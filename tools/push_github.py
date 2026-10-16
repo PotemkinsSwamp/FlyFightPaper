@@ -16,7 +16,12 @@ SKIP = re.compile(r"(\.blend\d?$|(^|/)(renders?|closeups?|close-ups?)/|compare[^
 
 
 def git(*args, inp=None, env=None):
-    return subprocess.run(["git", *args], input=inp, capture_output=True, text=True, check=True, env=env).stdout
+    """Bytes in and out (Windows text mode turns 
+ into 
+, and git then ignores --index-info lines)."""
+    out = subprocess.run(["git", *args], input=inp.encode() if isinstance(inp, str) else inp, capture_output=True,
+                         check=True, env=env).stdout
+    return out.decode("utf-8", "surrogateescape")
 
 
 def last_copied():
@@ -26,11 +31,12 @@ def last_copied():
     return git("rev-parse", m.group(1)).strip()
 
 
-def copy(commit, tip):
+def copy(commit, tip, since=None, message=None):
+    """Replays main COMMIT (its change from SINCE, default its parent) on top of the GitHub tip."""
     env = dict(os.environ, GIT_INDEX_FILE=git("rev-parse", "--git-path", "github-index").strip())
     git("read-tree", tip, env=env)
     lines, skipped = [], []
-    for row in git("diff-tree", "-r", "--no-renames", "--no-commit-id", commit).splitlines():
+    for row in git("diff-tree", "-r", "--no-renames", "--no-commit-id", *([since] if since else []), commit).splitlines():
         meta, path = row.split("\t", 1)
         _, mode, _, sha, status = meta.split()
         if SKIP.search(path):
@@ -40,7 +46,8 @@ def copy(commit, tip):
             lines.append(f"0 {'0' * 40}\t{path}")
             continue
         if path == ".gitattributes":  # keep the snapshot's LFS rule for the bell tower
-            sha = git("hash-object", "-w", "--stdin", inp=git("cat-file", "blob", sha) + LFS_LINE).strip()
+            blob = subprocess.run(["git", "cat-file", "blob", sha], capture_output=True, check=True).stdout
+            sha = git("hash-object", "-w", "--stdin", inp=blob + LFS_LINE.encode()).strip()
         elif int(git("cat-file", "-s", sha)) > MAX_BYTES:
             skipped.append(path + " (too big)")
             continue
