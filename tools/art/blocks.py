@@ -1747,7 +1747,27 @@ def monorail_station_north():
                     trim.append(gc("Real top stud on corner brick",1.1,.4,(x+dx,y+dy,149.8),"red",vertices=16))
     groups.append(("toy-brick-trims-and-join-tape",trim))
     groups.append(("corrugated-top-box-cut-edges",board_edges(180,74,82,1.4)+board_edges(180,74,148.5,1.4)))
-    return groups
+    return same_both_sides(groups)
+
+
+def same_both_sides(groups, front=-34):
+    """Copy every front detail (centre in front of y=FRONT) round to the back, turned 180 degrees, so the building
+    looks the same from both sides (Alan 2026-10-16). A copy lands in the left/right group its new place belongs to."""
+    swap = lambda label: label.replace("left","@").replace("right","left").replace("@","right")
+    out = {label: list(parts) for label,parts in groups}
+    centre = lambda obj: np.mean([v.co[:] for v in obj.data.vertices],axis=0)
+    have = [(centre(obj),len(obj.data.vertices)) for _,parts in groups for obj in parts]
+    for label,parts in groups:
+        for obj in parts:
+            c = centre(obj)
+            if c[1] >= front or any(n==len(obj.data.vertices) and np.allclose(o,(-c[0],-c[1],c[2]),atol=.3)
+                                    for o,n in have):
+                continue                                                     # not a front detail, or already twinned
+            copy = obj.copy()
+            copy.data = obj.data.copy()
+            bpy.context.scene.collection.objects.link(copy)
+            out[swap(label) if swap(label) in out else label].append(rotate_about(copy,180))
+    return list(out.items())
 
 
 BUILDERS["monorail-station-north"] = monorail_station_north
@@ -1757,6 +1777,7 @@ OPENINGS["monorail-station-north"] = [("road",-44,44,0,80),("monorail-tunnel",-3
 
 def monorail_station_south():
     PAINT["tin-red"] = ("CD2E24","enamel")
+    PAINT["tile-grey"] = ("A4A8AA","plastic")
     PAINT["glass"] = ("226398","glass")
     groups = []
     for x in (-64.5,64.5):
@@ -1772,6 +1793,13 @@ def monorail_station_south():
                 parts += gd(x,4,-40,14,26,"green") if x<0 else gw(x,20,-40,16,20,mullions=False)
                 if x<0:
                     parts += brick((20,7,3),(x,-43,1.5),"green",3)
+                # Grey tile base plate round the leg's foot, like a toy road plate (Alan 2026-10-16)
+                # (outward only: the road opening between the legs stays clear)
+                cx = x+math.copysign(1.5,x)
+                parts.append(gb("Grey tile base plate under the leg",(44,92,1.2),(cx,0,.6),"tile-grey",.2))
+                for i in (-1,1):
+                    parts += [gb("Base plate tile seam",(44,.5,.1),(cx,i*23,1.22),"dark",.02),
+                              gb("Base plate tile seam",(.5,92,.1),(cx+i*11,0,1.22),"dark",.02)]
             if level==3:
                 parts += gw(x,60,-40,16,20,mullions=False)
             groups.append((("left" if x<0 else "right")+"-toy-leg-course-"+str(level+1),parts))
