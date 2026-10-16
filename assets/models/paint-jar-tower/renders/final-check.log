@@ -1,0 +1,36 @@
+00:00.609  blend            | Read blend: "D:\FlyFightPaper\assets\models\paint-jar-tower\hero.blend"
+Extensions: writing cache failed ([Errno 13] Permission denied: 'C:\\Users\\gutie\\AppData\\Roaming\\Blender Foundation\\Blender\\5.1\\extensions\\.cache\\compat.dat').
+FINAL boundary ground-floor-front-left 0
+FINAL boundary ground-floor-front-right 0
+FINAL boundary ground-floor-back-left 0
+FINAL boundary ground-floor-back-right 0
+FINAL boundary upper-walls-front-left 0
+FINAL boundary upper-walls-front-right 0
+FINAL boundary upper-walls-back-left 0
+FINAL boundary upper-walls-back-right 0
+FINAL boundary roof-front-left 0
+FINAL boundary roof-front-right 0
+FINAL boundary roof-back-left 0
+FINAL boundary roof-back-right 0
+FINAL boundary topper-front-left 0
+FINAL boundary topper-front-right 0
+FINAL boundary topper-back-left 0
+FINAL boundary topper-back-right 0
+00:20.859  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\render-front.png'
+00:21.359  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\render-back.png'
+00:22.250  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\ground-floor-after.png'
+Info: Saved as "hero.blend"
+FINAL maps refreshed paint-jar-tower
+00:22.750  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\closeup-0.png'
+00:23.156  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\closeup-1.png'
+00:23.609  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\closeup-2.png'
+00:24.016  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\closeup-3.png'
+00:24.453  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\closeup-4.png'
+00:24.891  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\closeup-5.png'
+00:25.250  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\closeup-6.png'
+00:25.609  render           | Saved: 'D:\FlyFightPaper\assets\models\paint-jar-tower\renders\closeup-7.png'
+CHECK boundaries []
+CHECK done paint-jar-tower
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

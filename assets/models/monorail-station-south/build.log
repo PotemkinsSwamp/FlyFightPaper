@@ -1,0 +1,206 @@
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+BLOCKS baking 1-left-toy-leg-course-1
+BLOCKS ray baking soft ambient occlusion for left-toy-leg-course-1
+D:\FlyFightPaper\tools\art\blocks.py:1282: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-1-left-toy-leg-course-1.fbx'
+export finished in 0.0104 sec.
+FBX version: 7400
+BLOCKS baking 2-left-toy-leg-course-2
+BLOCKS ray baking soft ambient occlusion for left-toy-leg-course-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-2-left-toy-leg-course-2.fbx'
+export finished in 0.0049 sec.
+FBX version: 7400
+BLOCKS baking 3-left-toy-leg-course-3
+BLOCKS ray baking soft ambient occlusion for left-toy-leg-course-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-3-left-toy-leg-course-3.fbx'
+export finished in 0.0054 sec.
+FBX version: 7400
+BLOCKS baking 4-left-toy-leg-course-4
+BLOCKS ray baking soft ambient occlusion for left-toy-leg-course-4
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-4-left-toy-leg-course-4.fbx'
+export finished in 0.0051 sec.
+FBX version: 7400
+BLOCKS baking 5-left-toy-leg-course-5
+BLOCKS ray baking soft ambient occlusion for left-toy-leg-course-5
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-5-left-toy-leg-course-5.fbx'
+export finished in 0.0078 sec.
+FBX version: 7400
+BLOCKS baking 6-right-toy-leg-course-1
+BLOCKS ray baking soft ambient occlusion for right-toy-leg-course-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-6-right-toy-leg-course-1.fbx'
+export finished in 0.0066 sec.
+FBX version: 7400
+BLOCKS baking 7-right-toy-leg-course-2
+BLOCKS ray baking soft ambient occlusion for right-toy-leg-course-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-7-right-toy-leg-course-2.fbx'
+export finished in 0.0053 sec.
+FBX version: 7400
+BLOCKS baking 8-right-toy-leg-course-3
+BLOCKS ray baking soft ambient occlusion for right-toy-leg-course-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-8-right-toy-leg-course-3.fbx'
+export finished in 0.0046 sec.
+FBX version: 7400
+BLOCKS baking 9-right-toy-leg-course-4
+BLOCKS ray baking soft ambient occlusion for right-toy-leg-course-4
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-9-right-toy-leg-course-4.fbx'
+export finished in 0.0063 sec.
+FBX version: 7400
+BLOCKS baking 10-right-toy-leg-course-5
+BLOCKS ray baking soft ambient occlusion for right-toy-leg-course-5
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-10-right-toy-leg-course-5.fbx'
+export finished in 0.0085 sec.
+FBX version: 7400
+BLOCKS baking 11-rounded-red-lunch-tin-half-1
+BLOCKS ray baking soft ambient occlusion for rounded-red-lunch-tin-half-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-11-rounded-red-lunch-tin-half-1.fbx'
+export finished in 0.0060 sec.
+FBX version: 7400
+BLOCKS baking 12-rounded-red-lunch-tin-half-2
+BLOCKS ray baking soft ambient occlusion for rounded-red-lunch-tin-half-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-12-rounded-red-lunch-tin-half-2.fbx'
+export finished in 0.0058 sec.
+FBX version: 7400
+BLOCKS baking 13-rounded-bottom-tin-rim-1
+BLOCKS ray baking soft ambient occlusion for rounded-bottom-tin-rim-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-13-rounded-bottom-tin-rim-1.fbx'
+export finished in 0.0046 sec.
+FBX version: 7400
+BLOCKS baking 14-rounded-bottom-tin-rim-2
+BLOCKS ray baking soft ambient occlusion for rounded-bottom-tin-rim-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-14-rounded-bottom-tin-rim-2.fbx'
+export finished in 0.0056 sec.
+FBX version: 7400
+BLOCKS baking 15-deep-lunch-tin-lid-1
+BLOCKS ray baking soft ambient occlusion for deep-lunch-tin-lid-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-15-deep-lunch-tin-lid-1.fbx'
+export finished in 0.0049 sec.
+FBX version: 7400
+BLOCKS baking 16-deep-lunch-tin-lid-2
+BLOCKS ray baking soft ambient occlusion for deep-lunch-tin-lid-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-16-deep-lunch-tin-lid-2.fbx'
+export finished in 0.0058 sec.
+FBX version: 7400
+BLOCKS baking 17-rolled-tin-rim-82-1
+BLOCKS ray baking soft ambient occlusion for rolled-tin-rim-82-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-17-rolled-tin-rim-82-1.fbx'
+export finished in 0.0053 sec.
+FBX version: 7400
+BLOCKS baking 18-rolled-tin-rim-82-2
+BLOCKS ray baking soft ambient occlusion for rolled-tin-rim-82-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-18-rolled-tin-rim-82-2.fbx'
+export finished in 0.0056 sec.
+FBX version: 7400
+BLOCKS baking 19-rolled-tin-rim-143.3-1
+BLOCKS ray baking soft ambient occlusion for rolled-tin-rim-143.3-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-19-rolled-tin-rim-143.3-1.fbx'
+export finished in 0.0053 sec.
+FBX version: 7400
+BLOCKS baking 20-rolled-tin-rim-143.3-2
+BLOCKS ray baking soft ambient occlusion for rolled-tin-rim-143.3-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-20-rolled-tin-rim-143.3-2.fbx'
+export finished in 0.0068 sec.
+FBX version: 7400
+BLOCKS baking 21-rolled-tin-rim-149.2-1
+BLOCKS ray baking soft ambient occlusion for rolled-tin-rim-149.2-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-21-rolled-tin-rim-149.2-1.fbx'
+export finished in 0.0057 sec.
+FBX version: 7400
+BLOCKS baking 22-rolled-tin-rim-149.2-2
+BLOCKS ray baking soft ambient occlusion for rolled-tin-rim-149.2-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-22-rolled-tin-rim-149.2-2.fbx'
+export finished in 0.0056 sec.
+FBX version: 7400
+BLOCKS baking 23-metal-lined-open-track-tunnel
+BLOCKS ray baking soft ambient occlusion for metal-lined-open-track-tunnel
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-23-metal-lined-open-track-tunnel.fbx'
+export finished in 0.0082 sec.
+FBX version: 7400
+BLOCKS baking 24-front-open-long-window--52
+BLOCKS ray baking soft ambient occlusion for front-open-long-window--52
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-24-front-open-long-window--52.fbx'
+export finished in 0.0063 sec.
+FBX version: 7400
+BLOCKS baking 25-front-open-long-window-0
+BLOCKS ray baking soft ambient occlusion for front-open-long-window-0
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-25-front-open-long-window-0.fbx'
+export finished in 0.0063 sec.
+FBX version: 7400
+BLOCKS baking 26-front-open-long-window-52
+BLOCKS ray baking soft ambient occlusion for front-open-long-window-52
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-26-front-open-long-window-52.fbx'
+export finished in 0.0065 sec.
+FBX version: 7400
+BLOCKS baking 27-back-open-long-window--52
+BLOCKS ray baking soft ambient occlusion for back-open-long-window--52
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-27-back-open-long-window--52.fbx'
+export finished in 0.0056 sec.
+FBX version: 7400
+BLOCKS baking 28-back-open-long-window-0
+BLOCKS ray baking soft ambient occlusion for back-open-long-window-0
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-28-back-open-long-window-0.fbx'
+export finished in 0.0053 sec.
+FBX version: 7400
+BLOCKS baking 29-back-open-long-window-52
+BLOCKS ray baking soft ambient occlusion for back-open-long-window-52
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-29-back-open-long-window-52.fbx'
+export finished in 0.0054 sec.
+FBX version: 7400
+BLOCKS baking 30-real-hinges-and-closing-clasps
+BLOCKS ray baking soft ambient occlusion for real-hinges-and-closing-clasps
+D:\FlyFightPaper\tools\art\blocks.py:739: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+D:\FlyFightPaper\tools\art\blocks.py:749: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-south\\parts\\pending-30-real-hinges-and-closing-clasps.fbx'
+export finished in 0.0128 sec.
+FBX version: 7400
+BLOCKS rendering concept camera
+BLOCKS rendering opening-front
+BLOCKS rendering opening-back
+Info: Saved as "pending-hero.blend"
+BLOCKS PASS monorail-station-south 30 pieces, 33692 triangles
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

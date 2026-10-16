@@ -1,0 +1,3654 @@
+{
+  "pieces": [
+    {
+      "piece": "kit/cardboard-base",
+      "color": "color",
+      "offset": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        95.0,
+        63.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge-cap",
+      "color": "color",
+      "offset": [
+        -44.75,
+        -30.9,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        5.5,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -35.0,
+        -30.9,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -21.0,
+        -30.9,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -7.0,
+        -30.9,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        7.0,
+        -30.9,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        21.0,
+        -30.9,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        35.0,
+        -30.9,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge-cap",
+      "color": "color",
+      "offset": [
+        44.75,
+        -30.9,
+        1.0
+      ],
+      "yaw": 0,
+      "size": [
+        5.5,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge-cap",
+      "color": "color",
+      "offset": [
+        44.75,
+        30.9,
+        1.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        5.5,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        35.0,
+        30.9,
+        1.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        21.0,
+        30.9,
+        1.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        7.0,
+        30.9,
+        1.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -7.0,
+        30.9,
+        1.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -21.0,
+        30.9,
+        1.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -35.0,
+        30.9,
+        1.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge-cap",
+      "color": "color",
+      "offset": [
+        -44.75,
+        30.9,
+        1.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        5.5,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -46.9,
+        24.5,
+        1.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -46.9,
+        10.5,
+        1.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -46.9,
+        -3.5,
+        1.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        -46.9,
+        -17.5,
+        1.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge-half",
+      "color": "color",
+      "offset": [
+        -46.9,
+        -28.0,
+        1.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        46.9,
+        -24.5,
+        1.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        46.9,
+        -10.5,
+        1.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        46.9,
+        3.5,
+        1.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge",
+      "color": "color",
+      "offset": [
+        46.9,
+        17.5,
+        1.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-edge-half",
+      "color": "color",
+      "offset": [
+        46.9,
+        28.0,
+        1.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/wall-shop",
+      "color": "color-card-light",
+      "offset": [
+        -14.0,
+        -21.0,
+        16.0
+      ],
+      "yaw": 0,
+      "size": [
+        56.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -41.9,
+        -21.64,
+        16.0
+      ],
+      "yaw": 0,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/shop-window",
+      "color": "color",
+      "offset": [
+        -14.0,
+        -22.0,
+        15.825
+      ],
+      "yaw": 0,
+      "size": [
+        54.0,
+        3.4,
+        24.35
+      ]
+    },
+    {
+      "piece": "kit/sweet-display",
+      "color": "color",
+      "offset": [
+        -14.0,
+        -20.4,
+        16.0
+      ],
+      "yaw": 0,
+      "size": [
+        49.0,
+        8.6,
+        21.0
+      ]
+    },
+    {
+      "piece": "kit/wall-door",
+      "color": "color-card-light",
+      "offset": [
+        28.0,
+        -21.0,
+        16.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        14.1,
+        -21.64,
+        16.0
+      ],
+      "yaw": 0,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/door",
+      "color": "color",
+      "offset": [
+        28.0,
+        -22.0,
+        15.5
+      ],
+      "yaw": 0,
+      "size": [
+        17.0,
+        3.8,
+        27.0
+      ]
+    },
+    {
+      "piece": "kit/awning",
+      "color": "color",
+      "offset": [
+        -35.0,
+        -24.9625,
+        27.6
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        7.325,
+        5.8
+      ]
+    },
+    {
+      "piece": "kit/awning",
+      "color": "color",
+      "offset": [
+        -21.0,
+        -24.9625,
+        27.6
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        7.325,
+        5.8
+      ]
+    },
+    {
+      "piece": "kit/awning",
+      "color": "color",
+      "offset": [
+        -7.0,
+        -24.9625,
+        27.6
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        7.325,
+        5.8
+      ]
+    },
+    {
+      "piece": "kit/awning",
+      "color": "color",
+      "offset": [
+        7.0,
+        -24.9625,
+        27.6
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        7.325,
+        5.8
+      ]
+    },
+    {
+      "piece": "kit/awning",
+      "color": "color",
+      "offset": [
+        21.0,
+        -24.9625,
+        27.6
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        7.325,
+        5.8
+      ]
+    },
+    {
+      "piece": "kit/awning",
+      "color": "color",
+      "offset": [
+        35.0,
+        -24.9625,
+        27.6
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        7.325,
+        5.8
+      ]
+    },
+    {
+      "piece": "kit/ruler-cornice",
+      "color": "color",
+      "offset": [
+        -28.0,
+        -22.0,
+        31.4
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        2.2,
+        1.2
+      ]
+    },
+    {
+      "piece": "kit/ruler-cornice",
+      "color": "color",
+      "offset": [
+        0.0,
+        -22.0,
+        31.4
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        2.2,
+        1.2
+      ]
+    },
+    {
+      "piece": "kit/ruler-cornice",
+      "color": "color",
+      "offset": [
+        28.0,
+        -22.0,
+        31.4
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        2.2,
+        1.2
+      ]
+    },
+    {
+      "piece": "kit/wall-plain",
+      "color": "color",
+      "offset": [
+        28.0,
+        21.0,
+        16.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        41.9,
+        21.64,
+        16.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        28.35637,
+        21.76,
+        16.18486
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/wall-door",
+      "color": "color-card-light",
+      "offset": [
+        0.0,
+        21.0,
+        16.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        13.9,
+        21.64,
+        16.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/door",
+      "color": "color",
+      "offset": [
+        0.0,
+        22.0,
+        15.5
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        17.0,
+        3.8,
+        27.0
+      ]
+    },
+    {
+      "piece": "kit/wall-plain",
+      "color": "color-card-warm",
+      "offset": [
+        -28.0,
+        21.0,
+        16.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -14.1,
+        21.64,
+        16.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        -27.64363,
+        21.76,
+        16.18486
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color",
+      "offset": [
+        -42.0,
+        17.5,
+        16.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -42.64,
+        20.9,
+        16.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/wall-square",
+      "color": "color-card-warm",
+      "offset": [
+        -42.0,
+        0.0,
+        16.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -42.64,
+        13.9,
+        16.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        -42.76,
+        0.35637,
+        16.18486
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-square",
+      "color": "color",
+      "offset": [
+        -43.275,
+        -0.0,
+        15.8875
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color-card-light",
+      "offset": [
+        -42.0,
+        -17.5,
+        16.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -42.64,
+        -14.1,
+        16.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color-card-light",
+      "offset": [
+        42.0,
+        -17.5,
+        16.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        42.64,
+        -20.9,
+        16.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/wall-square",
+      "color": "color",
+      "offset": [
+        42.0,
+        0.0,
+        16.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        42.64,
+        -13.9,
+        16.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        42.76,
+        -0.35637,
+        16.18486
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-square",
+      "color": "color",
+      "offset": [
+        43.275,
+        -0.0,
+        15.8875
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color-card-warm",
+      "offset": [
+        42.0,
+        17.5,
+        16.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        42.64,
+        14.1,
+        16.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/shop-plinth",
+      "color": "color",
+      "offset": [
+        -14.0,
+        -21.8,
+        3.9
+      ],
+      "yaw": 0,
+      "size": [
+        53.85,
+        1.7,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        35.0,
+        21.8875,
+        3.2
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        21.0,
+        21.8875,
+        3.2
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        7.0,
+        21.8875,
+        3.2
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        -7.0,
+        21.8875,
+        3.2
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        -21.0,
+        21.8875,
+        3.2
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        -35.0,
+        21.8875,
+        3.2
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        -42.8875,
+        14.0,
+        3.2
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        -42.8875,
+        -0.0,
+        3.2
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        -42.8875,
+        -14.0,
+        3.2
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        42.8875,
+        -14.0,
+        3.2
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        42.8875,
+        -0.0,
+        3.2
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color-red",
+      "offset": [
+        42.8875,
+        14.0,
+        3.2
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -38.0,
+        -21.69,
+        12.0
+      ],
+      "yaw": 0,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        38.0,
+        -21.69,
+        24.0
+      ],
+      "yaw": 0,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        38.0,
+        21.69,
+        12.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -38.0,
+        21.69,
+        24.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -42.69,
+        17.0,
+        12.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -42.69,
+        -17.0,
+        24.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        42.69,
+        -17.0,
+        12.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        42.69,
+        17.0,
+        24.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/quoin-column",
+      "color": "color",
+      "offset": [
+        -40.875,
+        -19.875,
+        32.0
+      ],
+      "yaw": 0.0,
+      "size": [
+        4.75,
+        4.75,
+        59.81667
+      ]
+    },
+    {
+      "piece": "kit/quoin-column",
+      "color": "color",
+      "offset": [
+        40.875,
+        -19.875,
+        32.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        4.75,
+        4.75,
+        59.81667
+      ]
+    },
+    {
+      "piece": "kit/brick-2x2",
+      "color": "color-yellow",
+      "offset": [
+        -42.0,
+        21.0,
+        4.4
+      ],
+      "yaw": 0,
+      "size": [
+        7.0,
+        7.0,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-2x2",
+      "color": "color",
+      "offset": [
+        42.0,
+        21.0,
+        4.4
+      ],
+      "yaw": 0,
+      "size": [
+        7.0,
+        7.0,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/wall-arch",
+      "color": "color",
+      "offset": [
+        -28.0,
+        -21.0,
+        47.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -41.9,
+        -21.64,
+        47.0
+      ],
+      "yaw": 0,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        -28.35637,
+        -21.76,
+        47.18486
+      ],
+      "yaw": 0,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-arch",
+      "color": "color",
+      "offset": [
+        -28.0,
+        -22.275,
+        46.8875
+      ],
+      "yaw": 0,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-arch",
+      "color": "color-card-light",
+      "offset": [
+        0.0,
+        -21.0,
+        47.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -13.9,
+        -21.64,
+        47.0
+      ],
+      "yaw": 0,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        -0.35637,
+        -21.76,
+        47.18486
+      ],
+      "yaw": 0,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-arch",
+      "color": "color",
+      "offset": [
+        0.0,
+        -22.275,
+        46.8875
+      ],
+      "yaw": 0,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-arch",
+      "color": "color-card-warm",
+      "offset": [
+        28.0,
+        -21.0,
+        47.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        14.1,
+        -21.64,
+        47.0
+      ],
+      "yaw": 0,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        27.64363,
+        -21.76,
+        47.18486
+      ],
+      "yaw": 0,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-arch",
+      "color": "color",
+      "offset": [
+        28.0,
+        -22.275,
+        46.8875
+      ],
+      "yaw": 0,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color-card-warm",
+      "offset": [
+        38.5,
+        21.0,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        41.9,
+        21.64,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/wall-arch",
+      "color": "color-card-warm",
+      "offset": [
+        21.0,
+        21.0,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        34.9,
+        21.64,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        21.35637,
+        21.76,
+        47.18486
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-arch",
+      "color": "color",
+      "offset": [
+        21.0,
+        22.275,
+        46.8875
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-half",
+      "color": "color-card-warm",
+      "offset": [
+        0.0,
+        21.0,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        6.9,
+        21.64,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        0.35637,
+        21.76,
+        47.18486
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/wall-arch",
+      "color": "color-card-warm",
+      "offset": [
+        -21.0,
+        21.0,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -7.1,
+        21.64,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        -20.64363,
+        21.76,
+        47.18486
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-arch",
+      "color": "color",
+      "offset": [
+        -21.0,
+        22.275,
+        46.8875
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color-card-warm",
+      "offset": [
+        -38.5,
+        21.0,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -35.1,
+        21.64,
+        47.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color-card-light",
+      "offset": [
+        -42.0,
+        17.5,
+        47.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -42.64,
+        20.9,
+        47.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/wall-arch",
+      "color": "color",
+      "offset": [
+        -42.0,
+        0.0,
+        47.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -42.64,
+        13.9,
+        47.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        -42.76,
+        0.35637,
+        47.18486
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-arch",
+      "color": "color",
+      "offset": [
+        -43.275,
+        -0.0,
+        46.8875
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color-card-warm",
+      "offset": [
+        -42.0,
+        -17.5,
+        47.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        -42.64,
+        -14.1,
+        47.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color-card-warm",
+      "offset": [
+        42.0,
+        -17.5,
+        47.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        42.64,
+        -20.9,
+        47.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/wall-arch",
+      "color": "color-card-light",
+      "offset": [
+        42.0,
+        0.0,
+        47.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        28.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        42.64,
+        -13.9,
+        47.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/tape-cluster",
+      "color": "color",
+      "offset": [
+        42.76,
+        -0.35637,
+        47.18486
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        25.08164,
+        0.15,
+        25.76667
+      ]
+    },
+    {
+      "piece": "kit/window-arch",
+      "color": "color",
+      "offset": [
+        43.275,
+        -0.0,
+        46.8875
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        18.0,
+        4.15,
+        22.225
+      ]
+    },
+    {
+      "piece": "kit/wall-narrow",
+      "color": "color",
+      "offset": [
+        42.0,
+        17.5,
+        47.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        7.0,
+        1.2,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/panel-seam",
+      "color": "color",
+      "offset": [
+        42.64,
+        14.1,
+        47.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        0.18,
+        0.14,
+        28.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        -28.0,
+        -14.035,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        0.0,
+        -14.035,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        28.0,
+        -14.035,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        -28.0,
+        -0.035,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        0.0,
+        -0.035,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        28.0,
+        -0.035,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        -28.0,
+        13.965,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        0.0,
+        13.965,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/book-slab",
+      "color": "color",
+      "offset": [
+        28.0,
+        13.965,
+        31.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.07,
+        3.0
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -35.0,
+        -21.8875,
+        32.15
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -21.0,
+        -21.8875,
+        32.15
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -7.0,
+        -21.8875,
+        32.15
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        7.0,
+        -21.8875,
+        32.15
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        21.0,
+        -21.8875,
+        32.15
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        35.0,
+        -21.8875,
+        32.15
+      ],
+      "yaw": 0,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        35.0,
+        21.8875,
+        32.15
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        21.0,
+        21.8875,
+        32.15
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        7.0,
+        21.8875,
+        32.15
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -7.0,
+        21.8875,
+        32.15
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -21.0,
+        21.8875,
+        32.15
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -35.0,
+        21.8875,
+        32.15
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -42.8875,
+        14.0,
+        32.15
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -42.8875,
+        -0.0,
+        32.15
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        -42.8875,
+        -14.0,
+        32.15
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        42.8875,
+        -14.0,
+        32.15
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        42.8875,
+        -0.0,
+        32.15
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/brick-band",
+      "color": "color",
+      "offset": [
+        42.8875,
+        14.0,
+        32.15
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.575,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/fluted-run",
+      "color": "color",
+      "offset": [
+        0.0,
+        -21.65,
+        30.6
+      ],
+      "yaw": 0,
+      "size": [
+        84.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-run",
+      "color": "color",
+      "offset": [
+        0.0,
+        21.65,
+        30.6
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        84.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-run-half",
+      "color": "color",
+      "offset": [
+        -42.65,
+        -0.0,
+        30.6
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        42.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-run-half",
+      "color": "color",
+      "offset": [
+        42.65,
+        -0.0,
+        30.6
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        42.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -38.0,
+        -21.69,
+        43.0
+      ],
+      "yaw": 0,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        38.0,
+        -21.69,
+        55.0
+      ],
+      "yaw": 0,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        38.0,
+        21.69,
+        43.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -38.0,
+        21.69,
+        55.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -42.69,
+        17.0,
+        43.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -42.69,
+        -17.0,
+        55.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        42.69,
+        -17.0,
+        43.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        42.69,
+        17.0,
+        55.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/brick-2x2",
+      "color": "color",
+      "offset": [
+        -42.0,
+        21.0,
+        34.4
+      ],
+      "yaw": 0,
+      "size": [
+        7.0,
+        7.0,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-2x2",
+      "color": "color-blue",
+      "offset": [
+        42.0,
+        21.0,
+        34.4
+      ],
+      "yaw": 0,
+      "size": [
+        7.0,
+        7.0,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/corner-flutes",
+      "color": "color",
+      "offset": [
+        -40.265,
+        -19.265,
+        32.0
+      ],
+      "yaw": 0,
+      "size": [
+        6.07,
+        6.07,
+        60.0
+      ]
+    },
+    {
+      "piece": "kit/corner-flutes",
+      "color": "color",
+      "offset": [
+        40.265,
+        -19.265,
+        32.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        6.07,
+        6.07,
+        60.0
+      ]
+    },
+    {
+      "piece": "kit/corner-flutes",
+      "color": "color",
+      "offset": [
+        40.265,
+        19.265,
+        32.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        6.07,
+        6.07,
+        60.0
+      ]
+    },
+    {
+      "piece": "kit/corner-flutes",
+      "color": "color",
+      "offset": [
+        -40.265,
+        19.265,
+        32.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        6.07,
+        6.07,
+        60.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        -28.0,
+        -14.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        0.0,
+        -14.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        28.0,
+        -14.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        -28.0,
+        0.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        0.0,
+        0.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        28.0,
+        0.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        -28.0,
+        14.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        0.0,
+        14.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/cardboard-floor",
+      "color": "color",
+      "offset": [
+        28.0,
+        14.0,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        14.0,
+        2.0
+      ]
+    },
+    {
+      "piece": "kit/fluted-run",
+      "color": "color",
+      "offset": [
+        0.0,
+        -21.65,
+        62.0
+      ],
+      "yaw": 0,
+      "size": [
+        84.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-run",
+      "color": "color",
+      "offset": [
+        0.0,
+        21.65,
+        62.0
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        84.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-run-half",
+      "color": "color",
+      "offset": [
+        -42.65,
+        -0.0,
+        62.0
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        42.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/fluted-run-half",
+      "color": "color",
+      "offset": [
+        42.65,
+        -0.0,
+        62.0
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        42.0,
+        1.2,
+        1.24
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet",
+      "color": "color",
+      "offset": [
+        -28.0,
+        -21.0,
+        65.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet",
+      "color": "color",
+      "offset": [
+        0.0,
+        -21.0,
+        65.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet",
+      "color": "color",
+      "offset": [
+        28.0,
+        -21.0,
+        65.5
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet",
+      "color": "color",
+      "offset": [
+        28.0,
+        21.0,
+        65.5
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet",
+      "color": "color",
+      "offset": [
+        0.0,
+        21.0,
+        65.5
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet",
+      "color": "color",
+      "offset": [
+        -28.0,
+        21.0,
+        65.5
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet",
+      "color": "color",
+      "offset": [
+        -42.0,
+        7.0,
+        65.5
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        28.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet-half",
+      "color": "color",
+      "offset": [
+        -42.0,
+        -14.0,
+        65.5
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet",
+      "color": "color",
+      "offset": [
+        42.0,
+        -7.0,
+        65.5
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        28.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/roof-parapet-half",
+      "color": "color",
+      "offset": [
+        42.0,
+        14.0,
+        65.5
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.0,
+        1.2,
+        5.0
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        -23.0,
+        -21.68,
+        65.5
+      ],
+      "yaw": 0,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        8.0,
+        -21.68,
+        65.5
+      ],
+      "yaw": 0,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        33.0,
+        -21.68,
+        65.5
+      ],
+      "yaw": 0,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/tape-patch",
+      "color": "color",
+      "offset": [
+        42.68,
+        -0.0,
+        65.5
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        6.0,
+        0.12,
+        3.6
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting",
+      "color": "color",
+      "offset": [
+        -28.0,
+        -20.8,
+        69.555
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting",
+      "color": "color",
+      "offset": [
+        0.0,
+        -20.8,
+        69.555
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting",
+      "color": "color",
+      "offset": [
+        28.0,
+        -20.8,
+        69.555
+      ],
+      "yaw": 0,
+      "size": [
+        28.0,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting",
+      "color": "color",
+      "offset": [
+        28.0,
+        20.8,
+        69.555
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting",
+      "color": "color",
+      "offset": [
+        -0.0,
+        20.8,
+        69.555
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting",
+      "color": "color",
+      "offset": [
+        -28.0,
+        20.8,
+        69.555
+      ],
+      "yaw": 3.141592653589793,
+      "size": [
+        28.0,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting",
+      "color": "color",
+      "offset": [
+        -41.8,
+        7.0,
+        69.555
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        28.0,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting-half",
+      "color": "color",
+      "offset": [
+        -41.8,
+        -14.0,
+        69.555
+      ],
+      "yaw": -1.5707963267948966,
+      "size": [
+        14.2,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting",
+      "color": "color",
+      "offset": [
+        41.8,
+        -7.0,
+        69.555
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        28.0,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/paper-bunting-half",
+      "color": "color",
+      "offset": [
+        41.8,
+        14.0,
+        69.555
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        14.2,
+        0.2,
+        4.71
+      ]
+    },
+    {
+      "piece": "kit/bunting-post",
+      "color": "color",
+      "offset": [
+        -41.9,
+        -20.9,
+        67.575
+      ],
+      "yaw": 0,
+      "size": [
+        1.5,
+        1.5,
+        9.15
+      ]
+    },
+    {
+      "piece": "kit/bunting-post",
+      "color": "color",
+      "offset": [
+        -41.9,
+        20.9,
+        67.575
+      ],
+      "yaw": 0,
+      "size": [
+        1.5,
+        1.5,
+        9.15
+      ]
+    },
+    {
+      "piece": "kit/bunting-post",
+      "color": "color",
+      "offset": [
+        41.9,
+        -20.9,
+        67.575
+      ],
+      "yaw": 0,
+      "size": [
+        1.5,
+        1.5,
+        9.15
+      ]
+    },
+    {
+      "piece": "kit/bunting-post",
+      "color": "color",
+      "offset": [
+        41.9,
+        20.9,
+        67.575
+      ],
+      "yaw": 0,
+      "size": [
+        1.5,
+        1.5,
+        9.15
+      ]
+    },
+    {
+      "piece": "kit/rooftop-chimney",
+      "color": "color",
+      "offset": [
+        -29.0,
+        9.0,
+        70.2
+      ],
+      "yaw": 0,
+      "size": [
+        10.0,
+        10.0,
+        14.4
+      ]
+    },
+    {
+      "piece": "kit/brick-2x2",
+      "color": "color-green",
+      "offset": [
+        -39.5,
+        -18.5,
+        64.9
+      ],
+      "yaw": 0,
+      "size": [
+        7.0,
+        7.0,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-1x1",
+      "color": "color-yellow",
+      "offset": [
+        -39.5,
+        -18.5,
+        68.7
+      ],
+      "yaw": 0,
+      "size": [
+        3.5,
+        3.5,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-2x2",
+      "color": "color-green",
+      "offset": [
+        -39.5,
+        18.5,
+        64.9
+      ],
+      "yaw": 0,
+      "size": [
+        7.0,
+        7.0,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-1x1",
+      "color": "color-yellow",
+      "offset": [
+        -39.5,
+        18.5,
+        68.7
+      ],
+      "yaw": 0,
+      "size": [
+        3.5,
+        3.5,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-2x2",
+      "color": "color-green",
+      "offset": [
+        39.5,
+        -18.5,
+        64.9
+      ],
+      "yaw": 0,
+      "size": [
+        7.0,
+        7.0,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-1x1",
+      "color": "color",
+      "offset": [
+        39.5,
+        -18.5,
+        68.7
+      ],
+      "yaw": 0,
+      "size": [
+        3.5,
+        3.5,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-2x2",
+      "color": "color-green",
+      "offset": [
+        39.5,
+        18.5,
+        64.9
+      ],
+      "yaw": 0,
+      "size": [
+        7.0,
+        7.0,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/brick-1x1",
+      "color": "color",
+      "offset": [
+        39.5,
+        18.5,
+        68.7
+      ],
+      "yaw": 0,
+      "size": [
+        3.5,
+        3.5,
+        3.8
+      ]
+    },
+    {
+      "piece": "kit/cupcake-sign",
+      "color": "color",
+      "offset": [
+        44.55,
+        -13.0,
+        20.5
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        13.6,
+        2.3,
+        16.6
+      ]
+    },
+    {
+      "piece": "kit/pencil-column",
+      "color": "color",
+      "offset": [
+        -43.25,
+        22.25,
+        16.0
+      ],
+      "yaw": 0,
+      "size": [
+        2.33827,
+        2.7,
+        27.6
+      ]
+    },
+    {
+      "piece": "kit/pencil-column",
+      "color": "color",
+      "offset": [
+        43.25,
+        22.25,
+        16.0
+      ],
+      "yaw": 0,
+      "size": [
+        2.33827,
+        2.7,
+        27.6
+      ]
+    },
+    {
+      "piece": "kit/roof-box",
+      "color": "color",
+      "offset": [
+        -27.0,
+        -9.0025,
+        65.21
+      ],
+      "yaw": 0,
+      "size": [
+        9.2,
+        7.305,
+        4.42
+      ]
+    },
+    {
+      "piece": "kit/roof-box",
+      "color": "color",
+      "offset": [
+        29.0025,
+        9.0,
+        65.21
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        9.2,
+        7.305,
+        4.42
+      ]
+    },
+    {
+      "piece": "kit/tape-roll",
+      "color": "color",
+      "offset": [
+        29.079417,
+        -9.27562,
+        64.2
+      ],
+      "yaw": -0.25,
+      "size": [
+        9.4281,
+        7.2,
+        2.4
+      ]
+    },
+    {
+      "piece": "kit/topper-plinth",
+      "color": "color",
+      "offset": [
+        6.0,
+        -6.0,
+        66.25
+      ],
+      "yaw": 0,
+      "size": [
+        16.0,
+        11.0,
+        6.5
+      ]
+    },
+    {
+      "piece": "kit/side-awning",
+      "color": "color",
+      "offset": [
+        44.525,
+        -0.0,
+        28.65
+      ],
+      "yaw": 1.5707963267948966,
+      "size": [
+        18.0,
+        4.25,
+        3.7
+      ]
+    },
+    {
+      "piece": "kit/drainpipe",
+      "color": "color",
+      "offset": [
+        43.3,
+        18.9864,
+        30.48503
+      ],
+      "yaw": 0,
+      "size": [
+        1.8,
+        2.6672,
+        57.02993
+      ]
+    },
+    {
+      "piece": "kit/doormat",
+      "color": "color",
+      "offset": [
+        28.0,
+        -25.7,
+        2.2625
+      ],
+      "yaw": 0,
+      "size": [
+        13.0,
+        5.0,
+        0.425
+      ]
+    },
+    {
+      "piece": "sweet-shop/4-topper",
+      "color": "color",
+      "offset": [
+        8.446660000000001,
+        -6.60701,
+        86.56674000000001
+      ],
+      "yaw": 0,
+      "size": [
+        34.1333,
+        14.2873,
+        36.866519999999994
+      ]
+    }
+  ],
+  "footprint": [
+    95,
+    63
+  ],
+  "height": 105.0,
+  "triangles": 31666,
+  "roof_height": 68,
+  "bounding_box": {
+    "min": [
+      -47.5,
+      -31.5,
+      0.0
+    ],
+    "max": [
+      47.5,
+      31.5,
+      105.0
+    ]
+  },
+  "recipe": "sweet-shop.recipe.json"
+}

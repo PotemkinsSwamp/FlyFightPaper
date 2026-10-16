@@ -1,0 +1,36 @@
+{
+  "building": "juice-carton-tower",
+  "pieces": 16,
+  "total_triangles": 37108,
+  "maximum_piece_triangles": 8268,
+  "lowest_front_pixels_per_stud": 6.296,
+  "open_edges": 0,
+  "front": "-y",
+  "touchup_changes": [],
+  "closeup_path": "assets/models/juice-carton-tower/renders/closeups.jpg",
+  "texture_contact_sheet": "assets/models/juice-carton-tower/renders/textures.png",
+  "texture_fill": "Shared fill_gaps.py --uv --all; packed scene refreshed afterwards. Dark navy window pixels preserved.",
+  "texture_doubts": [
+    {
+      "file": "parts/5-upper-walls-front-left-color.png",
+      "concern": "Cream frame forms a large B-like shape on the flat map."
+    },
+    {
+      "file": "parts/8-upper-walls-back-right-color.png",
+      "concern": "Cream window frames and detached trim can read as U/L-like strokes."
+    },
+    {
+      "file": "parts/14-topper-front-right-color.png",
+      "concern": "Flattened red-striped straw makes small curved number/letter-like strokes."
+    },
+    {
+      "file": "parts/14-topper-front-right-roughness.png",
+      "concern": "Dark straw/trim islands have a branching, limb-like silhouette."
+    }
+  ],
+  "remaining_issues": [
+    "Texture moderation doubts require review before any later upload."
+  ],
+  "visual_check": "Two cartons, doors, steps, cream window frames, dark panes and red roof inspected. Straw bend is intact and needs no replacement.",
+  "closeup_status": "Reviewed final closeups.jpg rendered from saved hero.blend."
+}

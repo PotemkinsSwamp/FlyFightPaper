@@ -1,0 +1,29 @@
+{
+  "name": "sweet-shop",
+  "width": 95,
+  "depth": 63,
+  "shell": [84, 42],
+  "floors": 2,
+  "floor_height": 28,
+  "windows": [
+    {"style": "square", "front": 0, "back": 0, "left": 1, "right": 1},
+    {"style": "arch", "front": 3, "back": 2, "left": 1, "right": 1}
+  ],
+  "shop_front": true,
+  "door": true,
+  "back_door": true,
+  "awning_color": "red",
+  "trims": true,
+  "tape": true,
+  "quoins": true,
+  "panel_details": true,
+  "full_height_quoins": true,
+  "side_details": true,
+  "pencil_columns": true,
+  "cupcake_sign": true,
+  "roof": {"parapet": true, "bunting": true, "bunting_all_sides": true, "chimney": true, "corner_bricks": true, "clutter": true, "topper_plinth": true},
+  "extras": [{"piece": "sweet-shop/4-topper", "color": "color", "yaw": 0}],
+  "roof_height": 68,
+  "expected_size": [95, 63, 105],
+  "expected_min": [-47.5, -31.5, 0]
+}

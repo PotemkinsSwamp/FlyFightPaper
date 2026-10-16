@@ -1,0 +1,45 @@
+{
+  "building": "paint-jar-tower",
+  "bake_status": "Complete; final saved-scene closeups and all three texture contact sheets inspected.",
+  "pieces": 16,
+  "total_triangles": 69964,
+  "maximum_piece_triangles": 8056,
+  "lowest_front_pixels_per_stud": 6.856,
+  "open_edges": 0,
+  "nonmanifold_edges": 0,
+  "front": "-y",
+  "touchup_changes": [
+    "Removed wholly contained faces from the warped back window on the blue middle jar.",
+    "Added a clean blue backing panel, four cream border bars and two straight cream pane dividers through touchup.json."
+  ],
+  "closeup_path": "assets/models/paint-jar-tower/renders/closeups.jpg",
+  "texture_contact_sheet": "assets/models/paint-jar-tower/renders/textures.png",
+  "texture_fill": "Shared fill_gaps.py --uv --all; packed scene refreshed afterwards.",
+  "texture_doubts": [
+    {
+      "file": "parts/6-upper-walls-front-right-color.png",
+      "concern": "Cream trim forms E/T-like branching strokes."
+    },
+    {
+      "file": "parts/9-roof-front-left-color.png",
+      "concern": "Blue/black curved patches can read as C-like outlines."
+    },
+    {
+      "file": "parts/14-topper-front-right-color.png",
+      "concern": "Cream trim forms B-like loops and straight letter-like strokes."
+    },
+    {
+      "file": "parts/16-topper-back-right-color.png",
+      "concern": "Cream trim forms E/F-like strokes."
+    },
+    {
+      "file": "parts/7-upper-walls-back-left-normal.png",
+      "concern": "A triangular frame island can read as an A-like outline."
+    }
+  ],
+  "remaining_issues": [
+    "The replacement back window is flat and retains the original cream side trim behind it.",
+    "Black patches remain inside some UV islands; the assembled model has no visible void, but flat maps still need moderation review."
+  ],
+  "visual_check": "Three stacked jars, ridged red/blue/yellow lids, paint drips, door, steps, top lid and all eight close-up views checked. Warped back-window smear replaced by four clean panes."
+}

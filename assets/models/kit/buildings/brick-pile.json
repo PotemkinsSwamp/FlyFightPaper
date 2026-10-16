@@ -1,0 +1,53 @@
+{
+ "footprint": [
+  110,
+  70
+ ],
+ "pieces": [
+  {
+   "piece": "kit/brick-2x4",
+   "color": "color",
+   "offset": [
+    0,
+    0,
+    14.93
+   ],
+   "yaw": 0,
+   "size": [
+    110,
+    55,
+    29.86
+   ]
+  },
+  {
+   "piece": "kit/brick-2x4",
+   "color": "color-blue",
+   "offset": [
+    9,
+    5,
+    38.5
+   ],
+   "yaw": 0,
+   "size": [
+    110,
+    55,
+    29.86
+   ]
+  },
+  {
+   "piece": "kit/brick-2x4",
+   "color": "color-yellow",
+   "offset": [
+    -14,
+    -4,
+    62.07
+   ],
+   "yaw": 0,
+   "size": [
+    110,
+    55,
+    29.86
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1176 @@
+{
+  "mode": "real UV islands",
+  "bleed_pixels": 3,
+  "maps": {
+    "1-left-toy-leg-course-1-color.png": {
+      "protected_sha256": "0ca13cb2fc8ffb94221aedc7882e017a35755aaeefc1845541bd1c21ec5e10e3",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 176185,
+      "filled_texels": 872391,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "62af03f663fde3ef4c9664d1d869c2103323b58247dacf8a039afbd1efdec328",
+      "file_changed": true
+    },
+    "1-left-toy-leg-course-1-normal.png": {
+      "protected_sha256": "1942f4609da443ece9920f73986fc99baba87946446acca3937402f31cbf56ba",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 176185,
+      "filled_texels": 872391,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "1-left-toy-leg-course-1-roughness.png": {
+      "protected_sha256": "2418efd9c116520ca9127e6cb2f561a63c52c19084ddd03995a7147b555534dd",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 176185,
+      "filled_texels": 872391,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "c4aa7dd433e0d8cf4cc5f4fe511eb579b43e527adcd9c52d4494382e3091cad7",
+      "file_changed": true
+    },
+    "2-left-toy-leg-course-2-color.png": {
+      "protected_sha256": "8c723621b8c6ad01728608285bb5443b282d7d089df3f4632e8c52df0a5e75f0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "32152e5ad21f5f6fe66ee08dd602a648f2568efb7f60f7fddec865f3d177f195",
+      "file_changed": true
+    },
+    "2-left-toy-leg-course-2-normal.png": {
+      "protected_sha256": "53b150ca3f9af810c679977731a71a98436632eb689313f3cc7be65022af43fe",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "2-left-toy-leg-course-2-roughness.png": {
+      "protected_sha256": "1ea6fb6eb1a0c7a9e8c37f90e8992895b7c8c2d2c66fea3b3226ef8e1172189d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "53d4c31c8437b2862a19f1150bfdba6463ffa4af7cfad8a38af254499ac3d7b0",
+      "file_changed": true
+    },
+    "3-left-toy-leg-course-3-color.png": {
+      "protected_sha256": "77c16e9fddab74b12f6620dfb4272b4901f1fca86d1544270d45ed120e2c1a1e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "49837b839833f3a0602da730a1ba97c2ef275fad582fa2c70a39604be09eed31",
+      "file_changed": true
+    },
+    "3-left-toy-leg-course-3-normal.png": {
+      "protected_sha256": "53b150ca3f9af810c679977731a71a98436632eb689313f3cc7be65022af43fe",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "3-left-toy-leg-course-3-roughness.png": {
+      "protected_sha256": "ffd3ece126546d844ba727ff07079b20aa1ed8f1c1ae94de5d0cd64c7062cd8d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "b301c2e40aa4ac7a57605ffa2c947f7856bb1e4bd891ba4d19a8ac7aa0c6dbc3",
+      "file_changed": true
+    },
+    "4-left-toy-leg-course-4-color.png": {
+      "protected_sha256": "ba0cd4349392521048d62094f49fe1fd13c651b0403706baf8d0e3ea10c77549",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "f06e82b4f457e380a02bd1198d3d8a351a1a9bf97d9cd90c6bd75317712efac5",
+      "file_changed": true
+    },
+    "4-left-toy-leg-course-4-normal.png": {
+      "protected_sha256": "0b41a76260b1d24ec1d454c12c4b182e888d7b63d784741a837ba6b2c5fbb957",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "4-left-toy-leg-course-4-roughness.png": {
+      "protected_sha256": "21b3e269335ee05e327f50b1ad11b4627940f18d4f83714dc60bf072c7036ce2",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "dd190e5562f4f9ee8c55e2bb798b1c2508ad3087c54f4c0e35376ca59a9f9125",
+      "file_changed": true
+    },
+    "5-left-toy-leg-course-5-color.png": {
+      "protected_sha256": "fdd9eb0dc957d1bb0c5cbcc19cea841b8198471a123790c9961dd55c726da5af",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "c277678b81724e8670a5bbbf5443c3b9abecccb05cab9e92e70f926335936c3f",
+      "file_changed": true
+    },
+    "5-left-toy-leg-course-5-normal.png": {
+      "protected_sha256": "53b150ca3f9af810c679977731a71a98436632eb689313f3cc7be65022af43fe",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "5-left-toy-leg-course-5-roughness.png": {
+      "protected_sha256": "5b66f89f25137637a1f12370c94ce35e6ee2a5e7059519179f71c50664c3594d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "49ab4ffab9a73e0590d92df29a36365e5fc41fd4f37bc4c6e978438c8ca82f83",
+      "file_changed": true
+    },
+    "6-right-toy-leg-course-1-color.png": {
+      "protected_sha256": "4808b8ccaa67537858e50ed6cd7b9b9628d0a4610eddbd04b30740de662c6986",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "5ad71bc9d2559d9d2e1b2e7dba7e99b5b8974c35ee1e5e80f5007d7dffa360e4",
+      "file_changed": true
+    },
+    "6-right-toy-leg-course-1-normal.png": {
+      "protected_sha256": "0b41a76260b1d24ec1d454c12c4b182e888d7b63d784741a837ba6b2c5fbb957",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "6-right-toy-leg-course-1-roughness.png": {
+      "protected_sha256": "a84ba73056417377ddf26612e0e0cd0b9c189c84c2d887bbbefb74350218812f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "db136af321033efe93e8fe53415f722a9a20f65e5ce6387f9f24b7261c2297d3",
+      "file_changed": true
+    },
+    "7-right-toy-leg-course-2-color.png": {
+      "protected_sha256": "78528e99953eb1a85a9405d027f365d3160647e8623084fb26564483bf51eb69",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "d50b93294ba2e0768b125c61088228dca4bf4ad6fc9b16e01faedcad85e980b8",
+      "file_changed": true
+    },
+    "7-right-toy-leg-course-2-normal.png": {
+      "protected_sha256": "53b150ca3f9af810c679977731a71a98436632eb689313f3cc7be65022af43fe",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "7-right-toy-leg-course-2-roughness.png": {
+      "protected_sha256": "ce75d0f0bf7c763909c70ad92afff375e2e050fb0339a496783ec03c38f39690",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "48b3ad36c13047da9a8823d337d959815894cda9b457a9c364c88244c322f81b",
+      "file_changed": true
+    },
+    "8-right-toy-leg-course-3-color.png": {
+      "protected_sha256": "0ee75f4c5a172d287b35374420e506c9f860cfb5c983d3faf4cdf905cbea5153",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "b3ca2b6bb7135e6f232ee8c915d2a4f3a1ee2b42a2aeff43149c5f313d2f73ab",
+      "file_changed": true
+    },
+    "8-right-toy-leg-course-3-normal.png": {
+      "protected_sha256": "53b150ca3f9af810c679977731a71a98436632eb689313f3cc7be65022af43fe",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "8-right-toy-leg-course-3-roughness.png": {
+      "protected_sha256": "15a98c459ed7dd5226ad9cfb390f8fa4097854af69fc4401aa60d0578ce5a4f6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "bb3416cb66eee80c6ad9d6f3f06858bc08f5a841491e58c4782299d3f36c2c26",
+      "file_changed": true
+    },
+    "9-right-toy-leg-course-4-color.png": {
+      "protected_sha256": "4ef6f58ac68428cfff758205f5609350c5d818aa1d9dc67a987a2f7ccf380bb3",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9bc30e7cd0c47e694206e2a3d1d84d1bf5bea8cc57c9134721d193d71e4e8846",
+      "file_changed": true
+    },
+    "9-right-toy-leg-course-4-normal.png": {
+      "protected_sha256": "0b41a76260b1d24ec1d454c12c4b182e888d7b63d784741a837ba6b2c5fbb957",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "9-right-toy-leg-course-4-roughness.png": {
+      "protected_sha256": "76ab3a2ec3d206f86459007c7668aacf83677e175087d38d4dc164834244e555",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 161136,
+      "filled_texels": 887440,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "20d2f28fd7bccbe2d3798e2d1b06f8af52258413f3009249265f50005b79bd91",
+      "file_changed": true
+    },
+    "10-right-toy-leg-course-5-color.png": {
+      "protected_sha256": "93dab0923705bf4f9efc4e1fb3dd055feee57e7132b5fa25197c77e829870e52",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "60c7ce723d1bb3e5eaef79dba23005b64aef45ae51c7c7bcfe2c0113856af836",
+      "file_changed": true
+    },
+    "10-right-toy-leg-course-5-normal.png": {
+      "protected_sha256": "53b150ca3f9af810c679977731a71a98436632eb689313f3cc7be65022af43fe",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9f434a0f8f97d5cd291c118eceb20bcaff796e8ba49034620802353fdbf77242",
+      "file_changed": true
+    },
+    "10-right-toy-leg-course-5-roughness.png": {
+      "protected_sha256": "28a573afa1109801c3e6fa74520b6f0357b51581c554cf2e47b300444a051ae0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 141421,
+      "filled_texels": 907155,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "0fb60a3733a797c76be905cd8536bc9c77e6a1b61f5c925f7297f70da73ea98c",
+      "file_changed": true
+    },
+    "11-rounded-red-lunch-tin-half-1-color.png": {
+      "protected_sha256": "0e8f2bbab98fd811ed7a52ef49091917f0b2a3ffa2d95ca7f12baeaa6a8c8e95",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 576709,
+      "filled_texels": 471867,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "e7f8ac3de9afd0933d87d5eb22d23ade756584d7bb494fddb8f49f6fe5144b2f",
+      "file_changed": true
+    },
+    "11-rounded-red-lunch-tin-half-1-normal.png": {
+      "protected_sha256": "b48003e3e988cd7be71e477e9703857cc91baa5b86b63055bd58b2edad9466a5",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 576709,
+      "filled_texels": 471867,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "2cd6ff227ff6df7391167909feebaad18d39729ea967d32746853077b8c23ef1",
+      "file_changed": true
+    },
+    "11-rounded-red-lunch-tin-half-1-roughness.png": {
+      "protected_sha256": "575eccc4d5274c44565f9658045cb21ab1fe4d0445fc9ced308ce3d9f1f78e54",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 576709,
+      "filled_texels": 471867,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "3ad91860bd62e0005f91ae503dc3198d142bb7e701be49718a17edfa1507b667",
+      "file_changed": true
+    },
+    "12-rounded-red-lunch-tin-half-2-color.png": {
+      "protected_sha256": "9f1e98e8c39c33ec6867cde91af83171a32b255c4d2d26f8271dbe16f6cb099f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 576709,
+      "filled_texels": 471867,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "3010dd2b4ade0f376509e0fc7676ef78bdb22aa61b471e394ce78716e8682c6f",
+      "file_changed": true
+    },
+    "12-rounded-red-lunch-tin-half-2-normal.png": {
+      "protected_sha256": "902061de22839d998494ff167b90ab92d2c3122b26603473c08cffc561fd486e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 576709,
+      "filled_texels": 471867,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "6bfc4194c4571c01a558e01bfaa205ce34d489704eb657babce1dea2ff6fe0cf",
+      "file_changed": true
+    },
+    "12-rounded-red-lunch-tin-half-2-roughness.png": {
+      "protected_sha256": "ce5f495db2fbcd668f6f6d5624f4cc9148742b6b28f7e24bf7f8554da547e499",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 576709,
+      "filled_texels": 471867,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "0dce0496766abf546feec78f73c3881898795b700d52ba281ec1689e0dce4b41",
+      "file_changed": true
+    },
+    "13-rounded-bottom-tin-rim-1-color.png": {
+      "protected_sha256": "2eabee161a5bfb8aab1cb3d97e329a51543a6324fa43d4b6a7d65e997feef727",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 440343,
+      "filled_texels": 608233,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "6a51637701e64e3829a1e8208a6ea1290ddff2e13d4c42720fd9711db441f8fd",
+      "file_changed": true
+    },
+    "13-rounded-bottom-tin-rim-1-normal.png": {
+      "protected_sha256": "15caefbd869c4d30d5c9d638306f8b9af8593d19bced9fe697b7719627b84e25",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 440343,
+      "filled_texels": 608233,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "ef192a524d545cb349eb912526cfdd79fccb9a8fa285593f7686e41a07625861",
+      "file_changed": true
+    },
+    "13-rounded-bottom-tin-rim-1-roughness.png": {
+      "protected_sha256": "9cb07315660eb7183bbf4c7aa0bf47f524b3eace285b5018f6fc3e7962223ec4",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 440343,
+      "filled_texels": 608233,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "aac4d857ce07ef3a6543abaaa900262153c8a2eaea963b80d16cda669d1efaa8",
+      "file_changed": true
+    },
+    "14-rounded-bottom-tin-rim-2-color.png": {
+      "protected_sha256": "0360ea707aecd48f8000df5464f86ccf984a898652acdbc71c63f491c30ada37",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 440343,
+      "filled_texels": 608233,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "1871a1d9472fc4a8a486f59331d2682a0960b947cedcc829ede6baa553bcd352",
+      "file_changed": true
+    },
+    "14-rounded-bottom-tin-rim-2-normal.png": {
+      "protected_sha256": "70f41ff1f39a0f07702d07177ef320932a762e04e68348994b926e10e390ce06",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 440343,
+      "filled_texels": 608233,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "ab10de646bebd3f215c772f4b82a18029e4d3b8792878a9bcafba4e79b86eade",
+      "file_changed": true
+    },
+    "14-rounded-bottom-tin-rim-2-roughness.png": {
+      "protected_sha256": "5a7ece5aff68b4f468291d5ab08cbb543040a5d2bf7c52f27bbf38f2d7323d22",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 440343,
+      "filled_texels": 608233,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "ecc11e215dfb1f267103bb10938f89d539b7e98ea7d8fce854b08ddb422a80da",
+      "file_changed": true
+    },
+    "15-deep-lunch-tin-lid-1-color.png": {
+      "protected_sha256": "d1d4c9692f0785d50585f1e3ad9b77ae5767a936b332a66334811b2badb27806",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 435534,
+      "filled_texels": 613042,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "845418df028732eb9c8402d16aae8c730fb804c1a2a244481c3723700c64e7d9",
+      "file_changed": true
+    },
+    "15-deep-lunch-tin-lid-1-normal.png": {
+      "protected_sha256": "9e7c1236aca38391be6a209cea70a17bd23c4a9c7a8e10f7bbd73c59d48b6d83",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 435534,
+      "filled_texels": 613042,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "6ec5a879b7cb61e6699f5bfdc5fec8a8a684b239d97449547bfad0d6477f0359",
+      "file_changed": true
+    },
+    "15-deep-lunch-tin-lid-1-roughness.png": {
+      "protected_sha256": "065ce2bbe5a8ac647262d2cbf91673450da7f8911b1d9d67673b984fc25feba4",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 435534,
+      "filled_texels": 613042,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "60458b902302f0c2acaf51c41cf7a163987aa3e1035f337dcb82e96599c6a9cc",
+      "file_changed": true
+    },
+    "16-deep-lunch-tin-lid-2-color.png": {
+      "protected_sha256": "152402fcbdfc1ab7f623f37a363a28a1332cd8fd6c5fca23f09ba07f637b402f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 435534,
+      "filled_texels": 613042,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "7b4d51b70ab7a36d2d54c2041939d4f0cee45bc61ffc3421669c14d233cedf35",
+      "file_changed": true
+    },
+    "16-deep-lunch-tin-lid-2-normal.png": {
+      "protected_sha256": "331414e7adac0cb55eeb35762f5db1b7994778b5bb318b919ffff1124e5c16f6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 435534,
+      "filled_texels": 613042,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "7f732f8a42ad0e2807947253872962042a1666daf960fb221c09d8702778bd93",
+      "file_changed": true
+    },
+    "16-deep-lunch-tin-lid-2-roughness.png": {
+      "protected_sha256": "ec8a0789f1673d2eded43462a4bd6641c05970b7285becf78854593c4662decb",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 435534,
+      "filled_texels": 613042,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "1f3b2a5c367d6f00e94e2c3b9bc284742b5274bead0d3045c3e08841f561437a",
+      "file_changed": true
+    },
+    "17-rolled-tin-rim-82-1-color.png": {
+      "protected_sha256": "f8e7e83b1292b0f8107bc9f5017226ddee66f4378de32e2ca573d0b39dded0be",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 49655,
+      "filled_texels": 998921,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "9ae792cd213200d1fa24922587f4f7a9c2a843b2964ad2708c02be4c56c36f4c",
+      "file_changed": true
+    },
+    "17-rolled-tin-rim-82-1-normal.png": {
+      "protected_sha256": "b6c3df2b008d73ef752f8775639d3b18746552d8e04c727b43785bdaf0ba83c0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 49655,
+      "filled_texels": 998921,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "3a0d5536fa8231911ffaae079a8d291d2debfe1ff103f0daa52661cafa8b9d21",
+      "file_changed": true
+    },
+    "17-rolled-tin-rim-82-1-roughness.png": {
+      "protected_sha256": "7e5cc147d617432c43ae0477eee2150c3776df50bbf7cfb070dd8283ff54b019",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 49655,
+      "filled_texels": 998921,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "2ab8b3c94a0f4a91bac035ed533acc605d4fb8a93ce74527efcce92165a5734c",
+      "file_changed": true
+    },
+    "18-rolled-tin-rim-82-2-color.png": {
+      "protected_sha256": "4481534d7e226b4018203f3539df781bc25ce1d8bb86596aee572a84fc76be70",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 49655,
+      "filled_texels": 998921,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "e7d19818fc17a0852261f18bc5f872ea1202e6ba2a703e4f42cebc336bf8d034",
+      "file_changed": true
+    },
+    "18-rolled-tin-rim-82-2-normal.png": {
+      "protected_sha256": "6922676d968140969594322e306ca433d4c71f90dc941ea0352e148c07a86b63",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 49655,
+      "filled_texels": 998921,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "e9c7254bd9d6194585b3c0996e40c3e1ce428ea9aaed6899202dda80f211da9f",
+      "file_changed": true
+    },
+    "18-rolled-tin-rim-82-2-roughness.png": {
+      "protected_sha256": "b62516abffd122b0f27ca201980639ead0f41a33b32200bea23724f01b6bb583",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 49655,
+      "filled_texels": 998921,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "39689be5e43e76d8129ca8cb509ef8560d47364136af8b4214ec91192056492f",
+      "file_changed": true
+    },
+    "19-rolled-tin-rim-143.3-1-color.png": {
+      "protected_sha256": "3358f42be090c2ed37aacb6515bcc33017aca4a1ba10ffd2d4f025b828255f86",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 51074,
+      "filled_texels": 997502,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "19c59a98f4666cf600e2a46d1fa5fbef6369c60140864bf4a936def3421d2dc6",
+      "file_changed": true
+    },
+    "19-rolled-tin-rim-143.3-1-normal.png": {
+      "protected_sha256": "a8de791893c99b6c128aa22a906a90af75bf60a6b432793304257b89bf57108f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 51074,
+      "filled_texels": 997502,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "3862a148cdddac360f8b2635bfad297701a895f329503f1bbecdcb715312a5a3",
+      "file_changed": true
+    },
+    "19-rolled-tin-rim-143.3-1-roughness.png": {
+      "protected_sha256": "083a6ee57a2b5adc6fb37273e4cb1e895310ccd34e08b37c9af737d1779d7a82",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 51074,
+      "filled_texels": 997502,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "c804e91a989916602a13991e8864794e32761ee7332dbf52eb4972c292343bb2",
+      "file_changed": true
+    },
+    "20-rolled-tin-rim-143.3-2-color.png": {
+      "protected_sha256": "fb3792513de2563817c5a98841d309ddd1df4cb8401ee80dcf869ab325283bca",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 51074,
+      "filled_texels": 997502,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "99222db1a2392bae86604c8d9d2b55a6ab67fc31e2d5a7739cdb91da4d5e5d3e",
+      "file_changed": true
+    },
+    "20-rolled-tin-rim-143.3-2-normal.png": {
+      "protected_sha256": "11ee5fb1535961fdc22c9a18be8b863fecfb6ecc9655b3e27299304bb7b4adfd",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 51074,
+      "filled_texels": 997502,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "7032cdc17af527ba96f8cdf22c415856e938691a32a933948bfddf07e489b942",
+      "file_changed": true
+    },
+    "20-rolled-tin-rim-143.3-2-roughness.png": {
+      "protected_sha256": "fdf9b99692aa164c4fdbf7a6c0bbb0317758d2c44f4881d6cda43650ba4ce891",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 51074,
+      "filled_texels": 997502,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "cceef512ac81374f276c3371102bc56f8cab94be38b0b1ca4f2d9af3b65d1837",
+      "file_changed": true
+    },
+    "21-rolled-tin-rim-149.2-1-color.png": {
+      "protected_sha256": "d875900234670a97f12be8924973b17e4034fb297e63e1c8620c8d96d408e7ee",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 47782,
+      "filled_texels": 1000794,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "081b9817f077a79fe4c6f46033eb061bfcce67d42b5db89be95130424476220f",
+      "file_changed": true
+    },
+    "21-rolled-tin-rim-149.2-1-normal.png": {
+      "protected_sha256": "ea4dbf94639451e764afc6881579b344cadd41a40e2d5501f467cebefc76be31",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 47782,
+      "filled_texels": 1000794,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "37345a6c3bd74e3465a449eb373e8c44f80694f757be7d3feec1687b5339a103",
+      "file_changed": true
+    },
+    "21-rolled-tin-rim-149.2-1-roughness.png": {
+      "protected_sha256": "857e60b092e3e17c324690ed51eb0c687f164295a96a0bdc5c1b2d4a079accca",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 47782,
+      "filled_texels": 1000794,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "428b6fbf23e1edd6be02da23c4b0741d01bae73c391e9fec6af32e5a917032bc",
+      "file_changed": true
+    },
+    "22-rolled-tin-rim-149.2-2-color.png": {
+      "protected_sha256": "3bbae67175f2330ab90177f214bc57c42b015a5965d254c009c11ea62642d73a",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 47782,
+      "filled_texels": 1000794,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "847f9ce8e252384c2a2db9faf6992d9c8c52a71f0f76e03e61a0245663707202",
+      "file_changed": true
+    },
+    "22-rolled-tin-rim-149.2-2-normal.png": {
+      "protected_sha256": "e03d497c57af52372d75655f7fa30626ec983b6e20aafd56467d1f2736efd009",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 47782,
+      "filled_texels": 1000794,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "8e166632888f93b060044648a2f646c958e22ef4670823acb08e8bc53d53eb90",
+      "file_changed": true
+    },
+    "22-rolled-tin-rim-149.2-2-roughness.png": {
+      "protected_sha256": "27295309ace7968d0967a058be0c51dd57b0e11c63a4a0b25176dc8ce2147741",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 47782,
+      "filled_texels": 1000794,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "aadfaad6764413d99e5fb30148e93fd161d735cc31e1156de7ce6d96d4ed3576",
+      "file_changed": true
+    },
+    "23-metal-lined-open-track-tunnel-color.png": {
+      "protected_sha256": "1aaaa3b4e6f682c69217d93c343d2b42e3cd2a0a7c901c54a521f91379b3b8e9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 344850,
+      "filled_texels": 703726,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "54281bb8442f87337f89b55ade07902a8d6dd2bd88c20b57471184224ba57224",
+      "file_changed": true
+    },
+    "23-metal-lined-open-track-tunnel-normal.png": {
+      "protected_sha256": "1fc1f95fefe0d8cfcb378390198460c0ecba8897d6622834aed4875b0be99776",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 344850,
+      "filled_texels": 703726,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "7c865bb1661e08e6edd569708ae380e3162e809be63df1650224ea75ed10c582",
+      "file_changed": true
+    },
+    "23-metal-lined-open-track-tunnel-roughness.png": {
+      "protected_sha256": "247dfa672d8dd96c5321716b13a29644af950a6d11cb301fe517c780758b23f0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 344850,
+      "filled_texels": 703726,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "0fdf00e061784dcbaf7a549ca3fa353ea9d4d39d3b9110558b8685a3a0be9ea3",
+      "file_changed": true
+    },
+    "24-front-open-long-window--52-color.png": {
+      "protected_sha256": "eed4e11b38e524e5f0be7723e2f2bd0f75368aa04f5a688124b702b32cea0c65",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "756cd18d543b9bc70c362510774b457498754d6eb3c4ff7017107abaa9471ea3",
+      "file_changed": true
+    },
+    "24-front-open-long-window--52-normal.png": {
+      "protected_sha256": "139d3ebf2be630e96b0d698f0a3cfe2f20a72a29e5f46fa1c7c567f43a3fe2b0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "dd7e212bb56747b7d6bcb88c3bef881b433bd06dad55f7f1761b169e89bfad5e",
+      "file_changed": true
+    },
+    "24-front-open-long-window--52-roughness.png": {
+      "protected_sha256": "2a05a88abbd7cca272ddb6cba37874aa55156e673557e9dffaf83ff91c9887b8",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "b259bcf0988329075b935c6309fdf4ccd54d95ba03fddbdff02df64b1897ce9e",
+      "file_changed": true
+    },
+    "25-front-open-long-window-0-color.png": {
+      "protected_sha256": "69d62b3649482eb0f3f9f431c31cc2e169f4a0fdae7cb311974e22f01bce68e9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "8064b8aa59e1951b9059553fed61573cb71da4f168b682e027cbfc0aa4779056",
+      "file_changed": true
+    },
+    "25-front-open-long-window-0-normal.png": {
+      "protected_sha256": "e7c7d6b0f67f04ad606e2a29908959aa4d4548028fdeb40c220bcb7c971d5103",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "3e44a17fc98f7231076510f19d773a4da8fe0867dc060c145fc228fb76f9f0ae",
+      "file_changed": true
+    },
+    "25-front-open-long-window-0-roughness.png": {
+      "protected_sha256": "249af98b61a72e05243e5a544ae7b8ba96afb677147ed13731c3016afe35cd82",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "e4ed4708e816965f6df3da08a0201a574c7208bb547d1cc0d9fba960d86ef3c7",
+      "file_changed": true
+    },
+    "26-front-open-long-window-52-color.png": {
+      "protected_sha256": "95f1e6b666a674a103bcd18dc6faa69f430f3ea8432564642cc9d327d4f74d84",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "ab9daa41b1cac3c8a68ce179b033654edf5b707b23a4910e52fac7e56dc15a1f",
+      "file_changed": true
+    },
+    "26-front-open-long-window-52-normal.png": {
+      "protected_sha256": "1616aa8ecfa3a76f884cc311446d617c7d5acf0576f18689c1776212d31ae997",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "e50ac1687605e13d5137aaadc179698e9470be1d6a0a6825ada20bbb152bb635",
+      "file_changed": true
+    },
+    "26-front-open-long-window-52-roughness.png": {
+      "protected_sha256": "701c95a470553220530947ccf04c05b38d70b07d2041bfb0447f80df7d6cdf0c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "e3a8bf4e0713bf1bd929655bb7c8c3fda24d99b6be35bac737ceaf8fd665ba1c",
+      "file_changed": true
+    },
+    "27-back-open-long-window--52-color.png": {
+      "protected_sha256": "131281197369c097c85f3982cef77170fe069ecf78502ee95bf6fe0cf1dd99f5",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "5cca6a8a3ecd285da3b09173ee32bf94eace6e4ffccf5383db4c33bf429f99f4",
+      "file_changed": true
+    },
+    "27-back-open-long-window--52-normal.png": {
+      "protected_sha256": "301dc96ad351d0322db93c201889652b9091d4128bbe696383bf8b2eb2ca2c60",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "adc05c90418c00f67e3a284470c95482abb10c5152c39aec67c3eb4defb86065",
+      "file_changed": true
+    },
+    "27-back-open-long-window--52-roughness.png": {
+      "protected_sha256": "44c11dba1e2be4a325a4661bf56779d1e69945152d81cc11934417ac30ce2934",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "0e72b8f796db304826dc01405ef9b539ac6dd8d9b21a56d6fa6a037034487da1",
+      "file_changed": true
+    },
+    "28-back-open-long-window-0-color.png": {
+      "protected_sha256": "b6c82d5033aa861ed1717efc15fe59c58f9f5586fdd4ca436b25c84113f7fb7e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "2ab0977bcf3a2c67a01f5658b0c50adb0a28ebfffabd201f8cfdd43853e2d48b",
+      "file_changed": true
+    },
+    "28-back-open-long-window-0-normal.png": {
+      "protected_sha256": "363736b2a83ec5d6c39eeefa6c6404cf976286ea1bb8e442d7785bc08773dd7d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "319862e682dcf159ba9c2e4d68b532db757f191cecaf5a3db232caafbbbb058d",
+      "file_changed": true
+    },
+    "28-back-open-long-window-0-roughness.png": {
+      "protected_sha256": "a744a100da4fdc3c310f6ee6190ecc494858b96d4ac84e173f7804e0a8f20ee8",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "459bc4d811044e3cf3b307aed7b558c2d0299344e3df6adcd3cf4495269d30ce",
+      "file_changed": true
+    },
+    "29-back-open-long-window-52-color.png": {
+      "protected_sha256": "9d667977e3cf515cde257c5ae83b3a896ffb82bf6c04f31034d83dbd739d21e9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "de261fd673ca068ea526f5b3273f4497bffcde602b4956baf1ece48e121d1abf",
+      "file_changed": true
+    },
+    "29-back-open-long-window-52-normal.png": {
+      "protected_sha256": "73941226a95201ae7bde50a827577414247889a331b7388cd338f180cf8b7ac6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "7a20aec4920827ec4a8002eff07e919f9814e8e19182aa756fc90e41aa154dd8",
+      "file_changed": true
+    },
+    "29-back-open-long-window-52-roughness.png": {
+      "protected_sha256": "ac702fb5195d6697bc53709c6c57f8f54d7dda685928fa3bb05ad5b43bac14c9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55262,
+      "filled_texels": 993314,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "6b8f92b6d9f513f1eefd284306bde59dd5ee837dbe9b9515467ab8473986973f",
+      "file_changed": true
+    },
+    "30-real-hinges-and-closing-clasps-color.png": {
+      "protected_sha256": "ce5b2cda4c81a0e1e9237e5c76d28b957fc7bb1488c47c8268eb5de4231eb28f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 6409,
+      "filled_texels": 1042167,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "69d7f76698021d51d8dc1f4291ccd56981fd89d9638d01918000cd85feda8ff2",
+      "file_changed": true
+    },
+    "30-real-hinges-and-closing-clasps-normal.png": {
+      "protected_sha256": "86094f70e772f0a0876480b9468126201ff35aa64590ac1e58d7a983b114ff78",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 6409,
+      "filled_texels": 1042167,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "3f7f4c7fdbb3c7c9806dc14e88ed6c30ae42f581f6a7c21d945c742ab4b4b153",
+      "file_changed": true
+    },
+    "30-real-hinges-and-closing-clasps-roughness.png": {
+      "protected_sha256": "0bff556166ec626d95648da226725dfd47b2b9f8e965a4dd1bf8c9c7bf8ec084",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 6409,
+      "filled_texels": 1042167,
+      "protected_pixels_unchanged": true,
+      "file_sha256": "b9af168baf8cfc7e857f148e10e73e81052e015789045a32f3dd6de47cfa9ec7",
+      "file_changed": true
+    }
+  }
+}

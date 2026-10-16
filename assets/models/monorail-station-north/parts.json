@@ -1,0 +1,636 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 17,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [
+    {
+      "label": "road",
+      "x": [
+        -44,
+        44
+      ],
+      "z": [
+        0,
+        80
+      ],
+      "shape": "rectangle",
+      "clear_front_and_back_rays": 1250
+    },
+    {
+      "label": "monorail-tunnel",
+      "x": [
+        -31,
+        31
+      ],
+      "z": [
+        100,
+        142
+      ],
+      "shape": "rectangle",
+      "clear_front_and_back_rays": 1250
+    }
+  ],
+  "pieces": [
+    {
+      "label": "left-stand-box-1",
+      "triangles": 11996,
+      "bounding_box": {
+        "min": [
+          -87.0,
+          -36.725,
+          0.0
+        ],
+        "max": [
+          -44.0,
+          36.34,
+          80.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-left-stand-box-1",
+      "front_pixels_per_stud": 7.992,
+      "front_surface_studs2": 3718.5184,
+      "outer_face_pixels_per_stud": {
+        "front": 7.992,
+        "back": 7.993,
+        "left": 7.99,
+        "right": null,
+        "top": 7.987,
+        "bottom": 7.987
+      }
+    },
+    {
+      "label": "left-stand-box-2",
+      "triangles": 10948,
+      "bounding_box": {
+        "min": [
+          -86.72501,
+          -42.5,
+          0.0
+        ],
+        "max": [
+          -44.25,
+          34.5,
+          77.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-left-stand-box-2",
+      "front_pixels_per_stud": 7.976,
+      "front_surface_studs2": 1915.6239,
+      "outer_face_pixels_per_stud": {
+        "front": 7.976,
+        "back": 7.584,
+        "left": 7.948,
+        "right": null,
+        "top": 7.911,
+        "bottom": 7.911
+      }
+    },
+    {
+      "label": "right-stand-box-1",
+      "triangles": 11996,
+      "bounding_box": {
+        "min": [
+          44.0,
+          -36.725,
+          0.0
+        ],
+        "max": [
+          87.0,
+          36.34,
+          80.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-right-stand-box-1",
+      "front_pixels_per_stud": 7.991,
+      "front_surface_studs2": 3722.9699,
+      "outer_face_pixels_per_stud": {
+        "front": 7.991,
+        "back": 7.993,
+        "left": null,
+        "right": 7.99,
+        "top": 7.987,
+        "bottom": 7.987
+      }
+    },
+    {
+      "label": "right-stand-box-2",
+      "triangles": 9648,
+      "bounding_box": {
+        "min": [
+          44.25,
+          -36.725,
+          1.0
+        ],
+        "max": [
+          86.72501,
+          34.49999,
+          77.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-right-stand-box-2",
+      "front_pixels_per_stud": 7.98,
+      "front_surface_studs2": 1421.1686,
+      "outer_face_pixels_per_stud": {
+        "front": 7.98,
+        "back": 7.566,
+        "left": null,
+        "right": 7.957,
+        "top": 7.838,
+        "bottom": 7.838
+      }
+    },
+    {
+      "label": "top-box-bottom-left",
+      "triangles": 216,
+      "bounding_box": {
+        "min": [
+          -90.0,
+          -37.0,
+          80.0
+        ],
+        "max": [
+          0.0,
+          37.0,
+          100.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-top-box-bottom-left",
+      "front_pixels_per_stud": 7.992,
+      "front_surface_studs2": 1784.968,
+      "outer_face_pixels_per_stud": {
+        "front": 7.992,
+        "back": 7.992,
+        "left": 7.991,
+        "right": null,
+        "top": 7.998,
+        "bottom": 7.998
+      }
+    },
+    {
+      "label": "top-box-lid-left",
+      "triangles": 216,
+      "bounding_box": {
+        "min": [
+          -90.0,
+          -37.0,
+          142.0
+        ],
+        "max": [
+          0.0,
+          37.0,
+          149.29999
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-top-box-lid-left",
+      "front_pixels_per_stud": 7.978,
+      "front_surface_studs2": 642.923,
+      "outer_face_pixels_per_stud": {
+        "front": 7.978,
+        "back": 7.978,
+        "left": 7.978,
+        "right": null,
+        "top": 7.998,
+        "bottom": 7.998
+      }
+    },
+    {
+      "label": "top-box-bottom-right",
+      "triangles": 216,
+      "bounding_box": {
+        "min": [
+          0.0,
+          -37.0,
+          80.0
+        ],
+        "max": [
+          90.0,
+          37.0,
+          100.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "7-top-box-bottom-right",
+      "front_pixels_per_stud": 7.992,
+      "front_surface_studs2": 1784.968,
+      "outer_face_pixels_per_stud": {
+        "front": 7.992,
+        "back": 7.992,
+        "left": null,
+        "right": 7.991,
+        "top": 7.998,
+        "bottom": 7.998
+      }
+    },
+    {
+      "label": "top-box-lid-right",
+      "triangles": 216,
+      "bounding_box": {
+        "min": [
+          0.0,
+          -37.0,
+          142.0
+        ],
+        "max": [
+          90.0,
+          37.0,
+          149.29999
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "8-top-box-lid-right",
+      "front_pixels_per_stud": 7.978,
+      "front_surface_studs2": 642.923,
+      "outer_face_pixels_per_stud": {
+        "front": 7.978,
+        "back": 7.978,
+        "left": null,
+        "right": 7.978,
+        "top": 7.998,
+        "bottom": 7.998
+      }
+    },
+    {
+      "label": "top-box-left-wing",
+      "triangles": 1620,
+      "bounding_box": {
+        "min": [
+          -89.55,
+          -36.55,
+          100.0
+        ],
+        "max": [
+          -31.0,
+          35.0,
+          142.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "9-top-box-left-wing",
+      "front_pixels_per_stud": 7.993,
+      "front_surface_studs2": 3356.3373,
+      "outer_face_pixels_per_stud": {
+        "front": 7.993,
+        "back": 7.995,
+        "left": 7.993,
+        "right": null,
+        "top": 7.995,
+        "bottom": 7.995
+      }
+    },
+    {
+      "label": "top-box-right-wing",
+      "triangles": 1620,
+      "bounding_box": {
+        "min": [
+          31.0,
+          -36.55,
+          100.0
+        ],
+        "max": [
+          89.55,
+          35.0,
+          142.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "10-top-box-right-wing",
+      "front_pixels_per_stud": 7.993,
+      "front_surface_studs2": 3356.3373,
+      "outer_face_pixels_per_stud": {
+        "front": 7.993,
+        "back": 7.995,
+        "left": null,
+        "right": 7.993,
+        "top": 7.995,
+        "bottom": 7.995
+      }
+    },
+    {
+      "label": "toy-brick-trims-and-join-tape-1",
+      "triangles": 11848,
+      "bounding_box": {
+        "min": [
+          -89.0,
+          -37.12499,
+          80.0
+        ],
+        "max": [
+          35.0,
+          -35.05,
+          150.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "11-toy-brick-trims-and-join-tape-1",
+      "front_pixels_per_stud": 7.978,
+      "front_surface_studs2": 1381.4151,
+      "outer_face_pixels_per_stud": {
+        "front": 7.978,
+        "back": null,
+        "left": 7.799,
+        "right": 7.768,
+        "top": 7.772,
+        "bottom": 7.772
+      }
+    },
+    {
+      "label": "toy-brick-trims-and-join-tape-2",
+      "triangles": 8256,
+      "bounding_box": {
+        "min": [
+          -89.0,
+          -37.35,
+          72.0
+        ],
+        "max": [
+          89.0,
+          36.0,
+          150.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "12-toy-brick-trims-and-join-tape-2",
+      "front_pixels_per_stud": 7.979,
+      "front_surface_studs2": 703.0729,
+      "outer_face_pixels_per_stud": {
+        "front": 7.979,
+        "back": 7.605,
+        "left": 7.702,
+        "right": 7.806,
+        "top": 7.96,
+        "bottom": 7.96
+      }
+    },
+    {
+      "label": "corrugated-top-box-cut-edges-1",
+      "triangles": 11236,
+      "bounding_box": {
+        "min": [
+          -90.0,
+          -37.36,
+          81.3
+        ],
+        "max": [
+          90.0,
+          37.36,
+          82.7
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "13-corrugated-top-box-cut-edges-1",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 274.7495,
+      "outer_face_pixels_per_stud": {
+        "front": 7.985,
+        "back": 7.984,
+        "left": 7.273,
+        "right": 7.27,
+        "top": 7.819,
+        "bottom": 7.819
+      }
+    },
+    {
+      "label": "corrugated-top-box-cut-edges-2",
+      "triangles": 10880,
+      "bounding_box": {
+        "min": [
+          -90.36,
+          -37.00001,
+          81.3
+        ],
+        "max": [
+          90.36,
+          37.36001,
+          82.7
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "14-corrugated-top-box-cut-edges-2",
+      "front_pixels_per_stud": 7.272,
+      "front_surface_studs2": 24.4083,
+      "outer_face_pixels_per_stud": {
+        "front": 7.272,
+        "back": 7.909,
+        "left": 7.841,
+        "right": 7.927,
+        "top": 7.777,
+        "bottom": 7.777
+      }
+    },
+    {
+      "label": "corrugated-top-box-cut-edges-3",
+      "triangles": 9992,
+      "bounding_box": {
+        "min": [
+          -90.0,
+          -37.36,
+          81.43305
+        ],
+        "max": [
+          90.36,
+          37.30999,
+          149.20001
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "15-corrugated-top-box-cut-edges-3",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 274.7453,
+      "outer_face_pixels_per_stud": {
+        "front": 7.985,
+        "back": 7.899,
+        "left": 7.269,
+        "right": 7.349,
+        "top": 7.804,
+        "bottom": 7.804
+      }
+    },
+    {
+      "label": "corrugated-top-box-cut-edges-4",
+      "triangles": 11800,
+      "bounding_box": {
+        "min": [
+          -90.36,
+          -37.00001,
+          147.79999
+        ],
+        "max": [
+          90.31001,
+          37.36001,
+          149.20001
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "16-corrugated-top-box-cut-edges-4",
+      "front_pixels_per_stud": 7.282,
+      "front_surface_studs2": 12.389,
+      "outer_face_pixels_per_stud": {
+        "front": 7.282,
+        "back": 7.944,
+        "left": 7.841,
+        "right": 7.735,
+        "top": 7.779,
+        "bottom": 7.779
+      }
+    },
+    {
+      "label": "corrugated-top-box-cut-edges-5",
+      "triangles": 3292,
+      "bounding_box": {
+        "min": [
+          89.86,
+          -37.00001,
+          147.79999
+        ],
+        "max": [
+          90.36,
+          36.99999,
+          149.20001
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "17-corrugated-top-box-cut-edges-5",
+      "front_pixels_per_stud": 7.261,
+      "front_surface_studs2": 12.0193,
+      "outer_face_pixels_per_stud": {
+        "front": 7.261,
+        "back": 7.272,
+        "left": null,
+        "right": 7.985,
+        "top": 7.689,
+        "bottom": 7.689
+      }
+    }
+  ],
+  "total_triangles": 115996,
+  "bounding_box": {
+    "min": [
+      -90.36,
+      -42.5,
+      0.0
+    ],
+    "max": [
+      90.36,
+      37.36001,
+      150.0
+    ]
+  },
+  "height": 150.0,
+  "requested_height": 150
+}

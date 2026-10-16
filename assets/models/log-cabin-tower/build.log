@@ -1,0 +1,54 @@
+BLOCKS baking 1-crossed-log-courses-1
+BLOCKS ray baking soft ambient occlusion for crossed-log-courses-1
+D:\FlyFightPaper\tools\art\blocks.py:1256: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\log-cabin-tower\\parts\\pending-1-crossed-log-courses-1.fbx'
+export finished in 0.0290 sec.
+FBX version: 7400
+BLOCKS baking 2-crossed-log-courses-2
+BLOCKS ray baking soft ambient occlusion for crossed-log-courses-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\log-cabin-tower\\parts\\pending-2-crossed-log-courses-2.fbx'
+export finished in 0.0446 sec.
+FBX version: 7400
+BLOCKS baking 3-crossed-log-courses-3
+BLOCKS ray baking soft ambient occlusion for crossed-log-courses-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\log-cabin-tower\\parts\\pending-3-crossed-log-courses-3.fbx'
+export finished in 0.0180 sec.
+FBX version: 7400
+BLOCKS baking 4-crossed-log-courses-4
+BLOCKS ray baking soft ambient occlusion for crossed-log-courses-4
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\log-cabin-tower\\parts\\pending-4-crossed-log-courses-4.fbx'
+export finished in 0.0099 sec.
+FBX version: 7400
+BLOCKS baking 5-framed-windows-door-and-steps
+BLOCKS ray baking soft ambient occlusion for framed-windows-door-and-steps
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\log-cabin-tower\\parts\\pending-5-framed-windows-door-and-steps.fbx'
+export finished in 0.0331 sec.
+FBX version: 7400
+BLOCKS baking 6-individual-log-gable-courses
+BLOCKS ray baking soft ambient occlusion for individual-log-gable-courses
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\log-cabin-tower\\parts\\pending-6-individual-log-gable-courses.fbx'
+export finished in 0.0055 sec.
+FBX version: 7400
+BLOCKS baking 7-two-cardboard-roof-slopes-and-cut-edges
+BLOCKS ray baking soft ambient occlusion for two-cardboard-roof-slopes-and-cut-edges
+D:\FlyFightPaper\tools\art\blocks.py:739: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+D:\FlyFightPaper\tools\art\blocks.py:749: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\log-cabin-tower\\parts\\pending-7-two-cardboard-roof-slopes-and-cut-edges.fbx'
+export finished in 0.0312 sec.
+FBX version: 7400
+BLOCKS rendering concept camera
+Info: Saved as "pending-hero.blend"
+BLOCKS PASS log-cabin-tower 7 pieces, 48340 triangles
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

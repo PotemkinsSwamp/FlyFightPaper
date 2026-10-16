@@ -1,0 +1,473 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 13,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [],
+  "pieces": [
+    {
+      "label": "crossed-block-layers-1-1",
+      "triangles": 2060,
+      "bounding_box": {
+        "min": [
+          -27.0,
+          -35.5,
+          0.0
+        ],
+        "max": [
+          27.0,
+          27.575,
+          32.4
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-crossed-block-layers-1-1",
+      "front_pixels_per_stud": 7.977,
+      "front_surface_studs2": 2266.6748,
+      "outer_face_pixels_per_stud": {
+        "front": 7.977,
+        "back": 7.979,
+        "left": 7.971,
+        "right": 7.97,
+        "top": 7.974,
+        "bottom": 7.974
+      }
+    },
+    {
+      "label": "crossed-block-layers-1-2",
+      "triangles": 1620,
+      "bounding_box": {
+        "min": [
+          -27.575,
+          -27.575,
+          16.0
+        ],
+        "max": [
+          27.575,
+          27.575,
+          48.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-crossed-block-layers-1-2",
+      "front_pixels_per_stud": 7.977,
+      "front_surface_studs2": 2720.5508,
+      "outer_face_pixels_per_stud": {
+        "front": 7.977,
+        "back": 7.977,
+        "left": 7.977,
+        "right": 7.978,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-1-3",
+      "triangles": 324,
+      "bounding_box": {
+        "min": [
+          9.66667,
+          -27.575,
+          32.0
+        ],
+        "max": [
+          27.0,
+          27.575,
+          48.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-crossed-block-layers-1-3",
+      "front_pixels_per_stud": 7.979,
+      "front_surface_studs2": 499.1002,
+      "outer_face_pixels_per_stud": {
+        "front": 7.979,
+        "back": 7.979,
+        "left": null,
+        "right": 7.975,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-2-1",
+      "triangles": 2160,
+      "bounding_box": {
+        "min": [
+          -27.575,
+          -27.575,
+          48.0
+        ],
+        "max": [
+          29.1,
+          27.575,
+          80.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-crossed-block-layers-2-1",
+      "front_pixels_per_stud": 7.976,
+      "front_surface_studs2": 2716.3811,
+      "outer_face_pixels_per_stud": {
+        "front": 7.976,
+        "back": 7.976,
+        "left": 7.977,
+        "right": 7.978,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-2-2",
+      "triangles": 1296,
+      "bounding_box": {
+        "min": [
+          -27.575,
+          -27.575,
+          64.0
+        ],
+        "max": [
+          27.575,
+          27.575,
+          96.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-crossed-block-layers-2-2",
+      "front_pixels_per_stud": 7.976,
+      "front_surface_studs2": 2221.4519,
+      "outer_face_pixels_per_stud": {
+        "front": 7.976,
+        "back": 7.976,
+        "left": 7.979,
+        "right": 7.978,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-3-1",
+      "triangles": 1620,
+      "bounding_box": {
+        "min": [
+          -27.575,
+          -42.575,
+          96.0
+        ],
+        "max": [
+          27.575,
+          27.575,
+          128.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-crossed-block-layers-3-1",
+      "front_pixels_per_stud": 7.977,
+      "front_surface_studs2": 3188.2628,
+      "outer_face_pixels_per_stud": {
+        "front": 7.977,
+        "back": 7.978,
+        "left": 7.977,
+        "right": 7.977,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-3-2",
+      "triangles": 1512,
+      "bounding_box": {
+        "min": [
+          -27.575,
+          -27.575,
+          112.0
+        ],
+        "max": [
+          29.1,
+          27.575,
+          144.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "7-crossed-block-layers-3-2",
+      "front_pixels_per_stud": 7.978,
+      "front_surface_studs2": 1025.42,
+      "outer_face_pixels_per_stud": {
+        "front": 7.978,
+        "back": 7.977,
+        "left": 7.976,
+        "right": 7.976,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-3-3",
+      "triangles": 864,
+      "bounding_box": {
+        "min": [
+          -7.5,
+          -29.1,
+          128.0
+        ],
+        "max": [
+          27.0,
+          27.575,
+          144.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "8-crossed-block-layers-3-3",
+      "front_pixels_per_stud": 7.978,
+      "front_surface_studs2": 703.8469,
+      "outer_face_pixels_per_stud": {
+        "front": 7.978,
+        "back": 7.979,
+        "left": 7.928,
+        "right": 7.973,
+        "top": 7.974,
+        "bottom": 7.974
+      }
+    },
+    {
+      "label": "crossed-block-layers-4-1",
+      "triangles": 1620,
+      "bounding_box": {
+        "min": [
+          -27.575,
+          -27.575,
+          144.0
+        ],
+        "max": [
+          27.575,
+          27.575,
+          176.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "9-crossed-block-layers-4-1",
+      "front_pixels_per_stud": 7.977,
+      "front_surface_studs2": 2720.5506,
+      "outer_face_pixels_per_stud": {
+        "front": 7.977,
+        "back": 7.977,
+        "left": 7.977,
+        "right": 7.978,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-4-2",
+      "triangles": 1296,
+      "bounding_box": {
+        "min": [
+          -27.575,
+          -27.575,
+          160.0
+        ],
+        "max": [
+          42.575,
+          27.575,
+          192.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "10-crossed-block-layers-4-2",
+      "front_pixels_per_stud": 7.976,
+      "front_surface_studs2": 2221.4503,
+      "outer_face_pixels_per_stud": {
+        "front": 7.976,
+        "back": 7.976,
+        "left": 7.979,
+        "right": 7.978,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-5-1",
+      "triangles": 1512,
+      "bounding_box": {
+        "min": [
+          -27.0,
+          -29.1,
+          192.0
+        ],
+        "max": [
+          27.0,
+          27.575,
+          208.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "11-crossed-block-layers-5-1",
+      "front_pixels_per_stud": 7.979,
+      "front_surface_studs2": 1702.0472,
+      "outer_face_pixels_per_stud": {
+        "front": 7.979,
+        "back": 7.979,
+        "left": 7.974,
+        "right": 7.974,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-5-2",
+      "triangles": 2160,
+      "bounding_box": {
+        "min": [
+          -27.575,
+          -27.575,
+          208.0
+        ],
+        "max": [
+          29.1,
+          27.575,
+          240.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "12-crossed-block-layers-5-2",
+      "front_pixels_per_stud": 7.976,
+      "front_surface_studs2": 2716.3801,
+      "outer_face_pixels_per_stud": {
+        "front": 7.976,
+        "back": 7.976,
+        "left": 7.977,
+        "right": 7.978,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    },
+    {
+      "label": "crossed-block-layers-5-3",
+      "triangles": 324,
+      "bounding_box": {
+        "min": [
+          9.66667,
+          -27.575,
+          224.0
+        ],
+        "max": [
+          27.0,
+          27.575,
+          240.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "13-crossed-block-layers-5-3",
+      "front_pixels_per_stud": 7.979,
+      "front_surface_studs2": 499.1003,
+      "outer_face_pixels_per_stud": {
+        "front": 7.979,
+        "back": 7.979,
+        "left": null,
+        "right": 7.975,
+        "top": 7.976,
+        "bottom": 7.976
+      }
+    }
+  ],
+  "total_triangles": 18368,
+  "bounding_box": {
+    "min": [
+      -27.575,
+      -42.575,
+      0.0
+    ],
+    "max": [
+      42.575,
+      27.575,
+      240.0
+    ]
+  },
+  "height": 240.0,
+  "requested_height": 240
+}

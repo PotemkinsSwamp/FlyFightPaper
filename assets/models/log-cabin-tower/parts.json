@@ -1,0 +1,269 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 7,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [],
+  "pieces": [
+    {
+      "label": "crossed-log-courses-1",
+      "triangles": 9088,
+      "bounding_box": {
+        "min": [
+          -35.0,
+          -30.21,
+          -0.0
+        ],
+        "max": [
+          35.0,
+          30.21,
+          49.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-crossed-log-courses-1",
+      "front_pixels_per_stud": 7.645,
+      "front_surface_studs2": 4649.7377,
+      "outer_face_pixels_per_stud": {
+        "front": 7.645,
+        "back": 7.645,
+        "left": 7.594,
+        "right": 7.594,
+        "top": 7.484,
+        "bottom": 7.484
+      }
+    },
+    {
+      "label": "crossed-log-courses-2",
+      "triangles": 9088,
+      "bounding_box": {
+        "min": [
+          -35.0,
+          -30.21,
+          44.0
+        ],
+        "max": [
+          35.0,
+          30.21,
+          93.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-crossed-log-courses-2",
+      "front_pixels_per_stud": 7.645,
+      "front_surface_studs2": 4649.7378,
+      "outer_face_pixels_per_stud": {
+        "front": 7.645,
+        "back": 7.645,
+        "left": 7.594,
+        "right": 7.594,
+        "top": 7.484,
+        "bottom": 7.484
+      }
+    },
+    {
+      "label": "crossed-log-courses-3",
+      "triangles": 9088,
+      "bounding_box": {
+        "min": [
+          -35.0,
+          -30.21,
+          88.0
+        ],
+        "max": [
+          35.0,
+          30.20999,
+          137.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-crossed-log-courses-3",
+      "front_pixels_per_stud": 7.645,
+      "front_surface_studs2": 4649.7383,
+      "outer_face_pixels_per_stud": {
+        "front": 7.645,
+        "back": 7.645,
+        "left": 7.594,
+        "right": 7.594,
+        "top": 7.484,
+        "bottom": 7.484
+      }
+    },
+    {
+      "label": "crossed-log-courses-4",
+      "triangles": 4544,
+      "bounding_box": {
+        "min": [
+          -35.0,
+          -30.20999,
+          132.0
+        ],
+        "max": [
+          35.0,
+          30.20999,
+          159.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-crossed-log-courses-4",
+      "front_pixels_per_stud": 7.645,
+      "front_surface_studs2": 2324.869,
+      "outer_face_pixels_per_stud": {
+        "front": 7.645,
+        "back": 7.645,
+        "left": 7.594,
+        "right": 7.594,
+        "top": 7.484,
+        "bottom": 7.484
+      }
+    },
+    {
+      "label": "framed-windows-door-and-steps",
+      "triangles": 4688,
+      "bounding_box": {
+        "min": [
+          -35.65,
+          -38.0,
+          0.0
+        ],
+        "max": [
+          35.65,
+          9.0,
+          144.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-framed-windows-door-and-steps",
+      "front_pixels_per_stud": 7.977,
+      "front_surface_studs2": 2603.9139,
+      "outer_face_pixels_per_stud": {
+        "front": 7.977,
+        "back": 7.932,
+        "left": 7.968,
+        "right": 7.965,
+        "top": 7.944,
+        "bottom": 7.944
+      }
+    },
+    {
+      "label": "individual-log-gable-courses",
+      "triangles": 640,
+      "bounding_box": {
+        "min": [
+          -33.47826,
+          -29.0,
+          159.5
+        ],
+        "max": [
+          33.47826,
+          29.0,
+          198.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-individual-log-gable-courses",
+      "front_pixels_per_stud": 7.482,
+      "front_surface_studs2": 1344.5072,
+      "outer_face_pixels_per_stud": {
+        "front": 7.482,
+        "back": 7.482,
+        "left": 6.949,
+        "right": 6.949,
+        "top": 7.239,
+        "bottom": 7.498
+      }
+    },
+    {
+      "label": "two-cardboard-roof-slopes-and-cut-edges",
+      "triangles": 11204,
+      "bounding_box": {
+        "min": [
+          -40.51996,
+          -35.36,
+          152.02057
+        ],
+        "max": [
+          40.51997,
+          35.36,
+          199.98244
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "7-two-cardboard-roof-slopes-and-cut-edges",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 343.7681,
+      "outer_face_pixels_per_stud": {
+        "front": 7.985,
+        "back": 7.985,
+        "left": 7.01,
+        "right": 7.01,
+        "top": 6.977,
+        "bottom": 6.977
+      }
+    }
+  ],
+  "total_triangles": 48340,
+  "bounding_box": {
+    "min": [
+      -40.51996,
+      -38.0,
+      0.0
+    ],
+    "max": [
+      40.51997,
+      35.36,
+      199.98244
+    ]
+  },
+  "height": 199.98244,
+  "requested_height": 200
+}

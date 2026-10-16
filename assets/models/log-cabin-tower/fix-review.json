@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "Eight individual roof-cut gable logs continue the round walls to the ridge; only roof slopes are cardboard, with corrugated cut edges. Varied wood tones, directional grain, subtle end grain and contact shading.",
+  "still_off": "Windows/door remain lower and smaller than in the concept; wood grain is smoother.",
+  "pieces": 7,
+  "triangles": 48340,
+  "lowest_front_pixels_per_stud": 7.482,
+  "compare": "assets\\models\\log-cabin-tower\\compare.png"
+}

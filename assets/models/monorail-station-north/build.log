@@ -1,0 +1,116 @@
+BLOCKS baking 1-left-stand-box-1
+BLOCKS ray baking soft ambient occlusion for left-stand-box-1
+D:\FlyFightPaper\tools\art\blocks.py:1243: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-1-left-stand-box-1.fbx'
+export finished in 0.0257 sec.
+FBX version: 7400
+BLOCKS baking 2-left-stand-box-2
+BLOCKS ray baking soft ambient occlusion for left-stand-box-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-2-left-stand-box-2.fbx'
+export finished in 0.0175 sec.
+FBX version: 7400
+BLOCKS baking 3-right-stand-box-1
+BLOCKS ray baking soft ambient occlusion for right-stand-box-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-3-right-stand-box-1.fbx'
+export finished in 0.0195 sec.
+FBX version: 7400
+BLOCKS baking 4-right-stand-box-2
+BLOCKS ray baking soft ambient occlusion for right-stand-box-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-4-right-stand-box-2.fbx'
+export finished in 0.0690 sec.
+FBX version: 7400
+BLOCKS baking 5-top-box-bottom-left
+BLOCKS ray baking soft ambient occlusion for top-box-bottom-left
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-5-top-box-bottom-left.fbx'
+export finished in 0.0050 sec.
+FBX version: 7400
+BLOCKS baking 6-top-box-lid-left
+BLOCKS ray baking soft ambient occlusion for top-box-lid-left
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-6-top-box-lid-left.fbx'
+export finished in 0.0055 sec.
+FBX version: 7400
+BLOCKS baking 7-top-box-bottom-right
+BLOCKS ray baking soft ambient occlusion for top-box-bottom-right
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-7-top-box-bottom-right.fbx'
+export finished in 0.0054 sec.
+FBX version: 7400
+BLOCKS baking 8-top-box-lid-right
+BLOCKS ray baking soft ambient occlusion for top-box-lid-right
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-8-top-box-lid-right.fbx'
+export finished in 0.0050 sec.
+FBX version: 7400
+BLOCKS baking 9-top-box-left-wing
+BLOCKS ray baking soft ambient occlusion for top-box-left-wing
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-9-top-box-left-wing.fbx'
+export finished in 0.0074 sec.
+FBX version: 7400
+BLOCKS baking 10-top-box-right-wing
+BLOCKS ray baking soft ambient occlusion for top-box-right-wing
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-10-top-box-right-wing.fbx'
+export finished in 0.0069 sec.
+FBX version: 7400
+BLOCKS baking 11-toy-brick-trims-and-join-tape-1
+BLOCKS ray baking soft ambient occlusion for toy-brick-trims-and-join-tape-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-11-toy-brick-trims-and-join-tape-1.fbx'
+export finished in 0.0168 sec.
+FBX version: 7400
+BLOCKS baking 12-toy-brick-trims-and-join-tape-2
+BLOCKS ray baking soft ambient occlusion for toy-brick-trims-and-join-tape-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-12-toy-brick-trims-and-join-tape-2.fbx'
+export finished in 0.0189 sec.
+FBX version: 7400
+BLOCKS baking 13-corrugated-top-box-cut-edges-1
+BLOCKS ray baking soft ambient occlusion for corrugated-top-box-cut-edges-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-13-corrugated-top-box-cut-edges-1.fbx'
+export finished in 0.0249 sec.
+FBX version: 7400
+BLOCKS baking 14-corrugated-top-box-cut-edges-2
+BLOCKS ray baking soft ambient occlusion for corrugated-top-box-cut-edges-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-14-corrugated-top-box-cut-edges-2.fbx'
+export finished in 0.0254 sec.
+FBX version: 7400
+BLOCKS baking 15-corrugated-top-box-cut-edges-3
+BLOCKS ray baking soft ambient occlusion for corrugated-top-box-cut-edges-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-15-corrugated-top-box-cut-edges-3.fbx'
+export finished in 0.0251 sec.
+FBX version: 7400
+BLOCKS baking 16-corrugated-top-box-cut-edges-4
+BLOCKS ray baking soft ambient occlusion for corrugated-top-box-cut-edges-4
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-16-corrugated-top-box-cut-edges-4.fbx'
+export finished in 0.0272 sec.
+FBX version: 7400
+BLOCKS baking 17-corrugated-top-box-cut-edges-5
+BLOCKS ray baking soft ambient occlusion for corrugated-top-box-cut-edges-5
+D:\FlyFightPaper\tools\art\blocks.py:739: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+D:\FlyFightPaper\tools\art\blocks.py:749: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\monorail-station-north\\parts\\pending-17-corrugated-top-box-cut-edges-5.fbx'
+export finished in 0.0096 sec.
+FBX version: 7400
+BLOCKS rendering concept camera
+BLOCKS rendering opening-front
+BLOCKS rendering opening-back
+Info: Saved as "pending-hero.blend"
+BLOCKS PASS monorail-station-north 17 pieces, 115996 triangles
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

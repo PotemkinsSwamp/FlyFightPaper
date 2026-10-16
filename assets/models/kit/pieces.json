@@ -1,0 +1,1061 @@
+{
+  "wall-plain": {
+    "size": [
+      28.0,
+      1.2,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 12,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-card-light",
+      "color-card-warm"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "wall-half": {
+    "size": [
+      14.0,
+      1.2,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 12,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-card-light",
+      "color-card-warm"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "wall-narrow": {
+    "size": [
+      7.0,
+      1.2,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 12,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-card-light",
+      "color-card-warm"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "wall-square": {
+    "size": [
+      28.0,
+      1.2,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 48,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-card-light",
+      "color-card-warm"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "wall-arch": {
+    "size": [
+      28.0,
+      1.2,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 84,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-card-light",
+      "color-card-warm"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "wall-shop": {
+    "size": [
+      56.0,
+      1.2,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 48,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-card-light",
+      "color-card-warm"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "wall-door": {
+    "size": [
+      28.0,
+      1.2,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 36,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-card-light",
+      "color-card-warm"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "wall-corner": {
+    "size": [
+      2.4,
+      2.4,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 24,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "fluted-edge": {
+    "size": [
+      14.0,
+      1.2,
+      1.24
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -0.0
+    ],
+    "triangles": 156,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "fluted-edge-half": {
+    "size": [
+      7.0,
+      1.2,
+      1.24
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -0.0
+    ],
+    "triangles": 92,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "fluted-edge-cap": {
+    "size": [
+      5.5,
+      1.2,
+      1.24
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -0.0
+    ],
+    "triangles": 76,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "tape-patch": {
+    "size": [
+      6.0,
+      0.12,
+      3.6
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 12,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "tape-strip": {
+    "size": [
+      3.06303,
+      0.12,
+      9.1747
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 12,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "brick-1x1": {
+    "size": [
+      3.5,
+      3.5,
+      3.8
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.4
+    ],
+    "triangles": 72,
+    "limit": 299,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "brick-2x2": {
+    "size": [
+      7.0,
+      7.0,
+      3.8
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.4
+    ],
+    "triangles": 156,
+    "limit": 299,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "brick-2x4": {
+    "size": [
+      14.0,
+      7.0,
+      3.8
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.4
+    ],
+    "triangles": 268,
+    "limit": 299,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "brick-band": {
+    "size": [
+      14.0,
+      1.575,
+      2.4
+    ],
+    "center": [
+      0.0,
+      -0.1875,
+      0.0
+    ],
+    "triangles": 64,
+    "limit": 300,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-red",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "window-arch": {
+    "size": [
+      18.0,
+      4.15,
+      22.225
+    ],
+    "center": [
+      0.0,
+      -1.275,
+      -0.1125
+    ],
+    "triangles": 616,
+    "limit": 800,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "window-square": {
+    "size": [
+      18.0,
+      4.15,
+      22.225
+    ],
+    "center": [
+      0.0,
+      -1.275,
+      -0.1125
+    ],
+    "triangles": 508,
+    "limit": 800,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "shop-window": {
+    "size": [
+      54.0,
+      3.4,
+      24.35
+    ],
+    "center": [
+      0.0,
+      -1.0,
+      -0.175
+    ],
+    "triangles": 112,
+    "limit": 400,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "door": {
+    "size": [
+      17.0,
+      3.8,
+      27.0
+    ],
+    "center": [
+      0.0,
+      -1.0,
+      0.0
+    ],
+    "triangles": 312,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "awning": {
+    "size": [
+      14.0,
+      7.325,
+      5.8
+    ],
+    "center": [
+      0.0,
+      -3.6625,
+      -2.9
+    ],
+    "triangles": 136,
+    "limit": 500,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "side-awning": {
+    "size": [
+      18.0,
+      4.25,
+      3.7
+    ],
+    "center": [
+      0.0,
+      -2.125,
+      -1.85
+    ],
+    "triangles": 232,
+    "limit": 300,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "ruler-cornice": {
+    "size": [
+      28.0,
+      2.2,
+      1.2
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 44,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "book-slab": {
+    "size": [
+      28.0,
+      14.07,
+      3.0
+    ],
+    "center": [
+      0.0,
+      -0.035,
+      0.0
+    ],
+    "triangles": 104,
+    "limit": 200,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-red",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "book-slab-half": {
+    "size": [
+      14.0,
+      14.07,
+      3.0
+    ],
+    "center": [
+      0.0,
+      -0.035,
+      0.0
+    ],
+    "triangles": 104,
+    "limit": 200,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-red",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "pencil-column": {
+    "size": [
+      2.33827,
+      2.7,
+      27.6
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 130,
+    "limit": 250,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-red",
+      "color-blue",
+      "color-green"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "paper-bunting": {
+    "size": [
+      28.0,
+      0.2,
+      4.71
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.055
+    ],
+    "triangles": 68,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "roof-parapet": {
+    "size": [
+      28.0,
+      1.2,
+      5.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 12,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "roof-parapet-half": {
+    "size": [
+      14.0,
+      1.2,
+      5.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 12,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "cardboard-floor": {
+    "size": [
+      28.0,
+      14.0,
+      2.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 36,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "cardboard-floor-half": {
+    "size": [
+      14.0,
+      14.0,
+      2.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 36,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "cardboard-base": {
+    "size": [
+      95.0,
+      63.0,
+      2.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 36,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "rooftop-chimney": {
+    "size": [
+      10.0,
+      10.0,
+      14.4
+    ],
+    "center": [
+      0.0,
+      0.0,
+      2.2
+    ],
+    "triangles": 152,
+    "limit": 500,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-red",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "sweet-display": {
+    "size": [
+      49.0,
+      8.6,
+      21.0
+    ],
+    "center": [
+      0.0,
+      0.6,
+      0.0
+    ],
+    "triangles": 1532,
+    "limit": 2600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "cupcake-sign": {
+    "size": [
+      13.6,
+      2.3,
+      16.6
+    ],
+    "center": [
+      0.0,
+      -0.35,
+      1.5
+    ],
+    "triangles": 484,
+    "limit": 900,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "quoin-column": {
+    "size": [
+      4.75,
+      4.75,
+      59.81667
+    ],
+    "center": [
+      1.125,
+      1.125,
+      30.0
+    ],
+    "triangles": 632,
+    "limit": 700,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "corner-flutes": {
+    "size": [
+      6.07,
+      6.07,
+      60.0
+    ],
+    "center": [
+      1.735,
+      1.735,
+      30.0
+    ],
+    "triangles": 568,
+    "limit": 600,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "fluted-run": {
+    "size": [
+      84.0,
+      1.2,
+      1.24
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -0.0
+    ],
+    "triangles": 412,
+    "limit": 650,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "fluted-run-half": {
+    "size": [
+      42.0,
+      1.2,
+      1.24
+    ],
+    "center": [
+      0.0,
+      0.0,
+      -0.0
+    ],
+    "triangles": 220,
+    "limit": 350,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "panel-seam": {
+    "size": [
+      0.18,
+      0.14,
+      28.0
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 12,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "tape-cluster": {
+    "size": [
+      25.08164,
+      0.15,
+      25.76667
+    ],
+    "center": [
+      -0.35637,
+      -0.03,
+      0.18486
+    ],
+    "triangles": 48,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "shop-plinth": {
+    "size": [
+      53.85,
+      1.7,
+      3.6
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "triangles": 96,
+    "limit": 200,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "topper-plinth": {
+    "size": [
+      16.0,
+      11.0,
+      6.5
+    ],
+    "center": [
+      0.0,
+      0.0,
+      3.25
+    ],
+    "triangles": 12,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": 8,
+    "pixels_per_stud": 64
+  },
+  "roof-box": {
+    "size": [
+      9.2,
+      7.305,
+      4.42
+    ],
+    "center": [
+      0.0,
+      -0.0025,
+      2.21
+    ],
+    "triangles": 84,
+    "limit": 200,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "tape-roll": {
+    "size": [
+      9.4281,
+      7.2,
+      2.4
+    ],
+    "center": [
+      1.11405,
+      0.0,
+      1.2
+    ],
+    "triangles": 140,
+    "limit": 200,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "bunting-post": {
+    "size": [
+      1.5,
+      1.5,
+      9.15
+    ],
+    "center": [
+      0.0,
+      0.0,
+      4.575
+    ],
+    "triangles": 24,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "paper-bunting-half": {
+    "size": [
+      14.2,
+      0.2,
+      4.71
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.055
+    ],
+    "triangles": 44,
+    "limit": 100,
+    "closed": true,
+    "colors": [
+      "color",
+      "color-blue",
+      "color-green",
+      "color-yellow"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "drainpipe": {
+    "size": [
+      1.8,
+      2.6672,
+      57.02993
+    ],
+    "center": [
+      0.0,
+      -0.6136,
+      28.48503
+    ],
+    "triangles": 216,
+    "limit": 300,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  },
+  "doormat": {
+    "size": [
+      13.0,
+      5.0,
+      0.425
+    ],
+    "center": [
+      0.0,
+      0.0,
+      0.0625
+    ],
+    "triangles": 156,
+    "limit": 200,
+    "closed": true,
+    "colors": [
+      "color"
+    ],
+    "tile_studs": null,
+    "pixels_per_stud": null
+  }
+}

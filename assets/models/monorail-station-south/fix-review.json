@@ -1,0 +1,25 @@
+{
+  "rounds": 3,
+  "changed": "South station rebuilt to chosen E: 80-deep tin/lid/rims/legs; full-length silver-lined X tunnel with rolled edges at both ends; three open 46 x 30 cream-framed, silver-reveal windows on each long face; no old small upper window pairs or front/back tunnel portal; catches/hinges above the windows; front-left camera. Enamel shading corrected by separating inner-face charts and aligning front/back window coordinates.",
+  "still_off": "The station-only export has no train, track beam, road, curb or grey leg plinths. Those picture elements are outside this rebuild. Metal is cleaner and cooler than the concept, the cream trim has squarer corners, and the retained leg windows are opaque blue with smaller frames. Brick colours are less saturated in the studio lighting.",
+  "pieces": 30,
+  "triangles": 33692,
+  "lowest_front_pixels_per_stud": 7.3,
+  "lowest_outer_face_pixels_per_stud": 7.28,
+  "compare": "assets/models/monorail-station-south/compare.png",
+  "build_checks": "all passed, Blender exit 0",
+  "opening_checks": {
+    "road": 1250,
+    "monorail-tunnel": 1250,
+    "long-window-left": 1250,
+    "long-window-centre": 1250,
+    "long-window-right": 1250
+  },
+  "gap_fill": {
+    "tool": "tools/art/fill_gaps.py --uv --all",
+    "maps": 90,
+    "protected_pixels_unchanged": true,
+    "method": "Temporary map copies filled, checked against original protected UV texels, then replaced atomically because Windows locked in-place writes."
+  },
+  "source_scope": "Only monorail_station_south and its CAMERAS / OPENINGS entries; all other builder syntax unchanged."
+}

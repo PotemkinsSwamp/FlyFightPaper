@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "Three separate boxes with folded stand lids, overhanging top-box lips, join tape, corrugated edges, three-pane bays and real corner brick studs. Tunnel enlarged to 62 x 42 at z 100-142, with no rail. Corrected the overlapping window-divider joints in the final round.",
+  "still_off": "Cardboard wear is more even than the approved picture; faint central lid/floor texture seams remain.",
+  "pieces": 17,
+  "triangles": 115996,
+  "lowest_front_pixels_per_stud": 7.261,
+  "compare": "assets\\models\\monorail-station-north\\compare.png"
+}
