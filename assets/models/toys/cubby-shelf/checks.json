@@ -1,0 +1,18 @@
+{
+  "toy": "cubby-shelf",
+  "triangles": 4144,
+  "size_xyz": [
+    600.0,
+    120.0,
+    300.0
+  ],
+  "lowest_z": 0.0,
+  "front": "-Y",
+  "base_origin": [
+    0,
+    0,
+    0
+  ],
+  "cubby_columns": 3,
+  "cubby_rows": 2
+}

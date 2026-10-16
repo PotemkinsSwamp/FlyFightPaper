@@ -1,0 +1,66 @@
+{
+  "building": "tape-roll-tower",
+  "pieces": 16,
+  "total_triangles": 54326,
+  "maximum_piece_triangles": 6810,
+  "lowest_front_pixels_per_stud": 5.335,
+  "open_edges": 0,
+  "front": "-y",
+  "touchup_changes": [
+    "Removed the extraneous floating yellow knob to the left of the red door using an all-vertices deletion box."
+  ],
+  "closeup_path": "assets\\models\\tape-roll-tower\\renders\\closeups.jpg",
+  "texture_contact_sheet": "assets\\models\\tape-roll-tower\\renders\\textures.png",
+  "hole": {
+    "center": [
+      0,
+      220
+    ],
+    "sample_spacing": 0.5,
+    "clear_center_ray": true,
+    "clear_pixels": 8942,
+    "largest_clear_circle_diameter": 47.52,
+    "clear_circle_center": [
+      0.0,
+      226.5
+    ],
+    "opening_area_studs2": 1842.0,
+    "front_render": "renders/flythrough-front.png",
+    "back_render": "renders/flythrough-back.png"
+  },
+  "texture_doubts": [
+    {
+      "file": "parts/5-upper-walls-front-left-color.png",
+      "concern": "Broad tan cross/T-like join."
+    },
+    {
+      "file": "parts/11-roof-back-left-color.png",
+      "concern": "Repeated red X/8-like paired circles."
+    },
+    {
+      "file": "parts/12-roof-back-right-color.png",
+      "concern": "Repeated red X/8-like paired circles."
+    },
+    {
+      "file": "parts/15-topper-back-left-color.png",
+      "concern": "Large cream O/P-like ring."
+    },
+    {
+      "file": "parts/11-roof-back-left-normal.png",
+      "concern": "Repeated paired rings and crossed centres can resemble X/8-like marks."
+    },
+    {
+      "file": "parts/9-roof-front-left-roughness.png",
+      "concern": "Low-contrast grey island outlines can resemble a body silhouette."
+    }
+  ],
+  "remaining_issues": [
+    "Minimum texture density 5.335 is below the 6-pixel aim.",
+    "A tiny yellow hinge-like mark remains on the left door frame after removing the floating knob.",
+    "Texture moderation doubts require review before any later upload."
+  ],
+  "visual_check": "Tape core clear front and back with no film or webbing; roof and facade inspected.",
+  "texture_fill": "Shared fill_gaps.py --uv --all; packed scene refreshed afterwards.",
+  "additional_texture_review": "renders/part2-texture-review.json",
+  "closeup_status": "Reviewed final closeups.jpg rendered from saved hero.blend."
+}

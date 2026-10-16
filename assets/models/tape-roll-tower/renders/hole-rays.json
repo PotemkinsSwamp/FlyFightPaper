@@ -1,0 +1,15 @@
+{
+  "center": [
+    0,
+    220
+  ],
+  "sample_spacing": 0.5,
+  "clear_center_ray": true,
+  "clear_pixels": 8942,
+  "largest_clear_circle_diameter": 47.52,
+  "clear_circle_center": [
+    0.0,
+    226.5
+  ],
+  "opening_area_studs2": 1842.0
+}

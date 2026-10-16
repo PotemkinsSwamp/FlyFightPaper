@@ -1,0 +1,14 @@
+{
+  "toy": "ceiling-ring",
+  "triangles": 1408,
+  "size_xyz": [
+    80.0,
+    8.0,
+    86.0
+  ],
+  "lowest_z": 0.0,
+  "exact_size": true,
+  "open_hole_diameter": 60,
+  "opening_rays_clear": 298,
+  "hanger_loops": 1
+}

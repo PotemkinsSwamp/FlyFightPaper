@@ -1,0 +1,21 @@
+{
+  "toy": "runway-light-tip",
+  "triangles": 14,
+  "size_xyz": [
+    0.675,
+    0.675,
+    0.9
+  ],
+  "lowest_z": 3.1,
+  "origin": "shared light base centre",
+  "assembly_size_xyz": [
+    3,
+    3,
+    4
+  ],
+  "tip_z_range": [
+    3.1,
+    4
+  ],
+  "separate_tip_mesh": "runway-light-tip"
+}

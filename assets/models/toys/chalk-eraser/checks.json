@@ -1,0 +1,28 @@
+{
+  "toy": "chalk-eraser",
+  "triangles": 1176,
+  "size_xyz": [
+    92.0,
+    29.0,
+    25.0
+  ],
+  "lowest_z": 0.0,
+  "felt_size_roblox_xyz_studs": [
+    89.6,
+    10.5,
+    26.6
+  ],
+  "felt_radius_studs": 1,
+  "wood_size_roblox_xyz_studs": [
+    92,
+    14.5,
+    29
+  ],
+  "wood_radius_studs": 2.4,
+  "felt_inset_studs": 1.2,
+  "size_roblox_xyz_studs": [
+    92.0,
+    25.0,
+    29.0
+  ]
+}

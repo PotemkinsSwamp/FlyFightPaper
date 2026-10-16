@@ -1,0 +1,9 @@
+{
+ "bulb_blender_studs": [
+  0,
+  4.0,
+  30.5
+ ],
+ "radius": 1.6,
+ "note": "Blender coords before export (Z up, front -Y); the toy's real size equals these studs"
+}

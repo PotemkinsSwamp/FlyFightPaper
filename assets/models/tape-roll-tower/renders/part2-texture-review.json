@@ -1,0 +1,63 @@
+{
+  "reviewed_sheet": "renders/textures.png",
+  "sheet_viewed_at_full_resolution": true,
+  "doubtful_colour_maps": [
+    {
+      "file": "parts/3-ground-floor-back-left-color.png",
+      "concern": "Broad tan H/T-like joins around the window gaps."
+    },
+    {
+      "file": "parts/4-ground-floor-back-right-color.png",
+      "concern": "Broad tan H-like patch."
+    },
+    {
+      "file": "parts/5-upper-walls-front-left-color.png",
+      "concern": "Broad tan cross/T-like join."
+    },
+    {
+      "file": "parts/6-upper-walls-front-right-color.png",
+      "concern": "Tan H-like join and blue C-like bend."
+    },
+    {
+      "file": "parts/7-upper-walls-back-left-color.png",
+      "concern": "Broad tan T-like join and angular blue strokes."
+    },
+    {
+      "file": "parts/8-upper-walls-back-right-color.png",
+      "concern": "Broad tan H/T-like joins."
+    },
+    {
+      "file": "parts/9-roof-front-left-color.png",
+      "concern": "Tan H-like join against blue."
+    },
+    {
+      "file": "parts/10-roof-front-right-color.png",
+      "concern": "Tan H/T-like joins."
+    },
+    {
+      "file": "parts/11-roof-back-left-color.png",
+      "concern": "Repeated red X/8-like paired circular motifs."
+    },
+    {
+      "file": "parts/12-roof-back-right-color.png",
+      "concern": "Repeated red X/8-like paired circular motifs."
+    },
+    {
+      "file": "parts/13-topper-front-left-color.png",
+      "concern": "Large tan inverted-U-like arch."
+    },
+    {
+      "file": "parts/14-topper-front-right-color.png",
+      "concern": "Large tan O/C-like arch."
+    },
+    {
+      "file": "parts/15-topper-back-left-color.png",
+      "concern": "Large cream O/P-like ring."
+    },
+    {
+      "file": "parts/16-topper-back-right-color.png",
+      "concern": "Large cream C/O-like arches."
+    }
+  ],
+  "decision": "Claude review required before upload; no clearance inferred from filling gaps."
+}

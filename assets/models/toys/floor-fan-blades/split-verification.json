@@ -1,0 +1,11 @@
+{
+  "body_triangles": 2852,
+  "rotor_triangles": 616,
+  "rotor_loose_parts": 6,
+  "rotor_z": [
+    19.0,
+    27.0
+  ],
+  "geometry_preserved": true,
+  "uv_max_error": 0.0
+}

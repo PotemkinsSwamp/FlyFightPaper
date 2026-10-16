@@ -1,0 +1,40 @@
+00:00.516  blend            | Read blend: "D:\FlyFightPaper\assets\models\tape-roll-tower\hero.blend"
+Extensions: writing cache failed ([Errno 13] Permission denied: 'C:\\Users\\gutie\\AppData\\Roaming\\Blender Foundation\\Blender\\5.1\\extensions\\.cache\\compat.dat').
+FINAL boundary ground-floor-front-left 0
+FINAL boundary ground-floor-front-right 0
+FINAL boundary ground-floor-back-left 0
+FINAL boundary ground-floor-back-right 0
+FINAL boundary upper-walls-front-left 0
+FINAL boundary upper-walls-front-right 0
+FINAL boundary upper-walls-back-left 0
+FINAL boundary upper-walls-back-right 0
+FINAL boundary roof-front-left 0
+FINAL boundary roof-front-right 0
+FINAL boundary roof-back-left 0
+FINAL boundary roof-back-right 0
+FINAL boundary topper-front-left 0
+FINAL boundary topper-front-right 0
+FINAL boundary topper-back-left 0
+FINAL boundary topper-back-right 0
+00:19.438  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\render-front.png'
+00:19.891  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\render-back.png'
+00:20.672  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\ground-floor-after.png'
+Info: Saved as "hero.blend"
+FINAL maps refreshed tape-roll-tower
+00:21.141  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\closeup-0.png'
+00:21.516  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\closeup-1.png'
+00:21.907  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\closeup-2.png'
+00:22.282  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\closeup-3.png'
+00:22.672  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\closeup-4.png'
+00:23.078  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\closeup-5.png'
+00:23.391  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\closeup-6.png'
+00:23.703  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\closeup-7.png'
+CHECK boundaries []
+D:\FlyFightPaper\assets\models\porthole-book-tower\renders\inspect_bake.py:48: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat=bpy.data.materials.new(name); mat.use_nodes=True
+00:27.782  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\flythrough-front.png'
+00:28.672  render           | Saved: 'D:\FlyFightPaper\assets\models\tape-roll-tower\renders\flythrough-back.png'
+CHECK done tape-roll-tower
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

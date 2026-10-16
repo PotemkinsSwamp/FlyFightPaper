@@ -1,0 +1,26 @@
+{
+  "toy": "classroom-bookshelf",
+  "triangles": 4780,
+  "size_xyz": [
+    300.0,
+    85.0,
+    260.0
+  ],
+  "lowest_z": 0.0,
+  "front": "-Y",
+  "base_origin": [
+    0,
+    0,
+    0
+  ],
+  "shelf_top_z": [
+    16.0,
+    64.0,
+    112.0,
+    160.0,
+    208.0
+  ],
+  "bottom_shelf_clearance": 10,
+  "flat_book_stacks": 5,
+  "clear_open_front_rays": 5
+}

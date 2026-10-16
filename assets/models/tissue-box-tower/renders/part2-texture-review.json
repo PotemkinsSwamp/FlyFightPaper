@@ -1,0 +1,71 @@
+{
+  "reviewed_sheet": "renders/textures.png",
+  "sheet_viewed_at_full_resolution": true,
+  "doubtful_colour_maps": [
+    {
+      "file": "parts/1-ground-floor-front-left-color.png",
+      "concern": "Green hooked cross/branch-like silhouette."
+    },
+    {
+      "file": "parts/2-ground-floor-front-right-color.png",
+      "concern": "Green hook and blue T-like junctions."
+    },
+    {
+      "file": "parts/3-ground-floor-back-left-color.png",
+      "concern": "Green H-like hooked junction."
+    },
+    {
+      "file": "parts/4-ground-floor-back-right-color.png",
+      "concern": "Large blue cross and green hooked cross-like junction."
+    },
+    {
+      "file": "parts/5-upper-walls-front-left-color.png",
+      "concern": "Large blue X-like junction."
+    },
+    {
+      "file": "parts/6-upper-walls-front-right-color.png",
+      "concern": "Blue X-like junction and broad red letter-like patch."
+    },
+    {
+      "file": "parts/7-upper-walls-back-left-color.png",
+      "concern": "Large blue X/T-like junction."
+    },
+    {
+      "file": "parts/8-upper-walls-back-right-color.png",
+      "concern": "Blue X-like junction and red upright T-like patch."
+    },
+    {
+      "file": "parts/9-roof-front-left-color.png",
+      "concern": "Large blue M-like patch."
+    },
+    {
+      "file": "parts/10-roof-front-right-color.png",
+      "concern": "Blue angular letter-like patch and red upright stroke."
+    },
+    {
+      "file": "parts/11-roof-back-left-color.png",
+      "concern": "Blue Y/A-like patch against cream."
+    },
+    {
+      "file": "parts/12-roof-back-right-color.png",
+      "concern": "Large blue X-like junction."
+    },
+    {
+      "file": "parts/13-topper-front-left-color.png",
+      "concern": "Large red P/O-like loop."
+    },
+    {
+      "file": "parts/14-topper-front-right-color.png",
+      "concern": "Red A/Y-like branching patch."
+    },
+    {
+      "file": "parts/15-topper-back-left-color.png",
+      "concern": "Red E/F-like branches against white."
+    },
+    {
+      "file": "parts/16-topper-back-right-color.png",
+      "concern": "Red F/P-like branches and limb-like silhouette."
+    }
+  ],
+  "decision": "Claude review required before upload; no clearance inferred from filling gaps."
+}

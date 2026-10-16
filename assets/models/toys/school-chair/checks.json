@@ -1,0 +1,16 @@
+{
+  "toy": "school-chair",
+  "triangles": 1144,
+  "size_xyz": [
+    110.0,
+    114.661,
+    200.0
+  ],
+  "lowest_z": 0.0,
+  "seat_xy": [
+    110.0,
+    100.0
+  ],
+  "seat_top_z": 90.0,
+  "backrest_top_z": 200.0
+}

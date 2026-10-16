@@ -1,0 +1,17 @@
+{
+  "toy": "classroom-door",
+  "triangles": 1232,
+  "size_xyz": [
+    190.0,
+    20.0,
+    370.0
+  ],
+  "lowest_z": 0.0,
+  "front": "-Y",
+  "base_origin": [
+    0,
+    0,
+    0
+  ],
+  "flat_back_y": 10
+}

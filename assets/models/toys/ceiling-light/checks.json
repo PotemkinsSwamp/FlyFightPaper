@@ -1,0 +1,22 @@
+{
+  "toy": "ceiling-light",
+  "triangles": 668,
+  "size_xyz": [
+    150.0,
+    40.0,
+    8.0
+  ],
+  "lowest_z": 0.0,
+  "front": "-Y",
+  "base_origin": [
+    0,
+    0,
+    0
+  ],
+  "flat_top_z": 8,
+  "frame_width": 3,
+  "diffuser_bottom_z": 2.3,
+  "louvre_inset": 2,
+  "grid_spacing": 4,
+  "glow_slot": "Glow"
+}

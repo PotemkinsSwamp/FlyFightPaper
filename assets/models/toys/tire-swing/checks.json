@@ -1,0 +1,15 @@
+{
+  "toy": "tire-swing",
+  "triangles": 5900,
+  "size_xyz": [
+    500.0,
+    300.0,
+    482.923
+  ],
+  "lowest_z": 0.0,
+  "tyre_top_z": 130.0,
+  "tyre_lowest_z": 89,
+  "tyre_opening_clear": true,
+  "chain_count": 3,
+  "links_per_chain": 12
+}

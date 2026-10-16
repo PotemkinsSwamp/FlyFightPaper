@@ -1,0 +1,14 @@
+{
+  "toy": "merry-go-round",
+  "triangles": 4440,
+  "size_xyz": [
+    400.0,
+    400.0,
+    180.0
+  ],
+  "lowest_z": 0.0,
+  "deck_top_z": 45.0,
+  "hub_top_z": 180.0,
+  "coloured_deck_segments": 6,
+  "curved_hand_rails": 3
+}

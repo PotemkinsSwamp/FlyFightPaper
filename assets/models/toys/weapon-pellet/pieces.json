@@ -1,0 +1,59 @@
+{
+  "weapon": "pellet",
+  "length_studs": 3.2,
+  "size": [
+    0.7711,
+    0.9257,
+    3.2
+  ],
+  "mount": {
+    "side": "bottom",
+    "point": [
+      -0.0,
+      -0.4629,
+      -0.0
+    ]
+  },
+  "maps": {
+    "base_color": "meshy-base_color.png",
+    "normal": "meshy-normal.png",
+    "roughness": "meshy-roughness.png",
+    "metallic": "meshy-metallic.png"
+  },
+  "pieces": [
+    {
+      "piece": "body",
+      "file": "parts/body.fbx",
+      "role": "static",
+      "centre": [
+        -0.0,
+        -0.0116,
+        -0.1252
+      ],
+      "size": [
+        0.7711,
+        0.9026,
+        2.9496
+      ],
+      "triangles": 2694,
+      "textured": true
+    },
+    {
+      "piece": "pellet",
+      "file": "parts/pellet.fbx",
+      "role": "fire",
+      "centre": [
+        0.0015,
+        0.2308,
+        1.3563
+      ],
+      "size": [
+        0.5115,
+        0.464,
+        0.4873
+      ],
+      "triangles": 376,
+      "textured": true
+    }
+  ]
+}

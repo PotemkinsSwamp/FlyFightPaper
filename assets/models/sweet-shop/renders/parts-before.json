@@ -1,0 +1,183 @@
+{
+  "source": "meshy.glb",
+  "source_triangles": 1450724,
+  "front": "-y",
+  "piece_count": 4,
+  "requested_height": 105.0,
+  "floor_cuts": [
+    42.1785,
+    65.23125
+  ],
+  "topper_base": 68.17125,
+  "pieces": [
+    {
+      "label": "ground-floor",
+      "triangles": 8428,
+      "bounding_box": {
+        "min": [
+          -47.39394,
+          -31.42842,
+          0.0
+        ],
+        "max": [
+          47.50424,
+          31.3455,
+          42.15232
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 1825,
+      "uv_coverage": 0.1987,
+      "uv_overlap": false,
+      "uv_padding_pixels": 8,
+      "prefix": "1-ground-floor",
+      "density_face": "front",
+      "front_surface_studs2": 4168.6774,
+      "front_pixels_per_stud": 2.223,
+      "back_pixels_per_stud": 2.226
+    },
+    {
+      "label": "upper-walls",
+      "triangles": 7072,
+      "bounding_box": {
+        "min": [
+          -44.3757,
+          -21.51974,
+          42.13204
+        ],
+        "max": [
+          37.65693,
+          26.7049,
+          65.20495
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 1434,
+      "uv_coverage": 0.228,
+      "uv_overlap": false,
+      "uv_padding_pixels": 8,
+      "prefix": "2-upper-walls",
+      "density_face": "front",
+      "front_surface_studs2": 1592.7947,
+      "front_pixels_per_stud": 3.119,
+      "back_pixels_per_stud": 3.117
+    },
+    {
+      "label": "roof",
+      "triangles": 6418,
+      "bounding_box": {
+        "min": [
+          -43.58271,
+          -20.58201,
+          65.19271
+        ],
+        "max": [
+          36.6349,
+          26.42318,
+          83.65043
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 2076,
+      "uv_coverage": 0.192,
+      "uv_overlap": false,
+      "uv_padding_pixels": 8,
+      "prefix": "3-roof",
+      "density_face": "front",
+      "front_surface_studs2": 534.2655,
+      "front_pixels_per_stud": 3.917,
+      "back_pixels_per_stud": 3.921
+    },
+    {
+      "label": "topper",
+      "triangles": 3858,
+      "bounding_box": {
+        "min": [
+          -8.61999,
+          -13.75066,
+          68.13348
+        ],
+        "max": [
+          25.51331,
+          0.53664,
+          105.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 410,
+      "uv_coverage": 0.4396,
+      "uv_overlap": false,
+      "uv_padding_pixels": 8,
+      "prefix": "4-topper",
+      "density_face": "front",
+      "front_surface_studs2": 922.6361,
+      "front_pixels_per_stud": 13.088,
+      "back_pixels_per_stud": 13.151
+    }
+  ],
+  "lowest_z": 0.0,
+  "height": 105.0,
+  "total_triangles": 25776,
+  "matching_regions": {
+    "ground-floor-front-left": {
+      "density_face": "front",
+      "front_surface_studs2": 2193.5734,
+      "front_pixels_per_stud": 2.225
+    },
+    "ground-floor-front-right": {
+      "density_face": "front",
+      "front_surface_studs2": 1975.2413,
+      "front_pixels_per_stud": 2.222
+    },
+    "ground-floor-back-left": {
+      "density_face": "back",
+      "front_surface_studs2": 1947.7488,
+      "front_pixels_per_stud": 2.227
+    },
+    "ground-floor-back-right": {
+      "density_face": "back",
+      "front_surface_studs2": 1728.6291,
+      "front_pixels_per_stud": 2.225
+    },
+    "upper-walls-front": {
+      "density_face": "front",
+      "front_surface_studs2": 1592.8927,
+      "front_pixels_per_stud": 3.119
+    },
+    "upper-walls-back": {
+      "density_face": "back",
+      "front_surface_studs2": 1874.5721,
+      "front_pixels_per_stud": 3.117
+    },
+    "topper": {
+      "density_face": "front",
+      "front_surface_studs2": 922.6361,
+      "front_pixels_per_stud": 13.088
+    },
+    "roof": {
+      "density_face": "front",
+      "front_surface_studs2": 534.2655,
+      "front_pixels_per_stud": 3.917
+    }
+  }
+}

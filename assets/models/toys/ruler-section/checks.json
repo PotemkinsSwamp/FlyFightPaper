@@ -1,0 +1,13 @@
+{
+  "toy": "ruler-section",
+  "triangles": 76,
+  "size_xyz": [
+    60.0,
+    30.0,
+    6.0
+  ],
+  "lowest_z": 0.0,
+  "exact_size": true,
+  "tick_period_studs": 10,
+  "ticks_on_top_and_bottom": true
+}

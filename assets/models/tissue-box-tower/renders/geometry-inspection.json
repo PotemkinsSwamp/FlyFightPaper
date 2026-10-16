@@ -1,0 +1,98 @@
+[
+  {
+    "piece": "ground-floor-front-left",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "ground-floor-front-right",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "ground-floor-back-left",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "ground-floor-back-right",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "upper-walls-front-left",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "upper-walls-front-right",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "upper-walls-back-left",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "upper-walls-back-right",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "roof-front-left",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "roof-front-right",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "roof-back-left",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "roof-back-right",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "topper-front-left",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "topper-front-right",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "topper-back-left",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  },
+  {
+    "piece": "topper-back-right",
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "boundary_coordinates": []
+  }
+]

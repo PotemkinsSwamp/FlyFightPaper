@@ -1,0 +1,16 @@
+{
+  "toy": "swing-set",
+  "triangles": 5972,
+  "size_xyz": [
+    700.0,
+    300.0,
+    482.923
+  ],
+  "lowest_z": 0.0,
+  "seat_top_z": [
+    112.0,
+    112.0
+  ],
+  "chain_count": 4,
+  "links_per_chain": 12
+}

@@ -1,0 +1,135 @@
+{
+  "weapon": "paperclip",
+  "length_studs": 3.8,
+  "size": [
+    0.774,
+    0.5,
+    3.87
+  ],
+  "mount": {
+    "side": "bottom",
+    "point": [
+      0.0,
+      -0.25,
+      -0.0
+    ]
+  },
+  "maps": {},
+  "pieces": [
+    {
+      "piece": "body",
+      "file": "parts/body.fbx",
+      "role": "static",
+      "centre": [
+        -0.007,
+        -0.19,
+        0.11
+      ],
+      "size": [
+        0.76,
+        0.12,
+        3.65
+      ],
+      "triangles": 12,
+      "textured": false,
+      "color": [
+        120,
+        122,
+        126
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "rails",
+      "file": "parts/rails.fbx",
+      "role": "static",
+      "centre": [
+        -0.007,
+        -0.05,
+        -0.14
+      ],
+      "size": [
+        0.62,
+        0.16,
+        3.15
+      ],
+      "triangles": 24,
+      "textured": false,
+      "color": [
+        232,
+        126,
+        52
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "coils",
+      "file": "parts/coils.fbx",
+      "role": "static",
+      "centre": [
+        0.0009,
+        -0.05,
+        -0.015
+      ],
+      "size": [
+        0.7721,
+        0.3003,
+        1.927
+      ],
+      "triangles": 912,
+      "textured": false,
+      "color": [
+        196,
+        112,
+        62
+      ],
+      "material": "Metal"
+    },
+    {
+      "piece": "battery",
+      "file": "parts/battery.fbx",
+      "role": "static",
+      "centre": [
+        -0.007,
+        0.06,
+        1.71
+      ],
+      "size": [
+        0.72,
+        0.38,
+        0.45
+      ],
+      "triangles": 12,
+      "textured": false,
+      "color": [
+        30,
+        30,
+        32
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "wire",
+      "file": "parts/wire.fbx",
+      "role": "fire",
+      "centre": [
+        -0.002,
+        -0.08,
+        -0.2991
+      ],
+      "size": [
+        0.12,
+        0.07,
+        3.2717
+      ],
+      "triangles": 94,
+      "textured": false,
+      "color": [
+        205,
+        205,
+        210
+      ],
+      "material": "Metal"
+    }
+  ]
+}

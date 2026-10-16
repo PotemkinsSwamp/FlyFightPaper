@@ -1,0 +1,15 @@
+{
+  "toy": "crawl-tunnel",
+  "triangles": 4016,
+  "size_xyz": [
+    400.0,
+    160.0,
+    160.0
+  ],
+  "lowest_z": 0.0,
+  "tunnel_direction": "X",
+  "barrel_inside_diameter": 124,
+  "entry_inside_diameter": 120,
+  "interior_floor_z": 23.0,
+  "open_through_rays": 5
+}

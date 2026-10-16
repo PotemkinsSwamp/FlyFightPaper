@@ -1,0 +1,19 @@
+{
+  "toy": "cardboard-tube",
+  "triangles": 1792,
+  "size_xyz": [
+    70.0,
+    200.0,
+    76.0
+  ],
+  "lowest_z": 0.0,
+  "exact_size": true,
+  "open_hole_diameter": 62,
+  "opening_rays_clear": 298,
+  "hanger_loops": 2,
+  "tube_wall_studs": 4,
+  "hanger_y": [
+    -70.0,
+    70.0
+  ]
+}

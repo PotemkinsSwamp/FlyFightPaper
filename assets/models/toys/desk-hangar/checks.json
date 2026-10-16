@@ -1,0 +1,17 @@
+{
+  "toy": "desk-hangar",
+  "triangles": 244,
+  "size_xyz": [
+    110.0,
+    70.0,
+    50.0
+  ],
+  "lowest_z": 0.0,
+  "front": "-Y",
+  "base_origin": [
+    0,
+    0,
+    0
+  ],
+  "clear_entrance_rays": 3
+}

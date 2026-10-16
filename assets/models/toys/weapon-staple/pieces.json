@@ -1,0 +1,108 @@
+{
+  "weapon": "staple",
+  "length_studs": 3.4,
+  "size": [
+    0.5304,
+    0.9066,
+    3.4
+  ],
+  "mount": {
+    "side": "top",
+    "point": [
+      0.0,
+      0.4533,
+      -0.0
+    ]
+  },
+  "maps": {
+    "base_color": "meshy-base_color.png",
+    "normal": "meshy-normal.png",
+    "roughness": "meshy-roughness.png",
+    "metallic": "meshy-metallic.png"
+  },
+  "pieces": [
+    {
+      "piece": "body",
+      "file": "parts/body.fbx",
+      "role": "static",
+      "centre": [
+        0.0,
+        -0.0286,
+        -0.2598
+      ],
+      "size": [
+        0.5304,
+        0.8494,
+        2.7965
+      ],
+      "triangles": 2281,
+      "textured": true
+    },
+    {
+      "piece": "lever",
+      "file": "parts/lever.fbx",
+      "role": "hinge",
+      "centre": [
+        0.0005,
+        0.3462,
+        0.6649
+      ],
+      "size": [
+        0.3478,
+        0.2142,
+        0.5227
+      ],
+      "triangles": 100,
+      "textured": true,
+      "pivot": [
+        -0.0013,
+        0.2359,
+        0.4289
+      ],
+      "axis": [
+        -1.0,
+        0.0,
+        -0.0
+      ]
+    },
+    {
+      "piece": "staple",
+      "file": "parts/staple.fbx",
+      "role": "fire",
+      "centre": [
+        -0.0021,
+        -0.146,
+        -1.4173
+      ],
+      "size": [
+        0.2621,
+        0.0952,
+        0.5654
+      ],
+      "triangles": 42,
+      "textured": true
+    },
+    {
+      "piece": "strip",
+      "file": "parts/strip.fbx",
+      "role": "slide",
+      "centre": [
+        -0.002,
+        -0.1551,
+        1.3934
+      ],
+      "size": [
+        0.2931,
+        0.1389,
+        0.6132
+      ],
+      "triangles": 237,
+      "textured": true,
+      "axis": [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    }
+  ]
+}

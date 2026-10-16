@@ -1,0 +1,14 @@
+{
+  "toy": "monkey-bars",
+  "triangles": 3484,
+  "size_xyz": [
+    600.0,
+    150.0,
+    420.0
+  ],
+  "lowest_z": 0.0,
+  "end_ladders": 2,
+  "rungs_per_end_ladder": 7,
+  "overhead_rungs": 9,
+  "overhead_openings_clear": true
+}

@@ -1,0 +1,266 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 6,
+  "requested_height": 190,
+  "height": 189,
+  "pad_size": [
+    72.0,
+    72.0,
+    31.5
+  ],
+  "pad_angles_degrees": [
+    0,
+    4,
+    -3,
+    4,
+    -4,
+    3
+  ],
+  "normal_convention": "OpenGL +Y",
+  "map_size": [
+    1024,
+    1024
+  ],
+  "uv_reuse": "Front paper chart is separate; other paper faces and repeated fittings share charts",
+  "baked_ambient_occlusion": {
+    "samples": 24,
+    "distance_studs": 4,
+    "maximum_darkening": 0.24,
+    "method": "Cosine-weighted ray tests against all six closed pieces"
+  },
+  "pieces": [
+    {
+      "label": "yellow-ground-pad",
+      "triangles": 10548,
+      "bounding_box": {
+        "min": [
+          -37.5,
+          -43.6,
+          0.0
+        ],
+        "max": [
+          37.5,
+          37.5,
+          31.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-yellow-ground-pad",
+      "density_face": "front",
+      "baked_ao_minimum": 0.7838,
+      "front_pixels_per_stud": 7.732,
+      "front_surface_studs2": 3490.9672,
+      "outer_face_pixels_per_stud": {
+        "front": 7.732,
+        "back": 7.41,
+        "left": 7.616,
+        "right": 7.565,
+        "top": 7.566,
+        "bottom": 7.569
+      }
+    },
+    {
+      "label": "pink-pad",
+      "triangles": 5564,
+      "bounding_box": {
+        "min": [
+          -38.9712,
+          -38.9712,
+          31.5
+        ],
+        "max": [
+          38.9712,
+          38.97119,
+          63.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-pink-pad",
+      "density_face": "front",
+      "baked_ao_minimum": 0.7847,
+      "front_pixels_per_stud": 7.41,
+      "front_surface_studs2": 2801.9204,
+      "outer_face_pixels_per_stud": {
+        "front": 7.41,
+        "back": 7.41,
+        "left": 7.41,
+        "right": 7.41,
+        "top": 7.157,
+        "bottom": 7.161
+      }
+    },
+    {
+      "label": "blue-pad",
+      "triangles": 5564,
+      "bounding_box": {
+        "min": [
+          -38.62093,
+          -38.62093,
+          63.0
+        ],
+        "max": [
+          38.62093,
+          38.62094,
+          94.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-blue-pad",
+      "density_face": "front",
+      "baked_ao_minimum": 0.7847,
+      "front_pixels_per_stud": 7.411,
+      "front_surface_studs2": 2801.8235,
+      "outer_face_pixels_per_stud": {
+        "front": 7.411,
+        "back": 7.411,
+        "left": 7.411,
+        "right": 7.411,
+        "top": 7.156,
+        "bottom": 7.161
+      }
+    },
+    {
+      "label": "green-pad",
+      "triangles": 5564,
+      "bounding_box": {
+        "min": [
+          -38.9712,
+          -38.9712,
+          94.5
+        ],
+        "max": [
+          38.9712,
+          38.97119,
+          126.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-green-pad",
+      "density_face": "front",
+      "baked_ao_minimum": 0.7847,
+      "front_pixels_per_stud": 7.411,
+      "front_surface_studs2": 2801.8981,
+      "outer_face_pixels_per_stud": {
+        "front": 7.411,
+        "back": 7.411,
+        "left": 7.411,
+        "right": 7.411,
+        "top": 7.157,
+        "bottom": 7.161
+      }
+    },
+    {
+      "label": "orange-pad",
+      "triangles": 5564,
+      "bounding_box": {
+        "min": [
+          -38.9712,
+          -38.9712,
+          126.0
+        ],
+        "max": [
+          38.9712,
+          38.9712,
+          157.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-orange-pad",
+      "density_face": "front",
+      "baked_ao_minimum": 0.7847,
+      "front_pixels_per_stud": 7.41,
+      "front_surface_studs2": 2801.9532,
+      "outer_face_pixels_per_stud": {
+        "front": 7.41,
+        "back": 7.41,
+        "left": 7.41,
+        "right": 7.41,
+        "top": 7.157,
+        "bottom": 7.161
+      }
+    },
+    {
+      "label": "yellow-roof-pad",
+      "triangles": 5564,
+      "bounding_box": {
+        "min": [
+          -38.62093,
+          -38.62093,
+          157.5
+        ],
+        "max": [
+          38.62093,
+          38.62093,
+          189.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-yellow-roof-pad",
+      "density_face": "front",
+      "baked_ao_minimum": 0.7847,
+      "front_pixels_per_stud": 7.411,
+      "front_surface_studs2": 2801.8365,
+      "outer_face_pixels_per_stud": {
+        "front": 7.411,
+        "back": 7.411,
+        "left": 7.411,
+        "right": 7.411,
+        "top": 7.158,
+        "bottom": 7.16
+      }
+    }
+  ],
+  "total_triangles": 38368,
+  "dimensions_note": "Six exact 31.5-stud pads total 189 studs; 90 x 90 is the rotated pad envelope, excluding proud window frames and the front doorstep.",
+  "bounding_box": {
+    "min": [
+      -38.9712,
+      -43.6,
+      0.0
+    ],
+    "max": [
+      38.9712,
+      38.9712,
+      189.0
+    ]
+  }
+}

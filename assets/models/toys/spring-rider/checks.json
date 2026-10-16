@@ -1,0 +1,15 @@
+{
+  "toy": "spring-rider",
+  "triangles": 3148,
+  "size_xyz": [
+    120.0,
+    60.0,
+    170.0
+  ],
+  "lowest_z": 0.0,
+  "seat_top_z": 137.5,
+  "spring_turns": 5,
+  "character": "green duck",
+  "display_front": "-Y",
+  "beak_direction": "-X"
+}

@@ -1,0 +1,19 @@
+{
+  "toy": "ruler-tape",
+  "triangles": 160,
+  "size_xyz": [
+    10.0,
+    32.0,
+    8.0
+  ],
+  "lowest_z": 0.0,
+  "exact_size": true,
+  "sleeve_inside_yz": [
+    30,
+    6
+  ],
+  "tape_wall_studs": 1,
+  "sleeve_rays_clear": 9,
+  "tape_alpha": 0.94,
+  "deck_offset_z": 1
+}

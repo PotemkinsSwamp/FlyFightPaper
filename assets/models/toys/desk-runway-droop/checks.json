@@ -1,0 +1,26 @@
+{
+  "toy": "desk-runway-droop",
+  "triangles": 1040,
+  "size_xyz": [
+    100.0,
+    224.649,
+    37.168
+  ],
+  "lowest_z": -37.05563,
+  "origin": "back edge centre at desk-top height",
+  "pad_xy": [
+    100,
+    86
+  ],
+  "runway_xy": [
+    88,
+    130
+  ],
+  "desk_front_y": 216,
+  "cardboard_thickness": 1.2,
+  "overhang_sheet_length": 40,
+  "continuous_cardboard_sheet": true,
+  "drawn_markings_are_texture": true,
+  "texture_set": "separate bake for this variant",
+  "minimum_z": -37.056
+}

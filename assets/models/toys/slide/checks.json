@@ -1,0 +1,14 @@
+{
+  "toy": "slide",
+  "triangles": 5172,
+  "size_xyz": [
+    800.0,
+    160.0,
+    438.978
+  ],
+  "lowest_z": 0.0,
+  "platform_top_z": 334.0,
+  "runout_top_z": 20.242,
+  "ladder_treads": 8,
+  "slide_direction": "+X"
+}

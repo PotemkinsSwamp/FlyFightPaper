@@ -1,0 +1,89 @@
+{
+  "weapon": "pencil-b",
+  "length_studs": 4.6,
+  "size": [
+    1.016,
+    0.828,
+    4.6
+  ],
+  "mount": {
+    "side": "top",
+    "point": [
+      0.0,
+      0.414,
+      -0.0
+    ]
+  },
+  "maps": {},
+  "pieces": [
+    {
+      "piece": "body",
+      "file": "parts/body.fbx",
+      "role": "static",
+      "centre": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "size": [
+        1.016,
+        0.828,
+        4.6
+      ],
+      "triangles": 956,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "band",
+      "file": "parts/band.fbx",
+      "role": "snap",
+      "centre": [
+        0.0,
+        0.264,
+        0.26
+      ],
+      "size": [
+        0.9045,
+        0.225,
+        1.725
+      ],
+      "triangles": 96,
+      "textured": false,
+      "color": [
+        140,
+        81,
+        37
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "pencil",
+      "file": "parts/pencil.fbx",
+      "role": "fire",
+      "centre": [
+        0.0,
+        0.164,
+        -0.58
+      ],
+      "size": [
+        0.35,
+        0.3031,
+        3.2
+      ],
+      "triangles": 50,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    }
+  ]
+}

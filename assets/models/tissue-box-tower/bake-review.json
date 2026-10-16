@@ -1,0 +1,54 @@
+{
+  "building": "tissue-box-tower",
+  "pieces": 16,
+  "total_triangles": 44348,
+  "maximum_piece_triangles": 5018,
+  "lowest_front_pixels_per_stud": 4.734,
+  "open_edges": 0,
+  "front": "-y",
+  "touchup_changes": [
+    "Removed wholly buried internal geometry below 200 studs without cutting faces reaching the outside walls.",
+    "Added a white inner floor.",
+    "Added two thin white lathe patches over actual tissue punctures."
+  ],
+  "closeup_path": "assets\\models\\tissue-box-tower\\renders\\closeups.jpg",
+  "texture_contact_sheet": "assets\\models\\tissue-box-tower\\renders\\textures.png",
+  "texture_doubts": [
+    {
+      "file": "parts/1-ground-floor-front-left-color.png",
+      "concern": "Green hooked cross/branch-like silhouette."
+    },
+    {
+      "file": "parts/4-ground-floor-back-right-color.png",
+      "concern": "Blue cross and green hooked junction."
+    },
+    {
+      "file": "parts/6-upper-walls-front-right-color.png",
+      "concern": "Blue X-like junction."
+    },
+    {
+      "file": "parts/12-roof-back-right-color.png",
+      "concern": "Large blue X-like junction."
+    },
+    {
+      "file": "parts/16-topper-back-right-color.png",
+      "concern": "Red branching patches can resemble limbs."
+    },
+    {
+      "file": "parts/11-roof-back-left-normal.png",
+      "concern": "Thin S-like folded contours remain on the flat map."
+    },
+    {
+      "file": "parts/12-roof-back-right-roughness.png",
+      "concern": "Light S-like contours against dark patches."
+    }
+  ],
+  "remaining_issues": [
+    "Minimum texture density 4.734 is below the 6-pixel aim.",
+    "Texture moderation doubts require review before any later upload."
+  ],
+  "visual_check": "Three boxes and soft folded tissue preserved; apparent punctures covered; no open mesh edges.",
+  "texture_fill": "Shared fill_gaps.py --uv --all; packed scene refreshed afterwards.",
+  "additional_texture_review": "renders/part2-texture-review.json",
+  "closeup_status": "Reviewed final closeups.jpg rendered from saved hero.blend."
+}

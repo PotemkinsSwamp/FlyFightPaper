@@ -1,0 +1,21 @@
+{
+  "toy": "saturn",
+  "triangles": 2496,
+  "size_xyz": [
+    140.0,
+    131.899,
+    70.55
+  ],
+  "lowest_z": 0.0,
+  "planet_xyz": [
+    60.0,
+    60.0,
+    60.0
+  ],
+  "ring_xyz": [
+    140.0,
+    131.899,
+    49.266
+  ],
+  "ring_tilt_degrees": 20.0
+}

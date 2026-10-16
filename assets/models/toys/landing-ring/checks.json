@@ -1,0 +1,23 @@
+{
+  "toy": "landing-ring",
+  "triangles": 2800,
+  "size_xyz": [
+    74.0,
+    8.0,
+    74.0
+  ],
+  "lowest_z": -37.0,
+  "origin": "ring centre",
+  "paper_links": 14,
+  "glued_overlap_seams": 14,
+  "threaded_neighbor_pairs": 14,
+  "interpenetrating_pairs": 0,
+  "minimum_opening_diameter": 59.998,
+  "opening_rays_clear": 437,
+  "colours": [
+    "red",
+    "blue",
+    "yellow",
+    "green"
+  ]
+}

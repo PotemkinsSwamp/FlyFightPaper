@@ -1,0 +1,16 @@
+{
+  "toy": "jungle-gym",
+  "triangles": 4796,
+  "size_xyz": [
+    800.0,
+    600.0,
+    499.657
+  ],
+  "lowest_z": 0.0,
+  "deck_top_z": 270.0,
+  "rope_grid": [
+    7,
+    5
+  ],
+  "monkey_bar_opening_clear": true
+}

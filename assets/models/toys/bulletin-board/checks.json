@@ -1,0 +1,17 @@
+{
+  "toy": "bulletin-board",
+  "triangles": 216,
+  "size_xyz": [
+    360.0,
+    8.0,
+    260.0
+  ],
+  "lowest_z": 0.0,
+  "front": "-Y",
+  "base_origin": [
+    0,
+    0,
+    0
+  ],
+  "cork_face_y": -3.0
+}

@@ -1,0 +1,13 @@
+{
+  "toy": "speed-bolt",
+  "triangles": 24,
+  "size_xyz": [
+    9.0,
+    2.5,
+    16.0
+  ],
+  "lowest_z": -8.0,
+  "origin": "bolt centre",
+  "doubled_paper_thickness": 0.12,
+  "real_fold_geometry": true
+}

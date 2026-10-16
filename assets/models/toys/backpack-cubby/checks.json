@@ -1,0 +1,35 @@
+{
+  "toy": "backpack-cubby",
+  "triangles": 7776,
+  "size_xyz": [
+    700.0,
+    60.0,
+    140.0
+  ],
+  "lowest_z": 0.0,
+  "front": "-Y",
+  "base_origin": [
+    0,
+    0,
+    0
+  ],
+  "cubby_columns": 7,
+  "cubby_rows": 2,
+  "backpacks": 9,
+  "lunchboxes": 2,
+  "rolled_jackets": 1,
+  "empty_compartments": 2,
+  "blank_name_labels": 7,
+  "clear_open_front_rays": 14,
+  "top_surface_z": 140,
+  "bounds_min_xyz": [
+    -350.0,
+    -30.0,
+    0.0
+  ],
+  "bounds_max_xyz": [
+    350.0,
+    30.0,
+    140.0
+  ]
+}

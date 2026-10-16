@@ -1,0 +1,202 @@
+{
+  "mode": "real UV islands",
+  "bleed_pixels": 3,
+  "maps": {
+    "1-inverted-cup-1-color.png": {
+      "protected_sha256": "5cc1a059e3cfb4a63ec6804fcfdd459d28f060038a09f875cbd863f66e01d9e9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 545571,
+      "filled_texels": 503005,
+      "file_sha256": "981a27114e83829cbd05f3114f5c9098bba06adaa9ca38f0bc8197de46040cb7",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-inverted-cup-1-normal.png": {
+      "protected_sha256": "cbcdc68fd311cab0d5cbe8b2e2efe2e51e72ec645ee2d6a8e7feb6a5cb8ea28d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 545571,
+      "filled_texels": 503005,
+      "file_sha256": "560d8293bed820f802214b40d2c8b5509dab09aae8003e162321127564bddc9b",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-inverted-cup-1-roughness.png": {
+      "protected_sha256": "fbeb642c803d547c5cec865f2fc576a12105f7a434b754a6f58509534e790481",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 545571,
+      "filled_texels": 503005,
+      "file_sha256": "bf18868ead32b039014619e1c3c1e9c32141e42bfafcb3dbd0999acd4e4bb9b6",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-inverted-cup-2-color.png": {
+      "protected_sha256": "c2627558f71dfda63409eb58ef179881bd6d83be9b747f5b3bb02cbbb236abdc",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 372877,
+      "filled_texels": 675699,
+      "file_sha256": "2e791c482bd68155cce87d957ab410cc6461e55d9f9f6a92c50b012a83b1005d",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-inverted-cup-2-normal.png": {
+      "protected_sha256": "538e12fbe7f86943ac30d1c3caac9a41fd00a81799fb104bb09e72eb15f620df",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 372877,
+      "filled_texels": 675699,
+      "file_sha256": "fddd008017b779bc04678b8b32c354e4cb4783d1baaf04d75d2acd3903b9d8f1",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-inverted-cup-2-roughness.png": {
+      "protected_sha256": "055c79cc920cdfd58a590fc2f6219d3b8495d3f4c34a5cb2ed70a25e89f4c4d0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 372877,
+      "filled_texels": 675699,
+      "file_sha256": "d1e5a240f2af854949c468707879582170d420796fca0421ff6092b3d362af38",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-inverted-cup-3-color.png": {
+      "protected_sha256": "edbc9e53de0fc4a727b9e59d868445a94ba379e0b0d0a18e8036448ecc42d197",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 275553,
+      "filled_texels": 773023,
+      "file_sha256": "79e043b026ec3a98267a305da7893b7b05879b019609c168befe0dd2984ec983",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-inverted-cup-3-normal.png": {
+      "protected_sha256": "787d5d07f38a769f5ba661656cce3787737c0e8ce51000216bc24d7dcf237ebc",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 275553,
+      "filled_texels": 773023,
+      "file_sha256": "b5e818507aa44560e3890454882800e9fc453da8985436a370831c9b9d572b31",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-inverted-cup-3-roughness.png": {
+      "protected_sha256": "476e7b81cf3861dc776f13db9268b7c51f78c7fac21883e4c4974f0fe7dd181b",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 275553,
+      "filled_texels": 773023,
+      "file_sha256": "d92e24ab9fa1c65d54c2f76257755e0cc13b9843beecaaf3f064cd272907c9d5",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-inverted-cup-4-color.png": {
+      "protected_sha256": "5a5ba09b5cfc8ac808d500758688b6f503fa8615f6e74c6092078959047688bc",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 199763,
+      "filled_texels": 848813,
+      "file_sha256": "ebcfb721daaef58f52641a6263ef8d5ec75f70467e779e64e7f482b2c940e412",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-inverted-cup-4-normal.png": {
+      "protected_sha256": "fbc77c41f45845d3673ead78c9f545f93e8fb7cdc9a2cf702114a6ca0627ec37",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 199763,
+      "filled_texels": 848813,
+      "file_sha256": "dcafa59d0aa35d08c361404ad8e2115b2b7f7d62a7ac77300bf6aadd0afed8ab",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-inverted-cup-4-roughness.png": {
+      "protected_sha256": "580edc6cab42646e59ae0c4580381eef84e2b9348a0c3af99f46537753aaa75c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 199763,
+      "filled_texels": 848813,
+      "file_sha256": "43fda9dfb52719c066375a614988223781fa3550dee001d7502c0ce38397f597",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-inverted-cup-5-color.png": {
+      "protected_sha256": "1049fb725d4c222fd4b381d7dba6ae8d647ea5cdb595a008a26687ed7d6caf60",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 147677,
+      "filled_texels": 900899,
+      "file_sha256": "f1df492372936f097f8f7a8ebc24c07a2b14e0e2959500de5db222900de85527",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-inverted-cup-5-normal.png": {
+      "protected_sha256": "31da6290edeadf94995eb63e5462446499fbe5dd4bf8e73f33f0d27c2e403890",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 147677,
+      "filled_texels": 900899,
+      "file_sha256": "c6081167e031be9ec17013c3b73fb9166a63d94838a20d979cf2230086fdf542",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-inverted-cup-5-roughness.png": {
+      "protected_sha256": "be3d0939f4fcb04ac397edf9f65e4a99c60adc36234ed216ec50bf501ba2210c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 147677,
+      "filled_texels": 900899,
+      "file_sha256": "14c361cb506b7c52ce29735a15ce147786630ecb901da7d6330371d8ef2e116f",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    }
+  },
+  "scene_manifest_and_fbx_unchanged": true
+}

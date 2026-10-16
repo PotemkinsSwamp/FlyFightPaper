@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "All five cups have integral rounded rolled lips, wider curved windows and glossier plastic with baked contact shading; corrected framing and darker glossy panes.",
+  "still_off": "Window corners are squarer and rim highlights differ slightly from the concept.",
+  "pieces": 5,
+  "triangles": 38636,
+  "lowest_front_pixels_per_stud": 7.475,
+  "compare": "assets\\models\\stacking-cup-tower\\compare.png"
+}

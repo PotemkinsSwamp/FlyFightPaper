@@ -1,0 +1,32 @@
+{
+  "toy": "paper-bunting",
+  "triangles": 1028,
+  "size_xyz": [
+    300.434,
+    2.106,
+    62.559
+  ],
+  "lowest_z": -62.0,
+  "attachment_points": [
+    [
+      -150.0,
+      0.0,
+      0.0
+    ],
+    [
+      150.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "string_sag": 30.0,
+  "pennants": 9,
+  "pennant_width_range": [
+    26.0,
+    26.0
+  ],
+  "pennant_height_range": [
+    32.225,
+    36.593
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "toy": "seesaw",
+  "triangles": 3684,
+  "size_xyz": [
+    600.0,
+    80.0,
+    160.0
+  ],
+  "lowest_z": 0.0,
+  "seat_top_z": [
+    118.0,
+    118.0
+  ],
+  "plank_top_z": 109.0,
+  "seat_handles": 2
+}

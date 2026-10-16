@@ -1,0 +1,15 @@
+{
+  "toy": "floor-fan-blades",
+  "cut_from": "floor-fan",
+  "triangles": 616,
+  "lowest_z": 19.0,
+  "size_xyz": [
+    110.749,
+    110.901,
+    8.0
+  ],
+  "axis": [
+    0.477,
+    -2.05
+  ]
+}

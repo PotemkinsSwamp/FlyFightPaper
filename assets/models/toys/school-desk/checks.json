@@ -1,0 +1,19 @@
+{
+  "toy": "school-desk",
+  "triangles": 3592,
+  "size_xyz": [
+    330.0,
+    210.0,
+    108.0
+  ],
+  "lowest_z": 0.0,
+  "desk_top_xyz": [
+    330.0,
+    210.0,
+    12.0
+  ],
+  "desk_top_z": 108,
+  "groove_floor_z": 105.0,
+  "underpass_rays_clear": 9,
+  "cubby_opens_toward": "+Y"
+}

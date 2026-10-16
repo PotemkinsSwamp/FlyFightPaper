@@ -1,0 +1,13 @@
+{
+  "toy": "fence-panel",
+  "triangles": 772,
+  "size_xyz": [
+    500.0,
+    10.0,
+    240.0
+  ],
+  "lowest_z": 0.0,
+  "tile_step_x": 500,
+  "panel_is_opaque": true,
+  "wire_pattern": "baked diamond pigment"
+}
