@@ -1,0 +1,23 @@
+{
+  "path": "operations/c6ade93a-74fe-4a85-afd5-9d7c127095f6",
+  "operationId": "c6ade93a-74fe-4a85-afd5-9d7c127095f6",
+  "done": true,
+  "response": {
+    "path": "assets/92798158654184",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:57:40.006Z",
+    "assetId": "92798158654184",
+    "displayName": "FlyFightPaper hangar slot",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

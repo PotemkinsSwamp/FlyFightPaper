@@ -1,0 +1,23 @@
+{
+  "path": "operations/0fe6d6a1-ea77-4462-af0a-2a9c5004a453",
+  "operationId": "0fe6d6a1-ea77-4462-af0a-2a9c5004a453",
+  "done": true,
+  "response": {
+    "path": "assets/101332652907481",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:57:05.018Z",
+    "assetId": "101332652907481",
+    "displayName": "FlyFightPaper hangar bg-4",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

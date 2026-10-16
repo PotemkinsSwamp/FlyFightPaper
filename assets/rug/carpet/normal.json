@@ -1,0 +1,24 @@
+{
+  "path": "operations/3ae60267-3418-42e0-8ee7-22cdba84c211",
+  "operationId": "3ae60267-3418-42e0-8ee7-22cdba84c211",
+  "done": true,
+  "response": {
+    "path": "assets/136120657902737",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-16T06:44:15.778Z",
+    "assetId": "136120657902737",
+    "displayName": "FlyFightPaper rug carpet normal",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  },
+  "sha256": "6ac109311fa1a53b3213b4eb192445699d3f1d358d72b76197afff97768c5f35"
+}

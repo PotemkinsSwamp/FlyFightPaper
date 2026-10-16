@@ -1,0 +1,23 @@
+{
+  "path": "operations/9062fa57-61e1-4daa-a100-7fd0c22a40eb",
+  "operationId": "9062fa57-61e1-4daa-a100-7fd0c22a40eb",
+  "done": true,
+  "response": {
+    "path": "assets/127869005862718",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-09T00:15:12.240Z",
+    "assetId": "127869005862718",
+    "displayName": "FlyFightPaper ingame index-card",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

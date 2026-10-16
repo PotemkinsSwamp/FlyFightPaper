@@ -1,0 +1,23 @@
+{
+  "path": "operations/85773937-8cb9-45d7-8b1e-f109bddaff2f",
+  "operationId": "85773937-8cb9-45d7-8b1e-f109bddaff2f",
+  "done": true,
+  "response": {
+    "path": "assets/78667835427454",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:57:07.298Z",
+    "assetId": "78667835427454",
+    "displayName": "FlyFightPaper hangar bar-blue",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

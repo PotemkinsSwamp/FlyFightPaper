@@ -1,0 +1,23 @@
+{
+  "path": "operations/dc2a6d7e-7c16-4acd-8818-727016efec09",
+  "operationId": "dc2a6d7e-7c16-4acd-8818-727016efec09",
+  "done": true,
+  "response": {
+    "path": "assets/79324501369328",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:58:02.491Z",
+    "assetId": "79324501369328",
+    "displayName": "FlyFightPaper hangar tab-selected",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

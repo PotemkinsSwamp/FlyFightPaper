@@ -1,0 +1,23 @@
+{
+  "path": "operations/1af81f6e-b9c2-45e2-b8f8-3b2b7ab58c8a",
+  "operationId": "1af81f6e-b9c2-45e2-b8f8-3b2b7ab58c8a",
+  "done": true,
+  "response": {
+    "path": "assets/72074243508272",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-09T00:15:18.057Z",
+    "assetId": "72074243508272",
+    "displayName": "FlyFightPaper ingame tape-label",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

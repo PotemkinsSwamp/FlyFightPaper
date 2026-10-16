@@ -1,0 +1,23 @@
+{
+  "path": "operations/bc21447a-1686-4349-bc1b-6b332950d384",
+  "operationId": "bc21447a-1686-4349-bc1b-6b332950d384",
+  "done": true,
+  "response": {
+    "path": "assets/86284438244594",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-09T00:01:19.433Z",
+    "assetId": "86284438244594",
+    "displayName": "FlyFightPaper results xp-bar-fill",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

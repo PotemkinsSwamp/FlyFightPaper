@@ -1,0 +1,41 @@
+# Decisions
+
+One note per choice Alan made, newest first. Each says what was decided and why, and links to the pages it
+affects. If a decision is reversed, add a new note and mark the old one "Replaced by ...".
+
+Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
+"Decisions to review". Back to [HOME](../HOME.md).
+
+- 2026-10-15: [Town replan v3 approved: two fans, a monorail train that kills](2026-10-15-town-replan-v3.md)
+- 2026-10-15: [Town replan: layout v2, unique buildings, fly-throughs, fans, bridges, a monorail](2026-10-15-town-replan-rulings.md)
+- 2026-10-15: [A denser city, still open to fly through](2026-10-15-denser-city.md)
+- 2026-10-15: [Ceiling ducts: a dark maze, a real pipe, air you fly against](2026-10-15-ducts-maze-rulings.md)
+- 2026-10-15: [Chalk eraser rulings after playtest](2026-10-15-chalk-eraser-rulings.md)
+- 2026-10-14: [Points: folds, assists by damage share, zone pay, bonuses](2026-10-14-points-system.md)
+- 2026-10-14: [Escapes: ceiling ducts and the chalk-eraser cloud](2026-10-14-escapes-hvac-ducts.md)
+- 2026-10-13: [The tutorial is built last](2026-10-13-tutorial-built-last.md)
+- 2026-10-13: [The eraser fires on any click](2026-10-13-eraser-fires-on-any-click.md)
+- 2026-10-13: [Takeoff is automatic](2026-10-13-automatic-takeoff.md)
+- 2026-10-13: [Plane colours by mode](2026-10-13-plane-colours.md)
+- 2026-10-13: [Modes workshop: moving zone, team colours, paper targets](2026-10-13-stage-9-modes-workshop.md)
+- 2026-10-13: [Fans give Lift for as long as you stay in them](2026-10-13-fans-refill-continuously.md)
+- 2026-10-13: [Build order after the vertical-slice gate](2026-10-13-build-order-after-gate.md)
+- 2026-10-13: [Binder Gunship becomes the Toilet Roll Gunship](2026-10-13-toilet-roll-gunship.md)
+- 2026-10-12: [The bell tower is the centre of town](2026-10-12-bell-tower-is-the-centre.md)
+- 2026-10-12: [Search the free Creator Store first](2026-10-12-creator-store-first.md)
+- 2026-10-11: [In-game menus reuse the main menu's art](2026-10-11-in-game-menus-match-main-menus.md)
+- 2026-10-10: [Never trade looks for frame rate](2026-10-10-no-quality-cuts-for-fps.md)
+- 2026-10-09: [The town is laid out like a real town](2026-10-09-town-planning-rules.md)
+- 2026-10-09: [Pictures from Codex, simple models in Blender](2026-10-09-pictures-by-codex-models-in-blender.md)
+- 2026-10-08: [Menus are made of classroom crafts](2026-10-08-menu-look-classroom-crafts.md)
+- 2026-10-07: [What bots had to do first](2026-10-07-bot-scope.md)
+- 2026-10-07: [The game stays in Alan's private experience](2026-10-07-private-publish.md)
+- 2026-10-07: [Stage 2 combat approved](2026-10-07-combat-approved.md)
+- 2026-10-07: [Saving uses ProfileStore](2026-10-07-profilestore-saving.md)
+- 2026-10-07: [Mouse-aim flying (War Thunder style)](2026-10-07-mouse-aim-controls.md)
+- 2026-10-07: [Meshy credit budget: stop at 300 left](2026-10-07-meshy-credit-budget.md)
+- 2026-10-07: [Keep the big room (about 2800 x 2200)](2026-10-07-keep-big-room.md)
+- 2026-10-07: [Bots get human-like quirks](2026-10-07-human-like-bot-quirks.md)
+- 2026-10-07: [Bot planes are balanced on purpose, never random](2026-10-07-balanced-bot-builds.md)
+- 2026-10-01: [Chalkboard says FOLD / FLY / FIGHT](2026-10-01-chalkboard-fold-fly-fight.md)
+- 2026-10-01: [Art target is the approved reference picture](2026-10-01-art-target-reference-image.md)

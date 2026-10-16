@@ -1,0 +1,57 @@
+{
+  "profiles": {
+    "data_store": "PPD_ProfileStore_DEV_v1",
+    "auto_save_seconds": 60,
+    "load_timeout_seconds": 120,
+    "access_wait_seconds": 15,
+    "session_steal_seconds": 40,
+    "load_repeat_seconds": 10,
+    "first_load_repeat_seconds": 5,
+    "worker_seconds": 0.1,
+    "status_seconds": 1,
+    "queue_limit": 256,
+    "retry_max_seconds": 8,
+    "shutdown_seconds": 25,
+    "session_id_history": 16,
+    "result_cache_limit": 256,
+    "boost_history_limit": 4096,
+    "max_refolds": 8,
+    "operations_per_tick": 16
+  },
+  "schema": {
+    "max_bytes": 192000,
+    "max_entries": 8192,
+    "max_depth": 10,
+    "max_id_bytes": 128,
+    "max_receipts": 1000
+  },
+  "rewards": {
+    "retry_seconds": 1,
+    "warning_seconds": 15,
+    "pending_per_player": 2048,
+    "attempts_per_player": 32
+  },
+  "round": {
+    "step_seconds": 0.1,
+    "menu_action_seconds": 0.25,
+    "menu_action_burst": 6,
+    "seed": 17029
+  },
+  "match_limits": {
+    "retained_rounds": 4,
+    "participants": 256,
+    "bindings": 4096,
+    "events": 100000,
+    "activity_intervals": 4096
+  },
+  "routing": {
+    "advertise_seconds": 15,
+    "entry_ttl_seconds": 90,
+    "entry_fresh_seconds": 45,
+    "destination_scan_limit": 20,
+    "discovery_failure_attempts": 3,
+    "discovery_retry_max_seconds": 30,
+    "discovery_retry_exponent_cap": 5,
+    "transfer_poll_seconds": 0.1
+  }
+}

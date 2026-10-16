@@ -1,0 +1,129 @@
+local Players=game:GetService("Players")
+local Input=game:GetService("UserInputService")
+local GuiService=game:GetService("GuiService")
+local Root=game.ReplicatedStorage:WaitForChild("FlyFightPaper")
+local Hangar=require(script.Parent.Hangar)
+local Options=require(script.Parent.Options)
+local Tutorial=require(script.Parent.Tutorial)
+local Board=require(script.Parent.MenuBoard)
+local SettingsScreen=require(script.Parent.SettingsScreen)
+local ResultsScreen=require(script.Parent.ResultsScreen)
+local PauseScreen=require(script.Parent.PauseScreen)
+local ShopScreen=require(script.Parent.ShopScreen)
+local WaitScreen=require(script.Parent.WaitScreen)
+local PaperUI=require(script.Parent.PaperUI)
+local Menu={}
+function Menu.start()
+ local player=Players.LocalPlayer
+ local action=Root:WaitForChild("RoundAction")
+ local gui=Instance.new("ScreenGui");gui.Name="GameMenu";gui.DisplayOrder=6;gui.IgnoreGuiInset=true;gui.ResetOnSpawn=false;gui.Parent=player:WaitForChild("PlayerGui")
+ local openButton=PaperUI.button(gui,"OpenMenu",require(Root.Shared.UIAssets).mainmenu.strip.yellow,"Menu",16,64,150,52,-2,function()end,30)
+ openButton.Label.TextColor3=PaperUI.INK
+ local state={screen="home",snapshot=nil,profile=nil,overlay=false,lastPhase=nil}
+ local render
+ local function overlay(open)
+  state.overlay=open
+  -- Opening the menu brings the round results back if Stay hid them.
+  if open then state.resultsHidden=false end
+  Root:SetAttribute("OverlayOpen",open);action:FireServer("overlay",open)
+  if render then render() end
+ end
+ local function home()
+  state.screen="home";render()
+ end
+ local board=Board.new(gui.Parent,{
+  play=function()action:FireServer("join")end,
+  hangar=function()state.screen="hangar";action:FireServer("profile");render()end,
+  settings=function()state.screen="settings";render()end,
+  tutorial=function()overlay(false);Tutorial.begin()end,
+  -- The mock shop is Studio-only; the server also refuses it on real profiles.
+  shop=game:GetService("RunService"):IsStudio() and function()state.screen="shop";render()end or nil,
+ })
+ local settingsScreen=SettingsScreen.new(gui.Parent,{
+  save=function(settings)action:FireServer("settings",settings);Options.apply(settings)end,
+  back=function()home()end,
+ })
+ local hangarScreen
+ hangarScreen=Hangar.new(gui.Parent,{
+  action=action,
+  back=function()home()end,
+  fly=function()
+   local draft=hangarScreen.draft();home();overlay(false)
+   -- From the main menu, join first; the build is fitted once our plane is waiting at a desk.
+   if not player:GetAttribute("InMatch") then action:FireServer("join") end
+   task.spawn(function()
+    for _=1,40 do
+     local plane=workspace:FindFirstChild("Planes") and workspace.Planes:FindFirstChild(tostring(player.UserId))
+     if plane and plane:GetAttribute("State")=="DESK" then Root.FlightAction:FireServer("loadout",draft);return end
+     task.wait(.25)
+    end
+   end)
+  end,
+ })
+ -- Paper screens drawn full-screen; anything not listed still uses the dark panel.
+ local resultsScreen=ResultsScreen.new(gui.Parent,{
+  vote=function(mode)action:FireServer("vote",mode)end,
+  -- Stay: put the results away and look around the classroom until the next round; Tab or Menu brings them back.
+  stay=function()state.resultsHidden=true;overlay(false)end,
+  leave=function()action:FireServer("withdraw",true);overlay(false);home()end,
+ })
+ local pauseScreen=PauseScreen.new(gui.Parent,{
+  resume=function()overlay(false)end,
+  hangar=function()state.screen="hangar";action:FireServer("profile");render()end,
+  settings=function()state.screen="settings";render()end,
+  tutorial=function()overlay(false);Tutorial.begin()end,
+  leave=function()action:FireServer("withdraw",true);overlay(false);home()end,
+ })
+ local shopScreen=ShopScreen.new(gui.Parent,{buy=function(key)action:FireServer("mockProduct",key)end,back=function()home()end})
+ local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})
+ local paper={home=board,settings=settingsScreen,hangar=hangarScreen,results=resultsScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen}
+ -- Open a menu screen directly (used by Studio photo mode).
+ function Menu.show(screen)
+  if player:GetAttribute("InMatch") and not state.overlay then overlay(true) end
+  state.screen=screen;action:FireServer("profile");render()
+ end
+-- The gap between rounds: results, then the vote, then the countdown.
+local function between(phase)return phase=="RESULTS" or phase=="VOTE" or phase=="COUNTDOWN" end
+render=function()
+  local inMatch=player:GetAttribute("InMatch")==true
+  local snap=state.snapshot
+  local results=inMatch and snap and between(snap.phase) and not state.resultsHidden
+  local queued=player:GetAttribute("JoinQueued")==true
+  local open=not inMatch or state.overlay or results or queued
+  openButton.Visible=inMatch and not open
+  -- Which paper screen shows: waiting for a desk, round results, the in-match clipboard, or the chosen screen.
+  local key=queued and "queued" or state.screen=="home" and (results and "results" or inMatch and "pause") or state.screen
+  local current=open and paper[key]
+  for _,screen in pairs(paper) do if screen~=current then screen.frame.Visible=false end end
+  if current then current.update(player,state.profile,snap);current.frame.Visible=true end
+ end
+ openButton.Activated:Connect(function()state.screen="home";overlay(true)end)
+ Input.InputBegan:Connect(function(input,processed)
+  if input.KeyCode==Enum.KeyCode.Tab and not Input:GetFocusedTextBox() and player:GetAttribute("InMatch") then state.screen="home";overlay(not state.overlay)
+  elseif input.KeyCode==Enum.KeyCode.Escape and player:GetAttribute("InMatch") then state.screen="home";overlay(true) end
+ end)
+ GuiService.MenuOpened:Connect(function()if player:GetAttribute("InMatch") then overlay(true) end end)
+ Root:WaitForChild("RoundView").OnClientEvent:Connect(function(snap)
+  state.snapshot=snap
+  local totals=snap.voteTotals or {};local voteKey=tostring(totals.FFA)..":"..tostring(totals.TDM)..":"..tostring(totals.CONTROL)
+  if state.lastPhase~=snap.phase then
+   local roundStarts=between(state.lastPhase) and not between(snap.phase)
+   state.lastPhase=snap.phase;state.screen="home"
+   -- Stay lasts until the next round starts, and a new round always starts with the menu put away.
+   if not between(snap.phase) then state.resultsHidden=false end
+   if roundStarts and state.overlay then overlay(false) else render() end
+  elseif state.lastVotes~=voteKey and snap.phase=="VOTE" then render() end
+  state.lastVotes=voteKey
+ end)
+ Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
+  state.profile=profile;Options.apply(profile.settings)
+  render() -- screens skip the redraw themselves when nothing they show changed
+ end)
+ player:GetAttributeChangedSignal("InMatch"):Connect(function()state.screen="home";state.overlay=false;Root:SetAttribute("OverlayOpen",false);render()end)
+ player:GetAttributeChangedSignal("ProfileStatus"):Connect(render)
+ player:GetAttributeChangedSignal("JoinQueued"):Connect(render)
+ player:GetAttributeChangedSignal("MenuMessage"):Connect(render)
+ render();action:FireServer("profile")
+ task.spawn(function()while gui.Parent do task.wait(3);action:FireServer("profile") end end)
+end
+return Menu

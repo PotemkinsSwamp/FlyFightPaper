@@ -1,0 +1,23 @@
+{
+  "path": "operations/c8086b62-cfb8-4534-8545-9b3f9ed7b654",
+  "operationId": "c8086b62-cfb8-4534-8545-9b3f9ed7b654",
+  "done": true,
+  "response": {
+    "path": "assets/95378195752624",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-09T03:56:09.323Z",
+    "assetId": "95378195752624",
+    "displayName": "FlyFightPaper rug stitch",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "path": "operations/6ba264c8-cf9b-4638-a9cc-73de34ab1cc7",
+  "operationId": "6ba264c8-cf9b-4638-a9cc-73de34ab1cc7",
+  "done": true,
+  "response": {
+    "path": "assets/131222070269430",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-09T00:15:07.179Z",
+    "assetId": "131222070269430",
+    "displayName": "FlyFightPaper ingame clipboard",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "name": "FlyFightPaper",
+  "tree": {
+    "$className": "DataModel",
+    "$ignoreUnknownInstances": true,
+    "ReplicatedStorage": {
+      "$ignoreUnknownInstances": true,
+      "FlyFightPaper": {
+        "$className": "Folder",
+        "$ignoreUnknownInstances": true,
+        "Shared": {
+          "$path": "src/shared"
+        },
+        "Generated": {
+          "$path": "src/generated"
+        },
+        "Assets": {
+          "$className": "Folder",
+          "AircraftParts": {
+            "$path": "assets/models/aircraft/aircraft.rbxmx"
+          },
+          "AircraftPieces": {
+            "$path": "assets/models/planes/pieces.rbxmx"
+          },
+          "EquipmentParts": {
+            "$path": "assets/models/equipment/equipment.rbxmx"
+          }
+        }
+      }
+    },
+    "ServerScriptService": {
+      "$ignoreUnknownInstances": true,
+      "FlyFightPaper": {
+        "$path": "src/server"
+      }
+    },
+    "StarterPlayer": {
+      "$ignoreUnknownInstances": true,
+      "StarterPlayerScripts": {
+        "$ignoreUnknownInstances": true,
+        "FlyFightPaper": {
+          "$path": "src/client"
+        }
+      }
+    },
+    "Workspace": {
+      "$ignoreUnknownInstances": true,
+      "$properties": {
+        "StreamingEnabled": false
+      }
+    },
+    "ServerStorage": {
+      "$ignoreUnknownInstances": true,
+      "FlyFightPaperTests": {
+        "$path": "tests"
+      },
+      "Assets": {
+        "$className": "Folder",
+        "PaperPlane": {
+          "$path": "assets/models/paper-plane.rbxmx"
+        }
+      }
+    },
+    "Lighting": {
+      "$properties": {
+        "ClockTime": 15.5,
+        "Brightness": 2.1,
+        "Ambient": [
+          0.5,
+          0.48,
+          0.44
+        ],
+        "OutdoorAmbient": [
+          0.65,
+          0.62,
+          0.58
+        ],
+        "EnvironmentDiffuseScale": 0.3,
+        "EnvironmentSpecularScale": 0.5,
+        "ShadowSoftness": 0.3,
+        "Technology": "Future",
+        "GlobalShadows": true,
+        "ExposureCompensation": 0,
+        "ColorShift_Top": [
+          1,
+          0.88,
+          0.72
+        ]
+      },
+      "Bloom": {
+        "$className": "BloomEffect",
+        "$properties": {
+          "Intensity": 0.4,
+          "Size": 24,
+          "Threshold": 0.9
+        }
+      },
+      "Atmosphere": {
+        "$className": "Atmosphere",
+        "$properties": {
+          "Density": 0.06,
+          "Offset": 0,
+          "Haze": 0.6,
+          "Glare": 0,
+          "Color": [
+            0.96,
+            0.86,
+            0.72
+          ],
+          "Decay": [
+            0.95,
+            0.8,
+            0.62
+          ]
+        }
+      },
+      "Sky": {
+        "$className": "Sky"
+      },
+      "WarmTint": {
+        "$className": "ColorCorrectionEffect",
+        "$properties": {
+          "TintColor": [
+            1,
+            0.95,
+            0.86
+          ],
+          "Saturation": 0.1,
+          "Contrast": 0.05,
+          "Brightness": 0
+        }
+      },
+      "SunRays": {
+        "$className": "SunRaysEffect",
+        "$properties": {
+          "Intensity": 0.04,
+          "Spread": 0.5
+        }
+      },
+      "ColorGrading": {
+        "$className": "ColorGradingEffect",
+        "$properties": {
+          "TonemapperPreset": "Default"
+        }
+      }
+    }
+  }
+}

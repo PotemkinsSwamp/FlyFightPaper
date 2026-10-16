@@ -1,0 +1,23 @@
+{
+  "path": "operations/2c831eae-43b6-4fb7-baa6-54d75ba4aa36",
+  "operationId": "2c831eae-43b6-4fb7-baa6-54d75ba4aa36",
+  "done": true,
+  "response": {
+    "path": "assets/131402918337135",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:53:32.452Z",
+    "assetId": "131402918337135",
+    "displayName": "FlyFightPaper settings pencil",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

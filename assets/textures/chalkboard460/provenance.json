@@ -1,0 +1,13 @@
+{
+  "tool": "built-in image_gen",
+  "source": "flight-club-chalk-v1.png",
+  "prompt": "prompt.txt",
+  "imageSHA256": "c4a1dc6e141c6b99f3deed9b0f8e0aecdc742a9e576c5a12c5ba1f95c32d68a2",
+  "dimensions": [
+    2172,
+    724
+  ],
+  "purpose": "Actual inset chalkboard face; frame and tray modeled separately in Blender",
+  "separateAPIbilling": false,
+  "nativeIntegration": "NOT_RUN"
+}

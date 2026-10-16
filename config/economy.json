@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "status": "initial tuning, not measured retention or demand",
+  "initial_paper": 0,
+  "initial_level": 1,
+  "initial_total_xp": 0,
+  "level_cap": 50,
+  "xp_next_level_base": 200,
+  "xp_next_level_step": 40,
+  "points": {
+    "fold": 100,
+    "fold_assist_max": 80,
+    "fold_assist_min": 10,
+    "airspace_outside_zone_factor": 0.4,
+    "streak_from": 3,
+    "streak_bonus": 25,
+    "revenge": 25,
+    "first_fold": 100,
+    "zone_per_5_eligible_seconds": 20,
+    "target": 50,
+    "target_points_max_per_participation": 500,
+    "prop": 2,
+    "prop_points_max_per_participation": 20
+  },
+  "paper_per_point": 0.363,
+  "xp_per_point": 0.68,
+  "completion_paper": 90,
+  "completion_xp": 120,
+  "win_paper": 40,
+  "win_xp": 60,
+  "podium_paper_by_place": [
+    30,
+    20,
+    10
+  ],
+  "podium_xp_by_place": [
+    45,
+    30,
+    15
+  ],
+  "completion_min_active_seconds": 120,
+  "completion_min_qualifying_events": 3,
+  "damage_engagement_min_actual_damage": 30,
+  "damage_engagement_idle_seconds": 5,
+  "bot_reward_factor": 1.0,
+  "control_personal_points_max_per_match": 1920,
+  "full_refold_cost_paper": 120,
+  "boost_bonus_affects_score": false,
+  "currency_rounding": "sum exact internal milli-units, floor credited integer, retain residual",
+  "reference_match": {
+    "eliminations": 6,
+    "assists": 4,
+    "control_points": 0,
+    "completion": true,
+    "expected_win_fraction": 0.5,
+    "expected_podium_paper": 10,
+    "expected_podium_xp": 15,
+    "seconds_including_intermission": 510,
+    "optional_refold_every_matches": 3,
+    "assist_damage_share": 0.4,
+    "paper_targets": 2
+  }
+}

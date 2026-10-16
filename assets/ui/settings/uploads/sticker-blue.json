@@ -1,0 +1,23 @@
+{
+  "path": "operations/f9b8418d-bfe5-4233-82c1-bb68fd3fc662",
+  "operationId": "f9b8418d-bfe5-4233-82c1-bb68fd3fc662",
+  "done": true,
+  "response": {
+    "path": "assets/136617162696979",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:53:38.823Z",
+    "assetId": "136617162696979",
+    "displayName": "FlyFightPaper settings sticker-blue",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

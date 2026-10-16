@@ -1,0 +1,23 @@
+{
+  "path": "operations/0089de66-a3b0-44f6-991d-fb3331aa4ab2",
+  "operationId": "0089de66-a3b0-44f6-991d-fb3331aa4ab2",
+  "done": true,
+  "response": {
+    "path": "assets/113216079197527",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-09T00:01:17.304Z",
+    "assetId": "113216079197527",
+    "displayName": "FlyFightPaper results unlock-card",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

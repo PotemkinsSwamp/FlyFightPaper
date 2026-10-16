@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "mode": "mock",
+  "live_sales_authorized": false,
+  "allow_real_spend_tests": false,
+  "offline_countdown": false,
+  "loaded_online_menu_countdown": true,
+  "multiplier_cap_per_resource": 2,
+  "permanent_hides_temporary_same_resource": true,
+  "products": [
+    {
+      "key": "xp_boost_15m",
+      "kind": "developer_product",
+      "benefit": "xp_seconds",
+      "amount": 900,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "xp_boost_30m",
+      "kind": "developer_product",
+      "benefit": "xp_seconds",
+      "amount": 1800,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "xp_boost_60m",
+      "kind": "developer_product",
+      "benefit": "xp_seconds",
+      "amount": 3600,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "xp_boost_180m",
+      "kind": "developer_product",
+      "benefit": "xp_seconds",
+      "amount": 10800,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "xp_boost_300m",
+      "kind": "developer_product",
+      "benefit": "xp_seconds",
+      "amount": 18000,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_boost_15m",
+      "kind": "developer_product",
+      "benefit": "paper_seconds",
+      "amount": 900,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_boost_30m",
+      "kind": "developer_product",
+      "benefit": "paper_seconds",
+      "amount": 1800,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_boost_60m",
+      "kind": "developer_product",
+      "benefit": "paper_seconds",
+      "amount": 3600,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_boost_180m",
+      "kind": "developer_product",
+      "benefit": "paper_seconds",
+      "amount": 10800,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_boost_300m",
+      "kind": "developer_product",
+      "benefit": "paper_seconds",
+      "amount": 18000,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_pack_1000",
+      "kind": "developer_product",
+      "benefit": "paper_balance",
+      "amount": 1000,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_pack_3500",
+      "kind": "developer_product",
+      "benefit": "paper_balance",
+      "amount": 3500,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_pack_10000",
+      "kind": "developer_product",
+      "benefit": "paper_balance",
+      "amount": 10000,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "permanent_2x_xp",
+      "kind": "pass",
+      "benefit": "permanent_xp",
+      "amount": 2,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "permanent_2x_paper",
+      "kind": "pass",
+      "benefit": "permanent_paper",
+      "amount": 2,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    }
+  ],
+  "paper_pack_amounts_status": "provisional; prices and live activation require owner authorization",
+  "mock_ui_label": "DEVELOPMENT ONLY — no real purchase",
+  "source_of_live_display_price": "platform-returned current product information, not fixture"
+}

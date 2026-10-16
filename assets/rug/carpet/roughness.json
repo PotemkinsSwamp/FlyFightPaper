@@ -1,0 +1,24 @@
+{
+  "path": "operations/7a23ba0e-a8f6-43db-abff-5cf9ea4bd95a",
+  "operationId": "7a23ba0e-a8f6-43db-abff-5cf9ea4bd95a",
+  "done": true,
+  "response": {
+    "path": "assets/78458224612846",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-16T06:44:18.815Z",
+    "assetId": "78458224612846",
+    "displayName": "FlyFightPaper rug carpet roughness",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  },
+  "sha256": "836d2d87bc94e1d0a9830da49b7467fc046b526dbabffbad4ac3c5a8eb93fc94"
+}

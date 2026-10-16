@@ -1,0 +1,23 @@
+{
+  "path": "operations/bfa93e88-4831-4abd-8bcd-1123d41d305b",
+  "operationId": "bfa93e88-4831-4abd-8bcd-1123d41d305b",
+  "done": true,
+  "response": {
+    "path": "assets/112102301676610",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:53:35.804Z",
+    "assetId": "112102301676610",
+    "displayName": "FlyFightPaper settings ruler",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "path": "operations/3a914029-8837-4e34-9304-800a208bb401",
+  "operationId": "3a914029-8837-4e34-9304-800a208bb401",
+  "done": true,
+  "response": {
+    "path": "assets/71425737657806",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-16T06:45:55.038Z",
+    "assetId": "71425737657806",
+    "displayName": "FlyFightPaper rug v4_t05_01",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

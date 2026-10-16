@@ -1,0 +1,690 @@
+{
+ "rug": [
+  -1240,
+  -700,
+  1240,
+  700
+ ],
+ "ring": [
+  -1170,
+  -630,
+  1170,
+  630
+ ],
+ "xs": [
+  -900,
+  -600,
+  -300,
+  300,
+  600,
+  900
+ ],
+ "zs": [
+  -315,
+  315
+ ],
+ "street": 20,
+ "blvd": 30,
+ "walk": 7,
+ "setback": 14,
+ "features": [
+  [
+   "market square",
+   -559,
+   -274,
+   -341,
+   -51
+  ],
+  [
+   "fan plaza",
+   341,
+   51,
+   559,
+   274
+  ],
+  [
+   "cardboard square",
+   -259,
+   -589,
+   -51,
+   -356
+  ],
+  [
+   "pond park",
+   341,
+   -589,
+   559,
+   -356
+  ],
+  [
+   "sports pitch",
+   341,
+   356,
+   559,
+   589
+  ],
+  [
+   "woods and pond",
+   -1129,
+   -589,
+   -941,
+   -356
+  ],
+  [
+   "farm",
+   941,
+   356,
+   1129,
+   589
+  ]
+ ],
+ "clear": [
+  [
+   "circle",
+   0,
+   0,
+   135
+  ],
+  [
+   "circle",
+   1060,
+   -100,
+   130
+  ],
+  [
+   "circle",
+   -150,
+   262,
+   105
+  ],
+  [
+   "rect",
+   -1280,
+   -185,
+   -1040,
+   185
+  ],
+  [
+   "rect",
+   1040,
+   -185,
+   1280,
+   185
+  ]
+ ],
+ "low": [
+  [
+   "rect",
+   -1210,
+   -700,
+   -1040,
+   -405
+  ],
+  [
+   "rect",
+   -1210,
+   405,
+   -1040,
+   700
+  ],
+  [
+   "rect",
+   -760,
+   -700,
+   -590,
+   -405
+  ],
+  [
+   "rect",
+   -760,
+   405,
+   -590,
+   700
+  ],
+  [
+   "rect",
+   -310,
+   -700,
+   -140,
+   -405
+  ],
+  [
+   "rect",
+   -310,
+   405,
+   -140,
+   700
+  ],
+  [
+   "rect",
+   140,
+   -700,
+   310,
+   -405
+  ],
+  [
+   "rect",
+   140,
+   405,
+   310,
+   700
+  ],
+  [
+   "rect",
+   590,
+   -700,
+   760,
+   -405
+  ],
+  [
+   "rect",
+   590,
+   405,
+   760,
+   700
+  ],
+  [
+   "rect",
+   1040,
+   -700,
+   1210,
+   -405
+  ],
+  [
+   "rect",
+   1040,
+   405,
+   1210,
+   700
+  ]
+ ],
+ "fans": [
+  [
+   "Market Square fan",
+   -450,
+   -162,
+   85
+  ],
+  [
+   "Fan Plaza fan",
+   450,
+   162,
+   85
+  ]
+ ],
+ "monorail": {
+  "x": 600,
+  "z": 315,
+  "corner_radius": 60,
+  "track_top": 125
+ },
+ "buildings": [
+  {
+   "name": "pencil-pillar-tower",
+   "box": [
+    -141,
+    -219.0,
+    -51,
+    -129.0
+   ],
+   "height": 345
+  },
+  {
+   "name": "book-stack-spire",
+   "box": [
+    -259,
+    -110.4,
+    -201.9,
+    -51.0
+   ],
+   "height": 175.5
+  },
+  {
+   "name": "tape-dispenser-depot",
+   "box": [
+    -259,
+    -252.2,
+    -203.2,
+    -175.8
+   ],
+   "height": 58.5
+  },
+  {
+   "name": "juice-carton-tower",
+   "box": [
+    -209.0,
+    51,
+    -129.0,
+    151
+   ],
+   "height": 260
+  },
+  {
+   "name": "porthole-book-tower",
+   "box": [
+    51,
+    126.0,
+    171,
+    236.0
+   ],
+   "height": 330
+  },
+  {
+   "name": "tube-tower",
+   "box": [
+    -463.7,
+    51,
+    -341.0,
+    183.3
+   ],
+   "height": 272.0
+  },
+  {
+   "name": "cereal-box-tower",
+   "box": [
+    471.0,
+    -161,
+    531.0,
+    -51
+   ],
+   "height": 250
+  },
+  {
+   "name": "glue-tower",
+   "box": [
+    480.5,
+    -274,
+    521.5,
+    -222.7
+   ],
+   "height": 81.2
+  },
+  {
+   "name": "jenga-tower",
+   "box": [
+    -121,
+    461.0,
+    -51,
+    531.0
+   ],
+   "height": 240
+  },
+  {
+   "name": "paint-palette-school",
+   "box": [
+    -259,
+    465.0,
+    -199.4,
+    527.0
+   ],
+   "height": 65.0
+  },
+  {
+   "name": "stacking-cup-tower",
+   "box": [
+    51,
+    -534.0,
+    121,
+    -464.0
+   ],
+   "height": 230
+  },
+  {
+   "name": "eraser-hall",
+   "box": [
+    187.6,
+    -530.3,
+    259.0,
+    -467.7
+   ],
+   "height": 52.0
+  },
+  {
+   "name": "tissue-box-tower",
+   "box": [
+    51,
+    356,
+    121,
+    466
+   ],
+   "height": 280
+  },
+  {
+   "name": "book-stack-lookout",
+   "box": [
+    51,
+    529.1,
+    130.2,
+    582.9
+   ],
+   "height": 117.0
+  },
+  {
+   "name": "pencil-case-hall",
+   "box": [
+    185.9,
+    356,
+    236.1,
+    453.2
+   ],
+   "height": 45.5
+  },
+  {
+   "name": "open-book-hall",
+   "box": [
+    -466.9,
+    -473.2,
+    -341.0,
+    -356.0
+   ],
+   "height": 88.4
+  },
+  {
+   "name": "sweet-shop",
+   "box": [
+    -416.9,
+    -584.1,
+    -341.0,
+    -533.9
+   ],
+   "height": 84.0
+  },
+  {
+   "name": "stapler-offices",
+   "box": [
+    -538.0,
+    -589,
+    -480.0,
+    -537.7
+   ],
+   "height": 91.0
+  },
+  {
+   "name": "book-apartments",
+   "box": [
+    -512.4,
+    356,
+    -341.0,
+    538.9
+   ],
+   "height": 260.0
+  },
+  {
+   "name": "log-cabin-tower",
+   "box": [
+    -721,
+    -269.0,
+    -641,
+    -199.0
+   ],
+   "height": 200
+  },
+  {
+   "name": "sharpener-tower",
+   "box": [
+    -855.9,
+    -274,
+    -782.1,
+    -210.4
+   ],
+   "height": 117.0
+  },
+  {
+   "name": "abacus-hall",
+   "box": [
+    -781,
+    191.0,
+    -641,
+    251.0
+   ],
+   "height": 65
+  },
+  {
+   "name": "ring-binder-tower",
+   "box": [
+    641,
+    -259.0,
+    771,
+    -169.0
+   ],
+   "height": 300
+  },
+  {
+   "name": "tape-roll-tower",
+   "box": [
+    641,
+    161.0,
+    761,
+    261.0
+   ],
+   "height": 270
+  },
+  {
+   "name": "milk-carton-tower",
+   "box": [
+    -856.3,
+    -489.2,
+    -761.7,
+    -356.0
+   ],
+   "height": 216.0
+  },
+  {
+   "name": "sticky-note-tower",
+   "box": [
+    -854.0,
+    356,
+    -764.0,
+    446
+   ],
+   "height": 190
+  },
+  {
+   "name": "book-stack-garden",
+   "box": [
+    -834.7,
+    518.8,
+    -763.3,
+    589.0
+   ],
+   "height": 137.7
+  },
+  {
+   "name": "ruler-stilt-tower",
+   "box": [
+    766.0,
+    -446,
+    856.0,
+    -356
+   ],
+   "height": 180
+  },
+  {
+   "name": "pencil-cup-tower",
+   "box": [
+    766.6,
+    -589,
+    835.4,
+    -519.3
+   ],
+   "height": 120.2
+  },
+  {
+   "name": "chalk-box-depot",
+   "box": [
+    641,
+    356,
+    711,
+    456
+   ],
+   "height": 60
+  },
+  {
+   "name": "shoebox-hall",
+   "box": [
+    641,
+    519,
+    761,
+    589
+   ],
+   "height": 55
+  },
+  {
+   "name": "clock-tower",
+   "box": [
+    -1015.4,
+    -118.6,
+    -941.0,
+    -51.0
+   ],
+   "height": 221.0
+  },
+  {
+   "name": "banner-tower",
+   "box": [
+    -1028.7,
+    -248.9,
+    -941.0,
+    -179.1
+   ],
+   "height": 115.1
+  },
+  {
+   "name": "notebook-tower",
+   "box": [
+    -1039.2,
+    51,
+    -941.0,
+    154.9
+   ],
+   "height": 177.5
+  },
+  {
+   "name": "brick-water-tower",
+   "box": [
+    941,
+    51,
+    1010.5,
+    126.3
+   ],
+   "height": 232.8
+  },
+  {
+   "name": "scissors-gate-house",
+   "box": [
+    941,
+    191.4,
+    1003.0,
+    250.6
+   ],
+   "height": 78.0
+  },
+  {
+   "name": "crayon-box-tower",
+   "box": [
+    1063.1,
+    207.8,
+    1129.0,
+    274.0
+   ],
+   "height": 139.8
+  },
+  {
+   "name": "paint-jar-tower",
+   "box": [
+    -1031,
+    356,
+    -941,
+    446
+   ],
+   "height": 170
+  },
+  {
+   "name": "egg-carton-market",
+   "box": [
+    -1061,
+    511.0,
+    -941,
+    581.0
+   ],
+   "height": 55
+  },
+  {
+   "name": "pencil-tin-tower",
+   "box": [
+    941,
+    -529.0,
+    1011,
+    -429.0
+   ],
+   "height": 160
+  },
+  {
+   "name": "bell-tower",
+   "box": [
+    -105,
+    -105,
+    105,
+    105
+   ],
+   "height": 430
+  }
+ ],
+ "gates": [
+  {
+   "name": "gateway-towers",
+   "box": [
+    189.5,
+    -201.0,
+    410.5,
+    -114.0
+   ],
+   "street_along": "z",
+   "height": 265
+  },
+  {
+   "name": "block-arch",
+   "box": [
+    -765.0,
+    -130.0,
+    -735.0,
+    130.0
+   ],
+   "street_along": "x",
+   "height": 130
+  },
+  {
+   "name": "pencil-case-bridge",
+   "box": [
+    720.0,
+    -100.0,
+    780.0,
+    100.0
+   ],
+   "street_along": "x",
+   "height": 140
+  },
+  {
+   "name": "monorail-station-north",
+   "box": [
+    115.0,
+    -400.0,
+    185.0,
+    -230.0
+   ],
+   "street_along": "x",
+   "height": 150
+  },
+  {
+   "name": "monorail-station-south",
+   "box": [
+    -185.0,
+    230.0,
+    -115.0,
+    400.0
+   ],
+   "street_along": "x",
+   "height": 150
+  }
+ ]
+}

@@ -1,0 +1,41 @@
+# Saving
+
+## What the player sees
+Your Paper, XP, level, owned parts, five saved builds and settings are kept between visits. Nothing you earned is
+lost if a save fails for a moment; it retries without stopping the match for everyone else.
+
+## Where it stands (2026-10-15)
+Built on ProfileStore (Stage 5, Codex's lane) and tested with a fake save store. In Studio, progress lasts one
+Play session only. Real saving, rejoin, server hop and multi-player tests wait for Alan's go on a private publish.
+
+## How it works
+*Moved from the old README.*
+
+Stage 5 uses the official vendored ProfileStore library in `src/server/Packages/`. Live servers use
+`PPD_ProfileStore_DEV_v1`; the older `PPD_DEV_v1` store is untouched. Studio always uses ProfileStore.Mock,
+which cannot grant simulated purchases to a live profile, even when Studio API access is enabled.
+Saving is configured in `config/server.json`: about one autosave per player per minute, plus join and leave.
+Rewards and their operation IDs change together in the same profile. Recent session IDs store the last applied
+operation sequence; retries from the active session cannot pay twice, and old sessions cannot write.
+Receipt IDs have a dedicated profile field. Real receipt processing stays disabled until Stage 10.
+
+## Code
+| File | What it does |
+|---|---|
+| `src/server/ProfileRuntime.luau` | One save session per player: load, autosave, final save, Studio mock |
+| `src/server/ProfileService.luau` | Changes to a save (rewards, boosts, refolds), each applied exactly once |
+| `src/server/RewardQueue.luau` | Retries a failed reward without blocking the round |
+| `src/shared/ProfileSchema.luau` | What a save file may contain (version 4) |
+| `src/server/Packages/` | ProfileStore library (third party, unmodified) |
+
+## Tuning numbers
+`config/server.json` `profiles`, `schema`, `rewards`.
+
+## Related
+- [Saving uses ProfileStore](../decisions/2026-10-07-profilestore-saving.md)
+- [The game stays private](../decisions/2026-10-07-private-publish.md)
+- [Economy and shop](economy-and-shop.md)
+- [Milestones, Stage 5](../plan/MILESTONES.md)
+- [Testing](../workshop/testing.md)
+
+Back to [HOME](../HOME.md)

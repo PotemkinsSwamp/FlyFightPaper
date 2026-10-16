@@ -1,0 +1,23 @@
+{
+  "path": "operations/0943b077-f6bb-4fea-aa68-eead81a464cf",
+  "operationId": "0943b077-f6bb-4fea-aa68-eead81a464cf",
+  "done": true,
+  "response": {
+    "path": "assets/129866047095335",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-09T00:01:06.201Z",
+    "assetId": "129866047095335",
+    "displayName": "FlyFightPaper results strip-blue",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

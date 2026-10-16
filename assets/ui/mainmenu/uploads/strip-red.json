@@ -1,0 +1,23 @@
+{
+  "path": "operations/24ab6d60-5de5-47da-a0f9-cd13bd330a3c",
+  "operationId": "24ab6d60-5de5-47da-a0f9-cd13bd330a3c",
+  "done": true,
+  "response": {
+    "path": "assets/84891639571797",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:17:41.290Z",
+    "assetId": "84891639571797",
+    "displayName": "FlyFightPaper mainmenu strip-red",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

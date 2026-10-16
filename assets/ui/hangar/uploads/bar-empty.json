@@ -1,0 +1,23 @@
+{
+  "path": "operations/73e92e64-258a-457a-af6c-c21d7ff08161",
+  "operationId": "73e92e64-258a-457a-af6c-c21d7ff08161",
+  "done": true,
+  "response": {
+    "path": "assets/88470216324199",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:57:10.468Z",
+    "assetId": "88470216324199",
+    "displayName": "FlyFightPaper hangar bar-empty",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

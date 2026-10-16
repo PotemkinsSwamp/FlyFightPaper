@@ -1,0 +1,23 @@
+{
+  "path": "operations/83ae85e9-ccab-417c-8a43-aa1d9a973193",
+  "operationId": "83ae85e9-ccab-417c-8a43-aa1d9a973193",
+  "done": true,
+  "response": {
+    "path": "assets/116159439019263",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:53:57.807Z",
+    "assetId": "116159439019263",
+    "displayName": "FlyFightPaper settings tab-green",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "path": "operations/92da298f-ebe5-4881-b11b-9cea4ce146c8",
+  "operationId": "92da298f-ebe5-4881-b11b-9cea4ce146c8",
+  "done": true,
+  "response": {
+    "path": "assets/124702004184836",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:57:58.772Z",
+    "assetId": "124702004184836",
+    "displayName": "FlyFightPaper hangar stats-sheet",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

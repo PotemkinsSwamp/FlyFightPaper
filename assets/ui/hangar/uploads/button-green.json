@@ -1,0 +1,23 @@
+{
+  "path": "operations/ed556632-a64d-4027-a882-382ddd5fc52a",
+  "operationId": "ed556632-a64d-4027-a882-382ddd5fc52a",
+  "done": true,
+  "response": {
+    "path": "assets/83467354769758",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-08T23:57:23.361Z",
+    "assetId": "83467354769758",
+    "displayName": "FlyFightPaper hangar button-green",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

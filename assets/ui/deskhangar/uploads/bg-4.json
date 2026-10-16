@@ -1,0 +1,23 @@
+{
+  "path": "operations/253882db-ffd7-45df-b43e-329788cfdae1",
+  "operationId": "253882db-ffd7-45df-b43e-329788cfdae1",
+  "done": true,
+  "response": {
+    "path": "assets/74385525106617",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-11T21:41:28.937Z",
+    "assetId": "74385525106617",
+    "displayName": "FlyFightPaper deskhangar bg-4",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,451 @@
+{
+  "schema_version": 1,
+  "tuning_status": "initial, untested; preserve owner-locked behavior",
+  "avatar_display": {
+    "standing_height_studs": 140,
+    "minimum_standing_height_studs": 100,
+    "body_space_width_studs": 124,
+    "body_space_depth_studs": 120,
+    "body_space_top_y": 220,
+    "appearance_timeout_seconds": 30,
+    "bot_outfits": {
+      "hair": [63690008, 451220849, 451221329, 376524487, 376526888, 9243992729, 9244021842, 3814474927, 9174355709,
+        7193442167, 7193448258, 9174354743, 3814476174, 9244095135, 7193386173, 6993754725, 7193401217, 9244038785,
+        7193450455, 7193449810, 376527350, 7193405096, 6993758617, 9244148336, 376548738, 9244145658, 7193454569,
+        62234425, 7193451306, 1103003368, 2956239660],
+      "shirts": [607785314, 3670737444, 144076358, 398633584, 382538059, 398635081, 398634295, 4047886060, 4047884939,
+        4047884046, 144076436, 382537702, 382537085],
+      "pants": [398633812, 398635338, 398634487, 144076760, 382538503, 382537569, 382537950, 382537806],
+      "hats": [417457461, 607702162, 2646473721, 48474313],
+      "glasses": [376527500, 376526673],
+      "backpacks": [98752422639730],
+      "hat_chance": 0.25,
+      "glasses_chance": 0.15,
+      "backpack_chance": 0.06,
+      "skin_tones": [[234, 184, 146], [204, 142, 105], [255, 204, 153], [160, 95, 53], [124, 92, 70], [86, 66, 54],
+        [245, 205, 48], [253, 234, 141]]
+    }
+  },
+  "world": {
+    "seed": 17029,
+    "width_studs": 2800,
+    "depth_studs": 2200,
+    "height_studs": 620,
+    "desk_count": 12,
+    "neutral_service_desks": 2,
+    "desk_top_y": 108,
+    "desk_size": [
+      330,
+      12,
+      210
+    ],
+    "desk_x_positions": [
+      -1125,
+      -675,
+      -225,
+      225,
+      675,
+      1125
+    ],
+    "desk_z_positions": [
+      -850,
+      850
+    ],
+    "plane_reference_length": 8,
+    "plane_reference_wingspan": 7,
+    "maximum_actors": 12,
+    "launch_corridor_studs": 330,
+    "layout_id": "classroom",
+    "neutral_desk_x_positions": [
+      -1160,
+      1160
+    ],
+    "neutral_desk_z_position": 0,
+    "route_x_positions": [
+      -1000,
+      -650,
+      -300,
+      0,
+      300,
+      650,
+      1000
+    ],
+    "route_z_positions": [
+      -700,
+      -350,
+      0,
+      350,
+      700
+    ],
+    "route_y_positions": [
+      145,
+      310,
+      495
+    ],
+    "paper_targets_comment": "Hidden kid-drawn paper targets (Alan 2026-10-13): rooftop points found in Studio (flat roofs 100-350 up, open sky), front faces the city middle. Each pilot has a private set per round; 2 points each = the prop cap.",
+    "paper_targets": [
+      {"design": "broccoli", "at": [-850, 200, 400], "yaw": -65},
+      {"design": "homework", "at": [754, 155.6, -206], "yaw": 180},
+      {"design": "alarm-clock", "at": [100, 153, 300], "yaw": 18},
+      {"design": "bath", "at": [-550, 229, -400], "yaw": -126},
+      {"design": "dentist-chair", "at": [650, 224, 150], "yaw": 77},
+      {"design": "spider", "at": [-600, 303, 200], "yaw": -72},
+      {"design": "vacuum", "at": [-550, 114, 400], "yaw": -54},
+      {"design": "spinach", "at": [550, 257, -450], "yaw": 129},
+      {"design": "broccoli", "at": [392, 77.6, 538], "yaw": 270},
+      {"design": "spider", "at": [650, 224, 300], "yaw": 65}
+    ],
+    "chalk_eraser_comment": "Easter egg (MILESTONES D14): a chalkboard eraser dropped in the fountain park south of the bell tower (workspace.Arena.ChalkEraser). Shoot it = a chalk cloud `radius` studs round a point a little above it for `seconds`; planes inside it are hard to see and can't be locked, aimed at with assist, chased by bots or name-tagged. Radius 2.25x then +30% and cooldown 3 min -> 2 min after Alan's playtests (2026-10-15). The felt is black after a puff and slowly turns chalky white; white = ready. Lasts 45 s (was 20, then 30), radius 20% smaller (364 -> 291), sight blocked through it like a building; full size for the first half, then shrinks to 15% and is gone (Rules.chalkRadius); inside, fog limits sight to about 380 studs. Ready again `cooldown_seconds` after a puff.",
+    "chalk_eraser": {"radius": 291, "seconds": 45, "cooldown_seconds": 120},
+    "ducts_comment": "Escape ducts above the drop ceiling (MILESTONES D14; layout redone as a maze after Alan's look, 2026-10-15). `rooms` (240 across) are the bends and junctions; `links` join two rooms on a straight line, ducts `width` wide and `height` tall from the ceiling top at `floor_y`. Four `vents` (ceiling holes `vent` across) at irregular spots; every vent reaches every other, with loops. The ducts pass over five of the classroom's ceiling lights: their glow comes up through grilles, the only light inside. `pipe`: one link is a round pipe `diameter` across the whole way (the heavy gunship, 26 wide, can't fit; others, 18.5 wide at most, can if they fly it straight). `fans`: spinning fans across ducts at `spots` [x, z, duct direction, way the air blows (+1/-1 along it)] in a round housing `opening` across (blades `reach` from the middle, inside the duct); a plane whose middle crosses a blade (`blade_width` + `plane_margin`) or the hub loses `damage_share` of its health and is shoved sideways. Moving air: flying with a fan's air speeds you up by up to `wind`; against it slows you by `headwind_share` of that (easier to time the blades; Alan: against was a little too slow); the `blower` in its room blows the same way along its `link`, stronger. Built by tools/ducts.py into assets/models/ducts.model.json; the server lets planes fly up to the duct roof.",
+    "ducts": {"floor_y": 628, "height": 140, "width": 120, "room": 240, "vent": 180, "wall": 8,
+      "rooms": {"A": [-1100, -860], "B": [-1100, 160], "C": [-460, 160], "D": [-460, 740], "E": [-460, -550], "F": [260, -550],
+        "G": [260, -860], "K": [260, 50], "M": [260, 740], "P": [1060, 740], "J": [1060, -100], "N": [1060, -550]},
+      "links": [["A", "B"], ["B", "C"], ["C", "D"], ["C", "E"], ["E", "F"], ["A", "G"], ["G", "F"], ["F", "K"], ["K", "M"],
+        ["D", "M"], ["M", "P"], ["P", "J"], ["F", "N"], ["N", "J"]],
+      "vents": ["A", "D", "M", "J"],
+      "pipe": {"link": ["F", "K"], "diameter": 25},
+      "fans": {"spots": [[-420, -860, "x", -1], [1060, 320, "z", 1]], "opening": 120, "blades": 3,
+        "blade_width": 16, "hub_radius": 12, "reach": 58, "plane_margin": 6, "turns_per_second": 0.8, "damage_share": 0.75, "wind": 0.3,
+        "headwind_share": 0.5},
+      "blower": {"room": "B", "link": ["B", "C"], "wind": 0.5},
+      "bot_runs": {"approach": 400, "approach_y": 470, "exit_y": 520},
+      "vent_hinge": {"A": "-x", "D": "+x", "M": "-z", "J": "+x"}},
+    "fans": [
+      {
+        "id": "fan:upward:west",
+        "kind": "upward",
+        "center": [
+          -600,
+          230,
+          0
+        ],
+        "halfsize": [
+          85,
+          210,
+          85
+        ],
+        "direction": [
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "id": "fan:upward:east",
+        "kind": "upward",
+        "center": [
+          600,
+          230,
+          0
+        ],
+        "halfsize": [
+          85,
+          210,
+          85
+        ],
+        "direction": [
+          0,
+          1,
+          0
+        ]
+      }
+    ],
+    "speed_pickups": {
+      "_comment": "Fly through one: +speed_bonus speed, adding up to max_bonus, and the timer restarts at seconds (Alan 2026-10-12: bolts add, time does not). Comes back after respawn_seconds. Each spot: 'at' = middle of the hole (token shown there), 'box' = the opening measured in Studio (world axes, studs): 7 ceiling rings, 3 cardboard tubes, under the bell tower, the gateway-towers arch.",
+      "speed_bonus": 0.25, "max_bonus": 1.0, "seconds": 5, "respawn_seconds": 1,
+      "spots": [
+        {"at": [120, 450, -330], "box": [16, 60, 60]}, {"at": [270, 450, -330], "box": [16, 60, 60]},
+        {"at": [420, 450, -330], "box": [16, 60, 60]}, {"at": [600, 440, 330], "box": [16, 60, 60]},
+        {"at": [860, 440, 330], "box": [16, 60, 60]}, {"at": [-480, 460, -180], "box": [60, 60, 16]},
+        {"at": [-480, 460, -60], "box": [60, 60, 16]}, {"at": [-330, 470, 330], "box": [200, 62, 60]},
+        {"at": [480, 470, 60], "box": [60, 62, 200]}, {"at": [-700, 470, 0], "box": [200, 62, 60]},
+        {"at": [0, 112, 0], "box": [126, 150, 126]}, {"at": [-630, 78, -412], "box": [84, 136, 106]}
+      ]
+    },
+    "monorail": {
+      "_comment": "The new town's toy monorail train (Alan 2026-10-15: solid, hitting it or being hit by it kills). It runs round config/monorail-track.json at `speed` studs/s on server time, so every client and the server agree where it is. `cars` front to back: model, size (width, height, length: the uploaded mesh's studs, assets/models/toys/<model>/upload.json) and `turned` (the back nose car faces backwards). The skirt bottom sits `skirt_below_top` under the track top; `rug_top` is the rug's surface. A plane whose middle comes within `plane_margin` of a car's box crashes. Off (`enabled` false) until the new town stands in the place.",
+      "enabled": true, "speed": 45, "rug_top": 0.6, "skirt_below_top": 4.5, "plane_margin": 3,
+      "cars": [
+        {"model": "monorail-car", "size": [11.266, 14.876, 34.0], "turned": false},
+        {"model": "monorail-car-middle", "size": [11.359, 15.0, 33.2], "turned": false},
+        {"model": "monorail-car", "size": [11.266, 14.876, 34.0], "turned": true}
+      ]
+    }
+  },
+  "flight": {
+    "simulation_hz": 60,
+    "input_hz": 20,
+    "snapshot_hz": 15,
+    "bot_decision_hz": 8,
+    "max_catchup_steps": 5,
+    "pitch_limit_deg": 80,
+    "bank_visual_limit_deg": 65,
+    "speed_equipment_penalty_per_mass": 1.2,
+    "turn_equipment_penalty_per_mass": 1.5,
+    "lift_equipment_penalty_per_mass": 1.5,
+    "lift_min_seconds": 45,
+    "lift_max_seconds": 125,
+    "speed_min_studs_s": 45,
+    "speed_max_studs_s": 155,
+    "turn_min_deg_s": 45,
+    "turn_max_deg_s": 340,
+    "empty_lift_descent_studs_s": 12,
+    "empty_lift_speed_factor": 0.7,
+    "glide_gravity_studs_s2": 60,
+    "glide_max_speed_factor": 1.5,
+    "lift_dive_max_speed_factor": 1.25,
+    "lift_dive_return_per_s": 0.5,
+    "fan_lift_per_second": 15,
+    "fan_updraft_studs_s": 30,
+    "horizontal_fan_speed_factor": 1.15,
+    "bank_response": 10,
+    "velocity_response": 14,
+    "orientation_response": 35,
+    "orientation_angular_headroom": 1.8,
+    "turn_rate_scale": 0.7,
+    "aim_degrees_per_pixel": 0.12,
+    "autopilot_settle_per_s": 8,
+    "autopilot_full_bank_deg": 10,
+    "graze_slide_push_studs_s": 10,
+    "drive_force_g": 6,
+    "aim_auto_level_per_s": 2.5,
+    "aim_level_delay_s": 0.35,
+    "turn_speed_bleed": 0.25
+  },
+  "combat": {
+    "reference_health": 120,
+    "pencil_damage": 260,
+    "pencil_reload_seconds": 4,
+    "eraser_damage_ratio_to_pencil": 0.1154,
+    "eraser_reload_seconds": 4,
+    "eraser_max_active_per_pilot": 2,
+    "eraser_lifetime_seconds": 8,
+    "eraser_lock_seconds": 1.5,
+    "eraser_slow_after_studs": 250,
+    "eraser_slow_full_studs": 750,
+    "eraser_min_speed_factor": 0.55,
+    "eraser_lock_range": 750,
+    "eraser_lock_cone_deg": 12,
+    "eraser_lock_keep_deg": 20,
+    "eraser_turn_deg_s": 90,
+    "assist_window_seconds": 10,
+    "assist_min_fraction_original_health": 0.1,
+    "friendly_fire": false,
+    "self_weapon_damage": false,
+    "ramming_awards_without_recent_weapon_damage": false,
+    "spawn_protection_seconds": 3,
+    "respawn_seconds": 4,
+    "plane_contact_health_fraction": 0.1,
+    "bounds_grace_seconds": 2,
+    "input_delay_allowance_seconds": 0.4,
+    "input_aim_slack_deg": 12,
+    "input_max_aim_deg": 80,
+    "max_rewind_seconds": 0.25,
+    "view_delay_seconds": 0.1,
+    "track_hz": 30,
+    "gun_assist_deg": 7,
+    "eraser_seeker_deg": 30,
+    "eraser_break_studs": 180,
+    "gun_convergence_studs": 150,
+    "collision_crash_speed": 12,
+    "collision_scrape_health_per_second": 0.15,
+    "ram_closing_speed": 30,
+    "collision_scrape_doubling_seconds": 0.5
+  },
+  "service": {
+    "protected_seconds_per_life": 120,
+    "protection_refill_out_seconds": 120,
+    "approach_out_studs": 145,
+    "approach_up_studs": 15,
+    "approach_box_studs": [70, 50, 60],
+    "approach_max_angle_degrees": 35,
+    "hangar_back_studs": 69,
+    "touchdown_out_studs": 92,
+    "takeoff_liftoff_out_studs": 60,
+    "takeoff_exit_studs": 25,
+    "touchdown_seconds": 0.6,
+    "taxi_seconds": 1.6,
+    "refill_seconds": 2,
+    "repair_seconds": 3,
+    "refold_seconds": 3,
+    "wear_per_full_health_repaired_fraction": 0.2,
+    "wear_floor_fraction": 0.6,
+    "full_refold_paper": 120,
+    "forced_launch": false,
+    "fresh_plane_preserves_streak": false,
+    "full_refold_preserves_streak": true
+  },
+  "rounds": {
+    "_comment": "Airspace Control moves every 90 seconds among these fixed cylinders, with a 15-second warning and no consecutive repeats. The Ceiling zone is wide and flat. Zone positions and sizes are a first pass, tuned in playtest (Alan 2026-10-14: tried 3x wider, then halved that: 300 radius; the ceiling zone moved over the east ceiling obstacles and stretched down well under the rings and cardboard rolls, 340-620 up).",
+    "duration_seconds": 480,
+    "ffa_elimination_target": 20,
+    "tdm_elimination_target": 60,
+    "control_target": 240,
+    "control_points_per_second": 1,
+    "control_move_seconds": 90,
+    "control_warning_seconds": 15,
+    "control_zones": [
+      {"name": "Centre towers", "center": [-50, 170, -100], "radius": 300, "half_height": 100},
+      {"name": "North-east towers", "center": [300, 170, -450], "radius": 300, "half_height": 100},
+      {"name": "North-west towers", "center": [-600, 170, -450], "radius": 300, "half_height": 100},
+      {"name": "South-west towers", "center": [-650, 170, 250], "radius": 300, "half_height": 100},
+      {"name": "South-east towers", "center": [600, 170, 250], "radius": 300, "half_height": 100},
+      {"name": "Ceiling", "center": [425, 480, 0], "radius": 475, "half_height": 140}
+    ],
+    "results_seconds": 8,
+    "vote_seconds": 12,
+    "launch_countdown_seconds": 3,
+    "vote_tie_rule": "least_recent_then_seeded",
+    "score_tie_rule": "shared_result_no_sudden_death",
+    "allow_join_in_progress": true
+  },
+  "menus": {
+    "saved_loadouts": 5,
+    "overlay_pauses_game": false,
+    "menu_consumes_boost_time_when_loaded": true,
+    "withdrawal_ends_streak": true,
+    "withdrawal_forfeits_final_bonuses": true
+  },
+  "bots": {
+    "rookie_mix": {
+      "rookie": 0.85,
+      "regular": 0.15,
+      "experienced": 0.0
+    },
+    "regular_mix": {
+      "rookie": 0.0,
+      "regular": 0.85,
+      "experienced": 0.15
+    },
+    "experienced_cap_per_team_or_ffa": 1,
+    "rookie_qualifying_matches": 5,
+    "qualification_active_seconds": 120,
+    "qualification_combat_or_objective_events": 3,
+    "early_graduation_enabled": false,
+    "regular_human_ffa_min": 2,
+    "regular_human_team_min": 4,
+    "visible_ai_labels": false,
+    "reward_factor": 1,
+    "hard_placement_cap": false,
+    "personalities": {
+      "aggressive": { "pursuit_factor": 1.5, "repair_at_fraction": 0.2, "evade_cooldown_factor": 1.5, "crowd_penalty_factor": 0.5, "wounded_bonus": 0, "objective_bonus": -0.15 },
+      "cautious": { "pursuit_factor": 0.8, "repair_at_fraction": 0.5, "evade_cooldown_factor": 0.7, "crowd_penalty_factor": 1.5, "wounded_bonus": 0, "objective_bonus": 0 },
+      "opportunist": { "pursuit_factor": 1.0, "repair_at_fraction": 0.35, "evade_cooldown_factor": 1.0, "crowd_penalty_factor": -0.3, "wounded_bonus": 400, "objective_bonus": 0 },
+      "objective": { "pursuit_factor": 1.0, "repair_at_fraction": 0.35, "evade_cooldown_factor": 1.0, "crowd_penalty_factor": 1.0, "wounded_bonus": 0, "objective_bonus": 0.25 }
+    },
+    "quirks": [ "rammer", "waggle", "split_s" ],
+    "quirk_chance": { "rookie": 0.3, "regular": 0.6, "experienced": 1.0 },
+    "second_quirk_chance": { "rookie": 0.0, "regular": 0.15, "experienced": 0.5 },
+    "ram_health_ratio": { "rookie": 1.5, "regular": 1.5, "experienced": 1.05 },
+    "objective_comment": "Airspace Control (Alan 2026-10-14): every bot splits its time between holding the zone and hunting. Each stint (objective_stint_seconds) it rolls objective_drive (by skill, plus the personality objective_bonus) to decide which. On the zone it circles at objective_orbit x radius and only chases enemies within objective_leash x radius of it; veterans (objective_preposition) head for the next zone during the warning.",
+    "objective_stint_seconds": [8, 14],
+    "profiles": {
+      "rookie": {
+        "lead_accuracy": 0.7,
+        "turn_factor": 0.72,
+        "speed_factor": 0.88,
+        "evade_cooldown_seconds": 5,
+        "evade_boost": false,
+        "reaction_seconds": [
+          0.65,
+          1.05
+        ],
+        "aim_error_deg": [
+          5,
+          10
+        ],
+        "hand_delay_seconds": [0.16, 0.26],
+        "pursuit_seconds": [
+          6,
+          12
+        ],
+        "seek_lift_at_fraction": 0.3,
+        "objective_drive": 0.3,
+        "objective_leash": 2.5,
+        "duct_escape_chance": 0, "duct_patrol_chance": 0,
+        "objective_preposition": false,
+        "objective_orbit": 0.85,
+        "eraser_notice": 0.15, "eraser_break": 0.35, "eraser_break_late_seconds": [0.4, 0.9],
+        "pull": 0.8, "read_attacker": 0.2, "lag_pursuit": false, "yo_yo": false,
+        "evade_moves": {"break_turn": 4, "snake": 2, "barrel_roll": 1},
+        "reverse_moves": {"flat_reverse": 4, "wingover": 1}
+      },
+      "regular": {
+        "lead_accuracy": 0.92,
+        "turn_factor": 0.82,
+        "speed_factor": 0.93,
+        "evade_cooldown_seconds": 3.5,
+        "evade_boost": false,
+        "reaction_seconds": [
+          0.3,
+          0.6
+        ],
+        "aim_error_deg": [
+          1.5,
+          3
+        ],
+        "hand_delay_seconds": [0.075, 0.15],
+        "pursuit_seconds": [
+          5,
+          10
+        ],
+        "seek_lift_at_fraction": 0.35,
+        "objective_drive": 0.6,
+        "objective_leash": 1.6,
+        "duct_escape_chance": 0, "duct_patrol_chance": 0,
+        "objective_preposition": false,
+        "objective_orbit": 0.6,
+        "eraser_notice": 0.3, "eraser_break": 0.55, "eraser_break_late_seconds": [0.2, 0.5],
+        "pull": 0.92, "read_attacker": 0.6, "lag_pursuit": true, "yo_yo": false,
+        "evade_moves": {"break_turn": 3, "snake": 2, "barrel_roll": 2, "split_s": 1},
+        "reverse_moves": {"flat_reverse": 2, "wingover": 2, "split_s": 1}
+      },
+      "experienced": {
+        "lead_accuracy": 0.95,
+        "turn_factor": 0.92,
+        "speed_factor": 0.98,
+        "evade_cooldown_seconds": 2.5,
+        "evade_boost": true,
+        "reaction_seconds": [
+          0.22,
+          0.45
+        ],
+        "aim_error_deg": [
+          1.0,
+          2.0
+        ],
+        "hand_delay_seconds": [0.15, 0.2],
+        "tracks_in_view": true,
+        "pursuit_seconds": [
+          4,
+          9
+        ],
+        "seek_lift_at_fraction": 0.4,
+        "objective_drive": 0.85,
+        "objective_leash": 1.25,
+        "duct_escape_chance": 0.4, "duct_patrol_chance": 0.12,
+        "objective_preposition": true,
+        "objective_orbit": 0.45,
+        "eraser_notice": 0.45, "eraser_break": 0.75, "eraser_break_late_seconds": [0.05, 0.3],
+        "pull": 1.05, "read_attacker": 0.95, "lag_pursuit": true, "yo_yo": true,
+        "evade_moves": {"break_turn": 2, "snake": 2, "barrel_roll": 2, "split_s": 2, "wingover": 1},
+        "reverse_moves": {"wingover": 2, "split_s": 2, "flat_reverse": 1}
+      }
+    }
+  },
+  "accessibility": {
+    "pc_required": true,
+    "touch_implementation_deferred": true,
+    "controller_deferred": true,
+    "ui_reference_resolution": [
+      1920,
+      1080
+    ],
+    "minimum_test_resolution": [
+      1280,
+      720
+    ],
+    "chat_required": false
+  }
+}

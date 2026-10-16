@@ -1,0 +1,23 @@
+{
+  "path": "operations/40efb14d-227e-494c-8c9a-5f8a9a387738",
+  "operationId": "40efb14d-227e-494c-8c9a-5f8a9a387738",
+  "done": true,
+  "response": {
+    "path": "assets/97874141587630",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-09T00:15:15.749Z",
+    "assetId": "97874141587630",
+    "displayName": "FlyFightPaper ingame sticky-note",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,83 @@
+-- Uploaded menu art (Roblox image ids). Sources: assets/ui/<screen>/; concept: assets/references/ui-concepts/.
+-- An empty id draws nothing, so a missing piece shows as a gap rather than an error.
+return {
+	mainmenu = {
+		bg = { "rbxassetid://70824458547142", "rbxassetid://90636437581127", "rbxassetid://111753475254544", "rbxassetid://131552915102739" }, -- background split into 2x2 tiles (top-left, top-right, bottom-left, bottom-right)
+		title = "rbxassetid://103734128810118",
+		strip = { yellow = "rbxassetid://81270758839816", blue = "rbxassetid://127387145271610", green = "rbxassetid://102293582971435", red = "rbxassetid://84891639571797" },
+		card = "rbxassetid://89622531819348",
+		drawing1 = "rbxassetid://84771186389926",
+		drawing2 = "rbxassetid://75995962139705",
+		photo = "rbxassetid://95838137299181",
+		plane = "rbxassetid://140510207715877",
+	},
+	settings = {
+		bg = { "rbxassetid://131322793683282", "rbxassetid://127705601041628", "rbxassetid://96541000690934", "rbxassetid://80235792777252" },
+		ruler = "rbxassetid://112102301676610",
+		pencil = "rbxassetid://131402918337135",
+		tag = "rbxassetid://94679570912477",
+		sticker = { red = "rbxassetid://95167817947211", blue = "rbxassetid://136617162696979", green = "rbxassetid://72275865664553",
+			yellow = "rbxassetid://139451901251339", purple = "rbxassetid://108439521706833", white = "rbxassetid://136096845362532" },
+		check = "rbxassetid://135193433305930",
+		tabOff = "rbxassetid://94076303094566",
+		tabOn = "rbxassetid://112038756025991",
+		tabGreen = "rbxassetid://116159439019263",
+		crosshairCard = "rbxassetid://94736097855757",
+	},
+	hangar = {
+		bg = { "rbxassetid://79778639138066", "rbxassetid://132568400298663", "rbxassetid://76022165880333", "rbxassetid://101332652907481" },
+		tab = "rbxassetid://115834678067841",
+		tabSelected = "rbxassetid://79324501369328",
+		card = "rbxassetid://84312204714104",
+		cardSelected = "rbxassetid://118872852149517",
+		preview = "rbxassetid://80540963066312",
+		statsSheet = "rbxassetid://124702004184836",
+		statRow = { red = "rbxassetid://74166245364488", blue = "rbxassetid://83398318100494", green = "rbxassetid://70725847047003", yellow = "rbxassetid://133852297040442" },
+		bar = { red = "rbxassetid://125915066273285", blue = "rbxassetid://78667835427454", green = "rbxassetid://100029801723584", orange = "rbxassetid://101578956565177", empty = "rbxassetid://88470216324199" },
+		slot = "rbxassetid://92798158654184",
+		slotSelected = "rbxassetid://88893390484207",
+		buttonGreen = "rbxassetid://83467354769758",
+		-- The folder alone, see-through around it, for the in-game hangar menu (assets/ui/deskhangar/).
+		folder = { "rbxassetid://90477686865340", "rbxassetid://106131906433035", "rbxassetid://99506492567038", "rbxassetid://74385525106617" },
+	},
+	results = {
+		bg = { "rbxassetid://102116902432283", "rbxassetid://112106473696549", "rbxassetid://125621367171438", "rbxassetid://85739017244295" },
+		goldStar = "rbxassetid://120331771075457",
+		rowHighlight = "rbxassetid://137797402914609",
+		strip = { blue = "rbxassetid://129866047095335", pink = "rbxassetid://82556466719896", green = "rbxassetid://78583732906300" },
+		unlockCard = "rbxassetid://113216079197527",
+		xpCard = "rbxassetid://76765257093865",
+		xpFrame = "rbxassetid://87963878165241",
+		xpFill = "rbxassetid://86284438244594",
+	},
+	ingame = {
+		clipboard = "rbxassetid://131222070269430",
+		stickyNote = "rbxassetid://97874141587630",
+		indexCard = "rbxassetid://127869005862718",
+		tapeLabel = "rbxassetid://72074243508272",
+	},
+	-- Flight HUD pieces (assets/ui/hud/; concepts hud-concept-1/2). White pieces are tinted in the game.
+	hud = {
+		notebook = "rbxassetid://110123970547575",
+		incoming = "rbxassetid://76239099114989",
+		scribble = "rbxassetid://105921512119910",
+		arrow = "rbxassetid://93844659261583",
+		ring = "rbxassetid://114300284068045",
+		bracket = "rbxassetid://133288006521198",
+		keyBox = "rbxassetid://116389741682536",
+		slip = "rbxassetid://99725754287779",
+		pinRed = "rbxassetid://118269057146968",
+		pinBlue = "rbxassetid://96658237976750",
+	},
+	-- Hidden paper targets (assets/ui/targets/; concept mode-concepts/paper-targets.png), keyed by design name.
+	targets = {
+		broccoli = "rbxassetid://108546335442787",
+		homework = "rbxassetid://88512104511264",
+		["alarm-clock"] = "rbxassetid://84701674941062",
+		bath = "rbxassetid://90423529121981",
+		["dentist-chair"] = "rbxassetid://97152656695637",
+		spider = "rbxassetid://125477512745397",
+		vacuum = "rbxassetid://140040954684836",
+		spinach = "rbxassetid://122359271557135",
+	},
+}
