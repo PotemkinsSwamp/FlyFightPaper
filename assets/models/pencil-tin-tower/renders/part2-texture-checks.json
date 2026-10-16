@@ -1,0 +1,319 @@
+{
+  "mode": "real UV islands",
+  "bleed_pixels": 3,
+  "maps": {
+    "1-upright-tin-band-1-1-color.png": {
+      "protected_sha256": "157f6fc8d45aea5ba5f7d5214274cd571faefcb903e3b3fafdb7c0ec10b2fbbc",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 605515,
+      "filled_texels": 443061,
+      "file_sha256": "d67fd85c80e7f10b52d1b125e00e63334d5d13096deae1fb025f420d837210ad",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-upright-tin-band-1-1-normal.png": {
+      "protected_sha256": "71127cc29bf7e59c5f38a91914cda9df8fb9b4cb767d56542e0ae8d713b3823b",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 605515,
+      "filled_texels": 443061,
+      "file_sha256": "54266bcc1cd179cffe9ed9173f1959c814191964c7517a7f98257e3ed53405e0",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-upright-tin-band-1-1-roughness.png": {
+      "protected_sha256": "403e7d10b0a9d79b8477d4fa353f7403e17178093a53c4d8d8acf56488ae5c4b",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 605515,
+      "filled_texels": 443061,
+      "file_sha256": "5d3d547c996b8a7599e3a8c4ac333cb02c061ba416cd2e3aa0a2d6bf77517e7b",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-upright-tin-band-1-2-color.png": {
+      "protected_sha256": "e7938d413a0eee9b726679c0af9c0d3e118c246f492760a8c0b755fbcdc98c2a",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 149675,
+      "filled_texels": 898901,
+      "file_sha256": "159aa5949a6aa228893239dfdb327723bed7e50c5406bdcae0ef3bed609e4c65",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-upright-tin-band-1-2-normal.png": {
+      "protected_sha256": "b96904c400bbc1f4a5cd6f3e388c66fc6d9fcc4eff1af747cefa3f026516a39d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 149675,
+      "filled_texels": 898901,
+      "file_sha256": "575a012d808767c7ce45bd5927e8f78a1cbc80a62ee34ca34c0389716cc87a60",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-upright-tin-band-1-2-roughness.png": {
+      "protected_sha256": "b8473136d31de00a51430dd44e14435edd82bb45d8d9d7c747455ecbe90bb476",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 149675,
+      "filled_texels": 898901,
+      "file_sha256": "2fbbe3bc8fffae3466ece80a0bd6a774aa70d091e144a076e0abe25c2fcf6973",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-upright-tin-band-2-1-color.png": {
+      "protected_sha256": "b1e6d8ef38aa20ade0543f9157a84b7a91cdaf6a9b67aece8526c2a1d409a38f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 629386,
+      "filled_texels": 419190,
+      "file_sha256": "f3f1766b8dd189fd713c70adec744b400927ecd388db144ce2a025446b0f942d",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-upright-tin-band-2-1-normal.png": {
+      "protected_sha256": "f8ae5dae9f4c06a7c89141917c669c477b5a4242da81c5d02e9efc7396ff7f09",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 629386,
+      "filled_texels": 419190,
+      "file_sha256": "c67fd801760e8fff65a8ce23cebb6aa1f1b2cbc854dde79866d14f09d2c5a90e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-upright-tin-band-2-1-roughness.png": {
+      "protected_sha256": "fb8f30844231c3e65fcfadddf7bfbdbbd68818cbee973a993b2efd7ccb2c90f6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 629386,
+      "filled_texels": 419190,
+      "file_sha256": "06b5248cbcb3bd95c0124e82b445446763b2cbece64b72f4dec9e39a94c9fccf",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-upright-tin-band-2-2-color.png": {
+      "protected_sha256": "9b9745679b1ec307386b5e668c1ea69bbd831cf7c21390f34bb97588e40cfe14",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 64855,
+      "filled_texels": 983721,
+      "file_sha256": "1f4ada49f1a5595598c2af4417e149df0155058faa5cce6cd7263e3cb694f560",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-upright-tin-band-2-2-normal.png": {
+      "protected_sha256": "5c67c44d784e603b7e1c6f328862b97c979b1a16999f267a165094f56a606f28",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 64855,
+      "filled_texels": 983721,
+      "file_sha256": "13124b24b66b8fe0c7ab3fee87a13f69e9d990a681fd1984fd93cd33f04ba21c",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-upright-tin-band-2-2-roughness.png": {
+      "protected_sha256": "4d93288fecc23fc8e8be4914a21b35ba597e856e5ab26cfd16f9c4392d55d388",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 64855,
+      "filled_texels": 983721,
+      "file_sha256": "e181b821d2cb9d33b110711cd6fe3a47b420db642c12bb56153694b34d285b79",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-upright-tin-band-3-1-color.png": {
+      "protected_sha256": "b97263b2bf0d0bff8d1bf714593b6a4e8e3d7432871a9289bc2d6ceca35541a0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 605515,
+      "filled_texels": 443061,
+      "file_sha256": "26b5a2908b4d2b7bd086be0f9fe26d367b6c86945f744b5b51e43cd424f287a1",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-upright-tin-band-3-1-normal.png": {
+      "protected_sha256": "653b82365a13e1dc268e55793afa7f5867dd9b8459cb3a0336e022e2ad3b9ddf",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 605515,
+      "filled_texels": 443061,
+      "file_sha256": "da5b2e9425b7b270573943671a9fda0457525327184184ac97ac8a1668244126",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-upright-tin-band-3-1-roughness.png": {
+      "protected_sha256": "d806a807db4522ad0c4a8857a45e74deae4e7d5b729967d85ff566ff77e1ee50",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 605515,
+      "filled_texels": 443061,
+      "file_sha256": "e85202328f3fb2d99e90dfdfd282933ec998128da3a6b076ab93860caba95243",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-upright-tin-band-3-2-color.png": {
+      "protected_sha256": "52326911044ad0fd838beb85aaa3cded7efeedaadb7364717e99b7f1d33c0036",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 88563,
+      "filled_texels": 960013,
+      "file_sha256": "c1b437c44caa96a41e0cf573df4b0a5a00e9c438762709f5720ff936b653b6a5",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-upright-tin-band-3-2-normal.png": {
+      "protected_sha256": "6dbd16585a5bde4607a1a550f6913ddc19f0bacd6c6dc3e351dc4b12eae96350",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 88563,
+      "filled_texels": 960013,
+      "file_sha256": "83264aab04ea1c3ae688b69a00e1a7b75a29c548d43497d959808a4b9428104e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-upright-tin-band-3-2-roughness.png": {
+      "protected_sha256": "5b630ca6eab23a0aebc637df088c05dd2712fa984d24a49f10780efecc4d0781",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 88563,
+      "filled_texels": 960013,
+      "file_sha256": "e7a35fc5977592c2185d3674a88c37bc208be1d66c962ba4c22d2417e25470aa",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-half-open-canopy-and-real-hinge-1-color.png": {
+      "protected_sha256": "5850dbdcf8141bc5ae8babcb016b7b0ca1ba30e32225a60a6fd7b7414ee61a01",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 409536,
+      "filled_texels": 639040,
+      "file_sha256": "8125111209638254d0ada7a7a89c566b7127ed069361416a6e6d8856149461b3",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-half-open-canopy-and-real-hinge-1-normal.png": {
+      "protected_sha256": "7adcbcd984fd076a7c57775a86c65a21ae1b96c5f09e4b9110312a511f36bc4f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 409536,
+      "filled_texels": 639040,
+      "file_sha256": "81a7f80e5aa3259ba47a30879d34fa89ecac8c973c60f5b8c24ae879a1395d58",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-half-open-canopy-and-real-hinge-1-roughness.png": {
+      "protected_sha256": "38020d8ba0c12787cc465d76768ab46c151a54996993b72f05ad720db574bb03",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 409536,
+      "filled_texels": 639040,
+      "file_sha256": "3f7c8ea8fb2f207bef679396ec3375172515502ffa4c10bb2b39b1953591f3a9",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "8-half-open-canopy-and-real-hinge-2-color.png": {
+      "protected_sha256": "ffc02ef67c35f1703adb1dbdfe70096bdcb05ddd73b0498edf61c20dbf1c8ed9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55424,
+      "filled_texels": 993152,
+      "file_sha256": "1535865624b35be1826ccf4f0c0b68d5002b1bb350bd1afe4a2d5f5926ffdc40",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "8-half-open-canopy-and-real-hinge-2-normal.png": {
+      "protected_sha256": "c99e3cca4deb8ab3c9f5eafb9d849fe69a94572543ac29b7bda5f15e2c8edfe4",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55424,
+      "filled_texels": 993152,
+      "file_sha256": "b2df3f5951ff13282f0514f7358dd63b42e9aba761ab13e6cb4946af60f38022",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "8-half-open-canopy-and-real-hinge-2-roughness.png": {
+      "protected_sha256": "7477cc339495065f22c27aad378771c7765a5b85846197b600c038d5fe5be8c4",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 55424,
+      "filled_texels": 993152,
+      "file_sha256": "69e9a7f43eadc9dad9bfe649294f7947b057d1e37bf70e0fc4f36288df7927cb",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    }
+  },
+  "scene_manifest_and_fbx_unchanged": true
+}

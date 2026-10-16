@@ -1,0 +1,202 @@
+{
+  "mode": "real UV islands",
+  "bleed_pixels": 3,
+  "maps": {
+    "1-cardboard-box-1-color.png": {
+      "protected_sha256": "e3f84d23f5dada4e33e25fba7f44541a397753f69bef71d46506c9d6e2c2a12c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 481602,
+      "filled_texels": 566974,
+      "file_sha256": "9abf12f2a729712313594695a76d653f1ae532e8c983763e663a4e3dcc514369",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-cardboard-box-1-normal.png": {
+      "protected_sha256": "ecf14fb244df51447c076bdc916cf4564c573f7082df8f188a26bdbaf334b2d5",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 481602,
+      "filled_texels": 566974,
+      "file_sha256": "5cb6c726a01e2d0f85b442fd6c9a5c576ec9343a45b7b8b7ca30ef57be8d66e4",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-cardboard-box-1-roughness.png": {
+      "protected_sha256": "c03c18e66fd8ce7175170289696a6e835af1cfa2ef3a276444bed5213d45e355",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 481602,
+      "filled_texels": 566974,
+      "file_sha256": "136db2d101af9e16fdf3907245732c7344d3e177c9502eb3add51c8fc476b044",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-cardboard-box-2-color.png": {
+      "protected_sha256": "9ce1d2a5c1e4d71db3c9701f99b7e6001d4b7c25fbfdde962995673d67e689d4",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 12193,
+      "filled_texels": 1036383,
+      "file_sha256": "702c1cd79a8c9b3fa1fecf0c0bf3b8002d7f22516abca61cc07911f12897edaf",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-cardboard-box-2-normal.png": {
+      "protected_sha256": "212248007512263d03b0f8e5d6ab6216a5747679682a317d4f6e0fcd7c29b2ad",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 12193,
+      "filled_texels": 1036383,
+      "file_sha256": "097013daee680e4f47c64d97f9108839e570ac904126818e169918df73e48400",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-cardboard-box-2-roughness.png": {
+      "protected_sha256": "442ac3ebbd9cd0462f31b76b7fd3cea943da06bb214bf794f7d733112191a32a",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 12193,
+      "filled_texels": 1036383,
+      "file_sha256": "5d012cc16c0c205da3e76388abfe6d8c51960ff73e3670f08f076ae02fbf9932",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-windows-and-door-color.png": {
+      "protected_sha256": "bab8717de44c576295897b8efda13134d8b0a4e11f22f18c945288a6f4a7799f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 40731,
+      "filled_texels": 1007845,
+      "file_sha256": "02b5f65dd10f91dc7c0a64aaf0c17ca84eb789b623fee6a40c96cb55d34132e9",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-windows-and-door-normal.png": {
+      "protected_sha256": "2bb8cdfe76b3c3e823e35cfbc130f1371e769d657aea82eaf957e834b6cdc680",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 40731,
+      "filled_texels": 1007845,
+      "file_sha256": "62e6b31c3d183d744c158a9ce4bf7d863a765ad38f29a5bcd711916f1034eb13",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-windows-and-door-roughness.png": {
+      "protected_sha256": "47c5f0debbd388498ef0a476eb36d1edec8390b3bcdd07705550c35fa086d16c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 40731,
+      "filled_texels": 1007845,
+      "file_sha256": "cd17092b7c5d808be128efe9ff46ca3edca9fee95cfde7bdb5dbc9d322692b73",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-propped-corrugated-awning-color.png": {
+      "protected_sha256": "b5fd3da1c68526827618013172782c34a2139c4662067cc50cb08c4ffe04606c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 586036,
+      "filled_texels": 462540,
+      "file_sha256": "693439591750239a5957535e21cc93d65b2d96b7efa1fc13d48d128d0d16977c",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-propped-corrugated-awning-normal.png": {
+      "protected_sha256": "1f3c6e75f414de05808f1f67d9d4233a345671f0a9faad72703c7eb8506d5530",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 586036,
+      "filled_texels": 462540,
+      "file_sha256": "0cda050cc5a3f3d66453b99cf7d606dfd8e0305ebbb98fc9074b96e1999ed2a9",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-propped-corrugated-awning-roughness.png": {
+      "protected_sha256": "2b669750f458fa9e0ad8cf61029c852fb2432fbd1eb3c5fb2016b415c32775f5",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 586036,
+      "filled_texels": 462540,
+      "file_sha256": "7521f3909c72fe0b74408c52e7818d7b13c2eb0319865e65f20e5b9143a5478d",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-toy-bricks-and-taped-props-color.png": {
+      "protected_sha256": "d14baa0bbc89bd2dc074ce88bf7c37ac0d0b403f03b1145aa82199cdf8bd8771",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37659,
+      "filled_texels": 1010917,
+      "file_sha256": "57811685428394e23d784e9d2a6752656ad114441d80799992d1b38b390e5d08",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-toy-bricks-and-taped-props-normal.png": {
+      "protected_sha256": "24748c00d73aaa6e1b94088210fe046d9700fb1c3c7db9f46a6e1e1ed70504cd",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37659,
+      "filled_texels": 1010917,
+      "file_sha256": "93e0d8e8913526e75019a8a96bf64b0743df6412b079a6a575bd6afde13842cf",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-toy-bricks-and-taped-props-roughness.png": {
+      "protected_sha256": "228aac79e4cc2860f66070cd347514dd47d99cf2f22c55efa1f244103880f49e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37659,
+      "filled_texels": 1010917,
+      "file_sha256": "b12295c5b4ce23c4e3fa5895f0f60f15ed934ed3662636adca97932236943192",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    }
+  },
+  "scene_manifest_and_fbx_unchanged": true
+}

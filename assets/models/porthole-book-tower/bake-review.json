@@ -1,0 +1,59 @@
+{
+  "building": "porthole-book-tower",
+  "pieces": 16,
+  "total_triangles": 57532,
+  "maximum_piece_triangles": 11898,
+  "lowest_front_pixels_per_stud": 4.304,
+  "open_edges": 0,
+  "front": "-y",
+  "touchup_changes": [],
+  "closeup_path": "assets\\models\\porthole-book-tower\\renders\\closeups.jpg",
+  "texture_contact_sheet": "assets\\models\\porthole-book-tower\\renders\\textures.png",
+  "hole": {
+    "center": [
+      0,
+      182.5
+    ],
+    "sample_spacing": 0.5,
+    "clear_center_ray": true,
+    "clear_pixels": 9078,
+    "largest_clear_circle_diameter": 53.45,
+    "clear_circle_center": [
+      0.0,
+      182.5
+    ],
+    "opening_area_studs2": 2269.5,
+    "front_render": "renders/flythrough-front.png",
+    "back_render": "renders/flythrough-back.png"
+  },
+  "texture_doubts": [
+    {
+      "file": "parts/7-upper-walls-back-left-color.png",
+      "concern": "Large blue X-like junction."
+    },
+    {
+      "file": "parts/9-roof-front-left-color.png",
+      "concern": "Large red X-like junction."
+    },
+    {
+      "file": "parts/10-roof-front-right-color.png",
+      "concern": "Red hook/J-like bend."
+    },
+    {
+      "file": "parts/13-topper-front-left-color.png",
+      "concern": "Stacked round O/8-like marks."
+    },
+    {
+      "file": "parts/13-topper-front-left-normal.png",
+      "concern": "Round window islands contain repeated O/X-like centres."
+    }
+  ],
+  "remaining_issues": [
+    "Minimum texture density 4.304 is below the 6-pixel aim.",
+    "Texture moderation doubts require review before any later upload."
+  ],
+  "visual_check": "Round porthole clear front and back with no film or webbing; book stack, door, roof and steps inspected.",
+  "texture_fill": "Shared fill_gaps.py --uv --all; packed scene refreshed afterwards.",
+  "additional_texture_review": "renders/part2-texture-review.json",
+  "closeup_status": "Reviewed final closeups.jpg rendered from saved hero.blend."
+}

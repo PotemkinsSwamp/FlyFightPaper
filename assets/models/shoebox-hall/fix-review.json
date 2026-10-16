@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "Rebuilt folded awning with separate rear plane and deep side flaps, height-adjusted posts, larger windows, separate flute/liner cut edges, cardboard fibres and stronger contact shading.",
+  "still_off": "Posts remain about 0.5 stud forward of the lid, leaving a support contact gap; rear roof plane is broader than the concept.",
+  "pieces": 5,
+  "triangles": 31596,
+  "lowest_front_pixels_per_stud": 7.051,
+  "compare": "assets/models/shoebox-hall/compare.png"
+}

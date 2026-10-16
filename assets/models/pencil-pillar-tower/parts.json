@@ -1,0 +1,541 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 15,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [],
+  "pieces": [
+    {
+      "label": "pencil-supported-box-1-1",
+      "triangles": 11200,
+      "bounding_box": {
+        "min": [
+          -33.5,
+          -33.5,
+          0.0
+        ],
+        "max": [
+          33.5,
+          33.5,
+          46.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-pencil-supported-box-1-1",
+      "front_pixels_per_stud": 7.909,
+      "front_surface_studs2": 4357.8537,
+      "outer_face_pixels_per_stud": {
+        "front": 7.909,
+        "back": 7.904,
+        "left": 7.939,
+        "right": 7.937,
+        "top": 7.992,
+        "bottom": 7.992
+      }
+    },
+    {
+      "label": "pencil-supported-box-1-2",
+      "triangles": 8708,
+      "bounding_box": {
+        "min": [
+          -32.36,
+          -38.5,
+          0.0
+        ],
+        "max": [
+          32.36,
+          32.23,
+          46.59
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-pencil-supported-box-1-2",
+      "front_pixels_per_stud": 7.877,
+      "front_surface_studs2": 249.9396,
+      "outer_face_pixels_per_stud": {
+        "front": 7.877,
+        "back": 7.839,
+        "left": 7.885,
+        "right": 7.945,
+        "top": 7.965,
+        "bottom": 7.965
+      }
+    },
+    {
+      "label": "pencil-supported-box-2-1",
+      "triangles": 11084,
+      "bounding_box": {
+        "min": [
+          -33.5,
+          -33.5,
+          46.5
+        ],
+        "max": [
+          33.5,
+          33.5,
+          93.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-pencil-supported-box-2-1",
+      "front_pixels_per_stud": 7.904,
+      "front_surface_studs2": 4044.1982,
+      "outer_face_pixels_per_stud": {
+        "front": 7.904,
+        "back": 7.904,
+        "left": 7.939,
+        "right": 7.937,
+        "top": 7.993,
+        "bottom": 7.993
+      }
+    },
+    {
+      "label": "pencil-supported-box-2-2",
+      "triangles": 6316,
+      "bounding_box": {
+        "min": [
+          -32.36,
+          -32.23,
+          88.0
+        ],
+        "max": [
+          32.36,
+          32.23,
+          93.09
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-pencil-supported-box-2-2",
+      "front_pixels_per_stud": 7.839,
+      "front_surface_studs2": 69.8658,
+      "outer_face_pixels_per_stud": {
+        "front": 7.839,
+        "back": 7.839,
+        "left": 7.977,
+        "right": 7.988,
+        "top": 7.919,
+        "bottom": 7.919
+      }
+    },
+    {
+      "label": "pencil-supported-box-3-1",
+      "triangles": 11084,
+      "bounding_box": {
+        "min": [
+          -33.5,
+          -33.5,
+          93.0
+        ],
+        "max": [
+          33.5,
+          33.5,
+          139.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-pencil-supported-box-3-1",
+      "front_pixels_per_stud": 7.904,
+      "front_surface_studs2": 4044.1957,
+      "outer_face_pixels_per_stud": {
+        "front": 7.904,
+        "back": 7.904,
+        "left": 7.939,
+        "right": 7.937,
+        "top": 7.993,
+        "bottom": 7.993
+      }
+    },
+    {
+      "label": "pencil-supported-box-3-2",
+      "triangles": 6316,
+      "bounding_box": {
+        "min": [
+          -32.36,
+          -32.23,
+          134.5
+        ],
+        "max": [
+          32.36,
+          32.23,
+          139.59
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-pencil-supported-box-3-2",
+      "front_pixels_per_stud": 7.839,
+      "front_surface_studs2": 69.8652,
+      "outer_face_pixels_per_stud": {
+        "front": 7.839,
+        "back": 7.839,
+        "left": 7.977,
+        "right": 7.988,
+        "top": 7.919,
+        "bottom": 7.919
+      }
+    },
+    {
+      "label": "pencil-supported-box-4-1",
+      "triangles": 11084,
+      "bounding_box": {
+        "min": [
+          -33.5,
+          -33.5,
+          139.5
+        ],
+        "max": [
+          33.5,
+          33.5,
+          186.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "7-pencil-supported-box-4-1",
+      "front_pixels_per_stud": 7.904,
+      "front_surface_studs2": 4044.197,
+      "outer_face_pixels_per_stud": {
+        "front": 7.904,
+        "back": 7.904,
+        "left": 7.939,
+        "right": 7.937,
+        "top": 7.993,
+        "bottom": 7.993
+      }
+    },
+    {
+      "label": "pencil-supported-box-4-2",
+      "triangles": 6316,
+      "bounding_box": {
+        "min": [
+          -32.36,
+          -32.23,
+          181.0
+        ],
+        "max": [
+          32.36,
+          32.23,
+          186.09
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "8-pencil-supported-box-4-2",
+      "front_pixels_per_stud": 7.839,
+      "front_surface_studs2": 69.8652,
+      "outer_face_pixels_per_stud": {
+        "front": 7.839,
+        "back": 7.839,
+        "left": 7.977,
+        "right": 7.988,
+        "top": 7.919,
+        "bottom": 7.919
+      }
+    },
+    {
+      "label": "pencil-supported-box-5-1",
+      "triangles": 11084,
+      "bounding_box": {
+        "min": [
+          -33.5,
+          -33.5,
+          186.0
+        ],
+        "max": [
+          33.5,
+          33.5,
+          232.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "9-pencil-supported-box-5-1",
+      "front_pixels_per_stud": 7.904,
+      "front_surface_studs2": 4044.1979,
+      "outer_face_pixels_per_stud": {
+        "front": 7.904,
+        "back": 7.904,
+        "left": 7.939,
+        "right": 7.937,
+        "top": 7.993,
+        "bottom": 7.993
+      }
+    },
+    {
+      "label": "pencil-supported-box-5-2",
+      "triangles": 6316,
+      "bounding_box": {
+        "min": [
+          -32.36,
+          -32.23,
+          227.5
+        ],
+        "max": [
+          32.36,
+          32.23,
+          232.59
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "10-pencil-supported-box-5-2",
+      "front_pixels_per_stud": 7.839,
+      "front_surface_studs2": 69.8652,
+      "outer_face_pixels_per_stud": {
+        "front": 7.839,
+        "back": 7.839,
+        "left": 7.977,
+        "right": 7.988,
+        "top": 7.919,
+        "bottom": 7.919
+      }
+    },
+    {
+      "label": "pencil-supported-box-6-1",
+      "triangles": 11084,
+      "bounding_box": {
+        "min": [
+          -33.5,
+          -33.5,
+          232.5
+        ],
+        "max": [
+          33.5,
+          33.5,
+          279.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "11-pencil-supported-box-6-1",
+      "front_pixels_per_stud": 7.904,
+      "front_surface_studs2": 4044.1864,
+      "outer_face_pixels_per_stud": {
+        "front": 7.904,
+        "back": 7.904,
+        "left": 7.939,
+        "right": 7.937,
+        "top": 7.993,
+        "bottom": 7.993
+      }
+    },
+    {
+      "label": "pencil-supported-box-6-2",
+      "triangles": 6316,
+      "bounding_box": {
+        "min": [
+          -32.36,
+          -32.23,
+          274.0
+        ],
+        "max": [
+          32.36,
+          32.23,
+          279.09
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "12-pencil-supported-box-6-2",
+      "front_pixels_per_stud": 7.839,
+      "front_surface_studs2": 69.8652,
+      "outer_face_pixels_per_stud": {
+        "front": 7.839,
+        "back": 7.839,
+        "left": 7.977,
+        "right": 7.988,
+        "top": 7.919,
+        "bottom": 7.919
+      }
+    },
+    {
+      "label": "pencil-supported-box-7-1",
+      "triangles": 11084,
+      "bounding_box": {
+        "min": [
+          -33.5,
+          -33.5,
+          279.0
+        ],
+        "max": [
+          33.5,
+          33.5,
+          325.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "13-pencil-supported-box-7-1",
+      "front_pixels_per_stud": 7.904,
+      "front_surface_studs2": 4044.1825,
+      "outer_face_pixels_per_stud": {
+        "front": 7.904,
+        "back": 7.904,
+        "left": 7.939,
+        "right": 7.937,
+        "top": 7.993,
+        "bottom": 7.993
+      }
+    },
+    {
+      "label": "pencil-supported-box-7-2",
+      "triangles": 6316,
+      "bounding_box": {
+        "min": [
+          -32.36,
+          -32.23,
+          320.5
+        ],
+        "max": [
+          32.36,
+          32.23,
+          325.59
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "14-pencil-supported-box-7-2",
+      "front_pixels_per_stud": 7.839,
+      "front_surface_studs2": 69.8652,
+      "outer_face_pixels_per_stud": {
+        "front": 7.839,
+        "back": 7.839,
+        "left": 7.977,
+        "right": 7.988,
+        "top": 7.919,
+        "bottom": 7.919
+      }
+    },
+    {
+      "label": "four-sharpened-hex-pencil-tips",
+      "triangles": 144,
+      "bounding_box": {
+        "min": [
+          -32.7,
+          -32.27128,
+          325.5
+        ],
+        "max": [
+          32.7,
+          32.27128,
+          345.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "15-four-sharpened-hex-pencil-tips",
+      "front_pixels_per_stud": 7.968,
+      "front_surface_studs2": 72.2708,
+      "outer_face_pixels_per_stud": {
+        "front": 7.968,
+        "back": 7.968,
+        "left": 7.415,
+        "right": 7.415,
+        "top": 8.0,
+        "bottom": 8.0
+      }
+    }
+  ],
+  "total_triangles": 124452,
+  "bounding_box": {
+    "min": [
+      -33.5,
+      -38.5,
+      0.0
+    ],
+    "max": [
+      33.5,
+      33.5,
+      345.0
+    ]
+  },
+  "height": 345.0,
+  "requested_height": 345
+}

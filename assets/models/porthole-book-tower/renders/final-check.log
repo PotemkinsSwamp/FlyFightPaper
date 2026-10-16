@@ -1,0 +1,40 @@
+00:00.515  blend            | Read blend: "D:\FlyFightPaper\assets\models\porthole-book-tower\hero.blend"
+Extensions: writing cache failed ([Errno 13] Permission denied: 'C:\\Users\\gutie\\AppData\\Roaming\\Blender Foundation\\Blender\\5.1\\extensions\\.cache\\compat.dat').
+FINAL boundary ground-floor-front-left 0
+FINAL boundary ground-floor-front-right 0
+FINAL boundary ground-floor-back-left 0
+FINAL boundary ground-floor-back-right 0
+FINAL boundary upper-walls-front-left 0
+FINAL boundary upper-walls-front-right 0
+FINAL boundary upper-walls-back-left 0
+FINAL boundary upper-walls-back-right 0
+FINAL boundary roof-front-left 0
+FINAL boundary roof-front-right 0
+FINAL boundary roof-back-left 0
+FINAL boundary roof-back-right 0
+FINAL boundary topper-front-left 0
+FINAL boundary topper-front-right 0
+FINAL boundary topper-back-left 0
+FINAL boundary topper-back-right 0
+00:18.687  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\render-front.png'
+00:19.125  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\render-back.png'
+00:19.922  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\ground-floor-after.png'
+Info: Saved as "hero.blend"
+FINAL maps refreshed porthole-book-tower
+00:20.390  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\closeup-0.png'
+00:20.765  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\closeup-1.png'
+00:21.187  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\closeup-2.png'
+00:21.593  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\closeup-3.png'
+00:22.000  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\closeup-4.png'
+00:22.390  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\closeup-5.png'
+00:22.750  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\closeup-6.png'
+00:23.078  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\closeup-7.png'
+CHECK boundaries []
+D:\FlyFightPaper\assets\models\porthole-book-tower\renders\inspect_bake.py:48: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat=bpy.data.materials.new(name); mat.use_nodes=True
+00:27.203  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\flythrough-front.png'
+00:28.093  render           | Saved: 'D:\FlyFightPaper\assets\models\porthole-book-tower\renders\flythrough-back.png'
+CHECK done porthole-book-tower
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

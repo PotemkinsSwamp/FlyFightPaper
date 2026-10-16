@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "Four roof pencils visibly separate hexagonal sharpened wood from dark graphite. Added shaft/wood/graphite texture recipes, fibre-textured boxes, genuine corrugated floor edges and folded tape. Door raised onto step studs, knob at half height; shallow concept camera.",
+  "still_off": "Corrugated edges are finer and the boxes a little wider than in the concept.",
+  "pieces": 15,
+  "triangles": 124452,
+  "lowest_front_pixels_per_stud": 7.839,
+  "compare": "assets\\models\\pencil-pillar-tower\\compare.png"
+}

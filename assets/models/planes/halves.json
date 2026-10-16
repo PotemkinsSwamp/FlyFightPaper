@@ -1,0 +1,3203 @@
+{
+ "from": "tools/art/split_halves.py",
+ "exports": [
+  {
+   "file": "body-paper-L.fbx",
+   "object": "body-paper-L",
+   "part": "body",
+   "region": "paper",
+   "display_name": "Classic Fold",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    1.404757
+   ],
+   "size": [
+    1.3,
+    2.25,
+    8.022345
+   ],
+   "triangles": 132,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    0.0,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "body-paper-R.fbx",
+   "object": "body-paper-R",
+   "part": "body",
+   "region": "paper",
+   "display_name": "Classic Fold",
+   "bbox_center": [
+    0.65,
+    0.275,
+    1.404757
+   ],
+   "size": [
+    1.3,
+    2.25,
+    8.022345
+   ],
+   "triangles": 144,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    0.0,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "nose-paper-L.fbx",
+   "object": "nose-paper-L",
+   "part": "nose",
+   "region": "paper",
+   "display_name": "Classic Nose",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    -4.119491
+   ],
+   "size": [
+    1.3,
+    2.25,
+    3.02615
+   ],
+   "triangles": 64,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    0.0,
+    1.008717
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "nose-paper-R.fbx",
+   "object": "nose-paper-R",
+   "part": "nose",
+   "region": "paper",
+   "display_name": "Classic Nose",
+   "bbox_center": [
+    0.65,
+    0.275,
+    -4.119491
+   ],
+   "size": [
+    1.3,
+    2.25,
+    3.02615
+   ],
+   "triangles": 72,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    0.0,
+    1.008717
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings-paper-L.fbx",
+   "object": "wings-paper-L",
+   "part": "wings",
+   "region": "paper",
+   "display_name": "Classic Wings",
+   "bbox_center": [
+    -3.401881,
+    0.875,
+    1.404757
+   ],
+   "size": [
+    6.803761,
+    0.19,
+    8.022345
+   ],
+   "triangles": 54,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -3.401881,
+    -0.02097,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings-paper-R.fbx",
+   "object": "wings-paper-R",
+   "part": "wings",
+   "region": "paper",
+   "display_name": "Classic Wings",
+   "bbox_center": [
+    3.401881,
+    0.875,
+    1.404757
+   ],
+   "size": [
+    6.803761,
+    0.19,
+    8.022345
+   ],
+   "triangles": 54,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    3.401881,
+    -0.02097,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings-accent-L.fbx",
+   "object": "wings-accent-L",
+   "part": "wings",
+   "region": "accent",
+   "display_name": "Classic Wings",
+   "bbox_center": [
+    -5.548761,
+    0.984436,
+    3.504291
+   ],
+   "size": [
+    0.95,
+    0.055008,
+    3.581723
+   ],
+   "triangles": 20,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -5.548761,
+    0.088466,
+    2.099534
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings-accent-R.fbx",
+   "object": "wings-accent-R",
+   "part": "wings",
+   "region": "accent",
+   "display_name": "Classic Wings",
+   "bbox_center": [
+    5.548761,
+    0.984436,
+    3.504291
+   ],
+   "size": [
+    0.95,
+    0.055008,
+    3.581723
+   ],
+   "triangles": 20,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    5.548761,
+    0.088466,
+    2.099534
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "tail-paper-L.fbx",
+   "object": "tail-paper-L",
+   "part": "tail",
+   "region": "paper",
+   "display_name": "Classic Tail",
+   "bbox_center": [
+    -0.3975,
+    1.690913,
+    6.415
+   ],
+   "size": [
+    0.795,
+    2.421826,
+    2.47
+   ],
+   "triangles": 92,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    -0.3975,
+    0.0,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "tail-paper-R.fbx",
+   "object": "tail-paper-R",
+   "part": "tail",
+   "region": "paper",
+   "display_name": "Classic Tail",
+   "bbox_center": [
+    0.3975,
+    1.690913,
+    6.415
+   ],
+   "size": [
+    0.795,
+    2.421826,
+    2.47
+   ],
+   "triangles": 92,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    0.3975,
+    0.0,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "body_slim-paper-L.fbx",
+   "object": "body_slim-paper-L",
+   "part": "body_slim",
+   "region": "paper",
+   "display_name": "Swift Fold",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    1.404757
+   ],
+   "size": [
+    1.3,
+    2.25,
+    8.022345
+   ],
+   "triangles": 174,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    -0.0,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "body_slim-paper-R.fbx",
+   "object": "body_slim-paper-R",
+   "part": "body_slim",
+   "region": "paper",
+   "display_name": "Swift Fold",
+   "bbox_center": [
+    0.65,
+    0.275,
+    1.404757
+   ],
+   "size": [
+    1.3,
+    2.25,
+    8.022345
+   ],
+   "triangles": 180,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    -0.0,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "body_heavy-cardboard-L.fbx",
+   "object": "body_heavy-cardboard-L",
+   "part": "body_heavy",
+   "region": "cardboard",
+   "display_name": "Cardboard Gunship",
+   "bbox_center": [
+    -1.3,
+    -0.2875,
+    1.404757
+   ],
+   "size": [
+    2.6,
+    3.375,
+    8.022345
+   ],
+   "triangles": 214,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -1.3,
+    -0.5625,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "body_heavy-cardboard-R.fbx",
+   "object": "body_heavy-cardboard-R",
+   "part": "body_heavy",
+   "region": "cardboard",
+   "display_name": "Cardboard Gunship",
+   "bbox_center": [
+    1.3,
+    -0.2875,
+    1.404757
+   ],
+   "size": [
+    2.6,
+    3.375,
+    8.022345
+   ],
+   "triangles": 228,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    1.3,
+    -0.5625,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "body_standard_mk2-paper-L.fbx",
+   "object": "body_standard_mk2-paper-L",
+   "part": "body_standard_mk2",
+   "region": "paper",
+   "display_name": "Courier Fold",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    1.404757
+   ],
+   "size": [
+    1.3,
+    2.25,
+    8.022345
+   ],
+   "triangles": 190,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    -0.0,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "body_standard_mk2-paper-R.fbx",
+   "object": "body_standard_mk2-paper-R",
+   "part": "body_standard_mk2",
+   "region": "paper",
+   "display_name": "Courier Fold",
+   "bbox_center": [
+    0.65,
+    0.275,
+    1.404757
+   ],
+   "size": [
+    1.3,
+    2.25,
+    8.022345
+   ],
+   "triangles": 202,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    -0.0,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "body_slim_mk2-paper-L.fbx",
+   "object": "body_slim_mk2-paper-L",
+   "part": "body_slim_mk2",
+   "region": "paper",
+   "display_name": "Racing Fold",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    1.404757
+   ],
+   "size": [
+    1.3,
+    2.25,
+    8.022345
+   ],
+   "triangles": 174,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    -0.0,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "body_slim_mk2-paper-R.fbx",
+   "object": "body_slim_mk2-paper-R",
+   "part": "body_slim_mk2",
+   "region": "paper",
+   "display_name": "Racing Fold",
+   "bbox_center": [
+    0.65,
+    0.275,
+    1.404757
+   ],
+   "size": [
+    1.3,
+    2.25,
+    8.022345
+   ],
+   "triangles": 180,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    -0.0,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "body_heavy_mk2-tube-L.fbx",
+   "object": "body_heavy_mk2-tube-L",
+   "part": "body_heavy_mk2",
+   "region": "tube",
+   "display_name": "Toilet Roll Gunship",
+   "bbox_center": [
+    -0.875,
+    -0.25,
+    1.404757
+   ],
+   "size": [
+    1.75,
+    3.5,
+    8.022345
+   ],
+   "triangles": 474,
+   "suggested_color3_255": [
+    184,
+    154,
+    118
+   ],
+   "suggested_color3": [
+    0.721569,
+    0.603922,
+    0.462745
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -0.875,
+    -0.525,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "body_heavy_mk2-tube-R.fbx",
+   "object": "body_heavy_mk2-tube-R",
+   "part": "body_heavy_mk2",
+   "region": "tube",
+   "display_name": "Toilet Roll Gunship",
+   "bbox_center": [
+    0.875,
+    -0.25,
+    1.404757
+   ],
+   "size": [
+    1.75,
+    3.5,
+    8.022345
+   ],
+   "triangles": 518,
+   "suggested_color3_255": [
+    184,
+    154,
+    118
+   ],
+   "suggested_color3": [
+    0.721569,
+    0.603922,
+    0.462745
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    0.875,
+    -0.525,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "body_heavy_mk2-cardboard-L.fbx",
+   "object": "body_heavy_mk2-cardboard-L",
+   "part": "body_heavy_mk2",
+   "region": "cardboard",
+   "display_name": "Toilet Roll Gunship",
+   "bbox_center": [
+    -0.881052,
+    -0.25,
+    1.403267
+   ],
+   "size": [
+    1.762104,
+    3.524207,
+    7.371506
+   ],
+   "triangles": 106,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -0.881052,
+    -0.525,
+    -0.00149
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "body_heavy_mk2-cardboard-R.fbx",
+   "object": "body_heavy_mk2-cardboard-R",
+   "part": "body_heavy_mk2",
+   "region": "cardboard",
+   "display_name": "Toilet Roll Gunship",
+   "bbox_center": [
+    0.881052,
+    -0.25,
+    1.403267
+   ],
+   "size": [
+    1.762104,
+    3.524207,
+    7.371506
+   ],
+   "triangles": 136,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    0.881052,
+    -0.525,
+    -0.00149
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "body_heavy_mk2-paper-L.fbx",
+   "object": "body_heavy_mk2-paper-L",
+   "part": "body_heavy_mk2",
+   "region": "paper",
+   "display_name": "Toilet Roll Gunship",
+   "bbox_center": [
+    -0.9,
+    0.245,
+    1.404757
+   ],
+   "size": [
+    1.8,
+    2.55,
+    2.824115
+   ],
+   "triangles": 90,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -0.9,
+    -0.03,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "body_heavy_mk2-paper-R.fbx",
+   "object": "body_heavy_mk2-paper-R",
+   "part": "body_heavy_mk2",
+   "region": "paper",
+   "display_name": "Toilet Roll Gunship",
+   "bbox_center": [
+    0.9,
+    0.245,
+    1.404757
+   ],
+   "size": [
+    1.8,
+    2.55,
+    2.824115
+   ],
+   "triangles": 90,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    0.9,
+    -0.03,
+    -0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "nose_1-paper-L.fbx",
+   "object": "nose_1-paper-L",
+   "part": "nose_1",
+   "region": "paper",
+   "display_name": "Needle Nose",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    -5.499166
+   ],
+   "size": [
+    1.3,
+    2.25,
+    5.7855
+   ],
+   "triangles": 64,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    -0.0,
+    -0.370958
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "nose_1-paper-R.fbx",
+   "object": "nose_1-paper-R",
+   "part": "nose_1",
+   "region": "paper",
+   "display_name": "Needle Nose",
+   "bbox_center": [
+    0.65,
+    0.275,
+    -5.499166
+   ],
+   "size": [
+    1.3,
+    2.25,
+    5.7855
+   ],
+   "triangles": 72,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    -0.0,
+    -0.370958
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "nose_2-paper-L.fbx",
+   "object": "nose_2-paper-L",
+   "part": "nose_2",
+   "region": "paper",
+   "display_name": "Blunt Nose",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    -3.640016
+   ],
+   "size": [
+    1.3,
+    2.25,
+    2.0672
+   ],
+   "triangles": 62,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    -0.0,
+    1.488192
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "nose_2-paper-R.fbx",
+   "object": "nose_2-paper-R",
+   "part": "nose_2",
+   "region": "paper",
+   "display_name": "Blunt Nose",
+   "bbox_center": [
+    0.65,
+    0.275,
+    -3.640016
+   ],
+   "size": [
+    1.3,
+    2.25,
+    2.0672
+   ],
+   "triangles": 72,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    -0.0,
+    1.488192
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "nose_3-paper-L.fbx",
+   "object": "nose_3-paper-L",
+   "part": "nose_3",
+   "region": "paper",
+   "display_name": "Long Point",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    -4.748416
+   ],
+   "size": [
+    1.3,
+    2.25,
+    4.284
+   ],
+   "triangles": 64,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    -0.0,
+    0.379792
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "nose_3-paper-R.fbx",
+   "object": "nose_3-paper-R",
+   "part": "nose_3",
+   "region": "paper",
+   "display_name": "Long Point",
+   "bbox_center": [
+    0.65,
+    0.275,
+    -4.748416
+   ],
+   "size": [
+    1.3,
+    2.25,
+    4.284
+   ],
+   "triangles": 72,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    -0.0,
+    0.379792
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "nose_4-paper-L.fbx",
+   "object": "nose_4-paper-L",
+   "part": "nose_4",
+   "region": "paper",
+   "display_name": "Compact Nose",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    -3.540216
+   ],
+   "size": [
+    1.3,
+    2.25,
+    1.8676
+   ],
+   "triangles": 64,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    -0.0,
+    1.587992
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "nose_4-paper-R.fbx",
+   "object": "nose_4-paper-R",
+   "part": "nose_4",
+   "region": "paper",
+   "display_name": "Compact Nose",
+   "bbox_center": [
+    0.65,
+    0.275,
+    -3.540216
+   ],
+   "size": [
+    1.3,
+    2.25,
+    1.8676
+   ],
+   "triangles": 72,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    -0.0,
+    1.587992
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "nose_5-paper-L.fbx",
+   "object": "nose_5-paper-L",
+   "part": "nose_5",
+   "region": "paper",
+   "display_name": "Tape Nose",
+   "bbox_center": [
+    -0.65,
+    0.275,
+    -4.425166
+   ],
+   "size": [
+    1.3,
+    2.25,
+    3.6375
+   ],
+   "triangles": 64,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    -0.65,
+    -0.0,
+    0.703042
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "nose_5-paper-R.fbx",
+   "object": "nose_5-paper-R",
+   "part": "nose_5",
+   "region": "paper",
+   "display_name": "Tape Nose",
+   "bbox_center": [
+    0.65,
+    0.275,
+    -4.425166
+   ],
+   "size": [
+    1.3,
+    2.25,
+    3.6375
+   ],
+   "triangles": 72,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.275,
+    -5.128208
+   ],
+   "center_offset_from_slot": [
+    0.65,
+    -0.0,
+    0.703042
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_1-paper-L.fbx",
+   "object": "wings_1-paper-L",
+   "part": "wings_1",
+   "region": "paper",
+   "display_name": "Swept Wings",
+   "bbox_center": [
+    -3.7,
+    0.875,
+    1.386792
+   ],
+   "size": [
+    7.4,
+    0.19,
+    7.986416
+   ],
+   "triangles": 46,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -3.7,
+    -0.02097,
+    -0.017965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_1-paper-R.fbx",
+   "object": "wings_1-paper-R",
+   "part": "wings_1",
+   "region": "paper",
+   "display_name": "Swept Wings",
+   "bbox_center": [
+    3.7,
+    0.875,
+    1.386792
+   ],
+   "size": [
+    7.4,
+    0.19,
+    7.986416
+   ],
+   "triangles": 46,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    3.7,
+    -0.02097,
+    -0.017965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_1-accent-L.fbx",
+   "object": "wings_1-accent-L",
+   "part": "wings_1",
+   "region": "accent",
+   "display_name": "Swept Wings",
+   "bbox_center": [
+    -6.7,
+    0.987547,
+    4.442858
+   ],
+   "size": [
+    1.08,
+    0.040906,
+    1.656194
+   ],
+   "triangles": 12,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -6.7,
+    0.091577,
+    3.038101
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_1-accent-R.fbx",
+   "object": "wings_1-accent-R",
+   "part": "wings_1",
+   "region": "accent",
+   "display_name": "Swept Wings",
+   "bbox_center": [
+    6.7,
+    0.987547,
+    4.442858
+   ],
+   "size": [
+    1.08,
+    0.040906,
+    1.656194
+   ],
+   "triangles": 12,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    6.7,
+    0.091577,
+    3.038101
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_2-paper-L.fbx",
+   "object": "wings_2-paper-L",
+   "part": "wings_2",
+   "region": "paper",
+   "display_name": "Broad Wings",
+   "bbox_center": [
+    -4.2,
+    0.875,
+    0.836792
+   ],
+   "size": [
+    8.4,
+    0.19,
+    6.886416
+   ],
+   "triangles": 46,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -4.2,
+    -0.02097,
+    -0.567965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_2-paper-R.fbx",
+   "object": "wings_2-paper-R",
+   "part": "wings_2",
+   "region": "paper",
+   "display_name": "Broad Wings",
+   "bbox_center": [
+    4.2,
+    0.875,
+    0.836792
+   ],
+   "size": [
+    8.4,
+    0.19,
+    6.886416
+   ],
+   "triangles": 46,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    4.2,
+    -0.02097,
+    -0.567965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_2-accent-L.fbx",
+   "object": "wings_2-accent-L",
+   "part": "wings_2",
+   "region": "accent",
+   "display_name": "Broad Wings",
+   "bbox_center": [
+    -7.85,
+    0.995,
+    1.074554
+   ],
+   "size": [
+    0.78,
+    0.026,
+    5.6832
+   ],
+   "triangles": 12,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -7.85,
+    0.09903,
+    -0.330203
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_2-accent-R.fbx",
+   "object": "wings_2-accent-R",
+   "part": "wings_2",
+   "region": "accent",
+   "display_name": "Broad Wings",
+   "bbox_center": [
+    7.85,
+    0.995,
+    1.074554
+   ],
+   "size": [
+    0.78,
+    0.026,
+    5.6832
+   ],
+   "triangles": 12,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    7.85,
+    0.09903,
+    -0.330203
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_3-paper-L.fbx",
+   "object": "wings_3-paper-L",
+   "part": "wings_3",
+   "region": "paper",
+   "display_name": "Delta Wings",
+   "bbox_center": [
+    -3.625,
+    0.875,
+    1.276792
+   ],
+   "size": [
+    7.25,
+    0.19,
+    7.766416
+   ],
+   "triangles": 46,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -3.625,
+    -0.02097,
+    -0.127965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_3-paper-R.fbx",
+   "object": "wings_3-paper-R",
+   "part": "wings_3",
+   "region": "paper",
+   "display_name": "Delta Wings",
+   "bbox_center": [
+    3.625,
+    0.875,
+    1.276792
+   ],
+   "size": [
+    7.25,
+    0.19,
+    7.766416
+   ],
+   "triangles": 46,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    3.625,
+    -0.02097,
+    -0.127965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_3-accent-L.fbx",
+   "object": "wings_3-accent-L",
+   "part": "wings_3",
+   "region": "accent",
+   "display_name": "Delta Wings",
+   "bbox_center": [
+    -6.55,
+    0.98581,
+    4.261583
+   ],
+   "size": [
+    1.08,
+    0.044379,
+    1.716833
+   ],
+   "triangles": 12,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -6.55,
+    0.08984,
+    2.856826
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_3-accent-R.fbx",
+   "object": "wings_3-accent-R",
+   "part": "wings_3",
+   "region": "accent",
+   "display_name": "Delta Wings",
+   "bbox_center": [
+    6.55,
+    0.98581,
+    4.261583
+   ],
+   "size": [
+    1.08,
+    0.044379,
+    1.716833
+   ],
+   "triangles": 12,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    6.55,
+    0.08984,
+    2.856826
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_4-paper-L.fbx",
+   "object": "wings_4-paper-L",
+   "part": "wings_4",
+   "region": "paper",
+   "display_name": "Cardstock Wings",
+   "bbox_center": [
+    -3.375,
+    1.385,
+    0.936792
+   ],
+   "size": [
+    6.75,
+    1.33,
+    7.086416
+   ],
+   "triangles": 62,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -3.375,
+    0.48903,
+    -0.467965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_4-paper-R.fbx",
+   "object": "wings_4-paper-R",
+   "part": "wings_4",
+   "region": "paper",
+   "display_name": "Cardstock Wings",
+   "bbox_center": [
+    3.375,
+    1.385,
+    0.936792
+   ],
+   "size": [
+    6.75,
+    1.33,
+    7.086416
+   ],
+   "triangles": 62,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    3.375,
+    0.48903,
+    -0.467965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_4-cardboard-L.fbx",
+   "object": "wings_4-cardboard-L",
+   "part": "wings_4",
+   "region": "cardboard",
+   "display_name": "Cardstock Wings",
+   "bbox_center": [
+    -3.375,
+    0.736878,
+    0.936792
+   ],
+   "size": [
+    6.75,
+    0.133755,
+    7.086416
+   ],
+   "triangles": 46,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -3.375,
+    -0.159092,
+    -0.467965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_4-cardboard-R.fbx",
+   "object": "wings_4-cardboard-R",
+   "part": "wings_4",
+   "region": "cardboard",
+   "display_name": "Cardstock Wings",
+   "bbox_center": [
+    3.375,
+    0.736878,
+    0.936792
+   ],
+   "size": [
+    6.75,
+    0.133755,
+    7.086416
+   ],
+   "triangles": 46,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    3.375,
+    -0.159092,
+    -0.467965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_4-accent-L.fbx",
+   "object": "wings_4-accent-L",
+   "part": "wings_4",
+   "region": "accent",
+   "display_name": "Cardstock Wings",
+   "bbox_center": [
+    -6.68,
+    1.5975,
+    1.665
+   ],
+   "size": [
+    0.183,
+    0.895,
+    4.63
+   ],
+   "triangles": 24,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -6.68,
+    0.70153,
+    0.260243
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_4-accent-R.fbx",
+   "object": "wings_4-accent-R",
+   "part": "wings_4",
+   "region": "accent",
+   "display_name": "Cardstock Wings",
+   "bbox_center": [
+    6.68,
+    1.5975,
+    1.665
+   ],
+   "size": [
+    0.183,
+    0.895,
+    4.63
+   ],
+   "triangles": 24,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    6.68,
+    0.70153,
+    0.260243
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_5-paper-L.fbx",
+   "object": "wings_5-paper-L",
+   "part": "wings_5",
+   "region": "paper",
+   "display_name": "Feather Folds",
+   "bbox_center": [
+    -3.975,
+    0.836509,
+    1.346792
+   ],
+   "size": [
+    7.95,
+    0.266983,
+    7.106416
+   ],
+   "triangles": 198,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -3.975,
+    -0.059461,
+    -0.057965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_5-paper-R.fbx",
+   "object": "wings_5-paper-R",
+   "part": "wings_5",
+   "region": "paper",
+   "display_name": "Feather Folds",
+   "bbox_center": [
+    3.975,
+    0.836509,
+    1.346792
+   ],
+   "size": [
+    7.95,
+    0.266983,
+    7.106416
+   ],
+   "triangles": 198,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    3.975,
+    -0.059461,
+    -0.057965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "wings_5-accent-L.fbx",
+   "object": "wings_5-accent-L",
+   "part": "wings_5",
+   "region": "accent",
+   "display_name": "Feather Folds",
+   "bbox_center": [
+    -7.225,
+    0.941483,
+    0.207143
+   ],
+   "size": [
+    1.45,
+    0.133033,
+    3.194076
+   ],
+   "triangles": 108,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    -7.225,
+    0.045513,
+    -1.197614
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "wings_5-accent-R.fbx",
+   "object": "wings_5-accent-R",
+   "part": "wings_5",
+   "region": "accent",
+   "display_name": "Feather Folds",
+   "bbox_center": [
+    7.225,
+    0.941483,
+    0.207143
+   ],
+   "size": [
+    1.45,
+    0.133033,
+    3.194076
+   ],
+   "triangles": 108,
+   "suggested_color3_255": [
+    206,
+    48,
+    43
+   ],
+   "suggested_color3": [
+    0.807843,
+    0.188235,
+    0.168627
+   ],
+   "team_color_at_runtime": true,
+   "slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+   ],
+   "center_offset_from_slot": [
+    7.225,
+    0.045513,
+    -1.197614
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "tail_1-paper-L.fbx",
+   "object": "tail_1-paper-L",
+   "part": "tail_1",
+   "region": "paper",
+   "display_name": "Split Tail",
+   "bbox_center": [
+    -0.524899,
+    1.515656,
+    6.532965
+   ],
+   "size": [
+    1.049798,
+    2.951312,
+    2.234071
+   ],
+   "triangles": 126,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    -0.524899,
+    -0.175257,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "tail_1-paper-R.fbx",
+   "object": "tail_1-paper-R",
+   "part": "tail_1",
+   "region": "paper",
+   "display_name": "Split Tail",
+   "bbox_center": [
+    0.524899,
+    1.515656,
+    6.532965
+   ],
+   "size": [
+    1.049798,
+    2.951312,
+    2.234071
+   ],
+   "triangles": 128,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    0.524899,
+    -0.175257,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "tail_2-paper-L.fbx",
+   "object": "tail_2-paper-L",
+   "part": "tail_2",
+   "region": "paper",
+   "display_name": "Ridge Tail",
+   "bbox_center": [
+    -0.3975,
+    1.51,
+    6.532965
+   ],
+   "size": [
+    0.795,
+    2.94,
+    2.234071
+   ],
+   "triangles": 198,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    -0.3975,
+    -0.180913,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "tail_2-paper-R.fbx",
+   "object": "tail_2-paper-R",
+   "part": "tail_2",
+   "region": "paper",
+   "display_name": "Ridge Tail",
+   "bbox_center": [
+    0.3975,
+    1.51,
+    6.532965
+   ],
+   "size": [
+    0.795,
+    2.94,
+    2.234071
+   ],
+   "triangles": 198,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    0.3975,
+    -0.180913,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "tail_3-paper-L.fbx",
+   "object": "tail_3-paper-L",
+   "part": "tail_3",
+   "region": "paper",
+   "display_name": "Wide Tail",
+   "bbox_center": [
+    -1.45,
+    1.51,
+    6.532965
+   ],
+   "size": [
+    2.9,
+    2.94,
+    2.234071
+   ],
+   "triangles": 260,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    -1.45,
+    -0.180913,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "tail_3-paper-R.fbx",
+   "object": "tail_3-paper-R",
+   "part": "tail_3",
+   "region": "paper",
+   "display_name": "Wide Tail",
+   "bbox_center": [
+    1.45,
+    1.51,
+    6.532965
+   ],
+   "size": [
+    2.9,
+    2.94,
+    2.234071
+   ],
+   "triangles": 262,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    1.45,
+    -0.180913,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "tail_4-paper-L.fbx",
+   "object": "tail_4-paper-L",
+   "part": "tail_4",
+   "region": "paper",
+   "display_name": "Guide Fin",
+   "bbox_center": [
+    -0.3975,
+    2.13,
+    6.532965
+   ],
+   "size": [
+    0.795,
+    4.18,
+    2.234071
+   ],
+   "triangles": 154,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    -0.3975,
+    0.439087,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "tail_4-paper-R.fbx",
+   "object": "tail_4-paper-R",
+   "part": "tail_4",
+   "region": "paper",
+   "display_name": "Guide Fin",
+   "bbox_center": [
+    0.3975,
+    2.13,
+    6.532965
+   ],
+   "size": [
+    0.795,
+    4.18,
+    2.234071
+   ],
+   "triangles": 154,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    0.3975,
+    0.439087,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "tail_5-paper-L.fbx",
+   "object": "tail_5-paper-L",
+   "part": "tail_5",
+   "region": "paper",
+   "display_name": "Tape Tail",
+   "bbox_center": [
+    -0.3975,
+    1.51,
+    6.532965
+   ],
+   "size": [
+    0.795,
+    2.94,
+    2.234071
+   ],
+   "triangles": 148,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    -0.3975,
+    -0.180913,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "tail_5-paper-R.fbx",
+   "object": "tail_5-paper-R",
+   "part": "tail_5",
+   "region": "paper",
+   "display_name": "Tape Tail",
+   "bbox_center": [
+    0.3975,
+    1.51,
+    6.532965
+   ],
+   "size": [
+    0.795,
+    2.94,
+    2.234071
+   ],
+   "triangles": 150,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    1.690913,
+    6.415
+   ],
+   "center_offset_from_slot": [
+    0.3975,
+    -0.180913,
+    0.117965
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "boost_band-paper-L.fbx",
+   "object": "boost_band-paper-L",
+   "part": "boost_band",
+   "region": "paper",
+   "display_name": "Elastic Booster",
+   "bbox_center": [
+    -0.245,
+    -0.810057,
+    3.24
+   ],
+   "size": [
+    0.49,
+    0.65,
+    2.46
+   ],
+   "triangles": 28,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    -0.245,
+    -0.535,
+    -0.01
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "boost_band-paper-R.fbx",
+   "object": "boost_band-paper-R",
+   "part": "boost_band",
+   "region": "paper",
+   "display_name": "Elastic Booster",
+   "bbox_center": [
+    0.245,
+    -0.810057,
+    3.24
+   ],
+   "size": [
+    0.49,
+    0.65,
+    2.46
+   ],
+   "triangles": 28,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    0.245,
+    -0.535,
+    -0.01
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "boost_band-cardboard-L.fbx",
+   "object": "boost_band-cardboard-L",
+   "part": "boost_band",
+   "region": "cardboard",
+   "display_name": "Elastic Booster",
+   "bbox_center": [
+    -0.285,
+    -0.755057,
+    3.25
+   ],
+   "size": [
+    0.57,
+    0.28,
+    2.38
+   ],
+   "triangles": 88,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    -0.285,
+    -0.48,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "boost_band-cardboard-R.fbx",
+   "object": "boost_band-cardboard-R",
+   "part": "boost_band",
+   "region": "cardboard",
+   "display_name": "Elastic Booster",
+   "bbox_center": [
+    0.285,
+    -0.755057,
+    3.25
+   ],
+   "size": [
+    0.57,
+    0.28,
+    2.38
+   ],
+   "triangles": 88,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    0.285,
+    -0.48,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "boost_spool-paper-L.fbx",
+   "object": "boost_spool-paper-L",
+   "part": "boost_spool",
+   "region": "paper",
+   "display_name": "Spool Booster",
+   "bbox_center": [
+    -0.245,
+    -0.792888,
+    3.24
+   ],
+   "size": [
+    0.49,
+    0.684338,
+    2.46
+   ],
+   "triangles": 122,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    -0.245,
+    -0.517831,
+    -0.01
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "boost_spool-paper-R.fbx",
+   "object": "boost_spool-paper-R",
+   "part": "boost_spool",
+   "region": "paper",
+   "display_name": "Spool Booster",
+   "bbox_center": [
+    0.245,
+    -0.792888,
+    3.24
+   ],
+   "size": [
+    0.49,
+    0.684338,
+    2.46
+   ],
+   "triangles": 122,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    0.245,
+    -0.517831,
+    -0.01
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "boost_spool-cardboard-L.fbx",
+   "object": "boost_spool-cardboard-L",
+   "part": "boost_spool",
+   "region": "cardboard",
+   "display_name": "Spool Booster",
+   "bbox_center": [
+    -0.285,
+    -0.755057,
+    3.25
+   ],
+   "size": [
+    0.57,
+    0.78,
+    2.38
+   ],
+   "triangles": 192,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    -0.285,
+    -0.48,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "boost_spool-cardboard-R.fbx",
+   "object": "boost_spool-cardboard-R",
+   "part": "boost_spool",
+   "region": "cardboard",
+   "display_name": "Spool Booster",
+   "bbox_center": [
+    0.285,
+    -0.755057,
+    3.25
+   ],
+   "size": [
+    0.57,
+    0.78,
+    2.38
+   ],
+   "triangles": 192,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    0.285,
+    -0.48,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "boost_twin-paper-L.fbx",
+   "object": "boost_twin-paper-L",
+   "part": "boost_twin",
+   "region": "paper",
+   "display_name": "Twin Elastic Booster",
+   "bbox_center": [
+    -0.345,
+    -0.810057,
+    3.24
+   ],
+   "size": [
+    0.69,
+    0.65,
+    2.46
+   ],
+   "triangles": 52,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    -0.345,
+    -0.535,
+    -0.01
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "boost_twin-paper-R.fbx",
+   "object": "boost_twin-paper-R",
+   "part": "boost_twin",
+   "region": "paper",
+   "display_name": "Twin Elastic Booster",
+   "bbox_center": [
+    0.345,
+    -0.810057,
+    3.24
+   ],
+   "size": [
+    0.69,
+    0.65,
+    2.46
+   ],
+   "triangles": 52,
+   "suggested_color3_255": [
+    238,
+    230,
+    212
+   ],
+   "suggested_color3": [
+    0.933333,
+    0.901961,
+    0.831373
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    0.345,
+    -0.535,
+    -0.01
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  },
+  {
+   "file": "boost_twin-cardboard-L.fbx",
+   "object": "boost_twin-cardboard-L",
+   "part": "boost_twin",
+   "region": "cardboard",
+   "display_name": "Twin Elastic Booster",
+   "bbox_center": [
+    -0.385,
+    -0.755057,
+    3.25
+   ],
+   "size": [
+    0.77,
+    0.28,
+    2.38
+   ],
+   "triangles": 88,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    -0.385,
+    -0.48,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "L"
+  },
+  {
+   "file": "boost_twin-cardboard-R.fbx",
+   "object": "boost_twin-cardboard-R",
+   "part": "boost_twin",
+   "region": "cardboard",
+   "display_name": "Twin Elastic Booster",
+   "bbox_center": [
+    0.385,
+    -0.755057,
+    3.25
+   ],
+   "size": [
+    0.77,
+    0.28,
+    2.38
+   ],
+   "triangles": 88,
+   "suggested_color3_255": [
+    166,
+    119,
+    72
+   ],
+   "suggested_color3": [
+    0.65098,
+    0.466667,
+    0.282353
+   ],
+   "team_color_at_runtime": false,
+   "slot_pivot": [
+    0.0,
+    -0.275057,
+    3.25
+   ],
+   "center_offset_from_slot": [
+    0.385,
+    -0.48,
+    0.0
+   ],
+   "assembly_rotation": "identity; no legacy yaw compensation",
+   "side": "R"
+  }
+ ]
+}

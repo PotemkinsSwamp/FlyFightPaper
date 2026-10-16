@@ -1,0 +1,42 @@
+BLOCKS baking 1-inverted-cup-1
+BLOCKS ray baking soft ambient occlusion for inverted-cup-1
+D:\FlyFightPaper\tools\art\blocks.py:1263: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\stacking-cup-tower\\parts\\pending-1-inverted-cup-1.fbx'
+export finished in 0.0142 sec.
+FBX version: 7400
+BLOCKS baking 2-inverted-cup-2
+BLOCKS ray baking soft ambient occlusion for inverted-cup-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\stacking-cup-tower\\parts\\pending-2-inverted-cup-2.fbx'
+export finished in 0.0135 sec.
+FBX version: 7400
+BLOCKS baking 3-inverted-cup-3
+BLOCKS ray baking soft ambient occlusion for inverted-cup-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\stacking-cup-tower\\parts\\pending-3-inverted-cup-3.fbx'
+export finished in 0.0146 sec.
+FBX version: 7400
+BLOCKS baking 4-inverted-cup-4
+BLOCKS ray baking soft ambient occlusion for inverted-cup-4
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\stacking-cup-tower\\parts\\pending-4-inverted-cup-4.fbx'
+export finished in 0.0125 sec.
+FBX version: 7400
+BLOCKS baking 5-inverted-cup-5
+BLOCKS ray baking soft ambient occlusion for inverted-cup-5
+D:\FlyFightPaper\tools\art\blocks.py:739: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+D:\FlyFightPaper\tools\art\blocks.py:749: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\stacking-cup-tower\\parts\\pending-5-inverted-cup-5.fbx'
+export finished in 0.0125 sec.
+FBX version: 7400
+BLOCKS rendering concept camera
+Info: Saved as "pending-hero.blend"
+BLOCKS PASS stacking-cup-tower 5 pieces, 38636 triangles
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

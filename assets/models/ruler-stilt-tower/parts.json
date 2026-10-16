@@ -1,0 +1,330 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 8,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [
+    {
+      "label": "required-between-posts",
+      "x": [
+        -28,
+        28
+      ],
+      "z": [
+        70,
+        120
+      ],
+      "shape": "rectangle",
+      "clear_front_and_back_rays": 1250
+    },
+    {
+      "label": "full-concept-gap",
+      "x": [
+        -28,
+        28
+      ],
+      "z": [
+        48.1,
+        120
+      ],
+      "shape": "rectangle",
+      "clear_front_and_back_rays": 1250
+    }
+  ],
+  "pieces": [
+    {
+      "label": "lower-cardboard-room-and-toy-feet-1",
+      "triangles": 10644,
+      "bounding_box": {
+        "min": [
+          -38.36,
+          -38.36,
+          8.0
+        ],
+        "max": [
+          38.0,
+          38.36,
+          48.09
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-lower-cardboard-room-and-toy-feet-1",
+      "front_pixels_per_stud": 7.995,
+      "front_surface_studs2": 2948.7067,
+      "outer_face_pixels_per_stud": {
+        "front": 7.995,
+        "back": 7.993,
+        "left": 7.99,
+        "right": 7.99,
+        "top": 7.996,
+        "bottom": 7.996
+      }
+    },
+    {
+      "label": "lower-cardboard-room-and-toy-feet-2",
+      "triangles": 11968,
+      "bounding_box": {
+        "min": [
+          -38.36,
+          -41.0,
+          0.0
+        ],
+        "max": [
+          38.36,
+          38.0,
+          46.5
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-lower-cardboard-room-and-toy-feet-2",
+      "front_pixels_per_stud": 7.962,
+      "front_surface_studs2": 1667.4865,
+      "outer_face_pixels_per_stud": {
+        "front": 7.962,
+        "back": 7.901,
+        "left": 7.945,
+        "right": 7.954,
+        "top": 7.955,
+        "bottom": 7.955
+      }
+    },
+    {
+      "label": "lower-cardboard-room-and-toy-feet-3",
+      "triangles": 1236,
+      "bounding_box": {
+        "min": [
+          -12.0,
+          -40.0,
+          4.0
+        ],
+        "max": [
+          12.0,
+          -32.0,
+          8.8
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-lower-cardboard-room-and-toy-feet-3",
+      "front_pixels_per_stud": 7.893,
+      "front_surface_studs2": 109.3457,
+      "outer_face_pixels_per_stud": {
+        "front": 7.893,
+        "back": null,
+        "left": 7.886,
+        "right": 7.829,
+        "top": 7.979,
+        "bottom": 7.979
+      }
+    },
+    {
+      "label": "four-rulers-with-plain-ticks",
+      "triangles": 5568,
+      "bounding_box": {
+        "min": [
+          -36.0,
+          -34.5,
+          48.0
+        ],
+        "max": [
+          36.0,
+          34.5,
+          120.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-four-rulers-with-plain-ticks",
+      "front_pixels_per_stud": 7.988,
+      "front_surface_studs2": 1139.3915,
+      "outer_face_pixels_per_stud": {
+        "front": 7.988,
+        "back": 7.988,
+        "left": 7.979,
+        "right": 7.979,
+        "top": 7.981,
+        "bottom": 7.981
+      }
+    },
+    {
+      "label": "upper-box-1-1",
+      "triangles": 10644,
+      "bounding_box": {
+        "min": [
+          -38.36,
+          -38.36,
+          120.0
+        ],
+        "max": [
+          38.0,
+          38.36,
+          150.09
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-upper-box-1-1",
+      "front_pixels_per_stud": 7.993,
+      "front_surface_studs2": 2261.4569,
+      "outer_face_pixels_per_stud": {
+        "front": 7.993,
+        "back": 7.991,
+        "left": 7.988,
+        "right": 7.988,
+        "top": 7.996,
+        "bottom": 7.996
+      }
+    },
+    {
+      "label": "upper-box-1-2",
+      "triangles": 9756,
+      "bounding_box": {
+        "min": [
+          -38.36,
+          -38.0,
+          124.0
+        ],
+        "max": [
+          38.36,
+          38.0,
+          149.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-upper-box-1-2",
+      "front_pixels_per_stud": 7.955,
+      "front_surface_studs2": 725.0616,
+      "outer_face_pixels_per_stud": {
+        "front": 7.955,
+        "back": 7.963,
+        "left": 7.965,
+        "right": 7.972,
+        "top": 7.92,
+        "bottom": 7.92
+      }
+    },
+    {
+      "label": "upper-box-2-1",
+      "triangles": 10644,
+      "bounding_box": {
+        "min": [
+          -38.36,
+          -38.36,
+          150.0
+        ],
+        "max": [
+          38.0,
+          38.36,
+          180.09
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "7-upper-box-2-1",
+      "front_pixels_per_stud": 7.993,
+      "front_surface_studs2": 2261.4574,
+      "outer_face_pixels_per_stud": {
+        "front": 7.993,
+        "back": 7.991,
+        "left": 7.988,
+        "right": 7.988,
+        "top": 7.996,
+        "bottom": 7.996
+      }
+    },
+    {
+      "label": "upper-box-2-2",
+      "triangles": 9756,
+      "bounding_box": {
+        "min": [
+          -38.36,
+          -38.0,
+          154.0
+        ],
+        "max": [
+          38.36,
+          38.0,
+          179.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "8-upper-box-2-2",
+      "front_pixels_per_stud": 7.955,
+      "front_surface_studs2": 725.0619,
+      "outer_face_pixels_per_stud": {
+        "front": 7.955,
+        "back": 7.963,
+        "left": 7.965,
+        "right": 7.972,
+        "top": 7.92,
+        "bottom": 7.92
+      }
+    }
+  ],
+  "total_triangles": 70216,
+  "bounding_box": {
+    "min": [
+      -38.36,
+      -41.0,
+      0.0
+    ],
+    "max": [
+      38.36,
+      38.36,
+      180.09
+    ]
+  },
+  "height": 180.09,
+  "requested_height": 180
+}

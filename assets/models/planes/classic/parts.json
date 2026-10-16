@@ -1,0 +1,1006 @@
+{
+  "schema_version": 2,
+  "units": "studs",
+  "axes": "X right, Y up, -Z forward",
+  "source": "option-a.png",
+  "texture_images": [],
+  "exports": [
+    {
+      "file": "body-paper.fbx",
+      "object": "body-paper",
+      "part": "body",
+      "region": "paper",
+      "display_name": "Classic Fold",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 144,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011173
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011173
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose-paper.fbx",
+      "object": "nose-paper",
+      "part": "nose",
+      "region": "paper",
+      "display_name": "Classic Nose",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -5.632566
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        -4.119491
+      ],
+      "size": [
+        2.6,
+        2.25,
+        3.02615
+      ],
+      "triangles": 72,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.0,
+        1.008717
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -0.504358
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -0.504358
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose-accent.fbx",
+      "object": "nose-accent",
+      "part": "nose",
+      "region": "accent",
+      "display_name": "Classic Nose",
+      "bbox_min": [
+        -0.52,
+        -0.46,
+        -7.65
+      ],
+      "bbox_max": [
+        0.52,
+        0.44,
+        -5.632566
+      ],
+      "bbox_center": [
+        0.0,
+        -0.01,
+        -6.641283
+      ],
+      "size": [
+        1.04,
+        0.9,
+        2.017434
+      ],
+      "triangles": 86,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.285,
+        -1.513075
+      ],
+      "slot_local_bbox_min": [
+        -0.52,
+        -0.735,
+        -2.521792
+      ],
+      "slot_local_bbox_max": [
+        0.52,
+        0.165,
+        -0.504358
+      ],
+      "fbx_local_bbox_min": [
+        -0.52,
+        -0.735,
+        -2.521792
+      ],
+      "fbx_local_bbox_max": [
+        0.52,
+        0.165,
+        -0.504358
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings-paper.fbx",
+      "object": "wings-paper",
+      "part": "wings",
+      "region": "paper",
+      "display_name": "Classic Wings",
+      "bbox_min": [
+        -6.803761,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        6.803761,
+        0.97,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        0.875,
+        1.404757
+      ],
+      "size": [
+        13.607522,
+        0.19,
+        8.022345
+      ],
+      "triangles": 76,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.02097,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -6.803761,
+        -0.11597,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        6.803761,
+        0.07403,
+        4.011173
+      ],
+      "fbx_local_bbox_min": [
+        -6.803761,
+        -0.11597,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        6.803761,
+        0.07403,
+        4.011173
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings-accent.fbx",
+      "object": "wings-accent",
+      "part": "wings",
+      "region": "accent",
+      "display_name": "Classic Wings",
+      "bbox_min": [
+        -6.023761,
+        0.956932,
+        1.713429
+      ],
+      "bbox_max": [
+        6.023761,
+        1.011939,
+        5.295152
+      ],
+      "bbox_center": [
+        0.0,
+        0.984436,
+        3.504291
+      ],
+      "size": [
+        12.047523,
+        0.055008,
+        3.581723
+      ],
+      "triangles": 40,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.088466,
+        2.099534
+      ],
+      "slot_local_bbox_min": [
+        -6.023761,
+        0.060962,
+        0.308672
+      ],
+      "slot_local_bbox_max": [
+        6.023761,
+        0.11597,
+        3.890396
+      ],
+      "fbx_local_bbox_min": [
+        -6.023761,
+        0.060962,
+        0.308672
+      ],
+      "fbx_local_bbox_max": [
+        6.023761,
+        0.11597,
+        3.890396
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings-sticker-left.fbx",
+      "object": "wings-sticker-left",
+      "part": "wings",
+      "region": "sticker",
+      "display_name": "Classic Wings",
+      "bbox_min": [
+        -4.085,
+        0.914106,
+        1.647566
+      ],
+      "bbox_max": [
+        -2.235,
+        0.982015,
+        3.497566
+      ],
+      "bbox_center": [
+        -3.16,
+        0.94806,
+        2.572566
+      ],
+      "size": [
+        1.85,
+        0.067909,
+        1.85
+      ],
+      "triangles": 60,
+      "suggested_color3_255": [
+        250,
+        250,
+        247
+      ],
+      "suggested_color3": [
+        0.980392,
+        0.980392,
+        0.968627
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        -3.16,
+        0.052091,
+        1.16781
+      ],
+      "slot_local_bbox_min": [
+        -4.085,
+        0.018136,
+        0.24281
+      ],
+      "slot_local_bbox_max": [
+        -2.235,
+        0.086045,
+        2.09281
+      ],
+      "fbx_local_bbox_min": [
+        -4.085,
+        0.018136,
+        0.24281
+      ],
+      "fbx_local_bbox_max": [
+        -2.235,
+        0.086045,
+        2.09281
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings-sticker-right.fbx",
+      "object": "wings-sticker-right",
+      "part": "wings",
+      "region": "sticker",
+      "display_name": "Classic Wings",
+      "bbox_min": [
+        2.235,
+        0.914106,
+        1.647566
+      ],
+      "bbox_max": [
+        4.085,
+        0.982015,
+        3.497566
+      ],
+      "bbox_center": [
+        3.16,
+        0.94806,
+        2.572566
+      ],
+      "size": [
+        1.85,
+        0.067909,
+        1.85
+      ],
+      "triangles": 60,
+      "suggested_color3_255": [
+        250,
+        250,
+        247
+      ],
+      "suggested_color3": [
+        0.980392,
+        0.980392,
+        0.968627
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        3.16,
+        0.052091,
+        1.16781
+      ],
+      "slot_local_bbox_min": [
+        2.235,
+        0.018136,
+        0.24281
+      ],
+      "slot_local_bbox_max": [
+        4.085,
+        0.086045,
+        2.09281
+      ],
+      "fbx_local_bbox_min": [
+        2.235,
+        0.018136,
+        0.24281
+      ],
+      "fbx_local_bbox_max": [
+        4.085,
+        0.086045,
+        2.09281
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail-paper.fbx",
+      "object": "tail-paper",
+      "part": "tail",
+      "region": "paper",
+      "display_name": "Classic Tail",
+      "bbox_min": [
+        -0.795,
+        0.48,
+        5.18
+      ],
+      "bbox_max": [
+        0.795,
+        2.901826,
+        7.65
+      ],
+      "bbox_center": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "size": [
+        1.59,
+        2.421826,
+        2.47
+      ],
+      "triangles": 96,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.795,
+        -1.210913,
+        -1.235
+      ],
+      "slot_local_bbox_max": [
+        0.795,
+        1.210913,
+        1.235
+      ],
+      "fbx_local_bbox_min": [
+        -0.795,
+        -1.210913,
+        -1.235
+      ],
+      "fbx_local_bbox_max": [
+        0.795,
+        1.210913,
+        1.235
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail-accent.fbx",
+      "object": "tail-accent",
+      "part": "tail",
+      "region": "accent",
+      "display_name": "Classic Tail",
+      "bbox_min": [
+        -0.092,
+        1.18,
+        5.76
+      ],
+      "bbox_max": [
+        0.092,
+        2.899826,
+        7.453
+      ],
+      "bbox_center": [
+        0.0,
+        2.039913,
+        6.6065
+      ],
+      "size": [
+        0.184,
+        1.719826,
+        1.693
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.349,
+        0.1915
+      ],
+      "slot_local_bbox_min": [
+        -0.092,
+        -0.510913,
+        -0.655
+      ],
+      "slot_local_bbox_max": [
+        0.092,
+        1.208913,
+        1.038
+      ],
+      "fbx_local_bbox_min": [
+        -0.092,
+        -0.510913,
+        -0.655
+      ],
+      "fbx_local_bbox_max": [
+        0.092,
+        1.208913,
+        1.038
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "pellet-tube.fbx",
+      "object": "pellet-tube",
+      "part": "pellet",
+      "region": "paper",
+      "display_name": "Paper Pellet Gun",
+      "bbox_min": [
+        -2.172435,
+        -0.332435,
+        -2.87
+      ],
+      "bbox_max": [
+        -1.347565,
+        0.492435,
+        0.243217
+      ],
+      "bbox_center": [
+        -1.76,
+        0.08,
+        -1.313391
+      ],
+      "size": [
+        0.82487,
+        0.82487,
+        3.113217
+      ],
+      "triangles": 192,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        -1.76,
+        0.08,
+        -1.313391
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.412435,
+        -0.412435,
+        -1.556609
+      ],
+      "slot_local_bbox_max": [
+        0.412435,
+        0.412435,
+        1.556609
+      ],
+      "fbx_local_bbox_min": [
+        -0.412435,
+        -0.412435,
+        -1.556609
+      ],
+      "fbx_local_bbox_max": [
+        0.412435,
+        0.412435,
+        1.556609
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "pellet-band.fbx",
+      "object": "pellet-band",
+      "part": "pellet",
+      "region": "band",
+      "display_name": "Paper Pellet Gun",
+      "bbox_min": [
+        -2.26,
+        -0.505,
+        -1.16
+      ],
+      "bbox_max": [
+        -1.26,
+        0.815,
+        -0.46
+      ],
+      "bbox_center": [
+        -1.76,
+        0.155,
+        -0.81
+      ],
+      "size": [
+        1.0,
+        1.32,
+        0.7
+      ],
+      "triangles": 64,
+      "suggested_color3_255": [
+        214,
+        200,
+        160
+      ],
+      "suggested_color3": [
+        0.839216,
+        0.784314,
+        0.627451
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        -1.76,
+        0.08,
+        -1.313391
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.075,
+        0.503391
+      ],
+      "slot_local_bbox_min": [
+        -0.5,
+        -0.585,
+        0.153391
+      ],
+      "slot_local_bbox_max": [
+        0.5,
+        0.735,
+        0.853391
+      ],
+      "fbx_local_bbox_min": [
+        -0.5,
+        -0.585,
+        0.153391
+      ],
+      "fbx_local_bbox_max": [
+        0.5,
+        0.735,
+        0.853391
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    }
+  ],
+  "assembled_parts": {
+    "body": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 144,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "nose": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -7.65
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "size": [
+        2.6,
+        2.25,
+        5.043584
+      ],
+      "triangles": 158,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "wings": {
+      "bbox_min": [
+        -6.803761,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        6.803761,
+        1.011939,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        0.895969,
+        1.404757
+      ],
+      "size": [
+        13.607522,
+        0.231939,
+        8.022345
+      ],
+      "triangles": 236,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "tail": {
+      "bbox_min": [
+        -0.795,
+        0.48,
+        5.18
+      ],
+      "bbox_max": [
+        0.795,
+        2.901826,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "size": [
+        1.59,
+        2.421826,
+        2.47
+      ],
+      "triangles": 120,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    }
+  },
+  "proportions": {
+    "length": 15.3,
+    "span": 13.607522123893807,
+    "height": 3.751826086956522,
+    "shoulder_width": 2.6,
+    "body_depth_shoulder_to_keel": 1.7999999999999998,
+    "raised_spine_height_above_shoulders": 0.44999999999999996,
+    "body_depth_including_spine": 2.25,
+    "nose_length": 5.04358407079646,
+    "nose_accent_fraction": 0.4,
+    "sticker_width": 1.85,
+    "wing_outer_leading_offset_from_top_trace": -0.45,
+    "wing_root_leading_offset_from_top_trace": 0.4
+  },
+  "review_camera": {
+    "projection": "perspective",
+    "location_blender": [
+      -10.584213,
+      21.518354,
+      13.78456
+    ],
+    "target_blender": [
+      0,
+      0,
+      0.5
+    ],
+    "lens_mm": 34.905698,
+    "sensor_width_mm": 36,
+    "roll_radians": 0.214796,
+    "comparison_uniform_reduction": 0.88
+  },
+  "overall_bounds": {
+    "min": [
+      -6.803761,
+      -0.85,
+      -7.65
+    ],
+    "max": [
+      6.803761,
+      2.901826,
+      7.65
+    ],
+    "size": [
+      13.607522,
+      3.751826,
+      15.3
+    ]
+  },
+  "mounts": {
+    "left": {
+      "tube_center": [
+        -1.76,
+        0.08,
+        -1.313391304347826
+      ],
+      "muzzle": [
+        -1.76,
+        0.08,
+        -2.87
+      ],
+      "forward": [
+        0,
+        0,
+        -1
+      ]
+    },
+    "right": {
+      "tube_center": [
+        1.76,
+        0.08,
+        -1.313391304347826
+      ],
+      "muzzle": [
+        1.76,
+        0.08,
+        -2.87
+      ],
+      "forward": [
+        0,
+        0,
+        -1
+      ]
+    }
+  },
+  "weapon": {
+    "tube_length": 3.113217391304348,
+    "tube_diameter": 0.8248695652173913,
+    "muzzle_offset_from_center": [
+      0,
+      0,
+      -1.556608695652174
+    ],
+    "right_instance_translation": [
+      3.52,
+      0,
+      0
+    ],
+    "front_fraction_ahead_of_wing_leading_edge": 0.36662742649687036
+  },
+  "fbx_contract": {
+    "source_unit_studs": 1,
+    "global_scale": 0.01,
+    "apply_unit_scale": false,
+    "apply_scale_options": "FBX_SCALE_NONE",
+    "bake_space_transform": true,
+    "fbx_unit_scale_factor": 1,
+    "scale_explanation": "0.01 cancels Blender's implicit 100x centimeter conversion. Saved vertex coordinates are in studs, matching the legacy FBX unit tag.",
+    "axis_forward": "-Z",
+    "axis_up": "Y",
+    "structural_yaw_compensation_degrees": 0,
+    "import_instruction": "Set mesh sizes and centers from this manifest. Preserve the slot-relative vertex offsets when composing regions.",
+    "limitation": "New sizes, centers, identity rotations and tube-center/muzzle mounts require later game integration. These files do not preserve the old template dimensions or yaw."
+  }
+}

@@ -1,0 +1,116 @@
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+BLOCKS baking 1-standing-binder-band-1-1
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-1-1
+D:\FlyFightPaper\tools\art\blocks.py:1268: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-1-standing-binder-band-1-1.fbx'
+export finished in 0.0065 sec.
+FBX version: 7400
+BLOCKS baking 2-standing-binder-band-1-2
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-1-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-2-standing-binder-band-1-2.fbx'
+export finished in 0.0051 sec.
+FBX version: 7400
+BLOCKS baking 3-standing-binder-band-1-3
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-1-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-3-standing-binder-band-1-3.fbx'
+export finished in 0.0107 sec.
+FBX version: 7400
+BLOCKS baking 4-standing-binder-band-2-1
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-2-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-4-standing-binder-band-2-1.fbx'
+export finished in 0.0049 sec.
+FBX version: 7400
+BLOCKS baking 5-standing-binder-band-2-2
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-2-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-5-standing-binder-band-2-2.fbx'
+export finished in 0.0043 sec.
+FBX version: 7400
+BLOCKS baking 6-standing-binder-band-2-3
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-2-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-6-standing-binder-band-2-3.fbx'
+export finished in 0.0100 sec.
+FBX version: 7400
+BLOCKS baking 7-standing-binder-band-3-1
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-3-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-7-standing-binder-band-3-1.fbx'
+export finished in 0.0045 sec.
+FBX version: 7400
+BLOCKS baking 8-standing-binder-band-3-2
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-3-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-8-standing-binder-band-3-2.fbx'
+export finished in 0.0043 sec.
+FBX version: 7400
+BLOCKS baking 9-standing-binder-band-3-3
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-3-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-9-standing-binder-band-3-3.fbx'
+export finished in 0.0128 sec.
+FBX version: 7400
+BLOCKS baking 10-standing-binder-band-4-1
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-4-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-10-standing-binder-band-4-1.fbx'
+export finished in 0.0057 sec.
+FBX version: 7400
+BLOCKS baking 11-standing-binder-band-4-2
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-4-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-11-standing-binder-band-4-2.fbx'
+export finished in 0.0047 sec.
+FBX version: 7400
+BLOCKS baking 12-standing-binder-band-4-3
+BLOCKS ray baking soft ambient occlusion for standing-binder-band-4-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-12-standing-binder-band-4-3.fbx'
+export finished in 0.0109 sec.
+FBX version: 7400
+BLOCKS baking 13-binder-roof-left
+BLOCKS ray baking soft ambient occlusion for binder-roof-left
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-13-binder-roof-left.fbx'
+export finished in 0.0047 sec.
+FBX version: 7400
+BLOCKS baking 14-binder-roof-right
+BLOCKS ray baking soft ambient occlusion for binder-roof-right
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-14-binder-roof-right.fbx'
+export finished in 0.0061 sec.
+FBX version: 7400
+BLOCKS baking 15-left-open-metal-ring
+BLOCKS ray baking soft ambient occlusion for left-open-metal-ring
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-15-left-open-metal-ring.fbx'
+export finished in 0.0141 sec.
+FBX version: 7400
+BLOCKS baking 16-right-open-metal-ring
+BLOCKS ray baking soft ambient occlusion for right-open-metal-ring
+D:\FlyFightPaper\tools\art\blocks.py:739: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+D:\FlyFightPaper\tools\art\blocks.py:749: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\ring-binder-tower\\parts\\pending-16-right-open-metal-ring.fbx'
+export finished in 0.0163 sec.
+FBX version: 7400
+BLOCKS rendering concept camera
+BLOCKS rendering opening-front
+BLOCKS rendering opening-back
+Info: Saved as "pending-hero.blend"
+BLOCKS PASS ring-binder-tower 16 pieces, 38500 triangles
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

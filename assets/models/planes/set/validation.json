@@ -1,0 +1,4691 @@
+{
+  "result": "PASS",
+  "part_count": 23,
+  "export_count": 61,
+  "source_checks": {
+    "body_slim-paper": {
+      "triangles": 180,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        90
+      ],
+      "self_intersections": 0,
+      "signed_volume": 3.23844676,
+      "minimum_triangle_area": 0.0021254402
+    },
+    "body_slim-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.05759047,
+      "minimum_triangle_area": 0.0041989963
+    },
+    "body_heavy-cardboard": {
+      "triangles": 276,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 3,
+      "component_vertex_counts": [
+        12,
+        12,
+        114
+      ],
+      "self_intersections": 0,
+      "signed_volume": 9.1021888,
+      "minimum_triangle_area": 0.000664424
+    },
+    "body_heavy-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.1573836,
+      "minimum_triangle_area": 0.0114750431
+    },
+    "body_heavy-tape": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.0120384,
+      "minimum_triangle_area": 0.0068399982
+    },
+    "body_standard_mk2-paper": {
+      "triangles": 226,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        113
+      ],
+      "self_intersections": 0,
+      "signed_volume": 5.4684677,
+      "minimum_triangle_area": 0.0006216352
+    },
+    "body_standard_mk2-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.08860071,
+      "minimum_triangle_area": 0.0064599938
+    },
+    "body_slim_mk2-paper": {
+      "triangles": 180,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        90
+      ],
+      "self_intersections": 0,
+      "signed_volume": 3.23844676,
+      "minimum_triangle_area": 0.0021254402
+    },
+    "body_slim_mk2-accent": {
+      "triangles": 64,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        8,
+        8,
+        12,
+        12
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.06881996,
+      "minimum_triangle_area": 0.0004624996
+    },
+    "body_heavy_mk2-tube": {
+      "triangles": 586,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        48,
+        249
+      ],
+      "self_intersections": 0,
+      "signed_volume": 121.60852861,
+      "minimum_triangle_area": 1.67724e-05
+    },
+    "body_heavy_mk2-cardboard": {
+      "triangles": 182,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        93
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.00557174,
+      "minimum_triangle_area": 0.0004005123
+    },
+    "body_heavy_mk2-paper": {
+      "triangles": 144,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        38,
+        38
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.04862277,
+      "minimum_triangle_area": 0.0009394137
+    },
+    "body_heavy_mk2-accent": {
+      "triangles": 192,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        96
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.05513146,
+      "minimum_triangle_area": 0.0045679435
+    },
+    "nose_1-paper": {
+      "triangles": 72,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        36
+      ],
+      "self_intersections": 0,
+      "signed_volume": 2.08721577,
+      "minimum_triangle_area": 9.49789e-05
+    },
+    "nose_1-accent": {
+      "triangles": 86,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        45
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.01211055,
+      "minimum_triangle_area": 1.872e-05
+    },
+    "nose_2-paper": {
+      "triangles": 72,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        36
+      ],
+      "self_intersections": 0,
+      "signed_volume": 1.2427989,
+      "minimum_triangle_area": 0.0097084697
+    },
+    "nose_2-accent": {
+      "triangles": 32,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        18
+      ],
+      "self_intersections": 0,
+      "signed_volume": 2.03111592,
+      "minimum_triangle_area": 0.1101213911
+    },
+    "nose_3-paper": {
+      "triangles": 72,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        36
+      ],
+      "self_intersections": 0,
+      "signed_volume": 1.79460187,
+      "minimum_triangle_area": 0.0019734791
+    },
+    "nose_3-accent": {
+      "triangles": 86,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        45
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.11594489,
+      "minimum_triangle_area": 1.872e-05
+    },
+    "nose_4-paper": {
+      "triangles": 72,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        36
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.85900053,
+      "minimum_triangle_area": 0.0032994791
+    },
+    "nose_4-accent": {
+      "triangles": 86,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        45
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.14997842,
+      "minimum_triangle_area": 1.872e-05
+    },
+    "nose_5-paper": {
+      "triangles": 72,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        36
+      ],
+      "self_intersections": 0,
+      "signed_volume": 1.4615752,
+      "minimum_triangle_area": 0.0014209788
+    },
+    "nose_5-accent": {
+      "triangles": 82,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        43
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.05693048,
+      "minimum_triangle_area": 1.872e-05
+    },
+    "nose_5-tape": {
+      "triangles": 144,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        36,
+        36
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.08023815,
+      "minimum_triangle_area": 0.0014124965
+    },
+    "wings_1-paper": {
+      "triangles": 60,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        32
+      ],
+      "self_intersections": 0,
+      "signed_volume": 3.18986229,
+      "minimum_triangle_area": 0.0060343378
+    },
+    "wings_1-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.03601944,
+      "minimum_triangle_area": 0.0047137962
+    },
+    "wings_2-paper": {
+      "triangles": 60,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        32
+      ],
+      "self_intersections": 0,
+      "signed_volume": 10.19762476,
+      "minimum_triangle_area": 0.0060343397
+    },
+    "wings_2-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.22877407,
+      "minimum_triangle_area": 0.0101475029
+    },
+    "wings_3-paper": {
+      "triangles": 60,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        32
+      ],
+      "self_intersections": 0,
+      "signed_volume": 6.46336584,
+      "minimum_triangle_area": 0.0060038232
+    },
+    "wings_3-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.06029873,
+      "minimum_triangle_area": 0.0055972737
+    },
+    "wings_4-paper": {
+      "triangles": 92,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        48
+      ],
+      "self_intersections": 0,
+      "signed_volume": 14.5776197,
+      "minimum_triangle_area": 0.0056569585
+    },
+    "wings_4-cardboard": {
+      "triangles": 60,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        32
+      ],
+      "self_intersections": 0,
+      "signed_volume": 3.73837903,
+      "minimum_triangle_area": 0.0027154538
+    },
+    "wings_4-accent": {
+      "triangles": 48,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.39469655,
+      "minimum_triangle_area": 0.011520577
+    },
+    "wings_5-paper": {
+      "triangles": 380,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        192
+      ],
+      "self_intersections": 0,
+      "signed_volume": 7.45546653,
+      "minimum_triangle_area": 9.40211e-05
+    },
+    "wings_5-accent": {
+      "triangles": 216,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 6,
+      "component_vertex_counts": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.09240947,
+      "minimum_triangle_area": 4.88909e-05
+    },
+    "tail_1-paper": {
+      "triangles": 186,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        93
+      ],
+      "self_intersections": 0,
+      "signed_volume": 1.33058283,
+      "minimum_triangle_area": 3.06708e-05
+    },
+    "tail_1-accent": {
+      "triangles": 48,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.10145363,
+      "minimum_triangle_area": 0.0112701721
+    },
+    "tail_2-paper": {
+      "triangles": 204,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        102
+      ],
+      "self_intersections": 0,
+      "signed_volume": 1.04725207,
+      "minimum_triangle_area": 1.27647e-05
+    },
+    "tail_2-accent": {
+      "triangles": 36,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 3,
+      "component_vertex_counts": [
+        8,
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.04784508,
+      "minimum_triangle_area": 0.0014875037
+    },
+    "tail_3-paper": {
+      "triangles": 310,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        155
+      ],
+      "self_intersections": 0,
+      "signed_volume": 1.90089874,
+      "minimum_triangle_area": 7.3656e-06
+    },
+    "tail_3-accent": {
+      "triangles": 48,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.09365339,
+      "minimum_triangle_area": 0.0077640925
+    },
+    "tail_4-paper": {
+      "triangles": 144,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        72
+      ],
+      "self_intersections": 0,
+      "signed_volume": 1.14910457,
+      "minimum_triangle_area": 2.47529e-05
+    },
+    "tail_4-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.05192658,
+      "minimum_triangle_area": 0.0111302235
+    },
+    "tail_5-paper": {
+      "triangles": 142,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        71
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.94896033,
+      "minimum_triangle_area": 4.1569e-05
+    },
+    "tail_5-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.04580997,
+      "minimum_triangle_area": 0.0101502418
+    },
+    "tail_5-tape": {
+      "triangles": 168,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        8,
+        8,
+        36,
+        36
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.09904225,
+      "minimum_triangle_area": 0.0016677093
+    },
+    "boost_band-paper": {
+      "triangles": 28,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        16
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.51167979,
+      "minimum_triangle_area": 0.0275000031
+    },
+    "boost_band-tape": {
+      "triangles": 48,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.08663989,
+      "minimum_triangle_area": 0.0068999799
+    },
+    "boost_band-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.01035999,
+      "minimum_triangle_area": 0.0056527072
+    },
+    "boost_band-cardboard": {
+      "triangles": 56,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        16,
+        16
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.12639674,
+      "minimum_triangle_area": 0.0040592923
+    },
+    "boost_band-elastic": {
+      "triangles": 86,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        45
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.3222752,
+      "minimum_triangle_area": 0.0371460309
+    },
+    "boost_spool-paper": {
+      "triangles": 128,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        66
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.86966355,
+      "minimum_triangle_area": 0.0114951134
+    },
+    "boost_spool-tape": {
+      "triangles": 48,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.08663989,
+      "minimum_triangle_area": 0.0068999799
+    },
+    "boost_spool-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.01035999,
+      "minimum_triangle_area": 0.0056527072
+    },
+    "boost_spool-cardboard": {
+      "triangles": 144,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        16,
+        16,
+        24,
+        24
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.24503483,
+      "minimum_triangle_area": 0.0040592923
+    },
+    "boost_spool-elastic": {
+      "triangles": 40,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        12,
+        12
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.01915045,
+      "minimum_triangle_area": 0.000876852
+    },
+    "boost_twin-paper": {
+      "triangles": 44,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        24
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.70335967,
+      "minimum_triangle_area": 0.0063999966
+    },
+    "boost_twin-tape": {
+      "triangles": 48,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 4,
+      "component_vertex_counts": [
+        8,
+        8,
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.09767987,
+      "minimum_triangle_area": 0.0068999799
+    },
+    "boost_twin-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.01035999,
+      "minimum_triangle_area": 0.0056527072
+    },
+    "boost_twin-cardboard": {
+      "triangles": 56,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        16,
+        16
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.17074647,
+      "minimum_triangle_area": 0.0040592923
+    },
+    "boost_twin-elastic": {
+      "triangles": 172,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        45,
+        45
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.41251227,
+      "minimum_triangle_area": 0.0262865571
+    }
+  },
+  "fbx_roundtrip": [
+    {
+      "file": "body_slim-paper.fbx",
+      "bounds_error_max": 3.3378601083100534e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 180,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          90
+        ],
+        "self_intersections": 0,
+        "signed_volume": 3.23844636,
+        "minimum_triangle_area": 0.0021254402
+      }
+    },
+    {
+      "file": "body_slim-accent.fbx",
+      "bounds_error_max": 1.8861770634259756e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.05759047,
+        "minimum_triangle_area": 0.0041989963
+      }
+    },
+    {
+      "file": "body_heavy-cardboard.fbx",
+      "bounds_error_max": 3.3378601083100534e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 276,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 3,
+        "component_vertex_counts": [
+          12,
+          12,
+          114
+        ],
+        "self_intersections": 0,
+        "signed_volume": 9.10218761,
+        "minimum_triangle_area": 0.000664424
+      }
+    },
+    {
+      "file": "body_heavy-accent.fbx",
+      "bounds_error_max": 2.3937225335224355e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.1573836,
+        "minimum_triangle_area": 0.0114750431
+      }
+    },
+    {
+      "file": "body_heavy-tape.fbx",
+      "bounds_error_max": 2.5510787959870385e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.01203841,
+        "minimum_triangle_area": 0.0068400051
+      }
+    },
+    {
+      "file": "body_standard_mk2-paper.fbx",
+      "bounds_error_max": 3.3378601083100534e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 226,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          113
+        ],
+        "self_intersections": 0,
+        "signed_volume": 5.46846731,
+        "minimum_triangle_area": 0.0006216407
+      }
+    },
+    {
+      "file": "body_standard_mk2-accent.fbx",
+      "bounds_error_max": 1.1453628540047944e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.08860071,
+        "minimum_triangle_area": 0.0064599927
+      }
+    },
+    {
+      "file": "body_slim_mk2-paper.fbx",
+      "bounds_error_max": 3.3378601083100534e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 180,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          90
+        ],
+        "self_intersections": 0,
+        "signed_volume": 3.23844636,
+        "minimum_triangle_area": 0.0021254402
+      }
+    },
+    {
+      "file": "body_slim_mk2-accent.fbx",
+      "bounds_error_max": 2.3377990721051845e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 64,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          8,
+          8,
+          12,
+          12
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.06881996,
+        "minimum_triangle_area": 0.0004624996
+      }
+    },
+    {
+      "file": "body_heavy_mk2-tube.fbx",
+      "bounds_error_max": 4.76837158203125e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 586,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          48,
+          249
+        ],
+        "self_intersections": 0,
+        "signed_volume": 121.6085303,
+        "minimum_triangle_area": 1.67723e-05
+      }
+    },
+    {
+      "file": "body_heavy_mk2-cardboard.fbx",
+      "bounds_error_max": 4.424133299707478e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 182,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          93
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.00557173,
+        "minimum_triangle_area": 0.0004005123
+      }
+    },
+    {
+      "file": "body_heavy_mk2-paper.fbx",
+      "bounds_error_max": 1.8418884284443493e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 144,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          38,
+          38
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.04862277,
+        "minimum_triangle_area": 0.0009394129
+      }
+    },
+    {
+      "file": "body_heavy_mk2-accent.fbx",
+      "bounds_error_max": 2.861022947442393e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 192,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          96
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.05513148,
+        "minimum_triangle_area": 0.0045679397
+      }
+    },
+    {
+      "file": "nose_1-paper.fbx",
+      "bounds_error_max": 2.7502441390936383e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 72,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          36
+        ],
+        "self_intersections": 0,
+        "signed_volume": 2.08721577,
+        "minimum_triangle_area": 9.49789e-05
+      }
+    },
+    {
+      "file": "nose_1-accent.fbx",
+      "bounds_error_max": 3.2080078149476776e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 86,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          45
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.01211055,
+        "minimum_triangle_area": 1.872e-05
+      }
+    },
+    {
+      "file": "nose_2-paper.fbx",
+      "bounds_error_max": 2.145767212802241e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 72,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          36
+        ],
+        "self_intersections": 0,
+        "signed_volume": 1.24279904,
+        "minimum_triangle_area": 0.0097084697
+      }
+    },
+    {
+      "file": "nose_2-accent.fbx",
+      "bounds_error_max": 4.957733155119826e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 32,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          18
+        ],
+        "self_intersections": 0,
+        "signed_volume": 2.03111597,
+        "minimum_triangle_area": 0.1101213911
+      }
+    },
+    {
+      "file": "nose_3-paper.fbx",
+      "bounds_error_max": 2.145767212802241e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 72,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          36
+        ],
+        "self_intersections": 0,
+        "signed_volume": 1.7946018,
+        "minimum_triangle_area": 0.0019734791
+      }
+    },
+    {
+      "file": "nose_3-accent.fbx",
+      "bounds_error_max": 3.658447269572207e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 86,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          45
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.11594488,
+        "minimum_triangle_area": 1.872e-05
+      }
+    },
+    {
+      "file": "nose_4-paper.fbx",
+      "bounds_error_max": 2.872619626614892e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 72,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          36
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.85900054,
+        "minimum_triangle_area": 0.0032994791
+      }
+    },
+    {
+      "file": "nose_4-accent.fbx",
+      "bounds_error_max": 2.872619626614892e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 86,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          45
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.14997842,
+        "minimum_triangle_area": 1.872e-05
+      }
+    },
+    {
+      "file": "nose_5-paper.fbx",
+      "bounds_error_max": 2.145767212802241e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 72,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          36
+        ],
+        "self_intersections": 0,
+        "signed_volume": 1.46157525,
+        "minimum_triangle_area": 0.0014209787
+      }
+    },
+    {
+      "file": "nose_5-accent.fbx",
+      "bounds_error_max": 1.311302185169616e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 82,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          43
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.05693048,
+        "minimum_triangle_area": 1.872e-05
+      }
+    },
+    {
+      "file": "nose_5-tape.fbx",
+      "bounds_error_max": 6.160659788978506e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 144,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          36,
+          36
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.08023817,
+        "minimum_triangle_area": 0.0014124965
+      }
+    },
+    {
+      "file": "wings_1-paper.fbx",
+      "bounds_error_max": 3.26633453395786e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 60,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          32
+        ],
+        "self_intersections": 0,
+        "signed_volume": 3.18986231,
+        "minimum_triangle_area": 0.0060343378
+      }
+    },
+    {
+      "file": "wings_1-accent.fbx",
+      "bounds_error_max": 4.3740844724027284e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.03601944,
+        "minimum_triangle_area": 0.0047137962
+      }
+    },
+    {
+      "file": "wings_2-paper.fbx",
+      "bounds_error_max": 3.8146972691777137e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 60,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          32
+        ],
+        "self_intersections": 0,
+        "signed_volume": 10.19762479,
+        "minimum_triangle_area": 0.0060343397
+      }
+    },
+    {
+      "file": "wings_2-accent.fbx",
+      "bounds_error_max": 5.484313965187226e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.22877407,
+        "minimum_triangle_area": 0.0101475029
+      }
+    },
+    {
+      "file": "wings_3-paper.fbx",
+      "bounds_error_max": 3.26633453395786e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 60,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          32
+        ],
+        "self_intersections": 0,
+        "signed_volume": 6.46336586,
+        "minimum_triangle_area": 0.0060038232
+      }
+    },
+    {
+      "file": "wings_3-accent.fbx",
+      "bounds_error_max": 2.546310424733633e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.06029873,
+        "minimum_triangle_area": 0.0055972737
+      }
+    },
+    {
+      "file": "wings_4-paper.fbx",
+      "bounds_error_max": 2.6941299435812027e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 92,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          48
+        ],
+        "self_intersections": 0,
+        "signed_volume": 14.57761972,
+        "minimum_triangle_area": 0.0056569585
+      }
+    },
+    {
+      "file": "wings_4-cardboard.fbx",
+      "bounds_error_max": 4.0256500244417737e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 60,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          32
+        ],
+        "self_intersections": 0,
+        "signed_volume": 3.73837904,
+        "minimum_triangle_area": 0.0027154538
+      }
+    },
+    {
+      "file": "wings_4-accent.fbx",
+      "bounds_error_max": 3.147125244851168e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 48,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          8,
+          8,
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.39469656,
+        "minimum_triangle_area": 0.0115205772
+      }
+    },
+    {
+      "file": "wings_5-paper.fbx",
+      "bounds_error_max": 2.348022460907373e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 380,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          192
+        ],
+        "self_intersections": 0,
+        "signed_volume": 7.45546649,
+        "minimum_triangle_area": 9.40211e-05
+      }
+    },
+    {
+      "file": "wings_5-accent.fbx",
+      "bounds_error_max": 4.97810363819795e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 216,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 6,
+        "component_vertex_counts": [
+          20,
+          20,
+          20,
+          20,
+          20,
+          20
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.09240947,
+        "minimum_triangle_area": 4.88909e-05
+      }
+    },
+    {
+      "file": "tail_1-paper.fbx",
+      "bounds_error_max": 4.4985961933363683e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 186,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          93
+        ],
+        "self_intersections": 0,
+        "signed_volume": 1.33058296,
+        "minimum_triangle_area": 3.06708e-05
+      }
+    },
+    {
+      "file": "tail_1-accent.fbx",
+      "bounds_error_max": 2.618560790423885e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 48,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          8,
+          8,
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.10145363,
+        "minimum_triangle_area": 0.0112701721
+      }
+    },
+    {
+      "file": "tail_2-paper.fbx",
+      "bounds_error_max": 3.174743650191658e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 204,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          102
+        ],
+        "self_intersections": 0,
+        "signed_volume": 1.0472522,
+        "minimum_triangle_area": 1.27647e-05
+      }
+    },
+    {
+      "file": "tail_2-accent.fbx",
+      "bounds_error_max": 2.9840087911736646e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 36,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 3,
+        "component_vertex_counts": [
+          8,
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.04784508,
+        "minimum_triangle_area": 0.0014875037
+      }
+    },
+    {
+      "file": "tail_3-paper.fbx",
+      "bounds_error_max": 3.174743650191658e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 310,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          155
+        ],
+        "self_intersections": 0,
+        "signed_volume": 1.90089886,
+        "minimum_triangle_area": 7.3656e-06
+      }
+    },
+    {
+      "file": "tail_3-accent.fbx",
+      "bounds_error_max": 2.548828126336389e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 48,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          8,
+          8,
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.09365339,
+        "minimum_triangle_area": 0.0077640925
+      }
+    },
+    {
+      "file": "tail_4-paper.fbx",
+      "bounds_error_max": 3.174743650191658e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 144,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          72
+        ],
+        "self_intersections": 0,
+        "signed_volume": 1.14910469,
+        "minimum_triangle_area": 2.47529e-05
+      }
+    },
+    {
+      "file": "tail_4-accent.fbx",
+      "bounds_error_max": 2.2888183615066282e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.05192658,
+        "minimum_triangle_area": 0.0111302235
+      }
+    },
+    {
+      "file": "tail_5-paper.fbx",
+      "bounds_error_max": 3.174743650191658e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 142,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          71
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.94896046,
+        "minimum_triangle_area": 4.1569e-05
+      }
+    },
+    {
+      "file": "tail_5-accent.fbx",
+      "bounds_error_max": 2.2888183615066282e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.04580997,
+        "minimum_triangle_area": 0.0101502418
+      }
+    },
+    {
+      "file": "tail_5-tape.fbx",
+      "bounds_error_max": 4.90684986115264e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 168,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          8,
+          8,
+          36,
+          36
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.09904223,
+        "minimum_triangle_area": 0.0016677093
+      }
+    },
+    {
+      "file": "boost_band-paper.fbx",
+      "bounds_error_max": 2.0980834936068504e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 28,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          16
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.51167977,
+        "minimum_triangle_area": 0.0275000031
+      }
+    },
+    {
+      "file": "boost_band-tape.fbx",
+      "bounds_error_max": 2.6702880884243996e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 48,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          8,
+          8,
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.08663989,
+        "minimum_triangle_area": 0.0068999799
+      }
+    },
+    {
+      "file": "boost_band-accent.fbx",
+      "bounds_error_max": 9.536743172944284e-08,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.01035999,
+        "minimum_triangle_area": 0.0056527068
+      }
+    },
+    {
+      "file": "boost_band-cardboard.fbx",
+      "bounds_error_max": 2.013854980553731e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 56,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          16,
+          16
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.12639673,
+        "minimum_triangle_area": 0.0040592923
+      }
+    },
+    {
+      "file": "boost_band-elastic.fbx",
+      "bounds_error_max": 2.479553220524622e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 86,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          45
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.32227517,
+        "minimum_triangle_area": 0.0371460309
+      }
+    },
+    {
+      "file": "boost_spool-paper.fbx",
+      "bounds_error_max": 2.6931190488799217e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 128,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          66
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.86966351,
+        "minimum_triangle_area": 0.0114951122
+      }
+    },
+    {
+      "file": "boost_spool-tape.fbx",
+      "bounds_error_max": 2.6702880884243996e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 48,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          8,
+          8,
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.08663989,
+        "minimum_triangle_area": 0.0068999799
+      }
+    },
+    {
+      "file": "boost_spool-accent.fbx",
+      "bounds_error_max": 9.536743172944284e-08,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.01035999,
+        "minimum_triangle_area": 0.0056527068
+      }
+    },
+    {
+      "file": "boost_spool-cardboard.fbx",
+      "bounds_error_max": 8.098411558021823e-08,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 144,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          16,
+          16,
+          24,
+          24
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.24503481,
+        "minimum_triangle_area": 0.0040592923
+      }
+    },
+    {
+      "file": "boost_spool-elastic.fbx",
+      "bounds_error_max": 2.8216552738768996e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 40,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          12,
+          12
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.01915044,
+        "minimum_triangle_area": 0.0008768513
+      }
+    },
+    {
+      "file": "boost_twin-paper.fbx",
+      "bounds_error_max": 2.0980834936068504e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 44,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          24
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.70335965,
+        "minimum_triangle_area": 0.0063999966
+      }
+    },
+    {
+      "file": "boost_twin-tape.fbx",
+      "bounds_error_max": 2.6702880884243996e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 48,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 4,
+        "component_vertex_counts": [
+          8,
+          8,
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.09767986,
+        "minimum_triangle_area": 0.0068999799
+      }
+    },
+    {
+      "file": "boost_twin-accent.fbx",
+      "bounds_error_max": 9.536743172944284e-08,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.01035999,
+        "minimum_triangle_area": 0.0056527068
+      }
+    },
+    {
+      "file": "boost_twin-cardboard.fbx",
+      "bounds_error_max": 2.013854980553731e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 56,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          16,
+          16
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.17074645,
+        "minimum_triangle_area": 0.0040592923
+      }
+    },
+    {
+      "file": "boost_twin-elastic.fbx",
+      "bounds_error_max": 2.479553220524622e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 172,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          45,
+          45
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.41251223,
+        "minimum_triangle_area": 0.0262865538
+      }
+    }
+  ],
+  "joins_and_mounts": {
+    "tolerance_studs": 0.0001,
+    "nose_body_pairs": [
+      {
+        "body": "body_standard",
+        "nose": "nose_0",
+        "maximum_section_error": 3.6582793028205884e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "nose": "nose_1",
+        "maximum_section_error": 3.6582793028205884e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "nose": "nose_2",
+        "maximum_section_error": 3.6582793028205884e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "nose": "nose_3",
+        "maximum_section_error": 3.6582793028205884e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "nose": "nose_4",
+        "maximum_section_error": 3.6582793028205884e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "nose": "nose_5",
+        "maximum_section_error": 3.6582793028205884e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "nose": "nose_0",
+        "maximum_section_error": 2.9564173584088927e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "nose": "nose_1",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "nose": "nose_2",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "nose": "nose_3",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "nose": "nose_4",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "nose": "nose_5",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "nose": "nose_0",
+        "maximum_section_error": 2.9564173584088927e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "nose": "nose_1",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "nose": "nose_2",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "nose": "nose_3",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "nose": "nose_4",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "nose": "nose_5",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "nose": "nose_0",
+        "maximum_section_error": 2.9564173584088927e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "nose": "nose_1",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "nose": "nose_2",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "nose": "nose_3",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "nose": "nose_4",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "nose": "nose_5",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "nose": "nose_0",
+        "maximum_section_error": 2.9564173584088927e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "nose": "nose_1",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "nose": "nose_2",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "nose": "nose_3",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "nose": "nose_4",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "nose": "nose_5",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "nose": "nose_0",
+        "maximum_section_error": 2.9564173584088927e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "nose": "nose_1",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "nose": "nose_2",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "nose": "nose_3",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "nose": "nose_4",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "nose": "nose_5",
+        "maximum_section_error": 8.596304118507825e-08,
+        "gap": 0
+      }
+    ],
+    "body_tail_pairs": [
+      {
+        "body": "body_standard",
+        "tail": "tail_1",
+        "maximum_section_error": 4.1484832799233627e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "tail": "tail_2",
+        "maximum_section_error": 4.1484832799233627e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "tail": "tail_3",
+        "maximum_section_error": 4.1484832799233627e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "tail": "tail_4",
+        "maximum_section_error": 4.1484832799233627e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_standard",
+        "tail": "tail_5",
+        "maximum_section_error": 4.1484832799233627e-07,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "tail": "tail_1",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "tail": "tail_2",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "tail": "tail_3",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "tail": "tail_4",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim",
+        "tail": "tail_5",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "tail": "tail_1",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "tail": "tail_2",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "tail": "tail_3",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "tail": "tail_4",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy",
+        "tail": "tail_5",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "tail": "tail_1",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "tail": "tail_2",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "tail": "tail_3",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "tail": "tail_4",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_standard_mk2",
+        "tail": "tail_5",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "tail": "tail_1",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "tail": "tail_2",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "tail": "tail_3",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "tail": "tail_4",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_slim_mk2",
+        "tail": "tail_5",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "tail": "tail_1",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "tail": "tail_2",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "tail": "tail_3",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "tail": "tail_4",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      },
+      {
+        "body": "body_heavy_mk2",
+        "tail": "tail_5",
+        "maximum_section_error": 7.27090830086288e-08,
+        "gap": 0
+      }
+    ],
+    "wing_seats": [
+      {
+        "part": "wings_1",
+        "top_y": 0.95,
+        "bottom_y": 0.85,
+        "pivot_unchanged": true,
+        "bodies_compatible": [
+          "body_standard",
+          "body_slim",
+          "body_heavy",
+          "body_standard_mk2",
+          "body_slim_mk2",
+          "body_heavy_mk2"
+        ]
+      },
+      {
+        "part": "wings_2",
+        "top_y": 0.95,
+        "bottom_y": 0.85,
+        "pivot_unchanged": true,
+        "bodies_compatible": [
+          "body_standard",
+          "body_slim",
+          "body_heavy",
+          "body_standard_mk2",
+          "body_slim_mk2",
+          "body_heavy_mk2"
+        ]
+      },
+      {
+        "part": "wings_3",
+        "top_y": 0.95,
+        "bottom_y": 0.85,
+        "pivot_unchanged": true,
+        "bodies_compatible": [
+          "body_standard",
+          "body_slim",
+          "body_heavy",
+          "body_standard_mk2",
+          "body_slim_mk2",
+          "body_heavy_mk2"
+        ]
+      },
+      {
+        "part": "wings_4",
+        "top_y": 0.95,
+        "bottom_y": 0.85,
+        "pivot_unchanged": true,
+        "bodies_compatible": [
+          "body_standard",
+          "body_slim",
+          "body_heavy",
+          "body_standard_mk2",
+          "body_slim_mk2",
+          "body_heavy_mk2"
+        ]
+      },
+      {
+        "part": "wings_5",
+        "top_y": 0.95,
+        "bottom_y": 0.85,
+        "pivot_unchanged": true,
+        "bodies_compatible": [
+          "body_standard",
+          "body_slim",
+          "body_heavy",
+          "body_standard_mk2",
+          "body_slim_mk2",
+          "body_heavy_mk2"
+        ]
+      }
+    ],
+    "mount_clearance": [
+      {
+        "part": "body_slim",
+        "mount": "left",
+        "tube_center_surface_distance": 1.2046093940734863,
+        "muzzle_surface_distance": 0.6434807181358337,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "body_slim",
+        "mount": "right",
+        "tube_center_surface_distance": 1.2046093940734863,
+        "muzzle_surface_distance": 0.6434807181358337,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "body_heavy",
+        "mount": "left",
+        "tube_center_surface_distance": 0.7034183144569397,
+        "muzzle_surface_distance": 0.5785267353057861,
+        "minimum_axis_surface_distance": 0.4808347821235657,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "body_heavy",
+        "mount": "right",
+        "tube_center_surface_distance": 0.7034183144569397,
+        "muzzle_surface_distance": 0.57329261302948,
+        "minimum_axis_surface_distance": 0.48083263635635376,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "body_standard_mk2",
+        "mount": "left",
+        "tube_center_surface_distance": 0.5870188474655151,
+        "muzzle_surface_distance": 0.6434807181358337,
+        "minimum_axis_surface_distance": 0.5870187878608704,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "body_standard_mk2",
+        "mount": "right",
+        "tube_center_surface_distance": 0.5870188474655151,
+        "muzzle_surface_distance": 0.6434807181358337,
+        "minimum_axis_surface_distance": 0.5870187878608704,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "body_slim_mk2",
+        "mount": "left",
+        "tube_center_surface_distance": 1.2046093940734863,
+        "muzzle_surface_distance": 0.6434807181358337,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "body_slim_mk2",
+        "mount": "right",
+        "tube_center_surface_distance": 1.2046093940734863,
+        "muzzle_surface_distance": 0.6434807181358337,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "body_heavy_mk2",
+        "mount": "left",
+        "tube_center_surface_distance": 1.3914384841918945,
+        "muzzle_surface_distance": 1.5012421607971191,
+        "minimum_axis_surface_distance": 1.3716096878051758,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true,
+        "catalog_wing_shift": 1.35,
+        "checked_tube_center": [
+          -3.11,
+          0.08,
+          -1.313391
+        ],
+        "checked_muzzle": [
+          -3.11,
+          0.08,
+          -2.87
+        ]
+      },
+      {
+        "part": "body_heavy_mk2",
+        "mount": "right",
+        "tube_center_surface_distance": 1.391438603401184,
+        "muzzle_surface_distance": 1.5012421607971191,
+        "minimum_axis_surface_distance": 1.3914384841918945,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true,
+        "catalog_wing_shift": 1.35,
+        "checked_tube_center": [
+          3.11,
+          0.08,
+          -1.313391
+        ],
+        "checked_muzzle": [
+          3.11,
+          0.08,
+          -2.87
+        ]
+      },
+      {
+        "part": "nose_1",
+        "mount": "left",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6224018335342407,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_1",
+        "mount": "right",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.622402012348175,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_2",
+        "mount": "left",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6010024547576904,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_2",
+        "mount": "right",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6010025143623352,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_3",
+        "mount": "left",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6246321201324463,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_3",
+        "mount": "right",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6246320009231567,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_4",
+        "mount": "left",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6408703327178955,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_4",
+        "mount": "right",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6408702731132507,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_5",
+        "mount": "left",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6310257315635681,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "nose_5",
+        "mount": "right",
+        "tube_center_surface_distance": 1.4200366735458374,
+        "muzzle_surface_distance": 0.6310259103775024,
+        "minimum_axis_surface_distance": 0.5876996517181396,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_1",
+        "mount": "left",
+        "tube_center_surface_distance": 0.7067099213600159,
+        "muzzle_surface_distance": 1.0686177015304565,
+        "minimum_axis_surface_distance": 0.7067099213600159,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_1",
+        "mount": "right",
+        "tube_center_surface_distance": 0.7067099213600159,
+        "muzzle_surface_distance": 1.0686177015304565,
+        "minimum_axis_surface_distance": 0.7067099213600159,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_2",
+        "mount": "left",
+        "tube_center_surface_distance": 0.7057742476463318,
+        "muzzle_surface_distance": 0.9898200631141663,
+        "minimum_axis_surface_distance": 0.7057742476463318,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_2",
+        "mount": "right",
+        "tube_center_surface_distance": 0.7057742476463318,
+        "muzzle_surface_distance": 0.9898200631141663,
+        "minimum_axis_surface_distance": 0.7057742476463318,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_3",
+        "mount": "left",
+        "tube_center_surface_distance": 0.7068771123886108,
+        "muzzle_surface_distance": 1.0686177015304565,
+        "minimum_axis_surface_distance": 0.7068771123886108,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_3",
+        "mount": "right",
+        "tube_center_surface_distance": 0.7068771123886108,
+        "muzzle_surface_distance": 1.0686177015304565,
+        "minimum_axis_surface_distance": 0.7068771123886108,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_4",
+        "mount": "left",
+        "tube_center_surface_distance": 0.597412109375,
+        "muzzle_surface_distance": 0.9443978667259216,
+        "minimum_axis_surface_distance": 0.597412109375,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_4",
+        "mount": "right",
+        "tube_center_surface_distance": 0.597412109375,
+        "muzzle_surface_distance": 0.9443978667259216,
+        "minimum_axis_surface_distance": 0.597412109375,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_5",
+        "mount": "left",
+        "tube_center_surface_distance": 0.7268570065498352,
+        "muzzle_surface_distance": 1.043437123298645,
+        "minimum_axis_surface_distance": 0.6768625974655151,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "wings_5",
+        "mount": "right",
+        "tube_center_surface_distance": 0.7268570065498352,
+        "muzzle_surface_distance": 1.0434373617172241,
+        "minimum_axis_surface_distance": 0.6768626570701599,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_1",
+        "mount": "left",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_1",
+        "mount": "right",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_2",
+        "mount": "left",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_2",
+        "mount": "right",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_3",
+        "mount": "left",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_3",
+        "mount": "right",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_4",
+        "mount": "left",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_4",
+        "mount": "right",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_5",
+        "mount": "left",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "tail_5",
+        "mount": "right",
+        "tube_center_surface_distance": 6.824156761169434,
+        "muzzle_surface_distance": 8.363131523132324,
+        "minimum_axis_surface_distance": 5.295498371124268,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "boost_band",
+        "mount": "left",
+        "tube_center_surface_distance": 3.515995979309082,
+        "muzzle_surface_distance": 4.989810466766357,
+        "minimum_axis_surface_distance": 2.161552906036377,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "boost_band",
+        "mount": "right",
+        "tube_center_surface_distance": 3.515995979309082,
+        "muzzle_surface_distance": 4.989810466766357,
+        "minimum_axis_surface_distance": 2.161552906036377,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "boost_spool",
+        "mount": "left",
+        "tube_center_surface_distance": 3.515995979309082,
+        "muzzle_surface_distance": 4.989810466766357,
+        "minimum_axis_surface_distance": 2.161552906036377,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "boost_spool",
+        "mount": "right",
+        "tube_center_surface_distance": 3.515995979309082,
+        "muzzle_surface_distance": 4.989810466766357,
+        "minimum_axis_surface_distance": 2.161552906036377,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "boost_twin",
+        "mount": "left",
+        "tube_center_surface_distance": 3.4502503871917725,
+        "muzzle_surface_distance": 4.943704128265381,
+        "minimum_axis_surface_distance": 2.0528788566589355,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      },
+      {
+        "part": "boost_twin",
+        "mount": "right",
+        "tube_center_surface_distance": 3.4502503871917725,
+        "muzzle_surface_distance": 4.943704128265381,
+        "minimum_axis_surface_distance": 2.0528788566589355,
+        "tube_radius": 0.41243478260869565,
+        "samples": 33,
+        "tube_and_muzzle_uncovered": true
+      }
+    ],
+    "booster_body_fit": [
+      {
+        "body": "body_standard",
+        "booster": "boost_band",
+        "pivot": [
+          0.0,
+          -0.275057,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_standard",
+        "booster": "boost_spool",
+        "pivot": [
+          0.0,
+          -0.275057,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_standard",
+        "booster": "boost_twin",
+        "pivot": [
+          0.0,
+          -0.275057,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_slim",
+        "booster": "boost_band",
+        "pivot": [
+          0.0,
+          -0.24,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_slim",
+        "booster": "boost_spool",
+        "pivot": [
+          0.0,
+          -0.24,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_slim",
+        "booster": "boost_twin",
+        "pivot": [
+          0.0,
+          -0.24,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_heavy",
+        "booster": "boost_band",
+        "pivot": [
+          0.0,
+          -1.995,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_heavy",
+        "booster": "boost_spool",
+        "pivot": [
+          0.0,
+          -1.995,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_heavy",
+        "booster": "boost_twin",
+        "pivot": [
+          0.0,
+          -1.995,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_standard_mk2",
+        "booster": "boost_band",
+        "pivot": [
+          0.0,
+          -0.87,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_standard_mk2",
+        "booster": "boost_spool",
+        "pivot": [
+          0.0,
+          -0.87,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_standard_mk2",
+        "booster": "boost_twin",
+        "pivot": [
+          0.0,
+          -0.87,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_slim_mk2",
+        "booster": "boost_band",
+        "pivot": [
+          0.0,
+          -0.24,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_slim_mk2",
+        "booster": "boost_spool",
+        "pivot": [
+          0.0,
+          -0.24,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_slim_mk2",
+        "booster": "boost_twin",
+        "pivot": [
+          0.0,
+          -0.24,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_heavy_mk2",
+        "booster": "boost_band",
+        "pivot": [
+          0.0,
+          -2.02,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_heavy_mk2",
+        "booster": "boost_spool",
+        "pivot": [
+          0.0,
+          -2.02,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      },
+      {
+        "body": "body_heavy_mk2",
+        "booster": "boost_twin",
+        "pivot": [
+          0.0,
+          -2.02,
+          3.25
+        ],
+        "non_strap_body_intersections": 0,
+        "short_tape_attachment_overlap_intentional": true
+      }
+    ],
+    "classic_tail_compatibility": {
+      "preserved": true,
+      "original_front_z": 5.295929,
+      "common_body_rear_section_preserved_on_every_body": true,
+      "note": "Classic tail remains unchanged; its original upper-socket overlap is retained. New tails meet the exact full body-rear rim."
+    }
+  },
+  "isolated_render_checks": [
+    {
+      "part": "body_slim",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        105,
+        105
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "body_heavy",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        92,
+        92,
+        51,
+        52
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "body_standard_mk2",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        105,
+        105
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "body_slim_mk2",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        105,
+        105
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "body_heavy_mk2",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        59,
+        59
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "nose_1",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        114,
+        114
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "nose_2",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        92,
+        92,
+        51,
+        52
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "nose_3",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        106,
+        106
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "nose_4",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        92,
+        92,
+        51,
+        51
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "nose_5",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        83,
+        83
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "wings_1",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        213,
+        212
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "wings_2",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        218,
+        218
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "wings_3",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        212,
+        212
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "wings_4",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        177,
+        177
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "wings_5",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        220,
+        220
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "tail_1",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        308,
+        308,
+        51,
+        52
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "tail_2",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        310,
+        310,
+        52,
+        52
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "tail_3",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        116,
+        116
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "tail_4",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        392,
+        393,
+        52,
+        52
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "tail_5",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        310,
+        310,
+        52,
+        52
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "boost_band",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        93,
+        93
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "boost_spool",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        93,
+        93
+      ],
+      "uncropped": true
+    },
+    {
+      "part": "boost_twin",
+      "resolution": [
+        1280,
+        960
+      ],
+      "margins_left_right_top_bottom": [
+        69,
+        69,
+        106,
+        106
+      ],
+      "uncropped": true
+    }
+  ],
+  "assembled_parts": {
+    "body_slim": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 204,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "body_heavy": {
+      "bbox_min": [
+        -2.62764,
+        -1.975,
+        -2.606416
+      ],
+      "bbox_max": [
+        2.62764,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        -0.2875,
+        1.404757
+      ],
+      "size": [
+        5.25528,
+        3.375,
+        8.022345
+      ],
+      "triangles": 324,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "body_standard_mk2": {
+      "bbox_min": [
+        -1.32296,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.32296,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.64592,
+        2.25,
+        8.022345
+      ],
+      "triangles": 250,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "body_slim_mk2": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 244,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "body_heavy_mk2": {
+      "bbox_min": [
+        -1.8,
+        -2.02,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.8,
+        1.52,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        -0.25,
+        1.404757
+      ],
+      "size": [
+        3.6,
+        3.54,
+        8.022345
+      ],
+      "triangles": 1104,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "nose_1": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -9.256416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -5.931416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        6.65
+      ],
+      "triangles": 158,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "nose_2": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -5.326416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -3.966416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        2.72
+      ],
+      "triangles": 104,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "nose_3": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -8.726416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -5.666416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        6.12
+      ],
+      "triangles": 158,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "nose_4": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -5.826416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -4.216416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        3.22
+      ],
+      "triangles": 158,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "nose_5": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -7.456416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -5.031416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        4.85
+      ],
+      "triangles": 298,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "wings_1": {
+      "bbox_min": [
+        -7.4,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        7.4,
+        1.008,
+        5.38
+      ],
+      "center": [
+        0.0,
+        0.894,
+        1.386792
+      ],
+      "size": [
+        14.8,
+        0.228,
+        7.986416
+      ],
+      "triangles": 84,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "wings_2": {
+      "bbox_min": [
+        -8.4,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        8.4,
+        1.008,
+        4.28
+      ],
+      "center": [
+        0.0,
+        0.894,
+        0.836792
+      ],
+      "size": [
+        16.8,
+        0.228,
+        6.886416
+      ],
+      "triangles": 84,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "wings_3": {
+      "bbox_min": [
+        -7.25,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        7.25,
+        1.008,
+        5.16
+      ],
+      "center": [
+        0.0,
+        0.894,
+        1.276792
+      ],
+      "size": [
+        14.5,
+        0.228,
+        7.766416
+      ],
+      "triangles": 84,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "wings_4": {
+      "bbox_min": [
+        -6.7715,
+        0.67,
+        -2.606416
+      ],
+      "bbox_max": [
+        6.7715,
+        2.05,
+        4.48
+      ],
+      "center": [
+        0.0,
+        1.36,
+        0.936792
+      ],
+      "size": [
+        13.543,
+        1.38,
+        7.086416
+      ],
+      "triangles": 200,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "wings_5": {
+      "bbox_min": [
+        -7.95,
+        0.703017,
+        -2.206416
+      ],
+      "bbox_max": [
+        7.95,
+        1.008,
+        4.9
+      ],
+      "center": [
+        0.0,
+        0.855509,
+        1.346792
+      ],
+      "size": [
+        15.9,
+        0.304983,
+        7.106416
+      ],
+      "triangles": 596,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "tail_1": {
+      "bbox_min": [
+        -1.088501,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        1.088501,
+        2.99881,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.519405,
+        6.532965
+      ],
+      "size": [
+        2.177002,
+        2.95881,
+        2.234071
+      ],
+      "triangles": 234,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "tail_2": {
+      "bbox_min": [
+        -0.795,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.795,
+        2.98,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        1.59,
+        2.94,
+        2.234071
+      ],
+      "triangles": 240,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "tail_3": {
+      "bbox_min": [
+        -2.9,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        2.9,
+        2.98,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        5.8,
+        2.94,
+        2.234071
+      ],
+      "triangles": 358,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "tail_4": {
+      "bbox_min": [
+        -0.795,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.795,
+        4.22,
+        7.65
+      ],
+      "center": [
+        0.0,
+        2.13,
+        6.532965
+      ],
+      "size": [
+        1.59,
+        4.18,
+        2.234071
+      ],
+      "triangles": 168,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "tail_5": {
+      "bbox_min": [
+        -0.806542,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.806542,
+        2.98,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        1.613084,
+        2.94,
+        2.234071
+      ],
+      "triangles": 334,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "boost_band": {
+      "bbox_min": [
+        -0.635,
+        -1.135057,
+        1.935
+      ],
+      "bbox_max": [
+        0.635,
+        -0.130057,
+        4.47
+      ],
+      "center": [
+        0.0,
+        -0.632557,
+        3.2025
+      ],
+      "size": [
+        1.27,
+        1.005,
+        2.535
+      ],
+      "triangles": 242,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ]
+    },
+    "boost_spool": {
+      "bbox_min": [
+        -0.635,
+        -1.145057,
+        1.935
+      ],
+      "bbox_max": [
+        0.635,
+        -0.130057,
+        4.47
+      ],
+      "center": [
+        0.0,
+        -0.637557,
+        3.2025
+      ],
+      "size": [
+        1.27,
+        1.015,
+        2.535
+      ],
+      "triangles": 384,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ]
+    },
+    "boost_twin": {
+      "bbox_min": [
+        -0.835,
+        -1.135057,
+        1.935
+      ],
+      "bbox_max": [
+        0.835,
+        -0.130057,
+        4.47
+      ],
+      "center": [
+        0.0,
+        -0.632557,
+        3.2025
+      ],
+      "size": [
+        1.67,
+        1.005,
+        2.535
+      ],
+      "triangles": 344,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ]
+    }
+  },
+  "total_triangles_by_part": {
+    "body_slim": 204,
+    "body_heavy": 324,
+    "body_standard_mk2": 250,
+    "body_slim_mk2": 244,
+    "body_heavy_mk2": 1104,
+    "nose_1": 158,
+    "nose_2": 104,
+    "nose_3": 158,
+    "nose_4": 158,
+    "nose_5": 298,
+    "wings_1": 84,
+    "wings_2": 84,
+    "wings_3": 84,
+    "wings_4": 200,
+    "wings_5": 596,
+    "tail_1": 234,
+    "tail_2": 240,
+    "tail_3": 358,
+    "tail_4": 168,
+    "tail_5": 334,
+    "boost_band": 242,
+    "boost_spool": 384,
+    "boost_twin": 344
+  },
+  "maximum_part_triangles": 1104,
+  "strict_part_triangle_limit": 400,
+  "part_triangle_limit_overrides": {
+    "body_heavy_mk2": 1200,
+    "wings_5": 600
+  },
+  "texture_images": [],
+  "uv_layers": 0,
+  "script_sha256": "1319d517ff15cc2ec165751f41197808bf15575836ddf7dcb46601f34e0c9da7",
+  "export_sha256": {
+    "body_slim-paper.fbx": "cd97e3701c81fd88467054427cc24e531c876e111dcf78c4aef53358467e13e4",
+    "body_slim-accent.fbx": "e27eabe63aee7efe274549d2d0b075e1e3bd5177bde068595f19dd4f067f9396",
+    "body_heavy-cardboard.fbx": "5eb4b3aecf3e7ad2cea1f2f94987670119f5d2802950aa2f90259db823a38669",
+    "body_heavy-accent.fbx": "3a2f2fbf291686cda17c0e23e00cb58d14fc741b451526011cc650e23fa24bd4",
+    "body_heavy-tape.fbx": "422d473705102008d663bbf90f57118d135ae5f8514d17b8b960df02aac6a43d",
+    "body_standard_mk2-paper.fbx": "ea5ead01ef10513150e70faceab9175b81b95a1a4af7c9128cd3394114bd0a40",
+    "body_standard_mk2-accent.fbx": "756d8098ab4f20dec86de88985836ffa28c58809d8a6651744e16f78f2123723",
+    "body_slim_mk2-paper.fbx": "72ba795ec51742580bde8df6f1d9e4ed1179f9607cdf2db5d32eb0fb8d58ed28",
+    "body_slim_mk2-accent.fbx": "e9a62a8cf5f39bee226abb0529128bec2841dc0cc4b617dcee0ad696b724d6e6",
+    "body_heavy_mk2-tube.fbx": "1f1a455502abf97262543c89738d05c2c5e190c5737caf414e7e94e48764fb25",
+    "body_heavy_mk2-cardboard.fbx": "ab0c969ac2de237295dde6a87d2c3091219edcfc43a815dd8ab5b7ccfbfb2db7",
+    "body_heavy_mk2-paper.fbx": "35f941d93fb14d4c59dfe24a69e300c735626dee9988778cf07bc19e2fbd9c49",
+    "body_heavy_mk2-accent.fbx": "a07a5e483a75e3c5473e61c0201d684e4a8df7742040a885c18f405733a4ba08",
+    "nose_1-paper.fbx": "b4d2bd10bf58e8842a747d00b6ca39873c84cff7d2d4780d8d542bca466ec3ef",
+    "nose_1-accent.fbx": "5be21545a61cf473a2c5dd3428a1cfcb45d9fd9ff462cf80b52c77af02439f26",
+    "nose_2-paper.fbx": "537766977eabcc0c14ab83040857c3ecc3f42c1967c3ea02424ad9dfee07ad4a",
+    "nose_2-accent.fbx": "d3e3237e62aee56de67dbfc2a17b2d1c5a69dec9cc42b3fb1285513854bf9140",
+    "nose_3-paper.fbx": "5523320ea2815a7a92505dc53e13393a23040cf6da4e2fae16dd6187dbe07d6a",
+    "nose_3-accent.fbx": "099dc354a4308094dfb2cd59da4caad42824a139f7bbd38cd922d7b4f942ba31",
+    "nose_4-paper.fbx": "58aa040ac7d69c6c785723c5377b06e76d74fc9732710c4dfcb80960f9827eb8",
+    "nose_4-accent.fbx": "54fe92cad03318fa0b7c53528043f0392d1016b5b120184c480607f00baa89e6",
+    "nose_5-paper.fbx": "21d20b6d89de19624240367c2819346a7dc217232a017049955c496c458b9388",
+    "nose_5-accent.fbx": "7f15fc34ae18f733ed9def4a4657a43bdb805fc06e49a7fb8f0598ee8ba3f927",
+    "nose_5-tape.fbx": "c798bdbd63c224795d595b547532899e5b64f0e79778dc7f6bfb27033c0abe46",
+    "wings_1-paper.fbx": "d91eafeef84af9a1234ce78664e359b46637d47bc78c00f5d67b23e430e85d60",
+    "wings_1-accent.fbx": "539e14f60e1fd1f5202224f193e91aa55ec60bc6ce5cb2935c78e02f952f546f",
+    "wings_2-paper.fbx": "ccd511bb3f1b920b3d4dace81b2ab7a374ae6d81d9027c61dd0098587c485388",
+    "wings_2-accent.fbx": "9acd652cb03b38c744a3c2794fec7e847c3511dd1230ab05fac01c2bf653c686",
+    "wings_3-paper.fbx": "bb9a0e8ffd84e9b5d851cb997e38bb6914669899f61d7b76557afb697553fc5d",
+    "wings_3-accent.fbx": "4c3a336c6c5f12d4dc2cc86d4f5b3e7c368a978ea79e34367ebb66c627a28dba",
+    "wings_4-paper.fbx": "7ff9c04ea49c7636245c27e54c5269246107703bb08130fda1f6c0e32c741ac5",
+    "wings_4-cardboard.fbx": "85b63767eb3d0784d04e4c111b3981e6077f51c703d549a1ad1a5db81ab66e48",
+    "wings_4-accent.fbx": "62eca1dad94fe73991c59801a8d9a6c5f8f9d032e03195f1f797ec5f4a4e8ba7",
+    "wings_5-paper.fbx": "425266f5df0c7fc4daa516dd59b9e51aee3c91bb87cc09bb61261e3114ea95b6",
+    "wings_5-accent.fbx": "0cabcdab92d6e2d450aa40653abc602f83b6d759bb7a3547ff6dfbdb72dabc45",
+    "tail_1-paper.fbx": "dfbdfccf66df632932d5efcfecef1c6387e1f35dc89e2f5e4c41f91683d6d853",
+    "tail_1-accent.fbx": "2961ebde3a0c17054aa5121a50556ea19f435d1603a6c775a3b35205341cc236",
+    "tail_2-paper.fbx": "c70c03e785a3f8086fe275ce3cefeefe5ceaa5b57c2dfc295a5c631ea8ab5d54",
+    "tail_2-accent.fbx": "fb3d1a0f4731e2a6ab4a1ee6ec466f143c06abae963dac0143f145804b9d782d",
+    "tail_3-paper.fbx": "87c8745f38fd1d03eaf7e95a373cebce7eb730e2392c01ce2f9d1a8e755b5cb0",
+    "tail_3-accent.fbx": "09bb86508fcaef5e98a8061fbf3a0540f63189b071ec62de56025b3dd2f44c19",
+    "tail_4-paper.fbx": "0d81317ac2f39232ad10424f595b3fa62cb9ff73b52019e59bd7c9bf107e477a",
+    "tail_4-accent.fbx": "f779508dc081f0fab86f72a12dae0513eca9660cf2daaf15b180251913d352b3",
+    "tail_5-paper.fbx": "e612b2fb707ec1a9be6b1eefed68cd9f6853629d03d23eef78d523fefe97065a",
+    "tail_5-accent.fbx": "0bfdade7ff4c6984f44265bc8002ab923efac7cf068a512e55be09e92df73501",
+    "tail_5-tape.fbx": "8b2539c6fcf9cb4385f5d86134e30a293d7d1e0af56b3603ad401c67cce0a444",
+    "boost_band-paper.fbx": "833e21ec166850733e9535ed9359550738eecbcb5ddb3d3d1f0aa3a32ed2cfd0",
+    "boost_band-tape.fbx": "fdb2b967c07d01d8895409f59ac07ae782b69dda7bf9c8da9ffbe2032fa4d478",
+    "boost_band-accent.fbx": "ff071e6b955c20238f34c1bf7659753f0ffff22392ed165df6984b4c9d97e8d5",
+    "boost_band-cardboard.fbx": "0ad811eb573ffc337f9066523213798ae948c47aae5bcac849bc17121bad256e",
+    "boost_band-elastic.fbx": "860411d39c4fe93fb02d52d4ede6f2d76cc51e56f44c4a9d8947e65e6861df2e",
+    "boost_spool-paper.fbx": "ef9b7b0333dd82b33d59976f891cb11ad604486323d5ee600be45cbddcedc7db",
+    "boost_spool-tape.fbx": "2a8b76598b9ef5b69ffb3d80bffbea31c452f0e8457eb5bf3a62ec49cf3a95ff",
+    "boost_spool-accent.fbx": "88a7d21ff04a5a4551beabf7de43e2998e075df3f2a21813d96832b6f4e103bd",
+    "boost_spool-cardboard.fbx": "fdff99905da6bf0a54f2423fd6dc31d7ba08c47e0f6a1dc05c2533183baad917",
+    "boost_spool-elastic.fbx": "27f10f966ecf8657681b956601a8cff5f7d6099aba65208b6b69333a36c8f531",
+    "boost_twin-paper.fbx": "f74c6f0d9bfc178ac0e4a0e4d53dbfa23c8efed12a81a3fc41ccce062f2ac602",
+    "boost_twin-tape.fbx": "a9fe6ec4dd50965cad297d37be8e890820f4841ab594fbffe53c20b4cb1ddc5c",
+    "boost_twin-accent.fbx": "6c6d49c9d335e87dc5b863718e1c8e17ad8142c3dae780d0b5f97282142f6b9c",
+    "boost_twin-cardboard.fbx": "658e98f483320bbd245077110ba6c030fe6e95201466f48c3f1e829b14ac6815",
+    "boost_twin-elastic.fbx": "8b00d4ca0759fcc4386c7618a24461bcbcdcc358a12cd1ec8fd7eb1d641b412e"
+  },
+  "reference_sha256": {
+    "bodies.png": "1e06a5521d2ac849ef8e78bb8ed59d0d7dcfb1d3d39e13edd109cf33eda80f92",
+    "boosters.png": "565a15d36602fe5f5318c9d178db2c8c622478da6efc99154fd99b2d9d77c7d4",
+    "mixes.png": "dd1ed02751903ab5d42f7784d4285e3fe56f801eb534115558dec745f556543d",
+    "noses.png": "12ed5e2b30ecd7fb94515bbc33afa1401d4da24e3747772992d4b34a63a63e0c",
+    "tails.png": "8b41585776aa4a30a819fa9671d6279adae8ee36f8567b1480798cfd6e961634",
+    "wings.png": "d00b0ac3f07a7872f66afe7184b5048c58d48cc0a28d268862af79f3ff498d97"
+  },
+  "classic_and_helper_unchanged": true,
+  "protected_file_sha256": {
+    "tools\\art\\planes.py": "d19d2948ff1fbe9419f9e559f791dcaa74dfb568a0d915ba707fa5821dc97714",
+    "assets\\models\\planes\\classic\\body-paper-L.fbx": "7b533d63ec91b4471b01329da7f3dfb5ed43a0ab9914ce9ec768e618d6490446",
+    "assets\\models\\planes\\classic\\body-paper-R.fbx": "77299ce6f59a116cfd50c936f5b3576a0c8ce333041ac7c81082164eceeb4b9f",
+    "assets\\models\\planes\\classic\\body-paper.fbx": "c43d1ca4e68550b73fdd49d189e69456b5320a92787b0a6eded0f4af88aca8e7",
+    "assets\\models\\planes\\classic\\classic.blend": "8462b62531cdcea4348ec84a899e7ec12d7bb6a8cc004d5223a5f1fd45cbb6d4",
+    "assets\\models\\planes\\classic\\compare.png": "661617015631b3dc9c201de80d51968339c309e3df04ca62689a39034d6cb8af",
+    "assets\\models\\planes\\classic\\nose-accent.fbx": "c2f3e783c53f977e3101e8c4e9a9b04d305818bc7260adf22ec4dfbbfe2fae9a",
+    "assets\\models\\planes\\classic\\nose-paper-L.fbx": "2efc276ae9aeb36c7b436111b6795f837d83bd6d2b227fff34f680dfc569f466",
+    "assets\\models\\planes\\classic\\nose-paper-R.fbx": "178af3a2f76a2920dd93b6c243eb8186c7c397028f355fbe0641656d00ccea29",
+    "assets\\models\\planes\\classic\\nose-paper.fbx": "3e9e481700105e0aae9855e5a005fc4467f6ae2296f87ae5f1373d2e1e5d9519",
+    "assets\\models\\planes\\classic\\parts.json": "1440cc419a302ed90649de35b498dc974601585b27bf36055c599c3215cd0269",
+    "assets\\models\\planes\\classic\\pellet-band.fbx": "cfe5e43ab9b4bd5106a94aeaac392cb7eea56bae170e2f54e5e0104a292cdc47",
+    "assets\\models\\planes\\classic\\pellet-tube.fbx": "16eee421fec6272d9b838b800f39941bc7e4ce9bbcdb1cf5464fd66d23a3973d",
+    "assets\\models\\planes\\classic\\README.md": "fcb2b92e086b392b1bb263b330c6ee59ae3f14655da9b1a453869945ef34e0ea",
+    "assets\\models\\planes\\classic\\render-exploded.png": "76804d438b688090db6d100248f1a47583d0196409966317cc80f647e0e2457a",
+    "assets\\models\\planes\\classic\\render-front.png": "ac06480a14508ef4646dbc3ef5b9f61c9d9aa9b099519cfec7388a7cc0768b61",
+    "assets\\models\\planes\\classic\\render-side.png": "daffa37996d8f86049d419fe5c4adc828ba9fcf7abe43a336c43bac182018f17",
+    "assets\\models\\planes\\classic\\render-team-blue.png": "2343a50a3f14120fe09db01e2c44f3266fa2656209a7bf867715df31f8cf325c",
+    "assets\\models\\planes\\classic\\render-team-red.png": "9697e98617e9f3416181c900cd39863a1e7a94d20c7f9ae939a57be1c6da8fde",
+    "assets\\models\\planes\\classic\\render-threequarter-blue.png": "005df54ba2aedc13e265474c874df836c406da41bf8976bdc5ef905fde4a95b4",
+    "assets\\models\\planes\\classic\\render-threequarter.png": "b051e45ceb14bc27059ea3b57a31a453ebe5edc02f952443a58ef0d7d9a039c8",
+    "assets\\models\\planes\\classic\\render-top.png": "fbab57bdb6ee3791f5d127871faeb700673826a655389c711961028c2bb4e015",
+    "assets\\models\\planes\\classic\\tail-accent.fbx": "3e18df2ff3991dc89c1b4d9dcf940aabc82b6c4e4d62094bc27f73a298238cbb",
+    "assets\\models\\planes\\classic\\tail-paper-L.fbx": "b0cfa60c14cd1f8a8e6089570e92731242e55c7639b4b6e64758ab1b3c7f7c18",
+    "assets\\models\\planes\\classic\\tail-paper-R.fbx": "8f30bef73920cda19d591baf54dc5b9dd2fef04f51a501e3c1fb5a60986436d5",
+    "assets\\models\\planes\\classic\\tail-paper.fbx": "e5b859dd4d449b44feeb554428e7008317ca0d5145b6fc96311ea1d8a04bdda4",
+    "assets\\models\\planes\\classic\\validation.json": "60b9d389d0a4bc09df5c09f2cd6a44bb83a9bdb05027868aada72c920016f356",
+    "assets\\models\\planes\\classic\\wings-accent-L.fbx": "c119d9a5d8c0fd0232a411d50b00d58d9964a3de85bb0cec0707d53fceda170a",
+    "assets\\models\\planes\\classic\\wings-accent-R.fbx": "eec06c1019020927181d6cd393d151e601ad7ea67c838ae494820fdebff076eb",
+    "assets\\models\\planes\\classic\\wings-accent.fbx": "3d3b46ad6cd818512705f047ec280c9f1bfac126a4cd1dd97b1c3c00911dfafc",
+    "assets\\models\\planes\\classic\\wings-paper-L.fbx": "68c14959b2246fe48c82873d871e0ecbea2b909e52bbe3115142674abaac7151",
+    "assets\\models\\planes\\classic\\wings-paper-R.fbx": "828c4b9b57d7bc46565aa60ce1010df18dc1ad35e5d1b0964e21c16f14d685fa",
+    "assets\\models\\planes\\classic\\wings-paper.fbx": "d23a9dedb09958db05e8594d2ed1c2a50fa0623c0036ef23da4f187511504dc0",
+    "assets\\models\\planes\\classic\\wings-sticker-left.fbx": "dc40ca99acbb6486d31b96030621fcae5d633ea71e775cf65ba6051f6a7d31fe",
+    "assets\\models\\planes\\classic\\wings-sticker-right.fbx": "42ff40f2a774f120d55e821fc6bfdf186f97b9a42785a4bdf858de6cf645a994"
+  },
+  "render_files": [
+    "joins.png",
+    "mixes.png",
+    "parts-review.png",
+    "renders\\body_heavy-nose-join.png",
+    "renders\\body_heavy-tail-join.png",
+    "renders\\body_heavy.png",
+    "renders\\body_heavy_mk2.png",
+    "renders\\body_slim-nose-join.png",
+    "renders\\body_slim-tail-join.png",
+    "renders\\body_slim.png",
+    "renders\\body_slim_mk2.png",
+    "renders\\body_standard_mk2.png",
+    "renders\\boost_band.png",
+    "renders\\boost_spool.png",
+    "renders\\boost_twin.png",
+    "renders\\mix-1.png",
+    "renders\\mix-2.png",
+    "renders\\mix-3.png",
+    "renders\\mix-4.png",
+    "renders\\nose_1.png",
+    "renders\\nose_2.png",
+    "renders\\nose_3.png",
+    "renders\\nose_4.png",
+    "renders\\nose_5.png",
+    "renders\\tail_1.png",
+    "renders\\tail_2.png",
+    "renders\\tail_3.png",
+    "renders\\tail_4.png",
+    "renders\\tail_5.png",
+    "renders\\wings_1.png",
+    "renders\\wings_2.png",
+    "renders\\wings_3.png",
+    "renders\\wings_4.png",
+    "renders\\wings_5.png"
+  ],
+  "visual_review": "Inspect the generated renders before delivery. In-game integration is outside this job."
+}

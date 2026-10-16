@@ -1,0 +1,5150 @@
+{
+  "schema_version": 2,
+  "units": "studs",
+  "axes": "X right, Y up, -Z forward",
+  "source": "../concepts/parts/",
+  "texture_images": [],
+  "exports": [
+    {
+      "file": "body_slim-paper.fbx",
+      "object": "body_slim-paper",
+      "part": "body_slim",
+      "region": "paper",
+      "display_name": "Swift Fold",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 180,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011172
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011172
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_slim-accent.fbx",
+      "object": "body_slim-accent",
+      "part": "body_slim",
+      "region": "accent",
+      "display_name": "Swift Fold",
+      "bbox_min": [
+        -0.67998,
+        0.08056,
+        1.55
+      ],
+      "bbox_max": [
+        0.67998,
+        0.89072,
+        3.56
+      ],
+      "bbox_center": [
+        0.0,
+        0.48564,
+        2.555
+      ],
+      "size": [
+        1.35996,
+        0.81016,
+        2.01
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.21064,
+        1.150243
+      ],
+      "slot_local_bbox_min": [
+        -0.67998,
+        -0.19444,
+        0.145243
+      ],
+      "slot_local_bbox_max": [
+        0.67998,
+        0.61572,
+        2.155243
+      ],
+      "fbx_local_bbox_min": [
+        -0.67998,
+        -0.19444,
+        0.145243
+      ],
+      "fbx_local_bbox_max": [
+        0.67998,
+        0.61572,
+        2.155243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_heavy-cardboard.fbx",
+      "object": "body_heavy-cardboard",
+      "part": "body_heavy",
+      "region": "cardboard",
+      "display_name": "Cardboard Gunship",
+      "bbox_min": [
+        -2.6,
+        -1.975,
+        -2.606416
+      ],
+      "bbox_max": [
+        2.6,
+        1.4,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        -0.2875,
+        1.404757
+      ],
+      "size": [
+        5.2,
+        3.375,
+        8.022345
+      ],
+      "triangles": 276,
+      "suggested_color3_255": [
+        166,
+        119,
+        72
+      ],
+      "suggested_color3": [
+        0.65098,
+        0.466667,
+        0.282353
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.5625,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -2.6,
+        -2.25,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        2.6,
+        1.125,
+        4.011172
+      ],
+      "fbx_local_bbox_min": [
+        -2.6,
+        -2.25,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        2.6,
+        1.125,
+        4.011172
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_heavy-accent.fbx",
+      "object": "body_heavy-accent",
+      "part": "body_heavy",
+      "region": "accent",
+      "display_name": "Cardboard Gunship",
+      "bbox_min": [
+        -2.62764,
+        -1.426,
+        1.55
+      ],
+      "bbox_max": [
+        2.62764,
+        0.788,
+        3.56
+      ],
+      "bbox_center": [
+        0.0,
+        -0.319,
+        2.555
+      ],
+      "size": [
+        5.25528,
+        2.214,
+        2.01
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.594,
+        1.150243
+      ],
+      "slot_local_bbox_min": [
+        -2.62764,
+        -1.701,
+        0.145243
+      ],
+      "slot_local_bbox_max": [
+        2.62764,
+        0.513,
+        2.155243
+      ],
+      "fbx_local_bbox_min": [
+        -2.62764,
+        -1.701,
+        0.145243
+      ],
+      "fbx_local_bbox_max": [
+        2.62764,
+        0.513,
+        2.155243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_heavy-tape.fbx",
+      "object": "body_heavy-tape",
+      "part": "body_heavy",
+      "region": "tape",
+      "display_name": "Cardboard Gunship",
+      "bbox_min": [
+        -2.52,
+        0.955,
+        -1.57
+      ],
+      "bbox_max": [
+        2.52,
+        1.012,
+        3.5
+      ],
+      "bbox_center": [
+        0.0,
+        0.9835,
+        0.965
+      ],
+      "size": [
+        5.04,
+        0.057,
+        5.07
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        214,
+        200,
+        160
+      ],
+      "suggested_color3": [
+        0.839216,
+        0.784314,
+        0.627451
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.7085,
+        -0.439757
+      ],
+      "slot_local_bbox_min": [
+        -2.52,
+        0.68,
+        -2.974757
+      ],
+      "slot_local_bbox_max": [
+        2.52,
+        0.737,
+        2.095243
+      ],
+      "fbx_local_bbox_min": [
+        -2.52,
+        0.68,
+        -2.974757
+      ],
+      "fbx_local_bbox_max": [
+        2.52,
+        0.737,
+        2.095243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_standard_mk2-paper.fbx",
+      "object": "body_standard_mk2-paper",
+      "part": "body_standard_mk2",
+      "region": "paper",
+      "display_name": "Courier Fold",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 226,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011172
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011172
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_standard_mk2-accent.fbx",
+      "object": "body_standard_mk2-accent",
+      "part": "body_standard_mk2",
+      "region": "accent",
+      "display_name": "Courier Fold",
+      "bbox_min": [
+        -1.32296,
+        -0.3876,
+        1.55
+      ],
+      "bbox_max": [
+        1.32296,
+        0.8588,
+        3.56
+      ],
+      "bbox_center": [
+        0.0,
+        0.2356,
+        2.555
+      ],
+      "size": [
+        2.64592,
+        1.2464,
+        2.01
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0394,
+        1.150243
+      ],
+      "slot_local_bbox_min": [
+        -1.32296,
+        -0.6626,
+        0.145243
+      ],
+      "slot_local_bbox_max": [
+        1.32296,
+        0.5838,
+        2.155243
+      ],
+      "fbx_local_bbox_min": [
+        -1.32296,
+        -0.6626,
+        0.145243
+      ],
+      "fbx_local_bbox_max": [
+        1.32296,
+        0.5838,
+        2.155243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_slim_mk2-paper.fbx",
+      "object": "body_slim_mk2-paper",
+      "part": "body_slim_mk2",
+      "region": "paper",
+      "display_name": "Racing Fold",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 180,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011172
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011172
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_slim_mk2-accent.fbx",
+      "object": "body_slim_mk2-accent",
+      "part": "body_slim_mk2",
+      "region": "accent",
+      "display_name": "Racing Fold",
+      "bbox_min": [
+        -0.67998,
+        0.08056,
+        -1.72
+      ],
+      "bbox_max": [
+        0.67998,
+        1.399189,
+        4.35
+      ],
+      "bbox_center": [
+        0.0,
+        0.739874,
+        1.315
+      ],
+      "size": [
+        1.35996,
+        1.318629,
+        6.07
+      ],
+      "triangles": 64,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.464874,
+        -0.089757
+      ],
+      "slot_local_bbox_min": [
+        -0.67998,
+        -0.19444,
+        -3.124757
+      ],
+      "slot_local_bbox_max": [
+        0.67998,
+        1.124189,
+        2.945243
+      ],
+      "fbx_local_bbox_min": [
+        -0.67998,
+        -0.19444,
+        -3.124757
+      ],
+      "fbx_local_bbox_max": [
+        0.67998,
+        1.124189,
+        2.945243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_heavy_mk2-tube.fbx",
+      "object": "body_heavy_mk2-tube",
+      "part": "body_heavy_mk2",
+      "region": "tube",
+      "display_name": "Toilet Roll Gunship",
+      "bbox_min": [
+        -1.75,
+        -2.0,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.75,
+        1.5,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        -0.25,
+        1.404757
+      ],
+      "size": [
+        3.5,
+        3.5,
+        8.022345
+      ],
+      "triangles": 586,
+      "suggested_color3_255": [
+        184,
+        154,
+        118
+      ],
+      "suggested_color3": [
+        0.721569,
+        0.603922,
+        0.462745
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.525,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -1.75,
+        -2.275,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        1.75,
+        1.225,
+        4.011172
+      ],
+      "fbx_local_bbox_min": [
+        -1.75,
+        -2.275,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        1.75,
+        1.225,
+        4.011172
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_heavy_mk2-cardboard.fbx",
+      "object": "body_heavy_mk2-cardboard",
+      "part": "body_heavy_mk2",
+      "region": "cardboard",
+      "display_name": "Toilet Roll Gunship",
+      "bbox_min": [
+        -1.762104,
+        -2.012104,
+        -2.282486
+      ],
+      "bbox_max": [
+        1.762104,
+        1.512104,
+        5.08902
+      ],
+      "bbox_center": [
+        0.0,
+        -0.25,
+        1.403267
+      ],
+      "size": [
+        3.524207,
+        3.524207,
+        7.371506
+      ],
+      "triangles": 182,
+      "suggested_color3_255": [
+        166,
+        119,
+        72
+      ],
+      "suggested_color3": [
+        0.65098,
+        0.466667,
+        0.282353
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.525,
+        -0.00149
+      ],
+      "slot_local_bbox_min": [
+        -1.762104,
+        -2.287104,
+        -3.687243
+      ],
+      "slot_local_bbox_max": [
+        1.762104,
+        1.237104,
+        3.684263
+      ],
+      "fbx_local_bbox_min": [
+        -1.762104,
+        -2.287104,
+        -3.687243
+      ],
+      "fbx_local_bbox_max": [
+        1.762104,
+        1.237104,
+        3.684263
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_heavy_mk2-paper.fbx",
+      "object": "body_heavy_mk2-paper",
+      "part": "body_heavy_mk2",
+      "region": "paper",
+      "display_name": "Toilet Roll Gunship",
+      "bbox_min": [
+        -1.8,
+        -1.03,
+        -0.007301
+      ],
+      "bbox_max": [
+        1.8,
+        1.52,
+        2.816814
+      ],
+      "bbox_center": [
+        0.0,
+        0.245,
+        1.404757
+      ],
+      "size": [
+        3.6,
+        2.55,
+        2.824115
+      ],
+      "triangles": 144,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.03,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -1.8,
+        -1.305,
+        -1.412058
+      ],
+      "slot_local_bbox_max": [
+        1.8,
+        1.245,
+        1.412057
+      ],
+      "fbx_local_bbox_min": [
+        -1.8,
+        -1.305,
+        -1.412058
+      ],
+      "fbx_local_bbox_max": [
+        1.8,
+        1.245,
+        1.412057
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "body_heavy_mk2-accent.fbx",
+      "object": "body_heavy_mk2-accent",
+      "part": "body_heavy_mk2",
+      "region": "accent",
+      "display_name": "Toilet Roll Gunship",
+      "bbox_min": [
+        -1.77,
+        -2.02,
+        3.075
+      ],
+      "bbox_max": [
+        1.77,
+        1.52,
+        3.325
+      ],
+      "bbox_center": [
+        0.0,
+        -0.25,
+        3.2
+      ],
+      "size": [
+        3.54,
+        3.54,
+        0.25
+      ],
+      "triangles": 192,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.525,
+        1.795243
+      ],
+      "slot_local_bbox_min": [
+        -1.77,
+        -2.295,
+        1.670243
+      ],
+      "slot_local_bbox_max": [
+        1.77,
+        1.245,
+        1.920243
+      ],
+      "fbx_local_bbox_min": [
+        -1.77,
+        -2.295,
+        1.670243
+      ],
+      "fbx_local_bbox_max": [
+        1.77,
+        1.245,
+        1.920243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_1-paper.fbx",
+      "object": "nose_1-paper",
+      "part": "nose_1",
+      "region": "paper",
+      "display_name": "Needle Nose",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -8.391916
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        -5.499166
+      ],
+      "size": [
+        2.6,
+        2.25,
+        5.7855
+      ],
+      "triangles": 72,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        -0.370958
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -3.263708
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -3.263708
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_1-accent.fbx",
+      "object": "nose_1-accent",
+      "part": "nose_1",
+      "region": "accent",
+      "display_name": "Needle Nose",
+      "bbox_min": [
+        -0.169,
+        -0.2845,
+        -9.256416
+      ],
+      "bbox_max": [
+        0.169,
+        0.008,
+        -8.391916
+      ],
+      "bbox_center": [
+        0.0,
+        -0.13825,
+        -8.824166
+      ],
+      "size": [
+        0.338,
+        0.2925,
+        0.8645
+      ],
+      "triangles": 86,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.41325,
+        -3.695958
+      ],
+      "slot_local_bbox_min": [
+        -0.169,
+        -0.5595,
+        -4.128208
+      ],
+      "slot_local_bbox_max": [
+        0.169,
+        -0.267,
+        -3.263708
+      ],
+      "fbx_local_bbox_min": [
+        -0.169,
+        -0.5595,
+        -4.128208
+      ],
+      "fbx_local_bbox_max": [
+        0.169,
+        -0.267,
+        -3.263708
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_2-paper.fbx",
+      "object": "nose_2-paper",
+      "part": "nose_2",
+      "region": "paper",
+      "display_name": "Blunt Nose",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -4.673616
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        -3.640016
+      ],
+      "size": [
+        2.6,
+        2.25,
+        2.0672
+      ],
+      "triangles": 72,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        1.488192
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        0.454592
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        0.454592
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_2-accent.fbx",
+      "object": "nose_2-accent",
+      "part": "nose_2",
+      "region": "accent",
+      "display_name": "Blunt Nose",
+      "bbox_min": [
+        -1.1024,
+        -0.7474,
+        -5.326416
+      ],
+      "bbox_max": [
+        1.1024,
+        1.285969,
+        -4.673616
+      ],
+      "bbox_center": [
+        0.0,
+        0.269285,
+        -5.000016
+      ],
+      "size": [
+        2.2048,
+        2.033369,
+        0.6528
+      ],
+      "triangles": 32,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.005715,
+        0.128192
+      ],
+      "slot_local_bbox_min": [
+        -1.1024,
+        -1.0224,
+        -0.198208
+      ],
+      "slot_local_bbox_max": [
+        1.1024,
+        1.010969,
+        0.454592
+      ],
+      "fbx_local_bbox_min": [
+        -1.1024,
+        -1.0224,
+        -0.198208
+      ],
+      "fbx_local_bbox_max": [
+        1.1024,
+        1.010969,
+        0.454592
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_3-paper.fbx",
+      "object": "nose_3-paper",
+      "part": "nose_3",
+      "region": "paper",
+      "display_name": "Long Point",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -6.890416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        -4.748416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        4.284
+      ],
+      "triangles": 72,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        0.379792
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -1.762208
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -1.762208
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_3-accent.fbx",
+      "object": "nose_3-accent",
+      "part": "nose_3",
+      "region": "accent",
+      "display_name": "Long Point",
+      "bbox_min": [
+        -0.39,
+        -0.395,
+        -8.726416
+      ],
+      "bbox_max": [
+        0.39,
+        0.28,
+        -6.890416
+      ],
+      "bbox_center": [
+        0.0,
+        -0.0575,
+        -7.808416
+      ],
+      "size": [
+        0.78,
+        0.675,
+        1.835999
+      ],
+      "triangles": 86,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.3325,
+        -2.680208
+      ],
+      "slot_local_bbox_min": [
+        -0.39,
+        -0.67,
+        -3.598208
+      ],
+      "slot_local_bbox_max": [
+        0.39,
+        0.005,
+        -1.762208
+      ],
+      "fbx_local_bbox_min": [
+        -0.39,
+        -0.67,
+        -3.598208
+      ],
+      "fbx_local_bbox_max": [
+        0.39,
+        0.005,
+        -1.762208
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_4-paper.fbx",
+      "object": "nose_4-paper",
+      "part": "nose_4",
+      "region": "paper",
+      "display_name": "Compact Nose",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -4.474016
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        -3.540216
+      ],
+      "size": [
+        2.6,
+        2.25,
+        1.8676
+      ],
+      "triangles": 72,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        1.587992
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        0.654192
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        0.654192
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_4-accent.fbx",
+      "object": "nose_4-accent",
+      "part": "nose_4",
+      "region": "accent",
+      "display_name": "Compact Nose",
+      "bbox_min": [
+        -0.546,
+        -0.473,
+        -5.826416
+      ],
+      "bbox_max": [
+        0.546,
+        0.472,
+        -4.474016
+      ],
+      "bbox_center": [
+        0.0,
+        -0.0005,
+        -5.150216
+      ],
+      "size": [
+        1.092,
+        0.945,
+        1.3524
+      ],
+      "triangles": 86,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.2755,
+        -0.022008
+      ],
+      "slot_local_bbox_min": [
+        -0.546,
+        -0.748,
+        -0.698208
+      ],
+      "slot_local_bbox_max": [
+        0.546,
+        0.197,
+        0.654192
+      ],
+      "fbx_local_bbox_min": [
+        -0.546,
+        -0.748,
+        -0.698208
+      ],
+      "fbx_local_bbox_max": [
+        0.546,
+        0.197,
+        0.654192
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_5-paper.fbx",
+      "object": "nose_5-paper",
+      "part": "nose_5",
+      "region": "paper",
+      "display_name": "Tape Nose",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -6.243916
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        -4.425166
+      ],
+      "size": [
+        2.6,
+        2.25,
+        3.6375
+      ],
+      "triangles": 72,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        0.703042
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -1.115708
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -1.115708
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_5-accent.fbx",
+      "object": "nose_5-accent",
+      "part": "nose_5",
+      "region": "accent",
+      "display_name": "Tape Nose",
+      "bbox_min": [
+        -0.325,
+        -0.3625,
+        -7.456416
+      ],
+      "bbox_max": [
+        0.325,
+        0.2,
+        -6.243916
+      ],
+      "bbox_center": [
+        0.0,
+        -0.08125,
+        -6.850166
+      ],
+      "size": [
+        0.65,
+        0.5625,
+        1.2125
+      ],
+      "triangles": 82,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.35625,
+        -1.721958
+      ],
+      "slot_local_bbox_min": [
+        -0.325,
+        -0.6375,
+        -2.328208
+      ],
+      "slot_local_bbox_max": [
+        0.325,
+        -0.075,
+        -1.115708
+      ],
+      "fbx_local_bbox_min": [
+        -0.325,
+        -0.6375,
+        -2.328208
+      ],
+      "fbx_local_bbox_max": [
+        0.325,
+        -0.075,
+        -1.115708
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "nose_5-tape.fbx",
+      "object": "nose_5-tape",
+      "part": "nose_5",
+      "region": "tape",
+      "display_name": "Tape Nose",
+      "bbox_min": [
+        -1.100993,
+        -0.763893,
+        -5.288416
+      ],
+      "bbox_max": [
+        1.100993,
+        1.144783,
+        -3.464916
+      ],
+      "bbox_center": [
+        0.0,
+        0.190445,
+        -4.376666
+      ],
+      "size": [
+        2.201986,
+        1.908677,
+        1.8235
+      ],
+      "triangles": 144,
+      "suggested_color3_255": [
+        214,
+        200,
+        160
+      ],
+      "suggested_color3": [
+        0.839216,
+        0.784314,
+        0.627451
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.084555,
+        0.751542
+      ],
+      "slot_local_bbox_min": [
+        -1.100993,
+        -1.038893,
+        -0.160208
+      ],
+      "slot_local_bbox_max": [
+        1.100993,
+        0.869783,
+        1.663292
+      ],
+      "fbx_local_bbox_min": [
+        -1.100993,
+        -1.038893,
+        -0.160208
+      ],
+      "fbx_local_bbox_max": [
+        1.100993,
+        0.869783,
+        1.663292
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_1-paper.fbx",
+      "object": "wings_1-paper",
+      "part": "wings_1",
+      "region": "paper",
+      "display_name": "Swept Wings",
+      "bbox_min": [
+        -7.4,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        7.4,
+        0.97,
+        5.38
+      ],
+      "bbox_center": [
+        0.0,
+        0.875,
+        1.386792
+      ],
+      "size": [
+        14.8,
+        0.19,
+        7.986416
+      ],
+      "triangles": 60,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.02097,
+        -0.017965
+      ],
+      "slot_local_bbox_min": [
+        -7.4,
+        -0.11597,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        7.4,
+        0.07403,
+        3.975243
+      ],
+      "fbx_local_bbox_min": [
+        -7.4,
+        -0.11597,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        7.4,
+        0.07403,
+        3.975243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_1-accent.fbx",
+      "object": "wings_1-accent",
+      "part": "wings_1",
+      "region": "accent",
+      "display_name": "Swept Wings",
+      "bbox_min": [
+        -7.24,
+        0.967094,
+        3.614761
+      ],
+      "bbox_max": [
+        7.24,
+        1.008,
+        5.270956
+      ],
+      "bbox_center": [
+        0.0,
+        0.987547,
+        4.442858
+      ],
+      "size": [
+        14.48,
+        0.040906,
+        1.656194
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.091577,
+        3.038101
+      ],
+      "slot_local_bbox_min": [
+        -7.24,
+        0.071124,
+        2.210004
+      ],
+      "slot_local_bbox_max": [
+        7.24,
+        0.11203,
+        3.866199
+      ],
+      "fbx_local_bbox_min": [
+        -7.24,
+        0.071124,
+        2.210004
+      ],
+      "fbx_local_bbox_max": [
+        7.24,
+        0.11203,
+        3.866199
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_2-paper.fbx",
+      "object": "wings_2-paper",
+      "part": "wings_2",
+      "region": "paper",
+      "display_name": "Broad Wings",
+      "bbox_min": [
+        -8.4,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        8.4,
+        0.97,
+        4.28
+      ],
+      "bbox_center": [
+        0.0,
+        0.875,
+        0.836792
+      ],
+      "size": [
+        16.799999,
+        0.19,
+        6.886416
+      ],
+      "triangles": 60,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.02097,
+        -0.567965
+      ],
+      "slot_local_bbox_min": [
+        -8.4,
+        -0.11597,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        8.4,
+        0.07403,
+        2.875243
+      ],
+      "fbx_local_bbox_min": [
+        -8.4,
+        -0.11597,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        8.4,
+        0.07403,
+        2.875243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_2-accent.fbx",
+      "object": "wings_2-accent",
+      "part": "wings_2",
+      "region": "accent",
+      "display_name": "Broad Wings",
+      "bbox_min": [
+        -8.24,
+        0.982,
+        -1.767047
+      ],
+      "bbox_max": [
+        8.24,
+        1.008,
+        3.916154
+      ],
+      "bbox_center": [
+        0.0,
+        0.995,
+        1.074554
+      ],
+      "size": [
+        16.48,
+        0.026,
+        5.6832
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.09903,
+        -0.330203
+      ],
+      "slot_local_bbox_min": [
+        -8.24,
+        0.08603,
+        -3.171804
+      ],
+      "slot_local_bbox_max": [
+        8.24,
+        0.11203,
+        2.511397
+      ],
+      "fbx_local_bbox_min": [
+        -8.24,
+        0.08603,
+        -3.171804
+      ],
+      "fbx_local_bbox_max": [
+        8.24,
+        0.11203,
+        2.511397
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_3-paper.fbx",
+      "object": "wings_3-paper",
+      "part": "wings_3",
+      "region": "paper",
+      "display_name": "Delta Wings",
+      "bbox_min": [
+        -7.25,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        7.25,
+        0.97,
+        5.16
+      ],
+      "bbox_center": [
+        0.0,
+        0.875,
+        1.276792
+      ],
+      "size": [
+        14.5,
+        0.19,
+        7.766416
+      ],
+      "triangles": 60,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.02097,
+        -0.127965
+      ],
+      "slot_local_bbox_min": [
+        -7.25,
+        -0.11597,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        7.25,
+        0.07403,
+        3.755243
+      ],
+      "fbx_local_bbox_min": [
+        -7.25,
+        -0.11597,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        7.25,
+        0.07403,
+        3.755243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_3-accent.fbx",
+      "object": "wings_3-accent",
+      "part": "wings_3",
+      "region": "accent",
+      "display_name": "Delta Wings",
+      "bbox_min": [
+        -7.09,
+        0.963621,
+        3.403167
+      ],
+      "bbox_max": [
+        7.09,
+        1.008,
+        5.12
+      ],
+      "bbox_center": [
+        0.0,
+        0.98581,
+        4.261583
+      ],
+      "size": [
+        14.18,
+        0.044379,
+        1.716833
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.08984,
+        2.856826
+      ],
+      "slot_local_bbox_min": [
+        -7.09,
+        0.067651,
+        1.99841
+      ],
+      "slot_local_bbox_max": [
+        7.09,
+        0.11203,
+        3.715243
+      ],
+      "fbx_local_bbox_min": [
+        -7.09,
+        0.067651,
+        1.99841
+      ],
+      "fbx_local_bbox_max": [
+        7.09,
+        0.11203,
+        3.715243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_4-paper.fbx",
+      "object": "wings_4-paper",
+      "part": "wings_4",
+      "region": "paper",
+      "display_name": "Cardstock Wings",
+      "bbox_min": [
+        -6.75,
+        0.72,
+        -2.606416
+      ],
+      "bbox_max": [
+        6.75,
+        2.05,
+        4.48
+      ],
+      "bbox_center": [
+        0.0,
+        1.385,
+        0.936792
+      ],
+      "size": [
+        13.5,
+        1.33,
+        7.086416
+      ],
+      "triangles": 92,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.48903,
+        -0.467965
+      ],
+      "slot_local_bbox_min": [
+        -6.75,
+        -0.17597,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        6.75,
+        1.15403,
+        3.075243
+      ],
+      "fbx_local_bbox_min": [
+        -6.75,
+        -0.17597,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        6.75,
+        1.15403,
+        3.075243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_4-cardboard.fbx",
+      "object": "wings_4-cardboard",
+      "part": "wings_4",
+      "region": "cardboard",
+      "display_name": "Cardstock Wings",
+      "bbox_min": [
+        -6.75,
+        0.67,
+        -2.606416
+      ],
+      "bbox_max": [
+        6.75,
+        0.803755,
+        4.48
+      ],
+      "bbox_center": [
+        0.0,
+        0.736878,
+        0.936792
+      ],
+      "size": [
+        13.5,
+        0.133755,
+        7.086416
+      ],
+      "triangles": 60,
+      "suggested_color3_255": [
+        166,
+        119,
+        72
+      ],
+      "suggested_color3": [
+        0.65098,
+        0.466667,
+        0.282353
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.159092,
+        -0.467965
+      ],
+      "slot_local_bbox_min": [
+        -6.75,
+        -0.22597,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        6.75,
+        -0.092215,
+        3.075243
+      ],
+      "fbx_local_bbox_min": [
+        -6.75,
+        -0.22597,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        6.75,
+        -0.092215,
+        3.075243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_4-accent.fbx",
+      "object": "wings_4-accent",
+      "part": "wings_4",
+      "region": "accent",
+      "display_name": "Cardstock Wings",
+      "bbox_min": [
+        -6.7715,
+        1.15,
+        -0.65
+      ],
+      "bbox_max": [
+        6.7715,
+        2.045,
+        3.98
+      ],
+      "bbox_center": [
+        0.0,
+        1.5975,
+        1.665
+      ],
+      "size": [
+        13.543,
+        0.895,
+        4.63
+      ],
+      "triangles": 48,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.70153,
+        0.260243
+      ],
+      "slot_local_bbox_min": [
+        -6.7715,
+        0.25403,
+        -2.054757
+      ],
+      "slot_local_bbox_max": [
+        6.7715,
+        1.14903,
+        2.575243
+      ],
+      "fbx_local_bbox_min": [
+        -6.7715,
+        0.25403,
+        -2.054757
+      ],
+      "fbx_local_bbox_max": [
+        6.7715,
+        1.14903,
+        2.575243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_5-paper.fbx",
+      "object": "wings_5-paper",
+      "part": "wings_5",
+      "region": "paper",
+      "display_name": "Feather Folds",
+      "bbox_min": [
+        -7.95,
+        0.703017,
+        -2.206416
+      ],
+      "bbox_max": [
+        7.95,
+        0.97,
+        4.9
+      ],
+      "bbox_center": [
+        0.0,
+        0.836509,
+        1.346792
+      ],
+      "size": [
+        15.9,
+        0.266983,
+        7.106416
+      ],
+      "triangles": 380,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.059461,
+        -0.057965
+      ],
+      "slot_local_bbox_min": [
+        -7.95,
+        -0.192953,
+        -3.611173
+      ],
+      "slot_local_bbox_max": [
+        7.95,
+        0.07403,
+        3.495243
+      ],
+      "fbx_local_bbox_min": [
+        -7.95,
+        -0.192953,
+        -3.611173
+      ],
+      "fbx_local_bbox_max": [
+        7.95,
+        0.07403,
+        3.495243
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "wings_5-accent.fbx",
+      "object": "wings_5-accent",
+      "part": "wings_5",
+      "region": "accent",
+      "display_name": "Feather Folds",
+      "bbox_min": [
+        -7.95,
+        0.874967,
+        -1.389895
+      ],
+      "bbox_max": [
+        7.95,
+        1.008,
+        1.804181
+      ],
+      "bbox_center": [
+        0.0,
+        0.941483,
+        0.207143
+      ],
+      "size": [
+        15.9,
+        0.133033,
+        3.194076
+      ],
+      "triangles": 216,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.045513,
+        -1.197614
+      ],
+      "slot_local_bbox_min": [
+        -7.95,
+        -0.021003,
+        -2.794652
+      ],
+      "slot_local_bbox_max": [
+        7.95,
+        0.11203,
+        0.399424
+      ],
+      "fbx_local_bbox_min": [
+        -7.95,
+        -0.021003,
+        -2.794652
+      ],
+      "fbx_local_bbox_max": [
+        7.95,
+        0.11203,
+        0.399424
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_1-paper.fbx",
+      "object": "tail_1-paper",
+      "part": "tail_1",
+      "region": "paper",
+      "display_name": "Split Tail",
+      "bbox_min": [
+        -1.049798,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        1.049798,
+        2.991312,
+        7.65
+      ],
+      "bbox_center": [
+        0.0,
+        1.515656,
+        6.532965
+      ],
+      "size": [
+        2.099596,
+        2.951312,
+        2.234071
+      ],
+      "triangles": 186,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.175257,
+        0.117965
+      ],
+      "slot_local_bbox_min": [
+        -1.049798,
+        -1.650913,
+        -0.999071
+      ],
+      "slot_local_bbox_max": [
+        1.049798,
+        1.300399,
+        1.235
+      ],
+      "fbx_local_bbox_min": [
+        -1.049798,
+        -1.650913,
+        -0.999071
+      ],
+      "fbx_local_bbox_max": [
+        1.049798,
+        1.300399,
+        1.235
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_1-accent.fbx",
+      "object": "tail_1-accent",
+      "part": "tail_1",
+      "region": "accent",
+      "display_name": "Split Tail",
+      "bbox_min": [
+        -1.088501,
+        2.000129,
+        6.1
+      ],
+      "bbox_max": [
+        1.088501,
+        2.99881,
+        7.49
+      ],
+      "bbox_center": [
+        0.0,
+        2.49947,
+        6.795
+      ],
+      "size": [
+        2.177001,
+        0.998681,
+        1.39
+      ],
+      "triangles": 48,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.808557,
+        0.38
+      ],
+      "slot_local_bbox_min": [
+        -1.088501,
+        0.309216,
+        -0.315
+      ],
+      "slot_local_bbox_max": [
+        1.088501,
+        1.307897,
+        1.075
+      ],
+      "fbx_local_bbox_min": [
+        -1.088501,
+        0.309216,
+        -0.315
+      ],
+      "fbx_local_bbox_max": [
+        1.088501,
+        1.307897,
+        1.075
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_2-paper.fbx",
+      "object": "tail_2-paper",
+      "part": "tail_2",
+      "region": "paper",
+      "display_name": "Ridge Tail",
+      "bbox_min": [
+        -0.795,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.795,
+        2.98,
+        7.65
+      ],
+      "bbox_center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        1.59,
+        2.94,
+        2.234071
+      ],
+      "triangles": 204,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.180913,
+        0.117965
+      ],
+      "slot_local_bbox_min": [
+        -0.795,
+        -1.650913,
+        -0.999071
+      ],
+      "slot_local_bbox_max": [
+        0.795,
+        1.289087,
+        1.235
+      ],
+      "fbx_local_bbox_min": [
+        -0.795,
+        -1.650913,
+        -0.999071
+      ],
+      "fbx_local_bbox_max": [
+        0.795,
+        1.289087,
+        1.235
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_2-accent.fbx",
+      "object": "tail_2-accent",
+      "part": "tail_2",
+      "region": "accent",
+      "display_name": "Ridge Tail",
+      "bbox_min": [
+        -0.097,
+        1.655,
+        5.685929
+      ],
+      "bbox_max": [
+        0.097,
+        2.975,
+        7.49
+      ],
+      "bbox_center": [
+        0.0,
+        2.315,
+        6.587965
+      ],
+      "size": [
+        0.194,
+        1.32,
+        1.80407
+      ],
+      "triangles": 36,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.624087,
+        0.172965
+      ],
+      "slot_local_bbox_min": [
+        -0.097,
+        -0.035913,
+        -0.729071
+      ],
+      "slot_local_bbox_max": [
+        0.097,
+        1.284087,
+        1.075
+      ],
+      "fbx_local_bbox_min": [
+        -0.097,
+        -0.035913,
+        -0.729071
+      ],
+      "fbx_local_bbox_max": [
+        0.097,
+        1.284087,
+        1.075
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_3-paper.fbx",
+      "object": "tail_3-paper",
+      "part": "tail_3",
+      "region": "paper",
+      "display_name": "Wide Tail",
+      "bbox_min": [
+        -2.9,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        2.9,
+        2.98,
+        7.65
+      ],
+      "bbox_center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        5.8,
+        2.94,
+        2.234071
+      ],
+      "triangles": 310,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.180913,
+        0.117965
+      ],
+      "slot_local_bbox_min": [
+        -2.9,
+        -1.650913,
+        -0.999071
+      ],
+      "slot_local_bbox_max": [
+        2.9,
+        1.289087,
+        1.235
+      ],
+      "fbx_local_bbox_min": [
+        -2.9,
+        -1.650913,
+        -0.999071
+      ],
+      "fbx_local_bbox_max": [
+        2.9,
+        1.289087,
+        1.235
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_3-accent.fbx",
+      "object": "tail_3-accent",
+      "part": "tail_3",
+      "region": "accent",
+      "display_name": "Wide Tail",
+      "bbox_min": [
+        -2.9,
+        1.11,
+        5.855911
+      ],
+      "bbox_max": [
+        2.9,
+        2.975,
+        7.49
+      ],
+      "bbox_center": [
+        0.0,
+        2.0425,
+        6.672956
+      ],
+      "size": [
+        5.8,
+        1.865,
+        1.634089
+      ],
+      "triangles": 48,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.351587,
+        0.257956
+      ],
+      "slot_local_bbox_min": [
+        -2.9,
+        -0.580913,
+        -0.559089
+      ],
+      "slot_local_bbox_max": [
+        2.9,
+        1.284087,
+        1.075
+      ],
+      "fbx_local_bbox_min": [
+        -2.9,
+        -0.580913,
+        -0.559089
+      ],
+      "fbx_local_bbox_max": [
+        2.9,
+        1.284087,
+        1.075
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_4-paper.fbx",
+      "object": "tail_4-paper",
+      "part": "tail_4",
+      "region": "paper",
+      "display_name": "Guide Fin",
+      "bbox_min": [
+        -0.795,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.795,
+        4.22,
+        7.65
+      ],
+      "bbox_center": [
+        0.0,
+        2.13,
+        6.532965
+      ],
+      "size": [
+        1.59,
+        4.18,
+        2.234071
+      ],
+      "triangles": 144,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.439087,
+        0.117965
+      ],
+      "slot_local_bbox_min": [
+        -0.795,
+        -1.650913,
+        -0.999071
+      ],
+      "slot_local_bbox_max": [
+        0.795,
+        2.529087,
+        1.235
+      ],
+      "fbx_local_bbox_min": [
+        -0.795,
+        -1.650913,
+        -0.999071
+      ],
+      "fbx_local_bbox_max": [
+        0.795,
+        2.529087,
+        1.235
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_4-accent.fbx",
+      "object": "tail_4-accent",
+      "part": "tail_4",
+      "region": "accent",
+      "display_name": "Guide Fin",
+      "bbox_min": [
+        -0.097,
+        3.16,
+        6.1
+      ],
+      "bbox_max": [
+        0.097,
+        4.215,
+        7.49
+      ],
+      "bbox_center": [
+        0.0,
+        3.6875,
+        6.795
+      ],
+      "size": [
+        0.194,
+        1.055,
+        1.39
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        1.996587,
+        0.38
+      ],
+      "slot_local_bbox_min": [
+        -0.097,
+        1.469087,
+        -0.315
+      ],
+      "slot_local_bbox_max": [
+        0.097,
+        2.524087,
+        1.075
+      ],
+      "fbx_local_bbox_min": [
+        -0.097,
+        1.469087,
+        -0.315
+      ],
+      "fbx_local_bbox_max": [
+        0.097,
+        2.524087,
+        1.075
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_5-paper.fbx",
+      "object": "tail_5-paper",
+      "part": "tail_5",
+      "region": "paper",
+      "display_name": "Tape Tail",
+      "bbox_min": [
+        -0.795,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.795,
+        2.98,
+        7.65
+      ],
+      "bbox_center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        1.59,
+        2.94,
+        2.234071
+      ],
+      "triangles": 142,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.180913,
+        0.117965
+      ],
+      "slot_local_bbox_min": [
+        -0.795,
+        -1.650913,
+        -0.999071
+      ],
+      "slot_local_bbox_max": [
+        0.795,
+        1.289087,
+        1.235
+      ],
+      "fbx_local_bbox_min": [
+        -0.795,
+        -1.650913,
+        -0.999071
+      ],
+      "fbx_local_bbox_max": [
+        0.795,
+        1.289087,
+        1.235
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_5-accent.fbx",
+      "object": "tail_5-accent",
+      "part": "tail_5",
+      "region": "accent",
+      "display_name": "Tape Tail",
+      "bbox_min": [
+        -0.097,
+        2.07,
+        6.1
+      ],
+      "bbox_max": [
+        0.097,
+        2.975,
+        7.49
+      ],
+      "bbox_center": [
+        0.0,
+        2.5225,
+        6.795
+      ],
+      "size": [
+        0.194,
+        0.905,
+        1.39
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.831587,
+        0.38
+      ],
+      "slot_local_bbox_min": [
+        -0.097,
+        0.379087,
+        -0.315
+      ],
+      "slot_local_bbox_max": [
+        0.097,
+        1.284087,
+        1.075
+      ],
+      "fbx_local_bbox_min": [
+        -0.097,
+        0.379087,
+        -0.315
+      ],
+      "fbx_local_bbox_max": [
+        0.097,
+        1.284087,
+        1.075
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "tail_5-tape.fbx",
+      "object": "tail_5-tape",
+      "part": "tail_5",
+      "region": "tape",
+      "display_name": "Tape Tail",
+      "bbox_min": [
+        -0.806542,
+        0.073767,
+        5.69
+      ],
+      "bbox_max": [
+        0.806542,
+        2.31,
+        7.52
+      ],
+      "bbox_center": [
+        0.0,
+        1.191884,
+        6.605
+      ],
+      "size": [
+        1.613084,
+        2.236232,
+        1.83
+      ],
+      "triangles": 168,
+      "suggested_color3_255": [
+        214,
+        200,
+        160
+      ],
+      "suggested_color3": [
+        0.839216,
+        0.784314,
+        0.627451
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.499029,
+        0.19
+      ],
+      "slot_local_bbox_min": [
+        -0.806542,
+        -1.617146,
+        -0.725
+      ],
+      "slot_local_bbox_max": [
+        0.806542,
+        0.619087,
+        1.105
+      ],
+      "fbx_local_bbox_min": [
+        -0.806542,
+        -1.617146,
+        -0.725
+      ],
+      "fbx_local_bbox_max": [
+        0.806542,
+        0.619087,
+        1.105
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_band-paper.fbx",
+      "object": "boost_band-paper",
+      "part": "boost_band",
+      "region": "paper",
+      "display_name": "Elastic Booster",
+      "bbox_min": [
+        -0.49,
+        -1.135057,
+        2.01
+      ],
+      "bbox_max": [
+        0.49,
+        -0.485057,
+        4.47
+      ],
+      "bbox_center": [
+        0.0,
+        -0.810057,
+        3.24
+      ],
+      "size": [
+        0.98,
+        0.65,
+        2.46
+      ],
+      "triangles": 28,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.535,
+        -0.01
+      ],
+      "slot_local_bbox_min": [
+        -0.49,
+        -0.86,
+        -1.24
+      ],
+      "slot_local_bbox_max": [
+        0.49,
+        -0.21,
+        1.22
+      ],
+      "fbx_local_bbox_min": [
+        -0.49,
+        -0.86,
+        -1.24
+      ],
+      "fbx_local_bbox_max": [
+        0.49,
+        -0.21,
+        1.22
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_band-tape.fbx",
+      "object": "boost_band-tape",
+      "part": "boost_band",
+      "region": "tape",
+      "display_name": "Elastic Booster",
+      "bbox_min": [
+        -0.635,
+        -1.075057,
+        1.935
+      ],
+      "bbox_max": [
+        0.635,
+        -0.130057,
+        4.405
+      ],
+      "bbox_center": [
+        0.0,
+        -0.602557,
+        3.17
+      ],
+      "size": [
+        1.27,
+        0.945,
+        2.47
+      ],
+      "triangles": 48,
+      "suggested_color3_255": [
+        214,
+        200,
+        160
+      ],
+      "suggested_color3": [
+        0.839216,
+        0.784314,
+        0.627451
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.3275,
+        -0.08
+      ],
+      "slot_local_bbox_min": [
+        -0.635,
+        -0.8,
+        -1.315
+      ],
+      "slot_local_bbox_max": [
+        0.635,
+        0.145,
+        1.155
+      ],
+      "fbx_local_bbox_min": [
+        -0.635,
+        -0.8,
+        -1.315
+      ],
+      "fbx_local_bbox_max": [
+        0.635,
+        0.145,
+        1.155
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_band-accent.fbx",
+      "object": "boost_band-accent",
+      "part": "boost_band",
+      "region": "accent",
+      "display_name": "Elastic Booster",
+      "bbox_min": [
+        -0.528,
+        -0.945057,
+        2.77
+      ],
+      "bbox_max": [
+        0.528,
+        -0.575057,
+        3.65
+      ],
+      "bbox_center": [
+        0.0,
+        -0.760057,
+        3.21
+      ],
+      "size": [
+        1.056,
+        0.37,
+        0.88
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.485,
+        -0.04
+      ],
+      "slot_local_bbox_min": [
+        -0.528,
+        -0.67,
+        -0.48
+      ],
+      "slot_local_bbox_max": [
+        0.528,
+        -0.3,
+        0.4
+      ],
+      "fbx_local_bbox_min": [
+        -0.528,
+        -0.67,
+        -0.48
+      ],
+      "fbx_local_bbox_max": [
+        0.528,
+        -0.3,
+        0.4
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_band-cardboard.fbx",
+      "object": "boost_band-cardboard",
+      "part": "boost_band",
+      "region": "cardboard",
+      "display_name": "Elastic Booster",
+      "bbox_min": [
+        -0.57,
+        -0.895057,
+        2.06
+      ],
+      "bbox_max": [
+        0.57,
+        -0.615057,
+        4.44
+      ],
+      "bbox_center": [
+        0.0,
+        -0.755057,
+        3.25
+      ],
+      "size": [
+        1.14,
+        0.28,
+        2.38
+      ],
+      "triangles": 56,
+      "suggested_color3_255": [
+        166,
+        119,
+        72
+      ],
+      "suggested_color3": [
+        0.65098,
+        0.466667,
+        0.282353
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.48,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.57,
+        -0.62,
+        -1.19
+      ],
+      "slot_local_bbox_max": [
+        0.57,
+        -0.34,
+        1.19
+      ],
+      "fbx_local_bbox_min": [
+        -0.57,
+        -0.62,
+        -1.19
+      ],
+      "fbx_local_bbox_max": [
+        0.57,
+        -0.34,
+        1.19
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_band-elastic.fbx",
+      "object": "boost_band-elastic",
+      "part": "boost_band",
+      "region": "elastic",
+      "display_name": "Elastic Booster",
+      "bbox_min": [
+        -0.3,
+        -1.055057,
+        2.24
+      ],
+      "bbox_max": [
+        0.3,
+        -0.455057,
+        4.26
+      ],
+      "bbox_center": [
+        0.0,
+        -0.755057,
+        3.25
+      ],
+      "size": [
+        0.6,
+        0.6,
+        2.02
+      ],
+      "triangles": 86,
+      "suggested_color3_255": [
+        199,
+        148,
+        73
+      ],
+      "suggested_color3": [
+        0.780392,
+        0.580392,
+        0.286275
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.48,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.3,
+        -0.78,
+        -1.01
+      ],
+      "slot_local_bbox_max": [
+        0.3,
+        -0.18,
+        1.01
+      ],
+      "fbx_local_bbox_min": [
+        -0.3,
+        -0.78,
+        -1.01
+      ],
+      "fbx_local_bbox_max": [
+        0.3,
+        -0.18,
+        1.01
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_spool-paper.fbx",
+      "object": "boost_spool-paper",
+      "part": "boost_spool",
+      "region": "paper",
+      "display_name": "Spool Booster",
+      "bbox_min": [
+        -0.49,
+        -1.135057,
+        2.01
+      ],
+      "bbox_max": [
+        0.49,
+        -0.450719,
+        4.47
+      ],
+      "bbox_center": [
+        0.0,
+        -0.792888,
+        3.24
+      ],
+      "size": [
+        0.98,
+        0.684338,
+        2.46
+      ],
+      "triangles": 128,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.517831,
+        -0.01
+      ],
+      "slot_local_bbox_min": [
+        -0.49,
+        -0.86,
+        -1.24
+      ],
+      "slot_local_bbox_max": [
+        0.49,
+        -0.175662,
+        1.22
+      ],
+      "fbx_local_bbox_min": [
+        -0.49,
+        -0.86,
+        -1.24
+      ],
+      "fbx_local_bbox_max": [
+        0.49,
+        -0.175662,
+        1.22
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_spool-tape.fbx",
+      "object": "boost_spool-tape",
+      "part": "boost_spool",
+      "region": "tape",
+      "display_name": "Spool Booster",
+      "bbox_min": [
+        -0.635,
+        -1.075057,
+        1.935
+      ],
+      "bbox_max": [
+        0.635,
+        -0.130057,
+        4.405
+      ],
+      "bbox_center": [
+        0.0,
+        -0.602557,
+        3.17
+      ],
+      "size": [
+        1.27,
+        0.945,
+        2.47
+      ],
+      "triangles": 48,
+      "suggested_color3_255": [
+        214,
+        200,
+        160
+      ],
+      "suggested_color3": [
+        0.839216,
+        0.784314,
+        0.627451
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.3275,
+        -0.08
+      ],
+      "slot_local_bbox_min": [
+        -0.635,
+        -0.8,
+        -1.315
+      ],
+      "slot_local_bbox_max": [
+        0.635,
+        0.145,
+        1.155
+      ],
+      "fbx_local_bbox_min": [
+        -0.635,
+        -0.8,
+        -1.315
+      ],
+      "fbx_local_bbox_max": [
+        0.635,
+        0.145,
+        1.155
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_spool-accent.fbx",
+      "object": "boost_spool-accent",
+      "part": "boost_spool",
+      "region": "accent",
+      "display_name": "Spool Booster",
+      "bbox_min": [
+        -0.528,
+        -0.945057,
+        2.77
+      ],
+      "bbox_max": [
+        0.528,
+        -0.575057,
+        3.65
+      ],
+      "bbox_center": [
+        0.0,
+        -0.760057,
+        3.21
+      ],
+      "size": [
+        1.056,
+        0.37,
+        0.88
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.485,
+        -0.04
+      ],
+      "slot_local_bbox_min": [
+        -0.528,
+        -0.67,
+        -0.48
+      ],
+      "slot_local_bbox_max": [
+        0.528,
+        -0.3,
+        0.4
+      ],
+      "fbx_local_bbox_min": [
+        -0.528,
+        -0.67,
+        -0.48
+      ],
+      "fbx_local_bbox_max": [
+        0.528,
+        -0.3,
+        0.4
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_spool-cardboard.fbx",
+      "object": "boost_spool-cardboard",
+      "part": "boost_spool",
+      "region": "cardboard",
+      "display_name": "Spool Booster",
+      "bbox_min": [
+        -0.57,
+        -1.145057,
+        2.06
+      ],
+      "bbox_max": [
+        0.57,
+        -0.365057,
+        4.44
+      ],
+      "bbox_center": [
+        0.0,
+        -0.755057,
+        3.25
+      ],
+      "size": [
+        1.14,
+        0.78,
+        2.38
+      ],
+      "triangles": 144,
+      "suggested_color3_255": [
+        166,
+        119,
+        72
+      ],
+      "suggested_color3": [
+        0.65098,
+        0.466667,
+        0.282353
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.48,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.57,
+        -0.87,
+        -1.19
+      ],
+      "slot_local_bbox_max": [
+        0.57,
+        -0.09,
+        1.19
+      ],
+      "fbx_local_bbox_min": [
+        -0.57,
+        -0.87,
+        -1.19
+      ],
+      "fbx_local_bbox_max": [
+        0.57,
+        -0.09,
+        1.19
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_spool-elastic.fbx",
+      "object": "boost_spool-elastic",
+      "part": "boost_spool",
+      "region": "elastic",
+      "display_name": "Spool Booster",
+      "bbox_min": [
+        -0.435,
+        -0.794028,
+        2.34
+      ],
+      "bbox_max": [
+        0.435,
+        -0.716086,
+        4.16
+      ],
+      "bbox_center": [
+        0.0,
+        -0.755057,
+        3.25
+      ],
+      "size": [
+        0.87,
+        0.077942,
+        1.82
+      ],
+      "triangles": 40,
+      "suggested_color3_255": [
+        199,
+        148,
+        73
+      ],
+      "suggested_color3": [
+        0.780392,
+        0.580392,
+        0.286275
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.48,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.435,
+        -0.518971,
+        -0.91
+      ],
+      "slot_local_bbox_max": [
+        0.435,
+        -0.441029,
+        0.91
+      ],
+      "fbx_local_bbox_min": [
+        -0.435,
+        -0.518971,
+        -0.91
+      ],
+      "fbx_local_bbox_max": [
+        0.435,
+        -0.441029,
+        0.91
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_twin-paper.fbx",
+      "object": "boost_twin-paper",
+      "part": "boost_twin",
+      "region": "paper",
+      "display_name": "Twin Elastic Booster",
+      "bbox_min": [
+        -0.69,
+        -1.135057,
+        2.01
+      ],
+      "bbox_max": [
+        0.69,
+        -0.485057,
+        4.47
+      ],
+      "bbox_center": [
+        0.0,
+        -0.810057,
+        3.24
+      ],
+      "size": [
+        1.38,
+        0.65,
+        2.46
+      ],
+      "triangles": 44,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.535,
+        -0.01
+      ],
+      "slot_local_bbox_min": [
+        -0.69,
+        -0.86,
+        -1.24
+      ],
+      "slot_local_bbox_max": [
+        0.69,
+        -0.21,
+        1.22
+      ],
+      "fbx_local_bbox_min": [
+        -0.69,
+        -0.86,
+        -1.24
+      ],
+      "fbx_local_bbox_max": [
+        0.69,
+        -0.21,
+        1.22
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_twin-tape.fbx",
+      "object": "boost_twin-tape",
+      "part": "boost_twin",
+      "region": "tape",
+      "display_name": "Twin Elastic Booster",
+      "bbox_min": [
+        -0.835,
+        -1.075057,
+        1.935
+      ],
+      "bbox_max": [
+        0.835,
+        -0.130057,
+        4.405
+      ],
+      "bbox_center": [
+        0.0,
+        -0.602557,
+        3.17
+      ],
+      "size": [
+        1.67,
+        0.945,
+        2.47
+      ],
+      "triangles": 48,
+      "suggested_color3_255": [
+        214,
+        200,
+        160
+      ],
+      "suggested_color3": [
+        0.839216,
+        0.784314,
+        0.627451
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.3275,
+        -0.08
+      ],
+      "slot_local_bbox_min": [
+        -0.835,
+        -0.8,
+        -1.315
+      ],
+      "slot_local_bbox_max": [
+        0.835,
+        0.145,
+        1.155
+      ],
+      "fbx_local_bbox_min": [
+        -0.835,
+        -0.8,
+        -1.315
+      ],
+      "fbx_local_bbox_max": [
+        0.835,
+        0.145,
+        1.155
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_twin-accent.fbx",
+      "object": "boost_twin-accent",
+      "part": "boost_twin",
+      "region": "accent",
+      "display_name": "Twin Elastic Booster",
+      "bbox_min": [
+        -0.728,
+        -0.945057,
+        2.77
+      ],
+      "bbox_max": [
+        0.728,
+        -0.575057,
+        3.65
+      ],
+      "bbox_center": [
+        0.0,
+        -0.760057,
+        3.21
+      ],
+      "size": [
+        1.456,
+        0.37,
+        0.88
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.485,
+        -0.04
+      ],
+      "slot_local_bbox_min": [
+        -0.728,
+        -0.67,
+        -0.48
+      ],
+      "slot_local_bbox_max": [
+        0.728,
+        -0.3,
+        0.4
+      ],
+      "fbx_local_bbox_min": [
+        -0.728,
+        -0.67,
+        -0.48
+      ],
+      "fbx_local_bbox_max": [
+        0.728,
+        -0.3,
+        0.4
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_twin-cardboard.fbx",
+      "object": "boost_twin-cardboard",
+      "part": "boost_twin",
+      "region": "cardboard",
+      "display_name": "Twin Elastic Booster",
+      "bbox_min": [
+        -0.77,
+        -0.895057,
+        2.06
+      ],
+      "bbox_max": [
+        0.77,
+        -0.615057,
+        4.44
+      ],
+      "bbox_center": [
+        0.0,
+        -0.755057,
+        3.25
+      ],
+      "size": [
+        1.54,
+        0.28,
+        2.38
+      ],
+      "triangles": 56,
+      "suggested_color3_255": [
+        166,
+        119,
+        72
+      ],
+      "suggested_color3": [
+        0.65098,
+        0.466667,
+        0.282353
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.48,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.77,
+        -0.62,
+        -1.19
+      ],
+      "slot_local_bbox_max": [
+        0.77,
+        -0.34,
+        1.19
+      ],
+      "fbx_local_bbox_min": [
+        -0.77,
+        -0.62,
+        -1.19
+      ],
+      "fbx_local_bbox_max": [
+        0.77,
+        -0.34,
+        1.19
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    },
+    {
+      "file": "boost_twin-elastic.fbx",
+      "object": "boost_twin-elastic",
+      "part": "boost_twin",
+      "region": "elastic",
+      "display_name": "Twin Elastic Booster",
+      "bbox_min": [
+        -0.57,
+        -1.005057,
+        2.24
+      ],
+      "bbox_max": [
+        0.57,
+        -0.505057,
+        4.26
+      ],
+      "bbox_center": [
+        0.0,
+        -0.755057,
+        3.25
+      ],
+      "size": [
+        1.14,
+        0.5,
+        2.02
+      ],
+      "triangles": 172,
+      "suggested_color3_255": [
+        199,
+        148,
+        73
+      ],
+      "suggested_color3": [
+        0.780392,
+        0.580392,
+        0.286275
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.48,
+        -0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.57,
+        -0.73,
+        -1.01
+      ],
+      "slot_local_bbox_max": [
+        0.57,
+        -0.23,
+        1.01
+      ],
+      "fbx_local_bbox_min": [
+        -0.57,
+        -0.73,
+        -1.01
+      ],
+      "fbx_local_bbox_max": [
+        0.57,
+        -0.23,
+        1.01
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation"
+    }
+  ],
+  "assembled_parts": {
+    "body_slim": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 204,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "body_heavy": {
+      "bbox_min": [
+        -2.62764,
+        -1.975,
+        -2.606416
+      ],
+      "bbox_max": [
+        2.62764,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        -0.2875,
+        1.404757
+      ],
+      "size": [
+        5.25528,
+        3.375,
+        8.022345
+      ],
+      "triangles": 324,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "body_standard_mk2": {
+      "bbox_min": [
+        -1.32296,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.32296,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.64592,
+        2.25,
+        8.022345
+      ],
+      "triangles": 250,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "body_slim_mk2": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 244,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "body_heavy_mk2": {
+      "bbox_min": [
+        -1.8,
+        -2.02,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.8,
+        1.52,
+        5.415929
+      ],
+      "center": [
+        0.0,
+        -0.25,
+        1.404757
+      ],
+      "size": [
+        3.6,
+        3.54,
+        8.022345
+      ],
+      "triangles": 1104,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ]
+    },
+    "nose_1": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -9.256416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -5.931416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        6.65
+      ],
+      "triangles": 158,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "nose_2": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -5.326416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -3.966416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        2.72
+      ],
+      "triangles": 104,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "nose_3": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -8.726416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -5.666416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        6.12
+      ],
+      "triangles": 158,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "nose_4": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -5.826416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -4.216416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        3.22
+      ],
+      "triangles": 158,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "nose_5": {
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -7.456416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "center": [
+        0.0,
+        0.275,
+        -5.031416
+      ],
+      "size": [
+        2.6,
+        2.25,
+        4.85
+      ],
+      "triangles": 298,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ]
+    },
+    "wings_1": {
+      "bbox_min": [
+        -7.4,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        7.4,
+        1.008,
+        5.38
+      ],
+      "center": [
+        0.0,
+        0.894,
+        1.386792
+      ],
+      "size": [
+        14.8,
+        0.228,
+        7.986416
+      ],
+      "triangles": 84,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "wings_2": {
+      "bbox_min": [
+        -8.4,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        8.4,
+        1.008,
+        4.28
+      ],
+      "center": [
+        0.0,
+        0.894,
+        0.836792
+      ],
+      "size": [
+        16.8,
+        0.228,
+        6.886416
+      ],
+      "triangles": 84,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "wings_3": {
+      "bbox_min": [
+        -7.25,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        7.25,
+        1.008,
+        5.16
+      ],
+      "center": [
+        0.0,
+        0.894,
+        1.276792
+      ],
+      "size": [
+        14.5,
+        0.228,
+        7.766416
+      ],
+      "triangles": 84,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "wings_4": {
+      "bbox_min": [
+        -6.7715,
+        0.67,
+        -2.606416
+      ],
+      "bbox_max": [
+        6.7715,
+        2.05,
+        4.48
+      ],
+      "center": [
+        0.0,
+        1.36,
+        0.936792
+      ],
+      "size": [
+        13.543,
+        1.38,
+        7.086416
+      ],
+      "triangles": 200,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "wings_5": {
+      "bbox_min": [
+        -7.95,
+        0.703017,
+        -2.206416
+      ],
+      "bbox_max": [
+        7.95,
+        1.008,
+        4.9
+      ],
+      "center": [
+        0.0,
+        0.855509,
+        1.346792
+      ],
+      "size": [
+        15.9,
+        0.304983,
+        7.106416
+      ],
+      "triangles": 596,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ]
+    },
+    "tail_1": {
+      "bbox_min": [
+        -1.088501,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        1.088501,
+        2.99881,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.519405,
+        6.532965
+      ],
+      "size": [
+        2.177002,
+        2.95881,
+        2.234071
+      ],
+      "triangles": 234,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "tail_2": {
+      "bbox_min": [
+        -0.795,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.795,
+        2.98,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        1.59,
+        2.94,
+        2.234071
+      ],
+      "triangles": 240,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "tail_3": {
+      "bbox_min": [
+        -2.9,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        2.9,
+        2.98,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        5.8,
+        2.94,
+        2.234071
+      ],
+      "triangles": 358,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "tail_4": {
+      "bbox_min": [
+        -0.795,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.795,
+        4.22,
+        7.65
+      ],
+      "center": [
+        0.0,
+        2.13,
+        6.532965
+      ],
+      "size": [
+        1.59,
+        4.18,
+        2.234071
+      ],
+      "triangles": 168,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "tail_5": {
+      "bbox_min": [
+        -0.806542,
+        0.04,
+        5.415929
+      ],
+      "bbox_max": [
+        0.806542,
+        2.98,
+        7.65
+      ],
+      "center": [
+        0.0,
+        1.51,
+        6.532965
+      ],
+      "size": [
+        1.613084,
+        2.94,
+        2.234071
+      ],
+      "triangles": 334,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ]
+    },
+    "boost_band": {
+      "bbox_min": [
+        -0.635,
+        -1.135057,
+        1.935
+      ],
+      "bbox_max": [
+        0.635,
+        -0.130057,
+        4.47
+      ],
+      "center": [
+        0.0,
+        -0.632557,
+        3.2025
+      ],
+      "size": [
+        1.27,
+        1.005,
+        2.535
+      ],
+      "triangles": 242,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ]
+    },
+    "boost_spool": {
+      "bbox_min": [
+        -0.635,
+        -1.145057,
+        1.935
+      ],
+      "bbox_max": [
+        0.635,
+        -0.130057,
+        4.47
+      ],
+      "center": [
+        0.0,
+        -0.637557,
+        3.2025
+      ],
+      "size": [
+        1.27,
+        1.015,
+        2.535
+      ],
+      "triangles": 384,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ]
+    },
+    "boost_twin": {
+      "bbox_min": [
+        -0.835,
+        -1.135057,
+        1.935
+      ],
+      "bbox_max": [
+        0.835,
+        -0.130057,
+        4.47
+      ],
+      "center": [
+        0.0,
+        -0.632557,
+        3.2025
+      ],
+      "size": [
+        1.67,
+        1.005,
+        2.535
+      ],
+      "triangles": 344,
+      "slot_pivot": [
+        0.0,
+        -0.275057,
+        3.25
+      ]
+    }
+  },
+  "mounts": {
+    "left": {
+      "tube_center": [
+        -1.76,
+        0.08,
+        -1.313391304347826
+      ],
+      "muzzle": [
+        -1.76,
+        0.08,
+        -2.87
+      ],
+      "forward": [
+        0,
+        0,
+        -1
+      ]
+    },
+    "right": {
+      "tube_center": [
+        1.76,
+        0.08,
+        -1.313391304347826
+      ],
+      "muzzle": [
+        1.76,
+        0.08,
+        -2.87
+      ],
+      "forward": [
+        0,
+        0,
+        -1
+      ]
+    }
+  },
+  "weapon": {
+    "tube_length": 3.113217391304348,
+    "tube_diameter": 0.8248695652173913,
+    "muzzle_offset_from_center": [
+      0,
+      0,
+      -1.556608695652174
+    ],
+    "right_instance_translation": [
+      3.52,
+      0,
+      0
+    ],
+    "front_fraction_ahead_of_wing_leading_edge": 0.36662742649687036
+  },
+  "fbx_contract": {
+    "source_unit_studs": 1,
+    "global_scale": 0.01,
+    "apply_unit_scale": false,
+    "apply_scale_options": "FBX_SCALE_NONE",
+    "bake_space_transform": true,
+    "fbx_unit_scale_factor": 1,
+    "scale_explanation": "0.01 cancels Blender's implicit 100x centimeter conversion. Saved vertex coordinates are in studs, matching the legacy FBX unit tag.",
+    "axis_forward": "-Z",
+    "axis_up": "Y",
+    "structural_yaw_compensation_degrees": 0,
+    "import_instruction": "Set mesh sizes and centers from this manifest. Preserve the slot-relative vertex offsets when composing regions.",
+    "limitation": "New sizes, centers, identity rotations and tube-center/muzzle mounts require later game integration. These files do not preserve the old template dimensions or yaw."
+  },
+  "slot_pivots": {
+    "body": [
+      0.0,
+      0.275,
+      1.404757
+    ],
+    "nose": [
+      0.0,
+      0.275,
+      -5.128208
+    ],
+    "wings": [
+      0.0,
+      0.89597,
+      1.404757
+    ],
+    "tail": [
+      0.0,
+      1.690913,
+      6.415
+    ],
+    "booster": [
+      0.0,
+      -0.275057,
+      3.25
+    ]
+  },
+  "booster_pivots": {
+    "boost_band": [
+      0.0,
+      -0.275057,
+      3.25
+    ],
+    "boost_spool": [
+      0.0,
+      -0.275057,
+      3.25
+    ],
+    "boost_twin": [
+      0.0,
+      -0.275057,
+      3.25
+    ]
+  },
+  "booster_body_pivots": {
+    "body_standard": [
+      0.0,
+      -0.275057,
+      3.25
+    ],
+    "body_slim": [
+      0.0,
+      -0.24,
+      3.25
+    ],
+    "body_heavy": [
+      0.0,
+      -1.995,
+      3.25
+    ],
+    "body_standard_mk2": [
+      0.0,
+      -0.87,
+      3.25
+    ],
+    "body_slim_mk2": [
+      0.0,
+      -0.24,
+      3.25
+    ],
+    "body_heavy_mk2": [
+      0.0,
+      -2.02,
+      3.25
+    ]
+  },
+  "join_contract": {
+    "nose_body_seam_z": -2.60641592920354,
+    "body_tail_seam_z": 5.4159292035398225,
+    "nose_body_outer_section_xy": [
+      [
+        0,
+        -0.85
+      ],
+      [
+        -1.066,
+        -0.57
+      ],
+      [
+        -1.3,
+        0.95
+      ],
+      [
+        -0.46799999999999997,
+        1.27
+      ],
+      [
+        -0.13,
+        1.4
+      ],
+      [
+        0.13,
+        1.4
+      ],
+      [
+        0.46799999999999997,
+        1.27
+      ],
+      [
+        1.3,
+        0.95
+      ],
+      [
+        1.066,
+        -0.57
+      ]
+    ],
+    "body_tail_outer_section_xy": [
+      [
+        0,
+        0.04
+      ],
+      [
+        -0.6519,
+        0.32
+      ],
+      [
+        -0.795,
+        0.95
+      ],
+      [
+        -0.2862,
+        0.95
+      ],
+      [
+        -0.07950000000000002,
+        1.4
+      ],
+      [
+        0.07950000000000002,
+        1.4
+      ],
+      [
+        0.2862,
+        0.95
+      ],
+      [
+        0.795,
+        0.95
+      ],
+      [
+        0.6519,
+        0.32
+      ]
+    ],
+    "shell_thickness": 0.085,
+    "wing_center_top_y": 0.95,
+    "wing_center_bottom_y": 0.85,
+    "shared_socket_priority_over_concept": true
+  }
+}

@@ -1,0 +1,631 @@
+{
+  "mode": "real UV islands",
+  "bleed_pixels": 3,
+  "maps": {
+    "1-standing-binder-band-1-1-color.png": {
+      "protected_sha256": "21dc3ae186ce10453f14a7b041440010088479ed28660f8a97a6593412c40a0a",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 267057,
+      "filled_texels": 781519,
+      "file_sha256": "c34183b92c4f2a443f43ee8fda4c65ef055f854a58ebc30b0bd85c4ca4c76131",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-standing-binder-band-1-1-normal.png": {
+      "protected_sha256": "d4ebd4ebb8453723b718c7b62005eebd303d608995be299a8c3aebb65d6e0d6d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 267057,
+      "filled_texels": 781519,
+      "file_sha256": "fa86274ab7aa10c2199e7769173d8b97dc8cc0a864feeb10c7a353d92e136bf1",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-standing-binder-band-1-1-roughness.png": {
+      "protected_sha256": "59f33679473bb32de89dd52cb648b6f86b9ea559374be398d472caa4a1e618aa",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 267057,
+      "filled_texels": 781519,
+      "file_sha256": "62de62297129a66a9b4eb7b71c95e374d7e98c4242c3cb7cc9525d1a3c26479e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-standing-binder-band-1-2-color.png": {
+      "protected_sha256": "c4e9e459f066a8337fbb5896d0e3fb02d1f9d8298e305ca995197686b57c305a",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "c042285df61d2142f4a5b801e1c256a20e3ff8b840b07565c56e98803da23d53",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-standing-binder-band-1-2-normal.png": {
+      "protected_sha256": "992921f7cd3ffe2e7bc9e1c60ad31e7115d1c66fe5f5b5de1f861ca87350dbe6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "f1a712640aa70449fee6866352a50176caff93fb57a56c919632579821278636",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-standing-binder-band-1-2-roughness.png": {
+      "protected_sha256": "285e159794a4fc7ae423f638193bd6398d096b46b04514c64ff10ec509d01af1",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "39e6598297a8a7b05d4c3b3af77c39ea1e107265fffdadbe9306d2fdfe9a7b11",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-standing-binder-band-1-3-color.png": {
+      "protected_sha256": "b3f802fcf8f03e9be834cab52226cdc3cac9e966db6d68b9479ae079a053a022",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 430528,
+      "filled_texels": 618048,
+      "file_sha256": "14bd4eb765e9ab68dfc595e650d59982a45f66b21b64358a9208d61543fc9700",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-standing-binder-band-1-3-normal.png": {
+      "protected_sha256": "ae77e2d3e02b0c3330e2e782dbf3276a4fb2f6284a8f0b40a28e7dbb51821231",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 430528,
+      "filled_texels": 618048,
+      "file_sha256": "581927c0dc12eada30b308061597f066c5d21beba9dc35fec4b88fafa5e40a67",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-standing-binder-band-1-3-roughness.png": {
+      "protected_sha256": "7dbfb96049383d07c0e3ee9a2b1d0ea0759c8896a667f99f0f3cab0ddaebb828",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 430528,
+      "filled_texels": 618048,
+      "file_sha256": "f594e2c0e6f23e7e6fadf77718ea72b0e7ae1d270030432842294bbc22e304b4",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-standing-binder-band-2-1-color.png": {
+      "protected_sha256": "0a6ea32827f6a73525e6cf034e46bb6b2339713e70972502d4d7ab222f8b05ab",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 269213,
+      "filled_texels": 779363,
+      "file_sha256": "29b42cec5fbba8af475b411026dd2f1cb7d26477483550caf9d6397bc90024a4",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-standing-binder-band-2-1-normal.png": {
+      "protected_sha256": "fbd7243913013bec32acabb3dc9932db57444f2cb29abb432453b261962a6925",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 269213,
+      "filled_texels": 779363,
+      "file_sha256": "8c1c33ae4b000cc68c0e343c780025afaa609b672bb30cee5055a84baa23950e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-standing-binder-band-2-1-roughness.png": {
+      "protected_sha256": "ab98eb81636aac4fdb839047bb163027b6765329fe153f3077c0ba9c3c94aad3",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 269213,
+      "filled_texels": 779363,
+      "file_sha256": "2a015627dff4da6f7e962a9a040b9b556893d2f3cfced3b8dd3fa358cc236cf4",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-standing-binder-band-2-2-color.png": {
+      "protected_sha256": "44084686a2993d2eb137ffab160116a1aff4c76fa5a3fe1885d07cf9d8127f4c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "52113a956e8bf85a9b0c3391b0cd9c52ee6d147d3d87310912b275f66ec2ea36",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-standing-binder-band-2-2-normal.png": {
+      "protected_sha256": "992921f7cd3ffe2e7bc9e1c60ad31e7115d1c66fe5f5b5de1f861ca87350dbe6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "f1a712640aa70449fee6866352a50176caff93fb57a56c919632579821278636",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-standing-binder-band-2-2-roughness.png": {
+      "protected_sha256": "cb376e47fdbc2e15446ac36620595138576ba9be411c881ca68844ecf5b63f0d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "1236699a2ed75aca6c39a7185eab81f4d74be71839f673aac419b9ac0c26c48f",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-standing-binder-band-2-3-color.png": {
+      "protected_sha256": "bf59f5c6cd05dc910d2f96242bbe1d36764765ee580604e1323ca9ef67b1e9b7",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 285174,
+      "filled_texels": 763402,
+      "file_sha256": "89647a06593cb8ab1c63a8a404b0d4f128def3e50633b634c2ec3a83d12a031a",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-standing-binder-band-2-3-normal.png": {
+      "protected_sha256": "f3f306279220f261842123105169a29785da681b3951cb8d66b1c3b6b0e117eb",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 285174,
+      "filled_texels": 763402,
+      "file_sha256": "a018b0dd5a686a60c3eb4c22c6c75d0d489c4f73e464923205f991d7f41d4f2e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-standing-binder-band-2-3-roughness.png": {
+      "protected_sha256": "6a8302c43cfd1aef28e059ce38d577d60355e097485a2f916f6a3f490303bccf",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 285174,
+      "filled_texels": 763402,
+      "file_sha256": "0c14ad27affe1695454dfac0cd890679f5a9e14a5c11c6150eb00418e4827315",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-standing-binder-band-3-1-color.png": {
+      "protected_sha256": "02a025f99c06e143cf5f1525be6b2f9cb70d72e41108f9951d1dd33e01e02300",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 269202,
+      "filled_texels": 779374,
+      "file_sha256": "6b60090daada9425e2551ab81f80a3af888da1742bcf069a703adc2b3242aecd",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-standing-binder-band-3-1-normal.png": {
+      "protected_sha256": "514bc2276fc2a6da667b860ee6f7bcd817f8ee587bf6470d9b4bf28a78f0d532",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 269202,
+      "filled_texels": 779374,
+      "file_sha256": "324e58c8376f23aaee085d08899b7c34736abf5b5f941592e9c90c354f437a5b",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-standing-binder-band-3-1-roughness.png": {
+      "protected_sha256": "62eed9177d619525b01056dcefc7c51ddffb820da9fd46a59c3839b2f35c7d73",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 269202,
+      "filled_texels": 779374,
+      "file_sha256": "ebcf07ca72c1abd1a8148aba7d9df669fa50f3c4229f5a570f8df190c6543fe9",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "8-standing-binder-band-3-2-color.png": {
+      "protected_sha256": "7615b83efdb9fe183250f84409fe002dab1a6ebe9b470eb64dd123b253f3e1c9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "a6e7816fc53ac146d080933e33194d7305189fb64e324bde8295be249ed9595e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "8-standing-binder-band-3-2-normal.png": {
+      "protected_sha256": "992921f7cd3ffe2e7bc9e1c60ad31e7115d1c66fe5f5b5de1f861ca87350dbe6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "f1a712640aa70449fee6866352a50176caff93fb57a56c919632579821278636",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "8-standing-binder-band-3-2-roughness.png": {
+      "protected_sha256": "cd8755f2c051c58d699cdb570f9bb0c341525d81b9ea7f7f12440e11b9316beb",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "e1774090c752ce90923ce1bb53c8c45de3edcf914cc2be38499461a4fbb6b52e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "9-standing-binder-band-3-3-color.png": {
+      "protected_sha256": "bdc55887651ac8f480ea567ef4feea6c3578542ee1cf022058d5dae572f18f62",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 285174,
+      "filled_texels": 763402,
+      "file_sha256": "de0fee0993e1423cc504e6859db56608e137084f8bdd427d4c612072c9ab42e5",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "9-standing-binder-band-3-3-normal.png": {
+      "protected_sha256": "0cc8407dd219a4869287a4ad33bf4a5843e26f2c6c30297eda0672d24501735e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 285174,
+      "filled_texels": 763402,
+      "file_sha256": "af62abbbf54b72443edb59374bd90ff2b20079a8eecc6909f16f9635189d7bd5",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "9-standing-binder-band-3-3-roughness.png": {
+      "protected_sha256": "6095eadfce37b007503beeef761aaed2f1b3af507dde740cf6c4d1d613f77e7a",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 285174,
+      "filled_texels": 763402,
+      "file_sha256": "bf15f2321fc13adef1a2d17b59cd9e88e10469bacc2f3273853dff30aa8c7cf3",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "10-standing-binder-band-4-1-color.png": {
+      "protected_sha256": "c36b47670aaf29da243b959d662ada637f2bebd9f9ee30e6f49094420b39e675",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 263648,
+      "filled_texels": 784928,
+      "file_sha256": "67cfcab305b8346e54e3e0eab15fd94144fab12b229175da36b1985c843f340e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "10-standing-binder-band-4-1-normal.png": {
+      "protected_sha256": "4807705f82d3771e38d44652429d0bfc5a089c44a5970b64e90f7f2ba0cb7f85",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 263648,
+      "filled_texels": 784928,
+      "file_sha256": "58a5ceb7132db33eca21af75b2e124af0e1bee526d0594b30901de099322e195",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "10-standing-binder-band-4-1-roughness.png": {
+      "protected_sha256": "503bcde429c3c8b05f71828c29e78b190a0e792fbaeafbde8d2de752666e1f59",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 263648,
+      "filled_texels": 784928,
+      "file_sha256": "e245e5edfde057496b8db3a8e340b41ce89a40efae2a4b98cdf6e6ad1391a43e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "11-standing-binder-band-4-2-color.png": {
+      "protected_sha256": "18d609930d92ac6fe95e04df70f651056c578e6ac44b1d825243392204cf5123",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "a8fc873fabf0cf97241b3974690da3b9b450870e4c701fa180ec0aab6753e7f6",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "11-standing-binder-band-4-2-normal.png": {
+      "protected_sha256": "992921f7cd3ffe2e7bc9e1c60ad31e7115d1c66fe5f5b5de1f861ca87350dbe6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "f1a712640aa70449fee6866352a50176caff93fb57a56c919632579821278636",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "11-standing-binder-band-4-2-roughness.png": {
+      "protected_sha256": "618eb03c12f61f30a68dbf2d650449af9a18d8f13c026d8b235024d847319309",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 672900,
+      "filled_texels": 375676,
+      "file_sha256": "21c81760b3a0779977b3815613d9c407f624809ff9fb9c262fcf6b85150956a4",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "12-standing-binder-band-4-3-color.png": {
+      "protected_sha256": "de3dbb5d7c10fe744bf7decf50aba33350649a40c0c4422a521485e3928b75f3",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 584523,
+      "filled_texels": 464053,
+      "file_sha256": "ce9ec8cce52376e345ef7aa531736c1758b007dd21c75031e45b3fe23ffb96f1",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "12-standing-binder-band-4-3-normal.png": {
+      "protected_sha256": "95b6da2e1f3e0f3d52c2605ea05020362e39dd69099be132033791c9834549db",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 584523,
+      "filled_texels": 464053,
+      "file_sha256": "08d4d652ce887be6657bdb85d81eb5fd32b3c400de4e91a99230ff1a5da1661e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "12-standing-binder-band-4-3-roughness.png": {
+      "protected_sha256": "03431d648bf31d689f3fe4dce5cc54ec338361345b078c7b4d5bc810650a2430",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 584523,
+      "filled_texels": 464053,
+      "file_sha256": "06b97cc5b9e923e1d9031b94041d8ec053104ddc009cc90d8571315e39ad8bf2",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "13-binder-roof-left-color.png": {
+      "protected_sha256": "8093091f24c3854a352bdc4a0f7ca7829714cda280fd8d6bb23ce4cfc6f5afc9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 384777,
+      "filled_texels": 663799,
+      "file_sha256": "881603f9a48927cfda1e18a7762baee61a4c1dc5d83daf389d31c5a7cf376e11",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "13-binder-roof-left-normal.png": {
+      "protected_sha256": "b02c503546bc9ccce43476a7dff8a429ad4ebf599f1a52f77d3e3a9570a1f10e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 384777,
+      "filled_texels": 663799,
+      "file_sha256": "f7b8a5a9532f7588b6dddb149447a770bd3446ef0225c38e4461dfa90dd0aa98",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "13-binder-roof-left-roughness.png": {
+      "protected_sha256": "5fee29d8c7b0d7f64f287a24eaca33c4b4f0af70df0a2dca250ca79482f7e758",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 384777,
+      "filled_texels": 663799,
+      "file_sha256": "8ce29c35fc6923de404050e78779a998dc1a8e9bdd8b22383559fb0295f5fad4",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "14-binder-roof-right-color.png": {
+      "protected_sha256": "6f5f355130494980a27ed253e52ee092f7d44cd3a0c9021af9c765f2bfe3c5bd",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 384777,
+      "filled_texels": 663799,
+      "file_sha256": "7e19c65c350454034ebccd18e590423a705a2984df15a982b69361d9eae53881",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "14-binder-roof-right-normal.png": {
+      "protected_sha256": "27bc4236330377dc801f736824a849cd44c03b5498b57c95bc28b0a7f3a1bcd6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 384777,
+      "filled_texels": 663799,
+      "file_sha256": "9dee6bc998fce5f125fa725493c12383f201403cde4dfb8f7866aab0644adfb5",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "14-binder-roof-right-roughness.png": {
+      "protected_sha256": "9a1f9f19d8afb022d747f64a032e31955a988a84f4b0f5918b7f8fd1d5bfb7b0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 384777,
+      "filled_texels": 663799,
+      "file_sha256": "d5d974aebcd5bdc622a8be5061b3fe3b0da77a3f1623b94b45e30cf25812fe9e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "15-left-open-metal-ring-color.png": {
+      "protected_sha256": "5d9598d4d429763681b0c445c225c87c9583533d2b04cbbb6a8d589bb3c0257e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 78806,
+      "filled_texels": 969770,
+      "file_sha256": "6e39b02d8a20912144cd05398c143db00beb54a5805bc9c20ad2bec654f60c32",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "15-left-open-metal-ring-normal.png": {
+      "protected_sha256": "ae234b53e9c0e916e10c21a26c549bb28daccdec86541314c87f3b82d7f2c85a",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 78806,
+      "filled_texels": 969770,
+      "file_sha256": "41fe0ecd4822b7f549310def9b7eb9b5c6a797923d1042675b8bc7fa9844dec9",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "15-left-open-metal-ring-roughness.png": {
+      "protected_sha256": "279a4362edd139e851951e92cd83f009af24d56a3cca58f45d3e74a4676e6dd3",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 78806,
+      "filled_texels": 969770,
+      "file_sha256": "bf79d6a24bbc100d9ad8d2106886bc57bc4208da964c3b76c18614297494b639",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "16-right-open-metal-ring-color.png": {
+      "protected_sha256": "c38dc195e4fe24de03a9e38212bc7a463b577238c233524d352af426d075dfb7",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 78804,
+      "filled_texels": 969772,
+      "file_sha256": "0b9d4dda47eeed4c0e7c1f6b294d5b9ea8bf7fbf0f996a5e93efe50de940e36f",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "16-right-open-metal-ring-normal.png": {
+      "protected_sha256": "c81535a200a8d77edbb1a376ca97f84baaa8d25535d5a65395e286620b63a96b",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 78804,
+      "filled_texels": 969772,
+      "file_sha256": "60a0fed4efcd794e4cc80bfabbe68ebfa49ecbebb14218d4cbd9e6f4dd7f1028",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "16-right-open-metal-ring-roughness.png": {
+      "protected_sha256": "5dd5c125f3232e534720d546d6f957bbadae5edb03242782cccbbb326c6551ba",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 78804,
+      "filled_texels": 969772,
+      "file_sha256": "cfcb400d63429b1690e1b10a22495fb09f03e9eb9858092ddc448e4c012ef92c",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    }
+  },
+  "scene_manifest_and_fbx_unchanged": true
+}

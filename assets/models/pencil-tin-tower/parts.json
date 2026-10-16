@@ -1,0 +1,303 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 8,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [],
+  "pieces": [
+    {
+      "label": "upright-tin-band-1-1",
+      "triangles": 556,
+      "bounding_box": {
+        "min": [
+          -50.0,
+          -21.0,
+          0.0
+        ],
+        "max": [
+          50.0,
+          21.0,
+          53.33334
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-upright-tin-band-1-1",
+      "front_pixels_per_stud": 7.839,
+      "front_surface_studs2": 5257.4318,
+      "outer_face_pixels_per_stud": {
+        "front": 7.839,
+        "back": 7.839,
+        "left": 7.727,
+        "right": 7.727,
+        "top": 8.0,
+        "bottom": 7.722
+      }
+    },
+    {
+      "label": "upright-tin-band-1-2",
+      "triangles": 6184,
+      "bounding_box": {
+        "min": [
+          -50.0,
+          -38.0,
+          0.0
+        ],
+        "max": [
+          49.97367,
+          -20.8,
+          55.4
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-upright-tin-band-1-2",
+      "front_pixels_per_stud": 7.929,
+      "front_surface_studs2": 3241.7733,
+      "outer_face_pixels_per_stud": {
+        "front": 7.929,
+        "back": null,
+        "left": 7.849,
+        "right": 7.844,
+        "top": 7.891,
+        "bottom": 7.888
+      }
+    },
+    {
+      "label": "upright-tin-band-2-1",
+      "triangles": 140,
+      "bounding_box": {
+        "min": [
+          -50.0,
+          -21.0,
+          53.33333
+        ],
+        "max": [
+          50.0,
+          21.0,
+          106.66667
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-upright-tin-band-2-1",
+      "front_pixels_per_stud": 7.912,
+      "front_surface_studs2": 5314.2986,
+      "outer_face_pixels_per_stud": {
+        "front": 7.912,
+        "back": 7.912,
+        "left": 7.787,
+        "right": 7.787,
+        "top": 8.0,
+        "bottom": 8.0
+      }
+    },
+    {
+      "label": "upright-tin-band-2-2",
+      "triangles": 3924,
+      "bounding_box": {
+        "min": [
+          -51.55,
+          -22.55,
+          53.33332
+        ],
+        "max": [
+          51.55,
+          9.0,
+          116.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-upright-tin-band-2-2",
+      "front_pixels_per_stud": 7.946,
+      "front_surface_studs2": 2406.9824,
+      "outer_face_pixels_per_stud": {
+        "front": 7.946,
+        "back": 7.94,
+        "left": 7.916,
+        "right": 7.916,
+        "top": 7.941,
+        "bottom": 7.941
+      }
+    },
+    {
+      "label": "upright-tin-band-3-1",
+      "triangles": 556,
+      "bounding_box": {
+        "min": [
+          -50.0,
+          -21.0,
+          106.66666
+        ],
+        "max": [
+          50.0,
+          21.0,
+          160.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-upright-tin-band-3-1",
+      "front_pixels_per_stud": 7.839,
+      "front_surface_studs2": 5257.4321,
+      "outer_face_pixels_per_stud": {
+        "front": 7.839,
+        "back": 7.839,
+        "left": 7.727,
+        "right": 7.727,
+        "top": 7.722,
+        "bottom": 8.0
+      }
+    },
+    {
+      "label": "upright-tin-band-3-2",
+      "triangles": 5212,
+      "bounding_box": {
+        "min": [
+          -51.55,
+          -22.55,
+          106.66666
+        ],
+        "max": [
+          51.55,
+          9.0,
+          160.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-upright-tin-band-3-2",
+      "front_pixels_per_stud": 7.921,
+      "front_surface_studs2": 2577.8468,
+      "outer_face_pixels_per_stud": {
+        "front": 7.921,
+        "back": 7.94,
+        "left": 7.908,
+        "right": 7.908,
+        "top": 7.786,
+        "bottom": 7.792
+      }
+    },
+    {
+      "label": "half-open-canopy-and-real-hinge-1",
+      "triangles": 2436,
+      "bounding_box": {
+        "min": [
+          -46.0,
+          -49.25301,
+          52.6054
+        ],
+        "max": [
+          46.0,
+          -20.18858,
+          74.17978
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "7-half-open-canopy-and-real-hinge-1",
+      "front_pixels_per_stud": 7.996,
+      "front_surface_studs2": 8508.9519,
+      "outer_face_pixels_per_stud": {
+        "front": 7.996,
+        "back": null,
+        "left": 7.816,
+        "right": 7.816,
+        "top": 7.997,
+        "bottom": 7.997
+      }
+    },
+    {
+      "label": "half-open-canopy-and-real-hinge-2",
+      "triangles": 4296,
+      "bounding_box": {
+        "min": [
+          -45.85,
+          -49.34266,
+          54.9283
+        ],
+        "max": [
+          45.85,
+          -21.25,
+          76.9
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "8-half-open-canopy-and-real-hinge-2",
+      "front_pixels_per_stud": 7.739,
+      "front_surface_studs2": 798.2654,
+      "outer_face_pixels_per_stud": {
+        "front": 7.739,
+        "back": null,
+        "left": 7.497,
+        "right": 7.497,
+        "top": 7.553,
+        "bottom": 7.553
+      }
+    }
+  ],
+  "total_triangles": 23304,
+  "bounding_box": {
+    "min": [
+      -51.55,
+      -49.34266,
+      0.0
+    ],
+    "max": [
+      51.55,
+      21.0,
+      160.0
+    ]
+  },
+  "height": 160.0,
+  "requested_height": 160
+}

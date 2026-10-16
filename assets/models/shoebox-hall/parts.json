@@ -1,0 +1,201 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 5,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [],
+  "pieces": [
+    {
+      "label": "cardboard-box-1",
+      "triangles": 11024,
+      "bounding_box": {
+        "min": [
+          -58.31,
+          -31.36,
+          0.0
+        ],
+        "max": [
+          58.0,
+          31.36001,
+          36.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-cardboard-box-1",
+      "front_pixels_per_stud": 7.997,
+      "front_surface_studs2": 4307.0048,
+      "outer_face_pixels_per_stud": {
+        "front": 7.997,
+        "back": 7.997,
+        "left": 7.984,
+        "right": 7.984,
+        "top": 7.99,
+        "bottom": 7.99
+      }
+    },
+    {
+      "label": "cardboard-box-2",
+      "triangles": 5292,
+      "bounding_box": {
+        "min": [
+          -58.36,
+          -31.0,
+          34.9
+        ],
+        "max": [
+          58.36,
+          31.0,
+          36.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-cardboard-box-2",
+      "front_pixels_per_stud": 7.051,
+      "front_surface_studs2": 16.7985,
+      "outer_face_pixels_per_stud": {
+        "front": 7.051,
+        "back": 7.051,
+        "left": 8.0,
+        "right": 7.981,
+        "top": 7.637,
+        "bottom": 7.637
+      }
+    },
+    {
+      "label": "windows-and-door",
+      "triangles": 3896,
+      "bounding_box": {
+        "min": [
+          -51.25,
+          -33.08,
+          3.0
+        ],
+        "max": [
+          50.25,
+          -30.8,
+          29.4
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-windows-and-door",
+      "front_pixels_per_stud": 7.978,
+      "front_surface_studs2": 1759.8645,
+      "outer_face_pixels_per_stud": {
+        "front": 7.978,
+        "back": null,
+        "left": 7.934,
+        "right": 7.928,
+        "top": 7.927,
+        "bottom": 7.927
+      }
+    },
+    {
+      "label": "propped-corrugated-awning",
+      "triangles": 6484,
+      "bounding_box": {
+        "min": [
+          -60.0,
+          -35.51924,
+          36.50403
+        ],
+        "max": [
+          60.0,
+          35.05043,
+          54.97771
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-propped-corrugated-awning",
+      "front_pixels_per_stud": 7.94,
+      "front_surface_studs2": 453.2282,
+      "outer_face_pixels_per_stud": {
+        "front": 7.94,
+        "back": 7.983,
+        "left": 7.976,
+        "right": 7.976,
+        "top": 7.99,
+        "bottom": 7.99
+      }
+    },
+    {
+      "label": "toy-bricks-and-taped-props",
+      "triangles": 4900,
+      "bounding_box": {
+        "min": [
+          -59.0,
+          -40.0,
+          0.0
+        ],
+        "max": [
+          59.0,
+          -27.0,
+          46.2
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-toy-bricks-and-taped-props",
+      "front_pixels_per_stud": 7.847,
+      "front_surface_studs2": 718.1863,
+      "outer_face_pixels_per_stud": {
+        "front": 7.847,
+        "back": null,
+        "left": 7.789,
+        "right": 7.794,
+        "top": 7.97,
+        "bottom": 7.97
+      }
+    }
+  ],
+  "total_triangles": 31596,
+  "bounding_box": {
+    "min": [
+      -60.0,
+      -40.0,
+      0.0
+    ],
+    "max": [
+      60.0,
+      35.05043,
+      54.97771
+    ]
+  },
+  "height": 54.97771,
+  "requested_height": 55
+}

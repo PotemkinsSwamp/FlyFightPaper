@@ -1,0 +1,102 @@
+BLOCKS baking 1-pencil-supported-box-1-1
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-1-1
+D:\FlyFightPaper\tools\art\blocks.py:1282: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-1-pencil-supported-box-1-1.fbx'
+export finished in 0.0170 sec.
+FBX version: 7400
+BLOCKS baking 2-pencil-supported-box-1-2
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-1-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-2-pencil-supported-box-1-2.fbx'
+export finished in 0.0135 sec.
+FBX version: 7400
+BLOCKS baking 3-pencil-supported-box-2-1
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-2-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-3-pencil-supported-box-2-1.fbx'
+export finished in 0.0163 sec.
+FBX version: 7400
+BLOCKS baking 4-pencil-supported-box-2-2
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-2-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-4-pencil-supported-box-2-2.fbx'
+export finished in 0.0106 sec.
+FBX version: 7400
+BLOCKS baking 5-pencil-supported-box-3-1
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-3-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-5-pencil-supported-box-3-1.fbx'
+export finished in 0.0184 sec.
+FBX version: 7400
+BLOCKS baking 6-pencil-supported-box-3-2
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-3-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-6-pencil-supported-box-3-2.fbx'
+export finished in 0.0107 sec.
+FBX version: 7400
+BLOCKS baking 7-pencil-supported-box-4-1
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-4-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-7-pencil-supported-box-4-1.fbx'
+export finished in 0.0159 sec.
+FBX version: 7400
+BLOCKS baking 8-pencil-supported-box-4-2
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-4-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-8-pencil-supported-box-4-2.fbx'
+export finished in 0.0110 sec.
+FBX version: 7400
+BLOCKS baking 9-pencil-supported-box-5-1
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-5-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-9-pencil-supported-box-5-1.fbx'
+export finished in 0.0156 sec.
+FBX version: 7400
+BLOCKS baking 10-pencil-supported-box-5-2
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-5-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-10-pencil-supported-box-5-2.fbx'
+export finished in 0.0115 sec.
+FBX version: 7400
+BLOCKS baking 11-pencil-supported-box-6-1
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-6-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-11-pencil-supported-box-6-1.fbx'
+export finished in 0.0160 sec.
+FBX version: 7400
+BLOCKS baking 12-pencil-supported-box-6-2
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-6-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-12-pencil-supported-box-6-2.fbx'
+export finished in 0.0107 sec.
+FBX version: 7400
+BLOCKS baking 13-pencil-supported-box-7-1
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-7-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-13-pencil-supported-box-7-1.fbx'
+export finished in 0.0152 sec.
+FBX version: 7400
+BLOCKS baking 14-pencil-supported-box-7-2
+BLOCKS ray baking soft ambient occlusion for pencil-supported-box-7-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-14-pencil-supported-box-7-2.fbx'
+export finished in 0.0106 sec.
+FBX version: 7400
+BLOCKS baking 15-four-sharpened-hex-pencil-tips
+BLOCKS ray baking soft ambient occlusion for four-sharpened-hex-pencil-tips
+D:\FlyFightPaper\tools\art\blocks.py:739: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+D:\FlyFightPaper\tools\art\blocks.py:749: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-pillar-tower\\parts\\pending-15-four-sharpened-hex-pencil-tips.fbx'
+export finished in 0.0048 sec.
+FBX version: 7400
+BLOCKS rendering concept camera
+Info: Saved as "pending-hero.blend"
+BLOCKS PASS pencil-pillar-tower 15 pieces, 124452 triangles
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

@@ -1,0 +1,531 @@
+{
+  "result": "PASS",
+  "source_checks": {
+    "body-paper": {
+      "triangles": 144,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        72
+      ],
+      "self_intersections": 0,
+      "signed_volume": 4.70405617,
+      "minimum_triangle_area": 0.0021254402
+    },
+    "nose-paper": {
+      "triangles": 72,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        36
+      ],
+      "self_intersections": 0,
+      "signed_volume": 1.37117532,
+      "minimum_triangle_area": 0.0028471528
+    },
+    "nose-accent": {
+      "triangles": 86,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        45
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.20673978,
+      "minimum_triangle_area": 1.0816e-06
+    },
+    "wings-paper": {
+      "triangles": 76,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        40
+      ],
+      "self_intersections": 0,
+      "signed_volume": 6.59380345,
+      "minimum_triangle_area": 0.0060343397
+    },
+    "wings-accent": {
+      "triangles": 40,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        12,
+        12
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.22912351,
+      "minimum_triangle_area": 0.001695187
+    },
+    "wings-sticker-left": {
+      "triangles": 60,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        32
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.13478405,
+      "minimum_triangle_area": 0.0023811328
+    },
+    "wings-sticker-right": {
+      "triangles": 60,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        32
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.13478405,
+      "minimum_triangle_area": 0.0023811328
+    },
+    "tail-paper": {
+      "triangles": 96,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        48
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.99541297,
+      "minimum_triangle_area": 0.0029454759
+    },
+    "tail-accent": {
+      "triangles": 24,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 2,
+      "component_vertex_counts": [
+        8,
+        8
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.14678933,
+      "minimum_triangle_area": 0.013572659
+    },
+    "pellet-tube": {
+      "triangles": 192,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        96
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.61271953,
+      "minimum_triangle_area": 0.0036246568
+    },
+    "pellet-band": {
+      "triangles": 64,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        32
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.24276874,
+      "minimum_triangle_area": 0.0034697647
+    }
+  },
+  "fbx_roundtrip": [
+    {
+      "file": "body-paper.fbx",
+      "bounds_error_max": 7.943115232222908e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 144,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          72
+        ],
+        "self_intersections": 0,
+        "signed_volume": 4.66145569,
+        "minimum_triangle_area": 0.0021254402
+      }
+    },
+    {
+      "file": "nose-paper.fbx",
+      "bounds_error_max": 4.520263674478997e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 72,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          36
+        ],
+        "self_intersections": 0,
+        "signed_volume": 1.37117525,
+        "minimum_triangle_area": 0.0028471528
+      }
+    },
+    {
+      "file": "nose-accent.fbx",
+      "bounds_error_max": 4.520263674478997e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 86,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          45
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.20673979,
+        "minimum_triangle_area": 1.0816e-06
+      }
+    },
+    {
+      "file": "wings-paper.fbx",
+      "bounds_error_max": 7.943115232222908e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 76,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          40
+        ],
+        "self_intersections": 0,
+        "signed_volume": 6.59380367,
+        "minimum_triangle_area": 0.0060343397
+      }
+    },
+    {
+      "file": "wings-accent.fbx",
+      "bounds_error_max": 1.0024414063281029e-06,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 40,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          12,
+          12
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.22912352,
+        "minimum_triangle_area": 0.001695187
+      }
+    },
+    {
+      "file": "wings-sticker-left.fbx",
+      "bounds_error_max": 6.999816895003619e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 60,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          32
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.13478398,
+        "minimum_triangle_area": 0.0023811312
+      }
+    },
+    {
+      "file": "wings-sticker-right.fbx",
+      "bounds_error_max": 6.999816895003619e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 60,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          32
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.13478398,
+        "minimum_triangle_area": 0.0023811312
+      }
+    },
+    {
+      "file": "tail-paper.fbx",
+      "bounds_error_max": 1.8954277036797862e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 96,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          48
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.99541285,
+        "minimum_triangle_area": 0.0029454759
+      }
+    },
+    {
+      "file": "tail-accent.fbx",
+      "bounds_error_max": 2.2888183615066282e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 24,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 2,
+        "component_vertex_counts": [
+          8,
+          8
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.14678933,
+        "minimum_triangle_area": 0.013572659
+      }
+    },
+    {
+      "file": "pellet-tube.fbx",
+      "bounds_error_max": 7.364826202505004e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 192,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          96
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.61271954,
+        "minimum_triangle_area": 0.0036246568
+      }
+    },
+    {
+      "file": "pellet-band.fbx",
+      "bounds_error_max": 3.9100646964662644e-07,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 64,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          32
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.24276871,
+        "minimum_triangle_area": 0.0034697647
+      }
+    }
+  ],
+  "sticker_source_checks": {
+    "sticker-square": {
+      "triangles": 60,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        32
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.1152,
+      "minimum_triangle_area": 0.0006698736
+    },
+    "sticker-circle": {
+      "triangles": 252,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "wire_edges": 0,
+      "inconsistent_edges": 0,
+      "loose_vertices": 0,
+      "closed_components": 1,
+      "component_vertex_counts": [
+        128
+      ],
+      "self_intersections": 0,
+      "signed_volume": 0.10162417,
+      "minimum_triangle_area": 0.0003823012
+    }
+  },
+  "sticker_fbx_roundtrip": [
+    {
+      "file": "sticker-square.fbx",
+      "bounds_error_max": 6.288290023762078e-08,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 60,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          32
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.1152,
+        "minimum_triangle_area": 0.0006698736
+      }
+    },
+    {
+      "file": "sticker-circle.fbx",
+      "bounds_error_max": 6.660819053608269e-08,
+      "raw_fbx_bounds_in_studs_verified": true,
+      "fbx_unit_scale_factor": 1.0,
+      "fbx_texture_records": 0,
+      "validation": {
+        "triangles": 252,
+        "boundary_edges": 0,
+        "nonmanifold_edges": 0,
+        "wire_edges": 0,
+        "inconsistent_edges": 0,
+        "loose_vertices": 0,
+        "closed_components": 1,
+        "component_vertex_counts": [
+          128
+        ],
+        "self_intersections": 0,
+        "signed_volume": 0.10162417,
+        "minimum_triangle_area": 0.0003823013
+      }
+    }
+  ],
+  "sticker_manifest": "../stickers/stickers.json",
+  "reference_sha256": "9d2b6c7228d9e614142e2c510e933a243e238234ba2a059480931a240b16d6db",
+  "script_sha256": "d19d2948ff1fbe9419f9e559f791dcaa74dfb568a0d915ba707fa5821dc97714",
+  "export_sha256": {
+    "body-paper.fbx": "c43d1ca4e68550b73fdd49d189e69456b5320a92787b0a6eded0f4af88aca8e7",
+    "nose-paper.fbx": "3e9e481700105e0aae9855e5a005fc4467f6ae2296f87ae5f1373d2e1e5d9519",
+    "nose-accent.fbx": "c2f3e783c53f977e3101e8c4e9a9b04d305818bc7260adf22ec4dfbbfe2fae9a",
+    "wings-paper.fbx": "d23a9dedb09958db05e8594d2ed1c2a50fa0623c0036ef23da4f187511504dc0",
+    "wings-accent.fbx": "3d3b46ad6cd818512705f047ec280c9f1bfac126a4cd1dd97b1c3c00911dfafc",
+    "wings-sticker-left.fbx": "dc40ca99acbb6486d31b96030621fcae5d633ea71e775cf65ba6051f6a7d31fe",
+    "wings-sticker-right.fbx": "42ff40f2a774f120d55e821fc6bfdf186f97b9a42785a4bdf858de6cf645a994",
+    "tail-paper.fbx": "e5b859dd4d449b44feeb554428e7008317ca0d5145b6fc96311ea1d8a04bdda4",
+    "tail-accent.fbx": "3e18df2ff3991dc89c1b4d9dcf940aabc82b6c4e4d62094bc27f73a298238cbb",
+    "pellet-tube.fbx": "16eee421fec6272d9b838b800f39941bc7e4ce9bbcdb1cf5464fd66d23a3973d",
+    "pellet-band.fbx": "cfe5e43ab9b4bd5106a94aeaac392cb7eea56bae170e2f54e5e0104a292cdc47"
+  },
+  "sticker_export_sha256": {
+    "sticker-square.fbx": "ab847feee29283600c91eb69297527d2fb5d33e049cd4ec48792d8caaff67901",
+    "sticker-circle.fbx": "a61b9e6e4bae9c8a8b3d302a78e7ebe1a41b235d6f6c969d8918b26d9ceb1dc4"
+  },
+  "texture_images": [],
+  "uv_layers": 0,
+  "max_triangles_per_export": 192,
+  "dimensions_checked": true,
+  "render_files": [
+    "compare.png",
+    "render-exploded.png",
+    "render-front.png",
+    "render-side.png",
+    "render-team-blue.png",
+    "render-team-red.png",
+    "render-threequarter-blue.png",
+    "render-threequarter.png",
+    "render-top.png"
+  ]
+}

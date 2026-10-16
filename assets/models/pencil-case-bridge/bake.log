@@ -1,0 +1,314 @@
+22:32:09 | INFO: Data are loaded, start creating Blender stuff
+22:32:09 | INFO: Blender create Mesh node 0
+22:32:11 | INFO: glTF import finished in 1.48s
+HERO bridge source reshaped with original faces and UVs retained
+HERO touch-up: removed 0 faces, added 0 clean boxes (0 paint only)
+Warning: No mesh data to join
+HERO floor cuts [56.580999999999996, 86.4164]; topper base 90.3364
+HERO ground-floor: 173442 -> 22904 triangles
+HERO upper-walls: 90185 -> 8257 triangles
+HERO roof: 10004 -> 6250 triangles
+HERO topper: 562917 -> 20631 triangles
+HERO upper-walls-back-left: filled holes along 1 open edges, 1 still open
+HERO upper-walls-back-left: native volume repair leaves 2442 faces (target 2519, removed 0 dust vertices)
+HERO upper-walls-back-left: strict closure 2519 -> 2442 triangles, zero open/nonmanifold edges
+HERO topper-back-left: filled holes along 1 open edges, 1 still open
+HERO topper-back-left: native volume repair leaves 6718 faces (target 6927, removed 0 dust vertices)
+HERO topper-back-left: strict closure 6927 -> 6718 triangles, zero open/nonmanifold edges
+00:54.250  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+HERO ground-floor-front-left: rigidly stitched 162 UV islands
+HERO ground-floor-front-left: packing charts
+HERO ground-floor-front-left: packing finished
+HERO ground-floor-front-left: repairing 377 folds and 1 UV slivers
+HERO ground-floor-front-left: packing charts
+HERO ground-floor-front-left: packing finished
+HERO ground-floor-front-left: repaired 113 UV faces
+HERO ground-floor-front-left UV {"uv_islands": 378, "uv_coverage": 0.5068, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 1-ground-floor-front-left color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 1-ground-floor-front-left normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 1-ground-floor-front-left roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\1-ground-floor-front-left.fbx'
+export finished in 0.0180 sec.
+FBX version: 7400
+HERO ground-floor-front-right: rigidly stitched 265 UV islands
+HERO ground-floor-front-right: packing charts
+HERO ground-floor-front-right: packing finished
+HERO ground-floor-front-right: repairing 37 folds and 0 UV slivers
+HERO ground-floor-front-right: packing charts
+HERO ground-floor-front-right: packing finished
+HERO ground-floor-front-right: repaired 29 UV faces
+HERO ground-floor-front-right UV {"uv_islands": 244, "uv_coverage": 0.4801, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 2-ground-floor-front-right color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 2-ground-floor-front-right normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 2-ground-floor-front-right roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\2-ground-floor-front-right.fbx'
+export finished in 0.0140 sec.
+FBX version: 7400
+HERO ground-floor-back-left: rigidly stitched 168 UV islands
+HERO ground-floor-back-left: packing charts
+HERO ground-floor-back-left: packing finished
+HERO ground-floor-back-left: repairing 13 folds and 0 UV slivers
+HERO ground-floor-back-left: packing charts
+HERO ground-floor-back-left: packing finished
+HERO ground-floor-back-left: repaired 11 UV faces
+HERO ground-floor-back-left UV {"uv_islands": 140, "uv_coverage": 0.431, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 3-ground-floor-back-left color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 3-ground-floor-back-left normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 3-ground-floor-back-left roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\3-ground-floor-back-left.fbx'
+export finished in 0.0121 sec.
+FBX version: 7400
+HERO ground-floor-back-right: rigidly stitched 136 UV islands
+HERO ground-floor-back-right: packing charts
+HERO ground-floor-back-right: packing finished
+HERO ground-floor-back-right: repairing 55 folds and 2 UV slivers
+HERO ground-floor-back-right: packing charts
+HERO ground-floor-back-right: packing finished
+HERO ground-floor-back-right: repaired 39 UV faces
+HERO ground-floor-back-right UV {"uv_islands": 234, "uv_coverage": 0.4702, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 4-ground-floor-back-right color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 4-ground-floor-back-right normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 4-ground-floor-back-right roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\4-ground-floor-back-right.fbx'
+export finished in 0.0200 sec.
+FBX version: 7400
+HERO upper-walls-front-left: rigidly stitched 95 UV islands
+HERO upper-walls-front-left: packing charts
+HERO upper-walls-front-left: packing finished
+HERO upper-walls-front-left: repairing 14 folds and 0 UV slivers
+HERO upper-walls-front-left: packing charts
+HERO upper-walls-front-left: packing finished
+HERO upper-walls-front-left: repaired 9 UV faces
+HERO upper-walls-front-left UV {"uv_islands": 110, "uv_coverage": 0.5267, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 5-upper-walls-front-left color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 5-upper-walls-front-left normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 5-upper-walls-front-left roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\5-upper-walls-front-left.fbx'
+export finished in 0.0075 sec.
+FBX version: 7400
+HERO upper-walls-front-right: rigidly stitched 50 UV islands
+HERO upper-walls-front-right: packing charts
+HERO upper-walls-front-right: packing finished
+HERO upper-walls-front-right: repairing 17 folds and 3 UV slivers
+HERO upper-walls-front-right: packing charts
+HERO upper-walls-front-right: packing finished
+HERO upper-walls-front-right: repaired 13 UV faces
+HERO upper-walls-front-right UV {"uv_islands": 130, "uv_coverage": 0.5196, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 6-upper-walls-front-right color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 6-upper-walls-front-right normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 6-upper-walls-front-right roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\6-upper-walls-front-right.fbx'
+export finished in 0.0082 sec.
+FBX version: 7400
+HERO upper-walls-back-left: rigidly stitched 73 UV islands
+HERO upper-walls-back-left: packing charts
+HERO upper-walls-back-left: packing finished
+HERO upper-walls-back-left: repairing 2 folds and 0 UV slivers
+HERO upper-walls-back-left: packing charts
+HERO upper-walls-back-left: packing finished
+HERO upper-walls-back-left: repaired 1 UV faces
+HERO upper-walls-back-left: repairing 1 folds and 0 UV slivers
+HERO upper-walls-back-left: packing charts
+HERO upper-walls-back-left: packing finished
+HERO upper-walls-back-left: repaired 1 UV faces
+HERO upper-walls-back-left UV {"uv_islands": 116, "uv_coverage": 0.4857, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 7-upper-walls-back-left color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 7-upper-walls-back-left normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 7-upper-walls-back-left roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\7-upper-walls-back-left.fbx'
+export finished in 0.0080 sec.
+FBX version: 7400
+HERO upper-walls-back-right: rigidly stitched 85 UV islands
+HERO upper-walls-back-right: packing charts
+HERO upper-walls-back-right: packing finished
+HERO upper-walls-back-right: repairing 25 folds and 3 UV slivers
+HERO upper-walls-back-right: packing charts
+HERO upper-walls-back-right: packing finished
+HERO upper-walls-back-right: repaired 22 UV faces
+HERO upper-walls-back-right UV {"uv_islands": 141, "uv_coverage": 0.5179, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 8-upper-walls-back-right color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 8-upper-walls-back-right normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 8-upper-walls-back-right roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\8-upper-walls-back-right.fbx'
+export finished in 0.0165 sec.
+FBX version: 7400
+HERO roof-front-left: rigidly stitched 33 UV islands
+HERO roof-front-left: packing charts
+HERO roof-front-left: packing finished
+HERO roof-front-left UV {"uv_islands": 23, "uv_coverage": 0.6692, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 9-roof-front-left color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 9-roof-front-left normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 9-roof-front-left roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\9-roof-front-left.fbx'
+export finished in 0.0145 sec.
+FBX version: 7400
+HERO roof-front-right: rigidly stitched 40 UV islands
+HERO roof-front-right: packing charts
+HERO roof-front-right: packing finished
+HERO roof-front-right: repairing 1 folds and 0 UV slivers
+HERO roof-front-right: packing charts
+HERO roof-front-right: packing finished
+HERO roof-front-right: repaired 1 UV faces
+HERO roof-front-right UV {"uv_islands": 30, "uv_coverage": 0.6538, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 10-roof-front-right color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 10-roof-front-right normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 10-roof-front-right roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\10-roof-front-right.fbx'
+export finished in 0.0065 sec.
+FBX version: 7400
+HERO roof-back-left: rigidly stitched 20 UV islands
+HERO roof-back-left: packing charts
+HERO roof-back-left: packing finished
+HERO roof-back-left: repairing 2 folds and 0 UV slivers
+HERO roof-back-left: packing charts
+HERO roof-back-left: packing finished
+HERO roof-back-left: repaired 2 UV faces
+HERO roof-back-left UV {"uv_islands": 33, "uv_coverage": 0.746, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 11-roof-back-left color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 11-roof-back-left normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 11-roof-back-left roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\11-roof-back-left.fbx'
+export finished in 0.0073 sec.
+FBX version: 7400
+HERO roof-back-right: rigidly stitched 39 UV islands
+HERO roof-back-right: packing charts
+HERO roof-back-right: packing finished
+HERO roof-back-right: repairing 2 folds and 0 UV slivers
+HERO roof-back-right: packing charts
+HERO roof-back-right: packing finished
+HERO roof-back-right: repaired 2 UV faces
+HERO roof-back-right UV {"uv_islands": 35, "uv_coverage": 0.7916, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 12-roof-back-right color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 12-roof-back-right normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 12-roof-back-right roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\12-roof-back-right.fbx'
+export finished in 0.0084 sec.
+FBX version: 7400
+HERO topper-front-left: rigidly stitched 493 UV islands
+HERO topper-front-left: packing charts
+HERO topper-front-left: packing finished
+HERO topper-front-left: repairing 41 folds and 0 UV slivers
+HERO topper-front-left: packing charts
+HERO topper-front-left: packing finished
+HERO topper-front-left: repaired 25 UV faces
+HERO topper-front-left UV {"uv_islands": 470, "uv_coverage": 0.4887, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 13-topper-front-left color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 13-topper-front-left normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 13-topper-front-left roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\13-topper-front-left.fbx'
+export finished in 0.0162 sec.
+FBX version: 7400
+HERO topper-front-right: rigidly stitched 577 UV islands
+HERO topper-front-right: packing charts
+HERO topper-front-right: packing finished
+HERO topper-front-right: repairing 62 folds and 0 UV slivers
+HERO topper-front-right: packing charts
+HERO topper-front-right: packing finished
+HERO topper-front-right: repaired 47 UV faces
+HERO topper-front-right UV {"uv_islands": 469, "uv_coverage": 0.4253, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 14-topper-front-right color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 14-topper-front-right normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 14-topper-front-right roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\14-topper-front-right.fbx'
+export finished in 0.0153 sec.
+FBX version: 7400
+HERO topper-back-left: rigidly stitched 437 UV islands
+HERO topper-back-left: packing charts
+HERO topper-back-left: packing finished
+HERO topper-back-left: repairing 56 folds and 0 UV slivers
+HERO topper-back-left: packing charts
+HERO topper-back-left: packing finished
+HERO topper-back-left: repaired 36 UV faces
+HERO topper-back-left UV {"uv_islands": 594, "uv_coverage": 0.4621, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 15-topper-back-left color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 15-topper-back-left normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 15-topper-back-left roughness
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\15-topper-back-left.fbx'
+export finished in 0.0135 sec.
+FBX version: 7400
+HERO topper-back-right: rigidly stitched 674 UV islands
+HERO topper-back-right: packing charts
+HERO topper-back-right: packing finished
+HERO topper-back-right: repairing 81 folds and 0 UV slivers
+HERO topper-back-right: packing charts
+HERO topper-back-right: packing finished
+HERO topper-back-right: repaired 46 UV faces
+HERO topper-back-right UV {"uv_islands": 598, "uv_coverage": 0.4235, "uv_overlap": false, "uv_padding_pixels": 4}
+HERO baking 16-topper-back-right color
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 16-topper-back-right normal
+Info: Baking map saved to internal image, save it externally or pack it
+HERO baking 16-topper-back-right roughness
+11:48.703  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\render-front.png'
+11:49.172  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\render-back.png'
+11:49.906  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\ground-floor-after.png'
+Info: Baking map saved to internal image, save it externally or pack it
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\pencil-case-bridge\\parts\\16-topper-back-right.fbx'
+export finished in 0.0159 sec.
+FBX version: 7400
+Info: Saved as "hero.blend"
+HERO PASS {"source": "meshy.glb", "source_triangles": 826042, "source_map_sizes": {"base_color": [4096, 4096], "normal": [4096, 4096], "roughness": [2048, 2048]}, "front": "-y", "piece_count": 16, "requested_height": 140.0, "floor_cuts": [56.580999999999996, 86.4164], "topper_base": 90.3364, "vertical_splits": "ground-floor:xy,upper-walls:xy,roof:xy,topper:xy", "min_coverage": 0.33, "pieces": [{"label": "ground-floor-front-left", "triangles": 7294, "bounding_box": {"min": [-90.59495, -26.43782, 0.05956], "max": [-51.28941, 0.0, 56.57248]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 378, "uv_coverage": 0.5068, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "front", "front_surface_studs2": 2347.3305, "front_pixels_per_stud": 9.574, "prefix": "1-ground-floor-front-left"}, {"label": "ground-floor-front-right", "triangles": 7596, "bounding_box": {"min": [51.24338, -26.43425, 0.0], "max": [90.70872, 0.0, 56.57244]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 244, "uv_coverage": 0.4801, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "front", "front_surface_studs2": 2364.1327, "front_pixels_per_stud": 9.269, "prefix": "2-ground-floor-front-right"}, {"label": "ground-floor-back-left", "triangles": 6004, "bounding_box": {"min": [-90.59707, -0.0, 0.05956], "max": [-51.29015, 26.41371, 56.57248]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 140, "uv_coverage": 0.431, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "back", "front_surface_studs2": 2216.5678, "front_pixels_per_stud": 8.154, "prefix": "3-ground-floor-back-left"}, {"label": "ground-floor-back-right", "triangles": 6162, "bounding_box": {"min": [51.23666, -0.0, 0.0], "max": [90.71512, 26.42473, 56.57244]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 234, "uv_coverage": 0.4702, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "back", "front_surface_studs2": 2217.3635, "front_pixels_per_stud": 8.569, "prefix": "4-ground-floor-back-right"}, {"label": "upper-walls-front-left", "triangles": 2444, "bounding_box": {"min": [-90.51471, -15.07392, 56.57261], "max": [-51.8436, 0.0, 86.41378]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 110, "uv_coverage": 0.5267, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "front", "front_surface_studs2": 1131.2945, "front_pixels_per_stud": 14.081, "prefix": "5-upper-walls-front-left"}, {"label": "upper-walls-front-right", "triangles": 2610, "bounding_box": {"min": [51.76757, -15.08414, 56.5727], "max": [90.59584, 0.0, 86.41383]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 130, "uv_coverage": 0.5196, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "front", "front_surface_studs2": 1178.0374, "front_pixels_per_stud": 14.174, "prefix": "6-upper-walls-front-right"}, {"label": "upper-walls-back-left", "triangles": 2442, "bounding_box": {"min": [-90.51556, -0.00516, 56.57174], "max": [-51.84209, 26.42049, 86.41438]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 116, "uv_coverage": 0.4857, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "back", "front_surface_studs2": 1133.9086, "front_pixels_per_stud": 11.682, "prefix": "7-upper-walls-back-left"}, {"label": "upper-walls-back-right", "triangles": 2940, "bounding_box": {"min": [51.69127, -0.0, 56.5727], "max": [90.5956, 26.42441, 86.41383]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 141, "uv_coverage": 0.5179, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "back", "front_surface_studs2": 1145.2208, "front_pixels_per_stud": 12.509, "prefix": "8-upper-walls-back-right"}, {"label": "roof-front-left", "triangles": 1476, "bounding_box": {"min": [-89.92442, -15.06285, 86.41387], "max": [-53.01059, 0.0, 90.33465]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 23, "uv_coverage": 0.6692, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "front", "front_surface_studs2": 142.6849, "front_pixels_per_stud": 27.551, "prefix": "9-roof-front-left"}, {"label": "roof-front-right", "triangles": 1694, "bounding_box": {"min": [52.15592, -15.05751, 86.41387], "max": [90.1765, 0.0, 90.33465]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 30, "uv_coverage": 0.6538, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "front", "front_surface_studs2": 149.3884, "front_pixels_per_stud": 27.916, "prefix": "10-roof-front-right"}, {"label": "roof-back-left", "triangles": 1820, "bounding_box": {"min": [-90.00785, -0.0, 86.41387], "max": [-53.29046, 26.3901, 90.33465]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 33, "uv_coverage": 0.746, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "back", "front_surface_studs2": 142.0098, "front_pixels_per_stud": 22.907, "prefix": "11-roof-back-left"}, {"label": "roof-back-right", "triangles": 1792, "bounding_box": {"min": [52.12947, -0.0, 86.41387], "max": [90.06918, 26.43326, 90.33465]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 35, "uv_coverage": 0.7916, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "back", "front_surface_studs2": 148.0731, "front_pixels_per_stud": 22.888, "prefix": "12-roof-back-right"}, {"label": "topper-front-left", "triangles": 5288, "bounding_box": {"min": [-91.25298, -16.79192, 90.33554], "max": [0.0, 0.0, 138.99789]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 470, "uv_coverage": 0.4887, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "front", "front_surface_studs2": 4262.8913, "front_pixels_per_stud": 7.806, "prefix": "13-topper-front-left"}, {"label": "topper-front-right", "triangles": 5602, "bounding_box": {"min": [-0.0, -20.42975, 90.33493], "max": [91.23262, 0.0, 139.09093]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 469, "uv_coverage": 0.4253, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "front", "front_surface_studs2": 4388.6628, "front_pixels_per_stud": 7.183, "prefix": "14-topper-front-right"}, {"label": "topper-back-left", "triangles": 6718, "bounding_box": {"min": [-91.51617, 0.04725, 90.33274], "max": [0.00106, 26.38278, 140.00374]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 594, "uv_coverage": 0.4621, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "back", "front_surface_studs2": 4410.4606, "front_pixels_per_stud": 6.77, "prefix": "15-topper-back-left"}, {"label": "topper-back-right", "triangles": 6662, "bounding_box": {"min": [-0.0, -0.0, 90.33493], "max": [91.45631, 26.40651, 138.96501]}, "boundary_edges": 0, "origin": [0, 0, 0], "uv_islands": 598, "uv_coverage": 0.4235, "uv_overlap": false, "uv_padding_pixels": 4, "density_face": "back", "front_surface_studs2": 4295.4767, "front_pixels_per_stud": 6.379, "prefix": "16-topper-back-right"}], "lowest_z": 0.0, "height": 140.003738, "total_triangles": 68544}
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

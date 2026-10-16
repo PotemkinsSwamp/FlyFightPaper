@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "Both complete ring assemblies turned 90 degrees, with round split wire, closing sleeves, hinged clasps and pins. Broader loops fit within the 90-deep binder and preserve the minimum 45 x 50 route along X. Darker pebbled covers, rounder spine, visible page edge and clean blank label.",
+  "still_off": "Rings remain narrower from the concept camera after the required turn; cover wear is cleaner than the picture.",
+  "pieces": 16,
+  "triangles": 38500,
+  "lowest_front_pixels_per_stud": 7.257,
+  "compare": "assets\\models\\ring-binder-tower\\compare.png"
+}

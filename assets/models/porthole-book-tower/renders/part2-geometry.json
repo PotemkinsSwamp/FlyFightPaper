@@ -1,0 +1,102 @@
+{
+  "pieces": [
+    {
+      "prefix": "1-ground-floor-front-left",
+      "triangles": 11840,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "2-ground-floor-front-right",
+      "triangles": 11898,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "3-ground-floor-back-left",
+      "triangles": 2154,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "4-ground-floor-back-right",
+      "triangles": 2102,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "5-upper-walls-front-left",
+      "triangles": 3170,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "6-upper-walls-front-right",
+      "triangles": 3074,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "7-upper-walls-back-left",
+      "triangles": 1608,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "8-upper-walls-back-right",
+      "triangles": 1572,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "9-roof-front-left",
+      "triangles": 1838,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "10-roof-front-right",
+      "triangles": 1830,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "11-roof-back-left",
+      "triangles": 1688,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "12-roof-back-right",
+      "triangles": 1798,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "13-topper-front-left",
+      "triangles": 5154,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "14-topper-front-right",
+      "triangles": 5016,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "15-topper-back-left",
+      "triangles": 1456,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    },
+    {
+      "prefix": "16-topper-back-right",
+      "triangles": 1334,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0
+    }
+  ],
+  "total_triangles": 57532,
+  "lowest_front_pixels_per_stud": 4.304
+}

@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='utf-8'?>
+<roblox version="4">
+  <Item class="Model" referent="Plane">
+    <Properties>
+      <string name="Name">PaperPlane</string>
+      <Ref name="PrimaryPart">Root</Ref>
+    </Properties>
+    <Item class="Part" referent="Root">
+      <Properties>
+        <string name="Name">Root</string>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">true</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">true</bool>
+        <bool name="Massless">false</bool>
+        <float name="Transparency">1</float>
+        <token name="Material">256</token>
+        <token name="TopSurface">0</token>
+        <token name="BottomSurface">0</token>
+        <Vector3 name="size">
+          <X>8</X>
+          <Y>1.2</Y>
+          <Z>10</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>0</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <R00>1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>1</R22>
+        </CoordinateFrame>
+        <Color3 name="Color">
+          <R>0.95</R>
+          <G>0.95</G>
+          <B>0.9</B>
+        </Color3>
+      </Properties>
+    </Item>
+    <Item class="WedgePart" referent="LeftWing">
+      <Properties>
+        <string name="Name">LeftWing</string>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="Massless">true</bool>
+        <float name="Transparency">0</float>
+        <token name="Material">256</token>
+        <token name="TopSurface">0</token>
+        <token name="BottomSurface">0</token>
+        <Vector3 name="size">
+          <X>0.18</X>
+          <Y>6</Y>
+          <Z>10</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-3</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <R00>0</R00>
+          <R01>-1</R01>
+          <R02>0</R02>
+          <R10>-1</R10>
+          <R11>0</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Color3 name="Color">
+          <R>0.94</R>
+          <G>0.95</G>
+          <B>0.9</B>
+        </Color3>
+      </Properties>
+      <Item class="WeldConstraint" referent="WeldLeftWing">
+        <Properties>
+          <string name="Name">Weld</string>
+          <Ref name="Part0">Root</Ref>
+          <Ref name="Part1">LeftWing</Ref>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="WedgePart" referent="RightWing">
+      <Properties>
+        <string name="Name">RightWing</string>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="Massless">true</bool>
+        <float name="Transparency">0</float>
+        <token name="Material">256</token>
+        <token name="TopSurface">0</token>
+        <token name="BottomSurface">0</token>
+        <Vector3 name="size">
+          <X>0.18</X>
+          <Y>6</Y>
+          <Z>10</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>3</X>
+          <Y>0</Y>
+          <Z>0</Z>
+          <R00>0</R00>
+          <R01>1</R01>
+          <R02>0</R02>
+          <R10>1</R10>
+          <R11>0</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Color3 name="Color">
+          <R>0.86</R>
+          <G>0.9</G>
+          <B>0.92</B>
+        </Color3>
+      </Properties>
+      <Item class="WeldConstraint" referent="WeldRightWing">
+        <Properties>
+          <string name="Name">Weld</string>
+          <Ref name="Part0">Root</Ref>
+          <Ref name="Part1">RightWing</Ref>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Part" referent="Spine">
+      <Properties>
+        <string name="Name">Spine</string>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="Massless">true</bool>
+        <float name="Transparency">0</float>
+        <token name="Material">256</token>
+        <token name="TopSurface">0</token>
+        <token name="BottomSurface">0</token>
+        <Vector3 name="size">
+          <X>0.28</X>
+          <Y>0.8</Y>
+          <Z>9</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>0</X>
+          <Y>0.3</Y>
+          <Z>0</Z>
+          <R00>1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>1</R22>
+        </CoordinateFrame>
+        <Color3 name="Color">
+          <R>0.2</R>
+          <G>0.65</G>
+          <B>0.8</B>
+        </Color3>
+      </Properties>
+      <Item class="WeldConstraint" referent="WeldSpine">
+        <Properties>
+          <string name="Name">Weld</string>
+          <Ref name="Part0">Root</Ref>
+          <Ref name="Part1">Spine</Ref>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="WedgePart" referent="Tail">
+      <Properties>
+        <string name="Name">Tail</string>
+        <bool name="Anchored">false</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="Massless">true</bool>
+        <float name="Transparency">0</float>
+        <token name="Material">256</token>
+        <token name="TopSurface">0</token>
+        <token name="BottomSurface">0</token>
+        <Vector3 name="size">
+          <X>0.2</X>
+          <Y>1.4</Y>
+          <Z>2</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>0</X>
+          <Y>0.7</Y>
+          <Z>3.5</Z>
+          <R00>1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>1</R22>
+        </CoordinateFrame>
+        <Color3 name="Color">
+          <R>0.94</R>
+          <G>0.95</G>
+          <B>0.9</B>
+        </Color3>
+      </Properties>
+      <Item class="WeldConstraint" referent="WeldTail">
+        <Properties>
+          <string name="Name">Weld</string>
+          <Ref name="Part0">Root</Ref>
+          <Ref name="Part1">Tail</Ref>
+        </Properties>
+      </Item>
+    </Item>
+  </Item>
+</roblox>

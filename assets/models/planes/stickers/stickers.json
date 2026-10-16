@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "units": "studs",
+  "axes": "X right, Y up, -Z forward",
+  "local_plane": "X-Z",
+  "local_up_normal": [
+    0,
+    1,
+    0
+  ],
+  "local_origin": "mesh centre",
+  "thickness": 0.04,
+  "top_offset_above_wing": 0.06,
+  "midplane_offset_above_wing": 0.039999999999999994,
+  "wing_sticker_spots": {
+    "left": {
+      "placeholder": "wings-sticker-left",
+      "center": [
+        -3.16,
+        0.94806,
+        2.572566
+      ],
+      "up_normal": [
+        0.015084,
+        0.999886,
+        -0.0
+      ],
+      "right": [
+        0.999886,
+        -0.015084,
+        0.0
+      ],
+      "back": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "center_offset_from_wings_slot": [
+        -3.16,
+        0.05209,
+        1.167809
+      ]
+    },
+    "right": {
+      "placeholder": "wings-sticker-right",
+      "center": [
+        3.16,
+        0.94806,
+        2.572566
+      ],
+      "up_normal": [
+        -0.015084,
+        0.999886,
+        -0.0
+      ],
+      "right": [
+        0.999886,
+        0.015084,
+        -0.0
+      ],
+      "back": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "center_offset_from_wings_slot": [
+        3.16,
+        0.05209,
+        1.167809
+      ]
+    }
+  },
+  "wings_slot_pivot": [
+    0.0,
+    0.89597,
+    1.404757
+  ],
+  "placement": "Use center in assembled plane coordinates, or center_offset_from_wings_slot in the wing slot. CFrame.fromMatrix(center, right, up_normal, back) orients either shape. Replace, rather than overlay, the white placeholder.",
+  "teams": {
+    "red": {
+      "shape": "sticker-square",
+      "color3_255": [
+        206,
+        48,
+        43
+      ]
+    },
+    "blue": {
+      "shape": "sticker-circle",
+      "color3_255": [
+        40,
+        91,
+        172
+      ]
+    },
+    "free_for_all": {
+      "shape": "existing wings-sticker-left/right placeholders",
+      "color3_255": [
+        250,
+        250,
+        247
+      ]
+    }
+  },
+  "exports": [
+    {
+      "file": "sticker-square.fbx",
+      "object": "sticker-square",
+      "part": "sticker",
+      "region": "sticker",
+      "bbox_min": [
+        -0.85,
+        -0.02,
+        -0.85
+      ],
+      "bbox_max": [
+        0.85,
+        0.02,
+        0.85
+      ],
+      "size": [
+        1.7,
+        0.04,
+        1.7
+      ],
+      "fbx_local_bbox_min": [
+        -0.85,
+        -0.02,
+        -0.85
+      ],
+      "fbx_local_bbox_max": [
+        0.85,
+        0.02,
+        0.85
+      ],
+      "slot_pivot": [
+        0,
+        0,
+        0
+      ],
+      "triangles": 60,
+      "team_color_at_runtime": true,
+      "default_color3_255": [
+        250,
+        250,
+        247
+      ],
+      "outline_segments": 16,
+      "corner_radius": 0.1
+    },
+    {
+      "file": "sticker-circle.fbx",
+      "object": "sticker-circle",
+      "part": "sticker",
+      "region": "sticker",
+      "bbox_min": [
+        -0.9,
+        -0.02,
+        -0.9
+      ],
+      "bbox_max": [
+        0.9,
+        0.02,
+        0.9
+      ],
+      "size": [
+        1.8,
+        0.04,
+        1.8
+      ],
+      "fbx_local_bbox_min": [
+        -0.9,
+        -0.02,
+        -0.9
+      ],
+      "fbx_local_bbox_max": [
+        0.9,
+        0.02,
+        0.9
+      ],
+      "slot_pivot": [
+        0,
+        0,
+        0
+      ],
+      "triangles": 252,
+      "team_color_at_runtime": true,
+      "default_color3_255": [
+        250,
+        250,
+        247
+      ],
+      "outline_segments": 64,
+      "diameter": 1.8
+    }
+  ],
+  "fbx_contract": {
+    "source_unit_studs": 1,
+    "global_scale": 0.01,
+    "apply_unit_scale": false,
+    "apply_scale_options": "FBX_SCALE_NONE",
+    "bake_space_transform": true,
+    "fbx_unit_scale_factor": 1,
+    "scale_explanation": "0.01 cancels Blender's implicit 100x centimeter conversion. Saved vertex coordinates are in studs, matching the legacy FBX unit tag.",
+    "axis_forward": "-Z",
+    "axis_up": "Y",
+    "structural_yaw_compensation_degrees": 0,
+    "import_instruction": "Set mesh sizes and centers from this manifest. Preserve the slot-relative vertex offsets when composing regions.",
+    "limitation": "New sizes, centers, identity rotations and tube-center/muzzle mounts require later game integration. These files do not preserve the old template dimensions or yaw."
+  }
+}

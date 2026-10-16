@@ -1,0 +1,67 @@
+{
+  "reviewed_sheet": "renders/textures.png",
+  "sheet_viewed_at_full_resolution": true,
+  "doubtful_colour_maps": [
+    {
+      "file": "parts/1-ground-floor-front-left-color.png",
+      "concern": "Round O-like marks and small X-like centres."
+    },
+    {
+      "file": "parts/2-ground-floor-front-right-color.png",
+      "concern": "Round O-like marks and angular letter-like patches."
+    },
+    {
+      "file": "parts/3-ground-floor-back-left-color.png",
+      "concern": "Broad red U-like bend and blue T-like patch."
+    },
+    {
+      "file": "parts/4-ground-floor-back-right-color.png",
+      "concern": "Red Z-like bend and green angular strokes."
+    },
+    {
+      "file": "parts/5-upper-walls-front-left-color.png",
+      "concern": "Green star-like junction near the upper centre."
+    },
+    {
+      "file": "parts/6-upper-walls-front-right-color.png",
+      "concern": "Cream cross-like junction and red curved letter-like patch."
+    },
+    {
+      "file": "parts/7-upper-walls-back-left-color.png",
+      "concern": "Large blue X-like junction and red T-like patch."
+    },
+    {
+      "file": "parts/8-upper-walls-back-right-color.png",
+      "concern": "Angular blue frame and green crossed strips."
+    },
+    {
+      "file": "parts/9-roof-front-left-color.png",
+      "concern": "Large red X-like junction."
+    },
+    {
+      "file": "parts/10-roof-front-right-color.png",
+      "concern": "Red hook/J-like bend against cream."
+    },
+    {
+      "file": "parts/12-roof-back-right-color.png",
+      "concern": "Red/cream F-like bars near the bottom left."
+    },
+    {
+      "file": "parts/13-topper-front-left-color.png",
+      "concern": "Stacked round O/8-like marks."
+    },
+    {
+      "file": "parts/14-topper-front-right-color.png",
+      "concern": "Blue and red O-like loops."
+    },
+    {
+      "file": "parts/15-topper-back-left-color.png",
+      "concern": "Blue 2/Z-like bend near the centre."
+    },
+    {
+      "file": "parts/16-topper-back-right-color.png",
+      "concern": "Rectangular O-like frames and angular red strokes."
+    }
+  ],
+  "decision": "Claude review required before upload; no clearance inferred from filling gaps."
+}

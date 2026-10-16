@@ -1,0 +1,13 @@
+00:00.969  blend            | Read blend: "D:\FlyFightPaper\assets\models\pencil-case-bridge\hero.blend"
+00:26.266  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\closeup-0.png'
+00:27.719  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\closeup-1.png'
+00:28.719  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\closeup-2.png'
+00:29.563  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\closeup-3.png'
+00:30.359  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\closeup-4.png'
+00:31.078  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\closeup-5.png'
+00:32.297  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\closeup-6.png'
+00:32.906  render           | Saved: 'D:\FlyFightPaper\assets\models\pencil-case-bridge\renders\closeup-7.png'
+Extensions: writing cache failed ([Errno 13] Permission denied: 'C:\\Users\\gutie\\AppData\\Roaming\\Blender Foundation\\Blender\\5.1\\extensions\\.cache\\compat.dat').
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

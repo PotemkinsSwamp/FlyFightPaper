@@ -1,0 +1,15 @@
+{
+  "delete": [],
+  "boxes": [],
+  "source_deformation": {
+    "height": 140,
+    "front": "-y",
+    "old_inner_x": 38,
+    "new_inner_x": 51,
+    "outer_x": 91.3825,
+    "x_blend_start_z": 92,
+    "x_blend_end_z": 96,
+    "old_height_break": 92,
+    "new_height_break": 96.5
+  }
+}

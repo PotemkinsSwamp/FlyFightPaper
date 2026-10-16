@@ -1,0 +1,273 @@
+{
+  "source": "meshy.glb",
+  "source_triangles": 1012680,
+  "source_map_sizes": {
+    "base_color": [
+      4096,
+      4096
+    ],
+    "normal": [
+      4096,
+      4096
+    ],
+    "roughness": [
+      2048,
+      2048
+    ]
+  },
+  "front": "-y",
+  "piece_count": 8,
+  "requested_height": 70.0,
+  "floor_cuts": [
+    27.996499999999997,
+    43.0885
+  ],
+  "topper_base": 45.048500000000004,
+  "vertical_splits": "ground-floor:xy,upper-walls:y",
+  "min_coverage": 0.33,
+  "pieces": [
+    {
+      "label": "ground-floor-front-left",
+      "triangles": 3870,
+      "bounding_box": {
+        "min": [
+          -74.70575,
+          -38.59028,
+          0.00955
+        ],
+        "max": [
+          0.0,
+          0.0,
+          27.9969
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 314,
+      "uv_coverage": 0.5073,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 2092.8888,
+      "front_pixels_per_stud": 7.03,
+      "prefix": "1-ground-floor-front-left"
+    },
+    {
+      "label": "ground-floor-front-right",
+      "triangles": 3166,
+      "bounding_box": {
+        "min": [
+          -0.0,
+          -38.54566,
+          0.13629
+        ],
+        "max": [
+          74.7511,
+          0.0,
+          27.99687
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 226,
+      "uv_coverage": 0.5584,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 2294.3847,
+      "front_pixels_per_stud": 7.119,
+      "prefix": "2-ground-floor-front-right"
+    },
+    {
+      "label": "ground-floor-back-left",
+      "triangles": 3714,
+      "bounding_box": {
+        "min": [
+          -74.71027,
+          -0.0,
+          0.0
+        ],
+        "max": [
+          0.0,
+          38.55687,
+          27.99643
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 293,
+      "uv_coverage": 0.5352,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 2150.3412,
+      "front_pixels_per_stud": 7.264,
+      "prefix": "3-ground-floor-back-left"
+    },
+    {
+      "label": "ground-floor-back-right",
+      "triangles": 3238,
+      "bounding_box": {
+        "min": [
+          -0.0,
+          -0.0,
+          0.13698
+        ],
+        "max": [
+          74.75193,
+          38.5556,
+          27.99918
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 521,
+      "uv_coverage": 0.5644,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 2376.2321,
+      "front_pixels_per_stud": 7.193,
+      "prefix": "4-ground-floor-back-right"
+    },
+    {
+      "label": "upper-walls-front",
+      "triangles": 2410,
+      "bounding_box": {
+        "min": [
+          -59.16618,
+          -38.32148,
+          27.99422
+        ],
+        "max": [
+          74.63047,
+          0.0,
+          43.10798
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 236,
+      "uv_coverage": 0.4446,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 2518.7288,
+      "front_pixels_per_stud": 7.72,
+      "prefix": "5-upper-walls-front"
+    },
+    {
+      "label": "upper-walls-back",
+      "triangles": 2442,
+      "bounding_box": {
+        "min": [
+          -58.85297,
+          -0.0,
+          27.99193
+        ],
+        "max": [
+          74.63369,
+          38.33892,
+          43.1181
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 225,
+      "uv_coverage": 0.4455,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 2539.3516,
+      "front_pixels_per_stud": 7.566,
+      "prefix": "6-upper-walls-back"
+    },
+    {
+      "label": "roof",
+      "triangles": 2499,
+      "bounding_box": {
+        "min": [
+          -69.48235,
+          -35.43905,
+          43.09522
+        ],
+        "max": [
+          74.52644,
+          35.37953,
+          45.334
+        ]
+      },
+      "boundary_edges": 3,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 254,
+      "uv_coverage": 0.4915,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 343.3075,
+      "front_pixels_per_stud": 4.305,
+      "prefix": "7-roof"
+    },
+    {
+      "label": "topper",
+      "triangles": 8140,
+      "bounding_box": {
+        "min": [
+          -71.23999,
+          -34.28028,
+          44.99844
+        ],
+        "max": [
+          74.49654,
+          34.21226,
+          70.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 1708,
+      "uv_coverage": 0.5154,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1727.4117,
+      "front_pixels_per_stud": 3.873,
+      "prefix": "8-topper"
+    }
+  ],
+  "lowest_z": 0.0,
+  "height": 70.0,
+  "total_triangles": 29479
+}
