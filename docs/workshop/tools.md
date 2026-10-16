@@ -8,6 +8,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 |---|---|
 | `tools/generate_config.py` | Turns `config/*.json` into Luau in `src/generated/`. Run after every config edit |
 | `tools/save_place.py` | Rebuilds the working place with the art, keeping saved art and exact collision. Ctrl+S in Studio first |
+| `tools/push_github.py` | Copies new `main` commits to GitHub (no Blender files or review pictures); runs by itself after every commit (`.githooks/post-commit`) |
 | `tools/studio_cli.py` | Calls Studio tools from the shell |
 | `tools/studio_shot.sh`, `studio_grab.ps1`, `studio_top.ps1` | Screenshot of the Studio window (only when Studio is in front) |
 | `tools/studio_export.lua` | Exports the classroom wall decor from Studio after editing it there |
@@ -40,6 +41,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `weapons.py` | Weapon models in moving pieces |
 | `toys.py`, `split_parts.py` | Town toys; splits moving bits like fan blades |
 | `hero.py`, `bell_tower.py` | Meshy hero buildings and the bell tower into textured pieces |
+| `cut_piece.py` | Cuts a box out of a finished hero building's pieces and closes the cut, keeping its textures (gateway towers' floor off the street) |
 | `kit.py` | The classroom building kit |
 | `blocks.py` | Blender-built town buildings (replan v3): one function per building, hero-piece output for `town_toys.py hero` |
 | `materials.py` | Separates toy-town materials from baked colour sheets |

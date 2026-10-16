@@ -21,6 +21,12 @@ each checked in Studio by eye (1280x720+) and ticked ✅ there.
   each); Explore (Sonnet) inventory ~186k; primary context high at handoff.
 
 ## NEXT ACTION + PLAN
+0. **GitHub pushes (Alan 2026-10-16, docs/decisions/2026-10-16-push-after-every-commit.md):** check Alan's one-time
+   snapshot push finished (`git ls-remote origin` shows main; it runs from `D:\FlyFightPaper-github`, branch
+   `github-snapshot`, script in the 2026-10-16 session scratchpad; leave that folder alone while it runs). Then set up
+   pushing after EVERY commit: copy each new `main` commit onto `github-snapshot` and push (seconds each), leaving
+   Blender working files (`*.blend`) and review pictures (renders, close-ups, compare sheets) off GitHub. Never a big
+   push again. The auto-mode check blocked branch/orphan git steps once: if it blocks the copy, ask Alan to allow it.
 1. Alan's notes (`docs/playtests/2026-10-16.md`), each done when Alan's look/screenshot shows it fixed:
    gate pads (#6 pencil-case bridge) never over asphalt; abacus-hall tile redrawn to its outline; block arch lot hidden
    with decorations; gateway towers (#2, next to the bell tower) arch bottom middle cut off the road; north station

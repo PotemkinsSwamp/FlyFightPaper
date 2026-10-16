@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-16: [Push after every commit](2026-10-16-push-after-every-commit.md)
 - 2026-10-15: [Town replan v3 approved: two fans, a monorail train that kills](2026-10-15-town-replan-v3.md)
 - 2026-10-15: [Town replan: layout v2, unique buildings, fly-throughs, fans, bridges, a monorail](2026-10-15-town-replan-rulings.md)
 - 2026-10-15: [A denser city, still open to fly through](2026-10-15-denser-city.md)

@@ -747,6 +747,23 @@ def build_town():
     return t
 
 
+PAD_SKIP = {"abacus-hall": ("5-", "6-", "7-")}       # no lot under a fly-through middle (Alan 2026-10-16)
+
+
+def ground_pad(b):
+    """Where a building really meets the rug: its pieces that start at the ground (parts.json boxes, turned and placed
+    like tools/town_toys.py buildings_v4 does), less any PAD_SKIP pieces. Gates stand on legs either side of a street."""
+    a, k, (x, z) = -math.radians(b["yaw"]), b["scale"], b["centre"]
+    c, s = math.cos(a), math.sin(a)
+    boxes = []
+    for piece in json.loads((ROOT / "assets/models" / b["name"] / "parts.json").read_text())["pieces"]:
+        (x0, y0, z0), (x1, y1, _) = piece["bounding_box"]["min"], piece["bounding_box"]["max"]
+        if z0 > 2 or piece["prefix"].startswith(PAD_SKIP.get(b["name"], ())): continue
+        corners = [(-bx * k, by * k) for bx, by in ((x0, y0), (x1, y0), (x1, y1), (x0, y1))]   # Blender x, y -> local
+        boxes.append(shapely.Polygon([(x + c * ox + s * oz, z - s * ox + c * oz) for ox, oz in corners]))
+    return unary_union(boxes)
+
+
 class PlanTown:
     """Layout D, printed flat. assets/rug/replan-v4.json (written by tools/town_plan.py) is the only layout source:
     roads, river, parks, plazas, buildings, lots and driveways are its shapes; this only paints them and plans
@@ -822,9 +839,10 @@ class PlanTown:
             p.area(self.river.buffer(4), C["shore"]); p.area(self.river, C["water"])
             for k in (12, 26):                                                    # current lines
                 p.area(self.river.buffer(-k).boundary.buffer(.4), C["water2"])
-            for name, fp, b in self.buildings:                                   # paved pads; a gate's only beside the street
+            for name, fp, b in self.buildings:                                   # paved pads; a gate's only under its legs
                 g = fp.buffer(1.5, join_style="mitre")
-                if b["gate"]: g = g.difference(self.paved).difference(self.river.buffer(4))
+                if b["gate"] or name in PAD_SKIP:
+                    g = ground_pad(b).buffer(1.5, join_style="mitre").difference(self.paved).difference(self.river.buffer(4))
                 p.area(g, C["lot"])
         self.ops.append(draw)
 

@@ -6,14 +6,14 @@ road's outer pavements and down the middle of the monorail avenue, through the t
 solid: fly into it, or let it hit you, and your plane crashes.
 
 ## Where it stands (2026-10-16)
-Code and tests done (296 tests passing); switched off (`enabled` false) until the new town stands in the place, so
-not yet seen moving. Still to check in Studio: the cars' noses lead (the mesh turn in `TrainMotion.luau`), and the
-train looks right in the station tunnels. Bots don't avoid it yet. Track pieces: [models](../art/models.md).
+Running in the place. Stops at both stations (2026-10-16, 297 tests passing): checked in Play by numbers, the
+middle car stands still at each station's middle for 10 s. Still to check by eye: the cars' noses lead (the mesh turn
+in `TrainMotion.luau`) and the train looks right in the station tunnels. Bots don't avoid it yet. Track pieces: [models](../art/models.md).
 
 ## Rules
-- The train runs round the loop at a steady speed on server time and stops about 10 seconds at each station (Alan
-  2026-10-16; not built yet); every client moves its own copy, so it costs no
-  network traffic and everyone sees it in the same place the server judges.
+- The train runs round the loop on server time and waits 10 seconds at each station with its middle car in the
+  station's middle (Alan 2026-10-16), slowing down into a station and speeding up out of it; every client moves its
+  own copy, so it costs no network traffic and everyone sees it in the same place the server judges.
 - Each car's front and back both follow the track, so the cars bend round corners one by one.
 - A plane whose middle comes within a small margin of a car's box is destroyed ("Hit by the monorail"), a crash
   like hitting a building (kill credit as for any crash).
@@ -26,11 +26,11 @@ train looks right in the station tunnels. Bots don't avoid it yet. Track pieces:
 | `src/shared/MonorailRules.luau` | Where each car is at a given time; whether a plane touches a car |
 | `src/client/TrainMotion.luau` | Moves the train's three cars on each client |
 | `src/server/FlightService.luau` | Destroys a plane the train touches (in its flight step) |
-| `tests/unit/MonorailRules.spec.luau` | Loop, spacing, speed and hit tests |
+| `tests/unit/MonorailRules.spec.luau` | Loop, spacing, station stops, speed and hit tests |
 
 ## Tuning numbers
-`config/gameplay.json` `world.monorail` (speed, margin, cars, on/off); the track line is
-`config/monorail-track.json`, written by `tools/town_plan.py`.
+`config/gameplay.json` `world.monorail` (speed, station wait, brake, margin, cars, on/off); the track line and the
+stations' middles are `config/monorail-track.json`, written by `tools/town_plan.py`.
 
 ## Related
 - [Town and rug](../world/town.md)

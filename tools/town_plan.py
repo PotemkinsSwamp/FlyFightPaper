@@ -252,6 +252,19 @@ def place_all(seed):
 # ponytail: 8 nudged passes, keep the one with fewest left out, then fewest shrunk, then best height curve
 *_, placed, lanes, unplaced = min((place_all(s) for s in range(8)), key=lambda r: r[:3])
 
+# Gates moved after the buildings are placed, so the town Alan has seen doesn't reshuffle (2026-10-16): the
+# pencil-case bridge's west leg stood on the main boulevard's curve; 51 studs south it is clear of every road.
+GATE_MOVES = {"pencil-case-bridge": (-400, 211)}
+for o in placed:
+    if o["name"] in GATE_MOVES:
+        o["x"], o["z"] = GATE_MOVES[o["name"]]
+        o["poly"] = rect(o["x"], o["z"], *SIZES[o["name"]][:2], o["yaw"])
+for o in placed:                    # every gate's legs (its footprint outside the street it spans) stand clear of roads
+    if o["gate"] and o["name"] != "monorail-station-south":            # the south station spans the river instead
+        g, w, _ = min(ROADS, key=lambda r: r[0].distance(Point(o["x"], o["z"])))
+        legs = o["poly"].difference(g.buffer(w + WALK, cap_style="flat"))
+        assert legs.intersection(ROAD.buffer(WALK)).area < 1, f"{o['name']}: a leg stands on a road or pavement"
+
 # ---- parking lots after the buildings: one per block that has buildings, in the space they left, on the street edge
 # (short driveway) and as near the block's buildings as possible
 LOT_SIZES = [(140, 60), (120, 56), (110, 60), (100, 50), (90, 50), (80, 50), (60, 40)]   # mixed, some wide
@@ -395,8 +408,11 @@ geo = lambda g: mapping(g)
 # the moving train's track for the game (src/generated/MonorailTrack.luau via tools/generate_config.py)
 (ROOT / "config/monorail-track.json").write_bytes((json.dumps({
     "_comment": "Written by tools/town_plan.py from the town plan; do not edit. The monorail loop's centre line (x, z) "
-                "on the rug and the track's top above the rug (studs). The train runs along it (src/shared/MonorailRules.luau).",
-    "track_top": MONO_TOP, "line": [[round(x, 2), round(z, 2)] for x, z in MONO.coords]}, indent=1) + "\n").encode())
+                "on the rug, the track's top above the rug (studs) and the stations' middles, where the train stops. The "
+                "train runs along it (src/shared/MonorailRules.luau).",
+    "track_top": MONO_TOP, "line": [[round(x, 2), round(z, 2)] for x, z in MONO.coords],
+    "stations": [[round(o["poly"].centroid.x, 1), round(o["poly"].centroid.y, 1)] for o in placed if o["name"] in TUNNEL]},
+    indent=1) + "\n").encode())
 
 # ---- picture
 fig, (ax, side) = plt.subplots(1, 2, figsize=(22, 11), gridspec_kw={"width_ratios": [3.2, 1]})

@@ -27,11 +27,58 @@ function MonorailRules.pointAt(s)
 	return points[lo]:Lerp(points[hi], span > 0 and (s - along[lo]) / span or 0)
 end
 
+-- How far round the loop the point nearest to (x, z) is.
+local function alongAt(x, z)
+	local p, best, bestS = Vector3.new(x, 0, z), math.huge, 0
+	for i = 2, #points do
+		local a, b = points[i - 1], points[i]
+		local t = math.clamp((p - a):Dot(b - a) / math.max((b - a):Dot(b - a), 1e-9), 0, 1)
+		local d = (a:Lerp(b, t) - p).Magnitude
+		if d < best then best, bestS = d, along[i - 1] + t * (b - a).Magnitude end
+	end
+	return bestS
+end
+
+-- The stops: the train's nose stands half a train past each station's middle, so the whole train is inside it.
+-- Between stops it speeds up and slows down at `brake` (studs/s per second); `arrive` is when it gets to a stop,
+-- counted from the first stop's arrival, and `period` is one lap with every wait.
+local trainLength = 0
+for _, car in ipairs(Mono.cars) do trainLength += car.size[3] end
+local stops = {}
+for _, st in ipairs(Track.stations or {}) do table.insert(stops, { head = (alongAt(st[1], st[2]) + trainLength / 2) % LENGTH }) end
+table.sort(stops, function(a, b) return a.head < b.head end)
+local period = 0
+for k, stop in ipairs(stops) do
+	local L = ((stops[k % #stops + 1].head - stop.head - 1e-6) % LENGTH) + 1e-6       -- one stop alone: a whole lap
+	local top = math.min(Mono.speed, math.sqrt(Mono.brake * L))
+	stop.arrive, stop.length, stop.top, stop.speedUp = period, L, top, top / Mono.brake
+	stop.leave = period + Mono.station_wait
+	stop.travel = 2 * stop.speedUp + (L - top * stop.speedUp) / top
+	period = stop.leave + stop.travel
+end
+MonorailRules.stops, MonorailRules.period = stops, period
+
+-- How far round the loop the train's nose is at server time `now`.
+-- Wrapped first: server time is ~1.8 billion seconds, too big for exact distances otherwise.
+function MonorailRules.headAt(now)
+	if #stops == 0 then return (now % (LENGTH / Mono.speed)) * Mono.speed end
+	local t = now % period
+	for _, stop in ipairs(stops) do
+		if t < stop.leave + stop.travel then
+			local m, a, top, up = math.max(t - stop.leave, 0), Mono.brake, stop.top, stop.speedUp
+			local gone = if m < up then a * m * m / 2
+				elseif m < stop.travel - up then top * up / 2 + top * (m - up)
+				else stop.length - a * (stop.travel - m) ^ 2 / 2
+			return (stop.head + gone) % LENGTH
+		end
+	end
+	return stops[1].head
+end
+
 -- Each car's CFrame (middle of its box, looking the way the train goes) and size (width, height, length) at server
 -- time `now`. Both ends of a car sit on the line, so the cars bend round curves one by one like a real train.
--- Wrapped first: server time is ~1.8 billion seconds, too big for exact distances otherwise.
 function MonorailRules.cars(now)
-	local head = (now % (LENGTH / Mono.speed)) * Mono.speed
+	local head = MonorailRules.headAt(now)
 	local out, behind = {}, 0
 	for i, car in ipairs(Mono.cars) do
 		local size = Vector3.new(car.size[1], car.size[2], car.size[3])

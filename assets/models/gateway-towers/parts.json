@@ -28,15 +28,15 @@
   "pieces": [
     {
       "label": "ground-floor-front-left",
-      "triangles": 6880,
+      "triangles": 5886,
       "bounding_box": {
         "min": [
           -110.56441,
           -43.2583,
-          0.04125
+          0.0
         ],
         "max": [
-          0.0,
+          -41.93067,
           0.0,
           101.41017
         ]
@@ -58,12 +58,12 @@
     },
     {
       "label": "ground-floor-front-right",
-      "triangles": 7598,
+      "triangles": 6522,
       "bounding_box": {
         "min": [
-          -0.0,
+          42.0,
           -43.3061,
-          0.02269
+          0.0
         ],
         "max": [
           110.57227,
@@ -88,15 +88,15 @@
     },
     {
       "label": "ground-floor-back-left",
-      "triangles": 7328,
+      "triangles": 6165,
       "bounding_box": {
         "min": [
           -110.24937,
           -0.0,
-          0.02074
+          0.0
         ],
         "max": [
-          0.0,
+          -41.91083,
           43.29435,
           101.4095
         ]
@@ -118,10 +118,10 @@
     },
     {
       "label": "ground-floor-back-right",
-      "triangles": 6979,
+      "triangles": 5970,
       "bounding_box": {
         "min": [
-          -0.0,
+          42.0,
           -0.0,
           0.0
         ],

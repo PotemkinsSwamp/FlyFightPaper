@@ -54,6 +54,8 @@ specific old fact. Never copy them back, and never recreate that evidence system
 - **No probe sprawl.** Throwaway debug scripts go in your temp folder and get deleted. Nothing like
   `artifacts/` or `evidence/` gets recreated in this repo.
 - **Commit small and often** with plain messages ("Bots now avoid walls"), not process notes.
+  **Push after every commit** (Alan, 2026-10-16): small pushes all through the session, never one big push at the
+  end. GitHub's copy starts from a snapshot of 2026-10-16 (branch `github-snapshot` -> GitHub `main`).
 - **Claude drives; Codex helps (Alan, 2026-10-07).** Claude talks to Alan, tests in Studio, judges feel and fits
   pieces together. It hands well-defined, testable jobs to Codex through the Codex plugin (codex-rescue agent /
   `/codex:rescue`, `task --write`) and checks every Codex change

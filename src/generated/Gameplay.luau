@@ -818,7 +818,8 @@ return JSONTypes.map({
         ["layout_id"] = "classroom",
         ["maximum_actors"] = 12,
         ["monorail"] = JSONTypes.map({
-            ["_comment"] = "The new town's toy monorail train (Alan 2026-10-15: solid, hitting it or being hit by it kills). It runs round config/monorail-track.json at `speed` studs/s on server time, so every client and the server agree where it is. `cars` front to back: model, size (width, height, length: the uploaded mesh's studs, assets/models/toys/<model>/upload.json) and `turned` (the back nose car faces backwards). The skirt bottom sits `skirt_below_top` under the track top; `rug_top` is the rug's surface. A plane whose middle comes within `plane_margin` of a car's box crashes. Off (`enabled` false) until the new town stands in the place.",
+            ["_comment"] = "The new town's toy monorail train (Alan 2026-10-15: solid, hitting it or being hit by it kills). It runs round config/monorail-track.json at `speed` studs/s on server time, waits `station_wait` seconds in each station (Alan 2026-10-16) and slows down and speeds up at `brake` studs/s per second, so every client and the server agree where it is. `cars` front to back: model, size (width, height, length: the uploaded mesh's studs, assets/models/toys/<model>/upload.json) and `turned` (the back nose car faces backwards). The skirt bottom sits `skirt_below_top` under the track top; `rug_top` is the rug's surface. A plane whose middle comes within `plane_margin` of a car's box crashes. Off (`enabled` false) until the new town stands in the place.",
+            ["brake"] = 15,
             ["cars"] = JSONTypes.array({
                 [1] = JSONTypes.map({
                     ["model"] = "monorail-car",
@@ -853,6 +854,7 @@ return JSONTypes.map({
             ["rug_top"] = 0.6,
             ["skirt_below_top"] = 4.5,
             ["speed"] = 45,
+            ["station_wait"] = 10,
         }),
         ["neutral_desk_x_positions"] = JSONTypes.array({
             [1] = -1160,

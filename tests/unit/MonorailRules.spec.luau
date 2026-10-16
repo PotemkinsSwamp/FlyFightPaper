@@ -26,8 +26,35 @@ function Spec.run()
 		local top = Mono.rug_top + Track.track_top
 		assert(math.abs(top - bottom - Mono.skirt_below_top) < 1e-3, "the skirt hangs skirt_below_top under the track top")
 	end)
-	test("the train moves forward at its speed, also on huge server times", function()
-		local a, b = Rules.cars(1e9)[1].cframe, Rules.cars(1e9 + 1)[1].cframe
+	test("the train waits station_wait seconds with its middle in each station, then moves off smoothly", function()
+		assert(#Rules.stops == #Track.stations and #Rules.stops == 2, "one stop per station")
+		local lap = 1e9 - 1e9 % Rules.period                       -- a lap starting at a huge server time
+		for _, stop in ipairs(Rules.stops) do
+			local start = Rules.cars(lap + stop.arrive + 0.5)
+			local finish = Rules.cars(lap + stop.leave - 0.5)
+			assert(start[1].cframe.Position:FuzzyEq(finish[1].cframe.Position, 1e-2), "it stands still while it waits")
+			local middle = start[2].cframe.Position * Vector3.new(1, 0, 1)
+			local miss = math.huge                 -- how much further the middle car is than the track's nearest point
+			for _, st in ipairs(Track.stations) do
+				local station, track = Vector3.new(st[1], 0, st[2]), math.huge
+				for s = 0, Rules.length, 1 do track = math.min(track, (Rules.pointAt(s) - station).Magnitude) end
+				miss = math.min(miss, (middle - station).Magnitude - track)
+			end
+			assert(miss < 3, ("the middle car stops %.1f studs off the station's middle"):format(miss))
+			local last = Rules.headAt(lap + stop.leave - 1)
+			for t = stop.leave - 1, stop.leave + 10, 0.1 do         -- no jumps: never faster than its top speed
+				local now = Rules.headAt(lap + t)
+				local step = (now - last) % Rules.length
+				assert(step <= Mono.speed * 0.1 + 1e-3, ("jumped %.2f studs in 0.1 s at %.1f s after leaving"):format(step, t - stop.leave))
+				last = now
+			end
+			assert(Rules.headAt(lap + stop.leave + 10) ~= Rules.headAt(lap + stop.leave), "it has left after 10 s")
+		end
+	end)
+	test("the train moves forward at its speed between stations, also on huge server times", function()
+		local stop = Rules.stops[1]
+		local cruise = 1e9 - 1e9 % Rules.period + stop.leave + stop.speedUp + 1
+		local a, b = Rules.cars(cruise)[1].cframe, Rules.cars(cruise + 1)[1].cframe
 		local moved = (b.Position - a.Position).Magnitude
 		-- straight-line distance: a little under the speed when that second is spent on a curve
 		assert(moved > Mono.speed * 0.9 and moved < Mono.speed + 0.5, ("moved %.2f in a second, want about %d"):format(moved, Mono.speed))
