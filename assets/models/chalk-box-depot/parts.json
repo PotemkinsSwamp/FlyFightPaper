@@ -1,0 +1,235 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 6,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [],
+  "pieces": [
+    {
+      "label": "box-and-base-1",
+      "triangles": 9852,
+      "bounding_box": {
+        "min": [
+          -50.31,
+          -35.36,
+          0.0
+        ],
+        "max": [
+          50.0,
+          35.36,
+          47.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-box-and-base-1",
+      "front_pixels_per_stud": 7.996,
+      "front_surface_studs2": 4570.7126,
+      "outer_face_pixels_per_stud": {
+        "front": 7.996,
+        "back": 7.996,
+        "left": 7.986,
+        "right": 7.986,
+        "top": 7.994,
+        "bottom": 7.994
+      }
+    },
+    {
+      "label": "box-and-base-2",
+      "triangles": 5932,
+      "bounding_box": {
+        "min": [
+          -50.36,
+          -35.0,
+          0.8
+        ],
+        "max": [
+          50.36,
+          35.0,
+          2.2
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-box-and-base-2",
+      "front_pixels_per_stud": 7.265,
+      "front_surface_studs2": 22.8594,
+      "outer_face_pixels_per_stud": {
+        "front": 7.265,
+        "back": 7.265,
+        "left": 8.0,
+        "right": 7.985,
+        "top": 7.689,
+        "bottom": 7.689
+      }
+    },
+    {
+      "label": "six-round-chalk-columns",
+      "triangles": 2280,
+      "bounding_box": {
+        "min": [
+          -47.0,
+          -34.0,
+          3.0
+        ],
+        "max": [
+          47.0,
+          -26.0,
+          50.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-six-round-chalk-columns",
+      "front_pixels_per_stud": 7.487,
+      "front_surface_studs2": 2208.5784,
+      "outer_face_pixels_per_stud": {
+        "front": 7.487,
+        "back": null,
+        "left": 7.487,
+        "right": 7.487,
+        "top": 7.986,
+        "bottom": 7.986
+      }
+    },
+    {
+      "label": "open-chalk-roof-tray-1",
+      "triangles": 10128,
+      "bounding_box": {
+        "min": [
+          -50.0,
+          -35.36,
+          50.0
+        ],
+        "max": [
+          50.0,
+          35.36,
+          60.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-open-chalk-roof-tray-1",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 1595.2277,
+      "outer_face_pixels_per_stud": {
+        "front": 7.985,
+        "back": 7.984,
+        "left": 7.694,
+        "right": 7.689,
+        "top": 7.911,
+        "bottom": 7.911
+      }
+    },
+    {
+      "label": "open-chalk-roof-tray-2",
+      "triangles": 9124,
+      "bounding_box": {
+        "min": [
+          -50.36,
+          -36.5,
+          51.0
+        ],
+        "max": [
+          50.36,
+          36.5,
+          60.075
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-open-chalk-roof-tray-2",
+      "front_pixels_per_stud": 7.863,
+      "front_surface_studs2": 121.9179,
+      "outer_face_pixels_per_stud": {
+        "front": 7.863,
+        "back": 7.868,
+        "left": 7.888,
+        "right": 7.981,
+        "top": 7.863,
+        "bottom": 7.863
+      }
+    },
+    {
+      "label": "windows-double-door-and-step",
+      "triangles": 8636,
+      "bounding_box": {
+        "min": [
+          -48.55,
+          -34.5,
+          3.0
+        ],
+        "max": [
+          48.55,
+          23.0,
+          41.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-windows-double-door-and-step",
+      "front_pixels_per_stud": 7.972,
+      "front_surface_studs2": 2402.3212,
+      "outer_face_pixels_per_stud": {
+        "front": 7.972,
+        "back": 7.942,
+        "left": 7.971,
+        "right": 7.971,
+        "top": 7.954,
+        "bottom": 7.954
+      }
+    }
+  ],
+  "total_triangles": 45952,
+  "bounding_box": {
+    "min": [
+      -50.36,
+      -36.5,
+      0.0
+    ],
+    "max": [
+      50.36,
+      36.5,
+      60.075
+    ]
+  },
+  "height": 60.075,
+  "requested_height": 60
+}

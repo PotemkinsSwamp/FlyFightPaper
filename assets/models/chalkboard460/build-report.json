@@ -1,0 +1,499 @@
+{
+  "status": "CANDIDATE",
+  "triangles": 2356,
+  "vertices": 1224,
+  "bounds": {
+    "min": [
+      -217.5,
+      0.0,
+      -6.0
+    ],
+    "max": [
+      217.5,
+      155.0,
+      6.0
+    ],
+    "size": [
+      435.0,
+      155.0,
+      12.0
+    ]
+  },
+  "members": 23,
+  "coherence": {
+    "method": "Actual triangle boundary contact/intersection witnesses, .0001stud tolerance; every closed member connected to frame. Hidden fitted laps at tray support, no structural-strength claim.",
+    "members": [
+      {
+        "name": "FrameStile-1",
+        "closed": true,
+        "volume": 6745.84838693322,
+        "faces": 108
+      },
+      {
+        "name": "FrameStile1",
+        "closed": true,
+        "volume": 6745.84838693322,
+        "faces": 108
+      },
+      {
+        "name": "FrameHead",
+        "closed": true,
+        "volume": 20815.65426292359,
+        "faces": 108
+      },
+      {
+        "name": "FrameBottom",
+        "closed": true,
+        "volume": 20815.65426292359,
+        "faces": 108
+      },
+      {
+        "name": "BoardBacking",
+        "closed": true,
+        "volume": 59638.76428749229,
+        "faces": 108
+      },
+      {
+        "name": "InsetWritingSlate",
+        "closed": true,
+        "volume": 304179.2943120003,
+        "faces": 12
+      },
+      {
+        "name": "TrayShelf",
+        "closed": true,
+        "volume": 5296.675422565769,
+        "faces": 108
+      },
+      {
+        "name": "TrayFrontLip",
+        "closed": true,
+        "volume": 290.3050677395393,
+        "faces": 108
+      },
+      {
+        "name": "TrayGusset-170",
+        "closed": true,
+        "volume": 18.35995325088519,
+        "faces": 12
+      },
+      {
+        "name": "TrayGusset0",
+        "closed": true,
+        "volume": 18.36000067234039,
+        "faces": 12
+      },
+      {
+        "name": "TrayGusset170",
+        "closed": true,
+        "volume": 18.35995325088519,
+        "faces": 12
+      },
+      {
+        "name": "TrayEndCheek-210.8",
+        "closed": true,
+        "volume": 34.14649615168885,
+        "faces": 108
+      },
+      {
+        "name": "TrayEndCheek210.8",
+        "closed": true,
+        "volume": 34.14649615168885,
+        "faces": 108
+      },
+      {
+        "name": "JoinPeg-214.5:5",
+        "closed": true,
+        "volume": 0.503279522869856,
+        "faces": 140
+      },
+      {
+        "name": "JoinPeg-214.5:152",
+        "closed": true,
+        "volume": 0.503279522869856,
+        "faces": 140
+      },
+      {
+        "name": "JoinPeg214.5:5",
+        "closed": true,
+        "volume": 0.503279522869856,
+        "faces": 140
+      },
+      {
+        "name": "JoinPeg214.5:152",
+        "closed": true,
+        "volume": 0.503279522869856,
+        "faces": 140
+      },
+      {
+        "name": "ChalkStick0",
+        "closed": true,
+        "volume": 8.98886560929221,
+        "faces": 140
+      },
+      {
+        "name": "ChalkStick1",
+        "closed": true,
+        "volume": 6.7388657609087685,
+        "faces": 140
+      },
+      {
+        "name": "ChalkStick2",
+        "closed": true,
+        "volume": 8.23886580358602,
+        "faces": 140
+      },
+      {
+        "name": "ChalkStick3",
+        "closed": true,
+        "volume": 5.988865788958871,
+        "faces": 140
+      },
+      {
+        "name": "EraserFelt",
+        "closed": true,
+        "volume": 50.25865645095945,
+        "faces": 108
+      },
+      {
+        "name": "EraserWoodHandle",
+        "closed": true,
+        "volume": 49.04288462419265,
+        "faces": 108
+      }
+    ],
+    "contacts": [
+      {
+        "a": "FrameStile-1",
+        "b": "FrameBottom",
+        "pointRobloxXYZ": [
+          -211.85000610351562,
+          8.0,
+          -5.650000095367432
+        ]
+      },
+      {
+        "a": "FrameStile-1",
+        "b": "BoardBacking",
+        "pointRobloxXYZ": [
+          -211.5,
+          148.64999389648438,
+          -5.65000057220459
+        ]
+      },
+      {
+        "a": "FrameStile1",
+        "b": "FrameHead",
+        "pointRobloxXYZ": [
+          211.85000610351562,
+          149.0,
+          -5.650000095367432
+        ]
+      },
+      {
+        "a": "FrameStile1",
+        "b": "FrameBottom",
+        "pointRobloxXYZ": [
+          211.85000610351562,
+          8.0,
+          1.6500000953674316
+        ]
+      },
+      {
+        "a": "FrameStile1",
+        "b": "BoardBacking",
+        "pointRobloxXYZ": [
+          211.5,
+          148.64999389648438,
+          -5.650001049041748
+        ]
+      },
+      {
+        "a": "FrameHead",
+        "b": "BoardBacking",
+        "pointRobloxXYZ": [
+          211.41998291015625,
+          149.0,
+          -5.080010890960693
+        ]
+      },
+      {
+        "a": "FrameHead",
+        "b": "InsetWritingSlate",
+        "pointRobloxXYZ": [
+          211.5,
+          149.0,
+          0.10000300407409668
+        ]
+      },
+      {
+        "a": "FrameHead",
+        "b": "JoinPeg-214.5:152",
+        "pointRobloxXYZ": [
+          -214.33750915527344,
+          152.60646057128906,
+          2.0
+        ]
+      },
+      {
+        "a": "FrameHead",
+        "b": "JoinPeg214.5:152",
+        "pointRobloxXYZ": [
+          214.66249084472656,
+          152.60646057128906,
+          2.0
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "BoardBacking",
+        "pointRobloxXYZ": [
+          -211.41998291015625,
+          8.0,
+          -5.080010890960693
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "InsetWritingSlate",
+        "pointRobloxXYZ": [
+          -211.50003051757812,
+          8.0,
+          -4.999980926513672
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "TrayShelf",
+        "pointRobloxXYZ": [
+          212.48196411132812,
+          2.7235488891601562,
+          2.0
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "TrayGusset-170",
+        "pointRobloxXYZ": [
+          -171.1999969482422,
+          3.000000238418579,
+          1.9999995231628418
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "TrayGusset0",
+        "pointRobloxXYZ": [
+          -1.2000000476837158,
+          3.000000238418579,
+          1.9999995231628418
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "TrayGusset170",
+        "pointRobloxXYZ": [
+          168.79998779296875,
+          3.0,
+          2.0
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "TrayEndCheek-210.8",
+        "pointRobloxXYZ": [
+          -212.45606994628906,
+          4.25606632232666,
+          2.000000238418579
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "TrayEndCheek210.8",
+        "pointRobloxXYZ": [
+          209.14393615722656,
+          4.25606632232666,
+          2.000000238418579
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "JoinPeg-214.5:5",
+        "pointRobloxXYZ": [
+          -213.8935546875,
+          5.162499904632568,
+          2.0
+        ]
+      },
+      {
+        "a": "FrameBottom",
+        "b": "JoinPeg214.5:5",
+        "pointRobloxXYZ": [
+          215.1064453125,
+          5.162499904632568,
+          2.0
+        ]
+      },
+      {
+        "a": "BoardBacking",
+        "b": "InsetWritingSlate",
+        "pointRobloxXYZ": [
+          211.42001342773438,
+          148.9199981689453,
+          -5.0
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "TrayFrontLip",
+        "pointRobloxXYZ": [
+          212.49783325195312,
+          2.6852216720581055,
+          5.414777755737305
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "TrayGusset-170",
+        "pointRobloxXYZ": [
+          -168.9600067138672,
+          2.8000001907348633,
+          1.0
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "TrayGusset0",
+        "pointRobloxXYZ": [
+          1.0399999618530273,
+          2.8000001907348633,
+          1.0
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "TrayGusset170",
+        "pointRobloxXYZ": [
+          171.0399932861328,
+          2.8000001907348633,
+          1.0
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "TrayEndCheek-210.8",
+        "pointRobloxXYZ": [
+          -209.14393615722656,
+          2.799999713897705,
+          1.443934440612793
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "TrayEndCheek210.8",
+        "pointRobloxXYZ": [
+          212.47964477539062,
+          2.7291512489318848,
+          1.5008530616760254
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "ChalkStick0",
+        "pointRobloxXYZ": [
+          -160.0800018310547,
+          2.799999952316284,
+          3.7999987602233887
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "ChalkStick1",
+        "pointRobloxXYZ": [
+          -137.5800018310547,
+          2.799999952316284,
+          3.7999987602233887
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "ChalkStick2",
+        "pointRobloxXYZ": [
+          -113.58000183105469,
+          2.799999952316284,
+          3.7999987602233887
+        ]
+      },
+      {
+        "a": "TrayShelf",
+        "b": "ChalkStick3",
+        "pointRobloxXYZ": [
+          -87.08000946044922,
+          2.799999713897705,
+          3.799999952316284
+        ]
+      },
+      {
+        "a": "TrayFrontLip",
+        "b": "TrayEndCheek-210.8",
+        "pointRobloxXYZ": [
+          -209.10000610351562,
+          2.5258686542510986,
+          5.300000190734863
+        ]
+      },
+      {
+        "a": "TrayFrontLip",
+        "b": "TrayEndCheek210.8",
+        "pointRobloxXYZ": [
+          212.5,
+          3.2800002098083496,
+          5.420000076293945
+        ]
+      },
+      {
+        "a": "TrayFrontLip",
+        "b": "EraserFelt",
+        "pointRobloxXYZ": [
+          158.5,
+          3.183595657348633,
+          5.300000190734863
+        ]
+      },
+      {
+        "a": "EraserFelt",
+        "b": "EraserWoodHandle",
+        "pointRobloxXYZ": [
+          143.75,
+          4.0,
+          5.149999618530273
+        ]
+      }
+    ],
+    "connectedMembers": 23
+  },
+  "freshImport": {
+    "status": "PASS",
+    "triangles": 2356,
+    "boundsMin": [
+      -217.5,
+      0.0,
+      -6.0
+    ],
+    "boundsMax": [
+      217.5,
+      155.0,
+      6.0
+    ],
+    "textures": 1,
+    "scope": "Fresh exactGLB import, strict.0001 bounds; exact3:1 artwork on inset front only"
+  },
+  "nativeIntegration": "NOT_RUN",
+  "hashes": {
+    "chalkboard460.blend": "086cbb978d3022bf7dcdc21802841bdc766e8519d104ee1f649e01bc70019f1e",
+    "chalkboard460.glb": "69829b3418d1d81528a3271cd67b8837d37597da90320c6f001184af95f170ad",
+    "chalkboard460-colors.glb": "9ec0ad4b7ebf41a0bea82e80f517ecfa0e31dff0f39f1c6e59ff3209b5169383",
+    "chalkboard460-geometry.json": "5370e69e36f2c7cfbf02a3a4ee53d53d6cfd47988951aaf511c4c897c4969d6a",
+    "chalkboard460-artwork.png": "c4a1dc6e141c6b99f3deed9b0f8e0aecdc742a9e576c5a12c5ba1f95c32d68a2"
+  }
+}

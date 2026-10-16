@@ -1,0 +1,152 @@
+{
+  "1": {
+    "texture": "rbxassetid://82904136206030",
+    "mesh": "rbxassetid://77079469412961",
+    "name": "ammo_eraser",
+    "size": {
+      "1": 82,
+      "2": 62,
+      "3": 150
+    }
+  },
+  "2": {
+    "texture": "rbxassetid://82904136206030",
+    "mesh": "rbxassetid://134753212109177",
+    "name": "ammo_paperclip",
+    "size": {
+      "1": 71.9997787475586,
+      "2": 12,
+      "3": 172.00001525878906
+    }
+  },
+  "3": {
+    "texture": "rbxassetid://82904136206030",
+    "mesh": "rbxassetid://102995129381491",
+    "name": "ammo_pellet",
+    "size": {
+      "1": 30.000019073486328,
+      "2": 30.000001907348633,
+      "3": 30.000019073486328
+    }
+  },
+  "4": {
+    "texture": "rbxassetid://82904136206030",
+    "mesh": "rbxassetid://113849227003432",
+    "name": "ammo_pencil",
+    "size": {
+      "1": 35.00004196166992,
+      "2": 35,
+      "3": 399.9999694824219
+    }
+  },
+  "5": {
+    "texture": "rbxassetid://82904136206030",
+    "mesh": "rbxassetid://83781036366165",
+    "name": "ammo_rubber",
+    "size": {
+      "1": 72.0000228881836,
+      "2": 12,
+      "3": 92
+    }
+  },
+  "6": {
+    "texture": "rbxassetid://82904136206030",
+    "mesh": "rbxassetid://87730995213374",
+    "name": "ammo_staple",
+    "size": {
+      "1": 72,
+      "2": 12,
+      "3": 85.98545837402344
+    }
+  },
+  "7": {
+    "texture": "rbxassetid://114202899982004",
+    "mesh": "rbxassetid://92082957184046",
+    "name": "boost_band",
+    "size": {
+      "1": 23,
+      "2": 21.549999237060547,
+      "3": 149.5
+    }
+  },
+  "8": {
+    "texture": "rbxassetid://114202899982004",
+    "mesh": "rbxassetid://133760246240765",
+    "name": "boost_spool",
+    "size": {
+      "1": 68,
+      "2": 21.549999237060547,
+      "3": 149.5
+    }
+  },
+  "9": {
+    "texture": "rbxassetid://114202899982004",
+    "mesh": "rbxassetid://87677610696761",
+    "name": "boost_twin",
+    "size": {
+      "1": 113,
+      "2": 21.549999237060547,
+      "3": 149.5
+    }
+  },
+  "10": {
+    "texture": "rbxassetid://79135958720884",
+    "mesh": "rbxassetid://138628103636914",
+    "name": "launcher_eraser",
+    "size": {
+      "1": 45,
+      "2": 26.600004196166992,
+      "3": 162
+    }
+  },
+  "11": {
+    "texture": "rbxassetid://79135958720884",
+    "mesh": "rbxassetid://104883728547508",
+    "name": "launcher_paperclip",
+    "size": {
+      "1": 50,
+      "2": 22,
+      "3": 190.00001525878906
+    }
+  },
+  "12": {
+    "texture": "rbxassetid://79135958720884",
+    "mesh": "rbxassetid://128268764799380",
+    "name": "launcher_pellet",
+    "size": {
+      "1": 29,
+      "2": 29.149999618530273,
+      "3": 198
+    }
+  },
+  "13": {
+    "texture": "rbxassetid://79135958720884",
+    "mesh": "rbxassetid://126132307848036",
+    "name": "launcher_pencil",
+    "size": {
+      "1": 34,
+      "2": 27.549999237060547,
+      "3": 361
+    }
+  },
+  "14": {
+    "texture": "rbxassetid://79135958720884",
+    "mesh": "rbxassetid://80966203868624",
+    "name": "launcher_rubber",
+    "size": {
+      "1": 51.5,
+      "2": 20.30000114440918,
+      "3": 164
+    }
+  },
+  "15": {
+    "texture": "rbxassetid://79135958720884",
+    "mesh": "rbxassetid://123266368038566",
+    "name": "launcher_staple",
+    "size": {
+      "1": 39.5,
+      "2": 22.5,
+      "3": 164
+    }
+  }
+}

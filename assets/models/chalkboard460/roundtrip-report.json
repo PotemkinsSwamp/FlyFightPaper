@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "matched": 2356,
+  "unmatchedNative": [],
+  "unmatchedCanonical": [],
+  "maximumPositionError": 0.0,
+  "maximumUVError": 2.9802322387695312e-08,
+  "maximumNormalError": 7.686529691705936e-05,
+  "thresholds": {
+    "position": 0.0001,
+    "UV": 1e-05,
+    "normal": 0.0001
+  },
+  "method": "Triangle position signatures and corner permutations, no face-index assumptions; NORMALS+merge_vertices=True import",
+  "artworkUVExtrema": {
+    "min": [
+      0.0,
+      0.0
+    ],
+    "max": [
+      1.0,
+      1.0
+    ]
+  },
+  "embeddedPNGExact": true
+}

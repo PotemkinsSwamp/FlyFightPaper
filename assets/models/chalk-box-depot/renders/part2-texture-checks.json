@@ -1,0 +1,241 @@
+{
+  "mode": "real UV islands",
+  "bleed_pixels": 3,
+  "maps": {
+    "1-box-and-base-1-color.png": {
+      "protected_sha256": "67dc3fe62ece77fe6ab34bd582c2031b6a4e082f86e68bb97b1d5e22de63694e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 473042,
+      "filled_texels": 575534,
+      "file_sha256": "35f4ef31d84fbb529765729e1ed2afd9bc716e40f8796e8f32f2f26c170f286e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-box-and-base-1-normal.png": {
+      "protected_sha256": "ba93bfecd72816f90f3f66f016d6fb2959ab3f4e5bdda88af516ba064f41913e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 473042,
+      "filled_texels": 575534,
+      "file_sha256": "b66b1bf0567570b516224952a2f0064293417c803ebc232776e832287b75cb2c",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-box-and-base-1-roughness.png": {
+      "protected_sha256": "2d1485d53046b22976d83f27f4e285eae732eb628a2accf112186affc5d3177c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 473042,
+      "filled_texels": 575534,
+      "file_sha256": "58c2dea4c3b24c9619c3c4c81c8571948cb1160b1099209dc36870d8422131fa",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-box-and-base-2-color.png": {
+      "protected_sha256": "21915d9968e306a5d3cc60ad1f4c28954ce8a4aa62a705b03e78d6c192de52aa",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 17024,
+      "filled_texels": 1031552,
+      "file_sha256": "91db6accf75b22ce3047807c10bcab3c9e9166ca94e41ec6ea7fac89b227a346",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-box-and-base-2-normal.png": {
+      "protected_sha256": "814a7e98754c3bf49b6e82d6372ed6047af9f273650f4b1c207cdba60e4b145f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 17024,
+      "filled_texels": 1031552,
+      "file_sha256": "b450d9db18d9609460fae8da022d6d00dbc87c392119203a153bfc09089d2213",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-box-and-base-2-roughness.png": {
+      "protected_sha256": "0e8c214729dd10812844180b0859e798e5975e5fa2090ea598275f3933eafabf",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 17024,
+      "filled_texels": 1031552,
+      "file_sha256": "70308333e4e6f1e9809447f43981aa0906b0c0897380852482e7fe9bae507337",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-six-round-chalk-columns-color.png": {
+      "protected_sha256": "a8894fc500a5e4fe8d40274c3f7a3f07286d89d38f118a0e7b4e685dbca0c3b6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 102080,
+      "filled_texels": 946496,
+      "file_sha256": "6617f3a25ff71ded22c294bf32f17577dd584706d0c55c59f571bdbce1f44560",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-six-round-chalk-columns-normal.png": {
+      "protected_sha256": "69cbbcff69fdc4e97555bd117c7741da6c266d617cabdb01b8e12abfe2724433",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 102080,
+      "filled_texels": 946496,
+      "file_sha256": "59fe0f2984b091f7675c1fb44c96b2ffd9fa7ccc096409e774b164af990e0f59",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-six-round-chalk-columns-roughness.png": {
+      "protected_sha256": "c72fa1a824b3c03ef0027e3e010968e70c1f09f2feee59bac6073c514e1ee458",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 102080,
+      "filled_texels": 946496,
+      "file_sha256": "ebedbc9f937fe5ebccfad49c0dc93f65d77eceabbfc7ddaac5add6f81ae18be0",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-open-chalk-roof-tray-1-color.png": {
+      "protected_sha256": "27153d8160d5ba92353856ee842619c3d74b65ef95675977f16a398e30447cc9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 556599,
+      "filled_texels": 491977,
+      "file_sha256": "e43b9f717e1fa34f38257fe7abb93e84b1690a4e4488f3dbee49e8eb695bd6d8",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-open-chalk-roof-tray-1-normal.png": {
+      "protected_sha256": "414f32821a4681f308608c4c80331c758445b7ac86ea53dae84907af44975f52",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 556599,
+      "filled_texels": 491977,
+      "file_sha256": "5e6edddfabd52b088cc6adcff6f4b3273cd48654a749e2b56ff7f895a72f9886",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-open-chalk-roof-tray-1-roughness.png": {
+      "protected_sha256": "14c629b45752527ac1bf5e5ff4db7fe8dac4340a16f0e730e3422cd72311ac60",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 556599,
+      "filled_texels": 491977,
+      "file_sha256": "144da1fc3121f71976a8536276a97b82c73bb9321bbb225dd13b5665b6421e17",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-open-chalk-roof-tray-2-color.png": {
+      "protected_sha256": "72633d00a4b38a9b32953ecb31d4dc4c6f95c4404980c8d0d8bafeeae842ed49",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 20200,
+      "filled_texels": 1028376,
+      "file_sha256": "c7f349f9d462e95375c333cadc0a8d3baa717c60e1443b0bf8f5b2fc599034e2",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-open-chalk-roof-tray-2-normal.png": {
+      "protected_sha256": "d1bdd76bdb203b99ee0c2ae5534b3024605bfa906d28184ebc189eed7d089d03",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 20200,
+      "filled_texels": 1028376,
+      "file_sha256": "a4f11df3765551dba4817e9fa59304f74c254331ff6de77a86f29e84c6a154af",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-open-chalk-roof-tray-2-roughness.png": {
+      "protected_sha256": "a27ab8768efc4fc648184877afee86eb1de70d5dfccdfa512891e033a703cb4f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 20200,
+      "filled_texels": 1028376,
+      "file_sha256": "d8da693be6f9707782f9b4101ad52089646b3da833f0888804a49198696e7160",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-windows-double-door-and-step-color.png": {
+      "protected_sha256": "f11246093e698664ee07f188b3e1bdbfaf502f954f2238761723b6a0b0e20bde",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 70483,
+      "filled_texels": 978093,
+      "file_sha256": "1285d3994b9894d08971da962c0a584f43c6ed363bb2a1de5799c501f67262ca",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-windows-double-door-and-step-normal.png": {
+      "protected_sha256": "1ce564c97297719e74862746907da14111cec06221b59358a8761fb3c927f530",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 70483,
+      "filled_texels": 978093,
+      "file_sha256": "e242ea44bd383e94f773067043af8ab303cac920ce1ad733bac10672664b9240",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-windows-double-door-and-step-roughness.png": {
+      "protected_sha256": "cc3348df50519b2012fa1307503f63cb40f6ded93f327d11f9d7ce733e030f00",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 70483,
+      "filled_texels": 978093,
+      "file_sha256": "5a431d01f5eeab2df0e769648589150529600e409171645429f269564f1083fd",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    }
+  },
+  "scene_manifest_and_fbx_unchanged": true
+}

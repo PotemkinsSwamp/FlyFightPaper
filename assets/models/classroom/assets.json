@@ -1,0 +1,52 @@
+{
+  "craft": {
+    "texture": "rbxassetid://78911011438913",
+    "atlas": "craft-atlas.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  "skyscraper": {
+    "texture": "rbxassetid://138295459739680",
+    "atlas": "skyscraper-atlas.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  "cardboard-arch": {
+    "texture": "rbxassetid://88504666719787",
+    "atlas": "cardboard-arch-atlas.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  "gateway": {
+    "texture": "rbxassetid://119199137320372",
+    "atlas": "gateway-atlas.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  "toy-bricks": {
+    "texture": "rbxassetid://71178789198806",
+    "atlas": "toy-bricks-atlas.png",
+    "size": [
+      1024,
+      1024
+    ]
+  },
+  "chalkboard": {
+    "texture": "rbxassetid://104324970019163",
+    "atlas": "chalkboard-atlas.png",
+    "size": [
+      1024,
+      1024
+    ],
+    "source": "../../textures/classroom-chalkboard391-v2-fight.png",
+    "mapping": "Approved 2:1 image centered in the retained 3:1 board, green side margins."
+  }
+}

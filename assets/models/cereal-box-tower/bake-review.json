@@ -1,0 +1,23 @@
+{
+  "building": "cereal-box-tower",
+  "pieces": 16,
+  "total_triangles": 64066,
+  "maximum_piece_triangles": 7396,
+  "lowest_front_pixels_per_stud": 5.081,
+  "open_edges": 0,
+  "front": "-y",
+  "touchup_changes": ["Added a clean brown inner floor at [1.98, 8.76, 210.2], size [97.4, 58, 2], beneath the four open flaps."],
+  "closeup_path": "assets/models/cereal-box-tower/renders/closeups.jpg",
+  "texture_contact_sheet": "assets/models/cereal-box-tower/renders/textures.png",
+  "texture_fill": "Shared fill_gaps.py --uv --all; packed scene refreshed afterwards.",
+  "texture_doubts": [
+    {"file": "parts/5-upper-walls-front-left-color.png", "concern": "Bold black X-like patch formed by flat texture islands."},
+    {"file": "parts/8-upper-walls-back-right-color.png", "concern": "Black H/branch-like joins on the flat map."},
+    {"file": "parts/11-roof-back-left-color.png", "concern": "Large black angular F/branch-like patches."},
+    {"file": "parts/12-roof-back-right-color.png", "concern": "Black angular L-like patches and cream crossing trim."},
+    {"file": "parts/5-upper-walls-front-left-roughness.png", "concern": "High-contrast X-like island patches also remain in roughness."}
+  ],
+  "remaining_issues": ["Minimum texture density 5.081 is below the 6-pixel aim.", "Black patches remain inside some UV islands; they are not visible as holes in the assembled close-ups, but the flat maps still need moderation review."],
+  "visual_check": "Four thin, separate flaps and a clean inner floor; no dark void in the top. Door, steps, window trim and all eight close-up views inspected.",
+  "bake_repair": "Folder-local adapter closes source seams and finishes one collapsed-UV repair; original exact UV checks remain enabled."
+}

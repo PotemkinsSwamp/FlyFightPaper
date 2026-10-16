@@ -1,0 +1,23 @@
+{
+  "path": "operations/2afcd4e2-f9d8-4b6b-8837-355e89d0f392",
+  "operationId": "2afcd4e2-f9d8-4b6b-8837-355e89d0f392",
+  "done": true,
+  "response": {
+    "path": "assets/71050966317872",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-07T05:06:35.172859500Z",
+    "assetId": "71050966317872",
+    "displayName": "Paper Plane Weapons and Boosters",
+    "description": "Private modular weapon, ammunition and elastic booster meshes from retained Blender art.",
+    "assetType": "Model",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,36 @@
+00:00.578  blend            | Read blend: "D:\FlyFightPaper\assets\models\cereal-box-tower\hero.blend"
+Extensions: writing cache failed ([Errno 13] Permission denied: 'C:\\Users\\gutie\\AppData\\Roaming\\Blender Foundation\\Blender\\5.1\\extensions\\.cache\\compat.dat').
+FINAL boundary ground-floor-front-left 0
+FINAL boundary ground-floor-front-right 0
+FINAL boundary ground-floor-back-left 0
+FINAL boundary ground-floor-back-right 0
+FINAL boundary upper-walls-front-left 0
+FINAL boundary upper-walls-front-right 0
+FINAL boundary upper-walls-back-left 0
+FINAL boundary upper-walls-back-right 0
+FINAL boundary roof-front-left 0
+FINAL boundary roof-front-right 0
+FINAL boundary roof-back-left 0
+FINAL boundary roof-back-right 0
+FINAL boundary topper-front-left 0
+FINAL boundary topper-front-right 0
+FINAL boundary topper-back-left 0
+FINAL boundary topper-back-right 0
+00:24.312  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\render-front.png'
+00:24.812  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\render-back.png'
+00:25.656  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\ground-floor-after.png'
+Info: Saved as "hero.blend"
+FINAL maps refreshed cereal-box-tower
+00:26.156  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\closeup-0.png'
+00:26.547  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\closeup-1.png'
+00:26.984  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\closeup-2.png'
+00:27.390  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\closeup-3.png'
+00:27.812  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\closeup-4.png'
+00:28.218  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\closeup-5.png'
+00:28.578  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\closeup-6.png'
+00:28.937  render           | Saved: 'D:\FlyFightPaper\assets\models\cereal-box-tower\renders\closeup-7.png'
+CHECK boundaries []
+CHECK done cereal-box-tower
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

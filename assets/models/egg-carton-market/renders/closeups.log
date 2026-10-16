@@ -1,0 +1,13 @@
+00:00.563  blend            | Read blend: "D:\FlyFightPaper\assets\models\egg-carton-market\hero.blend"
+00:19.500  render           | Saved: 'D:\FlyFightPaper\assets\models\egg-carton-market\renders\closeup-0.png'
+00:19.969  render           | Saved: 'D:\FlyFightPaper\assets\models\egg-carton-market\renders\closeup-1.png'
+00:20.360  render           | Saved: 'D:\FlyFightPaper\assets\models\egg-carton-market\renders\closeup-2.png'
+00:20.750  render           | Saved: 'D:\FlyFightPaper\assets\models\egg-carton-market\renders\closeup-3.png'
+00:21.141  render           | Saved: 'D:\FlyFightPaper\assets\models\egg-carton-market\renders\closeup-4.png'
+00:21.532  render           | Saved: 'D:\FlyFightPaper\assets\models\egg-carton-market\renders\closeup-5.png'
+00:21.844  render           | Saved: 'D:\FlyFightPaper\assets\models\egg-carton-market\renders\closeup-6.png'
+00:22.157  render           | Saved: 'D:\FlyFightPaper\assets\models\egg-carton-market\renders\closeup-7.png'
+Extensions: writing cache failed ([Errno 13] Permission denied: 'C:\\Users\\gutie\\AppData\\Roaming\\Blender Foundation\\Blender\\5.1\\extensions\\.cache\\compat.dat').
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "Broader roof lip hides loose chalk ends; simple double doors with dark glazing, facing half-height pulls and two-pane transom; corrugated tray/base edges, speckled chalk and cardboard fibre maps.",
+  "still_off": "Box reads narrower, and chalk wear is smoother than the concept.",
+  "pieces": 6,
+  "triangles": 45952,
+  "lowest_front_pixels_per_stud": 7.265,
+  "compare": "assets\\models\\chalk-box-depot\\compare.png"
+}
