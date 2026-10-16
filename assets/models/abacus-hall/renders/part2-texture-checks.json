@@ -1,0 +1,280 @@
+{
+  "mode": "real UV islands",
+  "bleed_pixels": 3,
+  "maps": {
+    "1-left-house-1-color.png": {
+      "protected_sha256": "d4c0ed6622fc133f18656689b0e388695b6c19c80f904d7a8b14490c64cc7e81",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 247880,
+      "filled_texels": 800696,
+      "file_sha256": "ca9adb4236ecfbf3d1a6e87136a7a67da8689ed579dc54e079dc0b3495015d95",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-left-house-1-normal.png": {
+      "protected_sha256": "43c6a328fd8533053ce4054b30c4ba3198274a2b71b1dcdbe52cd92b308c9c86",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 247880,
+      "filled_texels": 800696,
+      "file_sha256": "c119674d5272f4e92ad8709db20e3f9c085c50dc1fe73a7bf48e28b311001cf3",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-left-house-1-roughness.png": {
+      "protected_sha256": "18fbf298cb97d77a67590f0941a56f58d899b114c5ecf4c9c935fd55b794ce2e",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 247880,
+      "filled_texels": 800696,
+      "file_sha256": "a9dfa73675714aa053197e79d704a5fd364048d99f820cb6984105f6848eef2c",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-left-house-2-color.png": {
+      "protected_sha256": "8061bc9062c5f0d4dcc1485d7a872fee799c402a8d17e343b2d73625ff759d00",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37276,
+      "filled_texels": 1011300,
+      "file_sha256": "fc64975726a32d980ec339dbad4fc71000f8a55b8146f5f66483b524edf2610f",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-left-house-2-normal.png": {
+      "protected_sha256": "124c410c8df5ee5d3052729ff74d6fa308c0fa354264434659201051c1f41cdb",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37276,
+      "filled_texels": 1011300,
+      "file_sha256": "777e2a7a5ca5753598b28c0c425a263ee1c1bcfc44a9c2ad3dd5baa5d678ebd4",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-left-house-2-roughness.png": {
+      "protected_sha256": "d4dae1ccff3f92348ea77e1b233de7cb13437fee73fc5d242960d39662110cd3",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37276,
+      "filled_texels": 1011300,
+      "file_sha256": "16e8e403c1c31d81b6b6741469061f898f0f056c9ad51d7494626aa0970b6cd5",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-right-house-1-color.png": {
+      "protected_sha256": "bc3827d0d8c4a03e4b515bf2adead17a6a6c9923488cd8953d36639c5b3eab63",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 247880,
+      "filled_texels": 800696,
+      "file_sha256": "2af17b8dba25dc79aed0ddfcdeee8455fd1d5717b5b4e9fd703045236d884137",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-right-house-1-normal.png": {
+      "protected_sha256": "066cf0bd3393710ed40a0945c0ddc7305096f95590f98b70a02d9dc6045792c4",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 247880,
+      "filled_texels": 800696,
+      "file_sha256": "d8c8758283327b8a756a1e59121a035ec24586c9de5379b5ef7f3c50733d3662",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-right-house-1-roughness.png": {
+      "protected_sha256": "abd0f8cefed4c6845e0501001d2987baac689347587405bafda50f1d39e2b74f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 247880,
+      "filled_texels": 800696,
+      "file_sha256": "c89dbbb494b833595d15b475f1e14b6f3457abfc374d79972a57137a877426eb",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-right-house-2-color.png": {
+      "protected_sha256": "1f541d8a1bf514c5723eded4665207a1eb70adb89289fb267fb7a4db8ecb9e1b",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37276,
+      "filled_texels": 1011300,
+      "file_sha256": "23ac0d4e6495edc98196c3d330e02948f1c805be31554118e07fa8c100c72c0f",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-right-house-2-normal.png": {
+      "protected_sha256": "44a6e999364f94b5932c35265b5fd1c982f9dc8b3b9ef25b2bf2d90271b275f2",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37276,
+      "filled_texels": 1011300,
+      "file_sha256": "56855de03bbdeee26111f3f392f5ca2cf98252430d91426580be03aa90725131",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-right-house-2-roughness.png": {
+      "protected_sha256": "9881c8a15d9d8d3e06669f71a3d02c68a4d26a465ffced3e6c8c7a97e8821b79",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 37276,
+      "filled_texels": 1011300,
+      "file_sha256": "16e1630f82bf0158a972fab92120708aa21c7c77675c975a86f9acd7e5771e6b",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-open-wood-abacus-frame-color.png": {
+      "protected_sha256": "7e3863f69fdf30d92e575b3fe05fa0559b660f1d35b95de27725ba931146d018",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 90221,
+      "filled_texels": 958355,
+      "file_sha256": "2fa85d004e4c23097d3c1f08dfc024aa71d608b44e41184e91b67739e43b10ab",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-open-wood-abacus-frame-normal.png": {
+      "protected_sha256": "078143543b537400e8418fdcdc56a79f30d2234545a90d08323d5e761c484069",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 90221,
+      "filled_texels": 958355,
+      "file_sha256": "913aca93f01eb614a53b6240b09810f7ef44cc863d25805c75d9eeb748a4e502",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-open-wood-abacus-frame-roughness.png": {
+      "protected_sha256": "e6c409ac3ef670de73c6922307ffc0ce2c80648caed47324a5e98383fe787176",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 90221,
+      "filled_texels": 958355,
+      "file_sha256": "d8752f1797486cbcf8c84afd58be53b4b5bef03796edb8bb61ccf881974739ff",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-painted-counting-beads-1-color.png": {
+      "protected_sha256": "4597942d3a7ed41ef701063a76e28d5c8d851e8a243ac651d297dc05da4fe6dd",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 12900,
+      "filled_texels": 1035676,
+      "file_sha256": "2725df2cc1571ff178cd0ccfa7834d26eecd4a07b5cf79ee336587b3ff9c499d",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-painted-counting-beads-1-normal.png": {
+      "protected_sha256": "d7cde04dccb1584486fa05b85f322065a6b9a0830c1682042b97c062acd579c6",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 12900,
+      "filled_texels": 1035676,
+      "file_sha256": "62e6b31c3d183d744c158a9ce4bf7d863a765ad38f29a5bcd711916f1034eb13",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-painted-counting-beads-1-roughness.png": {
+      "protected_sha256": "63da4c4c0cc7353bb8944edc3eed2557f56ec8fda7d41bd9c4fb9bcefe3e2979",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 12900,
+      "filled_texels": 1035676,
+      "file_sha256": "e7583ead93a7a0e33a7266d04187af514aab39f80038ca03c2f5a3ed53336666",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-painted-counting-beads-2-color.png": {
+      "protected_sha256": "7acd1a433b1bb8619a656c5cc6039c0e8e2574c9570b07deb13775701aa13b96",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 3225,
+      "filled_texels": 1045351,
+      "file_sha256": "d7fcb81534712802a18cf08266a9da5be44a7b383dc57f662f2d0d036f16714d",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-painted-counting-beads-2-normal.png": {
+      "protected_sha256": "d7dbca9541df55088ef5a1cf48600e589bd36173ce138ddf41030baa7320254a",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 3225,
+      "filled_texels": 1045351,
+      "file_sha256": "62e6b31c3d183d744c158a9ce4bf7d863a765ad38f29a5bcd711916f1034eb13",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "7-painted-counting-beads-2-roughness.png": {
+      "protected_sha256": "dcfbc296b2c3c5d134e1cb0416f112455cfc6fbe72b407b19ebf23bebdcc00a5",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 3225,
+      "filled_texels": 1045351,
+      "file_sha256": "ffd3e1a4674d28e90b18fd2870e5689350e08b37a8a93e5575d149b85cf348ab",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    }
+  },
+  "scene_manifest_and_fbx_unchanged": true
+}

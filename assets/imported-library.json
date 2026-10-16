@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "models": [
+    {
+      "key": "Meshy394",
+      "name": "SteppedCardboardTower394",
+      "model_id": "130790603834896",
+      "mesh_id": "103398591151961",
+      "texture_id": "138224364306979",
+      "creator_user_id": 52064999,
+      "moderation": "Approved",
+      "size": [
+        150.16802978515625,
+        260,
+        116.04219818115234
+      ],
+      "source": "assets/models/meshy394/roblox/meshy394-cardboard-tower.glb",
+      "provenance": "Owner-authorized Meshy generation, Blender cleanup and private Roblox upload",
+      "runtime_delivery": "Hosted mesh fetch failed in local Studio; bundled fallback required"
+    },
+    {
+      "key": "Meshy399",
+      "name": "UpperBelfry399",
+      "model_id": "124125746006694",
+      "mesh_id": "118917092571160",
+      "texture_id": "133021025088977",
+      "creator_user_id": 52064999,
+      "moderation": "Approved",
+      "size": [
+        144.7241668701172,
+        400,
+        146.81297302246094
+      ],
+      "source": "assets/models/meshy399/roblox/meshy399-upper-belfry.glb",
+      "provenance": "Owner-authorized Meshy generation, Blender preparation and private Roblox upload",
+      "runtime_delivery": "Hosted mesh and texture fetch failed in local Studio; exact bundled native mesh/image review passed, production placement pending"
+    },
+    {
+      "key": "Meshy397",
+      "name": "SkybridgeBuilding397",
+      "model_id": "111854251355951",
+      "mesh_id": "99083762896431",
+      "texture_id": "107086300443491",
+      "creator_user_id": 52064999,
+      "moderation": "Approved",
+      "size": [
+        269.3027038574219,
+        399.9999694824219,
+        104.20330047607422
+      ],
+      "source": "assets/models/meshy397/roblox/meshy397-twin-tower.glb",
+      "provenance": "Owner-authorized Meshy generation, Blender cleanup and private Roblox upload",
+      "runtime_delivery": "Inserted into Studio ServerStorage, production placement and native rendering pending"
+    }
+  ]
+}

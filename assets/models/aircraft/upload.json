@@ -1,0 +1,23 @@
+{
+  "path": "operations/dccbec0e-3bb1-476d-9fd5-6b7b9c6cd451",
+  "operationId": "dccbec0e-3bb1-476d-9fd5-6b7b9c6cd451",
+  "done": true,
+  "response": {
+    "path": "assets/127537857719849",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-07T04:48:28.077563Z",
+    "assetId": "127537857719849",
+    "displayName": "Paper Plane Modular Aircraft",
+    "description": "Private paper aircraft structural part library. Original retained Blender art, finished atlas and normals.",
+    "assetType": "Model",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active"
+  }
+}

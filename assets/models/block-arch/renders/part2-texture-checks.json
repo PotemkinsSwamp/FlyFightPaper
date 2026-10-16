@@ -1,0 +1,241 @@
+{
+  "mode": "real UV islands",
+  "bleed_pixels": 3,
+  "maps": {
+    "1-blue-block-pier-color.png": {
+      "protected_sha256": "6e8320504c97be9bcd26e385219353ee1d4047621d4c57500fb7c50202aed28c",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 415038,
+      "filled_texels": 633538,
+      "file_sha256": "d87ab251d3979fde5f7859e543361d0246799a58094c7fefa46eccc75e90437e",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-blue-block-pier-normal.png": {
+      "protected_sha256": "7d0161ee87ffcbda3cc6291f02afa3cdc8f925dd709429658c8da2187aef8b47",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 415038,
+      "filled_texels": 633538,
+      "file_sha256": "4ee79b54fe2f6362ac318924f86404e38744971ddf1e46b60bb10e43312d73a0",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "1-blue-block-pier-roughness.png": {
+      "protected_sha256": "02f99e6d61c5569a1a4a721af77429d96fee54290bc43f0acc7dd54d9b75c706",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 415038,
+      "filled_texels": 633538,
+      "file_sha256": "6600bda1bd2e9f1c59b9339c2e40b5a13cee64d898dfaa23d6b510ab73d9ca5c",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-red-block-pier-color.png": {
+      "protected_sha256": "ae2eeb6943642d51919fdd641ad91c6d2694f138b15d69bede9b7b9575199582",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 421192,
+      "filled_texels": 627384,
+      "file_sha256": "e56d62e5dd1885107520d02fdad67994fbbcd6e82b950e189f553bd78d50e75d",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-red-block-pier-normal.png": {
+      "protected_sha256": "166e87556fbb2b2be06ddec32abc2a1574a016436c42b06e7b4a737d25a7f7e0",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 421192,
+      "filled_texels": 627384,
+      "file_sha256": "118725bd689102eda63cb205227a503a8e04d786125c15daa21890867dba6206",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "2-red-block-pier-roughness.png": {
+      "protected_sha256": "4c626202a936f957871e62262b57a8e42398351b0e723160cb9f501bece40688",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 421192,
+      "filled_texels": 627384,
+      "file_sha256": "ab22281a7e633ab5c36731db4882add54bc3a3a2c581ba1563aa647f019c7aa7",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-curved-wood-arch-sector-1-color.png": {
+      "protected_sha256": "161c90ec4a6b52884f8a57cd7c51707d1a4fdca8d2c7818afeacd125c9f4b85d",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 345345,
+      "filled_texels": 703231,
+      "file_sha256": "ccda635061b48e05abe5419ae26a7fd44e74d22073db82c9b1bd29b42b8bd880",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-curved-wood-arch-sector-1-normal.png": {
+      "protected_sha256": "8fb326a473cff5c63c39f3eda71eea9ff2079f959018fb448f6c692af35330b9",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 345345,
+      "filled_texels": 703231,
+      "file_sha256": "6759622e6c96b8c12b042600c3e18f30cb7a1485294595756dd4d232a1c12fce",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "3-curved-wood-arch-sector-1-roughness.png": {
+      "protected_sha256": "6e942c032ec7c6ca018f2075a8d450c5e7dc0046f3af1dceb2bf44415ed24734",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 345345,
+      "filled_texels": 703231,
+      "file_sha256": "6d260921b133f9ece9d372fd454ea1127945a9cb5c8f9f49e200320b86daa78b",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-curved-wood-arch-sector-2-color.png": {
+      "protected_sha256": "034f3e3fa19df0c878103ee9dc334a9dd5594381489bb02cdf5dc7daea3d0d47",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 302639,
+      "filled_texels": 745937,
+      "file_sha256": "e1d89ada6e3d385212d8dbf1c98e698030a414964cfd4b08670270d2e7b7d473",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-curved-wood-arch-sector-2-normal.png": {
+      "protected_sha256": "0eb8fba5854505c7d47b2bb0872428e934e3ba41639c064f89a9b5930b424689",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 302639,
+      "filled_texels": 745937,
+      "file_sha256": "9de3c41523cf2fa147eaac623d8c713e6fa743ec035da2d9f870d85dfc9fbf76",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "4-curved-wood-arch-sector-2-roughness.png": {
+      "protected_sha256": "440a91e3214e75c82c8f7a42dc111b1a50a05b9f1c12dd53591f33e2df0efd53",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 302639,
+      "filled_texels": 745937,
+      "file_sha256": "d61dd646e97f78ec7cca0520bf35e14bedc0a111df85686e9d8db9c4a136f7c2",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-curved-wood-arch-sector-3-color.png": {
+      "protected_sha256": "cb681d9e5067968f4dc75411adc1f08ec0caf193a2398c86665156e4513d7a05",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 302639,
+      "filled_texels": 745937,
+      "file_sha256": "63f9d8552dca67db891311d0897bfee3f3324523b4bed4dacc37997c00b6932c",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-curved-wood-arch-sector-3-normal.png": {
+      "protected_sha256": "6c380cad43294a788b94671e9dd372672c450dc4294a5ef01518b2a0ea6bfc07",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 302639,
+      "filled_texels": 745937,
+      "file_sha256": "cc12e18b160829bd8e269587c5f9d015524a79ad9c1504eaa10eab5b939a42fa",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "5-curved-wood-arch-sector-3-roughness.png": {
+      "protected_sha256": "9b0f85e4f4f7ea80e4c638c394df6ad862a353432c47a329dc5b85ed7b6fde6b",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 302639,
+      "filled_texels": 745937,
+      "file_sha256": "3b6172c76ae4c232b76bbc061769b2c6372919f481dcda6d6f298859e5f6ae18",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-curved-wood-arch-sector-4-color.png": {
+      "protected_sha256": "b3bf2a81849595d316310a4482dbad0142fdf2cb93b4e4db09e2f2fba9a5b9a5",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 345344,
+      "filled_texels": 703232,
+      "file_sha256": "391338b66c52f530a972f3dc528093e1f1c4961223d41774aeb46e9e2e3a356d",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-curved-wood-arch-sector-4-normal.png": {
+      "protected_sha256": "8bc5a891f06856af56bb3dd19aa3e742ff5b0dba0ec1412be6b45f4ce44be484",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 345344,
+      "filled_texels": 703232,
+      "file_sha256": "c9b634ce526df2622c068fca01c0f0bbeec347a60f8d9481befdae731737ef14",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    },
+    "6-curved-wood-arch-sector-4-roughness.png": {
+      "protected_sha256": "41617d1855141851a9a5a04751297e51d0a49bd8bc59ef5bd67ff0154321762f",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "protected_texels": 345344,
+      "filled_texels": 703232,
+      "file_sha256": "72e08b3375e874f7780bd42a888ae2efca79a999c607d547785839e1dfcfd50c",
+      "protected_pixels_unchanged": true,
+      "file_changed": true
+    }
+  },
+  "scene_manifest_and_fbx_unchanged": true
+}

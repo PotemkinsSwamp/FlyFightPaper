@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "Upper and lower frame rails embed into both houses; upper rail sits under pitched roofs, rods connect to rails; corrugated roof/plinth edges and baked grain/contact shading. Final pass refined rail/rod grain, wood knobs and concept framing.",
+  "still_off": "Height increased from 65 to 75 to preserve the required z 10-60 flight gap beneath pitched roofs. Surface wear remains more even than the concept.",
+  "pieces": 7,
+  "triangles": 45104,
+  "lowest_front_pixels_per_stud": 7.07,
+  "compare": "assets\\models\\abacus-hall\\compare.png"
+}

@@ -1,0 +1,97 @@
+{
+  "why": "Close both long lower terrace roof slots and the upper front slot with cardboard fillers beneath the yellow rulers. Add a matching upper rear strip to close the black corner notches exposed beside the top tower. Retain existing walls, windows, rulers and banner. Masking-tape strip over the roof-deck join at x=0 (Alan saw a dark crack there from above, 2026-10-11).",
+  "delete_rule": "all",
+  "delete": [],
+  "boxes": [
+    {
+      "center": [
+        -56.15,
+        6.5,
+        102.7
+      ],
+      "size": [
+        14.3,
+        83.0,
+        3.2
+      ],
+      "color": [
+        183,
+        137,
+        87
+      ],
+      "roughness": 0.65
+    },
+    {
+      "center": [
+        56.15,
+        6.5,
+        102.7
+      ],
+      "size": [
+        14.3,
+        83.0,
+        3.2
+      ],
+      "color": [
+        183,
+        137,
+        87
+      ],
+      "roughness": 0.65
+    },
+    {
+      "center": [
+        0.0,
+        -25.75,
+        144.6
+      ],
+      "size": [
+        88.0,
+        6.5,
+        3.8
+      ],
+      "color": [
+        183,
+        137,
+        87
+      ],
+      "roughness": 0.65
+    },
+    {
+      "center": [
+        0.0,
+        35.7,
+        144.6
+      ],
+      "size": [
+        88.0,
+        7.4,
+        3.8
+      ],
+      "color": [
+        183,
+        137,
+        87
+      ],
+      "roughness": 0.65
+    },
+    {
+      "center": [
+        0,
+        -14,
+        171.3
+      ],
+      "size": [
+        10,
+        54,
+        1.4
+      ],
+      "color": [
+        236,
+        222,
+        180
+      ],
+      "roughness": 0.8
+    }
+  ]
+}

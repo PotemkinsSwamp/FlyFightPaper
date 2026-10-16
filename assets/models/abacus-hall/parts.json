@@ -1,0 +1,284 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 7,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [
+    {
+      "label": "between-rods",
+      "through_axis": "y",
+      "x": [
+        -15,
+        15
+      ],
+      "z": [
+        10,
+        60
+      ],
+      "shape": "rectangle",
+      "clear_front_and_back_rays": 1250
+    }
+  ],
+  "pieces": [
+    {
+      "label": "left-house-1",
+      "triangles": 11936,
+      "bounding_box": {
+        "min": [
+          -72.30344,
+          -30.39,
+          0.0
+        ],
+        "max": [
+          -39.69656,
+          30.36,
+          75.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-left-house-1",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 2316.6124,
+      "outer_face_pixels_per_stud": {
+        "front": 7.985,
+        "back": 7.986,
+        "left": 7.665,
+        "right": null,
+        "top": 7.601,
+        "bottom": 7.769
+      }
+    },
+    {
+      "label": "left-house-2",
+      "triangles": 3056,
+      "bounding_box": {
+        "min": [
+          -71.55,
+          -34.5,
+          0.0
+        ],
+        "max": [
+          -42.0,
+          6.5,
+          50.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-left-house-2",
+      "front_pixels_per_stud": 7.97,
+      "front_surface_studs2": 656.2787,
+      "outer_face_pixels_per_stud": {
+        "front": 7.97,
+        "back": 7.937,
+        "left": 7.947,
+        "right": null,
+        "top": 7.949,
+        "bottom": 7.949
+      }
+    },
+    {
+      "label": "right-house-1",
+      "triangles": 11936,
+      "bounding_box": {
+        "min": [
+          39.69656,
+          -30.39,
+          0.0
+        ],
+        "max": [
+          72.30344,
+          30.36,
+          75.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-right-house-1",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 2316.6126,
+      "outer_face_pixels_per_stud": {
+        "front": 7.985,
+        "back": 7.986,
+        "left": null,
+        "right": 7.665,
+        "top": 7.601,
+        "bottom": 7.769
+      }
+    },
+    {
+      "label": "right-house-2",
+      "triangles": 3056,
+      "bounding_box": {
+        "min": [
+          42.0,
+          -34.5,
+          0.0
+        ],
+        "max": [
+          71.55,
+          6.49999,
+          50.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-right-house-2",
+      "front_pixels_per_stud": 7.97,
+      "front_surface_studs2": 656.2787,
+      "outer_face_pixels_per_stud": {
+        "front": 7.97,
+        "back": 7.937,
+        "left": null,
+        "right": 7.947,
+        "top": 7.949,
+        "bottom": 7.949
+      }
+    },
+    {
+      "label": "open-wood-abacus-frame",
+      "triangles": 1920,
+      "bounding_box": {
+        "min": [
+          -50.0,
+          -6.0,
+          0.0
+        ],
+        "max": [
+          50.0,
+          6.0,
+          64.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-open-wood-abacus-frame",
+      "front_pixels_per_stud": 7.802,
+      "front_surface_studs2": 2152.0741,
+      "outer_face_pixels_per_stud": {
+        "front": 7.802,
+        "back": 7.802,
+        "left": 7.616,
+        "right": 7.616,
+        "top": 7.985,
+        "bottom": 7.985
+      }
+    },
+    {
+      "label": "painted-counting-beads-1",
+      "triangles": 11880,
+      "bounding_box": {
+        "min": [
+          -39.2,
+          -4.2,
+          12.808
+        ],
+        "max": [
+          39.2,
+          4.2,
+          54.192
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-painted-counting-beads-1",
+      "front_pixels_per_stud": 7.07,
+      "front_surface_studs2": 1089.8358,
+      "outer_face_pixels_per_stud": {
+        "front": 7.07,
+        "back": 7.07,
+        "left": 7.07,
+        "right": 7.07,
+        "top": 7.288,
+        "bottom": 7.288
+      }
+    },
+    {
+      "label": "painted-counting-beads-2",
+      "triangles": 1320,
+      "bounding_box": {
+        "min": [
+          30.8,
+          -4.2,
+          32.808
+        ],
+        "max": [
+          39.2,
+          4.2,
+          53.192
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "7-painted-counting-beads-2",
+      "front_pixels_per_stud": 7.07,
+      "front_surface_studs2": 121.0929,
+      "outer_face_pixels_per_stud": {
+        "front": 7.07,
+        "back": 7.07,
+        "left": null,
+        "right": 7.07,
+        "top": 7.288,
+        "bottom": 7.288
+      }
+    }
+  ],
+  "total_triangles": 45104,
+  "bounding_box": {
+    "min": [
+      -72.30344,
+      -34.5,
+      0.0
+    ],
+    "max": [
+      72.30344,
+      30.36,
+      75.0
+    ]
+  },
+  "height": 75.0,
+  "requested_height": 75
+}

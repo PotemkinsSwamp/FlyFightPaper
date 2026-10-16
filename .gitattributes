@@ -1,0 +1,368 @@
+# Preserve deterministic source/build hashes across Windows checkouts.
+*.luau text eol=lf
+*.py text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.rbxlx text eol=lf
+*.rbxl binary
+*.obj text eol=lf
+*.mtl text eol=lf
+# These reviewed receipts and import fixtures pin original bytes, including CRLF.
+# Preserve their exact archived representation without changing canonical source rules.
+artifacts/working-fixes/toy-core-promotion-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/toy-core-native-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/toy-core-donor-decoder-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/regular-runtime-native-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/regular-runtime-populated-native-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/regular-runtime-root-correction-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/regular-runtime-root-native-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/toy-core-surface-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/TOY_CORE_SURFACE*OCT05* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/WORKING_RECONCILIATION*OCT05* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/REGULAR_RUNTIME*OCT05* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/TOY_PROMOTION_MILESTONE* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Imported geometry/proof digests bind exact upstream bytes, including newlines.
+assets/models/meshy*/finished/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/meshy*/collision/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/meshy*/finished444/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/meshy*/finished455/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/window442/window442-geometry.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/exterior443/oak-reviewed-recipe.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/chalkboard460/*-geometry.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/chalkboard460/roblox462-recipe.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/toykit461/*-geometry.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/toykit461/before-arch465/*-geometry.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/toy469/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/toy471/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/layouts/toy466/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/layouts/toy477/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/gable473/**/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/gable478/**/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/gable483/**/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/meshy467/finished/**/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/layouts/gable475/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/layouts/gable478/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/meshy493/**/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/meshy504/**/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/carton552/*.mesh.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/tunnel565/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+assets/models/ceiling570/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Frozen execution receipts and authored channel pins retain their tested bytes.
+artifacts/working-fixes/city-startup/** -text
+artifacts/working-fixes/empty-overlap/** -text
+assets/models/remaining-city-polish/** -text
+assets/models/airframe-finish-current/** -text
+artifacts/working-fixes/static-oak/saved-geometry/** -text
+artifacts/working-fixes/bot-query-index/** -text
+artifacts/working-fixes/airframe-current/** -text
+artifacts/working-fixes/blocked-pair/** -text
+artifacts/working-fixes/craft-joinery-current/** -text
+assets/models/craft-joinery-current/** -text
+tools/restore_craft_joinery_current.luau -text
+tools/prepare_craft_joinery_current.py -text
+evidence/CRAFT_JOINERY_CURRENT_INTEGRATION.md -text
+assets/models/weapon-ammo-current/** -text
+assets/models/toy-construction-current/** -text
+artifacts/working-fixes/weapon-ammo-finish/** -text
+
+assets/models/toy-construction-remaining/** -text
+artifacts/working-fixes/flight-geometry-phase/** -text
+
+artifacts/working-fixes/bot-competence-current/** -text
+# October 6 scoped native receipts and overlays bind exact tested bytes.
+artifacts/working-fixes/wind-validation-batch-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/wind-validation-native-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/wind-receipt-review-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/native-query-attribution-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/native-query-attribution-run-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/native-query-attribution-findings-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/native-query-attribution-independent-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/WIND_VALIDATION*OCT05* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/NATIVE_QUERY_ATTRIBUTION*OCT06* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# The executed builder's pinned bytes include a final blank line.
+artifacts/working-fixes/wind-validation-native-oct05/prepare.py -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+evidence/WIND_VALIDATION_INSTALLED_OCT06.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Frozen east district geometry and reviewed receipts preserve exact input bytes.
+artifacts/working-fixes/east-district-bearing-oct05/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/east-district-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/EAST_DISTRICT*OCT06* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Accepted collision/city batch binds frozen native exports and exact inverse bytes.
+artifacts/working-fixes/flight-slide-recovery-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/flight-slide-recovery-native-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/flight-slide-native-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/flight-offset-prevention-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/flight-offset-prevention-native-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/east-district-integration-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/east-district-native-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/book-bank-current-contract-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/oct06-batch-promotion-prep/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/oct06-batch-install-review/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/OCT06_* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/FLIGHT_SLIDE*OCT06* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve the already executed and hashed commands' exact terminal bytes.
+artifacts/working-fixes/book-bank-current-contract-oct06/receipts/Generated_ack.luau -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/book-bank-current-contract-oct06/receipts/Generated_original_cleanup.luau -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/east-district-integration-oct06/transport-native-correction/Generated_export_1.luau -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/east-district-integration-oct06/transport-native-correction/Generated_export_2.luau -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/east-district-integration-oct06/transport-native-correction/Generated_export_3.luau -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/flight-slide-native-review-oct06/INDEPENDENT_REVIEW.md -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+# Frozen October 6 model recipes, scoped native receipts and uninstalled candidates.
+artifacts/working-fixes/runtime-cost-next-batch-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/runtime-phase-followup-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/runtime-pose-result-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-design-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-finish-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-finish-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-import-inspection-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-integration-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-integration-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-integration-correction-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-correction-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-bank-watch-root-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-bank-watch-review-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-bank-watch-correction-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-native-inspection-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve upstream reference whitespace and unified-diff context markers as received.
+artifacts/working-fixes/elevated-cardboard-import-inspection-oct06/assets.md -text whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-integration-correction-oct06/correction.patch -text whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+artifacts/working-fixes/elevated-cardboard-integration-oct06/source.patch -text whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/ASSET_ELEVATED*OCT06.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/elevated-cardboard-native-proof-prep-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-native-proof-review-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-native-proof-run-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-native-proof-actual-review-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-bank-watch-correction-review-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-bound-integration-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-bound-review-oct06/** -text
+
+artifacts/working-fixes/runtime-phase-followup-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-bound-native-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-bound-native-run-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-bound-staging-prep-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-bound-staging-review-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-donor-promotion-prep-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-staging-cost-review-oct06/** -text
+
+artifacts/working-fixes/current-runtime-observation-prep-oct06/** -text
+
+artifacts/working-fixes/current-runtime-observation-review-oct06/** -text
+
+artifacts/working-fixes/current-runtime-observation-run-oct06/** -text
+
+artifacts/working-fixes/current-runtime-observation-actual-review-oct06/** -text
+
+artifacts/working-fixes/current-runtime-cost-diagnosis-oct06/** -text
+
+artifacts/working-fixes/current-craft-bank-admission-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-book-failure-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-native-xml-prep-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-native-xml-run-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-native-xml-correction-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-native-xml-correction-run-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-final-promotion-prep-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-bound-actual-review-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-actual-donor-review-oct06/** -text
+
+artifacts/working-fixes/current-runtime-cleanup-recovery-prep-oct06/** -text
+
+artifacts/working-fixes/saved-chalkboard-loading-oct06/** -text
+
+artifacts/working-fixes/saved-chalkboard-loading-mounted-correction-oct06/** -text
+
+artifacts/working-fixes/saved-chalkboard-native-run-oct06/** -text
+
+artifacts/working-fixes/map-final-preload-oct06/** -text
+
+artifacts/working-fixes/final-map-chalk-independent-review-oct06/** -text
+
+artifacts/working-fixes/combined-working-promotion-prep-oct06/** -text
+
+artifacts/working-fixes/current-release-coverage-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-scene-callback-correction-oct06-run/** -text
+
+artifacts/working-fixes/elevated-cardboard-scene-callback-correction-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-scene-contract-oct06-run/** -text
+
+artifacts/working-fixes/elevated-cardboard-scene-contract-oct06/** -text
+
+artifacts/working-fixes/final-map-chalk-current-editor-tests-oct06-run/** -text
+
+artifacts/working-fixes/final-map-chalk-current-editor-tests-oct06/** -text
+
+artifacts/working-fixes/final-map-chalk-source-correction-oct06/** -text
+
+artifacts/working-fixes/final-map-chalk-source-tests-oct06-run/** -text
+
+artifacts/working-fixes/final-map-chalk-source-tests-oct06/** -text
+
+artifacts/working-fixes/loading-current-promotion-review-oct06/** -text
+
+artifacts/working-fixes/loading-only-working-promotion-oct06/** -text
+
+artifacts/working-fixes/saved-chalkboard-current-editor-xml-oct06-run/** -text
+
+artifacts/working-fixes/saved-chalkboard-current-editor-xml-oct06/** -text
+
+artifacts/working-fixes/saved-chalkboard-geometry-admission-correction-oct06-run/** -text
+
+artifacts/working-fixes/saved-chalkboard-geometry-admission-correction-oct06/** -text
+
+artifacts/working-fixes/saved-chalkboard-geometry-admission-lookup-fix-oct06-run/** -text
+
+artifacts/working-fixes/saved-chalkboard-geometry-admission-lookup-fix-oct06/** -text
+
+artifacts/working-fixes/saved-chalkboard-native-literal-admission-oct06-run/** -text
+
+artifacts/working-fixes/saved-chalkboard-native-literal-admission-oct06/** -text
+
+artifacts/working-fixes/saved-chalkboard-native-xml-probe-oct06/** -text
+
+artifacts/working-fixes/scene-batch-cost-review-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-current-editor-scene-oct06/** -text
+
+artifacts/working-fixes/elevated-cardboard-current-editor-scene-oct06-run/** -text
+
+artifacts/working-fixes/current-elevated-scene-actual-review-oct06/** -text
+
+artifacts/working-fixes/current-facade-cost-review-oct06/** -text
+
+artifacts/working-fixes/combined-working-final-promotion-oct06/** -text
+
+artifacts/working-fixes/combined-working-live-sync-oct06/** -text
+
+artifacts/working-fixes/combined-working-live-sync-oct06-run/** -text
+
+artifacts/working-fixes/current-bot-pursuit-read-audit-oct06/** -text
+
+artifacts/working-fixes/current-combined-install-actual-review-oct06/** -text
+
+artifacts/working-fixes/current-elevated-physical-review-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-correction-oct06/** -text
+
+artifacts/working-fixes/current-window-depth-audit-oct06/** -text
+
+artifacts/working-fixes/current-source-preparation-repair-oct06/** -text
+
+tools/prepare_working_batch_sources.py -text
+
+artifacts/working-fixes/elevated-silhouette-native-prep-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-native-closure-correction-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-native-command-syntax-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-native-run-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-integration-map-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-integration-prep-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-integration-run-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-data-closure-review-oct06/** -text
+
+artifacts/working-fixes/elevated-silhouette-live-promotion-prep-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/elevated-silhouette-live-namespace-correction-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/elevated-silhouette-live-promotion-review-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/elevated-silhouette-live-promotion-run-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/revised-elevated-foreground-observer-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/city-template-startup-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/city-template-startup-native-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/city-template-startup-normal-play-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-bridge-frame-admission-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-bridge-frame-native-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-bridge-frame-review-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-bridge-frame-normal-play-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-bridge-frame-admission-oct06/candidate.patch -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-ready-frame-cost-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-ready-frame-labels-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-ready-frame-label-native-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-ready-frame-normal-play-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-ready-frame-decision-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-play-row-stability-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-normal-flight-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-native-input-capture-probe-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-ready-frame-labels-oct06/candidate.patch -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/focused-belfry-finish-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/focused-belfry-independent-review-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/focused-belfry-joinery-correction-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/current-belfry-native-review-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/focused-gallery-winding-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/focused-belfry-integration-prep-oct06/** -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+# These native comparisons and captured fixtures bind exact original bytes.
+artifacts/working-fixes/current-render-probe-review-oct06/** -text
+artifacts/working-fixes/current-desk-launch-diagnosis-oct06/** -text
+artifacts/working-fixes/current-focused-landmark-normal-play-oct06/** -text
+artifacts/working-fixes/current-focused-landmark-pixels-oct06/** -text
+artifacts/working-fixes/current-world-refresh-cost-oct06/** -text
+artifacts/working-fixes/current-hud-projection-cost-oct06/** -text
+artifacts/working-fixes/current-flight-performance-native-oct06/** -text
+
+# Frozen callback candidates preserve exact native-tested bytes.
+artifacts/working-fixes/current-client-callback-batch-oct06/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+artifacts/working-fixes/focused-belfry-root-crop-correction-oct06/** -text
+
+artifacts/working-fixes/current-belfry-crop-integration-oct06/** -text
+
+artifacts/working-fixes/focused-belfry-native-readability-oct06/** -text
+
+artifacts/working-fixes/current-hud-visibility-attribution-oct06/** -text
+
+artifacts/working-fixes/current-window-depth-current-review-oct06/** -text
+assets/models/bell-tower/hero.blend filter=lfs diff=lfs merge=lfs -text

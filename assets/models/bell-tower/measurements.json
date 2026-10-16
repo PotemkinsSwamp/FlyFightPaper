@@ -1,0 +1,447 @@
+{
+  "axes": "studs, Z up, front -Y, base centre at origin",
+  "overall_bounds": {
+    "min": [
+      -103.0,
+      -103.0,
+      0.0
+    ],
+    "max": [
+      103.0,
+      103.0,
+      430.0
+    ]
+  },
+  "outer_footprint": [
+    206.0,
+    206.0
+  ],
+  "legs": [
+    {
+      "centre": [
+        -83.0,
+        -83.0
+      ],
+      "footprint": [
+        40.0,
+        40.0
+      ]
+    },
+    {
+      "centre": [
+        -83.0,
+        83.0
+      ],
+      "footprint": [
+        40.0,
+        40.0
+      ]
+    },
+    {
+      "centre": [
+        83.0,
+        -83.0
+      ],
+      "footprint": [
+        40.0,
+        40.0
+      ]
+    },
+    {
+      "centre": [
+        83.0,
+        83.0
+      ],
+      "footprint": [
+        40.0,
+        40.0
+      ]
+    }
+  ],
+  "brick_leg_top": 110,
+  "big_leg_bricks": [
+    {
+      "centre_xy": [
+        -83,
+        -83
+      ],
+      "course": 1,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.8
+      ],
+      "z": [
+        5,
+        39.8
+      ]
+    },
+    {
+      "centre_xy": [
+        -83,
+        83
+      ],
+      "course": 1,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.8
+      ],
+      "z": [
+        5,
+        39.8
+      ]
+    },
+    {
+      "centre_xy": [
+        83,
+        -83
+      ],
+      "course": 1,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.8
+      ],
+      "z": [
+        5,
+        39.8
+      ]
+    },
+    {
+      "centre_xy": [
+        83,
+        83
+      ],
+      "course": 1,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.8
+      ],
+      "z": [
+        5,
+        39.8
+      ]
+    },
+    {
+      "centre_xy": [
+        -83,
+        -83
+      ],
+      "course": 2,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.6
+      ],
+      "z": [
+        40.2,
+        74.8
+      ]
+    },
+    {
+      "centre_xy": [
+        -83,
+        83
+      ],
+      "course": 2,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.6
+      ],
+      "z": [
+        40.2,
+        74.8
+      ]
+    },
+    {
+      "centre_xy": [
+        83,
+        -83
+      ],
+      "course": 2,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.6
+      ],
+      "z": [
+        40.2,
+        74.8
+      ]
+    },
+    {
+      "centre_xy": [
+        83,
+        83
+      ],
+      "course": 2,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.6
+      ],
+      "z": [
+        40.2,
+        74.8
+      ]
+    },
+    {
+      "centre_xy": [
+        -83,
+        -83
+      ],
+      "course": 3,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.8
+      ],
+      "z": [
+        75.2,
+        110
+      ]
+    },
+    {
+      "centre_xy": [
+        -83,
+        83
+      ],
+      "course": 3,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.8
+      ],
+      "z": [
+        75.2,
+        110
+      ]
+    },
+    {
+      "centre_xy": [
+        83,
+        -83
+      ],
+      "course": 3,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.8
+      ],
+      "z": [
+        75.2,
+        110
+      ]
+    },
+    {
+      "centre_xy": [
+        83,
+        83
+      ],
+      "course": 3,
+      "size_xyz": [
+        40.0,
+        40.0,
+        34.8
+      ],
+      "z": [
+        75.2,
+        110
+      ]
+    }
+  ],
+  "bricks_per_leg": 3,
+  "brick_sequence": [
+    "red",
+    "blue",
+    "red"
+  ],
+  "leg_brick_footprint": [
+    40,
+    40
+  ],
+  "arch_jambs_align_with_leg_inner_faces": true,
+  "arch_opening_width": 126.0,
+  "arch_centre_clear_height": 173.0,
+  "arch_spring_height": 110.0,
+  "arch_straight_jamb_height_above_legs": 0.0,
+  "arch_radius": 63.0,
+  "arch_shape": "semicircle on all four sides",
+  "cardboard_above_arch_apex": 15.0,
+  "arch_crown_height_on_four_sides": [
+    173.0,
+    173.0,
+    173.0,
+    173.0
+  ],
+  "arch_through_X_and_Y_clear": true,
+  "belfry_post_bottom": 278.0,
+  "belfry_ceiling": 340.0,
+  "belfry_clear_width": 70.0,
+  "belfry_clear_height_below_bell": 22.0,
+  "belfry_through_X_and_Y_clear_below_bell": true,
+  "bell_lowest_point": 300.0,
+  "bell_size_xyz": [
+    46.0,
+    46.0,
+    48.0
+  ],
+  "roof_base": 340,
+  "roof_peak": 398,
+  "roof_footprint": [
+    128,
+    128
+  ],
+  "clock_body_size_xyz": [
+    142.0,
+    142.0,
+    58.0
+  ],
+  "clock_body_z": [
+    200,
+    258
+  ],
+  "clock_seat_diameter": 50,
+  "clock_positions": [
+    {
+      "side": "front",
+      "centre": [
+        0.0,
+        -72.35,
+        229.0
+      ],
+      "outward": [
+        0.0,
+        -1.0,
+        0
+      ],
+      "rotation_z_degrees": 0
+    },
+    {
+      "side": "right",
+      "centre": [
+        72.35,
+        -0.0,
+        229.0
+      ],
+      "outward": [
+        1.0,
+        -0.0,
+        0
+      ],
+      "rotation_z_degrees": 90
+    },
+    {
+      "side": "back",
+      "centre": [
+        0.0,
+        72.35,
+        229.0
+      ],
+      "outward": [
+        0.0,
+        1.0,
+        0
+      ],
+      "rotation_z_degrees": 180
+    },
+    {
+      "side": "left",
+      "centre": [
+        -72.35,
+        0.0,
+        229.0
+      ],
+      "outward": [
+        -1.0,
+        0.0,
+        0
+      ],
+      "rotation_z_degrees": 270
+    }
+  ],
+  "arch_block_size_xyz": [
+    206,
+    206,
+    78
+  ],
+  "arch_block_z": [
+    110,
+    188
+  ],
+  "belfry_outer_footprint": [
+    118,
+    118
+  ],
+  "belfry_post_size_xy": [
+    24,
+    24
+  ],
+  "upper_band_footprint": [
+    118,
+    118
+  ],
+  "upper_red_corner_footprint": [
+    24,
+    24
+  ],
+  "upper_red_corner_centres_xy": [
+    [
+      -47,
+      -47
+    ],
+    [
+      -47,
+      47
+    ],
+    [
+      47,
+      -47
+    ],
+    [
+      47,
+      47
+    ]
+  ],
+  "lower_red_corner_footprint": [
+    40,
+    40
+  ],
+  "lower_red_corner_centres_xy": [
+    [
+      -83,
+      -83
+    ],
+    [
+      -83,
+      83
+    ],
+    [
+      83,
+      -83
+    ],
+    [
+      83,
+      83
+    ]
+  ],
+  "lower_blue_visible_span": 126,
+  "clock_base_board_footprint": [
+    160,
+    160
+  ],
+  "cone_base_width": 27.0,
+  "cone_z": [
+    398,
+    428
+  ],
+  "cone_height_width_ratio": 1.11111,
+  "finial_radius": 2.2,
+  "bell_hanger_top": 348.0,
+  "total_height": 430.0,
+  "flight_volume_ray_checks": 2500,
+  "ground_touching_components": 4
+}

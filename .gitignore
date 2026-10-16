@@ -1,0 +1,33 @@
+# Secrets and local caches.
+.env
+.env.*
+!.env.example
+*credentials*.json
+auth.json
+*.key
+*.pem
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+.codex/log/
+.codex/cache/
+state/*.local.md
+*.tmp
+
+# Local Studio locks and recovery archives
+*.rbxl.lock
+*.rbxlx.lock
+
+
+captures/
+
+# Rug tile pictures are drawn by tools/rug.py; only their upload records are kept.
+assets/rug/tiles/
+assets/rug/tiles-v3/
+assets/rug/tiles-v4/
+
+# Scratch copy of the duct model for live preview in Studio
+src/generated/DuctsPreview.luau
+src/generated/TownPreview.luau
+assets/rug/replan-proto.json

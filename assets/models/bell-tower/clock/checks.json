@@ -1,0 +1,251 @@
+{
+  "front": "-Y",
+  "axes": "Blender studs: X right, Y depth, Z up",
+  "pivot": [
+    0,
+    0,
+    0
+  ],
+  "rotation_axis": [
+    0,
+    1,
+    0
+  ],
+  "shared_texture_set": [
+    "clock-color.png",
+    "clock-normal.png",
+    "clock-roughness.png"
+  ],
+  "texture_size": 2048,
+  "atlas_uv": {
+    "uv_islands": 17,
+    "uv_coverage": 0.4956,
+    "uv_overlap": false,
+    "uv_padding_pixels": 4
+  },
+  "clock_positions": [
+    {
+      "side": "front",
+      "centre": [
+        0.0,
+        -72.35,
+        229.0
+      ],
+      "outward": [
+        0.0,
+        -1.0,
+        0
+      ],
+      "rotation_z_degrees": 0
+    },
+    {
+      "side": "right",
+      "centre": [
+        72.35,
+        -0.0,
+        229.0
+      ],
+      "outward": [
+        1.0,
+        -0.0,
+        0
+      ],
+      "rotation_z_degrees": 90
+    },
+    {
+      "side": "back",
+      "centre": [
+        0.0,
+        72.35,
+        229.0
+      ],
+      "outward": [
+        0.0,
+        1.0,
+        0
+      ],
+      "rotation_z_degrees": 180
+    },
+    {
+      "side": "left",
+      "centre": [
+        -72.35,
+        0.0,
+        229.0
+      ],
+      "outward": [
+        -1.0,
+        0.0,
+        0
+      ],
+      "rotation_z_degrees": 270
+    }
+  ],
+  "exported_hand_pose": "both straight up at 12",
+  "rendered_hand_pose": "10:10",
+  "meshes": [
+    {
+      "label": "clock-face",
+      "triangles": 692,
+      "bounding_box": {
+        "min": [
+          -25.0,
+          -2.47,
+          -25.0
+        ],
+        "max": [
+          25.0,
+          1.0,
+          25.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 7,
+      "uv_coverage": 0.4834,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 3727.5149,
+      "front_pixels_per_stud": 16.125,
+      "size_xyz": [
+        50.0,
+        3.47,
+        50.0
+      ],
+      "box_centre": [
+        0.0,
+        -0.735,
+        0.0
+      ],
+      "pivot_offset_xyz": [
+        -0.0,
+        0.735,
+        -0.0
+      ],
+      "axis": [
+        -0.0,
+        -0.0
+      ],
+      "axis_coordinates": "X,Z offset from mesh box centre to clock pivot",
+      "rotation_axis": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "label": "clock-hour",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          -1.4,
+          -1.595,
+          -1.4
+        ],
+        "max": [
+          1.4,
+          -1.245,
+          16.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.0065,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 45.92,
+      "front_pixels_per_stud": 16.126,
+      "size_xyz": [
+        2.8,
+        0.35,
+        17.4
+      ],
+      "box_centre": [
+        0.0,
+        -1.42,
+        7.3
+      ],
+      "pivot_offset_xyz": [
+        -0.0,
+        1.42,
+        -7.3
+      ],
+      "axis": [
+        -0.0,
+        -7.3
+      ],
+      "axis_coordinates": "X,Z offset from mesh box centre to clock pivot",
+      "rotation_axis": [
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "label": "clock-minute",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          -0.95,
+          -2.03,
+          -1.4
+        ],
+        "max": [
+          0.95,
+          -1.71,
+          20.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.0056,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 38.7599,
+      "front_pixels_per_stud": 16.126,
+      "size_xyz": [
+        1.89999,
+        0.32,
+        21.4
+      ],
+      "box_centre": [
+        0.0,
+        -1.87,
+        9.3
+      ],
+      "pivot_offset_xyz": [
+        -0.0,
+        1.87,
+        -9.3
+      ],
+      "axis": [
+        -0.0,
+        -9.3
+      ],
+      "axis_coordinates": "X,Z offset from mesh box centre to clock pivot",
+      "rotation_axis": [
+        0,
+        1,
+        0
+      ]
+    }
+  ],
+  "total_triangles": 724
+}

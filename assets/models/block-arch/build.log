@@ -1,0 +1,54 @@
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+BLOCKS baking 1-blue-block-pier
+BLOCKS ray baking soft ambient occlusion for blue-block-pier
+D:\FlyFightPaper\tools\art\blocks.py:1243: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\block-arch\\parts\\pending-1-blue-block-pier.fbx'
+export finished in 0.0064 sec.
+FBX version: 7400
+BLOCKS baking 2-red-block-pier
+BLOCKS ray baking soft ambient occlusion for red-block-pier
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\block-arch\\parts\\pending-2-red-block-pier.fbx'
+export finished in 0.0063 sec.
+FBX version: 7400
+BLOCKS baking 3-curved-wood-arch-sector-1
+BLOCKS ray baking soft ambient occlusion for curved-wood-arch-sector-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\block-arch\\parts\\pending-3-curved-wood-arch-sector-1.fbx'
+export finished in 0.0054 sec.
+FBX version: 7400
+BLOCKS baking 4-curved-wood-arch-sector-2
+BLOCKS ray baking soft ambient occlusion for curved-wood-arch-sector-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\block-arch\\parts\\pending-4-curved-wood-arch-sector-2.fbx'
+export finished in 0.0052 sec.
+FBX version: 7400
+BLOCKS baking 5-curved-wood-arch-sector-3
+BLOCKS ray baking soft ambient occlusion for curved-wood-arch-sector-3
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\block-arch\\parts\\pending-5-curved-wood-arch-sector-3.fbx'
+export finished in 0.0054 sec.
+FBX version: 7400
+BLOCKS baking 6-curved-wood-arch-sector-4
+BLOCKS ray baking soft ambient occlusion for curved-wood-arch-sector-4
+D:\FlyFightPaper\tools\art\blocks.py:739: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+D:\FlyFightPaper\tools\art\blocks.py:749: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\block-arch\\parts\\pending-6-curved-wood-arch-sector-4.fbx'
+export finished in 0.0233 sec.
+FBX version: 7400
+BLOCKS rendering concept camera
+BLOCKS rendering opening-front
+BLOCKS rendering opening-back
+Info: Saved as "pending-hero.blend"
+BLOCKS PASS block-arch 6 pieces, 5952 triangles
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

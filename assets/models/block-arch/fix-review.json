@@ -1,0 +1,9 @@
+{
+  "rounds": 3,
+  "changed": "Two separate painted wooden piers support a genuinely curved, rounded arch; projecting rounded window frame, thicker door trim, grain and contact shading. A full 160 x 86 road rectangle is clear.",
+  "still_off": "Taller envelope 160 rather than 130, permitted by the fix brief. Wood wear is smoother; faint seams remain on the arch top at export cuts.",
+  "pieces": 6,
+  "triangles": 5952,
+  "lowest_front_pixels_per_stud": 7.963,
+  "compare": "assets\\models\\block-arch\\compare.png"
+}

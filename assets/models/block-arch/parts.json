@@ -1,0 +1,249 @@
+{
+  "source": "tools/art/blocks.py",
+  "front": "-y",
+  "up": "z",
+  "units": "studs",
+  "piece_count": 6,
+  "map_size": [
+    1024,
+    1024
+  ],
+  "normal_convention": "OpenGL +Y",
+  "uv_reuse": "Identical material faces share planar charts at eight pixels per stud",
+  "opening_checks": [
+    {
+      "label": "road-minimum-clearance",
+      "x": [
+        -80,
+        80
+      ],
+      "z": [
+        0,
+        86
+      ],
+      "shape": "rectangle",
+      "clear_front_and_back_rays": 1250
+    }
+  ],
+  "pieces": [
+    {
+      "label": "blue-block-pier",
+      "triangles": 1384,
+      "bounding_box": {
+        "min": [
+          -130.0,
+          -18.1,
+          0.0
+        ],
+        "max": [
+          -80.0,
+          15.0,
+          96.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "1-blue-block-pier",
+      "front_pixels_per_stud": 7.963,
+      "front_surface_studs2": 6160.5644,
+      "outer_face_pixels_per_stud": {
+        "front": 7.963,
+        "back": 7.977,
+        "left": 7.944,
+        "right": null,
+        "top": 7.934,
+        "bottom": 7.934
+      }
+    },
+    {
+      "label": "red-block-pier",
+      "triangles": 1304,
+      "bounding_box": {
+        "min": [
+          80.0,
+          -26.0,
+          0.0
+        ],
+        "max": [
+          130.0,
+          15.0,
+          96.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "2-red-block-pier",
+      "front_pixels_per_stud": 7.977,
+      "front_surface_studs2": 6319.9012,
+      "outer_face_pixels_per_stud": {
+        "front": 7.977,
+        "back": 7.977,
+        "left": null,
+        "right": 7.962,
+        "top": 7.956,
+        "bottom": 7.956
+      }
+    },
+    {
+      "label": "curved-wood-arch-sector-1",
+      "triangles": 880,
+      "bounding_box": {
+        "min": [
+          -129.98164,
+          -15.0,
+          96.0
+        ],
+        "max": [
+          -65.0,
+          15.0,
+          151.42067
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "3-curved-wood-arch-sector-1",
+      "front_pixels_per_stud": 7.988,
+      "front_surface_studs2": 2347.5717,
+      "outer_face_pixels_per_stud": {
+        "front": 7.988,
+        "back": 7.988,
+        "left": 7.348,
+        "right": null,
+        "top": 7.405,
+        "bottom": 7.78
+      }
+    },
+    {
+      "label": "curved-wood-arch-sector-2",
+      "triangles": 752,
+      "bounding_box": {
+        "min": [
+          -65.0,
+          -15.0,
+          113.48529
+        ],
+        "max": [
+          0.0,
+          15.0,
+          160.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "4-curved-wood-arch-sector-2",
+      "front_pixels_per_stud": 7.99,
+      "front_surface_studs2": 2250.0039,
+      "outer_face_pixels_per_stud": {
+        "front": 7.99,
+        "back": 7.99,
+        "left": 8.0,
+        "right": null,
+        "top": 7.942,
+        "bottom": 7.883
+      }
+    },
+    {
+      "label": "curved-wood-arch-sector-3",
+      "triangles": 752,
+      "bounding_box": {
+        "min": [
+          0.0,
+          -15.0,
+          113.48529
+        ],
+        "max": [
+          65.0,
+          15.0,
+          160.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "5-curved-wood-arch-sector-3",
+      "front_pixels_per_stud": 7.99,
+      "front_surface_studs2": 2250.0039,
+      "outer_face_pixels_per_stud": {
+        "front": 7.99,
+        "back": 7.99,
+        "left": null,
+        "right": 8.0,
+        "top": 7.942,
+        "bottom": 7.883
+      }
+    },
+    {
+      "label": "curved-wood-arch-sector-4",
+      "triangles": 880,
+      "bounding_box": {
+        "min": [
+          65.0,
+          -15.0,
+          96.0
+        ],
+        "max": [
+          129.98164,
+          15.0,
+          151.42067
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "6-curved-wood-arch-sector-4",
+      "front_pixels_per_stud": 7.988,
+      "front_surface_studs2": 2347.5717,
+      "outer_face_pixels_per_stud": {
+        "front": 7.988,
+        "back": 7.988,
+        "left": null,
+        "right": 7.348,
+        "top": 7.405,
+        "bottom": 7.78
+      }
+    }
+  ],
+  "total_triangles": 5952,
+  "bounding_box": {
+    "min": [
+      -130.0,
+      -26.0,
+      0.0
+    ],
+    "max": [
+      130.0,
+      15.0,
+      160.0
+    ]
+  },
+  "height": 160.0,
+  "requested_height": 160
+}

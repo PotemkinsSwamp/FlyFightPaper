@@ -1,0 +1,140 @@
+Bell tower design A: round 4, reference corrections and separate animated-clock asset
+
+TIP: red cone is 27 across and 30 tall, from 398 to 428.
+Small gold ball has radius 2.2, centre at 427.8 and top at 430.
+CORNERS: upper red bricks are 24 square, centred at (+/-47, +/-47), directly under the posts.
+The upper blue band is 118 square, with outer faces flush with those red corners.
+Lower red corners are 40 square, centred at (+/-83, +/-83), flush with the 206-square arch block.
+ARCH: 206 square, exactly aligned with the 40-wide brick bodies' outer faces.
+Opening is 126 wide: a true radius-63 semicircle springing at the leg tops, 110, with apex 173.
+No straight jambs above the legs. The 110-188 block leaves 15 of cardboard above the apex.
+The same curve is measured on all four sides. Corner tape retained.
+LEGS: three large 40-square bricks per leg, red/blue/red, about 35 tall, on a 5-tall green plate.
+Each exposed outer brick face has four large studs. The two joins also have four top studs.
+Clock body is 142 square at 200-258. Painted clocks removed; four plain round seats added.
+Belfry is 278-340 (62 tall), with 118 outer footprint and 70 opening, as Alan corrected.
+BELL: 46 across, 48 tall, low point 300, polished warm gold with roughness 0.14 and metallic 0.85.
+Its hanger reaches 348, inside the roof; the visible shell ends at 338, beneath the ceiling.
+Roof is 128 square, 340-398. Stronger irregular paper folds on the roof and kraft panels are baked into the maps.
+One separate clock has two independently turning hands. All four are displayed at 10:10.
+
+Size conflicts resolved using Alan's latest instruction:
+Cone base 9.33333 -> 27; cone height 28 -> 30, as Alan measured from front-a.png for round 4.
+Arch spring 124 -> 110; apex 155 -> 173; both radii are 63.
+Bell 36 x 36 x 40 -> 46 x 46 x 48, with its lowest point retained at 300.
+Upper band 150 -> 118, explicitly approved by Alan and updated in the brief.
+
+The lower visible blue run is 126 between the flush 40-wide corner bricks;
+its old 160-wide run overlapped those corners. The 160-square clock base board is retained.
+
+Files written:
+tools/art/bell_tower.py
+assets/models/bell-tower/bell-tower.blend (editable material source)
+assets/models/bell-tower/hero.blend (packed exported assembly)
+assets/models/bell-tower/parts.json
+assets/models/bell-tower/measurements.json
+assets/models/bell-tower/report.txt
+
+assets/models/bell-tower/clock/clock-source.blend
+assets/models/bell-tower/clock/clock.blend
+assets/models/bell-tower/clock/checks.json
+assets/models/bell-tower/clock/clock-face.fbx, clock-hour.fbx, clock-minute.fbx
+The three clock meshes share clock-color.png, clock-normal.png, clock-roughness.png.
+
+Each prefix below has parts/<prefix>.fbx, <prefix>-color.png,
+<prefix>-normal.png and <prefix>-roughness.png. Arch and clock-body maps are 4096 x 4096;
+all other tower and clock maps are 2048 x 2048.
+
+Piece list (triangles; front pixels per stud):
+1-legs-bottom-front-left: 1448; 12.647
+2-legs-bottom-front-right: 1448; 13.169
+3-legs-bottom-back-left: 1448; 12.927
+4-legs-bottom-back-right: 1448; 14.367
+5-legs-middle-front-left: 1772; 12.894
+6-legs-middle-front-right: 1772; 15.888
+7-legs-middle-back-left: 1772; 13.892
+8-legs-middle-back-right: 1772; 13.476
+9-legs-top-front-left: 1404; 16.59
+10-legs-top-front-right: 1404; 16.19
+11-legs-top-back-left: 1404; 16.019
+12-legs-top-back-right: 1404; 16.347
+13-arches-front-left: 404; 17.317
+14-arches-front-right: 404; 17.209
+15-arches-back-left: 404; 17.209
+16-arches-back-right: 404; 17.573
+17-arch-board-front-left: 16; 9.796
+18-arch-board-front-right: 16; 9.796
+19-arch-board-back-left: 16; 9.796
+20-arch-board-back-right: 16; 9.796
+21-clock-base-front-left: 16; 12.612
+22-clock-base-front-right: 16; 12.612
+23-clock-base-back-left: 16; 12.612
+24-clock-base-back-right: 16; 12.612
+25-lower-bricks-front-left: 1180; 14.858
+26-lower-bricks-front-right: 1180; 15.04
+27-lower-bricks-back-left: 1180; 15.04
+28-lower-bricks-back-right: 1180; 15.166
+29-clock-body: 1052; 11.88
+30-upper-bricks-front-left: 700; 20.725
+31-upper-bricks-front-right: 700; 19.993
+32-upper-bricks-back-left: 700; 20.502
+33-upper-bricks-back-right: 700; 20.724
+34-posts-front-left: 176; 16.207
+35-posts-front-right: 176; 16.207
+36-posts-back-left: 176; 16.207
+37-posts-back-right: 176; 16.207
+38-bell: 3016; 17.422
+39-roof-front-left: 32; 13.951
+40-roof-front-right: 32; 13.951
+41-roof-back-left: 32; 13.951
+42-roof-back-right: 32; 13.951
+43-topper: 1054; 37.61
+Tower: 33714 triangles, 43 pieces.
+Clock meshes (triangles, measured size XYZ, pivot offset XYZ from box centre):
+clock-face: 692; [50.0, 3.47, 50.0]; [-0.0, 0.735, -0.0]
+clock-hour: 16; [2.8, 0.35, 17.4]; [-0.0, 1.42, -7.3]
+clock-minute: 16; [1.9, 0.32, 21.4]; [-0.0, 1.87, -9.3]
+Total with FOUR installed clocks: 36610 triangles.
+Limit: 12000 triangles per piece; 48000 total.
+Every piece exceeds Gateway's highest density (8.704 pixels/stud).
+
+Measured dimensions, studs (Z up, base centre at origin, front -Y):
+Four ground feet: 40 x 40, centred at (+/-83, +/-83). Only these touch ground.
+Structural footprint: 206 x 206. Brick leg tops: 110.
+Side stud ends project 1.9 beyond the brick bodies; the arch is flush with the bodies.
+Arches: 126 wide, radius 63, spring at 110, centre clearance 173 on every side.
+Straight flight through the middle in X and Y is clear.
+Clock body: 142 x 142 x 58, from 200 to 258. Four 50-diameter mounting seats.
+Four clock centre points and outward facings: [{'side': 'front', 'centre': [0.0, -72.35, 229.0], 'outward': [0.0, -1.0, 0], 'rotation_z_degrees': 0}, {'side': 'right', 'centre': [72.35, -0.0, 229.0], 'outward': [1.0, -0.0, 0], 'rotation_z_degrees': 90}, {'side': 'back', 'centre': [0.0, 72.35, 229.0], 'outward': [0.0, 1.0, 0], 'rotation_z_degrees': 180}, {'side': 'left', 'centre': [-72.35, 0.0, 229.0], 'outward': [-1.0, 0.0, 0], 'rotation_z_degrees': 270}]
+Both exported hands point at 12; render instances show approximately 10:10.
+All origins are the dial centre; turn hands about the local Y axis.
+Belfry: yellow posts from 278.0 to 340.0.
+Belfry opening: 70.0 wide on every side; no glass or rails.
+Bell lowest point: 300.0. Clear height below bell: 22.0. Bell is its own piece.
+Bell size: [46.0, 46.0, 48.0].
+Roof seat: 340; blue roof peak: 398; base: 128 square; cone base: 27; cone top: 428; finial top: 430.
+
+Renders, all in assets/models/bell-tower/:
+render-front.png
+render-side.png
+render-threequarter.png
+render-arch-through-x.png
+render-arch-through-y.png
+render-belfry-through-x.png
+render-belfry-through-y.png
+compare.png (front-a.png beside the final front render)
+
+Verification: saved geometry/UVs/maps and every FBX reimport passed;
+2500 ray tests passed in the two required ground and belfry flight volumes.
+
+Reference check: final front comparison inspected side by side against front-a.png.
+Round-4 points checked: broad cone, semicircular arch, larger polished-gold bell and paper creases.
+Front camera uses the reference's 1672 x 941 frame and matches its tip and front-foot pixel heights.
+Front camera: {'position': [0, -1500, 215], 'target': [0, 0, 215], 'projection': 'PERSP', 'lens_mm': 63.5282, 'sensor_width_mm': 36.0, 'vertical_shift': -0.018296, 'resolution': [1672, 941], 'reference': 'assets/references/bell-tower/front-a.png', 'match': 'estimated frontal perspective; fitted reference tip and front-foot heights', 'reference_has_camera_metadata': False, 'reference_tip_y': 17, 'reference_front_foot_y': 894}
+Lighting uses warm area lights, a lower gold reflection softbox and soft ground shadows.
+Remaining visual differences against front-a.png:
+The reference has no camera metadata, so its original lens cannot be recovered exactly; the recorded lens is a fitted estimate.
+Surface wrinkles and tape folds are procedurally made and do not trace every crease in the picture.
+Tape and small roof folds are baked surface detail. Clock hands remain separate geometry.
+Large side studs stay geometric; tiny top-stud fillets are in the normal maps.
+No Roblox import or in-game check was run, as instructed.

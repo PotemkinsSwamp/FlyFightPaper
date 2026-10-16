@@ -1,0 +1,56 @@
+BLOCKS baking 1-left-house-1
+BLOCKS ray baking soft ambient occlusion for left-house-1
+D:\FlyFightPaper\tools\art\blocks.py:1282: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  material.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\abacus-hall\\parts\\pending-1-left-house-1.fbx'
+export finished in 0.0200 sec.
+FBX version: 7400
+BLOCKS baking 2-left-house-2
+BLOCKS ray baking soft ambient occlusion for left-house-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\abacus-hall\\parts\\pending-2-left-house-2.fbx'
+export finished in 0.0091 sec.
+FBX version: 7400
+BLOCKS baking 3-right-house-1
+BLOCKS ray baking soft ambient occlusion for right-house-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\abacus-hall\\parts\\pending-3-right-house-1.fbx'
+export finished in 0.0288 sec.
+FBX version: 7400
+BLOCKS baking 4-right-house-2
+BLOCKS ray baking soft ambient occlusion for right-house-2
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\abacus-hall\\parts\\pending-4-right-house-2.fbx'
+export finished in 0.0074 sec.
+FBX version: 7400
+BLOCKS baking 5-open-wood-abacus-frame
+BLOCKS ray baking soft ambient occlusion for open-wood-abacus-frame
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\abacus-hall\\parts\\pending-5-open-wood-abacus-frame.fbx'
+export finished in 0.0087 sec.
+FBX version: 7400
+BLOCKS baking 6-painted-counting-beads-1
+BLOCKS ray baking soft ambient occlusion for painted-counting-beads-1
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\abacus-hall\\parts\\pending-6-painted-counting-beads-1.fbx'
+export finished in 0.0147 sec.
+FBX version: 7400
+BLOCKS baking 7-painted-counting-beads-2
+BLOCKS ray baking soft ambient occlusion for painted-counting-beads-2
+D:\FlyFightPaper\tools\art\blocks.py:739: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world.use_nodes = True
+D:\FlyFightPaper\tools\art\blocks.py:749: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  mat.use_nodes = True
+
+FBX export starting... 'D:\\FlyFightPaper\\assets\\models\\abacus-hall\\parts\\pending-7-painted-counting-beads-2.fbx'
+export finished in 0.0142 sec.
+FBX version: 7400
+BLOCKS rendering concept camera
+BLOCKS rendering opening-front
+BLOCKS rendering opening-back
+Info: Saved as "pending-hero.blend"
+BLOCKS PASS abacus-hall 7 pieces, 45104 triangles
+Blender 5.1.1 (hash b70da489d7f4 built 2026-04-14 01:37:22)
+
+Blender quit

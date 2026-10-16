@@ -1,0 +1,2086 @@
+{
+  "source": "bell-tower.blend",
+  "pipeline": "hero.py capped cuts, UV checks, baking and FBX roundtrip",
+  "source_triangles": 41186,
+  "front": "-y",
+  "requested_height": 430.0,
+  "texture_size": 2048,
+  "bake_size": 4096,
+  "arch_texture_size": 4096,
+  "arch_bake_size": 8192,
+  "clock_body_texture_size": 4096,
+  "clock_body_bake_size": 8192,
+  "piece_count": 43,
+  "vertical_splits": "legs-bottom:xy,legs-middle:xy,legs-top:xy,arches:xy,arch-board:xy,clock-base:xy,lower-bricks:xy,upper-bricks:xy,posts:xy,roof:xy",
+  "min_coverage": 0.33,
+  "density_floor_pixels_per_stud": 8.704,
+  "density_reference": "gateway-towers/parts.json: highest front_pixels_per_stud",
+  "clock_positions": [
+    {
+      "side": "front",
+      "centre": [
+        0.0,
+        -72.35,
+        229.0
+      ],
+      "outward": [
+        0.0,
+        -1.0,
+        0
+      ],
+      "rotation_z_degrees": 0
+    },
+    {
+      "side": "right",
+      "centre": [
+        72.35,
+        -0.0,
+        229.0
+      ],
+      "outward": [
+        1.0,
+        -0.0,
+        0
+      ],
+      "rotation_z_degrees": 90
+    },
+    {
+      "side": "back",
+      "centre": [
+        0.0,
+        72.35,
+        229.0
+      ],
+      "outward": [
+        0.0,
+        1.0,
+        0
+      ],
+      "rotation_z_degrees": 180
+    },
+    {
+      "side": "left",
+      "centre": [
+        -72.35,
+        0.0,
+        229.0
+      ],
+      "outward": [
+        -1.0,
+        0.0,
+        0
+      ],
+      "rotation_z_degrees": 270
+    }
+  ],
+  "clocks_baked_onto_body": false,
+  "clock_asset": "clock/checks.json",
+  "clock_unique_triangles": 724,
+  "clock_instances": 4,
+  "size_revision": "round 4: cone 27x30, radius-63 semicircle, polished 46x48 bell, crumpled paper",
+  "source_signatures": {
+    "legs": "7b72d44347b5f262bb0f2d308ed9ab6b561c347282afd34f9e22f0b5ad5acbf9",
+    "arches": "afcddf77088a4a348479663ce3b63a9a2e9cf0a72484d738421d49261818120f",
+    "arch-board": "1349ef9d90ffa72226c92c68d3491f8e10742bf891034b51fde7c849aedca1b3",
+    "clock-base": "b87e7b9cf94dc60e965ce2c449ba1bfe8a10ed00b2546c18dcf8d936a974a6f5",
+    "lower-bricks": "870915ac55376bb3188f03771ef33dfe95af20df222798f2fdabcc7ad2f233b7",
+    "clock-body": "2bcf797d79234733159c0c2f3c7f43dd12a48e9ce3d899ba9c9c42a55dc3f140",
+    "upper-bricks": "a4ae1489625706f5764d67fd0cdd78cb9e8c981f4c417a93d1bb9be7fed8cfb9",
+    "posts": "b31ca42112036fb2f51921cbc29f992afbe995725e7bde65d7d0e59ee6125fa5",
+    "bell": "25762c3ecb3bcefd7100c48f6aa7659270dd3f0525bb8602b0f3f18bb1fa0088",
+    "roof": "15c03157202213e5b48eff0d66b0e4fe8a578abf0c532213d916c11f7c6fb4b2",
+    "topper": "894c7a1a171eeaa08d424c9e4b201e323ca4123ba9ce56c15e6d91379f453466"
+  },
+  "reference_overrides": {
+    "cone_base_width": 27.0,
+    "arch_opening_width": 126,
+    "upper_band_footprint": [
+      118,
+      118
+    ],
+    "lower_blue_visible_span": 126,
+    "arch_apex": 173.0,
+    "bell_size_xyz": [
+      46.0,
+      46.0,
+      48.0
+    ]
+  },
+  "pieces": [
+    {
+      "label": "legs-bottom-front-left",
+      "triangles": 1448,
+      "bounding_box": {
+        "min": [
+          -104.89999,
+          -104.89999,
+          0.0
+        ],
+        "max": [
+          -63.0,
+          -63.0,
+          40.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 26,
+      "uv_coverage": 0.5878,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 2049.208,
+      "front_pixels_per_stud": 12.647,
+      "prefix": "1-legs-bottom-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-bottom-front-right",
+      "triangles": 1448,
+      "bounding_box": {
+        "min": [
+          63.0,
+          -104.89999,
+          0.0
+        ],
+        "max": [
+          104.89999,
+          -63.0,
+          40.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 25,
+      "uv_coverage": 0.6313,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 2049.208,
+      "front_pixels_per_stud": 13.169,
+      "prefix": "2-legs-bottom-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-bottom-back-left",
+      "triangles": 1448,
+      "bounding_box": {
+        "min": [
+          -104.89999,
+          63.0,
+          0.0
+        ],
+        "max": [
+          -63.0,
+          104.89999,
+          40.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 25,
+      "uv_coverage": 0.6133,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 2049.208,
+      "front_pixels_per_stud": 12.927,
+      "prefix": "3-legs-bottom-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-bottom-back-right",
+      "triangles": 1448,
+      "bounding_box": {
+        "min": [
+          63.0,
+          63.0,
+          0.0
+        ],
+        "max": [
+          104.89999,
+          104.89999,
+          40.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 24,
+      "uv_coverage": 0.7526,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 2049.208,
+      "front_pixels_per_stud": 14.367,
+      "prefix": "4-legs-bottom-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-middle-front-left",
+      "triangles": 1772,
+      "bounding_box": {
+        "min": [
+          -104.89999,
+          -104.89999,
+          40.0
+        ],
+        "max": [
+          -63.0,
+          -63.0,
+          75.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 33,
+      "uv_coverage": 0.4749,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1938.0694,
+      "front_pixels_per_stud": 12.894,
+      "prefix": "5-legs-middle-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-middle-front-right",
+      "triangles": 1772,
+      "bounding_box": {
+        "min": [
+          63.0,
+          -104.89999,
+          40.0
+        ],
+        "max": [
+          104.89999,
+          -63.0,
+          75.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 35,
+      "uv_coverage": 0.7377,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1938.0694,
+      "front_pixels_per_stud": 15.888,
+      "prefix": "6-legs-middle-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-middle-back-left",
+      "triangles": 1772,
+      "bounding_box": {
+        "min": [
+          -104.89999,
+          63.0,
+          40.0
+        ],
+        "max": [
+          -63.0,
+          104.89999,
+          75.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 35,
+      "uv_coverage": 0.5617,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1938.0693,
+      "front_pixels_per_stud": 13.892,
+      "prefix": "7-legs-middle-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-middle-back-right",
+      "triangles": 1772,
+      "bounding_box": {
+        "min": [
+          63.0,
+          63.0,
+          40.0
+        ],
+        "max": [
+          104.89999,
+          104.89999,
+          75.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 35,
+      "uv_coverage": 0.5209,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1938.0693,
+      "front_pixels_per_stud": 13.476,
+      "prefix": "8-legs-middle-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-top-front-left",
+      "triangles": 1404,
+      "bounding_box": {
+        "min": [
+          -104.89999,
+          -104.89999,
+          75.0
+        ],
+        "max": [
+          -63.0,
+          -63.0,
+          110.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 22,
+      "uv_coverage": 0.7464,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1936.047,
+      "front_pixels_per_stud": 16.59,
+      "prefix": "9-legs-top-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-top-front-right",
+      "triangles": 1404,
+      "bounding_box": {
+        "min": [
+          63.0,
+          -104.89999,
+          75.0
+        ],
+        "max": [
+          104.89999,
+          -63.0,
+          110.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 22,
+      "uv_coverage": 0.709,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1936.047,
+      "front_pixels_per_stud": 16.19,
+      "prefix": "10-legs-top-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-top-back-left",
+      "triangles": 1404,
+      "bounding_box": {
+        "min": [
+          -104.89999,
+          63.0,
+          75.0
+        ],
+        "max": [
+          -63.0,
+          104.89999,
+          110.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 22,
+      "uv_coverage": 0.6964,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1936.047,
+      "front_pixels_per_stud": 16.019,
+      "prefix": "11-legs-top-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "legs-top-back-right",
+      "triangles": 1404,
+      "bounding_box": {
+        "min": [
+          63.0,
+          63.0,
+          75.0
+        ],
+        "max": [
+          104.89999,
+          104.89999,
+          110.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 22,
+      "uv_coverage": 0.73,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1936.047,
+      "front_pixels_per_stud": 16.347,
+      "prefix": "12-legs-top-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "arches-front-left",
+      "triangles": 404,
+      "bounding_box": {
+        "min": [
+          -103.0,
+          -103.0,
+          110.0
+        ],
+        "max": [
+          0.0,
+          0.0,
+          188.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 18,
+      "uv_coverage": 0.5655,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 6322.9797,
+      "front_pixels_per_stud": 17.317,
+      "prefix": "13-arches-front-left",
+      "texture_size": 4096,
+      "bake_size": 8192
+    },
+    {
+      "label": "arches-front-right",
+      "triangles": 404,
+      "bounding_box": {
+        "min": [
+          0.0,
+          -103.0,
+          110.0
+        ],
+        "max": [
+          103.0,
+          -0.0,
+          188.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 18,
+      "uv_coverage": 0.5585,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 6322.9797,
+      "front_pixels_per_stud": 17.209,
+      "prefix": "14-arches-front-right",
+      "texture_size": 4096,
+      "bake_size": 8192
+    },
+    {
+      "label": "arches-back-left",
+      "triangles": 404,
+      "bounding_box": {
+        "min": [
+          -103.0,
+          0.0,
+          110.0
+        ],
+        "max": [
+          0.0,
+          103.0,
+          188.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 18,
+      "uv_coverage": 0.5584,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 6322.9797,
+      "front_pixels_per_stud": 17.209,
+      "prefix": "15-arches-back-left",
+      "texture_size": 4096,
+      "bake_size": 8192
+    },
+    {
+      "label": "arches-back-right",
+      "triangles": 404,
+      "bounding_box": {
+        "min": [
+          0.0,
+          -0.0,
+          110.0
+        ],
+        "max": [
+          103.0,
+          103.0,
+          188.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 18,
+      "uv_coverage": 0.5828,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 6322.9797,
+      "front_pixels_per_stud": 17.573,
+      "prefix": "16-arches-back-right",
+      "texture_size": 4096,
+      "bake_size": 8192
+    },
+    {
+      "label": "arch-board-front-left",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          -103.0,
+          -103.0,
+          188.0
+        ],
+        "max": [
+          0.0,
+          0.0,
+          190.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.4963,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 206.0,
+      "front_pixels_per_stud": 9.796,
+      "prefix": "17-arch-board-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "arch-board-front-right",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          0.0,
+          -103.0,
+          188.0
+        ],
+        "max": [
+          103.0,
+          0.0,
+          190.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.4963,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 206.0,
+      "front_pixels_per_stud": 9.796,
+      "prefix": "18-arch-board-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "arch-board-back-left",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          -103.0,
+          0.0,
+          188.0
+        ],
+        "max": [
+          0.0,
+          103.0,
+          190.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.4963,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 206.0,
+      "front_pixels_per_stud": 9.796,
+      "prefix": "19-arch-board-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "arch-board-back-right",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          0.0,
+          0.0,
+          188.0
+        ],
+        "max": [
+          103.0,
+          103.0,
+          190.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.4963,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 206.0,
+      "front_pixels_per_stud": 9.796,
+      "prefix": "20-arch-board-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "clock-base-front-left",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          -80.0,
+          -80.0,
+          196.0
+        ],
+        "max": [
+          0.0,
+          0.0,
+          200.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.5148,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 320.0,
+      "front_pixels_per_stud": 12.612,
+      "prefix": "21-clock-base-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "clock-base-front-right",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          0.0,
+          -80.0,
+          196.0
+        ],
+        "max": [
+          80.0,
+          0.0,
+          200.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.5148,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 320.0,
+      "front_pixels_per_stud": 12.612,
+      "prefix": "22-clock-base-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "clock-base-back-left",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          -80.0,
+          0.0,
+          196.0
+        ],
+        "max": [
+          0.0,
+          80.0,
+          200.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.5148,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 320.0,
+      "front_pixels_per_stud": 12.612,
+      "prefix": "23-clock-base-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "clock-base-back-right",
+      "triangles": 16,
+      "bounding_box": {
+        "min": [
+          0.0,
+          0.0,
+          196.0
+        ],
+        "max": [
+          80.0,
+          80.0,
+          200.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 5,
+      "uv_coverage": 0.5148,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 320.0,
+      "front_pixels_per_stud": 12.612,
+      "prefix": "24-clock-base-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "lower-bricks-front-left",
+      "triangles": 1180,
+      "bounding_box": {
+        "min": [
+          -103.0,
+          -103.0,
+          188.0
+        ],
+        "max": [
+          -0.15,
+          -0.15,
+          200.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 60,
+      "uv_coverage": 0.6952,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1243.0736,
+      "front_pixels_per_stud": 14.858,
+      "prefix": "25-lower-bricks-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "lower-bricks-front-right",
+      "triangles": 1180,
+      "bounding_box": {
+        "min": [
+          0.15,
+          -103.0,
+          188.0
+        ],
+        "max": [
+          103.0,
+          -0.15,
+          200.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 63,
+      "uv_coverage": 0.6941,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1243.0736,
+      "front_pixels_per_stud": 15.04,
+      "prefix": "26-lower-bricks-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "lower-bricks-back-left",
+      "triangles": 1180,
+      "bounding_box": {
+        "min": [
+          -103.0,
+          0.15,
+          188.0
+        ],
+        "max": [
+          -0.15,
+          103.0,
+          200.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 63,
+      "uv_coverage": 0.6941,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1243.0736,
+      "front_pixels_per_stud": 15.04,
+      "prefix": "27-lower-bricks-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "lower-bricks-back-right",
+      "triangles": 1180,
+      "bounding_box": {
+        "min": [
+          0.15,
+          0.15,
+          188.0
+        ],
+        "max": [
+          103.0,
+          103.0,
+          200.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 60,
+      "uv_coverage": 0.7193,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1243.0736,
+      "front_pixels_per_stud": 15.166,
+      "prefix": "28-lower-bricks-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "clock-body",
+      "triangles": 92,
+      "bounding_box": {
+        "min": [
+          -71.35,
+          -71.35001,
+          200.0
+        ],
+        "max": [
+          71.35,
+          71.35,
+          258.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 25,
+      "uv_coverage": 0.4516,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 8260.9075,
+      "front_pixels_per_stud": 10.165,
+      "prefix": "29-clock-body",
+      "texture_size": 4096,
+      "bake_size": 8192
+    },
+    {
+      "label": "upper-bricks-front-left",
+      "triangles": 700,
+      "bounding_box": {
+        "min": [
+          -59.0,
+          -59.0,
+          258.0
+        ],
+        "max": [
+          -0.15,
+          -0.15,
+          278.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 32,
+      "uv_coverage": 0.7391,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1038.1471,
+      "front_pixels_per_stud": 20.725,
+      "prefix": "30-upper-bricks-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "upper-bricks-front-right",
+      "triangles": 700,
+      "bounding_box": {
+        "min": [
+          0.15,
+          -59.0,
+          258.0
+        ],
+        "max": [
+          59.0,
+          -0.15,
+          278.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 32,
+      "uv_coverage": 0.6887,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1038.1471,
+      "front_pixels_per_stud": 19.993,
+      "prefix": "31-upper-bricks-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "upper-bricks-back-left",
+      "triangles": 700,
+      "bounding_box": {
+        "min": [
+          -59.0,
+          0.15,
+          258.0
+        ],
+        "max": [
+          -0.15,
+          59.0,
+          278.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 32,
+      "uv_coverage": 0.7176,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1038.1471,
+      "front_pixels_per_stud": 20.502,
+      "prefix": "32-upper-bricks-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "upper-bricks-back-right",
+      "triangles": 700,
+      "bounding_box": {
+        "min": [
+          0.15,
+          0.15,
+          258.0
+        ],
+        "max": [
+          59.0,
+          59.0,
+          278.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 32,
+      "uv_coverage": 0.7392,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1038.1471,
+      "front_pixels_per_stud": 20.724,
+      "prefix": "33-upper-bricks-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "posts-front-left",
+      "triangles": 176,
+      "bounding_box": {
+        "min": [
+          -59.0,
+          -59.0,
+          278.0
+        ],
+        "max": [
+          -35.0,
+          -35.0,
+          340.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 12,
+      "uv_coverage": 0.6473,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1529.1593,
+      "front_pixels_per_stud": 16.207,
+      "prefix": "34-posts-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "posts-front-right",
+      "triangles": 176,
+      "bounding_box": {
+        "min": [
+          35.0,
+          -59.0,
+          278.0
+        ],
+        "max": [
+          59.0,
+          -35.0,
+          340.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 12,
+      "uv_coverage": 0.6474,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1529.1593,
+      "front_pixels_per_stud": 16.207,
+      "prefix": "35-posts-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "posts-back-left",
+      "triangles": 176,
+      "bounding_box": {
+        "min": [
+          -59.0,
+          35.0,
+          278.0
+        ],
+        "max": [
+          -35.0,
+          59.0,
+          340.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 12,
+      "uv_coverage": 0.6474,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1529.1593,
+      "front_pixels_per_stud": 16.207,
+      "prefix": "36-posts-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "posts-back-right",
+      "triangles": 176,
+      "bounding_box": {
+        "min": [
+          35.0,
+          35.0,
+          278.0
+        ],
+        "max": [
+          59.0,
+          59.0,
+          340.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 12,
+      "uv_coverage": 0.6473,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 1529.1593,
+      "front_pixels_per_stud": 16.207,
+      "prefix": "37-posts-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "bell",
+      "triangles": 3016,
+      "bounding_box": {
+        "min": [
+          -23.0,
+          -23.0,
+          300.0
+        ],
+        "max": [
+          23.0,
+          23.0,
+          348.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 14,
+      "uv_coverage": 0.5192,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 1098.7953,
+      "front_pixels_per_stud": 17.422,
+      "prefix": "38-bell",
+      "texture_size": 2048,
+      "bake_size": 4096,
+      "metallic": 0.85
+    },
+    {
+      "label": "roof-front-left",
+      "triangles": 32,
+      "bounding_box": {
+        "min": [
+          -64.0,
+          -64.0,
+          340.0
+        ],
+        "max": [
+          0.0,
+          0.0,
+          398.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 8,
+      "uv_coverage": 0.7746,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 3050.0301,
+      "front_pixels_per_stud": 13.951,
+      "prefix": "39-roof-front-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "roof-front-right",
+      "triangles": 32,
+      "bounding_box": {
+        "min": [
+          0.0,
+          -64.0,
+          340.0
+        ],
+        "max": [
+          64.0,
+          0.0,
+          398.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 8,
+      "uv_coverage": 0.7746,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 3050.0301,
+      "front_pixels_per_stud": 13.951,
+      "prefix": "40-roof-front-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "roof-back-left",
+      "triangles": 32,
+      "bounding_box": {
+        "min": [
+          -64.0,
+          0.0,
+          340.0
+        ],
+        "max": [
+          0.0,
+          64.0,
+          398.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 8,
+      "uv_coverage": 0.7746,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 3050.0301,
+      "front_pixels_per_stud": 13.951,
+      "prefix": "41-roof-back-left",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "roof-back-right",
+      "triangles": 32,
+      "bounding_box": {
+        "min": [
+          0.0,
+          0.0,
+          340.0
+        ],
+        "max": [
+          64.0,
+          64.0,
+          398.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 8,
+      "uv_coverage": 0.7746,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "back",
+      "front_surface_studs2": 3050.0301,
+      "front_pixels_per_stud": 13.951,
+      "prefix": "42-roof-back-right",
+      "texture_size": 2048,
+      "bake_size": 4096
+    },
+    {
+      "label": "topper",
+      "triangles": 1054,
+      "bounding_box": {
+        "min": [
+          -13.5,
+          -13.5,
+          398.0
+        ],
+        "max": [
+          13.5,
+          13.5,
+          430.0
+        ]
+      },
+      "boundary_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "uv_islands": 8,
+      "uv_coverage": 0.5421,
+      "uv_overlap": false,
+      "uv_padding_pixels": 4,
+      "density_face": "front",
+      "front_surface_studs2": 478.7557,
+      "front_pixels_per_stud": 37.61,
+      "prefix": "43-topper",
+      "texture_size": 2048,
+      "bake_size": 4096
+    }
+  ],
+  "lowest_z": 0.0,
+  "height": 430.0,
+  "tower_triangles": 33714,
+  "total_triangles": 36610,
+  "measurements": {
+    "axes": "studs, Z up, front -Y, base centre at origin",
+    "overall_bounds": {
+      "min": [
+        -103.0,
+        -103.0,
+        0.0
+      ],
+      "max": [
+        103.0,
+        103.0,
+        430.0
+      ]
+    },
+    "outer_footprint": [
+      206.0,
+      206.0
+    ],
+    "legs": [
+      {
+        "centre": [
+          -83.0,
+          -83.0
+        ],
+        "footprint": [
+          40.0,
+          40.0
+        ]
+      },
+      {
+        "centre": [
+          -83.0,
+          83.0
+        ],
+        "footprint": [
+          40.0,
+          40.0
+        ]
+      },
+      {
+        "centre": [
+          83.0,
+          -83.0
+        ],
+        "footprint": [
+          40.0,
+          40.0
+        ]
+      },
+      {
+        "centre": [
+          83.0,
+          83.0
+        ],
+        "footprint": [
+          40.0,
+          40.0
+        ]
+      }
+    ],
+    "brick_leg_top": 110,
+    "big_leg_bricks": [
+      {
+        "centre_xy": [
+          -83,
+          -83
+        ],
+        "course": 1,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.8
+        ],
+        "z": [
+          5,
+          39.8
+        ]
+      },
+      {
+        "centre_xy": [
+          -83,
+          83
+        ],
+        "course": 1,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.8
+        ],
+        "z": [
+          5,
+          39.8
+        ]
+      },
+      {
+        "centre_xy": [
+          83,
+          -83
+        ],
+        "course": 1,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.8
+        ],
+        "z": [
+          5,
+          39.8
+        ]
+      },
+      {
+        "centre_xy": [
+          83,
+          83
+        ],
+        "course": 1,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.8
+        ],
+        "z": [
+          5,
+          39.8
+        ]
+      },
+      {
+        "centre_xy": [
+          -83,
+          -83
+        ],
+        "course": 2,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.6
+        ],
+        "z": [
+          40.2,
+          74.8
+        ]
+      },
+      {
+        "centre_xy": [
+          -83,
+          83
+        ],
+        "course": 2,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.6
+        ],
+        "z": [
+          40.2,
+          74.8
+        ]
+      },
+      {
+        "centre_xy": [
+          83,
+          -83
+        ],
+        "course": 2,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.6
+        ],
+        "z": [
+          40.2,
+          74.8
+        ]
+      },
+      {
+        "centre_xy": [
+          83,
+          83
+        ],
+        "course": 2,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.6
+        ],
+        "z": [
+          40.2,
+          74.8
+        ]
+      },
+      {
+        "centre_xy": [
+          -83,
+          -83
+        ],
+        "course": 3,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.8
+        ],
+        "z": [
+          75.2,
+          110
+        ]
+      },
+      {
+        "centre_xy": [
+          -83,
+          83
+        ],
+        "course": 3,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.8
+        ],
+        "z": [
+          75.2,
+          110
+        ]
+      },
+      {
+        "centre_xy": [
+          83,
+          -83
+        ],
+        "course": 3,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.8
+        ],
+        "z": [
+          75.2,
+          110
+        ]
+      },
+      {
+        "centre_xy": [
+          83,
+          83
+        ],
+        "course": 3,
+        "size_xyz": [
+          40.0,
+          40.0,
+          34.8
+        ],
+        "z": [
+          75.2,
+          110
+        ]
+      }
+    ],
+    "bricks_per_leg": 3,
+    "brick_sequence": [
+      "red",
+      "blue",
+      "red"
+    ],
+    "leg_brick_footprint": [
+      40,
+      40
+    ],
+    "arch_jambs_align_with_leg_inner_faces": true,
+    "arch_opening_width": 126.0,
+    "arch_centre_clear_height": 173.0,
+    "arch_spring_height": 110.0,
+    "arch_straight_jamb_height_above_legs": 0.0,
+    "arch_radius": 63.0,
+    "arch_shape": "semicircle on all four sides",
+    "cardboard_above_arch_apex": 15.0,
+    "arch_crown_height_on_four_sides": [
+      173.0,
+      173.0,
+      173.0,
+      173.0
+    ],
+    "arch_through_X_and_Y_clear": true,
+    "belfry_post_bottom": 278.0,
+    "belfry_ceiling": 340.0,
+    "belfry_clear_width": 70.0,
+    "belfry_clear_height_below_bell": 22.0,
+    "belfry_through_X_and_Y_clear_below_bell": true,
+    "bell_lowest_point": 300.0,
+    "bell_size_xyz": [
+      46.0,
+      46.0,
+      48.0
+    ],
+    "roof_base": 340,
+    "roof_peak": 398,
+    "roof_footprint": [
+      128,
+      128
+    ],
+    "clock_body_size_xyz": [
+      142.0,
+      142.0,
+      58.0
+    ],
+    "clock_body_z": [
+      200,
+      258
+    ],
+    "clock_seat_diameter": 50,
+    "clock_positions": [
+      {
+        "side": "front",
+        "centre": [
+          0.0,
+          -72.35,
+          229.0
+        ],
+        "outward": [
+          0.0,
+          -1.0,
+          0
+        ],
+        "rotation_z_degrees": 0
+      },
+      {
+        "side": "right",
+        "centre": [
+          72.35,
+          -0.0,
+          229.0
+        ],
+        "outward": [
+          1.0,
+          -0.0,
+          0
+        ],
+        "rotation_z_degrees": 90
+      },
+      {
+        "side": "back",
+        "centre": [
+          0.0,
+          72.35,
+          229.0
+        ],
+        "outward": [
+          0.0,
+          1.0,
+          0
+        ],
+        "rotation_z_degrees": 180
+      },
+      {
+        "side": "left",
+        "centre": [
+          -72.35,
+          0.0,
+          229.0
+        ],
+        "outward": [
+          -1.0,
+          0.0,
+          0
+        ],
+        "rotation_z_degrees": 270
+      }
+    ],
+    "arch_block_size_xyz": [
+      206,
+      206,
+      78
+    ],
+    "arch_block_z": [
+      110,
+      188
+    ],
+    "belfry_outer_footprint": [
+      118,
+      118
+    ],
+    "belfry_post_size_xy": [
+      24,
+      24
+    ],
+    "upper_band_footprint": [
+      118,
+      118
+    ],
+    "upper_red_corner_footprint": [
+      24,
+      24
+    ],
+    "upper_red_corner_centres_xy": [
+      [
+        -47,
+        -47
+      ],
+      [
+        -47,
+        47
+      ],
+      [
+        47,
+        -47
+      ],
+      [
+        47,
+        47
+      ]
+    ],
+    "lower_red_corner_footprint": [
+      40,
+      40
+    ],
+    "lower_red_corner_centres_xy": [
+      [
+        -83,
+        -83
+      ],
+      [
+        -83,
+        83
+      ],
+      [
+        83,
+        -83
+      ],
+      [
+        83,
+        83
+      ]
+    ],
+    "lower_blue_visible_span": 126,
+    "clock_base_board_footprint": [
+      160,
+      160
+    ],
+    "cone_base_width": 27.0,
+    "cone_z": [
+      398,
+      428
+    ],
+    "cone_height_width_ratio": 1.11111,
+    "finial_radius": 2.2,
+    "bell_hanger_top": 348.0,
+    "total_height": 430.0,
+    "flight_volume_ray_checks": 2500,
+    "ground_touching_components": 4
+  },
+  "render_cameras": {
+    "front": {
+      "position": [
+        0,
+        -1500,
+        215
+      ],
+      "target": [
+        0,
+        0,
+        215
+      ],
+      "projection": "PERSP",
+      "lens_mm": 63.5282,
+      "sensor_width_mm": 36.0,
+      "vertical_shift": -0.018296,
+      "resolution": [
+        1672,
+        941
+      ],
+      "reference": "assets/references/bell-tower/front-a.png",
+      "match": "estimated frontal perspective; fitted reference tip and front-foot heights",
+      "reference_has_camera_metadata": false,
+      "reference_tip_y": 17,
+      "reference_front_foot_y": 894
+    },
+    "side": {
+      "position": [
+        1850,
+        0,
+        320
+      ],
+      "target": [
+        0,
+        0,
+        215
+      ],
+      "projection": "PERSP",
+      "lens_mm": 139.55478,
+      "sensor_width_mm": 36.0,
+      "vertical_shift": 0.0,
+      "resolution": [
+        1600,
+        1600
+      ]
+    },
+    "threequarter": {
+      "position": [
+        700,
+        -1800,
+        500
+      ],
+      "target": [
+        0,
+        0,
+        215
+      ],
+      "projection": "PERSP",
+      "lens_mm": 143.42958,
+      "sensor_width_mm": 36.0,
+      "vertical_shift": 0.0,
+      "resolution": [
+        1600,
+        1600
+      ]
+    },
+    "arch-through-y": {
+      "position": [
+        0,
+        -850,
+        100
+      ],
+      "target": [
+        0,
+        0,
+        100
+      ],
+      "projection": "ORTHO",
+      "lens_mm": 143.42958,
+      "sensor_width_mm": 36.0,
+      "vertical_shift": 0.0,
+      "resolution": [
+        1600,
+        1600
+      ]
+    },
+    "arch-through-x": {
+      "position": [
+        850,
+        0,
+        100
+      ],
+      "target": [
+        0,
+        0,
+        100
+      ],
+      "projection": "ORTHO",
+      "lens_mm": 143.42958,
+      "sensor_width_mm": 36.0,
+      "vertical_shift": 0.0,
+      "resolution": [
+        1600,
+        1600
+      ]
+    },
+    "belfry-through-y": {
+      "position": [
+        0,
+        -850,
+        309
+      ],
+      "target": [
+        0,
+        0,
+        309
+      ],
+      "projection": "ORTHO",
+      "lens_mm": 143.42958,
+      "sensor_width_mm": 36.0,
+      "vertical_shift": 0.0,
+      "resolution": [
+        1600,
+        1600
+      ]
+    },
+    "belfry-through-x": {
+      "position": [
+        850,
+        0,
+        309
+      ],
+      "target": [
+        0,
+        0,
+        309
+      ],
+      "projection": "ORTHO",
+      "lens_mm": 143.42958,
+      "sensor_width_mm": 36.0,
+      "vertical_shift": 0.0,
+      "resolution": [
+        1600,
+        1600
+      ]
+    }
+  }
+}
