@@ -8,7 +8,8 @@ Zone moves and looks right. Paper targets stand on roofs; two (homework, the sec
 buildings placed later and moved to open roofs (2026-10-15). A hit tested in Play: the server pays 50 and tells the
 shooter's screen; the board falling flat not yet seen (Studio wasn't drawing). Team deathmatch passed a full match by
 numbers (2026-10-15: 6 v 6, no bot chased a teammate, results, vote and next round). Not yet seen: the ceiling zone
-spot in a real match, the vote screen.
+spot in a real match, the vote screen. Zone spots sized by building density, and the Studio "next spot" button
+([decision](../decisions/2026-10-16-zones-follow-density.md)).
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*

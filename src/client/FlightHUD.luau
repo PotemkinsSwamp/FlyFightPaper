@@ -300,7 +300,7 @@ function HUD.start(getPlane, action)
 	local mixedBots=eraserBots:Clone();mixedBots.Name="MixedBots";mixedBots.Text="mixed bots";mixedBots.Position=UDim2.fromOffset(770,-40)
 	mixedBots.BackgroundColor3=Color3.fromRGB(45,95,70);mixedBots.Parent=picker;mixedBots.Activated:Connect(function()action("mixedBots")end)
 	-- Test mode (Alan, 2026-10-14): end this round and start the next one in the picked mode.
-	for index, mode in ipairs({ { "FFA", "free-for-all" }, { "TDM", "team DM" }, { "CONTROL", "airspace" }, { "CEILING", "ceiling" } }) do
+	for index, mode in ipairs({ { "FFA", "free-for-all" }, { "TDM", "team DM" }, { "CONTROL", "airspace" }, { "NEXTSPOT", "next spot" } }) do
 		local button=eraserBots:Clone();button.Name="Mode"..mode[1];button.Text="mode: "..mode[2];button.Position=UDim2.fromOffset((index-1)*110,-40)
 		button.BackgroundColor3=Color3.fromRGB(70,60,120);button.Parent=picker
 		button.Activated:Connect(function()Root.RoundAction:FireServer("devMode",mode[1])end)

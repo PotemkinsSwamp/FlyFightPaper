@@ -478,9 +478,9 @@ return JSONTypes.map({
                     [2] = 170,
                     [3] = -100,
                 }),
-                ["half_height"] = 100,
+                ["half_height"] = 65,
                 ["name"] = "Centre towers",
-                ["radius"] = 300,
+                ["radius"] = 420,
             }),
             [2] = JSONTypes.map({
                 ["center"] = JSONTypes.array({
@@ -488,9 +488,9 @@ return JSONTypes.map({
                     [2] = 170,
                     [3] = -450,
                 }),
-                ["half_height"] = 100,
+                ["half_height"] = 70,
                 ["name"] = "North-east towers",
-                ["radius"] = 300,
+                ["radius"] = 410,
             }),
             [3] = JSONTypes.map({
                 ["center"] = JSONTypes.array({
@@ -498,9 +498,9 @@ return JSONTypes.map({
                     [2] = 170,
                     [3] = -450,
                 }),
-                ["half_height"] = 100,
+                ["half_height"] = 95,
                 ["name"] = "North-west towers",
-                ["radius"] = 300,
+                ["radius"] = 350,
             }),
             [4] = JSONTypes.map({
                 ["center"] = JSONTypes.array({
@@ -508,9 +508,9 @@ return JSONTypes.map({
                     [2] = 170,
                     [3] = 250,
                 }),
-                ["half_height"] = 100,
+                ["half_height"] = 97,
                 ["name"] = "South-west towers",
-                ["radius"] = 300,
+                ["radius"] = 345,
             }),
             [5] = JSONTypes.map({
                 ["center"] = JSONTypes.array({
@@ -520,7 +520,7 @@ return JSONTypes.map({
                 }),
                 ["half_height"] = 100,
                 ["name"] = "South-east towers",
-                ["radius"] = 300,
+                ["radius"] = 340,
             }),
             [6] = JSONTypes.map({
                 ["center"] = JSONTypes.array({
@@ -533,6 +533,7 @@ return JSONTypes.map({
                 ["radius"] = 475,
             }),
         }),
+        ["control_zones_comment"] = "Zone size follows how crowded the spot is (Alan 2026-10-16: denser = larger and shorter, so pilots chase between buildings): radius 340-420 and half height 100-65, scaled by the share of the zone's floor under new-town buildings (9% -> 28%). Ceiling spot unchanged.",
         ["duration_seconds"] = 480,
         ["ffa_elimination_target"] = 20,
         ["launch_countdown_seconds"] = 3,

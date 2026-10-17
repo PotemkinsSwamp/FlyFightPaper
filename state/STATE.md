@@ -1,17 +1,21 @@
-# Since Alan last checked (2026-10-16)
-- **New town playable (2026-10-16 evening):** 6 of Alan's 7 first-look notes fixed and seen in Studio
-  (docs/playtests/2026-10-16.md); every building collides by its exact shape (453 had been solid boxes); eraser park
-  has a fountain, benches, bushes; train stops 10 s at each station and now runs at 90 studs/s; pushes to GitHub
-  after every commit. **Left:** stacked-lids tower's two wrecked windows, paper targets floating (put back on
-  roofs), block arch's blue pier buried in its neighbour, train speed not yet seen, tissue-tower grey piece not found.
+# Since Alan last checked (2026-10-16, late)
+- **Place rebuilt and saved (Alan, 23:20):** Central Park's toys (playground, picnic, ducks, boathouse), Alan's
+  eraser move/resize, bigger fountain and boathouse nudge are all in the files, so rebuilds keep them.
+- **Train 105 studs/s** (Alan: "slightly faster"; brake 35); tests 297/0. Stops centred 10 s in both stations; the
+  north station is shorter than the train (end cars poke out ~20 studs).
+- **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
+  pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
+- **Paint-jar tower windows:** the back's torn red and blue windows get the clean yellow window copied over them
+  (shape and paint). Rebake in progress, then upload (Alan's go given) and a live swap in Studio.
+- **Block arch pier:** nothing touches it (neighbours 23 and 30 studs away); Alan to send a screenshot if it still
+  looks buried. **Tissue tower grey piece:** every town piece has its paint; it was most likely still loading.
+- **Bots vs the train:** 7 minutes of bot matches, 0 train crashes, 3 close passes. Bots don't dodge it yet.
+- **Airspace zones bigger and flatter where buildings are dense** (Alan); the Studio dev button "next spot" moves
+  the zone to the next spot on each click (replaces "ceiling"). Checked by numbers in Play; looks wait on Alan.
 - **Ducts approved by Alan and saved** (Ctrl+S): HVAC look, props, solid vent grilles, veteran bots flying through.
-- **Two paper targets were buried inside buildings** (homework, second broccoli): moved to open rooftops. A target
-  hit tested in Play: the server pays 50 points and tells your screen. The board falling flat not seen yet (Studio
-  wasn't drawing, which also freezes animations).
 - **Team match passed by numbers** (6 v 6, results, vote, next round; no bot ever chased a teammate).
 - **Rookie graduation:** each step has its own test (qualifying match -> saved count, max 5 -> regular room ->
   regular bots); saving round-trip 17/0, rules 296/0. Not played live (needs 5 real qualifying matches).
-- **Bug fixed:** a plane respawning just as a round's time ran out threw an error.
 
 # Stage 9 — what's left (MILESTONES D13)
 Everything is built; what's left needs your eyes: the playtest list at the bottom, then your Stage 9 approval.
@@ -27,6 +31,8 @@ Track C saving needs a private publish (Alan's go). Place file not re-saved (nee
 
 Alan's eraser rulings: docs/decisions/2026-10-15-chalk-eraser-rulings.md.
 Decisions to review
+New town ruler bridge: none built. The plan's only candidate (ruler-stilt tower to book-stack lookout) slopes 37
+  studs and crosses the block arch's top. North station left shorter than the train (end cars poke out).
 Duct props: cobwebs, spiders, toys and tools are see-through to planes (fly through them). Veterans flee to the
   ducts 40% of the time when shot at (vent within 500), wander in 12% of patrol turns; others never (config bots.*.duct_*).
 Duct light: read "lights from below, connected to the lights above" as: ducts glow only through grilles where they
@@ -37,7 +43,7 @@ Stapler: kept its damage per second (17.5): 0.8 s bursts, each staple 4.67 damag
 Fan: 15 Lift/s, updraft 30. Dive with Lift: 1.25x max. Cardboard body: wings and guns scaled to fit.
 Bot eraser skill (config bots.*.eraser_*): notice lock 15/30/45%, break 35/55/75%, late 0.4-0.9/0.2-0.5/0.05-0.3 s.
 HUD heat cells count DOWN (full = cool). Flight notes fade after 4 s. Warning words INCOMING!/BREAK NOW!/LOCKED ON!.
-Zone: 600 across, 200 tall (ceiling 950 across, 340-620 up) after Alan tried 3x and halved it; open zone is yellow.
+Zone: 680-840 across, 200-130 tall by building density (ceiling 950 across, 340-620 up); open zone is yellow.
 Bots and the zone (config bots.profiles.*.objective_*): share of time on the zone 30/60/85% (rookie/regular/veteran),
   "objective" personality +25%, "aggressive" -15%; only veterans head to the next zone early. Read "noobs should be
   as good" as "noobs should NOT be as good" at the objective.

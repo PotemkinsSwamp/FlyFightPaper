@@ -46,12 +46,14 @@ function Runtime.new(flight,combat,bots,profiles)
    player:SetAttribute("MenuTokens",tokens);player:SetAttribute("LastMenuAction",now)
   end
   if action=="join" then self:join(player)
-  elseif action=="devMode" and Run:IsStudio() and (MatchRules.mode(value) or value=="CEILING") then
+  elseif action=="devMode" and Run:IsStudio() and (MatchRules.mode(value) or value=="NEXTSPOT") then
    -- Studio test mode: the next round uses this mode, and a running round ends now so the switch is quick.
-   -- "CEILING" is Airspace with the zone held on the ceiling spot all round.
-   self.engine.devZone=value=="CEILING" and #Config.rounds.control_zones or nil
-   Root:SetAttribute("DevMode",value=="CEILING" and "CONTROL" or value)
-   if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_mode") end
+   -- "NEXTSPOT" (Alan 2026-10-16): Airspace with the zone held still; each click moves it to the next spot, so every
+   -- spot can be seen in one round. From another mode, the first click starts an Airspace round on spot 1.
+   local spotOnly=value=="NEXTSPOT" and self.engine.devZone~=nil and self.engine.round and self.engine.round.mode=="CONTROL"
+   self.engine.devZone=value=="NEXTSPOT" and (self.engine.devZone or 0)%#Config.rounds.control_zones+1 or nil
+   Root:SetAttribute("DevMode",value=="NEXTSPOT" and "CONTROL" or value)
+   if not spotOnly and (self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN") then self.engine:_close(self.engine:_clock(),"dev_mode") end
   elseif action=="practice" then self:practice(player)
   elseif action=="practiceTarget" then local p=flight.pilots[player];if p and p.practice then combat:practiceTarget(p) end
   elseif action=="practiceDone" then if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end;self:join(player)

@@ -459,8 +459,8 @@ end
 function Match:_zone()
     local r, rounds = self.round, self.context.config.rounds
     if not r or r.mode ~= "CONTROL" then return nil end
-    -- Studio test mode "airspace: ceiling" (Alan 2026-10-14): one spot for the whole round, never moving.
-    if self.devZone then return rounds.control_zones[self.devZone], self.devZone, self.devZone, math.huge end
+    -- Studio test mode "next spot" (Alan 2026-10-16): the zone stays on the picked spot until the next click.
+    if self.devZone then return rounds.control_zones[self.devZone], self.devZone, self.devZone % #rounds.control_zones + 1, math.huge end
     local elapsed = math.max(0, self.now - r.startedAt)
     local boundary = (math.floor(elapsed / rounds.control_move_seconds) + 1) * rounds.control_move_seconds
     -- Subtracting a fractional start clock can round just below an exact move time.

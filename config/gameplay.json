@@ -289,12 +289,13 @@
     "control_points_per_second": 1,
     "control_move_seconds": 90,
     "control_warning_seconds": 15,
+    "control_zones_comment": "Zone size follows how crowded the spot is (Alan 2026-10-16: denser = larger and shorter, so pilots chase between buildings): radius 340-420 and half height 100-65, scaled by the share of the zone's floor under new-town buildings (9% -> 28%). Ceiling spot unchanged.",
     "control_zones": [
-      {"name": "Centre towers", "center": [-50, 170, -100], "radius": 300, "half_height": 100},
-      {"name": "North-east towers", "center": [300, 170, -450], "radius": 300, "half_height": 100},
-      {"name": "North-west towers", "center": [-600, 170, -450], "radius": 300, "half_height": 100},
-      {"name": "South-west towers", "center": [-650, 170, 250], "radius": 300, "half_height": 100},
-      {"name": "South-east towers", "center": [600, 170, 250], "radius": 300, "half_height": 100},
+      {"name": "Centre towers", "center": [-50, 170, -100], "radius": 420, "half_height": 65},
+      {"name": "North-east towers", "center": [300, 170, -450], "radius": 410, "half_height": 70},
+      {"name": "North-west towers", "center": [-600, 170, -450], "radius": 350, "half_height": 95},
+      {"name": "South-west towers", "center": [-650, 170, 250], "radius": 345, "half_height": 97},
+      {"name": "South-east towers", "center": [600, 170, 250], "radius": 340, "half_height": 100},
       {"name": "Ceiling", "center": [425, 480, 0], "radius": 475, "half_height": 140}
     ],
     "results_seconds": 8,
