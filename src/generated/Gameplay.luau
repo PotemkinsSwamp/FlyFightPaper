@@ -819,7 +819,7 @@ return JSONTypes.map({
         ["maximum_actors"] = 12,
         ["monorail"] = JSONTypes.map({
             ["_comment"] = "The new town's toy monorail train (Alan 2026-10-15: solid, hitting it or being hit by it kills). It runs round config/monorail-track.json at `speed` studs/s on server time, waits `station_wait` seconds in each station (Alan 2026-10-16) and slows down and speeds up at `brake` studs/s per second, so every client and the server agree where it is. `cars` front to back: model, size (width, height, length: the uploaded mesh's studs, assets/models/toys/<model>/upload.json) and `turned` (the back nose car faces backwards). The skirt bottom sits `skirt_below_top` under the track top; `rug_top` is the rug's surface. A plane whose middle comes within `plane_margin` of a car's box crashes. Off (`enabled` false) until the new town stands in the place.",
-            ["brake"] = 30,
+            ["brake"] = 35,
             ["cars"] = JSONTypes.array({
                 [1] = JSONTypes.map({
                     ["model"] = "monorail-car",
@@ -853,7 +853,7 @@ return JSONTypes.map({
             ["plane_margin"] = 3,
             ["rug_top"] = 0.6,
             ["skirt_below_top"] = 4.5,
-            ["speed"] = 90,
+            ["speed"] = 105,
             ["station_wait"] = 10,
         }),
         ["neutral_desk_x_positions"] = JSONTypes.array({
@@ -980,7 +980,7 @@ return JSONTypes.map({
         }),
         ["seed"] = 17029,
         ["speed_pickups"] = JSONTypes.map({
-            ["_comment"] = "Fly through one: +speed_bonus speed, adding up to max_bonus, and the timer restarts at seconds (Alan 2026-10-12: bolts add, time does not). Comes back after respawn_seconds. Each spot: 'at' = middle of the hole (token shown there), 'box' = the opening measured in Studio (world axes, studs): 7 ceiling rings, 3 cardboard tubes, under the bell tower, the gateway-towers arch.",
+            ["_comment"] = "Fly through one: +speed_bonus speed, adding up to max_bonus, and the timer restarts at seconds (Alan 2026-10-12: bolts add, time does not). Comes back after respawn_seconds. Each spot: 'at' = middle of the hole (token shown there), 'box' = the opening measured in Studio (world axes, studs): 7 ceiling rings, 3 cardboard tubes, under the bell tower, the gateway-towers arch; then (2026-10-16, Alan: more in fly-through spots, measured in Studio) the porthole book tower's porthole, the tape roll's hole, under the ruler-stilt tower, the abacus hall's slot, the block arch, under the pencil-case bridge, under the north station (below the train's tunnel), under the south station's lunch tin.",
             ["max_bonus"] = 1.0,
             ["respawn_seconds"] = 1,
             ["seconds"] = 5,
@@ -1128,6 +1128,102 @@ return JSONTypes.map({
                         [1] = 84,
                         [2] = 132,
                         [3] = 106,
+                    }),
+                }),
+                [13] = JSONTypes.map({
+                    ["at"] = JSONTypes.array({
+                        [1] = 636,
+                        [2] = 184,
+                        [3] = -216,
+                    }),
+                    ["box"] = JSONTypes.array({
+                        [1] = 48,
+                        [2] = 52,
+                        [3] = 127,
+                    }),
+                }),
+                [14] = JSONTypes.map({
+                    ["at"] = JSONTypes.array({
+                        [1] = -650,
+                        [2] = 228,
+                        [3] = -238,
+                    }),
+                    ["box"] = JSONTypes.array({
+                        [1] = 36,
+                        [2] = 40,
+                        [3] = 106,
+                    }),
+                }),
+                [15] = JSONTypes.map({
+                    ["at"] = JSONTypes.array({
+                        [1] = 484,
+                        [2] = 60,
+                        [3] = -398,
+                    }),
+                    ["box"] = JSONTypes.array({
+                        [1] = 52,
+                        [2] = 116,
+                        [3] = 76,
+                    }),
+                }),
+                [16] = JSONTypes.map({
+                    ["at"] = JSONTypes.array({
+                        [1] = 635,
+                        [2] = 36,
+                        [3] = 515,
+                    }),
+                    ["box"] = JSONTypes.array({
+                        [1] = 16,
+                        [2] = 44,
+                        [3] = 134,
+                    }),
+                }),
+                [17] = JSONTypes.map({
+                    ["at"] = JSONTypes.array({
+                        [1] = 400,
+                        [2] = 56,
+                        [3] = -485,
+                    }),
+                    ["box"] = JSONTypes.array({
+                        [1] = 148,
+                        [2] = 104,
+                        [3] = 61,
+                    }),
+                }),
+                [18] = JSONTypes.map({
+                    ["at"] = JSONTypes.array({
+                        [1] = -399,
+                        [2] = 48,
+                        [3] = 211,
+                    }),
+                    ["box"] = JSONTypes.array({
+                        [1] = 100,
+                        [2] = 92,
+                        [3] = 72,
+                    }),
+                }),
+                [19] = JSONTypes.map({
+                    ["at"] = JSONTypes.array({
+                        [1] = 200,
+                        [2] = 40,
+                        [3] = -318,
+                    }),
+                    ["box"] = JSONTypes.array({
+                        [1] = 104,
+                        [2] = 72,
+                        [3] = 80,
+                    }),
+                }),
+                [20] = JSONTypes.map({
+                    ["at"] = JSONTypes.array({
+                        [1] = 0,
+                        [2] = 40,
+                        [3] = 450,
+                    }),
+                    ["box"] = JSONTypes.array({
+                        [1] = 80,
+                        [2] = 72,
+                        [3] = 112,
                     }),
                 }),
             }),

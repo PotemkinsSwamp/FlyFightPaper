@@ -7,7 +7,7 @@ solid: fly into it, or let it hit you, and your plane crashes.
 
 ## Where it stands (2026-10-16)
 Running in the place. Stops at both stations (2026-10-16, 297 tests passing): checked in Play by numbers, the
-middle car stands still at each station's middle for 10 s. Speed 90 looked at in Play (2026-10-16): both end cars'
+middle car stands still at each station's middle for 10 s. Speed 90 looked at in Play (2026-10-16; now 105, brake 35: Alan "slightly faster"): both end cars'
 noses face outwards; the south tin holds the whole train, the north station is shorter than the train, so the end
 cars poke out about 20 studs each side. Bots don't avoid it yet. Track pieces: [models](../art/models.md).
 
