@@ -104,6 +104,9 @@ mistake would be easy to make twice.
   `PRECISE_HEADER` test. A mesh with no saved shape loads as a solid **box** (planes hit the gaps; 2026-10-16, 453
   parts): run `tools/exact_collision.lua` in Studio after every rebuild with new meshes, wait while Studio is busy,
   then Ctrl+S.
+- **Exact collision can fill a hollow piece's opening.** The south station's lunch tin got a shape that blocked a
+  wedge of its own track tunnel (2026-10-17). Check tunnels with a grid of raycasts after new shapes are computed;
+  a piece that fails goes in `WALLS` in `tools/town_toys.py` (see-through mesh + plain invisible walls).
 - **New models need texture packs.** After placing new models, Play gets slow (over a minute) until Alan presses
   Ctrl+S and `python tools/town_toys.py packs FlyFightPaper-WORKING.rbxlx` then `build` harvest the packs.
 - **Rojo live sync sometimes can't set MeshIds.** After syncing new mesh parts, check each `MeshId` is not empty

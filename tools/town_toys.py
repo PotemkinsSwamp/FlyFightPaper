@@ -335,8 +335,32 @@ def buildings_v4(recs, missing):
             ox, oy, oz = -(x0 + x1) / 2 * k, (z0 + z1) / 2 * k, (y0 + y1) / 2 * k
             size = [(x1 - x0) * k, (z1 - z0) * k, (y1 - y0) * k]
             cf = [x + c * ox + s * oz, 0.6 + oy, z - s * ox + c * oz, c, 0, s, 0, 1, 0, -s, 0, c]
-            out.append(part(f"{name}/{piece['prefix']}", rec, "color", cf, size, solid=True))
+            see_through = any(piece["label"].startswith(n) for n in WALLS.get(name, ((), []))[0])
+            out.append(part(f"{name}/{piece['prefix']}", rec, "color", cf, size, solid=not see_through))
+        for i, ((x0, y0, z0), (x1, y1, z1)) in enumerate(WALLS.get(name, ((), []))[1]):
+            ox, oy, oz = -(x0 + x1) / 2 * k, (z0 + z1) / 2 * k, (y0 + y1) / 2 * k
+            cf = [x + c * ox + s * oz, 0.6 + oy, z - s * ox + c * oz, c, 0, s, 0, 1, 0, -s, 0, c]
+            out.append(wall(f"{name}/wall-{i + 1}", cf, [(x1 - x0) * k, (z1 - z0) * k, (y1 - y0) * k]))
     return out
+
+# Pieces whose exact shape Studio gets wrong, flown as plain invisible walls instead (Blender studs, building's own
+# frame): (labels made see-through, wall boxes). The lunch tin's west half shape filled a wedge of the track tunnel
+# (2026-10-17), so the tin is its floor, roof, and long walls round the three windows; the ends stay open.
+_TIN = [((-85, -40, 103), (85, 40, 120)), ((-85, -40, 162), (85, 40, 167))]
+for _y0, _y1 in ((-40, -31), (31, 40)):
+    _TIN += [((-85, _y0, 120), (85, _y1, 124.4)), ((-85, _y0, 155.6), (85, _y1, 162))]
+    _TIN += [((a, _y0, 124.4), (b, _y1, 155.6)) for a, b in ((-85, -75.6), (-28.4, -23.6), (23.6, 28.4), (75.6, 85))]
+WALLS = {"monorail-station-south": (("rounded-red-lunch-tin-half",), _TIN)}
+
+def wall(name, cf, size):
+    """An invisible solid box: planes and bots hit it like the building it stands in for."""
+    rot = "".join(f"<R{i // 3}{i % 3}>{v:.4f}</R{i // 3}{i % 3}>" for i, v in enumerate(cf[3:]))
+    return (f'<Item class="Part"><Properties><string name="Name">{name}</string><bool name="Anchored">true</bool>'
+            '<bool name="CanCollide">true</bool><bool name="CanQuery">true</bool><bool name="CanTouch">false</bool>'
+            '<bool name="CastShadow">false</bool><float name="Transparency">1</float>'
+            f'<Vector3 name="size"><X>{size[0]:.3f}</X><Y>{size[1]:.3f}</Y><Z>{size[2]:.3f}</Z></Vector3>'
+            f'<CoordinateFrame name="CFrame"><X>{cf[0]}</X><Y>{cf[1]:.3f}</Y><Z>{cf[2]}</Z>{rot}</CoordinateFrame>'
+            '</Properties></Item>')
 
 def monorail_train(recs, missing):
     """The train's three cars (car-1..car-3 in a MonorailTrain model), parked at the track start; each client moves
