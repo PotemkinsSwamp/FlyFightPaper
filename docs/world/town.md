@@ -14,7 +14,9 @@ In the game: the **new town (layout D)** — `default.project.json` now builds `
 and train, and the classroom's own pieces from `toy-placements.json`). Fans moved to x +/-600, the chalk eraser to
 its park. Alan's first-look notes: [playtest 2026-10-16](../playtests/2026-10-16.md) (6 of 7 fixed and seen in
 Studio the same evening; the rug paves only under pieces that touch the ground; eraser park has a fountain, benches
-and bushes). After any rebuild with new meshes run `tools/exact_collision.lua` in Studio, then Ctrl+S. Today's town is kept in
+and bushes). Central Park's toys (playground, picnic spot, ducks, boathouse; `PlanTown.parks` in `tools/rug.py`,
+trees keep clear) are in `city-toys-v4.rbxmx` since 2026-10-16 late, waiting for a rebuild. The one planned ruler
+bridge (ruler-stilt tower to book-stack lookout) is not built yet. After any rebuild with new meshes run `tools/exact_collision.lua` in Studio, then Ctrl+S. Today's town is kept in
 `D:\FlyFightPaper-snapshots\` (place files as saved 2026-10-15 and 2026-10-16, its city-toys and classroom files);
 its hand placements stay in git (`assets/rug/toy-placements.json`). Earlier rulings:
 [replan rulings](../decisions/2026-10-15-town-replan-rulings.md).

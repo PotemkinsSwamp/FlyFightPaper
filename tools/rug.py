@@ -25,7 +25,7 @@ from PIL import Image, ImageDraw, ImageFont
 import shapely
 import shapely.affinity
 from shapely.geometry import shape as shp, Point as SPoint, LineString as SLine, box as sbox
-from shapely.ops import unary_union
+from shapely.ops import unary_union, nearest_points
 
 ROOT = Path(__file__).resolve().parents[1]
 RUG = ROOT / "assets" / "rug"
@@ -819,6 +819,27 @@ class PlanTown:
             if min(abs(a - s) for s in (0, 90, 180, 270, 360)) > 12 and not 280 < a < 350:
                 t = math.radians(a)
                 self.toy("bush", ec.x + math.cos(t) * er * .9, ec.y + math.sin(t) * er * .9, 4.5, 12)
+        # Central Park's toys (decision 2026-10-15 town replan v3): ducks on the pond clear of the two rowing boats, the
+        # boathouse on the shore facing the water, the playground and a picnic spot in the widest open grass. Trees
+        # keep out of their spots (self.park_keep, used by spots()).
+        c, ok = self.pond.centroid, lambda area, step=4: [SPoint(x, z) for x in np.arange(area.bounds[0], area.bounds[2], step)
+                                                           for z in np.arange(area.bounds[1], area.bounds[3], step)
+                                                           if area.contains(SPoint(x, z))]
+        boats = [SPoint(c.x - 28, c.y + 6), SPoint(c.x + 26, c.y - 4)]               # transport()'s rowing boats
+        ducks = max(ok(self.pond.buffer(-14), 2), key=lambda q: min(q.distance(b) for b in boats))
+        shore = self.pond.buffer(19).exterior
+        boathouse = max((q for q in (shore.interpolate(k / 120, normalized=True) for k in range(120))
+                         if self.park.buffer(-16).contains(q)), key=lambda q: self.park.exterior.distance(q))
+        water = nearest_points(boathouse, self.pond)[1]
+        free = self.park.buffer(-28).difference(self.pond.buffer(45)).difference(boathouse.buffer(40))
+        play = max(ok(free), key=lambda q: min(self.park.exterior.distance(q), self.pond.exterior.distance(q) - 20))
+        free = self.park.buffer(-12).difference(self.pond.buffer(25)).difference(play.buffer(70)).difference(boathouse.buffer(40))
+        picnic = max(ok(free), key=lambda q: self.park.exterior.distance(q))
+        self.toy("ducks", ducks.x, ducks.y, 10, 4)
+        self.toy("boathouse", boathouse.x, boathouse.y, 15, 20, math.atan2(water.y - boathouse.y, water.x - boathouse.x))
+        self.toy("playground", play.x, play.y, 25, 20, math.atan2(c.y - play.y, c.x - play.x))
+        self.toy("picnic", picnic.x, picnic.y, 6, 5, math.atan2(c.y - picnic.y, c.x - picnic.x))
+        self.park_keep = [boathouse.buffer(19), play.buffer(30), picnic.buffer(12)]
         def draw(p):
             p.area(self.park.buffer(1.5), C["hedge"]); p.area(self.park, shade(C["grass"], .93))
             p.area(self.pond.buffer(5), C["shore"]); p.area(self.pond, C["water"])
@@ -1032,7 +1053,7 @@ class PlanTown:
         keep = unary_union([self.paved.buffer(4), self.river.buffer(8), solid.buffer(8)] + [l.buffer(5) for l in self.lots] +
                            [d.buffer(9) for d in self.drives] + [q.buffer(6) for _, q, _ in self.site_list] +
                            [SPoint(x, z).buffer(r + 4) for x, z, r in self.circles] + [self.pond.buffer(8), self.eraser] +
-                           [self.bell_pad.buffer(6)] +
+                           [self.bell_pad.buffer(6)] + self.park_keep +
                            [SPoint(x, z).buffer(100) for x, z in self.fans] + [shp(c) for c in self.plan["clear"]])
         rng = np.random.default_rng(99)
         x0, z0, x1, z1 = self.bounds
