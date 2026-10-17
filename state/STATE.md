@@ -5,8 +5,8 @@
   north station is shorter than the train (end cars poke out ~20 studs).
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
-- **Paint-jar tower windows:** the back's torn red and blue windows get the clean yellow window copied over them
-  (shape and paint). Rebake in progress, then upload (Alan's go given) and a live swap in Studio.
+- **Paint-jar tower windows fixed** (Alan's go): clean four-pane windows on the back, uploaded and swapped into
+  Studio; needs Alan's Ctrl+S. Faint streaks left in one pane of each, only close up.
 - **Block arch pier:** nothing touches it (neighbours 23 and 30 studs away); Alan to send a screenshot if it still
   looks buried. **Tissue tower grey piece:** every town piece has its paint; it was most likely still loading.
 - **Bots vs the train:** 7 minutes of bot matches, 0 train crashes, 3 close passes. Bots don't dodge it yet.
