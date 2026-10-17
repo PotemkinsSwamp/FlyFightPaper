@@ -458,7 +458,8 @@ function Service:step(dt)
    if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds then self:destroy(p,"Left the room","bounds");continue end
    if p.player and now-p.checkAt>=.25 then
     local elapsed=now-p.checkAt;local cf=p.body.CFrame
-    local cruise=p.stats.speed*(utility and utility.speed_factor or 1)*(1+(now<(p.pickupUntil or 0)+1 and p.pickupBonus or 0))*(now<(p.windAt or -math.huge)+1 and 1+Gameplay.world.ducts.blower.wind or 1)
+    -- The booster's extra speed only counts while it is (or just was) firing (2026-10-17 audit: it was always on).
+    local cruise=p.stats.speed*(utility and now-(p.boostedAt or -math.huge)<1 and utility.speed_factor or 1)*(1+(now<(p.pickupUntil or 0)+1 and p.pickupBonus or 0))*(now<(p.windAt or -math.huge)+1 and 1+Gameplay.world.ducts.blower.wind or 1)
     -- A short grace after boosting covers the client hearing late that the boost ran out.
     local empty=p.model:GetAttribute("Lift")<=0 and now-(p.boostedAt or -math.huge)>.6
     if empty and not p.emptySince then p.emptySince,p.emptyY,p.emptyUp=now,p.checkCFrame.Y,0 end
@@ -468,8 +469,12 @@ function Service:step(dt)
      and Rules.turnAllowed(p.checkCFrame.LookVector,cf.LookVector,elapsed,p.stats.turn)
      and (not empty or Rules.climbAllowed(cf.Y,p.emptyY,cruise,now-p.emptySince,p.emptyUp))
     p.checkAt=now
-    if allowed then p.checkCFrame=cf
+    if allowed then p.checkCFrame=cf;p.corrections=0
     else
+     -- A client that keeps ignoring the correction is cheating (or hopelessly lagged): after 1.5 s of it the plane
+     -- is lost, like leaving the room. One lag spike only snaps it back.
+     p.corrections=(p.corrections or 0)+1
+     if p.corrections>=6 then self:destroy(p,"Flight corrected","bounds");continue end
      -- Lag or a bad client: put the plane back where it last flew legally instead of killing it.
      p.body.CFrame=p.checkCFrame;p.body.AssemblyLinearVelocity=p.checkCFrame.LookVector*p.stats.speed
      p.lastPosition,p.lastCFrame=p.checkCFrame.Position,p.checkCFrame

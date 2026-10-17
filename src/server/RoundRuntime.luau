@@ -64,7 +64,9 @@ function Runtime.new(flight,combat,bots,profiles)
    local p=flight.pilots[player];if p then p.overlay=value;if value then combat:trigger(p,1,false);combat:trigger(p,2,false) end end
   elseif action=="service" and type(value)=="string" then
    local p=flight.pilots[player];if p and flight.onService then flight.onService(p,value) end
-  elseif action=="profile" then self:sendProfile(player)
+  elseif action=="profile" then
+   -- Not in the click budget (the client refreshes every 3 s), but at most once a second per player.
+   if os.clock()-(player:GetAttribute("LastProfileAt") or -math.huge)>=1 then player:SetAttribute("LastProfileAt",os.clock());self:sendProfile(player) end
   elseif action=="vote" and type(value)=="string" then self.engine:vote(tostring(player.UserId),value)
   else self.hangar:handle(player,action,value) end
  end)
@@ -94,6 +96,8 @@ function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total)
  self:combatEvent("lifeEnded",victim,{killer=killer and identity(killer),assists=identities,reason=cause=="fresh" and "fresh_plane" or cause})
 end
 function Runtime:bind(p)
+ -- A practice flight is never in the match: it can't hold the zone, score, earn or qualify (2026-10-17 audit).
+ if p.practice then return end
  -- tick first: a round whose time just ran out must not take a new life (lifeStarted ticks and would refuse it)
  if self.engine:tick()~="ACTIVE" then return end
  local prior=self.profiles:view(p.player)

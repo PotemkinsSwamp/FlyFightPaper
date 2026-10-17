@@ -43,7 +43,7 @@ function Service:perform(p,action)
    end
    p.serviceBusy=false
   end)
- elseif action=="refold" and p.player then
+ elseif action=="refold" and p.player and p.identity then
   local profile=self.profiles:view(p.player)
   if not profile then return end
   local intent=self.profiles.service:operationID()

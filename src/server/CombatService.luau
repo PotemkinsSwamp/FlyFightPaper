@@ -87,11 +87,14 @@ function Service:receive(p,packet,now)
  if packet.group~=1 and packet.group~=2 or type(packet.down)~="boolean" then return false end
  if now-info.window>=1 then info.window=now;info.messages={0,0} end
  -- Releases never depend on a stale aiming transform. Origins always come from the server's mount.
+ -- ponytail: releases are never capped, so a trigger can always be let go; each costs one table write.
  if packet.down then
   info.messages[packet.group]+=1;if info.messages[packet.group]>60 then return false end
   if not FlightRules.finite(packet.at) or packet.at>now+.1 or now-packet.at>Config.input_delay_allowance_seconds then return false end
   if not FlightRules.vector(packet.direction) or math.abs(packet.direction.Magnitude-1)>.01 then return false end
-  local age=math.clamp(now-packet.at,0,Config.input_delay_allowance_seconds)
+  -- The client's claimed age can't exceed its measured round trip (+0.1 s), so it can't widen its own aim cone.
+  local ping=p.player and p.player:GetNetworkPing() or 0
+  local age=math.clamp(math.min(now-packet.at,ping+.1),0,Config.input_delay_allowance_seconds)
   local arc=math.rad(math.min(Config.input_max_aim_deg,Config.input_aim_slack_deg+(p.stats.turn)*(age+.1)))
   if p.body.CFrame.LookVector:Dot(packet.direction)<math.cos(arc) then return false end
   info.aimData[packet.group]={arc=arc,at=now,latency=age};info.latency=age

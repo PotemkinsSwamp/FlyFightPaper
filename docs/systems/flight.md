@@ -7,6 +7,9 @@ You point the mouse where you want to go and the plane flies itself there, banki
 Works and approved in play. Boost now pushes along the nose even with no Lift. Open: Toilet Roll body jitter Alan saw once (not reproduced; needs his description).
 
 ## Rules
+- **Cheat checks (2026-10-17 audit):** the server compares each human plane's position and turn every 0.25 s and
+  snaps it back if it moved too far; a booster's extra speed only counts while it fires; 6 snaps in a row (1.5 s)
+  lose the plane like leaving the room. Not yet done: a per-frame check (a teleport and back inside 0.25 s isn't seen).
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
 
 Primary mouse points the desired nose direction; automatic banking shows turns. Automatic forward speed

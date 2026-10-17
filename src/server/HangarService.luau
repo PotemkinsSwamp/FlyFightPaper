@@ -28,7 +28,13 @@ function Service:handle(player,action,value)
   local _,reason=self.catalog:validateLoadout(preset.loadout,profile.ownership,Economy.levelForXP(profile.xpMilli))
   if reason=="two weapon types per plane" then self:message(player,"Two weapon types per plane: one for left click, one for right click.");return end
   if not Schema.validate(candidate,self.catalog) then self:message(player,Run:IsStudio() and "Not saved: saving keeps only parts you own at your level. Use Fly this build to test any parts." or "Build refused. Check ownership, level, capacity and mount types.");return end
-  self:enqueue(player,{kind="preset",slot=value.slot,name=preset.name,loadout=preset.loadout},function(ok)
+  -- Player-typed names go through Roblox's text filter (shown only to their owner); a failed filter keeps no name.
+  local name=preset.name
+  if type(name)=="string" and name~="" then
+   local ok,filtered=pcall(function() return game:GetService("TextService"):FilterStringAsync(name,player.UserId):GetNonChatStringForUserAsync(player.UserId) end)
+   name=ok and filtered or ("Build "..value.slot)
+  end
+  self:enqueue(player,{kind="preset",slot=value.slot,name=name,loadout=preset.loadout},function(ok)
    self:message(player,ok and "Preset saved. Apply it with a fresh plane or full refold." or "Preset could not be saved.")
   end)
  elseif action=="purchasePart" then
