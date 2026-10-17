@@ -64,11 +64,13 @@ function ChalkCloud.start()
 	-- Ready sign (Alan 2026-10-15): chalk blotches over the felt. Right after a puff the felt is clean (its own dark
 	-- charcoal); over the cooldown the blotches slowly fade back in; lots of white with black showing through =
 	-- ready to shoot again. The model's felt is its bottom 10.5 of 25 studs (assets/models/toys/chalk-eraser/checks.json).
+	-- Sized from the eraser as placed (made 92 x 25 x 29), so it can be moved and resized in Studio freely.
 	local body = eraser:FindFirstChildWhichIsA("BasePart")
+	local scale = body.Size / Vector3.new(92, 25, 29)
 	local coat = Instance.new("Part")
-	coat.Name, coat.Transparency, coat.Size = "ChalkCoat", 1, Vector3.new(91.2, 11.2, 28.2) -- clear of the fuzzy felt
+	coat.Name, coat.Transparency, coat.Size = "ChalkCoat", 1, Vector3.new(91.2, 11.2, 28.2) * scale -- clear of the felt
 	coat.Anchored, coat.CanCollide, coat.CanQuery, coat.CanTouch, coat.CastShadow = true, false, false, false, false
-	coat.CFrame = body.CFrame * CFrame.new(0, -body.Size.Y / 2 + 10.5 / 2, 0)
+	coat.CFrame = body.CFrame * CFrame.new(0, (-body.Size.Y + 10.5 * scale.Y) / 2, 0)
 	local blotches = {} -- two layers of soft dust blobs on every face, at their loaded see-through amount
 	for _, face in Enum.NormalId:GetEnumItems() do
 		for _, layer in { { 14, 9, 0, 0, 0.15 }, { 9, 6, 4, 2, 0.35 } } do

@@ -94,7 +94,9 @@ mistake would be easy to make twice.
 - **Exact building collision is computed once and saved in the place.** Alan presses Ctrl+S after new buildings
   are placed and their shapes are computed, BEFORE any `tools/save_place.py` rebuild, or about 40 minutes of
   computing is thrown away. `save_place.py` copies saved shapes onto rebuilt parts by MeshId; check with its
-  `PRECISE_HEADER` test.
+  `PRECISE_HEADER` test. A mesh with no saved shape loads as a solid **box** (planes hit the gaps; 2026-10-16, 453
+  parts): run `tools/exact_collision.lua` in Studio after every rebuild with new meshes, wait while Studio is busy,
+  then Ctrl+S.
 - **New models need texture packs.** After placing new models, Play gets slow (over a minute) until Alan presses
   Ctrl+S and `python tools/town_toys.py packs FlyFightPaper-WORKING.rbxlx` then `build` harvest the packs.
 - **Rojo live sync sometimes can't set MeshIds.** After syncing new mesh parts, check each `MeshId` is not empty

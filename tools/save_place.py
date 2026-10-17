@@ -98,7 +98,7 @@ def exact_shapes(old_arena, new_arena, strings):
             props.extend(copy.deepcopy(e) for e in saved[mesh_id(item)] if e is not None); reused += 1
         else:
             ET.SubElement(props, "token", name="CollisionFidelity").text = PRECISE; marked += 1
-    print(f"Exact collision: {reused} parts reuse saved shapes, {marked} left for Studio to work out once (then Ctrl+S)")
+    print(f"Exact collision: {reused} parts reuse saved shapes, {marked} left for Studio: run tools/exact_collision.lua in Studio, wait, then Ctrl+S")
 
 
 def main():
