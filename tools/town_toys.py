@@ -37,12 +37,13 @@ FRONT = -math.pi / 2        # turn that points a toy's front (Blender -Y) along 
 # spot kind -> [(toy, colour map, weight)], and the scale rule (spot radius / the toy's own radius)
 CHOICES = {
     "tree": [("tree-lollipop", "color", 5), ("tree-lollipop", "color-autumn", 1), ("tree-bushy", "color", 6)],
+    "bush": [("tree-bushy", "color", 1)],          # a bushy tree shrunk to a bush (eraser park)
     "car": [("car-hatchback", "color", 1), ("car-sedan", "color", 1), ("car-taxi", "color", 1), ("car-van", "color", 1)],
     "stall": [("stall", f"color-{i}", 1) for i in range(6)],
     "house": [("house", f"color-{i}", 1) for i in range(3)],
     "crop": [("crop-row", f"color-{i}", 1) for i in range(3)],
 }
-RADIUS = {"tree": 10, "pine": 9}  # canopy radius the model is built at
+RADIUS = {"tree": 10, "pine": 9, "bush": 10}  # canopy radius the model is built at
 # Everything else is scaled evenly so its longest footprint side fits its rug spot (studs); fountains use the spot's r.
 FIT = {"house": 30, "stall": 22, "playground": 50, "picnic": 12, "goal": 24, "pool": 44, "hay-bale": 8, "footbridge": 34,
        "boathouse": 30, "barn": 44, "petrol-station": 60, "fire-station": 50, "plane": 26, "hangar": 40, "terminal": 40,
@@ -141,7 +142,7 @@ PLACEMENTS = ROOT / "assets/rug/toy-placements.json"
 def records():
     recs = {p.parent.name: json.loads(p.read_text()) for p in TOYS.glob("*/upload.json")}
     for p in (ROOT / "assets/models").glob("*/parts/*.upload.json"):    # hero building pieces, named "folder/piece"
-        recs[f"{p.parent.parent.name}/{p.name.split('.')[0]}"] = json.loads(p.read_text())
+        recs[f"{p.parent.parent.name}/{p.name.removesuffix('.upload.json')}"] = json.loads(p.read_text())
     return recs
 
 
@@ -347,7 +348,7 @@ def monorail_train(recs, missing):
 
 def readlua(folder):
     """Luau for Studio's execute_luau: LoadAsset each uploaded piece, return its MeshId and size as JSON for `meshes`."""
-    ids = {p.name.split(".")[0]: json.loads(p.read_text())["model"] for p in (ROOT / folder / "parts").glob("*.upload.json")}
+    ids = {p.name.removesuffix(".upload.json"): json.loads(p.read_text())["model"] for p in (ROOT / folder / "parts").glob("*.upload.json")}
     print("local H,I,o=game:GetService('HttpService'),game:GetService('InsertService'),{} for k,id in pairs(H:JSONDecode('"
           + json.dumps(ids) + "')) do local m=I:LoadAsset(id) local p=m:FindFirstChildWhichIsA('MeshPart',true) "
           "o[k]={mesh=p.MeshId:match('%d+'),initial={p.Size.X,p.Size.Y,p.Size.Z}} m:Destroy() end return H:JSONEncode(o)")

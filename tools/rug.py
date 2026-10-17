@@ -808,6 +808,17 @@ class PlanTown:
 
     def parks(self):
         ec, er = self.eraser.centroid, math.sqrt(self.eraser.area / math.pi)
+        # The eraser park's toys (Alan 2026-10-16: "needs a fountain, benches, bushes"): the fountain in the middle
+        # basin, a bench facing it in three quarters beside the ring path, bushes round the edge between the paths. The
+        # fourth quarter (around 315 degrees) is where the eraser lies (assets/models/toys/chalk-eraser).
+        self.toy("fountain", ec.x, ec.y, 14, 15)
+        for a in (45, 135, 225):
+            t = math.radians(a)
+            self.toy("bench", ec.x + math.cos(t) * er * .7, ec.y + math.sin(t) * er * .7, 5, 5, t + math.pi)
+        for a in range(10, 360, 20):
+            if min(abs(a - s) for s in (0, 90, 180, 270, 360)) > 12 and not 280 < a < 350:
+                t = math.radians(a)
+                self.toy("bush", ec.x + math.cos(t) * er * .9, ec.y + math.sin(t) * er * .9, 4.5, 12)
         def draw(p):
             p.area(self.park.buffer(1.5), C["hedge"]); p.area(self.park, shade(C["grass"], .93))
             p.area(self.pond.buffer(5), C["shore"]); p.area(self.pond, C["water"])
