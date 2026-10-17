@@ -10,6 +10,12 @@ local PaperUI = require(script.Parent.PaperUI)
 local Loading = {}
 
 local cover, status, fill, shownAt
+local LINES = {
+	"The other pilots are setting up the classroom...", "Colouring in the pages...", "Folding paper planes...",
+	"Sharpening the pencils...", "Drawing the roads on the rug...", "Taping the town together...",
+	"Winding up the toy train...", "Hanging the paper chains...", "Filling the paint jars...",
+	"Stacking the books into towers...", "Practising loop-the-loops...", "Picking the best paper...",
+}
 
 -- Called first thing on join so the player never sees the bare room while the game connects.
 function Loading.show()
@@ -27,18 +33,30 @@ function Loading.show()
 	fill = image(card, "Fill", results.xpFill, 95, 205, 1, 80)
 	fill.AnchorPoint, fill.Position, fill.ScaleType = Vector2.new(0, 0.5), UDim2.fromOffset(95, 245), Enum.ScaleType.Stretch
 	image(card, "Frame", results.xpFrame, 80, 190, 640, 110).ScaleType = Enum.ScaleType.Stretch
-	local plane = image(sheet, "Plane", menu.plane, -300, 380, 290, 200, 0)
-	TweenService:Create(plane, TweenInfo.new(3.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1), {
-		Position = UDim2.fromOffset(PaperUI.W + 300, 300), Rotation = 8,
+	-- The plane flies nose first (Alan 2026-10-17): turned 24 degrees so the picture's nose points along its gentle
+	-- climb (checked in a Studio preview), and cropped so its dashed trail no longer sits in front of the nose.
+	local plane = image(sheet, "Plane", menu.plane, 0, 0, 215, 200, 24)
+	plane.ImageRectOffset, plane.ImageRectSize = Vector2.zero, Vector2.new(630, 589)
+	plane.Position = UDim2.fromOffset(-250, 760)
+	TweenService:Create(plane, TweenInfo.new(4, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1), {
+		Position = UDim2.fromOffset(PaperUI.W + 250, 260),
 	}):Play()
+	-- What the other pilots are busy with while you load (Alan 2026-10-17), a new line every few seconds.
+	task.spawn(function()
+		local i = math.random(#LINES)
+		while cover and cover.Parent do
+			status.Text = LINES[i]; i = i % #LINES + 1
+			task.wait(2.5)
+		end
+	end)
 	cover.Visible = true
 end
 
 function Loading.run()
 	if not cover then Loading.show() end
 
-	local function progress(text, fraction)
-		status.Text = text
+	-- The words rotate on their own (see LINES); this only moves the crayon bar.
+	local function progress(fraction)
 		fill.Size = UDim2.fromOffset(610 * math.clamp(fraction, 0.02, 1), 80)
 	end
 	-- Seconds spent in each step, kept on workspace (LoadTimes) so slow joins can be traced.
@@ -77,7 +95,7 @@ function Loading.run()
 				Content:PreloadAsync(ids, function(id, fetch)
 					completed += 1
 					heard = os.clock()
-					progress("Unpacking the classroom", math.min(completed, #list) / math.max(#list, 1))
+					progress(math.min(completed, #list) / math.max(#list, 1))
 					if fetch == Enum.AssetFetchStatus.Success then failed[id] = nil; loaded += 1 end
 				end)
 			end)
@@ -92,17 +110,14 @@ function Loading.run()
 		for id in failed do table.insert(retry, id) end
 		-- A handful of misses isn't worth seconds of waiting (one failed picture cost ~5 s): retry only past 5%.
 		if #retry <= #list * 0.05 or loaded < #retry or os.clock() + attempt >= stopAt then break end
-		progress("Still unpacking a few things...", 1)
+		progress(1)
 		task.wait(attempt)
 		preload(retry)
 	end
 	local failures = 0
 	for _ in failed do failures += 1 end
 	workspace:SetAttribute("AssetLoadFailures", failures)
-	if failures > #list * 0.05 and loaded > 0 then
-		progress("A few pictures didn't load. You can still play; rejoin later to retry.", 1)
-		task.wait(1.5)
-	end
+	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
 	cover.Parent:Destroy()
 	Root.RoundAction:FireServer("mapReady")
