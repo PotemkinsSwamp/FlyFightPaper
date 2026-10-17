@@ -15,7 +15,6 @@
 - **Bots vs the train:** 7 minutes of bot matches, 0 train crashes, 3 close passes. Bots don't dodge it yet.
 - **Airspace zones bigger and flatter where buildings are dense** (Alan); the Studio dev button "next spot" moves
   the zone to the next spot on each click (replaces "ceiling"). Checked by numbers in Play; looks wait on Alan.
-- **Ducts approved by Alan and saved** (Ctrl+S): HVAC look, props, solid vent grilles, veteran bots flying through.
 - **Team match passed by numbers** (6 v 6, results, vote, next round; no bot ever chased a teammate).
 - **Rookie graduation:** each step has its own test (qualifying match -> saved count, max 5 -> regular room ->
   regular bots); saving round-trip 17/0, rules 296/0. Not played live (needs 5 real qualifying matches).
