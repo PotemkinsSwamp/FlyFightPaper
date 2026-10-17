@@ -456,7 +456,18 @@ function Service:step(dt)
    local outside=math.abs(localPos.X)>self.boundsSize.X/2+12 or (localPos.Y>self.boundsSize.Y/2+self.headroom+12 or localPos.Y<-self.boundsSize.Y/2-12) or math.abs(localPos.Z)>self.boundsSize.Z/2+12
    if outside then p.outSince=p.outSince or now;p.model:SetAttribute("Message","Return to the room now") elseif p.outSince then p.outSince=nil;p.model:SetAttribute("Message","") end
    if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds then self:destroy(p,"Left the room","bounds");continue end
-   if p.player and now-p.checkAt>=.25 then
+   -- Blink check every step (2026-10-17): a teleport and back inside the 0.25 s window. It compares against the last
+   -- position the server saw change, over the time since, so bursty replication can't trip it.
+   -- ponytail: one generous speed cap (2.5x cruise + 40) catches blinks only; the 0.25 s check still judges speed.
+   if p.player then
+    local pos=p.body.Position
+    if pos~=p.seenPos then
+     if p.seenPos and (pos-p.seenPos).Magnitude>(p.stats.speed*2.5+40)*(now-p.seenAt)+16 then p.blink=true end
+     p.seenPos,p.seenAt=pos,now
+    end
+   end
+   if p.player and (now-p.checkAt>=.25 or p.blink) then
+    p.blink=nil
     local elapsed=now-p.checkAt;local cf=p.body.CFrame
     -- The booster's extra speed only counts while it is (or just was) firing (2026-10-17 audit: it was always on).
     local cruise=p.stats.speed*(utility and now-(p.boostedAt or -math.huge)<1 and utility.speed_factor or 1)*(1+(now<(p.pickupUntil or 0)+1 and p.pickupBonus or 0))*(now<(p.windAt or -math.huge)+1 and 1+Gameplay.world.ducts.blower.wind or 1)
@@ -477,7 +488,7 @@ function Service:step(dt)
      if p.corrections>=6 then self:destroy(p,"Flight corrected","bounds");continue end
      -- Lag or a bad client: put the plane back where it last flew legally instead of killing it.
      p.body.CFrame=p.checkCFrame;p.body.AssemblyLinearVelocity=p.checkCFrame.LookVector*p.stats.speed
-     p.lastPosition,p.lastCFrame=p.checkCFrame.Position,p.checkCFrame
+     p.lastPosition,p.lastCFrame,p.seenPos,p.seenAt=p.checkCFrame.Position,p.checkCFrame,p.checkCFrame.Position,now
      -- Count the empty-Lift climb limit again from the corrected spot, or the old spot fails too and every check snaps.
      if empty then p.emptySince,p.emptyY,p.emptyUp=now,p.checkCFrame.Y,0 end
      p.model:SetAttribute("Message","Flight corrected")

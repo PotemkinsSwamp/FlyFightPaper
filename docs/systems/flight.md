@@ -9,7 +9,8 @@ Works and approved in play. Boost now pushes along the nose even with no Lift. O
 ## Rules
 - **Cheat checks (2026-10-17 audit):** the server compares each human plane's position and turn every 0.25 s and
   snaps it back if it moved too far; a booster's extra speed only counts while it fires; 6 snaps in a row (1.5 s)
-  lose the plane like leaving the room. Not yet done: a per-frame check (a teleport and back inside 0.25 s isn't seen).
+  lose the plane like leaving the room. Every step, a jump faster than 2.5x cruise (+40) since the last position the
+  server saw change runs that check at once, so a teleport and back inside 0.25 s is caught.
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
 
 Primary mouse points the desired nose direction; automatic banking shows turns. Automatic forward speed
