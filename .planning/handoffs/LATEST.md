@@ -1,7 +1,7 @@
-# LATEST → handoff-2026-10-17-art-town-notes-train-scrape.md
+# LATEST → handoff-2026-10-17-multiplayer-published-security.md
 
-★ START HERE: make both monorail stations a little taller and the same height (train near each station floor), Alan's
-4th-look note 5 in docs/playtests/2026-10-16.md; renders → Alan's OK → upload (his go) → rebuild → Play look.
+★ START HERE: ask Alan's go to re-publish (File > Publish As > Overwrite, never File > Publish) so the live game has
+the security and server-move fixes; then his live checks (join straight in, Paper/XP kept after rejoin, F9 memory).
 
-Quick state: main 907d5e95, every commit auto-pushed to GitHub. Place saved with the paint-jar tower's new windows.
-Previous: handoff-2026-10-16-2115-art-new-town-notes-fixed.md.
+Quick state: main 690ecc32, tests 306/0, game published privately (server size 12). Studio is on the online copy.
+Previous: handoff-2026-10-17-art-town-notes-train-scrape.md.
