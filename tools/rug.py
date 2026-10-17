@@ -837,7 +837,7 @@ class PlanTown:
         free = self.park.buffer(-12).difference(self.pond.buffer(25)).difference(play.buffer(70)).difference(boathouse.buffer(40))
         picnic = max(ok(free), key=lambda q: self.park.exterior.distance(q))
         self.toy("ducks", ducks.x, ducks.y, 10, 4)
-        self.toy("boathouse", boathouse.x, boathouse.y, 15, 20, math.atan2(water.y - boathouse.y, water.x - boathouse.x))
+        self.toy("boathouse", -606.773, -538.176, 15, 20, math.atan2(water.y - boathouse.y, water.x - boathouse.x))   # Alan nudged it onto the shore in Studio (2026-10-16); turn as worked out
         self.toy("playground", play.x, play.y, 25, 20, math.atan2(c.y - play.y, c.x - play.x))
         self.toy("picnic", picnic.x, picnic.y, 6, 5, math.atan2(c.y - picnic.y, c.x - picnic.x))
         self.park_keep = [boathouse.buffer(19), play.buffer(30), picnic.buffer(12)]
