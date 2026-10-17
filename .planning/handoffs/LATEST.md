@@ -1,7 +1,7 @@
-# LATEST → handoff-2026-10-16-2115-art-new-town-notes-fixed.md
+# LATEST → handoff-2026-10-17-art-town-notes-train-scrape.md
 
-★ START HERE: re-run the rules tests and watch the train at speed 90, then fix Alan's three third-look notes
-(stacked-lids tower windows, floating paper targets, block arch's buried pier) in docs/playtests/2026-10-16.md.
+★ START HERE: make both monorail stations a little taller and the same height (train near each station floor), Alan's
+4th-look note 5 in docs/playtests/2026-10-16.md; renders → Alan's OK → upload (his go) → rebuild → Play look.
 
-Quick state: main, every commit auto-pushed to GitHub. New town in the place, saved with all exact collision shapes.
-Previous: handoff-2026-10-16-2000-art-new-town-in-place-fix-notes.md.
+Quick state: main 907d5e95, every commit auto-pushed to GitHub. Place saved with the paint-jar tower's new windows.
+Previous: handoff-2026-10-16-2115-art-new-town-notes-fixed.md.

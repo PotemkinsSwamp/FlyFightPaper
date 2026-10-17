@@ -1,4 +1,6 @@
-# Since Alan last checked (2026-10-16, late)
+# Since Alan last checked (2026-10-17)
+- **Next up: both stations a bit taller and equal** (Alan's 4th look); his notes on the train scrape and "next spot"
+  are fixed (docs/playtests/2026-10-16.md). No ruler bridges in the new town (Alan).
 - **Place rebuilt and saved (Alan, 23:20):** Central Park's toys (playground, picnic, ducks, boathouse), Alan's
   eraser move/resize, bigger fountain and boathouse nudge are all in the files, so rebuilds keep them.
 - **Train 105 studs/s** (Alan: "slightly faster"; brake 35); tests 297/0. Stops centred 10 s in both stations; the
@@ -7,8 +9,6 @@
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
 - **Paint-jar tower windows fixed** (Alan's go): clean four-pane windows on the back, uploaded and swapped into
   Studio; needs Alan's Ctrl+S. Faint streaks left in one pane of each, only close up.
-- **Block arch pier:** nothing touches it (neighbours 23 and 30 studs away); Alan to send a screenshot if it still
-  looks buried. **Tissue tower grey piece:** every town piece has its paint; it was most likely still loading.
 - **Bots vs the train:** 7 minutes of bot matches, 0 train crashes, 3 close passes. Bots don't dodge it yet.
 - **Airspace zones bigger and flatter where buildings are dense** (Alan); the Studio dev button "next spot" moves
   the zone to the next spot on each click (replaces "ceiling"). Checked by numbers in Play; looks wait on Alan.
@@ -54,6 +54,6 @@ Waiting on Alan — Stage 9 playtest, then your approval
    the moving zone and its green arrow, the ceiling spot (east side, under the rings), veteran bots fighting for the
    zone while rookies wander, the "+100 FOLD" pop-ups and the results points.
 2. Round end: let a round finish (or switch mode in the hangar): does the vote screen look on brand?
-3. Paper targets: find a kid-drawn cut-out on a rooftop and shoot it: it should fall flat and pay 50.
+3. Train: skim it (should scrape, not crash), fly into its nose (crash), fit above it in the south station.
 4. Escapes: puff the chalk eraser; take the ducts once more (spot a veteran bot diving out of a vent).
 5. Say "Stage 9 approved", or what to fix.
