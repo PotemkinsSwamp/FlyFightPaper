@@ -1,6 +1,7 @@
 # Since Alan last checked (2026-10-17)
-- **Next up: both stations a bit taller and equal** (Alan's 4th look); his notes on the train scrape and "next spot"
-  are fixed (docs/playtests/2026-10-16.md). No ruler bridges in the new town (Alan).
+- **Both stations 170 tall** (were 150; Alan OK'd the renders, upload his go): track tunnels 20 studs higher, train
+  on the tunnel floor, ~26 studs of air above it. **Schoolyard trees and houses back** (the new-town build had
+  dropped them). Both reach the place in the next rebuild (Alan closes/reopens Studio, then Ctrl+S).
 - **Place rebuilt and saved (Alan, 23:20):** Central Park's toys (playground, picnic, ducks, boathouse), Alan's
   eraser move/resize, bigger fountain and boathouse nudge are all in the files, so rebuilds keep them.
 - **Train 105 studs/s** (Alan: "slightly faster"; brake 35); tests 297/0. Stops centred 10 s in both stations; the
