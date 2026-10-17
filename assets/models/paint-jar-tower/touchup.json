@@ -1,141 +1,37 @@
 {
-  "delete_rule": "all",
-  "delete": [
-    [
-      -15.8,
-      41,
-      62.8,
-      15.8,
-      48.8,
-      87.8
-    ]
-  ],
-  "boxes": [
+  "_comment": "2026-10-16 (Alan's third look): the back's red and blue jar windows were torn by Meshy. The back yellow jar's clean four-pane window is copied up onto each (same jar radius and frame style). Replaces the old flat-box patch on the blue jar, which didn't match. The copy stands 1 stud proud of the torn window (nothing is cut away, so the bake has no holes).",
+  "copies": [
     {
-      "center": [
+      "from": [
+        -13.5,
+        30,
+        11.3,
+        13.5,
+        50,
+        32.3
+      ],
+      "offset": [
         0,
-        42.7,
-        75.3
-      ],
-      "size": [
-        32.4,
-        10,
-        25.5
-      ],
-      "color": [
-        18,
-        94,
-        132
-      ],
-      "roughness": 0.55
-    },
-    {
-      "center": [
-        -15.25,
-        48,
-        75.3
-      ],
-      "size": [
-        1.9,
-        0.8,
-        25.5
-      ],
-      "color": [
-        234,
-        213,
-        167
-      ],
-      "roughness": 0.55
-    },
-    {
-      "center": [
-        15.25,
-        48,
-        75.3
-      ],
-      "size": [
-        1.9,
-        0.8,
-        25.5
-      ],
-      "color": [
-        234,
-        213,
-        167
-      ],
-      "roughness": 0.55
-    },
-    {
-      "center": [
         0,
-        48,
-        63.5
+        108.0
       ],
-      "size": [
-        32.4,
-        0.8,
-        1.9
-      ],
-      "color": [
-        234,
-        213,
-        167
-      ],
-      "roughness": 0.55
+      "push": 1.0
     },
     {
-      "center": [
+      "from": [
+        -13.5,
+        30,
+        11.3,
+        13.5,
+        50,
+        32.3
+      ],
+      "offset": [
         0,
-        48,
-        87.1
-      ],
-      "size": [
-        32.4,
-        0.8,
-        1.9
-      ],
-      "color": [
-        234,
-        213,
-        167
-      ],
-      "roughness": 0.55
-    },
-    {
-      "center": [
         0,
-        48,
-        75.3
+        54.35
       ],
-      "size": [
-        1.4,
-        0.8,
-        25.5
-      ],
-      "color": [
-        234,
-        213,
-        167
-      ],
-      "roughness": 0.55
-    },
-    {
-      "center": [
-        0,
-        48,
-        75.3
-      ],
-      "size": [
-        32.4,
-        0.8,
-        1.4
-      ],
-      "color": [
-        234,
-        213,
-        167
-      ],
-      "roughness": 0.55
+      "push": 1.0
     }
   ]
 }
