@@ -31,7 +31,6 @@ Broken or not yet checked
 Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
 Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
-Alan's eraser rulings: docs/decisions/2026-10-15-chalk-eraser-rulings.md.
 Decisions to review
 Duct props: cobwebs, spiders, toys and tools are see-through to planes (fly through them). Veterans flee to the
   ducts 40% of the time when shot at (vent within 500), wander in 12% of patrol turns; others never (config bots.*.duct_*).
