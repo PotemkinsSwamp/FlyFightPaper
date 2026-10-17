@@ -13,7 +13,6 @@
   north station is shorter than the train (end cars poke out ~20 studs).
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
-- **Bots vs the train:** 7 minutes of bot matches, 0 train crashes, 3 close passes. Bots don't dodge it yet.
 - **Airspace zones bigger and flatter where buildings are dense** (Alan); the Studio dev button "next spot" moves
   the zone to the next spot on each click (replaces "ceiling"). Checked by numbers in Play; looks wait on Alan.
 - **Team match passed by numbers** (6 v 6, results, vote, next round; no bot ever chased a teammate).
