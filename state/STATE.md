@@ -1,12 +1,12 @@
 # Since Alan last checked (2026-10-17)
-- **Published privately (Alan, 2026-10-17)** as "FlyFightPaper(First Fold)", server size 12. Re-published by Alan
-  (2026-10-17, Publish As > Overwrite) with: security pass (practice planes out of the
-  match, booster speed only while boosting, ignored corrections lose the plane, aim age capped by ping, profile
-  spam limit, build names filtered) and safe server moves (real final save, 60 s timeout). Tests 306/0.
+- **Published privately** ("FlyFightPaper(First Fold)", server size 12); re-published by Alan with the security
+  pass and safe server moves (details: docs/systems/flight.md, docs/systems/saving.md).
 - **Since that publish (needs another Publish As, Alan's go):** late rewards reach a departed player's save; a
-  teleport-and-back is caught; a slow friend check can't start two moves; room search reads 100 rows. Tests 318/0.
+  teleport-and-back is caught; a slow friend check can't start two moves; room search reads 100 rows; fold credit
+  (Alan: big damage wins, +25 finishing shot, 15 s, repair wipes); loading screen fixed. Tests 321/0.
+- **Next art job (Alan's notes 2026-10-17):** menu pictures of the old town and AI-gibberish rulers (plan in
+  docs/playtests/2026-10-17.md).
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
-- **30-min 12-plane run:** steady 60 steps/s, rounds cycle cleanly, no build-up; small memory creep (likely Studio).
 - **Stations 170 tall, in the place, Alan OK'd them in Play;** south tin flies as invisible walls (its computed shape
   blocked the tunnel). Schoolyard trees and houses back.
 - **Train 105 studs/s** (Alan: "slightly faster"; brake 35); tests 297/0. Stops centred 10 s in both stations; the

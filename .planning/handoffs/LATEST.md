@@ -1,6 +1,8 @@
-# LATEST → handoff-2026-10-17-multiplayer-published-security.md
+# LATEST → handoff-2026-10-17-1800-multiplayer-fold-credit-loading.md
 
-★ START HERE: re-publish DONE (Alan, 2026-10-17; Studio copy checked: all 8 fixes in). Since then (needs another Publish As, Alan's go): offline rewards, blink check, matchmaking guards; tests 318/0. Next: Alan's live checks (join straight in, Paper/XP kept after rejoin, F9 memory).
+★ START HERE: ask Alan's go to re-publish (he clicks File > Publish As > Overwrite) so the live game gets fold
+credit, the loading screen, offline rewards and the newer cheat/matchmaking fixes; then his live checks; then the
+menu art (old town pictures, AI-gibberish rulers).
 
-Quick state: main 690ecc32, tests 306/0, game published privately (server size 12). Studio is on the online copy.
-Previous: handoff-2026-10-17-art-town-notes-train-scrape.md.
+Quick state: main, tests 321/0, game published privately (server size 12). Studio is on the online copy.
+Previous: handoff-2026-10-17-multiplayer-published-security.md.
