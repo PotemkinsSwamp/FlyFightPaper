@@ -7,8 +7,9 @@ solid: fly into it, or let it hit you, and your plane crashes.
 
 ## Where it stands (2026-10-16)
 Running in the place. Stops at both stations (2026-10-16, 297 tests passing): checked in Play by numbers, the
-middle car stands still at each station's middle for 10 s. Still to check by eye: the cars' noses lead (the mesh turn
-in `TrainMotion.luau`) and the train looks right in the station tunnels. Bots don't avoid it yet. Track pieces: [models](../art/models.md).
+middle car stands still at each station's middle for 10 s. Speed 90 looked at in Play (2026-10-16): both end cars'
+noses face outwards; the south tin holds the whole train, the north station is shorter than the train, so the end
+cars poke out about 20 studs each side. Bots don't avoid it yet. Track pieces: [models](../art/models.md).
 
 ## Rules
 - The train runs round the loop on server time and waits 10 seconds at each station with its middle car in the

@@ -82,18 +82,18 @@
       310,
       495
     ],
-    "paper_targets_comment": "Hidden kid-drawn paper targets (Alan 2026-10-13): rooftop points found in Studio (flat roofs 100-350 up, open sky), front faces the city middle. Each pilot has a private set per round; 2 points each = the prop cap.",
+    "paper_targets_comment": "Hidden kid-drawn paper targets (Alan 2026-10-13): rooftop points found in Studio (flat roofs 90-350 up, open sky above; re-placed 2026-10-16 for the new town), front faces the city middle. Each pilot has a private set per round; 2 points each = the prop cap.",
     "paper_targets": [
-      {"design": "broccoli", "at": [-850, 200, 400], "yaw": -65},
-      {"design": "homework", "at": [754, 155.6, -206], "yaw": 180},
-      {"design": "alarm-clock", "at": [100, 153, 300], "yaw": 18},
-      {"design": "bath", "at": [-550, 229, -400], "yaw": -126},
-      {"design": "dentist-chair", "at": [650, 224, 150], "yaw": 77},
-      {"design": "spider", "at": [-600, 303, 200], "yaw": -72},
-      {"design": "vacuum", "at": [-550, 114, 400], "yaw": -54},
-      {"design": "spinach", "at": [550, 257, -450], "yaw": 129},
-      {"design": "broccoli", "at": [392, 77.6, 538], "yaw": 270},
-      {"design": "spider", "at": [650, 224, 300], "yaw": 65}
+      {"design": "broccoli", "at": [602, 330.6, -190], "yaw": 108},
+      {"design": "homework", "at": [538, 143.9, -558], "yaw": 136},
+      {"design": "alarm-clock", "at": [466, 149.0, 474], "yaw": 45},
+      {"design": "bath", "at": [882, 93.6, 98], "yaw": 84},
+      {"design": "dentist-chair", "at": [202, 256.7, 90], "yaw": 66},
+      {"design": "spider", "at": [-86, 189.6, 562], "yaw": -9},
+      {"design": "vacuum", "at": [-838, 200.1, 514], "yaw": -58},
+      {"design": "spinach", "at": [-190, 234.5, 74], "yaw": -69},
+      {"design": "broccoli", "at": [-542, 240.6, -190], "yaw": -109},
+      {"design": "spider", "at": [-870, 111.8, -254], "yaw": -106}
     ],
     "chalk_eraser_comment": "Easter egg (MILESTONES D14): a chalkboard eraser dropped in the fountain park south of the bell tower (workspace.Arena.ChalkEraser). Shoot it = a chalk cloud `radius` studs round a point a little above it for `seconds`; planes inside it are hard to see and can't be locked, aimed at with assist, chased by bots or name-tagged. Radius 2.25x then +30% and cooldown 3 min -> 2 min after Alan's playtests (2026-10-15). The felt is black after a puff and slowly turns chalky white; white = ready. Lasts 45 s (was 20, then 30), radius 20% smaller (364 -> 291), sight blocked through it like a building; full size for the first half, then shrinks to 15% and is gone (Rules.chalkRadius); inside, fog limits sight to about 380 studs. Ready again `cooldown_seconds` after a puff.",
     "chalk_eraser": {"radius": 291, "seconds": 45, "cooldown_seconds": 120},
@@ -160,7 +160,7 @@
         {"at": [860, 440, 330], "box": [16, 60, 60]}, {"at": [-480, 460, -180], "box": [60, 60, 16]},
         {"at": [-480, 460, -60], "box": [60, 60, 16]}, {"at": [-330, 470, 330], "box": [200, 62, 60]},
         {"at": [480, 470, 60], "box": [60, 62, 200]}, {"at": [-700, 470, 0], "box": [200, 62, 60]},
-        {"at": [0, 112, 0], "box": [126, 150, 126]}, {"at": [-630, 78, -412], "box": [84, 136, 106]}
+        {"at": [0, 112, 0], "box": [126, 150, 126]}, {"at": [0, 72, 230], "box": [84, 132, 106]}
       ]
     },
     "monorail": {
