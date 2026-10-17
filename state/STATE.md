@@ -1,6 +1,6 @@
 # Since Alan last checked (2026-10-17)
-- **Published privately (Alan, 2026-10-17)** as "FlyFightPaper(First Fold)", server size 12. Since then (not online
-  yet, needs Alan's go to re-publish with File > Publish As > Overwrite): security pass (practice planes out of the
+- **Published privately (Alan, 2026-10-17)** as "FlyFightPaper(First Fold)", server size 12. Re-published by Alan
+  (2026-10-17, Publish As > Overwrite) with: security pass (practice planes out of the
   match, booster speed only while boosting, ignored corrections lose the plane, aim age capped by ping, profile
   spam limit, build names filtered) and safe server moves (real final save, 60 s timeout). Tests 306/0.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
