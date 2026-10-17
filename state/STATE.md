@@ -1,17 +1,16 @@
 # Since Alan last checked (2026-10-17)
-- **Real players next (Alan):** 12 per server; joining puts you straight into the match (a bot leaves at once,
-  checked in Play: plane in 0.1 s); a beginner may join a friend's regular room after one match. Tests 298/0.
-  Private publish: Alan's go given; waiting on him to publish from Studio (place isn't linked to the experience).
+- **Published privately (Alan, 2026-10-17)** as "FlyFightPaper(First Fold)", server size 12. Since then (not online
+  yet, needs Alan's go to re-publish with File > Publish As > Overwrite): security pass (practice planes out of the
+  match, booster speed only while boosting, ignored corrections lose the plane, aim age capped by ping, profile
+  spam limit, build names filtered) and safe server moves (real final save, 60 s timeout). Tests 306/0.
+- **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
+- **30-min 12-plane run:** steady 60 steps/s, rounds cycle cleanly, no build-up; small memory creep (likely Studio).
 - **Stations 170 tall, in the place, Alan OK'd them in Play;** south tin flies as invisible walls (its computed shape
   blocked the tunnel). Schoolyard trees and houses back.
-- **Place rebuilt and saved (Alan, 23:20):** Central Park's toys (playground, picnic, ducks, boathouse), Alan's
-  eraser move/resize, bigger fountain and boathouse nudge are all in the files, so rebuilds keep them.
 - **Train 105 studs/s** (Alan: "slightly faster"; brake 35); tests 297/0. Stops centred 10 s in both stations; the
   north station is shorter than the train (end cars poke out ~20 studs).
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
-- **Paint-jar tower windows fixed** (Alan's go): clean four-pane windows on the back, uploaded and swapped into
-  Studio; needs Alan's Ctrl+S. Faint streaks left in one pane of each, only close up.
 - **Bots vs the train:** 7 minutes of bot matches, 0 train crashes, 3 close passes. Bots don't dodge it yet.
 - **Airspace zones bigger and flatter where buildings are dense** (Alan); the Studio dev button "next spot" moves
   the zone to the next spot on each click (replaces "ceiling"). Checked by numbers in Play; looks wait on Alan.
