@@ -1,13 +1,9 @@
 # Since Alan last checked (2026-10-17)
 - **Published privately** ("FlyFightPaper(First Fold)", server size 12); re-published by Alan with the security
   pass and safe server moves (details: docs/systems/flight.md, docs/systems/saving.md).
-- **Since that publish (needs another Publish As, Alan's go):** late rewards reach a departed player's save; a
-  teleport-and-back is caught; a slow friend check can't start two moves; room search reads 100 rows; fold credit
-  (Alan: big damage wins, +25 finishing shot, 15 s, repair wipes); loading screen fixed. Tests 321/0.
-- **Hangar flow (Alan's pick):** builds change at the desk: Edit build button, picked-build preview, Save / Save &
-  fly - 120 Paper, unsaved-changes warning, free refold into the same build. Checked in Play; not yet published.
-- **Menu art done (Alan OK'd, uploaded):** today's town in the main-menu pictures, real ruler numbers, clean menu
-  plane with its own pin. Checked in Play. Hangar flow and menu art need Alan's Publish As to go live.
+- **Re-published by Alan (2026-10-17 evening):** everything up to the desk hangar flow and the new menu art is live.
+- **Next (Alan's notes):** click a weapon again to clear it ("Clear weapon spot" button stays); rotating, on-theme
+  lines for every event message, waits described not counted; then talk about rounds that never stop.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
