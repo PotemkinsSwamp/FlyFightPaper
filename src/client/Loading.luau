@@ -33,10 +33,9 @@ function Loading.show()
 	fill = image(card, "Fill", results.xpFill, 95, 205, 1, 80)
 	fill.AnchorPoint, fill.Position, fill.ScaleType = Vector2.new(0, 0.5), UDim2.fromOffset(95, 245), Enum.ScaleType.Stretch
 	image(card, "Frame", results.xpFrame, 80, 190, 640, 110).ScaleType = Enum.ScaleType.Stretch
-	-- While loading, the plane keeps flying across nose first (Alan 2026-10-17): turned 24 degrees to its climb, and
-	-- cropped so its pin (it gets pinned on the menu board) and its dashed trail don't fly with it.
-	local plane = image(sheet, "Plane", menu.plane, 0, 0, 215, 181, 24)
-	plane.ImageRectOffset, plane.ImageRectSize = Vector2.new(0, 58), Vector2.new(630, 531)
+	-- While loading, the plane keeps flying across nose first (Alan 2026-10-17), turned 24 degrees to its climb. No pin:
+	-- it only gets pinned on the menu board.
+	local plane = image(sheet, "Plane", menu.plane, 0, 0, 226, 195, 24)
 	plane.Position = UDim2.fromOffset(-250, 760)
 	TweenService:Create(plane, TweenInfo.new(4, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1), {
 		Position = UDim2.fromOffset(PaperUI.W + 250, 260),

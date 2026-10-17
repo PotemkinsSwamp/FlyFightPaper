@@ -2,17 +2,17 @@
 -- An empty id draws nothing, so a missing piece shows as a gap rather than an error.
 return {
 	mainmenu = {
-		bg = { "rbxassetid://70824458547142", "rbxassetid://90636437581127", "rbxassetid://111753475254544", "rbxassetid://131552915102739" }, -- background split into 2x2 tiles (top-left, top-right, bottom-left, bottom-right)
+		bg = { "rbxassetid://86213401449162", "rbxassetid://117440946239741", "rbxassetid://70484091614246", "rbxassetid://125119084625268" }, -- background split into 2x2 tiles (top-left, top-right, bottom-left, bottom-right)
 		title = "rbxassetid://103734128810118",
 		strip = { yellow = "rbxassetid://81270758839816", blue = "rbxassetid://127387145271610", green = "rbxassetid://102293582971435", red = "rbxassetid://84891639571797" },
 		card = "rbxassetid://89622531819348",
-		drawing1 = "rbxassetid://84771186389926",
-		drawing2 = "rbxassetid://75995962139705",
-		photo = "rbxassetid://95838137299181",
-		plane = "rbxassetid://140510207715877",
+		drawing1 = "rbxassetid://87353912097125",
+		drawing2 = "rbxassetid://84778693355255",
+		photo = "rbxassetid://83093020395376",
+		plane = "rbxassetid://118655728797714",
 	},
 	settings = {
-		bg = { "rbxassetid://131322793683282", "rbxassetid://127705601041628", "rbxassetid://96541000690934", "rbxassetid://80235792777252" },
+		bg = { "rbxassetid://104052162768654", "rbxassetid://111560859395578", "rbxassetid://138034606283227", "rbxassetid://131649016886064" },
 		ruler = "rbxassetid://112102301676610",
 		pencil = "rbxassetid://131402918337135",
 		tag = "rbxassetid://94679570912477",
@@ -41,7 +41,7 @@ return {
 		folder = { "rbxassetid://90477686865340", "rbxassetid://106131906433035", "rbxassetid://99506492567038", "rbxassetid://74385525106617" },
 	},
 	results = {
-		bg = { "rbxassetid://102116902432283", "rbxassetid://112106473696549", "rbxassetid://125621367171438", "rbxassetid://85739017244295" },
+		bg = { "rbxassetid://115001392503048", "rbxassetid://96562871734090", "rbxassetid://87591984146456", "rbxassetid://83555563405703" },
 		goldStar = "rbxassetid://120331771075457",
 		rowHighlight = "rbxassetid://137797402914609",
 		strip = { blue = "rbxassetid://129866047095335", pink = "rbxassetid://82556466719896", green = "rbxassetid://78583732906300" },

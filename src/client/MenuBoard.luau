@@ -32,11 +32,10 @@ function Board.new(playerGui, actions)
 		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop (dev)", 1580, 560, 250, 70, 4, actions.shop, 34))
 	end
 	PaperUI.popIn(cover, pieces)
-	-- Each time the board shows, the plane flies in to its spot and only then is pinned (Alan 2026-10-17). The
-	-- picture's own pin is cropped off (same crop as the loading screen); a pushpin pops in on its nose.
-	local plane = image(sheet, "Plane", Art.plane, 1230, 462, 209, 176, 0)
-	plane.ImageRectOffset, plane.ImageRectSize = Vector2.new(0, 58), Vector2.new(630, 531)
-	local pin = image(sheet, "PlanePin", UIAssets.hud.pinRed, 1405, 435, 34, 34, 0)
+	-- Each time the board shows, the plane flies in to its spot and only then is pinned (Alan 2026-10-17): a pushpin
+	-- pops in on its nose (the plane picture has no pin of its own).
+	local plane = image(sheet, "Plane", Art.plane, 1230, 443, 226, 195, 0)
+	local pin = image(sheet, "PlanePin", UIAssets.hud.pinRed, 1415, 433, 34, 34, 0)
 	local home, pinSize = plane.Position, pin.Size
 	cover:GetPropertyChangedSignal("Visible"):Connect(function()
 		if not cover.Visible then return end
