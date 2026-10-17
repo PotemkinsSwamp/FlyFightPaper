@@ -1,7 +1,9 @@
 # Since Alan last checked (2026-10-17)
-- **Both stations 170 tall** (were 150; Alan OK'd the renders, upload his go): track tunnels 20 studs higher, train
-  on the tunnel floor, ~26 studs of air above it. **Schoolyard trees and houses back** (the new-town build had
-  dropped them). Both reach the place in the next rebuild (Alan closes/reopens Studio, then Ctrl+S).
+- **Real players next (Alan):** 12 per server; joining puts you straight into the match (a bot leaves at once,
+  checked in Play: plane in 0.1 s); a beginner may join a friend's regular room after one match. Tests 298/0.
+  Private publish: Alan's go given; waiting on him to publish from Studio (place isn't linked to the experience).
+- **Stations 170 tall, in the place, Alan OK'd them in Play;** south tin flies as invisible walls (its computed shape
+  blocked the tunnel). Schoolyard trees and houses back.
 - **Place rebuilt and saved (Alan, 23:20):** Central Park's toys (playground, picnic, ducks, boathouse), Alan's
   eraser move/resize, bigger fountain and boathouse nudge are all in the files, so rebuilds keep them.
 - **Train 105 studs/s** (Alan: "slightly faster"; brake 35); tests 297/0. Stops centred 10 s in both stations; the
