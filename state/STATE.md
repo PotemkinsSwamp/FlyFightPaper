@@ -6,14 +6,9 @@
   (Alan: big damage wins, +25 finishing shot, 15 s, repair wipes); loading screen fixed. Tests 321/0.
 - **Hangar flow (Alan's pick):** builds change at the desk: Edit build button, picked-build preview, Save / Save &
   fly - 120 Paper, unsaved-changes warning, free refold into the same build. Checked in Play; not yet published.
-- **Menu art done (Alan OK'd, uploaded):** main menu drawings and photo show today's town (photo = Codex
-  "cinematic" version, Alan's pick); rulers read real numbers; clean menu plane with its own pin. Checked in Play.
-  Needs Alan's Publish As to go live (with the items above).
+- **Menu art done (Alan OK'd, uploaded):** today's town in the main-menu pictures, real ruler numbers, clean menu
+  plane with its own pin. Checked in Play. Hangar flow and menu art need Alan's Publish As to go live.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
-- **Stations 170 tall, in the place, Alan OK'd them in Play;** south tin flies as invisible walls (its computed shape
-  blocked the tunnel). Schoolyard trees and houses back.
-- **Train 105 studs/s** (Alan: "slightly faster"; brake 35); tests 297/0. Stops centred 10 s in both stations; the
-  north station is shorter than the train (end cars poke out ~20 studs).
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
 - **Airspace zones bigger and flatter where buildings are dense** (Alan); the Studio dev button "next spot" moves

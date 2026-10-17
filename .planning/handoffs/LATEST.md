@@ -1,7 +1,7 @@
-# LATEST → handoff-2026-10-17-2000-ui-menu-art-plane.md
+# LATEST → handoff-2026-10-17-ui-desk-hangar-flow.md
 
-★ START HERE: Alan is re-publishing before the session; start on a clean 2D paper-plane asset for the loading/menu
-animation (full nose, no pin, no trail; pin separate), then ruler numbers and old-town pictures in the menus.
+★ START HERE: menu art and the desk hangar flow are built and checked in Play but not live; ask Alan whether he has
+published (Publish As > Overwrite), then support his Stage 9 playtest (STATE.md list, item 5 = hangar).
 
-Quick state: main, tests 321/0, game published privately (server size 12). Studio is on the online copy.
-Previous: handoff-2026-10-17-1800-multiplayer-fold-credit-loading.md.
+Quick state: main, tests 321/0. Studio on the online copy, Rojo serving.
+Previous: handoff-2026-10-17-2000-ui-menu-art-plane.md.

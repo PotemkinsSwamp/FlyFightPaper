@@ -20,6 +20,12 @@ mistake would be easy to make twice.
   resumes). Three buildings uploading side by side worked fine (2026-10-16, ~1,000 files in ~40 min).
 - **A freshly uploaded mesh can look invisible for a few seconds** after a place rebuild. Look again before debugging.
 
+- **Fixing made-up text in AI pictures** (rulers, 2026-10-17): erase each dark glyph plus 3 px around it (AI text
+  carries a light halo that otherwise shows as a pale blob), fill from the surrounding pixels without wrapping round
+  the picture's edges, then letter real numbers at the ruler's measured angle, tops toward the ticks. Compare
+  before/after at 2x. Menu pictures of the town: Studio captures, then Codex draws from them (`codex exec` in a
+  scratch folder, ~4 min for three pictures, free on Alan's plan); tell it "no text, letters or numbers anywhere".
+
 ## Making 3D models
 - **`toys.py` bakes go black in two cases** (2026-10-16): a `lathe()` profile listed top-to-bottom (list it bottom-
   to-top: its custom normals assume that), and beams split into overlapping pieces (coplanar overlaps). Look at
