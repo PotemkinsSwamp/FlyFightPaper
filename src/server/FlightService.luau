@@ -143,7 +143,7 @@ function Service:build(p)
  body.CustomPhysicalProperties=PhysicalProperties.new(0.3,0.15,0.1)
  for key,value in pairs({OwnerId=p.player and p.player.UserId or 0,Life=p.life,State="DESK",LiftMax=p.stats.lift,Lift=p.stats.lift,Speed=p.stats.speed,
   TurnRate=p.stats.turn,PitchRate=p.stats.pitch,YawRate=p.stats.yaw,Health=p.stats.health,MaxHealth=p.stats.health,OriginalHealth=p.stats.health,DisplayName=p.name,ControllerType=p.kind,
-  Message="Ready at your desk",Loadout=p.loadoutName,Protected=true,Kills=self.records[p.id].kills}) do model:SetAttribute(key,value) end
+  Message="Ready at your desk",Loadout=p.loadoutName,LoadoutData=game:GetService("HttpService"):JSONEncode(p.loadout),Protected=true,Kills=self.records[p.id].kills}) do model:SetAttribute(key,value) end
  -- A practice flight stays one through crashes: every new plane carries the mark and its desk ring.
  if p.practice then model:SetAttribute("Practice",true);model:SetAttribute("PracticeRing",Landing.approach(p.home,Desk)) end
  local color=Color3.fromHSV((p.seat*.133)%1,0.65,0.9)
@@ -229,6 +229,7 @@ end
 function Service:refold(p,loadout)
  p.loadout=loadout;p.stats=assert(self.catalog:deriveStats(loadout))
  Aircraft.build(p.model,loadout,self.catalog,false)
+ p.model:SetAttribute("LoadoutData",game:GetService("HttpService"):JSONEncode(loadout))
  for key,value in pairs({Speed=p.stats.speed,TurnRate=p.stats.turn,PitchRate=p.stats.pitch,YawRate=p.stats.yaw,OriginalHealth=p.stats.health,MaxHealth=p.stats.health,Health=p.stats.health,LiftMax=p.stats.lift,Lift=p.stats.lift}) do p.model:SetAttribute(key,value) end
  p.orientation.MaxAngularVelocity=math.rad(p.stats.turn)*Gameplay.flight.orientation_angular_headroom
  local utility=loadout.utility and self.catalog:get(loadout.utility)

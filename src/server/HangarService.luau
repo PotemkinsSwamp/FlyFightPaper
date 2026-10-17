@@ -9,6 +9,12 @@ function Service.new(flight,profiles)
  return setmetatable({flight=flight,profiles=profiles,catalog=flight.catalog},Service)
 end
 function Service:message(player,text) player:SetAttribute("MenuMessage",text) end
+-- The picked build is the one the next refold or fresh plane flies; picking one ends a Studio test build.
+function Service:select(player,slot)
+ player:SetAttribute("SelectedPreset",slot)
+ local p=self.flight.pilots[player]
+ if p then p.testLoadout=nil end
+end
 function Service:enqueue(player,input,callback)
  if not self.profiles:enqueue(player,input,nil,callback) then self:message(player,"Saving is busy. Try again shortly.") end
 end
@@ -16,10 +22,8 @@ function Service:handle(player,action,value)
  local profile=self.profiles:view(player);if not profile then return end
  if action=="selectPreset" then
   if type(value)~="number" or value%1~=0 or value<1 or value>PresetCount then return end
-  player:SetAttribute("SelectedPreset",value)
-  local p=self.flight.pilots[player]
-  if p then p.testLoadout=nil end
-  self:message(player,p and "Preset selected. Use a fresh plane or full refold to apply it." or "Preset selected for your next launch.")
+  self:select(player,value)
+  self:message(player,self.flight.pilots[player] and ("Build "..value.." picked. Full refold at your desk flies it.") or ("Build "..value.." picked for your next flight."))
  elseif action=="savePreset" then
   if type(value)~="table" or type(value.slot)~="number" or value.slot%1~=0 or value.slot<1 or value.slot>PresetCount then return end
   local candidate=Schema.copy(profile);local preset=Schema.copy({name=value.name,loadout=value.loadout})
@@ -35,7 +39,12 @@ function Service:handle(player,action,value)
    name=ok and filtered or ("Build "..value.slot)
   end
   self:enqueue(player,{kind="preset",slot=value.slot,name=name,loadout=preset.loadout},function(ok)
-   self:message(player,ok and "Preset saved. Apply it with a fresh plane or full refold." or "Preset could not be saved.")
+   if not ok then self:message(player,"Build could not be saved.");return end
+   self:select(player,value.slot)
+   local p=self.flight.pilots[player]
+   local atDesk=p and p.model and p.model:GetAttribute("State")=="DESK"
+   if value.fly==true and atDesk and self.flight.onService then self:message(player,"Saved. Refolding it at your desk.");self.flight.onService(p,"refold")
+   else self:message(player,not p and "Saved. You fly this build next." or atDesk and "Saved. Full refold at your desk flies it." or "Saved. Land at your desk to fly it.") end
   end)
  elseif action=="purchasePart" then
   if type(value)~="string" or not self.catalog:get(value) then return end

@@ -1,6 +1,7 @@
 -- Hangar on a kraft-cardboard folder (Alan's approved concept: assets/references/ui-concepts/hangar.png).
 -- Folder tabs pick the part slot, part cards on the left, the 3D plane on taped paper, crayon stat bars on the right,
--- five saved builds along the bottom.
+-- five saved builds along the bottom. It opens on the build you fly; Save makes a build the one you fly next, and at
+-- your desk "Save & fly" also refolds it (Alan 2026-10-17).
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), require(Root.Generated.Gameplay))
 local Aircraft = require(Root.Shared.Aircraft)
@@ -33,7 +34,7 @@ Hangar.STATS = STATS -- the in-game hangar menu shows the same rows
 -- Mount tags on the weapons tab, by mount size (picked to show on red or blue paper and the sky-blue photo).
 local MOUNT_COLOURS = { light = Color3.fromRGB(70, 185, 80), medium = Color3.fromRGB(250, 200, 30), heavy = Color3.fromRGB(150, 80, 215) }
 
--- api = { action = RoundAction remote, back(), fly(loadout) (Studio only) }
+-- api = { action = RoundAction remote, back(), flown() (after Save & fly), fly(loadout) (Studio only) }
 function Hangar.new(playerGui, api)
 	local cover, sheet = PaperUI.screen(playerGui, "HangarScreen", Art.bg)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
@@ -42,7 +43,13 @@ function Hangar.new(playerGui, api)
 	button(sheet, "Back", Art.buttonGreen, "Back", 1390, 30, 230, 95, 2, api.back, 50)
 	if dev then button(sheet, "FlyBuild", Art.buttonGreen, "Fly this build", 40, 40, 330, 95, -2, function() api.fly() end, 40) end
 
-	local state = { preset = 1, slot = "body", mount = 1, angle = 0.5, pitch = -0.5 }
+	local player = game.Players.LocalPlayer
+	local state = { preset = player:GetAttribute("SelectedPreset") or 1, slot = "body", mount = 1, angle = 0.5, pitch = -0.5 }
+	-- Your plane waiting at its desk: only then can Save & fly refold it.
+	local function atDesk()
+		local plane = workspace:FindFirstChild("Planes") and workspace.Planes:FindFirstChild(tostring(player.UserId))
+		return player:GetAttribute("InMatch") == true and plane ~= nil and plane:GetAttribute("State") == "DESK"
+	end
 	local profile, render
 
 	local function choose(pick, ...)
@@ -232,8 +239,11 @@ function Hangar.new(playerGui, api)
 		preview(draft)
 
 		-- Under the plane: mounts (weapons tab), the no-booster card (boost tab), or the purchase card.
+		-- Unsaved: the draft differs from the saved build (compared after the same mount clean-up the draft had).
+		local unsaved = not Builder.equal(draft, Builder.new(Catalog, saved).candidate)
 		local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
-			or game.Players.LocalPlayer:GetAttribute("MenuMessage") or ""
+			or state.dropAsk and string.format("Build %d has changes you haven't saved. Click build %d again to drop them.", state.preset, state.dropAsk)
+			or player:GetAttribute("MenuMessage") or ""
 		if state.purchase then
 			local part = state.purchase
 			local candidate = assert(Schema.copy(draft))
@@ -278,19 +288,30 @@ function Hangar.new(playerGui, api)
 			end
 		end
 		local message = words(content, "Message", note, 590, 852, 710, 50, 30)
-		local problem = builder.message ~= "" or not valid
+		local problem = builder.message ~= "" or not valid or state.dropAsk ~= nil
 		message.TextColor3, message.TextWrapped = problem and Color3.fromRGB(170, 30, 30) or Color3.fromRGB(30, 110, 50), true
 
-		-- Saved builds 1-5 and Save.
+		-- Saved builds 1-5: picking one is picking the build you fly (same as at the desk). Unsaved changes ask first.
 		for i = 1, 5 do
 			button(content, "Preset" .. i, i == state.preset and Art.slotSelected or Art.slot, tostring(i), 600 + (i - 1) * 125, 905, 110, 110, 0, function()
-				state.preset = i; state.purchase = nil; builder:reset(profile.presets[i].loadout, i)
+				if i == state.preset then return end
+				if unsaved and state.dropAsk ~= i then state.dropAsk = i; render(); return end
+				state.preset, state.purchase, state.dropAsk = i, nil, nil; builder:reset(profile.presets[i].loadout, i)
 				api.action:FireServer("selectPreset", i); render()
 			end, 60)
 		end
-		button(content, "SavePreset", Art.buttonGreen, "Save build", 1320, 900, 560, 125, -1, function()
-			api.action:FireServer("savePreset", { slot = state.preset, name = profile.presets[state.preset].name, loadout = draft })
-		end, 64)
+		-- Save, and at the desk a clearly separate Save & fly that spends Paper (Alan 2026-10-17).
+		local function save(fly)
+			state.dropAsk = nil
+			api.action:FireServer("savePreset", { slot = state.preset, name = profile.presets[state.preset].name, loadout = draft, fly = fly })
+			if fly then api.flown() end
+		end
+		if atDesk() then
+			button(content, "SavePreset", Art.buttonGreen, "Save", 1320, 900, 250, 125, -1, function() save(false) end, 56)
+			button(content, "SaveFly", Art.buttonGreen, "Save & fly - 120 Paper", 1585, 900, 310, 125, 1, function() save(true) end, 34)
+		else
+			button(content, "SavePreset", Art.buttonGreen, "Save build", 1320, 900, 560, 125, -1, function() save(false) end, 64)
+		end
 		state.draft = draft
 	end
 
@@ -300,12 +321,20 @@ function Hangar.new(playerGui, api)
 	local shown
 	function self.update(player, newProfile)
 		local key = newProfile and game:GetService("HttpService"):JSONEncode({ newProfile.paper, newProfile.ownership, newProfile.presets,
-			player:GetAttribute("MenuMessage") })
+			player:GetAttribute("MenuMessage"), atDesk() })
 		if key == shown and content:FindFirstChild("SavePreset") then return end
 		shown, profile = key, newProfile
 		render()
 	end
 	function self.draft() return state.draft end
+	-- Opening the hangar shows the build you fly, unless you left changes on another one unsaved.
+	function self.open()
+		local selected = player:GetAttribute("SelectedPreset") or 1
+		local saved = profile and profile.presets[state.preset]
+		local unsaved = state.builder and saved and not Builder.equal(state.builder.candidate, Builder.new(Catalog, saved.loadout).candidate)
+		if not unsaved then state.preset, state.dropAsk = selected, nil end
+		shown = nil
+	end
 	return self
 end
 

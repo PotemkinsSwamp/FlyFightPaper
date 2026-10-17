@@ -1,10 +1,13 @@
 # Desks and service
 
 ## What the player sees
-Every pilot has a desk. You launch from it and can fly back to land: refill Lift for free, repair for free (each repair wears your maximum health down a little), pay 120 Paper for a full refold that keeps your streak, or take a free fresh plane that ends it. While parked you get up to 120 seconds of protection per life.
+Every pilot has a desk. You launch from it and can fly back to land: refill Lift for free, repair for free (each repair wears your maximum health down a little), pay 120 Paper for a full refold that keeps your streak, or take a free fresh plane that ends it. While parked you get up to 120 seconds of protection per life. The desk's hangar shows your five builds: pick one and
+the preview shows it; **Edit build** opens the full hangar on it; a full refold flies it.
 
-## Where it stands (2026-10-15)
-Works (connected since Oct 7). Landing guide ("Line up here") is in.
+## Where it stands (2026-10-17)
+Works (connected since Oct 7). Landing guide ("Line up here") is in. Builds change only at the desk
+([decision](../decisions/2026-10-17-builds-change-at-the-desk.md)): Edit button, picked-build preview, and a refold
+into the build you already fly is refused without charge.
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*

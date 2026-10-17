@@ -2,9 +2,13 @@
 
 ## What the player sees
 A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bodies are fast and fragile, heavy bodies are tough and slow and carry more. In the hangar you build, compare and save five builds. Weapons that can't fit are crossed out with a crayon X saying why.
+The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
+Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-10-15)
+## Where it stands (2026-10-17)
 Plane parts redone (Stage 8). Smart weapon placing and the crayon X are in. Team and free-for-all colours are in.
+One hangar flow ([decision](../decisions/2026-10-17-builds-change-at-the-desk.md)): Edit from the desk, Save / Save &
+fly, opens on the flown build, unsaved-changes warning. Checked in Studio Play 2026-10-17; not yet played by Alan.
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*

@@ -1,6 +1,7 @@
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Rules=require(Root.Shared.ServiceRules)
 local Config=require(Root.Generated.Gameplay).service
+local Builder=require(Root.Shared.BuilderModel)
 local Service={};Service.__index=Service
 function Service.new(flight,profiles)
  local self=setmetatable({flight=flight,profiles=profiles},Service)
@@ -49,6 +50,7 @@ function Service:perform(p,action)
   if not profile then return end
   local intent=self.profiles.service:operationID()
   local loadout=self.flight.selectedLoadout and self.flight.selectedLoadout(p.player) or p.loadout
+  if Builder.equal(loadout,p.loadout) then p.model:SetAttribute("Message","You already fly this build. Pick another one, or Edit it first.");return end
   p.serviceBusy=true;p.model:SetAttribute("ServiceBusy",true);p.model:SetAttribute("Message","Reserving 120 Paper for full refold")
   local fence={nonce=profile.lease.nonce,generation=profile.generation,actorId=p.id,lifeId=tostring(life),matchId=p.identity.matchId,
    participationId=p.id,padId=p.padKey or tostring(p.seat),sessionGeneration=profile.generation}

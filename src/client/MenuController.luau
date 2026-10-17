@@ -29,11 +29,11 @@ function Menu.start()
   if render then render() end
  end
  local function home()
-  state.screen="home";render()
+  state.screen="home";state.fromDesk=false;render()
  end
  local board=Board.new(gui.Parent,{
   play=function()action:FireServer("join")end,
-  hangar=function()state.screen="hangar";action:FireServer("profile");render()end,
+  hangar=function()Menu.show("hangar")end,
   settings=function()state.screen="settings";render()end,
   tutorial=function()overlay(false);Tutorial.begin()end,
   -- The mock shop is Studio-only; the server also refuses it on real profiles.
@@ -46,7 +46,9 @@ function Menu.start()
  local hangarScreen
  hangarScreen=Hangar.new(gui.Parent,{
   action=action,
-  back=function()home()end,
+  -- Opened with Edit at the desk, Back (and Save & fly) go straight back to the desk.
+  back=function()if state.fromDesk then home();overlay(false) else home() end end,
+  flown=function()home();overlay(false)end,
   fly=function()
    local draft=hangarScreen.draft();home();overlay(false)
    -- From the main menu, join first; the build is fitted once our plane is waiting at a desk.
@@ -69,7 +71,7 @@ function Menu.start()
  })
  local pauseScreen=PauseScreen.new(gui.Parent,{
   resume=function()overlay(false)end,
-  hangar=function()state.screen="hangar";action:FireServer("profile");render()end,
+  hangar=function()Menu.show("hangar")end,
   settings=function()state.screen="settings";render()end,
   tutorial=function()overlay(false);Tutorial.begin()end,
   leave=function()action:FireServer("withdraw",true);overlay(false);home()end,
@@ -77,10 +79,11 @@ function Menu.start()
  local shopScreen=ShopScreen.new(gui.Parent,{buy=function(key)action:FireServer("mockProduct",key)end,back=function()home()end})
  local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})
  local paper={home=board,settings=settingsScreen,hangar=hangarScreen,results=resultsScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen}
- -- Open a menu screen directly (used by Studio photo mode).
- function Menu.show(screen)
+ -- Open a menu screen directly (the desk's Edit button, the menu buttons, Studio photo mode).
+ function Menu.show(screen,fromDesk)
   if player:GetAttribute("InMatch") and not state.overlay then overlay(true) end
-  state.screen=screen;action:FireServer("profile");render()
+  if screen=="hangar" then hangarScreen.open() end
+  state.screen=screen;state.fromDesk=fromDesk==true;action:FireServer("profile");render()
  end
 -- The gap between rounds: results, then the vote, then the countdown.
 local function between(phase)return phase=="RESULTS" or phase=="VOTE" or phase=="COUNTDOWN" end

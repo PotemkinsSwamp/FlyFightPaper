@@ -13,7 +13,7 @@ local STEPS={
  "Fire: left click. Shoot down the paper target ahead!",
  "Lift keeps you flying and runs out. Fly up through the cyan fan to refill it.",
  "Land: fly back to your desk, through its paper-chain ring.",
- "Nice flying! Joining a Rookie match...",
+ "Nice flying! At your desk, Edit build changes your plane. Joining a Rookie match...",
 }
 local LAUNCH,STEER,FIRE,LIFT,LAND,DONE=1,2,3,4,5,6
 function Tutorial.begin()

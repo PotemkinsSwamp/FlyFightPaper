@@ -1,12 +1,16 @@
 -- In-game hangar menu, shown while your plane sits in its desk hangar. Layout B (plane left, service buttons right,
 -- saved builds along the bottom) drawn with the main-menu Hangar's own art (Alan, 2026-10-11): the kraft folder, the
 -- taped preview paper, construction-paper strips, crayon stat bars and numbered build squares.
--- Picking a build selects it; Full refold (or a fresh plane) flies it.
+-- Picking a build selects it and shows it on the preview; Full refold (or a fresh plane) flies it. Edit opens the
+-- full Hangar on it: builds only change at the desk (Alan 2026-10-17).
 local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local TweenService = game:GetService("TweenService")
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), require(Root.Generated.Gameplay))
 local Aircraft = require(Root.Shared.Aircraft)
 local Rules = require(Root.Shared.ServiceRules)
+local Builder = require(Root.Shared.BuilderModel)
 local Art = require(Root.Shared.UIAssets).hangar
 local BuildStats = {}
 for _, entry in require(script.Parent.Hangar).STATS do BuildStats[entry[1]] = entry end
@@ -44,6 +48,17 @@ function DeskHangar.new(playerGui, api)
 	-- Boost show what is left now; Speed, Climb and Swerve show the build (same ranges as the main Hangar).
 	image(sheet, "Preview", Art.preview, 60, 245, 750, 545).ImageColor3 = Color3.fromRGB(140, 185, 230)
 	local planeView = viewport(sheet, "Plane", 95, 290, 680, 450)
+	local heading = words(sheet, "PreviewHeading", "", 95, 258, 470, 40, 30)
+	-- Edit: the full Hangar on the picked build. It wiggles until a new player has used it once (Alan 2026-10-17).
+	local edit = button(sheet, "Edit", Art.buttonGreen, "Edit build", 580, 250, 220, 80, 2, function()
+		Root:SetAttribute("HangarEdited", true)
+		require(script.Parent.MenuController).show("hangar", true)
+	end, 36)
+	if not Root:GetAttribute("HangarEdited") then
+		local wiggle = TweenService:Create(edit, TweenInfo.new(0.35, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), { Rotation = -3 })
+		wiggle:Play()
+		Root:GetAttributeChangedSignal("HangarEdited"):Once(function() wiggle:Cancel(); edit.Rotation = 2 end)
+	end
 	image(sheet, "StatsSheet", Art.statsSheet, 845, 266, 360, 504, 1).ScaleType = Enum.ScaleType.Stretch
 	local rows = {
 		{ "Health", "red", "red", function(p) return p:GetAttribute("Health") or 0, p:GetAttribute("MaxHealth") or 1 end },
@@ -104,7 +119,7 @@ function DeskHangar.new(playerGui, api)
 	local launch = button(sheet, "Launch", Art.buttonGreen, "LAUNCH!", 1250, 840, 600, 160, -1, function() api.flight("launch") end, 80)
 
 	-- Saved builds along the bottom: the main Hangar's numbered squares, each showing its real model.
-	local slots, preset, shownPresets, picked = {}, Players.LocalPlayer:GetAttribute("SelectedPreset") or 1, nil, -9
+	local slots, preset, shownPresets, presets, picked = {}, Players.LocalPlayer:GetAttribute("SelectedPreset") or 1, nil, nil, -9
 	for i = 1, 5 do
 		local slot = button(sheet, "Build" .. i, Art.slot, "", 70 + (i - 1) * 225, 840, 150, 150, 0, function()
 			preset = i; api.round:FireServer("selectPreset", i); picked = os.clock()
@@ -113,10 +128,15 @@ function DeskHangar.new(playerGui, api)
 		words(slot, "Number", tostring(i), 14, 6, 40, 40, 36)
 		slots[i] = slot
 	end
-	PaperUI.popIn(cover, { buttons.Refill, buttons.Repair, buttons.Fresh, buttons.Refold, launch })
+	PaperUI.popIn(cover, { buttons.Refill, buttons.Repair, buttons.Fresh, buttons.Refold, launch, edit })
+	Players.LocalPlayer:GetAttributeChangedSignal("SelectedPreset"):Connect(function()
+		preset = Players.LocalPlayer:GetAttribute("SelectedPreset") or 1
+		for k, other in slots do other.Image = k == preset and Art.slotSelected or Art.slot end
+	end)
 
-	local function showPresets(presets)
-		local key = game:GetService("HttpService"):JSONEncode(presets)
+	local function showPresets(list)
+		presets = list
+		local key = HttpService:JSONEncode(presets)
 		if key == shownPresets then return end
 		shownPresets = key
 		for i, slot in slots do
@@ -147,9 +167,36 @@ function DeskHangar.new(playerGui, api)
 		end
 	end)
 
+	-- The picked build when it isn't the one you fly: its model, and its stats read like a fresh plane's.
+	local function pickedBuild(plane)
+		local loadout = presets and presets[preset] and presets[preset].loadout
+		local ok, flying = pcall(HttpService.JSONDecode, HttpService, plane:GetAttribute("LoadoutData") or "")
+		if not loadout or not ok or Builder.equal(loadout, flying) then return nil end
+		local stats = Catalog:deriveStats(loadout)
+		if not stats then return nil end
+		local utility = loadout.utility and Catalog:get(loadout.utility)
+		local boost = utility and utility.boost_seconds or 0
+		local values = { Health = stats.health, MaxHealth = stats.health, Lift = stats.lift, LiftMax = stats.lift, Speed = stats.speed,
+			PitchRate = stats.pitch, YawRate = stats.yaw, Boost = boost, BoostMax = boost }
+		return loadout, { GetAttribute = function(_, key) return values[key] end }
+	end
+
 	-- The live plane: a copy of what your plane looks like now, rebuilt when its parts change.
 	local shownPlane
 	local function showPlane(plane)
+		local picked = pickedBuild(plane)
+		if picked then
+			local key = HttpService:JSONEncode(picked)
+			if shownPlane == key then return end
+			shownPlane = key
+			planeView:ClearAllChildren()
+			local world = Instance.new("WorldModel")
+			world.Parent = planeView
+			local model = Instance.new("Model")
+			model.Parent = world
+			if Aircraft.build(model, picked, Catalog, true) then frame(planeView, model, 0.62) end
+			return
+		end
 		local appearance = plane:FindFirstChild("Appearance")
 		local body = plane:FindFirstChild("Root")
 		if not appearance or not body or appearance == shownPlane then return end
@@ -177,8 +224,10 @@ function DeskHangar.new(playerGui, api)
 		cover.Visible = visible
 		if not visible then shownPlane = nil; return end
 		showPlane(plane)
+		local _, pickedStats = pickedBuild(plane)
+		heading.Text = pickedStats and string.format("Build %d (not flying yet)", preset) or "Flying now"
 		for _, row in rows do
-			local value, max = row[4](plane)
+			local value, max = row[4](pickedStats or plane)
 			local cells = math.max(row.least or 0, max > 0 and math.ceil(math.clamp(value / max, 0, 1) * 5) or 0)
 			for k = 1, 5 do row.cells[k].Image = k <= cells and Art.bar[row[3]] or Art.bar.empty end
 		end
@@ -187,7 +236,7 @@ function DeskHangar.new(playerGui, api)
 		local message = plane:GetAttribute("Message")
 		if message ~= lastMessage then lastMessage, messageAt = message, os.clock() end
 		note.Text = (plane:GetAttribute("ServiceBusy") or os.clock() - messageAt < 4) and message and message ~= "" and message
-			or os.clock() - picked < 4 and string.format("Build %d picked: Full refold (or a fresh plane) flies it.", preset)
+			or os.clock() - picked < 4 and string.format("Build %d picked: Full refold flies it, Edit changes its parts.", preset)
 			or remaining <= 0 and "Hangar safety used up: it comes back after 2 minutes out of the hangar, or with a kill."
 			or string.format("Safe in the hangar: %.0fs. Repair leaves %.0f max health. A fresh plane ends your streak.", remaining, repair and repair.lifeMaxHealth or 0)
 		note.TextColor3 = remaining <= 10 and Color3.fromRGB(200, 40, 30) or remaining <= 30 and Color3.fromRGB(200, 110, 20) or PaperUI.INK
