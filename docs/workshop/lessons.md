@@ -67,6 +67,13 @@ mistake would be easy to make twice.
 - **Commit Codex's output before touching it.** Git only knows committed versions; `git checkout` on a fresh
   Codex export brings back the old file (cost a 20-minute re-export).
 
+- **Rebaking a Meshy building:** use its original settings, including `--detail 2.5 --min-coverage 0.33` (the
+  hero buildings' standard; parts.json records `detail` since 2026-10-16, older ones don't). A default-detail rebake
+  of the paint-jar tower came out at half the triangles and had to be redone. A rebake drops every upload record,
+  so all its pieces upload again.
+- **Windows sometimes holds just-written files** (Errno 22 on overwrite, 2026-10-16; probably a scanner): they can be
+  moved aside but not overwritten. `hero.py` and `fill_gaps.py` move old files aside before writing.
+
 ## Studio and the place file
 - **The server deletes unknown things at the top of `workspace` on start** (`src/server/Bootstrap.server.luau`):
   world props go inside `workspace.Arena` (in `default.project.json` under `Arena`).

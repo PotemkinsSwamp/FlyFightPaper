@@ -118,7 +118,13 @@ def fill(parts, prefix, uv_triangles=None, bleed=3):
         mask, iy, ix = indices[size]
         result = a[iy, ix]
         assert np.array_equal(result[~mask], a[~mask]), "Protected island pixels changed"
-        Image.fromarray(result).convert(mode).save(path)
+        try:
+            Image.fromarray(result).convert(mode).save(path)
+        except OSError:      # Windows: something has the old file mapped, so it can't be overwritten, only moved aside
+            os.replace(path, path.with_suffix(".old"))
+            Image.fromarray(result).convert(mode).save(path)
+            try: os.remove(path.with_suffix(".old"))
+            except OSError: pass
         print("filled", path.name, f"{mask.mean():.0%} empty", flush=True)
 
 

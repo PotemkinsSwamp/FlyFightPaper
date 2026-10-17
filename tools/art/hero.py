@@ -160,6 +160,21 @@ def touch_up(source, folder):
     gone = [f for f in bm.faces for b in spec.get("delete", [])
             if (all(inside(b, v.co) for v in f.verts) if whole else inside(b, f.calc_center_median()))]
     bmesh.ops.delete(bm, geom=list(set(gone)), context="FACES")
+    # "copies": [{"from": box, "offset": [dx, dy, dz], "push": studs}]: faces whose middle is in the box are copied
+    # (texture and all), moved by offset and pushed out from the upright axis to cover the hole a delete box left.
+    # Each copy is a thin closed slab (0.4 studs, inward), so the pieces keep no open edges. For a torn window with a
+    # clean twin on the same round body (paint-jar tower, 2026-10-16).
+    for copy in spec.get("copies", []):
+        b = copy["from"]
+        faces = [f for f in bm.faces if inside(b, f.calc_center_median())]
+        made = bmesh.ops.duplicate(bm, geom=faces)["geom"]
+        patch = [g for g in made if isinstance(g, bmesh.types.BMFace)]
+        for v in (g for g in made if isinstance(g, bmesh.types.BMVert)):
+            v.co += Vector(copy["offset"]) + Vector((v.co.x, v.co.y, 0)).normalized() * copy.get("push", 0)
+        back = bmesh.ops.extrude_face_region(bm, geom=patch, use_keep_orig=True)["geom"]
+        for v in (g for g in back if isinstance(g, bmesh.types.BMVert)):
+            v.co -= Vector((v.co.x, v.co.y, 0)).normalized() * .4
+        bmesh.ops.recalc_face_normals(bm, faces=patch + [g for g in back if isinstance(g, bmesh.types.BMFace)])
     bm.to_mesh(source.data)
     bm.free()
     colors = {}
@@ -216,7 +231,8 @@ def touch_up(source, folder):
         bpy.ops.object.join()
         for f in source.data.polygons[start:]:
             f.material_index = colors[key]
-    log(f"touch-up: removed {len(set(gone))} faces, added {len(spec.get('boxes', []))} clean boxes ({len(DECALS)} paint only)")
+    log(f"touch-up: removed {len(set(gone))} faces, {len(spec.get('copies', []))} copied patches, "
+        f"added {len(spec.get('boxes', []))} clean boxes ({len(DECALS)} paint only)")
 
 
 def quiet_cut(obj, lower, upper, prefer):
@@ -1306,6 +1322,10 @@ def main():
     bpy.context.scene.unit_settings.system = "NONE"
     parts_folder = folder / "parts"
     parts_folder.mkdir(exist_ok=True)
+    # Windows: something (a virus scanner?) can keep just-written files mapped, so they can't be overwritten (Errno 22,
+    # 2026-10-16). Moving them aside first lets every save write a fresh file; the leftovers go at the end.
+    for old in [*parts_folder.glob("*.fbx"), *parts_folder.glob("*.png")]:
+        old.replace(old.with_name(old.name + ".old"))
     source, front = import_source(folder, args.height, args.front)
     touch_up(source, folder)
     source_count = len(triangles(source.data))
@@ -1337,7 +1357,8 @@ def main():
                                    for name in ("base_color", "normal", "roughness")},
               "front": front, "piece_count": len(objects), "requested_height": args.height,
               "floor_cuts": cuts, "topper_base": topper_level,
-              "vertical_splits": args.vertical_splits, "min_coverage": args.min_coverage, "pieces": []}
+              "vertical_splits": args.vertical_splits, "min_coverage": args.min_coverage, "detail": args.detail,
+              "pieces": []}
     if args.geometry_source:
         report["geometry_source"] = str(args.geometry_source)
     cycles_setup()
@@ -1387,6 +1408,9 @@ def main():
     for path in parts_folder.iterdir():
         if (path.suffix.lower() in (".fbx", ".png") or path.name.endswith(".upload.json")) and path.name not in wanted:
             path.unlink()
+        if path.suffix == ".old":
+            try: path.unlink()
+            except OSError: pass
     # Only the low pieces are saved/rendered; unused high-poly materials/maps
     # would otherwise bloat a reusable hero asset.
     for mat in list(bpy.data.materials):

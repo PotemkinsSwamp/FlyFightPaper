@@ -22,7 +22,9 @@ photos of the object, use those instead.
 - Big jobs go out in batches so pictures and models are made side by side.
 
 ## 4. Check it
-- Close-up sheet (`tools/art/closeups.py`); fix melted or torn parts through `touchup.json`.
+- Close-up sheet (`tools/art/closeups.py`); fix melted or torn parts through `touchup.json`. A torn window with a
+  clean twin on the same round body: copy the twin over it (`copies`: a thin slab of its shape and paint). Cutting
+  the torn faces out first left holes after simplifying (paint-jar tower, 2026-10-16).
 - Contact sheet of every texture; look for anything that could read as a symbol, hand sign, text or body shape. Run
   `tools/art/fill_gaps.py` on hero pieces. This is what got Alan's account banned twice.
 
