@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-17: [Real players: 12 per server, straight into the match](2026-10-17-real-players-join-instantly.md)
 - 2026-10-17: [No ruler bridges in the new town](2026-10-17-no-ruler-bridges.md)
 - 2026-10-16: [Airspace zones follow how crowded the town is](2026-10-16-zones-follow-density.md)
 - 2026-10-16: [Push after every commit](2026-10-16-push-after-every-commit.md)

@@ -325,6 +325,8 @@
     },
     "experienced_cap_per_team_or_ffa": 1,
     "rookie_qualifying_matches": 5,
+    "friend_join_matches_comment": "A beginner with at least this many qualifying matches may play in a friend's regular room instead of being moved to a beginners' room (Alan 2026-10-17: the friend has to play one game after the tutorial first).",
+    "friend_join_matches": 1,
     "qualification_active_seconds": 120,
     "qualification_combat_or_objective_events": 3,
     "early_graduation_enabled": false,

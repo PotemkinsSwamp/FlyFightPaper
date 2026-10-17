@@ -250,10 +250,18 @@ function Rules.plan(input)
 		nextBotIdentitySerial = input.botIdentitySerial + #botAdds }
 end
 
+-- Which bot leaves first for a joining human: a dead one, then one safely parked at its desk, then one flying
+-- nobody is fighting, then any bot (Alan 2026-10-17: players join straight into the match, never wait).
+local function releaseRank(actor)
+	if actor.state == "DESTROYED" then return 0 end
+	if (actor.state == "SPAWN_READY" or actor.state == "SERVICING") and actor.trustedSafeParkedService == true
+		and actor.recentDamageCredit == false then return 1 end
+	return actor.recentDamageCredit == true and 3 or 2
+end
+
 local function releaseOrder(input, candidates)
 	table.sort(candidates, function(a, b)
-		local rankA = a.state == "DESTROYED" and 0 or 1
-		local rankB = b.state == "DESTROYED" and 0 or 1
+		local rankA, rankB = releaseRank(a), releaseRank(b)
 		if rankA ~= rankB then return rankA < rankB end
 		local tieA, tieB = hash(input.seed, a.key), hash(input.seed, b.key)
 		if tieA ~= tieB then return tieA < tieB end
@@ -283,19 +291,14 @@ function Rules.humanPriority(input)
 	end
 	local candidates = {}
 	for _, actor in ipairs(input.actors) do
-		if actor.controllerType == "bot" and actor.state == "DESTROYED" then
-			table.insert(candidates, actor)
-		elseif actor.controllerType == "bot" and (actor.state == "SPAWN_READY" or actor.state == "SERVICING")
-			and actor.trustedSafeParkedService == true and actor.recentDamageCredit == false then
-			table.insert(candidates, actor)
-		end
+		if actor.controllerType == "bot" then table.insert(candidates, actor) end
 	end
 	releaseOrder(input, candidates)
 	if #candidates > 0 then
 		local candidate = candidates[1]
 		return { status = "release_proposed", admission = nil,
-			releaseProposal = { actorKey = candidate.key, reason = candidate.state == "DESTROYED" and "dead_life"
-				or "safe_parked_service", damageCreditDisposition = "preserve_round_ledger" } }
+			releaseProposal = { actorKey = candidate.key, reason = ({ "dead_life", "safe_parked_service", "flying_bot",
+				"flying_bot" })[releaseRank(candidate) + 1], damageCreditDisposition = "preserve_round_ledger" } }
 	end
 	return { status = "wait_menu", admission = nil, releaseProposal = nil }
 end

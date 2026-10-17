@@ -5,10 +5,23 @@ local Service={};Service.__index=Service
 function Service.classFor(profile)
  return profile and profile.qualification and profile.qualification.count>=Gameplay.bots.rookie_qualifying_matches and "regular" or "rookie"
 end
+-- A beginner may stay in a friend's regular room after `friend_join_matches` qualifying matches (Alan 2026-10-17).
+function Service.friendCanStay(profile,hasFriend)
+ return hasFriend==true and Service.classFor(profile)=="rookie" and profile.qualification.count>=Gameplay.bots.friend_join_matches
+end
+local function anyFriendHere(player)
+ for _,other in ipairs(game:GetService("Players"):GetPlayers()) do
+  if other~=player then
+   local ok,friend=pcall(player.IsFriendsWith,player,other.UserId)
+   if ok and friend then return true end
+  end
+ end
+ return false
+end
 function Service.new(profiles,options)
  options=options or {}
  local mock=options.mock;if mock==nil then mock=Run:IsStudio() or game.PlaceId==0 end
- local self=setmetatable({profiles=profiles,mock=mock,transfers={},loading=not mock},Service)
+ local self=setmetatable({profiles=profiles,mock=mock,transfers={},loading=not mock,friendHere=options.friendHere or anyFriendHere},Service)
  if not mock then
   self.platform=options.platform or require(script.Parent.MatchmakingAdapter).new()
   self.platform:onFailure(function(player)self:failed(player)end)
@@ -43,6 +56,7 @@ function Service:admit(player)
  local class=Service.classFor(profile)
  if not self.class then self.class=class end
  if class==self.class then return true end
+ if self.class=="regular" and Service.friendCanStay(profile,self.friendHere(player)) then return true end
  if self.mock then player:SetAttribute("MenuMessage","Studio keeps beginner and established rooms separate. Start a new Play session to test the other room.");return false end
  self.transfers[player]=true;player:SetAttribute("Routing",true);player:SetAttribute("MenuMessage","Finding a room for your experience level. Saving before the transfer.")
  task.spawn(function()

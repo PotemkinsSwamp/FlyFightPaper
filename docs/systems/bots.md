@@ -36,6 +36,10 @@ player exits before final results. AFK/menu presence does not qualify. XP boosts
 this counter. Early graduation is disabled in the seed; optional later evidence-based change is not necessary
 for first candidate. Persist graduation server-side; old clients cannot claim rookie state.
 
+A human who joins never waits for a bot to die or land: a bot leaves at once (dead, then parked, then one nobody
+is fighting, then any; [decision](../decisions/2026-10-17-real-players-join-instantly.md)). A beginner with
+`friend_join_matches` qualifying matches may stay in a friend's regular room.
+
 Production matching must isolate rookies from established players. Initial implementation: each combat server
 hosts one eligibility class, with a small server-side routing adapter for compatible server/queue selection.
 Trusted profile state determines eligibility. Do not trust client-requested class or arbitrary teleport data.

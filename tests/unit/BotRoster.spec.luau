@@ -161,12 +161,17 @@ function Spec.run()
 		assert(actors[2].profileName == "rookie")
 	end)
 
-	test("BR08 full flying room queues humans without a release proposal", function()
+	test("BR08 full flying room releases a flying bot; only a room of 12 humans makes a human wait", function()
 		local actors = { human("h1") }
 		for index = 2, 12 do table.insert(actors, bot(tostring(index), "rookie", nil, "FLYING")) end
 		local policy = assert(Rules.humanPriority(input("rookie", "FFA", actors,
 			{ { userKey = "waiting", arrivalOrder = 1 } }, 5)))
-		assert(policy.status == "wait_menu" and policy.admission == nil and policy.releaseProposal == nil)
+		assert(policy.status == "release_proposed" and policy.releaseProposal.reason == "flying_bot")
+		local humans = {}
+		for index = 1, 12 do table.insert(humans, human("full" .. index)) end
+		local full = assert(Rules.humanPriority(input("rookie", "FFA", humans,
+			{ { userKey = "waiting", arrivalOrder = 1 } }, 5)))
+		assert(full.status == "wait_menu" and full.admission == nil and full.releaseProposal == nil)
 	end)
 
 	test("BR09 first queued human uses vacancy without deleting an actor", function()
@@ -184,11 +189,15 @@ function Spec.run()
 			{ trustedSafeParkedService = true, recentDamageCredit = false }))
 		local queue = { { userKey = "waiting", arrivalOrder = 1 } }
 		local contradictory = assert(Rules.humanPriority(input("regular", "FFA", actors, queue, 14)))
-		assert(contradictory.status == "wait_menu" and contradictory.releaseProposal == nil)
+		assert(contradictory.status == "release_proposed" and contradictory.releaseProposal.reason == "flying_bot")
+		for index = 2, 11 do actors[index] = bot(tostring(index), "regular", nil, "FLYING", { recentDamageCredit = true }) end
+		actors[12] = bot("calm", "regular", nil, "FLYING", { recentDamageCredit = false })
+		local calm = assert(Rules.humanPriority(input("regular", "FFA", actors, queue, 14)))
+		assert(calm.releaseProposal.actorKey == "bot:calm", "a bot nobody is fighting leaves before one in a fight")
 		actors[12] = bot("parked-credit", "regular", nil, "SERVICING",
 			{ trustedSafeParkedService = true, recentDamageCredit = true })
 		local credited = assert(Rules.humanPriority(input("regular", "FFA", actors, queue, 14)))
-		assert(credited.status == "wait_menu")
+		assert(credited.status == "release_proposed" and credited.releaseProposal.reason == "flying_bot")
 		actors[12] = bot("parked-safe", "regular", nil, "SERVICING",
 			{ trustedSafeParkedService = true, recentDamageCredit = false })
 		local parked = assert(Rules.humanPriority(input("regular", "FFA", actors, queue, 14)))
@@ -207,7 +216,7 @@ function Spec.run()
 		local queue = { { userKey = "waiting", arrivalOrder = 1 } }
 		local request = input("rookie", "FFA", actors, queue, 19)
 		request.trustedRoundBoundary = true
-		assert(assert(Rules.humanPriority(request)).status == "wait_menu")
+		assert(assert(Rules.humanPriority(request)).status == "release_proposed")
 		request.roundLedgerSettled, request.botCleanupReady = true, true
 		local policy = assert(Rules.humanPriority(request))
 		assert(policy.status == "round_boundary_rebuild" and policy.admission.userKey == "waiting")

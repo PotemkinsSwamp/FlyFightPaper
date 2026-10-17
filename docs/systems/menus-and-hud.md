@@ -29,7 +29,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/SettingsScreen.luau`, `src/client/Options.luau` | Settings screen and applying settings |
 | `src/client/PauseScreen.luau` | In-match clipboard menu |
 | `src/client/ResultsScreen.luau` | Round results |
-| `src/client/WaitScreen.luau` | "Waiting for a desk" note |
+| `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |
 | `src/client/PaperUI.luau` | Shared builder for the paper screens |

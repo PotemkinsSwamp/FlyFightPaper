@@ -144,6 +144,8 @@ return JSONTypes.map({
     ["bots"] = JSONTypes.map({
         ["early_graduation_enabled"] = false,
         ["experienced_cap_per_team_or_ffa"] = 1,
+        ["friend_join_matches"] = 1,
+        ["friend_join_matches_comment"] = "A beginner with at least this many qualifying matches may play in a friend's regular room instead of being moved to a beginners' room (Alan 2026-10-17: the friend has to play one game after the tutorial first).",
         ["hard_placement_cap"] = false,
         ["objective_comment"] = "Airspace Control (Alan 2026-10-14): every bot splits its time between holding the zone and hunting. Each stint (objective_stint_seconds) it rolls objective_drive (by skill, plus the personality objective_bonus) to decide which. On the zone it circles at objective_orbit x radius and only chases enemies within objective_leash x radius of it; veterans (objective_preposition) head for the next zone during the warning.",
         ["objective_stint_seconds"] = JSONTypes.array({
