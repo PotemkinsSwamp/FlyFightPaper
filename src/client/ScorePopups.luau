@@ -10,6 +10,7 @@ local WORDS = {
 	first_fold = { "FIRST FOLD", Color3.fromRGB(255, 140, 50) },
 	streak = { "STREAK", Color3.fromRGB(255, 140, 50) },
 	revenge = { "REVENGE", Color3.fromRGB(255, 90, 80) },
+	finishing_shot = { "FINISHING SHOT", Color3.fromRGB(255, 205, 40) },
 	zone = { "ZONE", Color3.fromRGB(255, 225, 90) },
 	target = { "TARGET", Color3.fromRGB(110, 225, 120) },
 	prop = { "", Color3.fromRGB(235, 235, 235) },

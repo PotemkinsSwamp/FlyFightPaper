@@ -15,6 +15,7 @@
     "streak_from": 3,
     "streak_bonus": 25,
     "revenge": 25,
+    "finishing_shot": 25,
     "first_fold": 100,
     "zone_per_5_eligible_seconds": 20,
     "target": 50,

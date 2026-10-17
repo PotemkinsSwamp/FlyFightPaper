@@ -393,6 +393,8 @@ function Match:consumeCombat(event)
             local amount = math.clamp(5 * math.round(100 * identity.share / 5), points.fold_assist_min, points.fold_assist_max)
             p.assists += 1
             earn(p, foldPoints(p, amount, true), "fold_assist", event.eventId, identity)
+            -- The last shot on a plane someone else mostly shot down (Alan 2026-10-17): an assist plus this bonus.
+            if identity.finisher == true then earn(p, points.finishing_shot, "finishing_shot", event.eventId .. ":finish", identity) end
             p.qualifyingEvents += 1; self:_activity(p, event.at, assistIdentities[p.key]); self:_qualify(p)
         end
         local target = r.mode == "FFA" and self.context.config.rounds.ffa_elimination_target

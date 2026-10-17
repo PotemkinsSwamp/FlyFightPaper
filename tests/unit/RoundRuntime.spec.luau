@@ -7,7 +7,7 @@ function Spec.run()
  local result,test=Suite.new()
  test("combat death carries damage shares without changing history identities and updates record points",function()
   local Combat=require(Server.CombatService)
-  for _,case in ipairs({{60,60,50},{12,228,10},{114,6,80}}) do
+  for _,case in ipairs({{60,60,50},{12,228,10},{58,2,80}}) do
    local f=MatchSpec.fixture();f:join("folder",true);f:join("victim",true);f:join("helper",true)
    local folder,victim,helper=f:identity("folder"),f:identity("victim"),table.freeze(f:identity("helper"))
    local now=workspace:GetServerTimeNow()
@@ -30,6 +30,25 @@ function Spec.run()
    assert(flight.records[folder.actorId].kills==1 and flight.records[folder.actorId].points==200)
    assert(history[1].identity==helper and helper.share==nil and #combat.info[victim.actorId].history==0)
   end
+ end)
+ test("big damage takes the fold and the last hitter earns an assist plus the finishing shot (Alan 2026-10-17)",function()
+  local Combat=require(Server.CombatService)
+  local f=MatchSpec.fixture();f:join("folder",true);f:join("victim",true);f:join("finisher",true)
+  local folder,victim,finisher=f:identity("folder"),f:identity("victim"),f:identity("finisher")
+  local now=workspace:GetServerTimeNow()
+  local history={{attacker=folder.actorId,at=now-2,damage=96,identity=folder},{attacker=finisher.actorId,at=now,damage=24,identity=finisher}}
+  local flight={byId={},records={}}
+  for _,identity in ipairs({folder,victim,finisher}) do flight.records[identity.actorId]={name=identity.actorId,kills=0,assists=0,points=0} end
+  local runtime=setmetatable({engine=f.m,flight=flight,earningCursor=0},Runtime)
+  function runtime:combatEvent(kind,p,extra)
+   assert(extra.killer.actorId==folder.actorId and extra.assists[1].finisher==true)
+   f:event(kind,"folder","victim",extra);self:earnings()
+  end
+  local combat=setmetatable({flight=flight,info={[victim.actorId]={history=history}},shots={},events={},cosmeticEvents={}},Combat)
+  combat.onDeath=function(...)runtime:combatDeath(...)end
+  combat:death({id=victim.actorId,name="Victim",identity=victim,stats={health=120},body={Position=Vector3.zero}},"weapon")
+  assert(flight.records[folder.actorId].kills==1 and flight.records[finisher.actorId].assists==1)
+  assert(flight.records[finisher.actorId].points==20+25,"20 for a fifth of the damage, 25 for the finishing shot")
  end)
  test("human earning rows each send one score popup and record points match all earned kinds",function()
   local f=MatchSpec.fixture();f:join("a");f:join("b",true);f:join("helper",true);f:join("humanHelper")

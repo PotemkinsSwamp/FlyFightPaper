@@ -73,14 +73,14 @@ function Runtime.new(flight,combat,bots,profiles)
  Players.PlayerRemoving:Connect(function(player) self.joined[player]=nil end)
  flight.onRemoved=function(p) if self.engine.phase=="ACTIVE" then self.engine:withdraw(p.id) end end
  combat.onDamage=function(attacker,victim,amount,at) self:combatEvent("weaponDamage",victim,{attacker=attacker.identity,amount=amount},at) end
- combat.onDeath=function(victim,cause,killer,assists,history,damage,total)
-  self:combatDeath(victim,cause,killer,assists,history,damage,total)
+ combat.onDeath=function(victim,cause,killer,assists,history,damage,total,finisher)
+  self:combatDeath(victim,cause,killer,assists,history,damage,total,finisher)
  end
  Run.Heartbeat:Connect(function(dt) self:step(dt) end)
  flight.active=false;bots.enabled=false;combat.enabled=false
  return self
 end
-function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total)
+function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total,finisher)
  local identities={}
  local function identity(id)
   for i=#history,1,-1 do if history[i].attacker==id and history[i].identity then return history[i].identity end end
@@ -89,7 +89,7 @@ function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total)
  for _,id in ipairs(assists) do
   local value=identity(id)
   if value then
-   value=table.clone(value);value.share=total>0 and (damage[id] or 0)/total or 0
+   value=table.clone(value);value.share=total>0 and (damage[id] or 0)/total or 0;value.finisher=id==finisher or nil
    table.insert(identities,value)
   end
  end

@@ -29,6 +29,7 @@ return JSONTypes.map({
     }),
     ["points"] = JSONTypes.map({
         ["airspace_outside_zone_factor"] = 0.4,
+        ["finishing_shot"] = 25,
         ["first_fold"] = 100,
         ["fold"] = 100,
         ["fold_assist_max"] = 80,

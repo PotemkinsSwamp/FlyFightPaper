@@ -1,7 +1,7 @@
 # Damage and deaths
 
 ## What the player sees
-Shots and crashes take health. Grazing a wall barely hurts; slamming into one can kill. A crash crumples your plane into a paper ball; being shot down tears it into paper shreds. The camera follows your remains until you respawn about four seconds later. The pilot who did the final weapon damage gets the **fold** (the game's word for a kill); others who did enough damage get an assist.
+Shots and crashes take health. Grazing a wall barely hurts; slamming into one can kill. A crash crumples your plane into a paper ball; being shot down tears it into paper shreds. The camera follows your remains until you respawn about four seconds later. The pilot who did the final weapon damage gets the **fold** (the game's word for a kill), unless someone else did half the plane's health or more in the last 15 s: then they get it and the finisher gets an assist plus +25 ([decision](../decisions/2026-10-17-fold-credit-big-damage-wins.md)). Others who did enough damage get an assist. A repair wipes earlier damage.
 
 ## Where it stands (2026-10-15)
 Works. Death looks (shreds, paper ball, team colours) wait on Alan's eyes. Bot-vs-bot rams never land.

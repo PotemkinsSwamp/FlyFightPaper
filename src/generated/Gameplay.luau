@@ -381,7 +381,7 @@ return JSONTypes.map({
     }),
     ["combat"] = JSONTypes.map({
         ["assist_min_fraction_original_health"] = 0.1,
-        ["assist_window_seconds"] = 10,
+        ["assist_window_seconds"] = 15,
         ["bounds_grace_seconds"] = 2,
         ["collision_crash_speed"] = 12,
         ["collision_scrape_doubling_seconds"] = 0.5,
@@ -400,6 +400,7 @@ return JSONTypes.map({
         ["eraser_slow_after_studs"] = 250,
         ["eraser_slow_full_studs"] = 750,
         ["eraser_turn_deg_s"] = 90,
+        ["fold_majority_fraction"] = 0.5,
         ["friendly_fire"] = false,
         ["gun_assist_deg"] = 7,
         ["gun_convergence_studs"] = 150,

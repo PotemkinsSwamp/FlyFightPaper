@@ -15,21 +15,30 @@ function Rules.triggerGroups(loadout)
 	end
 	return groups
 end
-function Rules.credit(history, now, maximum, victim)
-	local damage, total, killer, latest = {}, 0, nil, -math.huge
+-- Fold credit (Alan 2026-10-17): only damage in the last assist_window_seconds, and none from before the victim's last
+-- repair (`since`), counts. The last hit gets the fold, unless another pilot did at least fold_majority_fraction of
+-- the plane's health and more than the last hitter: then that pilot gets it, and the last hitter is the `finisher`
+-- (always an assist, plus a finishing bonus). No stealing a fold with one shot; finishing still pays.
+function Rules.credit(history, now, maximum, victim, since)
+	local damage, total, last, latest = {}, 0, nil, -math.huge
 	for _, hit in ipairs(history) do
-		if hit.attacker ~= victim and hit.at <= now and now-hit.at <= Config.assist_window_seconds then
+		if hit.attacker ~= victim and hit.at <= now and now-hit.at <= Config.assist_window_seconds and hit.at >= (since or -math.huge) then
 			damage[hit.attacker] = (damage[hit.attacker] or 0)+hit.damage
 			total += hit.damage
-			if hit.at >= latest then killer, latest = hit.attacker, hit.at end
+			if hit.at >= latest then last, latest = hit.attacker, hit.at end
 		end
 	end
+	local killer, finisher = last, nil
+	for attacker, amount in pairs(damage) do
+		if attacker ~= last and amount >= maximum*Config.fold_majority_fraction and amount > (damage[killer] or 0) then killer = attacker end
+	end
+	if killer ~= last then finisher = last end
 	local assists = {}
 	for attacker, amount in pairs(damage) do
-		if attacker ~= killer and amount >= maximum*Config.assist_min_fraction_original_health then table.insert(assists,attacker) end
+		if attacker ~= killer and (attacker == finisher or amount >= maximum*Config.assist_min_fraction_original_health) then table.insert(assists,attacker) end
 	end
 	table.sort(assists)
-	return killer, assists, damage, total
+	return killer, assists, damage, total, finisher
 end
 function Rules.readyMount(mounts, group, now, after, fireMode)
 	for offset=1,#mounts do

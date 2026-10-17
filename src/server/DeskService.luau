@@ -38,6 +38,7 @@ function Service:perform(p,action)
     else
      local repaired=assert(Rules.repair(p.stats.health,p.model:GetAttribute("MaxHealth"),p.model:GetAttribute("Health")))
      p.model:SetAttribute("Health",repaired.health);p.model:SetAttribute("MaxHealth",repaired.lifeMaxHealth)
+     p.repairedAt=workspace:GetServerTimeNow() -- earlier damage no longer counts toward a fold or assist (Alan 2026-10-17)
     end
     p.model:SetAttribute("Message","Service complete. Ready to launch");p.model:SetAttribute("ServiceBusy",false)
    end

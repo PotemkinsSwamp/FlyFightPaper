@@ -273,7 +273,7 @@ function Service:hit(attacker,target,amount,now,position)
 end
 function Service:death(p,cause)
  local now=workspace:GetServerTimeNow();local info=self.info[p.id]
- local killer,assists,damage,total=Rules.credit(info and info.history or {},now,p.stats.health,p.id)
+ local killer,assists,damage,total,finisher=Rules.credit(info and info.history or {},now,p.stats.health,p.id,p.repairedAt)
  if cause=="vacancy" or cause=="round_end" then killer=nil;assists={} end
  if killer and self.flight.records[killer] then
   local record=self.flight.records[killer];record.kills+=1
@@ -282,7 +282,7 @@ function Service:death(p,cause)
  end
  -- Match earnings supply record points, including zone points and fold bonuses.
  for _,id in ipairs(assists) do local record=self.flight.records[id];if record then record.assists+=1 end end
- if self.onDeath then self.onDeath(p,cause,killer,assists,info and info.history or {},damage,total) end
+ if self.onDeath then self.onDeath(p,cause,killer,assists,info and info.history or {},damage,total,finisher) end
  for _,shot in pairs(self.shots) do if shot.owner==p.id then self:finish(shot) end end
  if info then info.held={false,false};info.history={} end
  self:emit({kind="death",victim=p.name,victimId=p.id,killer=killer and self.flight.records[killer].name or nil,killerId=killer,cause=cause,position=p.body.Position})
