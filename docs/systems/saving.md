@@ -6,7 +6,8 @@ lost if a save fails for a moment; it retries without stopping the match for eve
 
 ## Where it stands (2026-10-15)
 Built on ProfileStore (Stage 5, Codex's lane) and tested with a fake save store. In Studio, progress lasts one
-Play session only. Real saving, rejoin, server hop and multi-player tests wait for Alan's go on a private publish.
+Play session only. Published privately on 2026-10-17 ([how](../decisions/2026-10-07-private-publish.md)); real
+saving, rejoin, server hop and multi-player tests are next, played on Roblox itself.
 
 ## How it works
 *Moved from the old README.*
