@@ -36,3 +36,5 @@ The station exports no track, train, road or bridge deck. Those picture elements
 
 Output checks and piece measurements: parts.json. Visual comparison: compare.png.
 Remaining visual differences: fix-review.json.
+
+2026-10-17 (Alan): everything above the legs lifted 20 studs (`STATION_LIFT` in blocks.py); legs 97 tall, track tunnel z 120-162, height 170.

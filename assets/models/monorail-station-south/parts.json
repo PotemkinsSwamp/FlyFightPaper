@@ -3,7 +3,7 @@
   "front": "-y",
   "up": "z",
   "units": "studs",
-  "piece_count": 34,
+  "piece_count": 36,
   "map_size": [
     1024,
     1024
@@ -33,13 +33,13 @@
         31
       ],
       "z": [
-        100,
-        142
+        120,
+        162
       ],
       "shape": {
         "axis": "x",
         "cx": 0,
-        "cz": 121,
+        "cz": 141,
         "rx": 62,
         "rz": 42
       },
@@ -53,8 +53,8 @@
         -29
       ],
       "z": [
-        105,
-        135
+        125,
+        155
       ],
       "shape": "rectangle",
       "clear_front_and_back_rays": 1250
@@ -67,8 +67,8 @@
         23
       ],
       "z": [
-        105,
-        135
+        125,
+        155
       ],
       "shape": "rectangle",
       "clear_front_and_back_rays": 1250
@@ -81,8 +81,8 @@
         75
       ],
       "z": [
-        105,
-        135
+        125,
+        155
       ],
       "shape": "rectangle",
       "clear_front_and_back_rays": 1250
@@ -113,10 +113,10 @@
       ],
       "prefix": "1-left-toy-leg-course-1-1",
       "front_pixels_per_stud": 7.978,
-      "front_surface_studs2": 1301.7257,
+      "front_surface_studs2": 1332.555,
       "outer_face_pixels_per_stud": {
         "front": 7.978,
-        "back": 7.984,
+        "back": 7.985,
         "left": 7.988,
         "right": null,
         "top": 7.988,
@@ -198,12 +198,12 @@
         "min": [
           -84.925,
           -40.0,
-          15.4
+          16.16667
         ],
         "max": [
           -44.075,
           40.0,
-          30.6
+          32.13333
         ]
       },
       "boundary_edges": 0,
@@ -214,12 +214,12 @@
         0
       ],
       "prefix": "4-left-toy-leg-course-2",
-      "front_pixels_per_stud": 7.984,
-      "front_surface_studs2": 606.6089,
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 637.4382,
       "outer_face_pixels_per_stud": {
-        "front": 7.984,
-        "back": 7.984,
-        "left": 7.991,
+        "front": 7.985,
+        "back": 7.985,
+        "left": 7.992,
         "right": null,
         "top": 7.99,
         "bottom": 7.99
@@ -232,12 +232,12 @@
         "min": [
           -84.925,
           -40.0,
-          30.8
+          32.33333
         ],
         "max": [
           -44.075,
           40.0,
-          46.0
+          48.3
         ]
       },
       "boundary_edges": 0,
@@ -248,12 +248,12 @@
         0
       ],
       "prefix": "5-left-toy-leg-course-3",
-      "front_pixels_per_stud": 7.984,
-      "front_surface_studs2": 606.6087,
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 637.4382,
       "outer_face_pixels_per_stud": {
-        "front": 7.984,
-        "back": 7.984,
-        "left": 7.991,
+        "front": 7.985,
+        "back": 7.985,
+        "left": 7.992,
         "right": null,
         "top": 7.99,
         "bottom": 7.99
@@ -261,17 +261,17 @@
     },
     {
       "label": "left-toy-leg-course-4",
-      "triangles": 864,
+      "triangles": 324,
       "bounding_box": {
         "min": [
           -84.925,
-          -41.55,
-          46.2
+          -40.0,
+          48.5
         ],
         "max": [
           -44.075,
           40.0,
-          70.0
+          64.46667
         ]
       },
       "boundary_edges": 0,
@@ -282,12 +282,12 @@
         0
       ],
       "prefix": "6-left-toy-leg-course-4",
-      "front_pixels_per_stud": 7.983,
-      "front_surface_studs2": 920.0725,
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 637.438,
       "outer_face_pixels_per_stud": {
-        "front": 7.983,
-        "back": 7.984,
-        "left": 7.99,
+        "front": 7.985,
+        "back": 7.985,
+        "left": 7.992,
         "right": null,
         "top": 7.99,
         "bottom": 7.99
@@ -295,17 +295,17 @@
     },
     {
       "label": "left-toy-leg-course-5",
-      "triangles": 3732,
+      "triangles": 864,
       "bounding_box": {
         "min": [
           -84.925,
-          -40.0,
-          61.6
+          -41.55,
+          64.66667
         ],
         "max": [
           -44.075,
           40.0,
-          80.0
+          85.0
         ]
       },
       "boundary_edges": 0,
@@ -316,12 +316,46 @@
         0
       ],
       "prefix": "7-left-toy-leg-course-5",
-      "front_pixels_per_stud": 7.898,
-      "front_surface_studs2": 732.2624,
+      "front_pixels_per_stud": 7.983,
+      "front_surface_studs2": 950.9012,
       "outer_face_pixels_per_stud": {
-        "front": 7.898,
-        "back": 7.898,
-        "left": 7.958,
+        "front": 7.983,
+        "back": 7.985,
+        "left": 7.991,
+        "right": null,
+        "top": 7.99,
+        "bottom": 7.99
+      }
+    },
+    {
+      "label": "left-toy-leg-course-6",
+      "triangles": 3732,
+      "bounding_box": {
+        "min": [
+          -84.925,
+          -40.0,
+          80.83334
+        ],
+        "max": [
+          -44.075,
+          40.0,
+          100.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "8-left-toy-leg-course-6",
+      "front_pixels_per_stud": 7.902,
+      "front_surface_studs2": 763.0914,
+      "outer_face_pixels_per_stud": {
+        "front": 7.902,
+        "back": 7.902,
+        "left": 7.96,
         "right": null,
         "top": 7.989,
         "bottom": 7.989
@@ -349,14 +383,14 @@
         0,
         0
       ],
-      "prefix": "8-right-toy-leg-course-1-1",
+      "prefix": "9-right-toy-leg-course-1-1",
       "front_pixels_per_stud": 7.983,
-      "front_surface_studs2": 920.0727,
+      "front_surface_studs2": 950.902,
       "outer_face_pixels_per_stud": {
         "front": 7.983,
-        "back": 7.984,
+        "back": 7.985,
         "left": null,
-        "right": 7.99,
+        "right": 7.991,
         "top": 7.99,
         "bottom": 7.99
       }
@@ -383,7 +417,7 @@
         0,
         0
       ],
-      "prefix": "9-right-toy-leg-course-1-2",
+      "prefix": "10-right-toy-leg-course-1-2",
       "front_pixels_per_stud": 7.912,
       "front_surface_studs2": 52.5325,
       "outer_face_pixels_per_stud": {
@@ -417,7 +451,7 @@
         0,
         0
       ],
-      "prefix": "10-right-toy-leg-course-1-3",
+      "prefix": "11-right-toy-leg-course-1-3",
       "front_pixels_per_stud": 7.882,
       "front_surface_studs2": 0.0885,
       "outer_face_pixels_per_stud": {
@@ -436,12 +470,12 @@
         "min": [
           44.075,
           -40.0,
-          15.4
+          16.16667
         ],
         "max": [
           84.925,
           40.0,
-          30.6
+          32.13333
         ]
       },
       "boundary_edges": 0,
@@ -451,14 +485,14 @@
         0,
         0
       ],
-      "prefix": "11-right-toy-leg-course-2",
-      "front_pixels_per_stud": 7.984,
-      "front_surface_studs2": 606.609,
+      "prefix": "12-right-toy-leg-course-2",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 637.4383,
       "outer_face_pixels_per_stud": {
-        "front": 7.984,
-        "back": 7.984,
+        "front": 7.985,
+        "back": 7.985,
         "left": null,
-        "right": 7.991,
+        "right": 7.992,
         "top": 7.99,
         "bottom": 7.99
       }
@@ -470,12 +504,12 @@
         "min": [
           44.075,
           -40.0,
-          30.8
+          32.33333
         ],
         "max": [
           84.925,
           40.0,
-          46.0
+          48.3
         ]
       },
       "boundary_edges": 0,
@@ -485,12 +519,80 @@
         0,
         0
       ],
-      "prefix": "12-right-toy-leg-course-3",
-      "front_pixels_per_stud": 7.984,
-      "front_surface_studs2": 606.6088,
+      "prefix": "13-right-toy-leg-course-3",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 637.4383,
       "outer_face_pixels_per_stud": {
-        "front": 7.984,
-        "back": 7.984,
+        "front": 7.985,
+        "back": 7.985,
+        "left": null,
+        "right": 7.992,
+        "top": 7.99,
+        "bottom": 7.99
+      }
+    },
+    {
+      "label": "right-toy-leg-course-4",
+      "triangles": 324,
+      "bounding_box": {
+        "min": [
+          44.075,
+          -40.0,
+          48.5
+        ],
+        "max": [
+          84.925,
+          40.0,
+          64.46667
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "14-right-toy-leg-course-4",
+      "front_pixels_per_stud": 7.985,
+      "front_surface_studs2": 637.4381,
+      "outer_face_pixels_per_stud": {
+        "front": 7.985,
+        "back": 7.985,
+        "left": null,
+        "right": 7.992,
+        "top": 7.99,
+        "bottom": 7.99
+      }
+    },
+    {
+      "label": "right-toy-leg-course-5",
+      "triangles": 864,
+      "bounding_box": {
+        "min": [
+          44.075,
+          -41.55,
+          64.66667
+        ],
+        "max": [
+          84.925,
+          40.0,
+          85.0
+        ]
+      },
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "prefix": "15-right-toy-leg-course-5",
+      "front_pixels_per_stud": 7.983,
+      "front_surface_studs2": 950.9013,
+      "outer_face_pixels_per_stud": {
+        "front": 7.983,
+        "back": 7.985,
         "left": null,
         "right": 7.991,
         "top": 7.99,
@@ -498,52 +600,18 @@
       }
     },
     {
-      "label": "right-toy-leg-course-4",
-      "triangles": 864,
-      "bounding_box": {
-        "min": [
-          44.075,
-          -41.55,
-          46.2
-        ],
-        "max": [
-          84.925,
-          40.0,
-          70.0
-        ]
-      },
-      "boundary_edges": 0,
-      "nonmanifold_edges": 0,
-      "origin": [
-        0,
-        0,
-        0
-      ],
-      "prefix": "13-right-toy-leg-course-4",
-      "front_pixels_per_stud": 7.983,
-      "front_surface_studs2": 920.0726,
-      "outer_face_pixels_per_stud": {
-        "front": 7.983,
-        "back": 7.984,
-        "left": null,
-        "right": 7.99,
-        "top": 7.99,
-        "bottom": 7.99
-      }
-    },
-    {
-      "label": "right-toy-leg-course-5",
+      "label": "right-toy-leg-course-6",
       "triangles": 3732,
       "bounding_box": {
         "min": [
           44.075,
           -40.0,
-          61.6
+          80.83334
         ],
         "max": [
           84.925,
           40.0,
-          80.0
+          100.0
         ]
       },
       "boundary_edges": 0,
@@ -553,14 +621,14 @@
         0,
         0
       ],
-      "prefix": "14-right-toy-leg-course-5",
-      "front_pixels_per_stud": 7.898,
-      "front_surface_studs2": 732.2625,
+      "prefix": "16-right-toy-leg-course-6",
+      "front_pixels_per_stud": 7.902,
+      "front_surface_studs2": 763.0915,
       "outer_face_pixels_per_stud": {
-        "front": 7.898,
-        "back": 7.898,
+        "front": 7.902,
+        "back": 7.902,
         "left": null,
-        "right": 7.958,
+        "right": 7.96,
         "top": 7.989,
         "bottom": 7.989
       }
@@ -572,12 +640,12 @@
         "min": [
           -85.0,
           -40.0,
-          83.0
+          103.0
         ],
         "max": [
           0.0,
           40.0,
-          147.0
+          167.0
         ]
       },
       "boundary_edges": 0,
@@ -587,7 +655,7 @@
         0,
         0
       ],
-      "prefix": "15-rounded-red-lunch-tin-half-1",
+      "prefix": "17-rounded-red-lunch-tin-half-1",
       "front_pixels_per_stud": 7.792,
       "front_surface_studs2": 3185.858,
       "outer_face_pixels_per_stud": {
@@ -606,12 +674,12 @@
         "min": [
           0.0,
           -40.0,
-          83.0
+          103.0
         ],
         "max": [
           85.0,
           40.0,
-          147.0
+          167.0
         ]
       },
       "boundary_edges": 0,
@@ -621,7 +689,7 @@
         0,
         0
       ],
-      "prefix": "16-rounded-red-lunch-tin-half-2",
+      "prefix": "18-rounded-red-lunch-tin-half-2",
       "front_pixels_per_stud": 7.792,
       "front_surface_studs2": 3185.858,
       "outer_face_pixels_per_stud": {
@@ -640,12 +708,12 @@
         "min": [
           -85.0,
           -40.0,
-          80.0
+          100.0
         ],
         "max": [
           0.0,
           40.0,
-          83.0
+          103.0
         ]
       },
       "boundary_edges": 0,
@@ -655,7 +723,7 @@
         0,
         0
       ],
-      "prefix": "17-rounded-bottom-tin-rim-1",
+      "prefix": "19-rounded-bottom-tin-rim-1",
       "front_pixels_per_stud": 7.765,
       "front_surface_studs2": 206.0879,
       "outer_face_pixels_per_stud": {
@@ -674,12 +742,12 @@
         "min": [
           0.0,
           -40.0,
-          80.0
+          100.0
         ],
         "max": [
           85.0,
           40.0,
-          83.0
+          103.0
         ]
       },
       "boundary_edges": 0,
@@ -689,7 +757,7 @@
         0,
         0
       ],
-      "prefix": "18-rounded-bottom-tin-rim-2",
+      "prefix": "20-rounded-bottom-tin-rim-2",
       "front_pixels_per_stud": 7.765,
       "front_surface_studs2": 206.088,
       "outer_face_pixels_per_stud": {
@@ -708,12 +776,12 @@
         "min": [
           -85.0,
           -40.0,
-          143.0
+          163.0
         ],
         "max": [
           0.0,
           40.0,
-          149.29999
+          169.29999
         ]
       },
       "boundary_edges": 0,
@@ -723,7 +791,7 @@
         0,
         0
       ],
-      "prefix": "19-deep-lunch-tin-lid-1",
+      "prefix": "21-deep-lunch-tin-lid-1",
       "front_pixels_per_stud": 7.573,
       "front_surface_studs2": 523.1526,
       "outer_face_pixels_per_stud": {
@@ -742,12 +810,12 @@
         "min": [
           0.0,
           -40.0,
-          143.0
+          163.0
         ],
         "max": [
           85.0,
           40.0,
-          149.29999
+          169.29999
         ]
       },
       "boundary_edges": 0,
@@ -757,7 +825,7 @@
         0,
         0
       ],
-      "prefix": "20-deep-lunch-tin-lid-2",
+      "prefix": "22-deep-lunch-tin-lid-2",
       "front_pixels_per_stud": 7.573,
       "front_surface_studs2": 523.1526,
       "outer_face_pixels_per_stud": {
@@ -776,12 +844,12 @@
         "min": [
           -85.2,
           -40.18725,
-          81.3
+          101.3
         ],
         "max": [
           1e-05,
           40.2,
-          82.7
+          102.7
         ]
       },
       "boundary_edges": 0,
@@ -791,7 +859,7 @@
         0,
         0
       ],
-      "prefix": "21-rolled-tin-rim-82-1",
+      "prefix": "23-rolled-tin-rim-82-1",
       "front_pixels_per_stud": 7.3,
       "front_surface_studs2": 122.5738,
       "outer_face_pixels_per_stud": {
@@ -810,12 +878,12 @@
         "min": [
           -1e-05,
           -40.2,
-          81.3
+          101.3
         ],
         "max": [
           85.2,
           40.18725,
-          82.7
+          102.7
         ]
       },
       "boundary_edges": 0,
@@ -825,7 +893,7 @@
         0,
         0
       ],
-      "prefix": "22-rolled-tin-rim-82-2",
+      "prefix": "24-rolled-tin-rim-82-2",
       "front_pixels_per_stud": 7.3,
       "front_surface_studs2": 122.5757,
       "outer_face_pixels_per_stud": {
@@ -844,12 +912,12 @@
         "min": [
           -85.2,
           -40.18725,
-          142.60001
+          162.60001
         ],
         "max": [
           1e-05,
           40.2,
-          144.0
+          164.0
         ]
       },
       "boundary_edges": 0,
@@ -859,7 +927,7 @@
         0,
         0
       ],
-      "prefix": "23-rolled-tin-rim-143.3-1",
+      "prefix": "25-rolled-tin-rim-143.3-1",
       "front_pixels_per_stud": 7.3,
       "front_surface_studs2": 122.5742,
       "outer_face_pixels_per_stud": {
@@ -878,12 +946,12 @@
         "min": [
           -1e-05,
           -40.2,
-          142.60001
+          162.60001
         ],
         "max": [
           85.2,
           40.18725,
-          144.0
+          164.0
         ]
       },
       "boundary_edges": 0,
@@ -893,7 +961,7 @@
         0,
         0
       ],
-      "prefix": "24-rolled-tin-rim-143.3-2",
+      "prefix": "26-rolled-tin-rim-143.3-2",
       "front_pixels_per_stud": 7.3,
       "front_surface_studs2": 122.5761,
       "outer_face_pixels_per_stud": {
@@ -912,12 +980,12 @@
         "min": [
           -85.3,
           -40.28725,
-          148.39999
+          168.39999
         ],
         "max": [
           1e-05,
           40.3,
-          150.0
+          170.0
         ]
       },
       "boundary_edges": 0,
@@ -927,7 +995,7 @@
         0,
         0
       ],
-      "prefix": "25-rolled-tin-rim-149.2-1",
+      "prefix": "27-rolled-tin-rim-149.2-1",
       "front_pixels_per_stud": 7.3,
       "front_surface_studs2": 140.2101,
       "outer_face_pixels_per_stud": {
@@ -946,12 +1014,12 @@
         "min": [
           -1e-05,
           -40.3,
-          148.39999
+          168.39999
         ],
         "max": [
           85.3,
           40.28725,
-          150.0
+          170.0
         ]
       },
       "boundary_edges": 0,
@@ -961,7 +1029,7 @@
         0,
         0
       ],
-      "prefix": "26-rolled-tin-rim-149.2-2",
+      "prefix": "28-rolled-tin-rim-149.2-2",
       "front_pixels_per_stud": 7.3,
       "front_surface_studs2": 140.2124,
       "outer_face_pixels_per_stud": {
@@ -980,12 +1048,12 @@
         "min": [
           -86.15,
           -33.65001,
-          97.35
+          117.35
         ],
         "max": [
           86.15,
           33.65001,
-          144.64999
+          164.64999
         ]
       },
       "boundary_edges": 0,
@@ -995,7 +1063,7 @@
         0,
         0
       ],
-      "prefix": "27-metal-lined-open-track-tunnel",
+      "prefix": "29-metal-lined-open-track-tunnel",
       "front_pixels_per_stud": 7.968,
       "front_surface_studs2": 3007.3433,
       "outer_face_pixels_per_stud": {
@@ -1014,12 +1082,12 @@
         "min": [
           -76.2,
           -41.55,
-          103.8
+          123.8
         ],
         "max": [
           -27.8,
           -31.0,
-          136.20001
+          156.20001
         ]
       },
       "boundary_edges": 0,
@@ -1029,7 +1097,7 @@
         0,
         0
       ],
-      "prefix": "28-front-open-long-window--52",
+      "prefix": "30-front-open-long-window--52",
       "front_pixels_per_stud": 7.94,
       "front_surface_studs2": 250.0671,
       "outer_face_pixels_per_stud": {
@@ -1048,12 +1116,12 @@
         "min": [
           -24.2,
           -41.55,
-          103.8
+          123.8
         ],
         "max": [
           24.2,
           -31.0,
-          136.20001
+          156.20001
         ]
       },
       "boundary_edges": 0,
@@ -1063,7 +1131,7 @@
         0,
         0
       ],
-      "prefix": "29-front-open-long-window-0",
+      "prefix": "31-front-open-long-window-0",
       "front_pixels_per_stud": 7.94,
       "front_surface_studs2": 250.0676,
       "outer_face_pixels_per_stud": {
@@ -1082,12 +1150,12 @@
         "min": [
           27.8,
           -41.55,
-          103.8
+          123.8
         ],
         "max": [
           76.2,
           -31.0,
-          136.20001
+          156.20001
         ]
       },
       "boundary_edges": 0,
@@ -1097,7 +1165,7 @@
         0,
         0
       ],
-      "prefix": "30-front-open-long-window-52",
+      "prefix": "32-front-open-long-window-52",
       "front_pixels_per_stud": 7.94,
       "front_surface_studs2": 250.0671,
       "outer_face_pixels_per_stud": {
@@ -1116,12 +1184,12 @@
         "min": [
           -76.2,
           31.0,
-          103.8
+          123.8
         ],
         "max": [
           -27.8,
           41.55,
-          136.20001
+          156.20001
         ]
       },
       "boundary_edges": 0,
@@ -1131,7 +1199,7 @@
         0,
         0
       ],
-      "prefix": "31-back-open-long-window--52",
+      "prefix": "33-back-open-long-window--52",
       "front_pixels_per_stud": null,
       "front_surface_studs2": 0.0,
       "outer_face_pixels_per_stud": {
@@ -1150,12 +1218,12 @@
         "min": [
           -24.2,
           31.0,
-          103.8
+          123.8
         ],
         "max": [
           24.2,
           41.55,
-          136.20001
+          156.20001
         ]
       },
       "boundary_edges": 0,
@@ -1165,7 +1233,7 @@
         0,
         0
       ],
-      "prefix": "32-back-open-long-window-0",
+      "prefix": "34-back-open-long-window-0",
       "front_pixels_per_stud": null,
       "front_surface_studs2": 0.0,
       "outer_face_pixels_per_stud": {
@@ -1184,12 +1252,12 @@
         "min": [
           27.8,
           31.0,
-          103.8
+          123.8
         ],
         "max": [
           76.2,
           41.55,
-          136.20001
+          156.20001
         ]
       },
       "boundary_edges": 0,
@@ -1199,7 +1267,7 @@
         0,
         0
       ],
-      "prefix": "33-back-open-long-window-52",
+      "prefix": "35-back-open-long-window-52",
       "front_pixels_per_stud": null,
       "front_surface_studs2": 0.0,
       "outer_face_pixels_per_stud": {
@@ -1218,12 +1286,12 @@
         "min": [
           -57.5,
           -42.7,
-          138.5
+          158.5
         ],
         "max": [
           57.49999,
           42.0,
-          147.5
+          167.5
         ]
       },
       "boundary_edges": 0,
@@ -1233,7 +1301,7 @@
         0,
         0
       ],
-      "prefix": "34-real-hinges-and-closing-clasps",
+      "prefix": "36-real-hinges-and-closing-clasps",
       "front_pixels_per_stud": 7.857,
       "front_surface_studs2": 276.7298,
       "outer_face_pixels_per_stud": {
@@ -1246,7 +1314,7 @@
       }
     }
   ],
-  "total_triangles": 34772,
+  "total_triangles": 35420,
   "bounding_box": {
     "min": [
       -88.0,
@@ -1256,9 +1324,9 @@
     "max": [
       88.0,
       46.0,
-      150.0
+      170.0
     ]
   },
-  "height": 150.0,
-  "requested_height": 150
+  "height": 170.0,
+  "requested_height": 170
 }

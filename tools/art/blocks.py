@@ -913,7 +913,7 @@ BUILDERS = {}
 OPENINGS = {}
 CAMERAS = {}
 HEIGHTS = {"shoebox-hall":55,"chalk-box-depot":60,"abacus-hall":75,"block-arch":160,
-    "monorail-station-north":150,"monorail-station-south":150,"pencil-tin-tower":160,
+    "monorail-station-north":170,"monorail-station-south":170,"pencil-tin-tower":160,
     "ruler-stilt-tower":180,"log-cabin-tower":200,"stacking-cup-tower":230,
     "jenga-tower":240,"ring-binder-tower":300,"pencil-pillar-tower":345}
 
@@ -1679,27 +1679,43 @@ def bay_window(x,z,y,width=36,height=24,panes=3,side=0):
     return parts
 
 
+# Both stations' track storeys sit STATION_LIFT studs higher than first built (Alan 2026-10-17: the train rides on
+# the tunnel floor). The monorail beam's underside is 120 studs up, so the tunnel floor is at 120 and the train has
+# about 26 studs of air above its roof.
+STATION_LIFT = 20
+
+
+def lift(groups, skip):
+    """Raise every piece of the groups whose label does not start with SKIP by STATION_LIFT."""
+    for label,parts in groups:
+        if not label.startswith(skip):
+            for obj in parts:
+                obj.data.transform(Matrix.Translation((0,0,STATION_LIFT)))
+    return groups
+
+
 def monorail_station_north():
     PAINT["glass"] = ("226398","glass")
     groups = []
     for x in (-64.5,64.5):
         outward = math.copysign(1,x)
         lid_x = x+outward
-        parts = [gb("Separate cardboard stand box",(41,70,77),(x,0,38.5)),
-                 gb("Stand box folded lid",(43,72,3),(lid_x,0,78.5))]
+        top = 77+STATION_LIFT
+        parts = [gb("Separate cardboard stand box",(41,70,top),(x,0,top/2)),
+                 gb("Stand box folded lid",(43,72,3),(lid_x,0,top+1.5))]
         for side in (0,180):
-            edge = corrugated_edge(42,-36.1,78.5,1.2,side)
+            edge = corrugated_edge(42,-36.1,top+1.5,1.2,side)
             for obj in edge:
                 obj.data.transform(Matrix.Translation((lid_x,0,0)))
             parts += edge
-        for z,col in ((2,"red"),(50,"red"),(46,"blue"),(42,"yellow")):
+        for z,col in ((2,"red"),(60,"red"),(56,"blue"),(52,"yellow")):
             parts += stud_band(40,x,-35.6,z,col)
             side_parts = stud_band(69,0,-85.6,z,col)
             for obj in side_parts:
                 rotate_about(obj,-90 if x<0 else 90)
             parts += side_parts
         for xx in (x-18,x+18):
-            parts.append(gb("Stand box corner tape",(4.5,.2,76),(xx,-35.2,39),"cream",.02))
+            parts.append(gb("Stand box corner tape",(4.5,.2,top-1),(xx,-35.2,top/2+.5),"cream",.02))
         if x<0:
             parts += gd(x,4,-35,15,28)
             parts += [gb("Grey door step",(24,9,2),(x,-38,1),"silver")]
@@ -1747,7 +1763,7 @@ def monorail_station_north():
                     trim.append(gc("Real top stud on corner brick",1.1,.4,(x+dx,y+dy,149.8),"red",vertices=16))
     groups.append(("toy-brick-trims-and-join-tape",trim))
     groups.append(("corrugated-top-box-cut-edges",board_edges(180,74,82,1.4)+board_edges(180,74,148.5,1.4)))
-    return same_both_sides(groups)
+    return same_both_sides(lift(groups,("left-stand-box","right-stand-box")))
 
 
 def same_both_sides(groups, front=-34):
@@ -1771,8 +1787,8 @@ def same_both_sides(groups, front=-34):
 
 
 BUILDERS["monorail-station-north"] = monorail_station_north
-CAMERAS["monorail-station-north"] = ((0,0,75),208,(.32,-1,.18))
-OPENINGS["monorail-station-north"] = [("road",-44,44,0,80),("monorail-tunnel",-31,31,100,142)]
+CAMERAS["monorail-station-north"] = ((0,0,85),228,(.32,-1,.18))
+OPENINGS["monorail-station-north"] = [("road",-44,44,0,80),("monorail-tunnel",-31,31,120,162)]
 
 
 def monorail_station_south():
@@ -1780,15 +1796,17 @@ def monorail_station_south():
     PAINT["tile-grey"] = ("A4A8AA","plastic")
     PAINT["glass"] = ("226398","glass")
     groups = []
+    courses = ("yellow","yellow","blue","yellow","yellow","blue")
+    step = (77+STATION_LIFT)/len(courses)
     for x in (-64.5,64.5):
-        for level,col in enumerate(("yellow","yellow","blue","yellow","blue")):
+        for level,col in enumerate(courses):
             parts = []
             for dx in (-41/3,0,41/3):
-                parts.append(gb("Separate toy brick leg block",(41/3-.15,80,15.2),
-                    (x+dx,0,level*15.4+7.6),col,.24))
-                if level==4:
+                parts.append(gb("Separate toy brick leg block",(41/3-.15,80,step-.2),
+                    (x+dx,0,level*step+step/2-.1),col,.24))
+                if level==len(courses)-1:
                     for y in (-31,-10,10,31):
-                        parts.append(gc("Round brick stud supporting tin",3,3.4,(x+dx,y,78.3),col,vertices=24))
+                        parts.append(gc("Round brick stud supporting tin",3,3.4,(x+dx,y,78.3+STATION_LIFT),col,vertices=24))
             if level==0:
                 parts += gd(x,4,-40,14,26,"green") if x<0 else gw(x,20,-40,16,20,mullions=False)
                 if x<0:
@@ -1800,8 +1818,8 @@ def monorail_station_south():
                 for i in (-1,1):
                     parts += [gb("Base plate tile seam",(44,.5,.1),(cx,i*23,1.22),"dark",.02),
                               gb("Base plate tile seam",(.5,92,.1),(cx+i*11,0,1.22),"dark",.02)]
-            if level==3:
-                parts += gw(x,60,-40,16,20,mullions=False)
+            if level==4:
+                parts += gw(x,75,-40,16,20,mullions=False)
             groups.append((("left" if x<0 else "right")+"-toy-leg-course-"+str(level+1),parts))
     def cut_opening(obj, size, at):
         cutter = box("Temporary station opening cutter",size,at,0)
@@ -1878,16 +1896,16 @@ def monorail_station_south():
         for dx in (-3,3):
             catches += [gs("Round clasp rivet",.8,(x+dx,-41.4,140.5),"silver",.7)]
     groups.append(("real-hinges-and-closing-clasps",catches))
-    return groups
+    return lift(groups,("left-toy-leg","right-toy-leg"))
 
 
 BUILDERS["monorail-station-south"] = monorail_station_south
-CAMERAS["monorail-station-south"] = ((0,0,75),218,(-.42,-1,.23))
+CAMERAS["monorail-station-south"] = ((0,0,85),238,(-.42,-1,.23))
 OPENINGS["monorail-station-south"] = [("road",-44,44,0,80),
     # The axis-x form requires radii; these enclose every rectangular grid sample.
-    ("monorail-tunnel",-31,31,100,142,{"axis":"x","cx":0,"cz":121,"rx":62,"rz":42}),
-    ("long-window-left",-75,-29,105,135),("long-window-centre",-23,23,105,135),
-    ("long-window-right",29,75,105,135)]
+    ("monorail-tunnel",-31,31,120,162,{"axis":"x","cx":0,"cz":141,"rx":62,"rz":42}),
+    ("long-window-left",-75,-29,125,155),("long-window-centre",-23,23,125,155),
+    ("long-window-right",29,75,125,155)]
 
 
 def closed_bands(obj,levels,color,axis=2):

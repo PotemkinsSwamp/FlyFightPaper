@@ -25,3 +25,5 @@ Three separate boxes: stand lids meet the top box at z 80; lips and folded tape 
 
 Output checks and piece measurements: parts.json. Visual comparison: compare.png.
 Remaining visual differences: fix-review.json.
+
+2026-10-17 (Alan): everything above the legs lifted 20 studs (`STATION_LIFT` in blocks.py); legs 97 tall, track tunnel z 120-162, height 170.

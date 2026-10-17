@@ -309,9 +309,12 @@ def buildings_v4(recs, missing):
     `stand`; the bell tower keeps today's hand-placed pieces (same spot in both towns)."""
     plan = json.loads((ROOT / "assets/rug/replan-v4.json").read_text())
     out = []
+    room = json.loads((ROOT / "config/gameplay.json").read_text())["world"]
+    def outside(cf):                                 # the schoolyard past the windows (trees, houses, benches) stays too
+        return abs(cf[0]) > room["width_studs"] / 2 or abs(cf[2]) > room["depth_studs"] / 2
     for r in json.loads(PLACEMENTS.read_text()):     # the classroom's own pieces and the bell tower stay as placed
         root = r["toy"].split("/")[0]
-        if root not in CLASSROOM_PIECES and root != "bell-tower": continue
+        if root not in CLASSROOM_PIECES and root != "bell-tower" and not outside(r["cf"]): continue
         if root == "thread":
             out.append(thread(r["cf"], r["size"])); continue
         cf = list(r["cf"])

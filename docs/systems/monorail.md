@@ -9,7 +9,8 @@ solid: fly into it, or let it hit you, and your plane crashes.
 Running in the place. Stops at both stations (2026-10-16, 297 tests passing): checked in Play by numbers, the
 middle car stands still at each station's middle for 10 s. Speed 90 looked at in Play (2026-10-16; now 105, brake 35: Alan "slightly faster"): both end cars'
 noses face outwards; the south tin holds the whole train, the north station is shorter than the train, so the end
-cars poke out about 20 studs each side. Bots don't avoid it yet. Track pieces: [models](../art/models.md).
+cars poke out about 20 studs each side. Bots don't avoid it yet. Both stations rebuilt 170 tall (2026-10-17, Alan's note): their track tunnels lifted 20 studs, so the
+beam rests on the tunnel floor (120 up) and there are about 26 studs of air above the train's roof; not uploaded yet. Track pieces: [models](../art/models.md).
 
 ## Rules
 - The train runs round the loop on server time and waits 10 seconds at each station with its middle car in the
