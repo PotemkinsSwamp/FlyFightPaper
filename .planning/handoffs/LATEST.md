@@ -1,8 +1,7 @@
-# LATEST → handoff-2026-10-16-2000-art-new-town-in-place-fix-notes.md
+# LATEST → handoff-2026-10-16-2115-art-new-town-notes-fixed.md
 
-★ START HERE: confirm Studio has the NEW place open (and whether Alan pressed Ctrl+S after the 453 collision shapes),
-then fix Alan's 7 first-look notes in docs/playtests/2026-10-16.md, each checked in Studio by eye and ticked there.
+★ START HERE: re-run the rules tests and watch the train at speed 90, then fix Alan's three third-look notes
+(stacked-lids tower windows, floating paper targets, block arch's buried pier) in docs/playtests/2026-10-16.md.
 
-Quick state: main 9f6e84ac+, not pushed. New town in the place file; monorail track + moving train in; south station v2
-built (needs foundations, upload). Today's town saved in D:\FlyFightPaper-snapshots\.
-Previous: handoff-2026-10-16-1530-art-town-assets-ready-monorail-next.md.
+Quick state: main, every commit auto-pushed to GitHub. New town in the place, saved with all exact collision shapes.
+Previous: handoff-2026-10-16-2000-art-new-town-in-place-fix-notes.md.

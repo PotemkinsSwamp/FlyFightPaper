@@ -1,11 +1,9 @@
 # Since Alan last checked (2026-10-16)
-- **New town is in the place file (2026-10-16)**, today's town saved in `D:\FlyFightPaper-snapshots\`. Monorail: track
-  on pillars round the loop (clear of every building, through both stations), moving train (stops at stations
-  next), all uploaded except the rebuilt south station. **Broken/left:** Alan's 7 notes in
-  docs/playtests/2026-10-16.md (gate pads on roads, abacus tile, gateway-towers arch over the road, north station's
-  bland back, a grey piece on the tissue-box tower, station 5 foundations, train stops). Paper targets and two
-  speed pickups still sit at today's town spots (re-pick on the new roofs); bot routes and zones unchecked; park
-  toys and the roof-to-roof ruler bridge not placed; 453 exact collision shapes for Studio to work out, then Ctrl+S.
+- **New town playable (2026-10-16 evening):** 6 of Alan's 7 first-look notes fixed and seen in Studio
+  (docs/playtests/2026-10-16.md); every building collides by its exact shape (453 had been solid boxes); eraser park
+  has a fountain, benches, bushes; train stops 10 s at each station and now runs at 90 studs/s; pushes to GitHub
+  after every commit. **Left:** stacked-lids tower's two wrecked windows, paper targets floating (put back on
+  roofs), block arch's blue pier buried in its neighbour, train speed not yet seen, tissue-tower grey piece not found.
 - **Ducts approved by Alan and saved** (Ctrl+S): HVAC look, props, solid vent grilles, veteran bots flying through.
 - **Two paper targets were buried inside buildings** (homework, second broccoli): moved to open rooftops. A target
   hit tested in Play: the server pays 50 points and tells your screen. The board falling flat not seen yet (Studio
