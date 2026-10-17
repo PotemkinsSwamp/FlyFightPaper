@@ -33,23 +33,14 @@ function Loading.show()
 	fill = image(card, "Fill", results.xpFill, 95, 205, 1, 80)
 	fill.AnchorPoint, fill.Position, fill.ScaleType = Vector2.new(0, 0.5), UDim2.fromOffset(95, 245), Enum.ScaleType.Stretch
 	image(card, "Frame", results.xpFrame, 80, 190, 640, 110).ScaleType = Enum.ScaleType.Stretch
-	-- The plane flies in nose first and settles on the board; only then is it pinned (Alan 2026-10-17). The picture's
-	-- own pin and dashed trail are cropped off (the pin sat on the nose); a separate pin pops in at the nose on landing.
+	-- While loading, the plane keeps flying across nose first (Alan 2026-10-17): turned 24 degrees to its climb, and
+	-- cropped so its pin (it gets pinned on the menu board) and its dashed trail don't fly with it.
 	local plane = image(sheet, "Plane", menu.plane, 0, 0, 215, 181, 24)
 	plane.ImageRectOffset, plane.ImageRectSize = Vector2.new(0, 58), Vector2.new(630, 531)
-	plane.Position = UDim2.fromOffset(-250, 980)
-	local rest, restAngle = Vector2.new(330, 660), 12
-	local flight = TweenService:Create(plane, TweenInfo.new(1.6, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
-		Position = UDim2.fromOffset(rest.X, rest.Y), Rotation = restAngle,
-	})
-	flight.Completed:Connect(function()
-		-- The nose tip sits at the cropped picture's top-right corner (+97, -90 from its middle), turned with the plane.
-		local a, nose = math.rad(restAngle), Vector2.new(97, -84)
-		local at = rest + Vector2.new(nose.X * math.cos(a) - nose.Y * math.sin(a), nose.X * math.sin(a) + nose.Y * math.cos(a))
-		local pin = image(sheet, "Pin", UIAssets.hud.pinRed, at.X, at.Y, 0, 0, 0)
-		TweenService:Create(pin, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Size = UDim2.fromOffset(46, 46) }):Play()
-	end)
-	flight:Play()
+	plane.Position = UDim2.fromOffset(-250, 760)
+	TweenService:Create(plane, TweenInfo.new(4, Enum.EasingStyle.Linear, Enum.EasingDirection.In, -1), {
+		Position = UDim2.fromOffset(PaperUI.W + 250, 260),
+	}):Play()
 	-- What the other pilots are busy with while you load (Alan 2026-10-17), a new line every few seconds.
 	task.spawn(function()
 		local i = math.random(#LINES)
