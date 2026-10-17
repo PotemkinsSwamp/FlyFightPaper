@@ -16,8 +16,8 @@ just outside its park at (-145, 123), smaller, and the park's fountain is bigger
 2026-10-16; kept in `chalk-eraser.rbxmx` and the fountain's `size` in `tools/rug.py`). Alan's first-look notes: [playtest 2026-10-16](../playtests/2026-10-16.md) (6 of 7 fixed and seen in
 Studio the same evening; the rug paves only under pieces that touch the ground; eraser park has a fountain, benches
 and bushes). Central Park's toys (playground, picnic spot, ducks, boathouse; `PlanTown.parks` in `tools/rug.py`,
-trees keep clear) are in `city-toys-v4.rbxmx` since 2026-10-16 late, waiting for a rebuild. The one planned ruler
-bridge (ruler-stilt tower to book-stack lookout) is not built yet. After any rebuild with new meshes run `tools/exact_collision.lua` in Studio, then Ctrl+S. Today's town is kept in
+trees keep clear) are in `city-toys-v4.rbxmx` since 2026-10-16 late, waiting for a rebuild. No ruler bridges in the new
+town ([decision](../decisions/2026-10-17-no-ruler-bridges.md)). After any rebuild with new meshes run `tools/exact_collision.lua` in Studio, then Ctrl+S. Today's town is kept in
 `D:\FlyFightPaper-snapshots\` (place files as saved 2026-10-15 and 2026-10-16, its city-toys and classroom files);
 its hand placements stay in git (`assets/rug/toy-placements.json`). Earlier rulings:
 [replan rulings](../decisions/2026-10-15-town-replan-rulings.md).

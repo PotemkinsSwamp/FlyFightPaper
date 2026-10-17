@@ -50,8 +50,10 @@ function Runtime.new(flight,combat,bots,profiles)
    -- Studio test mode: the next round uses this mode, and a running round ends now so the switch is quick.
    -- "NEXTSPOT" (Alan 2026-10-16): Airspace with the zone held still; each click moves it to the next spot, so every
    -- spot can be seen in one round. From another mode, the first click starts an Airspace round on spot 1.
-   local spotOnly=value=="NEXTSPOT" and self.engine.devZone~=nil and self.engine.round and self.engine.round.mode=="CONTROL"
-   self.engine.devZone=value=="NEXTSPOT" and (self.engine.devZone or 0)%#Config.rounds.control_zones+1 or nil
+   -- In an Airspace round it only moves the zone (from the spot it is on now); in any other mode it starts one.
+   local spotOnly=value=="NEXTSPOT" and self.engine.round~=nil and self.engine.round.mode=="CONTROL"
+   local current=nil;if spotOnly then current=select(2,self.engine:_zone()) end
+   self.engine.devZone=value=="NEXTSPOT" and (current or self.engine.devZone or 0)%#Config.rounds.control_zones+1 or nil
    Root:SetAttribute("DevMode",value=="NEXTSPOT" and "CONTROL" or value)
    if not spotOnly and (self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN") then self.engine:_close(self.engine:_clock(),"dev_mode") end
   elseif action=="practice" then self:practice(player)

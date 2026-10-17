@@ -315,10 +315,11 @@ function Service:land(p,home,padKey)
  stage(1);return true
 end
 -- The plane's exact shape touching the room: steep hits destroy it, scrapes cost health while they last.
-function Service:impact(p,normal,part,now,dt)
+function Service:impact(p,normal,part,now,dt,pushed)
  local incoming=p.previousVelocity or p.body.AssemblyLinearVelocity
  -- The pilot's own client already stops the plane at the surface, so judge by where the nose points too.
- local into=math.max(0,-incoming:Dot(normal),-p.body.CFrame.LookVector:Dot(normal)*p.stats.speed)
+ -- `pushed`: how fast the surface itself moves into the plane (the monorail train).
+ local into=math.max(0,-incoming:Dot(normal),-p.body.CFrame.LookVector:Dot(normal)*p.stats.speed,pushed or 0)
  -- Contact counts as continuous while touches are less than a quarter second apart.
  if not p.scrapeSince or now-(p.lastScrape or 0)>.25 then p.scrapeSince=now end
  p.lastScrape=now
@@ -491,8 +492,13 @@ function Service:step(dt)
      if push then self:fanHit(p,frame:VectorToWorldSpace(push),now) end
     end
    end
-   if train and p.model:GetAttribute("State")=="FLYING" and MonorailRules.hit(train,p.body.Position) then
-    self:destroy(p,"Hit by the monorail. New plane in 4 seconds","collision")
+   if train and p.model:GetAttribute("State")=="FLYING" then
+    -- The train is solid like a building (Alan 2026-10-16): a skim scrapes, a hard hit or the train running into you crashes.
+    local car,normal=MonorailRules.hit(train,p.body.Position)
+    if car then
+     self.trainCars=self.trainCars or workspace:FindFirstChild("MonorailTrain",true)
+     self:impact(p,normal,self.trainCars and self.trainCars:FindFirstChild("car-"..car) or p.body,now,dt,math.max(0,MonorailRules.velocity(car,now):Dot(normal)))
+    end
    end
    if p.model:GetAttribute("State")~="FLYING" then continue end
    if now-p.lastContact>.6 then

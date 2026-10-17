@@ -31,8 +31,6 @@ Track C saving needs a private publish (Alan's go). Place file not re-saved (nee
 
 Alan's eraser rulings: docs/decisions/2026-10-15-chalk-eraser-rulings.md.
 Decisions to review
-New town ruler bridge: none built. The plan's only candidate (ruler-stilt tower to book-stack lookout) slopes 37
-  studs and crosses the block arch's top. North station left shorter than the train (end cars poke out).
 Duct props: cobwebs, spiders, toys and tools are see-through to planes (fly through them). Veterans flee to the
   ducts 40% of the time when shot at (vent within 500), wander in 12% of patrol turns; others never (config bots.*.duct_*).
 Duct light: read "lights from below, connected to the lights above" as: ducts glow only through grilles where they

@@ -68,6 +68,10 @@ function Spec.run()
 		assert(Rules.hit(cars, car * Vector3.new(half.X + Mono.plane_margin - 0.5, 0, 0)) == 2, "a wing tip's width away still hits")
 		assert(Rules.hit(cars, car * Vector3.new(half.X + Mono.plane_margin + 1, 0, 0)) == nil, "just clear of the side")
 		assert(Rules.hit(cars, car * Vector3.new(0, half.Y + Mono.plane_margin + 1, 0)) == nil, "just clear of the roof")
+		local _, normal = Rules.hit(cars, car * Vector3.new(0, half.Y + Mono.plane_margin - 0.5, 0))
+		assert(normal:Dot(car.UpVector) > 0.99, "skimming the roof scrapes the roof (its way out is up)")
+		local _, front = Rules.hit(cars, cars[1].cframe * Vector3.new(0, 0, -(cars[1].size.Z / 2 + Mono.plane_margin - 0.5)))
+		assert(front:Dot(cars[1].cframe.LookVector) > 0.99, "in front of the nose car the way out is forward")
 	end)
 	return result
 end
