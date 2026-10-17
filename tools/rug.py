@@ -810,8 +810,9 @@ class PlanTown:
         ec, er = self.eraser.centroid, math.sqrt(self.eraser.area / math.pi)
         # The eraser park's toys (Alan 2026-10-16: "needs a fountain, benches, bushes"): the fountain in the middle
         # basin, a bench facing it in three quarters beside the ring path, bushes round the edge between the paths. The
-        # fourth quarter (around 315 degrees) is where the eraser lies (assets/models/toys/chalk-eraser).
-        self.toy("fountain", ec.x, ec.y, 14, 15)
+        # fourth quarter (around 315 degrees) was the eraser's; Alan moved it out of the park to (-145, 123) and made it
+        # smaller (2026-10-16; its spot and size live in assets/models/toys/chalk-eraser/chalk-eraser.rbxmx).
+        self.toy("fountain", ec.x, ec.y, 20.64, 20, size=[41.283, 20.019, 40.207])   # as Alan sized it in Studio (2026-10-16)
         for a in (45, 135, 225):
             t = math.radians(a)
             self.toy("bench", ec.x + math.cos(t) * er * .7, ec.y + math.sin(t) * er * .7, 5, 5, t + math.pi)
@@ -1020,9 +1021,10 @@ class PlanTown:
         self.crossings = crossings
         self.ops.append(draw)
 
-    def toy(self, kind, x, z, r, height, angle=0.0):
+    def toy(self, kind, x, z, r, height, angle=0.0, size=None):
+        """`size`: exact studs (x, y, z) when Alan sized a toy by hand in Studio; otherwise town_toys.py fits it."""
         self.toys.append(dict(kind=kind, x=round(float(x), 3), z=round(float(z), 3), r=float(r), height=float(height),
-                              angle=round(float(angle), 5)))
+                              angle=round(float(angle), 5), **({"size": size} if size else {})))
 
     def spots(self):
         mono = self.plan["monorail"]; line = shp(mono["line"])

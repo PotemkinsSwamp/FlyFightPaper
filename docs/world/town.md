@@ -11,8 +11,9 @@ park south of the bell tower.
 ## Where it stands (2026-10-16, evening)
 In the game: the **new town (layout D)** — `default.project.json` now builds `city-rug-v4.rbxmx` and `city-toys-v4.rbxmx`
 (`tools/town_toys.py build v4`: toys, the 45 buildings and the bell tower at the plan's spots, the monorail track
-and train, and the classroom's own pieces from `toy-placements.json`). Fans moved to x +/-600, the chalk eraser to
-its park. Alan's first-look notes: [playtest 2026-10-16](../playtests/2026-10-16.md) (6 of 7 fixed and seen in
+and train, and the classroom's own pieces from `toy-placements.json`). Fans moved to x +/-600. The chalk eraser stands
+just outside its park at (-145, 123), smaller, and the park's fountain is bigger (both sized by Alan in Studio,
+2026-10-16; kept in `chalk-eraser.rbxmx` and the fountain's `size` in `tools/rug.py`). Alan's first-look notes: [playtest 2026-10-16](../playtests/2026-10-16.md) (6 of 7 fixed and seen in
 Studio the same evening; the rug paves only under pieces that touch the ground; eraser park has a fountain, benches
 and bushes). Central Park's toys (playground, picnic spot, ducks, boathouse; `PlanTown.parks` in `tools/rug.py`,
 trees keep clear) are in `city-toys-v4.rbxmx` since 2026-10-16 late, waiting for a rebuild. The one planned ruler

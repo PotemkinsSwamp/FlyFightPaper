@@ -267,7 +267,7 @@ def build(plan=None):
         elif kind == "fountain": scale = 2 * spot["r"] / footprint
         else: scale = FIT[toy] / footprint if toy in FIT else 1
         angle = rng.uniform(0, 2 * math.pi) if round_thing or kind == "fountain" else -spot.get("angle", 0) + FRONT
-        size = [v * scale for v in rec["studs"]]
+        size = spot.get("size") or [v * scale for v in rec["studs"]]
         item = part(toy, rec, color, place(spot["x"], spot["z"], angle, size), size, solid=kind in SOLID)
         if toy == "street-lamp":
             item = item[:-len("</Item>")] + lamp_light(size[1], scale) + "</Item>"
