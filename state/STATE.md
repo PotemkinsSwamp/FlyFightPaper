@@ -4,8 +4,9 @@
 - **Since that publish (needs another Publish As, Alan's go):** late rewards reach a departed player's save; a
   teleport-and-back is caught; a slow friend check can't start two moves; room search reads 100 rows; fold credit
   (Alan: big damage wins, +25 finishing shot, 15 s, repair wipes); loading screen fixed. Tests 321/0.
-- **Next art job (Alan's notes 2026-10-17):** menu pictures of the old town and AI-gibberish rulers (plan in
-  docs/playtests/2026-10-17.md).
+- **Menu art done (Alan OK'd, uploaded):** main menu drawings and photo show today's town (photo = Codex
+  "cinematic" version, Alan's pick); rulers read real numbers; clean menu plane with its own pin. Checked in Play.
+  Needs Alan's Publish As to go live (with the items above).
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **Stations 170 tall, in the place, Alan OK'd them in Play;** south tin flies as invisible walls (its computed shape
   blocked the tunnel). Schoolyard trees and houses back.
