@@ -4,6 +4,8 @@
 - **Since that publish (needs another Publish As, Alan's go):** late rewards reach a departed player's save; a
   teleport-and-back is caught; a slow friend check can't start two moves; room search reads 100 rows; fold credit
   (Alan: big damage wins, +25 finishing shot, 15 s, repair wipes); loading screen fixed. Tests 321/0.
+- **Hangar flow (Alan's pick):** builds change at the desk: Edit build button, picked-build preview, Save / Save &
+  fly - 120 Paper, unsaved-changes warning, free refold into the same build. Checked in Play; not yet published.
 - **Menu art done (Alan OK'd, uploaded):** main menu drawings and photo show today's town (photo = Codex
   "cinematic" version, Alan's pick); rulers read real numbers; clean menu plane with its own pin. Checked in Play.
   Needs Alan's Publish As to go live (with the items above).
@@ -58,4 +60,5 @@ Waiting on Alan — Stage 9 playtest, then your approval
 2. Round end: let a round finish (or switch mode in the hangar): does the vote screen look on brand?
 3. Train: skim it (should scrape, not crash), fly into its nose (crash), fit above it in the south station.
 4. Escapes: puff the chalk eraser; take the ducts once more (spot a veteran bot diving out of a vent).
-5. Say "Stage 9 approved", or what to fix.
+5. Hangar: land at your desk, pick a build, Edit build, change a part, Save & fly. Does it make sense first time?
+6. Say "Stage 9 approved", or what to fix.
