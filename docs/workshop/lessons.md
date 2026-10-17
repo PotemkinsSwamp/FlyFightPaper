@@ -104,6 +104,9 @@ mistake would be easy to make twice.
   `PRECISE_HEADER` test. A mesh with no saved shape loads as a solid **box** (planes hit the gaps; 2026-10-16, 453
   parts): run `tools/exact_collision.lua` in Studio after every rebuild with new meshes, wait while Studio is busy,
   then Ctrl+S.
+- **After Publish As, Studio is editing the online copy, not `FlyFightPaper-WORKING.rbxlx`** (2026-10-17). Ctrl+S then
+  saves to Roblox; the working file only changes with **File > Save to File**. Rebuilds (`save_place.py`) read the
+  working file, so ask for Save to File (not just Ctrl+S) before any rebuild, and re-publish with Publish As after.
 - **Exact collision can fill a hollow piece's opening.** The south station's lunch tin got a shape that blocked a
   wedge of its own track tunnel (2026-10-17). Check tunnels with a grid of raycasts after new shapes are computed;
   a piece that fails goes in `WALLS` in `tools/town_toys.py` (see-through mesh + plain invisible walls).
