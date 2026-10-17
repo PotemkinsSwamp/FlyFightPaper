@@ -41,7 +41,7 @@ return JSONTypes.map({
     }),
     ["routing"] = JSONTypes.map({
         ["advertise_seconds"] = 15,
-        ["destination_scan_limit"] = 20,
+        ["destination_scan_limit"] = 100,
         ["discovery_failure_attempts"] = 3,
         ["discovery_retry_exponent_cap"] = 5,
         ["discovery_retry_max_seconds"] = 30,

@@ -48,7 +48,7 @@
     "advertise_seconds": 15,
     "entry_ttl_seconds": 90,
     "entry_fresh_seconds": 45,
-    "destination_scan_limit": 20,
+    "destination_scan_limit": 100,
     "discovery_failure_attempts": 3,
     "discovery_retry_max_seconds": 30,
     "discovery_retry_exponent_cap": 5,

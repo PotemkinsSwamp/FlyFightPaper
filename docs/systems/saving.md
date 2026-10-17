@@ -12,7 +12,8 @@ Live-only risks from the 2026-10-17 review (Codex, checked by Claude). Fixed (30
 the real final save (a read of that saved version; a failed read doesn't block), gives up after 60 s, and refreshes
 the new room's record just before sending.
 Still open: rewards earned after a player left (a late assist) live only in that server's memory; two players can
-be sent to the same last seat; a slow friend check could start two moves; stale room rows can hide open rooms.
+be sent to the same last seat (Roblox then refuses the full room and the move fails safely). Fixed: a slow friend
+check can't start two moves; the room search reads 100 rows, so stale ones can't hide open rooms.
 
 ## How it works
 *Moved from the old README.*

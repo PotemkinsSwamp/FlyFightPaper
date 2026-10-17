@@ -65,7 +65,13 @@ function Service:admit(player)
  local class=Service.classFor(profile)
  if not self.class then self.class=class end
  if class==self.class then return true end
- if self.class=="regular" and Service.friendCanStay(profile,self.friendHere(player)) then return true end
+ -- The friend lookup yields: hold the player so a second Play press can't start a second transfer meanwhile.
+ if self.class=="regular" then
+  self.checking=self.checking or {};if self.checking[player] then return false end
+  self.checking[player]=true;local friend=self.friendHere(player);self.checking[player]=nil
+  if not player.Parent or self.transfers[player] then return false end
+  if Service.friendCanStay(profile,friend) then return true end
+ end
  if self.mock then player:SetAttribute("MenuMessage","Studio keeps beginner and established rooms separate. Start a new Play session to test the other room.");return false end
  local transfer={};self.transfers[player]=transfer;player:SetAttribute("Routing",true);player:SetAttribute("MenuMessage","Finding a room for your experience level. Saving before the transfer.")
  task.spawn(function()
