@@ -8,8 +8,9 @@ lost if a save fails for a moment; it retries without stopping the match for eve
 Built on ProfileStore (Stage 5, Codex's lane) and tested with a fake save store. In Studio, progress lasts one
 Play session only. Published privately on 2026-10-17 ([how](../decisions/2026-10-07-private-publish.md)); real
 saving, rejoin, server hop and multi-player tests are next, played on Roblox itself.
-Live-only risks from the 2026-10-17 review (Codex, checked by Claude): being fixed now: an early autosave could
-pass for the final save before a server move; no deadline on a stuck move; a moved-to room's record could expire.
+Live-only risks from the 2026-10-17 review (Codex, checked by Claude). Fixed (306 tests): a server move waits for
+the real final save (a read of that saved version; a failed read doesn't block), gives up after 60 s, and refreshes
+the new room's record just before sending.
 Still open: rewards earned after a player left (a late assist) live only in that server's memory; two players can
 be sent to the same last seat; a slow friend check could start two moves; stale room rows can hide open rooms.
 

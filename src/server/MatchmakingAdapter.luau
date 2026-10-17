@@ -25,18 +25,23 @@ function Adapter:destination(class)
  for _,entry in ipairs(self.maps[class]:GetRangeAsync(Enum.SortDirection.Ascending,Config.destination_scan_limit)) do
   local row=entry.value
   if type(row)=="table" and row.class==class and type(row.count)=="number" and row.count<Gameplay.world.maximum_actors and type(row.updatedAt)=="number" and os.time()-row.updatedAt<Config.entry_fresh_seconds then
-   if entry.key~=game.PrivateServerId and ((type(row.accessCode)=="string" and #row.accessCode>0) or (type(row.jobId)=="string" and #row.jobId>0 and row.jobId~=game.JobId)) then return row end
+   if entry.key~=game.PrivateServerId and ((type(row.accessCode)=="string" and #row.accessCode>0) or (type(row.jobId)=="string" and #row.jobId>0 and row.jobId~=game.JobId)) then row.roomId=entry.key;return row end
   end
  end
- local code,id=Teleport:ReserveServerAsync(game.PlaceId)
- local row={class=class,accessCode=code,count=0,updatedAt=os.time()}
+ local teleport=self.teleport or Teleport;local code,id=teleport:ReserveServerAsync(game.PlaceId)
+ local row={class=class,accessCode=code,roomId=id,count=0,updatedAt=os.time()}
  self.index:SetAsync(id,row,Config.entry_ttl_seconds,0);self.maps[class]:SetAsync(id,row,Config.entry_ttl_seconds,0)
  return row
 end
-function Adapter:send(player,destination)
+function Adapter:send(player,destination,canSend)
+ local row=table.clone(destination);row.updatedAt=os.time()
+ local key=row.roomId or row.jobId
+ if row.accessCode then self.index:SetAsync(key,row,Config.entry_ttl_seconds,row.count) end
+ self.maps[row.class]:SetAsync(key,row,Config.entry_ttl_seconds,row.count)
  local options=Instance.new("TeleportOptions")
  if destination.accessCode then options.ReservedServerAccessCode=destination.accessCode else options.ServerInstanceId=destination.jobId end
- Teleport:TeleportAsync(game.PlaceId,{player},options)
+ assert(not canSend or canSend(),"Room transfer cancelled or timed out")
+ local teleport=self.teleport or Teleport;teleport:TeleportAsync(game.PlaceId,{player},options)
 end
 function Adapter:onFailure(callback)
  return Teleport.TeleportInitFailed:Connect(function(player)callback(player)end)

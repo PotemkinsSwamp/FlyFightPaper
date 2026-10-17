@@ -67,6 +67,34 @@ function Spec.run()
   local rooms=setmetatable({profiles=profiles,transfers={[p]=true}},Matching)
   rooms:failed(p);assert(reloaded and not p:GetAttribute("Routing"));p:Destroy()
  end)
+ test("a save timeout clears routing, waits to reload, and never sends a late transfer",function()
+  for _,savedAtDeadline in ipairs({false,true}) do
+   local p,profile=player(5);local now=100;local sent=0;local loads=0;local entry={}
+   local profiles={entries={[p]=entry},view=function()return profile end,release=function()entry.leaving=true end}
+   profiles.load=function(_,who)loads+=1;profiles.entries[who]={loaded=true}end
+   local rooms=setmetatable({profiles=profiles,mock=false,class="rookie",transfers={},now=function()return now end,
+    platform={destination=function()return {class="regular"}end,send=function()sent+=1 end}},Matching)
+   rooms:admit(p);task.wait(.05);now=159.9;task.wait(.15)
+   assert(rooms.transfers[p] and sent==0 and loads==0)
+   now=160;if savedAtDeadline then profiles.entries[p]=nil end;task.wait(.15)
+   local timedOut=not rooms.transfers[p] and p:GetAttribute("Routing")==false and p:GetAttribute("MenuMessage")=="Room transfer timed out. Your progress is safe. Try Play again."
+   local held=savedAtDeadline or (profiles.entries[p]==entry and loads==0)
+   profiles.entries[p]=nil;task.wait(.15);p:Destroy()
+   assert(timedOut and held and sent==0 and loads==1)
+  end
+ end)
+ test("a deadline crossed while refreshing the room prevents the actual send",function()
+  local p,profile=player(5);local now=0;local sent=false;local loaded=false
+  local profiles={entries={[p]={}},view=function()return profile end,load=function()loaded=true end}
+  profiles.release=function()profiles.entries[p]=nil end
+  local rooms=setmetatable({profiles=profiles,mock=false,class="rookie",transfers={},now=function()return now end,
+   platform={destination=function()return {class="regular"}end,send=function(_,_,_,canSend)
+    now=60;assert(canSend and canSend());sent=true
+   end}},Matching)
+  rooms:admit(p);task.wait()
+  assert(not sent and loaded and not rooms.transfers[p] and not p:GetAttribute("Routing"))
+  assert(p:GetAttribute("MenuMessage")=="Room transfer timed out. Your progress is safe. Try Play again.");p:Destroy()
+ end)
  return result
 end
 return Spec

@@ -40,7 +40,8 @@ function Runtime.new(catalog)
   self.stopping=true
   for player in pairs(self.entries) do self:release(player) end
   local deadline=os.clock()+Config.shutdown_seconds
-  while next(self.entries) and os.clock()<deadline do task.wait(Config.worker_seconds) end
+  -- ProfileStore waits for its own final writes and refuses confirmation reads during shutdown.
+  while next(self.entries) and not ProfileStore.IsClosing and os.clock()<deadline do task.wait(Config.worker_seconds) end
  end)
  return self
 end
@@ -101,9 +102,13 @@ function Runtime:load(player)
   end)
   profile.OnAfterSave:Connect(function(data)
    e.lastSavedVersion=data.version;e.saveDelayed=false
-   if not profile:IsActive() then
-    self.service:detach(e.account)
-    if self.entries[player]==e then self.entries[player]=nil end
+   if e.closing and not profile:IsActive() and not ProfileStore.IsClosing then
+    local version=not self.mock and profile.KeyInfo.Version or nil
+    local ok,saved=pcall(function()return self.store:GetAsync("Player_"..player.UserId,version)end)
+    -- Inactivity precedes the final write; only its saved version has a cleared session lock.
+    -- A failed read doesn't block: worst case is the old race, never a session stuck open.
+    if ok and saved and (saved.Session or saved.Data.generation~=profile.Data.generation or saved.Data.version<profile.Data.version) then return end
+    if self.entries[player]==e then self.service:detach(e.account);self.entries[player]=nil end
    end
   end)
   profile.OnSessionEnd:Connect(function()

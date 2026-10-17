@@ -21,8 +21,63 @@ local function fixture()
  end
  return runtime,players
 end
+local function signal()
+ local event={listeners={}}
+ function event:Connect(callback)table.insert(self.listeners,callback)end
+ function event:Fire(value)for _,callback in ipairs(self.listeners) do callback(value) end end
+ return event
+end
+local function waitFor(callback)
+ local deadline=os.clock()+1
+ while not callback() and os.clock()<deadline do task.wait() end
+ assert(callback(),"profile worker did not finish")
+end
+local function savingFixture()
+ local catalog=Catalog.new(require(Root.Generated.Catalog));local profile=Fake.new(Schema.defaults(catalog))
+ profile.OnSave=signal();profile.OnAfterSave=signal();profile.OnSessionEnd=signal();profile.KeyInfo={Version="autosave"}
+ function profile:AddUserId()end
+ function profile:EndSession()self.OnSave:Fire();self.active=false;self.OnSessionEnd:Fire()end
+ local player={UserId=9990042,Parent=game:GetService("Players"),attributes={}}
+ function player:SetAttribute(key,value)self.attributes[key]=value end
+ function player:GetAttribute(key)return self.attributes[key]end
+ function player:Kick(message)self.kicked=message end
+ local store={saved={}}
+ function store:StartSessionAsync()return profile end
+ function store:GetAsync(key,version)
+  assert(key=="Player_"..player.UserId and version==profile.KeyInfo.Version)
+  if self.fail then error("injected confirmation failure") end
+  return self.saved[version]
+ end
+ local runtime=setmetatable({catalog=catalog,mock=true,entries={},store=store,service=Service.new({catalog=catalog,mock=true,monotonic=function()return 100 end})},Runtime)
+ runtime:load(player);waitFor(function()return runtime.entries[player] and runtime.entries[player].loaded end)
+ runtime.mock=false -- Exercise version-specific confirmation through the fake store, without live API access.
+ return runtime,player,profile,store
+end
 function Spec.run()
  local result,test=Suite.new()
+ test("an autosave completing after EndSession cannot confirm the final write",function()
+  local runtime,player,profile,store=savingFixture();local entry=runtime.entries[player]
+  local data=assert(Schema.copy(profile.Data));store.saved.autosave={Data=data,Session={JobId="source"}}
+  runtime:release(player);waitFor(function()return entry.closing and not profile:IsActive() end)
+  profile.OnAfterSave:Fire(data)
+  assert(runtime.entries[player]==entry and runtime.service.sessions[entry.account] and not player.kicked)
+  profile.KeyInfo={Version="final"};store.saved.final={Data=data};profile.OnAfterSave:Fire(data)
+  assert(runtime.entries[player]==nil and runtime.service.sessions[entry.account]==nil)
+ end)
+ test("a failed confirmation read releases (no later save would ever retry it)",function()
+  local runtime,player,profile,store=savingFixture();local entry=runtime.entries[player]
+  runtime:release(player);waitFor(function()return entry.closing and not profile:IsActive() end)
+  local data=assert(Schema.copy(profile.Data));profile.KeyInfo={Version="final"};store.saved.final={Data=data};store.fail=true
+  profile.OnAfterSave:Fire(data);assert(runtime.entries[player]==nil)
+ end)
+ test("a cleared lock from another generation cannot release a profile",function()
+  local runtime,player,profile,store=savingFixture();local entry=runtime.entries[player]
+  runtime:release(player);waitFor(function()return entry.closing and not profile:IsActive() end)
+  local data=assert(Schema.copy(profile.Data));profile.KeyInfo={Version="final"}
+  store.saved.final={Data=assert(Schema.copy(data))};store.saved.final.Data.generation+=1
+  profile.OnAfterSave:Fire(data);assert(runtime.entries[player]==entry)
+  store.saved.final={Data=data};profile.OnAfterSave:Fire(data);assert(runtime.entries[player]==nil)
+ end)
  test("joining recovers over-capacity or three-type presets and pending refolds without losing Paper",function()
   local catalog=Catalog.new(require(Root.Generated.Catalog))
   for _,mounts in ipairs({{"eraser",false,"rubber","rubber"},{"pellet","staple","rubber",false}}) do
