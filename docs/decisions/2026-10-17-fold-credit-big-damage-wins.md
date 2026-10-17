@@ -7,7 +7,7 @@
 - Only damage from the last **15 seconds** counts toward a fold or assist (was 10).
 - The last hit gets the fold, **unless** another pilot did at least **half the plane's health** and more than the
   last hitter in that time: then that pilot gets the fold (100), and the last hitter gets an assist plus a
-  **finishing shot** bonus (+25).
+  **finishing shot** bonus (+25), shown on screen as **FINAL TEAR** (Alan).
 - **A repair wipes earlier damage:** after a plane repairs at its desk, nothing done to it before counts. (A refold
   or fresh plane is a new plane, so it already started clean.)
 
