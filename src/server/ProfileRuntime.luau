@@ -3,6 +3,7 @@
 local Players=game:GetService("Players")
 local Run=game:GetService("RunService")
 local Root=game.ReplicatedStorage.FlyFightPaper
+require(script.Parent.RewardQueue) -- Register offline flushing before ProfileStore's close hook.
 local ProfileStore=require(script.Parent.Packages.ProfileStore)
 local Profile=require(script.Parent.ProfileService)
 local Schema=require(Root.Shared.ProfileSchema)
@@ -10,6 +11,7 @@ local Economy=require(Root.Shared.EconomyRules)
 local Gameplay=require(Root.Generated.Gameplay)
 local Config=require(Root.Generated.Server).profiles
 local Runtime={};Runtime.__index=Runtime
+local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
 function Runtime.new(catalog)
  ProfileStore.SetConstant("AUTO_SAVE_PERIOD",Config.auto_save_seconds)
  ProfileStore.SetConstant("START_SESSION_TIMEOUT",Config.load_timeout_seconds)
@@ -33,7 +35,7 @@ function Runtime.new(catalog)
  Players.PlayerRemoving:Connect(function(player)
   -- Later removal callbacks may still award a valid contribution. Drain them before ending.
   local e=self.entries[player]
-  if e then e.leaving=true;e.releaseAt=os.clock();self.service:setProducerConnected(e.account,false) end
+  if e then self:rememberRewardMultipliers(player,e);e.leaving=true;e.releaseAt=os.clock();self.service:setProducerConnected(e.account,false) end
  end)
  for _,player in Players:GetPlayers() do self:load(player) end
  game:BindToClose(function()
@@ -47,7 +49,24 @@ function Runtime.new(catalog)
 end
 function Runtime:release(player)
  local e=self.entries[player]
- if e then e.leaving=true;e.releaseAt=0;self.service:setProducerConnected(e.account,false) end
+ if e then self:rememberRewardMultipliers(player,e);e.leaving=true;e.releaseAt=0;self.service:setProducerConnected(e.account,false) end
+end
+function Runtime:rememberRewardMultipliers(player,e)
+ local capture=self.service:producerCapture(e.account)
+ if capture.status=="ok" then
+  self.rewardMultipliers=self.rewardMultipliers or {};self.rewardMultipliers[player.UserId]=assert(Schema.copy(capture.value))
+ end
+end
+function Runtime:hasPlayer(userId)
+ return Players:GetPlayerByUserId(userId)~=nil
+end
+function Runtime:messageReward(userId,input,source)
+ if self:hasPlayer(userId) or (not self.mock and ProfileStore.DataStoreState~="Access") then return false end
+ if not input.multipliers and (input.kind=="contribution" or input.kind=="finalBonus") then
+  local capture=self.rewardMultipliers and self.rewardMultipliers[userId]
+  if capture then input.multipliers=assert(Schema.copy(capture)) end
+ end
+ return self.store:MessageAsync("Player_"..userId,{kind="reward",source=source,input=assert(Schema.copy(input))})
 end
 function Runtime:load(player)
  if self.entries[player] or self.stopping then return end
@@ -119,6 +138,15 @@ function Runtime:load(player)
    player:SetAttribute("ProfileStatus","Session moved. Please rejoin.")
    if player.Parent then player:Kick("Your profile was opened in another server. Please rejoin to continue safely.") end
   end)
+  profile:MessageHandler(function(message,processed)
+   if type(message)~="table" or message.kind~="reward" then return end
+   local input=Schema.copy(message.input)
+   if type(input)~="table" or not rewardKinds[input.kind] or not Schema.id(input.id) or not input.id:match("^reward%w+:%d+$") or type(message.source)~="string" or input.rewardSource~=message.source then return end
+   while self.entries[player]==e and not e.closing and profile:IsActive() do
+    if self:enqueue(player,input,nil,function(ok)if ok then processed()end end) then return end
+    task.wait(Config.worker_seconds)
+   end
+  end)
   self:update(e)
   local nextStatus=0;local processed=0
   while self.entries[player]==e and not e.closing do
@@ -186,9 +214,12 @@ function Runtime:enqueue(player,input,source,callback)
   if capture.status~="ok" then return false end
   copy.multipliers=assert(Schema.copy(capture.value))
  end
- local op=self.service:prepare(e.account,copy);if not op then return false end
+ local reward=copy.rewardSource~=nil
+ if reward and (not rewardKinds[copy.kind] or type(copy.rewardSource)~="string" or not Schema.id(copy.id) or not copy.id:match("^reward%w+:%d+$")) then return false end
+ local op=reward and copy or self.service:prepare(e.account,copy);if not op then return false end
  if source then e.seen[source]=true end
- table.insert(e.queue,op);e.callbacks[op.id]=callback
+ local previous=e.callbacks[op.id]
+ table.insert(e.queue,op);e.callbacks[op.id]=previous and function(ok,value)previous(ok,value);if callback then callback(ok,value)end end or callback
  return true
 end
 return Runtime

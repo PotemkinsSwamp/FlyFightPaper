@@ -32,10 +32,14 @@ local function waitFor(callback)
  while not callback() and os.clock()<deadline do task.wait() end
  assert(callback(),"profile worker did not finish")
 end
-local function savingFixture()
+local function savingFixture(messages)
  local catalog=Catalog.new(require(Root.Generated.Catalog));local profile=Fake.new(Schema.defaults(catalog))
  profile.OnSave=signal();profile.OnAfterSave=signal();profile.OnSessionEnd=signal();profile.KeyInfo={Version="autosave"}
  function profile:AddUserId()end
+ function profile:MessageHandler(callback)
+  self.handler=callback
+  for _,message in ipairs(messages or {}) do task.spawn(callback,assert(Schema.copy(message)),function()self.processed=(self.processed or 0)+1 end) end
+ end
  function profile:EndSession()self.OnSave:Fire();self.active=false;self.OnSessionEnd:Fire()end
  local player={UserId=9990042,Parent=game:GetService("Players"),attributes={}}
  function player:SetAttribute(key,value)self.attributes[key]=value end
@@ -121,6 +125,67 @@ function Spec.run()
   assert(runtime:flush(e) and #e.queue==0 and p.attributes.Paper==19)
   local profile=runtime.service.sessions[e.account].profile
   assert(profile.writes==0 and profile.Data.operationIds[runtime.service.sessions[e.account].token]==10)
+ end)
+ test("reward messages loaded twice pay once and are acknowledged only after applying",function()
+  local input={kind="contribution",points=10,multipliers={paper=2,xp=1},id="rewardorigin:1",rewardSource="late_assist"}
+  local message={kind="reward",source=input.rewardSource,input=input}
+  local runtime,player,profile=savingFixture({message,message});local entry=runtime.entries[player]
+  waitFor(function()return profile.processed==2 end)
+  local view=runtime.service:view(entry.account).value
+  assert(view.paperMilli==100000000+7260 and view.xpMilli==60000000+6800 and view.operationIds.rewardorigin==1)
+  local paid=assert(Schema.copy(profile.Data));runtime.service:detach(entry.account)
+  local reloaded=Fake.new(paid);assert(runtime.service:attach(entry.account,reloaded,{connected=true,mapLoaded=true}).status=="ok")
+  assert(runtime:enqueue(player,input,nil) and runtime:flush(entry))
+  assert(reloaded.Data.paperMilli==paid.paperMilli and reloaded.Data.xpMilli==paid.xpMilli)
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("message acknowledgements wait for the worker and survive duplicate callbacks",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player];local paid=profile.Data.paperMilli;local processed=0
+  local message={kind="reward",source="bonus",input={kind="finalBonus",finalPaper=12,finalXP=17,multipliers={paper=1,xp=2},id="rewardbonus:1",rewardSource="bonus"}}
+  local function done()assert(profile.Data.paperMilli==paid+12000);processed+=1 end
+  profile.handler(message,done);profile.handler(message,done);assert(processed==0 and #entry.queue==2)
+  assert(runtime:flush(entry));waitFor(function()return processed==2 end)
+  assert(profile.Data.xpMilli==60000000+34000 and #entry.queue==0)
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("a failed reward mutation is not acknowledged and remains queued for retry",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player];local processed=false
+  local message={kind="reward",source="assist",input={kind="contribution",points=10,multipliers={paper=1,xp=1},id="rewardretry:1",rewardSource="assist"}}
+  local apply=runtime.service.apply;runtime.service.apply=function()error("injected mutation failure")end
+  profile.handler(message,function()processed=true end)
+  assert(not runtime:process(entry) and not processed and #entry.queue==1)
+  runtime.service.apply=apply;assert(runtime:flush(entry));waitFor(function()return processed end)
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("a reward already applied locally is not paid again by its message",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player];local processed=false
+  local input={kind="contribution",points=10,multipliers={paper=1,xp=1},id="rewardlocal:1",rewardSource="assist"}
+  assert(runtime:enqueue(player,input,input.rewardSource) and runtime:flush(entry));local paid=profile.Data.paperMilli
+  profile.handler({kind="reward",source=input.rewardSource,input=input},function()processed=true end)
+  assert(runtime:flush(entry));waitFor(function()return processed end);assert(profile.Data.paperMilli==paid)
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("reward message ids cannot authorize purchases or invalid multipliers",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player];local paid=profile.Data.paperMilli;local processed=false
+  local input={kind="purchasedPaper",wholePaper=100,id="rewardinvalid:1",rewardSource="purchase"}
+  assert(not runtime:enqueue(player,input,nil) and runtime.service:apply(entry.account,input).status=="error")
+  input={kind="contribution",points=10,multipliers={paper=3,xp=1},id="rewardinvalid:1",rewardSource="assist"}
+  profile.handler({kind="reward",source=input.rewardSource,input=input},function()processed=true end)
+  assert(runtime:flush(entry) and not processed and profile.Data.paperMilli==paid and not profile.Data.operationIds.rewardinvalid)
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("offline sends use the selected mock store key and keep the departure multiplier",function()
+  local runtime,players=fixture();local player=players[1];local entry=runtime.entries[player]
+  local profile=runtime.service.sessions[entry.account].profile;profile.Data.boosts.permanentPaper=true
+  runtime.service.sessions[entry.account].clock=require(Root.Shared.BoostClock).new(profile.Data.boosts,100,true)
+  runtime:release(player);runtime.service:detach(entry.account);runtime.entries[player]=nil
+  runtime.store={messages={}}
+  function runtime.store:MessageAsync(key,message)table.insert(self.messages,{key=key,message=message});return true end
+  local present=false;function runtime:hasPlayer()return present end
+  local input={kind="contribution",points=10,id="rewardmock:1",rewardSource="assist"}
+  assert(runtime:messageReward(1,input,"assist"))
+  local sent=runtime.store.messages[1];assert(sent.key=="Player_1" and sent.message.input.id==input.id and sent.message.input.multipliers.paper==2)
+  present=true;assert(not runtime:messageReward(1,input,"assist") and #runtime.store.messages==1)
  end)
  return result
 end

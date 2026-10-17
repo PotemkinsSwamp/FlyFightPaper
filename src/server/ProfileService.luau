@@ -179,16 +179,18 @@ end
 local allowed={contribution=true,finalBonus=true,equipmentPurchase=true,preset=true,settings=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
+local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
 function Service:apply(account,input)
  local s=self:_session(account);if not s then return outcome("retry","profile_unavailable") end
  local op=Schema.copy(input)
  if not op or not allowed[op.kind] or not Schema.id(op.id) then return outcome("error","invalid_operation") end
  local token,sequence=op.id:match("^(%w+):(%d+)$");sequence=tonumber(sequence)
- if token~=s.token or not Schema.integer(sequence) or sequence<1 then return outcome("error","old_session_operation") end
+ local reward=token and token:match("^reward%w+$") and rewardKinds[op.kind] and type(op.rewardSource)=="string"
+ if (token~=s.token and not reward) or not Schema.integer(sequence) or sequence<1 then return outcome("error","old_session_operation") end
  local identity=Schema.canonical(op)
  local cached=s.results[op.id]
  if cached and cached.identity~=identity then return outcome("error","operation_id_conflict") end
- if sequence<=s.profile.Data.operationIds[token] then
+ if sequence<=(s.profile.Data.operationIds[token] or 0) then
   return outcome("ok",nil,cached and cached.value or {type="AlreadyApplied",operationID=op.id})
  end
  if (op.kind=="purchasedPaper" or op.kind=="boostIntent") and not self.mock then return outcome("error","studio_only") end
@@ -206,6 +208,14 @@ function Service:apply(account,input)
  local data=assert(Schema.copy(s.profile.Data));data.lease={nonce=s.token,generation=data.generation,expires=0}
  local result,err=self:_effect(data,op,clock:snapshot())
  if not result then return outcome("error",err) end
+ -- Reward streams reuse the saved operation watermarks across receiving sessions.
+ if data.operationIds[token]==nil then
+  table.insert(data.operationSessions,token)
+  if #data.operationSessions>Config.session_id_history then
+   local oldest=data.operationSessions[1]==s.token and 2 or 1
+   data.operationIds[table.remove(data.operationSessions,oldest)]=nil
+  end
+ end
  data.lease=nil;data.version+=1;data.operationIds[token]=sequence
  local valid,validation=Schema.validate(data,self.catalog)
  if not valid then return outcome("error",validation) end
