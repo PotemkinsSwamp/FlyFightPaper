@@ -17,8 +17,9 @@ beam rests on the tunnel floor (120 up) and there are about 26 studs of air abov
   station's middle (Alan 2026-10-16), slowing down into a station and speeding up out of it; every client moves its
   own copy, so it costs no network traffic and everyone sees it in the same place the server judges.
 - Each car's front and back both follow the track, so the cars bend round corners one by one.
-- A plane whose middle comes within 1 stud of a car's box touches it like a building wall (Alan 2026-10-17): a
-  skim scrapes and pushes the plane off; a hard hit, or the train running into the plane, crashes it.
+- A plane touches a car when any corner of its parts (wingtips, nose, tail fin) or its middle comes within 1 stud of
+  the car's box (Alan 2026-10-18: wings used to pass through), like a building wall: a skim scrapes and pushes the
+  plane off; a hard hit, or the train running into the plane, crashes it.
 - The beam and pillars are ordinary solid town pieces (crash or scrape like buildings).
 - Route and clearance rules: [town replan decision](../decisions/2026-10-15-town-replan-v3.md).
 

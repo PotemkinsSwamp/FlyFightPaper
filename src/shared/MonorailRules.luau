@@ -91,19 +91,28 @@ function MonorailRules.cars(now)
 	return out
 end
 
--- Which car (index) a plane whose middle is at `position` is touching, or nil; and the world normal of the car face
--- it is nearest to (the way out), so a touch can scrape like a building wall (Alan 2026-10-16).
-function MonorailRules.hit(cars, position)
+-- Which car (index) a plane is touching, or nil, from points on the plane: its middle, or every corner of its parts
+-- (Alan 2026-10-18: a wing or the tail touching the train counts, not only the plane's middle). Also the world
+-- normal of the car face the deepest point is nearest to (the way out), so a touch can scrape like a building wall.
+function MonorailRules.hit(cars, points)
+	if typeof(points) == "Vector3" then points = { points } end
+	local hitCar, deepest, normal = nil, -1, nil
 	for i, car in ipairs(cars) do
-		local p, half = car.cframe:PointToObjectSpace(position), car.size / 2 + Vector3.one * Mono.plane_margin
-		if math.abs(p.X) <= half.X and math.abs(p.Y) <= half.Y and math.abs(p.Z) <= half.Z then
-			local depth = { half.X - math.abs(p.X), half.Y - math.abs(p.Y), half.Z - math.abs(p.Z) }
-			local axis = depth[1] <= depth[2] and depth[1] <= depth[3] and Vector3.xAxis or depth[2] <= depth[3] and Vector3.yAxis or Vector3.zAxis
-			local side = (axis == Vector3.xAxis and p.X or axis == Vector3.yAxis and p.Y or p.Z) >= 0 and 1 or -1
-			return i, car.cframe:VectorToWorldSpace(axis * side)
+		local half = car.size / 2 + Vector3.one * Mono.plane_margin
+		for _, position in points do
+			local p = car.cframe:PointToObjectSpace(position)
+			if math.abs(p.X) <= half.X and math.abs(p.Y) <= half.Y and math.abs(p.Z) <= half.Z then
+				local depth = { half.X - math.abs(p.X), half.Y - math.abs(p.Y), half.Z - math.abs(p.Z) }
+				local least = math.min(depth[1], depth[2], depth[3])
+				if least > deepest then
+					local axis = depth[1] == least and Vector3.xAxis or depth[2] == least and Vector3.yAxis or Vector3.zAxis
+					local side = (axis == Vector3.xAxis and p.X or axis == Vector3.yAxis and p.Y or p.Z) >= 0 and 1 or -1
+					hitCar, deepest, normal = i, least, car.cframe:VectorToWorldSpace(axis * side)
+				end
+			end
 		end
 	end
-	return nil
+	return hitCar, normal
 end
 
 -- A car's velocity at server time `now` (studs/s), for judging how hard it runs into a plane.

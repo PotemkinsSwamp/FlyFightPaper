@@ -542,7 +542,14 @@ function Service:step(dt)
    end
    if train and p.model:GetAttribute("State")=="FLYING" then
     -- The train is solid like a building (Alan 2026-10-16): a skim scrapes, a hard hit or the train running into you crashes.
-    local car,normal=MonorailRules.hit(train,p.body.Position)
+    -- Every corner of the plane's parts (wingtips, nose, tail fin) counts, checked only when the train is near.
+    local points,near={p.body.Position},false
+    for _,car in ipairs(train) do near=near or (car.cframe.Position-p.body.Position).Magnitude<car.size.Magnitude/2+40 end
+    local colliders=near and p.model:FindFirstChild("Colliders")
+    for _,piece in ipairs(colliders and colliders:GetChildren() or {}) do
+     for i=0,7 do table.insert(points,piece.CFrame*(piece.Size*Vector3.new(i%2-.5,(i//2)%2-.5,i//4-.5))) end
+    end
+    local car,normal=MonorailRules.hit(train,points)
     if car then
      self.trainCars=self.trainCars or workspace:FindFirstChild("MonorailTrain",true)
      self:impact(p,normal,self.trainCars and self.trainCars:FindFirstChild("car-"..car) or p.body,now,dt,math.max(0,MonorailRules.velocity(car,now):Dot(normal)))
