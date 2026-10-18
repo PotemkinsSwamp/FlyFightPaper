@@ -8,16 +8,12 @@
   same line. All in src/shared/Lines.luau. Seen in Studio Play; tests 326/0. Alan is reviewing the full list.
 - **Rounds never stop** (Alan's decision, docs/decisions/2026-10-17-rounds-never-stop.md): "Pencils down!", winners'
   moment on the desks with results, safe vote lap through mode rings, next round where everyone is. Not built yet.
-- **In the open place (not saved by me):** a "meme toy", "HorseDragoon", "Backpack", "ungroup pibble" and "Model" sit
-  loose in Workspace (not in the committed place). Their two scripts were read: harmless. Alan: yours to keep or delete.
+- **Loose in the place file:** "meme toy", "HorseDragoon", "Backpack", "ungroup pibble", "Model" (scripts read: harmless). Keep or delete?
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
 - **Airspace zones bigger and flatter where buildings are dense** (Alan); the Studio dev button "next spot" moves
   the zone to the next spot on each click (replaces "ceiling"). Checked by numbers in Play; looks wait on Alan.
-- **Team match passed by numbers** (6 v 6, results, vote, next round; no bot ever chased a teammate).
-- **Rookie graduation:** each step has its own test (qualifying match -> saved count, max 5 -> regular room ->
-  regular bots); saving round-trip 17/0, rules 296/0. Not played live (needs 5 real qualifying matches).
 
 # Stage 9 — what's left (MILESTONES D13)
 Everything is built; what's left needs your eyes: the playtest list at the bottom, then your Stage 9 approval.
