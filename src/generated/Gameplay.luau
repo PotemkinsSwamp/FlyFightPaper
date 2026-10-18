@@ -540,7 +540,7 @@ return JSONTypes.map({
         ["duration_seconds"] = 480,
         ["ffa_elimination_target"] = 20,
         ["launch_countdown_seconds"] = 3,
-        ["results_seconds"] = 15,
+        ["results_seconds"] = 18,
         ["round_end_comment"] = "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still; a cutscene shows the top 3 on the winner_desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is.",
         ["score_tie_rule"] = "shared_result_no_sudden_death",
         ["tdm_elimination_target"] = 60,

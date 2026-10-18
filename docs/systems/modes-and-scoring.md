@@ -10,9 +10,10 @@ the next round starts in place. Cutscene and the Studio "end match" button seen 
 same day: a team round starting in place after a free-for-all (or the reverse) crashed seating the bots, leaving that
 round without bots. Results card shows folds, assists, crashes and points per pilot, team totals in team rounds, and your Paper, XP
 and level bar (seen 2026-10-17; the bar filling not yet seen, the test account is at max level). Alan's evening notes (same decision, "Revised again"): the cutscene films each winner close up and straight on in turn
-(3rd, 2nd, then 1st with a slow push in), a little from below, the results card on the right; only things that would
-block a winner fade out on your screen, so the town and ceiling decorations stay (Alan 2026-10-18: closer, more
-cinematic). Seen in Play 2026-10-18. The stand-up-and-hop animation is uploaded (Alan's go, 2026-10-18, free) and seen playing for all three winners in Play. Vote lap now 30 s. Vote rings: three giant hula hoops in front of
+(3rd, 2nd, then 1st with a slow push in), a little from below, the results card on the right; then the card goes and
+it zooms out to all three emoting together, from just above the town's roofs with a wide lens. Only things that
+would block a winner fade out on your screen (whole buildings, never half of one), and a Roblox focus blur keeps the
+winners sharp (Alan 2026-10-18: closer, more cinematic). Winners' moment now 18 s. Seen in Play 2026-10-18. The stand-up-and-hop animation is uploaded (Alan's go, 2026-10-18, free) and seen playing for all three winners in Play. Vote lap now 30 s. Vote rings: three giant hula hoops in front of
 the window wall (plastic with glowing tape stripes, built from round parts as no free Creator Store hoop fit; seen 2026-10-18), with a white HUD arrow to the nearest one while none is on screen (seen pointing
 the right way 2026-10-18; it stays hidden with a ring in view). Tests 328/0.
 Zone moves and looks right. Paper targets stand on roofs; two (homework, the second broccoli) were buried inside

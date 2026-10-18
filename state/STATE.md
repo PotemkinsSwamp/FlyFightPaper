@@ -12,8 +12,8 @@
   the bots; emotes threw giant avatars' bodies apart (Roblox scales the hip movement twice).
 - **Main-menu ruler** reads 3 to 12, right way up: uploaded with Alan's go and seen in Play.
 - **Cutscene, closer and more cinematic** (Alan's notes 2026-10-18, seen in Studio Play): a close-up of each winner
-  in turn as they stand up and hop (3rd, 2nd, then 1st with a slow push in), a little from below; only what would
-  block a winner fades out, so the town and ceiling decorations stay. Vote rings are now giant hula hoops (no free Creator Store hoop fit; built from round parts).
+  in turn as they stand up and hop (3rd, 2nd, then 1st with a slow push in), then a zoom out to all three emoting;
+  only what would block a winner fades out, so the town and ceiling decorations stay; focus blur on the winners. Vote rings are now giant hula hoops (no free Creator Store hoop fit; built from round parts).
   Smoother stand-up/hop animation uploaded with your go (free) and seen playing in Play.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
@@ -36,8 +36,8 @@ Track C saving needs a private publish (Alan's go). Place file not re-saved (nee
 
 Decisions to review
 Results card "Crashes" counts every time a pilot went down (shot or crashed), from the round's deaths.
-Cutscene: one close-up per winner (3rd, 2nd, 1st), no shot of all three together; winner on the left, card on the
-right the whole time.
+Cutscene: winners' moment 15 s -> 18 s so the zoom-out to all three has time; the results card shows during the
+close-ups and goes for the group shot.
 Winner desks: the chalkboard row has six desks, so "middle three" = desks 2-3-4, 1st in the middle (config rounds.winner_desks).
 Duct props: cobwebs, spiders, toys and tools are see-through to planes (fly through them). Veterans flee to the
   ducts 40% of the time when shot at (vent within 500), wander in 12% of patrol turns; others never (config bots.*.duct_*).

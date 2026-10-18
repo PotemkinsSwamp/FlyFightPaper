@@ -10,15 +10,26 @@ local PLACES = { "1st", "2nd", "3rd" }
 local COLORS = { Color3.fromRGB(255, 205, 40), Color3.fromRGB(220, 225, 235), Color3.fromRGB(230, 140, 70) }
 local EMOTES = { "rbxassetid://507771019", "rbxassetid://507770677", "rbxassetid://507770239" } -- Roblox R15 dance, cheer, wave
 local SEATED = { [Enum.HumanoidRigType.R15] = "rbxassetid://2506281703", [Enum.HumanoidRigType.R6] = "rbxassetid://178130996" }
-local BANNER, GLIDE, STAND, JUMP, TURN = 1.2, 2.0, 0.6, 0.7, 2.2 -- seconds; 3rd goes first, then 2nd, then 1st, TURN apart
+local BANNER, GLIDE, STAND, JUMP, TURN = 1.2, 2.0, 0.6, 0.7, 1.8 -- seconds; 3rd goes first, then 2nd, then 1st, TURN apart
 local HOP_SETTLE = 0.35 -- the hop animation lands, squashes and settles this long before the emote starts
 local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room instead of skimming through it
 -- The shots (Alan 2026-10-18: closer, cinematic, no bare floor or ceiling): a close-up of each winner in turn as they
 -- stand and hop, square on to the desk and a little from below, the winner on the left of the screen and the results
--- card on the right; the camera pans to the next winner just before they move, and ends on 1st with a slow push in.
+-- card on the right; the camera pans to the next winner just before they move, pushes in on 1st as they land and
+-- emote, then the card goes and it zooms out to all three emoting together (Alan 2026-10-18).
 -- Lens, how much of the screen height the winner fills (as multiples of their leg length), low angle (height lost
 -- per stud back), where the winner sits across the screen (0.5 = middle), push in and how long each pan takes.
 local SHOT_FOV, SHOT_HEIGHT, SHOT_LOW, SHOT_SIDE, PUSH_IN, PAN = 40, 3.3, 0.08, 0.33, 0.12, 0.6
+-- The group shot looks down a little from above the town's roofs (height gained per stud back), so the roofs fill
+-- the bottom of the screen; anything closer than NEAR_CLEAR studs in front of any shot fades so it never films
+-- from inside a building.
+local GROUP_RISE, NEAR_CLEAR = 0.16, 350
+local GROUP_FOV = 70 -- a wide lens, so the camera stays within the 500 studs Roblox's focus blur can reach
+local GROUP_CLEAR = 120 -- the group shot keeps the town in front (soft in the blur), clearing only at the lens
+-- Film-style focus (Alan 2026-10-18: the town in front looked bad): the winners sharp, what's in front of them soft
+-- and the wall behind slightly soft. Studs either side of the desk row kept sharp (wider for the group), blur amounts.
+local BLUR_RADIUS, BLUR_NEAR, BLUR_FAR = 130, 0.8, 0.2
+local ZOOM_AT, ZOOM = 2 * TURN + 2.6, 1.6 -- seconds after arriving that the zoom out to all three starts, and its length
 -- Only what would block a winner in their shot fades out on this screen; the rest of the town and the ceiling
 -- decorations stay in view. Never faded: the room shell, the chalkboard, desks, chairs and the desks' hangars and
 -- runways. Always faded: planes, other name tags and the desk landing rings.
@@ -87,15 +98,17 @@ end
 
 -- Whether a part sits between a shot's camera and its winner: nearer than the winner and overlapping them on screen
 -- (or, for something reaching past the camera, crossing a sight line to the winner).
-local function blocks(part, shots, tanHalf)
+local function blocks(part, shots)
 	for _, shot in shots do
-		local rect, near = onScreen(shot.view, tanHalf, part.CFrame, part.Size)
+		local rect, near = onScreen(shot.view, shot.tanHalf, part.CFrame, part.Size)
 		if not rect then
 			for _, point in shot.points do
 				if lineHits(shot.view.Position, point, part.CFrame, part.Size) then return true end
 			end
 		elseif near < shot.near and rect[1] < shot.rect[3] and rect[3] > shot.rect[1] and rect[2] < shot.rect[4] and rect[4] > shot.rect[2] then
 			return true
+		elseif near < shot.clear and rect[1] < shot.aspect and rect[3] > -shot.aspect and rect[2] < 1 and rect[4] > -1 then
+			return true -- right in front of the camera
 		end
 	end
 	return false
@@ -111,18 +124,43 @@ local function fadeShot(state, amount)
 end
 
 -- Take one thing out of the shot if it blocks a winner, remembering how to put it back. Name tags go at once.
+local function fadePart(state, part)
+	for _, look in { part, table.unpack(part:GetChildren()) } do
+		if (look:IsA("BasePart") or look:IsA("Decal") or look:IsA("Texture")) and not state.cleared[look] and look.LocalTransparencyModifier < 1 then
+			state.cleared[look] = look.LocalTransparencyModifier
+			look.LocalTransparencyModifier = look.LocalTransparencyModifier + (1 - look.LocalTransparencyModifier) * (state.faded or 0)
+		end
+	end
+end
+
+-- The town's buildings are loose pieces named "building/piece" in CityToys: all pieces of the one this part is in.
+local function buildingPieces(state, part)
+	local toys = workspace:FindFirstChild("Arena") and workspace.Arena:FindFirstChild("CityToys")
+	if not toys or not part:IsDescendantOf(toys) then return nil end
+	local entry = part
+	while entry.Parent ~= toys do entry = entry.Parent end
+	local name = entry.Name:match("^(.-)/")
+	if not name then return nil end
+	if not state.buildings then
+		state.buildings = {}
+		for _, piece in toys:GetChildren() do
+			local key = piece.Name:match("^(.-)/")
+			if key then state.buildings[key] = state.buildings[key] or {}; table.insert(state.buildings[key], piece) end
+		end
+	end
+	return state.buildings[name]
+end
+
 local function hideForShot(state, item)
 	if state.cleared[item] then return end
 	local rule = shotRule(item)
 	if rule == "never" then return end
 	if item:IsA("BasePart") then
-		if item.LocalTransparencyModifier < 1 and (rule == "always" or blocks(item, state.shots, state.tanHalf)) then
-			state.cleared[item] = item.LocalTransparencyModifier
-			item.LocalTransparencyModifier = item.LocalTransparencyModifier + (1 - item.LocalTransparencyModifier) * (state.faded or 0)
-			for _, look in item:GetChildren() do
-				if (look:IsA("Decal") or look:IsA("Texture")) and look.LocalTransparencyModifier < 1 then
-					state.cleared[look] = look.LocalTransparencyModifier
-				end
+		if item.LocalTransparencyModifier < 1 and (rule == "always" or blocks(item, state.shots)) then
+			-- A whole building goes, never half of one (that shows its dark inside).
+			for _, piece in buildingPieces(state, item) or { item } do
+				if piece:IsA("BasePart") then fadePart(state, piece) end
+				for _, part in piece:GetDescendants() do if part:IsA("BasePart") then fadePart(state, part) end end
 			end
 		end
 	elseif item:IsA("BillboardGui") or (rule == "always" and (item:IsA("SurfaceGui") or item:IsA("Beam") or item:IsA("Trail") or item:IsA("ParticleEmitter"))) then
@@ -253,10 +291,11 @@ function Cutscene.play(winners, onStage)
 	local back = row:Cross(Vector3.yAxis)
 	if back:Dot(flat(-middle)) < 0 then back = -back end
 	local right = Vector3.yAxis:Cross(back) -- screen right when looking at the desks from the room side
-	local tanHalf = math.tan(math.rad(SHOT_FOV / 2))
 	local aspect = camera.ViewportSize.X / math.max(camera.ViewportSize.Y, 1)
-	local state = { start = os.clock(), winners = {}, hidden = {}, cleared = {}, stage = "banner", tanHalf = tanHalf, cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
+	local state = { start = os.clock(), winners = {}, hidden = {}, cleared = {}, stage = "banner", cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
 	active = state
+	state.blur = Instance.new("DepthOfFieldEffect") -- Roblox's own camera blur, on this screen only
+	state.blur.Name, state.blur.NearIntensity, state.blur.FarIntensity, state.blur.Parent = "WinnersFocus", 0, 0, camera
 	Root:SetAttribute("Cutscene", true)
 	onStage("banner")
 
@@ -285,31 +324,46 @@ function Cutscene.play(winners, onStage)
 	-- Each winner's close-up: framed on where they end up standing on the desk, and the box around them (chair to
 	-- desk front, desk top to name tag) that nothing may block.
 	local shots = {}
-	local function closeUp(place)
-		local desk, w = desks[place], state.winners[place]
-		local feet = w and w.feet or 80
-		local stand = w and w.desk.Position or desk.Position + Vector3.new(0, desk.Size.Y / 2 + feet, 0) + back * desk.Size.Z * 0.3
-		local chair = room:FindFirstChild("Chair" .. desk.Name:sub(5))
-		local distance = SHOT_HEIGHT * feet / 2 / tanHalf
-		local target = stand + Vector3.new(0, feet * 0.05, 0) + right * (0.5 - SHOT_SIDE) * 2 * distance * tanHalf * aspect
-		local eye = target + back * distance - Vector3.new(0, distance * SHOT_LOW, 0)
-		local deskTop = desk.Position.Y + desk.Size.Y / 2
-		local top = stand.Y + feet * 0.75 + 60
-		local from = chair and flat(chair.Position) or flat(stand) - back * 200
-		local center = (from + flat(stand)) / 2 + back * 20 + Vector3.new(0, (deskTop + top) / 2, 0)
-		local size = Vector3.new(260, top - deskTop, (flat(stand) - from).Magnitude + 120)
+	-- A shot of some winners: square on to the desks and a little from below, the winners placed at `side` across
+	-- the screen, close enough to fill SHOT_HEIGHT leg lengths (or wider to fit them all); and the box around them
+	-- (chair to desk front, desk top to name tag) that nothing may block.
+	local function shotOf(places, side, rise, fov, clear)
+		local stands, feet, froms = {}, 0, {}
+		for _, place in places do
+			local desk, w = desks[place], state.winners[place]
+			local legs = w and w.feet or 80
+			local stand = w and w.desk.Position or desk.Position + Vector3.new(0, desk.Size.Y / 2 + legs, 0) + back * desk.Size.Z * 0.3
+			local chair = room:FindFirstChild("Chair" .. desk.Name:sub(5))
+			table.insert(stands, stand)
+			table.insert(froms, chair and flat(chair.Position) or flat(stand) - back * 200)
+			feet = math.max(feet, legs)
+		end
+		local middle, from = Vector3.zero, Vector3.zero
+		for i, stand in stands do middle += stand / #stands; from += froms[i] / #stands end
+		local across = 0
+		for _, stand in stands do across = math.max(across, math.abs((stand - middle):Dot(right))) end
+		local share = 1 - 2 * math.abs(0.5 - side) -- share of the screen width the winners may use
+		local tanHalf = math.tan(math.rad(fov / 2))
+		local distance = math.max(SHOT_HEIGHT * feet / 2 / tanHalf, (across + 150) / (tanHalf * aspect * share))
+		local target = middle + Vector3.new(0, feet * 0.05, 0) + right * (0.5 - side) * 2 * distance * tanHalf * aspect
+		local eye = target + back * distance + Vector3.new(0, distance * rise, 0)
+		local deskTop = desks[places[1]].Position.Y + desks[places[1]].Size.Y / 2
+		local top = middle.Y + feet * 0.75 + 60
+		local center = (from + flat(middle)) / 2 + back * 20 + Vector3.new(0, (deskTop + top) / 2, 0)
+		local size = Vector3.new(2 * across + 260, top - deskTop, (flat(middle) - from).Magnitude + 120)
 		local box = CFrame.fromMatrix(center, right, Vector3.yAxis)
 		local view = CFrame.lookAt(eye, target)
 		local rect, near = onScreen(view, tanHalf, box, size)
 		local points = { center }
 		for i = 0, 7 do points[#points + 1] = box * (size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5)) end
-		local shot = { view = view, rect = rect or { -1, -1, 1, 1 }, near = near, points = points }
-		table.insert(shots, shot)
+		table.insert(shots, { view = view, rect = rect or { -1, -1, 1, 1 }, near = near, points = points, aspect = aspect, tanHalf = tanHalf, clear = clear })
 		return view, distance
 	end
-	local third, second = closeUp(3), closeUp(2)
-	local first, firstDistance = closeUp(1)
+	local third, second = shotOf({ 3 }, SHOT_SIDE, -SHOT_LOW, SHOT_FOV, NEAR_CLEAR), shotOf({ 2 }, SHOT_SIDE, -SHOT_LOW, SHOT_FOV, NEAR_CLEAR)
+	local first, firstDistance = shotOf({ 1 }, SHOT_SIDE, -SHOT_LOW, SHOT_FOV, NEAR_CLEAR)
 	local closer = first + first.LookVector * firstDistance * PUSH_IN
+	local group, groupDistance = shotOf({ 2, 1, 3 }, 0.5, GROUP_RISE, GROUP_FOV, GROUP_CLEAR) -- all three, centred, once the card has gone
+	local drift = group + group.LookVector * groupDistance * PUSH_IN * 0.5
 	state.shots = shots
 
 	-- Roblox scales an animation's hip movement twice on a scaled-up avatar (27 x 27 instead of 27, measured
@@ -339,7 +393,9 @@ function Cutscene.play(winners, onStage)
 		if t < TURN then return third:Lerp(second, ease((t - TURN + PAN) / PAN)) end
 		if t < 2 * TURN - PAN then return second end
 		if t < 2 * TURN then return second:Lerp(first, ease((t - 2 * TURN + PAN) / PAN)) end
-		return first:Lerp(closer, ease((t - 2 * TURN) / (leave - arrive - 2 * TURN)))
+		if t < ZOOM_AT then return first:Lerp(closer, ease((t - 2 * TURN) / (ZOOM_AT - 2 * TURN))) end
+		if t < ZOOM_AT + ZOOM then return closer:Lerp(group, ease((t - ZOOM_AT) / ZOOM)) end
+		return group:Lerp(drift, ease((t - ZOOM_AT - ZOOM) / (leave - arrive - ZOOM_AT - ZOOM)))
 	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
@@ -348,6 +404,7 @@ function Cutscene.play(winners, onStage)
 		local liveFov = camera.CFrame ~= state.written and camera.FieldOfView or state.fov
 		state.home, state.fov = live, liveFov
 		local hold = holdAt(t - arrive)
+		local holdFov = SHOT_FOV + (GROUP_FOV - SHOT_FOV) * ease((t - arrive - ZOOM_AT) / ZOOM)
 		local view, fov
 		if t < BANNER then view, fov = live, liveFov
 		elseif t < arrive then
@@ -355,19 +412,25 @@ function Cutscene.play(winners, onStage)
 			local a = ease((t - BANNER) / GLIDE)
 			fadeShot(state, ease((t - BANNER) / (GLIDE * 0.6)))
 			view, fov = live:Lerp(third, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), liveFov + (SHOT_FOV - liveFov) * a
-		elseif t < leave then view, fov = hold, SHOT_FOV
+		elseif t < leave then view, fov = hold, holdFov
 		else
 			local a = ease((t - leave) / GLIDE)
 			fadeShot(state, 1 - a)
-			view, fov = hold:Lerp(live, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), SHOT_FOV + (liveFov - SHOT_FOV) * a
+			view, fov = hold:Lerp(live, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), holdFov + (liveFov - holdFov) * a
 		end
 		if t < arrive then seatWinners() end
 		for _, w in state.winners do moveWinner(w, t - arrive) end
-		local stage = t < arrive and "banner" or t < leave and "card" or "back"
+		local stage = t < arrive and "banner" or t < arrive + ZOOM_AT and "card" or t < leave and "group" or "back"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end
 		if t >= leave + GLIDE then Cutscene.stop(); return end
 		camera.CameraType = Enum.CameraType.Scriptable
 		camera.CFrame, camera.FieldOfView = view, fov
+		-- Focus on the desk row (all winners stand the same distance back), soft in front and a little behind.
+		local row = state.winners[1] or state.winners[2] or state.winners[3]
+		local strength = t < arrive and ease((t - BANNER) / GLIDE) or t < leave and 1 or 1 - ease((t - leave) / GLIDE)
+		state.blur.FocusDistance = row and math.max(0, (row.desk.Position - view.Position):Dot(view.LookVector)) or 500
+		state.blur.InFocusRadius = t < arrive + ZOOM_AT and BLUR_RADIUS or BLUR_RADIUS * 1.6
+		state.blur.NearIntensity, state.blur.FarIntensity = BLUR_NEAR * strength, BLUR_FAR * strength
 		state.written = view
 	end)
 end
@@ -385,6 +448,7 @@ function Cutscene.stop()
 	for item, was in state.cleared do
 		if was == true then item.Enabled = true elseif was == "visible" then item.Visible = true end
 	end
+	state.blur:Destroy()
 	workspace.CurrentCamera.CameraType, workspace.CurrentCamera.FieldOfView = state.cameraType, state.fov
 	Root:SetAttribute("Cutscene", false)
 end
