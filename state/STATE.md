@@ -47,5 +47,5 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-1. Draw-on-your-plane safeguards: pick from the options in chat (2026-10-18).
+1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: after the research report.
