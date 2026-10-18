@@ -90,13 +90,17 @@ function Rules.podium(records, seed)
     return ordered
 end
 -- The winners' moment (Alan 2026-10-17): the top 3 of the round, or of the winning team in a team round, 1st first.
+-- A tied team round gives no places (no podium), so its top 3 come in results order (Alan 2026-10-18: no hops after a tie).
 function Rules.winners(result)
     local rows = {}
-    for _, p in ipairs(result and result.participants or {}) do
-        if p.place and (not result.winningTeam or result.draw or p.teamId == result.winningTeam) then table.insert(rows, p) end
+    for i, p in ipairs(result and result.participants or {}) do
+        local place = p.place or (result.draw and i)
+        if place and (not result.winningTeam or result.draw or p.teamId == result.winningTeam) then table.insert(rows, { place = place, row = p }) end
     end
-    table.sort(rows, function(a, b) return a.place < b.place or a.place == b.place and a.actorId < b.actorId end)
-    return { table.unpack(rows, 1, math.min(3, #rows)) }
+    table.sort(rows, function(a, b) return a.place < b.place or a.place == b.place and a.row.actorId < b.row.actorId end)
+    local top = {}
+    for i = 1, math.min(3, #rows) do top[i] = rows[i].row end
+    return top
 end
 -- Did a plane fly through a vote ring this step? The step from `from` to `to` must cross the ring's face (its local
 -- Z plane) inside `radius` of the centre, in either direction.

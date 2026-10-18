@@ -32,12 +32,14 @@ local CARD = 10 -- the results card's seconds at the end of the winners' moment 
 local HOP_SETTLE = 0.35 -- the hop animation lands, squashes and settles this long before the emote starts
 local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room instead of skimming through it
 -- The shots, square on to the desk row and level: the lens, a slow push in on the group (share of the distance), and
--- the frame: its top CLOSE_TOP over the desk top for a close-up (just over the head) and GROUP_TOP for all three (the
--- chalkboard wall behind them, not the ceiling decorations: Alan 2026-10-18), CLOSE tall for a close-up, wider if
--- needed so SIDE_ROOM fits beside the outside winners (body, arms and the whole plate: Alan 2026-10-18, half bodies
--- and plates were cut off); any extra height goes below the desks. Sizes in winner heights.
-local SHOT_FOV, PUSH_IN, CLOSE_TOP, GROUP_TOP, CLOSE, SIDE_ROOM = 50, 0.04, 1.3, 2.2, 1.9, 1.2
-local EYE_LOW = 0.15 -- the camera never goes lower than this far over the desk top (winner heights)
+-- the frame: a close-up CLOSE tall with its top CLOSE_TOP over the desk top (just over the head); the group wide
+-- enough that SIDE_ROOM fits beside the outside winners (body, arms and the whole plate: Alan 2026-10-18, half bodies
+-- and plates were cut off), looking GROUP_TILT degrees down at them with the bottom of the frame GROUP_FLOOR below
+-- the desk top under them (just under the plates, so the town's pillars in front stay out: Alan 2026-10-18). Sizes in
+-- winner heights.
+local SHOT_FOV, PUSH_IN, CLOSE_TOP, CLOSE, SIDE_ROOM = 50, 0.04, 1.3, 1.9, 1.2
+local GROUP_TILT, GROUP_FLOOR = 8, 1.05
+local EYE_LOW = 0.15 -- a close-up camera never goes lower than this far over the desk top (winner heights)
 -- How far forward on their desk 1st and the others stand (shares of the desk depth): 1st a little in front.
 local FIRST_FORWARD, SIDE_FORWARD = 0.32, 0.22
 -- The two outside winner desks slide in to this many studs from the middle one, on this screen only, for the
@@ -174,12 +176,21 @@ local function buildingPieces(state, part)
 	return state.buildings[name]
 end
 
+-- Whether a part hangs from the ceiling between the group shot's camera and the winners (planets, mobiles: Alan
+-- 2026-10-18, the planet was too much in the shot). Town buildings are never "hanging".
+local function overhead(state, part)
+	local o = state.overhead
+	if not o or part.Position.Y - part.Size.Y / 2 < o.y or buildingPieces(state, part) then return false end
+	local depth = (part.Position - o.view.Position):Dot(o.view.LookVector)
+	return depth > 0 and depth < o.depth
+end
+
 local function hideForShot(state, item)
 	if state.cleared[item] then return end
 	local rule = shotRule(item)
 	if rule == "never" then return end
 	if item:IsA("BasePart") then
-		if item.LocalTransparencyModifier < 1 and (rule == "always" or blocks(item, state.shots)) then
+		if item.LocalTransparencyModifier < 1 and (rule == "always" or blocks(item, state.shots) or overhead(state, item)) then
 			-- A whole building goes, never half of one (that shows its dark inside).
 			for _, piece in buildingPieces(state, item) or { item } do
 				if piece:IsA("BasePart") then fadePart(state, piece) end
@@ -485,17 +496,23 @@ function Cutscene.play(winners, onStage)
 	local points = { center }
 	for i = 0, 7 do points[#points + 1] = box * (size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5)) end
 	state.shots = {}
-	local function shotOf(places, tall, headRoom)
+	local function shotOf(places, tall, headRoom)  -- headRoom nil: the group shot
 		local mid, wide = Vector3.zero, 0
 		for _, place in places do mid += spots[place] / #places end
 		for _, place in places do wide = math.max(wide, math.abs((spots[place] - mid):Dot(right))) end
 		local half = math.max(tall * height / 2, (wide + SIDE_ROOM * height) / aspect)
 		local distance = half / tanHalf
-		-- Level if that keeps the camera at least EYE_LOW up the winners; a wide shot would sink it into the floor,
-		-- so it stays there and tilts down until the top of the frame is back just over their heads.
-		local top = deskTop + headRoom * height
-		local eyeY = math.max(top - half, deskTop + EYE_LOW * height)
-		local tilt = math.atan((top - eyeY) / distance) - math.rad(SHOT_FOV / 2)
+		local eyeY, tilt
+		if headRoom then
+			-- Level if that keeps the camera at least EYE_LOW over the desk top, else there and tilted down until the
+			-- top of the frame is back just over their heads.
+			local top = deskTop + headRoom * height
+			eyeY = math.max(top - half, deskTop + EYE_LOW * height)
+			tilt = math.atan((top - eyeY) / distance) - math.rad(SHOT_FOV / 2)
+		else
+			tilt = -math.rad(GROUP_TILT)
+			eyeY = deskTop - GROUP_FLOOR * height + distance * math.tan(math.rad(SHOT_FOV / 2 + GROUP_TILT))
+		end
 		local eye = Vector3.new(mid.X, eyeY, mid.Z) + back * distance
 		local view = CFrame.lookAt(eye, eye - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
 		local rect, near = onScreen(view, tanHalf, box, size)
@@ -503,7 +520,8 @@ function Cutscene.play(winners, onStage)
 		return view, distance
 	end
 	local third, second, first = shotOf({ 3 }, CLOSE, CLOSE_TOP), shotOf({ 2 }, CLOSE, CLOSE_TOP), shotOf({ 1 }, CLOSE, CLOSE_TOP)
-	local group, groupDistance = shotOf({ 1, 2, 3 }, 0, GROUP_TOP)
+	local group, groupDistance = shotOf({ 1, 2, 3 }, 0)
+	state.overhead = { view = group, depth = groupDistance, y = deskTop + 1.5 * height }
 	local drift = group + group.LookVector * groupDistance * PUSH_IN
 	state.plateGui, state.plates = makePlates(winners)
 	state.confetti = makeConfetti(CFrame.new(middle + Vector3.new(0, 1.5 * height, 0)), Vector3.new(2 * across + height, 1, height * 0.8), height)
