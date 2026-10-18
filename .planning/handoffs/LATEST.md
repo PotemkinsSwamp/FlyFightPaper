@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-18-ui-scrape-wobble.md
+# LATEST → handoff-2026-10-18-ui-paper-look.md
 
-★ START HERE: winners' moment rebuilt and OK'd by Alan; train hits fixed. Next: scrapes wobble you instead of
-killing (shallow angle under ~25° = scrape with a wobble to correct; head-on = crash; the train's moving front still
-kills), for buildings and the train's sides; then Alan's re-check and "Stage 9 approved".
+★ START HERE: Stage 9 approved; shop planned with Alan; softer paper team colours live. Next: paper texture (UVs +
+paper maps tinted by team colour, like the Classic sample) on the other 22 plane parts and boosters; done when every
+part shows it in Studio Play, team tints are right, tests 328/0 and Alan OKs it. Uploads need Alan's go (he runs them).
 
-Quick state: main, tests 328/0. Studio open with Play running; Rojo serving.
-Previous: handoff-2026-10-18-ui-winners-shot-redesign.md.
+Quick state: main, tests 328/0. Studio open in Edit, Rojo serving; place not saved (duct fan fix needs Save to File).
+Previous: handoff-2026-10-18-ui-scrape-wobble.md.

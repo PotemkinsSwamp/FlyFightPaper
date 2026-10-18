@@ -159,6 +159,11 @@ mistake would be easy to make twice.
   before closing its Studio (on 2026-10-08 a restart deleted the only copy).
 
 ## Working with Alan
+- **Scripted doc edits: never `replace` a slice cut between two markers without checking it** (2026-10-18): if the
+  end marker sits before the start marker the slice is empty, and `s.replace("", text)` puts the text between every
+  character (the shop plan note went out garbled and pushed). Assert the old text is non-empty and found exactly once.
+- **Plane meshes before the paper retexture have no UV layout** (2026-10-18): no material, texture or skin can show on
+  them; a textured part means a new mesh upload (with UVs) plus its maps, swapped in by MeshId.
 - **No desktop control** (mouse and keyboard) unless truly necessary or Alan asks; say why first. Anything that
   needs a real click (Rojo Connect, Ctrl+S) goes to Alan as a request.
 - **Commands for Alan are PowerShell:** `cd D:\FlyFightPaper; ...` with `;`, never `&&`.
