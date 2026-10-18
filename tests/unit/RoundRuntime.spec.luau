@@ -134,17 +134,18 @@ function Spec.run()
  test("Timer results drain combat before reading the finalized result",function()
   local f=MatchSpec.fixture();f:join("pilot",true);f:advance(480)
   assert(f.m.phase=="ENDING" and f.m.round.result==nil and f.m.round.endedAt==nil)
-  local removed=0
-  local pilot={id="pilot"}
+  -- Rounds never stop (Alan 2026-10-17): only a practice flight leaves; everyone else holds still, safe.
+  local removed,held=0,nil
+  local pilot,practice={id="pilot"},{id="practice",practice=true}
   local runtime=setmetatable({engine=f.m,finished=false,earningCursor=0,earnedTotals={},settledRows={},
-   flight={active=true,records={{cause="weapon"}},pilots={pilot},remove=function(_,p,cause)
-    assert(p==pilot and cause=="round_end");removed+=1
+   flight={active=true,records={{cause="weapon"}},pilots={pilot,practice},hold=function(_,on) held=on end,remove=function(_,p,cause)
+    assert(p==practice and cause=="round_end");removed+=1
    end},combat={enabled=true,shots={},totalFired=17,totalHits=3},bots={enabled=true}},Runtime)
   runtime:finish()
   assert(f.m.phase=="RESULTS" and f.m.round.result~=nil)
   assert(runtime.lastRound.seconds==480 and runtime.lastRound.shots==17 and runtime.lastRound.hits==3)
-  assert(runtime.finished and runtime.settled and removed==1)
-  assert(not runtime.flight.active and not runtime.combat.enabled and not runtime.bots.enabled)
+  assert(runtime.finished and runtime.settled and removed==1 and held==true)
+  assert(runtime.flight.active and runtime.flight.safe and not runtime.combat.enabled and not runtime.bots.enabled)
   runtime:finish();assert(removed==1)
  end)
  test("a failed player reward cannot hold the server in results",function()
@@ -156,7 +157,8 @@ function Spec.run()
   local runtime=setmetatable({engine=f.m,profiles=profiles,earningCursor=0,earnedTotals={},finalRewards={},settledRows={}},Runtime)
   runtime:earnings();runtime:queueSettlement()
   assert(runtime.settled and runtime.rewardQueue.players[1] and paid[f.matchId..":stats:b"]==2)
-  f:advance(23);assert(f.m.phase=="READY")
+  local rounds=require(game.ReplicatedStorage.FlyFightPaper.Generated.Gameplay).rounds
+  f:advance(rounds.results_seconds+rounds.vote_seconds+rounds.launch_countdown_seconds);assert(f.m.phase=="READY")
   -- Cleanup is allowed after the handoff, even while one player's retries remain.
   assert(f.m:acknowledgeSettlement(f.matchId,f.m.round.settlementId))
   assert(f.m:cleanup(f.matchId,{upstreamDrained=true,livesEnded=true,replayBarrier=true}))

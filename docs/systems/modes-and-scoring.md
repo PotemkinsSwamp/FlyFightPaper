@@ -61,7 +61,8 @@ rescaled so a reference match pays the same Paper and XP as before (config econo
 | File | What it does |
 |---|---|
 | `src/server/MatchService.luau` | Rounds, lives, points, teams |
-| `src/server/RoundRuntime.luau` | Round phases, voting, rewards, score pop-ups |
+| `src/server/RoundRuntime.luau` | Round phases, voting, rewards, score pop-ups; the round end in the room (planes hold, safe vote lap, next round in place) |
+| `src/server/VoteRings.luau` | The vote lap's mode rings: built, counted, and which one a plane flew through |
 | `src/shared/MatchRules.luau` | Mode rules |
 | `src/client/ControlZone.luau` | Drawing the Airspace zone |
 | `src/client/PaperTargets.luau` | Hidden paper targets |

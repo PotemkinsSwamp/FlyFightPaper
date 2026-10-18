@@ -89,4 +89,22 @@ function Rules.podium(records, seed)
     end)
     return ordered
 end
+-- The winners' moment (Alan 2026-10-17): the top 3 of the round, or of the winning team in a team round, 1st first.
+function Rules.winners(result)
+    local rows = {}
+    for _, p in ipairs(result and result.participants or {}) do
+        if p.place and (not result.winningTeam or result.draw or p.teamId == result.winningTeam) then table.insert(rows, p) end
+    end
+    table.sort(rows, function(a, b) return a.place < b.place or a.place == b.place and a.actorId < b.actorId end)
+    return { table.unpack(rows, 1, math.min(3, #rows)) }
+end
+-- Did a plane fly through a vote ring this step? The step from `from` to `to` must cross the ring's face (its local
+-- Z plane) inside `radius` of the centre, in either direction.
+function Rules.throughRing(from, to, ring, radius)
+    local a, b = ring:PointToObjectSpace(from), ring:PointToObjectSpace(to)
+    if (a.Z > 0) == (b.Z > 0) or a.Z == b.Z then return false end
+    local t = a.Z / (a.Z - b.Z)
+    local hit = a:Lerp(b, t)
+    return Vector2.new(hit.X, hit.Y).Magnitude <= radius
+end
 return table.freeze(Rules)

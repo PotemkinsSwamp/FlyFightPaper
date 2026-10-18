@@ -133,9 +133,28 @@ function Service:add(player,options)
  local home=CFrame.new(desk.Position+Vector3.new(0,desk.Size.Y/2+2.8,0))*CFrame.Angles(0,desk.Name:find("North") and math.pi or 0,0)
  local p={key=key,id=id,player=player,kind=player and "human" or "bot",name=player and player.DisplayName or options.name,
   seat=seat,home=home,loadout=options.loadout or self.catalog:starterLoadout(),loadoutName=options.loadoutName or "pellet",tier=options.tier or "regular",practice=options.practice,life=0}
- self.records[id]=self.records[id] or {name=p.name,kind=p.kind,tier=p.kind=="bot" and p.tier or nil,shots=0,hits=0,kills=0,assists=0,deaths=0,weaponDeaths=0,collisionDeaths=0,damage=0,points=0}
+ self.records[id]=self.records[id] or self:newRecord(p)
  self.pilots[key]=p;self.byId[id]=p;self:build(p)
  return p
+end
+function Service:newRecord(p)
+ return {name=p.name,kind=p.kind,tier=p.kind=="bot" and p.tier or nil,shots=0,hits=0,kills=0,assists=0,deaths=0,weaponDeaths=0,collisionDeaths=0,damage=0,points=0}
+end
+-- Rounds never stop (Alan 2026-10-17, docs/decisions/2026-10-17-rounds-never-stop.md). A new round starts where
+-- everyone is: a clean record, full health (wear gone), Lift and boost.
+function Service:newRound(p)
+ self.records[p.id]=self:newRecord(p);p.protectionRemaining=Desk.protected_seconds_per_life
+ for key,value in pairs({Health=p.stats.health,MaxHealth=p.stats.health,OriginalHealth=p.stats.health,Lift=p.stats.lift,Boost=p.model:GetAttribute("BoostMax") or 0,Kills=0}) do p.model:SetAttribute(key,value) end
+end
+-- The winners' moment: every flying plane holds still in the air until the vote lap, then flies on from there.
+function Service:hold(on)
+ for _,p in pairs(self.pilots) do
+  if on and not p.held and p.model:GetAttribute("State")=="FLYING" then
+   p.held=true;p.body:SetNetworkOwner(nil);p.body.Anchored=true;p.drive.Enabled=false;p.orientation.Enabled=false
+  elseif not on and p.held then
+   p.held=nil;p.model:SetAttribute("Lift",p.stats.lift);self:fly(p)
+  elseif not on then p.model:SetAttribute("Lift",p.stats.lift) end
+ end
 end
 function Service:build(p)
  -- A returning account gets a new identity even when its previous pilot was removed.
@@ -246,6 +265,7 @@ end
 -- `walls`: the room hurts even a protected plane; protection only stops enemy fire and rams.
 -- `how`: how this hit could bring the plane down, for the death line (Lines.death).
 function Service:damage(p,amount,cause,walls,how)
+ if self.safe then return 0 end -- between rounds nothing hurts
  if p.model:GetAttribute("State")=="DESTROYED" or not walls and self:protected(p,workspace:GetServerTimeNow()) then return 0 end
  local actual=math.min(p.model:GetAttribute("Health"),math.max(0,amount))
  p.model:SetAttribute("Health",p.model:GetAttribute("Health")-actual)
@@ -331,6 +351,8 @@ function Service:impact(p,normal,part,now,dt,pushed)
  p.lastScrape=now
  local amount=Rules.collisionDamage(into,part.Name=="Floor" and p.model:GetAttribute("Lift")<=0,p.stats.health,dt,now-p.scrapeSince)
  if Run:IsStudio() then self.records[p.id].lastImpact={part=part:GetFullName(),speed=into,at=now,position=tostring(p.body.Position)} end
+ -- Between rounds walls only bounce you off.
+ if self.safe then p.model:SetAttribute("CollisionNormal",normal);p.model:SetAttribute("DeflectUntil",now+.35);return end
  local how={kind="crash",part=part.Name,outOfLift=p.model:GetAttribute("Lift")<=0}
  if amount>=p.stats.health then
   self:destroy(p,how,"collision")
@@ -342,6 +364,7 @@ function Service:impact(p,normal,part,now,dt,pushed)
 end
 -- A duct fan blade: a big bite out of the plane and a shove the way the blade was moving.
 function Service:fanHit(p,push,now)
+ if self.safe then return end
  self:damage(p,p.stats.health*Gameplay.world.ducts.fans.damage_share,"fan",true,{kind="fan"})
  if p.model:GetAttribute("State")~="FLYING" then return end
  p.model:SetAttribute("Knock",push*60);p.model:SetAttribute("KnockUntil",now+.3)
@@ -447,6 +470,7 @@ function Service:step(dt)
   if state=="DESTROYED" and now>=p.respawnAt then
    if not self.padReservations["desk:"..p.seat] then self:replace(p) else say(p,"padWait") end
   elseif state=="TAKEOFF" then self:takeoffStep(p,dt)
+  elseif state=="FLYING" and p.held then -- holding still for the winners' moment
   elseif state=="FLYING" then
    local utility=p.loadout.utility and self.catalog:get(p.loadout.utility)
    local boosting=utility and p.boostHeld and (p.model:GetAttribute("Boost") or 0)>0
@@ -463,7 +487,7 @@ function Service:step(dt)
    local localPos=self.boundsCF:PointToObjectSpace(p.body.Position)
    local outside=math.abs(localPos.X)>self.boundsSize.X/2+12 or (localPos.Y>self.boundsSize.Y/2+self.headroom+12 or localPos.Y<-self.boundsSize.Y/2-12) or math.abs(localPos.Z)>self.boundsSize.Z/2+12
    if outside then p.outSince=p.outSince or now;say(p,"turnBack") elseif p.outSince then p.outSince=nil;p.model:SetAttribute("Message","") end
-   if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds then self:destroy(p,{kind="bounds"},"bounds");continue end
+   if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds and not self.safe then self:destroy(p,{kind="bounds"},"bounds");continue end
    -- Blink check every step (2026-10-17): a teleport and back inside the 0.25 s window. It compares against the last
    -- position the server saw change, over the time since, so bursty replication can't trip it.
    -- ponytail: one generous speed cap (2.5x cruise + 40) catches blinks only; the 0.25 s check still judges speed.

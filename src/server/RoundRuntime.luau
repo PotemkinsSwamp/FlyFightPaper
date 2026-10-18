@@ -10,6 +10,7 @@ local Economy=require(Root.Generated.Economy)
 local ServerConfig=require(Root.Generated.Server)
 local ServiceRules=require(Root.Shared.ServiceRules)
 local RewardQueue=require(script.Parent.RewardQueue)
+local VoteRings=require(script.Parent.VoteRings)
 local Runtime={};Runtime.__index=Runtime
 function Runtime.new(flight,combat,bots,profiles)
  local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false},Runtime)
@@ -17,6 +18,7 @@ function Runtime.new(flight,combat,bots,profiles)
  self.engine=Match.new({clock={now=os.clock},config=Config,economy=Economy,sessionId=Http:GenerateGUID(false):gsub("%-",""):sub(1,12),seed=ServerConfig.round.seed,
   allowStudioTestUsers=Run:IsStudio(),combatDrainState=function() return {through=os.clock(),blocked=false} end})
  self.bots.match=self.engine
+ self.rings=VoteRings.new(flight.room)
  if Run:IsStudio() then
   local status=Instance.new("BindableFunction");status.Name="MatchStatus";status.Parent=game.ServerStorage
   status.OnInvoke=function()return self.engine:snapshot(),self.engine.round and self.engine.round.lifeBounds,self.rejections,{records=flight.records,lastRound=self.lastRound,elapsed=self.engine.round and self.engine.now-self.engine.round.startedAt,fired=combat.totalFired,hits=combat.totalHits,flightMs=flight.lastWorkMs,combatMs=combat.lastWorkMs,botMs=bots.lastWorkMs} end
@@ -67,7 +69,7 @@ function Runtime.new(flight,combat,bots,profiles)
   elseif action=="profile" then
    -- Not in the click budget (the client refreshes every 3 s), but at most once a second per player.
    if os.clock()-(player:GetAttribute("LastProfileAt") or -math.huge)>=1 then player:SetAttribute("LastProfileAt",os.clock());self:sendProfile(player) end
-  elseif action=="vote" and type(value)=="string" then self.engine:vote(tostring(player.UserId),value)
+  elseif action=="vote" and type(value)=="string" then self:castVote(player,value)
   else self.hangar:handle(player,action,value) end
  end)
  Players.PlayerRemoving:Connect(function(player) self.joined[player]=nil end)
@@ -111,11 +113,11 @@ function Runtime:bind(p)
  p.identity={actorId=p.id,lifeId=tostring(p.life),participationId=p.id,matchId=self.engine.round.id,teamId=p.team}
  assert(self.engine:lifeStarted(p.identity))
  p.model:SetAttribute("Team",p.team or "")
+ local text=p.body.PilotName:FindFirstChildOfClass("TextLabel")
  if p.team then
-  local text=p.body.PilotName:FindFirstChildOfClass("TextLabel")
   text.Text=(p.team=="team:1" and "[■] " or "[●] ")..p.name
   text.TextColor3=p.team=="team:1" and Color3.fromRGB(255,120,110) or Color3.fromRGB(110,170,255)
- end
+ else text.Text=p.name;text.TextColor3=Color3.fromHSV((p.seat*.133)%1,0.65,0.9) end -- a plane flying on into a free-for-all
 end
 function Runtime:combatEvent(kind,victim,extra,at)
  if not self.engine.round or not victim.identity or (self.engine.phase~="ACTIVE" and self.engine.phase~="ENDING") then return end
@@ -174,7 +176,11 @@ function Runtime:begin(mode)
  if self.onBegin then self.onBegin() end
  self.sequence=0;self.earningCursor=0;self.finished=false;self.settled=false;self.earnedTotals={};self.finalRewards={};self.settledRows={}
  self.startShots=self.combat.totalFired;self.startHits=self.combat.totalHits
- self.flight.records={};self.flight.active=true;self.bots.enabled=true;self.combat.enabled=true
+ -- Rounds never stop (Alan 2026-10-17): planes already in the room carry on into this round.
+ self.flight.records={};self.flight.active=true;self.flight.safe=false;self.bots.enabled=true;self.combat.enabled=true
+ self.flight:hold(false);self.rings:hide();if self.onSitDown then self.onSitDown() end
+ for _,p in pairs(self.flight.pilots) do self.flight:newRound(p) end
+ for _,player in ipairs(Players:GetPlayers()) do player:SetAttribute("Vote",nil) end
  for player in pairs(self.joined) do
   if not self.matchmaking:admit(player) then self.joined[player]=nil;player:SetAttribute("InMatch",false) end
  end
@@ -182,7 +188,7 @@ function Runtime:begin(mode)
  self.flight.mode=mode or "FFA";self.flight.eligibility=self.bots.eligibility
  local zone=self.flight.room:FindFirstChild("ControlZone");if zone then zone.Transparency=mode=="CONTROL" and .84 or 1 end
  for player in pairs(self.joined) do
-  if player.Parent and self.profiles:view(player) then
+  if player.Parent and self.profiles:view(player) and not self.flight.pilots[player] then
    local profile=self.profiles:view(player)
    local p=self.flight:add(player,{loadout=profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout})
    if p then self:bind(p);player:SetAttribute("JoinQueued",false) end
@@ -224,20 +230,50 @@ function Runtime:withdraw(player)
  player:SetAttribute("JoinQueued",false)
  if self.engine.round and self.engine.phase=="ACTIVE" then self.engine:withdraw(tostring(player.UserId));self.bots:fill() end
 end
+-- Round end (Alan 2026-10-17, docs/decisions/2026-10-17-rounds-never-stop.md): nobody leaves the room. Scoring
+-- stops, nothing can hurt anyone, and every flying plane holds still for the winners' moment; the vote lap follows.
 function Runtime:finish()
  if self.finished then return end
- self.flight.active=false;self.combat.enabled=false;self.bots.enabled=false
+ self.flight.safe=true;self.combat.enabled=false;self.bots.enabled=false
  for _,shot in pairs(self.combat.shots) do self.combat:finish(shot) end
  assert(self.engine:sealCombatDrain(self.engine.round.id,self.engine.round.lastSequence))
  self.finished=true
  self.lastRound={mode=self.engine.round.mode,seconds=self.engine.round.endedAt-self.engine.round.startedAt,records=self.flight.records,shots=self.combat.totalFired-(self.startShots or 0),hits=self.combat.totalHits-(self.startHits or 0)}
  self:earnings()
  self:queueSettlement()
- local pilots={};for _,p in pairs(self.flight.pilots) do table.insert(pilots,p) end
+ local pilots={};for _,p in pairs(self.flight.pilots) do if p.practice then table.insert(pilots,p) end end
  for _,p in ipairs(pilots) do
   self.flight:remove(p,"round_end")
-  if p.practice and p.player then p.player:SetAttribute("InMatch",false) end -- practice ends with the round
+  if p.player then p.player:SetAttribute("InMatch",false) end -- practice ends with the round
  end
+ self.flight:hold(true)
+ if self.onWinners then
+  local ids={};for place,row in ipairs(MatchRules.winners(self.engine.round.result)) do ids[place]=row.actorId end
+  self.onWinners(ids)
+ end
+end
+-- A vote from the 1/2/3 keys, the card, or flying through a ring. The player's attribute lights their choice.
+function Runtime:castVote(player,mode)
+ if self.engine:vote(tostring(player.UserId),mode) then player:SetAttribute("Vote",mode) end
+end
+-- Each step of the vote lap: whose plane flew through a ring since last step.
+function Runtime:watchRings()
+ for _,p in pairs(self.flight.pilots) do
+  if p.player and p.model:GetAttribute("State")=="FLYING" then
+   local now=p.body.Position
+   local mode=p.ringFrom and self.rings:passed(p.ringFrom,now)
+   if mode then self:castVote(p.player,mode) end
+   p.ringFrom=now
+  else p.ringFrom=nil end
+ end
+end
+-- What happens as the round break moves on: the vote lap frees the planes and puts up the rings; the countdown
+-- takes them down again.
+function Runtime:phaseChanged(phase)
+ if phase=="VOTE" then
+  self.flight:hold(false);self.bots.enabled=true;self.rings:show()
+  if self.onSitDown then self.onSitDown() end
+ elseif phase=="COUNTDOWN" then self.rings:hide() end
 end
 function Runtime:queueSettlement()
  local r=self.engine.round
@@ -284,10 +320,13 @@ function Runtime:step(dt)
   end
   self.engine:tick();self:earnings()
   if self.engine.phase=="ENDING" then self:finish() end
+  if self.engine.phase~=self.lastPhase then self.lastPhase=self.engine.phase;self:phaseChanged(self.engine.phase) end
+  if self.engine.phase=="VOTE" then self:watchRings() end
   if self.finished and not self.settled then self:queueSettlement() end
   if self.engine.phase=="READY" and self.settled and next(self.joined) then self:begin(Run:IsStudio() and Root:GetAttribute("DevMode") or self.engine.nextMode or "FFA") end
  end
  local snapshot=table.clone(self.engine:publicSnapshot())
+ if self.engine.phase=="VOTE" then self.rings:update(snapshot.voteTotals or {}) end
  snapshot.endsAt=self.engine.round and self.engine.round.endsAt;snapshot.serverTime=os.clock()
  if self.engine.round and self.engine.round.result then
   local result=table.clone(snapshot.result);result.participants={}

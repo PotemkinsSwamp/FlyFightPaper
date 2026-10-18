@@ -22,6 +22,7 @@ local HUD = require(script.Parent.FlightHUD)
 local planes = workspace:WaitForChild("Planes")
 local Menu=require(script.Parent.MenuController)
 Menu.start()
+require(script.Parent.RoundEnd).start()
 local action = Root:WaitForChild("FlightAction")
 local plane, stopFlight
 local function attach(model)

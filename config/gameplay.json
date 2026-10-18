@@ -299,8 +299,14 @@
       {"name": "South-east towers", "center": [600, 170, 250], "radius": 340, "half_height": 100},
       {"name": "Ceiling", "center": [425, 480, 0], "radius": 475, "half_height": 140}
     ],
-    "results_seconds": 8,
-    "vote_seconds": 12,
+    "round_end_comment": "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still, the camera visits the top 3 on their desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is. Rings: one row of three over each side of the room, in air checked clear (2026-10-17); each row is FFA, TDM, CONTROL from west to east.",
+    "results_seconds": 10,
+    "vote_seconds": 20,
+    "vote_ring_radius": 80,
+    "vote_rings": [
+      {"mode": "FFA", "center": [-600, 420, 450]}, {"mode": "TDM", "center": [0, 420, 450]}, {"mode": "CONTROL", "center": [600, 420, 450]},
+      {"mode": "FFA", "center": [-750, 360, -600]}, {"mode": "TDM", "center": [-150, 360, -600]}, {"mode": "CONTROL", "center": [450, 360, -600]}
+    ],
     "launch_countdown_seconds": 3,
     "vote_tie_rule": "least_recent_then_seeded",
     "score_tie_rule": "shared_result_no_sudden_death",

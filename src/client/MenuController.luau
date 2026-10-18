@@ -7,7 +7,6 @@ local Options=require(script.Parent.Options)
 local Tutorial=require(script.Parent.Tutorial)
 local Board=require(script.Parent.MenuBoard)
 local SettingsScreen=require(script.Parent.SettingsScreen)
-local ResultsScreen=require(script.Parent.ResultsScreen)
 local PauseScreen=require(script.Parent.PauseScreen)
 local ShopScreen=require(script.Parent.ShopScreen)
 local WaitScreen=require(script.Parent.WaitScreen)
@@ -23,8 +22,6 @@ function Menu.start()
  local render
  local function overlay(open)
   state.overlay=open
-  -- Opening the menu brings the round results back if Stay hid them.
-  if open then state.resultsHidden=false end
   Root:SetAttribute("OverlayOpen",open);action:FireServer("overlay",open)
   if render then render() end
  end
@@ -63,12 +60,6 @@ function Menu.start()
   end,
  })
  -- Paper screens drawn full-screen; anything not listed still uses the dark panel.
- local resultsScreen=ResultsScreen.new(gui.Parent,{
-  vote=function(mode)action:FireServer("vote",mode)end,
-  -- Stay: put the results away and look around the classroom until the next round; Tab or Menu brings them back.
-  stay=function()state.resultsHidden=true;overlay(false)end,
-  leave=function()action:FireServer("withdraw",true);overlay(false);home()end,
- })
  local pauseScreen=PauseScreen.new(gui.Parent,{
   resume=function()overlay(false)end,
   hangar=function()Menu.show("hangar")end,
@@ -78,24 +69,22 @@ function Menu.start()
  })
  local shopScreen=ShopScreen.new(gui.Parent,{buy=function(key)action:FireServer("mockProduct",key)end,back=function()home()end})
  local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})
- local paper={home=board,settings=settingsScreen,hangar=hangarScreen,results=resultsScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen}
+ local paper={home=board,settings=settingsScreen,hangar=hangarScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen}
  -- Open a menu screen directly (the desk's Edit button, the menu buttons, Studio photo mode).
  function Menu.show(screen,fromDesk)
   if player:GetAttribute("InMatch") and not state.overlay then overlay(true) end
   if screen=="hangar" then hangarScreen.open() end
   state.screen=screen;state.fromDesk=fromDesk==true;action:FireServer("profile");render()
  end
--- The gap between rounds: results, then the vote, then the countdown.
-local function between(phase)return phase=="RESULTS" or phase=="VOTE" or phase=="COUNTDOWN" end
+-- Rounds never stop (Alan 2026-10-17): the round end plays out in the room (RoundEnd), so no menu opens by itself.
 render=function()
   local inMatch=player:GetAttribute("InMatch")==true
   local snap=state.snapshot
-  local results=inMatch and snap and between(snap.phase) and not state.resultsHidden
   local queued=player:GetAttribute("JoinQueued")==true
-  local open=not inMatch or state.overlay or results or queued
+  local open=not inMatch or state.overlay or queued
   openButton.Visible=inMatch and not open
   -- Which paper screen shows: waiting for a desk, round results, the in-match clipboard, or the chosen screen.
-  local key=queued and "queued" or state.screen=="home" and (results and "results" or inMatch and "pause") or state.screen
+  local key=queued and "queued" or state.screen=="home" and (inMatch and "pause") or state.screen
   local current=open and paper[key]
   for _,screen in pairs(paper) do if screen~=current then screen.frame.Visible=false end end
   if current then current.update(player,state.profile,snap);current.frame.Visible=true end
@@ -108,15 +97,6 @@ render=function()
  GuiService.MenuOpened:Connect(function()if player:GetAttribute("InMatch") then overlay(true) end end)
  Root:WaitForChild("RoundView").OnClientEvent:Connect(function(snap)
   state.snapshot=snap
-  local totals=snap.voteTotals or {};local voteKey=tostring(totals.FFA)..":"..tostring(totals.TDM)..":"..tostring(totals.CONTROL)
-  if state.lastPhase~=snap.phase then
-   local roundStarts=between(state.lastPhase) and not between(snap.phase)
-   state.lastPhase=snap.phase;state.screen="home"
-   -- Stay lasts until the next round starts, and a new round always starts with the menu put away.
-   if not between(snap.phase) then state.resultsHidden=false end
-   if roundStarts and state.overlay then overlay(false) else render() end
-  elseif state.lastVotes~=voteKey and snap.phase=="VOTE" then render() end
-  state.lastVotes=voteKey
  end)
  Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
   state.profile=profile;Options.apply(profile.settings)

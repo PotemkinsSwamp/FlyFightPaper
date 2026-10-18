@@ -43,6 +43,9 @@ flight.onSpawn=function(p) combat:attach(p);if p.kind=="bot" then bots:reset(p) 
 flight.onDeath=function(p,cause) combat:death(p,cause) end
 flight.onRefold=function(p) combat:refit(p) end
 flight.onLand=function(p) desks:perform(p,"refill") end
+-- The winners' moment: the top 3 jump up on their desks; everyone sits back down for the vote lap.
+rounds.onWinners=function(ids) avatars:celebrate(ids) end
+rounds.onSitDown=function() avatars:sitDown() end
 local removed=flight.onRemoved
 flight.onRemoved=function(p) combat:detach(p);avatars:remove(p);if removed then removed(p) end end
 -- Studio perf readout: server frame times over the last second, shown by the client dev overlay.

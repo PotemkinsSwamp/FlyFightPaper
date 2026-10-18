@@ -540,10 +540,62 @@ return JSONTypes.map({
         ["duration_seconds"] = 480,
         ["ffa_elimination_target"] = 20,
         ["launch_countdown_seconds"] = 3,
-        ["results_seconds"] = 8,
+        ["results_seconds"] = 10,
+        ["round_end_comment"] = "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still, the camera visits the top 3 on their desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is. Rings: one row of three over each side of the room, in air checked clear (2026-10-17); each row is FFA, TDM, CONTROL from west to east.",
         ["score_tie_rule"] = "shared_result_no_sudden_death",
         ["tdm_elimination_target"] = 60,
-        ["vote_seconds"] = 12,
+        ["vote_ring_radius"] = 80,
+        ["vote_rings"] = JSONTypes.array({
+            [1] = JSONTypes.map({
+                ["center"] = JSONTypes.array({
+                    [1] = -600,
+                    [2] = 420,
+                    [3] = 450,
+                }),
+                ["mode"] = "FFA",
+            }),
+            [2] = JSONTypes.map({
+                ["center"] = JSONTypes.array({
+                    [1] = 0,
+                    [2] = 420,
+                    [3] = 450,
+                }),
+                ["mode"] = "TDM",
+            }),
+            [3] = JSONTypes.map({
+                ["center"] = JSONTypes.array({
+                    [1] = 600,
+                    [2] = 420,
+                    [3] = 450,
+                }),
+                ["mode"] = "CONTROL",
+            }),
+            [4] = JSONTypes.map({
+                ["center"] = JSONTypes.array({
+                    [1] = -750,
+                    [2] = 360,
+                    [3] = -600,
+                }),
+                ["mode"] = "FFA",
+            }),
+            [5] = JSONTypes.map({
+                ["center"] = JSONTypes.array({
+                    [1] = -150,
+                    [2] = 360,
+                    [3] = -600,
+                }),
+                ["mode"] = "TDM",
+            }),
+            [6] = JSONTypes.map({
+                ["center"] = JSONTypes.array({
+                    [1] = 450,
+                    [2] = 360,
+                    [3] = -600,
+                }),
+                ["mode"] = "CONTROL",
+            }),
+        }),
+        ["vote_seconds"] = 20,
         ["vote_tie_rule"] = "least_recent_then_seeded",
     }),
     ["schema_version"] = 1,
