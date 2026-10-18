@@ -358,6 +358,7 @@ Rewrite client steering and camera; keep client network ownership and the server
 - **Done when:** a new player understands the game without reading anything long, and Alan approves.
 
 ## Stage 10 — Commerce wiring (stays off)
+What is sold and the order (plane retexture first): [shop plan 2026-10-18](../decisions/2026-10-18-shop-plan.md).
 - Real `MarketplaceService` adapter: `ProcessReceipt` with idempotency through ProfileStore, plus game-pass ownership checks.
 - Keep everything **disabled** until Alan approves product IDs and prices. No real Robux tests.
 

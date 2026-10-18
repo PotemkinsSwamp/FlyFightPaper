@@ -89,7 +89,8 @@ a preset requires respawn/fresh plane or legal paid refold, not an airborne tran
 to main menu ends life/streak, preserves earned contributions, forfeits final bonuses, and respects recent-attacker
 credit. A withdrawn FFA pilot cannot win. No free escape/rejoin resetting novice progress or reward ledgers.
 
-Paper and XP are separate. Buying Paper cannot buy the required level. No direct level purchases. A useful
+Paper and XP are separate. Buying Paper cannot buy the required level. No direct level purchases. Robux may unlock one part early at a fixed
+price set by its level; that never grants XP or levels (Alan 2026-10-18, [shop plan](../decisions/2026-10-18-shop-plan.md)). A useful
 purchase after roughly two or three ordinary matches; a 10–15-hour unboosted collection is a provisional
 modeling target, not proven retention. The code must support central tuning without rewriting every module.
 
@@ -122,7 +123,7 @@ consume unavailable value. Permanent ownership disables new same-resource tempor
 remaining time on a permanent upgrade with clear terms, no invented refund. Live prices/IDs are not approved.
 
 ## Later scope and delivery boundary
-Later: cosmetics, more maps, full touch then controller, improved desk equipment, collapsing cities, capture/
+Cosmetics are now planned for sale ([shop plan](../decisions/2026-10-18-shop-plan.md)). Later: more maps, full touch then controller, improved desk equipment, collapsing cities, capture/
 payload and escort modes, advanced ranked systems. Do not build these instead of the required game.
 Deliver a complete private candidate and honest evidence. No public launch, real spending, account changes,
 or claims of tested enjoyment, indistinguishability, or profitability without evidence.

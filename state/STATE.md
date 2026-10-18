@@ -1,8 +1,8 @@
 # Since Alan last checked (2026-10-18)
 - **Winners' moment rebuilt** (OK'd): 3rd, 2nd, 1st hop onto desks, then a group shot dancing with Roblox emotes,
   name plates, confetti; results card the last 10 s (27 s in all). Details: docs/systems/modes-and-scoring.md.
-- **Stage 9 approved (2026-10-18).** Next by the plan: Stage 10 (shop wiring, kept switched off until you OK
-  prices), then the tutorial, then Stage 11 (multiplayer tests, QA, release candidate).
+- **Stage 9 approved (2026-10-18).** Next ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)): retexture the
+  plane parts (one sample for your OK first), pricing research, then the shop (off until you OK prices).
 - **Wall touches are fair now (you re-checked):** a graze under about 25 degrees on a building, the
   room or the train's side is a scrape: a little damage, the nose is knocked away and the plane wobbles, and you
   steer back. Grinding along keeps costing more. More head-on crashes; the train's moving front still kills. Checked:
@@ -10,7 +10,7 @@
   bots died only to weapons in a 2-minute match. ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md))
 - Earlier: real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
-# Now: Stage 9 approved; Stage 10 next (MILESTONES)
+# Now: plane retexture, then Stage 10 shop (MILESTONES)
 Toilet Roll jitter: not reproduced; tell me when it happens.
 
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
@@ -47,4 +47,5 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-1. Nothing blocking. Stage 10 needs your product list and prices before anything is switched on.
+1. Draw-on-your-plane pass: yes, no, or a safer version (see the shop plan's Open line).
+2. Prices: after the research report.
