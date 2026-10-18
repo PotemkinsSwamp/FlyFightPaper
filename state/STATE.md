@@ -8,7 +8,6 @@
   same line. All in src/shared/Lines.luau. Seen in Studio Play; tests 326/0. Alan is reviewing the full list.
 - **Rounds never stop** (Alan's decision, docs/decisions/2026-10-17-rounds-never-stop.md): "Pencils down!", winners'
   moment on the desks with results, safe vote lap through mode rings, next round where everyone is. Not built yet.
-- **Loose in the place file:** "meme toy", "HorseDragoon", "Backpack", "ungroup pibble", "Model" (scripts read: harmless). Keep or delete?
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
