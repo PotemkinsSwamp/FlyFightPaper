@@ -165,11 +165,11 @@ mistake would be easy to make twice.
 - **Show layouts before uploading.** Town layouts get a preview picture and Alan's OK first
   ([decision](../decisions/2026-10-09-town-planning-rules.md)).
 - **Touch up before showing.** Nothing is shown to Alan until its close-ups are clean.
-
-Back to [HOME](../HOME.md)
 - **Emotes on scaled-up avatars** (2026-10-17): Roblox scales an animation's hip ("Root" joint) movement twice on an
   avatar made big with `ScaleTo` (27 x 27 instead of 27), so emotes throw the body far from its root; other joints
   are fine. Fix: each `PreSimulation`, divide that joint's `Transform.Position` by the model's scale
   (`src/client/WinnersCutscene.luau`). Test a new animation on a big avatar by measuring head-to-root drift.
 - **Starting a round in place:** planes carried over keep their old team; clear it and join them to the new round
   before bots fill desks, or the roster rejects them (`invalid_actor_team` / `unexpected_actor_team`).
+
+Back to [HOME](../HOME.md)
