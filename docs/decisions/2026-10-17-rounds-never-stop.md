@@ -40,6 +40,11 @@ When a round ends, nobody is sent to a results menu. Instead:
   the avatars' animation.
 - **Vote lap at least 30 seconds** (you may need to cross the whole room): set to 30.
 - **Vote rings don't match the look** of the game yet; they need to fit the classroom-craft style.
+- **Alan's picks:** vote rings become **hula hoops** (bright plastic gym hoops, one colour per mode, soft glow; Creator
+  Store first). Animations: Alan leans to **made and uploaded** animations. Roblox's own route is: animate on an R15
+  rig (Blender or Studio's Animation Editor), import the FBX in the Animation Editor, publish to get an animation id,
+  play it through the Animator (the same kind of asset as Marketplace emotes, so buyable emotes later fit). Each
+  upload needs Alan's go; still to check: whether Open Cloud can upload animations without clicking through Studio.
 
 ## Why
 Alan: other games (TF2) keep you playing between rounds, and dead time makes players leave. Shooting vote targets
