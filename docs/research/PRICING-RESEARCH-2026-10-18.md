@@ -253,7 +253,10 @@ the developer about $0.27 (70% share at the DevEx rate above).
 Ground rules
 1. **Each step builds on the last:** a cheap first buy (49-99), the everyday middle (149-499), a few big items
    (799-2,999) that make the middle look fair.
-2. **Buying a part early never costs less than buying its Paper,** or nobody buys Paper packs.
+2. **Paper and Robux are linked by one rate.** Packs give 10-12.5 Paper per R$. Cosmetics and special planes cost
+   25 Paper per R$ of their Robux price (twice the best pack), so the good ones are a real grind (a 279 R$ skin =
+   about 7,000 Paper, 16 matches) and Robux is the quick way. Early part unlocks cost about their Paper value.
+   First guess: re-check once the game is a whole economy.
 3. **Permanent costs a lot** (Alan 2026-10-18): it lasts forever, so timed boosts are the everyday buy.
 4. **No random paid items** (loot boxes): every buy says exactly what you get.
 5. Prices are read from Roblox, not written into the game, so Roblox's regional pricing can lower them in poorer
@@ -264,15 +267,15 @@ Ground rules
 | Starter pack (once per player): 1,500 Paper + 1 trail + 30 min 2x XP | 99 | Cheap first purchase is the hardest step |
 | Paper packs: 1,000 / 3,500 / 10,000 | 99 / 299 / 799 | Bonus grows with size (+17%, +25%) |
 | 2x XP or 2x Paper for 15 / 30 / 60 / 180 / 300 min | 25 / 45 / 79 / 199 / 299 | 5 h nearly the pass price |
-| Permanent 2x XP / 2x Paper | 999 / 1,499 | Alan: permanent is forever, so it costs a lot ($12-19) |
-| Early part unlock, by the part's level: 2-5 / 7-12 / 14-20 / 22-28 / 40 | 79 / 199 / 249 / 349 / 499 | Always above its Paper value |
-| Body bundle: one body and its matching parts unlocked early | about 999 | Alan: no unlock-everything button |
+| Permanent 2x XP / 2x Paper | 1,499 / 999 | Alan: permanent costs a lot, XP the most |
+| Early part unlock, by the part's level: 2-5 / 7-12 / 14-20 / 22-28 / 40 | 49 / 149 / 199 / 279 / 399 | About its Paper value; cheaper because prestige takes parts back |
+| Body bundle: one body and its matching parts unlocked early | about 699 | Alan: no unlock-everything button |
 | VIP: +5 build slots, name colour, VIP desk spot | 499 | Big games: 375-800 |
 | Cosmetics (emotes, trails, stickers, fold effects, paper types): sliding scale by how detailed and how wanted | about 25-279 ($0.30-3.49) | Alan: simple ones cost cents, detailed popular ones a few dollars |
 | Whole-plane skins: common / rare / legendary | 299 / 499 / 799 | Rivals shop 299 / 449 / 599 |
 | Drawing pass | 349 | One-time, big feature |
 | Private server, per month | 100 | Roblox lowers it by region |
-| Special planes | 15,000-30,000 Paper | 35-70 matches, or Paper packs |
+| Special planes | 15,000-30,000 Paper or 599-1,199 R$ | 35-70 matches, or Robux |
 | Season sticker book (later) | 499-699 | Big games: 639-799 |
 
 To check after launch: which items sell, then change prices (Roblox's own price tests can help once sales are
