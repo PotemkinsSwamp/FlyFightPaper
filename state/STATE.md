@@ -1,8 +1,11 @@
 # Since Alan last checked (2026-10-18)
-- **Winners' moment rebuilt** (OK'd): 3rd, 2nd, 1st hop onto desks, then a group shot dancing with Roblox emotes,
-  name plates, confetti; results card the last 10 s (27 s in all). Details: docs/systems/modes-and-scoring.md.
-- **Stage 9 approved (2026-10-18).** Next ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)): retexture the
-  plane parts (one sample for your OK first), pricing research, then the shop (off until you OK prices).
+- **Planes look like paper (started):** softer coloured-paper team colours are in for every plane. Paper texture
+  (creases, paper edges) works on the Classic sample in Studio; the other 22 parts next
+  ([decision](../docs/decisions/2026-10-18-paper-look.md)). **Duct fans** no longer poke through the ceiling.
+- **Shop planned with you:** what we sell, whole-plane skins, sticker editor, drawing pass with safeguards,
+  prestige, special planes ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)); draft prices in the
+  [pricing research](../docs/research/PRICING-RESEARCH-2026-10-18.md).
+- **Stage 9 approved (2026-10-18).**
 - **Wall touches are fair now (you re-checked):** a graze under about 25 degrees on a building, the
   room or the train's side is a scrape: a little damage, the nose is knocked away and the plane wobbles, and you
   steer back. Grinding along keeps costing more. More head-on crashes; the train's moving front still kills. Checked:
@@ -10,7 +13,7 @@
   bots died only to weapons in a 2-minute match. ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md))
 - Earlier: real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
-# Now: plane retexture, then Stage 10 shop (MILESTONES)
+# Now: paper texture on all plane parts, then prestige design and the Stage 10 shop (MILESTONES)
 Toilet Roll jitter: not reproduced; tell me when it happens.
 
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
