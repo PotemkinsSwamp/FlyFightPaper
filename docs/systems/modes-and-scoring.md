@@ -13,8 +13,8 @@ and level bar (seen 2026-10-17; the bar filling not yet seen, the test account i
 middle desk), with the town, ceiling decorations, landing rings, planes and name tags faded out on your screen while it
 plays; the card comes in after about 4 s, once the camera has stepped back beside it (seen in Play 2026-10-18, steady
 60 FPS). The stand-up-and-hop animation is built and seen in a Studio test (waits on Alan's go to upload). Vote lap now 30 s. Vote rings: three giant hula hoops in front of
-the window wall (plastic with glowing tape stripes, built from round parts as no free Creator Store hoop fit; seen 2026-10-18), with a white HUD arrow to the nearest one while none is on screen (arrow not yet
-seen pointing; it stayed hidden correctly with a ring in view). Tests 328/0.
+the window wall (plastic with glowing tape stripes, built from round parts as no free Creator Store hoop fit; seen 2026-10-18), with a white HUD arrow to the nearest one while none is on screen (seen pointing
+the right way 2026-10-18; it stays hidden with a ring in view). Tests 328/0.
 Zone moves and looks right. Paper targets stand on roofs; two (homework, the second broccoli) were buried inside
 buildings placed later and moved to open roofs (2026-10-15). A hit tested in Play: the server pays 50 and tells the
 shooter's screen; the board falling flat not yet seen (Studio wasn't drawing). Team deathmatch passed a full match by
