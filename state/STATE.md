@@ -47,5 +47,6 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
+0. Studio: File > Save to File (keeps today's duct fan fix in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK.

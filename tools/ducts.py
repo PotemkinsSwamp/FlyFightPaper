@@ -310,9 +310,20 @@ for i, (x, z, axis, flow) in enumerate(F["spots"], start=1):
     # blades just after it); the housing's thick ring fills the plate's square hole round the blades' circle
     at = (x if along_x else z) - 6 * flow
     hole = F["opening"] / 2
-    plate(along_x, at, z if along_x else x, hole * 2 + 8, hole * 2 + 8, "FanPlate")
-    ring("FanHousing", LOOK_X if along_x else LOOK_Z, [at, MID, z] if along_x else [x, MID, at], hole + 16, 24, (32, 10),
-         color=STEEL)
+    # The plate fills above and below the blades' circle; the housing ring fills its sides. The ring is thinner
+    # toward the top and bottom so it never pokes through the duct floor (the classroom ceiling, Alan 2026-10-18)
+    # or roof: each piece's corners stay half a stud inside.
+    plate(along_x, at, z if along_x else x, W, hole * 2, "FanPlate")
+    frame = LOOK_X if along_x else LOOK_Z
+    centre = [at, MID, z] if along_x else [x, MID, at]
+    length = 2 * math.pi * (hole + 16) / 24 * 1.1
+    for k in range(24):
+        t = k * 2 * math.pi / 24
+        s, c = abs(math.sin(t)), abs(math.cos(t))
+        thick = 32 if s < 1e-6 else min(32, (H / 2 - 0.5 - length / 2 * c) / s - hole)
+        offset = apply(frame, apply(rz(t), [hole + thick / 2, 0, 0]))
+        part("FanHousing", [length, thick, 10], [centre[i] + offset[i] for i in range(3)],
+             rot=mat_mul(frame, rz(t - math.pi / 2)), color=STEEL)
 
 # The blower: a big fan on its room's far wall, facing down its duct (the client spins it).
 bl = D["blower"]

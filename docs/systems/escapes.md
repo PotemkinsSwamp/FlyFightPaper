@@ -25,7 +25,10 @@ Ways to shake off a plane that is chasing you. Two are planned:
 
 No points for shaking someone off.
 
-## Where it stands (2026-10-15)
+## Where it stands (2026-10-18)
+Fan housings no longer poke through the classroom ceiling (Alan 2026-10-18): the ring is trimmed top and bottom to
+the duct and the plate fills above and below the blades; checked with test rays, no see-through gaps. Live in the
+open Studio place; needs File > Save to File.
 Chalk eraser built and playtested by Alan: cloud made 2.25x then another 30% bigger (728 across), eraser half size,
 cooldown 3 min -> 2 min, haze inside instead of white-out, chalk blotches on the felt as the ready sign. Its model (92 x 29 x 25 studs) is
 built in Blender from Alan's approved model sheet and uploaded (2026-10-15). Ducts (2026-10-15): first built as a symmetrical loop and cross with 7 vents; Alan
