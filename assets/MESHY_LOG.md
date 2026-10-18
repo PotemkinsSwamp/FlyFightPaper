@@ -93,3 +93,6 @@
 | 2026-10-15 | cereal-box-tower | hero model from 4 views, 2k geometry, 4K PBR | 35 | succeeded, kept? tbd |
 | 2026-10-15 | egg-carton-market | hero model from 4 views, 2k geometry, 4K PBR | 35 | succeeded, kept? tbd |
 | 2026-10-15 | pencil-case-bridge | hero model from 4 views, 2k geometry, 4K PBR | 35 | succeeded, kept? tbd |
+| 2026-10-18 | plane-figure8 | motion 6 s | 10 | succeeded, kept? tbd |
+| 2026-10-18 | plane-swoop | motion 7 s | 10 | succeeded, kept? tbd |
+| 2026-10-18 | plane-spin | motion 7 s | 10 | succeeded, kept? tbd |

@@ -99,6 +99,14 @@ def views(folder, *images):
     save_model(t, out)
 
 
+def motion(name, seconds, prompt):
+    out = ROOT / "assets/animations/meshy"; out.mkdir(parents=True, exist_ok=True)
+    t = run("text-to-motion", dict(prompt=prompt, mode="prime", duration=float(seconds)), 10, name, f"motion {seconds} s")
+    fetch(t["result"]["motion_url"], out / f"{name}.fbx")
+    (out / f"{name}.json").write_text(json.dumps(dict(prompt=prompt, seconds=seconds, task=t["id"]), indent=2) + "\n")
+    print(out / f"{name}.fbx", "credits left", balance())
+
+
 if __name__ == "__main__":
     cmd, *args = sys.argv[1:] or ["balance"]
-    print(balance()) if cmd == "balance" else {"image": image, "model": model, "views": views}[cmd](*args)
+    print(balance()) if cmd == "balance" else {"image": image, "model": model, "views": views, "motion": motion}[cmd](*args)
