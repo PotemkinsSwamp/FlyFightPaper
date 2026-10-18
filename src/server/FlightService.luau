@@ -74,7 +74,7 @@ function Service.new()
   end
   local now=workspace:GetServerTimeNow();if now-p.lastAction<0.35 then return end;p.lastAction=now
   if action=="launch" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:launch(p)
-  elseif action=="fresh" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:destroy(p,Lines.pick("freshPlane"),"fresh")
+  elseif action=="fresh" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:destroy(p,{kind="fresh"},"fresh")
   elseif action=="loadout" and Run:IsStudio() and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then
    -- Studio test flights: a desk picker name or a whole hangar build, with every part unlocked.
    -- It lasts until the player picks a hangar preset and is never saved to the profile.
@@ -93,7 +93,7 @@ function Service.new()
    end end
    if hunter then
     hunter.team=nil;hunter.testLoadout=Loadouts.make(self.catalog,"eraser_only");hunter.loadoutName="eraser_only"
-    if hunter.model:GetAttribute("State")=="DESK" then self:replace(hunter) else self:destroy(hunter,"Rearming with an eraser","fresh") end
+    if hunter.model:GetAttribute("State")=="DESK" then self:replace(hunter) else self:destroy(hunter,{kind="fresh"},"fresh") end
    end
   end
  end)
@@ -185,7 +185,7 @@ function Service:replace(p)
  self:build(p)
 end
 function Service:remove(p,cause)
- if p.model:GetAttribute("State")~="DESTROYED" then self:destroy(p,"Left the round",cause) end
+ if p.model:GetAttribute("State")~="DESTROYED" then self:destroy(p,{kind="left"},cause) end
  p.model:Destroy();self.pilots[p.key]=nil;self.byId[p.id]=nil;self.seats[p.seat]=nil
  if self.onRemoved then self.onRemoved(p) end
 end
@@ -244,18 +244,20 @@ function Service:atDesk(p)
  return math.abs(position.X)<=48 and math.abs(position.Z)<=48 and math.abs(position.Y)<=16
 end
 -- `walls`: the room hurts even a protected plane; protection only stops enemy fire and rams.
-function Service:damage(p,amount,cause,walls)
+-- `how`: how this hit could bring the plane down, for the death line (Lines.death).
+function Service:damage(p,amount,cause,walls,how)
  if p.model:GetAttribute("State")=="DESTROYED" or not walls and self:protected(p,workspace:GetServerTimeNow()) then return 0 end
  local actual=math.min(p.model:GetAttribute("Health"),math.max(0,amount))
  p.model:SetAttribute("Health",p.model:GetAttribute("Health")-actual)
- if p.model:GetAttribute("Health")<=0 then self:destroy(p,Lines.pick("shotDown"),cause) end
+ if p.model:GetAttribute("Health")<=0 then self:destroy(p,how or {kind=cause=="weapon" and "weapon" or "crash"},cause) end
  return actual
 end
-function Service:destroy(p,message,cause)
+-- `how` (Lines.death) picks the top note; CombatService rewrites it once it knows who gets the fold.
+function Service:destroy(p,how,cause)
  if p.model:GetAttribute("State")=="DESTROYED" then return end
  self:clearLandingQueue(p)
  -- DeathCause picks the client's death animation (PlaneDeaths): "weapon" tears the plane up, anything else crumples it.
- p.model:SetAttribute("DeathCause",cause or "collision");p.model:SetAttribute("State","DESTROYED");p.model:SetAttribute("Health",0);p.model:SetAttribute("Message",message)
+ p.model:SetAttribute("DeathCause",cause or "collision");p.model:SetAttribute("State","DESTROYED");p.model:SetAttribute("Health",0);p.how=how;p.model:SetAttribute("Message",Lines.death(how,"you"))
  p.drive.Enabled=false;p.orientation.Enabled=false
  if not p.body.Anchored then p.body:SetNetworkOwner(nil) end
  p.body.Anchored=true;p.body.CanCollide=false;p.body.CanQuery=false;p.respawnAt=workspace:GetServerTimeNow()+Gameplay.combat.respawn_seconds
@@ -329,17 +331,18 @@ function Service:impact(p,normal,part,now,dt,pushed)
  p.lastScrape=now
  local amount=Rules.collisionDamage(into,part.Name=="Floor" and p.model:GetAttribute("Lift")<=0,p.stats.health,dt,now-p.scrapeSince)
  if Run:IsStudio() then self.records[p.id].lastImpact={part=part:GetFullName(),speed=into,at=now,position=tostring(p.body.Position)} end
+ local how={kind="crash",part=part.Name,outOfLift=p.model:GetAttribute("Lift")<=0}
  if amount>=p.stats.health then
-  self:destroy(p,Lines.pick("crashed"),"collision")
+  self:destroy(p,how,"collision")
   return
  end
- self:damage(p,amount,"collision",true)
+ self:damage(p,amount,"collision",true,how)
  p.model:SetAttribute("CollisionNormal",normal);p.model:SetAttribute("DeflectUntil",now+.35)
  say(p,"scraping")
 end
 -- A duct fan blade: a big bite out of the plane and a shove the way the blade was moving.
 function Service:fanHit(p,push,now)
- self:damage(p,p.stats.health*Gameplay.world.ducts.fans.damage_share,"fan",true)
+ self:damage(p,p.stats.health*Gameplay.world.ducts.fans.damage_share,"fan",true,{kind="fan"})
  if p.model:GetAttribute("State")~="FLYING" then return end
  p.model:SetAttribute("Knock",push*60);p.model:SetAttribute("KnockUntil",now+.3)
  say(p,"fanClip")
@@ -361,12 +364,13 @@ function Service:ram(a,b,now)
  a.lastContact,b.lastContact=now,now
  local closing=((a.previousVelocity or Vector3.zero)-(b.previousVelocity or Vector3.zero)):Dot((b.body.Position-a.body.Position).Unit)
  if closing<Gameplay.combat.ram_closing_speed then
-  for _,p in ipairs({a,b}) do self:damage(p,p.stats.health*Gameplay.combat.plane_contact_health_fraction,"contact") end
+  for _,p in ipairs({a,b}) do self:damage(p,p.stats.health*Gameplay.combat.plane_contact_health_fraction,"contact",nil,{kind="ram",other=(p==a and b or a).name}) end
   return
  end
  local ha,hb=a.model:GetAttribute("Health"),b.model:GetAttribute("Health")
- if ha<=hb then self:damage(b,ha,"collision");self:damage(a,ha,"collision") end
- if hb<ha then self:damage(a,hb,"collision");self:damage(b,hb,"collision") end
+ local hitA,hitB={kind="ram",other=b.name},{kind="ram",other=a.name}
+ if ha<=hb then self:damage(b,ha,"collision",nil,hitB);self:damage(a,ha,"collision",nil,hitA) end
+ if hb<ha then self:damage(a,hb,"collision",nil,hitA);self:damage(b,hb,"collision",nil,hitB) end
 end
 function Service:inServiceZone(p,origin)
  local homes={}
@@ -459,7 +463,7 @@ function Service:step(dt)
    local localPos=self.boundsCF:PointToObjectSpace(p.body.Position)
    local outside=math.abs(localPos.X)>self.boundsSize.X/2+12 or (localPos.Y>self.boundsSize.Y/2+self.headroom+12 or localPos.Y<-self.boundsSize.Y/2-12) or math.abs(localPos.Z)>self.boundsSize.Z/2+12
    if outside then p.outSince=p.outSince or now;say(p,"turnBack") elseif p.outSince then p.outSince=nil;p.model:SetAttribute("Message","") end
-   if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds then self:destroy(p,Lines.pick("leftRoom"),"bounds");continue end
+   if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds then self:destroy(p,{kind="bounds"},"bounds");continue end
    -- Blink check every step (2026-10-17): a teleport and back inside the 0.25 s window. It compares against the last
    -- position the server saw change, over the time since, so bursty replication can't trip it.
    -- ponytail: one generous speed cap (2.5x cruise + 40) catches blinks only; the 0.25 s check still judges speed.
@@ -489,7 +493,7 @@ function Service:step(dt)
      -- A client that keeps ignoring the correction is cheating (or hopelessly lagged): after 1.5 s of it the plane
      -- is lost, like leaving the room. One lag spike only snaps it back.
      p.corrections=(p.corrections or 0)+1
-     if p.corrections>=6 then self:destroy(p,Lines.pick("wobbleDown"),"bounds");continue end
+     if p.corrections>=6 then self:destroy(p,{kind="unfolded"},"bounds");continue end
      -- Lag or a bad client: put the plane back where it last flew legally instead of killing it.
      p.body.CFrame=p.checkCFrame;p.body.AssemblyLinearVelocity=p.checkCFrame.LookVector*p.stats.speed
      p.lastPosition,p.lastCFrame,p.seenPos,p.seenAt=p.checkCFrame.Position,p.checkCFrame,p.checkCFrame.Position,now

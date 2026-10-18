@@ -30,7 +30,7 @@ end
 function Service:perform(p,action)
  if p.serviceBusy or p.model:GetAttribute("State")~="DESK" then return end
  local life=p.life
- if action=="fresh" then self.flight:destroy(p,Lines.pick("freshPlane"),"fresh");return end
+ if action=="fresh" then self.flight:destroy(p,{kind="fresh"},"fresh");return end
  if action=="refill" or action=="repair" then
   p.serviceBusy=true;p.model:SetAttribute("ServiceBusy",true)
   p.model:SetAttribute("Message",Lines.pick(action=="refill" and "refilling" or "repairing"))

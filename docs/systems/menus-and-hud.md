@@ -5,7 +5,8 @@ Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-fo
 
 ## Where it stands (2026-10-17)
 Stage 6 approved by Alan (2026-10-13) after the on-brand HUD restyle. Edge arrows now stay below the top strips.
-Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); seen in Studio Play 2026-10-17 except the
+Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); death lines say how it happened (weapon, the
+building or thing hit, who chased or rammed you), the same line on your note and in the feed. Seen in Studio Play 2026-10-17 except the
 between-rounds lines. Warnings (INCOMING!, LOCKED ON!), zone words and error messages stay fixed on purpose.
 
 ## Rules

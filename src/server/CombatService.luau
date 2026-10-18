@@ -2,6 +2,7 @@ local RS=game:GetService("ReplicatedStorage")
 local Run=game:GetService("RunService")
 local Root=RS.FlyFightPaper
 local Rules=require(Root.Shared.CombatRules)
+local Lines=require(Root.Shared.Lines)
 local FlightRules=require(Root.Shared.FlightRules)
 local Config=require(Root.Generated.Gameplay).combat
 local PaperSigns=require(Root.Generated.Gameplay).world.paper_targets
@@ -259,16 +260,16 @@ function Service:finish(shot,position,wall)
  if shot.weapon.homing and self.info[shot.owner] then self.info[shot.owner].activeErasers=math.max(0,self.info[shot.owner].activeErasers-1) end
  self:emit({kind="end",id=shot.id,position=position or shot.position,wall=wall})
 end
-function Service:hit(attacker,target,amount,now,position)
+function Service:hit(attacker,target,amount,now,position,weaponId)
  if not attacker or not self:enemy(attacker,target) or target.model:GetAttribute("State")=="DESTROYED" or self.flight:protected(target,now) then return end
  local actual=math.min(amount,target.model:GetAttribute("Health"));if actual<=0 then return end
  local history=self.info[target.id].history
  for i=#history,1,-1 do if now-history[i].at>Config.assist_window_seconds then table.remove(history,i) end end
- table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity})
+ table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity,weapon=weaponId})
  local record=self.flight.records[attacker.id];record.damage+=actual;record.hits+=1;self.totalHits+=1
  target.lastHitAt=now;target.lastHitBy=attacker
  if self.onDamage then self.onDamage(attacker,target,actual,os.clock()) end
- self.flight:damage(target,actual,"weapon")
+ self.flight:damage(target,actual,"weapon",nil,{kind="weapon",weapon=weaponId})
  self:emit({kind="hit",owner=attacker.id,target=target.id,damage=actual,position=position or target.body.Position})
 end
 function Service:death(p,cause)
@@ -282,10 +283,19 @@ function Service:death(p,cause)
  end
  -- Match earnings supply record points, including zone points and fold bonuses.
  for _,id in ipairs(assists) do local record=self.flight.records[id];if record then record.assists+=1 end end
+ -- The death line, now that the fold has an owner: the folder's name and the weapon of their last hit.
+ local how=table.clone(p.how or {kind=cause=="weapon" and "weapon" or "crash"})
+ local killerName=killer and self.flight.records[killer] and self.flight.records[killer].name or nil
+ if how.kind=="weapon" then
+  for _,entry in ipairs(info and info.history or {}) do if entry.attacker==killer then how.weapon=entry.weapon end end
+ end
+ how.template,how.t=Lines.plan(how,killerName)
+ if p.model and p.model:GetAttribute("State")=="DESTROYED" then p.model:SetAttribute("Message",Lines.death(how,"you",killerName)) end
+ p.deathHow=how
  if self.onDeath then self.onDeath(p,cause,killer,assists,info and info.history or {},damage,total,finisher) end
  for _,shot in pairs(self.shots) do if shot.owner==p.id then self:finish(shot) end end
  if info then info.held={false,false};info.history={} end
- self:emit({kind="death",victim=p.name,victimId=p.id,killer=killer and self.flight.records[killer].name or nil,killerId=killer,cause=cause,position=p.body.Position})
+ self:emit({kind="death",victim=p.name,victimId=p.id,killer=killer and self.flight.records[killer].name or nil,killerId=killer,cause=cause,how=p.deathHow,position=p.body.Position})
 end
 -- Earliest plane on a shot's path this step, tested where each target was when the shooter saw it.
 function Service:planeHit(shot,delta,now)
@@ -427,7 +437,7 @@ function Service:step(dt)
    if taken then -- the practice target took the shot
    elseif target and (not result or t*delta.Magnitude<=result.Distance) then
     local at=shot.position+delta*t
-    self:hit(attacker,target,shot.weapon.damage,now,at);self:finish(shot,at)
+    self:hit(attacker,target,shot.weapon.damage,now,at,shot.weapon.id);self:finish(shot,at)
    elseif result then
     self:chalkHit(result.Instance,now)
     if attacker and self.onProp then self.onProp(attacker,result.Instance) end

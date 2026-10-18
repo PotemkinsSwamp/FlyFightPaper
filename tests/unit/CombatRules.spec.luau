@@ -419,7 +419,7 @@ function Spec.run()
 		local deaths=0
 		local service=setmetatable({records={test={deaths=0,weaponDeaths=0,collisionDeaths=0}},onDeath=function()deaths+=1 end},Flight)
 		local p={id="test",model=model,body=body,drive={},orientation={}}
-		service:destroy(p,"test","weapon");service:destroy(p,"duplicate","weapon")
+		service:destroy(p,{kind="weapon"},"weapon");service:destroy(p,{kind="weapon"},"weapon")
 		assert(service.records.test.deaths==1 and service.records.test.weaponDeaths==1 and deaths==1)
 		model:Destroy()
 	end)

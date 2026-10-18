@@ -277,7 +277,7 @@ function HUD.start(getPlane, action)
 		slip.Words.UIPadding.PaddingLeft = UDim.new(0.11, 0)
 		local pin = PaperUI.image(slip, "Pin", UIArt.hud.pinRed, 14, -6, 30, 30)
 		slip.Words:GetPropertyChangedSignal("Text"):Connect(function()
-			local mine = slip.Words.Text:find("^You ") or slip.Words.Text:find(" you$")
+			local mine = slip.Words.Text:find("%f[%a][Yy]ou%f[%A]") or slip.Words.Text:find("%f[%a][Yy]our%f[%A]")
 			pin.Image = mine and UIArt.hud.pinBlue or UIArt.hud.pinRed
 		end)
 	end
