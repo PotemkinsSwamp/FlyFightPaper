@@ -64,8 +64,9 @@ end
 -- tools/art/split_halves.py; stripes and tape stay whole). Play screenshots
 -- (2026-10-13): white paper vanished against the cream walls and desks, coloured paper stood out everywhere.
 -- Cardboard parts take a darker shade (the city is cardboard), tape and rubber bands highlighter yellow.
-local RED={paper=Color3.fromRGB(235,40,50),dark=Color3.fromRGB(175,20,35),sticker="sticker-square"}
-local BLUE={paper=Color3.fromRGB(25,115,255),dark=Color3.fromRGB(15,70,190),sticker="sticker-circle"}
+-- Softer, coloured-paper team colours (Alan 2026-10-18: pure red and blue looked like plastic).
+local RED={paper=Color3.fromRGB(214,78,72),dark=Color3.fromRGB(165,55,50),sticker="sticker-square"}
+local BLUE={paper=Color3.fromRGB(70,128,214),dark=Color3.fromRGB(45,90,170),sticker="sticker-circle"}
 local MIDDLE={paper=Color3.fromRGB(252,252,255),dark=Color3.fromRGB(80,80,90)}
 local WHITE=Color3.fromRGB(252,252,255)
 local STICKER_SPOT=1.85 -- a full-size sticker placeholder's width; smaller placeholders (Swept Wings) get smaller stickers
@@ -105,6 +106,9 @@ function Aircraft.paint(model)
     if body and not part.Anchored then local weld=Instance.new("WeldConstraint");weld.Part0=body;weld.Part1=sticker;weld.Parent=sticker end
    end
   end
+  -- A textured (paper) piece is tinted through its SurfaceAppearance; the part's own colour doesn't show.
+  local look=part.Parent and part:FindFirstChildOfClass("SurfaceAppearance")
+  if look then look.Color=part.Color end
  end
 end
 function Aircraft.build(model,loadout,catalog,preview)

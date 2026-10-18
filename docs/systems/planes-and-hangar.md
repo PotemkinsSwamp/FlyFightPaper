@@ -5,7 +5,10 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-10-17)
+## Where it stands (2026-10-18)
+Softer coloured-paper team colours in (checked in Play: every plane red 214,78,72 / blue 70,128,214). Paper
+textures: Classic sample built and uploaded, tried in Studio, not yet in the game's pieces; the other 22 parts next
+([decision](../decisions/2026-10-18-paper-look.md)). `Aircraft.paint` tints a textured piece through its SurfaceAppearance.
 Plane parts redone (Stage 8). Smart weapon placing and the crayon X are in. Team and free-for-all colours are in.
 One hangar flow ([decision](../decisions/2026-10-17-builds-change-at-the-desk.md)): Edit from the desk, Save / Save &
 fly, opens on the flown build, unsaved-changes warning. Checked in Studio Play 2026-10-17; not yet played by Alan.
