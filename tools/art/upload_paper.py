@@ -47,7 +47,7 @@ for name in NAMES:
         out = D / "upload-tmp.json"
         out.unlink(missing_ok=True)
         done = subprocess.run([sys.executable, str(ROOT / "tools/upload_texture.py"), str(path), "--creator", "52064999",
-                               "--name", f"FlyFightPaper plane {name} {key}", "--output", str(out)]
+                               "--name", f"FFP plane {name} {key}"[:50], "--output", str(out)]
                               + (["--model"] if key == "model" else []))
         if done.returncode:
             sys.exit(f"Stopped at {name} {key}; see {out}. Re-run to continue.")
