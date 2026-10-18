@@ -171,5 +171,6 @@ mistake would be easy to make twice.
   (`src/client/WinnersCutscene.luau`). Test a new animation on a big avatar by measuring head-to-root drift.
 - **Starting a round in place:** planes carried over keep their old team; clear it and join them to the new round
   before bots fill desks, or the roster rejects them (`invalid_actor_team` / `unexpected_actor_team`).
+- **Codex picture jobs in a scratch folder** need `codex exec --skip-git-repo-check`, or Codex refuses to run outside a git folder.
 
 Back to [HOME](../HOME.md)

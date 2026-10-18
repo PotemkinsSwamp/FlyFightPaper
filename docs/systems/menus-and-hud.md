@@ -8,6 +8,8 @@ Stage 6 approved by Alan (2026-10-13) after the on-brand HUD restyle. Edge arrow
 Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); death lines say how it happened (weapon, the
 building or thing hit, who chased or rammed you), the same line on your note and in the feed. Seen in Studio Play 2026-10-17 except the
 between-rounds lines. Warnings (INCOMING!, LOCKED ON!), zone words and error messages stay fixed on purpose.
+Main-menu ruler repainted by Codex (reads 3 to 12, right way up; 1 and 2 behind the paper ball), uploaded and seen
+in Play 2026-10-17.
 Level bar with next unlock on the main menu board's stats card, in the hangar under the plane, and on the results card
 (seen 2026-10-17; partly filled bar seen on a test screen, the test account is at max level).
 

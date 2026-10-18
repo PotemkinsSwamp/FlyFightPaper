@@ -2,7 +2,7 @@
 -- An empty id draws nothing, so a missing piece shows as a gap rather than an error.
 return {
 	mainmenu = {
-		bg = { "rbxassetid://86213401449162", "rbxassetid://117440946239741", "rbxassetid://70484091614246", "rbxassetid://125119084625268" }, -- background split into 2x2 tiles (top-left, top-right, bottom-left, bottom-right)
+		bg = { "rbxassetid://86213401449162", "rbxassetid://139161444944451", "rbxassetid://70484091614246", "rbxassetid://92701816112270" }, -- background split into 2x2 tiles (top-left, top-right, bottom-left, bottom-right)
 		title = "rbxassetid://103734128810118",
 		strip = { yellow = "rbxassetid://81270758839816", blue = "rbxassetid://127387145271610", green = "rbxassetid://102293582971435", red = "rbxassetid://84891639571797" },
 		card = "rbxassetid://89622531819348",

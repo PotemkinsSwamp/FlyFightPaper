@@ -1,12 +1,12 @@
 {
-  "path": "operations/c9ab62ef-3ab9-432a-917f-1a43bdf30b5a",
-  "operationId": "c9ab62ef-3ab9-432a-917f-1a43bdf30b5a",
+  "path": "operations/28164cde-6b57-46ea-9f3e-8ae269232560",
+  "operationId": "28164cde-6b57-46ea-9f3e-8ae269232560",
   "done": true,
   "response": {
-    "path": "assets/117440946239741",
+    "path": "assets/139161444944451",
     "revisionId": "1",
-    "revisionCreateTime": "2026-10-17T23:05:18.459Z",
-    "assetId": "117440946239741",
+    "revisionCreateTime": "2026-10-18T03:49:56.326Z",
+    "assetId": "139161444944451",
     "displayName": "FlyFightPaper mainmenu bg-2",
     "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
     "assetType": "Image",
