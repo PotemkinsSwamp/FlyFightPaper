@@ -1,10 +1,13 @@
 # Since Alan last checked (2026-10-17)
-- **Bots look like real players** (2026-10-18, your pick): each wears an outfit a real player saved, from a list
-  (33 so far; a background search adds about 1 a minute: tools/find_bot_looks.luau), never their name. Seen in Play
-  at the desks and in the cutscene. A few items in some outfits are blocked for our game; that bot just skips them.
-- **Plane emote prototype taken out** (Alan 2026-10-18: arm-only, no life; a kid moves the whole body, head
-  follows the plane, hips and legs turn with it). Next try is a full-body animation from a tool; options in the
-  decision note. 1st dances again.
+- **Bots look like real players** (2026-10-18, your pick): each wears one of 157 outfits real players saved (found
+  by tools/find_bot_looks.luau), never their name. Seen in Play at the desks and in the cutscene. A few items in some
+  outfits are blocked for our game; that bot just skips them. **Names** now in today's styles (lunaaa, sxphie_12,
+  honeypotato, RAWR).
+- **Plane emote:** arm-only prototype taken out (no life). Three Meshy full-body clips made (30 credits, 1,013
+  left), converted to Roblox bodies (tools/meshy_to_r15.py) and seen in Play with the plane in hand: "better but
+  odd". Parked for the shop stage; 1st dances (config rounds.winner_plane_emote empty).
+- **Next: the winners' shot redesign** ([decision](../docs/decisions/2026-10-18-winners-shot-redesign.md)): one
+  steady group shot of the top 3 on their desks, all emoting at once with Roblox's emotes, name plates, confetti.
 - **Published privately** ("FlyFightPaper(First Fold)", 12 players); live up to the desk hangar flow and menu art.
 - **Done (Alan's notes):** clicking the weapon already on a mount takes it off; the button reads "Clear weapon spot".
   Event lines rewritten after Alan's notes: death lines say how it happened, Minecraft-style (weapon, the building

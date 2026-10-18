@@ -12,7 +12,7 @@ the round pipe (`DuctRules.botRuns`), only with over half their Lift and enough 
 Tested: 5 minutes of forced runs, no crashes; 3 minutes of normal play, one run.
 
 Bot looks (2026-10-18): each bot wears an outfit a real Roblox player saved, from a list of dressed-up ones
-(`avatar_display.bot_look_outfits`, found once by `tools/find_bot_looks.luau`: layered clothing or 4+ accessories and
+(`avatar_display.bot_look_outfits`, 157 of them, found once by `tools/find_bot_looks.luau`: layered clothing or 4+ accessories and
 at least one creator-made item). Searching live is out: Roblox allows 300 avatar lookups a minute. Random accounts were
 10x slower to search than saved outfits (most are quitters in Roblox's free starter looks, which made bots look
 alike). Same name, same outfit; no two bots on a server share one; old catalog outfit if lookups fail.
