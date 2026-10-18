@@ -9,6 +9,9 @@ local Root=RS:WaitForChild("FlyFightPaper")
 local Rules=require(Root.Shared.FlightRules)
 local Landing=require(Root.Shared.ServiceRules)
 local Catalog=require(Root.Shared.Catalog)
+local Lines=require(Root.Shared.Lines)
+-- For messages set every tick (scraping, waiting): keep the line already showing instead of picking a new one each tick.
+local function say(p,set) if not Lines.is(set,p.model:GetAttribute("Message") or "") then p.model:SetAttribute("Message",Lines.pick(set)) end end
 local Gameplay=require(Root.Generated.Gameplay)
 local Desk=Gameplay.service
 local Loadouts=require(Root.Shared.WeaponLoadouts)
@@ -71,7 +74,7 @@ function Service.new()
   end
   local now=workspace:GetServerTimeNow();if now-p.lastAction<0.35 then return end;p.lastAction=now
   if action=="launch" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:launch(p)
-  elseif action=="fresh" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:destroy(p,"New plane in 4 seconds","fresh")
+  elseif action=="fresh" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:destroy(p,Lines.pick("freshPlane"),"fresh")
   elseif action=="loadout" and Run:IsStudio() and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then
    -- Studio test flights: a desk picker name or a whole hangar build, with every part unlocked.
    -- It lasts until the player picks a hangar preset and is never saved to the profile.
@@ -143,7 +146,7 @@ function Service:build(p)
  body.CustomPhysicalProperties=PhysicalProperties.new(0.3,0.15,0.1)
  for key,value in pairs({OwnerId=p.player and p.player.UserId or 0,Life=p.life,State="DESK",LiftMax=p.stats.lift,Lift=p.stats.lift,Speed=p.stats.speed,
   TurnRate=p.stats.turn,PitchRate=p.stats.pitch,YawRate=p.stats.yaw,Health=p.stats.health,MaxHealth=p.stats.health,OriginalHealth=p.stats.health,DisplayName=p.name,ControllerType=p.kind,
-  Message="Ready at your desk",Loadout=p.loadoutName,LoadoutData=game:GetService("HttpService"):JSONEncode(p.loadout),Protected=true,Kills=self.records[p.id].kills}) do model:SetAttribute(key,value) end
+  Message=Lines.pick("atDesk"),Loadout=p.loadoutName,LoadoutData=game:GetService("HttpService"):JSONEncode(p.loadout),Protected=true,Kills=self.records[p.id].kills}) do model:SetAttribute(key,value) end
  -- A practice flight stays one through crashes: every new plane carries the mark and its desk ring.
  if p.practice then model:SetAttribute("Practice",true);model:SetAttribute("PracticeRing",Landing.approach(p.home,Desk)) end
  local color=Color3.fromHSV((p.seat*.133)%1,0.65,0.9)
@@ -193,7 +196,7 @@ function Service:launch(p)
  self:clearLandingQueue(p)
  local hangar=p.serviceHome or p.hangar
  p.body.CFrame=hangar
- p.model:SetAttribute("State","TAKEOFF");p.model:SetAttribute("Message","Taking off")
+ p.model:SetAttribute("State","TAKEOFF");p.model:SetAttribute("Message",Lines.pick("takeoff"))
  -- Physics (server-owned) carries the plane along the path: an anchored plane moved by the server reaches each
  -- player at half the frame rate and judders; a moving unanchored one is smoothed on every screen.
  p.takeoff={legs=Landing.takeoff(hangar*CFrame.new(0,0,-Desk.hangar_back_studs),Desk,p.stats.speed),leg=1,t=0,from=hangar}
@@ -245,7 +248,7 @@ function Service:damage(p,amount,cause,walls)
  if p.model:GetAttribute("State")=="DESTROYED" or not walls and self:protected(p,workspace:GetServerTimeNow()) then return 0 end
  local actual=math.min(p.model:GetAttribute("Health"),math.max(0,amount))
  p.model:SetAttribute("Health",p.model:GetAttribute("Health")-actual)
- if p.model:GetAttribute("Health")<=0 then self:destroy(p,"Destroyed. New plane in 4 seconds",cause) end
+ if p.model:GetAttribute("Health")<=0 then self:destroy(p,Lines.pick("shotDown"),cause) end
  return actual
 end
 function Service:destroy(p,message,cause)
@@ -285,7 +288,7 @@ function Service:queueLanding(p,home,key)
  p.waitingPad=key;p.waitingHome=home;p.queuedAt=p.queuedAt or workspace:GetServerTimeNow()
  p.model:SetAttribute("HoldingPosition",Landing.approach(home,Desk).Position+home.LookVector*120+home.RightVector*(index-1)*55+Vector3.new(0,70,0))
  p.model:SetAttribute("DeskQueuePosition",index)
- p.model:SetAttribute("DeskAvailable",false);p.model:SetAttribute("Message","Desk occupied. Follow the waiting marker; your approach opens in order.")
+ p.model:SetAttribute("DeskAvailable",false);say(p,"deskBusy")
 end
 function Service:land(p,home,padKey)
  padKey=padKey or "desk:"..p.seat
@@ -295,7 +298,7 @@ function Service:land(p,home,padKey)
  self.padReservations[padKey]=p.id;p.padKey=padKey
  local hangar=Landing.hangar(home,Desk)
  p.serviceHome=hangar
- p.model:SetAttribute("State","LANDING");p.model:SetAttribute("Message","Landing for service")
+ p.model:SetAttribute("State","LANDING");p.model:SetAttribute("Message",Lines.pick("landing"))
  p.body:SetNetworkOwner(nil);p.drive.Enabled=false;p.orientation.Enabled=false;p.body.Anchored=true
  -- Inbound = facing the wall. Touch down where the runway tape starts (just inside the desk's room-side edge).
  local inbound=CFrame.Angles(0,math.pi,0)
@@ -305,7 +308,7 @@ function Service:land(p,home,padKey)
   if not p.model.Parent or self.pilots[p.key]~=p or p.model:GetAttribute("State")~="LANDING" then return end
   if not stages[i] then
    p.body.CFrame=hangar   -- turned to face out while the hangar menu covers the view
-   p.model:SetAttribute("State","DESK");p.model:SetAttribute("Message","Landed. Lift refill takes two seconds")
+   p.model:SetAttribute("State","DESK");p.model:SetAttribute("Message",Lines.pick("landed"))
    if self.onLand then self.onLand(p) end
    return
   end
@@ -327,19 +330,19 @@ function Service:impact(p,normal,part,now,dt,pushed)
  local amount=Rules.collisionDamage(into,part.Name=="Floor" and p.model:GetAttribute("Lift")<=0,p.stats.health,dt,now-p.scrapeSince)
  if Run:IsStudio() then self.records[p.id].lastImpact={part=part:GetFullName(),speed=into,at=now,position=tostring(p.body.Position)} end
  if amount>=p.stats.health then
-  self:destroy(p,"Crashed. New plane in 4 seconds","collision")
+  self:destroy(p,Lines.pick("crashed"),"collision")
   return
  end
  self:damage(p,amount,"collision",true)
  p.model:SetAttribute("CollisionNormal",normal);p.model:SetAttribute("DeflectUntil",now+.35)
- p.model:SetAttribute("Message","Scraping! Turn away from the surface")
+ say(p,"scraping")
 end
 -- A duct fan blade: a big bite out of the plane and a shove the way the blade was moving.
 function Service:fanHit(p,push,now)
  self:damage(p,p.stats.health*Gameplay.world.ducts.fans.damage_share,"fan",true)
  if p.model:GetAttribute("State")~="FLYING" then return end
  p.model:SetAttribute("Knock",push*60);p.model:SetAttribute("KnockUntil",now+.3)
- p.model:SetAttribute("Message","Clipped by a fan!")
+ say(p,"fanClip")
 end
 function Service:contact(p)
  local travel=(p.previousVelocity and p.previousVelocity.Magnitude>1) and p.previousVelocity.Unit or p.body.CFrame.LookVector
@@ -384,7 +387,7 @@ function Service:regionsFor(p,now)
   local inside=false
   for _,part in ipairs(workspace:GetPartBoundsInBox(CFrame.new(fan.Position),fan.Size,self.regions)) do if part==p.body then inside=true;break end end
   if inside and upward then
-   if not p.fanInside[name] then p.model:SetAttribute("Message","Updraft: Lift rising") end
+   if not p.fanInside[name] then p.model:SetAttribute("Message",Lines.pick("updraft")) end
    -- ponytail: called every ~0.1 s (regionClock), so 0.1 s of gust per call.
    p.model:SetAttribute("Lift",Rules.fanLift(p.model:GetAttribute("Lift"),p.stats.lift,.1))
    updraft=Gameplay.flight.fan_updraft_studs_s
@@ -394,8 +397,8 @@ function Service:regionsFor(p,now)
  p.model:SetAttribute("Updraft",updraft)
  -- Moving air in the ducts (fans, the blower): faster with it, slower against it.
  local wind=DuctRules.wind(p.body.Position,p.body.CFrame.LookVector)
- if (wind>1.05)~=((p.wind or 1)>1.05) and wind>1.05 then p.model:SetAttribute("Message","Tailwind: speed up!") end
- if (wind<.95)~=((p.wind or 1)<.95) and wind<.95 then p.model:SetAttribute("Message","Headwind: slowing down") end
+ if (wind>1.05)~=((p.wind or 1)>1.05) and wind>1.05 then p.model:SetAttribute("Message",Lines.pick("tailwind")) end
+ if (wind<.95)~=((p.wind or 1)<.95) and wind<.95 then p.model:SetAttribute("Message",Lines.pick("headwind")) end
  if math.abs(wind-1)<.05 and math.abs((p.wind or 1)-1)>=.05 then p.model:SetAttribute("Message","") end
  p.wind=wind;if wind>1 then p.windAt=now end
  -- Checked 10 times a second along the path flown since the last check, so a fast plane can't skip one.
@@ -405,7 +408,7 @@ function Service:regionsFor(p,now)
   for _,marker in ipairs(self.pickups) do
    if now>=marker:GetAttribute("ReadyAt") and Rules.segmentHitsBox(marker.Position,marker.Size,from,to) then
     marker:SetAttribute("ReadyAt",now+Pickups.respawn_seconds);p.pickupBonus,p.pickupUntil=Rules.stackPickup(p.pickupBonus or 0,p.pickupUntil or 0,now,Pickups)
-    p.model:SetAttribute("PickupUntil",p.pickupUntil);p.model:SetAttribute("Message","Speed up!")
+    p.model:SetAttribute("PickupUntil",p.pickupUntil);p.model:SetAttribute("Message",Lines.pick("speedPickup"))
    end
   end
  end
@@ -413,7 +416,7 @@ function Service:regionsFor(p,now)
   if (p.body.Position-p.waitingHome.Position).Magnitude>450 or now-p.queuedAt>25 then self:clearLandingQueue(p)
   elseif self:padAvailable(p.waitingPad,p.id) then
    p.model:SetAttribute("HoldingPosition",Landing.approach(p.waitingHome,Desk).Position)
-   p.model:SetAttribute("DeskAvailable",true);p.model:SetAttribute("Message","Your pad is free. Fly through its approach ring.")
+   p.model:SetAttribute("DeskAvailable",true);say(p,"padFree")
   end
  end
  if now-p.launchAt<3 then return end
@@ -438,7 +441,7 @@ function Service:step(dt)
   p.model:SetAttribute("ProtectionRemaining",p.protectionRemaining)
   p.protectionRemaining,p.outOfHangar=Landing.hangarSafety(p.protectionRemaining,p.outOfHangar or 0,(state=="DESK" or state=="LANDING") and self:atDesk(p),dt,Desk.protected_seconds_per_life,Desk.protection_refill_out_seconds)
   if state=="DESTROYED" and now>=p.respawnAt then
-   if not self.padReservations["desk:"..p.seat] then self:replace(p) else p.model:SetAttribute("Message","Waiting for your desk pad to clear") end
+   if not self.padReservations["desk:"..p.seat] then self:replace(p) else say(p,"padWait") end
   elseif state=="TAKEOFF" then self:takeoffStep(p,dt)
   elseif state=="FLYING" then
    local utility=p.loadout.utility and self.catalog:get(p.loadout.utility)
@@ -455,8 +458,8 @@ function Service:step(dt)
    end
    local localPos=self.boundsCF:PointToObjectSpace(p.body.Position)
    local outside=math.abs(localPos.X)>self.boundsSize.X/2+12 or (localPos.Y>self.boundsSize.Y/2+self.headroom+12 or localPos.Y<-self.boundsSize.Y/2-12) or math.abs(localPos.Z)>self.boundsSize.Z/2+12
-   if outside then p.outSince=p.outSince or now;p.model:SetAttribute("Message","Return to the room now") elseif p.outSince then p.outSince=nil;p.model:SetAttribute("Message","") end
-   if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds then self:destroy(p,"Left the room","bounds");continue end
+   if outside then p.outSince=p.outSince or now;say(p,"turnBack") elseif p.outSince then p.outSince=nil;p.model:SetAttribute("Message","") end
+   if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds then self:destroy(p,Lines.pick("leftRoom"),"bounds");continue end
    -- Blink check every step (2026-10-17): a teleport and back inside the 0.25 s window. It compares against the last
    -- position the server saw change, over the time since, so bursty replication can't trip it.
    -- ponytail: one generous speed cap (2.5x cruise + 40) catches blinks only; the 0.25 s check still judges speed.
@@ -486,13 +489,13 @@ function Service:step(dt)
      -- A client that keeps ignoring the correction is cheating (or hopelessly lagged): after 1.5 s of it the plane
      -- is lost, like leaving the room. One lag spike only snaps it back.
      p.corrections=(p.corrections or 0)+1
-     if p.corrections>=6 then self:destroy(p,"Flight corrected","bounds");continue end
+     if p.corrections>=6 then self:destroy(p,Lines.pick("wobbleDown"),"bounds");continue end
      -- Lag or a bad client: put the plane back where it last flew legally instead of killing it.
      p.body.CFrame=p.checkCFrame;p.body.AssemblyLinearVelocity=p.checkCFrame.LookVector*p.stats.speed
      p.lastPosition,p.lastCFrame,p.seenPos,p.seenAt=p.checkCFrame.Position,p.checkCFrame,p.checkCFrame.Position,now
      -- Count the empty-Lift climb limit again from the corrected spot, or the old spot fails too and every check snaps.
      if empty then p.emptySince,p.emptyY,p.emptyUp=now,p.checkCFrame.Y,0 end
-     p.model:SetAttribute("Message","Flight corrected")
+     say(p,"wobble")
      continue
     end
    end

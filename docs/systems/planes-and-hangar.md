@@ -9,6 +9,8 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 Plane parts redone (Stage 8). Smart weapon placing and the crayon X are in. Team and free-for-all colours are in.
 One hangar flow ([decision](../decisions/2026-10-17-builds-change-at-the-desk.md)): Edit from the desk, Save / Save &
 fly, opens on the flown build, unsaved-changes warning. Checked in Studio Play 2026-10-17; not yet played by Alan.
+Weapons tab: clicking the weapon already on the picked mount takes it off; the button reads "Clear weapon spot"
+(checked in Studio Play 2026-10-17).
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*

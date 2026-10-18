@@ -2,6 +2,7 @@
 local Root = game.ReplicatedStorage:WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets).results
 local Economy = require(Root.Shared.EconomyRules)
+local Lines = require(Root.Shared.Lines)
 local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), require(Root.Generated.Gameplay))
 local PaperUI = require(script.Parent.PaperUI)
 local ResultsScreen = {}
@@ -16,6 +17,10 @@ local COLUMNS = { -- header, x, width, value
 	{ "XP", 1260, 120, function(row) return tostring(row.xp or 0) end },
 }
 local MODES = { { "FFA", "Free-for-all", "blue" }, { "TDM", "Team dogfight", "pink" }, { "CONTROL", "Airspace Control", "green" } }
+local function modeName(code)
+	for _, mode in MODES do if mode[1] == code then return mode[2] end end
+	return tostring(code)
+end
 
 -- The cheapest part unlocked at the next level above yours, for the "next unlock" card.
 local function nextUnlock(level)
@@ -89,7 +94,7 @@ function ResultsScreen.new(playerGui, api)
 				function() if voting then api.vote(mode[1]) end end, 44)
 			if not voting then b.ImageTransparency, b.Label.TextTransparency = 0.45, 0.45 end
 		end
-		local help = words(content, "VoteHelp", voting and "Pick the next mode!" or snap and snap.phase == "COUNTDOWN" and "Next round: " .. tostring(snap.nextMode) or "Voting opens soon.", 1440, 785, 440, 50, 34)
+		local help = words(content, "VoteHelp", Lines.stable(voting and "vote" or snap and snap.phase == "COUNTDOWN" and "nextRound" or "voteSoon", snap and snap.endsAt or 0, modeName(snap and snap.nextMode)), 1440, 785, 440, 50, 34)
 		help.TextColor3 = Color3.fromRGB(250, 245, 230)
 		button(content, "NextRound", Art.strip.green, "Stay", 1440, 835, 210, 95, -2, api.stay, 44)
 		button(content, "MainMenu", Art.strip.pink, "Menu", 1665, 835, 210, 95, 2, api.leave, 44)

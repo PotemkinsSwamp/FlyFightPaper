@@ -1,4 +1,5 @@
 local Root=game.ReplicatedStorage.FlyFightPaper
+local Lines=require(Root:WaitForChild("Shared"):WaitForChild("Lines"))
 local Sounds=game:GetService("SoundService")
 local Audio={}
 -- {sound, playback speed, volume, seconds to play (default .22)}. A number is a Creator Store sound, mostly Pro
@@ -124,7 +125,7 @@ function Audio.start(getPlane)
    -- A locked-on eraser warns with a repeating beep until the lock breaks.
    if nextIncoming and (not incoming or os.clock()-beepAt>.35) then Audio.play("incoming");beepAt=os.clock() end
    local nextMessage=p:GetAttribute("Message")
-   if message~=nextMessage and nextMessage and nextMessage:find("complete") then Audio.play("service") end
+   if message~=nextMessage and nextMessage and (Lines.is("serviceDone",nextMessage) or Lines.is("refoldDone",nextMessage)) then Audio.play("service") end
    message=nextMessage
   end
   state,life,lift,lock,incoming,health=nextState,p:GetAttribute("Life"),nextLift,nextLock,nextIncoming,p:GetAttribute("Health")

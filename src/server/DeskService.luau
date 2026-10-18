@@ -2,6 +2,7 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 local Rules=require(Root.Shared.ServiceRules)
 local Config=require(Root.Generated.Gameplay).service
 local Builder=require(Root.Shared.BuilderModel)
+local Lines=require(Root.Shared.Lines)
 local Service={};Service.__index=Service
 function Service.new(flight,profiles)
  local self=setmetatable({flight=flight,profiles=profiles},Service)
@@ -29,10 +30,10 @@ end
 function Service:perform(p,action)
  if p.serviceBusy or p.model:GetAttribute("State")~="DESK" then return end
  local life=p.life
- if action=="fresh" then self.flight:destroy(p,"Folding a fresh plane","fresh");return end
+ if action=="fresh" then self.flight:destroy(p,Lines.pick("freshPlane"),"fresh");return end
  if action=="refill" or action=="repair" then
   p.serviceBusy=true;p.model:SetAttribute("ServiceBusy",true)
-  p.model:SetAttribute("Message",action=="refill" and "Refilling Lift" or "Repairing. This adds wear")
+  p.model:SetAttribute("Message",Lines.pick(action=="refill" and "refilling" or "repairing"))
   task.delay(action=="refill" and Config.refill_seconds or Config.repair_seconds,function()
    if self:valid(p,life) then
     if action=="refill" then p.model:SetAttribute("Lift",p.stats.lift);p.model:SetAttribute("Boost",p.model:GetAttribute("BoostMax") or 0)
@@ -41,7 +42,7 @@ function Service:perform(p,action)
      p.model:SetAttribute("Health",repaired.health);p.model:SetAttribute("MaxHealth",repaired.lifeMaxHealth)
      p.repairedAt=workspace:GetServerTimeNow() -- earlier damage no longer counts toward a fold or assist (Alan 2026-10-17)
     end
-    p.model:SetAttribute("Message","Service complete. Ready to launch");p.model:SetAttribute("ServiceBusy",false)
+    p.model:SetAttribute("Message",Lines.pick("serviceDone"));p.model:SetAttribute("ServiceBusy",false)
    end
    p.serviceBusy=false
   end)
@@ -51,7 +52,7 @@ function Service:perform(p,action)
   local intent=self.profiles.service:operationID()
   local loadout=self.flight.selectedLoadout and self.flight.selectedLoadout(p.player) or p.loadout
   if Builder.equal(loadout,p.loadout) then p.model:SetAttribute("Message","You already fly this build. Pick another one, or Edit it first.");return end
-  p.serviceBusy=true;p.model:SetAttribute("ServiceBusy",true);p.model:SetAttribute("Message","Reserving 120 Paper for full refold")
+  p.serviceBusy=true;p.model:SetAttribute("ServiceBusy",true);p.model:SetAttribute("Message",Lines.pick("refolding"))
   local fence={nonce=profile.lease.nonce,generation=profile.generation,actorId=p.id,lifeId=tostring(life),matchId=p.identity.matchId,
    participationId=p.id,padId=p.padKey or tostring(p.seat),sessionGeneration=profile.generation}
   local accepted=self.profiles:enqueue(p.player,{kind="refoldIntent",intentId=intent,fence=fence,loadout=loadout},nil,function(ok,reason)
@@ -68,7 +69,7 @@ function Service:perform(p,action)
      if delivered and self:valid(p,life) then
       self.flight:refold(p,loadout)
       applied=true
-      p.model:SetAttribute("Message","Full refold complete. Streak kept.")
+      p.model:SetAttribute("Message",Lines.pick("refoldDone"))
      end
      if self:valid(p,life) then p.model:SetAttribute("ServiceBusy",false) end
      p.serviceBusy=false

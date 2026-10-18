@@ -195,7 +195,11 @@ function Hangar.new(playerGui, api)
 			local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 252, 190, 0, function()
 				if not owned then state.purchase = part; render(); return end
 				state.purchase = nil
-				if state.slot == "weapons" then choose(function() return placeWeapon(part.id) end)
+				if state.slot == "weapons" then
+					-- Clicking the weapon already on the picked mount takes it off (Alan 2026-10-17).
+					local i = math.min(state.mount, Catalog:get(draft.body).mount_count)
+					if draft.weapon_mounts[i] == part.id then choose(builder.selectMount, i, false)
+					else choose(function() return placeWeapon(part.id) end) end
 				elseif state.slot == "boost" then choose(builder.selectUtility, part.id)
 				else choose(builder.selectStructure, state.slot, part.id) end
 			end)
@@ -282,7 +286,7 @@ function Hangar.new(playerGui, api)
 				local info = words(content, "MountInfo", string.format("Mount %d: %s%s. %s", i, body.mount_types[i],
 					part and (groups[i] == 1 and ", left click" or ", right click") or "", part and part.name or "Empty: pick a weapon."), 600, 782, 680, 56, 30)
 				info.TextXAlignment = Enum.TextXAlignment.Center
-				button(content, "ClearMount", Art.buttonGreen, "Clear mount " .. state.mount, 1090, 280, 200, 70, 3, function() choose(builder.selectMount, state.mount, false) end, 28)
+				button(content, "ClearMount", Art.buttonGreen, "Clear weapon spot", 1090, 280, 200, 70, 3, function() choose(builder.selectMount, state.mount, false) end, 28)
 			elseif state.slot == "boost" then
 				button(content, "NoBoost", Art.tab, "No booster", 840, 775, 240, 80, 0, function() choose(builder.selectUtility, nil) end, 32)
 			end

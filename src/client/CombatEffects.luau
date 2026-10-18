@@ -8,6 +8,7 @@ local Catalog=require(Root.Shared.Catalog).new(require(Root.Generated.Catalog),r
 local Rules=require(Root.Shared.CombatRules)
 local Config=require(Root.Generated.Gameplay).combat
 local Aircraft=require(Root.Shared.Aircraft)
+local Lines=require(Root.Shared.Lines)
 local Audio=require(script.Parent.Audio)
 local Motion=require(script.Parent.WeaponMotion)
 local FlightState=require(script.Parent.FlightController).state
@@ -136,7 +137,7 @@ function Effects.start(getPlane)
    if event.killerId==myId then marker(gui,true);Audio.play("kill") end
    local killer=event.killerId==myId and "You" or event.killer
    local victim=event.victimId==myId and "you" or event.victim
-   table.insert(feed,1,killer and (killer.." knocked down "..victim) or ((event.victimId==myId and "You" or victim).." crashed"))
+   table.insert(feed,1,killer and Lines.pick("fold",killer,victim) or Lines.pick("crash",event.victimId==myId and "You" or victim))
    while #feed>4 do table.remove(feed) end
    -- One notebook slip per line (FlightHUD makes Slip1..4, newest on top).
    local slips=gui:FindFirstChild("KillFeed")

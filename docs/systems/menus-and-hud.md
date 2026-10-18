@@ -34,6 +34,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/FlightHUD.luau` | Everything on screen while flying |
 | `src/client/PaperUI.luau` | Shared builder for the paper screens |
 | `src/shared/UIAssets.luau` | Uploaded menu and HUD image IDs |
+| `src/shared/Lines.luau` | Rotating event lines (plane down, landing, desk service, kill feed, between rounds); one is picked at random, never twice in a row ([decision](../decisions/2026-10-17-fresh-rotating-lines.md)) |
 
 ## Tuning numbers
 `config/gameplay.json` `menus`, `accessibility`. Menu art: `assets/ui/` (made by `tools/ui_pieces.py`).
