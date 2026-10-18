@@ -17,6 +17,11 @@
   flies it around their head like a kid would; slams the plane down and leaps like a football touchdown; throws the
   plane and it circles them; throws it and it flies off, comes straight at the camera and "crashes" into it as the
   camera pulls back; plus ordinary dances. They should look cool enough that players want to buy them.
+- **Prototype verdict (Alan, 2026-10-18):** the arm-only plane emote (arm IK chasing a circle) looked lifeless;
+  taken out. A kid moves the whole body: head and eyes follow the plane, hips twist, legs turn with it, the plane
+  swoops in circles or S-shapes. No hand-keyed or arm-only emotes. Look first at animation tools that are not Adobe
+  (Alan: too expensive, predatory contracts): Meshy text-to-motion (his existing credits), Uthana, DeepMotion
+  SayMotion; Roblox video capture later. The scripted plane-in-hand part can be reused on a real animation.
 - **How they get made:** body motion from a short video of a real person (Roblox's Animation capture) or free
   sources where Roblox lets us use them; hand-made keyframes only for simple moves. The plane is a prop attached to
   the hand; throws, circles and camera moves are scripted. Each animation is previewed in Studio with a temporary id,

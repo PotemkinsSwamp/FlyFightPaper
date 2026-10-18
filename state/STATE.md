@@ -2,8 +2,9 @@
 - **Bots look like real players** (2026-10-18, your pick): each wears an outfit a real player saved, from a list
   (33 so far; a background search adds about 1 a minute: tools/find_bot_looks.luau), never their name. Seen in Play
   at the desks and in the cutscene. A few items in some outfits are blocked for our game; that bot just skips them.
-- **Prototype emote:** 1st place flies their own plane round their head in the cutscene (seen in Play by numbers and
-  stills; the arm reaches about halfway round the left side). Judge the motion live.
+- **Plane emote prototype taken out** (Alan 2026-10-18: arm-only, no life; a kid moves the whole body, head
+  follows the plane, hips and legs turn with it). Next try is a full-body animation from a tool; options in the
+  decision note. 1st dances again.
 - **Published privately** ("FlyFightPaper(First Fold)", 12 players); live up to the desk hangar flow and menu art.
 - **Done (Alan's notes):** clicking the weapon already on a mount takes it off; the button reads "Clear weapon spot".
   Event lines rewritten after Alan's notes: death lines say how it happened, Minecraft-style (weapon, the building
@@ -70,7 +71,7 @@ Waiting on Alan — Stage 9 playtest, then your approval
    zone while rookies wander, the "+100 FOLD" pop-ups and the results points.
 2. Round end: in the hangar press "end match" (red, top). Watch the winners' cutscene, the results card, then fly
    through a hula hoop on the window wall to vote. Try it once from the air and once from the hangar. Do the bots
-   look like real players? Does 1st flying their plane round their head look right?
+   look like real players?
 3. Train: skim it (should scrape, not crash), fly into its nose (crash), fit above it in the south station.
 4. Escapes: puff the chalk eraser; take the ducts once more (spot a veteran bot diving out of a vent).
 5. Hangar: land at your desk, pick a build, Edit build, change a part, Save & fly. Does it make sense first time?
