@@ -1,0 +1,3264 @@
+{
+  "schema_version": 1,
+  "result": "PASS",
+  "sample": "Classic folded paper",
+  "rebuild_command": "& D:/Blender/blender.exe -b --factory-startup --threads 4 --python-exit-code 1 --python tools/art/plane_paper.py",
+  "blender_version": "5.1.1",
+  "units": "studs",
+  "axes": "X right, Y up, -Z forward",
+  "source_hashes": {
+    "assets/models/planes/classic/body-paper-L.fbx": "7b533d63ec91b4471b01329da7f3dfb5ed43a0ab9914ce9ec768e618d6490446",
+    "assets/models/planes/classic/body-paper-R.fbx": "77299ce6f59a116cfd50c936f5b3576a0c8ce333041ac7c81082164eceeb4b9f",
+    "assets/models/planes/classic/body-paper.fbx": "c43d1ca4e68550b73fdd49d189e69456b5320a92787b0a6eded0f4af88aca8e7",
+    "assets/models/planes/classic/nose-accent.fbx": "c2f3e783c53f977e3101e8c4e9a9b04d305818bc7260adf22ec4dfbbfe2fae9a",
+    "assets/models/planes/classic/nose-paper-L.fbx": "2efc276ae9aeb36c7b436111b6795f837d83bd6d2b227fff34f680dfc569f466",
+    "assets/models/planes/classic/nose-paper-R.fbx": "178af3a2f76a2920dd93b6c243eb8186c7c397028f355fbe0641656d00ccea29",
+    "assets/models/planes/classic/nose-paper.fbx": "3e9e481700105e0aae9855e5a005fc4467f6ae2296f87ae5f1373d2e1e5d9519",
+    "assets/models/planes/classic/pellet-band.fbx": "cfe5e43ab9b4bd5106a94aeaac392cb7eea56bae170e2f54e5e0104a292cdc47",
+    "assets/models/planes/classic/pellet-tube.fbx": "16eee421fec6272d9b838b800f39941bc7e4ce9bbcdb1cf5464fd66d23a3973d",
+    "assets/models/planes/classic/tail-accent.fbx": "3e18df2ff3991dc89c1b4d9dcf940aabc82b6c4e4d62094bc27f73a298238cbb",
+    "assets/models/planes/classic/tail-paper-L.fbx": "b0cfa60c14cd1f8a8e6089570e92731242e55c7639b4b6e64758ab1b3c7f7c18",
+    "assets/models/planes/classic/tail-paper-R.fbx": "8f30bef73920cda19d591baf54dc5b9dd2fef04f51a501e3c1fb5a60986436d5",
+    "assets/models/planes/classic/tail-paper.fbx": "e5b859dd4d449b44feeb554428e7008317ca0d5145b6fc96311ea1d8a04bdda4",
+    "assets/models/planes/classic/wings-accent-L.fbx": "c119d9a5d8c0fd0232a411d50b00d58d9964a3de85bb0cec0707d53fceda170a",
+    "assets/models/planes/classic/wings-accent-R.fbx": "eec06c1019020927181d6cd393d151e601ad7ea67c838ae494820fdebff076eb",
+    "assets/models/planes/classic/wings-accent.fbx": "3d3b46ad6cd818512705f047ec280c9f1bfac126a4cd1dd97b1c3c00911dfafc",
+    "assets/models/planes/classic/wings-paper-L.fbx": "68c14959b2246fe48c82873d871e0ecbea2b909e52bbe3115142674abaac7151",
+    "assets/models/planes/classic/wings-paper-R.fbx": "828c4b9b57d7bc46565aa60ce1010df18dc1ad35e5d1b0964e21c16f14d685fa",
+    "assets/models/planes/classic/wings-paper.fbx": "d23a9dedb09958db05e8594d2ed1c2a50fa0623c0036ef23da4f187511504dc0",
+    "assets/models/planes/classic/wings-sticker-left.fbx": "dc40ca99acbb6486d31b96030621fcae5d633ea71e775cf65ba6051f6a7d31fe",
+    "assets/models/planes/classic/wings-sticker-right.fbx": "42ff40f2a774f120d55e821fc6bfdf186f97b9a42785a4bdf858de6cf645a994",
+    "assets/models/planes/classic/parts.json": "1440cc419a302ed90649de35b498dc974601585b27bf36055c599c3215cd0269",
+    "assets/models/planes/classic/classic.blend": "8462b62531cdcea4348ec84a899e7ec12d7bb6a8cc004d5223a5f1fd45cbb6d4",
+    "assets/models/planes/halves.json": "20ed425b5926cc1b567aeb7da6c4129c5f2ec6c2c2f694aa01dc180a93c924cf",
+    "tools/art/planes.py": "d19d2948ff1fbe9419f9e559f791dcaa74dfb568a0d915ba707fa5821dc97714",
+    "src/shared/Aircraft.luau": "c5c1848dc68f2ff4283da73d375cb60a6eb246cf3425a4cf77e79ff110d704d0"
+  },
+  "classic_blend_meshes_read": [
+    "wings-sticker-right",
+    "wings-sticker-left",
+    "wings-paper",
+    "wings-accent",
+    "tail-paper",
+    "tail-accent",
+    "sticker-square",
+    "sticker-circle",
+    "pellet-tube",
+    "pellet-band",
+    "nose-paper",
+    "nose-accent",
+    "body-paper"
+  ],
+  "fbx_contract": {
+    "source_unit_studs": 1,
+    "global_scale": 0.01,
+    "apply_unit_scale": false,
+    "apply_scale_options": "FBX_SCALE_NONE",
+    "bake_space_transform": true,
+    "fbx_unit_scale_factor": 1,
+    "scale_explanation": "0.01 cancels Blender's implicit 100x centimeter conversion. Saved vertex coordinates are in studs, matching the legacy FBX unit tag.",
+    "axis_forward": "-Z",
+    "axis_up": "Y",
+    "structural_yaw_compensation_degrees": 0,
+    "import_instruction": "Set mesh sizes and centers from this manifest. Preserve the slot-relative vertex offsets when composing regions.",
+    "limitation": "New sizes, centers, identity rotations and tube-center/muzzle mounts require later game integration. These files do not preserve the old template dimensions or yaw."
+  },
+  "exports": [
+    {
+      "file": "body-paper-L.fbx",
+      "object": "body-paper-L",
+      "part": "body",
+      "region": "paper",
+      "display_name": "Classic Fold",
+      "bbox_center": [
+        -0.65,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        1.3,
+        2.25,
+        8.022345
+      ],
+      "triangles": 108,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        -0.65,
+        0.0,
+        0.0
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "L",
+      "source_triangles": 132,
+      "removed_source_zero_area_triangles": 24,
+      "maps": {
+        "color": "body-paper-L-color.png",
+        "normal": "body-paper-L-normal.png",
+        "roughness": "body-paper-L-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.011756285093724728,
+          0.983803391456604
+        ],
+        "coverage_percent": 41.006,
+        "gutter_pixels": 12,
+        "texels_per_stud": 86.44,
+        "triangle_density_min_max": [
+          81.93,
+          87.2
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          1024,
+          1024
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8234688777045642,
+          0.8863893657243838
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 49,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.005845427513122559
+      },
+      "assembly_location_blender": [
+        -0.6499999761581421,
+        -1.404757022857666,
+        0.2750000059604645
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/body-paper-L.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.6499999761581421,
+            -4.011172771453857,
+            -1.1250003576278687
+          ],
+          [
+            0.6499999761581421,
+            4.011172771453857,
+            1.1250003576278687
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.6499999761581421,
+            -4.011172771453857,
+            -1.1250007152557373
+          ],
+          [
+            0.6499999761581421,
+            4.011172771453857,
+            1.1250007152557373
+          ]
+        ],
+        "bbox_error_max_studs": 3.5762786865234375e-07,
+        "raw_fbx_bbox_error_max_studs": 3.5762786865234375e-07,
+        "vertex_position_error_max_studs": 3.5762786865234375e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 3.5762786865234375e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 24,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "body-paper-R.fbx",
+      "object": "body-paper-R",
+      "part": "body",
+      "region": "paper",
+      "display_name": "Classic Fold",
+      "bbox_center": [
+        0.65,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        1.3,
+        2.25,
+        8.022345
+      ],
+      "triangles": 108,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.65,
+        0.0,
+        0.0
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "R",
+      "source_triangles": 144,
+      "removed_source_zero_area_triangles": 36,
+      "maps": {
+        "color": "body-paper-R-color.png",
+        "normal": "body-paper-R-normal.png",
+        "roughness": "body-paper-R-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.01182745024561882,
+          0.9882814288139343
+        ],
+        "coverage_percent": 42.571,
+        "gutter_pixels": 12,
+        "texels_per_stud": 88.08,
+        "triangle_density_min_max": [
+          83.48,
+          88.85
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          1024,
+          1024
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8239681631161425,
+          0.8859999569440556
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 51,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.005720019340515137
+      },
+      "assembly_location_blender": [
+        0.6499999761581421,
+        -1.404757022857666,
+        0.2750000059604645
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/body-paper-R.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.6499999761581421,
+            -4.011172771453857,
+            -1.1250003576278687
+          ],
+          [
+            0.6499999761581421,
+            4.011172771453857,
+            1.1250003576278687
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.6499999761581421,
+            -4.011172771453857,
+            -1.1250007152557373
+          ],
+          [
+            0.6499999761581421,
+            4.011172771453857,
+            1.1250007152557373
+          ]
+        ],
+        "bbox_error_max_studs": 3.5762786865234375e-07,
+        "raw_fbx_bbox_error_max_studs": 3.5762786865234375e-07,
+        "vertex_position_error_max_studs": 3.5762786865234375e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 3.5762786865234375e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 36,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "body-paper.fbx",
+      "object": "body-paper",
+      "part": "body",
+      "region": "paper",
+      "display_name": "Classic Fold",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -2.606416
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "size": [
+        2.6,
+        2.25,
+        8.022345
+      ],
+      "triangles": 144,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011173
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        4.011173
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 144,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "body-paper-color.png",
+        "normal": "body-paper-normal.png",
+        "roughness": "body-paper-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.01171875186264515,
+          0.9790230989456177
+        ],
+        "coverage_percent": 40.484,
+        "gutter_pixels": 12,
+        "texels_per_stud": 61.48,
+        "triangle_density_min_max": [
+          58.59,
+          62.36
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          1024,
+          1024
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8234352631614792,
+          0.8864832111209039
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 112,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.005597829818725586
+      },
+      "assembly_location_blender": [
+        0.0,
+        -1.404757022857666,
+        0.2750000059604645
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/body-paper.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -1.2999999523162842,
+            -4.011172771453857,
+            -1.1250003576278687
+          ],
+          [
+            1.2999999523162842,
+            4.011172771453857,
+            1.1250003576278687
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -1.2999999523162842,
+            -4.011172771453857,
+            -1.1250007152557373
+          ],
+          [
+            1.2999999523162842,
+            4.011172771453857,
+            1.1250007152557373
+          ]
+        ],
+        "bbox_error_max_studs": 3.5762786865234375e-07,
+        "raw_fbx_bbox_error_max_studs": 3.5762786865234375e-07,
+        "vertex_position_error_max_studs": 3.5762786865234375e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 3.5762786865234375e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "nose-accent.fbx",
+      "object": "nose-accent",
+      "part": "nose",
+      "region": "accent",
+      "display_name": "Classic Nose",
+      "bbox_min": [
+        -0.52,
+        -0.46,
+        -7.65
+      ],
+      "bbox_max": [
+        0.52,
+        0.44,
+        -5.632566
+      ],
+      "bbox_center": [
+        0.0,
+        -0.01,
+        -6.641283
+      ],
+      "size": [
+        1.04,
+        0.9,
+        2.017434
+      ],
+      "triangles": 86,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.285,
+        -1.513075
+      ],
+      "slot_local_bbox_min": [
+        -0.52,
+        -0.735,
+        -2.521792
+      ],
+      "slot_local_bbox_max": [
+        0.52,
+        0.165,
+        -0.504358
+      ],
+      "fbx_local_bbox_min": [
+        -0.52,
+        -0.735,
+        -2.521792
+      ],
+      "fbx_local_bbox_max": [
+        0.52,
+        0.165,
+        -0.504358
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 86,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "nose-accent-color.png",
+        "normal": "nose-accent-normal.png",
+        "roughness": "nose-accent-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.02343747578561306,
+          0.9588835835456848
+        ],
+        "coverage_percent": 34.016,
+        "gutter_pixels": 12,
+        "texels_per_stud": 127.38,
+        "triangle_density_min_max": [
+          123.0,
+          129.14
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8239946084127704,
+          0.8827935530643906
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 39,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.00596928596496582
+      },
+      "assembly_location_blender": [
+        0.0,
+        5.128208160400391,
+        0.2750000059604645
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/nose-accent.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.5199999809265137,
+            0.5043582320213318,
+            -0.7350000739097595
+          ],
+          [
+            0.5199999809265137,
+            2.521791934967041,
+            0.16499997675418854
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.5199999809265137,
+            0.504358172416687,
+            -0.7350001335144043
+          ],
+          [
+            0.5199999809265137,
+            2.521791934967041,
+            0.16499993205070496
+          ]
+        ],
+        "bbox_error_max_studs": 5.960464477539063e-08,
+        "raw_fbx_bbox_error_max_studs": 5.960464477539063e-08,
+        "vertex_position_error_max_studs": 1.7881393432617188e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 1.7881393432617188e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "nose-paper-L.fbx",
+      "object": "nose-paper-L",
+      "part": "nose",
+      "region": "paper",
+      "display_name": "Classic Nose",
+      "bbox_center": [
+        -0.65,
+        0.275,
+        -4.119491
+      ],
+      "size": [
+        1.3,
+        2.25,
+        3.02615
+      ],
+      "triangles": 52,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        -0.65,
+        0.0,
+        1.008717
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "L",
+      "source_triangles": 64,
+      "removed_source_zero_area_triangles": 12,
+      "maps": {
+        "color": "nose-paper-L-color.png",
+        "normal": "nose-paper-L-normal.png",
+        "roughness": "nose-paper-L-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023437460884451866,
+          0.9487095475196838
+        ],
+        "coverage_percent": 32.672,
+        "gutter_pixels": 12,
+        "texels_per_stud": 69.87,
+        "triangle_density_min_max": [
+          68.38,
+          70.56
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8260393247096887,
+          0.8845177628764797
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 6,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.00596928596496582
+      },
+      "assembly_location_blender": [
+        -0.6499999761581421,
+        5.128208160400391,
+        0.2750000059604645
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/nose-paper-L.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.6499999761581421,
+            -2.52179217338562,
+            -1.124999761581421
+          ],
+          [
+            0.6499999761581421,
+            0.5043582916259766,
+            1.125000238418579
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.6499999761581421,
+            -2.52179217338562,
+            -1.1249995231628418
+          ],
+          [
+            0.6499999761581421,
+            0.5043582916259766,
+            1.1250004768371582
+          ]
+        ],
+        "bbox_error_max_studs": 2.384185791015625e-07,
+        "raw_fbx_bbox_error_max_studs": 2.384185791015625e-07,
+        "vertex_position_error_max_studs": 2.384185791015625e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 2.384185791015625e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 12,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "nose-paper-R.fbx",
+      "object": "nose-paper-R",
+      "part": "nose",
+      "region": "paper",
+      "display_name": "Classic Nose",
+      "bbox_center": [
+        0.65,
+        0.275,
+        -4.119491
+      ],
+      "size": [
+        1.3,
+        2.25,
+        3.02615
+      ],
+      "triangles": 52,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.65,
+        0.0,
+        1.008717
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "R",
+      "source_triangles": 72,
+      "removed_source_zero_area_triangles": 20,
+      "maps": {
+        "color": "nose-paper-R-color.png",
+        "normal": "nose-paper-R-normal.png",
+        "roughness": "nose-paper-R-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.02343747206032276,
+          0.9765626192092896
+        ],
+        "coverage_percent": 34.785,
+        "gutter_pixels": 12,
+        "texels_per_stud": 72.09,
+        "triangle_density_min_max": [
+          70.55,
+          72.8
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8240189614409252,
+          0.8866205575209004
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 6,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.005536556243896484
+      },
+      "assembly_location_blender": [
+        0.6499999761581421,
+        5.128208160400391,
+        0.2750000059604645
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/nose-paper-R.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.6499999761581421,
+            -2.52179217338562,
+            -1.124999761581421
+          ],
+          [
+            0.6499999761581421,
+            0.5043582916259766,
+            1.125000238418579
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.6499999761581421,
+            -2.52179217338562,
+            -1.1249995231628418
+          ],
+          [
+            0.6499999761581421,
+            0.5043582916259766,
+            1.1250004768371582
+          ]
+        ],
+        "bbox_error_max_studs": 2.384185791015625e-07,
+        "raw_fbx_bbox_error_max_studs": 2.384185791015625e-07,
+        "vertex_position_error_max_studs": 2.384185791015625e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 2.384185791015625e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 20,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "nose-paper.fbx",
+      "object": "nose-paper",
+      "part": "nose",
+      "region": "paper",
+      "display_name": "Classic Nose",
+      "bbox_min": [
+        -1.3,
+        -0.85,
+        -5.632566
+      ],
+      "bbox_max": [
+        1.3,
+        1.4,
+        -2.606416
+      ],
+      "bbox_center": [
+        0.0,
+        0.275,
+        -4.119491
+      ],
+      "size": [
+        2.6,
+        2.25,
+        3.02615
+      ],
+      "triangles": 72,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.275,
+        -5.128208
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.0,
+        1.008717
+      ],
+      "slot_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -0.504358
+      ],
+      "slot_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "fbx_local_bbox_min": [
+        -1.3,
+        -1.125,
+        -0.504358
+      ],
+      "fbx_local_bbox_max": [
+        1.3,
+        1.125,
+        2.521792
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 72,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "nose-paper-color.png",
+        "normal": "nose-paper-normal.png",
+        "roughness": "nose-paper-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023437486961483955,
+          0.9765627384185791
+        ],
+        "coverage_percent": 30.967,
+        "gutter_pixels": 12,
+        "texels_per_stud": 48.83,
+        "triangle_density_min_max": [
+          47.19,
+          49.54
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8239625594234952,
+          0.8863719541430973
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 14,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.005536437034606934
+      },
+      "assembly_location_blender": [
+        0.0,
+        5.128208160400391,
+        0.2750000059604645
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/nose-paper.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -1.2999999523162842,
+            -2.52179217338562,
+            -1.124999761581421
+          ],
+          [
+            1.2999999523162842,
+            0.5043582916259766,
+            1.125000238418579
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -1.2999999523162842,
+            -2.52179217338562,
+            -1.1249995231628418
+          ],
+          [
+            1.2999999523162842,
+            0.5043582916259766,
+            1.1250004768371582
+          ]
+        ],
+        "bbox_error_max_studs": 2.384185791015625e-07,
+        "raw_fbx_bbox_error_max_studs": 2.384185791015625e-07,
+        "vertex_position_error_max_studs": 2.384185791015625e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 2.384185791015625e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "pellet-band.fbx",
+      "object": "pellet-band",
+      "part": "pellet",
+      "region": "band",
+      "display_name": "Paper Pellet Gun",
+      "bbox_min": [
+        -2.26,
+        -0.505,
+        -1.16
+      ],
+      "bbox_max": [
+        -1.26,
+        0.815,
+        -0.46
+      ],
+      "bbox_center": [
+        -1.76,
+        0.155,
+        -0.81
+      ],
+      "size": [
+        1.0,
+        1.32,
+        0.7
+      ],
+      "triangles": 64,
+      "suggested_color3_255": [
+        214,
+        200,
+        160
+      ],
+      "suggested_color3": [
+        0.839216,
+        0.784314,
+        0.627451
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        -1.76,
+        0.08,
+        -1.313391
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.075,
+        0.503391
+      ],
+      "slot_local_bbox_min": [
+        -0.5,
+        -0.585,
+        0.153391
+      ],
+      "slot_local_bbox_max": [
+        0.5,
+        0.735,
+        0.853391
+      ],
+      "fbx_local_bbox_min": [
+        -0.5,
+        -0.585,
+        0.153391
+      ],
+      "fbx_local_bbox_max": [
+        0.5,
+        0.735,
+        0.853391
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 64,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "pellet-band-color.png",
+        "normal": "pellet-band-normal.png",
+        "roughness": "pellet-band-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023726122453808784,
+          0.9765624403953552
+        ],
+        "coverage_percent": 37.531,
+        "gutter_pixels": 12,
+        "texels_per_stud": 123.93,
+        "triangle_density_min_max": [
+          123.93,
+          123.93
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8281373794485625,
+          0.8839622444978693
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 48,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.006086945533752441
+      },
+      "assembly_location_blender": [
+        -1.7599999904632568,
+        1.3133909702301025,
+        0.07999999821186066
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/pellet-band.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.5,
+            -0.8533913493156433,
+            -0.5849999785423279
+          ],
+          [
+            0.5,
+            -0.1533913016319275,
+            0.7350000739097595
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.5,
+            -0.8533914089202881,
+            -0.5849999785423279
+          ],
+          [
+            0.5,
+            -0.15339124202728271,
+            0.7350001335144043
+          ]
+        ],
+        "bbox_error_max_studs": 5.960464477539063e-08,
+        "raw_fbx_bbox_error_max_studs": 5.960464477539063e-08,
+        "vertex_position_error_max_studs": 5.960464477539063e-08,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 5.960464477539063e-08,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "pellet-tube.fbx",
+      "object": "pellet-tube",
+      "part": "pellet",
+      "region": "paper",
+      "display_name": "Paper Pellet Gun",
+      "bbox_min": [
+        -2.172435,
+        -0.332435,
+        -2.87
+      ],
+      "bbox_max": [
+        -1.347565,
+        0.492435,
+        0.243217
+      ],
+      "bbox_center": [
+        -1.76,
+        0.08,
+        -1.313391
+      ],
+      "size": [
+        0.82487,
+        0.82487,
+        3.113217
+      ],
+      "triangles": 192,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        -1.76,
+        0.08,
+        -1.313391
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.0,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.412435,
+        -0.412435,
+        -1.556609
+      ],
+      "slot_local_bbox_max": [
+        0.412435,
+        0.412435,
+        1.556609
+      ],
+      "fbx_local_bbox_min": [
+        -0.412435,
+        -0.412435,
+        -1.556609
+      ],
+      "fbx_local_bbox_max": [
+        0.412435,
+        0.412435,
+        1.556609
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 192,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "pellet-tube-color.png",
+        "normal": "pellet-tube-normal.png",
+        "roughness": "pellet-tube-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023456132039427757,
+          0.9765625596046448
+        ],
+        "coverage_percent": 32.009,
+        "gutter_pixels": 12,
+        "texels_per_stud": 75.27,
+        "triangle_density_min_max": [
+          74.81,
+          76.12
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8232154719029966,
+          0.8834824237816393
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 144,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.00596928596496582
+      },
+      "assembly_location_blender": [
+        -1.7599999904632568,
+        1.3133909702301025,
+        0.07999999821186066
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/pellet-tube.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.41243481636047363,
+            -1.5566086769104004,
+            -0.4124348759651184
+          ],
+          [
+            0.41243481636047363,
+            1.5566085577011108,
+            0.4124348759651184
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.41243481636047363,
+            -1.5566086769104004,
+            -0.41243499517440796
+          ],
+          [
+            0.41243481636047363,
+            1.5566085577011108,
+            0.41243499517440796
+          ]
+        ],
+        "bbox_error_max_studs": 1.1920928955078125e-07,
+        "raw_fbx_bbox_error_max_studs": 1.1920928955078125e-07,
+        "vertex_position_error_max_studs": 1.1920928955078125e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 1.1920928955078125e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "tail-accent.fbx",
+      "object": "tail-accent",
+      "part": "tail",
+      "region": "accent",
+      "display_name": "Classic Tail",
+      "bbox_min": [
+        -0.092,
+        1.18,
+        5.76
+      ],
+      "bbox_max": [
+        0.092,
+        2.899826,
+        7.453
+      ],
+      "bbox_center": [
+        0.0,
+        2.039913,
+        6.6065
+      ],
+      "size": [
+        0.184,
+        1.719826,
+        1.693
+      ],
+      "triangles": 24,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.349,
+        0.1915
+      ],
+      "slot_local_bbox_min": [
+        -0.092,
+        -0.510913,
+        -0.655
+      ],
+      "slot_local_bbox_max": [
+        0.092,
+        1.208913,
+        1.038
+      ],
+      "fbx_local_bbox_min": [
+        -0.092,
+        -0.510913,
+        -0.655
+      ],
+      "fbx_local_bbox_max": [
+        0.092,
+        1.208913,
+        1.038
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 24,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "tail-accent-color.png",
+        "normal": "tail-accent-normal.png",
+        "roughness": "tail-accent-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023437513038516045,
+          0.9765626192092896
+        ],
+        "coverage_percent": 36.641,
+        "gutter_pixels": 12,
+        "texels_per_stud": 104.38,
+        "triangle_density_min_max": [
+          104.38,
+          104.38
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8258311449484573,
+          0.8833186622891883
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 24,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.006209254264831543
+      },
+      "assembly_location_blender": [
+        0.0,
+        -6.414999961853027,
+        1.6909129619598389
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/tail-accent.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.09200000017881393,
+            -1.0380001068115234,
+            -0.5109131932258606
+          ],
+          [
+            0.09200000017881393,
+            0.6549996733665466,
+            1.2089130878448486
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.09200000017881393,
+            -1.0380001068115234,
+            -0.5109132528305054
+          ],
+          [
+            0.09200000017881393,
+            0.6549996137619019,
+            1.2089132070541382
+          ]
+        ],
+        "bbox_error_max_studs": 1.1920928955078125e-07,
+        "raw_fbx_bbox_error_max_studs": 1.1920928955078125e-07,
+        "vertex_position_error_max_studs": 1.1920928955078125e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 1.1920928955078125e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "tail-paper-L.fbx",
+      "object": "tail-paper-L",
+      "part": "tail",
+      "region": "paper",
+      "display_name": "Classic Tail",
+      "bbox_center": [
+        -0.3975,
+        1.690913,
+        6.415
+      ],
+      "size": [
+        0.795,
+        2.421826,
+        2.47
+      ],
+      "triangles": 92,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        -0.3975,
+        0.0,
+        0.0
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "L",
+      "source_triangles": 92,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "tail-paper-L-color.png",
+        "normal": "tail-paper-L-normal.png",
+        "roughness": "tail-paper-L-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023497074842453003,
+          0.968031644821167
+        ],
+        "coverage_percent": 34.339,
+        "gutter_pixels": 12,
+        "texels_per_stud": 78.54,
+        "triangle_density_min_max": [
+          78.41,
+          78.56
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.825070854795929,
+          0.884920565957169
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 42,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.006087064743041992
+      },
+      "assembly_location_blender": [
+        -0.39750000834465027,
+        -6.414999961853027,
+        1.6909129619598389
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/tail-paper-L.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.39750000834465027,
+            -1.2350002527236938,
+            -1.2109131813049316
+          ],
+          [
+            0.39750000834465027,
+            1.2350001335144043,
+            1.2109131813049316
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.39750000834465027,
+            -1.2350003719329834,
+            -1.2109133005142212
+          ],
+          [
+            0.39750000834465027,
+            1.2350001335144043,
+            1.2109133005142212
+          ]
+        ],
+        "bbox_error_max_studs": 1.1920928955078125e-07,
+        "raw_fbx_bbox_error_max_studs": 1.1920928955078125e-07,
+        "vertex_position_error_max_studs": 1.1920928955078125e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 1.1920928955078125e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "tail-paper-R.fbx",
+      "object": "tail-paper-R",
+      "part": "tail",
+      "region": "paper",
+      "display_name": "Classic Tail",
+      "bbox_center": [
+        0.3975,
+        1.690913,
+        6.415
+      ],
+      "size": [
+        0.795,
+        2.421826,
+        2.47
+      ],
+      "triangles": 92,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.3975,
+        0.0,
+        0.0
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "R",
+      "source_triangles": 92,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "tail-paper-R-color.png",
+        "normal": "tail-paper-R-normal.png",
+        "roughness": "tail-paper-R-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023437494412064552,
+          0.9765625
+        ],
+        "coverage_percent": 34.209,
+        "gutter_pixels": 12,
+        "texels_per_stud": 78.39,
+        "triangle_density_min_max": [
+          78.26,
+          78.41
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8275377264598475,
+          0.8823683064802694
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 42,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.006092965602874756
+      },
+      "assembly_location_blender": [
+        0.39750000834465027,
+        -6.414999961853027,
+        1.6909129619598389
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/tail-paper-R.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.39750003814697266,
+            -1.2350002527236938,
+            -1.2109131813049316
+          ],
+          [
+            0.39750003814697266,
+            1.2350001335144043,
+            1.2109131813049316
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.39750003814697266,
+            -1.2350003719329834,
+            -1.2109133005142212
+          ],
+          [
+            0.39750003814697266,
+            1.2350001335144043,
+            1.2109133005142212
+          ]
+        ],
+        "bbox_error_max_studs": 1.1920928955078125e-07,
+        "raw_fbx_bbox_error_max_studs": 1.1920928955078125e-07,
+        "vertex_position_error_max_studs": 1.1920928955078125e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 1.1920928955078125e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "tail-paper.fbx",
+      "object": "tail-paper",
+      "part": "tail",
+      "region": "paper",
+      "display_name": "Classic Tail",
+      "bbox_min": [
+        -0.795,
+        0.48,
+        5.18
+      ],
+      "bbox_max": [
+        0.795,
+        2.901826,
+        7.65
+      ],
+      "bbox_center": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "size": [
+        1.59,
+        2.421826,
+        2.47
+      ],
+      "triangles": 96,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        1.690913,
+        6.415
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -0.795,
+        -1.210913,
+        -1.235
+      ],
+      "slot_local_bbox_max": [
+        0.795,
+        1.210913,
+        1.235
+      ],
+      "fbx_local_bbox_min": [
+        -0.795,
+        -1.210913,
+        -1.235
+      ],
+      "fbx_local_bbox_max": [
+        0.795,
+        1.210913,
+        1.235
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 96,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "tail-paper-color.png",
+        "normal": "tail-paper-normal.png",
+        "roughness": "tail-paper-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023437481373548508,
+          0.9765626788139343
+        ],
+        "coverage_percent": 33.471,
+        "gutter_pixels": 12,
+        "texels_per_stud": 62.21,
+        "triangle_density_min_max": [
+          62.11,
+          62.25
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8247848978391993,
+          0.88490703120863
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 72,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.00646442174911499
+      },
+      "assembly_location_blender": [
+        0.0,
+        -6.414999961853027,
+        1.6909129619598389
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/tail-paper.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.7950000166893005,
+            -1.2350002527236938,
+            -1.2109131813049316
+          ],
+          [
+            0.7950000166893005,
+            1.2350001335144043,
+            1.2109131813049316
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.7950000166893005,
+            -1.2350003719329834,
+            -1.2109133005142212
+          ],
+          [
+            0.7950000166893005,
+            1.2350001335144043,
+            1.2109133005142212
+          ]
+        ],
+        "bbox_error_max_studs": 1.1920928955078125e-07,
+        "raw_fbx_bbox_error_max_studs": 1.1920928955078125e-07,
+        "vertex_position_error_max_studs": 1.1920928955078125e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 1.1920928955078125e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "wings-accent-L.fbx",
+      "object": "wings-accent-L",
+      "part": "wings",
+      "region": "accent",
+      "display_name": "Classic Wings",
+      "bbox_center": [
+        -5.548761,
+        0.984436,
+        3.504291
+      ],
+      "size": [
+        0.95,
+        0.055008,
+        3.581723
+      ],
+      "triangles": 20,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        -5.548761,
+        0.088466,
+        2.099534
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "L",
+      "source_triangles": 20,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "wings-accent-L-color.png",
+        "normal": "wings-accent-L-normal.png",
+        "roughness": "wings-accent-L-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.02343747951090336,
+          0.9765625596046448
+        ],
+        "coverage_percent": 43.243,
+        "gutter_pixels": 12,
+        "texels_per_stud": 136.73,
+        "triangle_density_min_max": [
+          136.73,
+          136.73
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.828145312158131,
+          0.8811414899657974
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 16,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.0063925981521606445
+      },
+      "assembly_location_blender": [
+        -5.548760890960693,
+        -1.404757022857666,
+        0.8959699869155884
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/wings-accent-L.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.47500014305114746,
+            -3.8903956413269043,
+            0.06096210330724716
+          ],
+          [
+            0.47500014305114746,
+            -0.3086724281311035,
+            0.11597000807523727
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.47500014305114746,
+            -3.8903956413269043,
+            0.06096212565898895
+          ],
+          [
+            0.47500014305114746,
+            -0.3086724281311035,
+            0.11597029864788055
+          ]
+        ],
+        "bbox_error_max_studs": 2.905726432800293e-07,
+        "raw_fbx_bbox_error_max_studs": 2.905726432800293e-07,
+        "vertex_position_error_max_studs": 2.905726432800293e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 2.905726432800293e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "wings-accent-R.fbx",
+      "object": "wings-accent-R",
+      "part": "wings",
+      "region": "accent",
+      "display_name": "Classic Wings",
+      "bbox_center": [
+        5.548761,
+        0.984436,
+        3.504291
+      ],
+      "size": [
+        0.95,
+        0.055008,
+        3.581723
+      ],
+      "triangles": 20,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        5.548761,
+        0.088466,
+        2.099534
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "R",
+      "source_triangles": 20,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "wings-accent-R-color.png",
+        "normal": "wings-accent-R-normal.png",
+        "roughness": "wings-accent-R-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023437445983290672,
+          0.9765625
+        ],
+        "coverage_percent": 42.936,
+        "gutter_pixels": 12,
+        "texels_per_stud": 136.25,
+        "triangle_density_min_max": [
+          136.25,
+          136.25
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8277636161127766,
+          0.8804762545773908
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 16,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.00646442174911499
+      },
+      "assembly_location_blender": [
+        5.548760890960693,
+        -1.404757022857666,
+        0.8959699869155884
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/wings-accent-R.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -0.47500014305114746,
+            -3.8903956413269043,
+            0.06096210330724716
+          ],
+          [
+            0.47500014305114746,
+            -0.3086724281311035,
+            0.11597000807523727
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -0.47500014305114746,
+            -3.8903956413269043,
+            0.06096212565898895
+          ],
+          [
+            0.47500014305114746,
+            -0.3086724281311035,
+            0.11597029864788055
+          ]
+        ],
+        "bbox_error_max_studs": 2.905726432800293e-07,
+        "raw_fbx_bbox_error_max_studs": 2.905726432800293e-07,
+        "vertex_position_error_max_studs": 2.905726432800293e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 2.905726432800293e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "wings-accent.fbx",
+      "object": "wings-accent",
+      "part": "wings",
+      "region": "accent",
+      "display_name": "Classic Wings",
+      "bbox_min": [
+        -6.023761,
+        0.956932,
+        1.713429
+      ],
+      "bbox_max": [
+        6.023761,
+        1.011939,
+        5.295152
+      ],
+      "bbox_center": [
+        0.0,
+        0.984436,
+        3.504291
+      ],
+      "size": [
+        12.047523,
+        0.055008,
+        3.581723
+      ],
+      "triangles": 40,
+      "suggested_color3_255": [
+        206,
+        48,
+        43
+      ],
+      "suggested_color3": [
+        0.807843,
+        0.188235,
+        0.168627
+      ],
+      "team_color_at_runtime": true,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        0.088466,
+        2.099534
+      ],
+      "slot_local_bbox_min": [
+        -6.023761,
+        0.060962,
+        0.308672
+      ],
+      "slot_local_bbox_max": [
+        6.023761,
+        0.11597,
+        3.890396
+      ],
+      "fbx_local_bbox_min": [
+        -6.023761,
+        0.060962,
+        0.308672
+      ],
+      "fbx_local_bbox_max": [
+        6.023761,
+        0.11597,
+        3.890396
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 40,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "wings-accent-color.png",
+        "normal": "wings-accent-normal.png",
+        "roughness": "wings-accent-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023437494412064552,
+          0.9765625
+        ],
+        "coverage_percent": 36.152,
+        "gutter_pixels": 12,
+        "texels_per_stud": 88.4,
+        "triangle_density_min_max": [
+          86.32,
+          88.42
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8278977706628049,
+          0.8810988305561828
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 32,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.006270408630371094
+      },
+      "assembly_location_blender": [
+        0.0,
+        -1.404757022857666,
+        0.8959699869155884
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/wings-accent.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -6.02376127243042,
+            -3.8903956413269043,
+            0.06096210330724716
+          ],
+          [
+            6.02376127243042,
+            -0.3086724281311035,
+            0.11597000807523727
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -6.02376127243042,
+            -3.8903956413269043,
+            0.06096212565898895
+          ],
+          [
+            6.02376127243042,
+            -0.3086724281311035,
+            0.11597029864788055
+          ]
+        ],
+        "bbox_error_max_studs": 2.905726432800293e-07,
+        "raw_fbx_bbox_error_max_studs": 2.905726432800293e-07,
+        "vertex_position_error_max_studs": 2.905726432800293e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 2.905726432800293e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "wings-paper-L.fbx",
+      "object": "wings-paper-L",
+      "part": "wings",
+      "region": "paper",
+      "display_name": "Classic Wings",
+      "bbox_center": [
+        -3.401881,
+        0.875,
+        1.404757
+      ],
+      "size": [
+        6.803761,
+        0.19,
+        8.022345
+      ],
+      "triangles": 38,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        -3.401881,
+        -0.02097,
+        0.0
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "L",
+      "source_triangles": 54,
+      "removed_source_zero_area_triangles": 16,
+      "maps": {
+        "color": "wings-paper-L-color.png",
+        "normal": "wings-paper-L-normal.png",
+        "roughness": "wings-paper-L-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.011718752793967724,
+          0.987758457660675
+        ],
+        "coverage_percent": 51.696,
+        "gutter_pixels": 12,
+        "texels_per_stud": 89.37,
+        "triangle_density_min_max": [
+          88.03,
+          89.56
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          1024,
+          1024
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8236233711027852,
+          0.8853161585198123
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 26,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.0063315629959106445
+      },
+      "assembly_location_blender": [
+        -3.401880979537964,
+        -1.404757022857666,
+        0.8959699869155884
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/wings-paper-L.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -3.4018805027008057,
+            -4.011172771453857,
+            -0.11596999317407608
+          ],
+          [
+            3.4018805027008057,
+            4.011172771453857,
+            0.07403064519166946
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -3.4018805027008057,
+            -4.011172771453857,
+            -0.11597026884555817
+          ],
+          [
+            3.4018805027008057,
+            4.011172771453857,
+            0.07403095066547394
+          ]
+        ],
+        "bbox_error_max_studs": 3.0547380447387695e-07,
+        "raw_fbx_bbox_error_max_studs": 3.0547380447387695e-07,
+        "vertex_position_error_max_studs": 3.0547380447387695e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 3.0547380447387695e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 16,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "wings-paper-R.fbx",
+      "object": "wings-paper-R",
+      "part": "wings",
+      "region": "paper",
+      "display_name": "Classic Wings",
+      "bbox_center": [
+        3.401881,
+        0.875,
+        1.404757
+      ],
+      "size": [
+        6.803761,
+        0.19,
+        8.022345
+      ],
+      "triangles": 38,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        3.401881,
+        -0.02097,
+        0.0
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "side": "R",
+      "source_triangles": 54,
+      "removed_source_zero_area_triangles": 16,
+      "maps": {
+        "color": "wings-paper-R-color.png",
+        "normal": "wings-paper-R-normal.png",
+        "roughness": "wings-paper-R-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.011737607419490814,
+          0.9814754128456116
+        ],
+        "coverage_percent": 53.398,
+        "gutter_pixels": 12,
+        "texels_per_stud": 90.83,
+        "triangle_density_min_max": [
+          89.47,
+          91.02
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          1024,
+          1024
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8226039987761847,
+          0.8863910860393845
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 25,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.00646442174911499
+      },
+      "assembly_location_blender": [
+        3.401880979537964,
+        -1.404757022857666,
+        0.8959699869155884
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/wings-paper-R.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -3.4018805027008057,
+            -4.011172771453857,
+            -0.11596999317407608
+          ],
+          [
+            3.4018805027008057,
+            4.011172771453857,
+            0.07403064519166946
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -3.4018805027008057,
+            -4.011172771453857,
+            -0.11597026884555817
+          ],
+          [
+            3.4018805027008057,
+            4.011172771453857,
+            0.07403095066547394
+          ]
+        ],
+        "bbox_error_max_studs": 3.0547380447387695e-07,
+        "raw_fbx_bbox_error_max_studs": 3.0547380447387695e-07,
+        "vertex_position_error_max_studs": 3.0547380447387695e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 3.0547380447387695e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 16,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "wings-paper.fbx",
+      "object": "wings-paper",
+      "part": "wings",
+      "region": "paper",
+      "display_name": "Classic Wings",
+      "bbox_min": [
+        -6.803761,
+        0.78,
+        -2.606416
+      ],
+      "bbox_max": [
+        6.803761,
+        0.97,
+        5.415929
+      ],
+      "bbox_center": [
+        0.0,
+        0.875,
+        1.404757
+      ],
+      "size": [
+        13.607522,
+        0.19,
+        8.022345
+      ],
+      "triangles": 76,
+      "suggested_color3_255": [
+        238,
+        230,
+        212
+      ],
+      "suggested_color3": [
+        0.933333,
+        0.901961,
+        0.831373
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        0.0,
+        -0.02097,
+        0.0
+      ],
+      "slot_local_bbox_min": [
+        -6.803761,
+        -0.11597,
+        -4.011173
+      ],
+      "slot_local_bbox_max": [
+        6.803761,
+        0.07403,
+        4.011173
+      ],
+      "fbx_local_bbox_min": [
+        -6.803761,
+        -0.11597,
+        -4.011173
+      ],
+      "fbx_local_bbox_max": [
+        6.803761,
+        0.07403,
+        4.011173
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 76,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "wings-paper-color.png",
+        "normal": "wings-paper-normal.png",
+        "roughness": "wings-paper-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.011740154586732388,
+          0.986554741859436
+        ],
+        "coverage_percent": 51.998,
+        "gutter_pixels": 12,
+        "texels_per_stud": 63.38,
+        "triangle_density_min_max": [
+          62.6,
+          63.44
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          1024,
+          1024
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8226567917267859,
+          0.8856895328257332
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 55,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.0063925981521606445
+      },
+      "assembly_location_blender": [
+        0.0,
+        -1.404757022857666,
+        0.8959699869155884
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/wings-paper.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -6.803761005401611,
+            -4.011172771453857,
+            -0.11596999317407608
+          ],
+          [
+            6.803761005401611,
+            4.011172771453857,
+            0.07403064519166946
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -6.803761005401611,
+            -4.011172771453857,
+            -0.11597026884555817
+          ],
+          [
+            6.803761005401611,
+            4.011172771453857,
+            0.07403095066547394
+          ]
+        ],
+        "bbox_error_max_studs": 3.0547380447387695e-07,
+        "raw_fbx_bbox_error_max_studs": 3.0547380447387695e-07,
+        "vertex_position_error_max_studs": 3.0547380447387695e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 3.0547380447387695e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "wings-sticker-left.fbx",
+      "object": "wings-sticker-left",
+      "part": "wings",
+      "region": "sticker",
+      "display_name": "Classic Wings",
+      "bbox_min": [
+        -4.085,
+        0.914106,
+        1.647566
+      ],
+      "bbox_max": [
+        -2.235,
+        0.982015,
+        3.497566
+      ],
+      "bbox_center": [
+        -3.16,
+        0.94806,
+        2.572566
+      ],
+      "size": [
+        1.85,
+        0.067909,
+        1.85
+      ],
+      "triangles": 60,
+      "suggested_color3_255": [
+        250,
+        250,
+        247
+      ],
+      "suggested_color3": [
+        0.980392,
+        0.980392,
+        0.968627
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        -3.16,
+        0.052091,
+        1.16781
+      ],
+      "slot_local_bbox_min": [
+        -4.085,
+        0.018136,
+        0.24281
+      ],
+      "slot_local_bbox_max": [
+        -2.235,
+        0.086045,
+        2.09281
+      ],
+      "fbx_local_bbox_min": [
+        -4.085,
+        0.018136,
+        0.24281
+      ],
+      "fbx_local_bbox_max": [
+        -2.235,
+        0.086045,
+        2.09281
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 60,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "wings-sticker-left-color.png",
+        "normal": "wings-sticker-left-normal.png",
+        "roughness": "wings-sticker-left-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.023714935407042503,
+          0.9765625596046448
+        ],
+        "coverage_percent": 46.761,
+        "gutter_pixels": 12,
+        "texels_per_stud": 132.15,
+        "triangle_density_min_max": [
+          129.89,
+          132.16
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8247760884711774,
+          0.8871333517535033
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 48,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.006025791168212891
+      },
+      "assembly_location_blender": [
+        0.0,
+        -1.404757022857666,
+        0.8959699869155884
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/wings-sticker-left.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            -4.085000038146973,
+            -2.0928096771240234,
+            0.01813594065606594
+          ],
+          [
+            -2.234999895095825,
+            -0.24280965328216553,
+            0.0860455259680748
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            -4.085000038146973,
+            -2.0928096771240234,
+            0.018135976046323776
+          ],
+          [
+            -2.234999895095825,
+            -0.24280965328216553,
+            0.08604566752910614
+          ]
+        ],
+        "bbox_error_max_studs": 1.4156103134155273e-07,
+        "raw_fbx_bbox_error_max_studs": 1.4156103134155273e-07,
+        "vertex_position_error_max_studs": 1.5832483768463135e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 1.5832483768463135e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    },
+    {
+      "file": "wings-sticker-right.fbx",
+      "object": "wings-sticker-right",
+      "part": "wings",
+      "region": "sticker",
+      "display_name": "Classic Wings",
+      "bbox_min": [
+        2.235,
+        0.914106,
+        1.647566
+      ],
+      "bbox_max": [
+        4.085,
+        0.982015,
+        3.497566
+      ],
+      "bbox_center": [
+        3.16,
+        0.94806,
+        2.572566
+      ],
+      "size": [
+        1.85,
+        0.067909,
+        1.85
+      ],
+      "triangles": 60,
+      "suggested_color3_255": [
+        250,
+        250,
+        247
+      ],
+      "suggested_color3": [
+        0.980392,
+        0.980392,
+        0.968627
+      ],
+      "team_color_at_runtime": false,
+      "slot_pivot": [
+        0.0,
+        0.89597,
+        1.404757
+      ],
+      "center_offset_from_slot": [
+        3.16,
+        0.052091,
+        1.16781
+      ],
+      "slot_local_bbox_min": [
+        2.235,
+        0.018136,
+        0.24281
+      ],
+      "slot_local_bbox_max": [
+        4.085,
+        0.086045,
+        2.09281
+      ],
+      "fbx_local_bbox_min": [
+        2.235,
+        0.018136,
+        0.24281
+      ],
+      "fbx_local_bbox_max": [
+        4.085,
+        0.086045,
+        2.09281
+      ],
+      "assembly_rotation": "identity; no legacy yaw compensation",
+      "source_triangles": 60,
+      "removed_source_zero_area_triangles": 0,
+      "maps": {
+        "color": "wings-sticker-right-color.png",
+        "normal": "wings-sticker-right-normal.png",
+        "roughness": "wings-sticker-right-roughness.png"
+      },
+      "uv_checks": {
+        "layer": "PaperUV",
+        "overlap_interior_pixels": 0,
+        "uv_bounds": [
+          0.0237150639295578,
+          0.9765623211860657
+        ],
+        "coverage_percent": 46.761,
+        "gutter_pixels": 12,
+        "texels_per_stud": 132.15,
+        "triangle_density_min_max": [
+          129.89,
+          132.16
+        ],
+        "validation": "UV triangle interior raster test, plus bounds and positive-area checks",
+        "analytical_triangle_overlap": "PASS",
+        "maximum_intersection_uv_area": 0.0,
+        "intersection_area_tolerance": 1e-10
+      },
+      "texture_checks": {
+        "resolution": [
+          512,
+          512
+        ],
+        "color_rgb_min_max": [
+          217,
+          254
+        ],
+        "color_channels_identical": true,
+        "roughness_min_max": [
+          0.8267500506384042,
+          0.881147465514419
+        ],
+        "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
+        "ao_luminance_weight": 0.115,
+        "fold_edges": 48,
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
+        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "geometry_displacement": 0,
+        "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
+        "saved_normal_unit_length_error_max": 0.006031215190887451
+      },
+      "assembly_location_blender": [
+        0.0,
+        -1.404757022857666,
+        0.8959699869155884
+      ],
+      "surface_appearance_tintable": true,
+      "classic_source": "../classic/wings-sticker-right.fbx",
+      "fbx_roundtrip": {
+        "result": "PASS",
+        "classic_import_bbox_blender": [
+          [
+            2.234999895095825,
+            -2.0928096771240234,
+            0.01813594065606594
+          ],
+          [
+            4.085000038146973,
+            -0.24280965328216553,
+            0.0860455259680748
+          ]
+        ],
+        "sample_import_bbox_blender": [
+          [
+            2.234999895095825,
+            -2.0928096771240234,
+            0.018135976046323776
+          ],
+          [
+            4.085000038146973,
+            -0.24280965328216553,
+            0.08604566752910614
+          ]
+        ],
+        "bbox_error_max_studs": 1.4156103134155273e-07,
+        "raw_fbx_bbox_error_max_studs": 1.4156103134155273e-07,
+        "vertex_position_error_max_studs": 1.5832483768463135e-07,
+        "fbx_unit_scale_factor": 1.0,
+        "rendering_surface_position_error_max_studs": 1.5832483768463135e-07,
+        "same_vertex_count": true,
+        "same_rendering_surfaces": true,
+        "removed_source_zero_area_triangles": 0,
+        "roundtrip_uv_overlap_interior_pixels": 0,
+        "tolerance_studs": 2e-05,
+        "analytical_roundtrip_uv_overlap": "PASS"
+      }
+    }
+  ],
+  "max_triangles": 192,
+  "geometry": "Unchanged source vertices and flat mesh normals; softened edges and grain baked into tangent maps",
+  "source_files_unchanged": true,
+  "render_files": [
+    "compare-threequarter.png",
+    "team-red.png",
+    "team-blue.png",
+    "closeup-wing.png",
+    "closeup-nose.png",
+    "maps-contact-sheet.png"
+  ],
+  "review_tints": {
+    "comparison_paper": [
+      238,
+      230,
+      212
+    ],
+    "comparison_accent": [
+      206,
+      48,
+      43
+    ],
+    "team_red_paper": [
+      235,
+      40,
+      50
+    ],
+    "team_blue_paper": [
+      25,
+      115,
+      255
+    ],
+    "team_accents": [
+      252,
+      252,
+      255
+    ]
+  },
+  "network_uploads_studio": "Not used",
+  "independent_saved_file_verification": "PASS",
+  "script_sha256": "d2a7972c7e812b281122028c77586280633c0e14a3d6cef1ca56a14c58859560",
+  "render_only_coplanar_separation_studs": 0.0003
+}
