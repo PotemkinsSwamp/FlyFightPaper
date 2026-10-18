@@ -58,6 +58,9 @@ function Runtime.new(flight,combat,bots,profiles)
    self.engine.devZone=value=="NEXTSPOT" and (current or self.engine.devZone or 0)%#Config.rounds.control_zones+1 or nil
    Root:SetAttribute("DevMode",value=="NEXTSPOT" and "CONTROL" or value)
    if not spotOnly and (self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN") then self.engine:_close(self.engine:_clock(),"dev_mode") end
+  elseif action=="endMatch" and Run:IsStudio() then
+   -- Studio test button: end the running round now; the next mode is left as it was.
+   if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_end") end
   elseif action=="practice" then self:practice(player)
   elseif action=="practiceTarget" then local p=flight.pilots[player];if p and p.practice then combat:practiceTarget(p) end
   elseif action=="practiceDone" then if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end;self:join(player)
