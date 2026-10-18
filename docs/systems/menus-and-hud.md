@@ -3,8 +3,10 @@
 ## What the player sees
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
-## Where it stands (2026-10-15)
+## Where it stands (2026-10-17)
 Stage 6 approved by Alan (2026-10-13) after the on-brand HUD restyle. Edge arrows now stay below the top strips.
+Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); seen in Studio Play 2026-10-17 except the
+between-rounds lines. Warnings (INCOMING!, LOCKED ON!), zone words and error messages stay fixed on purpose.
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md section 9).*
