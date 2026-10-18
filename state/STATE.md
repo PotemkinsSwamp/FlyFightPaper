@@ -1,15 +1,17 @@
 # Since Alan last checked (2026-10-18)
 - **Winners' moment rebuilt** (OK'd): 3rd, 2nd, 1st hop onto desks, then a group shot dancing with Roblox emotes,
   name plates, confetti; results card the last 10 s (27 s in all). Details: docs/systems/modes-and-scoring.md.
-- **Wall touches are fair now (built 2026-10-18, your re-check):** a graze under about 25 degrees on a building, the
+- **Stage 9 approved (2026-10-18).** Next by the plan: Stage 10 (shop wiring, kept switched off until you OK
+  prices), then the tutorial, then Stage 11 (multiplayer tests, QA, release candidate).
+- **Wall touches are fair now (you re-checked):** a graze under about 25 degrees on a building, the
   room or the train's side is a scrape: a little damage, the nose is knocked away and the plane wobbles, and you
   steer back. Grinding along keeps costing more. More head-on crashes; the train's moving front still kills. Checked:
   15 degrees along a wall wobbled and survived, 45 crashed; train sides 5-20 degrees scrape, 30+ crash, front kills;
   bots died only to weapons in a 2-minute match. ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md))
 - Earlier: real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
-# Stage 9 — what's left (MILESTONES D13)
-Built; needs your playtest (bottom) and approval. Toilet Roll jitter: not reproduced; tell me when it happens.
+# Now: Stage 9 approved; Stage 10 next (MILESTONES)
+Toilet Roll jitter: not reproduced; tell me when it happens.
 
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
@@ -44,17 +46,5 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
   events stay 1 per 10 s; a pilot with no position sample counts as outside the zone.
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
-Waiting on Alan — Stage 9 playtest, then your approval
-1. Modes: in the hangar pick "mode team DM", "mode airspace" and "mode next spot". Team colours on planes and names,
-   the moving zone and its green arrow, each zone spot ("next spot" moves it on), veteran bots fighting for the
-   zone while rookies wander, the "+100 FOLD" pop-ups and the results points.
-2. Round end: in the hangar press "end match" (red, top). Watch the winners' moment to the end (the results card
-   comes up for the last 10 s), then fly through a hula hoop on the window wall to vote. Try it once from the air,
-   once from the hangar and once after a team round. Do the bots look like real players?
-3. Walls and train: graze a building and the train's side with a wing (wobble, you live, steer back), fly nose-first
-   into a wall (crash), get hit by the train's front (dead), fit above it in the south station. Is the wobble too
-   much or too little?
-4. Escapes: puff the chalk eraser; take the ducts once more (spot a veteran bot diving out of a vent).
-5. Hangar: land at your desk, pick a build, Edit build, change a part, Save & fly. Does it make sense first time?
-   On the weapons tab, click a mounted weapon again: it comes off. Crash a few times: the lines change each time.
-6. Say "Stage 9 approved", or what to fix.
+Waiting on Alan
+1. Nothing blocking. Stage 10 needs your product list and prices before anything is switched on.

@@ -333,6 +333,7 @@ Rewrite client steering and camera; keep client network ownership and the server
   stat bars, compare, five editable presets.
 
 ## Stage 9 — Modes and content completion (after ★) (workshopped with Alan 2026-10-13, D13)
+**Approved by Alan 2026-10-18** ([decision](../decisions/2026-10-18-stage-9-approved.md)).
 - **Airspace Control:** a moving field (see D13): crayon/chalk circle on what is under it plus a drifting loop of
   paper bits around its edges; white when nobody holds it, team colour when held, both colours when contested.
   Crayon capture bar under the round strip; edge arrow to the zone (and to the next spot during the warning).

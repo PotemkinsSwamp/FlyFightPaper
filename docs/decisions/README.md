@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-18: [Stage 9 approved](2026-10-18-stage-9-approved.md)
 - 2026-10-18: [Scrapes wobble you; head-on hits crash](2026-10-18-scrapes-wobble.md)
 - 2026-10-18: [Winners' shot: one steady group shot, like the big games](2026-10-18-winners-shot-redesign.md)
 - 2026-10-18: [Emotes with the paper plane; bots that look like real players](2026-10-18-emotes-and-bot-looks.md)

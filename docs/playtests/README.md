@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-10-18: Stage 9 sign-off](2026-10-18.md)
 - [2026-10-17: menus, loading screen, fold credit](2026-10-17.md)
 - [2026-10-16: first look at the new town](2026-10-16.md)
 - [2026-10-14/15: zone, targets, points, chalk eraser](2026-10-14.md)
