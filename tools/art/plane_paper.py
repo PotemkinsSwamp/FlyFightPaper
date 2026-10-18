@@ -26,10 +26,11 @@ SOURCE = ROOT / "assets/models/planes/classic"
 OUT = ROOT / "assets/models/planes/paper-sample"
 COMMAND = "& D:/Blender/blender.exe -b --factory-startup --threads 4 --python-exit-code 1 --python tools/art/plane_paper.py"
 RENDERS = ["compare-threequarter.png", "team-red.png", "team-blue.png",
-           "closeup-wing.png", "closeup-nose.png", "maps-contact-sheet.png"]
+           "closeup-wing.png", "closeup-nose.png", "maps-contact-sheet.png", "game-distance.png"]
 PAPER, RED, BLUE = (238, 230, 212), (206, 48, 43), (40, 91, 172)
 TEAM_RED, TEAM_BLUE, WHITE = (235, 40, 50), (25, 115, 255), (252, 252, 255)
 TOLERANCE = 0.00002
+FEATURES = {}
 
 
 def log(message):
@@ -277,81 +278,121 @@ def noise(p, scale, seed):
 
 
 def paper_height(p):
-    # Two long-grain directions, tiny pulp dimples and a barely visible broad
-    # wave. Coordinates remain in assembled space, so colour seams do not
-    # restart the grain and left/right halves receive the same paper field.
-    skew = p.copy()
-    skew[:, 0] += p[:, 1] * .13
-    fibres = noise(skew, (22, 4.5, 24), 147)
-    cross_grain = p.copy()
-    cross_grain[:, 0] = .72 * p[:, 0] + .69 * p[:, 1]
-    cross_grain[:, 1] = -.69 * p[:, 0] + .72 * p[:, 1]
-    crossing_fibres = noise(cross_grain, (24, 5, 25), 321)
-    pulp = noise(p, (38, 31, 37), 419)
-    wave = noise(p, (1.1, .65, 1.2), 833)
-    return .0028 * fibres + .00075 * crossing_fibres + .00032 * pulp + .0015 * wave
+    """Fine isotropic tooth, plus a few large, extremely shallow handling marks.
 
-
-def edge_details(obj, p, n, face_ids):
-    """Bake narrow edge rolls and crease channels at existing fold edges only.
-
-    This changes shading normals, never positions, faces, pivots or seams.
-    Coplanar triangulation edges are excluded. Artificial half-cut cap edges
-    are excluded too, so the assembled left/right centre does not get a groove.
+    Equal noise frequencies on all three axes prevent brushed streaks. The
+    broad field is smooth analytical curvature, never coarse random dimples.
+    World positions keep the field continuous across pigment and split seams.
     """
-    mesh = obj.data
+    q = p @ np.array(((.36, -.80, .48), (.80, .52, .30), (-.48, .30, .82)))
+    tooth = .00065 * noise(q, (28, 28, 28), 147)
+    tooth += .00022 * noise(q, (43, 43, 43), 419)
+    wave = .007 * np.sin(p @ np.array((.61, .37, .21)))
+    wave += .003 * np.sin(p @ np.array((-.49, .73, .32)) + 1.4)
+    for centre, radius, depth in (((-3.8, -2.1, .95), 1.25, -.009),
+                                  ((3.7, -3.0, .95), 1.5, -.007),
+                                  ((.6, -.8, .4), 1.7, -.005)):
+        wave += depth * np.exp(-np.sum((p - centre) ** 2, axis=1) / radius ** 2)
+    return tooth + wave
+
+
+def feature_edges(obj):
+    """Classify existing folds and cut rims without changing the source mesh.
+
+    Use whole-mesh references for both halves. A centre-cut cap is never a
+    paper edge, and true folds at that cut must survive on both alternatives.
+    Opposing surfaces and coplanar triangulation diagonals are excluded.
+    """
     verts = coordinates(obj) + np.array(obj.location)
     edges = {}
-    for face in mesh.polygons:
+    for face in obj.data.polygons:
         for a, b in face.edge_keys:
-            edges.setdefault(tuple(sorted((a, b))), []).append(face.index)
-    result = n.copy()
-    crease_shade = np.zeros(len(p))
-    real_folds = 0
+            edges.setdefault(tuple(sorted((a, b))), []).append(face)
+    result = []
     for (ai, bi), faces in edges.items():
         if len(faces) != 2:
             continue
-        f1, f2 = [mesh.polygons[i] for i in faces]
+        f1, f2 = faces
         n1, n2 = np.array(f1.normal[:]), np.array(f2.normal[:])
-        dot = np.clip(n1.dot(n2), -1, 1)
-        if dot > .9999 or dot < -.98:
+        dot = float(n1 @ n2)
+        shallow_wing = obj["part"] == "wings" and obj["region"] != "sticker" and dot > .97
+        if dot > (.999999 if shallow_wing else .9998) or dot < -.98:
             continue
         a, b = verts[ai], verts[bi]
-        if obj.get("side") and max(abs(a[0]), abs(b[0])) < 1e-5:
+        length = np.linalg.norm(b - a)
+        if length < .06:
             continue
-        if any(max(abs(a[1] - seam), abs(b[1] - seam)) < 1e-4
-               for seam in (2.606416, 5.632566, -5.415929)):
-            continue  # Slot and pigment boundaries are not extra paper folds.
-        real_folds += 1
-        for face, other in ((f1, n2), (f2, n1)):
-            ids = np.flatnonzero(face_ids == face.index)
+        if obj.name == "pellet-tube" and abs((b - a)[1]) / length > .999:
+            continue  # Cylinder facets are not longitudinal paper creases.
+        if obj["part"] != "pellet" and any(
+                max(abs(a[1] - seam), abs(b[1] - seam)) < 1e-4
+                for seam in (2.606416, 5.632566, -5.415929)):
+            continue  # Assembly joints and pigment changes are not cut rims.
+        # The thin sidewall of a sheet is a rim. Two substantial adjoining
+        # panels form a fold, even at Classic's shallow wing-root angles.
+        altitude = min(2 * f.area / length for f in faces)
+        kind = "fold" if altitude > .14 or shallow_wing else "rim"
+        if obj["region"] == "sticker":
+            kind = "sticker"
+        result.append((a, b, n1, n2, kind))
+    return result
+
+
+def edge_details(obj, p, n, face_ids):
+    """Crisp valley/ridge pairs, thin bright rims and a soft sticker edge lift.
+
+    Apply on the supporting plane, across coplanar triangle boundaries. This
+    avoids clipped crease segments and preserves the whole/half appearance.
+    """
+    del face_ids
+    result = n.copy()
+    dark, bright = np.zeros(len(p)), np.zeros(len(p))
+    whole_name = obj.name[:-2] if obj.get("side") else obj.name
+    features = FEATURES[whole_name]
+    for a, b, n1, n2, kind in features:
+        e = b - a
+        length = np.linalg.norm(e)
+        e /= length
+        for face_normal, other in ((n1, n2), (n2, n1)):
+            ids = np.flatnonzero((n @ face_normal > .999)
+                                 & (np.abs((p - a) @ face_normal) < .0001))
             if not len(ids):
                 continue
-            e = b - a
-            length = np.linalg.norm(e)
-            e /= length
             v = p[ids] - a
             along = np.clip(v @ e, 0, length)
             delta = v - along[:, None] * e
             distance = np.linalg.norm(delta, axis=1)
-            # Paper edge radius in shading only: about 1/8 of its thickness.
-            roll = np.exp(-(distance / .019) ** 2)
-            face_normal = np.array(face.normal[:])
+            near = distance < (.7 if kind == "fold" else .35)
+            ids, distance, delta = ids[near], distance[near], delta[near]
+            outward = delta / np.maximum(distance[:, None], 1e-12)
+            if kind == "fold":
+                valley = np.exp(-(distance / .043) ** 2)
+                ridge = np.exp(-((distance - .082) / .037) ** 2)
+                shoulder = np.exp(-(distance / .24) ** 2)
+                dark[ids] = np.maximum(dark[ids], .095 * valley + .022 * shoulder)
+                bright[ids] = np.maximum(bright[ids], .028 * ridge)
+                # Derivative of a narrow pressed valley beside a raised ridge.
+                slope = .012 * distance / .043 ** 2 * valley
+                slope -= .007 * (distance - .082) / .037 ** 2 * ridge
+                slope += .035 * shoulder
+                result[ids] -= slope[:, None] * outward
+            else:
+                rim = np.exp(-(distance / .038) ** 2)
+                bright[ids] = np.maximum(bright[ids], .040 * rim)
+                if kind == "sticker":
+                    lift = np.exp(-(distance / .075) ** 2)
+                    result[ids] += (.006 * distance / .075 ** 2 * lift)[:, None] * outward
+                    dark[ids] = np.maximum(dark[ids], .012 * np.exp(-((distance - .065) / .04) ** 2))
+            # A shading-only edge roll catches light on the retained thickness.
             midpoint = face_normal + other
             midpoint /= np.linalg.norm(midpoint)
-            # Add only the tangent slope. Several neighbouring edges on a
-            # thin rim must never subtract its front-facing normal component.
             slope_to_midpoint = midpoint / max(midpoint.dot(face_normal), .1) - face_normal
+            roll_strength = .25 if kind == "fold" else .22 if kind == "sticker" else .55
+            roll = roll_strength * np.exp(-(distance / .025) ** 2)
             result[ids] += roll[:, None] * slope_to_midpoint
-            # A pressed fold has a very fine adjacent channel, not a drawn line.
-            width = .040 if dot > .8 else .024
-            crease = np.exp(-(distance / width) ** 2)
-            crease_shade[ids] = np.maximum(crease_shade[ids], crease * .012)
-            outward = delta / np.maximum(distance[:, None], 1e-12)
-            slope = .035 * (distance / width) * crease
-            result[ids] -= slope[:, None] * outward
     result /= np.maximum(np.linalg.norm(result, axis=1)[:, None], 1e-12)
-    return result, crease_shade, real_folds
+    return result, bright - dark, {kind: sum(f[-1] == kind for f in features)
+                                   for kind in ("fold", "rim", "sticker")}
 
 
 def dilate(data, valid, iterations=12):
@@ -394,7 +435,19 @@ def bake_ao(obj, resolution):
     active(obj)
     bpy.context.scene.render.bake.use_clear = True
     bpy.context.scene.render.bake.margin = 12
-    bpy.ops.object.bake(type="EMIT")
+    # Team stickers change shape at runtime. Baking the placeholder square's
+    # footprint would stamp a permanent square shadow under a circular marker.
+    # Keep all structural occlusion, but let removable stickers cast their own
+    # correctly shaped render/runtime shadows instead of drawing them in maps.
+    markers = [o for o in bpy.context.scene.objects
+               if o != obj and o.get("region") == "sticker" and not o.hide_render]
+    try:
+        for marker in markers:
+            marker.hide_render = True
+        bpy.ops.object.bake(type="EMIT")
+    finally:
+        for marker in markers:
+            marker.hide_render = False
     values = np.empty(resolution * resolution * 4, dtype=np.float32)
     image.pixels.foreach_get(values)
     values = values.reshape(resolution, resolution, 4)[:, :, 0].copy()
@@ -412,28 +465,49 @@ def make_maps(obj, resolution):
     valid = face >= 0
     p, normals = pos[valid], n[valid]
     ao = bake_ao(obj, resolution)
-    softened, crease, folds = edge_details(obj, p, normals, face[valid])
+    softened, edge_tone, features = edge_details(obj, p, normals, face[valid])
+    if obj["part"] == "wings" and obj["region"] == "accent":
+        assert features["fold"] > 0, "Wing-tip fold must continue through coloured paper"
+    shade_normals = normals.copy()
+    if obj.name == "pellet-tube":
+        # Smooth a rolled sheet in the normal map, retaining every low-poly
+        # vertex and the original hollow opening. Its flat source facets must
+        # not introduce long stripes that could be mistaken for fibre grain.
+        v = coordinates(obj) + np.array(obj.location)
+        centre = (v.min(0) + v.max(0)) / 2
+        radial = (p - centre) * np.array((1, 0, 1))
+        radial /= np.maximum(np.linalg.norm(radial, axis=1)[:, None], 1e-12)
+        radial *= np.where(np.sum(radial * normals, axis=1) < 0, -1, 1)[:, None]
+        sides = np.abs(normals[:, 1]) < .01
+        softened[sides] += radial[sides] - normals[sides]
+        shade_normals[sides] = radial[sides]
     epsilon = .0025
     gradient = np.column_stack([(paper_height(p + np.eye(3)[i] * epsilon)
                                   - paper_height(p - np.eye(3)[i] * epsilon)) / (2 * epsilon)
                                  for i in range(3)])
     gradient -= normals * np.sum(gradient * normals, axis=1)[:, None]
+    if obj["region"] == "sticker":
+        gradient *= .45
     final = softened - gradient
     final /= np.linalg.norm(final, axis=1)[:, None]
     tangent_normal = np.column_stack((np.sum(final * t[valid], axis=1),
                                       np.sum(final * bit[valid], axis=1),
                                       np.sum(final * normals, axis=1)))
     assert np.min(tangent_normal[:, 2]) > 0
-    grain = noise(p, (22, 4.5, 24), 147)
-    cloud = noise(p, (4, 3, 4), 971)
-    luminance = np.clip(.978 + .018 * grain + .004 * cloud
-                        - .115 * (1 - ao[valid]) - crease, .85, .995)
-    roughness = np.clip(.855 + .022 * grain + .012 * cloud, .81, .90)
+    grain = noise(p, (28, 28, 28), 147)
+    # Low-amplitude, constant panel tone reinforces how real adjoining facets
+    # catch light. Grain stays out of the broad colour field entirely.
+    panel_tone = .020 * (shade_normals @ np.array((-.48, .16, .86)))
+    luminance = np.clip(.962 + .002 * grain + panel_tone
+                        - .12 * (1 - ao[valid]) + edge_tone, .85, .995)
+    sticker = obj["region"] == "sticker"
+    rough_base = .56 if sticker else .84
+    roughness = np.clip(rough_base + .012 * grain, rough_base - .015, rough_base + .015)
     arrays = {}
     for kind, background, data in (
             ("color", [.978] * 3, np.repeat(luminance[:, None], 3, axis=1)),
             ("normal", [.5, .5, 1], tangent_normal * .5 + .5),
-            ("roughness", [.855] * 3, np.repeat(roughness[:, None], 3, axis=1))):
+            ("roughness", [rough_base] * 3, np.repeat(roughness[:, None], 3, axis=1))):
         array = np.empty((resolution, resolution, 3), dtype=np.float32)
         array[:] = background
         array[valid] = data
@@ -448,9 +522,14 @@ def make_maps(obj, resolution):
         "resolution": [resolution, resolution], "color_rgb_min_max": [int(arrays["color"].min()), int(arrays["color"].max())],
         "color_channels_identical": True, "roughness_min_max": [float(roughness.min()), float(roughness.max())],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": .115, "fold_edges": folds,
+        "ao_luminance_weight": .12, "fold_edges": features["fold"], "edge_features": features,
+        "ao_removable_marker_footprints": False,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": .043, "fold_ridge_offset_studs": .082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": obj.name[:-2] if obj.get("side") else obj.name,
+        "rolled_tube_smoothing": obj.name == "pellet-tube",
         "geometry_displacement": 0, "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes"}
 
 
@@ -464,8 +543,8 @@ def paper_material(obj, region):
     mat["region"] = region
     nodes, links = mat.node_tree.nodes, mat.node_tree.links
     bsdf = nodes.get("Principled BSDF")
-    bsdf.inputs["Specular IOR Level"].default_value = .22
-    bsdf.inputs["Roughness"].default_value = .855
+    bsdf.inputs["Specular IOR Level"].default_value = .32 if region == "sticker" else .22
+    bsdf.inputs["Roughness"].default_value = .56 if region == "sticker" else .84
     tint = nodes.new("ShaderNodeMixRGB")
     tint.name = "Runtime tint"
     tint.blend_type = "MULTIPLY"
@@ -652,6 +731,15 @@ def _review_renders(objects, source_blend):
     # Identical framing and physical lighting in the two halves of the compare.
     render_file("compare-threequarter.png", (-17, 24, 20), (0, 0, .45), 23, 800, 900)
     new_image = pixels(OUT / "compare-threequarter.png")
+    # Fit the longest projected mesh span to exactly 250 pixels per plane.
+    cam = camera((-17, 24, 20), (0, 0, .45), 26)
+    bpy.context.view_layer.update()
+    view_points = np.array([cam.matrix_world.inverted() @ (obj.matrix_world @ v.co)
+                            for obj in display for v in obj.data.vertices])[:, :2]
+    projected_span = max(np.linalg.norm(view_points - v, axis=1).max() for v in view_points)
+    game_scale = float(projected_span * 500 / 250)
+    render_file("game-distance.png", (-17, 24, 20), (0, 0, .45), game_scale, 500, 400)
+    game_new = pixels(OUT / "game-distance.png")
     temporary_materials = []
     saved = {}
     for obj in display:
@@ -667,6 +755,8 @@ def _review_renders(objects, source_blend):
         temporary_materials.append(mat)
     render_file("compare-threequarter.png", (-17, 24, 20), (0, 0, .45), 23, 800, 900)
     old_image = pixels(OUT / "compare-threequarter.png")
+    render_file("game-distance.png", (-17, 24, 20), (0, 0, .45), game_scale, 500, 400)
+    game_old = pixels(OUT / "game-distance.png")
     for obj, mat in saved.items():
         obj.data.materials[0] = mat
     for mat in temporary_materials:
@@ -674,6 +764,8 @@ def _review_renders(objects, source_blend):
             bpy.data.materials.remove(mat)
     sheet = np.round(np.clip(np.concatenate((old_image, new_image), axis=1), 0, 1) * 255).astype(np.uint8)
     png(OUT / "compare-threequarter.png", sheet)
+    sheet = np.round(np.clip(np.concatenate((game_old, game_new), axis=1), 0, 1) * 255).astype(np.uint8)
+    png(OUT / "game-distance.png", sheet)
 
     # Existing team marker shapes are geometry, never symbols drawn in maps.
     shapes = {}
@@ -758,13 +850,20 @@ def readme(report):
         "## Rebuild", "", "From D:/FlyFightPaper in PowerShell:", "", "```powershell", COMMAND, "```", "",
         "Only Blender 5.1 and its included NumPy are required. CPU rendering is deterministic. All outputs stay in this folder.", "",
         "## Review", "",
-        "- compare-threequarter.png: OLD left, NEW right, 1600 x 900. Same camera, scale, lights and matte material response; old uses the exact original geometry and flat colours. Warm-white paper (238,230,212), red details (206,48,43).",
+        "- compare-threequarter.png: OLD left, NEW right, 1600 x 900. Identical camera, scale and lights; old uses the exact original geometry and round-1 flat materials. Warm-white paper (238,230,212), red details (206,48,43).",
+        "- game-distance.png: OLD left, NEW right, 1000 x 400. Each plane's longest projected mesh span is 250 pixels. Identical three-quarter camera and lights. Rendered at delivery size, never sharpened or enlarged.",
         "- team-red.png / team-blue.png: the exported maps multiplied by actual Aircraft.luau paper tints (235,40,50) / (25,115,255), with white accents and existing white square/circle geometry. Tape is yellow, matching the game.",
         "- closeup-wing.png / closeup-nose.png: actual exported maps on unchanged geometry, 1600 x 900.",
         "- maps-contact-sheet.png: every map, no drawn labels. Each row is listed below; columns are colour, normal, roughness.", "",
+        "## Round 2 response to review", "",
+        "1. Too similar at a distance: increased clean fold valley/ridge contrast, added bright thin outer rims and slight facet tone changes. The game-distance comparison is the small-scale check.",
+        "2. Wood streaks and hammered nose: removed stretched fibre noise, coarse pulp and random broad bump noise. Replaced them with much finer equal-frequency tooth and a few smooth, extremely shallow handling marks. Broad panels stay clean.",
+        "3. Missing folds: baked straight dark valleys with adjacent light ridges and paired normal slopes at the actual spine, body/wing folds, nose facets and tail folds. Whole-mesh feature references keep real folds across the split alternatives and prevent fake half-cut outlines. Coplanar diagonals and assembly/pigment boundaries are excluded.",
+        "4. Plastic accents/stickers: accents now share the same tooth, fold and edge treatment as plain paper, including the shallow bend through each wing stripe. Stickers have finer tooth, lower roughness and a thin shading-only soft edge lift on their existing thickness. Rolled tube sides use continuous radial shading instead of long facet bands.", "",
         "## Material and geometry choices", "",
         "All colour maps have identical R/G/B channels: light neutral paper, subtle fibres, gentle real baked ambient occlusion. No prepainted team colour, text, logos or authored symbols. Atlas gutters have neutral opaque backgrounds, never black cut-out silhouettes.", "",
-        "Normals use Blender MikkTSpace tangents and the UV handedness, OpenGL +Y green up. They contain continuous procedural fibres, fine pulp, a very slight broad wave, pressed channels along existing folds and narrow shading rolls at existing hard edges. No displacement, no added geometry and no silhouette changes. Roughness is matte paper, approximately 0.81-0.90. Metalness should be 0.", "",
+        "Removable sticker shapes are excluded from structural AO bakes. Their existing geometry casts its own matching shadow in review images, so the blue circle does not retain a square placeholder footprint in the wing map.", "",
+        "Normals use Blender MikkTSpace tangents and the UV handedness, OpenGL +Y green up. Fine isotropic tooth has no preferred fibre direction. Clean valley/ridge pairs follow existing geometric folds, with a little matching colour contrast and broad facet tone. Cut edges get thin bright rims. Broad waves and a few soft dents are shallow, smooth and confined to shading. No displacement, added geometry or silhouette changes. Matte plain/coloured paper roughness is about 0.83-0.85; sticker paper about 0.55-0.57. Metalness should be 0.", "",
         "The edge-softening compromise is deliberate: normal-map shading instead of geometric bevels preserves every source vertex, seam and bounding box. It cannot round an outline or make a zero-angle grazing silhouette look curved. Existing paper thickness is retained.", "",
         "Some original half FBXs contain zero-area triangles from their centre cuts. Only those invisible faces are removed in the sample; their count is recorded per file. All original vertex coordinates and all real surface faces are retained.", "",
         "Classic also has coincident body/wing shoulder faces. Review images temporarily lower the wing regions by 0.0003 stud to stop Cycles shadow-ray interference. Both OLD and NEW receive the same subpixel separation. The saved Blender model, FBXs, UVs, pivots and verification bounds retain the exact original positions. Existing coplanarity remains an integration consideration.", "",
@@ -831,13 +930,16 @@ def verify_saved(report):
                 assert decoded[:, :, 2].min() > 0
                 entry["texture_checks"]["saved_normal_unit_length_error_max"] = error
             else:
-                assert data.min() >= .80 and data.max() <= .91
+                low, high = (.54, .58) if entry["region"] == "sticker" else (.82, .86)
+                assert data.min() >= low and data.max() <= high
         log(entry["file"] + ": independent saved-file checks PASS")
     for filename in RENDERS:
         data = (OUT / filename).read_bytes()
         assert data[:8] == b"\x89PNG\r\n\x1a\n"
         width, height = struct.unpack(">II", data[16:24])
-        if filename != "maps-contact-sheet.png":
+        if filename == "game-distance.png":
+            assert (width, height) == (1000, 400)
+        elif filename != "maps-contact-sheet.png":
             assert (width, height) == (1600, 900)
     for relative, expected in report["source_hashes"].items():
         assert sha(ROOT / relative) == expected, "Source changed: " + relative
@@ -918,6 +1020,8 @@ def main():
         objects.append(obj)
         originals[obj.name] = (original_coords, original_raw, original_surfaces)
     bpy.context.view_layer.update()
+    FEATURES.clear()
+    FEATURES.update({obj.name: feature_edges(obj) for obj in objects if not obj.get("side")})
     bake_instances = right_instances(objects)
     exports = []
     for obj in objects:
@@ -976,13 +1080,15 @@ def main():
     contact_sheet(exports)
     for path in immutable_paths:
         assert sha(path) == before_hashes[str(path.relative_to(ROOT)).replace("\\", "/")], "Source changed: " + str(path)
-    report = {"schema_version": 1, "result": "PASS", "sample": "Classic folded paper",
+    report = {"schema_version": 2, "result": "PASS", "sample": "Classic folded paper, round 2",
         "rebuild_command": COMMAND, "blender_version": bpy.app.version_string,
         "units": contract["units"], "axes": contract["axes"], "source_hashes": before_hashes,
         "classic_blend_meshes_read": blend_mesh_names, "fbx_contract": contract["fbx_contract"],
         "exports": exports, "max_triangles": max(e["triangles"] for e in exports),
         "geometry": "Unchanged source vertices and flat mesh normals; softened edges and grain baked into tangent maps",
         "source_files_unchanged": True, "render_files": RENDERS,
+        "game_distance": {"resolution": [1000, 400], "layout": "OLD left, NEW right",
+                          "plane_projected_longest_span_pixels": 250},
         "render_only_coplanar_separation_studs": .0003,
         "review_tints": {"comparison_paper": PAPER, "comparison_accent": RED,
                          "team_red_paper": TEAM_RED, "team_blue_paper": TEAM_BLUE, "team_accents": WHITE},
@@ -992,7 +1098,7 @@ def main():
     readme(report)
     manifest_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     verify_saved(report)
-    log(f"COMPLETE: {len(exports)} FBXs, {len(exports) * 3} maps, blend, README and six review images")
+    log(f"COMPLETE: {len(exports)} FBXs, {len(exports) * 3} maps, blend, README and seven review images")
 
 
 if __name__ == "__main__":

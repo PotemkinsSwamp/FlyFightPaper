@@ -14,16 +14,26 @@ Only Blender 5.1 and its included NumPy are required. CPU rendering is determini
 
 ## Review
 
-- compare-threequarter.png: OLD left, NEW right, 1600 x 900. Same camera, scale, lights and matte material response; old uses the exact original geometry and flat colours. Warm-white paper (238,230,212), red details (206,48,43).
+- compare-threequarter.png: OLD left, NEW right, 1600 x 900. Identical camera, scale and lights; old uses the exact original geometry and round-1 flat materials. Warm-white paper (238,230,212), red details (206,48,43).
+- game-distance.png: OLD left, NEW right, 1000 x 400. Each plane's longest projected mesh span is 250 pixels. Identical three-quarter camera and lights. Rendered at delivery size, never sharpened or enlarged.
 - team-red.png / team-blue.png: the exported maps multiplied by actual Aircraft.luau paper tints (235,40,50) / (25,115,255), with white accents and existing white square/circle geometry. Tape is yellow, matching the game.
 - closeup-wing.png / closeup-nose.png: actual exported maps on unchanged geometry, 1600 x 900.
 - maps-contact-sheet.png: every map, no drawn labels. Each row is listed below; columns are colour, normal, roughness.
+
+## Round 2 response to review
+
+1. Too similar at a distance: increased clean fold valley/ridge contrast, added bright thin outer rims and slight facet tone changes. The game-distance comparison is the small-scale check.
+2. Wood streaks and hammered nose: removed stretched fibre noise, coarse pulp and random broad bump noise. Replaced them with much finer equal-frequency tooth and a few smooth, extremely shallow handling marks. Broad panels stay clean.
+3. Missing folds: baked straight dark valleys with adjacent light ridges and paired normal slopes at the actual spine, body/wing folds, nose facets and tail folds. Whole-mesh feature references keep real folds across the split alternatives and prevent fake half-cut outlines. Coplanar diagonals and assembly/pigment boundaries are excluded.
+4. Plastic accents/stickers: accents now share the same tooth, fold and edge treatment as plain paper, including the shallow bend through each wing stripe. Stickers have finer tooth, lower roughness and a thin shading-only soft edge lift on their existing thickness. Rolled tube sides use continuous radial shading instead of long facet bands.
 
 ## Material and geometry choices
 
 All colour maps have identical R/G/B channels: light neutral paper, subtle fibres, gentle real baked ambient occlusion. No prepainted team colour, text, logos or authored symbols. Atlas gutters have neutral opaque backgrounds, never black cut-out silhouettes.
 
-Normals use Blender MikkTSpace tangents and the UV handedness, OpenGL +Y green up. They contain continuous procedural fibres, fine pulp, a very slight broad wave, pressed channels along existing folds and narrow shading rolls at existing hard edges. No displacement, no added geometry and no silhouette changes. Roughness is matte paper, approximately 0.81-0.90. Metalness should be 0.
+Removable sticker shapes are excluded from structural AO bakes. Their existing geometry casts its own matching shadow in review images, so the blue circle does not retain a square placeholder footprint in the wing map.
+
+Normals use Blender MikkTSpace tangents and the UV handedness, OpenGL +Y green up. Fine isotropic tooth has no preferred fibre direction. Clean valley/ridge pairs follow existing geometric folds, with a little matching colour contrast and broad facet tone. Cut edges get thin bright rims. Broad waves and a few soft dents are shallow, smooth and confined to shading. No displacement, added geometry or silhouette changes. Matte plain/coloured paper roughness is about 0.83-0.85; sticker paper about 0.55-0.57. Metalness should be 0.
 
 The edge-softening compromise is deliberate: normal-map shading instead of geometric bevels preserves every source vertex, seam and bounding box. It cannot round an outline or make a zero-angle grazing silhouette look curved. Existing paper thickness is retained.
 

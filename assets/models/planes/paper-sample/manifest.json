@@ -1,7 +1,7 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "result": "PASS",
-  "sample": "Classic folded paper",
+  "sample": "Classic folded paper, round 2",
   "rebuild_command": "& D:/Blender/blender.exe -b --factory-startup --threads 4 --python-exit-code 1 --python tools/art/plane_paper.py",
   "blender_version": "5.1.1",
   "units": "studs",
@@ -137,21 +137,32 @@
         ],
         "color_rgb_min_max": [
           217,
-          254
+          252
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8234688777045642,
-          0.8863893657243838
+          0.8281125458775648,
+          0.8519379161610411
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 49,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 111,
+        "edge_features": {
+          "fold": 111,
+          "rim": 1,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "body-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.005845427513122559
+        "saved_normal_unit_length_error_max": 0.0051032304763793945
       },
       "assembly_location_blender": [
         -0.6499999761581421,
@@ -272,21 +283,32 @@
         ],
         "color_rgb_min_max": [
           217,
-          254
+          252
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8239681631161425,
-          0.8859999569440556
+          0.8280256172095852,
+          0.8519284240374715
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 51,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 111,
+        "edge_features": {
+          "fold": 111,
+          "rim": 1,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "body-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.005720019340515137
+        "saved_normal_unit_length_error_max": 0.005108237266540527
       },
       "assembly_location_blender": [
         0.6499999761581421,
@@ -436,21 +458,32 @@
         ],
         "color_rgb_min_max": [
           217,
-          254
+          252
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8234352631614792,
-          0.8864832111209039
+          0.8280948037138103,
+          0.8519249436916323
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 112,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 111,
+        "edge_features": {
+          "fold": 111,
+          "rim": 1,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "body-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.005597829818725586
+        "saved_normal_unit_length_error_max": 0.005108237266540527
       },
       "assembly_location_blender": [
         0.0,
@@ -604,17 +637,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8239946084127704,
-          0.8827935530643906
+          0.8281522760017458,
+          0.8519162777418611
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 39,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 18,
+        "edge_features": {
+          "fold": 18,
+          "rim": 11,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "nose-accent",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.00596928596496582
+        "saved_normal_unit_length_error_max": 0.0054743289947509766
       },
       "assembly_location_blender": [
         0.0,
@@ -739,17 +783,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8260393247096887,
-          0.8845177628764797
+          0.8282114413463504,
+          0.8518698548932898
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 6,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 12,
+        "edge_features": {
+          "fold": 12,
+          "rim": 2,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "nose-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.00596928596496582
+        "saved_normal_unit_length_error_max": 0.004802107810974121
       },
       "assembly_location_blender": [
         -0.6499999761581421,
@@ -870,21 +925,32 @@
         ],
         "color_rgb_min_max": [
           217,
-          254
+          252
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8240189614409252,
-          0.8866205575209004
+          0.828201923984584,
+          0.8518748350963833
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 6,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 12,
+        "edge_features": {
+          "fold": 12,
+          "rim": 2,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "nose-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.005536556243896484
+        "saved_normal_unit_length_error_max": 0.004802107810974121
       },
       "assembly_location_blender": [
         0.6499999761581421,
@@ -1038,17 +1104,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8239625594234952,
-          0.8863719541430973
+          0.8281798070214956,
+          0.851909776585821
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 14,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 12,
+        "edge_features": {
+          "fold": 12,
+          "rim": 2,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "nose-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.005536437034606934
+        "saved_normal_unit_length_error_max": 0.004985809326171875
       },
       "assembly_location_blender": [
         0.0,
@@ -1202,17 +1279,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8281373794485625,
-          0.8839622444978693
+          0.8282463300385938,
+          0.8518651621263336
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 48,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 8,
+        "edge_features": {
+          "fold": 8,
+          "rim": 40,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "pellet-band",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.006086945533752441
+        "saved_normal_unit_length_error_max": 0.005720019340515137
       },
       "assembly_location_blender": [
         -1.7599999904632568,
@@ -1366,17 +1454,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8232154719029966,
-          0.8834824237816393
+          0.8280637788301206,
+          0.8518134605147909
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 144,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 0,
+        "edge_features": {
+          "fold": 0,
+          "rim": 96,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "pellet-tube",
+        "rolled_tube_smoothing": true,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.00596928596496582
+        "saved_normal_unit_length_error_max": 0.006216883659362793
       },
       "assembly_location_blender": [
         -1.7599999904632568,
@@ -1530,17 +1629,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8258311449484573,
-          0.8833186622891883
+          0.8281056576770146,
+          0.8519157827925165
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 24,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 0,
+        "edge_features": {
+          "fold": 0,
+          "rim": 16,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "tail-accent",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.006209254264831543
+        "saved_normal_unit_length_error_max": 0.005907416343688965
       },
       "assembly_location_blender": [
         0.0,
@@ -1665,17 +1775,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.825070854795929,
-          0.884920565957169
+          0.8281493586847505,
+          0.8518150525652289
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 42,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 14,
+        "edge_features": {
+          "fold": 14,
+          "rim": 56,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "tail-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.006087064743041992
+        "saved_normal_unit_length_error_max": 0.005658864974975586
       },
       "assembly_location_blender": [
         -0.39750000834465027,
@@ -1800,17 +1921,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8275377264598475,
-          0.8823683064802694
+          0.828384492118317,
+          0.8518503019901947
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 42,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 14,
+        "edge_features": {
+          "fold": 14,
+          "rim": 56,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "tail-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.006092965602874756
+        "saved_normal_unit_length_error_max": 0.005597710609436035
       },
       "assembly_location_blender": [
         0.39750000834465027,
@@ -1964,17 +2096,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8247848978391993,
-          0.88490703120863
+          0.8283126827566205,
+          0.8518954646289205
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 72,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 14,
+        "edge_features": {
+          "fold": 14,
+          "rim": 56,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "tail-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.00646442174911499
+        "saved_normal_unit_length_error_max": 0.005907297134399414
       },
       "assembly_location_blender": [
         0.0,
@@ -2099,17 +2242,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.828145312158131,
-          0.8811414899657974
+          0.8283686710045399,
+          0.8517795572312624
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 16,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 4,
+        "edge_features": {
+          "fold": 4,
+          "rim": 24,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "wings-accent",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.0063925981521606445
+        "saved_normal_unit_length_error_max": 0.005903482437133789
       },
       "assembly_location_blender": [
         -5.548760890960693,
@@ -2234,17 +2388,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8277636161127766,
-          0.8804762545773908
+          0.828143039300902,
+          0.8517070491151815
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 16,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 4,
+        "edge_features": {
+          "fold": 4,
+          "rim": 24,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "wings-accent",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.00646442174911499
+        "saved_normal_unit_length_error_max": 0.005903482437133789
       },
       "assembly_location_blender": [
         5.548760890960693,
@@ -2398,17 +2563,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8278977706628049,
-          0.8810988305561828
+          0.8283936182305148,
+          0.8517842306730385
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 32,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 4,
+        "edge_features": {
+          "fold": 4,
+          "rim": 24,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "wings-accent",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.006270408630371094
+        "saved_normal_unit_length_error_max": 0.005720019340515137
       },
       "assembly_location_blender": [
         0.0,
@@ -2533,17 +2709,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8236233711027852,
-          0.8853161585198123
+          0.8280999576284649,
+          0.851907638299608
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 26,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 17,
+        "edge_features": {
+          "fold": 17,
+          "rim": 42,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "wings-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.0063315629959106445
+        "saved_normal_unit_length_error_max": 0.005845487117767334
       },
       "assembly_location_blender": [
         -3.401880979537964,
@@ -2668,17 +2855,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8226039987761847,
-          0.8863910860393845
+          0.828087685394556,
+          0.8519216676305318
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 25,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 17,
+        "edge_features": {
+          "fold": 17,
+          "rim": 42,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "wings-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.00646442174911499
+        "saved_normal_unit_length_error_max": 0.005903482437133789
       },
       "assembly_location_blender": [
         3.401880979537964,
@@ -2832,17 +3030,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8226567917267859,
-          0.8856895328257332
+          0.8280664315843447,
+          0.8518772764969678
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 55,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 17,
+        "edge_features": {
+          "fold": 17,
+          "rim": 42,
+          "sticker": 0
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "wings-paper",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.0063925981521606445
+        "saved_normal_unit_length_error_max": 0.005720019340515137
       },
       "assembly_location_blender": [
         0.0,
@@ -2996,17 +3205,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8247760884711774,
-          0.8871333517535033
+          0.5481103339660681,
+          0.5717155212223936
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 48,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 0,
+        "edge_features": {
+          "fold": 0,
+          "rim": 0,
+          "sticker": 32
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "wings-sticker-left",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.006025791168212891
+        "saved_normal_unit_length_error_max": 0.005412459373474121
       },
       "assembly_location_blender": [
         0.0,
@@ -3160,17 +3380,28 @@
         ],
         "color_channels_identical": true,
         "roughness_min_max": [
-          0.8267500506384042,
-          0.881147465514419
+          0.5480787214850834,
+          0.5718337847820478
         ],
         "ao_method": "Cycles Ambient Occlusion shader, 24 hemisphere samples, .45-stud radius, emission bake",
-        "ao_luminance_weight": 0.115,
-        "fold_edges": 48,
+        "ao_luminance_weight": 0.12,
+        "fold_edges": 0,
+        "edge_features": {
+          "fold": 0,
+          "rim": 0,
+          "sticker": 32
+        },
+        "ao_removable_marker_footprints": false,
         "normal_convention": "MikkTSpace tangent, OpenGL +Y green up; no green-channel inversion",
-        "detail": "Continuous procedural paper fibres, small pulp dimples, very slight wave, pressed folds, .019-stud shading edge roll",
+        "detail": "Fine isotropic tooth; shallow broad handling wave; real fold valley/ridge pairs; thin bright cut rims; softer glossier sticker paper with shading-only edge lift",
+        "fold_valley_width_studs": 0.043,
+        "fold_ridge_offset_studs": 0.082,
+        "grain_directionality": "Equal frequency on every axis, no stretched noise",
+        "feature_reference": "wings-sticker-right",
+        "rolled_tube_smoothing": false,
         "geometry_displacement": 0,
         "padding": "12 pixels, neutral opaque backgrounds; no black silhouettes",
-        "saved_normal_unit_length_error_max": 0.006031215190887451
+        "saved_normal_unit_length_error_max": 0.005230545997619629
       },
       "assembly_location_blender": [
         0.0,
@@ -3228,8 +3459,18 @@
     "team-blue.png",
     "closeup-wing.png",
     "closeup-nose.png",
-    "maps-contact-sheet.png"
+    "maps-contact-sheet.png",
+    "game-distance.png"
   ],
+  "game_distance": {
+    "resolution": [
+      1000,
+      400
+    ],
+    "layout": "OLD left, NEW right",
+    "plane_projected_longest_span_pixels": 250
+  },
+  "render_only_coplanar_separation_studs": 0.0003,
   "review_tints": {
     "comparison_paper": [
       238,
@@ -3259,6 +3500,5 @@
   },
   "network_uploads_studio": "Not used",
   "independent_saved_file_verification": "PASS",
-  "script_sha256": "d2a7972c7e812b281122028c77586280633c0e14a3d6cef1ca56a14c58859560",
-  "render_only_coplanar_separation_studs": 0.0003
+  "script_sha256": "db4f00ee4a0b828c02dfd6397df5f9c24f137815a96a1fb880ebcf4c9509d245"
 }
