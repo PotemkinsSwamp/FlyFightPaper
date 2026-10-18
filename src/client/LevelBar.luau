@@ -28,7 +28,7 @@ function LevelBar.new(parent, x, y, w, t, inline)
 	local count = words(parent, "XPCount", "", x + w * 0.4, y, w * 0.6, t * 1.2, t * 0.85)
 	local unlock = words(parent, "NextUnlock", "", x, y + t * 3.2, w, t * 1.2, t * 0.85)
 	if inline then
-		barX, barY, barW, barH = x + t * 4.4, y, w * 0.45, t * 1.6
+		barX, barY, barW, barH = x + t * 4.4, y, w * 0.35, t * 1.6
 		level.Size = UDim2.fromOffset(t * 4.4, barH)
 		count.Visible = false
 		unlock.Position, unlock.Size = UDim2.fromOffset(barX + barW + t * 0.6, y), UDim2.fromOffset(w - barW - t * 5, barH)

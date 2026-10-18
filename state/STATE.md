@@ -4,10 +4,12 @@
   Event lines rewritten after Alan's notes: death lines say how it happened, Minecraft-style (weapon, the building
   or thing you hit, who chased or rammed you), classroom-themed, no sound words; your note and the kill feed say the
   same line. All in src/shared/Lines.luau. Seen in Studio Play; tests 326/0. Alan is reviewing the full list.
-- **Rounds never stop** (docs/decisions/2026-10-17-rounds-never-stop.md): first pass built and tried by Alan (planes
-  hold, winners on desks, safe vote lap through rings, next round in place; old results menu removed). Next: his
-  revisions: cutscene at the chalkboard desks, richer results card, big window-wall rings, end-match dev button,
-  XP bar + next unlock on the main menu board and hangar.
+- **Round end, Alan's revisions all built** (seen in Studio Play): Studio "end match" button; winners' cutscene
+  (camera glides to the chalkboard-row desks, the top 3 stand up, hop on the desks and dance/cheer/wave with name
+  tags, camera glides back); results card with folds, assists, crashes, team totals, your Paper/XP and level bar;
+  three big neon vote rings on the window wall with a HUD arrow; level bar + next unlock on the menu board, hangar
+  and card. Fixed on the way: a team round starting right after a free-for-all (or the reverse) crashed seating
+  the bots; emotes threw giant avatars' bodies apart (Roblox scales the hip movement twice).
 - **Main-menu ruler** (numbers 1-12, right way up): its own session, waiting on Alan's OK before upload.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
@@ -25,6 +27,9 @@ two aim markers, automatic takeoff, paper deaths, moving weapons, on-brand crayo
 
 Broken or not yet checked
 Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
+One cutscene frame showed a big green shape across the camera for a moment (probably a plane mid-takeoff when
+everything froze); watch for it. During the vote lap the top strip still shows the old round's mode and clock.
+Vote-ring arrow not yet seen pointing (needs flying away from the rings).
 Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
@@ -54,7 +59,8 @@ Waiting on Alan — Stage 9 playtest, then your approval
 1. Modes: in the hangar pick "mode: team DM", "mode: airspace" and "mode: ceiling". Team colours on planes and names,
    the moving zone and its green arrow, the ceiling spot (east side, under the rings), veteran bots fighting for the
    zone while rookies wander, the "+100 FOLD" pop-ups and the results points.
-2. Round end: let a round finish (or switch mode in the hangar): does the vote screen look on brand?
+2. Round end: in the hangar press "end match" (red, top). Watch the winners' cutscene, the results card, then fly
+   through a neon ring on the window wall to vote. Try it once from the air and once from the hangar.
 3. Train: skim it (should scrape, not crash), fly into its nose (crash), fit above it in the south station.
 4. Escapes: puff the chalk eraser; take the ducts once more (spot a veteran bot diving out of a vent).
 5. Hangar: land at your desk, pick a build, Edit build, change a part, Save & fly. Does it make sense first time?

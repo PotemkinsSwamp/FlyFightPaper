@@ -42,7 +42,6 @@ function DeskHangar.new(playerGui, api)
 	cover.Parent.DisplayOrder = 5 -- under the Menu button (6) and the menus and overlays (10)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	PaperUI.words(sheet, "Title", "Hangar", 60, 196, 285, 46, 42).TextXAlignment = Enum.TextXAlignment.Center
-	local levelBar = require(script.Parent.LevelBar).new(sheet, 160, 744, 620, 24, true)
 
 	-- The plane on the taped preview paper (sky-tinted like the main Hangar so the white plane stands out), and beside
 	-- it, centred on it, the lined stats sheet: the main Hangar's stat strips and five crayon bar cells. Health, Lift and
@@ -50,6 +49,8 @@ function DeskHangar.new(playerGui, api)
 	image(sheet, "Preview", Art.preview, 60, 245, 750, 545).ImageColor3 = Color3.fromRGB(140, 185, 230)
 	local planeView = viewport(sheet, "Plane", 95, 290, 680, 450)
 	local heading = words(sheet, "PreviewHeading", "", 95, 258, 470, 40, 30)
+	-- Your level along the bottom of the preview paper (made after the paper so it draws on top).
+	local levelBar = require(script.Parent.LevelBar).new(sheet, 120, 698, 660, 24, true)
 	-- Edit: the full Hangar on the picked build. It wiggles until a new player has used it once (Alan 2026-10-17).
 	local edit = button(sheet, "Edit", Art.buttonGreen, "Edit build", 580, 250, 220, 80, 2, function()
 		Root:SetAttribute("HangarEdited", true)
