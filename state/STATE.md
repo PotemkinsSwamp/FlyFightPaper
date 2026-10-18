@@ -2,8 +2,10 @@
 - **Published privately** ("FlyFightPaper(First Fold)", server size 12); re-published by Alan with the security
   pass and safe server moves (details: docs/systems/flight.md, docs/systems/saving.md).
 - **Re-published by Alan (2026-10-17 evening):** everything up to the desk hangar flow and the new menu art is live.
-- **Next (Alan's notes):** click a weapon again to clear it ("Clear weapon spot" button stays); rotating, on-theme
-  lines for every event message, waits described not counted; then talk about rounds that never stop.
+- **Done (Alan's notes):** clicking the weapon already on a mount takes it off; the button reads "Clear weapon spot".
+  Event messages and kill-feed lines now rotate through short paper lines (all in src/shared/Lines.luau), waits
+  described, not counted. Seen in Studio Play except the between-rounds lines. Tests 325/0.
+- **Next:** Alan picks how rounds end (straight on vs a results pause); nothing built until he decides.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
@@ -36,6 +38,8 @@ Stapler: kept its damage per second (17.5): 0.8 s bursts, each staple 4.67 damag
 Fan: 15 Lift/s, updraft 30. Dive with Lift: 1.25x max. Cardboard body: wings and guns scaled to fit.
 Bot eraser skill (config bots.*.eraser_*): notice lock 15/30/45%, break 35/55/75%, late 0.4-0.9/0.2-0.5/0.05-0.3 s.
 HUD heat cells count DOWN (full = cool). Flight notes fade after 4 s. Warning words INCOMING!/BREAK NOW!/LOCKED ON!.
+Rotating lines skip warnings (INCOMING!, LOCKED ON!), zone words, error messages and the score pop-up words (FOLD,
+  FINAL TEAR): those stay fixed so kids learn them at a glance.
 Zone: 680-840 across, 200-130 tall by building density (ceiling 950 across, 340-620 up); open zone is yellow.
 Bots and the zone (config bots.profiles.*.objective_*): share of time on the zone 30/60/85% (rookie/regular/veteran),
   "objective" personality +25%, "aggressive" -15%; only veterans head to the next zone early. Read "noobs should be
@@ -52,4 +56,5 @@ Waiting on Alan — Stage 9 playtest, then your approval
 3. Train: skim it (should scrape, not crash), fly into its nose (crash), fit above it in the south station.
 4. Escapes: puff the chalk eraser; take the ducts once more (spot a veteran bot diving out of a vent).
 5. Hangar: land at your desk, pick a build, Edit build, change a part, Save & fly. Does it make sense first time?
+   On the weapons tab, click a mounted weapon again: it comes off. Crash a few times: the lines change each time.
 6. Say "Stage 9 approved", or what to fix.
