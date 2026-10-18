@@ -2,7 +2,7 @@
 
 Run: python tools/art/plane_pieces.py
 Reads planes/classic/parts.json + planes/set/parts.json (sizes, slot pivots), planes/stickers/stickers.json and
-planes/uploads.json (MeshIds).
+planes/uploads.json (MeshIds), planes/paper-sample + paper-set/uploads.json (paper meshes and maps).
 Models are named after the catalog part id; children are MeshParts named after their FBX stem, positioned in the
 assembled plane frame. Weapons (launcher_<catalog id>) come from tools/art/weapons.py (assets/models/toys/weapon-*/
 pieces.json + upload.json), placed relative to the left slot's centre; each piece carries a Role attribute (and Pivot/
@@ -129,10 +129,28 @@ def container(cls, name, children, attrs=None):
 """
 
 
+# Paper look (Alan, 2026-10-18): pieces uploaded with a UV layout + paper maps (tools/art/plane_paper.py,
+# tools/art/upload_paper.py) use that mesh and get a SurfaceAppearance; Aircraft.paint tints it by team.
+PAPER = {}
+for folder in ("paper-sample", "paper-set"):
+    record = PLANES / folder / "uploads.json"
+    if record.exists():
+        PAPER.update({k: v for k, v in json.loads(record.read_text(encoding="utf-8")).items() if "mesh" in v})
+
+
+def surface(up):
+    return f"""<Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://{up['color']}</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://{up['normal']}</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://{up['roughness']}</url></Content></Properties></Item>"""
+
+
 def piece(stem):
     e = exports[stem]
     position = [round(e["slot_pivot"][i] + e["center_offset_from_slot"][i], 6) for i in range(3)]
-    return mesh_part(stem, e["size"], position, e["suggested_color3_255"], e["region"], mesh=e.get("mesh"))
+    up = PAPER.get(stem)
+    return mesh_part(stem, e["size"], position, e["suggested_color3_255"], e["region"],
+                     mesh=up["mesh"] if up else e.get("mesh"), paint=surface(up) if up else "")
 
 
 def weapon(folder):
@@ -144,11 +162,7 @@ def weapon(folder):
     lift = (TUBE_TOP if top else WING_TOP) - mount[1]
     out = -max(0, BODY_EDGE - (1.76 - man["size"][0] / 2))      # left slot: outward is -X
     shift = [out - mount[0], lift, -mount[2]]
-    paint = (f"""<Item class="SurfaceAppearance"><Properties><string name="Name">Paint</string>
-        <Content name="ColorMap"><url>rbxassetid://{up['color']}</url></Content>
-        <Content name="NormalMap"><url>rbxassetid://{up['normal']}</url></Content>
-        <Content name="RoughnessMap"><url>rbxassetid://{up['roughness']}</url></Content></Properties></Item>"""
-             if "color" in up else "")
+    paint = surface(up).replace(">Paper<", ">Paint<") if "color" in up else ""
     xml = ""
     for row in man["pieces"]:
         at = lambda v: [round(v[i] + shift[i], 4) for i in range(3)]

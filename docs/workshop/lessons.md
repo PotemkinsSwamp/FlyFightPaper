@@ -11,6 +11,9 @@ mistake would be easy to make twice.
   ban, and Alan's account is the only upload route (no alt accounts: that would be ban evasion). Before ANY upload,
   make a contact sheet of every colour, normal and roughness map and look for symbols, hand signs, text or body
   shapes. Run `tools/art/fill_gaps.py` on hero pieces with shapes on black. Upload slowly.
+- **An FBX uploaded with `--model` is a Model asset, not a mesh.** Its id as a MeshId fails to load (invisible
+  parts; the Classic paper sample, 2026-10-18). Read the inner MeshPart's MeshId in Studio with `LoadAsset`
+  (`tools/art/upload_paper.py lua`, `tools/town_toys.py`) and use that.
 - **Every FBX uploaded through Open Cloud arrives turned 180 degrees** (front and back swapped). Model templates
   must carry the turn (like `assets/models/aircraft/aircraft.rbxmx`).
 - **Open Cloud can stay "processing" past the uploader's 40 s.** Check the saved operation in
