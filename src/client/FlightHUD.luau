@@ -611,7 +611,7 @@ function HUD.start(getPlane, action)
 		if update < 0.1 then return end
 		update = 0
 		local plane = getPlane()
-		local shown=plane~=nil and plane.Parent~=nil and not Root:GetAttribute("OverlayOpen") and not Root:GetAttribute("PhotoMode")
+		local shown=plane~=nil and plane.Parent~=nil and not Root:GetAttribute("OverlayOpen") and not Root:GetAttribute("PhotoMode") and not Root:GetAttribute("Cutscene")
 		-- In the hangar the hangar menu shows Lift, health, score and buttons, so the flight HUD steps aside.
 		local inHangar=shown and plane:GetAttribute("State")=="DESK"
 		desk.update(plane,inHangar)

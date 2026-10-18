@@ -31,7 +31,8 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/Hangar.luau`, `src/client/DeskHangar.luau` | Main-menu and in-game hangar |
 | `src/client/SettingsScreen.luau`, `src/client/Options.luau` | Settings screen and applying settings |
 | `src/client/PauseScreen.luau` | In-match clipboard menu |
-| `src/client/RoundEnd.luau` | Round end in the room: "Pencils down!", camera visits the top 3 with the results card, vote card (1/2/3), next round's name |
+| `src/client/RoundEnd.luau` | Round end in the room: "Pencils down!", the winners' cutscene with the results card, vote card (1/2/3), next round's name |
+| `src/client/WinnersCutscene.luau` | Camera glides to the chalkboard-row desks; local copies of the top 3 stand up, hop on the desks and emote, then the camera glides back |
 | `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |

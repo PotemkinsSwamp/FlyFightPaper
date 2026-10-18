@@ -1,8 +1,7 @@
 -- The round end, played out in the room (Alan 2026-10-17, docs/decisions/2026-10-17-rounds-never-stop.md):
--- "Pencils down!", then the camera visits the top 3 standing on their desks while a results card shows the scores;
--- then the vote lap card (fly through a ring, or press 1/2/3); then the next round's name. No menu opens.
+-- "Pencils down!", then the winners' cutscene (WinnersCutscene) with the results card; then the vote lap card (fly
+-- through a ring, or press 1/2/3); then the next round's name. No menu opens.
 local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 local Input = game:GetService("UserInputService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local MatchRules = require(Root.Shared.MatchRules)
@@ -10,11 +9,11 @@ local Lines = require(Root.Shared.Lines)
 local Rounds = require(Root.Generated.Gameplay).rounds
 local UIArt = require(Root.Shared.UIAssets)
 local PaperUI = require(script.Parent.PaperUI)
+local Cutscene = require(script.Parent.WinnersCutscene)
 
 local MODES = { { "FFA", "Free-for-all", "blue" }, { "TDM", "Team dogfight", "pink" }, { "CONTROL", "Airspace Control", "green" } }
 local KEYS = { [Enum.KeyCode.One] = 1, [Enum.KeyCode.Two] = 2, [Enum.KeyCode.Three] = 3 }
 local PLACES = { "1st", "2nd", "3rd" }
-local BANNER_SECONDS = 1.6 -- "Pencils down!" on its own before the camera leaves your plane
 
 local RoundEnd = {}
 
@@ -38,7 +37,7 @@ function RoundEnd.start()
 	local subline = words(banner, "Subline", "", 40, 92, 720, 44, 34)
 	subline.TextXAlignment = Enum.TextXAlignment.Center
 
-	-- Results card (right), and the place tag for whoever the camera is looking at (bottom left).
+	-- Results card (right).
 	local card = image(sheet, "Results", UIArt.ingame.indexCard, 1330, 230, 560, 640, 1.5)
 	card.ScaleType = Enum.ScaleType.Stretch
 	local title = words(card, "Title", "Results", 0, 40, 560, 60, 52)
@@ -51,10 +50,6 @@ function RoundEnd.start()
 			name = words(card, "Name" .. i, "", 130, 104 + i * 52, 270, 44, 32), points = words(card, "Points" .. i, "", 400, 104 + i * 52, 100, 44, 32) }
 		rows[i].name.TextTruncate, rows[i].points.TextXAlignment = Enum.TextTruncate.AtEnd, Enum.TextXAlignment.Right
 	end
-	local tag = image(sheet, "PlaceTag", UIArt.hud.notebook, 60, 840, 620, 150, -2)
-	tag.ScaleType = Enum.ScaleType.Stretch
-	local tagWords = words(tag, "Words", "", 30, 20, 560, 110, 64)
-	tagWords.TextXAlignment, tagWords.FontFace = Enum.TextXAlignment.Center, Font.fromEnum(Enum.Font.PermanentMarker)
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -70,8 +65,8 @@ function RoundEnd.start()
 		end, 38)
 	end
 
-	local state = { phase = nil, snap = nil, shots = nil, startedAt = 0 }
-	local function show(part) for _, child in { banner, card, tag, vote } do child.Visible = child == part or (type(part) == "table" and table.find(part, child) ~= nil) end end
+	local state = { phase = nil, snap = nil, stage = "banner" }
+	local function show(part) for _, child in { banner, card, vote } do child.Visible = child == part or (type(part) == "table" and table.find(part, child) ~= nil) end end
 
 	local function fillResults(snap)
 		local list = table.clone(snap.result and snap.result.participants or {})
@@ -98,47 +93,22 @@ function RoundEnd.start()
 		return first and (first.displayName == player.DisplayName and "You win the round!" or first.displayName .. " wins the round!") or "Round over"
 	end
 
-	-- Camera shots: 3rd, then 2nd, then 1st, each from the middle of the room looking back at their desk.
-	local function planShots(snap)
-		local shots = {}
-		local winners = MatchRules.winners(snap.result)
-		for place = #winners, 1, -1 do
-			local row = winners[place]
-			for _, model in (workspace:FindFirstChild("Arena") or workspace):GetChildren() do
-				if model:IsA("Model") and model:GetAttribute("PilotId") == row.actorId then
-					table.insert(shots, { model = model, place = place, name = row.displayName, points = math.floor(row.contribution or 0) })
-					break
-				end
+	local update
+	function update(snap)
+		state.snap = snap
+		local inMatch = player:GetAttribute("InMatch")
+		if snap.phase ~= state.phase then
+			state.phase = snap.phase
+			Cutscene.stop()
+			if snap.phase == "RESULTS" and inMatch then
+				state.stage = "card" -- stays on the card if the cutscene can't play
+				Cutscene.play(MatchRules.winners(snap.result), function(stage)
+					state.stage = stage
+					if state.snap then update(state.snap) end
+				end)
 			end
 		end
-		return shots
-	end
-
-	RunService:BindToRenderStep("RoundEndCamera", Enum.RenderPriority.Camera.Value + 2, function()
-		if state.phase ~= "RESULTS" or not state.shots or #state.shots == 0 then return end
-		local elapsed = os.clock() - state.startedAt - BANNER_SECONDS
-		if elapsed < 0 then return end
-		local each = (Rounds.results_seconds - BANNER_SECONDS - 0.4) / #state.shots
-		local shot = state.shots[math.min(#state.shots, math.floor(elapsed / each) + 1)]
-		if not shot.model.Parent then return end
-		local box, size = shot.model:GetBoundingBox()
-		local toward = (Vector3.new(0, box.Position.Y, 0) - box.Position) * Vector3.new(1, 0, 1)
-		toward = toward.Magnitude > 1 and toward.Unit or Vector3.zAxis
-		local camera = workspace.CurrentCamera
-		camera.CameraType = Enum.CameraType.Scriptable
-		local drift = (elapsed % each) / each -- a slow push in
-		camera.CFrame = CFrame.lookAt(box.Position + toward * size.Y * (2.6 - drift * 0.4) + Vector3.new(0, size.Y * 0.35, 0), box.Position)
-		tagWords.Text = string.format("%s  %s  %d pts", PLACES[shot.place], shot.name, shot.points)
-		show({ card, tag })
-	end)
-
-	local function update(snap)
-		state.snap = snap
-		if snap.phase ~= state.phase then
-			state.phase, state.startedAt = snap.phase, os.clock()
-			if snap.phase == "RESULTS" then state.shots = planShots(snap) end
-		end
-		if not player:GetAttribute("InMatch") or snap.phase == "ACTIVE" or snap.phase == "READY" or snap.phase == "ENDING" then
+		if not inMatch or snap.phase == "ACTIVE" or snap.phase == "READY" or snap.phase == "ENDING" then
 			cover.Visible = false
 			return
 		end
@@ -146,9 +116,7 @@ function RoundEnd.start()
 		if snap.phase == "RESULTS" then
 			fillResults(snap)
 			headline.Text, subline.Text = "Pencils down!", winnerLine(snap)
-			if os.clock() - state.startedAt < BANNER_SECONDS or #state.shots == 0 then show({ banner, card }) end
-			-- An avatar still loading at the start: look again; with none found, the card just stays up.
-			if #state.shots < #MatchRules.winners(snap.result) then state.shots = planShots(snap) end
+			show(state.stage == "banner" and banner or state.stage == "card" and card or nil)
 		elseif snap.phase == "VOTE" then
 			local totals, mine = snap.voteTotals or {}, player:GetAttribute("Vote")
 			for i, mode in MODES do

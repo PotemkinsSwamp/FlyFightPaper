@@ -299,8 +299,10 @@
       {"name": "South-east towers", "center": [600, 170, 250], "radius": 340, "half_height": 100},
       {"name": "Ceiling", "center": [425, 480, 0], "radius": 475, "half_height": 140}
     ],
-    "round_end_comment": "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still, the camera visits the top 3 on their desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is. Rings: one row of three over each side of the room, in air checked clear (2026-10-17); each row is FFA, TDM, CONTROL from west to east.",
-    "results_seconds": 10,
+    "round_end_comment": "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still; a cutscene shows the top 3 on the winner_desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is. Rings: one row of three over each side of the room, in air checked clear (2026-10-17); each row is FFA, TDM, CONTROL from west to east.",
+    "results_seconds": 15,
+    "winner_desks_comment": "The winners' cutscene (Alan 2026-10-17): the top 3 stand on these desks, 1st, 2nd, 3rd. The chalkboard row is North; it has six desks, so 'the middle three' is 2-3-4 with 1st in the middle (Claude's pick, easy to change).",
+    "winner_desks": ["DeskNorth3", "DeskNorth2", "DeskNorth4"],
     "vote_seconds": 20,
     "vote_ring_radius": 80,
     "vote_rings": [

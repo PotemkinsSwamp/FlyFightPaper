@@ -3,7 +3,7 @@ local Run=game:GetService("RunService")
 local Config=require(game.ReplicatedStorage.FlyFightPaper.Generated.Gameplay).avatar_display
 local Service={};Service.__index=Service
 function Service.new(flight)
- return setmetatable({flight=flight,models={},requests={},celebrating={}},Service)
+ return setmetatable({flight=flight,models={},requests={}},Service)
 end
 -- A bot dresses like a player: hair, shirt, pants, skin tone and sometimes a cap, shades or a backpack, all free
 -- Roblox-made catalog items (config avatar_display.bot_outfits). The same name always gets the same outfit.
@@ -97,51 +97,5 @@ function Service:assign(p)
    end
   end
  end)
-end
--- The winners' moment (Alan 2026-10-17): 1st, 2nd and 3rd jump up onto their desks and dance, cheer or wave
--- (Roblox's own R15 emotes). sitDown puts everyone back in their chair for the vote lap.
-local EMOTES={"rbxassetid://507771019","rbxassetid://507770677","rbxassetid://507770239"}
-local JUMP_SECONDS=.7
-function Service:celebrate(ids)
- self:sitDown()
- for place,id in ipairs(ids) do
-  local p,model=self.flight.byId[id],self.models[id]
-  local humanoid=model and model:IsA("Model") and model:FindFirstChildOfClass("Humanoid")
-  local animator=humanoid and humanoid:FindFirstChildOfClass("Animator")
-  if p and animator then
-   local seated=animator:GetPlayingAnimationTracks()
-   for _,track in ipairs(seated) do track:Stop(0) end
-   local from=model:GetPivot()
-   local emote=Instance.new("Animation");emote.Name="WinnerEmote";emote.AnimationId=EMOTES[place];emote.Parent=model
-   local track=animator:LoadAnimation(emote);track.Looped=true;track.Priority=Enum.AnimationPriority.Action
-   self.celebrating[id]={from=from,seated=seated,track=track,model=model}
-   model:SetAttribute("Celebrating",place)
-   task.spawn(function()
-    Run.Heartbeat:Wait()
-    -- Feet on the desk top, beside the runway, facing the middle of the room.
-    local desk=self.flight.desks[p.seat]
-    local box,size=model:GetBoundingBox()
-    local spot=desk.CFrame*Vector3.new(desk.Size.X*.3,desk.Size.Y/2,0)
-    local stand=from.Position.Y-(box.Position.Y-size.Y/2)
-    local goal=CFrame.lookAt(spot+Vector3.new(0,stand,0),Vector3.new(0,spot.Y+stand,0))
-    local start=os.clock()
-    while self.celebrating[id] and os.clock()-start<JUMP_SECONDS do
-     local t=(os.clock()-start)/JUMP_SECONDS
-     model:PivotTo(from:Lerp(goal,t)+Vector3.new(0,math.sin(t*math.pi)*size.Y*.6,0))
-     Run.Heartbeat:Wait()
-    end
-    if self.celebrating[id] then model:PivotTo(goal);track:Play(.2) end
-   end)
-  end
- end
-end
-function Service:sitDown()
- for id,c in pairs(self.celebrating) do
-  self.celebrating[id]=nil
-  if c.model.Parent then
-   c.track:Stop(0);c.model:PivotTo(c.from);c.model:SetAttribute("Celebrating",nil)
-   for _,track in ipairs(c.seated) do track:Play(0);track.TimePosition=math.min(.2,track.Length*.5);track:AdjustSpeed(0) end
-  end
- end
 end
 return Service

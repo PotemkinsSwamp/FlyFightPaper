@@ -181,8 +181,8 @@ function Runtime:begin(mode)
  self.startShots=self.combat.totalFired;self.startHits=self.combat.totalHits
  -- Rounds never stop (Alan 2026-10-17): planes already in the room carry on into this round.
  self.flight.records={};self.flight.active=true;self.flight.safe=false;self.bots.enabled=true;self.combat.enabled=true
- self.flight:hold(false);self.rings:hide();if self.onSitDown then self.onSitDown() end
- for _,p in pairs(self.flight.pilots) do self.flight:newRound(p) end
+ self.flight:hold(false);self.rings:hide()
+ for _,p in pairs(self.flight.pilots) do self.flight:newRound(p);p.team=nil end -- teams are dealt again as each joins
  for _,player in ipairs(Players:GetPlayers()) do player:SetAttribute("Vote",nil) end
  for player in pairs(self.joined) do
   if not self.matchmaking:admit(player) then self.joined[player]=nil;player:SetAttribute("InMatch",false) end
@@ -197,8 +197,9 @@ function Runtime:begin(mode)
    if p then self:bind(p);player:SetAttribute("JoinQueued",false) end
   end
  end
- self.bots:fill()
- for _,p in pairs(self.flight.pilots) do if not p.practice and (not p.identity or p.identity.matchId~=self.engine.round.id) then self:bind(p) end end
+ -- Planes carried over join the new round (and get their team) before bots fill the empty desks around them.
+ local function bindNew() for _,p in pairs(self.flight.pilots) do if not p.practice and (not p.identity or p.identity.matchId~=self.engine.round.id) then self:bind(p) end end end
+ bindNew();self.bots:fill();bindNew()
 end
 -- Practice flight (Stage 6, first 60 seconds): the player flies in the live room but is nobody's enemy, is not in
 -- the match and earns nothing (practice is never reward-eligible). Their screen walks them through it.
@@ -249,11 +250,7 @@ function Runtime:finish()
   self.flight:remove(p,"round_end")
   if p.player then p.player:SetAttribute("InMatch",false) end -- practice ends with the round
  end
- self.flight:hold(true)
- if self.onWinners then
-  local ids={};for place,row in ipairs(MatchRules.winners(self.engine.round.result)) do ids[place]=row.actorId end
-  self.onWinners(ids)
- end
+ self.flight:hold(true) -- each client plays the winners' cutscene (src/client/WinnersCutscene.luau)
 end
 -- A vote from the 1/2/3 keys, the card, or flying through a ring. The player's attribute lights their choice.
 function Runtime:castVote(player,mode)
@@ -275,7 +272,6 @@ end
 function Runtime:phaseChanged(phase)
  if phase=="VOTE" then
   self.flight:hold(false);self.bots.enabled=true;self.rings:show()
-  if self.onSitDown then self.onSitDown() end
  elseif phase=="COUNTDOWN" then self.rings:hide() end
 end
 function Runtime:queueSettlement()

@@ -540,8 +540,8 @@ return JSONTypes.map({
         ["duration_seconds"] = 480,
         ["ffa_elimination_target"] = 20,
         ["launch_countdown_seconds"] = 3,
-        ["results_seconds"] = 10,
-        ["round_end_comment"] = "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still, the camera visits the top 3 on their desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is. Rings: one row of three over each side of the room, in air checked clear (2026-10-17); each row is FFA, TDM, CONTROL from west to east.",
+        ["results_seconds"] = 15,
+        ["round_end_comment"] = "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still; a cutscene shows the top 3 on the winner_desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is. Rings: one row of three over each side of the room, in air checked clear (2026-10-17); each row is FFA, TDM, CONTROL from west to east.",
         ["score_tie_rule"] = "shared_result_no_sudden_death",
         ["tdm_elimination_target"] = 60,
         ["vote_ring_radius"] = 80,
@@ -597,6 +597,12 @@ return JSONTypes.map({
         }),
         ["vote_seconds"] = 20,
         ["vote_tie_rule"] = "least_recent_then_seeded",
+        ["winner_desks"] = JSONTypes.array({
+            [1] = "DeskNorth3",
+            [2] = "DeskNorth2",
+            [3] = "DeskNorth4",
+        }),
+        ["winner_desks_comment"] = "The winners' cutscene (Alan 2026-10-17): the top 3 stand on these desks, 1st, 2nd, 3rd. The chalkboard row is North; it has six desks, so 'the middle three' is 2-3-4 with 1st in the middle (Claude's pick, easy to change).",
     }),
     ["schema_version"] = 1,
     ["service"] = JSONTypes.map({

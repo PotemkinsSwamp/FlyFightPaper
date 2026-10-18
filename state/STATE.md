@@ -28,6 +28,7 @@ Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot
 Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
+Winner desks: the chalkboard row has six desks, so "middle three" = desks 2-3-4, 1st in the middle (config rounds.winner_desks).
 Duct props: cobwebs, spiders, toys and tools are see-through to planes (fly through them). Veterans flee to the
   ducts 40% of the time when shot at (vent within 500), wander in 12% of patrol turns; others never (config bots.*.duct_*).
 Duct light: read "lights from below, connected to the lights above" as: ducts glow only through grilles where they
