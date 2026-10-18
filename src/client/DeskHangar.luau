@@ -42,6 +42,7 @@ function DeskHangar.new(playerGui, api)
 	cover.Parent.DisplayOrder = 5 -- under the Menu button (6) and the menus and overlays (10)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	PaperUI.words(sheet, "Title", "Hangar", 60, 196, 285, 46, 42).TextXAlignment = Enum.TextXAlignment.Center
+	local levelBar = require(script.Parent.LevelBar).new(sheet, 160, 744, 620, 24, true)
 
 	-- The plane on the taped preview paper (sky-tinted like the main Hangar so the white plane stands out), and beside
 	-- it, centred on it, the lined stats sheet: the main Hangar's stat strips and five crayon bar cells. Health, Lift and
@@ -156,6 +157,7 @@ function DeskHangar.new(playerGui, api)
 	end
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
 		if profile and profile.presets then showPresets(profile.presets) end
+		if profile and profile.xp then levelBar.set(profile.xp) end
 	end)
 	Root:WaitForChild("RoundView").OnClientEvent:Connect(function(snapshot)
 		local remaining = snapshot.endsAt and math.max(0, math.ceil(snapshot.endsAt - snapshot.serverTime)) or 0

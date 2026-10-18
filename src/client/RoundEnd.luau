@@ -6,13 +6,12 @@ local RunService = game:GetService("RunService")
 local Input = game:GetService("UserInputService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local MatchRules = require(Root.Shared.MatchRules)
-local Economy = require(Root.Shared.EconomyRules)
-local LEVEL_CAP = require(Root.Generated.Economy).level_cap
 local Lines = require(Root.Shared.Lines)
 local Rounds = require(Root.Generated.Gameplay).rounds
 local UIArt = require(Root.Shared.UIAssets)
 local PaperUI = require(script.Parent.PaperUI)
 local Cutscene = require(script.Parent.WinnersCutscene)
+local LevelBar = require(script.Parent.LevelBar)
 
 local MODES = { { "FFA", "Free-for-all", "blue" }, { "TDM", "Team dogfight", "pink" }, { "CONTROL", "Airspace Control", "green" } }
 local KEYS = { [Enum.KeyCode.One] = 1, [Enum.KeyCode.Two] = 2, [Enum.KeyCode.Three] = 3 }
@@ -67,14 +66,7 @@ function RoundEnd.start()
 		for _, column in COLUMNS do rows[i].numbers[column[4]] = cell(column[1] .. i, "", column[2], y, column[3], 30, true) end
 	end
 	local earned = cell("Earned", "", 44, 746, 595, 36, true)
-	local level = cell("Level", "", 64, 794, 260, 38)
-	local count = cell("XPCount", "", 340, 794, 280, 30)
-	count.TextXAlignment = Enum.TextXAlignment.Right
-	local barFrame = image(card, "XPFrame", UIArt.results.xpFrame, 64, 842, 556, 66)
-	barFrame.ScaleType = Enum.ScaleType.Stretch
-	local barFill = image(card, "XPFill", UIArt.results.xpFill, 76, 853, 532, 44)
-	barFill.ScaleType, barFill.AnchorPoint, barFill.Position, barFill.ZIndex = Enum.ScaleType.Stretch, Vector2.new(0, 0.5), UDim2.fromOffset(76, 875), barFrame.ZIndex - 1
-	local xpBar = { level, count, barFrame, barFill }
+	local xpBar = LevelBar.new(card, 64, 790, 556, 34)
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -120,17 +112,13 @@ function RoundEnd.start()
 	RunService.RenderStepped:Connect(function()
 		local mine = state.mine
 		local shown = cover.Visible and card.Visible and mine ~= nil and state.profileXP ~= nil
-		for _, piece in xpBar do piece.Visible = shown end
+		xpBar.show(shown)
 		if not shown then return end
+		-- ponytail: "before" assumes the profile already holds this round's XP (it is paid as it is earned).
 		local after = math.max(state.profileXP, mine.xp or 0)
 		local before = math.max(0, after - (mine.xp or 0))
 		local t = math.clamp((os.clock() - state.cardAt - 0.5) / 1.5, 0, 1)
-		local xp = before + (after - before) * (1 - (1 - t) ^ 2)
-		local at, into, need = Economy.levelForXP(math.floor(xp * 1000))
-		local capped = at == LEVEL_CAP
-		level.Text = "Level " .. tostring(at or 1)
-		count.Text = capped and "max level" or string.format("%d / %d XP", (into or 0) // 1000, (need or 0) // 1000)
-		barFill.Size = UDim2.fromOffset(532 * (capped and 1 or need and need > 0 and math.clamp(into / need, 0, 1) or 0), 44)
+		xpBar.set(before + (after - before) * (1 - (1 - t) ^ 2))
 	end)
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) state.profileXP = profile.xp end)
 

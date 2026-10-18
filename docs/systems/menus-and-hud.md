@@ -8,6 +8,8 @@ Stage 6 approved by Alan (2026-10-13) after the on-brand HUD restyle. Edge arrow
 Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); death lines say how it happened (weapon, the
 building or thing hit, who chased or rammed you), the same line on your note and in the feed. Seen in Studio Play 2026-10-17 except the
 between-rounds lines. Warnings (INCOMING!, LOCKED ON!), zone words and error messages stay fixed on purpose.
+Level bar with next unlock on the main menu board's stats card, in the hangar under the plane, and on the results card
+(seen 2026-10-17; partly filled bar seen on a test screen, the test account is at max level).
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md section 9).*
@@ -32,6 +34,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/SettingsScreen.luau`, `src/client/Options.luau` | Settings screen and applying settings |
 | `src/client/PauseScreen.luau` | In-match clipboard menu |
 | `src/client/RoundEnd.luau` | Round end in the room: "Pencils down!", the winners' cutscene with the results card, vote card (1/2/3), next round's name |
+| `src/client/LevelBar.luau` | Your level, XP bar and next unlock: on the results card, the main menu board and the hangar |
 | `src/client/WinnersCutscene.luau` | Camera glides to the chalkboard-row desks; local copies of the top 3 stand up, hop on the desks and emote, then the camera glides back |
 | `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |

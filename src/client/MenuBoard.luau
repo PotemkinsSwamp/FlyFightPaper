@@ -20,6 +20,7 @@ function Board.new(playerGui, actions)
 	local stats = PaperUI.words(card, "Stats", "", 70, 70, 290, 380, 44)
 	stats.TextYAlignment, stats.LineHeight = Enum.TextYAlignment.Top, 1.15
 	table.insert(pieces, card)
+	local levelBar = require(script.Parent.LevelBar).new(card, 56, 282, 280, 27)
 
 	local buttons = Instance.new("Frame")
 	buttons.Name, buttons.BackgroundTransparency, buttons.Size = "Buttons", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H)
@@ -52,8 +53,9 @@ function Board.new(playerGui, actions)
 	local self = { frame = cover }
 	function self.update(player, profile)
 		local s = profile and profile.statistics or {}
-		stats.Text = string.format("Level %d\nPaper %d\nPlanes downed %d\nWins %d\nMatches %d",
-			player:GetAttribute("Level") or 1, player:GetAttribute("Paper") or 0, s.eliminations or 0, s.wins or 0, s.matches or 0)
+		stats.Text = string.format("Paper %d\nPlanes downed %d\nWins %d\nMatches %d",
+			player:GetAttribute("Paper") or 0, s.eliminations or 0, s.wins or 0, s.matches or 0)
+		levelBar.set(profile and profile.xp or 0)
 	end
 	return self
 end
