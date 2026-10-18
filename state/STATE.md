@@ -4,6 +4,8 @@
   (free; 24 tried, 12 in use), paper name plates once all three are in frame, confetti. The two outside desks slide in
   next to 1st on your screen only: the real desks can't move without moving towers by their landing paths. Results
   card up the last 10 s, so the moment is 27 s. Fixed: a tied team round showed nobody hopping.
+- **Your Stage 9 playtest (2026-10-18): all good except the train**: wings and tail went through it. Fixed: every
+  corner of the plane's parts now counts (a plane alongside is hit at its wingtip). Waiting on your re-check (item 3).
 - **Bots look like real players:** 157 saved outfits real players made, names in today's styles (lunaaa, RAWR).
 - **Plane emote** parked for the shop stage (Meshy clips "better but odd"; 1,013 credits left).
 - Earlier: published privately; round end with vote hoops, results card and level bar; event lines; 20 speed
