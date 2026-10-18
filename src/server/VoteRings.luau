@@ -1,12 +1,13 @@
--- The vote lap's rings (Alan 2026-10-17, docs/decisions/2026-10-17-rounds-never-stop.md): one row of three big paper
--- rings over each side of the room, one per mode. Fly through one to vote; each shows its mode and live vote count.
--- Spots and size: config rounds.vote_rings / vote_ring_radius. The look is the desks' landing ring, scaled up.
+-- The vote lap's rings (Alan 2026-10-17, docs/decisions/2026-10-17-rounds-never-stop.md, revised): three big glowing
+-- rings in front of the window wall, facing the room, one per mode. Fly through one to vote; each has a big sign with
+-- its mode and live vote count. Spots and size: config rounds.vote_rings / vote_ring_radius.
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Rounds = require(Root.Generated.Gameplay).rounds
 local MatchRules = require(Root.Shared.MatchRules)
 
 local NAMES = { FFA = "Free-for-all", TDM = "Team dogfight", CONTROL = "Airspace Control" }
-local TINTS = { FFA = Color3.fromRGB(120, 170, 255), TDM = Color3.fromRGB(255, 140, 190), CONTROL = Color3.fromRGB(130, 220, 140) }
+local TINTS = { FFA = Color3.fromRGB(70, 150, 255), TDM = Color3.fromRGB(255, 90, 170), CONTROL = Color3.fromRGB(80, 230, 110) }
+local KEYS = { "FFA", "TDM", "CONTROL" } -- the 1 / 2 / 3 keys
 
 local VoteRings = {}
 VoteRings.__index = VoteRings
@@ -16,31 +17,39 @@ function VoteRings.new(room)
 	return setmetatable({ room = room, rings = {} }, VoteRings)
 end
 
+local SEGMENTS, TUBE = 36, 18 -- a neon tube made of short blocks around the circle
+
 function VoteRings:show()
 	self:hide()
 	local folder = Instance.new("Folder")
 	folder.Name = "VoteRings"
-	local template
-	for _, item in self.room:GetDescendants() do
-		if item:IsA("MeshPart") and item.Name:find("^landing%-ring") then template = item break end
-	end
-	local size = Rounds.vote_ring_radius * 2.25 -- the mesh's hole is about 0.9 of its width
+	local radius = Rounds.vote_ring_radius
 	for i, spot in Rounds.vote_rings do
-		local cframe = CFrame.new(spot.center[1], spot.center[2], spot.center[3])
-		local ring = template and template:Clone() or Instance.new("Part")
-		ring.Name, ring.Anchored, ring.CanCollide, ring.CanQuery, ring.CanTouch, ring.CastShadow = "VoteRing" .. i, true, false, false, false, false
-		ring.Size, ring.CFrame = Vector3.new(size, size, template and size * 8 / 74 or 4), cframe
-		if not template then ring.Shape, ring.Transparency = Enum.PartType.Cylinder, 0.6 end
-		ring.Color = TINTS[spot.mode]
-		for _, child in ring:GetChildren() do if not child:IsA("SurfaceAppearance") then child:Destroy() end end
+		local center = Vector3.new(spot.center[1], spot.center[2], spot.center[3])
+		local cframe = CFrame.lookAt(center, Vector3.new(0, center.Y, 0)) -- faces the middle of the room
+		local ring = Instance.new("Model")
+		ring.Name = "VoteRing" .. i
+		for k = 1, SEGMENTS do
+			local angle = k / SEGMENTS * math.pi * 2
+			local piece = Instance.new("Part")
+			piece.Anchored, piece.CanCollide, piece.CanQuery, piece.CanTouch, piece.CastShadow = true, false, false, false, false
+			piece.Material, piece.Color = Enum.Material.Neon, TINTS[spot.mode]
+			piece.Size = Vector3.new(TUBE, radius * 2 * math.pi / SEGMENTS * 1.08, TUBE)
+			piece.CFrame = cframe * CFrame.new(math.cos(angle) * radius, math.sin(angle) * radius, 0) * CFrame.Angles(0, 0, angle)
+			piece.Parent = ring
+		end
 		local sign = Instance.new("BillboardGui")
-		sign.Name, sign.Size, sign.StudsOffsetWorldSpace, sign.LightInfluence = "Sign", UDim2.fromOffset(260, 90), Vector3.new(0, size * 0.62, 0), 0
-		sign.MaxDistance, sign.AlwaysOnTop = 4000, false
+		sign.Name, sign.Size, sign.StudsOffsetWorldSpace, sign.LightInfluence = "Sign", UDim2.fromOffset(340, 120), Vector3.new(0, radius + 70, 0), 0
+		sign.MaxDistance, sign.AlwaysOnTop = 5000, false
 		local words = Instance.new("TextLabel")
 		words.Name, words.Size, words.BackgroundTransparency = "Words", UDim2.fromScale(1, 1), 1
 		words.FontFace, words.TextScaled, words.TextColor3 = Font.fromEnum(Enum.Font.PermanentMarker), true, TINTS[spot.mode]
 		words.TextStrokeColor3, words.TextStrokeTransparency = Color3.fromRGB(28, 26, 30), 0
-		words.Parent, sign.Parent = sign, ring
+		local anchor = Instance.new("Part") -- an invisible dot in the middle that carries the sign
+		anchor.Name, anchor.Size, anchor.CFrame, anchor.Transparency = "SignAnchor", Vector3.one, cframe, 1
+		anchor.Anchored, anchor.CanCollide, anchor.CanQuery, anchor.CanTouch = true, false, false, false
+		anchor.Parent = ring
+		words.Parent, sign.Parent = sign, anchor
 		ring:SetAttribute("Mode", spot.mode)
 		ring.Parent = folder
 		self.rings[i] = { mode = spot.mode, cframe = cframe, words = words }
@@ -53,7 +62,7 @@ end
 function VoteRings:update(totals)
 	for _, ring in self.rings do
 		local count = totals[ring.mode] or 0
-		ring.words.Text = string.format("%s\n%d %s", NAMES[ring.mode], count, count == 1 and "vote" or "votes")
+		ring.words.Text = string.format("%d  %s\n%d %s", table.find(KEYS, ring.mode), NAMES[ring.mode], count, count == 1 and "vote" or "votes")
 	end
 end
 

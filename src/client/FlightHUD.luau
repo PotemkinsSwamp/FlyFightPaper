@@ -135,6 +135,7 @@ function HUD.start(getPlane, action)
 	end
 	zoneArrow = makeArrow("ZoneArrow")
 	local zoneMoveArrow, lastZone, zoneMovedUntil = makeArrow("ZoneMoveArrow"), nil, 0
+	local voteArrow, votePhase = makeArrow("VoteArrow"), false
 	local function arrowFor(index)
 		local arrow = arrows[index]
 		if not arrow then
@@ -312,6 +313,7 @@ function HUD.start(getPlane, action)
 	-- Crayon colours for the round strip's words.
 	local function crayon(text, hex) return string.format('<font color="#%s">%s</font>', hex, text) end
 	game.ReplicatedStorage.FlyFightPaper:WaitForChild("RoundView").OnClientEvent:Connect(function(snapshot)
+		votePhase = snapshot.phase == "VOTE"
 		local remaining=snapshot.endsAt and math.max(0,math.ceil(snapshot.endsAt-snapshot.serverTime)) or 0
 		local text=crayon(({CONTROL="AIRSPACE"})[snapshot.mode] or snapshot.mode or "","D7282F").."   "..crayon(string.format("%d:%02d",math.floor(remaining/60),remaining%60),"1F5BC8")
 		local first=false
@@ -540,6 +542,18 @@ function HUD.start(getPlane, action)
 		end
 		zoneArrow.Visible = flying and goalAt ~= nil and not goalSeen and not zoneMoveArrow.Visible
 		if zoneArrow.Visible then pointAt(zoneArrow, goalAt, Color3.fromRGB(255, 205, 40)) end
+		-- The vote lap: a white arrow to the nearest vote ring while none is on screen.
+		local nearest, anySeen
+		if flying and votePhase then
+			for _, ring in Gameplay.rounds.vote_rings do
+				local at = Vector3.new(table.unpack(ring.center))
+				local _, seen = camera:WorldToViewportPoint(at)
+				anySeen = anySeen or seen
+				if not nearest or (at - body.Position).Magnitude < (nearest - body.Position).Magnitude then nearest = at end
+			end
+		end
+		voteArrow.Visible = nearest ~= nil and not anySeen
+		if voteArrow.Visible then pointAt(voteArrow, nearest, Color3.fromRGB(255, 255, 255)) end
 		local noseRange = 300
 		if target then
 			-- Where the target will be when a shot fired now reaches it, following its current turn.

@@ -541,60 +541,37 @@ return JSONTypes.map({
         ["ffa_elimination_target"] = 20,
         ["launch_countdown_seconds"] = 3,
         ["results_seconds"] = 15,
-        ["round_end_comment"] = "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still; a cutscene shows the top 3 on the winner_desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is. Rings: one row of three over each side of the room, in air checked clear (2026-10-17); each row is FFA, TDM, CONTROL from west to east.",
+        ["round_end_comment"] = "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still; a cutscene shows the top 3 on the winner_desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is.",
         ["score_tie_rule"] = "shared_result_no_sudden_death",
         ["tdm_elimination_target"] = 60,
-        ["vote_ring_radius"] = 80,
+        ["vote_ring_radius"] = 130,
         ["vote_rings"] = JSONTypes.array({
             [1] = JSONTypes.map({
                 ["center"] = JSONTypes.array({
-                    [1] = -600,
-                    [2] = 420,
-                    [3] = 450,
+                    [1] = -1200,
+                    [2] = 360,
+                    [3] = 500,
                 }),
                 ["mode"] = "FFA",
             }),
             [2] = JSONTypes.map({
                 ["center"] = JSONTypes.array({
-                    [1] = 0,
-                    [2] = 420,
-                    [3] = 450,
+                    [1] = -1200,
+                    [2] = 360,
+                    [3] = 0,
                 }),
                 ["mode"] = "TDM",
             }),
             [3] = JSONTypes.map({
                 ["center"] = JSONTypes.array({
-                    [1] = 600,
-                    [2] = 420,
-                    [3] = 450,
-                }),
-                ["mode"] = "CONTROL",
-            }),
-            [4] = JSONTypes.map({
-                ["center"] = JSONTypes.array({
-                    [1] = -750,
+                    [1] = -1200,
                     [2] = 360,
-                    [3] = -600,
-                }),
-                ["mode"] = "FFA",
-            }),
-            [5] = JSONTypes.map({
-                ["center"] = JSONTypes.array({
-                    [1] = -150,
-                    [2] = 360,
-                    [3] = -600,
-                }),
-                ["mode"] = "TDM",
-            }),
-            [6] = JSONTypes.map({
-                ["center"] = JSONTypes.array({
-                    [1] = 450,
-                    [2] = 360,
-                    [3] = -600,
+                    [3] = -500,
                 }),
                 ["mode"] = "CONTROL",
             }),
         }),
+        ["vote_rings_comment"] = "Vote rings (Alan 2026-10-17, revised): three big neon rings in front of the window wall, facing the room, FFA / TDM / CONTROL from left to right as you look at the wall (south to north), like the vote card.",
         ["vote_seconds"] = 20,
         ["vote_tie_rule"] = "least_recent_then_seeded",
         ["winner_desks"] = JSONTypes.array({
