@@ -48,4 +48,4 @@ Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked inste
 
 Waiting on Alan
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
-2. Prices: after the research report.
+2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK.
