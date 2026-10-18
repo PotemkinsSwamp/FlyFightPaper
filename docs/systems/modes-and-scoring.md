@@ -9,7 +9,8 @@ the winners' cutscene (15 s, desks in `rounds.winner_desks`), then a safe vote l
 the next round starts in place. Cutscene and the Studio "end match" button seen working in Play 2026-10-17. Fixed the
 same day: a team round starting in place after a free-for-all (or the reverse) crashed seating the bots, leaving that
 round without bots. Results card shows folds, assists, crashes and points per pilot, team totals in team rounds, and your Paper, XP
-and level bar (seen 2026-10-17; the bar filling not yet seen, the test account is at max level). Vote rings: three big neon rings in front of
+and level bar (seen 2026-10-17; the bar filling not yet seen, the test account is at max level). Alan's evening notes (same decision, "Revised again") are next: straight-on cutscene with the town hidden, hula-hoop
+rings, smoother animation; vote lap now 30 s. Vote rings: three big neon rings in front of
 the window wall (seen 2026-10-17), with a white HUD arrow to the nearest one while none is on screen (arrow not yet
 seen pointing; it stayed hidden correctly with a ring in view). Tests 328/0.
 Zone moves and looks right. Paper targets stand on roofs; two (homework, the second broccoli) were buried inside

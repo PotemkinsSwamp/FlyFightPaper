@@ -10,7 +10,10 @@
   three big neon vote rings on the window wall with a HUD arrow; level bar + next unlock on the menu board, hangar
   and card. Fixed on the way: a team round starting right after a free-for-all (or the reverse) crashed seating
   the bots; emotes threw giant avatars' bodies apart (Roblox scales the hip movement twice).
-- **Main-menu ruler** (numbers 1-12, right way up): its own session, waiting on Alan's OK before upload.
+- **Main-menu ruler** reads 3 to 12, right way up: uploaded with Alan's go and seen in Play.
+- **Alan saw the cutscene (evening):** camera must be dead centre and straight on, town/ceiling decor/landing rings/
+  planes hidden on your screen during it, smoother stand-up and jump (uploaded animations, route being checked),
+  vote rings become hula hoops, vote lap now 30 s. Next session builds these.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.

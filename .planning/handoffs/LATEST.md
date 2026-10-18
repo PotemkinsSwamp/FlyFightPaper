@@ -1,7 +1,8 @@
-# LATEST → handoff-2026-10-17-ui-round-end-cutscene.md
+# LATEST → handoff-2026-10-18-ui-cutscene-straight-on.md
 
-★ START HERE: round end first pass built and tried by Alan. Next: dev-panel "End match" button, then the winners'
-cutscene at the chalkboard-row middle desks, richer results card, big window-wall vote rings, XP bar on menu/hangar.
+★ START HERE: round-end revisions built; Alan's evening notes next: cutscene dead centre and straight on with the
+town/decor/landing rings/planes hidden locally, smoother stand-up/jump (research uploaded animations), hula-hoop
+vote rings. Vote lap is 30 s. Ruler uploaded.
 
-Quick state: main, tests 328/0. Studio open with Play left running; Rojo serving. Ruler art fix in its own session.
-Previous: handoff-2026-10-17-2345-ui-fresh-lines-weapon-spot.md.
+Quick state: main, tests 328/0. Studio open in Edit (Play stopped); Rojo serving.
+Previous: handoff-2026-10-17-ui-round-end-cutscene.md.
