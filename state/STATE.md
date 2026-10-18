@@ -48,8 +48,8 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan — Stage 9 playtest, then your approval
-1. Modes: in the hangar pick "mode: team DM", "mode: airspace" and "mode: ceiling". Team colours on planes and names,
-   the moving zone and its green arrow, the ceiling spot (east side, under the rings), veteran bots fighting for the
+1. Modes: in the hangar pick "mode team DM", "mode airspace" and "mode next spot". Team colours on planes and names,
+   the moving zone and its green arrow, each zone spot ("next spot" moves it on), veteran bots fighting for the
    zone while rookies wander, the "+100 FOLD" pop-ups and the results points.
 2. Round end: in the hangar press "end match" (red, top). Watch the winners' moment to the end (the results card
    comes up for the last 10 s), then fly through a hula hoop on the window wall to vote. Try it once from the air,
