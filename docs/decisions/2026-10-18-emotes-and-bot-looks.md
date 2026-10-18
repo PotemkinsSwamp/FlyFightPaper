@@ -8,9 +8,9 @@
   real-looking players. Then one prototype prop emote (the plane flying around the head) to prove the workflow.
   The emote shop itself waits for the shop stage.
 - **Bot looks:** bots should be impossible to tell from real players. Today's look (classic shirt and pants) is
-  years out of date. Dress them in today's styles from Roblox catalog items (newer heads with moving faces, 3D
-  layered jackets and hoodies, popular hair); NPCs may wear any catalog item without buying it. Never copy a real
-  player's avatar or name (VISION: no forged accounts). Bot names already follow real player styles; keep them.
+  years out of date. Not by hand-dressing them (Alan: too slow, won't look real): first research how Roblox devs
+  give NPCs real-player looks (plugins, Creator Store kits, whole catalog looks), bring Alan 2-3 options, he picks.
+  Never copy a real player's avatar or name (VISION: no forged accounts). Bot names already follow real player styles; keep them.
 - **Emote ideas (Alan's, to sell later):** the kid jumps on the desk holding the plane they used most that match and
   flies it around their head like a kid would; slams the plane down and leaps like a football touchdown; throws the
   plane and it circles them; throws it and it flies off, comes straight at the camera and "crashes" into it as the
