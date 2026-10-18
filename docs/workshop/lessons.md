@@ -165,6 +165,14 @@ mistake would be easy to make twice.
 - **Show layouts before uploading.** Town layouts get a preview picture and Alan's OK first
   ([decision](../decisions/2026-10-09-town-planning-rules.md)).
 - **Touch up before showing.** Nothing is shown to Alan until its close-ups are clean.
+- **Roblox's own emotes are free to play in any game** (2026-10-18): search the catalog by script
+  (`AvatarEditorService:SearchCatalog`, asset type EmoteAnimation, creator "Roblox"), then
+  `game:GetObjects("rbxassetid://<catalog id>")` gives the Animation inside with its real animation id. All 24 tried
+  played on our big avatars; Hero Landing and Break Dance dip below the desk.
+- **Rojo can die with a Studio reconnect** (2026-10-18): when the Studio tools come back under a new id, check that
+  `rojo serve` still answers on port 34872 before trusting a test; Alan reconnects the plugin.
+- **Wide shots in a tall room:** a 16:9 shot wide enough for three desks is very tall at their depth; pick where the
+  spare height goes (wall above or floor below) and fade what hangs from the ceiling in front of the lens.
 - **Emotes on scaled-up avatars** (2026-10-17): Roblox scales an animation's hip ("Root" joint) movement twice on an
   avatar made big with `ScaleTo` (27 x 27 instead of 27), so emotes throw the body far from its root; other joints
   are fine. Fix: each `PreSimulation`, divide that joint's `Transform.Position` by the model's scale

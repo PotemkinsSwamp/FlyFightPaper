@@ -1,34 +1,13 @@
-# Since Alan last checked (2026-10-17)
-- **Bots look like real players** (2026-10-18, your pick): each wears one of 157 outfits real players saved (found
-  by tools/find_bot_looks.luau), never their name. Seen in Play at the desks and in the cutscene. A few items in some
-  outfits are blocked for our game; that bot just skips them. **Names** now in today's styles (lunaaa, sxphie_12,
-  honeypotato, RAWR).
-- **Plane emote:** arm-only prototype taken out (no life). Three Meshy full-body clips made (30 credits, 1,013
-  left), converted to Roblox bodies (tools/meshy_to_r15.py) and seen in Play with the plane in hand: "better but
-  odd". Parked for the shop stage; 1st dances (config rounds.winner_plane_emote empty).
-- **Next: the winners' shot redesign** ([decision](../docs/decisions/2026-10-18-winners-shot-redesign.md)): one
-  steady group shot of the top 3 on their desks, all emoting at once with Roblox's emotes, name plates, confetti.
-- **Published privately** ("FlyFightPaper(First Fold)", 12 players); live up to the desk hangar flow and menu art.
-- **Done (Alan's notes):** clicking the weapon already on a mount takes it off; the button reads "Clear weapon spot".
-  Event lines rewritten after Alan's notes: death lines say how it happened, Minecraft-style (weapon, the building
-  or thing you hit, who chased or rammed you), classroom-themed, no sound words; your note and the kill feed say the
-  same line. All in src/shared/Lines.luau. Seen in Studio Play; tests 326/0. Alan is reviewing the full list.
-- **Round end, Alan's revisions all built** (seen in Studio Play): Studio "end match" button; winners' cutscene
-  (camera glides to the chalkboard-row desks, the top 3 stand up, hop on the desks and dance/cheer/wave with name
-  tags, camera glides back); results card with folds, assists, crashes, team totals, your Paper/XP and level bar;
-  three big neon vote rings on the window wall with a HUD arrow; level bar + next unlock on the menu board, hangar
-  and card. Fixed on the way: a team round starting right after a free-for-all (or the reverse) crashed seating
-  the bots; emotes threw giant avatars' bodies apart (Roblox scales the hip movement twice).
-- **Main-menu ruler** reads 3 to 12, right way up: uploaded with Alan's go and seen in Play.
-- **Cutscene, closer and more cinematic** (Alan's notes 2026-10-18, seen in Studio Play): a close-up of each winner
-  in turn as they stand up and hop (3rd, 2nd, then 1st with a slow push in), then a zoom out to all three emoting;
-  only what would block a winner fades out, so the town and ceiling decorations stay; focus blur on the winners. Vote rings are now giant hula hoops (no free Creator Store hoop fit; built from round parts).
-  Smoother stand-up/hop animation uploaded with your go (free) and seen playing in Play.
-- **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
-- **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
-  pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
-- **Airspace zones bigger and flatter where buildings are dense** (Alan); the Studio dev button "next spot" moves
-  the zone to the next spot on each click (replaces "ceiling"). Checked by numbers in Play; looks wait on Alan.
+# Since Alan last checked (2026-10-18)
+- **Winners' moment rebuilt like the big games** (your notes, OK'd on the group shot): close-ups as 3rd, 2nd, then
+  1st hop onto their desks, then one steady shot from a little above of all three dancing with Roblox's own emotes
+  (free; 24 tried, 12 in use), paper name plates once all three are in frame, confetti. The two outside desks slide in
+  next to 1st on your screen only: the real desks can't move without moving towers by their landing paths. Results
+  card up the last 10 s, so the moment is 27 s. Fixed: a tied team round showed nobody hopping.
+- **Bots look like real players:** 157 saved outfits real players made, names in today's styles (lunaaa, RAWR).
+- **Plane emote** parked for the shop stage (Meshy clips "better but odd"; 1,013 credits left).
+- Earlier: published privately; round end with vote hoops, results card and level bar; event lines; 20 speed
+  boosts; bigger Airspace zones where buildings are dense.
 
 # Stage 9 — what's left (MILESTONES D13)
 Everything is built; what's left needs your eyes: the playtest list at the bottom, then your Stage 9 approval.
@@ -45,8 +24,8 @@ Track C saving needs a private publish (Alan's go). Place file not re-saved (nee
 
 Decisions to review
 Results card "Crashes" counts every time a pilot went down (shot or crashed), from the round's deaths.
-Cutscene: winners' moment 15 s -> 18 s so the zoom-out to all three has time; the results card shows during the
-close-ups and goes for the group shot.
+Winners' moment: 1st does a winner's move (Godlike, Celebrate, Jumping Cheer, Greatest), 2nd and 3rd two different
+dances; desks 50 studs apart in the shot.
 Winner desks: the chalkboard row has six desks, so "middle three" = desks 2-3-4, 1st in the middle (config rounds.winner_desks).
 Duct props: cobwebs, spiders, toys and tools are see-through to planes (fly through them). Veterans flee to the
   ducts 40% of the time when shot at (vent within 500), wander in 12% of patrol turns; others never (config bots.*.duct_*).
@@ -72,9 +51,9 @@ Waiting on Alan — Stage 9 playtest, then your approval
 1. Modes: in the hangar pick "mode: team DM", "mode: airspace" and "mode: ceiling". Team colours on planes and names,
    the moving zone and its green arrow, the ceiling spot (east side, under the rings), veteran bots fighting for the
    zone while rookies wander, the "+100 FOLD" pop-ups and the results points.
-2. Round end: in the hangar press "end match" (red, top). Watch the winners' cutscene, the results card, then fly
-   through a hula hoop on the window wall to vote. Try it once from the air and once from the hangar. Do the bots
-   look like real players?
+2. Round end: in the hangar press "end match" (red, top). Watch the winners' moment to the end (the results card
+   comes up for the last 10 s), then fly through a hula hoop on the window wall to vote. Try it once from the air,
+   once from the hangar and once after a team round. Do the bots look like real players?
 3. Train: skim it (should scrape, not crash), fly into its nose (crash), fit above it in the south station.
 4. Escapes: puff the chalk eraser; take the ducts once more (spot a veteran bot diving out of a vent).
 5. Hangar: land at your desk, pick a build, Edit build, change a part, Save & fly. Does it make sense first time?

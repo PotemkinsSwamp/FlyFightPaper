@@ -1,7 +1,7 @@
 # Winners' shot: one steady group shot, like the big games
 
 **Decided:** 2026-10-18 (Alan)  
-**Status:** in force; not built yet
+**Status:** in force; built 2026-10-18 and the group shot OK'd by Alan in Play the same day
 
 ## Decision
 - **Reference:** Alan's clips of winner screens (Black Ops 3 "Winners Circle", Street Fighter characters in Apex

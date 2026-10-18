@@ -5,7 +5,7 @@ Three modes, voted on after each round: free-for-all (8 minutes or 20 folds), te
 
 ## Where it stands (2026-10-17)
 Round end ([decision](../decisions/2026-10-17-rounds-never-stop.md)): nobody leaves the room; planes hold still for
-the winners' cutscene (15 s, desks in `rounds.winner_desks`), then a safe vote lap through mode rings (keys 1/2/3) and
+the winners' moment (27 s, desks in `rounds.winner_desks`), then a safe vote lap through mode rings (keys 1/2/3) and
 the next round starts in place. Cutscene and the Studio "end match" button seen working in Play 2026-10-17. Fixed the
 same day: a team round starting in place after a free-for-all (or the reverse) crashed seating the bots, leaving that
 round without bots. Results card shows folds, assists, crashes and points per pilot, team totals in team rounds, and your Paper, XP
@@ -13,7 +13,12 @@ and level bar (seen 2026-10-17; the bar filling not yet seen, the test account i
 (3rd, 2nd, then 1st with a slow push in), a little from below, the results card on the right; then the card goes and
 it zooms out to all three emoting together, from just above the town's roofs with a wide lens. Only things that
 would block a winner fade out on your screen (whole buildings, never half of one), and a Roblox focus blur keeps the
-winners sharp (Alan 2026-10-18: closer, more cinematic). Winners' moment now 18 s. Seen in Play 2026-10-18. The stand-up-and-hop animation is uploaded (Alan's go, 2026-10-18, free) and seen playing for all three winners in Play. Vote lap now 30 s. Vote rings: three giant hula hoops in front of
+winners sharp (Alan 2026-10-18: closer, more cinematic). Rebuilt 2026-10-18 like the big games' winner screens
+([decision](../decisions/2026-10-18-winners-shot-redesign.md)): close-ups as each hops up, then one steady group shot,
+a little from above, of all three dancing with Roblox's own emotes, paper name plates (place, name, points) and
+confetti; the two outside desks slide in next to 1st on your screen only (the real ones can't move: towers stand by
+their landing paths). The results card comes up for the last 10 s, so the moment is 27 s. A tied team round has no
+places, so its top 3 come in results order. Alan OK'd the group shot in Play 2026-10-18. The stand-up-and-hop animation is uploaded (Alan's go, 2026-10-18, free) and seen playing for all three winners in Play. Vote lap now 30 s. Vote rings: three giant hula hoops in front of
 the window wall (plastic with glowing tape stripes, built from round parts as no free Creator Store hoop fit; seen 2026-10-18), with a white HUD arrow to the nearest one while none is on screen (seen pointing
 the right way 2026-10-18; it stays hidden with a ring in view). Tests 328/0.
 Zone moves and looks right. Paper targets stand on roofs; two (homework, the second broccoli) were buried inside
