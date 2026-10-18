@@ -580,6 +580,8 @@ return JSONTypes.map({
             [3] = "DeskNorth4",
         }),
         ["winner_desks_comment"] = "The winners' cutscene (Alan 2026-10-17): the top 3 stand on these desks, 1st, 2nd, 3rd. The chalkboard row is North; it has six desks, so 'the middle three' is 2-3-4 with 1st in the middle (Claude's pick, easy to change).",
+        ["winner_hop_animation"] = "",
+        ["winner_hop_comment"] = "Uploaded R15 animation the winners stand up and hop onto their desk with (built by tools/winner_hop_animation.luau). Empty until Alan okays the upload; until then the plain code-moved stand-up plays.",
     }),
     ["schema_version"] = 1,
     ["service"] = JSONTypes.map({

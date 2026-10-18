@@ -31,7 +31,8 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | Script | What it does / when |
 |---|---|
 | `tools/ui_pieces.py` | Cuts one menu screen's art into pieces and (with `--upload`) uploads them |
-| `tools/upload_texture.py` | Uploads a picture or FBX to Roblox (used by the other upload tools) |
+| `tools/upload_texture.py` | Uploads a picture, FBX or animation (`--animation`, an .rbxm) to Roblox (used by the other upload tools) |
+| `tools/winner_hop_animation.luau` | Builds the winners' stand-up-and-hop keyframes in Studio (R15); exported to `assets/animations/winner-hop.rbxm` for upload |
 | `tools/meshy.py` | Paid Meshy jobs; every job logged in `assets/MESHY_LOG.md`. Stop at 300 credits left |
 
 ## Blender (`tools/art/`)

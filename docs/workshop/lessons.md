@@ -169,6 +169,10 @@ mistake would be easy to make twice.
   avatar made big with `ScaleTo` (27 x 27 instead of 27), so emotes throw the body far from its root; other joints
   are fine. Fix: each `PreSimulation`, divide that joint's `Transform.Position` by the model's scale
   (`src/client/WinnersCutscene.luau`). Test a new animation on a big avatar by measuring head-to-root drift.
+- **Animations without Studio clicks (2026-10-18):** build a KeyframeSequence by script, preview it in Play with
+  `AnimationClipProvider:RegisterAnimationClip` (a temporary id, Studio only, register it on the client for client-side
+  playback), export it with `SerializationService:SerializeInstancesAsync` + `EncodingService:Base64Encode`, then upload
+  the .rbxm through Open Cloud as assetType Animation (`tools/upload_texture.py --animation`). Free.
 - **Starting a round in place:** planes carried over keep their old team; clear it and join them to the new round
   before bots fill desks, or the roster rejects them (`invalid_actor_team` / `unexpected_actor_team`).
 - **Codex picture jobs in a scratch folder** need `codex exec --skip-git-repo-check`, or Codex refuses to run outside a git folder.

@@ -11,6 +11,7 @@ local COLORS = { Color3.fromRGB(255, 205, 40), Color3.fromRGB(220, 225, 235), Co
 local EMOTES = { "rbxassetid://507771019", "rbxassetid://507770677", "rbxassetid://507770239" } -- Roblox R15 dance, cheer, wave
 local SEATED = { [Enum.HumanoidRigType.R15] = "rbxassetid://2506281703", [Enum.HumanoidRigType.R6] = "rbxassetid://178130996" }
 local BANNER, GLIDE, STAND, JUMP, STAGGER = 1.2, 2.0, 0.6, 0.7, 0.3 -- seconds; 3rd moves first, then 2nd, then 1st
+local HOP_SETTLE = 0.35 -- the hop animation lands, squashes and settles this long before the emote starts
 local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room instead of skimming through it
 -- The shot (Alan 2026-10-17 evening: dead centre, straight on, zooming into the desks): the camera faces the desk row
 -- square on from the room side, 1st on the middle desk. It pushes in while the winners stand and jump; when the
@@ -127,6 +128,10 @@ local function copyWinner(room, source, desk, place, name, facing)
 		if seated.IsPlaying and seated.Speed == 0 then play(seated) end
 	end)
 	local emote = load(EMOTES[place]); emote.Looped, emote.Priority = true, Enum.AnimationPriority.Action
+	-- The stand-up-and-hop animation, once uploaded (Studio tests can set a temporary id on DevWinnerHop).
+	local hopId = Root:GetAttribute("DevWinnerHop") or Rounds.winner_hop_animation
+	local hop = hopId ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15 and load(hopId) or nil
+	if hop then hop.Priority = Enum.AnimationPriority.Action2 end
 	-- Feet sit this far below the root: hip height plus half the root for R15, the legs for R6.
 	local leg = model:FindFirstChild("Left Leg")
 	local feet = humanoid.RigType == Enum.HumanoidRigType.R15 and humanoid.HipHeight + rootPart.Size.Y / 2 or rootPart.Size.Y / 2 + (leg and leg.Size.Y or 2)
@@ -146,7 +151,7 @@ local function copyWinner(room, source, desk, place, name, facing)
 	for _, joint in model:GetDescendants() do
 		if joint.Name == "Root" and (joint:IsA("AnimationConstraint") or joint:IsA("Motor6D")) then hips = joint end
 	end
-	return { model = model, seated = seated, emote = emote, from = model:GetPivot(), place = place, hips = hips, scale = model:GetScale(),
+	return { model = model, seated = seated, emote = emote, hop = hop, from = model:GetPivot(), place = place, hips = hips, scale = model:GetScale(),
 		chair = CFrame.lookAt(onChair, onChair + facing), desk = CFrame.lookAt(onDesk, onDesk + facing), stood = false, landed = false }
 end
 
@@ -154,15 +159,20 @@ end
 local function moveWinner(w, t)
 	t -= (3 - w.place) * STAGGER
 	if t < 0 then return end
-	if not w.stood then w.stood = true; w.seated:Stop(STAND) end
+	if not w.stood then
+		w.stood = true
+		w.seated:Stop(w.hop and 0.15 or STAND)
+		if w.hop then w.hop:Play(0.15) end
+	end
 	if t < STAND then
 		w.model:PivotTo(w.from:Lerp(w.chair, ease(t / STAND)))
 	elseif t < STAND + JUMP then
 		local a = (t - STAND) / JUMP
 		w.model:PivotTo(w.chair:Lerp(w.desk, a) + Vector3.new(0, math.sin(a * math.pi) * 70, 0))
 	elseif not w.landed then
-		w.landed = true; w.model:PivotTo(w.desk); w.emote:Play(0.2)
+		w.landed = true; w.model:PivotTo(w.desk)
 	end
+	if w.landed and not w.emote.IsPlaying and t >= STAND + JUMP + (w.hop and HOP_SETTLE or 0) then w.emote:Play(0.3) end
 end
 
 -- winners: { { actorId, displayName }, ... } in place order. onStage("banner" | "card" | "back") as it moves on.
