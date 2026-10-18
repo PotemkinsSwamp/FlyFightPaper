@@ -14,7 +14,7 @@
 - **Cutscene redone after Alan's evening notes** (seen in Studio Play 2026-10-18): straight on, dead centre, 1st on
   the middle desk; town, ceiling decorations, landing rings, planes and name tags fade out on your screen while it
   plays and fade back after. Vote rings are now giant hula hoops (no free Creator Store hoop fit; built from round parts).
-  Smoother stand-up/hop animation built and tested in Studio; waits on your go to upload (free).
+  Smoother stand-up/hop animation uploaded with your go (free) and seen playing in Play.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
@@ -60,7 +60,6 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan — Stage 9 playtest, then your approval
-0. Your go to upload the winners' stand-up-and-hop animation (one free Open Cloud upload, no clicks needed).
 1. Modes: in the hangar pick "mode: team DM", "mode: airspace" and "mode: ceiling". Team colours on planes and names,
    the moving zone and its green arrow, the ceiling spot (east side, under the rings), veteran bots fighting for the
    zone while rookies wander, the "+100 FOLD" pop-ups and the results points.
