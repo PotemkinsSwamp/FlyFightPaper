@@ -1,5 +1,5 @@
--- The winners' cutscene (Alan 2026-10-17, docs/decisions/2026-10-17-rounds-never-stop.md, "Revised"): the camera
--- glides from wherever you are (your plane or the hangar) to the winner desks by the chalkboard. Local copies of the
+-- The winners' cutscene (Alan 2026-10-17/18, docs/decisions/2026-10-17-rounds-never-stop.md): the camera glides
+-- from wherever you are (your plane or the hangar) to close-ups of the winner desks by the chalkboard. Local copies of the
 -- top 3 take the place of the students sitting there, stand up on their chairs, jump onto the desks and emote, then
 -- the camera glides back. It all happens on this screen only: the server's seated avatars are just hidden here.
 local RunService = game:GetService("RunService")
@@ -10,22 +10,21 @@ local PLACES = { "1st", "2nd", "3rd" }
 local COLORS = { Color3.fromRGB(255, 205, 40), Color3.fromRGB(220, 225, 235), Color3.fromRGB(230, 140, 70) }
 local EMOTES = { "rbxassetid://507771019", "rbxassetid://507770677", "rbxassetid://507770239" } -- Roblox R15 dance, cheer, wave
 local SEATED = { [Enum.HumanoidRigType.R15] = "rbxassetid://2506281703", [Enum.HumanoidRigType.R6] = "rbxassetid://178130996" }
-local BANNER, GLIDE, STAND, JUMP, STAGGER = 1.2, 2.0, 0.6, 0.7, 0.3 -- seconds; 3rd moves first, then 2nd, then 1st
+local BANNER, GLIDE, STAND, JUMP, TURN = 1.2, 2.0, 0.6, 0.7, 2.2 -- seconds; 3rd goes first, then 2nd, then 1st, TURN apart
 local HOP_SETTLE = 0.35 -- the hop animation lands, squashes and settles this long before the emote starts
 local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room instead of skimming through it
--- The shot (Alan 2026-10-17 evening: dead centre, straight on, zooming into the desks): the camera faces the desk row
--- square on from the room side, 1st on the middle desk. It pushes in while the winners stand and jump; when the
--- results card is due it steps back and aside, so the card comes in with all three desks clear of it.
--- Distances back from the desks, how far it looks down (height gained per stud back), the height it looks at,
--- the lens, the push in, when the card comes (seconds after arriving) and how long the step aside takes.
-local SHOT_BACK, SIDE_BACK, SHOT_TILT, SHOT_AIM_Y, SHOT_FOV, PUSH_IN = 1150, 1750, 0.16, 170, 40, 0.15
-local CARD_AFTER, STEP_ASIDE = 4, 1.5
--- What stays visible while it plays: the room shell, the chalkboard, desks, chairs and the desks' hangars and
--- runways. Everything else (the town, ceiling decorations, landing rings, planes, name tags) hides on this screen.
+-- The shots (Alan 2026-10-18: closer, cinematic, no bare floor or ceiling): a close-up of each winner in turn as they
+-- stand and hop, square on to the desk and a little from below, the winner on the left of the screen and the results
+-- card on the right; the camera pans to the next winner just before they move, and ends on 1st with a slow push in.
+-- Lens, how much of the screen height the winner fills (as multiples of their leg length), low angle (height lost
+-- per stud back), where the winner sits across the screen (0.5 = middle), push in and how long each pan takes.
+local SHOT_FOV, SHOT_HEIGHT, SHOT_LOW, SHOT_SIDE, PUSH_IN, PAN = 40, 3.3, 0.08, 0.33, 0.12, 0.6
+-- Only what would block a winner in their shot fades out on this screen; the rest of the town and the ceiling
+-- decorations stay in view. Never faded: the room shell, the chalkboard, desks, chairs and the desks' hangars and
+-- runways. Always faded: planes, other name tags and the desk landing rings.
 local KEEP_ARENA = { "^Wall", "^Floor", "^Window", "^Chalkboard", "^Desk", "^Chair", "^NeutralDesk" }
 local KEEP_TOYS = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hangar"] = true, ["desk-runway-droop"] = true,
 	["runway-light"] = true, ["runway-light-tip"] = true }
-local CEILING_DECOR = { "Planet", "Star", "Crane", "Jupiter", "Earth", "Saturn", "Thread", "Mobile", "Chimes" }
 local Cutscene = {}
 local active
 
@@ -37,19 +36,69 @@ local function matchesAny(name, patterns)
 	return false
 end
 
--- Whether a thing in the world is out of the cutscene, decided by what it sits under: its top-level child of the
--- workspace, then for the room the room's child, then for the toy and decor folders the folder's child.
-local function outOfShot(item)
+-- "always", "never" or "check" (fade only if it blocks a shot), decided by what the thing sits under: its top-level
+-- child of the workspace, then for the room the room's child, then for the toy folder the folder's child.
+local function shotRule(item)
 	local chain, at = {}, item
 	while at.Parent and at ~= workspace do table.insert(chain, 1, at); at = at.Parent end
 	local top, child, entry = chain[1], chain[2], chain[3]
-	if at ~= workspace or top.Name:match("^Winner") or top == workspace.Terrain or top.Name == "Schoolyard" or top:IsA("Camera") then return false end
-	if top.Name ~= "Arena" then return true end -- the town rug, planes, pickups, anything loose
-	if not child or child:GetAttribute("SeatedAvatar") then return false end -- students: the winner desks' are handled on their own
-	if child.Name == "CityToys" then return not (entry and KEEP_TOYS[entry.Name]) end
-	if child.Name == "ClassroomDecor" then return entry ~= nil and matchesAny(entry.Name, CEILING_DECOR) end
-	if child.Name == "Ducts" then return not (entry and entry.Name == "Ceiling") end -- the ceiling itself stays
-	return not matchesAny(child.Name, KEEP_ARENA)
+	if at ~= workspace or top.Name:match("^Winner") or top == workspace.Terrain or top:IsA("Camera") then return "never" end
+	if item:IsA("BillboardGui") or top.Name == "Planes" then return "always" end
+	if top.Name ~= "Arena" or not child then return "check" end
+	if child:GetAttribute("SeatedAvatar") then return "never" end -- students: the winner desks' are handled on their own
+	if child.Name == "CityToys" and entry then
+		if entry.Name == "landing-ring" then return "always" end
+		return KEEP_TOYS[entry.Name] and "never" or "check"
+	end
+	if child.Name == "Ducts" and entry and entry.Name == "Ceiling" then return "never" end
+	return matchesAny(child.Name, KEEP_ARENA) and "never" or "check"
+end
+
+-- Where a box's corners land on screen for a camera: the screen rectangle (in units of the screen half-height) and
+-- the nearest depth, or nil if part of it is behind the camera.
+local function onScreen(view, tanHalf, cframe, size)
+	local x0, y0, x1, y1, near = math.huge, math.huge, -math.huge, -math.huge, math.huge
+	for i = 0, 7 do
+		local corner = cframe * (size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5))
+		local q = view:PointToObjectSpace(corner)
+		if q.Z > -1 then return nil, -q.Z end
+		local sx, sy = q.X / (-q.Z * tanHalf), q.Y / (-q.Z * tanHalf)
+		x0, y0, x1, y1, near = math.min(x0, sx), math.min(y0, sy), math.max(x1, sx), math.max(y1, sy), math.min(near, -q.Z)
+	end
+	return { x0, y0, x1, y1 }, near
+end
+
+-- Whether the straight line from a to b passes through a box.
+local function lineHits(a, b, cframe, size)
+	local from, to, half = cframe:PointToObjectSpace(a), cframe:PointToObjectSpace(b), size / 2
+	local t0, t1 = 0, 1
+	for _, axis in { "X", "Y", "Z" } do
+		local start, step, h = from[axis], to[axis] - from[axis], half[axis]
+		if math.abs(step) < 1e-6 then
+			if math.abs(start) > h then return false end
+		else
+			local u, v = (-h - start) / step, (h - start) / step
+			t0, t1 = math.max(t0, math.min(u, v)), math.min(t1, math.max(u, v))
+			if t0 > t1 then return false end
+		end
+	end
+	return true
+end
+
+-- Whether a part sits between a shot's camera and its winner: nearer than the winner and overlapping them on screen
+-- (or, for something reaching past the camera, crossing a sight line to the winner).
+local function blocks(part, shots, tanHalf)
+	for _, shot in shots do
+		local rect, near = onScreen(shot.view, tanHalf, part.CFrame, part.Size)
+		if not rect then
+			for _, point in shot.points do
+				if lineHits(shot.view.Position, point, part.CFrame, part.Size) then return true end
+			end
+		elseif near < shot.near and rect[1] < shot.rect[3] and rect[3] > shot.rect[1] and rect[2] < shot.rect[4] and rect[4] > shot.rect[2] then
+			return true
+		end
+	end
+	return false
 end
 
 -- Fade everything out of the shot (0 = as it was, 1 = gone); it fades during the glides so nothing pops.
@@ -61,18 +110,33 @@ local function fadeShot(state, amount)
 	end
 end
 
--- Take one thing out of the shot, remembering how to put it back. Name tags and effects go at once.
+-- Take one thing out of the shot if it blocks a winner, remembering how to put it back. Name tags go at once.
 local function hideForShot(state, item)
-	if state.cleared[item] or not outOfShot(item) then return end
-	if item:IsA("BasePart") or item:IsA("Decal") or item:IsA("Texture") then
-		if item.LocalTransparencyModifier < 1 then
+	if state.cleared[item] then return end
+	local rule = shotRule(item)
+	if rule == "never" then return end
+	if item:IsA("BasePart") then
+		if item.LocalTransparencyModifier < 1 and (rule == "always" or blocks(item, state.shots, state.tanHalf)) then
 			state.cleared[item] = item.LocalTransparencyModifier
 			item.LocalTransparencyModifier = item.LocalTransparencyModifier + (1 - item.LocalTransparencyModifier) * (state.faded or 0)
+			for _, look in item:GetChildren() do
+				if (look:IsA("Decal") or look:IsA("Texture")) and look.LocalTransparencyModifier < 1 then
+					state.cleared[look] = look.LocalTransparencyModifier
+				end
+			end
 		end
-	elseif item:IsA("BillboardGui") or item:IsA("SurfaceGui") or item:IsA("Beam") or item:IsA("Trail") or item:IsA("ParticleEmitter") then
+	elseif item:IsA("BillboardGui") or (rule == "always" and (item:IsA("SurfaceGui") or item:IsA("Beam") or item:IsA("Trail") or item:IsA("ParticleEmitter"))) then
 		if item.Enabled then state.cleared[item] = true; item.Enabled = false end
-	elseif item:IsA("RopeConstraint") or item:IsA("RodConstraint") or item:IsA("SpringConstraint") then -- mobile strings
-		if item.Visible then state.cleared[item] = "visible"; item.Visible = false end
+	end
+end
+
+-- Mobile strings go with whatever they hold.
+local function hideStrings(state)
+	for _, item in workspace:GetDescendants() do
+		if (item:IsA("RopeConstraint") or item:IsA("RodConstraint") or item:IsA("SpringConstraint")) and item.Visible then
+			local a, b = item.Attachment0, item.Attachment1
+			if (a and state.cleared[a.Parent]) or (b and state.cleared[b.Parent]) then state.cleared[item] = "visible"; item.Visible = false end
+		end
 	end
 end
 
@@ -151,13 +215,13 @@ local function copyWinner(room, source, desk, place, name, facing)
 	for _, joint in model:GetDescendants() do
 		if joint.Name == "Root" and (joint:IsA("AnimationConstraint") or joint:IsA("Motor6D")) then hips = joint end
 	end
-	return { model = model, seated = seated, emote = emote, hop = hop, from = model:GetPivot(), place = place, hips = hips, scale = model:GetScale(),
+	return { model = model, seated = seated, emote = emote, hop = hop, from = model:GetPivot(), place = place, hips = hips, scale = model:GetScale(), feet = feet,
 		chair = CFrame.lookAt(onChair, onChair + facing), desk = CFrame.lookAt(onDesk, onDesk + facing), stood = false, landed = false }
 end
 
 -- Where each winner is at `t` seconds after the camera arrived: standing up on the chair, then hopping onto the desk.
 local function moveWinner(w, t)
-	t -= (3 - w.place) * STAGGER
+	t -= (3 - w.place) * TURN
 	if t < 0 then return end
 	if not w.stood then
 		w.stood = true
@@ -189,16 +253,9 @@ function Cutscene.play(winners, onStage)
 	local back = row:Cross(Vector3.yAxis)
 	if back:Dot(flat(-middle)) < 0 then back = -back end
 	local right = Vector3.yAxis:Cross(back) -- screen right when looking at the desks from the room side
-	local aim = Vector3.new(middle.X, SHOT_AIM_Y, middle.Z)
-	local function frame(distance, sideways)
-		local target = aim + right * sideways
-		return CFrame.lookAt(target + back * distance + Vector3.new(0, distance * SHOT_TILT, 0), target)
-	end
-	local shot, closer = frame(SHOT_BACK, 0), frame(SHOT_BACK * (1 - PUSH_IN), 0)
-	-- Beside the card: the card covers the right 36% of the screen, so the desks centre on the rest.
-	local halfWidth = SIDE_BACK * math.tan(math.rad(SHOT_FOV / 2)) * camera.ViewportSize.X / math.max(camera.ViewportSize.Y, 1)
-	local aside = frame(SIDE_BACK, halfWidth * 0.36)
-	local state = { start = os.clock(), winners = {}, hidden = {}, cleared = {}, stage = "banner", cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
+	local tanHalf = math.tan(math.rad(SHOT_FOV / 2))
+	local aspect = camera.ViewportSize.X / math.max(camera.ViewportSize.Y, 1)
+	local state = { start = os.clock(), winners = {}, hidden = {}, cleared = {}, stage = "banner", tanHalf = tanHalf, cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
 	active = state
 	Root:SetAttribute("Cutscene", true)
 	onStage("banner")
@@ -225,6 +282,36 @@ function Cutscene.play(winners, onStage)
 	end
 	seatWinners()
 
+	-- Each winner's close-up: framed on where they end up standing on the desk, and the box around them (chair to
+	-- desk front, desk top to name tag) that nothing may block.
+	local shots = {}
+	local function closeUp(place)
+		local desk, w = desks[place], state.winners[place]
+		local feet = w and w.feet or 80
+		local stand = w and w.desk.Position or desk.Position + Vector3.new(0, desk.Size.Y / 2 + feet, 0) + back * desk.Size.Z * 0.3
+		local chair = room:FindFirstChild("Chair" .. desk.Name:sub(5))
+		local distance = SHOT_HEIGHT * feet / 2 / tanHalf
+		local target = stand + Vector3.new(0, feet * 0.05, 0) + right * (0.5 - SHOT_SIDE) * 2 * distance * tanHalf * aspect
+		local eye = target + back * distance - Vector3.new(0, distance * SHOT_LOW, 0)
+		local deskTop = desk.Position.Y + desk.Size.Y / 2
+		local top = stand.Y + feet * 0.75 + 60
+		local from = chair and flat(chair.Position) or flat(stand) - back * 200
+		local center = (from + flat(stand)) / 2 + back * 20 + Vector3.new(0, (deskTop + top) / 2, 0)
+		local size = Vector3.new(260, top - deskTop, (flat(stand) - from).Magnitude + 120)
+		local box = CFrame.fromMatrix(center, right, Vector3.yAxis)
+		local view = CFrame.lookAt(eye, target)
+		local rect, near = onScreen(view, tanHalf, box, size)
+		local points = { center }
+		for i = 0, 7 do points[#points + 1] = box * (size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5)) end
+		local shot = { view = view, rect = rect or { -1, -1, 1, 1 }, near = near, points = points }
+		table.insert(shots, shot)
+		return view, distance
+	end
+	local third, second = closeUp(3), closeUp(2)
+	local first, firstDistance = closeUp(1)
+	local closer = first + first.LookVector * firstDistance * PUSH_IN
+	state.shots = shots
+
 	-- Roblox scales an animation's hip movement twice on a scaled-up avatar (27 x 27 instead of 27, measured
 	-- 2026-10-17), which throws the body far off its root. Once standing, take the extra scale back out each step.
 	state.fixHips = RunService.PreSimulation:Connect(function()
@@ -235,10 +322,24 @@ function Cutscene.play(winners, onStage)
 
 	local arrive = BANNER + GLIDE
 	local leave = Rounds.results_seconds - GLIDE - 0.3
-	local cardAt = arrive + CARD_AFTER
 	local function clearShot()
-		for _, item in workspace:GetDescendants() do hideForShot(state, item) end
 		state.added = workspace.DescendantAdded:Connect(function(item) hideForShot(state, item) end)
+		task.spawn(function() -- a few hundred parts a frame, so the glide doesn't stutter; done well before it lands
+			for i, item in workspace:GetDescendants() do
+				if active ~= state then return end
+				hideForShot(state, item)
+				if i % 400 == 0 then RunService.Heartbeat:Wait() end
+			end
+			hideStrings(state)
+		end)
+	end
+	-- The camera while it holds, `t` seconds after arriving: on 3rd, pan to 2nd, pan to 1st, then push in on 1st.
+	local function holdAt(t)
+		if t < TURN - PAN then return third end
+		if t < TURN then return third:Lerp(second, ease((t - TURN + PAN) / PAN)) end
+		if t < 2 * TURN - PAN then return second end
+		if t < 2 * TURN then return second:Lerp(first, ease((t - 2 * TURN + PAN) / PAN)) end
+		return first:Lerp(closer, ease((t - 2 * TURN) / (leave - arrive - 2 * TURN)))
 	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
@@ -246,14 +347,14 @@ function Cutscene.play(winners, onStage)
 		local live = camera.CFrame ~= state.written and camera.CFrame or state.home
 		local liveFov = camera.CFrame ~= state.written and camera.FieldOfView or state.fov
 		state.home, state.fov = live, liveFov
-		local hold = shot:Lerp(closer, ease((t - arrive) / (CARD_AFTER - STEP_ASIDE))):Lerp(aside, ease((t - cardAt + STEP_ASIDE) / STEP_ASIDE))
+		local hold = holdAt(t - arrive)
 		local view, fov
 		if t < BANNER then view, fov = live, liveFov
 		elseif t < arrive then
 			if not state.added then clearShot() end
 			local a = ease((t - BANNER) / GLIDE)
 			fadeShot(state, ease((t - BANNER) / (GLIDE * 0.6)))
-			view, fov = live:Lerp(shot, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), liveFov + (SHOT_FOV - liveFov) * a
+			view, fov = live:Lerp(third, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), liveFov + (SHOT_FOV - liveFov) * a
 		elseif t < leave then view, fov = hold, SHOT_FOV
 		else
 			local a = ease((t - leave) / GLIDE)
@@ -262,7 +363,7 @@ function Cutscene.play(winners, onStage)
 		end
 		if t < arrive then seatWinners() end
 		for _, w in state.winners do moveWinner(w, t - arrive) end
-		local stage = t < arrive and "banner" or t < cardAt and "winners" or t < leave and "card" or "back"
+		local stage = t < arrive and "banner" or t < leave and "card" or "back"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end
 		if t >= leave + GLIDE then Cutscene.stop(); return end
 		camera.CameraType = Enum.CameraType.Scriptable

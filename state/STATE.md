@@ -36,8 +36,8 @@ Track C saving needs a private publish (Alan's go). Place file not re-saved (nee
 
 Decisions to review
 Results card "Crashes" counts every time a pilot went down (shot or crashed), from the round's deaths.
-Cutscene: the winners get the screen to themselves for about 4 s, then the camera steps back and right so the
-results card fits beside the desks (dead centre would put the card over 3rd place).
+Cutscene: one close-up per winner (3rd, 2nd, 1st), no shot of all three together; winner on the left, card on the
+right the whole time.
 Winner desks: the chalkboard row has six desks, so "middle three" = desks 2-3-4, 1st in the middle (config rounds.winner_desks).
 Duct props: cobwebs, spiders, toys and tools are see-through to planes (fly through them). Veterans flee to the
   ducts 40% of the time when shot at (vent within 500), wander in 12% of patrol turns; others never (config bots.*.duct_*).
