@@ -37,7 +37,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/PauseScreen.luau` | In-match clipboard menu |
 | `src/client/RoundEnd.luau` | Round end in the room: "Pencils down!", the winners' cutscene with the results card, vote card (1/2/3), next round's name |
 | `src/client/LevelBar.luau` | Your level, XP bar and next unlock: on the results card, the main menu board and the hangar |
-| `src/client/WinnersCutscene.luau` | Camera glides to the chalkboard-row desks for a close-up of each winner in turn (3rd, 2nd, 1st), fading out on this screen only what would block them; local copies of the top 3 stand up, hop on the desks and emote, the results card beside them; then a zoom out to all three emoting, then it glides back. Plays the hop animation in `rounds.winner_hop_animation` once uploaded |
+| `src/client/WinnersCutscene.luau` | Camera glides to the chalkboard-row desks for a close-up of each winner in turn (3rd, 2nd, 1st), fading out on this screen only what would block them; local copies of the top 3 stand up, hop on the desks and emote, the results card beside them; then a zoom out to all three emoting, then it glides back. Plays the hop animation in `rounds.winner_hop_animation` once uploaded. 1st plays `rounds.winner_plane_emote` (Meshy full-body clip, empty until uploaded) holding a copy of their own plane in the right hand, nose turning the way the hand moves |
 | `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |

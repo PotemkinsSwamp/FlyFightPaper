@@ -311,6 +311,8 @@
     "winner_desks": ["DeskNorth3", "DeskNorth2", "DeskNorth4"],
     "winner_hop_comment": "Uploaded R15 animation the winners stand up and hop onto their desk with (built by tools/winner_hop_animation.luau). Uploaded 2026-10-18 with Alan's go; empty would fall back to the plain code-moved stand-up.",
     "winner_hop_animation": "rbxassetid://108989627946940",
+    "winner_plane_emote_comment": "1st place's plane-playing body animation (Meshy text-to-motion, tools/meshy_to_r15.py); empty until uploaded with Alan's go, then 1st dances instead.",
+    "winner_plane_emote": "",
     "vote_seconds": 30,
     "vote_ring_radius": 130,
     "vote_rings_comment": "Vote rings (Alan 2026-10-17, revised): three big neon rings in front of the window wall, facing the room, FFA / TDM / CONTROL from left to right as you look at the wall (south to north), like the vote card.",

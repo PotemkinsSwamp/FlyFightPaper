@@ -201,8 +201,42 @@ end
 
 local function play(track) track:Play(0); track.TimePosition = math.min(0.2, track.Length * 0.5); track:AdjustSpeed(0) end
 
+-- 1st's emote: playing with their plane (Alan 2026-10-18, docs/decisions/2026-10-18-emotes-and-bot-looks.md). A
+-- full-body animation from Meshy text-to-motion (tools/meshy_to_r15.py) moves the body; a copy of their own plane
+-- sits in the right hand, nose turning the way the hand moves. Studio tests set a temporary id on DevWinnerEmote.
+local PLANE_LENGTH, PLANE_TURN = 0.3, 0.15 -- plane length as a share of the winner's height; how fast the nose turns
+local function holdPlane(model, actorId)
+	local planes = workspace:FindFirstChild("Planes")
+	local source = planes and planes:FindFirstChild(tostring(actorId))
+	local hand = model:FindFirstChild("RightHand")
+	if not source or not hand then return nil end
+	source.Archivable = true
+	local plane = source:Clone()
+	for _, item in plane:GetDescendants() do
+		if item:IsA("LuaSourceContainer") or item:IsA("BillboardGui") or item:IsA("JointInstance") or item:IsA("WeldConstraint") then item:Destroy()
+		elseif item:IsA("BasePart") then
+			item.Anchored, item.CanCollide, item.CanQuery, item.CanTouch, item.LocalTransparencyModifier = true, false, false, false, 0
+		end
+	end
+	local height = model:GetScale() * 5 -- an R15 avatar is about 5 studs tall at scale 1
+	plane:ScaleTo(plane:GetScale() * height * PLANE_LENGTH / plane:GetExtentsSize().Z)
+	plane.Name = "HeldPlane"
+	return { plane = plane, hand = hand, length = height * PLANE_LENGTH, last = hand.Position, heading = model:GetPivot().LookVector }
+end
+local function flyPlane(w)
+	local prop = w.prop
+	if not prop.plane.Parent then prop.plane.Parent = w.model end
+	local at = prop.hand.Position
+	local moved = at - prop.last
+	prop.last = at
+	if moved.Magnitude > prop.length * 0.002 then prop.heading = prop.heading:Lerp(moved.Unit, PLANE_TURN).Unit end
+	local grip = at + prop.heading * prop.length * 0.3 -- held by the tail
+	local up = math.abs(prop.heading.Y) > 0.97 and w.desk.LookVector or Vector3.yAxis
+	prop.plane:PivotTo(CFrame.lookAt(grip, grip + prop.heading, up))
+end
+
 -- A local copy of a winner's seated avatar, moved to sit in the chair at `desk`; standing, it faces `facing`.
-local function copyWinner(room, source, desk, place, name, facing)
+local function copyWinner(room, source, desk, place, name, facing, actorId)
 	local fromChair, toChair = chairAt(room, source:GetPivot().Position), room:FindFirstChild("Chair" .. desk.Name:sub(5))
 	if not fromChair or not toChair then return nil end
 	source.Archivable = true
@@ -229,7 +263,9 @@ local function copyWinner(room, source, desk, place, name, facing)
 		repeat RunService.Heartbeat:Wait() until seated.Length > 0 or os.clock() > deadline
 		if seated.IsPlaying and seated.Speed == 0 then play(seated) end
 	end)
-	local emote = load(EMOTES[place]); emote.Looped, emote.Priority = true, Enum.AnimationPriority.Action
+	local planeEmote = Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
+	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15 and holdPlane(model, actorId) or nil
+	local emote = load(prop and planeEmote or EMOTES[place]); emote.Looped, emote.Priority = true, Enum.AnimationPriority.Action
 	-- The stand-up-and-hop animation, once uploaded (Studio tests can set a temporary id on DevWinnerHop).
 	local hopId = Root:GetAttribute("DevWinnerHop") or Rounds.winner_hop_animation
 	local hop = hopId ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15 and load(hopId) or nil
@@ -253,7 +289,7 @@ local function copyWinner(room, source, desk, place, name, facing)
 	for _, joint in model:GetDescendants() do
 		if joint.Name == "Root" and (joint:IsA("AnimationConstraint") or joint:IsA("Motor6D")) then hips = joint end
 	end
-	return { model = model, seated = seated, emote = emote, hop = hop, from = model:GetPivot(), place = place, hips = hips, scale = model:GetScale(), feet = feet,
+	return { model = model, seated = seated, emote = emote, hop = hop, prop = prop, from = model:GetPivot(), place = place, hips = hips, scale = model:GetScale(), feet = feet,
 		chair = CFrame.lookAt(onChair, onChair + facing), desk = CFrame.lookAt(onDesk, onDesk + facing), stood = false, landed = false }
 end
 
@@ -275,6 +311,7 @@ local function moveWinner(w, t)
 		w.landed = true; w.model:PivotTo(w.desk)
 	end
 	if w.landed and not w.emote.IsPlaying and t >= STAND + JUMP + (w.hop and HOP_SETTLE or 0) then w.emote:Play(0.3) end
+	if w.prop and w.emote.IsPlaying then flyPlane(w) end
 end
 
 -- winners: { { actorId, displayName }, ... } in place order. onStage("banner" | "card" | "back") as it moves on.
@@ -306,7 +343,7 @@ function Cutscene.play(winners, onStage)
 			if row and not state.winners[place] then
 				for _, source in room:GetChildren() do
 					if source:IsA("Model") and source:GetAttribute("PilotId") == row.actorId then
-						state.winners[place] = copyWinner(room, source, desk, place, row.displayName, back)
+						state.winners[place] = copyWinner(room, source, desk, place, row.displayName, back, row.actorId)
 						break
 					end
 				end

@@ -618,6 +618,8 @@ return JSONTypes.map({
         ["winner_desks_comment"] = "The winners' cutscene (Alan 2026-10-17): the top 3 stand on these desks, 1st, 2nd, 3rd. The chalkboard row is North; it has six desks, so 'the middle three' is 2-3-4 with 1st in the middle (Claude's pick, easy to change).",
         ["winner_hop_animation"] = "rbxassetid://108989627946940",
         ["winner_hop_comment"] = "Uploaded R15 animation the winners stand up and hop onto their desk with (built by tools/winner_hop_animation.luau). Uploaded 2026-10-18 with Alan's go; empty would fall back to the plain code-moved stand-up.",
+        ["winner_plane_emote"] = "",
+        ["winner_plane_emote_comment"] = "1st place's plane-playing body animation (Meshy text-to-motion, tools/meshy_to_r15.py); empty until uploaded with Alan's go, then 1st dances instead.",
     }),
     ["schema_version"] = 1,
     ["service"] = JSONTypes.map({
