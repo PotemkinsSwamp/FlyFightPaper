@@ -11,12 +11,17 @@ studs (`duct_escape_chance` 40%), and now and then wander through instead of to 
 the round pipe (`DuctRules.botRuns`), only with over half their Lift and enough to finish. Inside they never dodge.
 Tested: 5 minutes of forced runs, no crashes; 3 minutes of normal play, one run.
 
+Bot looks (2026-10-18): each bot borrows the current look of a random dressed-up Roblox player (layered clothing or
+4+ accessories; about 1 account in 11 qualifies, found in ~1 s). Same name, same look; old catalog outfit if none
+fits. Checked in Play: desks and winners' cutscene.
+
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
 
 Rookie/Regular/Experienced are internal profiles. No public bot badges, separate roster, fake account profile,
 purchase chat, or online-human count. Normal custom scoreboard says Pilots/Eliminations. Developer-only view
-can show controller/tier/state. Use coherent fictional names and original avatar presets, not copied user IDs.
+can show controller/tier/state. Use coherent fictional names. Avatars: a random real player's current look (Alan 2026-10-18, see
+[bot looks](../decisions/2026-10-18-emotes-and-bot-looks.md)), never their name.
 No requirement to hide technical reality from platform inspection or falsely advertise all-human competition.
 
 Shared command controller; states for launch, travel, target, pursue/aim/fire, evade, fan-seek, return/service,
@@ -62,7 +67,7 @@ invulnerable debug bots or target-board practice.
 | `src/shared/BotBuilds.luau` | Bot planes per skill tier |
 | `src/shared/BotNames.luau` | Made-up pilot names |
 | `src/shared/BotRosterRules.luau` | How many bots and which skill |
-| `src/server/AvatarService.luau` | Seated avatars at desks, bot outfits |
+| `src/server/AvatarService.luau` | Seated avatars at desks, bot looks (`Service.look`) |
 | `src/server/Matchmaking.luau, src/server/MatchmakingAdapter.luau` | Rookie or regular servers, transfers |
 
 ## Tuning numbers

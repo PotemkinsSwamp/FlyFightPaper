@@ -1,7 +1,7 @@
 # Emotes with the paper plane; bots that look like real players
 
 **Decided:** 2026-10-18 (Alan)  
-**Status:** in force; order of work agreed, nothing built yet
+**Status:** in force; bot looks built 2026-10-18, emotes next
 
 ## Decision
 - **Order:** bots first, emotes next. Next: modern-looking bot avatars so the winners' cutscene can be judged with
@@ -10,7 +10,9 @@
 - **Bot looks:** bots should be impossible to tell from real players. Today's look (classic shirt and pants) is
   years out of date. Not by hand-dressing them (Alan: too slow, won't look real): first research how Roblox devs
   give NPCs real-player looks (plugins, Creator Store kits, whole catalog looks), bring Alan 2-3 options, he picks.
-  Never copy a real player's avatar or name (VISION: no forged accounts). Bot names already follow real player styles; keep them.
+  **Picked (Alan, same day):** copy the look of random real players (lots of variety, nobody notices recycled
+  bots). VISION only forbids forged accounts, so bots keep their own made-up names; only the outfit is borrowed.
+  Rejected: catalog style sets and live bestseller mixes (random mixes looked messy in a test).
 - **Emote ideas (Alan's, to sell later):** the kid jumps on the desk holding the plane they used most that match and
   flies it around their head like a kid would; slams the plane down and leaps like a football touchdown; throws the
   plane and it circles them; throws it and it flies off, comes straight at the camera and "crashes" into it as the
