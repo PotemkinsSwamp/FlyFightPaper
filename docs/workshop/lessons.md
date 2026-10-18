@@ -180,5 +180,14 @@ mistake would be easy to make twice.
 - **Starting a round in place:** planes carried over keep their old team; clear it and join them to the new round
   before bots fill desks, or the roster rejects them (`invalid_actor_team` / `unexpected_actor_team`).
 - **Codex picture jobs in a scratch folder** need `codex exec --skip-git-repo-check`, or Codex refuses to run outside a git folder.
+- **Real-player looks for bots (2026-10-18):** `GetHumanoidDescriptionFromUserIdAsync` allows 300 lookups a minute per
+  server, so never search at runtime. Random user ids are mostly quitters in Roblox's free starter outfits (layered,
+  so a "2+ layered items" filter lets them through and bots look alike); require one item not made by Roblox
+  (`GetProductInfoAsync` creator id 1). Random saved-outfit ids (`GetHumanoidDescriptionFromOutfitIdAsync`, 1e8-1.2e10)
+  find about 10x more good looks than user ids.
+- **Meshy text-to-motion clips (2026-10-18):** standalone FBX on an SMPL skeleton (T-pose rest, 30 fps, 2-10 s, 10
+  credits). `tools/meshy_to_r15.py` maps them onto R15 by world-space bone turns; check by comparing knee/elbow bend
+  angles before and after (they matched to 0.1°). `AnimationClipProvider:RegisterAnimationClip` returns a plain hash
+  string that works as an AnimationId as is (`rbxtemp://` in front is refused).
 
 Back to [HOME](../HOME.md)

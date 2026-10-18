@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-18-ui-bot-looks-research.md
+# LATEST → handoff-2026-10-18-ui-winners-shot-redesign.md
 
-★ START HERE: winners' cutscene is cinematic now (close-ups, zoom out to all three, focus blur, uploaded hop);
-vote rings are hula hoops. Next: RESEARCH how Roblox devs make NPCs look like real players (plugins, kits, catalog
-bundles), report 2-3 options to Alan; no hand-dressing. Then build his pick, then the plane prop emote.
+★ START HERE: bots now wear outfits real players saved (157) and have modern names. Next: rebuild the winners'
+shot like Alan's reference clips: top 3 side by side on neighbouring desks, all emoting at once with Roblox's own
+emotes, one steady group shot, name plates, confetti. First test which Roblox emotes load (free).
 
 Quick state: main, tests 328/0. Studio open in Edit (Play stopped); Rojo serving.
-Previous: handoff-2026-10-18-ui-bot-looks-next.md (superseded same day).
+Previous: handoff-2026-10-18-ui-bot-looks-research.md.
