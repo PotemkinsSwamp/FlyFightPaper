@@ -43,6 +43,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 |---|---|
 | `planes.py`, `plane_set.py`, `plane_pieces.py` | Build the plane parts and write `planes/pieces.rbxmx` |
 | `plane_paper.py` | Paper retexture sample of the Classic plane (UVs, paper colour/normal/roughness maps) into `planes/paper-sample/` |
+| `upload_paper_sample.py` | Uploads the paper-sample Classic pieces and maps (resumable; ids in `paper-sample/uploads.json`) |
 | `split_halves.py` | Cuts plane pieces into left and right halves (wing fit, two-colour free-for-all planes) |
 | `weapons.py` | Weapon models in moving pieces |
 | `toys.py`, `split_parts.py` | Town toys; splits moving bits like fan blades |
