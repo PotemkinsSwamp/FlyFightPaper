@@ -1,17 +1,19 @@
-"""Local Classic paper sample. Blender Python and NumPy only; never uploads.
+"""Local Classic sample and modular-set paper maps. Blender Python + NumPy.
 
 & D:/Blender/blender.exe -b --factory-startup --threads 4 --python-exit-code 1 --python tools/art/plane_paper.py
 
 Source FBXs are authoritative, including the separately centred half meshes.
-All generated files live in assets/models/planes/paper-sample/.
+Classic writes paper-sample/; -- --set writes paper-set/. Never uploads.
 """
 
 import argparse
 import hashlib
+import itertools
 import json
 import math
 import struct
 import sys
+import time
 import zlib
 from pathlib import Path
 
@@ -31,10 +33,16 @@ PAPER, RED, BLUE = (238, 230, 212), (206, 48, 43), (40, 91, 172)
 TEAM_RED, TEAM_BLUE, WHITE = (235, 40, 50), (25, 115, 255), (252, 252, 255)
 TOLERANCE = 0.00002
 FEATURES = {}
+SET_MODE = False
+PART_BOUNDS = {}
+JOINT_PLANES = {}
+REGION_BOUNDARIES = {}
+TUBE_WRAP = None
+TUBE_SIDE_NORMALS = []
 
 
 def log(message):
-    print("PAPER_SAMPLE " + message, flush=True)
+    print(("PAPER_SET " if SET_MODE else "PAPER_SAMPLE ") + message, flush=True)
 
 
 def bvec(p):
@@ -136,10 +144,16 @@ def active(obj):
 
 def unwrap(obj, resolution):
     active(obj)
+    if SET_MODE and obj.get("reused_paper_uv"):
+        obj.data.calc_loop_triangles()
+        obj.data.calc_tangents(uvmap="PaperUV")
+        return
     bpy.ops.object.mode_set(mode="EDIT")
     bpy.ops.mesh.select_all(action="SELECT")
     bpy.ops.uv.smart_project(angle_limit=math.radians(28), island_margin=0.018,
                              area_weight=0, correct_aspect=True, scale_to_bounds=False)
+    if SET_MODE:
+        repair_set_uvs(obj)
     bpy.ops.uv.pack_islands(rotate=True, scale=True, margin_method="FRACTION",
                             margin=12 / resolution, shape_method="CONCAVE")
     bpy.ops.object.mode_set(mode="OBJECT")
@@ -277,13 +291,15 @@ def noise(p, scale, seed):
     return result
 
 
-def paper_height(p):
+def paper_height(p, obj=None):
     """Fine isotropic tooth, plus a few large, extremely shallow handling marks.
 
     Equal noise frequencies on all three axes prevent brushed streaks. The
     broad field is smooth analytical curvature, never coarse random dimples.
     World positions keep the field continuous across pigment and split seams.
     """
+    if SET_MODE:
+        return set_height(p, obj)
     q = p @ np.array(((.36, -.80, .48), (.80, .52, .30), (-.48, .30, .82)))
     tooth = .00065 * noise(q, (28, 28, 28), 147)
     tooth += .00022 * noise(q, (43, 43, 43), 419)
@@ -315,16 +331,24 @@ def feature_edges(obj):
         f1, f2 = faces
         n1, n2 = np.array(f1.normal[:]), np.array(f2.normal[:])
         dot = float(n1 @ n2)
-        shallow_wing = obj["part"] == "wings" and obj["region"] != "sticker" and dot > .97
+        wing = obj.get("slot") == "wings" if SET_MODE else obj["part"] == "wings"
+        shallow_wing = wing and obj["region"] != "sticker" and dot > .97
         if dot > (.999999 if shallow_wing else .9998) or dot < -.98:
             continue
         a, b = verts[ai], verts[bi]
         length = np.linalg.norm(b - a)
         if length < .06:
             continue
-        if obj.name == "pellet-tube" and abs((b - a)[1]) / length > .999:
+        rolled = SET_MODE and (obj["region"] == "tube" or (
+            obj["part"] == "body_heavy_mk2" and obj["region"] == "accent"))
+        cylinder_facets = rolled and all(any(abs(n @ side) > .9999 for side in TUBE_SIDE_NORMALS)
+                                         for n in (n1, n2))
+        if (cylinder_facets or obj.name == "pellet-tube") and abs((b - a)[1]) / length > .999:
             continue  # Cylinder facets are not longitudinal paper creases.
-        if obj["part"] != "pellet" and any(
+        if SET_MODE and any(max(abs(a[axis] - seam), abs(b[axis] - seam)) < 1e-4
+                            for axis, seam in JOINT_PLANES[obj["part"]]):
+            continue
+        if not SET_MODE and obj["part"] != "pellet" and any(
                 max(abs(a[1] - seam), abs(b[1] - seam)) < 1e-4
                 for seam in (2.606416, 5.632566, -5.415929)):
             continue  # Assembly joints and pigment changes are not cut rims.
@@ -332,6 +356,8 @@ def feature_edges(obj):
         # panels form a fold, even at Classic's shallow wing-root angles.
         altitude = min(2 * f.area / length for f in faces)
         kind = "fold" if altitude > .14 or shallow_wing else "rim"
+        if SET_MODE and kind == "rim" and region_boundary(obj, a, b, n1, n2):
+            continue
         if obj["region"] == "sticker":
             kind = "sticker"
         result.append((a, b, n1, n2, kind))
@@ -458,6 +484,8 @@ def bake_ao(obj, resolution):
 
 
 def make_maps(obj, resolution):
+    if SET_MODE:
+        return make_set_maps(obj, resolution)
     unwrap(obj, resolution)
     buffers, uv_report = atlas(obj, resolution)
     uv_report.update(exact_uv_overlap(obj))
@@ -554,6 +582,8 @@ def paper_material(obj, region):
         tex = nodes.new("ShaderNodeTexImage")
         tex.name = kind
         tex.image = bpy.data.images.load(str(OUT / (obj.name + "-" + kind + ".png")), check_existing=True)
+        if SET_MODE:
+            tex.image.reload()
         tex.image.colorspace_settings.name = "sRGB" if kind == "color" else "Non-Color"
         if kind == "color":
             links.new(tex.outputs["Color"], tint.inputs[1])
@@ -950,11 +980,771 @@ def verify_saved(report):
     (OUT / "manifest.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 
 
+def repair_set_uvs(obj):
+    """Retain real needle triangles that Smart Project collapses to UV lines.
+
+    Give only collapsed triangles independent positive-area charts before
+    the normal 12px-gutter pack. No faces or source vertices are removed.
+    """
+    bpy.ops.object.mode_set(mode="OBJECT")
+    mesh = obj.data
+    mesh.calc_loop_triangles()
+    uv = mesh.uv_layers.active.data
+    repaired = 0
+    for triangle in mesh.loop_triangles:
+        a, b, c = (np.array(uv[i].uv) for i in triangle.loops)
+        area = abs((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]))
+        longest = max(np.linalg.norm(b - a), np.linalg.norm(c - a), np.linalg.norm(c - b))
+        # Packing stores float32 UVs. Near-collinear charts can lose their
+        # last bit of altitude during the final scale/translation as well.
+        if area / max(longest, 1e-12) > .0001:
+            continue
+        assert len(mesh.polygons[triangle.polygon_index].vertices) == 3
+        x = 2. + repaired * .04
+        for loop, point in zip(triangle.loops, ((x, 0), (x + .02, 0), (x, .004))):
+            uv[loop].uv = point
+        repaired += 1
+    obj["repaired_collapsed_uv_triangles"] = repaired
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.select_all(action="SELECT")
+
+
+def strict_set_uvs(obj, resolution):
+    """Split non-coplanar panels before resorting to individual triangles."""
+    active(obj)
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.select_all(action="SELECT")
+    bpy.ops.uv.smart_project(angle_limit=math.radians(1), island_margin=.018,
+                             area_weight=0, correct_aspect=True, scale_to_bounds=False)
+    repair_set_uvs(obj)
+    bpy.ops.uv.pack_islands(rotate=True, scale=True, margin_method="FRACTION",
+                            margin=12 / resolution, shape_method="CONCAVE")
+    bpy.ops.object.mode_set(mode="OBJECT")
+    obj.data.uv_layers.active.name = "PaperUV"
+    obj.data.calc_tangents(uvmap="PaperUV")
+    obj["strict_uv_projection"] = True
+
+
+def separate_triangle_uvs(obj, resolution):
+    """Fallback for folded islands that Smart Project maps onto themselves."""
+    active(obj)
+    mesh = obj.data
+    mesh.calc_loop_triangles()
+    uv = mesh.uv_layers.active.data
+    verts = coordinates(obj)
+    offset = 0.
+    for triangle in mesh.loop_triangles:
+        assert len(mesh.polygons[triangle.polygon_index].vertices) == 3
+        p = verts[list(triangle.vertices)]
+        edges = [(np.linalg.norm(p[j] - p[i]), i, j) for i, j in ((0, 1), (1, 2), (2, 0))]
+        length, i, j = max(edges)
+        k = 3 - i - j
+        direction = (p[j] - p[i]) / length
+        along = float((p[k] - p[i]) @ direction)
+        height = max(np.linalg.norm(np.cross(p[k] - p[i], direction)), .008)
+        points = {i: (offset, 0), j: (offset + length, 0), k: (offset + along, height)}
+        for corner, loop in enumerate(triangle.loops):
+            uv[loop].uv = points[corner]
+        offset += length + 1
+    bpy.ops.object.mode_set(mode="EDIT")
+    bpy.ops.mesh.select_all(action="SELECT")
+    bpy.ops.uv.pack_islands(rotate=True, scale=True, margin_method="FRACTION",
+                            margin=12 / resolution, shape_method="CONVEX")
+    bpy.ops.object.mode_set(mode="OBJECT")
+    mesh.calc_tangents(uvmap="PaperUV")
+
+
+def reuse_set_uvs(obj, filename):
+    """Transfer only UVs from a geometry-matching output, never its vertices.
+
+    Every atlas and newly baked map still passes the full build checks. This
+    avoids repacking successful islands when restarting an interrupted build.
+    """
+    path = OUT / filename
+    if not path.exists():
+        return
+    cached = import_fbx(path)
+    try:
+        assert len(cached.data.uv_layers) == 1
+        current_surfaces, saved_surfaces = rendering_surfaces(obj), rendering_surfaces(cached)
+        assert current_surfaces.shape == saved_surfaces.shape
+        assert np.max(np.abs(current_surfaces - saved_surfaces)) < TOLERANCE
+        assert len(obj.data.vertices) == len(cached.data.vertices)
+        cached.data.calc_loop_triangles()
+        saved_vertices, vertices = coordinates(cached), coordinates(obj)
+        uv = cached.data.uv_layers.active.data
+        groups = {}
+        def key(points):
+            return tuple(sorted(tuple(row) for row in np.round(points, 5)))
+        for triangle in cached.data.loop_triangles:
+            xyz = saved_vertices[list(triangle.vertices)]
+            groups.setdefault(key(xyz), []).append((xyz, np.array([uv[i].uv[:] for i in triangle.loops])))
+        transfers = []
+        for triangle in obj.data.loop_triangles:
+            xyz = vertices[list(triangle.vertices)]
+            candidates = groups[key(xyz)]
+            choices = [(float(np.max(np.abs(xyz - points[list(order)]))), index, order)
+                       for index, (points, _) in enumerate(candidates)
+                       for order in itertools.permutations(range(3))]
+            error, index, order = min(choices)
+            assert error < TOLERANCE
+            _, points = candidates.pop(index)
+            transfers.extend(zip(triangle.loops, points[list(order)]))
+        assert all(not group for group in groups.values())
+        for layer in list(obj.data.uv_layers):
+            obj.data.uv_layers.remove(layer)
+        layer = obj.data.uv_layers.new(name="PaperUV")
+        for loop, point in transfers:
+            layer.data[loop].uv = point
+        obj["reused_paper_uv"] = True
+    except (AssertionError, KeyError, ValueError):
+        log(obj.name + ": existing UVs do not match source; rebuilding atlas")
+    finally:
+        bpy.data.objects.remove(cached, do_unlink=True)
+
+
+def set_slot(part):
+    return "booster" if part.startswith("boost_") else part.split("_")[0]
+
+
+def set_selection():
+    """The display contract, deliberately independent of directory contents."""
+    regions = {
+        "body_slim": "paper accent", "body_heavy": "cardboard accent tape",
+        "body_standard_mk2": "paper accent", "body_slim_mk2": "paper accent",
+        "body_heavy_mk2": "tube cardboard paper accent"}
+    for slot in ("nose", "wings", "tail"):
+        for i in range(1, 6):
+            regions[f"{slot}_{i}"] = "paper accent" + (
+                " cardboard" if slot == "wings" and i == 4 else
+                " tape" if slot != "wings" and i == 5 else "")
+    for part in ("boost_band", "boost_spool", "boost_twin"):
+        regions[part] = "paper tape accent cardboard elastic"
+    files = []
+    for part, names in regions.items():
+        for region in names.split():
+            split = region in ("paper", "cardboard", "tube") or (
+                set_slot(part) == "wings" and region == "accent")
+            files += [f"{part}-{region}{suffix}.fbx" for suffix in (("-L", "-R") if split else ("",))]
+    assert len(files) == len(set(files)) == 95
+    return files
+
+
+def set_joint_planes(contract):
+    """Match slot-relative bounds at facing slot ends, never fixed Classic Zs."""
+    records = contract["assembled_parts"]
+    result = {part: [] for part in records}
+    for part, record in records.items():
+        slot = set_slot(part)
+        lo, hi = np.array(record["bbox_min"]), np.array(record["bbox_max"])
+        pivot = np.array(contract["slot_pivots"][slot])
+        if slot == "booster":
+            # Booster tape attaches at its own default under-body anchor.
+            anchor = contract["booster_pivots"][part]
+            result[part].append((2, float(anchor[1])))
+            continue
+        for other, neighbour in records.items():
+            other_slot = set_slot(other)
+            if (slot, other_slot) not in (("body", "nose"), ("body", "tail"),
+                                          ("nose", "body"), ("tail", "body"),
+                                          ("wings", "nose")):
+                continue
+            other_pivot = np.array(contract["slot_pivots"][other_slot])
+            front = other_pivot[2] < pivot[2]
+            own_z = lo[2] if front else hi[2]
+            other_z = neighbour["bbox_max" if front else "bbox_min"][2]
+            if abs(own_z - other_z) < TOLERANCE:
+                plane = (1, float(-own_z))  # Roblox Z becomes Blender -Y.
+                if plane not in result[part]:
+                    result[part].append(plane)
+    # Contiguous colour regions can have different inner wall thicknesses.
+    # Exclude their entire shared interface, including hidden closing caps,
+    # rather than relying only on identical outer coplanar edge segments.
+    for first in contract["exports"]:
+        for second in contract["exports"]:
+            if first["part"] != second["part"] or first["region"] == second["region"]:
+                continue
+            for axis in range(3):
+                seam = first["bbox_max"][axis]
+                if abs(seam - second["bbox_min"][axis]) >= TOLERANCE:
+                    continue
+                others = [i for i in range(3) if i != axis]
+                overlap = all(min(first["bbox_max"][i], second["bbox_max"][i])
+                              > max(first["bbox_min"][i], second["bbox_min"][i]) for i in others)
+                if overlap:
+                    plane = ((0, seam) if axis == 0 else (2, seam) if axis == 1 else (1, -seam))
+                    if plane not in result[first["part"]]:
+                        result[first["part"]].append(plane)
+    return result
+
+
+def region_boundary(obj, a, b, n1, n2):
+    """Exclude collinear pigment interfaces with a continuing coplanar panel.
+
+    Raised overlapping accents retain their physical cut edges. Only an edge
+    shared by another region's panel on the opposite side is an interface.
+    """
+    e = b - a
+    length = np.linalg.norm(e)
+    e /= length
+    for region, c, d, normal, centre in REGION_BOUNDARIES.get(obj["part"], []):
+        if region == obj["region"]:
+            continue
+        if abs(normal @ n1) < .999 and abs(normal @ n2) < .999:
+            continue
+        if max(np.linalg.norm(np.cross(c - a, e)), np.linalg.norm(np.cross(d - a, e))) > 1e-4:
+            continue
+        low, high = sorted(((c - a) @ e, (d - a) @ e))
+        if low > 1e-4 or high < length - 1e-4:
+            continue
+        # The registry includes the current region; reject its own side.
+        for face_normal in (n1, n2):
+            if normal @ face_normal > .999:
+                direction = np.cross(e, face_normal)
+                mid = (a + b) / 2
+                own = [f for f in obj.data.polygons
+                       if np.dot(f.normal, face_normal) > .999
+                       and abs((np.array(f.center) + obj.location - a) @ face_normal) < 1e-4
+                       and any(np.linalg.norm(coordinates(obj)[v] + obj.location - a) < 1e-4
+                               for v in f.vertices)]
+                if any(((np.array(f.center) + obj.location - mid) @ direction)
+                       * ((centre - mid) @ direction) < -1e-8 for f in own):
+                    return True
+    return False
+
+
+def wrap_distance(p):
+    centre, axial, angles, radius = TUBE_WRAP
+    radial = p - centre
+    phase = np.arctan2(radial[:, 0], radial[:, 2])
+    wanted = np.interp(p[:, 1], axial, angles)
+    distance = np.arctan2(np.sin(phase - wanted), np.cos(phase - wanted)) * radius
+    barrel = (p[:, 1] >= axial[0]) & (p[:, 1] <= axial[-1])
+    barrel &= np.linalg.norm(radial[:, (0, 2)], axis=1) > radius - .16
+    return distance, barrel
+
+
+def tube_side_normals(obj, centre, radius):
+    """Learn barrel directions from the whole outer wall, excluding sockets."""
+    vertices = coordinates(obj) + obj.location
+    radial = np.linalg.norm((vertices - centre)[:, (0, 2)], axis=1)
+    axial_span = np.ptp(vertices[:, 1])
+    minimum_area = max(f.area for f in obj.data.polygons) * .05
+    result = []
+    for face in obj.data.polygons:
+        normal = np.array(face.normal)
+        if face.area < minimum_area or np.ptp(vertices[list(face.vertices), 1]) < axial_span * .25:
+            continue
+        if abs(normal[1]) > .02 or min(radial[list(face.vertices)]) < radius - .02:
+            continue
+        if not any(abs(normal @ other) > .9999 for other in result):
+            result.append(normal)
+    assert len(result) >= 8, "Missing barrel normal references"
+    return result
+
+
+def set_height(p, obj):
+    region = obj["region"]
+    if region == "elastic":
+        return np.zeros(len(p))
+    if region == "tape":
+        # Smooth film, very shallow fine wrinkles; no paper grain.
+        return .00011 * np.sin(p @ np.array((41, 37, 43))) * noise(p, (3, 3, 3), 823)
+    q = p @ np.array(((.36, -.80, .48), (.80, .52, .30), (-.48, .30, .82)))
+    coarse = region in ("cardboard", "tube")
+    height = (.0008 if coarse else .00065) * noise(q, (22, 22, 22) if coarse else (28, 28, 28), 147)
+    height += .00022 * noise(q, (35, 35, 35) if coarse else (43, 43, 43), 419)
+    lo, hi = PART_BOUNDS[obj["part"]]
+    span = hi - lo
+    amplitude = min(1., max(span) / 5)
+    height += amplitude * (.007 * np.sin(p @ np.array((.61, .37, .21)))
+                           + .003 * np.sin(p @ np.array((-.49, .73, .32)) + 1.4))
+    radius = min(1.5, max(span) * .16)
+    for fraction, depth in (((.27, .40, .55), -.009), ((.73, .65, .55), -.007), ((.53, .28, .35), -.005)):
+        centre = lo + span * np.array(fraction)
+        height += amplitude * depth * np.exp(-np.sum((p - centre) ** 2, axis=1) / radius ** 2)
+    if region == "tube":
+        distance, barrel = wrap_distance(p)
+        height -= .0015 * np.exp(-(distance / .026) ** 2) * barrel
+    return height
+
+
+def card_edge_faces(obj):
+    """Find actual narrow sidewalls adjoining a broad face, not long panel tris."""
+    mesh = obj.data
+    neighbours, heights = {}, {}
+    v = coordinates(obj)
+    for face in mesh.polygons:
+        heights[face.index] = min(2 * face.area / max(np.linalg.norm(v[a] - v[b]), 1e-12)
+                                  for a, b in face.edge_keys)
+        for edge in face.edge_keys:
+            neighbours.setdefault(tuple(sorted(edge)), []).append(face)
+    result = set()
+    for faces in neighbours.values():
+        if len(faces) != 2:
+            continue
+        for narrow, broad in (faces, faces[::-1]):
+            if heights[narrow.index] < .12 and heights[broad.index] > .14 and abs(narrow.normal.dot(broad.normal)) < .5:
+                result.add(narrow.index)
+    return result
+
+
+def set_atlas(obj, resolution):
+    unwrap(obj, resolution)
+    fallback = obj.get("triangle_uv_fallback", False)
+    try:
+        buffers, uv_report = atlas(obj, resolution)
+        uv_report.update(exact_uv_overlap(obj))
+    except AssertionError as error:
+        log(obj.name + ": splitting non-coplanar UV panels (" + str(error) + ")")
+        strict_set_uvs(obj, resolution)
+        try:
+            buffers, uv_report = atlas(obj, resolution)
+            uv_report.update(exact_uv_overlap(obj))
+        except AssertionError:
+            log(obj.name + ": using separate triangle UV charts")
+            separate_triangle_uvs(obj, resolution)
+            buffers, uv_report = atlas(obj, resolution)
+            uv_report.update(exact_uv_overlap(obj))
+            fallback = True
+            obj["triangle_uv_fallback"] = True
+    uv_report["separate_triangle_chart_fallback"] = fallback
+    uv_report["strict_panel_projection"] = obj.get("strict_uv_projection", False)
+    uv_report["repaired_collapsed_source_uv_triangles"] = obj.get("repaired_collapsed_uv_triangles", 0)
+    return buffers, uv_report
+
+
+def make_set_maps(obj, resolution):
+    buffers, uv_report = set_atlas(obj, resolution)
+    pos, n, t, bit, face = buffers
+    valid = face >= 0
+    p, normals, face_ids = pos[valid], n[valid], face[valid]
+    region = obj["region"]
+    ao = bake_ao(obj, resolution)
+    if region == "elastic":
+        softened, edge_tone = normals.copy(), np.zeros(len(p))
+        features = {k: 0 for k in ("fold", "rim", "sticker")}
+    else:
+        softened, edge_tone, features = edge_details(obj, p, normals, face_ids)
+    shade_normals = normals.copy()
+    cylindrical = region == "tube" or (obj["part"] == "body_heavy_mk2" and region == "accent")
+    if cylindrical:
+        radial = (p - TUBE_WRAP[0]) * np.array((1, 0, 1))
+        radius = np.linalg.norm(radial, axis=1)
+        radial /= np.maximum(radius[:, None], 1e-12)
+        radial *= np.where(np.sum(radial * normals, axis=1) < 0, -1, 1)[:, None]
+        barrel_faces = [f.index for f in obj.data.polygons
+                        if any(abs(np.array(f.normal) @ side) > .9999 for side in TUBE_SIDE_NORMALS)]
+        sides = np.isin(face_ids, barrel_faces)
+        softened[sides] += radial[sides] - normals[sides]
+        shade_normals[sides] = radial[sides]
+    epsilon = .0025
+    gradient = np.column_stack([(paper_height(p + np.eye(3)[i] * epsilon, obj)
+                                - paper_height(p - np.eye(3)[i] * epsilon, obj)) / (2 * epsilon)
+                               for i in range(3)])
+    cut_faces = card_edge_faces(obj) if region == "cardboard" and obj["part"] != "body_heavy_mk2" else set()
+    cut = np.isin(face_ids, list(cut_faces))
+    flute = np.sin(p @ np.array((31., 29., 37.)))
+    if np.any(cut):
+        gradient[cut] += (.00045 * np.cos(p[cut] @ np.array((31., 29., 37.))))[:, None] * np.array((31., 29., 37.))
+        edge_tone[cut] += .012 * flute[cut]
+    gradient -= normals * np.sum(gradient * normals, axis=1)[:, None]
+    final = softened - gradient
+    final /= np.linalg.norm(final, axis=1)[:, None]
+    tangent_normal = np.column_stack((np.sum(final * t[valid], axis=1),
+                                      np.sum(final * bit[valid], axis=1), np.sum(final * normals, axis=1)))
+    assert np.min(tangent_normal[:, 2]) > 0, obj.name + ": reversed shading normal"
+    frequency = 22 if region in ("cardboard", "tube") else 28
+    grain = noise(p, (frequency,) * 3, 147) if region not in ("tape", "elastic") else np.zeros(len(p))
+    panel_tone = .020 * (shade_normals @ np.array((-.48, .16, .86))) if region != "elastic" else 0
+    luminance = .962 + .002 * grain + panel_tone - (.06 if region == "elastic" else .12) * (1 - ao[valid]) + edge_tone
+    if region == "tube":
+        distance, barrel = wrap_distance(p)
+        luminance -= .012 * np.exp(-(distance / .03) ** 2) * barrel
+    luminance = np.clip(luminance, .85, .995)
+    rough_base = {"paper": .84, "accent": .84, "cardboard": .88, "tube": .88, "tape": .425, "elastic": .65}[region]
+    roughness = np.clip(rough_base + .012 * grain, rough_base - .015, rough_base + .015)
+    arrays = {}
+    for kind, background, data in (
+            ("color", [.978] * 3, np.repeat(luminance[:, None], 3, axis=1)),
+            ("normal", [.5, .5, 1], tangent_normal * .5 + .5),
+            ("roughness", [rough_base] * 3, np.repeat(roughness[:, None], 3, axis=1))):
+        array = np.empty((resolution, resolution, 3), dtype=np.float32)
+        array[:] = background
+        array[valid] = data
+        dilate(array, valid)
+        if kind == "normal":
+            decoded = array * 2 - 1
+            decoded /= np.maximum(np.linalg.norm(decoded, axis=2)[:, :, None], 1e-12)
+            array = decoded * .5 + .5
+        arrays[kind] = np.round(np.clip(array[::-1], 0, 1) * 255).astype(np.uint8)
+        png(OUT / (obj.name + "-" + kind + ".png"), arrays[kind])
+    return uv_report, {
+        "resolution": [resolution, resolution], "surface_area_studs2": sum(f.area for f in obj.data.polygons),
+        "color_rgb_min_max": [int(arrays["color"].min()), int(arrays["color"].max())],
+        "color_channels_identical": True, "roughness_min_max": [float(roughness.min()), float(roughness.max())],
+        "roughness_base": rough_base, "edge_features": features, "feature_reference": obj.name[:-2] if obj.get("side") else obj.name,
+        "cardboard_corrugation_cut_faces": sorted(cut_faces), "rolled_tube_smoothing": cylindrical,
+        "helical_seam": "Follows the existing single raised wrap" if region == "tube" else None,
+        "ao_method": "Cycles AO, 24 hemisphere samples, .45-stud radius, same-part assembled geometry",
+        "normal_convention": "MikkTSpace tangent, OpenGL +Y green up", "geometry_displacement": 0,
+        "handling_bounds_blender": [v.tolist() for v in PART_BOUNDS[obj["part"]]],
+        "padding": "12 pixels; opaque neutral fill"}
+
+
+def map_bytes(path):
+    """Exact file values for our filter-zero PNGs, with no colour management."""
+    data = path.read_bytes()
+    width, height = struct.unpack(">II", data[16:24])
+    assert data[24:26] == bytes((8, 2))
+    offset, compressed = 8, []
+    while offset < len(data):
+        size = struct.unpack(">I", data[offset:offset + 4])[0]
+        if data[offset + 4:offset + 8] == b"IDAT":
+            compressed.append(data[offset + 8:offset + 8 + size])
+        offset += size + 12
+    rows = np.frombuffer(zlib.decompress(b"".join(compressed)), dtype=np.uint8).reshape(height, width * 3 + 1)
+    assert not rows[:, 0].any()
+    return rows[:, 1:].reshape(height, width, 3).copy()
+
+
+def set_contact_sheets(entries, parts):
+    files = []
+    for part in parts:
+        group = [e for e in entries if e["part"] == part]
+        cell = max(e["texture_checks"]["resolution"][0] for e in group)
+        gap = 12
+        height = sum(e["texture_checks"]["resolution"][0] + gap for e in group) + gap
+        original = np.full((height, 3 * (cell + gap) + gap, 3), 224, dtype=np.uint8)
+        boosted = original.copy()
+        y = gap
+        for entry in group:
+            for col, kind in enumerate(("color", "normal", "roughness")):
+                data = map_bytes(OUT / entry["maps"][kind])
+                h, w = data.shape[:2]
+                x = gap + col * (cell + gap) + (cell - w) // 2
+                original[y:y + h, x:x + w] = data
+                low, high = int(data.min()), int(data.max())
+                stretch = np.round((data.astype(float) - low) * 255 / (high - low)).astype(np.uint8) if high > low else np.full_like(data, 224)
+                boosted[y:y + h, x:x + w] = stretch
+            y += h + gap
+        for suffix, data in (("", original), ("-boosted", boosted)):
+            name = f"contact-sheets/{part}{suffix}.png"
+            png(OUT / name, data)
+            files.append(name)
+    return files
+
+
+def set_rgb(region, blue=False):
+    return ((255, 255, 255) if region == "accent" else (255, 212, 20) if region in ("tape", "elastic")
+            else (45, 90, 170) if blue and region in ("cardboard", "tube")
+            else (165, 55, 50) if region in ("cardboard", "tube")
+            else (70, 128, 214) if blue else (214, 78, 72))
+
+
+def set_review_renders(objects, old_objects, parts):
+    """Old flat source and new mapped halves, identical geometry/cameras/lights."""
+    setup_render()
+    scene = bpy.context.scene
+    scene.cycles.samples = 16
+    floor = bpy.data.objects["Review ground"]
+    floor.hide_render = True  # Same neutral world background for every isolated part.
+    scene.render.image_settings.color_mode = "RGB"
+    outputs, grid = [], np.full((4 * 240, 6 * 240, 3), 224, dtype=np.uint8)
+    direction = Vector((-1.1, 1.55, 1.25)).normalized()
+    for index, part in enumerate(parts):
+        group = [o for o in objects if o["part"] == part]
+        old = [o for o in old_objects if o["part"] == part]
+        for obj in objects + old_objects:
+            obj.hide_render = True
+        points = np.concatenate([coordinates(o) + o.location for o in group])
+        centre = (points.min(0) + points.max(0)) / 2
+        location = Vector(centre) + direction * 26
+        cam = camera(location, centre, 1)
+        bpy.context.view_layer.update()
+        projected = np.array([cam.matrix_world.inverted() @ Vector(p) for p in points])[:, :2]
+        span = np.ptp(projected, axis=0)
+        centre_view = (projected.min(0) + projected.max(0)) / 2
+        # Centre the projected bbox, rather than the less reliable 3D bbox.
+        shift = cam.matrix_world.to_3x3() @ Vector((*centre_view, 0))
+        location += shift
+        target = Vector(centre) + shift
+        scale = max(span[0], span[1] * 800 / 900) * 1.22
+        saved = {o: o.location.copy() for o in group + old}
+        # Source wing shoulder overlays can contain coincident triangles.
+        if set_slot(part) == "wings":
+            for obj in group + old:
+                if obj["region"] == "accent":
+                    obj.location.z += .0003
+        try:
+            for obj in group:
+                obj.hide_render = False
+                set_tint(obj.data.materials[0], set_rgb(obj["region"]))
+            compare = f"renders/{part}-compare.png"
+            render_file(compare, location, target, scale, 800, 900)
+            new = pixels(OUT / compare)[:, :, :3]
+            # Render at its final small delivery size, with a 200px longest span.
+            diameter = max(np.linalg.norm(projected - p, axis=1).max() for p in projected)
+            tile_scale = diameter * 240 / 200
+            tile_name = f"renders/{part}-distance.png"
+            render_file(tile_name, location, target, tile_scale, 240, 240)
+            tile = np.round(np.clip(pixels(OUT / tile_name)[:, :, :3], 0, 1) * 255).astype(np.uint8)
+            (OUT / tile_name).unlink()
+            if index == 0:
+                grid[:] = tile[0, 0]
+            y, x = (index // 6) * 240, (index % 6) * 240
+            grid[y:y + 240, x:x + 240] = tile
+            for obj in group:
+                obj.hide_render = True
+            for obj in old:
+                obj.hide_render = False
+            render_file(compare, location, target, scale, 800, 900)
+            old_image = pixels(OUT / compare)[:, :, :3]
+            png(OUT / compare, np.round(np.clip(np.concatenate((old_image, new), axis=1), 0, 1) * 255).astype(np.uint8))
+            for obj in old:
+                obj.hide_render = True
+            for obj in group:
+                obj.hide_render = False
+                set_tint(obj.data.materials[0], set_rgb(obj["region"], blue=True))
+            blue = f"renders/{part}-blue.png"
+            blue_scale = max(span[0], span[1] * 1600 / 900) * 1.22
+            render_file(blue, location, target, blue_scale)
+            outputs.extend((compare, blue))
+        finally:
+            for obj, position in saved.items():
+                obj.location = position
+        log(part + ": red comparison, blue and game-distance render complete")
+    png(OUT / "renders/game-distance.png", grid)
+    outputs.append("renders/game-distance.png")
+    return outputs
+
+
+def set_readme(report):
+    lines = ["# Modular folded-paper set", "", "Local build only. No uploads, commits or Studio use.", "",
+             "## Rebuild", "", "```powershell", COMMAND + " -- --set", "```", "",
+             "Blender 5.1 + included NumPy only. Deterministic CPU bakes and 16-sample renders.", "",
+             "## Review", "",
+             "renders/<part>-compare.png: OLD flat source left, NEW right, 1600 x 900. Same geometry, camera, scale and lights.",
+             "renders/<part>-blue.png: NEW blue, 1600 x 900. renders/game-distance.png: 23 red parts, 200px longest projected span per part.",
+             "contact-sheets/<part>.png: exact PNG bytes at native resolution; one mesh per row, colour/normal/roughness columns. The -boosted sheet stretches each complete map's min/max to 0/255 (constant maps stay neutral). No labels.", "",
+             "## Round 2 response to review", "",
+             "Classic round-2 fold valleys/ridges, bright cut rims, isotropic tooth and shallow handling marks continue across the halves. Joint planes come from this set's slot bounds; coplanar pigment interfaces and split caps are excluded.", "",
+             "## Material and geometry choices", "",
+             "Near-white identical RGB colour channels and opaque neutral gutters throughout. No authored text, logos or symbols. Paper/accent roughness .84, coarser card/tube .88, smooth faintly wrinkled tape .425, smooth rubber .65. Corrugation is confined to actual narrow card edge faces. Tube normals shade continuously around the barrel; its faint wrap follows the existing single raised spiral.",
+             "Normal maps use MikkTSpace, OpenGL +Y. No displacement or vertex edits. Only zero-area source triangles are removed and counted. Each mesh has a non-overlapping PaperUV atlas, 12px gutters, 1024 above 48 square studs and 512 otherwise.",
+             "Real needle triangles collapsed by Smart Project receive small separate UV charts before packing. Overlapping islands are split at non-coplanar panels; individual triangle charts are a final fallback. Corrections are recorded in the UV checks; no real faces are removed.",
+             "Handling fields use each assembled part's own bounds and common world positions. AO sees only that part's assembled display meshes. Wing accents receive a temporary .0003-stud review separation in both old/new; exports retain source positions.", "",
+             "## Import contract", "",
+             "Y up, -Z forward, global_scale=.01, UnitScaleFactor=1, raw coordinates in studs. Do not recenter. Original slot_pivot and center_offset_from_slot values remain in manifest.json. Halves are recentered on X only. Booster pivots and body-specific anchors are copied from parts.json.",
+             "Use sidecar maps in SurfaceAppearance and tint at runtime: red paper 214,78,72 / card 165,55,50; blue paper 70,128,214 / card 45,90,170; accents white; tape/elastic 255,212,20. Colour is sRGB, other maps non-colour. Export materials are neutral. No whole-mesh alternatives are exported.", "",
+             "## Meshes and contact-sheet rows", "",
+             "Row numbers restart for each part; columns are colour, normal, roughness.", "",
+             "| Part | Row | FBX / map prefix | Region | Triangles | Texture size |",
+             "|---|---:|---|---|---:|---:|"]
+    for part in report["parts"]:
+        for row, entry in enumerate([e for e in report["exports"] if e["part"] == part], 1):
+            lines.append(f"| {part} | {row} | {Path(entry['file']).stem} | {entry['region']} | {entry['triangles']} | {entry['texture_checks']['resolution'][0]} |")
+    lines += ["", "## Verification", "",
+              "All 95 FBXs pass the existing export_check roundtrip: units, bounds, vertex multiset/count, real surfaces, and UV raster/analytical overlap checks. Tolerance 0.00002 stud. Saved maps are checked for channel equality, unit normals and material roughness. Source and Classic sample SHA-256 checks pass before/after. See manifest.json for individual results.", "",
+              f"Build wall time: {report['build_wall_seconds']:.1f} seconds. Studio appearance remains untested.", ""]
+    (OUT / "README.md").write_text("\n".join(lines), encoding="utf-8")
+
+
+def build_set():
+    global SET_MODE, SOURCE, OUT, TUBE_WRAP, TUBE_SIDE_NORMALS
+    SET_MODE = True
+    SOURCE = ROOT / "assets/models/planes/set"
+    OUT = ROOT / "assets/models/planes/paper-set"
+    started = time.perf_counter()
+    halves_path = ROOT / "assets/models/planes/halves.json"
+    protected = sorted(SOURCE.glob("*.fbx")) + [SOURCE / "parts.json", SOURCE / "plane-set.blend", halves_path]
+    protected += sorted(p for p in (ROOT / "assets/models/planes/paper-sample").rglob("*") if p.is_file())
+    hashes = {p.relative_to(ROOT).as_posix(): sha(p) for p in protected}
+    contract = json.loads((SOURCE / "parts.json").read_text())
+    records = {e["file"]: e for e in contract["exports"]}
+    records.update({e["file"]: e for e in json.loads(halves_path.read_text())["exports"] if (SOURCE / e["file"]).exists()})
+    selected = set_selection()
+    assert set(records) == {p.name for p in SOURCE.glob("*.fbx")}
+    assert set(selected) <= set(records)
+    parts = list(contract["assembled_parts"])
+    assert len(parts) == 23
+    for folder in (OUT, OUT / "renders", OUT / "contact-sheets"):
+        folder.mkdir(parents=True, exist_ok=True)
+    manifest = OUT / "manifest.json"
+    if manifest.exists():
+        manifest.unlink()
+    with bpy.data.libraries.load(str(SOURCE / "plane-set.blend"), link=False) as (src, dst):
+        blend_mesh_names = list(src.meshes)
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    bpy.context.preferences.filepaths.save_version = 0
+    scene = bpy.context.scene
+    scene.unit_settings.system = "NONE"
+    scene.render.engine = "CYCLES"
+    scene.cycles.device, scene.cycles.samples, scene.cycles.seed = "CPU", 1, 1701
+    scene.world = bpy.data.worlds.new("Set bake world")
+    scene.render.bake.use_selected_to_active = False
+    objects, references, originals, old_objects = [], [], {}, []
+    for filename, entry in records.items():
+        obj = import_fbx(SOURCE / filename)
+        obj.name = Path(filename).stem
+        obj["part"], obj["region"], obj["side"], obj["slot"] = entry["part"], entry["region"], entry.get("side", ""), set_slot(entry["part"])
+        original = (coordinates(obj), raw_fbx(SOURCE / filename)[0], rendering_surfaces(obj))
+        offset = np.array(entry["slot_pivot"], dtype=float)
+        if entry.get("side"):
+            offset[0] = entry["bbox_center"][0]
+        obj.location = bvec(offset)
+        if filename in selected:
+            old = obj.copy()
+            old.data = obj.data.copy()
+            old.name = "Old source " + obj.name
+            scene.collection.objects.link(old)
+            old.data.materials.clear()
+            mat = bpy.data.materials.new(old.name + " flat")
+            mat.use_nodes = True
+            bsdf = mat.node_tree.nodes.get("Principled BSDF")
+            bsdf.inputs["Base Color"].default_value = (*linear(set_rgb(obj["region"])), 1)
+            bsdf.inputs["Roughness"].default_value = .855
+            bsdf.inputs["Specular IOR Level"].default_value = .22
+            old.data.materials.append(mat)
+            old.hide_render = True
+            old_objects.append(old)
+            for face in obj.data.polygons:
+                face.use_smooth = False
+            count, removed = remove_invisible_faces(obj)
+            obj["source_triangles"], obj["removed_source_zero_area_triangles"] = count, removed
+            originals[obj.name] = original
+            objects.append(obj)
+        else:
+            assert not obj["side"], filename + ": unexpected half reference"
+            references.append(obj)
+        obj.hide_render = True
+    bpy.context.view_layer.update()
+    PART_BOUNDS.clear()
+    for part in parts:
+        points = np.concatenate([coordinates(o) + o.location for o in objects if o["part"] == part])
+        PART_BOUNDS[part] = (points.min(0), points.max(0))
+    JOINT_PLANES.clear()
+    JOINT_PLANES.update(set_joint_planes(contract))
+    REGION_BOUNDARIES.clear()
+    whole = references + [o for o in objects if not o["side"]]
+    for obj in whole:
+        points = coordinates(obj) + obj.location
+        for face in obj.data.polygons:
+            if face.area < 1e-10:
+                continue
+            normal = np.array(face.normal)
+            centre = np.array(face.center) + obj.location
+            for a, b in face.edge_keys:
+                REGION_BOUNDARIES.setdefault(obj["part"], []).append((obj["region"], points[a], points[b], normal, centre))
+    tube = next(o for o in references if o["region"] == "tube")
+    tube_bbox = bounds(tube) + tube.location
+    centre = (tube_bbox.min(0) + tube_bbox.max(0)) / 2
+    spiral = next(o for o in references if o["part"] == tube["part"] and o["region"] == "cardboard")
+    p = coordinates(spiral) + spiral.location
+    radii = np.linalg.norm((p - centre)[:, (0, 2)], axis=1)
+    crest = p[radii > radii.max() - .001]
+    crest = crest[np.argsort(crest[:, 1])]
+    assert len(crest) > 20, "Existing tube wrap reference missing"
+    TUBE_WRAP = (centre, crest[:, 1], np.unwrap(np.arctan2(crest[:, 0] - centre[0], crest[:, 2] - centre[2])),
+                 float((tube_bbox[1, 0] - tube_bbox[0, 0]) / 2))
+    TUBE_SIDE_NORMALS = tube_side_normals(tube, centre, TUBE_WRAP[3])
+    FEATURES.clear()
+    for obj in whole:
+        FEATURES[obj.name] = feature_edges(obj) if obj["region"] != "elastic" else []
+        if obj["region"] == "tape":
+            FEATURES[obj.name] = [(*f[:-1], "rim") for f in FEATURES[obj.name]]
+    by_name = {o.name + ".fbx": o for o in objects}
+    # Validate every atlas before spending time on any bakes or renders.
+    for filename in selected:
+        obj = by_name[filename]
+        resolution = 1024 if sum(f.area for f in obj.data.polygons) > 48 else 512
+        reuse_set_uvs(obj, filename)
+        buffers, _ = set_atlas(obj, resolution)
+        del buffers
+        obj["reused_paper_uv"] = True
+        log(obj.name + ": UV preflight PASS")
+    exports = []
+    for filename in selected:
+        obj = by_name[filename]
+        entry = dict(records[filename])
+        for other in objects:
+            other.hide_render = other["part"] != obj["part"]
+        obj.data.calc_loop_triangles()
+        entry.update({"triangles": len(obj.data.loop_triangles), "source_triangles": obj["source_triangles"],
+                      "removed_source_zero_area_triangles": obj["removed_source_zero_area_triangles"]})
+        area = sum(f.area for f in obj.data.polygons)
+        resolution = 1024 if area > 48 else 512
+        log(f"Baking {obj.name}: {entry['triangles']} triangles, {resolution}px")
+        uv_report, texture_report = make_maps(obj, resolution)
+        set_tint(paper_material(obj, entry["region"]), (255, 255, 255))
+        entry.update({"object": obj.name, "maps": {k: obj.name + "-" + k + ".png" for k in ("color", "normal", "roughness")},
+                      "uv_checks": uv_report, "texture_checks": texture_report,
+                      "assembly_location_blender": list(obj.location), "surface_appearance_tintable": True,
+                      "set_source": "../set/" + filename})
+        for field in ("suggested_color3_255", "suggested_color3", "team_color_at_runtime"):
+            entry.pop(field, None)
+        entry["runtime_tint_role"] = "team" if entry["region"] in ("paper", "cardboard", "tube") else "fixed"
+        entry["runtime_red_rgb"] = set_rgb(entry["region"])
+        entry["runtime_blue_rgb"] = set_rgb(entry["region"], blue=True)
+        entry["fbx_roundtrip"] = export_check(obj, entry, *originals[obj.name])
+        exports.append(entry)
+        log(obj.name + ": maps and FBX roundtrip PASS")
+    sheets = set_contact_sheets(exports, parts)
+    renders = set_review_renders(objects, old_objects, parts)
+    for entry in exports:
+        for kind, filename in entry["maps"].items():
+            values = map_bytes(OUT / filename)
+            assert list(values.shape[:2]) == entry["texture_checks"]["resolution"]
+            if kind in ("color", "roughness"):
+                assert np.array_equal(values[:, :, 0], values[:, :, 1]) and np.array_equal(values[:, :, 0], values[:, :, 2])
+            if kind == "color":
+                assert values.min() >= 216 and values.max() <= 254
+            elif kind == "normal":
+                normal = values.astype(float) / 127.5 - 1
+                error = float(np.max(np.abs(np.linalg.norm(normal, axis=2) - 1)))
+                assert error < .014 and normal[:, :, 2].min() > 0
+                entry["texture_checks"]["saved_normal_unit_length_error_max"] = error
+            else:
+                base = entry["texture_checks"]["roughness_base"]
+                assert values.min() / 255 >= base - .017 and values.max() / 255 <= base + .017
+    for relative, expected in hashes.items():
+        assert sha(ROOT / relative) == expected, "Source changed: " + relative
+    assert {p.name for p in OUT.glob("*.fbx")} == set(selected)
+    assert {p.name for p in OUT.glob("*-*.png")} == {name for e in exports for name in e["maps"].values()}
+    for filename in sheets + renders:
+        data = (OUT / filename).read_bytes()
+        assert data[:8] == b"\x89PNG\r\n\x1a\n"
+        if filename.startswith("renders/"):
+            assert struct.unpack(">II", data[16:24]) == ((1440, 960) if filename.endswith("game-distance.png") else (1600, 900))
+    report = {"schema_version": 2, "result": "PASS", "parts": parts, "exports": exports,
+              "units": contract["units"], "axes": contract["axes"], "fbx_contract": contract["fbx_contract"],
+              "slot_pivots": contract["slot_pivots"], "booster_pivots": contract["booster_pivots"],
+              "booster_body_pivots": contract["booster_body_pivots"], "joint_planes_blender": JOINT_PLANES,
+              "source_hashes": hashes, "source_files_unchanged": True, "classic_sample_unchanged": True,
+              "source_hash_scope": "Before/after this build, including Classic sample files",
+              "set_blend_meshes_read": blend_mesh_names, "whole_fold_references": [o.name for o in references],
+              "script_sha256": sha(Path(__file__)), "blender_version": bpy.app.version_string,
+              "rebuild_command": COMMAND + " -- --set", "contact_sheets": sheets, "render_files": renders,
+              "saved_map_verification": "PASS", "build_wall_seconds": round(time.perf_counter() - started, 2),
+              "review": {"render_samples": 16, "cpu_seed": 1701, "old_geometry": "Exact source FBXs",
+                         "old_source_smoothing_preserved": True,
+                         "game_distance_projected_span_pixels": 200, "wing_accent_review_separation_studs": .0003},
+              "network_uploads_studio": "Not used"}
+    set_readme(report)
+    manifest.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    log(f"COMPLETE: 95 FBXs, 285 maps, 46 contact sheets, 47 renders; {report['build_wall_seconds']} seconds")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--renders-only", action="store_true")
     parser.add_argument("--verify-only", action="store_true")
+    parser.add_argument("--set", action="store_true", help="Build the 95 modular-set display meshes")
     args = parser.parse_args(sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else [])
+    if args.set:
+        assert not args.renders_only and not args.verify_only, "--set performs a complete build"
+        build_set()
+        return
     OUT.mkdir(parents=True, exist_ok=True)
     bpy.context.preferences.filepaths.save_version = 0
     if args.verify_only:

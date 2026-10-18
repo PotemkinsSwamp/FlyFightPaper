@@ -31,3 +31,8 @@ assets/rug/tiles-v4/
 src/generated/DuctsPreview.luau
 src/generated/TownPreview.luau
 assets/rug/replan-proto.json
+
+# Paper-set review images (rebuilt by tools/art/plane_paper.py --set); only the overview is kept
+assets/models/planes/paper-set/contact-sheets/
+assets/models/planes/paper-set/renders/*
+!assets/models/planes/paper-set/renders/game-distance.png
