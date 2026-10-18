@@ -34,11 +34,10 @@ local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room 
 -- The shots, square on to the desk row and level: the lens, a slow push in on the group (share of the distance), and
 -- the frame: a close-up CLOSE tall with its top CLOSE_TOP over the desk top (just over the head); the group wide
 -- enough that SIDE_ROOM fits beside the outside winners (body, arms and the whole plate: Alan 2026-10-18, half bodies
--- and plates were cut off), looking GROUP_TILT degrees down at them with the bottom of the frame GROUP_FLOOR below
--- the desk top under them (just under the plates, so the town's pillars in front stay out: Alan 2026-10-18). Sizes in
--- winner heights.
+-- and plates were cut off), from GROUP_EYE over the desk top looking GROUP_TILT degrees down at them (Alan 2026-10-18:
+-- looking a little down, just above the town's pillars in front, which fade out anyway). Sizes in winner heights.
 local SHOT_FOV, PUSH_IN, CLOSE_TOP, CLOSE, SIDE_ROOM = 50, 0.04, 1.3, 1.9, 1.2
-local GROUP_TILT, GROUP_FLOOR = 8, 1.05
+local GROUP_TILT, GROUP_EYE = 8, 1.6
 local EYE_LOW = 0.15 -- a close-up camera never goes lower than this far over the desk top (winner heights)
 -- How far forward on their desk 1st and the others stand (shares of the desk depth): 1st a little in front.
 local FIRST_FORWARD, SIDE_FORWARD = 0.32, 0.22
@@ -57,7 +56,7 @@ local CONFETTI_COLORS = { Color3.fromRGB(230, 60, 60), Color3.fromRGB(60, 110, 2
 	Color3.fromRGB(70, 190, 90), Color3.fromRGB(240, 120, 200) }
 -- Only what would block a winner in their shot fades out on this screen; the rest of the town and the ceiling
 -- decorations stay in view. Never faded: the room shell, the chalkboard, desks, chairs and the desks' hangars and
--- runways. Always faded: planes, other name tags and the desk landing rings.
+-- runways. Always faded: planes, other name tags, the desk landing rings and the monorail's pillars and track.
 local KEEP_ARENA = { "^Wall", "^Floor", "^Window", "^Chalkboard", "^Desk", "^Chair", "^NeutralDesk" }
 local KEEP_TOYS = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hangar"] = true, ["desk-runway-droop"] = true,
 	["runway-light"] = true, ["runway-light-tip"] = true }
@@ -83,7 +82,7 @@ local function shotRule(item)
 	if top.Name ~= "Arena" or not child then return "check" end
 	if child:GetAttribute("SeatedAvatar") then return "never" end -- students: the winner desks' are handled on their own
 	if child.Name == "CityToys" and entry then
-		if entry.Name == "landing-ring" then return "always" end
+		if entry.Name == "landing-ring" or entry.Name:match("^monorail%-pylon") or entry.Name:match("^monorail%-beam") then return "always" end
 		return KEEP_TOYS[entry.Name] and "never" or "check"
 	end
 	if child.Name == "Ducts" and entry and entry.Name == "Ceiling" then return "never" end
@@ -511,7 +510,7 @@ function Cutscene.play(winners, onStage)
 			tilt = math.atan((top - eyeY) / distance) - math.rad(SHOT_FOV / 2)
 		else
 			tilt = -math.rad(GROUP_TILT)
-			eyeY = deskTop - GROUP_FLOOR * height + distance * math.tan(math.rad(SHOT_FOV / 2 + GROUP_TILT))
+			eyeY = deskTop + GROUP_EYE * height
 		end
 		local eye = Vector3.new(mid.X, eyeY, mid.Z) + back * distance
 		local view = CFrame.lookAt(eye, eye - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
