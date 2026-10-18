@@ -144,10 +144,9 @@ mistake would be easy to make twice.
   disabled in `~/.codex/config.toml`; if tools vanish again, stop only the StudioMCP processes whose parent is
   `codex.exe`, never this session's own proxy (stopping that kills the link until a new session). Codex picture jobs
   that hang at "starting" through the plugin work with `codex exec -s workspace-write - < prompt.txt`.
-- **Studio link "connected, 0 tools" with no Codex running** (2026-10-17): this session's proxy was the only
-  StudioMCP, so nothing to stop. Workaround that needed no restart: a throwaway Python script in the temp folder that
-  starts the newest `StudioMCP.exe` itself and sends JSON-RPC (`initialize`, `tools/list`, `tools/call`); all tools
-  worked (Play, execute_luau with `datamodel_type`, screen_capture, user_mouse_input with `mouse_button`).
+- **Studio link "connected, 0 tools" with no Codex running** (2026-10-17): nothing to stop and no restart needed:
+  `python tools/studio_cli.py TOOL '{json}'` drives Studio directly (Play, execute_luau with `datamodel_type`,
+  screen_capture, user_mouse_input with `mouse_button`). Check `tools/` before writing a helper.
 - **Closing and reopening Studio** without desktop control: `Stop-Process -Name RobloxStudioBeta`, then
   `tools/save_place.py` if needed, then `Start-Process <place>.rbxlx`; ask first if Alan may be using Studio.
   Opening Studio through desktop control's `open_application` starts a second empty Studio.
