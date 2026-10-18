@@ -20,6 +20,16 @@ return JSONTypes.map({
         ["body_space_depth_studs"] = 120,
         ["body_space_top_y"] = 220,
         ["body_space_width_studs"] = 124,
+        ["bot_look_outfits"] = JSONTypes.array({
+            [1] = 5244940176,
+            [2] = 5840039622,
+            [3] = 11360692399,
+            [4] = 11229081601,
+            [5] = 7069150747,
+            [6] = 11120854959,
+            [7] = 6817333207,
+        }),
+        ["bot_look_outfits_comment"] = "Outfits real players saved, worn by bots (Alan 2026-10-18); found by tools/find_bot_looks.luau.",
         ["bot_outfits"] = JSONTypes.map({
             ["backpack_chance"] = 0.06,
             ["backpacks"] = JSONTypes.array({

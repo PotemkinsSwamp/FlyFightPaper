@@ -32,6 +32,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 |---|---|
 | `tools/ui_pieces.py` | Cuts one menu screen's art into pieces and (with `--upload`) uploads them |
 | `tools/upload_texture.py` | Uploads a picture, FBX or animation (`--animation`, an .rbxm) to Roblox (used by the other upload tools) |
+| `tools/find_bot_looks.luau` | Run in Studio Edit through the Studio link: finds dressed-up outfits real players saved, for bot looks (writes ids to the ServerStorage attribute `BotLookOutfits`, ~5 a minute) for `avatar_display.bot_look_outfits` |
 | `tools/winner_hop_animation.luau` | Builds the winners' stand-up-and-hop keyframes in Studio (R15); exported to `assets/animations/winner-hop.rbxm` for upload |
 | `tools/meshy.py` | Paid Meshy jobs; every job logged in `assets/MESHY_LOG.md`. Stop at 300 credits left |
 

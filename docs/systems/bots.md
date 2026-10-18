@@ -11,9 +11,11 @@ studs (`duct_escape_chance` 40%), and now and then wander through instead of to 
 the round pipe (`DuctRules.botRuns`), only with over half their Lift and enough to finish. Inside they never dodge.
 Tested: 5 minutes of forced runs, no crashes; 3 minutes of normal play, one run.
 
-Bot looks (2026-10-18): each bot borrows the current look of a random dressed-up Roblox player (layered clothing or
-4+ accessories; about 1 account in 11 qualifies, found in ~1 s). Same name, same look; old catalog outfit if none
-fits. Checked in Play: desks and winners' cutscene.
+Bot looks (2026-10-18): each bot wears an outfit a real Roblox player saved, from a list of dressed-up ones
+(`avatar_display.bot_look_outfits`, found once by `tools/find_bot_looks.luau`: layered clothing or 4+ accessories and
+at least one creator-made item). Searching live is out: Roblox allows 300 avatar lookups a minute. Random accounts were
+10x slower to search than saved outfits (most are quitters in Roblox's free starter looks, which made bots look
+alike). Same name, same outfit; no two bots on a server share one; old catalog outfit if lookups fail.
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*

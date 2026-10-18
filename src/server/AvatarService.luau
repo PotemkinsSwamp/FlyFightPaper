@@ -3,7 +3,7 @@ local Run=game:GetService("RunService")
 local Config=require(game.ReplicatedStorage.FlyFightPaper.Generated.Gameplay).avatar_display
 local Service={};Service.__index=Service
 function Service.new(flight)
- return setmetatable({flight=flight,models={},requests={}},Service)
+ return setmetatable({flight=flight,models={},requests={},wearing={}},Service)
 end
 -- A bot dresses like a player: hair, shirt, pants, skin tone and sometimes a cap, shades or a backpack, all free
 -- Roblox-made catalog items (config avatar_display.bot_outfits). The same name always gets the same outfit.
@@ -23,29 +23,34 @@ function Service.outfit(name)
  if rng:NextNumber()<outfits.backpack_chance then description.BackAccessory=tostring(any(outfits.backpacks)) end
  return description
 end
--- A bot borrows the current look of a random dressed-up Roblox player (Alan 2026-10-18), keeping its own made-up
--- name. Random accounts are mostly quitters in default clothes, so it tries seeded ids until one wears layered
--- clothing or several accessories (about 1 in 11 does, ~0.07 s a try). Same name, same look; the old outfit if none fits.
-local looks={}
-function Service.look(name)
- if looks[name] then return looks[name]:Clone() end
- local seed=0
- for i=1,#name do seed=(seed*31+string.byte(name,i))%2147483647 end
- local rng=Random.new(seed)
- local found
- for _=1,100 do
-  local ok,description=pcall(Players.GetHumanoidDescriptionFromUserIdAsync,Players,rng:NextInteger(1e9,1.1e10))
-  if ok then
-   local layered,accessories=0,0
-   for _,item in description:GetAccessories(true) do accessories+=1;if item.IsLayered then layered+=1 end end
-   if layered>=2 or accessories>=4 then found=description;break end
+-- A bot wears an outfit a real Roblox player saved (Alan 2026-10-18), keeping its own made-up name. The ids (config
+-- avatar_display.bot_look_outfits) are dressed-up outfits found once by tools/find_bot_looks.luau: Roblox allows only
+-- 300 avatar lookups a minute, too few to search while the game runs. Same name, same outfit, unless another bot on
+-- the server wears it; the old catalog outfit if Roblox's lookups fail.
+local looks={} -- outfit id -> its look, fetched once per server
+function Service:look(p)
+ local ids,fetches=Config.bot_look_outfits,0
+ local function worn(id) for other,wearing in self.wearing do if wearing==id and other~=p.id then return true end end end
+ local start=0
+ for i=1,#p.name do start=(start*31+string.byte(p.name,i))%2147483647 end
+ for i=0,#ids-1 do
+  local id=ids[(start+i)%#ids+1]
+  if not worn(id) then
+   self.wearing[p.id]=id -- claimed before the lookup waits, so two bots never pick the same outfit
+   if not looks[id] then
+    fetches+=1
+    local ok,description=pcall(Players.GetHumanoidDescriptionFromOutfitIdAsync,Players,id)
+    if ok then looks[id]=description end
+   end
+   if looks[id] then return looks[id]:Clone() end
+   if fetches>=3 then break end
   end
  end
- looks[name]=found or Service.outfit(name)
- return looks[name]:Clone()
+ self.wearing[p.id]=nil
+ return Service.outfit(p.name)
 end
 function Service:remove(p)
- self.requests[p.id]=nil
+ self.requests[p.id]=nil;self.wearing[p.id]=nil
  local model=self.models[p.id];if model then model:Destroy();self.models[p.id]=nil end
 end
 function Service:assign(p)
@@ -54,7 +59,7 @@ function Service:assign(p)
  task.spawn(function()
   local ok,model=pcall(function()
    if p.player then return Players:CreateHumanoidModelFromUserIdAsync(p.player.UserId) end
-   return Players:CreateHumanoidModelFromDescriptionAsync(Service.look(p.name),Enum.HumanoidRigType.R15)
+   return Players:CreateHumanoidModelFromDescriptionAsync(self:look(p),Enum.HumanoidRigType.R15)
   end)
   if self.requests[p.id]~=token or self.flight.byId[p.id]~=p then if ok then model:Destroy() end;return end
   if not ok then

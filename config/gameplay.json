@@ -24,7 +24,9 @@
       "backpack_chance": 0.06,
       "skin_tones": [[234, 184, 146], [204, 142, 105], [255, 204, 153], [160, 95, 53], [124, 92, 70], [86, 66, 54],
         [245, 205, 48], [253, 234, 141]]
-    }
+    },
+    "bot_look_outfits_comment": "Outfits real players saved, worn by bots (Alan 2026-10-18); found by tools/find_bot_looks.luau.",
+    "bot_look_outfits": [5244940176, 5840039622, 11360692399, 11229081601, 7069150747, 11120854959, 6817333207]
   },
   "world": {
     "seed": 17029,
