@@ -1,7 +1,7 @@
 # Rounds never stop: winners' moment, a safe vote lap, next round where you are
 
 **Decided:** 2026-10-17 (Alan)  
-**Status:** in force (not built yet)
+**Status:** in force; first pass built 2026-10-17, revised after Alan tried it (below)
 
 ## Decision
 When a round ends, nobody is sent to a results menu. Instead:
@@ -16,6 +16,19 @@ When a round ends, nobody is sent to a results menu. Instead:
 4. **The next round starts where everyone is**, with no relaunch; planes change colour if the mode changes.
 - XP, level and the next unlock show on the main menu board and in the hangar, reachable mid-match through Menu
   without leaving the game.
+
+## Revised after Alan tried the first pass (2026-10-17)
+- **The winners' moment is a cutscene**, not the live room: planes go on autopilot and the camera glides from
+  wherever you are (your plane, or the hangar) into the **middle three desks of the row nearest the chalkboard**.
+  In the cutscene the students at those desks are replaced by the round's top 3 (whole round in free-for-all; the
+  winning team's top 3 in team modes). They stand up from their chairs, jump onto the desks and emote for about 10
+  seconds while the results card shows, then the camera glides back to where you were. No loading screen, no hard
+  cut: it must look like the same room. Emotes may later become things players buy.
+- **Results card, more detail:** per pilot folds, assists and crashes beside points; your own Paper and XP from the
+  round with your level bar filling; in team rounds names in red or blue and both team totals at the top.
+- **Vote rings:** on the window wall, much larger, and not paper rings: something that stands out, and it must be
+  obvious where to fly the moment the vote starts (Alan couldn't find the first-pass rings).
+- **Dev panel:** a Studio button that ends the match now, to test the round end.
 
 ## Why
 Alan: other games (TF2) keep you playing between rounds, and dead time makes players leave. Shooting vote targets
