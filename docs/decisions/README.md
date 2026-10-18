@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-17: [Rounds never stop: winners' moment, safe vote lap, next round where you are](2026-10-17-rounds-never-stop.md)
 - 2026-10-17: [Game words stay fresh: rotating lines for events](2026-10-17-fresh-rotating-lines.md)
 - 2026-10-17: [Builds change at the desk: Edit from the quick hangar, "Save & fly" in the hangar](2026-10-17-builds-change-at-the-desk.md)
 - 2026-10-17: [Fold credit: big damage wins, finishing pays, repair wipes old damage](2026-10-17-fold-credit-big-damage-wins.md)

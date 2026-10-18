@@ -339,7 +339,8 @@ Rewrite client steering and camera; keep client network ownership and the server
 - **TDM:** team colours on planes, outlines, names and the round strip.
 - **Hidden paper targets** (D13): kid-drawn cut-outs on buildings, client-side, fall flat, server-checked points.
 - **Escapes** to lose a chaser (D14: HVAC ducts above a drop ceiling + chalk-eraser cloud; concepts approved, build next).
-- Mode vote at the end of a round checked and on brand.
+- Round end ([decision 2026-10-17](../decisions/2026-10-17-rounds-never-stop.md)): "Pencils down!", winners' moment on the
+  desks with the results, a safe vote lap through mode rings (keys as backup), next round where everyone is.
 - Bot avatars, personalities and tier loadouts verified in every mode (bots chase the zone, never teammates).
 - Rookie graduation flow verified.
 
