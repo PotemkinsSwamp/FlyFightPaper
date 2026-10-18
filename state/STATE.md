@@ -3,9 +3,13 @@
   pass and safe server moves (details: docs/systems/flight.md, docs/systems/saving.md).
 - **Re-published by Alan (2026-10-17 evening):** everything up to the desk hangar flow and the new menu art is live.
 - **Done (Alan's notes):** clicking the weapon already on a mount takes it off; the button reads "Clear weapon spot".
-  Event messages and kill-feed lines now rotate through short paper lines (all in src/shared/Lines.luau), waits
-  described, not counted. Seen in Studio Play except the between-rounds lines. Tests 325/0.
-- **Next:** Alan picks how rounds end (straight on vs a results pause); nothing built until he decides.
+  Event lines rewritten after Alan's notes: death lines say how it happened, Minecraft-style (weapon, the building
+  or thing you hit, who chased or rammed you), classroom-themed, no sound words; your note and the kill feed say the
+  same line. All in src/shared/Lines.luau. Seen in Studio Play; tests 326/0. Alan is reviewing the full list.
+- **Rounds never stop** (Alan's decision, docs/decisions/2026-10-17-rounds-never-stop.md): "Pencils down!", winners'
+  moment on the desks with results, safe vote lap through mode rings, next round where everyone is. Not built yet.
+- **In the open place (not saved by me):** a "meme toy", "HorseDragoon", "Backpack", "ungroup pibble" and "Model" sit
+  loose in Workspace (not in the committed place). Their two scripts were read: harmless. Alan: yours to keep or delete.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
