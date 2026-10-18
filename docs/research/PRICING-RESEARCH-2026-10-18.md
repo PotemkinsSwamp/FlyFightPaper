@@ -244,7 +244,7 @@ Starter / first-purchase packs
 
 ---------------------------------------------------------------------------------------------------
 
-## Draft price ladder (Claude, 2026-10-18; waits on Alan, nothing is on sale)
+## Draft price ladder (Claude 2026-10-18, changed with Alan the same day; nothing is on sale)
 
 What is sold: [shop plan](../decisions/2026-10-18-shop-plan.md). Our numbers: a normal match pays about 430 Paper;
 parts cost 500-5,000 Paper and unlock at levels 2-40 (`config/catalog.json`). Every 100 R$ a player spends pays
@@ -254,7 +254,7 @@ Ground rules
 1. **Each step builds on the last:** a cheap first buy (49-99), the everyday middle (149-499), a few big items
    (799-2,999) that make the middle look fair.
 2. **Buying a part early never costs less than buying its Paper,** or nobody buys Paper packs.
-3. **Permanent beats long timed boosts** in value, so the 5-hour boost points people to the pass.
+3. **Permanent costs a lot** (Alan 2026-10-18): it lasts forever, so timed boosts are the everyday buy.
 4. **No random paid items** (loot boxes): every buy says exactly what you get.
 5. Prices are read from Roblox, not written into the game, so Roblox's regional pricing can lower them in poorer
    countries.
@@ -264,15 +264,11 @@ Ground rules
 | Starter pack (once per player): 1,500 Paper + 1 trail + 30 min 2x XP | 99 | Cheap first purchase is the hardest step |
 | Paper packs: 1,000 / 3,500 / 10,000 | 99 / 299 / 799 | Bonus grows with size (+17%, +25%) |
 | 2x XP or 2x Paper for 15 / 30 / 60 / 180 / 300 min | 25 / 45 / 79 / 199 / 299 | 5 h nearly the pass price |
-| Permanent 2x XP / 2x Paper | 399 / 449 | Big games: 299-450 |
+| Permanent 2x XP / 2x Paper | 999 / 1,499 | Alan: permanent is forever, so it costs a lot ($12-19) |
 | Early part unlock, by the part's level: 2-5 / 7-12 / 14-20 / 22-28 / 40 | 79 / 199 / 249 / 349 / 499 | Always above its Paper value |
-| Unlock every part now | 2,999 | Anchor; plane games bundle at 2,999 |
+| Body bundle: one body and its matching parts unlocked early | about 999 | Alan: no unlock-everything button |
 | VIP: +5 build slots, name colour, VIP desk spot | 499 | Big games: 375-800 |
-| Emotes: free-asset / custom | 49-79 / 149-249 | Alan: free ones cheap |
-| Trails: common / rare / legendary | 99 / 199 / 349 | Small items, rarity steps |
-| Sticker packs (5 stickers) | 49-99 | Sticker editor itself free |
-| Fold effects: common / rare / legendary | 149 / 299 / 449 | Shown to the whole lobby |
-| Paper types (graph, newspaper ... foil, holographic) | 149 / 249 / 399 | |
+| Cosmetics (emotes, trails, stickers, fold effects, paper types): sliding scale by how detailed and how wanted | about 25-279 ($0.30-3.49) | Alan: simple ones cost cents, detailed popular ones a few dollars |
 | Whole-plane skins: common / rare / legendary | 299 / 499 / 799 | Rivals shop 299 / 449 / 599 |
 | Drawing pass | 349 | One-time, big feature |
 | Private server, per month | 100 | Roblox lowers it by region |
