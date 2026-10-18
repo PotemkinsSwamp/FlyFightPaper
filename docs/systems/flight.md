@@ -3,8 +3,9 @@
 ## What the player sees
 You point the mouse where you want to go and the plane flies itself there, banking into turns. Takeoff from your desk is automatic. Flying burns **Lift** (your paper plane's staying-up power); when it runs out you glide down but can still steer. Upward fans refill Lift and push you up; speed bolts and boost make you faster.
 
-## Where it stands (2026-10-15)
-Works and approved in play. Boost now pushes along the nose even with no Lift. Open: Toilet Roll body jitter Alan saw once (not reproduced; needs his description).
+## Where it stands (2026-10-18)
+Works and approved in play. A scrape knocks the nose and aim away from the surface and wobbles the plane (2026-10-18,
+waits on Alan's feel check; rule in [damage and deaths](damage-and-deaths.md)). Boost now pushes along the nose even with no Lift. Open: Toilet Roll body jitter Alan saw once (not reproduced; needs his description).
 
 ## Rules
 - **Cheat checks (2026-10-17 audit):** the server compares each human plane's position and turn every 0.25 s and

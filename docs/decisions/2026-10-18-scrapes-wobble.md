@@ -1,7 +1,7 @@
 # Scrapes wobble you; head-on hits crash
 
 **Decided:** 2026-10-18 (Alan)  
-**Status:** in force; not built yet
+**Status:** in force; built 2026-10-18, waits on Alan's check
 
 ## Decision
 - **Same rule for buildings and the train's sides.** Touching a wall at a shallow angle (under about 25 degrees

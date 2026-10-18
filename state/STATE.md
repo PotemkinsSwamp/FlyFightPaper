@@ -1,32 +1,25 @@
 # Since Alan last checked (2026-10-18)
-- **Winners' moment rebuilt like the big games** (your notes, OK'd on the group shot): close-ups as 3rd, 2nd, then
-  1st hop onto their desks, then one steady shot from a little above of all three dancing with Roblox's own emotes
-  (free; 24 tried, 12 in use), paper name plates once all three are in frame, confetti. The two outside desks slide in
-  next to 1st on your screen only: the real desks can't move without moving towers by their landing paths. Results
-  card up the last 10 s, so the moment is 27 s. Fixed: a tied team round showed nobody hopping.
-- **Your Stage 9 playtest (2026-10-18): all good except wall touches.** Train: wings now count (every corner of
-  the plane's parts), joints between cars no longer kill, only its moving front kills at once; the roof feels right.
-  Still wrong (yours, same for buildings): a wing graze kills. **Next: scrapes wobble you, head-on hits crash**
-  ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md)); then your train/building re-check and Stage 9 OK.
-- **Bots look like real players:** 157 saved outfits real players made, names in today's styles (lunaaa, RAWR).
-- **Plane emote** parked for the shop stage (Meshy clips "better but odd"; 1,013 credits left).
-- Earlier: published privately; round end with vote hoops, results card and level bar; event lines; 20 speed
-  boosts; bigger Airspace zones where buildings are dense.
+- **Winners' moment rebuilt** (OK'd): 3rd, 2nd, 1st hop onto desks, then a group shot dancing with Roblox emotes,
+  name plates, confetti; results card the last 10 s (27 s in all). Details: docs/systems/modes-and-scoring.md.
+- **Wall touches are fair now (built 2026-10-18, your re-check):** a graze under about 25 degrees on a building, the
+  room or the train's side is a scrape: a little damage, the nose is knocked away and the plane wobbles, and you
+  steer back. Grinding along keeps costing more. More head-on crashes; the train's moving front still kills. Checked:
+  15 degrees along a wall wobbled and survived, 45 crashed; train sides 5-20 degrees scrape, 30+ crash, front kills;
+  bots died only to weapons in a 2-minute match. ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md))
+- Earlier: real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
 # Stage 9 — what's left (MILESTONES D13)
-Everything is built; what's left needs your eyes: the playtest list at the bottom, then your Stage 9 approval.
-Toilet Roll body jitter: not reproduced; tell me when it happens.
+Built; needs your playtest (bottom) and approval. Toilet Roll jitter: not reproduced; tell me when it happens.
 
-What works
-Flight, combat with 6 weapons, bots, menus, city, bell tower, power-ups, fans, all plane parts, hangar preview,
-two aim markers, automatic takeoff, paper deaths, moving weapons, on-brand crayon HUD, moving Airspace zone.
+What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
-Broken or not yet checked
-Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
+Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
 During the vote lap the top strip still shows the old round's mode and clock.
 Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
+Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
+  (config flight.scrape_*); crash angle 25 (combat.collision_crash_angle_deg).
 Results card "Crashes" counts every time a pilot went down (shot or crashed), from the round's deaths.
 Winners' moment: 1st does a winner's move (Godlike, Celebrate, Jumping Cheer, Greatest), 2nd and 3rd two different
 dances; desks 50 studs apart in the shot.
@@ -58,7 +51,9 @@ Waiting on Alan — Stage 9 playtest, then your approval
 2. Round end: in the hangar press "end match" (red, top). Watch the winners' moment to the end (the results card
    comes up for the last 10 s), then fly through a hula hoop on the window wall to vote. Try it once from the air,
    once from the hangar and once after a team round. Do the bots look like real players?
-3. Train: skim it (should scrape, not crash), fly into its nose (crash), fit above it in the south station.
+3. Walls and train: graze a building and the train's side with a wing (wobble, you live, steer back), fly nose-first
+   into a wall (crash), get hit by the train's front (dead), fit above it in the south station. Is the wobble too
+   much or too little?
 4. Escapes: puff the chalk eraser; take the ducts once more (spot a veteran bot diving out of a vent).
 5. Hangar: land at your desk, pick a build, Edit build, change a part, Save & fly. Does it make sense first time?
    On the weapons tab, click a mounted weapon again: it comes off. Crash a few times: the lines change each time.

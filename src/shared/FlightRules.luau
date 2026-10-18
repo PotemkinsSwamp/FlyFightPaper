@@ -147,13 +147,18 @@ function Rules.climbAllowed(y, emptyY, cruise, seconds, updraftGain)
 	return y <= emptyY + (held ^ 2 - stall ^ 2) / (2 * Config.glide_gravity_studs_s2)
 		- Config.empty_lift_descent_studs_s * 0.5 * seconds + updraftGain + 10
 end
--- Flying into a surface faster than the crash speed (nose-first, side-on) destroys the plane. A shallow
--- scrape or belly slide costs health that grows the longer contact lasts (doubling every few tenths of a second):
--- a quick touch is cheap, a long slide is deadly, and pulling up in time saves the plane.
--- `normalSpeed` is how fast the plane was moving into the surface; `touching` is how long contact has lasted.
-function Rules.collisionDamage(normalSpeed, emptyOnFloor, maximum, dt, touching)
+-- Hitting a surface more head-on than the crash angle (Alan 2026-10-18: about 25 degrees between the flight
+-- path and the wall) destroys the plane. A shallower graze or belly slide is a scrape: it costs health that grows
+-- the longer contact lasts (doubling every few tenths of a second), so a quick touch is cheap, a long grind is
+-- deadly, and pulling away in time saves the plane. `into` is how fast the plane moves into the surface, `speed`
+-- how fast it flies, `touching` how long contact has lasted.
+function Rules.crashes(into, speed)
 	local combat = require(script.Parent.Parent.Generated.Gameplay).combat
-	if emptyOnFloor or normalSpeed >= combat.collision_crash_speed then return maximum end
+	return into >= math.max(speed, 1) * math.sin(math.rad(combat.collision_crash_angle_deg))
+end
+function Rules.collisionDamage(into, speed, emptyOnFloor, maximum, dt, touching)
+	local combat = require(script.Parent.Parent.Generated.Gameplay).combat
+	if emptyOnFloor or Rules.crashes(into, speed) then return maximum end
 	return maximum * combat.collision_scrape_health_per_second * 2 ^ ((touching or 0) / combat.collision_scrape_doubling_seconds) * dt
 end
 -- Which solid part a plane's exact-shape Colliders touch, and that surface's outward normal. Shared by the

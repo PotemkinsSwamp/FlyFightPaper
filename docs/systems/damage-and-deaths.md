@@ -1,12 +1,20 @@
 # Damage and deaths
 
 ## What the player sees
-Shots and crashes take health. Grazing a wall barely hurts; slamming into one can kill. A crash crumples your plane into a paper ball; being shot down tears it into paper shreds. The camera follows your remains until you respawn about four seconds later. The pilot who did the final weapon damage gets the **fold** (the game's word for a kill), unless someone else did half the plane's health or more in the last 15 s: then they get it and the finisher gets an assist plus +25 ([decision](../decisions/2026-10-17-fold-credit-big-damage-wins.md)). Others who did enough damage get an assist. A repair wipes earlier damage.
+Shots and crashes take health. Grazing a wall or the train's side at a shallow angle is a scrape: a little damage, and the plane is knocked away and wobbles so you have to steer back; hitting more head-on crashes. A crash crumples your plane into a paper ball; being shot down tears it into paper shreds. The camera follows your remains until you respawn about four seconds later. The pilot who did the final weapon damage gets the **fold** (the game's word for a kill), unless someone else did half the plane's health or more in the last 15 s: then they get it and the finisher gets an assist plus +25 ([decision](../decisions/2026-10-17-fold-credit-big-damage-wins.md)). Others who did enough damage get an assist. A repair wipes earlier damage.
 
-## Where it stands (2026-10-15)
-Works. Death looks (shreds, paper ball, team colours) wait on Alan's eyes. Bot-vs-bot rams never land.
+## Where it stands (2026-10-18)
+Walls judged by angle (built 2026-10-18, waits on Alan's check): in Play a 15 degree graze along a wall scraped and
+wobbled (8 health over 2 s of grinding), 45 degrees crashed; bots in a 2-minute match died only to weapons. Works. Death looks (shreds, paper ball, team colours) wait on Alan's eyes. Bot-vs-bot rams never land.
 
 ## Rules
+- **Scrape or crash by angle** ([decision](../decisions/2026-10-18-scrapes-wobble.md)): touching a building, the
+  room or the train's side at under 25 degrees between the flight path and the surface (`combat.collision_crash_angle_deg`)
+  is a scrape: health that grows the longer contact lasts, and the pilot's client knocks the nose and aim 10 degrees
+  away and rolls the plane into a fading wobble (`flight.scrape_*`). More head-on is a crash. Empty Lift on the floor
+  and the train's moving front always kill. Judged by `Rules.crashes` in `src/shared/FlightRules.luau` on both the
+  server and the pilot's client. The old rulebook text below is superseded where it differs.
+
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
 
 Use swept-volume world collision with a visually honest plane proxy. Collision damage depends on normal

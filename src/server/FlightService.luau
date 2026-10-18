@@ -340,7 +340,7 @@ function Service:land(p,home,padKey)
  end
  stage(1);return true
 end
--- The plane's exact shape touching the room: steep hits destroy it, scrapes cost health while they last.
+-- The plane's exact shape touching the room: head-on hits destroy it, shallow scrapes cost health while they last.
 function Service:impact(p,normal,part,now,dt,pushed)
  local incoming=p.previousVelocity or p.body.AssemblyLinearVelocity
  -- The pilot's own client already stops the plane at the surface, so judge by where the nose points too.
@@ -349,7 +349,8 @@ function Service:impact(p,normal,part,now,dt,pushed)
  -- Contact counts as continuous while touches are less than a quarter second apart.
  if not p.scrapeSince or now-(p.lastScrape or 0)>.25 then p.scrapeSince=now end
  p.lastScrape=now
- local amount=Rules.collisionDamage(into,part.Name=="Floor" and p.model:GetAttribute("Lift")<=0,p.stats.health,dt,now-p.scrapeSince)
+ -- Crash or scrape by angle (Alan 2026-10-18): `into` against the plane's own speed.
+ local amount=Rules.collisionDamage(into,math.max(incoming.Magnitude,p.stats.speed),part.Name=="Floor" and p.model:GetAttribute("Lift")<=0,p.stats.health,dt,now-p.scrapeSince)
  if Run:IsStudio() then self.records[p.id].lastImpact={part=part:GetFullName(),speed=into,at=now,position=tostring(p.body.Position)} end
  -- Between rounds walls only bounce you off.
  if self.safe then p.model:SetAttribute("CollisionNormal",normal);p.model:SetAttribute("DeflectUntil",now+.35);return end

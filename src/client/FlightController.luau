@@ -23,12 +23,25 @@ function Controller.start(plane)
 	-- The aim is a full rotation, not yaw/pitch angles, so it can go over the top: loops, rolls, inverted.
 	local heading, bank, aimFrame, lastSteer = body.CFrame.LookVector, 0, CFrame.identity, 0
 	local wasFlying, locked, focused, boostSent, glide, momentum = false, false, true, false, nil, nil
+	-- A scrape's wobble: when it started and which way the plane rolls.
+	local wobbleAt, wobbleSide = -math.huge, 0
 	local function setAim(direction)
 		local look = aimFrame.LookVector
 		local angle = math.acos(math.clamp(look:Dot(direction), -1, 1))
 		if angle < 1e-4 then return end
 		local axis = look:Cross(direction)
 		aimFrame = CFrame.fromAxisAngle(axis.Magnitude > 1e-4 and axis.Unit or aimFrame.UpVector, angle) * aimFrame
+	end
+	-- A scrape knocks the nose and the pilot's aim away from the wall, so they have to steer back, and rolls the
+	-- touching wing up into a wobble (Alan 2026-10-18). Once per wobble, however long the contact lasts.
+	local function scrape(normal, now)
+		if now - wobbleAt < Config.scrape_wobble_seconds * 0.6 or normal.Magnitude < .5 then return end
+		local axis = heading:Cross(normal)
+		if axis.Magnitude > 1e-3 then
+			local knock = CFrame.fromAxisAngle(axis.Unit, math.rad(Config.scrape_knock_deg))
+			heading, aimFrame = knock:VectorToWorldSpace(heading), knock * aimFrame
+		end
+		wobbleAt, wobbleSide = now, orientation.CFrame.RightVector:Dot(normal) >= 0 and 1 or -1
 	end
 	local function lockMouse(lock)
 		if lock == locked then return end
@@ -83,17 +96,29 @@ function Controller.start(plane)
 		if part then
 			-- A real crash (the server's own test): crumple now instead of sliding until the server's word arrives.
 			local into = math.max(0, -drive.VectorVelocity:Dot(normal), -heading:Dot(normal) * speed)
-			if into >= Gameplay.combat.collision_crash_speed or part.Name == "Floor" and lift <= 0 then Deaths.predict(plane) end
+			if Rules.crashes(into, math.max(drive.VectorVelocity.Magnitude, speed)) or part.Name == "Floor" and lift <= 0 then
+				Deaths.predict(plane)
+			else
+				scrape(normal, now)
+			end
 			drive.VectorVelocity -= normal * math.min(0, drive.VectorVelocity:Dot(normal))
 			desired -= normal * math.min(0, desired:Dot(normal))
 			desired += normal * Config.graze_slide_push_studs_s
 		elseif now < (plane:GetAttribute("DeflectUntil") or 0) then
-			-- Graze: drop the push into the surface and slide along it.
+			-- Graze: drop the push into the surface and slide along it. The server's word is the only one for the
+			-- train, which the pilot's own wall check doesn't see.
 			local normal = plane:GetAttribute("CollisionNormal") or Vector3.zero
+			scrape(normal, now)
 			desired -= normal * math.min(0, desired:Dot(normal))
 			desired += normal * Config.graze_slide_push_studs_s
 		end
 		if now < (plane:GetAttribute("KnockUntil") or 0) then desired += plane:GetAttribute("Knock") end -- a duct fan's shove
+		local wobbling = now - wobbleAt
+		if wobbling < Config.scrape_wobble_seconds then
+			-- The roll swings back and forth and dies away over the wobble's length.
+			local fade = 1 - wobbling / Config.scrape_wobble_seconds
+			orientation.CFrame *= CFrame.Angles(0, 0, -wobbleSide * math.rad(Config.scrape_wobble_deg) * fade * fade * math.cos(2 * math.pi * Config.scrape_wobble_hz * wobbling))
+		end
 		drive.VectorVelocity = drive.VectorVelocity:Lerp(desired, 1 - math.exp(-Config.velocity_response * dt))
 	end)
 	return function()

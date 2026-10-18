@@ -175,19 +175,22 @@ function Spec.run()
 		assert(not Rules.movementAllowed(origin, Vector3.new(0, 100, 700), Vector3.zero, 0.25, 100))
 		assert(not Rules.vector(Vector3.new(0/0, 0, 0)))
 	end)
-	test("slamming a surface destroys; a scrape costs health for as long as it lasts", function()
-		local crash = require(Root.Generated.Gameplay).combat.collision_crash_speed
-		assert(Rules.collisionDamage(110, false, 120, 1/60) == 120, "nose-dive into the floor")
-		assert(Rules.collisionDamage(crash, false, 300, 1/60) == 300, "side-on into a wall")
+	test("a head-on hit destroys; a shallow scrape costs health for as long as it lasts", function()
+		local function into(degrees, speed) return speed * math.sin(math.rad(degrees)) end
+		assert(Rules.collisionDamage(110, 110, false, 120, 1/60) == 120, "nose-dive into the floor")
+		assert(Rules.collisionDamage(into(30, 90), 90, false, 300, 1/60) == 300, "30 degrees into a wall crashes")
+		assert(Rules.collisionDamage(into(20, 90), 90, false, 300, 1/60) < 300, "a 20 degree wing graze is a scrape")
+		assert(Rules.collisionDamage(into(20, 200), 200, false, 300, 1/60) < 300, "a graze at boost speed is still a scrape")
+		assert(Rules.collisionDamage(math.huge, 90, false, 300, 1/60) == 300, "the train's front running into you")
 		local function slide(seconds)
 			local total = 0
-			for t = 0, seconds - 1e-9, 1/60 do total += Rules.collisionDamage(8, false, 120, 1/60, t) end
+			for t = 0, seconds - 1e-9, 1/60 do total += Rules.collisionDamage(8, 100, false, 120, 1/60, t) end
 			return total
 		end
 		assert(slide(0.1) > 0 and slide(0.1) < 6, "a brief wing clip costs a little: "..slide(0.1))
 		assert(slide(1) < 120, "a one-second belly slide is survivable: "..slide(1))
 		assert(slide(2.5) >= 120, "a long slide destroys the plane: "..slide(2.5))
-		assert(Rules.collisionDamage(0, true, 120, 1/60) == 120, "empty Lift on the floor")
+		assert(Rules.collisionDamage(0, 100, true, 120, 1/60) == 120, "empty Lift on the floor")
 	end)
 	return result
 end
