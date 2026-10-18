@@ -11,9 +11,9 @@
   and card. Fixed on the way: a team round starting right after a free-for-all (or the reverse) crashed seating
   the bots; emotes threw giant avatars' bodies apart (Roblox scales the hip movement twice).
 - **Main-menu ruler** reads 3 to 12, right way up: uploaded with Alan's go and seen in Play.
-- **Cutscene redone after Alan's evening notes** (seen in Studio Play 2026-10-18): straight on, dead centre, 1st on
-  the middle desk; town, ceiling decorations, landing rings, planes and name tags fade out on your screen while it
-  plays and fade back after. Vote rings are now giant hula hoops (no free Creator Store hoop fit; built from round parts).
+- **Cutscene, closer and more cinematic** (Alan's notes 2026-10-18, seen in Studio Play): a close-up of each winner
+  in turn as they stand up and hop (3rd, 2nd, then 1st with a slow push in), a little from below; only what would
+  block a winner fades out, so the town and ceiling decorations stay. Vote rings are now giant hula hoops (no free Creator Store hoop fit; built from round parts).
   Smoother stand-up/hop animation uploaded with your go (free) and seen playing in Play.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
