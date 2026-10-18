@@ -173,6 +173,10 @@ mistake would be easy to make twice.
   `AnimationClipProvider:RegisterAnimationClip` (a temporary id, Studio only, register it on the client for client-side
   playback), export it with `SerializationService:SerializeInstancesAsync` + `EncodingService:Base64Encode`, then upload
   the .rbxm through Open Cloud as assetType Animation (`tools/upload_texture.py --animation`). Free.
+- **Focus blur range (2026-10-18):** `DepthOfFieldEffect.FocusDistance` and `InFocusRadius` clamp at 500 studs; our
+  room is huge, so a shot that uses the blur keeps the camera within ~480 studs of its subject (wider lens if needed).
+- **Fading town pieces for a camera shot:** fade a whole building (all CityToys "name/piece" pieces) when any piece
+  blocks; fading only the blocking pieces shows the building's dark inside.
 - **Starting a round in place:** planes carried over keep their old team; clear it and join them to the new round
   before bots fill desks, or the roster rejects them (`invalid_actor_team` / `unexpected_actor_team`).
 - **Codex picture jobs in a scratch folder** need `codex exec --skip-git-repo-check`, or Codex refuses to run outside a git folder.
