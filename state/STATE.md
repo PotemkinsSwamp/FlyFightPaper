@@ -1,7 +1,8 @@
 # Since Alan last checked (2026-10-18)
-- **Planes look like paper (started):** softer coloured-paper team colours are in for every plane. Paper texture
-  (creases, paper edges) works on the Classic sample in Studio; the other 22 parts next
-  ([decision](../docs/decisions/2026-10-18-paper-look.md)). **Duct fans** no longer poke through the ceiling.
+- **Planes look like paper:** Classic now shows its paper texture in the game (checked in Play: red, blue and the
+  half-and-half free-for-all plane; tests 328/0). It had been invisible: the uploads were "Model" wrappers, now fixed.
+  Paper maps for the other 22 parts and 3 boosters are made and checked (no symbol-like shapes); they wait on your
+  upload ([decision](../docs/decisions/2026-10-18-paper-look.md)). **Duct fans** no longer poke through the ceiling.
 - **Shop planned with you:** what we sell, whole-plane skins, sticker editor, drawing pass with safeguards,
   prestige, special planes ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)); draft prices in the
   [pricing research](../docs/research/PRICING-RESEARCH-2026-10-18.md).
@@ -50,6 +51,8 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
+00. Upload the paper textures for the other parts (380 files, about 15 min), in PowerShell from D:\FlyFightPaper:
+    `python tools/art/upload_paper.py set` (resumable: re-run if it stops). Then I wire them in and check them in Play.
 0. Studio: File > Save to File (keeps today's duct fan fix in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK.

@@ -7,8 +7,9 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-10-18)
 Softer coloured-paper team colours in (checked in Play: every plane red 214,78,72 / blue 70,128,214). Paper
-textures: Classic sample built and uploaded, tried in Studio, not yet in the game's pieces; the other 22 parts next
-([decision](../decisions/2026-10-18-paper-look.md)). `Aircraft.paint` tints a textured piece through its SurfaceAppearance.
+textures: Classic in the game's pieces (checked in Play, both team modes); the other parts' maps are built
+(`assets/models/planes/paper-set/`) and wait on upload; `tools/art/plane_pieces.py` picks up any piece with a "mesh"
+id in `paper-sample/` or `paper-set/uploads.json` ([decision](../decisions/2026-10-18-paper-look.md)). `Aircraft.paint` tints a textured piece through its SurfaceAppearance.
 Plane parts redone (Stage 8). Smart weapon placing and the crayon X are in. Team and free-for-all colours are in.
 One hangar flow ([decision](../decisions/2026-10-17-builds-change-at-the-desk.md)): Edit from the desk, Save / Save &
 fly, opens on the flown build, unsaved-changes warning. Checked in Studio Play 2026-10-17; not yet played by Alan.
