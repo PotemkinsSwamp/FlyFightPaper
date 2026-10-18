@@ -1,5 +1,6 @@
--- The vote lap's rings (Alan 2026-10-17, docs/decisions/2026-10-17-rounds-never-stop.md, revised): three big glowing
--- rings in front of the window wall, facing the room, one per mode. Fly through one to vote; each has a big sign with
+-- The vote lap's rings (Alan 2026-10-17, docs/decisions/2026-10-17-rounds-never-stop.md, revised again): three giant
+-- hula hoops in front of the window wall, facing the room, one per mode: bright plastic with glowing tape stripes.
+-- (No free Creator Store hoop matched the look on 2026-10-18, so they are built from round parts.) Fly through one to vote; each has a big sign with
 -- its mode and live vote count. Spots and size: config rounds.vote_rings / vote_ring_radius.
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Rounds = require(Root.Generated.Gameplay).rounds
@@ -17,7 +18,7 @@ function VoteRings.new(room)
 	return setmetatable({ room = room, rings = {} }, VoteRings)
 end
 
-local SEGMENTS, TUBE = 36, 18 -- a neon tube made of short blocks around the circle
+local SEGMENTS, TUBE, STRIPE_EVERY = 48, 18, 4 -- a round plastic tube of short cylinders; every 4th is glowing tape
 
 function VoteRings:show()
 	self:hide()
@@ -33,9 +34,12 @@ function VoteRings:show()
 			local angle = k / SEGMENTS * math.pi * 2
 			local piece = Instance.new("Part")
 			piece.Anchored, piece.CanCollide, piece.CanQuery, piece.CanTouch, piece.CastShadow = true, false, false, false, false
-			piece.Material, piece.Color = Enum.Material.Neon, TINTS[spot.mode]
-			piece.Size = Vector3.new(TUBE, radius * 2 * math.pi / SEGMENTS * 1.08, TUBE)
-			piece.CFrame = cframe * CFrame.new(math.cos(angle) * radius, math.sin(angle) * radius, 0) * CFrame.Angles(0, 0, angle)
+			piece.Shape = Enum.PartType.Cylinder
+			local stripe = k % STRIPE_EVERY == 0
+			piece.Material = stripe and Enum.Material.Neon or Enum.Material.SmoothPlastic
+			piece.Color = stripe and TINTS[spot.mode]:Lerp(Color3.new(1, 1, 1), 0.55) or TINTS[spot.mode]
+			piece.Size = Vector3.new(radius * 2 * math.pi / SEGMENTS * 1.08, TUBE, TUBE) -- a cylinder runs along X
+			piece.CFrame = cframe * CFrame.new(math.cos(angle) * radius, math.sin(angle) * radius, 0) * CFrame.Angles(0, 0, angle + math.pi / 2)
 			piece.Parent = ring
 		end
 		local sign = Instance.new("BillboardGui")
