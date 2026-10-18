@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-18-ui-winners-shot-redesign.md
+# LATEST → handoff-2026-10-18-ui-scrape-wobble.md
 
-★ START HERE: bots now wear outfits real players saved (157) and have modern names. Next: rebuild the winners'
-shot like Alan's reference clips: top 3 side by side on neighbouring desks, all emoting at once with Roblox's own
-emotes, one steady group shot, name plates, confetti. First test which Roblox emotes load (free).
+★ START HERE: winners' moment rebuilt and OK'd by Alan; train hits fixed. Next: scrapes wobble you instead of
+killing (shallow angle under ~25° = scrape with a wobble to correct; head-on = crash; the train's moving front still
+kills), for buildings and the train's sides; then Alan's re-check and "Stage 9 approved".
 
-Quick state: main, tests 328/0. Studio open in Edit (Play stopped); Rojo serving.
-Previous: handoff-2026-10-18-ui-bot-looks-research.md.
+Quick state: main, tests 328/0. Studio open with Play running; Rojo serving.
+Previous: handoff-2026-10-18-ui-winners-shot-redesign.md.

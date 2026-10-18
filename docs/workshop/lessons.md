@@ -171,6 +171,10 @@ mistake would be easy to make twice.
   played on our big avatars; Hero Landing and Break Dance dip below the desk.
 - **Rojo can die with a Studio reconnect** (2026-10-18): when the Studio tools come back under a new id, check that
   `rojo serve` still answers on port 34872 before trusting a test; Alan reconnects the plugin.
+- **Check a collision change by outcome before Alan plays it** (2026-10-18): the first train fix made wing touches
+  kill (cars' joints counted as the next car's front). Run the scenarios (alongside, at a joint, roof, nose-first,
+  in front of the train) with a real plane's `Colliders` corners through the hit rule and `Rules.collisionDamage`,
+  and read off scrape or crash, before handing it over.
 - **Wide shots in a tall room:** a 16:9 shot wide enough for three desks is very tall at their depth; pick where the
   spare height goes (wall above or floor below) and fade what hangs from the ceiling in front of the lens.
 - **Emotes on scaled-up avatars** (2026-10-17): Roblox scales an animation's hip ("Root" joint) movement twice on an
