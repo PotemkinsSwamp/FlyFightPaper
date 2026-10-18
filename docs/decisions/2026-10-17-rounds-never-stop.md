@@ -30,6 +30,17 @@ When a round ends, nobody is sent to a results menu. Instead:
   obvious where to fly the moment the vote starts (Alan couldn't find the first-pass rings).
 - **Dev panel:** a Studio button that ends the match now, to test the round end.
 
+## Revised again after Alan saw the cutscene (2026-10-17, evening)
+- **Camera dead centre, straight on:** 1st place on the middle desk, 2nd and 3rd either side, all three desks front
+  and centre (not at an angle with 3rd nearest the camera). It should feel like the camera zooms into the desks.
+- **Nothing in the way:** it is a cutscene, not the live room. The town and the ceiling decorations move away or
+  vanish on your screen so they never block the shot; only the three desks and their hangars (runway, arch) stay.
+  No desk landing rings ("fly-in paper circles"), no planes or name tags in the shot.
+- **Smoother animation:** standing up and jumping onto the desk look rigid; find a way to get real control over
+  the avatars' animation.
+- **Vote lap at least 30 seconds** (you may need to cross the whole room): set to 30.
+- **Vote rings don't match the look** of the game yet; they need to fit the classroom-craft style.
+
 ## Why
 Alan: other games (TF2) keep you playing between rounds, and dead time makes players leave. Shooting vote targets
 was dropped because it needs aim, ammo and maybe a trip to the desk; flying through a ring is the skill everyone has.

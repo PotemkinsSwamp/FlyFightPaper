@@ -572,7 +572,7 @@ return JSONTypes.map({
             }),
         }),
         ["vote_rings_comment"] = "Vote rings (Alan 2026-10-17, revised): three big neon rings in front of the window wall, facing the room, FFA / TDM / CONTROL from left to right as you look at the wall (south to north), like the vote card.",
-        ["vote_seconds"] = 20,
+        ["vote_seconds"] = 30,
         ["vote_tie_rule"] = "least_recent_then_seeded",
         ["winner_desks"] = JSONTypes.array({
             [1] = "DeskNorth3",
