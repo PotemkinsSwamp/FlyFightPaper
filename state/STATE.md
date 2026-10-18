@@ -1,13 +1,14 @@
 # Since Alan last checked (2026-10-17)
-- **Published privately** ("FlyFightPaper(First Fold)", server size 12); re-published by Alan with the security
-  pass and safe server moves (details: docs/systems/flight.md, docs/systems/saving.md).
-- **Re-published by Alan (2026-10-17 evening):** everything up to the desk hangar flow and the new menu art is live.
+- **Published privately** ("FlyFightPaper(First Fold)", 12 players); live up to the desk hangar flow and menu art.
 - **Done (Alan's notes):** clicking the weapon already on a mount takes it off; the button reads "Clear weapon spot".
   Event lines rewritten after Alan's notes: death lines say how it happened, Minecraft-style (weapon, the building
   or thing you hit, who chased or rammed you), classroom-themed, no sound words; your note and the kill feed say the
   same line. All in src/shared/Lines.luau. Seen in Studio Play; tests 326/0. Alan is reviewing the full list.
-- **Rounds never stop** (Alan's decision, docs/decisions/2026-10-17-rounds-never-stop.md): "Pencils down!", winners'
-  moment on the desks with results, safe vote lap through mode rings, next round where everyone is. Not built yet.
+- **Rounds never stop** (docs/decisions/2026-10-17-rounds-never-stop.md): first pass built and tried by Alan (planes
+  hold, winners on desks, safe vote lap through rings, next round in place; old results menu removed). Next: his
+  revisions: cutscene at the chalkboard desks, richer results card, big window-wall rings, end-match dev button,
+  XP bar + next unlock on the main menu board and hangar.
+- **Main-menu ruler** (numbers 1-12, right way up): its own session, waiting on Alan's OK before upload.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.

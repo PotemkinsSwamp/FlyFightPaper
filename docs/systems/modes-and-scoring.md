@@ -3,7 +3,11 @@
 ## What the player sees
 Three modes, voted on after each round: free-for-all (8 minutes or 20 folds), team deathmatch (8 minutes or 60 team folds) and Airspace Control (hold a moving zone; first team to 240). Every point you earn pops up above your plane ("+100 FOLD"). Hidden kid-drawn paper targets on rooftops pay extra.
 
-## Where it stands (2026-10-15)
+## Where it stands (2026-10-17)
+Round end, first pass ([decision](../decisions/2026-10-17-rounds-never-stop.md)): nobody leaves the room; planes hold
+still, the top 3 jump on their own desks, then a safe vote lap through mode rings (keys 1/2/3) and the next round
+starts in place. Alan tried it: being redone as a cutscene at the chalkboard desks, a richer results card, bigger
+rings on the window wall, and an end-match dev button. Tests 328/0.
 Zone moves and looks right. Paper targets stand on roofs; two (homework, the second broccoli) were buried inside
 buildings placed later and moved to open roofs (2026-10-15). A hit tested in Play: the server pays 50 and tells the
 shooter's screen; the board falling flat not yet seen (Studio wasn't drawing). Team deathmatch passed a full match by
