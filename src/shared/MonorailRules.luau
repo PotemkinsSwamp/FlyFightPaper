@@ -93,21 +93,34 @@ end
 
 -- Which car (index) a plane is touching, or nil, from points on the plane: its middle, or every corner of its parts
 -- (Alan 2026-10-18: a wing or the tail touching the train counts, not only the plane's middle). Also the world
--- normal of the car face the deepest point is nearest to (the way out), so a touch can scrape like a building wall.
-function MonorailRules.hit(cars, points)
+-- normal of the face it came in through (the way out), so a touch scrapes like a building wall: traced back along
+-- the plane's motion against that car (`velocity` and `carVelocities`, world), else the nearest face. Where two cars
+-- meet is inside the train, never a face (Alan 2026-10-18: a wing near a joint was taken for the next car's front).
+local AXES = { "X", "Y", "Z" }
+function MonorailRules.hit(cars, points, velocity, carVelocities)
 	if typeof(points) == "Vector3" then points = { points } end
 	local hitCar, deepest, normal = nil, -1, nil
 	for i, car in ipairs(cars) do
 		local half = car.size / 2 + Vector3.one * Mono.plane_margin
+		local moving = velocity and carVelocities and car.cframe:VectorToObjectSpace(velocity - carVelocities[i])
 		for _, position in points do
 			local p = car.cframe:PointToObjectSpace(position)
 			if math.abs(p.X) <= half.X and math.abs(p.Y) <= half.Y and math.abs(p.Z) <= half.Z then
 				local depth = { half.X - math.abs(p.X), half.Y - math.abs(p.Y), half.Z - math.abs(p.Z) }
-				local least = math.min(depth[1], depth[2], depth[3])
+				-- The front (-Z) of every car but the first, and the back of every car but the last, are joints.
+				local joint = (p.Z < 0 and i > 1) or (p.Z >= 0 and i < #cars)
+				local least = math.min(depth[1], depth[2], joint and math.huge or depth[3])
 				if least > deepest then
-					local axis = depth[1] == least and Vector3.xAxis or depth[2] == least and Vector3.yAxis or Vector3.zAxis
-					local side = (axis == Vector3.xAxis and p.X or axis == Vector3.yAxis and p.Y or p.Z) >= 0 and 1 or -1
-					hitCar, deepest, normal = i, least, car.cframe:VectorToWorldSpace(axis * side)
+					local axis, soonest = nil, math.huge
+					for k, name in AXES do
+						local v = moving and moving[name] or 0
+						if not (k == 3 and joint) and v ~= 0 and (p[name] >= 0) == (v < 0) and depth[k] / math.abs(v) < soonest then
+							axis, soonest = k, depth[k] / math.abs(v)
+						end
+					end
+					axis = axis or (depth[1] == least and 1 or depth[2] == least and 2 or 3)
+					local unit = ({ Vector3.xAxis, Vector3.yAxis, Vector3.zAxis })[axis]
+					hitCar, deepest, normal = i, least, car.cframe:VectorToWorldSpace(unit * (p[AXES[axis]] >= 0 and 1 or -1))
 				end
 			end
 		end

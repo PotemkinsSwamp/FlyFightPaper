@@ -549,10 +549,16 @@ function Service:step(dt)
     for _,piece in ipairs(colliders and colliders:GetChildren() or {}) do
      for i=0,7 do table.insert(points,piece.CFrame*(piece.Size*Vector3.new(i%2-.5,(i//2)%2-.5,i//4-.5))) end
     end
-    local car,normal=MonorailRules.hit(train,points)
+    local moving=near and {}
+    for i in ipairs(moving and train or {}) do moving[i]=MonorailRules.velocity(i,now) end
+    local car,normal=MonorailRules.hit(train,points,p.previousVelocity or p.body.AssemblyLinearVelocity,moving)
     if car then
      self.trainCars=self.trainCars or workspace:FindFirstChild("MonorailTrain",true)
-     self:impact(p,normal,self.trainCars and self.trainCars:FindFirstChild("car-"..car) or p.body,now,dt,math.max(0,MonorailRules.velocity(car,now):Dot(normal)))
+     -- The front of the moving train running into a plane (a T-bone, or catching a slow plane from behind) kills at
+     -- once (Alan 2026-10-18); everywhere else the train is a building wall.
+     local pushed=math.max(0,MonorailRules.velocity(car,now):Dot(normal))
+     if pushed>Gameplay.world.monorail.nose_kill_speed then pushed=math.huge end
+     self:impact(p,normal,self.trainCars and self.trainCars:FindFirstChild("car-"..car) or p.body,now,dt,pushed)
     end
    end
    if p.model:GetAttribute("State")~="FLYING" then continue end

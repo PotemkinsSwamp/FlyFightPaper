@@ -74,6 +74,15 @@ function Spec.run()
 		assert(normal:Dot(car.UpVector) > 0.99, "skimming the roof scrapes the roof (its way out is up)")
 		local _, front = Rules.hit(cars, cars[1].cframe * Vector3.new(0, 0, -(cars[1].size.Z / 2 + Mono.plane_margin - 0.5)))
 		assert(front:Dot(cars[1].cframe.LookVector) > 0.99, "in front of the nose car the way out is forward")
+		local joint = cars[1].cframe * Vector3.new(half.X + Mono.plane_margin - 0.5, 0, cars[1].size.Z / 2 - 0.2)
+		local _, side = Rules.hit(cars, joint)
+		assert(math.abs(side:Dot(cars[1].cframe.RightVector)) > 0.99, "a wing tip by a joint scrapes the side, never the next car's front")
+		local slow = {}
+		for i, c in cars do slow[i] = c.cframe.LookVector * Mono.speed end
+		local _, alongside = Rules.hit(cars, car * Vector3.new(half.X + Mono.plane_margin - 0.2, 0, 3), car.LookVector * 40 - car.RightVector * 3, slow)
+		assert(alongside:Dot(car.RightVector) > 0.99, "flying alongside, slower than the train, a wing tip scrapes the side")
+		local _, tbone = Rules.hit(cars, cars[1].cframe * Vector3.new(2, 0, -(cars[1].size.Z / 2 + Mono.plane_margin - 0.5)), cars[1].cframe.RightVector * 80, slow)
+		assert(tbone:Dot(cars[1].cframe.LookVector) > 0.99, "crossing in front of the moving train, the nose hits you")
 	end)
 	return result
 end
