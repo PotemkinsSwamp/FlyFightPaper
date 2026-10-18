@@ -11,9 +11,9 @@
   and card. Fixed on the way: a team round starting right after a free-for-all (or the reverse) crashed seating
   the bots; emotes threw giant avatars' bodies apart (Roblox scales the hip movement twice).
 - **Main-menu ruler** reads 3 to 12, right way up: uploaded with Alan's go and seen in Play.
-- **Alan saw the cutscene (evening):** camera must be dead centre and straight on, town/ceiling decor/landing rings/
-  planes hidden on your screen during it, smoother stand-up and jump (uploaded animations, route being checked),
-  vote rings become hula hoops, vote lap now 30 s. Next session builds these.
+- **Cutscene redone after Alan's evening notes** (seen in Studio Play 2026-10-18): straight on, dead centre, 1st on
+  the middle desk; town, ceiling decorations, landing rings, planes and name tags fade out on your screen while it
+  plays and fade back after. Still to do: smoother stand-up/jump (uploaded animations, cost first), hula-hoop rings.
 - **Join straight in:** a bot leaves at once for a joining player; beginners join a friend after one match.
 - **20 speed boosts** (8 new, in the fly-through holes: porthole, tape roll, ruler stilts, abacus slot, block arch,
   pencil-case bridge, under both stations below the train). **Paper targets** back on ten open rooftops.
@@ -30,13 +30,14 @@ two aim markers, automatic takeoff, paper deaths, moving weapons, on-brand crayo
 
 Broken or not yet checked
 Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
-One cutscene frame showed a big green shape across the camera for a moment (probably a plane mid-takeoff when
-everything froze); watch for it. During the vote lap the top strip still shows the old round's mode and clock.
+During the vote lap the top strip still shows the old round's mode and clock.
 Vote-ring arrow not yet seen pointing (needs flying away from the rings).
 Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
 Results card "Crashes" counts every time a pilot went down (shot or crashed), from the round's deaths.
+Cutscene: the winners get the screen to themselves for about 4 s, then the camera steps back and right so the
+results card fits beside the desks (dead centre would put the card over 3rd place).
 Winner desks: the chalkboard row has six desks, so "middle three" = desks 2-3-4, 1st in the middle (config rounds.winner_desks).
 Duct props: cobwebs, spiders, toys and tools are see-through to planes (fly through them). Veterans flee to the
   ducts 40% of the time when shot at (vent within 500), wander in 12% of patrol turns; others never (config bots.*.duct_*).
