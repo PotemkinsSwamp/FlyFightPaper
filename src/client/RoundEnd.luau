@@ -2,9 +2,12 @@
 -- "Pencils down!", then the winners' cutscene (WinnersCutscene) with the results card; then the vote lap card (fly
 -- through a ring, or press 1/2/3); then the next round's name. No menu opens.
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 local Input = game:GetService("UserInputService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local MatchRules = require(Root.Shared.MatchRules)
+local Economy = require(Root.Shared.EconomyRules)
+local LEVEL_CAP = require(Root.Generated.Economy).level_cap
 local Lines = require(Root.Shared.Lines)
 local Rounds = require(Root.Generated.Gameplay).rounds
 local UIArt = require(Root.Shared.UIAssets)
@@ -37,19 +40,41 @@ function RoundEnd.start()
 	local subline = words(banner, "Subline", "", 40, 92, 720, 44, 34)
 	subline.TextXAlignment = Enum.TextXAlignment.Center
 
-	-- Results card (right).
-	local card = image(sheet, "Results", UIArt.ingame.indexCard, 1330, 230, 560, 640, 1.5)
+	-- Results card (right): every pilot's folds, assists, crashes and points; team totals in team rounds; your
+	-- Paper and XP from the round with your level bar filling up.
+	-- The index card art has tape above the paper: the paper itself runs x 44-639, y 150-974 inside this box.
+	local card = image(sheet, "Results", UIArt.ingame.indexCard, 1220, 40, 680, 1000, 1)
 	card.ScaleType = Enum.ScaleType.Stretch
-	local title = words(card, "Title", "Results", 0, 40, 560, 60, 52)
+	local title = words(card, "Title", "Results", 44, 158, 595, 56, 50)
 	title.TextXAlignment = Enum.TextXAlignment.Center
+	local teams = words(card, "Teams", "", 44, 210, 595, 44, 38)
+	teams.TextXAlignment, teams.RichText = Enum.TextXAlignment.Center, true
+	local function cell(name, text, x, y, w, size, centred)
+		local label = words(card, name, text, x, y, w, 44, size)
+		label.TextTruncate = Enum.TextTruncate.AtEnd
+		if centred then label.TextXAlignment = Enum.TextXAlignment.Center end
+		return label
+	end
+	local COLUMNS = { { "Folds", 300, 74, "kills" }, { "Assists", 374, 84, "assists" }, { "Crashes", 458, 90, "deaths" }, { "Pts", 548, 80, "contribution" } }
+	cell("HeadPilot", "Pilot", 100, 256, 200, 26).TextColor3 = Color3.fromRGB(30, 60, 140)
+	for _, column in COLUMNS do cell("Head" .. column[1], column[1], column[2], 256, column[3], 24, true).TextColor3 = Color3.fromRGB(30, 60, 140) end
 	local rows = {}
 	for i = 1, 9 do
-		local highlight = image(card, "Mine" .. i, UIArt.results.rowHighlight, 40, 100 + i * 52, 480, 48)
+		local y = 248 + i * 44
+		local highlight = image(card, "Mine" .. i, UIArt.results.rowHighlight, 50, y - 2, 584, 44)
 		highlight.ScaleType, highlight.Visible = Enum.ScaleType.Stretch, false
-		rows[i] = { highlight = highlight, place = words(card, "Place" .. i, "", 60, 104 + i * 52, 70, 44, 32),
-			name = words(card, "Name" .. i, "", 130, 104 + i * 52, 270, 44, 32), points = words(card, "Points" .. i, "", 400, 104 + i * 52, 100, 44, 32) }
-		rows[i].name.TextTruncate, rows[i].points.TextXAlignment = Enum.TextTruncate.AtEnd, Enum.TextXAlignment.Right
+		rows[i] = { highlight = highlight, place = cell("Place" .. i, "", 56, y, 46, 26), name = cell("Name" .. i, "", 100, y, 200, 30), numbers = {} }
+		for _, column in COLUMNS do rows[i].numbers[column[4]] = cell(column[1] .. i, "", column[2], y, column[3], 30, true) end
 	end
+	local earned = cell("Earned", "", 44, 746, 595, 36, true)
+	local level = cell("Level", "", 64, 794, 260, 38)
+	local count = cell("XPCount", "", 340, 794, 280, 30)
+	count.TextXAlignment = Enum.TextXAlignment.Right
+	local barFrame = image(card, "XPFrame", UIArt.results.xpFrame, 64, 842, 556, 66)
+	barFrame.ScaleType = Enum.ScaleType.Stretch
+	local barFill = image(card, "XPFill", UIArt.results.xpFill, 76, 853, 532, 44)
+	barFill.ScaleType, barFill.AnchorPoint, barFill.Position, barFill.ZIndex = Enum.ScaleType.Stretch, Vector2.new(0, 0.5), UDim2.fromOffset(76, 875), barFrame.ZIndex - 1
+	local xpBar = { level, count, barFrame, barFill }
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -65,25 +90,49 @@ function RoundEnd.start()
 		end, 38)
 	end
 
-	local state = { phase = nil, snap = nil, stage = "banner" }
+	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, mine = nil, cardAt = 0 }
 	local function show(part) for _, child in { banner, card, vote } do child.Visible = child == part or (type(part) == "table" and table.find(part, child) ~= nil) end end
 
+	local TEAM_INK = { ["team:1"] = Color3.fromRGB(200, 40, 40), ["team:2"] = Color3.fromRGB(40, 80, 200) }
 	local function fillResults(snap)
-		local list = table.clone(snap.result and snap.result.participants or {})
+		local result = snap.result or {}
+		local list = table.clone(result.participants or {})
 		table.sort(list, function(a, b) return (a.place or 99) < (b.place or 99) end)
 		local me = player.DisplayName
+		state.mine = nil
+		for _, p in list do if p.displayName == me then state.mine = p end end
 		for i, row in rows do
 			local p = list[i]
 			-- The last line is always you, if you didn't make the top 8.
-			if i == #rows then
-				for _, other in list do if other.displayName == me and (other.place or 99) > #rows - 1 then p = other end end
-			end
-			row.place.Text = p and PLACES[p.place] or p and tostring(p.place) or ""
+			local myLine = state.mine and table.find(list, state.mine)
+			if i == #rows and myLine and myLine >= #rows then p = state.mine end
+			row.place.Text = p and (PLACES[p.place] or tostring(p.place or "")) or ""
 			row.name.Text = p and p.displayName or ""
-			row.points.Text = p and tostring(math.floor(p.contribution or 0)) or ""
-			row.highlight.Visible = p ~= nil and p.displayName == me
+			row.name.TextColor3 = p and TEAM_INK[p.teamId] or PaperUI.INK
+			for key, label in row.numbers do label.Text = p and tostring(math.floor(p[key] or 0)) or "" end
+			row.highlight.Visible = p ~= nil and p == state.mine
 		end
+		local totals = snap.mode ~= "FFA" and snap.teams
+		teams.Text = totals and string.format('<font color="#C82828">Red %d</font>  -  <font color="#2850C8">Blue %d</font>', math.floor(totals["team:1"] or 0), math.floor(totals["team:2"] or 0)) or ""
+		earned.Text = state.mine and string.format("You: +%d Paper   +%d XP", state.mine.paper or 0, state.mine.xp or 0) or ""
 	end
+	-- Your level bar fills from where you were before this round to where you are now.
+	RunService.RenderStepped:Connect(function()
+		local mine = state.mine
+		local shown = cover.Visible and card.Visible and mine ~= nil and state.profileXP ~= nil
+		for _, piece in xpBar do piece.Visible = shown end
+		if not shown then return end
+		local after = math.max(state.profileXP, mine.xp or 0)
+		local before = math.max(0, after - (mine.xp or 0))
+		local t = math.clamp((os.clock() - state.cardAt - 0.5) / 1.5, 0, 1)
+		local xp = before + (after - before) * (1 - (1 - t) ^ 2)
+		local at, into, need = Economy.levelForXP(math.floor(xp * 1000))
+		local capped = at == LEVEL_CAP
+		level.Text = "Level " .. tostring(at or 1)
+		count.Text = capped and "max level" or string.format("%d / %d XP", (into or 0) // 1000, (need or 0) // 1000)
+		barFill.Size = UDim2.fromOffset(532 * (capped and 1 or need and need > 0 and math.clamp(into / need, 0, 1) or 0), 44)
+	end)
+	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) state.profileXP = profile.xp end)
 
 	local function winnerLine(snap)
 		local result = snap.result or {}
@@ -101,8 +150,9 @@ function RoundEnd.start()
 			state.phase = snap.phase
 			Cutscene.stop()
 			if snap.phase == "RESULTS" and inMatch then
-				state.stage = "card" -- stays on the card if the cutscene can't play
+				state.stage, state.cardAt = "card", os.clock() -- stays on the card if the cutscene can't play
 				Cutscene.play(MatchRules.winners(snap.result), function(stage)
+					if stage == "card" and state.stage ~= "card" then state.cardAt = os.clock() end
 					state.stage = stage
 					if state.snap then update(state.snap) end
 				end)
