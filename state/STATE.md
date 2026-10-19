@@ -1,5 +1,5 @@
 # Since Alan last checked (2026-10-18)
-- **Planes look like paper (needs your OK):** every part and booster now has its paper texture in the game:
+- **Planes look like paper (you approved it):** every part and booster now has its paper texture in the game:
   creases, paper edges, cardboard, toilet roll, tape and rubber bands, tinted red, blue, or half-and-half in
   free-for-all. Checked in Studio Play, sizes unchanged, tests 328/0
   ([decision](../docs/decisions/2026-10-18-paper-look.md)). **Duct fans** no longer poke through the ceiling.
@@ -14,7 +14,7 @@
   bots died only to weapons in a 2-minute match. ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md))
 - Earlier: real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
-# Now: paper texture on all plane parts, then prestige design and the Stage 10 shop (MILESTONES)
+# Now: prestige design, then the Stage 10 shop (stays off until you OK prices) (MILESTONES)
 Toilet Roll jitter: not reproduced; tell me when it happens.
 
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
@@ -51,8 +51,6 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-00. Paper look: try a match and the hangar with different parts; tell me any part that looks wrong. Your OK
-    closes it, then prestige design.
 0. Studio: File > Save to File (keeps today's duct fan fix in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK.
