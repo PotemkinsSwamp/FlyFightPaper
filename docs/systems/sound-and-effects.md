@@ -14,9 +14,10 @@ final loudness balance. Death looks wait on his eyes.
 ## Rules
 The sound brief is in [Art direction](../vision/ART_DIRECTION.md) ("Audio and effects"). Only licensed sounds from
 Roblox's free audio library or the Creator Store. Music: a shuffled playlist of free APM tracks in menus and matches
-(ids in `Audio.luau`). Tutorial lessons have one calm song of their own, looped and quiet, no classroom chatter, and a
-rising two-note chime for every finished step (Alan, 2026-10-18); Combat Training will get different music.
-Lesson song: APM "Daisy Fresh" (1839864816), Alan's pick by ear from eight free licensed choices (2026-10-18).
+(ids in `Audio.luau`; Alan added Sprint, Comedy Clip (a), Tough Guys (A) and Silly Chase by ear, 2026-10-18).
+Each tutorial lesson has one song of its own, looped and quiet, no classroom chatter, and a
+rising two-note chime for every finished step (Alan, 2026-10-18). Lesson songs (Alan's picks by ear, 2026-10-18): Flight School APM "Daisy Fresh"
+(1839864816); Combat Training APM "Liberty Bell (a) 60" (105397100521450).
 Sounds without a place play straight in SoundService (before 2026-10-18 they sat at the room's middle and faded with
 distance); every sound is loaded when the game starts.
 

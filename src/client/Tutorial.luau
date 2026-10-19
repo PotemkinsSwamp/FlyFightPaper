@@ -38,7 +38,7 @@ local YELLOW=Color3.fromRGB(255,225,70)
 
 function Tutorial.begin(lesson)
  Tutorial.lessonKey=lesson or "flight";Tutorial.lesson=Lessons[Tutorial.lessonKey];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
- Root:SetAttribute("TutorialOpen",true)
+ Root:SetAttribute("TutorialLesson",Tutorial.lessonKey);Root:SetAttribute("TutorialOpen",true) -- lesson first: its song is picked when TutorialOpen changes
  Root.RoundAction:FireServer("practice",Tutorial.lessonKey)
 end
 

@@ -68,20 +68,22 @@ function Audio.start(getPlane)
  local whoosh=Instance.new("Sound");whoosh.Name="PaperWhoosh";whoosh.SoundId="rbxassetid://9125742262";whoosh.Looped=true;whoosh.Volume=0;whoosh.Parent=Sounds;whoosh:Play()
  -- Background music: a shuffled playlist of free APM tracks licensed for Roblox games (Alan: faster, playful, a
  -- playlist). Add or remove ids here. The Music slider sets it; the classroom hum follows the Sound slider.
- local playlist={1844592742,1836626222,1842246698,1842172723} -- Action Kids, Frisky, Funky Thing, Disguise
+ -- Sprint, Comedy Clip (a), Tough Guys (A) and Silly Chase: Alan's picks by ear 2026-10-18.
+ local playlist={1844592742,1836626222,1842246698,1842172723,1837585595,1842172309,1840752122,1836289689} -- Action Kids, Frisky, Funky Thing, Disguise, Sprint, Comedy Clip, Tough Guys, Silly Chase
  for i=#playlist,2,-1 do local j=math.random(i);playlist[i],playlist[j]=playlist[j],playlist[i] end
  -- Every sound loads now, so the first play of each isn't cut short while it loads.
  task.spawn(function() local ids={};for _,definition in definitions do table.insert(ids,id(definition)) end;game:GetService("ContentProvider"):PreloadAsync(ids) end)
  -- Lessons have one calm song of their own (Alan: peaceful, focusing, playful, subtle, maybe classical; one song,
  -- not a playlist), looped, quiet, and no classroom chatter, so the step chimes stand out.
- -- APM "Daisy Fresh" (simple and child-like), Alan's pick by ear 2026-10-18.
- local LESSON_SONG=1839864816
+ -- Each lesson has its own (Alan's picks by ear 2026-10-18): Flight School APM "Daisy Fresh" (simple and
+ -- child-like), Combat Training APM "Liberty Bell (a) 60".
+ local LESSON_SONGS={flight=1839864816,combat=105397100521450}
  local function inLesson() return Root:GetAttribute("TutorialOpen")==true end
  local music=Instance.new("Sound");music.Name="Music";music.Parent=Sounds
  local track=0
  local function nextTrack()
   music.Looped=inLesson()
-  if inLesson() then music.SoundId="rbxassetid://"..LESSON_SONG
+  if inLesson() then music.SoundId="rbxassetid://"..(LESSON_SONGS[Root:GetAttribute("TutorialLesson")] or LESSON_SONGS.flight)
   else track=track%#playlist+1;music.SoundId="rbxassetid://"..playlist[track] end
   music:Play()
  end
