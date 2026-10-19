@@ -1,18 +1,12 @@
-# Since Alan last checked (2026-10-18)
-- **Tutorial: Flight School approved by you.** the "Grabbing attention" pass is built in your approved
-  crayon look: dim round the one thing to do, crayon frame and tag, a bold line along a flyable path, a turn arrow only
-  when you fly the wrong way, a fixed hoop course, quiet "Daisy Fresh" music and a ding per step. Flight School can't be
-  lost (bounce off walls, Lift and Boost never run out). Seven rounds of your notes are in
-  ([playtest](../docs/playtests/2026-10-18-flight-school-attention.md)). Next: Combat Training, planned with you first.
-- **Fixed for the whole game:** sounds that should be heard everywhere (round bell, lock beeps, desk sounds) faded
-  away from the room's middle; the fan's whoosh is softer.
-- **Real shop code built, switched off (Stage 10):** when someone pays, the game adds the item and saves it before
-  telling Roblox "done", so nobody is charged without getting it and nobody gets it twice. Permanent 2x passes are
-  checked with Roblox on join. Also: early part unlocks (one Roblox product per part, 28 parts). Nothing can be bought
-  until you OK prices and we put the real product numbers in. Tests 388/0
-  ([how it works](../docs/systems/economy-and-shop.md)).
+# Since Alan last checked (2026-10-19)
+- **Combat School built, five rounds of your notes in** ([playtest](../docs/playtests/2026-10-19-combat-school.md)):
+  aiming in near-still slow motion (star, still targets, the lead ring, eraser lock), then Paper Pals that can't fold
+  you, slow erasers to dodge, and a smooth way back after a crash. Every step freezes the world 5 s so you can read.
+  The Tutorial button asks Flight School or Combat School; a brand-new player is asked if they want the tutorial.
+- **For the whole game:** the dot turns red only on the orange ring (you, after a match); the guns' aim help stays.
+  A respawned practice plane is the training plane again (the "no boost" bug). Four more songs in the playlist.
 
-# Now: Tutorial, Combat Training next (plan with you first) (MILESTONES); Stage 10 code done and off
+# Now: Tutorial, Combat School waiting on your notes (MILESTONES); Stage 10 code done and off
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
@@ -20,6 +14,9 @@ During the vote lap the top strip still shows the old round's mode and clock.
 Track C saving needs a private publish (Alan's go). Toilet Roll jitter: not reproduced; tell me when it happens. Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
+Combat School: Pals fly at 60% speed; first Pal eraser at half speed, 80% of that after each hit (floor 30%);
+  crossing targets 350 studs away at 60 studs/s. "No thanks" to the welcome question isn't saved: a player who never
+  plays a match is asked again next visit. Training Room time to 10 min (not built yet).
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
   buying early is useless). Buying a part with Paper still needs the level.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
@@ -49,7 +46,7 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-- OK the Combat Training plan (next session brings it), then test it after it's built.
+- Your notes on Combat School (next session).
 - Backlog (yours): a new fan sound for the real game (the current one is a wind tunnel).
 - Private publish (your go) to test the real move into the private tutorial room.
 0. Studio: File > Save to File (keeps today's duct fan fix in the place file).
