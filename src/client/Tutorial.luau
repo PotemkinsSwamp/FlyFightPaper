@@ -155,7 +155,7 @@ function Tutorial.start(getPlane)
   local before=boardBefore
   local function start() if before then before() end;Tutorial.begin(key) end
   if player:GetAttribute("InMatch") and not Root:GetAttribute("TutorialRoom") then
-   choose("Leave this match?","This lesson runs in your own Training Room, so you'll leave this match. Your progress is saved.",
+   choose("Leave this match?","This runs in your own private room, so you'll leave this match. Your progress is saved.",
     {{"Go",start},{"Stay",function() end,"red"}})
   else start() end
  end

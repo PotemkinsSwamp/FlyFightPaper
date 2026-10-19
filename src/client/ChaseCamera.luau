@@ -7,6 +7,7 @@ local Camera = {}
 
 -- Feel tuning. Position follows a bit slower than rotation so turns read as motion.
 local DISTANCE, HEIGHT, LOOK_AHEAD = 24, 6, 60
+local RANGE_DISTANCE, RANGE_HEIGHT = 15, 4.5
 local POSITION_RESPONSE, ROTATION_RESPONSE = 9, 16
 local BASE_FOV, MAX_EXTRA_FOV, FOV_RESPONSE = 72, 12, 4
 local SHAKE_ON_HIT, SHAKE_ON_NEAR_MISS, SHAKE_DECAY = 0.6, 0.3, 3
@@ -58,9 +59,12 @@ function Camera.start(getPlane)
 		local aim = remains and flat and flat.Magnitude > 0.1 and (flat.Unit - Vector3.yAxis * 0.4).Unit or FlightState.aim or body.CFrame.LookVector
 		local aimUp = not remains and FlightState.aimUp or Vector3.yAxis
 		local focus = remains or body.Position + aimUp * 2
-		if not position then position, look, up = focus - aim * DISTANCE + aimUp * HEIGHT, aim, aimUp end
+		-- The Range: closer, so the plane shows from the wings up at the bottom of the view.
+		local distance, height = DISTANCE, HEIGHT
+		if plane:GetAttribute("Pinned") then distance, height = RANGE_DISTANCE, RANGE_HEIGHT end
+		if not position then position, look, up = focus - aim * distance + aimUp * height, aim, aimUp end
 		up = up:Lerp(aimUp, smooth(ROTATION_RESPONSE, dt)).Unit
-		local desired = focus - aim * DISTANCE + up * HEIGHT
+		local desired = focus - aim * distance + up * height
 		if (desired - position).Magnitude > 150 then position, look = desired, aim end
 		position = position:Lerp(desired, smooth(POSITION_RESPONSE, dt))
 		look = look:Lerp(aim, smooth(ROTATION_RESPONSE, dt)).Unit

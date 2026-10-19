@@ -253,4 +253,12 @@ local ERASER_STEPS={
 -- One lesson after Flight School (Alan 2026-10-19: "flight school, then combat school").
 Lessons.combat={name="Combat School",doneTitle="You're ready!",steps={launch()}}
 for _,list in {AIM_STEPS,FIGHT_STEPS,ERASER_STEPS} do for _,step in list do table.insert(Lessons.combat.steps,step) end end
+-- The Range (not a lesson: it never ends; Menu > Leave goes back). Rough build for feel: one note, the plane hangs on
+-- the stage and turns to aim, the cut-outs swing on their sticks.
+Lessons.range={name="The Range",steps={{text="Shoot the paper planes! Close ones show how fast a weapon tears them; far ones need leading. Esc > Leave when you're done.",key="Mouse",
+ update=function(ctx)
+  -- Asked again until the plane is on the stage (the first ask can come before the server has made it).
+  if ctx.state~="FLYING" and os.clock()-(ctx.data.asked or 0)>1 then ctx.data.asked=os.clock();ctx.lesson({range=true}) end
+  return false
+ end}}}
 return Lessons

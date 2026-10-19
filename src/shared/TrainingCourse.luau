@@ -23,6 +23,14 @@ Course.DRILLS={
  fast={{yaw=0,range=350,health=12,speed=120,span=170,depth=25}},
  fastEraser={{yaw=0,range=350,health=30,speed=45,span=110,depth=20,eraserOnly=true}},
 }
+-- The Range (docs/plan/TUTORIAL-PLAN.md, rough build for feel): far from the classroom, the plane hangs at `origin`
+-- facing the stage (-Z); targets are flat cut-outs on sticks in three rows (`at`: offset from origin), each swinging
+-- side to side (it flips at the ends) and bobbing. A folded one is replaced after the usual respawn wait.
+Course.RANGE={origin=CFrame.new(0,900,12000),targets={
+ {at=Vector3.new(0,5,-160),health=40,speed=30,span=60,depth=4,bob=12,color="red"},
+ {at=Vector3.new(-80,40,-360),health=40,speed=50,span=110,depth=4,bob=25,color="blue",phase=math.pi},
+ {at=Vector3.new(60,80,-620),health=40,speed=70,span=170,depth=4,bob=35,color="red"},
+}}
 -- Where a target is `t` seconds after it appeared, sweeping round `center` along `side` (the pilot's right when it
 -- appeared), and its velocity; a still one faces `face`.
 function Course.pose(drill,center,t,face,side)
@@ -31,8 +39,10 @@ function Course.pose(drill,center,t,face,side)
  end
  local toward=side:Cross(Vector3.yAxis)
  local w=drill.speed/drill.span;local a=t*w+(drill.phase or 0)
- local at=center+side*math.cos(a)*drill.span+toward*math.sin(a)*drill.depth
- local velocity=(-side*math.sin(a)*drill.span+toward*math.cos(a)*drill.depth)*w
+ -- `bob`: up and down twice per sweep (the Range's targets swoop as they cross).
+ local bob=drill.bob or 0
+ local at=center+side*math.cos(a)*drill.span+toward*math.sin(a)*drill.depth+Vector3.yAxis*math.sin(2*a)*bob
+ local velocity=(-side*math.sin(a)*drill.span+toward*math.cos(a)*drill.depth+Vector3.yAxis*math.cos(2*a)*2*bob)*w
  return CFrame.lookAt(at,at+velocity),velocity
 end
 -- The points a target passes through, to check its whole sweep is in clear air.

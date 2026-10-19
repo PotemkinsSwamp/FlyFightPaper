@@ -283,15 +283,18 @@ function Runtime:lesson(player,cmd)
    return Course.POINTS[(i-1)%#Course.POINTS+1]
   end
   for i,spec in ipairs(Course.DRILLS[cmd.drill] or {}) do
-   local d=self.flight:add(nil,{id="drill"..player.UserId.."_"..i,name="Target",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
-   if not d then break end
-   self.bots.brains[d.id]=nil -- no brain: FlightService flies it on its spot
    local center=spotFor(spec,i);table.insert(taken,center)
-   d.foeOf=p.id;d.lessonPlayer=player;d.drill={spec=spec,t=0,center=center,face=p.body.Position,side=sideOf(center)}
-   d.model:SetAttribute("Health",spec.health);d.model:SetAttribute("MaxHealth",spec.health);d.model:SetAttribute("DrillOf",player.UserId)
-   d.hasLaunched=true;d.body.CFrame=Course.pose(spec,center,0,p.body.Position,d.drill.side);self.flight:fly(d)
+   if not self:addDrill(player,p,spec,i,center,sideOf(center)) then break end
   end
   ball:Destroy()
+ end
+ -- The Range: the plane hangs still on the stage and only turns to aim (FlightController follows `Pinned`).
+ if cmd.range==true then
+  local origin=Course.RANGE.origin
+  self:rangeStage()
+  p.pin=origin.Position;p.keepLift=true;p.gentle=true;p.model:SetAttribute("Pinned",p.pin);p.model:SetAttribute("Gentle",true)
+  if p.model:GetAttribute("State")~="FLYING" then p.body.CFrame=origin;self.flight:fly(p) end
+  self:rangeTargets(player,p)
  end
  if cmd.pal==false or PAL_MODES[cmd.pal] then
   local id="tutorialFoe"..player.UserId;local foe=self.flight.byId[id]
@@ -313,6 +316,41 @@ function Runtime:lesson(player,cmd)
   self.bots:placePal(foe) -- in the air now, so the step's read pause holds it too
  end
 end
+-- One practice target plane on its spot (TrainingCourse.DRILLS or RANGE), flown there by FlightService.
+function Runtime:addDrill(player,p,spec,i,center,side)
+ local d=self.flight:add(nil,{id="drill"..player.UserId.."_"..i,name="Target",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
+ if not d then return nil end
+ self.bots.brains[d.id]=nil -- no brain: FlightService flies it on its spot
+ d.foeOf=p.id;d.lessonPlayer=player;d.drill={spec=spec,t=0,center=center,face=p.body.Position,side=side}
+ d.model:SetAttribute("Health",spec.health);d.model:SetAttribute("MaxHealth",spec.health);d.model:SetAttribute("DrillOf",player.UserId)
+ if spec.color then d.model:SetAttribute("RangeTarget",spec.color) end -- drawn as a flat cut-out on a stick (RangeTargets)
+ d.hasLaunched=true;d.body.CFrame=Course.pose(spec,center,0,p.body.Position,side);self.flight:fly(d)
+ return d
+end
+-- The Range's targets: any that folded (and were cleared away) come back on a fresh stick.
+function Runtime:rangeTargets(player,p)
+ local origin=Course.RANGE.origin
+ for i,spec in ipairs(Course.RANGE.targets) do
+  if not self.flight.byId["drill"..player.UserId.."_"..i] then self:addDrill(player,p,spec,i,origin*spec.at,origin.RightVector) end
+ end
+end
+-- ponytail: stand-in stage for the Range's feel check (2026-10-19); replaced by the real 2D-piece stage model.
+function Runtime:rangeStage()
+ if workspace:FindFirstChild("RangeStage") then return end
+ local origin=Course.RANGE.origin
+ local stage=Instance.new("Model");stage.Name="RangeStage"
+ local function block(name,size,at,color)
+  local part=Instance.new("Part");part.Name=name;part.Size=size;part.CFrame=origin*CFrame.new(at);part.Color=color
+  part.Anchored,part.CanCollide,part.CastShadow=true,false,false;part.Material=Enum.Material.Cardboard;part.Parent=stage
+ end
+ block("Backdrop",Vector3.new(1600,900,4),Vector3.new(0,200,-820),Color3.fromRGB(90,130,210))
+ block("Bottom",Vector3.new(1600,4,1000),Vector3.new(0,-260,-400),Color3.fromRGB(60,40,30))
+ for _,row in {{z=-140,top=-40},{z=-340,top=-5},{z=-600,top=30}} do
+  block("Ledge",Vector3.new(1600,row.top+260,20),Vector3.new(0,(row.top-260)/2,row.z),Color3.fromRGB(170,125,80))
+ end
+ for _,x in {-760,760} do block("Curtain",Vector3.new(80,900,1000),Vector3.new(x,200,-400),Color3.fromRGB(235,160,110)) end
+ stage.Parent=workspace
+end
 function Runtime:practice(player,lesson)
  if not player:GetAttribute("ClassroomLoaded") or not self.profiles:view(player) then return end
  if self.flight.pilots[player] then self:withdraw(player) end
@@ -333,13 +371,16 @@ function Runtime:practice(player,lesson)
   if self.engine.phase~="ACTIVE" then player:SetAttribute("MenuMessage","Practice opens when the next round starts.");return end
  end
  -- Lessons fly a fixed training plane (Alan 2026-10-18); the player's own builds are untouched.
- local p=self.flight:add(player,{loadout=Loadouts.make(self.flight.catalog,lesson=="combat" and "training_pellets" or "training"),loadoutName="training",practice=true})
+ -- The Range flies your own selected build (Alan 2026-10-19: test any build there).
+ local profile=self.profiles:view(player)
+ local loadout=lesson=="range" and profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout or Loadouts.make(self.flight.catalog,lesson=="combat" and "training_pellets" or "training")
+ local p=self.flight:add(player,{loadout=loadout,loadoutName=lesson=="range" and "range" or "training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
  -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off, Lift stops at 1 second and Boost at 0.01.
  -- Combat School's aiming part asks for gentle itself (lesson cmd); its fights keep crashes (Alan).
  p.gentle=lesson=="flight";p.model:SetAttribute("Gentle",p.gentle or nil)
  -- Combat School is about aiming and fighting: Lift stays full the whole lesson (Alan 2026-10-19).
- p.keepLift=lesson=="combat"
+ p.keepLift=lesson=="combat" or lesson=="range"
  for _,key in {"DrillDown","PalFolds","PalEraserHits","PalEraserMisses","EraserHits"} do player:SetAttribute(key,0) end
  player:SetAttribute("InMatch",true)
 end
@@ -434,6 +475,7 @@ function Runtime:step(dt)
  self.clock+=dt;if self.clock<ServerConfig.round.step_seconds then return end;self.clock%=ServerConfig.round.step_seconds
  Root:SetAttribute("TutorialRoom",self:tutorialRoom())
  -- The tutorial room has no match: the round engine waits (Studio's stand-in room resumes its paused match after).
+ for _,p in pairs(self.flight.pilots) do if p.pin and p.player and p.model:GetAttribute("State")=="FLYING" then self:rangeTargets(p.player,p) end end
  if self.flight.tutorialRoom then return end
  if self.engine.round then
   if self.engine.phase=="ACTIVE" then

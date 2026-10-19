@@ -105,6 +105,9 @@ function Controller.start(plane)
 		glide = lift <= 0 and Rules.glide(glide or momentum, heading, cruise, dt) or nil
 		momentum = lift > 0 and Rules.dive(momentum, heading, cruise, dt) or nil
 		local desired = Rules.velocity(heading, speed * (momentum or cruise) / cruise, lift, plane:GetAttribute("Updraft") or 0, glide, cruise)
+		-- The Range: the plane hangs on its spot and only turns to aim.
+		local pin = plane:GetAttribute("Pinned")
+		if pin then desired = (pin - body.Position) * 4 end
 		-- Touching the room: never sink into it; slide along it. The server decides scrape damage or a crash.
 		local part, normal = Rules.contact(plane, heading, solid, single)
 		if part then

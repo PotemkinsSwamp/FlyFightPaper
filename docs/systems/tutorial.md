@@ -22,7 +22,11 @@ Lessons follow the agreed [tutorial plan](../plan/TUTORIAL-PLAN.md). **Flight Sc
 a lesson gets a tick and Replay once finished (saved on the account: the end card sends `lessonDone`, the server
 ticks it only in the tutorial room). Hangar Tour and the Range show an "Almost ready!" note until they're built. From a match, Play first asks "Leave this match?"
 (the lesson runs on another server). The welcome question goes only to a player with no matches and no ticks. The
-Training Room has no time limit (Alan 2026-10-19: people leave, or Roblox kicks them for being idle). Flight School's end card has "Next: Combat School". Flight School: the step engine
+Training Room has no time limit (Alan 2026-10-19: people leave, or Roblox kicks them for being idle).
+**The Range, rough build for feel** (2026-10-19, not yet played): its card opens it like a lesson that never ends; your own
+build hangs still on a stand-in stage far from the classroom (`Pinned`: it only turns to aim; closer camera) and three
+target planes, drawn as flat cut-outs on sticks (`RangeTarget`), swing and bob in three rows, tear as they're hit, split
+and sink, and come back after the respawn wait. Flight School's end card has "Next: Combat School". Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during
 lessons (Alan). In Studio the Tutorial button turns the room into the tutorial world (match paused, bots gone) since
@@ -100,7 +104,8 @@ air, the gun range sent, and how far and where each passed the nearest enemy's c
 |---|---|
 | `src/client/Tutorial.luau` | Lesson step engine: goal note, markers, spotlight, ticks, hints, Skip |
 | `src/client/TutorialLessons.luau` | Each lesson's steps: Flight School, Combat School (aiming, then fighting) |
-| `src/shared/TrainingCourse.luau` | The Training Room's course points, practice targets and slow-motion share |
+| `src/shared/TrainingCourse.luau` | The Training Room's course points, practice targets, slow-motion share and the Range's spot and targets |
+| `src/client/RangeTargets.luau` | The Range's targets drawn as cut-outs on sticks that tear, split and sink |
 | `src/server/RoundRuntime.luau` | Tutorial room: no rounds or bots; first-join routing; practice flights |
 | `src/server/Matchmaking.luau` | Sends a player to a fresh private tutorial room and back |
 | `src/server/MatchmakingAdapter.luau` | Reserves tutorial rooms; never lists them; carries the lesson picked |

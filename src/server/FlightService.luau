@@ -509,7 +509,7 @@ function Service:step(dt)
    end
    local localPos=self.boundsCF:PointToObjectSpace(p.body.Position)
    local outside=math.abs(localPos.X)>self.boundsSize.X/2+12 or (localPos.Y>self.boundsSize.Y/2+self.headroom+12 or localPos.Y<-self.boundsSize.Y/2-12) or math.abs(localPos.Z)>self.boundsSize.Z/2+12
-   if outside then p.outSince=p.outSince or now;say(p,"turnBack") elseif p.outSince then p.outSince=nil;p.model:SetAttribute("Message","") end
+   if outside and not p.pin then p.outSince=p.outSince or now;say(p,"turnBack") elseif p.outSince then p.outSince=nil;p.model:SetAttribute("Message","") end
    if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds and not self.safe and not p.gentle then self:destroy(p,{kind="bounds"},"bounds");continue end
    -- Blink check every step (2026-10-17): a teleport and back inside the 0.25 s window. It compares against the last
    -- position the server saw change, over the time since, so bursty replication can't trip it.
