@@ -37,10 +37,10 @@ local STEP_DING_DELAY=.4
 local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flying: you still need to see the room)
 local YELLOW=Color3.fromRGB(255,225,70)
 local SOFT_SLICE,SOFT_SEE_THROUGH=.2,.5 -- the soft frame: a third as thick as the usual one, half see-through
-local CRASH_TIP_AFTER=3
+local CRASH_TIP_AFTER=3 -- crashes on one step before the note suggests open air
 -- How long each step's note holds the world still before it moves on its own (Alan 2026-10-19: 2.5 s, a draining bar,
 -- no countdown); a look step's longer note gets 5.
-local READ_SECONDS,LOOK_SECONDS=2.5,5 -- crashes on one step before the note suggests open air
+local READ_SECONDS,LOOK_SECONDS=2.5,5
 
 function Tutorial.begin(lesson)
  if Tutorial.closeAsk then Tutorial.closeAsk() end -- a lesson starting closes the welcome question (found in Play)
@@ -77,7 +77,8 @@ function Tutorial.start(getPlane)
 
  -- The goal note: sticky note near the top, lesson and step, the instruction, the key picture, the count.
  local note=Instance.new("ImageLabel");note.Name="Note";note.Image=Art.ingame.stickyNote;note.ScaleType=Enum.ScaleType.Stretch;note.BackgroundTransparency=1
- note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.05) -- just under where a match's clock sits;note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui -- just under the top strip, out of the middle of the view
+ -- The note sits just under where a match's clock would be (Alan 2026-10-19: higher, so INCOMING fits under it).
+ note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.05);note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui -- just under the top strip, out of the middle of the view
  local scale=Instance.new("UIScale");scale.Parent=note
  local function fit() scale.Scale=math.max(.6,workspace.CurrentCamera.ViewportSize.Y/1080) end
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit);fit()

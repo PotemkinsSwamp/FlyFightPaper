@@ -1,10 +1,11 @@
-# Since Alan last checked (2026-10-19)
-- **Combat School built, five rounds of your notes in** ([playtest](../docs/playtests/2026-10-19-combat-school.md)):
-  aiming in near-still slow motion (star, still targets, the lead ring, eraser lock), then Paper Pals that can't fold
-  you, slow erasers to dodge, and a smooth way back after a crash. Every step freezes the world 5 s so you can read.
-  The Tutorial button asks Flight School or Combat School; a brand-new player is asked if they want the tutorial.
-- **For the whole game:** the dot turns red only on the orange ring (you, after a match); the guns' aim help stays.
-  A respawned practice plane is the training plane again (the "no boost" bug). Four more songs in the playlist.
+# Since Alan last checked (2026-10-19, second session)
+- **Aiming fixed for the whole game:** the two wing guns crossed at 150 studs and missed past that; now they meet at
+  the target's range (12/12 hits at 220 in Play). Aim assist 7 degrees to 3 (lessons too); the red dot means you'd hit
+  with no help ([decision](../docs/decisions/2026-10-19-less-aim-assist.md)). No more jolt left on launch/unfreeze.
+- **Combat School, 10 more rounds of your notes** ([playtest](../docs/playtests/2026-10-19-combat-school.md)): Lift
+  stays full; no eraser until its own last part; read pause 2.5 s with a draining bar; Pals appear in the air ahead,
+  your speed, half Health, run in a straight line; step 8's Pal hunts you down (checked in Play); erasers to dodge come
+  from ahead, never while frozen (checked in Play). Paperclip: ting the instant it fires, plus a soft zap.
 
 # Now: Tutorial, Combat School waiting on your notes (MILESTONES); Stage 10 code done and off
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
@@ -14,9 +15,9 @@ During the vote lap the top strip still shows the old round's mode and clock.
 Track C saving needs a private publish (Alan's go). Toilet Roll jitter: not reproduced; tell me when it happens. Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
-Combat School: Pals fly at 60% speed; first Pal eraser at half speed, 80% of that after each hit (floor 30%);
-  crossing targets 350 studs away at 60 studs/s. "No thanks" to the welcome question isn't saved: a player who never
-  plays a match is asked again next visit. Training Room time to 10 min (not built yet).
+Combat School: the hunting Pal (step 8) flies 25% faster until you're at half Health (else a player flying away is
+  never caught); look cards hold 5 s, action steps 2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%).
+  "No thanks" to the welcome question isn't saved. Training Room time to 10 min (not built yet).
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
   buying early is useless). Buying a part with Paper still needs the level.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
@@ -46,7 +47,7 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-- Your notes on Combat School (next session).
+- Play Combat School again: hitting with 3-degree assist, Pals (step 7 chase, step 8 hunt), the eraser part.
 - Backlog (yours): a new fan sound for the real game (the current one is a wind tunnel).
 - Private publish (your go) to test the real move into the private tutorial room.
 0. Studio: File > Save to File (keeps today's duct fan fix in the place file).

@@ -169,6 +169,10 @@ mistake would be easy to make twice.
   lesson pause (2026-10-19). Ignore the mouse for 0.1 s after locking (FlightController).
 
 ## Working with Alan
+- **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
+  code alone (the red dot, the eraser during the freeze, step 8's Pal) were wrong, and each cost Alan a playtest.
+  One logged Play run found each real cause in minutes (BotIntent, Held, distances each second). For aim, read where
+  the shots went (`DevShotLog`), not just which way the guns pointed.
 - **Scripted doc edits: never `replace` a slice cut between two markers without checking it** (2026-10-18): if the
   end marker sits before the start marker the slice is empty, and `s.replace("", text)` puts the text between every
   character (the shop plan note went out garbled and pushed). Assert the old text is non-empty and found exactly once.
