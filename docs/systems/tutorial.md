@@ -59,7 +59,10 @@ the floor, duct fans and the room's edge; its Lift stops at 1 second and its Boo
 Combat School's aiming part can't be lost either (the step asks for gentle); its fights keep normal crashes, but a Pal can never fold you
 (its hits stop at 1 Health) and Pals and targets never ram you. A respawned practice plane is the same training plane
 (it used to come back as the player's own build, often with no booster: the "no boost" report).
-A lesson step asks the server for what it needs with `RoundAction("lesson", {slow, gentle, repair, drill, pal})`; the
+Read, then act (Alan 2026-10-19): every step that starts in the air holds the player's plane, targets and Pal still
+(FlightService:freeze, the same hold as the winners' moment) with its note up until "Ready: go! [Space]"; nothing
+counts while frozen; a look step's Got it unfreezes and finishes it; Flight School too.
+A lesson step asks the server for what it needs with `RoundAction("lesson", {freeze, slow, gentle, repair, drill, pal})`; the
 server keeps counts on the player (`DrillDown`, `PalFolds`, `PalEraserMisses`, `PalEraserHits`, `EraserHits`).
 Studio: set `DevLesson` (flight / combat) on `ReplicatedStorage.FlyFightPaper` on the client to open a lesson.
 

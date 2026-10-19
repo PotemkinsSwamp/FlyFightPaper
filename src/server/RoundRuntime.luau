@@ -232,7 +232,7 @@ function Runtime:firstJoin(player)
  end)
 end
 -- What a lesson step asks the server for (docs/systems/tutorial.md), all at once or a piece at a time:
--- {slow=true/false (aiming's slow motion), gentle=true/false (bounce off walls), repair=true (full Health), drill=name in TrainingCourse.DRILLS or false
+-- {freeze=true/false (hold the lesson still while its note is read), slow=true/false (aiming's slow motion), gentle=true/false (bounce off walls), repair=true (full Health), drill=name in TrainingCourse.DRILLS or false
 -- (practice target planes), pal=mode or false (Combat Training's one enemy: "circle" flies the course and never
 -- shoots, "pellet" shoots until you're at half Health, "eraser" fires slow erasers until one misses)}.
 -- Targets and Pals fight only this player (CombatService:enemy) and can never fold them (CombatService:hit).
@@ -243,6 +243,10 @@ function Runtime:lesson(player,cmd)
  if type(cmd.slow)=="boolean" then p.slow=cmd.slow and Course.SLOW_MO or nil;p.model:SetAttribute("SlowMo",p.slow) end
  if cmd.repair==true then p.model:SetAttribute("Health",p.stats.health) end
  if type(cmd.gentle)=="boolean" then p.gentle=cmd.gentle;p.model:SetAttribute("Gentle",cmd.gentle or nil) end
+ -- Read, then act (Alan 2026-10-19): the player's plane, targets and Pal hold still while the note is read.
+ if type(cmd.freeze)=="boolean" then
+  for _,q in pairs(self.flight.pilots) do if q==p or q.foeOf==p.id then self.flight:freeze(q,cmd.freeze) end end
+ end
  if cmd.drill==false or Course.DRILLS[cmd.drill] then
   for _,other in pairs(table.clone(self.flight.pilots)) do if other.drill and other.foeOf==p.id then self.flight:remove(other,"vacancy") end end
   player:SetAttribute("DrillDown",0)

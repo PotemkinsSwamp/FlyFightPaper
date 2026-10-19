@@ -17,6 +17,9 @@
   School); the Tutorial button asks which; a first-time player is asked whether they'd like the tutorial (like most
   games) instead of being sent; slow motion "way slower, almost to a standstill" (6%); the crosshair's frame much
   thinner and see-through (it hid the crosshair).
+- **Read, then act (2026-10-19):** before each step the world freezes with the note up; it unfreezes when the player
+  is ready. Every step, Flight School included: "in this game where you're constantly moving, you don't get that
+  opportunity. So we have to do it for them."
 - Training Room time goes to 10 minutes (Claude's suggestion, OK'd with the plan).
 
 ## Why

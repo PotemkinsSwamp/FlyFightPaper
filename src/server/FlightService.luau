@@ -150,12 +150,15 @@ end
 -- The winners' moment: every flying plane holds still in the air until the vote lap, then flies on from there.
 function Service:hold(on)
  for _,p in pairs(self.pilots) do
-  if on and not p.held and p.model:GetAttribute("State")=="FLYING" then
-   p.held=true;p.body:SetNetworkOwner(nil);p.body.Anchored=true;p.drive.Enabled=false;p.orientation.Enabled=false
-  elseif not on and p.held then
-   p.held=nil;p.model:SetAttribute("Lift",p.stats.lift);self:fly(p)
-  elseif not on then p.model:SetAttribute("Lift",p.stats.lift) end
+  if not on then p.model:SetAttribute("Lift",p.stats.lift) end
+  self:freeze(p,on)
  end
+end
+-- One flying plane held still in the air (the winners' moment; a lesson's "read, then act" pause), then flown on.
+function Service:freeze(p,on)
+ if on and not p.held and p.model:GetAttribute("State")=="FLYING" then
+  p.held=true;p.body:SetNetworkOwner(nil);p.body.Anchored=true;p.drive.Enabled=false;p.orientation.Enabled=false
+ elseif not on and p.held then p.held=nil;self:fly(p) end
 end
 function Service:build(p)
  -- A returning account gets a new identity even when its previous pilot was removed.

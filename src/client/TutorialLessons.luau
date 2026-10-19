@@ -123,7 +123,7 @@ local AIM_STEPS={
     if (star.Position-ctx.body.Position).Magnitude<45 then ctx.data.point=ctx.data.point%#Course.POINTS+1 end
     ctx.softSpot("AimCircle","NoseDot")
     ctx.marker(star.Position,"STAR",12,star)
-    ctx.data.held=noseOn(ctx,star.Position,4) and ctx.data.held+ctx.dt or 0
+    ctx.data.held=not ctx.reading and noseOn(ctx,star.Position,4) and ctx.data.held+ctx.dt or 0
     return ctx.data.held>=1
    end},
   {text=shootText("Put the dot on a target. When the dot turns red, hold left click!"),key="Left click",count=3,

@@ -392,16 +392,20 @@ function Tutorial.start(getPlane)
 
  local stepStarted,doneAt,holdK,relaunchAsked=0,nil,nil,0
  local crashedAt,crashes=nil,0
+ -- Read, then act (Alan 2026-10-19: "it gives the player time to read and then act"): every step that starts in the
+ -- air first holds the world still (RoundRuntime:lesson freeze) with its note up, until Go (Space). A "look" step
+ -- (gotIt) is all reading: its Got it lets the world go and finishes it. `reading`: nil, "waiting" (not flying yet), true.
+ local reading=nil
  local function startStep(index)
   Tutorial.index=index;ctx.data={};table.clear(clicked);stepStarted=os.clock();doneAt=nil;tick.Visible=false;Tutorial.gotIt=false;Tutorial.skipStep=false
-  clearCourse();star.Parent=nil;crashes=0
+  clearCourse();star.Parent=nil;crashes=0;reading="waiting"
   if index==1 then airRoutes() end -- plan the room's air routes once, while the plane still sits on the desk
   local step=Tutorial.lesson.steps[index]
   if step and step.enter then step.enter(ctx) end
  end
  local function finish(skipped)
-  Tutorial.active=false;Root:SetAttribute("TutorialOpen",false);clearCourse();note.Visible=false;star.Parent=nil
-  ctx.lesson({slow=false,drill=false,pal=false})
+  Tutorial.active=false;Root:SetAttribute("TutorialOpen",false);clearCourse();note.Visible=false;star.Parent=nil;reading=nil
+  ctx.lesson({freeze=false,slow=false,drill=false,pal=false})
   Audio.play("finish")
   cardTitle.Text=skipped and "Lesson skipped" or Tutorial.lesson.doneTitle or (Tutorial.lesson.name.." done!")
   Tutorial.nextKey=Tutorial.lesson.next
@@ -463,14 +467,24 @@ function Tutorial.start(getPlane)
    if ctx.state=="DESK" and os.clock()-relaunchAsked>1 then relaunchAsked=os.clock();Root.FlightAction:FireServer("launch") end
    return
   end
+  -- The read pause starts the first moment this step is in the air; Go lets the world move again.
+  if reading=="waiting" and ctx.state=="FLYING" then reading=true;Tutorial.gotIt=false;ctx.lesson({freeze=true}) end
+  if reading=="waiting" and ctx.state~="FLYING" and ctx.state~="TAKEOFF" then reading=nil end -- starts at a desk: nothing to freeze
+  if reading==true and Tutorial.gotIt then
+   reading=nil;ctx.lesson({freeze=false});stepStarted=os.clock()
+   if not step.gotIt then Tutorial.gotIt=false end
+  end
+  ctx.reading=reading==true
   local result=plane and step.update(ctx) or false
+  if reading then result=step.count and 0 or false end -- nothing counts while frozen
   local count=step.count
   local finished=count and type(result)=="number" and result>=count or result==true or (step.gotIt and Tutorial.gotIt)
   -- A step's words can change with what's happening (a function of ctx), e.g. the eraser warnings.
   text.Text=(type(step.text)=="function" and step.text(ctx) or step.text)..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
   key.Text=step.key or "";key.Visible=step.key~=nil
-  gotIt.Visible=step.gotIt==true
-  local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt
+  gotIt.Visible=step.gotIt==true or reading==true
+  gotIt.Label.Text=reading==true and not step.gotIt and "Ready: go!  [Space]" or "Got it  [Space]"
+  local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt and not reading
   hint.Text=stuck and step.hint and ("Tip: "..step.hint) or crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or ""
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end

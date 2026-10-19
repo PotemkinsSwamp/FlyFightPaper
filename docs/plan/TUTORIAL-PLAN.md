@@ -7,6 +7,9 @@ lessons work in steps, are kept separate, can be skipped and replayed from the m
 and the flying ones happen in the player's own timed private room.
 
 ## How every lesson works (the same in all of them)
+- **Read, then act (Alan 2026-10-19, every step, Flight School too):** a step that starts in the air first freezes the
+  world (your plane, the targets, the Pal) with its note up; it moves again when you press **Ready: go! [Space]**.
+  A "look" step's **Got it** both unfreezes and finishes it.
 - **One step at a time.** Each step asks for one thing and waits until you've done it. It moves on by itself when
   you do it. Only "look at this" steps have a **Got it** button.
 - **The goal note stays up** at the top of the screen (our sticky-note look) until the step is done, with a count
