@@ -129,7 +129,7 @@ function Service:visible(from,to)
  return workspace:Raycast(from,delta,self.flight.cast)==nil
 end
 function Service:eligible(p)
- return self.enabled~=false and p and p.model.Parent and p.model:GetAttribute("State")=="FLYING"
+ return self.enabled~=false and p and p.model.Parent and p.model:GetAttribute("State")=="FLYING" and not p.held -- held still: no firing
 end
 function Service:targetable(p,now)
  return self.enabled~=false and p and p.model.Parent and p.model:GetAttribute("State")~="DESTROYED" and not self.flight:protected(p,now or workspace:GetServerTimeNow())

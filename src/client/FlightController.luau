@@ -66,6 +66,15 @@ function Controller.start(plane)
 			aimFrame = CFrame.lookAt(Vector3.zero, heading)
 		end
 		if Deaths.dying(plane) then drive.VectorVelocity = Vector3.zero; return end
+		-- Held still (a lesson's read pause, the winners' moment): the aim stays on the nose and the mouse is free to
+		-- click, so when it lets go the plane flies on where it points (Alan 2026-10-19: the aim drifted off while frozen).
+		if plane:GetAttribute("Held") then
+			heading, bank = body.CFrame.LookVector, 0
+			aimFrame = CFrame.lookAt(Vector3.zero, heading)
+			state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
+			lockMouse(false)
+			return
+		end
 		local blocked = not focused or Input:GetFocusedTextBox() ~= nil or Root:GetAttribute("OverlayOpen") == true
 		lockMouse(not blocked)
 		if not blocked then

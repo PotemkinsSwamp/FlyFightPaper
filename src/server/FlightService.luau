@@ -158,7 +158,8 @@ end
 function Service:freeze(p,on)
  if on and not p.held and p.model:GetAttribute("State")=="FLYING" then
   p.held=true;p.body:SetNetworkOwner(nil);p.body.Anchored=true;p.drive.Enabled=false;p.orientation.Enabled=false
- elseif not on and p.held then p.held=nil;self:fly(p) end
+  p.model:SetAttribute("Held",true) -- the pilot's screen keeps the aim on the nose meanwhile
+ elseif not on and p.held then p.held=nil;p.model:SetAttribute("Held",nil);self:fly(p) end
 end
 function Service:build(p)
  -- A returning account gets a new identity even when its previous pilot was removed.
