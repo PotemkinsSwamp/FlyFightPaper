@@ -211,5 +211,12 @@ mistake would be easy to make twice.
   credits). `tools/meshy_to_r15.py` maps them onto R15 by world-space bone turns; check by comparing knee/elbow bend
   angles before and after (they matched to 0.1°). `AnimationClipProvider:RegisterAnimationClip` returns a plain hash
   string that works as an AnimationId as is (`rbxtemp://` in front is refused).
-
+- **Tutorial UI traps (2026-10-18):** the Kalam font has no arrow or tick signs (▼ ➤ ✓ draw as empty boxes): use
+  the crayon arrow picture (`UIAssets.hud.arrow`, points right). ScreenGuis report `AbsolutePosition` (0,-58) under the
+  top bar: to place one GUI over another, subtract this layer's `gui.AbsolutePosition`. Screen captures drop
+  see-through frames (dims look missing): check by making them solid for one capture. `execute_luau` gets its own
+  copy of a ModuleScript, so it can't read or change a running module's state; drive the game through remotes and
+  attributes instead. Loading changed modules with `require` in Edit catches typing mistakes without starting Play.
+- **Studio Play takes Alan's mouse (2026-10-18):** a flying plane locks the mouse to the centre. Run Play only when
+  Alan says go or is away, in one short batch, and stop it right after.
 Back to [HOME](../HOME.md)

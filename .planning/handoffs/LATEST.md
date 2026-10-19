@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-18-ui-paper-done-prestige.md
+# LATEST → handoff-2026-10-18-ui-tutorial-attention.md
 
-★ START HERE: Paper look on every plane part approved; prestige built and parked by Alan. Next: Stage 10 commerce
-wiring (real MarketplaceService adapter, receipts with ProfileStore idempotency, game-pass checks), everything OFF
-until Alan OKs prices; done = adapter behind the mock, sales off, tests green.
+★ START HERE: Build the approved "Grabbing attention" pass of docs/plan/TUTORIAL-PLAN.md on Flight School, starting
+with a Codex concept picture of the highlight frame + arrow for Alan's OK. Done = Alan plays Flight School and always
+knew where to go (he is the tester). Studio Play only with his go (it grabs his mouse).
 
-Quick state: main, tests 340/0. Studio open in Edit, Rojo serving; rbxlx shows modified (ask Alan about Save to File).
-Previous: handoff-2026-10-18-ui-paper-look.md.
+Quick state: main, tests 397/0 before the last tutorial edits (re-run needs Play). Stage 10 shop code done and off.
+Previous: handoff-2026-10-18-ui-paper-done-prestige.md.

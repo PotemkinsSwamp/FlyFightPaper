@@ -1,22 +1,17 @@
 # Since Alan last checked (2026-10-18)
+- **Tutorial (in progress):** plan agreed with you ([plan](../docs/plan/TUTORIAL-PLAN.md)): five separate lessons,
+  fixed training plane, short, always replayable. Its own empty room is built (Studio: the Tutorial button clears the
+  room). Flight School's steps are written; your playtest asked for much stronger attention-grabbing, approved as
+  "Grabbing attention" in the plan: next session builds it, starting with a concept picture for the highlight art.
 - **Real shop code built, switched off (Stage 10):** when someone pays, the game adds the item and saves it before
   telling Roblox "done", so nobody is charged without getting it and nobody gets it twice. Permanent 2x passes are
   checked with Roblox on join. Also: early part unlocks (one Roblox product per part, 28 parts). Nothing can be bought
   until you OK prices and we put the real product numbers in. Tests 388/0
   ([how it works](../docs/systems/economy-and-shop.md)).
-- **Planes look like paper (you approved it):** every part and booster now has its paper texture in the game:
-  creases, paper edges, cardboard, toilet roll, tape and rubber bands, tinted red, blue, or half-and-half in
-  free-for-all. ([decision](../docs/decisions/2026-10-18-paper-look.md)). Duct fans no longer poke through the ceiling.
-- **Prestige built:** at level 50 a Prestige button appears on the main menu's stats card; hold to confirm. You go
-  back to level 1 and lose your parts (even bought ones), keep your Paper, boosts and stats, and get a gold rank
-  star on your level bar. Bots stay at your old difficulty. Parked until you want to work on it.
-- **Shop planned with you:** what we sell, whole-plane skins, sticker editor, drawing pass with safeguards,
-  prestige, special planes ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)); draft prices in the
-  [pricing research](../docs/research/PRICING-RESEARCH-2026-10-18.md).
-- Earlier: wall scrapes made fair ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md)); Stage 9 approved;
-  real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
+- Earlier today: paper look on every plane part (approved); prestige built and parked; shop planned with you
+  ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)); wall scrapes made fair; Stage 9 approved.
 
-# Now: Tutorial (built last, MILESTONES); Stage 10 code done and off
+# Now: Tutorial, attention-grabbing pass on Flight School (MILESTONES); Stage 10 code done and off
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
@@ -53,6 +48,8 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
+- Try the tutorial after each tutorial session (you're its tester); OK the highlight concept picture; run its upload.
+- Private publish (your go) to test the real move into the private tutorial room.
 0. Studio: File > Save to File (keeps today's duct fan fix in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK. Then: create the products and
