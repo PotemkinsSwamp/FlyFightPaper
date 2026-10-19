@@ -55,8 +55,8 @@ one place without editing transaction logic. Full refold initially costs120 Pape
 alternative. No spending prompt appears on death, firing input, or automatic landing.
 
 ## Prestige
-Alan's idea is in the [shop plan](../decisions/2026-10-18-shop-plan.md); the details below are Claude's
-(2026-10-18, in STATE "Decisions to review").
+Alan's idea is in the [shop plan](../decisions/2026-10-18-shop-plan.md); the details below are Claude's. Alan,
+2026-10-18: keep them for now, they will change later; he is not set on working on prestige yet, so don't go deeper.
 - **When:** at the level cap (50), from the menus only (never in a match). Ranks 1-10; at rank 10 you stay at 50.
 - **Takes back:** your level (back to 1, XP 0; XP earned past 50 is not carried over) and every part and weapon
   except the free starter ones, bought ones too. Saved builds keep their names; a build that uses a part you no

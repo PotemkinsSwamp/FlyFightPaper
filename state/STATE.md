@@ -5,7 +5,8 @@
   ([decision](../docs/decisions/2026-10-18-paper-look.md)). **Duct fans** no longer poke through the ceiling.
 - **Prestige built:** at level 50 a Prestige button appears on the main menu's stats card; hold to confirm. You go
   back to level 1 and lose your parts (even bought ones), keep your Paper, boosts and stats, and get a gold rank
-  star on your level bar. Bots stay at your old difficulty. Checked in Studio Play; tests 340/0.
+  star on your level bar. Bots stay at your old difficulty. Checked in Studio Play; tests 340/0. You said keep the
+  details for now; prestige is parked until you want to work on it.
 - **Shop planned with you:** what we sell, whole-plane skins, sticker editor, drawing pass with safeguards,
   prestige, special planes ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)); draft prices in the
   [pricing research](../docs/research/PRICING-RESEARCH-2026-10-18.md).
@@ -27,9 +28,6 @@ During the vote lap the top strip still shows the old round's mode and clock.
 Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
-Prestige details (docs/systems/economy-and-shop.md "Prestige"): 10 ranks; XP past 50 not carried over; builds with
-  parts you lost become the starter build; matches played kept so bots stay at your difficulty; a badge with your
-  rank plus one prestige-only cosmetic per rank; hold-to-confirm screen; no faster levelling after prestige.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
   (config flight.scrape_*); crash angle 25 (combat.collision_crash_angle_deg).
 Results card "Crashes" counts every time a pilot went down (shot or crashed), from the round's deaths.
