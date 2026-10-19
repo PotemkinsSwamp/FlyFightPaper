@@ -24,6 +24,20 @@ and the flying ones happen in the player's own timed private room.
 - **Always say how to come back:** Skip and every end card say "You can replay this any time: Menu > Training",
   and the first time you're back at the main menu the Training button is spotlit once.
 
+## Grabbing attention (Alan's playtest 2026-10-18; proposal, waiting for his OK)
+Alan: small arrows aren't enough; every step must pull your eyes to the one thing to do, "in your face".
+- **One focus look for everything**, menus and the 3D world alike: the whole screen dims except a bright hole
+  around the target, and the dim breathes in and out. For a button it's the button; for a hoop, fan, bolt or
+  enemy the hole follows the thing on screen as you fly.
+- **The target itself glows** (a bright outline that shows through walls) with "FLY HERE" and the distance.
+- **Off-screen: you're turned toward it.** A big arrow in front of your plane points the way (like racing games'
+  direction arrow), plus a glowing guide line from your plane to the target.
+- **Hoops are a fixed course** in clear air in front of the Training Room desk, checked by hand so none sit inside a
+  building (one spawned inside the bell tower), with the next hoop already visible, like flight games' ring courses.
+- **Real art for the frame and arrow**, in the game's paper-and-crayon look: a concept picture first (Codex), Alan
+  OKs it, then it's uploaded (Alan runs uploads). The plain rounded rectangle is a stand-in until then.
+- **It fades the moment the step is done** (done: LAUNCH fades on click).
+
 ## The lessons
 Five separate lessons. The first two run in your own private **Training Room** (a copy of the classroom with
 nobody else in it). The rest happen in the normal game.
