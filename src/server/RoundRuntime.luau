@@ -246,14 +246,37 @@ function Runtime:lesson(player,cmd)
  if cmd.drill==false or Course.DRILLS[cmd.drill] then
   for _,other in pairs(table.clone(self.flight.pilots)) do if other.drill and other.foeOf==p.id then self.flight:remove(other,"vacancy") end end
   player:SetAttribute("DrillDown",0)
+  -- Each target goes in clear air near where the pilot is now: no part of the room within its reach, and a clear
+  -- line from the pilot. ponytail: tries a fixed list of spots, falls back to the hand-checked course points.
+  -- The same exact shapes the planes collide with (FlightService's room checks), tested with a ball of that reach.
+  local overlap,sight,ball=self.flight.overlap,self.flight.cast,Instance.new("Part")
+  ball.Shape=Enum.PartType.Ball;ball.Anchored,ball.CanCollide,ball.CanTouch,ball.Transparency=true,false,false,1;ball.Parent=workspace
+  local heading=p.body.CFrame.LookVector*Vector3.new(1,0,1);heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
+  local taken={}
+  local function sideOf(center) local flat=(center-p.body.Position)*Vector3.new(1,0,1);return flat.Magnitude>1 and flat.Unit:Cross(Vector3.yAxis) or Vector3.xAxis end
+  local function clear(spec,center)
+   for _,other in taken do if (other-center).Magnitude<60 then return false end end
+   if workspace:Raycast(p.body.Position,center-p.body.Position,sight) then return false end
+   ball.Size=Vector3.one*((spec.depth or 0)+25)*2
+   for _,point in Course.sweep(spec,center,sideOf(center)) do
+    ball.Position=point;if #workspace:GetPartsInPart(ball,overlap)>0 then return false end
+   end
+   return true
+  end
+  local function spotFor(spec,i)
+   for _,center in Course.candidates(spec,p.body.Position,heading) do if clear(spec,center) then return center end end
+   return Course.POINTS[(i-1)%#Course.POINTS+1]
+  end
   for i,spec in ipairs(Course.DRILLS[cmd.drill] or {}) do
    local d=self.flight:add(nil,{id="drill"..player.UserId.."_"..i,name="Target",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
    if not d then break end
    self.bots.brains[d.id]=nil -- no brain: FlightService flies it on its spot
-   d.foeOf=p.id;d.lessonPlayer=player;d.drill={spec=spec,owner=p,t=0,desk=p.home.Position}
+   local center=spotFor(spec,i);table.insert(taken,center)
+   d.foeOf=p.id;d.lessonPlayer=player;d.drill={spec=spec,t=0,center=center,face=p.body.Position,side=sideOf(center)}
    d.model:SetAttribute("Health",spec.health);d.model:SetAttribute("MaxHealth",spec.health);d.model:SetAttribute("DrillOf",player.UserId)
-   d.hasLaunched=true;d.body.CFrame=Course.pose(spec,0,d.drill.desk);self.flight:fly(d)
+   d.hasLaunched=true;d.body.CFrame=Course.pose(spec,center,0,p.body.Position,d.drill.side);self.flight:fly(d)
   end
+  ball:Destroy()
  end
  if cmd.pal==false or PAL_MODES[cmd.pal] then
   local id="tutorialFoe"..player.UserId;local foe=self.flight.byId[id]

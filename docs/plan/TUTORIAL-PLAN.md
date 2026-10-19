@@ -59,18 +59,19 @@ End card: "Flight School done!" with **Next: Combat Training** and **Go to a mat
 
 ### Lesson 2: Combat School (Training Room, about 6 minutes): part 1, aiming (added by Alan 2026-10-18)
 Alan 2026-10-19: Aiming and Combat Training are one lesson, "Combat School"; the Tutorial button asks Flight School or
-Combat School; a first-time player is asked whether they'd like the tutorial. Slow motion first (almost still, shots at full speed; colours soften, music
-slows), then full speed. Walls only bounce you off. Targets are paper planes held still or circling.
+Combat School; a first-time player is asked whether they'd like the tutorial. Slow motion first (your plane almost still; shots and targets at full speed; colours soften, music
+slows), then full speed. Walls only bounce you off. Targets are paper planes just ahead of you, held still or sweeping left and right across your view (Alan: that's
+what shows the lead).
 | # | What you do | Moves on when |
 |---|---|---|
 | 1 | Launch | In the air |
 | 2 | Put the dot on the star (the circle steers; the dot is where the guns point) | Dot on the star for 1 s |
 | 3 | Shoot three still targets when the dot turns green | All 3 down |
-| 4 | Shoot two circling targets: dot on the orange ring | Both down |
+| 4 | Shoot two that fly past left and right: dot on the orange ring | Both down |
 | 5 | Hold right click with a target in the big eraser circle | Lock starts |
 | 6 | Keep holding until the box turns red: the eraser fires and chases (1/2) | 2 down by erasers |
 | 7 | Look: erasers reload in 4 seconds | Got it |
-| 8 | Full speed: one circling target with pellets | Down |
+| 8 | Full speed: one flying past, with pellets | Down |
 | 9 | Full speed: one eraser lock | Down |
 Then straight on to part 2.
 

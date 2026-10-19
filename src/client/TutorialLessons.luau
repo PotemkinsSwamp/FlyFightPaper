@@ -133,8 +133,8 @@ local AIM_STEPS={
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
    end},
-  {text=shootText("Moving targets: put the dot on the orange ring, not on the plane."),key="Left click",count=2,
-   hint="The orange ring is where your pellets meet the plane. Dot on the ring, then shoot.",
+  {text=shootText("These fly past. Your pellets take a moment to get there: put the dot on the orange ring in front of the plane."),key="Left click",count=2,
+   hint="The orange ring shows where the plane will be when your pellets arrive. Dot on the ring, then shoot.",
    enter=function(ctx) ctx.lesson({drill="moving"}) end,
    update=function(ctx)
     ctx.softSpot("LeadPipper")
@@ -164,7 +164,7 @@ local AIM_STEPS={
     ctx.spotlight("RightStrip")
     return false
    end},
-  {text=shootText("Full speed! Shoot the moving target: dot on the orange ring."),key="Left click",count=1,
+  {text=shootText("Full speed! Shoot the one flying past: dot on the orange ring."),key="Left click",count=1,
    hint="Same as before, just faster. Dot on the orange ring.",
    enter=function(ctx) ctx.lesson({slow=false,drill="fast"}) end,
    update=function(ctx)

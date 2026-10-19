@@ -485,10 +485,10 @@ function Service:step(dt)
   elseif state=="TAKEOFF" then self:takeoffStep(p,dt)
   elseif state=="FLYING" and p.held then -- holding still for the winners' moment
   elseif state=="FLYING" and p.drill then
-   -- A practice target plane: held on its spot or flown round its little circle, slowed with its pilot's slow motion.
-   local d=p.drill;local slow=d.owner.slow or 1;d.t+=dt*slow
-   local pose,velocity=Course.pose(d.spec,d.t,d.desk)
-   p.drive.VectorVelocity=velocity*slow+(pose.Position-p.body.Position)*3;p.orientation.CFrame=pose.Rotation
+   -- A practice target plane: held on its spot or sweeping left and right in front of its pilot (TrainingCourse).
+   local d=p.drill;d.t+=dt
+   local pose,velocity=Course.pose(d.spec,d.center,d.t,d.face,d.side)
+   p.drive.VectorVelocity=velocity+(pose.Position-p.body.Position)*3;p.orientation.CFrame=pose.Rotation
   elseif state=="FLYING" then
    local utility=p.loadout.utility and self.catalog:get(p.loadout.utility)
    local boosting=utility and p.boostHeld and (p.model:GetAttribute("Boost") or 0)>0
