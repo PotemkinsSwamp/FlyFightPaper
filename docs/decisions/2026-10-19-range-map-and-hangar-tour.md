@@ -1,9 +1,11 @@
-# The Range is its own small map; the Hangar Tour happens there
+# The Hangar Range is its own small map; the Hangar Tour happens there
 
 **Decided:** 2026-10-19 (Alan)  
 **Status:** in force (design and research next; nothing built yet)
 
 ## Decision
+- **Its name is the Hangar Range** (Alan, after playing the rough build: "it works good, conceptually; it just needs the
+  art and the rest of the buttons"). Below, "the Range" means the Hangar Range.
 - **The Range is a separate small map**, not the classroom: wide open, your plane held still (it can only slide side
   to side), flat 2D paper-plane targets hung on fishing wire from metal rigs, moving in circles, figure eights and
   random paths, so you still lead your shots. A speed picker: Noob / Challenge / Veteran / Maneuvers. Weapons can be

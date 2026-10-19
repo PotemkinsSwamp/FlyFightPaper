@@ -91,7 +91,7 @@ the plane takes off by itself, the step carries on, and the Pal holds fire until
 | 5 | Your eraser on the Pal | Your eraser hits |
 End card: "You're ready!" with **Go to a match**.
 
-### The Range (not a lesson; the Training board's fourth card)
+### The Hangar Range (not a lesson; the Training board's fourth card)
 Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hangar-tour.md)); look: concepts
 `assets/references/ui-concepts/range-stage-view-2.png` (the scene), `range-stage-tear-2.png` (a target tearing),
 `target-damage-sheet.png` (the damage steps), built from separate 2D pieces put back together to match.

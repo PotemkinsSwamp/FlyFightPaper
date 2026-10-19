@@ -23,7 +23,7 @@ a lesson gets a tick and Replay once finished (saved on the account: the end car
 ticks it only in the tutorial room). Hangar Tour and the Range show an "Almost ready!" note until they're built. From a match, Play first asks "Leave this match?"
 (the lesson runs on another server). The welcome question goes only to a player with no matches and no ticks. The
 Training Room has no time limit (Alan 2026-10-19: people leave, or Roblox kicks them for being idle).
-**The Range, rough build for feel** (2026-10-19, not yet played): its card opens it like a lesson that never ends; your own
+**The Hangar Range, rough build for feel** (2026-10-19; Alan played it: "conceptually, it works well"; next the art, the side board and its buttons): its card opens it like a lesson that never ends; your own
 build hangs still on a stand-in stage far from the classroom (`Pinned`: it only turns to aim; closer camera) and three
 target planes, drawn as flat cut-outs on sticks (`RangeTarget`), swing and bob in three rows, tear as they're hit, split
 and sink, and come back after the respawn wait. Flight School's end card has "Next: Combat School". Flight School: the step engine
