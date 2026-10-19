@@ -4,7 +4,19 @@
 You earn **Paper** (money) and **XP** (levels) from points in every match. Paper buys plane parts and weapons; levels unlock them. The shop sells Paper packs and 2x XP / 2x Paper boosts, but real sales are switched off until Alan approves products and prices.
 
 ## Where it stands (2026-10-18)
-Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Studio-only practice shop with no Robux. Real purchases are Stage 10 and stay off.
+Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Studio-only practice
+shop with no Robux. The real Roblox purchase code is built for the 15 products (Stage 10, Codex, reviewed; 375 tests)
+and is switched off: with `mode` "mock" it never talks to Roblox's shop.
+- **Receipts:** a paid boost or Paper pack is added together with its receipt ID in one save change, then the game
+  waits for that save to reach Roblox before telling Roblox "granted". A failed save means "not yet": Roblox resends
+  and the receipt ID stops a second payout. A product switched off after someone paid is still delivered.
+- **Passes:** ownership is asked from Roblox on join and after a pass purchase; an error grants nothing.
+- **Buying:** the server opens Roblox's buy window (`buyProduct`), only when live, enabled and mapped; never for an
+  owned pass or a timed boost the permanent pass already covers. No live shop screen yet (needs real prices to show).
+- **To switch on (Alan's go):** create the products and passes on Roblox, put their IDs and approved prices in
+  `config/commerce.json`, set `enabled`, `mode` "live" and `live_sales_authorized` true, then test on a private server.
+- **Not built yet:** early part unlocks (plan: one Roblox product per part), VIP pass (benefits not chosen), private
+  servers (Roblox setting, Alan) and their match settings, cosmetics, special planes, drawing pass (paid outside check).
 
 ## Economy details
 All values here are initial tuning. They are not optimal prices, observed willingness to pay, or a forecast.
@@ -154,6 +166,8 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |
 | `src/server/HangarService.luau` | Buying parts, the practice shop |
 | `src/client/ShopScreen.luau` | Studio-only practice shop screen |
+| `src/server/CommerceService.luau` | Real Roblox purchases: receipts, pass checks, buy prompts (off) |
+| `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts |
 
 ## Tuning numbers
 `config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price); `config/commerce.json` (15 shop products; `mode` is "mock", live sales off); prices in `config/catalog.json`.

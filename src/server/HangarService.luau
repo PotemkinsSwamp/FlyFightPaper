@@ -5,8 +5,8 @@ local Economy=require(Root.Shared.EconomyRules)
 local Commerce=require(Root.Generated.Commerce)
 local PresetCount=require(Root.Generated.Gameplay).menus.saved_loadouts
 local Service={};Service.__index=Service
-function Service.new(flight,profiles)
- return setmetatable({flight=flight,profiles=profiles,catalog=flight.catalog},Service)
+function Service.new(flight,profiles,commerce)
+ return setmetatable({flight=flight,profiles=profiles,commerce=commerce,catalog=flight.catalog},Service)
 end
 function Service:message(player,text) player:SetAttribute("MenuMessage",text) end
 -- The picked build is the one the next refold or fresh plane flies; picking one ends a Studio test build.
@@ -72,6 +72,11 @@ function Service:handle(player,action,value)
   candidate.settings=settings
   if not Schema.validate(candidate,self.catalog) then return end
   self:enqueue(player,{kind="settings",settings=settings})
+ elseif action=="buyProduct" and type(value)=="string" then
+  if self.commerce then
+   local ok=self.commerce:prompt(player,value)
+   if not ok then self:message(player,"Shop is closed for now.") end
+  end
  elseif action=="mockProduct" and Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
   if type(value)~="string" then return end
   local product

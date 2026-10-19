@@ -27,7 +27,9 @@ which cannot grant simulated purchases to a live profile, even when Studio API a
 Saving is configured in `config/server.json`: about one autosave per player per minute, plus join and leave.
 Rewards and their operation IDs change together in the same profile. Recent session IDs store the last applied
 operation sequence; retries from the active session cannot pay twice, and old sessions cannot write.
-Receipt IDs have a dedicated profile field. Real receipt processing stays disabled until Stage 10.
+Receipt IDs have a dedicated profile field: a paid product and its receipt ID change in the same save, and the
+receipt is acknowledged only once that save has reached Roblox ([economy and shop](economy-and-shop.md)). Switched off
+until Alan approves prices.
 
 ## Code
 | File | What it does |

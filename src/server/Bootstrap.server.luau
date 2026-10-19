@@ -23,8 +23,9 @@ flight.active=false
 local combat = require(script.Parent.CombatService).new(flight)
 local bots=require(script.Parent.BotService).new(flight, combat)
 local profiles=require(script.Parent.ProfileRuntime).new(flight.catalog)
+local commerce=require(script.Parent.CommerceService).new(profiles)
 local desks=require(script.Parent.DeskService).new(flight,profiles)
-local rounds=require(script.Parent.RoundRuntime).new(flight,combat,bots,profiles)
+local rounds=require(script.Parent.RoundRuntime).new(flight,combat,bots,profiles,commerce)
 local props=require(script.Parent.PropsService).new(flight.room)
 rounds.onBegin=function()props:reset();combat:resetPaperTargets()end
 -- Hidden paper targets: one score per pilot per sign per round, with their own cap.

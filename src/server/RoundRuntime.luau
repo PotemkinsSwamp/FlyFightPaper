@@ -12,7 +12,7 @@ local ServiceRules=require(Root.Shared.ServiceRules)
 local RewardQueue=require(script.Parent.RewardQueue)
 local VoteRings=require(script.Parent.VoteRings)
 local Runtime={};Runtime.__index=Runtime
-function Runtime.new(flight,combat,bots,profiles)
+function Runtime.new(flight,combat,bots,profiles,commerce)
  local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false},Runtime)
  self.matchmaking=require(script.Parent.Matchmaking).new(profiles)
  self.engine=Match.new({clock={now=os.clock},config=Config,economy=Economy,sessionId=Http:GenerateGUID(false):gsub("%-",""):sub(1,12),seed=ServerConfig.round.seed,
@@ -26,7 +26,7 @@ function Runtime.new(flight,combat,bots,profiles)
  self.view=Instance.new("RemoteEvent");self.view.Name="RoundView";self.view.Parent=Root
  self.profileView=Instance.new("RemoteEvent");self.profileView.Name="ProfileView";self.profileView.Parent=Root
  self.action=Instance.new("RemoteEvent");self.action.Name="RoundAction";self.action.Parent=Root
- self.hangar=require(script.Parent.HangarService).new(flight,profiles)
+ self.hangar=require(script.Parent.HangarService).new(flight,profiles,commerce)
  flight.selectedLoadout=function(player)
   local profile=profiles:view(player)
   return profile and profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout

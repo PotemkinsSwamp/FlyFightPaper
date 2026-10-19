@@ -6,10 +6,40 @@ local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
 local BoostClock=require(Root.Shared.BoostClock)
 local Gameplay=require(Root.Generated.Gameplay)
-local Config=require(Root.Generated.Server).profiles
+local ServerConfig=require(Root.Generated.Server)
+local Config=ServerConfig.profiles
 local Service={};Service.__index=Service
 local function outcome(status,code,value) return {status=status,code=code,value=value} end
 local function count(t) local n=0;for _ in pairs(t) do n+=1 end;return n end
+function Service.receiptKey(purchaseId)
+ if type(purchaseId)~="string" then return nil end
+ local key="r_"..purchaseId
+ if Schema.id(key) then return key end
+ -- FNV-1a 64-bit, non-cryptographic. Split the prime (2^40 + 435) into
+ -- two 32-bit halves so every intermediate stays exact in Luau's doubles.
+ local high,low=0xcbf29ce4,0x84222325
+ for i=1,#purchaseId do
+  low=bit32.bxor(low,string.byte(purchaseId,i))
+  local product=low*435
+  high=(high*435+math.floor(product/4294967296)+low*256)%4294967296
+  low=product%4294967296
+ end
+ return "h_"..string.format("%08x%08x",high,low)
+end
+local function validReceiptGrant(grant)
+ if type(grant)~="table" then return false end
+ local fields
+ if grant.kind=="purchasedPaper" then
+  if not Schema.integer(grant.wholePaper) or grant.wholePaper<1 then return false end
+  fields={kind=true,wholePaper=true}
+ elseif grant.kind=="boostIntent" then
+  if (grant.resource~="xp" and grant.resource~="paper") or grant.action~="duration"
+   or not Schema.integer(grant.seconds) or grant.seconds<1 then return false end
+  fields={kind=true,resource=true,action=true,seconds=true}
+ else return false end
+ for key in pairs(grant) do if not fields[key] then return false end end
+ return true
+end
 function Service.new(options)
  return setmetatable({catalog=options.catalog,mono=options.monotonic or os.clock,
   mock=Run:IsStudio() and options.mock==true,sessions={}},Service)
@@ -98,6 +128,18 @@ function Service:detach(account)
 end
 local function safeAdd(a,b) if not Schema.integer(b) or a>Economy.MAX_SAFE_INTEGER-b then return nil end; return a+b end
 function Service:_effect(p,op,boostState)
+	if op.kind=="receipt" then
+		local key=Service.receiptKey(op.receiptId)
+		if p.receiptIds[key]==true then return {type="ReceiptAlreadyGranted"} end
+		local grant=table.clone(op.grant);grant.id=op.id
+		local result,err=self:_effect(p,grant,boostState)
+		if not result then return nil,err end
+		p.receiptIds[key]=true
+		return result
+	elseif op.kind=="passGrant" then
+		if p.boosts[op.resource=="xp" and "permanentXP" or "permanentPaper"] then return {type="PassAlreadyGranted"} end
+		return self:_effect(p,{kind="boostIntent",resource=op.resource,action="permanent"},boostState)
+	end
 	if boostState then p.boosts=assert(Schema.copy(boostState)) end
 	local v=Schema.economicView(p)
 	local applied,err,result
@@ -182,7 +224,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,settings=true,
+local allowed={receipt=true,passGrant=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,settings=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
@@ -200,15 +242,31 @@ function Service:apply(account,input)
   return outcome("ok",nil,cached and cached.value or {type="AlreadyApplied",operationID=op.id})
  end
  if (op.kind=="purchasedPaper" or op.kind=="boostIntent") and not self.mock then return outcome("error","studio_only") end
+ local intent=op
+ if op.kind=="receipt" then
+  if type(op.receiptId)~="string" or #op.receiptId==0 then return outcome("error","invalid_receipt") end
+  if not validReceiptGrant(op.grant) then return outcome("error","invalid_receipt_grant") end
+  local key=Service.receiptKey(op.receiptId)
+  if s.profile.Data.receiptIds[key]==true then intent=nil
+  elseif count(s.profile.Data.receiptIds)>=ServerConfig.schema.max_receipts then
+   -- Ceiling: 1000 receipts per player. Upgrade path: ordered ring with
+   -- oldest-acknowledged eviction; never evict a pending receipt to make room.
+   return outcome("error","receipt_cap")
+  else intent=op.grant end
+ elseif op.kind=="passGrant" then
+  if op.resource~="xp" and op.resource~="paper" then return outcome("error","invalid_resource") end
+  if s.profile.Data.boosts[op.resource=="xp" and "permanentXP" or "permanentPaper"] then intent=nil
+  else intent={kind="boostIntent",resource=op.resource,action="permanent"} end
+ end
  local advanced,why=self:_advance(s);if not advanced then return outcome("retry",why) end
  local clock=s.clock
- if op.kind=="boostIntent" then
+ if intent and intent.kind=="boostIntent" then
   clock=BoostClock.new(s.clock:snapshot(),s.clock.now,s.clock.eligible,{historyLimit=Config.boost_history_limit})
   clock.startedAt=s.clock.startedAt;clock.watermark=s.clock.watermark;clock.revision=s.clock.revision
   clock.intervals=assert(Schema.copy(s.clock.intervals));clock.changes=assert(Schema.copy(s.clock.changes))
   local ok,err
-  if op.action=="duration" then ok,err=clock:grantVerifiedTemporary(op.resource,op.seconds,self.mono())
-  elseif op.action=="permanent" then ok,err=clock:grantVerifiedPermanent(op.resource,self.mono()) end
+  if intent.action=="duration" then ok,err=clock:grantVerifiedTemporary(intent.resource,intent.seconds,self.mono())
+  elseif intent.action=="permanent" then ok,err=clock:grantVerifiedPermanent(intent.resource,self.mono()) end
   if not ok then return outcome("error",err or "invalid_boost_intent") end
  end
  local data=assert(Schema.copy(s.profile.Data));data.lease={nonce=s.token,generation=data.generation,expires=0}
