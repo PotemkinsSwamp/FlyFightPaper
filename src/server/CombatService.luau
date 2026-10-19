@@ -219,7 +219,8 @@ function Service:fire(p,mount,now)
  if cooling then self:publishHeat(p,now) end
  return true
 end
-function Service:launch(p,mount,now,target)
+-- `origin`: the shot starts there, aimed at `target`, instead of at the plane's gun (the eraser Pal's erasers).
+function Service:launch(p,mount,now,target,origin)
  if not self:eligible(p) then return false end
  local info=self.info[p.id];local weapon=mount.weapon
  local direction=info.aims and info.aims[mount.group] or info.aim or p.body.CFrame.LookVector
@@ -233,7 +234,8 @@ function Service:launch(p,mount,now,target)
   local spread=math.rad(weapon.spread_deg)
   direction=(CFrame.lookAt(Vector3.zero,direction)*CFrame.Angles(self.random:NextNumber(-spread,spread),self.random:NextNumber(-spread,spread),0)).LookVector
  end
- if self.flight.inServiceZone and self.flight:inServiceZone(p,position) then return false end
+ if origin then position,direction=origin,(target.body.Position-origin).Unit
+ elseif self.flight.inServiceZone and self.flight:inServiceZone(p,position) then return false end
  p.spawnProtectionUntil=0
  self.serial+=1
  -- Humans aim at where they saw targets. Their view is one trip old (positions reaching them) plus Roblox's
@@ -271,7 +273,7 @@ function Service:finish(shot,position,wall)
  if pal and pal.pal and pal.lessonPlayer and (shot.struck or victim and victim.model:GetAttribute("State")=="FLYING") then
   local key=shot.struck and "PalEraserHits" or "PalEraserMisses"
   pal.lessonPlayer:SetAttribute(key,(pal.lessonPlayer:GetAttribute(key) or 0)+1)
-  if shot.struck then pal.pal.eraserSlow=math.max(.3,pal.pal.eraserSlow*.8) else pal.pal.mode="circle" end -- dodged: it stops shooting
+  if shot.struck then pal.pal.eraserSlow=math.max(.6,pal.pal.eraserSlow*.9) else pal.pal.mode="circle" end -- dodged: it stops shooting
  end
  self:emit({kind="end",id=shot.id,position=position or shot.position,wall=wall})
 end

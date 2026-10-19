@@ -58,6 +58,13 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - Pals waited to come out of the hangar, next to you. **Done:** they appear in the air 350-550 studs away, ahead,
   behind a building when possible, before the step's read pause.
 
+## Round 9
+- Too much aim assist: bullets "magnetised", trails visibly turning; or dot on the ring and nothing hits. **Done:**
+  assist 7 degrees to 1, none in lessons, red dot only when you'd hit without help
+  ([decision](../decisions/2026-10-19-less-aim-assist.md)).
+- The reload card should come between the two eraser shots. **Done.**
+- The eraser to dodge: faster (still slower than a real one) and from nowhere, not after the Pal lines up. **Done.**
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

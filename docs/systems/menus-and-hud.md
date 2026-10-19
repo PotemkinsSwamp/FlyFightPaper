@@ -14,13 +14,10 @@ Level bar with next unlock on the main menu board's stats card, in the hangar un
 (seen 2026-10-17; partly filled bar seen on a test screen, the test account is at max level).
 
 ## Rules
-The nose dot turns red exactly when the shots will land if fired now (Alan 2026-10-19: "if I'm hitting shots... my
-crosshair should be red"), worked out the way the guns aim: the target in range and either the nose within the gun
-assist of the orange ring (the shots then go to the ring) or, closer in, the nose line passing within 2 studs of it.
-Two screen-distance rules before this (dot on the ring; then also the plane's middle up close) stayed green while
-shots hit. The gun assist (`combat.gun_assist_deg`,
-7: the guns fire at the ring when it's that close to the nose) stays ([decision](../decisions/2026-10-19-aiming-and-combat-lessons.md)),
-so near misses still often hit. A shot-path check against the target's shape was dropped after a Play measurement.
+The nose dot turns red when the shots would land with no aim help (Alan 2026-10-19,
+[decision](../decisions/2026-10-19-less-aim-assist.md)): the target in range and the nose line passing within 2 studs of
+the orange ring's point. The gun assist (`combat.gun_assist_deg`, 1 degree, none on practice planes; was 7) sends
+shots to the ring when the nose is that close. A shot-path check against the target's shape was dropped after a Play measurement.
 *Moved word for word from the old rulebook (GAME_SPEC.md section 9).*
 
 All first-release screens and controls must be navigable at 1280×720 and the reference 1920×1080. Team markers

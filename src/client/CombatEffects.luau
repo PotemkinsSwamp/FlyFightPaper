@@ -15,15 +15,16 @@ local FlightState=require(script.Parent.FlightController).state
 local assist=math.cos(math.rad(require(Root.Generated.Gameplay).combat.gun_assist_deg))
 local convergence=require(Root.Generated.Gameplay).combat.gun_convergence_studs
 local Effects={}
--- Gun assist: when the nose is within a few degrees of the lead marker, shots go to the marker.
--- The nose always trails a moving aim slightly; this closes that gap. The server allows the same leeway.
+-- Gun assist: when the nose is within combat.gun_assist_deg (1) of the lead marker, shots go to the marker: a small
+-- nudge for the nose trailing a moving aim. Alan 2026-10-19: 7 degrees felt like magnetised bullets, "like War
+-- Thunder" (no pull) is the model. None in lessons (Practice planes), so players learn the real aim.
 -- Also returns the target's range: both guns meet there. At a fixed 150 studs they crossed and flew past either
 -- side of a plane seen from behind at 300 (measured 2026-10-19), though the dot was red on the ring.
 function Effects.aim(body,weapon)
  local leadFor=FlightState.leadFor
  if leadFor and weapon then
   local offset=leadFor(weapon)-body.Position
-  if body.CFrame.LookVector:Dot(offset.Unit)>=assist then return offset.Unit,offset.Magnitude end
+  if body.CFrame.LookVector:Dot(offset.Unit)>=assist and not body.Parent:GetAttribute("Practice") then return offset.Unit,offset.Magnitude end
   return body.CFrame.LookVector,offset.Magnitude
  end
  return body.CFrame.LookVector

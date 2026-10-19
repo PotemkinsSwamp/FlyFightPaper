@@ -53,8 +53,10 @@ of a hangar: Alan 2026-10-19, "coming out of nowhere"; BotService:placePal), fac
 chasing or U-turning (Alan 2026-10-19: easy to chase down, "worse than noob"): one that never shoots, one that turns
 on you 3 seconds in every 10 and shoots until you're at half Health. Neither carries an eraser. Part 3, the eraser:
 the plane refolds in the air with an eraser on right click (`eraser=true`), then in slow motion the big lock circle and
-lock (holding right click fires it at full lock), its reload, one lock at full speed, a Pal that hunts you with slow
-erasers (half speed, slower again after each hit) until you dodge one, then your eraser on it.
+lock (holding right click fires one at full lock) on one target, its reload (the card comes while it fills, between
+the two shots), the second target, one lock at full speed, then a Pal whose erasers appear out of nowhere 300 studs off
+your side or tail, already chasing you (BotService:palEraser; 80% speed, 10% slower after each hit, never under 60%)
+until you dodge one, then your eraser on it. No aim assist in lessons ([decision](../decisions/2026-10-19-less-aim-assist.md)).
 Folded by a crash: a countdown note, the plane takes off by itself, the step carries on and the Pal holds fire until
 you've flown 2 seconds; after 3 crashes on a step, a tip.
 
@@ -95,7 +97,7 @@ air, the gun range sent, and how far and where each passed the nearest enemy's c
 
 ## Tuning numbers
 `TrainingCourse.SLOW_MO` (.06), target health, sweep size and speed in `TrainingCourse.DRILLS`; Pal speed (.45), turn share (.6, BotService) and first
-eraser speed (.5) in `RoundRuntime:lesson`; the soft frame's `SOFT_SLICE`/`SOFT_SEE_THROUGH` in `Tutorial.luau`.
+eraser speed (.8) in `RoundRuntime:lesson`; the soft frame's `SOFT_SLICE`/`SOFT_SEE_THROUGH` in `Tutorial.luau`.
 
 ## Related
 - [The tutorial is built last](../decisions/2026-10-13-tutorial-built-last.md)

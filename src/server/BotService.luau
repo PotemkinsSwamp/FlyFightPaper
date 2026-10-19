@@ -57,6 +57,23 @@ function Service:placePal(p)
  p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
  local b=self.brains[p.id];if b then b.mode="launch" end
 end
+-- The eraser Pal's erasers appear out of nowhere 300 studs off your side or tail, already chasing you, one at a
+-- time with 1.5 s between (Alan 2026-10-19: waiting for the Pal to line up and lock took too long).
+function Service:palEraser(p,victim,now)
+ local info=self.combat.info[p.id]
+ if info.activeErasers>0 then p.pal.nextEraserAt=now+1.5;return end
+ if now<(p.pal.nextEraserAt or 0) then return end
+ local mount;for _,m in ipairs(info.mounts) do if m.weapon.homing then mount=m end end
+ if not mount then return end
+ local from=victim.body.Position
+ local heading=victim.body.CFrame.LookVector*Vector3.new(1,0,1);heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
+ for _,range in {300,200} do
+  for _,turn in {120,-120,90,-90,150,-150,180} do
+   local at=from+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*range
+   if not workspace:Raycast(from,at-from,self.flight.cast) then self.combat:launch(p,mount,now,victim,at);return end
+  end
+ end
+end
 function Service:palReady(p,now)
  local victim=self.flight.byId[p.foeOf]
  return victim and victim.model:GetAttribute("State")=="FLYING" and now-(victim.launchAt or 0)>2 and victim or nil
@@ -407,8 +424,8 @@ function Service:decide(p,b,now)
  -- otherwise (and once it has stopped shooting) it flies the course loop so it is easy to find and shoot.
  if p.pal then
   local victim=self:palReady(p,now)
-  -- An eraser Pal hunts you (it must lock on); a pellet Pal only turns on you 3 seconds in every 10.
-  if victim and (p.pal.mode=="eraser" or p.pal.mode=="pellet" and (now+b.seed)%10<3) then
+  -- A pellet Pal only turns on you 3 seconds in every 10; an eraser Pal's erasers come from nowhere (palEraser).
+  if victim and p.pal.mode=="pellet" and (now+b.seed)%10<3 then
    b.target=victim;b.mode="chase";b.goal=victim.body.Position;b.lastSeen=now;b.lastKnown=victim.body.Position;b.lastVelocity=victim.body.AssemblyLinearVelocity
   else
    b.target=nil;b.mode="patrol";b.goal=wander(self,b,position,now)
@@ -564,7 +581,8 @@ function Service:steer(p,b,dt,now)
    -- Pellets until their player is down to half Health, then never again; one slow eraser at a time.
    local victim=self:palReady(p,now)
    if p.pal.mode=="pellet" and victim and victim.model:GetAttribute("Health")<=victim.stats.health*.5 then p.pal.mode="circle" end
-   fire=fire and victim~=nil and (eraser and p.pal.mode=="eraser" and self.combat.info[p.id].activeErasers==0 or not eraser and p.pal.mode=="pellet")
+   fire=fire and victim~=nil and not eraser and p.pal.mode=="pellet"
+   if eraser and victim and p.pal.mode=="eraser" then self:palEraser(p,victim,now) end
   end
   self.combat:trigger(p,group,fire,aim)
  end

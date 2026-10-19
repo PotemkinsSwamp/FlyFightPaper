@@ -205,16 +205,23 @@ local ERASER_STEPS={
   {text=function(ctx)
     local progress=ctx.plane and ctx.plane:GetAttribute("LockProgress") or 0
     return progress>0 and progress<1 and "Keep holding... when the box turns red, the eraser fires!" or "Keep it in the circle until the box turns red: the eraser fires and chases!"
-   end,key="Right click",count=2,
+   end,key="Right click",count=1,
    hint="Lost it? The box starts over when the target leaves the big circle. A quick click fires straight, with no chase.",
    update=function(ctx)
     markTarget(ctx,"LOCK ON")
     return ctx.count("DrillDown")
    end},
+  -- The reload card comes between the two eraser shots, while the first one's reload fills (Alan 2026-10-19).
   {text="Erasers take 4 seconds to reload: watch the right-click row fill up.",gotIt=true,
    update=function(ctx)
     ctx.spotlight("RightStrip")
     return false
+   end},
+  {text="Reloaded! Lock on to the other target: hold right click.",key="Right click",count=2,
+   hint="Keep it in the big circle until the box turns red.",
+   update=function(ctx)
+    markTarget(ctx,"LOCK ON")
+    return ctx.count("DrillDown")
    end},
   {text="Now lock on with your eraser: hold right click.",key="Right click",count=1,
    hint="Keep the target in the big circle until the box turns red.",

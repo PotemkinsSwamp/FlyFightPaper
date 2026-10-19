@@ -274,7 +274,7 @@
     "max_rewind_seconds": 0.25,
     "view_delay_seconds": 0.1,
     "track_hz": 30,
-    "gun_assist_deg": 7,
+    "gun_assist_deg": 1,
     "eraser_seeker_deg": 30,
     "eraser_break_studs": 180,
     "gun_convergence_studs": 150,

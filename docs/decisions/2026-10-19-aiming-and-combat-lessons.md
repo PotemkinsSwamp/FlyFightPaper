@@ -20,7 +20,7 @@
 - **Read, then act (2026-10-19):** before each step the world freezes with the note up; it unfreezes when the player
   is ready. Every step, Flight School included: "in this game where you're constantly moving, you don't get that
   opportunity. So we have to do it for them."
-- **Aim help kept (2026-10-19):** the guns already fire at the orange ring when it's within 7 degrees of the nose
+- **Aim help kept (2026-10-19; replaced the same day by [less aim assist](2026-10-19-less-aim-assist.md)):** the guns already fire at the orange ring when it's within 7 degrees of the nose
   (measured in Play). Alan kept it. After a match he set the red dot: red only while the dot is on the orange ring
   ("a second indicator that you're going to make your shots"); the lesson teaches "put the dot on the orange ring". Smaller or no help would make every match harder and need a rebalance.
 - Training Room time goes to 10 minutes (Claude's suggestion, OK'd with the plan).
