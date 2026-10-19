@@ -37,10 +37,10 @@ all step, beside the 3D target's focus; the Lift step instead spotlights the Lif
 keeps its glow, line and turn arrow. Sound: one quiet looped song ("Daisy Fresh"), and the same soft ding for each hoop
 and, a beat later, each finished step. Alan's first look: [playtest](../playtests/2026-10-18-flight-school-attention.md).
 **Combat School** (Alan 2026-10-18/19, [decision](../decisions/2026-10-19-aiming-and-combat-lessons.md)), part 1,
-aiming: in slow motion first (your plane at 6% speed, almost still; turning, shots and targets at full speed; colours
+aiming: in slow motion first (your plane at 6% speed, almost still, Lift kept full; turning, shots and targets at full speed; colours
 soften, the music slows, a whoosh and a "SLOW MOTION" tag): the circle vs the dot (a star), three still targets
-(dot turns green = it will hit), two that sweep left and right across in front of you at a real plane's speed (crossing your view is what shows
-the lead: aim at the orange ring), the eraser's big lock circle and lock
+(the dot turns red = it will hit; the dot is always green/red, whatever crosshair colour is set), two that sweep left and right across in front of you at a real plane's speed (crossing your view is what shows
+the lead): first a look step on the orange ring ("AIM HERE", "that's called leading"), then shoot them, the eraser's big lock circle and lock
 (holding right click fires it at full lock), its reload; then full speed for one target and one eraser lock. HUD
 pieces it points at (crosshair, lead ring, eraser circle) get a soft frame: thin, half see-through, no dim.
 **Targets are real paper planes** placed in clear air just ahead of where you are when the step starts (checked

@@ -345,8 +345,9 @@ function Tutorial.start(getPlane)
   end
  end
  ctx.clicked=function(name) return clicked[name]==true end
- local softSpot=false
+ local softSpot,softTag=false,nil
  ctx.softSpot=function(...) ctx.spotlight(...);softSpot=true end
+ ctx.softTag=function(words) softTag=words end -- a tag under the soft frame ("AIM HERE")
  ctx.pulse=function(name) pulseName=name end
  local dingAt=0
  ctx.ding=function() dingAt=os.clock();Audio.play("ding") end
@@ -434,7 +435,7 @@ function Tutorial.start(getPlane)
  if RunService:IsStudio() then Root:GetAttributeChangedSignal("DevLesson"):Connect(function() Tutorial.begin(Root:GetAttribute("DevLesson")) end) end
 
  RunService.RenderStepped:Connect(function(dt)
-  marked,spotNames,pulseName,softSpot=nil,nil,nil,false
+  marked,spotNames,pulseName,softSpot,softTag=nil,nil,nil,false,nil
   if not Tutorial.active then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
@@ -485,7 +486,7 @@ function Tutorial.start(getPlane)
   targetRing.Visible=spotNames~=nil and low~=nil
   if spotNames then
    local targetLow,targetHigh=low,high
-   low,high=box(spotNames);drawSpot(low,high,not softSpot and (ctx.state=="FLYING" and WORLD_DIM or GUI_DIM) or nil,false,nil,dt,softSpot)
+   low,high=box(spotNames);drawSpot(low,high,not softSpot and (ctx.state=="FLYING" and WORLD_DIM or GUI_DIM) or nil,false,softSpot and softTag or nil,dt,softSpot)
    if targetLow then
     local grow=6+(math.sin(os.clock()*5)+1)*4
     targetRing.Position=UDim2.fromOffset(targetLow.X-grow,targetLow.Y-grow);targetRing.Size=UDim2.fromOffset(targetHigh.X-targetLow.X+grow*2,targetHigh.Y-targetLow.Y+grow*2)

@@ -499,7 +499,8 @@ function Service:step(dt)
    -- Drain in 0.2 s steps so these attributes replicate at 5 Hz, not every frame.
    p.liftDrain=(p.liftDrain or 0)+dt;p.boostDrain=(p.boostDrain or 0)+(boosting and dt or 0)
    if p.liftDrain>=.2 then
-    p.model:SetAttribute("Lift",math.max(p.gentle and 1 or 0,Rules.lift(p.model:GetAttribute("Lift"),p.stats.lift,p.liftDrain)));p.liftDrain=0
+    -- Slow motion (the tutorial's aiming) keeps Lift full: you only turn and aim there (Alan 2026-10-19).
+    p.model:SetAttribute("Lift",p.slow and p.stats.lift or math.max(p.gentle and 1 or 0,Rules.lift(p.model:GetAttribute("Lift"),p.stats.lift,p.liftDrain)));p.liftDrain=0
     if p.boostDrain>0 then p.model:SetAttribute("Boost",math.max(p.gentle and .01 or 0,p.model:GetAttribute("Boost")-p.boostDrain));p.boostDrain=0 end
    end
    local localPos=self.boundsCF:PointToObjectSpace(p.body.Position)

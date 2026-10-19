@@ -126,18 +126,25 @@ local AIM_STEPS={
     ctx.data.held=noseOn(ctx,star.Position,4) and ctx.data.held+ctx.dt or 0
     return ctx.data.held>=1
    end},
-  {text=shootText("Put the dot on a target. When the dot turns green, hold left click!"),key="Left click",count=3,
-   hint="Wait for the dot to turn green, then hold left click.",
+  {text=shootText("Put the dot on a target. When the dot turns red, hold left click!"),key="Left click",count=3,
+   hint="Wait for the dot to turn red: that means your pellets will hit. Then hold left click.",
    enter=function(ctx) ctx.lesson({drill="still"}) end,
    update=function(ctx)
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
    end},
-  {text=shootText("These fly past. Your pellets take a moment to get there: put the dot on the orange ring in front of the plane."),key="Left click",count=2,
-   hint="The orange ring shows where the plane will be when your pellets arrive. Dot on the ring, then shoot.",
+  -- Leading (Alan 2026-10-19: nothing taught it): first just look at the ring in front of a plane flying past.
+  {text="Pellets take time to get there. Aim at the orange ring: where the plane WILL be. That's called leading.",gotIt=true,
    enter=function(ctx) ctx.lesson({drill="moving"}) end,
    update=function(ctx)
-    ctx.softSpot("LeadPipper")
+    ctx.softSpot("LeadPipper");ctx.softTag("AIM HERE")
+    markTarget(ctx,"WATCH")
+    return false
+   end},
+  {text=shootText("Put the dot inside the orange ring. When the dot turns red, hold left click!"),key="Left click",count=2,
+   hint="Aim at the orange ring, not at the plane. The dot turns red when it's inside the ring.",
+   update=function(ctx)
+    ctx.softSpot("LeadPipper");ctx.softTag("AIM HERE")
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
    end},

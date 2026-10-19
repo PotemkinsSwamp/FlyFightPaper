@@ -579,7 +579,11 @@ function HUD.start(getPlane, action)
 					local lead = FlightState.leadFor(weapon)
 					place(pipper, lead)
 					if group == 1 or not guns[1] then noseRange = (lead - body.Position).Magnitude end
-					local onTarget = willHit(plane, body, target, m, group)
+					-- Red only when the dot is really inside this ring (Alan 2026-10-19: it went red with the dot well off the
+					-- ring, and the shots missed): the path check alone forgives a fast target too much.
+					local dot = camera:WorldToViewportPoint(body.Position + body.CFrame.LookVector * (lead - body.Position).Magnitude)
+					local inRing = pipper.Visible and (Vector2.new(dot.X, dot.Y) - Vector2.new(pipper.Position.X.Offset, pipper.Position.Y.Offset)).Magnitude <= pipper.AbsoluteSize.X / 2
+					local onTarget = inRing and willHit(plane, body, target, m, group)
 					anyHit = anyHit or onTarget
 					pipper.BackgroundTransparency = onTarget and 0.35 or 1
 					local a = pipper.Position
