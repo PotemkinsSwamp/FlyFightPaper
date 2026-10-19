@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-18-ui-paper-look.md
+# LATEST → handoff-2026-10-18-ui-paper-done-prestige.md
 
-★ START HERE: Stage 9 approved; shop planned with Alan; softer paper team colours live. Next: paper texture (UVs +
-paper maps tinted by team colour, like the Classic sample) on the other 22 plane parts and boosters; done when every
-part shows it in Studio Play, team tints are right, tests 328/0 and Alan OKs it. Uploads need Alan's go (he runs them).
+★ START HERE: Paper look on every plane part approved; prestige built and parked by Alan. Next: Stage 10 commerce
+wiring (real MarketplaceService adapter, receipts with ProfileStore idempotency, game-pass checks), everything OFF
+until Alan OKs prices; done = adapter behind the mock, sales off, tests green.
 
-Quick state: main, tests 328/0. Studio open in Edit, Rojo serving; place not saved (duct fan fix needs Save to File).
-Previous: handoff-2026-10-18-ui-scrape-wobble.md.
+Quick state: main, tests 340/0. Studio open in Edit, Rojo serving; rbxlx shows modified (ask Alan about Save to File).
+Previous: handoff-2026-10-18-ui-paper-look.md.
