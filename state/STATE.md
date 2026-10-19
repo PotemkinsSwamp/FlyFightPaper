@@ -1,4 +1,9 @@
 # Since Alan last checked (2026-10-18)
+- **Real shop code built, switched off (Stage 10):** when someone pays, the game adds the item and saves it before
+  telling Roblox "done", so nobody is charged without getting it and nobody gets it twice. Permanent 2x passes are
+  checked with Roblox on join. Also: early part unlocks (one Roblox product per part, 28 parts). Nothing can be bought
+  until you OK prices and we put the real product numbers in. Tests 388/0
+  ([how it works](../docs/systems/economy-and-shop.md)).
 - **Planes look like paper (you approved it):** every part and booster now has its paper texture in the game:
   creases, paper edges, cardboard, toilet roll, tape and rubber bands, tinted red, blue, or half-and-half in
   free-for-all. Checked in Studio Play, sizes unchanged, tests 328/0
@@ -18,7 +23,7 @@
   bots died only to weapons in a 2-minute match. ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md))
 - Earlier: real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
-# Now: Stage 10 shop (stays off until you OK prices) (MILESTONES)
+# Now: Tutorial (built last, MILESTONES); Stage 10 code done and off
 Toilet Roll jitter: not reproduced; tell me when it happens.
 
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
@@ -28,6 +33,8 @@ During the vote lap the top strip still shows the old round's mode and clock.
 Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
+Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
+  buying early is useless). Buying a part with Paper still needs the level.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
   (config flight.scrape_*); crash angle 25 (combat.collision_crash_angle_deg).
 Results card "Crashes" counts every time a pilot went down (shot or crashed), from the round's deaths.
@@ -57,4 +64,5 @@ Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked inste
 Waiting on Alan
 0. Studio: File > Save to File (keeps today's duct fan fix in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
-2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK.
+2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK. Then: create the products and
+   passes on Roblox (I'll give exact steps), and decide the VIP pass's perks and whether to turn on private servers.
