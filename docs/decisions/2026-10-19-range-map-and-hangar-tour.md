@@ -15,7 +15,7 @@
 - **Leaving a match warns you.** Clicking Tutorial (a lesson) or Range from a match first says you'll leave your game
   for another server.
 - Flight School and Combat School stay in the classroom copy (approved; they need the real map).
-- The Training Room's 10-minute limit is dropped (Claude's suggestion; Roblox closes empty rooms itself, and a timer
+- Proposed, waiting on Alan's OK: drop the Training Room's 10-minute limit (Claude's suggestion; Roblox closes empty rooms itself, and a timer
   could cut off a slow learner).
 - Research first ([range and hangar research](../research/RANGE-HANGAR-RESEARCH-2026-10-19.md)): how shooter and flight games do ranges, target patterns, difficulty, hangars and quick loadout
   switching.
