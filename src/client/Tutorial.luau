@@ -77,7 +77,7 @@ function Tutorial.start(getPlane)
 
  -- The goal note: sticky note near the top, lesson and step, the instruction, the key picture, the count.
  local note=Instance.new("ImageLabel");note.Name="Note";note.Image=Art.ingame.stickyNote;note.ScaleType=Enum.ScaleType.Stretch;note.BackgroundTransparency=1
- note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.08);note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui -- just under the top strip, out of the middle of the view
+ note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.05) -- just under where a match's clock sits;note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui -- just under the top strip, out of the middle of the view
  local scale=Instance.new("UIScale");scale.Parent=note
  local function fit() scale.Scale=math.max(.6,workspace.CurrentCamera.ViewportSize.Y/1080) end
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit);fit()

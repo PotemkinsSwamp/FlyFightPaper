@@ -203,6 +203,7 @@ function HUD.start(getPlane, action)
 	threat.Words.Size, threat.Words.UIPadding.PaddingTop = UDim2.fromScale(1, 0.66), UDim.new(0.2, 0)
 	threat.Words.FontFace = Font.fromEnum(Enum.Font.PermanentMarker) -- the heavy marker of concept 2's INCOMING!
 	local sub = PaperUI.words(threat, "Sub", "", 0, 0, 0, 0, 28)
+	local threatTop = 150 -- below the round strip; lower in Airspace Control, under the lesson note in a lesson
 	sub.Position, sub.Size, sub.TextXAlignment, sub.TextScaled = UDim2.new(0.12, 0, 0.58, 0), UDim2.fromScale(0.76, 0.26), Enum.TextXAlignment.Center, true
 	local subCap = Instance.new("UITextSizeConstraint")
 	subCap.MaxTextSize, subCap.Parent = 28, sub
@@ -290,6 +291,7 @@ function HUD.start(getPlane, action)
 		teams = snapshot.teams or teams
 		capture.Visible = control
 		status.Position, threat.Position = UDim2.new(0.5, 0, 0, control and 160 or 84), UDim2.new(0.5, 0, 0, control and 226 or 150)
+		threatTop = control and 226 or 150
 		lockInfo.Position = UDim2.new(0.5, 0, 0, control and 234 or 158)
 		round.Words.UIPadding.PaddingRight = UDim.new(first and 0.14 or 0.07, 0)
 	end)
@@ -688,6 +690,10 @@ function HUD.start(getPlane, action)
 		threat.Visible, threat.Words.Text, sub.Text = headline ~= nil, headline or "", line or ""
 		threat.Size = loud and UDim2.fromOffset(600, 198) or UDim2.fromOffset(450, 149)
 		threat.Rotation = loud and (math.floor(os.clock()*8)%2==0 and -3 or 2) or -2
+		-- In a lesson its note covers this spot: drop it just under the note, a size smaller (Alan 2026-10-19: INCOMING
+		-- and BREAK NOW! were hidden behind it).
+		threat.Position = UDim2.new(0.5, 0, 0, lesson and 300 or threatTop)
+		if lesson then threat.Size = UDim2.fromOffset(450, 149) end
 		local target=plane:GetAttribute("LockName") or ""
 		local mine=os.clock()-(Players.LocalPlayer:GetAttribute("EraserAwayAt") or -9)<1.2 and "ERASER AWAY"
 			or progress>=1 and string.format("LOCKED: %s  (%s)",target,eraserButton)

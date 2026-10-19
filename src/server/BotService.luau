@@ -16,14 +16,14 @@ local Service={};Service.__index=Service
 -- for 2 seconds (Alan: smooth after a crash), so a player back from a crash isn't jumped on takeoff.
 -- Pals are easy prey (Alan 2026-10-19: a Pal that turned back or chased you only made you both fly in circles):
 -- they wander slowly in gentle turns, picking a clear spot ahead every few seconds, and never U-turn unless boxed in.
--- With its player within 600 studs it heads away from them instead (Alan 2026-10-19: it should try to get away,
--- noob-level, so you feel the chase), changing course every 2.5 s.
+-- With its player within 600 studs it flies straight away from them instead (Alan 2026-10-19: get away "in a straight
+-- line", dumber than zig-zagging), only turning off that line when the way is blocked.
 local function wander(self,b,position,now,from)
  if b.wanderGoal and now<b.wanderUntil and (position-b.wanderGoal).Magnitude>80 then return b.wanderGoal end
  local heading=(from and (position-from).Magnitude<600 and position-from or b.heading)*Vector3.new(1,0,1)
  heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
  local climb=math.clamp((Course.POINTS[2].Y-position.Y)*.3,-40,40) -- drift back toward the course's height
- local first=b.random:NextNumber(-30,30)
+ local first=from and 0 or b.random:NextNumber(-30,30)
  for _,turn in {first,first+40,first-40,90,-90,135,-135,180} do
   local goal=position+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*250+Vector3.yAxis*climb
   if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+2.5;return goal end
@@ -434,6 +434,7 @@ function Service:decide(p,b,now)
  -- A Pal ignores the rest of the brain: it chases its player only in a shooting step and only when they are ready;
  -- otherwise (and once it has stopped shooting) it flies the course loop so it is easy to find and shoot.
  if p.pal then
+  b.move=nil -- no stunts: the brain above sometimes starts an orbit or a break turn (Alan: "too many maneuvers")
   local victim=self:palReady(p,now)
   -- A pellet Pal hunts you without a break until your Health is down to half (Alan 2026-10-19: "whittle your health
   -- down" so you learn it; its hits can't fold you), then turns "circle" and runs; an eraser Pal's erasers come

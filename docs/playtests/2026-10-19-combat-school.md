@@ -92,6 +92,13 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - Step 8's Pal should hunt you hard until your Health is whittled down (never folding you), then run. **Done.**
 - Pals the same speed as you, not faster. **Done.**
 
-Next: Alan plays Combat School again.
+## Round 15
+- Step 8's Pal still didn't come after you. **Not found yet** by reading the code; needs a Play run with its thinking logged.
+- Step 13 (second slow-motion eraser lock) is redundant. **Cut.**
+- INCOMING / BREAK NOW! hidden behind the lesson note. **Done:** the note sits higher, the warning just under it.
+- Step 7's Pal does too many maneuvers. **Found:** the normal bot brain started orbits and break turns. **Done:** no
+  stunts; it flies straight away from you.
+
+Next: find step 8 in Play, then Alan plays Combat School again.
 
 Back to [playtests](README.md)
