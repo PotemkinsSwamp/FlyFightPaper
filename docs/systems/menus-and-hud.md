@@ -14,9 +14,10 @@ Level bar with next unlock on the main menu board's stats card, in the hangar un
 (seen 2026-10-17; partly filled bar seen on a test screen, the test account is at max level).
 
 ## Rules
-The nose dot turns red exactly when it sits inside a lead ring and the target is in the weapon's range (Alan
-2026-10-19). A shot-path check against the target's shape was dropped after a Play measurement: it went red off the
-ring on fast targets and stayed green on a perfect aim past ~150 studs, while the shots hit.
+The nose dot turns red exactly when the guns will hit: a lead ring within the gun assist (`combat.gun_assist_deg`, 7;
+the guns then fire at the ring by themselves) and the target in range. Alan 2026-10-19 kept the assist after a Play
+measurement showed it ([decision](../decisions/2026-10-19-aiming-and-combat-lessons.md)); a shot-path check against the
+target's shape was dropped (it went red off the ring on fast targets and stayed green on a good aim past ~150 studs).
 *Moved word for word from the old rulebook (GAME_SPEC.md section 9).*
 
 All first-release screens and controls must be navigable at 1280×720 and the reference 1920×1080. Team markers

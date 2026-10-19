@@ -134,15 +134,15 @@ local AIM_STEPS={
     return ctx.count("DrillDown")
    end},
   -- Leading (Alan 2026-10-19: nothing taught it): first just look at the ring in front of a plane flying past.
-  {text="Pellets take time to get there. Aim at the orange ring: where the plane WILL be. That's called leading.",gotIt=true,
+  {text="Pellets take time to get there. The orange ring is where the plane WILL be: that's leading. Get close and your guns aim at it.",gotIt=true,
    enter=function(ctx) ctx.lesson({drill="moving"}) end,
    update=function(ctx)
     ctx.softSpot("LeadPipper");ctx.softTag("AIM HERE")
     markTarget(ctx,"WATCH")
     return false
    end},
-  {text=shootText("Put the dot inside the orange ring. When the dot turns red, hold left click!"),key="Left click",count=2,
-   hint="Aim at the orange ring, not at the plane. The dot turns red when it's inside the ring.",
+  {text=shootText("Get the dot close to the orange ring. When the dot turns red, hold left click!"),key="Left click",count=2,
+   hint="Red means your guns will hit: once you're close, they aim at the ring for you.",
    update=function(ctx)
     ctx.softSpot("LeadPipper");ctx.softTag("AIM HERE")
     markTarget(ctx,"SHOOT")

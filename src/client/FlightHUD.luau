@@ -53,7 +53,9 @@ function HUD.start(getPlane, action)
 	Settings:GetAttributeChangedSignal("CrosshairColor"):Connect(applyCrosshair)
 	Settings:GetAttributeChangedSignal("CrosshairSize"):Connect(applyCrosshair)
 	applyCrosshair()
-	-- Bright green; turns red and grows a little when it sits inside a lead ring with the target in range.
+	-- Bright green; turns red and grows a little when the guns will hit: a lead ring within the gun assist (they fire at
+	-- the ring by themselves, CombatEffects.aim) and the target in range.
+	local ASSIST = math.cos(math.rad(require(Root.Generated.Gameplay).combat.gun_assist_deg))
 	local NOSE, NOSE_ON = Color3.fromRGB(60, 255, 90), Color3.fromRGB(255, 40, 60)
 	local noseDot = reticle("NoseDot", 10, true)
 	noseDot.BackgroundColor3 = NOSE
@@ -529,12 +531,10 @@ function HUD.start(getPlane, action)
 					local lead = FlightState.leadFor(weapon)
 					place(pipper, lead)
 					if group == 1 or not guns[1] then noseRange = (lead - body.Position).Magnitude end
-					-- Red exactly when the dot is inside this ring and the target is in range (Alan 2026-10-19). Measured in Play:
-					-- a path check against the target's shape went red off the ring on fast targets and stayed green on
-					-- a perfect aim past ~150 studs, while the shots hit; the ring is where the shots meet the target.
-					local dot = camera:WorldToViewportPoint(body.Position + body.CFrame.LookVector * (lead - body.Position).Magnitude)
-					local inRing = pipper.Visible and (Vector2.new(dot.X, dot.Y) - Vector2.new(pipper.Position.X.Offset, pipper.Position.Y.Offset)).Magnitude <= pipper.AbsoluteSize.X / 2
-					local onTarget = inRing and CombatRules.travelTime(weapon, (lead - body.Position).Magnitude) < math.huge
+					-- Red exactly when the shots go to the ring: it is inside the gun assist and the target in range (Alan
+					-- 2026-10-19 kept the assist). Measured in Play: a path check against the target's shape went red off the
+					-- ring on fast targets and stayed green on a good aim past ~150 studs while the shots hit.
+					local onTarget = body.CFrame.LookVector:Dot((lead - body.Position).Unit) >= ASSIST and CombatRules.travelTime(weapon, (lead - body.Position).Magnitude) < math.huge
 					anyHit = anyHit or onTarget
 					pipper.BackgroundTransparency = onTarget and 0.35 or 1
 					local a = pipper.Position
