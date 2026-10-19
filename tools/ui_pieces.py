@@ -2,6 +2,7 @@
 
     python tools/ui_pieces.py mainmenu            # prepare only (writes assets/ui/<screen>/ready/)
     python tools/ui_pieces.py mainmenu --upload   # also upload new pieces through tools/upload_texture.py
+    python tools/ui_pieces.py tutorial --keep-size # no trimming: 9-slice pieces keep the pixel sizes the code slices at
 
 Pieces come from assets/ui/<screen>/source/*.png. background.png is cut into a 2x2 grid (bg-1..bg-4);
 every other piece is trimmed to its visible pixels. Everything is shrunk to Roblox's 1024-pixel image limit.
@@ -23,7 +24,7 @@ def shrink(image):
     return image if scale == 1.0 else image.resize((round(image.width * scale), round(image.height * scale)), Image.LANCZOS)
 
 
-def prepare(screen):
+def prepare(screen, keep_size=False):
     source, ready = ROOT / "assets/ui" / screen / "source", ROOT / "assets/ui" / screen / "ready"
     ready.mkdir(parents=True, exist_ok=True)
     names = []
@@ -36,7 +37,7 @@ def prepare(screen):
                 image.crop((x, y, x + 960, y + 540)).save(ready / f"bg-{i + 1}.png")
                 names.append(f"bg-{i + 1}")
         else:
-            box = image.getchannel("A").getbbox()
+            box = None if keep_size else image.getchannel("A").getbbox()
             shrink(image.crop(box) if box else image).save(ready / f"{path.stem}.png")
             names.append(path.stem)
     return ready, names
@@ -61,7 +62,7 @@ def upload(screen, ready, names):
 
 if __name__ == "__main__":
     screen = sys.argv[1]
-    ready, names = prepare(screen)
+    ready, names = prepare(screen, "--keep-size" in sys.argv)
     for name in names:
         print(name, Image.open(ready / f"{name}.png").size)
     if "--upload" in sys.argv:
