@@ -1,17 +1,18 @@
 # Since Alan last checked (2026-10-18)
-- **Tutorial (in progress):** plan agreed with you ([plan](../docs/plan/TUTORIAL-PLAN.md)): five separate lessons,
-  fixed training plane, short, always replayable. Its own empty room is built (Studio: the Tutorial button clears the
-  room). Flight School's steps are written; your playtest asked for much stronger attention-grabbing, approved as
-  "Grabbing attention" in the plan: next session builds it, starting with a concept picture for the highlight art.
+- **Tutorial, Flight School (in progress, you're testing):** the "Grabbing attention" pass is built in your approved
+  crayon look: dim round the one thing to do, crayon frame and tag, a bold line along a flyable path, a turn arrow only
+  when you fly the wrong way, a fixed hoop course, quiet "Daisy Fresh" music and a ding per step. Flight School can't be
+  lost (bounce off walls, Lift stops at 1 s). Six rounds of your notes are in
+  ([playtest](../docs/playtests/2026-10-18-flight-school-attention.md)); the last round is not yet seen.
+- **Fixed for the whole game:** sounds that should be heard everywhere (round bell, lock beeps, desk sounds) faded
+  away from the room's middle; the fan's whoosh is softer.
 - **Real shop code built, switched off (Stage 10):** when someone pays, the game adds the item and saves it before
   telling Roblox "done", so nobody is charged without getting it and nobody gets it twice. Permanent 2x passes are
   checked with Roblox on join. Also: early part unlocks (one Roblox product per part, 28 parts). Nothing can be bought
   until you OK prices and we put the real product numbers in. Tests 388/0
   ([how it works](../docs/systems/economy-and-shop.md)).
-- Earlier today: paper look on every plane part (approved); prestige built and parked; shop planned with you
-  ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)); wall scrapes made fair; Stage 9 approved.
 
-# Now: Tutorial, attention-grabbing pass on Flight School (MILESTONES); Stage 10 code done and off
+# Now: Tutorial, Flight School polish from your playtests (MILESTONES); Stage 10 code done and off
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
@@ -48,7 +49,8 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-- Try the tutorial after each tutorial session (you're its tester); OK the highlight concept picture; run its upload.
+- Play Flight School again (your last six notes are in) and say when it's done; then Combat Training is planned with you.
+- Backlog (yours): a new fan sound for the real game (the current one is a wind tunnel).
 - Private publish (your go) to test the real move into the private tutorial room.
 0. Studio: File > Save to File (keeps today's duct fan fix in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.

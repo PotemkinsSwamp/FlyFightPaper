@@ -30,8 +30,10 @@ Alan: small arrows aren't enough; every step must pull your eyes to the one thin
   around the target, and the dim breathes in and out. For a button it's the button; for a hoop, fan, bolt or
   enemy the hole follows the thing on screen as you fly.
 - **The target itself glows** (a bright outline that shows through walls) with "FLY HERE" and the distance.
-- **Off-screen: you're turned toward it.** A big arrow in front of your plane points the way (like racing games'
-  direction arrow), plus a glowing guide line from your plane to the target.
+- **A bold guide line leads you there** along a path you can really fly; a small see-through arrow by the aim circle
+  shows only when you fly the wrong way and points where to turn (Alan's playtests, 2026-10-18).
+- **Calm and kind:** one quiet song of its own ("Daisy Fresh"), a soft ding for every hoop and every finished step, no
+  classroom chatter; in Flight School you can't crash (you bounce off) and Lift stops at 1 second.
 - **Hoops are a fixed course** in clear air in front of the Training Room desk, checked by hand so none sit inside a
   building (one spawned inside the bell tower), with the next hoop already visible, like flight games' ring courses.
 - **Real art for the frame and arrow**, in the game's paper-and-crayon look: a concept picture first (Codex), Alan
@@ -47,7 +49,7 @@ nobody else in it). The rest happen in the normal game.
 |---|---|---|---|
 | 1 | Your plane on your desk, the LAUNCH button lit | Click LAUNCH (or press Enter) | You're in the air |
 | 2 | Three paper hoops in a gentle line ahead, mouse picture | Move the mouse to steer through them (1/3...) | All 3 hoops |
-| 3 | The Lift bar pulses: "Lift keeps you flying. Fill it at a fan." Marker on the nearest fan | Fly up through the fan | Lift goes up in the fan |
+| 3 | Everything greyed out but the Lift bar: "Your Lift drops every second. Fill it up in a fan: follow the line!" The fan glows with its ring and the line | Turn and fly up through the fan | Lift goes up in the fan |
 | 4 | Marker on a fly-through with a speed bolt | Fly through it for extra speed | Bolt picked up |
 | 5 | The Boost bar pulses, Shift picture | Hold Shift to boost | 1 second of boost |
 | 6 | Marker "Line up here" in front of your desk, then on the desk's ring | Fly through your desk's ring to land | Parked at the desk |
