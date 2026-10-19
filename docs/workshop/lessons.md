@@ -211,6 +211,8 @@ mistake would be easy to make twice.
   credits). `tools/meshy_to_r15.py` maps them onto R15 by world-space bone turns; check by comparing knee/elbow bend
   angles before and after (they matched to 0.1°). `AnimationClipProvider:RegisterAnimationClip` returns a plain hash
   string that works as an AnimationId as is (`rbxtemp://` in front is refused).
+- **A comment in a packed Luau line switches off everything after it** (2026-10-18: `-- note` in the middle of a
+  `;`-joined line hid the tutorial note for a whole playtest). Comments go at the end of the line or above it.
 - **Tutorial UI traps (2026-10-18):** the Kalam font has no arrow or tick signs (▼ ➤ ✓ draw as empty boxes): use
   the crayon arrow picture (`UIAssets.hud.arrow`, points right). ScreenGuis report `AbsolutePosition` (0,-58) under the
   top bar: to place one GUI over another, subtract this layer's `gui.AbsolutePosition`. Screen captures drop

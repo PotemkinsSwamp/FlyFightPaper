@@ -1,8 +1,8 @@
 -- The tutorial's step engine (docs/plan/TUTORIAL-PLAN.md): a goal note at the top with the key to press; one focus
 -- look for every step ("Grabbing attention"): the screen dims round the one button, bar or 3D target, a 3D target
--- glows with its distance, and when it's off-screen a big arrow in front of the plane and a guide line point the
--- way. A tick and a ding for each finished step, a hint when stuck, and Skip (tap K: step, hold K: lesson). The
--- steps live in TutorialLessons.luau.
+-- glows with its distance, a bold guide line leads to it along a path you can fly, and a small arrow by the aim
+-- circle shows which way to turn when you're flying the wrong way. A tick and a ding for each finished step, a hint
+-- when stuck, and Skip (tap K: step, hold K: lesson). The steps live in TutorialLessons.luau.
 -- Lessons are practice: the server makes the plane nobody's enemy and pays nothing.
 local Players=game:GetService("Players")
 local RunService=game:GetService("RunService")
@@ -18,14 +18,14 @@ local HINT_SECONDS=10
 local HOLD_SKIP_SECONDS=1.5
 local HOOP_RADIUS=30
 local HOOP_PIECES=24
-local POINTER_STUDS=10 -- the pointer arrow's width
-local POINTER_AHEAD=30 -- how far in front of the plane it floats
-local POINTER_SIDE=14 -- and how far to the right, so it sits beside the line, not on it (Alan)
+local WRONG_WAY_DEGREES=75 -- the turn arrow shows when the way to go is more than this far off the plane's nose
+local TURN_ARROW_REACH=170 -- how far from the middle of the screen it sits, on the side to turn to
 local MIN_HOLE_PIXELS=70 -- half the dim hole's size for a far-away target
 local MAX_HOLE_SHARE=.28 -- and at most this share of the screen's height for a close one
 local ROUTE_SECONDS=1 -- how often the guide line re-plans its path (often enough to follow you, not so often it jumps)
 local LINE_STEP_STUDS=20 -- the line is smoothed into pieces about this long
 local LINE_PIECES=48 -- at most this many pieces
+local LINE_WIDTH=4.5 -- studs; bold enough to see from the chase camera (Alan)
 local LINE_HIDE_STUDS=40 -- the guide line goes away this close to the target
 local DASH_SPEED=1.5 -- how fast the line's dashes crawl toward the target
 local BURST_ANGLES={-150,180,150,-30,0,30} -- the "look here" marks: three each side, like the concept
@@ -66,7 +66,7 @@ function Tutorial.start(getPlane)
 
  -- The goal note: sticky note near the top, lesson and step, the instruction, the key picture, the count.
  local note=Instance.new("ImageLabel");note.Name="Note";note.Image=Art.ingame.stickyNote;note.ScaleType=Enum.ScaleType.Stretch;note.BackgroundTransparency=1
- note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.08) -- just under the top strip, out of the middle of the view;note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui
+ note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.08);note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui -- just under the top strip, out of the middle of the view
  local scale=Instance.new("UIScale");scale.Parent=note
  local function fit() scale.Scale=math.max(.6,workspace.CurrentCamera.ViewportSize.Y/1080) end
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit);fit()
@@ -94,12 +94,10 @@ function Tutorial.start(getPlane)
  -- The target glows through walls.
  local glowOutline=Instance.new("Highlight");glowOutline.Name="TutorialGlow";glowOutline.DepthMode=Enum.HighlightDepthMode.AlwaysOnTop
  glowOutline.OutlineColor=YELLOW;glowOutline.FillColor=YELLOW;glowOutline.FillTransparency=.75;glowOutline.Enabled=false;glowOutline.Parent=player.PlayerGui
- -- Off-screen: the big paper arrow floats in front of the plane and points the way (like racing games), drawn on top.
- local pointCard=Instance.new("Part");pointCard.Name="TutorialPointer";pointCard.Anchored,pointCard.CanCollide,pointCard.CanQuery,pointCard.CanTouch,pointCard.Transparency=true,false,false,false,1
- pointCard.Size=Vector3.new(POINTER_STUDS,POINTER_STUDS*.62,.2)
- local pointFace=Instance.new("SurfaceGui");pointFace.Face=Enum.NormalId.Back;pointFace.AlwaysOnTop=true;pointFace.LightInfluence=0;pointFace.PixelsPerStud=20;pointFace.Adornee=pointCard;pointFace.Parent=player.PlayerGui
- local pointImage=Instance.new("ImageLabel");pointImage.Image=Pieces.arrow;pointImage.BackgroundTransparency=1;pointImage.ScaleType=Enum.ScaleType.Fit;pointImage.AnchorPoint=Vector2.new(.5,.5)
- pointImage.Position=UDim2.fromScale(.5,.5);pointImage.Size=UDim2.fromScale(1,1);pointImage.Parent=pointFace
+ -- Flying the wrong way: a paper arrow by the aim circle points the way to turn (back if it's behind you).
+ -- See-through and smaller than the line, which does the main pointing (Alan).
+ local turnArrow=Instance.new("ImageLabel");turnArrow.Name="TurnArrow";turnArrow.Image=Pieces.arrow;turnArrow.BackgroundTransparency=1;turnArrow.ScaleType=Enum.ScaleType.Fit
+ turnArrow.AnchorPoint=Vector2.new(.5,.5);turnArrow.Size=UDim2.fromOffset(130,82);turnArrow.Visible=false;turnArrow.Parent=gui
  -- The guide line: crayon dashes that crawl toward the target along a path you can really fly (the bots' air
  -- routes round the buildings when the straight way is blocked), so following it gets you there.
  local Routes=require(Root.Shared.AirRoutes)
@@ -119,8 +117,8 @@ function Tutorial.start(getPlane)
   if not lines[i] then
    local dot=Instance.new("Attachment");dot.Parent=workspace.Terrain;dots[i]=dot
    local line=Instance.new("Beam");line.Name="TutorialGuide";line.Attachment0=i==1 and lineStart or dots[i-1];line.Attachment1=dot
-   line.FaceCamera=true;line.Width0,line.Width1=2.4,2.4;line.Texture=Pieces.dash;line.TextureMode=Enum.TextureMode.Wrap;line.TextureLength=16
-   line.TextureSpeed=DASH_SPEED;line.LightEmission=.4;line.LightInfluence=0;line.Enabled=false;line.Parent=workspace.Terrain;lines[i]=line
+   line.FaceCamera=true;line.Width0,line.Width1=LINE_WIDTH,LINE_WIDTH;line.Texture=Pieces.dash;line.TextureMode=Enum.TextureMode.Wrap;line.TextureLength=16
+   line.TextureSpeed=DASH_SPEED;line.LightEmission=1;line.LightInfluence=0;line.Enabled=false;line.Parent=workspace.Terrain;lines[i]=line
   end
   return lines[i],dots[i]
  end
@@ -129,8 +127,10 @@ function Tutorial.start(getPlane)
  -- Hoops: a fixed course in clear air ahead of the Training Room desk (DeskSouth3), checked by hand in Studio so
  -- none sits in a building (each has 50 studs of empty air round it and the legs between them are clear). All
  -- hoops show at once so the next one is already in view; the one to fly through now is bright, the rest pale.
+ -- The last hoop sends you north with the west fan 90 degrees to your left and 450 studs of clear air ahead, so
+ -- there's time to read the Lift note and turn (Alan: the old course aimed straight into the fan).
  -- ponytail: world points for the tutorial room's desk only; another desk still gets the same hoops.
- local COURSE={Vector3.new(-225,205,440),Vector3.new(-300,235,280),Vector3.new(-410,265,110)}
+ local COURSE={Vector3.new(-225,205,440),Vector3.new(-210,280,270),Vector3.new(-170,340,100)}
  local hoops,lastLocal={},nil
  local function paint(model,now)
   for _,piece in model:GetChildren() do piece.Transparency=now and 0 or .55 end
@@ -220,7 +220,7 @@ function Tutorial.start(getPlane)
  local marked=nil
  local function drawMarker(body)
   glowOutline.Adornee=marked and marked.instance;glowOutline.Enabled=marked~=nil and marked.instance~=nil
-  pointCard.Parent=nil
+  turnArrow.Visible=false
   local shown=0
   if marked and body then
    -- Re-plan the path a few times a second (and at once for a new target).
@@ -231,12 +231,12 @@ function Tutorial.start(getPlane)
     if route[#route]~=marked.position then table.insert(route,marked.position) end
    end
    if (marked.position-body.Position).Magnitude>LINE_HIDE_STUDS then
-    -- A smooth curve (Catmull-Rom) through the plane and the path's turns, leaving along the plane's nose.
+    -- A smooth curve (Catmull-Rom) through the plane and the path's turns, starting straight at the first turn.
     local points={body.Position};for _,point in route do table.insert(points,point) end
     lineStart.Parent=body
     for i=1,#points-1 do
      local p1,p2=points[i],points[i+1]
-     local p0=points[i-1] or p1-body.CFrame.LookVector*(p2-p1).Magnitude
+     local p0=points[i-1] or p1-(p2-p1)
      local p3=points[i+2] or p2+(p2-p1)
      for k=1,math.max(1,math.ceil((p2-p1).Magnitude/LINE_STEP_STUDS)) do
       if shown>=LINE_PIECES then break end
@@ -253,16 +253,14 @@ function Tutorial.start(getPlane)
   local distance=body and math.floor((marked.position-body.Position).Magnitude) or 0
   local point,onScreen=camera:WorldToViewportPoint(marked.position)
   local view=camera.ViewportSize
-  local inView=onScreen and point.X>view.X*.1 and point.X<view.X*.9 and point.Y>view.Y*.1 and point.Y<view.Y*.9
-  if not inView and body then
-   -- The arrow points along the path's first leg. Its card faces the camera as far as it can while the arrow
-   -- (pointing right in the picture) lies along the way to go; it bobs and swells a little.
-   local at=body.Position+camera.CFrame.LookVector*POINTER_AHEAD+camera.CFrame.RightVector*POINTER_SIDE+camera.CFrame.UpVector*(6+math.sin(os.clock()*4)*1.5)
-   local way=((route[1] or marked.position)-at).Unit;local toCamera=(camera.CFrame.Position-at).Unit
-   local facing=toCamera-way*toCamera:Dot(way);if facing.Magnitude<.05 then facing=camera.CFrame.UpVector end
-   facing=facing.Unit
-   pointCard.CFrame=CFrame.fromMatrix(at,way,facing:Cross(way),facing);pointCard.Parent=workspace
-   local swell=.92+(math.sin(os.clock()*6)+1)*.04;pointImage.Size=UDim2.fromScale(swell,swell)
+  local nextPoint=route[1] or marked.position
+  if body and (nextPoint-body.Position).Unit:Dot(body.CFrame.LookVector)<math.cos(math.rad(WRONG_WAY_DEGREES)) then
+   -- The way to go, seen from the camera, flattened onto the screen; straight behind = turn right.
+   local way=camera.CFrame:VectorToObjectSpace((nextPoint-body.Position).Unit)
+   local flat=Vector2.new(way.X,-way.Y);if flat.Magnitude<.15 then flat=Vector2.new(1,0) end
+   flat=flat.Unit
+   local at=view/2+flat*(TURN_ARROW_REACH+math.sin(os.clock()*5)*10)
+   turnArrow.Position=UDim2.fromOffset(at.X,at.Y);turnArrow.Rotation=math.deg(math.atan2(flat.Y,flat.X));turnArrow.ImageTransparency=.3;turnArrow.Visible=true
   end
   if not onScreen then return end
   -- Hole size: the target's radius seen from here, never smaller than a thumb nor bigger than a big part of the screen.

@@ -25,11 +25,11 @@ the hole is round for 3D targets and a rounded box for buttons); a crayon frame 
 wobbles on it with six "look here" marks pulsing out; a 3D target glows through walls (Highlight) and gets a taped
 tag under it ("FLY HERE 120": what to do and how far). A dashed crayon guide line crawls from the plane to the
 target along a path you can really fly: straight when clear, else along the bots' air routes
-(`src/shared/AirRoutes.luau`, built on the client once per lesson, 0.1 s; re-planned every second), drawn as a smooth
-curve leaving along the plane's nose. Off screen, a smaller paper arrow floats ahead and to the right of the plane,
-pointing along the line's first leg. Hoops are a fixed course of three
-in clear air ahead of DeskSouth3 (hand-checked in Studio: 50 studs of empty air round each, legs clear), all shown
-at once, red and white like the concept, the current one bright. A HUD bar the step talks about gets its own breathing frame
+(`src/shared/AirRoutes.luau`, built on the client once per lesson, 0.1 s; re-planned every second), drawn as a bold (4.5 studs) smooth
+curve. Only when you fly the wrong way (the way to go more than 75 degrees off the nose), a see-through paper arrow
+by the aim circle points where to turn, backward-ish if it's behind you. Hoops are a fixed course of three
+in clear air ahead of DeskSouth3 (hand-checked in Studio: 50 studs of empty air round each, legs clear), ending
+heading north with the west fan 90 degrees to the left (time to read the Lift note before the fan), all shown at once, red and white like the concept, the current one bright. A HUD bar the step talks about gets its own breathing frame
 all step, beside the 3D target's focus (Lift bar + fan). Alan's first look: [playtest](../playtests/2026-10-18-flight-school-attention.md). Combat Training not started; a
 half-built enemy helper (`tutorialFoe` in RoundRuntime, the foe rule in CombatService:enemy) waits for it.
 
