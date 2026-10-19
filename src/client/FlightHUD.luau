@@ -529,10 +529,14 @@ function HUD.start(getPlane, action)
 					local lead = FlightState.leadFor(weapon)
 					place(pipper, lead)
 					if group == 1 or not guns[1] then noseRange = (lead - body.Position).Magnitude end
-					-- Red only while the dot is on this ring and the target in range (Alan 2026-10-19, after a match: red
-					-- anywhere near the target "is not a good indicator"). The gun assist still helps the shots nearby.
+					-- Red = the shots land if fired now (Alan 2026-10-19). At range the dot must sit on this ring (red anywhere near
+					-- the target "is not a good indicator"); up close, where the plane's middle (2 studs round the lead) covers
+					-- more screen than the ring, anywhere on that (Alan: it stayed green though the shots hit).
 					local dot = camera:WorldToViewportPoint(body.Position + body.CFrame.LookVector * (lead - body.Position).Magnitude)
-					local onRing = pipper.Visible and (Vector2.new(dot.X, dot.Y) - Vector2.new(pipper.Position.X.Offset, pipper.Position.Y.Offset)).Magnitude <= pipper.AbsoluteSize.X / 2 + 3
+					local ring = Vector2.new(pipper.Position.X.Offset, pipper.Position.Y.Offset)
+					local edge = camera:WorldToViewportPoint(lead + camera.CFrame.RightVector * 2)
+					local reach = math.max(pipper.AbsoluteSize.X / 2 + 3, (Vector2.new(edge.X, edge.Y) - ring).Magnitude)
+					local onRing = pipper.Visible and (Vector2.new(dot.X, dot.Y) - ring).Magnitude <= reach
 					local onTarget = onRing and CombatRules.travelTime(weapon, (lead - body.Position).Magnitude) < math.huge
 					anyHit = anyHit or onTarget
 					pipper.BackgroundTransparency = onTarget and 0.35 or 1

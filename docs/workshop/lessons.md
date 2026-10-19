@@ -164,6 +164,9 @@ mistake would be easy to make twice.
 - **Test-copy details:** set HttpEnabled; fetch files from the local file server with `nocache=true` (otherwise
   Studio serves old cached files); click real buttons with `user_mouse_input` `instance_path`; check a file exists
   before closing its Studio (on 2026-10-08 a restart deleted the only copy).
+- **Locking the mouse reads as a mouse move.** Switching `MouseBehavior` to `LockCenter` pulls the cursor to the
+  middle, and the next `GetMouseDelta` reports that jump: the plane's aim jolted left after every LAUNCH click or
+  lesson pause (2026-10-19). Ignore the mouse for 0.1 s after locking (FlightController).
 
 ## Working with Alan
 - **Scripted doc edits: never `replace` a slice cut between two markers without checking it** (2026-10-18): if the

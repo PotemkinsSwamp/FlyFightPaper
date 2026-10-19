@@ -38,7 +38,9 @@ local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flyi
 local YELLOW=Color3.fromRGB(255,225,70)
 local SOFT_SLICE,SOFT_SEE_THROUGH=.2,.5 -- the soft frame: a third as thick as the usual one, half see-through
 local CRASH_TIP_AFTER=3
-local READ_SECONDS=5 -- how long each step's note holds the world still before it moves on its own -- crashes on one step before the note suggests open air
+-- How long each step's note holds the world still before it moves on its own (Alan 2026-10-19: 2.5 s, a draining bar,
+-- no countdown); a look step's longer note gets 5.
+local READ_SECONDS,LOOK_SECONDS=2.5,5 -- crashes on one step before the note suggests open air
 
 function Tutorial.begin(lesson)
  if Tutorial.closeAsk then Tutorial.closeAsk() end -- a lesson starting closes the welcome question (found in Play)
@@ -86,6 +88,9 @@ function Tutorial.start(getPlane)
  local tick=PaperUI.words(note,"Tick","Done!",470,112,130,50,38);tick.TextColor3=Color3.fromRGB(40,150,60);tick.Visible=false
  local hint=PaperUI.words(note,"Hint","",40,150,540,30,22);hint.TextColor3=Color3.fromRGB(90,90,100)
  local gotIt=PaperUI.button(note,"GotIt",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Got it  [Space]",40,176,240,48,1,function() Tutorial.gotIt=true end,24)
+ -- While the world is held for reading, a bar along the button drains to empty, then it lets go.
+ local readBar=Instance.new("Frame");readBar.Name="ReadBar";readBar.BorderSizePixel=0;readBar.BackgroundColor3=Color3.fromRGB(35,35,35)
+ readBar.BackgroundTransparency=.3;readBar.AnchorPoint=Vector2.new(0,1);readBar.Position=UDim2.new(0,8,1,-5);readBar.ZIndex=gotIt.ZIndex+2;readBar.Visible=false;readBar.Parent=gotIt
  local skip=PaperUI.button(note,"Skip",Art.mainmenu.strip.red,"Skip  [K]",330,176,250,48,-1,function() Tutorial.skipStep=true end,24)
  local skipFill=Instance.new("Frame");skipFill.BackgroundColor3=Color3.new(1,1,1);skipFill.BackgroundTransparency=.5;skipFill.BorderSizePixel=0;skipFill.Size=UDim2.fromScale(0,1);skipFill.Parent=skip
 
@@ -474,7 +479,8 @@ function Tutorial.start(getPlane)
   end
   -- The read pause starts the first moment this step is in the air; Go lets the world move again.
   if reading=="waiting" and ctx.state=="FLYING" then reading=true;readingAt=os.clock();Tutorial.gotIt=false;ctx.lesson({freeze=true}) end
-  if reading==true and os.clock()-readingAt>=READ_SECONDS then Tutorial.gotIt=true end
+  local readFor=step.gotIt and LOOK_SECONDS or READ_SECONDS
+  if reading==true and os.clock()-readingAt>=readFor then Tutorial.gotIt=true end
   if reading=="waiting" and ctx.state~="FLYING" and ctx.state~="TAKEOFF" then reading=nil end -- starts at a desk: nothing to freeze
   if reading==true and Tutorial.gotIt then
    reading=nil;ctx.lesson({freeze=false});stepStarted=os.clock()
@@ -489,7 +495,9 @@ function Tutorial.start(getPlane)
   text.Text=(type(step.text)=="function" and step.text(ctx) or step.text)..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
   key.Text=step.key or "";key.Visible=step.key~=nil
   gotIt.Visible=step.gotIt==true or reading==true
-  gotIt.Label.Text=reading==true and string.format("Go in %d  [Space]",math.ceil(READ_SECONDS-(os.clock()-readingAt))) or "Got it  [Space]"
+  gotIt.Label.Text=reading==true and not step.gotIt and "Go  [Space]" or "Got it  [Space]"
+  local left=reading==true and math.clamp(1-(os.clock()-readingAt)/readFor,0,1) or 0
+  readBar.Visible=left>0;readBar.Size=UDim2.new(left,-16*left,0,6)
   local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt and not reading
   hint.Text=stuck and step.hint and ("Tip: "..step.hint) or crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or ""
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)

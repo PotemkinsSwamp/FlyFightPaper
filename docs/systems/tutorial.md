@@ -67,7 +67,8 @@ Its aiming part can't be lost either (the step asks for gentle); its fights keep
 (its hits stop at 1 Health) and Pals and targets never ram you. A respawned practice plane is the same training plane
 (it used to come back as the player's own build, often with no booster: the "no boost" report).
 Read, then act (Alan 2026-10-19): every step that starts in the air holds the player's plane, targets and Pal still
-(FlightService:freeze, the same hold as the winners' moment) with its note up for 5 seconds, counting down on its button (Space goes early; Alan: nobody should have to press anything); nothing
+(FlightService:freeze, the same hold as the winners' moment) with its note up for 2.5 seconds (a look step's longer note 5), a bar draining along its Go button (Alan 2026-10-19: 5 s and
+the 5-4-3-2-1 countdown were too long; Space goes early; Alan: nobody should have to press anything); nothing
 counts while frozen; a look step's Got it unfreezes and finishes it; Flight School too. While held (model attribute
 `Held`) the pilot's aim stays on the nose, the mouse is free to click Go, and nothing fires (the aim used to drift
 with the mouse, so the plane pointed somewhere else when it let go).

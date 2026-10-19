@@ -22,7 +22,7 @@ function Controller.start(plane)
 	local orientation = body:WaitForChild("NoseOrientation")
 	-- The aim is a full rotation, not yaw/pitch angles, so it can go over the top: loops, rolls, inverted.
 	local heading, bank, aimFrame, lastSteer = body.CFrame.LookVector, 0, CFrame.identity, 0
-	local wasFlying, locked, focused, boostSent, glide, momentum = false, false, true, false, nil, nil
+	local wasFlying, locked, focused, boostSent, glide, momentum, lockedAt = false, false, true, false, nil, nil, 0
 	-- A scrape's wobble: when it started and which way the plane rolls.
 	local wobbleAt, wobbleSide = -math.huge, 0
 	local function setAim(direction)
@@ -46,6 +46,7 @@ function Controller.start(plane)
 	local function lockMouse(lock)
 		if lock == locked then return end
 		locked = lock
+		if lock then lockedAt = os.clock() end
 		Input.MouseBehavior = lock and Enum.MouseBehavior.LockCenter or Enum.MouseBehavior.Default
 		Input.MouseIconEnabled = not lock
 	end
@@ -80,6 +81,9 @@ function Controller.start(plane)
 		if not blocked then
 			-- Mouse moves turn the aim around its own axes, so "up" on screen is always up for the pilot.
 			local delta = Input:GetMouseDelta() * math.rad(Config.aim_degrees_per_pixel) * (Root:GetAttribute("Sensitivity") or 1)
+			-- Locking pulls the free cursor (just used on LAUNCH or the lesson's Go, right of centre) to the middle of
+			-- the screen, which reads as one big mouse move: the "jolt to the left" (Alan 2026-10-19). Skip that moment.
+			if os.clock() - lockedAt < 0.1 then delta = Vector2.zero end
 			if delta.Magnitude > 0 then aimFrame = aimFrame * CFrame.Angles(-delta.Y, -delta.X, 0); lastSteer = os.clock() end
 		end
 		if state.aimOverride then setAim(state.aimOverride(body)); lastSteer = os.clock() end

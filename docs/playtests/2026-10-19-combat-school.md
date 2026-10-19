@@ -46,6 +46,12 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
   every-weapon lesson is the planned Weapons Range.
 - Pals too hard to chase 1v1 (circling). **Done:** slower, slow-turning, wandering Pals that only turn on you briefly.
 
+## Round 7
+- Long-range shots land now. Up close the dot stayed green though the shots hit. **Done:** red also anywhere on the
+  plane's middle up close.
+- The aim jolted left on every launch and every unfreeze. **Found and fixed:** locking the mouse read as a big move.
+- The read pause: 2.5 s, a draining bar, no countdown. **Done.**
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)
