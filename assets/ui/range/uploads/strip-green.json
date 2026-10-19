@@ -1,0 +1,23 @@
+{
+  "path": "operations/3ab639c1-8d0d-41e2-b798-faf10c32ffd4",
+  "operationId": "3ab639c1-8d0d-41e2-b798-faf10c32ffd4",
+  "done": true,
+  "response": {
+    "path": "assets/100375019576740",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:37.043Z",
+    "assetId": "100375019576740",
+    "displayName": "FlyFightPaper range strip-green",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

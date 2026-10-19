@@ -1,0 +1,23 @@
+{
+  "path": "operations/5c314c67-feea-4f5e-b2ae-4a9adb057a91",
+  "operationId": "5c314c67-feea-4f5e-b2ae-4a9adb057a91",
+  "done": true,
+  "response": {
+    "path": "assets/105921512119910",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T02:52:24.397Z",
+    "assetId": "105921512119910",
+    "displayName": "FlyFightPaper hud frame-scribble",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

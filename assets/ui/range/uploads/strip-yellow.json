@@ -1,0 +1,23 @@
+{
+  "path": "operations/78e26187-7326-4f47-b0be-c699d2176b3a",
+  "operationId": "78e26187-7326-4f47-b0be-c699d2176b3a",
+  "done": true,
+  "response": {
+    "path": "assets/140725343009257",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:46.976Z",
+    "assetId": "140725343009257",
+    "displayName": "FlyFightPaper range strip-yellow",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

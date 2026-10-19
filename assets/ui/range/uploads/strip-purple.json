@@ -1,0 +1,23 @@
+{
+  "path": "operations/f15b69fa-ae35-4616-953f-6102786534cc",
+  "operationId": "f15b69fa-ae35-4616-953f-6102786534cc",
+  "done": true,
+  "response": {
+    "path": "assets/120263472105237",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:40.365Z",
+    "assetId": "120263472105237",
+    "displayName": "FlyFightPaper range strip-purple",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

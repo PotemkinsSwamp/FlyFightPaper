@@ -1,0 +1,23 @@
+{
+  "path": "operations/d78b463a-d095-4d06-962a-23964fea3d15",
+  "operationId": "d78b463a-d095-4d06-962a-23964fea3d15",
+  "done": true,
+  "response": {
+    "path": "assets/87721412385746",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:43:09.028Z",
+    "assetId": "87721412385746",
+    "displayName": "FlyFightPaper range target-blue-half-back",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

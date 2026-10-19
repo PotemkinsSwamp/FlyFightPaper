@@ -1,0 +1,23 @@
+{
+  "path": "operations/b1b472c9-26aa-44bc-8cd3-fb4b9e36a2c4",
+  "operationId": "b1b472c9-26aa-44bc-8cd3-fb4b9e36a2c4",
+  "done": true,
+  "response": {
+    "path": "assets/122359271557135",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T04:14:23.195Z",
+    "assetId": "122359271557135",
+    "displayName": "FlyFightPaper targets spinach",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

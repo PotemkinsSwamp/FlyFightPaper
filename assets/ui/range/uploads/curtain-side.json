@@ -1,0 +1,23 @@
+{
+  "path": "operations/858535d3-f767-44cb-89ab-e33dea1d5458",
+  "operationId": "858535d3-f767-44cb-89ab-e33dea1d5458",
+  "done": true,
+  "response": {
+    "path": "assets/116963270764119",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:14.674Z",
+    "assetId": "116963270764119",
+    "displayName": "FlyFightPaper range curtain-side",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

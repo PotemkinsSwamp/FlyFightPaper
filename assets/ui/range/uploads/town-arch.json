@@ -1,0 +1,23 @@
+{
+  "path": "operations/4690f99e-37cd-4f34-a054-848d026a2442",
+  "operationId": "4690f99e-37cd-4f34-a054-848d026a2442",
+  "done": true,
+  "response": {
+    "path": "assets/119197903146535",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:43:38.399Z",
+    "assetId": "119197903146535",
+    "displayName": "FlyFightPaper range town-arch",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

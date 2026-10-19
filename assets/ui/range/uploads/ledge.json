@@ -1,0 +1,23 @@
+{
+  "path": "operations/9e055322-8bde-47cf-8a43-630936d821ce",
+  "operationId": "9e055322-8bde-47cf-8a43-630936d821ce",
+  "done": true,
+  "response": {
+    "path": "assets/83361502931301",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:21.014Z",
+    "assetId": "83361502931301",
+    "displayName": "FlyFightPaper range ledge",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

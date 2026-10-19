@@ -1,0 +1,23 @@
+{
+  "path": "operations/9bff66b3-3f5c-46b7-bb6f-a22b5780a3e9",
+  "operationId": "9bff66b3-3f5c-46b7-bb6f-a22b5780a3e9",
+  "done": true,
+  "response": {
+    "path": "assets/140040954684836",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T04:14:25.964Z",
+    "assetId": "140040954684836",
+    "displayName": "FlyFightPaper targets vacuum",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

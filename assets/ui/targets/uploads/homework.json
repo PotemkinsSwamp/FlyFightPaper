@@ -1,0 +1,23 @@
+{
+  "path": "operations/702f33c3-77df-49d1-879e-334df6681a56",
+  "operationId": "702f33c3-77df-49d1-879e-334df6681a56",
+  "done": true,
+  "response": {
+    "path": "assets/88512104511264",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T04:14:16.988Z",
+    "assetId": "88512104511264",
+    "displayName": "FlyFightPaper targets homework",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

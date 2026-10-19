@@ -1,0 +1,23 @@
+{
+  "path": "operations/dd8f1d47-2139-46a1-8811-ca4bb3578f47",
+  "operationId": "dd8f1d47-2139-46a1-8811-ca4bb3578f47",
+  "done": true,
+  "response": {
+    "path": "assets/99725754287779",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T02:52:42.627Z",
+    "assetId": "99725754287779",
+    "displayName": "FlyFightPaper hud slip-notebook",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

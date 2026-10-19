@@ -1,0 +1,23 @@
+{
+  "path": "operations/c237398a-68b5-4dcb-97d1-3844bd6b8986",
+  "operationId": "c237398a-68b5-4dcb-97d1-3844bd6b8986",
+  "done": true,
+  "response": {
+    "path": "assets/74758506901640",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:43:50.754Z",
+    "assetId": "74758506901640",
+    "displayName": "FlyFightPaper range town-row-c",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

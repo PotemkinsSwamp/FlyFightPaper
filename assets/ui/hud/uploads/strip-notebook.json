@@ -1,0 +1,23 @@
+{
+  "path": "operations/694347ce-115a-4309-bc02-d5eab03ddef0",
+  "operationId": "694347ce-115a-4309-bc02-d5eab03ddef0",
+  "done": true,
+  "response": {
+    "path": "assets/110123970547575",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T02:52:45.880Z",
+    "assetId": "110123970547575",
+    "displayName": "FlyFightPaper hud strip-notebook",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

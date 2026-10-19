@@ -1,0 +1,23 @@
+{
+  "path": "operations/eaa89daf-47bd-4c84-8b6a-187a470f7e14",
+  "operationId": "eaa89daf-47bd-4c84-8b6a-187a470f7e14",
+  "done": true,
+  "response": {
+    "path": "assets/114300284068045",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T02:52:39.161Z",
+    "assetId": "114300284068045",
+    "displayName": "FlyFightPaper hud ring",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

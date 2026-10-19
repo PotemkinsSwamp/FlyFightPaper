@@ -1,0 +1,23 @@
+{
+  "path": "operations/773a1d2a-0f5b-4826-8928-4732c0af1857",
+  "operationId": "773a1d2a-0f5b-4826-8928-4732c0af1857",
+  "done": true,
+  "response": {
+    "path": "assets/96182028767221",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:43:58.437Z",
+    "assetId": "96182028767221",
+    "displayName": "FlyFightPaper range town-twin",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -50,11 +50,26 @@ return {
 		xpFrame = "rbxassetid://87963878165241",
 		xpFill = "rbxassetid://86284438244594",
 	},
+	-- The Hangar Range (assets/ui/range/; concept range-stage-view-2). Uploaded by Alan 2026-10-19; not placed yet.
+	range = {
+		backdrop = "rbxassetid://94046304178728", board = "rbxassetid://97516109717403", bushes = "rbxassetid://134471401038099",
+		curtainSide = "rbxassetid://116963270764119", lamp = "rbxassetid://110133720046199", ledge = "rbxassetid://83361502931301",
+		scoreCard = "rbxassetid://74344471965466", scrap = "rbxassetid://99061707185371", selected = "rbxassetid://77346158317983",
+		stripBlue = "rbxassetid://131414222716997", stripGreen = "rbxassetid://100375019576740", stripPurple = "rbxassetid://120263472105237",
+		stripRed = "rbxassetid://119370059843524", stripYellow = "rbxassetid://140725343009257", tag = "rbxassetid://122262745222580",
+		targetBlue0 = "rbxassetid://100466545549362", targetBlue1 = "rbxassetid://128566339922684", targetBlue2 = "rbxassetid://87900694765128",
+		targetBlue3 = "rbxassetid://71108629384860", targetBlueHalfBack = "rbxassetid://87721412385746", targetBlueHalfFront = "rbxassetid://103402635695263",
+		targetRed0 = "rbxassetid://126437968441823", targetRed1 = "rbxassetid://137592640177793", targetRed2 = "rbxassetid://84568946527791",
+		targetRed3 = "rbxassetid://88905940775675", targetRedHalfBack = "rbxassetid://84780552790739", targetRedHalfFront = "rbxassetid://76528143101157",
+		title = "rbxassetid://80054477461939", townArch = "rbxassetid://119197903146535", townClock = "rbxassetid://102556615538053",
+		townRowA = "rbxassetid://96402057689663", townRowB = "rbxassetid://116332950561387", townRowC = "rbxassetid://74758506901640",
+		townStepped = "rbxassetid://123872596852658", townTwin = "rbxassetid://96182028767221",
+	},
 	-- The Training board (assets/ui/trainingboard/; concept training-board-c). Uploaded by Alan 2026-10-19.
 	trainingboard = {
 		bg = { "rbxassetid://91520224114176", "rbxassetid://121622096406913", "rbxassetid://99839578988261", "rbxassetid://139377949748377" },
 		title = "rbxassetid://127148292972405", paperFlight = "rbxassetid://73124461274469", paperCombat = "rbxassetid://77127618909836",
-		paperHangar = "rbxassetid://97196756698429", paperRange = "rbxassetid://132858113163486",
+		paperHangar = "rbxassetid://71935281954018", paperRange = "rbxassetid://96038284662893",
 		stripGreen = "rbxassetid://116436557781990", stripRed = "rbxassetid://105160400934566", tick = "rbxassetid://91100704633557",
 	},
 	ingame = {

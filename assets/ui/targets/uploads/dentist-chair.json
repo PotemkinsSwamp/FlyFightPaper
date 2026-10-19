@@ -1,0 +1,23 @@
+{
+  "path": "operations/1e68259b-7906-40ab-bca2-525d6df62984",
+  "operationId": "1e68259b-7906-40ab-bca2-525d6df62984",
+  "done": true,
+  "response": {
+    "path": "assets/97152656695637",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T04:14:13.873Z",
+    "assetId": "97152656695637",
+    "displayName": "FlyFightPaper targets dentist-chair",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

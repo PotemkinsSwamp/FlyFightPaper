@@ -1,0 +1,23 @@
+{
+  "path": "operations/81aa97d9-baa5-4c78-9485-110021779a60",
+  "operationId": "81aa97d9-baa5-4c78-9485-110021779a60",
+  "done": true,
+  "response": {
+    "path": "assets/94046304178728",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:05.338Z",
+    "assetId": "94046304178728",
+    "displayName": "FlyFightPaper range backdrop",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "path": "operations/7cecc2b7-9d04-4b6f-a89d-dca345797229",
+  "operationId": "7cecc2b7-9d04-4b6f-a89d-dca345797229",
+  "done": true,
+  "response": {
+    "path": "assets/99061707185371",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:27.314Z",
+    "assetId": "99061707185371",
+    "displayName": "FlyFightPaper range scrap",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "path": "operations/605a922f-dfdb-4fba-adf1-78030a1d5546",
+  "operationId": "605a922f-dfdb-4fba-adf1-78030a1d5546",
+  "done": true,
+  "response": {
+    "path": "assets/71108629384860",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:43:05.595Z",
+    "assetId": "71108629384860",
+    "displayName": "FlyFightPaper range target-blue-3",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

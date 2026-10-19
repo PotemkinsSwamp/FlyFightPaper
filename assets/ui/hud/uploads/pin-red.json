@@ -1,0 +1,23 @@
+{
+  "path": "operations/8503b6eb-47d9-4e05-9614-d1da62d10fbd",
+  "operationId": "8503b6eb-47d9-4e05-9614-d1da62d10fbd",
+  "done": true,
+  "response": {
+    "path": "assets/118269057146968",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T02:52:36.108Z",
+    "assetId": "118269057146968",
+    "displayName": "FlyFightPaper hud pin-red",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

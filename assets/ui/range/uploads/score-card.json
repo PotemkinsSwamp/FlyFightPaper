@@ -1,0 +1,23 @@
+{
+  "path": "operations/17adaf49-7b7c-4b55-b0e9-8837a4afca4f",
+  "operationId": "17adaf49-7b7c-4b55-b0e9-8837a4afca4f",
+  "done": true,
+  "response": {
+    "path": "assets/74344471965466",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:25.281Z",
+    "assetId": "74344471965466",
+    "displayName": "FlyFightPaper range score-card",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

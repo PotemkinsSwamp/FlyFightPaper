@@ -1,0 +1,23 @@
+{
+  "path": "operations/52c76562-c1ea-4d88-a3f7-cefd4cdd6716",
+  "operationId": "52c76562-c1ea-4d88-a3f7-cefd4cdd6716",
+  "done": true,
+  "response": {
+    "path": "assets/84701674941062",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T04:14:04.480Z",
+    "assetId": "84701674941062",
+    "displayName": "FlyFightPaper targets alarm-clock",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

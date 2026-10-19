@@ -1,0 +1,23 @@
+{
+  "path": "operations/5eac9e83-f938-4e90-a0ec-582f9a14caef",
+  "operationId": "5eac9e83-f938-4e90-a0ec-582f9a14caef",
+  "done": true,
+  "response": {
+    "path": "assets/110133720046199",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:42:18.095Z",
+    "assetId": "110133720046199",
+    "displayName": "FlyFightPaper range lamp",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

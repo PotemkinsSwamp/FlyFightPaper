@@ -1,0 +1,23 @@
+{
+  "path": "operations/bc0e7d9c-18da-4a7d-bd45-074d1e472738",
+  "operationId": "bc0e7d9c-18da-4a7d-bd45-074d1e472738",
+  "done": true,
+  "response": {
+    "path": "assets/116389741682536",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T02:52:27.079Z",
+    "assetId": "116389741682536",
+    "displayName": "FlyFightPaper hud key-box",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

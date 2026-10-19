@@ -1,0 +1,23 @@
+{
+  "path": "operations/3dc70044-8aa8-43fc-bf26-12eaf1749246",
+  "operationId": "3dc70044-8aa8-43fc-bf26-12eaf1749246",
+  "done": true,
+  "response": {
+    "path": "assets/88905940775675",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:43:24.845Z",
+    "assetId": "88905940775675",
+    "displayName": "FlyFightPaper range target-red-3",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

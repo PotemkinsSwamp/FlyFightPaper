@@ -1,0 +1,23 @@
+{
+  "path": "operations/05c8edc9-b711-449e-ae19-a1b8bfb8fc9e",
+  "operationId": "05c8edc9-b711-449e-ae19-a1b8bfb8fc9e",
+  "done": true,
+  "response": {
+    "path": "assets/90423529121981",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T04:14:07.641Z",
+    "assetId": "90423529121981",
+    "displayName": "FlyFightPaper targets bath",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

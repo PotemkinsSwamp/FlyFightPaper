@@ -1,0 +1,23 @@
+{
+  "path": "operations/b78b60eb-2f60-4dd8-b346-80009c815f3f",
+  "operationId": "b78b60eb-2f60-4dd8-b346-80009c815f3f",
+  "done": true,
+  "response": {
+    "path": "assets/123872596852658",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:43:54.420Z",
+    "assetId": "123872596852658",
+    "displayName": "FlyFightPaper range town-stepped",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

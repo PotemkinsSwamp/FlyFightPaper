@@ -1,0 +1,23 @@
+{
+  "path": "operations/8bfb1b77-61c0-4c74-9bfc-af6c706b42c1",
+  "operationId": "8bfb1b77-61c0-4c74-9bfc-af6c706b42c1",
+  "done": true,
+  "response": {
+    "path": "assets/108546335442787",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T04:14:10.504Z",
+    "assetId": "108546335442787",
+    "displayName": "FlyFightPaper targets broccoli",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "path": "operations/a4bc3a6f-e99e-4926-8ac3-88b98881ab34",
+  "operationId": "a4bc3a6f-e99e-4926-8ac3-88b98881ab34",
+  "done": true,
+  "response": {
+    "path": "assets/133288006521198",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-14T02:52:21.167Z",
+    "assetId": "133288006521198",
+    "displayName": "FlyFightPaper hud bracket",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

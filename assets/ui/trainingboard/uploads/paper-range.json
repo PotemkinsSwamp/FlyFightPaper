@@ -1,0 +1,23 @@
+{
+  "path": "operations/8354d9a8-f2a1-4ba8-ba1f-bcc9b3084237",
+  "operationId": "8354d9a8-f2a1-4ba8-ba1f-bcc9b3084237",
+  "done": true,
+  "response": {
+    "path": "assets/96038284662893",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T21:41:47.673Z",
+    "assetId": "96038284662893",
+    "displayName": "FlyFightPaper trainingboard paper-range",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}
