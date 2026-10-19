@@ -148,9 +148,9 @@ local AIM_STEPS={
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
    end},
-  {text=shootText("Full speed! Shoot the one flying past: dot on the orange ring."),key="Left click",count=1,
-   hint="Same as before, just faster. Dot on the orange ring.",
-   enter=function(ctx) ctx.lesson({slow=false,drill="fast"}) end,
+  {text=shootText("This one's fast! The faster it goes, the further ahead the ring. Dot on the ring!"),key="Left click",count=1,
+   hint="Keep the dot on the orange ring as it zooms across, and hold left click.",
+   enter=function(ctx) ctx.lesson({drill="fast"}) end,
    update=function(ctx)
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
@@ -166,7 +166,7 @@ end
 local FIGHT_STEPS={
   {text=shootText("An enemy! It's slow and won't shoot. Shoot it down: dot on the orange ring."),key="Left click",
    hint="Follow the line to it, then put the dot on the orange ring and hold left click.",
-   enter=function(ctx) ctx.lesson({drill=false,pal="circle",gentle=false});ctx.data.start=ctx.count("PalFolds") end,
+   enter=function(ctx) ctx.lesson({drill=false,pal="circle",gentle=false,slow=false});ctx.data.start=ctx.count("PalFolds") end,
    update=function(ctx)
     markPal(ctx,"ENEMY")
     return ctx.count("PalFolds")>ctx.data.start

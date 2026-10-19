@@ -65,6 +65,14 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - The reload card should come between the two eraser shots. **Done.**
 - The eraser to dodge: faster (still slower than a real one) and from nowhere, not after the Pal lines up. **Done.**
 
+## Round 10
+- Naming's better. Step 6 (fast crossing target) at full speed: you just caught up, no lead felt. **Done:** you stay
+  in slow motion and it crosses twice as fast.
+- Step 7's Pal appeared to the left; too slow, so you circle it. **Done:** it appears ahead (400-700 studs), flies at
+  85%, and heads away from you, changing course every 2.5 s.
+- Step 8's Pal took 10 s to attack. **Done:** it comes at you for its first 6 seconds.
+- The eraser came while you were frozen, from the side. **Done:** none while frozen; it comes from ahead, toward the Pal.
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

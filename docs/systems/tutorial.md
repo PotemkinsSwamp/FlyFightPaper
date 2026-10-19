@@ -41,21 +41,24 @@ aiming: in slow motion first (your plane at 6% speed, almost still, Lift kept fu
 soften, the music slows, a whoosh and a "SLOW MOTION" tag): the circle vs the dot (a star), three still targets
 (the dot turns red = it will hit; the dot is always green/red, whatever crosshair colour is set), two that sweep left and right across in front of you at a real plane's speed (crossing your view is what shows
 the lead): first a look step on the orange ring ("AIM HERE", "that's called leading"), then shoot them (350 studs away, crossing at 60 studs/s: measured in Play, faster
-crossings left the nose trailing the ring so the dot never sat in it); then full speed for one target. HUD
+crossings left the nose trailing the ring so the dot never sat in it); then one crossing twice as fast (120
+studs/s), still in slow motion (Alan 2026-10-19: at full speed you just caught up with it and felt no lead). HUD
 pieces it points at (crosshair, lead ring, eraser circle) get a soft frame: thin, half see-through, no dim.
 Until part 3 the plane has two pellet guns and no eraser (Alan 2026-10-19: its circle, sounds and lock-on distract
 from aiming and suggest every plane has one).
 **Targets are real paper planes** placed in clear air just ahead of where you are when the step starts (checked
 against the room's exact shapes; the course points are the fallback), held still or sweeping
 (`src/shared/TrainingCourse.luau`), so every aim help works on them as in a match. Part 2, fighting: one "Paper Pal"
-at a time, appearing in the air 350-550 studs away (ahead first, hidden behind a building when it can be; never out
-of a hangar: Alan 2026-10-19, "coming out of nowhere"; BotService:placePal), facing away, at 45% speed, turning slowly and wandering in gentle curves to a clear spot ahead every few seconds, never
-chasing or U-turning (Alan 2026-10-19: easy to chase down, "worse than noob"): one that never shoots, one that turns
-on you 3 seconds in every 10 and shoots until you're at half Health. Neither carries an eraser. Part 3, the eraser:
+at a time, at full speed again, appearing in the air 400-700 studs ahead (within 40 degrees of the nose, hidden behind
+a building when it can be; never out of a hangar or off to the side: Alan 2026-10-19, "coming out of nowhere";
+BotService:placePal), facing away, at 85% speed, turning at 80%, heading away from you while you're within 600 studs
+and changing course every 2.5 s (Alan 2026-10-19: noob-level, trying to get away, so you feel the chase; 45% just
+meant circling it): one that never shoots, one that comes straight at you for its first 6 seconds (so you see your
+Health drop), then 3 seconds in every 10, shooting until you're at half Health. Neither carries an eraser. Part 3, the eraser:
 the plane refolds in the air with an eraser on right click (`eraser=true`), then in slow motion the big lock circle and
 lock (holding right click fires one at full lock) on one target, its reload (the card comes while it fills, between
-the two shots), the second target, one lock at full speed, then a Pal whose erasers appear out of nowhere 300 studs off
-your side or tail, already chasing you (BotService:palEraser; 80% speed, 10% slower after each hit, never under 60%)
+the two shots), the second target, one lock at full speed, then a Pal whose erasers appear on their own 300 studs ahead
+of you, toward the Pal, already chasing you, never while the note holds you still (BotService:palEraser; 80% speed, 10% slower after each hit, never under 60%)
 until you dodge one, then your eraser on it. No aim assist in lessons ([decision](../decisions/2026-10-19-less-aim-assist.md)).
 Folded by a crash: a countdown note, the plane takes off by itself, the step carries on and the Pal holds fire until
 you've flown 2 seconds; after 3 crashes on a step, a tip.
@@ -96,7 +99,7 @@ air, the gun range sent, and how far and where each passed the nearest enemy's c
 | `src/server/FlightService.luau` | Gentle planes, slow motion, flying the practice targets |
 
 ## Tuning numbers
-`TrainingCourse.SLOW_MO` (.06), target health, sweep size and speed in `TrainingCourse.DRILLS`; Pal speed (.45), turn share (.6, BotService) and first
+`TrainingCourse.SLOW_MO` (.06), target health, sweep size and speed in `TrainingCourse.DRILLS`; Pal speed (.85), turn share (.8, BotService) and first
 eraser speed (.8) in `RoundRuntime:lesson`; the soft frame's `SOFT_SLICE`/`SOFT_SEE_THROUGH` in `Tutorial.luau`.
 
 ## Related

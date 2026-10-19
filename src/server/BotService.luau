@@ -16,20 +16,24 @@ local Service={};Service.__index=Service
 -- for 2 seconds (Alan: smooth after a crash), so a player back from a crash isn't jumped on takeoff.
 -- Pals are easy prey (Alan 2026-10-19: a Pal that turned back or chased you only made you both fly in circles):
 -- they wander slowly in gentle turns, picking a clear spot ahead every few seconds, and never U-turn unless boxed in.
-local function wander(self,b,position,now)
+-- With its player within 600 studs it heads away from them instead (Alan 2026-10-19: it should try to get away,
+-- noob-level, so you feel the chase), changing course every 2.5 s.
+local function wander(self,b,position,now,from)
  if b.wanderGoal and now<b.wanderUntil and (position-b.wanderGoal).Magnitude>80 then return b.wanderGoal end
- local heading=b.heading*Vector3.new(1,0,1);heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
+ local heading=(from and (position-from).Magnitude<600 and position-from or b.heading)*Vector3.new(1,0,1)
+ heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
  local climb=math.clamp((Course.POINTS[2].Y-position.Y)*.3,-40,40) -- drift back toward the course's height
  local first=b.random:NextNumber(-30,30)
  for _,turn in {first,first+40,first-40,90,-90,135,-135,180} do
   local goal=position+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*250+Vector3.yAxis*climb
-  if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+4;return goal end
+  if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+2.5;return goal end
  end
- b.wanderGoal,b.wanderUntil=Course.POINTS[2],now+4;return b.wanderGoal
+ b.wanderGoal,b.wanderUntil=Course.POINTS[2],now+2.5;return b.wanderGoal
 end
 -- Pals appear in the air, never out of a hangar (Alan 2026-10-19: "it's like the enemy's coming out of nowhere"):
--- 350-550 studs from their player, ahead first, in clear air inside the room, hidden behind a building if one
--- of those spots is, and facing away so the player can chase it. Fallback: the course's middle point.
+-- 400-700 studs ahead of their player (within 40 degrees of the nose; Alan: not off to the side), in clear air inside
+-- the room, hidden behind a building if one of those spots is, facing away so the player chases it. Only if nothing
+-- ahead is clear: further round, then the course's middle point.
 function Service:placePal(p)
  local victim=self.flight.byId[p.foeOf]
  if not victim or p.model:GetAttribute("State")~="DESK" then return end
@@ -39,17 +43,17 @@ function Service:placePal(p)
  ball.Size=Vector3.one*80;ball.Parent=workspace
  local half=self.flight.boundsSize/2-Vector3.one*60
  local open,hidden
- for _,turn in {0,35,-35,70,-70,110,-110,180} do
-  for _,range in {450,350,550} do
+ for _,turn in {0,20,-20,40,-40,70,-70,110,-110,180} do
+  for _,range in {600,500,700,400} do
    local at=from+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*range+Vector3.yAxis*20
    local inside=self.flight.boundsCF:PointToObjectSpace(at)
    ball.Position=at
    if math.abs(inside.X)<half.X and math.abs(inside.Y)<half.Y and math.abs(inside.Z)<half.Z and #workspace:GetPartsInPart(ball,self.flight.overlap)==0 then
     open=open or at
-    if workspace:Raycast(from,at-from,self.flight.cast) then hidden=at;break end
+    if math.abs(turn)<=40 and workspace:Raycast(from,at-from,self.flight.cast) then hidden=at;break end
    end
   end
-  if hidden then break end
+  if hidden or open and (turn==-40 or math.abs(turn)>40) then break end
  end
  ball:Destroy()
  local at=hidden or open or Course.POINTS[2]
@@ -57,8 +61,8 @@ function Service:placePal(p)
  p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
  local b=self.brains[p.id];if b then b.mode="launch" end
 end
--- The eraser Pal's erasers appear out of nowhere 300 studs off your side or tail, already chasing you, one at a
--- time with 1.5 s between (Alan 2026-10-19: waiting for the Pal to line up and lock took too long).
+-- The eraser Pal's erasers appear on their own 300 studs ahead of you, toward the Pal, already chasing you, one at a
+-- time with 1.5 s between (Alan 2026-10-19: not waiting for the Pal to lock; ahead so you see it coming and dodge).
 function Service:palEraser(p,victim,now)
  local info=self.combat.info[p.id]
  if info.activeErasers>0 then p.pal.nextEraserAt=now+1.5;return end
@@ -66,9 +70,11 @@ function Service:palEraser(p,victim,now)
  local mount;for _,m in ipairs(info.mounts) do if m.weapon.homing then mount=m end end
  if not mount then return end
  local from=victim.body.Position
- local heading=victim.body.CFrame.LookVector*Vector3.new(1,0,1);heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
+ local toward=p.body.Position-from
+ local heading=(toward:Dot(victim.body.CFrame.LookVector)>0 and toward or victim.body.CFrame.LookVector)*Vector3.new(1,0,1)
+ heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
  for _,range in {300,200} do
-  for _,turn in {120,-120,90,-90,150,-150,180} do
+  for _,turn in {0,20,-20,40,-40} do
    local at=from+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*range
    if not workspace:Raycast(from,at-from,self.flight.cast) then self.combat:launch(p,mount,now,victim,at);return end
   end
@@ -76,7 +82,8 @@ function Service:palEraser(p,victim,now)
 end
 function Service:palReady(p,now)
  local victim=self.flight.byId[p.foeOf]
- return victim and victim.model:GetAttribute("State")=="FLYING" and now-(victim.launchAt or 0)>2 and victim or nil
+ -- Not while the lesson's note holds you still either (Alan: an eraser came at a frozen plane).
+ return victim and victim.model:GetAttribute("State")=="FLYING" and not victim.held and now-(victim.launchAt or 0)>2 and victim or nil
 end
 local MIXED_SKILLS={"rookie","regular","experienced"}
 local function aimError(direction,b,now)
@@ -424,11 +431,15 @@ function Service:decide(p,b,now)
  -- otherwise (and once it has stopped shooting) it flies the course loop so it is easy to find and shoot.
  if p.pal then
   local victim=self:palReady(p,now)
-  -- A pellet Pal only turns on you 3 seconds in every 10; an eraser Pal's erasers come from nowhere (palEraser).
-  if victim and p.pal.mode=="pellet" and (now+b.seed)%10<3 then
+  -- A pellet Pal comes straight at you for its first 6 seconds (Alan: so you see your Health drop), then only 3
+  -- seconds in every 10; an eraser Pal's erasers come from ahead on their own (palEraser).
+  if victim and p.pal.mode=="pellet" then p.pal.since=p.pal.since or now end
+  local fighting=victim and p.pal.mode=="pellet" and (now-p.pal.since<6 or (now-p.pal.since)%10<3)
+  if fighting then
    b.target=victim;b.mode="chase";b.goal=victim.body.Position;b.lastSeen=now;b.lastKnown=victim.body.Position;b.lastVelocity=victim.body.AssemblyLinearVelocity
   else
-   b.target=nil;b.mode="patrol";b.goal=wander(self,b,position,now)
+   local player=self.flight.byId[p.foeOf]
+   b.target=nil;b.mode="patrol";b.goal=wander(self,b,position,now,player and player.body.Position)
   end
  end
  -- Studio spectator camera (F10) shows each bot's intent.
@@ -552,7 +563,7 @@ function Service:steer(p,b,dt,now)
  if b.avoid then direction=b.avoid end
  -- Same autopilot as human pilots: the bot only chooses where to aim.
  local desired
- desired,b.bank,p.orientation.CFrame=FlightRules.autopilot(b.heading,b.bank,direction,p.stats.yaw*b.profile.turn_factor*(p.pal and .6 or 1),p.stats.pitch*b.profile.turn_factor*(p.pal and .6 or 1),dt)
+ desired,b.bank,p.orientation.CFrame=FlightRules.autopilot(b.heading,b.bank,direction,p.stats.yaw*b.profile.turn_factor*(p.pal and .8 or 1),p.stats.pitch*b.profile.turn_factor*(p.pal and .8 or 1),dt)
  local bleed=FlightRules.turnSpeedFactor(b.heading,desired,dt,turn)
  b.heading=desired
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost

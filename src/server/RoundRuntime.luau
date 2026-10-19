@@ -295,9 +295,9 @@ function Runtime:lesson(player,cmd)
    foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=Loadouts.make(self.flight.catalog,cmd.pal=="eraser" and "training" or "training_pellets"),loadoutName="training"})
    if not foe then return end
   end
-  -- Pals fly at 45% speed and can't crash or run out of Lift (gentle), so they're always there to catch.
+  -- Pals fly at 85% speed (Alan 2026-10-19: 45% just meant circling them) and can't crash or run out of Lift (gentle).
   foe.foeOf=p.id;foe.lessonPlayer=player;foe.gentle=true;foe.model:SetAttribute("Gentle",true)
-  foe.pal={mode=cmd.pal,slow=.45,eraserSlow=foe.pal and foe.pal.eraserSlow or .8}
+  foe.pal={mode=cmd.pal,slow=.85,eraserSlow=foe.pal and foe.pal.eraserSlow or .8}
   player:SetAttribute("TutorialFoe",id)
   if foe.model:GetAttribute("State")=="DESTROYED" then self.flight:replace(foe) end -- the next Pal now, not after the wait
   self.bots:placePal(foe) -- in the air now, so the step's read pause holds it too
