@@ -54,3 +54,14 @@ and the hoop looked like loose blocks (now 24 pieces end to end).
     fills it, and which way to the fan.** [Step 3 now spotlights the Lift bar (the rest dimmed, lighter while flying);
     the fan keeps its glow, line and turn arrow; note: "Your Lift drops every second. Fill it up in a fan: follow the
     line!" Not yet seen.]
+
+## Sixth look (same day)
+16. **The Lift (and Boost) frame covers the bar's words and squares at its smallest.** [Box frames now sit 30 px
+    outside what they frame (the crayon band clears the content) and no longer tilt. Not yet seen.]
+17. **During the Lift step the fan lost its ring.** [The fan gets its own ring and tag beside the Lift spotlight. Not
+    yet seen.]
+18. **Backlog: replace the fan sound in the real game** (still a wind tunnel, not wind). [In STATE "Next".]
+19. **You shouldn't be able to die in Flight School: bounce off things; Lift stops at 1 second** (Combat Training
+    keeps crashes). He crashed, came back without boost and couldn't do the boost step. [The server marks a Flight
+    School plane gentle: walls, the floor, duct fans and leaving the room only bounce it, and its Lift never drops
+    below 1 s. Why the new plane had no boost is not found yet. Not yet seen.]

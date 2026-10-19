@@ -37,6 +37,9 @@ half-built enemy helper (`tutorialFoe` in RoundRuntime, the foe rule in CombatSe
 
 ## Rules
 See "Tutorial (built last)" in [Milestones](../plan/MILESTONES.md). Practice is never reward-eligible.
+Flight School can't be lost (Alan 2026-10-18): its plane (`p.gentle`, set when the client asks for practice with the
+lesson "flight") only bounces off walls, the floor, duct fans and the room's edge, and its Lift stops at 1 second.
+Combat Training keeps normal crashes.
 
 ## Code
 | File | What it does |

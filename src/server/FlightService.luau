@@ -352,8 +352,8 @@ function Service:impact(p,normal,part,now,dt,pushed)
  -- Crash or scrape by angle (Alan 2026-10-18): `into` against the plane's own speed.
  local amount=Rules.collisionDamage(into,math.max(incoming.Magnitude,p.stats.speed),part.Name=="Floor" and p.model:GetAttribute("Lift")<=0,p.stats.health,dt,now-p.scrapeSince)
  if Run:IsStudio() then self.records[p.id].lastImpact={part=part:GetFullName(),speed=into,at=now,position=tostring(p.body.Position)} end
- -- Between rounds walls only bounce you off.
- if self.safe then p.model:SetAttribute("CollisionNormal",normal);p.model:SetAttribute("DeflectUntil",now+.35);return end
+ -- Between rounds, and in Flight School, walls only bounce you off.
+ if self.safe or p.gentle then p.model:SetAttribute("CollisionNormal",normal);p.model:SetAttribute("DeflectUntil",now+.35);return end
  local how={kind="crash",part=part.Name,outOfLift=p.model:GetAttribute("Lift")<=0}
  if amount>=p.stats.health then
   self:destroy(p,how,"collision")
@@ -365,7 +365,7 @@ function Service:impact(p,normal,part,now,dt,pushed)
 end
 -- A duct fan blade: a big bite out of the plane and a shove the way the blade was moving.
 function Service:fanHit(p,push,now)
- if self.safe then return end
+ if self.safe or p.gentle then return end
  self:damage(p,p.stats.health*Gameplay.world.ducts.fans.damage_share,"fan",true,{kind="fan"})
  if p.model:GetAttribute("State")~="FLYING" then return end
  p.model:SetAttribute("Knock",push*60);p.model:SetAttribute("KnockUntil",now+.3)
@@ -482,13 +482,13 @@ function Service:step(dt)
    -- Drain in 0.2 s steps so these attributes replicate at 5 Hz, not every frame.
    p.liftDrain=(p.liftDrain or 0)+dt;p.boostDrain=(p.boostDrain or 0)+(boosting and dt or 0)
    if p.liftDrain>=.2 then
-    p.model:SetAttribute("Lift",Rules.lift(p.model:GetAttribute("Lift"),p.stats.lift,p.liftDrain));p.liftDrain=0
+    p.model:SetAttribute("Lift",math.max(p.gentle and 1 or 0,Rules.lift(p.model:GetAttribute("Lift"),p.stats.lift,p.liftDrain)));p.liftDrain=0
     if p.boostDrain>0 then p.model:SetAttribute("Boost",math.max(0,p.model:GetAttribute("Boost")-p.boostDrain));p.boostDrain=0 end
    end
    local localPos=self.boundsCF:PointToObjectSpace(p.body.Position)
    local outside=math.abs(localPos.X)>self.boundsSize.X/2+12 or (localPos.Y>self.boundsSize.Y/2+self.headroom+12 or localPos.Y<-self.boundsSize.Y/2-12) or math.abs(localPos.Z)>self.boundsSize.Z/2+12
    if outside then p.outSince=p.outSince or now;say(p,"turnBack") elseif p.outSince then p.outSince=nil;p.model:SetAttribute("Message","") end
-   if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds and not self.safe then self:destroy(p,{kind="bounds"},"bounds");continue end
+   if p.outSince and now-p.outSince>Gameplay.combat.bounds_grace_seconds and not self.safe and not p.gentle then self:destroy(p,{kind="bounds"},"bounds");continue end
    -- Blink check every step (2026-10-17): a teleport and back inside the 0.25 s window. It compares against the last
    -- position the server saw change, over the time since, so bursty replication can't trip it.
    -- ponytail: one generous speed cap (2.5x cruise + 40) catches blinks only; the 0.25 s check still judges speed.

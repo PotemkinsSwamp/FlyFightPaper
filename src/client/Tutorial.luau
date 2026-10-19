@@ -30,15 +30,16 @@ local LINE_HIDE_STUDS=40 -- the guide line goes away this close to the target
 local DASH_SPEED=1.5 -- how fast the line's dashes crawl toward the target
 local BURST_ANGLES={-150,180,150,-30,0,30} -- the "look here" marks: three each side, like the concept
 local FRAME_SLICE=Rect.new(64,64,448,192) -- frame-box.png (512x256): corners stay, sides stretch
+local FRAME_OUTSET=30 -- pixels a box frame sits outside its target: its crayon band (40 px art x .6 slice scale) clears the content
 local TAG_SLICE=Rect.new(96,40,416,120) -- tag.png (512x160)
 local STEP_DING_DELAY=.4
 local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flying: you still need to see the room)
 local YELLOW=Color3.fromRGB(255,225,70)
 
 function Tutorial.begin(lesson)
- Tutorial.lesson=Lessons[lesson or "flight"];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
+ Tutorial.lessonKey=lesson or "flight";Tutorial.lesson=Lessons[Tutorial.lessonKey];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
  Root:SetAttribute("TutorialOpen",true)
- Root.RoundAction:FireServer("practice")
+ Root.RoundAction:FireServer("practice",Tutorial.lessonKey)
 end
 
 function Tutorial.start(getPlane)
@@ -63,6 +64,8 @@ function Tutorial.start(getPlane)
  local tag=Instance.new("ImageLabel");tag.Name="Tag";tag.Image=Pieces.tag;tag.ScaleType=Enum.ScaleType.Slice;tag.SliceCenter=TAG_SLICE;tag.SliceScale=.45
  tag.BackgroundTransparency=1;tag.AnchorPoint=Vector2.new(.5,0);tag.Size=UDim2.fromOffset(300,76);tag.Visible=false;tag.Parent=gui
  local barFrame=frame:Clone();barFrame.Name="BarFrame";barFrame.Image=Pieces.frameBox;barFrame.ScaleType=Enum.ScaleType.Slice;barFrame.Parent=gui
+ -- A 3D target's ring while the spotlight is on a bar (Lift bar + fan): no dim of its own, just the ring and tag.
+ local targetRing=frame:Clone();targetRing.Name="TargetRing";targetRing.Image=Pieces.frameRing;targetRing.ScaleType=Enum.ScaleType.Stretch;targetRing.Parent=gui
  local tagText=PaperUI.words(tag,"Text","",0,0,300,76,36);tagText.Size=UDim2.fromScale(1,1);tagText.TextXAlignment=Enum.TextXAlignment.Center
 
  -- The goal note: sticky note near the top, lesson and step, the instruction, the key picture, the count.
@@ -187,6 +190,12 @@ function Tutorial.start(getPlane)
  -- `dim` is how dark the rest of the screen gets (nil = no dim, just the frame); `round` makes the hole a circle;
  -- `words` puts the tag under it.
  local spotAlpha,last=0,nil
+ local function placeTag(center,high,words,transparency)
+  local clock=os.clock()
+  tagText.Text=words;tag.Size=UDim2.fromOffset(math.max(240,#words*22+80),76);tag.Visible=true
+  tag.Position=UDim2.fromOffset(center.X,high.Y+10+math.sin(clock*3)*4);tag.Rotation=-2+math.sin(clock*1.7)*1.5
+  tag.ImageTransparency=transparency;tagText.TextTransparency=transparency
+ end
  local function drawSpot(low,high,dim,round,words,dt)
   if low then spotAlpha,last=1,{low,high,dim,round,words}
   elseif spotAlpha>0 then spotAlpha=math.max(0,spotAlpha-dt/.25);if spotAlpha>0 then low,high,dim,round,words=table.unpack(last) end end
@@ -196,24 +205,21 @@ function Tutorial.start(getPlane)
   if not low then return end
   -- Alive, to catch the eye: the frame breathes and wobbles, the marks pulse outward, the dim deepens and lifts.
   local clock=os.clock();local beat=(math.sin(clock*5)+1)/2
-  local grow=6+beat*8
+  -- A box frame stays fully outside what it frames even at its smallest (Alan: it covered the bar's words).
+  local grow=(round and 6 or FRAME_OUTSET)+beat*8
   low-=Vector2.new(grow,grow);high+=Vector2.new(grow,grow)
   local center,half=(low+high)/2,(high-low)/2
   holeCorner.CornerRadius=round and UDim.new(.5,0) or UDim.new(0,14)
   frame.Image=round and Pieces.frameRing or Pieces.frameBox;frame.ScaleType=round and Enum.ScaleType.Stretch or Enum.ScaleType.Slice
   frame.Position=UDim2.fromOffset(low.X,low.Y);frame.Size=UDim2.fromOffset(high.X-low.X,high.Y-low.Y)
-  frame.Rotation=math.sin(clock*2.3)*1.5;frame.ImageTransparency=fade(0)
+  frame.Rotation=round and math.sin(clock*2.3)*1.5 or 0;frame.ImageTransparency=fade(0)
   hole.Position,hole.Size=frame.Position,frame.Size
   for i,mark in bursts do
    local angle=math.rad(BURST_ANGLES[i]);local out=24+beat*16
    local at=center+Vector2.new(math.cos(angle)*(half.X+out),math.sin(angle)*(half.Y+out))
    mark.Position=UDim2.fromOffset(at.X,at.Y);mark.ImageTransparency=fade(beat*.3)
   end
-  if words then
-   tagText.Text=words;tag.Size=UDim2.fromOffset(math.max(240,#words*22+80),76)
-   tag.Position=UDim2.fromOffset(center.X,high.Y+10+math.sin(clock*3)*4);tag.Rotation=-2+math.sin(clock*1.7)*1.5
-   tag.ImageTransparency=fade(0);tagText.TextTransparency=fade(0)
-  end
+  if words then placeTag(center,high,words,fade(0)) end
   if dim then dimStroke.Transparency=fade(dim+beat*.18) end
  end
 
@@ -344,13 +350,13 @@ function Tutorial.start(getPlane)
 
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName=nil,nil,nil
-  if not Tutorial.active then note.Visible=false;barFrame.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
+  if not Tutorial.active then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
   ctx.plane=plane;ctx.body=plane and plane:FindFirstChild("Root");ctx.state=plane and plane:GetAttribute("State");ctx.dt=dt
   -- The server refuses practice until the classroom and the save have loaded: keep asking.
-  if not plane and os.clock()-Tutorial.askedAt>4 then Tutorial.askedAt=os.clock();Root.RoundAction:FireServer("practice") end
+  if not plane and os.clock()-Tutorial.askedAt>4 then Tutorial.askedAt=os.clock();Root.RoundAction:FireServer("practice",Tutorial.lessonKey) end
   local step=Tutorial.lesson.steps[Tutorial.index]
   if not step then finish(false);return end
   if ctx.state=="FLYING" then ctx.data.flew=true end
@@ -377,14 +383,23 @@ function Tutorial.start(getPlane)
   -- One focus look for everything: a button (spotlight, dims the rest) or the 3D target. A HUD bar the step
   -- talks about (pulse) gets its own breathing frame the whole step, so it shows next to a 3D target (Lift + fan).
   local low,high,words=drawMarker(ctx.body)
-  if spotNames then low,high=box(spotNames);drawSpot(low,high,ctx.state=="FLYING" and WORLD_DIM or GUI_DIM,false,nil,dt)
+  targetRing.Visible=spotNames~=nil and low~=nil
+  if spotNames then
+   local targetLow,targetHigh=low,high
+   low,high=box(spotNames);drawSpot(low,high,ctx.state=="FLYING" and WORLD_DIM or GUI_DIM,false,nil,dt)
+   if targetLow then
+    local grow=6+(math.sin(os.clock()*5)+1)*4
+    targetRing.Position=UDim2.fromOffset(targetLow.X-grow,targetLow.Y-grow);targetRing.Size=UDim2.fromOffset(targetHigh.X-targetLow.X+grow*2,targetHigh.Y-targetLow.Y+grow*2)
+    targetRing.Rotation=math.sin(os.clock()*2.3)*1.5;targetRing.ImageTransparency=0
+    placeTag((targetLow+targetHigh)/2,targetHigh+Vector2.new(grow,grow),words,0)
+   end
   else drawSpot(low,high,low and WORLD_DIM or nil,true,words,dt) end
   local barLow,barHigh=nil,nil;if pulseName then barLow,barHigh=box({pulseName}) end
   barFrame.Visible=barLow~=nil
   if barLow then
-   local grow=8+(math.sin(os.clock()*6)+1)*6
+   local grow=FRAME_OUTSET+(math.sin(os.clock()*6)+1)*5
    barFrame.Position=UDim2.fromOffset(barLow.X-grow,barLow.Y-grow);barFrame.Size=UDim2.fromOffset(barHigh.X-barLow.X+grow*2,barHigh.Y-barLow.Y+grow*2)
-   barFrame.Rotation=math.sin(os.clock()*2.3)*1.2;barFrame.ImageTransparency=0
+   barFrame.Rotation=0;barFrame.ImageTransparency=0
   end
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
   if doneAt and os.clock()-doneAt>.8 then startStep(Tutorial.index+1) end

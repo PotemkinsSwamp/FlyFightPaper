@@ -62,7 +62,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
   elseif action=="endMatch" and Run:IsStudio() then
    -- Studio test button: end the running round now; the next mode is left as it was.
    if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_end") end
-  elseif action=="practice" then self:practice(player)
+  elseif action=="practice" then self:practice(player,value)
   elseif action=="practiceTarget" then local p=flight.pilots[player];if p and p.practice then combat:practiceTarget(p) end
   elseif action=="tutorialFoe" then self:tutorialFoe(player,true)
   elseif action=="tutorialFoeDone" then self:tutorialFoe(player,false)
@@ -240,7 +240,7 @@ function Runtime:tutorialFoe(player,wanted)
  foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
  if foe then foe.foeOf=p.id;player:SetAttribute("TutorialFoe",id) end
 end
-function Runtime:practice(player)
+function Runtime:practice(player,lesson)
  if not player:GetAttribute("ClassroomLoaded") or not self.profiles:view(player) then return end
  if self.flight.pilots[player] then self:withdraw(player) end
  -- Replaying the tutorial from a match room opens a private room for it (live). Studio can't move players between
@@ -261,6 +261,8 @@ function Runtime:practice(player)
  -- Lessons fly a fixed training plane (Alan 2026-10-18); the player's own builds are untouched.
  local p=self.flight:add(player,{loadout=require(Root.Shared.WeaponLoadouts).make(self.flight.catalog,"training"),loadoutName="training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
+ -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off and Lift stops at 1 second.
+ p.gentle=lesson=="flight"
  player:SetAttribute("InMatch",true)
 end
 function Runtime:join(player)
