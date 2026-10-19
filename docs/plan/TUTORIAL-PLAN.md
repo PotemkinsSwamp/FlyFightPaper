@@ -91,16 +91,33 @@ the plane takes off by itself, the step carries on, and the Pal holds fire until
 | 5 | Your eraser on the Pal | Your eraser hits |
 End card: "You're ready!" with **Go to a match**.
 
-### Lesson 3: Weapons Range (Training Room, optional, about 3 minutes)
-Changed by Alan 2026-10-19: the Range is its own small map with its own menu button, not a lesson, and the Hangar
-Tour runs inside it ([decision](../decisions/2026-10-19-range-map-and-hangar-tour.md)); this section and Lesson 4 get
-rewritten after the research.
-Six stations, one weapon each: Pellet Gun, Staple Burst, Rubber Band Repeater, Precision Paperclip, Guided Eraser,
-Pencil Launcher. Your plane switches to that weapon, one line says how it fires ("Hold to spray", "One big shot, slow
-reload", "Hold to lock"...), and you hit the station's target to move on. Opened from the Training board only.
+### The Range (not a lesson; the Training board's fourth card)
+Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hangar-tour.md)); look: concepts
+`assets/references/ui-concepts/range-stage-view-2.png` (the scene), `range-stage-tear-2.png` (a target tearing),
+`target-damage-sheet.png` (the damage steps), built from separate 2D pieces put back together to match.
+- **Where:** a private room like the Training Room; you appear on a big kid-made puppet-theatre stage far from the
+  classroom (same place file; only the stage loads around you). Studio stands in for it like the Training Room does.
+- **Your plane** hangs still, seen from the wings up (weapons in view); you move it left, right, up and down and shoot
+  freely. Heat and reload stay real, so you learn how each weapon really behaves.
+- **Targets:** flat red or blue paper-plane cut-outs (team colours only) on sticks rising from behind three ledges:
+  close (how fast a weapon tears one), middle, far by the scenery (leading and range). They move back and forth and up
+  and down; at the side the stick turns and the cut-out flips. Each hit tears it more (5 damage steps) until it splits,
+  bursts and falls; the stick sinks and a fresh one rises.
+- **Side board:** the difficulty picker (Noob / Challenge / Veteran / Maneuvers: faster, wider, then sudden swoops),
+  the score card (shots, hits, accuracy), and the loadout strips below.
+- **Loadouts (Alan: "like other games do it"):** your five saved builds as numbered strips (keys 1-5) that swap your
+  plane instantly and free; **Hangar** opens the in-game hangar menu on top, where Edit opens the full Hangar; saving
+  there swaps your plane at once. Every part can be tried in the Range, even ones you don't own yet (try before you
+  buy, like Rivals); matches still need it unlocked.
+- **First visit:** sticky notes point at the picker, the score card, the loadout strips and how to leave, one at a time.
+- **Leave:** Menu > Leave takes you back to a normal room. From a match, opening it first says you'll leave the match.
+- **Build order:** (1) rough build for feel: stand-in stage, one moving cut-out that flips and tears, the held plane and
+  its camera; Alan plays it. (2) 2D pieces from the concepts (Codex), checked on a contact sheet, uploaded by Alan.
+  (3) Rows, patterns and the picker. (4) Score card, loadout strips and Hangar. (5) Sticky notes. Then the Hangar Tour.
 
-### Lesson 4: Hangar Tour (in the normal game, spotlight through the menus, about 2 minutes)
-Offered the first time you open the Hangar ("Show me around?" **Yes** / **Skip**), and replayable from the board.
+### Lesson 3: Hangar Tour (in the Range, spotlight through the menus, about 2 minutes)
+Played from the Training board (Alan 2026-10-19): it moves you to the Range, walks the Hangar, then "Now try it!" hands
+you to the Range with the plane you built and its sticky notes.
 1. The part tabs: nose, wings, body, tail, weapons, boost. Click the Wings tab.
 2. A part card: click one to try it on; the plane in the middle changes.
 3. The stat bars (health, speed, turn, Lift, capacity): what goes up and down when you swap parts.
