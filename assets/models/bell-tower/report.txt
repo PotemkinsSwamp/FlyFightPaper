@@ -131,9 +131,13 @@ Reference check: final front comparison inspected side by side against front-a.p
 Round-4 points checked: broad cone, semicircular arch, larger polished-gold bell and paper creases.
 Front camera uses the reference's 1672 x 941 frame and matches its tip and front-foot pixel heights.
 Front camera: {'position': [0, -1500, 215], 'target': [0, 0, 215], 'projection': 'PERSP', 'lens_mm': 63.5282, 'sensor_width_mm': 36.0, 'vertical_shift': -0.018296, 'resolution': [1672, 941], 'reference': 'assets/references/bell-tower/front-a.png', 'match': 'estimated frontal perspective; fitted reference tip and front-foot heights', 'reference_has_camera_metadata': False, 'reference_tip_y': 17, 'reference_front_foot_y': 894}
-Lighting uses warm area lights, a lower gold reflection softbox and soft ground shadows.
+Lighting uses warm area lights, bell-only linked fills, glossy-only studio reflection cards and soft ground shadows.
 Remaining visual differences against front-a.png:
 The reference has no camera metadata, so its original lens cannot be recovered exactly; the recorded lens is a fitted estimate.
+At matched overall framing the requested 27-by-30 cone appears shorter, and the radius-63 arch crown higher, than drawn in the reference.
+The requested measured dimensions are retained; the comparison is not an exact silhouette match.
+The blue roof's paper wrinkles are subtler than the reference, although the baked side panel shows the irregular creases clearly.
+The bell has strong polished-gold highlights, with a darker reflection of the cardboard ceiling across its shoulder.
 Surface wrinkles and tape folds are procedurally made and do not trace every crease in the picture.
 Tape and small roof folds are baked surface detail. Clock hands remain separate geometry.
 Large side studs stay geometric; tiny top-stud fillets are in the normal maps.

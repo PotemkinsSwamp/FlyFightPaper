@@ -17,13 +17,11 @@
   real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
 # Now: Tutorial (built last, MILESTONES); Stage 10 code done and off
-Toilet Roll jitter: not reproduced; tell me when it happens.
-
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
 During the vote lap the top strip still shows the old round's mode and clock.
-Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
+Track C saving needs a private publish (Alan's go). Toilet Roll jitter: not reproduced; tell me when it happens. Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
