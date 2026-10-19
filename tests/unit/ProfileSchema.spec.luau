@@ -130,8 +130,10 @@ function Spec.run()
 		p=fresh(); p.ownership.invented=true; assert(not Schema.validate(p,catalog))
 		local expensive
 		for _,item in ipairs(catalog.weapons) do if item.min_level>1 then expensive=item; break end end
-		assert(expensive); p=fresh(); p.ownership[expensive.id]=true; p.presets[1].loadout.weapon_mounts[1]=expensive.id
+		-- An owned part flies at any level (early unlocks, shop plan 2026-10-18); an unowned one stays locked.
+		assert(expensive); p=fresh(); p.presets[1].loadout.weapon_mounts[1]=expensive.id
 		assert(not Schema.validate(p,catalog))
+		p.ownership[expensive.id]=true; assert(Schema.validate(p,catalog))
 	end)
 	test("capacity tuning recovers only the affected preset and preserves the account",function()
 		local p=fresh();p.xpMilli=60000000;p.paperMilli=1234567;p.ownership.eraser=true;p.ownership.rubber=true
@@ -162,7 +164,8 @@ function Spec.run()
 		local p=fresh();p.presets[1].loadout.weapon_mounts[1]="invented";assert(not Schema.migrate(p,catalog))
 		p=fresh();p.presets[1].loadout.weapon_mounts[3]="pencil";assert(not Schema.migrate(p,catalog))
 		p=fresh();p.xpMilli=60000000;p.presets[1].loadout.weapon_mounts[1]="rubber";assert(not Schema.migrate(p,catalog))
-		p=fresh();p.ownership.rubber=true;p.presets[1].loadout.weapon_mounts[1]="rubber";assert(not Schema.migrate(p,catalog))
+		p=fresh();p.presets[1].loadout.weapon_mounts[1]="rubber";assert(not Schema.migrate(p,catalog))
+		p.ownership.rubber=true;assert(Schema.migrate(p,catalog),"an owned part is legal at any level")
 	end)
 	test("settings agree with SessionProtocol and names reject invalid UTF8/control bytes",function()
 		local p=fresh(); p.settings={sensitivity=0.2,sound=0,music=0.5,reducedShake=true,quality="Low",crosshairColor="blue",crosshairSize="Medium"}; assert(Schema.validate(p,catalog))

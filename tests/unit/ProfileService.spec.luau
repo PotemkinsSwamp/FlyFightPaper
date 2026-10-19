@@ -122,6 +122,62 @@ function Spec.run()
   assert(reopened.Data.paperMilli==before.paperMilli+1000000 and reopened.Data.purchasedPaperMilli==before.purchasedPaperMilli+1000000)
   assert(reopened.Data.version==version+1 and reopened.Data.operationIds[service.sessions.user.token]==1)
  end)
+ test("part receipts unlock each part category at level one without Paper or XP changes",function()
+  for _,id in ipairs({"nose_5","eraser","boost_twin"}) do
+   local service,profile=fixture();profile.Data.xpMilli=0
+   local before=assert(Schema.copy(profile.Data))
+   local paperPurchase=service:apply("user",assert(service:prepare("user",{kind="equipmentPurchase",catalogID=id})))
+   assert(paperPurchase.status=="error" and paperPurchase.code=="level_locked",paperPurchase.code)
+   assert(Schema.canonical(profile.Data)==Schema.canonical(before))
+   local input={kind="receipt",receiptId="part/"..id,grant={kind="partUnlock",catalogID=id}}
+   local op=assert(service:prepare("user",input));local first=service:apply("user",op)
+   assert(first.status=="ok" and first.value.type=="PartUnlocked" and first.value.catalogID==id,first.code)
+   local expected=assert(Schema.copy(before));expected.ownership[id]=true;expected.receiptIds[Service.receiptKey(input.receiptId)]=true
+   expected.version+=1;expected.operationIds[service.sessions.user.token]=2
+   assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"part unlock changed unrelated progress")
+   local after=Schema.canonical(profile.Data)
+   assert(service:apply("user",op).status=="ok" and Schema.canonical(profile.Data)==after)
+   assert(profile:EndSession());service:detach("user")
+   local reopened=Fake.new(profile.LastSavedData)
+   assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
+   local replay=service:apply("user",assert(service:prepare("user",input)))
+   assert(replay.status=="ok" and replay.value.type=="ReceiptAlreadyGranted",replay.code)
+   assert(reopened.Data.ownership[id] and reopened.Data.paperMilli==before.paperMilli and reopened.Data.xpMilli==0)
+   assert(reopened.Data.purchasedPaperMilli==before.purchasedPaperMilli and reopened.Data.earnedPaperMilli==before.earnedPaperMilli)
+  end
+ end)
+ test("an already owned part still records its racing receipt and replays as granted",function()
+  local service,profile=fixture();local before=assert(Schema.copy(profile.Data))
+  local input={kind="receipt",receiptId="owned/part",grant={kind="partUnlock",catalogID="staple"}}
+  local first=service:apply("user",assert(service:prepare("user",input)))
+  assert(first.status=="ok" and first.value.type=="PartAlreadyOwned",first.code)
+  local expected=assert(Schema.copy(before));expected.receiptIds[Service.receiptKey(input.receiptId)]=true
+  expected.version+=1;expected.operationIds[service.sessions.user.token]=1
+  assert(Schema.canonical(profile.Data)==Schema.canonical(expected))
+  local replay=service:apply("user",assert(service:prepare("user",input)))
+  assert(replay.status=="ok" and replay.value.type=="ReceiptAlreadyGranted",replay.code)
+ end)
+ test("unknown part receipts fail without recording a receipt or advancing the saved operation",function()
+  local service,profile=fixture();local before=Schema.canonical(profile.Data)
+  local refused=service:apply("user",assert(service:prepare("user",{kind="receipt",receiptId="missing/part",
+   grant={kind="partUnlock",catalogID="missing_part"}})))
+  assert(refused.status=="error" and refused.code=="unknown_part",refused.code)
+  assert(Schema.canonical(profile.Data)==before)
+ end)
+ test("a receipt-owned high-level part can be saved in a level one preset and reloaded",function()
+  local service,profile,catalog=fixture();profile.Data.xpMilli=0
+  local granted=service:apply("user",assert(service:prepare("user",{kind="receipt",receiptId="preset/part",
+   grant={kind="partUnlock",catalogID="eraser"}})))
+  assert(granted.status=="ok",granted.code)
+  local loadout=catalog:starterLoadout();loadout.weapon_mounts[1]="eraser"
+  local saved=service:apply("user",assert(service:prepare("user",{kind="preset",slot=1,name="Early eraser",loadout=loadout})))
+  assert(saved.status=="ok" and saved.value.type=="PresetSaved",saved.code)
+  assert(Schema.validate(profile.Data,catalog) and Economy.levelForXP(profile.Data.xpMilli)==1)
+  assert(profile:EndSession());service:detach("user")
+  local reopened=Fake.new(profile.LastSavedData)
+  assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
+  assert(Schema.validate(reopened.Data,catalog) and reopened.Data.presets[1].loadout.weapon_mounts[1]=="eraser")
+ end)
  test("receipt ceiling refuses new grants atomically but still accepts an existing receipt",function()
   local service,profile=fixture();local cap=require(Root.Generated.Server).schema.max_receipts
   profile.Data.receiptIds={}
@@ -165,14 +221,17 @@ function Spec.run()
    {kind="purchasedPaper",wholePaper=1.5},{kind="purchasedPaper",wholePaper=1,extra=true},
    {kind="boostIntent",resource="xp",action="permanent"},{kind="boostIntent",resource="other",action="duration",seconds=1},
    {kind="boostIntent",resource="xp",action="duration",seconds=0},{kind="boostIntent",resource="xp",action="duration",seconds=1.5},
-   {kind="boostIntent",resource="xp",action="duration",seconds=1,wholePaper=10},{kind="statistics",deltas={wins=1}}}
+   {kind="boostIntent",resource="xp",action="duration",seconds=1,wholePaper=10},{kind="statistics",deltas={wins=1}},
+   {kind="partUnlock"},{kind="partUnlock",catalogID=""},{kind="partUnlock",catalogID=1},
+   {kind="partUnlock",catalogID="eraser",wholePaper=1},{kind="partUnlock",catalogID="eraser",extra=true}}
   for _,grant in ipairs(grants) do
    local refused=service:apply("user",assert(service:prepare("user",{kind="receipt",receiptId="invalid",grant=grant})))
    assert(refused.status=="error" and refused.code=="invalid_receipt_grant",refused.code)
    assert(Schema.canonical(profile.Data)==before)
   end
   for _,input in ipairs({{kind="receipt",receiptId="",grant={kind="purchasedPaper",wholePaper=1}},
-   {kind="receipt",receiptId=42,grant={kind="purchasedPaper",wholePaper=1}},{kind="passGrant",resource="other"}}) do
+   {kind="receipt",receiptId=42,grant={kind="purchasedPaper",wholePaper=1}},{kind="passGrant",resource="other"},
+   {kind="partUnlock",catalogID="eraser"}}) do
    assert(service:apply("user",assert(service:prepare("user",input))).status=="error")
    assert(Schema.canonical(profile.Data)==before)
   end

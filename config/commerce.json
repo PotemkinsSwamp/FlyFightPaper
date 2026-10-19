@@ -142,6 +142,258 @@
       "roblox_product_id": null,
       "approved_robux_price": null,
       "enabled": false
+    },
+    {
+      "key": "part_body_slim",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "body_slim",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_body_heavy",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "body_heavy",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_body_standard_mk2",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "body_standard_mk2",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_body_slim_mk2",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "body_slim_mk2",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_body_heavy_mk2",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "body_heavy_mk2",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_nose_1",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "nose_1",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_nose_2",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "nose_2",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_nose_3",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "nose_3",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_nose_4",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "nose_4",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_nose_5",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "nose_5",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_wings_1",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "wings_1",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_wings_2",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "wings_2",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_wings_3",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "wings_3",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_wings_4",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "wings_4",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_wings_5",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "wings_5",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_tail_1",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "tail_1",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_tail_2",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "tail_2",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_tail_3",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "tail_3",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_tail_4",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "tail_4",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_tail_5",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "tail_5",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_staple",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "staple",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_rubber",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "rubber",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_paperclip",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "paperclip",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_eraser",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "eraser",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_pencil",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "pencil",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_boost_band",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "boost_band",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_boost_spool",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "boost_spool",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "part_boost_twin",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "boost_twin",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
     }
   ],
   "paper_pack_amounts_status": "provisional; prices and live activation require owner authorization",

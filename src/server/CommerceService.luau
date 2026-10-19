@@ -15,6 +15,13 @@ function Service.new(profiles,deps)
   wait=deps.wait or task.wait,now=deps.now or os.clock,timeoutSeconds=deps.timeoutSeconds or 20},Service)
  if not catalog then warn("Commerce disabled: "..tostring(why)) end
  if not self.live then return self end
+ local parts=profiles.catalog or deps.catalog
+ for _,offer in ipairs(catalog.offers) do
+  if offer.benefit=="part_unlock" and (type(parts)~="table" or type(parts.get)~="function" or not parts:get(offer.catalogID)) then
+   warn("Commerce disabled: unknown part "..tostring(offer.catalogID));self.live=false
+   return self
+  end
+ end
  self.saveAfter=setmetatable({},{__mode="k"})
  self.marketplace=deps.marketplace or game:GetService("MarketplaceService")
  self.players=deps.players or game:GetService("Players")
@@ -126,6 +133,7 @@ function Service:prompt(player,key)
  if not offer.productID then return false,"unmapped" end
  local view=player.Parent and self.profiles:view(player)
  if not view then return false,"profile_unavailable" end
+ if offer.benefit=="part_unlock" and view.ownership[offer.catalogID]==true then return false,"owned" end
  if Rules.owned(offer,view.boosts) then return false,offer.kind=="pass" and "owned" or "permanent_owned" end
  local ok=pcall(function()
   if offer.kind=="pass" then self.marketplace:PromptGamePassPurchase(player,offer.productID)

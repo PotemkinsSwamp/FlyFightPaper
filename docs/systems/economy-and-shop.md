@@ -5,7 +5,7 @@ You earn **Paper** (money) and **XP** (levels) from points in every match. Paper
 
 ## Where it stands (2026-10-18)
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Studio-only practice
-shop with no Robux. The real Roblox purchase code is built for the 15 products (Stage 10, Codex, reviewed; 375 tests)
+shop with no Robux. The real Roblox purchase code is built for the 15 products and part unlocks (Stage 10, Codex, reviewed; 388 tests)
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
 - **Receipts:** a paid boost or Paper pack is added together with its receipt ID in one save change, then the game
   waits for that save to reach Roblox before telling Roblox "granted". A failed save means "not yet": Roblox resends
@@ -15,7 +15,11 @@ and is switched off: with `mode` "mock" it never talks to Roblox's shop.
   owned pass or a timed boost the permanent pass already covers. No live shop screen yet (needs real prices to show).
 - **To switch on (Alan's go):** create the products and passes on Roblox, put their IDs and approved prices in
   `config/commerce.json`, set `enabled`, `mode` "live" and `live_sales_authorized` true, then test on a private server.
-- **Not built yet:** early part unlocks (plan: one Roblox product per part), VIP pass (benefits not chosen), private
+- **Early part unlocks:** one Roblox product per part above level 1 (28, `part_<id>` in `config/commerce.json`), all
+  off. A part you own flies at any level; Paper purchases still need the level. Buying an owned part is refused.
+  Prestige takes bought parts back like any other. Still to do with prices: the hangar's "Unlock now" button and its
+  "prestige takes this back" warning.
+- **Not built yet:** VIP pass (benefits not chosen), private
   servers (Roblox setting, Alan) and their match settings, cosmetics, special planes, drawing pass (paid outside check).
 
 ## Economy details

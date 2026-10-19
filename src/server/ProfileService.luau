@@ -36,6 +36,9 @@ local function validReceiptGrant(grant)
   if (grant.resource~="xp" and grant.resource~="paper") or grant.action~="duration"
    or not Schema.integer(grant.seconds) or grant.seconds<1 then return false end
   fields={kind=true,resource=true,action=true,seconds=true}
+ elseif grant.kind=="partUnlock" then
+  if type(grant.catalogID)~="string" or #grant.catalogID==0 then return false end
+  fields={kind=true,catalogID=true}
  else return false end
  for key in pairs(grant) do if not fields[key] then return false end end
  return true
@@ -147,6 +150,10 @@ function Service:_effect(p,op,boostState)
 	elseif op.kind=="finalBonus" then
 		applied,err=Economy.applyFinalBonuses(v,{finalPaper=op.finalPaper,finalXP=op.finalXP},op.multipliers,op.id)
 	elseif op.kind=="equipmentPurchase" then applied,err=Economy.validateEquipmentPurchase(v,self.catalog,op.catalogID,op.id)
+	elseif op.kind=="partUnlock" then
+		if not self.catalog:get(op.catalogID) then return nil,"unknown_part" end
+		if p.ownership[op.catalogID]==true then result={type="PartAlreadyOwned"}
+		else p.ownership[op.catalogID]=true;result={type="PartUnlocked",catalogID=op.catalogID} end
 	elseif op.kind=="prestige" then
 		-- Keep unrelated save fields outside the economy rules' smaller copy bounds.
 		local prestigeView=assert(Schema.copy(v))

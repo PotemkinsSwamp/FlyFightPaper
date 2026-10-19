@@ -33,18 +33,26 @@ function Rules.catalog(config)
     for k in pairs(config) do if not allowedConfig[k] then return nil,"unknown_config_field" end end
     local byKey, byID, ordered, n = {}, {}, {}, 0
     for i in pairs(config.products) do
-        if type(i)~="number" or i%1~=0 or i<1 or i>15 then return nil,"invalid_offer_array" end
+        if type(i)~="number" or i%1~=0 or i<1 then return nil,"invalid_offer_array" end
         n+=1
     end
-    if n~=15 then return nil,"offer_count" end
+    if n<15 then return nil,"offer_count" end
     local fields={key=true,kind=true,benefit=true,amount=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
-    for i=1,15 do
+    local partFields={key=true,kind=true,benefit=true,catalog_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
+    for i=1,n do
         local p=config.products[i]
         if type(p)~="table" then return nil,"malformed_offer" end
-        for k in pairs(p) do if not fields[k] then return nil,"unknown_offer_field" end end
-        local e=expected[p.key]
-        if not e or p.kind~=e.kind or p.benefit~=e.benefit or p.amount~=e.amount or type(p.enabled)~="boolean" then
-            return nil,"immutable_offer_mismatch"
+        local part=p.benefit=="part_unlock"
+        local allowedFields=part and partFields or fields
+        for k in pairs(p) do if not allowedFields[k] then return nil,"unknown_offer_field" end end
+        if part then
+            if p.kind~="developer_product" or type(p.catalog_id)~="string" or #p.catalog_id==0
+                or p.key~="part_"..p.catalog_id or type(p.enabled)~="boolean" then return nil,"invalid_part_offer" end
+        else
+            local e=expected[p.key]
+            if not e or p.kind~=e.kind or p.benefit~=e.benefit or p.amount~=e.amount or type(p.enabled)~="boolean" then
+                return nil,"immutable_offer_mismatch"
+            end
         end
         if byKey[p.key] then return nil,"duplicate_offer" end
         -- Nil, empty tables and arbitrary generated maps are NOT the JSON null sentinel.
@@ -52,7 +60,7 @@ function Rules.catalog(config)
         if (not idNull and not Rules.positiveInteger(p.roblox_product_id))
             or (not priceNull and not Rules.positiveInteger(p.approved_robux_price))
             or idNull~=priceNull or (p.enabled and idNull) then return nil,"invalid_mapping" end
-        local offer=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,
+        local offer=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,catalogID=p.catalog_id,
             enabled=p.enabled,productID=not idNull and p.roblox_product_id or nil,
             approvedPrice=not priceNull and p.approved_robux_price or nil})
         if offer.productID then
@@ -61,6 +69,7 @@ function Rules.catalog(config)
         end
         byKey[p.key]=offer; ordered[i]=offer
     end
+    for key in pairs(expected) do if not byKey[key] then return nil,"offer_count" end end
     return table.freeze({mode=config.mode,authorized=config.live_sales_authorized,
         byKey=table.freeze(byKey),byID=table.freeze(byID),offers=table.freeze(ordered)})
 end
@@ -73,6 +82,7 @@ function Rules.owned(offer,boosts)
     return resource and boosts[resource=="xp" and "permanentXP" or "permanentPaper"]==true or false
 end
 function Rules.operation(offer,source,version)
+    if offer.benefit=="part_unlock" then return table.freeze({kind="partUnlock",catalogID=offer.catalogID}) end
     local op={sourceIdentity=source,expectedVersion=version}
     if offer.benefit=="paper_balance" then op.kind="purchasedPaper"; op.wholePaper=offer.amount
     else
@@ -86,9 +96,9 @@ function Rules.preview(catalog,boosts)
     local offers={}
     for i,p in ipairs(catalog.offers) do
         local owned=Rules.owned(p,boosts)
-        offers[i]=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,
+        offers[i]=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,catalogID=p.catalogID,
             label=catalog.mode=="mock" and "DEVELOPMENT ONLY - no real purchase" or "Live checkout unavailable",
-            available=catalog.mode=="mock" and not owned,ownedPermanent=owned,
+            available=catalog.mode=="mock" and p.benefit~="part_unlock" and not owned,ownedPermanent=owned,
             reason=owned and "permanent_owned" or (catalog.mode~="mock" and "live_request_unavailable" or nil),
             onlineTime=p.benefit=="xp_seconds" or p.benefit=="paper_seconds"})
     end

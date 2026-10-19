@@ -164,6 +164,26 @@ function Suite.run()
 		expect(accepted == true, err)
 	end)
 
+	check("owned higher-level structures weapons and utilities are legal at level one", function()
+		for _, id in ipairs({ "nose_5", "eraser", "boost_twin" }) do
+			local definition = catalog:get(id)
+			local loadout = catalog:starterLoadout()
+			if definition.slot then loadout[definition.slot] = id
+			elseif definition.class then loadout.weapon_mounts[1] = id
+			else loadout.utility = id end
+			local owned = { body_standard = true, nose_0 = true, wings_0 = true, tail_0 = true, pellet = true }
+			expectRejected(catalog, loadout, owned, 1, "requires level " .. tostring(definition.min_level))
+			expectRejected(catalog, loadout, nil, 1, "requires level " .. tostring(definition.min_level))
+			owned[id] = 1
+			expectRejected(catalog, loadout, owned, 1, "requires level ")
+			owned[id] = true
+			local accepted, err = catalog:validateLoadout(loadout, owned, 1)
+			expect(accepted == true, err)
+			owned[id] = nil
+			expectRejected(catalog, loadout, owned, definition.min_level, "not owned: " .. id)
+		end
+	end)
+
 	check("CFG03 starter reference stats", function()
 		local stats, err = catalog:deriveStats(catalog:starterLoadout())
 		expect(stats ~= nil, err)

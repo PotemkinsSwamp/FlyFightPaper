@@ -206,7 +206,7 @@ function Catalog:validateLoadout(loadout, ownership, level)
 	end
 
 	for id, definition in pairs(selected) do
-		if level < definition.min_level then
+		if level < definition.min_level and not (ownership ~= nil and ownership[id] == true) then
 			return nil, id .. " requires level " .. tostring(definition.min_level)
 		end
 		-- nil ownership is reserved for trusted internal all-owned analysis.

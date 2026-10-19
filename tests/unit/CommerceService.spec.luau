@@ -57,7 +57,7 @@ local function fixture(options)
  f.service=Profile.new({catalog=f.catalog,monotonic=function()return f.time end})
  assert(f.service:attach("user",f.profile,{connected=true,mapLoaded=false}).status=="ok")
  local entry={profile=f.profile,account="user"}
- f.profiles={entries={[f.player]=entry}}
+ f.profiles={catalog=f.catalog,entries={[f.player]=entry}}
  function f.profiles:view(player)
   if f.unloaded or player~=f.player or self.entries[player]~=entry then return nil end
   local view=f.service:view("user")
@@ -123,6 +123,30 @@ function Spec.run()
   assert(f.marketplace.PromptGamePassPurchaseFinished.connections==1 and f.players.PlayerAdded.connections==1)
   assert(f.marketplace.ProcessReceipt(f:receipt("paper_pack_1000"))==Decisions.PurchaseGranted)
  end)
+ test("live catalogs naming unknown parts stay off before touching marketplace even for disabled offers",function()
+  local catalog=Catalog.new(require(Root.Generated.Catalog),require(Root.Generated.Gameplay))
+  for _,mapped in ipairs({true,false}) do
+   local config=liveConfig();local part=config.products[16]
+   part.key="part_missing_part";part.catalog_id="missing_part"
+   if not mapped then
+    part.enabled=false;part.roblox_product_id=require(Root.Generated.JSONTypes).Null
+    part.approved_robux_price=require(Root.Generated.JSONTypes).Null
+   end
+   assert(Rules.catalog(config),"missing catalog part must reach server validation")
+   local marketplace=setmetatable({},{__index=function()error("off adapter touched marketplace")end,
+    __newindex=function()error("off adapter bound marketplace")end})
+   local service=Commerce.new({catalog=catalog},{config=config,marketplace=marketplace,players={}})
+   assert(service.live==false and not service:prompt({},part.key) and not service:checkPasses({}))
+   assert(service:processReceipt({})==Decisions.NotProcessedYet)
+  end
+ end)
+ test("live part catalogs require a server catalog and accept the injected catalog fallback",function()
+  local config=liveConfig()
+  local off=Commerce.new({}, {config=config,marketplace={},players={}})
+  assert(off.live==false)
+  local f=fixture();f.profiles.catalog=nil;f.deps.catalog=f.catalog;f.players.list={}
+  assert(Commerce.new(f.profiles,f.deps).live==true)
+ end)
  test("Paper receipts grant once under different operation ids and save their receipt and balance together",function()
   local f=fixture();local info=f:receipt("paper_pack_1000");local key=Profile.receiptKey(info.PurchaseId)
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
@@ -143,6 +167,22 @@ function Spec.run()
   f.profile.failSave=false
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
   assert(f.profile.Data.paperMilli==3500000 and f.profile.LastSavedData.paperMilli==3500000 and f.profile.LastSavedData.receiptIds[key])
+ end)
+ test("early part receipts acknowledge only saved ownership and replay without granting more",function()
+  local f=fixture();f.profile.failSave=true
+  local info=f:receipt("part_eraser");local key=Profile.receiptKey(info.PurchaseId)
+  assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
+  assert(f.profile.Data.ownership.eraser and f.profile.Data.receiptIds[key])
+  assert(not f.profile.LastSavedData.ownership.eraser and not f.profile.LastSavedData.receiptIds[key])
+  f.profile.failSave=false
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  assert(f.profile.LastSavedData.ownership.eraser and f.profile.LastSavedData.receiptIds[key])
+  assert(f.profile.LastSavedData.paperMilli==0 and f.profile.LastSavedData.purchasedPaperMilli==0 and f.profile.LastSavedData.xpMilli==0)
+  assert(f.inputs[1].grant.kind=="partUnlock" and f.inputs[1].grant.catalogID=="eraser")
+  assert(f.outcomes[1].value.type=="PartUnlocked" and f.outcomes[2].value.type=="ReceiptAlreadyGranted")
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.outcomes[3].value.type=="ReceiptAlreadyGranted")
+  local ok,why=f.commerce:prompt(f.player,"part_eraser")
+  assert(not ok and why=="owned" and #f.marketplace.calls==0 and #f.inputs==3)
  end)
  test("a queued asynchronous save is not mistaken for a durable receipt",function()
   local f=fixture();local pending
@@ -197,18 +237,23 @@ function Spec.run()
   assert(f.profile.LastSavedData.boosts.xpSeconds==900)
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profile.Data.boosts.xpSeconds==900)
  end)
- test("all thirteen developer products use their catalog benefits",function()
-  local f=fixture();local paper,xpSeconds,paperSeconds,n=0,0,0,0
+ test("all developer products use their catalog benefits including part ownership",function()
+  local f=fixture();local paper,xpSeconds,paperSeconds,n,parts=0,0,0,0,0
   for _,offer in ipairs(f.commerce.catalog.offers) do
    if offer.kind=="developer_product" then
     n+=1
     assert(f.commerce:processReceipt(f:receipt(offer.key))==Decisions.PurchaseGranted,offer.key)
     if offer.benefit=="paper_balance" then paper+=offer.amount*1000
     elseif offer.benefit=="xp_seconds" then xpSeconds+=offer.amount
-    else paperSeconds+=offer.amount end
+    elseif offer.benefit=="paper_seconds" then paperSeconds+=offer.amount
+    else
+     assert(offer.benefit=="part_unlock" and f.profile.LastSavedData.ownership[offer.catalogID])
+     parts+=1
+    end
    end
   end
-  assert(n==13 and f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
+  assert(parts>0 and n==13+parts and n==#f.commerce.catalog.offers-2)
+  assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)
   for i=2,#f.saveTimes do assert(f.saveTimes[i]-f.saveTimes[i-1]>=2,"receipts must share the save cooldown") end
  end)
@@ -314,7 +359,7 @@ function Spec.run()
  end)
  test("prompts call the matching Roblox checkout with the right ids and grant nothing",function()
   local f=fixture()
-  for _,key in ipairs({"paper_pack_10000","xp_boost_60m","permanent_2x_paper"}) do
+  for _,key in ipairs({"paper_pack_10000","xp_boost_60m","permanent_2x_paper","part_eraser"}) do
    local offer=f:offer(key);local ok,why=f.commerce:prompt(f.player,key)
    assert(ok and why=="prompted")
    local call=f.marketplace.calls[#f.marketplace.calls]
