@@ -201,7 +201,8 @@ function Service:build(p)
 end
 function Service:replace(p)
  if p.testLoadout then p.loadout=p.testLoadout
- elseif p.player and self.selectedLoadout then p.loadout=self.selectedLoadout(p.player) or p.loadout end
+ -- A practice plane respawns as the same training plane, not the player's own build (it may have no booster).
+ elseif p.player and self.selectedLoadout and not p.practice then p.loadout=self.selectedLoadout(p.player) or p.loadout end
  if p.model then p.model:Destroy() end
  self:build(p)
 end
