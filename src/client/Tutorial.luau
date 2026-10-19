@@ -17,11 +17,15 @@ local Tutorial={active=false}
 local HINT_SECONDS=10
 local HOLD_SKIP_SECONDS=1.5
 local HOOP_RADIUS=30
-local POINTER_STUDS=16 -- the pointer arrow's width
+local HOOP_PIECES=24
+local POINTER_STUDS=10 -- the pointer arrow's width
 local POINTER_AHEAD=30 -- how far in front of the plane it floats
+local POINTER_SIDE=14 -- and how far to the right, so it sits beside the line, not on it (Alan)
 local MIN_HOLE_PIXELS=70 -- half the dim hole's size for a far-away target
-local PULSE_FIRST_SECONDS=3
-local ROUTE_SECONDS=.4 -- how often the guide line re-plans its path
+local MAX_HOLE_SHARE=.28 -- and at most this share of the screen's height for a close one
+local ROUTE_SECONDS=1 -- how often the guide line re-plans its path (often enough to follow you, not so often it jumps)
+local LINE_STEP_STUDS=20 -- the line is smoothed into pieces about this long
+local LINE_PIECES=48 -- at most this many pieces
 local LINE_HIDE_STUDS=40 -- the guide line goes away this close to the target
 local DASH_SPEED=1.5 -- how fast the line's dashes crawl toward the target
 local BURST_ANGLES={-150,180,150,-30,0,30} -- the "look here" marks: three each side, like the concept
@@ -57,11 +61,12 @@ function Tutorial.start(getPlane)
  end
  local tag=Instance.new("ImageLabel");tag.Name="Tag";tag.Image=Pieces.tag;tag.ScaleType=Enum.ScaleType.Slice;tag.SliceCenter=TAG_SLICE;tag.SliceScale=.45
  tag.BackgroundTransparency=1;tag.AnchorPoint=Vector2.new(.5,0);tag.Size=UDim2.fromOffset(300,76);tag.Visible=false;tag.Parent=gui
+ local barFrame=frame:Clone();barFrame.Name="BarFrame";barFrame.Image=Pieces.frameBox;barFrame.ScaleType=Enum.ScaleType.Slice;barFrame.Parent=gui
  local tagText=PaperUI.words(tag,"Text","",0,0,300,76,36);tagText.Size=UDim2.fromScale(1,1);tagText.TextXAlignment=Enum.TextXAlignment.Center
 
  -- The goal note: sticky note near the top, lesson and step, the instruction, the key picture, the count.
  local note=Instance.new("ImageLabel");note.Name="Note";note.Image=Art.ingame.stickyNote;note.ScaleType=Enum.ScaleType.Stretch;note.BackgroundTransparency=1
- note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.17);note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui
+ note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.08) -- just under the top strip, out of the middle of the view;note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui
  local scale=Instance.new("UIScale");scale.Parent=note
  local function fit() scale.Scale=math.max(.6,workspace.CurrentCamera.ViewportSize.Y/1080) end
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit);fit()
@@ -140,10 +145,11 @@ function Tutorial.start(getPlane)
    local at=COURSE[i];local ahead=COURSE[i+1] or at+(at-COURSE[i-1])
    local spot=CFrame.lookAt(at,ahead)
    local model=Instance.new("Model");model.Name="TutorialHoop"
-   for k=1,20 do
-    local a=k/20*math.pi*2
+   -- 24 pieces laid end to end round the circle (each a little longer than its share, so there are no gaps).
+   for k=1,HOOP_PIECES do
+    local a=k/HOOP_PIECES*math.pi*2
     local piece=Instance.new("Part");piece.Anchored,piece.CanCollide,piece.CanQuery,piece.CanTouch=true,false,false,false
-    piece.Size=Vector3.new(4,10,3);piece.Material=Enum.Material.SmoothPlastic;piece.Color=k%2==0 and Color3.fromRGB(235,60,50) or Color3.fromRGB(250,248,240) -- red and white paper, like the concept
+    piece.Size=Vector3.new(2*math.pi*HOOP_RADIUS/HOOP_PIECES*1.08,3.5,3);piece.Material=Enum.Material.SmoothPlastic;piece.Color=k%2==0 and Color3.fromRGB(235,60,50) or Color3.fromRGB(250,248,240) -- red and white paper, like the concept
     piece.CFrame=spot*CFrame.Angles(0,0,a)*CFrame.new(0,HOOP_RADIUS,0);piece.Parent=model
    end
    paint(model,i==from);model.Parent=workspace
@@ -151,7 +157,7 @@ function Tutorial.start(getPlane)
   end
  end
 
- -- Spotlight on GUI pieces found by name anywhere on screen; pulse = the frame without the dim.
+ -- Spotlight on GUI pieces found by name anywhere on screen; pulse = a HUD bar's own frame, no dim.
  local spotNames,pulseName=nil,nil
  local function findGui(name)
   for _,item in player.PlayerGui:GetDescendants() do
@@ -225,9 +231,20 @@ function Tutorial.start(getPlane)
     if route[#route]~=marked.position then table.insert(route,marked.position) end
    end
    if (marked.position-body.Position).Magnitude>LINE_HIDE_STUDS then
+    -- A smooth curve (Catmull-Rom) through the plane and the path's turns, leaving along the plane's nose.
+    local points={body.Position};for _,point in route do table.insert(points,point) end
     lineStart.Parent=body
-    for i,point in route do local line,dot=lineTo(i);dot.WorldPosition=point;line.Enabled=true end
-    shown=#route
+    for i=1,#points-1 do
+     local p1,p2=points[i],points[i+1]
+     local p0=points[i-1] or p1-body.CFrame.LookVector*(p2-p1).Magnitude
+     local p3=points[i+2] or p2+(p2-p1)
+     for k=1,math.max(1,math.ceil((p2-p1).Magnitude/LINE_STEP_STUDS)) do
+      if shown>=LINE_PIECES then break end
+      local t=k/math.max(1,math.ceil((p2-p1).Magnitude/LINE_STEP_STUDS))
+      local point=.5*((2*p1)+(p2-p0)*t+(2*p0-5*p1+4*p2-p3)*t*t+(3*p1-p0-3*p2+p3)*t*t*t)
+      shown+=1;local line,dot=lineTo(shown);dot.WorldPosition=point;line.Enabled=true
+     end
+    end
    end
   end
   for i=shown+1,#lines do lines[i].Enabled=false end
@@ -240,7 +257,7 @@ function Tutorial.start(getPlane)
   if not inView and body then
    -- The arrow points along the path's first leg. Its card faces the camera as far as it can while the arrow
    -- (pointing right in the picture) lies along the way to go; it bobs and swells a little.
-   local at=body.Position+camera.CFrame.LookVector*POINTER_AHEAD+camera.CFrame.UpVector*(6+math.sin(os.clock()*4)*1.5)
+   local at=body.Position+camera.CFrame.LookVector*POINTER_AHEAD+camera.CFrame.RightVector*POINTER_SIDE+camera.CFrame.UpVector*(6+math.sin(os.clock()*4)*1.5)
    local way=((route[1] or marked.position)-at).Unit;local toCamera=(camera.CFrame.Position-at).Unit
    local facing=toCamera-way*toCamera:Dot(way);if facing.Magnitude<.05 then facing=camera.CFrame.UpVector end
    facing=facing.Unit
@@ -248,9 +265,9 @@ function Tutorial.start(getPlane)
    local swell=.92+(math.sin(os.clock()*6)+1)*.04;pointImage.Size=UDim2.fromScale(swell,swell)
   end
   if not onScreen then return end
-  -- Hole size: the target's radius seen from here, never smaller than a thumb.
+  -- Hole size: the target's radius seen from here, never smaller than a thumb nor bigger than a big part of the screen.
   local across=marked.radius*view.Y/(2*point.Z*math.tan(math.rad(camera.FieldOfView)/2))
-  local half=math.max(MIN_HOLE_PIXELS,across)
+  local half=math.clamp(across,MIN_HOLE_PIXELS,view.Y*MAX_HOLE_SHARE)
   local center=Vector2.new(point.X,point.Y) -- viewport pixels = this layer's pixels (it ignores the top bar)
   return center-Vector2.new(half,half),center+Vector2.new(half,half),string.format("%s %d",marked.text,distance)
  end
@@ -326,7 +343,7 @@ function Tutorial.start(getPlane)
 
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName=nil,nil,nil
-  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
+  if not Tutorial.active then note.Visible=false;barFrame.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
@@ -348,19 +365,22 @@ function Tutorial.start(getPlane)
   gotIt.Visible=step.gotIt==true
   local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt
   hint.Text=stuck and step.hint and ("Tip: "..step.hint) or ""
-  local swell=stuck and marked and math.abs(math.sin(os.clock()*4))*30 or 0
-  arrow.Size=UDim2.fromOffset(64+swell,64+swell)
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end
   if finished and not doneAt then doneAt=os.clock();tick.Visible=true;ctx.ding() end
   if doneAt then spotNames,pulseName,marked=nil,nil,nil end
-  -- One focus look for everything: a button or bar (spotlight dims, pulse doesn't) or the 3D target.
-  -- A bar pulse and a 3D target in one step (Lift bar + fan): the bar first, then the target.
+  -- One focus look for everything: a button (spotlight, dims the rest) or the 3D target. A HUD bar the step
+  -- talks about (pulse) gets its own breathing frame the whole step, so it shows next to a 3D target (Lift + fan).
   local low,high,words=drawMarker(ctx.body)
-  if low and pulseName and os.clock()-stepStarted>PULSE_FIRST_SECONDS then pulseName=nil end
-  local names=spotNames or (pulseName and {pulseName})
-  if names then low,high=box(names);drawSpot(low,high,spotNames and GUI_DIM or nil,false,nil,dt)
+  if spotNames then low,high=box(spotNames);drawSpot(low,high,GUI_DIM,false,nil,dt)
   else drawSpot(low,high,low and WORLD_DIM or nil,true,words,dt) end
+  local barLow,barHigh=nil,nil;if pulseName then barLow,barHigh=box({pulseName}) end
+  barFrame.Visible=barLow~=nil
+  if barLow then
+   local grow=8+(math.sin(os.clock()*6)+1)*6
+   barFrame.Position=UDim2.fromOffset(barLow.X-grow,barLow.Y-grow);barFrame.Size=UDim2.fromOffset(barHigh.X-barLow.X+grow*2,barHigh.Y-barLow.Y+grow*2)
+   barFrame.Rotation=math.sin(os.clock()*2.3)*1.2;barFrame.ImageTransparency=0
+  end
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
   if doneAt and os.clock()-doneAt>.8 then startStep(Tutorial.index+1) end
  end)
