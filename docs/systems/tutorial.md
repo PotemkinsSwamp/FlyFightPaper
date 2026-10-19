@@ -56,8 +56,8 @@ and changing course every 2.5 s (Alan 2026-10-19: noob-level, trying to get away
 meant circling it): one that never shoots, one that hunts you without a break, shooting, until your Health is
 down to half (its hits can't fold you; Alan: "whittle your health down"), then runs so you can shoot it down. Neither carries an eraser. Part 3, the eraser:
 the plane refolds in the air with an eraser on right click (`eraser=true`), then in slow motion the big lock circle and
-lock (holding right click fires one at full lock) on one target, its reload (the card comes while it fills, between
-the two shots), the second target, one lock at full speed, then a Pal whose erasers appear on their own 300 studs ahead
+lock (holding right click fires one at full lock) on one target, its reload (the card comes while it fills, before
+the next shot; a second slow-motion lock was cut as redundant), one lock at full speed, then a Pal whose erasers appear on their own 300 studs ahead
 of you, toward the Pal, already chasing you, never while the note holds you still nor in a step's first second (before its freeze
 reaches the server, an eraser used to slip out and hit the frozen player) (BotService:palEraser; 80% speed, 10% slower after each hit, never under 60%)
 until you dodge one, then your eraser on it. Lessons have the same 3-degree aim assist as matches ([decision](../decisions/2026-10-19-less-aim-assist.md)).

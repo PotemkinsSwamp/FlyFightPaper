@@ -211,17 +211,12 @@ local ERASER_STEPS={
     markTarget(ctx,"LOCK ON")
     return ctx.count("DrillDown")
    end},
-  -- The reload card comes between the two eraser shots, while the first one's reload fills (Alan 2026-10-19).
+  -- The reload card comes between the first eraser shot and the full-speed one, while the reload fills (Alan
+  -- 2026-10-19; a second slow-motion lock was cut as redundant).
   {text="Erasers take 4 seconds to reload: watch the right-click row fill up.",gotIt=true,
    update=function(ctx)
     ctx.spotlight("RightStrip")
     return false
-   end},
-  {text="Reloaded! Lock on to the other target: hold right click.",key="Right click",count=2,
-   hint="Keep it in the big circle until the box turns red.",
-   update=function(ctx)
-    markTarget(ctx,"LOCK ON")
-    return ctx.count("DrillDown")
    end},
   {text="Now lock on with your eraser: hold right click.",key="Right click",count=1,
    hint="Keep the target in the big circle until the box turns red.",

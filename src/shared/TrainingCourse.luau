@@ -18,7 +18,7 @@ Course.DRILLS={
  -- Measured in Play (2026-10-19): crossing at 100 studs/s 220 away, the plane's nose trailed the ring by 30-60 px, so
  -- the dot never sat in it. Further and slower: about 10 degrees/s across, the ring still a clear 40 px ahead.
  moving={{yaw=0,range=350,health=12,speed=60,span=130,depth=20},{yaw=0,range=350,rise=45,health=12,speed=60,span=130,depth=20,phase=math.pi}},
- eraser={{yaw=0,range=350,health=30,speed=45,span=110,depth=20,eraserOnly=true},{yaw=0,range=350,rise=45,health=30,speed=45,span=110,depth=20,eraserOnly=true,phase=math.pi}},
+ eraser={{yaw=0,range=350,health=30,speed=45,span=110,depth=20,eraserOnly=true}}, -- one: its second lock step was cut
  -- Still slow motion for you, but twice as fast across (Alan 2026-10-19: at full speed you just caught up with it).
  fast={{yaw=0,range=350,health=12,speed=120,span=170,depth=25}},
  fastEraser={{yaw=0,range=350,health=30,speed=45,span=110,depth=20,eraserOnly=true}},
