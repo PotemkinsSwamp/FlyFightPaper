@@ -64,7 +64,10 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_end") end
   elseif action=="practice" then self:practice(player)
   elseif action=="practiceTarget" then local p=flight.pilots[player];if p and p.practice then combat:practiceTarget(p) end
+  elseif action=="tutorialFoe" then self:tutorialFoe(player,true)
+  elseif action=="tutorialFoeDone" then self:tutorialFoe(player,false)
   elseif action=="practiceDone" then
+   self:tutorialFoe(player,false)
    if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end
    -- Studio's stand-in tutorial room turns back into a normal room; a real one sends the player on to a match room.
    if Run:IsStudio() and Root:GetAttribute("DevTutorialRoom") then Root:SetAttribute("DevTutorialRoom",false);flight.tutorialRoom=false end
@@ -225,6 +228,18 @@ function Runtime:firstJoin(player)
   if profile and self.matchmaking.needsTutorial(profile) and not player:GetAttribute("InMatch") then self.matchmaking:routeTutorial(player) end
  end)
 end
+-- The lesson's one enemy: a rookie bot that fights only this player (CombatService:enemy), from its own desk.
+function Runtime:tutorialFoe(player,wanted)
+ local id="tutorialFoe"..player.UserId;local foe=self.flight.byId[id]
+ if not wanted then
+  if foe then self.flight:remove(foe,"vacancy");self.bots.brains[id]=nil end
+  player:SetAttribute("TutorialFoe",nil);return
+ end
+ local p=self.flight.pilots[player]
+ if foe or not p or not p.practice or not self:tutorialRoom() then return end
+ foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
+ if foe then foe.foeOf=p.id;player:SetAttribute("TutorialFoe",id) end
+end
 function Runtime:practice(player)
  if not player:GetAttribute("ClassroomLoaded") or not self.profiles:view(player) then return end
  if self.flight.pilots[player] then self:withdraw(player) end
@@ -237,8 +252,8 @@ function Runtime:practice(player)
   if not self.engine.round or self.engine.phase=="READY" then self:begin("FFA") end
   if self.engine.phase~="ACTIVE" then player:SetAttribute("MenuMessage","Practice opens when the next round starts.");return end
  end
- local profile=self.profiles:view(player)
- local p=self.flight:add(player,{loadout=profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout,practice=true})
+ -- Lessons fly a fixed training plane (Alan 2026-10-18); the player's own builds are untouched.
+ local p=self.flight:add(player,{loadout=require(Root.Shared.WeaponLoadouts).make(self.flight.catalog,"training"),loadoutName="training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
  player:SetAttribute("InMatch",true)
 end

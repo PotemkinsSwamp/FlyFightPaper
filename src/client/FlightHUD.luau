@@ -663,7 +663,10 @@ function HUD.start(getPlane, action)
 		-- In flight a note fades after 4 seconds; at the desk or when shot down it stays.
 		local message = plane:GetAttribute("Message") or ""
 		if message ~= status.Words.Text then status.Words.Text, noteAt = message, os.clock() end
-		status.Visible = message ~= "" and (state ~= "FLYING" or os.clock() - noteAt < 4)
+		-- During a lesson the news note and the kill feed stay hidden: the lesson's own note is the only text (Alan).
+		local lesson = Root:GetAttribute("TutorialOpen") == true
+		status.Visible = message ~= "" and (state ~= "FLYING" or os.clock() - noteAt < 4) and not lesson
+		feed.Visible = not lesson
 		if capture.Visible then
 			local target, zone = Gameplay.rounds.control_target, Zone.state
 			for side, team in { "team:1", "team:2" } do

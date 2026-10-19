@@ -163,6 +163,8 @@ function DeskHangar.new(playerGui, api)
 	Root:WaitForChild("RoundView").OnClientEvent:Connect(function(snapshot)
 		local remaining = snapshot.endsAt and math.max(0, math.ceil(snapshot.endsAt - snapshot.serverTime)) or 0
 		clock.Text = string.format("%d:%02d left", math.floor(remaining / 60), remaining % 60)
+		-- The tutorial's own room has no match: no clock or mode on the desk card.
+		if Root:GetAttribute("TutorialRoom") then clock.Text, score.Text = "Training", "";return end
 		if snapshot.mode ~= "FFA" and snapshot.teams then
 			score.Text = string.format('<font color="#D22828">Red %.0f</font> - <font color="#2850D2">Blue %.0f</font>', snapshot.teams["team:1"], snapshot.teams["team:2"])
 		else

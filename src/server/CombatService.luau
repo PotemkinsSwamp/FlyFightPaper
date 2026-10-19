@@ -144,6 +144,8 @@ function Service:chalkHit(part,now)
 end
 -- Practice pilots (first 60 seconds) are nobody's enemy: they can't hit or be hit, and bots ignore them.
 function Service:enemy(a,b)
+ -- Except the tutorial's one enemy and the pilot it was made for.
+ if a~=b and (a.foeOf==b.id or b.foeOf==a.id) then return true end
  return a~=b and not a.practice and not b.practice and (not a.team or not b.team or a.team~=b.team)
 end
 -- A practice pilot's paper target, a little ahead of them, heading toward the middle of the room.
