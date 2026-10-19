@@ -24,7 +24,7 @@ and the flying ones happen in the player's own timed private room.
 - **Always say how to come back:** Skip and every end card say "You can replay this any time: Menu > Training",
   and the first time you're back at the main menu the Training button is spotlit once.
 
-## Grabbing attention (Alan's playtest 2026-10-18; proposal, waiting for his OK)
+## Grabbing attention (Alan's playtest 2026-10-18; approved by Alan the same day)
 Alan: small arrows aren't enough; every step must pull your eyes to the one thing to do, "in your face".
 - **One focus look for everything**, menus and the 3D world alike: the whole screen dims except a bright hole
   around the target, and the dim breathes in and out. For a button it's the button; for a hoop, fan, bolt or
