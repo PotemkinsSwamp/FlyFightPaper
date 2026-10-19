@@ -432,6 +432,8 @@ function Service:step(dt)
    if dt>.5 then shot.born+=dt-.5 end
    delta=shot.origin+Rules.shotOffset(shot.weapon,shot.direction0,now-shot.born)-shot.position
   end
+  -- A fast shot after a long hitch could still pass the cast limit: it catches up over the next steps instead.
+  if delta.Magnitude>1000 then delta=delta.Unit*1000 end
   if delta.Magnitude>.001 then
    local result=workspace:Spherecast(shot.position,shot.radius,delta,self.worldCast)
    local target,t=self:planeHit(shot,delta,now)

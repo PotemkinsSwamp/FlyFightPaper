@@ -500,7 +500,8 @@ function Tutorial.start(getPlane)
 
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName,softSpot,softTag=nil,nil,nil,false,nil
-  if not Tutorial.active then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
+  -- A menu open over the lesson (Esc) is what the player is looking at: no dim, spotlight or note on top of it (Alan 2026-10-19).
+  if not Tutorial.active or Root:GetAttribute("OverlayOpen") then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
