@@ -3,6 +3,9 @@
   creases, paper edges, cardboard, toilet roll, tape and rubber bands, tinted red, blue, or half-and-half in
   free-for-all. Checked in Studio Play, sizes unchanged, tests 328/0
   ([decision](../docs/decisions/2026-10-18-paper-look.md)). **Duct fans** no longer poke through the ceiling.
+- **Prestige built:** at level 50 a Prestige button appears on the main menu's stats card; hold to confirm. You go
+  back to level 1 and lose your parts (even bought ones), keep your Paper, boosts and stats, and get a gold rank
+  star on your level bar. Bots stay at your old difficulty. Checked in Studio Play; tests 340/0.
 - **Shop planned with you:** what we sell, whole-plane skins, sticker editor, drawing pass with safeguards,
   prestige, special planes ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)); draft prices in the
   [pricing research](../docs/research/PRICING-RESEARCH-2026-10-18.md).
@@ -14,7 +17,7 @@
   bots died only to weapons in a 2-minute match. ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md))
 - Earlier: real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
-# Now: prestige design, then the Stage 10 shop (stays off until you OK prices) (MILESTONES)
+# Now: Stage 10 shop (stays off until you OK prices) (MILESTONES)
 Toilet Roll jitter: not reproduced; tell me when it happens.
 
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
