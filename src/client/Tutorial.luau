@@ -172,8 +172,9 @@ function Tutorial.start(getPlane)
    local item=findGui(name)
    if item then
     -- Absolute positions are screen-wide; this layer's own offsets start at its corner (under the top bar or not).
-    -- Paper buttons have see-through margins round the art: frame the paper, not the whole box.
-    local trim=item:IsA("ImageButton") and item.AbsoluteSize*.1 or Vector2.zero
+    -- Paper buttons have see-through margins above and below the art: frame the paper, not the whole box. Their
+    -- ends reach the sides, so only a sliver comes off there (Alan: the desk card's strips were cut off).
+    local trim=item:IsA("ImageButton") and item.AbsoluteSize*Vector2.new(.02,.1) or Vector2.zero
     local a=item.AbsolutePosition-gui.AbsolutePosition+trim;local b=a+item.AbsoluteSize-trim*2
     low=low and Vector2.new(math.min(low.X,a.X),math.min(low.Y,a.Y)) or a
     high=high and Vector2.new(math.max(high.X,b.X),math.max(high.Y,b.Y)) or b
@@ -365,7 +366,7 @@ function Tutorial.start(getPlane)
   hint.Text=stuck and step.hint and ("Tip: "..step.hint) or ""
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end
-  if finished and not doneAt then doneAt=os.clock();tick.Visible=true;ctx.ding() end
+  if finished and not doneAt then doneAt=os.clock();tick.Visible=true;Audio.play("stepDone") end
   if doneAt then spotNames,pulseName,marked=nil,nil,nil end
   -- One focus look for everything: a button (spotlight, dims the rest) or the 3D target. A HUD bar the step
   -- talks about (pulse) gets its own breathing frame the whole step, so it shows next to a 3D target (Lift + fan).

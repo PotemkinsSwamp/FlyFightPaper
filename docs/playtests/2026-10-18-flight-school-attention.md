@@ -24,3 +24,12 @@ and the hoop looked like loose blocks (now 24 pieces end to end).
    mid-line switched off the rest of the line, including the note's parent. Fixed.]
 7. **The hoops aimed straight into the fan, so the Lift step was over before you could read it.** [New course ends
    heading north with the fan 90 degrees to the left and 450 studs of clear air ahead. Not yet re-checked.]
+
+## Third look (same day)
+8. **The desk card's frame cut off the ends of the four buttons.** [The frame trimmed 10% off each side of paper
+   buttons; now 2%, since these strips reach the sides. Not yet re-checked.]
+9. **Lessons need their own music: peaceful, focusing, playful, subtle (maybe classical), free to use; no distracting
+   sounds; a ding for every finished step, like the hoops.** [Calm lesson playlist of four licensed tracks picked by
+   description (Alan judges by ear), quieter than match music; classroom chatter off during lessons; each finished step
+   plays a rising two-note chime, louder than the hoop ding (it used to be the same coin sound, masked by take-off,
+   fan and bolt sounds). Combat Training gets different music later. Not yet heard.]

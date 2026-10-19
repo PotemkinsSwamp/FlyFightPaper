@@ -13,7 +13,9 @@ final loudness balance. Death looks wait on his eyes.
 
 ## Rules
 The sound brief is in [Art direction](../vision/ART_DIRECTION.md) ("Audio and effects"). Only licensed sounds from
-Roblox's free audio library or the Creator Store. Music: "Happy Daze" (free APM track) loops in menus and matches.
+Roblox's free audio library or the Creator Store. Music: a shuffled playlist of free APM tracks in menus and matches
+(ids in `Audio.luau`). Tutorial lessons have their own calm playlist (APM and Distrokid, quieter), no classroom chatter,
+and a rising two-note chime for every finished step (Alan, 2026-10-18); Combat Training will get different music.
 
 ## Code
 | File | What it does |

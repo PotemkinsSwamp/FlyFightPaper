@@ -21,6 +21,8 @@ local definitions={
  lock={12221990,1.3,.5},lockbeep={12221990,1.8,.25},incoming={12221990,.8,.5},empty={"action_falling.ogg",1.4,.15},
  fan={9114185133,1.2,.35,1},land={9113563828,1,.5,.6},service={"volume_slider.ogg",1.9,.2},
  death={9125723704,1.1,.6,1},hit={"volume_slider.ogg",3,.35},kill={"impact_explosion_03.mp3",2.4,.3},start={105176025193207,1,.35,3},finish={9117261163,1,.4,.8},purchase={1169806635,1,.4,.8},
+ -- A tutorial step done: the coin sound as a rising two-note chime, louder than a hoop's ding (Alan: hear every step).
+ stepDone={1169806635,1.2,.6,.8,after={"stepDone2",.12}},stepDone2={1169806635,1.6,.55,.8},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you).
 local pool,available,busy={},{},{}
@@ -65,17 +67,26 @@ function Audio.start(getPlane)
  -- playlist). Add or remove ids here. The Music slider sets it; the classroom hum follows the Sound slider.
  local playlist={1844592742,1836626222,1842246698,1842172723} -- Action Kids, Frisky, Funky Thing, Disguise
  for i=#playlist,2,-1 do local j=math.random(i);playlist[i],playlist[j]=playlist[j],playlist[i] end
+ -- Lessons have their own calm music (Alan: peaceful, focusing, playful, subtle, maybe classical) and no classroom
+ -- chatter, so the step chimes stand out: Distrokid "Bamboo Dream Steps (Calm Piano & Celesta)", APM "Pure
+ -- Innocence", "Playground Idyll", "Daisy Fresh" (both libraries are licensed for Roblox games).
+ local lessonTracks={101906137416418,1847585588,1837587505,1839864816}
+ local function inLesson() return Root:GetAttribute("TutorialOpen")==true end
  local music=Instance.new("Sound");music.Name="Music";music.Parent=Sounds
  local track=0
- local function nextTrack() track=track%#playlist+1;music.SoundId="rbxassetid://"..playlist[track];music:Play() end
+ local function nextTrack()
+  local list=inLesson() and lessonTracks or playlist
+  track=track%#list+1;music.SoundId="rbxassetid://"..list[track];music:Play()
+ end
  music.Ended:Connect(nextTrack)
  -- Volume glides to the slider's value (a quarter second), so a jump from 0 to 100% fades instead of blasting.
  local glide=TweenInfo.new(.25)
  local function volumes()
-  game:GetService("TweenService"):Create(ambience,glide,{Volume=.04*(Root:GetAttribute("SoundVolume") or 1)}):Play()
-  game:GetService("TweenService"):Create(music,glide,{Volume=.2*(Root:GetAttribute("MusicVolume") or 1)}):Play()
+  game:GetService("TweenService"):Create(ambience,glide,{Volume=(inLesson() and 0 or .04)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
+  game:GetService("TweenService"):Create(music,glide,{Volume=(inLesson() and .12 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
  end
  Root:GetAttributeChangedSignal("MusicVolume"):Connect(volumes);Root:GetAttributeChangedSignal("SoundVolume"):Connect(volumes)
+ Root:GetAttributeChangedSignal("TutorialOpen"):Connect(function() track=0;nextTrack();volumes() end)
  volumes();nextTrack()
  local lastPhase
  local Players=game:GetService("Players")
