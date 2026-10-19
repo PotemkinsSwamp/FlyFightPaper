@@ -7,6 +7,12 @@ local Service={};Service.__index=Service
 function Service.classFor(profile)
  return profile and profile.qualification and profile.qualification.count>=Gameplay.bots.rookie_qualifying_matches and "regular" or "rookie"
 end
+function Service.needsTutorial(profile)
+ return profile and profile.statistics and profile.statistics.matches==0 and profile.qualification and profile.qualification.count==0 or false
+end
+function Service:isTutorialRoom()
+ return self.class=="tutorial"
+end
 -- A beginner may stay in a friend's regular room after `friend_join_matches` qualifying matches (Alan 2026-10-17).
 function Service.friendCanStay(profile,hasFriend)
  return hasFriend==true and Service.classFor(profile)=="rookie" and profile.qualification.count>=Gameplay.bots.friend_join_matches
@@ -39,7 +45,7 @@ function Service.new(profiles,options)
   end)
   task.spawn(function()
    while true do
-    if self.class then pcall(function()self.platform:advertise(self.class)end) end
+    if self.class and not self:isTutorialRoom() then pcall(function()self.platform:advertise(self.class)end) end
     task.wait(Config.advertise_seconds)
    end
   end)
@@ -59,21 +65,8 @@ function Service:failed(player,message)
   end)
  end
 end
-function Service:admit(player)
- local profile=self.profiles:view(player);if not profile or self.transfers[player] then return false end
- if self.loading or self.unavailable then player:SetAttribute("MenuMessage","Room matching is unavailable. Stay in the menu and try Play again shortly.");return false end
- local class=Service.classFor(profile)
- if not self.class then self.class=class end
- if class==self.class then return true end
- -- The friend lookup yields: hold the player so a second Play press can't start a second transfer meanwhile.
- if self.class=="regular" then
-  self.checking=self.checking or {};if self.checking[player] then return false end
-  self.checking[player]=true;local friend=self.friendHere(player);self.checking[player]=nil
-  if not player.Parent or self.transfers[player] then return false end
-  if Service.friendCanStay(profile,friend) then return true end
- end
- if self.mock then player:SetAttribute("MenuMessage","Studio keeps beginner and established rooms separate. Start a new Play session to test the other room.");return false end
- local transfer={};self.transfers[player]=transfer;player:SetAttribute("Routing",true);player:SetAttribute("MenuMessage","Finding a room for your experience level. Saving before the transfer.")
+local function transferPlayer(self,player,class,message)
+ local transfer={};self.transfers[player]=transfer;player:SetAttribute("Routing",true);player:SetAttribute("MenuMessage",message)
  task.spawn(function()
   local now=self.now or os.clock;local deadline=now()+TRANSFER_TIMEOUT
   local ok,destination=pcall(function()return self.platform:destination(class)end)
@@ -91,6 +84,27 @@ function Service:admit(player)
   local sent=pcall(function()self.platform:send(player,destination,function()return self.transfers[player]==transfer and player.Parent and now()<deadline end)end)
   if not sent and self.transfers[player]==transfer then self:failed(player,now()>=deadline and TIMEOUT_MESSAGE or nil) end
  end)
+ return true
+end
+function Service:routeTutorial(player)
+ if self.mock or self.loading or self.unavailable or self.transfers[player] or self:isTutorialRoom() or not self.profiles:view(player) then return false end
+ return transferPlayer(self,player,"tutorial","Opening your practice room. Saving first.")
+end
+function Service:admit(player)
+ local profile=self.profiles:view(player);if not profile or self.transfers[player] then return false end
+ if self.loading or self.unavailable then player:SetAttribute("MenuMessage","Room matching is unavailable. Stay in the menu and try Play again shortly.");return false end
+ local class=Service.classFor(profile)
+ if not self.class then self.class=class end
+ if class==self.class then return true end
+ -- The friend lookup yields: hold the player so a second Play press can't start a second transfer meanwhile.
+ if self.class=="regular" then
+  self.checking=self.checking or {};if self.checking[player] then return false end
+  self.checking[player]=true;local friend=self.friendHere(player);self.checking[player]=nil
+  if not player.Parent or self.transfers[player] then return false end
+  if Service.friendCanStay(profile,friend) then return true end
+ end
+ if self.mock then player:SetAttribute("MenuMessage","Studio keeps beginner and established rooms separate. Start a new Play session to test the other room.");return false end
+ transferPlayer(self,player,class,"Finding a room for your experience level. Saving before the transfer.")
  return false
 end
 return Service

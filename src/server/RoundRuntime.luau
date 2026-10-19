@@ -37,6 +37,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    if player:GetAttribute("ClassroomLoaded") then return end
    player:SetAttribute("ClassroomLoaded",true)
    local entry=profiles.entries[player];if entry and entry.loaded then profiles.service:setProducerMapLoaded(entry.account,true) end
+   self:firstJoin(player)
    return
   end
   -- Click budget: a short burst of quick clicks always lands (a colour then a size, a preset then Save build),
@@ -63,7 +64,11 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_end") end
   elseif action=="practice" then self:practice(player)
   elseif action=="practiceTarget" then local p=flight.pilots[player];if p and p.practice then combat:practiceTarget(p) end
-  elseif action=="practiceDone" then if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end;self:join(player)
+  elseif action=="practiceDone" then
+   if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end
+   -- Studio's stand-in tutorial room turns back into a normal room; a real one sends the player on to a match room.
+   if Run:IsStudio() and Root:GetAttribute("DevTutorialRoom") then Root:SetAttribute("DevTutorialRoom",false);flight.tutorialRoom=false end
+   self:join(player)
   elseif action=="withdraw" and value==true then self:withdraw(player)
   elseif action=="overlay" and type(value)=="boolean" then
    local p=flight.pilots[player];if p then p.overlay=value;if value then combat:trigger(p,1,false);combat:trigger(p,2,false) end end
@@ -203,11 +208,35 @@ function Runtime:begin(mode)
 end
 -- Practice flight (Stage 6, first 60 seconds): the player flies in the live room but is nobody's enemy, is not in
 -- the match and earns nothing (practice is never reward-eligible). Their screen walks them through it.
+-- The tutorial's own empty room (MILESTONES "Tutorial"): a private server with no match and no bots. Studio stands in
+-- for one with the DevTutorialRoom attribute on ReplicatedStorage.FlyFightPaper.
+function Runtime:tutorialRoom()
+ return self.matchmaking:isTutorialRoom() or (Run:IsStudio() and Root:GetAttribute("DevTutorialRoom")==true)
+end
+-- A brand-new player is sent to their own tutorial room as soon as the classroom has loaded (live servers only).
+function Runtime:firstJoin(player)
+ if self:tutorialRoom() then return end
+ local data=player:GetJoinData().TeleportData
+ if type(data)=="table" and data.tutorialSeen then return end
+ task.spawn(function()
+  local deadline=os.clock()+30
+  while player.Parent and not self.profiles:view(player) and os.clock()<deadline do task.wait(.5) end
+  local profile=self.profiles:view(player)
+  if profile and self.matchmaking.needsTutorial(profile) and not player:GetAttribute("InMatch") then self.matchmaking:routeTutorial(player) end
+ end)
+end
 function Runtime:practice(player)
  if not player:GetAttribute("ClassroomLoaded") or not self.profiles:view(player) then return end
  if self.flight.pilots[player] then self:withdraw(player) end
- if not self.engine.round or self.engine.phase=="READY" then self:begin("FFA") end
- if self.engine.phase~="ACTIVE" then player:SetAttribute("MenuMessage","Practice opens when the next round starts.");return end
+ if self:tutorialRoom() then
+  -- No round here: flying, shooting and the lesson's one enemy run without a clock, a score or a roster.
+  self.flight.tutorialRoom=true;self.flight.active=true;self.flight.safe=false;self.combat.enabled=true;self.bots.enabled=true
+ else
+  -- Replaying the tutorial from a match room opens a private room for it (live); Studio practises in this room.
+  if self.matchmaking:routeTutorial(player) then return end
+  if not self.engine.round or self.engine.phase=="READY" then self:begin("FFA") end
+  if self.engine.phase~="ACTIVE" then player:SetAttribute("MenuMessage","Practice opens when the next round starts.");return end
+ end
  local profile=self.profiles:view(player)
  local p=self.flight:add(player,{loadout=profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout,practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
@@ -302,6 +331,7 @@ function Runtime:sendProfile(player)
 end
 function Runtime:step(dt)
  self.clock+=dt;if self.clock<ServerConfig.round.step_seconds then return end;self.clock%=ServerConfig.round.step_seconds
+ Root:SetAttribute("TutorialRoom",self:tutorialRoom())
  if self.engine.round then
   if self.engine.phase=="ACTIVE" then
    for player in pairs(self.joined) do

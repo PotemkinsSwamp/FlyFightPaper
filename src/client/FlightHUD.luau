@@ -332,7 +332,9 @@ function HUD.start(getPlane, action)
 			end
 		end
 		-- The gold star sits at the strip's right end, so 1st-place words make room for it.
-		round.Words.Text, round.Visible, star.Visible = text, true, first
+		-- The tutorial's own room has no match: no clock, mode or place.
+		local match = not game.ReplicatedStorage.FlyFightPaper:GetAttribute("TutorialRoom")
+		round.Words.Text, round.Visible, star.Visible = text, match, first and match
 		local control = snapshot.mode == "CONTROL"
 		teams = snapshot.teams or teams
 		capture.Visible = control

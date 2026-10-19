@@ -83,7 +83,7 @@ function Service.new(flight,combat)
  Service.active=self;return self
 end
 function Service:fill()
- if self.flight.active==false or self.flight.eraserDuel then return end
+ if self.flight.active==false or self.flight.eraserDuel or self.flight.tutorialRoom then return end
  local count=0;for _ in pairs(self.flight.pilots) do count+=1 end
  -- Studio "mixed bots" test mode skips the roster rules: every build, skill, personality and quirk in turn.
  if self.flight.mixedBots then

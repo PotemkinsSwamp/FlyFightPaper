@@ -18,7 +18,7 @@ local STEPS={
 local LAUNCH,STEER,FIRE,LIFT,LAND,DONE=1,2,3,4,5,6
 function Tutorial.begin()
  Tutorial.active=true;Tutorial.step=LAUNCH;Tutorial.heading=nil;Tutorial.flyingLife=nil;Tutorial.doneAt=nil
- Root:SetAttribute("TutorialOpen",true)
+ Root:SetAttribute("TutorialOpen",true);Tutorial.askedAt=os.clock()
  Root.RoundAction:FireServer("practice")
 end
 function Tutorial.start(getPlane)
@@ -93,11 +93,18 @@ function Tutorial.start(getPlane)
  end
 
  local requested=0
+ -- The tutorial's own room (a new player's first join, or a replay) starts the lesson by itself, once.
+ local function autoStart()
+  if Root:GetAttribute("TutorialRoom") and not Tutorial.autoStarted then Tutorial.autoStarted=true;task.delay(1,Tutorial.begin) end
+ end
+ Root:GetAttributeChangedSignal("TutorialRoom"):Connect(autoStart);autoStart()
  RunService.RenderStepped:Connect(function()
   panel.Visible=Tutorial.active and not Root:GetAttribute("OverlayOpen")
   local plane=getPlane()
   if not Tutorial.active or not plane or not plane.Parent or not plane:GetAttribute("Practice") then
    pointAt(nil);clearTarget()
+   -- The server refuses practice until the classroom and the save have loaded: keep asking.
+   if Tutorial.active and Tutorial.step==LAUNCH and os.clock()-Tutorial.askedAt>4 then Tutorial.askedAt=os.clock();Root.RoundAction:FireServer("practice") end
    -- The round ended under the practice flight, or the player left it: put the note away.
    if Tutorial.active and Tutorial.step>LAUNCH and not Players.LocalPlayer:GetAttribute("InMatch") then close() end
    return
