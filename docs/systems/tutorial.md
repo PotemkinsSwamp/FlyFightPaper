@@ -14,13 +14,18 @@ send them straight back. A player who leaves before playing a match sees it agai
 Studio stands in for the room: set the `DevTutorialRoom` attribute on `ReplicatedStorage.FlyFightPaper` during
 Play; Skip turns the room back into a normal match. The live room move needs a private publish to test (Alan's go).
 Lessons follow the agreed [tutorial plan](../plan/TUTORIAL-PLAN.md). **Flight School is in progress:** the step engine
-(goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson, spotlight that dims
-all but one button, edge arrow) and its 7 steps are written; lessons fly the fixed training plane (pellets, eraser,
-booster); the news note and kill feed are hidden during lessons (Alan). Checked in Studio: the LAUNCH spotlight,
-hoops counting 1/3-3/3. In Studio the Tutorial button turns the room into the tutorial world (match paused, bots gone) since Studio can't
-move players between servers; the match resumes after. Spotlight redone after Alan's look (dims the rest, flashes,
-thick crayon frame, arrow); arrows use the crayon arrow picture (the font has no arrow signs). Not yet checked: the
-new spotlight, the 3D marker, the Lift-bar pulse, speed bolt, boost, landing, the desk card, the end card. Combat Training not started; a
+(goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
+written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during
+lessons (Alan). In Studio the Tutorial button turns the room into the tutorial world (match paused, bots gone) since
+Studio can't move players between servers; the match resumes after.
+**"Grabbing attention" pass (2026-10-18, built, not yet seen in Play):** one focus look for every step. The screen
+dims except a hole on the target (one frame with a screen-wide outline, so the hole is round for 3D targets and a
+rounded box for buttons); a 3D target glows through walls (Highlight) with "FLY HERE" and its distance; when it is off
+screen a big crayon arrow floats in front of the plane pointing the way, with a yellow guide line to it. Hoops are a
+fixed course of three in clear air ahead of DeskSouth3 (hand-checked in Studio: 50 studs of empty air round each, legs
+clear), all shown at once, the current one bright. A bar pulse plus a 3D target (Lift bar + fan) shows the bar for 3 s
+first. Concept art for the frame, tag and arrow: `assets/references/ui-concepts/attention-*.png` (waits for Alan's OK,
+then upload); the stand-ins are the plain yellow frame and the HUD's chevron picture. Combat Training not started; a
 half-built enemy helper (`tutorialFoe` in RoundRuntime, the foe rule in CombatService:enemy) waits for it.
 
 ## Rules

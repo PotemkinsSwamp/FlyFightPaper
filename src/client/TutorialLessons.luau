@@ -13,6 +13,15 @@ local function fans()
  return list
 end
 local FANS=fans()
+-- The fan's spinning blades glow (the floor fan is one model of many parts; the blades are one of them). Looked up
+-- when needed: the classroom loads after this module.
+local function blades(fan)
+ if (fan.blades and fan.blades.Parent) or os.clock()-(fan.looked or -9)<2 then return fan.blades end
+ fan.looked=os.clock()
+ for _,part in workspace:GetDescendants() do
+  if part.Name=="floor-fan-blades" and part:IsA("BasePart") and (Vector3.new(fan.center.X,part.Position.Y,fan.center.Z)-part.Position).Magnitude<fan.half.X then fan.blades=part;return part end
+ end
+end
 local function nearestFan(position)
  local best,distance=nil,math.huge
  for _,fan in FANS do local d=(fan.center-position).Magnitude;if d<distance then best,distance=fan,d end end
@@ -38,8 +47,8 @@ Lessons.flight={
    enter=function(ctx) ctx.data.passed=0 end,
    update=function(ctx)
     if ctx.state~="FLYING" and ctx.state~="TAKEOFF" then return ctx.data.passed end
-    local hoop=ctx.hoop()
-    ctx.marker(hoop.Position,"Fly through")
+    local hoop,model=ctx.hoop()
+    ctx.marker(hoop.Position,"FLY HERE",34,model)
     if ctx.passedHoop() then ctx.data.passed+=1;ctx.ding();ctx.clearHoop() end
     return ctx.data.passed
    end},
@@ -47,14 +56,14 @@ Lessons.flight={
    update=function(ctx)
     ctx.pulse("LiftStrip")
     local fan=ctx.body and nearestFan(ctx.body.Position)
-    if fan then ctx.marker(fan.center,"Fan") end
+    if fan then ctx.marker(fan.center,"FLY UP HERE",fan.half.X,blades(fan)) end
     return ctx.state=="FLYING" and ctx.body~=nil and inFan(ctx.body.Position)
    end},
   {text="Fly through a speed bolt for extra speed.",hint="Bolts spin inside the rings and tubes.",
    enter=function(ctx) ctx.data.before=ctx.plane and ctx.plane:GetAttribute("PickupUntil") or 0 end,
    update=function(ctx)
     local bolt=ctx.body and ctx.nearestBolt(ctx.body.Position)
-    if bolt then ctx.marker(bolt.Position,"Speed bolt") end
+    if bolt then ctx.marker(bolt.Position,"SPEED BOLT",14,bolt) end
     return ctx.plane~=nil and (ctx.plane:GetAttribute("PickupUntil") or 0)>ctx.data.before
    end},
   {text="Hold Shift to boost.",key="Shift",
@@ -69,7 +78,7 @@ Lessons.flight={
     local ring=ctx.plane and ctx.plane:GetAttribute("PracticeRing")
     local rel=ring and ctx.body and ring:PointToObjectSpace(ctx.body.Position)
     local lined=rel and rel.Z<-80 and math.abs(rel.X)<30 and math.abs(rel.Y)<40
-    if ring and ctx.state=="FLYING" then ctx.marker(lined and ring.Position or (ring*CFrame.new(0,10,-260)).Position,lined and "Your desk: straight on" or "Line up here") end
+    if ring and ctx.state=="FLYING" then ctx.marker(lined and ring.Position or (ring*CFrame.new(0,10,-260)).Position,lined and "YOUR DESK: STRAIGHT ON" or "LINE UP HERE",24) end
     return ctx.state=="DESK" and ctx.data.flew
    end},
   {text="At your desk: Refill Lift and Repair are free. Full refold changes your plane. Fresh plane starts over.",gotIt=true,

@@ -1,12 +1,13 @@
--- The tutorial's step engine (docs/plan/TUTORIAL-PLAN.md): a goal note at the top with the key to press, markers on
--- the things to fly to, a spotlight that dims everything but one button or bar, a tick and a ding for each finished
--- step, a hint when stuck, and Skip (tap K: step, hold K: lesson). The steps live in TutorialLessons.luau.
+-- The tutorial's step engine (docs/plan/TUTORIAL-PLAN.md): a goal note at the top with the key to press; one focus
+-- look for every step ("Grabbing attention"): the screen dims round the one button, bar or 3D target, a 3D target
+-- glows with its distance, and when it's off-screen a big arrow in front of the plane and a guide line point the
+-- way. A tick and a ding for each finished step, a hint when stuck, and Skip (tap K: step, hold K: lesson). The
+-- steps live in TutorialLessons.luau.
 -- Lessons are practice: the server makes the plane nobody's enemy and pays nothing.
 local Players=game:GetService("Players")
 local RunService=game:GetService("RunService")
 local Input=game:GetService("UserInputService")
 local Root=game.ReplicatedStorage.FlyFightPaper
-local Gameplay=require(Root.Generated.Gameplay)
 local Art=require(Root.Shared.UIAssets)
 local PaperUI=require(script.Parent.PaperUI)
 local Audio=require(script.Parent.Audio)
@@ -15,6 +16,11 @@ local Tutorial={active=false}
 local HINT_SECONDS=10
 local HOLD_SKIP_SECONDS=1.5
 local HOOP_RADIUS=30
+local POINTER_STUDS=16 -- the pointer arrow's width
+local POINTER_AHEAD=30 -- how far in front of the plane it floats
+local MIN_HOLE_PIXELS=70 -- half the dim hole's size for a far-away target
+local PULSE_FIRST_SECONDS=3
+local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flying: you still need to see the room)
 local YELLOW=Color3.fromRGB(255,225,70)
 
 function Tutorial.begin(lesson)
@@ -27,19 +33,18 @@ function Tutorial.start(getPlane)
  local player=Players.LocalPlayer
  local gui=Instance.new("ScreenGui");gui.Name="Tutorial";gui.ResetOnSpawn=false;gui.IgnoreGuiInset=true;gui.DisplayOrder=20;gui.Parent=player.PlayerGui
 
- -- Spotlight: four dim panes around a hole, a yellow frame on the hole. Pulse: the frame only (while flying).
- local panes={}
- for i=1,4 do
-  local pane=Instance.new("Frame");pane.BackgroundColor3=Color3.new(0,0,0);pane.BackgroundTransparency=.45;pane.BorderSizePixel=0;pane.Visible=false;pane.Parent=gui
-  panes[i]=pane
- end
+ -- Spotlight: the whole screen dims except a hole on the target. The dim is one frame the size of the hole with a
+ -- screen-wide outline, so the hole can be round (hoops) or a rounded box (buttons). Pulse: the frame only.
+ local hole=Instance.new("Frame");hole.Name="Dim";hole.BackgroundTransparency=1;hole.Visible=false;hole.Parent=gui
+ local holeCorner=Instance.new("UICorner");holeCorner.Parent=hole
+ local dimStroke=Instance.new("UIStroke");dimStroke.Color=Color3.new(0,0,0);dimStroke.Thickness=4000;dimStroke.Parent=hole
  -- The frame: a thick crayon-yellow border with a soft white glow inside, and a big arrow bouncing above it.
  local frame=Instance.new("Frame");frame.BackgroundColor3=YELLOW;frame.BackgroundTransparency=.85;frame.Visible=false;frame.Parent=gui
  local stroke=Instance.new("UIStroke");stroke.Color=YELLOW;stroke.Thickness=8;stroke.Parent=frame
- Instance.new("UICorner",frame).CornerRadius=UDim.new(0,14)
+ local frameCorner=Instance.new("UICorner");frameCorner.Parent=frame
  local glow=Instance.new("Frame");glow.BackgroundTransparency=1;glow.Size=UDim2.new(1,-10,1,-10);glow.Position=UDim2.fromOffset(5,5);glow.Parent=frame
  local glowStroke=Instance.new("UIStroke");glowStroke.Color=Color3.new(1,1,1);glowStroke.Thickness=3;glowStroke.Parent=glow
- Instance.new("UICorner",glow).CornerRadius=UDim.new(0,10)
+ local glowCorner=Instance.new("UICorner");glowCorner.Parent=glow
  -- Arrows are the HUD's crayon arrow picture (it points right; turned to point down). The font has no arrow signs.
  local function crayonArrow(parent,name,size,rotation)
   local image=Instance.new("ImageLabel");image.Name=name;image.Image=Art.hud.arrow;image.ImageColor3=YELLOW;image.BackgroundTransparency=1
@@ -75,43 +80,54 @@ function Tutorial.start(getPlane)
   card.Visible=false;Root.RoundAction:FireServer("practiceDone")
  end,30)
 
- -- Markers: a bouncing arrow over the thing to fly to (drawn on top of everything); an edge arrow when it's off-screen.
+ -- Markers: a label with the distance and a bouncing arrow over the thing to fly to (drawn on top of everything).
  local anchor=Instance.new("Part");anchor.Name="TutorialAnchor";anchor.Anchored,anchor.CanCollide,anchor.CanQuery,anchor.CanTouch,anchor.Transparency=true,false,false,false,1;anchor.Size=Vector3.one
  local board=Instance.new("BillboardGui");board.Name="TutorialMarker";board.AlwaysOnTop=true;board.Size=UDim2.fromOffset(220,110);board.LightInfluence=0;board.Adornee=anchor;board.Enabled=false
  board.Parent=player.PlayerGui -- billboards do not draw inside a ScreenGui
  local label=PaperUI.words(board,"Text","",0,0,220,40,26);label.Size=UDim2.new(1,0,0,40);label.TextXAlignment=Enum.TextXAlignment.Center;label.TextColor3=YELLOW
  local outline=Instance.new("UIStroke");outline.Thickness=2;outline.Parent=label
  local arrow=crayonArrow(board,"Arrow",64,90);arrow.Position=UDim2.new(.5,0,0,74);arrow.Visible=true
- local edge=crayonArrow(gui,"EdgeArrow",80,0)
+ -- The target glows through walls.
+ local glowOutline=Instance.new("Highlight");glowOutline.Name="TutorialGlow";glowOutline.DepthMode=Enum.HighlightDepthMode.AlwaysOnTop
+ glowOutline.OutlineColor=YELLOW;glowOutline.FillColor=YELLOW;glowOutline.FillTransparency=.75;glowOutline.Enabled=false;glowOutline.Parent=player.PlayerGui
+ -- Off-screen: a big arrow floating in front of the plane turns to point the way (like racing games), and a
+ -- glowing guide line runs from the plane to the target. The arrow is the crayon picture on a card, drawn on top.
+ local pointCard=Instance.new("Part");pointCard.Name="TutorialPointer";pointCard.Anchored,pointCard.CanCollide,pointCard.CanQuery,pointCard.CanTouch,pointCard.Transparency=true,false,false,false,1
+ pointCard.Size=Vector3.new(POINTER_STUDS,POINTER_STUDS*.6,.2)
+ local pointFace=Instance.new("SurfaceGui");pointFace.Face=Enum.NormalId.Back;pointFace.AlwaysOnTop=true;pointFace.LightInfluence=0;pointFace.PixelsPerStud=20;pointFace.Adornee=pointCard;pointFace.Parent=player.PlayerGui
+ local pointImage=Instance.new("ImageLabel");pointImage.Image=Art.hud.arrow;pointImage.ImageColor3=YELLOW;pointImage.BackgroundTransparency=1;pointImage.ScaleType=Enum.ScaleType.Fit;pointImage.Size=UDim2.fromScale(1,1);pointImage.Parent=pointFace
+ local lineStart,lineEnd=Instance.new("Attachment"),Instance.new("Attachment");lineEnd.Parent=workspace.Terrain
+ local guide=Instance.new("Beam");guide.Name="TutorialGuide";guide.Attachment0,guide.Attachment1=lineStart,lineEnd;guide.FaceCamera=true;guide.Width0,guide.Width1=1.6,1.6
+ guide.Color=ColorSequence.new(YELLOW);guide.LightEmission=1;guide.LightInfluence=0;guide.Transparency=NumberSequence.new(.25,.6);guide.Enabled=false;guide.Parent=workspace.Terrain
 
- -- Hoops: paper rings built here (this screen only), one at a time, a little off to the side so you have to steer.
- local hoop,hoopModel,lastLocal=nil,nil,nil
- local hoopSide=1
- local function clearHoop() if hoopModel then hoopModel:Destroy() end;hoop,hoopModel,lastLocal=nil,nil,nil end
- local function clear(from,to)
-  local params=RaycastParams.new();params.FilterType=Enum.RaycastFilterType.Exclude
-  params.FilterDescendantsInstances={workspace:FindFirstChild("Planes"),hoopModel}
-  return workspace:Spherecast(from,HOOP_RADIUS*.6,to-from,params)==nil
+ -- Hoops: a fixed course in clear air ahead of the Training Room desk (DeskSouth3), checked by hand in Studio so
+ -- none sits in a building (each has 50 studs of empty air round it and the legs between them are clear). All
+ -- hoops show at once so the next one is already in view; the one to fly through now is bright, the rest pale.
+ -- ponytail: world points for the tutorial room's desk only; another desk still gets the same hoops.
+ local COURSE={Vector3.new(-225,205,440),Vector3.new(-300,235,280),Vector3.new(-410,265,110)}
+ local hoops,lastLocal={},nil
+ local function paint(model,now)
+  for _,piece in model:GetChildren() do piece.Transparency=now and 0 or .55 end
  end
- local function placeHoop(body)
-  local look=body.CFrame.LookVector;local flat=Vector3.new(look.X,0,look.Z).Unit
-  local height=Gameplay.world.height_studs
-  hoopSide=-hoopSide
-  local spot
-  for _,turn in ipairs({20,-20,35,-35,0,60,-60,90,-90,135,180}) do
-   local dir=CFrame.Angles(0,math.rad(turn*hoopSide),0):VectorToWorldSpace(flat)
-   local at=body.Position+dir*260;at=Vector3.new(at.X,math.clamp(at.Y,90,height-90),at.Z)
-   if clear(body.Position,at) and clear(at,at+dir*120) then spot=CFrame.lookAt(at,at+dir);break end
+ local function clearHoop()
+  local done=table.remove(hoops,1);if done then done.model:Destroy() end;lastLocal=nil
+  if hoops[1] then paint(hoops[1].model,true) end
+ end
+ local function clearCourse() for _,h in hoops do h.model:Destroy() end;table.clear(hoops);lastLocal=nil end
+ local function placeCourse(from)
+  for i=from,#COURSE do
+   local at=COURSE[i];local ahead=COURSE[i+1] or at+(at-COURSE[i-1])
+   local spot=CFrame.lookAt(at,ahead)
+   local model=Instance.new("Model");model.Name="TutorialHoop"
+   for k=1,20 do
+    local a=k/20*math.pi*2
+    local piece=Instance.new("Part");piece.Anchored,piece.CanCollide,piece.CanQuery,piece.CanTouch=true,false,false,false
+    piece.Size=Vector3.new(4,10,3);piece.Material=Enum.Material.SmoothPlastic;piece.Color=k%2==0 and Color3.fromRGB(255,190,60) or Color3.fromRGB(255,120,80)
+    piece.CFrame=spot*CFrame.Angles(0,0,a)*CFrame.new(0,HOOP_RADIUS,0);piece.Parent=model
+   end
+   paint(model,i==from);model.Parent=workspace
+   table.insert(hoops,{cframe=spot,model=model})
   end
-  spot=spot or CFrame.lookAt(Vector3.new(0,height*.55,0),Vector3.new(0,height*.55,0)+flat)
-  hoopModel=Instance.new("Model");hoopModel.Name="TutorialHoop"
-  for i=1,20 do
-   local a=i/20*math.pi*2
-   local piece=Instance.new("Part");piece.Anchored,piece.CanCollide,piece.CanQuery,piece.CanTouch=true,false,false,false
-   piece.Size=Vector3.new(4,10,3);piece.Material=Enum.Material.SmoothPlastic;piece.Color=i%2==0 and Color3.fromRGB(255,190,60) or Color3.fromRGB(255,120,80)
-   piece.CFrame=spot*CFrame.Angles(0,0,a)*CFrame.new(0,HOOP_RADIUS,0);piece.Parent=hoopModel
-  end
-  hoopModel.Parent=workspace;hoop=spot
  end
 
  -- Spotlight on GUI pieces found by name anywhere on screen; pulse = the frame without the dim.
@@ -139,51 +155,64 @@ function Tutorial.start(getPlane)
   return low,high
  end
  -- When a step is done the spotlight fades out at once (Alan: it lingered after LAUNCH was clicked).
- local spotAlpha,lastNames,lastDim=0,nil,false
- local function drawSpot(dim,dt)
-  local names=spotNames or (pulseName and {pulseName})
-  if names then spotAlpha,lastNames,lastDim=1,names,dim
-  elseif spotAlpha>0 then spotAlpha=math.max(0,spotAlpha-dt/.25);names,dim=spotAlpha>0 and lastNames or nil,lastDim end
+ -- `dim` is how dark the rest of the screen gets (nil = no dim, just the frame); `round` makes the hole a circle.
+ local spotAlpha,last=0,nil
+ local function drawSpot(low,high,dim,round,dt)
+  if low then spotAlpha,last=1,{low,high,dim,round}
+  elseif spotAlpha>0 then spotAlpha=math.max(0,spotAlpha-dt/.25);if spotAlpha>0 then low,high,dim,round=table.unpack(last) end end
   local fade=function(t) return 1-(1-t)*spotAlpha end
-  local low,high=nil,nil;if names then low,high=box(names) end
-  frame.Visible=low~=nil;pointer.Visible=low~=nil
-  for _,pane in panes do pane.Visible=dim and low~=nil end
+  frame.Visible=low~=nil;pointer.Visible=low~=nil;hole.Visible=dim~=nil and low~=nil
   if not low then return end
   -- Flash in and out to catch the eye: the border breathes, the dim deepens and lifts, the arrow bounces.
   local beat=(math.sin(os.clock()*5)+1)/2
   local grow=6+beat*8
   low-=Vector2.new(grow,grow);high+=Vector2.new(grow,grow)
+  local corner=round and UDim.new(.5,0) or UDim.new(0,14)
+  frameCorner.CornerRadius,glowCorner.CornerRadius,holeCorner.CornerRadius=corner,corner,corner
   frame.Position=UDim2.fromOffset(low.X,low.Y);frame.Size=UDim2.fromOffset(high.X-low.X,high.Y-low.Y)
+  hole.Position,hole.Size=frame.Position,frame.Size
   stroke.Transparency=fade(beat*.35);glowStroke.Transparency=fade(.2+beat*.5);frame.BackgroundTransparency=fade(.8+beat*.15)
   pointer.Position=UDim2.fromOffset((low.X+high.X)/2,low.Y-55-beat*18);pointer.ImageTransparency=fade(0)
-  for _,pane in panes do pane.BackgroundTransparency=fade(.22+beat*.18) end
-  if dim then
-   local view=gui.AbsoluteSize
-   panes[1].Position,panes[1].Size=UDim2.fromOffset(0,0),UDim2.fromOffset(view.X,low.Y)
-   panes[2].Position,panes[2].Size=UDim2.fromOffset(0,high.Y),UDim2.fromOffset(view.X,view.Y-high.Y)
-   panes[3].Position,panes[3].Size=UDim2.fromOffset(0,low.Y),UDim2.fromOffset(low.X,high.Y-low.Y)
-   panes[4].Position,panes[4].Size=UDim2.fromOffset(high.X,low.Y),UDim2.fromOffset(view.X-high.X,high.Y-low.Y)
-  end
+  if dim then dimStroke.Transparency=fade(dim+beat*.18) end
  end
 
+ -- A 3D target: its glow, the label with the distance, the dim hole round it when it's on screen, and the pointer
+ -- arrow and guide line when it isn't. Returns the hole's box (in this layer's pixels) or nil.
  local marked=nil
- local function drawMarker()
-  board.Enabled=marked~=nil;edge.Visible=false
+ local function drawMarker(body)
+  board.Enabled=marked~=nil
+  glowOutline.Adornee=marked and marked.instance;glowOutline.Enabled=marked~=nil and marked.instance~=nil
+  guide.Enabled=false;pointCard.Parent=nil
   if not marked then anchor.Parent=nil;return end
-  anchor.Position=marked.position+Vector3.new(0,14+math.sin(os.clock()*5)*3,0);anchor.Parent=workspace;label.Text=marked.text
-  local camera=workspace.CurrentCamera;local point,onScreen=camera:WorldToViewportPoint(marked.position)
-  if onScreen then return end
-  -- Off-screen: an arrow on the screen edge pointing the way to turn.
-  local view=camera.ViewportSize;local center=view/2
-  local flat=Vector2.new(point.X,point.Y)-center;if point.Z<0 then flat=-flat end
-  if flat.Magnitude<1 then flat=Vector2.new(0,1) end
-  local dir=flat.Unit;local reach=math.min((center.X-60)/math.max(math.abs(dir.X),1e-3),(center.Y-60)/math.max(math.abs(dir.Y),1e-3))
-  local at=center+dir*reach;edge.Position=UDim2.fromOffset(at.X,at.Y);edge.Rotation=math.deg(math.atan2(dir.Y,dir.X));edge.Visible=true
+  local camera=workspace.CurrentCamera
+  local distance=body and math.floor((marked.position-body.Position).Magnitude) or 0
+  anchor.Position=marked.position+Vector3.new(0,marked.radius+14+math.sin(os.clock()*5)*3,0);anchor.Parent=workspace
+  label.Text=string.format("%s  %d",marked.text,distance)
+  local point,onScreen=camera:WorldToViewportPoint(marked.position)
+  local view=camera.ViewportSize
+  local inView=onScreen and point.X>view.X*.1 and point.X<view.X*.9 and point.Y>view.Y*.1 and point.Y<view.Y*.9
+  if not inView and body then
+   -- The card faces the camera as far as it can while its arrow (pointing right in the picture) lies along the way to go.
+   local at=body.Position+camera.CFrame.LookVector*POINTER_AHEAD+camera.CFrame.UpVector*6
+   local way=(marked.position-at).Unit;local toCamera=(camera.CFrame.Position-at).Unit
+   local facing=toCamera-way*toCamera:Dot(way);if facing.Magnitude<.05 then facing=camera.CFrame.UpVector end
+   facing=facing.Unit
+   pointCard.CFrame=CFrame.fromMatrix(at,way,facing:Cross(way),facing);pointCard.Parent=workspace
+   pointImage.ImageTransparency=.1-math.sin(os.clock()*6)*.1
+   lineStart.Parent=body;lineEnd.WorldPosition=marked.position;guide.Enabled=true
+  end
+  if not onScreen then return end
+  -- Hole size: the target's radius seen from here, never smaller than a thumb.
+  local across=marked.radius*view.Y/(2*point.Z*math.tan(math.rad(camera.FieldOfView)/2))
+  local half=math.max(MIN_HOLE_PIXELS,across)
+  local center=Vector2.new(point.X,point.Y) -- viewport pixels = this layer's pixels (it ignores the top bar)
+  return center-Vector2.new(half,half),center+Vector2.new(half,half)
  end
 
  local bolts=workspace:FindFirstChild("SpeedPickups")
  local ctx={data={},dt=0}
- ctx.marker=function(position,words) marked={position=position,text=words} end
+ -- marker(where, words, how big round it is, the thing to make glow)
+ ctx.marker=function(position,words,radius,instance) marked={position=position,text=words,radius=radius or 20,instance=instance} end
  local clicked,hooked={},{}
  ctx.spotlight=function(...)
   spotNames={...}
@@ -195,11 +224,12 @@ function Tutorial.start(getPlane)
  ctx.clicked=function(name) return clicked[name]==true end
  ctx.pulse=function(name) pulseName=name end
  ctx.ding=function() Audio.play("purchase") end
- ctx.hoop=function() if not hoop and ctx.body then placeHoop(ctx.body) end;return hoop end
+ -- The hoop to fly through now (the course is laid out the first time): its CFrame and its model.
+ ctx.hoop=function() if not hoops[1] then placeCourse(1) end;return hoops[1].cframe,hoops[1].model end
  ctx.clearHoop=clearHoop
  ctx.passedHoop=function()
-  if not hoop or not ctx.body then return false end
-  local now=hoop:PointToObjectSpace(ctx.body.Position);local before=lastLocal;lastLocal=now
+  if not hoops[1] or not ctx.body then return false end
+  local now=hoops[1].cframe:PointToObjectSpace(ctx.body.Position);local before=lastLocal;lastLocal=now
   if not before or (before.Z<0)==(now.Z<0) then return false end
   local t=before.Z/(before.Z-now.Z);local cross=before:Lerp(now,t)
   return Vector2.new(cross.X,cross.Y).Magnitude<=HOOP_RADIUS
@@ -216,12 +246,12 @@ function Tutorial.start(getPlane)
  local stepStarted,doneAt,holdK,relaunchAsked=0,nil,nil,0
  local function startStep(index)
   Tutorial.index=index;ctx.data={};table.clear(clicked);stepStarted=os.clock();doneAt=nil;tick.Visible=false;Tutorial.gotIt=false;Tutorial.skipStep=false
-  clearHoop()
+  clearCourse()
   local step=Tutorial.lesson.steps[index]
   if step and step.enter then step.enter(ctx) end
  end
  local function finish(skipped)
-  Tutorial.active=false;Root:SetAttribute("TutorialOpen",false);clearHoop();note.Visible=false
+  Tutorial.active=false;Root:SetAttribute("TutorialOpen",false);clearCourse();note.Visible=false
   Audio.play("finish")
   cardTitle.Text=skipped and "Lesson skipped" or (Tutorial.lesson.name.." done!")
   card.Visible=true
@@ -249,7 +279,7 @@ function Tutorial.start(getPlane)
 
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName=nil,nil,nil
-  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(false,dt);return end
+  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
@@ -276,8 +306,14 @@ function Tutorial.start(getPlane)
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end
   if finished and not doneAt then doneAt=os.clock();tick.Visible=true;ctx.ding() end
-  if doneAt then spotNames,pulseName=nil,nil end
-  drawMarker();drawSpot(spotNames~=nil,dt)
+  if doneAt then spotNames,pulseName,marked=nil,nil,nil end
+  -- One focus look for everything: a button or bar (spotlight dims, pulse doesn't) or the 3D target.
+  -- A bar pulse and a 3D target in one step (Lift bar + fan): the bar first, then the target.
+  local low,high=drawMarker(ctx.body)
+  if low and pulseName and os.clock()-stepStarted>PULSE_FIRST_SECONDS then pulseName=nil end
+  local names=spotNames or (pulseName and {pulseName})
+  if names then low,high=box(names);drawSpot(low,high,spotNames and GUI_DIM or nil,false,dt)
+  else drawSpot(low,high,low and WORLD_DIM or nil,true,dt) end
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
   if doneAt and os.clock()-doneAt>.8 then startStep(Tutorial.index+1) end
  end)
