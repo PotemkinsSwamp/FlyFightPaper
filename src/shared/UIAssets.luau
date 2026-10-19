@@ -69,6 +69,15 @@ return {
 		pinRed = "rbxassetid://118269057146968",
 		pinBlue = "rbxassetid://96658237976750",
 	},
+	-- Tutorial "look here" pieces (assets/ui/tutorial/; concept ui-concepts/attention-*.png), already coloured.
+	tutorial = {
+		frameBox = "",
+		frameRing = "",
+		burst = "",
+		tag = "",
+		arrow = "",
+		dash = "",
+	},
 	-- Hidden paper targets (assets/ui/targets/; concept mode-concepts/paper-targets.png), keyed by design name.
 	targets = {
 		broccoli = "rbxassetid://108546335442787",

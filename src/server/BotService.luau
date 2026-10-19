@@ -7,7 +7,7 @@ local CombatRules=require(Root.Shared.CombatRules)
 local Builds=require(Root.Shared.BotBuilds)
 local Roster=require(Root.Shared.BotRosterRules)
 local Config=require(Root.Generated.Gameplay)
-local Routes=require(script.Parent.AirRoutes)
+local Routes=require(Root.Shared.AirRoutes)
 local Landing=require(Root.Shared.ServiceRules)
 local DuctRules=require(Root.Shared.DuctRules)
 local Service={};Service.__index=Service

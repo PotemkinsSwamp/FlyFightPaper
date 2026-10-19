@@ -1,4 +1,4 @@
-local Routes=require(game.ServerScriptService.FlyFightPaper.AirRoutes)
+local Routes=require(game.ReplicatedStorage.FlyFightPaper.Shared.AirRoutes)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
 function Spec.run()

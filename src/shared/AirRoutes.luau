@@ -1,4 +1,5 @@
--- Navigation nodes are gameplay data, derived from the native room. They do not build geometry.
+-- Navigation nodes are gameplay data, derived from the native room. They do not build geometry. Shared: the bots
+-- fly these routes (server) and the tutorial draws its guide line along them (client).
 local Routes={};Routes.__index=Routes
 function Routes.new(flight)
 	local self=setmetatable({flight=flight,nodes={},edges={}},Routes)

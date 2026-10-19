@@ -65,7 +65,7 @@ invulnerable debug bots or target-board practice.
 | File | What it does |
 |---|---|
 | `src/server/BotService.luau` | Bot brain: vision, targets, states, zone play |
-| `src/server/AirRoutes.luau` | Flight routes through the room and pathfinding |
+| `src/shared/AirRoutes.luau` | Flight routes through the room and pathfinding (also the tutorial guide line) |
 | `src/shared/BotBuilds.luau` | Bot planes per skill tier |
 | `src/shared/BotNames.luau` | Made-up pilot names in present-day styles (2026-10-18: lowercase handles, stretched names, x-swaps, nonsense words, ALL-CAPS jokes) |
 | `src/shared/BotRosterRules.luau` | How many bots and which skill |

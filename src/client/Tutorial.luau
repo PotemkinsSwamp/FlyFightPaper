@@ -9,6 +9,7 @@ local RunService=game:GetService("RunService")
 local Input=game:GetService("UserInputService")
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Art=require(Root.Shared.UIAssets)
+local Gameplay=require(Root.Generated.Gameplay)
 local PaperUI=require(script.Parent.PaperUI)
 local Audio=require(script.Parent.Audio)
 local Lessons=require(script.Parent.TutorialLessons)
@@ -20,6 +21,12 @@ local POINTER_STUDS=16 -- the pointer arrow's width
 local POINTER_AHEAD=30 -- how far in front of the plane it floats
 local MIN_HOLE_PIXELS=70 -- half the dim hole's size for a far-away target
 local PULSE_FIRST_SECONDS=3
+local ROUTE_SECONDS=.4 -- how often the guide line re-plans its path
+local LINE_HIDE_STUDS=40 -- the guide line goes away this close to the target
+local DASH_SPEED=1.5 -- how fast the line's dashes crawl toward the target
+local BURST_ANGLES={-150,180,150,-30,0,30} -- the "look here" marks: three each side, like the concept
+local FRAME_SLICE=Rect.new(64,64,448,192) -- frame-box.png (512x256): corners stay, sides stretch
+local TAG_SLICE=Rect.new(96,40,416,120) -- tag.png (512x160)
 local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flying: you still need to see the room)
 local YELLOW=Color3.fromRGB(255,225,70)
 
@@ -38,20 +45,19 @@ function Tutorial.start(getPlane)
  local hole=Instance.new("Frame");hole.Name="Dim";hole.BackgroundTransparency=1;hole.Visible=false;hole.Parent=gui
  local holeCorner=Instance.new("UICorner");holeCorner.Parent=hole
  local dimStroke=Instance.new("UIStroke");dimStroke.Color=Color3.new(0,0,0);dimStroke.Thickness=4000;dimStroke.Parent=hole
- -- The frame: a thick crayon-yellow border with a soft white glow inside, and a big arrow bouncing above it.
- local frame=Instance.new("Frame");frame.BackgroundColor3=YELLOW;frame.BackgroundTransparency=.85;frame.Visible=false;frame.Parent=gui
- local stroke=Instance.new("UIStroke");stroke.Color=YELLOW;stroke.Thickness=8;stroke.Parent=frame
- local frameCorner=Instance.new("UICorner");frameCorner.Parent=frame
- local glow=Instance.new("Frame");glow.BackgroundTransparency=1;glow.Size=UDim2.new(1,-10,1,-10);glow.Position=UDim2.fromOffset(5,5);glow.Parent=frame
- local glowStroke=Instance.new("UIStroke");glowStroke.Color=Color3.new(1,1,1);glowStroke.Thickness=3;glowStroke.Parent=glow
- local glowCorner=Instance.new("UICorner");glowCorner.Parent=glow
- -- Arrows are the HUD's crayon arrow picture (it points right; turned to point down). The font has no arrow signs.
- local function crayonArrow(parent,name,size,rotation)
-  local image=Instance.new("ImageLabel");image.Name=name;image.Image=Art.hud.arrow;image.ImageColor3=YELLOW;image.BackgroundTransparency=1
-  image.ScaleType=Enum.ScaleType.Fit;image.AnchorPoint=Vector2.new(.5,.5);image.Size=UDim2.fromOffset(size,size);image.Rotation=rotation;image.Visible=false;image.Parent=parent
-  return image
+ -- The frame (Alan's approved concept, assets/references/ui-concepts/attention-*.png): a crayon outline that
+ -- stretches to any button (9-slice) or a crayon ring round a 3D target, crayon "look here" marks that pulse out
+ -- round it, and for a 3D target a taped tag under it with what to do and how far.
+ local Pieces=Art.tutorial
+ local frame=Instance.new("ImageLabel");frame.Name="Frame";frame.BackgroundTransparency=1;frame.SliceCenter=FRAME_SLICE;frame.SliceScale=.6;frame.Visible=false;frame.Parent=gui
+ local bursts={}
+ for i,angle in BURST_ANGLES do
+  local mark=Instance.new("ImageLabel");mark.Name="Burst";mark.Image=Pieces.burst;mark.BackgroundTransparency=1;mark.AnchorPoint=Vector2.new(.5,.5)
+  mark.Size=UDim2.fromOffset(60,22);mark.Rotation=angle;mark.Visible=false;mark.Parent=gui;bursts[i]=mark
  end
- local pointer=crayonArrow(gui,"SpotArrow",110,90)
+ local tag=Instance.new("ImageLabel");tag.Name="Tag";tag.Image=Pieces.tag;tag.ScaleType=Enum.ScaleType.Slice;tag.SliceCenter=TAG_SLICE;tag.SliceScale=.45
+ tag.BackgroundTransparency=1;tag.AnchorPoint=Vector2.new(.5,0);tag.Size=UDim2.fromOffset(250,62);tag.Visible=false;tag.Parent=gui
+ local tagText=PaperUI.words(tag,"Text","",0,0,250,62,30);tagText.Size=UDim2.fromScale(1,1);tagText.TextXAlignment=Enum.TextXAlignment.Center
 
  -- The goal note: sticky note near the top, lesson and step, the instruction, the key picture, the count.
  local note=Instance.new("ImageLabel");note.Name="Note";note.Image=Art.ingame.stickyNote;note.ScaleType=Enum.ScaleType.Stretch;note.BackgroundTransparency=1
@@ -80,25 +86,40 @@ function Tutorial.start(getPlane)
   card.Visible=false;Root.RoundAction:FireServer("practiceDone")
  end,30)
 
- -- Markers: a label with the distance and a bouncing arrow over the thing to fly to (drawn on top of everything).
- local anchor=Instance.new("Part");anchor.Name="TutorialAnchor";anchor.Anchored,anchor.CanCollide,anchor.CanQuery,anchor.CanTouch,anchor.Transparency=true,false,false,false,1;anchor.Size=Vector3.one
- local board=Instance.new("BillboardGui");board.Name="TutorialMarker";board.AlwaysOnTop=true;board.Size=UDim2.fromOffset(220,110);board.LightInfluence=0;board.Adornee=anchor;board.Enabled=false
- board.Parent=player.PlayerGui -- billboards do not draw inside a ScreenGui
- local label=PaperUI.words(board,"Text","",0,0,220,40,26);label.Size=UDim2.new(1,0,0,40);label.TextXAlignment=Enum.TextXAlignment.Center;label.TextColor3=YELLOW
- local outline=Instance.new("UIStroke");outline.Thickness=2;outline.Parent=label
- local arrow=crayonArrow(board,"Arrow",64,90);arrow.Position=UDim2.new(.5,0,0,74);arrow.Visible=true
  -- The target glows through walls.
  local glowOutline=Instance.new("Highlight");glowOutline.Name="TutorialGlow";glowOutline.DepthMode=Enum.HighlightDepthMode.AlwaysOnTop
  glowOutline.OutlineColor=YELLOW;glowOutline.FillColor=YELLOW;glowOutline.FillTransparency=.75;glowOutline.Enabled=false;glowOutline.Parent=player.PlayerGui
- -- Off-screen: a big arrow floating in front of the plane turns to point the way (like racing games), and a
- -- glowing guide line runs from the plane to the target. The arrow is the crayon picture on a card, drawn on top.
+ -- Off-screen: the big paper arrow floats in front of the plane and points the way (like racing games), drawn on top.
  local pointCard=Instance.new("Part");pointCard.Name="TutorialPointer";pointCard.Anchored,pointCard.CanCollide,pointCard.CanQuery,pointCard.CanTouch,pointCard.Transparency=true,false,false,false,1
- pointCard.Size=Vector3.new(POINTER_STUDS,POINTER_STUDS*.6,.2)
+ pointCard.Size=Vector3.new(POINTER_STUDS,POINTER_STUDS*.62,.2)
  local pointFace=Instance.new("SurfaceGui");pointFace.Face=Enum.NormalId.Back;pointFace.AlwaysOnTop=true;pointFace.LightInfluence=0;pointFace.PixelsPerStud=20;pointFace.Adornee=pointCard;pointFace.Parent=player.PlayerGui
- local pointImage=Instance.new("ImageLabel");pointImage.Image=Art.hud.arrow;pointImage.ImageColor3=YELLOW;pointImage.BackgroundTransparency=1;pointImage.ScaleType=Enum.ScaleType.Fit;pointImage.Size=UDim2.fromScale(1,1);pointImage.Parent=pointFace
- local lineStart,lineEnd=Instance.new("Attachment"),Instance.new("Attachment");lineEnd.Parent=workspace.Terrain
- local guide=Instance.new("Beam");guide.Name="TutorialGuide";guide.Attachment0,guide.Attachment1=lineStart,lineEnd;guide.FaceCamera=true;guide.Width0,guide.Width1=1.6,1.6
- guide.Color=ColorSequence.new(YELLOW);guide.LightEmission=1;guide.LightInfluence=0;guide.Transparency=NumberSequence.new(.25,.6);guide.Enabled=false;guide.Parent=workspace.Terrain
+ local pointImage=Instance.new("ImageLabel");pointImage.Image=Pieces.arrow;pointImage.BackgroundTransparency=1;pointImage.ScaleType=Enum.ScaleType.Fit;pointImage.AnchorPoint=Vector2.new(.5,.5)
+ pointImage.Position=UDim2.fromScale(.5,.5);pointImage.Size=UDim2.fromScale(1,1);pointImage.Parent=pointFace
+ -- The guide line: crayon dashes that crawl toward the target along a path you can really fly (the bots' air
+ -- routes round the buildings when the straight way is blocked), so following it gets you there.
+ local Routes=require(Root.Shared.AirRoutes)
+ local routes=nil
+ local function airRoutes()
+  local room=workspace:FindFirstChild("Arena")
+  if not routes and room then
+   local cast=RaycastParams.new();cast.FilterType=Enum.RaycastFilterType.Include;cast.FilterDescendantsInstances={room};cast.RespectCanCollide=true
+   local world=Gameplay.world
+   routes=Routes.new({room=room,cast=cast,boundsSize=Vector3.new(world.width_studs,world.height_studs,world.depth_studs)})
+  end
+  return routes
+ end
+ local lineStart=Instance.new("Attachment");lineStart.Name="TutorialLine"
+ local dots,lines={},{}
+ local function lineTo(i)
+  if not lines[i] then
+   local dot=Instance.new("Attachment");dot.Parent=workspace.Terrain;dots[i]=dot
+   local line=Instance.new("Beam");line.Name="TutorialGuide";line.Attachment0=i==1 and lineStart or dots[i-1];line.Attachment1=dot
+   line.FaceCamera=true;line.Width0,line.Width1=2.4,2.4;line.Texture=Pieces.dash;line.TextureMode=Enum.TextureMode.Wrap;line.TextureLength=16
+   line.TextureSpeed=DASH_SPEED;line.LightEmission=.4;line.LightInfluence=0;line.Enabled=false;line.Parent=workspace.Terrain;lines[i]=line
+  end
+  return lines[i],dots[i]
+ end
+ local route,routeAt,routeFor={},0,nil
 
  -- Hoops: a fixed course in clear air ahead of the Training Room desk (DeskSouth3), checked by hand in Studio so
  -- none sits in a building (each has 50 studs of empty air round it and the legs between them are clear). All
@@ -122,7 +143,7 @@ function Tutorial.start(getPlane)
    for k=1,20 do
     local a=k/20*math.pi*2
     local piece=Instance.new("Part");piece.Anchored,piece.CanCollide,piece.CanQuery,piece.CanTouch=true,false,false,false
-    piece.Size=Vector3.new(4,10,3);piece.Material=Enum.Material.SmoothPlastic;piece.Color=k%2==0 and Color3.fromRGB(255,190,60) or Color3.fromRGB(255,120,80)
+    piece.Size=Vector3.new(4,10,3);piece.Material=Enum.Material.SmoothPlastic;piece.Color=k%2==0 and Color3.fromRGB(235,60,50) or Color3.fromRGB(250,248,240) -- red and white paper, like the concept
     piece.CFrame=spot*CFrame.Angles(0,0,a)*CFrame.new(0,HOOP_RADIUS,0);piece.Parent=model
    end
    paint(model,i==from);model.Parent=workspace
@@ -155,58 +176,83 @@ function Tutorial.start(getPlane)
   return low,high
  end
  -- When a step is done the spotlight fades out at once (Alan: it lingered after LAUNCH was clicked).
- -- `dim` is how dark the rest of the screen gets (nil = no dim, just the frame); `round` makes the hole a circle.
+ -- `dim` is how dark the rest of the screen gets (nil = no dim, just the frame); `round` makes the hole a circle;
+ -- `words` puts the tag under it.
  local spotAlpha,last=0,nil
- local function drawSpot(low,high,dim,round,dt)
-  if low then spotAlpha,last=1,{low,high,dim,round}
-  elseif spotAlpha>0 then spotAlpha=math.max(0,spotAlpha-dt/.25);if spotAlpha>0 then low,high,dim,round=table.unpack(last) end end
+ local function drawSpot(low,high,dim,round,words,dt)
+  if low then spotAlpha,last=1,{low,high,dim,round,words}
+  elseif spotAlpha>0 then spotAlpha=math.max(0,spotAlpha-dt/.25);if spotAlpha>0 then low,high,dim,round,words=table.unpack(last) end end
   local fade=function(t) return 1-(1-t)*spotAlpha end
-  frame.Visible=low~=nil;pointer.Visible=low~=nil;hole.Visible=dim~=nil and low~=nil
+  frame.Visible=low~=nil;hole.Visible=dim~=nil and low~=nil;tag.Visible=low~=nil and words~=nil
+  for _,mark in bursts do mark.Visible=low~=nil end
   if not low then return end
-  -- Flash in and out to catch the eye: the border breathes, the dim deepens and lifts, the arrow bounces.
-  local beat=(math.sin(os.clock()*5)+1)/2
+  -- Alive, to catch the eye: the frame breathes and wobbles, the marks pulse outward, the dim deepens and lifts.
+  local clock=os.clock();local beat=(math.sin(clock*5)+1)/2
   local grow=6+beat*8
   low-=Vector2.new(grow,grow);high+=Vector2.new(grow,grow)
-  local corner=round and UDim.new(.5,0) or UDim.new(0,14)
-  frameCorner.CornerRadius,glowCorner.CornerRadius,holeCorner.CornerRadius=corner,corner,corner
+  local center,half=(low+high)/2,(high-low)/2
+  holeCorner.CornerRadius=round and UDim.new(.5,0) or UDim.new(0,14)
+  frame.Image=round and Pieces.frameRing or Pieces.frameBox;frame.ScaleType=round and Enum.ScaleType.Stretch or Enum.ScaleType.Slice
   frame.Position=UDim2.fromOffset(low.X,low.Y);frame.Size=UDim2.fromOffset(high.X-low.X,high.Y-low.Y)
+  frame.Rotation=math.sin(clock*2.3)*1.5;frame.ImageTransparency=fade(0)
   hole.Position,hole.Size=frame.Position,frame.Size
-  stroke.Transparency=fade(beat*.35);glowStroke.Transparency=fade(.2+beat*.5);frame.BackgroundTransparency=fade(.8+beat*.15)
-  pointer.Position=UDim2.fromOffset((low.X+high.X)/2,low.Y-55-beat*18);pointer.ImageTransparency=fade(0)
+  for i,mark in bursts do
+   local angle=math.rad(BURST_ANGLES[i]);local out=24+beat*16
+   local at=center+Vector2.new(math.cos(angle)*(half.X+out),math.sin(angle)*(half.Y+out))
+   mark.Position=UDim2.fromOffset(at.X,at.Y);mark.ImageTransparency=fade(beat*.3)
+  end
+  if words then
+   tagText.Text=words;tag.Size=UDim2.fromOffset(math.max(200,#words*19+60),62)
+   tag.Position=UDim2.fromOffset(center.X,high.Y+10+math.sin(clock*3)*4);tag.Rotation=-2+math.sin(clock*1.7)*1.5
+   tag.ImageTransparency=fade(0);tagText.TextTransparency=fade(0)
+  end
   if dim then dimStroke.Transparency=fade(dim+beat*.18) end
  end
 
- -- A 3D target: its glow, the label with the distance, the dim hole round it when it's on screen, and the pointer
- -- arrow and guide line when it isn't. Returns the hole's box (in this layer's pixels) or nil.
+ -- A 3D target: its glow, the guide line along a flyable path, the dim hole and tag round it when it's on screen,
+ -- and the big arrow when it isn't. Returns the hole's box (in this layer's pixels) and the tag's words, or nil.
  local marked=nil
  local function drawMarker(body)
-  board.Enabled=marked~=nil
   glowOutline.Adornee=marked and marked.instance;glowOutline.Enabled=marked~=nil and marked.instance~=nil
-  guide.Enabled=false;pointCard.Parent=nil
-  if not marked then anchor.Parent=nil;return end
+  pointCard.Parent=nil
+  local shown=0
+  if marked and body then
+   -- Re-plan the path a few times a second (and at once for a new target).
+   if routeFor~=marked.position or os.clock()-routeAt>ROUTE_SECONDS then
+    routeFor,routeAt=marked.position,os.clock()
+    local paths=airRoutes()
+    route=(not paths or paths:clear(body.Position,marked.position,12)) and {marked.position} or paths:path(body.Position,marked.position,body.CFrame.LookVector)
+    if route[#route]~=marked.position then table.insert(route,marked.position) end
+   end
+   if (marked.position-body.Position).Magnitude>LINE_HIDE_STUDS then
+    lineStart.Parent=body
+    for i,point in route do local line,dot=lineTo(i);dot.WorldPosition=point;line.Enabled=true end
+    shown=#route
+   end
+  end
+  for i=shown+1,#lines do lines[i].Enabled=false end
+  if not marked then return end
   local camera=workspace.CurrentCamera
   local distance=body and math.floor((marked.position-body.Position).Magnitude) or 0
-  anchor.Position=marked.position+Vector3.new(0,marked.radius+14+math.sin(os.clock()*5)*3,0);anchor.Parent=workspace
-  label.Text=string.format("%s  %d",marked.text,distance)
   local point,onScreen=camera:WorldToViewportPoint(marked.position)
   local view=camera.ViewportSize
   local inView=onScreen and point.X>view.X*.1 and point.X<view.X*.9 and point.Y>view.Y*.1 and point.Y<view.Y*.9
   if not inView and body then
-   -- The card faces the camera as far as it can while its arrow (pointing right in the picture) lies along the way to go.
-   local at=body.Position+camera.CFrame.LookVector*POINTER_AHEAD+camera.CFrame.UpVector*6
-   local way=(marked.position-at).Unit;local toCamera=(camera.CFrame.Position-at).Unit
+   -- The arrow points along the path's first leg. Its card faces the camera as far as it can while the arrow
+   -- (pointing right in the picture) lies along the way to go; it bobs and swells a little.
+   local at=body.Position+camera.CFrame.LookVector*POINTER_AHEAD+camera.CFrame.UpVector*(6+math.sin(os.clock()*4)*1.5)
+   local way=((route[1] or marked.position)-at).Unit;local toCamera=(camera.CFrame.Position-at).Unit
    local facing=toCamera-way*toCamera:Dot(way);if facing.Magnitude<.05 then facing=camera.CFrame.UpVector end
    facing=facing.Unit
    pointCard.CFrame=CFrame.fromMatrix(at,way,facing:Cross(way),facing);pointCard.Parent=workspace
-   pointImage.ImageTransparency=.1-math.sin(os.clock()*6)*.1
-   lineStart.Parent=body;lineEnd.WorldPosition=marked.position;guide.Enabled=true
+   local swell=.92+(math.sin(os.clock()*6)+1)*.04;pointImage.Size=UDim2.fromScale(swell,swell)
   end
   if not onScreen then return end
   -- Hole size: the target's radius seen from here, never smaller than a thumb.
   local across=marked.radius*view.Y/(2*point.Z*math.tan(math.rad(camera.FieldOfView)/2))
   local half=math.max(MIN_HOLE_PIXELS,across)
   local center=Vector2.new(point.X,point.Y) -- viewport pixels = this layer's pixels (it ignores the top bar)
-  return center-Vector2.new(half,half),center+Vector2.new(half,half)
+  return center-Vector2.new(half,half),center+Vector2.new(half,half),string.format("%s %d",marked.text,distance)
  end
 
  local bolts=workspace:FindFirstChild("SpeedPickups")
@@ -247,6 +293,7 @@ function Tutorial.start(getPlane)
  local function startStep(index)
   Tutorial.index=index;ctx.data={};table.clear(clicked);stepStarted=os.clock();doneAt=nil;tick.Visible=false;Tutorial.gotIt=false;Tutorial.skipStep=false
   clearCourse()
+  if index==1 then airRoutes() end -- plan the room's air routes once, while the plane still sits on the desk
   local step=Tutorial.lesson.steps[index]
   if step and step.enter then step.enter(ctx) end
  end
@@ -279,7 +326,7 @@ function Tutorial.start(getPlane)
 
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName=nil,nil,nil
-  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,dt);return end
+  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
@@ -309,11 +356,11 @@ function Tutorial.start(getPlane)
   if doneAt then spotNames,pulseName,marked=nil,nil,nil end
   -- One focus look for everything: a button or bar (spotlight dims, pulse doesn't) or the 3D target.
   -- A bar pulse and a 3D target in one step (Lift bar + fan): the bar first, then the target.
-  local low,high=drawMarker(ctx.body)
+  local low,high,words=drawMarker(ctx.body)
   if low and pulseName and os.clock()-stepStarted>PULSE_FIRST_SECONDS then pulseName=nil end
   local names=spotNames or (pulseName and {pulseName})
-  if names then low,high=box(names);drawSpot(low,high,spotNames and GUI_DIM or nil,false,dt)
-  else drawSpot(low,high,low and WORLD_DIM or nil,true,dt) end
+  if names then low,high=box(names);drawSpot(low,high,spotNames and GUI_DIM or nil,false,nil,dt)
+  else drawSpot(low,high,low and WORLD_DIM or nil,true,words,dt) end
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
   if doneAt and os.clock()-doneAt>.8 then startStep(Tutorial.index+1) end
  end)
