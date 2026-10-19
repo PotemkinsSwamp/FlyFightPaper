@@ -24,6 +24,9 @@ During the vote lap the top strip still shows the old round's mode and clock.
 Track C saving needs a private publish (Alan's go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
+Prestige details (docs/systems/economy-and-shop.md "Prestige"): 10 ranks; XP past 50 not carried over; builds with
+  parts you lost become the starter build; matches played kept so bots stay at your difficulty; a badge with your
+  rank plus one prestige-only cosmetic per rank; hold-to-confirm screen; no faster levelling after prestige.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
   (config flight.scrape_*); crash angle 25 (combat.collision_crash_angle_deg).
 Results card "Crashes" counts every time a pilot went down (shot or crashed), from the round's deaths.

@@ -54,6 +54,21 @@ pellets are free/owned; other initial prices are in the catalog. Prices and targ
 one place without editing transaction logic. Full refold initially costs120 Paper with a free fresh-plane
 alternative. No spending prompt appears on death, firing input, or automatic landing.
 
+## Prestige
+Alan's idea is in the [shop plan](../decisions/2026-10-18-shop-plan.md); the details below are Claude's
+(2026-10-18, in STATE "Decisions to review").
+- **When:** at the level cap (50), from the menus only (never in a match). Ranks 1-10; at rank 10 you stay at 50.
+- **Takes back:** your level (back to 1, XP 0; XP earned past 50 is not carried over) and every part and weapon
+  except the free starter ones, bought ones too. Saved builds keep their names; a build that uses a part you no
+  longer own (or can't use at level 1) becomes the starter build.
+- **Keeps:** Paper, cosmetics, boosts and passes, settings, statistics, and how many matches you've played (so the
+  bots stay at your old difficulty instead of going back to beginner bots).
+- **Gives:** a prestige badge with your rank, shown with your level and name; plus one prestige-only cosmetic per
+  rank (trail, sticker, skin...), made with the Stage 10 cosmetics. Levelling speed is the same as before.
+- **Warnings:** before you prestige, a confirm screen lists what goes (how many parts) and what stays (your Paper);
+  you hold the button to confirm. Part purchases with Robux will say "prestige takes this back".
+- Can't prestige while a refold is still being paid out.
+
 ## Reference economy check
 The reference match uses six folds, four assists at an assumed 40% damage share (40 points each), no zone
 points, and two paper targets (100 points), with full completion, 50% average winning frequency, ten expected
