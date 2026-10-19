@@ -88,6 +88,10 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - Paperclip: the ting came late (after the shot had gone) and it's too quiet; it needs a soft electric railgun zap
   too. **Done:** ting the instant it fires, louder, zap under it.
 
+## Round 14
+- Step 8's Pal should hunt you hard until your Health is whittled down (never folding you), then run. **Done.**
+- Pals the same speed as you, not faster. **Done.**
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

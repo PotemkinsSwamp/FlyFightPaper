@@ -435,11 +435,10 @@ function Service:decide(p,b,now)
  -- otherwise (and once it has stopped shooting) it flies the course loop so it is easy to find and shoot.
  if p.pal then
   local victim=self:palReady(p,now)
-  -- A pellet Pal comes straight at you for its first 6 seconds (Alan: so you see your Health drop), then only 3
-  -- seconds in every 10; an eraser Pal's erasers come from ahead on their own (palEraser).
-  if victim and p.pal.mode=="pellet" then p.pal.since=p.pal.since or now end
-  local fighting=victim and p.pal.mode=="pellet" and (now-p.pal.since<6 or (now-p.pal.since)%10<3)
-  if fighting then
+  -- A pellet Pal hunts you without a break until your Health is down to half (Alan 2026-10-19: "whittle your health
+  -- down" so you learn it; its hits can't fold you), then turns "circle" and runs; an eraser Pal's erasers come
+  -- from ahead on their own (palEraser).
+  if victim and p.pal.mode=="pellet" then
    b.target=victim;b.mode="chase";b.goal=victim.body.Position;b.lastSeen=now;b.lastKnown=victim.body.Position;b.lastVelocity=victim.body.AssemblyLinearVelocity
   else
    local player=self.flight.byId[p.foeOf]
