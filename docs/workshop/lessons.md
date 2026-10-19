@@ -30,6 +30,8 @@ mistake would be easy to make twice.
   the picture's edges, then letter real numbers at the ruler's measured angle, tops toward the ticks. Compare
   before/after at 2x. Menu pictures of the town: Studio captures, then Codex draws from them (`codex exec` in a
   scratch folder, ~4 min for three pictures, free on Alan's plan); tell it "no text, letters or numbers anywhere".
+- **Changing an uploaded menu piece** (2026-10-19): `tools/ui_pieces.py` reuses an existing `uploads/<piece>.json` and
+  never re-uploads; delete that record (git keeps it) before the upload run, then put the new id in UIAssets.
 
 ## Making 3D models
 - **`toys.py` bakes go black in two cases** (2026-10-16): a `lathe()` profile listed top-to-bottom (list it bottom-
@@ -167,6 +169,12 @@ mistake would be easy to make twice.
 - **Locking the mouse reads as a mouse move.** Switching `MouseBehavior` to `LockCenter` pulls the cursor to the
   middle, and the next `GetMouseDelta` reports that jump: the plane's aim jolted left after every LAUNCH click or
   lesson pause (2026-10-19). Ignore the mouse for 0.1 s after locking (FlightController).
+- **Tests in Edit mode lie** (2026-10-19): the MCP Edit VM keeps old copies of required modules, so the suite showed 15
+  failures in code nobody touched. Run the tests in Play on the server VM (no mouse needed while Alan plays).
+- **A Lua value can't be stored on an Instance** (`board.before=fn` errors: "not a valid member"): keep it in a local.
+  It made the Tutorial button do nothing (2026-10-19).
+- **Stopping a background Codex job** (TaskStop) leaves `codex.exe` running and it can still write files; stop the
+  codex.exe started at that time too.
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
