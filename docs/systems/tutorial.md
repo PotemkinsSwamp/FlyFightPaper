@@ -13,8 +13,8 @@ Finishing or skipping sends the player to a normal room for their level, tagged 
 send them straight back. A player who leaves before playing a match sees it again on their next visit.
 Studio stands in for the room: set the `DevTutorialRoom` attribute on `ReplicatedStorage.FlyFightPaper` during
 Play; Skip turns the room back into a normal match. The live room move needs a private publish to test (Alan's go).
-Lesson so far: steer, shoot the practice target, Lift and a fan, landing. Next: one enemy to fight, then the HUD,
-hangar, weapons and plane-building steps.
+Alan stopped the lesson build (2026-10-18): plan first. The lessons are redesigned in the [tutorial plan](../plan/TUTORIAL-PLAN.md)
+(draft, waiting on his OK); the current sticky-note steps will be replaced.
 
 ## Rules
 See "Tutorial (built last)" in [Milestones](../plan/MILESTONES.md). Practice is never reward-eligible.
