@@ -135,7 +135,8 @@ function Effects.start(getPlane)
   elseif event.kind=="death" or event.kind=="prop" then
    if event.kind=="death" then
    if event.killerId==myId then marker(gui,true);Audio.play("kill") end
-   table.insert(feed,1,Lines.death(event.how or {kind=event.cause=="weapon" and "weapon" or "crash"},event.victimId==myId and "you" or event.victim,event.killer and (event.killerId==myId and "you" or event.killer)))
+   -- Lesson crashes and leaving a lesson never reach the kill feed (Alan: they carried into the next match).
+   if not event.practice then table.insert(feed,1,Lines.death(event.how or {kind=event.cause=="weapon" and "weapon" or "crash"},event.victimId==myId and "you" or event.victim,event.killer and (event.killerId==myId and "you" or event.killer))) end
    while #feed>4 do table.remove(feed) end
    -- One notebook slip per line (FlightHUD makes Slip1..4, newest on top).
    local slips=gui:FindFirstChild("KillFeed")

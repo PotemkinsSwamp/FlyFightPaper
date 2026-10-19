@@ -32,7 +32,7 @@ Lessons.flight={
   {text="Click LAUNCH to take off!",key="Enter",
    update=function(ctx)
     ctx.spotlight("Launch")
-    return ctx.state~="DESK" and ctx.state~=nil
+    return ctx.clicked("Launch") or (ctx.state~="DESK" and ctx.state~=nil)
    end},
   {text="Move the mouse to steer through the hoops.",key="Mouse",count=3,hint="Your plane turns toward the circle.",
    enter=function(ctx) ctx.data.passed=0 end,

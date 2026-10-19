@@ -297,7 +297,7 @@ function Service:death(p,cause)
  if self.onDeath then self.onDeath(p,cause,killer,assists,info and info.history or {},damage,total,finisher) end
  for _,shot in pairs(self.shots) do if shot.owner==p.id then self:finish(shot) end end
  if info then info.held={false,false};info.history={} end
- self:emit({kind="death",victim=p.name,victimId=p.id,killer=killer and self.flight.records[killer].name or nil,killerId=killer,cause=cause,how=p.deathHow,position=p.body.Position})
+ self:emit({kind="death",victim=p.name,victimId=p.id,killer=killer and self.flight.records[killer].name or nil,killerId=killer,cause=cause,how=p.deathHow,position=p.body.Position,practice=p.practice or nil})
 end
 -- Earliest plane on a shot's path this step, tested where each target was when the shooter saw it.
 function Service:planeHit(shot,delta,now)

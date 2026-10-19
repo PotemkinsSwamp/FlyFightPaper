@@ -138,8 +138,13 @@ function Tutorial.start(getPlane)
   end
   return low,high
  end
- local function drawSpot(dim)
+ -- When a step is done the spotlight fades out at once (Alan: it lingered after LAUNCH was clicked).
+ local spotAlpha,lastNames,lastDim=0,nil,false
+ local function drawSpot(dim,dt)
   local names=spotNames or (pulseName and {pulseName})
+  if names then spotAlpha,lastNames,lastDim=1,names,dim
+  elseif spotAlpha>0 then spotAlpha=math.max(0,spotAlpha-dt/.25);names,dim=spotAlpha>0 and lastNames or nil,lastDim end
+  local fade=function(t) return 1-(1-t)*spotAlpha end
   local low,high=nil,nil;if names then low,high=box(names) end
   frame.Visible=low~=nil;pointer.Visible=low~=nil
   for _,pane in panes do pane.Visible=dim and low~=nil end
@@ -149,9 +154,9 @@ function Tutorial.start(getPlane)
   local grow=6+beat*8
   low-=Vector2.new(grow,grow);high+=Vector2.new(grow,grow)
   frame.Position=UDim2.fromOffset(low.X,low.Y);frame.Size=UDim2.fromOffset(high.X-low.X,high.Y-low.Y)
-  stroke.Transparency=beat*.35;glowStroke.Transparency=.2+beat*.5;frame.BackgroundTransparency=.8+beat*.15
-  pointer.Position=UDim2.fromOffset((low.X+high.X)/2,low.Y-55-beat*18)
-  for _,pane in panes do pane.BackgroundTransparency=.22+beat*.18 end
+  stroke.Transparency=fade(beat*.35);glowStroke.Transparency=fade(.2+beat*.5);frame.BackgroundTransparency=fade(.8+beat*.15)
+  pointer.Position=UDim2.fromOffset((low.X+high.X)/2,low.Y-55-beat*18);pointer.ImageTransparency=fade(0)
+  for _,pane in panes do pane.BackgroundTransparency=fade(.22+beat*.18) end
   if dim then
    local view=gui.AbsoluteSize
    panes[1].Position,panes[1].Size=UDim2.fromOffset(0,0),UDim2.fromOffset(view.X,low.Y)
@@ -179,7 +184,15 @@ function Tutorial.start(getPlane)
  local bolts=workspace:FindFirstChild("SpeedPickups")
  local ctx={data={},dt=0}
  ctx.marker=function(position,words) marked={position=position,text=words} end
- ctx.spotlight=function(...) spotNames={...} end
+ local clicked,hooked={},{}
+ ctx.spotlight=function(...)
+  spotNames={...}
+  for _,name in spotNames do
+   local item=findGui(name)
+   if item and item:IsA("GuiButton") and not hooked[item] then hooked[item]=true;item.Activated:Connect(function() clicked[name]=true end) end
+  end
+ end
+ ctx.clicked=function(name) return clicked[name]==true end
  ctx.pulse=function(name) pulseName=name end
  ctx.ding=function() Audio.play("purchase") end
  ctx.hoop=function() if not hoop and ctx.body then placeHoop(ctx.body) end;return hoop end
@@ -202,7 +215,7 @@ function Tutorial.start(getPlane)
 
  local stepStarted,doneAt,holdK,relaunchAsked=0,nil,nil,0
  local function startStep(index)
-  Tutorial.index=index;ctx.data={};stepStarted=os.clock();doneAt=nil;tick.Visible=false;Tutorial.gotIt=false;Tutorial.skipStep=false
+  Tutorial.index=index;ctx.data={};table.clear(clicked);stepStarted=os.clock();doneAt=nil;tick.Visible=false;Tutorial.gotIt=false;Tutorial.skipStep=false
   clearHoop()
   local step=Tutorial.lesson.steps[index]
   if step and step.enter then step.enter(ctx) end
@@ -218,6 +231,7 @@ function Tutorial.start(getPlane)
  Input.InputBegan:Connect(function(input,processed)
   if processed or not Tutorial.active then return end
   if input.KeyCode==Enum.KeyCode.Space then Tutorial.gotIt=true
+  elseif input.KeyCode==Enum.KeyCode.Return then clicked.Launch=true
   elseif input.KeyCode==Enum.KeyCode.K then holdK=os.clock() end
  end)
  Input.InputEnded:Connect(function(input)
@@ -235,7 +249,7 @@ function Tutorial.start(getPlane)
 
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName=nil,nil,nil
-  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(false);return end
+  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(false,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
@@ -261,8 +275,9 @@ function Tutorial.start(getPlane)
   arrow.Size=UDim2.fromOffset(64+swell,64+swell)
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end
-  drawMarker();drawSpot(spotNames~=nil)
   if finished and not doneAt then doneAt=os.clock();tick.Visible=true;ctx.ding() end
+  if doneAt then spotNames,pulseName=nil,nil end
+  drawMarker();drawSpot(spotNames~=nil,dt)
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
   if doneAt and os.clock()-doneAt>.8 then startStep(Tutorial.index+1) end
  end)
