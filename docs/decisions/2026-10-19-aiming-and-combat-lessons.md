@@ -13,6 +13,10 @@
   eraser is slow enough to dodge; a crash has a smooth way back (countdown, auto take-off, same step).
 - **Music:** Liberty Bell for the tutorial's combat lessons; Sprint, Comedy Clip (a), Tough Guys (A) and Silly Chase
   join the match playlist.
+- **After his first look (2026-10-19):** Aiming is part of one **Combat School** (two lessons: Flight School, Combat
+  School); the Tutorial button asks which; a first-time player is asked whether they'd like the tutorial (like most
+  games) instead of being sent; slow motion "way slower, almost to a standstill" (6%); the crosshair's frame much
+  thinner and see-through (it hid the crosshair).
 - Training Room time goes to 10 minutes (Claude's suggestion, OK'd with the plan).
 
 ## Why

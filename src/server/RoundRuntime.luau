@@ -215,20 +215,24 @@ end
 function Runtime:tutorialRoom()
  return self.matchmaking:isTutorialRoom() or (Run:IsStudio() and Root:GetAttribute("DevTutorialRoom")==true)
 end
--- A brand-new player is sent to their own tutorial room as soon as the classroom has loaded (live servers only).
+-- A brand-new player is asked once the classroom and their save have loaded whether they'd like the tutorial (Alan
+-- 2026-10-19: ask, like most games, don't send them). In a tutorial room: which lesson they picked on the way in.
 function Runtime:firstJoin(player)
- if self:tutorialRoom() then return end
  local data=player:GetJoinData().TeleportData
+ if self:tutorialRoom() then
+  if type(data)=="table" and type(data.lesson)=="string" then player:SetAttribute("StartLesson",data.lesson) end
+  return
+ end
  if type(data)=="table" and data.tutorialSeen then return end
  task.spawn(function()
   local deadline=os.clock()+30
   while player.Parent and not self.profiles:view(player) and os.clock()<deadline do task.wait(.5) end
   local profile=self.profiles:view(player)
-  if profile and self.matchmaking.needsTutorial(profile) and not player:GetAttribute("InMatch") then self.matchmaking:routeTutorial(player) end
+  if profile and self.matchmaking.needsTutorial(profile) and not player:GetAttribute("InMatch") then player:SetAttribute("OfferTutorial",true) end
  end)
 end
 -- What a lesson step asks the server for (docs/systems/tutorial.md), all at once or a piece at a time:
--- {slow=true/false (Aiming's slow motion), repair=true (full Health), drill=name in TrainingCourse.DRILLS or false
+-- {slow=true/false (aiming's slow motion), gentle=true/false (bounce off walls), repair=true (full Health), drill=name in TrainingCourse.DRILLS or false
 -- (practice target planes), pal=mode or false (Combat Training's one enemy: "circle" flies the course and never
 -- shoots, "pellet" shoots until you're at half Health, "eraser" fires slow erasers until one misses)}.
 -- Targets and Pals fight only this player (CombatService:enemy) and can never fold them (CombatService:hit).
@@ -238,6 +242,7 @@ function Runtime:lesson(player,cmd)
  if type(cmd)~="table" or not p or not p.practice or not self:tutorialRoom() then return end
  if type(cmd.slow)=="boolean" then p.slow=cmd.slow and Course.SLOW_MO or nil;p.model:SetAttribute("SlowMo",p.slow) end
  if cmd.repair==true then p.model:SetAttribute("Health",p.stats.health) end
+ if type(cmd.gentle)=="boolean" then p.gentle=cmd.gentle;p.model:SetAttribute("Gentle",cmd.gentle or nil) end
  if cmd.drill==false or Course.DRILLS[cmd.drill] then
   for _,other in pairs(table.clone(self.flight.pilots)) do if other.drill and other.foeOf==p.id then self.flight:remove(other,"vacancy") end end
   player:SetAttribute("DrillDown",0)
@@ -272,6 +277,7 @@ function Runtime:practice(player,lesson)
  if self.flight.pilots[player] then self:withdraw(player) end
  -- Replaying the tutorial from a match room opens a private room for it (live). Studio can't move players between
  -- servers, so this room becomes the tutorial room instead: the match pauses where it is and every bot leaves.
+ player:SetAttribute("WantLesson",type(lesson)=="string" and lesson or nil) -- carried to the tutorial room
  if not self:tutorialRoom() and not self.matchmaking:routeTutorial(player) and Run:IsStudio() then Root:SetAttribute("DevTutorialRoom",true) end
  if self:tutorialRoom() then
   -- No round here: flying, shooting and the lesson's one enemy run without a clock, a score or a roster.
@@ -289,8 +295,8 @@ function Runtime:practice(player,lesson)
  local p=self.flight:add(player,{loadout=require(Root.Shared.WeaponLoadouts).make(self.flight.catalog,"training"),loadoutName="training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
  -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off, Lift stops at 1 second and Boost at 0.01.
- -- Aiming can't be lost either (it's about aiming, not surviving); Combat Training keeps crashes (Alan).
- p.gentle=lesson=="flight" or lesson=="aim";p.model:SetAttribute("Gentle",p.gentle or nil)
+ -- Combat School's aiming part asks for gentle itself (lesson cmd); its fights keep crashes (Alan).
+ p.gentle=lesson=="flight";p.model:SetAttribute("Gentle",p.gentle or nil)
  for _,key in {"DrillDown","PalFolds","PalEraserHits","PalEraserMisses","EraserHits"} do player:SetAttribute(key,0) end
  player:SetAttribute("InMatch",true)
 end

@@ -44,7 +44,7 @@ local function launch()
 end
 
 Lessons.flight={
- name="Flight School",next="aim",
+ name="Flight School",next="combat",
  steps={
   launch(),
   {text="Move the mouse to steer through the hoops.",key="Mouse",count=3,hint="Your plane turns toward the circle.",
@@ -109,21 +109,19 @@ local function noseOn(ctx,position,degrees)
 end
 local Course=require(Root.Shared.TrainingCourse)
 
--- Aiming (Alan 2026-10-19): first in slow motion, so there's time to see how the circle, the dot, the orange
--- ring and the eraser lock work; then once more at full speed. Walls only bounce you off (gentle).
-Lessons.aim={
- name="Aiming",next="combat",
- steps={
-  launch(),
+-- Combat School, part 1: aiming (Alan 2026-10-19). First in slow motion, almost still, so there's time to see how
+-- the circle, the dot, the orange ring and the eraser lock work; then once more at full speed. Walls only bounce
+-- you off here (gentle). HUD pieces get the soft frame (thin, see-through, no dim) so the crosshair stays visible.
+local AIM_STEPS={
   {text="Slow motion! The circle is where you steer. The dot is where your guns point. Put the dot on the star.",key="Mouse",
    hint="Hold the circle on the star and wait: the dot slides over to it.",
-   enter=function(ctx) ctx.lesson({slow=true});ctx.data.point=1;ctx.data.held=0 end,
+   enter=function(ctx) ctx.lesson({slow=true,gentle=true});ctx.data.point=1;ctx.data.held=0 end,
    update=function(ctx)
     if ctx.state~="FLYING" then return false end
     local star=ctx.star(Course.POINTS[ctx.data.point])
     -- Flew past it: the star waits at the next point instead.
     if (star.Position-ctx.body.Position).Magnitude<45 then ctx.data.point=ctx.data.point%#Course.POINTS+1 end
-    ctx.spotlight("AimCircle","NoseDot")
+    ctx.softSpot("AimCircle","NoseDot")
     ctx.marker(star.Position,"STAR",12,star)
     ctx.data.held=noseOn(ctx,star.Position,4) and ctx.data.held+ctx.dt or 0
     return ctx.data.held>=1
@@ -139,7 +137,7 @@ Lessons.aim={
    hint="The orange ring is where your pellets meet the plane. Dot on the ring, then shoot.",
    enter=function(ctx) ctx.lesson({drill="moving"}) end,
    update=function(ctx)
-    ctx.spotlight("LeadPipper")
+    ctx.softSpot("LeadPipper")
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
    end},
@@ -148,7 +146,7 @@ Lessons.aim={
    hint="Turn so the target sits inside the big circle round your nose.",
    enter=function(ctx) ctx.lesson({drill="eraser"}) end,
    update=function(ctx)
-    ctx.spotlight("EraserSeeker")
+    ctx.softSpot("EraserSeeker")
     markTarget(ctx,"LOCK ON")
     return ctx.plane~=nil and (ctx.plane:GetAttribute("LockProgress") or 0)>=.3
    end},
@@ -180,22 +178,18 @@ Lessons.aim={
     markTarget(ctx,"LOCK ON")
     return ctx.count("DrillDown")
    end},
- },
 }
 
--- Combat Training (TUTORIAL-PLAN Lesson 2): one Pal at a time. Pals can never fold you (only crashes can) and stop
+-- Combat School, part 2: fighting. One Pal at a time. Pals can never fold you (only crashes can) and stop
 -- fighting while you're down; the engine shows a countdown and flies you back to the same step.
 local function markPal(ctx,words)
  local pal=ctx.pal()
  if pal then ctx.marker(pal.Root.Position,words,16,pal) end
 end
-Lessons.combat={
- name="Combat Training",doneTitle="You're ready!",
- steps={
-  launch(),
+local FIGHT_STEPS={
   {text=shootText("An enemy! It's slow and won't shoot. Shoot it down: dot on the orange ring."),key="Left click",
    hint="Follow the line to it, then put the dot on the orange ring and hold left click.",
-   enter=function(ctx) ctx.lesson({pal="circle"});ctx.data.start=ctx.count("PalFolds") end,
+   enter=function(ctx) ctx.lesson({drill=false,pal="circle",gentle=false});ctx.data.start=ctx.count("PalFolds") end,
    update=function(ctx)
     markPal(ctx,"ENEMY")
     return ctx.count("PalFolds")>ctx.data.start
@@ -233,10 +227,12 @@ Lessons.combat={
    hint="Keep it in the big circle until the box turns red: your eraser fires and chases it.",
    enter=function(ctx) ctx.lesson({pal="circle"});ctx.data.start=ctx.count("EraserHits") end,
    update=function(ctx)
-    ctx.spotlight("EraserSeeker")
+    ctx.softSpot("EraserSeeker")
     markPal(ctx,"LOCK ON")
     return ctx.count("EraserHits")>ctx.data.start
    end},
- },
 }
+-- One lesson after Flight School (Alan 2026-10-19: "flight school, then combat school").
+Lessons.combat={name="Combat School",doneTitle="You're ready!",steps={launch()}}
+for _,list in {AIM_STEPS,FIGHT_STEPS} do for _,step in list do table.insert(Lessons.combat.steps,step) end end
 return Lessons

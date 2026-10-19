@@ -4,8 +4,9 @@
 -- ponytail: world points for the tutorial room's desk only; another desk still gets the same course.
 local Course={}
 Course.POINTS={Vector3.new(-225,205,440),Vector3.new(-210,280,270),Vector3.new(-170,340,100)}
--- Aiming lesson slow motion (Alan 2026-10-19): planes and targets fly at this share of their speed; shots don't.
-Course.SLOW_MO=.35
+-- Aiming slow motion (Alan 2026-10-19: "way slower, almost to a standstill, but you can turn and aim"): planes and
+-- targets fly at this share of their speed; turning and shots don't slow.
+Course.SLOW_MO=.06
 -- Practice target planes. Still ones hold their spot facing the desk; moving ones fly a small flat circle round the
 -- point (radius 40 keeps the wings inside the 50 clear studs) at `speed` studs/s (times SLOW_MO in slow motion).
 -- `health`: pellet targets fold after about 6 pellets; eraser targets after one eraser, and only erasers count.

@@ -6,16 +6,17 @@ fans, landing), shooting paper targets, then a fight with one enemy, then what e
 hangar, each weapon, and how building a plane works. It can be skipped and replayed, and never pays rewards.
 
 ## Where it stands (2026-10-19)
-Being built now (after Stage 10). **Its own room works:** a brand-new player (no matches played) is sent, once the
-classroom has loaded, to a fresh private server of the same place that nobody else can join; the Tutorial button
-does the same from any room. The room has no match, no clock, no bots and no rewards; the lesson starts by itself.
+Being built now (after Stage 10). **Its own room works:** a brand-new player (no matches played) is asked once the
+classroom has loaded, "Welcome, pilot! Want a quick tutorial?" (Yes / No thanks, and where to find it later; Alan
+2026-10-19: ask, like most games). Yes, or the Tutorial button (which first asks "Which lesson?": Flight School or
+Combat School), opens a fresh private server of the same place that nobody else can join, carrying the lesson picked. The room has no match, no clock, no bots and no rewards; the lesson starts by itself.
 Finishing or skipping sends the player to a normal room for their level, tagged "tutorial seen" so that room doesn't
 send them straight back. A player who leaves before playing a match sees it again on their next visit.
 Studio stands in for the room: set the `DevTutorialRoom` attribute on `ReplicatedStorage.FlyFightPaper` during
 Play; Skip turns the room back into a normal match. The live room move needs a private publish to test (Alan's go).
 Lessons follow the agreed [tutorial plan](../plan/TUTORIAL-PLAN.md). **Flight School is approved by Alan (2026-10-18,
-[decision](../decisions/2026-10-18-flight-school-approved.md)). Aiming and Combat Training are built (2026-10-19),
-not yet seen in Play.** The lessons run in order: Flight School, Aiming, Combat Training (the end card has "Next"). Flight School: the step engine
+[decision](../decisions/2026-10-18-flight-school-approved.md)). Combat School is built (2026-10-19); after Alan's
+first look its slow motion is slower and the crosshair's frame thinner.** Flight School's end card has "Next: Combat School". Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during
 lessons (Alan). In Studio the Tutorial button turns the room into the tutorial world (match paused, bots gone) since
@@ -34,35 +35,48 @@ in clear air ahead of DeskSouth3 (hand-checked in Studio: 50 studs of empty air 
 heading north with the west fan 90 degrees to the left (time to read the Lift note before the fan), all shown at once, red and white like the concept, the current one bright. A HUD bar the step talks about gets its own breathing frame
 all step, beside the 3D target's focus; the Lift step instead spotlights the Lift bar (the rest dimmed) while the fan
 keeps its glow, line and turn arrow. Sound: one quiet looped song ("Daisy Fresh"), and the same soft ding for each hoop
-and, a beat later, each finished step. Alan's first look: [playtest](../playtests/2026-10-18-flight-school-attention.md). Combat Training not started; a
-half-built enemy helper (`tutorialFoe` in RoundRuntime, the foe rule in CombatService:enemy) waits for it.
+and, a beat later, each finished step. Alan's first look: [playtest](../playtests/2026-10-18-flight-school-attention.md).
+**Combat School** (Alan 2026-10-18/19, [decision](../decisions/2026-10-19-aiming-and-combat-lessons.md)), part 1,
+aiming: in slow motion first (plane and targets at 6% speed, almost still; turning and shots at full speed; colours
+soften, the music slows, a whoosh and a "SLOW MOTION" tag): the circle vs the dot (a star), three still targets
+(dot turns green = it will hit), two circling ones (aim at the orange ring), the eraser's big lock circle and lock
+(holding right click fires it at full lock), its reload; then full speed for one target and one eraser lock. HUD
+pieces it points at (crosshair, lead ring, eraser circle) get a soft frame: thin, half see-through, no dim.
+**Targets are real paper planes** held on a course point or flying a 40-stud circle round one
+(`src/shared/TrainingCourse.luau`), so every aim help works on them as in a match. Part 2, fighting: one "Paper Pal"
+at a time at 60% speed: one that only flies the course, one that shoots until you're at half Health and then stops,
+one that fires slow erasers (half speed, slower again after each hit) until you dodge one, then your eraser on it.
+Folded by a crash: a countdown note, the plane takes off by itself, the step carries on and the Pal holds fire until
+you've flown 2 seconds; after 3 crashes on a step, a tip.
 
 ## Rules
 See "Tutorial (built last)" in [Milestones](../plan/MILESTONES.md). Practice is never reward-eligible.
 Flight School can't be lost (Alan 2026-10-18): its plane (`p.gentle`, set when the client asks for practice with the
 lesson "flight"; its model carries `Gentle` so the pilot's client doesn't crumple it either) only bounces off walls,
 the floor, duct fans and the room's edge; its Lift stops at 1 second and its Boost at 0.01.
-Aiming can't be lost either (same gentle plane). Combat Training keeps normal crashes, but a Pal can never fold you
+Combat School's aiming part can't be lost either (the step asks for gentle); its fights keep normal crashes, but a Pal can never fold you
 (its hits stop at 1 Health) and Pals and targets never ram you. A respawned practice plane is the same training plane
 (it used to come back as the player's own build, often with no booster: the "no boost" report).
-A lesson step asks the server for what it needs with `RoundAction("lesson", {slow, repair, drill, pal})`; the
+A lesson step asks the server for what it needs with `RoundAction("lesson", {slow, gentle, repair, drill, pal})`; the
 server keeps counts on the player (`DrillDown`, `PalFolds`, `PalEraserMisses`, `PalEraserHits`, `EraserHits`).
-Studio: set `DevLesson` (flight / aim / combat) on `ReplicatedStorage.FlyFightPaper` on the client to open a lesson.
+Studio: set `DevLesson` (flight / combat) on `ReplicatedStorage.FlyFightPaper` on the client to open a lesson.
 
 ## Code
 | File | What it does |
 |---|---|
 | `src/client/Tutorial.luau` | Lesson step engine: goal note, markers, spotlight, ticks, hints, Skip |
-| `src/client/TutorialLessons.luau` | Each lesson's steps: Flight School, Aiming, Combat Training |
+| `src/client/TutorialLessons.luau` | Each lesson's steps: Flight School, Combat School (aiming, then fighting) |
 | `src/shared/TrainingCourse.luau` | The Training Room's course points, practice targets and slow-motion share |
 | `src/server/RoundRuntime.luau` | Tutorial room: no rounds or bots; first-join routing; practice flights |
 | `src/server/Matchmaking.luau` | Sends a player to a fresh private tutorial room and back |
-| `src/server/MatchmakingAdapter.luau` | Reserves tutorial rooms; never lists them |
-| `src/shared/CombatRules.luau` | `practiceTargetPose`: where the practice target goes |
-| `src/server/CombatService.luau` | Practice pilots are nobody's enemy |
+| `src/server/MatchmakingAdapter.luau` | Reserves tutorial rooms; never lists them; carries the lesson picked |
+| `src/server/CombatService.luau` | Practice pilots are nobody's enemy except their lesson's; a Pal can't fold you; slow Pal erasers |
+| `src/server/BotService.luau` | The Pals' brain: when they chase, shoot or fly the course |
+| `src/server/FlightService.luau` | Gentle planes, slow motion, flying the practice targets |
 
 ## Tuning numbers
-None yet.
+`TrainingCourse.SLOW_MO` (.06), target health and circle speed in `TrainingCourse.DRILLS`; Pal speed (.6) and first
+eraser speed (.5) in `RoundRuntime:lesson`; the soft frame's `SOFT_SLICE`/`SOFT_SEE_THROUGH` in `Tutorial.luau`.
 
 ## Related
 - [The tutorial is built last](../decisions/2026-10-13-tutorial-built-last.md)

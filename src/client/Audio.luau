@@ -83,8 +83,8 @@ function Audio.start(getPlane)
  -- Lessons have one calm song of their own (Alan: peaceful, focusing, playful, subtle, maybe classical; one song,
  -- not a playlist), looped, quiet, and no classroom chatter, so the step chimes stand out.
  -- Each lesson has its own (Alan's picks by ear 2026-10-18): Flight School APM "Daisy Fresh" (simple and
- -- child-like), Aiming and Combat Training APM "Liberty Bell (a) 60".
- local LESSON_SONGS={flight=1839864816,aim=105397100521450,combat=105397100521450}
+ -- child-like), Combat School APM "Liberty Bell (a) 60".
+ local LESSON_SONGS={flight=1839864816,combat=105397100521450}
  local function inLesson() return Root:GetAttribute("TutorialOpen")==true end
  local music=Instance.new("Sound");music.Name="Music";music.Parent=Sounds
  local track=0

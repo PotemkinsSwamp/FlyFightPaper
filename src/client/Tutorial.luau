@@ -36,6 +36,7 @@ local TAG_SLICE=Rect.new(96,40,416,120) -- tag.png (512x160)
 local STEP_DING_DELAY=.4
 local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flying: you still need to see the room)
 local YELLOW=Color3.fromRGB(255,225,70)
+local SOFT_SLICE,SOFT_SEE_THROUGH=.2,.5 -- the soft frame: a third as thick as the usual one, half see-through
 local CRASH_TIP_AFTER=3 -- crashes on one step before the note suggests open air
 
 function Tutorial.begin(lesson)
@@ -100,6 +101,35 @@ function Tutorial.start(getPlane)
  local nextButton=PaperUI.button(card,"Next",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Next lesson",320,170,280,60,1,function()
   card.Visible=false;if Tutorial.nextKey then Tutorial.begin(Tutorial.nextKey) end
  end,30)
+
+ -- A question card (Alan 2026-10-19): which lesson (the Tutorial button), or, the first time in the game, would
+ -- you like the tutorial (most games ask once, can be skipped in one click, and say where to find it again).
+ local ask=card:Clone();ask.Name="Ask";ask.Parent=gui;ask.Visible=false
+ for _,child in ask:GetChildren() do if child:IsA("GuiButton") then child:Destroy() end end
+ workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()ask.UIScale.Scale=scale.Scale end)
+ local choices={}
+ local function choose(title,words,options)
+  ask.Title.Text,ask.Text.Text=title,words
+  for _,button in choices do button:Destroy() end;table.clear(choices)
+  for i,option in options do
+   local x=#options==1 and 160 or (i==1 and 20 or 320)
+   table.insert(choices,PaperUI.button(ask,"Choice"..i,Art.mainmenu.strip[option[3] or "green"] or Art.mainmenu.strip.red,option[1],x,170,280,60,i==1 and -1 or 1,function() ask.Visible=false;option[2]() end,28))
+  end
+  local close=PaperUI.button(ask,"Close",Art.mainmenu.strip.red,"X",560,10,50,50,0,function() ask.Visible=false end,28)
+  table.insert(choices,close)
+  ask.Visible=true
+ end
+ function Tutorial.choose(before)
+  local function go(lesson) return function() if before then before() end;Tutorial.begin(lesson) end end
+  choose("Which lesson?","You can replay any lesson, any time.",{{"Flight School",go("flight")},{"Combat School",go("combat")}})
+ end
+ local function offer()
+  if not player:GetAttribute("OfferTutorial") or Tutorial.active then return end
+  player:SetAttribute("OfferTutorial",nil)
+  choose("Welcome, pilot!","Want a quick tutorial? Learn to fly and fight in about 5 minutes. (Later: Menu > Tutorial.)",
+   {{"Yes, teach me!",function() Tutorial.begin("flight") end},{"No thanks",function() end,"red"}})
+ end
+ player:GetAttributeChangedSignal("OfferTutorial"):Connect(offer);task.defer(offer)
 
  -- Slow motion (the Aiming lesson, Alan 2026-10-19): the server slows the plane and targets; this screen shows it.
  -- Colours soften and cool, the music slows, a whoosh, and a crayon tag says so. Off again with a quick whoosh.
@@ -217,23 +247,26 @@ function Tutorial.start(getPlane)
   tag.Position=UDim2.fromOffset(center.X,high.Y+10+math.sin(clock*3)*4);tag.Rotation=-2+math.sin(clock*1.7)*1.5
   tag.ImageTransparency=transparency;tagText.TextTransparency=transparency
  end
- local function drawSpot(low,high,dim,round,words,dt)
-  if low then spotAlpha,last=1,{low,high,dim,round,words}
-  elseif spotAlpha>0 then spotAlpha=math.max(0,spotAlpha-dt/.25);if spotAlpha>0 then low,high,dim,round,words=table.unpack(last) end end
+ -- `soft`: a HUD piece you must still see through (the crosshair, Alan 2026-10-19: the bold frame hid it): a thin,
+ -- see-through frame close round it, no dim and no marks.
+ local function drawSpot(low,high,dim,round,words,dt,soft)
+  if low then spotAlpha,last=1,{low,high,dim,round,words,soft}
+  elseif spotAlpha>0 then spotAlpha=math.max(0,spotAlpha-dt/.25);if spotAlpha>0 then low,high,dim,round,words,soft=table.unpack(last) end end
   local fade=function(t) return 1-(1-t)*spotAlpha end
   frame.Visible=low~=nil;hole.Visible=dim~=nil and low~=nil;tag.Visible=low~=nil and words~=nil
-  for _,mark in bursts do mark.Visible=low~=nil end
+  for _,mark in bursts do mark.Visible=low~=nil and not soft end
   if not low then return end
   -- Alive, to catch the eye: the frame breathes and wobbles, the marks pulse outward, the dim deepens and lifts.
   local clock=os.clock();local beat=(math.sin(clock*5)+1)/2
   -- A box frame stays fully outside what it frames even at its smallest (Alan: it covered the bar's words).
-  local grow=(round and 6 or FRAME_OUTSET)+beat*8
+  local grow=soft and 10+beat*3 or (round and 6 or FRAME_OUTSET)+beat*8
+  frame.SliceScale=soft and SOFT_SLICE or .6
   low-=Vector2.new(grow,grow);high+=Vector2.new(grow,grow)
   local center,half=(low+high)/2,(high-low)/2
   holeCorner.CornerRadius=round and UDim.new(.5,0) or UDim.new(0,14)
   frame.Image=round and Pieces.frameRing or Pieces.frameBox;frame.ScaleType=round and Enum.ScaleType.Stretch or Enum.ScaleType.Slice
   frame.Position=UDim2.fromOffset(low.X,low.Y);frame.Size=UDim2.fromOffset(high.X-low.X,high.Y-low.Y)
-  frame.Rotation=round and math.sin(clock*2.3)*1.5 or 0;frame.ImageTransparency=fade(0)
+  frame.Rotation=round and math.sin(clock*2.3)*1.5 or 0;frame.ImageTransparency=fade(soft and SOFT_SEE_THROUGH or 0)
   hole.Position,hole.Size=frame.Position,frame.Size
   for i,mark in bursts do
    local angle=math.rad(BURST_ANGLES[i]);local out=24+beat*16
@@ -312,6 +345,8 @@ function Tutorial.start(getPlane)
   end
  end
  ctx.clicked=function(name) return clicked[name]==true end
+ local softSpot=false
+ ctx.softSpot=function(...) ctx.spotlight(...);softSpot=true end
  ctx.pulse=function(name) pulseName=name end
  local dingAt=0
  ctx.ding=function() dingAt=os.clock();Audio.play("ding") end
@@ -390,14 +425,16 @@ function Tutorial.start(getPlane)
 
  -- The tutorial's own room (a new player's first join, or a replay) starts Flight School by itself, once.
  local function autoStart()
-  if Root:GetAttribute("TutorialRoom") and not Tutorial.autoStarted and not Tutorial.active then Tutorial.autoStarted=true;task.delay(1,Tutorial.begin) end
+  if Root:GetAttribute("TutorialRoom") and not Tutorial.autoStarted and not Tutorial.active then
+   Tutorial.autoStarted=true;task.delay(1,function() Tutorial.begin(player:GetAttribute("StartLesson")) end)
+  end
  end
  Root:GetAttributeChangedSignal("TutorialRoom"):Connect(autoStart);autoStart()
  -- Studio test hook: set DevLesson (flight, aim, combat) on ReplicatedStorage.FlyFightPaper to open that lesson.
  if RunService:IsStudio() then Root:GetAttributeChangedSignal("DevLesson"):Connect(function() Tutorial.begin(Root:GetAttribute("DevLesson")) end) end
 
  RunService.RenderStepped:Connect(function(dt)
-  marked,spotNames,pulseName=nil,nil,nil
+  marked,spotNames,pulseName,softSpot=nil,nil,nil,false
   if not Tutorial.active then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
@@ -448,7 +485,7 @@ function Tutorial.start(getPlane)
   targetRing.Visible=spotNames~=nil and low~=nil
   if spotNames then
    local targetLow,targetHigh=low,high
-   low,high=box(spotNames);drawSpot(low,high,ctx.state=="FLYING" and WORLD_DIM or GUI_DIM,false,nil,dt)
+   low,high=box(spotNames);drawSpot(low,high,not softSpot and (ctx.state=="FLYING" and WORLD_DIM or GUI_DIM) or nil,false,nil,dt,softSpot)
    if targetLow then
     local grow=6+(math.sin(os.clock()*5)+1)*4
     targetRing.Position=UDim2.fromOffset(targetLow.X-grow,targetLow.Y-grow);targetRing.Size=UDim2.fromOffset(targetHigh.X-targetLow.X+grow*2,targetHigh.Y-targetLow.Y+grow*2)

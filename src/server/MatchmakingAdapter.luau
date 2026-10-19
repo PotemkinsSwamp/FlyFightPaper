@@ -46,7 +46,9 @@ function Adapter:send(player,destination,canSend)
  local options=Instance.new("TeleportOptions")
  if destination.accessCode then options.ReservedServerAccessCode=destination.accessCode else options.ServerInstanceId=destination.jobId end
  -- Leaving a tutorial room: the next room must not send this still-new player straight back to it.
- if self.row and self.row.class=="tutorial" then options:SetTeleportData({tutorialSeen=true}) end
+ if self.row and self.row.class=="tutorial" then options:SetTeleportData({tutorialSeen=true})
+ -- Going to one: the lesson the player picked (Flight School or Combat School) opens there.
+ elseif row.class=="tutorial" then options:SetTeleportData({lesson=player:GetAttribute("WantLesson")}) end
  assert(not canSend or canSend(),"Room transfer cancelled or timed out")
  local teleport=self.teleport or Teleport;teleport:TeleportAsync(game.PlaceId,{player},options)
 end
