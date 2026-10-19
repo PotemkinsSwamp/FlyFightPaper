@@ -71,7 +71,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end
    -- Studio's stand-in tutorial room turns back into a normal room; a real one sends the player on to a match room.
    if Run:IsStudio() and Root:GetAttribute("DevTutorialRoom") then Root:SetAttribute("DevTutorialRoom",false);flight.tutorialRoom=false end
-   self:join(player)
+   self:join(player);bots:fill()
   elseif action=="withdraw" and value==true then self:withdraw(player)
   elseif action=="overlay" and type(value)=="boolean" then
    local p=flight.pilots[player];if p then p.overlay=value;if value then combat:trigger(p,1,false);combat:trigger(p,2,false) end end
@@ -243,12 +243,18 @@ end
 function Runtime:practice(player)
  if not player:GetAttribute("ClassroomLoaded") or not self.profiles:view(player) then return end
  if self.flight.pilots[player] then self:withdraw(player) end
+ -- Replaying the tutorial from a match room opens a private room for it (live). Studio can't move players between
+ -- servers, so this room becomes the tutorial room instead: the match pauses where it is and every bot leaves.
+ if not self:tutorialRoom() and not self.matchmaking:routeTutorial(player) and Run:IsStudio() then Root:SetAttribute("DevTutorialRoom",true) end
  if self:tutorialRoom() then
   -- No round here: flying, shooting and the lesson's one enemy run without a clock, a score or a roster.
   self.flight.tutorialRoom=true;self.flight.active=true;self.flight.safe=false;self.combat.enabled=true;self.bots.enabled=true
+  self.flight:hold(false)
+  for _,other in pairs(table.clone(self.flight.pilots)) do
+   if other.kind=="bot" and not other.foeOf then self.flight:remove(other,"vacancy");self.bots.brains[other.id]=nil end
+  end
  else
-  -- Replaying the tutorial from a match room opens a private room for it (live); Studio practises in this room.
-  if self.matchmaking:routeTutorial(player) then return end
+  if self.matchmaking.transfers[player] then return end -- on its way to a private tutorial room
   if not self.engine.round or self.engine.phase=="READY" then self:begin("FFA") end
   if self.engine.phase~="ACTIVE" then player:SetAttribute("MenuMessage","Practice opens when the next round starts.");return end
  end
@@ -347,6 +353,8 @@ end
 function Runtime:step(dt)
  self.clock+=dt;if self.clock<ServerConfig.round.step_seconds then return end;self.clock%=ServerConfig.round.step_seconds
  Root:SetAttribute("TutorialRoom",self:tutorialRoom())
+ -- The tutorial room has no match: the round engine waits (Studio's stand-in room resumes its paused match after).
+ if self.flight.tutorialRoom then return end
  if self.engine.round then
   if self.engine.phase=="ACTIVE" then
    for player in pairs(self.joined) do

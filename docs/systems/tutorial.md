@@ -17,8 +17,10 @@ Lessons follow the agreed [tutorial plan](../plan/TUTORIAL-PLAN.md). **Flight Sc
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson, spotlight that dims
 all but one button, edge arrow) and its 7 steps are written; lessons fly the fixed training plane (pellets, eraser,
 booster); the news note and kill feed are hidden during lessons (Alan). Checked in Studio: the LAUNCH spotlight,
-hoops counting 1/3-3/3. Not yet checked: the 3D marker over hoops/fan (didn't show in captures), the Lift-bar pulse
-after a position fix, speed bolt, boost, landing, the desk card, the end card. Combat Training not started; a
+hoops counting 1/3-3/3. In Studio the Tutorial button turns the room into the tutorial world (match paused, bots gone) since Studio can't
+move players between servers; the match resumes after. Spotlight redone after Alan's look (dims the rest, flashes,
+thick crayon frame, arrow); arrows use the crayon arrow picture (the font has no arrow signs). Not yet checked: the
+new spotlight, the 3D marker, the Lift-bar pulse, speed bolt, boost, landing, the desk card, the end card. Combat Training not started; a
 half-built enemy helper (`tutorialFoe` in RoundRuntime, the foe rule in CombatService:enemy) waits for it.
 
 ## Rules

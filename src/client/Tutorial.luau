@@ -33,9 +33,20 @@ function Tutorial.start(getPlane)
   local pane=Instance.new("Frame");pane.BackgroundColor3=Color3.new(0,0,0);pane.BackgroundTransparency=.45;pane.BorderSizePixel=0;pane.Visible=false;pane.Parent=gui
   panes[i]=pane
  end
- local frame=Instance.new("Frame");frame.BackgroundTransparency=1;frame.Visible=false;frame.Parent=gui
- local stroke=Instance.new("UIStroke");stroke.Color=YELLOW;stroke.Thickness=4;stroke.Parent=frame
- Instance.new("UICorner",frame).CornerRadius=UDim.new(0,10)
+ -- The frame: a thick crayon-yellow border with a soft white glow inside, and a big arrow bouncing above it.
+ local frame=Instance.new("Frame");frame.BackgroundColor3=YELLOW;frame.BackgroundTransparency=.85;frame.Visible=false;frame.Parent=gui
+ local stroke=Instance.new("UIStroke");stroke.Color=YELLOW;stroke.Thickness=8;stroke.Parent=frame
+ Instance.new("UICorner",frame).CornerRadius=UDim.new(0,14)
+ local glow=Instance.new("Frame");glow.BackgroundTransparency=1;glow.Size=UDim2.new(1,-10,1,-10);glow.Position=UDim2.fromOffset(5,5);glow.Parent=frame
+ local glowStroke=Instance.new("UIStroke");glowStroke.Color=Color3.new(1,1,1);glowStroke.Thickness=3;glowStroke.Parent=glow
+ Instance.new("UICorner",glow).CornerRadius=UDim.new(0,10)
+ -- Arrows are the HUD's crayon arrow picture (it points right; turned to point down). The font has no arrow signs.
+ local function crayonArrow(parent,name,size,rotation)
+  local image=Instance.new("ImageLabel");image.Name=name;image.Image=Art.hud.arrow;image.ImageColor3=YELLOW;image.BackgroundTransparency=1
+  image.ScaleType=Enum.ScaleType.Fit;image.AnchorPoint=Vector2.new(.5,.5);image.Size=UDim2.fromOffset(size,size);image.Rotation=rotation;image.Visible=false;image.Parent=parent
+  return image
+ end
+ local pointer=crayonArrow(gui,"SpotArrow",110,90)
 
  -- The goal note: sticky note near the top, lesson and step, the instruction, the key picture, the count.
  local note=Instance.new("ImageLabel");note.Name="Note";note.Image=Art.ingame.stickyNote;note.ScaleType=Enum.ScaleType.Stretch;note.BackgroundTransparency=1
@@ -47,7 +58,7 @@ function Tutorial.start(getPlane)
  local text=PaperUI.words(note,"Text","",40,58,440,96,30);text.TextWrapped=true;text.TextYAlignment=Enum.TextYAlignment.Top
  local key=PaperUI.words(note,"Key","",490,64,100,48,26);key.TextXAlignment=Enum.TextXAlignment.Center;key.BackgroundTransparency=0;key.BackgroundColor3=Color3.fromRGB(250,250,245)
  Instance.new("UICorner",key).CornerRadius=UDim.new(0,8);local keyStroke=Instance.new("UIStroke");keyStroke.Thickness=3;keyStroke.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;keyStroke.Parent=key
- local tick=PaperUI.words(note,"Tick","✓",520,110,60,60,56);tick.TextColor3=Color3.fromRGB(40,150,60);tick.Visible=false
+ local tick=PaperUI.words(note,"Tick","Done!",470,112,130,50,38);tick.TextColor3=Color3.fromRGB(40,150,60);tick.Visible=false
  local hint=PaperUI.words(note,"Hint","",40,150,540,30,22);hint.TextColor3=Color3.fromRGB(90,90,100)
  local gotIt=PaperUI.button(note,"GotIt",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Got it  [Space]",40,176,240,48,1,function() Tutorial.gotIt=true end,24)
  local skip=PaperUI.button(note,"Skip",Art.mainmenu.strip.red,"Skip  [K]",330,176,250,48,-1,function() Tutorial.skipStep=true end,24)
@@ -70,10 +81,8 @@ function Tutorial.start(getPlane)
  board.Parent=player.PlayerGui -- billboards do not draw inside a ScreenGui
  local label=PaperUI.words(board,"Text","",0,0,220,40,26);label.Size=UDim2.new(1,0,0,40);label.TextXAlignment=Enum.TextXAlignment.Center;label.TextColor3=YELLOW
  local outline=Instance.new("UIStroke");outline.Thickness=2;outline.Parent=label
- local arrow=PaperUI.words(board,"Arrow","▼",0,40,220,60,56);arrow.Size=UDim2.new(1,0,0,60);arrow.TextXAlignment=Enum.TextXAlignment.Center;arrow.TextColor3=YELLOW
- outline:Clone().Parent=arrow
- local edge=PaperUI.words(gui,"EdgeArrow","➤",0,0,70,70,64);edge.AnchorPoint=Vector2.new(.5,.5);edge.TextXAlignment=Enum.TextXAlignment.Center;edge.TextColor3=YELLOW;edge.Visible=false
- outline:Clone().Parent=edge
+ local arrow=crayonArrow(board,"Arrow",64,90);arrow.Position=UDim2.new(.5,0,0,74);arrow.Visible=true
+ local edge=crayonArrow(gui,"EdgeArrow",80,0)
 
  -- Hoops: paper rings built here (this screen only), one at a time, a little off to the side so you have to steer.
  local hoop,hoopModel,lastLocal=nil,nil,nil
@@ -132,12 +141,17 @@ function Tutorial.start(getPlane)
  local function drawSpot(dim)
   local names=spotNames or (pulseName and {pulseName})
   local low,high=nil,nil;if names then low,high=box(names) end
-  frame.Visible=low~=nil
+  frame.Visible=low~=nil;pointer.Visible=low~=nil
   for _,pane in panes do pane.Visible=dim and low~=nil end
   if not low then return end
-  low-=Vector2.new(10,10);high+=Vector2.new(10,10)
+  -- Flash in and out to catch the eye: the border breathes, the dim deepens and lifts, the arrow bounces.
+  local beat=(math.sin(os.clock()*5)+1)/2
+  local grow=6+beat*8
+  low-=Vector2.new(grow,grow);high+=Vector2.new(grow,grow)
   frame.Position=UDim2.fromOffset(low.X,low.Y);frame.Size=UDim2.fromOffset(high.X-low.X,high.Y-low.Y)
-  stroke.Transparency=dim and 0 or .5+.5*math.sin(os.clock()*6)
+  stroke.Transparency=beat*.35;glowStroke.Transparency=.2+beat*.5;frame.BackgroundTransparency=.8+beat*.15
+  pointer.Position=UDim2.fromOffset((low.X+high.X)/2,low.Y-55-beat*18)
+  for _,pane in panes do pane.BackgroundTransparency=.22+beat*.18 end
   if dim then
    local view=gui.AbsoluteSize
    panes[1].Position,panes[1].Size=UDim2.fromOffset(0,0),UDim2.fromOffset(view.X,low.Y)
@@ -215,13 +229,13 @@ function Tutorial.start(getPlane)
 
  -- The tutorial's own room (a new player's first join, or a replay) starts Flight School by itself, once.
  local function autoStart()
-  if Root:GetAttribute("TutorialRoom") and not Tutorial.autoStarted then Tutorial.autoStarted=true;task.delay(1,Tutorial.begin) end
+  if Root:GetAttribute("TutorialRoom") and not Tutorial.autoStarted and not Tutorial.active then Tutorial.autoStarted=true;task.delay(1,Tutorial.begin) end
  end
  Root:GetAttributeChangedSignal("TutorialRoom"):Connect(autoStart);autoStart()
 
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName=nil,nil,nil
-  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(false);for _,pane in panes do pane.Visible=false end;return end
+  if not Tutorial.active then note.Visible=false;drawMarker();drawSpot(false);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
@@ -234,7 +248,7 @@ function Tutorial.start(getPlane)
   -- Back at the desk after a crash: fly again by yourself (only the launch and landing steps wait for you).
   if ctx.state=="DESK" and Tutorial.index>1 and not step.land and not step.gotIt and os.clock()-relaunchAsked>2 then relaunchAsked=os.clock();Root.FlightAction:FireServer("launch") end
   note.Visible=not Root:GetAttribute("OverlayOpen")
-  title.Text=string.format("%s  ·  step %d of %d",Tutorial.lesson.name,Tutorial.index,#Tutorial.lesson.steps)
+  title.Text=string.format("%s  -  step %d of %d",Tutorial.lesson.name,Tutorial.index,#Tutorial.lesson.steps)
   local result=plane and step.update(ctx) or false
   local count=step.count
   local finished=count and type(result)=="number" and result>=count or result==true or (step.gotIt and Tutorial.gotIt)
@@ -243,7 +257,8 @@ function Tutorial.start(getPlane)
   gotIt.Visible=step.gotIt==true
   local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt
   hint.Text=stuck and step.hint and ("Tip: "..step.hint) or ""
-  if stuck and marked then arrow.TextSize=56+math.abs(math.sin(os.clock()*4))*24 else arrow.TextSize=56 end
+  local swell=stuck and marked and math.abs(math.sin(os.clock()*4))*30 or 0
+  arrow.Size=UDim2.fromOffset(64+swell,64+swell)
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end
   drawMarker();drawSpot(spotNames~=nil)
