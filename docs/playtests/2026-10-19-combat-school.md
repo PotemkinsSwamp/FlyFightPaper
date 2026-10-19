@@ -93,12 +93,15 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - Pals the same speed as you, not faster. **Done.**
 
 ## Round 15
-- Step 8's Pal still didn't come after you. **Not found yet** by reading the code; needs a Play run with its thinking logged.
+- Step 8's Pal still didn't come after you. **Found in Play:** it appeared 550 studs away facing away, flew off for
+  5 s, then couldn't catch a player flying away at its own speed. **Done:** it appears 300-450 ahead facing you,
+  heads straight for you, 25% faster while hunting. Measured: closing at once, Health 120 to 101 in 10 s.
+- Checked in Play: no eraser while frozen; the first came 1.5 s after the freeze ended, 200 studs ahead.
 - Step 13 (second slow-motion eraser lock) is redundant. **Cut.**
 - INCOMING / BREAK NOW! hidden behind the lesson note. **Done:** the note sits higher, the warning just under it.
 - Step 7's Pal does too many maneuvers. **Found:** the normal bot brain started orbits and break turns. **Done:** no
   stunts; it flies straight away from you.
 
-Next: find step 8 in Play, then Alan plays Combat School again.
+Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

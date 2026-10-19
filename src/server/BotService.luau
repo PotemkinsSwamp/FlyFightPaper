@@ -44,7 +44,9 @@ function Service:placePal(p)
  local half=self.flight.boundsSize/2-Vector3.one*60
  local open,hidden
  for _,turn in {0,20,-20,40,-40,70,-70,110,-110,180} do
-  for _,range in {600,500,700,400} do
+  -- A pellet Pal is there to attack you: closer, and facing you (Alan 2026-10-19: it "doesn't come after me";
+  -- measured, it spent its first 5 s turning round from 550 studs away).
+  for _,range in p.pal.mode=="pellet" and {350,300,450} or {600,500,700,400} do
    local at=from+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*range+Vector3.yAxis*20
    local inside=self.flight.boundsCF:PointToObjectSpace(at)
    ball.Position=at
@@ -58,6 +60,7 @@ function Service:placePal(p)
  ball:Destroy()
  local at=hidden or open or Course.POINTS[2]
  local away=(at-from)*Vector3.new(1,0,1);away=away.Magnitude>1 and away.Unit or heading
+ if p.pal.mode=="pellet" then away=-away end
  p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
  -- Half a normal plane's Health in lessons (Alan 2026-10-19: full Health made them frustrating).
  p.model:SetAttribute("MaxHealth",p.stats.health/2);p.model:SetAttribute("Health",p.stats.health/2)
@@ -439,10 +442,12 @@ function Service:decide(p,b,now)
   -- A pellet Pal hunts you without a break until your Health is down to half (Alan 2026-10-19: "whittle your health
   -- down" so you learn it; its hits can't fold you), then turns "circle" and runs; an eraser Pal's erasers come
   -- from ahead on their own (palEraser).
+  local player=self.flight.byId[p.foeOf]
   if victim and p.pal.mode=="pellet" then
    b.target=victim;b.mode="chase";b.goal=victim.body.Position;b.lastSeen=now;b.lastKnown=victim.body.Position;b.lastVelocity=victim.body.AssemblyLinearVelocity
+  elseif p.pal.mode=="pellet" and player then
+   b.target=nil;b.mode="patrol";b.goal=player.body.Position -- not shooting yet, but already on its way to you
   else
-   local player=self.flight.byId[p.foeOf]
    b.target=nil;b.mode="patrol";b.goal=wander(self,b,position,now,player and player.body.Position)
   end
  end
@@ -572,7 +577,8 @@ function Service:steer(p,b,dt,now)
  b.heading=desired
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost
  -- A Pal flies at `pal.speed` times its plane's own speed, not a bot's slower share (RoundRuntime:lesson).
- local cruise,lift=p.stats.speed*(p.pal and p.pal.speed or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
+ -- A hunting pellet Pal is 25% faster, or a player flying away at the same speed is never caught (measured).
+ local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*(p.pal.mode=="pellet" and 1.25 or 1) or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
  if p.model:GetAttribute("Boosting") then lift=math.max(lift,1) end -- boost flies along the nose even with no Lift
  local speed=cruise*bleed
  b.glide=lift<=0 and FlightRules.glide(b.glide or b.momentum,desired,cruise,dt) or nil
