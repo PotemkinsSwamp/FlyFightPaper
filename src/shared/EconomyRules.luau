@@ -262,6 +262,43 @@ function EconomyRules.validateEquipmentPurchase(profile, catalog, catalogID, ope
 		catalogID = catalogID, priceMilli = priceMilli, chargedMilli = priceMilli, alreadyOwned = false })
 end
 
+function EconomyRules.prestige(profile, catalog, operationID, config)
+	local ok, err = validateOperationID(operationID)
+	if not ok then return nil, err end
+	if type(catalog) ~= "table" or type(catalog.starterLoadout) ~= "function" or type(catalog.validateLoadout) ~= "function" then
+		return failure("invalid_catalog", "prestige requires an actual Catalog instance")
+	end
+	config = economyConfig(config)
+	if not config or not validSafeInteger(config.prestige_max) or config.prestige_max < 1 then
+		return failure("invalid_economy_config", "prestige maximum must be a positive safe integer")
+	end
+	local initialXP = type(config.initial_total_xp) == "number" and config.initial_total_xp * MILLI
+	if not validSafeInteger(initialXP) then return failure("invalid_economy_config", "initial XP must be exact nonnegative milliunits") end
+	local updated, profileError = cloneProfile(profile)
+	if not updated then return failure("invalid_profile", profileError) end
+	if not validSafeInteger(updated.prestige) or updated.prestige > config.prestige_max
+		or type(updated.presets) ~= "table" or (updated.refolds ~= nil and type(updated.refolds) ~= "table") then
+		return failure("invalid_profile", "prestige requires a valid rank, presets and refolds")
+	end
+	local level, levelError = EconomyRules.levelForXP(updated.xpMilli, config)
+	if not level then return nil, levelError end
+	if level ~= config.level_cap then return failure("not_at_level_cap", "prestige requires the level cap") end
+	if updated.prestige >= config.prestige_max then return failure("prestige_max", "maximum prestige rank reached") end
+	if updated.refolds and next(updated.refolds) ~= nil then return failure("refold_pending", "finish pending refolds before prestige") end
+	local ownership, ownershipError = EconomyRules.starterOwnership(catalog)
+	if not ownership then return nil, ownershipError end
+	local newLevel, newLevelError = EconomyRules.levelForXP(initialXP, config)
+	if not newLevel then return nil, newLevelError end
+	updated.prestige += 1
+	updated.xpMilli = initialXP
+	updated.ownership = ownership
+	for _, preset in ipairs(updated.presets) do
+		if type(preset) ~= "table" then return failure("invalid_profile", "presets must be tables") end
+		if not catalog:validateLoadout(preset.loadout, ownership, newLevel) then preset.loadout = catalog:starterLoadout() end
+	end
+	return immutableResult(updated, { type = "Prestiged", operationID = operationID, prestige = updated.prestige })
+end
+
 -- Purchased Paper is added without conversion, multiplier, earned balance or XP effects.
 function EconomyRules.addPurchasedPaper(profile, wholePaper, operationID)
 	local ok, err = validateOperationID(operationID)

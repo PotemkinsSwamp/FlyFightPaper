@@ -43,6 +43,7 @@ return JSONTypes.map({
         ["target_points_max_per_participation"] = 500,
         ["zone_per_5_eligible_seconds"] = 20,
     }),
+    ["prestige_max"] = 10,
     ["reference_match"] = JSONTypes.map({
         ["assist_damage_share"] = 0.4,
         ["assists"] = 4,

@@ -1,6 +1,7 @@
 local Root=game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
+local EconomyConfig=require(Root.Generated.Economy)
 local Catalog=require(Root.Shared.Catalog)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
@@ -13,6 +14,16 @@ function Spec.run()
 		assert(Schema.canonical(p.ownership)==Schema.canonical(starter) and #p.presets==5)
 		assert(p.paperMilli==require(Root.Generated.Economy).initial_paper*1000)
 		assert(p.xpMilli==require(Root.Generated.Economy).initial_total_xp*1000)
+		assert(p.schemaVersion==5 and p.prestige==0)
+	end)
+	test("prestige accepts ranks zero through the configured maximum and rejects invalid ranks",function()
+		for rank=0,EconomyConfig.prestige_max do
+			local p=fresh(); p.prestige=rank; assert(Schema.validate(p,catalog))
+		end
+		for _,rank in ipairs({-1,EconomyConfig.prestige_max+1,0.5,"1",false,0/0,math.huge}) do
+			local p=fresh(); p.prestige=rank; assert(not Schema.validate(p,catalog))
+		end
+		local p=fresh(); p.prestige=nil; assert(not Schema.validate(p,catalog))
 	end)
 	test("new profiles have valid default crosshair settings",function()
 		local p=fresh()
@@ -39,37 +50,56 @@ function Spec.run()
 		local p=fresh(); p.settings.crosshairColor=nil; assert(not Schema.validate(p,catalog))
 		p=fresh(); p.settings.crosshairSize=nil; assert(not Schema.validate(p,catalog))
 	end)
-	test("previous schema migration adds only crosshair defaults without mutating input",function()
-		local p=fresh(); p.schemaVersion=Schema.VERSION-1; p.settings.crosshairColor=nil; p.settings.crosshairSize=nil
+	test("v3 migration adds crosshair and prestige defaults without mutating input",function()
+		local p=fresh(); p.schemaVersion=3; p.prestige=nil; p.settings.crosshairColor=nil; p.settings.crosshairSize=nil
 		p.paperMilli=1234567; p.settings.music=0.25; p.settings.quality="Low"; p.extensions={custom={kept=true}}
 		local original=Schema.canonical(p)
 		local migrated=assert(Schema.migrate(p,catalog))
 		assert(migrated.schemaVersion==Schema.VERSION and migrated.settings.crosshairColor=="blue" and migrated.settings.crosshairSize=="Medium")
 		assert(Schema.validate(migrated,catalog))
 		assert(Schema.canonical(p)==original,"migration mutated input")
-		local expected=assert(Schema.copy(p)); expected.schemaVersion=Schema.VERSION
+		local expected=assert(Schema.copy(p)); expected.schemaVersion=Schema.VERSION; expected.prestige=0
 		expected.settings.crosshairColor="blue"; expected.settings.crosshairSize="Medium"
 		assert(Schema.canonical(migrated)==Schema.canonical(expected),"migration changed unrelated fields")
 	end)
+	test("v4 migration adds only prestige and schema version while keeping the complete save",function()
+		local p=fresh(); p.schemaVersion=4; p.prestige=nil; p.version=12; p.generation=3
+		p.paperMilli=1234567; p.earnedPaperMilli=987654; p.purchasedPaperMilli=555000; p.xpMilli=60000000
+		p.ownership.staple=true; p.presets[1].name="Old build"; p.presets[1].loadout.weapon_mounts[1]="staple"
+		p.settings.music=0.25; p.settings.crosshairColor="red"; p.settings.crosshairSize="Large"
+		p.boosts={paperSeconds=12.5,xpSeconds=900,permanentPaper=true,permanentXP=false}
+		p.qualification={count=2,history={first=true,second=true}}
+		p.statistics={matches=8,wins=3,eliminations=40,deaths=12}
+		p.operationIds={old=7}; p.operationSessions={"old"}; p.receiptIds={receipt=true}; p.extensions={kept=true}
+		p.lease={nonce="old",generation=3,expires=100}
+		p.refolds={pending={state="reserved",costMilli=require(Root.Generated.Gameplay).service.full_refold_paper*1000,
+			loadout=catalog:starterLoadout(),fence={nonce="old",generation=3,sessionGeneration=1,actorId="pilot",lifeId="1",matchId="match",participationId="pilot",padId="desk"}}}
+		local original=Schema.canonical(p); local expected=assert(Schema.copy(p))
+		expected.schemaVersion=5; expected.prestige=0
+		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
+		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v4 migration changed unrelated fields")
+		assert(Schema.canonical(p)==original,"v4 migration mutated input")
+		assert(Schema.canonical(Schema.migrate(migrated,catalog))==Schema.canonical(migrated))
+	end)
 	test("v1 migration preserves exact value and unrelated fields",function()
-		local p=fresh(); p.schemaVersion=1; p.streams=nil; p.journal={}; p.operationIds=nil; p.operationSessions=nil; p.receiptIds=nil; p.paperMilli=1234567; p.xpMilli=98765
+		local p=fresh(); p.schemaVersion=1; p.prestige=nil; p.streams=nil; p.journal={}; p.operationIds=nil; p.operationSessions=nil; p.receiptIds=nil; p.paperMilli=1234567; p.xpMilli=98765
 		p.settings.crosshairColor=nil; p.settings.crosshairSize=nil
 		p.boosts.xpSeconds=10.25; p.extensions={custom={kept=true}}
 		assert(catalog:get("pencil") and not p.ownership.pencil); p.ownership.pencil=true
 		local ownership=Schema.canonical(p.ownership)
 		local migrated=assert(Schema.migrate(p,catalog))
-		assert(migrated.schemaVersion==Schema.VERSION and migrated.paperMilli==1234567 and migrated.xpMilli==98765)
+		assert(migrated.schemaVersion==Schema.VERSION and migrated.prestige==0 and migrated.paperMilli==1234567 and migrated.xpMilli==98765)
 		assert(migrated.boosts.xpSeconds==10.25 and migrated.extensions.custom.kept and p.schemaVersion==1)
 		assert(migrated.ownership.pencil and Schema.canonical(migrated.ownership)==ownership)
 		assert(Schema.canonical(p.ownership)==ownership,"migration mutated input ownership")
 		assert(migrated.settings.crosshairColor=="blue" and migrated.settings.crosshairSize=="Medium" and Schema.validate(migrated,catalog))
 		p.ownership=nil; assert(not Schema.migrate(p,catalog))
 	end)
-	test("v2 migration continues through crosshair defaults",function()
-		local p=fresh(); p.schemaVersion=2; p.journal={}; p.streams={}; p.operationIds=nil; p.operationSessions=nil; p.receiptIds=nil
+	test("v2 migration continues through crosshair and prestige defaults",function()
+		local p=fresh(); p.schemaVersion=2; p.prestige=nil; p.journal={}; p.streams={}; p.operationIds=nil; p.operationSessions=nil; p.receiptIds=nil
 		p.settings.crosshairColor=nil; p.settings.crosshairSize=nil
 		local migrated=assert(Schema.migrate(p,catalog))
-		assert(migrated.schemaVersion==Schema.VERSION and migrated.settings.crosshairColor=="blue" and migrated.settings.crosshairSize=="Medium")
+		assert(migrated.schemaVersion==Schema.VERSION and migrated.prestige==0 and migrated.settings.crosshairColor=="blue" and migrated.settings.crosshairSize=="Medium")
 		assert(migrated.journal==nil and migrated.streams==nil and Schema.validate(migrated,catalog))
 	end)
 	test("malformed and future versions fail closed",function()

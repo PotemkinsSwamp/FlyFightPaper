@@ -3,6 +3,7 @@ local Rules = require(Root.Shared.EconomyRules)
 local Catalog = require(Root.Shared.Catalog)
 local CatalogConfig = require(Root.Generated.Catalog)
 local EconomyConfig = require(Root.Generated.Economy)
+local Schema = require(Root.Shared.ProfileSchema)
 local Suite = require(script.Parent.Parent.fixtures.Suite)
 
 local function profile(paper, xp, ownership)
@@ -13,6 +14,13 @@ end
 local function rejected(result, err, code)
 	assert(result == nil and type(err) == "table" and err.type == "EconomyRejected", "expected typed rejection")
 	if code then assert(err.code == code, tostring(err.code) .. " != " .. code) end
+end
+
+local function xpAtCap(config)
+	config = config or EconomyConfig
+	local xp = 0
+	for level = 1, config.level_cap - 1 do xp += (config.xp_next_level_base + config.xp_next_level_step * (level - 1)) * 1000 end
+	return xp
 end
 
 local Spec = {}
@@ -155,6 +163,86 @@ function Spec.run()
 		assert(bought.profile.earnedPaperMilli == 0 and bought.profile.xpMilli == 0)
 		local level = assert(Rules.levelForXP(bought.profile.xpMilli))
 		assert(level == 1 and before.paperMilli == 0)
+	end)
+	test("prestige at the exact level cap increments rank and returns an immutable result without changing input", function()
+		local p = Schema.defaults(catalog); p.xpMilli = xpAtCap()
+		local original = Schema.canonical(p)
+		local prestiged = assert(Rules.prestige(Schema.freeze(p), catalog, "prestige-cap"))
+		assert(prestiged.operation.type == "Prestiged" and prestiged.operation.operationID == "prestige-cap" and prestiged.operation.prestige == 1)
+		assert(prestiged.profile.prestige == 1 and prestiged.profile.xpMilli == EconomyConfig.initial_total_xp * 1000)
+		assert(Rules.levelForXP(prestiged.profile.xpMilli) == 1 and Schema.validate(prestiged.profile, catalog))
+		assert(Schema.canonical(p) == original, "prestige mutated input")
+		assert(table.isfrozen(prestiged) and table.isfrozen(prestiged.operation) and table.isfrozen(prestiged.profile))
+		assert(table.isfrozen(prestiged.profile.presets[1].loadout) and table.isfrozen(prestiged.profile.ownership))
+		assert(not pcall(function() prestiged.profile.prestige = 2 end))
+	end)
+	test("prestige discards excess XP and only changes rank XP ownership and invalid preset loadouts", function()
+		local p = Schema.defaults(catalog); p.prestige = 3; p.xpMilli = xpAtCap() + 1234567
+		p.paperMilli = 1234567; p.earnedPaperMilli = 7654321; p.purchasedPaperMilli = 999000
+		p.ownership.staple = true; p.ownership.pencil = true
+		p.presets[1].name = "Keep my name"; p.presets[1].loadout.weapon_mounts[1] = "staple"
+		p.presets[2].name = "Legal starter parts"; p.presets[2].loadout.weapon_mounts[1] = false
+		p.settings = { music = 0.25, sound = 0.5, sensitivity = 2, reducedShake = true, quality = "Low", crosshairColor = "red", crosshairSize = "Large" }
+		p.boosts = { paperSeconds = 31.5, xpSeconds = 7200, permanentPaper = true, permanentXP = true }
+		p.qualification = { count = 2, history = { first = true, second = true } }
+		p.statistics = { matches = 14, wins = 5, eliminations = 60, deaths = 20 }
+		p.operationIds = { old = 12 }; p.operationSessions = { "old" }; p.receiptIds = { receipt = true }
+		p.extensions = { cosmetics = { skin = "kept" } }; p.refolds = {}
+		assert(Schema.validate(p, catalog))
+		local original = Schema.canonical(p); local expected = assert(Schema.copy(p))
+		expected.prestige = 4; expected.xpMilli = EconomyConfig.initial_total_xp * 1000
+		expected.ownership = assert(Schema.copy(assert(Rules.starterOwnership(catalog))))
+		expected.presets[1].loadout = catalog:starterLoadout()
+		local prestiged = assert(Rules.prestige(p, catalog, "prestige-preserve"))
+		assert(Schema.canonical(prestiged.profile) == Schema.canonical(expected), "prestige changed unrelated progress or a legal preset")
+		assert(Schema.canonical(p) == original and Schema.validate(prestiged.profile, catalog))
+	end)
+	test("prestige refuses below cap at maximum rank and whenever refolds are pending without changing input", function()
+		local p = Schema.defaults(catalog); p.xpMilli = xpAtCap() - 1
+		local original = Schema.canonical(p)
+		local value, err = Rules.prestige(p, catalog, "prestige-low")
+		rejected(value, err, "not_at_level_cap"); assert(Schema.canonical(p) == original)
+		p.xpMilli = xpAtCap(); p.prestige = EconomyConfig.prestige_max
+		original = Schema.canonical(p)
+		value, err = Rules.prestige(p, catalog, "prestige-max")
+		rejected(value, err, "prestige_max"); assert(Schema.canonical(p) == original)
+		p.prestige = 0
+		for _, state in ipairs({ "reserved", "delivered", "applied", "cancelled" }) do
+			p.refolds = { pending = { state = state } }; original = Schema.canonical(p)
+			value, err = Rules.prestige(p, catalog, "prestige-pending")
+			rejected(value, err, "refold_pending"); assert(Schema.canonical(p) == original)
+		end
+		p.refolds = {}; p.prestige = EconomyConfig.prestige_max - 1
+		assert(assert(Rules.prestige(p, catalog, "prestige-last")).profile.prestige == EconomyConfig.prestige_max)
+	end)
+	test("prestige uses the supplied cap rank maximum and configured initial XP", function()
+		local tuned = table.clone(EconomyConfig)
+		tuned.level_cap = 3; tuned.prestige_max = 2; tuned.initial_total_xp = 0.125
+		local p = Schema.defaults(catalog); p.xpMilli = xpAtCap(tuned); p.prestige = 1
+		local prestiged = assert(Rules.prestige(p, catalog, "prestige-tuned", tuned))
+		assert(prestiged.profile.prestige == 2 and prestiged.profile.xpMilli == 125)
+		assert(Rules.levelForXP(prestiged.profile.xpMilli, tuned) == 1)
+		p.prestige = 2
+		local value, err = Rules.prestige(p, catalog, "prestige-tuned-max", tuned)
+		rejected(value, err, "prestige_max")
+	end)
+	test("prestige validates operation ids profiles and configuration before applying changes", function()
+		local p = Schema.defaults(catalog); p.xpMilli = xpAtCap()
+		for _, id in ipairs({ "", false, 123, string.rep("x", 161) }) do
+			local value, err = Rules.prestige(p, catalog, id); rejected(value, err, "invalid_operation_id")
+		end
+		local value, err = Rules.prestige(p, catalog, nil); rejected(value, err, "invalid_operation_id")
+		for _, rank in ipairs({ -1, 0.5, EconomyConfig.prestige_max + 1, "1" }) do
+			p.prestige = rank
+			value, err = Rules.prestige(p, catalog, "prestige-invalid"); rejected(value, err, "invalid_profile")
+		end
+		p.prestige = nil
+		value, err = Rules.prestige(p, catalog, "prestige-missing"); rejected(value, err, "invalid_profile")
+		p.prestige = 0
+		local tuned = table.clone(EconomyConfig); tuned.prestige_max = -1
+		value, err = Rules.prestige(p, catalog, "prestige-config", tuned); rejected(value, err, "invalid_economy_config")
+		tuned.prestige_max = 10; tuned.initial_total_xp = -1
+		value, err = Rules.prestige(p, catalog, "prestige-xp", tuned); rejected(value, err, "invalid_economy_config")
 	end)
 	test("humanity/controller source cannot alter pure reward arithmetic", function()
 		local sameHuman = assert(Rules.contributionMilli(100, 2, 1))

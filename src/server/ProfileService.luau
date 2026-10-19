@@ -105,6 +105,12 @@ function Service:_effect(p,op,boostState)
 	elseif op.kind=="finalBonus" then
 		applied,err=Economy.applyFinalBonuses(v,{finalPaper=op.finalPaper,finalXP=op.finalXP},op.multipliers,op.id)
 	elseif op.kind=="equipmentPurchase" then applied,err=Economy.validateEquipmentPurchase(v,self.catalog,op.catalogID,op.id)
+	elseif op.kind=="prestige" then
+		-- Keep unrelated save fields outside the economy rules' smaller copy bounds.
+		local prestigeView=assert(Schema.copy(v))
+		prestigeView.prestige=p.prestige;prestigeView.presets=p.presets;prestigeView.refolds=p.refolds
+		applied,err=Economy.prestige(prestigeView,self.catalog,op.id)
+		if applied then p.prestige=applied.profile.prestige;p.presets=assert(Schema.copy(applied.profile.presets)) end
 	elseif op.kind=="purchasedPaper" then applied,err=Economy.addPurchasedPaper(v,op.wholePaper,op.id)
 	elseif op.kind=="preset" then
 		if not Schema.integer(op.slot) or op.slot<1 or op.slot>Gameplay.menus.saved_loadouts then return nil,"invalid_slot" end
@@ -176,7 +182,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={contribution=true,finalBonus=true,equipmentPurchase=true,preset=true,settings=true,
+local allowed={contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,settings=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}

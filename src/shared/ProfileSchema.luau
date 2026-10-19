@@ -3,7 +3,7 @@ local Economy = require(script.Parent.EconomyRules)
 local EconomyConfig = require(script.Parent.Parent.Generated.Economy)
 local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
-local Schema = { VERSION = 4, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
+local Schema = { VERSION = 5, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
@@ -74,7 +74,7 @@ function Schema.defaults(catalog)
 	local paper, xp = EconomyConfig.initial_paper*1000, EconomyConfig.initial_total_xp*1000
 	assert(integer(paper) and integer(xp),"invalid_initial_economy")
 	local p = { schemaVersion = Schema.VERSION, version = 0, generation = 0, paperMilli = paper, earnedPaperMilli = 0,
-		purchasedPaperMilli = 0, xpMilli = xp, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
+		purchasedPaperMilli = 0, xpMilli = xp, prestige = 0, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
 		presets = {}, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium" },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
 		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {} }
@@ -85,9 +85,10 @@ function Schema.validate(record, catalog)
 	local p, err = Schema.copy(record); if not p then return nil, err end
 	local ok, message = pcall(function()
 		exact(p, { schemaVersion=1, version=1, generation=1, lease=0, paperMilli=1, earnedPaperMilli=1, purchasedPaperMilli=1,
-			xpMilli=1, ownership=1, presets=1, settings=1, qualification=1, boosts=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, extensions=0, refolds=0 })
+			xpMilli=1, prestige=1, ownership=1, presets=1, settings=1, qualification=1, boosts=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, extensions=0, refolds=0 })
 		assert(p.schemaVersion == Schema.VERSION, "unsupported_schema")
 		assert(integer(p.version) and integer(p.generation), "invalid_version")
+		assert(integer(p.prestige) and p.prestige<=EconomyConfig.prestige_max, "invalid_prestige")
 		for _, k in ipairs(moneyFields) do assert(integer(p[k]), "invalid_money") end
 		for id, owned in pairs(p.ownership) do assert(type(id)=="string" and catalog:get(id) and owned==true, "invalid_ownership") end
 		local level = assert(Economy.levelForXP(p.xpMilli))
@@ -152,7 +153,11 @@ function Schema.migrate(record, catalog)
 	if p.schemaVersion==3 then
 		if type(p.settings)~="table" then return nil,"missing_table" end
 		p.settings.crosshairColor="blue";p.settings.crosshairSize="Medium"
-		p.schemaVersion=Schema.VERSION
+		p.schemaVersion=4
+	end
+	if p.schemaVersion==4 then
+		p.prestige=0
+		p.schemaVersion=5
 	end
 	-- Loadout tuning can invalidate an otherwise readable save. Keep its account and preset names intact.
 	local level=Economy.levelForXP(p.xpMilli)

@@ -5,6 +5,7 @@ Your Paper, XP, level, owned parts, five saved builds and settings are kept betw
 lost if a save fails for a moment; it retries without stopping the match for everyone else.
 
 ## Where it stands (2026-10-15)
+The save now has a prestige rank (schema 5); its rules are on [Economy and shop](economy-and-shop.md#prestige).
 Built on ProfileStore (Stage 5, Codex's lane) and tested with a fake save store. In Studio, progress lasts one
 Play session only. Published privately on 2026-10-17 ([how](../decisions/2026-10-07-private-publish.md)); real
 saving, rejoin, server hop and multi-player tests are next, played on Roblox itself.
@@ -34,7 +35,8 @@ Receipt IDs have a dedicated profile field. Real receipt processing stays disabl
 | `src/server/ProfileRuntime.luau` | One save session per player: load, autosave, final save, Studio mock |
 | `src/server/ProfileService.luau` | Changes to a save (rewards, boosts, refolds), each applied exactly once |
 | `src/server/RewardQueue.luau` | Retries a failed reward without blocking the round |
-| `src/shared/ProfileSchema.luau` | What a save file may contain (version 4) |
+| `src/shared/ProfileSchema.luau` | What a save file may contain |
+| `tests/unit/ProfileService.spec.luau` | Save changes, prestige and duplicate requests |
 | `src/server/Packages/` | ProfileStore library (third party, unmodified) |
 
 ## Tuning numbers
