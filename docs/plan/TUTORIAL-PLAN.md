@@ -92,6 +92,9 @@ the plane takes off by itself, the step carries on, and the Pal holds fire until
 End card: "You're ready!" with **Go to a match**.
 
 ### Lesson 3: Weapons Range (Training Room, optional, about 3 minutes)
+Changed by Alan 2026-10-19: the Range is its own small map with its own menu button, not a lesson, and the Hangar
+Tour runs inside it ([decision](../decisions/2026-10-19-range-map-and-hangar-tour.md)); this section and Lesson 4 get
+rewritten after the research.
 Six stations, one weapon each: Pellet Gun, Staple Burst, Rubber Band Repeater, Precision Paperclip, Guided Eraser,
 Pencil Launcher. Your plane switches to that weapon, one line says how it fires ("Hold to spray", "One big shot, slow
 reload", "Hold to lock"...), and you hit the station's target to move on. Opened from the Training board only.

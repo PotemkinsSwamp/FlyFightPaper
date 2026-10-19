@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-19: [The Range is its own small map; the Hangar Tour happens there](2026-10-19-range-map-and-hangar-tour.md)
 - 2026-10-19: [Combat School approved](2026-10-19-combat-school-approved.md)
 - 2026-10-19: [Much less aim assist, none in lessons; red dot means a hit without help](2026-10-19-less-aim-assist.md)
 - 2026-10-19: [Aiming lesson in slow motion; Combat Training Pals can't fold you](2026-10-19-aiming-and-combat-lessons.md)
