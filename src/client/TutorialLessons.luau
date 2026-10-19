@@ -35,14 +35,18 @@ local function inFan(position)
  return false
 end
 
+local function launch()
+ return {text="Click LAUNCH to take off!",key="Enter",
+  update=function(ctx)
+   ctx.spotlight("Launch")
+   return ctx.clicked("Launch") or (ctx.state~="DESK" and ctx.state~=nil)
+  end}
+end
+
 Lessons.flight={
- name="Flight School",
+ name="Flight School",next="aim",
  steps={
-  {text="Click LAUNCH to take off!",key="Enter",
-   update=function(ctx)
-    ctx.spotlight("Launch")
-    return ctx.clicked("Launch") or (ctx.state~="DESK" and ctx.state~=nil)
-   end},
+  launch(),
   {text="Move the mouse to steer through the hoops.",key="Mouse",count=3,hint="Your plane turns toward the circle.",
    enter=function(ctx) ctx.data.passed=0 end,
    update=function(ctx)
@@ -85,6 +89,153 @@ Lessons.flight={
    update=function(ctx)
     ctx.spotlight("Refill","Repair","Fresh","Refold")
     return false
+   end},
+ },
+}
+
+-- Shared by the shooting steps: a marker on the nearest practice target, and the overheat tip (doesn't hold you up).
+local function markTarget(ctx,words)
+ local target=ctx.targets()[1]
+ if target then ctx.marker(target.Root.Position,words,16,target) end
+end
+local function overheated(ctx)
+ return ctx.plane~=nil and workspace:GetServerTimeNow()<(ctx.plane:GetAttribute("MountCoolingUntil1") or 0)
+end
+local function shootText(words)
+ return function(ctx) return overheated(ctx) and "Too hot! Let go of left click to cool down." or words end
+end
+local function noseOn(ctx,position,degrees)
+ return ctx.body~=nil and ctx.body.CFrame.LookVector:Dot((position-ctx.body.Position).Unit)>math.cos(math.rad(degrees))
+end
+local Course=require(Root.Shared.TrainingCourse)
+
+-- Aiming (Alan 2026-10-19): first in slow motion, so there's time to see how the circle, the dot, the orange
+-- ring and the eraser lock work; then once more at full speed. Walls only bounce you off (gentle).
+Lessons.aim={
+ name="Aiming",next="combat",
+ steps={
+  launch(),
+  {text="Slow motion! The circle is where you steer. The dot is where your guns point. Put the dot on the star.",key="Mouse",
+   hint="Hold the circle on the star and wait: the dot slides over to it.",
+   enter=function(ctx) ctx.lesson({slow=true});ctx.data.point=1;ctx.data.held=0 end,
+   update=function(ctx)
+    if ctx.state~="FLYING" then return false end
+    local star=ctx.star(Course.POINTS[ctx.data.point])
+    -- Flew past it: the star waits at the next point instead.
+    if (star.Position-ctx.body.Position).Magnitude<45 then ctx.data.point=ctx.data.point%#Course.POINTS+1 end
+    ctx.spotlight("AimCircle","NoseDot")
+    ctx.marker(star.Position,"STAR",12,star)
+    ctx.data.held=noseOn(ctx,star.Position,4) and ctx.data.held+ctx.dt or 0
+    return ctx.data.held>=1
+   end},
+  {text=shootText("Put the dot on a target. When the dot turns green, hold left click!"),key="Left click",count=3,
+   hint="Wait for the dot to turn green, then hold left click.",
+   enter=function(ctx) ctx.lesson({drill="still"}) end,
+   update=function(ctx)
+    markTarget(ctx,"SHOOT")
+    return ctx.count("DrillDown")
+   end},
+  {text=shootText("Moving targets: put the dot on the orange ring, not on the plane."),key="Left click",count=2,
+   hint="The orange ring is where your pellets meet the plane. Dot on the ring, then shoot.",
+   enter=function(ctx) ctx.lesson({drill="moving"}) end,
+   update=function(ctx)
+    ctx.spotlight("LeadPipper")
+    markTarget(ctx,"SHOOT")
+    return ctx.count("DrillDown")
+   end},
+  -- Holding right click through the 1.5 s lock fires the eraser by itself (CombatService), so no "let go" step.
+  {text="Your eraser chases planes. Hold right click and keep a target inside the big circle.",key="Right click",
+   hint="Turn so the target sits inside the big circle round your nose.",
+   enter=function(ctx) ctx.lesson({drill="eraser"}) end,
+   update=function(ctx)
+    ctx.spotlight("EraserSeeker")
+    markTarget(ctx,"LOCK ON")
+    return ctx.plane~=nil and (ctx.plane:GetAttribute("LockProgress") or 0)>=.3
+   end},
+  {text=function(ctx)
+    local progress=ctx.plane and ctx.plane:GetAttribute("LockProgress") or 0
+    return progress>0 and progress<1 and "Keep holding... when the box turns red, the eraser fires!" or "Keep it in the circle until the box turns red: the eraser fires and chases!"
+   end,key="Right click",count=2,
+   hint="Lost it? The box starts over when the target leaves the big circle. A quick click fires straight, with no chase.",
+   update=function(ctx)
+    markTarget(ctx,"LOCK ON")
+    return ctx.count("DrillDown")
+   end},
+  {text="Erasers take 4 seconds to reload: watch the right-click row fill up.",gotIt=true,
+   update=function(ctx)
+    ctx.spotlight("RightStrip")
+    return false
+   end},
+  {text=shootText("Full speed! Shoot the moving target: dot on the orange ring."),key="Left click",count=1,
+   hint="Same as before, just faster. Dot on the orange ring.",
+   enter=function(ctx) ctx.lesson({slow=false,drill="fast"}) end,
+   update=function(ctx)
+    markTarget(ctx,"SHOOT")
+    return ctx.count("DrillDown")
+   end},
+  {text="Now lock on with your eraser: hold right click.",key="Right click",count=1,
+   hint="Keep the target in the big circle until the box turns red.",
+   enter=function(ctx) ctx.lesson({drill="fastEraser"}) end,
+   update=function(ctx)
+    markTarget(ctx,"LOCK ON")
+    return ctx.count("DrillDown")
+   end},
+ },
+}
+
+-- Combat Training (TUTORIAL-PLAN Lesson 2): one Pal at a time. Pals can never fold you (only crashes can) and stop
+-- fighting while you're down; the engine shows a countdown and flies you back to the same step.
+local function markPal(ctx,words)
+ local pal=ctx.pal()
+ if pal then ctx.marker(pal.Root.Position,words,16,pal) end
+end
+Lessons.combat={
+ name="Combat Training",doneTitle="You're ready!",
+ steps={
+  launch(),
+  {text=shootText("An enemy! It's slow and won't shoot. Shoot it down: dot on the orange ring."),key="Left click",
+   hint="Follow the line to it, then put the dot on the orange ring and hold left click.",
+   enter=function(ctx) ctx.lesson({pal="circle"});ctx.data.start=ctx.count("PalFolds") end,
+   update=function(ctx)
+    markPal(ctx,"ENEMY")
+    return ctx.count("PalFolds")>ctx.data.start
+   end},
+  {text=function(ctx)
+    local plane=ctx.plane
+    local low=plane and plane:GetAttribute("Health")<=(plane:GetAttribute("MaxHealth") or 1)*.5
+    if overheated(ctx) then return "Too hot! Let go of left click to cool down." end
+    return low and "It hit you: your Health went down. Now it's stopped. Shoot it down!" or "This one shoots back! Watch your Health bar."
+   end,key="Left click",
+   hint="It only shoots until you're at half Health. Then chase it and shoot.",
+   enter=function(ctx) ctx.lesson({pal="pellet"});ctx.data.start=ctx.count("PalFolds") end,
+   update=function(ctx)
+    ctx.pulse("HealthStrip")
+    markPal(ctx,"ENEMY")
+    return ctx.count("PalFolds")>ctx.data.start
+   end},
+  {text=function(ctx)
+    local plane=ctx.plane;local now=workspace:GetServerTimeNow()
+    if plane and now<(plane:GetAttribute("EraserIncomingUntil") or 0) then
+     return (plane:GetAttribute("EraserDistance") or math.huge)<Gameplay.combat.eraser_break_studs and "BREAK NOW! Turn hard, right now!" or "INCOMING! An eraser is chasing you. Wait for BREAK NOW!"
+    end
+    if plane and now<(plane:GetAttribute("IncomingLockUntil") or 0) then return "LOCKED ON! It's about to fire an eraser at you." end
+    if ctx.data.hitOnce then return "It hit you! The next one is slower. Turn hard as soon as you see BREAK NOW!" end
+    return "This one fires slow erasers. Dodge one: when you see BREAK NOW!, turn hard."
+   end,
+   hint="Turn hard the moment BREAK NOW! shows. Turning too early lets it follow you.",
+   enter=function(ctx) ctx.lesson({repair=true,pal="eraser"});ctx.data.misses=ctx.count("PalEraserMisses");ctx.data.hits=ctx.count("PalEraserHits") end,
+   update=function(ctx)
+    if ctx.count("PalEraserHits")>ctx.data.hits then ctx.data.hitOnce=true end
+    markPal(ctx,"ENEMY")
+    return ctx.count("PalEraserMisses")>ctx.data.misses
+   end},
+  {text="Dodged it! Your turn: hold right click with the enemy inside the big circle.",key="Right click",
+   hint="Keep it in the big circle until the box turns red: your eraser fires and chases it.",
+   enter=function(ctx) ctx.lesson({pal="circle"});ctx.data.start=ctx.count("EraserHits") end,
+   update=function(ctx)
+    ctx.spotlight("EraserSeeker")
+    markPal(ctx,"LOCK ON")
+    return ctx.count("EraserHits")>ctx.data.start
    end},
  },
 }

@@ -41,7 +41,7 @@ Alan: small arrows aren't enough; every step must pull your eyes to the one thin
 - **It fades the moment the step is done** (done: LAUNCH fades on click).
 
 ## The lessons
-Five separate lessons. The first two run in your own private **Training Room** (a copy of the classroom with
+Six separate lessons. The first three run in your own private **Training Room** (a copy of the classroom with
 nobody else in it). The rest happen in the normal game.
 
 ### Lesson 1: Flight School (Training Room, about 2 minutes)
@@ -57,23 +57,40 @@ nobody else in it). The rest happen in the normal game.
 End card: "Flight School done!" with **Next: Combat Training** and **Go to a match**.
 (Lessons use a fixed training plane with a booster and an eraser; your own parts and builds are not touched.)
 
-### Lesson 2: Combat Training (Training Room, about 3 minutes)
-| # | What you see | What you do | Moves on when |
-|---|---|---|---|
-| 1 | Three paper targets ahead, each with a marker; the aim circle pulses, left-click picture | Hold left click to shoot them (1/3...) | All 3 down |
-| - | Only if your gun overheats: the heat cells pulse, "Let go to cool down" (doesn't hold you up) | - | - |
-| 2 | One enemy plane (red outline, marker) that flies slowly and doesn't shoot | Shoot it down | Folded, "+100 FOLD" pops |
-| 3 | A second enemy that shoots back slowly; spotlight on your Health bar | Shoot it down (if it folds you, you fly again) | Folded |
-| 4 | The enemy fires a slow eraser at you; "INCOMING!" then "BREAK NOW! Turn hard!" are explained as they appear | Turn hard to dodge it | The eraser misses |
-| 5 | Right-click picture: your training plane has an eraser too | Hold right click on the enemy to lock, let go to fire | Your eraser hits |
-End card: "You're ready!" with **Go to a match** (you're sent to a normal room with beginner bots).
+### Lesson 2: Aiming (Training Room, about 3 minutes; added by Alan 2026-10-18)
+Slow motion first (plane and targets at about a third of their speed, shots at full speed; colours soften, music
+slows), then full speed. Walls only bounce you off. Targets are paper planes held still or circling.
+| # | What you do | Moves on when |
+|---|---|---|
+| 1 | Launch | In the air |
+| 2 | Put the dot on the star (the circle steers; the dot is where the guns point) | Dot on the star for 1 s |
+| 3 | Shoot three still targets when the dot turns green | All 3 down |
+| 4 | Shoot two circling targets: dot on the orange ring | Both down |
+| 5 | Hold right click with a target in the big eraser circle | Lock starts |
+| 6 | Keep holding until the box turns red: the eraser fires and chases (1/2) | 2 down by erasers |
+| 7 | Look: erasers reload in 4 seconds | Got it |
+| 8 | Full speed: one circling target with pellets | Down |
+| 9 | Full speed: one eraser lock | Down |
+End card: "Aiming done!" with **Next: Combat Training**.
 
-### Lesson 3: Weapons Range (Training Room, optional, about 3 minutes)
+### Lesson 3: Combat Training (Training Room, about 3 minutes)
+One "Paper Pal" at a time, at 60% speed. A Pal can never fold you; only crashes can. Folded by a crash: a countdown,
+the plane takes off by itself, the step carries on, and the Pal holds fire until you've flown 2 seconds.
+| # | What you do | Moves on when |
+|---|---|---|
+| 1 | Launch | In the air |
+| 2 | Shoot down a Pal that only flies the course | Folded |
+| 3 | A Pal shoots you until you're at half Health (Health bar framed), then stops: shoot it down | Folded |
+| 4 | Health refilled; a Pal fires slow erasers (INCOMING! / BREAK NOW! explained as they show): dodge one | One misses |
+| 5 | Your eraser on the Pal | Your eraser hits |
+End card: "You're ready!" with **Go to a match**.
+
+### Lesson 4: Weapons Range (Training Room, optional, about 3 minutes)
 Six stations, one weapon each: Pellet Gun, Staple Burst, Rubber Band Repeater, Precision Paperclip, Guided Eraser,
 Pencil Launcher. Your plane switches to that weapon, one line says how it fires ("Hold to spray", "One big shot, slow
 reload", "Hold to lock"...), and you hit the station's target to move on. Opened from the Training board only.
 
-### Lesson 4: Hangar Tour (in the normal game, spotlight through the menus, about 2 minutes)
+### Lesson 5: Hangar Tour (in the normal game, spotlight through the menus, about 2 minutes)
 Offered the first time you open the Hangar ("Show me around?" **Yes** / **Skip**), and replayable from the board.
 1. The part tabs: nose, wings, body, tail, weapons, boost. Click the Wings tab.
 2. A part card: click one to try it on; the plane in the middle changes.
@@ -85,7 +102,7 @@ Offered the first time you open the Hangar ("Show me around?" **Yes** / **Skip**
 8. Save: your five saved builds. Click Save.
 9. Flying it: pick a build at your desk; "Full refold" changes your plane mid-match (costs Paper), "Fresh plane" is free.
 
-### Lesson 5: Match Tips (in your first real matches, each shown once)
+### Lesson 6: Match Tips (in your first real matches, each shown once)
 Short notes that pop up the first time something happens, not before:
 - First spawn: "Fold enemy planes for points. Most points wins."
 - First Team match: "You're on Red/Blue. Don't shoot the blue outlines."
@@ -99,8 +116,8 @@ The main menu's Tutorial button opens a **Training board** listing the five less
 **Play** / **Replay**. Lessons 1-3 move you to your Training Room; 4 and 5 run where you are (5 is just on/off).
 
 ## The Training Room (private and timed)
-- A new player's first join goes straight to their Training Room: Flight School, then Combat Training, then a match.
-- Only you are in it. The room is timed: 8 minutes, with a warning 1 minute before the end. When the lessons
+- A new player's first join goes straight to their Training Room: Flight School, then Aiming, then Combat Training, then a match.
+- Only you are in it. The room is timed: 10 minutes (Alan 2026-10-19, with Aiming added), with a warning 1 minute before the end. When the lessons
   are done, skipped, or time runs out, you're moved to a normal room for your level.
 - If the move fails, it tries again; if it still fails, a button says "Try again".
 - Which lessons you've finished is saved, so the game knows not to send you back unless you ask.

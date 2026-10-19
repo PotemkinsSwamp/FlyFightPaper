@@ -10,7 +10,15 @@ local Config=require(Root.Generated.Gameplay)
 local Routes=require(Root.Shared.AirRoutes)
 local Landing=require(Root.Shared.ServiceRules)
 local DuctRules=require(Root.Shared.DuctRules)
+local Course=require(Root.Shared.TrainingCourse)
 local Service={};Service.__index=Service
+-- Combat Training's Pals (p.pal, set by RoundRuntime:lesson): they only fight while their player has been flying
+-- for 2 seconds (Alan: smooth after a crash), so a player back from a crash isn't jumped on takeoff.
+local PAL_LOOP={1,2,3,2} -- back and forth along the course's checked-clear legs
+function Service:palReady(p,now)
+ local victim=self.flight.byId[p.foeOf]
+ return victim and victim.model:GetAttribute("State")=="FLYING" and now-(victim.launchAt or 0)>2 and victim or nil
+end
 local MIXED_SKILLS={"rookie","regular","experienced"}
 local function aimError(direction,b,now)
  local drift=math.sin(now*.8+b.seed)*b.error
@@ -353,6 +361,18 @@ function Service:decide(p,b,now)
    if self.flight.eraserDuel then for _,other in pairs(self.flight.pilots) do if other.kind=="human" and self.combat:targetable(other,now) then b.goal=other.body.Position end end end
   end
  end
+ -- A Pal ignores the rest of the brain: it chases its player only in a shooting step and only when they are ready;
+ -- otherwise (and once it has stopped shooting) it flies the course loop so it is easy to find and shoot.
+ if p.pal then
+  local victim=self:palReady(p,now)
+  if victim and (p.pal.mode=="pellet" or p.pal.mode=="eraser") then
+   b.target=victim;b.mode="chase";b.goal=victim.body.Position;b.lastSeen=now;b.lastKnown=victim.body.Position;b.lastVelocity=victim.body.AssemblyLinearVelocity
+  else
+   b.target=nil;b.mode="patrol";b.palStep=b.palStep or 1
+   if (position-Course.POINTS[PAL_LOOP[b.palStep]]).Magnitude<90 then b.palStep=b.palStep%#PAL_LOOP+1 end
+   b.goal=Course.POINTS[PAL_LOOP[b.palStep]]
+  end
+ end
  -- Studio spectator camera (F10) shows each bot's intent.
  if Run:IsStudio() then p.model:SetAttribute("BotIntent",b.mode..(b.target and " -> "..b.target.name or "")) end
  if b.mode=="duct" then b.route={}
@@ -478,7 +498,7 @@ function Service:steer(p,b,dt,now)
  local bleed=FlightRules.turnSpeedFactor(b.heading,desired,dt,turn)
  b.heading=desired
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost
- local cruise,lift=p.stats.speed*b.profile.speed_factor*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
+ local cruise,lift=p.stats.speed*b.profile.speed_factor*(p.model:GetAttribute("BoostSpeedFactor") or 1)*(p.pal and p.pal.slow or 1),p.model:GetAttribute("Lift")
  if p.model:GetAttribute("Boosting") then lift=math.max(lift,1) end -- boost flies along the nose even with no Lift
  local speed=cruise*bleed
  b.glide=lift<=0 and FlightRules.glide(b.glide or b.momentum,desired,cruise,dt) or nil
@@ -498,7 +518,14 @@ function Service:steer(p,b,dt,now)
   end end
   if semi then self.combat:trigger(p,group,false,aim) end
   -- Bots are smart with erasers: they wait for a full lock. Guns and pencils need alignment.
-  self.combat:trigger(p,group,eraser and (p.model:GetAttribute("LockProgress") or 0)>=1 or not eraser and aligned,aim)
+  local fire=eraser and (p.model:GetAttribute("LockProgress") or 0)>=1 or not eraser and aligned
+  if p.pal then
+   -- Pellets until their player is down to half Health, then never again; one slow eraser at a time.
+   local victim=self:palReady(p,now)
+   if p.pal.mode=="pellet" and victim and victim.model:GetAttribute("Health")<=victim.stats.health*.5 then p.pal.mode="circle" end
+   fire=fire and victim~=nil and (eraser and p.pal.mode=="eraser" and self.combat.info[p.id].activeErasers==0 or not eraser and p.pal.mode=="pellet")
+  end
+  self.combat:trigger(p,group,fire,aim)
  end
 end
 -- Aim tracks the target every frame like a human's hand, but from what the bot saw `lag` seconds ago (a short

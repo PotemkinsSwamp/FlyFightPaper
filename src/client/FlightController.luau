@@ -82,7 +82,8 @@ function Controller.start(plane)
 		local before = heading
 		heading, bank, orientation.CFrame = Rules.autopilot(heading, bank, state.aim, plane:GetAttribute("YawRate"), plane:GetAttribute("PitchRate"), dt, state.aimUp)
 		local now = workspace:GetServerTimeNow()
-		local cruise = plane:GetAttribute("Speed") * (plane:GetAttribute("BoostSpeedFactor") or 1)
+		-- SlowMo: the Aiming lesson's slow motion (the server allows any speed below cruise).
+		local cruise = plane:GetAttribute("Speed") * (plane:GetAttribute("BoostSpeedFactor") or 1) * (plane:GetAttribute("SlowMo") or 1)
 		local speed = cruise * Rules.turnSpeedFactor(before, heading, dt, plane:GetAttribute("TurnRate"))
 		-- Boosting flies along the nose like having Lift, even when Lift is empty (Alan 2026-10-14).
 		local lift = plane:GetAttribute("Boosting") and math.max(plane:GetAttribute("Lift"), 1) or plane:GetAttribute("Lift")

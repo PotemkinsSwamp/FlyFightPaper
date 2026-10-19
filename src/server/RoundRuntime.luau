@@ -11,6 +11,8 @@ local ServerConfig=require(Root.Generated.Server)
 local ServiceRules=require(Root.Shared.ServiceRules)
 local RewardQueue=require(script.Parent.RewardQueue)
 local VoteRings=require(script.Parent.VoteRings)
+local Course=require(Root.Shared.TrainingCourse)
+local Loadouts=require(Root.Shared.WeaponLoadouts)
 local Runtime={};Runtime.__index=Runtime
 function Runtime.new(flight,combat,bots,profiles,commerce)
  local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false},Runtime)
@@ -63,11 +65,8 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    -- Studio test button: end the running round now; the next mode is left as it was.
    if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_end") end
   elseif action=="practice" then self:practice(player,value)
-  elseif action=="practiceTarget" then local p=flight.pilots[player];if p and p.practice then combat:practiceTarget(p) end
-  elseif action=="tutorialFoe" then self:tutorialFoe(player,true)
-  elseif action=="tutorialFoeDone" then self:tutorialFoe(player,false)
+  elseif action=="lesson" then self:lesson(player,value)
   elseif action=="practiceDone" then
-   self:tutorialFoe(player,false)
    if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end
    -- Studio's stand-in tutorial room turns back into a normal room; a real one sends the player on to a match room.
    if Run:IsStudio() and Root:GetAttribute("DevTutorialRoom") then Root:SetAttribute("DevTutorialRoom",false);flight.tutorialRoom=false end
@@ -110,7 +109,7 @@ function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total,fi
 end
 function Runtime:bind(p)
  -- A practice flight is never in the match: it can't hold the zone, score, earn or qualify (2026-10-17 audit).
- if p.practice then return end
+ if p.practice or p.foeOf then return end -- nor are a lesson's targets and Pals
  -- tick first: a round whose time just ran out must not take a new life (lifeStarted ticks and would refuse it)
  if self.engine:tick()~="ACTIVE" then return end
  local prior=self.profiles:view(p.player)
@@ -228,17 +227,45 @@ function Runtime:firstJoin(player)
   if profile and self.matchmaking.needsTutorial(profile) and not player:GetAttribute("InMatch") then self.matchmaking:routeTutorial(player) end
  end)
 end
--- The lesson's one enemy: a rookie bot that fights only this player (CombatService:enemy), from its own desk.
-function Runtime:tutorialFoe(player,wanted)
- local id="tutorialFoe"..player.UserId;local foe=self.flight.byId[id]
- if not wanted then
-  if foe then self.flight:remove(foe,"vacancy");self.bots.brains[id]=nil end
-  player:SetAttribute("TutorialFoe",nil);return
- end
+-- What a lesson step asks the server for (docs/systems/tutorial.md), all at once or a piece at a time:
+-- {slow=true/false (Aiming's slow motion), repair=true (full Health), drill=name in TrainingCourse.DRILLS or false
+-- (practice target planes), pal=mode or false (Combat Training's one enemy: "circle" flies the course and never
+-- shoots, "pellet" shoots until you're at half Health, "eraser" fires slow erasers until one misses)}.
+-- Targets and Pals fight only this player (CombatService:enemy) and can never fold them (CombatService:hit).
+local PAL_MODES={circle=true,pellet=true,eraser=true}
+function Runtime:lesson(player,cmd)
  local p=self.flight.pilots[player]
- if foe or not p or not p.practice or not self:tutorialRoom() then return end
- foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
- if foe then foe.foeOf=p.id;player:SetAttribute("TutorialFoe",id) end
+ if type(cmd)~="table" or not p or not p.practice or not self:tutorialRoom() then return end
+ if type(cmd.slow)=="boolean" then p.slow=cmd.slow and Course.SLOW_MO or nil;p.model:SetAttribute("SlowMo",p.slow) end
+ if cmd.repair==true then p.model:SetAttribute("Health",p.stats.health) end
+ if cmd.drill==false or Course.DRILLS[cmd.drill] then
+  for _,other in pairs(table.clone(self.flight.pilots)) do if other.drill and other.foeOf==p.id then self.flight:remove(other,"vacancy") end end
+  player:SetAttribute("DrillDown",0)
+  for i,spec in ipairs(Course.DRILLS[cmd.drill] or {}) do
+   local d=self.flight:add(nil,{id="drill"..player.UserId.."_"..i,name="Target",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
+   if not d then break end
+   self.bots.brains[d.id]=nil -- no brain: FlightService flies it on its spot
+   d.foeOf=p.id;d.lessonPlayer=player;d.drill={spec=spec,owner=p,t=0,desk=p.home.Position}
+   d.model:SetAttribute("Health",spec.health);d.model:SetAttribute("MaxHealth",spec.health);d.model:SetAttribute("DrillOf",player.UserId)
+   d.hasLaunched=true;d.body.CFrame=Course.pose(spec,0,d.drill.desk);self.flight:fly(d)
+  end
+ end
+ if cmd.pal==false or PAL_MODES[cmd.pal] then
+  local id="tutorialFoe"..player.UserId;local foe=self.flight.byId[id]
+  if cmd.pal==false then
+   if foe then self.flight:remove(foe,"vacancy") end
+   player:SetAttribute("TutorialFoe",nil);return
+  end
+  if not foe then
+   foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=Loadouts.make(self.flight.catalog,"training"),loadoutName="training"})
+   if not foe then return end
+  end
+  -- Pals fly at 60% speed and can't crash or run out of Lift (gentle), so they're always there to fight.
+  foe.foeOf=p.id;foe.lessonPlayer=player;foe.gentle=true;foe.model:SetAttribute("Gentle",true)
+  foe.pal={mode=cmd.pal,slow=.6,eraserSlow=foe.pal and foe.pal.eraserSlow or .5}
+  player:SetAttribute("TutorialFoe",id)
+  if foe.model:GetAttribute("State")=="DESTROYED" then self.flight:replace(foe) end -- the next Pal now, not after the wait
+ end
 end
 function Runtime:practice(player,lesson)
  if not player:GetAttribute("ClassroomLoaded") or not self.profiles:view(player) then return end
@@ -262,7 +289,9 @@ function Runtime:practice(player,lesson)
  local p=self.flight:add(player,{loadout=require(Root.Shared.WeaponLoadouts).make(self.flight.catalog,"training"),loadoutName="training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
  -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off, Lift stops at 1 second and Boost at 0.01.
- p.gentle=lesson=="flight";p.model:SetAttribute("Gentle",p.gentle or nil)
+ -- Aiming can't be lost either (it's about aiming, not surviving); Combat Training keeps crashes (Alan).
+ p.gentle=lesson=="flight" or lesson=="aim";p.model:SetAttribute("Gentle",p.gentle or nil)
+ for _,key in {"DrillDown","PalFolds","PalEraserHits","PalEraserMisses","EraserHits"} do player:SetAttribute(key,0) end
  player:SetAttribute("InMatch",true)
 end
 function Runtime:join(player)

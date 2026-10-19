@@ -24,6 +24,8 @@ local definitions={
  death={9125723704,1.1,.6,1},hit={"volume_slider.ogg",3,.35},kill={"impact_explosion_03.mp3",2.4,.3},start={105176025193207,1,.35,3},finish={9117261163,1,.4,.8},purchase={1169806635,1,.4,.8},
  -- The tutorial's ding (a hoop, a finished step): the coin sound, soft (Alan: 30% quieter, the same ding every time).
  ding={1169806635,1,.28,.8},
+ -- The Aiming lesson's slow motion going on and off: the eraser's whoosh, low and slow, then high and quick.
+ slowDown={9125648149,.45,.45,1.6},speedUp={9125648149,1.4,.45,.8},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
 -- the rest sit straight in SoundService, heard the same anywhere. (Until 2026-10-18 those sat in an attachment
@@ -61,6 +63,11 @@ function Audio.flight(part,weapon)
  sound.TimePosition=0;sound:Play()
 end
 Audio.WEAPON_HEARING_STUDS=WEAPON_HEARING_STUDS
+-- Slow motion (the Aiming lesson): the music slows and drops in pitch with it.
+function Audio.slowMusic(on)
+ local music=Sounds:FindFirstChild("Music")
+ if music then game:GetService("TweenService"):Create(music,TweenInfo.new(.6),{PlaybackSpeed=on and .8 or 1}):Play() end
+end
 function Audio.start(getPlane)
  -- Classroom ambience: Pro Sound Effects "Kids Walla 2" (children in a school room), kept far in the background.
  local ambience=Instance.new("Sound");ambience.Name="ClassroomAmbience";ambience.SoundId="rbxassetid://9112811182";ambience.Looped=true;ambience.Parent=Sounds;ambience:Play()
@@ -76,8 +83,8 @@ function Audio.start(getPlane)
  -- Lessons have one calm song of their own (Alan: peaceful, focusing, playful, subtle, maybe classical; one song,
  -- not a playlist), looped, quiet, and no classroom chatter, so the step chimes stand out.
  -- Each lesson has its own (Alan's picks by ear 2026-10-18): Flight School APM "Daisy Fresh" (simple and
- -- child-like), Combat Training APM "Liberty Bell (a) 60".
- local LESSON_SONGS={flight=1839864816,combat=105397100521450}
+ -- child-like), Aiming and Combat Training APM "Liberty Bell (a) 60".
+ local LESSON_SONGS={flight=1839864816,aim=105397100521450,combat=105397100521450}
  local function inLesson() return Root:GetAttribute("TutorialOpen")==true end
  local music=Instance.new("Sound");music.Name="Music";music.Parent=Sounds
  local track=0

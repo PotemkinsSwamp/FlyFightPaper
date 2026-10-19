@@ -20,6 +20,7 @@ local Roster=require(Root.Shared.BotRosterRules)
 local HitShapes=require(script.Parent.HitShapes)
 local DuctRules=require(Root.Shared.DuctRules)
 local MonorailRules=require(Root.Shared.MonorailRules)
+local Course=require(Root.Shared.TrainingCourse)
 local Service={};Service.__index=Service
 
 function Service.new()
@@ -170,6 +171,8 @@ function Service:build(p)
  if p.practice then model:SetAttribute("Practice",true);model:SetAttribute("PracticeRing",Landing.approach(p.home,Desk)) end
  -- Flight School (p.gentle): the pilot's client must not crumple it either, only bounce it off.
  if p.gentle then model:SetAttribute("Gentle",true) end
+ -- Aiming lesson slow motion: the pilot's own screen flies the plane at this share of its speed.
+ if p.slow then model:SetAttribute("SlowMo",p.slow) end
  local color=Color3.fromHSV((p.seat*.133)%1,0.65,0.9)
  if Aircraft.build(model,p.loadout,self.catalog,false) then
   for _,part in ipairs(model:GetChildren()) do if part:IsA("BasePart") and part~=body then part:Destroy() end end
@@ -210,6 +213,8 @@ function Service:remove(p,cause)
  if p.model:GetAttribute("State")~="DESTROYED" then self:destroy(p,{kind="left"},cause) end
  p.model:Destroy();self.pilots[p.key]=nil;self.byId[p.id]=nil;self.seats[p.seat]=nil
  if self.onRemoved then self.onRemoved(p) end
+ -- A lesson's targets and Pal go with their player.
+ for _,other in pairs(self.pilots) do if other.foeOf==p.id then self:remove(other,cause) end end
 end
 -- Automatic takeoff (D11): a scripted roll down the runway, off the desk and through the ring, like the scripted
 -- landing; the pilot (or bot) gets the plane once it is through. Weapons and steering wait for FLYING.
@@ -287,6 +292,8 @@ function Service:destroy(p,how,cause)
  if p.padKey then self.padReservations[p.padKey]=nil;p.padKey=nil end
  local record=self.records[p.id];record.deaths+=1
  if cause=="weapon" then record.weaponDeaths+=1 elseif cause=="collision" then record.collisionDeaths+=1 end
+ -- Lessons count what the player has folded: practice target planes and the Pals.
+ if p.lessonPlayer and cause=="weapon" then local key=p.drill and "DrillDown" or "PalFolds";p.lessonPlayer:SetAttribute(key,(p.lessonPlayer:GetAttribute(key) or 0)+1) end
  if self.onDeath then self.onDeath(p,cause or "collision") end
 end
 function Service:clearLandingQueue(p)
@@ -471,10 +478,17 @@ function Service:step(dt)
   p.model:SetAttribute("Protected",self:protected(p,now))
   p.model:SetAttribute("ProtectionRemaining",p.protectionRemaining)
   p.protectionRemaining,p.outOfHangar=Landing.hangarSafety(p.protectionRemaining,p.outOfHangar or 0,(state=="DESK" or state=="LANDING") and self:atDesk(p),dt,Desk.protected_seconds_per_life,Desk.protection_refill_out_seconds)
-  if state=="DESTROYED" and now>=p.respawnAt then
+  if state=="DESTROYED" and p.drill then
+   if now>=p.respawnAt then self:remove(p,"vacancy") end -- a folded practice target is gone for good
+  elseif state=="DESTROYED" and now>=p.respawnAt then
    if not self.padReservations["desk:"..p.seat] then self:replace(p) else say(p,"padWait") end
   elseif state=="TAKEOFF" then self:takeoffStep(p,dt)
   elseif state=="FLYING" and p.held then -- holding still for the winners' moment
+  elseif state=="FLYING" and p.drill then
+   -- A practice target plane: held on its spot or flown round its little circle, slowed with its pilot's slow motion.
+   local d=p.drill;local slow=d.owner.slow or 1;d.t+=dt*slow
+   local pose,velocity=Course.pose(d.spec,d.t,d.desk)
+   p.drive.VectorVelocity=velocity*slow+(pose.Position-p.body.Position)*3;p.orientation.CFrame=pose.Rotation
   elseif state=="FLYING" then
    local utility=p.loadout.utility and self.catalog:get(p.loadout.utility)
    local boosting=utility and p.boostHeld and (p.model:GetAttribute("Boost") or 0)>0
@@ -569,7 +583,8 @@ function Service:step(dt)
    if now-p.lastContact>.6 then
     for _,other in ipairs(workspace:GetPartsInPart(p.body,self.regions)) do
      local q=other~=p.body and other.Name=="Root" and self.byId[other.Parent.Name]
-     if q and q.model:GetAttribute("State")=="FLYING" and now-q.lastContact>.6 and self:touching(p,q) then self:ram(p,q,now);break end
+     -- A lesson's targets and Pals never ram their player (Alan: a Pal can't fold you).
+     if q and not (p.foeOf or q.foeOf) and q.model:GetAttribute("State")=="FLYING" and now-q.lastContact>.6 and self:touching(p,q) then self:ram(p,q,now);break end
     end
    end
    p.lastPosition,p.lastCFrame=p.body.Position,p.body.CFrame;p.previousVelocity=p.body.AssemblyLinearVelocity

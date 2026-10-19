@@ -138,8 +138,6 @@ function Rules.segmentBox(origin, delta, cf, half)
 	return enter
 end
 
--- Practice target (first 60 seconds): a slow paper plane weaving along a line. Server (hits) and the player's
--- screen (drawing) both place it from the same numbers, so it needs no network updates.
 -- Hidden paper targets (Alan 2026-10-13): a kid-drawn sign standing on a rooftop. `row` = world.paper_targets entry
 -- ({ at = roof point, yaw = degrees }); the pose is the sign's centre, facing along its look vector.
 Rules.PAPER_TARGET_HALF = Vector3.new(7.2, 8.4, 0.6) -- 20% larger (Alan 2026-10-14)
@@ -161,12 +159,5 @@ function Rules.chalkBlocks(eraser, from, to, now, chalk)
 	local line = to - from
 	local along = line:Dot(line) > 1e-6 and math.clamp((center - from):Dot(line) / line:Dot(line), 0, 1) or 0
 	return (from + line * along - center).Magnitude < Rules.chalkRadius(chalk, eraser:GetAttribute("CloudUntil"), now)
-end
-Rules.PRACTICE_TARGET_HALF = Vector3.new(8, 3, 8)
-function Rules.practiceTargetPose(from, direction, seconds)
-	local right = direction:Cross(Vector3.yAxis).Unit
-	local function at(t) return from + direction * 45 * t + right * math.sin(t * 0.9) * 40 + Vector3.yAxis * math.sin(t * 0.6) * 15 end
-	local here = at(seconds)
-	return CFrame.lookAt(here, at(seconds + 0.1))
 end
 return table.freeze(Rules)

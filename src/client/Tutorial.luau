@@ -13,6 +13,7 @@ local Gameplay=require(Root.Generated.Gameplay)
 local PaperUI=require(script.Parent.PaperUI)
 local Audio=require(script.Parent.Audio)
 local Lessons=require(script.Parent.TutorialLessons)
+local Course=require(Root.Shared.TrainingCourse)
 local Tutorial={active=false}
 local HINT_SECONDS=10
 local HOLD_SKIP_SECONDS=1.5
@@ -35,9 +36,10 @@ local TAG_SLICE=Rect.new(96,40,416,120) -- tag.png (512x160)
 local STEP_DING_DELAY=.4
 local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flying: you still need to see the room)
 local YELLOW=Color3.fromRGB(255,225,70)
+local CRASH_TIP_AFTER=3 -- crashes on one step before the note suggests open air
 
 function Tutorial.begin(lesson)
- Tutorial.lessonKey=lesson or "flight";Tutorial.lesson=Lessons[Tutorial.lessonKey];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
+ Tutorial.lessonKey=Lessons[lesson] and lesson or "flight";Tutorial.lesson=Lessons[Tutorial.lessonKey];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
  Root:SetAttribute("TutorialLesson",Tutorial.lessonKey);Root:SetAttribute("TutorialOpen",true) -- lesson first: its song is picked when TutorialOpen changes
  Root.RoundAction:FireServer("practice",Tutorial.lessonKey)
 end
@@ -91,9 +93,30 @@ function Tutorial.start(getPlane)
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()cardScale.Scale=scale.Scale end)
  local cardTitle=PaperUI.words(card,"Title","",40,30,540,56,44);cardTitle.TextXAlignment=Enum.TextXAlignment.Center
  local cardText=PaperUI.words(card,"Text","You can replay any lesson: Menu > Tutorial.",40,96,540,60,26);cardText.TextWrapped=true;cardText.TextXAlignment=Enum.TextXAlignment.Center
- PaperUI.button(card,"Play",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Go to a match",160,170,300,60,-1,function()
+ local matchButton=PaperUI.button(card,"Play",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Go to a match",160,170,300,60,-1,function()
   card.Visible=false;Root.RoundAction:FireServer("practiceDone")
  end,30)
+ -- The lessons run in order (Flight School, Aiming, Combat Training): the next one is a click away.
+ local nextButton=PaperUI.button(card,"Next",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Next lesson",320,170,280,60,1,function()
+  card.Visible=false;if Tutorial.nextKey then Tutorial.begin(Tutorial.nextKey) end
+ end,30)
+
+ -- Slow motion (the Aiming lesson, Alan 2026-10-19): the server slows the plane and targets; this screen shows it.
+ -- Colours soften and cool, the music slows, a whoosh, and a crayon tag says so. Off again with a quick whoosh.
+ local slowLook=Instance.new("ColorCorrectionEffect");slowLook.Name="TutorialSlowMo";slowLook.Enabled=false;slowLook.Parent=game:GetService("Lighting")
+ local slowTag=Instance.new("ImageLabel");slowTag.Name="SlowTag";slowTag.Image=Art.tutorial.tag;slowTag.ScaleType=Enum.ScaleType.Slice;slowTag.SliceCenter=TAG_SLICE;slowTag.SliceScale=.45
+ slowTag.BackgroundTransparency=1;slowTag.AnchorPoint=Vector2.new(1,0);slowTag.Position=UDim2.new(1,-30,0,110);slowTag.Size=UDim2.fromOffset(320,76);slowTag.Rotation=3;slowTag.Visible=false;slowTag.Parent=gui
+ local slowWords=PaperUI.words(slowTag,"Text","SLOW MOTION",0,0,320,76,36);slowWords.Size=UDim2.fromScale(1,1);slowWords.TextXAlignment=Enum.TextXAlignment.Center
+ local slowOn=false
+ local function setSlow(on)
+  if on==slowOn then return end
+  slowOn=on;Audio.play(on and "slowDown" or "speedUp");Audio.slowMusic(on)
+  slowLook.Enabled=true;slowTag.Visible=on
+  game:GetService("TweenService"):Create(slowLook,TweenInfo.new(.6),{Saturation=on and -.45 or 0,Contrast=on and .08 or 0,TintColor=on and Color3.fromRGB(215,230,255) or Color3.new(1,1,1)}):Play()
+ end
+ -- The Aiming lesson's first target: a glowing star in clear air.
+ local star=Instance.new("Part");star.Name="TutorialStar";star.Shape=Enum.PartType.Ball;star.Size=Vector3.one*12;star.Material=Enum.Material.Neon;star.Color=YELLOW
+ star.Anchored,star.CanCollide,star.CanQuery,star.CanTouch,star.CastShadow=true,false,false,false,false
 
  -- The target glows through walls.
  local glowOutline=Instance.new("Highlight");glowOutline.Name="TutorialGlow";glowOutline.DepthMode=Enum.HighlightDepthMode.AlwaysOnTop
@@ -128,13 +151,11 @@ function Tutorial.start(getPlane)
  end
  local route,routeAt,routeFor={},0,nil
 
- -- Hoops: a fixed course in clear air ahead of the Training Room desk (DeskSouth3), checked by hand in Studio so
- -- none sits in a building (each has 50 studs of empty air round it and the legs between them are clear). All
+ -- Hoops: the Training Room's fixed course (TrainingCourse.luau, clear air checked by hand in Studio). All
  -- hoops show at once so the next one is already in view; the one to fly through now is bright, the rest pale.
  -- The last hoop sends you north with the west fan 90 degrees to your left and 450 studs of clear air ahead, so
  -- there's time to read the Lift note and turn (Alan: the old course aimed straight into the fan).
- -- ponytail: world points for the tutorial room's desk only; another desk still gets the same hoops.
- local COURSE={Vector3.new(-225,205,440),Vector3.new(-210,280,270),Vector3.new(-170,340,100)}
+ local COURSE=Course.POINTS
  local hoops,lastLocal={},nil
  local function paint(model,now)
   for _,piece in model:GetChildren() do piece.Transparency=now and 0 or .55 end
@@ -304,6 +325,26 @@ function Tutorial.start(getPlane)
   local t=before.Z/(before.Z-now.Z);local cross=before:Lerp(now,t)
   return Vector2.new(cross.X,cross.Y).Magnitude<=HOOP_RADIUS
  end
+ -- The lesson's server side (RoundRuntime:lesson): targets, the Pal, slow motion, a repair.
+ ctx.player=player
+ ctx.lesson=function(cmd) if cmd.slow~=nil then setSlow(cmd.slow) end;Root.RoundAction:FireServer("lesson",cmd) end
+ -- Practice target planes still in the air, nearest first.
+ ctx.targets=function()
+  local list={}
+  for _,model in workspace.Planes:GetChildren() do
+   local root=model:FindFirstChild("Root")
+   if root and model:GetAttribute("DrillOf")==player.UserId and model:GetAttribute("State")=="FLYING" then table.insert(list,model) end
+  end
+  if ctx.body then table.sort(list,function(a,b) return (a.Root.Position-ctx.body.Position).Magnitude<(b.Root.Position-ctx.body.Position).Magnitude end) end
+  return list
+ end
+ -- Counts the server keeps on the player (DrillDown, PalFolds, PalEraserMisses, EraserHits...).
+ ctx.count=function(name) return player:GetAttribute(name) or 0 end
+ ctx.pal=function()
+  local model=workspace.Planes:FindFirstChild(player:GetAttribute("TutorialFoe") or "")
+  return model and model:GetAttribute("State")=="FLYING" and model or nil
+ end
+ ctx.star=function(position) star.Position=position;star.Parent=workspace;return star end
  ctx.nearestBolt=function(position)
   bolts=bolts or workspace:FindFirstChild("SpeedPickups");if not bolts then return nil end
   local best,distance=nil,math.huge;local now=workspace:GetServerTimeNow()
@@ -314,17 +355,22 @@ function Tutorial.start(getPlane)
  end
 
  local stepStarted,doneAt,holdK,relaunchAsked=0,nil,nil,0
+ local crashedAt,crashes=nil,0
  local function startStep(index)
   Tutorial.index=index;ctx.data={};table.clear(clicked);stepStarted=os.clock();doneAt=nil;tick.Visible=false;Tutorial.gotIt=false;Tutorial.skipStep=false
-  clearCourse()
+  clearCourse();star.Parent=nil;crashes=0
   if index==1 then airRoutes() end -- plan the room's air routes once, while the plane still sits on the desk
   local step=Tutorial.lesson.steps[index]
   if step and step.enter then step.enter(ctx) end
  end
  local function finish(skipped)
-  Tutorial.active=false;Root:SetAttribute("TutorialOpen",false);clearCourse();note.Visible=false
+  Tutorial.active=false;Root:SetAttribute("TutorialOpen",false);clearCourse();note.Visible=false;star.Parent=nil
+  ctx.lesson({slow=false,drill=false,pal=false})
   Audio.play("finish")
-  cardTitle.Text=skipped and "Lesson skipped" or (Tutorial.lesson.name.." done!")
+  cardTitle.Text=skipped and "Lesson skipped" or Tutorial.lesson.doneTitle or (Tutorial.lesson.name.." done!")
+  Tutorial.nextKey=Tutorial.lesson.next
+  nextButton.Visible=Tutorial.nextKey~=nil;nextButton.Label.Text=Tutorial.nextKey and "Next: "..Lessons[Tutorial.nextKey].name or ""
+  matchButton.Position=UDim2.fromOffset(Tutorial.nextKey and 170 or 310,200) -- buttons sit by their middle
   card.Visible=true
   -- Skipping mid-flight: the mouse steers the plane, so go straight on to the match and keep the card up a moment.
   if skipped and ctx.state and ctx.state~="DESK" then Root.RoundAction:FireServer("practiceDone");task.delay(5,function()card.Visible=false end) end
@@ -347,6 +393,8 @@ function Tutorial.start(getPlane)
   if Root:GetAttribute("TutorialRoom") and not Tutorial.autoStarted and not Tutorial.active then Tutorial.autoStarted=true;task.delay(1,Tutorial.begin) end
  end
  Root:GetAttributeChangedSignal("TutorialRoom"):Connect(autoStart);autoStart()
+ -- Studio test hook: set DevLesson (flight, aim, combat) on ReplicatedStorage.FlyFightPaper to open that lesson.
+ if RunService:IsStudio() then Root:GetAttributeChangedSignal("DevLesson"):Connect(function() Tutorial.begin(Root:GetAttribute("DevLesson")) end) end
 
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName=nil,nil,nil
@@ -364,14 +412,28 @@ function Tutorial.start(getPlane)
   if ctx.state=="DESK" and Tutorial.index>1 and not step.land and not step.gotIt and os.clock()-relaunchAsked>2 then relaunchAsked=os.clock();Root.FlightAction:FireServer("launch") end
   note.Visible=not Root:GetAttribute("OverlayOpen")
   title.Text=string.format("%s  -  step %d of %d",Tutorial.lesson.name,Tutorial.index,#Tutorial.lesson.steps)
+  -- Folded mid-lesson (Combat Training keeps crashes): a kind word and a countdown, then the plane takes off by
+  -- itself and the step carries on where it was (the server keeps the targets and holds the Pal's fire).
+  if ctx.state=="DESTROYED" and not crashedAt then crashedAt=os.clock();crashes+=1 end
+  if crashedAt and ctx.state=="FLYING" then crashedAt=nil end
+  if crashedAt and not step.land then
+   local left=math.ceil(Gameplay.combat.respawn_seconds-(os.clock()-crashedAt))
+   text.Text=left>0 and string.format("Folded! Walls fold paper planes. Back in the air in %d...",left) or "Taking off again..."
+   key.Visible,gotIt.Visible,tick.Visible=false,false,false
+   hint.Text=crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or ""
+   drawMarker();drawSpot(nil,nil,nil,false,nil,dt);barFrame.Visible=false;targetRing.Visible=false
+   if ctx.state=="DESK" and os.clock()-relaunchAsked>1 then relaunchAsked=os.clock();Root.FlightAction:FireServer("launch") end
+   return
+  end
   local result=plane and step.update(ctx) or false
   local count=step.count
   local finished=count and type(result)=="number" and result>=count or result==true or (step.gotIt and Tutorial.gotIt)
-  text.Text=step.text..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
+  -- A step's words can change with what's happening (a function of ctx), e.g. the eraser warnings.
+  text.Text=(type(step.text)=="function" and step.text(ctx) or step.text)..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
   key.Text=step.key or "";key.Visible=step.key~=nil
   gotIt.Visible=step.gotIt==true
   local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt
-  hint.Text=stuck and step.hint and ("Tip: "..step.hint) or ""
+  hint.Text=stuck and step.hint and ("Tip: "..step.hint) or crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or ""
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end
   if finished and not doneAt then

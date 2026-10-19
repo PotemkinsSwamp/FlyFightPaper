@@ -148,16 +148,6 @@ function Service:enemy(a,b)
  if a~=b and (a.foeOf==b.id or b.foeOf==a.id) then return true end
  return a~=b and not a.practice and not b.practice and (not a.team or not b.team or a.team~=b.team)
 end
--- A practice pilot's paper target, a little ahead of them, heading toward the middle of the room.
-function Service:practiceTarget(p)
- local now=workspace:GetServerTimeNow()
- local from=p.body.Position+p.body.CFrame.LookVector*200+Vector3.new(0,10,0)
- local toward=Vector3.new(-from.X,0,-from.Z)
- local direction=toward.Magnitude>1 and toward.Unit or Vector3.xAxis
- p.practiceTarget={at=now,from=from,direction=direction,health=30}
- p.model:SetAttribute("PracticeTargetFrom",from);p.model:SetAttribute("PracticeTargetDirection",direction)
- p.model:SetAttribute("PracticeTargetHealth",30);p.model:SetAttribute("PracticeTargetAt",now)
-end
 function Service:trigger(p,which,down,aim)
  local info=self.info[p.id];if not info then return end
  local now=workspace:GetServerTimeNow();local old=info.held[which]
@@ -249,22 +239,36 @@ function Service:launch(p,mount,now,target)
  local latency=aimData and aimData.latency or 0
  local rewind=p.kind=="human" and math.min(Config.max_rewind_seconds,2*latency+Config.view_delay_seconds) or 0
  local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+weapon.lifetime,rewind=rewind,flown=0,
-  target=target,targetLife=target and target.life,radius=weapon.projectile_radius}
+  target=target,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
  self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1
  local record=self.flight.records[p.id];if record then record.shots+=1 end
  if weapon.homing then info.activeErasers+=1 end
- self:emit({kind="shot",id=shot.id,owner=p.id,slot=mount.slot,weapon=weapon.id,position=position,direction=direction,speed=weapon.projectile_speed,expires=shot.expires,time=now})
+ self:emit({kind="shot",id=shot.id,owner=p.id,slot=mount.slot,weapon=weapon.id,position=position,direction=direction,speed=shot.speed,expires=shot.expires,time=now})
  return true
 end
 function Service:finish(shot,position,wall)
  if not self.shots[shot.id] then return end
  self.shots[shot.id]=nil;self.shotCount-=1
  if shot.weapon.homing and self.info[shot.owner] then self.info[shot.owner].activeErasers=math.max(0,self.info[shot.owner].activeErasers-1) end
+ -- Combat Training's dodge step: did the Pal's eraser miss its player? A hit makes the next one slower still.
+ local pal=shot.weapon.homing and self.flight.byId[shot.owner]
+ local victim=pal and pal.foeOf and self.flight.byId[pal.foeOf]
+ -- An eraser that flew on because its player crashed doesn't count as dodged.
+ if pal and pal.pal and pal.lessonPlayer and (shot.struck or victim and victim.model:GetAttribute("State")=="FLYING") then
+  local key=shot.struck and "PalEraserHits" or "PalEraserMisses"
+  pal.lessonPlayer:SetAttribute(key,(pal.lessonPlayer:GetAttribute(key) or 0)+1)
+  if shot.struck then pal.pal.eraserSlow=math.max(.3,pal.pal.eraserSlow*.8) else pal.pal.mode="circle" end -- dodged: it stops shooting
+ end
  self:emit({kind="end",id=shot.id,position=position or shot.position,wall=wall})
 end
 function Service:hit(attacker,target,amount,now,position,weaponId)
  if not attacker or not self:enemy(attacker,target) or target.model:GetAttribute("State")=="DESTROYED" or self.flight:protected(target,now) then return end
- local actual=math.min(amount,target.model:GetAttribute("Health"));if actual<=0 then return end
+ -- Lessons: an eraser-only practice target ignores everything else, and a Pal can never fold its player.
+ local homing=weaponId and self.flight.catalog:get(weaponId).homing
+ if target.drill and target.drill.spec.eraserOnly and not homing then return end
+ if homing and attacker.practice and attacker.player then attacker.player:SetAttribute("EraserHits",(attacker.player:GetAttribute("EraserHits") or 0)+1) end
+ local health=target.model:GetAttribute("Health")
+ local actual=math.min(amount,attacker.foeOf==target.id and health-1 or health);if actual<=0 then return end
  local history=self.info[target.id].history
  for i=#history,1,-1 do if now-history[i].at>Config.assist_window_seconds then table.remove(history,i) end end
  table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity,weapon=weaponId})
@@ -401,7 +405,7 @@ function Service:step(dt)
    end
   end
   local delta -- ponytail: a server hitch slows shots instead of breaking the 1024-stud cast limit
-  if shot.weapon.homing then delta=shot.direction*Rules.eraserSpeed(shot.weapon.projectile_speed,shot.flown,Config)*math.min(dt,.5)
+  if shot.weapon.homing then delta=shot.direction*Rules.eraserSpeed(shot.speed,shot.flown,Config)*math.min(dt,.5)
   else
    if dt>.5 then shot.born+=dt-.5 end
    delta=shot.origin+Rules.shotOffset(shot.weapon,shot.direction0,now-shot.born)-shot.position
@@ -410,18 +414,7 @@ function Service:step(dt)
    local result=workspace:Spherecast(shot.position,shot.radius,delta,self.worldCast)
    local target,t=self:planeHit(shot,delta,now)
    local attacker=self.flight.byId[shot.owner]
-   local dummy,taken=attacker and attacker.practiceTarget,false
-   if dummy then
-    local pose=Rules.practiceTargetPose(dummy.from,dummy.direction,now-dummy.at)
-    local t2=Rules.segmentBox(shot.position,delta,pose,Rules.PRACTICE_TARGET_HALF+Vector3.one*shot.radius)
-    if t2 and (not result or t2*delta.Magnitude<=result.Distance) and (not target or t2<=t) then taken=true
-     local at=shot.position+delta*t2
-     dummy.health-=shot.weapon.damage;attacker.model:SetAttribute("PracticeTargetHealth",math.max(0,dummy.health))
-     self:emit({kind="hit",owner=attacker.id,target="practice",damage=shot.weapon.damage,position=at})
-     if dummy.health<=0 then attacker.practiceTarget=nil end
-     self:finish(shot,at)
-    end
-   end
+   local taken=false
    -- Hidden paper targets: only the shooter's own still-standing signs (each pilot has a private set per round).
    local signs=not taken and attacker and attacker.player and PaperSigns
    if signs then
@@ -436,10 +429,10 @@ function Service:step(dt)
      end
     end
    end
-   if taken then -- the practice target took the shot
+   if taken then -- a paper sign took the shot
    elseif target and (not result or t*delta.Magnitude<=result.Distance) then
     local at=shot.position+delta*t
-    self:hit(attacker,target,shot.weapon.damage,now,at,shot.weapon.id);self:finish(shot,at)
+    shot.struck=target;self:hit(attacker,target,shot.weapon.damage,now,at,shot.weapon.id);self:finish(shot,at)
    elseif result then
     self:chalkHit(result.Instance,now)
     if attacker and self.onProp then self.onProp(attacker,result.Instance) end
