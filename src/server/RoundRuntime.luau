@@ -295,7 +295,7 @@ function Runtime:lesson(player,cmd)
   self:rangeStage()
   p.pin=origin.Position;p.keepLift=true;p.gentle=true;p.model:SetAttribute("Pinned",p.pin);p.model:SetAttribute("Gentle",true)
   if p.model:GetAttribute("State")~="FLYING" then p.body.CFrame=origin;self.flight:fly(p) end
-  self:rangeTargets(player,p)
+  self:rangePick(player,player:GetAttribute("RangeRows") or "all")
  end
  if cmd.pal==false or PAL_MODES[cmd.pal] then
   local id="tutorialFoe"..player.UserId;local foe=self.flight.byId[id]
@@ -328,12 +328,33 @@ function Runtime:addDrill(player,p,spec,i,center,side)
  d.hasLaunched=true;d.body.CFrame=Course.pose(spec,center,0,p.body.Position,side);self.flight:fly(d)
  return d
 end
--- The Range's targets: any that folded (and were cleared away) come back on a fresh stick.
+-- The Range's targets in the picked rows (`RangeRows`): any that folded (and were cleared away) come back on a fresh
+-- stick; ones in rows no longer picked are lowered (`Lowered`: RangeTargets tips them back) and taken away.
 function Runtime:rangeTargets(player,p)
  local origin=Course.RANGE.origin
+ local rows=player:GetAttribute("RangeRows") or "all"
  for i,spec in ipairs(Course.RANGE.targets) do
-  if not self.flight.byId["drill"..player.UserId.."_"..i] then self:addDrill(player,p,spec,i,origin*spec.at,origin.RightVector) end
+  local d=self.flight.byId["drill"..player.UserId.."_"..i]
+  if rows=="all" or spec.row==rows then
+   if not d then self:addDrill(player,p,spec,i,origin*spec.at,origin.RightVector) end
+  elseif d and not d.model:GetAttribute("Lowered") then
+   d.model:SetAttribute("Lowered",true)
+   task.delay(.7,function() if self.flight.byId[d.id]==d then self.flight:remove(d,"vacancy") end end)
+  end
  end
+end
+-- A shot hit a row-picker plate: those rows stand, that plate stays down (the others stand back up).
+function Runtime:rangePick(player,rows)
+ local p=self.flight.pilots[player]
+ if not p or not p.pin then return end
+ player:SetAttribute("RangeRows",rows)
+ local stage=workspace:FindFirstChild("RangeStage")
+ for _,plate in stage and stage:GetChildren() or {} do
+  if plate:GetAttribute("RangePick") then
+   plate:SetAttribute("Down",plate:GetAttribute("RangePick")==rows);plate.CanQuery=plate:GetAttribute("RangePick")~=rows
+  end
+ end
+ self:rangeTargets(player,p)
 end
 -- The Range's stage (RangeStage: the puppet theatre from the concept), built once when someone first opens the Range.
 function Runtime:rangeStage()

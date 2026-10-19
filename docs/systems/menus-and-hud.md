@@ -18,6 +18,8 @@ The nose dot turns red when the shots would land with no aim help (Alan 2026-10-
 [decision](../decisions/2026-10-19-less-aim-assist.md)): the target in range and the nose line passing within 2 studs of
 the orange ring's point. The gun assist (`combat.gun_assist_deg`, 3 degrees, lessons too; was 7) sends
 shots to the ring when the nose is that close.
+The orange ring follows the enemy whose ring (its lead) is nearest the aim circle, not the nearest plane, and keeps it
+until another's ring is 3 degrees nearer (Alan 2026-10-19, [decision](../decisions/2026-10-19-range-row-picker-and-aim-pick.md)).
 In a lesson the INCOMING / BREAK NOW! note drops just under the lesson's note, a size smaller (it was hidden behind it). A shot-path check against the target's shape was dropped after a Play measurement.
 *Moved word for word from the old rulebook (GAME_SPEC.md section 9).*
 

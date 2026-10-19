@@ -4,21 +4,25 @@
 -- (15 studs behind the plane, 4.5 up, 72° view). Pieces are lit by their own paint (LightInfluence 0), like the concept.
 local Root=game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Art=require(Root.Shared.UIAssets).range
+local Course=require(Root.Shared.TrainingCourse)
 local Stage={}
 
 -- Pixel sizes of the uploaded pieces (assets/ui/range/ready/), for shapes and mirrored copies.
 local PX={backdrop={1024,576},curtainSide={298,1024},lamp={673,1024},ledge={1024,128},bushes={1024,78},
  townRowA={1024,222},townRowB={1024,229},townRowC={1024,259},townArch={1024,910},townClock={326,1024},
- townStepped={625,1024},townTwin={1024,766}}
+ townStepped={625,1024},townTwin={1024,766},stripGreen={1024,228},stripYellow={1024,227},stripPurple={1024,227},stripRed={1024,225}}
+-- ponytail: stand-in plate art (the side board's paper strips) until the plane-shaped plates are drawn and uploaded.
+local PLATE={close="stripGreen",medium="stripYellow",long="stripPurple",all="stripRed"}
 
 -- Ground rows: flat cardboard rows the target sticks rise from behind (close, middle, far). Heights put each row's lip
 -- where the concept has it on screen, so they need not climb like real steps.
-local ROWS={{z=-100,top=-55,h=40,w=800},{z=-330,top=-96,h=77,w=1600},{z=-590,top=-59,h=112,w=2400}}
-local DARK=Color3.fromRGB(58,34,28)
+local ROWS={{z=-100,top=-55,h=45,w=800},{z=-330,top=-96,h=77,w=1600},{z=-590,top=-59,h=112,w=2400}}
+-- The box round the stage: drapes the colour of the curtains, a cardboard floor, a dark ceiling.
+local DRAPE,FLOOR,DARK=Color3.fromRGB(214,104,58),Color3.fromRGB(176,124,78),Color3.fromRGB(96,40,32)
 
-local function part(stage,name,size,cf,color)
+local function part(stage,name,size,cf,color,material)
  local p=Instance.new("Part");p.Name=name;p.Size=size;p.CFrame=cf;p.Color=color or DARK
- p.Material=Enum.Material.Cardboard;p.Anchored=true;p.CanCollide=false;p.CanQuery=false;p.CanTouch=false;p.CastShadow=false
+ p.Material=material or Enum.Material.Fabric;p.Anchored=true;p.CanCollide=false;p.CanQuery=false;p.CanTouch=false;p.CastShadow=false
  p.Parent=stage
  return p
 end
@@ -42,15 +46,16 @@ function Stage.build(origin)
  local function at(x,y,z) return origin*CFrame.new(x,y,z) end
  -- The painted sky cloth and the box round it (floor, ceiling, the wings and the dark hall the plane hangs in).
  paint(stage,origin,"backdrop",0,-144,-820,3000,1688)
- part(stage,"Floor",Vector3.new(2400,4,740),at(0,-177,-460))
- part(stage,"Ceiling",Vector3.new(2400,4,700),at(0,700,-480))
+ local card=Enum.Material.Cardboard
+ part(stage,"Floor",Vector3.new(3000,4,740),at(0,-177,-460),FLOOR,card)
+ part(stage,"Ceiling",Vector3.new(3000,4,700),at(0,700,-480))
  for _,s in {-1,1} do
-  part(stage,"Wing",Vector3.new(945,1000,4),at(s*727,100,-152))
-  part(stage,"HallSide",Vector3.new(4,600,304),at(s*300,100,0))
+  part(stage,"Wing",Vector3.new(945,1000,4),at(s*727,100,-152),DRAPE)
+  part(stage,"HallSide",Vector3.new(4,600,304),at(s*300,100,0),DRAPE)
  end
- part(stage,"Header",Vector3.new(520,480,4),at(0,370,-152))
- part(stage,"HallBack",Vector3.new(604,600,4),at(0,100,152))
- part(stage,"HallFloor",Vector3.new(604,4,252),at(0,-100,25))
+ part(stage,"Header",Vector3.new(520,480,4),at(0,370,-152),DRAPE)
+ part(stage,"HallBack",Vector3.new(604,600,4),at(0,100,152),DRAPE)
+ part(stage,"HallFloor",Vector3.new(604,4,252),at(0,-100,25),FLOOR,card)
  part(stage,"HallCeiling",Vector3.new(604,4,304),at(0,300,0))
  -- The cardboard town in three depths: two rows of houses, then the landmarks, with bushes along their feet.
  local function houses(z,bottom,h,order,x)
@@ -77,6 +82,30 @@ function Stage.build(origin)
    local b=part(bulbs,"Bulb",Vector3.one*size,at(x,r.top-size*.3,r.z+1),Color3.fromRGB(255,214,140))
    b.Shape=Enum.PartType.Ball;b.Material=Enum.Material.Neon
   end
+ end
+ -- Bulb strips along the hall's sides and the header's edge, so the edges of the view still read as the theatre.
+ for _,s in {-1,1} do
+  for _,y in {-60,120} do
+   for z=-140,140,24 do
+    local b=part(bulbs,"Bulb",Vector3.one*4,at(s*297,y,z),Color3.fromRGB(255,214,140));b.Shape=Enum.PartType.Ball;b.Material=Enum.Material.Neon
+   end
+  end
+ end
+ for x=-250,250,24 do
+  local b=part(bulbs,"Bulb",Vector3.one*4,at(x,134,-149),Color3.fromRGB(255,214,140));b.Shape=Enum.PartType.Ball;b.Material=Enum.Material.Neon
+ end
+ -- The row picker: knock-down plates standing on the close row's lip, each a word on painted paper. A shot that
+ -- hits one picks its rows (RoundRuntime:rangePick); RangeTargets tips the picked one back.
+ local lip=ROWS[1]
+ for _,pick in Course.RANGE.picks do
+  local key=PLATE[pick.row];local h=pick.w*.4
+  local plate=paint(stage,origin,key,pick.x,lip.top+2+h/2,lip.z-3,pick.w,h)
+  plate.Name="Pick";plate.CanQuery=true;plate:SetAttribute("RangePick",pick.row)
+  local gui=plate.SurfaceGui;gui.PixelsPerStud=40
+  local word=Instance.new("TextLabel");word.Size=UDim2.fromScale(.84,.7);word.Position=UDim2.fromScale(.08,.15)
+  word.BackgroundTransparency=1;word.Text=pick.label;word.TextScaled=true;word.TextColor3=Color3.fromRGB(43,38,52)
+  word.FontFace=Font.new("rbxasset://fonts/families/Kalam.json",Enum.FontWeight.Bold);word.Parent=gui
+  part(stage,"PickFoot",Vector3.new(pick.w*.3,2,2),at(pick.x,lip.top+1,lip.z-3),FLOOR,card)
  end
  -- The proscenium: curtains tied back at each side, a rail of hanging lamps across the top.
  paint(stage,origin,"curtainSide",-216,0,-150,87,300)

@@ -6,6 +6,7 @@ local Rules = require(Root.Shared.FlightRules)
 local Deaths = require(script.Parent.PlaneDeaths)
 local Gameplay = require(Root.Generated.Gameplay)
 local Config = Gameplay.flight
+local Course = require(Root.Shared.TrainingCourse)
 local Controller = {}
 -- Read by the camera and HUD. `aimOverride` lets dev tools fly the plane without a mouse.
 Controller.state = { aim = nil, aimUp = nil, aimOverride = nil }
@@ -89,11 +90,19 @@ function Controller.start(plane)
 		if state.aimOverride then setAim(state.aimOverride(body)); lastSteer = os.clock() end
 		if os.clock() - lastSteer > Config.aim_level_delay_s then aimFrame = Rules.levelAim(aimFrame, dt) end
 		aimFrame = aimFrame:Orthonormalize()
+		-- The Range: the aim stays on the stage and never rolls, so you never see past it (Alan 2026-10-19).
+		local pinned = plane:GetAttribute("Pinned")
+		if pinned then
+			local stage = Course.RANGE.origin.Rotation
+			local pitch, yaw = stage:ToObjectSpace(aimFrame):ToOrientation()
+			aimFrame = stage * CFrame.fromOrientation(math.clamp(pitch, -Course.RANGE.pitch, Course.RANGE.pitch), math.clamp(yaw, -Course.RANGE.yaw, Course.RANGE.yaw), 0)
+		end
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
 		local boost = not blocked and Input:IsKeyDown(Enum.KeyCode.LeftShift)
 		if boost ~= boostSent then boostSent = boost; Root.FlightAction:FireServer("boost", boost) end
 		local before = heading
 		heading, bank, orientation.CFrame = Rules.autopilot(heading, bank, state.aim, plane:GetAttribute("YawRate"), plane:GetAttribute("PitchRate"), dt, state.aimUp)
+		if pinned then bank, orientation.CFrame = 0, CFrame.lookAt(Vector3.zero, heading) end -- wings stay level in the Range
 		local now = workspace:GetServerTimeNow()
 		-- SlowMo: the Aiming lesson's slow motion (the server allows any speed below cruise).
 		local cruise = plane:GetAttribute("Speed") * (plane:GetAttribute("BoostSpeedFactor") or 1) * (plane:GetAttribute("SlowMo") or 1)

@@ -33,6 +33,8 @@ combat.onPaperTarget=function(p,index)
  if rounds.engine.phase=="ACTIVE" then rounds.engine:propContribution("target:"..index..":"..p.id,p.id);rounds:earnings() end
 end
 combat.onProp=function(p,part)
+ -- The Range's row-picker plates (RangeStage) pick which target rows stand.
+ if part:GetAttribute("RangePick") then if p.player then rounds:rangePick(p.player,part:GetAttribute("RangePick")) end return end
  if rounds.engine.phase=="ACTIVE" and props:breakPart(part) then
   rounds.engine:propContribution("prop:"..part.Name,p.id);rounds:earnings()
   combat:emit({kind="prop",position=part.Position})

@@ -2,7 +2,8 @@
 -- as a flat painted paper-plane cut-out on a stick instead of a plane (pieces in UIAssets.range). It faces the stage
 -- front, tilts with its swoop, and turns over on its stick when it changes direction. Each hit tears it more (pictures
 -- 0-3); when folded it rips in two, the halves fall away in a burst of scraps and the stick sinks out of sight (the
--- server brings a fresh one up after the wait).
+-- server brings a fresh one up after the wait). Targets in rows no longer picked tip back whole and sink (`Lowered`);
+-- the row-picker plates (RangeStage) tip back with a ting while picked (`Down`).
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 local ContentProvider = game:GetService("ContentProvider")
@@ -10,6 +11,7 @@ local Debris = game:GetService("Debris")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets).range
 local Course = require(Root.Shared.TrainingCourse)
+local Audio = require(script.Parent.Audio)
 local Targets = {}
 
 local LENGTH = 26 -- studs nose to tail; the picture's own shape gives the height
@@ -100,6 +102,35 @@ function Targets.start()
 		TweenService:Create(t.stick, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { CFrame = t.stick.CFrame - Vector3.new(0, STICK, 0) }):Play()
 		Debris:AddItem(t.stick, 1.1)
 	end
+	-- Not picked any more: it tips back whole, stick and all, and sinks out of sight.
+	local function lower(model, t)
+		live[model] = nil
+		local hinge = t.card.CFrame * CFrame.new(0, -t.card.Size.Y / 2, 0)
+		local info = TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+		TweenService:Create(t.card, info, { CFrame = hinge * CFrame.Angles(-math.rad(85), 0, 0) * CFrame.new(0, t.card.Size.Y / 2, 0) - Vector3.new(0, 40, 0) }):Play()
+		TweenService:Create(t.stick, info, { CFrame = t.stick.CFrame - Vector3.new(0, 40, 0) }):Play()
+		Debris:AddItem(t.card, 0.7)
+		Debris:AddItem(t.stick, 0.7)
+	end
+	-- Row-picker plates: down (tipped back on its foot) while picked, with a ting when it goes.
+	local function plate(part)
+		local up = part.CFrame
+		local down = up * CFrame.new(0, -part.Size.Y / 2, 0) * CFrame.Angles(-math.rad(80), 0, 0) * CFrame.new(0, part.Size.Y / 2, 0)
+		local function set(sound)
+			local isDown = part:GetAttribute("Down") == true
+			TweenService:Create(part, TweenInfo.new(0.25, Enum.EasingStyle.Back, isDown and Enum.EasingDirection.Out or Enum.EasingDirection.InOut), { CFrame = isDown and down or up }):Play()
+			if sound and isDown then Audio.play("plate", up.Position) end
+		end
+		part:GetAttributeChangedSignal("Down"):Connect(function() set(true) end)
+		set(false)
+	end
+	local function watchStage(model)
+		for _, part in model:GetChildren() do
+			if part:GetAttribute("RangePick") then plate(part) end
+		end
+	end
+	workspace.ChildAdded:Connect(function(child) if child.Name == "RangeStage" then watchStage(child) end end)
+	if workspace:FindFirstChild("RangeStage") then watchStage(workspace.RangeStage) end
 	local planes = workspace:WaitForChild("Planes")
 	local function watch(model)
 		add(model)
@@ -112,6 +143,10 @@ function Targets.start()
 			local body = model.Parent and model:FindFirstChild("Root")
 			if not body or model:GetAttribute("State") == "DESTROYED" then
 				tearDown(model, t)
+				continue
+			end
+			if model:GetAttribute("Lowered") then
+				lower(model, t)
 				continue
 			end
 			-- Its heading on the stage: across (turns it over) and up/down (tilts it).

@@ -374,6 +374,17 @@ function HUD.start(getPlane, action)
 	local sight = RaycastParams.new()
 	sight.FilterType = Enum.RaycastFilterType.Include
 	sight.FilterDescendantsInstances = { workspace:FindFirstChild("Arena") or workspace:WaitForChild("GreyboxRoom") }
+	-- Where a shot of `weapon` fired now meets `root`, following its current turn (`m`: its tracked motion).
+	local function leadOf(root, m, weapon, body)
+		local lead = root.Position
+		for _ = 1, 4 do
+			local t = CombatRules.travelTime(weapon, (lead - body.Position).Magnitude)
+			if t == math.huge then t = weapon.lifetime end
+			lead = root.Position + m.velocity * t + m.acceleration * (0.5 * t * t) + Vector3.yAxis * (0.5 * (weapon.drop or 0) * t * t)
+		end
+		return lead
+	end
+	local STICKY, picked = math.rad(3), nil -- how much closer another enemy's lead must be to take the marker
 	-- Reticles move every frame, after the camera.
 	RunService:BindToRenderStep("FlightReticles", Enum.RenderPriority.Camera.Value + 3, function()
 		local plane = getPlane()
@@ -396,10 +407,14 @@ function HUD.start(getPlane, action)
 			end
 			return sightline[root]
 		end
-		-- Pick the enemy closest to where the pilot is aiming. Track each plane's turning so the lead curves with it.
+		-- Pick the enemy whose lead (where you'd shoot to hit it) is closest to where the pilot is aiming, not the plane
+		-- itself: a far plane is aimed at well ahead of it, so a near one crossing the sight mustn't steal the marker
+		-- (Alan 2026-10-19). The current pick holds until another is clearly closer. Track each plane's turning so the
+		-- lead curves with it.
 		local now = os.clock()
-		local target, guns, best = nil, flying and gunWeapons(plane) or {}, math.cos(math.rad(35))
+		local target, guns, best = nil, flying and gunWeapons(plane) or {}, math.rad(35)
 		local look = FlightState.aim or (body and body.CFrame.LookVector)
+		local gun = guns[1] or guns[2]
 		for _, other in ipairs(planes:GetChildren()) do
 			local root = other:FindFirstChild("Root")
 			if root and other ~= plane then
@@ -414,13 +429,15 @@ function HUD.start(getPlane, action)
 					m.velocity, m.at = velocity, now
 				end
 				if next(guns) and other:GetAttribute("State") == "FLYING" and enemy(plane, other) and seen(root) then
-					local offset = root.Position - body.Position
-					local facing = offset.Magnitude < 1000 and look:Dot(offset.Unit) or -1
-					if facing > best then target, best = root, facing end
+					local offset = (gun and leadOf(root, m, gun, body) or root.Position) - body.Position
+					local angle = (root.Position - body.Position).Magnitude < 1000 and math.acos(math.clamp(look:Dot(offset.Unit), -1, 1)) or math.pi
+					if root == picked then angle -= STICKY end
+					if angle < best then target, best = root, angle end
 				end
 			end
 		end
 		for root in pairs(motion) do if not root.Parent then motion[root] = nil end end
+		picked = target
 		local shown = 0
 		for _, other in ipairs(flying and planes:GetChildren() or {}) do
 			local root = other:FindFirstChild("Root")
@@ -513,15 +530,7 @@ function HUD.start(getPlane, action)
 			-- Where the target will be when a shot fired now reaches it, following its current turn.
 			local m = motion[target]
 			-- Shared with the gun assist, which leads each weapon by its own speed, drag and drop.
-			FlightState.leadFor = function(weapon)
-				local lead = target.Position
-				for _ = 1, 4 do
-					local t = CombatRules.travelTime(weapon, (lead - body.Position).Magnitude)
-					if t == math.huge then t = weapon.lifetime end
-					lead = target.Position + m.velocity * t + m.acceleration * (0.5 * t * t) + Vector3.yAxis * (0.5 * (weapon.drop or 0) * t * t)
-				end
-				return lead
-			end
+			FlightState.leadFor = function(weapon) return leadOf(target, m, weapon, body) end
 			place(bracket, target.Position)
 			-- The nose dot sits at the left-click lead's range, so dot-on-marker means the guns really point there.
 			local anyHit, b = false, bracket.Position
