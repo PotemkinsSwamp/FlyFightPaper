@@ -107,6 +107,10 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - Step 8: placed ahead, you and the Pal just chased each other and it never landed a shot. **Done:** it comes in from
   behind you, off to one side, 300-400 studs back ("from a distance as well") with a clear shot, facing you.
 
+- Step 8 still spawned a little close and missed its shots. **Found:** bots' guns meet at a fixed 150 studs (the bug
+  players had) plus deliberate aim wobble and delay. **Done:** while hunting, the Pal aims dead on (no wobble or
+  delay, full lead, guns meeting at your range), comes in 400-500 studs behind, then pulls round in front and runs.
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

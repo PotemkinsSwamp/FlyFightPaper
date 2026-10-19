@@ -229,7 +229,8 @@ function Service:launch(p,mount,now,target,origin)
  if p.body.CFrame.LookVector:Dot(direction)<math.cos(arc) then direction=p.body.CFrame.LookVector end
  local factor=self.flight.catalog:get(p.loadout.body).visual_scale/2
  local position=p.body.CFrame:PointToWorldSpace(Aircraft.muzzleOffset(mount.slot,factor,mount.weapon.id,Aircraft.fitOf(p.model)))
- direction=Aircraft.converge(p.body,position,direction,p.kind=="human" and aimData and aimData.range or Config.gun_convergence_studs)
+ -- Bots' guns meet at 150 studs, except where BotService sets info.range (the tutorial's hunting Pal).
+ direction=Aircraft.converge(p.body,position,direction,p.kind=="human" and aimData and aimData.range or info.range or Config.gun_convergence_studs)
  if weapon.spread_deg>0 then
   local spread=math.rad(weapon.spread_deg)
   direction=(CFrame.lookAt(Vector3.zero,direction)*CFrame.Angles(self.random:NextNumber(-spread,spread),self.random:NextNumber(-spread,spread),0)).LookVector

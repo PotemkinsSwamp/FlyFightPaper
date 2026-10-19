@@ -34,7 +34,7 @@ end
 -- 400-700 studs ahead of their player (within 40 degrees of the nose; Alan: not off to the side), in clear air inside
 -- the room, hidden behind a building if one of those spots is, facing away so the player chases it. Only if nothing
 -- ahead is clear: further round, then the course's middle point. The pellet Pal (step 8) instead comes in from behind
--- you, off to one side where you don't see it, 300-400 studs back (in its guns' reach) with a clear shot, facing you (Alan 2026-10-19: placed
+-- you, off to one side where you don't see it, 400-500 studs back (in its guns' reach) with a clear shot, facing you (Alan 2026-10-19: placed
 -- ahead, you just chased each other and it never landed a shot; you should have to turn round to find it).
 function Service:placePal(p)
  local victim=self.flight.byId[p.foeOf]
@@ -47,7 +47,7 @@ function Service:placePal(p)
  local open,hidden
  local attack=p.pal.mode=="pellet"
  for _,turn in attack and {150,-150,130,-130,170,-170,110,-110} or {0,20,-20,40,-40,70,-70,110,-110,180} do
-  for _,range in attack and {350,300,400} or {600,500,700,400} do
+  for _,range in attack and {450,500,400} or {600,500,700,400} do
    local at=from+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*range+Vector3.yAxis*20
    local inside=self.flight.boundsCF:PointToObjectSpace(at)
    ball.Position=at
@@ -448,6 +448,11 @@ function Service:decide(p,b,now)
   local player=self.flight.byId[p.foeOf]
   if victim and p.pal.mode=="pellet" then
    b.target=victim;b.mode="chase";b.goal=victim.body.Position;b.lastSeen=now;b.lastKnown=victim.body.Position;b.lastVelocity=victim.body.AssemblyLinearVelocity
+  elseif p.pal.overtake and player then
+   -- Health whittled down: pull round in front of you, then run like step 7's (Alan 2026-10-19).
+   local ahead=(position-player.body.Position):Dot(player.body.CFrame.LookVector)
+   if ahead>150 then p.pal.overtake=nil end
+   b.target=nil;b.mode="patrol";b.goal=player.body.Position+player.body.CFrame.LookVector*350
   elseif p.pal.mode=="pellet" and player then
    b.target=nil;b.mode="patrol";b.goal=player.body.Position -- not shooting yet, but already on its way to you
   else
@@ -581,7 +586,7 @@ function Service:steer(p,b,dt,now)
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost
  -- A Pal flies at `pal.speed` times its plane's own speed, not a bot's slower share (RoundRuntime:lesson).
  -- A hunting pellet Pal is 25% faster, or a player flying away at the same speed is never caught (measured).
- local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*(p.pal.mode=="pellet" and 1.25 or 1) or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
+ local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*((p.pal.mode=="pellet" or p.pal.overtake) and 1.25 or 1) or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
  if p.model:GetAttribute("Boosting") then lift=math.max(lift,1) end -- boost flies along the nose even with no Lift
  local speed=cruise*bleed
  b.glide=lift<=0 and FlightRules.glide(b.glide or b.momentum,desired,cruise,dt) or nil
@@ -589,10 +594,14 @@ function Service:steer(p,b,dt,now)
  local velocity=FlightRules.velocity(desired,speed*(b.momentum or cruise)/cruise,lift,p.model:GetAttribute("Updraft") or 0,b.glide,cruise)
  if now<(p.model:GetAttribute("DeflectUntil") or 0) then local normal=p.model:GetAttribute("CollisionNormal") or Vector3.zero;velocity-=normal*math.min(0,velocity:Dot(normal));velocity+=normal*Config.flight.graze_slide_push_studs_s end
  p.drive.VectorVelocity=p.drive.VectorVelocity:Lerp(velocity,1-math.exp(-Config.flight.velocity_response*dt))
- if lead and (lead-position).Magnitude>.1 then self.combat.info[p.id].aim=aimError((lead-position).Unit,b,now) end
+ -- Step 8's hunting Pal shoots like a veteran and better: no aim wobble, and its guns meet at the target's range
+ -- (Alan 2026-10-19: "it needs to hit its shots dead on"; at the bots' fixed 150 studs they crossed and missed).
+ local hunting=p.pal and p.pal.mode=="pellet"
+ if lead and (lead-position).Magnitude>.1 then self.combat.info[p.id].aim=hunting and (lead-position).Unit or aimError((lead-position).Unit,b,now) end
+ self.combat.info[p.id].range=hunting and lead and (lead-position).Magnitude or nil
  -- Triggers are hand work too: checked every frame against the live lead, not held between decisions.
  local aim=self.combat.info[p.id].aim or p.body.CFrame.LookVector
- local aligned=lead~=nil and p.body.CFrame.LookVector:Dot((lead-position).Unit)>math.cos(math.rad(12)) and (b.target.body.Position-position).Magnitude<450
+ local aligned=lead~=nil and p.body.CFrame.LookVector:Dot((lead-position).Unit)>math.cos(math.rad(12)) and (b.target.body.Position-position).Magnitude<(hunting and 650 or 450)
  for group=1,2 do
   local semi,eraser=false,false
   for _,mount in ipairs(self.combat.info[p.id].mounts) do if mount.group==group then
@@ -605,7 +614,7 @@ function Service:steer(p,b,dt,now)
   if p.pal then
    -- Pellets until their player is down to half Health, then never again; one slow eraser at a time.
    local victim=self:palReady(p,now)
-   if p.pal.mode=="pellet" and victim and victim.model:GetAttribute("Health")<=victim.stats.health*.5 then p.pal.mode="circle" end
+   if p.pal.mode=="pellet" and victim and victim.model:GetAttribute("Health")<=victim.stats.health*.5 then p.pal.mode="circle";p.pal.overtake=true end
    fire=fire and victim~=nil and not eraser and p.pal.mode=="pellet"
    if eraser and victim and p.pal.mode=="eraser" then self:palEraser(p,victim,now) end
   end
@@ -625,13 +634,14 @@ function Service:lead(p,b,now)
  end
  if #samples==0 then return nil end
  -- Keep a quarter second more than the hand-eye delay, so the bot also sees how the target is turning.
- while #samples>1 and samples[2].at<=now-b.lag-.25 do table.remove(samples,1) end
+ local lag=p.pal and p.pal.mode=="pellet" and 0 or b.lag -- the hunting Pal sees you as you are
+ while #samples>1 and samples[2].at<=now-lag-.25 do table.remove(samples,1) end
  local seen,old=samples[1],samples[1]
- for _,sample in ipairs(samples) do if sample.at<=now-b.lag then seen=sample else break end end
+ for _,sample in ipairs(samples) do if sample.at<=now-lag then seen=sample else break end end
  b.view=seen
  local turning=seen.at-old.at>.05 and (seen.velocity-old.velocity)/(seen.at-old.at) or Vector3.zero
  -- Skill sets lead accuracy: experts follow the whole turn, rookies lead short and shoot behind.
- local accuracy=b.profile.lead_accuracy
+ local accuracy=p.pal and p.pal.mode=="pellet" and 1 or b.profile.lead_accuracy
  local origin,weapon,age=p.body.Position,self:weaponFor(p),now-seen.at
  local predicted=seen.position
  for _=1,3 do
