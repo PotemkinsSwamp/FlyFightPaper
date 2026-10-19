@@ -12,6 +12,7 @@ local ServiceRules=require(Root.Shared.ServiceRules)
 local RewardQueue=require(script.Parent.RewardQueue)
 local VoteRings=require(script.Parent.VoteRings)
 local Course=require(Root.Shared.TrainingCourse)
+local RangeStage=require(script.Parent.RangeStage)
 local Loadouts=require(Root.Shared.WeaponLoadouts)
 local Schema=require(Root.Shared.ProfileSchema)
 local Runtime={};Runtime.__index=Runtime
@@ -334,22 +335,9 @@ function Runtime:rangeTargets(player,p)
   if not self.flight.byId["drill"..player.UserId.."_"..i] then self:addDrill(player,p,spec,i,origin*spec.at,origin.RightVector) end
  end
 end
--- ponytail: stand-in stage for the Range's feel check (2026-10-19); replaced by the real 2D-piece stage model.
+-- The Range's stage (RangeStage: the puppet theatre from the concept), built once when someone first opens the Range.
 function Runtime:rangeStage()
- if workspace:FindFirstChild("RangeStage") then return end
- local origin=Course.RANGE.origin
- local stage=Instance.new("Model");stage.Name="RangeStage"
- local function block(name,size,at,color)
-  local part=Instance.new("Part");part.Name=name;part.Size=size;part.CFrame=origin*CFrame.new(at);part.Color=color
-  part.Anchored,part.CanCollide,part.CastShadow=true,false,false;part.Material=Enum.Material.Cardboard;part.Parent=stage
- end
- block("Backdrop",Vector3.new(1600,900,4),Vector3.new(0,200,-820),Color3.fromRGB(90,130,210))
- block("Bottom",Vector3.new(1600,4,1000),Vector3.new(0,-260,-400),Color3.fromRGB(60,40,30))
- for _,row in {{z=-140,top=-40},{z=-340,top=-5},{z=-600,top=30}} do
-  block("Ledge",Vector3.new(1600,row.top+260,20),Vector3.new(0,(row.top-260)/2,row.z),Color3.fromRGB(170,125,80))
- end
- for _,x in {-760,760} do block("Curtain",Vector3.new(80,900,1000),Vector3.new(x,200,-400),Color3.fromRGB(235,160,110)) end
- stage.Parent=workspace
+ if not workspace:FindFirstChild("RangeStage") then RangeStage.build(Course.RANGE.origin) end
 end
 function Runtime:practice(player,lesson)
  if not player:GetAttribute("ClassroomLoaded") or not self.profiles:view(player) then return end

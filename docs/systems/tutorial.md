@@ -23,10 +23,15 @@ a lesson gets a tick and Replay once finished (saved on the account: the end car
 ticks it only in the tutorial room). Hangar Tour and the Range show an "Almost ready!" note until they're built. From a match, Play first asks "Leave this match?"
 (the lesson runs on another server). The welcome question goes only to a player with no matches and no ticks. The
 Training Room has no time limit (Alan 2026-10-19: people leave, or Roblox kicks them for being idle).
-**The Hangar Range, rough build for feel** (2026-10-19; Alan played it: "conceptually, it works well"; next the art, the side board and its buttons). Its 35 art pieces (scenery, targets with 4 damage steps and torn halves, side board) are made and uploaded (`assets/ui/range/`, ids in UIAssets `range`), not placed yet: its card opens it like a lesson that never ends; your own
-build hangs still on a stand-in stage far from the classroom (`Pinned`: it only turns to aim; closer camera) and three
-target planes, drawn as flat cut-outs on sticks (`RangeTarget`), swing and bob in three rows, tear as they're hit, split
-and sink, and come back after the respawn wait. Flight School's end card has "Next: Combat School". Flight School: the step engine
+**The Hangar Range** (2026-10-19 rough build; Alan played it: "conceptually, it works well"). Later that day: the real stage
+and targets from its 35 uploaded pieces (`assets/ui/range/`, ids in UIAssets `range`), laid out from the concept as seen
+from the Range camera; Alan's first look (Edit preview) asked for a bigger cloth and town, done. Not yet judged in Play;
+next the side board. Its card opens it like a lesson that never ends; your own build hangs still on a puppet-theatre
+stage far from the classroom (`Pinned`: it only turns to aim; closer camera): sky cloth, cardboard town in three depths,
+three ground rows with warm bulbs, curtains, lamps with soft beams (all painted flats lit by their own paint). Three
+target planes, drawn as painted cut-outs on sticks (`RangeTarget`), swing and bob in three rows, tilt with their swoop
+and turn over on the stick when they change direction, show 4 tear pictures as they're hit, split into two halves with
+a scrap burst, sink, and rise again after the respawn wait. Flight School's end card has "Next: Combat School". Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during
 lessons (Alan). In Studio the Tutorial button turns the room into the tutorial world (match paused, bots gone) since
@@ -105,7 +110,8 @@ air, the gun range sent, and how far and where each passed the nearest enemy's c
 | `src/client/Tutorial.luau` | Lesson step engine: goal note, markers, spotlight, ticks, hints, Skip |
 | `src/client/TutorialLessons.luau` | Each lesson's steps: Flight School, Combat School (aiming, then fighting) |
 | `src/shared/TrainingCourse.luau` | The Training Room's course points, practice targets, slow-motion share and the Range's spot and targets |
-| `src/client/RangeTargets.luau` | The Range's targets drawn as cut-outs on sticks that tear, split and sink |
+| `src/client/RangeTargets.luau` | The Range's targets drawn as painted cut-outs on sticks that turn over, tear, split and sink |
+| `src/server/RangeStage.luau` | The Range's puppet-theatre stage built from the painted pieces, measured from the concept |
 | `src/server/RoundRuntime.luau` | Tutorial room: no rounds or bots; first-join routing; practice flights |
 | `src/server/Matchmaking.luau` | Sends a player to a fresh private tutorial room and back |
 | `src/server/MatchmakingAdapter.luau` | Reserves tutorial rooms; never lists them; carries the lesson picked |
