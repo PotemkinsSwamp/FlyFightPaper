@@ -10,9 +10,11 @@ local Stage={}
 -- Pixel sizes of the uploaded pieces (assets/ui/range/ready/), for shapes and mirrored copies.
 local PX={backdrop={1024,576},curtainSide={298,1024},lamp={673,1024},ledge={1024,128},bushes={1024,78},
  townRowA={1024,222},townRowB={1024,229},townRowC={1024,259},townArch={1024,910},townClock={326,1024},
- townStepped={625,1024},townTwin={1024,766},stripGreen={1024,228},stripYellow={1024,227},stripPurple={1024,227},stripRed={1024,225}}
--- ponytail: stand-in plate art (the side board's paper strips) until the plane-shaped plates are drawn and uploaded.
-local PLATE={close="stripGreen",medium="stripYellow",long="stripPurple",all="stripRed"}
+ townStepped={625,1024},townTwin={1024,766},stripGreen={1024,228},stripYellow={1024,227},stripPurple={1024,227},stripRed={1024,225},
+ pickerClose={1024,674},pickerMedium={1024,681},pickerLong={1024,638},pickerAll={1024,1012},pickerStand={1024,329}}
+-- Row-picker plates: a plane shape per row (green, yellow, purple) and a round one for All, with where the word goes.
+-- ponytail: the side board's paper strips stand in until the plate pictures are uploaded (their ids in UIAssets).
+local PLATE={close={"pickerClose","stripGreen"},medium={"pickerMedium","stripYellow"},long={"pickerLong","stripPurple"},all={"pickerAll","stripRed"}}
 
 -- Ground rows: flat cardboard rows the target sticks rise from behind (close, middle, far). Heights put each row's lip
 -- where the concept has it on screen, so they need not climb like real steps.
@@ -98,14 +100,20 @@ function Stage.build(origin)
  -- hits one picks its rows (RoundRuntime:rangePick); RangeTargets tips the picked one back.
  local lip=ROWS[1]
  for _,pick in Course.RANGE.picks do
-  local key=PLATE[pick.row];local h=pick.w*.4
+  local real=Art[PLATE[pick.row][1]] and PLATE[pick.row][1]
+  local key=real or PLATE[pick.row][2];local h=real and pick.w*PX[key][2]/PX[key][1] or pick.w*.4
   local plate=paint(stage,origin,key,pick.x,lip.top+2+h/2,lip.z-3,pick.w,h)
   plate.Name="Pick";plate.CanQuery=true;plate:SetAttribute("RangePick",pick.row)
   local gui=plate.SurfaceGui;gui.PixelsPerStud=40
-  local word=Instance.new("TextLabel");word.Size=UDim2.fromScale(.84,.7);word.Position=UDim2.fromScale(.08,.15)
+  local round=pick.row=="all" and real
+  local word=Instance.new("TextLabel");word.Size=UDim2.fromScale(round and .6 or .74,round and .26 or .4)
+  word.Position=UDim2.fromScale(round and .2 or .16,round and .5 or .2)
   word.BackgroundTransparency=1;word.Text=pick.label;word.TextScaled=true;word.TextColor3=Color3.fromRGB(43,38,52)
   word.FontFace=Font.new("rbxasset://fonts/families/Kalam.json",Enum.FontWeight.Bold);word.Parent=gui
-  part(stage,"PickFoot",Vector3.new(pick.w*.3,2,2),at(pick.x,lip.top+1,lip.z-3),FLOOR,card)
+  local edge=Instance.new("UIStroke");edge.Color=Color3.fromRGB(255,248,232);edge.Thickness=3;edge.Parent=word
+  if Art.pickerStand then
+   local w=pick.w*.5;paint(stage,origin,"pickerStand",pick.x,lip.top+w*329/1024/2,lip.z-2.5,w,w*329/1024).Name="PickFoot"
+  else part(stage,"PickFoot",Vector3.new(pick.w*.3,2,2),at(pick.x,lip.top+1,lip.z-3),FLOOR,card) end
  end
  -- The proscenium: curtains tied back at each side, a rail of hanging lamps across the top.
  paint(stage,origin,"curtainSide",-216,0,-150,87,300)
