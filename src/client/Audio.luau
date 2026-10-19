@@ -12,6 +12,7 @@ local Audio={}
 -- "Zip Bys Airy Rips 26". `after` = {sound, seconds later} plays a second sound (pencil: band thwap, then the pencil).
 -- Weapons share one loudness (WEAPON); missiles (eraser, pencil) are louder (MISSILE); the stapler a touch quieter.
 local WEAPON,MISSILE=.4,.7
+local FAN_WHOOSH_SHARE=.25 -- how much of the speed whoosh plays inside a fan's updraft
 local WEAPON_HEARING_STUDS=250 -- other planes' weapons are heard only this close (Alan's note 12)
 local definitions={
  pellet={110204084658828,1.3,WEAPON},staple={9113075143,1,WEAPON*.85},rubber={12222103,1.1,WEAPON},
@@ -19,10 +20,10 @@ local definitions={
  eraser={9125648149,1,MISSILE,.7},pencil={12222103,.75,WEAPON,.25,after={"pencilflight",.06}},pencilflight={"impact_explosion_03.mp3",1.8,MISSILE},
  flight={9120989898,1,.3,1},tear={9125724621,1.2,.25,.35},
  lock={12221990,1.3,.5},lockbeep={12221990,1.8,.25},incoming={12221990,.8,.5},empty={"action_falling.ogg",1.4,.15},
- fan={9114185133,1.2,.35,1},land={9113563828,1,.5,.6},service={"volume_slider.ogg",1.9,.2},
+ fan={9114185133,1.2,.15,1},land={9113563828,1,.5,.6},service={"volume_slider.ogg",1.9,.2},
  death={9125723704,1.1,.6,1},hit={"volume_slider.ogg",3,.35},kill={"impact_explosion_03.mp3",2.4,.3},start={105176025193207,1,.35,3},finish={9117261163,1,.4,.8},purchase={1169806635,1,.4,.8},
- -- A tutorial step done: the coin sound as a rising two-note chime, louder than a hoop's ding (Alan: hear every step).
- stepDone={1169806635,1.2,.6,.8,after={"stepDone2",.12}},stepDone2={1169806635,1.6,.55,.8},
+ -- The tutorial's ding (a hoop, a finished step): the coin sound, soft (Alan: 30% quieter, the same ding every time).
+ ding={1169806635,1,.28,.8},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
 -- the rest sit straight in SoundService, heard the same anywhere. (Until 2026-10-18 those sat in an attachment
@@ -89,7 +90,7 @@ function Audio.start(getPlane)
  local glide=TweenInfo.new(.25)
  local function volumes()
   game:GetService("TweenService"):Create(ambience,glide,{Volume=(inLesson() and 0 or .04)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
-  game:GetService("TweenService"):Create(music,glide,{Volume=(inLesson() and .084 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
+  game:GetService("TweenService"):Create(music,glide,{Volume=(inLesson() and .067 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
  end
  Root:GetAttributeChangedSignal("MusicVolume"):Connect(volumes);Root:GetAttributeChangedSignal("SoundVolume"):Connect(volumes)
  Root:GetAttributeChangedSignal("TutorialOpen"):Connect(function() nextTrack();volumes() end)
@@ -127,6 +128,8 @@ function Audio.start(getPlane)
   local phase=p and p:GetAttribute("State")
   local speed=body and (phase=="FLYING" or phase=="TAKEOFF") and body.AssemblyLinearVelocity.Magnitude or 0
   local rush=math.clamp((speed-(p and p:GetAttribute("Speed") or math.huge)-3)/80,0,1)
+  -- A fan's push up isn't a dive: only a soft whoosh in one (Alan: it sounded like a wind tunnel).
+  if p and (p:GetAttribute("Updraft") or 0)>0 then rush*=FAN_WHOOSH_SHARE end
   whoosh.Volume=whoosh.Volume+(rush*.35*(Root:GetAttribute("SoundVolume") or 1)-whoosh.Volume)*.1;whoosh.PlaybackSpeed=.8+rush*.6
   if not body then return end
   local nextState=p:GetAttribute("State");local nextLift=p:GetAttribute("Lift");local nextLock=p:GetAttribute("LockProgress");local nextIncoming=math.max(p:GetAttribute("IncomingLockUntil") or 0,p:GetAttribute("EraserIncomingUntil") or 0)>workspace:GetServerTimeNow()

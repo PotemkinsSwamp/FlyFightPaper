@@ -31,6 +31,7 @@ local DASH_SPEED=1.5 -- how fast the line's dashes crawl toward the target
 local BURST_ANGLES={-150,180,150,-30,0,30} -- the "look here" marks: three each side, like the concept
 local FRAME_SLICE=Rect.new(64,64,448,192) -- frame-box.png (512x256): corners stay, sides stretch
 local TAG_SLICE=Rect.new(96,40,416,120) -- tag.png (512x160)
+local STEP_DING_DELAY=.4
 local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flying: you still need to see the room)
 local YELLOW=Color3.fromRGB(255,225,70)
 
@@ -285,7 +286,8 @@ function Tutorial.start(getPlane)
  end
  ctx.clicked=function(name) return clicked[name]==true end
  ctx.pulse=function(name) pulseName=name end
- ctx.ding=function() Audio.play("purchase") end
+ local dingAt=0
+ ctx.ding=function() dingAt=os.clock();Audio.play("ding") end
  -- The hoop to fly through now (the course is laid out the first time): its CFrame and its model.
  ctx.hoop=function() if not hoops[1] then placeCourse(1) end;return hoops[1].cframe,hoops[1].model end
  ctx.clearHoop=clearHoop
@@ -366,12 +368,16 @@ function Tutorial.start(getPlane)
   hint.Text=stuck and step.hint and ("Tip: "..step.hint) or ""
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end
-  if finished and not doneAt then doneAt=os.clock();tick.Visible=true;Audio.play("stepDone") end
+  if finished and not doneAt then
+   -- The step's ding comes a beat after (on LAUNCH it clashed with take-off), and only once if a hoop just dinged.
+   doneAt=os.clock();tick.Visible=true
+   if os.clock()-dingAt>.5 then task.delay(STEP_DING_DELAY,ctx.ding) end
+  end
   if doneAt then spotNames,pulseName,marked=nil,nil,nil end
   -- One focus look for everything: a button (spotlight, dims the rest) or the 3D target. A HUD bar the step
   -- talks about (pulse) gets its own breathing frame the whole step, so it shows next to a 3D target (Lift + fan).
   local low,high,words=drawMarker(ctx.body)
-  if spotNames then low,high=box(spotNames);drawSpot(low,high,GUI_DIM,false,nil,dt)
+  if spotNames then low,high=box(spotNames);drawSpot(low,high,ctx.state=="FLYING" and WORLD_DIM or GUI_DIM,false,nil,dt)
   else drawSpot(low,high,low and WORLD_DIM or nil,true,words,dt) end
   local barLow,barHigh=nil,nil;if pulseName then barLow,barHigh=box({pulseName}) end
   barFrame.Visible=barLow~=nil

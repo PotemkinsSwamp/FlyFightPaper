@@ -42,3 +42,15 @@ and the hoop looked like loose blocks (now 24 pieces end to end).
     distance from it (the hoops get closer to the middle; the fan and bolts are far). They now play straight in
     SoundService; this also fixes the round-start bell, lock beeps and desk service sounds far from the middle. Every
     sound also loads at start. Not yet heard.]
+
+## Fifth listen (same day)
+12. **Music 20% lower; dings 30% lower.** [Lesson music .084 -> .067; the ding .4 -> .28.]
+13. **The first ding (LAUNCH) was grating, metal-sounding, too fast, not like the other dings.** [It was the two-note
+    step chime on top of take-off. Every step now plays the same soft hoop ding, 0.4 s after the step is done, once
+    (not twice when the last hoop also dinged). Not yet heard.]
+14. **The fan sounds like a wind tunnel (in the real game too).** [Two sounds: the fan whirr (.35 -> .15) and the speed
+    whoosh, which took the fan's push up for a dive (now a quarter as loud inside an updraft). Not yet heard.]
+15. **On the fan step, grey out everything but the Lift bar, and the note should say Lift drops every second, a fan
+    fills it, and which way to the fan.** [Step 3 now spotlights the Lift bar (the rest dimmed, lighter while flying);
+    the fan keeps its glow, line and turn arrow; note: "Your Lift drops every second. Fill it up in a fan: follow the
+    line!" Not yet seen.]

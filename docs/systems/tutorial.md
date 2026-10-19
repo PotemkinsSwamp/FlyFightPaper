@@ -30,7 +30,9 @@ curve. Only when you fly the wrong way (the way to go more than 75 degrees off t
 by the aim circle points where to turn, backward-ish if it's behind you. Hoops are a fixed course of three
 in clear air ahead of DeskSouth3 (hand-checked in Studio: 50 studs of empty air round each, legs clear), ending
 heading north with the west fan 90 degrees to the left (time to read the Lift note before the fan), all shown at once, red and white like the concept, the current one bright. A HUD bar the step talks about gets its own breathing frame
-all step, beside the 3D target's focus (Lift bar + fan). Alan's first look: [playtest](../playtests/2026-10-18-flight-school-attention.md). Combat Training not started; a
+all step, beside the 3D target's focus; the Lift step instead spotlights the Lift bar (the rest dimmed) while the fan
+keeps its glow, line and turn arrow. Sound: one quiet looped song ("Daisy Fresh"), and the same soft ding for each hoop
+and, a beat later, each finished step. Alan's first look: [playtest](../playtests/2026-10-18-flight-school-attention.md). Combat Training not started; a
 half-built enemy helper (`tutorialFoe` in RoundRuntime, the foe rule in CombatService:enemy) waits for it.
 
 ## Rules

@@ -52,9 +52,9 @@ Lessons.flight={
     if ctx.passedHoop() then ctx.data.passed+=1;ctx.ding();ctx.clearHoop() end
     return ctx.data.passed
    end},
-  {text="Lift keeps you flying. Fill it at a fan!",key=nil,hint="Fly up into the fan's wind.",
+  {text="Your Lift drops every second. Fill it up in a fan: follow the line!",key=nil,hint="Follow the yellow line, then fly up into the fan's wind.",
    update=function(ctx)
-    ctx.pulse("LiftStrip")
+    ctx.spotlight("LiftStrip") -- everything greyed out but the Lift bar (Alan); the line and glow show the fan
     local fan=ctx.body and nearestFan(ctx.body.Position)
     if fan then ctx.marker(fan.center,"FLY UP HERE",fan.half.X,blades(fan)) end
     return ctx.state=="FLYING" and ctx.body~=nil and inFan(ctx.body.Position)
