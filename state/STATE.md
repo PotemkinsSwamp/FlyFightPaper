@@ -6,22 +6,15 @@
   ([how it works](../docs/systems/economy-and-shop.md)).
 - **Planes look like paper (you approved it):** every part and booster now has its paper texture in the game:
   creases, paper edges, cardboard, toilet roll, tape and rubber bands, tinted red, blue, or half-and-half in
-  free-for-all. Checked in Studio Play, sizes unchanged, tests 328/0
-  ([decision](../docs/decisions/2026-10-18-paper-look.md)). **Duct fans** no longer poke through the ceiling.
+  free-for-all. ([decision](../docs/decisions/2026-10-18-paper-look.md)). Duct fans no longer poke through the ceiling.
 - **Prestige built:** at level 50 a Prestige button appears on the main menu's stats card; hold to confirm. You go
   back to level 1 and lose your parts (even bought ones), keep your Paper, boosts and stats, and get a gold rank
-  star on your level bar. Bots stay at your old difficulty. Checked in Studio Play; tests 340/0. You said keep the
-  details for now; prestige is parked until you want to work on it.
+  star on your level bar. Bots stay at your old difficulty. Parked until you want to work on it.
 - **Shop planned with you:** what we sell, whole-plane skins, sticker editor, drawing pass with safeguards,
   prestige, special planes ([shop plan](../docs/decisions/2026-10-18-shop-plan.md)); draft prices in the
   [pricing research](../docs/research/PRICING-RESEARCH-2026-10-18.md).
-- **Stage 9 approved (2026-10-18).**
-- **Wall touches are fair now (you re-checked):** a graze under about 25 degrees on a building, the
-  room or the train's side is a scrape: a little damage, the nose is knocked away and the plane wobbles, and you
-  steer back. Grinding along keeps costing more. More head-on crashes; the train's moving front still kills. Checked:
-  15 degrees along a wall wobbled and survived, 45 crashed; train sides 5-20 degrees scrape, 30+ crash, front kills;
-  bots died only to weapons in a 2-minute match. ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md))
-- Earlier: real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
+- Earlier: wall scrapes made fair ([decision](../docs/decisions/2026-10-18-scrapes-wobble.md)); Stage 9 approved;
+  real-looking bots; plane emote parked for the shop (1,013 Meshy credits left); private publish.
 
 # Now: Tutorial (built last, MILESTONES); Stage 10 code done and off
 Toilet Roll jitter: not reproduced; tell me when it happens.
