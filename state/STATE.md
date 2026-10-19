@@ -2,12 +2,12 @@
 - **Aiming fixed for the whole game:** the two wing guns crossed at 150 studs and missed past that; now they meet at
   the target's range (12/12 hits at 220 in Play). Aim assist 7 degrees to 3 (lessons too); the red dot means you'd hit
   with no help ([decision](../docs/decisions/2026-10-19-less-aim-assist.md)). No more jolt left on launch/unfreeze.
-- **Combat School, 10 more rounds of your notes** ([playtest](../docs/playtests/2026-10-19-combat-school.md)): Lift
+- **Combat School approved** after 16 rounds of your notes ([playtest](../docs/playtests/2026-10-19-combat-school.md)): Lift
   stays full; no eraser until its own last part; read pause 2.5 s with a draining bar; Pals appear in the air ahead,
   your speed, half Health, run in a straight line; step 8's Pal hunts you down (checked in Play); erasers to dodge come
   from ahead, never while frozen (checked in Play). Paperclip: ting the instant it fires, plus a soft zap.
 
-# Now: Tutorial, Combat School waiting on your notes (MILESTONES); Stage 10 code done and off
+# Now: Tutorial; Flight and Combat School approved, the Training board next (MILESTONES); Stage 10 code done and off
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
@@ -47,7 +47,8 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-- Play Combat School again: hitting with 3-degree assist, Pals (step 7 chase, step 8 hunt), the eraser part.
+- Combat School approved. Your call later: give the match bots the gun fix too (their guns still cross at 150 studs,
+  so they miss past it; fixing it makes every bot noticeably more accurate).
 - Backlog (yours): a new fan sound for the real game (the current one is a wind tunnel).
 - Private publish (your go) to test the real move into the private tutorial room.
 0. Studio: File > Save to File (keeps today's duct fan fix in the place file).

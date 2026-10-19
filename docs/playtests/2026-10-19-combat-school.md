@@ -111,6 +111,6 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
   players had) plus deliberate aim wobble and delay. **Done:** while hunting, the Pal aims dead on (no wobble or
   delay, full lead, guns meeting at your range), comes in 400-500 studs behind, then pulls round in front and runs.
 
-Next: Alan plays Combat School again.
+Alan: "good enough now, we can move on": [approved](../decisions/2026-10-19-combat-school-approved.md).
 
 Back to [playtests](README.md)
