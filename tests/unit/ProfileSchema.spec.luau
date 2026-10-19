@@ -14,7 +14,7 @@ function Spec.run()
 		assert(Schema.canonical(p.ownership)==Schema.canonical(starter) and #p.presets==5)
 		assert(p.paperMilli==require(Root.Generated.Economy).initial_paper*1000)
 		assert(p.xpMilli==require(Root.Generated.Economy).initial_total_xp*1000)
-		assert(p.schemaVersion==5 and p.prestige==0)
+		assert(p.schemaVersion==Schema.VERSION and p.prestige==0 and next(p.lessons)==nil)
 	end)
 	test("prestige accepts ranks zero through the configured maximum and rejects invalid ranks",function()
 		for rank=0,EconomyConfig.prestige_max do
@@ -58,7 +58,7 @@ function Spec.run()
 		assert(migrated.schemaVersion==Schema.VERSION and migrated.settings.crosshairColor=="blue" and migrated.settings.crosshairSize=="Medium")
 		assert(Schema.validate(migrated,catalog))
 		assert(Schema.canonical(p)==original,"migration mutated input")
-		local expected=assert(Schema.copy(p)); expected.schemaVersion=Schema.VERSION; expected.prestige=0
+		local expected=assert(Schema.copy(p)); expected.schemaVersion=Schema.VERSION; expected.prestige=0; expected.lessons={}
 		expected.settings.crosshairColor="blue"; expected.settings.crosshairSize="Medium"
 		assert(Schema.canonical(migrated)==Schema.canonical(expected),"migration changed unrelated fields")
 	end)
@@ -75,11 +75,22 @@ function Spec.run()
 		p.refolds={pending={state="reserved",costMilli=require(Root.Generated.Gameplay).service.full_refold_paper*1000,
 			loadout=catalog:starterLoadout(),fence={nonce="old",generation=3,sessionGeneration=1,actorId="pilot",lifeId="1",matchId="match",participationId="pilot",padId="desk"}}}
 		local original=Schema.canonical(p); local expected=assert(Schema.copy(p))
-		expected.schemaVersion=5; expected.prestige=0
+		expected.schemaVersion=Schema.VERSION; expected.prestige=0; expected.lessons={}
 		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
 		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v4 migration changed unrelated fields")
 		assert(Schema.canonical(p)==original,"v4 migration mutated input")
 		assert(Schema.canonical(Schema.migrate(migrated,catalog))==Schema.canonical(migrated))
+	end)
+	test("v5 migration adds an empty lesson list and nothing else",function()
+		local p=fresh(); p.schemaVersion=5; p.lessons=nil; p.paperMilli=4321; p.statistics.matches=3
+		local expected=assert(Schema.copy(p)); expected.schemaVersion=Schema.VERSION; expected.lessons={}
+		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
+		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v5 migration changed unrelated fields")
+	end)
+	test("lesson ticks accept only known lessons marked true",function()
+		local p=fresh(); p.lessons={flight=true,combat=true}; assert(Schema.validate(p,catalog))
+		for _,bad in ipairs({{secret=true},{flight=false},{flight=1},{[1]=true}}) do local q=fresh(); q.lessons=bad; assert(not Schema.validate(q,catalog)) end
+		local q=fresh(); q.lessons=nil; assert(not Schema.validate(q,catalog))
 	end)
 	test("v1 migration preserves exact value and unrelated fields",function()
 		local p=fresh(); p.schemaVersion=1; p.prestige=nil; p.streams=nil; p.journal={}; p.operationIds=nil; p.operationSessions=nil; p.receiptIds=nil; p.paperMilli=1234567; p.xpMilli=98765

@@ -121,13 +121,15 @@ Short notes that pop up the first time something happens, not before:
 Can be turned off in Settings.
 
 ## The Training board (menu)
-The main menu's Tutorial button opens a **Training board** listing the five lessons, each with a tick when done and
-**Play** / **Replay**. Lessons 1-3 move you to your Training Room; 4 and 5 run where you are (5 is just on/off).
+The main menu's Tutorial button opens a **Training board** listing the lessons, each with a tick when done and
+**Play** / **Replay**; ones not built yet say "Coming soon". Flight School and Combat School move you to your Training
+Room (from a match it first warns you'll leave it); the Hangar Tour moves you to the Range map; Match Tips is on/off.
+The Range itself is not on the board: it gets its own menu button ([decision](../decisions/2026-10-19-range-map-and-hangar-tour.md)).
 
 ## The Training Room (private and timed)
 - A new player's first join asks "Want a quick tutorial?"; Yes: their Training Room, Flight School, then Combat School, then a match.
-- Only you are in it. The room is timed: 10 minutes (Alan 2026-10-19, with Aiming added), with a warning 1 minute before the end. When the lessons
-  are done, skipped, or time runs out, you're moved to a normal room for your level.
+- Only you are in it. No time limit (Alan 2026-10-19: "people will leave, or they'll be kicked for being idle").
+  When the lessons are done or skipped, you're moved to a normal room for your level.
 - If the move fails, it tries again; if it still fails, a button says "Try again".
 - Which lessons you've finished is saved, so the game knows not to send you back unless you ask.
 
@@ -145,7 +147,7 @@ in Settings.
 
 ## Build order after Alan's OK
 1. The step engine everyone shares: goal note, key pictures, world markers, spotlight, tick and hint, Skip.
-2. Flight School. 3. Combat Training. 4. Training board, saved ticks, the 15-minute room. 5. Hangar Tour.
+2. Flight School. 3. Combat Training. 4. Training board and saved ticks. 5. Hangar Tour.
 6. Match Tips. 7. Weapons Range.
 Each lesson is checked in Studio Play with screenshots of every step and shown to Alan before the next.
 

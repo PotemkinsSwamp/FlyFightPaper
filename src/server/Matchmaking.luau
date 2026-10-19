@@ -8,7 +8,7 @@ function Service.classFor(profile)
  return profile and profile.qualification and profile.qualification.count>=Gameplay.bots.rookie_qualifying_matches and "regular" or "rookie"
 end
 function Service.needsTutorial(profile)
- return profile and profile.statistics and profile.statistics.matches==0 and profile.qualification and profile.qualification.count==0 or false
+ return profile and profile.statistics and profile.statistics.matches==0 and profile.qualification and profile.qualification.count==0 and next(profile.lessons or {})==nil or false
 end
 function Service:isTutorialRoom()
  return self.class=="tutorial"

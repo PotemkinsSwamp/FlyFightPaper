@@ -17,7 +17,7 @@ Track C saving needs a private publish (Alan's go). Toilet Roll jitter: not repr
 Decisions to review
 Combat School: the hunting Pal (step 8) flies 25% faster until you're at half Health (else a player flying away is
   never caught); look cards hold 5 s, action steps 2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%).
-  "No thanks" to the welcome question isn't saved. Training Room time to 10 min (not built yet).
+  "No thanks" to the welcome question isn't saved.
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
   buying early is useless). Buying a part with Paper still needs the level.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s

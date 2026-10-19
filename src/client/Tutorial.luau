@@ -44,6 +44,7 @@ local READ_SECONDS,LOOK_SECONDS=2.5,5
 
 function Tutorial.begin(lesson)
  if Tutorial.closeAsk then Tutorial.closeAsk() end -- a lesson starting closes the welcome question (found in Play)
+ if Tutorial.active and Tutorial.close then Tutorial.close() end -- switching lessons: the old one's targets, Pal and slow motion go first
  Tutorial.lessonKey=Lessons[lesson] and lesson or "flight";Tutorial.lesson=Lessons[Tutorial.lessonKey];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
  Root:SetAttribute("TutorialLesson",Tutorial.lessonKey);Root:SetAttribute("TutorialOpen",true) -- lesson first: its song is picked when TutorialOpen changes
  Root.RoundAction:FireServer("practice",Tutorial.lessonKey)
@@ -128,9 +129,54 @@ function Tutorial.start(getPlane)
   ask.Visible=true
  end
  Tutorial.closeAsk=function() ask.Visible=false end
+ -- The Training board (the Tutorial button; Alan 2026-10-19): a smaller copy of the main menu's cork board floating
+ -- over the game, its title on a taped index card in crayon letters, each lesson on its own pinned paper with Play
+ -- (Replay once finished: the tick is saved on the account) under its name. Lessons not built yet say "Coming soon".
+ -- From a match, Play first says you'll leave it (the lesson runs on another server).
+ Tutorial.lessons={}
+ Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) if type(profile)=="table" and type(profile.lessons)=="table" then Tutorial.lessons=profile.lessons end end)
+ local ROWS={{"flight","Flight School","Steer, Lift, fans and landing"},{"combat","Combat School","Aim, shoot and fight a Paper Pal"},
+  {nil,"Hangar Tour","Build a plane, then try it at the Range"},{nil,"Match Tips","Little tips in your first matches"}}
+ local boardCover,boardSheet=PaperUI.screen(player.PlayerGui,"TrainingBoard",Art.mainmenu.bg,.85)
+ boardCover.BackgroundTransparency,boardCover.BackgroundColor3=.45,Color3.fromRGB(20,14,8) -- the game dims behind the board
+ boardCover.Parent.DisplayOrder=15 -- above the menus, under the lesson's own cards (Leave this match?)
+ local pieces={}
+ local titleCard=PaperUI.image(boardSheet,"Title",Art.ingame.indexCard,620,110,680,275,-1.5);table.insert(pieces,titleCard)
+ local CRAYON={"#d8382f","#2f6fd8","#e8a21c","#2e9a48","#8a3fc4","#e2672a"}
+ local letters,n={},0
+ for ch in ("Training Board"):gmatch(".") do if ch==" " then table.insert(letters," ") else n+=1;table.insert(letters,string.format('<font color="%s">%s</font>',CRAYON[(n-1)%#CRAYON+1],ch)) end end
+ local titleWords=PaperUI.words(titleCard,"Words",table.concat(letters),40,55,600,140,104);titleWords.RichText=true;titleWords.TextXAlignment=Enum.TextXAlignment.Center
+ local subWords=PaperUI.words(titleCard,"Sub","Replay any lesson, any time.",40,190,600,50,32);subWords.TextXAlignment=Enum.TextXAlignment.Center
+ local boardBefore=nil
+ local back=PaperUI.button(boardSheet,"Back",Art.mainmenu.strip.red,"Back",1490,170,300,100,2,function() boardCover.Visible=false end,56);table.insert(pieces,back)
+ local rowButtons={}
+ local function go(key)
+  boardCover.Visible=false
+  local before=boardBefore
+  local function start() if before then before() end;Tutorial.begin(key) end
+  if player:GetAttribute("InMatch") and not Root:GetAttribute("TutorialRoom") then
+   choose("Leave this match?","This lesson runs in your own Training Room, so you'll leave this match. Your progress is saved.",
+    {{"Go",start},{"Stay",function() end,"red"}})
+  else start() end
+ end
+ for i,row in ROWS do
+  local paper=PaperUI.image(boardSheet,"Lesson"..i,Art.mainmenu.card,170+(i-1)*410,420,350,458,({-2.5,1.5,-1,2.5})[i]);table.insert(pieces,paper)
+  local grey=Color3.fromRGB(140,140,140)
+  local name=PaperUI.words(paper,"Name",row[2],50,85,280,60,46);name.TextXAlignment=Enum.TextXAlignment.Center;if not row[1] then name.TextColor3=grey end
+  local about=PaperUI.words(paper,"About",row[3],60,150,265,110,30);about.TextWrapped=true;about.TextXAlignment=Enum.TextXAlignment.Center;about.TextYAlignment=Enum.TextYAlignment.Top
+  if not row[1] then about.TextColor3=grey end
+  if row[1] then
+   local tickMark=PaperUI.image(paper,"Tick",Art.settings.check,145,250,80,80,-6);tickMark.Visible=false
+   rowButtons[row[1]]={tick=tickMark,button=PaperUI.button(paper,"Play",Art.mainmenu.strip.green,"Play",50,335,270,90,i%2==0 and 1.5 or -1.5,function() go(row[1]) end,48)}
+  else
+   local soon=PaperUI.words(paper,"Soon","Coming soon",50,345,270,70,38);soon.TextColor3=grey;soon.TextXAlignment=Enum.TextXAlignment.Center;soon.Rotation=-4
+  end
+ end
+ PaperUI.popIn(boardCover,pieces)
  function Tutorial.choose(before)
-  local function go(lesson) return function() if before then before() end;Tutorial.begin(lesson) end end
-  choose("Which lesson?","You can replay any lesson, any time.",{{"Flight School",go("flight")},{"Combat School",go("combat")}})
+  ask.Visible=false;boardBefore=before
+  for key,row in rowButtons do local done=Tutorial.lessons[key]==true;row.tick.Visible=done;row.button.Label.Text=done and "Replay" or "Play" end
+  boardCover.Visible=true
  end
  local function offer()
   if not player:GetAttribute("OfferTutorial") or Tutorial.active then return end
@@ -414,10 +460,21 @@ function Tutorial.start(getPlane)
   local step=Tutorial.lesson.steps[index]
   if step and step.enter then step.enter(ctx) end
  end
- local function finish(skipped)
+ local function close()
   Tutorial.active=false;Root:SetAttribute("TutorialOpen",false);clearCourse();note.Visible=false;star.Parent=nil;reading=nil
   ctx.lesson({freeze=false,slow=false,drill=false,pal=false})
+ end
+ Tutorial.close=close
+ -- Menu > Leave during a lesson: end it with no end card and back to the menu. (Only withdrawing the plane used to
+ -- leave the lesson running, and it kept asking for a new plane: Alan 2026-10-19, "it keeps pulling me back".)
+ function Tutorial.quit()
+  if not Tutorial.active then return false end
+  close();Root.RoundAction:FireServer("practiceDone","menu");return true
+ end
+ local function finish(skipped)
+  close()
   Audio.play("finish")
+  if not skipped then Tutorial.lessons[Tutorial.lessonKey]=true;Root.RoundAction:FireServer("lessonDone",Tutorial.lessonKey) end -- its tick on the Training board
   cardTitle.Text=skipped and "Lesson skipped" or Tutorial.lesson.doneTitle or (Tutorial.lesson.name.." done!")
   Tutorial.nextKey=Tutorial.lesson.next
   nextButton.Visible=Tutorial.nextKey~=nil;nextButton.Label.Text=Tutorial.nextKey and "Next: "..Lessons[Tutorial.nextKey].name or ""

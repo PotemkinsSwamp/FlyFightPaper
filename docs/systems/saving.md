@@ -4,8 +4,10 @@
 Your Paper, XP, level, owned parts, five saved builds and settings are kept between visits. Nothing you earned is
 lost if a save fails for a moment; it retries without stopping the match for everyone else.
 
-## Where it stands (2026-10-15)
-The save now has a prestige rank (schema 5); its rules are on [Economy and shop](economy-and-shop.md#prestige).
+## Where it stands (2026-10-19)
+The save now keeps which lessons you've finished (schema 6, `lessons`: the [Training board](tutorial.md)'s ticks; a
+new lesson name only widens `ProfileSchema.LESSONS`, no migration) and a prestige rank (schema 5). **Before publishing a new schema, shut down all old servers**: an
+old server can't read a newer save and would kick a player sent to it (Codex review 2026-10-19). Prestige: its rules are on [Economy and shop](economy-and-shop.md#prestige).
 Built on ProfileStore (Stage 5, Codex's lane) and tested with a fake save store. In Studio, progress lasts one
 Play session only. Published privately on 2026-10-17 ([how](../decisions/2026-10-07-private-publish.md)); real
 saving, rejoin, server hop and multi-player tests are next, played on Roblox itself.

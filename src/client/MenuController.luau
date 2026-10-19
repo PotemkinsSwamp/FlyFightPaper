@@ -32,7 +32,7 @@ function Menu.start()
   play=function()action:FireServer("join")end,
   hangar=function()Menu.show("hangar")end,
   settings=function()state.screen="settings";render()end,
-  tutorial=function()Tutorial.choose(function()overlay(false)end)end, -- pick Flight School or Combat School first
+  tutorial=function()Tutorial.choose(function()overlay(false)end)end, -- the Training board
   prestige=function()action:FireServer("prestige")end,
   -- The mock shop is Studio-only; the server also refuses it on real profiles.
   shop=game:GetService("RunService"):IsStudio() and function()state.screen="shop";render()end or nil,
@@ -65,8 +65,8 @@ function Menu.start()
   resume=function()overlay(false)end,
   hangar=function()Menu.show("hangar")end,
   settings=function()state.screen="settings";render()end,
-  tutorial=function()Tutorial.choose(function()overlay(false)end)end, -- pick Flight School or Combat School first
-  leave=function()action:FireServer("withdraw",true);overlay(false);home()end,
+  tutorial=function()Tutorial.choose(function()overlay(false)end)end, -- the Training board
+  leave=function()if not Tutorial.quit() then action:FireServer("withdraw",true) end;overlay(false);home()end,
  })
  local shopScreen=ShopScreen.new(gui.Parent,{buy=function(key)action:FireServer("mockProduct",key)end,back=function()home()end})
  local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})

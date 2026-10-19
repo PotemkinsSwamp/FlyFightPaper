@@ -165,6 +165,9 @@ function Service:_effect(p,op,boostState)
 		if not Schema.integer(op.slot) or op.slot<1 or op.slot>Gameplay.menus.saved_loadouts then return nil,"invalid_slot" end
 		p.presets[op.slot]={name=op.name,loadout=op.loadout}; result={type="PresetSaved",slot=op.slot}
 	elseif op.kind=="settings" then p.settings=op.settings; result={type="SettingsSaved"}
+	elseif op.kind=="lessonDone" then
+		if not Schema.LESSONS[op.lesson] then return nil,"invalid_lesson" end
+		p.lessons[op.lesson]=true; result={type="LessonDone",lesson=op.lesson}
 	elseif op.kind=="qualification" then
 		if not Schema.id(op.matchId) or type(op.activeSeconds)~="number" or op.activeSeconds<Gameplay.bots.qualification_active_seconds or not Schema.integer(op.events) or op.events<Gameplay.bots.qualification_combat_or_objective_events then return nil,"not_qualified" end
 		local already=p.qualification.history[op.matchId]==true or p.qualification.count>=Gameplay.bots.rookie_qualifying_matches
@@ -231,7 +234,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={receipt=true,passGrant=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,settings=true,
+local allowed={receipt=true,passGrant=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,settings=true,lessonDone=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}

@@ -10,6 +10,7 @@ PaperUI.font = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.
 -- A full-screen layer (own ScreenGui so its pieces stack simply) holding a hidden cover and the scaled sheet.
 -- With no background ids the cover is a see-through dim (for overlays on top of the game). floating: the background
 -- art has its own see-through edges (the game shows around it), so the cover is clear and the sheet fits inside.
+-- A number for floating also shrinks the sheet to that share of the screen (the Training board: a smaller board).
 function PaperUI.screen(playerGui, name, backgroundIds, floating)
 	local layer = Instance.new("ScreenGui")
 	layer.Name, layer.IgnoreGuiInset, layer.ResetOnSpawn, layer.DisplayOrder = name, true, false, 10
@@ -27,7 +28,7 @@ function PaperUI.screen(playerGui, name, backgroundIds, floating)
 	local function fit()
 		local view = workspace.CurrentCamera.ViewportSize
 		-- Backgrounds cover the screen (cropping frame edges on odd shapes); overlays fit inside it.
-		scale.Scale = (#backgroundIds > 0 and not floating and math.max or math.min)(view.X / PaperUI.W, view.Y / PaperUI.H)
+		scale.Scale = (#backgroundIds > 0 and not floating and math.max or math.min)(view.X / PaperUI.W, view.Y / PaperUI.H) * (type(floating) == "number" and floating or 1)
 	end
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
 	fit()

@@ -22,6 +22,7 @@ function Spec.run()
    {statistics={matches=0}},
    {qualification={count=0}},
    {statistics={},qualification={}},
+   {statistics={matches=0},qualification={count=0},lessons={flight=true}},
   }) do assert(Matching.needsTutorial(profile)==false) end
  end)
  test("only a tutorial server identifies itself as a tutorial room",function()

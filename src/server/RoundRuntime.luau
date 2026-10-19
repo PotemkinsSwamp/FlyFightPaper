@@ -13,6 +13,7 @@ local RewardQueue=require(script.Parent.RewardQueue)
 local VoteRings=require(script.Parent.VoteRings)
 local Course=require(Root.Shared.TrainingCourse)
 local Loadouts=require(Root.Shared.WeaponLoadouts)
+local Schema=require(Root.Shared.ProfileSchema)
 local Runtime={};Runtime.__index=Runtime
 function Runtime.new(flight,combat,bots,profiles,commerce)
  local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false},Runtime)
@@ -70,7 +71,15 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end
    -- Studio's stand-in tutorial room turns back into a normal room; a real one sends the player on to a match room.
    if Run:IsStudio() and Root:GetAttribute("DevTutorialRoom") then Root:SetAttribute("DevTutorialRoom",false);flight.tutorialRoom=false end
-   self:join(player);bots:fill()
+   if value~="menu" then self:join(player) end -- "menu": the player left the lesson for the menu, not a match
+   bots:fill()
+  elseif action=="lessonDone" and Schema.LESSONS[value] then
+   -- A lesson's end card was reached in the tutorial room: tick it on the Training board (no rewards, so the
+   -- client's word is enough; the server only checks the name and the room).
+   local profile=self.profiles:view(player)
+   if profile and self:tutorialRoom() and not profile.lessons[value] then
+    self.profiles:enqueue(player,{kind="lessonDone",lesson=value},nil,function(ok) if ok then self:sendProfile(player) end end)
+   end
   elseif action=="withdraw" and value==true then self:withdraw(player)
   elseif action=="overlay" and type(value)=="boolean" then
    local p=flight.pilots[player];if p then p.overlay=value;if value then combat:trigger(p,1,false);combat:trigger(p,2,false) end end
@@ -418,7 +427,7 @@ function Runtime:sendProfile(player)
   local e=self.profiles.entries[player]
   local boost=self.profiles.service:liveBoostView(e.account)
   self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,
-   presets=profile.presets,settings=profile.settings,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
+   presets=profile.presets,settings=profile.settings,lessons=profile.lessons,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end
 end
 function Runtime:step(dt)
