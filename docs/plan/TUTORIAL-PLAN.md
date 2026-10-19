@@ -71,7 +71,7 @@ what shows the lead).
 | 2 | Put the dot on the star (the circle steers; the dot is where the guns point) | Dot on the star for 1 s |
 | 3 | Shoot three still targets when the dot turns red | All 3 down |
 | 4 | Look: the orange ring in front of a plane flying past is where it WILL be (leading) | Got it |
-| 4b | Shoot two that fly past left and right: dot close to the orange ring (red = the guns will hit) | Both down |
+| 4b | Shoot two that fly past left and right: dot on the orange ring (red = on the ring) | Both down |
 | 5 | Hold right click with a target in the big eraser circle | Lock starts |
 | 6 | Keep holding until the box turns red: the eraser fires and chases (1/2) | 2 down by erasers |
 | 7 | Look: erasers reload in 4 seconds | Got it |

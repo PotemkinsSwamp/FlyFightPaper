@@ -53,8 +53,7 @@ function HUD.start(getPlane, action)
 	Settings:GetAttributeChangedSignal("CrosshairColor"):Connect(applyCrosshair)
 	Settings:GetAttributeChangedSignal("CrosshairSize"):Connect(applyCrosshair)
 	applyCrosshair()
-	-- Bright green; turns red and grows a little when the guns will hit: a lead ring within the gun assist (they fire at
-	-- the ring by themselves, CombatEffects.aim) and the target in range (ASSIST, below).
+	-- Bright green; turns red and grows a little only while it sits on an orange lead ring with the target in range.
 	local NOSE, NOSE_ON = Color3.fromRGB(60, 255, 90), Color3.fromRGB(255, 40, 60)
 	local noseDot = reticle("NoseDot", 10, true)
 	noseDot.BackgroundColor3 = NOSE
@@ -68,7 +67,6 @@ function HUD.start(getPlane, action)
 	-- Aim help: a lead marker for the enemy nearest the nose, with a bracket on that enemy.
 	local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 	local Gameplay = require(Root.Generated.Gameplay)
-	local ASSIST = math.cos(math.rad(Gameplay.combat.gun_assist_deg))
 	local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), Gameplay)
 	local CombatRules = require(Root.Shared.CombatRules)
 	-- The lead marker is the "second crosshair": put the nose dot on it and the shots meet the enemy.
@@ -531,10 +529,11 @@ function HUD.start(getPlane, action)
 					local lead = FlightState.leadFor(weapon)
 					place(pipper, lead)
 					if group == 1 or not guns[1] then noseRange = (lead - body.Position).Magnitude end
-					-- Red exactly when the shots go to the ring: it is inside the gun assist and the target in range (Alan
-					-- 2026-10-19 kept the assist). Measured in Play: a path check against the target's shape went red off the
-					-- ring on fast targets and stayed green on a good aim past ~150 studs while the shots hit.
-					local onTarget = body.CFrame.LookVector:Dot((lead - body.Position).Unit) >= ASSIST and CombatRules.travelTime(weapon, (lead - body.Position).Magnitude) < math.huge
+					-- Red only while the dot is on this ring and the target in range (Alan 2026-10-19, after a match: red
+					-- anywhere near the target "is not a good indicator"). The gun assist still helps the shots nearby.
+					local dot = camera:WorldToViewportPoint(body.Position + body.CFrame.LookVector * (lead - body.Position).Magnitude)
+					local onRing = pipper.Visible and (Vector2.new(dot.X, dot.Y) - Vector2.new(pipper.Position.X.Offset, pipper.Position.Y.Offset)).Magnitude <= pipper.AbsoluteSize.X / 2 + 3
+					local onTarget = onRing and CombatRules.travelTime(weapon, (lead - body.Position).Magnitude) < math.huge
 					anyHit = anyHit or onTarget
 					pipper.BackgroundTransparency = onTarget and 0.35 or 1
 					local a = pipper.Position
