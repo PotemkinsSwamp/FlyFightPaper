@@ -211,6 +211,9 @@ mistake would be easy to make twice.
   credits). `tools/meshy_to_r15.py` maps them onto R15 by world-space bone turns; check by comparing knee/elbow bend
   angles before and after (they matched to 0.1°). `AnimationClipProvider:RegisterAnimationClip` returns a plain hash
   string that works as an AnimationId as is (`rbxtemp://` in front is refused).
+- **A Sound inside an Attachment plays at that attachment's place, even outside the room** (2026-10-18: "flat" UI
+  sounds sat in an attachment under SoundService, so they played from the room's middle and faded with distance).
+  Sounds meant to be heard the same everywhere go straight in SoundService.
 - **A comment in a packed Luau line switches off everything after it** (2026-10-18: `-- note` in the middle of a
   `;`-joined line hid the tutorial note for a whole playtest). Comments go at the end of the line or above it.
 - **Tutorial UI traps (2026-10-18):** the Kalam font has no arrow or tick signs (▼ ➤ ✓ draw as empty boxes): use

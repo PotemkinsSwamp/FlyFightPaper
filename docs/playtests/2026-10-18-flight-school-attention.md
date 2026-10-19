@@ -33,3 +33,12 @@ and the hoop looked like loose blocks (now 24 pieces end to end).
    description (Alan judges by ear), quieter than match music; classroom chatter off during lessons; each finished step
    plays a rising two-note chime, louder than the hoop ding (it used to be the same coin sound, masked by take-off,
    fan and bolt sounds). Combat Training gets different music later. Not yet heard.]
+
+## Fourth listen (same day)
+10. **Music too loud: lower it about 30%; one song, not a playlist; Alan picks it by ear.** [Volume .12 -> .084, one
+    looped song (Pure Innocence as a stand-in); links to eight choices sent to Alan.]
+11. **Ring dings got louder each hoop (the first inaudible) and no chime after any other step.** [Root cause: sounds
+    without a place sat in an attachment outside the room, which put them at the room's middle, so they faded with
+    distance from it (the hoops get closer to the middle; the fan and bolts are far). They now play straight in
+    SoundService; this also fixes the round-start bell, lock beeps and desk service sounds far from the middle. Every
+    sound also loads at start. Not yet heard.]

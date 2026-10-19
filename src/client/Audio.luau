@@ -24,8 +24,10 @@ local definitions={
  -- A tutorial step done: the coin sound as a rising two-note chime, louder than a hoop's ding (Alan: hear every step).
  stepDone={1169806635,1.2,.6,.8,after={"stepDone2",.12}},stepDone2={1169806635,1.6,.55,.8},
 }
--- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you).
-local pool,available,busy={},{},{}
+-- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
+-- the rest sit straight in SoundService, heard the same anywhere. (Until 2026-10-18 those sat in an attachment
+-- outside the room, which put them at the room's middle: far away they faded out, e.g. the tutorial's chimes.)
+local pool,available,busy,spots={},{},{},{}
 local function id(definition)
  return type(definition[1])=="number" and "rbxassetid://"..definition[1] or "rbxasset://sounds/"..definition[1]
 end
@@ -36,11 +38,11 @@ function Audio.play(name,position,reach)
  if not sound then
   if #pool>=24 then return end
   sound=Instance.new("Sound");sound.RollOffMinDistance=40
-  local spot=Instance.new("Attachment");spot.Name="SoundSpot";sound.Parent=spot;table.insert(pool,sound)
+  spots[sound]=Instance.new("Attachment");spots[sound].Name="SoundSpot";table.insert(pool,sound)
  end
  sound.RollOffMaxDistance=reach or 450
- local spot=sound.Parent
- if position then spot.WorldPosition=position;spot.Parent=workspace.Terrain else spot.Parent=Sounds end
+ local spot=spots[sound]
+ if position then spot.WorldPosition=position;spot.Parent=workspace.Terrain;sound.Parent=spot else sound.Parent=Sounds end
  sound.SoundId=id(definition);sound.PlaybackSpeed=definition[2];sound.Volume=definition[3]*(Root:GetAttribute("SoundVolume") or 1)
  local token={};busy[sound]=token;sound:Play()
  task.delay(definition[4] or .22,function()if busy[sound]==token then sound:Stop();busy[sound]=nil;table.insert(available,sound) end end)
@@ -67,26 +69,30 @@ function Audio.start(getPlane)
  -- playlist). Add or remove ids here. The Music slider sets it; the classroom hum follows the Sound slider.
  local playlist={1844592742,1836626222,1842246698,1842172723} -- Action Kids, Frisky, Funky Thing, Disguise
  for i=#playlist,2,-1 do local j=math.random(i);playlist[i],playlist[j]=playlist[j],playlist[i] end
- -- Lessons have their own calm music (Alan: peaceful, focusing, playful, subtle, maybe classical) and no classroom
- -- chatter, so the step chimes stand out: Distrokid "Bamboo Dream Steps (Calm Piano & Celesta)", APM "Pure
- -- Innocence", "Playground Idyll", "Daisy Fresh" (both libraries are licensed for Roblox games).
- local lessonTracks={101906137416418,1847585588,1837587505,1839864816}
+ -- Every sound loads now, so the first play of each isn't cut short while it loads.
+ task.spawn(function() local ids={};for _,definition in definitions do table.insert(ids,id(definition)) end;game:GetService("ContentProvider"):PreloadAsync(ids) end)
+ -- Lessons have one calm song of their own (Alan: peaceful, focusing, playful, subtle, maybe classical; one song,
+ -- not a playlist), looped, quiet, and no classroom chatter, so the step chimes stand out.
+ -- ponytail: APM "Pure Innocence" until Alan picks the song by ear (choices in docs/systems/sound-and-effects.md).
+ local LESSON_SONG=1847585588
  local function inLesson() return Root:GetAttribute("TutorialOpen")==true end
  local music=Instance.new("Sound");music.Name="Music";music.Parent=Sounds
  local track=0
  local function nextTrack()
-  local list=inLesson() and lessonTracks or playlist
-  track=track%#list+1;music.SoundId="rbxassetid://"..list[track];music:Play()
+  music.Looped=inLesson()
+  if inLesson() then music.SoundId="rbxassetid://"..LESSON_SONG
+  else track=track%#playlist+1;music.SoundId="rbxassetid://"..playlist[track] end
+  music:Play()
  end
  music.Ended:Connect(nextTrack)
  -- Volume glides to the slider's value (a quarter second), so a jump from 0 to 100% fades instead of blasting.
  local glide=TweenInfo.new(.25)
  local function volumes()
   game:GetService("TweenService"):Create(ambience,glide,{Volume=(inLesson() and 0 or .04)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
-  game:GetService("TweenService"):Create(music,glide,{Volume=(inLesson() and .12 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
+  game:GetService("TweenService"):Create(music,glide,{Volume=(inLesson() and .084 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
  end
  Root:GetAttributeChangedSignal("MusicVolume"):Connect(volumes);Root:GetAttributeChangedSignal("SoundVolume"):Connect(volumes)
- Root:GetAttributeChangedSignal("TutorialOpen"):Connect(function() track=0;nextTrack();volumes() end)
+ Root:GetAttributeChangedSignal("TutorialOpen"):Connect(function() nextTrack();volumes() end)
  volumes();nextTrack()
  local lastPhase
  local Players=game:GetService("Players")
