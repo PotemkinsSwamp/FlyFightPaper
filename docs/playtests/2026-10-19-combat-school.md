@@ -102,6 +102,11 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - Step 7's Pal does too many maneuvers. **Found:** the normal bot brain started orbits and break turns. **Done:** no
   stunts; it flies straight away from you.
 
+## Round 16
+- The lesson note vanished. **Fixed:** a comment I'd added mid-line cut off the code that puts it on screen.
+- Step 8: placed ahead, you and the Pal just chased each other and it never landed a shot. **Done:** it comes in from
+  behind you, off to one side, 300-400 studs back ("from a distance as well") with a clear shot, facing you.
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

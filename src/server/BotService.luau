@@ -33,7 +33,9 @@ end
 -- Pals appear in the air, never out of a hangar (Alan 2026-10-19: "it's like the enemy's coming out of nowhere"):
 -- 400-700 studs ahead of their player (within 40 degrees of the nose; Alan: not off to the side), in clear air inside
 -- the room, hidden behind a building if one of those spots is, facing away so the player chases it. Only if nothing
--- ahead is clear: further round, then the course's middle point.
+-- ahead is clear: further round, then the course's middle point. The pellet Pal (step 8) instead comes in from behind
+-- you, off to one side where you don't see it, 300-400 studs back (in its guns' reach) with a clear shot, facing you (Alan 2026-10-19: placed
+-- ahead, you just chased each other and it never landed a shot; you should have to turn round to find it).
 function Service:placePal(p)
  local victim=self.flight.byId[p.foeOf]
  if not victim or p.model:GetAttribute("State")~="DESK" then return end
@@ -43,24 +45,25 @@ function Service:placePal(p)
  ball.Size=Vector3.one*80;ball.Parent=workspace
  local half=self.flight.boundsSize/2-Vector3.one*60
  local open,hidden
- for _,turn in {0,20,-20,40,-40,70,-70,110,-110,180} do
-  -- A pellet Pal is there to attack you: closer, and facing you (Alan 2026-10-19: it "doesn't come after me";
-  -- measured, it spent its first 5 s turning round from 550 studs away).
-  for _,range in p.pal.mode=="pellet" and {350,300,450} or {600,500,700,400} do
+ local attack=p.pal.mode=="pellet"
+ for _,turn in attack and {150,-150,130,-130,170,-170,110,-110} or {0,20,-20,40,-40,70,-70,110,-110,180} do
+  for _,range in attack and {350,300,400} or {600,500,700,400} do
    local at=from+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*range+Vector3.yAxis*20
    local inside=self.flight.boundsCF:PointToObjectSpace(at)
    ball.Position=at
    if math.abs(inside.X)<half.X and math.abs(inside.Y)<half.Y and math.abs(inside.Z)<half.Z and #workspace:GetPartsInPart(ball,self.flight.overlap)==0 then
     open=open or at
-    if math.abs(turn)<=40 and workspace:Raycast(from,at-from,self.flight.cast) then hidden=at;break end
+    local blocked=workspace:Raycast(from,at-from,self.flight.cast)
+    -- `hidden` = the spot wanted: behind a building ahead, or (attacking) behind you with a clear shot
+    if attack and not blocked or not attack and math.abs(turn)<=40 and blocked then hidden=at;break end
    end
   end
-  if hidden or open and (turn==-40 or math.abs(turn)>40) then break end
+  if hidden or not attack and open and (turn==-40 or math.abs(turn)>40) then break end
  end
  ball:Destroy()
  local at=hidden or open or Course.POINTS[2]
  local away=(at-from)*Vector3.new(1,0,1);away=away.Magnitude>1 and away.Unit or heading
- if p.pal.mode=="pellet" then away=-away end
+ if attack then away=-away end
  p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
  -- Half a normal plane's Health in lessons (Alan 2026-10-19: full Health made them frustrating).
  p.model:SetAttribute("MaxHealth",p.stats.health/2);p.model:SetAttribute("Health",p.stats.health/2)
