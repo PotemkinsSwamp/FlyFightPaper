@@ -59,6 +59,8 @@ function Service:placePal(p)
  local at=hidden or open or Course.POINTS[2]
  local away=(at-from)*Vector3.new(1,0,1);away=away.Magnitude>1 and away.Unit or heading
  p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
+ -- Half a normal plane's Health in lessons (Alan 2026-10-19: full Health made them frustrating).
+ p.model:SetAttribute("MaxHealth",p.stats.health/2);p.model:SetAttribute("Health",p.stats.health/2)
  local b=self.brains[p.id];if b then b.mode="launch" end
 end
 -- The eraser Pal's erasers appear on their own 300 studs ahead of you, toward the Pal, already chasing you, one at a
@@ -82,8 +84,10 @@ function Service:palEraser(p,victim,now)
 end
 function Service:palReady(p,now)
  local victim=self.flight.byId[p.foeOf]
- -- Not while the lesson's note holds you still either (Alan: an eraser came at a frozen plane).
- return victim and victim.model:GetAttribute("State")=="FLYING" and not victim.held and now-(victim.launchAt or 0)>2 and victim or nil
+ -- Not while the lesson's note holds you still either (Alan: an eraser came at a frozen plane), nor in the first
+ -- second of a step, before its freeze has reached the server: unfreezing restarts the 2 seconds (fly sets launchAt).
+ return victim and victim.model:GetAttribute("State")=="FLYING" and not victim.held and now-(victim.launchAt or 0)>2
+  and now-(p.pal.at or 0)>1 and victim or nil
 end
 local MIXED_SKILLS={"rookie","regular","experienced"}
 local function aimError(direction,b,now)
