@@ -41,14 +41,19 @@ aiming: in slow motion first (your plane at 6% speed, almost still, Lift kept fu
 soften, the music slows, a whoosh and a "SLOW MOTION" tag): the circle vs the dot (a star), three still targets
 (the dot turns red = it will hit; the dot is always green/red, whatever crosshair colour is set), two that sweep left and right across in front of you at a real plane's speed (crossing your view is what shows
 the lead): first a look step on the orange ring ("AIM HERE", "that's called leading"), then shoot them (350 studs away, crossing at 60 studs/s: measured in Play, faster
-crossings left the nose trailing the ring so the dot never sat in it), the eraser's big lock circle and lock
-(holding right click fires it at full lock), its reload; then full speed for one target and one eraser lock. HUD
+crossings left the nose trailing the ring so the dot never sat in it); then full speed for one target. HUD
 pieces it points at (crosshair, lead ring, eraser circle) get a soft frame: thin, half see-through, no dim.
+Until part 3 the plane has two pellet guns and no eraser (Alan 2026-10-19: its circle, sounds and lock-on distract
+from aiming and suggest every plane has one).
 **Targets are real paper planes** placed in clear air just ahead of where you are when the step starts (checked
 against the room's exact shapes; the course points are the fallback), held still or sweeping
 (`src/shared/TrainingCourse.luau`), so every aim help works on them as in a match. Part 2, fighting: one "Paper Pal"
-at a time at 60% speed: one that only flies the course, one that shoots until you're at half Health and then stops,
-one that fires slow erasers (half speed, slower again after each hit) until you dodge one, then your eraser on it.
+at a time at 45% speed, turning slowly and wandering in gentle curves to a clear spot ahead every few seconds, never
+chasing or U-turning (Alan 2026-10-19: easy to chase down, "worse than noob"): one that never shoots, one that turns
+on you 3 seconds in every 10 and shoots until you're at half Health. Neither carries an eraser. Part 3, the eraser:
+the plane refolds in the air with an eraser on right click (`eraser=true`), then in slow motion the big lock circle and
+lock (holding right click fires it at full lock), its reload, one lock at full speed, a Pal that hunts you with slow
+erasers (half speed, slower again after each hit) until you dodge one, then your eraser on it.
 Folded by a crash: a countdown note, the plane takes off by itself, the step carries on and the Pal holds fire until
 you've flown 2 seconds; after 3 crashes on a step, a tip.
 
@@ -57,7 +62,8 @@ See "Tutorial (built last)" in [Milestones](../plan/MILESTONES.md). Practice is 
 Flight School can't be lost (Alan 2026-10-18): its plane (`p.gentle`, set when the client asks for practice with the
 lesson "flight"; its model carries `Gentle` so the pilot's client doesn't crumple it either) only bounces off walls,
 the floor, duct fans and the room's edge; its Lift stops at 1 second and its Boost at 0.01.
-Combat School's aiming part can't be lost either (the step asks for gentle); its fights keep normal crashes, but a Pal can never fold you
+Combat School's Lift stays full the whole lesson (`p.keepLift`; Alan 2026-10-19: Lift isn't what it teaches).
+Its aiming part can't be lost either (the step asks for gentle); its fights keep normal crashes, but a Pal can never fold you
 (its hits stop at 1 Health) and Pals and targets never ram you. A respawned practice plane is the same training plane
 (it used to come back as the player's own build, often with no booster: the "no boost" report).
 Read, then act (Alan 2026-10-19): every step that starts in the air holds the player's plane, targets and Pal still
@@ -65,10 +71,12 @@ Read, then act (Alan 2026-10-19): every step that starts in the air holds the pl
 counts while frozen; a look step's Got it unfreezes and finishes it; Flight School too. While held (model attribute
 `Held`) the pilot's aim stays on the nose, the mouse is free to click Go, and nothing fires (the aim used to drift
 with the mouse, so the plane pointed somewhere else when it let go).
-A lesson step asks the server for what it needs with `RoundAction("lesson", {freeze, slow, gentle, repair, drill, pal})`; the
+A lesson step asks the server for what it needs with `RoundAction("lesson", {freeze, slow, gentle, repair, eraser, drill, pal})`; the
 server keeps counts on the player (`DrillDown`, `PalFolds`, `PalEraserMisses`, `PalEraserHits`, `EraserHits`).
 Studio: set `DevLesson` (flight / combat) on `ReplicatedStorage.FlyFightPaper` on the client to open a lesson. To test
 aiming, the player attribute `DevAimLead` (DevTools.luau) steers at the HUD's orange ring and `DevAim` at a direction.
+Every player's last 40 shots are recorded in Studio on the player attribute `DevShotLog` (CombatService): hit, wall or
+air, the gun range sent, and how far and where each passed the nearest enemy's centre, so a playtest's misses can be read.
 
 ## Code
 | File | What it does |
@@ -80,11 +88,11 @@ aiming, the player attribute `DevAimLead` (DevTools.luau) steers at the HUD's or
 | `src/server/Matchmaking.luau` | Sends a player to a fresh private tutorial room and back |
 | `src/server/MatchmakingAdapter.luau` | Reserves tutorial rooms; never lists them; carries the lesson picked |
 | `src/server/CombatService.luau` | Practice pilots are nobody's enemy except their lesson's; a Pal can't fold you; slow Pal erasers |
-| `src/server/BotService.luau` | The Pals' brain: when they chase, shoot or fly the course |
+| `src/server/BotService.luau` | The Pals' brain: wandering, when they turn on you and shoot |
 | `src/server/FlightService.luau` | Gentle planes, slow motion, flying the practice targets |
 
 ## Tuning numbers
-`TrainingCourse.SLOW_MO` (.06), target health, sweep size and speed in `TrainingCourse.DRILLS`; Pal speed (.6) and first
+`TrainingCourse.SLOW_MO` (.06), target health, sweep size and speed in `TrainingCourse.DRILLS`; Pal speed (.45), turn share (.6, BotService) and first
 eraser speed (.5) in `RoundRuntime:lesson`; the soft frame's `SOFT_SLICE`/`SOFT_SEE_THROUGH` in `Tutorial.luau`.
 
 ## Related

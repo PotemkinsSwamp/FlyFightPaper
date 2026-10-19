@@ -110,7 +110,7 @@ end
 local Course=require(Root.Shared.TrainingCourse)
 
 -- Combat School, part 1: aiming (Alan 2026-10-19). First in slow motion, almost still, so there's time to see how
--- the circle, the dot, the orange ring and the eraser lock work; then once more at full speed. Walls only bounce
+-- the circle, the dot and the orange ring work; then once more at full speed. Walls only bounce
 -- you off here (gentle). HUD pieces get the soft frame (thin, see-through, no dim) so the crosshair stays visible.
 local AIM_STEPS={
   {text="Slow motion! The circle is where you steer. The dot is where your guns point. Put the dot on the star.",key="Mouse",
@@ -148,41 +148,11 @@ local AIM_STEPS={
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
    end},
-  -- Holding right click through the 1.5 s lock fires the eraser by itself (CombatService), so no "let go" step.
-  {text="Your eraser chases planes. Hold right click and keep a target inside the big circle.",key="Right click",
-   hint="Turn so the target sits inside the big circle round your nose.",
-   enter=function(ctx) ctx.lesson({drill="eraser"}) end,
-   update=function(ctx)
-    ctx.softSpot("EraserSeeker")
-    markTarget(ctx,"LOCK ON")
-    return ctx.plane~=nil and (ctx.plane:GetAttribute("LockProgress") or 0)>=.3
-   end},
-  {text=function(ctx)
-    local progress=ctx.plane and ctx.plane:GetAttribute("LockProgress") or 0
-    return progress>0 and progress<1 and "Keep holding... when the box turns red, the eraser fires!" or "Keep it in the circle until the box turns red: the eraser fires and chases!"
-   end,key="Right click",count=2,
-   hint="Lost it? The box starts over when the target leaves the big circle. A quick click fires straight, with no chase.",
-   update=function(ctx)
-    markTarget(ctx,"LOCK ON")
-    return ctx.count("DrillDown")
-   end},
-  {text="Erasers take 4 seconds to reload: watch the right-click row fill up.",gotIt=true,
-   update=function(ctx)
-    ctx.spotlight("RightStrip")
-    return false
-   end},
   {text=shootText("Full speed! Shoot the one flying past: dot on the orange ring."),key="Left click",count=1,
    hint="Same as before, just faster. Dot on the orange ring.",
    enter=function(ctx) ctx.lesson({slow=false,drill="fast"}) end,
    update=function(ctx)
     markTarget(ctx,"SHOOT")
-    return ctx.count("DrillDown")
-   end},
-  {text="Now lock on with your eraser: hold right click.",key="Right click",count=1,
-   hint="Keep the target in the big circle until the box turns red.",
-   enter=function(ctx) ctx.lesson({drill="fastEraser"}) end,
-   update=function(ctx)
-    markTarget(ctx,"LOCK ON")
     return ctx.count("DrillDown")
    end},
 }
@@ -214,6 +184,45 @@ local FIGHT_STEPS={
     markPal(ctx,"ENEMY")
     return ctx.count("PalFolds")>ctx.data.start
    end},
+}
+
+-- Combat School, part 3: the eraser (Alan 2026-10-19: until now the plane has no eraser, so its big circle and
+-- sounds don't distract from aiming; it is the one weapon that works differently). Slow motion again to lock on,
+-- full speed once, then dodge a Pal's eraser and fire one back.
+local ERASER_STEPS={
+  {text="Last part: your eraser! Your plane now has an eraser launcher on right click. Erasers chase the plane you lock on to.",gotIt=true,
+   enter=function(ctx) ctx.lesson({pal=false,eraser=true,slow=true,gentle=true}) end,
+   update=function(ctx) return false end},
+  -- Holding right click through the 1.5 s lock fires the eraser by itself (CombatService), so no "let go" step.
+  {text="Your eraser chases planes. Hold right click and keep a target inside the big circle.",key="Right click",
+   hint="Turn so the target sits inside the big circle round your nose.",
+   enter=function(ctx) ctx.lesson({drill="eraser"}) end,
+   update=function(ctx)
+    ctx.softSpot("EraserSeeker")
+    markTarget(ctx,"LOCK ON")
+    return ctx.plane~=nil and (ctx.plane:GetAttribute("LockProgress") or 0)>=.3
+   end},
+  {text=function(ctx)
+    local progress=ctx.plane and ctx.plane:GetAttribute("LockProgress") or 0
+    return progress>0 and progress<1 and "Keep holding... when the box turns red, the eraser fires!" or "Keep it in the circle until the box turns red: the eraser fires and chases!"
+   end,key="Right click",count=2,
+   hint="Lost it? The box starts over when the target leaves the big circle. A quick click fires straight, with no chase.",
+   update=function(ctx)
+    markTarget(ctx,"LOCK ON")
+    return ctx.count("DrillDown")
+   end},
+  {text="Erasers take 4 seconds to reload: watch the right-click row fill up.",gotIt=true,
+   update=function(ctx)
+    ctx.spotlight("RightStrip")
+    return false
+   end},
+  {text="Now lock on with your eraser: hold right click.",key="Right click",count=1,
+   hint="Keep the target in the big circle until the box turns red.",
+   enter=function(ctx) ctx.lesson({slow=false,drill="fastEraser"}) end,
+   update=function(ctx)
+    markTarget(ctx,"LOCK ON")
+    return ctx.count("DrillDown")
+   end},
   {text=function(ctx)
     local plane=ctx.plane;local now=workspace:GetServerTimeNow()
     if plane and now<(plane:GetAttribute("EraserIncomingUntil") or 0) then
@@ -224,7 +233,7 @@ local FIGHT_STEPS={
     return "This one fires slow erasers. Dodge one: when you see BREAK NOW!, turn hard."
    end,
    hint="Turn hard the moment BREAK NOW! shows. Turning too early lets it follow you.",
-   enter=function(ctx) ctx.lesson({repair=true,pal="eraser"});ctx.data.misses=ctx.count("PalEraserMisses");ctx.data.hits=ctx.count("PalEraserHits") end,
+   enter=function(ctx) ctx.lesson({drill=false,gentle=false,repair=true,pal="eraser"});ctx.data.misses=ctx.count("PalEraserMisses");ctx.data.hits=ctx.count("PalEraserHits") end,
    update=function(ctx)
     if ctx.count("PalEraserHits")>ctx.data.hits then ctx.data.hitOnce=true end
     markPal(ctx,"ENEMY")
@@ -241,5 +250,5 @@ local FIGHT_STEPS={
 }
 -- One lesson after Flight School (Alan 2026-10-19: "flight school, then combat school").
 Lessons.combat={name="Combat School",doneTitle="You're ready!",steps={launch()}}
-for _,list in {AIM_STEPS,FIGHT_STEPS} do for _,step in list do table.insert(Lessons.combat.steps,step) end end
+for _,list in {AIM_STEPS,FIGHT_STEPS,ERASER_STEPS} do for _,step in list do table.insert(Lessons.combat.steps,step) end end
 return Lessons

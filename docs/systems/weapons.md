@@ -58,6 +58,12 @@ Replacing a type cannot finish an in-progress cooldown early: new types start th
 at service completion, and reused mounts retain any later prior readyAt. A real respawn creates a new life
 with spawn rules. Do not use ordinary repair/refold to reset projectile counts.
 
+A player's guns meet at the range of the target they're aiming at (the client sends it with the aim; the server clamps
+it to 20-1000 studs); with no target, and for bots, at `combat.gun_convergence_studs` (150). Fixed at 150, the two
+wing guns crossed and flew past either side of a plane seen from behind at 300 studs even with the dot red on the
+ring (measured 2026-10-19; Alan: "the shots don't make it"). After the fix, Play: 12 of 12 aimed pellets hit
+targets crossing at 220 studs, and 6 of 6 at 130.
+
 ### Guided erasers
 Initial lock: 1.5 seconds of valid target alignment/visibility within 750 studs. Incoming warning on the target.
 Launch speed 200 studs/s through 250 studs flown, then falls linearly to 110 studs/s (0.55x) at 750 studs

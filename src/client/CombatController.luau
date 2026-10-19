@@ -16,7 +16,8 @@ function Controller.start(getPlane,effects)
   if life~=p:GetAttribute("Life") then life=p:GetAttribute("Life");seq=0 end
   local body=p:FindFirstChild("Root");if not body then return end
   seq+=1
-  remote:FireServer({group=which,down=held[which] and not Root:GetAttribute("OverlayOpen"),direction=effects.aim(body,which),at=workspace:GetServerTimeNow(),life=life,seq=seq})
+  local direction,range=effects.aim(body,which)
+  remote:FireServer({group=which,down=held[which] and not Root:GetAttribute("OverlayOpen"),direction=direction,range=range,at=workspace:GetServerTimeNow(),life=life,seq=seq})
  end
  Input.InputBegan:Connect(function(input,processed)
   if processed or Input:GetFocusedTextBox() or Root:GetAttribute("OverlayOpen") then return end

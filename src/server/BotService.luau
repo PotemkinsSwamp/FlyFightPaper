@@ -14,7 +14,19 @@ local Course=require(Root.Shared.TrainingCourse)
 local Service={};Service.__index=Service
 -- Combat Training's Pals (p.pal, set by RoundRuntime:lesson): they only fight while their player has been flying
 -- for 2 seconds (Alan: smooth after a crash), so a player back from a crash isn't jumped on takeoff.
-local PAL_LOOP={1,2,3,2} -- back and forth along the course's checked-clear legs
+-- Pals are easy prey (Alan 2026-10-19: a Pal that turned back or chased you only made you both fly in circles):
+-- they wander slowly in gentle turns, picking a clear spot ahead every few seconds, and never U-turn unless boxed in.
+local function wander(self,b,position,now)
+ if b.wanderGoal and now<b.wanderUntil and (position-b.wanderGoal).Magnitude>80 then return b.wanderGoal end
+ local heading=b.heading*Vector3.new(1,0,1);heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
+ local climb=math.clamp((Course.POINTS[2].Y-position.Y)*.3,-40,40) -- drift back toward the course's height
+ local first=b.random:NextNumber(-30,30)
+ for _,turn in {first,first+40,first-40,90,-90,135,-135,180} do
+  local goal=position+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*250+Vector3.yAxis*climb
+  if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+4;return goal end
+ end
+ b.wanderGoal,b.wanderUntil=Course.POINTS[2],now+4;return b.wanderGoal
+end
 function Service:palReady(p,now)
  local victim=self.flight.byId[p.foeOf]
  return victim and victim.model:GetAttribute("State")=="FLYING" and now-(victim.launchAt or 0)>2 and victim or nil
@@ -365,12 +377,11 @@ function Service:decide(p,b,now)
  -- otherwise (and once it has stopped shooting) it flies the course loop so it is easy to find and shoot.
  if p.pal then
   local victim=self:palReady(p,now)
-  if victim and (p.pal.mode=="pellet" or p.pal.mode=="eraser") then
+  -- An eraser Pal hunts you (it must lock on); a pellet Pal only turns on you 3 seconds in every 10.
+  if victim and (p.pal.mode=="eraser" or p.pal.mode=="pellet" and (now+b.seed)%10<3) then
    b.target=victim;b.mode="chase";b.goal=victim.body.Position;b.lastSeen=now;b.lastKnown=victim.body.Position;b.lastVelocity=victim.body.AssemblyLinearVelocity
   else
-   b.target=nil;b.mode="patrol";b.palStep=b.palStep or 1
-   if (position-Course.POINTS[PAL_LOOP[b.palStep]]).Magnitude<90 then b.palStep=b.palStep%#PAL_LOOP+1 end
-   b.goal=Course.POINTS[PAL_LOOP[b.palStep]]
+   b.target=nil;b.mode="patrol";b.goal=wander(self,b,position,now)
   end
  end
  -- Studio spectator camera (F10) shows each bot's intent.
@@ -426,7 +437,7 @@ function Service:steer(p,b,dt,now)
  if b.move and b.move.mode~=b.mode then b.move=nil end
  local flown=b.move and self:moveDirection(p,b,now,turn)
  if flown then goal=position+flown*300
- elseif b.mode=="patrol" or b.mode=="search" then
+ elseif (b.mode=="patrol" or b.mode=="search") and not p.pal then
   -- People don't fly ruler lines: drift side to side and up and down while cruising.
   goal+=(p.body.CFrame.RightVector*math.sin(now*.6+b.seed)*.45+Vector3.yAxis*math.sin(now*.37+b.seed*1.7)*.15)*(goal-position).Magnitude
  end
@@ -494,7 +505,7 @@ function Service:steer(p,b,dt,now)
  if b.avoid then direction=b.avoid end
  -- Same autopilot as human pilots: the bot only chooses where to aim.
  local desired
- desired,b.bank,p.orientation.CFrame=FlightRules.autopilot(b.heading,b.bank,direction,p.stats.yaw*b.profile.turn_factor,p.stats.pitch*b.profile.turn_factor,dt)
+ desired,b.bank,p.orientation.CFrame=FlightRules.autopilot(b.heading,b.bank,direction,p.stats.yaw*b.profile.turn_factor*(p.pal and .6 or 1),p.stats.pitch*b.profile.turn_factor*(p.pal and .6 or 1),dt)
  local bleed=FlightRules.turnSpeedFactor(b.heading,desired,dt,turn)
  b.heading=desired
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost

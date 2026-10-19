@@ -98,7 +98,9 @@ function Service:receive(p,packet,now)
   local age=math.clamp(math.min(now-packet.at,ping+.1),0,Config.input_delay_allowance_seconds)
   local arc=math.rad(math.min(Config.input_max_aim_deg,Config.input_aim_slack_deg+(p.stats.turn)*(age+.1)))
   if p.body.CFrame.LookVector:Dot(packet.direction)<math.cos(arc) then return false end
-  info.aimData[packet.group]={arc=arc,at=now,latency=age};info.latency=age
+  -- Where the guns meet: the client's target range (clamped; only moves where the two streams cross).
+  local range=FlightRules.finite(packet.range) and math.clamp(packet.range,20,1000) or nil
+  info.aimData[packet.group]={arc=arc,at=now,latency=age,range=range};info.latency=age
  end
  info.seq=packet.seq;self:trigger(p,packet.group,packet.down,packet.down and packet.direction or nil)
  return true
@@ -226,7 +228,7 @@ function Service:launch(p,mount,now,target)
  if p.body.CFrame.LookVector:Dot(direction)<math.cos(arc) then direction=p.body.CFrame.LookVector end
  local factor=self.flight.catalog:get(p.loadout.body).visual_scale/2
  local position=p.body.CFrame:PointToWorldSpace(Aircraft.muzzleOffset(mount.slot,factor,mount.weapon.id,Aircraft.fitOf(p.model)))
- direction=Aircraft.converge(p.body,position,direction,Config.gun_convergence_studs)
+ direction=Aircraft.converge(p.body,position,direction,p.kind=="human" and aimData and aimData.range or Config.gun_convergence_studs)
  if weapon.spread_deg>0 then
   local spread=math.rad(weapon.spread_deg)
   direction=(CFrame.lookAt(Vector3.zero,direction)*CFrame.Angles(self.random:NextNumber(-spread,spread),self.random:NextNumber(-spread,spread),0)).LookVector
@@ -240,6 +242,8 @@ function Service:launch(p,mount,now,target)
  local rewind=p.kind=="human" and math.min(Config.max_rewind_seconds,2*latency+Config.view_delay_seconds) or 0
  local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+weapon.lifetime,rewind=rewind,flown=0,
   target=target,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
+ -- Studio shot recorder: how close each of a player's shots came to the nearest enemy (see :finish).
+ if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range} end
  self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1
  local record=self.flight.records[p.id];if record then record.shots+=1 end
  if weapon.homing then info.activeErasers+=1 end
@@ -249,6 +253,16 @@ end
 function Service:finish(shot,position,wall)
  if not self.shots[shot.id] then return end
  self.shots[shot.id]=nil;self.shotCount-=1
+ -- Studio: the player attribute DevShotLog keeps the last 40 shots: H(it)/W(all)/A(ir), the gun range sent, how far
+ -- the shot passed from the target's centre, and where (target's right, up, back), all in studs.
+ local owner=shot.dev and self.flight.byId[shot.owner]
+ if owner and owner.player then
+  local d,o=shot.dev,shot.dev.off or Vector3.zero
+  local entry=string.format("%s r%s m%.1f(%.1f,%.1f,%.1f)@%.0f",shot.struck and "H" or wall and "W" or "A",d.range and string.format("%.0f",d.range) or "-",math.min(d.miss,99),o.X,o.Y,o.Z,d.dist or 0)
+  local log=string.split(owner.player:GetAttribute("DevShotLog") or "","|");if log[1]=="" then table.remove(log,1) end
+  table.insert(log,entry);while #log>40 do table.remove(log,1) end
+  owner.player:SetAttribute("DevShotLog",table.concat(log,"|"))
+ end
  if shot.weapon.homing and self.info[shot.owner] then self.info[shot.owner].activeErasers=math.max(0,self.info[shot.owner].activeErasers-1) end
  -- Combat Training's dodge step: did the Pal's eraser miss its player? A hit makes the next one slower still.
  local pal=shot.weapon.homing and self.flight.byId[shot.owner]
@@ -316,6 +330,11 @@ function Service:planeHit(shot,delta,now)
   if info and self:enemy(shooter,target) and target.model:GetAttribute("State")=="FLYING" then
    local cf=Rules.sample(info.track,now-shot.rewind) or target.body.CFrame
    if (cf.Position-(shot.position+delta/2)).Magnitude<reach then
+    if shot.dev then
+     local along=math.clamp((cf.Position-shot.position):Dot(delta)/math.max(delta:Dot(delta),1e-6),0,1)
+     local near=shot.position+delta*along
+     if (near-cf.Position).Magnitude<shot.dev.miss then shot.dev.miss=(near-cf.Position).Magnitude;shot.dev.off=cf:PointToObjectSpace(near);shot.dev.dist=(near-shot.origin).Magnitude end
+    end
     local function at(pose)
      local t=HitShapes.cast(target,pose,shot.position,delta,size,rotation)
      -- No plane model to test (unit fixtures): its body box.

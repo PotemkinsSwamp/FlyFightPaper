@@ -36,6 +36,16 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - The dot went red anywhere near a target. **Done:** red only while the dot is on the orange ring.
 - (A crash in the HUD from one of these edits broke every menu for a while; fixed and checked in Play.)
 
-Next: Alan's notes on Combat School (next session).
+## Round 6 (a match and Combat School)
+- Red dot on the ring, but shots still missed beyond close range, in matches too. **Found and fixed:** the two wing
+  guns always met at 150 studs and spread past it, so a plane seen from behind at 300 was missed on both sides.
+  Now they meet at the target's range ([weapons](../systems/weapons.md)). Measured after: 12/12 hits crossing at 220.
+  Round 4's measurement checked the aim direction, not where the two guns' shots went.
+- Ran out of Lift in Combat School. **Done:** Lift stays full all lesson.
+- The eraser distracts while learning to aim. **Done:** no eraser until a last part; Alan's idea of a later
+  every-weapon lesson is the planned Weapons Range.
+- Pals too hard to chase 1v1 (circling). **Done:** slower, slow-turning, wandering Pals that only turn on you briefly.
+
+Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

@@ -51,7 +51,7 @@ function Spec.run()
  test("sending to a tutorial refreshes only its index before teleport",function()
   local f=fixture();f.adapter.maps={}
   local row=f.adapter:destination("tutorial");row.updatedAt=1
-  f.writes={};local player={};local before=os.time();local checked=false
+  f.writes={};local player={GetAttribute=function()return nil end};local before=os.time();local checked=false
   f.adapter:send(player,row,function()checked=true;return true end)
   assert(f.sent==1 and checked and f.players[1]==player and f.options.ReservedServerAccessCode==row.accessCode)
   assert(#f.writes==2 and f.writes[1].name=="index" and f.writes[2].name=="teleport" and next(f.rows.class)==nil)

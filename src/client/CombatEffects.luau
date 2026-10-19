@@ -17,11 +17,14 @@ local convergence=require(Root.Generated.Gameplay).combat.gun_convergence_studs
 local Effects={}
 -- Gun assist: when the nose is within a few degrees of the lead marker, shots go to the marker.
 -- The nose always trails a moving aim slightly; this closes that gap. The server allows the same leeway.
+-- Also returns the target's range: both guns meet there. At a fixed 150 studs they crossed and flew past either
+-- side of a plane seen from behind at 300 (measured 2026-10-19), though the dot was red on the ring.
 function Effects.aim(body,weapon)
  local leadFor=FlightState.leadFor
  if leadFor and weapon then
-  local direction=(leadFor(weapon)-body.Position).Unit
-  if body.CFrame.LookVector:Dot(direction)>=assist then return direction end
+  local offset=leadFor(weapon)-body.Position
+  if body.CFrame.LookVector:Dot(offset.Unit)>=assist then return offset.Unit,offset.Magnitude end
+  return body.CFrame.LookVector,offset.Magnitude
  end
  return body.CFrame.LookVector
 end
@@ -328,7 +331,8 @@ function Effects.start(getPlane)
   Motion.fired(plane,mount.slot)
   local factor=plane:GetAttribute("MountScale") or 1
   local position=body.CFrame:PointToWorldSpace(Aircraft.muzzleOffset(mount.slot,factor,mount.weapon.id,Aircraft.fitOf(plane)))
-  local direction=Aircraft.converge(body,position,Effects.aim(body,weapon),convergence)
+  local aim,range=Effects.aim(body,weapon)
+  local direction=Aircraft.converge(body,position,aim,range or convergence)
   if weapon.spread_deg>0 then
    local spread=math.rad(weapon.spread_deg)
    direction=(CFrame.lookAt(Vector3.zero,direction)*CFrame.Angles(spreadRandom:NextNumber(-spread,spread),spreadRandom:NextNumber(-spread,spread),0)).LookVector

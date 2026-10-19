@@ -232,7 +232,7 @@ function Runtime:firstJoin(player)
  end)
 end
 -- What a lesson step asks the server for (docs/systems/tutorial.md), all at once or a piece at a time:
--- {freeze=true/false (hold the lesson still while its note is read), slow=true/false (aiming's slow motion), gentle=true/false (bounce off walls), repair=true (full Health), drill=name in TrainingCourse.DRILLS or false
+-- {freeze=true/false (hold the lesson still while its note is read), slow=true/false (aiming's slow motion), gentle=true/false (bounce off walls), repair=true (full Health), eraser=true (swap in the training plane with its eraser), drill=name in TrainingCourse.DRILLS or false
 -- (practice target planes), pal=mode or false (Combat Training's one enemy: "circle" flies the course and never
 -- shoots, "pellet" shoots until you're at half Health, "eraser" fires slow erasers until one misses)}.
 -- Targets and Pals fight only this player (CombatService:enemy) and can never fold them (CombatService:hit).
@@ -242,6 +242,8 @@ function Runtime:lesson(player,cmd)
  if type(cmd)~="table" or not p or not p.practice or not self:tutorialRoom() then return end
  if type(cmd.slow)=="boolean" then p.slow=cmd.slow and Course.SLOW_MO or nil;p.model:SetAttribute("SlowMo",p.slow) end
  if cmd.repair==true then p.model:SetAttribute("Health",p.stats.health) end
+ -- Combat School's last part hands over the eraser: the plane refolds in the air with one on right click.
+ if cmd.eraser==true and not table.find(p.loadout.weapon_mounts,"eraser") then self.flight:refold(p,Loadouts.make(self.flight.catalog,"training")) end
  if type(cmd.gentle)=="boolean" then p.gentle=cmd.gentle;p.model:SetAttribute("Gentle",cmd.gentle or nil) end
  -- Read, then act (Alan 2026-10-19): the player's plane, targets and Pal hold still while the note is read.
  if type(cmd.freeze)=="boolean" then
@@ -289,12 +291,13 @@ function Runtime:lesson(player,cmd)
    player:SetAttribute("TutorialFoe",nil);return
   end
   if not foe then
-   foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=Loadouts.make(self.flight.catalog,"training"),loadoutName="training"})
+   -- Only the eraser Pal carries an eraser, so the pellet fights have no lock-on warnings.
+   foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=Loadouts.make(self.flight.catalog,cmd.pal=="eraser" and "training" or "training_pellets"),loadoutName="training"})
    if not foe then return end
   end
-  -- Pals fly at 60% speed and can't crash or run out of Lift (gentle), so they're always there to fight.
+  -- Pals fly at 45% speed and can't crash or run out of Lift (gentle), so they're always there to catch.
   foe.foeOf=p.id;foe.lessonPlayer=player;foe.gentle=true;foe.model:SetAttribute("Gentle",true)
-  foe.pal={mode=cmd.pal,slow=.6,eraserSlow=foe.pal and foe.pal.eraserSlow or .5}
+  foe.pal={mode=cmd.pal,slow=.45,eraserSlow=foe.pal and foe.pal.eraserSlow or .5}
   player:SetAttribute("TutorialFoe",id)
   if foe.model:GetAttribute("State")=="DESTROYED" then self.flight:replace(foe) end -- the next Pal now, not after the wait
  end
@@ -319,11 +322,13 @@ function Runtime:practice(player,lesson)
   if self.engine.phase~="ACTIVE" then player:SetAttribute("MenuMessage","Practice opens when the next round starts.");return end
  end
  -- Lessons fly a fixed training plane (Alan 2026-10-18); the player's own builds are untouched.
- local p=self.flight:add(player,{loadout=require(Root.Shared.WeaponLoadouts).make(self.flight.catalog,"training"),loadoutName="training",practice=true})
+ local p=self.flight:add(player,{loadout=Loadouts.make(self.flight.catalog,lesson=="combat" and "training_pellets" or "training"),loadoutName="training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
  -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off, Lift stops at 1 second and Boost at 0.01.
  -- Combat School's aiming part asks for gentle itself (lesson cmd); its fights keep crashes (Alan).
  p.gentle=lesson=="flight";p.model:SetAttribute("Gentle",p.gentle or nil)
+ -- Combat School is about aiming and fighting: Lift stays full the whole lesson (Alan 2026-10-19).
+ p.keepLift=lesson=="combat"
  for _,key in {"DrillDown","PalFolds","PalEraserHits","PalEraserMisses","EraserHits"} do player:SetAttribute(key,0) end
  player:SetAttribute("InMatch",true)
 end

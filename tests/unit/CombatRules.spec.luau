@@ -409,7 +409,7 @@ function Spec.run()
 	end)
 	test("eraser release is exactly once",function()
 		local shot={id=1,owner="test",weapon={id="eraser",homing=true},position=Vector3.zero}
-		local service=setmetatable({shots={[1]=shot},shotCount=1,info={test={activeErasers=2}},events={},cosmeticEvents={}},Combat)
+		local service=setmetatable({shots={[1]=shot},shotCount=1,info={test={activeErasers=2}},events={},cosmeticEvents={},flight={byId={}}},Combat)
 		service:finish(shot);service:finish(shot)
 		assert(service.shotCount==0 and service.info.test.activeErasers==1 and #service.cosmeticEvents==1 and #service.events==0)
 	end)
@@ -426,7 +426,7 @@ function Spec.run()
 	test("removed pilots release their shots and combat state without affecting others",function()
 		local own={id=1,owner="leaving",weapon={id="eraser",homing=true},position=Vector3.zero}
 		local other={id=2,owner="staying",weapon={id="eraser",homing=true},position=Vector3.zero}
-		local service=setmetatable({shots={[1]=own,[2]=other},shotCount=2,info={leaving={activeErasers=1},staying={activeErasers=1}},events={},cosmeticEvents={}},Combat)
+		local service=setmetatable({shots={[1]=own,[2]=other},shotCount=2,info={leaving={activeErasers=1},staying={activeErasers=1}},events={},cosmeticEvents={},flight={byId={}}},Combat)
 		service:detach({id="leaving"});service:detach({id="leaving"})
 		assert(service.info.leaving==nil and service.info.staying.activeErasers==1)
 		assert(service.shots[2]==other and service.shots[1]==nil and service.shotCount==1 and #service.cosmeticEvents==1)
