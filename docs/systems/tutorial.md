@@ -60,7 +60,7 @@ lock (holding right click fires one at full lock) on one target, its reload (the
 the two shots), the second target, one lock at full speed, then a Pal whose erasers appear on their own 300 studs ahead
 of you, toward the Pal, already chasing you, never while the note holds you still nor in a step's first second (before its freeze
 reaches the server, an eraser used to slip out and hit the frozen player) (BotService:palEraser; 80% speed, 10% slower after each hit, never under 60%)
-until you dodge one, then your eraser on it. Lessons have the same 3-degree aim assist as matches ([decision](../decisions/2026-10-19-less-aim-assist.md)).
+until you dodge one, then your eraser on it. Lessons have the same 1-degree aim assist as matches ([decision](../decisions/2026-10-19-less-aim-assist.md)).
 Pals have half a normal plane's Health (Alan 2026-10-19: full Health was frustrating).
 Folded by a crash: a countdown note, the plane takes off by itself, the step carries on and the Pal holds fire until
 you've flown 2 seconds; after 3 crashes on a step, a tip.

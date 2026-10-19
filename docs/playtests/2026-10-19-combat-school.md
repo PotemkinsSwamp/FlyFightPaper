@@ -77,7 +77,8 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - A Pal slower than you is harder (you overshoot and circle). **Done:** every Pal flies 5% faster than you.
 
 ## Round 12
-- With 1 degree of aim assist hitting anything is "extremely difficult". **Done:** 3 degrees, lessons too.
+- Hitting anything is "extremely difficult": asked for 3 degrees; then, told the tutorial had none at all: **1 degree
+  everywhere, lessons included.**
 - Pals have too much Health. **Done:** half.
 - Still frozen while an eraser comes. **Found:** the eraser fired in the moment between the step starting and its
   freeze reaching the server. **Done:** none in a step's first second, then 2 s after the freeze ends.

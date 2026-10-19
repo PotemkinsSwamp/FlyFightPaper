@@ -562,7 +562,7 @@ return JSONTypes.map({
         ["eraser_turn_deg_s"] = 90,
         ["fold_majority_fraction"] = 0.5,
         ["friendly_fire"] = false,
-        ["gun_assist_deg"] = 3,
+        ["gun_assist_deg"] = 1,
         ["gun_convergence_studs"] = 150,
         ["input_aim_slack_deg"] = 12,
         ["input_delay_allowance_seconds"] = 0.4,

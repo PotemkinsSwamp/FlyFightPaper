@@ -16,7 +16,7 @@ Level bar with next unlock on the main menu board's stats card, in the hangar un
 ## Rules
 The nose dot turns red when the shots would land with no aim help (Alan 2026-10-19,
 [decision](../decisions/2026-10-19-less-aim-assist.md)): the target in range and the nose line passing within 2 studs of
-the orange ring's point. The gun assist (`combat.gun_assist_deg`, 3 degrees, lessons too; was 7, then 1) sends
+the orange ring's point. The gun assist (`combat.gun_assist_deg`, 1 degree, lessons too; was 7) sends
 shots to the ring when the nose is that close. A shot-path check against the target's shape was dropped after a Play measurement.
 *Moved word for word from the old rulebook (GAME_SPEC.md section 9).*
 
