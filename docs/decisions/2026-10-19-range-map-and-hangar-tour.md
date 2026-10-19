@@ -8,6 +8,13 @@
   to side), flat 2D paper-plane targets hung on fishing wire from metal rigs, moving in circles, figure eights and
   random paths, so you still lead your shots. A speed picker: Noob / Challenge / Veteran / Maneuvers. Weapons can be
   switched quickly.
+- **Alan's picture of the Range (later the same day; replaces the wires above):** it feels like a big kid-made puppet theatre stage (Alan: not a cardboard box, too small; a paper curtain behind, warm stage lights, cardboard cut-outs of our town's buildings drawn on as scenery with crayon clouds, paper curtains at the sides; the theatre fills the whole view: no floor, room or windows, only the theatre and the Range's menu).
+  The targets are flat 2D paper-plane cut-outs on sticks coming up from below, as if a child hidden behind the box
+  were moving them (no child or hand is ever seen): back and forth, up and down; at the side of the box the stick
+  turns and the cut-out flips to face the other way. Hit enough, a target rips in half like torn paper, the halves fall,
+  its stick drops out of sight and a new one comes up from below. Your plane stays put; you see it from the wings up
+  (its weapons in view) and can move the view left, right, up and down and shoot freely. The plane can be fully
+  customised there (any body, any weapons: e.g. the toilet-roll body with 10 capacity and 6 rubber band guns).
 - **The Range is not a tutorial.** It can be opened any time: it is the Training board's fourth card, in Match Tips'
   place (Alan, later the same day; no tick, it isn't a lesson). Inside, sticky notes just point at things and say what
   they do ("click this to do this").
