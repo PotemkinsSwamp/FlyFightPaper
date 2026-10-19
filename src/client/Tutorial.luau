@@ -37,7 +37,8 @@ local STEP_DING_DELAY=.4
 local GUI_DIM,WORLD_DIM=.22,.4 -- how see-through the dim is (lighter while flying: you still need to see the room)
 local YELLOW=Color3.fromRGB(255,225,70)
 local SOFT_SLICE,SOFT_SEE_THROUGH=.2,.5 -- the soft frame: a third as thick as the usual one, half see-through
-local CRASH_TIP_AFTER=3 -- crashes on one step before the note suggests open air
+local CRASH_TIP_AFTER=3
+local READ_SECONDS=5 -- how long each step's note holds the world still before it moves on its own -- crashes on one step before the note suggests open air
 
 function Tutorial.begin(lesson)
  Tutorial.lessonKey=Lessons[lesson] and lesson or "flight";Tutorial.lesson=Lessons[Tutorial.lessonKey];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
@@ -395,7 +396,9 @@ function Tutorial.start(getPlane)
  -- Read, then act (Alan 2026-10-19: "it gives the player time to read and then act"): every step that starts in the
  -- air first holds the world still (RoundRuntime:lesson freeze) with its note up, until Go (Space). A "look" step
  -- (gotIt) is all reading: its Got it lets the world go and finishes it. `reading`: nil, "waiting" (not flying yet), true.
- local reading=nil
+ -- It lets go by itself after READ_SECONDS with a countdown on the button (Alan: don't make them press anything);
+ -- Space still goes early.
+ local reading,readingAt=nil,0
  local function startStep(index)
   Tutorial.index=index;ctx.data={};table.clear(clicked);stepStarted=os.clock();doneAt=nil;tick.Visible=false;Tutorial.gotIt=false;Tutorial.skipStep=false
   clearCourse();star.Parent=nil;crashes=0;reading="waiting"
@@ -468,7 +471,8 @@ function Tutorial.start(getPlane)
    return
   end
   -- The read pause starts the first moment this step is in the air; Go lets the world move again.
-  if reading=="waiting" and ctx.state=="FLYING" then reading=true;Tutorial.gotIt=false;ctx.lesson({freeze=true}) end
+  if reading=="waiting" and ctx.state=="FLYING" then reading=true;readingAt=os.clock();Tutorial.gotIt=false;ctx.lesson({freeze=true}) end
+  if reading==true and os.clock()-readingAt>=READ_SECONDS then Tutorial.gotIt=true end
   if reading=="waiting" and ctx.state~="FLYING" and ctx.state~="TAKEOFF" then reading=nil end -- starts at a desk: nothing to freeze
   if reading==true and Tutorial.gotIt then
    reading=nil;ctx.lesson({freeze=false});stepStarted=os.clock()
@@ -483,7 +487,7 @@ function Tutorial.start(getPlane)
   text.Text=(type(step.text)=="function" and step.text(ctx) or step.text)..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
   key.Text=step.key or "";key.Visible=step.key~=nil
   gotIt.Visible=step.gotIt==true or reading==true
-  gotIt.Label.Text=reading==true and not step.gotIt and "Ready: go!  [Space]" or "Got it  [Space]"
+  gotIt.Label.Text=reading==true and string.format("Go in %d  [Space]",math.ceil(READ_SECONDS-(os.clock()-readingAt))) or "Got it  [Space]"
   local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt and not reading
   hint.Text=stuck and step.hint and ("Tip: "..step.hint) or crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or ""
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
