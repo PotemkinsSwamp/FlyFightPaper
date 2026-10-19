@@ -71,12 +71,12 @@ return {
 	},
 	-- Tutorial "look here" pieces (assets/ui/tutorial/; concept ui-concepts/attention-*.png), already coloured.
 	tutorial = {
-		frameBox = "",
-		frameRing = "",
-		burst = "",
-		tag = "",
-		arrow = "",
-		dash = "",
+		frameBox = "rbxassetid://131513208633678",
+		frameRing = "rbxassetid://70377535387263",
+		burst = "rbxassetid://136087187968614",
+		tag = "rbxassetid://129673420830598",
+		arrow = "rbxassetid://128216360516580",
+		dash = "rbxassetid://98525696595946",
 	},
 	-- Hidden paper targets (assets/ui/targets/; concept mode-concepts/paper-targets.png), keyed by design name.
 	targets = {

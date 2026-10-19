@@ -1,0 +1,23 @@
+{
+  "path": "operations/b7a9da6e-b532-4908-b1b8-c406fe69fac1",
+  "operationId": "b7a9da6e-b532-4908-b1b8-c406fe69fac1",
+  "done": true,
+  "response": {
+    "path": "assets/128216360516580",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T02:06:46.312Z",
+    "assetId": "128216360516580",
+    "displayName": "FlyFightPaper tutorial arrow-big",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

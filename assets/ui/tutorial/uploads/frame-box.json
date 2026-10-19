@@ -1,0 +1,23 @@
+{
+  "path": "operations/c539a0fe-fb1c-4726-bed6-e0a3586cca8b",
+  "operationId": "c539a0fe-fb1c-4726-bed6-e0a3586cca8b",
+  "done": true,
+  "response": {
+    "path": "assets/131513208633678",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T02:06:55.516Z",
+    "assetId": "131513208633678",
+    "displayName": "FlyFightPaper tutorial frame-box",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

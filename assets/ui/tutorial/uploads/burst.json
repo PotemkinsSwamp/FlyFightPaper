@@ -1,0 +1,23 @@
+{
+  "path": "operations/629d5a53-a5a9-433e-8c9b-d12b97974374",
+  "operationId": "629d5a53-a5a9-433e-8c9b-d12b97974374",
+  "done": true,
+  "response": {
+    "path": "assets/136087187968614",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T02:06:49.135Z",
+    "assetId": "136087187968614",
+    "displayName": "FlyFightPaper tutorial burst",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}
