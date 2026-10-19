@@ -33,6 +33,7 @@ function Menu.start()
   hangar=function()Menu.show("hangar")end,
   settings=function()state.screen="settings";render()end,
   tutorial=function()overlay(false);Tutorial.begin()end,
+  prestige=function()action:FireServer("prestige")end,
   -- The mock shop is Studio-only; the server also refuses it on real profiles.
   shop=game:GetService("RunService"):IsStudio() and function()state.screen="shop";render()end or nil,
  })

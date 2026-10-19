@@ -3,8 +3,8 @@
 ## What the player sees
 You earn **Paper** (money) and **XP** (levels) from points in every match. Paper buys plane parts and weapons; levels unlock them. The shop sells Paper packs and 2x XP / 2x Paper boosts, but real sales are switched off until Alan approves products and prices.
 
-## Where it stands (2026-10-15)
-Earning, levels and part purchases work. The shop is a Studio-only practice shop with no Robux. Real purchases are Stage 10 and stay off.
+## Where it stands (2026-10-18)
+Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Studio-only practice shop with no Robux. Real purchases are Stage 10 and stay off.
 
 ## Economy details
 All values here are initial tuning. They are not optimal prices, observed willingness to pay, or a forecast.
@@ -63,10 +63,11 @@ Alan's idea is in the [shop plan](../decisions/2026-10-18-shop-plan.md); the det
   longer own (or can't use at level 1) becomes the starter build.
 - **Keeps:** Paper, cosmetics, boosts and passes, settings, statistics, and how many matches you've played (so the
   bots stay at your old difficulty instead of going back to beginner bots).
-- **Gives:** a prestige badge with your rank, shown with your level and name; plus one prestige-only cosmetic per
-  rank (trail, sticker, skin...), made with the Stage 10 cosmetics. Levelling speed is the same as before.
-- **Warnings:** before you prestige, a confirm screen lists what goes (how many parts) and what stays (your Paper);
-  you hold the button to confirm. Part purchases with Robux will say "prestige takes this back".
+- **Gives:** a gold star with your rank on your level bar (main menu, desk hangar, results); other players will see
+  it with your name once name tags come with the Stage 10 cosmetics. Plus one prestige-only cosmetic per rank (trail,
+  sticker, skin...), made with those cosmetics. Levelling speed is the same as before.
+- **Warnings:** the Prestige button sits on the main menu's stats card at max level; its confirm sheet lists what
+  goes (how many parts) and what stays (your Paper); you hold the button for 2 seconds to confirm. Part purchases with Robux will say "prestige takes this back".
 - Can't prestige while a refold is still being paid out.
 
 ## Reference economy check

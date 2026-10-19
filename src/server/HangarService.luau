@@ -53,6 +53,19 @@ function Service:handle(player,action,value)
   self:enqueue(player,{kind="equipmentPurchase",catalogID=value},function(ok)
    self:message(player,ok and "Part unlocked. You can use it on every legal mount." or "Part purchase was not completed.")
   end)
+ elseif action=="prestige" then
+  -- From the menus only (docs/systems/economy-and-shop.md "Prestige"); the save rules re-check everything.
+  if player:GetAttribute("InMatch") then self:message(player,"Prestige from the main menu.");return end
+  local view=assert(Schema.copy(Schema.economicView(profile)))
+  view.prestige,view.presets,view.refolds=profile.prestige,profile.presets,profile.refolds
+  local legal,reason=Economy.prestige(view,self.catalog,"preview")
+  if not legal then
+   self:message(player,reason.code=="refold_pending" and "Finish your refold first." or reason.code=="prestige_max" and "You're at the top prestige rank." or "Reach the top level first.")
+   return
+  end
+  self:enqueue(player,{kind="prestige"},function(ok)
+   self:message(player,ok and "Prestige! Your new rank star is on your level bar." or "Prestige was not completed. Nothing changed.")
+  end)
  elseif action=="settings" then
   local settings=Schema.copy(value);local candidate=Schema.copy(profile)
   if not settings or not candidate then return end

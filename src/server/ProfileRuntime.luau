@@ -192,6 +192,7 @@ function Runtime:update(e)
  e.player:SetAttribute("Paper",math.floor(e.snapshot.paperMilli/Economy.MILLI))
  e.player:SetAttribute("XP",math.floor(e.snapshot.xpMilli/Economy.MILLI))
  e.player:SetAttribute("Level",Economy.levelForXP(e.snapshot.xpMilli))
+ e.player:SetAttribute("Prestige",e.snapshot.prestige or 0)
  e.player:SetAttribute("Graduated",e.snapshot.qualification.count>=Gameplay.bots.rookie_qualifying_matches)
  e.player:SetAttribute("ProfileStatus",self.mock and "Studio session only" or (e.saveDelayed and "Saving delayed. Progress is held in this server." or (e.lastSavedVersion>=e.snapshot.version and "Saved" or "Waiting to save")))
 end

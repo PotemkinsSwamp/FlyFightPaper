@@ -5,6 +5,7 @@ local Root = game.ReplicatedStorage:WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets).results
 local Economy = require(Root.Shared.EconomyRules)
 local LEVEL_CAP = require(Root.Generated.Economy).level_cap
+local PRESTIGE_MAX = require(Root.Generated.Economy).prestige_max or 10
 local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), require(Root.Generated.Gameplay))
 local PaperUI = require(script.Parent.PaperUI)
 
@@ -41,9 +42,20 @@ function LevelBar.new(parent, x, y, w, t, inline)
 	fill.ScaleType, fill.AnchorPoint = Enum.ScaleType.Stretch, Vector2.new(0, 0.5) -- drawn over the frame (made after it), inside its rim
 	fill.Position = UDim2.fromOffset(barX + barW * 0.02, barY + barH / 2)
 
-	local self = { pieces = { level, count, unlock, frame, fill } }
-	-- xp: whole XP points (the profile's `xp`).
+	-- Prestige rank: a gold star stuck on the end of the bar with the rank on it (hidden at rank 0).
+	local star = PaperUI.image(parent, "PrestigeStar", Art.goldStar, barX + barW - t * 1.3, barY - t * 0.45, t * 2.6, t * 2.6, 8)
+	local rank = PaperUI.words(star, "Rank", "", 0, 0, 0, 0, t * 1.3)
+	rank.Size, rank.Position, rank.TextXAlignment = UDim2.fromScale(1, 1), UDim2.fromScale(0, 0.08), Enum.TextXAlignment.Center
+	local edge = Instance.new("UIStroke") -- a white edge keeps the number readable on the gold
+	edge.Color, edge.Thickness, edge.Parent = Color3.new(1, 1, 1), 2, rank
+
+	local self = { pieces = { level, count, unlock, frame, fill, star } }
+	local ranked = false
+	-- xp: whole XP points (the profile's `xp`). The prestige rank comes from the player's Prestige attribute.
 	function self.set(xp)
+		local prestige = game.Players.LocalPlayer:GetAttribute("Prestige") or 0
+		ranked = prestige > 0
+		star.Visible, rank.Text = ranked and frame.Visible, tostring(prestige)
 		local at, into, need = Economy.levelForXP(math.max(0, math.floor(xp * 1000)))
 		at = at or 1
 		local capped = at == LEVEL_CAP
@@ -51,9 +63,10 @@ function LevelBar.new(parent, x, y, w, t, inline)
 		count.Text = capped and "max level" or string.format("%d / %d XP", (into or 0) // 1000, (need or 0) // 1000)
 		fill.Size = UDim2.fromOffset(fillW * (capped and 1 or need and need > 0 and math.clamp(into / need, 0, 1) or 0), fillH)
 		local part = nextUnlock(at)
-		unlock.Text = part and string.format("Next: %s at level %d", part.name, part.min_level) or "Everything unlocked!"
+		unlock.Text = part and string.format("Next: %s at level %d", part.name, part.min_level)
+			or capped and prestige < PRESTIGE_MAX and "Prestige ready!" or "Everything unlocked!"
 	end
-	function self.show(on) for _, piece in self.pieces do piece.Visible = on and (piece ~= count or not inline) end end
+	function self.show(on) for _, piece in self.pieces do piece.Visible = on and (piece ~= count or not inline) and (piece ~= star or ranked) end end
 	return self
 end
 
