@@ -122,9 +122,10 @@ Can be turned off in Settings.
 
 ## The Training board (menu)
 The main menu's Tutorial button opens a **Training board** listing the lessons, each with a tick when done and
-**Play** / **Replay**; ones not built yet say "Coming soon". Flight School and Combat School move you to your Training
-Room (from a match it first warns you'll leave it); the Hangar Tour moves you to the Range map; Match Tips is on/off.
-The Range itself is not on the board: it gets its own menu button ([decision](../decisions/2026-10-19-range-map-and-hangar-tour.md)).
+**Play** / **Replay**: Flight School, Combat School, Hangar Tour and the Range (no tick: not a lesson). Flight School
+and Combat School move you to your Training Room (from a match it first warns you'll leave it); the Hangar Tour and
+the Range move you to the Range map. Match Tips are not on it (on/off in Settings)
+([decision](../decisions/2026-10-19-range-map-and-hangar-tour.md)).
 
 ## The Training Room (private and timed)
 - A new player's first join asks "Want a quick tutorial?"; Yes: their Training Room, Flight School, then Combat School, then a match.

@@ -50,6 +50,13 @@ return {
 		xpFrame = "rbxassetid://87963878165241",
 		xpFill = "rbxassetid://86284438244594",
 	},
+	-- The Training board (assets/ui/trainingboard/; concept training-board-c). Uploaded by Alan 2026-10-19.
+	trainingboard = {
+		bg = { "rbxassetid://91520224114176", "rbxassetid://121622096406913", "rbxassetid://99839578988261", "rbxassetid://139377949748377" },
+		title = "rbxassetid://127148292972405", paperFlight = "rbxassetid://73124461274469", paperCombat = "rbxassetid://77127618909836",
+		paperHangar = "rbxassetid://97196756698429", paperRange = "rbxassetid://132858113163486",
+		stripGreen = "rbxassetid://116436557781990", stripRed = "rbxassetid://105160400934566", tick = "rbxassetid://91100704633557",
+	},
 	ingame = {
 		clipboard = "rbxassetid://131222070269430",
 		stickyNote = "rbxassetid://97874141587630",

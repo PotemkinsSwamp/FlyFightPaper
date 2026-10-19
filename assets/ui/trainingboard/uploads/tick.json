@@ -1,0 +1,23 @@
+{
+  "path": "operations/8b730f0c-528e-4898-b4bf-6b69c9b5d8ce",
+  "operationId": "8b730f0c-528e-4898-b4bf-6b69c9b5d8ce",
+  "done": true,
+  "response": {
+    "path": "assets/91100704633557",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T20:17:41.614Z",
+    "assetId": "91100704633557",
+    "displayName": "FlyFightPaper trainingboard tick",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

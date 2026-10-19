@@ -1,0 +1,23 @@
+{
+  "path": "operations/fbe95dbb-6c5e-4c10-a375-fbf9c5fa59fe",
+  "operationId": "fbe95dbb-6c5e-4c10-a375-fbf9c5fa59fe",
+  "done": true,
+  "response": {
+    "path": "assets/97196756698429",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T20:17:25.829Z",
+    "assetId": "97196756698429",
+    "displayName": "FlyFightPaper trainingboard paper-hangar",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

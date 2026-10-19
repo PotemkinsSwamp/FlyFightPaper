@@ -1,0 +1,23 @@
+{
+  "path": "operations/22262245-1d89-4729-9fb1-fb3b2e947434",
+  "operationId": "22262245-1d89-4729-9fb1-fb3b2e947434",
+  "done": true,
+  "response": {
+    "path": "assets/121622096406913",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T20:17:03.268Z",
+    "assetId": "121622096406913",
+    "displayName": "FlyFightPaper trainingboard bg-2",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

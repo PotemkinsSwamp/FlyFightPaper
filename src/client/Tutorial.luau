@@ -129,29 +129,29 @@ function Tutorial.start(getPlane)
   ask.Visible=true
  end
  Tutorial.closeAsk=function() ask.Visible=false end
- -- The Training board (the Tutorial button; Alan 2026-10-19): a smaller copy of the main menu's cork board floating
- -- over the game, its title on a taped index card in crayon letters, each lesson on its own pinned paper with Play
- -- (Replay once finished: the tick is saved on the account) under its name. Lessons not built yet say "Coming soon".
- -- From a match, Play first says you'll leave it (the lesson runs on another server).
+ -- The Training board (the Tutorial button; Alan 2026-10-19, concept assets/references/ui-concepts/training-board-c.png):
+ -- its own cork board floating over the game, the title on a taped sheet, each card a pinned sheet of coloured paper
+ -- (name, line and doodle drawn on it) with a live Play strip under them (Replay, and a tick, once a lesson is finished:
+ -- the tick is saved on the account). The Range is a card too but not a lesson (no tick). From a match, Play first
+ -- says you'll leave it (the lesson runs on another server).
+ local BoardArt=Art.trainingboard
  Tutorial.lessons={}
  Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) if type(profile)=="table" and type(profile.lessons)=="table" then Tutorial.lessons=profile.lessons end end)
- local ROWS={{"flight","Flight School","Steer, Lift, fans and landing"},{"combat","Combat School","Aim, shoot and fight a Paper Pal"},
-  {nil,"Hangar Tour","Build a plane, then try it at the Range"},{nil,"Match Tips","Little tips in your first matches"}}
- local boardCover,boardSheet=PaperUI.screen(player.PlayerGui,"TrainingBoard",Art.mainmenu.bg,.85)
+ -- Sheet positions measured from the concept (1920x1080 sheet).
+ local CARDS={{key="flight",art="paperFlight",x=106,turn=-1},{key="combat",art="paperCombat",x=548,turn=1},
+  {key="hangar",art="paperHangar",x=980,turn=-1.5},{key="range",art="paperRange",x=1414,turn=1.5}}
+ local boardCover,boardSheet=PaperUI.screen(player.PlayerGui,"TrainingBoard",BoardArt.bg,.85)
  boardCover.BackgroundTransparency,boardCover.BackgroundColor3=.45,Color3.fromRGB(20,14,8) -- the game dims behind the board
  boardCover.Parent.DisplayOrder=15 -- above the menus, under the lesson's own cards (Leave this match?)
- local pieces={}
- local titleCard=PaperUI.image(boardSheet,"Title",Art.ingame.indexCard,620,110,680,275,-1.5);table.insert(pieces,titleCard)
- local CRAYON={"#d8382f","#2f6fd8","#e8a21c","#2e9a48","#8a3fc4","#e2672a"}
- local letters,n={},0
- for ch in ("Training Board"):gmatch(".") do if ch==" " then table.insert(letters," ") else n+=1;table.insert(letters,string.format('<font color="%s">%s</font>',CRAYON[(n-1)%#CRAYON+1],ch)) end end
- local titleWords=PaperUI.words(titleCard,"Words",table.concat(letters),40,55,600,140,104);titleWords.RichText=true;titleWords.TextXAlignment=Enum.TextXAlignment.Center
- local subWords=PaperUI.words(titleCard,"Sub","Replay any lesson, any time.",40,190,600,50,32);subWords.TextXAlignment=Enum.TextXAlignment.Center
+ local pieces={PaperUI.image(boardSheet,"Title",BoardArt.title,365,80,1170,290,0)}
  local boardBefore=nil
- local back=PaperUI.button(boardSheet,"Back",Art.mainmenu.strip.red,"Back",1490,170,300,100,2,function() boardCover.Visible=false end,56);table.insert(pieces,back)
- local rowButtons={}
+ table.insert(pieces,PaperUI.button(boardSheet,"Back",BoardArt.stripRed,"Back",1555,135,270,170,0,function() boardCover.Visible=false end,72))
+ local cards={}
  local function go(key)
   boardCover.Visible=false
+  if not Lessons[key] then -- ponytail: the Hangar Tour and the Range are being built (2026-10-19); this note goes when they land
+   choose("Almost ready!","This one is being built right now. Try it again soon!",{{"OK",function() end}});return
+  end
   local before=boardBefore
   local function start() if before then before() end;Tutorial.begin(key) end
   if player:GetAttribute("InMatch") and not Root:GetAttribute("TutorialRoom") then
@@ -159,23 +159,15 @@ function Tutorial.start(getPlane)
     {{"Go",start},{"Stay",function() end,"red"}})
   else start() end
  end
- for i,row in ROWS do
-  local paper=PaperUI.image(boardSheet,"Lesson"..i,Art.mainmenu.card,170+(i-1)*410,420,350,458,({-2.5,1.5,-1,2.5})[i]);table.insert(pieces,paper)
-  local grey=Color3.fromRGB(140,140,140)
-  local name=PaperUI.words(paper,"Name",row[2],50,85,280,60,46);name.TextXAlignment=Enum.TextXAlignment.Center;if not row[1] then name.TextColor3=grey end
-  local about=PaperUI.words(paper,"About",row[3],60,150,265,110,30);about.TextWrapped=true;about.TextXAlignment=Enum.TextXAlignment.Center;about.TextYAlignment=Enum.TextYAlignment.Top
-  if not row[1] then about.TextColor3=grey end
-  if row[1] then
-   local tickMark=PaperUI.image(paper,"Tick",Art.settings.check,145,250,80,80,-6);tickMark.Visible=false
-   rowButtons[row[1]]={tick=tickMark,button=PaperUI.button(paper,"Play",Art.mainmenu.strip.green,"Play",50,335,270,90,i%2==0 and 1.5 or -1.5,function() go(row[1]) end,48)}
-  else
-   local soon=PaperUI.words(paper,"Soon","Coming soon",50,345,270,70,38);soon.TextColor3=grey;soon.TextXAlignment=Enum.TextXAlignment.Center;soon.Rotation=-4
-  end
+ for _,card in CARDS do
+  local paper=PaperUI.image(boardSheet,"Card_"..card.key,BoardArt[card.art],card.x,378,420,600,card.turn);table.insert(pieces,paper)
+  local tickMark=PaperUI.image(paper,"Tick",BoardArt.tick,297,332,110,100,-4);tickMark.Visible=false
+  cards[card.key]={tick=tickMark,button=PaperUI.button(paper,"Play",BoardArt.stripGreen,"Play",38,443,355,115,0,function() go(card.key) end,80)}
  end
  PaperUI.popIn(boardCover,pieces)
  function Tutorial.choose(before)
   ask.Visible=false;boardBefore=before
-  for key,row in rowButtons do local done=Tutorial.lessons[key]==true;row.tick.Visible=done;row.button.Label.Text=done and "Replay" or "Play" end
+  for key,card in cards do local done=Lessons[key]~=nil and Tutorial.lessons[key]==true;card.tick.Visible=done;card.button.Label.Text=done and "Replay" or "Play" end
   boardCover.Visible=true
  end
  local function offer()

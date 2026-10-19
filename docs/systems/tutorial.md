@@ -17,9 +17,10 @@ Play; Skip turns the room back into a normal match. The live room move needs a p
 Lessons follow the agreed [tutorial plan](../plan/TUTORIAL-PLAN.md). **Flight School is approved by Alan (2026-10-18,
 [decision](../decisions/2026-10-18-flight-school-approved.md)). Combat School is approved by Alan (2026-10-19,
 [decision](../decisions/2026-10-19-combat-school-approved.md)) after sixteen rounds of notes.** **The Training board** (2026-10-19, built, not yet seen in Play): the Tutorial button
-(main menu and pause menu) opens a board of the lessons: Flight School and Combat School with a tick once finished
-(saved on the account: the end card sends `lessonDone`, the server ticks it only in the tutorial room) and Play, or
-Replay once ticked; Hangar Tour and Match Tips say "Coming soon". From a match, Play first asks "Leave this match?"
+(main menu and pause menu) opens its own cork board (art in `assets/ui/trainingboard/`, concept
+`training-board-c.png`): Flight School, Combat School, Hangar Tour and the Range, each a pinned sheet with a Play strip;
+a lesson gets a tick and Replay once finished (saved on the account: the end card sends `lessonDone`, the server
+ticks it only in the tutorial room). Hangar Tour and the Range show an "Almost ready!" note until they're built. From a match, Play first asks "Leave this match?"
 (the lesson runs on another server). The welcome question goes only to a player with no matches and no ticks. The
 Training Room has no time limit (Alan 2026-10-19: people leave, or Roblox kicks them for being idle). Flight School's end card has "Next: Combat School". Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are

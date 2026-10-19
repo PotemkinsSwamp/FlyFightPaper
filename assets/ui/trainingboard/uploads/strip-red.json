@@ -1,0 +1,23 @@
+{
+  "path": "operations/fe211c46-a181-427d-b36d-3420a95d17a9",
+  "operationId": "fe211c46-a181-427d-b36d-3420a95d17a9",
+  "done": true,
+  "response": {
+    "path": "assets/105160400934566",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-19T20:17:38.736Z",
+    "assetId": "105160400934566",
+    "displayName": "FlyFightPaper trainingboard strip-red",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}
