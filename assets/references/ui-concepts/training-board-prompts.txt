@@ -1,0 +1,42 @@
+Training Board concept prompts
+Mode: built-in image generation
+Style reference: assets/references/ui-concepts/main-menu.png
+Final canvas: 1664 x 936 pixels, exact 16:9. Only a few pixels of the plain dark outer margin were trimmed after generation.
+
+VARIANT A
+Use case: ui-mockup.
+Create ONE finished high-resolution concept picture for the "Training Board" menu overlay of a kids' Roblox paper-plane game. Landscape 16:9, render at 1920x1080 or 2048x1152, at least 1600 pixels wide.
+Input image 1 (main-menu.png) is the approved STYLE REFERENCE ONLY. Make a different, smaller bulletin board from exactly the same classroom. Match the reference's photographic realism, honey-brown wooden frame, golden warm sun coming from the left, actual granular cork, tactile fibrous torn paper, slightly wrinkled masking tape, glossy colored push pins, black hand lettering on colored paper buttons and waxy crayon lettering. This is a photograph of handmade classroom materials, not a flat vector UI, cartoon, or generic digital cards.
+
+Composition: front-facing entire rectangular wooden frame fully visible, centered on a plain dark charcoal background. Narrow dark margin around ALL four sides, approximately 5 percent. Only the framed cork board and its attached contents. Board should read as a compact floating game overlay. No classroom scenery, desk, alphabet strip, loose desk supplies, people, logos, watermarks or weapons.
+
+Layout inside cork: upper title zone, then FOUR DISTINCT portrait lesson paper sheets across ONE HORIZONTAL ROW. Large clean shapes, generous spacing, consistent card sizes, each slightly tilted differently (only a few degrees). Everything is readable, no overlapping text. Each sheet carries its own title, description, one doodle, and its own button glued onto the bottom of THAT SAME SHEET. Leave visible paper surrounding the button on every side. Do not put buttons separately on the cork below the sheets. Four paper cards only.
+
+Top center: one wide torn off-white title sheet taped at the top corners with beige masking tape like the main menu title, reading exactly "TRAINING BOARD" in big uppercase multi-colored crayon letters (red, blue, green, yellow, purple, orange). Beneath, on the same title sheet, smaller dark pencil handwriting exactly "Replay any lesson, any time."
+Top right of the cork, beside the title without obscuring it: small RED torn-paper strip pinned with a colored push pin, black handwritten "Back".
+
+VARIANT A: all four lesson sheets are plain WHITE torn notebook or index paper, lightly warm in the sunshine. No colored card backgrounds. Each is pinned near the top with a colored push pin.
+
+Left to right exact card contents in this top-to-bottom order:
+1. Heading in blue crayon "Flight School". Below, dark readable pencil handwriting "Steer, Lift, fans and landing". This is one short sentence; a neat two-line wrap is acceptable to keep legible. Below the description: a simple crayon doodle of a paper plane looping through a hoop, with one short looping flight trail. Add a big GREEN crayon check mark at a free corner, clearly marking completion, without covering words or doodle. At the bottom of this same sheet, a GREEN torn construction-paper strip with big black handwritten "Replay".
+2. Heading in red crayon "Combat School". Below, pencil "Aim, shoot and fight a Paper Pal". One short sentence, may wrap to two lines. Below: simple colorful crayon target doodle with a star in its center. At bottom of this same sheet, a GREEN torn-paper strip with large black handwritten "Play".
+3. Heading in green crayon "Hangar Tour". Below, pencil "Build a plane, then try it at the Range". One short sentence, may wrap neatly across two or three lines. Below: simple doodle of a folded paper plane sitting on a school folder. At bottom of THIS SAME SHEET a GREY torn-paper strip with clear dark lettering "Coming soon". This entire sheet is gently faded and desaturated to signal unavailable, but its text must remain readable.
+4. Heading in warm yellow-orange crayon "Match Tips". Below, pencil "Little tips in your first matches". One short sentence, may wrap to two lines. Below: a simple lightbulb doodle. At bottom of THIS SAME SHEET a GREY torn-paper strip with clear dark lettering "Coming soon". This sheet is also gently faded and desaturated, with readable text.
+
+Exact wording, no extra labels, no extra decorative objects or symbols besides specified doodles and completion check. Preserve the warm rich colors and lighting of main-menu.png. Keep photographic paper and cork textures but avoid noisy decoration. Broad uncluttered card layout, easy for a child to read at a small display size.
+
+VARIANT B
+Use case: precise-object-edit, ui-mockup.
+Create variant B of this Training Board concept as ONE image. Landscape 16:9, at least 1600 pixels wide.
+
+Input image 1 is the Training Board variant A, the edit target. Input image 2 is the approved main-menu style reference. Preserve variant A's complete composition and its same-classroom photographic style, cork, wooden frame, warm sunlight from the left, shadows, crayon lettering, exact words, colored pins, narrow plain dark background margin, and all four fully visible lesson sheets in their single row. Keep the board alone without desk items, alphabet strip, people, logos, weapons or additional decorations.
+
+CHANGE ONLY THE MATERIAL AND COLOR OF THE FOUR LESSON SHEETS: instead of white notebook/index paper, each should be a slightly fibrous torn piece of PALE CONSTRUCTION PAPER, left to right CREAM for Flight School, LIGHT BLUE for Combat School, LIGHT GREEN for Hangar Tour, LIGHT YELLOW for Match Tips. Real soft pastel pigmented construction paper with fine photographic fibers and natural wrinkles, not flat colored rectangles. Torn edges. These are construction-paper sheets, so remove notebook punched holes and ruled lines. Each sheet stays pinned and slightly tilted differently. The final two stay gently faded to indicate unavailable, but their pale green and yellow colors must still be distinguishable and their text must remain readable.
+
+ALL OTHER CONTENT IS LOCKED. The top title sheet stays off-white and taped at its corners, "TRAINING BOARD" in big multi-colored crayon letters with pencil subtitle "Replay any lesson, any time." The pinned red "Back" strip stays at top right.
+Four lesson cards from left to right:
+1. Blue-crayon "Flight School"; pencil "Steer, Lift, fans and landing"; paper plane looping through a hoop doodle; large green completion check; GREEN torn-paper button reading "Replay" at the bottom INSIDE that same cream sheet.
+2. Red-crayon "Combat School"; pencil "Aim, shoot and fight a Paper Pal"; target with a star doodle; GREEN torn-paper button reading "Play" INSIDE the same light blue sheet.
+3. Green-crayon "Hangar Tour"; pencil "Build a plane, then try it at the Range"; paper plane on a folder doodle; GREY torn-paper "Coming soon" button INSIDE the same pale green sheet.
+4. Yellow-orange-crayon "Match Tips"; pencil "Little tips in your first matches"; lightbulb doodle; GREY torn-paper "Coming soon" button INSIDE the same light yellow sheet.
+All text verbatim. Preserve the sizes and positions of the text and the matching doodles. Small neat wraps of descriptions are fine; do not shrink the text. Keep visible sheet margins around each button. No content besides specified text, doodles and completion check. Match the first reference's finished photograph, legibility, large shapes and warm same-classroom character exactly, making the construction paper color variants immediately apparent.
