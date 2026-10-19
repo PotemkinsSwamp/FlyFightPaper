@@ -669,7 +669,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://121864755714389</url>
+          <url>rbxassetid://96397869042569</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -695,7 +695,10 @@
           <Y>2.25</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://97744344572203</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://103321342300121</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://137029093734375</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_slim-paper-R">
       <Properties>
@@ -711,7 +714,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://89815668006611</url>
+          <url>rbxassetid://130335580035612</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -737,7 +740,10 @@
           <Y>2.25</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://123615890563645</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://96368797511486</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://90197989329948</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_slim-accent">
       <Properties>
@@ -753,7 +759,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://75492340013472</url>
+          <url>rbxassetid://79561212555114</url>
         </Content>
         <Vector3 name="size">
           <X>1.35996</X>
@@ -779,7 +785,10 @@
           <Y>0.81016</Y>
           <Z>2.01</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://84910986440272</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://96372603864877</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://78722946346327</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="body_heavy">
@@ -801,7 +810,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://97810257449387</url>
+          <url>rbxassetid://78803815067754</url>
         </Content>
         <Vector3 name="size">
           <X>2.6</X>
@@ -827,7 +836,10 @@
           <Y>3.375</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://92583115708598</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://88730384357238</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://87882206011075</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy-cardboard-R">
       <Properties>
@@ -843,7 +855,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://127825484174289</url>
+          <url>rbxassetid://72808558412136</url>
         </Content>
         <Vector3 name="size">
           <X>2.6</X>
@@ -869,7 +881,10 @@
           <Y>3.375</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://130817174547831</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://132749188868984</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://110034541417794</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy-accent">
       <Properties>
@@ -885,7 +900,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://101295361493910</url>
+          <url>rbxassetid://109314508355599</url>
         </Content>
         <Vector3 name="size">
           <X>5.25528</X>
@@ -911,7 +926,10 @@
           <Y>2.214</Y>
           <Z>2.01</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://132430738338877</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://119683727232419</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://110362251795470</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy-tape">
       <Properties>
@@ -927,7 +945,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4292266144</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://77594571820754</url>
+          <url>rbxassetid://119293550938439</url>
         </Content>
         <Vector3 name="size">
           <X>5.04</X>
@@ -953,7 +971,10 @@
           <Y>0.057</Y>
           <Z>5.07</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://93044153112386</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://133970361687434</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://129068240808281</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="body_standard_mk2">
@@ -975,7 +996,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://82586903570241</url>
+          <url>rbxassetid://127602947013174</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1001,7 +1022,10 @@
           <Y>2.25</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://114331266651610</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://134849505458084</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://103655774054048</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_standard_mk2-paper-R">
       <Properties>
@@ -1017,7 +1041,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://121960349724242</url>
+          <url>rbxassetid://106689734399206</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1043,7 +1067,10 @@
           <Y>2.25</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://135669379610726</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://89162611146408</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://140442736860735</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_standard_mk2-accent">
       <Properties>
@@ -1059,7 +1086,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://79881517173912</url>
+          <url>rbxassetid://92943646213171</url>
         </Content>
         <Vector3 name="size">
           <X>2.64592</X>
@@ -1085,7 +1112,10 @@
           <Y>1.2464</Y>
           <Z>2.01</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://82307451341497</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://94473538512948</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://76649658209477</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="body_slim_mk2">
@@ -1107,7 +1137,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://121864755714389</url>
+          <url>rbxassetid://96397869042569</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1133,7 +1163,10 @@
           <Y>2.25</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://127812128245729</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://99091076753752</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://97701592207207</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_slim_mk2-paper-R">
       <Properties>
@@ -1149,7 +1182,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://89815668006611</url>
+          <url>rbxassetid://130335580035612</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1175,7 +1208,10 @@
           <Y>2.25</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://76468591661764</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://73116662961750</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://72921409375644</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_slim_mk2-accent">
       <Properties>
@@ -1191,7 +1227,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://102345061500185</url>
+          <url>rbxassetid://85644585999180</url>
         </Content>
         <Vector3 name="size">
           <X>1.35996</X>
@@ -1217,7 +1253,10 @@
           <Y>1.318629</Y>
           <Z>6.07</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://86446624194257</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://100420828735197</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://94829672097449</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="body_heavy_mk2">
@@ -1239,7 +1278,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4290288246</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://115913847361383</url>
+          <url>rbxassetid://78344186912530</url>
         </Content>
         <Vector3 name="size">
           <X>1.75</X>
@@ -1265,7 +1304,10 @@
           <Y>3.5</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://97000298052689</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://98378087174905</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://116222519864837</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy_mk2-tube-R">
       <Properties>
@@ -1281,7 +1323,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4290288246</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://95332840784379</url>
+          <url>rbxassetid://99946049640670</url>
         </Content>
         <Vector3 name="size">
           <X>1.75</X>
@@ -1307,7 +1349,10 @@
           <Y>3.5</Y>
           <Z>8.022345</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://97618931509058</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://93583616699275</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://85466427136792</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy_mk2-cardboard-L">
       <Properties>
@@ -1323,7 +1368,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://135179634638480</url>
+          <url>rbxassetid://136666893249564</url>
         </Content>
         <Vector3 name="size">
           <X>1.762104</X>
@@ -1349,7 +1394,10 @@
           <Y>3.524207</Y>
           <Z>7.371506</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://85694544659991</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://135187404878077</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://126126673379181</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy_mk2-cardboard-R">
       <Properties>
@@ -1365,7 +1413,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://120536669930309</url>
+          <url>rbxassetid://77378151472990</url>
         </Content>
         <Vector3 name="size">
           <X>1.762104</X>
@@ -1391,7 +1439,10 @@
           <Y>3.524207</Y>
           <Z>7.371506</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://133309737635910</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://113671520442544</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://105460054908126</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy_mk2-paper-L">
       <Properties>
@@ -1407,7 +1458,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://132980950498397</url>
+          <url>rbxassetid://75351693568276</url>
         </Content>
         <Vector3 name="size">
           <X>1.8</X>
@@ -1433,7 +1484,10 @@
           <Y>2.55</Y>
           <Z>2.824115</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://128223098049787</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://97330230975489</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://95652873415714</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy_mk2-paper-R">
       <Properties>
@@ -1449,7 +1503,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://100646404706630</url>
+          <url>rbxassetid://127659860355617</url>
         </Content>
         <Vector3 name="size">
           <X>1.8</X>
@@ -1475,7 +1529,10 @@
           <Y>2.55</Y>
           <Z>2.824115</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://131091920495649</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://75274554536389</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://75037266299531</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="body_heavy_mk2-accent">
       <Properties>
@@ -1491,7 +1548,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://92569133750229</url>
+          <url>rbxassetid://73577898129444</url>
         </Content>
         <Vector3 name="size">
           <X>3.54</X>
@@ -1517,7 +1574,10 @@
           <Y>3.54</Y>
           <Z>0.25</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://94629450911173</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://107471973347339</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://109050352923271</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="nose_1">
@@ -1538,7 +1598,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://89095947814667</url>
+          <url>rbxassetid://121245593768972</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1564,7 +1624,10 @@
           <Y>2.25</Y>
           <Z>5.7855</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://110881422623129</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://139668244149306</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://76455534574184</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_1-paper-R">
       <Properties>
@@ -1580,7 +1643,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://87188025432230</url>
+          <url>rbxassetid://108330720346945</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1606,7 +1669,10 @@
           <Y>2.25</Y>
           <Z>5.7855</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://124488477052278</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://110150389345735</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://93749756174928</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_1-accent">
       <Properties>
@@ -1622,7 +1688,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://125915991405551</url>
+          <url>rbxassetid://129249889115726</url>
         </Content>
         <Vector3 name="size">
           <X>0.338</X>
@@ -1648,7 +1714,10 @@
           <Y>0.2925</Y>
           <Z>0.8645</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://96860617282562</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://115225231998430</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://113050981750624</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="nose_2">
@@ -1669,7 +1738,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://73971846719926</url>
+          <url>rbxassetid://127831965546737</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1695,7 +1764,10 @@
           <Y>2.25</Y>
           <Z>2.0672</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://114399267344782</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://112399936533206</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://90357005362575</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_2-paper-R">
       <Properties>
@@ -1711,7 +1783,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://75980653839045</url>
+          <url>rbxassetid://105351789347879</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1737,7 +1809,10 @@
           <Y>2.25</Y>
           <Z>2.0672</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://129141634324591</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://102649717253557</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://87316908415503</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_2-accent">
       <Properties>
@@ -1753,7 +1828,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://79750586220502</url>
+          <url>rbxassetid://75654558069081</url>
         </Content>
         <Vector3 name="size">
           <X>2.2048</X>
@@ -1779,7 +1854,10 @@
           <Y>2.033369</Y>
           <Z>0.6528</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://124663259544901</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://101436041976855</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://104262800960736</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="nose_3">
@@ -1800,7 +1878,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://111415905733057</url>
+          <url>rbxassetid://113595363826020</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1826,7 +1904,10 @@
           <Y>2.25</Y>
           <Z>4.284</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://85667199303383</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://115912934710023</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://73903070024536</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_3-paper-R">
       <Properties>
@@ -1842,7 +1923,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://79914469811300</url>
+          <url>rbxassetid://115813045072340</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1868,7 +1949,10 @@
           <Y>2.25</Y>
           <Z>4.284</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://113194030030331</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://75433139499211</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://138541011975388</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_3-accent">
       <Properties>
@@ -1884,7 +1968,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://130761097248591</url>
+          <url>rbxassetid://72955370997759</url>
         </Content>
         <Vector3 name="size">
           <X>0.78</X>
@@ -1910,7 +1994,10 @@
           <Y>0.675</Y>
           <Z>1.835999</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://135797075573150</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://103353191808482</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://128181675958400</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="nose_4">
@@ -1931,7 +2018,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://86832882802730</url>
+          <url>rbxassetid://137762792156217</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1957,7 +2044,10 @@
           <Y>2.25</Y>
           <Z>1.8676</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://140072928544476</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://82187001673403</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://104645277215314</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_4-paper-R">
       <Properties>
@@ -1973,7 +2063,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://115225560247852</url>
+          <url>rbxassetid://110245660510190</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -1999,7 +2089,10 @@
           <Y>2.25</Y>
           <Z>1.8676</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://121099205139970</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://103266041027023</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://108202220154039</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_4-accent">
       <Properties>
@@ -2015,7 +2108,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://95243620210527</url>
+          <url>rbxassetid://103494921650692</url>
         </Content>
         <Vector3 name="size">
           <X>1.092</X>
@@ -2041,7 +2134,10 @@
           <Y>0.945</Y>
           <Z>1.3524</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://95369197905214</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://116706612425757</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://73331384766782</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="nose_5">
@@ -2062,7 +2158,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://92956336157819</url>
+          <url>rbxassetid://90861505298182</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -2088,7 +2184,10 @@
           <Y>2.25</Y>
           <Z>3.6375</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://87986913386254</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://120247890730749</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://115887525576250</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_5-paper-R">
       <Properties>
@@ -2104,7 +2203,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://133800906967652</url>
+          <url>rbxassetid://87480328891350</url>
         </Content>
         <Vector3 name="size">
           <X>1.3</X>
@@ -2130,7 +2229,10 @@
           <Y>2.25</Y>
           <Z>3.6375</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://128717358732768</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://94383053151729</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://113901976439560</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_5-accent">
       <Properties>
@@ -2146,7 +2248,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://131439416504308</url>
+          <url>rbxassetid://110130239810694</url>
         </Content>
         <Vector3 name="size">
           <X>0.65</X>
@@ -2172,7 +2274,10 @@
           <Y>0.5625</Y>
           <Z>1.2125</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://97771255482519</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://106381212173609</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://138979515288632</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="nose_5-tape">
       <Properties>
@@ -2188,7 +2293,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4292266144</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://118299738808597</url>
+          <url>rbxassetid://82156105719374</url>
         </Content>
         <Vector3 name="size">
           <X>2.201986</X>
@@ -2214,7 +2319,10 @@
           <Y>1.908677</Y>
           <Z>1.8235</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://80876914775409</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://86149153303046</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://102180448186645</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="wings_1">
@@ -2236,7 +2344,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://108594125341004</url>
+          <url>rbxassetid://107990881529362</url>
         </Content>
         <Vector3 name="size">
           <X>7.4</X>
@@ -2262,7 +2370,10 @@
           <Y>0.19</Y>
           <Z>7.986416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://94625272808447</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://90351789041516</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://103959281464784</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_1-paper-R">
       <Properties>
@@ -2278,7 +2389,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://78097630194581</url>
+          <url>rbxassetid://98086205450851</url>
         </Content>
         <Vector3 name="size">
           <X>7.4</X>
@@ -2304,7 +2415,10 @@
           <Y>0.19</Y>
           <Z>7.986416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://108181161912628</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://136393372395007</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://129832845043413</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_1-accent-L">
       <Properties>
@@ -2320,7 +2434,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://78078461793435</url>
+          <url>rbxassetid://131705597111754</url>
         </Content>
         <Vector3 name="size">
           <X>1.08</X>
@@ -2346,7 +2460,10 @@
           <Y>0.040906</Y>
           <Z>1.656194</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://137836684148898</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://121520265656795</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://76804941042506</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_1-accent-R">
       <Properties>
@@ -2362,7 +2479,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://109308201941141</url>
+          <url>rbxassetid://122814787890243</url>
         </Content>
         <Vector3 name="size">
           <X>1.08</X>
@@ -2388,7 +2505,10 @@
           <Y>0.040906</Y>
           <Z>1.656194</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://82354894822269</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://112873625665831</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://80670612413982</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_1-sticker-left">
       <Properties>
@@ -2494,7 +2614,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://124746893631245</url>
+          <url>rbxassetid://129983691580838</url>
         </Content>
         <Vector3 name="size">
           <X>8.4</X>
@@ -2520,7 +2640,10 @@
           <Y>0.19</Y>
           <Z>6.886416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://108594328615039</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://76474617247973</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://80362788968164</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_2-paper-R">
       <Properties>
@@ -2536,7 +2659,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://89053270902002</url>
+          <url>rbxassetid://118433605785422</url>
         </Content>
         <Vector3 name="size">
           <X>8.4</X>
@@ -2562,7 +2685,10 @@
           <Y>0.19</Y>
           <Z>6.886416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://133119213331476</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://135302914576959</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://128506742112209</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_2-accent-L">
       <Properties>
@@ -2578,7 +2704,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://116657305128191</url>
+          <url>rbxassetid://72796186622043</url>
         </Content>
         <Vector3 name="size">
           <X>0.78</X>
@@ -2604,7 +2730,10 @@
           <Y>0.026</Y>
           <Z>5.6832</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://138888000113361</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://76100302732986</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://107805383434327</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_2-accent-R">
       <Properties>
@@ -2620,7 +2749,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://123421569382082</url>
+          <url>rbxassetid://74203581660243</url>
         </Content>
         <Vector3 name="size">
           <X>0.78</X>
@@ -2646,7 +2775,10 @@
           <Y>0.026</Y>
           <Z>5.6832</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://82906716915849</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://83799940633180</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://104389964924379</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_2-sticker-left">
       <Properties>
@@ -2752,7 +2884,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://88738241462640</url>
+          <url>rbxassetid://95534002487966</url>
         </Content>
         <Vector3 name="size">
           <X>7.25</X>
@@ -2778,7 +2910,10 @@
           <Y>0.19</Y>
           <Z>7.766416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://72555054280524</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://137595573128402</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://132248369297394</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_3-paper-R">
       <Properties>
@@ -2794,7 +2929,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://116448375326328</url>
+          <url>rbxassetid://85293299980446</url>
         </Content>
         <Vector3 name="size">
           <X>7.25</X>
@@ -2820,7 +2955,10 @@
           <Y>0.19</Y>
           <Z>7.766416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://112780330823529</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://132425313206057</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://129856902984232</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_3-accent-L">
       <Properties>
@@ -2836,7 +2974,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://137149622891609</url>
+          <url>rbxassetid://127097222434787</url>
         </Content>
         <Vector3 name="size">
           <X>1.08</X>
@@ -2862,7 +3000,10 @@
           <Y>0.044379</Y>
           <Z>1.716833</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://105048680729436</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://82081241150281</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://114174124792550</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_3-accent-R">
       <Properties>
@@ -2878,7 +3019,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://73706551503299</url>
+          <url>rbxassetid://116402595872158</url>
         </Content>
         <Vector3 name="size">
           <X>1.08</X>
@@ -2904,7 +3045,10 @@
           <Y>0.044379</Y>
           <Z>1.716833</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://125727680341212</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://117517950317448</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://117334254668931</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_3-sticker-left">
       <Properties>
@@ -3010,7 +3154,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://90863601602891</url>
+          <url>rbxassetid://102009828103408</url>
         </Content>
         <Vector3 name="size">
           <X>6.75</X>
@@ -3036,7 +3180,10 @@
           <Y>1.33</Y>
           <Z>7.086416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://88453133124620</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://140280148372511</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://97835790814296</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_4-paper-R">
       <Properties>
@@ -3052,7 +3199,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://106669606237585</url>
+          <url>rbxassetid://136894505259470</url>
         </Content>
         <Vector3 name="size">
           <X>6.75</X>
@@ -3078,7 +3225,10 @@
           <Y>1.33</Y>
           <Z>7.086416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://80282626465444</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://94638881748004</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://133576814479334</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_4-cardboard-L">
       <Properties>
@@ -3094,7 +3244,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://134319060509063</url>
+          <url>rbxassetid://107822861536781</url>
         </Content>
         <Vector3 name="size">
           <X>6.75</X>
@@ -3120,7 +3270,10 @@
           <Y>0.133755</Y>
           <Z>7.086416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://96619986469936</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://110265319799784</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://72334660804558</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_4-cardboard-R">
       <Properties>
@@ -3136,7 +3289,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://112568209685604</url>
+          <url>rbxassetid://138959237922737</url>
         </Content>
         <Vector3 name="size">
           <X>6.75</X>
@@ -3162,7 +3315,10 @@
           <Y>0.133755</Y>
           <Z>7.086416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://109505475659299</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://135584557002339</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://115381145066833</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_4-accent-L">
       <Properties>
@@ -3178,7 +3334,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://92725206281552</url>
+          <url>rbxassetid://96578293708247</url>
         </Content>
         <Vector3 name="size">
           <X>0.183</X>
@@ -3204,7 +3360,10 @@
           <Y>0.895</Y>
           <Z>4.63</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://112483968009674</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://134371016586818</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://103013887498515</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_4-accent-R">
       <Properties>
@@ -3220,7 +3379,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://92725206281552</url>
+          <url>rbxassetid://96578293708247</url>
         </Content>
         <Vector3 name="size">
           <X>0.183</X>
@@ -3246,7 +3405,10 @@
           <Y>0.895</Y>
           <Z>4.63</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://96802333688719</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://94112902578393</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://102083009436084</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_4-sticker-left">
       <Properties>
@@ -3352,7 +3514,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://108438272536307</url>
+          <url>rbxassetid://119652400523617</url>
         </Content>
         <Vector3 name="size">
           <X>7.95</X>
@@ -3378,7 +3540,10 @@
           <Y>0.266983</Y>
           <Z>7.106416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://111836177388514</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://93005388622918</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://122592425640762</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_5-paper-R">
       <Properties>
@@ -3394,7 +3559,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://77872136702580</url>
+          <url>rbxassetid://110662624339489</url>
         </Content>
         <Vector3 name="size">
           <X>7.95</X>
@@ -3420,7 +3585,10 @@
           <Y>0.266983</Y>
           <Z>7.106416</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://71910534776366</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://115823209782432</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://108635261392412</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_5-accent-L">
       <Properties>
@@ -3436,7 +3604,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://95775378632203</url>
+          <url>rbxassetid://129661167935538</url>
         </Content>
         <Vector3 name="size">
           <X>1.45</X>
@@ -3462,7 +3630,10 @@
           <Y>0.133033</Y>
           <Z>3.194076</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://91723927854731</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://128436141832309</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://130764020629793</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_5-accent-R">
       <Properties>
@@ -3478,7 +3649,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://89068600259041</url>
+          <url>rbxassetid://137619592979343</url>
         </Content>
         <Vector3 name="size">
           <X>1.45</X>
@@ -3504,7 +3675,10 @@
           <Y>0.133033</Y>
           <Z>3.194076</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://113746165246626</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://100764755509530</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://110318102342350</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="wings_5-sticker-left">
       <Properties>
@@ -3609,7 +3783,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://73662485038789</url>
+          <url>rbxassetid://134969363827728</url>
         </Content>
         <Vector3 name="size">
           <X>1.049798</X>
@@ -3635,7 +3809,10 @@
           <Y>2.951312</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://134442959616937</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://101876718819565</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://125759509244147</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_1-paper-R">
       <Properties>
@@ -3651,7 +3828,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://78345628322066</url>
+          <url>rbxassetid://131399036373342</url>
         </Content>
         <Vector3 name="size">
           <X>1.049798</X>
@@ -3677,7 +3854,10 @@
           <Y>2.951312</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://101434319332472</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://139383658977428</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://130499143697120</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_1-accent">
       <Properties>
@@ -3693,7 +3873,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://129515113852375</url>
+          <url>rbxassetid://133646428959179</url>
         </Content>
         <Vector3 name="size">
           <X>2.177001</X>
@@ -3719,7 +3899,10 @@
           <Y>0.998681</Y>
           <Z>1.39</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://138221371058886</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://98898156985185</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://118187009010174</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="tail_2">
@@ -3740,7 +3923,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://113627253871405</url>
+          <url>rbxassetid://105917875356377</url>
         </Content>
         <Vector3 name="size">
           <X>0.795</X>
@@ -3766,7 +3949,10 @@
           <Y>2.94</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://110141255547392</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://86941635052820</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://119426557882721</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_2-paper-R">
       <Properties>
@@ -3782,7 +3968,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://131318058509842</url>
+          <url>rbxassetid://125745309129660</url>
         </Content>
         <Vector3 name="size">
           <X>0.795</X>
@@ -3808,7 +3994,10 @@
           <Y>2.94</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://89151481816960</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://117222479723354</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://128264170487018</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_2-accent">
       <Properties>
@@ -3824,7 +4013,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://84027468384600</url>
+          <url>rbxassetid://127826798217569</url>
         </Content>
         <Vector3 name="size">
           <X>0.194</X>
@@ -3850,7 +4039,10 @@
           <Y>1.32</Y>
           <Z>1.80407</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://130317385956550</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://131135839924796</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://99046223137217</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="tail_3">
@@ -3871,7 +4063,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://78358728548410</url>
+          <url>rbxassetid://79673943902097</url>
         </Content>
         <Vector3 name="size">
           <X>2.9</X>
@@ -3897,7 +4089,10 @@
           <Y>2.94</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://84931511037215</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://107919398617457</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://85388597161800</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_3-paper-R">
       <Properties>
@@ -3913,7 +4108,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://132347466701375</url>
+          <url>rbxassetid://123376386303331</url>
         </Content>
         <Vector3 name="size">
           <X>2.9</X>
@@ -3939,7 +4134,10 @@
           <Y>2.94</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://135480238553816</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://104829469040049</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://131056916291391</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_3-accent">
       <Properties>
@@ -3955,7 +4153,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://130772879061698</url>
+          <url>rbxassetid://78370017325714</url>
         </Content>
         <Vector3 name="size">
           <X>5.8</X>
@@ -3981,7 +4179,10 @@
           <Y>1.865</Y>
           <Z>1.634089</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://88707111968791</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://76551634428018</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://102906798966144</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="tail_4">
@@ -4002,7 +4203,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://93007513021252</url>
+          <url>rbxassetid://79015416512616</url>
         </Content>
         <Vector3 name="size">
           <X>0.795</X>
@@ -4028,7 +4229,10 @@
           <Y>4.18</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://118840968380656</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://131513958583290</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://132814464354401</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_4-paper-R">
       <Properties>
@@ -4044,7 +4248,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://85847193956853</url>
+          <url>rbxassetid://97379265258255</url>
         </Content>
         <Vector3 name="size">
           <X>0.795</X>
@@ -4070,7 +4274,10 @@
           <Y>4.18</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://77760035075531</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://133246752980624</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://96659088494273</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_4-accent">
       <Properties>
@@ -4086,7 +4293,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://99305474900655</url>
+          <url>rbxassetid://138834395573444</url>
         </Content>
         <Vector3 name="size">
           <X>0.194</X>
@@ -4112,7 +4319,10 @@
           <Y>1.055</Y>
           <Z>1.39</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://138037747160047</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://100798963755652</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://92933419394088</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="tail_5">
@@ -4133,7 +4343,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://114270229482934</url>
+          <url>rbxassetid://89002169798658</url>
         </Content>
         <Vector3 name="size">
           <X>0.795</X>
@@ -4159,7 +4369,10 @@
           <Y>2.94</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://90604094661721</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://136468152637010</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://126928542310722</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_5-paper-R">
       <Properties>
@@ -4175,7 +4388,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://98964563288178</url>
+          <url>rbxassetid://138025030381633</url>
         </Content>
         <Vector3 name="size">
           <X>0.795</X>
@@ -4201,7 +4414,10 @@
           <Y>2.94</Y>
           <Z>2.234071</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://86384082581390</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://79291261138770</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://89423524961267</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_5-accent">
       <Properties>
@@ -4217,7 +4433,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://126626714090300</url>
+          <url>rbxassetid://84294774663817</url>
         </Content>
         <Vector3 name="size">
           <X>0.194</X>
@@ -4243,7 +4459,10 @@
           <Y>0.905</Y>
           <Z>1.39</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://80807948681183</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://85051571859258</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://109676111087437</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="tail_5-tape">
       <Properties>
@@ -4259,7 +4478,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4292266144</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://82683524305776</url>
+          <url>rbxassetid://117631368030994</url>
         </Content>
         <Vector3 name="size">
           <X>1.613084</X>
@@ -4285,7 +4504,10 @@
           <Y>2.236232</Y>
           <Z>1.83</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://73206540558622</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://133682551336105</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://76565333991711</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="boost_band">
@@ -4306,7 +4528,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://103434529688520</url>
+          <url>rbxassetid://105379360494314</url>
         </Content>
         <Vector3 name="size">
           <X>0.49</X>
@@ -4332,7 +4554,10 @@
           <Y>0.65</Y>
           <Z>2.46</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://88497255267096</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://125160144205044</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://108981293732324</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_band-paper-R">
       <Properties>
@@ -4348,7 +4573,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://98524773877210</url>
+          <url>rbxassetid://109953523541290</url>
         </Content>
         <Vector3 name="size">
           <X>0.49</X>
@@ -4374,7 +4599,10 @@
           <Y>0.65</Y>
           <Z>2.46</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://95726558295268</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://77825665568850</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://118296943587571</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_band-tape">
       <Properties>
@@ -4390,7 +4618,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4292266144</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://118015527310863</url>
+          <url>rbxassetid://87068652602643</url>
         </Content>
         <Vector3 name="size">
           <X>1.27</X>
@@ -4416,7 +4644,10 @@
           <Y>0.945</Y>
           <Z>2.47</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://99688605906177</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://99107214956052</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://113334541609129</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_band-accent">
       <Properties>
@@ -4432,7 +4663,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://124156401008405</url>
+          <url>rbxassetid://135146615741527</url>
         </Content>
         <Vector3 name="size">
           <X>1.056</X>
@@ -4458,7 +4689,10 @@
           <Y>0.37</Y>
           <Z>0.88</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://79747533088799</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://137298356578559</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://131563122929434</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_band-cardboard-L">
       <Properties>
@@ -4474,7 +4708,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://91097042054317</url>
+          <url>rbxassetid://75831294705385</url>
         </Content>
         <Vector3 name="size">
           <X>0.57</X>
@@ -4500,7 +4734,10 @@
           <Y>0.28</Y>
           <Z>2.38</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://122333070381355</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://97631746565297</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://98504415094816</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_band-cardboard-R">
       <Properties>
@@ -4516,7 +4753,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://114420718639249</url>
+          <url>rbxassetid://140110397456632</url>
         </Content>
         <Vector3 name="size">
           <X>0.57</X>
@@ -4542,7 +4779,10 @@
           <Y>0.28</Y>
           <Z>2.38</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://95154414338027</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://134089072298658</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://81484490692899</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_band-elastic">
       <Properties>
@@ -4558,7 +4798,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291269705</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://132992414271340</url>
+          <url>rbxassetid://95098815579599</url>
         </Content>
         <Vector3 name="size">
           <X>0.6</X>
@@ -4584,7 +4824,10 @@
           <Y>0.6</Y>
           <Z>2.02</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://137380347336563</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://86983894335989</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://115331427477856</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="boost_spool">
@@ -4605,7 +4848,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://80607332691844</url>
+          <url>rbxassetid://77545561130238</url>
         </Content>
         <Vector3 name="size">
           <X>0.49</X>
@@ -4631,7 +4874,10 @@
           <Y>0.684338</Y>
           <Z>2.46</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://103370646468303</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://127960011551137</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://91271875329901</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_spool-paper-R">
       <Properties>
@@ -4647,7 +4893,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://115162650747693</url>
+          <url>rbxassetid://122859919971913</url>
         </Content>
         <Vector3 name="size">
           <X>0.49</X>
@@ -4673,7 +4919,10 @@
           <Y>0.684338</Y>
           <Z>2.46</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://107446811425880</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://107542075110045</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://115781169846940</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_spool-tape">
       <Properties>
@@ -4689,7 +4938,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4292266144</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://118015527310863</url>
+          <url>rbxassetid://87068652602643</url>
         </Content>
         <Vector3 name="size">
           <X>1.27</X>
@@ -4715,7 +4964,10 @@
           <Y>0.945</Y>
           <Z>2.47</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://86034991843155</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://79335144985686</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://74530676737632</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_spool-accent">
       <Properties>
@@ -4731,7 +4983,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://124156401008405</url>
+          <url>rbxassetid://135146615741527</url>
         </Content>
         <Vector3 name="size">
           <X>1.056</X>
@@ -4757,7 +5009,10 @@
           <Y>0.37</Y>
           <Z>0.88</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://128702369206375</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://118480846456547</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://138120940996053</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_spool-cardboard-L">
       <Properties>
@@ -4773,7 +5028,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://134244906012532</url>
+          <url>rbxassetid://73340443704132</url>
         </Content>
         <Vector3 name="size">
           <X>0.57</X>
@@ -4799,7 +5054,10 @@
           <Y>0.78</Y>
           <Z>2.38</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://131830749105547</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://105329190023883</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://86773117967800</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_spool-cardboard-R">
       <Properties>
@@ -4815,7 +5073,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://87520327189589</url>
+          <url>rbxassetid://109951169468655</url>
         </Content>
         <Vector3 name="size">
           <X>0.57</X>
@@ -4841,7 +5099,10 @@
           <Y>0.78</Y>
           <Z>2.38</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://95254758269964</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://83635260660033</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://122084852957902</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_spool-elastic">
       <Properties>
@@ -4857,7 +5118,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291269705</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://113018466665849</url>
+          <url>rbxassetid://106802164959812</url>
         </Content>
         <Vector3 name="size">
           <X>0.87</X>
@@ -4883,7 +5144,10 @@
           <Y>0.077942</Y>
           <Z>1.82</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://75770037175277</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://110739230241133</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://107429614753539</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="boost_twin">
@@ -4904,7 +5168,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://87902809388991</url>
+          <url>rbxassetid://109715300507106</url>
         </Content>
         <Vector3 name="size">
           <X>0.69</X>
@@ -4930,7 +5194,10 @@
           <Y>0.65</Y>
           <Z>2.46</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://80451224713123</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://123827863709274</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://132217973577463</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_twin-paper-R">
       <Properties>
@@ -4946,7 +5213,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4293846740</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://84832648629913</url>
+          <url>rbxassetid://81614652828647</url>
         </Content>
         <Vector3 name="size">
           <X>0.69</X>
@@ -4972,7 +5239,10 @@
           <Y>0.65</Y>
           <Z>2.46</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://75936148550607</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://118760259887143</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://95252039840983</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_twin-tape">
       <Properties>
@@ -4988,7 +5258,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4292266144</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://107996700361475</url>
+          <url>rbxassetid://88585365845530</url>
         </Content>
         <Vector3 name="size">
           <X>1.67</X>
@@ -5014,7 +5284,10 @@
           <Y>0.945</Y>
           <Z>2.47</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://111739949100804</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://72217402139554</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://108041579520514</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_twin-accent">
       <Properties>
@@ -5030,7 +5303,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291702827</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://102693354897992</url>
+          <url>rbxassetid://84937487103464</url>
         </Content>
         <Vector3 name="size">
           <X>1.456</X>
@@ -5056,7 +5329,10 @@
           <Y>0.37</Y>
           <Z>0.88</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://97253720787293</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://126803594997650</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://110037551275823</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_twin-cardboard-L">
       <Properties>
@@ -5072,7 +5348,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://115468550882201</url>
+          <url>rbxassetid://97964031256217</url>
         </Content>
         <Vector3 name="size">
           <X>0.77</X>
@@ -5098,7 +5374,10 @@
           <Y>0.28</Y>
           <Z>2.38</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://138658848695425</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://74990170527641</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://131412980295978</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_twin-cardboard-R">
       <Properties>
@@ -5114,7 +5393,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4289099592</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://127681284639743</url>
+          <url>rbxassetid://138323551172715</url>
         </Content>
         <Vector3 name="size">
           <X>0.77</X>
@@ -5140,7 +5419,10 @@
           <Y>0.28</Y>
           <Z>2.38</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://137033304433158</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://133341519513049</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://74554003754059</url></Content></Properties></Item>
     </Item>
     <Item class="MeshPart" referent="boost_twin-elastic">
       <Properties>
@@ -5156,7 +5438,7 @@
         <token name="Material">272</token>
         <Color3uint8 name="Color3uint8">4291269705</Color3uint8>
         <Content name="MeshId">
-          <url>rbxassetid://88334028234311</url>
+          <url>rbxassetid://75792617643918</url>
         </Content>
         <Vector3 name="size">
           <X>1.14</X>
@@ -5182,7 +5464,10 @@
           <Y>0.5</Y>
           <Z>2.02</Z>
         </Vector3>
-      </Properties>
+      </Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Paper</string>
+        <Content name="ColorMap"><url>rbxassetid://88490161696133</url></Content>
+        <Content name="NormalMap"><url>rbxassetid://73364091704857</url></Content>
+        <Content name="RoughnessMap"><url>rbxassetid://83600198214743</url></Content></Properties></Item>
     </Item>
   </Item>
   <Item class="Model" referent="launcher_pellet">

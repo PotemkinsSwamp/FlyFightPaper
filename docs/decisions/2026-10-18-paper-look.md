@@ -1,7 +1,7 @@
 # Planes: paper texture and softer team colours
 
 **Decided:** 2026-10-18 (Alan)  
-**Status:** in force; colours done, textures on the Classic plane only (sample), the other 22 parts next
+**Status:** in force; colours and paper textures on every part and booster (2026-10-18), waiting on Alan's OK
 
 ## Decision
 - Every plane part gets a paper texture: a UV layout (so Roblox can put any texture, and later skins, on it) and
