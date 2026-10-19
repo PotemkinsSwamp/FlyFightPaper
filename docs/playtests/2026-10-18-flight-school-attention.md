@@ -65,3 +65,9 @@ and the hoop looked like loose blocks (now 24 pieces end to end).
     keeps crashes). He crashed, came back without boost and couldn't do the boost step. [The server marks a Flight
     School plane gentle: walls, the floor, duct fans and leaving the room only bounce it, and its Lift never drops
     below 1 s. Why the new plane had no boost is not found yet. Not yet seen.]
+
+## Seventh look (same day)
+20. **Gentle mode still crumpled you, in a loop (crumple, fall, come back as a plane).** [The pilot's own client
+    plays the crumple at once on a hard hit, before the server's word; it didn't know about Flight School. The server
+    now marks the plane `Gentle` and the client only bounces it. Not yet seen.]
+21. **Boost should stop at 0.01 s in Flight School so it never runs out.** [Done on the server. Not yet seen.]

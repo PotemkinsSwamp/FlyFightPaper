@@ -168,6 +168,8 @@ function Service:build(p)
   Message=Lines.pick("atDesk"),Loadout=p.loadoutName,LoadoutData=game:GetService("HttpService"):JSONEncode(p.loadout),Protected=true,Kills=self.records[p.id].kills}) do model:SetAttribute(key,value) end
  -- A practice flight stays one through crashes: every new plane carries the mark and its desk ring.
  if p.practice then model:SetAttribute("Practice",true);model:SetAttribute("PracticeRing",Landing.approach(p.home,Desk)) end
+ -- Flight School (p.gentle): the pilot's client must not crumple it either, only bounce it off.
+ if p.gentle then model:SetAttribute("Gentle",true) end
  local color=Color3.fromHSV((p.seat*.133)%1,0.65,0.9)
  if Aircraft.build(model,p.loadout,self.catalog,false) then
   for _,part in ipairs(model:GetChildren()) do if part:IsA("BasePart") and part~=body then part:Destroy() end end
@@ -483,7 +485,7 @@ function Service:step(dt)
    p.liftDrain=(p.liftDrain or 0)+dt;p.boostDrain=(p.boostDrain or 0)+(boosting and dt or 0)
    if p.liftDrain>=.2 then
     p.model:SetAttribute("Lift",math.max(p.gentle and 1 or 0,Rules.lift(p.model:GetAttribute("Lift"),p.stats.lift,p.liftDrain)));p.liftDrain=0
-    if p.boostDrain>0 then p.model:SetAttribute("Boost",math.max(0,p.model:GetAttribute("Boost")-p.boostDrain));p.boostDrain=0 end
+    if p.boostDrain>0 then p.model:SetAttribute("Boost",math.max(p.gentle and .01 or 0,p.model:GetAttribute("Boost")-p.boostDrain));p.boostDrain=0 end
    end
    local localPos=self.boundsCF:PointToObjectSpace(p.body.Position)
    local outside=math.abs(localPos.X)>self.boundsSize.X/2+12 or (localPos.Y>self.boundsSize.Y/2+self.headroom+12 or localPos.Y<-self.boundsSize.Y/2-12) or math.abs(localPos.Z)>self.boundsSize.Z/2+12

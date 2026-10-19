@@ -261,8 +261,8 @@ function Runtime:practice(player,lesson)
  -- Lessons fly a fixed training plane (Alan 2026-10-18); the player's own builds are untouched.
  local p=self.flight:add(player,{loadout=require(Root.Shared.WeaponLoadouts).make(self.flight.catalog,"training"),loadoutName="training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
- -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off and Lift stops at 1 second.
- p.gentle=lesson=="flight"
+ -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off, Lift stops at 1 second and Boost at 0.01.
+ p.gentle=lesson=="flight";p.model:SetAttribute("Gentle",p.gentle or nil)
  player:SetAttribute("InMatch",true)
 end
 function Runtime:join(player)

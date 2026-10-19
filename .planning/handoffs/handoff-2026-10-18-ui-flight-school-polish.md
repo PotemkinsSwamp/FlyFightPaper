@@ -4,7 +4,8 @@
 
 ★ START HERE: Goal: Flight School that Alan plays and says "done": he always knows where to go and nothing grates.
 First action: ask Alan to play Flight School (Play → Menu → Tutorial) and take his notes; the sixth round of fixes
-(frames outside the bars, fan ring during the Lift step, can't-crash + Lift floor at 1 s) is not yet seen by anyone.
+(frames outside the bars, fan ring during the Lift step, can't-crash + Lift floor at 1 s) and the seventh (no client
+crumple in Flight School, Boost floor at 0.01) are not yet seen by anyone.
 Done = Alan says Flight School is done. Then plan Combat Training with him (plan first, his OK, then build).
 
 > Read on demand: AGENTS.md → THIS → [playtest log](../../docs/playtests/2026-10-18-flight-school-attention.md) (every
@@ -41,7 +42,8 @@ product IDs/prices, turning sales on.
   once per lesson, 0.1 s), Catmull-Rom smoothed, re-planned each second, 4.5 studs wide.
 - Hoop course is fixed world points, hand-checked in Studio (50 studs clear, legs clear); it ends heading north with
   the west fan 90° left so the Lift note can be read first (Alan).
-- Flight School is "gentle" (server `p.gentle`, client sends the lesson name with `practice`): bounce, Lift ≥ 1 s.
+- Flight School is "gentle" (server `p.gentle` + model attribute `Gentle` so the client won't predict a crumple;
+  client sends the lesson name with `practice`): bounce, Lift ≥ 1 s, Boost ≥ 0.01.
   Combat Training must keep crashes (Alan).
 - Lesson music: one looped song, APM "Daisy Fresh" (Alan's pick by ear), volume .067; classroom chatter off; every
   step and hoop plays the same soft `ding` (.28), a step's 0.4 s late and once.
