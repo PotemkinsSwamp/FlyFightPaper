@@ -48,7 +48,8 @@ from aiming and suggest every plane has one).
 **Targets are real paper planes** placed in clear air just ahead of where you are when the step starts (checked
 against the room's exact shapes; the course points are the fallback), held still or sweeping
 (`src/shared/TrainingCourse.luau`), so every aim help works on them as in a match. Part 2, fighting: one "Paper Pal"
-at a time at 45% speed, turning slowly and wandering in gentle curves to a clear spot ahead every few seconds, never
+at a time, appearing in the air 350-550 studs away (ahead first, hidden behind a building when it can be; never out
+of a hangar: Alan 2026-10-19, "coming out of nowhere"; BotService:placePal), facing away, at 45% speed, turning slowly and wandering in gentle curves to a clear spot ahead every few seconds, never
 chasing or U-turning (Alan 2026-10-19: easy to chase down, "worse than noob"): one that never shoots, one that turns
 on you 3 seconds in every 10 and shoots until you're at half Health. Neither carries an eraser. Part 3, the eraser:
 the plane refolds in the air with an eraser on right click (`eraser=true`), then in slow motion the big lock circle and

@@ -52,6 +52,12 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - The aim jolted left on every launch and every unfreeze. **Found and fixed:** locking the mouse read as a big move.
 - The read pause: 2.5 s, a draining bar, no countdown. **Done.**
 
+## Round 8
+- Still hitting while the dot was green. **Done:** red now follows the guns' real aim (the gun assist), not a screen
+  distance. My Round 7 fix was a guess that didn't match how the guns aim.
+- Pals waited to come out of the hangar, next to you. **Done:** they appear in the air 350-550 studs away, ahead,
+  behind a building when possible, before the step's read pause.
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

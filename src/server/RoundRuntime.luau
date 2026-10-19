@@ -300,6 +300,7 @@ function Runtime:lesson(player,cmd)
   foe.pal={mode=cmd.pal,slow=.45,eraserSlow=foe.pal and foe.pal.eraserSlow or .5}
   player:SetAttribute("TutorialFoe",id)
   if foe.model:GetAttribute("State")=="DESTROYED" then self.flight:replace(foe) end -- the next Pal now, not after the wait
+  self.bots:placePal(foe) -- in the air now, so the step's read pause holds it too
  end
 end
 function Runtime:practice(player,lesson)

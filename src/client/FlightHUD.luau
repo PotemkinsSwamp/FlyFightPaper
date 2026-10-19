@@ -68,6 +68,7 @@ function HUD.start(getPlane, action)
 	local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 	local Gameplay = require(Root.Generated.Gameplay)
 	local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), Gameplay)
+	local ASSIST = math.cos(math.rad(Gameplay.combat.gun_assist_deg))
 	local CombatRules = require(Root.Shared.CombatRules)
 	-- The lead marker is the "second crosshair": put the nose dot on it and the shots meet the enemy.
 	-- One lead marker per weapon type (Alan): left-click weapon = orange ring, right-click weapon = cyan diamond.
@@ -529,15 +530,14 @@ function HUD.start(getPlane, action)
 					local lead = FlightState.leadFor(weapon)
 					place(pipper, lead)
 					if group == 1 or not guns[1] then noseRange = (lead - body.Position).Magnitude end
-					-- Red = the shots land if fired now (Alan 2026-10-19). At range the dot must sit on this ring (red anywhere near
-					-- the target "is not a good indicator"); up close, where the plane's middle (2 studs round the lead) covers
-					-- more screen than the ring, anywhere on that (Alan: it stayed green though the shots hit).
-					local dot = camera:WorldToViewportPoint(body.Position + body.CFrame.LookVector * (lead - body.Position).Magnitude)
-					local ring = Vector2.new(pipper.Position.X.Offset, pipper.Position.Y.Offset)
-					local edge = camera:WorldToViewportPoint(lead + camera.CFrame.RightVector * 2)
-					local reach = math.max(pipper.AbsoluteSize.X / 2 + 3, (Vector2.new(edge.X, edge.Y) - ring).Magnitude)
-					local onRing = pipper.Visible and (Vector2.new(dot.X, dot.Y) - ring).Magnitude <= reach
-					local onTarget = onRing and CombatRules.travelTime(weapon, (lead - body.Position).Magnitude) < math.huge
+					-- Red = the shots land if fired now, worked out the way the guns really aim (Alan 2026-10-19: "if I'm hitting
+					-- shots... my crosshair should be red"; a screen-distance rule stayed green while they hit). The gun assist sends
+					-- them to the ring while the nose is within gun_assist_deg of it (CombatEffects.aim); otherwise they fly along the
+					-- nose and land only if that passes within 2 studs of the ring's point.
+					local offset = lead - body.Position
+					local look = body.CFrame.LookVector
+					local lands = look:Dot(offset.Unit) >= ASSIST or (body.Position + look * offset.Magnitude - lead).Magnitude <= 2
+					local onTarget = pipper.Visible and lands and CombatRules.travelTime(weapon, offset.Magnitude) < math.huge
 					anyHit = anyHit or onTarget
 					pipper.BackgroundTransparency = onTarget and 0.35 or 1
 					local a = pipper.Position

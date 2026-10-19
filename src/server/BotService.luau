@@ -27,6 +27,36 @@ local function wander(self,b,position,now)
  end
  b.wanderGoal,b.wanderUntil=Course.POINTS[2],now+4;return b.wanderGoal
 end
+-- Pals appear in the air, never out of a hangar (Alan 2026-10-19: "it's like the enemy's coming out of nowhere"):
+-- 350-550 studs from their player, ahead first, in clear air inside the room, hidden behind a building if one
+-- of those spots is, and facing away so the player can chase it. Fallback: the course's middle point.
+function Service:placePal(p)
+ local victim=self.flight.byId[p.foeOf]
+ if not victim or p.model:GetAttribute("State")~="DESK" then return end
+ local from=victim.body.Position
+ local heading=victim.body.CFrame.LookVector*Vector3.new(1,0,1);heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
+ local ball=Instance.new("Part");ball.Shape=Enum.PartType.Ball;ball.Anchored,ball.CanCollide,ball.CanTouch,ball.Transparency=true,false,false,1
+ ball.Size=Vector3.one*80;ball.Parent=workspace
+ local half=self.flight.boundsSize/2-Vector3.one*60
+ local open,hidden
+ for _,turn in {0,35,-35,70,-70,110,-110,180} do
+  for _,range in {450,350,550} do
+   local at=from+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*range+Vector3.yAxis*20
+   local inside=self.flight.boundsCF:PointToObjectSpace(at)
+   ball.Position=at
+   if math.abs(inside.X)<half.X and math.abs(inside.Y)<half.Y and math.abs(inside.Z)<half.Z and #workspace:GetPartsInPart(ball,self.flight.overlap)==0 then
+    open=open or at
+    if workspace:Raycast(from,at-from,self.flight.cast) then hidden=at;break end
+   end
+  end
+  if hidden then break end
+ end
+ ball:Destroy()
+ local at=hidden or open or Course.POINTS[2]
+ local away=(at-from)*Vector3.new(1,0,1);away=away.Magnitude>1 and away.Unit or heading
+ p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
+ local b=self.brains[p.id];if b then b.mode="launch" end
+end
 function Service:palReady(p,now)
  local victim=self.flight.byId[p.foeOf]
  return victim and victim.model:GetAttribute("State")=="FLYING" and now-(victim.launchAt or 0)>2 and victim or nil
@@ -576,7 +606,8 @@ function Service:step(dt)
   local p=self.flight.byId[id]
   if not p then self.brains[id]=nil;continue end
   local state=p.model:GetAttribute("State")
-  if state=="DESK" and now>=b.launchAt then
+  if state=="DESK" and p.pal then self:placePal(p)
+  elseif state=="DESK" and now>=b.launchAt then
    if not p.serviceBusy then
     if p.model:GetAttribute("Health")<p.model:GetAttribute("MaxHealth") and self.flight.onService then self.flight.onService(p,"repair")
     else
