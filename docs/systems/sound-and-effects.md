@@ -20,6 +20,8 @@ rising two-note chime for every finished step (Alan, 2026-10-18). Lesson songs (
 (1839864816); Combat Training APM "Liberty Bell (a) 60" (105397100521450).
 Sounds without a place play straight in SoundService (before 2026-10-18 they sat at the room's middle and faded with
 distance); every sound is loaded when the game starts.
+The paperclip fires with two sounds at once (Alan 2026-10-19): the metal ting ("Key Dings Metal Clinking 11", louder than
+the other guns) and a soft railgun zap under it ("Electric Arcing 6").
 
 ## Code
 | File | What it does |

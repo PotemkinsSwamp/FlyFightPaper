@@ -1,7 +1,7 @@
 # Much less aim assist, none in lessons; red dot means a hit without help
 
 **Decided:** 2026-10-19 (Alan)  
-**Status:** in force, amended the same day: lessons get the same 1 degree (below)
+**Status:** in force, amended the same day: 3 degrees everywhere, lessons too (below)
 
 ## Decision
 - **Gun assist cut from 7 degrees to 1** (`combat.gun_assist_deg`), for everyone. Alan: 7 felt like the bullets were
@@ -11,7 +11,8 @@
 - Later, maybe: more help for console and mobile players ("not important right now").
 - **Amended (Alan, after playing it):** hitting felt "extremely difficult" in the tutorial, which had no assist at
   all. He first asked for 3 degrees, then, learning the tutorial had been at 0: **1 degree everywhere, lessons
-  included** (no exception). The red dot rule stays: red only for a hit without help.
+  included** (no exception). Then, before playing that: **3 degrees, everywhere**. The red dot rule stays: red only
+  for a hit without help.
 
 ## Why
 With 7 degrees of pull, shots curved visibly into targets and the red dot (which counted the pull) was red far from

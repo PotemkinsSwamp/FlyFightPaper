@@ -15,9 +15,9 @@ local FlightState=require(script.Parent.FlightController).state
 local assist=math.cos(math.rad(require(Root.Generated.Gameplay).combat.gun_assist_deg))
 local convergence=require(Root.Generated.Gameplay).combat.gun_convergence_studs
 local Effects={}
--- Gun assist: when the nose is within combat.gun_assist_deg (1) of the lead marker, shots go to the marker: a
+-- Gun assist: when the nose is within combat.gun_assist_deg (3) of the lead marker, shots go to the marker: a
 -- nudge for the nose trailing a moving aim. Alan 2026-10-19: 7 degrees felt like magnetised bullets ("like War
--- Thunder" is the model); lessons get the same 1 (they had none, which is what felt too hard).
+-- Thunder" is the model), 1 too hard; lessons get the same.
 -- Also returns the target's range: both guns meet there. At a fixed 150 studs they crossed and flew past either
 -- side of a plane seen from behind at 300 (measured 2026-10-19), though the dot was red on the ring.
 function Effects.aim(body,weapon)

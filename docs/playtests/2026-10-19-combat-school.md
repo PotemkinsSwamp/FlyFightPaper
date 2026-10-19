@@ -83,6 +83,11 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - Still frozen while an eraser comes. **Found:** the eraser fired in the moment between the step starting and its
   freeze reaching the server. **Done:** none in a step's first second, then 2 s after the freeze ends.
 
+## Round 13
+- Aim assist up to 3 degrees, everywhere. **Done.**
+- Paperclip: the ting came late (after the shot had gone) and it's too quiet; it needs a soft electric railgun zap
+  too. **Done:** ting the instant it fires, louder, zap under it.
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)
