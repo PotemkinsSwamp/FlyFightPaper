@@ -51,7 +51,7 @@ against the room's exact shapes; the course points are the fallback), held still
 (`src/shared/TrainingCourse.luau`), so every aim help works on them as in a match. Part 2, fighting: one "Paper Pal"
 at a time, at full speed again, appearing in the air 400-700 studs ahead (within 40 degrees of the nose, hidden behind
 a building when it can be; never out of a hangar or off to the side: Alan 2026-10-19, "coming out of nowhere";
-BotService:placePal), facing away, at 85% speed, turning at 80%, heading away from you while you're within 600 studs
+BotService:placePal), facing away, 5% faster than you (Alan 2026-10-19: slower ones are harder, you overshoot and circle them), turning at 80%, heading away from you while you're within 600 studs
 and changing course every 2.5 s (Alan 2026-10-19: noob-level, trying to get away, so you feel the chase; 45% just
 meant circling it): one that never shoots, one that comes straight at you for its first 6 seconds (so you see your
 Health drop), then 3 seconds in every 10, shooting until you're at half Health. Neither carries an eraser. Part 3, the eraser:
@@ -99,7 +99,7 @@ air, the gun range sent, and how far and where each passed the nearest enemy's c
 | `src/server/FlightService.luau` | Gentle planes, slow motion, flying the practice targets |
 
 ## Tuning numbers
-`TrainingCourse.SLOW_MO` (.06), target health, sweep size and speed in `TrainingCourse.DRILLS`; Pal speed (.85), turn share (.8, BotService) and first
+`TrainingCourse.SLOW_MO` (.06), target health, sweep size and speed in `TrainingCourse.DRILLS`; Pal speed (1.05 of its plane's speed), turn share (.8, BotService) and first
 eraser speed (.8) in `RoundRuntime:lesson`; the soft frame's `SOFT_SLICE`/`SOFT_SEE_THROUGH` in `Tutorial.luau`.
 
 ## Related

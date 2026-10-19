@@ -73,6 +73,9 @@ Decisions: [aiming and combat lessons](../decisions/2026-10-19-aiming-and-combat
 - Step 8's Pal took 10 s to attack. **Done:** it comes at you for its first 6 seconds.
 - The eraser came while you were frozen, from the side. **Done:** none while frozen; it comes from ahead, toward the Pal.
 
+## Round 11
+- A Pal slower than you is harder (you overshoot and circle). **Done:** every Pal flies 5% faster than you.
+
 Next: Alan plays Combat School again.
 
 Back to [playtests](README.md)

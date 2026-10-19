@@ -567,7 +567,8 @@ function Service:steer(p,b,dt,now)
  local bleed=FlightRules.turnSpeedFactor(b.heading,desired,dt,turn)
  b.heading=desired
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost
- local cruise,lift=p.stats.speed*b.profile.speed_factor*(p.model:GetAttribute("BoostSpeedFactor") or 1)*(p.pal and p.pal.slow or 1),p.model:GetAttribute("Lift")
+ -- A Pal flies at `pal.speed` times its plane's own speed, not a bot's slower share (RoundRuntime:lesson).
+ local cruise,lift=p.stats.speed*(p.pal and p.pal.speed or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
  if p.model:GetAttribute("Boosting") then lift=math.max(lift,1) end -- boost flies along the nose even with no Lift
  local speed=cruise*bleed
  b.glide=lift<=0 and FlightRules.glide(b.glide or b.momentum,desired,cruise,dt) or nil
