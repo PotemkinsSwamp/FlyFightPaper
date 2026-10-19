@@ -36,7 +36,7 @@ and the hoop looked like loose blocks (now 24 pieces end to end).
 
 ## Fourth listen (same day)
 10. **Music too loud: lower it about 30%; one song, not a playlist; Alan picks it by ear.** [Volume .12 -> .084, one
-    looped song (Pure Innocence as a stand-in); links to eight choices sent to Alan.]
+    looped song (Pure Innocence as a stand-in); links to eight choices sent to Alan; he picked "Daisy Fresh".]
 11. **Ring dings got louder each hoop (the first inaudible) and no chime after any other step.** [Root cause: sounds
     without a place sat in an attachment outside the room, which put them at the room's middle, so they faded with
     distance from it (the hoops get closer to the middle; the fan and bolts are far). They now play straight in

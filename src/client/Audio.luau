@@ -73,8 +73,8 @@ function Audio.start(getPlane)
  task.spawn(function() local ids={};for _,definition in definitions do table.insert(ids,id(definition)) end;game:GetService("ContentProvider"):PreloadAsync(ids) end)
  -- Lessons have one calm song of their own (Alan: peaceful, focusing, playful, subtle, maybe classical; one song,
  -- not a playlist), looped, quiet, and no classroom chatter, so the step chimes stand out.
- -- ponytail: APM "Pure Innocence" until Alan picks the song by ear (choices in docs/systems/sound-and-effects.md).
- local LESSON_SONG=1847585588
+ -- APM "Daisy Fresh" (simple and child-like), Alan's pick by ear 2026-10-18.
+ local LESSON_SONG=1839864816
  local function inLesson() return Root:GetAttribute("TutorialOpen")==true end
  local music=Instance.new("Sound");music.Name="Music";music.Parent=Sounds
  local track=0
