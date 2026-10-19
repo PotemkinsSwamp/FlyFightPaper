@@ -56,8 +56,8 @@ function Tutorial.start(getPlane)
   mark.Size=UDim2.fromOffset(60,22);mark.Rotation=angle;mark.Visible=false;mark.Parent=gui;bursts[i]=mark
  end
  local tag=Instance.new("ImageLabel");tag.Name="Tag";tag.Image=Pieces.tag;tag.ScaleType=Enum.ScaleType.Slice;tag.SliceCenter=TAG_SLICE;tag.SliceScale=.45
- tag.BackgroundTransparency=1;tag.AnchorPoint=Vector2.new(.5,0);tag.Size=UDim2.fromOffset(250,62);tag.Visible=false;tag.Parent=gui
- local tagText=PaperUI.words(tag,"Text","",0,0,250,62,30);tagText.Size=UDim2.fromScale(1,1);tagText.TextXAlignment=Enum.TextXAlignment.Center
+ tag.BackgroundTransparency=1;tag.AnchorPoint=Vector2.new(.5,0);tag.Size=UDim2.fromOffset(300,76);tag.Visible=false;tag.Parent=gui
+ local tagText=PaperUI.words(tag,"Text","",0,0,300,76,36);tagText.Size=UDim2.fromScale(1,1);tagText.TextXAlignment=Enum.TextXAlignment.Center
 
  -- The goal note: sticky note near the top, lesson and step, the instruction, the key picture, the count.
  local note=Instance.new("ImageLabel");note.Name="Note";note.Image=Art.ingame.stickyNote;note.ScaleType=Enum.ScaleType.Stretch;note.BackgroundTransparency=1
@@ -202,7 +202,7 @@ function Tutorial.start(getPlane)
    mark.Position=UDim2.fromOffset(at.X,at.Y);mark.ImageTransparency=fade(beat*.3)
   end
   if words then
-   tagText.Text=words;tag.Size=UDim2.fromOffset(math.max(200,#words*19+60),62)
+   tagText.Text=words;tag.Size=UDim2.fromOffset(math.max(240,#words*22+80),76)
    tag.Position=UDim2.fromOffset(center.X,high.Y+10+math.sin(clock*3)*4);tag.Rotation=-2+math.sin(clock*1.7)*1.5
    tag.ImageTransparency=fade(0);tagText.TextTransparency=fade(0)
   end
