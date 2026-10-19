@@ -12,6 +12,9 @@
 - Keep it **short**: 15 minutes is too long, people would leave. (Claude's pick: lessons about 2 and 3 minutes, Training
   Room closes after 8 minutes.)
 - **Match Tips** can be turned off in Settings.
+- **Alan tests the tutorial himself**; Claude only does quick script and picture checks. The tutorial runs in a world
+  with only the player in it (in Studio too). Highlights dim the rest of the screen, sit exactly on the button and
+  flash to catch the eye. No news notes or kill feed during lessons.
 
 ## Why
 Alan: a tutorial must teach in steps (do this, look at this) and cover everything, including plane building, but
