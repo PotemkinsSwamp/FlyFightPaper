@@ -54,8 +54,7 @@ function HUD.start(getPlane, action)
 	Settings:GetAttributeChangedSignal("CrosshairSize"):Connect(applyCrosshair)
 	applyCrosshair()
 	-- Bright green; turns red and grows a little when the guns will hit: a lead ring within the gun assist (they fire at
-	-- the ring by themselves, CombatEffects.aim) and the target in range.
-	local ASSIST = math.cos(math.rad(require(Root.Generated.Gameplay).combat.gun_assist_deg))
+	-- the ring by themselves, CombatEffects.aim) and the target in range (ASSIST, below).
 	local NOSE, NOSE_ON = Color3.fromRGB(60, 255, 90), Color3.fromRGB(255, 40, 60)
 	local noseDot = reticle("NoseDot", 10, true)
 	noseDot.BackgroundColor3 = NOSE
@@ -69,6 +68,7 @@ function HUD.start(getPlane, action)
 	-- Aim help: a lead marker for the enemy nearest the nose, with a bracket on that enemy.
 	local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 	local Gameplay = require(Root.Generated.Gameplay)
+	local ASSIST = math.cos(math.rad(Gameplay.combat.gun_assist_deg))
 	local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), Gameplay)
 	local CombatRules = require(Root.Shared.CombatRules)
 	-- The lead marker is the "second crosshair": put the nose dot on it and the shots meet the enemy.

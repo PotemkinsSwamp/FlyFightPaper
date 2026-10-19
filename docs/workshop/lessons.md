@@ -95,6 +95,8 @@ mistake would be easy to make twice.
   `(now * turns % 1) * 2 * math.pi` (`src/shared/DuctRules.luau` `fanAngle`).
 - **One error in a client module's `start()` stops every module after it in `Bootstrap.client.luau`**: no flight
   controller, no camera, the plane flies straight. After renaming or removing a config key, grep `src/` for it.
+  A compile check (`loadstring`) can't see it: on 2026-10-19 a value read above the line that loads it crashed the HUD
+  and every menu after it (Tutorial and Play did nothing). After any client edit, start Play and read the console.
 - **Rojo `.model.json` parts:** CFrame must be written `{"CFrame": {"position": [x,y,z], "orientation": [[row],[row],[row]]}}`
   (rows of the rotation); Enums as names, Color3 as 0-1 floats. `tools/ducts.py` builds the duct model this way, no
   Studio export needed.
