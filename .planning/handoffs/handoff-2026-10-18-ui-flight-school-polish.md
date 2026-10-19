@@ -2,11 +2,10 @@
 
 **Labels:** kind=ui+product · lane=ui · branch=main · issues= · areas=src/client/Tutorial.luau, src/client/TutorialLessons.luau, src/client/Audio.luau, src/shared/AirRoutes.luau, src/shared/UIAssets.luau, src/server/FlightService.luau, src/server/RoundRuntime.luau, assets/ui/tutorial, tools/ui_pieces.py
 
-★ START HERE: Goal: Flight School that Alan plays and says "done": he always knows where to go and nothing grates.
-First action: ask Alan to play Flight School (Play → Menu → Tutorial) and take his notes; the sixth round of fixes
-(frames outside the bars, fan ring during the Lift step, can't-crash + Lift floor at 1 s) and the seventh (no client
-crumple in Flight School, Boost floor at 0.01) are not yet seen by anyone.
-Done = Alan says Flight School is done. Then plan Combat Training with him (plan first, his OK, then build).
+★ START HERE: Goal: Combat Training (Lesson 2 of the tutorial plan) that Alan plays and calls done. Flight School is
+APPROVED by Alan (2026-10-18, decision note). First action: find why a respawned practice plane had no boost (crashes
+stay on in Combat), then bring Alan a step-by-step Combat Training plan built on the plan's Lesson 2 for his OK
+before any code (memory plan-before-building-features). Done = Alan plays it and says done.
 
 > Read on demand: AGENTS.md → THIS → [playtest log](../../docs/playtests/2026-10-18-flight-school-attention.md) (every
 > note and what was done) → [tutorial page](../../docs/systems/tutorial.md) → the plan's Lesson 2 when Combat starts.
@@ -24,9 +23,12 @@ Done = Alan says Flight School is done. Then plan Combat Training with him (plan
   context ~42% at handoff.
 
 ## NEXT ACTION + PLAN
-1. Alan plays Flight School; fix his notes; repeat until he says done. Look for: frames clear of bar text, the fan's
-   ring + tag during the Lift step, no crash possible, Lift stuck at 1 s, one soft ding per step, quiet music.
-2. Plan Combat Training with Alan (its own music; crashes stay on), then build it, Alan tests.
+1. Root-cause the "respawned practice plane had no boost" report (Combat Training keeps crashes). Check: crash a
+   practice plane in Combat mode and the new plane has full boost.
+2. Combat Training plan for Alan's OK: the plan's Lesson 2 steps (targets, slow foe, foe that shoots back, dodge an
+   eraser, fire your own), reusing Flight School's attention look; its own music (Alan: different from Flight
+   School's; pick by ear from links like last time); crashes on. Half-built helper: `Runtime:tutorialFoe` +
+   `CombatService:enemy` foe rule. Then build, Alan tests, fix until he says done.
 3. Then the plan's order: Training board + saved ticks + 8-min room, Hangar Tour, Match Tips (+ Settings switch),
    Weapons Range. Then Stage 11.
 HOLDS (Alan's go, each): Studio Play runs (they grab his mouse; he often plays in the same Play: don't drive it while
@@ -61,6 +63,7 @@ product IDs/prices, turning sales on.
   private publish; live shop screen waits for prices; e5359191's accidental sweep of art + rbxlx (never `git commit -a`).
 
 ## WHAT SHIPPED / OTHER QUEUED
+- f0cea6e7 No client crumple in Flight School, Boost floor · + approval commit
 - 3217981c Concept pictures (Codex) · 64c05a85 Dim, glow, arrow, line, fixed hoops · bfe8b057 Crayon frame, marks, tag;
   line on air routes (AirRoutes shared) · 9dfe9837 Piece tool keep-size · a23e9983 Pieces (Codex) · 271e57b2 Pieces
   uploaded (Alan) · c9402982 Bigger tag · 83781962 Playtest 1 fixes · bb1d5ffd Note back, bolder line, wrong-way arrow,

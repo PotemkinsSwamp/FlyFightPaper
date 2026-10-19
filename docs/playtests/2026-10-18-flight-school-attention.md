@@ -71,3 +71,5 @@ and the hoop looked like loose blocks (now 24 pieces end to end).
     plays the crumple at once on a hard hit, before the server's word; it didn't know about Flight School. The server
     now marks the plane `Gentle` and the client only bounces it. Not yet seen.]
 21. **Boost should stop at 0.01 s in Flight School so it never runs out.** [Done on the server. Not yet seen.]
+
+22. ✅ **"The tutorial is good. We can move on to the combat tutorial."** ([decision](../decisions/2026-10-18-flight-school-approved.md))

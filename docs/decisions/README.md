@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-18: [Flight School approved; Combat Training next](2026-10-18-flight-school-approved.md)
 - 2026-10-18: [Tutorial: short separate lessons, fixed training plane, always replayable](2026-10-18-tutorial-lessons.md)
 - 2026-10-18: [Planes: paper texture and softer team colours](2026-10-18-paper-look.md)
 - 2026-10-18: [What the shop sells; plane retexture first](2026-10-18-shop-plan.md)
