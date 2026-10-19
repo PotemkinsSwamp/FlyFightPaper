@@ -15,10 +15,12 @@ Course.SLOW_MO=.06
 -- `health`: pellet targets fold after about 6 pellets; eraser targets after one eraser, and only erasers count.
 Course.DRILLS={
  still={{yaw=-25,range=220,health=12},{yaw=0,range=220,health=12},{yaw=25,range=220,health=12}},
- moving={{yaw=0,range=260,health=12,speed=100,span=130,depth=20},{yaw=0,range=260,rise=45,health=12,speed=100,span=130,depth=20,phase=math.pi}},
- eraser={{yaw=0,range=300,health=30,speed=50,span=110,depth=20,eraserOnly=true},{yaw=0,range=300,rise=45,health=30,speed=50,span=110,depth=20,eraserOnly=true,phase=math.pi}},
- fast={{yaw=0,range=300,health=12,speed=100,span=130,depth=20}},
- fastEraser={{yaw=0,range=320,health=30,speed=60,span=110,depth=20,eraserOnly=true}},
+ -- Measured in Play (2026-10-19): crossing at 100 studs/s 220 away, the plane's nose trailed the ring by 30-60 px, so
+ -- the dot never sat in it. Further and slower: about 10 degrees/s across, the ring still a clear 40 px ahead.
+ moving={{yaw=0,range=350,health=12,speed=60,span=130,depth=20},{yaw=0,range=350,rise=45,health=12,speed=60,span=130,depth=20,phase=math.pi}},
+ eraser={{yaw=0,range=350,health=30,speed=45,span=110,depth=20,eraserOnly=true},{yaw=0,range=350,rise=45,health=30,speed=45,span=110,depth=20,eraserOnly=true,phase=math.pi}},
+ fast={{yaw=0,range=350,health=12,speed=60,span=130,depth=20}},
+ fastEraser={{yaw=0,range=350,health=30,speed=45,span=110,depth=20,eraserOnly=true}},
 }
 -- Where a target is `t` seconds after it appeared, sweeping round `center` along `side` (the pilot's right when it
 -- appeared), and its velocity; a still one faces `face`.

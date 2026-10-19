@@ -40,7 +40,8 @@ and, a beat later, each finished step. Alan's first look: [playtest](../playtest
 aiming: in slow motion first (your plane at 6% speed, almost still, Lift kept full; turning, shots and targets at full speed; colours
 soften, the music slows, a whoosh and a "SLOW MOTION" tag): the circle vs the dot (a star), three still targets
 (the dot turns red = it will hit; the dot is always green/red, whatever crosshair colour is set), two that sweep left and right across in front of you at a real plane's speed (crossing your view is what shows
-the lead): first a look step on the orange ring ("AIM HERE", "that's called leading"), then shoot them, the eraser's big lock circle and lock
+the lead): first a look step on the orange ring ("AIM HERE", "that's called leading"), then shoot them (350 studs away, crossing at 60 studs/s: measured in Play, faster
+crossings left the nose trailing the ring so the dot never sat in it), the eraser's big lock circle and lock
 (holding right click fires it at full lock), its reload; then full speed for one target and one eraser lock. HUD
 pieces it points at (crosshair, lead ring, eraser circle) get a soft frame: thin, half see-through, no dim.
 **Targets are real paper planes** placed in clear air just ahead of where you are when the step starts (checked
@@ -66,7 +67,8 @@ counts while frozen; a look step's Got it unfreezes and finishes it; Flight Scho
 with the mouse, so the plane pointed somewhere else when it let go).
 A lesson step asks the server for what it needs with `RoundAction("lesson", {freeze, slow, gentle, repair, drill, pal})`; the
 server keeps counts on the player (`DrillDown`, `PalFolds`, `PalEraserMisses`, `PalEraserHits`, `EraserHits`).
-Studio: set `DevLesson` (flight / combat) on `ReplicatedStorage.FlyFightPaper` on the client to open a lesson.
+Studio: set `DevLesson` (flight / combat) on `ReplicatedStorage.FlyFightPaper` on the client to open a lesson. To test
+aiming, the player attribute `DevAimLead` (DevTools.luau) steers at the HUD's orange ring and `DevAim` at a direction.
 
 ## Code
 | File | What it does |

@@ -116,6 +116,15 @@ function DevTools.start(menu)
 		local aim = player:GetAttribute("DevAim")
 		FlightState.aimOverride = aim and function() return aim end or nil
 	end)
+	-- DevAimLead: steer exactly at the HUD's left-click lead ring (the orange ring), to test the aim helpers and hits.
+	player:GetAttributeChangedSignal("DevAimLead"):Connect(function()
+		local Root = game.ReplicatedStorage.FlyFightPaper
+		local pellet = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), require(Root.Generated.Gameplay)):get("pellet")
+		FlightState.aimOverride = player:GetAttribute("DevAimLead") and function(body)
+			local lead = FlightState.leadFor and FlightState.leadFor(pellet)
+			return lead and (lead - body.Position).Unit or body.CFrame.LookVector
+		end or nil
+	end)
 	Input.InputBegan:Connect(function(input, processed)
 		if processed then return end
 		if input.KeyCode == Enum.KeyCode.F8 then DevTools.setView(view % #DevTools.views + 1)

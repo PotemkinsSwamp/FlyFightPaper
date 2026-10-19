@@ -53,7 +53,7 @@ function HUD.start(getPlane, action)
 	Settings:GetAttributeChangedSignal("CrosshairColor"):Connect(applyCrosshair)
 	Settings:GetAttributeChangedSignal("CrosshairSize"):Connect(applyCrosshair)
 	applyCrosshair()
-	-- Bright green; turns red and grows a little when a shot fired now will hit (see willHit).
+	-- Bright green; turns red and grows a little when it sits inside a lead ring with the target in range.
 	local NOSE, NOSE_ON = Color3.fromRGB(60, 255, 90), Color3.fromRGB(255, 40, 60)
 	local noseDot = reticle("NoseDot", 10, true)
 	noseDot.BackgroundColor3 = NOSE
@@ -154,55 +154,6 @@ function HUD.start(getPlane, action)
 			if weapon and not weapon.homing then found[groups[slot]] = found[groups[slot]] or weapon end
 		end
 		return found
-	end
-	local Effects = require(script.Parent.CombatEffects)
-	local Aircraft = require(Root.Shared.Aircraft)
-	local shapeParams = RaycastParams.new()
-	shapeParams.FilterType = Enum.RaycastFilterType.Include
-	local shapes = {} -- target Root -> the exact-shape parts the server's hits use
-	-- True only when a shot fired now really hits: each gun's path (same muzzle, aim and convergence as the shot)
-	-- is swept past the target's exact shape around the moment it arrives, with the target following its turn.
-	-- ponytail: aims down the middle of spread weapons and ignores walls in between (the target is already in view).
-	local function willHit(plane, body, target, m, group)
-		local parts = shapes[target]
-		if not parts then
-			parts = {}
-			for _, d in ipairs(target.Parent:GetDescendants()) do
-				if d:IsA("MeshPart") and d.CanQuery then table.insert(parts, d) end
-			end
-			if #parts == 0 then return false end
-			shapes[target] = parts
-		end
-		shapeParams.FilterDescendantsInstances = parts
-		local factor, guns = plane:GetAttribute("MountScale") or 1, {}
-		local ids=string.split(plane:GetAttribute("Mounts") or "", ",")
-		local groups=assert(CombatRules.triggerGroups({weapon_mounts=ids}))
-		for slot, id in ipairs(ids) do
-			local weapon = id ~= "" and Catalog:get(id)
-			if weapon and not weapon.homing then table.insert(guns, {slot = slot, weapon = weapon, group = groups[slot]}) end
-		end
-		local function moved(s) return m.velocity * s + m.acceleration * (0.5 * s * s) end
-		for _, gun in ipairs(guns) do
-			local weapon = gun.weapon
-			if gun.group == group then
-				local muzzle = body.CFrame:PointToWorldSpace(Aircraft.muzzleOffset(gun.slot, factor, gun.weapon.id, Aircraft.fitOf(plane)))
-				local direction = Aircraft.converge(body, muzzle, Effects.aim(body, weapon), Gameplay.combat.gun_convergence_studs)
-				local arrive = CombatRules.travelTime(weapon, (FlightState.leadFor(weapon) - muzzle).Magnitude)
-				if arrive < math.huge then
-					local a, b = math.max(0, arrive - 0.2), arrive + 0.2
-					local from = muzzle + CombatRules.shotOffset(weapon, direction, a) - moved(a)
-					local to = muzzle + CombatRules.shotOffset(weapon, direction, b) - moved(b)
-					-- Roblox caps one shape sweep at 1024 studs; fast weapons sweep further in 0.4 s, so go in pieces.
-					local length = (to - from).Magnitude
-					local unit = length > 0.001 and (to - from).Unit or Vector3.zero
-					for offset = 0, length, 1000 do
-						local step = math.min(1000, length - offset)
-						if step > 0.001 and workspace:Spherecast(from + unit * offset, weapon.projectile_radius, unit * step, shapeParams) then return true end
-					end
-				end
-			end
-		end
-		return false
 	end
 	-- Words on paper (Alan, 2026-10-13: notebook strips and big crayon-marker words, like the menus). Panels are
 	-- laid out for 1080p and scaled to the screen height, so the HUD keeps the same share of any screen.
@@ -468,7 +419,6 @@ function HUD.start(getPlane, action)
 			end
 		end
 		for root in pairs(motion) do if not root.Parent then motion[root] = nil end end
-		for root in pairs(shapes) do if not root.Parent then shapes[root] = nil end end
 		local shown = 0
 		for _, other in ipairs(flying and planes:GetChildren() or {}) do
 			local root = other:FindFirstChild("Root")
@@ -579,11 +529,12 @@ function HUD.start(getPlane, action)
 					local lead = FlightState.leadFor(weapon)
 					place(pipper, lead)
 					if group == 1 or not guns[1] then noseRange = (lead - body.Position).Magnitude end
-					-- Red only when the dot is really inside this ring (Alan 2026-10-19: it went red with the dot well off the
-					-- ring, and the shots missed): the path check alone forgives a fast target too much.
+					-- Red exactly when the dot is inside this ring and the target is in range (Alan 2026-10-19). Measured in Play:
+					-- a path check against the target's shape went red off the ring on fast targets and stayed green on
+					-- a perfect aim past ~150 studs, while the shots hit; the ring is where the shots meet the target.
 					local dot = camera:WorldToViewportPoint(body.Position + body.CFrame.LookVector * (lead - body.Position).Magnitude)
 					local inRing = pipper.Visible and (Vector2.new(dot.X, dot.Y) - Vector2.new(pipper.Position.X.Offset, pipper.Position.Y.Offset)).Magnitude <= pipper.AbsoluteSize.X / 2
-					local onTarget = inRing and willHit(plane, body, target, m, group)
+					local onTarget = inRing and CombatRules.travelTime(weapon, (lead - body.Position).Magnitude) < math.huge
 					anyHit = anyHit or onTarget
 					pipper.BackgroundTransparency = onTarget and 0.35 or 1
 					local a = pipper.Position

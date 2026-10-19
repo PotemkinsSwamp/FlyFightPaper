@@ -41,6 +41,7 @@ local CRASH_TIP_AFTER=3
 local READ_SECONDS=5 -- how long each step's note holds the world still before it moves on its own -- crashes on one step before the note suggests open air
 
 function Tutorial.begin(lesson)
+ if Tutorial.closeAsk then Tutorial.closeAsk() end -- a lesson starting closes the welcome question (found in Play)
  Tutorial.lessonKey=Lessons[lesson] and lesson or "flight";Tutorial.lesson=Lessons[Tutorial.lessonKey];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
  Root:SetAttribute("TutorialLesson",Tutorial.lessonKey);Root:SetAttribute("TutorialOpen",true) -- lesson first: its song is picked when TutorialOpen changes
  Root.RoundAction:FireServer("practice",Tutorial.lessonKey)
@@ -120,6 +121,7 @@ function Tutorial.start(getPlane)
   table.insert(choices,close)
   ask.Visible=true
  end
+ Tutorial.closeAsk=function() ask.Visible=false end
  function Tutorial.choose(before)
   local function go(lesson) return function() if before then before() end;Tutorial.begin(lesson) end end
   choose("Which lesson?","You can replay any lesson, any time.",{{"Flight School",go("flight")},{"Combat School",go("combat")}})

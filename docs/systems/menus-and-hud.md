@@ -14,8 +14,9 @@ Level bar with next unlock on the main menu board's stats card, in the hangar un
 (seen 2026-10-17; partly filled bar seen on a test screen, the test account is at max level).
 
 ## Rules
-The nose dot turns red only when it sits inside the orange lead ring and the shot path really meets the target
-(Alan 2026-10-19: it went red well off the ring, and the shots missed).
+The nose dot turns red exactly when it sits inside a lead ring and the target is in the weapon's range (Alan
+2026-10-19). A shot-path check against the target's shape was dropped after a Play measurement: it went red off the
+ring on fast targets and stayed green on a perfect aim past ~150 studs, while the shots hit.
 *Moved word for word from the old rulebook (GAME_SPEC.md section 9).*
 
 All first-release screens and controls must be navigable at 1280×720 and the reference 1920×1080. Team markers
