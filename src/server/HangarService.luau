@@ -43,7 +43,9 @@ function Service:handle(player,action,value)
    self:select(player,value.slot)
    local p=self.flight.pilots[player]
    local atDesk=p and p.model and p.model:GetAttribute("State")=="DESK"
-   if value.fly==true and atDesk and self.flight.onService then self:message(player,"Saved. Refolding it at your desk.");self.flight.onService(p,"refold")
+   -- The Range (Edit in Hangar): saving swaps the plane there at once (TUTORIAL-PLAN "Range loadouts").
+   if p and p.pin then self.flight:refold(p,preset.loadout);self:message(player,"Saved. You're flying it now.")
+   elseif value.fly==true and atDesk and self.flight.onService then self:message(player,"Saved. Refolding it at your desk.");self.flight.onService(p,"refold")
    else self:message(player,not p and "Saved. You fly this build next." or atDesk and "Saved. Full refold at your desk flies it." or "Saved. Land at your desk to fly it.") end
   end)
  elseif action=="purchasePart" then

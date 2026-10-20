@@ -33,16 +33,26 @@ Course.DRILLS={
 -- `x`: across the stage, `w`: width in studs.
 -- `seat`: where the plane hangs, from origin: back toward the still camera so it sits low and out of the way.
 Course.RANGE={origin=CFrame.new(0,900,12000),seat=Vector3.new(0,0,10),yaw=math.rad(48),up=math.rad(28),down=math.rad(34),targets={
- {row="close",at=Vector3.new(0,5,-150),health=40,speed=30,span=60,depth=4,bob=12,color="red"},
- {row="close",at=Vector3.new(0,-2,-172),health=40,speed=30,span=60,depth=4,bob=12,color="blue",phase=math.pi},
- {row="medium",at=Vector3.new(-80,40,-360),health=40,speed=50,span=110,depth=4,bob=25,color="blue",phase=math.pi},
- {row="medium",at=Vector3.new(80,28,-385),health=40,speed=50,span=110,depth=4,bob=25,color="red",phase=math.pi/2},
- {row="long",at=Vector3.new(60,80,-620),health=40,speed=70,span=170,depth=4,bob=35,color="red"},
- {row="long",at=Vector3.new(-60,66,-645),health=40,speed=70,span=170,depth=4,bob=35,color="blue",phase=math.pi},
+ -- Wide, high sweeps so the targets use the whole stage (Alan approved the flying area 2026-10-20). Speeds are
+ -- Challenge's; the other difficulties scale them (DIFFICULTY).
+ {row="close",at=Vector3.new(0,20,-150),health=40,speed=65,span=130,depth=4,bob=35,color="red"},
+ {row="close",at=Vector3.new(0,10,-172),health=40,speed=65,span=130,depth=4,bob=35,color="blue",phase=math.pi},
+ {row="medium",at=Vector3.new(-40,70,-360),health=40,speed=117,span=260,depth=4,bob=70,color="blue",phase=math.pi},
+ {row="medium",at=Vector3.new(40,55,-385),health=40,speed=117,span=260,depth=4,bob=70,color="red",phase=math.pi/2},
+ {row="long",at=Vector3.new(30,130,-620),health=40,speed=185,span=450,depth=4,bob=110,color="red"},
+ {row="long",at=Vector3.new(-30,115,-645),health=40,speed=185,span=450,depth=4,bob=110,color="blue",phase=math.pi},
 },picks={
  {row="close",label="Close",x=-98,w=35},{row="medium",label="Medium",x=-63,w=28},
  {row="long",label="Long\nrange",x=70,w=22},{row="all",label="All",x=100,w=19},
 }}
+-- The Range's difficulty strips: how fast the targets sweep and how far they swoop up and down. Maneuvers adds a
+-- quick weave on top, like a real enemy dodging.
+Course.DIFFICULTY={noob={speed=.6,bob=.6},challenge={speed=1,bob=1},veteran={speed=1.6,bob=1.2},maneuvers={speed=1.6,bob=1.2,weave=true}}
+function Course.difficulty(spec,level)
+ local d=Course.DIFFICULTY[level] or Course.DIFFICULTY.noob
+ local copy=table.clone(spec);copy.speed=spec.speed*d.speed;copy.bob=(spec.bob or 0)*d.bob;copy.weave=d.weave
+ return copy
+end
 -- Where a target is `t` seconds after it appeared, sweeping round `center` along `side` (the pilot's right when it
 -- appeared), and its velocity; a still one faces `face`.
 function Course.pose(drill,center,t,face,side)
@@ -55,6 +65,10 @@ function Course.pose(drill,center,t,face,side)
  local bob=drill.bob or 0
  local at=center+side*math.cos(a)*drill.span+toward*math.sin(a)*drill.depth+Vector3.yAxis*math.sin(2*a)*bob
  local velocity=(-side*math.sin(a)*drill.span+toward*math.cos(a)*drill.depth+Vector3.yAxis*math.cos(2*a)*2*bob)*w
+ if drill.weave then -- a quick side-step and dip on top of the sweep, out of step with it
+  at+=side*math.sin(3.1*a)*drill.span*.22+Vector3.yAxis*math.sin(4.3*a+1)*bob*.5
+  velocity+=(side*math.cos(3.1*a)*3.1*drill.span*.22+Vector3.yAxis*math.cos(4.3*a+1)*4.3*bob*.5)*w
+ end
  return CFrame.lookAt(at,at+velocity),velocity
 end
 -- The points a target passes through, to check its whole sweep is in clear air.

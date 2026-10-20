@@ -119,7 +119,8 @@ air, the gun range sent, and how far and where each passed the nearest enemy's c
 | `src/client/TutorialLessons.luau` | Each lesson's steps: Flight School, Combat School (aiming, then fighting) |
 | `src/shared/TrainingCourse.luau` | The Training Room's course points, practice targets, slow-motion share and the Range's spot and targets |
 | `src/client/RangeTargets.luau` | The Range's targets drawn as painted cut-outs on sticks that turn over, tear, split and sink |
-| `src/server/RangeStage.luau` | The Range's puppet-theatre stage built from the painted pieces, measured from the concept |
+| `src/server/RangeStage.luau` | The Range's puppet-theatre stage built from the painted pieces, measured from the concept; its controls (row plates, score card, Reset, Menu note, the menu on strings) |
+| `src/client/RangeBoard.luau` | The Range's controls: the crosshair as cursor, the menu dropping and pulling up, score card, rings, keys 1-5 |
 | `src/server/RoundRuntime.luau` | Tutorial room: no rounds or bots; first-join routing; practice flights |
 | `src/server/Matchmaking.luau` | Sends a player to a fresh private tutorial room and back |
 | `src/server/MatchmakingAdapter.luau` | Reserves tutorial rooms; never lists them; carries the lesson picked |

@@ -68,6 +68,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_end") end
   elseif action=="practice" then self:practice(player,value)
   elseif action=="lesson" then self:lesson(player,value)
+  elseif action=="range" and type(value)=="string" then self:rangeAction(player,value)
   elseif action=="practiceDone" then
    if flight.pilots[player] and flight.pilots[player].practice then self:withdraw(player) end
    -- Studio's stand-in tutorial room turns back into a normal room; a real one sends the player on to a match room.
@@ -337,18 +338,39 @@ function Runtime:rangeTargets(player,p)
  for i,spec in ipairs(Course.RANGE.targets) do
   local d=self.flight.byId["drill"..player.UserId.."_"..i]
   if rows=="all" or spec.row==rows then
-   if not d then self:addDrill(player,p,spec,i,origin*spec.at,origin.RightVector) end
-  elseif d and not d.model:GetAttribute("Lowered") then
-   d.model:SetAttribute("Lowered",true)
-   task.delay(.7,function() if self.flight.byId[d.id]==d then self.flight:remove(d,"vacancy") end end)
-  end
+   if not d then self:addDrill(player,p,Course.difficulty(spec,player:GetAttribute("RangeDifficulty")),i,origin*spec.at,origin.RightVector) end
+  elseif d then self:lowerDrill(d) end
  end
+end
+-- Tipped back out of sight (`Lowered`: RangeTargets), then taken away; rangeTargets brings a fresh one when wanted.
+function Runtime:lowerDrill(d)
+ if d.model:GetAttribute("Lowered") then return end
+ d.model:SetAttribute("Lowered",true)
+ task.delay(.7,function() if self.flight.byId[d.id]==d then self.flight:remove(d,"vacancy") end end)
+end
+-- The Range's controls (RangeStage), clicked with the crosshair (client RangeBoard): rows, difficulty, a loadout,
+-- Reset. Any change starts the score over (docs/plan/TUTORIAL-PLAN.md "The Hangar Range").
+local RANGE_ROWS={close=true,medium=true,long=true,all=true}
+function Runtime:rangeAction(player,what)
+ local p=self.flight.pilots[player]
+ if not p or not p.pin then return end
+ if RANGE_ROWS[what] then self:rangePick(player,what)
+ elseif Course.DIFFICULTY[what] then
+  player:SetAttribute("RangeDifficulty",what)
+  for i in ipairs(Course.RANGE.targets) do local d=self.flight.byId["drill"..player.UserId.."_"..i];if d then self:lowerDrill(d) end end
+ elseif what:match("^load%d$") then
+  local slot=tonumber(what:sub(5));local profile=self.profiles:view(player);local preset=profile and profile.presets[slot]
+  if not preset then return end
+  -- ponytail: the Range flies your saved builds (and picks that build for matches too) until it keeps its own five.
+  player:SetAttribute("SelectedPreset",slot);self.flight:refold(p,preset.loadout)
+ elseif what~="reset" then return end
+ player:SetAttribute("RangeShots",0);player:SetAttribute("RangeHits",0)
 end
 -- A shot hit a row-picker plate: those rows stand, that plate stays down (the others stand back up).
 function Runtime:rangePick(player,rows)
  local p=self.flight.pilots[player]
  if not p or not p.pin then return end
- player:SetAttribute("RangeRows",rows)
+ player:SetAttribute("RangeRows",rows);player:SetAttribute("RangeShots",0);player:SetAttribute("RangeHits",0)
  local stage=workspace:FindFirstChild("RangeStage")
  for _,plate in stage and stage:GetChildren() or {} do
   if plate:GetAttribute("RangePick") then

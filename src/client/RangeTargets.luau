@@ -16,7 +16,7 @@ local Targets = {}
 
 local LENGTH = 26 -- studs nose to tail; the picture's own shape gives the height
 local PX = { full = Vector2.new(1024, 535), back = Vector2.new(687, 717), front = Vector2.new(745, 364), scrap = Vector2.new(448, 366) }
-local STICK = 240 -- long enough to reach below the row in front of it
+local STICK = 420 -- long enough to reach below the row in front of it from the top of the highest swoop
 local TURN = 0.3 -- seconds to turn over on the stick
 local RISE = 0.6 -- seconds a fresh one takes to rise into place
 local TEARS = 4 -- pictures 0..3, then it splits

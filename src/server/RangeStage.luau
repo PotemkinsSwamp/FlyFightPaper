@@ -55,27 +55,31 @@ local function write(p,text,size,pos,align)
  return word
 end
 
--- The Range's controls (docs/plan/TUTORIAL-PLAN.md "The Hangar Range"; Alan 2026-10-20), all shot like targets: the
--- row plates on the floor (one shot switches rows), the score card with its Reset strip and the Menu note hanging on
--- strings in the top corners, and the menu that unfolds over the middle of the stage (loadouts, difficulty, Hangar).
--- Each shootable piece carries `RangeBoard` (what it does), the plates `RangePick`; the menu sits in `RangeMenu`.
+-- The Range's controls (docs/plan/TUTORIAL-PLAN.md "The Hangar Range"; Alan 2026-10-20), clicked with the crosshair
+-- (client RangeBoard): the row plates on the floor (one click switches rows), the score card with its Reset strip and
+-- the Menu note hanging on strings in the top corners, and the menu that drops on its strings over the middle of the
+-- stage (loadouts, difficulty, Hangar). Each clickable piece carries `RangeBoard` (what it does), the plates
+-- `RangePick`; the menu is the `RangeMenu` model, built hanging MENU_LIFT above the view until it drops.
 local COLUMNS={
  {head="Loadouts",x=-27,items={{"load1","1   Loadout 1","stripGreen"},{"load2","2   Loadout 2","stripYellow"},{"load3","3   Loadout 3","stripRed"},{"load4","4   Loadout 4","stripPurple"},{"load5","5   Loadout 5","stripBlue"}}},
  {head="Difficulty",x=27,items={{"noob","Noob","stripGreen"},{"challenge","Challenge","stripYellow"},{"veteran","Veteran","stripRed"},{"maneuvers","Maneuvers","stripPurple"},{"hangar","Edit in Hangar","stripBlue"}}},
 }
 local PLATE={close="pickerClose",medium="pickerMedium",long="pickerLong",all="pickerAll"}
-local FLOOR_Y,PICK_Z,MENU_Z,MENU_Y=-56,-72,-60,20
+local FLOOR_Y,PICK_Z,MENU_Z,MENU_Y,MENU_LIFT=-56,-72,-60,20,90
 local INK_EDGE=Color3.fromRGB(255,248,232)
 local function shootable(p,what) p.Name="BoardStrip";p.CanQuery=true;p:SetAttribute("RangeBoard",what) end
 local function label(stage,origin,text,x,y,z,w,h)
  local p=flat(stage,origin,"Label",x,y,z,w,h);write(p,text,UDim2.fromScale(1,1),UDim2.fromScale(0,0));return p
 end
--- A piece hanging on two strings from above the view, like the theatre's other puppets.
+-- Two strings running up out of view from a piece's top edge, like the theatre's other puppets.
+local function strings(stage,origin,x,top,w,z,length)
+ for _,s in {-1,1} do
+  part(stage,"String",Vector3.new(.25,length,.25),origin*CFrame.new(x+s*w*.35,top+length/2,z-.3),Color3.fromRGB(60,50,45))
+ end
+end
 local function hang(stage,origin,key,x,top,w)
  local h=tall(key,w);local p=paint(stage,origin,key,x,top-h/2,MENU_Z,w,h)
- for _,s in {-1,1} do
-  part(stage,"String",Vector3.new(.25,40,.25),origin*CFrame.new(x+s*w*.35,top+20,MENU_Z-.3),Color3.fromRGB(60,50,45))
- end
+ strings(stage,origin,x,top,w,MENU_Z,40)
  return p,h
 end
 local function controls(stage,origin)
@@ -107,15 +111,18 @@ local function controls(stage,origin)
  local reset=paint(stage,origin,"stripBlue",74,50-ch-.4-rh/2,MENU_Z,20,rh);shootable(reset,"reset")
  write(reset,"Reset",UDim2.fromScale(.75,.8),UDim2.fromScale(.17,.1))
  local tab=hang(stage,origin,"tag",-72,50,15);shootable(tab,"menu")
- write(tab,"Menu",UDim2.fromScale(.8,.4),UDim2.fromScale(.1,.35)).Name="Word"
- -- The menu: the board piece turned on its side at its own shape, the title, two columns of strips.
- local sheet=Instance.new("Model");sheet.Name="RangeMenu" -- ponytail: not on the stage until the Menu note opens it (next step)
+ write(tab,"Menu",UDim2.fromScale(.8,.4),UDim2.fromScale(.1,.35))
+ -- The menu: the board piece turned on its side at its own shape, the title and Back to range, two columns of strips.
+ local sheet=Instance.new("Model");sheet.Name="RangeMenu";sheet.Parent=stage
  local W=118;local H=W*PX.board[1]/PX.board[2]
  local back=paint(sheet,origin,"board",0,MENU_Y,MENU_Z-3,W,H);back.Name="Sheet"
  local img=back.SurfaceGui.ImageLabel;img.AnchorPoint=Vector2.new(.5,.5);img.Position=UDim2.fromScale(.5,.5)
- img.Size=UDim2.fromScale(H/W,W/H);img.Rotation=90
+ img.Size=UDim2.fromScale(H/W,W/H);img.Rotation=90;sheet.PrimaryPart=back
+ strings(sheet,origin,0,MENU_Y+H/2,W*1.2,MENU_Z-3,120)
  local top=MENU_Y+H/2-3
  local th=tall("title",38);paint(sheet,origin,"title",0,top-th/2,MENU_Z,38,th)
+ local bh=tall("stripRed",30);local close=paint(sheet,origin,"stripRed",38,top-th/2,MENU_Z,30,bh);shootable(close,"close-menu")
+ write(close,"Back to range",UDim2.fromScale(.8,.8),UDim2.fromScale(.12,.1))
  for _,c in COLUMNS do
   local y=top-th-1
   label(sheet,origin,c.head,c.x,y-3,MENU_Z,40,6);y-=7
@@ -124,7 +131,7 @@ local function controls(stage,origin)
    write(p,item[2],UDim2.fromScale(.8,.8),UDim2.fromScale(.12,.1));y-=h+.6
   end
  end
- -- The red ring round the picked loadout and difficulty; RangeTargets moves them.
+ -- The red ring round the picked loadout and difficulty; RangeBoard moves them.
  for i,what in {"load1","noob"} do
   for _,p in sheet:GetChildren() do
    if p:GetAttribute("RangeBoard")==what then
@@ -132,6 +139,7 @@ local function controls(stage,origin)
    end
   end
  end
+ sheet:PivotTo(sheet:GetPivot()+origin.UpVector*MENU_LIFT)
 end
 
 function Stage.build(origin)

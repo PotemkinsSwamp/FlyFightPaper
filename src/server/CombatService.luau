@@ -249,6 +249,7 @@ function Service:launch(p,mount,now,target,origin)
  if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range} end
  self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1
  local record=self.flight.records[p.id];if record then record.shots+=1 end
+ if p.pin and p.player then p.player:SetAttribute("RangeShots",(p.player:GetAttribute("RangeShots") or 0)+1) end -- the Range's score card
  if weapon.homing then info.activeErasers+=1 end
  self:emit({kind="shot",id=shot.id,owner=p.id,slot=mount.slot,weapon=weapon.id,position=position,direction=direction,speed=shot.speed,expires=shot.expires,time=now})
  return true
@@ -290,6 +291,7 @@ function Service:hit(attacker,target,amount,now,position,weaponId)
  for i=#history,1,-1 do if now-history[i].at>Config.assist_window_seconds then table.remove(history,i) end end
  table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity,weapon=weaponId})
  local record=self.flight.records[attacker.id];record.damage+=actual;record.hits+=1;self.totalHits+=1
+ if attacker.pin and attacker.player then attacker.player:SetAttribute("RangeHits",(attacker.player:GetAttribute("RangeHits") or 0)+1) end
  target.lastHitAt=now;target.lastHitBy=attacker
  if self.onDamage then self.onDamage(attacker,target,actual,os.clock()) end
  self.flight:damage(target,actual,"weapon",nil,{kind="weapon",weapon=weaponId})
