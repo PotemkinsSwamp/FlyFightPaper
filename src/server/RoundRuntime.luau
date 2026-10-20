@@ -324,7 +324,11 @@ function Runtime:addDrill(player,p,spec,i,center,side)
  local d=self.flight:add(nil,{id="drill"..player.UserId.."_"..i,name="Target",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
  if not d then return nil end
  self.bots.brains[d.id]=nil -- no brain: FlightService flies it on its spot
- d.foeOf=p.id;d.lessonPlayer=player;d.drill={spec=spec,t=0,center=center,face=p.body.Position,side=side}
+ d.foeOf=p.id;d.lessonPlayer=player;d.drill={spec=spec,t0=workspace:GetServerTimeNow(),center=center,face=p.body.Position,side=side}
+ -- Its whole path, so the lead ring can follow the real curve rather than guess from its turn (FlightHUD).
+ local function v(x) return {x.X,x.Y,x.Z} end
+ d.model:SetAttribute("DrillPath",game:GetService("HttpService"):JSONEncode({t0=d.drill.t0,center=v(center),face=v(d.drill.face),side=v(side),
+  speed=spec.speed,span=spec.span,depth=spec.depth,bob=spec.bob,phase=spec.phase,weave=spec.weave}))
  d.model:SetAttribute("Health",spec.health);d.model:SetAttribute("MaxHealth",spec.health);d.model:SetAttribute("DrillOf",player.UserId)
  if spec.color then d.model:SetAttribute("RangeTarget",spec.color) end -- drawn as a flat cut-out on a stick (RangeTargets)
  d.hasLaunched=true;d.body.CFrame=Course.pose(spec,center,0,p.body.Position,side);self.flight:fly(d)

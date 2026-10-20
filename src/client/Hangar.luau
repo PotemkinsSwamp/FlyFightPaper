@@ -42,7 +42,6 @@ function Hangar.new(playerGui, api)
 	local content = Instance.new("Frame")
 	content.Name, content.BackgroundTransparency, content.Size, content.Parent = "Content", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), sheet
 	button(sheet, "Back", Art.buttonGreen, "Back", 1390, 30, 230, 95, 2, api.back, 50)
-	if dev then button(sheet, "FlyBuild", Art.buttonGreen, "Fly this build", 40, 40, 330, 95, -2, function() api.fly() end, 40) end
 
 	local player = game.Players.LocalPlayer
 	local state = { preset = player:GetAttribute("SelectedPreset") or 1, slot = "body", mount = 1, angle = 0.5, pitch = -0.5 }
@@ -299,21 +298,26 @@ function Hangar.new(playerGui, api)
 				button(content, "NoBoost", Art.tab, "No booster", 840, 775, 240, 80, 0, function() choose(builder.selectUtility, nil) end, 32)
 			end
 		end
-		local message = words(content, "Message", note, 590, 852, 710, 50, 30)
+		local message = words(content, "Message", note, 590, 908, 710, 44, 28)
 		local problem = builder.message ~= "" or not valid or state.dropAsk ~= nil
 		message.TextColor3, message.TextWrapped = problem and Color3.fromRGB(170, 30, 30) or Color3.fromRGB(30, 110, 50), true
 
 		-- Saved builds 1-5: picking one is picking the build you fly (same as at the desk; in the Range it swaps your
-		-- plane). Unsaved changes ask first. The picked build's name is typed over just left of them.
+		-- plane). Unsaved changes ask first. The picked build's name sits on a white tag under the plane: click to type
+		-- (Alan 2026-10-20: easy to see, under the model; the numbers sit half over the folder's bottom edge).
 		local nameBox = Instance.new("TextBox")
 		nameBox.Name, nameBox.Text, nameBox.PlaceholderText, nameBox.ClearTextOnFocus = "BuildName", builds[state.preset].name, "Name this build", false
-		nameBox.Position, nameBox.Size, nameBox.BackgroundTransparency = UDim2.fromOffset(45, 925), UDim2.fromOffset(530, 80), 1
-		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3, nameBox.TextXAlignment = PaperUI.font, 44, PaperUI.INK, Enum.TextXAlignment.Left
+		nameBox.AnchorPoint, nameBox.Position, nameBox.Size = Vector2.new(0.5, 0), UDim2.fromOffset(935, 856), UDim2.fromOffset(440, 48)
+		nameBox.BackgroundColor3, nameBox.BorderSizePixel = Color3.fromRGB(255, 252, 240), 0
+		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3 = PaperUI.font, 32, PaperUI.INK
 		nameBox.TextTruncate, nameBox.Parent = Enum.TextTruncate.AtEnd, content
-		local underline = Instance.new("Frame")
-		underline.Position, underline.Size, underline.BackgroundColor3, underline.BorderSizePixel = UDim2.new(0, 0, 1, -6), UDim2.new(1, 0, 0, 4), PaperUI.INK, 0
-		underline.Parent = nameBox
-		words(content, "NameHint", "Click the name to change it", 45, 890, 530, 36, 26).TextTransparency = 0.35
+		Instance.new("UICorner", nameBox).CornerRadius = UDim.new(0, 10)
+		local edge = Instance.new("UIStroke")
+		edge.Thickness, edge.Color, edge.ApplyStrokeMode, edge.Parent = 3, PaperUI.INK, Enum.ApplyStrokeMode.Border, nameBox
+		local pad = Instance.new("UIPadding")
+		pad.PaddingLeft, pad.PaddingRight, pad.Parent = UDim.new(0, 14), UDim.new(0, 104), nameBox
+		local hint = words(nameBox, "Rename", "rename", 0, 0, 96, 48, 22)
+		hint.AnchorPoint, hint.Position, hint.TextTransparency = Vector2.new(0, 0), UDim2.new(1, 4, 0, 0), 0.45
 		nameBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if utf8.len(nameBox.Text) and utf8.len(nameBox.Text) > NAME_MAX then nameBox.Text = nameBox.Text:sub(1, utf8.offset(nameBox.Text, NAME_MAX + 1) - 1) end
 		end)
@@ -323,7 +327,7 @@ function Hangar.new(playerGui, api)
 			api.action:FireServer("renamePreset", { range = range, slot = state.preset, name = name })
 		end)
 		for i = 1, 5 do
-			button(content, "Preset" .. i, i == state.preset and Art.slotSelected or Art.slot, tostring(i), 600 + (i - 1) * 125, 905, 110, 110, 0, function()
+			button(content, "Preset" .. i, i == state.preset and Art.slotSelected or Art.slot, tostring(i), 600 + (i - 1) * 125, 952, 110, 110, 0, function()
 				if i == state.preset then return end
 				if unsaved and state.dropAsk ~= i then state.dropAsk = i; render(); return end
 				state.preset, state.purchase, state.dropAsk = i, nil, nil; builder:reset(builds[i].loadout, i)
@@ -337,6 +341,10 @@ function Hangar.new(playerGui, api)
 			api.action:FireServer(range and "saveRangePreset" or "savePreset", { slot = state.preset, name = builds[state.preset].name, loadout = draft, fly = fly })
 			if fly then api.flown() end
 		end
+		-- Top left: in the Range, Test in Range saves and drops you back into the Range flying it, so a saved build
+		-- visibly works (Alan 2026-10-20). Elsewhere Studio keeps its dev-only Fly this build there.
+		if range then button(content, "TestInRange", Art.buttonGreen, "Test in Range", 40, 40, 330, 95, -2, function() save(true) end, 40)
+		elseif dev then button(content, "FlyBuild", Art.buttonGreen, "Fly this build", 40, 40, 330, 95, -2, function() api.fly() end, 40) end
 		if atDesk() then
 			button(content, "SavePreset", Art.buttonGreen, "Save", 1320, 900, 250, 125, -1, function() save(false) end, 56)
 			button(content, "SaveFly", Art.buttonGreen, "Save & fly - 120 Paper", 1585, 900, 310, 125, 1, function() save(true) end, 34)

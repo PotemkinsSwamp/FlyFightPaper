@@ -22,7 +22,7 @@ function PauseScreen.new(playerGui, api)
 		button(sheet, "Resume", strip.yellow, "Keep flying", 700, 400, 520, 120, -1, api.resume, 72),
 		button(sheet, "Hangar", strip.blue, "Hangar", 715, 530, 490, 100, 1, api.hangar),
 		button(sheet, "Settings", strip.green, "Settings", 715, 640, 490, 100, -1, api.settings),
-		button(sheet, "Tutorial", strip.yellow, "Tutorial", 715, 750, 490, 100, 0.5, api.tutorial),
+		button(sheet, "Tutorial", strip.yellow, "Training", 715, 750, 490, 100, 0.5, api.tutorial),
 		button(sheet, "Leave", strip.red, "Leave match", 715, 860, 490, 100, -0.5, function() confirm.Visible = true end, 64),
 	}
 	-- The sticky note sits on top of the clipboard when you press Leave.

@@ -8,7 +8,7 @@ hangar, each weapon, and how building a plane works. It can be skipped and repla
 ## Where it stands (2026-10-19)
 Being built now (after Stage 10). **Its own room works:** a brand-new player (no matches played) is asked once the
 classroom has loaded, "Welcome, pilot! Want a quick tutorial?" (Yes / No thanks, and where to find it later; Alan
-2026-10-19: ask, like most games). Yes, or the Tutorial button (which first asks "Which lesson?": Flight School or
+2026-10-19: ask, like most games). Yes, or the Training button (named Tutorial until Alan 2026-10-20; it first asks "Which lesson?": Flight School or
 Combat School), opens a fresh private server of the same place that nobody else can join, carrying the lesson picked. The room has no match, no clock, no bots and no rewards; the lesson starts by itself.
 Finishing or skipping sends the player to a normal room for their level, tagged "tutorial seen" so that room doesn't
 send them straight back. A player who leaves before playing a match sees it again on their next visit.
@@ -16,7 +16,7 @@ Studio stands in for the room: set the `DevTutorialRoom` attribute on `Replicate
 Play; Skip turns the room back into a normal match. The live room move needs a private publish to test (Alan's go).
 Lessons follow the agreed [tutorial plan](../plan/TUTORIAL-PLAN.md). **Flight School is approved by Alan (2026-10-18,
 [decision](../decisions/2026-10-18-flight-school-approved.md)). Combat School is approved by Alan (2026-10-19,
-[decision](../decisions/2026-10-19-combat-school-approved.md)) after sixteen rounds of notes.** **The Training board** (2026-10-19, built, not yet seen in Play): the Tutorial button
+[decision](../decisions/2026-10-19-combat-school-approved.md)) after sixteen rounds of notes.** **The Training board** (2026-10-19, built, not yet seen in Play): the Training button
 (main menu and pause menu) opens its own cork board (art in `assets/ui/trainingboard/`, concept
 `training-board-c.png`): Flight School, Combat School, Hangar Tour and the Range, each a pinned sheet with a Play strip;
 a lesson gets a tick and Replay once finished (saved on the account: the end card sends `lessonDone`, the server
@@ -35,15 +35,15 @@ two per row, painted cut-outs on long sticks (`RangeTarget`) sweeping wide and h
 **Difficulty** (`Course.DIFFICULTY`): Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x plus a weave.
 **Controls, clicked with the crosshair** (RangeBoard; the guns still fire): the row plates on the floor (Close, Medium,
 Long range, All; sticks stand on their hinges), the score card + Reset hanging top right (`RangeShots`/`RangeHits`,
-start over on any change), Range Menu and Hangar strips hanging at the left edge under the game's Menu button (which the
-crosshair can click too), and the Range Menu, which drops on strings on a spring: Loadouts 1-5 (also keys 1-5; swap
+start over on any change), Range Menu and Hangar strips hanging top left, level with the score card (Alan 2026-10-20; the game's Menu
+button, which the crosshair can click too, is above them), and the Range Menu, which drops on strings on a spring: Loadouts 1-5 (also keys 1-5; swap
 the plane in the air) and Difficulty plus Edit in Hangar (saving there swaps the plane). The loadouts are the Range's own
 five builds (saved as `rangePresets`, any part allowed, never used in matches; you start on the one you last flew
 there). The Hangar opened in the Range edits them ("Range only" on parts you don't own); built 2026-10-19, not yet played.
 Flight School's end card has "Next: Combat School". Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during
-lessons (Alan). In Studio the Tutorial button turns the room into the tutorial world (match paused, bots gone) since
+lessons (Alan). In Studio the Training button turns the room into the tutorial world (match paused, bots gone) since
 Studio can't move players between servers; the match resumes after.
 **"Grabbing attention" pass (2026-10-18, built, not yet seen in Play):** one focus look for every step, in the
 art of Alan's approved concept (`assets/references/ui-concepts/attention-*.png`; pieces in `assets/ui/tutorial/`,

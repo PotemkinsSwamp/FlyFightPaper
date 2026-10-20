@@ -113,9 +113,11 @@ local function controls(stage,origin)
  local rh=tall("stripBlue",20)
  local reset=paint(stage,origin,"stripBlue",74,50-ch-.4-rh/2,MENU_Z,20,rh);shootable(reset,"reset")
  write(reset,"Reset",UDim2.fromScale(.75,.8),UDim2.fromScale(.17,.1))
- -- At the left edge under the game's own Menu button, out of the targets' way: Range Menu (click it again to fold the
- -- menu), and the Hangar strip hanging from it (Alan 2026-10-19). Plain strips, no pins: the strings hold them.
- local NOTE_X,NOTE_TOP,NOTE_W=-76,40,22
+ -- At the left edge, level with the score card (the pair's middle on the card's), out of the targets' way and of a long
+ -- lead ring's: Range Menu (click it again to fold the menu), and the Hangar strip hanging from it (Alan 2026-10-20).
+ -- Plain strips, no pins: the strings hold them.
+ local NOTE_X,NOTE_W=-84,22
+ local NOTE_TOP=50-ch/2+tall("plainStrip",NOTE_W)+1.5
  local tab,tabH=hang(stage,origin,"plainStrip",NOTE_X,NOTE_TOP,NOTE_W);shootable(tab,"menu")
  write(tab,"Range Menu",UDim2.fromScale(.84,.8),UDim2.fromScale(.08,.1))
  local hangar=hang(stage,origin,"plainStrip",NOTE_X,NOTE_TOP-tabH-3,NOTE_W,NOTE_TOP-tabH*.3);shootable(hangar,"hangar")

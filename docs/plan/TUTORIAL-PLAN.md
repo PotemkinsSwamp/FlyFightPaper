@@ -140,7 +140,7 @@ Short notes that pop up the first time something happens, not before:
 Can be turned off in Settings.
 
 ## The Training board (menu)
-The main menu's Tutorial button opens a **Training board** listing the lessons, each with a tick when done and
+The main menu's Training button (Alan 2026-10-20: was Tutorial) opens a **Training board** listing the lessons, each with a tick when done and
 **Play** / **Replay**: Flight School, Combat School, Hangar Tour and the Range (no tick: not a lesson). Flight School
 and Combat School move you to your Training Room (from a match it first warns you'll leave it); the Hangar Tour and
 the Range move you to the Range map. Match Tips are not on it (on/off in Settings)

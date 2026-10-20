@@ -263,6 +263,9 @@ mistake would be easy to make twice.
   see-through frames (dims look missing): check by making them solid for one capture. `execute_luau` gets its own
   copy of a ModuleScript, so it can't read or change a running module's state; drive the game through remotes and
   attributes instead. Loading changed modules with `require` in Edit catches typing mistakes without starting Play.
+- **A lead ring can't guess a curving path (2026-10-20):** speed + turn (second-order) prediction misses by tens of
+  studs once a shot flies over ~1 s at a target that swoops (pencil, Range Veteran long: 0% hits even with exact
+  motion). Simulate the miss before blaming the guns; for scripted targets read the real path instead.
 - **Studio Play takes Alan's mouse (2026-10-18):** a flying plane locks the mouse to the centre. Run Play only when
   Alan says go or is away, in one short batch, and stop it right after.
 Back to [HOME](../HOME.md)

@@ -19,6 +19,11 @@
   plan OK'd later the same night): saved with the profile, any part allowed, never used in matches; the Hangar opened
   in the Range edits them; renaming (click the name, 20 letters) works for match builds too; you start on the Range
   build you last flew there (Alan's pick over "always build 1").
+- **2026-10-20 (Alan, Play look):** the menu's Tutorial button is now **Training** (it holds three lessons and the
+  Range); Range Menu and Hangar hang top left, level with the score card (a long lead ring hid behind them lower
+  down); in the Hangar the build's name is a white tag under the plane, the 1-5 buttons sit half over the folder's
+  bottom edge, and in the Range a **Test in Range** button (everyone, top left) saves and drops you back flying it.
+  The lead ring must be trustworthy: practice targets now give it their exact path.
 - Liked, later: on a swap the old plane flies off into the distance and the new one slides in from behind.
 
 ## Why

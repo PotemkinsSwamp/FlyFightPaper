@@ -493,8 +493,8 @@ function Service:step(dt)
   elseif state=="FLYING" and p.held then -- holding still for the winners' moment
   elseif state=="FLYING" and p.drill then
    -- A practice target plane: held on its spot or sweeping left and right in front of its pilot (TrainingCourse).
-   local d=p.drill;d.t+=dt
-   local pose,velocity=Course.pose(d.spec,d.center,d.t,d.face,d.side)
+   local d=p.drill
+   local pose,velocity=Course.pose(d.spec,d.center,now-d.t0,d.face,d.side) -- on the server clock, as the lead ring reads it
    p.drive.VectorVelocity=velocity+(pose.Position-p.body.Position)*3;p.orientation.CFrame=pose.Rotation
   elseif state=="FLYING" then
    local utility=p.loadout.utility and self.catalog:get(p.loadout.utility)

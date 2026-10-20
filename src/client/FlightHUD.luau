@@ -1,6 +1,9 @@
 local Players = game:GetService("Players")
 local Input = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local Http = game:GetService("HttpService")
+local Course = require(game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper").Shared.TrainingCourse)
+local VIEW_DELAY = require(game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper").Generated.Gameplay).combat.view_delay_seconds
 local HUD = {}
 
 function HUD.start(getPlane, action)
@@ -374,13 +377,32 @@ function HUD.start(getPlane, action)
 	local sight = RaycastParams.new()
 	sight.FilterType = Enum.RaycastFilterType.Include
 	sight.FilterDescendantsInstances = { workspace:FindFirstChild("Arena") or workspace:WaitForChild("GreyboxRoom") }
-	-- Where a shot of `weapon` fired now meets `root`, following its current turn (`m`: its tracked motion).
+	-- Practice targets fly a set path (TrainingCourse.pose, `DrillPath`), so their lead is exact. Guessing from the
+	-- current turn misses them: over a pencil's 1.3 s flight the Range's swoops beat it every time (measured 2026-10-20).
+	local paths = {}
+	local function pathOf(root)
+		local json = root.Parent and root.Parent:GetAttribute("DrillPath")
+		if not json then return nil end
+		local cached = paths[root]
+		if not cached or cached.json ~= json then
+			local d = Http:JSONDecode(json)
+			local function v(a) return Vector3.new(a[1], a[2], a[3]) end
+			cached = { json = json, t0 = d.t0, center = v(d.center), face = v(d.face), side = v(d.side), spec = d }
+			paths[root] = cached
+		end
+		return cached
+	end
+	-- Where a shot of `weapon` fired now meets `root`, following its current turn (`m`: its tracked motion). The
+	-- server judges hits where the target was on your screen (one trip plus smoothing back), so a path is read there.
 	local function leadOf(root, m, weapon, body)
-		local lead = root.Position
+		local path, lead = pathOf(root), root.Position
+		local seen = path and workspace:GetServerTimeNow() - path.t0 - Players.LocalPlayer:GetNetworkPing() / 2 - VIEW_DELAY
 		for _ = 1, 4 do
 			local t = CombatRules.travelTime(weapon, (lead - body.Position).Magnitude)
 			if t == math.huge then t = weapon.lifetime end
-			lead = root.Position + m.velocity * t + m.acceleration * (0.5 * t * t) + Vector3.yAxis * (0.5 * (weapon.drop or 0) * t * t)
+			local ahead = path and Course.pose(path.spec, path.center, seen + t, path.face, path.side).Position
+				or root.Position + m.velocity * t + m.acceleration * (0.5 * t * t)
+			lead = ahead + Vector3.yAxis * (0.5 * (weapon.drop or 0) * t * t)
 		end
 		return lead
 	end
@@ -436,7 +458,7 @@ function HUD.start(getPlane, action)
 				end
 			end
 		end
-		for root in pairs(motion) do if not root.Parent then motion[root] = nil end end
+		for root in pairs(motion) do if not root.Parent then motion[root], paths[root] = nil, nil end end
 		picked, FlightState.target = target, target
 		local shown = 0
 		for _, other in ipairs(flying and planes:GetChildren() or {}) do

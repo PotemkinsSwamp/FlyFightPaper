@@ -32,7 +32,7 @@ function Board.new(playerGui, actions)
 	table.insert(pieces, button(buttons, "Play", Art.strip.yellow, "Play", 690, 445, 540, 140, -1, actions.play, 100))
 	table.insert(pieces, button(buttons, "Hangar", Art.strip.blue, "Hangar", 710, 600, 500, 120, 1, actions.hangar))
 	table.insert(pieces, button(buttons, "Settings", Art.strip.green, "Settings", 710, 735, 500, 120, -1, actions.settings))
-	table.insert(pieces, button(buttons, "Tutorial", Art.strip.red, "Tutorial", 715, 870, 490, 120, 0.5, actions.tutorial))
+	table.insert(pieces, button(buttons, "Tutorial", Art.strip.red, "Training", 715, 870, 490, 120, 0.5, actions.tutorial))
 	if actions.shop then
 		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop (dev)", 1580, 560, 250, 70, 4, actions.shop, 34))
 	end
