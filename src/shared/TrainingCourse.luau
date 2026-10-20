@@ -32,7 +32,8 @@ Course.DRILLS={
 -- 2026-10-19): shoot one and it tips back on its hinge and stays down while picked. Bigger plate = closer row.
 -- `x`: across the stage, `w`: width in studs.
 -- `seat`: where the plane hangs, from origin: back toward the still camera so it sits low and out of the way.
-Course.RANGE={origin=CFrame.new(0,900,12000),seat=Vector3.new(0,0,10),yaw=math.rad(50),up=math.rad(28),down=math.rad(34),targets={
+-- `up` reaches the top bar (the game's Menu button sits there: Alan 2026-10-20); the view's top edge is 32 degrees up.
+Course.RANGE={origin=CFrame.new(0,900,12000),seat=Vector3.new(0,0,10),yaw=math.rad(50),up=math.rad(31.5),down=math.rad(34),targets={
  -- Wide, high sweeps so the targets use the whole stage (Alan approved the flying area 2026-10-19). Speeds are
  -- Challenge's; the other difficulties scale them (DIFFICULTY).
  {row="close",at=Vector3.new(0,20,-150),health=40,speed=65,span=130,depth=4,bob=35,color="red"},
@@ -71,6 +72,27 @@ function Course.pose(drill,center,t,face,side)
   velocity+=(side*math.cos(2.3*a)*2.3*drill.span*.14+Vector3.yAxis*math.cos(3.1*a+1)*3.1*bob*.35)*w
  end
  return CFrame.lookAt(at,at+velocity),velocity
+end
+-- A practice target's set path, published by the server on its model (`DrillPath`: RoundRuntime.addDrill), so the
+-- card you see, the lead ring and the server's hit check all use the same spot (Alan 2026-10-20: shots dead on the
+-- ring missed while the plane under the card lagged its path on the swoops). Returns nil for any other plane.
+local paths=setmetatable({},{__mode="k"})
+function Course.pathOf(model)
+ local json=model and model:GetAttribute("DrillPath")
+ if not json then return nil end
+ local cached=paths[model]
+ if not cached or cached.json~=json then
+  local d=game:GetService("HttpService"):JSONDecode(json)
+  local function v(a) return Vector3.new(a[1],a[2],a[3]) end
+  cached={json=json,t0=d.t0,center=v(d.center),face=v(d.face),side=v(d.side),spec=d};paths[model]=cached
+ end
+ return cached
+end
+-- Where it is at server-clock `time`, and its velocity.
+function Course.pathAt(path,time) return Course.pose(path.spec,path.center,time-path.t0,path.face,path.side) end
+-- The server-clock moment a player's screen shows (one trip back plus Roblox's smoothing): hits are judged there.
+function Course.shownTime()
+ return workspace:GetServerTimeNow()-game:GetService("Players").LocalPlayer:GetNetworkPing()/2-require(script.Parent.Parent.Generated.Gameplay).combat.view_delay_seconds
 end
 -- The points a target passes through, to check its whole sweep is in clear air.
 function Course.sweep(drill,center,side)

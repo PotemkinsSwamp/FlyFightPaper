@@ -16,8 +16,14 @@ function Menu.start()
  local player=Players.LocalPlayer
  local action=Root:WaitForChild("RoundAction")
  local gui=Instance.new("ScreenGui");gui.Name="GameMenu";gui.DisplayOrder=6;gui.IgnoreGuiInset=true;gui.ResetOnSpawn=false;gui.Parent=player:WaitForChild("PlayerGui")
- local openButton=PaperUI.button(gui,"OpenMenu",require(Root.Shared.UIAssets).mainmenu.strip.yellow,"Menu",16,64,150,52,-2,function()end,30)
+ local openButton=PaperUI.button(gui,"OpenMenu",require(Root.Shared.UIAssets).mainmenu.strip.yellow,"Menu",16,64,124,42,-2,function()end,28)
  openButton.Label.TextColor3=PaperUI.INK
+ -- Up in Roblox's top bar, just right of Roblox's own buttons (Alan 2026-10-20: lower down it covered the Range Menu).
+ local function dock()
+  local bar=GuiService.TopbarInset
+  if bar.Height>0 then openButton.Position=UDim2.fromOffset(bar.Min.X+10+62,bar.Min.Y+bar.Height/2) end
+ end
+ dock();GuiService:GetPropertyChangedSignal("TopbarInset"):Connect(dock)
  local state={screen="home",snapshot=nil,profile=nil,overlay=false,lastPhase=nil}
  local render
  local function overlay(open)

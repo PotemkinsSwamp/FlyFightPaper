@@ -161,8 +161,11 @@ function Targets.start()
 				lower(model, t)
 				continue
 			end
+			-- On its set path at the moment hits are judged (TrainingCourse.pathOf), else where its plane is.
+			local path = Course.pathOf(model)
+			local pose = path and Course.pathAt(path, Course.shownTime()) or body.CFrame
 			-- Its heading on the stage: across (turns it over) and up/down (tilts it).
-			local look = stage:VectorToObjectSpace(body.CFrame.LookVector)
+			local look = stage:VectorToObjectSpace(pose.LookVector)
 			local facing = look.X >= 0 and 0 or math.pi
 			t.turn += math.clamp(facing - t.turn, -math.pi * dt / TURN, math.pi * dt / TURN)
 			local tilt = math.clamp(math.atan2(look.Y, math.abs(look.X)), -0.6, 0.6)
@@ -174,7 +177,7 @@ function Targets.start()
 				setArt(t.card, image(t.color, tostring(step)))
 			end
 			local rise = math.max(0, 1 - (os.clock() - t.born) / RISE)
-			local at = body.Position - Vector3.new(0, rise * rise * 60, 0)
+			local at = pose.Position - Vector3.new(0, rise * rise * 60, 0)
 			-- Tilting about the turned card's own axis lifts the nose whichever way it faces.
 			t.card.CFrame = CFrame.new(at) * stage * CFrame.Angles(0, t.turn, 0) * CFrame.Angles(0, 0, t.tilt)
 			t.stick.CFrame = CFrame.new(at - Vector3.new(0, t.card.Size.Y * 0.3 + STICK / 2, 0)) * CFrame.Angles(0, 0, math.rad(90))

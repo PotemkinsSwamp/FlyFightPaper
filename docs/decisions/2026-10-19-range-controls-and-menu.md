@@ -23,7 +23,10 @@
   Range); Range Menu and Hangar hang top left, level with the score card (a long lead ring hid behind them lower
   down); in the Hangar the build's name is a white tag under the plane, the 1-5 buttons sit half over the folder's
   bottom edge, and in the Range a **Test in Range** button (everyone, top left) saves and drops you back flying it.
-  The lead ring must be trustworthy: practice targets now give it their exact path.
+  The lead ring must be trustworthy: practice targets now give it their exact path. Second look the same night:
+  shots near the ring landed (the aim help) and dead-on shots at climbing targets missed (the hit check used the
+  plane under the card, which lagged its path), so the Range has no aim help and judges hits on the path; the
+  game's Menu button moved into Roblox's top bar for good (Alan: "that would have to be permanent, which I don't mind").
 - Liked, later: on a swap the old plane flies off into the distance and the new one slides in from behind.
 
 ## Why

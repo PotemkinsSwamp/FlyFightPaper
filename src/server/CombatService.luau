@@ -9,6 +9,7 @@ local PaperSigns=require(Root.Generated.Gameplay).world.paper_targets
 local Chalk=require(Root.Generated.Gameplay).world.chalk_eraser
 local Aircraft=require(Root.Shared.Aircraft)
 local HitShapes=require(script.Parent.HitShapes)
+local Course=require(Root.Shared.TrainingCourse)
 local Service={};Service.__index=Service
 function Service.new(flight)
  local self=setmetatable({flight=flight,info={},shots={},paperDown={},serial=0,events={},clock=0,shotCount=0,totalFired=0,totalHits=0,random=Random.new()},Service)
@@ -333,7 +334,9 @@ function Service:planeHit(shot,delta,now)
  for _,target in pairs(self.flight.pilots) do
   local info=self.info[target.id]
   if info and self:enemy(shooter,target) and target.model:GetAttribute("State")=="FLYING" then
-   local cf=Rules.sample(info.track,now-shot.rewind) or target.body.CFrame
+   -- A practice target is judged on its set path, as its card is drawn (TrainingCourse.pathOf).
+   local d=target.drill
+   local cf=d and Course.pose(d.spec,d.center,now-shot.rewind-d.t0,d.face,d.side) or Rules.sample(info.track,now-shot.rewind) or target.body.CFrame
    if (cf.Position-(shot.position+delta/2)).Magnitude<reach then
     if shot.dev then
      local along=math.clamp((cf.Position-shot.position):Dot(delta)/math.max(delta:Dot(delta),1e-6),0,1)

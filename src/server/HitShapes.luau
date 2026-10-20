@@ -67,7 +67,9 @@ local card=Instance.new("Part");card.Name="RangeCard";card.Size=Vector3.new(22,1
 function Shapes.cast(p,pose,origin,delta,size,rotation)
 	if p.model:GetAttribute("RangeTarget") then
 		if delta.Magnitude<1e-6 then return nil end
-		card.CFrame=CFrame.new(pose.Position);params.FilterDescendantsInstances={card}
+		-- Tilted with its heading, as RangeTargets draws it (nose up on a climb, whichever way it faces).
+		local look=pose.LookVector;local tilt=math.clamp(math.atan2(look.Y,math.abs(look.X)),-.6,.6)
+		card.CFrame=CFrame.new(pose.Position)*CFrame.Angles(0,0,look.X>=0 and tilt or -tilt);params.FilterDescendantsInstances={card}
 		local up=math.abs(delta.Unit.Y)>.99 and Vector3.zAxis or Vector3.yAxis
 		local result=world:Blockcast(CFrame.lookAt(origin,origin+delta,up)*rotation,size,delta,params)
 		return result and result.Distance/delta.Magnitude

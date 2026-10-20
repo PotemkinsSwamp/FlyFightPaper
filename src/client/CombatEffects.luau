@@ -21,6 +21,10 @@ local Effects={}
 -- Also returns the target's range: both guns meet there. At a fixed 150 studs they crossed and flew past either
 -- side of a plane seen from behind at 300 (measured 2026-10-19), though the dot was red on the ring.
 function Effects.aim(body,weapon)
+ -- The Range has no assist: shots go where the crosshair is, at its range, so the ring tells the truth (Alan
+ -- 2026-10-20: shots near the ring were landing).
+ local point=FlightState.aimPoint
+ if point then return (point-body.Position).Unit,(point-body.Position).Magnitude end
  local leadFor=FlightState.leadFor
  if leadFor and weapon then
   local offset=leadFor(weapon)-body.Position
