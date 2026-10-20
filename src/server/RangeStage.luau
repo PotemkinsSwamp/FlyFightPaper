@@ -45,6 +45,7 @@ local function wide(key,h) return h*PX[key][1]/PX[key][2] end
 
 function Stage.build(origin)
  local stage=Instance.new("Model");stage.Name="RangeStage"
+ stage.ModelStreamingMode=Enum.ModelStreamingMode.Atomic -- arrives whole, so RangeTargets finds every plate and stick
  local function at(x,y,z) return origin*CFrame.new(x,y,z) end
  -- The painted sky cloth and the box round it (floor, ceiling, the wings and the dark hall the plane hangs in).
  paint(stage,origin,"backdrop",0,-144,-820,3000,1688)
@@ -96,24 +97,32 @@ function Stage.build(origin)
  for x=-250,250,24 do
   local b=part(bulbs,"Bulb",Vector3.one*4,at(x,134,-149),Color3.fromRGB(255,214,140));b.Shape=Enum.PartType.Ball;b.Material=Enum.Material.Neon
  end
- -- The row picker: knock-down plates standing on the close row's lip, each a word on painted paper. A shot that
- -- hits one picks its rows (RoundRuntime:rangePick); RangeTargets tips the picked one back.
- local lip=ROWS[1]
+ -- The row picker: knock-down plates on a cardboard floor at the front of the stage, at the bottom of the view, each a
+ -- word on painted paper on a stick from its hinged foot. A shot that hits one picks its rows (RoundRuntime:rangePick);
+ -- RangeTargets tips the picked one back on its hinge (`Hinge`), stick and all.
+ local FLOOR_Y,PICK_Z=-56,-72
+ part(stage,"Apron",Vector3.new(600,4,70),at(0,FLOOR_Y-2,-65),FLOOR,card)
  for _,pick in Course.RANGE.picks do
   local real=Art[PLATE[pick.row][1]] and PLATE[pick.row][1]
   local key=real or PLATE[pick.row][2];local h=real and pick.w*PX[key][2]/PX[key][1] or pick.w*.4
-  local plate=paint(stage,origin,key,pick.x,lip.top+2+h/2,lip.z-3,pick.w,h)
+  local foot=pick.w*.6;local footH=foot*329/1024;local hinge=FLOOR_Y+footH*.7;local stick=h*.35
+  local plate=paint(stage,origin,key,pick.x,hinge+stick+h/2,PICK_Z,pick.w,h)
   plate.Name="Pick";plate.CanQuery=true;plate:SetAttribute("RangePick",pick.row)
-  local gui=plate.SurfaceGui;gui.PixelsPerStud=40
-  local round=pick.row=="all" and real
-  local word=Instance.new("TextLabel");word.Size=UDim2.fromScale(round and .6 or .74,round and .26 or .4)
-  word.Position=UDim2.fromScale(round and .2 or .16,round and .5 or .2)
-  word.BackgroundTransparency=1;word.Text=pick.label;word.TextScaled=true;word.TextColor3=Color3.fromRGB(43,38,52)
+  plate:SetAttribute("Hinge",(origin*CFrame.new(pick.x,hinge,PICK_Z)).Position)
+  local gui=plate.SurfaceGui;gui.PixelsPerStud=10 -- scaled text stops at 100 px, so a small canvas keeps words big
+  local round,two=pick.row=="all" and real,pick.label:find("\n")~=nil
+  local word=Instance.new("TextLabel")
+  word.Size=round and UDim2.fromScale(.6,.26) or two and UDim2.fromScale(.86,.88) or UDim2.fromScale(.74,.4)
+  word.Position=round and UDim2.fromScale(.2,.5) or two and UDim2.fromScale(.1,-.04) or UDim2.fromScale(.16,.2)
+  word.BackgroundTransparency=1;word.Text=pick.label;word.TextScaled=true;word.LineHeight=.85;word.TextColor3=Color3.fromRGB(43,38,52)
   word.FontFace=Font.new("rbxasset://fonts/families/Kalam.json",Enum.FontWeight.Bold);word.Parent=gui
   local edge=Instance.new("UIStroke");edge.Color=Color3.fromRGB(255,248,232);edge.Thickness=3;edge.Parent=word
-  if Art.pickerStand then
-   local w=pick.w*.5;paint(stage,origin,"pickerStand",pick.x,lip.top+w*329/1024/2,lip.z-2.5,w,w*329/1024).Name="PickFoot"
-  else part(stage,"PickFoot",Vector3.new(pick.w*.3,2,2),at(pick.x,lip.top+1,lip.z-3),FLOOR,card) end
+  -- The stick runs from the hinge up behind the plate.
+  local length=stick+h*.25
+  local rod=part(stage,"PickStick",Vector3.new(length,pick.w*.035,pick.w*.035),at(pick.x,hinge+length/2,PICK_Z-.5)*CFrame.Angles(0,0,math.rad(90)),Color3.fromRGB(205,165,110),Enum.Material.Wood)
+  rod.Shape=Enum.PartType.Cylinder;rod:SetAttribute("StickOf",pick.row)
+  if Art.pickerStand then paint(stage,origin,"pickerStand",pick.x,FLOOR_Y+footH/2,PICK_Z+1,foot,footH).Name="PickFoot"
+  else part(stage,"PickFoot",Vector3.new(foot,footH,3),at(pick.x,FLOOR_Y+footH/2,PICK_Z),FLOOR,card) end
  end
  -- The proscenium: curtains tied back at each side, a rail of hanging lamps across the top.
  paint(stage,origin,"curtainSide",-216,0,-150,87,300)

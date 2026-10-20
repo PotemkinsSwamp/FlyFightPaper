@@ -26,10 +26,12 @@ Course.DRILLS={
 -- The Range (docs/plan/TUTORIAL-PLAN.md): far from the classroom, the plane hangs at `origin` facing the stage (-Z);
 -- targets are flat cut-outs on sticks in three rows (`at`: offset from origin; `row`: close, medium or long), each
 -- swinging side to side (it turns over at the ends) and bobbing. A folded one is replaced after the usual respawn wait.
--- `yaw`/`pitch`: how far the aim may turn from straight ahead (radians), so the view stays on the stage.
--- `picks`: the knock-down plates on the close row's lip that pick which rows stand (Alan 2026-10-19): shoot one and it
--- tips back and stays down while picked. Bigger plate = closer row. `x`: across the stage, `w`: width in studs.
-Course.RANGE={origin=CFrame.new(0,900,12000),yaw=math.rad(30),pitch=math.rad(20),targets={
+-- `yaw`/`up`/`down`: how far the aim may turn from straight ahead (radians), so the view stays on the stage; down
+-- reaches the picker plates on the floor.
+-- `picks`: the knock-down plates on the stage floor at the bottom of the view that pick which rows stand (Alan
+-- 2026-10-19): shoot one and it tips back on its hinge and stays down while picked. Bigger plate = closer row.
+-- `x`: across the stage, `w`: width in studs.
+Course.RANGE={origin=CFrame.new(0,900,12000),yaw=math.rad(30),up=math.rad(20),down=math.rad(35),targets={
  {row="close",at=Vector3.new(0,5,-150),health=40,speed=30,span=60,depth=4,bob=12,color="red"},
  {row="close",at=Vector3.new(0,-2,-172),health=40,speed=30,span=60,depth=4,bob=12,color="blue",phase=math.pi},
  {row="medium",at=Vector3.new(-80,40,-360),health=40,speed=50,span=110,depth=4,bob=25,color="blue",phase=math.pi},
@@ -37,8 +39,8 @@ Course.RANGE={origin=CFrame.new(0,900,12000),yaw=math.rad(30),pitch=math.rad(20)
  {row="long",at=Vector3.new(60,80,-620),health=40,speed=70,span=170,depth=4,bob=35,color="red"},
  {row="long",at=Vector3.new(-60,66,-645),health=40,speed=70,span=170,depth=4,bob=35,color="blue",phase=math.pi},
 },picks={
- {row="close",label="Close",x=-125,w=24},{row="medium",label="Medium",x=-82,w=19},
- {row="long",label="Long range",x=72,w=15},{row="all",label="All",x=104,w=13},
+ {row="close",label="Close",x=-98,w=35},{row="medium",label="Medium",x=-63,w=28},
+ {row="long",label="Long\nrange",x=70,w=22},{row="all",label="All",x=100,w=19},
 }}
 -- Where a target is `t` seconds after it appeared, sweeping round `center` along `side` (the pilot's right when it
 -- appeared), and its velocity; a still one faces `face`.

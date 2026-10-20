@@ -95,7 +95,7 @@ function Controller.start(plane)
 		if pinned then
 			local stage = Course.RANGE.origin.Rotation
 			local pitch, yaw = stage:ToObjectSpace(aimFrame):ToOrientation()
-			aimFrame = stage * CFrame.fromOrientation(math.clamp(pitch, -Course.RANGE.pitch, Course.RANGE.pitch), math.clamp(yaw, -Course.RANGE.yaw, Course.RANGE.yaw), 0)
+			aimFrame = stage * CFrame.fromOrientation(math.clamp(pitch, -Course.RANGE.down, Course.RANGE.up), math.clamp(yaw, -Course.RANGE.yaw, Course.RANGE.yaw), 0)
 		end
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
 		local boost = not blocked and Input:IsKeyDown(Enum.KeyCode.LeftShift)

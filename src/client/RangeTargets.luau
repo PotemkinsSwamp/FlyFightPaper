@@ -112,21 +112,31 @@ function Targets.start()
 		Debris:AddItem(t.card, 0.7)
 		Debris:AddItem(t.stick, 0.7)
 	end
-	-- Row-picker plates: down (tipped back on its foot) while picked, with a ting when it goes.
-	local function plate(part)
-		local up = part.CFrame
-		local down = up * CFrame.new(0, -part.Size.Y / 2, 0) * CFrame.Angles(-math.rad(80), 0, 0) * CFrame.new(0, part.Size.Y / 2, 0)
+	-- Row-picker plates: down (tipped back on its hinge, stick and all) while picked, with a ting when it goes.
+	local function plate(part, stick)
+		local hinge = CFrame.new(part:GetAttribute("Hinge")) * stage
+		local tip = hinge * CFrame.Angles(-math.rad(80), 0, 0) * hinge:Inverse()
+		local pieces = { part, stick }
+		local up = {}
+		for _, piece in pieces do up[piece] = piece.CFrame end
 		local function set(sound)
 			local isDown = part:GetAttribute("Down") == true
-			TweenService:Create(part, TweenInfo.new(0.25, Enum.EasingStyle.Back, isDown and Enum.EasingDirection.Out or Enum.EasingDirection.InOut), { CFrame = isDown and down or up }):Play()
-			if sound and isDown then Audio.play("plate", up.Position) end
+			local info = TweenInfo.new(0.25, Enum.EasingStyle.Back, isDown and Enum.EasingDirection.Out or Enum.EasingDirection.InOut)
+			for _, piece in pieces do
+				TweenService:Create(piece, info, { CFrame = isDown and tip * up[piece] or up[piece] }):Play()
+			end
+			if sound and isDown then Audio.play("plate", up[part].Position) end
 		end
 		part:GetAttributeChangedSignal("Down"):Connect(function() set(true) end)
 		set(false)
 	end
 	local function watchStage(model)
+		local sticks = {}
 		for _, part in model:GetChildren() do
-			if part:GetAttribute("RangePick") then plate(part) end
+			if part:GetAttribute("StickOf") then sticks[part:GetAttribute("StickOf")] = part end
+		end
+		for _, part in model:GetChildren() do
+			if part:GetAttribute("RangePick") then plate(part, sticks[part:GetAttribute("RangePick")]) end
 		end
 	end
 	workspace.ChildAdded:Connect(function(child) if child.Name == "RangeStage" then watchStage(child) end end)

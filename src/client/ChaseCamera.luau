@@ -7,7 +7,8 @@ local Camera = {}
 
 -- Feel tuning. Position follows a bit slower than rotation so turns read as motion.
 local DISTANCE, HEIGHT, LOOK_AHEAD = 24, 6, 60
-local RANGE_DISTANCE, RANGE_HEIGHT = 15, 4.5
+-- The Range: further back and higher, so the plane sits small at the bottom like the concept (Alan 2026-10-19).
+local RANGE_DISTANCE, RANGE_HEIGHT = 22, 8
 local POSITION_RESPONSE, ROTATION_RESPONSE = 9, 16
 local BASE_FOV, MAX_EXTRA_FOV, FOV_RESPONSE = 72, 12, 4
 local SHAKE_ON_HIT, SHAKE_ON_NEAR_MISS, SHAKE_DECAY = 0.6, 0.3, 3
