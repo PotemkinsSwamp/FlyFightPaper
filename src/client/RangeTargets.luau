@@ -29,7 +29,8 @@ local function card(art, px)
 	local size = px / PX.full.X * LENGTH
 	local part = Instance.new("Part")
 	part.Name, part.Size, part.Transparency = "Card", Vector3.new(size.X, size.Y, 0.2), 1
-	part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
+	-- Queryable so the plane can point at the card under the crosshair (FlightController); only this client sees it.
+	part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, true, false, false
 	for _, face in { Enum.NormalId.Back, Enum.NormalId.Front } do
 		local gui = Instance.new("SurfaceGui")
 		gui.Face, gui.LightInfluence, gui.MaxDistance, gui.Parent = face, 0, 5000, part

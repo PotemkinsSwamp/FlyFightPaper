@@ -293,8 +293,9 @@ function Runtime:lesson(player,cmd)
  if cmd.range==true then
   local origin=Course.RANGE.origin
   self:rangeStage()
-  p.pin=origin.Position;p.keepLift=true;p.gentle=true;p.model:SetAttribute("Pinned",p.pin);p.model:SetAttribute("Gentle",true)
-  if p.model:GetAttribute("State")~="FLYING" then p.body.CFrame=origin;self.flight:fly(p) end
+  local seat=origin*CFrame.new(Course.RANGE.seat)
+  p.pin=seat.Position;p.keepLift=true;p.gentle=true;p.model:SetAttribute("Pinned",p.pin);p.model:SetAttribute("Gentle",true)
+  if p.model:GetAttribute("State")~="FLYING" then p.body.CFrame=seat;self.flight:fly(p) end
   self:rangePick(player,player:GetAttribute("RangeRows") or "all")
  end
  if cmd.pal==false or PAL_MODES[cmd.pal] then

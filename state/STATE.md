@@ -1,12 +1,11 @@
-# Since Alan last checked (2026-10-19, third session)
-- **Training board done** ("it looks good"): its own cork-board art; Flight School, Combat School, Hangar Tour, Hangar
-  Range cards; finished lessons get a saved tick and Replay; from a match it warns you'll leave. No room time limit.
-- Fixed: Leave in a lesson pulled you back in; the lesson's dim covered the menu; a shot error after server hitches.
-- **Hangar Range** ([decision](../docs/decisions/2026-10-19-range-map-and-hangar-tour.md)): rough build played ("works
-  well conceptually"); its 35 art pieces (stage, cardboard town, red/blue targets with tear steps, side board) are
-  made and uploaded, not placed yet. Next: build the real stage from them, then the side board's buttons.
+# Since Alan last checked (2026-10-19, fourth session)
+- **Hangar Range built from the art**: puppet-theatre stage, cardboard town, painted targets that tilt, turn over,
+  tear in 4 steps, split and rise again. Still camera like the concept: the crosshair moves, the plane points at it.
+- **Row picker**: four knock-down plates you shoot (Close, Medium, Long range, All; art approved and uploaded).
+- **Aim help, whole game**: the orange ring follows the enemy whose lead is nearest your crosshair, and sticks to it.
+- **Side board decided** (shoot its strips, difficulty steps, score resets, the Range's own 5 loadouts); not built yet.
 
-# Now: Tutorial; Training board done, the Hangar Range next, then the Hangar Tour (TUTORIAL-PLAN); Stage 10 code done
+# Now: Tutorial; Hangar Range stage and picker built; its side board next, then sticky notes, then the Hangar Tour
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
@@ -17,8 +16,7 @@ Decisions to review
 Combat School: the hunting Pal (step 8) flies 25% faster until you're at half Health (else a player flying away is
   never caught); look cards hold 5 s, action steps 2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%).
   "No thanks" to the welcome question isn't saved.
-Hangar Range: every part can be tried there, even ones you don't own (matches still need it unlocked); plane turns to
-  aim but stays put; targets 40 Health, three rows (stand-in numbers until you tune them).
+Hangar Range: Lift and Health bars hide there; targets 40 Health, 2 per row (stand-in numbers until you tune them).
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
   buying early is useless). Buying a part with Paper still needs the level.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
@@ -48,6 +46,7 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
+- Range Play check: still camera, plates (shoot Long range, then All), new aim help in a real match too.
 - Your call later: give the match bots the gun fix too (their guns still cross at 150 studs,
   so they miss past it; fixing it makes every bot noticeably more accurate).
 - Backlog (yours): a new fan sound for the real game (the current one is a wind tunnel).

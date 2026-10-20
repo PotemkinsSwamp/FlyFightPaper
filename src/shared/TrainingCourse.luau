@@ -31,7 +31,8 @@ Course.DRILLS={
 -- `picks`: the knock-down plates on the stage floor at the bottom of the view that pick which rows stand (Alan
 -- 2026-10-19): shoot one and it tips back on its hinge and stays down while picked. Bigger plate = closer row.
 -- `x`: across the stage, `w`: width in studs.
-Course.RANGE={origin=CFrame.new(0,900,12000),yaw=math.rad(48),up=math.rad(28),down=math.rad(34),targets={
+-- `seat`: where the plane hangs, from origin: back toward the still camera so it sits low and out of the way.
+Course.RANGE={origin=CFrame.new(0,900,12000),seat=Vector3.new(0,0,10),yaw=math.rad(48),up=math.rad(28),down=math.rad(34),targets={
  {row="close",at=Vector3.new(0,5,-150),health=40,speed=30,span=60,depth=4,bob=12,color="red"},
  {row="close",at=Vector3.new(0,-2,-172),health=40,speed=30,span=60,depth=4,bob=12,color="blue",phase=math.pi},
  {row="medium",at=Vector3.new(-80,40,-360),health=40,speed=50,span=110,depth=4,bob=25,color="blue",phase=math.pi},

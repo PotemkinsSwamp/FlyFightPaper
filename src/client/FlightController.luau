@@ -10,7 +10,7 @@ local Course = require(Root.Shared.TrainingCourse)
 local Controller = {}
 -- Read by the camera and HUD. `aimOverride` lets dev tools fly the plane without a mouse.
 Controller.state = { aim = nil, aimUp = nil, aimOverride = nil }
-local plateCast = RaycastParams.new() -- the Range's picker plates (the only stage parts shots can hit)
+local plateCast = RaycastParams.new() -- the Range's picker plates and target cut-outs (what the crosshair can be on)
 plateCast.FilterType = Enum.RaycastFilterType.Include
 local solid = OverlapParams.new()
 solid.FilterType, solid.RespectCanCollide = Enum.RaycastFilterType.Include, true
@@ -102,10 +102,13 @@ function Controller.start(plane)
 			aimFrame = stage * CFrame.fromOrientation(math.clamp(pitch, -Course.RANGE.down, Course.RANGE.up), math.clamp(yaw, -Course.RANGE.yaw, Course.RANGE.yaw), 0)
 			local eye = workspace.CurrentCamera.CFrame.Position
 			local stageModel = workspace:FindFirstChild("RangeStage")
-			if stageModel then plateCast.FilterDescendantsInstances = { stageModel } end
-			local hit = stageModel and workspace:Raycast(eye, aimFrame.LookVector * 1000, plateCast)
+			local cards = workspace:FindFirstChild("RangeTargets")
+			plateCast.FilterDescendantsInstances = { stageModel, cards }
+			if not stageModel then plateCast.FilterDescendantsInstances = { cards } end
+			local hit = workspace:Raycast(eye, aimFrame.LookVector * 1000, plateCast)
 			local target = state.target and state.target.Parent and state.target
-			local reach = hit and hit.Distance or target and (target.Position - eye).Magnitude or 400
+			-- Nothing under the crosshair: the target the aim help picked (you're leading it), else the far row.
+			local reach = hit and hit.Distance or target and (target.Position - eye).Magnitude or 640
 			steer = (eye + aimFrame.LookVector * reach - body.Position).Unit
 		end
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
