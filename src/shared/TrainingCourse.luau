@@ -47,7 +47,8 @@ Course.RANGE={origin=CFrame.new(0,900,12000),seat=Vector3.new(0,0,10),yaw=math.r
 }}
 -- The Range's difficulty strips: how fast the targets sweep and how far they swoop up and down. Maneuvers adds a
 -- quick weave on top, like a real enemy dodging.
-Course.DIFFICULTY={noob={speed=.6,bob=.6},challenge={speed=1,bob=1},veteran={speed=1.6,bob=1.2},maneuvers={speed=1.6,bob=1.2,weave=true}}
+-- Alan 2026-10-20: Maneuvers at Veteran's speed was impossible, so it weaves at Challenge's speed.
+Course.DIFFICULTY={noob={speed=.6,bob=.6},challenge={speed=1,bob=1},veteran={speed=1.4,bob=1.2},maneuvers={speed=1,bob=1,weave=true}}
 function Course.difficulty(spec,level)
  local d=Course.DIFFICULTY[level] or Course.DIFFICULTY.noob
  local copy=table.clone(spec);copy.speed=spec.speed*d.speed;copy.bob=(spec.bob or 0)*d.bob;copy.weave=d.weave
@@ -66,8 +67,8 @@ function Course.pose(drill,center,t,face,side)
  local at=center+side*math.cos(a)*drill.span+toward*math.sin(a)*drill.depth+Vector3.yAxis*math.sin(2*a)*bob
  local velocity=(-side*math.sin(a)*drill.span+toward*math.cos(a)*drill.depth+Vector3.yAxis*math.cos(2*a)*2*bob)*w
  if drill.weave then -- a quick side-step and dip on top of the sweep, out of step with it
-  at+=side*math.sin(3.1*a)*drill.span*.22+Vector3.yAxis*math.sin(4.3*a+1)*bob*.5
-  velocity+=(side*math.cos(3.1*a)*3.1*drill.span*.22+Vector3.yAxis*math.cos(4.3*a+1)*4.3*bob*.5)*w
+  at+=side*math.sin(2.3*a)*drill.span*.14+Vector3.yAxis*math.sin(3.1*a+1)*bob*.35
+  velocity+=(side*math.cos(2.3*a)*2.3*drill.span*.14+Vector3.yAxis*math.cos(3.1*a+1)*3.1*bob*.35)*w
  end
  return CFrame.lookAt(at,at+velocity),velocity
 end

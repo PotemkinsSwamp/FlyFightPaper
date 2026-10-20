@@ -263,6 +263,9 @@ end
 function Service:refold(p,loadout)
  p.loadout=loadout;p.stats=assert(self.catalog:deriveStats(loadout))
  Aircraft.build(p.model,loadout,self.catalog,false)
+ -- New parts welded on can hand the plane back to the server, which then flies it straight off (Alan 2026-10-20,
+ -- swapping loadouts in the Range): give it back to its pilot.
+ if p.player and not p.body.Anchored then p.body:SetNetworkOwner(p.player) end
  p.model:SetAttribute("LoadoutData",game:GetService("HttpService"):JSONEncode(loadout))
  for key,value in pairs({Speed=p.stats.speed,TurnRate=p.stats.turn,PitchRate=p.stats.pitch,YawRate=p.stats.yaw,OriginalHealth=p.stats.health,MaxHealth=p.stats.health,Health=p.stats.health,LiftMax=p.stats.lift,Lift=p.stats.lift}) do p.model:SetAttribute(key,value) end
  p.orientation.MaxAngularVelocity=math.rad(p.stats.turn)*Gameplay.flight.orientation_angular_headroom

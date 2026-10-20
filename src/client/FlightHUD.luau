@@ -539,7 +539,7 @@ function HUD.start(getPlane, action)
 				if weapon then
 					local lead = FlightState.leadFor(weapon)
 					place(pipper, lead)
-					if group == 1 or not guns[1] then noseRange = (lead - body.Position).Magnitude end
+					if group == 1 or not guns[1] then noseRange, FlightState.leadPoint = (lead - body.Position).Magnitude, lead end
 					-- Red = the shots land if fired now without any aim help (Alan 2026-10-19: red only if you'd hit without the
 					-- assist): the nose line passes within 2 studs of the ring's point, where the guns meet.
 					local offset = lead - body.Position
@@ -559,7 +559,7 @@ function HUD.start(getPlane, action)
 			end
 			noseDot.BackgroundColor3, noseDot.Size = anyHit and NOSE_ON or NOSE, UDim2.fromOffset((anyHit and 11 or 10) * crosshairScale, (anyHit and 11 or 10) * crosshairScale)
 		else
-			FlightState.leadFor = nil
+			FlightState.leadFor, FlightState.leadPoint = nil, nil
 			noseDot.BackgroundColor3, noseDot.Size = NOSE, UDim2.fromOffset(10 * crosshairScale, 10 * crosshairScale)
 			bracket.Visible = false
 			for group, pipper in ipairs(pippers) do pipper.Visible, leadLines[group].Visible = false, false end

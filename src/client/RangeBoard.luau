@@ -1,16 +1,17 @@
 -- The Hangar Range's controls (RangeStage; docs/plan/TUTORIAL-PLAN.md "The Hangar Range"). In the Range the crosshair
 -- is the cursor (Alan 2026-10-20): a click on a row plate or a board strip does what it says while the guns fire as
--- usual. Also here: the menu dropping on its strings with a little bounce and pulling back up, the score card, the red
--- rings on the picked loadout and difficulty, the loadout names, and keys 1-5 for the loadouts.
+-- usual, and on the game's own Menu button too. Also here: the menu dropping on its strings with a little bounce and
+-- pulling back up, the score card, the red rings on the picked loadout and difficulty, the loadout names, keys 1-5.
 local Input = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local FlightState = require(script.Parent.FlightController).state
 local Board = {}
 
 local LIFT = 90 -- studs the folded menu hangs above the view (RangeStage MENU_LIFT)
-local DROP = TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out) -- falls, overshoots, settles on its strings
-local PULL = TweenInfo.new(0.45, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+-- The menu rides a spring toward open or folded: it drops, overshoots a little on its strings and settles. A spring
+-- (not a tween) so clicks mid-move just change where it heads (Alan 2026-10-20: tweens left it stuck halfway).
+local SPRING, DAMP = 81, 11 -- 9 rad/s, damping 0.6: one small bounce, settled in under a second
 local KEYS = { [Enum.KeyCode.One] = 1, [Enum.KeyCode.Two] = 2, [Enum.KeyCode.Three] = 3, [Enum.KeyCode.Four] = 4, [Enum.KeyCode.Five] = 5 }
 
 function Board.start()
@@ -18,7 +19,8 @@ function Board.start()
 	local action = Root:WaitForChild("RoundAction")
 	local cast = RaycastParams.new()
 	cast.FilterType = Enum.RaycastFilterType.Include
-	local stage, sheet, up, isOpen, slide = nil, nil, nil, false, nil
+	local stage, sheet, up, isOpen = nil, nil, nil, false
+	local height, speed = LIFT, 0 -- how far above its open spot the menu hangs, and how fast that is changing
 	local presets = {}
 
 	local function strip(what)
@@ -50,22 +52,24 @@ function Board.start()
 		end
 	end
 	local function open(on)
-		if not sheet or on == isOpen then return end
 		isOpen = on
-		if slide then slide:Cancel() end
-		local pivot = Instance.new("CFrameValue")
-		pivot.Value = sheet:GetPivot()
-		pivot.Changed:Connect(function(cf) sheet:PivotTo(cf) end)
-		slide = TweenService:Create(pivot, on and DROP or PULL, { Value = on and up - Vector3.new(0, LIFT, 0) or up })
-		slide:Play()
 		if on then refresh() end
 	end
+	RunService.RenderStepped:Connect(function(dt)
+		local goal = isOpen and 0 or LIFT
+		if not sheet or not sheet.Parent or (height == goal and speed == 0) then return end
+		dt = math.min(dt, 1 / 30)
+		speed += (SPRING * (goal - height) - DAMP * speed) * dt
+		height += speed * dt
+		if math.abs(goal - height) < 0.05 and math.abs(speed) < 0.1 then height, speed = goal, 0 end
+		sheet:PivotTo(up - Vector3.new(0, LIFT - height, 0))
+	end)
 	local function hook(model)
 		stage = model
 		cast.FilterDescendantsInstances = { stage }
 		sheet = stage:WaitForChild("RangeMenu", 10)
 		if not sheet then return end
-		up, isOpen = sheet:GetPivot(), false
+		up, isOpen, height, speed = sheet:GetPivot(), false, LIFT, 0
 		refresh()
 		score()
 	end
@@ -83,14 +87,23 @@ function Board.start()
 	local function click(what)
 		if what == "menu" then open(not isOpen)
 		elseif what == "close-menu" then open(false)
-		elseif what == "hangar" then require(script.Parent.MenuController).show("hangar", true)
+		elseif what == "hangar" then open(false); require(script.Parent.MenuController).show("hangar", true)
 		else action:FireServer("range", what) end
 	end
 	Input.InputBegan:Connect(function(input, processed)
 		if processed or not FlightState.aimPoint or not stage or not stage.Parent then return end
 		if KEYS[input.KeyCode] then click("load" .. KEYS[input.KeyCode]) return end
 		if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.MouseButton2 then return end
-		local hit = workspace:Raycast(workspace.CurrentCamera.CFrame.Position, FlightState.aim * 1000, cast)
+		local eye = workspace.CurrentCamera.CFrame.Position
+		-- The game's Menu button (top left) under the crosshair opens the game menu, like Esc.
+		local spot = workspace.CurrentCamera:WorldToViewportPoint(eye + FlightState.aim * 1000)
+		local button = player.PlayerGui:FindFirstChild("GameMenu") and player.PlayerGui.GameMenu:FindFirstChild("OpenMenu")
+		local low, size = button and button.AbsolutePosition, button and button.AbsoluteSize
+		if button and button.Visible and spot.X >= low.X and spot.X <= low.X + size.X and spot.Y >= low.Y and spot.Y <= low.Y + size.Y then
+			require(script.Parent.MenuController).pause()
+			return
+		end
+		local hit = workspace:Raycast(eye, FlightState.aim * 1000, cast)
 		local part = hit and hit.Instance
 		local what = part and (part:GetAttribute("RangeBoard") or part:GetAttribute("RangePick"))
 		if what then click(what) end

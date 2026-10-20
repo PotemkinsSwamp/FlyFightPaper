@@ -56,8 +56,8 @@ local function write(p,text,size,pos,align)
 end
 
 -- The Range's controls (docs/plan/TUTORIAL-PLAN.md "The Hangar Range"; Alan 2026-10-20), clicked with the crosshair
--- (client RangeBoard): the row plates on the floor (one click switches rows), the score card with its Reset strip and
--- the Menu note hanging on strings in the top corners, and the menu that drops on its strings over the middle of the
+-- (client RangeBoard): the row plates on the floor (one click switches rows), the score card with its Reset strip, and
+-- the Range Menu and Hangar notes hanging on strings in the top corners; the menu drops on its strings over the middle of the
 -- stage (loadouts, difficulty, Hangar). Each clickable piece carries `RangeBoard` (what it does), the plates
 -- `RangePick`; the menu is the `RangeMenu` model, built hanging MENU_LIFT above the view until it drops.
 local COLUMNS={
@@ -110,8 +110,11 @@ local function controls(stage,origin)
  local rh=tall("stripBlue",20)
  local reset=paint(stage,origin,"stripBlue",74,50-ch-.4-rh/2,MENU_Z,20,rh);shootable(reset,"reset")
  write(reset,"Reset",UDim2.fromScale(.75,.8),UDim2.fromScale(.17,.1))
- local tab=hang(stage,origin,"tag",-72,50,15);shootable(tab,"menu")
- write(tab,"Menu",UDim2.fromScale(.8,.4),UDim2.fromScale(.1,.35))
+ -- Range Menu and Hangar notes side by side, clear of the game's own Menu button in the corner.
+ local tab=hang(stage,origin,"tag",-58,50,15);shootable(tab,"menu")
+ write(tab,"Range\nMenu",UDim2.fromScale(.8,.6),UDim2.fromScale(.1,.25))
+ local hangar=hang(stage,origin,"tag",-40,50,15);shootable(hangar,"hangar")
+ write(hangar,"Hangar",UDim2.fromScale(.8,.4),UDim2.fromScale(.1,.35))
  -- The menu: the board piece turned on its side at its own shape, the title and Back to range, two columns of strips.
  local sheet=Instance.new("Model");sheet.Name="RangeMenu";sheet.Parent=stage
  local W=118;local H=W*PX.board[1]/PX.board[2]

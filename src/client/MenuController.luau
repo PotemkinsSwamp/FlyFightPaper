@@ -90,7 +90,9 @@ render=function()
   for _,screen in pairs(paper) do if screen~=current then screen.frame.Visible=false end end
   if current then current.update(player,state.profile,snap);current.frame.Visible=true end
  end
- openButton.Activated:Connect(function()state.screen="home";overlay(true)end)
+ -- Menu.pause: the Menu button's job, also for the Range's crosshair-as-cursor (RangeBoard).
+ function Menu.pause() state.screen="home";overlay(true) end
+ openButton.Activated:Connect(Menu.pause)
  Input.InputBegan:Connect(function(input,processed)
   if input.KeyCode==Enum.KeyCode.Tab and not Input:GetFocusedTextBox() and player:GetAttribute("InMatch") then state.screen="home";overlay(not state.overlay)
   elseif input.KeyCode==Enum.KeyCode.Escape and player:GetAttribute("InMatch") then state.screen="home";overlay(true) end

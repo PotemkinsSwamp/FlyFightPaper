@@ -107,8 +107,9 @@ function Controller.start(plane)
 			if not stageModel then plateCast.FilterDescendantsInstances = { cards } end
 			local hit = workspace:Raycast(eye, aimFrame.LookVector * 1000, plateCast)
 			local target = state.target and state.target.Parent and state.target
-			-- Nothing under the crosshair: the target the aim help picked (you're leading it), else the far row.
-			local reach = hit and hit.Distance or target and (target.Position - eye).Magnitude or 640
+			-- Nothing under the crosshair: as far as the lead ring of the target the aim help picked (you're leading it, so
+			-- the nose lands on the ring and it turns red), else that target, else the far row.
+			local reach = hit and hit.Distance or state.leadPoint and (state.leadPoint - eye).Magnitude or target and (target.Position - eye).Magnitude or 640
 			state.aimPoint = eye + aimFrame.LookVector * reach
 			steer = (state.aimPoint - body.Position).Unit
 		else
