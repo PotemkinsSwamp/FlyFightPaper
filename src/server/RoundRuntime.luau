@@ -359,10 +359,11 @@ function Runtime:rangeAction(player,what)
   player:SetAttribute("RangeDifficulty",what)
   for i in ipairs(Course.RANGE.targets) do local d=self.flight.byId["drill"..player.UserId.."_"..i];if d then self:lowerDrill(d) end end
  elseif what:match("^load%d$") then
-  local slot=tonumber(what:sub(5));local profile=self.profiles:view(player);local preset=profile and profile.presets[slot]
+  -- The Range's own five builds (any part, never match builds); the one picked is remembered in the save.
+  local slot=tonumber(what:sub(5));local profile=self.profiles:view(player);local preset=profile and profile.rangePresets and profile.rangePresets[slot]
   if not preset then return end
-  -- ponytail: the Range flies your saved builds (and picks that build for matches too) until it keeps its own five.
-  player:SetAttribute("SelectedPreset",slot);self.flight:refold(p,preset.loadout)
+  player:SetAttribute("RangeSlot",slot);self.flight:refold(p,preset.loadout)
+  if profile.rangeSlot~=slot then self.profiles:enqueue(player,{kind="rangeSlot",slot=slot}) end
  elseif what~="reset" then return end
  player:SetAttribute("RangeShots",0);player:SetAttribute("RangeHits",0)
 end
@@ -403,9 +404,10 @@ function Runtime:practice(player,lesson)
   if self.engine.phase~="ACTIVE" then player:SetAttribute("MenuMessage","Practice opens when the next round starts.");return end
  end
  -- Lessons fly a fixed training plane (Alan 2026-10-18); the player's own builds are untouched.
- -- The Range flies your own selected build (Alan 2026-10-19: test any build there).
+ -- The Range flies its own builds, starting on the one last flown there (Alan 2026-10-19).
  local profile=self.profiles:view(player)
- local loadout=lesson=="range" and profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout or Loadouts.make(self.flight.catalog,lesson=="combat" and "training_pellets" or "training")
+ if lesson=="range" then player:SetAttribute("RangeSlot",profile.rangeSlot) end
+ local loadout=lesson=="range" and profile.rangePresets[profile.rangeSlot].loadout or Loadouts.make(self.flight.catalog,lesson=="combat" and "training_pellets" or "training")
  local p=self.flight:add(player,{loadout=loadout,loadoutName=lesson=="range" and "range" or "training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
  -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off, Lift stops at 1 second and Boost at 0.01.
@@ -500,7 +502,7 @@ function Runtime:sendProfile(player)
   local e=self.profiles.entries[player]
   local boost=self.profiles.service:liveBoostView(e.account)
   self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,
-   presets=profile.presets,settings=profile.settings,lessons=profile.lessons,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
+   presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end
 end
 function Runtime:step(dt)

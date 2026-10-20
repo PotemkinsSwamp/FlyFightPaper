@@ -3,7 +3,7 @@ local Economy = require(script.Parent.EconomyRules)
 local EconomyConfig = require(script.Parent.Parent.Generated.Economy)
 local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
-local Schema = { VERSION = 6, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
+local Schema = { VERSION = 7, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
@@ -77,17 +77,20 @@ function Schema.defaults(catalog)
 	assert(integer(paper) and integer(xp),"invalid_initial_economy")
 	local p = { schemaVersion = Schema.VERSION, version = 0, generation = 0, paperMilli = paper, earnedPaperMilli = 0,
 		purchasedPaperMilli = 0, xpMilli = xp, prestige = 0, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
-		presets = {}, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium" },
+		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium" },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
 		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, lessons = {} }
-	for i = 1, Gameplay.menus.saved_loadouts do p.presets[i] = { name = "Preset " .. i, loadout = catalog:starterLoadout() } end
+	for i = 1, Gameplay.menus.saved_loadouts do
+		p.presets[i] = { name = "Preset " .. i, loadout = catalog:starterLoadout() }
+		p.rangePresets[i] = { name = "Range " .. i, loadout = catalog:starterLoadout() }
+	end
 	return p
 end
 function Schema.validate(record, catalog)
 	local p, err = Schema.copy(record); if not p then return nil, err end
 	local ok, message = pcall(function()
 		exact(p, { schemaVersion=1, version=1, generation=1, lease=0, paperMilli=1, earnedPaperMilli=1, purchasedPaperMilli=1,
-			xpMilli=1, prestige=1, ownership=1, presets=1, settings=1, qualification=1, boosts=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, lessons=1, extensions=0, refolds=0 })
+			xpMilli=1, prestige=1, ownership=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, lessons=1, extensions=0, refolds=0 })
 		assert(p.schemaVersion == Schema.VERSION, "unsupported_schema")
 		assert(integer(p.version) and integer(p.generation), "invalid_version")
 		assert(integer(p.prestige) and p.prestige<=EconomyConfig.prestige_max, "invalid_prestige")
@@ -99,6 +102,12 @@ function Schema.validate(record, catalog)
 			exact(preset, {name=1,loadout=1}); assert(type(preset.name)=="string" and #preset.name<=48 and #preset.name>0 and utf8.len(preset.name)~=nil and not preset.name:find("%c"), "invalid_preset_name")
 			assert(catalog:validateLoadout(preset.loadout, p.ownership, level))
 		end
+		assert(#p.rangePresets == Gameplay.menus.saved_loadouts, "five_range_presets_required")
+		for _, preset in ipairs(p.rangePresets) do
+			exact(preset, {name=1,loadout=1}); assert(type(preset.name)=="string" and #preset.name<=48 and #preset.name>0 and utf8.len(preset.name)~=nil and not preset.name:find("%c"), "invalid_preset_name")
+			assert(catalog:validateLoadout(preset.loadout, nil, 1000000000))
+		end
+		assert(integer(p.rangeSlot) and p.rangeSlot>=1 and p.rangeSlot<=Gameplay.menus.saved_loadouts, "invalid_range_slot")
 		exact(p.settings, {music=1,sound=1,sensitivity=1,reducedShake=1,quality=1,crosshairColor=1,crosshairSize=1})
 		for _, k in ipairs({"music","sound"}) do assert(type(p.settings[k])=="number" and p.settings[k]>=0 and p.settings[k]<=1, "invalid_volume") end
 		assert(type(p.settings.sensitivity)=="number" and p.settings.sensitivity>=0.2 and p.settings.sensitivity<=3 and type(p.settings.reducedShake)=="boolean", "invalid_settings")
@@ -166,16 +175,22 @@ function Schema.migrate(record, catalog)
 		p.lessons={}
 		p.schemaVersion=6
 	end
+	if p.schemaVersion==6 then
+		p.rangePresets={};p.rangeSlot=1
+		for i=1,Gameplay.menus.saved_loadouts do p.rangePresets[i]={name="Range "..i,loadout=catalog:starterLoadout()} end
+		p.schemaVersion=7
+	end
 	-- Loadout tuning can invalidate an otherwise readable save. Keep its account and preset names intact.
 	local level=Economy.levelForXP(p.xpMilli)
-	local function recover(entry)
+	local function recover(entry, ownership, entryLevel)
 		if type(entry)~="table" then return end
-		local _,reason=catalog:validateLoadout(entry.loadout,p.ownership,level)
+		local _,reason=catalog:validateLoadout(entry.loadout,ownership,entryLevel)
 		if reason=="weapon capacity exceeds body capacity" or reason=="two weapon types per plane" then entry.loadout=catalog:starterLoadout() end
 	end
-	if type(p.presets)=="table" then for _,preset in ipairs(p.presets) do recover(preset) end end
+	if type(p.presets)=="table" then for _,preset in ipairs(p.presets) do recover(preset,p.ownership,level) end end
+	if type(p.rangePresets)=="table" then for _,preset in ipairs(p.rangePresets) do recover(preset,nil,1000000000) end end
 	-- Pending refolds still pass validation so the normal join recovery can refund reserved Paper.
-	if type(p.refolds)=="table" then for _,intent in pairs(p.refolds) do recover(intent) end end
+	if type(p.refolds)=="table" then for _,intent in pairs(p.refolds) do recover(intent,p.ownership,level) end end
 	return Schema.validate(p, catalog)
 end
 return table.freeze(Schema)

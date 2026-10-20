@@ -32,6 +32,7 @@ local STATS = {
 }
 Hangar.STATS = STATS -- the in-game hangar menu shows the same rows
 -- Mount tags on the weapons tab, by mount size (picked to show on red or blue paper and the sky-blue photo).
+local NAME_MAX = 20 -- letters in a build's name (HangarService checks it too)
 local MOUNT_COLOURS = { light = Color3.fromRGB(70, 185, 80), medium = Color3.fromRGB(250, 200, 30), heavy = Color3.fromRGB(150, 80, 215) }
 
 -- api = { action = RoundAction remote, back(), flown() (after Save & fly), fly(loadout) (Studio only) }
@@ -49,6 +50,11 @@ function Hangar.new(playerGui, api)
 	local function atDesk()
 		local plane = workspace:FindFirstChild("Planes") and workspace.Planes:FindFirstChild(tostring(player.UserId))
 		return player:GetAttribute("InMatch") == true and plane ~= nil and plane:GetAttribute("State") == "DESK"
+	end
+	-- In the Range the hangar edits the Range's own five builds: every part, never flown in matches (TUTORIAL-PLAN).
+	local function inRange()
+		local plane = workspace:FindFirstChild("Planes") and workspace.Planes:FindFirstChild(tostring(player.UserId))
+		return plane ~= nil and plane:GetAttribute("Pinned") ~= nil
 	end
 	local profile, render
 
@@ -171,9 +177,11 @@ function Hangar.new(playerGui, api)
 	render = function()
 		for _, child in content:GetChildren() do child:Destroy() end
 		if not profile then return end
-		local level = dev and 50 or game.Players.LocalPlayer:GetAttribute("Level") or 1
-		local ownership = dev and everything or profile.ownership
-		local saved = profile.presets[state.preset].loadout
+		local range = state.range and profile.rangePresets ~= nil
+		local builds = range and profile.rangePresets or profile.presets
+		local level = (dev or range) and 50 or game.Players.LocalPlayer:GetAttribute("Level") or 1
+		local ownership = (dev or range) and everything or profile.ownership
+		local saved = builds[state.preset].loadout
 		state.builder = state.builder or Builder.new(Catalog, saved, ownership, level)
 		state.builder:update({ selectedLoadout = saved, selectedRevision = state.preset, profile = { ownership = ownership, level = level } })
 		local builder = state.builder
@@ -188,7 +196,7 @@ function Hangar.new(playerGui, api)
 		-- Part cards: a 2-column grid (every slot has at most 6 parts, so they all fit).
 		local definitions = Catalog.structuresBySlot[state.slot] or (state.slot == "weapons" and Catalog.weapons) or Catalog.utilities
 		for i, part in definitions do
-			local owned = dev or profile.ownership[part.id] == true
+			local owned = dev or range or profile.ownership[part.id] == true
 			local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
 				or state.slot == "weapons" and table.find(draft.weapon_mounts, part.id) ~= nil
 			local x, y = 45 + (i - 1) % 2 * 262, 272 + math.floor((i - 1) / 2) * 200
@@ -205,7 +213,7 @@ function Hangar.new(playerGui, api)
 			end)
 			local name = words(card, "Name", part.name, 18, 14, 216, 96, 36)
 			name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
-			local detail = owned and (equipped and "Equipped" or "Owned") or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
+			local detail = owned and (equipped and "Equipped" or range and profile.ownership[part.id] ~= true and "Range only" or "Owned") or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
 			if state.slot == "weapons" then
 				-- Damage (Alan): pips for how hard one shot hits, then damage per second.
 				name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(216, 44), false, true -- long names shrink to one line
@@ -247,7 +255,7 @@ function Hangar.new(playerGui, api)
 		local unsaved = not Builder.equal(draft, Builder.new(Catalog, saved).candidate)
 		local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
 			or state.dropAsk and string.format("Build %d has changes you haven't saved. Click build %d again to drop them.", state.preset, state.dropAsk)
-			or player:GetAttribute("MenuMessage") or ""
+			or player:GetAttribute("MenuMessage") or (range and "Range builds: every part works here, only in the Range." or "")
 		if state.purchase then
 			local part = state.purchase
 			local candidate = assert(Schema.copy(draft))
@@ -295,19 +303,38 @@ function Hangar.new(playerGui, api)
 		local problem = builder.message ~= "" or not valid or state.dropAsk ~= nil
 		message.TextColor3, message.TextWrapped = problem and Color3.fromRGB(170, 30, 30) or Color3.fromRGB(30, 110, 50), true
 
-		-- Saved builds 1-5: picking one is picking the build you fly (same as at the desk). Unsaved changes ask first.
+		-- Saved builds 1-5: picking one is picking the build you fly (same as at the desk; in the Range it swaps your
+		-- plane). Unsaved changes ask first. The picked build's name is typed over just left of them.
+		local nameBox = Instance.new("TextBox")
+		nameBox.Name, nameBox.Text, nameBox.PlaceholderText, nameBox.ClearTextOnFocus = "BuildName", builds[state.preset].name, "Name this build", false
+		nameBox.Position, nameBox.Size, nameBox.BackgroundTransparency = UDim2.fromOffset(45, 925), UDim2.fromOffset(530, 80), 1
+		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3, nameBox.TextXAlignment = PaperUI.font, 44, PaperUI.INK, Enum.TextXAlignment.Left
+		nameBox.TextTruncate, nameBox.Parent = Enum.TextTruncate.AtEnd, content
+		local underline = Instance.new("Frame")
+		underline.Position, underline.Size, underline.BackgroundColor3, underline.BorderSizePixel = UDim2.new(0, 0, 1, -6), UDim2.new(1, 0, 0, 4), PaperUI.INK, 0
+		underline.Parent = nameBox
+		words(content, "NameHint", "Click the name to change it", 45, 890, 530, 36, 26).TextTransparency = 0.35
+		nameBox:GetPropertyChangedSignal("Text"):Connect(function()
+			if utf8.len(nameBox.Text) and utf8.len(nameBox.Text) > NAME_MAX then nameBox.Text = nameBox.Text:sub(1, utf8.offset(nameBox.Text, NAME_MAX + 1) - 1) end
+		end)
+		nameBox.FocusLost:Connect(function()
+			local name = nameBox.Text:gsub("^%s+", ""):gsub("%s+$", "")
+			if name == "" or name == builds[state.preset].name then nameBox.Text = builds[state.preset].name; return end
+			api.action:FireServer("renamePreset", { range = range, slot = state.preset, name = name })
+		end)
 		for i = 1, 5 do
 			button(content, "Preset" .. i, i == state.preset and Art.slotSelected or Art.slot, tostring(i), 600 + (i - 1) * 125, 905, 110, 110, 0, function()
 				if i == state.preset then return end
 				if unsaved and state.dropAsk ~= i then state.dropAsk = i; render(); return end
-				state.preset, state.purchase, state.dropAsk = i, nil, nil; builder:reset(profile.presets[i].loadout, i)
-				api.action:FireServer("selectPreset", i); render()
+				state.preset, state.purchase, state.dropAsk = i, nil, nil; builder:reset(builds[i].loadout, i)
+				if range then api.action:FireServer("range", "load" .. i) else api.action:FireServer("selectPreset", i) end
+				render()
 			end, 60)
 		end
 		-- Save, and at the desk a clearly separate Save & fly that spends Paper (Alan 2026-10-17).
 		local function save(fly)
 			state.dropAsk = nil
-			api.action:FireServer("savePreset", { slot = state.preset, name = profile.presets[state.preset].name, loadout = draft, fly = fly })
+			api.action:FireServer(range and "saveRangePreset" or "savePreset", { slot = state.preset, name = builds[state.preset].name, loadout = draft, fly = fly })
 			if fly then api.flown() end
 		end
 		if atDesk() then
@@ -324,7 +351,7 @@ function Hangar.new(playerGui, api)
 	-- lands on a replaced button is lost (the menu refreshes the profile every 3 seconds).
 	local shown
 	function self.update(player, newProfile)
-		local key = newProfile and game:GetService("HttpService"):JSONEncode({ newProfile.paper, newProfile.ownership, newProfile.presets,
+		local key = newProfile and game:GetService("HttpService"):JSONEncode({ newProfile.paper, newProfile.ownership, newProfile.presets, newProfile.rangePresets,
 			player:GetAttribute("MenuMessage"), atDesk() })
 		if key == shown and content:FindFirstChild("SavePreset") then return end
 		shown, profile = key, newProfile
@@ -332,10 +359,15 @@ function Hangar.new(playerGui, api)
 	end
 	function self.draft() return state.draft end
 	-- Opening the hangar shows the build you fly, unless you left changes on another one unsaved.
+	-- Opened in the Range it shows the Range's builds (switching lists drops the other list's unsaved draft).
 	function self.open()
-		local selected = player:GetAttribute("SelectedPreset") or 1
-		local saved = profile and profile.presets[state.preset]
-		local unsaved = state.builder and saved and not Builder.equal(state.builder.candidate, Builder.new(Catalog, saved.loadout).candidate)
+		local range = inRange()
+		local selected = range and (player:GetAttribute("RangeSlot") or 1) or player:GetAttribute("SelectedPreset") or 1
+		local builds = profile and (state.range and profile.rangePresets or profile.presets)
+		local saved = builds and builds[state.preset]
+		local unsaved = range == state.range and state.builder and saved and not Builder.equal(state.builder.candidate, Builder.new(Catalog, saved.loadout).candidate)
+		if range ~= state.range then state.builder = nil end
+		state.range = range
 		if not unsaved then state.preset, state.dropAsk = selected, nil end
 		shown = nil
 	end

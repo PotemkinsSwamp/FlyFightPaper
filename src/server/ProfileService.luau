@@ -164,6 +164,12 @@ function Service:_effect(p,op,boostState)
 	elseif op.kind=="preset" then
 		if not Schema.integer(op.slot) or op.slot<1 or op.slot>Gameplay.menus.saved_loadouts then return nil,"invalid_slot" end
 		p.presets[op.slot]={name=op.name,loadout=op.loadout}; result={type="PresetSaved",slot=op.slot}
+	elseif op.kind=="rangePreset" then
+		if not Schema.integer(op.slot) or op.slot<1 or op.slot>Gameplay.menus.saved_loadouts then return nil,"invalid_slot" end
+		p.rangePresets[op.slot]={name=op.name,loadout=op.loadout}; result={type="RangePresetSaved",slot=op.slot}
+	elseif op.kind=="rangeSlot" then
+		if not Schema.integer(op.slot) or op.slot<1 or op.slot>Gameplay.menus.saved_loadouts then return nil,"invalid_slot" end
+		p.rangeSlot=op.slot; result={type="RangeSlotSaved",slot=op.slot}
 	elseif op.kind=="settings" then p.settings=op.settings; result={type="SettingsSaved"}
 	elseif op.kind=="lessonDone" then
 		if not Schema.LESSONS[op.lesson] then return nil,"invalid_lesson" end
@@ -234,7 +240,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={receipt=true,passGrant=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,settings=true,lessonDone=true,
+local allowed={receipt=true,passGrant=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}

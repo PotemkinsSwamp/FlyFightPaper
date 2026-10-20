@@ -15,6 +15,7 @@ local function fixture()
  data.paperMilli=1234567;data.earnedPaperMilli=2345678;data.purchasedPaperMilli=900000
  data.ownership.staple=true;data.presets[1].name="Keep this name";data.presets[1].loadout.weapon_mounts[1]="staple"
  data.presets[2].name="Legal starter build";data.presets[2].loadout.weapon_mounts[1]=false
+ data.rangePresets[4].name="Keep this Range build";data.rangePresets[4].loadout.weapon_mounts[1]="eraser";data.rangeSlot=4
  data.boosts={paperSeconds=12.5,xpSeconds=1800,permanentPaper=true,permanentXP=false}
  data.settings.music=0.25;data.settings.crosshairColor="red"
  data.qualification={count=2,history={first=true,second=true}}
@@ -29,6 +30,67 @@ local function fixture()
 end
 function Spec.run()
  local result,test=Suite.new()
+ test("Range preset saves accept unowned parts and apply once without changing match builds",function()
+  local service,profile,catalog=fixture();profile.Data.xpMilli=0
+  local loadout=catalog:starterLoadout();loadout.nose="nose_5";loadout.weapon_mounts[1]="eraser";loadout.utility="boost_twin"
+  assert(not profile.Data.ownership.eraser and catalog:get("eraser").min_level>Economy.levelForXP(profile.Data.xpMilli))
+  local before=assert(Schema.copy(profile.Data))
+  local op=assert(service:prepare("user",{kind="rangePreset",slot=5,name="Try all parts",loadout=loadout}))
+  local applied=service:apply("user",op)
+  assert(applied.status=="ok",applied.code)
+  assert(applied.value.type=="RangePresetSaved" and applied.value.slot==5 and applied.value.operationID==op.id)
+  local expected=assert(Schema.copy(before));expected.rangePresets[5]={name=op.name,loadout=loadout}
+  expected.version+=1;expected.operationIds[service.sessions.user.token]=1
+  assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"Range save changed unrelated progress")
+  local after=Schema.canonical(profile.Data);local retry=service:apply("user",op)
+  assert(retry.status=="ok" and retry.value.type=="RangePresetSaved" and Schema.canonical(profile.Data)==after)
+  local newer=assert(service:prepare("user",{kind="rangePreset",slot=5,name="Newer build",loadout=catalog:starterLoadout()}))
+  assert(service:apply("user",newer).status=="ok");after=Schema.canonical(profile.Data)
+  assert(service:apply("user",op).status=="ok" and Schema.canonical(profile.Data)==after,"retry overwrote the newer build")
+  op.name="Conflicting retry"
+  assert(service:apply("user",op).code=="operation_id_conflict" and Schema.canonical(profile.Data)==after)
+ end)
+ test("Range slot saves apply once and survive a save and rejoin with the Range builds",function()
+  local service,profile=fixture();local before=assert(Schema.copy(profile.Data))
+  local op=assert(service:prepare("user",{kind="rangeSlot",slot=1}));local applied=service:apply("user",op)
+  assert(applied.status=="ok",applied.code)
+  assert(applied.value.type=="RangeSlotSaved" and applied.value.slot==1 and applied.value.operationID==op.id)
+  local expected=assert(Schema.copy(before));expected.rangeSlot=1;expected.version+=1
+  expected.operationIds[service.sessions.user.token]=1
+  assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"Range selection changed unrelated progress")
+  local after=Schema.canonical(profile.Data);local retry=service:apply("user",op)
+  assert(retry.status=="ok" and retry.value.type=="RangeSlotSaved" and Schema.canonical(profile.Data)==after)
+  assert(service:apply("user",assert(service:prepare("user",{kind="rangeSlot",slot=5}))).status=="ok")
+  after=Schema.canonical(profile.Data)
+  assert(service:apply("user",op).status=="ok" and Schema.canonical(profile.Data)==after,"retry changed the newer selection")
+  op.slot=2
+  assert(service:apply("user",op).code=="operation_id_conflict" and Schema.canonical(profile.Data)==after)
+  assert(profile:EndSession());service:detach("user")
+  local reopened=Fake.new(profile.LastSavedData)
+  assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
+  assert(reopened.Data.rangeSlot==5 and Schema.canonical(reopened.Data.rangePresets)==Schema.canonical(before.rangePresets))
+ end)
+ test("Range operations reject invalid slots without changing saved progress or the operation watermark",function()
+  for _,kind in ipairs({"rangePreset","rangeSlot"}) do
+   for _,slot in ipairs({0,6,-1,1.5,"1",false}) do
+    local service,profile,catalog=fixture();local before=Schema.canonical(profile.Data)
+    local applied=service:apply("user",assert(service:prepare("user",{kind=kind,slot=slot,name="Invalid slot",loadout=catalog:starterLoadout()})))
+    assert(applied.status=="error" and applied.code=="invalid_slot",applied.code)
+    assert(Schema.canonical(profile.Data)==before,"invalid Range slot changed saved progress")
+   end
+  end
+ end)
+ test("Range preset saves revalidate names and loadouts before changing any saved data",function()
+  local service,profile,catalog=fixture();local before=Schema.canonical(profile.Data)
+  local overloaded=catalog:starterLoadout();overloaded.weapon_mounts={"eraser",false,"rubber","rubber"}
+  for _,input in ipairs({{name="",loadout=catalog:starterLoadout()},{name="bad\nname",loadout=catalog:starterLoadout()},
+   {name="Over capacity",loadout=overloaded},{name="Missing loadout"},{loadout=catalog:starterLoadout()}}) do
+   input.kind="rangePreset";input.slot=1
+   local applied=service:apply("user",assert(service:prepare("user",input)))
+   assert(applied.status=="error")
+   assert(Schema.canonical(profile.Data)==before,"invalid Range build changed saved progress")
+  end
+ end)
  test("prestige exposes its rank in the view and preserves all unrelated saved progress",function()
   local service,profile,catalog=fixture()
   assert(service:view("user").value.prestige==0)
@@ -43,6 +105,7 @@ function Spec.run()
   assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"prestige changed unrelated saved progress")
   local view=service:view("user").value
   assert(view.prestige==1 and table.isfrozen(view) and profile.writes==0)
+  assert(view.rangeSlot==4 and Schema.canonical(view.rangePresets)==Schema.canonical(before.rangePresets),"prestige changed the Range builds")
  end)
  test("retrying a prestige operation applies it once even after earning back the level cap",function()
   local service,profile=fixture();local op=assert(service:prepare("user",{kind="prestige"}))

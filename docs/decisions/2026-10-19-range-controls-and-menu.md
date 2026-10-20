@@ -15,8 +15,10 @@
 - **Range Menu drops on strings** with a small bounce: Loadouts 1-5 (also keys 1-5) and Difficulty (Noob, Challenge,
   Veteran, Maneuvers) plus Edit in Hangar; Back to range (or Range Menu again) pulls it back up.
 - **Maneuvers** weaves at Challenge's speed (at Veteran's it was impossible).
-- **Next: the Range's own five loadouts with names you can change** (Alan picked this over the swap animation first).
-  Until then the strips are your saved match builds and picking one also picks it for matches.
+- **The Range keeps its own five loadouts with names you can change** (Alan picked this over the swap animation first;
+  plan OK'd later the same night): saved with the profile, any part allowed, never used in matches; the Hangar opened
+  in the Range edits them; renaming (click the name, 20 letters) works for match builds too; you start on the Range
+  build you last flew there (Alan's pick over "always build 1").
 - Liked, later: on a swap the old plane flies off into the distance and the new one slides in from behind.
 
 ## Why

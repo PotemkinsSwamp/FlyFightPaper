@@ -28,10 +28,10 @@ function Board.start()
 			if p:GetAttribute("RangeBoard") == what then return p end
 		end
 	end
-	-- The red rings follow the picked loadout and difficulty; the strips show the saved builds' names.
+	-- The red rings follow the picked loadout and difficulty; the strips show the Range builds' names.
 	local function refresh()
 		if not sheet then return end
-		for i, what in { "load" .. (player:GetAttribute("SelectedPreset") or 1), player:GetAttribute("RangeDifficulty") or "noob" } do
+		for i, what in { "load" .. (player:GetAttribute("RangeSlot") or 1), player:GetAttribute("RangeDifficulty") or "noob" } do
 			local ring, on = sheet:FindFirstChild("Ring" .. i), strip(what)
 			if ring and on then ring.CFrame = on.CFrame * CFrame.new(0, 0, 1) end
 		end
@@ -77,9 +77,9 @@ function Board.start()
 	if workspace:FindFirstChild("RangeStage") then task.spawn(hook, workspace.RangeStage) end
 
 	for _, key in { "RangeShots", "RangeHits" } do player:GetAttributeChangedSignal(key):Connect(score) end
-	for _, key in { "SelectedPreset", "RangeDifficulty" } do player:GetAttributeChangedSignal(key):Connect(refresh) end
+	for _, key in { "RangeSlot", "RangeDifficulty" } do player:GetAttributeChangedSignal(key):Connect(refresh) end
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
-		presets = profile.presets or {}
+		presets = profile.rangePresets or {}
 		refresh()
 	end)
 

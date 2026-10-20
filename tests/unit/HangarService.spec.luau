@@ -29,6 +29,19 @@ function Spec.run()
 		assert(#profiles.calls==1 and profiles.calls[1].kind=="preset")
 		assert(Schema.canonical(profiles.calls[1].loadout)==Schema.canonical(loadout))
 	end)
+	test("a Range build may use parts you don't own and queues the Range's own save",function()
+		local service,player,profiles,catalog=fixture();local loadout=catalog:starterLoadout()
+		loadout.nose="nose_5";loadout.utility="boost_twin"
+		service:handle(player,"saveRangePreset",{slot=2,loadout=loadout})
+		assert(#profiles.calls==1 and profiles.calls[1].kind=="rangePreset" and profiles.calls[1].slot==2 and profiles.calls[1].name=="Range 2")
+		service:handle(player,"savePreset",{slot=2,loadout=loadout})
+		assert(#profiles.calls==1,"match builds still need owned parts")
+	end)
+	test("a name over 20 letters is refused without a save",function()
+		local service,player,profiles=fixture()
+		service:handle(player,"renamePreset",{range=true,slot=1,name=string.rep("a",21)})
+		assert(#profiles.calls==0 and player.attributes.MenuMessage=="Names are 1 to 20 letters.")
+	end)
 	return result
 end
 return Spec

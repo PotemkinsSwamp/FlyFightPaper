@@ -37,8 +37,9 @@ two per row, painted cut-outs on long sticks (`RangeTarget`) sweeping wide and h
 Long range, All; sticks stand on their hinges), the score card + Reset hanging top right (`RangeShots`/`RangeHits`,
 start over on any change), Range Menu and Hangar strips hanging at the left edge under the game's Menu button (which the
 crosshair can click too), and the Range Menu, which drops on strings on a spring: Loadouts 1-5 (also keys 1-5; swap
-the plane in the air) and Difficulty plus Edit in Hangar (saving there swaps the plane). For now the loadouts are your
-saved match builds (picking one also picks it for matches); **next: the Range's own five, with names you can change.**
+the plane in the air) and Difficulty plus Edit in Hangar (saving there swaps the plane). The loadouts are the Range's own
+five builds (saved as `rangePresets`, any part allowed, never used in matches; you start on the one you last flew
+there). The Hangar opened in the Range edits them ("Range only" on parts you don't own); built 2026-10-19, not yet played.
 Flight School's end card has "Next: Combat School". Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during

@@ -5,6 +5,7 @@ Your Paper, XP, level, owned parts, five saved builds and settings are kept betw
 lost if a save fails for a moment; it retries without stopping the match for everyone else.
 
 ## Where it stands (2026-10-19)
+Schema 7 adds the Range's own five builds (`rangePresets`, any part allowed) and the last Range build flown (`rangeSlot`); the shut-down-old-servers rule applies.
 The save now keeps which lessons you've finished (schema 6, `lessons`: the [Training board](tutorial.md)'s ticks; a
 new lesson name only widens `ProfileSchema.LESSONS`, no migration) and a prestige rank (schema 5). **Before publishing a new schema, shut down all old servers**: an
 old server can't read a newer save and would kick a player sent to it (Codex review 2026-10-19). Prestige: its rules are on [Economy and shop](economy-and-shop.md#prestige).

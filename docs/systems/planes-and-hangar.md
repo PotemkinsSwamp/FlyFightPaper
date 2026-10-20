@@ -1,7 +1,7 @@
 # Planes and hangar
 
 ## What the player sees
-A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bodies are fast and fragile, heavy bodies are tough and slow and carry more. In the hangar you build, compare and save five builds. Weapons that can't fit are crossed out with a crayon X saying why.
+A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bodies are fast and fragile, heavy bodies are tough and slow and carry more. In the hangar you build, compare, save and name five builds (click the name, up to 20 letters, Roblox-filtered). In the [Range](tutorial.md) it edits the Range's own five instead. Weapons that can't fit are crossed out with a crayon X saying why.
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 

@@ -9,12 +9,48 @@ function Spec.run()
 	local result,test=Suite.new()
 	local catalog=Catalog.new(require(Root.Generated.Catalog),require(Root.Generated.Gameplay))
 	local function fresh() return Schema.defaults(catalog) end
-	test("explicit defaults grant only catalog starter ownership and five legal presets",function()
+	test("explicit defaults grant only catalog starter ownership and five legal match and Range presets",function()
 		local p=assert(Schema.validate(fresh(),catalog)); local starter=assert(Economy.starterOwnership(catalog))
-		assert(Schema.canonical(p.ownership)==Schema.canonical(starter) and #p.presets==5)
+		assert(Schema.canonical(p.ownership)==Schema.canonical(starter) and #p.presets==5 and #p.rangePresets==5 and p.rangeSlot==1)
+		for i,preset in ipairs(p.rangePresets) do
+			assert(preset.name=="Range "..i and Schema.canonical(preset.loadout)==Schema.canonical(catalog:starterLoadout()))
+		end
 		assert(p.paperMilli==require(Root.Generated.Economy).initial_paper*1000)
 		assert(p.xpMilli==require(Root.Generated.Economy).initial_total_xp*1000)
 		assert(p.schemaVersion==Schema.VERSION and p.prestige==0 and next(p.lessons)==nil)
+	end)
+	test("Range presets allow unowned high-level parts while match presets still reject them",function()
+		local p=fresh(); local loadout=p.rangePresets[1].loadout
+		loadout.nose="nose_5"; loadout.weapon_mounts[1]="eraser"; loadout.utility="boost_twin"
+		for _,id in ipairs({"nose_5","eraser","boost_twin"}) do
+			assert(not p.ownership[id] and catalog:get(id).min_level>Economy.levelForXP(p.xpMilli))
+		end
+		assert(Schema.validate(p,catalog))
+		p.presets[1].loadout=assert(Schema.copy(loadout)); assert(not Schema.validate(p,catalog))
+	end)
+	test("Range presets still reject excess capacity and a third weapon type",function()
+		for _,mounts in ipairs({{"eraser",false,"rubber","rubber"},{"pellet","staple","rubber",false}}) do
+			local p=fresh(); p.rangePresets[2].loadout.weapon_mounts=mounts
+			assert(not Schema.validate(p,catalog))
+		end
+	end)
+	test("Range presets require five exact entries and the same bounded names as match presets",function()
+		for _,name in ipairs({"",string.rep("x",49),string.rep(utf8.char(0x2603),17),"bad\nname",string.char(255),false}) do
+			local p=fresh(); p.rangePresets[1].name=name; assert(not Schema.validate(p,catalog))
+		end
+		local p=fresh(); p.rangePresets[1].name=string.rep(utf8.char(0x2603),16); assert(Schema.validate(p,catalog))
+		p=fresh(); p.rangePresets[5]=nil; assert(not Schema.validate(p,catalog))
+		p=fresh(); p.rangePresets[6]={name="Extra",loadout=catalog:starterLoadout()}; assert(not Schema.validate(p,catalog))
+		p=fresh(); p.rangePresets[1].extra=true; assert(not Schema.validate(p,catalog))
+		p=fresh(); p.rangePresets[1].loadout=nil; assert(not Schema.validate(p,catalog))
+		p=fresh(); p.rangePresets=nil; assert(not Schema.validate(p,catalog))
+	end)
+	test("Range slot must be an integer from one through five",function()
+		for slot=1,5 do local p=fresh(); p.rangeSlot=slot; assert(Schema.validate(p,catalog)) end
+		for _,slot in ipairs({0,6,-1,1.5,"1",false}) do
+			local p=fresh(); p.rangeSlot=slot; assert(not Schema.validate(p,catalog))
+		end
+		local p=fresh(); p.rangeSlot=nil; assert(not Schema.validate(p,catalog))
 	end)
 	test("prestige accepts ranks zero through the configured maximum and rejects invalid ranks",function()
 		for rank=0,EconomyConfig.prestige_max do
@@ -87,6 +123,18 @@ function Spec.run()
 		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
 		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v5 migration changed unrelated fields")
 	end)
+	test("v6 migration adds Range defaults while preserving match builds, names and the complete save",function()
+		local p=fresh(); p.schemaVersion=6; p.rangePresets=nil; p.rangeSlot=nil
+		p.ownership.eraser=true; p.presets[2].name="Saved match build"; p.presets[2].loadout.weapon_mounts[1]="eraser"
+		p.version=12; p.paperMilli=4321; p.prestige=2; p.lessons={flight=true}; p.statistics.matches=3
+		p.settings.music=0.25; p.extensions={custom={kept=true}}
+		local original=Schema.canonical(p); local expected=assert(Schema.copy(p)); local defaults=fresh()
+		expected.schemaVersion=7; expected.rangePresets=defaults.rangePresets; expected.rangeSlot=1
+		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
+		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v6 migration changed unrelated fields")
+		assert(Schema.canonical(p)==original,"v6 migration mutated input")
+		assert(Schema.canonical(assert(Schema.migrate(migrated,catalog)))==Schema.canonical(migrated))
+	end)
 	test("lesson ticks accept only known lessons marked true",function()
 		local p=fresh(); p.lessons={flight=true,combat=true}; assert(Schema.validate(p,catalog))
 		for _,bad in ipairs({{secret=true},{flight=false},{flight=1},{[1]=true}}) do local q=fresh(); q.lessons=bad; assert(not Schema.validate(q,catalog)) end
@@ -157,6 +205,23 @@ function Spec.run()
 		assert(Schema.canonical(recovered)==Schema.canonical(expected),"recovery changed unrelated progress")
 		assert(Schema.canonical(p)==original,"recovery mutated the saved input")
 		assert(Schema.canonical(assert(Schema.migrate(recovered,catalog)))==Schema.canonical(recovered),"recovery must be idempotent")
+	end)
+	test("Range recovery repairs capacity and weapon types while keeping legal unowned builds and names",function()
+		local p=fresh(); p.rangeSlot=3; p.rangePresets[1].name="Old heavy guns"; p.rangePresets[2].name="Three old guns"
+		p.rangePresets[1].loadout.weapon_mounts={"eraser",false,"rubber","rubber"}
+		p.rangePresets[2].loadout.weapon_mounts={"pellet","staple","rubber",false}
+		p.rangePresets[3].loadout.weapon_mounts[1]="eraser"; assert(not p.ownership.eraser)
+		local original=Schema.canonical(p); local expected=assert(Schema.copy(p))
+		expected.rangePresets[1].loadout=catalog:starterLoadout(); expected.rangePresets[2].loadout=catalog:starterLoadout()
+		assert(not Schema.validate(p,catalog))
+		local recovered=assert(Schema.migrate(Schema.freeze(p),catalog))
+		assert(Schema.canonical(recovered)==Schema.canonical(expected),"Range recovery changed unrelated fields")
+		assert(Schema.canonical(p)==original,"Range recovery mutated input")
+		assert(Schema.canonical(assert(Schema.migrate(recovered,catalog)))==Schema.canonical(recovered))
+	end)
+	test("Range recovery still rejects unknown parts and incompatible mounts",function()
+		local p=fresh(); p.rangePresets[1].loadout.weapon_mounts[1]="invented"; assert(not Schema.migrate(p,catalog))
+		p=fresh(); p.rangePresets[1].loadout.weapon_mounts[3]="pencil"; assert(not Schema.migrate(p,catalog))
 	end)
 	test("a saved third weapon type recovers only its preset and pending refold",function()
 		local p=fresh();p.xpMilli=60000000;p.paperMilli=1234567;p.ownership.staple=true;p.ownership.rubber=true
