@@ -32,7 +32,7 @@ Course.DRILLS={
 -- 2026-10-19): shoot one and it tips back on its hinge and stays down while picked. Bigger plate = closer row.
 -- `x`: across the stage, `w`: width in studs.
 -- `seat`: where the plane hangs, from origin: back toward the still camera so it sits low and out of the way.
-Course.RANGE={origin=CFrame.new(0,900,12000),seat=Vector3.new(0,0,10),yaw=math.rad(48),up=math.rad(28),down=math.rad(34),targets={
+Course.RANGE={origin=CFrame.new(0,900,12000),seat=Vector3.new(0,0,10),yaw=math.rad(50),up=math.rad(28),down=math.rad(34),targets={
  -- Wide, high sweeps so the targets use the whole stage (Alan approved the flying area 2026-10-20). Speeds are
  -- Challenge's; the other difficulties scale them (DIFFICULTY).
  {row="close",at=Vector3.new(0,20,-150),health=40,speed=65,span=130,depth=4,bob=35,color="red"},

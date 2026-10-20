@@ -3,7 +3,8 @@
 -- measured from the concept (assets/references/ui-concepts/range-stage-view-2.png) as seen from the Range camera
 -- (15 studs behind the plane, 4.5 up, 72° view). Pieces are lit by their own paint (LightInfluence 0), like the concept.
 local Root=game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
-local Art=require(Root.Shared.UIAssets).range
+local Art=table.clone(require(Root.Shared.UIAssets).range)
+Art.plainStrip=require(Root.Shared.UIAssets).trainingboard.stripGreen -- the Training board's green strip: no pin
 local Course=require(Root.Shared.TrainingCourse)
 local Stage={}
 
@@ -12,7 +13,7 @@ local PX={backdrop={1024,576},curtainSide={298,1024},lamp={673,1024},ledge={1024
  townRowA={1024,222},townRowB={1024,229},townRowC={1024,259},townArch={1024,910},townClock={326,1024},
  townStepped={625,1024},townTwin={1024,766},
  pickerClose={1024,674},pickerMedium={1024,681},pickerLong={1024,638},pickerAll={1024,1012},pickerStand={1024,329},
- board={644,1024},title={1024,290},scoreCard={1024,569},tag={998,1024},selected={1024,301},
+ board={644,1024},plainStrip={1024,308},title={1024,290},scoreCard={1024,569},selected={1024,301},
  stripGreen={1024,225},stripYellow={1024,225},stripRed={1024,225},stripPurple={1024,225},stripBlue={1024,225}}
 
 -- Ground rows: flat cardboard rows the target sticks rise from behind (close, middle, far). Heights put each row's lip
@@ -71,15 +72,17 @@ local function shootable(p,what) p.Name="BoardStrip";p.CanQuery=true;p:SetAttrib
 local function label(stage,origin,text,x,y,z,w,h)
  local p=flat(stage,origin,"Label",x,y,z,w,h);write(p,text,UDim2.fromScale(1,1),UDim2.fromScale(0,0));return p
 end
--- Two strings running up out of view from a piece's top edge, like the theatre's other puppets.
-local function strings(stage,origin,x,top,w,z,length)
+-- Two strings from `high` down to `low`, just behind a piece at depth z, so they run down behind its paper and hold it
+-- (Alan 2026-10-20: strings ending at the top edge looked like the paper floated).
+local function strings(stage,origin,x,low,high,w,z)
  for _,s in {-1,1} do
-  part(stage,"String",Vector3.new(.25,length,.25),origin*CFrame.new(x+s*w*.35,top+length/2,z-.3),Color3.fromRGB(60,50,45))
+  part(stage,"String",Vector3.new(.25,high-low,.25),origin*CFrame.new(x+s*w*.35,(low+high)/2,z-.3),Color3.fromRGB(60,50,45))
  end
 end
-local function hang(stage,origin,key,x,top,w)
+-- A piece hanging from above the view, or from `from` (the bottom of the piece above it).
+local function hang(stage,origin,key,x,top,w,from)
  local h=tall(key,w);local p=paint(stage,origin,key,x,top-h/2,MENU_Z,w,h)
- strings(stage,origin,x,top,w,MENU_Z,40)
+ strings(stage,origin,x,top-h*.6,from or top+40,w,MENU_Z)
  return p,h
 end
 local function controls(stage,origin)
@@ -102,7 +105,7 @@ local function controls(stage,origin)
   rod.Shape=Enum.PartType.Cylinder;rod:SetAttribute("StickOf",pick.row)
   paint(stage,origin,"pickerStand",pick.x,FLOOR_Y+footH/2,PICK_Z-1,foot,footH).Name="PickFoot"
  end
- -- Top right: the score card, its Reset strip just under it. Top left: the Menu note (shoot it again to fold the menu).
+ -- Top right: the score card, its Reset strip just under it.
  local card,ch=hang(stage,origin,"scoreCard",72,50,24);card.Name="ScoreCard"
  for i,line in {"Hits  0","Shots  0","0%"} do
   write(card,line,UDim2.fromScale(.75,.29),UDim2.fromScale(.15,.08+(i-1)*.29),Enum.TextXAlignment.Left).Name="Line"..i
@@ -110,18 +113,20 @@ local function controls(stage,origin)
  local rh=tall("stripBlue",20)
  local reset=paint(stage,origin,"stripBlue",74,50-ch-.4-rh/2,MENU_Z,20,rh);shootable(reset,"reset")
  write(reset,"Reset",UDim2.fromScale(.75,.8),UDim2.fromScale(.17,.1))
- -- Range Menu and Hangar notes side by side, clear of the game's own Menu button in the corner.
- local tab=hang(stage,origin,"tag",-58,50,15);shootable(tab,"menu")
- write(tab,"Range\nMenu",UDim2.fromScale(.8,.6),UDim2.fromScale(.1,.25))
- local hangar=hang(stage,origin,"tag",-40,50,15);shootable(hangar,"hangar")
- write(hangar,"Hangar",UDim2.fromScale(.8,.4),UDim2.fromScale(.1,.35))
+ -- At the left edge under the game's own Menu button, out of the targets' way: Range Menu (click it again to fold the
+ -- menu), and the Hangar strip hanging from it (Alan 2026-10-20). Plain strips, no pins: the strings hold them.
+ local NOTE_X,NOTE_TOP,NOTE_W=-76,40,22
+ local tab,tabH=hang(stage,origin,"plainStrip",NOTE_X,NOTE_TOP,NOTE_W);shootable(tab,"menu")
+ write(tab,"Range Menu",UDim2.fromScale(.84,.8),UDim2.fromScale(.08,.1))
+ local hangar=hang(stage,origin,"plainStrip",NOTE_X,NOTE_TOP-tabH-3,NOTE_W,NOTE_TOP-tabH*.3);shootable(hangar,"hangar")
+ write(hangar,"Hangar",UDim2.fromScale(.84,.8),UDim2.fromScale(.08,.1))
  -- The menu: the board piece turned on its side at its own shape, the title and Back to range, two columns of strips.
  local sheet=Instance.new("Model");sheet.Name="RangeMenu";sheet.Parent=stage
  local W=118;local H=W*PX.board[1]/PX.board[2]
  local back=paint(sheet,origin,"board",0,MENU_Y,MENU_Z-3,W,H);back.Name="Sheet"
  local img=back.SurfaceGui.ImageLabel;img.AnchorPoint=Vector2.new(.5,.5);img.Position=UDim2.fromScale(.5,.5)
  img.Size=UDim2.fromScale(H/W,W/H);img.Rotation=90;sheet.PrimaryPart=back
- strings(sheet,origin,0,MENU_Y+H/2,W*1.2,MENU_Z-3,120)
+ strings(sheet,origin,0,MENU_Y+H*.2,MENU_Y+H/2+120,W*1.2,MENU_Z-3)
  local top=MENU_Y+H/2-3
  local th=tall("title",38);paint(sheet,origin,"title",0,top-th/2,MENU_Z,38,th)
  local bh=tall("stripRed",30);local close=paint(sheet,origin,"stripRed",38,top-th/2,MENU_Z,30,bh);shootable(close,"close-menu")
