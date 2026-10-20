@@ -57,7 +57,6 @@ function Stage.build(origin)
  end
  part(stage,"Header",Vector3.new(520,480,4),at(0,370,-152),DRAPE)
  part(stage,"HallBack",Vector3.new(604,600,4),at(0,100,152),DRAPE)
- part(stage,"HallFloor",Vector3.new(604,4,252),at(0,-100,25),FLOOR,card)
  part(stage,"HallCeiling",Vector3.new(604,4,304),at(0,300,0))
  -- The cardboard town in three depths: two rows of houses, then the landmarks, with bushes along their feet.
  local function houses(z,bottom,h,order,x)
@@ -100,7 +99,7 @@ function Stage.build(origin)
  -- word on painted paper on a stick from its hinged foot. A shot that hits one picks its rows (RoundRuntime:rangePick);
  -- RangeTargets tips the picked one back on its hinge (`Hinge`), stick and all.
  local FLOOR_Y,PICK_Z=-56,-72
- part(stage,"Apron",Vector3.new(600,4,70),at(0,FLOOR_Y-2,-65),FLOOR,card)
+ part(stage,"Apron",Vector3.new(604,4,254),at(0,FLOOR_Y-2,25),FLOOR,card) -- runs from the close row back under the plane to the hall's back wall
  for _,pick in Course.RANGE.picks do
   local key=PLATE[pick.row];local h=pick.w*PX[key][2]/PX[key][1]
   local foot=pick.w*.6;local footH=foot*329/1024;local hinge=FLOOR_Y+footH*.7;local stick=h*.35

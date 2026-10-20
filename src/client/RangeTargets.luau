@@ -112,32 +112,33 @@ function Targets.start()
 		Debris:AddItem(t.card, 0.7)
 		Debris:AddItem(t.stick, 0.7)
 	end
-	-- Row-picker plates: down (tipped back on its hinge, stick and all) while picked, with a ting when it goes.
-	local function plate(part, stick)
+	-- Row-picker plates: down (tipped back on its hinge, stick and all) while picked, with a ting when it goes. The
+	-- stage's parts can arrive after the stage itself, so each plate is hooked up as it arrives and finds its stick
+	-- (`StickOf`) when it first moves.
+	local function plate(part, model)
 		local hinge = CFrame.new(part:GetAttribute("Hinge")) * stage
 		local tip = hinge * CFrame.Angles(-math.rad(80), 0, 0) * hinge:Inverse()
-		local pieces = { part, stick }
-		local up = {}
-		for _, piece in pieces do up[piece] = piece.CFrame end
+		local up = { [part] = part.CFrame }
 		local function set(sound)
+			for _, other in model:GetChildren() do
+				if other:GetAttribute("StickOf") == part:GetAttribute("RangePick") and not up[other] then up[other] = other.CFrame end
+			end
 			local isDown = part:GetAttribute("Down") == true
 			local info = TweenInfo.new(0.25, Enum.EasingStyle.Back, isDown and Enum.EasingDirection.Out or Enum.EasingDirection.InOut)
-			for _, piece in pieces do
-				TweenService:Create(piece, info, { CFrame = isDown and tip * up[piece] or up[piece] }):Play()
+			for piece, rest in up do
+				TweenService:Create(piece, info, { CFrame = isDown and tip * rest or rest }):Play()
 			end
 			if sound and isDown then Audio.play("plate", up[part].Position) end
 		end
 		part:GetAttributeChangedSignal("Down"):Connect(function() set(true) end)
-		set(false)
+		task.defer(set, false)
 	end
 	local function watchStage(model)
-		local sticks = {}
-		for _, part in model:GetChildren() do
-			if part:GetAttribute("StickOf") then sticks[part:GetAttribute("StickOf")] = part end
+		local function check(part)
+			if part:GetAttribute("RangePick") then plate(part, model) end
 		end
-		for _, part in model:GetChildren() do
-			if part:GetAttribute("RangePick") then plate(part, sticks[part:GetAttribute("RangePick")]) end
-		end
+		model.ChildAdded:Connect(check)
+		for _, part in model:GetChildren() do check(part) end
 	end
 	workspace.ChildAdded:Connect(function(child) if child.Name == "RangeStage" then watchStage(child) end end)
 	if workspace:FindFirstChild("RangeStage") then watchStage(workspace.RangeStage) end

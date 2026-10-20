@@ -32,11 +32,12 @@ three ground rows with warm bulbs, curtains, lamps with soft beams (all painted 
 target planes, drawn as painted cut-outs on sticks (`RangeTarget`), swing and bob in three rows, tilt with their swoop
 and turn over on the stick when they change direction, show 4 tear pictures as they're hit, split into two halves with
 a scrap burst, sink, and rise again after the respawn wait. After Alan's first Play look ([decision](../decisions/2026-10-19-range-row-picker-and-aim-pick.md)):
-the aim stops at the stage edges (`RANGE.yaw`, `up`, `down`) and the plane stays level; the box round the stage is dressed
+the Range camera stays still (no sliding scenery); the crosshair moves over the screen within `RANGE.yaw`, `up`,
+`down`, the plane stays level and points at what the crosshair is on (a plate it hits, else the aim-help target, else
+400 studs) so shots land on the crosshair; Lift and Health are hidden there; one cardboard floor runs under the plane; the box round the stage is dressed
 (drape walls, cardboard floor, bulbs); two targets per row; the row picker is four knock-down plates on the stage
 floor at the bottom of the view (Close, Medium, Long range, All; `RANGE.picks`, `RangeRows`), each on a stick from a
-hinged foot; the Range camera sits further back and higher (plane small at the bottom, like the concept) and the aim
-reaches 35° down to them. A shot that hits one picks it, it tips back on its hinge with a ting and stays down, the unpicked rows' targets tip back and leave (`Lowered`). The plates are plane-shaped paper
+hinged foot; the camera sits back and up, tipped down 4° (plane small at the bottom, like the concept). A shot that hits one picks it, it tips back on its hinge with a ting and stays down, the unpicked rows' targets tip back and leave (`Lowered`). The plates are plane-shaped paper
 (green Close, yellow Medium, purple Long range) and a round All, art by Codex, uploaded after Alan OK'd an assembled preview. Flight School's end card has "Next: Combat School". Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during

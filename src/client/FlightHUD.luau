@@ -437,7 +437,7 @@ function HUD.start(getPlane, action)
 			end
 		end
 		for root in pairs(motion) do if not root.Parent then motion[root] = nil end end
-		picked = target
+		picked, FlightState.target = target, target
 		local shown = 0
 		for _, other in ipairs(flying and planes:GetChildren() or {}) do
 			local root = other:FindFirstChild("Root")
@@ -655,6 +655,7 @@ function HUD.start(getPlane, action)
 		boostRow.visible(boostMax > 0)
 		boostRow.show(tenths(plane:GetAttribute("Boost") or 0, boostMax), "blue")
 		boostRow.value.Text = string.format("%.1fs", plane:GetAttribute("Boost") or 0)
+		left.Visible = not plane:GetAttribute("Pinned") -- the Range: nothing hurts you and Lift never runs out
 		local ids=string.split(plane:GetAttribute("Mounts") or "",",")
 		local groups=assert(CombatRules.triggerGroups({weapon_mounts=ids}));local eraserButton="right-click"
 		for slot,id in ipairs(ids) do if id=="eraser" then eraserButton=(groups[slot]==1 and "left" or "right").."-click" end end

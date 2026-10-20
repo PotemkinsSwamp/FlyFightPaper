@@ -3,12 +3,14 @@ local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local FlightState = require(script.Parent.FlightController).state
 local Deaths = require(script.Parent.PlaneDeaths)
+local Course = require(Root.Shared.TrainingCourse)
 local Camera = {}
 
 -- Feel tuning. Position follows a bit slower than rotation so turns read as motion.
 local DISTANCE, HEIGHT, LOOK_AHEAD = 24, 6, 60
--- The Range: further back and higher, so the plane sits small at the bottom like the concept (Alan 2026-10-19).
-local RANGE_DISTANCE, RANGE_HEIGHT = 22, 8
+-- The Range: a still camera behind and above the plane, tipped down a little, so the plane sits small at the bottom
+-- like the concept (Alan 2026-10-19).
+local RANGE_DISTANCE, RANGE_HEIGHT, RANGE_TILT = 22, 8, math.rad(4)
 local POSITION_RESPONSE, ROTATION_RESPONSE = 9, 16
 local BASE_FOV, MAX_EXTRA_FOV, FOV_RESPONSE = 72, 12, 4
 local SHAKE_ON_HIT, SHAKE_ON_NEAR_MISS, SHAKE_DECAY = 0.6, 0.3, 3
@@ -53,6 +55,14 @@ function Camera.start(getPlane)
 		local camera = workspace.CurrentCamera
 		if not body then lines.Parent = nil; return end
 		camera.CameraType = Enum.CameraType.Scriptable
+		-- The Range: the camera stays still; the crosshair moves over the stage and the plane turns to follow it
+		-- (Alan 2026-10-19: a swinging camera made the flat scenery slide about and showed past the stage).
+		if plane:GetAttribute("Pinned") and not Deaths.remains(plane) then
+			camera.CFrame = Course.RANGE.origin * CFrame.new(0, RANGE_HEIGHT, RANGE_DISTANCE) * CFrame.Angles(-RANGE_TILT, 0, 0)
+			camera.FieldOfView, fov, position = BASE_FOV, BASE_FOV, nil
+			lines.Parent = nil
+			return
+		end
 		-- The camera rolls with the aim, so it stays behind the pilot through loops and inverted flight.
 		-- After a death it keeps its last heading and follows the paper ball or the falling shreds until respawn.
 		local remains = Deaths.remains(plane)
@@ -60,9 +70,7 @@ function Camera.start(getPlane)
 		local aim = remains and flat and flat.Magnitude > 0.1 and (flat.Unit - Vector3.yAxis * 0.4).Unit or FlightState.aim or body.CFrame.LookVector
 		local aimUp = not remains and FlightState.aimUp or Vector3.yAxis
 		local focus = remains or body.Position + aimUp * 2
-		-- The Range: closer, so the plane shows from the wings up at the bottom of the view.
 		local distance, height = DISTANCE, HEIGHT
-		if plane:GetAttribute("Pinned") then distance, height = RANGE_DISTANCE, RANGE_HEIGHT end
 		if not position then position, look, up = focus - aim * distance + aimUp * height, aim, aimUp end
 		up = up:Lerp(aimUp, smooth(ROTATION_RESPONSE, dt)).Unit
 		local desired = focus - aim * distance + up * height

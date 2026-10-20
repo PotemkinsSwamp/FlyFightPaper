@@ -7,6 +7,9 @@
 - **No black box:** the aim stops at the stage edges (about 30° left/right, 20° up/down) and the edges of the view are
   dressed as the theatre (drape-coloured walls, cardboard floor, bulb strips), not a full 360° room.
 - **Your plane stays level** in the Range: it only points, it never banks.
+- **Still camera (Alan's second look, same day):** the swinging chase camera made the flat scenery slide in and out
+  and the plates were out of reach. Now the camera stays still like the concept, the crosshair moves over the screen
+  and the plane points at what it is on; one floor runs under the plane; Lift and Health hide in the Range.
 - **Row picker = knock-down targets you shoot**, on the close row's lip near the bottom: Close, Medium, Long range and
   All. Shoot one: "ting", it tips back and stays down while picked; the old rows' targets fall and the new rows' rise.
   Each plate is a plane shape with its word over it; the closer the row, the bigger the plate (Close biggest).

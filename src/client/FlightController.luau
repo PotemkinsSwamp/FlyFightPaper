@@ -10,6 +10,8 @@ local Course = require(Root.Shared.TrainingCourse)
 local Controller = {}
 -- Read by the camera and HUD. `aimOverride` lets dev tools fly the plane without a mouse.
 Controller.state = { aim = nil, aimUp = nil, aimOverride = nil }
+local plateCast = RaycastParams.new() -- the Range's picker plates (the only stage parts shots can hit)
+plateCast.FilterType = Enum.RaycastFilterType.Include
 local solid = OverlapParams.new()
 solid.FilterType, solid.RespectCanCollide = Enum.RaycastFilterType.Include, true
 solid.FilterDescendantsInstances = { workspace:FindFirstChild("Arena") or workspace:WaitForChild("GreyboxRoom") }
@@ -88,20 +90,29 @@ function Controller.start(plane)
 			if delta.Magnitude > 0 then aimFrame = aimFrame * CFrame.Angles(-delta.Y, -delta.X, 0); lastSteer = os.clock() end
 		end
 		if state.aimOverride then setAim(state.aimOverride(body)); lastSteer = os.clock() end
-		if os.clock() - lastSteer > Config.aim_level_delay_s then aimFrame = Rules.levelAim(aimFrame, dt) end
-		aimFrame = aimFrame:Orthonormalize()
-		-- The Range: the aim stays on the stage and never rolls, so you never see past it (Alan 2026-10-19).
 		local pinned = plane:GetAttribute("Pinned")
+		if not pinned and os.clock() - lastSteer > Config.aim_level_delay_s then aimFrame = Rules.levelAim(aimFrame, dt) end
+		aimFrame = aimFrame:Orthonormalize()
+		-- The Range: the aim is the crosshair's line from the still camera; it stays on the screen and never rolls
+		-- (Alan 2026-10-19), and the plane points at what the crosshair is on, so shots land on it.
+		local steer
 		if pinned then
 			local stage = Course.RANGE.origin.Rotation
 			local pitch, yaw = stage:ToObjectSpace(aimFrame):ToOrientation()
 			aimFrame = stage * CFrame.fromOrientation(math.clamp(pitch, -Course.RANGE.down, Course.RANGE.up), math.clamp(yaw, -Course.RANGE.yaw, Course.RANGE.yaw), 0)
+			local eye = workspace.CurrentCamera.CFrame.Position
+			local stageModel = workspace:FindFirstChild("RangeStage")
+			if stageModel then plateCast.FilterDescendantsInstances = { stageModel } end
+			local hit = stageModel and workspace:Raycast(eye, aimFrame.LookVector * 1000, plateCast)
+			local target = state.target and state.target.Parent and state.target
+			local reach = hit and hit.Distance or target and (target.Position - eye).Magnitude or 400
+			steer = (eye + aimFrame.LookVector * reach - body.Position).Unit
 		end
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
 		local boost = not blocked and Input:IsKeyDown(Enum.KeyCode.LeftShift)
 		if boost ~= boostSent then boostSent = boost; Root.FlightAction:FireServer("boost", boost) end
 		local before = heading
-		heading, bank, orientation.CFrame = Rules.autopilot(heading, bank, state.aim, plane:GetAttribute("YawRate"), plane:GetAttribute("PitchRate"), dt, state.aimUp)
+		heading, bank, orientation.CFrame = Rules.autopilot(heading, bank, steer or state.aim, plane:GetAttribute("YawRate"), plane:GetAttribute("PitchRate"), dt, state.aimUp)
 		if pinned then bank, orientation.CFrame = 0, CFrame.lookAt(Vector3.zero, heading) end -- wings stay level in the Range
 		local now = workspace:GetServerTimeNow()
 		-- SlowMo: the Aiming lesson's slow motion (the server allows any speed below cruise).
