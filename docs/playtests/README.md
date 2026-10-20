@@ -4,6 +4,7 @@ One note per time Alan played the game, newest first: what he said, and what cha
 final on these.
 
 - [2026-10-19: Training board and the Hangar Range](2026-10-19-training-board-and-range.md)
+- [2026-10-19: the Hangar Range's real stage](2026-10-19-range-real-stage.md)
 - [2026-10-18/19: Combat School](2026-10-19-combat-school.md)
 - [2026-10-18: Stage 9 sign-off](2026-10-18.md)
 - [2026-10-18: Flight School with the attention pass](2026-10-18-flight-school-attention.md)

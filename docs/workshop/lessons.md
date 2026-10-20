@@ -176,6 +176,17 @@ mistake would be easy to make twice.
 - **Stopping a background Codex job** (TaskStop) leaves `codex.exe` running and it can still write files; stop the
   codex.exe started at that time too.
 
+- **Flat 2D scenery needs a still camera (Hangar Range, 2026-10-19):** a chase camera swinging round the plane made the
+  painted flats slide past each other and showed their edges. A still camera with a moving crosshair keeps them flat;
+  the plane must then point at what the crosshair is on (raycast plates and cut-outs, else the aim-help target), or
+  shots land below the crosshair. Check reach in Play: plates 54° off the plane were outside a 30° aim limit.
+- **Hook up a replicated model's parts as they arrive:** a client script that walked `RangeStage:GetChildren()` on
+  the model's `ChildAdded` found none of its plates; listen to the model's own `ChildAdded` too.
+- **`TextScaled` stops at 100 px:** on a big SurfaceGui canvas words stay small; lower `PixelsPerStud` so the box is
+  under 100 px tall. Kalam pads its letters, so text boxes need to be bigger than the words look.
+- **Edit-mode previews of new modules:** Edit caches `require`, so clone the module and point its requires at clones
+  (UIAssets, TrainingCourse) to preview a builder without Play.
+
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
   code alone (the red dot, the eraser during the freeze, step 8's Pal) were wrong, and each cost Alan a playtest.

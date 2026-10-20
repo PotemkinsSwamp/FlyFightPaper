@@ -1,8 +1,9 @@
-# LATEST → handoff-2026-10-19-ui-training-board-hangar-range.md
+# LATEST → handoff-2026-10-19-ui-range-stage-and-picker.md
 
-★ START HERE: Training board done (2026-10-19). Next: the Hangar Range built from its 35 uploaded pieces to match
-`range-stage-view-2.png`, Alan looks in Play; then its side board (difficulty, score, quick loadouts, Hangar), sticky
-notes, then the Hangar Tour.
+★ START HERE: Hangar Range stage, targets and shootable row picker built (2026-10-19); still camera, plane low, shots
+meet the crosshair. Next: the side board (shoot its strips: difficulty, score + reset, loadouts 1-5, Hangar) as an
+assembled preview for Alan's OK, then build; then the Range's own saved loadouts, sticky notes, the Hangar Tour.
 
-Quick state: main, tests 399/0 in Play 2026-10-19, Alan's last Play 0 script errors, Studio in Edit, Rojo serving.
-Previous: handoff-2026-10-19-ui-combat-school-approved.md.
+Quick state: main, tests 399/0 last run (re-run: this session changed FlightHUD and TrainingCourse), Studio in Edit,
+Rojo serving. Alan hasn't played the last fix (8ec600ab) yet.
+Previous: handoff-2026-10-19-ui-training-board-hangar-range.md.
