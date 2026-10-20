@@ -1,0 +1,23 @@
+{
+  "path": "operations/180e2728-d685-4c28-93f0-eb8c24248d06",
+  "operationId": "180e2728-d685-4c28-93f0-eb8c24248d06",
+  "done": true,
+  "response": {
+    "path": "assets/140191552193282",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-20T01:22:42.341Z",
+    "assetId": "140191552193282",
+    "displayName": "FlyFightPaper range picker-stand",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

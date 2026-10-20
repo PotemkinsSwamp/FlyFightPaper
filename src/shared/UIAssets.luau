@@ -50,7 +50,7 @@ return {
 		xpFrame = "rbxassetid://87963878165241",
 		xpFill = "rbxassetid://86284438244594",
 	},
-	-- The Hangar Range (assets/ui/range/; concept range-stage-view-2). Uploaded by Alan 2026-10-19; not placed yet.
+	-- The Hangar Range (assets/ui/range/; concept range-stage-view-2). Uploaded by Alan 2026-10-19; stage placed by RangeStage.
 	range = {
 		backdrop = "rbxassetid://94046304178728", board = "rbxassetid://97516109717403", bushes = "rbxassetid://134471401038099",
 		curtainSide = "rbxassetid://116963270764119", lamp = "rbxassetid://110133720046199", ledge = "rbxassetid://83361502931301",
@@ -64,6 +64,9 @@ return {
 		title = "rbxassetid://80054477461939", townArch = "rbxassetid://119197903146535", townClock = "rbxassetid://102556615538053",
 		townRowA = "rbxassetid://96402057689663", townRowB = "rbxassetid://116332950561387", townRowC = "rbxassetid://74758506901640",
 		townStepped = "rbxassetid://123872596852658", townTwin = "rbxassetid://96182028767221",
+		-- The row-picker plates (Alan approved the assembled preview 2026-10-19).
+		pickerClose = "rbxassetid://116543412917354", pickerMedium = "rbxassetid://84215014991333", pickerLong = "rbxassetid://113259560270392",
+		pickerAll = "rbxassetid://110076308959196", pickerStand = "rbxassetid://140191552193282",
 	},
 	-- The Training board (assets/ui/trainingboard/; concept training-board-c). Uploaded by Alan 2026-10-19.
 	trainingboard = {

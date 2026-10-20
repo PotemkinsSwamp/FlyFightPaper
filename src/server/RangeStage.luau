@@ -10,11 +10,10 @@ local Stage={}
 -- Pixel sizes of the uploaded pieces (assets/ui/range/ready/), for shapes and mirrored copies.
 local PX={backdrop={1024,576},curtainSide={298,1024},lamp={673,1024},ledge={1024,128},bushes={1024,78},
  townRowA={1024,222},townRowB={1024,229},townRowC={1024,259},townArch={1024,910},townClock={326,1024},
- townStepped={625,1024},townTwin={1024,766},stripGreen={1024,228},stripYellow={1024,227},stripPurple={1024,227},stripRed={1024,225},
+ townStepped={625,1024},townTwin={1024,766},
  pickerClose={1024,674},pickerMedium={1024,681},pickerLong={1024,638},pickerAll={1024,1012},pickerStand={1024,329}}
--- Row-picker plates: a plane shape per row (green, yellow, purple) and a round one for All, with where the word goes.
--- ponytail: the side board's paper strips stand in until the plate pictures are uploaded (their ids in UIAssets).
-local PLATE={close={"pickerClose","stripGreen"},medium={"pickerMedium","stripYellow"},long={"pickerLong","stripPurple"},all={"pickerAll","stripRed"}}
+-- Row-picker plates: a plane shape per row (green, yellow, purple) and a round one for All.
+local PLATE={close="pickerClose",medium="pickerMedium",long="pickerLong",all="pickerAll"}
 
 -- Ground rows: flat cardboard rows the target sticks rise from behind (close, middle, far). Heights put each row's lip
 -- where the concept has it on screen, so they need not climb like real steps.
@@ -103,17 +102,17 @@ function Stage.build(origin)
  local FLOOR_Y,PICK_Z=-56,-72
  part(stage,"Apron",Vector3.new(600,4,70),at(0,FLOOR_Y-2,-65),FLOOR,card)
  for _,pick in Course.RANGE.picks do
-  local real=Art[PLATE[pick.row][1]] and PLATE[pick.row][1]
-  local key=real or PLATE[pick.row][2];local h=real and pick.w*PX[key][2]/PX[key][1] or pick.w*.4
+  local key=PLATE[pick.row];local h=pick.w*PX[key][2]/PX[key][1]
   local foot=pick.w*.6;local footH=foot*329/1024;local hinge=FLOOR_Y+footH*.7;local stick=h*.35
   local plate=paint(stage,origin,key,pick.x,hinge+stick+h/2,PICK_Z,pick.w,h)
   plate.Name="Pick";plate.CanQuery=true;plate:SetAttribute("RangePick",pick.row)
   plate:SetAttribute("Hinge",(origin*CFrame.new(pick.x,hinge,PICK_Z)).Position)
-  local gui=plate.SurfaceGui;gui.PixelsPerStud=10 -- scaled text stops at 100 px, so a small canvas keeps words big
-  local round,two=pick.row=="all" and real,pick.label:find("\n")~=nil
+  local gui=plate.SurfaceGui;gui.PixelsPerStud=6 -- scaled text stops at 100 px, so a small canvas keeps words big
+  local round,two=pick.row=="all",pick.label:find("\n")~=nil
   local word=Instance.new("TextLabel")
-  word.Size=round and UDim2.fromScale(.6,.26) or two and UDim2.fromScale(.86,.88) or UDim2.fromScale(.74,.4)
-  word.Position=round and UDim2.fromScale(.2,.5) or two and UDim2.fromScale(.1,-.04) or UDim2.fromScale(.16,.2)
+  -- Kalam pads its letters a lot, so the boxes are bigger than the words look.
+  word.Size=round and UDim2.fromScale(.7,.36) or two and UDim2.fromScale(.9,1) or UDim2.fromScale(.8,.62)
+  word.Position=round and UDim2.fromScale(.15,.44) or two and UDim2.fromScale(.06,0) or UDim2.fromScale(.12,.1)
   word.BackgroundTransparency=1;word.Text=pick.label;word.TextScaled=true;word.LineHeight=.85;word.TextColor3=Color3.fromRGB(43,38,52)
   word.FontFace=Font.new("rbxasset://fonts/families/Kalam.json",Enum.FontWeight.Bold);word.Parent=gui
   local edge=Instance.new("UIStroke");edge.Color=Color3.fromRGB(255,248,232);edge.Thickness=3;edge.Parent=word
@@ -121,8 +120,7 @@ function Stage.build(origin)
   local length=stick+h*.25
   local rod=part(stage,"PickStick",Vector3.new(length,pick.w*.035,pick.w*.035),at(pick.x,hinge+length/2,PICK_Z-.5)*CFrame.Angles(0,0,math.rad(90)),Color3.fromRGB(205,165,110),Enum.Material.Wood)
   rod.Shape=Enum.PartType.Cylinder;rod:SetAttribute("StickOf",pick.row)
-  if Art.pickerStand then paint(stage,origin,"pickerStand",pick.x,FLOOR_Y+footH/2,PICK_Z+1,foot,footH).Name="PickFoot"
-  else part(stage,"PickFoot",Vector3.new(foot,footH,3),at(pick.x,FLOOR_Y+footH/2,PICK_Z),FLOOR,card) end
+  paint(stage,origin,"pickerStand",pick.x,FLOOR_Y+footH/2,PICK_Z+1,foot,footH).Name="PickFoot"
  end
  -- The proscenium: curtains tied back at each side, a rail of hanging lamps across the top.
  paint(stage,origin,"curtainSide",-216,0,-150,87,300)

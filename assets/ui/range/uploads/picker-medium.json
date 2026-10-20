@@ -1,0 +1,23 @@
+{
+  "path": "operations/07a04553-068c-47a3-b272-028be1842003",
+  "operationId": "07a04553-068c-47a3-b272-028be1842003",
+  "done": true,
+  "response": {
+    "path": "assets/84215014991333",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-20T01:22:38.811Z",
+    "assetId": "84215014991333",
+    "displayName": "FlyFightPaper range picker-medium",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}
