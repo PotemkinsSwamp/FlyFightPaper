@@ -103,12 +103,14 @@ Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hang
   close (how fast a weapon tears one), middle, far by the scenery (leading and range). They move back and forth and up
   and down; at the side the stick turns and the cut-out flips. Each hit tears it more (5 damage steps) until it splits,
   bursts and falls; the stick sinks and a fresh one rises.
-- **Side board:** the difficulty picker (Noob / Challenge / Veteran / Maneuvers: faster, wider, then sudden swoops),
-  the score card (shots, hits, accuracy), and the loadout strips below.
-- **Loadouts (Alan: "like other games do it"):** your five saved builds as numbered strips (keys 1-5) that swap your
-  plane instantly and free; **Hangar** opens the in-game hangar menu on top, where Edit opens the full Hangar; saving
-  there swaps your plane at once. Every part can be tried in the Range, even ones you don't own yet (try before you
-  buy, like Rivals); matches still need it unlocked.
+- **Side board** (Alan 2026-10-19, [decision](../decisions/2026-10-19-range-row-picker-and-aim-pick.md)): stands at the
+  right edge of the still view like the concept, and **you shoot its strips** to use it (like the row plates). The
+  difficulty strips: Noob (slow, steady), Challenge (faster, wider sweeps), Veteran (fast, quicker turns), Maneuvers
+  (sudden swoops and dodges like real enemies). The score card (shots, hits, %) starts over on any change (difficulty,
+  rows, loadout) and has a reset strip.
+- **Range loadouts:** five builds of its own, kept only for the Range and saved with your profile (they never become
+  your match builds); any part works there, even ones you don't own yet. Numbered strips (shoot one, or keys 1-5)
+  swap your plane instantly; **Hangar** opens the in-game hangar on top to edit them; saving swaps your plane at once.
 - **First visit:** sticky notes point at the picker, the score card, the loadout strips and how to leave, one at a time.
 - **Leave:** Menu > Leave takes you back to a normal room. From a match, opening it first says you'll leave the match.
 - **Build order:** (1) rough build for feel: stand-in stage, one moving cut-out that flips and tears, the held plane and

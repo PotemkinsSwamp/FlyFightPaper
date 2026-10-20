@@ -17,6 +17,10 @@
   crosshair, not the plane itself, and keeps it until another is clearly nearer. A near target crossing your sight no
   longer steals the marker from the far one you're leading.
 
+- **Side board (asked the same day):** shoot its strips (it stands at the right edge of the view, like the concept);
+  difficulty = speed, then size, then swoops; the score starts over on any change, plus a reset strip; the Range has
+  its own five loadouts, any part allowed, saved to your profile and never leaving the Range.
+
 ## Why
 Alan: "it's just in a big black box"; "your plane needs to stay level"; shooting the far targets, "the ones up close
 might move forward and then take the targeting". He wants one target at a time, switching by where the crosshair points.
