@@ -510,6 +510,13 @@ function Tutorial.start(getPlane)
   if not plane and os.clock()-Tutorial.askedAt>4 then Tutorial.askedAt=os.clock();Root.RoundAction:FireServer("practice",Tutorial.lessonKey) end
   local step=Tutorial.lesson.steps[Tutorial.index]
   if not step then finish(false);return end
+  -- The Range is a room, not a lesson (Alan 2026-10-20): no note, no read pause, no skipping (K sent you to a match);
+  -- its one step only gets the plane onto the stage. Menu > Leave ends it.
+  if Tutorial.lesson.room then
+   note.Visible=false;holdK=nil;Tutorial.skipStep=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt)
+   if plane then step.update(ctx) end
+   return
+  end
   if ctx.state=="FLYING" then ctx.data.flew=true end
   -- Back at the desk after a crash: fly again by yourself (only the launch and landing steps wait for you).
   if ctx.state=="DESK" and Tutorial.index>1 and not step.land and not step.gotIt and os.clock()-relaunchAsked>2 then relaunchAsked=os.clock();Root.FlightAction:FireServer("launch") end
