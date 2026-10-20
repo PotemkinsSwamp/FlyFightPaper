@@ -109,7 +109,10 @@ function Controller.start(plane)
 			local target = state.target and state.target.Parent and state.target
 			-- Nothing under the crosshair: the target the aim help picked (you're leading it), else the far row.
 			local reach = hit and hit.Distance or target and (target.Position - eye).Magnitude or 640
-			steer = (eye + aimFrame.LookVector * reach - body.Position).Unit
+			state.aimPoint = eye + aimFrame.LookVector * reach
+			steer = (state.aimPoint - body.Position).Unit
+		else
+			state.aimPoint = nil
 		end
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
 		local boost = not blocked and Input:IsKeyDown(Enum.KeyCode.LeftShift)
