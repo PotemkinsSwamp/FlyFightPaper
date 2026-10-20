@@ -11,9 +11,9 @@ local Stage={}
 local PX={backdrop={1024,576},curtainSide={298,1024},lamp={673,1024},ledge={1024,128},bushes={1024,78},
  townRowA={1024,222},townRowB={1024,229},townRowC={1024,259},townArch={1024,910},townClock={326,1024},
  townStepped={625,1024},townTwin={1024,766},
- pickerClose={1024,674},pickerMedium={1024,681},pickerLong={1024,638},pickerAll={1024,1012},pickerStand={1024,329}}
--- Row-picker plates: a plane shape per row (green, yellow, purple) and a round one for All.
-local PLATE={close="pickerClose",medium="pickerMedium",long="pickerLong",all="pickerAll"}
+ pickerClose={1024,674},pickerMedium={1024,681},pickerLong={1024,638},pickerAll={1024,1012},pickerStand={1024,329},
+ board={644,1024},title={1024,290},scoreCard={1024,569},tag={998,1024},selected={1024,301},
+ stripGreen={1024,225},stripYellow={1024,225},stripRed={1024,225},stripPurple={1024,225},stripBlue={1024,225}}
 
 -- Ground rows: flat cardboard rows the target sticks rise from behind (close, middle, far). Heights put each row's lip
 -- where the concept has it on screen, so they need not climb like real steps.
@@ -28,11 +28,15 @@ local function part(stage,name,size,cf,color,material)
  return p
 end
 -- A painted flat piece facing the plane. `tile` repeats it across (rows); `flip` mirrors it.
-local function paint(stage,origin,key,x,y,z,w,h,opt)
- opt=opt or {}
- local p=part(stage,key,Vector3.new(w,h,.5),origin*CFrame.new(x,y,z));p.Transparency=1
+local function flat(stage,origin,name,x,y,z,w,h)
+ local p=part(stage,name,Vector3.new(w,h,.5),origin*CFrame.new(x,y,z));p.Transparency=1
  local gui=Instance.new("SurfaceGui");gui.Face=Enum.NormalId.Back;gui.LightInfluence=0;gui.MaxDistance=5000
  gui.SizingMode=Enum.SurfaceGuiSizingMode.PixelsPerStud;gui.PixelsPerStud=1;gui.Parent=p
+ return p,gui
+end
+local function paint(stage,origin,key,x,y,z,w,h,opt)
+ opt=opt or {}
+ local p,gui=flat(stage,origin,key,x,y,z,w,h)
  local img=Instance.new("ImageLabel");img.Size=UDim2.fromScale(1,1);img.BackgroundTransparency=1;img.Image=Art[key];img.Parent=gui
  local px=PX[key]
  if opt.tile then img.ScaleType=Enum.ScaleType.Tile;img.TileSize=UDim2.fromScale(h*px[1]/px[2]/w,1) end
@@ -41,6 +45,94 @@ local function paint(stage,origin,key,x,y,z,w,h,opt)
 end
 -- Width from height (or the other way) at the piece's own shape.
 local function wide(key,h) return h*PX[key][1]/PX[key][2] end
+local function tall(key,w) return w*PX[key][2]/PX[key][1] end
+-- Words in dark ink on a painted piece. Scaled text stops at 100 px, so a small canvas keeps words big.
+local function write(p,text,size,pos,align)
+ local gui=p.SurfaceGui;gui.PixelsPerStud=6
+ local word=Instance.new("TextLabel");word.Size=size;word.Position=pos;word.BackgroundTransparency=1;word.Text=text
+ word.TextScaled=true;word.LineHeight=.85;word.TextColor3=Color3.fromRGB(43,38,52);word.TextXAlignment=align or Enum.TextXAlignment.Center
+ word.FontFace=Font.new("rbxasset://fonts/families/Kalam.json",Enum.FontWeight.Bold);word.Parent=gui
+ return word
+end
+
+-- The Range's controls (docs/plan/TUTORIAL-PLAN.md "The Hangar Range"; Alan 2026-10-20), all shot like targets: the
+-- row plates on the floor (one shot switches rows), the score card with its Reset strip and the Menu note hanging on
+-- strings in the top corners, and the menu that unfolds over the middle of the stage (loadouts, difficulty, Hangar).
+-- Each shootable piece carries `RangeBoard` (what it does), the plates `RangePick`; the menu sits in `RangeMenu`.
+local COLUMNS={
+ {head="Loadouts",x=-27,items={{"load1","1   Loadout 1","stripGreen"},{"load2","2   Loadout 2","stripYellow"},{"load3","3   Loadout 3","stripRed"},{"load4","4   Loadout 4","stripPurple"},{"load5","5   Loadout 5","stripBlue"}}},
+ {head="Difficulty",x=27,items={{"noob","Noob","stripGreen"},{"challenge","Challenge","stripYellow"},{"veteran","Veteran","stripRed"},{"maneuvers","Maneuvers","stripPurple"},{"hangar","Edit in Hangar","stripBlue"}}},
+}
+local PLATE={close="pickerClose",medium="pickerMedium",long="pickerLong",all="pickerAll"}
+local FLOOR_Y,PICK_Z,MENU_Z,MENU_Y=-56,-72,-60,20
+local INK_EDGE=Color3.fromRGB(255,248,232)
+local function shootable(p,what) p.Name="BoardStrip";p.CanQuery=true;p:SetAttribute("RangeBoard",what) end
+local function label(stage,origin,text,x,y,z,w,h)
+ local p=flat(stage,origin,"Label",x,y,z,w,h);write(p,text,UDim2.fromScale(1,1),UDim2.fromScale(0,0));return p
+end
+-- A piece hanging on two strings from above the view, like the theatre's other puppets.
+local function hang(stage,origin,key,x,top,w)
+ local h=tall(key,w);local p=paint(stage,origin,key,x,top-h/2,MENU_Z,w,h)
+ for _,s in {-1,1} do
+  part(stage,"String",Vector3.new(.25,40,.25),origin*CFrame.new(x+s*w*.35,top+20,MENU_Z-.3),Color3.fromRGB(60,50,45))
+ end
+ return p,h
+end
+local function controls(stage,origin)
+ -- Row plates: a word on painted paper on a stick fixed to the hinge on its cardboard foot. The picked one tips back
+ -- on the hinge, stick and all (RangeTargets, `Hinge`).
+ for _,pick in Course.RANGE.picks do
+  local key=PLATE[pick.row];local h=tall(key,pick.w)
+  local foot=pick.w*.6;local footH=tall("pickerStand",foot);local hinge=FLOOR_Y+footH*.77;local stick=h*.35
+  local plate=paint(stage,origin,key,pick.x,hinge+stick+h/2,PICK_Z,pick.w,h)
+  plate.Name="Pick";plate.CanQuery=true;plate:SetAttribute("RangePick",pick.row)
+  plate:SetAttribute("Hinge",(origin*CFrame.new(pick.x,hinge,PICK_Z)).Position)
+  -- Kalam pads its letters a lot, so the boxes are bigger than the words look.
+  local round,two=pick.row=="all",pick.label:find("\n")~=nil
+  local word=write(plate,pick.label,round and UDim2.fromScale(.7,.36) or two and UDim2.fromScale(.9,1) or UDim2.fromScale(.8,.62),
+   round and UDim2.fromScale(.15,.44) or two and UDim2.fromScale(.06,0) or UDim2.fromScale(.12,.1))
+  local edge=Instance.new("UIStroke");edge.Color=INK_EDGE;edge.Thickness=3;edge.Parent=word
+  -- The stick stands on the hinge's top leaf, in front of the foot and behind the plate.
+  local length=stick+h*.25
+  local rod=part(stage,"PickStick",Vector3.new(length,pick.w*.035,pick.w*.035),origin*CFrame.new(pick.x,hinge+length/2,PICK_Z-.5)*CFrame.Angles(0,0,math.rad(90)),Color3.fromRGB(205,165,110),Enum.Material.Wood)
+  rod.Shape=Enum.PartType.Cylinder;rod:SetAttribute("StickOf",pick.row)
+  paint(stage,origin,"pickerStand",pick.x,FLOOR_Y+footH/2,PICK_Z-1,foot,footH).Name="PickFoot"
+ end
+ -- Top right: the score card, its Reset strip just under it. Top left: the Menu note (shoot it again to fold the menu).
+ local card,ch=hang(stage,origin,"scoreCard",72,50,24);card.Name="ScoreCard"
+ for i,line in {"Hits  0","Shots  0","0%"} do
+  write(card,line,UDim2.fromScale(.75,.29),UDim2.fromScale(.15,.08+(i-1)*.29),Enum.TextXAlignment.Left).Name="Line"..i
+ end
+ local rh=tall("stripBlue",20)
+ local reset=paint(stage,origin,"stripBlue",74,50-ch-.4-rh/2,MENU_Z,20,rh);shootable(reset,"reset")
+ write(reset,"Reset",UDim2.fromScale(.75,.8),UDim2.fromScale(.17,.1))
+ local tab=hang(stage,origin,"tag",-72,50,15);shootable(tab,"menu")
+ write(tab,"Menu",UDim2.fromScale(.8,.4),UDim2.fromScale(.1,.35)).Name="Word"
+ -- The menu: the board piece turned on its side at its own shape, the title, two columns of strips.
+ local sheet=Instance.new("Model");sheet.Name="RangeMenu" -- ponytail: not on the stage until the Menu note opens it (next step)
+ local W=118;local H=W*PX.board[1]/PX.board[2]
+ local back=paint(sheet,origin,"board",0,MENU_Y,MENU_Z-3,W,H);back.Name="Sheet"
+ local img=back.SurfaceGui.ImageLabel;img.AnchorPoint=Vector2.new(.5,.5);img.Position=UDim2.fromScale(.5,.5)
+ img.Size=UDim2.fromScale(H/W,W/H);img.Rotation=90
+ local top=MENU_Y+H/2-3
+ local th=tall("title",38);paint(sheet,origin,"title",0,top-th/2,MENU_Z,38,th)
+ for _,c in COLUMNS do
+  local y=top-th-1
+  label(sheet,origin,c.head,c.x,y-3,MENU_Z,40,6);y-=7
+  for _,item in c.items do
+   local h=tall(item[3],42);local p=paint(sheet,origin,item[3],c.x,y-h/2,MENU_Z,42,h);shootable(p,item[1])
+   write(p,item[2],UDim2.fromScale(.8,.8),UDim2.fromScale(.12,.1));y-=h+.6
+  end
+ end
+ -- The red ring round the picked loadout and difficulty; RangeTargets moves them.
+ for i,what in {"load1","noob"} do
+  for _,p in sheet:GetChildren() do
+   if p:GetAttribute("RangeBoard")==what then
+    local ring=paint(sheet,origin,"selected",0,0,0,46,tall("selected",46));ring.CFrame=p.CFrame*CFrame.new(0,0,1);ring.Name="Ring"..i
+   end
+  end
+ end
+end
 
 function Stage.build(origin)
  local stage=Instance.new("Model");stage.Name="RangeStage"
@@ -95,35 +187,11 @@ function Stage.build(origin)
  for x=-250,250,24 do
   local b=part(bulbs,"Bulb",Vector3.one*4,at(x,134,-149),Color3.fromRGB(255,214,140));b.Shape=Enum.PartType.Ball;b.Material=Enum.Material.Neon
  end
- -- The row picker: knock-down plates on a cardboard floor at the front of the stage, at the bottom of the view, each a
- -- word on painted paper on a stick from its hinged foot. A shot that hits one picks its rows (RoundRuntime:rangePick);
- -- RangeTargets tips the picked one back on its hinge (`Hinge`), stick and all.
- local FLOOR_Y,PICK_Z=-56,-72
- part(stage,"Apron",Vector3.new(604,4,254),at(0,FLOOR_Y-2,25),FLOOR,card) -- runs from the close row back under the plane to the hall's back wall
- for _,pick in Course.RANGE.picks do
-  local key=PLATE[pick.row];local h=pick.w*PX[key][2]/PX[key][1]
-  local foot=pick.w*.6;local footH=foot*329/1024;local hinge=FLOOR_Y+footH*.7;local stick=h*.35
-  local plate=paint(stage,origin,key,pick.x,hinge+stick+h/2,PICK_Z,pick.w,h)
-  plate.Name="Pick";plate.CanQuery=true;plate:SetAttribute("RangePick",pick.row)
-  plate:SetAttribute("Hinge",(origin*CFrame.new(pick.x,hinge,PICK_Z)).Position)
-  local gui=plate.SurfaceGui;gui.PixelsPerStud=6 -- scaled text stops at 100 px, so a small canvas keeps words big
-  local round,two=pick.row=="all",pick.label:find("\n")~=nil
-  local word=Instance.new("TextLabel")
-  -- Kalam pads its letters a lot, so the boxes are bigger than the words look.
-  word.Size=round and UDim2.fromScale(.7,.36) or two and UDim2.fromScale(.9,1) or UDim2.fromScale(.8,.62)
-  word.Position=round and UDim2.fromScale(.15,.44) or two and UDim2.fromScale(.06,0) or UDim2.fromScale(.12,.1)
-  word.BackgroundTransparency=1;word.Text=pick.label;word.TextScaled=true;word.LineHeight=.85;word.TextColor3=Color3.fromRGB(43,38,52)
-  word.FontFace=Font.new("rbxasset://fonts/families/Kalam.json",Enum.FontWeight.Bold);word.Parent=gui
-  local edge=Instance.new("UIStroke");edge.Color=Color3.fromRGB(255,248,232);edge.Thickness=3;edge.Parent=word
-  -- The stick runs from the hinge up behind the plate.
-  local length=stick+h*.25
-  local rod=part(stage,"PickStick",Vector3.new(length,pick.w*.035,pick.w*.035),at(pick.x,hinge+length/2,PICK_Z-.5)*CFrame.Angles(0,0,math.rad(90)),Color3.fromRGB(205,165,110),Enum.Material.Wood)
-  rod.Shape=Enum.PartType.Cylinder;rod:SetAttribute("StickOf",pick.row)
-  paint(stage,origin,"pickerStand",pick.x,FLOOR_Y+footH/2,PICK_Z+1,foot,footH).Name="PickFoot"
- end
+ part(stage,"Apron",Vector3.new(604,4,254),at(0,FLOOR_Y-2,25),FLOOR,card) -- the stage floor from the close row back under the plane to the hall's back wall
  -- The proscenium: curtains tied back at each side, a rail of hanging lamps across the top.
  paint(stage,origin,"curtainSide",-216,0,-150,87,300)
  paint(stage,origin,"curtainSide",216,0,-150,87,300,{flip=true})
+ controls(stage,origin)
  local rail=part(stage,"LampRail",Vector3.new(520,3,3),at(0,128,-149),Color3.fromRGB(70,60,55))
  rail.Shape=Enum.PartType.Cylinder
  -- Each lamp throws a soft warm beam down onto the stage (a Beam: always faces the camera, costs no light).
