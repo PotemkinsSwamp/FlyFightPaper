@@ -1,6 +1,6 @@
 # Hangar Range: crosshair is the cursor, row plates stay on the floor, menu drops on strings; own loadouts next
 
-**Decided:** 2026-10-20 (Alan, over three Play looks)  
+**Decided:** 2026-10-19 (Alan, over three Play looks)  
 **Status:** in force (built; waiting on Alan's Play check of the last layout)
 
 ## Decision

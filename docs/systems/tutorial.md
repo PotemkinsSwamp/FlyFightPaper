@@ -23,23 +23,23 @@ a lesson gets a tick and Replay once finished (saved on the account: the end car
 ticks it only in the tutorial room). Hangar Tour and the Range show an "Almost ready!" note until they're built. From a match, Play first asks "Leave this match?"
 (the lesson runs on another server). The welcome question goes only to a player with no matches and no ticks. The
 Training Room has no time limit (Alan 2026-10-19: people leave, or Roblox kicks them for being idle).
-**The Hangar Range** (2026-10-19 rough build; Alan played it: "conceptually, it works well"). Later that day: the real stage
-and targets from its 35 uploaded pieces (`assets/ui/range/`, ids in UIAssets `range`), laid out from the concept as seen
-from the Range camera; Alan's first look (Edit preview) asked for a bigger cloth and town, done. Not yet judged in Play;
-next the side board. Its card opens it like a lesson that never ends; your own build hangs still on a puppet-theatre
-stage far from the classroom (`Pinned`: it only turns to aim; closer camera): sky cloth, cardboard town in three depths,
-three ground rows with warm bulbs, curtains, lamps with soft beams (all painted flats lit by their own paint). Three
-target planes, drawn as painted cut-outs on sticks (`RangeTarget`), swing and bob in three rows, tilt with their swoop
-and turn over on the stick when they change direction, show 4 tear pictures as they're hit, split into two halves with
-a scrap burst, sink, and rise again after the respawn wait. After Alan's first Play look ([decision](../decisions/2026-10-19-range-row-picker-and-aim-pick.md)):
-the Range camera stays still (no sliding scenery); the crosshair moves over the screen within `RANGE.yaw`, `up`,
-`down`, the plane hangs low at the bottom of the view (`RANGE.seat`, back toward the camera; Alan: out of the way), stays
-level and points at what the crosshair is on (a plate or target cut-out, else the aim-help target, else the far row)
-so shots land on the crosshair (Play check: 27 of 40 hits on the lead ring at 410 studs); Lift and Health are hidden there; one cardboard floor runs under the plane; the box round the stage is dressed
-(drape walls, cardboard floor, bulbs); two targets per row; the row picker is four knock-down plates on the stage
-floor at the bottom of the view (Close, Medium, Long range, All; `RANGE.picks`, `RangeRows`), each on a stick from a
-hinged foot; the camera sits back and up, tipped down 4°. A shot that hits one picks it, it tips back on its hinge with a ting and stays down, the unpicked rows' targets tip back and leave (`Lowered`). The plates are plane-shaped paper
-(green Close, yellow Medium, purple Long range) and a round All, art by Codex, uploaded after Alan OK'd an assembled preview. Flight School's end card has "Next: Combat School". Flight School: the step engine
+**The Hangar Range** (built 2026-10-19; Alan has played each step; last layout not yet seen in Play;
+decisions: [stage and picker](../decisions/2026-10-19-range-row-picker-and-aim-pick.md),
+[controls and menu](../decisions/2026-10-19-range-controls-and-menu.md)). A **room, not a lesson** (`room=true`: no note,
+no skipping; Menu > Leave ends it). Your build hangs still and level on a puppet-theatre stage (`Pinned`) seen from a
+still camera; everything is painted flats from `assets/ui/range/` (UIAssets `range`). The crosshair moves over the
+screen within `RANGE.yaw`/`up`/`down`; the plane points at the spot under it (a control or cut-out, else the aim-help
+target's lead ring, else the far row), and the green dot is drawn at that spot so it sits on the circle. **Targets:**
+two per row, painted cut-outs on long sticks (`RangeTarget`) sweeping wide and high over most of the stage, tearing in
+4 pictures, splitting and rising again; **hit as the flat card you see** (HitShapes), not the plane under it.
+**Difficulty** (`Course.DIFFICULTY`): Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x plus a weave.
+**Controls, clicked with the crosshair** (RangeBoard; the guns still fire): the row plates on the floor (Close, Medium,
+Long range, All; sticks stand on their hinges), the score card + Reset hanging top right (`RangeShots`/`RangeHits`,
+start over on any change), Range Menu and Hangar strips hanging at the left edge under the game's Menu button (which the
+crosshair can click too), and the Range Menu, which drops on strings on a spring: Loadouts 1-5 (also keys 1-5; swap
+the plane in the air) and Difficulty plus Edit in Hangar (saving there swaps the plane). For now the loadouts are your
+saved match builds (picking one also picks it for matches); **next: the Range's own five, with names you can change.**
+Flight School's end card has "Next: Combat School". Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during
 lessons (Alan). In Studio the Tutorial button turns the room into the tutorial world (match paused, bots gone) since

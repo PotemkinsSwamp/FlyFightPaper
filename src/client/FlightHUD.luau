@@ -565,7 +565,7 @@ function HUD.start(getPlane, action)
 			for group, pipper in ipairs(pippers) do pipper.Visible, leadLines[group].Visible = false, false end
 		end
 		-- The Range: the plane points at the spot under the aim circle (FlightController), so the dot goes at that spot's
-		-- range and sits on the circle once the plane has turned (Alan 2026-10-20: they didn't line up and it drifted).
+		-- range and sits on the circle once the plane has turned (Alan 2026-10-19: they didn't line up and it drifted).
 		if FlightState.aimPoint then noseRange = (FlightState.aimPoint - body.Position).Magnitude end
 		if flying then place(noseDot, body.Position + body.CFrame.LookVector * noseRange) else noseDot.Visible = false end
 		local carriesEraser = flying and string.find(plane:GetAttribute("Mounts") or "", "eraser") ~= nil

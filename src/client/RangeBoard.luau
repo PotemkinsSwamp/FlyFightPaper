@@ -1,5 +1,5 @@
 -- The Hangar Range's controls (RangeStage; docs/plan/TUTORIAL-PLAN.md "The Hangar Range"). In the Range the crosshair
--- is the cursor (Alan 2026-10-20): a click on a row plate or a board strip does what it says while the guns fire as
+-- is the cursor (Alan 2026-10-19): a click on a row plate or a board strip does what it says while the guns fire as
 -- usual, and on the game's own Menu button too. Also here: the menu dropping on its strings with a little bounce and
 -- pulling back up, the score card, the red rings on the picked loadout and difficulty, the loadout names, keys 1-5.
 local Input = game:GetService("UserInputService")
@@ -10,7 +10,7 @@ local Board = {}
 
 local LIFT = 90 -- studs the folded menu hangs above the view (RangeStage MENU_LIFT)
 -- The menu rides a spring toward open or folded: it drops, overshoots a little on its strings and settles. A spring
--- (not a tween) so clicks mid-move just change where it heads (Alan 2026-10-20: tweens left it stuck halfway).
+-- (not a tween) so clicks mid-move just change where it heads (Alan 2026-10-19: tweens left it stuck halfway).
 local SPRING, DAMP = 81, 11 -- 9 rad/s, damping 0.6: one small bounce, settled in under a second
 local KEYS = { [Enum.KeyCode.One] = 1, [Enum.KeyCode.Two] = 2, [Enum.KeyCode.Three] = 3, [Enum.KeyCode.Four] = 4, [Enum.KeyCode.Five] = 5 }
 

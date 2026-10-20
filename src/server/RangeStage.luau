@@ -56,7 +56,7 @@ local function write(p,text,size,pos,align)
  return word
 end
 
--- The Range's controls (docs/plan/TUTORIAL-PLAN.md "The Hangar Range"; Alan 2026-10-20), clicked with the crosshair
+-- The Range's controls (docs/plan/TUTORIAL-PLAN.md "The Hangar Range"; Alan 2026-10-19), clicked with the crosshair
 -- (client RangeBoard): the row plates on the floor (one click switches rows), the score card with its Reset strip, and
 -- the Range Menu and Hangar notes hanging on strings in the top corners; the menu drops on its strings over the middle of the
 -- stage (loadouts, difficulty, Hangar). Each clickable piece carries `RangeBoard` (what it does), the plates
@@ -73,7 +73,7 @@ local function label(stage,origin,text,x,y,z,w,h)
  local p=flat(stage,origin,"Label",x,y,z,w,h);write(p,text,UDim2.fromScale(1,1),UDim2.fromScale(0,0));return p
 end
 -- Two strings from `high` down to `low`, just behind a piece at depth z, so they run down behind its paper and hold it
--- (Alan 2026-10-20: strings ending at the top edge looked like the paper floated).
+-- (Alan 2026-10-19: strings ending at the top edge looked like the paper floated).
 local function strings(stage,origin,x,low,high,w,z)
  for _,s in {-1,1} do
   part(stage,"String",Vector3.new(.25,high-low,.25),origin*CFrame.new(x+s*w*.35,(low+high)/2,z-.3),Color3.fromRGB(60,50,45))
@@ -114,7 +114,7 @@ local function controls(stage,origin)
  local reset=paint(stage,origin,"stripBlue",74,50-ch-.4-rh/2,MENU_Z,20,rh);shootable(reset,"reset")
  write(reset,"Reset",UDim2.fromScale(.75,.8),UDim2.fromScale(.17,.1))
  -- At the left edge under the game's own Menu button, out of the targets' way: Range Menu (click it again to fold the
- -- menu), and the Hangar strip hanging from it (Alan 2026-10-20). Plain strips, no pins: the strings hold them.
+ -- menu), and the Hangar strip hanging from it (Alan 2026-10-19). Plain strips, no pins: the strings hold them.
  local NOTE_X,NOTE_TOP,NOTE_W=-76,40,22
  local tab,tabH=hang(stage,origin,"plainStrip",NOTE_X,NOTE_TOP,NOTE_W);shootable(tab,"menu")
  write(tab,"Range Menu",UDim2.fromScale(.84,.8),UDim2.fromScale(.08,.1))

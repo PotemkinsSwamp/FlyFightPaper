@@ -186,6 +186,19 @@ mistake would be easy to make twice.
   under 100 px tall. Kalam pads its letters, so text boxes need to be bigger than the words look.
 - **Edit-mode previews of new modules:** Edit caches `require`, so clone the module and point its requires at clones
   (UIAssets, TrainingCourse) to preview a builder without Play.
+- **A drawn stand-in needs a matching hitbox (2026-10-19):** the Range draws each target as a flat card, but hits were
+  tested against the hidden plane under it (HitShapes), seen side-on as a thin edge, so long shots never landed. If
+  the picture isn't the model, give the hit test the picture's shape.
+- **Welding new parts onto a flying plane can drop network ownership (2026-10-19):** after `FlightService:refold` in the
+  Range the server took the plane and flew it off with its own velocity. Give ownership back after any rebuild.
+- **Measure the play area before laying out controls over a game view (2026-10-19):** the Range side-board preview was
+  rejected partly because the targets' sweeps covered only about a quarter of the screen width; project each sweep's
+  ends onto the capture first, then fit controls into what's left.
+- **Overlapping see-through SurfaceGui flats sort badly:** a backing board drawn 1 stud behind its strips hid them;
+  keep 3+ studs between layers, or don't overlap them. Never 9-slice a painted piece with folds across its middle.
+- **Moving a model with a TweenService tween on a CFrameValue stuck halfway (2026-10-19, 3-4 times in Alan's Play):**
+  a per-frame spring toward a goal can't stall and takes a click mid-move. Gemini CLI's free personal sign-in stopped
+  working (Google says move to Antigravity); Codex is the second opinion for now.
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
