@@ -35,7 +35,8 @@ function BuildShelf.new(parent, catalog, pick)
 	local group = PaperUI.words(tab, "Label", "", 0, 4, 320, 84, 46)
 	group.TextXAlignment = Enum.TextXAlignment.Center
 	local outline = PaperUI.image(frame, "Picked", Art.outline, 0, 0, CUBBY + 20, CUBBY + 20)
-	outline.ScaleType, outline.SliceCenter, outline.ZIndex = Enum.ScaleType.Slice, Rect.new(64, 64, 448, 448), 3
+	-- The crayon band sits in the outer 48 px of the trimmed 480 px piece.
+	outline.ScaleType, outline.SliceCenter, outline.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 3
 	local cubbies = {}
 	local self = { frame = frame }
 

@@ -37,10 +37,10 @@ function Customize.draw(content, ctx)
 	-- Index tabs first so they tuck under the right page; the picked one sticks out further.
 	for i, tab in Customize.TABS do
 		local picked = tab.slot == state.slot
-		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 70 + (picked and 30 or 0), 230 + (i - 1) * 100, 210, 88, 0,
+		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 230 + (i - 1) * 100, 200, 88, 0,
 			function() state.slot = tab.slot; state.purchase = nil; ctx.render() end, 40)
 		t.ImageColor3 = tab.tint
-		t.Label.Position, t.Label.Size = UDim2.fromOffset(70, 0), UDim2.new(1, -70, 1, 0)
+		t.Label.Position, t.Label.Size = UDim2.fromOffset(80, 0), UDim2.new(1, -80, 1, 0)
 	end
 	image(content, "BinderLeft", Binder.binderLeft, BINDER_X, BINDER_Y, PAGE_W, PAGE_H).ScaleType = Enum.ScaleType.Stretch
 	image(content, "BinderRight", Binder.binderRight, BINDER_X + PAGE_W, BINDER_Y, PAGE_W, PAGE_H).ScaleType = Enum.ScaleType.Stretch
@@ -121,14 +121,14 @@ function Customize.draw(content, ctx)
 				candidate.weapon_mounts = mounts
 			end
 		end
-		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, 1420, 150, 0.85)
+		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, 1440, 150, 0.82)
 		note = string.format("%s: %d Paper, level %d. Bars show the plane with it.", part.name, part.paper_price, part.min_level)
 		button(content, "BuyPart", Art.buttonGreen, "Buy", 90, 815, 240, 90, -1, function()
 			ctx.api.action:FireServer("purchasePart", part.id); state.purchase = nil; ctx.render()
 		end, 46)
 		button(content, "CancelBuy", Art.tab, "Cancel", 360, 815, 240, 90, 1, function() state.purchase = nil; ctx.render() end, 40)
 	else
-		ctx.statSheet(stats, nil, 1420, 150, 0.85)
+		ctx.statSheet(stats, nil, 1440, 150, 0.82)
 		if state.slot == "weapons" then
 			local body = ctx.catalog:get(draft.body)
 			local groups = assert(CombatRules.triggerGroups(draft))
@@ -159,13 +159,13 @@ function Customize.draw(content, ctx)
 	-- in the Range (saves and drops you back in flying it, Alan 2026-10-20).
 	local second = ctx.range and "Test in Range" or ctx.atDesk() and "Save & fly - 120 Paper"
 	if second then
-		button(content, "SavePreset", Art.buttonGreen, "Save", 1420, 720, 215, 130, -1, function() ctx.save(false) end, 52)
-		button(content, "SaveFly", Art.buttonGreen, second, 1650, 720, 250, 130, 1, function() ctx.save(true) end, 32)
+		button(content, "SavePreset", Art.buttonGreen, "Save", 1440, 720, 205, 130, -1, function() ctx.save(false) end, 52)
+		button(content, "SaveFly", Art.buttonGreen, second, 1655, 720, 245, 130, 1, function() ctx.save(true) end, 32)
 	else
-		button(content, "SavePreset", Art.buttonGreen, "Save build", 1420, 720, 480, 130, -1, function() ctx.save(false) end, 60)
+		button(content, "SavePreset", Art.buttonGreen, "Save build", 1440, 720, 460, 130, -1, function() ctx.save(false) end, 60)
 	end
 	-- Studio only: fly the draft straight away, nothing saved.
-	if ctx.dev and not ctx.range then button(content, "FlyBuild", Art.buttonGreen, "Fly this build", 1495, 880, 330, 90, -2, function() ctx.api.fly() end, 40) end
+	if ctx.dev and not ctx.range then button(content, "FlyBuild", Art.buttonGreen, "Fly this build", 1505, 880, 330, 90, -2, function() ctx.api.fly() end, 40) end
 end
 
 return Customize
