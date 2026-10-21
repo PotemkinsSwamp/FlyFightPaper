@@ -6,6 +6,8 @@ Shots and crashes take health. Grazing a wall or the train's side at a shallow a
 ## Where it stands (2026-10-18)
 Walls judged by angle (built 2026-10-18, waits on Alan's check): in Play a 15 degree graze along a wall scraped and
 wobbled (8 health over 2 s of grinding), 45 degrees crashed; bots in a 2-minute match died only to weapons. Works. Death looks (shreds, paper ball, team colours) wait on Alan's eyes. Bot-vs-bot rams never land.
+2026-10-20: a shot whose box already overlaps a plane where a server step starts now hits (a Blockcast alone skipped
+it; `tests/unit/HitShapes.spec.luau` fails without the fix). Not yet seen in a match.
 
 ## Rules
 - **Scrape or crash by angle** ([decision](../decisions/2026-10-18-scrapes-wobble.md)): touching a building, the
@@ -42,7 +44,8 @@ to human figures. Respawn delay starts at four seconds; a player may instead rem
 | File | What it does |
 |---|---|
 | `src/server/CombatService.luau` | Kill and assist credit, hit tests |
-| `src/server/HitShapes.luau` | Exact plane hitboxes on the server |
+| `src/server/HitShapes.luau` | Exact plane hitboxes on the server; a shot starting inside a plane counts |
+| `tests/unit/HitShapes.spec.luau` | Plane hits: starting inside, hitting from outside, missing above |
 | `src/client/PlaneDeaths.luau` | Paper ball and shred death visuals |
 
 ## Tuning numbers

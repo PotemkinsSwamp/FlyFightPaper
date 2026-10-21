@@ -6,6 +6,10 @@ local Rules=require(game:GetService("ReplicatedStorage"):WaitForChild("FlyFightP
 local Shapes={}
 local world=Instance.new("WorldModel");world.Name="HitShapes";world.Parent=game:GetService("ServerStorage")
 local params=RaycastParams.new();params.FilterType=Enum.RaycastFilterType.Include
+-- A cast never reports a part it starts touching, so the shot's box is first checked for overlap where it starts
+-- (a plane can step onto a shot between server steps: lessons.md "A shapecast never hits a part it starts touching").
+local overlap=OverlapParams.new();overlap.FilterType=Enum.RaycastFilterType.Include
+local probe=Instance.new("Part");probe.Name="ShotProbe";probe.Anchored=true;probe.CanCollide=false;probe.CanQuery=false;probe.CanTouch=false;probe.Parent=world
 local precise={} -- mesh id -> precise MeshPart, false while loading, nil before asked
 local copies={} -- pilot id -> {model=plane model it mirrors, folder=Model, complete=bool}
 
@@ -84,7 +88,10 @@ function Shapes.cast(p,pose,origin,delta,size,rotation)
 	params.FilterDescendantsInstances={copy.folder}
 	local up=pose:VectorToObjectSpace(Vector3.yAxis)
 	if math.abs(step.Unit:Dot(up))>.99 then up=pose:VectorToObjectSpace(Vector3.zAxis) end
-	local result=world:Blockcast(CFrame.lookAt(from,from+step,up)*rotation,size,step,params)
+	local start=CFrame.lookAt(from,from+step,up)*rotation
+	probe.Size,probe.CFrame=size,start;overlap.FilterDescendantsInstances={copy.folder}
+	if #world:GetPartsInPart(probe,overlap)>0 then return 0 end
+	local result=world:Blockcast(start,size,step,params)
 	return result and result.Distance/step.Magnitude
 end
 return Shapes

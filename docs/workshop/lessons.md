@@ -271,7 +271,7 @@ mistake would be easy to make twice.
   enough to miss a 13-stud card going up. Draw it on `GetServerTimeNow()` and rewind only the message's own trip.
 - **A shapecast never hits a part it starts touching (2026-10-20):** a moving target can step onto a shot between
   server steps, and Blockcast/Spherecast then skip it. For a plain box use `CombatRules.segmentBox`, which counts a
-  start inside. Plane hits (HitShapes copies) still use Blockcast and can rarely miss this way.
+  start inside. For mesh shapes check `GetPartsInPart` with the shot's box at the start first (HitShapes does).
 - **GUI positions start below the top bar:** compare a crosshair's viewport point with a button's
   `AbsolutePosition` minus its ScreenGui's `AbsolutePosition` (an IgnoreGuiInset gui's corner is the window's).
 - **Studio Play takes Alan's mouse (2026-10-18):** a flying plane locks the mouse to the centre. Run Play only when
