@@ -278,7 +278,22 @@ local function watch(update) return function(ctx) local s=tour();return s~=nil a
 local function seen(ctx) ctx.data.at=ctx.data.at or os.clock();return os.clock()-ctx.data.at>LOOK_AFTER end
 local function spot(s) return math.min(2,Catalog:get(s.draft.body).mount_count) end
 local function hangarOpen(ctx) local layer=ctx.player.PlayerGui:FindFirstChild("HangarScreen");return layer~=nil and layer.Cover.Visible end
-local WEIGHT={"WeightRow","MountInfo"};for k=1,12 do table.insert(WEIGHT,"WeightBox"..k) end
+-- Step 4 walks down the stat sheet one row at a time, in kid words (Alan 2026-10-21: say what every bar means).
+local STATS={
+ {"Health","Health: how many hits your plane can take before it folds. More boxes = tougher."},
+ {"Speed","Speed: how fast your plane flies. More boxes = faster."},
+ {"Climb","Climb: how fast your nose turns up and down. Good for loops and dodging."},
+ {"Swerve","Swerve: how fast you turn left and right. Good for chasing other planes."},
+ {"Lift","Lift: how long you can stay up before you must refill at a fan or your desk."},
+ {"Weight","Weight: how much gear your plane can carry. Each gear fills some of these boxes."},
+}
+-- A stat's row on the sheet: its label strip and its boxes (Weight has as many boxes as the body carries).
+local function statRow(name) local names={name.."Row"};for k=1,12 do table.insert(names,name.."Box"..k) end;return table.unpack(names) end
+-- A gear card on the page showing the red X (it can't go on this plane), if there is one right now.
+local function crossedCard(ctx)
+ local layer=ctx.player.PlayerGui:FindFirstChild("HangarScreen")
+ for _,id in GEAR_IDS do local card=layer and layer:FindFirstChild(id,true);if card and card:FindFirstChild("CrayonX") then return id end end
+end
 Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="Opening your Hangar...",doneTitle="Hangar Tour done!",
  doneText="Your match planes are in the main menu's Hangar: same screens. In matches, some parts unlock with levels and Paper. The Range is yours now!",
  ready=function(ctx,step)
@@ -287,7 +302,10 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
    if os.clock()-(ctx.data.asked or 0)>1 then ctx.data.asked=os.clock();ctx.lesson({range=true}) end
    return false
   end
-  if step.out then return true end
+  if step.out then
+   if hangarOpen(ctx) and Hangar.tour then Hangar.tour.close() end -- Test in Range was skipped: back to the stage
+   return true
+  end
   local s=tour()
   if s and hangarOpen(ctx) then
    if step.page and s.page~=step.page then
@@ -304,8 +322,8 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
  end,
  steps={
   {text="This is your Hangar. Each cubby holds one of your planes.",gotIt=true,page="shelf",
-   update=function(ctx) ctx.spotlight("EndLeft","EndRight","GroupTab");return false end},
-  {text="Tap a cubby to pick that plane.",page="shelf",hint="Click the cubby in the bright frame.",
+   update=function(ctx) ctx.spotlight("EndLeft","EndRight");return false end},
+  {text="Click a cubby to pick that plane.",page="shelf",hint="Click the cubby in the bright frame.",
    update=watch(function(ctx,s)
     ctx.data.from=ctx.data.from or s.preset
     if s.preset~=ctx.data.from then return true end
@@ -316,8 +334,8 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
     local name=s.builds[s.preset].name;ctx.data.name=ctx.data.name or name
     ctx.spotlight("NameTape","Rename");return name~=ctx.data.name
    end)},
-  {text="These bars are your plane: Health, Speed, Climb, Swerve, Lift. Weight is how much gear it can carry.",gotIt=true,page="shelf",
-   update=function(ctx) ctx.spotlight("StatsSheet");return false end},
+  {text=function(ctx) local page=ctx.data.page or 1;return STATS[page][2].."  "..page.."/"..#STATS end,gotIt=true,pages=#STATS,page="shelf",
+   update=function(ctx) ctx.spotlight(statRow(STATS[ctx.data.page or 1][1]));return false end},
   {text="Click Customize to change its parts.",page="shelf",
    update=watch(function(ctx,s) ctx.spotlight("Customize");return s.page=="customize" end)},
   {text="Each tab is one part of the plane. Click Wings.",page="customize",
@@ -333,7 +351,7 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
    update=watch(function(ctx,s) ctx.spotlight("Tabweapons");return s.slot=="weapons" end)},
   {text=function(ctx) return "These numbers are your gear spots. Click spot "..(ctx.data.spot or 2).."." end,page="customize",
    update=watch(function(ctx,s) ctx.data.spot=spot(s);ctx.spotlight("Mount"..ctx.data.spot);return s.mount==ctx.data.spot end)},
-  {text=function(ctx) return "Now pick a gear card to put on spot "..(ctx.data.spot or 2).."." end,page="customize",
+  {text=function(ctx) return "Now pick a gear card for spot "..(ctx.data.spot or 2)..". Too big for it? It goes on a spot that fits." end,page="customize",
    hint="A card with a red X can't go there: try another.",
    update=watch(function(ctx,s)
     ctx.data.spot=spot(s)
@@ -341,8 +359,19 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
     if mounts~=ctx.data.before then return seen(ctx) end
     ctx.spotlight(table.unpack(GEAR_IDS));return false
    end)},
-  {text="Gear has weight: too heavy and a card gets a red X. One gear type fires on left click, the other on right click.",gotIt=true,page="customize",
-   update=function(ctx) ctx.spotlight(table.unpack(WEIGHT));return false end},
+  -- Three pages: the Weight boxes, the left/right click line, and a red X, shown only when a card really has one.
+  {text=function(ctx)
+    local page=ctx.data.page or 1
+    local text=page==1 and "Each gear weighs something. Its weight fills these boxes: a plane can't carry more than they hold."
+     or page==2 and "This line says which click fires this spot's gear: one gear type on left click, the other on right."
+     or "A red X means that gear can't go on your plane right now. The card says why."
+    return text.."  "..page.."/"..(crossedCard(ctx) and 3 or 2)
+   end,gotIt=true,page="customize",pages=function(ctx) return crossedCard(ctx) and 3 or 2 end,
+   update=function(ctx)
+    local page=ctx.data.page or 1
+    if page==1 then ctx.spotlight(statRow("Weight")) elseif page==2 then ctx.spotlight("MountInfo") else ctx.spotlight(crossedCard(ctx) or "MountInfo") end
+    return false
+   end},
   {text="Click Save to keep your build.",page="customize",
    update=watch(function(ctx,s)
     ctx.spotlight("SavePreset");ctx.data.dirty=ctx.data.dirty or s.unsaved
@@ -350,11 +379,21 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
    end)},
   {text="Click Test in Range to fly it.",page="customize",
    update=function(ctx) ctx.spotlight("SaveFly");return ctx.clicked("SaveFly") end},
-  {text="Now try it! Hit 3 targets.",key="Left click",count=3,out=true,hint="Put the green dot on a target and hold left click.",
+  {text="Now try it! Hit 3 different targets.",key="Left click",count=3,out=true,hint="Put the green dot on a target and hold left click.",
    update=function(ctx)
-    -- Hits since the step began (the Range's own count starts over on any change, so only rises are added up).
-    local hits=ctx.count("RangeHits");ctx.data.n=(ctx.data.n or 0)+math.max(0,hits-(ctx.data.last or hits));ctx.data.last=hits
-    return ctx.data.n
+    -- Different targets (Alan 2026-10-21: one target hit three times finished it): a card counts once its Health drops.
+    -- A torn-down card is replaced by a new one, which counts as another target.
+    ctx.data.health=ctx.data.health or {};ctx.data.hit=ctx.data.hit or {}
+    local folder=workspace:FindFirstChild("RangeCards");local n=0
+    for _,card in folder and folder:GetChildren() or {} do
+     if card:GetAttribute("DrillOf")==ctx.player.UserId then
+      local health=card:GetAttribute("Health") or 0
+      if ctx.data.health[card] and health<ctx.data.health[card] then ctx.data.hit[card]=true end
+      ctx.data.health[card]=health
+     end
+    end
+    for _ in ctx.data.hit do n+=1 end
+    return n
    end},
  }}
 return Lessons

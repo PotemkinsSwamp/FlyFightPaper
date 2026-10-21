@@ -167,7 +167,7 @@ function Customize.draw(content, ctx)
 				dot.Parent = content
 				words(content, "Key" .. size, size, PHOTO[1] + 93 + (k - 1) * 150, PHOTO[2] + 67, 110, 40, 34)
 			end
-			local info = words(content, "MountInfo", string.format("Mount %d: %s%s. %s", m, body.mount_types[m],
+			local info = words(content, "MountInfo", string.format("Spot %d: %s%s. %s", m, body.mount_types[m],
 				part and (groups[m] == 1 and ", left click" or ", right click") or "", part and part.name or "Empty: pick a gear card."), 700, 888, 540, 44, 28)
 			info.TextXAlignment, info.TextWrapped = Enum.TextXAlignment.Center, true
 			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 840, 980, 260, 70, 2, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)

@@ -122,7 +122,6 @@ function Tutorial.start(getPlane)
  local matchButton=PaperUI.button(card,"Play",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Go to a match",160,170,300,60,-1,function()
   card.Visible=false;Root.RoundAction:FireServer("practiceDone")
  end,30)
- cardText.TextScaled=true;Instance.new("UITextSizeConstraint",cardText).MaxTextSize=26 -- a longer end line still fits
  -- The lessons run in order (Flight School, Aiming, Combat Training): the next one is a click away.
  local nextButton=PaperUI.button(card,"Next",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Next lesson",320,170,280,60,1,function()
   card.Visible=false;if Tutorial.nextKey then Tutorial.begin(Tutorial.nextKey) end
@@ -507,6 +506,7 @@ function Tutorial.start(getPlane)
   -- has no buttons and goes by itself.
   local stay=Tutorial.lesson.stay
   matchButton.Visible=stay==nil
+  cardText.Size=UDim2.fromOffset(540,stay and 150 or 60) -- no buttons: a longer end line gets their room
   if stay then nextButton.Visible=false;Tutorial.begin(stay,true);task.delay(7,function() card.Visible=false end);return end
   -- Skipping mid-flight: the mouse steers the plane, so go straight on to the match and keep the card up a moment.
   if skipped and ctx.state and ctx.state~="DESK" then Root.RoundAction:FireServer("practiceDone");task.delay(5,function()card.Visible=false end) end
@@ -534,14 +534,17 @@ function Tutorial.start(getPlane)
  -- Studio test hook: set DevLesson (flight, aim, combat) on ReplicatedStorage.FlyFightPaper to open that lesson.
  if RunService:IsStudio() then Root:GetAttributeChangedSignal("DevLesson"):Connect(function() Tutorial.begin(Root:GetAttribute("DevLesson")) end) end
 
- -- Over a menu the note moves out of the spotlight's way: top middle, else bottom middle, then the corners.
- local NOTE_SPOTS={{.5,0},{.5,1},{1,0},{1,1},{0,0},{0,1}}
- local function placeNote(low,high)
+ -- Over a menu the note sits bottom right (the Hangar's Save corner: clear of the cards, the plane and the bars, Alan
+ -- 2026-10-21: it hid the gear cards' names), and moves out of the spotlight's way: top middle, bottom middle, corners.
+ local NOTE_SPOTS={{1,1},{.5,0},{.5,1},{1,0},{0,0},{0,1}}
+ local function placeNote(menu,low,high)
   note.AnchorPoint=Vector2.new(.5,0)
-  if not low then note.Position=UDim2.fromScale(.5,.05);return end
-  local view=gui.AbsoluteSize;local w,h=620*scale.Scale,230*scale.Scale;local m=view.Y*.05;local pad=FRAME_OUTSET+10
+  if not menu then note.Position=UDim2.fromScale(.5,.05);return end
+  low,high=low or Vector2.new(-1e4,-1e4),high or Vector2.new(-1e4,-1e4)
+  -- Corners hug the screen's sides; the note may cover the frame's outer edge, never the hole.
+  local view=gui.AbsoluteSize;local w,h=620*scale.Scale,230*scale.Scale;local m=view.Y*.05;local side=20;local pad=FRAME_OUTSET/2
   for _,spot in NOTE_SPOTS do
-   local x=spot[1]==.5 and view.X/2 or spot[1]==1 and view.X-m-w/2 or m+w/2
+   local x=spot[1]==.5 and view.X/2 or spot[1]==1 and view.X-side-w/2 or side+w/2
    local y=spot[2]==0 and m or view.Y-m-h
    if x+w/2<low.X-pad or x-w/2>high.X+pad or y+h<low.Y-pad or y>high.Y+pad then note.Position=UDim2.fromOffset(x,y);return end
   end
@@ -606,6 +609,12 @@ function Tutorial.start(getPlane)
   -- on its last step counts before the Hangar would be opened again.
   local waiting=Tutorial.lesson.ready~=nil and not doneAt and result~=true and not Tutorial.lesson.ready(ctx,step)
   if waiting then Tutorial.gotIt,result,spotNames,marked=false,false,nil,nil end
+  -- A look step can have pages (step.pages: a number, or worked out from ctx): Got it turns to the next one, the last
+  -- one finishes the step. The step reads ctx.data.page (1 first) to pick its words and spotlight.
+  local pages=type(step.pages)=="function" and step.pages(ctx) or step.pages
+  if step.gotIt and Tutorial.gotIt and pages and (ctx.data.page or 1)<pages then
+   ctx.data.page=(ctx.data.page or 1)+1;Tutorial.gotIt=false;stepStarted=os.clock();ctx.ding()
+  end
   local finished=count and type(result)=="number" and result>=count or result==true or (step.gotIt and Tutorial.gotIt)
   -- A step's words can change with what's happening (a function of ctx), e.g. the eraser warnings.
   text.Text=(type(step.text)=="function" and step.text(ctx) or step.text)..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
@@ -651,7 +660,7 @@ function Tutorial.start(getPlane)
   if menu and not doneAt and not waiting then
    if step.gotIt then block(true) elseif spotLow then block(true,spotLow,spotHigh) end -- a lost button: nothing blocked, never stuck
   end
-  placeNote(menu and spotLow,spotHigh)
+  placeNote(menu,spotLow,spotHigh)
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
   if doneAt and os.clock()-doneAt>.8 then startStep(Tutorial.index+1) end
  end)

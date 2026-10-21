@@ -157,6 +157,8 @@ function Hangar.new(playerGui, api)
 		pencil.AnchorPoint, pencil.Position, pencil.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(x + w - 55, y + h / 2), UDim2.fromOffset(96, 26)
 		pencil.ScaleType, pencil.Parent = Enum.ScaleType.Fit, parent
 		pencil.Activated:Connect(function() nameBox:CaptureFocus() end)
+		-- Clicking in selects the whole name, so typing replaces it (Ctrl+A isn't something a kid knows).
+		nameBox.Focused:Connect(function() nameBox.SelectionStart, nameBox.CursorPosition = 1, #nameBox.Text + 1 end)
 		nameBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if utf8.len(nameBox.Text) and utf8.len(nameBox.Text) > NAME_MAX then nameBox.Text = nameBox.Text:sub(1, utf8.offset(nameBox.Text, NAME_MAX + 1) - 1) end
 		end)
@@ -287,8 +289,8 @@ function Hangar.new(playerGui, api)
 
 	local self = { frame = cover }
 	-- The Hangar Tour (TutorialLessons) watches what the player does here (page, tab, picked build, spot, draft) and
-	-- can turn back to the binder. ponytail: there is one Hangar screen, so a module field is enough.
-	Hangar.tour = { state = state, render = function() render() end }
+	-- can turn back to the binder or close it. ponytail: there is one Hangar screen, so a module field is enough.
+	Hangar.tour = { state = state, render = function() render() end, close = function() api.flown() end }
 	-- Redraw only when something the hangar shows changed: redrawing replaces the buttons, and a click that
 	-- lands on a replaced button is lost (the menu refreshes the profile every 3 seconds).
 	local shown

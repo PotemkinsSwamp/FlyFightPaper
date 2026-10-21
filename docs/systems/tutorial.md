@@ -97,12 +97,16 @@ Pals have half a normal plane's Health (Alan 2026-10-19: full Health was frustra
 Folded by a crash: a countdown note, the plane takes off by itself, the step carries on and the Pal holds fire until
 you've flown 2 seconds; after 3 crashes on a step, a tip.
 
-**The Hangar Tour** (lesson 3, built 2026-10-21, not yet played; [plan](../plan/TUTORIAL-PLAN.md) "Lesson 3"): the
+**The Hangar Tour** (lesson 3, built 2026-10-21; Alan's first play the same day, then fixed and played through by
+Claude: step 4 walks the stat sheet row by row in kid words, step 11 is three pages (Weight, the click line, and a
+red X only when a card really has one), the last step counts 3 different targets, the name is selected on click;
+the note sits bottom right over the Hangar; [plan](../plan/TUTORIAL-PLAN.md) "Lesson 3"): the
 Training board's card moves you to the Range on the Range builds (the server treats lesson `hangar` like `range`),
 `lesson.ready` puts the plane on the stage and opens the Range's Hangar (again if it gets closed, never over the game
 menu) on the step's page, then the 14 steps run on the real screens. A menu lesson (`lesson.screen`) shows its note
 over that menu, finds buttons only on it, has no read pause, moves the note out of the spotlight's way, and puts
-see-through walls round the spotlight so only the lit button can be clicked (a look step: only Got it). Steps watch the
+see-through walls round the spotlight so only the lit button can be clicked (a look step: only Got it). A look step
+can have pages (`step.pages`): Got it turns the page. Steps watch the
 Hangar's own state (`Hangar.tour`: page, tab, picked build, spot, draft), not clicks, since most clicks redraw the
 Hangar. The tick is saved as `hangar`; the end card (no buttons, gone after 7 s) hands over to the Range
 (`lesson.stay`), and skipping keeps you there too.
