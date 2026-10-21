@@ -1,6 +1,6 @@
 # Hangar plan: cubby shelf + Customize binder
 
-**Status:** OK'd by Alan 2026-10-20 (answered its questions); art next
+**Status:** built; Alan OK'd it in Play 2026-10-21
 **Looks:** `assets/references/ui-concepts/hangar-shelf-screen.png` (first screen) and `hangar-customize-b.png`
 (Customize), picked by Alan ([decision](../decisions/2026-10-20-hangar-build-shelf.md)).
 

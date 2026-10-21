@@ -6,7 +6,7 @@ The hangar opens on the build you fly; saving makes a build the one you fly next
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-10-21)
-**Hangar rework built, waiting on Alan's Play check** ([plan](../plan/HANGAR-PLAN.md),
+**Hangar rework built; Alan played it and OK'd it 2026-10-21** ([plan](../plan/HANGAR-PLAN.md),
 [decision](../decisions/2026-10-20-hangar-build-shelf.md)): the first screen is a cubby shelf (one still 3D plane per
 build, `BuildShelf`), the big photo, tape name label (click to rename), reference-style stat sheet and Customize
 button; Customize is a binder (`HangarCustomize`) with index tabs (Body, Nose, Wings, Tail, Gear, Boost), the 3D plane

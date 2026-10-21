@@ -117,18 +117,34 @@ Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hang
   its camera; Alan plays it. (2) 2D pieces from the concepts (Codex), checked on a contact sheet, uploaded by Alan.
   (3) Rows, patterns and the picker. (4) Score card, loadout strips and Hangar. (5) Sticky notes. Then the Hangar Tour.
 
-### Lesson 3: Hangar Tour (in the Range, spotlight through the menus, about 2 minutes)
-Played from the Training board (Alan 2026-10-19): it moves you to the Range, walks the Hangar, then "Now try it!" hands
-you to the Range with the plane you built and its sticky notes.
-1. The part tabs: nose, wings, body, tail, weapons, boost. Click the Wings tab.
-2. A part card: click one to try it on; the plane in the middle changes.
-3. The stat bars (health, speed, turn, Lift, capacity): what goes up and down when you swap parts.
-4. A locked card: it needs a level and Paper. Where the level bar and your Paper are.
-5. The Weapons tab: the numbered weapon spots on your plane. Click a spot, then a weapon.
-6. Capacity and spot sizes: a red X means it doesn't fit, and the card says why.
-7. Two weapon types per plane: left click fires one, right click the other.
-8. Save: your five saved builds. Click Save.
-9. Flying it: pick a build at your desk; "Full refold" changes your plane mid-match (costs Paper), "Fresh plane" is free.
+### Lesson 3: Hangar Tour (in the Range, about 2-3 minutes) — draft for the new Hangar, waiting on Alan's OK
+Rewritten 2026-10-21 for the cubby shelf + Customize binder ([decision](../decisions/2026-10-20-hangar-build-shelf.md)).
+Played from the Training board: it moves you to the Range and opens the Range's Hangar by itself. It uses the
+**Range builds**, so nothing of your match builds changes. Each step uses the shared step engine: goal note, the
+spotlight (rest of the screen dimmed, a breathing crayon frame on the thing to click), a tick and ding, a hint after
+10 s, Skip (K). "Do" steps move on when you do the thing; "look" steps have a **Got it** strip.
+
+| # | Spotlight on | Note says | Moves on when |
+|---|---|---|---|
+| 1 | the shelf | "This is your Hangar. Each cubby holds one of your planes." | Got it |
+| 2 | another cubby | "Tap a cubby to pick that plane." | you pick it |
+| 3 | the name tape + pencil | "Name it! Click the pencil, type, press Enter." | you rename it (Skip if you like the name) |
+| 4 | the stat sheet | "These bars are your plane: Health, Speed, Climb, Swerve, Lift. Weight is how much gear it can carry." | Got it |
+| 5 | Customize | "Click Customize to change its parts." | the binder opens |
+| 6 | the Wings tab | "Each tab is one part of the plane. Click Wings." | the page turns to Wings |
+| 7 | a wing card | "Click a card to try it on. Watch the plane and the bars change." | you equip a different wing |
+| 8 | the Gear tab | "Gear is what your plane shoots. Click Gear." | Gear opens |
+| 9 | a numbered spot on the plane | "These numbers are your gear spots. Click spot 2." | spot 2 picked |
+| 10 | the gear cards | "Now pick a gear card to put on spot 2." | spot 2 changes |
+| 11 | the Weight row + mount line | "Each gear weighs something. Too heavy and a card gets a red X saying why. One gear type fires with left click, the other with right click." | Got it |
+| 12 | Save | "Click Save to keep your build." | saved |
+| 13 | Test in Range | "Click Test in Range to fly it." | the Hangar closes, your new plane is out |
+| 14 | the targets | "Now try it! Hit 3 targets." | 3 hits |
+| End | end card | "Hangar Tour done! Your match planes are in the main menu's Hangar: same screens. The Range is yours now." | tick saved, sticky notes take over |
+
+Not in the tour (the Range unlocks every part, and the desk menu is being redesigned): locked parts (level and Paper)
+and the desk's refold. Claude's pick: one line on the end card for locked parts, and a Match Tip the first time you're
+at your desk for refolding. Alan to confirm.
 
 ### Lesson 5: Match Tips (in your first real matches, each shown once)
 Short notes that pop up the first time something happens, not before:

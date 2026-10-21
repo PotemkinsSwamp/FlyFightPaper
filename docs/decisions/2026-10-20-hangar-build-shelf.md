@@ -1,7 +1,7 @@
 # Hangar: builds live in a cubby shelf; Customize opens the part editor
 
 **Decided:** 2026-10-20 (Alan, from three Codex concepts)  
-**Status:** in force (planned, not built)
+**Status:** in force; built, and Alan played it and OK'd it 2026-10-21 ("looks good")
 
 ## Decision
 - The five 1-5 squares are replaced by a **classroom cubby shelf** (concept "picker-b"): each saved build sits in its
