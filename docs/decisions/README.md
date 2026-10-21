@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-20: [Hangar: builds live in a cubby shelf; Customize opens the part editor](2026-10-20-hangar-build-shelf.md)
 - 2026-10-19: [Hangar Range: crosshair is the cursor, row plates on the floor, menu drops on strings; own loadouts next](2026-10-19-range-controls-and-menu.md)
 - 2026-10-19: [Hangar Range: stays on the stage, level plane, shootable row picker; aim help picks by lead](2026-10-19-range-row-picker-and-aim-pick.md)
 - 2026-10-19: [The Hangar Range is its own small map; the Hangar Tour happens there](2026-10-19-range-map-and-hangar-tour.md)
