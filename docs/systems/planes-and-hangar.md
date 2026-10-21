@@ -59,7 +59,9 @@ progress. Pending refolds still recover normally, including the once-only refund
 | `src/shared/Catalog.luau` | Parts and weapons, stats, which builds are legal |
 | `src/shared/Aircraft.luau` | Puts the plane meshes together, mounts, team colours |
 | `src/shared/BuilderModel.luau` | The build you are editing in the hangar |
-| `src/client/Hangar.luau` | Main-menu hangar screen |
+| `src/client/Hangar.luau` | Main-menu hangar: the shelf screen, stat sheet, name label, plane photo |
+| `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build |
+| `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save |
 | `src/server/HangarService.luau` | Saving builds and buying parts |
 
 ## Tuning numbers

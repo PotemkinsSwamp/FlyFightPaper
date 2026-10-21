@@ -1,15 +1,17 @@
--- Hangar on a kraft-cardboard folder (Alan's approved concept: assets/references/ui-concepts/hangar.png).
--- Folder tabs pick the part slot, part cards on the left, the 3D plane on taped paper, crayon stat bars on the right,
--- five saved builds along the bottom. It opens on the build you fly; Save makes a build the one you fly next, and at
--- your desk "Save & fly" also refolds it (Alan 2026-10-17).
+-- Hangar: a cubby shelf of your builds, and a Customize binder that edits one (Alan picked both 2026-10-20: concepts
+-- assets/references/ui-concepts/hangar-shelf-screen.png and hangar-customize-b.png; plan docs/plan/HANGAR-PLAN.md).
+-- The shelf screen shows the picked build big with its name and stats; tapping a cubby picks the build you fly (in the
+-- Range it swaps your plane, and the shelf holds only the Range's builds). Customize opens the binder
+-- (HangarCustomize). Saving makes a build the one you fly next, and at your desk "Save & fly" also refolds it.
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), require(Root.Generated.Gameplay))
 local Aircraft = require(Root.Shared.Aircraft)
-local Schema = require(Root.Shared.ProfileSchema)
 local Builder = require(Root.Shared.BuilderModel)
-local CombatRules = require(Root.Shared.CombatRules)
-local Art = require(Root.Shared.UIAssets).hangar
+local Assets = require(Root.Shared.UIAssets)
+local Art, Shelf = Assets.hangar, Assets.hangarShelf
 local PaperUI = require(script.Parent.PaperUI)
+local BuildShelf = require(script.Parent.BuildShelf)
+local Customize = require(script.Parent.HangarCustomize)
 local Hangar = {}
 
 -- Studio dev mode: every part counts as owned at the level cap, and "Fly this build" sends the draft straight
@@ -20,7 +22,6 @@ local everything = {}
 for _, list in { Catalog.weapons, Catalog.utilities } do for _, part in list do everything[part.id] = true end end
 for _, list in Catalog.structuresBySlot do for _, part in list do everything[part.id] = true end end
 
-local TABS = { "body", "nose", "wings", "tail", "weapons", "boost" }
 -- Bar ranges cover every body/nose/wing/tail swap on the starter build (measured 2026-10-08).
 local STATS = {
 	{ "Health", "red", "red", function(s) return s.health end, 60, 340, "%.0f" },
@@ -31,20 +32,21 @@ local STATS = {
 	{ "Lift", "yellow", "orange", function(s) return s.lift end, 70, 110, "%.0fs" },
 }
 Hangar.STATS = STATS -- the in-game hangar menu shows the same rows
--- Mount tags on the weapons tab, by mount size (picked to show on red or blue paper and the sky-blue photo).
 local NAME_MAX = 20 -- letters in a build's name (HangarService checks it too)
+-- Mount tags on the Gear page, by mount size (picked to show on red or blue paper and the sky-blue photo).
 local MOUNT_COLOURS = { light = Color3.fromRGB(70, 185, 80), medium = Color3.fromRGB(250, 200, 30), heavy = Color3.fromRGB(150, 80, 215) }
+local PHOTO = { 346, 40, 750, 520 } -- the shelf screen's big taped photo (x, y, w, h in sheet pixels)
 
 -- api = { action = RoundAction remote, back(), flown() (after Save & fly), fly(loadout) (Studio only) }
 function Hangar.new(playerGui, api)
-	local cover, sheet = PaperUI.screen(playerGui, "HangarScreen", Art.bg)
+	-- ponytail: the old folder background stands in until Alan uploads the cork board.
+	local cover, sheet = PaperUI.screen(playerGui, "HangarScreen", #Shelf.bg > 0 and Shelf.bg or Art.bg)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local content = Instance.new("Frame")
 	content.Name, content.BackgroundTransparency, content.Size, content.Parent = "Content", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), sheet
-	button(sheet, "Back", Art.buttonGreen, "Back", 1390, 30, 230, 95, 2, api.back, 50)
 
 	local player = game.Players.LocalPlayer
-	local state = { preset = player:GetAttribute("SelectedPreset") or 1, slot = "body", mount = 1, angle = 0.5, pitch = -0.5 }
+	local state = { preset = player:GetAttribute("SelectedPreset") or 1, page = "shelf", slot = "body", mount = 1, angle = 0.5, pitch = -0.5 }
 	-- Your plane waiting at its desk: only then can Save & fly refold it.
 	local function atDesk()
 		local plane = workspace:FindFirstChild("Planes") and workspace.Planes:FindFirstChild(tostring(player.UserId))
@@ -57,67 +59,120 @@ function Hangar.new(playerGui, api)
 	end
 	local profile, render
 
+	-- Back: from Customize to the shelf (unsaved changes ask once first), from the shelf out of the Hangar.
+	button(sheet, "Back", Assets.range.stripRed, "Back", 30, 25, 270, 110, -3, function()
+		if state.page == "shelf" then api.back(); return end
+		if state.unsaved and not state.dropAsk then state.dropAsk = true; render(); return end
+		state.page, state.purchase, state.dropAsk = "shelf", nil, nil
+		state.builder:reset(state.builds[state.preset].loadout, state.preset)
+		render()
+	end, 54).ZIndex = 5
+
+	-- Tapping a cubby picks that build: the one you fly next (in the Range it swaps your plane).
+	local shelf = BuildShelf.new(sheet, Catalog, function(i)
+		if i == state.preset then return end
+		state.preset, state.purchase, state.dropAsk = i, nil, nil
+		state.builder:reset(state.builds[i].loadout, i)
+		if state.range then api.action:FireServer("range", "load" .. i) else api.action:FireServer("selectPreset", i) end
+		render()
+	end)
+
 	local function choose(pick, ...)
 		state.builder.message = ""
 		local ok, reason = pick(state.builder, ...)
 		if not ok then
 			reason = tostring(reason)
-			if reason=="two weapon types per plane" then reason = "Two weapon types per plane: one for left click, one for right click."
-			elseif reason:find("capacity exceeds") then reason = "Too much weight for this body. Remove a weapon or pick a bigger body."
-			elseif reason:find("incompatible with ordered mount") then reason = "That weapon is too big for that mount." end
+			if reason=="two weapon types per plane" then reason = "Two gear types per plane: one for left click, one for right click."
+			elseif reason:find("capacity exceeds") then reason = "Too much weight for this body. Take some gear off or pick a bigger body."
+			elseif reason:find("incompatible with ordered mount") then reason = "That gear is too big for that mount." end
 			state.builder.message = reason
 		end
 		render()
 	end
-	-- Weapons go where they fit, moving others around if needed (BuilderModel.placeWeapon, Alan's note 20).
+	-- Gear goes where it fits, moving others around if needed (BuilderModel.placeWeapon, Alan's note 20).
 	local function placeWeapon(id)
 		local ok, result = state.builder:placeWeapon(id, state.mount)
 		if ok then state.mount = result end
 		return ok, result
 	end
 
-	-- Six rows on the lined sheet: five crayon bars and the weapon capacity row.
+	-- The stat sheet: five crayon bars and the weight row, drawn at full size inside a frame that is placed and
+	-- scaled (the shelf screen and the binder each fit it beside their own pieces).
 	local ROW = 98
-	local function statRow(name, art, y, tint)
-		local strip = image(content, name .. "Row", art, 1370, y, 490, 84)
-		strip.ScaleType = Enum.ScaleType.Stretch
-		if tint then strip.ImageColor3 = tint end
-		words(content, name .. "Name", name, 1392, y + 6, 190, 72, 38)
-	end
-	local function statSheet(stats, compare)
-		image(content, "StatsSheet", Art.statsSheet, 1310, 255, 575, 640, 1).ScaleType = Enum.ScaleType.Stretch
+	local function statSheet(stats, compare, x, y, scale)
+		local holder = Instance.new("Frame")
+		holder.Name, holder.BackgroundTransparency = "Stats", 1
+		holder.Position, holder.Size, holder.Parent = UDim2.fromOffset(x, y), UDim2.fromOffset(575, 640), content
+		local fit = Instance.new("UIScale")
+		fit.Scale, fit.Parent = scale, holder
+		image(holder, "StatsSheet", Art.statsSheet, 0, 0, 575, 640, 1).ScaleType = Enum.ScaleType.Stretch
+		local function statRow(name, art, top, tint)
+			local strip = image(holder, name .. "Row", art, 60, top, 490, 84)
+			strip.ScaleType = Enum.ScaleType.Stretch
+			if tint then strip.ImageColor3 = tint end
+			words(holder, name .. "Name", name, 82, top + 6, 190, 72, 38)
+		end
 		for i, entry in STATS do
 			local name, row, bar, get, lo, hi, format, tint = table.unpack(entry)
-			local y = 275 + (i - 1) * ROW
-			statRow(name, Art.statRow[row], y, tint)
+			local top = 20 + (i - 1) * ROW
+			statRow(name, Art.statRow[row], top, tint)
 			local value = stats and get(stats) or lo
 			local filled = math.clamp(math.ceil((value - lo) / (hi - lo) * 5), 1, 5)
-			for k = 1, 5 do image(content, name .. "Bar" .. k, k <= filled and Art.bar[bar] or Art.bar.empty, 1570 + (k - 1) * 50, y + 20, 46, 42) end
+			for k = 1, 5 do image(holder, name .. "Bar" .. k, k <= filled and Art.bar[bar] or Art.bar.empty, 260 + (k - 1) * 50, top + 20, 46, 42) end
 			local shown = string.format(format, value)
 			if compare then shown ..= string.format(" (%+.0f)", get(compare) - value) end
-			words(content, name .. "Value", shown, 1395, y + 64, 445, 26, 24).TextXAlignment = Enum.TextXAlignment.Right
+			words(holder, name .. "Value", shown, 85, top + 64, 445, 26, 24).TextXAlignment = Enum.TextXAlignment.Right
 		end
-		-- Weapon capacity: how much weapon weight this body can carry (each weapon card shows its weight).
+		-- Weight: how much gear this body can carry (each gear card shows its weight).
 		if stats then
-			local y = 275 + #STATS * ROW
-			statRow("Capacity", Art.statRow.blue, y, Color3.fromRGB(215, 190, 255))
+			local top = 20 + #STATS * ROW
+			statRow("Capacity", Art.statRow.blue, top, Color3.fromRGB(215, 190, 255))
 			local cells = math.max(stats.capacity, 1)
 			local w = math.min(50, 250 / cells)
 			for k = 1, cells do
-				image(content, "Cap" .. k, k <= stats.used_capacity and Art.bar.blue or Art.bar.empty, 1570 + (k - 1) * w, y + 20, w - 3, 42)
+				image(holder, "Cap" .. k, k <= stats.used_capacity and Art.bar.blue or Art.bar.empty, 260 + (k - 1) * w, top + 20, w - 3, 42)
 			end
-			local used = words(content, "CapacityValue", string.format("%d of %d used", stats.used_capacity, stats.capacity), 1395, y + 64, 445, 26, 24)
+			local used = words(holder, "CapacityValue", string.format("%d of %d used", stats.used_capacity, stats.capacity), 85, top + 64, 445, 26, 24)
 			used.TextXAlignment = Enum.TextXAlignment.Right
 			if stats.used_capacity >= stats.capacity then used.TextColor3 = Color3.fromRGB(170, 30, 30) end
 		end
 	end
 
-	local function preview(draft)
-		-- Tinted sky-blue so the plane stands out from the cardboard sheet.
-		image(content, "PreviewPaper", Art.preview, 575, 265, 720, 590, 0).ImageColor3 = Color3.fromRGB(140, 185, 230)
+	-- The build's name on masking tape (concept hangar-name-tape-a.png). On the shelf screen it is a box: click it to
+	-- type a new name (up to NAME_MAX letters, Roblox-filtered on the server).
+	local function nameTag(parent, x, y, w, h, editable)
+		local build = state.builds[state.preset]
+		image(parent, "NameTape", Assets.ingame.tapeLabel, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
+		if not editable then
+			words(parent, "BuildName", build.name, x + 20, y, w - 40, h, 44).TextXAlignment = Enum.TextXAlignment.Center
+			return
+		end
+		local nameBox = Instance.new("TextBox")
+		nameBox.Name, nameBox.Text, nameBox.PlaceholderText, nameBox.ClearTextOnFocus = "BuildName", build.name, "Name this build", false
+		nameBox.Position, nameBox.Size, nameBox.BackgroundTransparency = UDim2.fromOffset(x + 30, y), UDim2.fromOffset(w - 130, h), 1
+		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3 = PaperUI.font, 52, PaperUI.INK
+		nameBox.TextTruncate, nameBox.Parent = Enum.TextTruncate.AtEnd, parent
+		local hint = words(parent, "Rename", "rename", x + w - 105, y, 90, h, 24)
+		hint.TextTransparency = 0.4
+		nameBox:GetPropertyChangedSignal("Text"):Connect(function()
+			if utf8.len(nameBox.Text) and utf8.len(nameBox.Text) > NAME_MAX then nameBox.Text = nameBox.Text:sub(1, utf8.offset(nameBox.Text, NAME_MAX + 1) - 1) end
+		end)
+		nameBox.FocusLost:Connect(function()
+			local name = nameBox.Text:gsub("^%s+", ""):gsub("%s+$", "")
+			if name == "" or name == build.name then nameBox.Text = build.name; return end
+			api.action:FireServer("renamePreset", { range = state.range, slot = state.preset, name = name })
+		end)
+	end
+
+	-- The plane on taped sky-blue paper. box = the paper (x, y, w, h); the 3D view sits inside it.
+	-- diagram (Gear page): a still view from above and behind (nose up) with a numbered tag on every mount.
+	local function preview(draft, box, diagram)
+		local px, py, pw, ph = table.unpack(box)
+		image(content, "PreviewPaper", Art.preview, px, py, pw, ph, 0).ImageColor3 = Color3.fromRGB(140, 185, 230)
+		local vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74
 		local view = Instance.new("ViewportFrame")
 		view.Name, view.BackgroundTransparency = "PlanePreview", 1
-		view.Position, view.Size = UDim2.fromOffset(625, 345), UDim2.fromOffset(620, 430) -- the blue area of the paper
+		view.Position, view.Size = UDim2.fromOffset(vx, vy), UDim2.fromOffset(vw, vh)
 		-- Softer fill and a warm key light so the folds show shading instead of flat colour.
 		view.Ambient, view.LightColor, view.LightDirection = Color3.fromRGB(140, 140, 150), Color3.fromRGB(255, 250, 235), Vector3.new(-0.6, -1, -0.4)
 		view.Parent = content
@@ -130,14 +185,12 @@ function Hangar.new(playerGui, api)
 		camera.Parent, view.CurrentCamera, camera.FieldOfView = view, camera, 45
 		-- Every build fills the same frame (Alan): the camera backs off until the plane's longer side (wingspan or
 		-- nose to tail) nearly fills the frame's height; the wider frame takes the corners when it turns.
-		local box, size = model:GetBoundingBox()
+		local center, size = model:GetBoundingBox()
 		local distance = math.max(size.X, size.Z) / 2 * 1.05 / math.sin(math.rad(camera.FieldOfView / 2))
-		-- Weapons tab: a still view from above and behind (nose up) with a numbered tag on every mount: the diagram.
-		local diagram = state.slot == "weapons" and not state.purchase
 		local function aim()
 			local angle, pitch = state.angle, state.pitch
 			if diagram then angle, pitch = 0, -1.2 end
-			camera.CFrame = CFrame.new(box.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(pitch, 0, 0) * CFrame.new(0, 0, distance)
+			camera.CFrame = CFrame.new(center.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(pitch, 0, 0) * CFrame.new(0, 0, distance)
 		end
 		aim()
 		if diagram then
@@ -146,8 +199,8 @@ function Hangar.new(playerGui, api)
 			for i = 1, body.mount_count do
 				-- Where the mount sits on screen (the preview has no flight body, so model space is the plane's frame).
 				local at = camera.CFrame:PointToObjectSpace(Aircraft.mountOffset(i, body.visual_scale / 2, Aircraft.wingFit(draft.body, draft.wings, body.wing_shift), draft.weapon_mounts[i] or nil))
-				local x = 625 + 620 * (0.5 + at.X / -at.Z / (2 * tan * 620 / 430))
-				local y = 345 + 430 * (0.5 - at.Y / -at.Z / (2 * tan))
+				local x = vx + vw * (0.5 + at.X / -at.Z / (2 * tan * vw / vh))
+				local y = vy + vh * (0.5 - at.Y / -at.Z / (2 * tan))
 				local chosen = i == state.mount
 				local r = chosen and 19 or 15
 				local tag = button(content, "Mount" .. i, "", tostring(i), x - r, y - r, r * 2, r * 2, 0, function() state.mount = i; render() end, chosen and 30 or 24)
@@ -173,185 +226,48 @@ function Hangar.new(playerGui, api)
 		view.Destroying:Connect(function() spin:Disconnect() end)
 	end
 
+	local function save(fly)
+		state.dropAsk = nil
+		local range = state.range and profile.rangePresets ~= nil
+		api.action:FireServer(range and "saveRangePreset" or "savePreset", { slot = state.preset, name = state.builds[state.preset].name, loadout = state.draft, fly = fly })
+		if fly then api.flown() end
+	end
+
 	render = function()
 		for _, child in content:GetChildren() do child:Destroy() end
+		shelf.frame.Visible = state.page == "shelf"
 		if not profile then return end
 		local range = state.range and profile.rangePresets ~= nil
 		local builds = range and profile.rangePresets or profile.presets
-		local level = (dev or range) and 50 or game.Players.LocalPlayer:GetAttribute("Level") or 1
+		local level = (dev or range) and 50 or player:GetAttribute("Level") or 1
 		local ownership = (dev or range) and everything or profile.ownership
 		local saved = builds[state.preset].loadout
 		state.builder = state.builder or Builder.new(Catalog, saved, ownership, level)
 		state.builder:update({ selectedLoadout = saved, selectedRevision = state.preset, profile = { ownership = ownership, level = level } })
 		local builder = state.builder
 		local draft = builder.candidate
-
-		for i, slot in TABS do
-			local tab = button(content, "Tab" .. slot, slot == state.slot and Art.tabSelected or Art.tab, slot, 45 + (i - 1) * 305, 150, 290, 110, 0,
-				function() state.slot = slot; state.purchase = nil; render() end, 50)
-			tab.Label.Position = UDim2.fromOffset(0, -8)
-		end
-
-		-- Part cards: a 2-column grid (every slot has at most 6 parts, so they all fit).
-		local definitions = Catalog.structuresBySlot[state.slot] or (state.slot == "weapons" and Catalog.weapons) or Catalog.utilities
-		for i, part in definitions do
-			local owned = dev or range or profile.ownership[part.id] == true
-			local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
-				or state.slot == "weapons" and table.find(draft.weapon_mounts, part.id) ~= nil
-			local x, y = 45 + (i - 1) % 2 * 262, 272 + math.floor((i - 1) / 2) * 200
-			local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 252, 190, 0, function()
-				if not owned then state.purchase = part; render(); return end
-				state.purchase = nil
-				if state.slot == "weapons" then
-					-- Clicking the weapon already on the picked mount takes it off (Alan 2026-10-17).
-					local i = math.min(state.mount, Catalog:get(draft.body).mount_count)
-					if draft.weapon_mounts[i] == part.id then choose(builder.selectMount, i, false)
-					else choose(function() return placeWeapon(part.id) end) end
-				elseif state.slot == "boost" then choose(builder.selectUtility, part.id)
-				else choose(builder.selectStructure, state.slot, part.id) end
-			end)
-			local name = words(card, "Name", part.name, 18, 14, 216, 96, 36)
-			name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
-			local detail = owned and (equipped and "Equipped" or range and profile.ownership[part.id] ~= true and "Range only" or "Owned") or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
-			if state.slot == "weapons" then
-				-- Damage (Alan): pips for how hard one shot hits, then damage per second.
-				name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(216, 44), false, true -- long names shrink to one line
-				local cap = Instance.new("UITextSizeConstraint")
-				cap.MaxTextSize, cap.Parent = 34, name
-				words(card, "HitLabel", "Hit", 18, 60, 50, 34, 26)
-				local hit = Catalog.hitRating(part)
-				for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, 62 + (k - 1) * 30, 64, 27, 26) end
-				words(card, "DPS", string.format("%.0f damage per second", Catalog.weaponDPS(part)), 18, 96, 216, 30, 24)
-				detail = string.format("%s, weight %d. %s", part.class, part.capacity, detail)
-				-- Can't go on this plane at all right now: a crayon X and why, so a kid sees what to change (note 21).
-				local blocked = owned and not equipped and select(2, builder:findPlace(part.id, state.mount))
-				if blocked then
-					detail = blocked
-					for _, angle in { 37, -37 } do
-						local stroke = Instance.new("Frame")
-						stroke.Name, stroke.AnchorPoint, stroke.Position = "CrayonX", Vector2.new(.5, .5), UDim2.fromScale(.5, .5)
-						stroke.Size, stroke.Rotation, stroke.ZIndex = UDim2.fromOffset(290, 12), angle, 5
-						stroke.BackgroundColor3, stroke.BackgroundTransparency, stroke.BorderSizePixel = Color3.fromRGB(215, 35, 45), .15, 0
-						Instance.new("UICorner", stroke).CornerRadius = UDim.new(.5, 0)
-						stroke.Parent = card
-					end
-				end
-				local status = words(card, "Status", detail, 18, 128, 216, 50, 21)
-				status.TextWrapped = true
-				if blocked then status.TextColor3, status.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
-			else
-				local info = words(card, "Status", detail, 18, 110, 216, 66, 24)
-				info.TextWrapped, info.TextYAlignment = true, Enum.TextYAlignment.Top
-			end
-		end
-
-		local valid, reason = builder:validate(draft)
-		local stats = Catalog:deriveStats(draft)
-		preview(draft)
-
-		-- Under the plane: mounts (weapons tab), the no-booster card (boost tab), or the purchase card.
+		state.builds, state.draft = builds, draft
 		-- Unsaved: the draft differs from the saved build (compared after the same mount clean-up the draft had).
-		local unsaved = not Builder.equal(draft, Builder.new(Catalog, saved).candidate)
-		local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
-			or state.dropAsk and string.format("Build %d has changes you haven't saved. Click build %d again to drop them.", state.preset, state.dropAsk)
-			or player:GetAttribute("MenuMessage") or (range and "Range builds: every part works here, only in the Range." or "")
-		if state.purchase then
-			local part = state.purchase
-			local candidate = assert(Schema.copy(draft))
-			if state.slot == "weapons" then candidate.weapon_mounts[math.min(state.mount, Catalog:get(candidate.body).mount_count)] = part.id
-			elseif state.slot == "boost" then candidate.utility = part.id
-			else
-				candidate[state.slot] = part.id
-				if state.slot == "body" then
-					local mounts = {}
-					for i = 1, part.mount_count do mounts[i] = candidate.weapon_mounts[i] or false end
-					candidate.weapon_mounts = mounts
-				end
-			end
-			statSheet(Catalog:deriveStats(candidate) or stats, stats)
-			note = string.format("%s: %d Paper, level %d. Bars show the plane with it.", part.name, part.paper_price, part.min_level)
-			button(content, "BuyPart", Art.buttonGreen, "Buy", 640, 770, 260, 90, -1, function()
-				api.action:FireServer("purchasePart", part.id); state.purchase = nil; render()
-			end, 46)
-			button(content, "CancelBuy", Art.tab, "Cancel", 930, 770, 260, 90, 1, function() state.purchase = nil; render() end, 40)
-		else
-			statSheet(stats)
-			if state.slot == "weapons" then
-				local body = Catalog:get(draft.body)
-				local groups = assert(CombatRules.triggerGroups(draft))
-				local i = math.min(state.mount, body.mount_count)
-				local part = draft.weapon_mounts[i] and Catalog:get(draft.weapon_mounts[i])
-				-- Key: a coloured dot and the size word for each mount size, top-left of the photo.
-				for k, size in { "light", "medium", "heavy" } do
-					local dot = Instance.new("Frame")
-					dot.Position, dot.Size, dot.BackgroundColor3 = UDim2.fromOffset(645 + (k - 1) * 150, 360), UDim2.fromOffset(26, 26), MOUNT_COLOURS[size]
-					Instance.new("UICorner", dot).CornerRadius = UDim.new(0.5, 0)
-					Instance.new("UIStroke", dot).Thickness = 2
-					dot.Parent = content
-					words(content, "Key" .. size, size, 678 + (k - 1) * 150, 352, 110, 40, 34)
-				end
-				local info = words(content, "MountInfo", string.format("Mount %d: %s%s. %s", i, body.mount_types[i],
-					part and (groups[i] == 1 and ", left click" or ", right click") or "", part and part.name or "Empty: pick a weapon."), 600, 782, 680, 56, 30)
-				info.TextXAlignment = Enum.TextXAlignment.Center
-				button(content, "ClearMount", Art.buttonGreen, "Clear weapon spot", 1090, 280, 200, 70, 3, function() choose(builder.selectMount, state.mount, false) end, 28)
-			elseif state.slot == "boost" then
-				button(content, "NoBoost", Art.tab, "No booster", 840, 775, 240, 80, 0, function() choose(builder.selectUtility, nil) end, 32)
-			end
-		end
-		local message = words(content, "Message", note, 590, 908, 710, 44, 28)
-		local problem = builder.message ~= "" or not valid or state.dropAsk ~= nil
-		message.TextColor3, message.TextWrapped = problem and Color3.fromRGB(170, 30, 30) or Color3.fromRGB(30, 110, 50), true
+		state.unsaved = not Builder.equal(draft, Builder.new(Catalog, saved).candidate)
 
-		-- Saved builds 1-5: picking one is picking the build you fly (same as at the desk; in the Range it swaps your
-		-- plane). Unsaved changes ask first. The picked build's name sits on a white tag under the plane: click to type
-		-- (Alan 2026-10-20: easy to see, under the model; the numbers sit half over the folder's bottom edge).
-		local nameBox = Instance.new("TextBox")
-		nameBox.Name, nameBox.Text, nameBox.PlaceholderText, nameBox.ClearTextOnFocus = "BuildName", builds[state.preset].name, "Name this build", false
-		nameBox.AnchorPoint, nameBox.Position, nameBox.Size = Vector2.new(0.5, 0), UDim2.fromOffset(935, 856), UDim2.fromOffset(440, 48)
-		nameBox.BackgroundColor3, nameBox.BorderSizePixel = Color3.fromRGB(255, 252, 240), 0
-		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3 = PaperUI.font, 32, PaperUI.INK
-		nameBox.TextTruncate, nameBox.Parent = Enum.TextTruncate.AtEnd, content
-		Instance.new("UICorner", nameBox).CornerRadius = UDim.new(0, 10)
-		local edge = Instance.new("UIStroke")
-		edge.Thickness, edge.Color, edge.ApplyStrokeMode, edge.Parent = 3, PaperUI.INK, Enum.ApplyStrokeMode.Border, nameBox
-		local pad = Instance.new("UIPadding")
-		pad.PaddingLeft, pad.PaddingRight, pad.Parent = UDim.new(0, 14), UDim.new(0, 104), nameBox
-		local hint = words(nameBox, "Rename", "rename", 0, 0, 96, 48, 22)
-		hint.AnchorPoint, hint.Position, hint.TextTransparency = Vector2.new(0, 0), UDim2.new(1, 4, 0, 0), 0.45
-		nameBox:GetPropertyChangedSignal("Text"):Connect(function()
-			if utf8.len(nameBox.Text) and utf8.len(nameBox.Text) > NAME_MAX then nameBox.Text = nameBox.Text:sub(1, utf8.offset(nameBox.Text, NAME_MAX + 1) - 1) end
-		end)
-		nameBox.FocusLost:Connect(function()
-			local name = nameBox.Text:gsub("^%s+", ""):gsub("%s+$", "")
-			if name == "" or name == builds[state.preset].name then nameBox.Text = builds[state.preset].name; return end
-			api.action:FireServer("renamePreset", { range = range, slot = state.preset, name = name })
-		end)
-		for i = 1, 5 do
-			button(content, "Preset" .. i, i == state.preset and Art.slotSelected or Art.slot, tostring(i), 600 + (i - 1) * 125, 952, 110, 110, 0, function()
-				if i == state.preset then return end
-				if unsaved and state.dropAsk ~= i then state.dropAsk = i; render(); return end
-				state.preset, state.purchase, state.dropAsk = i, nil, nil; builder:reset(builds[i].loadout, i)
-				if range then api.action:FireServer("range", "load" .. i) else api.action:FireServer("selectPreset", i) end
+		if state.page == "shelf" then
+			shelf.set(builds, state.preset, range and "Range" or "My builds")
+			preview(draft, PHOTO)
+			nameTag(content, PHOTO[1] + 110, PHOTO[2] + PHOTO[4] - 60, 530, 100, true)
+			statSheet(Catalog:deriveStats(draft), nil, 1290, 12, 0.85)
+			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1300, 568, 500, 118, -1, function()
+				state.page, state.slot, state.purchase = "customize", "body", nil
 				render()
-			end, 60)
+			end, 72)
+			open.ZIndex = 2
+			return
 		end
-		-- Save, and at the desk a clearly separate Save & fly that spends Paper (Alan 2026-10-17).
-		local function save(fly)
-			state.dropAsk = nil
-			api.action:FireServer(range and "saveRangePreset" or "savePreset", { slot = state.preset, name = builds[state.preset].name, loadout = draft, fly = fly })
-			if fly then api.flown() end
-		end
-		-- Top left: in the Range, Test in Range saves and drops you back into the Range flying it, so a saved build
-		-- visibly works (Alan 2026-10-20). Elsewhere Studio keeps its dev-only Fly this build there.
-		if range then button(content, "TestInRange", Art.buttonGreen, "Test in Range", 40, 40, 330, 95, -2, function() save(true) end, 40)
-		elseif dev then button(content, "FlyBuild", Art.buttonGreen, "Fly this build", 40, 40, 330, 95, -2, function() api.fly() end, 40) end
-		if atDesk() then
-			button(content, "SavePreset", Art.buttonGreen, "Save", 1320, 900, 250, 125, -1, function() save(false) end, 56)
-			button(content, "SaveFly", Art.buttonGreen, "Save & fly - 120 Paper", 1585, 900, 310, 125, 1, function() save(true) end, 34)
-		else
-			button(content, "SavePreset", Art.buttonGreen, "Save build", 1320, 900, 560, 125, -1, function() save(false) end, 64)
-		end
-		state.draft = draft
+		Customize.draw(content, {
+			state = state, builder = builder, draft = draft, profile = profile, range = range, dev = dev, catalog = Catalog,
+			owned = function(part) return dev or range or profile.ownership[part.id] == true end,
+			choose = choose, placeWeapon = placeWeapon, statSheet = statSheet, preview = preview, nameTag = nameTag,
+			save = save, atDesk = atDesk, api = api, render = render, mountColours = MOUNT_COLOURS,
+		})
 	end
 
 	local self = { frame = cover }
@@ -361,22 +277,24 @@ function Hangar.new(playerGui, api)
 	function self.update(player, newProfile)
 		local key = newProfile and game:GetService("HttpService"):JSONEncode({ newProfile.paper, newProfile.ownership, newProfile.presets, newProfile.rangePresets,
 			player:GetAttribute("MenuMessage"), atDesk() })
-		if key == shown and content:FindFirstChild("SavePreset") then return end
+		if key == shown and #content:GetChildren() > 0 then return end
 		shown, profile = key, newProfile
 		render()
 	end
 	function self.draft() return state.draft end
-	-- Opening the hangar shows the build you fly, unless you left changes on another one unsaved.
-	-- Opened in the Range it shows the Range's builds (switching lists drops the other list's unsaved draft).
+	-- Opening the hangar shows the shelf on the build you fly, unless you left changes unsaved: then it reopens
+	-- Customize on them. Opened in the Range it shows the Range's builds (switching lists drops the other list's draft).
 	function self.open()
 		local range = inRange()
 		local selected = range and (player:GetAttribute("RangeSlot") or 1) or player:GetAttribute("SelectedPreset") or 1
-		local builds = profile and (state.range and profile.rangePresets or profile.presets)
-		local saved = builds and builds[state.preset]
-		local unsaved = range == state.range and state.builder and saved and not Builder.equal(state.builder.candidate, Builder.new(Catalog, saved.loadout).candidate)
+		local unsaved = range == state.range and state.unsaved
 		if range ~= state.range then state.builder = nil end
 		state.range = range
-		if not unsaved then state.preset, state.dropAsk = selected, nil end
+		state.page, state.dropAsk, state.purchase = unsaved and "customize" or "shelf", nil, nil
+		if not unsaved then
+			state.preset = selected
+			if state.builder and state.builds then state.builder:reset(state.builds[selected].loadout, selected) end
+		end
 		shown = nil
 	end
 	return self
