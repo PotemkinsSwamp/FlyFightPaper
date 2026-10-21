@@ -1,6 +1,6 @@
 # Hangar plan: cubby shelf + Customize binder
 
-**Status:** draft, waiting on Alan's OK (2026-10-20)
+**Status:** OK'd by Alan 2026-10-20 (answered its questions); art next
 **Looks:** `assets/references/ui-concepts/hangar-shelf-screen.png` (first screen) and `hangar-customize-b.png`
 (Customize), picked by Alan ([decision](../decisions/2026-10-20-hangar-build-shelf.md)).
 
@@ -12,7 +12,7 @@
 - Under it, the **masking-tape name label** with a pencil. Click it to type a new name (up to 20 letters).
 - Right: the **stat sheet** (Health, Speed, Climb, Swerve, Lift and the weight row, the same bars as today), and under
   it the big orange **Customize** button.
-- Bottom: the **cubby shelf**. Tabs on top: **My builds**, **Range** (only in the Range), **Special** (hidden until
+- Bottom: the **cubby shelf**. Tabs on top: **My builds** (outside the Range) or **Range** (in the Range: only the Range builds), **Special** (hidden until
   special planes exist). Each cubby holds that build as its real 3D plane, standing still, with its name on tape
   underneath. The picked one has the yellow crayon outline.
 - **Tap a cubby = pick that build.** It becomes the build you fly next (in the Range it swaps your plane at once). The
@@ -61,9 +61,9 @@ the Range strips if they match.
 - Unit tests stay green (no rules change).
 - Alan's Play check with a what-to-look-at list: main menu, desk in a match, the Range; phone-sized window.
 
-## Questions for Alan
-1. In the Range, show only the Range builds (my pick: one group, no mix-ups), or My builds too?
-2. The in-game desk menu has the old 1-5 squares too. Give it the same cubby shelf in this job (my pick: in-game menus
-   match the main menus), or later?
+## Alan's answers (2026-10-20)
+1. In the Range the shelf shows **only the Range builds**: they are a separate set, so they stay apart (same look).
+2. The in-game desk menu does **not** get the cubbies: it is a quick menu and needs its own, smaller matching concept,
+   made after the Hangar is done.
 
 Back to [HOME](../HOME.md)
