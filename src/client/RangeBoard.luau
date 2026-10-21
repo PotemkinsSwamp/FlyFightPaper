@@ -97,8 +97,11 @@ function Board.start()
 		local eye = workspace.CurrentCamera.CFrame.Position
 		-- The game's Menu button (top left) under the crosshair opens the game menu, like Esc.
 		local spot = workspace.CurrentCamera:WorldToViewportPoint(eye + FlightState.aim * 1000)
-		local button = player.PlayerGui:FindFirstChild("GameMenu") and player.PlayerGui.GameMenu:FindFirstChild("OpenMenu")
-		local low, size = button and button.AbsolutePosition, button and button.AbsoluteSize
+		local menu = player.PlayerGui:FindFirstChild("GameMenu")
+		local button = menu and menu:FindFirstChild("OpenMenu")
+		-- Measured from the menu's own top-left (the window's corner: it ignores the top bar inset). GUI positions start
+		-- below the top bar, so in the top bar a button's raw position never matched the crosshair (Alan 2026-10-20).
+		local low, size = button and button.AbsolutePosition - menu.AbsolutePosition, button and button.AbsoluteSize
 		if button and button.Visible and spot.X >= low.X and spot.X <= low.X + size.X and spot.Y >= low.Y and spot.Y <= low.Y + size.Y then
 			require(script.Parent.MenuController).pause()
 			return

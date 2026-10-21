@@ -161,9 +161,9 @@ function Targets.start()
 				lower(model, t)
 				continue
 			end
-			-- On its set path at the moment hits are judged (TrainingCourse.pathOf), else where its plane is.
+			-- On its set path (TrainingCourse.pathOf), else where its plane is.
 			local path = Course.pathOf(model)
-			local pose = path and Course.pathAt(path, Course.shownTime()) or body.CFrame
+			local pose = path and Course.pathAt(path, workspace:GetServerTimeNow()) or body.CFrame
 			-- Its heading on the stage: across (turns it over) and up/down (tilts it).
 			local look = stage:VectorToObjectSpace(pose.LookVector)
 			local facing = look.X >= 0 and 0 or math.pi

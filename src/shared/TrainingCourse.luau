@@ -88,12 +88,9 @@ function Course.pathOf(model)
  end
  return cached
 end
--- Where it is at server-clock `time`, and its velocity.
+-- Where it is at server-clock `time`, and its velocity. Clients draw it at their synced server clock's now, and the
+-- server judges a shot at the moment its trigger message was sent (CombatService `pathRewind`), so both agree.
 function Course.pathAt(path,time) return Course.pose(path.spec,path.center,time-path.t0,path.face,path.side) end
--- The server-clock moment a player's screen shows (one trip back plus Roblox's smoothing): hits are judged there.
-function Course.shownTime()
- return workspace:GetServerTimeNow()-game:GetService("Players").LocalPlayer:GetNetworkPing()/2-require(script.Parent.Parent.Generated.Gameplay).combat.view_delay_seconds
-end
 -- The points a target passes through, to check its whole sweep is in clear air.
 function Course.sweep(drill,center,side)
  if not drill.speed then return {center} end

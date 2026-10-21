@@ -62,8 +62,9 @@ end
 -- Returns false when the target has no plane model to test (callers fall back to its body box).
 -- The Range's targets are drawn as flat cut-outs facing the stage (RangeTargets, 26 by 13.6 studs), not as the plane
 -- under them (seen side-on, a thin edge: Alan 2026-10-19, long shots never landed), so they're hit as one card.
--- ponytail: a box a little inside the picture; the stage faces down -Z like the world (TrainingCourse.RANGE has no turn).
-local card=Instance.new("Part");card.Name="RangeCard";card.Size=Vector3.new(22,11.5,2);card.Anchored=true;card.CanQuery=true;card.Parent=world
+-- The whole picture counts (Alan 2026-10-20: hitting the paper you see is a hit); the stage faces down -Z like the
+-- world (TrainingCourse.RANGE has no turn).
+local card=Instance.new("Part");card.Name="RangeCard";card.Size=Vector3.new(26,13.6,2);card.Anchored=true;card.CanQuery=true;card.Parent=world
 function Shapes.cast(p,pose,origin,delta,size,rotation)
 	if p.model:GetAttribute("RangeTarget") then
 		if delta.Magnitude<1e-6 then return nil end

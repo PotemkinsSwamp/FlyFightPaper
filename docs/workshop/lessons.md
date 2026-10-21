@@ -266,6 +266,11 @@ mistake would be easy to make twice.
 - **A lead ring can't guess a curving path (2026-10-20):** speed + turn (second-order) prediction misses by tens of
   studs once a shot flies over ~1 s at a target that swoops (pencil, Range Veteran long: 0% hits even with exact
   motion). Simulate the miss before blaming the guns; for scripted targets read the real path instead.
+- **Same path, same clock (2026-10-20):** a scripted target drawn "a smoothing delay ago" but judged with the
+  general rewind (two trips + smoothing) is off by the difference, about 150 studs/s x a few hundredths of a second:
+  enough to miss a 13-stud card going up. Draw it on `GetServerTimeNow()` and rewind only the message's own trip.
+- **GUI positions start below the top bar:** compare a crosshair's viewport point with a button's
+  `AbsolutePosition` minus its ScreenGui's `AbsolutePosition` (an IgnoreGuiInset gui's corner is the window's).
 - **Studio Play takes Alan's mouse (2026-10-18):** a flying plane locks the mouse to the centre. Run Play only when
   Alan says go or is away, in one short batch, and stop it right after.
 Back to [HOME](../HOME.md)

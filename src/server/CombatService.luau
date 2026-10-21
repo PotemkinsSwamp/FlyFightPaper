@@ -244,7 +244,10 @@ function Service:launch(p,mount,now,target,origin)
  -- display smoothing, and their shot took another trip to get here, so rewind two trips plus smoothing, capped.
  local latency=aimData and aimData.latency or 0
  local rewind=p.kind=="human" and math.min(Config.max_rewind_seconds,2*latency+Config.view_delay_seconds) or 0
- local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+weapon.lifetime,rewind=rewind,flown=0,
+ -- Practice targets fly a set path drawn on the client's synced clock, so only the trigger message's own trip is
+ -- rewound for them: exactly the moment the pilot aimed (TrainingCourse.pathAt).
+ local pathRewind=p.kind=="human" and aimData and math.min(Config.max_rewind_seconds,latency+now-aimData.at) or 0
+ local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+weapon.lifetime,rewind=rewind,pathRewind=pathRewind,flown=0,
   target=target,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
  -- Studio shot recorder: how close each of a player's shots came to the nearest enemy (see :finish).
  if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range} end
@@ -336,7 +339,7 @@ function Service:planeHit(shot,delta,now)
   if info and self:enemy(shooter,target) and target.model:GetAttribute("State")=="FLYING" then
    -- A practice target is judged on its set path, as its card is drawn (TrainingCourse.pathOf).
    local d=target.drill
-   local cf=d and Course.pose(d.spec,d.center,now-shot.rewind-d.t0,d.face,d.side) or Rules.sample(info.track,now-shot.rewind) or target.body.CFrame
+   local cf=d and Course.pose(d.spec,d.center,now-shot.pathRewind-d.t0,d.face,d.side) or Rules.sample(info.track,now-shot.rewind) or target.body.CFrame
    if (cf.Position-(shot.position+delta/2)).Magnitude<reach then
     if shot.dev then
      local along=math.clamp((cf.Position-shot.position):Dot(delta)/math.max(delta:Dot(delta),1e-6),0,1)

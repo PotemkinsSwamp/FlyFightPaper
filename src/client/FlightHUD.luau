@@ -376,12 +376,12 @@ function HUD.start(getPlane, action)
 	sight.FilterType = Enum.RaycastFilterType.Include
 	sight.FilterDescendantsInstances = { workspace:FindFirstChild("Arena") or workspace:WaitForChild("GreyboxRoom") }
 	-- Where a shot of `weapon` fired now meets `root`, following its current turn (`m`: its tracked motion).
-	-- Practice targets fly a set path (TrainingCourse.pathOf), so their lead is exact, read from the moment your
-	-- screen shows. Guessing from the turn misses them: over a pencil's 1.3 s flight the Range's swoops beat it every
-	-- time (measured 2026-10-20).
+	-- Practice targets fly a set path (TrainingCourse.pathOf), so their lead is exact, read on the synced server
+	-- clock (the server judges at the moment you aimed). Guessing from the turn misses them: over a pencil's 1.3 s
+	-- flight the Range's swoops beat it every time (measured 2026-10-20).
 	local function leadOf(root, m, weapon, body)
 		local path, lead = Course.pathOf(root.Parent), root.Position
-		local seen = path and Course.shownTime()
+		local seen = path and workspace:GetServerTimeNow()
 		for _ = 1, 4 do
 			local t = CombatRules.travelTime(weapon, (lead - body.Position).Magnitude)
 			if t == math.huge then t = weapon.lifetime end
@@ -538,7 +538,8 @@ function HUD.start(getPlane, action)
 			local m = motion[target]
 			-- Shared with the gun assist, which leads each weapon by its own speed, drag and drop.
 			FlightState.leadFor = function(weapon) return leadOf(target, m, weapon, body) end
-			place(bracket, target.Position)
+			local path = Course.pathOf(target.Parent)
+			place(bracket, path and Course.pathAt(path, workspace:GetServerTimeNow()).Position or target.Position)
 			-- The nose dot sits at the left-click lead's range, so dot-on-marker means the guns really point there.
 			local anyHit, b = false, bracket.Position
 			for group, pipper in ipairs(pippers) do
