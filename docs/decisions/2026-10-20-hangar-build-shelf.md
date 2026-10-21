@@ -27,6 +27,9 @@
   space on both screens (bigger photo, stats, binder, cards); on Customize the real 3D plane sits on the binder page
   (no stretched photo paper); switching tabs turns the page. In the Range the shelf shows only the Range builds; the
   in-game desk menu gets its own condensed quick-menu concept later (cubbies don't fit a quick menu).
+- **The Range's Hangar looks its own (Alan, 2026-10-21):** "slightly different so it's recognizable that they are
+  separate loadouts": pink Range tab and photo paper, a pinned "Range builds: practice only" note, a pink binder titled
+  "Range Customize". Both screens rename from the tape (with a pencil).
 
 ## Why
 The 1-5 squares can't show names, had no room for future special planes, and the white name box didn't match the
