@@ -319,7 +319,7 @@ function Runtime:lesson(player,cmd)
   self.bots:placePal(foe) -- in the air now, so the step's read pause holds it too
  end
 end
--- One practice target plane on its spot (TrainingCourse.DRILLS or RANGE), flown there by FlightService.
+-- One Combat School practice target plane on its spot (TrainingCourse.DRILLS), flown there by FlightService.
 function Runtime:addDrill(player,p,spec,i,center,side)
  local d=self.flight:add(nil,{id="drill"..player.UserId.."_"..i,name="Target",loadout=self.flight.catalog:starterLoadout(),loadoutName="pellet"})
  if not d then return nil end
@@ -330,27 +330,27 @@ function Runtime:addDrill(player,p,spec,i,center,side)
  d.model:SetAttribute("DrillPath",game:GetService("HttpService"):JSONEncode({t0=d.drill.t0,center=v(center),face=v(d.drill.face),side=v(side),
   speed=spec.speed,span=spec.span,depth=spec.depth,bob=spec.bob,phase=spec.phase,weave=spec.weave}))
  d.model:SetAttribute("Health",spec.health);d.model:SetAttribute("MaxHealth",spec.health);d.model:SetAttribute("DrillOf",player.UserId)
- if spec.color then d.model:SetAttribute("RangeTarget",spec.color) end -- drawn as a flat cut-out on a stick (RangeTargets)
  d.hasLaunched=true;d.body.CFrame=Course.pose(spec,center,0,p.body.Position,side);self.flight:fly(d)
  return d
 end
--- The Range's targets in the picked rows (`RangeRows`): any that folded (and were cleared away) come back on a fresh
--- stick; ones in rows no longer picked are lowered (`Lowered`: RangeTargets tips them back) and taken away.
+-- The Range's targets in the picked rows (`RangeRows`), each a painted card that is the target itself
+-- (CombatService:addCard): any that folded (and were cleared away) come back on a fresh stick; ones in rows no longer
+-- picked are lowered (`Lowered`: RangeTargets tips them back) and taken away.
 function Runtime:rangeTargets(player,p)
  local origin=Course.RANGE.origin
  local rows=player:GetAttribute("RangeRows") or "all"
  for i,spec in ipairs(Course.RANGE.targets) do
-  local d=self.flight.byId["drill"..player.UserId.."_"..i]
+  local id="card"..player.UserId.."_"..i;local c=self.combat.cards[id]
   if rows=="all" or spec.row==rows then
-   if not d then self:addDrill(player,p,Course.difficulty(spec,player:GetAttribute("RangeDifficulty")),i,origin*spec.at,origin.RightVector) end
-  elseif d then self:lowerDrill(d) end
+   if not c then self.combat:addCard(p,id,Course.difficulty(spec,player:GetAttribute("RangeDifficulty")),origin*spec.at,origin.RightVector) end
+  elseif c then self:lowerCard(c) end
  end
 end
 -- Tipped back out of sight (`Lowered`: RangeTargets), then taken away; rangeTargets brings a fresh one when wanted.
-function Runtime:lowerDrill(d)
- if d.model:GetAttribute("Lowered") then return end
- d.model:SetAttribute("Lowered",true)
- task.delay(.7,function() if self.flight.byId[d.id]==d then self.flight:remove(d,"vacancy") end end)
+function Runtime:lowerCard(c)
+ if c.model:GetAttribute("Lowered") then return end
+ c.model:SetAttribute("Lowered",true)
+ task.delay(.7,function() self.combat:removeCard(c) end)
 end
 -- The Range's controls (RangeStage), clicked with the crosshair (client RangeBoard): rows, difficulty, a loadout,
 -- Reset. Any change starts the score over (docs/plan/TUTORIAL-PLAN.md "The Hangar Range").
@@ -361,7 +361,7 @@ function Runtime:rangeAction(player,what)
  if RANGE_ROWS[what] then self:rangePick(player,what)
  elseif Course.DIFFICULTY[what] then
   player:SetAttribute("RangeDifficulty",what)
-  for i in ipairs(Course.RANGE.targets) do local d=self.flight.byId["drill"..player.UserId.."_"..i];if d then self:lowerDrill(d) end end
+  for i in ipairs(Course.RANGE.targets) do local c=self.combat.cards["card"..player.UserId.."_"..i];if c then self:lowerCard(c) end end
  elseif what:match("^load%d$") then
   -- The Range's own five builds (any part, never match builds); the one picked is remembered in the save.
   local slot=tonumber(what:sub(5));local profile=self.profiles:view(player);local preset=profile and profile.rangePresets and profile.rangePresets[slot]

@@ -12,7 +12,7 @@ local HitShapes=require(script.Parent.HitShapes)
 local Course=require(Root.Shared.TrainingCourse)
 local Service={};Service.__index=Service
 function Service.new(flight)
- local self=setmetatable({flight=flight,info={},shots={},paperDown={},serial=0,events={},clock=0,shotCount=0,totalFired=0,totalHits=0,random=Random.new()},Service)
+ local self=setmetatable({flight=flight,info={},shots={},paperDown={},serial=0,events={},clock=0,shotCount=0,totalFired=0,totalHits=0,random=Random.new(),cards={}},Service)
  self.remote=Instance.new("RemoteEvent");self.remote.Name="CombatEvents";self.remote.Parent=Root
  -- Tracer news can be lost without harm, so it goes unreliable; hits, kills and deaths stay reliable.
  self.cosmetics=Instance.new("UnreliableRemoteEvent");self.cosmetics.Name="CombatCosmetics";self.cosmetics.Parent=Root;self.cosmeticEvents={}
@@ -79,8 +79,34 @@ function Service:resetPaperTargets() self.paperDown={} end
 function Service:emit(event) table.insert(cosmetic[event.kind] and self.cosmeticEvents or self.events,event) end
 function Service:detach(p)
  HitShapes.forget(p)
+ for _,c in pairs(self.cards) do if c.foeOf==p.id then self:removeCard(c) end end
  for _,shot in pairs(self.shots) do if shot.owner==p.id then self:finish(shot) end end
  self.info[p.id]=nil
+end
+-- The Range's targets (docs/systems/tutorial.md): each painted card is the target itself, not a plane. It holds its
+-- Health, flies its set path (TrainingCourse.pose, published as `DrillPath` so the client draws it and its lead ring
+-- on the same path) and only its pilot can hit it. Its `Root` follows the path so eraser lock-on and seeking work.
+function Service:addCard(p,id,spec,center,side)
+ local folder=workspace:FindFirstChild("RangeCards")
+ if not folder then folder=Instance.new("Folder");folder.Name="RangeCards";folder.Parent=workspace end
+ local model,body=Instance.new("Model"),Instance.new("Part")
+ body.Name,body.Size,body.Transparency="Root",Vector3.new(26,13.6,2),1 -- HitShapes.CARD
+ body.Anchored,body.CanCollide,body.CanQuery,body.CanTouch,body.CastShadow=true,false,false,false,false
+ local c={id=id,name="Target",card=true,life=1,foeOf=p.id,spec=spec,t0=workspace:GetServerTimeNow(),center=center,face=p.body.Position,side=side,model=model,body=body}
+ body.CFrame=self:cardPose(c,c.t0);body.Parent=model;model.PrimaryPart=body
+ local function v(x) return {x.X,x.Y,x.Z} end
+ model:SetAttribute("DrillPath",game:GetService("HttpService"):JSONEncode({t0=c.t0,center=v(center),face=v(c.face),side=v(side),
+  speed=spec.speed,span=spec.span,depth=spec.depth,bob=spec.bob,phase=spec.phase,weave=spec.weave}))
+ model:SetAttribute("Health",spec.health);model:SetAttribute("MaxHealth",spec.health);model:SetAttribute("State","FLYING")
+ model:SetAttribute("RangeTarget",spec.color or "red");model:SetAttribute("DrillOf",p.player and p.player.UserId or 0)
+ model.ModelStreamingMode=Enum.ModelStreamingMode.Persistent -- arrives whole, Root and all
+ model.Name=id;model.Parent=folder;self.cards[id]=c
+ return c
+end
+function Service:cardPose(c,at) return (Course.pose(c.spec,c.center,at-c.t0,c.face,c.side)) end
+function Service:removeCard(c)
+ if self.cards[c.id]~=c then return end
+ self.cards[c.id]=nil;c.model:Destroy()
 end
 function Service:receive(p,packet,now)
  if type(packet)~="table" then return false end
@@ -188,9 +214,11 @@ function Service:lock(p,info,now)
  local candidate=info.lockPilot and cone(info.lockPilot,Config.eraser_lock_keep_deg) and info.lockPilot or nil
  if not candidate then
   local best=-1
-  for _,target in pairs(self.flight.pilots) do
-   local dot=cone(target,Config.eraser_lock_cone_deg)
-   if dot and dot>best then candidate,best=target,dot end
+  for _,list in {self.flight.pilots,self.cards} do
+   for _,target in pairs(list) do
+    local dot=cone(target,Config.eraser_lock_cone_deg)
+    if dot and dot>best then candidate,best=target,dot end
+   end
   end
  end
  if info.lockPilot~=candidate then info.lockPilot=candidate;info.lockAt=now end
@@ -291,15 +319,26 @@ function Service:hit(attacker,target,amount,now,position,weaponId)
  if homing and attacker.practice and attacker.player then attacker.player:SetAttribute("EraserHits",(attacker.player:GetAttribute("EraserHits") or 0)+1) end
  local health=target.model:GetAttribute("Health")
  local actual=math.min(amount,attacker.foeOf==target.id and health-1 or health);if actual<=0 then return end
+ if target.card then return self:cardHit(attacker,target,health-actual,actual,position) end
  local history=self.info[target.id].history
  for i=#history,1,-1 do if now-history[i].at>Config.assist_window_seconds then table.remove(history,i) end end
  table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity,weapon=weaponId})
  local record=self.flight.records[attacker.id];record.damage+=actual;record.hits+=1;self.totalHits+=1
- if attacker.pin and attacker.player then attacker.player:SetAttribute("RangeHits",(attacker.player:GetAttribute("RangeHits") or 0)+1) end
  target.lastHitAt=now;target.lastHitBy=attacker
  if self.onDamage then self.onDamage(attacker,target,actual,os.clock()) end
  self.flight:damage(target,actual,"weapon",nil,{kind="weapon",weapon=weaponId})
  self:emit({kind="hit",owner=attacker.id,target=target.id,damage=actual,position=position or target.body.Position})
+end
+-- A Range card takes the hit itself; folded, it tears (client RangeTargets) and is cleared after the respawn wait, and
+-- RoundRuntime:rangeTargets puts up a fresh one.
+function Service:cardHit(attacker,c,left,actual,position)
+ if attacker.player then attacker.player:SetAttribute("RangeHits",(attacker.player:GetAttribute("RangeHits") or 0)+1) end
+ c.model:SetAttribute("Health",left)
+ self:emit({kind="hit",owner=attacker.id,target=c.id,damage=actual,position=position or c.body.Position})
+ if left>0 then return end
+ c.model:SetAttribute("State","DESTROYED")
+ self:emit({kind="death",victim=c.name,victimId=c.id,killer=attacker.name,killerId=attacker.id,cause="weapon",position=c.body.Position,practice=true})
+ task.delay(Config.respawn_seconds,function() self:removeCard(c) end)
 end
 function Service:death(p,cause)
  local now=workspace:GetServerTimeNow();local info=self.info[p.id]
@@ -367,10 +406,18 @@ function Service:planeHit(shot,delta,now)
    end
   end
  end
+ -- The shooter's own Range cards, judged where the path had them when the shot was aimed (TrainingCourse.pathAt).
+ for _,c in pairs(self.cards) do
+  if c.foeOf==shooter.id and c.model:GetAttribute("State")=="FLYING" then
+   local t=HitShapes.card(self:cardPose(c,now-shot.pathRewind),shot.position,delta,size)
+   if t and t<bestT then best,bestT=c,t end
+  end
+ end
  return best,bestT
 end
 function Service:step(dt)
  local now=workspace:GetServerTimeNow();self.clock+=dt;self.trackClock+=dt
+ for _,c in pairs(self.cards) do if c.model:GetAttribute("State")=="FLYING" then c.body.CFrame=self:cardPose(c,now) end end
  if self.trackClock>=1/Config.track_hz then
   self.trackClock=0
   for _,p in pairs(self.flight.pilots) do

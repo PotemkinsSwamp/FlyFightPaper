@@ -62,25 +62,25 @@ function Shapes.forget(p)
 	if copies[p.id] then copies[p.id].folder:Destroy();copies[p.id]=nil end
 end
 
+-- The Range's targets are flat cards facing the stage (RangeTargets draws them 26 by 13.6 studs), and the card is the
+-- target itself (CombatService:addCard). The whole picture counts (Alan 2026-10-20: hitting the paper you see is a
+-- hit); the stage faces down -Z like the world (TrainingCourse.RANGE has no turn). Returns the fraction of delta
+-- travelled before touching, or nil.
+local CARD=Vector3.new(26,13.6,2)
+function Shapes.card(pose,origin,delta,size)
+	if delta.Magnitude<1e-6 then return nil end
+	-- Tilted with its heading, as RangeTargets draws it (nose up on a climb, whichever way it faces). Plain box maths,
+	-- not a Blockcast: a cast never sees a part it starts touching, and a moving card can step onto a shot between
+	-- steps (tests/unit/RangeAccuracy: 1 in 3,709 dead-on shots missed that way).
+	-- ponytail: the shot counts as a ball of its thinnest half-width.
+	local look=pose.LookVector;local tilt=math.clamp(math.atan2(look.Y,math.abs(look.X)),-.6,.6)
+	local frame=CFrame.new(pose.Position)*CFrame.Angles(0,0,look.X>=0 and tilt or -tilt)
+	return Rules.segmentBox(origin,delta,frame,CARD/2+Vector3.one*math.min(size.X,size.Y,size.Z)/2)
+end
 -- Sweep a projectile box (size, drawn with `rotation` around its travel direction) from origin along delta,
 -- against target p posed at `pose`. Returns the fraction of delta travelled before touching, or nil.
 -- Returns false when the target has no plane model to test (callers fall back to its body box).
--- The Range's targets are drawn as flat cut-outs facing the stage (RangeTargets, 26 by 13.6 studs), not as the plane
--- under them (seen side-on, a thin edge: Alan 2026-10-19, long shots never landed), so they're hit as one card.
--- The whole picture counts (Alan 2026-10-20: hitting the paper you see is a hit); the stage faces down -Z like the
--- world (TrainingCourse.RANGE has no turn).
-local CARD=Vector3.new(26,13.6,2)
 function Shapes.cast(p,pose,origin,delta,size,rotation)
-	if p.model:GetAttribute("RangeTarget") then
-		if delta.Magnitude<1e-6 then return nil end
-		-- Tilted with its heading, as RangeTargets draws it (nose up on a climb, whichever way it faces). Plain box maths,
-		-- not a Blockcast: a cast never sees a part it starts touching, and a moving card can step onto a shot between
-		-- steps (tests/unit/RangeAccuracy: 1 in 3,709 dead-on shots missed that way).
-		-- ponytail: the shot counts as a ball of its thinnest half-width.
-		local look=pose.LookVector;local tilt=math.clamp(math.atan2(look.Y,math.abs(look.X)),-.6,.6)
-		local frame=CFrame.new(pose.Position)*CFrame.Angles(0,0,look.X>=0 and tilt or -tilt)
-		return Rules.segmentBox(origin,delta,frame,CARD/2+Vector3.one*math.min(size.X,size.Y,size.Z)/2)
-	end
 	local copy=copyOf(p)
 	if not copy then return false end
 	local from=pose:PointToObjectSpace(origin);local step=pose:VectorToObjectSpace(delta)

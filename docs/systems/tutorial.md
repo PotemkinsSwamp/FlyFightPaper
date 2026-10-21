@@ -31,7 +31,11 @@ still camera; everything is painted flats from `assets/ui/range/` (UIAssets `ran
 screen within `RANGE.yaw`/`up`/`down`; the plane points at the spot under it (a control or cut-out, else the aim-help
 target's lead ring, else the far row), and the green dot is drawn at that spot so it sits on the circle. **Targets:**
 two per row, painted cut-outs on long sticks (`RangeTarget`) sweeping wide and high over most of the stage, tearing in
-4 pictures, splitting and rising again; **hit as the flat card you see** (HitShapes), not the plane under it.
+4 pictures, splitting and rising again. **The card is the target itself** ([decision](../decisions/2026-10-21-range-targets-are-the-cards.md);
+built 2026-10-21, not yet played): no plane behind it. It holds its own Health, is hit as the flat card you see
+(`HitShapes.card`) on its set path (`DrillPath`), and an eraser locks onto it (`CombatService:addCard`, in
+`workspace.RangeCards`). The lead ring picks it like a plane, but it gets no enemy diamond or arrow. Combat School's
+targets stay real paper planes.
 **Difficulty** (`Course.DIFFICULTY`): Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x plus a weave.
 **Controls, clicked with the crosshair** (RangeBoard; the guns still fire): the row plates on the floor (Close, Medium,
 Long range, All; sticks stand on their hinges), the score card + Reset hanging top right (`RangeShots`/`RangeHits`,

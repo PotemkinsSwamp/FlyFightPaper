@@ -16,12 +16,11 @@ local MUZZLE = Vector3.new(3, -1, -2) -- a wing gun's spot next to the plane's m
 -- `blocked(from, delta)`: optional, true when the stage stops the shot first (the Edit check passes the real stage).
 function Spec.measure(blocked)
 	local seat = (Course.RANGE.origin * CFrame.new(Course.RANGE.seat)).Position
-	local card = Instance.new("Model");card:SetAttribute("RangeTarget", "red")
 	local rows = {}
 	for _, weapon in Catalog.weapons do
 		if weapon.homing or weapon.spread_deg > 0 then continue end -- erasers seek; spread misses on purpose
-		local size, rotation = Aircraft.projectile(weapon.id, false)
-		size, rotation = size or Vector3.one * weapon.projectile_radius * 2, rotation or CFrame.identity
+		local size = Aircraft.projectile(weapon.id, false)
+		size = size or Vector3.one * weapon.projectile_radius * 2
 		for level in Course.DIFFICULTY do
 			for i, base in Course.RANGE.targets do
 				local spec = Course.difficulty(base, level)
@@ -44,7 +43,7 @@ function Spec.measure(blocked)
 						if blocked and blocked(previous, delta) then row.blocked += 1;break end
 						local pose = at(n * STEP)
 						near = math.min(near, (pose.Position - position).Magnitude)
-						if HitShapes.cast({ model = card }, pose, previous, delta, size, rotation) then landed = true;break end
+						if HitShapes.card(pose, previous, delta, size) then landed = true;break end
 						previous = position
 					end
 					if landed then row.hits += 1 else row.worst = math.max(row.worst, near) end
@@ -52,7 +51,6 @@ function Spec.measure(blocked)
 			end
 		end
 	end
-	card:Destroy()
 	return rows
 end
 

@@ -73,9 +73,10 @@ function Course.pose(drill,center,t,face,side)
  end
  return CFrame.lookAt(at,at+velocity),velocity
 end
--- A practice target's set path, published by the server on its model (`DrillPath`: RoundRuntime.addDrill), so the
--- card you see, the lead ring and the server's hit check all use the same spot (Alan 2026-10-20: shots dead on the
--- ring missed while the plane under the card lagged its path on the swoops). Returns nil for any other plane.
+-- A practice target's set path, published by the server on its model (`DrillPath`: RoundRuntime.addDrill, and
+-- CombatService:addCard for the Range's cards), so the card you see, the lead ring and the server's hit check all use
+-- the same spot (Alan 2026-10-20: shots dead on the ring missed while the plane under the card lagged its path on the
+-- swoops). Returns nil for any other plane.
 local paths=setmetatable({},{__mode="k"})
 function Course.pathOf(model)
  local json=model and model:GetAttribute("DrillPath")

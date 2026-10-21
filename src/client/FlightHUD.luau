@@ -416,7 +416,14 @@ function HUD.start(getPlane, action)
 		local target, guns, best = nil, flying and gunWeapons(plane) or {}, math.rad(35)
 		local look = FlightState.aim or (body and body.CFrame.LookVector)
 		local gun = guns[1] or guns[2]
-		for _, other in ipairs(planes:GetChildren()) do
+		-- The Range's card targets (CombatService:addCard) are picked like planes but get no diamond or arrow
+		-- (Alan 2026-10-21: the whole stage is in view).
+		local candidates = planes:GetChildren()
+		local cards = workspace:FindFirstChild("RangeCards")
+		for _, card in cards and cards:GetChildren() or {} do
+			if card:GetAttribute("DrillOf") == Players.LocalPlayer.UserId then table.insert(candidates, card) end
+		end
+		for _, other in ipairs(candidates) do
 			local root = other:FindFirstChild("Root")
 			if root and other ~= plane then
 				local m = motion[root]
@@ -580,10 +587,12 @@ function HUD.start(getPlane, action)
 		else
 			seeker.Visible = false
 		end
-		local locked = carriesEraser and planes:FindFirstChild(plane:GetAttribute("LockTarget") or "")
+		local lockId = plane and plane:GetAttribute("LockTarget") or ""
+		local locked = carriesEraser and (planes:FindFirstChild(lockId) or workspace:FindFirstChild("RangeCards") and workspace.RangeCards:FindFirstChild(lockId))
 		local progress = plane and plane:GetAttribute("LockProgress") or 0
 		if locked and locked:FindFirstChild("Root") and progress > 0 then
-			place(lockBox, locked.Root.Position)
+			local path = Course.pathOf(locked) -- a Range card: where it's drawn
+			place(lockBox, path and Course.pathAt(path, workspace:GetServerTimeNow()).Position or locked.Root.Position)
 			local size = 70 - 30 * progress
 			lockBox.Size = UDim2.fromOffset(size, size)
 			tint(lockBox, progress >= 1 and Color3.fromRGB(255, 50, 50) or Color3.fromRGB(255, 220, 90))

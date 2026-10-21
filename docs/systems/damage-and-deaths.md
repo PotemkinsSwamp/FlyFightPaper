@@ -43,8 +43,8 @@ to human figures. Respawn delay starts at four seconds; a player may instead rem
 ## Code
 | File | What it does |
 |---|---|
-| `src/server/CombatService.luau` | Kill and assist credit, hit tests |
-| `src/server/HitShapes.luau` | Exact plane hitboxes on the server; a shot starting inside a plane counts |
+| `src/server/CombatService.luau` | Kill and assist credit, hit tests; the Range's card targets (their Health and hits) |
+| `src/server/HitShapes.luau` | Exact plane hitboxes on the server; a shot starting inside a plane counts; the Range card's flat box |
 | `tests/unit/HitShapes.spec.luau` | Plane hits: starting inside, hitting from outside, missing above |
 | `src/client/PlaneDeaths.luau` | Paper ball and shred death visuals |
 

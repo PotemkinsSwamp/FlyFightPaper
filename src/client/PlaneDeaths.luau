@@ -266,8 +266,7 @@ function Deaths.start()
 	local planes = workspace:WaitForChild("Planes")
 	local function watch(model)
 		model:GetAttributeChangedSignal("State"):Connect(function()
-			-- The Range's cut-outs tear their own way (RangeTargets).
-			if model:GetAttribute("State") == "DESTROYED" and not started[model] and not model:GetAttribute("RangeTarget") then play(model, model:GetAttribute("DeathCause")) end
+			if model:GetAttribute("State") == "DESTROYED" and not started[model] then play(model, model:GetAttribute("DeathCause")) end
 		end)
 		model.AncestryChanged:Connect(function()
 			if not model.Parent then started[model], predicted[model], remains[model] = nil, nil, nil end

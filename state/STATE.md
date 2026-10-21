@@ -1,4 +1,6 @@
 # Since Alan last checked (2026-10-20)
+- **Range targets are the cards themselves** (2026-10-21, your OK): no hidden plane behind them; erasers lock on the
+  card; no enemy diamond in the Range. Not yet played: see "Waiting on Alan".
 - **Range aim is right now** (you confirmed in Play): targets fly a set path that the circle, the paper and the hit check
   all share, at the same moment; no aim help in the Range; a test fires 3,709 shots at the circle and all hit.
 - **Range has its own five builds** (any part, never in matches, remembered pick); builds can be renamed; Test in Range.
@@ -46,6 +48,9 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
+- Range cards (play the Range): shots land on the card; it tears in 4 steps, splits and rises; no smoke or scraps
+  trailing behind a damaged card; no little diamond near the cards; Test in Range with an eraser build: the lock box
+  sits on the card and the eraser flies into it; the score card counts shots and hits.
 - Hangar concepts (next session): the cubby shelf screen and the Customize screen, built to grow (skins, trails,
   per-part and weapon skins later). Pick a look, then the plan, then art upload (yours).
 - Your call later: give the match bots the gun fix too (their guns still cross at 150 studs,

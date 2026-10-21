@@ -1,6 +1,6 @@
--- The Range's targets (docs/plan/TUTORIAL-PLAN.md): a practice target plane marked `RangeTarget` (its colour) is drawn
--- as a flat painted paper-plane cut-out on a stick instead of a plane (pieces in UIAssets.range). It faces the stage
--- front, tilts with its swoop, and turns over on its stick when it changes direction. Each hit tears it more (pictures
+-- The Range's targets (docs/systems/tutorial.md): each card target (CombatService:addCard, in workspace.RangeCards,
+-- `RangeTarget` = its colour) is drawn as a flat painted paper-plane cut-out on a stick (pieces in UIAssets.range). It
+-- faces the stage front, tilts with its swoop, and turns over on its stick when it changes direction. Each hit tears it more (pictures
 -- 0-3); when folded it rips in two, the halves fall away in a burst of scraps and the stick sinks out of sight (the
 -- server brings a fresh one up after the wait). Targets in rows no longer picked tip back whole and sink (`Lowered`);
 -- the row-picker plates (RangeStage) tip back with a ting while picked (`Down`).
@@ -61,17 +61,9 @@ function Targets.start()
 		ContentProvider:PreloadAsync(list)
 	end)
 	local live = {}
-	local function hide(model)
-		for _, part in model:GetDescendants() do
-			if part:IsA("BasePart") then part.LocalTransparencyModifier = 1 end
-			if part:IsA("BillboardGui") then part.Enabled = false end
-		end
-	end
 	local function add(model)
 		local color = model:GetAttribute("RangeTarget")
 		if not color or live[model] then return end
-		hide(model)
-		model.DescendantAdded:Connect(function() hide(model) end)
 		local t = { color = color, step = 0, turn = 0, tilt = 0, born = os.clock(), card = card(image(color, "0"), PX.full) }
 		t.stick = Instance.new("Part")
 		t.stick.Name, t.stick.Shape, t.stick.Size = "Stick", Enum.PartType.Cylinder, Vector3.new(STICK, 1.2, 1.2)
@@ -143,17 +135,16 @@ function Targets.start()
 	end
 	workspace.ChildAdded:Connect(function(child) if child.Name == "RangeStage" then watchStage(child) end end)
 	if workspace:FindFirstChild("RangeStage") then watchStage(workspace.RangeStage) end
-	local planes = workspace:WaitForChild("Planes")
-	local function watch(model)
-		add(model)
-		model:GetAttributeChangedSignal("RangeTarget"):Connect(function() add(model) end)
+	local function watchCards(cards)
+		cards.ChildAdded:Connect(add)
+		for _, model in cards:GetChildren() do add(model) end
 	end
-	planes.ChildAdded:Connect(watch)
-	for _, model in planes:GetChildren() do watch(model) end
+	workspace.ChildAdded:Connect(function(child) if child.Name == "RangeCards" then watchCards(child) end end)
+	if workspace:FindFirstChild("RangeCards") then watchCards(workspace.RangeCards) end
 	RunService.RenderStepped:Connect(function(dt)
 		for model, t in live do
-			local body = model.Parent and model:FindFirstChild("Root")
-			if not body or model:GetAttribute("State") == "DESTROYED" then
+			local path = Course.pathOf(model)
+			if not model.Parent or not path or model:GetAttribute("State") == "DESTROYED" then
 				tearDown(model, t)
 				continue
 			end
@@ -161,9 +152,8 @@ function Targets.start()
 				lower(model, t)
 				continue
 			end
-			-- On its set path (TrainingCourse.pathOf), else where its plane is.
-			local path = Course.pathOf(model)
-			local pose = path and Course.pathAt(path, workspace:GetServerTimeNow()) or body.CFrame
+			-- On its set path (TrainingCourse.pathOf), as the server judges it.
+			local pose = Course.pathAt(path, workspace:GetServerTimeNow())
 			-- Its heading on the stage: across (turns it over) and up/down (tilts it).
 			local look = stage:VectorToObjectSpace(pose.LookVector)
 			local facing = look.X >= 0 and 0 or math.pi

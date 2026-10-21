@@ -17,7 +17,7 @@ function Spec.run()
 		local model=Instance.new("Model");model.Parent=game.ServerStorage;model:SetAttribute("State","FLYING")
 		local body=Instance.new("Part");body.Anchored=true;body.CFrame=CFrame.identity;body.Parent=model
 		local p={id="tap",kind="human",life=1,model=model,body=body,loadout=loadout,stats=catalog:deriveStats(loadout)}
-		local service=setmetatable({shotCount=0,totalFired=0,serial=0,shots={},events={},cosmeticEvents={},info={},random=Random.new(),flight={catalog=catalog,records={}}},Combat)
+		local service=setmetatable({cards={},shotCount=0,totalFired=0,serial=0,shots={},events={},cosmeticEvents={},info={},random=Random.new(),flight={catalog=catalog,records={}}},Combat)
 		service:attach(p)
 		return service,p,model
 	end
@@ -198,7 +198,7 @@ function Spec.run()
 			local track={}
 			local target={id="t",model=Instance.new("Folder"),body={Size=Vector3.new(14,2,15)}};target.model:SetAttribute("State","FLYING")
 			local shooter={id="s"}
-			local service=setmetatable({info={t={track=track}},flight={pilots={t=target,s=shooter},byId={t=target,s=shooter}}},Combat)
+			local service=setmetatable({cards={},info={t={track=track}},flight={pilots={t=target,s=shooter},byId={t=target,s=shooter}}},Combat)
 			local velocity=Vector3.new(107,0,0)
 			local function at(time) return Vector3.new(-150,0,-150)+velocity*time end
 			local oneWay,smoothing,speed=.05,Config.view_delay_seconds,900
@@ -229,7 +229,7 @@ function Spec.run()
 			local target={id="t",kind=kind,model=Instance.new("Folder"),body={Size=Vector3.new(14,2,15),AssemblyLinearVelocity=Vector3.new(110,0,0)}}
 			target.model:SetAttribute("State","FLYING")
 			local shooter={id="s"}
-			local service=setmetatable({info={t={track={{at=0,cf=CFrame.identity},{at=1,cf=CFrame.identity}}}},flight={pilots={t=target,s=shooter},byId={t=target,s=shooter}}},Combat)
+			local service=setmetatable({cards={},info={t={track={{at=0,cf=CFrame.identity},{at=1,cf=CFrame.identity}}}},flight={pilots={t=target,s=shooter},byId={t=target,s=shooter}}},Combat)
 			local shot={owner="s",weapon={homing=true},position=Vector3.new(x,0,-20),radius=.6,rewind=0}
 			local hit=service:planeHit(shot,Vector3.new(0,0,40),.5)
 			target.model:Destroy()
@@ -409,7 +409,7 @@ function Spec.run()
 	end)
 	test("eraser release is exactly once",function()
 		local shot={id=1,owner="test",weapon={id="eraser",homing=true},position=Vector3.zero}
-		local service=setmetatable({shots={[1]=shot},shotCount=1,info={test={activeErasers=2}},events={},cosmeticEvents={},flight={byId={}}},Combat)
+		local service=setmetatable({cards={},shots={[1]=shot},shotCount=1,info={test={activeErasers=2}},events={},cosmeticEvents={},flight={byId={}}},Combat)
 		service:finish(shot);service:finish(shot)
 		assert(service.shotCount==0 and service.info.test.activeErasers==1 and #service.cosmeticEvents==1 and #service.events==0)
 	end)
@@ -426,7 +426,7 @@ function Spec.run()
 	test("removed pilots release their shots and combat state without affecting others",function()
 		local own={id=1,owner="leaving",weapon={id="eraser",homing=true},position=Vector3.zero}
 		local other={id=2,owner="staying",weapon={id="eraser",homing=true},position=Vector3.zero}
-		local service=setmetatable({shots={[1]=own,[2]=other},shotCount=2,info={leaving={activeErasers=1},staying={activeErasers=1}},events={},cosmeticEvents={},flight={byId={}}},Combat)
+		local service=setmetatable({cards={},shots={[1]=own,[2]=other},shotCount=2,info={leaving={activeErasers=1},staying={activeErasers=1}},events={},cosmeticEvents={},flight={byId={}}},Combat)
 		service:detach({id="leaving"});service:detach({id="leaving"})
 		assert(service.info.leaving==nil and service.info.staying.activeErasers==1)
 		assert(service.shots[2]==other and service.shots[1]==nil and service.shotCount==1 and #service.cosmeticEvents==1)
