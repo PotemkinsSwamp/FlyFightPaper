@@ -2,6 +2,7 @@
 -- hangar-customize-b.png). Index tabs down its edge pick a category, the left page shows the plane (the Gear page shows
 -- its numbered mounts), the right page holds the cards, and the stat sheet and Save sit beside it.
 -- Categories are a list so it can grow: skins, trails and part skins later are one more TABS row plus their page.
+local TweenService = game:GetService("TweenService")
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Schema = require(Root.Shared.ProfileSchema)
 local CombatRules = require(Root.Shared.CombatRules)
@@ -22,7 +23,7 @@ Customize.TABS = {
 
 -- Binder layout (sheet pixels): the two halves meet at the rings; the plane photo fills the left page.
 local BINDER_X, BINDER_Y, PAGE_W, PAGE_H = 20, 165, 630, 920
-local PHOTO = { 75, 250, 530, 680 }
+local PHOTO = { 75, 250, 530, 635 } -- the 3D plane on the left page, above its name tape
 
 -- ctx comes from Hangar: state, builder, draft, profile, range, dev, owned(part), choose(pick, ...),
 -- placeWeapon(id), statSheet(stats, compare, x, y, w, h), preview(draft, box, diagram), nameTag(...), save(fly),
@@ -38,7 +39,11 @@ function Customize.draw(content, ctx)
 	for i, tab in Customize.TABS do
 		local picked = tab.slot == state.slot
 		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 225 + (i - 1) * 100, 200, 88, 0,
-			function() state.slot = tab.slot; state.purchase = nil; ctx.render() end, 40)
+			function()
+				if tab.slot ~= state.slot then state.turn = true end
+				state.slot, state.purchase = tab.slot, nil
+				ctx.render()
+			end, 40)
 		t.ImageColor3 = tab.tint
 		t.Label.Position, t.Label.Size = UDim2.fromOffset(80, 0), UDim2.new(1, -80, 1, 0)
 	end
@@ -98,10 +103,23 @@ function Customize.draw(content, ctx)
 		end
 	end
 
+	-- Switching tabs turns the page (Alan 2026-10-21): the old right page folds over toward the rings while the new
+	-- cards show underneath.
+	if state.turn then
+		state.turn = nil
+		local page = image(content, "PageTurn", Binder.binderRight, 0, 0, PAGE_W, PAGE_H)
+		page.ScaleType, page.ZIndex, page.AnchorPoint = Enum.ScaleType.Stretch, 8, Vector2.new(0, 0.5)
+		page.Position = UDim2.fromOffset(BINDER_X + PAGE_W, BINDER_Y + PAGE_H / 2)
+		local fold = TweenService:Create(page, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+			{ Size = UDim2.fromOffset(0, PAGE_H), ImageColor3 = Color3.fromRGB(150, 140, 120) })
+		fold.Completed:Connect(function() page:Destroy() end)
+		fold:Play()
+	end
+
 	-- Left page: the build's name, then the plane (the Gear page: a still diagram with a numbered tag on every mount).
 	local diagram = state.slot == "weapons" and not state.purchase
 	ctx.nameTag(content, 125, 890, 430, 92, false)
-	ctx.preview(draft, PHOTO, diagram)
+	ctx.preview(draft, PHOTO, diagram, true)
 	local valid, reason = builder:validate(draft)
 	local stats = ctx.catalog:deriveStats(draft)
 	local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))

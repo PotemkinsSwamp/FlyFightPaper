@@ -165,13 +165,17 @@ function Hangar.new(playerGui, api)
 		end)
 	end
 
-	-- The plane on taped sky-blue paper. box = the paper (x, y, w, h); the 3D view sits inside it.
+	-- The plane in 3D. box = (x, y, w, h). On the shelf screen it sits on taped sky-blue paper; bare (the binder's
+	-- left page, which is blue already) it fills the box with no paper (Alan 2026-10-21: a stretched photo looked bad).
 	-- diagram (Gear page): a still view from above and behind (nose up) with a numbered tag on every mount.
-	local function preview(draft, box, diagram)
+	local function preview(draft, box, diagram, bare)
 		local px, py, pw, ph = table.unpack(box)
-		local paper = image(content, "PreviewPaper", Art.preview, px, py, pw, ph, 0)
-		paper.ScaleType, paper.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(140, 185, 230)
-		local vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74
+		local vx, vy, vw, vh = px, py, pw, ph
+		if not bare then
+			local paper = image(content, "PreviewPaper", Art.preview, px, py, pw, ph, 0)
+			paper.ScaleType, paper.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(140, 185, 230)
+			vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74
+		end
 		local view = Instance.new("ViewportFrame")
 		view.Name, view.BackgroundTransparency = "PlanePreview", 1
 		view.Position, view.Size = UDim2.fromOffset(vx, vy), UDim2.fromOffset(vw, vh)
@@ -188,7 +192,8 @@ function Hangar.new(playerGui, api)
 		-- Every build fills the same frame (Alan): the camera backs off until the plane's longer side (wingspan or
 		-- nose to tail) nearly fills the frame's height; the wider frame takes the corners when it turns.
 		local center, size = model:GetBoundingBox()
-		local distance = math.max(size.X, size.Z) / 2 * 1.05 / math.sin(math.rad(camera.FieldOfView / 2))
+		-- (A frame taller than wide is limited by its width instead.)
+		local distance = math.max(size.X, size.Z) / 2 * 1.05 / math.sin(math.rad(camera.FieldOfView / 2)) / math.min(1, vw / vh)
 		local function aim()
 			local angle, pitch = state.angle, state.pitch
 			if diagram then angle, pitch = 0, -1.2 end
