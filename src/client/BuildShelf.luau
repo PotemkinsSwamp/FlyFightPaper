@@ -44,8 +44,9 @@ function BuildShelf.new(parent, catalog, pick)
 
 	-- ponytail: one row of up to five cubbies (every group has five builds); the arrow and sideways scroll come
 	-- with the first group that has more.
-	function self.set(builds, picked, groupName)
-		group.Text = groupName
+	-- tint: the group tab's colour (the Range's is pink, so its separate builds look separate).
+	function self.set(builds, picked, groupName, tint)
+		group.Text, tab.ImageColor3 = groupName, tint
 		local left = (PaperUI.W - #builds * CUBBY - 2 * END_W) / 2
 		if #cubbies == 0 then
 			PaperUI.image(frame, "EndLeft", Art.endLeft, left, TOP, END_W, FRONT_H).ScaleType = Enum.ScaleType.Stretch

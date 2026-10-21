@@ -33,7 +33,7 @@ function Customize.draw(content, ctx)
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
 	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 500, 12, 700, 140)
 	title.ScaleType = Enum.ScaleType.Stretch
-	words(title, "Label", "Customize", 0, 0, 700, 140, 88).TextXAlignment = Enum.TextXAlignment.Center
+	words(title, "Label", ctx.range and "Range Customize" or "Customize", 0, 0, 700, 140, ctx.range and 72 or 88).TextXAlignment = Enum.TextXAlignment.Center
 
 	-- Index tabs first so they tuck under the right page; the picked one sticks out further.
 	for i, tab in Customize.TABS do
@@ -47,8 +47,14 @@ function Customize.draw(content, ctx)
 		t.ImageColor3 = tab.tint
 		t.Label.Position, t.Label.Size = UDim2.fromOffset(80, 0), UDim2.new(1, -80, 1, 0)
 	end
-	image(content, "BinderLeft", Binder.binderLeft, BINDER_X, BINDER_Y, PAGE_W, PAGE_H).ScaleType = Enum.ScaleType.Stretch
-	image(content, "BinderRight", Binder.binderRight, BINDER_X + PAGE_W, BINDER_Y, PAGE_W, PAGE_H).ScaleType = Enum.ScaleType.Stretch
+	-- The Range's binder is pink (its builds are a separate set).
+	local white = Color3.new(1, 1, 1)
+	local tints = ctx.range and { Color3.fromRGB(255, 175, 200), Color3.fromRGB(255, 222, 230) } or { white, white }
+	local binderTint = tints[2] -- the right page's (the page that turns)
+	for i, half in { Binder.binderLeft, Binder.binderRight } do
+		local page = image(content, "Binder" .. i, half, BINDER_X + (i - 1) * PAGE_W, BINDER_Y, PAGE_W, PAGE_H)
+		page.ScaleType, page.ImageColor3 = Enum.ScaleType.Stretch, tints[i]
+	end
 
 	-- Right page: the cards, 2 across and 3 down (no category has more than 6 today; more would flip to a page 2).
 	local definitions = ctx.catalog.structuresBySlot[state.slot] or (state.slot == "weapons" and ctx.catalog.weapons) or ctx.catalog.utilities
@@ -108,7 +114,7 @@ function Customize.draw(content, ctx)
 	if state.turn then
 		state.turn = nil
 		local page = image(content, "PageTurn", Binder.binderRight, 0, 0, PAGE_W, PAGE_H)
-		page.ScaleType, page.ZIndex, page.AnchorPoint = Enum.ScaleType.Stretch, 8, Vector2.new(0, 0.5)
+		page.ScaleType, page.ZIndex, page.AnchorPoint, page.ImageColor3 = Enum.ScaleType.Stretch, 8, Vector2.new(0, 0.5), binderTint
 		page.Position = UDim2.fromOffset(BINDER_X + PAGE_W, BINDER_Y + PAGE_H / 2)
 		local fold = TweenService:Create(page, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
 			{ Size = UDim2.fromOffset(0, PAGE_H), ImageColor3 = Color3.fromRGB(150, 140, 120) })

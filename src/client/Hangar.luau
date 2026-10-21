@@ -35,6 +35,10 @@ Hangar.STATS = STATS -- the in-game hangar menu shows the same rows
 local NAME_MAX = 20 -- letters in a build's name (HangarService checks it too)
 -- Mount tags on the Gear page, by mount size (picked to show on red or blue paper and the sky-blue photo).
 local MOUNT_COLOURS = { light = Color3.fromRGB(70, 185, 80), medium = Color3.fromRGB(250, 200, 30), heavy = Color3.fromRGB(150, 80, 215) }
+-- The Range's builds are a separate set (Alan 2026-10-21: "look slightly different so it's recognizable"): a pink tab,
+-- pink photo paper, a pinned note on the shelf screen, a pink binder titled "Range Customize".
+local RANGE_PINK, SKY_BLUE = Color3.fromRGB(240, 110, 130), Color3.fromRGB(140, 185, 230)
+Hangar.RANGE_PINK = RANGE_PINK
 local PHOTO = { 330, 12, 780, 560 } -- the shelf screen's big taped photo (x, y, w, h in sheet pixels)
 -- Label and box colours on the stat sheet (white pieces, tinted).
 local STAT_COLOURS = {
@@ -171,7 +175,7 @@ function Hangar.new(playerGui, api)
 		local vx, vy, vw, vh = px, py, pw, ph
 		if not bare then
 			local paper = image(content, "PreviewPaper", Art.preview, px, py, pw, ph, 0)
-			paper.ScaleType, paper.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(140, 185, 230)
+			paper.ScaleType, paper.ImageColor3 = Enum.ScaleType.Stretch, state.range and Color3.fromRGB(235, 165, 195) or SKY_BLUE
 			vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74
 		end
 		local view = Instance.new("ViewportFrame")
@@ -256,7 +260,13 @@ function Hangar.new(playerGui, api)
 		state.unsaved = not Builder.equal(draft, Builder.new(Catalog, saved).candidate)
 
 		if state.page == "shelf" then
-			shelf.set(builds, state.preset, range and "Range" or "My builds")
+			shelf.set(builds, state.preset, range and "Range" or "My builds", range and RANGE_PINK or Color3.fromRGB(255, 215, 60))
+			if range then
+				local note = image(content, "RangeNote", Assets.range.stripRed, 20, 170, 300, 130, -4)
+				note.ScaleType = Enum.ScaleType.Stretch
+				local text = words(note, "Label", "Range builds: practice only", 20, 0, 270, 130, 36)
+				text.TextXAlignment, text.TextWrapped = Enum.TextXAlignment.Center, true
+			end
 			preview(draft, PHOTO)
 			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, 52)
 			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
