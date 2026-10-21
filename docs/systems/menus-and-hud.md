@@ -24,7 +24,8 @@ The ring guesses a plane's path from its speed and turn; practice targets (the R
 their set path (`DrillPath`, `TrainingCourse.pathOf`), so their ring is exact (2026-10-20: the guess hit 0% with a
 pencil on Veteran long range), and their card on screen and the server's hit check use that same path at the same
 moment: the client draws it on its synced server clock, the server rewinds only the trigger message's trip
-(`pathRewind`). The whole picture (26 x 13.6) is the hit area. The Range has
+(`pathRewind`). The whole picture (26 x 13.6) is the hit area. Checked by `tests/unit/RangeAccuracy.spec.luau`
+(Alan's idea, 2026-10-20): 3,709 of 3,709 shots aimed at the ring hit; pellets can't reach the long row's far swing. The Range has
 no gun assist: shots go where the crosshair points, at its range.
 The in-match **Menu** button sits in Roblox's top bar, just right of Roblox's own buttons (`GuiService.TopbarInset`;
 Alan 2026-10-20: lower down it covered the Range Menu strip).

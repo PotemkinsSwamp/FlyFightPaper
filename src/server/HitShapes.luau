@@ -2,6 +2,7 @@
 -- tail, mounted weapons, booster). Each pilot gets a private copy of their plane in a server-only WorldModel,
 -- and a shot is tested by sweeping the projectile's own box through that copy, posed where the target was.
 local AssetService=game:GetService("AssetService")
+local Rules=require(game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper").Shared.CombatRules)
 local Shapes={}
 local world=Instance.new("WorldModel");world.Name="HitShapes";world.Parent=game:GetService("ServerStorage")
 local params=RaycastParams.new();params.FilterType=Enum.RaycastFilterType.Include
@@ -64,16 +65,17 @@ end
 -- under them (seen side-on, a thin edge: Alan 2026-10-19, long shots never landed), so they're hit as one card.
 -- The whole picture counts (Alan 2026-10-20: hitting the paper you see is a hit); the stage faces down -Z like the
 -- world (TrainingCourse.RANGE has no turn).
-local card=Instance.new("Part");card.Name="RangeCard";card.Size=Vector3.new(26,13.6,2);card.Anchored=true;card.CanQuery=true;card.Parent=world
+local CARD=Vector3.new(26,13.6,2)
 function Shapes.cast(p,pose,origin,delta,size,rotation)
 	if p.model:GetAttribute("RangeTarget") then
 		if delta.Magnitude<1e-6 then return nil end
-		-- Tilted with its heading, as RangeTargets draws it (nose up on a climb, whichever way it faces).
+		-- Tilted with its heading, as RangeTargets draws it (nose up on a climb, whichever way it faces). Plain box maths,
+		-- not a Blockcast: a cast never sees a part it starts touching, and a moving card can step onto a shot between
+		-- steps (tests/unit/RangeAccuracy: 1 in 3,709 dead-on shots missed that way).
+		-- ponytail: the shot counts as a ball of its thinnest half-width.
 		local look=pose.LookVector;local tilt=math.clamp(math.atan2(look.Y,math.abs(look.X)),-.6,.6)
-		card.CFrame=CFrame.new(pose.Position)*CFrame.Angles(0,0,look.X>=0 and tilt or -tilt);params.FilterDescendantsInstances={card}
-		local up=math.abs(delta.Unit.Y)>.99 and Vector3.zAxis or Vector3.yAxis
-		local result=world:Blockcast(CFrame.lookAt(origin,origin+delta,up)*rotation,size,delta,params)
-		return result and result.Distance/delta.Magnitude
+		local frame=CFrame.new(pose.Position)*CFrame.Angles(0,0,look.X>=0 and tilt or -tilt)
+		return Rules.segmentBox(origin,delta,frame,CARD/2+Vector3.one*math.min(size.X,size.Y,size.Z)/2)
 	end
 	local copy=copyOf(p)
 	if not copy then return false end

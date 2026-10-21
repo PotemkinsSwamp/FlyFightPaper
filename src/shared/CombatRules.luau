@@ -81,6 +81,17 @@ function Rules.travelTime(weapon, d)
 	end
 	return t>weapon.lifetime+1e-9 and math.huge or t
 end
+-- Where to aim a shot of `weapon` fired from `from` now, at a target that will be at `ahead(t)` t seconds from now
+-- (the lead ring, FlightHUD): the travel time is found by a few rounds of guessing, and the aim rises by the drop.
+function Rules.lead(weapon, from, ahead)
+	local lead=ahead(0)
+	for _=1,4 do
+		local t=Rules.travelTime(weapon,(lead-from).Magnitude)
+		if t==math.huge then t=weapon.lifetime end
+		lead=ahead(t)+Vector3.yAxis*(0.5*(weapon.drop or 0)*t*t)
+	end
+	return lead
+end
 function Rules.shotOffset(weapon, direction, t)
 	return direction*Rules.shotDistance(weapon,t)-Vector3.yAxis*(0.5*(weapon.drop or 0)*t*t)
 end

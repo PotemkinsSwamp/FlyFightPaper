@@ -380,16 +380,10 @@ function HUD.start(getPlane, action)
 	-- clock (the server judges at the moment you aimed). Guessing from the turn misses them: over a pencil's 1.3 s
 	-- flight the Range's swoops beat it every time (measured 2026-10-20).
 	local function leadOf(root, m, weapon, body)
-		local path, lead = Course.pathOf(root.Parent), root.Position
-		local seen = path and workspace:GetServerTimeNow()
-		for _ = 1, 4 do
-			local t = CombatRules.travelTime(weapon, (lead - body.Position).Magnitude)
-			if t == math.huge then t = weapon.lifetime end
-			local ahead = path and Course.pathAt(path, seen + t).Position
-				or root.Position + m.velocity * t + m.acceleration * (0.5 * t * t)
-			lead = ahead + Vector3.yAxis * (0.5 * (weapon.drop or 0) * t * t)
-		end
-		return lead
+		local path, now = Course.pathOf(root.Parent), workspace:GetServerTimeNow()
+		return CombatRules.lead(weapon, body.Position, function(t)
+			return path and Course.pathAt(path, now + t).Position or root.Position + m.velocity * t + m.acceleration * (0.5 * t * t)
+		end)
 	end
 	local STICKY, picked = math.rad(3), nil -- how much closer another enemy's lead must be to take the marker
 	-- Reticles move every frame, after the camera.
