@@ -5,7 +5,16 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-10-18)
+## Where it stands (2026-10-21)
+**Hangar rework built, waiting on Alan's Play check** ([plan](../plan/HANGAR-PLAN.md),
+[decision](../decisions/2026-10-20-hangar-build-shelf.md)): the first screen is a cubby shelf (one still 3D plane per
+build, `BuildShelf`), the big photo, tape name label (click to rename), reference-style stat sheet and Customize
+button; Customize is a binder (`HangarCustomize`) with index tabs (Body, Nose, Wings, Tail, Gear, Boost), the 3D plane
+on the left page, cards on the right, a page turn when switching tabs. Art uploaded 2026-10-21
+(`assets/ui/hangarshelf/`, `UIAssets.hangarShelf`). Not yet seen in Play. The desk's in-game menu keeps its old
+squares until its own quick-menu concept.
+
+Earlier (2026-10-18):
 Softer coloured-paper team colours in (checked in Play: every plane red 214,78,72 / blue 70,128,214). Paper
 textures on every part and booster (107 pieces; Classic in `paper-sample/`, the rest in
 `assets/models/planes/paper-set/`), checked in Play in both team modes and free-for-all; `tools/art/plane_pieces.py` picks up any piece with a "mesh"

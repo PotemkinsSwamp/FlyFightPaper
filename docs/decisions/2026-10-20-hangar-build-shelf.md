@@ -22,6 +22,11 @@
   the **binder** (`hangar-customize-b.png`): index tabs down its edge, plane on the left page, cards on the right.
   Alan: the binder "allows for ... the most modularity"; a page that overflows flips like a book (later).
   Weapons are called **Gear** in the Customize tabs. Build plan: [Hangar plan](../plan/HANGAR-PLAN.md).
+- **Preview fixes (Alan, 2026-10-21):** the shelf needs depth like the concept (a visible top board the tabs stand on,
+  front edges with thickness); the stat sheet looks like the concept's (coloured labels, big crayon boxes); less empty
+  space on both screens (bigger photo, stats, binder, cards); on Customize the real 3D plane sits on the binder page
+  (no stretched photo paper); switching tabs turns the page. In the Range the shelf shows only the Range builds; the
+  in-game desk menu gets its own condensed quick-menu concept later (cubbies don't fit a quick menu).
 
 ## Why
 The 1-5 squares can't show names, had no room for future special planes, and the white name box didn't match the
