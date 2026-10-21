@@ -22,7 +22,7 @@ Customize.TABS = {
 
 -- Binder layout (sheet pixels): the two halves meet at the rings; the plane photo fills the left page.
 local BINDER_X, BINDER_Y, PAGE_W, PAGE_H = 20, 165, 630, 920
-local PHOTO = { 75, 262, 530, 600 }
+local PHOTO = { 75, 250, 530, 680 }
 
 -- ctx comes from Hangar: state, builder, draft, profile, range, dev, owned(part), choose(pick, ...),
 -- placeWeapon(id), statSheet(stats, compare, x, y, w, h), preview(draft, box, diagram), nameTag(...), save(fly),
@@ -51,8 +51,8 @@ function Customize.draw(content, ctx)
 		local owned = ctx.owned(part)
 		local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
 			or state.slot == "weapons" and table.find(draft.weapon_mounts, part.id) ~= nil
-		local x, y = 700 + (i - 1) % 2 * 272, 245 + math.floor((i - 1) / 2) * 205
-		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 262, 195, 0, function()
+		local x, y = 700 + (i - 1) % 2 * 272, 245 + math.floor((i - 1) / 2) * 215
+		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 262, 205, 0, function()
 			if not owned then state.purchase = part; ctx.render(); return end
 			state.purchase = nil
 			if state.slot == "weapons" then
@@ -100,7 +100,7 @@ function Customize.draw(content, ctx)
 
 	-- Left page: the build's name, then the plane (the Gear page: a still diagram with a numbered tag on every mount).
 	local diagram = state.slot == "weapons" and not state.purchase
-	ctx.nameTag(content, 125, 815, 430, 92, false)
+	ctx.nameTag(content, 125, 890, 430, 92, false)
 	ctx.preview(draft, PHOTO, diagram)
 	local valid, reason = builder:validate(draft)
 	local stats = ctx.catalog:deriveStats(draft)
@@ -123,10 +123,10 @@ function Customize.draw(content, ctx)
 		end
 		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, 1415, 140, 490, 610)
 		note = string.format("%s: %d Paper, level %d. Bars show the plane with it.", part.name, part.paper_price, part.min_level)
-		button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 958, 240, 76, -1, function()
+		button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
 			ctx.api.action:FireServer("purchasePart", part.id); state.purchase = nil; ctx.render()
 		end, 46)
-		button(content, "CancelBuy", Art.tab, "Cancel", 995, 958, 240, 76, 1, function() state.purchase = nil; ctx.render() end, 40)
+		button(content, "CancelBuy", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.purchase = nil; ctx.render() end, 40)
 	else
 		ctx.statSheet(stats, nil, 1415, 140, 490, 610)
 		if state.slot == "weapons" then
@@ -144,14 +144,14 @@ function Customize.draw(content, ctx)
 				words(content, "Key" .. size, size, PHOTO[1] + 93 + (k - 1) * 150, PHOTO[2] + 67, 110, 40, 34)
 			end
 			local info = words(content, "MountInfo", string.format("Mount %d: %s%s. %s", m, body.mount_types[m],
-				part and (groups[m] == 1 and ", left click" or ", right click") or "", part and part.name or "Empty: pick a gear card."), 700, 860, 540, 44, 28)
+				part and (groups[m] == 1 and ", left click" or ", right click") or "", part and part.name or "Empty: pick a gear card."), 700, 888, 540, 44, 28)
 			info.TextXAlignment, info.TextWrapped = Enum.TextXAlignment.Center, true
-			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 840, 958, 260, 76, 2, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
+			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 840, 980, 260, 70, 2, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
 		elseif state.slot == "boost" then
-			button(content, "NoBoost", Art.tab, "No booster", 840, 958, 260, 76, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
+			button(content, "NoBoost", Art.tab, "No booster", 840, 980, 260, 70, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
 		end
 	end
-	local message = words(content, "Message", note, 700, 905, 540, 50, 26)
+	local message = words(content, "Message", note, 700, 932, 540, 46, 26)
 	local problem = builder.message ~= "" or not valid or state.dropAsk ~= nil
 	message.TextColor3, message.TextWrapped = problem and Color3.fromRGB(170, 30, 30) or Color3.fromRGB(30, 110, 50), true
 

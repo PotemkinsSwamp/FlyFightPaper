@@ -257,7 +257,7 @@ function Hangar.new(playerGui, api)
 			preview(draft, PHOTO)
 			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, true)
 			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
-			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 540, 600, 125, -1, function()
+			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 530, 600, 120, -1, function()
 				state.page, state.slot, state.purchase = "customize", "body", nil
 				render()
 			end, 72)

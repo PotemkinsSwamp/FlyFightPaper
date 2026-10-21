@@ -13,7 +13,7 @@ local BuildShelf = {}
 
 -- Sheet pixels: a cubby's width (its inside is square), the front piece's height (the shelf's top board seen from a
 -- little above, then the frame), how much of that is the top board, the side boards, and where the top board starts.
-local CUBBY, FRONT_H, TOP_FACE, END_W, TOP = 345, 414, 69, 60, 655
+local CUBBY, FRONT_H, TOP_FACE, END_W, TOP = 345, 414, 69, 60, 640
 
 -- The plane seen from above and behind, nose away and a little to the side, filling the cubby's opening.
 local function draw(view, catalog, loadout)
@@ -33,7 +33,7 @@ function BuildShelf.new(parent, catalog, pick)
 	frame.Name, frame.BackgroundTransparency, frame.Size, frame.Parent = "Shelf", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), parent
 	-- The group's tab on the top rail: My builds, or Range in the Range (Special joins when special planes exist).
 	local tab = PaperUI.image(frame, "GroupTab", Art.shelfTab, 110, TOP - 58, 320, 92) -- standing on the top board
-	tab.ScaleType, tab.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(255, 215, 60)
+	tab.ScaleType, tab.ImageColor3, tab.ZIndex = Enum.ScaleType.Stretch, Color3.fromRGB(255, 215, 60), 2
 	local group = PaperUI.words(tab, "Label", "", 0, 4, 320, 84, 46)
 	group.TextXAlignment = Enum.TextXAlignment.Center
 	local outline = PaperUI.image(frame, "Picked", Art.outline, 0, 0, CUBBY + 20, FRONT_H - TOP_FACE + 20)
