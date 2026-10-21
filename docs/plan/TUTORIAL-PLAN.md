@@ -117,7 +117,7 @@ Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hang
   its camera; Alan plays it. (2) 2D pieces from the concepts (Codex), checked on a contact sheet, uploaded by Alan.
   (3) Rows, patterns and the picker. (4) Score card, loadout strips and Hangar. (5) Sticky notes. Then the Hangar Tour.
 
-### Lesson 3: Hangar Tour (in the Range, about 2-3 minutes) — draft for the new Hangar, waiting on Alan's OK
+### Lesson 3: Hangar Tour (in the Range, about 2-3 minutes) — OK'd by Alan 2026-10-21, not built
 Rewritten 2026-10-21 for the cubby shelf + Customize binder ([decision](../decisions/2026-10-20-hangar-build-shelf.md)).
 Played from the Training board: it moves you to the Range and opens the Range's Hangar by itself. It uses the
 **Range builds**, so nothing of your match builds changes. Each step uses the shared step engine: goal note, the
@@ -142,9 +142,9 @@ spotlight (rest of the screen dimmed, a breathing crayon frame on the thing to c
 | 14 | the targets | "Now try it! Hit 3 targets." | 3 hits |
 | End | end card | "Hangar Tour done! Your match planes are in the main menu's Hangar: same screens. The Range is yours now." | tick saved, sticky notes take over |
 
-Not in the tour (the Range unlocks every part, and the desk menu is being redesigned): locked parts (level and Paper)
-and the desk's refold. Claude's pick: one line on the end card for locked parts, and a Match Tip the first time you're
-at your desk for refolding. Alan to confirm.
+**Alan's answers (2026-10-21, "yes to all your picks"):** locked parts get one line on the end card ("In matches,
+some parts unlock with levels and Paper"); refolding at the desk is a Match Tip the first time you're at your desk;
+during "do" steps only the spotlighted thing can be clicked (the rest is dimmed and blocked); the 14 steps stay as listed.
 
 ### Lesson 5: Match Tips (in your first real matches, each shown once)
 Short notes that pop up the first time something happens, not before:
