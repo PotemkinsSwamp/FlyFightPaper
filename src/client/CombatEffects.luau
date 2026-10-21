@@ -21,10 +21,11 @@ local Effects={}
 -- Also returns the target's range: both guns meet there. At a fixed 150 studs they crossed and flew past either
 -- side of a plane seen from behind at 300 (measured 2026-10-19), though the dot was red on the ring.
 function Effects.aim(body,weapon)
- -- The Range has no assist: shots go where the crosshair is, at its range, so the ring tells the truth (Alan
- -- 2026-10-20: shots near the ring were landing).
+ -- The Range has no assist: shots go where the green dot (the nose) points, at the crosshair's range, as in a match
+ -- (Alan 2026-10-21). They used to go to the crosshair, which the nose trails while tracking, so the dot sat on the
+ -- ring and showed red while the shots flew ~2 degrees ahead: 2% hits on the long row.
  local point=FlightState.aimPoint
- if point then return (point-body.Position).Unit,(point-body.Position).Magnitude end
+ if point then return body.CFrame.LookVector,(point-body.Position).Magnitude end
  local leadFor=FlightState.leadFor
  if leadFor and weapon then
   local offset=leadFor(weapon)-body.Position

@@ -1,6 +1,8 @@
 # Since Alan last checked (2026-10-20)
 - **Range targets are the cards themselves** (2026-10-21, your OK): no hidden plane behind them; erasers lock on the
   card; no enemy diamond in the Range. Not yet played: see "Waiting on Alan".
+- **Range long row fixed** (2026-10-21, your pick): shots follow the green dot, as in a match. Your green dot trailed
+  the crosshair while tracking, and shots went to the crosshair: 24 studs off at long range.
 - **Range aim is right now** (you confirmed in Play): targets fly a set path that the circle, the paper and the hit check
   all share, at the same moment; no aim help in the Range; a test fires 3,709 shots at the circle and all hit.
 - **Range has its own five builds** (any part, never in matches, remembered pick); builds can be renamed; Test in Range.
@@ -48,7 +50,8 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-- Range cards (play the Range): shots land on the card; it tears in 4 steps, splits and rises; no smoke or scraps
+- Range (play it): shots now go where the GREEN DOT points (not the crosshair): dot in the orange ring = hit, on
+  the long row too (was 2%; now 100% in the test). Also: shots land on the card; it tears in 4 steps, splits and rises; no smoke or scraps
   trailing behind a damaged card; no little diamond near the cards; Test in Range with an eraser build: the lock box
   sits on the card and the eraser flies into it; the score card counts shots and hits.
 - Hangar concepts (next session): the cubby shelf screen and the Customize screen, built to grow (skins, trails,

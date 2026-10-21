@@ -9,6 +9,9 @@
 - An eraser locks onto the card and seeks it; the lead ring follows the card's set path as before. No aim help.
 - The small enemy diamond is not shown over Range cards (Alan: "that can be removed in the range"). It stays in matches.
 - Combat School's targets stay real paper planes (they're meant to work like match planes).
+- **Shots follow the green dot (the nose), not the crosshair** (Alan, same day, after the long row missed side to side:
+  [playtest](../playtests/2026-10-21-range-long-row.md)): dot in the ring = hit, as in a match; the crosshair is what
+  you steer with. Rejected: snapping the nose onto the crosshair (easier, less like a match).
 
 ## Why
 The hidden plane still showed through: smoke and paper scraps trailed from it when a card was damaged, and the

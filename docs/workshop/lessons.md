@@ -277,3 +277,7 @@ mistake would be easy to make twice.
 - **Studio Play takes Alan's mouse (2026-10-18):** a flying plane locks the mouse to the centre. Run Play only when
   Alan says go or is away, in one short batch, and stop it right after.
 Back to [HOME](../HOME.md)
+- **An "on target" sign must use what the shot uses (2026-10-21):** the Range's green dot showed the nose and turned
+  red by the nose, but shots went to the crosshair, which the nose trails by 1-2 degrees while tracking. Close targets
+  hid it; the long row hit 2%. A test that fires from the ideal aim can't see this: simulate the player's real loop
+  (aim, turning, what the client sends) when an indicator and the shots could disagree.

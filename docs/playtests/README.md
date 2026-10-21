@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-10-21: Range cards and the long row](2026-10-21-range-long-row.md)
 - [2026-10-20: Range aim, Range builds, Hangar look](2026-10-20-range-aim-and-hangar.md)
 - [2026-10-19 (late): the Hangar Range's controls](2026-10-19-range-controls.md)
 - [2026-10-19: Training board and the Hangar Range](2026-10-19-training-board-and-range.md)

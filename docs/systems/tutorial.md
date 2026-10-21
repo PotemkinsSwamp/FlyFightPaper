@@ -29,7 +29,9 @@ decisions: [stage and picker](../decisions/2026-10-19-range-row-picker-and-aim-p
 no skipping; Menu > Leave ends it). Your build hangs still and level on a puppet-theatre stage (`Pinned`) seen from a
 still camera; everything is painted flats from `assets/ui/range/` (UIAssets `range`). The crosshair moves over the
 screen within `RANGE.yaw`/`up`/`down`; the plane points at the spot under it (a control or cut-out, else the aim-help
-target's lead ring, else the far row), and the green dot is drawn at that spot so it sits on the circle. **Targets:**
+target's lead ring, else the far row), and the green dot is drawn at that spot's range so it sits on the circle once
+the plane has turned. **Shots go where the green dot (the nose) points**, at that range (CombatEffects.aim; Alan
+2026-10-21): the nose trails the crosshair while tracking, so the dot, not the crosshair, says where shots land. **Targets:**
 two per row, painted cut-outs on long sticks (`RangeTarget`) sweeping wide and high over most of the stage, tearing in
 4 pictures, splitting and rising again. **The card is the target itself** ([decision](../decisions/2026-10-21-range-targets-are-the-cards.md);
 built 2026-10-21, not yet played): no plane behind it. It holds its own Health, is hit as the flat card you see
