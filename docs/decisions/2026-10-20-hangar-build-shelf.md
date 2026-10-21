@@ -18,6 +18,10 @@
 - **The Customize screen gets its own concepts first and must grow without a redo** (Alan, same night): today it edits
   body, nose, wings, tail, weapons and boost; later skins, trails, skins for single parts and for weapons, mixed and
   matched. So categories are a list that can get longer (not a fixed row of six tabs), and a part can carry a skin.
+- **Looks picked (Alan, 2026-10-20, later):** the shelf screen as drawn in `hangar-shelf-screen.png`, and Customize as
+  the **binder** (`hangar-customize-b.png`): index tabs down its edge, plane on the left page, cards on the right.
+  Alan: the binder "allows for ... the most modularity"; a page that overflows flips like a book (later).
+  Weapons are called **Gear** in the Customize tabs. Build plan: [Hangar plan](../plan/HANGAR-PLAN.md).
 
 ## Why
 The 1-5 squares can't show names, had no room for future special planes, and the white name box didn't match the
@@ -27,7 +31,8 @@ every build would need a hand-drawn picture.
 
 ## Pictures
 `assets/references/ui-concepts/hangar-shelf-cubbies-b.png` (chosen), `hangar-name-tape-a.png` (name label),
-`hangar-shelf-polaroids-a.png` (runner-up).
+`hangar-shelf-polaroids-a.png` (runner-up), `hangar-shelf-screen.png` and
+`hangar-customize-b.png` (picked), `hangar-customize-a.png` (sticky-note list, not picked).
 
 ## Affects
 - [Planes and hangar](../systems/planes-and-hangar.md), [Tutorial](../systems/tutorial.md) (the Range)

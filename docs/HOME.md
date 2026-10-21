@@ -20,6 +20,7 @@ otherwise.
 - [Milestones](plan/MILESTONES.md): stages, quality bars and Alan's ★ gates.
 - [Ideas not yet planned](plan/IDEAS.md)
 - [Tutorial plan](plan/TUTORIAL-PLAN.md) (draft, waiting on Alan)
+- [Hangar plan](plan/HANGAR-PLAN.md) (draft, waiting on Alan)
 - [Release notes](plan/RELEASE_NOTES.md) (2026-10-07 build)
 
 ## The game, system by system
