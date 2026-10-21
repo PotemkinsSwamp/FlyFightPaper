@@ -1,10 +1,11 @@
-# Since Alan last checked (2026-10-19, fifth session)
-- **Hangar Range controls work** (crosshair is the cursor there): row plates on the floor, score card + Reset top right,
-  Range Menu + Hangar strips at the left edge; Range Menu drops on strings (loadouts 1-5, keys 1-5, difficulty).
-- **Fixed from your Play:** dot off the circle, Range acting as a lesson (K), plane flying off on a swap, long shots
-  never landing (targets now hit as the card you see), menu sticking, Maneuvers too fast.
+# Since Alan last checked (2026-10-20)
+- **Range aim is right now** (you confirmed in Play): targets fly a set path that the circle, the paper and the hit check
+  all share, at the same moment; no aim help in the Range; a test fires 3,709 shots at the circle and all hit.
+- **Range has its own five builds** (any part, never in matches, remembered pick); builds can be renamed; Test in Range.
+- **Menu button** sits in Roblox's top bar (crosshair can click it); main menu's Tutorial button now says Training.
+- **Rare missed hits fixed** for planes in matches too (a shot that starts inside a plane now counts).
 
-# Now: Tutorial; Hangar Range controls built; next its own five loadouts with names, then sticky notes, Hangar Tour
+# Now: Hangar rework (your OK 2026-10-20): cubby shelf + separate Customize screen; concepts for both first
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
@@ -15,8 +16,7 @@ Decisions to review
 Combat School: the hunting Pal (step 8) flies 25% faster until you're at half Health (else a player flying away is
   never caught); look cards hold 5 s, action steps 2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%).
   "No thanks" to the welcome question isn't saved.
-Hangar Range: Lift and Health bars hide there; targets 40 Health, 2 per row; hit box 22 x 11.5 (a bit inside the
-  picture); Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x + weave (stand-ins until you tune them).
+Hangar Range: Lift and Health bars hide there; targets 40 Health, 2 per row; hit box is the whole picture; Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x + weave (stand-ins until you tune them).
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
   buying early is useless). Buying a part with Paper still needs the level.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
@@ -46,7 +46,8 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
 Waiting on Alan
-- Range Play check: Range Menu/Hangar strips at the left (in the way? strings read right?), loadout swap, long shots.
+- Hangar concepts (next session): the cubby shelf screen and the Customize screen, built to grow (skins, trails,
+  per-part and weapon skins later). Pick a look, then the plan, then art upload (yours).
 - Your call later: give the match bots the gun fix too (their guns still cross at 150 studs,
   so they miss past it; fixing it makes every bot noticeably more accurate).
 - Backlog (yours): a new fan sound for the real game (the current one is a wind tunnel).

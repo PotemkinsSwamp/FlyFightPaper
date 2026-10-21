@@ -15,12 +15,19 @@
   stats, Save). Tapping a cubby picks that build (in the Range it swaps your plane). Alan: "you tap ... one of your
   presets and then there's a button to customize ... it pulls up another screen."
 - Names are always visible (no hover), so it works on phones.
+- **The Customize screen gets its own concepts first and must grow without a redo** (Alan, same night): today it edits
+  body, nose, wings, tail, weapons and boost; later skins, trails, skins for single parts and for weapons, mixed and
+  matched. So categories are a list that can get longer (not a fixed row of six tabs), and a part can carry a skin.
 
 ## Why
 The 1-5 squares can't show names, had no room for future special planes, and the white name box didn't match the
 crafts look (Alan 2026-10-20: "we might as well just change it now so it's able to easily include other things in the
 future"). Cubbies looked best; a ViewportFrame makes them as cheap as polaroids. The crayon-card concept was dropped:
 every build would need a hand-drawn picture.
+
+## Pictures
+`assets/references/ui-concepts/hangar-shelf-cubbies-b.png` (chosen), `hangar-name-tape-a.png` (name label),
+`hangar-shelf-polaroids-a.png` (runner-up).
 
 ## Affects
 - [Planes and hangar](../systems/planes-and-hangar.md), [Tutorial](../systems/tutorial.md) (the Range)
