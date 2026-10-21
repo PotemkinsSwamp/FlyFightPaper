@@ -115,7 +115,9 @@ with the mouse, so the plane pointed somewhere else when it let go).
 A lesson step asks the server for what it needs with `RoundAction("lesson", {freeze, slow, gentle, repair, eraser, drill, pal})`; the
 server keeps counts on the player (`DrillDown`, `PalFolds`, `PalEraserMisses`, `PalEraserHits`, `EraserHits`).
 Studio: set `DevLesson` (flight / combat) on `ReplicatedStorage.FlyFightPaper` on the client to open a lesson. To test
-aiming, the player attribute `DevAimLead` (DevTools.luau) steers at the HUD's orange ring and `DevAim` at a direction.
+aiming, the player attribute `DevAimLead` (DevTools.luau) steers at the HUD's orange ring when there's clear air to it
+(else it flies the loop above the city) and holds the trigger (`DevFire`, CombatController) only while the dot is on
+the ring; `DevAim` steers at a direction.
 Every player's last 40 shots are recorded in Studio on the player attribute `DevShotLog` (CombatService): hit, wall or
 air, the gun range sent, and how far and where each passed the nearest enemy's centre, so a playtest's misses can be read.
 

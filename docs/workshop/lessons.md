@@ -281,3 +281,9 @@ Back to [HOME](../HOME.md)
   red by the nose, but shots went to the crosshair, which the nose trails by 1-2 degrees while tracking. Close targets
   hid it; the long row hit 2%. A test that fires from the ideal aim can't see this: simulate the player's real loop
   (aim, turning, what the client sends) when an indicator and the shots could disagree.
+- **A shooting test must aim like a good player, or it measures the test (Alan, 2026-10-21):** a plane steered at the
+  ring chased bots through buildings and its dot trailed the ring, so 21-30% hits said nothing about the game. Fire
+  only while the HUD's own "on target" test passes and keep clear air (DevAimLead), or better, record real flight and
+  fire simulated shots at it offline with the real hit shapes (thousands of shots, no aiming noise).
+- **Count the trigger's travel time once (2026-10-21):** the screen showing bots 0.19 s late looked like a gap against
+  the server's 0.1 s rewind, but the rewind also adds twice the trigger message's age; end-to-end shots showed no lag.

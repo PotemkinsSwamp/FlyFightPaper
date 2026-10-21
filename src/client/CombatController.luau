@@ -29,6 +29,11 @@ function Controller.start(getPlane,effects)
   if which then held[which]=false;effects.press(which,false);send(which) end
  end)
  Input.WindowFocusReleased:Connect(function()held={false,false};effects.press(1,false);effects.press(2,false);send(1);send(2)end)
+ -- Studio test hook: the player attribute DevFire holds the left trigger (Studio MCP can't press the game's mouse).
+ if Run:IsStudio() then
+  local player=Players.LocalPlayer
+  player:GetAttributeChangedSignal("DevFire"):Connect(function() held[1]=player:GetAttribute("DevFire")==true;effects.press(1,held[1]);send(1) end)
+ end
  -- While firing, refresh the aim 30 times a second: the server fires each round along the latest aim it has,
  -- and a 0.1 s old aim misses a turning plane at range. Idle triggers resync 10 times a second.
  Run.Heartbeat:Connect(function(dt)

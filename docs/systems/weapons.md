@@ -5,6 +5,13 @@ Six weapon families made of school supplies: paper pellets, staples, rubber band
 
 ## Where it stands (2026-10-15)
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
+**Match aim measured (2026-10-21, Alan asked if matches miss like the Range did):** in a match shots leave along the
+nose, where the green dot is drawn (the Range bug can't happen there). 30 s of 11 bots' real flight recorded on the
+server, then "dot exactly on the ring" shots fired at it with the real hit shapes: pellets hit 99% at 150 studs, 88%
+at 300, 61% at 450; pencils 89% / 47% / 21%. Knowing where the bot really went, 100% at every range, so every miss is
+the ring's guess (bots turn and jink during a long flight); a turn-following guess gained only 0-7 points, not built.
+Timing in Studio: end-to-end shots with the dot on the ring passed within a few studs of the bot's centre, with no
+steady lag behind it; live servers' lag can't be measured from Studio.
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*

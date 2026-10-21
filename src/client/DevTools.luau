@@ -116,14 +116,38 @@ function DevTools.start(menu)
 		local aim = player:GetAttribute("DevAim")
 		FlightState.aimOverride = aim and function() return aim end or nil
 	end)
-	-- DevAimLead: steer exactly at the HUD's left-click lead ring (the orange ring), to test the aim helpers and hits.
+	-- DevAimLead: steer at the HUD's left-click lead ring (the orange ring) when there's clear air to it, else fly the
+	-- loop above the city (Alan 2026-10-21: chasing bots through buildings isn't a test). DevFire is held only while the
+	-- dot is on the ring by the HUD's own red test (nose line within 2 studs of it), so each shot asks "dot in the
+	-- ring: did it hit?"; read the results from DevShotLog.
 	player:GetAttributeChangedSignal("DevAimLead"):Connect(function()
 		local Root = game.ReplicatedStorage.FlyFightPaper
 		local pellet = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), require(Root.Generated.Gameplay)):get("pellet")
-		FlightState.aimOverride = player:GetAttribute("DevAimLead") and function(body)
+		local solid = RaycastParams.new()
+		solid.FilterType = Enum.RaycastFilterType.Include
+		solid.FilterDescendantsInstances = { workspace:FindFirstChild("Arena") or workspace:FindFirstChild("GreyboxRoom") }
+		local points, target, changedAt = DevTools.routes.loop, 1, 0
+		local function fire(on)
+			if (player:GetAttribute("DevFire") == true) ~= on and os.clock() - changedAt > 0.1 then
+				changedAt = os.clock()
+				player:SetAttribute("DevFire", on)
+			end
+		end
+		if not player:GetAttribute("DevAimLead") then FlightState.aimOverride = nil; fire(false); return end
+		FlightState.aimOverride = function(body)
 			local lead = FlightState.leadFor and FlightState.leadFor(pellet)
-			return lead and (lead - body.Position).Unit or body.CFrame.LookVector
-		end or nil
+			local look = body.CFrame.LookVector
+			local clear = lead and body.Position.Y > 150 and not workspace:Raycast(body.Position, look * 220, solid)
+				and not workspace:Raycast(body.Position, lead - body.Position, solid)
+			if clear then
+				local reach = (lead - body.Position).Magnitude
+				fire((body.Position + look * reach - lead).Magnitude <= 2)
+				return (lead - body.Position).Unit
+			end
+			fire(false)
+			if (points[target] - body.Position).Magnitude < 180 then target = target % #points + 1 end
+			return (points[target] - body.Position).Unit
+		end
 	end)
 	Input.InputBegan:Connect(function(input, processed)
 		if processed then return end
