@@ -41,10 +41,11 @@ return {
 		folder = { "rbxassetid://90477686865340", "rbxassetid://106131906433035", "rbxassetid://99506492567038", "rbxassetid://74385525106617" },
 	},
 	-- Hangar cubby shelf and Customize binder (assets/ui/hangarshelf/; concepts hangar-shelf-screen, hangar-customize-b).
-	-- Empty until Alan uploads them; white pieces (shelfTab, indexTab) are tinted in the game.
+	-- Empty until Alan uploads them; white pieces (shelfTab, indexTab, statLabel, statBox, statBoxEmpty) are tinted in the game.
 	hangarShelf = {
 		bg = {}, cubbyBack = "", cubbyFront = "", endLeft = "", endRight = "", outline = "", shelfTab = "",
 		binderLeft = "", binderRight = "", indexTab = "", buttonOrange = "",
+		statsPaper = "", statLabel = "", statBox = "", statBoxEmpty = "",
 	},
 	results = {
 		bg = { "rbxassetid://115001392503048", "rbxassetid://96562871734090", "rbxassetid://87591984146456", "rbxassetid://83555563405703" },

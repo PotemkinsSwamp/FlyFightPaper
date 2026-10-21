@@ -35,7 +35,12 @@ Hangar.STATS = STATS -- the in-game hangar menu shows the same rows
 local NAME_MAX = 20 -- letters in a build's name (HangarService checks it too)
 -- Mount tags on the Gear page, by mount size (picked to show on red or blue paper and the sky-blue photo).
 local MOUNT_COLOURS = { light = Color3.fromRGB(70, 185, 80), medium = Color3.fromRGB(250, 200, 30), heavy = Color3.fromRGB(150, 80, 215) }
-local PHOTO = { 346, 40, 750, 520 } -- the shelf screen's big taped photo (x, y, w, h in sheet pixels)
+local PHOTO = { 330, 12, 780, 560 } -- the shelf screen's big taped photo (x, y, w, h in sheet pixels)
+-- Label and box colours on the stat sheet (white pieces, tinted).
+local STAT_COLOURS = {
+	Health = Color3.fromRGB(230, 90, 90), Speed = Color3.fromRGB(80, 140, 230), Climb = Color3.fromRGB(90, 180, 90),
+	Swerve = Color3.fromRGB(90, 190, 200), Lift = Color3.fromRGB(245, 150, 60), Weight = Color3.fromRGB(175, 130, 220),
+}
 
 -- api = { action = RoundAction remote, back(), flown() (after Save & fly), fly(loadout) (Studio only) }
 function Hangar.new(playerGui, api)
@@ -96,45 +101,41 @@ function Hangar.new(playerGui, api)
 		return ok, result
 	end
 
-	-- The stat sheet: five crayon bars and the weight row, drawn at full size inside a frame that is placed and
-	-- scaled (the shelf screen and the binder each fit it beside their own pieces).
-	local ROW = 98
-	local function statSheet(stats, compare, x, y, scale)
-		local holder = Instance.new("Frame")
-		holder.Name, holder.BackgroundTransparency = "Stats", 1
-		holder.Position, holder.Size, holder.Parent = UDim2.fromOffset(x, y), UDim2.fromOffset(575, 640), content
-		local fit = Instance.new("UIScale")
-		fit.Scale, fit.Parent = scale, holder
-		image(holder, "StatsSheet", Art.statsSheet, 0, 0, 575, 640, 1).ScaleType = Enum.ScaleType.Stretch
-		local function statRow(name, art, top, tint)
-			local strip = image(holder, name .. "Row", art, 60, top, 490, 84)
-			strip.ScaleType = Enum.ScaleType.Stretch
-			if tint then strip.ImageColor3 = tint end
-			words(holder, name .. "Name", name, 82, top + 6, 190, 72, 38)
+	-- The stat sheet (concept hangar-shelf-screen.png): taped notebook paper, a coloured paper label per stat and five
+	-- crayon boxes, then the weight row (how much gear this body carries). It lays itself out to fit its box (the
+	-- shelf screen's is wide, the binder's tall). compare (buying a part): each label shows what the part changes.
+	local function statSheet(stats, compare, x, y, w, h)
+		image(content, "StatsSheet", Shelf.statsPaper, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
+		local rowH = h * 0.8 / (#STATS + 1)
+		local labelX, labelW = x + w * 0.1, w * 0.36
+		local function row(i, name, tint, filled, cells)
+			local top = y + h * 0.13 + (i - 1) * rowH
+			local strip = image(content, name .. "Row", Shelf.statLabel, labelX, top + rowH * 0.08, labelW, rowH * 0.84)
+			strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, tint
+			local label = words(content, name .. "Name", name, labelX + 10, top, labelW - 20, rowH, 40)
+			label.TextXAlignment, label.TextScaled = Enum.TextXAlignment.Center, true
+			local cap = Instance.new("UITextSizeConstraint")
+			cap.MaxTextSize, cap.Parent = math.floor(rowH * 0.55), label
+			local size = math.min(rowH * 0.72, w * 0.46 / (math.max(cells, 5) * 1.12))
+			for k = 1, cells do
+				local cell = image(content, name .. "Box" .. k, k <= filled and Shelf.statBox or Shelf.statBoxEmpty, labelX + labelW + 14 + (k - 1) * size * 1.12, top + (rowH - size) / 2, size, size)
+				cell.ImageColor3 = tint
+			end
+			return label
 		end
 		for i, entry in STATS do
-			local name, row, bar, get, lo, hi, format, tint = table.unpack(entry)
-			local top = 20 + (i - 1) * ROW
-			statRow(name, Art.statRow[row], top, tint)
+			local name, _, _, get, lo, hi = table.unpack(entry)
 			local value = stats and get(stats) or lo
-			local filled = math.clamp(math.ceil((value - lo) / (hi - lo) * 5), 1, 5)
-			for k = 1, 5 do image(holder, name .. "Bar" .. k, k <= filled and Art.bar[bar] or Art.bar.empty, 260 + (k - 1) * 50, top + 20, 46, 42) end
-			local shown = string.format(format, value)
-			if compare then shown ..= string.format(" (%+.0f)", get(compare) - value) end
-			words(holder, name .. "Value", shown, 85, top + 64, 445, 26, 24).TextXAlignment = Enum.TextXAlignment.Right
-		end
-		-- Weight: how much gear this body can carry (each gear card shows its weight).
-		if stats then
-			local top = 20 + #STATS * ROW
-			statRow("Capacity", Art.statRow.blue, top, Color3.fromRGB(215, 190, 255))
-			local cells = math.max(stats.capacity, 1)
-			local w = math.min(50, 250 / cells)
-			for k = 1, cells do
-				image(holder, "Cap" .. k, k <= stats.used_capacity and Art.bar.blue or Art.bar.empty, 260 + (k - 1) * w, top + 20, w - 3, 42)
+			local label = row(i, name, STAT_COLOURS[name], math.clamp(math.ceil((value - lo) / (hi - lo) * 5), 1, 5), 5)
+			if compare then
+				local change = value - get(compare)
+				label.Text = string.format("%s %+.0f", name, change)
+				label.TextColor3 = change < 0 and Color3.fromRGB(170, 30, 30) or change > 0 and Color3.fromRGB(20, 100, 40) or PaperUI.INK
 			end
-			local used = words(holder, "CapacityValue", string.format("%d of %d used", stats.used_capacity, stats.capacity), 85, top + 64, 445, 26, 24)
-			used.TextXAlignment = Enum.TextXAlignment.Right
-			if stats.used_capacity >= stats.capacity then used.TextColor3 = Color3.fromRGB(170, 30, 30) end
+		end
+		if stats then
+			local label = row(#STATS + 1, "Weight", STAT_COLOURS.Weight, stats.used_capacity, math.max(stats.capacity, 1))
+			if stats.used_capacity >= stats.capacity then label.TextColor3 = Color3.fromRGB(170, 30, 30) end
 		end
 	end
 
@@ -168,7 +169,8 @@ function Hangar.new(playerGui, api)
 	-- diagram (Gear page): a still view from above and behind (nose up) with a numbered tag on every mount.
 	local function preview(draft, box, diagram)
 		local px, py, pw, ph = table.unpack(box)
-		image(content, "PreviewPaper", Art.preview, px, py, pw, ph, 0).ImageColor3 = Color3.fromRGB(140, 185, 230)
+		local paper = image(content, "PreviewPaper", Art.preview, px, py, pw, ph, 0)
+		paper.ScaleType, paper.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(140, 185, 230)
 		local vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74
 		local view = Instance.new("ViewportFrame")
 		view.Name, view.BackgroundTransparency = "PlanePreview", 1
@@ -253,9 +255,9 @@ function Hangar.new(playerGui, api)
 		if state.page == "shelf" then
 			shelf.set(builds, state.preset, range and "Range" or "My builds")
 			preview(draft, PHOTO)
-			nameTag(content, PHOTO[1] + 110, PHOTO[2] + PHOTO[4] - 60, 530, 100, true)
-			statSheet(Catalog:deriveStats(draft), nil, 1290, 12, 0.85)
-			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1300, 568, 500, 118, -1, function()
+			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, true)
+			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
+			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 540, 600, 125, -1, function()
 				state.page, state.slot, state.purchase = "customize", "body", nil
 				render()
 			end, 72)

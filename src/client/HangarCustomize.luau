@@ -21,23 +21,23 @@ Customize.TABS = {
 }
 
 -- Binder layout (sheet pixels): the two halves meet at the rings; the plane photo fills the left page.
-local BINDER_X, BINDER_Y, PAGE_W, PAGE_H = 30, 175, 625, 890
-local PHOTO = { 60, 290, 570, 500 }
+local BINDER_X, BINDER_Y, PAGE_W, PAGE_H = 20, 165, 630, 920
+local PHOTO = { 75, 262, 530, 600 }
 
 -- ctx comes from Hangar: state, builder, draft, profile, range, dev, owned(part), choose(pick, ...),
--- placeWeapon(id), statSheet(stats, compare, x, y, scale), preview(draft, box, diagram), nameTag(...), save(fly),
+-- placeWeapon(id), statSheet(stats, compare, x, y, w, h), preview(draft, box, diagram), nameTag(...), save(fly),
 -- atDesk(), api, mountColours.
 function Customize.draw(content, ctx)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
-	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 560, 30, 640, 120)
+	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 500, 12, 700, 140)
 	title.ScaleType = Enum.ScaleType.Stretch
-	words(title, "Label", "Customize", 0, 0, 640, 120, 80).TextXAlignment = Enum.TextXAlignment.Center
+	words(title, "Label", "Customize", 0, 0, 700, 140, 88).TextXAlignment = Enum.TextXAlignment.Center
 
 	-- Index tabs first so they tuck under the right page; the picked one sticks out further.
 	for i, tab in Customize.TABS do
 		local picked = tab.slot == state.slot
-		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 230 + (i - 1) * 100, 200, 88, 0,
+		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 225 + (i - 1) * 100, 200, 88, 0,
 			function() state.slot = tab.slot; state.purchase = nil; ctx.render() end, 40)
 		t.ImageColor3 = tab.tint
 		t.Label.Position, t.Label.Size = UDim2.fromOffset(80, 0), UDim2.new(1, -80, 1, 0)
@@ -51,8 +51,8 @@ function Customize.draw(content, ctx)
 		local owned = ctx.owned(part)
 		local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
 			or state.slot == "weapons" and table.find(draft.weapon_mounts, part.id) ~= nil
-		local x, y = 695 + (i - 1) % 2 * 258, 262 + math.floor((i - 1) / 2) * 200
-		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 252, 190, 0, function()
+		local x, y = 700 + (i - 1) % 2 * 272, 245 + math.floor((i - 1) / 2) * 205
+		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 262, 195, 0, function()
 			if not owned then state.purchase = part; ctx.render(); return end
 			state.purchase = nil
 			if state.slot == "weapons" then
@@ -100,14 +100,14 @@ function Customize.draw(content, ctx)
 
 	-- Left page: the build's name, then the plane (the Gear page: a still diagram with a numbered tag on every mount).
 	local diagram = state.slot == "weapons" and not state.purchase
-	ctx.nameTag(content, 140, 200, 410, 78, false)
+	ctx.nameTag(content, 125, 815, 430, 92, false)
 	ctx.preview(draft, PHOTO, diagram)
 	local valid, reason = builder:validate(draft)
 	local stats = ctx.catalog:deriveStats(draft)
 	local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
 		or state.dropAsk and "You have changes you haven't saved. Click Back again to drop them."
 		or game.Players.LocalPlayer:GetAttribute("MenuMessage") or (ctx.range and "Range builds: every part works here, only in the Range." or "")
-	-- Under the plane: the mount line (Gear), the no-booster card (Boost), or Buy / Cancel for a locked part.
+	-- Bottom of the right page: the mount line (Gear), the no-booster card (Boost), or Buy / Cancel for a locked part.
 	if state.purchase then
 		local part = state.purchase
 		local candidate = assert(Schema.copy(draft))
@@ -121,14 +121,14 @@ function Customize.draw(content, ctx)
 				candidate.weapon_mounts = mounts
 			end
 		end
-		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, 1440, 150, 0.82)
+		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, 1415, 140, 490, 610)
 		note = string.format("%s: %d Paper, level %d. Bars show the plane with it.", part.name, part.paper_price, part.min_level)
-		button(content, "BuyPart", Art.buttonGreen, "Buy", 90, 815, 240, 90, -1, function()
+		button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 958, 240, 76, -1, function()
 			ctx.api.action:FireServer("purchasePart", part.id); state.purchase = nil; ctx.render()
 		end, 46)
-		button(content, "CancelBuy", Art.tab, "Cancel", 360, 815, 240, 90, 1, function() state.purchase = nil; ctx.render() end, 40)
+		button(content, "CancelBuy", Art.tab, "Cancel", 995, 958, 240, 76, 1, function() state.purchase = nil; ctx.render() end, 40)
 	else
-		ctx.statSheet(stats, nil, 1440, 150, 0.82)
+		ctx.statSheet(stats, nil, 1415, 140, 490, 610)
 		if state.slot == "weapons" then
 			local body = ctx.catalog:get(draft.body)
 			local groups = assert(CombatRules.triggerGroups(draft))
@@ -144,14 +144,14 @@ function Customize.draw(content, ctx)
 				words(content, "Key" .. size, size, PHOTO[1] + 93 + (k - 1) * 150, PHOTO[2] + 67, 110, 40, 34)
 			end
 			local info = words(content, "MountInfo", string.format("Mount %d: %s%s. %s", m, body.mount_types[m],
-				part and (groups[m] == 1 and ", left click" or ", right click") or "", part and part.name or "Empty: pick a gear card."), 60, 800, 570, 50, 28)
+				part and (groups[m] == 1 and ", left click" or ", right click") or "", part and part.name or "Empty: pick a gear card."), 700, 860, 540, 44, 28)
 			info.TextXAlignment, info.TextWrapped = Enum.TextXAlignment.Center, true
-			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 225, 860, 240, 76, 2, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
+			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 840, 958, 260, 76, 2, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
 		elseif state.slot == "boost" then
-			button(content, "NoBoost", Art.tab, "No booster", 225, 820, 240, 80, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
+			button(content, "NoBoost", Art.tab, "No booster", 840, 958, 260, 76, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
 		end
 	end
-	local message = words(content, "Message", note, 695, 870, 510, 80, 26)
+	local message = words(content, "Message", note, 700, 905, 540, 50, 26)
 	local problem = builder.message ~= "" or not valid or state.dropAsk ~= nil
 	message.TextColor3, message.TextWrapped = problem and Color3.fromRGB(170, 30, 30) or Color3.fromRGB(30, 110, 50), true
 
@@ -159,13 +159,13 @@ function Customize.draw(content, ctx)
 	-- in the Range (saves and drops you back in flying it, Alan 2026-10-20).
 	local second = ctx.range and "Test in Range" or ctx.atDesk() and "Save & fly - 120 Paper"
 	if second then
-		button(content, "SavePreset", Art.buttonGreen, "Save", 1440, 720, 205, 130, -1, function() ctx.save(false) end, 52)
-		button(content, "SaveFly", Art.buttonGreen, second, 1655, 720, 245, 130, 1, function() ctx.save(true) end, 32)
+		button(content, "SavePreset", Art.buttonGreen, "Save", 1425, 775, 220, 150, -1, function() ctx.save(false) end, 52)
+		button(content, "SaveFly", Art.buttonGreen, second, 1655, 775, 250, 150, 1, function() ctx.save(true) end, 32)
 	else
-		button(content, "SavePreset", Art.buttonGreen, "Save build", 1440, 720, 460, 130, -1, function() ctx.save(false) end, 60)
+		button(content, "SavePreset", Art.buttonGreen, "Save build", 1440, 775, 460, 150, -1, function() ctx.save(false) end, 60)
 	end
 	-- Studio only: fly the draft straight away, nothing saved.
-	if ctx.dev and not ctx.range then button(content, "FlyBuild", Art.buttonGreen, "Fly this build", 1505, 880, 330, 90, -2, function() ctx.api.fly() end, 40) end
+	if ctx.dev and not ctx.range then button(content, "FlyBuild", Art.buttonGreen, "Fly this build", 1505, 945, 330, 90, -2, function() ctx.api.fly() end, 40) end
 end
 
 return Customize
