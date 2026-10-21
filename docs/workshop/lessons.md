@@ -33,6 +33,12 @@ mistake would be easy to make twice.
 - **Changing an uploaded menu piece** (2026-10-19): `tools/ui_pieces.py` reuses an existing `uploads/<piece>.json` and
   never re-uploads; delete that record (git keeps it) before the upload run, then put the new id in UIAssets.
 
+- **`ui_pieces.py` trims every piece to its visible pixels**, so a 9-slice `SliceCenter` must be measured on the
+  trimmed `ready/` file, not the brief's size (Hangar outline: 512 drawn, 480 trimmed, band in the outer 48 px).
+- **Menu previews before upload: draw them at the game's real sheet coordinates** (a PIL script using the same numbers
+  as the Luau). Alan caught a flat shelf (no top board), empty space and a stretched photo paper this way, before any
+  upload (2026-10-21). Landscape paper art stretched into a tall box looks bad: drop it or get a piece in that shape.
+
 ## Making 3D models
 - **`toys.py` bakes go black in two cases** (2026-10-16): a `lathe()` profile listed top-to-bottom (list it bottom-
   to-top: its custom normals assume that), and beams split into overlapping pieces (coplanar overlaps). Look at
@@ -199,6 +205,10 @@ mistake would be easy to make twice.
 - **Moving a model with a TweenService tween on a CFrameValue stuck halfway (2026-10-19, 3-4 times in Alan's Play):**
   a per-frame spring toward a goal can't stall and takes a click mid-move. Gemini CLI's free personal sign-in stopped
   working (Google says move to Antigravity); Codex is the second opinion for now.
+
+- **A click on an empty spot of a menu is NOT "processed"** (`InputBegan`'s flag is false unless a button took it), so
+  world click handlers must also check `Root:GetAttribute("OverlayOpen")`: the Range turned such clicks into shots and
+  closed Customize (2026-10-21).
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the

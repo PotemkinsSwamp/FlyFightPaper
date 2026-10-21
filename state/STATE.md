@@ -1,26 +1,24 @@
-# Since Alan last checked (2026-10-20)
-- **Range targets are the cards themselves** (2026-10-21, your OK): no hidden plane behind them; erasers lock on the
-  card; no enemy diamond in the Range. Not yet played: see "Waiting on Alan".
-- **Range long row fixed** (2026-10-21, your pick): shots follow the green dot, as in a match. Your green dot trailed
-  the crosshair while tracking, and shots went to the crosshair: 24 studs off at long range.
-- **Range aim is right now** (you confirmed in Play): targets fly a set path that the circle, the paper and the hit check
-  all share, at the same moment; no aim help in the Range; a test fires 3,709 shots at the circle and all hit.
-- **Range has its own five builds** (any part, never in matches, remembered pick); builds can be renamed; Test in Range.
-- **Menu button** sits in Roblox's top bar (crosshair can click it); main menu's Tutorial button now says Training.
-- **Rare missed hits fixed** for planes in matches too (a shot that starts inside a plane now counts).
+# Since Alan last checked (2026-10-21)
+- **New Hangar built and OK'd** (you played it: "looks good"): a cubby shelf of your builds (each its real 3D plane),
+  big photo, tape name with a pencil, reference-style stats; Customize is a binder with index tabs (Body, Nose, Wings,
+  Tail, Gear, Boost) and a page turn. The Range's Hangar is pink ("Range Customize") and shows only Range builds.
+- **Range targets are the cards themselves** (no plane behind); shots follow the green dot, so the long row hits too.
+- **In the Range a click on an open menu is no longer a shot** (it used to close Customize).
 
-# Now: Hangar rework (your OK 2026-10-20): cubby shelf + separate Customize screen; concepts for both first
+# Now: Hangar Tour (lesson 3) — plan OK'd 2026-10-21, build next
+Plan: docs/plan/TUTORIAL-PLAN.md, Lesson 3 (14 steps in the Range with the Range builds, your answers in it).
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
-During the vote lap the top strip still shows the old round's mode and clock.
-Track C saving needs a private publish (Alan's go). Toilet Roll jitter: not reproduced; tell me when it happens. Place file not re-saved (needs Ctrl+S; code lives in src/).
+During the vote lap the top strip still shows the old round's mode and clock. The desk's quick menu still has the
+old 1-5 squares (gets its own condensed concept later). Track C saving needs a private publish (Alan's go).
+Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
 Combat School: the hunting Pal (step 8) flies 25% faster until you're at half Health (else a player flying away is
   never caught); look cards hold 5 s, action steps 2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%).
   "No thanks" to the welcome question isn't saved.
-Hangar Range: Lift and Health bars hide there; targets 40 Health, 2 per row; hit box is the whole picture; Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x + weave (stand-ins until you tune them).
+Hangar Range: Range Hangar is pink; Lift and Health bars hide there; targets 40 Health, 2 per row; hit box is the whole picture; Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x + weave (stand-ins until you tune them).
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
   buying early is useless). Buying a part with Paper still needs the level.
 Scrape wobble: nose and aim knocked 10 degrees off the wall, roll swing up to 30 degrees fading over 0.9 s
@@ -49,18 +47,12 @@ Points: fold assist share rounded to 5, min 10 max 80; outside-zone fold = 40% (
   events stay 1 per 10 s; a pilot with no position sample counts as outside the zone.
 Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked instead of client-reported (cheat-proof).
 
+
 Waiting on Alan
-- Range (play it): shots now go where the GREEN DOT points (not the crosshair): dot in the orange ring = hit, on
-  the long row too (was 2%; now 100% in the test). Also: shots land on the card; it tears in 4 steps, splits and rises; no smoke or scraps
-  trailing behind a damaged card; no little diamond near the cards; Test in Range with an eraser build: the lock box
-  sits on the card and the eraser flies into it; the score card counts shots and hits.
-- Hangar concepts (next session): the cubby shelf screen and the Customize screen, built to grow (skins, trails,
-  per-part and weapon skins later). Pick a look, then the plan, then art upload (yours).
-- Your call later: give the match bots the gun fix too (their guns still cross at 150 studs,
-  so they miss past it; fixing it makes every bot noticeably more accurate).
-- Backlog (yours): a new fan sound for the real game (the current one is a wind tunnel).
-- Private publish (your go) to test the real move into the private tutorial room.
-0. Studio: File > Save to File (keeps today's duct fan fix in the place file).
+- Hangar Tour: you'll play it when built (what-to-look-at list then).
+- Your call later: give the match bots the gun fix too (their guns still cross at 150 studs, so they miss past it).
+  Match aim measured: misses come from bots turning mid-flight; a faster pencil or less jinky bots is your balance call.
+- Backlog (yours): a new fan sound for the real game. Private publish (your go) to test the move into the tutorial room.
+0. Studio: File > Save to File (keeps the duct fan fix in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
-2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK. Then: create the products and
-   passes on Roblox (I'll give exact steps), and decide the VIP pass's perks and whether to turn on private servers.
+2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK; then products, passes, VIP perks.

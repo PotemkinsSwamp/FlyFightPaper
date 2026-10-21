@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-20-ui-hangar-shelf-concepts.md
+# LATEST → handoff-2026-10-21-ui-hangar-built-tour-next.md
 
-★ START HERE: Range aim proven (3,709/3,709 test shots; Alan: "the targeting is now good") and the Range keeps its own
-five named builds. Next: the Hangar rework Alan approved — cubby-shelf build picker + a separate Customize screen built
-to grow (skins, trails later). First: Codex concepts for both screens, Alan picks, then the build plan for his OK.
+★ START HERE: The new Hangar (cubby shelf + Customize binder) is built, uploaded and OK'd by Alan in Play. Next: build
+the Hangar Tour (lesson 3) exactly as planned in docs/plan/TUTORIAL-PLAN.md (OK'd with Alan's answers); done when Alan
+plays it from the Training board and says it works.
 
-Quick state: main, affected tests pass in Edit (full suite needs Play), Rojo serving, Studio in Edit.
-Previous: handoff-2026-10-19-2350-ui-range-controls.md.
+Quick state: main, code compiles in Edit, Rojo serving, Studio in Edit, Play stopped.
+Previous: handoff-2026-10-20-ui-hangar-shelf-concepts.md.
