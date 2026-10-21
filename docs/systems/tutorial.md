@@ -20,7 +20,7 @@ Lessons follow the agreed [tutorial plan](../plan/TUTORIAL-PLAN.md). **Flight Sc
 (main menu and pause menu) opens its own cork board (art in `assets/ui/trainingboard/`, concept
 `training-board-c.png`): Flight School, Combat School, Hangar Tour and the Range, each a pinned sheet with a Play strip;
 a lesson gets a tick and Replay once finished (saved on the account: the end card sends `lessonDone`, the server
-ticks it only in the tutorial room). Hangar Tour and the Range show an "Almost ready!" note until they're built. From a match, Play first asks "Leave this match?"
+ticks it only in the tutorial room). From a match, Play first asks "Leave this match?"
 (the lesson runs on another server). The welcome question goes only to a player with no matches and no ticks. The
 Training Room has no time limit (Alan 2026-10-19: people leave, or Roblox kicks them for being idle).
 **The Hangar Range** (built 2026-10-19; Alan has played each step; last layout not yet seen in Play;
@@ -97,6 +97,16 @@ Pals have half a normal plane's Health (Alan 2026-10-19: full Health was frustra
 Folded by a crash: a countdown note, the plane takes off by itself, the step carries on and the Pal holds fire until
 you've flown 2 seconds; after 3 crashes on a step, a tip.
 
+**The Hangar Tour** (lesson 3, built 2026-10-21, not yet played; [plan](../plan/TUTORIAL-PLAN.md) "Lesson 3"): the
+Training board's card moves you to the Range on the Range builds (the server treats lesson `hangar` like `range`),
+`lesson.ready` puts the plane on the stage and opens the Range's Hangar (again if it gets closed, never over the game
+menu) on the step's page, then the 14 steps run on the real screens. A menu lesson (`lesson.screen`) shows its note
+over that menu, finds buttons only on it, has no read pause, moves the note out of the spotlight's way, and puts
+see-through walls round the spotlight so only the lit button can be clicked (a look step: only Got it). Steps watch the
+Hangar's own state (`Hangar.tour`: page, tab, picked build, spot, draft), not clicks, since most clicks redraw the
+Hangar. The tick is saved as `hangar`; the end card (no buttons, gone after 7 s) hands over to the Range
+(`lesson.stay`), and skipping keeps you there too.
+
 ## Rules
 See "Tutorial (built last)" in [Milestones](../plan/MILESTONES.md). Practice is never reward-eligible.
 Flight School can't be lost (Alan 2026-10-18): its plane (`p.gentle`, set when the client asks for practice with the
@@ -125,7 +135,7 @@ air, the gun range sent, and how far and where each passed the nearest enemy's c
 | File | What it does |
 |---|---|
 | `src/client/Tutorial.luau` | Lesson step engine: goal note, markers, spotlight, ticks, hints, Skip |
-| `src/client/TutorialLessons.luau` | Each lesson's steps: Flight School, Combat School (aiming, then fighting) |
+| `src/client/TutorialLessons.luau` | Each lesson's steps: Flight School, Combat School (aiming, then fighting), the Hangar Tour |
 | `src/shared/TrainingCourse.luau` | The Training Room's course points, practice targets, slow-motion share and the Range's spot and targets |
 | `src/client/RangeTargets.luau` | The Range's targets drawn as painted cut-outs on sticks that turn over, tear, split and sink |
 | `src/server/RangeStage.luau` | The Range's puppet-theatre stage built from the painted pieces, measured from the concept; its controls (row plates, score card, Reset, Menu note, the menu on strings) |

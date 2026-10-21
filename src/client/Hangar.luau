@@ -286,6 +286,9 @@ function Hangar.new(playerGui, api)
 	end
 
 	local self = { frame = cover }
+	-- The Hangar Tour (TutorialLessons) watches what the player does here (page, tab, picked build, spot, draft) and
+	-- can turn back to the binder. ponytail: there is one Hangar screen, so a module field is enough.
+	Hangar.tour = { state = state, render = function() render() end }
 	-- Redraw only when something the hangar shows changed: redrawing replaces the buttons, and a click that
 	-- lands on a replaced button is lost (the menu refreshes the profile every 3 seconds).
 	local shown

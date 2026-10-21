@@ -42,12 +42,13 @@ local CRASH_TIP_AFTER=3 -- crashes on one step before the note suggests open air
 -- no countdown); a look step's longer note gets 5.
 local READ_SECONDS,LOOK_SECONDS=2.5,5
 
-function Tutorial.begin(lesson)
+-- keep: the plane is already where the lesson needs it (the Hangar Tour handing over to the Range), so no new one.
+function Tutorial.begin(lesson,keep)
  if Tutorial.closeAsk then Tutorial.closeAsk() end -- a lesson starting closes the welcome question (found in Play)
  if Tutorial.active and Tutorial.close then Tutorial.close() end -- switching lessons: the old one's targets, Pal and slow motion go first
  Tutorial.lessonKey=Lessons[lesson] and lesson or "flight";Tutorial.lesson=Lessons[Tutorial.lessonKey];Tutorial.index=0;Tutorial.active=true;Tutorial.askedAt=os.clock()
  Root:SetAttribute("TutorialLesson",Tutorial.lessonKey);Root:SetAttribute("TutorialOpen",true) -- lesson first: its song is picked when TutorialOpen changes
- Root.RoundAction:FireServer("practice",Tutorial.lessonKey)
+ if not keep then Root.RoundAction:FireServer("practice",Tutorial.lessonKey) end
 end
 
 function Tutorial.start(getPlane)
@@ -59,6 +60,21 @@ function Tutorial.start(getPlane)
  local hole=Instance.new("Frame");hole.Name="Dim";hole.BackgroundTransparency=1;hole.Visible=false;hole.Parent=gui
  local holeCorner=Instance.new("UICorner");holeCorner.Parent=hole
  local dimStroke=Instance.new("UIStroke");dimStroke.Color=Color3.new(0,0,0);dimStroke.Thickness=4000;dimStroke.Parent=hole
+ -- Over a menu (the Hangar Tour, Alan 2026-10-21) only the spotlit button can be clicked: four see-through walls round
+ -- the hole catch every other click; a look step gets one wall over everything (its Got it sits above the walls).
+ local walls={}
+ for i=1,4 do
+  local wall=Instance.new("TextButton");wall.Name="Block";wall.Text="";wall.BackgroundTransparency=1;wall.AutoButtonColor=false
+  wall.ZIndex=0;wall.Visible=false;wall.Parent=gui;walls[i]=wall
+ end
+ local function block(on,low,high)
+  local view=gui.AbsoluteSize
+  local rects=not on and {} or low and {{0,0,view.X,low.Y},{0,high.Y,view.X,view.Y-high.Y},{0,low.Y,low.X,high.Y-low.Y},{high.X,low.Y,view.X-high.X,high.Y-low.Y}} or {{0,0,view.X,view.Y}}
+  for i,wall in walls do
+   local r=rects[i];wall.Visible=r~=nil
+   if r then wall.Position=UDim2.fromOffset(r[1],r[2]);wall.Size=UDim2.fromOffset(math.max(0,r[3]),math.max(0,r[4])) end
+  end
+ end
  -- The frame (Alan's approved concept, assets/references/ui-concepts/attention-*.png): a crayon outline that
  -- stretches to any button (9-slice) or a crayon ring round a 3D target, crayon "look here" marks that pulse out
  -- round it, and for a 3D target a taped tag under it with what to do and how far.
@@ -106,6 +122,7 @@ function Tutorial.start(getPlane)
  local matchButton=PaperUI.button(card,"Play",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Go to a match",160,170,300,60,-1,function()
   card.Visible=false;Root.RoundAction:FireServer("practiceDone")
  end,30)
+ cardText.TextScaled=true;Instance.new("UITextSizeConstraint",cardText).MaxTextSize=26 -- a longer end line still fits
  -- The lessons run in order (Flight School, Aiming, Combat Training): the next one is a click away.
  local nextButton=PaperUI.button(card,"Next",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Next lesson",320,170,280,60,1,function()
   card.Visible=false;if Tutorial.nextKey then Tutorial.begin(Tutorial.nextKey) end
@@ -149,9 +166,6 @@ function Tutorial.start(getPlane)
  local cards={}
  local function go(key)
   boardCover.Visible=false
-  if not Lessons[key] then -- ponytail: the Hangar Tour and the Range are being built (2026-10-19); this note goes when they land
-   choose("Almost ready!","This one is being built right now. Try it again soon!",{{"OK",function() end}});return
-  end
   local before=boardBefore
   local function start() if before then before() end;Tutorial.begin(key) end
   if player:GetAttribute("InMatch") and not Root:GetAttribute("TutorialRoom") then
@@ -261,7 +275,22 @@ function Tutorial.start(getPlane)
 
  -- Spotlight on GUI pieces found by name anywhere on screen; pulse = a HUD bar's own frame, no dim.
  local spotNames,pulseName=nil,nil
+ -- A lesson that teaches a menu (lesson.screen: the Hangar Tour's HangarScreen) shows over it while it's open, and
+ -- finds its buttons only on it, only if really on screen (the Hangar keeps its other page hidden, not removed).
+ local function menuLayer()
+  local layer=Tutorial.lesson and Tutorial.lesson.screen and player.PlayerGui:FindFirstChild(Tutorial.lesson.screen)
+  local cover=layer and layer:FindFirstChild("Cover")
+  return cover and cover.Visible and layer or nil
+ end
  local function findGui(name)
+  local layer=menuLayer()
+  if layer then
+   local item=layer:FindFirstChild(name,true)
+   local up=item
+   while up and up:IsA("GuiObject") do if not up.Visible then return end;up=up.Parent end
+   if item and item:IsA("GuiObject") and item.AbsoluteSize.X>0 then return item,layer end
+   return
+  end
   for _,item in player.PlayerGui:GetDescendants() do
    if item.Name==name and item:IsA("GuiObject") and item.Visible and item.AbsoluteSize.X>0 then
     local layer=item:FindFirstAncestorWhichIsA("ScreenGui");if layer and layer.Enabled and layer~=gui then return item,layer end
@@ -448,6 +477,7 @@ function Tutorial.start(getPlane)
  local function startStep(index)
   Tutorial.index=index;ctx.data={};table.clear(clicked);stepStarted=os.clock();doneAt=nil;tick.Visible=false;Tutorial.gotIt=false;Tutorial.skipStep=false
   clearCourse();star.Parent=nil;crashes=0;reading="waiting"
+  if Tutorial.lesson.screen then reading=nil end -- a menu lesson has nothing in the air to hold still
   if index==1 then airRoutes() end -- plan the room's air routes once, while the plane still sits on the desk
   local step=Tutorial.lesson.steps[index]
   if step and step.enter then step.enter(ctx) end
@@ -468,10 +498,16 @@ function Tutorial.start(getPlane)
   Audio.play("finish")
   if not skipped then Tutorial.lessons[Tutorial.lessonKey]=true;Root.RoundAction:FireServer("lessonDone",Tutorial.lessonKey) end -- its tick on the Training board
   cardTitle.Text=skipped and "Lesson skipped" or Tutorial.lesson.doneTitle or (Tutorial.lesson.name.." done!")
+  cardText.Text=Tutorial.lesson.doneText or "You can replay any lesson: Menu > Training."
   Tutorial.nextKey=Tutorial.lesson.next
   nextButton.Visible=Tutorial.nextKey~=nil;nextButton.Label.Text=Tutorial.nextKey and "Next: "..Lessons[Tutorial.nextKey].name or ""
   matchButton.Position=UDim2.fromOffset(Tutorial.nextKey and 170 or 310,200) -- buttons sit by their middle
   card.Visible=true
+  -- The Hangar Tour ends in the Range, which carries on as the Range (lesson.stay). The mouse aims there, so the card
+  -- has no buttons and goes by itself.
+  local stay=Tutorial.lesson.stay
+  matchButton.Visible=stay==nil
+  if stay then nextButton.Visible=false;Tutorial.begin(stay,true);task.delay(7,function() card.Visible=false end);return end
   -- Skipping mid-flight: the mouse steers the plane, so go straight on to the match and keep the card up a moment.
   if skipped and ctx.state and ctx.state~="DESK" then Root.RoundAction:FireServer("practiceDone");task.delay(5,function()card.Visible=false end) end
  end
@@ -498,10 +534,27 @@ function Tutorial.start(getPlane)
  -- Studio test hook: set DevLesson (flight, aim, combat) on ReplicatedStorage.FlyFightPaper to open that lesson.
  if RunService:IsStudio() then Root:GetAttributeChangedSignal("DevLesson"):Connect(function() Tutorial.begin(Root:GetAttribute("DevLesson")) end) end
 
+ -- Over a menu the note moves out of the spotlight's way: top middle, else bottom middle, then the corners.
+ local NOTE_SPOTS={{.5,0},{.5,1},{1,0},{1,1},{0,0},{0,1}}
+ local function placeNote(low,high)
+  note.AnchorPoint=Vector2.new(.5,0)
+  if not low then note.Position=UDim2.fromScale(.5,.05);return end
+  local view=gui.AbsoluteSize;local w,h=620*scale.Scale,230*scale.Scale;local m=view.Y*.05;local pad=FRAME_OUTSET+10
+  for _,spot in NOTE_SPOTS do
+   local x=spot[1]==.5 and view.X/2 or spot[1]==1 and view.X-m-w/2 or m+w/2
+   local y=spot[2]==0 and m or view.Y-m-h
+   if x+w/2<low.X-pad or x-w/2>high.X+pad or y+h<low.Y-pad or y>high.Y+pad then note.Position=UDim2.fromOffset(x,y);return end
+  end
+  note.Position=UDim2.fromScale(.5,.05)
+ end
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName,softSpot,softTag=nil,nil,nil,false,nil
-  -- A menu open over the lesson (Esc) is what the player is looking at: no dim, spotlight or note on top of it (Alan 2026-10-19).
-  if not Tutorial.active or Root:GetAttribute("OverlayOpen") then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
+  block(false)
+  local menu=Tutorial.active and menuLayer()~=nil
+  -- A menu open over the lesson (Esc) is what the player is looking at: no dim, spotlight or note on top of it (Alan 2026-10-19),
+  -- unless it's the menu the lesson teaches.
+  local overlay=Root:GetAttribute("OverlayOpen") and not menu
+  if not Tutorial.active or overlay then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
@@ -520,7 +573,7 @@ function Tutorial.start(getPlane)
   if ctx.state=="FLYING" then ctx.data.flew=true end
   -- Back at the desk after a crash: fly again by yourself (only the launch and landing steps wait for you).
   if ctx.state=="DESK" and Tutorial.index>1 and not step.land and not step.gotIt and os.clock()-relaunchAsked>2 then relaunchAsked=os.clock();Root.FlightAction:FireServer("launch") end
-  note.Visible=not Root:GetAttribute("OverlayOpen")
+  note.Visible=not overlay
   title.Text=string.format("%s  -  step %d of %d",Tutorial.lesson.name,Tutorial.index,#Tutorial.lesson.steps)
   -- Folded mid-lesson (Combat Training keeps crashes): a kind word and a countdown, then the plane takes off by
   -- itself and the step carries on where it was (the server keeps the targets and holds the Pal's fire).
@@ -548,11 +601,17 @@ function Tutorial.start(getPlane)
   local result=plane and step.update(ctx) or false
   if reading then result=step.count and 0 or false end -- nothing counts while frozen
   local count=step.count
+  -- A lesson can need things set up first (the Hangar Tour: the plane on the Range stage, the Hangar open): until
+  -- lesson.ready says so the note waits and nothing counts. Asked after update, so the click that closes the Hangar
+  -- on its last step counts before the Hangar would be opened again.
+  local waiting=Tutorial.lesson.ready~=nil and not doneAt and result~=true and not Tutorial.lesson.ready(ctx,step)
+  if waiting then Tutorial.gotIt,result,spotNames,marked=false,false,nil,nil end
   local finished=count and type(result)=="number" and result>=count or result==true or (step.gotIt and Tutorial.gotIt)
   -- A step's words can change with what's happening (a function of ctx), e.g. the eraser warnings.
   text.Text=(type(step.text)=="function" and step.text(ctx) or step.text)..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
+  if waiting then text.Text=Tutorial.lesson.waitText or "One moment..." end
   key.Text=step.key or "";key.Visible=step.key~=nil
-  gotIt.Visible=step.gotIt==true or reading==true
+  gotIt.Visible=step.gotIt==true and not waiting or reading==true
   gotIt.Label.Text=reading==true and not step.gotIt and "Go  [Space]" or "Got it  [Space]"
   local left=reading==true and math.clamp(1-(os.clock()-readingAt)/readFor,0,1) or 0
   readBar.Visible=left>0;readBar.Size=UDim2.new(left,-16*left,0,6)
@@ -570,9 +629,11 @@ function Tutorial.start(getPlane)
   -- talks about (pulse) gets its own breathing frame the whole step, so it shows next to a 3D target (Lift + fan).
   local low,high,words=drawMarker(ctx.body)
   targetRing.Visible=spotNames~=nil and low~=nil
+  local spotLow,spotHigh=nil,nil
   if spotNames then
    local targetLow,targetHigh=low,high
-   low,high=box(spotNames);drawSpot(low,high,not softSpot and (ctx.state=="FLYING" and WORLD_DIM or GUI_DIM) or nil,false,softSpot and softTag or nil,dt,softSpot)
+   low,high=box(spotNames);spotLow,spotHigh=low,high
+   drawSpot(low,high,not softSpot and (ctx.state=="FLYING" and not menu and WORLD_DIM or GUI_DIM) or nil,false,softSpot and softTag or nil,dt,softSpot)
    if targetLow then
     local grow=6+(math.sin(os.clock()*5)+1)*4
     targetRing.Position=UDim2.fromOffset(targetLow.X-grow,targetLow.Y-grow);targetRing.Size=UDim2.fromOffset(targetHigh.X-targetLow.X+grow*2,targetHigh.Y-targetLow.Y+grow*2)
@@ -587,6 +648,10 @@ function Tutorial.start(getPlane)
    barFrame.Position=UDim2.fromOffset(barLow.X-grow,barLow.Y-grow);barFrame.Size=UDim2.fromOffset(barHigh.X-barLow.X+grow*2,barHigh.Y-barLow.Y+grow*2)
    barFrame.Rotation=0;barFrame.ImageTransparency=0
   end
+  if menu and not doneAt and not waiting then
+   if step.gotIt then block(true) elseif spotLow then block(true,spotLow,spotHigh) end -- a lost button: nothing blocked, never stuck
+  end
+  placeNote(menu and spotLow,spotHigh)
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
   if doneAt and os.clock()-doneAt>.8 then startStep(Tutorial.index+1) end
  end)

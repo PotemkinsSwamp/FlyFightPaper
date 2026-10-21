@@ -117,7 +117,7 @@ Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hang
   its camera; Alan plays it. (2) 2D pieces from the concepts (Codex), checked on a contact sheet, uploaded by Alan.
   (3) Rows, patterns and the picker. (4) Score card, loadout strips and Hangar. (5) Sticky notes. Then the Hangar Tour.
 
-### Lesson 3: Hangar Tour (in the Range, about 2-3 minutes) — OK'd by Alan 2026-10-21, not built
+### Lesson 3: Hangar Tour (in the Range, about 2-3 minutes) — OK'd by Alan 2026-10-21, built 2026-10-21, not yet played
 Rewritten 2026-10-21 for the cubby shelf + Customize binder ([decision](../decisions/2026-10-20-hangar-build-shelf.md)).
 Played from the Training board: it moves you to the Range and opens the Range's Hangar by itself. It uses the
 **Range builds**, so nothing of your match builds changes. Each step uses the shared step engine: goal note, the

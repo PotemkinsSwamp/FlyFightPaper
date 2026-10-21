@@ -409,16 +409,18 @@ function Runtime:practice(player,lesson)
  end
  -- Lessons fly a fixed training plane (Alan 2026-10-18); the player's own builds are untouched.
  -- The Range flies its own builds, starting on the one last flown there (Alan 2026-10-19).
+ -- The Hangar Tour runs in the Range on the same builds (TUTORIAL-PLAN Lesson 3).
  local profile=self.profiles:view(player)
- if lesson=="range" then player:SetAttribute("RangeSlot",profile.rangeSlot) end
- local loadout=lesson=="range" and profile.rangePresets[profile.rangeSlot].loadout or Loadouts.make(self.flight.catalog,lesson=="combat" and "training_pellets" or "training")
- local p=self.flight:add(player,{loadout=loadout,loadoutName=lesson=="range" and "range" or "training",practice=true})
+ local range=lesson=="range" or lesson=="hangar"
+ if range then player:SetAttribute("RangeSlot",profile.rangeSlot) end
+ local loadout=range and profile.rangePresets[profile.rangeSlot].loadout or Loadouts.make(self.flight.catalog,lesson=="combat" and "training_pellets" or "training")
+ local p=self.flight:add(player,{loadout=loadout,loadoutName=range and "range" or "training",practice=true})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
  -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off, Lift stops at 1 second and Boost at 0.01.
  -- Combat School's aiming part asks for gentle itself (lesson cmd); its fights keep crashes (Alan).
  p.gentle=lesson=="flight";p.model:SetAttribute("Gentle",p.gentle or nil)
  -- Combat School is about aiming and fighting: Lift stays full the whole lesson (Alan 2026-10-19).
- p.keepLift=lesson=="combat" or lesson=="range"
+ p.keepLift=lesson=="combat" or range
  for _,key in {"DrillDown","PalFolds","PalEraserHits","PalEraserMisses","EraserHits"} do player:SetAttribute(key,0) end
  player:SetAttribute("InMatch",true)
 end

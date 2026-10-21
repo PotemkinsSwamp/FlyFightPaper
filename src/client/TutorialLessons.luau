@@ -261,4 +261,100 @@ Lessons.range={name="Hangar Range",room=true,steps={{
   if ctx.state~="FLYING" and os.clock()-(ctx.data.asked or 0)>1 then ctx.data.asked=os.clock();ctx.lesson({range=true}) end
   return false
  end}}}
+
+-- Lesson 3, the Hangar Tour (TUTORIAL-PLAN "Lesson 3", OK'd by Alan 2026-10-21): in the Range, on the Range's own
+-- builds (your match builds never change), over the real Hangar. Each step watches the Hangar's own state (Hangar.tour)
+-- rather than clicks, since most clicks redraw the Hangar. `page`: the Hangar page the step is on (lesson.ready turns
+-- to it); `out`: the step needs the Hangar closed. A step whose change you should see (a new wing, new gear) waits a
+-- moment with the spotlight off before it ticks.
+local HttpService=game:GetService("HttpService")
+local Hangar=require(script.Parent.Hangar)
+local Catalog=require(Root.Shared.Catalog).new(require(Root.Generated.Catalog),Gameplay)
+local LOOK_AFTER=1.5 -- seconds to see what a change did
+local GEAR_IDS={};for _,part in Catalog.weapons do table.insert(GEAR_IDS,part.id) end
+local function tour() local t=Hangar.tour;return t and t.state.draft and t.state or nil end
+local function watch(update) return function(ctx) local s=tour();return s~=nil and update(ctx,s) end end
+-- After a change: true once it has been on screen for LOOK_AFTER seconds.
+local function seen(ctx) ctx.data.at=ctx.data.at or os.clock();return os.clock()-ctx.data.at>LOOK_AFTER end
+local function spot(s) return math.min(2,Catalog:get(s.draft.body).mount_count) end
+local function hangarOpen(ctx) local layer=ctx.player.PlayerGui:FindFirstChild("HangarScreen");return layer~=nil and layer.Cover.Visible end
+local WEIGHT={"WeightRow","MountInfo"};for k=1,12 do table.insert(WEIGHT,"WeightBox"..k) end
+Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="Opening your Hangar...",doneTitle="Hangar Tour done!",
+ doneText="Your match planes are in the main menu's Hangar: same screens. In matches, some parts unlock with levels and Paper. The Range is yours now!",
+ ready=function(ctx,step)
+  -- First the plane onto the Range stage (asked again until the server has made it), then the Hangar open on the right page.
+  if not ctx.plane or ctx.plane:GetAttribute("Pinned")==nil then
+   if os.clock()-(ctx.data.asked or 0)>1 then ctx.data.asked=os.clock();ctx.lesson({range=true}) end
+   return false
+  end
+  if step.out then return true end
+  local s=tour()
+  if s and hangarOpen(ctx) then
+   if step.page and s.page~=step.page then
+    if step.page=="shelf" then s.builder:reset(s.builds[s.preset].loadout,s.preset) end -- what Back does: unsaved changes go
+    s.page,s.dropAsk,s.purchase=step.page,nil,nil;Hangar.tour.render()
+   end
+   return true
+  end
+  -- Closed (Back, or Esc then Resume): open it again, but never over the game menu.
+  if not game.ReplicatedStorage.FlyFightPaper:GetAttribute("OverlayOpen") and os.clock()-(ctx.data.opened or 0)>1 then
+   ctx.data.opened=os.clock();require(script.Parent.MenuController).show("hangar",true)
+  end
+  return false
+ end,
+ steps={
+  {text="This is your Hangar. Each cubby holds one of your planes.",gotIt=true,page="shelf",
+   update=function(ctx) ctx.spotlight("EndLeft","EndRight","GroupTab");return false end},
+  {text="Tap a cubby to pick that plane.",page="shelf",hint="Click the cubby in the bright frame.",
+   update=watch(function(ctx,s)
+    ctx.data.from=ctx.data.from or s.preset
+    if s.preset~=ctx.data.from then return true end
+    ctx.spotlight("Pick"..(ctx.data.from==1 and 2 or 1));return false
+   end)},
+  {text="Name it! Click the pencil, type, press Enter.",key="Enter",page="shelf",hint="Like the name? Press K to skip this step.",
+   update=watch(function(ctx,s)
+    local name=s.builds[s.preset].name;ctx.data.name=ctx.data.name or name
+    ctx.spotlight("NameTape","Rename");return name~=ctx.data.name
+   end)},
+  {text="These bars are your plane: Health, Speed, Climb, Swerve, Lift. Weight is how much gear it can carry.",gotIt=true,page="shelf",
+   update=function(ctx) ctx.spotlight("StatsSheet");return false end},
+  {text="Click Customize to change its parts.",page="shelf",
+   update=watch(function(ctx,s) ctx.spotlight("Customize");return s.page=="customize" end)},
+  {text="Each tab is one part of the plane. Click Wings.",page="customize",
+   update=watch(function(ctx,s) ctx.spotlight("Tabwings");return s.slot=="wings" end)},
+  {text="Click a card to try it on. Watch the plane and the bars change.",page="customize",hint="Pick a wing card that doesn't say Equipped.",
+   update=watch(function(ctx,s)
+    ctx.data.wings=ctx.data.wings or s.draft.wings
+    if s.draft.wings~=ctx.data.wings then return seen(ctx) end
+    for _,part in Catalog.structuresBySlot.wings do if part.id~=ctx.data.wings then ctx.spotlight(part.id);break end end
+    return false
+   end)},
+  {text="Gear is what your plane shoots. Click Gear.",page="customize",
+   update=watch(function(ctx,s) ctx.spotlight("Tabweapons");return s.slot=="weapons" end)},
+  {text=function(ctx) return "These numbers are your gear spots. Click spot "..(ctx.data.spot or 2).."." end,page="customize",
+   update=watch(function(ctx,s) ctx.data.spot=spot(s);ctx.spotlight("Mount"..ctx.data.spot);return s.mount==ctx.data.spot end)},
+  {text=function(ctx) return "Now pick a gear card to put on spot "..(ctx.data.spot or 2).."." end,page="customize",
+   hint="A card with a red X can't go there: try another.",
+   update=watch(function(ctx,s)
+    ctx.data.spot=spot(s)
+    local mounts=HttpService:JSONEncode(s.draft.weapon_mounts);ctx.data.before=ctx.data.before or mounts
+    if mounts~=ctx.data.before then return seen(ctx) end
+    ctx.spotlight(table.unpack(GEAR_IDS));return false
+   end)},
+  {text="Gear has weight: too heavy and a card gets a red X. One gear type fires on left click, the other on right click.",gotIt=true,page="customize",
+   update=function(ctx) ctx.spotlight(table.unpack(WEIGHT));return false end},
+  {text="Click Save to keep your build.",page="customize",
+   update=watch(function(ctx,s)
+    ctx.spotlight("SavePreset");ctx.data.dirty=ctx.data.dirty or s.unsaved
+    return ctx.clicked("SavePreset") or ctx.data.dirty and not s.unsaved
+   end)},
+  {text="Click Test in Range to fly it.",page="customize",
+   update=function(ctx) ctx.spotlight("SaveFly");return ctx.clicked("SaveFly") end},
+  {text="Now try it! Hit 3 targets.",key="Left click",count=3,out=true,hint="Put the green dot on a target and hold left click.",
+   update=function(ctx)
+    -- Hits since the step began (the Range's own count starts over on any change, so only rises are added up).
+    local hits=ctx.count("RangeHits");ctx.data.n=(ctx.data.n or 0)+math.max(0,hits-(ctx.data.last or hits));ctx.data.last=hits
+    return ctx.data.n
+   end},
+ }}
 return Lessons

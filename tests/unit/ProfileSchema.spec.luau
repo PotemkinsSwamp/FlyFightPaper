@@ -136,7 +136,7 @@ function Spec.run()
 		assert(Schema.canonical(assert(Schema.migrate(migrated,catalog)))==Schema.canonical(migrated))
 	end)
 	test("lesson ticks accept only known lessons marked true",function()
-		local p=fresh(); p.lessons={flight=true,combat=true}; assert(Schema.validate(p,catalog))
+		local p=fresh(); p.lessons={flight=true,combat=true,hangar=true}; assert(Schema.validate(p,catalog))
 		for _,bad in ipairs({{secret=true},{flight=false},{flight=1},{[1]=true}}) do local q=fresh(); q.lessons=bad; assert(not Schema.validate(q,catalog)) end
 		local q=fresh(); q.lessons=nil; assert(not Schema.validate(q,catalog))
 	end)

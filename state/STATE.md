@@ -5,7 +5,7 @@
 - **Range targets are the cards themselves** (no plane behind); shots follow the green dot, so the long row hits too.
 - **In the Range a click on an open menu is no longer a shot** (it used to close Customize).
 
-# Now: Hangar Tour (lesson 3) — plan OK'd 2026-10-21, build next
+# Now: Hangar Tour (lesson 3) — built 2026-10-21, waiting on Alan's Play check
 Plan: docs/plan/TUTORIAL-PLAN.md, Lesson 3 (14 steps in the Range with the Range builds, your answers in it).
 What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
 
@@ -18,6 +18,8 @@ Decisions to review
 Combat School: the hunting Pal (step 8) flies 25% faster until you're at half Health (else a player flying away is
   never caught); look cards hold 5 s, action steps 2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%).
   "No thanks" to the welcome question isn't saved.
+Hangar Tour: look steps block all clicks but Got it; light off 1.5 s after a wing/gear change so you see it; no glow
+  on the targets; end card has no buttons (mouse aims in the Range), goes after 7 s; Skip keeps you in the Range.
 Hangar Range: Range Hangar is pink; Lift and Health bars hide there; targets 40 Health, 2 per row; hit box is the whole picture; Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x + weave (stand-ins until you tune them).
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
   buying early is useless). Buying a part with Paper still needs the level.
@@ -49,7 +51,7 @@ Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked inste
 
 
 Waiting on Alan
-- Hangar Tour: you'll play it when built (what-to-look-at list then).
+- Hangar Tour: play it from Training > Hangar Tour (your go for Play); what to look at is in the chat.
 - Your call later: give the match bots the gun fix too (their guns still cross at 150 studs, so they miss past it).
   Match aim measured: misses come from bots turning mid-flight; a faster pencil or less jinky bots is your balance call.
 - Backlog (yours): a new fan sound for the real game. Private publish (your go) to test the move into the tutorial room.
