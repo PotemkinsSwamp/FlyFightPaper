@@ -1,0 +1,23 @@
+{
+  "path": "operations/e5825ae4-d726-416c-85e2-d72e9b266035",
+  "operationId": "e5825ae4-d726-416c-85e2-d72e9b266035",
+  "done": true,
+  "response": {
+    "path": "assets/107004369377864",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-21T05:32:59.781Z",
+    "assetId": "107004369377864",
+    "displayName": "FlyFightPaper hangarshelf outline",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

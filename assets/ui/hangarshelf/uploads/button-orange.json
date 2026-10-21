@@ -1,0 +1,23 @@
+{
+  "path": "operations/a691cea6-0de9-4aaf-a5f6-09c09eecb9c6",
+  "operationId": "a691cea6-0de9-4aaf-a5f6-09c09eecb9c6",
+  "done": true,
+  "response": {
+    "path": "assets/126851776000245",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-21T05:32:46.821Z",
+    "assetId": "126851776000245",
+    "displayName": "FlyFightPaper hangarshelf button-orange",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

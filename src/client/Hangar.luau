@@ -44,8 +44,7 @@ local STAT_COLOURS = {
 
 -- api = { action = RoundAction remote, back(), flown() (after Save & fly), fly(loadout) (Studio only) }
 function Hangar.new(playerGui, api)
-	-- ponytail: the old folder background stands in until Alan uploads the cork board.
-	local cover, sheet = PaperUI.screen(playerGui, "HangarScreen", #Shelf.bg > 0 and Shelf.bg or Art.bg)
+	local cover, sheet = PaperUI.screen(playerGui, "HangarScreen", Shelf.bg)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local content = Instance.new("Frame")
 	content.Name, content.BackgroundTransparency, content.Size, content.Parent = "Content", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), sheet

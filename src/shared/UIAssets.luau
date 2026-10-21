@@ -41,11 +41,16 @@ return {
 		folder = { "rbxassetid://90477686865340", "rbxassetid://106131906433035", "rbxassetid://99506492567038", "rbxassetid://74385525106617" },
 	},
 	-- Hangar cubby shelf and Customize binder (assets/ui/hangarshelf/; concepts hangar-shelf-screen, hangar-customize-b).
-	-- Empty until Alan uploads them; white pieces (shelfTab, indexTab, statLabel, statBox, statBoxEmpty) are tinted in the game.
+	-- Uploaded 2026-10-21; white pieces (shelfTab, indexTab, statLabel, statBox, statBoxEmpty) are tinted in the game.
 	hangarShelf = {
-		bg = {}, cubbyBack = "", cubbyFront = "", endLeft = "", endRight = "", outline = "", shelfTab = "",
-		binderLeft = "", binderRight = "", indexTab = "", buttonOrange = "",
-		statsPaper = "", statLabel = "", statBox = "", statBoxEmpty = "",
+		bg = { "rbxassetid://133397690165754", "rbxassetid://105639322311566", "rbxassetid://115182631090136", "rbxassetid://116475380443993" },
+		cubbyBack = "rbxassetid://103396781406593", cubbyFront = "rbxassetid://91837232661923",
+		endLeft = "rbxassetid://77250322353606", endRight = "rbxassetid://70512922987121",
+		outline = "rbxassetid://107004369377864", shelfTab = "rbxassetid://130611353722432",
+		binderLeft = "rbxassetid://113985177433175", binderRight = "rbxassetid://110535459444634",
+		indexTab = "rbxassetid://76160948676401", buttonOrange = "rbxassetid://126851776000245",
+		statsPaper = "rbxassetid://109589083209118", statLabel = "rbxassetid://92620076840621",
+		statBox = "rbxassetid://80213400784355", statBoxEmpty = "rbxassetid://138489607891947",
 	},
 	results = {
 		bg = { "rbxassetid://115001392503048", "rbxassetid://96562871734090", "rbxassetid://87591984146456", "rbxassetid://83555563405703" },

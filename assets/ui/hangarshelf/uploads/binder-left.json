@@ -1,0 +1,23 @@
+{
+  "path": "operations/802ea545-6186-484d-a336-e6a846825142",
+  "operationId": "802ea545-6186-484d-a336-e6a846825142",
+  "done": true,
+  "response": {
+    "path": "assets/113985177433175",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-21T05:32:39.123Z",
+    "assetId": "113985177433175",
+    "displayName": "FlyFightPaper hangarshelf binder-left",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

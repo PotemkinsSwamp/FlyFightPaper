@@ -1,0 +1,23 @@
+{
+  "path": "operations/50403b3d-7660-439f-9016-05ef56668391",
+  "operationId": "50403b3d-7660-439f-9016-05ef56668391",
+  "done": true,
+  "response": {
+    "path": "assets/70512922987121",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-21T05:33:06.109Z",
+    "assetId": "70512922987121",
+    "displayName": "FlyFightPaper hangarshelf shelf-end-right",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

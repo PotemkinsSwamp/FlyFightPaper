@@ -1,0 +1,23 @@
+{
+  "path": "operations/830123aa-6352-4cff-af19-68637d5b3fc4",
+  "operationId": "830123aa-6352-4cff-af19-68637d5b3fc4",
+  "done": true,
+  "response": {
+    "path": "assets/91837232661923",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-21T05:32:53.414Z",
+    "assetId": "91837232661923",
+    "displayName": "FlyFightPaper hangarshelf cubby-front",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}
