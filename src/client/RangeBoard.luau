@@ -91,7 +91,8 @@ function Board.start()
 		else action:FireServer("range", what) end
 	end
 	Input.InputBegan:Connect(function(input, processed)
-		if processed or not FlightState.aimPoint or not stage or not stage.Parent then return end
+		-- A menu (the Hangar, the game menu) open over the Range takes the clicks: an empty spot on it is not a shot.
+		if processed or Root:GetAttribute("OverlayOpen") or not FlightState.aimPoint or not stage or not stage.Parent then return end
 		if KEYS[input.KeyCode] then click("load" .. KEYS[input.KeyCode]) return end
 		if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.MouseButton2 then return end
 		local eye = workspace.CurrentCamera.CFrame.Position

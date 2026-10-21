@@ -118,7 +118,7 @@ function Customize.draw(content, ctx)
 
 	-- Left page: the build's name, then the plane (the Gear page: a still diagram with a numbered tag on every mount).
 	local diagram = state.slot == "weapons" and not state.purchase
-	ctx.nameTag(content, 125, 890, 430, 92, false)
+	ctx.nameTag(content, 115, 890, 450, 92, 44)
 	ctx.preview(draft, PHOTO, diagram, true)
 	local valid, reason = builder:validate(draft)
 	local stats = ctx.catalog:deriveStats(draft)

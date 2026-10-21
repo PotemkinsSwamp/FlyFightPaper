@@ -138,22 +138,21 @@ function Hangar.new(playerGui, api)
 		end
 	end
 
-	-- The build's name on masking tape (concept hangar-name-tape-a.png). On the shelf screen it is a box: click it to
-	-- type a new name (up to NAME_MAX letters, Roblox-filtered on the server).
-	local function nameTag(parent, x, y, w, h, editable)
+	-- The build's name on masking tape with a pencil (concept hangar-name-tape-a.png), on both screens: click the name
+	-- or the pencil to type a new one (up to NAME_MAX letters, Roblox-filtered on the server). size = letter size.
+	local function nameTag(parent, x, y, w, h, size)
 		local build = state.builds[state.preset]
 		image(parent, "NameTape", Assets.ingame.tapeLabel, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
-		if not editable then
-			words(parent, "BuildName", build.name, x + 20, y, w - 40, h, 44).TextXAlignment = Enum.TextXAlignment.Center
-			return
-		end
 		local nameBox = Instance.new("TextBox")
 		nameBox.Name, nameBox.Text, nameBox.PlaceholderText, nameBox.ClearTextOnFocus = "BuildName", build.name, "Name this build", false
 		nameBox.Position, nameBox.Size, nameBox.BackgroundTransparency = UDim2.fromOffset(x + 30, y), UDim2.fromOffset(w - 130, h), 1
-		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3 = PaperUI.font, 52, PaperUI.INK
+		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3 = PaperUI.font, size, PaperUI.INK
 		nameBox.TextTruncate, nameBox.Parent = Enum.TextTruncate.AtEnd, parent
-		local hint = words(parent, "Rename", "rename", x + w - 105, y, 90, h, 24)
-		hint.TextTransparency = 0.4
+		local pencil = Instance.new("ImageButton")
+		pencil.Name, pencil.Image, pencil.BackgroundTransparency, pencil.Rotation = "Rename", Assets.settings.pencil, 1, -35
+		pencil.AnchorPoint, pencil.Position, pencil.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(x + w - 55, y + h / 2), UDim2.fromOffset(96, 26)
+		pencil.ScaleType, pencil.Parent = Enum.ScaleType.Fit, parent
+		pencil.Activated:Connect(function() nameBox:CaptureFocus() end)
 		nameBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if utf8.len(nameBox.Text) and utf8.len(nameBox.Text) > NAME_MAX then nameBox.Text = nameBox.Text:sub(1, utf8.offset(nameBox.Text, NAME_MAX + 1) - 1) end
 		end)
@@ -259,7 +258,7 @@ function Hangar.new(playerGui, api)
 		if state.page == "shelf" then
 			shelf.set(builds, state.preset, range and "Range" or "My builds")
 			preview(draft, PHOTO)
-			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, true)
+			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, 52)
 			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
 			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 530, 600, 120, -1, function()
 				state.page, state.slot, state.purchase = "customize", "body", nil
