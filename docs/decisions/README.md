@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-22: [Tutorials approved](2026-10-22-tutorials-approved.md)
 - 2026-10-21: [Hangar: try a card on, Select puts it on; exact numbers on the stat sheet](2026-10-21-hangar-try-on-select.md)
 - 2026-10-21: [Range targets are the cards themselves, with no plane behind them](2026-10-21-range-targets-are-the-cards.md)
 - 2026-10-20: [Hangar: builds live in a cubby shelf; Customize opens the part editor](2026-10-20-hangar-build-shelf.md)

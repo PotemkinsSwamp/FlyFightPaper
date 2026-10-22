@@ -356,6 +356,8 @@ Rewrite client steering and camera; keep client network ownership and the server
   target placed from shared numbers (CombatRules.practiceTargetPose, server hits it), a sticky-note step guide
   (src/client/Tutorial.luau), and a landing guide ("Line up here"). In the live room the target was hard to find.
 - **Done when:** a new player understands the game without reading anything long, and Alan approves.
+- **Approved by Alan 2026-10-22** ([decision](../decisions/2026-10-22-tutorials-approved.md)): Flight School, Combat
+  School, Hangar Tour and the Training board. Match Tips and the Range's sticky notes are still to build.
 
 ## Stage 10 — Commerce wiring (stays off)
 What is sold and the order (plane retexture first): [shop plan 2026-10-18](../decisions/2026-10-18-shop-plan.md).
