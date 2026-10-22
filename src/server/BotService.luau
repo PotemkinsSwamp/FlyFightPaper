@@ -15,18 +15,18 @@ local Service={};Service.__index=Service
 -- Combat Training's Pals (p.pal, set by RoundRuntime:lesson): they only fight while their player has been flying
 -- for 2 seconds (Alan: smooth after a crash), so a player back from a crash isn't jumped on takeoff.
 -- Pals are easy prey (Alan 2026-10-19: a Pal that turned back or chased you only made you both fly in circles;
--- 2026-10-21: still circled, "it needs to be pretty dumb when it's running"): they keep their own heading, with a
--- gentle turn every few seconds, and only turn further when the way is blocked. Never away from you (that turned them
--- every time you turned, so you both circled).
+-- 2026-10-21: still circled, "it needs to be pretty dumb when it's running"; 2026-10-22: then too dumb, killed before
+-- any chase): they keep their own heading and every 2.5-4 s bank 25-50 degrees one way or the other, turning further
+-- only when the way is blocked. Never away from you (that turned them every time you turned, so you both circled).
 local function wander(self,b,position,now)
  if b.wanderGoal and now<b.wanderUntil and (position-b.wanderGoal).Magnitude>80 then return b.wanderGoal end
  local heading=b.heading*Vector3.new(1,0,1)
  heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
  local climb=math.clamp((Course.POINTS[2].Y-position.Y)*.3,-40,40) -- drift back toward the course's height
- local first=b.random:NextNumber(-20,20)
+ local first=b.random:NextNumber(25,50)*(b.random:NextNumber()<.5 and -1 or 1)
  for _,turn in {first,first+40,first-40,90,-90,135,-135,180} do
   local goal=position+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*250+Vector3.yAxis*climb
-  if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+3;return goal end
+  if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+b.random:NextNumber(2.5,4);return goal end
  end
  b.wanderGoal,b.wanderUntil=Course.POINTS[2],now+3;return b.wanderGoal
 end
@@ -581,10 +581,10 @@ function Service:steer(p,b,dt,now)
  b.heading=desired
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost
  -- A Pal flies at `pal.speed` times its plane's own speed, not a bot's slower share (RoundRuntime:lesson), and
- -- slower while you're far from it (Alan 2026-10-21: chasing one took a minute): you close in fast, then nearly
- -- match it so you don't overshoot.
+ -- slower while you're far from it (Alan 2026-10-21: chasing one took a minute): you close in, then it matches you,
+ -- so you catch it by cutting inside its turns (Alan 2026-10-22: 70%/95% made it too easy, no chase).
  local foe=p.pal and self.flight.byId[p.foeOf]
- local catchUp=foe and (foe.body.Position-position).Magnitude>250 and .7 or .95
+ local catchUp=foe and (foe.body.Position-position).Magnitude>250 and .85 or 1
  local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*catchUp or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
  if p.model:GetAttribute("Boosting") then lift=math.max(lift,1) end -- boost flies along the nose even with no Lift
  local speed=cruise*bleed

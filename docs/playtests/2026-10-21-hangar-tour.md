@@ -42,4 +42,13 @@ Decision: [try on, then Select](../decisions/2026-10-21-hangar-try-on-select.md)
     **Done:** fake shots from just behind you until half Health; every Pal runs nearly straight, 70% speed while you're
     far, 95% near.
 
+## 2026-10-22
+19. A lesson's end card couldn't be clicked: the plane kept flying with the mouse. **Done:** finishing freezes everything.
+20. Combat School's end should offer the Hangar Tour. **Done:** "Next: Hangar Tour".
+21. Step 8's Pal died too fast, no chase ("a little too dumb"; Health unchanged, half). **Done:** 85% far / 100% near,
+    banks 25-50 degrees every 2.5-4 s.
+22. INCOMING in step 8 (it shouldn't have an eraser). Cause: a Pal kept from another step kept its eraser. **Done:**
+    refolded with the right weapon.
+23. The Hangar Tour's last card needs dismissing. **Done:** click it or Space (the 7 s stays).
+
 Back to [playtests](README.md)

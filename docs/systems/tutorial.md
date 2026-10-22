@@ -46,7 +46,7 @@ button, which the crosshair can click too, is above them), and the Range Menu, w
 the plane in the air) and Difficulty plus Edit in Hangar (saving there swaps the plane). The loadouts are the Range's own
 five builds (saved as `rangePresets`, any part allowed, never used in matches; you start on the one you last flew
 there). The Hangar opened in the Range edits them ("Range only" on parts you don't own); built 2026-10-19, not yet played.
-Flight School's end card has "Next: Combat School", and Combat School's "Next: Hangar Tour" (Alan 2026-10-22). Flight School: the step engine
+Flight School's end card has "Next: Combat School", and Combat School's "Next: Hangar Tour" (Alan 2026-10-22). Finishing in the air freezes everything (targets, Pal, your plane) and frees the mouse for the card's buttons; either button lets go first (Alan 2026-10-22). The Hangar Tour's card has no buttons: a click on it or Space closes it, or it goes after 7 s. A Pal kept from another step is refolded when it carries the wrong weapon (only the eraser Pal has an eraser). Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during
 lessons (Alan). In Studio the Training button turns the room into the tutorial world (match paused, bots gone) since
@@ -81,7 +81,7 @@ against the room's exact shapes; the course points are the fallback), held still
 (`src/shared/TrainingCourse.luau`), so every aim help works on them as in a match. Part 2, fighting: one "Paper Pal"
 at a time, at full speed again, appearing in the air 400-700 studs ahead (within 40 degrees of the nose, hidden behind
 a building when it can be; never out of a hangar or off to the side: Alan 2026-10-19, "coming out of nowhere";
-BotService:placePal), facing away, your speed when you're near and 70% while you're over 250 studs off (Alan 2026-10-21: chasing one took a minute; near, it nearly matches you so you don't overshoot), turning at 80%, keeping its own heading with a gentle turn every 3 s
+BotService:placePal), facing away, your speed when you're near and 85% while you're over 250 studs off (Alan 2026-10-21: chasing one took a minute; 2026-10-22: 70%/95% was too easy, no chase), turning at 80%, keeping its own heading and banking 25-50 degrees one way or the other every 2.5-4 s
 and turning further only when blocked, never a stunt and never away from you (Alan 2026-10-19/21: noob-level, "in a straight line"; turning away from you made you both circle): one that never shoots, and one that starts behind you, off to one side, 400-500 studs back, flying away
 (always placed afresh when the step starts or restarts; Alan 2026-10-21: it kept appearing ahead). Its "shots" are fakes (BotService:palAmbush; Alan 2026-10-21): bursts of pellets appear 70 studs behind you, out of sight, and always hit,
 only while it is behind you, until your Health is down to half (its hits can't fold you; Alan: "whittle your health down"); the note says "An enemy is behind you, shooting!" while it's back there. You turn round, see it running, and chase it down. Neither carries an eraser. Part 3, the eraser:

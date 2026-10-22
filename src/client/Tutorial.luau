@@ -122,13 +122,18 @@ function Tutorial.start(getPlane)
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()cardScale.Scale=scale.Scale end)
  local cardTitle=PaperUI.words(card,"Title","",40,30,540,56,44);cardTitle.TextXAlignment=Enum.TextXAlignment.Center
  local cardText=PaperUI.words(card,"Text","You can replay any lesson: Menu > Tutorial.",40,96,540,60,26);cardText.TextWrapped=true;cardText.TextXAlignment=Enum.TextXAlignment.Center
+ -- The end card holds the plane still so the mouse can click (finish); either button lets it go first.
  local matchButton=PaperUI.button(card,"Play",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Go to a match",160,170,300,60,-1,function()
-  card.Visible=false;Root.RoundAction:FireServer("practiceDone")
+  card.Visible=false;Root.RoundAction:FireServer("lesson",{freeze=false});Root.RoundAction:FireServer("practiceDone")
  end,30)
- -- The lessons run in order (Flight School, Aiming, Combat Training): the next one is a click away.
+ -- The lessons run in order (Flight School, Combat School, Hangar Tour): the next one is a click away.
  local nextButton=PaperUI.button(card,"Next",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Next lesson",320,170,280,60,1,function()
-  card.Visible=false;if Tutorial.nextKey then Tutorial.begin(Tutorial.nextKey) end
+  card.Visible=false;Root.RoundAction:FireServer("lesson",{freeze=false});if Tutorial.nextKey then Tutorial.begin(Tutorial.nextKey) end
  end,30)
+ -- A card with no buttons (the Hangar Tour's, in the Range) closes on a click or Space (Alan 2026-10-22), or by itself.
+ local dismiss=Instance.new("TextButton");dismiss.Name="Dismiss";dismiss.Text="";dismiss.BackgroundTransparency=1;dismiss.Size=UDim2.fromScale(1,1);dismiss.ZIndex=5;dismiss.Visible=false;dismiss.Parent=card
+ dismiss.Activated:Connect(function() card.Visible=false end)
+ Input.InputBegan:Connect(function(input,processed) if not processed and card.Visible and dismiss.Visible and input.KeyCode==Enum.KeyCode.Space then card.Visible=false end end)
 
  -- A question card (Alan 2026-10-19): which lesson (the Tutorial button), or, the first time in the game, would
  -- you like the tutorial (most games ask once, can be skipped in one click, and say where to find it again).
@@ -508,11 +513,14 @@ function Tutorial.start(getPlane)
   -- The Hangar Tour ends in the Range, which carries on as the Range (lesson.stay). The mouse aims there, so the card
   -- has no buttons and goes by itself.
   local stay=Tutorial.lesson.stay
-  matchButton.Visible=stay==nil
+  matchButton.Visible,dismiss.Visible=stay==nil,stay~=nil
+  if stay then cardText.Text..=" (Click or press Space to close.)" end
   cardText.Size=UDim2.fromOffset(540,stay and 150 or 60) -- no buttons: a longer end line gets their room
   if stay then nextButton.Visible=false;Tutorial.begin(stay,true);task.delay(7,function() card.Visible=false end);return end
   -- Skipping mid-flight: the mouse steers the plane, so go straight on to the match and keep the card up a moment.
-  if skipped and ctx.state and ctx.state~="DESK" then Root.RoundAction:FireServer("practiceDone");task.delay(5,function()card.Visible=false end) end
+  if skipped and ctx.state and ctx.state~="DESK" then Root.RoundAction:FireServer("practiceDone");task.delay(5,function()card.Visible=false end)
+  -- Finished in the air: everything holds still and the mouse is free to pick a button (Alan 2026-10-22).
+  elseif ctx.state=="FLYING" then ctx.lesson({freeze=true}) end
  end
  Input.InputBegan:Connect(function(input,processed)
   if processed or not Tutorial.active then return end

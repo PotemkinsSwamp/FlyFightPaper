@@ -315,10 +315,14 @@ function Runtime:lesson(player,cmd)
    if foe then self.flight:remove(foe,"vacancy") end
    player:SetAttribute("TutorialFoe",nil);return
   end
+  -- Only the eraser Pal carries an eraser, so the pellet fights have no lock-on warnings. A Pal kept from another
+  -- step (or a replayed lesson) gets refolded when it has the wrong one (Alan 2026-10-22: INCOMING in step 8).
+  local loadout=Loadouts.make(self.flight.catalog,cmd.pal=="eraser" and "training" or "training_pellets")
   if not foe then
-   -- Only the eraser Pal carries an eraser, so the pellet fights have no lock-on warnings.
-   foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=Loadouts.make(self.flight.catalog,cmd.pal=="eraser" and "training" or "training_pellets"),loadoutName="training"})
+   foe=self.flight:add(nil,{id=id,name="Paper Pal",tier="rookie",loadout=loadout,loadoutName="training"})
    if not foe then return end
+  elseif (table.find(foe.loadout.weapon_mounts,"eraser")~=nil)~=(cmd.pal=="eraser") then
+   foe.loadout=loadout;self.flight:replace(foe)
   end
   -- Pals fly exactly your speed (same plane; Alan 2026-10-19: slower ones were harder, you overshoot and circle
   -- them) and can't crash or run out of Lift (gentle).
