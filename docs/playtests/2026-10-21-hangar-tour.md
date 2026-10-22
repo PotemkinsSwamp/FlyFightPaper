@@ -50,5 +50,8 @@ Decision: [try on, then Select](../decisions/2026-10-21-hangar-try-on-select.md)
 22. INCOMING in step 8 (it shouldn't have an eraser). Cause: a Pal kept from another step kept its eraser. **Done:**
     refolded with the right weapon.
 23. The Hangar Tour's last card needs dismissing. **Done:** click it or Space (the 7 s stays).
+24. Step 8: no shots before you turned round (twice). Cause: they waited ~2-3 s after the note, and the "behind you"
+    note came first, so you turned at once. **Done:** shots from 0.5 s after the note, from the Pal's side while it's out
+    of view; the note names it only after a hit. Checked in Play: Health 120 to 70 in ~5 s while it sat behind.
 
 Back to [playtests](README.md)

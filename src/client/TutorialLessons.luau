@@ -175,10 +175,12 @@ local FIGHT_STEPS={
     local plane=ctx.plane
     local low=plane and plane:GetAttribute("Health")<=(plane:GetAttribute("MaxHealth") or 1)*.5
     if overheated(ctx) then return "Too hot! Let go of left click to cool down." end
-    -- It comes in from behind (BotService:placePal): say so while it's back there (Alan 2026-10-21).
+    -- It shoots from behind (BotService:palAmbush): once it has hit you, say where it is while it's back there
+    -- (Alan 2026-10-22: said before the first shot, you turned round before it could hit you).
     local pal=ctx.pal()
-    if not low and pal and ctx.body and (pal.Root.Position-ctx.body.Position):Dot(ctx.body.CFrame.LookVector)<0 then
-     return "An enemy is behind you, shooting! Turn round and find it."
+    local hit=plane and plane:GetAttribute("Health")<(plane:GetAttribute("MaxHealth") or 0)
+    if hit and not low and pal and ctx.body and (pal.Root.Position-ctx.body.Position):Dot(ctx.body.CFrame.LookVector)<0 then
+     return "It's shooting you from behind! Turn round and find it."
     end
     return low and "It hit you: your Health went down. Now it's stopped. Shoot it down!" or "This one shoots back! Watch your Health bar."
    end,key="Left click",

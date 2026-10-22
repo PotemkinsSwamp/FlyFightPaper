@@ -94,17 +94,23 @@ function Service:palReady(p,now)
  return victim and victim.model:GetAttribute("State")=="FLYING" and not victim.held and now-(victim.launchAt or 0)>2
   and now-(p.pal.at or 0)>1 and victim or nil
 end
--- Step 8's ambush (Alan 2026-10-21): pellets appear just behind you, out of sight, and always hit, as if the Pal far
--- behind had fired them, in bursts until your Health is half; then it only runs. None while it's in front of you,
--- where you'd see they don't come from it.
+-- Step 8's ambush (Alan 2026-10-21/22): from the moment the note lets you go, pellets appear 70 studs from you on
+-- the Pal's side, out of sight, and always hit, as if the Pal had fired them, until your Health is half; then it only
+-- runs. Only while the Pal is out of your view (over 60 degrees off your nose), where you'd see they don't come from it.
 function Service:palAmbush(p,victim,now)
  if victim.model:GetAttribute("Health")<=victim.stats.health*.5 then p.pal.mode="circle";return end
+ if victim.model:GetAttribute("State")~="FLYING" or victim.held or now-(victim.launchAt or 0)<.3 or now-(p.pal.at or 0)<1 then return end
  local frame=victim.body.CFrame
- if now%1.6>.8 or now<(p.pal.nextShotAt or 0) or (p.body.Position-frame.Position):Dot(frame.LookVector)>0 then return end
+ local toward=(p.body.Position-frame.Position).Unit
+ if now<(p.pal.nextShotAt or 0) or frame.LookVector:Dot(toward)>math.cos(math.rad(60)) then return end
  local mount;for _,m in ipairs(self.combat.info[p.id].mounts) do if not m.weapon.homing then mount=m end end
  if not mount then return end
- p.pal.nextShotAt=now+mount.weapon.shot_interval
- self.combat:launch(p,mount,now,victim,frame.Position-frame.LookVector*70+frame.RightVector*math.random(-4,4)+frame.UpVector*2)
+ p.pal.nextShotAt=now+.12
+ -- Closer in when a wall stands in the way (measured: 11 of 46 shots hit one from 70 studs).
+ local offset=toward*70+frame.RightVector*math.random(-4,4)+frame.UpVector*2
+ local wall=workspace:Raycast(frame.Position,offset,self.flight.cast)
+ if wall then offset=offset.Unit*math.max(8,wall.Distance-4) end
+ self.combat:launch(p,mount,now,victim,frame.Position+offset)
 end
 local MIXED_SKILLS={"rookie","regular","experienced"}
 local function aimError(direction,b,now)
@@ -597,7 +603,8 @@ function Service:steer(p,b,dt,now)
  -- Triggers are hand work too: checked every frame against the live lead, not held between decisions.
  local aim=self.combat.info[p.id].aim or p.body.CFrame.LookVector
  local aligned=lead~=nil and p.body.CFrame.LookVector:Dot((lead-position).Unit)>math.cos(math.rad(12)) and (b.target.body.Position-position).Magnitude<450
- if p.pal and p.pal.mode=="pellet" then local victim=self:palReady(p,now);if victim then self:palAmbush(p,victim,now) end end
+ local foe=p.pal and p.pal.mode=="pellet" and self.flight.byId[p.foeOf]
+ if foe then self:palAmbush(p,foe,now) end
  for group=1,2 do
   local semi,eraser=false,false
   for _,mount in ipairs(self.combat.info[p.id].mounts) do if mount.group==group then
