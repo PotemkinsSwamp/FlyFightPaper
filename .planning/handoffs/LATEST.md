@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-21-ui-hangar-built-tour-next.md
+# LATEST → handoff-2026-10-21-ui-hangar-tour-built-try-on.md
 
-★ START HERE: The new Hangar (cubby shelf + Customize binder) is built, uploaded and OK'd by Alan in Play. Next: build
-the Hangar Tour (lesson 3) exactly as planned in docs/plan/TUTORIAL-PLAN.md (OK'd with Alan's answers); done when Alan
-plays it from the Training board and says it works.
+★ START HERE: Hangar Tour built and played twice by Alan (his notes fixed); the Hangar now shows exact numbers and
+Customize tries a card on before Select puts it on. Next: Alan's Play check of try-on/Select and the tour; fix his
+notes; done when he says both work. Then the queued UI list in the handoff.
 
 Quick state: main, code compiles in Edit, Rojo serving, Studio in Edit, Play stopped.
-Previous: handoff-2026-10-20-ui-hangar-shelf-concepts.md.
+Previous: handoff-2026-10-21-ui-hangar-built-tour-next.md.

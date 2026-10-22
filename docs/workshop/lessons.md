@@ -177,6 +177,9 @@ mistake would be easy to make twice.
   lesson pause (2026-10-19). Ignore the mouse for 0.1 s after locking (FlightController).
 - **Tests in Edit mode lie** (2026-10-19): the MCP Edit VM keeps old copies of required modules, so the suite showed 15
   failures in code nobody touched. Run the tests in Play on the server VM (no mouse needed while Alan plays).
+- **Studio MCP clicks (2026-10-21):** `user_mouse_input` x/y are in the same space as `AbsolutePosition` (below the
+  top bar), not window pixels; a rotated button (the Hangar's pencil) can be missed by `instance_path`, so click its
+  `AbsolutePosition + AbsoluteSize/2`. A running Play never picks up Rojo edits: stop and start Play after each change.
 - **A Lua value can't be stored on an Instance** (`board.before=fn` errors: "not a valid member"): keep it in a local.
   It made the Tutorial button do nothing (2026-10-19).
 - **Stopping a background Codex job** (TaskStop) leaves `codex.exe` running and it can still write files; stop the

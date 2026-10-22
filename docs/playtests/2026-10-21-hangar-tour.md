@@ -1,0 +1,23 @@
+# Playtest 2026-10-21: the Hangar Tour (lesson 3)
+
+Alan played the first build of the Hangar Tour from the Training board, then the Hangar after its fixes. What he
+said and what changed. Plan: [tutorial plan](../plan/TUTORIAL-PLAN.md) "Lesson 3". System: [tutorial](../systems/tutorial.md).
+Decision: [try on, then Select](../decisions/2026-10-21-hangar-try-on-select.md).
+
+## First play
+1. Step 4 named the stats without saying what they are. **Done:** one row at a time, kid words (1/6 ... 6/6). ✅
+2. Step 11 lit the whole bottom of the page and described a red X that wasn't there. **Done:** pages for the Weight
+   boxes, the click line, and a red X only when a card really has one (the Hangar swaps gear to fit, so it's rare). ✅
+3. "Hit 3 targets" finished on one target hit three times. **Done:** 3 different targets. ✅
+4. Alan: Claude should play it through too. **Done:** played three times in Studio; also fixed the note covering the
+   gear cards, the name needing Ctrl+A to replace, Mount/spot words, skipping step 13 leaving the Hangar open. ✅
+
+## Second play
+5. The Range showed for a split second before the Hangar. **Done:** cork cover until the Hangar is open (1 frame in
+   408 measured). ✅
+6. Ding 20% quieter in the tour, and it came ~1.5 s after the click. **Done:** `softDing`, rings on the click. ✅
+7. The Hangar lost its exact numbers. **Done:** number after each row. ✅
+8. Changes compared to the saved build, not to what was last picked. **Done:** try on, then Select. Not yet seen by
+   Alan.
+
+Back to [playtests](README.md)
