@@ -1,0 +1,18 @@
+Make TWO finished concept pictures with your built-in image generation and save them as PNG files in the current folder with exactly these names: desk-menu-a.png, desk-menu-b.png. Each landscape 16:9, at least 1600 pixels wide. Do nothing else (no code, no other files).
+
+They show a small in-match "quick menu" for a kids' Roblox paper-plane game, drawn ON TOP of the live game view. Input image 1 (scene.jpg) is the live game: the player's plane parked inside its paper desk hangar, looking out down the runway at the toy-town classroom. Keep that game view as the background of both pictures, clearly visible around the menu (you may darken it very slightly), with a small white-and-red folded paper plane parked on the runway in the middle near the bottom.
+Input images 2 and 3 (hangar-style.png, customize-style.png) are the approved STYLE: same photographic handmade classroom look, warm cork board, torn construction paper, wrinkled masking tape, a light-blue taped paper photo, a torn notebook-paper stat sheet with crayon boxes, black hand lettering, waxy crayon outlines. Real craft materials, not flat vector UI or cartoon. Big clean shapes, readable at a small size by a child. This quick menu must look like a smaller sibling of that Hangar screen. Do NOT draw a wooden cubby shelf. Exact wording only as written below; no other text, letters or numbers anywhere. No people, logos, watermarks.
+
+Pieces (both pictures have exactly these):
+- A small yellow torn-paper score note: "Red 12 - Blue 9" (Red in red, Blue in blue) and under it "2:41 left".
+- The small light-blue taped photo of the red-and-blue folded paper plane (from image 2), with a masking-tape name label "Sky Hawk" under it.
+- A small torn notebook-paper stat sheet with three rows, each a coloured paper strip word and five crayon boxes: "Health" (red, 3 filled), "Lift" (orange, 4 filled), "Boost" (blue, 2 filled).
+- Five small builds to pick from: tiny taped photos (like mini polaroids) each with a different folded paper plane and a masking-tape name: "Speedy", "Tank", "Sky Hawk" (picked: thick yellow crayon outline), "Dart", "Build 5".
+- Four service buttons, torn construction-paper strips with black handwriting: blue "Refill Lift", green "Repair", yellow "Fresh plane", red "Full refold - 120 Paper".
+- An orange torn-paper button "Customize" (same as image 2).
+- The biggest button: green torn construction paper, "LAUNCH!".
+- A thin strip of masking tape with small handwriting: "Safe in the hangar: 85s".
+
+PICTURE A: desk-menu-a.png. Everything on ONE compact cork-board panel with a thin wooden frame, hung over the right two-thirds of the screen, top to bottom with a little margin. The left third shows the game (hangar and runway) with the parked plane. Inside the panel: score note top right; photo + name label top left; stat sheet beside the photo; the five mini build photos in a row under them; the four service strips in a 2x2 block bottom left; "Customize" and the big "LAUNCH!" bottom right; the tape note along the very bottom.
+
+PICTURE B: desk-menu-b.png. No frame: separate pieces pinned straight onto the screen edges like a scrapbook, leaving the middle of the screen open so the runway and parked plane show through. Top left: photo + name label + stat sheet. Top right: score note. Left edge: the five mini build photos stacked top to bottom on a narrow torn cork strip. Right edge: the four service strips stacked, then "Customize". Bottom centre: the big "LAUNCH!" with the tape note just above it.
