@@ -52,6 +52,7 @@ function Hangar.new(playerGui, api)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local content = Instance.new("Frame")
 	content.Name, content.BackgroundTransparency, content.Size, content.Parent = "Content", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), sheet
+	content.ZIndex = 2 -- in front of the shelf, so Customize stands on its top board (Alan 2026-10-21)
 
 	local player = game.Players.LocalPlayer
 	local state = { preset = player:GetAttribute("SelectedPreset") or 1, page = "shelf", slot = "body", mount = 1, angle = 0.5, pitch = -0.5, names = {} }

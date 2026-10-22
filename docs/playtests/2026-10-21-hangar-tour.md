@@ -25,5 +25,7 @@ Decision: [try on, then Select](../decisions/2026-10-21-hangar-try-on-select.md)
 10. Select broke gear ("you click on the number and then you press the gear"). **Done:** gear you own goes straight on;
     the tour's gear step no longer asks for Select.
 11. A rename flashed back to "Preset 1" for a couple of seconds after Enter. **Done:** the typed name shows while it saves.
+12. Customize still sat behind the shelf (the shelf was drawn over the page). **Done:** the page draws in front of it.
+13. The three boosters didn't say how they differ. **Done:** each card says "+35% speed for 4 seconds" etc.
 
 Back to [playtests](README.md)

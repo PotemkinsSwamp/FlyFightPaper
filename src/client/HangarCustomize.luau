@@ -110,6 +110,15 @@ function Customize.draw(content, ctx)
 			local status = words(card, "Status", detail, 18, 128, 216, 50, 21)
 			status.TextWrapped = true
 			if blocked then status.TextColor3, status.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
+		elseif state.slot == "boost" then
+			-- What each booster does (Alan 2026-10-21: three boosters looked the same).
+			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(216, 44), false, true
+			local cap = Instance.new("UITextSizeConstraint")
+			cap.MaxTextSize, cap.Parent = 34, name
+			local boost = words(card, "Boost", string.format("+%d%% speed for %d seconds", math.round((part.speed_factor - 1) * 100), part.boost_seconds), 18, 60, 216, 60, 26)
+			boost.TextWrapped = true
+			local info = words(card, "Status", detail, 18, 128, 216, 50, 21)
+			info.TextWrapped = true
 		else
 			local info = words(card, "Status", detail, 18, 110, 216, 66, 24)
 			info.TextWrapped, info.TextYAlignment = true, Enum.TextYAlignment.Top
