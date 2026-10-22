@@ -298,5 +298,9 @@ Back to [HOME](../HOME.md)
   ring chased bots through buildings and its dot trailed the ring, so 21-30% hits said nothing about the game. Fire
   only while the HUD's own "on target" test passes and keep clear air (DevAimLead), or better, record real flight and
   fire simulated shots at it offline with the real hit shapes (thousands of shots, no aiming noise).
+- **Esc belongs to Roblox first (2026-10-22):** every Esc opens or closes Roblox's own menu, and the press that closes
+  it never reaches `InputBegan`. So "Esc again goes back" needs a third press; give the screen a button for it.
+- **A shot with a target is an eraser (2026-10-22):** CombatService steers any shot that has `target` and raises
+  INCOMING! on it. Placed pellets (step 8's ambush) pass the target only for aiming, and need a lead to hit.
 - **Count the trigger's travel time once (2026-10-21):** the screen showing bots 0.19 s late looked like a gap against
   the server's 0.1 s rewind, but the rewind also adds twice the trigger message's age; end-to-end shots showed no lag.

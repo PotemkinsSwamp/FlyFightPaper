@@ -53,5 +53,12 @@ Decision: [try on, then Select](../decisions/2026-10-21-hangar-try-on-select.md)
 24. Step 8: no shots before you turned round (twice). Cause: they waited ~2-3 s after the note, and the "behind you"
     note came first, so you turned at once. **Done:** shots from 0.5 s after the note, from the Pal's side while it's out
     of view; the note names it only after a hit. Checked in Play: Health 120 to 70 in ~5 s while it sat behind.
+25. INCOMING! in step 8 again. Cause: the ambush's pellets were given the player as a target, and a shot with a target
+    steers and warns like an eraser (that steering was also why they hit). **Done:** only erasers keep a target; placed
+    pellets are led instead. Checked in Play: no warning, Health 120 to 60 in ~4 s.
+26. Esc in the Hangar Tour showed the Range instead of the Hangar. **Done:** the clipboard menu opens over the Hangar;
+    Keep flying goes back to it. Checked in Play.
+27. Should an eraser lock stay on after firing? Kept as is (it stays while the target stays in the circle; the next
+    eraser fires when reloaded): Claude's recommendation, Alan to confirm.
 
 Back to [playtests](README.md)

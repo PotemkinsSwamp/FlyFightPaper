@@ -28,11 +28,12 @@ function Menu.start()
  local render
  local function overlay(open)
   state.overlay=open
+  if not open then state.under=nil end -- (Roblox's own menu also opens on Esc: that mustn't drop the Hangar underneath)
   Root:SetAttribute("OverlayOpen",open);action:FireServer("overlay",open)
   if render then render() end
  end
  local function home()
-  state.screen="home";state.fromDesk=false;render()
+  state.screen,state.under="home",nil;state.fromDesk=false;render()
  end
  local board=Board.new(gui.Parent,{
   play=function()action:FireServer("join")end,
@@ -67,8 +68,11 @@ function Menu.start()
   end,
  })
  -- Paper screens drawn full-screen; anything not listed still uses the dark panel.
+ -- Esc over the Hangar (Alan 2026-10-22): the pause menu opens on top of it (state.under), and Resume or Esc again
+ -- goes back to the Hangar instead of the room.
+ local function back() state.screen,state.under=state.under,nil;render() end
  local pauseScreen=PauseScreen.new(gui.Parent,{
-  resume=function()overlay(false)end,
+  resume=function()if state.under then back() else overlay(false) end end,
   hangar=function()Menu.show("hangar")end,
   settings=function()state.screen="settings";render()end,
   tutorial=function()Tutorial.choose(function()overlay(false)end)end, -- the Training board
@@ -80,6 +84,7 @@ function Menu.start()
  -- Open a menu screen directly (the desk's Edit button, the menu buttons, Studio photo mode).
  function Menu.show(screen,fromDesk)
   if player:GetAttribute("InMatch") and not state.overlay then overlay(true) end
+  state.under=nil
   if screen=="hangar" then hangarScreen.open() end
   state.screen=screen;state.fromDesk=fromDesk==true;action:FireServer("profile");render()
  end
@@ -93,15 +98,21 @@ render=function()
   -- Which paper screen shows: waiting for a desk, round results, the in-match clipboard, or the chosen screen.
   local key=queued and "queued" or state.screen=="home" and (inMatch and "pause") or state.screen
   local current=open and paper[key]
-  for _,screen in pairs(paper) do if screen~=current then screen.frame.Visible=false end end
+  local under=key=="pause" and state.under and paper[state.under] -- stays as it was, under the pause menu
+  for _,screen in pairs(paper) do if screen~=current and screen~=under then screen.frame.Visible=false end end
   if current then current.update(player,state.profile,snap);current.frame.Visible=true end
  end
  -- Menu.pause: the Menu button's job, also for the Range's crosshair-as-cursor (RangeBoard).
  function Menu.pause() state.screen="home";overlay(true) end
+ local function escape()
+  if state.under and state.screen=="home" then back()
+  elseif state.overlay and state.screen=="hangar" then state.under,state.screen="hangar","home";render()
+  else state.screen="home";overlay(true) end
+ end
  openButton.Activated:Connect(Menu.pause)
  Input.InputBegan:Connect(function(input,processed)
   if input.KeyCode==Enum.KeyCode.Tab and not Input:GetFocusedTextBox() and player:GetAttribute("InMatch") then state.screen="home";overlay(not state.overlay)
-  elseif input.KeyCode==Enum.KeyCode.Escape and player:GetAttribute("InMatch") then state.screen="home";overlay(true) end
+  elseif input.KeyCode==Enum.KeyCode.Escape and player:GetAttribute("InMatch") then escape() end
  end)
  GuiService.MenuOpened:Connect(function()if player:GetAttribute("InMatch") then overlay(true) end end)
  Root:WaitForChild("RoundView").OnClientEvent:Connect(function(snap)

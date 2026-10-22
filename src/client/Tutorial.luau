@@ -284,10 +284,12 @@ function Tutorial.start(getPlane)
  local spotNames,pulseName=nil,nil
  -- A lesson that teaches a menu (lesson.screen: the Hangar Tour's HangarScreen) shows over it while it's open, and
  -- finds its buttons only on it, only if really on screen (the Hangar keeps its other page hidden, not removed).
+ -- (Not while the pause menu sits on top of it: Esc over the Hangar keeps the Hangar showing underneath.)
  local function menuLayer()
   local layer=Tutorial.lesson and Tutorial.lesson.screen and player.PlayerGui:FindFirstChild(Tutorial.lesson.screen)
   local cover=layer and layer:FindFirstChild("Cover")
-  return cover and cover.Visible and layer or nil
+  local pause=player.PlayerGui:FindFirstChild("PauseScreen")
+  return cover and cover.Visible and not (pause and pause.Cover.Visible) and layer or nil
  end
  local function findGui(name)
   local layer=menuLayer()

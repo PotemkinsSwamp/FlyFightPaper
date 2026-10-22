@@ -264,7 +264,12 @@ function Service:launch(p,mount,now,target,origin)
   local spread=math.rad(weapon.spread_deg)
   direction=(CFrame.lookAt(Vector3.zero,direction)*CFrame.Angles(self.random:NextNumber(-spread,spread),self.random:NextNumber(-spread,spread),0)).LookVector
  end
- if origin then position,direction=origin,(target.body.Position-origin).Unit
+ -- origin: a shot that starts there, aimed at target (palEraser, palAmbush); only an eraser chases it afterwards
+ -- (a pellet that "chased" raised INCOMING!: Alan 2026-10-22).
+ if origin then
+  -- Led: a straight pellet aimed at where the plane is now arrives a few studs behind it.
+  local at=target.body.Position
+  position,direction=origin,(at+target.body.AssemblyLinearVelocity*((at-origin).Magnitude/weapon.projectile_speed)-origin).Unit
  elseif self.flight.inServiceZone and self.flight:inServiceZone(p,position) then return false end
  p.spawnProtectionUntil=0
  self.serial+=1
@@ -276,7 +281,7 @@ function Service:launch(p,mount,now,target,origin)
  -- rewound for them: exactly the moment the pilot aimed (TrainingCourse.pathAt).
  local pathRewind=p.kind=="human" and aimData and math.min(Config.max_rewind_seconds,latency+now-aimData.at) or 0
  local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+weapon.lifetime,rewind=rewind,pathRewind=pathRewind,flown=0,
-  target=target,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
+  target=weapon.homing and target or nil,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
  -- Studio shot recorder: how close each of a player's shots came to the nearest enemy (see :finish).
  if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range} end
  self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1

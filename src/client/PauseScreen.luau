@@ -8,6 +8,7 @@ local PauseScreen = {}
 -- api = { resume(), hangar(), settings(), tutorial(), leave() }
 function PauseScreen.new(playerGui, api)
 	local cover, sheet = PaperUI.screen(playerGui, "PauseScreen", {})
+	cover.Parent.DisplayOrder = 11 -- over the Hangar it was opened on (MenuController: Esc keeps the Hangar underneath)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local strip = Art.mainmenu.strip
 	local board = image(sheet, "Clipboard", Art.ingame.clipboard, 610, 40, 700, 1000, 0)

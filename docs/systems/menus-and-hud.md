@@ -14,6 +14,9 @@ Level bar with next unlock on the main menu board's stats card, in the hangar un
 (seen 2026-10-17; partly filled bar seen on a test screen, the test account is at max level).
 
 ## Rules
+Esc over the Hangar opens the clipboard menu on top of it, with the Hangar still showing underneath; Keep flying (or Esc
+when Roblox's own menu isn't open) goes back to the Hangar, not the room (Alan 2026-10-22). Esc always toggles Roblox's
+system menu too, and the press that closes it never reaches the game.
 The nose dot turns red when the shots would land with no aim help (Alan 2026-10-19,
 [decision](../decisions/2026-10-19-less-aim-assist.md)): the target in range and the nose line passing within 2 studs of
 the orange ring's point. The gun assist (`combat.gun_assist_deg`, 3 degrees, lessons too; was 7) sends
