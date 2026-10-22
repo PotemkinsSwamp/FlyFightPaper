@@ -81,11 +81,12 @@ function Menu.start()
  local shopScreen=ShopScreen.new(gui.Parent,{buy=function(key)action:FireServer("mockProduct",key)end,back=function()home()end})
  local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})
  local paper={home=board,settings=settingsScreen,hangar=hangarScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen}
- -- Open a menu screen directly (the desk's Edit button, the menu buttons, Studio photo mode).
- function Menu.show(screen,fromDesk)
+ -- Open a menu screen directly (the desk's Customize button, the menu buttons, Studio photo mode).
+ -- page: which Hangar page to open on ("customize" = the binder).
+ function Menu.show(screen,fromDesk,page)
   if player:GetAttribute("InMatch") and not state.overlay then overlay(true) end
   state.under=nil
-  if screen=="hangar" then hangarScreen.open() end
+  if screen=="hangar" then hangarScreen.open(page) end
   state.screen=screen;state.fromDesk=fromDesk==true;action:FireServer("profile");render()
  end
 -- Rounds never stop (Alan 2026-10-17): the round end plays out in the room (RoundEnd), so no menu opens by itself.

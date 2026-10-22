@@ -11,8 +11,8 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 build, `BuildShelf`), the big photo, tape name label (click to rename), reference-style stat sheet (each row: label, five boxes, the real number; Weight "2/6"; Alan 2026-10-21) and Customize. In Customize a card click only tries the part on (crayon ring, "Trying it on"): the plane shows it and each number shows its change from what you have on now, in green or red; **Select** puts it on and it becomes what the next card is compared with; Cancel or clicking the equipped card stops trying (a part you don't own shows Buy instead of Select). Gear you own skips this: pick a spot number, click the gear, it goes on. A new name shows straight away while it saves. Booster cards say how much speed for how long. Gear comes off with Clear spot
 button; Customize is a binder (`HangarCustomize`) with index tabs (Body, Nose, Wings, Tail, Gear, Boost), the 3D plane
 on the left page, cards on the right, a page turn when switching tabs. Art uploaded 2026-10-21
-(`assets/ui/hangarshelf/`, `UIAssets.hangarShelf`). Not yet seen in Play. The desk's in-game menu keeps its old
-squares until its own quick-menu concept.
+(`assets/ui/hangarshelf/`, `UIAssets.hangarShelf`). Not yet seen in Play. The desk's quick menu has its own design
+([decision](../decisions/2026-10-22-desk-quick-menu.md)).
 
 Earlier (2026-10-18):
 Softer coloured-paper team colours in (checked in Play: every plane red 214,78,72 / blue 70,128,214). Paper

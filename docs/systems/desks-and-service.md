@@ -4,7 +4,12 @@
 Every pilot has a desk. You launch from it and can fly back to land: refill Lift for free, repair for free (each repair wears your maximum health down a little), pay 120 Paper for a full refold that keeps your streak, or take a free fresh plane that ends it. While parked you get up to 120 seconds of protection per life. The desk's hangar shows your five builds: pick one and
 the preview shows it; **Edit build** opens the full hangar on it; a full refold flies it.
 
-## Where it stands (2026-10-17)
+## Where it stands (2026-10-22)
+**New quick menu built, not yet played by Alan** ([decision](../decisions/2026-10-22-desk-quick-menu.md)): photo, name
+and a four-row stat sheet top left, the five builds as small photos down the left, service strips and Customize (opens
+the Hangar's binder) down the right, the note and LAUNCH! bottom middle; the match strip and kill feed stay up
+(`FlightHUD`'s MatchInfo layer). No new art: it reuses the Hangar and Range pieces.
+
 Works (connected since Oct 7). Landing guide ("Line up here") is in. Builds change only at the desk
 ([decision](../decisions/2026-10-17-builds-change-at-the-desk.md)): Edit button, picked-build preview, and a refold
 into the build you already fly is refused without charge.
@@ -74,7 +79,7 @@ A free fresh plane ends the life/streak and respawns normally. Streak has no esc
 |---|---|
 | `src/server/DeskService.luau` | Refill, repair, refold, fresh plane |
 | `src/shared/ServiceRules.luau` | Repair math, protection, landing ring and takeoff path |
-| `src/client/DeskHangar.luau` | The in-game hangar menu at your desk |
+| `src/client/DeskHangar.luau` | The desk quick menu (pieces round the screen edges) |
 | `src/client/DeskPieces.luau` | Landing rings and runway lights |
 
 ## Tuning numbers

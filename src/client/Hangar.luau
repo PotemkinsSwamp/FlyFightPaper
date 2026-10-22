@@ -45,6 +45,7 @@ local STAT_COLOURS = {
 	Health = Color3.fromRGB(230, 90, 90), Speed = Color3.fromRGB(80, 140, 230), Climb = Color3.fromRGB(90, 180, 90),
 	Swerve = Color3.fromRGB(90, 190, 200), Lift = Color3.fromRGB(245, 150, 60), Weight = Color3.fromRGB(175, 130, 220),
 }
+Hangar.STAT_COLOURS = STAT_COLOURS -- the desk's quick menu tints its rows the same
 
 -- api = { action = RoundAction remote, back(), flown() (after Save & fly), fly(loadout) (Studio only) }
 function Hangar.new(playerGui, api)
@@ -326,13 +327,15 @@ function Hangar.new(playerGui, api)
 	function self.draft() return state.draft end
 	-- Opening the hangar shows the shelf on the build you fly, unless you left changes unsaved: then it reopens
 	-- Customize on them. Opened in the Range it shows the Range's builds (switching lists drops the other list's draft).
-	function self.open()
+	-- page "customize" (the desk's Customize button) opens straight on the binder.
+	function self.open(page)
 		local range = inRange()
 		local selected = range and (player:GetAttribute("RangeSlot") or 1) or player:GetAttribute("SelectedPreset") or 1
 		local unsaved = range == state.range and state.unsaved
 		if range ~= state.range then state.builder = nil end
 		state.range = range
-		state.page, state.dropAsk, state.trying = unsaved and "customize" or "shelf", nil, nil
+		state.page, state.dropAsk, state.trying = (unsaved or page == "customize") and "customize" or "shelf", nil, nil
+		if page == "customize" and not unsaved then state.slot = "body" end
 		if not unsaved then
 			state.preset = selected
 			if state.builder and state.builds then state.builder:reset(state.builds[selected].loadout, selected) end

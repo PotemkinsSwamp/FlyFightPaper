@@ -1,8 +1,10 @@
--- In-game hangar menu, shown while your plane sits in its desk hangar. Layout B (plane left, service buttons right,
--- saved builds along the bottom) drawn with the main-menu Hangar's own art (Alan, 2026-10-11): the kraft folder, the
--- taped preview paper, construction-paper strips, crayon stat bars and numbered build squares.
--- Picking a build selects it and shows it on the preview; Full refold (or a fresh plane) flies it. Edit opens the
--- full Hangar on it: builds only change at the desk (Alan 2026-10-17).
+-- In-game desk quick menu, shown while your plane sits in its desk hangar (Alan's pick 2026-10-22: concept
+-- assets/references/ui-concepts/desk-quick-menu-b.png). Pieces pinned round the screen edges with the new Hangar's
+-- art, so the runway, the match strip (top middle) and the kill feed (top right) stay in view: top left the plane's
+-- photo, name tape and a short stat sheet; down the left your five builds as small photos; down the right the
+-- service strips and Customize; bottom middle the hangar note and LAUNCH!.
+-- Picking a build selects it and shows it on the photo; Full refold (or a fresh plane) flies it. Customize opens the
+-- full Hangar's binder on it: builds only change at the desk (Alan 2026-10-17).
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
@@ -11,129 +13,185 @@ local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog)
 local Aircraft = require(Root.Shared.Aircraft)
 local Rules = require(Root.Shared.ServiceRules)
 local Builder = require(Root.Shared.BuilderModel)
-local Art = require(Root.Shared.UIAssets).hangar
+local Assets = require(Root.Shared.UIAssets)
+local Art, Shelf = Assets.hangar, Assets.hangarShelf
+local Hangar = require(script.Parent.Hangar)
 local BuildStats = {}
-for _, entry in require(script.Parent.Hangar).STATS do BuildStats[entry[1]] = entry end
+for _, entry in Hangar.STATS do BuildStats[entry[1]] = entry end
 local PaperUI = require(script.Parent.PaperUI)
 local DeskHangar = {}
 
--- A camera framing a model in a ViewportFrame: from its left side, a little above and behind, so the nose points right.
--- room: camera distance as a share of "whole model just fits" (smaller = bigger plane).
+local SKY_BLUE = Color3.fromRGB(140, 185, 230)
+local TOPBAR = 64 -- screen pixels kept clear for Roblox's top bar and the Menu button
+
+-- A camera framing a model in a ViewportFrame like the Hangar's cubbies: from above and behind, nose away and a
+-- little to the side. room: camera distance as a share of "whole model just fits" (smaller = bigger plane).
 local function frame(view, model, room)
 	local camera = Instance.new("Camera")
 	camera.FieldOfView, camera.Parent, view.CurrentCamera = 40, view, camera
-	local cf, size = model:GetBoundingBox()
-	local reach = size.Magnitude * 0.5 / math.tan(math.rad(20)) * room
-	camera.CFrame = CFrame.lookAt(cf.Position + (cf.RightVector * -0.9 + cf.UpVector * 0.6 + cf.LookVector * -0.2).Unit * reach, cf.Position)
+	local box, size = model:GetBoundingBox()
+	local distance = math.max(size.X, size.Z) / 2 * 1.1 / math.sin(math.rad(20)) * room
+	camera.CFrame = CFrame.new(box.Position) * CFrame.Angles(0, 0.5, 0) * CFrame.Angles(-0.6, 0, 0) * CFrame.new(0, 0, distance)
 end
 
 local function viewport(parent, name, x, y, w, h)
 	local view = Instance.new("ViewportFrame")
 	view.Name, view.BackgroundTransparency = name, 1
 	view.Position, view.Size = UDim2.fromOffset(x, y), UDim2.fromOffset(w, h)
-	view.Ambient, view.LightDirection, view.Parent = Color3.fromRGB(220, 218, 210), Vector3.new(-1, -1, -1), parent
+	view.Ambient, view.LightColor, view.LightDirection = Color3.fromRGB(140, 140, 150), Color3.fromRGB(255, 250, 235), Vector3.new(-0.6, -1, -0.4)
+	view.Parent = parent
 	return view
+end
+
+-- A fresh copy of a build's 3D plane in a view (the old one goes).
+local function showBuild(view, loadout, room)
+	view:ClearAllChildren()
+	local world = Instance.new("WorldModel")
+	world.Parent = view
+	local model = Instance.new("Model")
+	model.Parent = world
+	if Aircraft.build(model, loadout, Catalog, true) then frame(view, model, room) end
 end
 
 -- api = { flight(action) = FlightAction, round = RoundAction remote }
 function DeskHangar.new(playerGui, api)
-	-- Just the folder over the live game (Alan: you are still in the match, the quick menu is only pulled up).
-	local cover, sheet = PaperUI.screen(playerGui, "DeskHangar", Art.folder, true)
-	cover.Parent.DisplayOrder = 5 -- under the Menu button (6) and the menus and overlays (10)
-	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
-	PaperUI.words(sheet, "Title", "Hangar", 60, 196, 285, 46, 42).TextXAlignment = Enum.TextXAlignment.Center
-
-	-- The plane on the taped preview paper (sky-tinted like the main Hangar so the white plane stands out), and beside
-	-- it, centred on it, the lined stats sheet: the main Hangar's stat strips and five crayon bar cells. Health, Lift and
-	-- Boost show what is left now; Speed, Climb and Swerve show the build (same ranges as the main Hangar).
-	image(sheet, "Preview", Art.preview, 60, 245, 750, 545).ImageColor3 = Color3.fromRGB(140, 185, 230)
-	local planeView = viewport(sheet, "Plane", 95, 290, 680, 450)
-	local heading = words(sheet, "PreviewHeading", "", 95, 258, 470, 40, 30)
-	-- Your level along the bottom of the preview paper (made after the paper so it draws on top).
-	local levelBar = require(script.Parent.LevelBar).new(sheet, 120, 698, 660, 24, true)
-	-- Edit: the full Hangar on the picked build. It wiggles until a new player has used it once (Alan 2026-10-17).
-	local edit = button(sheet, "Edit", Art.buttonGreen, "Edit build", 580, 250, 220, 80, 2, function()
-		Root:SetAttribute("HangarEdited", true)
-		require(script.Parent.MenuController).show("hangar", true)
-	end, 36)
-	if not Root:GetAttribute("HangarEdited") then
-		local wiggle = TweenService:Create(edit, TweenInfo.new(0.35, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), { Rotation = -3 })
-		wiggle:Play()
-		Root:GetAttributeChangedSignal("HangarEdited"):Once(function() wiggle:Cancel(); edit.Rotation = 2 end)
+	-- Just pieces over the live game (Alan: you are still in the match, the quick menu is only pulled up).
+	local layer = Instance.new("ScreenGui")
+	layer.Name, layer.IgnoreGuiInset, layer.ResetOnSpawn, layer.DisplayOrder = "DeskHangar", true, false, 5 -- under the Menu button (6)
+	layer.ZIndexBehavior, layer.Parent = Enum.ZIndexBehavior.Sibling, playerGui
+	local cover = Instance.new("Frame")
+	cover.Name, cover.Size, cover.BackgroundTransparency, cover.Visible, cover.Parent = "Cover", UDim2.fromScale(1, 1), 1, false, layer
+	-- Three groups pinned to the screen's edges, drawn in 1920x1080 sheet pixels and scaled to fit the screen.
+	local scales = {}
+	local function panel(name, anchor, w, h)
+		local group = Instance.new("Frame")
+		group.Name, group.AnchorPoint, group.BackgroundTransparency, group.Size, group.Parent = name, anchor, 1, UDim2.fromOffset(w, h), cover
+		local scale = Instance.new("UIScale")
+		scale.Parent = group
+		table.insert(scales, scale)
+		return group
 	end
-	image(sheet, "StatsSheet", Art.statsSheet, 845, 266, 360, 504, 1).ScaleType = Enum.ScaleType.Stretch
+	local left = panel("Left", Vector2.new(0, 0), 640, 1010)
+	local right = panel("Right", Vector2.new(1, 0), 400, 540)
+	local bottom = panel("Bottom", Vector2.new(0.5, 1), 640, 214)
+	local function fit()
+		local view = workspace.CurrentCamera.ViewportSize
+		local s = math.min(view.X / PaperUI.W, (view.Y - TOPBAR) / 1016)
+		for _, scale in scales do scale.Scale = s end
+		left.Position, bottom.Position = UDim2.fromOffset(16, TOPBAR), UDim2.new(0.5, 0, 1, -12)
+		-- The service strips start under the flight HUD's kill feed (FlightHUD: 10 px down, 4 slips, its own scale).
+		right.Position = UDim2.new(1, -16, 0, 10 + 250 * math.max(0.6, view.Y / 1080))
+	end
+	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
+	fit()
+	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
+
+	-- Top left: the plane's taped sky-blue photo with its name on masking tape, and beside it the short stat sheet.
+	local photo = image(left, "Photo", Art.preview, 0, 0, 300, 220, -2)
+	photo.ScaleType, photo.ImageColor3 = Enum.ScaleType.Stretch, SKY_BLUE
+	local planeView = viewport(left, "Plane", 24, 30, 252, 158)
+	local notYet = words(left, "NotFlyingYet", "", 24, 10, 252, 28, 24)
+	notYet.TextXAlignment, notYet.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(190, 35, 30)
+	image(left, "NameTape", Assets.ingame.tapeLabel, 20, 188, 260, 56).ScaleType = Enum.ScaleType.Stretch
+	local name = words(left, "BuildName", "", 40, 190, 220, 52, 32)
+	name.TextXAlignment, name.TextScaled = Enum.TextXAlignment.Center, true
+	local nameCap = Instance.new("UITextSizeConstraint")
+	nameCap.MaxTextSize, nameCap.Parent = 32, name
+
+	-- Health, Lift and Boost show what is left now; Speed shows the build (Alan 2026-10-22: these four, no turning
+	-- or weight here; Customize has the full sheet).
+	image(left, "StatsSheet", Shelf.statsPaper, 315, 0, 320, 250, 1).ScaleType = Enum.ScaleType.Stretch
+	local speed = BuildStats.Speed
+	local colours = Hangar.STAT_COLOURS
 	local rows = {
-		{ "Health", "red", "red", function(p) return p:GetAttribute("Health") or 0, p:GetAttribute("MaxHealth") or 1 end },
-		{ "Speed" }, { "Climb" }, { "Swerve" },
-		{ "Lift", "yellow", "orange", function(p) return p:GetAttribute("Lift") or 0, p:GetAttribute("LiftMax") or 90 end },
-		{ "Boost", "blue", "blue", function(p) return p:GetAttribute("Boost") or 0, p:GetAttribute("BoostMax") or 0 end },
+		{ "Health", colours.Health, function(p) return p:GetAttribute("Health") or 0, p:GetAttribute("MaxHealth") or 1 end },
+		{ "Speed", colours.Speed, function(p)
+			return speed[4]({ speed = p:GetAttribute("Speed") or speed[5] }) - speed[5], speed[6] - speed[5]
+		end, least = 1 }, -- like the Hangar, a build stat shows at least one box
+		{ "Lift", colours.Lift, function(p) return p:GetAttribute("Lift") or 0, p:GetAttribute("LiftMax") or 90 end },
+		{ "Boost", colours.Swerve, function(p) return p:GetAttribute("Boost") or 0, p:GetAttribute("BoostMax") or 0 end },
 	}
 	for i, row in rows do
-		local build = not row[4] and BuildStats[row[1]] -- Health and Lift stay live (what is left now)
-		if build then
-			local _, strip, bar, get, lo, hi = table.unpack(build)
-			row[2], row[3], row[5], row.least = strip, bar, build[8], 1 -- like the main Hangar, a build stat shows at least one cell
-			row[4] = function(p)
-				return get({ speed = p:GetAttribute("Speed") or lo, pitch = p:GetAttribute("PitchRate") or lo, yaw = p:GetAttribute("YawRate") or lo }) - lo, hi - lo
-			end
-		end
-		local y = 320 + (i - 1) * 65 -- strips glued inside the sheet, close together (Alan)
-		local strip = image(sheet, row[1] .. "Row", Art.statRow[row[2]], 893, y, 290, 70)
-		strip.ScaleType = Enum.ScaleType.Stretch
-		if row[5] then strip.ImageColor3 = row[5] end
-		words(sheet, row[1] .. "Name", row[1], 905, y + 5, 100, 60, 30)
+		local y = 42 + (i - 1) * 50
+		local strip = image(left, row[1] .. "Row", Shelf.statLabel, 333, y, 116, 42)
+		strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, row[2]
+		local label = words(left, row[1] .. "Name", row[1], 341, y, 100, 42, 28)
+		label.TextXAlignment = Enum.TextXAlignment.Center
 		row.cells = {}
-		for k = 1, 5 do row.cells[k] = image(sheet, row[1] .. "Bar" .. k, Art.bar.empty, 1010 + (k - 1) * 34, y + 19, 31, 32) end
+		for k = 1, 5 do
+			row.cells[k] = image(left, row[1] .. "Box" .. k, Shelf.statBoxEmpty, 456 + (k - 1) * 34, y + 6, 30, 30)
+			row.cells[k].ImageColor3 = row[2]
+		end
 	end
-	-- The note sits on a torn paper label (the flight HUD's) so its red/orange warnings read on the cardboard.
-	local label = image(sheet, "NotePaper", require(Root.Shared.UIAssets).ingame.tapeLabel, 90, 784, 1100, 58)
+
+	-- Bottom middle: the hangar note on masking tape, and LAUNCH! on the green taped paper.
+	local label = image(bottom, "NotePaper", Assets.ingame.tapeLabel, 0, 0, 640, 56)
 	label.ScaleType, label.SliceCenter, label.SliceScale = Enum.ScaleType.Slice, Rect.new(90, 30, 894, 104), 0.45
-	local note = words(sheet, "Note", "", 110, 792, 1060, 42, 28)
-	note.TextXAlignment = Enum.TextXAlignment.Center
+	local note = words(bottom, "Note", "", 30, 4, 580, 48, 26)
+	note.TextXAlignment, note.TextScaled = Enum.TextXAlignment.Center, true
+	local noteCap = Instance.new("UITextSizeConstraint")
+	noteCap.MaxTextSize, noteCap.Parent = 26, note
+	local launch = button(bottom, "Launch", Art.buttonGreen, "LAUNCH!", 40, 66, 560, 148, -1, function() api.flight("launch") end, 84)
 
-	-- Score card.
-	image(sheet, "ScoreCard", Art.card, 1240, 255, 620, 130).ScaleType = Enum.ScaleType.Stretch
-	local score = words(sheet, "Score", "", 1240, 268, 620, 52, 44)
-	local clock = words(sheet, "Clock", "", 1240, 318, 620, 52, 38)
-	score.TextXAlignment, clock.TextXAlignment, score.RichText = Enum.TextXAlignment.Center, Enum.TextXAlignment.Center, true
-
-	-- Service buttons on construction-paper strips, LAUNCH on the green taped paper (the main Hangar's Save build).
+	-- Down the right: the service strips (the Range's torn construction paper), then Customize (the Hangar's orange).
 	local service = function(kind) return function() api.round:FireServer("service", kind) end end
+	local REFOLD = "Full refold - 120 Paper"
 	local buttons = {}
 	for i, entry in {
-		{ "Refill", "Refill Lift", "blue", service("refill") },
-		{ "Repair", "Repair", "green", service("repair") },
-		{ "Fresh", "Fresh plane", "yellow", function() api.flight("fresh") end },
-		{ "Refold", "Full refold - 120 Paper", "red", function()
+		{ "Refill", "Refill Lift", Assets.range.stripBlue, service("refill") },
+		{ "Repair", "Repair", Assets.range.stripGreen, service("repair") },
+		{ "Fresh", "Fresh plane", Assets.range.stripYellow, function() api.flight("fresh") end },
+		{ "Refold", REFOLD, Assets.range.stripRed, function()
 			-- Spending Paper asks once: the first click turns the strip into a question for 3 seconds.
-			local label = buttons.Refold.Label
-			if label.Text ~= "Sure? Click again - 120 Paper" then
-				label.Text = "Sure? Click again - 120 Paper"
-				task.delay(3, function() label.Text = "Full refold - 120 Paper" end)
+			local text = buttons.Refold.Label
+			if text.Text ~= "Sure? Click again" then
+				text.Text = "Sure? Click again"
+				task.delay(3, function() text.Text = REFOLD end)
 				return
 			end
-			label.Text = "Full refold - 120 Paper"
+			text.Text = REFOLD
 			service("refold")()
 		end },
 	} do
-		buttons[entry[1]] = button(sheet, entry[1], Art.statRow[entry[3]], entry[2], 1240, 385 + (i - 1) * 112, 620, 130, 0, entry[4], entry[1] == "Refold" and 40 or 48)
+		buttons[entry[1]] = button(right, entry[1], entry[3], entry[2], 0, (i - 1) * 104, 400, 88, i % 2 == 0 and 1 or -1, entry[4], entry[1] == "Refold" and 32 or 44)
 	end
-	local launch = button(sheet, "Launch", Art.buttonGreen, "LAUNCH!", 1250, 840, 600, 160, -1, function() api.flight("launch") end, 80)
+	local customize = button(right, "Customize", Shelf.buttonOrange, "Customize", 0, 424, 400, 112, 1, function()
+		Root:SetAttribute("HangarEdited", true)
+		require(script.Parent.MenuController).show("hangar", true, "customize")
+	end, 52)
+	-- Customize wiggles until a new player has used it once (Alan 2026-10-17).
+	if not Root:GetAttribute("HangarEdited") then
+		local wiggle = TweenService:Create(customize, TweenInfo.new(0.35, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), { Rotation = -3 })
+		wiggle:Play()
+		Root:GetAttributeChangedSignal("HangarEdited"):Once(function() wiggle:Cancel(); customize.Rotation = 1 end)
+	end
 
-	-- Saved builds along the bottom: the main Hangar's numbered squares, each showing its real model.
-	local slots, preset, shownPresets, presets, picked = {}, Players.LocalPlayer:GetAttribute("SelectedPreset") or 1, nil, nil, -9
+	-- Down the left: your five builds as small taped photos with their names; the picked one has the yellow crayon outline.
+	local preset, presets, shownPresets, picked = Players.LocalPlayer:GetAttribute("SelectedPreset") or 1, nil, nil, -9
+	local outline = image(left, "Picked", Shelf.outline, 0, 0, 214, 150)
+	outline.ScaleType, outline.SliceCenter, outline.SliceScale, outline.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.4, 3
+	local slots = {}
 	for i = 1, 5 do
-		local slot = button(sheet, "Build" .. i, Art.slot, "", 70 + (i - 1) * 225, 840, 150, 150, 0, function()
+		local y = 272 + (i - 1) * 146
+		local mini = image(left, "BuildPhoto" .. i, Art.preview, 12, y, 190, 112, i % 2 == 0 and 2 or -2)
+		mini.ScaleType, mini.ImageColor3 = Enum.ScaleType.Stretch, SKY_BLUE
+		local view = viewport(left, "BuildPlane" .. i, 26, y + 14, 162, 80)
+		image(left, "BuildTape" .. i, Assets.ingame.tapeLabel, 17, y + 90, 180, 44).ScaleType = Enum.ScaleType.Stretch
+		local tag = words(left, "BuildName" .. i, "", 30, y + 92, 154, 40, 26)
+		tag.TextXAlignment, tag.TextScaled = Enum.TextXAlignment.Center, true
+		local cap = Instance.new("UITextSizeConstraint")
+		cap.MaxTextSize, cap.Parent = 26, tag
+		local hit = Instance.new("TextButton")
+		hit.Name, hit.Text, hit.BackgroundTransparency, hit.ZIndex = "Pick" .. i, "", 1, 4
+		hit.Position, hit.Size, hit.Parent = UDim2.fromOffset(4, y - 4), UDim2.fromOffset(206, 142), left
+		hit.Activated:Connect(function()
 			preset = i; api.round:FireServer("selectPreset", i); picked = os.clock()
-			for k, other in slots do other.Image = k == i and Art.slotSelected or Art.slot end
 		end)
-		words(slot, "Number", tostring(i), 14, 6, 40, 40, 36)
-		slots[i] = slot
+		slots[i] = { y = y, view = view, tag = tag, hit = hit }
 	end
-	PaperUI.popIn(cover, { buttons.Refill, buttons.Repair, buttons.Fresh, buttons.Refold, launch, edit })
+	PaperUI.popIn(cover, { buttons.Refill, buttons.Repair, buttons.Fresh, buttons.Refold, customize, launch })
 	Players.LocalPlayer:GetAttributeChangedSignal("SelectedPreset"):Connect(function()
 		preset = Players.LocalPlayer:GetAttribute("SelectedPreset") or 1
-		for k, other in slots do other.Image = k == preset and Art.slotSelected or Art.slot end
 	end)
 
 	local function showPresets(list)
@@ -142,34 +200,13 @@ function DeskHangar.new(playerGui, api)
 		if key == shownPresets then return end
 		shownPresets = key
 		for i, slot in slots do
-			slot.Image = i == preset and Art.slotSelected or Art.slot
-			local old = slot:FindFirstChild("Model")
-			if old then old:Destroy() end
-			local loadout = presets[i] and presets[i].loadout
-			if loadout then
-				local view = viewport(slot, "Model", 12, 30, 126, 110)
-				local world = Instance.new("WorldModel")
-				world.Parent = view
-				local model = Instance.new("Model")
-				model.Parent = world
-				if Aircraft.build(model, loadout, Catalog, true) then frame(view, model, 0.85) end
-			end
+			local build = presets[i]
+			slot.tag.Text = build and build.name or ("Build " .. i)
+			if build and build.loadout then showBuild(slot.view, build.loadout, 0.85) else slot.view:ClearAllChildren() end
 		end
 	end
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
 		if profile and profile.presets then showPresets(profile.presets) end
-		if profile and profile.xp then levelBar.set(profile.xp) end
-	end)
-	Root:WaitForChild("RoundView").OnClientEvent:Connect(function(snapshot)
-		local remaining = snapshot.endsAt and math.max(0, math.ceil(snapshot.endsAt - snapshot.serverTime)) or 0
-		clock.Text = string.format("%d:%02d left", math.floor(remaining / 60), remaining % 60)
-		-- The tutorial's own room has no match: no clock or mode on the desk card.
-		if Root:GetAttribute("TutorialRoom") then clock.Text, score.Text = "Training", "";return end
-		if snapshot.mode ~= "FFA" and snapshot.teams then
-			score.Text = string.format('<font color="#D22828">Red %.0f</font> - <font color="#2850D2">Blue %.0f</font>', snapshot.teams["team:1"], snapshot.teams["team:2"])
-		else
-			score.Text = snapshot.mode or ""
-		end
 	end)
 
 	-- The picked build when it isn't the one you fly: its model, and its stats read like a fresh plane's.
@@ -182,24 +219,19 @@ function DeskHangar.new(playerGui, api)
 		local utility = loadout.utility and Catalog:get(loadout.utility)
 		local boost = utility and utility.boost_seconds or 0
 		local values = { Health = stats.health, MaxHealth = stats.health, Lift = stats.lift, LiftMax = stats.lift, Speed = stats.speed,
-			PitchRate = stats.pitch, YawRate = stats.yaw, Boost = boost, BoostMax = boost }
+			Boost = boost, BoostMax = boost }
 		return loadout, { GetAttribute = function(_, key) return values[key] end }
 	end
 
 	-- The live plane: a copy of what your plane looks like now, rebuilt when its parts change.
 	local shownPlane
 	local function showPlane(plane)
-		local picked = pickedBuild(plane)
-		if picked then
-			local key = HttpService:JSONEncode(picked)
+		local loadout = pickedBuild(plane)
+		if loadout then
+			local key = HttpService:JSONEncode(loadout)
 			if shownPlane == key then return end
 			shownPlane = key
-			planeView:ClearAllChildren()
-			local world = Instance.new("WorldModel")
-			world.Parent = planeView
-			local model = Instance.new("Model")
-			model.Parent = world
-			if Aircraft.build(model, picked, Catalog, true) then frame(planeView, model, 0.62) end
+			showBuild(planeView, loadout, 0.75)
 			return
 		end
 		local appearance = plane:FindFirstChild("Appearance")
@@ -219,7 +251,7 @@ function DeskHangar.new(playerGui, api)
 				copy.Anchored, copy.CFrame, copy.Parent = true, body.CFrame:ToObjectSpace(part.CFrame), model
 			end
 		end
-		frame(planeView, model, 0.62)
+		frame(planeView, model, 0.75)
 	end
 
 	local self = {}
@@ -229,24 +261,27 @@ function DeskHangar.new(playerGui, api)
 		cover.Visible = visible
 		if not visible then shownPlane = nil; return end
 		showPlane(plane)
-		local _, pickedStats = pickedBuild(plane)
-		heading.Text = pickedStats and string.format("Build %d (not flying yet)", preset) or "Flying now"
+		local loadout, pickedStats = pickedBuild(plane)
+		local build = presets and presets[preset]
+		name.Text = build and build.name or ""
+		notYet.Text = loadout and "Not flying yet" or ""
+		outline.Position = UDim2.fromOffset(107, slots[preset] and slots[preset].y + 58 or -999)
 		for _, row in rows do
-			local value, max = row[4](pickedStats or plane)
+			local value, max = row[3](pickedStats or plane)
 			local cells = math.max(row.least or 0, max > 0 and math.ceil(math.clamp(value / max, 0, 1) * 5) or 0)
-			for k = 1, 5 do row.cells[k].Image = k <= cells and Art.bar[row[3]] or Art.bar.empty end
+			for k = 1, 5 do row.cells[k].Image = k <= cells and Shelf.statBox or Shelf.statBoxEmpty end
 		end
 		local remaining = plane:GetAttribute("ProtectionRemaining") or 120
 		local repair = Rules.repair(plane:GetAttribute("OriginalHealth"), plane:GetAttribute("MaxHealth"), plane:GetAttribute("Health"))
 		local message = plane:GetAttribute("Message")
 		if message ~= lastMessage then lastMessage, messageAt = message, os.clock() end
 		note.Text = (plane:GetAttribute("ServiceBusy") or os.clock() - messageAt < 4) and message and message ~= "" and message
-			or os.clock() - picked < 4 and string.format("Build %d picked: Full refold flies it, Edit changes its parts.", preset)
-			or remaining <= 0 and "Hangar safety used up: it comes back after 2 minutes out of the hangar, or with a kill."
+			or os.clock() - picked < 4 and string.format("%s picked: Full refold flies it, Customize changes it.", build and build.name or "Build")
+			or remaining <= 0 and "Hangar safety used up: back after 2 minutes out, or with a kill."
 			or string.format("Safe in the hangar: %.0fs. Repair leaves %.0f max health. A fresh plane ends your streak.", remaining, repair and repair.lifeMaxHealth or 0)
 		note.TextColor3 = remaining <= 10 and Color3.fromRGB(200, 40, 30) or remaining <= 30 and Color3.fromRGB(200, 110, 20) or PaperUI.INK
 	end
-	self.sheet = sheet
+	self.sheet = cover
 	return self
 end
 

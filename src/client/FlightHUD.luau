@@ -298,7 +298,12 @@ function HUD.start(getPlane, action)
 	end)
 	-- In the hangar: the crayon hangar menu (service, builds, LAUNCH). Studio's dev picker rides on its sheet.
 	local desk = require(script.Parent.DeskHangar).new(gui.Parent, { flight = action, round = game.ReplicatedStorage.FlyFightPaper.RoundAction })
-	picker.Position, picker.Parent = UDim2.fromOffset(520, 165), desk.sheet
+	picker.Position, picker.Parent = UDim2.new(0.5, -440, 0.6, 0), desk.sheet
+	-- The match strip and the kill feed stay up at the desk too (Alan 2026-10-22: the quick menu leaves them in
+	-- view), so they live on their own layer that hides only with the rest of the game's HUD.
+	local matchInfo = Instance.new("ScreenGui")
+	matchInfo.Name, matchInfo.ResetOnSpawn, matchInfo.IgnoreGuiInset, matchInfo.Parent = "MatchInfo", false, true, gui.Parent
+	top.Parent, feed.Parent = matchInfo, matchInfo
 	Input.InputBegan:Connect(function(input, processed)
 		if processed then return end
 		if input.KeyCode == Enum.KeyCode.Return then action("launch")
@@ -613,6 +618,9 @@ function HUD.start(getPlane, action)
 		desk.update(plane,inHangar)
 		picker.Visible=inHangar and RunService:IsStudio()
 		gui.Enabled=shown and not inHangar
+		matchInfo.Enabled=shown
+		-- At the desk only the match strip shows up top: the desk's own note carries the news.
+		if inHangar then status.Visible, threat.Visible, lockInfo.Visible = false, false, false end
 		if not gui.Enabled then return end
 		-- Outline other planes so they read at range: orange for enemies, blue for teammates.
 		for _, other in ipairs(planes:GetChildren()) do

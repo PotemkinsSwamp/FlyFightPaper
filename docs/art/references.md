@@ -6,7 +6,7 @@ any argument about style.
 | Picture | What it is | Status |
 |---|---|---|
 | `classroom-city-approved-v1.png` | The whole look: warm, chunky toy classroom city | **Approved art target** ([decision](../decisions/2026-10-01-art-target-reference-image.md)) |
-| `ui-concepts/` | Main menu, hangar, desk hangar, HUD, results, settings | **Approved** menu and HUD looks (desk-hangar "layout B", HUD "concept 1") |
+| `ui-concepts/` | Main menu, hangar, desk hangar, HUD, results, settings | **Approved** menu and HUD looks (desk quick menu `desk-quick-menu-b`, HUD "concept 1") |
 | `mode-concepts/` | Chalk eraser, HVAC ducts and vents, paper targets, zone looks, plus in-game shots | Escape concepts approved 2026-10-14; zone look = confetti |
 | `bell-tower/` | Three bell-tower designs | **Design A picked** |
 | `world-pieces/` | Fan wind, desk runway, power-up, rings | Picked: paper-chain rings, lightning-bolt power-up, runway |
