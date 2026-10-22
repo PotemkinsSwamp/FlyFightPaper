@@ -256,7 +256,8 @@ local ERASER_STEPS={
    end},
 }
 -- One lesson after Flight School (Alan 2026-10-19: "flight school, then combat school").
-Lessons.combat={name="Combat School",doneTitle="You're ready!",steps={launch()}}
+-- Then the Hangar Tour (Alan 2026-10-22: it is part of the same series), offered beside "Go to a match".
+Lessons.combat={name="Combat School",doneTitle="You're ready!",next="hangar",steps={launch()}}
 for _,list in {AIM_STEPS,FIGHT_STEPS,ERASER_STEPS} do for _,step in list do table.insert(Lessons.combat.steps,step) end end
 -- The Hangar Range (Alan 2026-10-19: its name; not a lesson: it never ends; Menu > Leave goes back). `room`: the engine
 -- shows no note and allows no skipping (Tutorial.luau); its one step only gets the plane onto the stage.

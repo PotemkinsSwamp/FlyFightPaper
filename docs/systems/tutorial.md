@@ -46,7 +46,7 @@ button, which the crosshair can click too, is above them), and the Range Menu, w
 the plane in the air) and Difficulty plus Edit in Hangar (saving there swaps the plane). The loadouts are the Range's own
 five builds (saved as `rangePresets`, any part allowed, never used in matches; you start on the one you last flew
 there). The Hangar opened in the Range edits them ("Range only" on parts you don't own); built 2026-10-19, not yet played.
-Flight School's end card has "Next: Combat School". Flight School: the step engine
+Flight School's end card has "Next: Combat School", and Combat School's "Next: Hangar Tour" (Alan 2026-10-22). Flight School: the step engine
 (goal note with key picture, tick and ding, hint after 10 s, Skip: tap K = step, hold K = lesson) and its 7 steps are
 written; lessons fly the fixed training plane (pellets, eraser, booster); the news note and kill feed are hidden during
 lessons (Alan). In Studio the Training button turns the room into the tutorial world (match paused, bots gone) since
