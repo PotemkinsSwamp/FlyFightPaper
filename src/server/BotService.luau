@@ -14,28 +14,28 @@ local Course=require(Root.Shared.TrainingCourse)
 local Service={};Service.__index=Service
 -- Combat Training's Pals (p.pal, set by RoundRuntime:lesson): they only fight while their player has been flying
 -- for 2 seconds (Alan: smooth after a crash), so a player back from a crash isn't jumped on takeoff.
--- Pals are easy prey (Alan 2026-10-19: a Pal that turned back or chased you only made you both fly in circles):
--- they wander slowly in gentle turns, picking a clear spot ahead every few seconds, and never U-turn unless boxed in.
--- With its player within 600 studs it flies straight away from them instead (Alan 2026-10-19: get away "in a straight
--- line", dumber than zig-zagging), only turning off that line when the way is blocked.
-local function wander(self,b,position,now,from)
+-- Pals are easy prey (Alan 2026-10-19: a Pal that turned back or chased you only made you both fly in circles;
+-- 2026-10-21: still circled, "it needs to be pretty dumb when it's running"): they keep their own heading, with a
+-- gentle turn every few seconds, and only turn further when the way is blocked. Never away from you (that turned them
+-- every time you turned, so you both circled).
+local function wander(self,b,position,now)
  if b.wanderGoal and now<b.wanderUntil and (position-b.wanderGoal).Magnitude>80 then return b.wanderGoal end
- local heading=(from and (position-from).Magnitude<600 and position-from or b.heading)*Vector3.new(1,0,1)
+ local heading=b.heading*Vector3.new(1,0,1)
  heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
  local climb=math.clamp((Course.POINTS[2].Y-position.Y)*.3,-40,40) -- drift back toward the course's height
- local first=from and 0 or b.random:NextNumber(-30,30)
+ local first=b.random:NextNumber(-20,20)
  for _,turn in {first,first+40,first-40,90,-90,135,-135,180} do
   local goal=position+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*250+Vector3.yAxis*climb
-  if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+2.5;return goal end
+  if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+3;return goal end
  end
- b.wanderGoal,b.wanderUntil=Course.POINTS[2],now+2.5;return b.wanderGoal
+ b.wanderGoal,b.wanderUntil=Course.POINTS[2],now+3;return b.wanderGoal
 end
 -- Pals appear in the air, never out of a hangar (Alan 2026-10-19: "it's like the enemy's coming out of nowhere"):
 -- 400-700 studs ahead of their player (within 40 degrees of the nose; Alan: not off to the side), in clear air inside
 -- the room, hidden behind a building if one of those spots is, facing away so the player chases it. Only if nothing
--- ahead is clear: further round, then the course's middle point. The pellet Pal (step 8) instead comes in from behind
--- you, off to one side where you don't see it, 400-500 studs back (in its guns' reach) with a clear shot, facing you (Alan 2026-10-19: placed
--- ahead, you just chased each other and it never landed a shot; you should have to turn round to find it).
+-- ahead is clear: further round, then the course's middle point. The pellet Pal (step 8) instead starts behind you,
+-- off to one side where you don't see it, 400-500 studs back in clear sight, flying away from you: you turn round and
+-- see it running (Alan 2026-10-19/21; its "shots" are palAmbush's).
 function Service:placePal(p)
  local victim=self.flight.byId[p.foeOf]
  if not victim or p.model:GetAttribute("State")~="DESK" then return end
@@ -63,7 +63,6 @@ function Service:placePal(p)
  ball:Destroy()
  local at=hidden or open or Course.POINTS[2]
  local away=(at-from)*Vector3.new(1,0,1);away=away.Magnitude>1 and away.Unit or heading
- if attack then away=-away end
  p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
  -- Half a normal plane's Health in lessons (Alan 2026-10-19: full Health made them frustrating).
  p.model:SetAttribute("MaxHealth",p.stats.health/2);p.model:SetAttribute("Health",p.stats.health/2)
@@ -94,6 +93,18 @@ function Service:palReady(p,now)
  -- second of a step, before its freeze has reached the server: unfreezing restarts the 2 seconds (fly sets launchAt).
  return victim and victim.model:GetAttribute("State")=="FLYING" and not victim.held and now-(victim.launchAt or 0)>2
   and now-(p.pal.at or 0)>1 and victim or nil
+end
+-- Step 8's ambush (Alan 2026-10-21): pellets appear just behind you, out of sight, and always hit, as if the Pal far
+-- behind had fired them, in bursts until your Health is half; then it only runs. None while it's in front of you,
+-- where you'd see they don't come from it.
+function Service:palAmbush(p,victim,now)
+ if victim.model:GetAttribute("Health")<=victim.stats.health*.5 then p.pal.mode="circle";return end
+ local frame=victim.body.CFrame
+ if now%1.6>.8 or now<(p.pal.nextShotAt or 0) or (p.body.Position-frame.Position):Dot(frame.LookVector)>0 then return end
+ local mount;for _,m in ipairs(self.combat.info[p.id].mounts) do if not m.weapon.homing then mount=m end end
+ if not mount then return end
+ p.pal.nextShotAt=now+mount.weapon.shot_interval
+ self.combat:launch(p,mount,now,victim,frame.Position-frame.LookVector*70+frame.RightVector*math.random(-4,4)+frame.UpVector*2)
 end
 local MIXED_SKILLS={"rookie","regular","experienced"}
 local function aimError(direction,b,now)
@@ -437,27 +448,12 @@ function Service:decide(p,b,now)
    if self.flight.eraserDuel then for _,other in pairs(self.flight.pilots) do if other.kind=="human" and self.combat:targetable(other,now) then b.goal=other.body.Position end end end
   end
  end
- -- A Pal ignores the rest of the brain: it chases its player only in a shooting step and only when they are ready;
- -- otherwise (and once it has stopped shooting) it flies the course loop so it is easy to find and shoot.
+ -- A Pal ignores the rest of the brain: it only runs, so it is easy to find and shoot.
  if p.pal then
   b.move=nil -- no stunts: the brain above sometimes starts an orbit or a break turn (Alan: "too many maneuvers")
-  local victim=self:palReady(p,now)
-  -- A pellet Pal hunts you without a break until your Health is down to half (Alan 2026-10-19: "whittle your health
-  -- down" so you learn it; its hits can't fold you), then turns "circle" and runs; an eraser Pal's erasers come
-  -- from ahead on their own (palEraser).
-  local player=self.flight.byId[p.foeOf]
-  if victim and p.pal.mode=="pellet" then
-   b.target=victim;b.mode="chase";b.goal=victim.body.Position;b.lastSeen=now;b.lastKnown=victim.body.Position;b.lastVelocity=victim.body.AssemblyLinearVelocity
-  elseif p.pal.overtake and player then
-   -- Health whittled down: pull round in front of you, then run like step 7's (Alan 2026-10-19).
-   local ahead=(position-player.body.Position):Dot(player.body.CFrame.LookVector)
-   if ahead>150 then p.pal.overtake=nil end
-   b.target=nil;b.mode="patrol";b.goal=player.body.Position+player.body.CFrame.LookVector*350
-  elseif p.pal.mode=="pellet" and player then
-   b.target=nil;b.mode="patrol";b.goal=player.body.Position -- not shooting yet, but already on its way to you
-  else
-   b.target=nil;b.mode="patrol";b.goal=wander(self,b,position,now,player and player.body.Position)
-  end
+  -- Every Pal just runs (wander). Step 8's "shots" come from palAmbush (steer); an eraser Pal's erasers come from
+  -- ahead on their own (palEraser). Its hits can't fold you.
+  b.target=nil;b.mode="patrol";b.goal=wander(self,b,position,now)
  end
  -- Studio spectator camera (F10) shows each bot's intent.
  if Run:IsStudio() then p.model:SetAttribute("BotIntent",b.mode..(b.target and " -> "..b.target.name or "")) end
@@ -584,9 +580,12 @@ function Service:steer(p,b,dt,now)
  local bleed=FlightRules.turnSpeedFactor(b.heading,desired,dt,turn)
  b.heading=desired
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost
- -- A Pal flies at `pal.speed` times its plane's own speed, not a bot's slower share (RoundRuntime:lesson).
- -- A hunting pellet Pal is 25% faster, or a player flying away at the same speed is never caught (measured).
- local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*((p.pal.mode=="pellet" or p.pal.overtake) and 1.25 or 1) or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
+ -- A Pal flies at `pal.speed` times its plane's own speed, not a bot's slower share (RoundRuntime:lesson), and
+ -- slower while you're far from it (Alan 2026-10-21: chasing one took a minute): you close in fast, then nearly
+ -- match it so you don't overshoot.
+ local foe=p.pal and self.flight.byId[p.foeOf]
+ local catchUp=foe and (foe.body.Position-position).Magnitude>250 and .7 or .95
+ local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*catchUp or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
  if p.model:GetAttribute("Boosting") then lift=math.max(lift,1) end -- boost flies along the nose even with no Lift
  local speed=cruise*bleed
  b.glide=lift<=0 and FlightRules.glide(b.glide or b.momentum,desired,cruise,dt) or nil
@@ -594,14 +593,11 @@ function Service:steer(p,b,dt,now)
  local velocity=FlightRules.velocity(desired,speed*(b.momentum or cruise)/cruise,lift,p.model:GetAttribute("Updraft") or 0,b.glide,cruise)
  if now<(p.model:GetAttribute("DeflectUntil") or 0) then local normal=p.model:GetAttribute("CollisionNormal") or Vector3.zero;velocity-=normal*math.min(0,velocity:Dot(normal));velocity+=normal*Config.flight.graze_slide_push_studs_s end
  p.drive.VectorVelocity=p.drive.VectorVelocity:Lerp(velocity,1-math.exp(-Config.flight.velocity_response*dt))
- -- Step 8's hunting Pal shoots like a veteran and better: no aim wobble, and its guns meet at the target's range
- -- (Alan 2026-10-19: "it needs to hit its shots dead on"; at the bots' fixed 150 studs they crossed and missed).
- local hunting=p.pal and p.pal.mode=="pellet"
- if lead and (lead-position).Magnitude>.1 then self.combat.info[p.id].aim=hunting and (lead-position).Unit or aimError((lead-position).Unit,b,now) end
- self.combat.info[p.id].range=hunting and lead and (lead-position).Magnitude or nil
+ if lead and (lead-position).Magnitude>.1 then self.combat.info[p.id].aim=aimError((lead-position).Unit,b,now) end
  -- Triggers are hand work too: checked every frame against the live lead, not held between decisions.
  local aim=self.combat.info[p.id].aim or p.body.CFrame.LookVector
- local aligned=lead~=nil and p.body.CFrame.LookVector:Dot((lead-position).Unit)>math.cos(math.rad(12)) and (b.target.body.Position-position).Magnitude<(hunting and 650 or 450)
+ local aligned=lead~=nil and p.body.CFrame.LookVector:Dot((lead-position).Unit)>math.cos(math.rad(12)) and (b.target.body.Position-position).Magnitude<450
+ if p.pal and p.pal.mode=="pellet" then local victim=self:palReady(p,now);if victim then self:palAmbush(p,victim,now) end end
  for group=1,2 do
   local semi,eraser=false,false
   for _,mount in ipairs(self.combat.info[p.id].mounts) do if mount.group==group then
@@ -612,10 +608,9 @@ function Service:steer(p,b,dt,now)
   -- Bots are smart with erasers: they wait for a full lock. Guns and pencils need alignment.
   local fire=eraser and (p.model:GetAttribute("LockProgress") or 0)>=1 or not eraser and aligned
   if p.pal then
-   -- Pellets until their player is down to half Health, then never again; one slow eraser at a time.
+   -- A Pal's own guns never fire (step 8's shots are palAmbush's); one slow eraser at a time.
    local victim=self:palReady(p,now)
-   if p.pal.mode=="pellet" and victim and victim.model:GetAttribute("Health")<=victim.stats.health*.5 then p.pal.mode="circle";p.pal.overtake=true end
-   fire=fire and victim~=nil and not eraser and p.pal.mode=="pellet"
+   fire=false
    if eraser and victim and p.pal.mode=="eraser" then self:palEraser(p,victim,now) end
   end
   self.combat:trigger(p,group,fire,aim)
@@ -634,14 +629,14 @@ function Service:lead(p,b,now)
  end
  if #samples==0 then return nil end
  -- Keep a quarter second more than the hand-eye delay, so the bot also sees how the target is turning.
- local lag=p.pal and p.pal.mode=="pellet" and 0 or b.lag -- the hunting Pal sees you as you are
+ local lag=b.lag
  while #samples>1 and samples[2].at<=now-lag-.25 do table.remove(samples,1) end
  local seen,old=samples[1],samples[1]
  for _,sample in ipairs(samples) do if sample.at<=now-lag then seen=sample else break end end
  b.view=seen
  local turning=seen.at-old.at>.05 and (seen.velocity-old.velocity)/(seen.at-old.at) or Vector3.zero
  -- Skill sets lead accuracy: experts follow the whole turn, rookies lead short and shoot behind.
- local accuracy=p.pal and p.pal.mode=="pellet" and 1 or b.profile.lead_accuracy
+ local accuracy=b.profile.lead_accuracy
  local origin,weapon,age=p.body.Position,self:weaponFor(p),now-seen.at
  local predicted=seen.position
  for _=1,3 do

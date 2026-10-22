@@ -35,5 +35,11 @@ Decision: [try on, then Select](../decisions/2026-10-21-hangar-try-on-select.md)
 15. Step 8's shooting Pal appeared ahead again. Likely cause: step 7's Pal came back (4 s) ahead of you before step 8
     began, and step 8 left a flying Pal where it was. **Done:** step 8 always places it afresh behind you, and the note
     says "An enemy is behind you, shooting!" while it is there.
+16. While a note froze you, targets and their lead rings kept moving. **Done:** a target's sweep clock stops while held.
+17. "Are all erasers slowed?" No: only the enemy's (80%, slower after each hit). Yours looked dodged because the Pal
+    turned away from you every few seconds. **Done:** Pals keep their own heading (below).
+18. Step 8 must always hit you from behind, then the Pal must be easy to kill (it circled you, a minute to kill).
+    **Done:** fake shots from just behind you until half Health; every Pal runs nearly straight, 70% speed while you're
+    far, 95% near.
 
 Back to [playtests](README.md)

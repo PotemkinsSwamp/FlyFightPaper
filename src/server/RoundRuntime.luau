@@ -245,9 +245,12 @@ end
 -- What a lesson step asks the server for (docs/systems/tutorial.md), all at once or a piece at a time:
 -- {freeze=true/false (hold the lesson still while its note is read), slow=true/false (aiming's slow motion), gentle=true/false (bounce off walls), repair=true (full Health), eraser=true (swap in the training plane with its eraser), drill=name in TrainingCourse.DRILLS or false
 -- (practice target planes), pal=mode or false (Combat Training's one enemy: "circle" flies the course and never
--- shoots, "pellet" shoots until you're at half Health, "eraser" fires slow erasers until one misses)}.
+-- shoots, "pellet" starts behind you and its shots hit you from behind until you're at half Health (BotService:palAmbush), "eraser" fires slow erasers until one misses)}.
 -- Targets and Pals fight only this player (CombatService:enemy) and can never fold them (CombatService:hit).
 local PAL_MODES={circle=true,pellet=true,eraser=true}
+-- A practice target's whole path, so the lead ring can follow the real curve rather than guess from its turn
+-- (FlightHUD); heldAt = frozen at that moment (TrainingCourse.pathAt).
+local function publishDrill(d) d.model:SetAttribute("DrillPath",game:GetService("HttpService"):JSONEncode(d.drill.path)) end
 function Runtime:lesson(player,cmd)
  local p=self.flight.pilots[player]
  if type(cmd)~="table" or not p or not p.practice or not self:tutorialRoom() then return end
@@ -258,7 +261,14 @@ function Runtime:lesson(player,cmd)
  if type(cmd.gentle)=="boolean" then p.gentle=cmd.gentle;p.model:SetAttribute("Gentle",cmd.gentle or nil) end
  -- Read, then act (Alan 2026-10-19): the player's plane, targets and Pal hold still while the note is read.
  if type(cmd.freeze)=="boolean" then
-  for _,q in pairs(self.flight.pilots) do if q==p or q.foeOf==p.id then self.flight:freeze(q,cmd.freeze) end end
+  local now=workspace:GetServerTimeNow()
+  for _,q in pairs(self.flight.pilots) do if q==p or q.foeOf==p.id then
+   self.flight:freeze(q,cmd.freeze)
+   -- A target's sweep runs on the clock: stop that clock while held, so it and its lead ring stay put (Alan 2026-10-21).
+   local d=q.drill
+   if d and cmd.freeze and not d.path.heldAt then d.path.heldAt=now;publishDrill(q)
+   elseif d and not cmd.freeze and d.path.heldAt then d.t0+=now-d.path.heldAt;d.path.t0,d.path.heldAt=d.t0,nil;publishDrill(q) end
+  end end
  end
  if cmd.drill==false or Course.DRILLS[cmd.drill] then
   for _,other in pairs(table.clone(self.flight.pilots)) do if other.drill and other.foeOf==p.id then self.flight:remove(other,"vacancy") end end
@@ -328,10 +338,9 @@ function Runtime:addDrill(player,p,spec,i,center,side)
  if not d then return nil end
  self.bots.brains[d.id]=nil -- no brain: FlightService flies it on its spot
  d.foeOf=p.id;d.lessonPlayer=player;d.drill={spec=spec,t0=workspace:GetServerTimeNow(),center=center,face=p.body.Position,side=side}
- -- Its whole path, so the lead ring can follow the real curve rather than guess from its turn (FlightHUD).
  local function v(x) return {x.X,x.Y,x.Z} end
- d.model:SetAttribute("DrillPath",game:GetService("HttpService"):JSONEncode({t0=d.drill.t0,center=v(center),face=v(d.drill.face),side=v(side),
-  speed=spec.speed,span=spec.span,depth=spec.depth,bob=spec.bob,phase=spec.phase,weave=spec.weave}))
+ d.drill.path={t0=d.drill.t0,center=v(center),face=v(d.drill.face),side=v(side),speed=spec.speed,span=spec.span,depth=spec.depth,bob=spec.bob,phase=spec.phase,weave=spec.weave}
+ publishDrill(d)
  d.model:SetAttribute("Health",spec.health);d.model:SetAttribute("MaxHealth",spec.health);d.model:SetAttribute("DrillOf",player.UserId)
  d.hasLaunched=true;d.body.CFrame=Course.pose(spec,center,0,p.body.Position,side);self.flight:fly(d)
  return d

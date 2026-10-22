@@ -85,13 +85,13 @@ function Course.pathOf(model)
  if not cached or cached.json~=json then
   local d=game:GetService("HttpService"):JSONDecode(json)
   local function v(a) return Vector3.new(a[1],a[2],a[3]) end
-  cached={json=json,t0=d.t0,center=v(d.center),face=v(d.face),side=v(d.side),spec=d};paths[model]=cached
+  cached={json=json,t0=d.t0,heldAt=d.heldAt,center=v(d.center),face=v(d.face),side=v(d.side),spec=d};paths[model]=cached
  end
  return cached
 end
 -- Where it is at server-clock `time`, and its velocity. Clients draw it at their synced server clock's now, and the
 -- server judges a shot at the moment its trigger message was sent (CombatService `pathRewind`), so both agree.
-function Course.pathAt(path,time) return Course.pose(path.spec,path.center,time-path.t0,path.face,path.side) end
+function Course.pathAt(path,time) return Course.pose(path.spec,path.center,math.min(time,path.heldAt or math.huge)-path.t0,path.face,path.side) end
 -- The points a target passes through, to check its whole sweep is in clear air.
 function Course.sweep(drill,center,side)
  if not drill.speed then return {center} end

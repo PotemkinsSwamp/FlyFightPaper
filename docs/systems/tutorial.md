@@ -81,12 +81,10 @@ against the room's exact shapes; the course points are the fallback), held still
 (`src/shared/TrainingCourse.luau`), so every aim help works on them as in a match. Part 2, fighting: one "Paper Pal"
 at a time, at full speed again, appearing in the air 400-700 studs ahead (within 40 degrees of the nose, hidden behind
 a building when it can be; never out of a hangar or off to the side: Alan 2026-10-19, "coming out of nowhere";
-BotService:placePal), facing away, exactly your speed (Alan 2026-10-19: slower ones are harder, you overshoot and circle them), turning at 80%, flying straight away from you while you're within 600 studs,
-turning only when blocked, never a stunt (Alan 2026-10-19: noob-level, "in a straight line", so you feel the chase): one that never shoots, one that comes in from behind you, off to one side, 400-500 studs back with a clear shot (Alan: ahead, you
-just chased each other; always placed afresh when the step starts or restarts, and the note says "An enemy is behind you" while it is; Alan 2026-10-21: it kept appearing ahead), heads straight for you and hunts you without a break (25% faster
-while hunting, or a player flying away is never caught: measured in Play), shooting dead on (no aim wobble or delay,
-full lead, its guns meeting at your range: Alan 2026-10-19, "veteran level" until then), until your Health is
-down to half (its hits can't fold you; Alan: "whittle your health down"), then pulls round in front of you and runs like step 7's. Neither carries an eraser. Part 3, the eraser:
+BotService:placePal), facing away, your speed when you're near and 70% while you're over 250 studs off (Alan 2026-10-21: chasing one took a minute; near, it nearly matches you so you don't overshoot), turning at 80%, keeping its own heading with a gentle turn every 3 s
+and turning further only when blocked, never a stunt and never away from you (Alan 2026-10-19/21: noob-level, "in a straight line"; turning away from you made you both circle): one that never shoots, and one that starts behind you, off to one side, 400-500 studs back, flying away
+(always placed afresh when the step starts or restarts; Alan 2026-10-21: it kept appearing ahead). Its "shots" are fakes (BotService:palAmbush; Alan 2026-10-21): bursts of pellets appear 70 studs behind you, out of sight, and always hit,
+only while it is behind you, until your Health is down to half (its hits can't fold you; Alan: "whittle your health down"); the note says "An enemy is behind you, shooting!" while it's back there. You turn round, see it running, and chase it down. Neither carries an eraser. Part 3, the eraser:
 the plane refolds in the air with an eraser on right click (`eraser=true`), then in slow motion the big lock circle and
 lock (holding right click fires one at full lock) on one target, its reload (the card comes while it fills, before
 the next shot; a second slow-motion lock was cut as redundant), one lock at full speed, then a Pal whose erasers appear on their own 300 studs ahead
