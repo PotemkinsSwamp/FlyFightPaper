@@ -8,7 +8,7 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 ## Where it stands (2026-10-21)
 **Hangar rework built; Alan played it and OK'd it 2026-10-21** ([plan](../plan/HANGAR-PLAN.md),
 [decision](../decisions/2026-10-20-hangar-build-shelf.md)): the first screen is a cubby shelf (one still 3D plane per
-build, `BuildShelf`), the big photo, tape name label (click to rename), reference-style stat sheet and Customize
+build, `BuildShelf`), the big photo, tape name label (click to rename), reference-style stat sheet (each row: label, five boxes, the real number; Weight "2/6"; while trying parts in Customize each number shows its change from the saved build in green or red, Alan 2026-10-21) and Customize
 button; Customize is a binder (`HangarCustomize`) with index tabs (Body, Nose, Wings, Tail, Gear, Boost), the 3D plane
 on the left page, cards on the right, a page turn when switching tabs. Art uploaded 2026-10-21
 (`assets/ui/hangarshelf/`, `UIAssets.hangarShelf`). Not yet seen in Play. The desk's in-game menu keeps its old

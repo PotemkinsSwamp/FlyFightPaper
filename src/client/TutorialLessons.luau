@@ -270,12 +270,10 @@ Lessons.range={name="Hangar Range",room=true,steps={{
 local HttpService=game:GetService("HttpService")
 local Hangar=require(script.Parent.Hangar)
 local Catalog=require(Root.Shared.Catalog).new(require(Root.Generated.Catalog),Gameplay)
-local LOOK_AFTER=1.5 -- seconds to see what a change did
+local LOOK_AFTER=2.3 -- seconds a step with a visible change stays up after it (the usual .8 + 1.5 to see it)
 local GEAR_IDS={};for _,part in Catalog.weapons do table.insert(GEAR_IDS,part.id) end
 local function tour() local t=Hangar.tour;return t and t.state.draft and t.state or nil end
 local function watch(update) return function(ctx) local s=tour();return s~=nil and update(ctx,s) end end
--- After a change: true once it has been on screen for LOOK_AFTER seconds.
-local function seen(ctx) ctx.data.at=ctx.data.at or os.clock();return os.clock()-ctx.data.at>LOOK_AFTER end
 local function spot(s) return math.min(2,Catalog:get(s.draft.body).mount_count) end
 local function hangarOpen(ctx) local layer=ctx.player.PlayerGui:FindFirstChild("HangarScreen");return layer~=nil and layer.Cover.Visible end
 -- Step 4 walks down the stat sheet one row at a time, in kid words (Alan 2026-10-21: say what every bar means).
@@ -294,7 +292,7 @@ local function crossedCard(ctx)
  local layer=ctx.player.PlayerGui:FindFirstChild("HangarScreen")
  for _,id in GEAR_IDS do local card=layer and layer:FindFirstChild(id,true);if card and card:FindFirstChild("CrayonX") then return id end end
 end
-Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="Opening your Hangar...",doneTitle="Hangar Tour done!",
+Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="softDing",waitText="Opening your Hangar...",doneTitle="Hangar Tour done!",
  doneText="Your match planes are in the main menu's Hangar: same screens. In matches, some parts unlock with levels and Paper. The Range is yours now!",
  ready=function(ctx,step)
   -- First the plane onto the Range stage (asked again until the server has made it), then the Hangar open on the right page.
@@ -332,7 +330,11 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
   {text="Name it! Click the pencil, type, press Enter.",key="Enter",page="shelf",hint="Like the name? Press K to skip this step.",
    update=watch(function(ctx,s)
     local name=s.builds[s.preset].name;ctx.data.name=ctx.data.name or name
-    ctx.spotlight("NameTape","Rename");return name~=ctx.data.name
+    ctx.spotlight("NameTape","Rename")
+    -- Done on Enter, not when the save comes back (that takes a couple of seconds and the ding came late).
+    local layer=ctx.player.PlayerGui:FindFirstChild("HangarScreen");local box=layer and layer:FindFirstChild("BuildName",true)
+    local typed=box and not box:IsFocused() and box.Text:match("%S") and box.Text~=ctx.data.name
+    return name~=ctx.data.name or typed==true
    end)},
   {text=function(ctx) local page=ctx.data.page or 1;return STATS[page][2].."  "..page.."/"..#STATS end,gotIt=true,pages=#STATS,page="shelf",
    update=function(ctx) ctx.spotlight(statRow(STATS[ctx.data.page or 1][1]));return false end},
@@ -341,9 +343,9 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
   {text="Each tab is one part of the plane. Click Wings.",page="customize",
    update=watch(function(ctx,s) ctx.spotlight("Tabwings");return s.slot=="wings" end)},
   {text="Click a card to try it on. Watch the plane and the bars change.",page="customize",hint="Pick a wing card that doesn't say Equipped.",
-   update=watch(function(ctx,s)
+   linger=LOOK_AFTER,update=watch(function(ctx,s)
     ctx.data.wings=ctx.data.wings or s.draft.wings
-    if s.draft.wings~=ctx.data.wings then return seen(ctx) end
+    if s.draft.wings~=ctx.data.wings then return true end
     for _,part in Catalog.structuresBySlot.wings do if part.id~=ctx.data.wings then ctx.spotlight(part.id);break end end
     return false
    end)},
@@ -352,11 +354,11 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",waitText="
   {text=function(ctx) return "These numbers are your gear spots. Click spot "..(ctx.data.spot or 2).."." end,page="customize",
    update=watch(function(ctx,s) ctx.data.spot=spot(s);ctx.spotlight("Mount"..ctx.data.spot);return s.mount==ctx.data.spot end)},
   {text=function(ctx) return "Now pick a gear card for spot "..(ctx.data.spot or 2)..". Too big for it? It goes on a spot that fits." end,page="customize",
-   hint="A card with a red X can't go there: try another.",
+   hint="A card with a red X can't go there: try another.",linger=LOOK_AFTER,
    update=watch(function(ctx,s)
     ctx.data.spot=spot(s)
     local mounts=HttpService:JSONEncode(s.draft.weapon_mounts);ctx.data.before=ctx.data.before or mounts
-    if mounts~=ctx.data.before then return seen(ctx) end
+    if mounts~=ctx.data.before then return true end
     ctx.spotlight(table.unpack(GEAR_IDS));return false
    end)},
   -- Three pages: the Weight boxes, the left/right click line, and a red X, shown only when a card really has one.

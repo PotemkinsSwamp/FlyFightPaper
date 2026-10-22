@@ -27,7 +27,7 @@ local PHOTO = { 75, 250, 530, 635 } -- the 3D plane on the left page, above its 
 
 -- ctx comes from Hangar: state, builder, draft, profile, range, dev, owned(part), choose(pick, ...),
 -- placeWeapon(id), statSheet(stats, compare, x, y, w, h), preview(draft, box, diagram), nameTag(...), save(fly),
--- atDesk(), api, mountColours.
+-- atDesk(), api, mountColours, savedStats (the saved build's stats while there are unsaved changes).
 function Customize.draw(content, ctx)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
@@ -152,7 +152,7 @@ function Customize.draw(content, ctx)
 		end, 46)
 		button(content, "CancelBuy", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.purchase = nil; ctx.render() end, 40)
 	else
-		ctx.statSheet(stats, nil, 1415, 140, 490, 610)
+		ctx.statSheet(stats, ctx.savedStats, 1415, 140, 490, 610)
 		if state.slot == "weapons" then
 			local body = ctx.catalog:get(draft.body)
 			local groups = assert(CombatRules.triggerGroups(draft))

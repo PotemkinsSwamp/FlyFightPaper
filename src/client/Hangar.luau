@@ -104,13 +104,26 @@ function Hangar.new(playerGui, api)
 		return ok, result
 	end
 
-	-- The stat sheet (concept hangar-shelf-screen.png): taped notebook paper, a coloured paper label per stat and five
-	-- crayon boxes, then the weight row (how much gear this body carries). It lays itself out to fit its box (the
-	-- shelf screen's is wide, the binder's tall). compare (buying a part): each label shows what the part changes.
+	-- The stat sheet (concept hangar-shelf-screen.png): taped notebook paper, a coloured paper label per stat, five
+	-- crayon boxes and the real number written after them, then the weight row (how much gear this body carries, "4/6").
+	-- It lays itself out to fit its box (the shelf screen's is wide, the binder's tall). compare: the stats to measure
+	-- against (the saved build while you try parts, or your build while looking at a part to buy); each number then
+	-- shows its change in green or red (Alan 2026-10-21: the boxes alone lost the exact numbers).
+	local GAIN, LOSS = "#1e7a32", "#b4231e"
 	local function statSheet(stats, compare, x, y, w, h)
 		image(content, "StatsSheet", Shelf.statsPaper, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
 		local rowH = h * 0.8 / (#STATS + 1)
-		local labelX, labelW = x + w * 0.1, w * 0.36
+		local labelX, labelW = x + w * 0.08, w * 0.3
+		-- The number after the boxes, with its change when there is one (the font shrinks to fit the column).
+		local function number(name, top, from, text, change)
+			local value = words(content, name .. "Value", text, from, top, x + w * 0.96 - from, rowH, 40)
+			value.RichText, value.TextScaled = true, true
+			local cap = Instance.new("UITextSizeConstraint")
+			cap.MaxTextSize, cap.Parent = math.floor(rowH * 0.6), value
+			if change and math.abs(change) >= 0.5 then
+				value.Text = string.format('%s <font color="%s">%+.0f</font>', text, change > 0 and GAIN or LOSS, change)
+			end
+		end
 		local function row(i, name, tint, filled, cells)
 			local top = y + h * 0.13 + (i - 1) * rowH
 			local strip = image(content, name .. "Row", Shelf.statLabel, labelX, top + rowH * 0.08, labelW, rowH * 0.84)
@@ -119,26 +132,23 @@ function Hangar.new(playerGui, api)
 			label.TextXAlignment, label.TextScaled = Enum.TextXAlignment.Center, true
 			local cap = Instance.new("UITextSizeConstraint")
 			cap.MaxTextSize, cap.Parent = math.floor(rowH * 0.55), label
-			local size = math.min(rowH * 0.72, w * 0.46 / (math.max(cells, 5) * 1.12))
+			local size = math.min(rowH * 0.72, w * 0.36 / (math.max(cells, 5) * 1.12))
 			for k = 1, cells do
 				local cell = image(content, name .. "Box" .. k, k <= filled and Shelf.statBox or Shelf.statBoxEmpty, labelX + labelW + 14 + (k - 1) * size * 1.12, top + (rowH - size) / 2, size, size)
 				cell.ImageColor3 = tint
 			end
-			return label
+			return label, top, labelX + labelW + 14 + cells * size * 1.12 + 8
 		end
 		for i, entry in STATS do
-			local name, _, _, get, lo, hi = table.unpack(entry)
+			local name, _, _, get, lo, hi, format = table.unpack(entry)
 			local value = stats and get(stats) or lo
-			local label = row(i, name, STAT_COLOURS[name], math.clamp(math.ceil((value - lo) / (hi - lo) * 5), 1, 5), 5)
-			if compare then
-				local change = value - get(compare)
-				label.Text = string.format("%s %+.0f", name, change)
-				label.TextColor3 = change < 0 and Color3.fromRGB(170, 30, 30) or change > 0 and Color3.fromRGB(20, 100, 40) or PaperUI.INK
-			end
+			local _, top, after = row(i, name, STAT_COLOURS[name], math.clamp(math.ceil((value - lo) / (hi - lo) * 5), 1, 5), 5)
+			if stats then number(name, top, after, string.format(format, value), compare and value - get(compare)) end
 		end
 		if stats then
-			local label = row(#STATS + 1, "Weight", STAT_COLOURS.Weight, stats.used_capacity, math.max(stats.capacity, 1))
+			local label, top, after = row(#STATS + 1, "Weight", STAT_COLOURS.Weight, stats.used_capacity, math.max(stats.capacity, 1))
 			if stats.used_capacity >= stats.capacity then label.TextColor3 = Color3.fromRGB(170, 30, 30) end
+			number("Weight", top, after, string.format("%d/%d", stats.used_capacity, stats.capacity)) -- its boxes already show the change
 		end
 	end
 
@@ -259,7 +269,8 @@ function Hangar.new(playerGui, api)
 		local draft = builder.candidate
 		state.builds, state.draft = builds, draft
 		-- Unsaved: the draft differs from the saved build (compared after the same mount clean-up the draft had).
-		state.unsaved = not Builder.equal(draft, Builder.new(Catalog, saved).candidate)
+		local savedBuild = Builder.new(Catalog, saved).candidate
+		state.unsaved = not Builder.equal(draft, savedBuild)
 
 		if state.page == "shelf" then
 			shelf.set(builds, state.preset, range and "Range" or "My builds", range and RANGE_PINK or Color3.fromRGB(255, 215, 60))
@@ -283,6 +294,7 @@ function Hangar.new(playerGui, api)
 			state = state, builder = builder, draft = draft, profile = profile, range = range, dev = dev, catalog = Catalog,
 			owned = function(part) return dev or range or profile.ownership[part.id] == true end,
 			choose = choose, placeWeapon = placeWeapon, statSheet = statSheet, preview = preview, nameTag = nameTag,
+			savedStats = state.unsaved and Catalog:deriveStats(savedBuild) or nil, -- what the parts you're trying change
 			save = save, atDesk = atDesk, api = api, render = render, mountColours = MOUNT_COLOURS,
 		})
 	end

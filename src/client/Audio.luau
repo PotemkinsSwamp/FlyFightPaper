@@ -26,6 +26,7 @@ local definitions={
  death={9125723704,1.1,.6,1},hit={"volume_slider.ogg",3,.35},kill={"impact_explosion_03.mp3",2.4,.3},start={105176025193207,1,.35,3},finish={9117261163,1,.4,.8},purchase={1169806635,1,.4,.8},
  -- The tutorial's ding (a hoop, a finished step): the coin sound, soft (Alan: 30% quieter, the same ding every time).
  ding={1169806635,1,.28,.8},
+ softDing={1169806635,1,.22,.8}, -- the Hangar Tour's: 20% quieter (Alan 2026-10-21)
  -- The Range's row-picker plate going down: the paperclip's metal ting, higher.
  plate={9116163687,1.6,.5,.5},
  -- The Aiming lesson's slow motion going on and off: the eraser's whoosh, low and slow, then high and quick.

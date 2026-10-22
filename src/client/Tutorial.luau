@@ -62,6 +62,9 @@ function Tutorial.start(getPlane)
  local dimStroke=Instance.new("UIStroke");dimStroke.Color=Color3.new(0,0,0);dimStroke.Thickness=4000;dimStroke.Parent=hole
  -- Over a menu (the Hangar Tour, Alan 2026-10-21) only the spotlit button can be clicked: four see-through walls round
  -- the hole catch every other click; a look step gets one wall over everything (its Got it sits above the walls).
+ -- A menu lesson covers the screen until its menu is open (Alan 2026-10-21: the Range flashed before the Hangar).
+ local cover=Instance.new("Frame");cover.Name="Cover";cover.Size=UDim2.fromScale(1,1);cover.BorderSizePixel=0
+ cover.BackgroundColor3=Color3.fromRGB(150,105,60);cover.ZIndex=0;cover.Visible=false;cover.Parent=gui -- PaperUI.screen's cork
  local walls={}
  for i=1,4 do
   local wall=Instance.new("TextButton");wall.Name="Block";wall.Text="";wall.BackgroundTransparency=1;wall.AutoButtonColor=false
@@ -425,7 +428,7 @@ function Tutorial.start(getPlane)
  ctx.softTag=function(words) softTag=words end -- a tag under the soft frame ("AIM HERE")
  ctx.pulse=function(name) pulseName=name end
  local dingAt=0
- ctx.ding=function() dingAt=os.clock();Audio.play("ding") end
+ ctx.ding=function() dingAt=os.clock();Audio.play(Tutorial.lesson and Tutorial.lesson.ding or "ding") end
  -- The hoop to fly through now (the course is laid out the first time): its CFrame and its model.
  ctx.hoop=function() if not hoops[1] then placeCourse(1) end;return hoops[1].cframe,hoops[1].model end
  ctx.clearHoop=clearHoop
@@ -552,7 +555,7 @@ function Tutorial.start(getPlane)
  end
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName,softSpot,softTag=nil,nil,nil,false,nil
-  block(false)
+  block(false);cover.Visible=false
   local menu=Tutorial.active and menuLayer()~=nil
   -- A menu open over the lesson (Esc) is what the player is looking at: no dim, spotlight or note on top of it (Alan 2026-10-19),
   -- unless it's the menu the lesson teaches.
@@ -609,6 +612,7 @@ function Tutorial.start(getPlane)
   -- on its last step counts before the Hangar would be opened again.
   local waiting=Tutorial.lesson.ready~=nil and not doneAt and result~=true and not Tutorial.lesson.ready(ctx,step)
   if waiting then Tutorial.gotIt,result,spotNames,marked=false,false,nil,nil end
+  cover.Visible=waiting and Tutorial.lesson.screen~=nil
   -- A look step can have pages (step.pages: a number, or worked out from ctx): Got it turns to the next one, the last
   -- one finishes the step. The step reads ctx.data.page (1 first) to pick its words and spotlight.
   local pages=type(step.pages)=="function" and step.pages(ctx) or step.pages
@@ -631,7 +635,8 @@ function Tutorial.start(getPlane)
   if finished and not doneAt then
    -- The step's ding comes a beat after (on LAUNCH it clashed with take-off), and only once if a hoop just dinged.
    doneAt=os.clock();tick.Visible=true
-   if os.clock()-dingAt>.5 then task.delay(STEP_DING_DELAY,ctx.ding) end
+   -- Over a menu the ding comes with the click (Alan 2026-10-21: late, it didn't sound like his doing).
+   if os.clock()-dingAt>.5 then if Tutorial.lesson.screen then ctx.ding() else task.delay(STEP_DING_DELAY,ctx.ding) end end
   end
   if doneAt then spotNames,pulseName,marked=nil,nil,nil end
   -- One focus look for everything: a button (spotlight, dims the rest) or the 3D target. A HUD bar the step
@@ -662,7 +667,8 @@ function Tutorial.start(getPlane)
   end
   placeNote(menu,spotLow,spotHigh)
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
-  if doneAt and os.clock()-doneAt>.8 then startStep(Tutorial.index+1) end
+  -- step.linger: a done step stays a while, spotlight off, so its result can be seen (a new wing on the plane).
+  if doneAt and os.clock()-doneAt>(step.linger or .8) then startStep(Tutorial.index+1) end
  end)
 end
 return Tutorial

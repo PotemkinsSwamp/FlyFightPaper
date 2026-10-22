@@ -100,7 +100,9 @@ you've flown 2 seconds; after 3 crashes on a step, a tip.
 **The Hangar Tour** (lesson 3, built 2026-10-21; Alan's first play the same day, then fixed and played through by
 Claude: step 4 walks the stat sheet row by row in kid words, step 11 is three pages (Weight, the click line, and a
 red X only when a card really has one), the last step counts 3 different targets, the name is selected on click;
-the note sits bottom right over the Hangar; [plan](../plan/TUTORIAL-PLAN.md) "Lesson 3"): the
+the note sits bottom right over the Hangar; the screen is covered in cork until the Hangar is open, so the Range
+never flashes first; its ding is 20% softer (`softDing`) and comes with the click; a step with a visible change
+lingers 2.3 s with the light off (`step.linger`); [plan](../plan/TUTORIAL-PLAN.md) "Lesson 3"): the
 Training board's card moves you to the Range on the Range builds (the server treats lesson `hangar` like `range`),
 `lesson.ready` puts the plane on the stage and opens the Range's Hangar (again if it gets closed, never over the game
 menu) on the step's page, then the 14 steps run on the real screens. A menu lesson (`lesson.screen`) shows its note
