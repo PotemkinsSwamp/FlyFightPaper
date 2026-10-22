@@ -18,6 +18,7 @@ Decisions to review
 Combat School: the hunting Pal (step 8) flies 25% faster until you're at half Health (else a player flying away is
   never caught); look cards hold 5 s, action steps 2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%).
   "No thanks" to the welcome question isn't saved.
+Hangar: a card click tries a part on, Select puts it on; clicking gear already on a spot no longer takes it off (Clear spot does).
 Hangar Tour: the red X page shows only when a card has one (the Hangar swaps gear to fit, so it's rare); look steps block all clicks but Got it; light off 1.5 s after a wing/gear change so you see it; no glow
   on the targets; end card has no buttons (mouse aims in the Range), goes after 7 s; Skip keeps you in the Range.
 Hangar Range: Range Hangar is pink; Lift and Health bars hide there; targets 40 Health, 2 per row; hit box is the whole picture; Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x + weave (stand-ins until you tune them).

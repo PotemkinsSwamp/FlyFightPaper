@@ -71,7 +71,7 @@ function Hangar.new(playerGui, api)
 	button(sheet, "Back", Assets.range.stripRed, "Back", 30, 25, 270, 110, -3, function()
 		if state.page == "shelf" then api.back(); return end
 		if state.unsaved and not state.dropAsk then state.dropAsk = true; render(); return end
-		state.page, state.purchase, state.dropAsk = "shelf", nil, nil
+		state.page, state.trying, state.dropAsk = "shelf", nil, nil
 		state.builder:reset(state.builds[state.preset].loadout, state.preset)
 		render()
 	end, 54).ZIndex = 5
@@ -79,7 +79,7 @@ function Hangar.new(playerGui, api)
 	-- Tapping a cubby picks that build: the one you fly next (in the Range it swaps your plane).
 	local shelf = BuildShelf.new(sheet, Catalog, function(i)
 		if i == state.preset then return end
-		state.preset, state.purchase, state.dropAsk = i, nil, nil
+		state.preset, state.trying, state.dropAsk = i, nil, nil
 		state.builder:reset(state.builds[i].loadout, i)
 		if state.range then api.action:FireServer("range", "load" .. i) else api.action:FireServer("selectPreset", i) end
 		render()
@@ -284,7 +284,7 @@ function Hangar.new(playerGui, api)
 			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, 52)
 			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
 			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 530, 600, 120, -1, function()
-				state.page, state.slot, state.purchase = "customize", "body", nil
+				state.page, state.slot, state.trying = "customize", "body", nil
 				render()
 			end, 72)
 			open.ZIndex = 2
@@ -294,7 +294,8 @@ function Hangar.new(playerGui, api)
 			state = state, builder = builder, draft = draft, profile = profile, range = range, dev = dev, catalog = Catalog,
 			owned = function(part) return dev or range or profile.ownership[part.id] == true end,
 			choose = choose, placeWeapon = placeWeapon, statSheet = statSheet, preview = preview, nameTag = nameTag,
-			savedStats = state.unsaved and Catalog:deriveStats(savedBuild) or nil, -- what the parts you're trying change
+			-- A card being tried on: the same change on a scratch copy of the build, so the real one is untouched.
+			tryOn = function(pick) local scratch = Builder.new(Catalog, draft, ownership, level); return pick(scratch) and scratch.candidate or nil end,
 			save = save, atDesk = atDesk, api = api, render = render, mountColours = MOUNT_COLOURS,
 		})
 	end
@@ -322,7 +323,7 @@ function Hangar.new(playerGui, api)
 		local unsaved = range == state.range and state.unsaved
 		if range ~= state.range then state.builder = nil end
 		state.range = range
-		state.page, state.dropAsk, state.purchase = unsaved and "customize" or "shelf", nil, nil
+		state.page, state.dropAsk, state.trying = unsaved and "customize" or "shelf", nil, nil
 		if not unsaved then
 			state.preset = selected
 			if state.builder and state.builds then state.builder:reset(state.builds[selected].loadout, selected) end

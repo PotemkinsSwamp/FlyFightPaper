@@ -308,7 +308,7 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
   if s and hangarOpen(ctx) then
    if step.page and s.page~=step.page then
     if step.page=="shelf" then s.builder:reset(s.builds[s.preset].loadout,s.preset) end -- what Back does: unsaved changes go
-    s.page,s.dropAsk,s.purchase=step.page,nil,nil;Hangar.tour.render()
+    s.page,s.dropAsk,s.trying=step.page,nil,nil;Hangar.tour.render()
    end
    return true
   end
@@ -342,10 +342,11 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
    update=watch(function(ctx,s) ctx.spotlight("Customize");return s.page=="customize" end)},
   {text="Each tab is one part of the plane. Click Wings.",page="customize",
    update=watch(function(ctx,s) ctx.spotlight("Tabwings");return s.slot=="wings" end)},
-  {text="Click a card to try it on. Watch the plane and the bars change.",page="customize",hint="Pick a wing card that doesn't say Equipped.",
+  {text="Click a card to try it on: the numbers show what it changes. Then click Select.",page="customize",hint="Pick a wing card that doesn't say Equipped, then Select.",
    linger=LOOK_AFTER,update=watch(function(ctx,s)
     ctx.data.wings=ctx.data.wings or s.draft.wings
     if s.draft.wings~=ctx.data.wings then return true end
+    if s.trying then ctx.spotlight("SelectPart");return false end -- trying one on: now Select
     for _,part in Catalog.structuresBySlot.wings do if part.id~=ctx.data.wings then ctx.spotlight(part.id);break end end
     return false
    end)},
@@ -353,12 +354,13 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
    update=watch(function(ctx,s) ctx.spotlight("Tabweapons");return s.slot=="weapons" end)},
   {text=function(ctx) return "These numbers are your gear spots. Click spot "..(ctx.data.spot or 2).."." end,page="customize",
    update=watch(function(ctx,s) ctx.data.spot=spot(s);ctx.spotlight("Mount"..ctx.data.spot);return s.mount==ctx.data.spot end)},
-  {text=function(ctx) return "Now pick a gear card for spot "..(ctx.data.spot or 2)..". Too big for it? It goes on a spot that fits." end,page="customize",
+  {text=function(ctx) return "Pick a gear card for spot "..(ctx.data.spot or 2)..", then Select. Too big for it? It goes on a spot that fits." end,page="customize",
    hint="A card with a red X can't go there: try another.",linger=LOOK_AFTER,
    update=watch(function(ctx,s)
     ctx.data.spot=spot(s)
     local mounts=HttpService:JSONEncode(s.draft.weapon_mounts);ctx.data.before=ctx.data.before or mounts
     if mounts~=ctx.data.before then return true end
+    if s.trying then ctx.spotlight("SelectPart");return false end
     ctx.spotlight(table.unpack(GEAR_IDS));return false
    end)},
   -- Three pages: the Weight boxes, the left/right click line, and a red X, shown only when a card really has one.

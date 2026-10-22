@@ -27,7 +27,7 @@ local PHOTO = { 75, 250, 530, 635 } -- the 3D plane on the left page, above its 
 
 -- ctx comes from Hangar: state, builder, draft, profile, range, dev, owned(part), choose(pick, ...),
 -- placeWeapon(id), statSheet(stats, compare, x, y, w, h), preview(draft, box, diagram), nameTag(...), save(fly),
--- atDesk(), api, mountColours, savedStats (the saved build's stats while there are unsaved changes).
+-- atDesk(), api, mountColours, tryOn(pick) (the build after pick(scratch builder), or nil).
 function Customize.draw(content, ctx)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
@@ -41,7 +41,7 @@ function Customize.draw(content, ctx)
 		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 225 + (i - 1) * 100, 200, 88, 0,
 			function()
 				if tab.slot ~= state.slot then state.turn = true end
-				state.slot, state.purchase = tab.slot, nil
+				state.slot, state.trying = tab.slot, nil
 				ctx.render()
 			end, 40)
 		t.ImageColor3 = tab.tint
@@ -63,20 +63,24 @@ function Customize.draw(content, ctx)
 		local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
 			or state.slot == "weapons" and table.find(draft.weapon_mounts, part.id) ~= nil
 		local x, y = 700 + (i - 1) % 2 * 272, 245 + math.floor((i - 1) / 2) * 215
+		-- Gear that can't go on this plane at all right now: a crayon X and why, so a kid sees what to change (note 21).
+		local blocked = state.slot == "weapons" and owned and not equipped and select(2, builder:findPlace(part.id, state.mount))
+		-- Clicking a card tries it on (Alan 2026-10-21): the plane and the numbers show it against what you have on now,
+		-- and Select puts it on. The card you already have on (for gear: on the picked spot) stops trying.
 		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 262, 205, 0, function()
-			if not owned then state.purchase = part; ctx.render(); return end
-			state.purchase = nil
-			if state.slot == "weapons" then
-				-- Clicking the weapon already on the picked mount takes it off (Alan 2026-10-17).
-				local m = math.min(state.mount, ctx.catalog:get(draft.body).mount_count)
-				if draft.weapon_mounts[m] == part.id then ctx.choose(builder.selectMount, m, false)
-				else ctx.choose(function() return ctx.placeWeapon(part.id) end) end
-			elseif state.slot == "boost" then ctx.choose(builder.selectUtility, part.id)
-			else ctx.choose(builder.selectStructure, state.slot, part.id) end
+			if blocked then ctx.choose(function() return ctx.placeWeapon(part.id) end); return end -- says why not
+			local here = state.slot == "weapons" and draft.weapon_mounts[math.min(state.mount, ctx.catalog:get(draft.body).mount_count)] == part.id
+				or state.slot ~= "weapons" and equipped
+			state.trying, builder.message = not here and part or nil, ""
+			ctx.render()
 		end)
+		if state.trying == part then
+			local ring = image(content, "Trying", Binder.outline, x - 14, y - 14, 290, 233)
+			ring.ScaleType, ring.SliceCenter, ring.SliceScale, ring.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.5, 3
+		end
 		local name = words(card, "Name", part.name, 18, 14, 216, 96, 36)
 		name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
-		local detail = owned and (equipped and "Equipped" or ctx.range and ctx.profile.ownership[part.id] ~= true and "Range only" or "Owned") or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
+		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and ctx.profile.ownership[part.id] ~= true and "Range only" or "Owned") or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
 		if state.slot == "weapons" then
 			-- Damage (Alan): pips for how hard one shot hits, then damage per second.
 			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(216, 44), false, true -- long names shrink to one line
@@ -87,8 +91,6 @@ function Customize.draw(content, ctx)
 			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, 62 + (k - 1) * 30, 64, 27, 26) end
 			words(card, "DPS", string.format("%.0f damage per second", ctx.catalog.weaponDPS(part)), 18, 96, 216, 30, 24)
 			detail = string.format("%s, weight %d. %s", part.class, part.capacity, detail)
-			-- Can't go on this plane at all right now: a crayon X and why, so a kid sees what to change (note 21).
-			local blocked = owned and not equipped and select(2, builder:findPlace(part.id, state.mount))
 			if blocked then
 				detail = blocked
 				for _, angle in { 37, -37 } do
@@ -123,36 +125,60 @@ function Customize.draw(content, ctx)
 	end
 
 	-- Left page: the build's name, then the plane (the Gear page: a still diagram with a numbered tag on every mount).
-	local diagram = state.slot == "weapons" and not state.purchase
+	local diagram = state.slot == "weapons" and not state.trying
 	ctx.nameTag(content, 115, 890, 450, 92, 44)
-	ctx.preview(draft, PHOTO, diagram, true)
+	-- The plane as it would be with the card you're trying on: the same move Select makes, on a scratch copy; a part
+	-- you don't own yet is just swapped in.
+	local candidate = nil
+	if state.trying then
+		local part = state.trying
+		candidate = ctx.owned(part) and ctx.tryOn(function(scratch)
+			if state.slot == "weapons" then return scratch:placeWeapon(part.id, state.mount)
+			elseif state.slot == "boost" then return scratch:selectUtility(part.id)
+			else return scratch:selectStructure(state.slot, part.id) end
+		end)
+		if not candidate then
+			candidate = assert(Schema.copy(draft))
+			if state.slot == "weapons" then candidate.weapon_mounts[math.min(state.mount, ctx.catalog:get(candidate.body).mount_count)] = part.id
+			elseif state.slot == "boost" then candidate.utility = part.id
+			else
+				candidate[state.slot] = part.id
+				if state.slot == "body" then
+					local mounts = {}
+					for i = 1, part.mount_count do mounts[i] = candidate.weapon_mounts[i] or false end
+					candidate.weapon_mounts = mounts
+				end
+			end
+		end
+	end
+	ctx.preview(candidate or draft, PHOTO, diagram, true)
 	local valid, reason = builder:validate(draft)
 	local stats = ctx.catalog:deriveStats(draft)
 	local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
 		or state.dropAsk and "You have changes you haven't saved. Click Back again to drop them."
 		or game.Players.LocalPlayer:GetAttribute("MenuMessage") or (ctx.range and "Range builds: every part works here, only in the Range." or "")
-	-- Bottom of the right page: the mount line (Gear), the no-booster card (Boost), or Buy / Cancel for a locked part.
-	if state.purchase then
-		local part = state.purchase
-		local candidate = assert(Schema.copy(draft))
-		if state.slot == "weapons" then candidate.weapon_mounts[math.min(state.mount, ctx.catalog:get(candidate.body).mount_count)] = part.id
-		elseif state.slot == "boost" then candidate.utility = part.id
-		else
-			candidate[state.slot] = part.id
-			if state.slot == "body" then
-				local mounts = {}
-				for i = 1, part.mount_count do mounts[i] = candidate.weapon_mounts[i] or false end
-				candidate.weapon_mounts = mounts
-			end
-		end
+	-- Bottom of the right page: Select / Cancel for a card you're trying on (Buy / Cancel for one you don't own yet), else
+	-- the mount line (Gear) and the no-booster card (Boost). Trying on: each number shows its change from what you have on.
+	if state.trying then
+		local part = state.trying
 		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, 1415, 140, 490, 610)
-		note = string.format("%s: %d Paper, level %d. Bars show the plane with it.", part.name, part.paper_price, part.min_level)
-		button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
-			ctx.api.action:FireServer("purchasePart", part.id); state.purchase = nil; ctx.render()
-		end, 46)
-		button(content, "CancelBuy", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.purchase = nil; ctx.render() end, 40)
+		if ctx.owned(part) then
+			note = part.name .. ": the numbers show what it changes. Select puts it on."
+			button(content, "SelectPart", Art.buttonGreen, "Select", 735, 980, 240, 70, -1, function()
+				state.trying = nil
+				if state.slot == "weapons" then ctx.choose(function() return ctx.placeWeapon(part.id) end)
+				elseif state.slot == "boost" then ctx.choose(builder.selectUtility, part.id)
+				else ctx.choose(builder.selectStructure, state.slot, part.id) end
+			end, 46)
+		else
+			note = string.format("%s: %d Paper, level %d. The numbers show what it changes.", part.name, part.paper_price, part.min_level)
+			button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
+				ctx.api.action:FireServer("purchasePart", part.id); state.trying = nil; ctx.render()
+			end, 46)
+		end
+		button(content, "CancelTry", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.trying = nil; ctx.render() end, 40)
 	else
-		ctx.statSheet(stats, ctx.savedStats, 1415, 140, 490, 610)
+		ctx.statSheet(stats, nil, 1415, 140, 490, 610)
 		if state.slot == "weapons" then
 			local body = ctx.catalog:get(draft.body)
 			local groups = assert(CombatRules.triggerGroups(draft))
