@@ -5,8 +5,8 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-10-21)
-**Hangar rework built; Alan played it and OK'd it 2026-10-21** ([plan](../plan/HANGAR-PLAN.md),
+## Where it stands (2026-10-22)
+**Hangar rework built; Alan played it and OK'd it 2026-10-21; try-on/Select approved with the tutorials 2026-10-22** (the desk's quick menu is next) ([plan](../plan/HANGAR-PLAN.md),
 [decision](../decisions/2026-10-20-hangar-build-shelf.md)): the first screen is a cubby shelf (one still 3D plane per
 build, `BuildShelf`), the big photo, tape name label (click to rename), reference-style stat sheet (each row: label, five boxes, the real number; Weight "2/6"; Alan 2026-10-21) and Customize. In Customize a card click only tries the part on (crayon ring, "Trying it on"): the plane shows it and each number shows its change from what you have on now, in green or red; **Select** puts it on and it becomes what the next card is compared with; Cancel or clicking the equipped card stops trying (a part you don't own shows Buy instead of Select). Gear you own skips this: pick a spot number, click the gear, it goes on. A new name shows straight away while it saves. Booster cards say how much speed for how long. Gear comes off with Clear spot
 button; Customize is a binder (`HangarCustomize`) with index tabs (Body, Nose, Wings, Tail, Gear, Boost), the 3D plane

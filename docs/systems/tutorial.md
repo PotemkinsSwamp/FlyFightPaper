@@ -5,8 +5,10 @@ A new player's first join goes straight into a guided lesson in an empty copy of
 fans, landing), shooting paper targets, then a fight with one enemy, then what every part of the HUD means, the
 hangar, each weapon, and how building a plane works. It can be skipped and replayed, and never pays rewards.
 
-## Where it stands (2026-10-19)
-Being built now (after Stage 10). **Its own room works:** a brand-new player (no matches played) is asked once the
+## Where it stands (2026-10-22)
+**Flight School, Combat School, the Hangar Tour and the Training board approved by Alan 2026-10-22**
+([decision](../decisions/2026-10-22-tutorials-approved.md)); Match Tips and the Range's first-visit sticky notes are
+still to build. **Its own room works:** a brand-new player (no matches played) is asked once the
 classroom has loaded, "Welcome, pilot! Want a quick tutorial?" (Yes / No thanks, and where to find it later; Alan
 2026-10-19: ask, like most games). Yes, or the Training button (named Tutorial until Alan 2026-10-20; it first asks "Which lesson?": Flight School or
 Combat School), opens a fresh private server of the same place that nobody else can join, carrying the lesson picked. The room has no match, no clock, no bots and no rewards; the lesson starts by itself.

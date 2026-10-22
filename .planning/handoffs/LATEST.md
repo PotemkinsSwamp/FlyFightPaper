@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-21-ui-hangar-tour-built-try-on.md
+# LATEST → handoff-2026-10-22-ui-tutorials-approved.md
 
-★ START HERE: Hangar Tour built and played twice by Alan (his notes fixed); the Hangar now shows exact numbers and
-Customize tries a card on before Select puts it on. Next: Alan's Play check of try-on/Select and the tour; fix his
-notes; done when he says both work. Then the queued UI list in the handoff.
+★ START HERE: Alan approved the tutorials (Flight School, Combat School, Hangar Tour, Training board, Hangar
+try-on/Select) on 2026-10-22. Next (his order): the desk quick menu, concept picture first for his OK on an assembled
+preview, then build; then the Range's first-visit sticky notes, Match Tips, the Range build swap.
 
-Quick state: main, code compiles in Edit, Rojo serving, Studio in Edit, Play stopped.
-Previous: handoff-2026-10-21-ui-hangar-built-tour-next.md.
+Quick state: main, Studio in Edit, Play stopped, Rojo serving on 34872 (restarted by Claude).
+Previous: handoff-2026-10-21-ui-hangar-tour-built-try-on.md.

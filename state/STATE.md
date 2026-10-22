@@ -1,25 +1,25 @@
-# Since Alan last checked (2026-10-21)
-- **Hangar Tour built and played** (you played it twice): 14 steps over the real Range Hangar, stats explained row by
-  row, 3 different targets, no Range flash, softer ding on the click. Claude played it through in Studio too.
-- **Hangar numbers are back** (both Hangars): the exact number after each stat row.
-- **Customize: click a card to try it on, Select puts it on**; the numbers compare with what you have on. Not seen by you yet.
+# Since Alan last checked (2026-10-22)
+- **Tutorials approved** (your words: "conclude the tutorials as done"): Flight School, Combat School, Hangar Tour,
+  Training board, Hangar try-on/Select. 28 of your notes fixed over two days (docs/playtests/2026-10-21-hangar-tour.md).
+- Fixed for every flight: the nose dot now settles on the aim circle (the camera sits above the plane).
 
-# Now: Hangar Tour (lesson 3) + Hangar try-on — waiting on Alan's Play check
-Plan: docs/plan/TUTORIAL-PLAN.md, Lesson 3. Playtest notes: docs/playtests/2026-10-21-hangar-tour.md.
-What works: everything in Stage 9 (flight, 6 weapons, bots, menus, city, power-ups, hangar, HUD, zone).
+# Now: UI lane — next is the desk quick menu (your pick), then the Range's first-visit sticky notes
+What works: everything in Stage 9 plus the tutorials. Then Match Tips and the Range build swap (fly off / slide in).
 
 Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
 During the vote lap the top strip still shows the old round's mode and clock. The desk's quick menu still has the
-old 1-5 squares (gets its own condensed concept later). Track C saving needs a private publish (Alan's go).
-Place file not re-saved (needs Ctrl+S; code lives in src/).
+old 1-5 squares (next). Track C saving needs a private publish (Alan's go). A lesson started while the tour's Hangar
+is open (Studio's DevLesson only) waits behind it. Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
-Combat School: the hunting Pal (step 8) flies 25% faster until you're at half Health (else a player flying away is
-  never caught); look cards hold 5 s, action steps 2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%).
-  "No thanks" to the welcome question isn't saved.
-Hangar: a card click tries a part on, Select puts it on; clicking gear already on a spot no longer takes it off (Clear spot does).
+Combat School: every Pal runs (85% of your speed when far, 100% near, banks 25-50 degrees every 2.5-4 s); step 8's
+  shots are fakes from the Pal's side while it's out of view (~4 s to half Health); look cards hold 5 s, action steps
+  2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%). "No thanks" to the welcome question isn't saved.
+Eraser lock stays on after firing while the target stays in the circle (Claude's recommendation; you may want it reset).
+Esc over the Hangar: Roblox's own menu toggles on every Esc, so "Keep flying" is the way back to the Hangar.
+Hangar: a card click tries a part on, Select puts it on (not gear you own: it goes straight on); Clear spot takes gear off.
 Hangar Tour: red X page only when a card has one (rare: the Hangar swaps gear to fit); look steps block all but Got it; no glow
-  on the targets; end card has no buttons (mouse aims in the Range), goes after 7 s; Skip keeps you in the Range.
+  on the targets; end card has no buttons (click or Space closes it, or it goes after 7 s); Skip keeps you in the Range.
 Hangar Range: Range Hangar is pink; Lift and Health bars hide there; targets 40 Health, 2 per row; hit box is the whole picture; Noob 0.6x, Challenge 1x, Veteran 1.4x, Maneuvers 1x + weave (stand-ins until you tune them).
 Early part unlocks: one Roblox product per part (you'd create 28), and a part you own flies at ANY level (otherwise
   buying early is useless). Buying a part with Paper still needs the level.
@@ -51,9 +51,8 @@ Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked inste
 
 
 Waiting on Alan
-- Try Customize: click a card (numbers show + / -), Select, then another card; and replay Training > Hangar Tour.
+- The desk quick menu: a concept picture comes first for your OK.
 - Your call later: give the match bots the gun fix too (their guns still cross at 150 studs, so they miss past it).
-  Match aim measured: misses come from bots turning mid-flight; a faster pencil or less jinky bots is your balance call.
 - Backlog (yours): a new fan sound for the real game. Private publish (your go) to test the move into the tutorial room.
 0. Studio: File > Save to File (keeps the duct fan fix in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
