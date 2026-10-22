@@ -69,7 +69,7 @@ invulnerable debug bots or target-board practice.
 | `src/shared/BotBuilds.luau` | Bot planes per skill tier |
 | `src/shared/BotNames.luau` | Made-up pilot names in present-day styles (2026-10-18: lowercase handles, stretched names, x-swaps, nonsense words, ALL-CAPS jokes) |
 | `src/shared/BotRosterRules.luau` | How many bots and which skill |
-| `src/server/AvatarService.luau` | Seated avatars at desks, bot looks (`Service.look`) |
+| `src/server/AvatarService.luau` | Seated avatars at desks (none for lesson planes: Pals and practice targets, Alan 2026-10-22), bot looks (`Service.look`) |
 | `src/server/Matchmaking.luau, src/server/MatchmakingAdapter.luau` | Rookie or regular servers, transfers |
 
 ## Tuning numbers

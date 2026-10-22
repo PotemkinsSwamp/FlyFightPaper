@@ -60,5 +60,7 @@ Decision: [try on, then Select](../decisions/2026-10-21-hangar-try-on-select.md)
     Keep flying goes back to it. Checked in Play.
 27. Should an eraser lock stay on after firing? Kept as is (it stays while the target stays in the circle; the next
     eraser fires when reloaded): Claude's recommendation, Alan to confirm.
+28. A figure appeared with every Paper Pal. It was the seated pilot avatar every plane gets at its desk. **Done:** lesson
+    planes (Pals, practice targets) get none. Checked in Play: only your own avatar is in the room.
 
 Back to [playtests](README.md)

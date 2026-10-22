@@ -53,15 +53,17 @@ function Service:remove(p)
  self.requests[p.id]=nil;self.wearing[p.id]=nil
  local model=self.models[p.id];if model then model:Destroy();self.models[p.id]=nil end
 end
+-- Lesson planes (Paper Pals, practice targets: foeOf) get no pilot at a desk (Alan 2026-10-22: a figure appeared
+-- behind the Pal). foeOf is set just after the plane is first made, so it's checked again once the model arrives.
 function Service:assign(p)
- if self.models[p.id] or self.requests[p.id] or self.flight.room.Name~="Arena" then return end
+ if self.models[p.id] or self.requests[p.id] or self.flight.room.Name~="Arena" or p.foeOf then return end
  local token={};self.requests[p.id]=token
  task.spawn(function()
   local ok,model=pcall(function()
    if p.player then return Players:CreateHumanoidModelFromUserIdAsync(p.player.UserId) end
    return Players:CreateHumanoidModelFromDescriptionAsync(self:look(p),Enum.HumanoidRigType.R15)
   end)
-  if self.requests[p.id]~=token or self.flight.byId[p.id]~=p then if ok then model:Destroy() end;return end
+  if self.requests[p.id]~=token or self.flight.byId[p.id]~=p or p.foeOf then if self.requests[p.id]==token then self.requests[p.id]=nil end;if ok then model:Destroy() end;return end
   if not ok then
    self.requests[p.id]=nil
    if p.player then
