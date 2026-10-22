@@ -14,7 +14,7 @@ waits on Alan's feel check; rule in [damage and deaths](damage-and-deaths.md)). 
   server saw change runs that check at once, so a teleport and back inside 0.25 s is caught.
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
 
-Primary mouse points the desired nose direction; automatic banking shows turns. Automatic forward speed
+Primary mouse points the desired nose direction (the plane steers at the spot on the aim circle's line at the nose dot's range, so the dot settles on the circle even though the camera sits above and behind; Alan 2026-10-21); automatic banking shows turns. Automatic forward speed
 uses derived stats. The weapon type in the lowest-numbered filled mount is primary: LMB or gamepad ButtonR2.
 The other type is secondary: RMB or gamepad ButtonL2. These gamepad bindings cover firing. Every mount of a
 type uses the same button. Either type can occupy either button, including erasers and pencils. Both buttons

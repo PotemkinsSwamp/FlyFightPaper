@@ -28,4 +28,12 @@ Decision: [try on, then Select](../decisions/2026-10-21-hangar-try-on-select.md)
 12. Customize still sat behind the shelf (the shelf was drawn over the page). **Done:** the page draws in front of it.
 13. The three boosters didn't say how they differ. **Done:** each card says "+35% speed for 4 seconds" etc.
 
+## Combat School (same sitting)
+14. Mouse held still, the nose dot never reached the aim circle. Cause: the circle is drawn from the camera (above and
+    behind), the nose flew the same direction from lower down. **Done:** the plane steers at the circle's spot at the
+    dot's range ([flight](../systems/flight.md)).
+15. Step 8's shooting Pal appeared ahead again. Likely cause: step 7's Pal came back (4 s) ahead of you before step 8
+    began, and step 8 left a flying Pal where it was. **Done:** step 8 always places it afresh behind you, and the note
+    says "An enemy is behind you, shooting!" while it is there.
+
 Back to [playtests](README.md)

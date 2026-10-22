@@ -83,7 +83,7 @@ at a time, at full speed again, appearing in the air 400-700 studs ahead (within
 a building when it can be; never out of a hangar or off to the side: Alan 2026-10-19, "coming out of nowhere";
 BotService:placePal), facing away, exactly your speed (Alan 2026-10-19: slower ones are harder, you overshoot and circle them), turning at 80%, flying straight away from you while you're within 600 studs,
 turning only when blocked, never a stunt (Alan 2026-10-19: noob-level, "in a straight line", so you feel the chase): one that never shoots, one that comes in from behind you, off to one side, 400-500 studs back with a clear shot (Alan: ahead, you
-just chased each other), heads straight for you and hunts you without a break (25% faster
+just chased each other; always placed afresh when the step starts or restarts, and the note says "An enemy is behind you" while it is; Alan 2026-10-21: it kept appearing ahead), heads straight for you and hunts you without a break (25% faster
 while hunting, or a player flying away is never caught: measured in Play), shooting dead on (no aim wobble or delay,
 full lead, its guns meeting at your range: Alan 2026-10-19, "veteran level" until then), until your Health is
 down to half (its hits can't fold you; Alan: "whittle your health down"), then pulls round in front of you and runs like step 7's. Neither carries an eraser. Part 3, the eraser:

@@ -114,6 +114,13 @@ function Controller.start(plane)
 			steer = (state.aimPoint - body.Position).Unit
 		else
 			state.aimPoint = nil
+			-- The aim circle is drawn from the camera, which sits above and behind the plane; flying the nose along the
+			-- same direction left the nose dot short of the circle for good (Alan 2026-10-21). So steer at the point on the
+			-- circle's line at the dot's range (the lead's, else 300: FlightHUD), and the dot settles on the circle.
+			local eye = workspace.CurrentCamera.CFrame.Position
+			local range = state.leadPoint and (state.leadPoint - body.Position).Magnitude or 300
+			local toward = eye + aimFrame.LookVector * ((body.Position - eye):Dot(aimFrame.LookVector) + range) - body.Position
+			if toward.Magnitude > 1 then steer = toward.Unit end
 		end
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
 		local boost = not blocked and Input:IsKeyDown(Enum.KeyCode.LeftShift)

@@ -315,7 +315,10 @@ function Runtime:lesson(player,cmd)
   foe.foeOf=p.id;foe.lessonPlayer=player;foe.gentle=true;foe.model:SetAttribute("Gentle",true)
   foe.pal={mode=cmd.pal,speed=1,at=workspace:GetServerTimeNow(),eraserSlow=foe.pal and foe.pal.eraserSlow or .8}
   player:SetAttribute("TutorialFoe",id)
-  if foe.model:GetAttribute("State")=="DESTROYED" then self.flight:replace(foe) end -- the next Pal now, not after the wait
+  -- The next Pal now, not after the wait. The ambush (pellet) always starts afresh behind you, even if the last
+  -- step's Pal already came back ahead of you, or the step restarted (Alan 2026-10-21: it kept appearing in front).
+  local state=foe.model:GetAttribute("State")
+  if state=="DESTROYED" or cmd.pal=="pellet" and state~="DESK" then self.flight:replace(foe) end
   self.bots:placePal(foe) -- in the air now, so the step's read pause holds it too
  end
 end
