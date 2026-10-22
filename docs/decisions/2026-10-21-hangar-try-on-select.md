@@ -9,6 +9,8 @@
   you have on now (green better, red worse), and a **Select** button puts it on. What you selected is then what the
   next card is compared with. Cancel, or clicking the card you have on, stops trying. A part you don't own shows Buy
   instead of Select.
+- **Gear you own skips try-on** (Alan, same day, after playing it): pick a spot number, click the gear, it goes on
+  ("doing the select kind of breaks that whole thing"). Gear you don't own still shows its numbers with Buy.
 - Gear comes off with Clear spot (clicking gear already on a spot used to take it off; it now just stops trying).
 
 ## Why

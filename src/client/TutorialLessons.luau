@@ -354,13 +354,12 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
    update=watch(function(ctx,s) ctx.spotlight("Tabweapons");return s.slot=="weapons" end)},
   {text=function(ctx) return "These numbers are your gear spots. Click spot "..(ctx.data.spot or 2).."." end,page="customize",
    update=watch(function(ctx,s) ctx.data.spot=spot(s);ctx.spotlight("Mount"..ctx.data.spot);return s.mount==ctx.data.spot end)},
-  {text=function(ctx) return "Pick a gear card for spot "..(ctx.data.spot or 2)..", then Select. Too big for it? It goes on a spot that fits." end,page="customize",
+  {text=function(ctx) return "Click a gear card: it goes on spot "..(ctx.data.spot or 2)..". Too big for it? It goes on a spot that fits." end,page="customize",
    hint="A card with a red X can't go there: try another.",linger=LOOK_AFTER,
    update=watch(function(ctx,s)
     ctx.data.spot=spot(s)
     local mounts=HttpService:JSONEncode(s.draft.weapon_mounts);ctx.data.before=ctx.data.before or mounts
     if mounts~=ctx.data.before then return true end
-    if s.trying then ctx.spotlight("SelectPart");return false end
     ctx.spotlight(table.unpack(GEAR_IDS));return false
    end)},
   -- Three pages: the Weight boxes, the left/right click line, and a red X, shown only when a card really has one.

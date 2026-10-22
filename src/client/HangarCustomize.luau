@@ -66,9 +66,14 @@ function Customize.draw(content, ctx)
 		-- Gear that can't go on this plane at all right now: a crayon X and why, so a kid sees what to change (note 21).
 		local blocked = state.slot == "weapons" and owned and not equipped and select(2, builder:findPlace(part.id, state.mount))
 		-- Clicking a card tries it on (Alan 2026-10-21): the plane and the numbers show it against what you have on now,
-		-- and Select puts it on. The card you already have on (for gear: on the picked spot) stops trying.
+		-- and Select puts it on. The card you already have on stops trying. Gear you own skips that (Alan 2026-10-21):
+		-- pick a spot number, click the gear, it goes on.
 		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 262, 205, 0, function()
-			if blocked then ctx.choose(function() return ctx.placeWeapon(part.id) end); return end -- says why not
+			if blocked or state.slot == "weapons" and owned then -- blocked: says why not
+				state.trying = nil
+				ctx.choose(function() return ctx.placeWeapon(part.id) end)
+				return
+			end
 			local here = state.slot == "weapons" and draft.weapon_mounts[math.min(state.mount, ctx.catalog:get(draft.body).mount_count)] == part.id
 				or state.slot ~= "weapons" and equipped
 			state.trying, builder.message = not here and part or nil, ""

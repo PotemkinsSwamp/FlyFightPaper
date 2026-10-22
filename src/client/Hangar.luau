@@ -54,7 +54,7 @@ function Hangar.new(playerGui, api)
 	content.Name, content.BackgroundTransparency, content.Size, content.Parent = "Content", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), sheet
 
 	local player = game.Players.LocalPlayer
-	local state = { preset = player:GetAttribute("SelectedPreset") or 1, page = "shelf", slot = "body", mount = 1, angle = 0.5, pitch = -0.5 }
+	local state = { preset = player:GetAttribute("SelectedPreset") or 1, page = "shelf", slot = "body", mount = 1, angle = 0.5, pitch = -0.5, names = {} }
 	-- Your plane waiting at its desk: only then can Save & fly refold it.
 	local function atDesk()
 		local plane = workspace:FindFirstChild("Planes") and workspace.Planes:FindFirstChild(tostring(player.UserId))
@@ -176,6 +176,9 @@ function Hangar.new(playerGui, api)
 			local name = nameBox.Text:gsub("^%s+", ""):gsub("%s+$", "")
 			if name == "" or name == build.name then nameBox.Text = build.name; return end
 			api.action:FireServer("renamePreset", { range = state.range, slot = state.preset, name = name })
+			-- The save takes a couple of seconds: show the new name meanwhile instead of the old one (Alan 2026-10-21).
+			state.names[(state.range and "range" or "my") .. state.preset] = { name = name, at = os.clock() }
+			render()
 		end)
 	end
 
@@ -268,6 +271,11 @@ function Hangar.new(playerGui, api)
 		local builder = state.builder
 		local draft = builder.candidate
 		state.builds, state.draft = builds, draft
+		-- A rename still saving (or just saved: the server may have filtered it) shows the typed name for 10 s.
+		for i, build in builds do
+			local pending = state.names[(range and "range" or "my") .. i]
+			if pending and os.clock() - pending.at < 10 then build.name = pending.name end
+		end
 		-- Unsaved: the draft differs from the saved build (compared after the same mount clean-up the draft had).
 		local savedBuild = Builder.new(Catalog, saved).candidate
 		state.unsaved = not Builder.equal(draft, savedBuild)
@@ -283,7 +291,7 @@ function Hangar.new(playerGui, api)
 			preview(draft, PHOTO)
 			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, 52)
 			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
-			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 530, 600, 120, -1, function()
+			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 564, 600, 120, -1, function()
 				state.page, state.slot, state.trying = "customize", "body", nil
 				render()
 			end, 72)
