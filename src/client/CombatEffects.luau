@@ -148,7 +148,8 @@ function Effects.start(getPlane)
    if not event.practice then table.insert(feed,1,Lines.death(event.how or {kind=event.cause=="weapon" and "weapon" or "crash"},event.victimId==myId and "you" or event.victim,event.killer and (event.killerId==myId and "you" or event.killer))) end
    while #feed>4 do table.remove(feed) end
    -- One notebook slip per line (FlightHUD makes Slip1..4, newest on top).
-   local slips=gui:FindFirstChild("KillFeed")
+   -- (On FlightHUD's MatchInfo layer, which stays up at the desk too.)
+   local info=Players.LocalPlayer.PlayerGui:FindFirstChild("MatchInfo");local slips=info and info:FindFirstChild("KillFeed")
    for i=1,4 do local slip=slips and slips:FindFirstChild("Slip"..i);if slip then slip.Visible=feed[i]~=nil;slip.Words.Text=feed[i] or "" end end
    end
   end
