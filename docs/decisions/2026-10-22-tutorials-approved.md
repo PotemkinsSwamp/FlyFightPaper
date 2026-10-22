@@ -8,6 +8,9 @@
   [tutorial plan](../plan/TUTORIAL-PLAN.md)), the Training board and the Hangar's try-on/Select are approved as they
   stand after his notes of 2026-10-21/22 ([playtest](../playtests/2026-10-21-hangar-tour.md)).
 - Match Tips (Lesson 5) and the Range's first-visit sticky notes were not part of this sign-off.
+- **Next, Alan's order (same day):** the desk quick menu first (a concept picture for his OK, then built), then the
+  Range's first-visit sticky notes (he wants them), then Match Tips and the Range build swap (old plane flies off,
+  new one slides in).
 
 ## Why
 Alan is the tutorial's tester ([decision](2026-10-18-tutorial-lessons.md)); a lesson is done when he says so.
