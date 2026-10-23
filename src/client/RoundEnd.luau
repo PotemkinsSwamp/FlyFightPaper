@@ -70,7 +70,8 @@ function RoundEnd.start()
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
-	vote.Name, vote.BackgroundTransparency, vote.Size, vote.Parent = "Vote", 1, UDim2.fromOffset(1920, 300), sheet
+	-- Below the match strip, which shows the vote lap's clock (Alan 2026-10-23: the cards covered it).
+	vote.Name, vote.BackgroundTransparency, vote.Size, vote.Position, vote.Parent = "Vote", 1, UDim2.fromOffset(1920, 300), UDim2.fromOffset(0, 80), sheet
 	local voteHelp = words(vote, "Help", "", 360, 186, 1200, 50, 36)
 	voteHelp.TextXAlignment, voteHelp.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(250, 245, 230)
 	local stroke = Instance.new("UIStroke")
@@ -164,7 +165,7 @@ function RoundEnd.start()
 			voteHelp.Text = mine and "Vote counted! Fly through another ring to change it." or "Fly through a ring to vote, or press 1, 2 or 3. Nothing can hurt you now."
 			show(vote)
 		elseif snap.phase == "COUNTDOWN" then
-			headline.Text, subline.Text = Lines.stable("nextRound", snap.matchId and #snap.matchId or 0, modeName(snap.nextMode)), "Get ready to fight!"
+			headline.Text, subline.Text = Lines.stable("nextRound", snap.matchId and #snap.matchId or 0, modeName(Root:GetAttribute("DevMode") or snap.nextMode)), "Get ready to fight!" -- DevMode: Studio's mode buttons win over the vote
 			show(banner)
 		end
 	end

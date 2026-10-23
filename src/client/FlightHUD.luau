@@ -284,10 +284,18 @@ function HUD.start(getPlane, action)
 				first=place==1
 			end
 		end
+		-- Between rounds the strip shows the break's own clock (it showed the old round's mode at 0:00): the vote lap's,
+		-- then the next mode's countdown. The winners' moment hides it.
+		if snapshot.phase ~= "ACTIVE" and snapshot.phase ~= "ENDING" then
+			local label = snapshot.phase == "VOTE" and "VOTE" or snapshot.phase == "COUNTDOWN" and (({CONTROL="AIRSPACE"})[Root:GetAttribute("DevMode") or snapshot.nextMode] or Root:GetAttribute("DevMode") or snapshot.nextMode) -- DevMode: Studio's mode buttons win over the vote or nil
+			local left = snapshot.phaseEndsAt and math.max(0, math.ceil(snapshot.phaseEndsAt - snapshot.serverTime))
+			text = label and left and crayon(label, "D7282F") .. "   " .. crayon(string.format("%d:%02d", math.floor(left / 60), left % 60), "1F5BC8") or nil
+			first = false
+		end
 		-- The gold star sits at the strip's right end, so 1st-place words make room for it.
 		-- No round running (the Range, the tutorial's own room): no clock, mode or place.
-		local match = snapshot.endsAt ~= nil and FlightState.aimPoint == nil and not game.ReplicatedStorage.FlyFightPaper:GetAttribute("TutorialRoom")
-		round.Words.Text, round.Visible, star.Visible = text, match, first and match
+		local match = text ~= nil and snapshot.endsAt ~= nil and FlightState.aimPoint == nil and not game.ReplicatedStorage.FlyFightPaper:GetAttribute("TutorialRoom")
+		round.Words.Text, round.Visible, star.Visible = text or "", match, first and match
 		local control = snapshot.mode == "CONTROL"
 		teams = snapshot.teams or teams
 		capture.Visible = control

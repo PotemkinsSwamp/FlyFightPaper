@@ -10,7 +10,7 @@ Schema.integer = integer
 -- Lessons a save can tick (the Training board). Adding one later only widens this list: no migration.
 -- Match Tips (MatchTips.luau) save the same way, one tick per tip shown; they can be saved from any room.
 Schema.TIPS = table.freeze({ tipFfa = true, tipTeam = true, tipControl = true, tipDesk = true, tipFold = true, tipFolded = true,
-	tipWall = true, tipEdge = true, tipLift = true, tipVote = true })
+	tipWall = true, tipEdge = true, tipLift = true, tipVote = true }) -- tipVote: retired 2026-10-23 (the vote card says it), kept so saves that have it stay valid
 Schema.LESSONS = (function()
 	local all = { flight = true, combat = true, hangar = true, rangeNotes = true } -- rangeNotes: the Range's first-visit notes were seen
 	for tip in Schema.TIPS do all[tip] = true end

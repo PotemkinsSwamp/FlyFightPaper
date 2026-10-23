@@ -1,6 +1,7 @@
 -- Match Tips (docs/plan/TUTORIAL-PLAN.md "Lesson 5"; Alan OK'd the plan 2026-10-23): a small sticky note the first
 -- time something happens in a real match, each tip once per account. The match never pauses: a tip goes after six
--- seconds on screen or on Got it (Space), one at a time, at least 20 seconds apart, so it never nags. Tips a finished
+-- seconds on screen or on Got it (Space), one at a time, at least 20 seconds apart, so it never nags; only while a
+-- round is on (the break has its own cards: Alan 2026-10-23, the tip covered the vote lap's). Tips a finished
 -- lesson already taught are skipped. Settings > Match tips turns them off. Seen tips save in `lessons` (Schema.TIPS).
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -26,7 +27,6 @@ local TIPS = {
 	{ key = "tipFolded", skip = "combat", text = "Folded! You'll be back at your desk in a moment.", when = function(c) return c.state == "DESTROYED" end },
 	{ key = "tipFold", text = "Folded one! Every fold is points.", when = function(c) return c.recent(c.foldedAt) end },
 	{ key = "tipWall", text = "Scrapes tear your paper. Turn early.", when = function(c) return c.flying and c.recent(FlightState.scrapedAt) end },
-	{ key = "tipVote", text = "Fly through a ring to vote for the next match.", when = function(c) return c.flying and c.phase == "VOTE" end },
 	{ key = "tipControl", text = "Hold the zone with your team.", point = "zone", when = function(c) return c.flying and c.mode == "CONTROL" end },
 	{ key = "tipTeam", text = function(c) return "You're on " .. TEAM_NAMES[c.plane:GetAttribute("Team")] .. ". Blue outlines are your team: fold the orange ones." end,
 		when = function(c) return c.flying and c.mode == "TDM" and TEAM_NAMES[c.plane:GetAttribute("Team")] ~= nil end },
@@ -98,7 +98,7 @@ function Tips.start(getPlane)
 		-- (and not over the tutorial's own question, "Welcome, pilot!")
 		local tutorial = player.PlayerGui:FindFirstChild("Tutorial")
 		local asking = tutorial ~= nil and tutorial:FindFirstChild("Ask") ~= nil and tutorial.Ask.Visible
-		local hidden = not inMatch or asking or Root:GetAttribute("OverlayOpen") or Root:GetAttribute("PhotoMode") or Root:GetAttribute("Cutscene")
+		local hidden = not inMatch or asking or (snapshot.phase ~= "ACTIVE" and snapshot.phase ~= nil) or Root:GetAttribute("OverlayOpen") or Root:GetAttribute("PhotoMode") or Root:GetAttribute("Cutscene")
 		if hidden or Root:GetAttribute("MatchTips") == false or not profileLoaded then gui.Enabled = false; return end
 		local state = plane:GetAttribute("State")
 		local c = { plane = plane, state = state, flying = state == "FLYING", mode = snapshot.mode, phase = snapshot.phase, foldedAt = foldedAt, recent = recent }
