@@ -20,6 +20,8 @@
 - Claude's calls (for Alan to reverse): the level bar is left out; Boost's row is teal so it doesn't match Speed's
   blue; the red strip's pins are blue so they show.
 
+- **Approved by Alan in a match, same day:** "The quick menu looks good. We can move on."
+
 ## Why
 Alan: B lets the match stay visible (strip and kill feed) while everything the desk needs is still there.
 

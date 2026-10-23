@@ -74,7 +74,8 @@ function Audio.slowMusic(on)
  if music then game:GetService("TweenService"):Create(music,TweenInfo.new(.6),{PlaybackSpeed=on and .8 or 1}):Play() end
 end
 function Audio.start(getPlane)
- -- Classroom ambience: Pro Sound Effects "Kids Walla 2" (children in a school room), kept far in the background.
+ -- Classroom ambience: Pro Sound Effects "Kids Walla 2" (children in a school room), in the background but still heard
+ -- under the music (Alan 2026-10-22: the music drowned it).
  local ambience=Instance.new("Sound");ambience.Name="ClassroomAmbience";ambience.SoundId="rbxassetid://9112811182";ambience.Looped=true;ambience.Parent=Sounds;ambience:Play()
  -- Paper whoosh: airy wind (Pro Sound Effects "Plasma Trails Constant Airy Whooshing 2") that rises with speed.
  local whoosh=Instance.new("Sound");whoosh.Name="PaperWhoosh";whoosh.SoundId="rbxassetid://9125742262";whoosh.Looped=true;whoosh.Volume=0;whoosh.Parent=Sounds;whoosh:Play()
@@ -99,11 +100,13 @@ function Audio.start(getPlane)
   else track=track%#playlist+1;music.SoundId="rbxassetid://"..playlist[track] end
   music:Play()
  end
- music.Ended:Connect(nextTrack)
+ -- The next song starts a moment later: a Play() inside Ended itself is ignored (measured 2026-10-22), which left the
+ -- playlist silent after its first song.
+ music.Ended:Connect(function() task.delay(.3,nextTrack) end)
  -- Volume glides to the slider's value (a quarter second), so a jump from 0 to 100% fades instead of blasting.
  local glide=TweenInfo.new(.25)
  local function volumes()
-  game:GetService("TweenService"):Create(ambience,glide,{Volume=(inLesson() and 0 or .04)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
+  game:GetService("TweenService"):Create(ambience,glide,{Volume=(inLesson() and 0 or .08)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
   game:GetService("TweenService"):Create(music,glide,{Volume=(inLesson() and .067 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
  end
  Root:GetAttributeChangedSignal("MusicVolume"):Connect(volumes);Root:GetAttributeChangedSignal("SoundVolume"):Connect(volumes)

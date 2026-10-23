@@ -7,7 +7,9 @@ range. A paper whoosh rises only when you go faster than your plane's normal spe
 landing, lock-on pings, an end-of-round whistle and a music track (with its own slider) fill out the rest. Effects:
 tracers, impact puffs, paper-shred deaths, fan wind swirls, damage smoke.
 
-## Where it stands (2026-10-15)
+## Where it stands (2026-10-22)
+The match playlist now moves on to the next song (it went silent after the first one), and the classroom children are
+twice as loud so they still show under the music (Alan's note 2026-10-22; not yet heard by him).
 Stage 7 sounds are in, including every sound note from the 2026-10-13 playtest. Waiting on Alan's ears for the
 final loudness balance. Death looks wait on his eyes.
 

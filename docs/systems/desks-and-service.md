@@ -5,7 +5,7 @@ Every pilot has a desk. You launch from it and can fly back to land: refill Lift
 the preview shows it; **Edit build** opens the full hangar on it; a full refold flies it.
 
 ## Where it stands (2026-10-22)
-**New quick menu built; Alan OK'd its assembled preview, not yet played** ([decision](../decisions/2026-10-22-desk-quick-menu.md)):
+**New quick menu approved by Alan in a match (2026-10-22)** ([decision](../decisions/2026-10-22-desk-quick-menu.md)):
 photo, name and a four-row stat sheet top left, the five builds as small turned photos on a cork strip down the left,
 pinned service strips and Customize (opens the Hangar's binder) down the right, the note and LAUNCH! bottom middle; the
 match strip and kill feed stay up (`FlightHUD`'s MatchInfo layer). New art in `assets/ui/deskmenu/` (`UIAssets.deskMenu`,
