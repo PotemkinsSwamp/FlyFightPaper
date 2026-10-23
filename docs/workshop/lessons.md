@@ -312,3 +312,7 @@ Back to [HOME](../HOME.md)
   INCOMING! on it. Placed pellets (step 8's ambush) pass the target only for aiming, and need a lead to hit.
 - **Count the trigger's travel time once (2026-10-21):** the screen showing bots 0.19 s late looked like a gap against
   the server's 0.1 s rewind, but the rewind also adds twice the trigger message's age; end-to-end shots showed no lag.
+- **Adding a part to a flying plane takes it off its pilot (2026-10-23):** welding the team stickers on (Aircraft.paint,
+  when a team round starts) reset the plane's network owner to the server. The pilot's mouse still turned the aim but
+  nothing moved the plane: it flew straight into a wall until it folded (no pointer, control back only on a new life).
+  After changing a client-flown plane's parts on the server, call `SetNetworkOwner(pilot)` again.

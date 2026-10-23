@@ -88,6 +88,10 @@ function Aircraft.paint(model)
  local pieces=Root:FindFirstChild("Assets") and Root.Assets:FindFirstChild("AircraftPieces")
  local stickers=pieces and pieces:FindFirstChild("Stickers")
  local body=model:FindFirstChild("Root")
+ -- Welding the stickers on hands the plane back to the server (Roblox resets an assembly's owner when parts join it):
+ -- the pilot's mouse stopped steering and the plane flew straight on when a team round repainted it mid-flight
+ -- (Alan 2026-10-23). Give it back to whoever flew it.
+ local owner=game:GetService("RunService"):IsServer() and body and not body.Anchored and body:GetNetworkOwner() or nil
  local count=0
  for _,part in ipairs(appearance:GetChildren()) do
   local region=part:GetAttribute("Region")
@@ -110,6 +114,7 @@ function Aircraft.paint(model)
   local look=part.Parent and part:FindFirstChildOfClass("SurfaceAppearance")
   if look then look.Color=part.Color end
  end
+ if owner and not body.Anchored then body:SetNetworkOwner(owner) end
 end
 function Aircraft.build(model,loadout,catalog,preview)
  local assets=Root:FindFirstChild("Assets")
