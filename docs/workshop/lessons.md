@@ -268,6 +268,9 @@ mistake would be easy to make twice.
 - **A Sound inside an Attachment plays at that attachment's place, even outside the room** (2026-10-18: "flat" UI
   sounds sat in an attachment under SoundService, so they played from the room's middle and faded with distance).
   Sounds meant to be heard the same everywhere go straight in SoundService.
+- **Moving a GUI piece to another ScreenGui breaks every `FindFirstChild` path to it** (2026-10-22: the kill feed moved to
+  FlightHUD's MatchInfo layer and CombatEffects, which looked in FlightHUD, stopped filling it). Grep the piece's name
+  across `src/` before moving it.
 - **The Range runs as the tutorial's "range" room** (`TutorialOpen` true, `TutorialLesson` "range"): "not in a lesson"
   checks must exclude it, or they also hide things in the Range (2026-10-22 sticky notes). And `x ~= nil` is true for
   `false`: write `if show then f() else nil`, not `show and f()`, when nil means "hide".

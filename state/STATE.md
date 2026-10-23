@@ -1,17 +1,17 @@
-# Since Alan last checked (2026-10-22)
-- **Tutorials approved** (your words: "conclude the tutorials as done"): Flight School, Combat School, Hangar Tour,
-  Training board, Hangar try-on/Select. 28 of your notes fixed over two days (docs/playtests/2026-10-21-hangar-tour.md).
-- Fixed for every flight: the nose dot now settles on the aim circle (the camera sits above the plane).
+# Since Alan last checked (2026-10-22, evening)
+- **Desk quick menu approved** in a match (concept B; match strip and kill feed stay up). 7 art pieces uploaded ($0).
+- Kill feed lines were broken by the move (fixed same session). Music playlist now moves to the next song (it went
+  silent after one); classroom children twice as loud under the music (not yet heard by you).
+- **Range first-visit sticky notes built**; your first look showed an empty note in the corner: fixed (two causes),
+  waiting for your retest.
 
-# Now: UI lane — next is the desk quick menu (your pick), then the Range's first-visit sticky notes
-What works: everything in Stage 9 plus the tutorials. Then Match Tips and the Range build swap (fly off / slide in).
-
-Broken or not yet checked: Visual looks of deaths/glints/split planes still wait on Alan's eyes. Bot-vs-bot rams never land.
-During the vote lap the top strip still shows the old round's mode and clock. The desk's quick menu still has the
-old 1-5 squares (next). Track C saving needs a private publish (Alan's go). A lesson started while the tour's Hangar
-is open (Studio's DevLesson only) waits behind it. Place file not re-saved (needs Ctrl+S; code lives in src/).
+# Now: UI lane: your retest of the Range sticky notes, then Match Tips (plan first), then the Range build swap
+What works: everything in Stage 9, the tutorials, the desk quick menu. Broken or not yet checked: Range sticky notes after the fix. Visual looks of deaths/glints/split planes still wait on
+your eyes. Bot-vs-bot rams never land. During the vote lap the top strip still shows the old round's mode and clock.
+Track C saving needs a private publish (your go). Place file not re-saved (needs Ctrl+S; code lives in src/).
 
 Decisions to review
+Desk quick menu: no level bar; Boost row teal (Speed is blue); blue pins on the red strip. Classroom chatter 0.08 (was 0.04).
 Combat School: every Pal runs (85% of your speed when far, 100% near, banks 25-50 degrees every 2.5-4 s); step 8's
   shots are fakes from the Pal's side while it's out of view (~4 s to half Health); look cards hold 5 s, action steps
   2.5 s; Pal erasers 80% speed, 10% slower per hit (floor 60%). "No thanks" to the welcome question isn't saved.
@@ -51,7 +51,7 @@ Paper targets: 14.4 x 16.8 studs, 50 points each (500 max), server-checked inste
 
 
 Waiting on Alan
-- The desk quick menu: a concept picture comes first for your OK.
+- Range sticky notes: open the Range, check the five notes and their arrows (what to try is in the chat/handoff).
 - Your call later: give the match bots the gun fix too (their guns still cross at 150 studs, so they miss past it).
 - Backlog (yours): a new fan sound for the real game. Private publish (your go) to test the move into the tutorial room.
 0. Studio: File > Save to File (keeps the duct fan fix in the place file).
