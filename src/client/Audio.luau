@@ -105,13 +105,21 @@ function Audio.start(getPlane)
  music.Ended:Connect(function() task.delay(.3,nextTrack) end)
  -- Volume glides to the slider's value (a quarter second), so a jump from 0 to 100% fades instead of blasting.
  local glide=TweenInfo.new(.25)
+ -- The children are the classroom's own sound (Alan 2026-10-23): only while you're out flying in a match, never at
+ -- the desk, in a menu, the Range or a lesson.
+ local function inClassroom()
+  local plane=getPlane()
+  return plane~=nil and plane.Parent~=nil and game:GetService("Players").LocalPlayer:GetAttribute("InMatch")==true and plane:GetAttribute("State")~="DESK"
+   and plane:GetAttribute("Pinned")==nil and not inLesson() and not Root:GetAttribute("OverlayOpen")
+ end
  local function volumes()
-  game:GetService("TweenService"):Create(ambience,glide,{Volume=(inLesson() and 0 or .08)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
+  game:GetService("TweenService"):Create(ambience,glide,{Volume=(inClassroom() and .08 or 0)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
   game:GetService("TweenService"):Create(music,glide,{Volume=(inLesson() and .067 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
  end
  Root:GetAttributeChangedSignal("MusicVolume"):Connect(volumes);Root:GetAttributeChangedSignal("SoundVolume"):Connect(volumes)
  Root:GetAttributeChangedSignal("TutorialOpen"):Connect(function() nextTrack();volumes() end)
  volumes();nextTrack()
+ task.spawn(function() local was;while true do task.wait(.25);local now=inClassroom();if now~=was then was=now;volumes() end end end)
  local lastPhase
  local Players=game:GetService("Players")
  Players.LocalPlayer:GetAttributeChangedSignal("MenuMessage"):Connect(function()

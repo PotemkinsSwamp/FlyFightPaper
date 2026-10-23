@@ -10,8 +10,8 @@ hangar, each weapon, and how building a plane works. It can be skipped and repla
 ([decision](../decisions/2026-10-22-tutorials-approved.md)); Match Tips is still to build. **The Range's first-visit
 sticky notes are built, redone after Alan's first look** (2026-10-23): the tutorial's own note, top middle, five
 notes one at a time, each with the lessons' crayon arrow just outside what it explains (an up row plate, Reset, Range
-Menu, Hangar; over the Hangar, its Back button, note bottom right; the Menu button), then a closing "The Range is
-yours" note (seven in all); a note goes when you use its thing or press Space ("Got it"), K ("Skip all") ends them,
+Menu, Hangar; over the Hangar, its Back button, note bottom right; the Menu button), then the last note, "The Range is
+yours... to leave, press Menu, then Leave", at the Menu button (six in all); a note goes when you use its thing or press Space ("Got it"), K ("Skip all") ends them,
 no timer, no shooting; never during a lesson or under a menu; seen once (saved as
 `lessons.rangeNotes`, no tick on the board). **Its own room works:** a brand-new player (no matches played) is asked once the
 classroom has loaded, "Welcome, pilot! Want a quick tutorial?" (Yes / No thanks, and where to find it later; Alan

@@ -36,8 +36,8 @@ local STEPS = {
 	{ text = "Your 5 Range builds and how hard the targets are.", done = "menu", find = boardPart("menu") },
 	{ text = "Change your Range builds. Any part works here, even ones you don't own.", done = "hangar", find = boardPart("hangar") },
 	{ text = "Back takes you to the Range.", done = "back", gui = "back" },
-	{ text = "Menu, then Leave, takes you out of the Range.", done = "pause", gui = "menu" },
-	{ text = "That's it! The Range is yours. Practise as long as you like." },
+	-- The last note (Alan 2026-10-23: a "Menu, then Leave" note of its own made people leave): Got it, or opening the Menu.
+	{ text = "That's it! The Range is yours: practise as long as you like. To leave, press Menu, then Leave.", done = "pause", gui = "menu" },
 }
 
 -- getStage() = the Range's stage model or nil.

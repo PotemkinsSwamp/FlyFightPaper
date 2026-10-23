@@ -117,7 +117,8 @@ Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hang
   seen once (saved). His first look (2026-10-23): the tutorial's own note, Space for "Got it", K for "Skip all", no
   timer, no shooting the note; the first one points at a plate that's up (Medium), not the "All" one that's down.
   Second look: arrows sat on their buttons (now just outside them), and opening the Hangar ended the notes; now a
-  Back note over the Hangar, then the Menu note, then a closing "The Range is yours" note.
+  Back note over the Hangar, then one last note: "The Range is yours... to leave, press Menu, then Leave" at the
+  Menu button (a Menu > Leave note of its own would make people leave, Alan 2026-10-23).
 - **Leave:** Menu > Leave takes you back to a normal room. From a match, opening it first says you'll leave the match.
 - **Build order:** (1) rough build for feel: stand-in stage, one moving cut-out that flips and tears, the held plane and
   its camera; Alan plays it. (2) 2D pieces from the concepts (Codex), checked on a contact sheet, uploaded by Alan.
