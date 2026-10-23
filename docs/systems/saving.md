@@ -7,7 +7,9 @@ lost if a save fails for a moment; it retries without stopping the match for eve
 ## Where it stands (2026-10-19)
 Schema 7 adds the Range's own five builds (`rangePresets`, any part allowed) and the last Range build flown (`rangeSlot`); the shut-down-old-servers rule applies.
 The save now keeps which lessons you've finished (schema 6, `lessons`: the [Training board](tutorial.md)'s ticks; a
-new lesson name only widens `ProfileSchema.LESSONS`, no migration) and a prestige rank (schema 5). **Before publishing a new schema, shut down all old servers**: an
+new lesson name only widens `ProfileSchema.LESSONS`, no migration; Match Tips save there too, one tick each, from any room:
+`ProfileSchema.TIPS`) and a prestige rank (schema 5). The Match tips switch is `settings.matchTips` (optional: missing
+means on, so older saves need no migration) and a prestige rank (schema 5). **Before publishing a new schema, shut down all old servers**: an
 old server can't read a newer save and would kick a player sent to it (Codex review 2026-10-19). Prestige: its rules are on [Economy and shop](economy-and-shop.md#prestige).
 Built on ProfileStore (Stage 5, Codex's lane) and tested with a fake save store. In Studio, progress lasts one
 Play session only. Published privately on 2026-10-17 ([how](../decisions/2026-10-07-private-publish.md)); real

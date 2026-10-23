@@ -129,7 +129,7 @@ function Spec.run()
 		p.version=12; p.paperMilli=4321; p.prestige=2; p.lessons={flight=true}; p.statistics.matches=3
 		p.settings.music=0.25; p.extensions={custom={kept=true}}
 		local original=Schema.canonical(p); local expected=assert(Schema.copy(p)); local defaults=fresh()
-		expected.schemaVersion=7; expected.rangePresets=defaults.rangePresets; expected.rangeSlot=1
+		expected.schemaVersion=Schema.VERSION; expected.rangePresets=defaults.rangePresets; expected.rangeSlot=1
 		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
 		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v6 migration changed unrelated fields")
 		assert(Schema.canonical(p)==original,"v6 migration mutated input")

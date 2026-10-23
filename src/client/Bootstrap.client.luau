@@ -42,5 +42,6 @@ local effects=require(script.Parent.CombatEffects).start(function() return plane
 require(script.Parent.CombatController).start(function() return plane end,effects)
 require(script.Parent.Audio).start(function()return plane end)
 require(script.Parent.Tutorial).start(function()return plane end)
+require(script.Parent.MatchTips).start(function()return plane end)
 require(script.Parent.DevTools).start(Menu)
 for _,connection in ipairs(loadingEvents) do connection:Disconnect() end

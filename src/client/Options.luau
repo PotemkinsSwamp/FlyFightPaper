@@ -12,5 +12,6 @@ function Options.apply(settings)
  applyQuality(settings.quality)
  Root:SetAttribute("Sensitivity",settings.sensitivity);Root:SetAttribute("SoundVolume",settings.sound);Root:SetAttribute("MusicVolume",settings.music)
  Root:SetAttribute("ReducedShake",settings.reducedShake);Root:SetAttribute("Quality",settings.quality);Root:SetAttribute("CrosshairColor",settings.crosshairColor);Root:SetAttribute("CrosshairSize",settings.crosshairSize)
+ Root:SetAttribute("MatchTips",settings.matchTips~=false)
 end
 return Options

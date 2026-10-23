@@ -8,7 +8,14 @@ local Schema = { VERSION = 7, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES =
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
 -- Lessons a save can tick (the Training board). Adding one later only widens this list: no migration.
-Schema.LESSONS = table.freeze({ flight = true, combat = true, hangar = true, rangeNotes = true }) -- rangeNotes: the Range's first-visit notes were seen
+-- Match Tips (MatchTips.luau) save the same way, one tick per tip shown; they can be saved from any room.
+Schema.TIPS = table.freeze({ tipFfa = true, tipTeam = true, tipControl = true, tipDesk = true, tipFold = true, tipFolded = true,
+	tipWall = true, tipEdge = true, tipLift = true, tipVote = true })
+Schema.LESSONS = (function()
+	local all = { flight = true, combat = true, hangar = true, rangeNotes = true } -- rangeNotes: the Range's first-visit notes were seen
+	for tip in Schema.TIPS do all[tip] = true end
+	return table.freeze(all)
+end)()
 function Schema.id(s) return type(s) == "string" and #s > 0 and #s <= Schema.MAX_OPERATION_ID and s:match("^[%w_%-:]+$") ~= nil end
 function Schema.nonce(s) return type(s)=="string" and #s>0 and #s<=64 and s:match("^[%w_%-:]+$")~=nil end
 local function freeze(v)
@@ -77,7 +84,7 @@ function Schema.defaults(catalog)
 	assert(integer(paper) and integer(xp),"invalid_initial_economy")
 	local p = { schemaVersion = Schema.VERSION, version = 0, generation = 0, paperMilli = paper, earnedPaperMilli = 0,
 		purchasedPaperMilli = 0, xpMilli = xp, prestige = 0, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
-		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium" },
+		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium", matchTips = true },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
 		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, lessons = {} }
 	for i = 1, Gameplay.menus.saved_loadouts do
@@ -108,7 +115,8 @@ function Schema.validate(record, catalog)
 			assert(catalog:validateLoadout(preset.loadout, nil, 1000000000))
 		end
 		assert(integer(p.rangeSlot) and p.rangeSlot>=1 and p.rangeSlot<=Gameplay.menus.saved_loadouts, "invalid_range_slot")
-		exact(p.settings, {music=1,sound=1,sensitivity=1,reducedShake=1,quality=1,crosshairColor=1,crosshairSize=1})
+		exact(p.settings, {music=1,sound=1,sensitivity=1,reducedShake=1,quality=1,crosshairColor=1,crosshairSize=1,matchTips=0}) -- matchTips: missing = on (older saves)
+		assert(p.settings.matchTips==nil or type(p.settings.matchTips)=="boolean", "invalid_settings")
 		for _, k in ipairs({"music","sound"}) do assert(type(p.settings[k])=="number" and p.settings[k]>=0 and p.settings[k]<=1, "invalid_volume") end
 		assert(type(p.settings.sensitivity)=="number" and p.settings.sensitivity>=0.2 and p.settings.sensitivity<=3 and type(p.settings.reducedShake)=="boolean", "invalid_settings")
 		assert(p.settings.quality=="Low" or p.settings.quality=="Medium" or p.settings.quality=="High", "invalid_quality")

@@ -91,11 +91,12 @@ function SettingsScreen.new(playerGui, api)
 	end
 
 	-- A row of paper tabs; the chosen one is bright.
-	local function tabs(key, label, y, options, names, onImage)
-		words(sheet, key .. "Label", label, 1020, y - 72, 600, 60, 52)
+	local function tabs(key, label, y, options, names, onImage, x)
+		x = x or 1020
+		words(sheet, key .. "Label", label, x, y - 72, x == 1020 and 600 or 400, 60, 52)
 		local row = {}
 		for i, option in options do
-			local tab = PaperUI.button(sheet, key .. tostring(option), Art.tabOff, names[i], 1020 + (i - 1) * 200, y, 185, 82, 0,
+			local tab = PaperUI.button(sheet, key .. tostring(option), Art.tabOff, names[i], x + (i - 1) * 200, y, 185, 82, 0,
 				function() settings[key] = option; refresh[key](); save() end, 40)
 			row[option] = tab
 		end
@@ -105,6 +106,7 @@ function SettingsScreen.new(playerGui, api)
 	end
 	tabs("crosshairSize", "Crosshair size", 540, SIZES, SIZES, Art.tabOn)
 	tabs("reducedShake", "Reduced shake", 720, { true, false }, { "On", "Off" }, Art.tabGreen)
+	tabs("matchTips", "Match tips", 720, { true, false }, { "On", "Off" }, Art.tabGreen, 1440) -- the tips in your first matches
 	tabs("quality", "Graphics quality", 895, { "Low", "Medium", "High" }, { "Low", "Medium", "High" }, Art.tabOn)
 	refresh.crosshairSize = (function(base)
 		return function()
@@ -123,6 +125,7 @@ function SettingsScreen.new(playerGui, api)
 		settings = profile.settings
 		settings.crosshairColor = settings.crosshairColor or "blue"
 		settings.crosshairSize = settings.crosshairSize or "Medium"
+		settings.matchTips = settings.matchTips ~= false
 		for _, fn in refresh do fn() end
 	end
 	return self

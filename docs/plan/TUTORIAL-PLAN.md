@@ -161,6 +161,9 @@ Short notes that pop up the first time something happens, not before:
 - First fold, first time folded, first scrape on a wall, first time near the edge, first time Lift is low
   ("Land at your desk or find a fan"), first vote lap ("Fly through a ring to vote").
 Can be turned off in Settings.
+Alan's OK on the details (2026-10-23): the tutorial's sticky note, smaller, under the match strip; Got it (Space) or
+6 seconds; one at a time, 20 seconds apart; saved once each; tips a finished lesson taught are skipped; no "show tips
+again" for now. Plus "Your desk: change your build here, then LAUNCH." the first time at your desk.
 
 ## The Training board (menu)
 The main menu's Training button (Alan 2026-10-20: was Tutorial) opens a **Training board** listing the lessons, each with a tick when done and

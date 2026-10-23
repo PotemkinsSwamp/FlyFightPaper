@@ -7,7 +7,12 @@ hangar, each weapon, and how building a plane works. It can be skipped and repla
 
 ## Where it stands (2026-10-22)
 **Flight School, Combat School, the Hangar Tour and the Training board approved by Alan 2026-10-22**
-([decision](../decisions/2026-10-22-tutorials-approved.md)); Match Tips is still to build. **The Range's first-visit
+([decision](../decisions/2026-10-22-tutorials-approved.md)). **Match Tips built 2026-10-23, not yet seen by Alan**:
+ten one-line tips in real matches, each once (saved), a small sticky note under the match strip, gone after 6 s or
+Space, 20 s apart, never over a menu or the tutorial's question; tips a finished lesson taught are skipped (Flight
+School: Lift, desk; Combat School: being folded); Settings > Match tips: On/Off. Seen working in a bots match: desk,
+take-off (free-for-all), folded, low Lift (arrow at the bar), edge, your first fold (the last three faked); the team,
+Airspace, vote-lap and scrape tips are untested. **The Range's first-visit
 sticky notes work: Alan approved them** (2026-10-23, after two rounds of his notes): the tutorial's own note, top middle, five
 notes one at a time, each with the lessons' crayon arrow just outside what it explains (an up row plate, Reset, Range
 Menu, Hangar; over the Hangar, its Back button, note bottom right; the Menu button), then the last note, "The Range is
@@ -152,6 +157,7 @@ air, the gun range sent, and how far and where each passed the nearest enemy's c
 | `src/server/RangeStage.luau` | The Range's puppet-theatre stage built from the painted pieces, measured from the concept; its controls (row plates, score card, Reset, Menu note, the menu on strings) |
 | `tests/unit/RangeAccuracy.spec.luau` | Fires ~3,700 shots dead on the lead ring at every Range target, row, difficulty and steady weapon; all must hit |
 | `src/client/RangeNotes.luau` | The Range's first-visit sticky notes and their arrows |
+| `src/client/MatchTips.luau` | Match Tips: the one-line notes in your first real matches, each shown once |
 | `src/client/RangeBoard.luau` | The Range's controls: the crosshair as cursor, the menu dropping and pulling up, score card, rings, keys 1-5 |
 | `src/server/RoundRuntime.luau` | Tutorial room: no rounds or bots; first-join routing; practice flights |
 | `src/server/Matchmaking.luau` | Sends a player to a fresh private tutorial room and back |

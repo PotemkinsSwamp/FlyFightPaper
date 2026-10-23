@@ -38,6 +38,7 @@ function Controller.start(plane)
 	-- A scrape knocks the nose and the pilot's aim away from the wall, so they have to steer back, and rolls the
 	-- touching wing up into a wobble (Alan 2026-10-18). Once per wobble, however long the contact lasts.
 	local function scrape(normal, now)
+		state.scrapedAt = os.clock() -- Match Tips' wall tip
 		if now - wobbleAt < Config.scrape_wobble_seconds * 0.6 or normal.Magnitude < .5 then return end
 		local axis = heading:Cross(normal)
 		if axis.Magnitude > 1e-3 then

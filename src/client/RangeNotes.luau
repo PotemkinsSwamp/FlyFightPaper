@@ -158,13 +158,7 @@ function Notes.new(getStage)
 		arrow.Visible = low ~= nil
 		if not low then return end
 		-- The arrow sits just outside what the note explains, on the note's side, pointing at it.
-		local middle, half = (low + high) / 2, (high - low) / 2
-		local from = note.AbsolutePosition - gui.AbsolutePosition + note.AbsoluteSize / 2
-		local away = from - middle
-		away = away.Magnitude > 1 and away.Unit or Vector2.new(0, -1)
-		local edge = math.min(math.abs(away.X) > 1e-3 and half.X / math.abs(away.X) or math.huge, math.abs(away.Y) > 1e-3 and half.Y / math.abs(away.Y) or math.huge)
-		local tip = middle + away * (edge + 70 * s)
-		arrow.Position, arrow.Rotation = UDim2.fromOffset(tip.X, tip.Y), math.deg(math.atan2(-away.Y, -away.X))
+		PaperUI.pointArrow(arrow, note.AbsolutePosition - gui.AbsolutePosition + note.AbsoluteSize / 2, low, high, s)
 	end)
 	-- Opening the game menu (the Menu button, Esc) finishes the last note.
 	Root:GetAttributeChangedSignal("OverlayOpen"):Connect(function()

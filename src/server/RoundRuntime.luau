@@ -79,7 +79,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    -- A lesson's end card was reached in the tutorial room: tick it on the Training board (no rewards, so the
    -- client's word is enough; the server only checks the name and the room).
    local profile=self.profiles:view(player)
-   if profile and self:tutorialRoom() and not profile.lessons[value] then
+   if profile and (self:tutorialRoom() or Schema.TIPS[value]) and not profile.lessons[value] then -- Match Tips: any room
     self.profiles:enqueue(player,{kind="lessonDone",lesson=value},nil,function(ok) if ok then self:sendProfile(player) end end)
    end
   elseif action=="withdraw" and value==true then self:withdraw(player)

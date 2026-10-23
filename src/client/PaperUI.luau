@@ -84,6 +84,17 @@ function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback,
 end
 
 -- Every time the cover is shown, the named pieces pop onto the sheet one after another.
+-- Puts the crayon arrow just outside a box (screen pixels, low and high corners), on the side facing `from`, pointing
+-- in at it. `s` is the screen's scale. Used by the Range's notes and the Match Tips.
+function PaperUI.pointArrow(arrow, from, low, high, s)
+	local middle, half = (low + high) / 2, (high - low) / 2
+	local away = from - middle
+	away = away.Magnitude > 1 and away.Unit or Vector2.new(0, -1)
+	local edge = math.min(math.abs(away.X) > 1e-3 and half.X / math.abs(away.X) or math.huge, math.abs(away.Y) > 1e-3 and half.Y / math.abs(away.Y) or math.huge)
+	local tip = middle + away * (edge + 70 * s)
+	arrow.Position, arrow.Rotation = UDim2.fromOffset(tip.X, tip.Y), math.deg(math.atan2(-away.Y, -away.X))
+end
+
 function PaperUI.popIn(cover, pieces)
 	local start = {}
 	for _, piece in pieces do start[piece] = { size = piece.Size, rotation = piece.Rotation } end
