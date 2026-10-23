@@ -324,8 +324,14 @@ Rewrite client steering and camera; keep client network ownership and the server
   All pooled.
 - **To do (Alan 2026-10-23):** the winners' moment at a match's end gets all the attention: the match music fades
   out (no match music under it) and kids cheer and whistle, like a party or a ball game. Later, special emotes (with
-  their own animation and music) play for a 1st-place winner who owns one; without one, the cheering plays. Alan picks
-  the cheer sounds by ear.
+  their own animation and music) play for a 1st-place winner who owns one; without one, the cheering plays.
+  Alan's picks (2026-10-23, all licensed, all load in the game): crowd cheers and whistles 9120973900 (PSE, 21 s) with
+  the kids' "Yeah!" 1841221347 (APM, 3 s) quiet on top; clapping 9113138035 (PSE small-room applause, 16 s); winners'
+  music: Cartoon Time 1844278029 (APM, 5 s) is too short: find a LONGER fun winners' track (~15-25 s) to cut to fit.
+  Mixed "tastefully", timed to the moment (27 s, from WinnersCutscene's own timings; confirm in Play): 0-1.2 s banner
+  (match music fades), 1.2-3.2 s camera glides in, winners stand and hop at ~5 / 6.5 / 8.5 s (3rd, 2nd, 1st), zoom
+  out 8.8-10.4 s, all dance to 17 s, camera back and results card 17-27 s, then the vote lap. Cheering and clapping
+  while they jump on the desks; music under the dancing. Plan the cue sheet with Alan before building.
 
 ## Stage 8 — Aircraft and builder visuals (after ★)
 - Polish all 24 structural parts and 6 weapon mounts (existing Meshy/Blender plus new Meshy where needed).
