@@ -322,6 +322,8 @@ Rewrite client steering and camera; keep client network ownership and the server
 - Real classroom ambience and a music track with its own slider.
 - Effects: impact puffs, paper-shred deaths, boost trail, protection dome, fan wind lines, damage smoke/tatters.
   All pooled.
+- **To do (Alan 2026-10-23):** the winners' moment at a match's end gets all the attention: the match music fades
+  out and a short winners' tune of its own plays (no match music under it). Pick the tune with Alan by ear.
 
 ## Stage 8 — Aircraft and builder visuals (after ★)
 - Polish all 24 structural parts and 6 weapon mounts (existing Meshy/Blender plus new Meshy where needed).
