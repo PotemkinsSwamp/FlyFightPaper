@@ -2,7 +2,7 @@
 -- One note at a time, each with the lessons' crayon arrow pointing at what it explains; nothing is dimmed, so you can
 -- keep shooting. A note goes when you use the thing it points at, or when you shoot/click the note; "Skip all" ends
 -- them. Seen once: the last note (or Skip all) saves "rangeNotes" in your lessons, like a lesson's tick.
--- Not during a lesson (the Hangar Tour runs in the Range), nor while a menu is open over the Range.
+-- Not during another lesson (the Hangar Tour runs in the Range), nor while a menu is open over the Range.
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
@@ -91,9 +91,10 @@ function Notes.new(getStage)
 
 	RunService.RenderStepped:Connect(function()
 		local inRange = FlightState.aimPoint ~= nil and getStage() ~= nil
-		local show = profileLoaded and not seen and inRange and STEPS[step] ~= nil
-			and not Root:GetAttribute("TutorialOpen") and not Root:GetAttribute("OverlayOpen")
-		local spot = show and target()
+		-- The Range itself runs as the tutorial's "range" room; any other lesson open (the Hangar Tour) hides the notes.
+		local lesson = Root:GetAttribute("TutorialOpen") and Root:GetAttribute("TutorialLesson") ~= "range"
+		local show = profileLoaded and not seen and inRange and STEPS[step] ~= nil and not lesson and not Root:GetAttribute("OverlayOpen")
+		local spot = if show then target() else nil
 		gui.Enabled = spot ~= nil
 		if not spot then return end
 		local view = workspace.CurrentCamera.ViewportSize
