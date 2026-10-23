@@ -27,7 +27,7 @@
   shots near the ring landed (the aim help) and dead-on shots at climbing targets missed (the hit check used the
   plane under the card, which lagged its path), so the Range has no aim help and judges hits on the path; the
   game's Menu button moved into Roblox's top bar for good (Alan: "that would have to be permanent, which I don't mind").
-- Liked, later: on a swap the old plane flies off into the distance and the new one slides in from behind.
+- Liked, later: on a swap the old plane flies off into the distance and the new one slides in from behind. **Dropped for now (Alan 2026-10-23: "not that important").**
 
 ## Why
 Alan: the boards were "taking up too much of the screen"; "I have to click menu, then another one, then back to
