@@ -64,7 +64,8 @@ function Notes.new(getStage)
 	local viaHangar, hangarWasOpen = false, false
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
 		if type(profile) == "table" and type(profile.lessons) == "table" then
-			profileLoaded, seen = true, seen or profile.lessons.rangeNotes == true
+			-- Our own save (the last note showing) comes back here too: that mustn't hide the last note.
+			profileLoaded, seen = true, seen or (not saved and profile.lessons.rangeNotes == true)
 		end
 	end)
 	-- Saved once the last note shows (leaving from the Menu note still counts as seen); gone after its Got it.
