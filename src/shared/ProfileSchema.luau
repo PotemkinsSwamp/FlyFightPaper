@@ -8,7 +8,7 @@ local Schema = { VERSION = 7, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES =
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
 -- Lessons a save can tick (the Training board). Adding one later only widens this list: no migration.
-Schema.LESSONS = table.freeze({ flight = true, combat = true, hangar = true })
+Schema.LESSONS = table.freeze({ flight = true, combat = true, hangar = true, rangeNotes = true }) -- rangeNotes: the Range's first-visit notes were seen
 function Schema.id(s) return type(s) == "string" and #s > 0 and #s <= Schema.MAX_OPERATION_ID and s:match("^[%w_%-:]+$") ~= nil end
 function Schema.nonce(s) return type(s)=="string" and #s>0 and #s<=64 and s:match("^[%w_%-:]+$")~=nil end
 local function freeze(v)

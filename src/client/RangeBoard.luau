@@ -22,6 +22,7 @@ function Board.start()
 	local stage, sheet, up, isOpen = nil, nil, nil, false
 	local height, speed = LIFT, 0 -- how far above its open spot the menu hangs, and how fast that is changing
 	local presets = {}
+	local notes = require(script.Parent.RangeNotes).new(function() return stage and stage.Parent and stage or nil end)
 
 	local function strip(what)
 		for _, p in (sheet and sheet:GetChildren() or {}) do
@@ -85,6 +86,7 @@ function Board.start()
 
 	-- A click (either button) on whatever the crosshair is over; FlightState.aimPoint is only set in the Range.
 	local function click(what)
+		notes.used(what)
 		if what == "menu" then open(not isOpen)
 		elseif what == "close-menu" then open(false)
 		elseif what == "hangar" then open(false); require(script.Parent.MenuController).show("hangar", true)
@@ -98,6 +100,7 @@ function Board.start()
 		local eye = workspace.CurrentCamera.CFrame.Position
 		-- The game's Menu button (top left) under the crosshair opens the game menu, like Esc.
 		local spot = workspace.CurrentCamera:WorldToViewportPoint(eye + FlightState.aim * 1000)
+		if notes.clicked(Vector2.new(spot.X, spot.Y)) then return end -- a first-visit sticky note (RangeNotes)
 		local menu = player.PlayerGui:FindFirstChild("GameMenu")
 		local button = menu and menu:FindFirstChild("OpenMenu")
 		-- Measured from the menu's own top-left (the window's corner: it ignores the top bar inset). GUI positions start
@@ -110,6 +113,7 @@ function Board.start()
 		local hit = workspace:Raycast(eye, FlightState.aim * 1000, cast)
 		local part = hit and hit.Instance
 		local what = part and (part:GetAttribute("RangeBoard") or part:GetAttribute("RangePick"))
+		if part and part:GetAttribute("RangePick") then notes.used("pick") end
 		if what then click(what) end
 	end)
 end

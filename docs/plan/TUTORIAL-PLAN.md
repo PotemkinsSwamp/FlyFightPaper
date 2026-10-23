@@ -112,6 +112,9 @@ Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hang
   your match builds); any part works there, even ones you don't own yet. Numbered strips (shoot one, or keys 1-5)
   swap your plane instantly; **Hangar** opens the in-game hangar on top to edit them; saving swaps your plane at once.
 - **First visit:** sticky notes point at the picker, the score card, the loadout strips and how to leave, one at a time.
+  Alan OK'd the details 2026-10-22: five notes (plates, score card, Range Menu, Hangar, Menu > Leave), the lessons'
+  sticky note and crayon arrow, nothing dimmed; a note goes when you use its thing or shoot/click it; "Skip all";
+  seen once (saved).
 - **Leave:** Menu > Leave takes you back to a normal room. From a match, opening it first says you'll leave the match.
 - **Build order:** (1) rough build for feel: stand-in stage, one moving cut-out that flips and tears, the held plane and
   its camera; Alan plays it. (2) 2D pieces from the concepts (Codex), checked on a contact sheet, uploaded by Alan.
