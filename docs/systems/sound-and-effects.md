@@ -31,6 +31,7 @@ the other guns) and a soft railgun zap under it ("Electric Arcing 6").
 | File | What it does |
 |---|---|
 | `src/client/Audio.luau` | Every sound: weapons, events, 3D positioning, whoosh, ambience, music, lock beeps |
+| `src/client/WinnersSound.luau` | The winners' moment's mix (cheers, clapping, "Yeah!", winners' track), built up to 1st's landing; plays in Studio Edit too (not yet hooked to the cutscene: Alan picks the track by ear) |
 | `src/client/CombatEffects.luau` | Tracers, impacts, hit markers, smoke |
 | `src/client/PlaneDeaths.luau` | Paper ball and shred deaths |
 | `src/client/FanWind.luau` | Wind swirls over fans |
