@@ -6,7 +6,9 @@ Three modes, voted on after each round: free-for-all (8 minutes or 20 folds), te
 ## Where it stands (2026-10-17)
 Round end ([decision](../decisions/2026-10-17-rounds-never-stop.md)): nobody leaves the room; planes hold still for
 the winners' moment (27 s, desks in `rounds.winner_desks`), then a safe vote lap through mode rings (keys 1/2/3) and
-the next round starts in place. Cutscene and the Studio "end match" button seen working in Play 2026-10-17. Fixed the
+the next round starts in place. Through the break and the new round's first 2 s walls only bounce you off (your
+screen doesn't play a crash either), and a plane carried into a team round keeps its pilot's control when it's
+repainted (both fixed 2026-10-23, seen in a bots match). Cutscene and the Studio "end match" button seen working in Play 2026-10-17. Fixed the
 same day: a team round starting in place after a free-for-all (or the reverse) crashed seating the bots, leaving that
 round without bots. Results card shows folds, assists, crashes and points per pilot, team totals in team rounds, and your Paper, XP
 and level bar (seen 2026-10-17; the bar filling not yet seen, the test account is at max level). Alan's evening notes (same decision, "Revised again"): the cutscene films each winner close up and straight on in turn

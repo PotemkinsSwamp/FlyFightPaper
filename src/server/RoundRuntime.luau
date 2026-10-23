@@ -15,6 +15,7 @@ local Course=require(Root.Shared.TrainingCourse)
 local RangeStage=require(script.Parent.RangeStage)
 local Loadouts=require(Root.Shared.WeaponLoadouts)
 local Schema=require(Root.Shared.ProfileSchema)
+local WALL_GRACE_SECONDS=2 -- ponytail: a fixed grace; move to config/gameplay.json if it needs tuning
 local Runtime={};Runtime.__index=Runtime
 function Runtime.new(flight,combat,bots,profiles,commerce)
  local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false},Runtime)
@@ -198,7 +199,10 @@ function Runtime:begin(mode)
  self.sequence=0;self.earningCursor=0;self.finished=false;self.settled=false;self.earnedTotals={};self.finalRewards={};self.settledRows={}
  self.startShots=self.combat.totalFired;self.startHits=self.combat.totalHits
  -- Rounds never stop (Alan 2026-10-17): planes already in the room carry on into this round.
- self.flight.records={};self.flight.active=true;self.flight.safe=false;self.bots.enabled=true;self.combat.enabled=true
+ self.flight.records={};self.flight.active=true;self.bots.enabled=true;self.combat.enabled=true
+ -- Walls stay soft for the round's first seconds, so a plane caught on one in the break can steer off it first.
+ local roundId=self.engine.round.id
+ task.delay(WALL_GRACE_SECONDS,function() if self.engine.round and self.engine.round.id==roundId and not self.finished then self.flight:setSafe(false) end end)
  self.flight:hold(false);self.rings:hide()
  for _,p in pairs(self.flight.pilots) do self.flight:newRound(p);p.team=nil end -- teams are dealt again as each joins
  for _,player in ipairs(Players:GetPlayers()) do player:SetAttribute("Vote",nil) end
@@ -413,7 +417,7 @@ function Runtime:practice(player,lesson)
  if not self:tutorialRoom() and not self.matchmaking:routeTutorial(player) and Run:IsStudio() then Root:SetAttribute("DevTutorialRoom",true) end
  if self:tutorialRoom() then
   -- No round here: flying, shooting and the lesson's one enemy run without a clock, a score or a roster.
-  self.flight.tutorialRoom=true;self.flight.active=true;self.flight.safe=false;self.combat.enabled=true;self.bots.enabled=true
+  self.flight.tutorialRoom=true;self.flight.active=true;self.flight:setSafe(false);self.combat.enabled=true;self.bots.enabled=true
   self.flight:hold(false)
   for _,other in pairs(table.clone(self.flight.pilots)) do
    if other.kind=="bot" and not other.foeOf then self.flight:remove(other,"vacancy");self.bots.brains[other.id]=nil end
@@ -465,7 +469,7 @@ end
 -- stops, nothing can hurt anyone, and every flying plane holds still for the winners' moment; the vote lap follows.
 function Runtime:finish()
  if self.finished then return end
- self.flight.safe=true;self.combat.enabled=false;self.bots.enabled=false
+ self.flight:setSafe(true);self.combat.enabled=false;self.bots.enabled=false
  for _,shot in pairs(self.combat.shots) do self.combat:finish(shot) end
  assert(self.engine:sealCombatDrain(self.engine.round.id,self.engine.round.lastSequence))
  self.finished=true

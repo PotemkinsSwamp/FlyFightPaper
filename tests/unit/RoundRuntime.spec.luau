@@ -138,7 +138,7 @@ function Spec.run()
   local removed,held=0,nil
   local pilot,practice={id="pilot"},{id="practice",practice=true}
   local runtime=setmetatable({engine=f.m,finished=false,earningCursor=0,earnedTotals={},settledRows={},
-   flight={active=true,records={{cause="weapon"}},pilots={pilot,practice},hold=function(_,on) held=on end,remove=function(_,p,cause)
+   flight={active=true,records={{cause="weapon"}},pilots={pilot,practice},hold=function(_,on) held=on end,setSafe=function(self,on) self.safe=on end,remove=function(_,p,cause)
     assert(p==practice and cause=="round_end");removed+=1
    end},combat={enabled=true,shots={},totalFired=17,totalHits=3},bots={enabled=true}},Runtime)
   runtime:finish()

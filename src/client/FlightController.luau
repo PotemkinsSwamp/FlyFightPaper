@@ -149,7 +149,7 @@ function Controller.start(plane)
 			-- A real crash (the server's own test): crumple now instead of sliding until the server's word arrives.
 			local into = math.max(0, -drive.VectorVelocity:Dot(normal), -heading:Dot(normal) * speed)
 			-- Flight School planes (Gentle) never crash: the server only bounces them off, so the client mustn't crumple.
-			if not plane:GetAttribute("Gentle") and (Rules.crashes(into, math.max(drive.VectorVelocity.Magnitude, speed)) or part.Name == "Floor" and lift <= 0) then
+			if not plane:GetAttribute("Gentle") and not Root:GetAttribute("WallsSafe") and (Rules.crashes(into, math.max(drive.VectorVelocity.Magnitude, speed)) or part.Name == "Floor" and lift <= 0) then
 				Deaths.predict(plane)
 			else
 				scrape(normal, now)

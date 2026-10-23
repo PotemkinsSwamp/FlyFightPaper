@@ -147,6 +147,13 @@ function Service:newRound(p)
  self.records[p.id]=self:newRecord(p);p.protectionRemaining=Desk.protected_seconds_per_life
  for key,value in pairs({Health=p.stats.health,MaxHealth=p.stats.health,OriginalHealth=p.stats.health,Lift=p.stats.lift,Boost=p.model:GetAttribute("BoostMax") or 0,Kills=0}) do p.model:SetAttribute(key,value) end
 end
+-- Between rounds nothing hurts and walls only bounce you off. Pilots' screens read WallsSafe so they don't play a crash
+-- the server won't make; a scrape that lasted the whole break starts fresh when it ends (2026-10-23: a plane left
+-- against a wall in the break folded the instant the next round began).
+function Service:setSafe(on)
+ self.safe=on;Root:SetAttribute("WallsSafe",on or nil)
+ if not on then for _,p in pairs(self.pilots) do p.scrapeSince=nil end end
+end
 -- The winners' moment: every flying plane holds still in the air until the vote lap, then flies on from there.
 function Service:hold(on)
  for _,p in pairs(self.pilots) do
