@@ -100,7 +100,6 @@ function Board.start()
 		local eye = workspace.CurrentCamera.CFrame.Position
 		-- The game's Menu button (top left) under the crosshair opens the game menu, like Esc.
 		local spot = workspace.CurrentCamera:WorldToViewportPoint(eye + FlightState.aim * 1000)
-		if notes.clicked(Vector2.new(spot.X, spot.Y)) then return end -- a first-visit sticky note (RangeNotes)
 		local menu = player.PlayerGui:FindFirstChild("GameMenu")
 		local button = menu and menu:FindFirstChild("OpenMenu")
 		-- Measured from the menu's own top-left (the window's corner: it ignores the top bar inset). GUI positions start

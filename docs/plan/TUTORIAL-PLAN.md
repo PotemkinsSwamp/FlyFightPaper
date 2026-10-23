@@ -114,7 +114,8 @@ Alan's design, 2026-10-19 ([decision](../decisions/2026-10-19-range-map-and-hang
 - **First visit:** sticky notes point at the picker, the score card, the loadout strips and how to leave, one at a time.
   Alan OK'd the details 2026-10-22: five notes (plates, score card, Range Menu, Hangar, Menu > Leave), the lessons'
   sticky note and crayon arrow, nothing dimmed; a note goes when you use its thing or shoot/click it; "Skip all";
-  seen once (saved).
+  seen once (saved). His first look (2026-10-23): the tutorial's own note, Space for "Got it", K for "Skip all", no
+  timer, no shooting the note; the first one points at a plate that's up (Medium), not the "All" one that's down.
 - **Leave:** Menu > Leave takes you back to a normal room. From a match, opening it first says you'll leave the match.
 - **Build order:** (1) rough build for feel: stand-in stage, one moving cut-out that flips and tears, the held plane and
   its camera; Alan plays it. (2) 2D pieces from the concepts (Codex), checked on a contact sheet, uploaded by Alan.

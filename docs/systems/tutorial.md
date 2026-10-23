@@ -8,9 +8,9 @@ hangar, each weapon, and how building a plane works. It can be skipped and repla
 ## Where it stands (2026-10-22)
 **Flight School, Combat School, the Hangar Tour and the Training board approved by Alan 2026-10-22**
 ([decision](../decisions/2026-10-22-tutorials-approved.md)); Match Tips is still to build. **The Range's first-visit
-sticky notes are built, not yet seen by Alan** (2026-10-22, his OK on the plan): five notes, one at a time, each with
-the lessons' crayon arrow (row plates, score card, Range Menu, Hangar, the Menu button); a note goes when you use its
-thing or shoot/click it, "Skip all" ends them; never during a lesson or under a menu; seen once (saved as
+sticky notes are built, redone after Alan's first look** (2026-10-23): the tutorial's own note, top middle, five
+notes one at a time, each with the lessons' crayon arrow (an up row plate, score card, Range Menu, Hangar, the Menu
+button); a note goes when you use its thing or press Space ("Got it"), K ("Skip all") ends them, no timer, no shooting; never during a lesson or under a menu; seen once (saved as
 `lessons.rangeNotes`, no tick on the board). **Its own room works:** a brand-new player (no matches played) is asked once the
 classroom has loaded, "Welcome, pilot! Want a quick tutorial?" (Yes / No thanks, and where to find it later; Alan
 2026-10-19: ask, like most games). Yes, or the Training button (named Tutorial until Alan 2026-10-20; it first asks "Which lesson?": Flight School or

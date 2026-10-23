@@ -1,10 +1,11 @@
 -- The Range's first-visit sticky notes (Alan OK'd the plan 2026-10-22; docs/plan/TUTORIAL-PLAN.md "The Hangar Range").
--- One note at a time, each with the lessons' crayon arrow pointing at what it explains; nothing is dimmed, so you can
--- keep shooting. A note goes when you use the thing it points at, or when you shoot/click the note; "Skip all" ends
--- them. Seen once: the last note (or Skip all) saves "rangeNotes" in your lessons, like a lesson's tick.
--- Not during another lesson (the Hangar Tour runs in the Range), nor while a menu is open over the Range.
+-- The tutorial's own note (Alan 2026-10-23: "so it just looks like a tutorial"): one at a time, top middle, with the
+-- lessons' crayon arrow by what it explains; nothing is dimmed, so you can keep shooting. Got it (Space) or using the
+-- thing moves on; Skip all (K) ends them; no timer. Seen once: the last note (or Skip all) saves "rangeNotes" in your
+-- lessons, like a lesson's tick. Not during another lesson (the Hangar Tour runs in the Range), nor under a menu.
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local Input = game:GetService("UserInputService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets)
 local PaperUI = require(script.Parent.PaperUI)
@@ -18,20 +19,23 @@ local function boardPart(what)
 		end
 	end
 end
+-- A plate that's up (the row in use lies down): Medium, or Close when Medium is the one down.
+local function upPlate(stage)
+	local plates = {}
+	for _, p in stage:GetDescendants() do
+		if p:IsA("BasePart") and p:GetAttribute("RangePick") then plates[p:GetAttribute("RangePick")] = p end
+	end
+	local medium = plates.medium
+	return if medium and not medium:GetAttribute("Down") then medium else plates.close
+end
 -- What each note says, what it points at (a part of the stage, or the game's Menu button), and what finishes it.
 local STEPS = {
-	{ text = "Shoot a plate to pick which row moves.", done = "pick", find = function(stage)
-		for _, p in stage:GetDescendants() do
-			if p:IsA("BasePart") and p:GetAttribute("RangePick") == "all" then return p end
-		end
-		return stage:FindFirstChild("Pick", true)
-	end },
+	{ text = "Shoot a plate to pick which row moves.", done = "pick", find = upPlate },
 	{ text = "Your shots, hits and aim. Shoot Reset to start over.", done = "reset", find = function(stage) return stage:FindFirstChild("ScoreCard") end },
 	{ text = "Your 5 Range builds and how hard the targets are.", done = "menu", find = boardPart("menu") },
 	{ text = "Change your Range builds. Any part works here, even ones you don't own.", done = "hangar", find = boardPart("hangar") },
 	{ text = "Menu, then Leave, takes you back.", done = "pause", gui = true },
 }
-local W, H = 330, 250 -- the note at 1080 px tall (sheet pixels), scaled with the screen
 
 -- getStage() = the Range's stage model or nil.
 function Notes.new(getStage)
@@ -39,17 +43,16 @@ function Notes.new(getStage)
 	local gui = Instance.new("ScreenGui")
 	gui.Name, gui.IgnoreGuiInset, gui.ResetOnSpawn, gui.DisplayOrder, gui.Enabled = "RangeNotes", true, false, 7, false
 	gui.Parent = player:WaitForChild("PlayerGui")
-	local note = PaperUI.image(gui, "Note", Art.ingame.stickyNote, 0, 0, W, H, -2)
-	note.ScaleType = Enum.ScaleType.Stretch
+	-- The tutorial's goal note (Tutorial.luau): same paper, size, place and words.
+	local note = Instance.new("ImageLabel")
+	note.Name, note.Image, note.ScaleType, note.BackgroundTransparency = "Note", Art.ingame.stickyNote, Enum.ScaleType.Stretch, 1
+	note.AnchorPoint, note.Position, note.Size, note.Rotation, note.Parent = Vector2.new(0.5, 0), UDim2.fromScale(0.5, 0.05), UDim2.fromOffset(620, 230), -1, gui
 	local scale = Instance.new("UIScale")
 	scale.Parent = note
-	local words = PaperUI.words(note, "Words", "", 30, 40, W - 60, H - 100, 34)
-	words.TextXAlignment, words.TextWrapped, words.TextScaled = Enum.TextXAlignment.Center, true, true
-	local cap = Instance.new("UITextSizeConstraint")
-	cap.MaxTextSize, cap.Parent = 34, words
-	local skip = PaperUI.words(note, "SkipAll", "Skip all", W - 150, H - 58, 110, 34, 24)
-	skip.TextXAlignment, skip.TextColor3 = Enum.TextXAlignment.Right, Color3.fromRGB(190, 35, 30)
-	local count = PaperUI.words(note, "Count", "", 40, H - 58, 80, 34, 24)
+	local title = PaperUI.words(note, "Title", "", 40, 24, 540, 34, 24)
+	title.TextColor3 = Color3.fromRGB(150, 60, 40)
+	local words = PaperUI.words(note, "Text", "", 40, 58, 540, 96, 30)
+	words.TextWrapped, words.TextYAlignment = true, Enum.TextYAlignment.Top
 	local arrow = PaperUI.image(gui, "Arrow", Art.tutorial.arrow, 0, 0, 120, 75)
 	local arrowScale = Instance.new("UIScale")
 	arrowScale.Parent = arrow
@@ -72,6 +75,12 @@ function Notes.new(getStage)
 	local function active()
 		return gui.Enabled and not seen and STEPS[step] ~= nil
 	end
+	PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "Got it  [Space]", 40, 176, 240, 48, 1, function() if active() then advance() end end, 24)
+	PaperUI.button(note, "Skip", Art.mainmenu.strip.red, "Skip all  [K]", 330, 176, 250, 48, -1, function() if active() then finish() end end, 24)
+	Input.InputBegan:Connect(function(input, processed)
+		if processed or not active() then return end
+		if input.KeyCode == Enum.KeyCode.Space then advance() elseif input.KeyCode == Enum.KeyCode.K then finish() end
+	end)
 
 	-- Where the current note points, in screen pixels (nil when its target isn't there).
 	local function target()
@@ -97,16 +106,13 @@ function Notes.new(getStage)
 		local spot = if show then target() else nil
 		gui.Enabled = spot ~= nil
 		if not spot then return end
-		local view = workspace.CurrentCamera.ViewportSize
-		local s = math.max(0.6, view.Y / 1080)
+		local s = math.max(0.6, workspace.CurrentCamera.ViewportSize.Y / 1080)
 		scale.Scale, arrowScale.Scale = s, s
-		words.Text, count.Text = STEPS[step].text, step .. " of " .. #STEPS
-		-- The note sits toward the middle of the screen from what it explains; the arrow between points at it.
-		local away = view / 2 - spot
-		away = away.Magnitude > 1 and away.Unit or Vector2.new(0, 1)
-		local centre = spot + away * 290 * s
-		centre = Vector2.new(math.clamp(centre.X, W / 2 * s + 8, view.X - W / 2 * s - 8), math.clamp(centre.Y, H / 2 * s + 8, view.Y - H / 2 * s - 8))
-		note.Position = UDim2.fromOffset(centre.X, centre.Y)
+		title.Text, words.Text = string.format("The Range  -  note %d of %d", step, #STEPS), STEPS[step].text
+		-- The arrow sits by what the note explains, pointing at it from the note's side.
+		local from = note.AbsolutePosition - gui.AbsolutePosition + note.AbsoluteSize / 2
+		local away = from - spot
+		away = away.Magnitude > 1 and away.Unit or Vector2.new(0, -1)
 		local tip = spot + away * 85 * s
 		arrow.Position, arrow.Rotation = UDim2.fromOffset(tip.X, tip.Y), math.deg(math.atan2(-away.Y, -away.X))
 	end)
@@ -119,19 +125,6 @@ function Notes.new(getStage)
 	-- RangeBoard reports each control used: "pick" (a row plate), "reset", "menu", "hangar", ...
 	function self.used(what)
 		if active() and STEPS[step].done == what then advance() end
-	end
-	-- A click where the crosshair is (screen pixels, the GUI's own frame): true when it landed on the note.
-	function self.clicked(spot)
-		if not active() then return false end
-		local low, size = note.AbsolutePosition - gui.AbsolutePosition, note.AbsoluteSize
-		if spot.X < low.X or spot.X > low.X + size.X or spot.Y < low.Y or spot.Y > low.Y + size.Y then return false end
-		local skipLow, skipSize = skip.AbsolutePosition - gui.AbsolutePosition, skip.AbsoluteSize
-		if spot.X >= skipLow.X and spot.X <= skipLow.X + skipSize.X and spot.Y >= skipLow.Y - 10 and spot.Y <= skipLow.Y + skipSize.Y + 10 then
-			finish()
-		else
-			advance()
-		end
-		return true
 	end
 	return self
 end
