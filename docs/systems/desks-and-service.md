@@ -5,10 +5,11 @@ Every pilot has a desk. You launch from it and can fly back to land: refill Lift
 the preview shows it; **Edit build** opens the full hangar on it; a full refold flies it.
 
 ## Where it stands (2026-10-22)
-**New quick menu built, not yet played by Alan** ([decision](../decisions/2026-10-22-desk-quick-menu.md)): photo, name
-and a four-row stat sheet top left, the five builds as small photos down the left, service strips and Customize (opens
-the Hangar's binder) down the right, the note and LAUNCH! bottom middle; the match strip and kill feed stay up
-(`FlightHUD`'s MatchInfo layer). No new art: it reuses the Hangar and Range pieces.
+**New quick menu built; Alan OK'd its assembled preview, not yet played** ([decision](../decisions/2026-10-22-desk-quick-menu.md)):
+photo, name and a four-row stat sheet top left, the five builds as small turned photos on a cork strip down the left,
+pinned service strips and Customize (opens the Hangar's binder) down the right, the note and LAUNCH! bottom middle; the
+match strip and kill feed stay up (`FlightHUD`'s MatchInfo layer). New art in `assets/ui/deskmenu/` (`UIAssets.deskMenu`,
+uploaded 2026-10-22); the rest reuses Hangar and HUD pieces.
 
 Works (connected since Oct 7). Landing guide ("Line up here") is in. Builds change only at the desk
 ([decision](../decisions/2026-10-17-builds-change-at-the-desk.md)): Edit button, picked-build preview, and a refold

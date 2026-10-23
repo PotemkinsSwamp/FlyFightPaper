@@ -1,0 +1,23 @@
+{
+  "path": "operations/7dd7813a-1b5e-431e-b557-fb57a91759a8",
+  "operationId": "7dd7813a-1b5e-431e-b557-fb57a91759a8",
+  "done": true,
+  "response": {
+    "path": "assets/71812846184948",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-23T01:00:35.306Z",
+    "assetId": "71812846184948",
+    "displayName": "FlyFightPaper deskmenu strip-green",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

@@ -14,24 +14,24 @@ local Aircraft = require(Root.Shared.Aircraft)
 local Rules = require(Root.Shared.ServiceRules)
 local Builder = require(Root.Shared.BuilderModel)
 local Assets = require(Root.Shared.UIAssets)
-local Art, Shelf = Assets.hangar, Assets.hangarShelf
+local Shelf, Desk = Assets.hangarShelf, Assets.deskMenu
 local Hangar = require(script.Parent.Hangar)
 local BuildStats = {}
 for _, entry in Hangar.STATS do BuildStats[entry[1]] = entry end
 local PaperUI = require(script.Parent.PaperUI)
 local DeskHangar = {}
 
-local SKY_BLUE = Color3.fromRGB(140, 185, 230)
-local TOPBAR = 64 -- screen pixels kept clear for Roblox's top bar and the Menu button
 
 -- A camera framing a model in a ViewportFrame like the Hangar's cubbies: from above and behind, nose away and a
 -- little to the side. room: camera distance as a share of "whole model just fits" (smaller = bigger plane).
-local function frame(view, model, room)
+-- tilt: the photo's turn in degrees; the camera rolls with it (a ViewportFrame itself can't turn).
+local function frame(view, model, room, tilt)
 	local camera = Instance.new("Camera")
 	camera.FieldOfView, camera.Parent, view.CurrentCamera = 40, view, camera
 	local box, size = model:GetBoundingBox()
 	local distance = math.max(size.X, size.Z) / 2 * 1.1 / math.sin(math.rad(20)) * room
 	camera.CFrame = CFrame.new(box.Position) * CFrame.Angles(0, 0.5, 0) * CFrame.Angles(-0.6, 0, 0) * CFrame.new(0, 0, distance)
+		* CFrame.Angles(0, 0, math.rad(tilt))
 end
 
 local function viewport(parent, name, x, y, w, h)
@@ -44,14 +44,19 @@ local function viewport(parent, name, x, y, w, h)
 end
 
 -- A fresh copy of a build's 3D plane in a view (the old one goes).
-local function showBuild(view, loadout, room)
+local function showBuild(view, loadout, room, tilt)
 	view:ClearAllChildren()
 	local world = Instance.new("WorldModel")
 	world.Parent = view
 	local model = Instance.new("Model")
 	model.Parent = world
-	if Aircraft.build(model, loadout, Catalog, true) then frame(view, model, room) end
+	if Aircraft.build(model, loadout, Catalog, true) then frame(view, model, room, tilt) end
 end
+
+-- The photo piece's sky-blue picture area, as shares of the piece (measured on assets/ui/deskmenu/ready/photo.png).
+local BLUE = { 41 / 464, 50 / 384, 422 / 464, 306 / 384 }
+local BIG_TILT, BUILD_TILTS = -2, { -4, 3, -2, 4, -3 }
+local PHOTO_Y = 56 -- the big photo's top in the left group (which starts 8 px down, level with the match strip)
 
 -- api = { flight(action) = FlightAction, round = RoundAction remote }
 function DeskHangar.new(playerGui, api)
@@ -71,36 +76,47 @@ function DeskHangar.new(playerGui, api)
 		table.insert(scales, scale)
 		return group
 	end
-	local left = panel("Left", Vector2.new(0, 0), 640, 1010)
-	local right = panel("Right", Vector2.new(1, 0), 400, 540)
-	local bottom = panel("Bottom", Vector2.new(0.5, 1), 640, 214)
+	local left = panel("Left", Vector2.new(0, 0), 640, 1068)
+	local right = panel("Right", Vector2.new(1, 0), 490, 820)
+	local bottom = panel("Bottom", Vector2.new(0.5, 1), 760, 300)
 	local function fit()
 		local view = workspace.CurrentCamera.ViewportSize
-		local s = math.min(view.X / PaperUI.W, (view.Y - TOPBAR) / 1016)
+		local s = math.min(view.X / PaperUI.W, (view.Y - 12) / 1068)
 		for _, scale in scales do scale.Scale = s end
-		left.Position, bottom.Position = UDim2.fromOffset(16, TOPBAR), UDim2.new(0.5, 0, 1, -12)
+		left.Position, bottom.Position = UDim2.fromOffset(16, 8), UDim2.new(0.5, 0, 1, -12) -- level with the match strip
 		-- The service strips start under the flight HUD's kill feed (FlightHUD: 10 px down, 4 slips, its own scale).
 		right.Position = UDim2.new(1, -16, 0, 10 + 250 * math.max(0.6, view.Y / 1080))
 	end
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
 	fit()
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
+	-- A turned group of pieces (a photo and its tape turn together); x, y, w, h like PaperUI.image.
+	local function turned(name, x, y, w, h, rotation)
+		local group = Instance.new("Frame")
+		group.Name, group.BackgroundTransparency, group.AnchorPoint = name, 1, Vector2.new(0.5, 0.5)
+		group.Position, group.Size, group.Rotation, group.Parent = UDim2.fromOffset(x + w / 2, y + h / 2), UDim2.fromOffset(w, h), rotation, left
+		return group
+	end
+	local function centred(label, size)
+		label.TextXAlignment, label.TextScaled = Enum.TextXAlignment.Center, true
+		local cap = Instance.new("UITextSizeConstraint")
+		cap.MaxTextSize, cap.Parent = size, label
+		return label
+	end
 
-	-- Top left: the plane's taped sky-blue photo with its name on masking tape, and beside it the short stat sheet.
-	local photo = image(left, "Photo", Art.preview, 0, 0, 300, 220, -2)
-	photo.ScaleType, photo.ImageColor3 = Enum.ScaleType.Stretch, SKY_BLUE
-	local planeView = viewport(left, "Plane", 24, 30, 252, 158)
-	local notYet = words(left, "NotFlyingYet", "", 24, 10, 252, 28, 24)
+	-- Top left: the plane's taped photo (just under Roblox's own buttons and the Menu button) with its name on masking
+	-- tape, and beside it, level with the match strip, the short stat sheet.
+	image(left, "Photo", Desk.photo, 0, PHOTO_Y, 300, 250, BIG_TILT).ScaleType = Enum.ScaleType.Stretch
+	local planeView = viewport(left, "Plane", 300 * BLUE[1], PHOTO_Y + 250 * BLUE[2], 300 * (BLUE[3] - BLUE[1]), 250 * (BLUE[4] - BLUE[2]))
+	local notYet = words(left, "NotFlyingYet", "", 30, PHOTO_Y + 36, 240, 26, 24)
 	notYet.TextXAlignment, notYet.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(190, 35, 30)
-	image(left, "NameTape", Assets.ingame.tapeLabel, 20, 188, 260, 56).ScaleType = Enum.ScaleType.Stretch
-	local name = words(left, "BuildName", "", 40, 190, 220, 52, 32)
-	name.TextXAlignment, name.TextScaled = Enum.TextXAlignment.Center, true
-	local nameCap = Instance.new("UITextSizeConstraint")
-	nameCap.MaxTextSize, nameCap.Parent = 32, name
+	local tape = turned("NameTape", 25, PHOTO_Y + 204, 250, 48, BIG_TILT)
+	image(tape, "Tape", Assets.ingame.tapeLabel, 0, 0, 250, 48).ScaleType = Enum.ScaleType.Stretch
+	local name = centred(words(tape, "BuildName", "", 20, 3, 210, 42, 34), 34)
 
 	-- Health, Lift and Boost show what is left now; Speed shows the build (Alan 2026-10-22: these four, no turning
-	-- or weight here; Customize has the full sheet).
-	image(left, "StatsSheet", Shelf.statsPaper, 315, 0, 320, 250, 1).ScaleType = Enum.ScaleType.Stretch
+	-- or weight here; Customize has the full sheet). Rows sit clear of the paper's binder holes and edges.
+	image(left, "StatsSheet", Shelf.statsPaper, 296, -6, 324, 330, 1).ScaleType = Enum.ScaleType.Stretch
 	local speed = BuildStats.Speed
 	local colours = Hangar.STAT_COLOURS
 	local rows = {
@@ -112,36 +128,34 @@ function DeskHangar.new(playerGui, api)
 		{ "Boost", colours.Swerve, function(p) return p:GetAttribute("Boost") or 0, p:GetAttribute("BoostMax") or 0 end },
 	}
 	for i, row in rows do
-		local y = 42 + (i - 1) * 50
-		local strip = image(left, row[1] .. "Row", Shelf.statLabel, 333, y, 116, 42)
+		local y = 60 + (i - 1) * 56
+		local strip = image(left, row[1] .. "Row", Shelf.statLabel, 345, y + 7, 100, 42)
 		strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, row[2]
-		local label = words(left, row[1] .. "Name", row[1], 341, y, 100, 42, 28)
-		label.TextXAlignment = Enum.TextXAlignment.Center
+		centred(words(left, row[1] .. "Name", row[1], 351, y + 9, 88, 38, 26), 26)
 		row.cells = {}
 		for k = 1, 5 do
-			row.cells[k] = image(left, row[1] .. "Box" .. k, Shelf.statBoxEmpty, 456 + (k - 1) * 34, y + 6, 30, 30)
+			row.cells[k] = image(left, row[1] .. "Box" .. k, Shelf.statBoxEmpty, 453 + (k - 1) * 29, y + 14, 27, 27)
 			row.cells[k].ImageColor3 = row[2]
 		end
 	end
 
-	-- Bottom middle: the hangar note on masking tape, and LAUNCH! on the green taped paper.
-	local label = image(bottom, "NotePaper", Assets.ingame.tapeLabel, 0, 0, 640, 56)
-	label.ScaleType, label.SliceCenter, label.SliceScale = Enum.ScaleType.Slice, Rect.new(90, 30, 894, 104), 0.45
-	local note = words(bottom, "Note", "", 30, 4, 580, 48, 26)
-	note.TextXAlignment, note.TextScaled = Enum.TextXAlignment.Center, true
-	local noteCap = Instance.new("UITextSizeConstraint")
-	noteCap.MaxTextSize, noteCap.Parent = 26, note
-	local launch = button(bottom, "Launch", Art.buttonGreen, "LAUNCH!", 40, 66, 560, 148, -1, function() api.flight("launch") end, 84)
+	-- Bottom middle: the hangar note on masking tape, and a big LAUNCH! on bright green paper (Alan 2026-10-22).
+	image(bottom, "NotePaper", Assets.ingame.tapeLabel, 50, 0, 660, 80).ScaleType = Enum.ScaleType.Stretch
+	local note = centred(words(bottom, "Note", "", 90, 8, 580, 64, 28), 28)
+	note.TextWrapped = true
+	local launch = button(bottom, "Launch", Desk.launch, "LAUNCH!", 0, 72, 760, 228, -1, function() api.flight("launch") end, 120)
 
-	-- Down the right: the service strips (the Range's torn construction paper), then Customize (the Hangar's orange).
+	-- Down the right: the service strips, then Customize (the Hangar's orange). Alan 2026-10-22: big, middle, small,
+	-- middle, big, so the column curves and fills the side.
 	local service = function(kind) return function() api.round:FireServer("service", kind) end end
 	local REFOLD = "Full refold - 120 Paper"
 	local buttons = {}
-	for i, entry in {
-		{ "Refill", "Refill Lift", Assets.range.stripBlue, service("refill") },
-		{ "Repair", "Repair", Assets.range.stripGreen, service("repair") },
-		{ "Fresh", "Fresh plane", Assets.range.stripYellow, function() api.flight("fresh") end },
-		{ "Refold", REFOLD, Assets.range.stripRed, function()
+	local top = 0
+	for _, entry in {
+		{ "Refill", "Refill Lift", Desk.stripBlue, service("refill"), 490, 160, -1.5, 52 },
+		{ "Repair", "Repair", Desk.stripGreen, service("repair"), 450, 142, 1, 48 },
+		{ "Fresh", "Fresh plane", Desk.stripYellow, function() api.flight("fresh") end, 410, 126, -1, 46 },
+		{ "Refold", REFOLD, Desk.stripRed, function()
 			-- Spending Paper asks once: the first click turns the strip into a question for 3 seconds.
 			local text = buttons.Refold.Label
 			if text.Text ~= "Sure? Click again" then
@@ -151,43 +165,56 @@ function DeskHangar.new(playerGui, api)
 			end
 			text.Text = REFOLD
 			service("refold")()
-		end },
+		end, 450, 142, 1.5, 38 },
+		{ "Customize", "Customize", Shelf.buttonOrange, function()
+			Root:SetAttribute("HangarEdited", true)
+			require(script.Parent.MenuController).show("hangar", true, "customize")
+		end, 490, 160, -1, 62 },
 	} do
-		buttons[entry[1]] = button(right, entry[1], entry[3], entry[2], 0, (i - 1) * 104, 400, 88, i % 2 == 0 and 1 or -1, entry[4], entry[1] == "Refold" and 32 or 44)
+		local key, label, art, click, w, h, rotation, size = table.unpack(entry)
+		local strip = button(right, key, art, label, 490 - w, top, w, h, rotation, click, size)
+		-- Pinned at both top corners with the kill feed's pins (Alan 2026-10-22: tape took too much attention); a pin
+		-- keeps its size on every strip and when the strip grows under the mouse.
+		for _, side in { 0, 1 } do
+			local pin = image(strip, "Pin", art == Desk.stripRed and Assets.hud.pinBlue or Assets.hud.pinRed, 0, 0, 30, 30) -- the kill feed's size
+			pin.Position = UDim2.new(side, side == 0 and 30 or -30, 0, 24)
+		end
+		buttons[key] = strip
+		top += h + 18
 	end
-	local customize = button(right, "Customize", Shelf.buttonOrange, "Customize", 0, 424, 400, 112, 1, function()
-		Root:SetAttribute("HangarEdited", true)
-		require(script.Parent.MenuController).show("hangar", true, "customize")
-	end, 52)
+	local customize = buttons.Customize
 	-- Customize wiggles until a new player has used it once (Alan 2026-10-17).
 	if not Root:GetAttribute("HangarEdited") then
 		local wiggle = TweenService:Create(customize, TweenInfo.new(0.35, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), { Rotation = -3 })
 		wiggle:Play()
-		Root:GetAttributeChangedSignal("HangarEdited"):Once(function() wiggle:Cancel(); customize.Rotation = 1 end)
+		Root:GetAttributeChangedSignal("HangarEdited"):Once(function() wiggle:Cancel(); customize.Rotation = -1 end)
 	end
 
-	-- Down the left: your five builds as small taped photos with their names; the picked one has the yellow crayon outline.
+	-- Down the left, on a strip of cork: your five builds as small taped photos with their names, each turned a little
+	-- (Alan 2026-10-22: photos taped to a board); the picked one has the yellow crayon outline.
+	local corkY = PHOTO_Y + 262
+	local cork = image(left, "Cork", Desk.corkStrip, 0, corkY, 214, 1068 - corkY)
+	cork.ScaleType, cork.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(240, 225, 210)
 	local preset, presets, shownPresets, picked = Players.LocalPlayer:GetAttribute("SelectedPreset") or 1, nil, nil, -9
-	local outline = image(left, "Picked", Shelf.outline, 0, 0, 214, 150)
-	outline.ScaleType, outline.SliceCenter, outline.SliceScale, outline.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.4, 3
 	local slots = {}
 	for i = 1, 5 do
-		local y = 272 + (i - 1) * 146
-		local mini = image(left, "BuildPhoto" .. i, Art.preview, 12, y, 190, 112, i % 2 == 0 and 2 or -2)
-		mini.ScaleType, mini.ImageColor3 = Enum.ScaleType.Stretch, SKY_BLUE
-		local view = viewport(left, "BuildPlane" .. i, 26, y + 14, 162, 80)
-		image(left, "BuildTape" .. i, Assets.ingame.tapeLabel, 17, y + 90, 180, 44).ScaleType = Enum.ScaleType.Stretch
-		local tag = words(left, "BuildName" .. i, "", 30, y + 92, 154, 40, 26)
-		tag.TextXAlignment, tag.TextScaled = Enum.TextXAlignment.Center, true
-		local cap = Instance.new("UITextSizeConstraint")
-		cap.MaxTextSize, cap.Parent = 26, tag
+		local y = corkY + 12 + (i - 1) * 146
+		local tilt = BUILD_TILTS[i]
+		local back = turned("BuildPhoto" .. i, 19, y, 176, 146, tilt)
+		image(back, "Photo", Desk.photo, 0, 0, 176, 146).ScaleType = Enum.ScaleType.Stretch
+		local view = viewport(left, "BuildPlane" .. i, 19 + 176 * BLUE[1], y + 146 * BLUE[2], 176 * (BLUE[3] - BLUE[1]), 146 * (BLUE[4] - BLUE[2]))
+		local front = turned("BuildTag" .. i, 19, y, 176, 146, tilt)
+		image(front, "Tape", Assets.ingame.tapeLabel, 5, 112, 166, 34).ScaleType = Enum.ScaleType.Stretch
+		local tag = centred(words(front, "Name", "", 18, 114, 140, 30, 24), 24)
+		local outline = image(front, "Picked", Shelf.outline, -4, -4, 184, 154)
+		outline.ScaleType, outline.SliceCenter, outline.SliceScale = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.4
 		local hit = Instance.new("TextButton")
-		hit.Name, hit.Text, hit.BackgroundTransparency, hit.ZIndex = "Pick" .. i, "", 1, 4
-		hit.Position, hit.Size, hit.Parent = UDim2.fromOffset(4, y - 4), UDim2.fromOffset(206, 142), left
+		hit.Name, hit.Text, hit.BackgroundTransparency = "Pick", "", 1
+		hit.Size, hit.Parent = UDim2.fromScale(1, 1), front
 		hit.Activated:Connect(function()
 			preset = i; api.round:FireServer("selectPreset", i); picked = os.clock()
 		end)
-		slots[i] = { y = y, view = view, tag = tag, hit = hit }
+		slots[i] = { view = view, tag = tag, outline = outline, tilt = tilt }
 	end
 	PaperUI.popIn(cover, { buttons.Refill, buttons.Repair, buttons.Fresh, buttons.Refold, customize, launch })
 	Players.LocalPlayer:GetAttributeChangedSignal("SelectedPreset"):Connect(function()
@@ -202,7 +229,7 @@ function DeskHangar.new(playerGui, api)
 		for i, slot in slots do
 			local build = presets[i]
 			slot.tag.Text = build and build.name or ("Build " .. i)
-			if build and build.loadout then showBuild(slot.view, build.loadout, 0.85) else slot.view:ClearAllChildren() end
+			if build and build.loadout then showBuild(slot.view, build.loadout, 0.85, slot.tilt) else slot.view:ClearAllChildren() end
 		end
 	end
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
@@ -231,7 +258,7 @@ function DeskHangar.new(playerGui, api)
 			local key = HttpService:JSONEncode(loadout)
 			if shownPlane == key then return end
 			shownPlane = key
-			showBuild(planeView, loadout, 0.75)
+			showBuild(planeView, loadout, 0.75, BIG_TILT)
 			return
 		end
 		local appearance = plane:FindFirstChild("Appearance")
@@ -251,7 +278,7 @@ function DeskHangar.new(playerGui, api)
 				copy.Anchored, copy.CFrame, copy.Parent = true, body.CFrame:ToObjectSpace(part.CFrame), model
 			end
 		end
-		frame(planeView, model, 0.75)
+		frame(planeView, model, 0.75, BIG_TILT)
 	end
 
 	local self = {}
@@ -265,7 +292,7 @@ function DeskHangar.new(playerGui, api)
 		local build = presets and presets[preset]
 		name.Text = build and build.name or ""
 		notYet.Text = loadout and "Not flying yet" or ""
-		outline.Position = UDim2.fromOffset(107, slots[preset] and slots[preset].y + 58 or -999)
+		for i, slot in slots do slot.outline.Visible = i == preset end
 		for _, row in rows do
 			local value, max = row[3](pickedStats or plane)
 			local cells = math.max(row.least or 0, max > 0 and math.ceil(math.clamp(value / max, 0, 1) * 5) or 0)

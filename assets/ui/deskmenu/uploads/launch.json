@@ -1,0 +1,23 @@
+{
+  "path": "operations/d86408e4-d66b-482e-9154-47401d5cf948",
+  "operationId": "d86408e4-d66b-482e-9154-47401d5cf948",
+  "done": true,
+  "response": {
+    "path": "assets/80986580132881",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-23T01:00:25.748Z",
+    "assetId": "80986580132881",
+    "displayName": "FlyFightPaper deskmenu launch",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

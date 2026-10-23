@@ -1,0 +1,23 @@
+{
+  "path": "operations/c72a62b3-a731-4e6f-8afa-e8db6f4a96b1",
+  "operationId": "c72a62b3-a731-4e6f-8afa-e8db6f4a96b1",
+  "done": true,
+  "response": {
+    "path": "assets/133931574927268",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-23T01:00:22.793Z",
+    "assetId": "133931574927268",
+    "displayName": "FlyFightPaper deskmenu cork-strip",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

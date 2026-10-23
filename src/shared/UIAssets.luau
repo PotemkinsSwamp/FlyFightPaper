@@ -40,6 +40,12 @@ return {
 		-- The folder alone, see-through around it, for the in-game hangar menu (assets/ui/deskhangar/).
 		folder = { "rbxassetid://90477686865340", "rbxassetid://106131906433035", "rbxassetid://99506492567038", "rbxassetid://74385525106617" },
 	},
+	-- Desk quick menu (assets/ui/deskmenu/; concept desk-quick-menu-b). Uploaded 2026-10-22 after Alan OK'd the preview.
+	deskMenu = {
+		corkStrip = "rbxassetid://133931574927268", photo = "rbxassetid://132448330647455", launch = "rbxassetid://80986580132881",
+		stripBlue = "rbxassetid://101822327681119", stripGreen = "rbxassetid://71812846184948",
+		stripYellow = "rbxassetid://107829360251744", stripRed = "rbxassetid://76762960710746",
+	},
 	-- Hangar cubby shelf and Customize binder (assets/ui/hangarshelf/; concepts hangar-shelf-screen, hangar-customize-b).
 	-- Uploaded 2026-10-21; white pieces (shelfTab, indexTab, statLabel, statBox, statBoxEmpty) are tinted in the game.
 	hangarShelf = {
