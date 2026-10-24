@@ -21,6 +21,7 @@ otherwise.
 - [Ideas not yet planned](plan/IDEAS.md)
 - [Tutorial plan](plan/TUTORIAL-PLAN.md) (draft, waiting on Alan)
 - [Hangar plan](plan/HANGAR-PLAN.md) (draft, waiting on Alan)
+- [Touch plan](plan/TOUCH-PLAN.md): phones and tablets (draft, waiting on Alan)
 - [Release notes](plan/RELEASE_NOTES.md) (2026-10-07 build)
 
 ## The game, system by system
