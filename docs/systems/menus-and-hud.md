@@ -21,6 +21,13 @@ The nose dot turns red when the shots would land with no aim help (Alan 2026-10-
 [decision](../decisions/2026-10-19-less-aim-assist.md)): the target in range and the nose line passing within 2 studs of
 the orange ring's point. The gun assist (`combat.gun_assist_deg`, 3 degrees, lessons too; was 7) sends
 shots to the ring when the nose is that close.
+**Phones (Alan 2026-10-23, [research](../research/TOUCH-AIM-RESEARCH-2026-10-23.md); built, not yet tuned or tried on a
+phone):** a wider gun assist that fades out towards its edge (`combat.touch_gun_assist_deg` 6, full inside
+`touch_assist_inner_fraction` 0.5 of it, none past `touch_assist_max_range_studs` 600), and the aim turns slower
+(`touch_slowdown_scale` 0.65 within `touch_slowdown_cone_deg` 8, easing in over `touch_slowdown_ease_in_s` 0.25) while
+the stick sweeps it over an enemy's ring, unless the stick is leaving it. The plane itself always turns at full speed.
+The nose dot turns yellow (and the ring fills faintly) when the shots land only thanks to that help. No auto-fire (Alan).
+Mouse players are unchanged.
 The orange ring follows the enemy whose ring (its lead) is nearest the aim circle, not the nearest plane, and keeps it
 until another's ring is 3 degrees nearer (Alan 2026-10-19, [decision](../decisions/2026-10-19-range-row-picker-and-aim-pick.md)).
 The ring guesses a plane's path from its speed and turn; practice targets (the Range, Combat School drills) publish
@@ -50,6 +57,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | File | What it does |
 |---|---|
 | `src/client/MenuController.luau` | Which screen shows; Esc and Tab |
+| `src/shared/AimHelp.luau` | Phone aim help numbers: how far a shot bends to the ring, how much the stick slows over an enemy (tests: `tests/unit/AimHelp.spec.luau`) |
 | `src/client/MenuBoard.luau` | Bulletin-board main menu |
 | `src/client/Hangar.luau`, `src/client/DeskHangar.luau` | Main-menu and in-game hangar |
 | `src/client/SettingsScreen.luau`, `src/client/Options.luau` | Settings screen and applying settings |

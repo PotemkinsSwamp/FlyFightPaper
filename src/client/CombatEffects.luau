@@ -12,12 +12,13 @@ local Lines=require(Root.Shared.Lines)
 local Audio=require(script.Parent.Audio)
 local Motion=require(script.Parent.WeaponMotion)
 local FlightState=require(script.Parent.FlightController).state
-local assist=math.cos(math.rad(require(Root.Generated.Gameplay).combat.gun_assist_deg))
+local AimHelp=require(Root.Shared.AimHelp)
+local Touch=require(script.Parent.TouchControls)
 local convergence=require(Root.Generated.Gameplay).combat.gun_convergence_studs
 local Effects={}
 -- Gun assist: when the nose is within combat.gun_assist_deg (3) of the lead marker, shots go to the marker: a
 -- nudge for the nose trailing a moving aim. Alan 2026-10-19: 7 degrees felt like magnetised bullets ("like War
--- Thunder" is the model), 1 too hard; lessons get the same.
+-- Thunder" is the model), 1 too hard; lessons get the same. Phones get a wider one that fades at its edge (AimHelp).
 -- Also returns the target's range: both guns meet there. At a fixed 150 studs they crossed and flew past either
 -- side of a plane seen from behind at 300 (measured 2026-10-19), though the dot was red on the ring.
 function Effects.aim(body,weapon)
@@ -29,8 +30,11 @@ function Effects.aim(body,weapon)
  local leadFor=FlightState.leadFor
  if leadFor and weapon then
   local offset=leadFor(weapon)-body.Position
-  if body.CFrame.LookVector:Dot(offset.Unit)>=assist then return offset.Unit,offset.Magnitude end
-  return body.CFrame.LookVector,offset.Magnitude
+  local look=body.CFrame.LookVector
+  local bend=AimHelp.bend(Config,math.deg(math.acos(math.clamp(look:Dot(offset.Unit),-1,1))),offset.Magnitude,Touch.active() or nil)
+  if bend>=1 then return offset.Unit,offset.Magnitude end
+  if bend>0 then return look:Lerp(offset.Unit,bend).Unit,offset.Magnitude end
+  return look,offset.Magnitude
  end
  return body.CFrame.LookVector
 end

@@ -55,7 +55,9 @@ function HUD.start(getPlane, action)
 	Settings:GetAttributeChangedSignal("CrosshairSize"):Connect(applyCrosshair)
 	applyCrosshair()
 	-- Bright green; turns red and grows a little only while it sits on an orange lead ring with the target in range.
-	local NOSE, NOSE_ON = Color3.fromRGB(60, 255, 90), Color3.fromRGB(255, 40, 60)
+	-- Phones (Alan 2026-10-23): yellow when the shots land only thanks to the touch aim help (AimHelp), so players
+	-- learn what the game does for them.
+	local NOSE, NOSE_ON, NOSE_HELPED = Color3.fromRGB(60, 255, 90), Color3.fromRGB(255, 40, 60), Color3.fromRGB(255, 215, 40)
 	local noseDot = reticle("NoseDot", 10, true)
 	noseDot.BackgroundColor3 = NOSE
 	-- Eraser seeker: any enemy inside this circle (and in range) starts locking; a box on it shrinks and turns red.
@@ -70,6 +72,8 @@ function HUD.start(getPlane, action)
 	local Gameplay = require(Root.Generated.Gameplay)
 	local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), Gameplay)
 	local CombatRules = require(Root.Shared.CombatRules)
+	local AimHelp = require(Root.Shared.AimHelp)
+	local Touch = require(script.Parent.TouchControls)
 	-- The lead marker is the "second crosshair": put the nose dot on it and the shots meet the enemy.
 	-- One lead marker per weapon type (Alan): left-click weapon = orange ring, right-click weapon = cyan diamond.
 	-- Each fills in when its own shots would hit now.
@@ -558,7 +562,7 @@ function HUD.start(getPlane, action)
 			local path = Course.pathOf(target.Parent)
 			place(bracket, path and Course.pathAt(path, workspace:GetServerTimeNow()).Position or target.Position)
 			-- The nose dot sits at the left-click lead's range, so dot-on-marker means the guns really point there.
-			local anyHit, b = false, bracket.Position
+			local anyHit, anyHelped, b = false, false, bracket.Position
 			for group, pipper in ipairs(pippers) do
 				local weapon, line = guns[group], leadLines[group]
 				if weapon then
@@ -570,9 +574,12 @@ function HUD.start(getPlane, action)
 					local offset = lead - body.Position
 					local look = body.CFrame.LookVector
 					local lands = (body.Position + look * offset.Magnitude - lead).Magnitude <= 2
-					local onTarget = pipper.Visible and lands and CombatRules.travelTime(weapon, offset.Magnitude) < math.huge
-					anyHit = anyHit or onTarget
-					pipper.BackgroundTransparency = onTarget and 0.35 or 1
+					local angle = math.deg(math.acos(math.clamp(look:Dot(offset.Unit), -1, 1)))
+					local helped = not lands and Touch.active() and AimHelp.bend(Gameplay.combat, angle, offset.Magnitude, true) >= 1
+					local reaches = pipper.Visible and CombatRules.travelTime(weapon, offset.Magnitude) < math.huge
+					local onTarget = reaches and lands
+					anyHit, anyHelped = anyHit or onTarget, anyHelped or (reaches and helped)
+					pipper.BackgroundTransparency = onTarget and 0.35 or reaches and helped and 0.65 or 1
 					local a = pipper.Position
 					local dx, dy = a.X.Offset - b.X.Offset, a.Y.Offset - b.Y.Offset
 					line.Position = UDim2.fromOffset((a.X.Offset + b.X.Offset) / 2, (a.Y.Offset + b.Y.Offset) / 2)
@@ -582,7 +589,8 @@ function HUD.start(getPlane, action)
 					pipper.Visible, line.Visible = false, false
 				end
 			end
-			noseDot.BackgroundColor3, noseDot.Size = anyHit and NOSE_ON or NOSE, UDim2.fromOffset((anyHit and 11 or 10) * crosshairScale, (anyHit and 11 or 10) * crosshairScale)
+			local on = anyHit or anyHelped
+			noseDot.BackgroundColor3, noseDot.Size = anyHit and NOSE_ON or anyHelped and NOSE_HELPED or NOSE, UDim2.fromOffset((on and 11 or 10) * crosshairScale, (on and 11 or 10) * crosshairScale)
 		else
 			FlightState.leadFor, FlightState.leadPoint = nil, nil
 			noseDot.BackgroundColor3, noseDot.Size = NOSE, UDim2.fromOffset(10 * crosshairScale, 10 * crosshairScale)

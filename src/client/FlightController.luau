@@ -8,6 +8,7 @@ local Gameplay = require(Root.Generated.Gameplay)
 local Config = Gameplay.flight
 local Course = require(Root.Shared.TrainingCourse)
 local Touch = require(script.Parent.TouchControls)
+local AimHelp = require(Root.Shared.AimHelp)
 local Controller = {}
 -- Read by the camera and HUD. `aimOverride` lets dev tools fly the plane without a mouse.
 Controller.state = { aim = nil, aimUp = nil, aimOverride = nil }
@@ -29,6 +30,7 @@ function Controller.start(plane)
 	local wasFlying, locked, focused, boostSent, glide, momentum, lockedAt = false, false, true, false, nil, nil, 0
 	-- A scrape's wobble: when it started and which way the plane rolls.
 	local wobbleAt, wobbleSide = -math.huge, 0
+	local slowSince = nil -- when the touch aim came within the slowdown cone of an enemy's lead (AimHelp)
 	local function setAim(direction)
 		local look = aimFrame.LookVector
 		local angle = math.acos(math.clamp(look:Dot(direction), -1, 1))
@@ -89,8 +91,21 @@ function Controller.start(plane)
 			-- Locking pulls the free cursor (just used on LAUNCH or the lesson's Go, right of centre) to the middle of
 			-- the screen, which reads as one big mouse move: the "jolt to the left" (Alan 2026-10-19). Skip that moment.
 			if os.clock() - lockedAt < 0.1 then delta = Vector2.zero end
-			-- Phones: the steering stick turns the aim at up to touch_stick_deg_per_s, the same way a mouse move does.
-			delta += Touch.stick * math.rad(Config.touch_stick_deg_per_s) * dt * (Root:GetAttribute("Sensitivity") or 1)
+			-- Phones: the steering stick turns the aim at up to touch_stick_deg_per_s, the same way a mouse move does,
+			-- a little slower while the aim passes over an enemy's lead ring (AimHelp.slowdown) so small thumb moves can
+			-- settle on it. Only the aim slows: the plane itself turns as fast as ever.
+			local stick = Touch.stick * math.rad(Config.touch_stick_deg_per_s) * dt * (Root:GetAttribute("Sensitivity") or 1)
+			if stick.Magnitude > 0 and state.leadPoint then
+				local toLead = (state.leadPoint - workspace.CurrentCamera.CFrame.Position).Unit
+				local function off(frame) return math.deg(math.acos(math.clamp(frame.LookVector:Dot(toLead), -1, 1))) end
+				local angle = off(aimFrame)
+				slowSince = angle < Gameplay.combat.touch_slowdown_cone_deg and (slowSince or os.clock()) or nil
+				local away = off(aimFrame * CFrame.Angles(-stick.Y, -stick.X, 0)) > angle
+				stick *= AimHelp.slowdown(Gameplay.combat, angle, slowSince and os.clock() - slowSince or 0, away)
+			else
+				slowSince = nil
+			end
+			delta += stick
 			if delta.Magnitude > 0 then aimFrame = aimFrame * CFrame.Angles(-delta.Y, -delta.X, 0); lastSteer = os.clock() end
 		end
 		if state.aimOverride then setAim(state.aimOverride(body)); lastSteer = os.clock() end
