@@ -68,6 +68,7 @@ otherwise.
 
 ## Research
 - [Audit 2026-10-07](research/AUDIT-2026-10-07.md): every problem found after the failed overnight build.
+- [Touch aim research 2026-10-23](research/TOUCH-AIM-RESEARCH-2026-10-23.md): how games give phone and controller players aim help, tuning numbers to start from, and how we'll measure it.
 - [Tutorial research 2026-10-18](research/TUTORIAL-RESEARCH-2026-10-18.md): how most games teach new players.
 - [Range and hangar research 2026-10-19](research/RANGE-HANGAR-RESEARCH-2026-10-19.md): how other games do practice ranges, moving targets, difficulty and hangar onboarding.
 - [Pricing research 2026-10-18](research/PRICING-RESEARCH-2026-10-18.md): what Roblox games charge, and our draft price ladder.

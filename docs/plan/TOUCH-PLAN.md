@@ -33,7 +33,7 @@ the stick", "tap Fire") and the key words on PC.
 
 ## Build order after Alan's OK
 1. **Steering stick + Fire/Boost buttons** in flight. Check: fly a lap and a fight in Studio's phone simulator.
-2. **Aim help for touch:** research first (how other games do it, what to tune, how to measure), then build. Check: hit rate against the Range targets on the stick close to a mouse player's.
+2. **Aim help for touch:** research done ([touch aim research](../research/TOUCH-AIM-RESEARCH-2026-10-23.md): a wider soft-edged gun assist first, slowdown near enemies second), then build. Check: hit rate against the Range targets on the stick close to a mouse player's.
 3. **Every key gets a tap** (list above). Check: a whole session from first join to a round end with no keyboard.
 4. **Screens on phones and tablets:** every screen at two phone sizes and one tablet size in the simulator, with
    screenshots; fix overlaps and small text.
