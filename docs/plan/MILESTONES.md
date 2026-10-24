@@ -369,6 +369,10 @@ Rewrite client steering and camera; keep client network ownership and the server
 - **Approved by Alan 2026-10-22** ([decision](../decisions/2026-10-22-tutorials-approved.md)): Flight School, Combat
   School, Hangar Tour and the Training board. Match Tips and the Range's sticky notes are still to build.
 
+## Touch controls (before Stage 11) (Alan, 2026-10-23)
+Phones and tablets, built from the [touch plan](TOUCH-PLAN.md) ([decision](../decisions/2026-10-23-touch-before-launch.md));
+controller right after. **Done when:** Alan plays a full session on his phone and says it works.
+
 ## Stage 10 — Commerce wiring (stays off)
 What is sold and the order (plane retexture first): [shop plan 2026-10-18](../decisions/2026-10-18-shop-plan.md).
 - Real `MarketplaceService` adapter: `ProcessReceipt` with idempotency through ProfileStore, plus game-pass ownership checks.

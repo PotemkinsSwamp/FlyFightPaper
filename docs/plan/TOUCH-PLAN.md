@@ -1,8 +1,8 @@
-# Touch plan: phones and tablets (2026-10-23, draft, waiting on Alan)
+# Touch plan: phones and tablets (2026-10-23, approved by Alan the same day)
 
 Alan asked (2026-10-23) when to start mobile and controller support. The recommendation: touch now, finished before
 the Stage 11 private playtest; controller after it. [VISION](../vision/VISION.md) says "PC first, touch later", so
-moving it earlier is Alan's call (a decision note when he OKs this plan). Nothing here is built yet.
+moving it earlier was Alan's call: he OK'd it the same day (answers below).
 
 ## What the player sees
 
@@ -33,7 +33,7 @@ the stick", "tap Fire") and the key words on PC.
 
 ## Build order after Alan's OK
 1. **Steering stick + Fire/Boost buttons** in flight. Check: fly a lap and a fight in Studio's phone simulator.
-2. **Aim help for touch.** Check: hit rate against the Range targets on the stick close to a mouse player's.
+2. **Aim help for touch:** research first (how other games do it, what to tune, how to measure), then build. Check: hit rate against the Range targets on the stick close to a mouse player's.
 3. **Every key gets a tap** (list above). Check: a whole session from first join to a round end with no keyboard.
 4. **Screens on phones and tablets:** every screen at two phone sizes and one tablet size in the simulator, with
    screenshots; fix overlaps and small text.
@@ -47,11 +47,11 @@ the stick", "tap Fire") and the key words on PC.
 - Done when Alan plays a full session on his phone (first join, the tutorial, a match, the winners' moment, the vote)
   and says it works.
 
-## Questions for Alan
-1. OK to move touch ahead of launch (before Stage 11), and controller right after?
-2. Steering: stick by default with "Drag to aim" as an option, as above?
-3. A little more aim help for touch players: yes or no?
-4. When steps 1-5 are done: a private publish so you can play on your phone (your go then)?
+## Alan's answers (2026-10-23)
+1. Touch before Stage 11, controller right after: yes ([decision](../decisions/2026-10-23-touch-before-launch.md)).
+2. Stick by default, "Drag to aim" as an option: yes.
+3. More aim help for touch: yes, but research how to do and tune it first (step 2 starts with that research).
+4. A private publish for the real-phone check once steps 1-5 are done: yes (the publish itself still gets his go then).
 
 ## Cost
 Code only; no uploads expected beyond a few small button pictures (shown to Alan assembled first). $0 in tools.

@@ -28,8 +28,8 @@ unlimited content promise. Numeric prices/stats are delegated tuning, not reason
 ## Controls and flight — locked
 Third-person chase camera. Automatic forward movement and aim-direction/nose-follow steering with automatic
 banking. No required separate yaw/roll/throttle controls. Forward weapon aim; at most two weapon trigger
-controls and one optional boost control. PC first. Design input/UI for later touch; do not claim touch or
-controller support is finished before it exists.
+controls and one optional boost control. PC first, then touch before the private playtest and controller after it (Alan 2026-10-23,
+[decision](../decisions/2026-10-23-touch-before-launch.md)); do not claim touch or controller support is finished before it exists.
 
 The player-facing reserve is **Lift**, not engine fuel. Starter reference endurance about 90 seconds; very
 heavy builds around 60 seconds. Exhaustion causes steerable descent, not instant destruction. Weight costs
@@ -123,7 +123,7 @@ consume unavailable value. Permanent ownership disables new same-resource tempor
 remaining time on a permanent upgrade with clear terms, no invented refund. Live prices/IDs are not approved.
 
 ## Later scope and delivery boundary
-Cosmetics are now planned for sale ([shop plan](../decisions/2026-10-18-shop-plan.md)). Later: more maps, full touch then controller, improved desk equipment, collapsing cities, capture/
+Cosmetics are now planned for sale ([shop plan](../decisions/2026-10-18-shop-plan.md)). Later: more maps, improved desk equipment, collapsing cities, capture/
 payload and escort modes, advanced ranked systems. Do not build these instead of the required game.
 Deliver a complete private candidate and honest evidence. No public launch, real spending, account changes,
 or claims of tested enjoyment, indistinguishability, or profitability without evidence.
