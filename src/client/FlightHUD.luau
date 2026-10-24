@@ -259,10 +259,13 @@ function HUD.start(getPlane, action)
 		button.BackgroundColor3=Color3.fromRGB(70,60,120);button.Parent=picker
 		button.Activated:Connect(function()Root.RoundAction:FireServer("devMode",mode[1])end)
 	end
-	-- Test button (Alan 2026-10-17): end this round now to see the round end.
-	local endMatch=eraserBots:Clone();endMatch.Name="EndMatch";endMatch.Text="end match";endMatch.Position=UDim2.fromOffset(660,-40)
-	endMatch.BackgroundColor3=Color3.fromRGB(150,40,40);endMatch.Parent=picker
-	endMatch.Activated:Connect(function()Root.RoundAction:FireServer("endMatch")end)
+	-- Test buttons (Alan 2026-10-17, 2026-10-23): end this round now to see the round end, with each finalist winners'
+	-- song (WinnersSound.TRACKS) to compare them in the real moment.
+	for index, song in ipairs({ "parade", "carnival", "show" }) do
+		local endMatch=eraserBots:Clone();endMatch.Name="EndMatch"..index;endMatch.Text="end: "..song;endMatch.Position=UDim2.fromOffset(330+index*110,-40)
+		endMatch.BackgroundColor3=Color3.fromRGB(150,40,40);endMatch.Parent=picker
+		endMatch.Activated:Connect(function()Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
+	end
 	-- Crayon colours for the round strip's words.
 	local function crayon(text, hex) return string.format('<font color="#%s">%s</font>', hex, text) end
 	game.ReplicatedStorage.FlyFightPaper:WaitForChild("RoundView").OnClientEvent:Connect(function(snapshot)

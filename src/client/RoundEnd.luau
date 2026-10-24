@@ -11,6 +11,7 @@ local Rounds = require(Root.Generated.Gameplay).rounds
 local UIArt = require(Root.Shared.UIAssets)
 local PaperUI = require(script.Parent.PaperUI)
 local Cutscene = require(script.Parent.WinnersCutscene)
+local WinnersSound = require(script.Parent.WinnersSound)
 local LevelBar = require(script.Parent.LevelBar)
 
 local MODES = { { "FFA", "Free-for-all", "blue" }, { "TDM", "Team dogfight", "pink" }, { "CONTROL", "Airspace Control", "green" } }
@@ -138,7 +139,11 @@ function RoundEnd.start()
 		if snap.phase ~= state.phase then
 			state.phase = snap.phase
 			Cutscene.stop()
+			if state.stopSound then state.stopSound(); state.stopSound = nil end
+			Root:SetAttribute("WinnersMoment", snap.phase == "RESULTS" and inMatch or nil) -- the match music fades out for it (Audio)
 			if snap.phase == "RESULTS" and inMatch then
+				local song = RunService:IsStudio() and Root:GetAttribute("DevWinnersSong") or WinnersSound.SONG
+				state.stopSound = WinnersSound.play(WinnersSound.TRACKS[song] or WinnersSound.TRACKS[WinnersSound.SONG])
 				state.stage, state.cardAt = "card", os.clock() -- stays on the card if the cutscene can't play
 				Cutscene.play(MatchRules.winners(snap.result), function(stage)
 					if stage == "card" and state.stage ~= "card" then state.cardAt = os.clock() end

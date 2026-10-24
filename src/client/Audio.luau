@@ -112,11 +112,14 @@ function Audio.start(getPlane)
   return plane~=nil and plane.Parent~=nil and game:GetService("Players").LocalPlayer:GetAttribute("InMatch")==true and plane:GetAttribute("State")~="DESK"
    and plane:GetAttribute("Pinned")==nil and not inLesson() and not Root:GetAttribute("OverlayOpen")
  end
+ -- The winners' moment has its own sound (WinnersSound): the match music fades out over its banner and comes back after.
  local function volumes()
+  local winners=Root:GetAttribute("WinnersMoment")==true
   game:GetService("TweenService"):Create(ambience,glide,{Volume=(inClassroom() and .08 or 0)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
-  game:GetService("TweenService"):Create(music,glide,{Volume=(inLesson() and .067 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
+  game:GetService("TweenService"):Create(music,winners and TweenInfo.new(1.2) or glide,{Volume=(winners and 0 or inLesson() and .067 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
  end
  Root:GetAttributeChangedSignal("MusicVolume"):Connect(volumes);Root:GetAttributeChangedSignal("SoundVolume"):Connect(volumes)
+ Root:GetAttributeChangedSignal("WinnersMoment"):Connect(volumes)
  Root:GetAttributeChangedSignal("TutorialOpen"):Connect(function() nextTrack();volumes() end)
  volumes();nextTrack()
  task.spawn(function() local was;while true do task.wait(.25);local now=inClassroom();if now~=was then was=now;volumes() end end end)

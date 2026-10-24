@@ -11,6 +11,7 @@ local SoundService = game:GetService("SoundService")
 local WinnersSound = {}
 -- Alan's three finalists (all APM, licensed for Roblox games); he picks one by ear.
 WinnersSound.TRACKS = { parade = 1838686578, carnival = 9041955420, show = 1835278359 } -- Parade March (30s), Nawlins Carnival Kids (a) (30), On With The Show 30C
+WinnersSound.SONG = "parade" -- the one the game plays until Alan picks (Studio's "end: ..." buttons try each)
 local CHEER, CLAP, YEAH = 9120973900, 9113138035, 1841221347 -- PSE crowd cheers and whistles, PSE small-room applause, APM kids "Yeah!"
 local FIRST_LANDS = 8.1
 
@@ -34,9 +35,10 @@ local function volumeAt(keys, t)
 	return 0
 end
 
--- Plays the whole mix with `track` as the winners' music; `loudness()` (optional) scales it, e.g. the Sound slider.
--- Returns a function that stops it early.
-function WinnersSound.play(track, loudness)
+-- Plays the whole mix with `track` as the winners' music: the song follows the Music slider, the crowd the Sound
+-- slider. Returns a function that stops it early.
+function WinnersSound.play(track)
+	local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 	local folder = Instance.new("Folder")
 	folder.Name = "WinnersSound"
 	local speakers = Instance.new("AudioDeviceOutput")
@@ -59,8 +61,9 @@ function WinnersSound.play(track, loudness)
 		folder:Destroy()
 	end
 	connection = RunService.Heartbeat:Connect(function()
-		local t, scale, left = os.clock() - start, loudness and loudness() or 1, false
+		local t, left = os.clock() - start, false
 		for _, cue in live do
+			local scale = Root:GetAttribute(cue.keys[1] == track and "MusicVolume" or "SoundVolume") or 1
 			local first, last = cue.keys[2][1], cue.keys[#cue.keys][1]
 			if t < last then left = true end
 			if t >= first and t < last and not cue.started then
