@@ -142,8 +142,9 @@ function RoundEnd.start()
 			if state.stopSound then state.stopSound(); state.stopSound = nil end
 			Root:SetAttribute("WinnersMoment", snap.phase == "RESULTS" and inMatch or nil) -- the match music fades out for it (Audio)
 			if snap.phase == "RESULTS" and inMatch then
-				local song = RunService:IsStudio() and Root:GetAttribute("DevWinnersSong") or WinnersSound.SONG
-				state.stopSound = WinnersSound.play(WinnersSound.TRACKS[song] or WinnersSound.TRACKS[WinnersSound.SONG])
+				local song = RunService:IsStudio() and WinnersSound.TRACKS[Root:GetAttribute("DevWinnersSong")] -- Studio's "end: <song>" buttons, once
+				Root:SetAttribute("DevWinnersSong", nil)
+				state.stopSound = WinnersSound.play(song or WinnersSound.TRACKS[WinnersSound.pick()])
 				state.stage, state.cardAt = "card", os.clock() -- stays on the card if the cutscene can't play
 				Cutscene.play(MatchRules.winners(snap.result), function(stage)
 					if stage == "card" and state.stage ~= "card" then state.cardAt = os.clock() end

@@ -9,9 +9,18 @@ local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
 
 local WinnersSound = {}
--- Alan's three finalists (all APM, licensed for Roblox games); he picks one by ear.
+-- The winners' songs (all APM, licensed for Roblox games). Alan 2026-10-23: use all three, a random one each round.
 WinnersSound.TRACKS = { parade = 1838686578, carnival = 9041955420, show = 1835278359 } -- Parade March (30s), Nawlins Carnival Kids (a) (30), On With The Show 30C
-WinnersSound.SONG = "parade" -- the one the game plays until Alan picks (Studio's "end: ..." buttons try each)
+local lastSong
+-- A random song, never the same one twice in a row.
+function WinnersSound.pick()
+	local songs = {}
+	for name in WinnersSound.TRACKS do
+		if name ~= lastSong then table.insert(songs, name) end
+	end
+	lastSong = songs[math.random(#songs)]
+	return lastSong
+end
 local CHEER, CLAP, YEAH = 9120973900, 9113138035, 1841221347 -- PSE crowd cheers and whistles, PSE small-room applause, APM kids "Yeah!"
 local FIRST_LANDS = 8.1
 
