@@ -236,12 +236,14 @@ function Hangar.new(playerGui, api)
 				ring.Thickness, ring.Color, ring.Parent = chosen and 5 or 3, chosen and Color3.fromRGB(255, 255, 255) or PaperUI.INK, tag
 			end
 		end
-		-- Drag to turn the plane: sideways spins it, up and down tips it over to see the top or the underside.
-		local last
-		view.InputBegan:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then last = input.Position end end)
-		view.InputEnded:Connect(function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 then last = nil end end)
+		-- Drag to turn the plane (mouse or a finger): sideways spins it, up and down tips it over to see the top or the
+		-- underside.
+		local last, finger
+		local function press(input) return input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch end
+		view.InputBegan:Connect(function(input) if press(input) then last, finger = input.Position, input end end)
+		view.InputEnded:Connect(function(input) if input == finger or input.UserInputType == Enum.UserInputType.MouseButton1 then last, finger = nil, nil end end)
 		view.InputChanged:Connect(function(input)
-			if last and not diagram and input.UserInputType == Enum.UserInputType.MouseMovement then
+			if last and not diagram and (input.UserInputType == Enum.UserInputType.MouseMovement or input == finger) then
 				state.angle += (input.Position.X - last.X) * 0.015
 				state.pitch = math.clamp(state.pitch - (input.Position.Y - last.Y) * 0.015, -1.5, 1.5)
 				last = input.Position; aim()

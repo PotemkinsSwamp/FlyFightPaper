@@ -57,6 +57,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | File | What it does |
 |---|---|
 | `src/client/MenuController.luau` | Which screen shows; Esc and Tab |
+| `src/shared/TouchWords.luau` | Phone wording: "Click" becomes "Tap", "hold left click" "hold FIRE", key hints like [Space] go; TouchControls rewrites every text on screen with it on a touch screen (tests: `tests/unit/TouchWords.spec.luau`, which also checks every lesson's text) |
 | `src/shared/AimHelp.luau` | Phone aim help numbers: how far a shot bends to the ring, how much the stick slows over an enemy (tests: `tests/unit/AimHelp.spec.luau`) |
 | `src/client/MenuBoard.luau` | Bulletin-board main menu |
 | `src/client/Hangar.luau`, `src/client/DeskHangar.luau` | Main-menu and in-game hangar |

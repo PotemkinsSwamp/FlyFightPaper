@@ -40,6 +40,12 @@ the stick", "tap Fire") and the key words on PC.
 5. **Tutorial and tip words per device.**
 6. **Real phone check** (needs a private publish: Alan's go): Alan plays on his phone; we measure FPS there.
 
+## Progress
+- 2026-10-23/24: step 1 (stick, FIRE / 2 / BOOST) and step 2 (aim help, fake-pilot tuned) built. Step 3 started:
+  Settings sliders, the Hangar's plane turning and the Range's stage strips (tap the strip) take fingers; the lesson's
+  Skip button held 1.5 s skips the whole lesson (like holding K); every text on screen says touch words (step 5,
+  TouchWords). Not yet seen on a phone-sized screen (waiting on the Device Simulator: Alan turns it on).
+
 ## Checks
 - Studio's Device Simulator (free) shows the screen sizes and gives touch-like input, but it can't show how thumbs
   feel or how fast the game runs on a phone ([Roblox: test on hardware](https://create.roblox.com/docs/performance-optimization/test-on-hardware)).

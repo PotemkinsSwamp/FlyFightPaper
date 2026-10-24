@@ -9,11 +9,13 @@ local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Config = require(Root.Generated.Gameplay).flight
 local PaperUI = require(script.Parent.PaperUI)
+local Words = require(Root.Shared.TouchWords)
 
 local Touch = { stick = Vector2.zero, boost = false, onFire = nil } -- onFire(which, down): CombatController's triggers
 
+-- Studio: ReplicatedStorage.FlyFightPaper's DevTouch attribute shows the phone layout on a PC, to look at it.
 function Touch.active()
-	return Input.PreferredInput == Enum.PreferredInput.Touch
+	return Input.PreferredInput == Enum.PreferredInput.Touch or RunService:IsStudio() and Root:GetAttribute("DevTouch") == true
 end
 
 local PAPER = Color3.fromRGB(250, 246, 232)
@@ -112,6 +114,25 @@ function Touch.start(getPlane)
 		if touch == stickTouch then stickTouch, Touch.stick, base.Visible = nil, Vector2.zero, false end
 		for _, entry in buttons do if entry.touch == touch then entry.release() end end
 	end)
+
+	-- Every text on screen says touch words on a phone ("Tap", "hold FIRE"; TouchWords), however it got there: menus,
+	-- lessons, tips, the HUD, messages from the server. Texts typed by the player (TextBoxes) are left alone.
+	local function fix(label)
+		if not Touch.active() then return end
+		local said = Words.say(label.Text, true)
+		if said ~= label.Text then label.Text = said end
+	end
+	local function watch(object)
+		if not (object:IsA("TextLabel") or object:IsA("TextButton")) then return end
+		object:GetPropertyChangedSignal("Text"):Connect(function() fix(object) end)
+		fix(object)
+	end
+	local playerGui = gui.Parent
+	playerGui.DescendantAdded:Connect(watch)
+	for _, object in playerGui:GetDescendants() do watch(object) end
+	local function fixAll() for _, object in playerGui:GetDescendants() do if object:IsA("TextLabel") or object:IsA("TextButton") then fix(object) end end end
+	Input:GetPropertyChangedSignal("PreferredInput"):Connect(fixAll)
+	if RunService:IsStudio() then Root:GetAttributeChangedSignal("DevTouch"):Connect(fixAll) end
 
 	-- Roblox's own walking stick and jump button would sit under the thumbs; the plane needs neither.
 	local controls, controlsOff

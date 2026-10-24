@@ -112,7 +112,7 @@ function Tutorial.start(getPlane)
  -- While the world is held for reading, a bar along the button drains to empty, then it lets go.
  local readBar=Instance.new("Frame");readBar.Name="ReadBar";readBar.BorderSizePixel=0;readBar.BackgroundColor3=Color3.fromRGB(35,35,35)
  readBar.BackgroundTransparency=.3;readBar.AnchorPoint=Vector2.new(0,1);readBar.Position=UDim2.new(0,8,1,-5);readBar.ZIndex=gotIt.ZIndex+2;readBar.Visible=false;readBar.Parent=gotIt
- local skip=PaperUI.button(note,"Skip",Art.mainmenu.strip.red,"Skip  [K]",330,176,250,48,-1,function() Tutorial.skipStep=true end,24)
+ local skip=PaperUI.button(note,"Skip",Art.mainmenu.strip.red,"Skip  [K]",330,176,250,48,-1,function() end,24) -- works like K: see skipPress
  local skipFill=Instance.new("Frame");skipFill.BackgroundColor3=Color3.new(1,1,1);skipFill.BackgroundTransparency=.5;skipFill.BorderSizePixel=0;skipFill.Size=UDim2.fromScale(0,1);skipFill.Parent=skip
 
  -- A short card in the middle: lesson finished or skipped, and how to come back (Alan: always tell them).
@@ -530,10 +530,15 @@ function Tutorial.start(getPlane)
   elseif input.KeyCode==Enum.KeyCode.Return then clicked.Launch=true
   elseif input.KeyCode==Enum.KeyCode.K then holdK=os.clock() end
  end)
+ -- The Skip button works like K (phones have no K): a tap skips the step, held for HOLD_SKIP_SECONDS the whole lesson.
+ local skipPress
+ skip.InputBegan:Connect(function(input)
+  if Tutorial.active and (input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch) then skipPress=input;holdK=os.clock() end
+ end)
  Input.InputEnded:Connect(function(input)
-  if input.KeyCode==Enum.KeyCode.K and holdK then
+  if (input.KeyCode==Enum.KeyCode.K or input==skipPress) and holdK then
    if os.clock()-holdK<HOLD_SKIP_SECONDS and Tutorial.active then Tutorial.skipStep=true end
-   holdK=nil
+   holdK,skipPress=nil,nil
   end
  end)
 

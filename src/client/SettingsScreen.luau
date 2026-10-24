@@ -39,7 +39,7 @@ function SettingsScreen.new(playerGui, api)
 			pencil.Position = UDim2.fromOffset(left + width * t, y + 36)
 			value.Text = show(settings[key])
 		end
-		local dragging = false
+		local dragging = false -- the mouse button or the finger (phones) that holds the pencil
 		local function follow(screenX)
 			local a, s = ruler.AbsolutePosition.X, ruler.AbsoluteSize.X
 			local t = math.clamp((screenX - a - s * 40 / 510) / (s * width / 510), 0, 1)
@@ -48,15 +48,15 @@ function SettingsScreen.new(playerGui, api)
 			Options.apply(settings) -- heard and felt while dragging; saved on release
 		end
 		local function grab(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = true; follow(input.Position.X) end
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = input; follow(input.Position.X) end
 		end
 		pencil.InputBegan:Connect(grab)
 		ruler.InputBegan:Connect(grab)
 		Input.InputChanged:Connect(function(input)
-			if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then follow(input.Position.X) end
+			if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input == dragging) then follow(input.Position.X) end
 		end)
 		Input.InputEnded:Connect(function(input)
-			if dragging and input.UserInputType == Enum.UserInputType.MouseButton1 then dragging = false; save() end
+			if dragging and (input == dragging or input.UserInputType == Enum.UserInputType.MouseButton1 and dragging.UserInputType == Enum.UserInputType.MouseButton1) then dragging = false; save() end
 		end)
 	end
 	slider("sensitivity", "Mouse sensitivity", 345, 0.2, 3, 0.1, function(v) return string.format("%.1f", v) end, "0.2", "3.0")
