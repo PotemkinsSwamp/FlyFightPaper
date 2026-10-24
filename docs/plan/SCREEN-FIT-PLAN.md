@@ -1,6 +1,6 @@
 # Screen fit plan: every piece in its place on any screen
 
-Draft 2026-10-24, waiting on Alan's OK. Follows the [touch plan](TOUCH-PLAN.md) step 4 (phone sizes) after Alan saw
+Approved by Alan 2026-10-24 ([decision](../decisions/2026-10-24-screen-fit.md)). Follows the [touch plan](TOUCH-PLAN.md) step 4 (phone sizes) after Alan saw
 the Menu button, the match strip and the kill feed pile up on a phone: "every UI element ... needs to follow this
 minimum maximum size and where it belongs, so it always looks the way we want it to on any screen."
 
@@ -50,9 +50,11 @@ PC 1920 x 1080, a small PC window (1280 x 720), a wide monitor. Switching the si
 Alan switches it, or gives Claude the go to click it. Done when the check is clean on every device and Alan's real
 phone matches (touch plan step 6).
 
-## Questions for Alan
-1. PC: some pieces will move a little on a PC too (where they sit badly today). OK, with before/after pictures?
-2. Kill feed on a phone: 2 short lines instead of 4?
+## Alan's answers (2026-10-24)
+Plan OK; small PC moves OK with before/after pictures; 2 kill-feed lines on a phone; Alan switches simulator devices.
+
+## Progress
+- 2026-10-24: plan approved; step 1 (size rule and check) started.
 
 ## Cost
 Code only: no uploads, $0. About two to three sessions.

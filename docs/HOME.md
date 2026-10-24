@@ -22,7 +22,7 @@ otherwise.
 - [Tutorial plan](plan/TUTORIAL-PLAN.md) (draft, waiting on Alan)
 - [Hangar plan](plan/HANGAR-PLAN.md) (draft, waiting on Alan)
 - [Touch plan](plan/TOUCH-PLAN.md): phones and tablets (approved 2026-10-23)
-- [Screen fit plan](plan/SCREEN-FIT-PLAN.md): every piece in its place on any screen (draft, waiting on Alan)
+- [Screen fit plan](plan/SCREEN-FIT-PLAN.md): every piece in its place on any screen (approved 2026-10-24)
 - [Release notes](plan/RELEASE_NOTES.md) (2026-10-07 build)
 
 ## The game, system by system

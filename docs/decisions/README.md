@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-10-24: [Screen fit: every piece in its place on any screen](2026-10-24-screen-fit.md)
 - 2026-10-23: [Touch controls before launch, controller after](2026-10-23-touch-before-launch.md)
 - 2026-10-22: [Desk quick menu: pieces round the edges (concept B)](2026-10-22-desk-quick-menu.md)
 - 2026-10-22: [Tutorials approved](2026-10-22-tutorials-approved.md)
