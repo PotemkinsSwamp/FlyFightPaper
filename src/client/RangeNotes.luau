@@ -10,6 +10,7 @@ local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets)
 local GuiService = game:GetService("GuiService")
 local PaperUI = require(script.Parent.PaperUI)
+local ScreenFit = require(script.Parent.ScreenFit)
 local FlightState = require(script.Parent.FlightController).state
 local Notes = {}
 
@@ -150,7 +151,7 @@ function Notes.new(getStage)
 		gui.Enabled = show and (low ~= nil or not (current.find or current.gui))
 		if not gui.Enabled then return end
 		local phone = PaperUI.isPhone()
-		local s = math.max(phone and 0.5 or 0.6, workspace.CurrentCamera.ViewportSize.Y / 1080)
+		local s = ScreenFit.scale(ScreenFit.NOTE)
 		scale.Scale, arrowScale.Scale = s, s
 		title.Text, words.Text = string.format("The Range  -  note %d of %d", step, #STEPS), current.text
 		skip.Visible = step < #STEPS

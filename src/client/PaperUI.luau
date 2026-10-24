@@ -1,6 +1,7 @@
 -- Shared pieces for the paper-and-crayon menu screens (concepts: assets/references/ui-concepts/).
 -- Each screen is a fixed 1920x1080 sheet that UIScale stretches to cover the screen; words are live text.
 local TweenService = game:GetService("TweenService")
+local ScreenFit = require(script.Parent.ScreenFit)
 local PaperUI = {}
 
 PaperUI.W, PaperUI.H = 1920, 1080
@@ -91,8 +92,7 @@ end
 local rest = setmetatable({}, { __mode = "k" }) -- piece -> { size, rotation }
 
 function PaperUI.isPhone()
-	local y = workspace.CurrentCamera.ViewportSize.Y
-	return y > 2 and y < 540
+	return ScreenFit.kind() == "phone"
 end
 
 -- apply(phone) now and again whenever the screen crosses the phone size.
@@ -102,8 +102,7 @@ function PaperUI.onPhone(apply)
 		local phone = PaperUI.isPhone()
 		if phone ~= last then last = phone; apply(phone) end
 	end
-	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(check)
-	check()
+	ScreenFit.watch(check)
 end
 
 -- Gives a piece other property values on a phone, e.g. PaperUI.phone(label, { TextSize = 40 }).

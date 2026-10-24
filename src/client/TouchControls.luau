@@ -100,13 +100,14 @@ function Touch.start(getPlane)
 	local fire2 = holdButton("Fire2", "2", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(2, down) end end)
 	local boost = holdButton("Boost", "BOOST", CRAYON.blue, function(down) Touch.boost = down end)
 
-	-- Sizes follow the screen's short side, so a phone and a tablet both get thumb-sized pieces.
+	-- Sizes follow the screen's short side, kept thumb-sized (points): a phone and a tablet both get pieces a thumb
+	-- can hit, and a tablet's don't grow huge.
 	local function fit()
 		local view = workspace.CurrentCamera.ViewportSize
 		local short = math.min(view.X, view.Y)
-		radius = short * Config.touch_stick_radius
+		radius = math.clamp(short * Config.touch_stick_radius, 44, 80)
 		base.Size, knob.Size = UDim2.fromOffset(radius * 2, radius * 2), UDim2.fromOffset(radius * 0.9, radius * 0.9)
-		local big, small = short * 0.24, short * 0.16
+		local big, small = math.clamp(short * 0.24, 76, 120), math.clamp(short * 0.16, 52, 84)
 		fire.Size = UDim2.fromOffset(big, big)
 		fire.Position = UDim2.new(1, -big * 0.5 - short * 0.06, 1, -big * 0.5 - short * 0.08)
 		fire2.Size = UDim2.fromOffset(small, small)

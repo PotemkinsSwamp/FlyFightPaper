@@ -163,6 +163,7 @@ function HUD.start(getPlane, action)
 	end
 	-- Words on paper (Alan, 2026-10-13: notebook strips and big crayon-marker words, like the menus). Panels are
 	-- laid out for 1080p and scaled to the screen height, so the HUD keeps the same share of any screen.
+	local ScreenFit = require(script.Parent.ScreenFit)
 	local PaperUI = require(script.Parent.PaperUI)
 	local UIArt = require(Root.Shared.UIAssets)
 	local function panel(name, anchor, position, size)
@@ -172,11 +173,7 @@ function HUD.start(getPlane, action)
 		local scale = Instance.new("UIScale")
 		scale.Parent = frame
 		-- Phones: a smaller floor (0.4 of 1080p still reads at about 15 points), so the HUD doesn't eat a small screen.
-		local function fit() scale.Scale = math.max(Touch.active() and 0.4 or 0.6, workspace.CurrentCamera.ViewportSize.Y / 1080) end
-		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
-		Input:GetPropertyChangedSignal("PreferredInput"):Connect(fit)
-		Root:GetAttributeChangedSignal("DevTouch"):Connect(fit)
-		fit()
+		ScreenFit.watch(function() scale.Scale = ScreenFit.scale(ScreenFit.HUD) end)
 		return frame
 	end
 	-- A paper piece with centred words that shrink to fit and keep clear of the torn ends.
@@ -507,7 +504,7 @@ function HUD.start(getPlane, action)
 			local direction = Vector2.new(relative.X, -relative.Y)
 			direction = direction.Magnitude > 0.01 and direction.Unit or Vector2.new(0, 1)
 			-- Ride a box inset from the edges, kept above the bottom bars.
-			local size, scale = camera.ViewportSize, math.max(0.6, camera.ViewportSize.Y / 1080)
+			local size, scale = camera.ViewportSize, ScreenFit.scale(ScreenFit.NOTE)
 			local function edge(down)
 				local halfX, up = size.X / 2 - 70 * scale, size.Y / 2 - 190 * scale -- below the top strips
 				return size / 2 + direction * math.min(halfX / math.max(math.abs(direction.X), 1e-3), (direction.Y < 0 and up or down) / math.max(math.abs(direction.Y), 1e-3))

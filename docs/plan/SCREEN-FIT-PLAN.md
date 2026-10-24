@@ -54,7 +54,14 @@ phone matches (touch plan step 6).
 Plan OK; small PC moves OK with before/after pictures; 2 kill-feed lines on a phone; Alan switches simulator devices.
 
 ## Progress
-- 2026-10-24: plan approved; step 1 (size rule and check) started.
+- 2026-10-24: plan approved. Step 1 built: `ScreenFit` (screen kind by the short side: phone under 540, tablet under
+  900; scale = min(width/1920, height/1080) kept between a least per kind and a most) now drives the flying screen,
+  the desk strips, lesson notes, tips, Range notes, score words and the phone sizes; touch buttons keep thumb sizes
+  (FIRE 76-120 points, 2/BOOST 52-84, stick radius 44-80). `ScreenCheck` lists overlaps, pieces under Roblox's
+  buttons or off screen, small words and small taps. Not yet run on a drawn screen (Studio stopped drawing).
+  **Next:** run the check on each screen; step 2: the top row (Menu then the match strip, placed from the top bar's
+  real free room), notes under it stacked from each other's real edges (news, lock, threat, lesson note, tip), kill
+  feed 2 slips on a phone.
 
 ## Cost
 Code only: no uploads, $0. About two to three sessions.

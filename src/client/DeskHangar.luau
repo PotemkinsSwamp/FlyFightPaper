@@ -19,7 +19,7 @@ local Hangar = require(script.Parent.Hangar)
 local BuildStats = {}
 for _, entry in Hangar.STATS do BuildStats[entry[1]] = entry end
 local PaperUI = require(script.Parent.PaperUI)
-local Touch = require(script.Parent.TouchControls)
+local ScreenFit = require(script.Parent.ScreenFit)
 local DeskHangar = {}
 
 
@@ -87,13 +87,11 @@ function DeskHangar.new(playerGui, api)
 		left.Position, bottom.Position = UDim2.fromOffset(16, 8), UDim2.new(0.5, 0, 1, -12) -- level with the match strip
 		-- The service strips start under the flight HUD's kill feed (FlightHUD: 10 px down, 4 slips, its own scale);
 		-- on a phone they shrink a little so Customize still fits above the bottom edge.
-		local top = 10 + 250 * math.max(Touch.active() and 0.4 or 0.6, view.Y / 1080)
+		local top = 10 + 250 * ScreenFit.scale(ScreenFit.HUD)
 		right.Position = UDim2.new(1, -16, 0, top)
 		if PaperUI.isPhone() then right.UIScale.Scale = math.min(s, (view.Y - top - 12) / 820) end
 	end
-	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
-	game:GetService("UserInputService"):GetPropertyChangedSignal("PreferredInput"):Connect(fit)
-	fit()
+	ScreenFit.watch(fit)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	-- A turned group of pieces (a photo and its tape turn together); x, y, w, h like PaperUI.image.
 	local function turned(name, x, y, w, h, rotation)

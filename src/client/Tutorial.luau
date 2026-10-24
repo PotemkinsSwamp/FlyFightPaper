@@ -103,8 +103,8 @@ function Tutorial.start(getPlane)
  -- Phones: a bit smaller (0.6 covered the top third of the screen) and under Roblox's top bar, where the Menu button and
  -- the match strip sit (the note covered them).
  local function noteTop() return PaperUI.isPhone() and UDim2.new(.5,0,0,game:GetService("GuiService").TopbarInset.Max.Y+4) or UDim2.fromScale(.5,.05) end
- local function fit() scale.Scale=math.max(PaperUI.isPhone() and .5 or .6,workspace.CurrentCamera.ViewportSize.Y/1080);note.Position=noteTop() end
- workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit);fit()
+ local ScreenFit=require(script.Parent.ScreenFit)
+ ScreenFit.watch(function() scale.Scale=ScreenFit.scale(ScreenFit.NOTE);note.Position=noteTop() end)
  local title=PaperUI.words(note,"Title","",40,24,540,34,24);title.TextColor3=Color3.fromRGB(150,60,40)
  local text=PaperUI.words(note,"Text","",40,58,440,96,30);text.TextWrapped=true;text.TextYAlignment=Enum.TextYAlignment.Top
  local key=PaperUI.words(note,"Key","",490,64,100,48,26);key.TextXAlignment=Enum.TextXAlignment.Center;key.BackgroundTransparency=0;key.BackgroundColor3=Color3.fromRGB(250,250,245)

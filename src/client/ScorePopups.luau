@@ -17,6 +17,7 @@ local WORDS = {
 }
 local SECONDS, RISE, GAP = 1.3, 60, 48 -- how long one shows, how far it floats up, spacing between stacked ones (px at 1080p)
 
+local ScreenFit = require(script.Parent.ScreenFit)
 local ScorePopups = {}
 
 function ScorePopups.start()
@@ -28,7 +29,7 @@ function ScorePopups.start()
 		for _, event in events do
 			if event.kind ~= "score" or type(event.points) ~= "number" then continue end
 			local word = WORDS[event.reason] or { "", Color3.new(1, 1, 1) }
-			local scale = math.max(0.6, gui.AbsoluteSize.Y / 1080)
+			local scale = ScreenFit.scale(ScreenFit.NOTE)
 			-- Older pop-ups still showing move up a row so the new one has room. The holder
 			-- carries that move; the label inside it does the float-up, so the two don't fight.
 			for _, holder in showing do holder.Position -= UDim2.fromOffset(0, GAP * scale) end

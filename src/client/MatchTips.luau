@@ -11,6 +11,7 @@ local Art = require(Root.Shared.UIAssets)
 local Lines = require(Root.Shared.Lines)
 local GuiService = game:GetService("GuiService")
 local PaperUI = require(script.Parent.PaperUI)
+local ScreenFit = require(script.Parent.ScreenFit)
 local FlightState = require(script.Parent.FlightController).state
 local Zone = require(script.Parent.ControlZone).state
 local Tips = {}
@@ -119,7 +120,7 @@ function Tips.start(getPlane)
 		shownFor += dt
 		-- Phones: a bit smaller, just under Roblox's top bar (the match strip moves up into it there).
 		local phone = PaperUI.isPhone()
-		local s = math.max(phone and 0.5 or 0.6, workspace.CurrentCamera.ViewportSize.Y / 1080)
+		local s = ScreenFit.scale(ScreenFit.NOTE)
 		scale.Scale, arrowScale.Scale = s, s
 		note.Position = UDim2.new(0.5, 0, 0, phone and GuiService.TopbarInset.Max.Y + 4 or 130)
 		local low, high = nil, nil
