@@ -11,12 +11,15 @@
   and Roblox's own buttons; backgrounds reach past the notch. PC look kept by design (not re-screenshotted: the
   simulator is on). Finger taps checked; a Range strip tap missed by 58 points and is fixed.
 
-# Now: UI lane: touch controls (docs/plan/TOUCH-PLAN.md): steps 1-5 done in the simulator; stick tuning with you next
+# Now: UI lane: screen fit (docs/plan/SCREEN-FIT-PLAN.md, your OK): step 1 built; step 2 the top row and notes next
 What works: everything in Stage 9, the tutorials, the desk quick menu, Range notes, Match Tips; on phones (simulator)
-every screen and the controls. Not yet: nothing tried on a real phone; stick feel not tuned. Track C saving needs
+every screen and the controls. Broken: on a phone the Menu button, match strip, kill feed and the notes under them
+still crowd each other (screen fit step 2 fixes it). Not yet: nothing tried on a real phone; stick feel not tuned. Track C saving needs
 a private publish (your go). Place file not re-saved (Save to File, your go; code lives in src/).
 
 Decisions to review
+Screen fit: screen kinds by the short side (phone under 540 points, tablet under 900); touch buttons kept thumb-sized
+  (FIRE 76-120 points); a small PC window gets tablet sizes.
 Touch: FIRE / 2 / BOOST paper buttons right, stick on the left half; phone aim help cone 6 (fades from 3), out to 800
   studs, slowdown 0.65 within 8 degrees; yellow dot = lands thanks to the help; held Skip (1.5 s) skips a lesson.
 Winners' moment: cheers from 3.2 s, clapping from 3rd's landing, "Yeah!" + song at 1st's landing (8.1 s), song
