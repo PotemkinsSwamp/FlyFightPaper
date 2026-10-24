@@ -233,6 +233,7 @@ function HUD.start(getPlane, action)
 	-- Top right: the last four knock-downs, one torn notebook slip each (CombatEffects fills them), pinned with a
 	-- blue pin when the line is about you and a red one otherwise.
 	local feed = panel("KillFeed", Vector2.new(1, 0), UDim2.new(1, -16, 0, 10), UDim2.fromOffset(450, 240))
+	ScreenFit.inRow(feed)
 	for i = 1, 4 do
 		local slip = note(feed, "Slip" .. i, UIArt.hud.slip, 450, 54, (i - 1) * 58, 26)
 		slip.Words.UIPadding.PaddingLeft = UDim.new(0.11, 0)
@@ -386,6 +387,7 @@ function HUD.start(getPlane, action)
 		return row
 	end
 	local left = corner("Bars", Vector2.new(0, 1), 630)
+	ScreenFit.inRow(left, function() return left.AnchorPoint.Y == 0 end) -- touch screens: up top, under the Menu button
 	local healthRow = bar(left, "Health", 160, 178, 630)
 	local liftRow = bar(left, "Lift", 85, 178, 630)
 	local boostRow = bar(left, "Boost", 10, 178, 630)

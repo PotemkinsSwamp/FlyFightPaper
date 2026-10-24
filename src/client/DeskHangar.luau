@@ -116,7 +116,7 @@ function DeskHangar.new(playerGui, api)
 	end
 
 	-- Top left: the plane's taped photo (just under Roblox's own buttons and the Menu button) with its name on masking
-	-- tape, and beside it, level with the match strip, the short stat sheet.
+	-- tape, and beside it, its top level with the photo's (Alan 2026-10-24, every screen), the short stat sheet.
 	image(left, "Photo", Desk.photo, 0, PHOTO_Y, 300, 250, BIG_TILT).ScaleType = Enum.ScaleType.Stretch
 	local planeView = viewport(left, "Plane", 300 * BLUE[1], PHOTO_Y + 250 * BLUE[2], 300 * (BLUE[3] - BLUE[1]), 250 * (BLUE[4] - BLUE[2]))
 	local notYet = PaperUI.phone(words(left, "NotFlyingYet", "", 30, PHOTO_Y + 36, 240, 26, 24), { TextSize = 36 })
@@ -127,9 +127,8 @@ function DeskHangar.new(playerGui, api)
 
 	-- Health, Lift and Boost show what is left now; Speed shows the build (Alan 2026-10-22: these four, no turning
 	-- or weight here; Customize has the full sheet). Rows sit clear of the paper's binder holes and edges.
-	local statsPaper = image(left, "StatsSheet", Shelf.statsPaper, 296, -6, 324, 330, 1)
+	local statsPaper = image(left, "StatsSheet", Shelf.statsPaper, 296, PHOTO_Y, 324, 330, 1)
 	statsPaper.ScaleType = Enum.ScaleType.Stretch
-	local statPieces = { statsPaper }
 	local speed = BuildStats.Speed
 	local colours = Hangar.STAT_COLOURS
 	local rows = {
@@ -141,23 +140,19 @@ function DeskHangar.new(playerGui, api)
 		{ "Boost", colours.Swerve, function(p) return p:GetAttribute("Boost") or 0, p:GetAttribute("BoostMax") or 0 end },
 	}
 	for i, row in rows do
-		local y = 60 + (i - 1) * 56
+		local y = PHOTO_Y + 66 + (i - 1) * 56
 		local strip = image(left, row[1] .. "Row", Shelf.statLabel, 345, y + 7, 100, 42)
 		strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, row[2]
 		local label = centred(words(left, row[1] .. "Name", row[1], 351, y + 9, 88, 38, 26), 26)
 		PaperUI.phone(strip, { Size = UDim2.fromOffset(112, 48) })
-		PaperUI.phone(label, { Position = UDim2.fromOffset(345, y + 167), Size = UDim2.fromOffset(100, 42) }) -- (with the drop below)
+		PaperUI.phone(label, { Position = UDim2.fromOffset(345, y + 7), Size = UDim2.fromOffset(100, 42) })
 		PaperUI.phone(label.UITextSizeConstraint, { MaxTextSize = 36 })
-		table.insert(statPieces, strip)
 		row.cells = {}
 		for k = 1, 5 do
 			row.cells[k] = image(left, row[1] .. "Box" .. k, Shelf.statBoxEmpty, 453 + (k - 1) * 29, y + 14, 27, 27)
 			row.cells[k].ImageColor3 = row[2]
-			table.insert(statPieces, row.cells[k])
 		end
 	end
-	-- Phones: the sheet drops under Roblox's top bar, where the Menu button sits (it covered the sheet's top rows).
-	for _, piece in statPieces do PaperUI.phone(piece, { Position = piece.Position + UDim2.fromOffset(0, 160) }) end
 
 	-- Bottom middle: the hangar note on masking tape, and a big LAUNCH! on bright green paper (Alan 2026-10-22).
 	local notePaper = image(bottom, "NotePaper", Assets.ingame.tapeLabel, 50, 0, 660, 80)

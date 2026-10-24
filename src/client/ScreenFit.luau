@@ -32,13 +32,16 @@ function ScreenFit.scale(least, most)
 	return math.clamp(math.min(view.X / 1920, view.Y / 1080), floor, most or math.huge)
 end
 
--- The screen map's top middle (step 2): the top row (Roblox's bar, the Menu button, the match strip), then a column of
--- notes under it in a fixed order. Pieces live in different ScreenGuis, so each one asks where it goes from the real
--- edges of the pieces above it (last frame's), and sets its own position.
+-- The screen map's top middle (step 2): the top row (Roblox's bar, the Menu button, the match strip, and the pieces up
+-- in the corners: kill feed, a touch screen's Health and Lift), then a column of notes in a fixed order. Each note sits
+-- under the real bottom (last frame's) of every shown piece above it that it would touch side to side: on a small
+-- phone the match strip's notes slide right, under the kill feed. Pieces live in different ScreenGuis, so each one
+-- asks where it goes and sets its own position.
 local GuiService = game:GetService("GuiService")
 local row, column = {}, {}
 ScreenFit.GAP = 4 -- points between pieces
-function ScreenFit.inRow(piece) table.insert(row, piece) end
+-- when(): only while it is up top (Health and Lift sit at the bottom on a PC).
+function ScreenFit.inRow(piece, when) table.insert(row, { piece = piece, when = when }) end
 -- order: smaller goes higher (capture 1, news 2, lesson or Range note 3, warning or lock 4, match tip 5).
 function ScreenFit.inColumn(piece, order)
 	table.insert(column, { piece = piece, order = order })
@@ -52,15 +55,19 @@ local function shown(piece)
 	end
 	return at ~= nil and at.Enabled
 end
--- The top for `piece` (in the column) in its parent's own points (UIScale undone): under the top row and every shown
--- column piece above it.
+-- The top for `piece` (in the column) in its parent's own points (UIScale undone).
 function ScreenFit.below(piece)
 	local y = GuiService.TopbarInset.Max.Y - GuiService:GetGuiInset().Y -- the bar's bottom in AbsolutePosition space
-	local function under(other) y = math.max(y, other.AbsolutePosition.Y + other.AbsoluteSize.Y) end
-	for _, other in row do if shown(other) then under(other) end end
+	local left, right = piece.AbsolutePosition.X, piece.AbsolutePosition.X + piece.AbsoluteSize.X
+	local function under(other)
+		if shown(other) and other.AbsolutePosition.X < right and other.AbsolutePosition.X + other.AbsoluteSize.X > left then
+			y = math.max(y, other.AbsolutePosition.Y + other.AbsoluteSize.Y)
+		end
+	end
+	for _, entry in row do if not entry.when or entry.when() then under(entry.piece) end end
 	for _, entry in column do
 		if entry.piece == piece then break end
-		if shown(entry.piece) then under(entry.piece) end
+		under(entry.piece)
 	end
 	local parent = piece.Parent
 	local size = parent:IsA("GuiObject") and parent.Size.Y.Offset > 0 and parent.AbsoluteSize.Y / parent.Size.Y.Offset or 1
