@@ -6,11 +6,14 @@
   then tuned with a fake-pilot test: thumbs land 83-100% of a mouse's hits), touch words on every text, sliders /
   Hangar turning / Range strips take fingers, the flight screen laid out for a phone.
 - Menu screens no longer get cut off at the top and bottom on wide screens (background covers, buttons fit).
+- **Every screen readable on a phone (simulator):** bigger words and taps on the menus, desk strips, binder, round end;
+  Customize no longer falls off the bottom; notes, tips, round end and the Hangar's Back stay clear of the Menu button
+  and Roblox's own buttons; backgrounds reach past the notch. PC look kept by design (not re-screenshotted: the
+  simulator is on). Finger taps checked; a Range strip tap missed by 58 points and is fixed.
 
-# Now: UI lane: touch controls (docs/plan/TOUCH-PLAN.md), step 4: every screen readable on a phone
-What works: everything in Stage 9, the tutorials, the desk quick menu, Range notes, Match Tips; on phones the flight
-screen and controls. Broken / not yet: menu text is about 7-10 points on a phone (too small); desk strips, Hangar,
-lesson notes, tips and the round end not yet laid out for phones; nothing tried on a real phone. Track C saving needs
+# Now: UI lane: touch controls (docs/plan/TOUCH-PLAN.md): steps 1-5 done in the simulator; stick tuning with you next
+What works: everything in Stage 9, the tutorials, the desk quick menu, Range notes, Match Tips; on phones (simulator)
+every screen and the controls. Not yet: nothing tried on a real phone; stick feel not tuned. Track C saving needs
 a private publish (your go). Place file not re-saved (Save to File, your go; code lives in src/).
 
 Decisions to review
