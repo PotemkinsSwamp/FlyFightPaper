@@ -222,6 +222,11 @@ mistake would be easy to make twice.
 - **Phone view in Studio (2026-10-24):** with Studio's Device Simulator (File > Beta Features > New Device Simulator,
   Alan turned it on), Play's viewport is a phone (749 x 381), PreferredInput is Touch and MCP screenshots show the
   phone screen. Without it, the `DevTouch` attribute on ReplicatedStorage.FlyFightPaper shows the touch layout on a PC.
+- **Driving the phone view from MCP (2026-10-24):** 749 x 381 is the notch-free safe area; the screenshot also shows
+  the notch strips at the sides (a default ScreenGui never draws there, so full-screen art needs `ScreenInsets = None`).
+  MCP mouse clicks land in the wrong place under the simulator, and any MCP key press flips PreferredInput to keyboard
+  (set `DevTouch` to keep the touch layout). Open screens with the `DevScreen` player attribute ("hangar:customize"
+  opens the binder). Kalam reads small: aim for about 14+ points on screen, not 12.
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the

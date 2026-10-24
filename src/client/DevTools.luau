@@ -109,7 +109,11 @@ function DevTools.start(menu)
 	-- Studio MCP commands run in a separate Lua VM, so they drive these tools through player attributes.
 	local player = Players.LocalPlayer
 	player:GetAttributeChangedSignal("DevView"):Connect(function() DevTools.setView(player:GetAttribute("DevView") or 0) end)
-	player:GetAttributeChangedSignal("DevScreen"):Connect(function() if menu then menu.show(player:GetAttribute("DevScreen")) end end)
+	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
+	player:GetAttributeChangedSignal("DevScreen"):Connect(function()
+		local screen, page = string.match(player:GetAttribute("DevScreen") or "", "^([^:]+):?(.*)$")
+		if menu and screen then menu.show(screen, false, page ~= "" and page or nil) end
+	end)
 	player:GetAttributeChangedSignal("DevPractice"):Connect(function() require(script.Parent.Tutorial).begin() end)
 	player:GetAttributeChangedSignal("DevAutopilot"):Connect(function() DevTools.autopilot(player:GetAttribute("DevAutopilot")) end)
 	player:GetAttributeChangedSignal("DevAim"):Connect(function()

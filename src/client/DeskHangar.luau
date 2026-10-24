@@ -19,6 +19,7 @@ local Hangar = require(script.Parent.Hangar)
 local BuildStats = {}
 for _, entry in Hangar.STATS do BuildStats[entry[1]] = entry end
 local PaperUI = require(script.Parent.PaperUI)
+local Touch = require(script.Parent.TouchControls)
 local DeskHangar = {}
 
 
@@ -84,10 +85,14 @@ function DeskHangar.new(playerGui, api)
 		local s = math.min(view.X / PaperUI.W, (view.Y - 12) / 1068)
 		for _, scale in scales do scale.Scale = s end
 		left.Position, bottom.Position = UDim2.fromOffset(16, 8), UDim2.new(0.5, 0, 1, -12) -- level with the match strip
-		-- The service strips start under the flight HUD's kill feed (FlightHUD: 10 px down, 4 slips, its own scale).
-		right.Position = UDim2.new(1, -16, 0, 10 + 250 * math.max(0.6, view.Y / 1080))
+		-- The service strips start under the flight HUD's kill feed (FlightHUD: 10 px down, 4 slips, its own scale);
+		-- on a phone they shrink a little so Customize still fits above the bottom edge.
+		local top = 10 + 250 * math.max(Touch.active() and 0.4 or 0.6, view.Y / 1080)
+		right.Position = UDim2.new(1, -16, 0, top)
+		if PaperUI.isPhone() then right.UIScale.Scale = math.min(s, (view.Y - top - 12) / 820) end
 	end
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
+	game:GetService("UserInputService"):GetPropertyChangedSignal("PreferredInput"):Connect(fit)
 	fit()
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	-- A turned group of pieces (a photo and its tape turn together); x, y, w, h like PaperUI.image.
@@ -108,7 +113,7 @@ function DeskHangar.new(playerGui, api)
 	-- tape, and beside it, level with the match strip, the short stat sheet.
 	image(left, "Photo", Desk.photo, 0, PHOTO_Y, 300, 250, BIG_TILT).ScaleType = Enum.ScaleType.Stretch
 	local planeView = viewport(left, "Plane", 300 * BLUE[1], PHOTO_Y + 250 * BLUE[2], 300 * (BLUE[3] - BLUE[1]), 250 * (BLUE[4] - BLUE[2]))
-	local notYet = words(left, "NotFlyingYet", "", 30, PHOTO_Y + 36, 240, 26, 24)
+	local notYet = PaperUI.phone(words(left, "NotFlyingYet", "", 30, PHOTO_Y + 36, 240, 26, 24), { TextSize = 36 })
 	notYet.TextXAlignment, notYet.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(190, 35, 30)
 	local tape = turned("NameTape", 25, PHOTO_Y + 204, 250, 48, BIG_TILT)
 	image(tape, "Tape", Assets.ingame.tapeLabel, 0, 0, 250, 48).ScaleType = Enum.ScaleType.Stretch
@@ -116,7 +121,9 @@ function DeskHangar.new(playerGui, api)
 
 	-- Health, Lift and Boost show what is left now; Speed shows the build (Alan 2026-10-22: these four, no turning
 	-- or weight here; Customize has the full sheet). Rows sit clear of the paper's binder holes and edges.
-	image(left, "StatsSheet", Shelf.statsPaper, 296, -6, 324, 330, 1).ScaleType = Enum.ScaleType.Stretch
+	local statsPaper = image(left, "StatsSheet", Shelf.statsPaper, 296, -6, 324, 330, 1)
+	statsPaper.ScaleType = Enum.ScaleType.Stretch
+	local statPieces = { statsPaper }
 	local speed = BuildStats.Speed
 	local colours = Hangar.STAT_COLOURS
 	local rows = {
@@ -131,18 +138,30 @@ function DeskHangar.new(playerGui, api)
 		local y = 60 + (i - 1) * 56
 		local strip = image(left, row[1] .. "Row", Shelf.statLabel, 345, y + 7, 100, 42)
 		strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, row[2]
-		centred(words(left, row[1] .. "Name", row[1], 351, y + 9, 88, 38, 26), 26)
+		local label = centred(words(left, row[1] .. "Name", row[1], 351, y + 9, 88, 38, 26), 26)
+		PaperUI.phone(strip, { Size = UDim2.fromOffset(112, 48) })
+		PaperUI.phone(label, { Position = UDim2.fromOffset(345, y + 167), Size = UDim2.fromOffset(100, 42) }) -- (with the drop below)
+		PaperUI.phone(label.UITextSizeConstraint, { MaxTextSize = 36 })
+		table.insert(statPieces, strip)
 		row.cells = {}
 		for k = 1, 5 do
 			row.cells[k] = image(left, row[1] .. "Box" .. k, Shelf.statBoxEmpty, 453 + (k - 1) * 29, y + 14, 27, 27)
 			row.cells[k].ImageColor3 = row[2]
+			table.insert(statPieces, row.cells[k])
 		end
 	end
+	-- Phones: the sheet drops under Roblox's top bar, where the Menu button sits (it covered the sheet's top rows).
+	for _, piece in statPieces do PaperUI.phone(piece, { Position = piece.Position + UDim2.fromOffset(0, 160) }) end
 
 	-- Bottom middle: the hangar note on masking tape, and a big LAUNCH! on bright green paper (Alan 2026-10-22).
-	image(bottom, "NotePaper", Assets.ingame.tapeLabel, 50, 0, 660, 80).ScaleType = Enum.ScaleType.Stretch
+	local notePaper = image(bottom, "NotePaper", Assets.ingame.tapeLabel, 50, 0, 660, 80)
+	notePaper.ScaleType = Enum.ScaleType.Stretch
 	local note = centred(words(bottom, "Note", "", 90, 8, 580, 64, 28), 28)
 	note.TextWrapped = true
+	-- Phones: wider and taller tape (reaching up over the runway) so the note reads at about 12 points.
+	PaperUI.phone(notePaper, { Position = UDim2.fromOffset(380, -10), Size = UDim2.fromOffset(820, 130) })
+	PaperUI.phone(note, { Position = UDim2.fromOffset(15, -60), Size = UDim2.fromOffset(730, 100) })
+	PaperUI.phone(note.UITextSizeConstraint, { MaxTextSize = 40 })
 	local launch = button(bottom, "Launch", Desk.launch, "LAUNCH!", 0, 72, 760, 228, -1, function() api.flight("launch") end, 120)
 
 	-- Down the right: the service strips, then Customize (the Hangar's orange). Alan 2026-10-22: big, middle, small,
@@ -183,6 +202,7 @@ function DeskHangar.new(playerGui, api)
 		top += h + 18
 	end
 	local customize = buttons.Customize
+	PaperUI.phone(buttons.Refold.Label, { TextSize = 44 })
 	-- Customize wiggles until a new player has used it once (Alan 2026-10-17).
 	if not Root:GetAttribute("HangarEdited") then
 		local wiggle = TweenService:Create(customize, TweenInfo.new(0.35, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut, -1, true), { Rotation = -3 })
@@ -204,8 +224,13 @@ function DeskHangar.new(playerGui, api)
 		image(back, "Photo", Desk.photo, 0, 0, 176, 146).ScaleType = Enum.ScaleType.Stretch
 		local view = viewport(left, "BuildPlane" .. i, 19 + 176 * BLUE[1], y + 146 * BLUE[2], 176 * (BLUE[3] - BLUE[1]), 146 * (BLUE[4] - BLUE[2]))
 		local front = turned("BuildTag" .. i, 19, y, 176, 146, tilt)
-		image(front, "Tape", Assets.ingame.tapeLabel, 5, 112, 166, 34).ScaleType = Enum.ScaleType.Stretch
+		local tape = image(front, "Tape", Assets.ingame.tapeLabel, 5, 112, 166, 34)
+		tape.ScaleType = Enum.ScaleType.Stretch
 		local tag = centred(words(front, "Name", "", 18, 114, 140, 30, 24), 24)
+		-- Phones: a taller tape with bigger words (they were about 8 points).
+		PaperUI.phone(tape, { Position = UDim2.fromOffset(88, 122), Size = UDim2.fromOffset(176, 52) })
+		PaperUI.phone(tag, { Position = UDim2.fromOffset(8, 98), Size = UDim2.fromOffset(160, 46) })
+		PaperUI.phone(tag.UITextSizeConstraint, { MaxTextSize = 38 })
 		local outline = image(front, "Picked", Shelf.outline, -4, -4, 184, 154)
 		outline.ScaleType, outline.SliceCenter, outline.SliceScale = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.4
 		local hit = Instance.new("TextButton")

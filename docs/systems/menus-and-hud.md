@@ -12,6 +12,10 @@ Main-menu ruler repainted by Codex (reads 3 to 12, right way up; 1 and 2 behind 
 in Play 2026-10-17.
 Level bar with next unlock on the main menu board's stats card, in the hangar under the plane, and on the results card
 (seen 2026-10-17; partly filled bar seen on a test screen, the test account is at max level).
+Phones (2026-10-24, seen in Studio's Device Simulator, not yet on a real phone): every paper screen has phone sizes
+(`PaperUI.phone`, a screen under 540 points tall; a PC keeps exactly what was drawn). Menu backgrounds reach past a
+phone's notch and crop from the bottom (titles stay whole); buttons stay in the safe area. Desk strips, lesson notes,
+tips, the round end and the vote sit below Roblox's top bar (the Menu button); the results card shows 6 bigger rows.
 
 ## Rules
 Esc over the Hangar opens the clipboard menu on top of it, with the Hangar still showing underneath; Keep flying (or Esc
@@ -69,7 +73,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |
-| `src/client/PaperUI.luau` | Shared builder for the paper screens |
+| `src/client/PaperUI.luau` | Shared builder for the paper screens; phone sizes (`isPhone`, `phone`) and the notch-safe sheet |
 | `src/shared/UIAssets.luau` | Uploaded menu and HUD image IDs |
 | `src/shared/Lines.luau` | Rotating event lines (plane down, landing, desk service, kill feed, between rounds); one is picked at random, never twice in a row ([decision](../decisions/2026-10-17-fresh-rotating-lines.md)) |
 

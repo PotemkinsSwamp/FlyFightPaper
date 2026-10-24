@@ -52,6 +52,11 @@ the stick", "tap Fire") and the key words on PC.
   Full-screen menus: the background covers the screen and the buttons sit on their own sheet that always fits (no
   more cropping on wide phones). **Next (step 4):** text on the menus is about 7-10 points on a phone (too small):
   go screen by screen (main menu, Settings, Hangar, desk strips, lesson notes, tips, round end) in the simulator.
+- 2026-10-24 (later): step 4 done in the simulator: every paper screen gets phone sizes (bigger words and taps) while a
+  PC keeps its look; Customize was off the bottom of a phone's desk strips, the Hangar's Back sat under Roblox's own
+  buttons, and the lesson note, tips, round-end banner and vote covered the Menu button: all fixed. Menu backgrounds
+  now reach the screen edges on notched phones. **Next:** taps in the simulator (step 3 check), stick tuning with
+  Alan, then step 6.
 
 ## Checks
 - Studio's Device Simulator (free) shows the screen sizes and gives touch-like input, but it can't show how thumbs

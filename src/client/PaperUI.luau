@@ -14,7 +14,14 @@ PaperUI.font = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.
 function PaperUI.screen(playerGui, name, backgroundIds, floating)
 	local layer = Instance.new("ScreenGui")
 	layer.Name, layer.IgnoreGuiInset, layer.ResetOnSpawn, layer.DisplayOrder = name, true, false, 10
+	layer.ScreenInsets = Enum.ScreenInsets.None -- the background reaches past a phone's notch; the sheet stays clear of it
 	layer.ZIndexBehavior, layer.Parent = Enum.ZIndexBehavior.Sibling, playerGui
+	-- The safe area (clear of notches and rounded corners) is what a default ScreenGui fills: one empty probe measures it.
+	local safe = playerGui:FindFirstChild("SafeArea")
+	if not safe then
+		safe = Instance.new("ScreenGui")
+		safe.Name, safe.IgnoreGuiInset, safe.ResetOnSpawn, safe.Parent = "SafeArea", true, false, playerGui
+	end
 	local cover = Instance.new("Frame")
 	cover.Name, cover.Size, cover.BackgroundColor3, cover.BorderSizePixel = "Cover", UDim2.fromScale(1, 1), Color3.fromRGB(150, 105, 60), 0
 	cover.ClipsDescendants, cover.Visible, cover.Parent = true, false, layer -- hidden until shown (plays the pop-in)
@@ -32,12 +39,22 @@ function PaperUI.screen(playerGui, name, backgroundIds, floating)
 	local backdrop = #backgroundIds > 0 and not floating and page("Backdrop") or nil
 	local sheet = page("Sheet")
 	local function fit()
-		local view = workspace.CurrentCamera.ViewportSize
-		local x, y = view.X / PaperUI.W, view.Y / PaperUI.H
-		sheet.UIScale.Scale = math.min(x, y) * (type(floating) == "number" and floating or 1)
-		if backdrop then backdrop.UIScale.Scale = math.max(x, y) end
+		local full, room = layer.AbsoluteSize, safe.AbsoluteSize
+		if full.X < 2 or room.X < 2 then return end
+		sheet.UIScale.Scale = math.min(room.X / PaperUI.W, room.Y / PaperUI.H) * (type(floating) == "number" and floating or 1)
+		local middle = safe.AbsolutePosition + room / 2 - layer.AbsolutePosition
+		sheet.Position = UDim2.fromOffset(middle.X, middle.Y)
+		if backdrop then
+			backdrop.UIScale.Scale = math.max(full.X / PaperUI.W, full.Y / PaperUI.H)
+			-- Phones crop a lot off a drawn background: from the bottom only, so titles drawn at the top stay whole.
+			local phone = PaperUI.isPhone()
+			backdrop.AnchorPoint, backdrop.Position = Vector2.new(0.5, phone and 0 or 0.5), UDim2.fromScale(0.5, phone and 0 or 0.5)
+		end
 	end
-	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
+	for _, gui in { layer, safe } do
+		gui:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit)
+		gui:GetPropertyChangedSignal("AbsolutePosition"):Connect(fit)
+	end
 	fit()
 	-- Background plates come as a 2x2 grid of tiles (Roblox images max out at 1024 pixels).
 	for i, id in backgroundIds do
@@ -68,6 +85,38 @@ function PaperUI.words(parent, name, value, x, y, w, h, size)
 	return label
 end
 
+-- Phones (Alan 2026-10-24: readable and good-looking there too): a screen under 540 points tall. Sheets drawn for
+-- 1080p shrink to about a third there, so pieces get phone sizes (bigger words, bigger taps) while a PC keeps exactly
+-- what was drawn. The pop-in and the buttons' squish go back to a piece's resting size, kept here.
+local rest = setmetatable({}, { __mode = "k" }) -- piece -> { size, rotation }
+
+function PaperUI.isPhone()
+	local y = workspace.CurrentCamera.ViewportSize.Y
+	return y > 2 and y < 540
+end
+
+-- apply(phone) now and again whenever the screen crosses the phone size.
+function PaperUI.onPhone(apply)
+	local last
+	local function check()
+		local phone = PaperUI.isPhone()
+		if phone ~= last then last = phone; apply(phone) end
+	end
+	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(check)
+	check()
+end
+
+-- Gives a piece other property values on a phone, e.g. PaperUI.phone(label, { TextSize = 40 }).
+function PaperUI.phone(piece, props)
+	local pc = {}
+	for key in props do pc[key] = piece[key] end
+	PaperUI.onPhone(function(phone)
+		for key, value in phone and props or pc do piece[key] = value end
+		if rest[piece] then rest[piece] = { size = piece.Size, rotation = piece.Rotation } end
+	end)
+	return piece
+end
+
 -- A paper button with a word on it: grows and tilts under the mouse, squishes when pressed.
 function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback, size)
 	local button = Instance.new("ImageButton")
@@ -76,11 +125,14 @@ function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback,
 	button.Position, button.Size, button.Rotation = UDim2.fromOffset(x + w / 2, y + h / 2), UDim2.fromOffset(w, h), rotation or 0
 	button.ScaleType = Enum.ScaleType.Stretch
 	button.Parent = parent
+	rest[button] = { size = button.Size, rotation = button.Rotation }
 	local text = PaperUI.words(button, "Label", label, 0, 0, w, h, size or 80)
 	text.Size, text.TextXAlignment = UDim2.fromScale(1, 1), Enum.TextXAlignment.Center
 	local info = TweenInfo.new(0.12, Enum.EasingStyle.Quad)
 	local function to(sx, sy, turn)
-		TweenService:Create(button, info, { Size = UDim2.fromOffset(w * sx, h * sy), Rotation = (rotation or 0) + turn }):Play()
+		local base = rest[button]
+		local size = base.size
+		TweenService:Create(button, info, { Size = UDim2.fromOffset(size.X.Offset * sx, size.Y.Offset * sy), Rotation = base.rotation + turn }):Play()
 	end
 	button.MouseEnter:Connect(function() to(1.05, 1.05, -1.5) end)
 	button.MouseLeave:Connect(function() to(1, 1, 0) end)
@@ -103,13 +155,12 @@ function PaperUI.pointArrow(arrow, from, low, high, s)
 end
 
 function PaperUI.popIn(cover, pieces)
-	local start = {}
-	for _, piece in pieces do start[piece] = { size = piece.Size, rotation = piece.Rotation } end
+	for _, piece in pieces do rest[piece] = rest[piece] or { size = piece.Size, rotation = piece.Rotation } end
 	local pop = TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
 	cover:GetPropertyChangedSignal("Visible"):Connect(function()
 		if not cover.Visible then return end
 		for i, piece in pieces do
-			local base = start[piece]
+			local base = rest[piece]
 			piece.Size = UDim2.fromOffset(base.size.X.Offset * 0.6, base.size.Y.Offset * 0.6)
 			piece.Rotation = base.rotation + (i % 2 == 0 and 8 or -8)
 			task.delay(0.04 * i, function()

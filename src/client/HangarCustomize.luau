@@ -43,7 +43,7 @@ function Customize.draw(content, ctx)
 				if tab.slot ~= state.slot then state.turn = true end
 				state.slot, state.trying = tab.slot, nil
 				ctx.render()
-			end, 40)
+			end, PaperUI.isPhone() and 50 or 40)
 		t.ImageColor3 = tab.tint
 		t.Label.Position, t.Label.Size = UDim2.fromOffset(80, 0), UDim2.new(1, -80, 1, 0)
 	end
@@ -123,6 +123,17 @@ function Customize.draw(content, ctx)
 			local info = words(card, "Status", detail, 18, 110, 216, 66, 24)
 			info.TextWrapped, info.TextYAlignment = true, Enum.TextYAlignment.Top
 		end
+		-- Phones: the card's words were 7-12 points; each grows as big as its box allows. (The binder is redrawn on
+		-- every change, so this reads the screen size each time instead of PaperUI.phone's watcher.)
+		if PaperUI.isPhone() then
+			for _, label in card:GetChildren() do
+				if label:IsA("TextLabel") then
+					local cap = label:FindFirstChildOfClass("UITextSizeConstraint") or Instance.new("UITextSizeConstraint")
+					cap.MaxTextSize, cap.Parent = label.Name == "Name" and 44 or 32, label
+					label.TextScaled = true
+				end
+			end
+		end
 	end
 
 	-- Switching tabs turns the page (Alan 2026-10-21): the old right page folds over toward the rings while the new
@@ -140,7 +151,7 @@ function Customize.draw(content, ctx)
 
 	-- Left page: the build's name, then the plane (the Gear page: a still diagram with a numbered tag on every mount).
 	local diagram = state.slot == "weapons" and not state.trying
-	ctx.nameTag(content, 115, 890, 450, 92, 44)
+	ctx.nameTag(content, 115, 890, 450, 92, PaperUI.isPhone() and 54 or 44)
 	-- The plane as it would be with the card you're trying on: the same move Select makes, on a scratch copy; a part
 	-- you don't own yet is just swapped in.
 	local candidate = nil

@@ -25,6 +25,10 @@ function Board.new(playerGui, actions)
 	stats.TextYAlignment, stats.LineHeight = Enum.TextYAlignment.Top, 1.15
 	table.insert(pieces, card)
 	local levelBar = require(script.Parent.LevelBar).new(card, 56, 282, 280, 27)
+	-- Phones: the level words were 8-10 points.
+	PaperUI.phone(card.Level, { TextSize = 38, Size = UDim2.fromOffset(160, 34) })
+	PaperUI.phone(card.XPCount, { TextSize = 34 })
+	PaperUI.phone(card.NextUnlock, { TextSize = 34 })
 
 	local buttons = Instance.new("Frame")
 	buttons.Name, buttons.BackgroundTransparency, buttons.Size = "Buttons", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H)
@@ -39,6 +43,8 @@ function Board.new(playerGui, actions)
 	-- Prestige (docs/systems/economy-and-shop.md): a button on the stats card at max level, then a confirm sheet that
 	-- says what goes and what stays; holding the button for two seconds confirms, so it can't happen by accident.
 	local prestigeButton = button(card, "Prestige", Art.strip.red, "Prestige", 60, 400, 250, 56, -2, function() end, 32)
+	PaperUI.phone(prestigeButton, { Size = UDim2.fromOffset(280, 80) }) -- a finger-sized strip on a phone
+	PaperUI.phone(prestigeButton.Label, { TextSize = 42 })
 	local confirm = Instance.new("Frame")
 	confirm.Name, confirm.BackgroundColor3, confirm.BackgroundTransparency = "PrestigeConfirm", Color3.fromRGB(20, 14, 8), 0.45
 	confirm.Size, confirm.Visible, confirm.ZIndex, confirm.Parent = UDim2.fromOffset(PaperUI.W, PaperUI.H), false, 5, sheet

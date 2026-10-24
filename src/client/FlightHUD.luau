@@ -642,6 +642,11 @@ function HUD.start(getPlane, action)
 		picker.Visible=inHangar and RunService:IsStudio()
 		gui.Enabled=shown and not inHangar
 		matchInfo.Enabled=shown
+		-- Phones: the round strip moves into the top bar's row just right of the Menu button (MenuController docks it
+		-- 124 wide, 10 past Roblox's buttons), and the kill feed drops below the top bar on the right; at the desk too.
+		local bar, touch = GuiService.TopbarInset, Touch.active()
+		top.Position = touch and UDim2.fromOffset(math.max(workspace.CurrentCamera.ViewportSize.X / 2, bar.Min.X + 142 + 320 * top.UIScale.Scale), 8) or UDim2.new(0.5, 0, 0, 8)
+		feed.Position = touch and UDim2.new(1, -8, 0, bar.Max.Y + 4) or UDim2.new(1, -16, 0, 10)
 		-- At the desk only the match strip shows up top: the desk's own note carries the news.
 		if inHangar then status.Visible, threat.Visible, lockInfo.Visible = false, false, false end
 		if not gui.Enabled then return end
@@ -734,15 +739,9 @@ function HUD.start(getPlane, action)
 		end
 		-- Phones: the FIRE and 2 buttons stand where the weapons panel was and show its state; Health and Lift move up
 		-- under the Menu button, away from the left thumb's stick.
-		local touch = Touch.active()
 		right.Visible = not touch
 		left.AnchorPoint = touch and Vector2.zero or Vector2.new(0, 1)
 		left.Position = touch and UDim2.fromOffset(12, GuiService.TopbarInset.Max.Y + 4 - (boostRow.on ~= false and 10 or 85) * left.UIScale.Scale) or UDim2.new(0, 20, 1, -16)
-		-- The round strip moves into the top bar's row just right of the Menu button (MenuController docks it 124 wide,
-		-- 10 past Roblox's buttons), and the kill feed drops below the top bar on the right.
-		local bar = GuiService.TopbarInset
-		top.Position = touch and UDim2.fromOffset(math.max(workspace.CurrentCamera.ViewportSize.X / 2, bar.Min.X + 142 + 320 * top.UIScale.Scale), 8) or UDim2.new(0.5, 0, 0, 8)
-		feed.Position = touch and UDim2.new(1, -8, 0, bar.Max.Y + 4) or UDim2.new(1, -16, 0, 10)
 		-- Threats to you: once locked on or an eraser is coming, the screen edge flashes red.
 		local serverNow=workspace:GetServerTimeNow()
 		local incoming=serverNow<(plane:GetAttribute("EraserIncomingUntil") or 0)

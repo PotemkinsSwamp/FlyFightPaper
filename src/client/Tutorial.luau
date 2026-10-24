@@ -100,7 +100,10 @@ function Tutorial.start(getPlane)
  -- The note sits just under where a match's clock would be (Alan 2026-10-19: higher, so INCOMING fits under it).
  note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.05);note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui -- just under the top strip, out of the middle of the view
  local scale=Instance.new("UIScale");scale.Parent=note
- local function fit() scale.Scale=math.max(.6,workspace.CurrentCamera.ViewportSize.Y/1080) end
+ -- Phones: a bit smaller (0.6 covered the top third of the screen) and under Roblox's top bar, where the Menu button and
+ -- the match strip sit (the note covered them).
+ local function noteTop() return PaperUI.isPhone() and UDim2.new(.5,0,0,game:GetService("GuiService").TopbarInset.Max.Y+4) or UDim2.fromScale(.5,.05) end
+ local function fit() scale.Scale=math.max(PaperUI.isPhone() and .5 or .6,workspace.CurrentCamera.ViewportSize.Y/1080);note.Position=noteTop() end
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit);fit()
  local title=PaperUI.words(note,"Title","",40,24,540,34,24);title.TextColor3=Color3.fromRGB(150,60,40)
  local text=PaperUI.words(note,"Text","",40,58,440,96,30);text.TextWrapped=true;text.TextYAlignment=Enum.TextYAlignment.Top
@@ -121,7 +124,7 @@ function Tutorial.start(getPlane)
  local cardScale=scale:Clone();cardScale.Parent=card
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()cardScale.Scale=scale.Scale end)
  local cardTitle=PaperUI.words(card,"Title","",40,30,540,56,44);cardTitle.TextXAlignment=Enum.TextXAlignment.Center
- local cardText=PaperUI.words(card,"Text","You can replay any lesson: Menu > Tutorial.",40,96,540,60,26);cardText.TextWrapped=true;cardText.TextXAlignment=Enum.TextXAlignment.Center
+ local cardText=PaperUI.words(card,"Text","You can replay any lesson: Menu > Training.",40,96,540,60,26);cardText.TextWrapped=true;cardText.TextXAlignment=Enum.TextXAlignment.Center
  -- The end card holds the plane still so the mouse can click (finish); either button lets it go first.
  local matchButton=PaperUI.button(card,"Play",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Go to a match",160,170,300,60,-1,function()
   card.Visible=false;Root.RoundAction:FireServer("lesson",{freeze=false});Root.RoundAction:FireServer("practiceDone")
@@ -140,13 +143,15 @@ function Tutorial.start(getPlane)
  local ask=card:Clone();ask.Name="Ask";ask.Parent=gui;ask.Visible=false
  for _,child in ask:GetChildren() do if child:IsA("GuiButton") then child:Destroy() end end
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()ask.UIScale.Scale=scale.Scale end)
+ -- Phones: the cards' small line was about 13 points.
+ for _,piece in {card,ask} do PaperUI.phone(piece.Text,{Position=UDim2.fromOffset(30,84),Size=UDim2.fromOffset(560,84),TextSize=32}) end
  local choices={}
  local function choose(title,words,options)
   ask.Title.Text,ask.Text.Text=title,words
   for _,button in choices do button:Destroy() end;table.clear(choices)
   for i,option in options do
    local x=#options==1 and 160 or (i==1 and 20 or 320)
-   table.insert(choices,PaperUI.button(ask,"Choice"..i,Art.mainmenu.strip[option[3] or "green"] or Art.mainmenu.strip.red,option[1],x,170,280,60,i==1 and -1 or 1,function() ask.Visible=false;option[2]() end,28))
+   table.insert(choices,PaperUI.button(ask,"Choice"..i,Art.mainmenu.strip[option[3] or "green"] or Art.mainmenu.strip.red,option[1],x,170,280,60,i==1 and -1 or 1,function() ask.Visible=false;option[2]() end,PaperUI.isPhone() and 36 or 28))
   end
   local close=PaperUI.button(ask,"Close",Art.mainmenu.strip.red,"X",560,10,50,50,0,function() ask.Visible=false end,28)
   table.insert(choices,close)
@@ -194,7 +199,7 @@ function Tutorial.start(getPlane)
  local function offer()
   if not player:GetAttribute("OfferTutorial") or Tutorial.active then return end
   player:SetAttribute("OfferTutorial",nil)
-  choose("Welcome, pilot!","Want a quick tutorial? Learn to fly and fight in about 5 minutes. (Later: Menu > Tutorial.)",
+  choose("Welcome, pilot!","Want a quick tutorial? Learn to fly and fight in about 5 minutes. (Later: Menu > Training.)",
    {{"Yes, teach me!",function() Tutorial.begin("flight") end},{"No thanks",function() end,"red"}})
  end
  player:GetAttributeChangedSignal("OfferTutorial"):Connect(offer);task.defer(offer)
@@ -557,7 +562,7 @@ function Tutorial.start(getPlane)
  local NOTE_SPOTS={{1,1},{.5,0},{.5,1},{1,0},{0,0},{0,1}}
  local function placeNote(menu,low,high)
   note.AnchorPoint=Vector2.new(.5,0)
-  if not menu then note.Position=UDim2.fromScale(.5,.05);return end
+  if not menu then note.Position=noteTop();return end
   low,high=low or Vector2.new(-1e4,-1e4),high or Vector2.new(-1e4,-1e4)
   -- Corners hug the screen's sides; the note may cover the frame's outer edge, never the hole.
   local view=gui.AbsoluteSize;local w,h=620*scale.Scale,230*scale.Scale;local m=view.Y*.05;local side=20;local pad=FRAME_OUTSET/2
@@ -566,7 +571,7 @@ function Tutorial.start(getPlane)
    local y=spot[2]==0 and m or view.Y-m-h
    if x+w/2<low.X-pad or x-w/2>high.X+pad or y+h<low.Y-pad or y>high.Y+pad then note.Position=UDim2.fromOffset(x,y);return end
   end
-  note.Position=UDim2.fromScale(.5,.05)
+  note.Position=noteTop()
  end
  RunService.RenderStepped:Connect(function(dt)
   marked,spotNames,pulseName,softSpot,softTag=nil,nil,nil,false,nil

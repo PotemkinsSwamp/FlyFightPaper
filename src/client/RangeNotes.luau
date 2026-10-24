@@ -8,6 +8,7 @@ local RunService = game:GetService("RunService")
 local Input = game:GetService("UserInputService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets)
+local GuiService = game:GetService("GuiService")
 local PaperUI = require(script.Parent.PaperUI)
 local FlightState = require(script.Parent.FlightController).state
 local Notes = {}
@@ -148,13 +149,16 @@ function Notes.new(getStage)
 		if show and (current.find or current.gui) then low, high = target() end
 		gui.Enabled = show and (low ~= nil or not (current.find or current.gui))
 		if not gui.Enabled then return end
-		local s = math.max(0.6, workspace.CurrentCamera.ViewportSize.Y / 1080)
+		local phone = PaperUI.isPhone()
+		local s = math.max(phone and 0.5 or 0.6, workspace.CurrentCamera.ViewportSize.Y / 1080)
 		scale.Scale, arrowScale.Scale = s, s
 		title.Text, words.Text = string.format("The Range  -  note %d of %d", step, #STEPS), current.text
 		skip.Visible = step < #STEPS
 		-- Over the Hangar the note sits bottom right, like the Hangar Tour's (clear of the shelf); top middle otherwise.
 		note.AnchorPoint = if inHangar then Vector2.new(1, 1) else Vector2.new(0.5, 0)
-		note.Position = if inHangar then UDim2.new(1, -20, 0.95, 0) else UDim2.fromScale(0.5, 0.05)
+		note.Position = if inHangar then UDim2.new(1, -20, 0.95, 0)
+			elseif phone then UDim2.new(0.5, 0, 0, GuiService.TopbarInset.Max.Y + 4) -- phones: under Roblox's top bar
+			else UDim2.fromScale(0.5, 0.05)
 		arrow.Visible = low ~= nil
 		if not low then return end
 		-- The arrow sits just outside what the note explains, on the note's side, pointing at it.

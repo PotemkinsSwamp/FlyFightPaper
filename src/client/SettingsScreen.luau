@@ -31,8 +31,11 @@ function SettingsScreen.new(playerGui, api)
 		local tag = image(sheet, key .. "Tag", Art.tag, 810, y - 8, 120, 88)
 		local value = words(tag, "Value", "", 0, 0, 120, 88, 44)
 		value.Size, value.TextXAlignment = UDim2.fromScale(1, 1), Enum.TextXAlignment.Center
-		words(sheet, key .. "Min", minLabel, 285, y + 74, 120, 36, 30)
-		words(sheet, key .. "Max", maxLabel, 690, y + 74, 100, 36, 30).TextXAlignment = Enum.TextXAlignment.Right
+		-- Phones: the ends' words were about 10 points.
+		PaperUI.phone(words(sheet, key .. "Min", minLabel, 285, y + 74, 120, 36, 30), { Size = UDim2.fromOffset(160, 50), TextSize = 42 })
+		local max = words(sheet, key .. "Max", maxLabel, 690, y + 74, 100, 36, 30)
+		max.TextXAlignment = Enum.TextXAlignment.Right
+		PaperUI.phone(max, { Position = UDim2.fromOffset(630, y + 74), Size = UDim2.fromOffset(160, 50), TextSize = 42 })
 		local left, width = 280 + 40, 510 - 80 -- the pencil's travel inside the ruler's ends
 		refresh[key] = function()
 			local t = (settings[key] - lo) / (hi - lo)
@@ -98,6 +101,8 @@ function SettingsScreen.new(playerGui, api)
 		for i, option in options do
 			local tab = PaperUI.button(sheet, key .. tostring(option), Art.tabOff, names[i], x + (i - 1) * 200, y, 185, 82, 0,
 				function() settings[key] = option; refresh[key](); save() end, 40)
+			PaperUI.phone(tab, { Size = UDim2.fromOffset(185, 104) }) -- taller for a finger on a phone
+			PaperUI.phone(tab.Label, { TextSize = 48 })
 			row[option] = tab
 		end
 		refresh[key] = function()
@@ -116,7 +121,9 @@ function SettingsScreen.new(playerGui, api)
 		end
 	end)(refresh.crosshairSize)
 
-	PaperUI.button(sheet, "Back", Art.tabGreen, "Back", 1640, 930, 200, 90, 3, api.back, 48)
+	local back = PaperUI.button(sheet, "Back", Art.tabGreen, "Back", 1640, 930, 200, 90, 3, api.back, 48)
+	PaperUI.phone(back, { Position = UDim2.fromOffset(1730, 960), Size = UDim2.fromOffset(260, 120) })
+	PaperUI.phone(back.Label, { TextSize = 60 })
 
 	local self = { frame = cover }
 	function self.update(_, profile)

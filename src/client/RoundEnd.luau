@@ -35,9 +35,11 @@ function RoundEnd.start()
 	-- Top banner: a notebook strip with big crayon words and a smaller line under it.
 	local banner = image(sheet, "Banner", UIArt.hud.notebook, 560, 40, 800, 150)
 	banner.ScaleType = Enum.ScaleType.Stretch
+	-- Phones: the banner and the vote drop below Roblox's top bar, where the Menu button and match strip sit.
+	PaperUI.phone(banner, { Position = UDim2.fromOffset(960, 245) })
 	local headline = words(banner, "Headline", "", 40, 18, 720, 80, 72)
 	headline.TextXAlignment, headline.FontFace = Enum.TextXAlignment.Center, Font.fromEnum(Enum.Font.PermanentMarker)
-	local subline = words(banner, "Subline", "", 40, 92, 720, 44, 34)
+	local subline = PaperUI.phone(words(banner, "Subline", "", 40, 92, 720, 44, 34), { TextSize = 40 })
 	subline.TextXAlignment = Enum.TextXAlignment.Center
 
 	-- Results card (right): every pilot's folds, assists, crashes and points; team totals in team rounds; your
@@ -56,23 +58,42 @@ function RoundEnd.start()
 		return label
 	end
 	local COLUMNS = { { "Folds", 300, 74, "kills" }, { "Assists", 374, 84, "assists" }, { "Crashes", 458, 90, "deaths" }, { "Pts", 548, 80, "contribution" } }
-	cell("HeadPilot", "Pilot", 100, 256, 200, 26).TextColor3 = Color3.fromRGB(30, 60, 140)
-	for _, column in COLUMNS do cell("Head" .. column[1], column[1], column[2], 256, column[3], 24, true).TextColor3 = Color3.fromRGB(30, 60, 140) end
+	-- Phones (words were 8-10 points): six taller rows with bigger words instead of nine; the heads shrink to fit.
+	local function head(label)
+		label.TextColor3 = Color3.fromRGB(30, 60, 140)
+		local cap = Instance.new("UITextSizeConstraint")
+		cap.MaxTextSize, cap.Parent = 28, label
+		PaperUI.phone(label, { TextScaled = true, Position = label.Position - UDim2.fromOffset(0, 4), Size = UDim2.fromOffset(label.Size.X.Offset, 50) })
+	end
+	head(cell("HeadPilot", "Pilot", 100, 256, 200, 26))
+	for _, column in COLUMNS do head(cell("Head" .. column[1], column[1], column[2], 256, column[3], 24, true)) end
 	local rows = {}
+	local PHONE_ROWS = 6
 	for i = 1, 9 do
-		local y = 248 + i * 44
+		local y, py = 248 + i * 44, 254 + i * 64
 		local highlight = image(card, "Mine" .. i, UIArt.results.rowHighlight, 50, y - 2, 584, 44)
 		highlight.ScaleType, highlight.Visible = Enum.ScaleType.Stretch, false
+		PaperUI.phone(highlight, { Position = UDim2.fromOffset(342, py + 28), Size = UDim2.fromOffset(584, 62) })
 		rows[i] = { highlight = highlight, place = cell("Place" .. i, "", 56, y, 46, 26), name = cell("Name" .. i, "", 100, y, 200, 30), numbers = {} }
-		for _, column in COLUMNS do rows[i].numbers[column[4]] = cell(column[1] .. i, "", column[2], y, column[3], 30, true) end
+		PaperUI.phone(rows[i].place, { Position = UDim2.fromOffset(52, py), Size = UDim2.fromOffset(60, 56), TextSize = 36 })
+		PaperUI.phone(rows[i].name, { Position = UDim2.fromOffset(110, py), Size = UDim2.fromOffset(190, 56), TextSize = 40 })
+		for _, column in COLUMNS do
+			local number = cell(column[1] .. i, "", column[2], y, column[3], 30, true)
+			PaperUI.phone(number, { Position = UDim2.fromOffset(column[2], py), Size = UDim2.fromOffset(column[3], 56), TextSize = 40 })
+			rows[i].numbers[column[4]] = number
+		end
 	end
 	local earned = cell("Earned", "", 44, 746, 595, 36, true)
 	local xpBar = LevelBar.new(card, 64, 790, 556, 34)
+	PaperUI.phone(card.Level, { TextSize = 44, Size = UDim2.fromOffset(250, 41) })
+	PaperUI.phone(card.XPCount, { TextSize = 36 })
+	PaperUI.phone(card.NextUnlock, { TextSize = 36 })
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
 	-- Below the match strip, which shows the vote lap's clock (Alan 2026-10-23: the cards covered it).
 	vote.Name, vote.BackgroundTransparency, vote.Size, vote.Position, vote.Parent = "Vote", 1, UDim2.fromOffset(1920, 300), UDim2.fromOffset(0, 80), sheet
+	PaperUI.phone(vote, { Position = UDim2.fromOffset(0, 190) })
 	local voteHelp = words(vote, "Help", "", 360, 186, 1200, 50, 36)
 	voteHelp.TextXAlignment, voteHelp.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(250, 245, 230)
 	local stroke = Instance.new("UIStroke")
@@ -95,11 +116,12 @@ function RoundEnd.start()
 		local me = player.DisplayName
 		state.mine = nil
 		for _, p in list do if p.displayName == me then state.mine = p end end
+		local shown = PaperUI.isPhone() and PHONE_ROWS or #rows
 		for i, row in rows do
-			local p = list[i]
-			-- The last line is always you, if you didn't make the top 8.
+			local p = i <= shown and list[i] or nil
+			-- The last line is always you, if you didn't make the top ones.
 			local myLine = state.mine and table.find(list, state.mine)
-			if i == #rows and myLine and myLine >= #rows then p = state.mine end
+			if i == shown and myLine and myLine >= shown then p = state.mine end
 			row.place.Text = p and (PLACES[p.place] or tostring(p.place or "")) or ""
 			row.name.Text = p and p.displayName or ""
 			row.name.TextColor3 = p and TEAM_INK[p.teamId] or PaperUI.INK

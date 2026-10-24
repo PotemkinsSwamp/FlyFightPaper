@@ -70,13 +70,16 @@ function Hangar.new(playerGui, api)
 	local profile, render
 
 	-- Back: from Customize to the shelf (unsaved changes ask once first), from the shelf out of the Hangar.
-	button(sheet, "Back", Assets.range.stripRed, "Back", 30, 25, 270, 110, -3, function()
+	local back = button(sheet, "Back", Assets.range.stripRed, "Back", 30, 25, 270, 110, -3, function()
 		if state.page == "shelf" then api.back(); return end
 		if state.unsaved and not state.dropAsk then state.dropAsk = true; render(); return end
 		state.page, state.trying, state.dropAsk = "shelf", nil, nil
 		state.builder:reset(state.builds[state.preset].loadout, state.preset)
 		render()
-	end, 54).ZIndex = 5
+	end, 54)
+	back.ZIndex = 5
+	-- Phones: under Roblox's own buttons (top left) a finger opened Roblox's menu instead; Back drops below them.
+	PaperUI.phone(back, { Position = UDim2.fromOffset(140, 225) })
 
 	-- Tapping a cubby picks that build: the one you fly next (in the Range it swaps your plane).
 	local shelf = BuildShelf.new(sheet, Catalog, function(i)

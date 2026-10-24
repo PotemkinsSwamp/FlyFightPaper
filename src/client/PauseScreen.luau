@@ -16,6 +16,7 @@ function PauseScreen.new(playerGui, api)
 	title.TextXAlignment = Enum.TextXAlignment.Center
 	local note = words(sheet, "Note", "Your plane keeps flying and can be hit while this is open.", 700, 300, 520, 80, 30)
 	note.TextXAlignment, note.TextWrapped = Enum.TextXAlignment.Center, true
+	PaperUI.phone(note, { Position = UDim2.fromOffset(690, 296), Size = UDim2.fromOffset(540, 104), TextSize = 40 }) -- was 10 points on a phone
 	local confirm = Instance.new("Frame")
 	confirm.Name, confirm.BackgroundTransparency, confirm.Size, confirm.Visible = "Confirm", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), false
 	confirm.ZIndex, confirm.Parent = 5, sheet
