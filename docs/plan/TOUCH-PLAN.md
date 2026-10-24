@@ -55,8 +55,9 @@ the stick", "tap Fire") and the key words on PC.
 - 2026-10-24 (later): step 4 done in the simulator: every paper screen gets phone sizes (bigger words and taps) while a
   PC keeps its look; Customize was off the bottom of a phone's desk strips, the Hangar's Back sat under Roblox's own
   buttons, and the lesson note, tips, round-end banner and vote covered the Menu button: all fixed. Menu backgrounds
-  now reach the screen edges on notched phones. **Next:** taps in the simulator (step 3 check), stick tuning with
-  Alan, then step 6.
+  now reach the screen edges on notched phones. Taps checked in the simulator with real touch events: menu buttons,
+  the Sound slider drag, Hangar plane turning, the Prestige hold (fills, resets on release), the lesson's held Skip all
+  work; the Range's strip taps aimed 58 points low and are fixed. **Next:** stick tuning with Alan, then step 6.
 
 ## Checks
 - Studio's Device Simulator (free) shows the screen sizes and gives touch-like input, but it can't show how thumbs

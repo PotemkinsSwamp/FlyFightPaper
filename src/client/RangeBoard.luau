@@ -118,7 +118,8 @@ function Board.start()
 	-- Phones: tap a strip on the stage itself (Reset, Hangar, a loadout, a difficulty); the plates are still shot.
 	Input.TouchTapInWorld:Connect(function(position, processed)
 		if processed or Root:GetAttribute("OverlayOpen") or not FlightState.aimPoint or not stage or not stage.Parent then return end
-		local ray = workspace.CurrentCamera:ScreenPointToRay(position.X, position.Y)
+		-- The tap's position counts Roblox's top bar (measured in the Device Simulator: ScreenPointToRay missed 58 points low).
+		local ray = workspace.CurrentCamera:ViewportPointToRay(position.X, position.Y)
 		local hit = workspace:Raycast(ray.Origin, ray.Direction * 1000, cast)
 		local what = hit and hit.Instance:GetAttribute("RangeBoard")
 		if what then click(what) end

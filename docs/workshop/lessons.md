@@ -226,7 +226,10 @@ mistake would be easy to make twice.
   the notch strips at the sides (a default ScreenGui never draws there, so full-screen art needs `ScreenInsets = None`).
   MCP mouse clicks land in the wrong place under the simulator, and any MCP key press flips PreferredInput to keyboard
   (set `DevTouch` to keep the touch layout). Open screens with the `DevScreen` player attribute ("hangar:customize"
-  opens the binder). Kalam reads small: aim for about 14+ points on screen, not 12.
+  opens the binder). Kalam reads small: aim for about 14+ points on screen, not 12. A click at (x, y) arrives as a touch
+  at (x - 62, y) in GUI space, so tap a button at its AbsolutePosition centre + (62, 0).
+- **`TouchTapInWorld` counts the top bar (2026-10-24):** its position is 58 points lower than GUI/InputObject space,
+  so turn it into a ray with `ViewportPointToRay`, not `ScreenPointToRay` (the Range's strips missed by 28 studs).
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
