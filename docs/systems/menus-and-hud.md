@@ -21,9 +21,9 @@ The nose dot turns red when the shots would land with no aim help (Alan 2026-10-
 [decision](../decisions/2026-10-19-less-aim-assist.md)): the target in range and the nose line passing within 2 studs of
 the orange ring's point. The gun assist (`combat.gun_assist_deg`, 3 degrees, lessons too; was 7) sends
 shots to the ring when the nose is that close.
-**Phones (Alan 2026-10-23, [research](../research/TOUCH-AIM-RESEARCH-2026-10-23.md); built, not yet tuned or tried on a
-phone):** a wider gun assist that fades out towards its edge (`combat.touch_gun_assist_deg` 6, full inside
-`touch_assist_inner_fraction` 0.5 of it, none past `touch_assist_max_range_studs` 600), and the aim turns slower
+**Phones (Alan 2026-10-23, [research](../research/TOUCH-AIM-RESEARCH-2026-10-23.md); built, first numbers from the
+fake-pilot test there, not yet tried on a phone):** a wider gun assist that fades out towards its edge (`combat.touch_gun_assist_deg` 6, full inside
+`touch_assist_inner_fraction` 0.5 of it, none past `touch_assist_max_range_studs` 800; never less than the mouse's), and the aim turns slower
 (`touch_slowdown_scale` 0.65 within `touch_slowdown_cone_deg` 8, easing in over `touch_slowdown_ease_in_s` 0.25) while
 the stick sweeps it over an enemy's ring, unless the stick is leaving it. The plane itself always turns at full speed.
 The nose dot turns yellow (and the ring fills faintly) when the shots land only thanks to that help. No auto-fire (Alan).

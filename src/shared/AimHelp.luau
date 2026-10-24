@@ -5,11 +5,12 @@
 local AimHelp = {}
 
 -- How much of a shot bends from the nose to the lead marker (0 none, 1 all the way), `angle` degrees off it at
--- `range` studs. Mouse: `touch` is nil.
+-- `range` studs. Mouse: `touch` is nil. Touch never gets less than the mouse's (the fake-pilot test 2026-10-24 found
+-- touch with no help at all past the far limit: 5% hits on the Range's long row against 31% with the mouse's).
 function AimHelp.bend(combat, angle, range, touch)
-	if not touch then return angle <= combat.gun_assist_deg and 1 or 0 end
+	local mouse = angle <= combat.gun_assist_deg and 1 or 0
 	local cone = combat.touch_gun_assist_deg
-	if range > combat.touch_assist_max_range_studs or angle >= cone then return 0 end
+	if not touch or mouse == 1 or range > combat.touch_assist_max_range_studs or angle >= cone then return mouse end
 	local inner = cone * combat.touch_assist_inner_fraction
 	if angle <= inner then return 1 end
 	return 1 - (angle - inner) / (cone - inner)

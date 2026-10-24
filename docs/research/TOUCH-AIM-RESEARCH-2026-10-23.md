@@ -138,6 +138,28 @@ Our own method, built from how Treyarch (win rate by distance band) and Apex/Pal
 
 **In live play.** Log hit rate and folds per input type (from `PreferredInput`) in real matches. Compare each input's result to the targets weekly. Small sample sizes in a private game, so a gap of a few points is noise.
 
+**First fake-pilot test (2026-10-24, Studio Edit, pure math).** The game's own shot motion and Range target paths (as
+`tests/unit/RangeAccuracy.spec.luau`), every steady weapon, Challenge and Maneuvers, about 1,300-1,400 shots per pilot
+and row. A pilot's nose sits off the lead ring by a random amount: "mouse" typically 1.5 degrees, "thumb" 3.5 (both our
+guesses). The slowdown is modelled as cutting the thumb's error by its scale (0.65): a guess too. Hits, close / medium /
+long row:
+
+| Pilot | Close | Medium | Long |
+|---|---:|---:|---:|
+| Mouse (3 degree assist) | 90% | 87% | 86% |
+| Thumb, mouse help only | 37% | 31% | 32% |
+| Thumb + bend (cone 6, to 800 studs) | 65% | 46% | 44% |
+| Thumb + bend + slowdown (cone 6, to 600) | 89% | 78% | 60% |
+| **Thumb + bend + slowdown (cone 6, to 800): chosen** | **90%** | **78%** | **71%** |
+| Thumb + bend + slowdown (cone 9, to 800) | 98% | 96% | 90% |
+
+- Found and fixed a bug: past the far limit touch got no help at all, less than the mouse (5% on the long row); touch
+  help is now never less than the mouse's (unit test).
+- Cone 6 to 800 studs puts the thumb at 100% / 90% / 83% of the mouse: inside the 80-100% target in every row. Cone 9
+  beats the mouse (too much). At 600 studs the long row (620-645 away) got no touch help: 70% of the mouse.
+- The bend alone isn't enough (46-65%); the result leans on the slowdown, whose effect here is a guess. Alan's phone
+  test is what settles it.
+
 **What Alan judges by feel on his phone**
 1. Does the plane feel like it fights me, or does it feel like it is helping? (Aim for "I can't tell, I just hit more".)
 2. Can I land shots on a bot flying straight at medium range most of the time?

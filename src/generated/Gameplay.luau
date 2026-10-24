@@ -578,7 +578,7 @@ return JSONTypes.map({
         ["self_weapon_damage"] = false,
         ["spawn_protection_seconds"] = 3,
         ["touch_assist_inner_fraction"] = 0.5,
-        ["touch_assist_max_range_studs"] = 600,
+        ["touch_assist_max_range_studs"] = 800,
         ["touch_gun_assist_deg"] = 6,
         ["touch_slowdown_cone_deg"] = 8,
         ["touch_slowdown_ease_in_s"] = 0.25,

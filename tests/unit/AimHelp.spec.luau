@@ -14,8 +14,13 @@ function Spec.run()
   local mid=AimHelp.bend(Combat,cone*(1+Combat.touch_assist_inner_fraction)/2,300,true)
   assert(mid>.4 and mid<.6)
   assert(AimHelp.bend(Combat,cone,300,true)==0)
-  assert(AimHelp.bend(Combat,0,Combat.touch_assist_max_range_studs+1,true)==0)
+  assert(AimHelp.bend(Combat,cone*.9,Combat.touch_assist_max_range_studs+1,true)==0)
   assert(cone>Combat.gun_assist_deg)
+ end)
+ test("touch help is never less than the mouse's, near or far",function()
+  for _,range in {100,Combat.touch_assist_max_range_studs+100} do
+   for angle=0,10,.25 do assert(AimHelp.bend(Combat,angle,range,true)>=AimHelp.bend(Combat,angle,range)) end
+  end
  end)
  test("the server's aim check leaves room for the widest touch bend",function()
   assert(Combat.touch_gun_assist_deg<Combat.input_aim_slack_deg)
