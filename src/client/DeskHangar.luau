@@ -6,6 +6,7 @@
 -- Picking a build selects it and shows it on the photo; Full refold (or a fresh plane) flies it. Customize opens the
 -- full Hangar's binder on it: builds only change at the desk (Alan 2026-10-17).
 local Players = game:GetService("Players")
+local GuiService = game:GetService("GuiService")
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
 local Root = game.ReplicatedStorage.FlyFightPaper
@@ -59,7 +60,7 @@ local BLUE = { 41 / 464, 50 / 384, 422 / 464, 306 / 384 }
 local BIG_TILT, BUILD_TILTS = -2, { -4, 3, -2, 4, -3 }
 local PHOTO_Y = 56 -- the big photo's top in the left group (which starts 8 px down, level with the match strip)
 
--- api = { flight(action) = FlightAction, round = RoundAction remote }
+-- api = { flight(action) = FlightAction, round = RoundAction remote, feed = the kill feed's frame (FlightHUD) }
 function DeskHangar.new(playerGui, api)
 	-- Just pieces over the live game (Alan: you are still in the match, the quick menu is only pulled up).
 	local layer = Instance.new("ScreenGui")
@@ -84,14 +85,21 @@ function DeskHangar.new(playerGui, api)
 		local view = workspace.CurrentCamera.ViewportSize
 		local s = math.min(view.X / PaperUI.W, (view.Y - 12) / 1068)
 		for _, scale in scales do scale.Scale = s end
-		left.Position, bottom.Position = UDim2.fromOffset(16, 8), UDim2.new(0.5, 0, 1, -12) -- level with the match strip
-		-- The service strips start under the flight HUD's kill feed (FlightHUD: 10 px down, 4 slips, its own scale);
-		-- on a phone they shrink a little so Customize still fits above the bottom edge.
-		local top = 10 + 250 * ScreenFit.scale(ScreenFit.HUD)
+		-- Level with the match strip, but the big photo stays under Roblox's top bar (its buttons sit there): on a
+		-- phone the column shrinks a little to make room.
+		local bar = GuiService.TopbarInset.Max.Y + ScreenFit.GAP
+		local leftScale = math.min(s, (view.Y - 4 - bar) / (1068 - PHOTO_Y))
+		left.UIScale.Scale = leftScale
+		left.Position, bottom.Position = UDim2.fromOffset(16, math.max(8, bar - PHOTO_Y * leftScale)), UDim2.new(0.5, 0, 1, -12)
+		-- The service strips start under the kill feed's real bottom (FlightHUD: 4 slips, 2 on a phone); they shrink
+		-- if needed so Customize still fits above the bottom edge.
+		local top = api.feed.AbsolutePosition.Y + api.feed.AbsoluteSize.Y - layer.AbsolutePosition.Y + ScreenFit.GAP
 		right.Position = UDim2.new(1, -16, 0, top)
-		if PaperUI.isPhone() then right.UIScale.Scale = math.min(s, (view.Y - top - 12) / 820) end
+		right.UIScale.Scale = math.min(s, (view.Y - top - 12) / 820)
 	end
 	ScreenFit.watch(fit)
+	api.feed:GetPropertyChangedSignal("AbsolutePosition"):Connect(fit)
+	api.feed:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	-- A turned group of pieces (a photo and its tape turn together); x, y, w, h like PaperUI.image.
 	local function turned(name, x, y, w, h, rotation)

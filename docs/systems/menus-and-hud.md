@@ -16,6 +16,12 @@ Phones (2026-10-24, seen in Studio's Device Simulator, not yet on a real phone):
 (`PaperUI.phone`, a screen under 540 points tall; a PC keeps exactly what was drawn). Menu backgrounds reach past a
 phone's notch and crop from the bottom (titles stay whole); buttons stay in the safe area. Desk strips, lesson notes,
 tips, the round end and the vote sit below Roblox's top bar (the Menu button); the results card shows 6 bigger rows.
+Top of the screen (screen fit step 2, every screen): one row (Roblox's bar, the Menu button, the match strip, which
+moves right of the Menu button when centred would hit it), then one column under it in a fixed order: Airspace
+capture strip, news note, lesson or Range note, warning or lock note, match tip; each sits under the real bottom of
+the shown ones above it (`ScreenFit.inRow`, `inColumn`, `below`). Kill feed: 2 slips on a phone, under the top bar;
+the desk's service strips start under the feed's real bottom; edge arrows stay below Health and Lift on touch
+screens. Match tip on a touch screen: tap the note (no Got it button).
 
 ## Rules
 Esc over the Hangar opens the clipboard menu on top of it, with the Hangar still showing underneath; Keep flying (or Esc

@@ -9,9 +9,9 @@ local Input = game:GetService("UserInputService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets)
 local Lines = require(Root.Shared.Lines)
-local GuiService = game:GetService("GuiService")
 local PaperUI = require(script.Parent.PaperUI)
 local ScreenFit = require(script.Parent.ScreenFit)
+local Touch = require(script.Parent.TouchControls)
 local FlightState = require(script.Parent.FlightController).state
 local Zone = require(script.Parent.ControlZone).state
 local Tips = {}
@@ -43,17 +43,20 @@ function Tips.start(getPlane)
 	gui.Name, gui.IgnoreGuiInset, gui.ResetOnSpawn, gui.DisplayOrder, gui.Enabled = "MatchTips", true, false, 6, false
 	gui.Parent = player:WaitForChild("PlayerGui")
 	-- The tutorial's sticky note, smaller: one line and Got it. Just under the match strip, clear of the middle of the view.
-	local note = Instance.new("ImageLabel")
-	note.Name, note.Image, note.ScaleType, note.BackgroundTransparency = "Note", Art.ingame.stickyNote, Enum.ScaleType.Stretch, 1
+	-- (A button: on a phone, tapping the note is its Got it; a 44-point button wouldn't fit on it.)
+	local note = Instance.new("ImageButton")
+	note.Name, note.Image, note.ScaleType, note.BackgroundTransparency, note.AutoButtonColor = "Note", Art.ingame.stickyNote, Enum.ScaleType.Stretch, 1, false
 	note.AnchorPoint, note.Position, note.Size, note.Rotation, note.Parent = Vector2.new(0.5, 0), UDim2.new(0.5, 0, 0, 130), UDim2.fromOffset(560, 140), 1, gui
 	local scale = Instance.new("UIScale")
 	scale.Parent = note
-	local title = PaperUI.words(note, "Title", "Match tip", 34, 16, 300, 30, 22)
+	ScreenFit.inColumn(note, 5)
+	local title = PaperUI.phone(PaperUI.words(note, "Title", "Match tip", 34, 16, 300, 30, 22), { TextSize = 28 })
 	title.TextColor3 = Color3.fromRGB(150, 60, 40)
 	local words = PaperUI.words(note, "Text", "", 34, 44, 492, 40, 28)
 	words.TextWrapped, words.TextYAlignment = true, Enum.TextYAlignment.Top
 	local current, shownFor, lastEnded = nil, 0, -math.huge
-	PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "Got it  [Space]", 34, 86, 220, 42, 1, function() shownFor = SHOW_SECONDS end, 22)
+	local gotIt = PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "Got it  [Space]", 34, 86, 220, 42, 1, function() shownFor = SHOW_SECONDS end, 22)
+	note.Activated:Connect(function() shownFor = SHOW_SECONDS end)
 	local arrow = PaperUI.image(gui, "Arrow", Art.tutorial.arrow, 0, 0, 120, 75)
 	local arrowScale = Instance.new("UIScale")
 	arrowScale.Parent = arrow
@@ -118,11 +121,11 @@ function Tips.start(getPlane)
 		gui.Enabled = current ~= nil
 		if not current then return end
 		shownFor += dt
-		-- Phones: a bit smaller, just under Roblox's top bar (the match strip moves up into it there).
-		local phone = PaperUI.isPhone()
+		-- Last in the top middle's column (ScreenFit): under the match strip and any news, warning or lock note.
 		local s = ScreenFit.scale(ScreenFit.NOTE)
 		scale.Scale, arrowScale.Scale = s, s
-		note.Position = UDim2.new(0.5, 0, 0, phone and GuiService.TopbarInset.Max.Y + 4 or 130)
+		gotIt.Visible = not Touch.active()
+		note.Position = UDim2.new(0.5, 0, 0, ScreenFit.below(note))
 		local low, high = nil, nil
 		if current.point then low, high = pointAt(current.point) end
 		arrow.Visible = low ~= nil

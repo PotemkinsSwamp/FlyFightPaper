@@ -8,7 +8,6 @@ local RunService = game:GetService("RunService")
 local Input = game:GetService("UserInputService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets)
-local GuiService = game:GetService("GuiService")
 local PaperUI = require(script.Parent.PaperUI)
 local ScreenFit = require(script.Parent.ScreenFit)
 local FlightState = require(script.Parent.FlightController).state
@@ -54,6 +53,7 @@ function Notes.new(getStage)
 	note.AnchorPoint, note.Position, note.Size, note.Rotation, note.Parent = Vector2.new(0.5, 0), UDim2.fromScale(0.5, 0.05), UDim2.fromOffset(620, 230), -1, gui
 	local scale = Instance.new("UIScale")
 	scale.Parent = note
+	ScreenFit.inColumn(note, 3)
 	local title = PaperUI.words(note, "Title", "", 40, 24, 540, 34, 24)
 	title.TextColor3 = Color3.fromRGB(150, 60, 40)
 	local words = PaperUI.words(note, "Text", "", 40, 58, 540, 96, 30)
@@ -150,7 +150,6 @@ function Notes.new(getStage)
 		if show and (current.find or current.gui) then low, high = target() end
 		gui.Enabled = show and (low ~= nil or not (current.find or current.gui))
 		if not gui.Enabled then return end
-		local phone = PaperUI.isPhone()
 		local s = ScreenFit.scale(ScreenFit.NOTE)
 		scale.Scale, arrowScale.Scale = s, s
 		title.Text, words.Text = string.format("The Range  -  note %d of %d", step, #STEPS), current.text
@@ -158,8 +157,7 @@ function Notes.new(getStage)
 		-- Over the Hangar the note sits bottom right, like the Hangar Tour's (clear of the shelf); top middle otherwise.
 		note.AnchorPoint = if inHangar then Vector2.new(1, 1) else Vector2.new(0.5, 0)
 		note.Position = if inHangar then UDim2.new(1, -20, 0.95, 0)
-			elseif phone then UDim2.new(0.5, 0, 0, GuiService.TopbarInset.Max.Y + 4) -- phones: under Roblox's top bar
-			else UDim2.fromScale(0.5, 0.05)
+			else UDim2.new(0.5, 0, 0, ScreenFit.below(note)) -- the top middle's column, under the top row
 		arrow.Visible = low ~= nil
 		if not low then return end
 		-- The arrow sits just outside what the note explains, on the note's side, pointing at it.

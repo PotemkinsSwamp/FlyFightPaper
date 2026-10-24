@@ -11,6 +11,15 @@ local Input = game:GetService("UserInputService")
 local ScreenCheck = {}
 
 local SKIP_GUIS = { Chat = true, BubbleChat = true, Freecam = true, SafeArea = true, TouchGui = true, ScreenCheckProbe = true }
+-- Markers that follow things in the 3D world (aim, enemies, edge arrows) slide over everything by design: not pieces.
+local MOVING = { "^AimCircle", "^NoseDot", "^LeadPipper", "^LeadLine", "^TargetBracket", "^EnemyMarker", "Arrow$", "^WaitingApproach" }
+-- So do a lesson's spotlight pieces, drawn around what they point at.
+local SPOTLIGHT = { Frame = true, Burst = true, BarFrame = true, TargetRing = true, Tag = true }
+local function moving(object)
+	for _, pattern in MOVING do if object.Name:find(pattern) then return true end end
+	local gui = object:FindFirstAncestorWhichIsA("ScreenGui")
+	return gui ~= nil and gui.Name == "Tutorial" and object.Parent == gui and SPOTLIGHT[object.Name] == true
+end
 local MIN_TEXT_PHONE, MIN_TEXT, MIN_TAP, OVERLAP_SHARE = 14, 12, 44, 0.15
 
 local function shown(object)
@@ -70,7 +79,8 @@ function ScreenCheck.run()
 				and object.Name ~= "Backdrop" and not object:FindFirstAncestor("Backdrop") and shown(object) then
 				local low, high = rect(object)
 				local big = area(low, high) > screenArea * 0.5
-				if draws(object) and not big then
+				local marker = moving(object) or (object.Parent and moving(object.Parent))
+				if draws(object) and not big and not marker then
 					-- Only the top-most drawn thing in its chain is a piece.
 					local parent, top = object.Parent, true
 					while parent and parent ~= gui do

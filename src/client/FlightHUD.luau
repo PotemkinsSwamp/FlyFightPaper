@@ -209,7 +209,6 @@ function HUD.start(getPlane, action)
 	threat.Words.Size, threat.Words.UIPadding.PaddingTop = UDim2.fromScale(1, 0.66), UDim.new(0.2, 0)
 	threat.Words.FontFace = Font.fromEnum(Enum.Font.PermanentMarker) -- the heavy marker of concept 2's INCOMING!
 	local sub = PaperUI.words(threat, "Sub", "", 0, 0, 0, 0, 28)
-	local threatTop = 150 -- below the round strip; lower in Airspace Control, under the lesson note in a lesson
 	sub.Position, sub.Size, sub.TextXAlignment, sub.TextScaled = UDim2.new(0.12, 0, 0.58, 0), UDim2.fromScale(0.76, 0.26), Enum.TextXAlignment.Center, true
 	local subCap = Instance.new("UITextSizeConstraint")
 	subCap.MaxTextSize, subCap.Parent = 28, sub
@@ -228,6 +227,9 @@ function HUD.start(getPlane, action)
 		end
 	end
 	local teams = { ["team:1"] = 0, ["team:2"] = 0 }
+	-- The screen map's top middle (ScreenFit): the match strip is in the top row; the notes stack under it.
+	ScreenFit.inRow(round)
+	ScreenFit.inColumn(capture, 1); ScreenFit.inColumn(status, 2); ScreenFit.inColumn(threat, 4); ScreenFit.inColumn(lockInfo, 4)
 	-- Top right: the last four knock-downs, one torn notebook slip each (CombatEffects fills them), pinned with a
 	-- blue pin when the line is about you and a red one otherwise.
 	local feed = panel("KillFeed", Vector2.new(1, 0), UDim2.new(1, -16, 0, 10), UDim2.fromOffset(450, 240))
@@ -307,13 +309,10 @@ function HUD.start(getPlane, action)
 		local control = snapshot.mode == "CONTROL"
 		teams = snapshot.teams or teams
 		capture.Visible = control
-		status.Position, threat.Position = UDim2.new(0.5, 0, 0, control and 160 or 84), UDim2.new(0.5, 0, 0, control and 226 or 150)
-		threatTop = control and 226 or 150
-		lockInfo.Position = UDim2.new(0.5, 0, 0, control and 234 or 158)
 		round.Words.UIPadding.PaddingRight = UDim.new(first and 0.14 or 0.07, 0)
 	end)
 	-- In the hangar: the crayon hangar menu (service, builds, LAUNCH). Studio's dev picker rides on its sheet.
-	local desk = require(script.Parent.DeskHangar).new(gui.Parent, { flight = action, round = game.ReplicatedStorage.FlyFightPaper.RoundAction })
+	local desk = require(script.Parent.DeskHangar).new(gui.Parent, { flight = action, round = game.ReplicatedStorage.FlyFightPaper.RoundAction, feed = feed })
 	picker.Position, picker.Parent = UDim2.new(0.5, -440, 0.6, 0), desk.sheet
 	-- The match strip and the kill feed stay up at the desk too (Alan 2026-10-22: the quick menu leaves them in
 	-- view), so they live on their own layer that hides only with the rest of the game's HUD.
@@ -505,8 +504,11 @@ function HUD.start(getPlane, action)
 			direction = direction.Magnitude > 0.01 and direction.Unit or Vector2.new(0, 1)
 			-- Ride a box inset from the edges, kept above the bottom bars.
 			local size, scale = camera.ViewportSize, ScreenFit.scale(ScreenFit.NOTE)
+			-- Below the top strips (and, on touch screens, below Health and Lift, which move up there).
+			local roof = 190 * scale
+			if left.Visible and left.AnchorPoint.Y == 0 then roof = math.max(roof, left.AbsolutePosition.Y + left.AbsoluteSize.Y - gui.AbsolutePosition.Y + 40 * scale) end
 			local function edge(down)
-				local halfX, up = size.X / 2 - 70 * scale, size.Y / 2 - 190 * scale -- below the top strips
+				local halfX, up = size.X / 2 - 70 * scale, size.Y / 2 - roof
 				return size / 2 + direction * math.min(halfX / math.max(math.abs(direction.X), 1e-3), (direction.Y < 0 and up or down) / math.max(math.abs(direction.Y), 1e-3))
 			end
 			-- Bottom edge between the bar panels; if that lands on a panel, stop above it.
@@ -639,11 +641,16 @@ function HUD.start(getPlane, action)
 		picker.Visible=inHangar and RunService:IsStudio()
 		gui.Enabled=shown and not inHangar
 		matchInfo.Enabled=shown
-		-- Phones: the round strip moves into the top bar's row just right of the Menu button (MenuController docks it
-		-- 124 wide, 10 past Roblox's buttons), and the kill feed drops below the top bar on the right; at the desk too.
-		local bar, touch = GuiService.TopbarInset, Touch.active()
-		top.Position = touch and UDim2.fromOffset(math.max(workspace.CurrentCamera.ViewportSize.X / 2, bar.Min.X + 142 + 320 * top.UIScale.Scale), 8) or UDim2.new(0.5, 0, 0, 8)
-		feed.Position = touch and UDim2.new(1, -8, 0, bar.Max.Y + 4) or UDim2.new(1, -16, 0, 10)
+		-- The match strip is centred unless that runs into the Menu button: then just right of its real edge (phones).
+		-- On a phone the kill feed drops under the top bar on the right, two slips; at the desk too.
+		local bar, touch, phone = GuiService.TopbarInset, Touch.active(), ScreenFit.kind() == "phone"
+		local menu = Players.LocalPlayer.PlayerGui:FindFirstChild("GameMenu")
+		local menuButton = menu and menu:FindFirstChild("OpenMenu")
+		local menuRight = menuButton and menuButton.Visible and menuButton.AbsolutePosition.X + menuButton.AbsoluteSize.X or 0
+		top.Position = UDim2.fromOffset(math.max(workspace.CurrentCamera.ViewportSize.X / 2, menuRight + ScreenFit.GAP * 2 + 320 * top.UIScale.Scale), 8)
+		feed.Position = phone and UDim2.new(1, -8, 0, bar.Max.Y + 4) or UDim2.new(1, -16, 0, 10)
+		feed.Size = UDim2.fromOffset(450, phone and 2 * 58 - 4 or 240)
+		for _, piece in { capture, status, threat, lockInfo } do piece.Position = UDim2.new(0.5, 0, 0, ScreenFit.below(piece)) end
 		-- At the desk only the match strip shows up top: the desk's own note carries the news.
 		if inHangar then status.Visible, threat.Visible, lockInfo.Visible = false, false, false end
 		if not gui.Enabled then return end
@@ -758,9 +765,7 @@ function HUD.start(getPlane, action)
 		threat.Visible, threat.Words.Text, sub.Text = headline ~= nil, headline or "", line or ""
 		threat.Size = loud and UDim2.fromOffset(600, 198) or UDim2.fromOffset(450, 149)
 		threat.Rotation = loud and (math.floor(os.clock()*8)%2==0 and -3 or 2) or -2
-		-- In a lesson its note covers this spot: drop it just under the note, a size smaller (Alan 2026-10-19: INCOMING
-		-- and BREAK NOW! were hidden behind it).
-		threat.Position = UDim2.new(0.5, 0, 0, lesson and 300 or threatTop)
+		-- In a lesson it sits under the lesson's note (ScreenFit's column), a size smaller (Alan 2026-10-19).
 		if lesson then threat.Size = UDim2.fromOffset(450, 149) end
 		local target=plane:GetAttribute("LockName") or ""
 		local mine=os.clock()-(Players.LocalPlayer:GetAttribute("EraserAwayAt") or -9)<1.2 and "ERASER AWAY"

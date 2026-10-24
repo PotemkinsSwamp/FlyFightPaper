@@ -32,6 +32,41 @@ function ScreenFit.scale(least, most)
 	return math.clamp(math.min(view.X / 1920, view.Y / 1080), floor, most or math.huge)
 end
 
+-- The screen map's top middle (step 2): the top row (Roblox's bar, the Menu button, the match strip), then a column of
+-- notes under it in a fixed order. Pieces live in different ScreenGuis, so each one asks where it goes from the real
+-- edges of the pieces above it (last frame's), and sets its own position.
+local GuiService = game:GetService("GuiService")
+local row, column = {}, {}
+ScreenFit.GAP = 4 -- points between pieces
+function ScreenFit.inRow(piece) table.insert(row, piece) end
+-- order: smaller goes higher (capture 1, news 2, lesson or Range note 3, warning or lock 4, match tip 5).
+function ScreenFit.inColumn(piece, order)
+	table.insert(column, { piece = piece, order = order })
+	table.sort(column, function(a, b) return a.order < b.order end)
+end
+local function shown(piece)
+	local at = piece
+	while at and not at:IsA("ScreenGui") do
+		if at:IsA("GuiObject") and not at.Visible then return false end
+		at = at.Parent
+	end
+	return at ~= nil and at.Enabled
+end
+-- The top for `piece` (in the column) in its parent's own points (UIScale undone): under the top row and every shown
+-- column piece above it.
+function ScreenFit.below(piece)
+	local y = GuiService.TopbarInset.Max.Y - GuiService:GetGuiInset().Y -- the bar's bottom in AbsolutePosition space
+	local function under(other) y = math.max(y, other.AbsolutePosition.Y + other.AbsoluteSize.Y) end
+	for _, other in row do if shown(other) then under(other) end end
+	for _, entry in column do
+		if entry.piece == piece then break end
+		if shown(entry.piece) then under(entry.piece) end
+	end
+	local parent = piece.Parent
+	local size = parent:IsA("GuiObject") and parent.Size.Y.Offset > 0 and parent.AbsoluteSize.Y / parent.Size.Y.Offset or 1
+	return (y + ScreenFit.GAP - parent.AbsolutePosition.Y) / size
+end
+
 -- fn() now and whenever the screen changes size or the player switches between touch and mouse.
 function ScreenFit.watch(fn)
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fn)

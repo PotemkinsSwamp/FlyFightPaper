@@ -62,6 +62,15 @@ Plan OK; small PC moves OK with before/after pictures; 2 kill-feed lines on a ph
   **Next:** run the check on each screen; step 2: the top row (Menu then the match strip, placed from the top bar's
   real free room), notes under it stacked from each other's real edges (news, lock, threat, lesson note, tip), kill
   feed 2 slips on a phone.
+- 2026-10-24 (later): first check runs on the big phone (831 x 439): Menu and match strip already apart; the kill feed
+  ran under the desk's strips, the desk photo sat under Roblox's buttons, news / lesson note / tip all aimed at one
+  spot, edge arrows crossed Health and Lift, Menu tap 42 points. **Step 2 built:** the top row and the column (see
+  [menus and HUD](../systems/menus-and-hud.md)), feed 2 slips on a phone, desk strips under the feed, Menu 46 tall,
+  the check skips markers that follow the 3D world. Check clean on the big phone: main menu (bar the welcome
+  question's taps), desk, flying with news + LOCKED ON, round end banner. **Still listed for step 4:** lesson note
+  words 12-13 points and Skip 24 tall; match tip words; welcome question's taps 30 tall; results card covers the
+  desk's right strips (PC too); results header words run together on a phone; main menu Prestige and Shop (dev)
+  taps 28-33 tall. **Next:** Alan switches devices (small phone, iPad, PC 1920 x 1080) and the check runs on each.
 
 ## Cost
 Code only: no uploads, $0. About two to three sessions.

@@ -100,10 +100,10 @@ function Tutorial.start(getPlane)
  -- The note sits just under where a match's clock would be (Alan 2026-10-19: higher, so INCOMING fits under it).
  note.AnchorPoint=Vector2.new(.5,0);note.Position=UDim2.fromScale(.5,.05);note.Size=UDim2.fromOffset(620,230);note.Rotation=-1;note.Visible=false;note.Parent=gui -- just under the top strip, out of the middle of the view
  local scale=Instance.new("UIScale");scale.Parent=note
- -- Phones: a bit smaller (0.6 covered the top third of the screen) and under Roblox's top bar, where the Menu button and
- -- the match strip sit (the note covered them).
- local function noteTop() return PaperUI.isPhone() and UDim2.new(.5,0,0,game:GetService("GuiService").TopbarInset.Max.Y+4) or UDim2.fromScale(.5,.05) end
+ -- In the top middle's column (ScreenFit): under the top row (Menu button, match strip) and any news note.
  local ScreenFit=require(script.Parent.ScreenFit)
+ ScreenFit.inColumn(note,3)
+ local function noteTop() return UDim2.new(.5,0,0,ScreenFit.below(note)) end
  ScreenFit.watch(function() scale.Scale=ScreenFit.scale(ScreenFit.NOTE);note.Position=noteTop() end)
  local title=PaperUI.words(note,"Title","",40,24,540,34,24);title.TextColor3=Color3.fromRGB(150,60,40)
  local text=PaperUI.words(note,"Text","",40,58,440,96,30);text.TextWrapped=true;text.TextYAlignment=Enum.TextYAlignment.Top
