@@ -1,6 +1,7 @@
 local Players = game:GetService("Players")
 local Input = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local GuiService = game:GetService("GuiService")
 local Course = require(game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper").Shared.TrainingCourse)
 local HUD = {}
 
@@ -170,8 +171,11 @@ function HUD.start(getPlane, action)
 		frame.Position, frame.Size, frame.Parent = position, size, gui
 		local scale = Instance.new("UIScale")
 		scale.Parent = frame
-		local function fit() scale.Scale = math.max(0.6, workspace.CurrentCamera.ViewportSize.Y / 1080) end
+		-- Phones: a smaller floor (0.4 of 1080p still reads at about 15 points), so the HUD doesn't eat a small screen.
+		local function fit() scale.Scale = math.max(Touch.active() and 0.4 or 0.6, workspace.CurrentCamera.ViewportSize.Y / 1080) end
 		workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
+		Input:GetPropertyChangedSignal("PreferredInput"):Connect(fit)
+		Root:GetAttributeChangedSignal("DevTouch"):Connect(fit)
 		fit()
 		return frame
 	end
@@ -706,9 +710,12 @@ function HUD.start(getPlane, action)
 			local weapon = plane:GetAttribute(name .. "Name") or "None"
 			row.visible(weapon ~= "None")
 			row.name.Text = weapon
+			local button = group == 1 and "Fire" or "Fire2" -- phones: the same state fills the touch button (TouchControls)
 			if plane:GetAttribute(name .. "HasHeat") then
 				-- Guns that overheat: ten green cells while cool, emptying as the gun heats; red while it cools down.
-				row.show(tenths(1 - (plane:GetAttribute(name .. "Heat") or 0), 1), plane:GetAttribute(name .. "Cooling") and "red" or "green")
+				local cool, color = 1 - (plane:GetAttribute(name .. "Heat") or 0), plane:GetAttribute(name .. "Cooling") and "red" or "green"
+				row.show(tenths(cool, 1), color)
+				Touch.gauge(button, cool, color, weapon)
 			else
 				-- One pip per weapon on this trigger: orange while reloading, green when ready; a ready eraser's pip
 				-- fills blue while it locks and turns red once locked.
@@ -720,8 +727,22 @@ function HUD.start(getPlane, action)
 					table.insert(fills, ready)
 				end
 				row.show(fills, color)
+				local total = 0
+				for _, share in fills do total += share end
+				Touch.gauge(button, #fills > 0 and total / #fills or 0, color, weapon)
 			end
 		end
+		-- Phones: the FIRE and 2 buttons stand where the weapons panel was and show its state; Health and Lift move up
+		-- under the Menu button, away from the left thumb's stick.
+		local touch = Touch.active()
+		right.Visible = not touch
+		left.AnchorPoint = touch and Vector2.zero or Vector2.new(0, 1)
+		left.Position = touch and UDim2.fromOffset(12, GuiService.TopbarInset.Max.Y + 4 - (boostRow.on ~= false and 10 or 85) * left.UIScale.Scale) or UDim2.new(0, 20, 1, -16)
+		-- The round strip moves into the top bar's row just right of the Menu button (MenuController docks it 124 wide,
+		-- 10 past Roblox's buttons), and the kill feed drops below the top bar on the right.
+		local bar = GuiService.TopbarInset
+		top.Position = touch and UDim2.fromOffset(math.max(workspace.CurrentCamera.ViewportSize.X / 2, bar.Min.X + 142 + 320 * top.UIScale.Scale), 8) or UDim2.new(0.5, 0, 0, 8)
+		feed.Position = touch and UDim2.new(1, -8, 0, bar.Max.Y + 4) or UDim2.new(1, -16, 0, 10)
 		-- Threats to you: once locked on or an eraser is coming, the screen edge flashes red.
 		local serverNow=workspace:GetServerTimeNow()
 		local incoming=serverNow<(plane:GetAttribute("EraserIncomingUntil") or 0)

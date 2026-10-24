@@ -20,21 +20,28 @@ function PaperUI.screen(playerGui, name, backgroundIds, floating)
 	cover.ClipsDescendants, cover.Visible, cover.Parent = true, false, layer -- hidden until shown (plays the pop-in)
 	if #backgroundIds == 0 then cover.BackgroundColor3, cover.BackgroundTransparency = Color3.fromRGB(20, 14, 8), 0.45 end
 	if floating then cover.BackgroundTransparency = 1 end
-	local sheet = Instance.new("Frame")
-	sheet.Name, sheet.AnchorPoint, sheet.Position = "Sheet", Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5)
-	sheet.Size, sheet.BackgroundTransparency, sheet.Parent = UDim2.fromOffset(PaperUI.W, PaperUI.H), 1, cover
-	local scale = Instance.new("UIScale")
-	scale.Parent = sheet
+	local function page(name)
+		local frame = Instance.new("Frame")
+		frame.Name, frame.AnchorPoint, frame.Position = name, Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5)
+		frame.Size, frame.BackgroundTransparency, frame.Parent = UDim2.fromOffset(PaperUI.W, PaperUI.H), 1, cover
+		Instance.new("UIScale").Parent = frame
+		return frame
+	end
+	-- The background art covers the screen (cropping its edges on other shapes); the buttons and words sit on their own
+	-- sheet that always fits inside it, so on a phone's wide screen nothing is cut off at the top and bottom (2026-10-24).
+	local backdrop = #backgroundIds > 0 and not floating and page("Backdrop") or nil
+	local sheet = page("Sheet")
 	local function fit()
 		local view = workspace.CurrentCamera.ViewportSize
-		-- Backgrounds cover the screen (cropping frame edges on odd shapes); overlays fit inside it.
-		scale.Scale = (#backgroundIds > 0 and not floating and math.max or math.min)(view.X / PaperUI.W, view.Y / PaperUI.H) * (type(floating) == "number" and floating or 1)
+		local x, y = view.X / PaperUI.W, view.Y / PaperUI.H
+		sheet.UIScale.Scale = math.min(x, y) * (type(floating) == "number" and floating or 1)
+		if backdrop then backdrop.UIScale.Scale = math.max(x, y) end
 	end
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
 	fit()
 	-- Background plates come as a 2x2 grid of tiles (Roblox images max out at 1024 pixels).
 	for i, id in backgroundIds do
-		local tile = PaperUI.image(sheet, "Background" .. i, id, ((i - 1) % 2) * PaperUI.W / 2, math.floor((i - 1) / 2) * PaperUI.H / 2, PaperUI.W / 2, PaperUI.H / 2)
+		local tile = PaperUI.image(backdrop or sheet, "Background" .. i, id, ((i - 1) % 2) * PaperUI.W / 2, math.floor((i - 1) / 2) * PaperUI.H / 2, PaperUI.W / 2, PaperUI.H / 2)
 		tile.ScaleType = Enum.ScaleType.Stretch
 	end
 	return cover, sheet

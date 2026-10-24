@@ -12,6 +12,16 @@ local PaperUI = require(script.Parent.PaperUI)
 local Words = require(Root.Shared.TouchWords)
 
 local Touch = { stick = Vector2.zero, boost = false, onFire = nil } -- onFire(which, down): CombatController's triggers
+-- The HUD's crayon colours (the weapon rows' cells): each button fills with its own weapon's state.
+local CRAYON = { green = Color3.fromRGB(110, 200, 95), red = Color3.fromRGB(230, 75, 60), orange = Color3.fromRGB(245, 155, 50),
+	blue = Color3.fromRGB(85, 150, 235) }
+local gauges = {}
+-- FlightHUD: button `name` ("Fire", "Fire2", "Boost") shows `share` (0-1) filled with crayon `color`, and `caption`
+-- (the weapon's name) under its word.
+function Touch.gauge(name, share, color, caption)
+	local gauge = gauges[name]
+	if gauge then gauge(share, color, caption) end
+end
 
 -- Studio: ReplicatedStorage.FlyFightPaper's DevTouch attribute shows the phone layout on a PC, to look at it.
 function Touch.active()
@@ -45,32 +55,50 @@ function Touch.start(getPlane)
 	-- Held buttons: each follows the one touch that pressed it, so sliding a thumb off doesn't stick it on.
 	local buttons = {}
 	local function holdButton(name, label, color, onHold)
-		local button = disc(name, color, gui)
+		-- Paper discs with a crayon fill rising from the bottom (the weapon's heat, reload or lock; Boost's charge),
+		-- drawn with a hard-edged gradient so the round edge stays round.
+		local button = disc(name, Color3.new(1, 1, 1), gui)
 		button.Active = true
+		local fill = Instance.new("UIGradient")
+		fill.Rotation, fill.Parent = -90, button
 		local words = PaperUI.words(button, "Label", label, 0, 0, 10, 10, 24)
-		words.Size, words.TextXAlignment, words.TextScaled = UDim2.fromScale(1, 1), Enum.TextXAlignment.Center, true
-		local padding = Instance.new("UIPadding")
-		padding.PaddingLeft, padding.PaddingRight = UDim.new(0.15, 0), UDim.new(0.15, 0)
-		padding.PaddingTop, padding.PaddingBottom, padding.Parent = UDim.new(0.3, 0), UDim.new(0.3, 0), words
+		words.AnchorPoint, words.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.45)
+		words.Size, words.TextXAlignment, words.TextScaled = UDim2.fromScale(0.7, 0.34), Enum.TextXAlignment.Center, true
+		local caption = PaperUI.words(button, "Caption", "", 0, 0, 10, 10, 14)
+		caption.AnchorPoint, caption.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.72)
+		caption.Size, caption.TextXAlignment, caption.TextScaled = UDim2.fromScale(0.62, 0.16), Enum.TextXAlignment.Center, true
+		gauges[name] = function(share, crayon, text)
+			local tint, edge = CRAYON[crayon] or color, math.clamp(share, 0, 1)
+			local points = { ColorSequenceKeypoint.new(0, tint), ColorSequenceKeypoint.new(1, PAPER) }
+			if edge > 0.001 and edge < 0.999 then
+				table.insert(points, 2, ColorSequenceKeypoint.new(edge, tint))
+				table.insert(points, 3, ColorSequenceKeypoint.new(math.min(edge + 0.001, 0.9999), PAPER))
+			elseif edge >= 0.999 then points[2] = ColorSequenceKeypoint.new(1, tint)
+			else points[1] = ColorSequenceKeypoint.new(0, PAPER) end
+			fill.Color = ColorSequence.new(points)
+			caption.Text = text or ""
+		end
+		gauges[name](1, nil)
+		button.BackgroundTransparency = 0.12 -- the game shows faintly through a small screen's biggest pieces
 		local entry = { frame = button, touch = nil }
 		button.InputBegan:Connect(function(input)
 			if input.UserInputType ~= Enum.UserInputType.Touch or entry.touch then return end
 			entry.touch = input
-			button.BackgroundTransparency = 0.35
+			button.BackgroundTransparency = 0.3
 			onHold(true)
 		end)
 		function entry.release()
 			if not entry.touch then return end
 			entry.touch = nil
-			button.BackgroundTransparency = 0
+			button.BackgroundTransparency = 0.12
 			onHold(false)
 		end
 		table.insert(buttons, entry)
 		return button
 	end
-	local fire = holdButton("Fire", "FIRE", Color3.fromRGB(240, 90, 70), function(down) if Touch.onFire then Touch.onFire(1, down) end end)
-	local fire2 = holdButton("Fire2", "2", Color3.fromRGB(250, 205, 40), function(down) if Touch.onFire then Touch.onFire(2, down) end end)
-	local boost = holdButton("Boost", "BOOST", Color3.fromRGB(110, 170, 240), function(down) Touch.boost = down end)
+	local fire = holdButton("Fire", "FIRE", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(1, down) end end)
+	local fire2 = holdButton("Fire2", "2", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(2, down) end end)
+	local boost = holdButton("Boost", "BOOST", CRAYON.blue, function(down) Touch.boost = down end)
 
 	-- Sizes follow the screen's short side, so a phone and a tablet both get thumb-sized pieces.
 	local function fit()
@@ -148,7 +176,10 @@ function Touch.start(getPlane)
 			gui.Enabled = flying
 			if not flying then releaseAll() end
 		end
-		boost.Visible = flying and (plane:GetAttribute("BoostMax") or 0) > 0
+		local boostMax = flying and plane:GetAttribute("BoostMax") or 0
+		boost.Visible = boostMax > 0
+		if boost.Visible then Touch.gauge("Boost", (plane:GetAttribute("Boost") or 0) / boostMax, "blue") end
+		fire2.Visible = flying and (plane:GetAttribute("AlternateName") or "None") ~= "None"
 		if controls and controlsOff ~= Touch.active() then
 			controlsOff = Touch.active()
 			if controlsOff then controls:Disable() else controls:Enable() end

@@ -44,7 +44,14 @@ the stick", "tap Fire") and the key words on PC.
 - 2026-10-23/24: step 1 (stick, FIRE / 2 / BOOST) and step 2 (aim help, fake-pilot tuned) built. Step 3 started:
   Settings sliders, the Hangar's plane turning and the Range's stage strips (tap the strip) take fingers; the lesson's
   Skip button held 1.5 s skips the whole lesson (like holding K); every text on screen says touch words (step 5,
-  TouchWords). Not yet seen on a phone-sized screen (waiting on the Device Simulator: Alan turns it on).
+  TouchWords).
+- 2026-10-24: Alan turned on Studio's Device Simulator (a 749 x 381 phone, landscape; Claude's Play screenshots are
+  now phone-sized). Flight screen done for phones: FIRE / 2 are paper discs that fill with their weapon's crayon state
+  (heat, reload, lock) and name it; the weapons panel hides; Health and Lift sit top-left under the Menu button; the
+  round strip sits in the top bar's row right of Menu; the kill feed drops under the top bar; HUD scale floor 0.4.
+  Full-screen menus: the background covers the screen and the buttons sit on their own sheet that always fits (no
+  more cropping on wide phones). **Next (step 4):** text on the menus is about 7-10 points on a phone (too small):
+  go screen by screen (main menu, Settings, Hangar, desk strips, lesson notes, tips, round end) in the simulator.
 
 ## Checks
 - Studio's Device Simulator (free) shows the screen sizes and gives touch-like input, but it can't show how thumbs
