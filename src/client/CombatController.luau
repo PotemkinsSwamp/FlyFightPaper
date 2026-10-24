@@ -29,6 +29,8 @@ function Controller.start(getPlane,effects)
   if which then held[which]=false;effects.press(which,false);send(which) end
  end)
  Input.WindowFocusReleased:Connect(function()held={false,false};effects.press(1,false);effects.press(2,false);send(1);send(2)end)
+ -- Phones: the Fire buttons (TouchControls) hold the triggers like the mouse buttons.
+ require(script.Parent.TouchControls).onFire=function(which,down) if Root:GetAttribute("OverlayOpen") then down=false end;held[which]=down;effects.press(which,down);send(which) end
  -- Studio test hook: the player attribute DevFire holds the left trigger (Studio MCP can't press the game's mouse).
  if Run:IsStudio() then
   local player=Players.LocalPlayer

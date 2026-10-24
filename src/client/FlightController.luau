@@ -7,6 +7,7 @@ local Deaths = require(script.Parent.PlaneDeaths)
 local Gameplay = require(Root.Generated.Gameplay)
 local Config = Gameplay.flight
 local Course = require(Root.Shared.TrainingCourse)
+local Touch = require(script.Parent.TouchControls)
 local Controller = {}
 -- Read by the camera and HUD. `aimOverride` lets dev tools fly the plane without a mouse.
 Controller.state = { aim = nil, aimUp = nil, aimOverride = nil }
@@ -88,6 +89,8 @@ function Controller.start(plane)
 			-- Locking pulls the free cursor (just used on LAUNCH or the lesson's Go, right of centre) to the middle of
 			-- the screen, which reads as one big mouse move: the "jolt to the left" (Alan 2026-10-19). Skip that moment.
 			if os.clock() - lockedAt < 0.1 then delta = Vector2.zero end
+			-- Phones: the steering stick turns the aim at up to touch_stick_deg_per_s, the same way a mouse move does.
+			delta += Touch.stick * math.rad(Config.touch_stick_deg_per_s) * dt * (Root:GetAttribute("Sensitivity") or 1)
 			if delta.Magnitude > 0 then aimFrame = aimFrame * CFrame.Angles(-delta.Y, -delta.X, 0); lastSteer = os.clock() end
 		end
 		if state.aimOverride then setAim(state.aimOverride(body)); lastSteer = os.clock() end
@@ -124,7 +127,7 @@ function Controller.start(plane)
 			if toward.Magnitude > 1 then steer = toward.Unit end
 		end
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
-		local boost = not blocked and Input:IsKeyDown(Enum.KeyCode.LeftShift)
+		local boost = not blocked and (Input:IsKeyDown(Enum.KeyCode.LeftShift) or Touch.boost)
 		if boost ~= boostSent then boostSent = boost; Root.FlightAction:FireServer("boost", boost) end
 		local before = heading
 		heading, bank, orientation.CFrame = Rules.autopilot(heading, bank, steer or state.aim, plane:GetAttribute("YawRate"), plane:GetAttribute("PitchRate"), dt, state.aimUp)

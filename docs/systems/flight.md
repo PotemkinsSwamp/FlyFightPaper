@@ -1,11 +1,12 @@
 # Flight
 
 ## What the player sees
-You point the mouse where you want to go and the plane flies itself there, banking into turns. Takeoff from your desk is automatic. Flying burns **Lift** (your paper plane's staying-up power); when it runs out you glide down but can still steer. Upward fans refill Lift and push you up; speed bolts and boost make you faster.
+You point the mouse where you want to go and the plane flies itself there, banking into turns. On a phone or tablet the left thumb pushes a steering stick instead and the right thumb holds Fire, 2 and Boost ([touch plan](../plan/TOUCH-PLAN.md)). Takeoff from your desk is automatic. Flying burns **Lift** (your paper plane's staying-up power); when it runs out you glide down but can still steer. Upward fans refill Lift and push you up; speed bolts and boost make you faster.
 
 ## Where it stands (2026-10-18)
 Works and approved in play. A scrape knocks the nose and aim away from the surface and wobbles the plane (2026-10-18,
 waits on Alan's feel check; rule in [damage and deaths](damage-and-deaths.md)). Boost now pushes along the nose even with no Lift. Open: Toilet Roll body jitter Alan saw once (not reproduced; needs his description).
+Touch (2026-10-23): steering stick and Fire/2/Boost buttons built, not yet tried in the phone simulator or on a phone.
 
 ## Rules
 - **Cheat checks (2026-10-17 audit):** the server compares each human plane's position and turn every 0.25 s and
@@ -41,7 +42,8 @@ held and augments speed by the equipped module; clamp stacked environmental spee
 ## Code
 | File | What it does |
 |---|---|
-| `src/client/FlightController.luau` | Mouse-aim steering on your screen |
+| `src/client/FlightController.luau` | Mouse-aim steering on your screen (and the touch stick's turning) |
+| `src/client/TouchControls.luau` | Phones and tablets: the floating steering stick (left half), Fire / 2 / Boost buttons; only while flying on a touch screen; turns off Roblox's own walk stick and jump button |
 | `src/client/ChaseCamera.luau` | Chase camera: smoothing, speed zoom, shake, stays in the room |
 | `src/server/FlightService.luau` | Server side of every plane: spawn at desk, takeoff, fans, speed pickups, death and landing hooks |
 | `src/shared/FlightRules.luau` | Lift drain and flight limits |
@@ -49,7 +51,7 @@ held and augments speed by the equipped module; clamp stacked environmental spee
 | `src/client/FanSpin.luau, src/client/FanWind.luau` | Fan blades turning and wind swirls |
 
 ## Tuning numbers
-`config/gameplay.json`: `flight` (speeds, turning, Lift, autopilot), `world.fans`, `world.speed_pickups`.
+`config/gameplay.json`: `flight` (speeds, turning, Lift, autopilot; touch stick: `touch_stick_deg_per_s` full-push turn rate, `touch_stick_curve` gentleness of small pushes, `touch_stick_radius` share of the screen's short side), `world.fans`, `world.speed_pickups`.
 
 ## Related
 - [Mouse-aim flying](../decisions/2026-10-07-mouse-aim-controls.md)
