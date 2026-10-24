@@ -212,6 +212,16 @@ mistake would be easy to make twice.
 - **A click on an empty spot of a menu is NOT "processed"** (`InputBegan`'s flag is false unless a button took it), so
   world click handlers must also check `Root:GetAttribute("OverlayOpen")`: the Range turned such clicks into shots and
   closed Customize (2026-10-21).
+- **Sounds in Edit mode (2026-10-23):** `Sound:Play()` does nothing in Edit (TimePosition stays 0), but the newer
+  `AudioPlayer` wired (`Wire`) to an `AudioDeviceOutput` plays, fades and reports TimePosition in Edit, so a timed mix
+  (WinnersSound) can be heard and checked without Play.
+- **Edit-mode `require` is cached (2026-10-24):** after Rojo syncs new code, a command-bar `require` in Edit still
+  returns the old module (new config keys came back nil). To test fresh code in Edit, clone the package
+  (`ReplicatedStorage.FlyFightPaper`), rename the real one aside, require from the clone, then restore the name.
+  Pure-math checks (unit specs, the fake-pilot aim test) run this way with no Play at all.
+- **Phone view in Studio (2026-10-24):** with Studio's Device Simulator (File > Beta Features > New Device Simulator,
+  Alan turned it on), Play's viewport is a phone (749 x 381), PreferredInput is Touch and MCP screenshots show the
+  phone screen. Without it, the `DevTouch` attribute on ReplicatedStorage.FlyFightPaper shows the touch layout on a PC.
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the

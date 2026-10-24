@@ -1,20 +1,23 @@
-# Since Alan last checked (2026-10-23)
-- **Range sticky notes approved** after two rounds of your notes: the tutorial's own note, Space for Got it, K for
-  Skip all, arrows beside what they point at, a Back note over the Hangar, last note "The Range is yours".
-- **Match Tips built and seen working** ("they work"): nine one-line tips in your first real matches, each once;
-  only while a round is on; Settings > Match tips On/Off.
-- **Fixed:** losing control when a team or Airspace round repainted your plane (it flew straight into a wall); a plane
-  left on a wall in the break folding the instant the next round began; the vote lap's top strip (now VOTE 0:30, cards
-  under it, no tips over it); classroom children only heard while flying in a match; no match clock in the Range.
-- Range build swap animation dropped for now (your call).
+# Since Alan last checked (2026-10-24)
+- **Winners' moment sound built:** match music fades at the banner, crowd and clapping build as 3rd and 2nd hop up,
+  1st's landing gets the kids' "Yeah!" and the song (Parade March, Nawlins Carnival Kids or On With The Show, random
+  each round, never twice in a row). Not yet heard by you in Play.
+- **Touch (phones) moved before launch (your OK):** steering stick + FIRE / 2 / BOOST, phone aim help (researched,
+  then tuned with a fake-pilot test: thumbs land 83-100% of a mouse's hits), touch words on every text, sliders /
+  Hangar turning / Range strips take fingers, the flight screen laid out for a phone.
+- Menu screens no longer get cut off at the top and bottom on wide screens (background covers, buttons fit).
 
-# Now: UI lane: the winners' moment sounds (picked; cue sheet for your OK, then build)
-What works: everything in Stage 9, the tutorials, the desk quick menu, the Range notes, Match Tips.
-Broken or not yet checked: Match Tips for team, Airspace and wall scrapes not seen live. Visual looks of
-deaths/glints/split planes still wait on your eyes. Bot-vs-bot rams never land. Track C saving needs a private
-publish (your go). Place file not re-saved (needs Save to File, your go; code lives in src/).
+# Now: UI lane: touch controls (docs/plan/TOUCH-PLAN.md), step 4: every screen readable on a phone
+What works: everything in Stage 9, the tutorials, the desk quick menu, Range notes, Match Tips; on phones the flight
+screen and controls. Broken / not yet: menu text is about 7-10 points on a phone (too small); desk strips, Hangar,
+lesson notes, tips and the round end not yet laid out for phones; nothing tried on a real phone. Track C saving needs
+a private publish (your go). Place file not re-saved (Save to File, your go; code lives in src/).
 
 Decisions to review
+Touch: FIRE / 2 / BOOST paper buttons right, stick on the left half; phone aim help cone 6 (fades from 3), out to 800
+  studs, slowdown 0.65 within 8 degrees; yellow dot = lands thanks to the help; held Skip (1.5 s) skips a lesson.
+Winners' moment: cheers from 3.2 s, clapping from 3rd's landing, "Yeah!" + song at 1st's landing (8.1 s), song
+  fades by 26 s; each player's game picks its own random song.
 Match Tips: under the match strip, 6 s on screen, 20 s apart; Flight School skips the Lift and desk tips, Combat
   School the "Folded!" tip; the vote-lap tip dropped (the vote card says it). Walls stay soft 2 s into a new round.
 Desk quick menu: no level bar; Boost row teal (Speed is blue); blue pins on the red strip. Classroom chatter 0.08.
@@ -38,10 +41,11 @@ Zone 680-840 across by building density; bots on the zone 30/60/85% (rookie/regu
 Points: fold assist share rounded to 5 (10-80); outside-zone fold 40%; paper targets 50 points each, server-checked.
 
 Waiting on Alan
-- Winners' moment sounds: your OK on the cue sheet (what plays when over the 27 s), and a longer winners' track
-  (Cartoon Time is only 5 s). Picks so far are in docs/plan/MILESTONES.md Stage 7.
-- Your call later: give the match bots the gun fix too (their guns still cross at 150 studs).
-- Backlog (yours): a new fan sound. Private publish (your go) to test the move into the tutorial room.
+- Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
+- Touch: try the stick and buttons in the Device Simulator (now on): does the stick turn too fast or slow? Buttons
+  the right size? Watch for the yellow dot in the Range.
+- Your call later: match bots' guns still cross at 150 studs. Backlog: a new fan sound.
 0. Studio: File > Save to File (keeps the latest fixes in the place file).
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK; then products, passes, VIP perks.
+3. Touch step 6: a private publish so you can play on your phone (your go then).
