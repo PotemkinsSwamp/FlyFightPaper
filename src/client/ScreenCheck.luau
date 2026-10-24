@@ -124,7 +124,9 @@ function ScreenCheck.run()
 		if under > 4 then report("UNDER ROBLOX " .. name(a.object)) end
 		for j = i + 1, #pieces do
 			local b = pieces[j]
-			if a.group ~= b.group then
+			-- (On a phone the match tip may cover the news note and the kill feed: Alan 2026-10-24.)
+			local tipOver = phone and (a.gui.Name == "MatchTips" and b.gui.Name == "MatchInfo" or b.gui.Name == "MatchTips" and a.gui.Name == "MatchInfo")
+			if a.group ~= b.group and not tipOver then
 				local shared = area(Vector2.new(math.max(a.low.X, b.low.X), math.max(a.low.Y, b.low.Y)), Vector2.new(math.min(a.high.X, b.high.X), math.min(a.high.Y, b.high.Y)))
 				local smaller = math.min(area(a.low, a.high), area(b.low, b.high))
 				if smaller > 0 and shared / smaller > OVERLAP_SHARE then

@@ -103,8 +103,12 @@ function Tutorial.start(getPlane)
  -- In the top middle's column (ScreenFit): under the top row (Menu button, match strip) and any news note.
  local ScreenFit=require(script.Parent.ScreenFit)
  ScreenFit.inColumn(note,3)
- local function noteTop() return UDim2.new(.5,0,0,ScreenFit.below(note)) end
- ScreenFit.watch(function() scale.Scale=ScreenFit.scale(ScreenFit.NOTE);note.Position=noteTop() end)
+ -- (Sets the note's scale too: it shrinks to fit a small phone's gap.)
+ local function noteTop()
+  local s=ScreenFit.scale(ScreenFit.NOTE);local x,y,fit=ScreenFit.place(note,s);scale.Scale=s*fit
+  return UDim2.new(.5,x,0,y)
+ end
+ ScreenFit.watch(function() note.Position=noteTop() end)
  local title=PaperUI.words(note,"Title","",40,24,540,34,24);title.TextColor3=Color3.fromRGB(150,60,40)
  local text=PaperUI.words(note,"Text","",40,58,440,96,30);text.TextWrapped=true;text.TextYAlignment=Enum.TextYAlignment.Top
  local key=PaperUI.words(note,"Key","",490,64,100,48,26);key.TextXAlignment=Enum.TextXAlignment.Center;key.BackgroundTransparency=0;key.BackgroundColor3=Color3.fromRGB(250,250,245)
@@ -122,7 +126,7 @@ function Tutorial.start(getPlane)
  local card=Instance.new("ImageLabel");card.Image=Art.ingame.stickyNote;card.ScaleType=Enum.ScaleType.Stretch;card.BackgroundTransparency=1
  card.AnchorPoint=Vector2.new(.5,.5);card.Position=UDim2.fromScale(.5,.45);card.Size=UDim2.fromOffset(620,260);card.Visible=false;card.Parent=gui
  local cardScale=scale:Clone();cardScale.Parent=card
- workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()cardScale.Scale=scale.Scale end)
+ ScreenFit.watch(function()cardScale.Scale=ScreenFit.scale(ScreenFit.NOTE) end)
  local cardTitle=PaperUI.words(card,"Title","",40,30,540,56,44);cardTitle.TextXAlignment=Enum.TextXAlignment.Center
  local cardText=PaperUI.words(card,"Text","You can replay any lesson: Menu > Training.",40,96,540,60,26);cardText.TextWrapped=true;cardText.TextXAlignment=Enum.TextXAlignment.Center
  -- The end card holds the plane still so the mouse can click (finish); either button lets it go first.
@@ -563,6 +567,7 @@ function Tutorial.start(getPlane)
  local function placeNote(menu,low,high)
   note.AnchorPoint=Vector2.new(.5,0)
   if not menu then note.Position=noteTop();return end
+  scale.Scale=ScreenFit.scale(ScreenFit.NOTE)
   low,high=low or Vector2.new(-1e4,-1e4),high or Vector2.new(-1e4,-1e4)
   -- Corners hug the screen's sides; the note may cover the frame's outer edge, never the hole.
   local view=gui.AbsoluteSize;local w,h=620*scale.Scale,230*scale.Scale;local m=view.Y*.05;local side=20;local pad=FRAME_OUTSET/2

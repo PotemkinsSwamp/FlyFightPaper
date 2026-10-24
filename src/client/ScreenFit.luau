@@ -32,19 +32,23 @@ function ScreenFit.scale(least, most)
 	return math.clamp(math.min(view.X / 1920, view.Y / 1080), floor, most or math.huge)
 end
 
--- The screen map's top middle (step 2): the top row (Roblox's bar, the Menu button, the match strip, and the pieces up
--- in the corners: kill feed, a touch screen's Health and Lift), then a column of notes in a fixed order. Each note sits
--- under the real bottom (last frame's) of every shown piece above it that it would touch side to side: on a small
--- phone the match strip's notes slide right, under the kill feed. Pieces live in different ScreenGuis, so each one
--- asks where it goes and sets its own position.
+-- The screen map's top middle (step 2): the top row (Roblox's bar, the Menu button, the match strip), the pieces up in
+-- the top corners (a touch screen's Health and Lift on the left, the kill feed on the right), and a column of notes
+-- in a fixed order under the row. A note stays where it was drawn (centred under the match strip) unless it would
+-- touch a corner piece: then it slides into the gap between them and shrinks to fit (small phones, Alan 2026-10-24).
+-- Each note sits under the shown pieces above it that it touches. Pieces live in different ScreenGuis, so each one
+-- asks where it goes (ScreenFit.place) from the others' real edges (last frame's) and sets its own position.
 local GuiService = game:GetService("GuiService")
-local row, column = {}, {}
+local row, sides, column = {}, {}, {}
 ScreenFit.GAP = 4 -- points between pieces
+function ScreenFit.inRow(piece) table.insert(row, piece) end
 -- when(): only while it is up top (Health and Lift sit at the bottom on a PC).
-function ScreenFit.inRow(piece, when) table.insert(row, { piece = piece, when = when }) end
+function ScreenFit.atSide(piece, when) table.insert(sides, { piece = piece, when = when }) end
 -- order: smaller goes higher (capture 1, news 2, lesson or Range note 3, warning or lock 4, match tip 5).
-function ScreenFit.inColumn(piece, order)
-	table.insert(column, { piece = piece, order = order })
+-- covers: on a phone it stays up top over the other notes and the kill feed rather than dropping into the middle of
+-- the view (the match tip, Alan 2026-10-24); it still keeps off Health and Lift.
+function ScreenFit.inColumn(piece, order, covers)
+	table.insert(column, { piece = piece, order = order, covers = covers })
 	table.sort(column, function(a, b) return a.order < b.order end)
 end
 local function shown(piece)
@@ -55,23 +59,51 @@ local function shown(piece)
 	end
 	return at ~= nil and at.Enabled
 end
--- The top for `piece` (in the column) in its parent's own points (UIScale undone).
-function ScreenFit.below(piece)
+local function scaleOf(parent) -- how much the parent's own points are scaled on screen
+	return parent:IsA("GuiObject") and parent.Size.X.Offset > 0 and parent.AbsoluteSize.X / parent.Size.X.Offset or 1
+end
+
+-- Where a column piece goes: x, y for UDim2.new(0.5, x, 0, y) in its parent's own points (AnchorPoint (0.5, 0)), and
+-- fit (1 or less) to shrink it by. base: the piece's own scale before fitting (its UIScale's usual value).
+function ScreenFit.place(piece, base)
+	local entry
+	for _, e in column do if e.piece == piece then entry = e end end
+	local parent, view = piece.Parent, ScreenFit.view()
+	local parentScale = scaleOf(parent)
+	local width = piece.Size.X.Offset * parentScale * (base or 1)
+	local home = parent.AbsolutePosition.X + parent.AbsoluteSize.X / 2
+	local phoneCovers = entry.covers and ScreenFit.kind() == "phone"
+	-- The gap between the corner pieces (the kill feed doesn't count for a note that covers).
+	local gapLeft, gapRight = ScreenFit.GAP * 2, view.X - ScreenFit.GAP * 2
+	for _, side in sides do
+		local other = side.piece
+		if shown(other) and (not side.when or side.when()) then
+			local low, high = other.AbsolutePosition.X, other.AbsolutePosition.X + other.AbsoluteSize.X
+			if (low + high) / 2 < view.X / 2 then gapLeft = math.max(gapLeft, high + ScreenFit.GAP * 2)
+			elseif not phoneCovers then gapRight = math.min(gapRight, low - ScreenFit.GAP * 2) end
+		end
+	end
+	local centre, fit = home, 1
+	if home - width / 2 < gapLeft or home + width / 2 > gapRight then
+		fit = math.min(1, (gapRight - gapLeft) / width)
+		local half = width * fit / 2
+		centre = math.clamp(home, gapLeft + half, math.max(gapLeft + half, gapRight - half))
+	end
+	local left, right = centre - width * fit / 2, centre + width * fit / 2
 	local y = GuiService.TopbarInset.Max.Y - GuiService:GetGuiInset().Y -- the bar's bottom in AbsolutePosition space
-	local left, right = piece.AbsolutePosition.X, piece.AbsolutePosition.X + piece.AbsoluteSize.X
 	local function under(other)
 		if shown(other) and other.AbsolutePosition.X < right and other.AbsolutePosition.X + other.AbsoluteSize.X > left then
 			y = math.max(y, other.AbsolutePosition.Y + other.AbsoluteSize.Y)
 		end
 	end
-	for _, entry in row do if not entry.when or entry.when() then under(entry.piece) end end
-	for _, entry in column do
-		if entry.piece == piece then break end
-		under(entry.piece)
+	for _, other in row do under(other) end
+	if not phoneCovers then
+		for _, e in column do
+			if e.piece == piece then break end
+			under(e.piece)
+		end
 	end
-	local parent = piece.Parent
-	local size = parent:IsA("GuiObject") and parent.Size.Y.Offset > 0 and parent.AbsoluteSize.Y / parent.Size.Y.Offset or 1
-	return (y + ScreenFit.GAP - parent.AbsolutePosition.Y) / size
+	return (centre - home) / parentScale, (y + ScreenFit.GAP - parent.AbsolutePosition.Y) / parentScale, fit
 end
 
 -- fn() now and whenever the screen changes size or the player switches between touch and mouse.

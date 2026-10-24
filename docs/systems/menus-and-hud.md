@@ -19,9 +19,12 @@ tips, the round end and the vote sit below Roblox's top bar (the Menu button); t
 Top of the screen (screen fit step 2, every screen): one row (Roblox's bar, the Menu button, the match strip, which
 moves right of the Menu button when centred would hit it), then one column under it in a fixed order: Airspace
 capture strip, news note, lesson or Range note, warning or lock note, match tip; each sits under the real bottom of
-every shown piece above it that it would touch side to side, the kill feed and a touch screen's Health and Lift
-included (`ScreenFit.inRow`, `inColumn`, `below`): on a small phone the notes slide under the kill feed. The desk's
-stat sheet's top is level with the photo's on every screen (Alan 2026-10-24). Kill feed: 2 slips on a phone, under the top bar;
+every shown piece above it that it would touch side to side (`ScreenFit.inRow`, `atSide`, `inColumn`, `place`). A
+note that would touch a top-corner piece (the kill feed, a touch screen's Health and Lift) slides into the gap
+between them and shrinks to fit (small phones, Alan 2026-10-24). On a phone the match tip is a bit smaller and stays
+up top over the news note and kill feed (never over Health and Lift) instead of dropping into the middle of the view. The desk's
+stat sheet's top is level with the photo's on every screen (Alan 2026-10-24); the photo's plane rebuilds when more
+of its parts arrive from the server (it once showed without a wing). Kill feed: 2 slips on a phone, under the top bar;
 the desk's service strips start under the feed's real bottom; edge arrows stay below Health and Lift on touch
 screens. Match tip on a touch screen: tap the note (no Got it button).
 

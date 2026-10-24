@@ -156,8 +156,12 @@ function Notes.new(getStage)
 		skip.Visible = step < #STEPS
 		-- Over the Hangar the note sits bottom right, like the Hangar Tour's (clear of the shelf); top middle otherwise.
 		note.AnchorPoint = if inHangar then Vector2.new(1, 1) else Vector2.new(0.5, 0)
-		note.Position = if inHangar then UDim2.new(1, -20, 0.95, 0)
-			else UDim2.new(0.5, 0, 0, ScreenFit.below(note)) -- the top middle's column, under the top row
+		if inHangar then
+			note.Position = UDim2.new(1, -20, 0.95, 0)
+		else -- the top middle's column, under the top row
+			local x, y, fit = ScreenFit.place(note, s)
+			note.Position, scale.Scale = UDim2.new(0.5, x, 0, y), s * fit
+		end
 		arrow.Visible = low ~= nil
 		if not low then return end
 		-- The arrow sits just outside what the note explains, on the note's side, pointing at it.

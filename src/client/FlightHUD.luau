@@ -230,10 +230,11 @@ function HUD.start(getPlane, action)
 	-- The screen map's top middle (ScreenFit): the match strip is in the top row; the notes stack under it.
 	ScreenFit.inRow(round)
 	ScreenFit.inColumn(capture, 1); ScreenFit.inColumn(status, 2); ScreenFit.inColumn(threat, 4); ScreenFit.inColumn(lockInfo, 4)
+	for _, piece in { capture, status, threat, lockInfo } do Instance.new("UIScale", piece).Name = "Fit" end -- shrinks it into a small phone's gap
 	-- Top right: the last four knock-downs, one torn notebook slip each (CombatEffects fills them), pinned with a
 	-- blue pin when the line is about you and a red one otherwise.
 	local feed = panel("KillFeed", Vector2.new(1, 0), UDim2.new(1, -16, 0, 10), UDim2.fromOffset(450, 240))
-	ScreenFit.inRow(feed)
+	ScreenFit.atSide(feed)
 	for i = 1, 4 do
 		local slip = note(feed, "Slip" .. i, UIArt.hud.slip, 450, 54, (i - 1) * 58, 26)
 		slip.Words.UIPadding.PaddingLeft = UDim.new(0.11, 0)
@@ -387,7 +388,7 @@ function HUD.start(getPlane, action)
 		return row
 	end
 	local left = corner("Bars", Vector2.new(0, 1), 630)
-	ScreenFit.inRow(left, function() return left.AnchorPoint.Y == 0 end) -- touch screens: up top, under the Menu button
+	ScreenFit.atSide(left, function() return left.AnchorPoint.Y == 0 end) -- touch screens: up top, under the Menu button
 	local healthRow = bar(left, "Health", 160, 178, 630)
 	local liftRow = bar(left, "Lift", 85, 178, 630)
 	local boostRow = bar(left, "Boost", 10, 178, 630)
@@ -652,7 +653,10 @@ function HUD.start(getPlane, action)
 		top.Position = UDim2.fromOffset(math.max(workspace.CurrentCamera.ViewportSize.X / 2, menuRight + ScreenFit.GAP * 2 + 320 * top.UIScale.Scale), 8)
 		feed.Position = phone and UDim2.new(1, -8, 0, bar.Max.Y + 4) or UDim2.new(1, -16, 0, 10)
 		feed.Size = UDim2.fromOffset(450, phone and 2 * 58 - 4 or 240)
-		for _, piece in { capture, status, threat, lockInfo } do piece.Position = UDim2.new(0.5, 0, 0, ScreenFit.below(piece)) end
+		for _, piece in { capture, status, threat, lockInfo } do
+			local x, y, fit = ScreenFit.place(piece)
+			piece.Position, piece.Fit.Scale = UDim2.new(0.5, x, 0, y), fit
+		end
 		-- At the desk only the match strip shows up top: the desk's own note carries the news.
 		if inHangar then status.Visible, threat.Visible, lockInfo.Visible = false, false, false end
 		if not gui.Enabled then return end

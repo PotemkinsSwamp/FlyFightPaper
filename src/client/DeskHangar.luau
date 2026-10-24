@@ -277,7 +277,7 @@ function DeskHangar.new(playerGui, api)
 	end
 
 	-- The live plane: a copy of what your plane looks like now, rebuilt when its parts change.
-	local shownPlane
+	local shownPlane, shownCount
 	local function showPlane(plane)
 		local loadout = pickedBuild(plane)
 		if loadout then
@@ -289,8 +289,12 @@ function DeskHangar.new(playerGui, api)
 		end
 		local appearance = plane:FindFirstChild("Appearance")
 		local body = plane:FindFirstChild("Root")
-		if not appearance or not body or appearance == shownPlane then return end
-		shownPlane = appearance
+		if not appearance or not body then return end
+		-- Parts can arrive from the server a frame or two after the model (Alan 2026-10-24: the photo was missing a
+		-- wing), so a new part count rebuilds it.
+		local count = #appearance:GetChildren()
+		if appearance == shownPlane and count == shownCount then return end
+		shownPlane, shownCount = appearance, count
 		planeView:ClearAllChildren()
 		local world = Instance.new("WorldModel")
 		world.Parent = planeView

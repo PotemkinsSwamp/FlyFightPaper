@@ -49,7 +49,7 @@ function Tips.start(getPlane)
 	note.AnchorPoint, note.Position, note.Size, note.Rotation, note.Parent = Vector2.new(0.5, 0), UDim2.new(0.5, 0, 0, 130), UDim2.fromOffset(560, 140), 1, gui
 	local scale = Instance.new("UIScale")
 	scale.Parent = note
-	ScreenFit.inColumn(note, 5)
+	ScreenFit.inColumn(note, 5, true) -- on a phone it stays up top (Alan 2026-10-24: not in the middle of the view)
 	local title = PaperUI.phone(PaperUI.words(note, "Title", "Match tip", 34, 16, 300, 30, 22), { TextSize = 28 })
 	title.TextColor3 = Color3.fromRGB(150, 60, 40)
 	local words = PaperUI.words(note, "Text", "", 34, 44, 492, 40, 28)
@@ -121,11 +121,13 @@ function Tips.start(getPlane)
 		gui.Enabled = current ~= nil
 		if not current then return end
 		shownFor += dt
-		-- Last in the top middle's column (ScreenFit): under the match strip and any news, warning or lock note.
-		local s = ScreenFit.scale(ScreenFit.NOTE)
-		scale.Scale, arrowScale.Scale = s, s
+		-- Last in the top middle's column (ScreenFit): under the match strip and any news, warning or lock note (on a
+		-- phone over them, a bit smaller: Alan 2026-10-24).
+		local s = ScreenFit.scale(ScreenFit.NOTE) * (ScreenFit.kind() == "phone" and 0.85 or 1)
+		local x, y, fit = ScreenFit.place(note, s)
+		scale.Scale, arrowScale.Scale = s * fit, s
 		gotIt.Visible = not Touch.active()
-		note.Position = UDim2.new(0.5, 0, 0, ScreenFit.below(note))
+		note.Position = UDim2.new(0.5, x, 0, y)
 		local low, high = nil, nil
 		if current.point then low, high = pointAt(current.point) end
 		arrow.Visible = low ~= nil
