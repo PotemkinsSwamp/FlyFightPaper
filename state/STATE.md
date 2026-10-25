@@ -3,7 +3,9 @@
   after its menu pictures are in; the menus work while the town arrives; Play / Fly / Training wait for it. Studio:
   main menu 2.7 s, town parts 4.0 s, everything 14.2 s; matches play normally; tests 425 / 0.
 - **Load step 2, load recorder: built.** Every join saves its times, device and screen size; I read them in Studio.
-- **Step 3 (repack the town's pictures): started.** First a one-sheet test that big 2048 pictures stay sharp on Roblox.
+- **Step 3 (repack the town's pictures): prepared, not in the game yet.** Same pixels, fewer files: 1,893 -> 732 town
+  picture files (4.8% fewer pixels). Clock tower uploaded as a pilot. Blocked on one close-up (old vs new) that needs
+  Studio's window in front (it draws nothing while behind other windows), then ~800 uploads and the swap.
 - Earlier today: smaller bump/shine maps published; your fresh join was 44.9 s with no paper art, then 1 min 2 s more.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
@@ -12,6 +14,7 @@ Broken: a fresh phone join took ~1 min 47 s (45 s with no menu art); steps 1-2 b
 Not yet: small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
+Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).
 Smaller maps: bell tower + sweet-shop swirl roof keep full-size maps (moderation caution).
 Loading: Skip appears once the main menu's pictures are in; the loading waits 3 minutes at most.
   On a phone the match tip may cover the news note and kill feed (never Health/Lift).

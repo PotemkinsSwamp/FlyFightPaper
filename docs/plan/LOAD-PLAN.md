@@ -95,6 +95,15 @@ Close-ups shown (3 buildings, bump/shine maps at half size): Alan said go, whole
   docs say both "up to 4096" and "1024 x 1024"; a 2048 stripe test (id 112459253586917) reads back as 1024, but
   EditableImage itself stops at 1024, so a close-up in a drawing Studio decides. If 2048 shrinks, sheets stay 1024
   (fewer gains: tighter packing only).
+  Pilot: the clock tower's 16 pieces on 4 shared 2048 sheets, uploaded (all approved; records in
+  `clock-tower/repacked/`, not yet in the game). Tighter packing gave no pixel savings (the old packing was already
+  as tight as the 4 px padding allows), so the gain is files. All 45 buildings planned (`*/repacked/repack.json`, every
+  check PASS): picture files 1,893 -> 732, pixels 4.8% fewer (each building's last sheet sized to fit; 111 pieces keep
+  their own maps where sharing would add pixels or a piece is too big). Left out on purpose: bell tower and sweet shop
+  (moderation caution, as with the smaller maps). Contact sheets of all 107 new colour sheets looked at: nothing
+  symbol-like (big black areas are hidden undersides, already approved before). Next: close-up of old vs repacked
+  clock tower in a drawing Studio (script ready); if the same, upload the rest (~800 files), read MeshIds, swap in
+  the Studio copy after Alan's step-1 test, redo exact collision and packs.
 
 ## Cost
 Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan's ChatGPT plan, free uploads, about
