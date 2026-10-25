@@ -27,7 +27,7 @@ def main():
             settings[key.strip()] = value.strip().strip('\"').strip("'")
     session = requests.Session()
     session.headers["x-api-key"] = settings["ROBLOX_API"]
-    kind, content = ("Animation", "model/x-rbxm") if args.animation else ("Model", "model/fbx") if args.model else ("Image", "image/png")
+    kind, content = ("Animation", "model/x-rbxm") if args.animation else ("Model", "model/fbx") if args.model else ("Image", "image/jpeg" if args.png.suffix.lower() in (".jpg", ".jpeg") else "image/png")
     request = {"assetType": kind, "displayName": args.name,
                "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
                "creationContext": {"creator": {"userId": args.creator}, "expectedPrice": 0}}

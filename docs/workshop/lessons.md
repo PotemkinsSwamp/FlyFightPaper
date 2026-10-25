@@ -253,6 +253,11 @@ mistake would be easy to make twice.
 - **PreloadAsync doesn't fetch pictures given as id text** (2026-10-25): every `rbxassetid://` string reported
   Failure in 0.1 s in Studio and stalled 15 s on a client, so the loading screen and menus showed only words on a
   phone. Hand it the things that draw them (an `ImageLabel` with `.Image` set, a MeshPart, a SurfaceAppearance).
+- **PreloadAsync fetches a list one file after another** (2026-10-25): 28 menu pictures in one call took over 15 s on
+  a phone. Ask for each file on its own, many side by side. Some MeshParts kept in ReplicatedStorage (plane pieces)
+  never report back, so give each request a time limit or they hold a slot for good.
+- **Smaller picture files don't shrink the download** (2026-10-25): Roblox stores every uploaded picture as its own
+  PNG (a 255 KB JPG came back as 975 KB; a 281 KB 256-colour PNG as 650 KB). Only fewer or smaller pictures help.
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the

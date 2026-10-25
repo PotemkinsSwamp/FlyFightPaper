@@ -9,7 +9,7 @@ local UIAssets = require(Root.Shared.UIAssets)
 local PaperUI = require(script.Parent.PaperUI)
 local Loading = {}
 
-local cover, status, fill, skip, shownAt
+local cover, status, fill, skip, skipNote, shownAt
 local skipped, townReady = false, false
 local LINES = {
 	"The other pilots are setting up the classroom...", "Colouring in the pages...", "Folding paper planes...",
@@ -37,6 +37,9 @@ function Loading.show()
 	-- Once the main menu's pictures are in, you can go in while the rest keeps loading (Alan 2026-10-25).
 	skip = PaperUI.button(sheet, "Skip", menu.strip.green, "Skip", 780, 920, 360, 110, -1, function() skipped = true end, 48)
 	skip.Visible = false
+	-- Said beside Skip, like other games do: you can play, the town is still painting in.
+	skipNote = words(card, "SkipNote", "You can play now! Grey buildings fill in as you fly.", 100, 295, 600, 70, 34)
+	skipNote.TextWrapped, skipNote.TextXAlignment, skipNote.Visible = true, Enum.TextXAlignment.Center, false
 	-- While loading, the plane keeps flying across nose first (Alan 2026-10-17), turned 24 degrees to its climb. No pin:
 	-- it only gets pinned on the menu board.
 	local plane = image(sheet, "Plane", menu.plane, 0, 0, 226, 195, 24)
@@ -78,20 +81,24 @@ local function run()
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
 	-- (MeshParts, SurfaceAppearances, decals) and PreloadAsync fetches what each one draws.
-	-- The main menu's own pictures first (the board, its strips, the level bar, the pin), then every other screen's.
+	-- In the order a player meets them (Alan 2026-10-25): the main menu (with its level bar and pin), then training
+	-- (a new player's first stop), the hangar, settings and the in-game screens. Skip only once all of those and the
+	-- town's parts are in; then the world's own pictures: the training range, then the town.
+	local MENUS = { "mainmenu", "results", "tutorial", "trainingboard", "hangar", "settings", "ingame", "hud", "deskMenu", "hangarShelf" }
+	local WORLD = { "range", "targets" }
 	-- Pictures go in on picture labels: PreloadAsync doesn't fetch id text (see first/LoadingFirst).
 	local function image(id) local label = Instance.new("ImageLabel"); label.Image = id; return label end
-	local menuArt, ui, seen = {}, {}, {}
+	local seen = {}
 	local function walk(t, into)
 		for _, v in t do
 			if type(v) == "table" then walk(v, into)
 			elseif type(v) == "string" and v:find("^rbxassetid://%d") and not seen[v] then seen[v] = true; table.insert(into, image(v)) end
 		end
 	end
-	walk(UIAssets.mainmenu, menuArt)
-	walk(UIAssets.results, menuArt)
-	table.insert(menuArt, image(UIAssets.hud.pinRed)); seen[UIAssets.hud.pinRed] = true
-	walk(UIAssets, ui)
+	local menus, world = {}, {}
+	for _, name in MENUS do walk(UIAssets[name], menus) end
+	for _, name in WORLD do walk(UIAssets[name], world) end
+	walk(UIAssets, menus) -- any screen not listed above still loads before Skip
 	local town, shapes, room, assets = {}, {}, nil, nil
 	local function collect(parent)
 		for _, item in parent:GetDescendants() do
@@ -101,51 +108,65 @@ local function run()
 			elseif item:IsA("SurfaceAppearance") or item:IsA("Decal") or item:IsA("Texture") then table.insert(town, item) end
 		end
 	end
-	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Batches go in a few
-	-- at a time; each counts when PreloadAsync returns. It can stall for good, so stop waiting once nothing has
-	-- finished for 45 s (3 minutes at most: a phone's first join is slow). 2026-10-25: at 15 s a phone cut every step
-	-- short, so each next step downloaded on top of the last; a step cut short shows as "cut" in the load times.
-	local total, finished, failures = #menuArt + #ui, 0, 0
+	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Menus one file per
+	-- request, 12 side by side; the town's thousands in groups: PreloadAsync fetches a list one file after another, and on a phone each round trip is slow
+	-- (2026-10-25: 28 menu pictures in one call took over 15 s). A request can stall for good, so a step stops
+	-- waiting once nothing has finished for 45 s (3 minutes in all); a step cut short shows as "cut" in the times.
+	-- The bar: the menus fill its first 40%, the training range to 50%, the town the rest.
+	local total, finished, failures, from, span = 1, 0, 0, 0, 0
+	local function step(items, start, width) total, finished, from, span = math.max(#items, 1), 0, start, width end
 	local stopAt, heard = os.clock() + 180, os.clock()
-	local function preload(items)
-		local queue, running = {}, 0
-		heard = os.clock() -- each step gets its own 45 s (2026-10-25: a stalled step made the next one quit at once)
-		-- Small batches for the menus (the bar moves, pictures come side by side); 40 for the town (batches of 5 stalled
-		-- a whole minute on 2026-10-25).
-		local size = math.clamp(math.ceil(#items / 30), 2, 40)
-		for i = 1, #items, size do table.insert(queue, table.move(items, i, math.min(i + size - 1, #items), 1, {})) end
+	local function preload(items, size, slots)
+		local nextItem, running = 1, 0
+		heard = os.clock()
 		local function worker()
 			running += 1
-			while #queue > 0 and os.clock() < stopAt do
-				local batch = table.remove(queue, 1)
-				pcall(function()
-					Content:PreloadAsync(batch, function(_, fetch)
-						if fetch ~= Enum.AssetFetchStatus.Success then failures += 1 end
+			while nextItem <= #items and os.clock() < stopAt do
+				local batch, back = table.move(items, nextItem, math.min(nextItem + size - 1, #items), 1, {}), false
+				nextItem += size
+				-- 8 s per file at most (plus 1 s a file in a group): a few plane pieces kept in ReplicatedStorage never report back (2026-10-25),
+				-- and each would hold one of the 12 slots for good. It keeps loading on its own.
+				task.spawn(function()
+					pcall(function()
+						Content:PreloadAsync(batch, function(_, fetch)
+							if fetch ~= Enum.AssetFetchStatus.Success then failures += 1 end
+						end)
 					end)
+					back = true
 				end)
+				local asked = os.clock()
+				while not back and os.clock() - asked < 8 + size do task.wait() end
 				finished += #batch; heard = os.clock()
-				progress(finished / math.max(total, 1))
+				progress(from + span * finished / total)
 			end
 			running -= 1
 		end
-		for _ = 1, 6 do task.spawn(worker) end
-		while (running > 0 or #queue > 0) and os.clock() < stopAt and os.clock() - heard < 45 do task.wait(0.1) end
-		return (running > 0 or #queue > 0) and " cut" or ""
+		for _ = 1, slots do task.spawn(worker) end
+		while (running > 0 or nextItem <= #items) and os.clock() < stopAt and os.clock() - heard < 45 do task.wait(0.1) end
+		return (running > 0 or nextItem <= #items) and " cut" or ""
 	end
-	-- Strict order (Alan 2026-10-25): the loading screen's art (above), then every menu's, then the town.
-	lap("main menu" .. preload(menuArt))
-	skip.Visible = true
-	lap("menu pictures" .. preload(ui))
-	-- Menus first (docs/plan/LOAD-PLAN.md step 1): only now does the server send the town (streaming), so its files
-	-- don't queue in front of the menus'.
+	step(menus, 0, 0.4)
+	lap("menus" .. preload(menus, 1, 12))
+	-- Only now does the server send the town (streaming, docs/plan/LOAD-PLAN.md step 1), so it doesn't queue in front
+	-- of the menus. Its parts arrive in a moment; with them in, Skip is safe: the game plays, and buildings still
+	-- without their pictures fill in while you fly.
 	Root:WaitForChild("RoundAction"):FireServer("sendTown")
 	room, assets = Loading.waitTown()
 	lap("town arrived")
-	collect(room)
+	skip.Visible, skipNote.Visible = true, true
 	collect(assets)
+	-- The plane pieces first, one file at a time: a few never report back and must not hold up a group of 40.
+	local planes = town
+	town = {}
+	collect(room)
 	if workspace:FindFirstChild("CityRug") then collect(workspace.CityRug) end
-	total += #town
-	lap("preloaded" .. preload(town))
+	step(world, 0.4, 0.1)
+	lap("range" .. preload(world, 1, 12))
+	step(planes, 0.5, 0.05)
+	lap("planes" .. preload(planes, 1, 12))
+	-- The town in groups of 40, 12 at a time: fastest of the sizes tried (2026-10-25: 40x6 9 s, 20x24 35 s, 5x48 20 s).
+	step(town, 0.55, 0.45)
+	lap("preloaded" .. preload(town, 40, 12))
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
