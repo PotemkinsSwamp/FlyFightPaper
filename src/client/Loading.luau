@@ -72,7 +72,8 @@ local function run()
 	local function lap(step) table.insert(times, string.format("%s %.1f", step, os.clock() - started)); workspace:SetAttribute("LoadTimes", table.concat(times, ", ")) end
 	lap("game in")
 	while not game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtAt") and os.clock() - started < 10 do task.wait(0.05) end
-	lap("loading screen")
+	local artFailed = game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtFailed") or 0
+	lap(artFailed > 0 and ("loading screen (" .. artFailed .. " failed)") or "loading screen")
 	-- Everything the game shows, before you get in (Alan 2026-10-25: on a phone the game let him in long before the
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
@@ -102,13 +103,17 @@ local function run()
 	end
 	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Batches go in a few
 	-- at a time; each counts when PreloadAsync returns. It can stall for good, so stop waiting once nothing has
-	-- finished for 15 s (3 minutes at most: a phone's first join is slow).
+	-- finished for 45 s (3 minutes at most: a phone's first join is slow). 2026-10-25: at 15 s a phone cut every step
+	-- short, so each next step downloaded on top of the last; a step cut short shows as "cut" in the load times.
 	local total, finished, failures = #menuArt + #ui, 0, 0
 	local stopAt, heard = os.clock() + 180, os.clock()
 	local function preload(items)
 		local queue, running = {}, 0
-		heard = os.clock() -- each step gets its own 15 s (2026-10-25: a stalled step made the next one quit at once)
-		for i = 1, #items, 40 do table.insert(queue, table.move(items, i, math.min(i + 39, #items), 1, {})) end
+		heard = os.clock() -- each step gets its own 45 s (2026-10-25: a stalled step made the next one quit at once)
+		-- Small batches for the menus (the bar moves, pictures come side by side); 40 for the town (batches of 5 stalled
+		-- a whole minute on 2026-10-25).
+		local size = math.clamp(math.ceil(#items / 30), 2, 40)
+		for i = 1, #items, size do table.insert(queue, table.move(items, i, math.min(i + size - 1, #items), 1, {})) end
 		local function worker()
 			running += 1
 			while #queue > 0 and os.clock() < stopAt do
@@ -124,14 +129,13 @@ local function run()
 			running -= 1
 		end
 		for _ = 1, 6 do task.spawn(worker) end
-		while (running > 0 or #queue > 0) and os.clock() < stopAt and os.clock() - heard < 15 do task.wait(0.1) end
+		while (running > 0 or #queue > 0) and os.clock() < stopAt and os.clock() - heard < 45 do task.wait(0.1) end
+		return (running > 0 or #queue > 0) and " cut" or ""
 	end
 	-- Strict order (Alan 2026-10-25): the loading screen's art (above), then every menu's, then the town.
-	preload(menuArt)
-	lap("main menu")
+	lap("main menu" .. preload(menuArt))
 	skip.Visible = true
-	preload(ui)
-	lap("menu pictures")
+	lap("menu pictures" .. preload(ui))
 	-- Menus first (docs/plan/LOAD-PLAN.md step 1): only now does the server send the town (streaming), so its files
 	-- don't queue in front of the menus'.
 	Root:WaitForChild("RoundAction"):FireServer("sendTown")
@@ -141,8 +145,7 @@ local function run()
 	collect(assets)
 	if workspace:FindFirstChild("CityRug") then collect(workspace.CityRug) end
 	total += #town
-	preload(town)
-	lap("preloaded")
+	lap("preloaded" .. preload(town))
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
