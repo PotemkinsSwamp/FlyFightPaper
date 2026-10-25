@@ -1,13 +1,14 @@
 # Since Alan last checked (2026-10-25)
-- **Smaller town pictures done and published** (half-size bump/shine, flat ones shared, fresh packs): looks the same.
-- **Your fresh-join phone test:** 44.9 s with no paper art, then 1 min 2 s more. Cause: the menu pictures queue behind
-  the whole town (sent at join), then the town is big (colour pictures the biggest part).
-- **Your plan (in order, until done):** 1) menus first: streaming, the town sent to each player after their menu is
-  up; 2) a load recorder; 3) repack the town's picture sheets (same look). `docs/plan/LOAD-PLAN.md`.
+- **Load step 1, menus first: built** (in the open Studio copy, ready to publish). The town now reaches your phone only
+  after its menu pictures are in; the menus work while the town arrives; Play / Fly / Training wait for it. Studio:
+  main menu 2.7 s, town parts 4.0 s, everything 14.2 s; matches play normally; tests 425 / 0.
+- **Load step 2, load recorder: built.** Every join saves its times, device and screen size; I read them in Studio.
+- **Step 3 (repack the town's pictures): started.** First a one-sheet test that big 2048 pictures stay sharp on Roblox.
+- Earlier today: smaller bump/shine maps published; your fresh join was 44.9 s with no paper art, then 1 min 2 s more.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: a fresh phone join takes ~1 min 47 s (45 s of it with no menu art); fix = load plan steps 1-3.
+Broken: a fresh phone join took ~1 min 47 s (45 s with no menu art); steps 1-2 built, awaiting your publish; step 3 next.
 Not yet: small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
@@ -43,7 +44,8 @@ Zone 680-840 across by building density; bots on the zone 30/60/85% (rookie/regu
 Points: fold assist share rounded to 5 (10-80); outside-zone fold 40%; paper targets 50 points each, server-checked.
 
 Waiting on Alan
-- After step 1 is built: publish, then a fresh join (delete + reinstall Roblox): menus in seconds?
+- **Publish now, then a fresh join** (delete + reinstall Roblox): do the menus show in seconds? How long until the
+  town is drawn? (Your join is recorded; no need to read /console.)
 - Then switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
 - Touch: try the stick and buttons in the Device Simulator (now on): does the stick turn too fast or slow? Buttons
