@@ -13,6 +13,7 @@ local RewardQueue=require(script.Parent.RewardQueue)
 local VoteRings=require(script.Parent.VoteRings)
 local Course=require(Root.Shared.TrainingCourse)
 local RangeStage=require(script.Parent.RangeStage)
+local LoadLog=require(script.Parent.LoadLog)
 local Loadouts=require(Root.Shared.WeaponLoadouts)
 local Schema=require(Root.Shared.ProfileSchema)
 local WALL_GRACE_SECONDS=2 -- ponytail: a fixed grace; move to config/gameplay.json if it needs tuning
@@ -39,6 +40,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
  self.action.OnServerEvent:Connect(function(player,action,value)
   if type(action)~="string" then return end
   if action=="sendTown" then self.flight:sendTown(player);return end
+  if action=="loadTimes" then LoadLog.save(player,value);return end
   if action=="mapReady" then
    if player:GetAttribute("ClassroomLoaded") then return end
    player:SetAttribute("ClassroomLoaded",true)

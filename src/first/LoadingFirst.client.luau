@@ -2,6 +2,7 @@
 -- are the first files a phone asks for, then the menus' (Alan 2026-10-25: queued behind the town's thousands of files,
 -- the loading screen showed only plain words). Loading.luau draws the screen once the game is in; its art is ready.
 local Content = game:GetService("ContentProvider")
+script.Parent:SetAttribute("FirstAt", os.clock()) -- the load times count from here (Loading.luau)
 local Art = require(script.Parent:WaitForChild("UIAssets"))
 local menu, results = Art.mainmenu, Art.results
 local first = { menu.title, results.xpCard, results.xpFill, results.xpFrame, menu.plane }

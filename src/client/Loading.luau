@@ -63,9 +63,9 @@ local function run()
 		fill.Size = UDim2.fromOffset(610 * math.clamp(fraction, 0.02, 1), 80)
 	end
 	-- Seconds spent in each step, kept on workspace (LoadTimes) so slow joins can be traced.
-	local started, times = shownAt or os.clock(), {}
+	local started, times = game.ReplicatedFirst.FlyFightPaper:GetAttribute("FirstAt") or shownAt or os.clock(), {}
 	local function lap(step) table.insert(times, string.format("%s %.1f", step, os.clock() - started)); workspace:SetAttribute("LoadTimes", table.concat(times, ", ")) end
-	lap("server ready")
+	lap("game in")
 	-- Everything the game shows, before you get in (Alan 2026-10-25: on a phone the game let him in long before the
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
@@ -136,6 +136,11 @@ local function run()
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
 	print("FlyFightPaper load times (seconds): " .. workspace:GetAttribute("LoadTimes")) -- readable on a phone: type /console in chat
+	-- The load recorder (server LoadLog): this join's times, read later in Studio.
+	local view = workspace.CurrentCamera.ViewportSize
+	Root.RoundAction:FireServer("loadTimes", { times = workspace:GetAttribute("LoadTimes"), skipped = workspace:GetAttribute("LoadSkippedAt"),
+		failures = failures, device = string.format("%s%s %dx%d", require(script.Parent.ScreenFit).kind(),
+			game:GetService("UserInputService").TouchEnabled and " touch" or "", view.X, view.Y) })
 end
 
 function Loading.run()
@@ -149,7 +154,7 @@ function Loading.run()
 		finished = true
 	end)
 	while not finished and not skipped do task.wait(0.1) end
-	if skipped and not finished then workspace:SetAttribute("LoadSkippedAt", os.clock() - shownAt) end
+	if skipped and not finished then workspace:SetAttribute("LoadSkippedAt", os.clock() - (game.ReplicatedFirst.FlyFightPaper:GetAttribute("FirstAt") or shownAt)) end
 	cover.Parent:Destroy()
 end
 

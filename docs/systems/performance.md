@@ -39,6 +39,7 @@ as before). The menus work while the town arrives; Play, Fly and Training wait f
 | `src/client/DevTools.luau` | Studio only: F8 photo viewpoints, F6 live camera, F9 performance overlay, F7 test autopilot (`DevAutopilot` routes: `loop`, `hug`; through the ceiling ducts `duct`, `fan`, `branch`) |
 | `src/shared/NativeAssets.luau` | Counts map assets so loading knows when it is done |
 | `src/client/Loading.luau` | Loading screen: menu pictures, then asks for the town; Skip once the menu is in; `Loading.town` holds Play until the town's parts are in |
+| `src/server/LoadLog.luau` | Load recorder: each join's load times and device, newest 50 kept in a DataStore; read in Studio with `require(game.ServerScriptService.FlyFightPaper.LoadLog).recent()` (Server VM, during Play) |
 | `src/first/LoadingFirst.client.luau` | Runs before the game arrives (ReplicatedFirst): asks for the loading screen's pictures and font first, then the menus' |
 | `src/client/Options.luau` | Graphics quality setting |
 | `src/server/Bootstrap.server.luau` | Server frame-time readout in Studio |

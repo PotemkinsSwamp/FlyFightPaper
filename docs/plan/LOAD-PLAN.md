@@ -86,6 +86,9 @@ Close-ups shown (3 buildings, bump/shine maps at half size): Alan said go, whole
   player's menu pictures are in (30 s fallback); menus start before the town, the rest of the game once its parts are
   in; Play/Fly/Training wait for it. Studio Play: main menu 2.7 s, town parts in 4.0 s, all pictures 14.2 s; no
   errors; joined a match with 12 planes, the town drawn; 425 / 0 tests. Next: Alan publishes, fresh phone join.
+- 2026-10-25 (load step 2, load recorder): built. Times now count from the first script on the phone (ReplicatedFirst);
+  each join sends them with its device kind and screen size, the server keeps the newest 50 (`LoadLog`). Studio test:
+  the join appeared with its numbers. Check left: Alan's published join shows up.
 
 ## Cost
 Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan's ChatGPT plan, free uploads, about
