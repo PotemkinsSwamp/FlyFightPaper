@@ -1,0 +1,106 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "13-toy-brick-trims-and-join-tape-1",
+        "15-toy-brick-trims-and-join-tape-3",
+        "16-toy-brick-trims-and-join-tape-4",
+        "17-corrugated-top-box-cut-edges-1",
+        "2-left-stand-box-2",
+        "21-corrugated-top-box-cut-edges-5",
+        "3-left-stand-box-3",
+        "5-right-stand-box-2",
+        "6-right-stand-box-3"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.530478,
+      "padded_coverage": 0.913333,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    },
+    {
+      "name": "sheet-2",
+      "pieces": [
+        "14-toy-brick-trims-and-join-tape-2",
+        "18-corrugated-top-box-cut-edges-2",
+        "19-corrugated-top-box-cut-edges-3",
+        "20-corrugated-top-box-cut-edges-4"
+      ],
+      "width": 2048,
+      "height": 1024,
+      "coverage": 0.297256,
+      "padded_coverage": 0.912522,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "1-left-stand-box-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "4-right-stand-box-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "7-top-box-bottom-left",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "11-top-box-left-wing",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "9-top-box-bottom-right",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "12-top-box-right-wing",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "10-top-box-lid-right",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "8-top-box-lid-left",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 21,
+    "files": 63,
+    "pixels": 66060288
+  },
+  "new": {
+    "sheets": 10,
+    "files": 30,
+    "pixels": 44040192
+  },
+  "repacked": {
+    "sheets": 2,
+    "files": 6,
+    "pixels": 18874368
+  },
+  "retained": {
+    "sheets": 8,
+    "files": 24,
+    "pixels": 25165824
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

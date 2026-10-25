@@ -1,0 +1,70 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "1-ground-floor-front-left",
+        "2-ground-floor-front-right",
+        "7-roof",
+        "8-topper"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.60743,
+      "padded_coverage": 0.747227,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    },
+    {
+      "name": "sheet-2",
+      "pieces": [
+        "3-ground-floor-back-left",
+        "4-ground-floor-back-right",
+        "5-upper-walls-front",
+        "6-upper-walls-back"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.687951,
+      "padded_coverage": 0.811702,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    }
+  ],
+  "skipped": [],
+  "old": {
+    "sheets": 8,
+    "files": 32,
+    "pixels": 33554432
+  },
+  "new": {
+    "sheets": 2,
+    "files": 8,
+    "pixels": 33554432
+  },
+  "repacked": {
+    "sheets": 2,
+    "files": 8,
+    "pixels": 33554432
+  },
+  "retained": {
+    "sheets": 0,
+    "files": 0,
+    "pixels": 0
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

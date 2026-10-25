@@ -1,0 +1,110 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "1-ground-floor-front-left",
+        "10-roof-front-right",
+        "2-ground-floor-front-right",
+        "5-upper-walls-front-left"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.550605,
+      "padded_coverage": 0.689329,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    },
+    {
+      "name": "sheet-2",
+      "pieces": [
+        "11-roof-back-left",
+        "12-roof-back-right",
+        "3-ground-floor-back-left",
+        "7-upper-walls-back-left"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.433222,
+      "padded_coverage": 0.540099,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    },
+    {
+      "name": "sheet-3",
+      "pieces": [
+        "13-topper-front-left",
+        "4-ground-floor-back-right",
+        "8-upper-walls-back-right",
+        "9-roof-front-left"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.5717,
+      "padded_coverage": 0.711851,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    },
+    {
+      "name": "sheet-4",
+      "pieces": [
+        "14-topper-front-right",
+        "15-topper-back-left",
+        "16-topper-back-right",
+        "6-upper-walls-front-right"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.597458,
+      "padded_coverage": 0.797552,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    }
+  ],
+  "skipped": [],
+  "old": {
+    "sheets": 16,
+    "files": 64,
+    "pixels": 67108864
+  },
+  "new": {
+    "sheets": 4,
+    "files": 16,
+    "pixels": 67108864
+  },
+  "repacked": {
+    "sheets": 4,
+    "files": 16,
+    "pixels": 67108864
+  },
+  "retained": {
+    "sheets": 0,
+    "files": 0,
+    "pixels": 0
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

@@ -1,0 +1,68 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "4-crossed-log-courses-4",
+        "6-individual-log-gable-courses"
+      ],
+      "width": 2048,
+      "height": 1024,
+      "coverage": 0.396263,
+      "padded_coverage": 0.482273,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "7-two-cardboard-roof-slopes-and-cut-edges",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "1-crossed-log-courses-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "5-framed-windows-door-and-steps",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "2-crossed-log-courses-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "3-crossed-log-courses-3",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 7,
+    "files": 21,
+    "pixels": 22020096
+  },
+  "new": {
+    "sheets": 6,
+    "files": 18,
+    "pixels": 22020096
+  },
+  "repacked": {
+    "sheets": 1,
+    "files": 3,
+    "pixels": 6291456
+  },
+  "retained": {
+    "sheets": 5,
+    "files": 15,
+    "pixels": 15728640
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

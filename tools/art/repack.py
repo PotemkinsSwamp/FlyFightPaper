@@ -3,6 +3,7 @@
 D:/Blender/blender.exe -b --python tools/art/repack.py -- assets/models/clock-tower --sheet 2048 --check
 Use --out repacked-1024 for a second pilot. Requires numpy in Blender and a
 system Python with numpy, Pillow and scipy (override with --image-python).
+--sheet is the maximum dimension; each atlas uses the smallest fitting format.
 Only the chosen building's repacked* output directory is written.
 """
 
@@ -21,6 +22,7 @@ import numpy as np
 OLD_SIZE = 1024
 PAD = 4
 CHANNELS = ("color", "normal", "roughness", "metalness")
+FORMATS = ((512, 512), (1024, 512), (1024, 1024), (2048, 1024), (2048, 2048))
 
 
 def require(condition, message):
@@ -262,45 +264,152 @@ def rectangle_place(free, island):
 
 
 def pack(pieces, size):
-    sheets = []
-    for piece in sorted(pieces, key=lambda p: (-sum(i["padded_area"] for i in p["islands"]), p["stem"])):
-        for index in range(len(sheets) + 1):
-            group = sheets[index]["pieces"] + [piece] if index < len(sheets) else [piece]
-            if sum(i["padded_area"] for p in group for i in p["islands"]) > size ** 2:
-                continue
-            # Retry the whole sheet in size order so a late piece's large
-            # islands are not stranded behind earlier pieces' tiny ones.
-            ordered = sorted([i for p in group for i in p["islands"]],
-                             key=lambda i: (-max(i["w"], i["h"]), -i["w"] * i["h"], i["id"]))
-            free = [(0, 0, size, size)]
-            board = np.zeros((size, size), dtype=bool)
-            placements = []
-            for island in ordered:
-                where = rectangle_place(free, island)
+    """Fill large sheets first, then minimize texels, with originals as a fallback.
+
+    Trials never move committed islands. Cached trials let shrinking, splitting
+    and regrouping use the same exact padding tests without repeating work.
+    """
+    formats = [d for d in FORMATS if max(d) <= size]
+    cache, best_cache = {}, {}
+
+    def layout(group, dimensions):
+        group = sorted(group, key=lambda p: p["stem"])
+        key = (tuple(p["stem"] for p in group), dimensions)
+        if key in cache:
+            return cache[key]
+        width, height = dimensions
+        ordered = sorted([i for p in group for i in p["islands"]],
+                         key=lambda i: (-max(i["w"], i["h"]), -i["w"] * i["h"], i["id"]))
+        cache[key] = None
+        if (sum(i["padded_area"] for i in ordered) > width * height or
+                any(i["w"] > width or i["h"] > height for i in ordered)):
+            return None
+        free = [(0, 0, width, height)]
+        board = np.zeros((height, width), dtype=bool)
+        placements = []
+        for island in ordered:
+            where = rectangle_place(free, island)
+            if where is None:
+                where = shape_place(board, island["padded"])
                 if where is None:
-                    where = shape_place(board, island["padded"])
-                    if where is None:
-                        log(f"Sheet trial full at {board.mean():.1%}, {len(placements)}/{len(ordered)} islands")
-                        break
-                    carve(free, *where, island["w"], island["h"])
-                x, y = where
-                board[y:y + island["h"], x:x + island["w"]] |= island["padded"]
-                placements.append((island, where))
-            else:
-                if index == len(sheets):
-                    sheets.append({"free": [], "pieces": []})
-                sheet = sheets[index]
-                sheet["free"] = free
-                sheet["board"] = board
-                sheet["pieces"] = group
-                piece["sheet"] = index
-                for island, where in placements:
-                    island["where"] = where
+                    break
+                carve(free, *where, island["w"], island["h"])
+            x, y = where
+            board[y:y + island["h"], x:x + island["w"]] |= island["padded"]
+            placements.append((island, where))
+        else:
+            cache[key] = {"pieces": group, "width": width, "height": height, "placements": placements}
+        # A regular grid is a useful fallback for a pair/four of already fitting
+        # pieces. It also avoids blaming a greedy packing failure on geometry.
+        if cache[key] is None and len(group) > 1:
+            for cell in (512, 1024):
+                columns, rows = width // cell, height // cell
+                if not columns or len(group) > columns * rows or (cell, cell) == dimensions:
+                    continue
+                tiles = [layout([p], (cell, cell)) for p in group]
+                if all(t is not None for t in tiles):
+                    placements = [(island, [x + n % columns * cell, y + n // columns * cell])
+                                  for n, tile in enumerate(tiles) for island, (x, y) in tile["placements"]]
+                    cache[key] = {"pieces": group, "width": width, "height": height, "placements": placements}
+                    break
+        return cache[key]
+
+    def best(group):
+        key = tuple(sorted(p["stem"] for p in group))
+        if key not in best_cache:
+            best_cache[key] = next((s for d in formats if (s := layout(group, d)) is not None), None)
+        return best_cache[key]
+
+    def score(sheets, kept=()):
+        # Count per-map texels, including a metalness sheet when ANY member has
+        # one. Retained pieces keep paying for their original 1024 maps.
+        return (sum(s["width"] * s["height"] * (3 + any(p["metal"] for p in s["pieces"])) for s in sheets)
+                + sum(OLD_SIZE ** 2 * (3 + p["metal"]) for p in kept),
+                sum(3 + any(p["metal"] for p in s["pieces"]) for s in sheets)
+                + sum(3 + p["metal"] for p in kept), len(kept))
+
+    initial, skipped = [], []
+    for piece in sorted(pieces, key=lambda p: (-sum(i["padded_area"] for i in p["islands"]), p["stem"])):
+        for index in range(len(initial) + 1):
+            group = initial[index]["pieces"] + [piece] if index < len(initial) else [piece]
+            sheet = layout(group, (size, size))
+            if sheet is not None:
+                if index == len(initial):
+                    initial.append(sheet)
+                else:
+                    initial[index] = sheet
                 break
         else:
-            raise RuntimeError(f"{piece['stem']}: cannot fit on {size}px without changing pixels or padding")
-        log(f"Packed {piece['stem']} on sheet-{piece['sheet'] + 1}")
-    return sheets
+            smaller = best([piece])
+            if smaller is not None:
+                initial.append(smaller)
+                continue
+            skipped.append({"piece": piece["stem"], "reason":
+                            f"Packing search could not fit this piece on any allowed sheet up to {size}x{size} with unchanged pixels and 4 px padding"})
+            log("SKIP " + piece["stem"] + ": cannot fit with unchanged pixels/padding")
+
+    sheets, retained = [], []
+    for full in initial:
+        group = sorted(full["pieces"], key=lambda p: (-sum(i["padded_area"] for i in p["islands"]), p["stem"]))
+        # Minimum-cost contiguous partitions of this greedy group. Keeping one
+        # piece's originals is always available, so memory can never grow.
+        plans = [([], [])]
+        for end in range(1, len(group) + 1):
+            prev, kept = plans[end - 1]
+            options = [(prev, kept + [group[end - 1]])]
+            for start in range(end):
+                candidate = best(group[start:end])
+                if candidate is not None:
+                    before, originals = plans[start]
+                    options.append((before + [candidate], originals))
+            plans.append(min(options, key=lambda plan: score(*plan)))
+        chosen, originals = plans[-1]
+        sheets.extend(chosen)
+        retained.extend(originals)
+
+    # Cross former sheet boundaries when a merge saves memory or texture files.
+    # A strictly improving score makes the loop finite and prevents shuffling.
+    while True:
+        improvement = None
+        for a in range(len(sheets)):
+            for b in range(a + 1, len(sheets)):
+                combined = best(sheets[a]["pieces"] + sheets[b]["pieces"])
+                if combined is not None and score([combined]) < score([sheets[a], sheets[b]]):
+                    improvement = (a, b, combined)
+                    break
+            if improvement:
+                break
+        if improvement is None:
+            for piece in list(retained):
+                for index, sheet in enumerate(sheets):
+                    combined = best(sheet["pieces"] + [piece])
+                    if combined is not None and score([combined]) < score([sheet], [piece]):
+                        sheets[index] = combined
+                        retained.remove(piece)
+                        improvement = "absorbed"
+                        break
+                if improvement:
+                    break
+        if improvement is None:
+            break
+        if improvement == "absorbed":
+            continue
+        a, b, combined = improvement
+        sheets[a] = combined
+        del sheets[b]
+    for piece in retained:
+        skipped.append({"piece": piece["stem"], "reason":
+                        "Kept original maps to keep this building within its original texel budget"})
+        log("SKIP " + piece["stem"] + ": keeping originals avoids extra texels")
+    # Large sheets first leaves the smallest sheet at the end of the building.
+    sheets.sort(key=lambda s: (-s["width"] * s["height"], tuple(p["stem"] for p in s["pieces"])))
+    for index, sheet in enumerate(sheets):
+        for piece in sheet["pieces"]:
+            piece["sheet"] = index
+        for island, where in sheet["placements"]:
+            island["where"] = where
+        log(f"Packed {len(sheet['pieces'])} pieces on sheet-{index + 1} ({sheet['width']}x{sheet['height']})")
+    return sheets, skipped
 
 
 def read_map(path):
@@ -311,13 +420,14 @@ def read_map(path):
         return np.array(im)[::-1].copy(), im.mode
 
 
-def make_sheets(sheets, size, parts, output):
+def make_sheets(sheets, parts, output):
     from PIL import Image
     from scipy import ndimage
     report, thumbs = [], []
     for number, sheet in enumerate(sheets, 1):
         name = f"sheet-{number}"
-        occupied = np.zeros((size, size), dtype=bool)
+        width, height = sheet["width"], sheet["height"]
+        occupied = np.zeros((height, width), dtype=bool)
         surface = np.zeros_like(occupied)
         maps = {c: [] for c in CHANNELS}
         for piece in sheet["pieces"]:
@@ -327,7 +437,7 @@ def make_sheets(sheets, size, parts, output):
             for island in piece["islands"]:
                 x, y = island["where"]
                 w, h = island["w"], island["h"]
-                require(0 <= x <= size - w and 0 <= y <= size - h, "Padding outside sheet")
+                require(0 <= x <= width - w and 0 <= y <= height - h, "Padding outside sheet")
                 region = occupied[y:y + h, x:x + w]
                 require(not (region & island["padded"]).any(), "Padded masks overlap")
                 region |= island["padded"]
@@ -344,7 +454,7 @@ def make_sheets(sheets, size, parts, output):
             rgb = any(m[1] in ("RGB", "RGBA") for m in present) or channel in ("color", "normal")
             mode = ("RGBA" if alpha else "RGB") if rgb else ("LA" if alpha else "L")
             channels = len(mode) if mode != "L" else 1
-            canvas = np.zeros((size, size, channels), dtype=np.uint8)
+            canvas = np.zeros((height, width, channels), dtype=np.uint8)
             for piece, data in zip(sheet["pieces"], maps[channel]):
                 if data is None:
                     # Absent SurfaceAppearance MetalnessMap means non-metal.
@@ -392,6 +502,7 @@ def make_sheets(sheets, size, parts, output):
                 thumbs.append(thumb.copy())
                 thumb.close()
         report.append({"name": name, "pieces": [p["stem"] for p in sheet["pieces"]],
+                       "width": width, "height": height,
                        "coverage": round(float(surface.mean()), 6),
                        "padded_coverage": round(float(occupied.mean()), 6),
                        "maps": written, "metalness": "present" if "metalness" in written else "absent"})
@@ -410,7 +521,7 @@ def image_worker(job_path):
     for stem in job["pieces"]:
         with np.load(scratch / f"{stem}.npz") as data:
             uv, loops, ids = data["uv"], data["loops"], data["islands"]
-        piece = {"stem": stem, "islands": []}
+        piece = {"stem": stem, "islands": [], "metal": (parts / f"{stem}-metalness.png").exists()}
         tri_ids = ids[loops[:, 0]]
         for i in range(int(ids.max()) + 1):
             island = raster_island(uv[loops[tri_ids == i]])
@@ -419,15 +530,17 @@ def image_worker(job_path):
         log(f"Read {stem}: {len(piece['islands'])} islands, "
             f"{sum(i['padded_area'] for i in piece['islands']) / OLD_SIZE ** 2:.1%} padded area")
         pieces.append(piece)
-    sheets = pack(pieces, job["size"])
-    report = make_sheets(sheets, job["size"], parts, output)
+    sheets, skipped = pack(pieces, job["size"])
+    report = make_sheets(sheets, parts, output)
+    included = [p for s in sheets for p in s["pieces"]]
     placements = {p["stem"]: {"sheet": p["sheet"], "offsets": [
-        (np.asarray(i["where"]) - i["low"]).tolist() for i in sorted(p["islands"], key=lambda i: i["id"])]}
-        for p in pieces}
-    (scratch / "packing.json").write_text(json.dumps({"placements": placements, "sheets": report}))
+        (np.asarray(i["where"]) - i["low"]).tolist() for i in sorted(p["islands"], key=lambda i: i["id"])],
+        "width": sheets[p["sheet"]]["width"], "height": sheets[p["sheet"]]["height"]}
+        for p in included}
+    (scratch / "packing.json").write_text(json.dumps({"placements": placements, "sheets": report, "skipped": skipped}))
 
 
-def compare_piece(old, new, ids, offsets, size, stem):
+def compare_piece(old, new, ids, offsets, dimensions, stem):
     for key in ("triangles", "loops"):
         require(np.array_equal(old[key], new[key]), f"{stem}: changed triangle/loop order")
     for key in ("positions", "normals", "matrix"):
@@ -435,7 +548,7 @@ def compare_piece(old, new, ids, offsets, size, stem):
                 f"{stem}: changed {key}")
     require(np.isfinite(new["uv"]).all() and (new["uv"] >= 0).all() and (new["uv"] <= 1).all(),
             f"{stem}: new UV outside [0,1]")
-    delta = new["uv"] * size - old["uv"] * OLD_SIZE
+    delta = new["uv"] * dimensions - old["uv"] * OLD_SIZE
     require(np.max(abs(delta - np.asarray(offsets)[ids])) < .0003,
             f"{stem}: UV change is not the planned integer translation")
 
@@ -445,10 +558,10 @@ def pixel_checks(job_path):
     job = json.loads(job_path.read_text())
     scratch, parts, output = (Path(job[k]) for k in ("scratch", "parts", "output"))
     plan = json.loads((scratch / "packing.json").read_text())
-    size = job["size"]
     rng = np.random.default_rng(20261025)
     count = 0
     for stem, placement in plan["placements"].items():
+        dimensions = np.array([placement["width"], placement["height"]])
         with np.load(scratch / f"{stem}.npz") as data:
             uv, loops, ids, vertices, triangles = [data[k] for k in ("uv", "loops", "islands", "positions", "triangles")]
         with np.load(scratch / f"{stem}-checked.npz") as data:
@@ -463,7 +576,7 @@ def pixel_checks(job_path):
         old_points = np.einsum("ij,ijk->ik", bary, uv[loops[chosen]])
         new_points = np.einsum("ij,ijk->ik", bary, new_uv[loops[chosen]])
         ox, oy = np.floor(old_points * OLD_SIZE).astype(int).clip(0, OLD_SIZE - 1).T
-        nx, ny = np.floor(new_points * size).astype(int).clip(0, size - 1).T
+        nx, ny = np.minimum(np.maximum(np.floor(new_points * dimensions).astype(int), 0), dimensions - 1).T
         tri_ids = ids[loops[:, 0]]
         masks = [raster_island(uv[loops[tri_ids == i]]) for i in range(len(placement["offsets"]))]
         for channel in CHANNELS:
@@ -474,6 +587,7 @@ def pixel_checks(job_path):
                 require(source is None and channel == "metalness", "Missing output map")
                 continue
             with Image.open(sheet_path) as im:
+                require(im.size == tuple(dimensions), f"{stem}: incorrect sheet dimensions")
                 target_mode = im.mode
                 target = np.array(im)[::-1]
             if source is not None:
@@ -521,10 +635,12 @@ def main():
                 "Output contains unrelated files; choose a different --out directory")
     sources = sorted(parts.glob("*.fbx"), key=lambda p: (int(p.stem.split("-", 1)[0]), p.name))
     require(sources, "No numbered piece FBXs in parts/")
-    skipped = [p.stem for p in sources if list(parts.glob(p.stem + "-color-*.png"))]
-    sources = [p for p in sources if p.stem not in skipped]
+    originals = list(sources)
+    skipped = [{"piece": p.stem, "reason": "Color variant files; original maps retained"}
+               for p in sources if list(parts.glob(p.stem + "-color-*.png"))]
+    sources = [p for p in sources if p.stem not in {s["piece"] for s in skipped}]
     if skipped:
-        log("Skipped color variants: " + ", ".join(skipped))
+        log("Skipped color variants: " + ", ".join(s["piece"] for s in skipped))
     for source in sources:
         for channel in CHANNELS[:3]:
             require((parts / f"{source.stem}-{channel}.png").is_file(), f"Missing {source.stem}-{channel}.png")
@@ -553,11 +669,14 @@ def main():
 
         worker("--pack-worker")
         packing = json.loads((scratch / "packing.json").read_text())
+        skipped.extend(packing["skipped"])
+        sources = [p for p in sources if p.stem in packing["placements"]]
         for source in sources:
             obj = import_piece(source)
             with np.load(scratch / f"{source.stem}.npz") as data:
-                offsets = packing["placements"][source.stem]["offsets"]
-                uv = (data["uv"] * OLD_SIZE + np.asarray(offsets)[data["islands"]]) / args.sheet
+                placement = packing["placements"][source.stem]
+                dimensions = np.array([placement["width"], placement["height"]])
+                uv = (data["uv"] * OLD_SIZE + np.asarray(placement["offsets"])[data["islands"]]) / dimensions
             obj.data.uv_layers.active.data.foreach_set("uv", uv.ravel())
             export_uv_only(obj, source, output / source.name, scratch, uv)
         if args.check:
@@ -566,21 +685,37 @@ def main():
                 new = mesh_data(import_piece(output / source.name))
                 with np.load(scratch / f"{source.stem}.npz") as data:
                     ids = data["islands"]
-                compare_piece(old, new, ids, packing["placements"][source.stem]["offsets"], args.sheet, source.stem)
+                placement = packing["placements"][source.stem]
+                dimensions = np.array([placement["width"], placement["height"]])
+                compare_piece(old, new, ids, placement["offsets"], dimensions, source.stem)
                 old_uv, new_uv = file_uv(source), file_uv(output / source.name)
-                delta = new_uv * args.sheet - old_uv * OLD_SIZE
+                delta = new_uv * dimensions - old_uv * OLD_SIZE
                 require(np.max(abs(delta - np.asarray(packing["placements"][source.stem]["offsets"])[ids])) < 1e-10,
                         f"{source.name}: saved UVs lost integer-texel precision")
                 np.savez(scratch / f"{source.stem}-checked.npz", uv=new_uv)
             worker("--check-worker")
-        old_files = sum((parts / f"{p.stem}-{c}.png").is_file() for p in sources for c in CHANNELS)
+        def map_count(paths):
+            return sum((parts / f"{p.stem}-{c}.png").is_file() or
+                       c == "color" and bool(list(parts.glob(p.stem + "-color-*.png")))
+                       for p in paths for c in CHANNELS)
+
+        old_files = map_count(originals)
+        retained = [p for p in originals if p.stem not in packing["placements"]]
+        retained_files = map_count(retained)
         new_files = sum(len(s["maps"]) for s in packing["sheets"])
+        new_pixels = sum(len(s["maps"]) * s["width"] * s["height"] for s in packing["sheets"])
         report = {"sheet_size": args.sheet, "sheets": packing["sheets"], "skipped": skipped,
-                  "old": {"sheets": len(sources), "files": old_files, "pixels": old_files * OLD_SIZE ** 2},
-                  "new": {"sheets": len(packing["sheets"]), "files": new_files, "pixels": new_files * args.sheet ** 2},
-                  "counts_note": "Texture PNG files and texels only; FBXs, contact preview and skipped pieces excluded.",
+                  "old": {"sheets": len(originals), "files": old_files, "pixels": old_files * OLD_SIZE ** 2},
+                  "new": {"sheets": len(packing["sheets"]) + len(retained), "files": new_files + retained_files,
+                          "pixels": new_pixels + retained_files * OLD_SIZE ** 2},
+                  "repacked": {"sheets": len(packing["sheets"]), "files": new_files, "pixels": new_pixels},
+                  "retained": {"sheets": len(retained), "files": retained_files, "pixels": retained_files * OLD_SIZE ** 2},
+                  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
                   "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
                   "check": "PASS" if args.check else "not run"}
+        report["texel_increase"] = max(0, report["new"]["pixels"] - report["old"]["pixels"])
+        if report["texel_increase"]:
+            log(f"WARNING: {folder.name} exceeds its old texel total by {report['texel_increase']}")
         (output / "repack.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
         expected = {"contact.png", "repack.json"} | {p.name for p in sources} | {
             f"{s['name']}-{c}.png" for s in packing["sheets"] for c in s["maps"]}

@@ -1,0 +1,104 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "15-left-open-metal-ring",
+        "16-right-open-metal-ring"
+      ],
+      "width": 2048,
+      "height": 1024,
+      "coverage": 0.258886,
+      "padded_coverage": 0.357189,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "8-standing-binder-band-3-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "5-standing-binder-band-2-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "2-standing-binder-band-1-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "11-standing-binder-band-4-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "9-standing-binder-band-3-3",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "13-binder-roof-left",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "12-standing-binder-band-4-3",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "14-binder-roof-right",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "3-standing-binder-band-1-3",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "1-standing-binder-band-1-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "6-standing-binder-band-2-3",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "7-standing-binder-band-3-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "4-standing-binder-band-2-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "10-standing-binder-band-4-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 16,
+    "files": 48,
+    "pixels": 50331648
+  },
+  "new": {
+    "sheets": 15,
+    "files": 45,
+    "pixels": 50331648
+  },
+  "repacked": {
+    "sheets": 1,
+    "files": 3,
+    "pixels": 6291456
+  },
+  "retained": {
+    "sheets": 14,
+    "files": 42,
+    "pixels": 44040192
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

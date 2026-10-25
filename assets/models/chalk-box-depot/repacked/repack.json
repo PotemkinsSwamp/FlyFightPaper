@@ -1,0 +1,61 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "2-box-and-base-2",
+        "3-six-round-chalk-columns",
+        "5-open-chalk-roof-tray-2"
+      ],
+      "width": 1024,
+      "height": 1024,
+      "coverage": 0.29052,
+      "padded_coverage": 0.7654,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "1-box-and-base-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "4-open-chalk-roof-tray-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "6-windows-double-door-and-step",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 6,
+    "files": 18,
+    "pixels": 18874368
+  },
+  "new": {
+    "sheets": 4,
+    "files": 12,
+    "pixels": 12582912
+  },
+  "repacked": {
+    "sheets": 1,
+    "files": 3,
+    "pixels": 3145728
+  },
+  "retained": {
+    "sheets": 3,
+    "files": 9,
+    "pixels": 9437184
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

@@ -1,0 +1,107 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "1-ground-floor-front-left",
+        "10-roof-front-right",
+        "11-roof-back-left",
+        "2-ground-floor-front-right"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.584589,
+      "padded_coverage": 0.717399,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    },
+    {
+      "name": "sheet-2",
+      "pieces": [
+        "12-roof-back-right",
+        "5-upper-walls-front-left",
+        "6-upper-walls-front-right",
+        "9-roof-front-left"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.570758,
+      "padded_coverage": 0.664973,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    },
+    {
+      "name": "sheet-3",
+      "pieces": [
+        "13-topper-front-left",
+        "14-topper-front-right",
+        "15-topper-back-left",
+        "16-topper-back-right"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.589389,
+      "padded_coverage": 0.770756,
+      "maps": [
+        "color",
+        "normal",
+        "roughness",
+        "metalness"
+      ],
+      "metalness": "present"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "4-ground-floor-back-right",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "3-ground-floor-back-left",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "7-upper-walls-back-left",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "8-upper-walls-back-right",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 16,
+    "files": 64,
+    "pixels": 67108864
+  },
+  "new": {
+    "sheets": 7,
+    "files": 28,
+    "pixels": 67108864
+  },
+  "repacked": {
+    "sheets": 3,
+    "files": 12,
+    "pixels": 50331648
+  },
+  "retained": {
+    "sheets": 4,
+    "files": 16,
+    "pixels": 16777216
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

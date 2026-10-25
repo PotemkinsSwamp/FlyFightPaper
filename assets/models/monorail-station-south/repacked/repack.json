@@ -1,0 +1,157 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "1-left-toy-leg-course-1-1",
+        "24-rolled-tin-rim-82-2",
+        "26-rolled-tin-rim-143.3-2",
+        "27-rolled-tin-rim-149.2-1",
+        "28-rolled-tin-rim-149.2-2",
+        "30-front-open-long-window--52",
+        "31-front-open-long-window-0",
+        "32-front-open-long-window-52",
+        "33-back-open-long-window--52",
+        "34-back-open-long-window-0",
+        "36-real-hinges-and-closing-clasps"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.649454,
+      "padded_coverage": 0.869131,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    },
+    {
+      "name": "sheet-2",
+      "pieces": [
+        "10-right-toy-leg-course-1-2",
+        "14-right-toy-leg-course-4",
+        "2-left-toy-leg-course-1-2",
+        "4-left-toy-leg-course-2"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.730504,
+      "padded_coverage": 0.793691,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    },
+    {
+      "name": "sheet-3",
+      "pieces": [
+        "11-right-toy-leg-course-1-3",
+        "19-rounded-bottom-tin-rim-1",
+        "3-left-toy-leg-course-1-3",
+        "35-back-open-long-window-52",
+        "7-left-toy-leg-course-5",
+        "9-right-toy-leg-course-1-1"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.786566,
+      "padded_coverage": 0.902943,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "29-metal-lined-open-track-tunnel",
+      "reason": "Packing search could not fit this piece on any allowed sheet up to 2048x2048 with unchanged pixels and 4 px padding"
+    },
+    {
+      "piece": "18-rounded-red-lunch-tin-half-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "17-rounded-red-lunch-tin-half-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "16-right-toy-leg-course-6",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "21-deep-lunch-tin-lid-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "8-left-toy-leg-course-6",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "15-right-toy-leg-course-5",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "22-deep-lunch-tin-lid-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "12-right-toy-leg-course-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "13-right-toy-leg-course-3",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "20-rounded-bottom-tin-rim-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "5-left-toy-leg-course-3",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "6-left-toy-leg-course-4",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "23-rolled-tin-rim-82-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "25-rolled-tin-rim-143.3-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 36,
+    "files": 108,
+    "pixels": 113246208
+  },
+  "new": {
+    "sheets": 18,
+    "files": 54,
+    "pixels": 84934656
+  },
+  "repacked": {
+    "sheets": 3,
+    "files": 9,
+    "pixels": 37748736
+  },
+  "retained": {
+    "sheets": 15,
+    "files": 45,
+    "pixels": 47185920
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

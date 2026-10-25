@@ -1,0 +1,58 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "3-curved-wood-arch-sector-1",
+        "4-curved-wood-arch-sector-2",
+        "5-curved-wood-arch-sector-3",
+        "6-curved-wood-arch-sector-4"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.636464,
+      "padded_coverage": 0.672047,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "2-red-block-pier",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "1-blue-block-pier",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 6,
+    "files": 18,
+    "pixels": 18874368
+  },
+  "new": {
+    "sheets": 3,
+    "files": 9,
+    "pixels": 18874368
+  },
+  "repacked": {
+    "sheets": 1,
+    "files": 3,
+    "pixels": 12582912
+  },
+  "retained": {
+    "sheets": 2,
+    "files": 6,
+    "pixels": 6291456
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

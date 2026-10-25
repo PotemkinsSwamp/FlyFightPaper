@@ -1,0 +1,66 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "1-upright-tin-band-1-1",
+        "3-upright-tin-band-2-1",
+        "4-upright-tin-band-2-2",
+        "8-half-open-canopy-and-real-hinge-2"
+      ],
+      "width": 2048,
+      "height": 2048,
+      "coverage": 0.828685,
+      "padded_coverage": 0.950127,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "5-upright-tin-band-3-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "7-half-open-canopy-and-real-hinge-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "2-upright-tin-band-1-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "6-upright-tin-band-3-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 8,
+    "files": 24,
+    "pixels": 25165824
+  },
+  "new": {
+    "sheets": 5,
+    "files": 15,
+    "pixels": 25165824
+  },
+  "repacked": {
+    "sheets": 1,
+    "files": 3,
+    "pixels": 12582912
+  },
+  "retained": {
+    "sheets": 4,
+    "files": 12,
+    "pixels": 12582912
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

@@ -1,0 +1,54 @@
+{
+  "sheet_size": 2048,
+  "sheets": [],
+  "skipped": [
+    {
+      "piece": "1-yellow-ground-pad",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "5-orange-pad",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "4-green-pad",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "6-yellow-roof-pad",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "3-blue-pad",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "2-pink-pad",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 6,
+    "files": 18,
+    "pixels": 18874368
+  },
+  "new": {
+    "sheets": 6,
+    "files": 18,
+    "pixels": 18874368
+  },
+  "repacked": {
+    "sheets": 0,
+    "files": 0,
+    "pixels": 0
+  },
+  "retained": {
+    "sheets": 6,
+    "files": 18,
+    "pixels": 18874368
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

@@ -1,0 +1,81 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "6-upper-box-1-2",
+        "8-upper-box-2-2"
+      ],
+      "width": 2048,
+      "height": 1024,
+      "coverage": 0.375992,
+      "padded_coverage": 0.746586,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    },
+    {
+      "name": "sheet-2",
+      "pieces": [
+        "2-lower-cardboard-room-and-toy-feet-2",
+        "3-lower-cardboard-room-and-toy-feet-3"
+      ],
+      "width": 1024,
+      "height": 1024,
+      "coverage": 0.550665,
+      "padded_coverage": 0.954325,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "1-lower-cardboard-room-and-toy-feet-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "4-four-rulers-with-plain-ticks",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "5-upper-box-1-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "7-upper-box-2-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 8,
+    "files": 24,
+    "pixels": 25165824
+  },
+  "new": {
+    "sheets": 6,
+    "files": 18,
+    "pixels": 22020096
+  },
+  "repacked": {
+    "sheets": 2,
+    "files": 6,
+    "pixels": 9437184
+  },
+  "retained": {
+    "sheets": 4,
+    "files": 12,
+    "pixels": 12582912
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

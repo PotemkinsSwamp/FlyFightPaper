@@ -1,0 +1,63 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "5-inverted-cup-5"
+      ],
+      "width": 1024,
+      "height": 1024,
+      "coverage": 0.557591,
+      "padded_coverage": 0.733029,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "1-inverted-cup-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "4-inverted-cup-4",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "2-inverted-cup-2",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "3-inverted-cup-3",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 5,
+    "files": 15,
+    "pixels": 15728640
+  },
+  "new": {
+    "sheets": 5,
+    "files": 15,
+    "pixels": 15728640
+  },
+  "repacked": {
+    "sheets": 1,
+    "files": 3,
+    "pixels": 3145728
+  },
+  "retained": {
+    "sheets": 4,
+    "files": 12,
+    "pixels": 12582912
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}

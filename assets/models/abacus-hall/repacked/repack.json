@@ -1,0 +1,59 @@
+{
+  "sheet_size": 2048,
+  "sheets": [
+    {
+      "name": "sheet-1",
+      "pieces": [
+        "2-left-house-2",
+        "4-right-house-2",
+        "5-open-wood-abacus-frame",
+        "6-painted-counting-beads-1",
+        "7-painted-counting-beads-2"
+      ],
+      "width": 2048,
+      "height": 1024,
+      "coverage": 0.580595,
+      "padded_coverage": 0.811163,
+      "maps": [
+        "color",
+        "normal",
+        "roughness"
+      ],
+      "metalness": "absent"
+    }
+  ],
+  "skipped": [
+    {
+      "piece": "1-left-house-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    },
+    {
+      "piece": "3-right-house-1",
+      "reason": "Kept original maps to keep this building within its original texel budget"
+    }
+  ],
+  "old": {
+    "sheets": 7,
+    "files": 21,
+    "pixels": 22020096
+  },
+  "new": {
+    "sheets": 3,
+    "files": 9,
+    "pixels": 12582912
+  },
+  "repacked": {
+    "sheets": 1,
+    "files": 3,
+    "pixels": 6291456
+  },
+  "retained": {
+    "sheets": 2,
+    "files": 6,
+    "pixels": 6291456
+  },
+  "counts_note": "Texture files/texels only. Old/new include unchanged skipped pieces; repacked counts generated PNGs only. FBXs and contact preview excluded.",
+  "uv_precision_note": "Saved FBX doubles checked exactly; Blender float32 re-import checked within 0.0003 texel. Samples use the saved FBX UVs.",
+  "check": "PASS",
+  "texel_increase": 0
+}
