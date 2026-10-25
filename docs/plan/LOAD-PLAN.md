@@ -47,13 +47,19 @@ first.
 - Done when a first join on Alan's phone shows whole menus within ~10 s and the town drawn by desk time.
 
 ## Alan's answers
-(waiting)
+2026-10-25: load before you get in, but only the menu has to wait (then Skip); target under a minute for everything,
+seconds ideally. Smaller building pictures OK where no difference shows, with before/after close-ups first.
 
 ## Progress
 - 2026-10-25: step 1 built: a ReplicatedFirst script asks for the loading screen's art and font, then the menus',
   before the game arrives; the loading screen waits for the menus' pictures and the town (batches of 40, the bar is
   the true share finished, 3 minutes at most) and always lets the player in. Studio: 6.4 s to get in, 425 / 0 tests.
   The first build Alan published read SurfaceAppearance maps (not allowed) and stuck on the loading screen.
+- 2026-10-25: Alan's phone (some files already on it): about 2 minutes; ~1 minute at 5% (the menu pictures), then
+  75%, then the big building pictures. Alan: wait only for the menu, then Skip and the rest loads later; but
+  everything should load in under a minute, seconds ideally. Built: the main menu's pictures first, then a Skip
+  button (the loading carries on behind the menu). Alan OK'd smaller building pictures where no difference shows,
+  before/after close-ups first (step 2).
 
 ## Cost
 Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan's ChatGPT plan, free uploads, about

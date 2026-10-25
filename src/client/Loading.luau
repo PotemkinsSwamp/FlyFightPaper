@@ -9,7 +9,8 @@ local UIAssets = require(Root.Shared.UIAssets)
 local PaperUI = require(script.Parent.PaperUI)
 local Loading = {}
 
-local cover, status, fill, shownAt
+local cover, status, fill, skip, shownAt
+local skipped = false
 local LINES = {
 	"The other pilots are setting up the classroom...", "Colouring in the pages...", "Folding paper planes...",
 	"Sharpening the pencils...", "Drawing the roads on the rug...", "Taping the town together...",
@@ -33,6 +34,9 @@ function Loading.show()
 	fill = image(card, "Fill", results.xpFill, 95, 205, 1, 80)
 	fill.AnchorPoint, fill.Position, fill.ScaleType = Vector2.new(0, 0.5), UDim2.fromOffset(95, 245), Enum.ScaleType.Stretch
 	image(card, "Frame", results.xpFrame, 80, 190, 640, 110).ScaleType = Enum.ScaleType.Stretch
+	-- Once the main menu's pictures are in, you can go in while the rest keeps loading (Alan 2026-10-25).
+	skip = PaperUI.button(sheet, "Skip", menu.strip.green, "Skip", 780, 920, 360, 110, -1, function() skipped = true end, 48)
+	skip.Visible = false
 	-- While loading, the plane keeps flying across nose first (Alan 2026-10-17), turned 24 degrees to its climb. No pin:
 	-- it only gets pinned on the menu board.
 	local plane = image(sheet, "Plane", menu.plane, 0, 0, 226, 195, 24)
@@ -71,14 +75,18 @@ local function run()
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
 	-- (MeshParts, SurfaceAppearances, decals) and PreloadAsync fetches what each one draws.
-	local ui, seen = {}, {}
-	local function walk(t)
+	-- The main menu's own pictures first (the board, its strips, the level bar, the pin), then every other screen's.
+	local menuArt, ui, seen = {}, {}, {}
+	local function walk(t, into)
 		for _, v in t do
-			if type(v) == "table" then walk(v)
-			elseif type(v) == "string" and v:find("^rbxassetid://%d") and not seen[v] then seen[v] = true; table.insert(ui, v) end
+			if type(v) == "table" then walk(v, into)
+			elseif type(v) == "string" and v:find("^rbxassetid://%d") and not seen[v] then seen[v] = true; table.insert(into, v) end
 		end
 	end
-	walk(UIAssets)
+	walk(UIAssets.mainmenu, menuArt)
+	walk(UIAssets.results, menuArt)
+	table.insert(menuArt, UIAssets.hud.pinRed); seen[UIAssets.hud.pinRed] = true
+	walk(UIAssets, ui)
 	local town, shapes = {}, {}
 	local function collect(parent)
 		for _, item in parent:GetDescendants() do
@@ -93,7 +101,7 @@ local function run()
 	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Batches go in a few
 	-- at a time; each counts when PreloadAsync returns. It can stall for good, so stop waiting once nothing has
 	-- finished for 15 s (3 minutes at most: a phone's first join is slow).
-	local total, finished, failures = #ui + #town, 0, 0
+	local total, finished, failures = #menuArt + #ui + #town, 0, 0
 	local stopAt, heard = os.clock() + 180, os.clock()
 	local function preload(items)
 		local queue, running = {}, 0
@@ -115,6 +123,9 @@ local function run()
 		for _ = 1, 6 do task.spawn(worker) end
 		while (running > 0 or #queue > 0) and os.clock() < stopAt and os.clock() - heard < 15 do task.wait(0.1) end
 	end
+	preload(menuArt)
+	lap("main menu")
+	skip.Visible = true
 	preload(ui)
 	lap("menu pictures")
 	preload(town)
@@ -128,9 +139,15 @@ end
 function Loading.run()
 	if not cover then Loading.show() end
 	-- Whatever goes wrong while loading, the player still gets in (2026-10-25: an error here kept a published
-	-- build on the loading screen for good).
-	local ok, problem = pcall(run)
-	if not ok then warn("Loading stopped early: " .. tostring(problem)) end
+	-- build on the loading screen for good). Skip lets them in early; the loading carries on behind the menu.
+	local finished = false
+	task.spawn(function()
+		local ok, problem = pcall(run)
+		if not ok then warn("Loading stopped early: " .. tostring(problem)) end
+		finished = true
+	end)
+	while not finished and not skipped do task.wait(0.1) end
+	if skipped and not finished then workspace:SetAttribute("LoadSkippedAt", os.clock() - shownAt) end
 	cover.Parent:Destroy()
 	Root.RoundAction:FireServer("mapReady")
 end
