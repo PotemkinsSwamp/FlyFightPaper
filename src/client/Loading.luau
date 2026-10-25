@@ -121,14 +121,15 @@ local function run()
 		end
 	end
 	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Menus one file per
-	-- request, 4 side by side (so the bar moves and none waits behind a whole list); the town's thousands in groups.
-	-- More side by side made a phone slower (12 at once: 1 min 45 s in all). A request can stall for good, so a step stops
+	-- request, 8 side by side (so the bar moves and none waits behind a whole list); the town's thousands in groups of
+	-- 40, 6 at a time. 2026-10-25: a PC took 27 s for the menus at 4 side by side (each file ~0.7 s whatever its size);
+	-- a phone was slower with 12 (1 min 45 s in all). A request can stall for good, so a step stops
 	-- waiting once nothing has finished for 45 s (3 minutes in all); a step cut short shows as "cut" in the times.
 	-- The bar: the menus fill its first 40%, the training range to 50%, the town the rest.
 	local total, finished, failures, from, span = 1, 0, 0, 0, 0
 	local function step(items, start, width) total, finished, from, span = math.max(#items, 1), 0, start, width end
 	local stopAt, heard = os.clock() + 180, os.clock()
-	local function preload(items, size, slots)
+	local function preload(items, size, slots, limit)
 		local nextItem, running = 1, 0
 		heard = os.clock()
 		local function worker()
@@ -136,8 +137,9 @@ local function run()
 			while nextItem <= #items and os.clock() < stopAt do
 				local batch, back = table.move(items, nextItem, math.min(nextItem + size - 1, #items), 1, {}), false
 				nextItem += size
-				-- 8 s per file at most (plus 1 s a file in a group): a few plane pieces kept in ReplicatedStorage never report back (2026-10-25),
-				-- and each would hold one of the 12 slots for good. It keeps loading on its own.
+				-- `limit` s per file at most (plus 1 s a file in a group): a few plane pieces kept in ReplicatedStorage never
+				-- report back (2026-10-25; they get 2 s, so they cost 2 s, not 8),
+				-- and each would hold a slot for good. It keeps loading on its own.
 				task.spawn(function()
 					pcall(function()
 						Content:PreloadAsync(batch, function(_, fetch)
@@ -147,7 +149,7 @@ local function run()
 					back = true
 				end)
 				local asked = os.clock()
-				while not back and os.clock() - asked < 8 + size do task.wait() end
+				while not back and os.clock() - asked < limit + size do task.wait() end
 				finished += #batch; heard = os.clock()
 				progress(from + span * finished / total)
 			end
@@ -158,7 +160,7 @@ local function run()
 		return (running > 0 or nextItem <= #items) and " cut" or ""
 	end
 	step(menus, 0, 0.4)
-	lap("menus" .. preload(menus, 1, 4))
+	lap("menus" .. preload(menus, 1, 8, 8))
 	-- Only now does the server send the town (streaming, docs/plan/LOAD-PLAN.md step 1), so it doesn't queue in front
 	-- of the menus. Its parts arrive in a moment; with them in, Skip is safe: the game plays, and buildings still
 	-- without their pictures fill in while you fly.
@@ -173,13 +175,13 @@ local function run()
 	collect(room)
 	if workspace:FindFirstChild("CityRug") then collect(workspace.CityRug) end
 	step(world, 0.4, 0.1)
-	lap("range" .. preload(world, 1, 4))
+	lap("range" .. preload(world, 1, 8, 8))
 	step(planes, 0.5, 0.05)
-	lap("planes" .. preload(planes, 1, 4))
+	lap("planes" .. preload(planes, 1, 8, 2))
 	-- The town in groups of 40, 6 at a time. 2026-10-25 phone: 12 at a time took the town 49 s, 6 at a time 27 s (a phone
 	-- has to unpack each file; more at once only makes them queue).
 	step(town, 0.55, 0.45)
-	lap("preloaded" .. preload(town, 40, 6))
+	lap("preloaded" .. preload(town, 40, 6, 8))
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
