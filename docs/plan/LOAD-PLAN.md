@@ -122,3 +122,11 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   fresh packs show the cereal-box tower grainier and darker, the notebook and clock towers paler, the ceiling moon
   darker: `.planning/load-maps-town-before-after.jpg`, for Alan. Uploads: Approved 1,186, Rejected 1 (a plain grey
   map; those 4 ring-binder pieces keep their old one).
+- 2026-10-25 (evening, loading order): pictures were never really preloaded (id text is ignored; fixed: labels).
+  Now: loading-screen art (kept drawn) -> menus in the order players meet them (8 side by side) -> town parts ->
+  Skip (with a note) -> range, plane pieces (2 s limit), town (40 x 6). Cold tests on the PC (`tools/cold_cache.py`):
+  Studio cold 20.4 s in all, menus done 10.5 s; Studio alone waits ~5-6 s before any first picture, the real app
+  doesn't (0.8 s). Alan's real-PC cold join (menus 4 at a time): loading screen 1.3 s, Skip 28 s, all 48.7 s; phone
+  (12 at a time) 1 min 46 s. Menus are the wall: ~150 files, ~51 MB (PC: ~0.7 s per file; phone: ~1.3 MB/s).
+  Smaller files don't help (Roblox re-stores every upload as its own PNG). Next: fewer files (sheets) and fewer
+  pixels (right-size ~15%, one tinted strip, shared boards ~15 MB), previews before any upload.

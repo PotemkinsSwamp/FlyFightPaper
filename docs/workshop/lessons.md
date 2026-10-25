@@ -258,6 +258,10 @@ mistake would be easy to make twice.
   never report back, so give each request a time limit or they hold a slot for good.
 - **The engine throws away preloaded pictures that nothing draws** (Roblox staff, 2026-02, won't fix): keep them drawn
   (almost see-through) until their screen is up; first/LoadingFirst's `KeepDrawn` does this for the first screens.
+- **Cold-load timing** (2026-10-25): `tools/cold_cache.py aside` empties Roblox's download cache (Studio and the
+  Roblox app closed). Studio Play waits ~5-6 s before the first picture of a join arrives (even one 34 px pin); the
+  real Roblox app gets it in under 1 s, so judge the first seconds on the real app. Studio Edit renders the town and
+  warms its files, so a Studio cold test only measures menus and pictures fairly.
 - **Smaller picture files don't shrink the download** (2026-10-25): Roblox stores every uploaded picture as its own
   PNG (a 255 KB JPG came back as 975 KB; a 281 KB 256-colour PNG as 650 KB). Only fewer or smaller pictures help.
 

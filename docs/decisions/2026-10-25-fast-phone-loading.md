@@ -17,6 +17,12 @@
   for the town if it isn't there yet; (2) a load recorder so every join's times are saved; (3) repack the town's
   picture sheets tighter (same sharpness, no look change), not half-size colour. Alan: do them in order, keep working
   until all are done.
+- Evening, after more phone joins (1 min 45 s at worst): loading order is the loading screen's own art first (it
+  shows complete, never a bare brown board), then every menu's pictures in the order a player meets them, then the
+  town. Skip only at a safe point: all menu pictures and the town's parts in, with a note that grey buildings fill
+  in. Menus stay real-looking pictures (no code-drawn boxes); cut their weight with right-sizing, one tinted strip,
+  shared boards and sheets, side-by-sides before any upload. Test changes with a cold PC cache
+  (`tools/cold_cache.py`), not a phone reinstall each time; the phone confirms the big steps.
 
 ## Why
 On Alan's phone the menus showed words without paper for a minute and the full load took about 2 minutes, even with

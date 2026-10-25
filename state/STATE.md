@@ -1,23 +1,23 @@
-# Since Alan last checked (2026-10-25)
-- **Load step 1, menus first: built** (in the open Studio copy, ready to publish). The town now reaches your phone only
-  after its menu pictures are in; the menus work while the town arrives; Play / Fly / Training wait for it. Studio:
-  main menu 2.7 s, town parts 4.0 s, everything 14.2 s; matches play normally; tests 425 / 0.
-- **Load step 2, load recorder: built.** Every join saves its times, device and screen size; I read them in Studio.
-- **Step 3 (repack the town's pictures): uploaded, not in the game yet.** Same pixels, fewer files: 1,893 -> 732 town
-  picture files (4.8% fewer pixels). Roblox keeps 2048 pictures (tested); the repacked clock tower looks the same as
-  today's (`.planning/repack-clock-tower-old-vs-new.jpg`). All 440 pieces + 356 pictures uploaded and approved. The
-  swap into the Studio copy waits for your step-1 phone test (so the two tests don't mix).
-- Earlier today: smaller bump/shine maps published; your fresh join was 44.9 s with no paper art, then 1 min 2 s more.
+# Since Alan last checked (2026-10-25, evening)
+- **Loading rebuilt in your order:** loading screen's own art first (shows whole), then every menu in the order a player
+  meets them, then the town; Skip only once menus and town parts are in, with a "grey buildings fill in" note.
+- **Found:** menu pictures were never really preloaded (fixed); Roblox throws away preloaded pictures nothing draws
+  (the first screens now stay drawn); smaller files don't help (Roblox re-stores every upload).
+- **Your real-PC cold join:** loading screen 1.3 s (instant), Skip 28 s, all 48.7 s. Phone: 1 min 46 s (worse: my
+  12-at-once change; undone). Since then: menus 8 at a time, plane pieces 2 s limit; Studio cold 30.4 -> 20.4 s.
+- **PC cold tests without your phone:** `tools/cold_cache.py` empties Roblox's download cache, then a join is timed.
+- **Waiting on you:** publish this build, then a cold PC join (I clear the cache first). Next: menu sheets and
+  lighter boards, previews before any upload. Repacked-town swap still waits behind this.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: a fresh phone join took ~1 min 47 s (45 s with no menu art); steps 1-2 built, awaiting your publish; step 3 uploaded, swap next.
+Broken: a fresh phone join takes ~1 min 46 s; menus (~150 files, ~51 MB) are the wall; step 3 (repack) uploaded, swap waits.
 Not yet: small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
 Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).
 Smaller maps: bell tower + sweet-shop swirl roof keep full-size maps (moderation caution).
-Loading: Skip appears once the main menu's pictures are in; the loading waits 3 minutes at most.
+Loading: Skip once all menus + town parts are in; a stuck file costs 8 s (plane pieces 2 s); 3 minutes at most.
   On a phone the match tip may cover the news note and kill feed (never Health/Lift).
 Screen fit: screen kinds by the short side (phone under 540 points, tablet under 900); touch buttons kept thumb-sized
   (FIRE 76-120 points); a small PC window gets tablet sizes.
