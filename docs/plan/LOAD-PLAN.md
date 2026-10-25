@@ -36,20 +36,24 @@ downloaded). Nothing pops in while flying. The town looks exactly as it does tod
    shape): about 4x fewer picture files and fewer shapes. This is the big one: re-bake 46 buildings (Codex, Blender),
    re-upload ~600 files (each checked on a contact sheet first), redo the saved collision (~40 min) and the packs.
 
-## Step 3 looked at closely (2026-10-25, for Alan's OK): skip it
-Streaming only saves time for what it leaves out, and this game can leave out almost nothing:
-- **The whole town is in view.** From the air you see the room end to end, so "no pop-in" means a streaming radius
-  covering the whole room: the phone would download the same files, just in a different order.
-- **The plane checks its own crashes on the phone** (`FlightRules.contact`, the same check the server runs). A building
-  not yet on the phone is air to the pilot but a wall to the server: invisible crashes. So every solid piece would have
-  to stay loaded (Persistent), and the solid pieces are the heavy ones (unique building shapes and pictures).
-- What could stay out (trees, cars, lamps) is already cheap: a few shapes and pictures used hundreds of times.
-- Turning it on also needs fixes in ~10 places (the loading screen would hang counting town pieces, the tutorial's guide
-  line would route through unloaded buildings, the train and winners' desks would freeze or vanish, no character so
-  nothing tells Roblox where the player is).
-The loading screen already lets players in after the menus (step 1, Skip), which is the one real gain streaming would
-bring. **Proposal:** leave streaming off; after step 2, read the phone's times; if pictures are still the wait, step 4
-(fewer, bigger files) is the change that actually shrinks the download.
+## Next three steps (Alan 2026-10-25, after the fresh-join phone test; do them in order, until all are done)
+The test: 44.9 s with no paper art (the menu's pictures queue behind the ~1,600 town files sent at join), then
+1 min 2 s more for the town ([playtest](../playtests/2026-10-25-phone-fresh-join.md)).
+1. **Menus first, for real.** StreamingEnabled on. The town (and other heavy room pieces) is
+   `ModelStreamingMode.PersistentPerPlayer`: a player gets it only after the server adds them
+   (`Model:AddPersistentPlayer`), which the server does once that player's menu pictures are in; then it stays on
+   their phone (no streaming out, so the phone's crash checks always see every wall). Play waits for the town if it
+   isn't there yet ("Unfolding the town..."). The Explore audit's spots get fixed: the loading count in
+   `NativeAssets.ready` (would hang), `Tutorial.airRoutes` cache, `TrainMotion` and `ChalkCloud` cached parts, winner
+   desks, `SpeedPickups`, Planes models. Check: Studio Play (Device Simulator phone), then Alan's fresh join: menus in
+   seconds.
+2. **Load recorder.** Each join saves its times (room, menu pictures, town, done) and device kind to a DataStore;
+   read in Studio. Check: Alan's next join appears with its numbers.
+3. **Repack the town's picture sheets** (was step 4): each building's pieces share tighter-packed sheets (today ~45%
+   of each sheet is padding), same pixels per stud so the same sharpness; colour, bump and shine. Re-bake 46 buildings
+   (Codex, Blender), contact sheets, upload (Alan's go: "until all steps are done"), redo saved collision and packs.
+   Check: close-ups before/after (same look), fewer and smaller files, Alan's fresh join under a minute.
+Streaming first looked like no gain (the whole town must be on the phone); it is kept for one thing: the order.
 
 ## Build order after Alan's OK
 Step 1 now (code only; Alan's go 2026-10-25). Step 2 next (no uploads except the tiny shared pictures). Step 3 after Alan OKs the pop-in
