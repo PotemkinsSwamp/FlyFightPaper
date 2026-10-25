@@ -76,7 +76,9 @@ local function run()
 	lap("game in")
 	while not game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtAt") and os.clock() - started < 10 do task.wait(0.05) end
 	local artFailed = game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtFailed") or 0
-	lap(artFailed > 0 and ("loading screen (" .. artFailed .. " failed)") or "loading screen")
+	local first = game.ReplicatedFirst.FlyFightPaper
+	lap(string.format("loading screen (queue %s then %d%s)", tostring(first:GetAttribute("QueueAtStart")), Content.RequestQueueSize,
+		artFailed > 0 and (", " .. artFailed .. " failed") or ""))
 	-- Everything the game shows, before you get in (Alan 2026-10-25: on a phone the game let him in long before the
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves

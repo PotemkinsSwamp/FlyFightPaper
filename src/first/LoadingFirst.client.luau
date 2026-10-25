@@ -3,6 +3,7 @@
 -- the loading screen showed only plain words). Loading.luau draws the screen once the game is in; its art is ready.
 local Content = game:GetService("ContentProvider")
 script.Parent:SetAttribute("FirstAt", os.clock()) -- the load times count from here (Loading.luau)
+script.Parent:SetAttribute("QueueAtStart", Content.RequestQueueSize) -- files already waiting ahead of ours
 local Art = require(script.Parent:WaitForChild("UIAssets"))
 local menu, results = Art.mainmenu, Art.results
 -- PreloadAsync doesn't fetch a picture given as id text (2026-10-25: it fails at once in Studio and stalls on a client),

@@ -2,6 +2,8 @@
 
     python tools/cold_cache.py aside   # Studio and Roblox closed: move Roblox's download cache to a backup folder
     python tools/cold_cache.py open    # open the cloud place in Studio (then Play; read LoadLog.recent())
+    python tools/cold_cache.py push FILE...  # write Luau (to %TEMP%/cold_push.lua, for studio_cli execute_luau in Edit) that puts
+                                             # these src/ files into the open Studio: a reopened Studio has no Rojo link
 
 The cache is only downloaded copies; Roblox rebuilds it. Each `aside` keeps the moved copy in
 %LOCALAPPDATA%\\Roblox-cache-aside\\<time> (move one back to restore it).
@@ -37,5 +39,23 @@ def open_studio():
     print("opening", exe.parent.name)
 
 
+ROOTS = {"src/first": "game.ReplicatedFirst.FlyFightPaper", "src/client": "game.StarterPlayer.StarterPlayerScripts.FlyFightPaper",
+         "src/server": "game.ServerScriptService.FlyFightPaper", "src/shared": "game.ReplicatedStorage.FlyFightPaper.Shared"}
+
+
+def push(*files):
+    lines = []
+    for f in files:
+        f = Path(f).as_posix()
+        folder, name = f.rsplit("/", 1)
+        name = name.removesuffix(".luau").removesuffix(".client").removesuffix(".server")
+        text = Path(f).read_text(encoding="utf-8")
+        eq = "=" * next(n for n in range(1, 20) if f"]{'=' * n}]" not in text)
+        lines.append(f"{ROOTS[folder]}:FindFirstChild('{name}').Source = [{eq}[{text}]{eq}]")
+    out = Path(os.environ["TEMP"]) / "cold_push.lua"
+    out.write_text("\n".join(lines) + f"\nreturn 'pushed {len(files)}'\n", encoding="utf-8")
+    print(out)
+
+
 if __name__ == "__main__":
-    {"aside": aside, "open": open_studio}[sys.argv[1]]()
+    {"aside": aside, "open": open_studio, "push": lambda: push(*sys.argv[2:])}[sys.argv[1]]()
