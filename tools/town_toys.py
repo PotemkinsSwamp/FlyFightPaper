@@ -25,7 +25,7 @@ After `upload`, the MeshId and MeshPart size of each FBX model are read in Studi
 upload.json as "mesh" and "initial"; "studs" is the FBX's real size (Roblox caps imported meshes at 2048, so initial
 is not a fixed multiple of it).
 """
-import json, math, random, re, subprocess, sys, time
+import json, math, random, re, subprocess, sys, tempfile, time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,6 +53,36 @@ SOLID = {"tree", "pine", "house", "stall", "boathouse", "barn", "petrol_station"
          "monorail-pylon"}
 
 
+FLAT_FILE = ROOT / "assets/models/flat-maps.json"     # "key value" -> the shared tiny map's asset id
+
+
+def send(path, key, name, out):
+    """Upload one file and return its asset id. Bump and shine maps go up at half size (no visible difference in
+    close-ups, Alan 2026-10-25); a flat one (one value all over) becomes the shared tiny map of that value, uploaded
+    once. Colour maps and models go up as they are."""
+    from PIL import Image, ImageStat
+    flats = json.loads(FLAT_FILE.read_text()) if FLAT_FILE.exists() else {}
+    tmp = value = None
+    if key in ("normal", "roughness", "metalness"):
+        im = Image.open(path); w, h = im.size
+        stat = ImageStat.Stat(im.resize((max(1, w // 8), max(1, h // 8)), Image.BILINEAR))
+        if max(stat.stddev) < 3:
+            value = f"{key} {','.join(str(round(m)) for m in stat.mean)}"
+            if value in flats: return flats[value]
+            im = Image.new(im.mode, (16, 16), tuple(round(m) for m in stat.mean))
+        else:
+            im = im.resize((w // 2, h // 2), Image.LANCZOS)
+        tmp = Path(tempfile.gettempdir()) / f"ffp-map{path.suffix}"; im.save(tmp); path = tmp
+    out.unlink(missing_ok=True)
+    subprocess.run([sys.executable, str(ROOT / "tools/upload_texture.py"), str(path), "--creator", CREATOR,
+                    "--name", name, "--output", str(out)] + (["--model"] if key == "model" else []), check=True)
+    asset = json.loads(out.read_text())["response"]["assetId"]; out.unlink()
+    if tmp: tmp.unlink()
+    if value:
+        flats[value] = asset; FLAT_FILE.write_text(json.dumps(dict(sorted(flats.items())), indent=0) + "\n")
+    return asset
+
+
 def upload(names):
     for name in names:
         d = TOYS / name; record = d / "upload.json"
@@ -61,12 +91,7 @@ def upload(names):
                                                     if p.stem.startswith(("color", "normal", "roughness", "metalness"))]
         for path, key in files:
             if key in rec: continue
-            out = d / f"upload-{key}.json"
-            out.unlink(missing_ok=True)
-            subprocess.run([sys.executable, str(ROOT / "tools/upload_texture.py"), str(path), "--creator", CREATOR,
-                            "--name", f"FlyFightPaper toy {name} {key}", "--output", str(out)]
-                           + (["--model"] if key == "model" else []), check=True)
-            rec[key] = json.loads(out.read_text())["response"]["assetId"]; out.unlink()
+            rec[key] = send(path, key, f"FlyFightPaper toy {name} {key}", d / f"upload-{key}.json")
             record.write_text(json.dumps(rec, indent=2) + "\n")
         print(name, rec)
 
@@ -155,11 +180,7 @@ def hero(folder):
         maps += [(p.stem[len(fbx.stem) + 1:], p) for p in sorted(fbx.parent.glob(f"{fbx.stem}-color-*.png"))]
         for key, path in [("model", fbx)] + maps:
             if key in rec: continue
-            out = fbx.with_name("upload-tmp.json"); out.unlink(missing_ok=True)
-            subprocess.run([sys.executable, str(ROOT / "tools/upload_texture.py"), str(path), "--creator", CREATOR,
-                            "--name", f"FFP tower part {fbx.stem.split('-')[0]} {key}", "--output", str(out)]
-                           + (["--model"] if key == "model" else []), check=True)
-            rec[key] = json.loads(out.read_text())["response"]["assetId"]; out.unlink()
+            rec[key] = send(path, key, f"FFP tower part {fbx.stem.split('-')[0]} {key}", fbx.with_name("upload-tmp.json"))
             record.write_text(json.dumps(rec, indent=2) + "\n")
         print(fbx.stem, rec)
 
