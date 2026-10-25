@@ -7,7 +7,18 @@ local Art = require(script.Parent:WaitForChild("UIAssets"))
 local menu, results = Art.mainmenu, Art.results
 -- PreloadAsync doesn't fetch a picture given as id text (2026-10-25: it fails at once in Studio and stalls on a client),
 -- so each id goes in on a picture label.
-local function image(id) local label = Instance.new("ImageLabel"); label.Image = id; return label end
+-- They stay drawn (almost see-through, in a corner) until the menu is up: the engine throws away preloaded pictures
+-- that nothing draws (Roblox staff, 2026-02: "if you preload ImageLabels but don't make them visible, the engine will
+-- think these textures are unused and collect them"). Loading.luau adds the main menu's and removes it all at the end.
+local keep = Instance.new("ScreenGui")
+keep.Name, keep.ResetOnSpawn, keep.DisplayOrder = "KeepDrawn", false, -10
+keep.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+local function image(id)
+	local label = Instance.new("ImageLabel")
+	label.Image, label.Size, label.BackgroundTransparency, label.ImageTransparency = id, UDim2.fromOffset(8, 8), 1, 0.99
+	label.Parent = keep
+	return label
+end
 local first = { image(menu.title), image(results.xpCard), image(results.xpFill), image(results.xpFrame), image(menu.plane) }
 for _, tile in menu.bg do table.insert(first, image(tile)) end
 local font = Instance.new("TextLabel") -- (the font loads through a label that uses it)

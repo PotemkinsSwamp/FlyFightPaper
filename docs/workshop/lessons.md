@@ -256,6 +256,8 @@ mistake would be easy to make twice.
 - **PreloadAsync fetches a list one file after another** (2026-10-25): 28 menu pictures in one call took over 15 s on
   a phone. Ask for each file on its own, many side by side. Some MeshParts kept in ReplicatedStorage (plane pieces)
   never report back, so give each request a time limit or they hold a slot for good.
+- **The engine throws away preloaded pictures that nothing draws** (Roblox staff, 2026-02, won't fix): keep them drawn
+  (almost see-through) until their screen is up; first/LoadingFirst's `KeepDrawn` does this for the first screens.
 - **Smaller picture files don't shrink the download** (2026-10-25): Roblox stores every uploaded picture as its own
   PNG (a 255 KB JPG came back as 975 KB; a 281 KB 256-colour PNG as 650 KB). Only fewer or smaller pictures help.
 

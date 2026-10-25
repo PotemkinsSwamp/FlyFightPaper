@@ -96,7 +96,17 @@ local function run()
 		end
 	end
 	local menus, world = {}, {}
-	for _, name in MENUS do walk(UIAssets[name], menus) end
+	for _, name in MENUS do
+		walk(UIAssets[name], menus)
+		-- The main menu's pictures (mainmenu, results) stay drawn until the menu is up, like the loading screen's
+		-- (first/LoadingFirst: the engine throws away preloaded pictures nothing draws).
+		local keep = name == "results" and Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
+		if keep then
+			for _, label in menus do
+				label.Size, label.BackgroundTransparency, label.ImageTransparency, label.Parent = UDim2.fromOffset(8, 8), 1, 0.99, keep
+			end
+		end
+	end
 	for _, name in WORLD do walk(UIAssets[name], world) end
 	walk(UIAssets, menus) -- any screen not listed above still loads before Skip
 	local town, shapes, room, assets = {}, {}, nil, nil
@@ -191,6 +201,9 @@ function Loading.run()
 	while not finished and not skipped do task.wait(0.1) end
 	if skipped and not finished then workspace:SetAttribute("LoadSkippedAt", os.clock() - (game.ReplicatedFirst.FlyFightPaper:GetAttribute("FirstAt") or shownAt)) end
 	cover.Parent:Destroy()
+	-- The menu is up and draws its own pictures now (see first/LoadingFirst).
+	local keep = Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
+	if keep then task.delay(5, keep.Destroy, keep) end
 end
 
 -- The town's parts (not yet their pictures) are all on this phone: the room, the rug and the plane pieces.
