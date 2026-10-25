@@ -104,8 +104,11 @@ Close-ups shown (3 buildings, bump/shine maps at half size): Alan said go, whole
   symbol-like (big black areas are hidden undersides, already approved before).
   Checked in a drawing Studio: a 2048 stripe picture shows every stripe up close, so Roblox keeps 2048. Old vs repacked
   clock tower, same spot and camera: ~1/255 average difference, 0.27% of pixels visibly off (picture noise):
-  `.planning/repack-clock-tower-old-vs-new.jpg`. Next: upload the other 43 (~800 files), read MeshIds, swap in the
-  Studio copy after Alan's step-1 test, redo exact collision and packs.
+  `.planning/repack-clock-tower-old-vs-new.jpg`. Uploaded: all 44 buildings' 440 repacked pieces and 356 shared
+  pictures (all Approved; 1 shape upload refused once, went through on retry); every new shape's size matches its
+  old piece. Records in `*/repacked/*.upload.json` (not yet copied over `parts/`, so rebuilds still make today's
+  town). Next (after Alan's step-1 phone test): swap live in the Studio copy (new shape loaded with exact collision,
+  new SurfaceAppearance), packs in slow batches, Alan saves; then copy the records over `parts/` and rebuild.
 
 ## Cost
 Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan's ChatGPT plan, free uploads, about
