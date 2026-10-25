@@ -12,6 +12,7 @@
   python tools/town_toys.py readlua FOLDER     Luau to run in Studio: reads each uploaded piece's MeshId and size
   python tools/town_toys.py meshes FOLDER JSON  store that Luau's result in the pieces' upload.json
   python tools/town_toys.py placelua FOLDER    Luau to run in Studio: stands the building's pieces in CityToys
+  python tools/town_toys.py swaplua FOLDER     Luau to run in Studio: swaps the building's CityToys pieces to FOLDER/repacked
   python tools/town_toys.py drop X Z R NAME... remove NAMEs and BuildingCollision boxes within R of X, Z from classroom.rbxmx
   python tools/town_toys.py pull FILE        keep hand edits made in Studio: FILE is the JSON dump of every CityToys part
                                              (name, colour map id, CFrame components, size, solid); saved as
@@ -452,6 +453,28 @@ def placelua(folder):
           f"return #T:GetChildren()")
 
 
+def swaplua(folder):
+    """Luau that swaps this building's CityToys pieces to their repacked shape and maps (FOLDER/repacked records), in
+    place: same size, spot and collision kind; ApplyMesh recomputes the exact shape. Safe to run twice."""
+    recs = {p.name.removesuffix(".upload.json"): {k: v for k, v in json.loads(p.read_text()).items() if k != "initial"}
+            for p in (ROOT / folder / "repacked").glob("*.upload.json") if p.name != "sheets.upload.json"}
+    name = Path(folder).name
+    print("local H,A=game:GetService('HttpService'),game:GetService('AssetService') local R=H:JSONDecode('"
+          + json.dumps(recs) + "') local T=workspace:FindFirstChild('CityToys',true) local n,left,bad=0,{},{} "
+          "for k in pairs(R) do left[k]=true end "
+          f"for _,p in ipairs(T:GetChildren()) do local r=R[p.Name:sub({len(name) + 2})] "
+          f"if p:IsA('MeshPart') and p.Name:sub(1,{len(name) + 1})=='{name}/' and r then left[p.Name:sub({len(name) + 2})]=nil "
+          "if p.MeshId~='rbxassetid://'..r.mesh then local size,cf=p.Size,p.CFrame local ok,e=pcall(function() "
+          "local m=A:CreateMeshPartAsync('rbxassetid://'..r.mesh,{CollisionFidelity=p.CollisionFidelity,RenderFidelity=p.RenderFidelity}) "
+          "p:ApplyMesh(m) m:Destroy() end) if not ok then table.insert(bad,p.Name..': '..tostring(e)) continue end p.Size,p.CFrame=size,cf end "
+          "local old=p:FindFirstChildWhichIsA('SurfaceAppearance') if not old or old.ColorMap~='rbxassetid://'..r.color then "
+          "local s=Instance.new('SurfaceAppearance') s.Name='Paint' if old then s.AlphaMode,s.Color=old.AlphaMode,old.Color old:Destroy() end "
+          "s.ColorMap='rbxassetid://'..r.color s.NormalMap='rbxassetid://'..r.normal s.RoughnessMap='rbxassetid://'..r.roughness "
+          "if r.metalness then s.MetalnessMap='rbxassetid://'..r.metalness end s.Parent=p end n+=1 task.wait() end end "
+          "for k in pairs(left) do table.insert(bad,k..': not in CityToys') end "
+          f"return '{name}: '..n..' pieces swapped'..(#bad>0 and '; '..table.concat(bad,'; ') or '')")
+
+
 def drop(x, z, r, *names, path=ROOT / "assets/models/classroom.rbxmx"):
     """Remove old buildings from classroom.rbxmx: these names and BuildingCollision boxes within r of x, z (r 0: names anywhere)."""
     text, out, i, gone = path.read_text(encoding="utf-8"), [], 0, []
@@ -501,5 +524,5 @@ if __name__ == "__main__":
     cmd, *args = sys.argv[1:]
     {"upload": lambda: upload(args), "pull": lambda: pull(*args), "build": lambda: build(*args), "hero": lambda: hero(*args), "repack": lambda: repack(*args),
      "stand": lambda: stand(*args), "kit": lambda: kit(*args), "readlua": lambda: readlua(*args),
-     "meshes": lambda: meshes(*args), "placelua": lambda: placelua(*args), "drop": lambda: drop(*args),
+     "meshes": lambda: meshes(*args), "placelua": lambda: placelua(*args), "swaplua": lambda: swaplua(*args), "drop": lambda: drop(*args),
      "packs": lambda: packs(*args), "rearm": lambda: rearm(*args)}[cmd]()

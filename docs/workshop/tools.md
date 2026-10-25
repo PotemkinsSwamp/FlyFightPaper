@@ -21,7 +21,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | Script | What it does / when |
 |---|---|
 | `tools/rug.py` | The city play rug: checks the layout, draws the preview, makes tiles, uploads, builds `city-rug.rbxmx`; `--plan assets/rug/replan-v4.json` prints the layout-D town (`preview-v4.png`, `fill-plan-v4.png`, `toy-spots-v4.json`, `--tiles` into `tiles-v4/`; `--upload` sends changed carpet maps and new tiles, `--build` writes `city-rug-v4.rbxmx` with the green stitched edge) |
-| `tools/town_toys.py` | Uploads toy and building meshes (`repack FOLDER`: a repacked building's shared sheets and pieces), builds `city-toys.rbxmx` (`build v4`: the new town's `city-toys-v4.rbxmx`, lamps with a switched-off light), harvests texture packs; bump/shine maps go up at half size and flat ones share one tiny map per value (`assets/models/flat-maps.json`) |
+| `tools/town_toys.py` | Uploads toy and building meshes (`repack FOLDER`: a repacked building's shared sheets and pieces; `swaplua FOLDER`: Luau that swaps its pieces in the open Studio copy), builds `city-toys.rbxmx` (`build v4`: the new town's `city-toys-v4.rbxmx`, lamps with a switched-off light), harvests texture packs; bump/shine maps go up at half size and flat ones share one tiny map per value (`assets/models/flat-maps.json`) |
 | `tools/town_plan.py` | Plans the town on layout D: streets, river, plazas, monorail loop, the 46 buildings (real sizes), gates, parking lots, driveways, paths, bridges; writes `assets/rug/replan-v4-*` |
 | `tools/city_links.py` | Ruler bridges, bell tower and ceiling pieces: plan, check, place |
 | `tools/desk_pieces.py` | Desk runways, paper-chain rings and runway lights |
