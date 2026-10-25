@@ -250,6 +250,9 @@ mistake would be easy to make twice.
   at (x - 62, y) in GUI space, so tap a button at its AbsolutePosition centre + (62, 0).
 - **`TouchTapInWorld` counts the top bar (2026-10-24):** its position is 58 points lower than GUI/InputObject space,
   so turn it into a ray with `ViewportPointToRay`, not `ScreenPointToRay` (the Range's strips missed by 28 studs).
+- **PreloadAsync doesn't fetch pictures given as id text** (2026-10-25): every `rbxassetid://` string reported
+  Failure in 0.1 s in Studio and stalled 15 s on a client, so the loading screen and menus showed only words on a
+  phone. Hand it the things that draw them (an `ImageLabel` with `.Image` set, a MeshPart, a SurfaceAppearance).
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
