@@ -131,6 +131,9 @@ mistake would be easy to make twice.
 - **Exact collision can fill a hollow piece's opening.** The south station's lunch tin got a shape that blocked a
   wedge of its own track tunnel (2026-10-17). Check tunnels with a grid of raycasts after new shapes are computed;
   a piece that fails goes in `WALLS` in `tools/town_toys.py` (see-through mesh + plain invisible walls).
+- **A phone downloads the whole map when streaming is off (2026-10-25).** ~4,500 assets made Alan's phone wait
+  minutes, and the menus' pictures queued behind the town's. Preload the menu art first (`Loading.luau`), and count
+  every texture map (SurfaceAppearance ones too) when judging a map's weight.
 - **New models need texture packs.** After placing new models, Play gets slow (over a minute) until Alan presses
   Ctrl+S and `python tools/town_toys.py packs FlyFightPaper-WORKING.rbxlx` then `build` harvest the packs.
 - **Rojo live sync sometimes can't set MeshIds.** After syncing new mesh parts, check each `MeshId` is not empty

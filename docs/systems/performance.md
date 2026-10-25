@@ -12,6 +12,15 @@ frame-rate check on Alan's PC is still due before release (Stage 11).
 count returns to the same level every round (no build-up); memory crept about 1.7 MB a minute (3,156 -> 3,203 MB,
 Studio counts plugins and the client too). Check the live server's memory in the F9 console on a long session.
 
+**Phones (Alan's real phone, 2026-10-25): far too slow to load.** Menus showed their words but no paper art, and
+the town took minutes. Cause: the place holds about 4,500 separate assets (~900 meshes, ~3,500 texture maps:
+colour, normal, roughness, metalness, texture packs; counted in the place file) and StreamingEnabled is off, so a
+phone asks for all of it at once and the menu pictures wait behind it. Almost nothing is reused: 924 of 983 colour
+maps and 814 of 921 meshes are used by one piece only (fast mobile games reuse a small kit of pieces and shared
+textures many times); 2,015 of 2,441 SurfaceAppearances carry a texture pack and separate maps. First fix: the loading screen now loads the
+menus' ~176 pictures before anything else and prints its timings (phone: type /console in chat). Not yet measured
+on the phone. The rest is the [load plan](../plan/LOAD-PLAN.md) (draft for Alan's OK).
+
 ## Rules
 - Target: steady 60 FPS on Alan's PC in a 12-plane match, no pop-in (set in [AGENTS.md](../../AGENTS.md)).
 - Never trade looks for frame rate: see the decision below.
