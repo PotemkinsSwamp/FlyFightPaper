@@ -3,14 +3,15 @@
   after its menu pictures are in; the menus work while the town arrives; Play / Fly / Training wait for it. Studio:
   main menu 2.7 s, town parts 4.0 s, everything 14.2 s; matches play normally; tests 425 / 0.
 - **Load step 2, load recorder: built.** Every join saves its times, device and screen size; I read them in Studio.
-- **Step 3 (repack the town's pictures): prepared, not in the game yet.** Same pixels, fewer files: 1,893 -> 732 town
-  picture files (4.8% fewer pixels). Clock tower uploaded as a pilot. Blocked on one close-up (old vs new) that needs
-  Studio's window in front (it draws nothing while behind other windows), then ~800 uploads and the swap.
+- **Step 3 (repack the town's pictures): uploaded, not in the game yet.** Same pixels, fewer files: 1,893 -> 732 town
+  picture files (4.8% fewer pixels). Roblox keeps 2048 pictures (tested); the repacked clock tower looks the same as
+  today's (`.planning/repack-clock-tower-old-vs-new.jpg`). All 440 pieces + 356 pictures uploaded and approved. The
+  swap into the Studio copy waits for your step-1 phone test (so the two tests don't mix).
 - Earlier today: smaller bump/shine maps published; your fresh join was 44.9 s with no paper art, then 1 min 2 s more.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: a fresh phone join took ~1 min 47 s (45 s with no menu art); steps 1-2 built, awaiting your publish; step 3 next.
+Broken: a fresh phone join took ~1 min 47 s (45 s with no menu art); steps 1-2 built, awaiting your publish; step 3 uploaded, swap next.
 Not yet: small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
