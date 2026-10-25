@@ -49,6 +49,8 @@ first.
 ## Alan's answers
 2026-10-25: load before you get in, but only the menu has to wait (then Skip); target under a minute for everything,
 seconds ideally. Smaller building pictures OK where no difference shows, with before/after close-ups first.
+Close-ups shown (3 buildings, bump/shine maps at half size): Alan said go, whole town
+([decision](../decisions/2026-10-25-fast-phone-loading.md)).
 
 ## Progress
 - 2026-10-25: step 1 built: a ReplicatedFirst script asks for the loading screen's art and font, then the menus',

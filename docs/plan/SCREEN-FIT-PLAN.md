@@ -71,6 +71,9 @@ Plan OK; small PC moves OK with before/after pictures; 2 kill-feed lines on a ph
   words 12-13 points and Skip 24 tall; match tip words; welcome question's taps 30 tall; results card covers the
   desk's right strips (PC too); results header words run together on a phone; main menu Prestige and Shop (dev)
   taps 28-33 tall. **Next:** Alan switches devices (small phone, iPad, PC 1920 x 1080) and the check runs on each.
+- 2026-10-25: Alan's devices: desk stat sheet now level with the photo everywhere; on the small iPhone notes slide
+  into the gap between Health/Lift and the kill feed and shrink (`ScreenFit.place`); match tip up top on phones.
+  Checked clean: big phone, PC (2046 x 801). **Next:** small iPhone and iPad re-check, then steps 3-6.
 
 ## Cost
 Code only: no uploads, $0. About two to three sessions.

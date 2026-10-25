@@ -1,23 +1,22 @@
-# Since Alan last checked (2026-10-24)
-- **Winners' moment sound built:** match music fades at the banner, crowd and clapping build as 3rd and 2nd hop up,
-  1st's landing gets the kids' "Yeah!" and the song (Parade March, Nawlins Carnival Kids or On With The Show, random
-  each round, never twice in a row). Not yet heard by you in Play.
-- **Touch (phones) moved before launch (your OK):** steering stick + FIRE / 2 / BOOST, phone aim help (researched,
-  then tuned with a fake-pilot test: thumbs land 83-100% of a mouse's hits), touch words on every text, sliders /
-  Hangar turning / Range strips take fingers, the flight screen laid out for a phone.
-- Menu screens no longer get cut off at the top and bottom on wide screens (background covers, buttons fit).
-- **Every screen readable on a phone (simulator):** bigger words and taps on the menus, desk strips, binder, round end;
-  Customize no longer falls off the bottom; notes, tips, round end and the Hangar's Back stay clear of the Menu button
-  and Roblox's own buttons; backgrounds reach past the notch. PC look kept by design (not re-screenshotted: the
-  simulator is on). Finger taps checked; a Range strip tap missed by 58 points and is fixed.
+# Since Alan last checked (2026-10-25)
+- **Screen fit step 2 done:** Menu then the match strip in one row; news, lesson note, warnings and match tip stack
+  under it; small phones slide them into the gap between Health/Lift and the kill feed; the match tip stays up top
+  on phones (a bit smaller); 2 kill-feed lines on a phone; desk stat sheet level with the photo; desk photo no longer
+  misses a wing.
+- **Phone loading (your phone test):** about 2 minutes, menus without their paper. Cause: ~4,500 separate town
+  files, nothing reused, streaming off. Built: loading screen art + font fetched before the game arrives, main menu
+  pictures first, then a Skip button while the rest loads, a true progress bar, and it always lets you in.
+  The first loading build you published got stuck (my bug, fixed and committed in c1114536).
+- You OK'd half-size bump/shine maps for the whole town (close-ups showed no difference): next session uploads them.
 
-# Now: UI lane: screen fit (docs/plan/SCREEN-FIT-PLAN.md, your OK): step 1 built; step 2 the top row and notes next
-What works: everything in Stage 9, the tutorials, the desk quick menu, Range notes, Match Tips; on phones (simulator)
-every screen and the controls. Broken: on a phone the Menu button, match strip, kill feed and the notes under them
-still crowd each other (screen fit step 2 fixes it). Not yet: nothing tried on a real phone; stick feel not tuned. Track C saving needs
-a private publish (your go). Place file not re-saved (Save to File, your go; code lives in src/).
+# Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
+What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
+Broken: a phone's first join is far too slow (about 2 minutes); fix in progress (smaller maps, then streaming).
+Not yet: Skip build not republished; small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
+Loading: Skip appears once the main menu's pictures are in; the loading waits 3 minutes at most.
+  On a phone the match tip may cover the news note and kill feed (never Health/Lift).
 Screen fit: screen kinds by the short side (phone under 540 points, tablet under 900); touch buttons kept thumb-sized
   (FIRE 76-120 points); a small PC window gets tablet sizes.
 Touch: FIRE / 2 / BOOST paper buttons right, stick on the left half; phone aim help cone 6 (fades from 3), out to 800
