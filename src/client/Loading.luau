@@ -53,7 +53,12 @@ function Loading.show()
 			task.wait(2.5)
 		end
 	end)
-	cover.Visible = true
+	-- Shown once its own art is in (first/LoadingFirst), so it never appears as a bare brown board; 10 s at most.
+	local first = game.ReplicatedFirst.FlyFightPaper
+	task.spawn(function()
+		while not first:GetAttribute("ArtAt") and os.clock() - shownAt < 10 do task.wait(0.05) end
+		mine.Visible = true
+	end)
 end
 
 local function run()
@@ -66,6 +71,8 @@ local function run()
 	local started, times = game.ReplicatedFirst.FlyFightPaper:GetAttribute("FirstAt") or shownAt or os.clock(), {}
 	local function lap(step) table.insert(times, string.format("%s %.1f", step, os.clock() - started)); workspace:SetAttribute("LoadTimes", table.concat(times, ", ")) end
 	lap("game in")
+	while not game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtAt") and os.clock() - started < 10 do task.wait(0.05) end
+	lap("loading screen")
 	-- Everything the game shows, before you get in (Alan 2026-10-25: on a phone the game let him in long before the
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
@@ -96,7 +103,7 @@ local function run()
 	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Batches go in a few
 	-- at a time; each counts when PreloadAsync returns. It can stall for good, so stop waiting once nothing has
 	-- finished for 15 s (3 minutes at most: a phone's first join is slow).
-	local total, finished, failures = #menuArt + #ui, 0, 0
+	local total, finished, failures = #menuArt, 0, 0
 	local stopAt, heard = os.clock() + 180, os.clock()
 	local function preload(items)
 		local queue, running = {}, 0
@@ -125,8 +132,6 @@ local function run()
 	-- don't queue in front of the menus'.
 	Root:WaitForChild("RoundAction"):FireServer("sendTown")
 	skip.Visible = true
-	preload(ui)
-	lap("menu pictures")
 	room, assets = Loading.waitTown()
 	lap("town arrived")
 	collect(room)
@@ -138,6 +143,8 @@ local function run()
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
+	-- The other screens' pictures last, behind everything you need to play (in order, they held the menus back).
+	task.spawn(preload, ui)
 	print("FlyFightPaper load times (seconds): " .. workspace:GetAttribute("LoadTimes")) -- readable on a phone: type /console in chat
 	-- The load recorder (server LoadLog): this join's times, read later in Studio.
 	local view = workspace.CurrentCamera.ViewportSize
