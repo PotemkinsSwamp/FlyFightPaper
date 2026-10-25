@@ -5,6 +5,7 @@ local Root=game.ReplicatedStorage:WaitForChild("FlyFightPaper")
 local Hangar=require(script.Parent.Hangar)
 local Options=require(script.Parent.Options)
 local Tutorial=require(script.Parent.Tutorial)
+local Loading=require(script.Parent.Loading)
 local Board=require(script.Parent.MenuBoard)
 local SettingsScreen=require(script.Parent.SettingsScreen)
 local PauseScreen=require(script.Parent.PauseScreen)
@@ -37,10 +38,10 @@ function Menu.start()
   state.screen,state.under="home",nil;state.fromDesk=false;render()
  end
  local board=Board.new(gui.Parent,{
-  play=function()action:FireServer("join")end,
+  play=function()Loading.town(function()action:FireServer("join")end)end,
   hangar=function()Menu.show("hangar")end,
   settings=function()state.screen="settings";render()end,
-  tutorial=function()Tutorial.choose(function()overlay(false)end)end, -- the Training board
+  tutorial=function()Loading.town(function()Tutorial.choose(function()overlay(false)end)end)end, -- the Training board
   prestige=function()action:FireServer("prestige")end,
   -- The mock shop is Studio-only; the server also refuses it on real profiles.
   shop=game:GetService("RunService"):IsStudio() and function()state.screen="shop";render()end or nil,
@@ -55,7 +56,7 @@ function Menu.start()
   -- Opened with Edit at the desk, Back (and Save & fly) go straight back to the desk.
   back=function()if state.fromDesk then home();overlay(false) else home() end end,
   flown=function()home();overlay(false)end,
-  fly=function()
+  fly=function()Loading.town(function()
    local draft=hangarScreen.draft();home();overlay(false)
    -- From the main menu, join first; the build is fitted once our plane is waiting at a desk.
    if not player:GetAttribute("InMatch") then action:FireServer("join") end
@@ -66,7 +67,7 @@ function Menu.start()
      task.wait(.25)
     end
    end)
-  end,
+  end)end,
  })
  -- Paper screens drawn full-screen; anything not listed still uses the dark panel.
  -- Esc over the Hangar (Alan 2026-10-22): the pause menu opens on top of it (state.under), and Resume or Esc again

@@ -10,7 +10,7 @@ local PaperUI = require(script.Parent.PaperUI)
 local Loading = {}
 
 local cover, status, fill, skip, shownAt
-local skipped = false
+local skipped, townReady = false, false
 local LINES = {
 	"The other pilots are setting up the classroom...", "Colouring in the pages...", "Folding paper planes...",
 	"Sharpening the pencils...", "Drawing the roads on the rug...", "Taping the town together...",
@@ -45,9 +45,10 @@ function Loading.show()
 		Position = UDim2.fromOffset(PaperUI.W + 250, 260),
 	}):Play()
 	-- What the other pilots are busy with while you load (Alan 2026-10-17), a new line every few seconds.
+	local mine = cover
 	task.spawn(function()
 		local i = math.random(#LINES)
-		while cover and cover.Parent do
+		while mine.Parent do
 			status.Text = LINES[i]; i = i % #LINES + 1
 			task.wait(2.5)
 		end
@@ -65,12 +66,6 @@ local function run()
 	local started, times = shownAt or os.clock(), {}
 	local function lap(step) table.insert(times, string.format("%s %.1f", step, os.clock() - started)); workspace:SetAttribute("LoadTimes", table.concat(times, ", ")) end
 	lap("server ready")
-	local room
-	repeat room = workspace:FindFirstChild("Arena") or workspace:FindFirstChild("GreyboxRoom"); if not room then task.wait() end until room
-	local assets = Root:WaitForChild("Assets")
-	lap("room")
-	while not NativeAssets.ready(room) or not NativeAssets.ready(assets) do task.wait(0.1) end
-	lap("replicated")
 	-- Everything the game shows, before you get in (Alan 2026-10-25: on a phone the game let him in long before the
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
@@ -87,7 +82,7 @@ local function run()
 	walk(UIAssets.results, menuArt)
 	table.insert(menuArt, UIAssets.hud.pinRed); seen[UIAssets.hud.pinRed] = true
 	walk(UIAssets, ui)
-	local town, shapes = {}, {}
+	local town, shapes, room, assets = {}, {}, nil, nil
 	local function collect(parent)
 		for _, item in parent:GetDescendants() do
 			if item:IsA("MeshPart") then
@@ -96,12 +91,10 @@ local function run()
 			elseif item:IsA("SurfaceAppearance") or item:IsA("Decal") or item:IsA("Texture") then table.insert(town, item) end
 		end
 	end
-	collect(room)
-	collect(assets)
 	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Batches go in a few
 	-- at a time; each counts when PreloadAsync returns. It can stall for good, so stop waiting once nothing has
 	-- finished for 15 s (3 minutes at most: a phone's first join is slow).
-	local total, finished, failures = #menuArt + #ui + #town, 0, 0
+	local total, finished, failures = #menuArt + #ui, 0, 0
 	local stopAt, heard = os.clock() + 180, os.clock()
 	local function preload(items)
 		local queue, running = {}, 0
@@ -125,9 +118,18 @@ local function run()
 	end
 	preload(menuArt)
 	lap("main menu")
+	-- Menus first (docs/plan/LOAD-PLAN.md step 1): only now does the server send the town (streaming), so its files
+	-- don't queue in front of the menus'.
+	Root:WaitForChild("RoundAction"):FireServer("sendTown")
 	skip.Visible = true
 	preload(ui)
 	lap("menu pictures")
+	room, assets = Loading.waitTown()
+	lap("town arrived")
+	collect(room)
+	collect(assets)
+	if workspace:FindFirstChild("CityRug") then collect(workspace.CityRug) end
+	total += #town
 	preload(town)
 	lap("preloaded")
 	workspace:SetAttribute("AssetLoadFailures", failures)
@@ -149,7 +151,30 @@ function Loading.run()
 	while not finished and not skipped do task.wait(0.1) end
 	if skipped and not finished then workspace:SetAttribute("LoadSkippedAt", os.clock() - shownAt) end
 	cover.Parent:Destroy()
-	Root.RoundAction:FireServer("mapReady")
+end
+
+-- The town's parts (not yet their pictures) are all on this phone: the room, the rug and the plane pieces.
+function Loading.waitTown()
+	local room
+	repeat room = workspace:FindFirstChild("Arena") or workspace:FindFirstChild("GreyboxRoom"); if not room then task.wait(0.1) end until room
+	local assets = Root:WaitForChild("Assets")
+	local function ready(model) return model and NativeAssets.ready(model) end
+	while not (ready(room) and ready(assets) and (ready(workspace:FindFirstChild("CityRug")) or room.Name == "GreyboxRoom")) do task.wait(0.1) end
+	return room, assets
+end
+
+-- Bootstrap calls this once everything that needs the town has started.
+function Loading.ready() townReady = true end
+
+-- Play, Fly and Training wait for the town if it isn't here yet (a fast Skip on a slow phone): the loading screen
+-- comes back until it is, then the action goes ahead.
+function Loading.town(action)
+	if not townReady then
+		Loading.show()
+		while not townReady do task.wait(0.1) end
+		cover.Parent:Destroy()
+	end
+	action()
 end
 
 return Loading

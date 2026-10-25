@@ -20,7 +20,10 @@ maps and 814 of 921 meshes are used by one piece only (fast mobile games reuse a
 textures many times); 2,015 of 2,441 SurfaceAppearances carry a texture pack and separate maps. First fix: the loading screen now loads the
 menus' ~176 pictures before anything else, then waits for the whole town, and prints its timings (phone: type
 /console in chat). Alan's phone (republished): it waits, but the loading screen showed only plain words: its art and
-font queued behind the town. So a ReplicatedFirst script now asks for those before the town arrives. Then every town bump/shine map went up at half size and flat ones were shared (46% fewer town picture pixels, every piece packed). The rest is the [load plan](../plan/LOAD-PLAN.md).
+font queued behind the town. So a ReplicatedFirst script now asks for those before the town arrives. Then every town bump/shine map went up at half size and flat ones were shared (46% fewer town picture pixels, every piece packed). Then menus first (2026-10-25): StreamingEnabled is on and the room and rug (`Arena`, `CityRug`) are
+`PersistentPerPlayer`: the server sends them to a player only when their menu pictures are in (`sendTown`, or after
+30 s), and they never stream out. Planes, speed pick-ups and the Range stage are `Persistent` (everyone gets them,
+as before). The menus work while the town arrives; Play, Fly and Training wait for it. The rest is the [load plan](../plan/LOAD-PLAN.md).
 
 ## Rules
 - Target: steady 60 FPS on Alan's PC in a 12-plane match, no pop-in (set in [AGENTS.md](../../AGENTS.md)).
@@ -35,7 +38,7 @@ font queued behind the town. So a ReplicatedFirst script now asks for those befo
 |---|---|
 | `src/client/DevTools.luau` | Studio only: F8 photo viewpoints, F6 live camera, F9 performance overlay, F7 test autopilot (`DevAutopilot` routes: `loop`, `hug`; through the ceiling ducts `duct`, `fan`, `branch`) |
 | `src/shared/NativeAssets.luau` | Counts map assets so loading knows when it is done |
-| `src/client/Loading.luau` | Loading screen: menu pictures, then every shape and picture of the town, before you get in (3 minutes at most) |
+| `src/client/Loading.luau` | Loading screen: menu pictures, then asks for the town; Skip once the menu is in; `Loading.town` holds Play until the town's parts are in |
 | `src/first/LoadingFirst.client.luau` | Runs before the game arrives (ReplicatedFirst): asks for the loading screen's pictures and font first, then the menus' |
 | `src/client/Options.luau` | Graphics quality setting |
 | `src/server/Bootstrap.server.luau` | Server frame-time readout in Studio |

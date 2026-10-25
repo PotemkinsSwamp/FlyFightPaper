@@ -38,6 +38,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
  end
  self.action.OnServerEvent:Connect(function(player,action,value)
   if type(action)~="string" then return end
+  if action=="sendTown" then self.flight:sendTown(player);return end
   if action=="mapReady" then
    if player:GetAttribute("ClassroomLoaded") then return end
    player:SetAttribute("ClassroomLoaded",true)

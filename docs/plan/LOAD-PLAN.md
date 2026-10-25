@@ -82,6 +82,11 @@ Close-ups shown (3 buildings, bump/shine maps at half size): Alan said go, whole
   button (the loading carries on behind the menu). Alan OK'd smaller building pictures where no difference shows,
   before/after close-ups first (step 2).
 
+- 2026-10-25 (load step 1, menus first): built. Streaming on; room + rug `PersistentPerPlayer`, sent when the
+  player's menu pictures are in (30 s fallback); menus start before the town, the rest of the game once its parts are
+  in; Play/Fly/Training wait for it. Studio Play: main menu 2.7 s, town parts in 4.0 s, all pictures 14.2 s; no
+  errors; joined a match with 12 planes, the town drawn; 425 / 0 tests. Next: Alan publishes, fresh phone join.
+
 ## Cost
 Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan's ChatGPT plan, free uploads, about
 3-4 sessions; the upload risk is managed by the contact-sheet check. Each phone test needs Alan to republish.

@@ -154,7 +154,7 @@ end
 
 function Stage.build(origin)
  local stage=Instance.new("Model");stage.Name="RangeStage"
- stage.ModelStreamingMode=Enum.ModelStreamingMode.Atomic -- arrives whole, so RangeTargets finds every plate and stick
+ stage.ModelStreamingMode=Enum.ModelStreamingMode.Persistent -- arrives whole and stays, so RangeTargets finds every plate and stick
  local function at(x,y,z) return origin*CFrame.new(x,y,z) end
  -- The painted sky cloth and the box round it (floor, ceiling, the wings and the dark hall the plane hangs in).
  paint(stage,origin,"backdrop",0,-144,-820,3000,1688)

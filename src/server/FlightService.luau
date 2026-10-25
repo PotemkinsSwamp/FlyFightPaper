@@ -30,6 +30,13 @@ function Service.new()
  -- in Studio and saved in the place (tools/save_place.py keeps it through rebuilds), so the server builds none at start.
  local NativeAssets=require(Root.Shared.NativeAssets)
  NativeAssets.mark(self.room);NativeAssets.mark(Root:WaitForChild("Assets"))
+ -- Menus first (docs/plan/LOAD-PLAN.md step 1): with streaming on, the room and the rug reach a player only once
+ -- their menu pictures are in (sendTown), so the town's ~1,600 files don't queue in front of the menus. Once sent they
+ -- never stream out (the phone's crash checks need every wall). 30 s fallback in case the client never asks.
+ self.town={self.room,workspace:FindFirstChild("CityRug")}
+ for _,model in self.town do model.ModelStreamingMode=Enum.ModelStreamingMode.PersistentPerPlayer end
+ local rug=self.town[2];if rug then NativeAssets.mark(rug) end
+ Players.PlayerAdded:Connect(function(player) task.delay(30,function() self:sendTown(player) end) end)
  self.planes=Instance.new("Folder");self.planes.Name="Planes";self.planes.Parent=workspace
  self.template=SS:WaitForChild("Assets"):WaitForChild("PaperPlane")
  self.catalog=Catalog.new(require(Root.Generated.Catalog),Gameplay)
@@ -55,7 +62,7 @@ function Service.new()
  end
  -- Speed power-ups at the fly-throughs: the server owns pick-up and respawn; clients spin the markers.
  local Pickups=Gameplay.world.speed_pickups
- self.pickups={};local pickupFolder=Instance.new("Folder");pickupFolder.Name="SpeedPickups"
+ self.pickups={};local pickupFolder=Instance.new("Model");pickupFolder.Name="SpeedPickups";pickupFolder.ModelStreamingMode=Enum.ModelStreamingMode.Persistent
  for i,spot in ipairs(Pickups.spots) do
   local marker=Instance.new("Part");marker.Name="SpeedPickup"..i;marker.Anchored=true;marker.CanCollide=false;marker.CanQuery=false;marker.CanTouch=false
   marker.Size=Vector3.new(table.unpack(spot.box));marker.Transparency=1;marker.Position=Vector3.new(table.unpack(spot.at));marker:SetAttribute("ReadyAt",0);marker.Parent=pickupFolder
@@ -171,7 +178,7 @@ end
 function Service:build(p)
  -- A returning account gets a new identity even when its previous pilot was removed.
  self.lifeSerial=(self.lifeSerial or 0)+1;p.life=self.lifeSerial;p.stats=assert(self.catalog:deriveStats(p.loadout))
- local model=self.template:Clone();model.Name=p.id
+ local model=self.template:Clone();model.Name=p.id;model.ModelStreamingMode=Enum.ModelStreamingMode.Persistent -- every plane, everywhere
  -- Root is only the flight body; it never collides. The exact-shape Colliders below decide what the plane touches.
  local body=model:WaitForChild("Root");model.PrimaryPart=body;body.Anchored=true;body.CanCollide=false;body.CanQuery=true;body.CollisionGroup="Planes"
  body.CustomPhysicalProperties=PhysicalProperties.new(0.3,0.15,0.1)
@@ -605,5 +612,11 @@ function Service:step(dt)
    p.lastPosition,p.lastCFrame=p.body.Position,p.body.CFrame;p.previousVelocity=p.body.AssemblyLinearVelocity
   end
  end
+end
+-- The town goes to this player now (their menu pictures are in, or 30 s passed); asked once per player.
+function Service:sendTown(player)
+ if not player.Parent or player:GetAttribute("TownSent") then return end
+ player:SetAttribute("TownSent",true)
+ for _,model in self.town do model:AddPersistentPlayer(player) end
 end
 return Service
