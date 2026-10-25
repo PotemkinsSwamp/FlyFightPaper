@@ -20,7 +20,7 @@ maps and 814 of 921 meshes are used by one piece only (fast mobile games reuse a
 textures many times); 2,015 of 2,441 SurfaceAppearances carry a texture pack and separate maps. First fix: the loading screen now loads the
 menus' ~176 pictures before anything else, then waits for the whole town, and prints its timings (phone: type
 /console in chat). Alan's phone (republished): it waits, but the loading screen showed only plain words: its art and
-font queued behind the town. So a ReplicatedFirst script now asks for those before the town arrives. The rest is the [load plan](../plan/LOAD-PLAN.md) (draft for Alan's OK).
+font queued behind the town. So a ReplicatedFirst script now asks for those before the town arrives. Then every town bump/shine map went up at half size and flat ones were shared (46% fewer town picture pixels, every piece packed). The rest is the [load plan](../plan/LOAD-PLAN.md).
 
 ## Rules
 - Target: steady 60 FPS on Alan's PC in a 12-plane match, no pop-in (set in [AGENTS.md](../../AGENTS.md)).

@@ -23,6 +23,10 @@ mistake would be easy to make twice.
 - **"Roblox rejected this upload" can be Roblox's own hiccup, not moderation.** Read the saved operation
   (`parts/upload-tmp.json`): `"internal error"` is a server fault; delete that file and re-run `town_toys.py hero` (it
   resumes). Three buildings uploading side by side worked fine (2026-10-16, ~1,000 files in ~40 min).
+- **"Reviewing" is not the verdict, and plain pictures can still be rejected (2026-10-25).** Of 1,187 bump/shine
+  re-uploads, 1,186 came back Approved and one plain grey roughness map (ring-binder roof) Rejected. Read each new
+  id's final `moderationResult` (Assets API GET, read only) before using any; never re-send a rejected picture,
+  keep the piece's earlier accepted one.
 - **A freshly uploaded mesh can look invisible for a few seconds** after a place rebuild. Look again before debugging.
 
 - **Fixing made-up text in AI pictures** (rulers, 2026-10-17): erase each dark glyph plus 3 px around it (AI text
@@ -139,6 +143,12 @@ mistake would be easy to make twice.
   every texture map (SurfaceAppearance ones too) when judging a map's weight.
 - **New models need texture packs.** After placing new models, Play gets slow (over a minute) until Alan presses
   Ctrl+S and `python tools/town_toys.py packs FlyFightPaper-WORKING.rbxlx` then `build` harvest the packs.
+- **New maps on many pieces at once: Studio re-makes their texture packs and gets throttled (2026-10-25).** Swapping
+  ~2,000 SurfaceAppearances made Studio ask for ~2,000 packs; most failed with HTTP 429 ("PBR textures may not be
+  visible"). A piece without its pack draws a little differently (the notebook tower's walls looked brighter), and
+  players see the pack. Re-make the missing ones slowly (new SurfaceAppearance, 10 every 25 s). Scripts can't read
+  `TexturePack`, but `SerializationService:SerializeInstancesAsync` of the SurfaceAppearance shows it
+  ("TexturePack" then the id), so packs can be checked and collected without saving the place.
 - **Rojo live sync sometimes can't set MeshIds.** After syncing new mesh parts, check each `MeshId` is not empty
   in Studio before judging; rebuild with `save_place.py` only if they arrive empty. The sync can take a few seconds.
 - **Studio only draws when it is in front.** Behind other windows, screenshots time out, frame code
