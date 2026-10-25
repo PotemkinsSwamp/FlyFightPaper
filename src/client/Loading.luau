@@ -103,7 +103,7 @@ local function run()
 	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Batches go in a few
 	-- at a time; each counts when PreloadAsync returns. It can stall for good, so stop waiting once nothing has
 	-- finished for 15 s (3 minutes at most: a phone's first join is slow).
-	local total, finished, failures = #menuArt, 0, 0
+	local total, finished, failures = #menuArt + #ui, 0, 0
 	local stopAt, heard = os.clock() + 180, os.clock()
 	local function preload(items)
 		local queue, running = {}, 0
@@ -126,12 +126,15 @@ local function run()
 		for _ = 1, 6 do task.spawn(worker) end
 		while (running > 0 or #queue > 0) and os.clock() < stopAt and os.clock() - heard < 15 do task.wait(0.1) end
 	end
+	-- Strict order (Alan 2026-10-25): the loading screen's art (above), then every menu's, then the town.
 	preload(menuArt)
 	lap("main menu")
+	skip.Visible = true
+	preload(ui)
+	lap("menu pictures")
 	-- Menus first (docs/plan/LOAD-PLAN.md step 1): only now does the server send the town (streaming), so its files
 	-- don't queue in front of the menus'.
 	Root:WaitForChild("RoundAction"):FireServer("sendTown")
-	skip.Visible = true
 	room, assets = Loading.waitTown()
 	lap("town arrived")
 	collect(room)
@@ -143,8 +146,6 @@ local function run()
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
-	-- The other screens' pictures last, behind everything you need to play (in order, they held the menus back).
-	task.spawn(preload, ui)
 	print("FlyFightPaper load times (seconds): " .. workspace:GetAttribute("LoadTimes")) -- readable on a phone: type /console in chat
 	-- The load recorder (server LoadLog): this join's times, read later in Studio.
 	local view = workspace.CurrentCamera.ViewportSize
