@@ -5,6 +5,8 @@
   python tools/town_toys.py build v4         the new town: toy-spots-v4.json -> assets/models/city-toys-v4.rbxmx
   python tools/town_toys.py rearm FOLDER PREFIX...  archive a hero piece's old maps on Roblox and forget them (hero re-uploads)
   python tools/town_toys.py hero FOLDER       upload a hero building's pieces (FOLDER/parts/*.fbx + maps from tools/art/hero.py)
+  python tools/town_toys.py repack FOLDER     upload a repacked building (tools/art/repack.py): each shared sheet once, each
+                                             piece's FBX; records in FOLDER/repacked/ (readlua/meshes take FOLDER/repacked)
   python tools/town_toys.py stand FOLDER X Z ANGLE   add the hero's pieces to toy-placements.json, base centre at X, Z
   python tools/town_toys.py kit NAME X Z ANGLE     stand a kit recipe, replacing its earlier placement
   python tools/town_toys.py readlua FOLDER     Luau to run in Studio: reads each uploaded piece's MeshId and size
@@ -183,6 +185,27 @@ def hero(folder):
             rec[key] = send(path, key, f"FFP tower part {fbx.stem.split('-')[0]} {key}", fbx.with_name("upload-tmp.json"))
             record.write_text(json.dumps(rec, indent=2) + "\n")
         print(fbx.stem, rec)
+
+
+def repack(folder):
+    d = ROOT / folder / "repacked"
+    plan = json.loads((d / "repack.json").read_text())
+    sheets = d / "sheets.upload.json"
+    ids = json.loads(sheets.read_text()) if sheets.exists() else {}
+    for sheet in plan["sheets"]:
+        for key in ("color", "normal", "roughness", "metalness"):
+            tag, path = f"{sheet['name']}-{key}", d / f"{sheet['name']}-{key}.png"
+            if tag in ids or not path.exists(): continue
+            ids[tag] = send(path, key, f"FFP tower sheet {key}", d / "upload-tmp.json")
+            sheets.write_text(json.dumps(ids, indent=2) + "\n")
+        for stem in sheet["pieces"]:
+            record = d / f"{stem}.upload.json"
+            rec = json.loads(record.read_text()) if record.exists() else {}
+            if "model" not in rec:
+                rec["model"] = send(d / f"{stem}.fbx", "model", f"FFP tower part {stem.split('-')[0]} model", d / "upload-tmp.json")
+            rec.update({k: ids[f"{sheet['name']}-{k}"] for k in ("color", "normal", "roughness", "metalness") if f"{sheet['name']}-{k}" in ids})
+            record.write_text(json.dumps(rec, indent=2) + "\n")
+            print(stem, rec)
 
 
 def stand(folder, x, z, angle):
@@ -396,7 +419,8 @@ def monorail_train(recs, missing):
 
 def readlua(folder):
     """Luau for Studio's execute_luau: LoadAsset each uploaded piece, return its MeshId and size as JSON for `meshes`."""
-    ids = {p.name.removesuffix(".upload.json"): json.loads(p.read_text())["model"] for p in (ROOT / folder / "parts").glob("*.upload.json")}
+    d = ROOT / folder; d = d / "parts" if (d / "parts").is_dir() else d
+    ids = {p.name.removesuffix(".upload.json"): json.loads(p.read_text())["model"] for p in d.glob("*.upload.json") if p.name != "sheets.upload.json"}
     print("local H,I,o=game:GetService('HttpService'),game:GetService('InsertService'),{} for k,id in pairs(H:JSONDecode('"
           + json.dumps(ids) + "')) do local m=I:LoadAsset(id) local p=m:FindFirstChildWhichIsA('MeshPart',true) "
           "o[k]={mesh=p.MeshId:match('%d+'),initial={p.Size.X,p.Size.Y,p.Size.Z}} m:Destroy() end return H:JSONEncode(o)")
@@ -406,7 +430,8 @@ def meshes(folder, result):
     """Write `readlua`'s JSON (a file, or the text itself) into each piece's upload.json."""
     data = json.loads(Path(result).read_text() if Path(result).exists() else result)
     for k, v in data.items():
-        record = ROOT / folder / "parts" / f"{k}.upload.json"
+        d = ROOT / folder; d = d / "parts" if (d / "parts").is_dir() else d
+        record = d / f"{k}.upload.json"
         rec = json.loads(record.read_text()); rec.update(v)
         record.write_text(json.dumps(rec, indent=2) + "\n")
     print("read", len(data), "pieces")
@@ -474,7 +499,7 @@ def rearm(folder, *prefixes):
 
 if __name__ == "__main__":
     cmd, *args = sys.argv[1:]
-    {"upload": lambda: upload(args), "pull": lambda: pull(*args), "build": lambda: build(*args), "hero": lambda: hero(*args),
+    {"upload": lambda: upload(args), "pull": lambda: pull(*args), "build": lambda: build(*args), "hero": lambda: hero(*args), "repack": lambda: repack(*args),
      "stand": lambda: stand(*args), "kit": lambda: kit(*args), "readlua": lambda: readlua(*args),
      "meshes": lambda: meshes(*args), "placelua": lambda: placelua(*args), "drop": lambda: drop(*args),
      "packs": lambda: packs(*args), "rearm": lambda: rearm(*args)}[cmd]()

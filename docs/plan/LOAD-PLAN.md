@@ -89,6 +89,12 @@ Close-ups shown (3 buildings, bump/shine maps at half size): Alan said go, whole
 - 2026-10-25 (load step 2, load recorder): built. Times now count from the first script on the phone (ReplicatedFirst);
   each join sends them with its device kind and screen size, the server keeps the newest 50 (`LoadLog`). Studio test:
   the join appeared with its numbers. Check left: Alan's published join shows up.
+- 2026-10-25 (load step 3, repack): method chosen so the look can't change: each building's UV islands are only
+  moved by whole pixels (no scaling, no turning) onto shared sheets, so every pixel copies byte for byte (Codex script
+  `tools/art/repack.py`, checked by sampling old vs new). Open question: does Roblox keep a 2048 picture at 2048? Its
+  docs say both "up to 4096" and "1024 x 1024"; a 2048 stripe test (id 112459253586917) reads back as 1024, but
+  EditableImage itself stops at 1024, so a close-up in a drawing Studio decides. If 2048 shrinks, sheets stay 1024
+  (fewer gains: tighter packing only).
 
 ## Cost
 Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan's ChatGPT plan, free uploads, about

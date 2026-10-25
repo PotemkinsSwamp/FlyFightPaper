@@ -36,3 +36,7 @@ assets/rug/replan-proto.json
 assets/models/planes/paper-set/contact-sheets/
 assets/models/planes/paper-set/renders/*
 !assets/models/planes/paper-set/renders/game-distance.png
+
+# Repacked town sheets and pieces (tools/art/repack.py remakes them byte for byte); only their json records are kept.
+assets/models/*/repacked/*.png
+assets/models/*/repacked/*.fbx
