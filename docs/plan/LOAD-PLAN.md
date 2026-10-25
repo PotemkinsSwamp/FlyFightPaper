@@ -19,9 +19,10 @@ downloaded). Nothing pops in while flying. The town looks exactly as it does tod
 - Streaming is off: a phone gets the whole town at once, and the menu pictures wait in the same line.
 
 ## How it works (four steps, cheapest first)
-1. **Menus first, and measure.** The loading screen downloads the menus' ~176 pictures before anything else, then
-   prints how long each step took (phone: type /console in chat). Alan republishes and reads the numbers: they say
-   whether the wait is the world arriving, the pictures, or the shapes.
+1. **Load before you get in.** The loading screen downloads the menus' ~176 pictures first, then every shape and
+   picture of the town (up to 3 minutes on a slow first join, with a real progress bar), and only then lets you in.
+   It prints how long each step took (phone: type /console in chat), a bonus, not a test: what Alan sees counts
+   (Alan 2026-10-25).
 2. **Same-look trims (no new art).** Flat pictures become one tiny shared picture per value, or none (a flat bump
    map draws the same as no bump map): ~340 fewer downloads. Every part gets its texture pack (after a Ctrl+S, the
    pack harvest `town_toys.py packs`). Checked with side-by-side close-ups before and after.
@@ -36,7 +37,7 @@ downloaded). Nothing pops in while flying. The town looks exactly as it does tod
    re-upload ~600 files (each checked on a contact sheet first), redo the saved collision (~40 min) and the packs.
 
 ## Build order after Alan's OK
-Step 1 now (code only). Step 2 next (no uploads except the tiny shared pictures). Step 3 after Alan OKs the pop-in
+Step 1 now (code only; Alan's go 2026-10-25). Step 2 next (no uploads except the tiny shared pictures). Step 3 after Alan OKs the pop-in
 test plan. Step 4 only if Alan's phone numbers after steps 1-3 still show pictures as the wait; its own short plan
 first.
 
@@ -49,7 +50,10 @@ first.
 (waiting)
 
 ## Progress
-- 2026-10-25: step 1 written (menu pictures first, load times printed); not yet run (Studio had no place open).
+- 2026-10-25: step 1 built: a ReplicatedFirst script asks for the loading screen's art and font, then the menus',
+  before the game arrives; the loading screen waits for the menus' pictures and the town (batches of 40, the bar is
+  the true share finished, 3 minutes at most) and always lets the player in. Studio: 6.4 s to get in, 425 / 0 tests.
+  The first build Alan published read SurfaceAppearance maps (not allowed) and stuck on the loading screen.
 
 ## Cost
 Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan's ChatGPT plan, free uploads, about

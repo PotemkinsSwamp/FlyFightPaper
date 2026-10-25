@@ -131,6 +131,9 @@ mistake would be easy to make twice.
 - **Exact collision can fill a hollow piece's opening.** The south station's lunch tin got a shape that blocked a
   wedge of its own track tunnel (2026-10-17). Check tunnels with a grid of raycasts after new shapes are computed;
   a piece that fails goes in `WALLS` in `tools/town_toys.py` (see-through mesh + plain invisible walls).
+- **Game scripts can't read a SurfaceAppearance's maps (2026-10-25).** `ColorMap` and the other maps need plugin
+  rights: reading one in a LocalScript errors, and it kept a published build on the loading screen for good. Hand
+  PreloadAsync the SurfaceAppearance itself. Loading is wrapped so any error still lets the player in.
 - **A phone downloads the whole map when streaming is off (2026-10-25).** ~4,500 assets made Alan's phone wait
   minutes, and the menus' pictures queued behind the town's. Preload the menu art first (`Loading.luau`), and count
   every texture map (SurfaceAppearance ones too) when judging a map's weight.

@@ -51,8 +51,7 @@ function Loading.show()
 	cover.Visible = true
 end
 
-function Loading.run()
-	if not cover then Loading.show() end
+local function run()
 
 	-- The words rotate on their own (see LINES); this only moves the crayon bar.
 	local function progress(fraction)
@@ -68,56 +67,70 @@ function Loading.run()
 	lap("room")
 	while not NativeAssets.ready(room) or not NativeAssets.ready(assets) do task.wait(0.1) end
 	lap("replicated")
-	local list, seen = {}, {}
+	-- Everything the game shows, before you get in (Alan 2026-10-25: on a phone the game let him in long before the
+	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
+	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
+	-- (MeshParts, SurfaceAppearances, decals) and PreloadAsync fetches what each one draws.
+	local ui, seen = {}, {}
+	local function walk(t)
+		for _, v in t do
+			if type(v) == "table" then walk(v)
+			elseif type(v) == "string" and v:find("^rbxassetid://%d") and not seen[v] then seen[v] = true; table.insert(ui, v) end
+		end
+	end
+	walk(UIAssets)
+	local town, shapes = {}, {}
 	local function collect(parent)
 		for _, item in parent:GetDescendants() do
-			-- Pictures only: PreloadAsync rejects mesh ids (all ~440 failed every join); Roblox streams meshes itself.
 			if item:IsA("MeshPart") then
-				if item.TextureID ~= "" and not seen[item.TextureID] then seen[item.TextureID] = true; table.insert(list, item.TextureID) end
-			elseif item:IsA("Decal") or item:IsA("Texture") then
-				if item.Texture ~= "" and not seen[item.Texture] then seen[item.Texture] = true; table.insert(list, item.Texture) end
-			end
+				local key = item.MeshId .. "|" .. item.TextureID -- one part per shape (toys repeat a lot)
+				if not shapes[key] then shapes[key] = true; table.insert(town, item) end
+			elseif item:IsA("SurfaceAppearance") or item:IsA("Decal") or item:IsA("Texture") then table.insert(town, item) end
 		end
 	end
 	collect(room)
 	collect(assets)
-	local failed, completed, loaded = {}, 0, 0
-	-- PreloadAsync can stall for good, and in Studio it reports nearly every asset as failed even though the art
-	-- shows. So stop waiting once nothing has answered for 4 s (30 s at most), and only retry when most assets
-	-- loaded (if most failed, the check itself is broken and retrying just makes the player wait).
-	local stopAt = os.clock() + 30
-	local function preload(ids)
-		for _, id in ids do failed[id] = true end
-		local done, heard = false, os.clock()
-		task.spawn(function()
-			pcall(function()
-				Content:PreloadAsync(ids, function(id, fetch)
-					completed += 1
-					heard = os.clock()
-					progress(math.min(completed, #list) / math.max(#list, 1))
-					if fetch == Enum.AssetFetchStatus.Success then failed[id] = nil; loaded += 1 end
+	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Batches go in a few
+	-- at a time; each counts when PreloadAsync returns. It can stall for good, so stop waiting once nothing has
+	-- finished for 15 s (3 minutes at most: a phone's first join is slow).
+	local total, finished, failures = #ui + #town, 0, 0
+	local stopAt, heard = os.clock() + 180, os.clock()
+	local function preload(items)
+		local queue, running = {}, 0
+		for i = 1, #items, 40 do table.insert(queue, table.move(items, i, math.min(i + 39, #items), 1, {})) end
+		local function worker()
+			running += 1
+			while #queue > 0 and os.clock() < stopAt do
+				local batch = table.remove(queue, 1)
+				pcall(function()
+					Content:PreloadAsync(batch, function(_, fetch)
+						if fetch ~= Enum.AssetFetchStatus.Success then failures += 1 end
+					end)
 				end)
-			end)
-			done = true
-		end)
-		while not done and os.clock() < stopAt and os.clock() - heard < 4 do task.wait(0.1) end
+				finished += #batch; heard = os.clock()
+				progress(finished / math.max(total, 1))
+			end
+			running -= 1
+		end
+		for _ = 1, 6 do task.spawn(worker) end
+		while (running > 0 or #queue > 0) and os.clock() < stopAt and os.clock() - heard < 15 do task.wait(0.1) end
 	end
-	preload(list)
+	preload(ui)
+	lap("menu pictures")
+	preload(town)
 	lap("preloaded")
-	for attempt = 1, 2 do
-		local retry = {}
-		for id in failed do table.insert(retry, id) end
-		-- A handful of misses isn't worth seconds of waiting (one failed picture cost ~5 s): retry only past 5%.
-		if #retry <= #list * 0.05 or loaded < #retry or os.clock() + attempt >= stopAt then break end
-		progress(1)
-		task.wait(attempt)
-		preload(retry)
-	end
-	local failures = 0
-	for _ in failed do failures += 1 end
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
+	print("FlyFightPaper load times (seconds): " .. workspace:GetAttribute("LoadTimes")) -- readable on a phone: type /console in chat
+end
+
+function Loading.run()
+	if not cover then Loading.show() end
+	-- Whatever goes wrong while loading, the player still gets in (2026-10-25: an error here kept a published
+	-- build on the loading screen for good).
+	local ok, problem = pcall(run)
+	if not ok then warn("Loading stopped early: " .. tostring(problem)) end
 	cover.Parent:Destroy()
 	Root.RoundAction:FireServer("mapReady")
 end

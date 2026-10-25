@@ -28,6 +28,12 @@
         }
       }
     },
+    "ReplicatedFirst": {
+      "$ignoreUnknownInstances": true,
+      "FlyFightPaper": {
+        "$path": "src/first"
+      }
+    },
     "ServerScriptService": {
       "$ignoreUnknownInstances": true,
       "FlyFightPaper": {

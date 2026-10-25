@@ -87,7 +87,8 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/PaperUI.luau` | Shared builder for the paper screens; phone sizes (`isPhone`, `phone`) and the notch-safe sheet |
 | `src/client/ScreenFit.luau` | The one size rule ([screen fit plan](../plan/SCREEN-FIT-PLAN.md)): screen kind (phone, tablet, PC) and each piece's scale between its least and most |
 | `src/client/ScreenCheck.luau` | Studio tool: lists overlapping pieces, pieces under Roblox's buttons or off screen, small words and small taps |
-| `src/shared/UIAssets.luau` | Uploaded menu and HUD image IDs |
+| `src/first/UIAssets.luau` | Uploaded menu and HUD image IDs (in ReplicatedFirst, so the loading screen can fetch them first; `src/shared/UIAssets.luau` points to it) |
+| `src/shared/UIAssets.luau` | One line: returns `src/first/UIAssets.luau` |
 | `src/shared/Lines.luau` | Rotating event lines (plane down, landing, desk service, kill feed, between rounds); one is picked at random, never twice in a row ([decision](../decisions/2026-10-17-fresh-rotating-lines.md)) |
 
 ## Tuning numbers
