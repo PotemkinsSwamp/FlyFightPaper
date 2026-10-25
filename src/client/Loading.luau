@@ -71,16 +71,18 @@ local function run()
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
 	-- (MeshParts, SurfaceAppearances, decals) and PreloadAsync fetches what each one draws.
 	-- The main menu's own pictures first (the board, its strips, the level bar, the pin), then every other screen's.
+	-- Pictures go in on picture labels: PreloadAsync doesn't fetch id text (see first/LoadingFirst).
+	local function image(id) local label = Instance.new("ImageLabel"); label.Image = id; return label end
 	local menuArt, ui, seen = {}, {}, {}
 	local function walk(t, into)
 		for _, v in t do
 			if type(v) == "table" then walk(v, into)
-			elseif type(v) == "string" and v:find("^rbxassetid://%d") and not seen[v] then seen[v] = true; table.insert(into, v) end
+			elseif type(v) == "string" and v:find("^rbxassetid://%d") and not seen[v] then seen[v] = true; table.insert(into, image(v)) end
 		end
 	end
 	walk(UIAssets.mainmenu, menuArt)
 	walk(UIAssets.results, menuArt)
-	table.insert(menuArt, UIAssets.hud.pinRed); seen[UIAssets.hud.pinRed] = true
+	table.insert(menuArt, image(UIAssets.hud.pinRed)); seen[UIAssets.hud.pinRed] = true
 	walk(UIAssets, ui)
 	local town, shapes, room, assets = {}, {}, nil, nil
 	local function collect(parent)
@@ -98,6 +100,7 @@ local function run()
 	local stopAt, heard = os.clock() + 180, os.clock()
 	local function preload(items)
 		local queue, running = {}, 0
+		heard = os.clock() -- each step gets its own 15 s (2026-10-25: a stalled step made the next one quit at once)
 		for i = 1, #items, 40 do table.insert(queue, table.move(items, i, math.min(i + 39, #items), 1, {})) end
 		local function worker()
 			running += 1
