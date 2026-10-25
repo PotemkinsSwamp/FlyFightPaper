@@ -1,9 +1,9 @@
-# LATEST → handoff-2026-10-25-load-phone-loading.md
+# LATEST → handoff-2026-10-25-load-smaller-maps.md
 
-★ START HERE: Goal (Alan): the game loads on a phone in under a minute and looks the same. Build half-size
-normal/roughness/metalness maps for the town (colour untouched, flat maps shared), contact-sheet, upload (Alan's go,
-whole town), swap ids in; done when Studio looks the same and Alan's phone loads clearly faster.
+★ START HERE: Goal (Alan): a phone joins in under a minute and looks the same. Smaller town maps + fresh packs are in
+the open Studio copy and the local file; next is Alan's publish + phone join, and his OK on the few buildings whose
+look changed (`.planning/load-maps-town-before-after.jpg`) and on skipping streaming.
 
-Quick state: main, Studio has the published cloud copy open (Alan re-signed in), Rojo serving on 34872. Screen fit
-step 2 done (big phone + PC); loading: art first, main menu then Skip (e3c21430, not yet republished).
-Previous: handoff-2026-10-24-ui-screen-fit.md (UI lane: small iPhone/iPad re-check, then steps 3-6).
+Quick state: main d2a0e5bb (+handoff), Studio has the cloud copy open with the swap (unsaved; Alan publishes from it).
+Previous: handoff-2026-10-25-load-phone-loading.md (load lane), handoff-2026-10-24-ui-screen-fit.md (UI lane: small
+iPhone/iPad re-check, then steps 3-6).

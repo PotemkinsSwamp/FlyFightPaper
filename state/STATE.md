@@ -1,20 +1,20 @@
-# Since Alan last checked (2026-10-25)
-- **Screen fit step 2 done:** Menu then the match strip in one row; news, lesson note, warnings and match tip stack
-  under it; small phones slide them into the gap between Health/Lift and the kill feed; the match tip stays up top
-  on phones (a bit smaller); 2 kill-feed lines on a phone; desk stat sheet level with the photo; desk photo no longer
-  misses a wing.
-- **Phone loading (your phone test):** about 2 minutes, menus without their paper. Cause: ~4,500 separate town
-  files, nothing reused, streaming off. Built: loading screen art + font fetched before the game arrives, main menu
-  pictures first, then a Skip button while the rest loads, a true progress bar, and it always lets you in.
-  The first loading build you published got stuck (my bug, fixed and committed in c1114536).
-- You OK'd half-size bump/shine maps for the whole town (close-ups showed no difference): next session uploads them.
+# Since Alan last checked (2026-10-25, night)
+- **Smaller town pictures done (your go):** every building/toy bump-shine map is half size (1,154 re-uploads), flat
+  ones share 33 tiny pictures, colour untouched: town pictures 46% smaller, every piece has its texture pack. In the
+  open Studio copy AND the local place file. Roblox approved 1,186, rejected 1 (plain grey; 4 pieces keep the old one).
+- **One look change to judge:** the smaller pictures draw identically (0.5/255), but a few buildings' old saved packs
+  were stale (pre-10-Oct materials). Fresh packs: cereal-box tower grainier, notebook/clock towers paler, ceiling moon
+  darker. `.planning/load-maps-town-before-after.jpg`.
+- **Streaming (load step 3): I propose skipping it** (whole town in view; the plane checks crashes on the phone, so it
+  would download the same files). Why: `docs/plan/LOAD-PLAN.md`, "Step 3 looked at closely".
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: a phone's first join is far too slow (about 2 minutes); fix in progress (smaller maps, then streaming).
-Not yet: Skip build not republished; small iPhone and iPad not re-checked since the gap change.
+Broken: a phone's first join is far too slow (about 2 minutes); smaller maps + Skip built, not yet on your phone.
+Not yet: Skip + smaller maps not published; small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
+Smaller maps: bell tower + sweet-shop swirl roof keep full-size maps (moderation caution).
 Loading: Skip appears once the main menu's pictures are in; the loading waits 3 minutes at most.
   On a phone the match tip may cover the news note and kill feed (never Health/Lift).
 Screen fit: screen kinds by the short side (phone under 540 points, tablet under 900); touch buttons kept thumb-sized
@@ -46,11 +46,15 @@ Zone 680-840 across by building density; bots on the zone 30/60/85% (rookie/regu
 Points: fold assist share rounded to 5 (10-80); outside-zone fold 40%; paper targets 50 points each, server-checked.
 
 Waiting on Alan
+- **Publish from the open Studio copy** (it has the smaller maps + Skip), then join on your phone: is it clearly
+  faster? Does the town look right? (/console in chat shows the load times.)
+- Look at `.planning/load-maps-town-before-after.jpg`: OK with the few buildings' fresh look?
+- Streaming: OK to skip it (load plan step 3)?
+- Then switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
 - Touch: try the stick and buttons in the Device Simulator (now on): does the stick turn too fast or slow? Buttons
   the right size? Watch for the yellow dot in the Range.
-- Your call later: match bots' guns still cross at 150 studs. Backlog: a new fan sound.
-0. Studio: File > Save to File (keeps the latest fixes in the place file).
+- Later: bots' guns cross at 150 studs (your call); backlog: a new fan sound.
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK; then products, passes, VIP perks.
 3. Touch step 6: a private publish so you can play on your phone (your go then).
