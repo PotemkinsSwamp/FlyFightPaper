@@ -77,7 +77,7 @@ local function run()
 	while not game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtAt") and os.clock() - started < 10 do task.wait(0.05) end
 	local artFailed = game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtFailed") or 0
 	local first = game.ReplicatedFirst.FlyFightPaper
-	lap(string.format("loading screen (queue %s then %d%s)", tostring(first:GetAttribute("QueueAtStart")), Content.RequestQueueSize,
+	lap(string.format("loading screen (queue %s, slowest %s%s)", tostring(first:GetAttribute("QueueAtStart")), tostring(first:GetAttribute("ArtSlowest")),
 		artFailed > 0 and (", " .. artFailed .. " failed") or ""))
 	-- Everything the game shows, before you get in (Alan 2026-10-25: on a phone the game let him in long before the
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
@@ -121,8 +121,8 @@ local function run()
 		end
 	end
 	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Menus one file per
-	-- request, 12 side by side; the town's thousands in groups: PreloadAsync fetches a list one file after another, and on a phone each round trip is slow
-	-- (2026-10-25: 28 menu pictures in one call took over 15 s). A request can stall for good, so a step stops
+	-- request, 4 side by side (so the bar moves and none waits behind a whole list); the town's thousands in groups.
+	-- More side by side made a phone slower (12 at once: 1 min 45 s in all). A request can stall for good, so a step stops
 	-- waiting once nothing has finished for 45 s (3 minutes in all); a step cut short shows as "cut" in the times.
 	-- The bar: the menus fill its first 40%, the training range to 50%, the town the rest.
 	local total, finished, failures, from, span = 1, 0, 0, 0, 0
@@ -158,7 +158,7 @@ local function run()
 		return (running > 0 or nextItem <= #items) and " cut" or ""
 	end
 	step(menus, 0, 0.4)
-	lap("menus" .. preload(menus, 1, 12))
+	lap("menus" .. preload(menus, 1, 4))
 	-- Only now does the server send the town (streaming, docs/plan/LOAD-PLAN.md step 1), so it doesn't queue in front
 	-- of the menus. Its parts arrive in a moment; with them in, Skip is safe: the game plays, and buildings still
 	-- without their pictures fill in while you fly.
@@ -173,12 +173,13 @@ local function run()
 	collect(room)
 	if workspace:FindFirstChild("CityRug") then collect(workspace.CityRug) end
 	step(world, 0.4, 0.1)
-	lap("range" .. preload(world, 1, 12))
+	lap("range" .. preload(world, 1, 4))
 	step(planes, 0.5, 0.05)
-	lap("planes" .. preload(planes, 1, 12))
-	-- The town in groups of 40, 12 at a time: fastest of the sizes tried (2026-10-25: 40x6 9 s, 20x24 35 s, 5x48 20 s).
+	lap("planes" .. preload(planes, 1, 4))
+	-- The town in groups of 40, 6 at a time. 2026-10-25 phone: 12 at a time took the town 49 s, 6 at a time 27 s (a phone
+	-- has to unpack each file; more at once only makes them queue).
 	step(town, 0.55, 0.45)
-	lap("preloaded" .. preload(town, 40, 12))
+	lap("preloaded" .. preload(town, 40, 6))
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
