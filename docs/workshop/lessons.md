@@ -98,6 +98,10 @@ mistake would be easy to make twice.
   moved aside but not overwritten. `hero.py` and `fill_gaps.py` move old files aside before writing.
 
 ## Studio and the place file
+- **Compare looks in the same spot.** Copies of a building 300 studs apart, high above the map, drew visibly darker
+  in one place than another (2026-10-25): move both to one spot (or swap them) before blaming the pictures.
+- **Roblox keeps pictures up to 2048 (tested 2026-10-25), but `EditableImage` reads at most 1024**, so a readback can't
+  tell you an upload's size; draw it up close in a drawing Studio instead.
 - **The server deletes unknown things at the top of `workspace` on start** (`src/server/Bootstrap.server.luau`):
   world props go inside `workspace.Arena` (in `default.project.json` under `Arena`).
 - **An uploaded mesh can carry a big PivotOffset** (the chalk eraser's was 1,250 studs down, so its cloud spawned

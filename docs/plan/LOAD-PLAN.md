@@ -101,9 +101,11 @@ Close-ups shown (3 buildings, bump/shine maps at half size): Alan said go, whole
   check PASS): picture files 1,893 -> 732, pixels 4.8% fewer (each building's last sheet sized to fit; 111 pieces keep
   their own maps where sharing would add pixels or a piece is too big). Left out on purpose: bell tower and sweet shop
   (moderation caution, as with the smaller maps). Contact sheets of all 107 new colour sheets looked at: nothing
-  symbol-like (big black areas are hidden undersides, already approved before). Next: close-up of old vs repacked
-  clock tower in a drawing Studio (script ready); if the same, upload the rest (~800 files), read MeshIds, swap in
-  the Studio copy after Alan's step-1 test, redo exact collision and packs.
+  symbol-like (big black areas are hidden undersides, already approved before).
+  Checked in a drawing Studio: a 2048 stripe picture shows every stripe up close, so Roblox keeps 2048. Old vs repacked
+  clock tower, same spot and camera: ~1/255 average difference, 0.27% of pixels visibly off (picture noise):
+  `.planning/repack-clock-tower-old-vs-new.jpg`. Next: upload the other 43 (~800 files), read MeshIds, swap in the
+  Studio copy after Alan's step-1 test, redo exact collision and packs.
 
 ## Cost
 Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan's ChatGPT plan, free uploads, about
