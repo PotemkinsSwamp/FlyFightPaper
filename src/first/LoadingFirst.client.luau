@@ -41,7 +41,9 @@ keep.Name, keep.ResetOnSpawn, keep.DisplayOrder = "KeepDrawn", false, -10
 keep.Parent = playerGui
 local function image(id)
 	local label = Instance.new("ImageLabel")
-	label.Image, label.Size, label.BackgroundTransparency, label.ImageTransparency = id, UDim2.fromOffset(8, 8), 1, 0.99
+	-- Drawn about as big as the screen draws them: a phone fetches a picture only as sharp as its drawn size (2026-10-25:
+	-- at 8 x 8 px the art "loaded" in 0.5 s as postage stamps, and the loading screen stayed blurry for 30 s).
+	label.Image, label.Size, label.BackgroundTransparency, label.ImageTransparency = id, UDim2.fromScale(0.5, 0.5), 1, 0.99
 	fit(label) -- now, not when the watcher hears of it: the preload below fetches whatever the label shows
 	label.Parent = keep
 	return label

@@ -112,7 +112,7 @@ local function run()
 		local keep = name == "results" and Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
 		if keep then
 			for _, label in menus do
-				label.Size, label.BackgroundTransparency, label.ImageTransparency, label.Parent = UDim2.fromOffset(8, 8), 1, 0.99, keep
+				label.Size, label.BackgroundTransparency, label.ImageTransparency, label.Parent = UDim2.fromScale(0.5, 0.5), 1, 0.99, keep -- (real size: see first/LoadingFirst)
 			end
 		end
 	end

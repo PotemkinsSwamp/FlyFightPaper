@@ -262,6 +262,9 @@ mistake would be easy to make twice.
   never report back, so give each request a time limit or they hold a slot for good.
 - **The engine throws away preloaded pictures that nothing draws** (Roblox staff, 2026-02, won't fix): keep them drawn
   (almost see-through) until their screen is up; first/LoadingFirst's `KeepDrawn` does this for the first screens.
+- **A phone fetches a picture only as sharp as it is drawn** (2026-10-25): preload labels drawn at 8 x 8 px "loaded"
+  the loading screen's art in 0.5 s on a phone, as postage stamps; the screen showed them stretched (blurry) for 30 s
+  until the full ones came. Draw preload labels near their real size (almost see-through); PC shows no difference.
 - **Cold-load timing** (2026-10-25): `tools/cold_cache.py aside` empties Roblox's download cache (Studio and the
   Roblox app closed). Studio Play waits ~5-6 s before the first picture of a join arrives (even one 34 px pin); the
   real Roblox app gets it in under 1 s, so judge the first seconds on the real app. Studio Edit renders the town and
