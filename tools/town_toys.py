@@ -12,7 +12,7 @@
   python tools/town_toys.py readlua FOLDER     Luau to run in Studio: reads each uploaded piece's MeshId and size
   python tools/town_toys.py meshes FOLDER JSON  store that Luau's result in the pieces' upload.json
   python tools/town_toys.py placelua FOLDER    Luau to run in Studio: stands the building's pieces in CityToys
-  python tools/town_toys.py swaplua FOLDER     Luau to run in Studio: swaps the building's CityToys pieces to FOLDER/repacked
+  python tools/town_toys.py swaplua FOLDER [parts]  Luau to run in Studio: swaps the building's CityToys pieces to FOLDER/repacked (or back to parts)
   python tools/town_toys.py drop X Z R NAME... remove NAMEs and BuildingCollision boxes within R of X, Z from classroom.rbxmx
   python tools/town_toys.py pull FILE        keep hand edits made in Studio: FILE is the JSON dump of every CityToys part
                                              (name, colour map id, CFrame components, size, solid); saved as
@@ -453,11 +453,12 @@ def placelua(folder):
           f"return #T:GetChildren()")
 
 
-def swaplua(folder):
+def swaplua(folder, records="repacked"):
     """Luau that swaps this building's CityToys pieces to their repacked shape and maps (FOLDER/repacked records), in
-    place: same size, spot and collision kind; ApplyMesh recomputes the exact shape. Safe to run twice."""
+    place: same size, spot and collision kind; ApplyMesh recomputes the exact shape. Safe to run twice.
+    `swaplua FOLDER parts` swaps them back to today's pieces (2026-10-25: a repacked roof lost a visible strip)."""
     recs = {p.name.removesuffix(".upload.json"): {k: v for k, v in json.loads(p.read_text()).items() if k != "initial"}
-            for p in (ROOT / folder / "repacked").glob("*.upload.json") if p.name != "sheets.upload.json"}
+            for p in (ROOT / folder / records).glob("*.upload.json") if p.name != "sheets.upload.json"}
     name = Path(folder).name
     print("local H,A=game:GetService('HttpService'),game:GetService('AssetService') local R=H:JSONDecode('"
           + json.dumps(recs) + "') local T=workspace:FindFirstChild('CityToys',true) local n,left,bad=0,{},{} "

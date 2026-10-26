@@ -37,6 +37,10 @@ mistake would be easy to make twice.
 - **Changing an uploaded menu piece** (2026-10-19): `tools/ui_pieces.py` reuses an existing `uploads/<piece>.json` and
   never re-uploads; delete that record (git keeps it) before the upload run, then put the new id in UIAssets.
 
+- **A piece's `ready/` file can differ from what Roblox has** (2026-10-25): `ui_pieces.py` reuses old upload records,
+  so a later re-cut never went up (7 results pieces: other sizes, other crops). Before building anything from `ready/`
+  files, read the online pixels in Studio (`AssetService:CreateEditableImageAsync` + `ReadPixelsBuffer`; return them
+  in ~66 KB chunks with `EncodingService:Base64Encode`, the MCP cuts replies near 100 KB) and compare.
 - **`ui_pieces.py` trims every piece to its visible pixels**, so a 9-slice `SliceCenter` must be measured on the
   trimmed `ready/` file, not the brief's size (Hangar outline: 512 drawn, 480 trimmed, band in the outer 48 px).
 - **Menu previews before upload: draw them at the game's real sheet coordinates** (a PIL script using the same numbers

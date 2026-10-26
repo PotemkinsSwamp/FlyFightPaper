@@ -140,3 +140,11 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   files / ~60 MB -> 46 files / ~39 MB. Studio check: home, settings, shop pixel-identical, hangar pages differ only in
   the turning plane; no old piece file fetched. Alan's real-PC cold join (v335): loading screen 1.6 s, Skip 5.3 s
   (was 23.6), range 7.5, planes 12.9, all 16.3 s (was 79.2). Next: a phone fresh join.
+- 2026-10-25 (late): phone fresh join (v335): loading screen 10 s (its art shared the slow link with the menus, so the
+  board showed blurry), menus 29.7 s (bar stuck, then a jump: 8 downloads sharing ~1.7 MB/s finish together), all
+  56.4 s. Fixed: the loading screen's art downloads alone first (30 s at most); phones load menus 3 at a time. Alan:
+  the goal is the whole load faster, not Skip sooner. Menu pieces now sized for 1080 (`ROOM` 1.0): 79 pieces in 11
+  sheets + 2 files. 7 results pieces' `ready/` files differed from what Roblox had (rebuilt from the online pixels).
+  Repacked town swapped into the Studio copy (all 43, packs OK), then found a defect: a visible strip of the notebook
+  tower's roof is flat grey in the repacked sheet (painted as a hidden underside); the old maps show lined paper.
+  Swapped back (`swaplua FOLDER parts`); the repack needs a check of every blacked-out region before it ships.
