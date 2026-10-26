@@ -138,4 +138,5 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   ~15 MB) dropped from the list; every other piece shrunk to 1.33x its drawn size on a 1080-tall screen (measured in
   Play) and the small ones packed into 14 sheets (`tools/ui_sheets.py`, `first/UISheets`). Menus before Skip: 128
   files / ~60 MB -> 46 files / ~39 MB. Studio check: home, settings, shop pixel-identical, hangar pages differ only in
-  the turning plane; no old piece file fetched. Waiting: Alan's publish + cold PC join.
+  the turning plane; no old piece file fetched. Alan's real-PC cold join (v335): loading screen 1.6 s, Skip 5.3 s
+  (was 23.6), range 7.5, planes 12.9, all 16.3 s (was 79.2). Next: a phone fresh join.

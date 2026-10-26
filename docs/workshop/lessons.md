@@ -262,6 +262,8 @@ mistake would be easy to make twice.
   Roblox app closed). Studio Play waits ~5-6 s before the first picture of a join arrives (even one 34 px pin); the
   real Roblox app gets it in under 1 s, so judge the first seconds on the real app. Studio Edit renders the town and
   warms its files, so a Studio cold test only measures menus and pictures fairly.
+  A Studio cold test refills the cache for the real app too: clear it again right before Alan's join (2026-10-25:
+  one join timed warm by mistake, menus 2.8 s).
 - **Smaller picture files don't shrink the download** (2026-10-25): Roblox stores every uploaded picture as its own
   PNG (a 255 KB JPG came back as 975 KB; a 281 KB 256-colour PNG as 650 KB). Only fewer or smaller pictures help.
 

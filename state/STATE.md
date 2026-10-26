@@ -1,17 +1,14 @@
-# Since Alan last checked (2026-10-25, evening)
-- **Loading rebuilt in your order:** loading screen's own art first (shows whole), then every menu in the order a player
-  meets them, then the town; Skip only once menus and town parts are in, with a "grey buildings fill in" note.
-- **Found:** menu pictures were never really preloaded (fixed); Roblox throws away preloaded pictures nothing draws
-  (the first screens now stay drawn); smaller files don't help (Roblox re-stores every upload).
-- **Your real-PC cold join:** loading screen 1.3 s (instant), Skip 28 s, all 48.7 s. Phone: 1 min 46 s (worse: my
-  12-at-once change; undone). Since then: menus 8 at a time, plane pieces 2 s limit; Studio cold 30.4 -> 20.4 s.
-- **PC cold tests without your phone:** `tools/cold_cache.py` empties Roblox's download cache, then a join is timed.
-- **Waiting on you:** publish this build, then a cold PC join (I clear the cache first). Next: menu sheets and
-  lighter boards, previews before any upload. Repacked-town swap still waits behind this.
+# Since Alan last checked (2026-10-25, night)
+- **Menus 4x faster on your PC:** your cold join reached Skip in 5.3 s (was 23.6 s) and finished in 16.3 s (was
+  1 min 19 s). Menus are now 46 files (~39 MB) instead of 128 (~60 MB): pieces shrunk to the size they're drawn,
+  small ones packed into 14 sheets, and 21 unused pictures no longer downloaded. Look checked: menus pixel-identical.
+- **Fixed:** the loading screen could wait 45 s on one stuck group of town pictures; now 12 s at most.
+- **Waiting on you:** a fresh join on your phone (delete + reinstall Roblox): how fast to the menu and the town?
+  Then: the repacked-town swap; iPhone/iPad re-check (screen fit 3-6).
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: a fresh phone join takes ~1 min 46 s; menus (~150 files, ~51 MB) are the wall; step 3 (repack) uploaded, swap waits.
+Broken: phone join last measured 1 min 46 s (before the menu cut; re-test pending); step 3 (repack) uploaded, swap waits.
 Not yet: small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
@@ -48,8 +45,8 @@ Zone 680-840 across by building density; bots on the zone 30/60/85% (rookie/regu
 Points: fold assist share rounded to 5 (10-80); outside-zone fold 40%; paper targets 50 points each, server-checked.
 
 Waiting on Alan
-- **Publish now, then a fresh join** (delete + reinstall Roblox): do the menus show in seconds? How long until the
-  town is drawn? (Your join is recorded; no need to read /console.)
+- **Phone fresh join** (delete + reinstall Roblox): do the menus show in seconds? How long until the town is drawn?
+  (Your join is recorded; no need to read /console.)
 - Then switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
 - Touch: try the stick and buttons in the Device Simulator (now on): does the stick turn too fast or slow? Buttons

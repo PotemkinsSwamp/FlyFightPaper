@@ -23,6 +23,8 @@
   in. Menus stay real-looking pictures (no code-drawn boxes); cut their weight with right-sizing, one tinted strip,
   shared boards and sheets, side-by-sides before any upload. Test changes with a cold PC cache
   (`tools/cold_cache.py`), not a phone reinstall each time; the phone confirms the big steps.
+- Night: shrink every menu piece that looks the same smaller (not only the worst), then upload sheets and shrunk
+  pieces together and test once. Result on the real PC, cold: Skip at 5.3 s (was 23.6), everything 16.3 s.
 
 ## Why
 On Alan's phone the menus showed words without paper for a minute and the full load took about 2 minutes, even with
