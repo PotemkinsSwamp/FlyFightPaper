@@ -32,6 +32,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | Script | What it does / when |
 |---|---|
 | `tools/ui_pieces.py` | Cuts one menu screen's art into pieces and (with `--upload`) uploads them; `--keep-size` skips trimming (9-slice pieces) |
+| `tools/ui_sheets.py` | Packs the menus' small pieces into a few 1024 sheets pixel for pixel (contact sheet to look at first); `--upload` uploads them and writes the sheet map in src/first |
 | `tools/upload_texture.py` | Uploads a picture, FBX or animation (`--animation`, an .rbxm) to Roblox (used by the other upload tools) |
 | `tools/find_bot_looks.luau` | Run in Studio Edit through the Studio link: finds dressed-up outfits real players saved, for bot looks (writes ids to the ServerStorage attribute `BotLookOutfits`, ~5 a minute) for `avatar_display.bot_look_outfits` |
 | `tools/meshy_to_r15.py` | Blender script: turns a Meshy text-to-motion clip (SMPL skeleton) into R15 joint poses, `NAME.r15.json` next to it (limbs follow the clip's bones in world space; hips stay over one spot) |
