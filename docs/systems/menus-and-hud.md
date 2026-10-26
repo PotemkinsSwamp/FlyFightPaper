@@ -89,6 +89,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/ScreenCheck.luau` | Studio tool: lists overlapping pieces, pieces under Roblox's buttons or off screen, small words and small taps |
 | `src/first/UIAssets.luau` | Uploaded menu and HUD image IDs (in ReplicatedFirst, so the loading screen can fetch them first; `src/shared/UIAssets.luau` points to it) |
 | `src/shared/UIAssets.luau` | One line: returns `src/first/UIAssets.luau` |
+| `src/first/UISheets.luau` | Menu sheets (written by `tools/ui_sheets.py`): packed piece id -> its sheet and spot; `first/LoadingFirst` points every label showing one at its sheet |
 | `src/shared/Lines.luau` | Rotating event lines (plane down, landing, desk service, kill feed, between rounds); one is picked at random, never twice in a row ([decision](../decisions/2026-10-17-fresh-rotating-lines.md)) |
 
 ## Tuning numbers

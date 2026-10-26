@@ -134,3 +134,8 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   plane pieces done 31.0 s (was 44.8), but all 79.2 s: one town group of 40 never reported back and the step waited
   45 s on it (Studio saw the same twice). Fix: every request gets a flat limit (town groups 12 s, not 48 s); the
   pictures keep loading on their own. Menus are still the wall: ~1.2 s a file on the real PC even 8 side by side.
+- 2026-10-25 (night, menus cut, look unchanged): 21 menu pictures no screen used (old hangar and results screens,
+  ~15 MB) dropped from the list; every other piece shrunk to 1.33x its drawn size on a 1080-tall screen (measured in
+  Play) and the small ones packed into 14 sheets (`tools/ui_sheets.py`, `first/UISheets`). Menus before Skip: 128
+  files / ~60 MB -> 46 files / ~39 MB. Studio check: home, settings, shop pixel-identical, hangar pages differ only in
+  the turning plane; no old piece file fetched. Waiting: Alan's publish + cold PC join.

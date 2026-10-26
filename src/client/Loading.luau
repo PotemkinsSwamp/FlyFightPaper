@@ -90,11 +90,16 @@ local function run()
 	local WORLD = { "range", "targets" }
 	-- Pictures go in on picture labels: PreloadAsync doesn't fetch id text (see first/LoadingFirst).
 	local function image(id) local label = Instance.new("ImageLabel"); label.Image = id; return label end
+	-- A piece packed into a menu sheet (first/UISheets) loads as its sheet.
+	local Sheets = require(game.ReplicatedFirst.FlyFightPaper.UISheets)
 	local seen = {}
 	local function walk(t, into)
 		for _, v in t do
 			if type(v) == "table" then walk(v, into)
-			elseif type(v) == "string" and v:find("^rbxassetid://%d") and not seen[v] then seen[v] = true; table.insert(into, image(v)) end
+			elseif type(v) == "string" and v:find("^rbxassetid://%d") then
+				v = Sheets[v] and Sheets[v][1] or v
+				if not seen[v] then seen[v] = true; table.insert(into, image(v)) end
+			end
 		end
 	end
 	local menus, world = {}, {}
