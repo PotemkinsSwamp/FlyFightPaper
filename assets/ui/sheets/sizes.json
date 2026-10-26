@@ -1,0 +1,414 @@
+{
+"deskmenu/cork-strip": [
+209,
+733
+],
+"deskmenu/launch": [
+756,
+227
+],
+"deskmenu/photo": [
+293,
+244
+],
+"deskmenu/strip-blue": [
+480,
+156
+],
+"deskmenu/strip-green": [
+441,
+139
+],
+"deskmenu/strip-red": [
+441,
+139
+],
+"deskmenu/strip-yellow": [
+402,
+123
+],
+"hangar/bar-blue": [
+30,
+31
+],
+"hangar/bar-empty": [
+30,
+31
+],
+"hangar/bar-green": [
+30,
+31
+],
+"hangar/bar-orange": [
+30,
+31
+],
+"hangar/bar-red": [
+30,
+31
+],
+"hangar/button-green": [
+460,
+150
+],
+"hangar/card": [
+262,
+205
+],
+"hangar/card-selected": [
+262,
+205
+],
+"hangar/preview": [
+779,
+560
+],
+"hangarshelf/bg-1": [
+1378,
+775
+],
+"hangarshelf/bg-2": [
+1378,
+775
+],
+"hangarshelf/bg-3": [
+1378,
+775
+],
+"hangarshelf/bg-4": [
+1378,
+775
+],
+"hangarshelf/binder-left": [
+630,
+920
+],
+"hangarshelf/binder-right": [
+630,
+920
+],
+"hangarshelf/button-orange": [
+600,
+120
+],
+"hangarshelf/cubby-back": [
+344,
+344
+],
+"hangarshelf/cubby-front": [
+344,
+414
+],
+"hangarshelf/index-tab": [
+200,
+88
+],
+"hangarshelf/outline": [
+364,
+364
+],
+"hangarshelf/shelf-end-left": [
+59,
+414
+],
+"hangarshelf/shelf-end-right": [
+59,
+414
+],
+"hangarshelf/shelf-tab": [
+320,
+92
+],
+"hangarshelf/stat-box": [
+47,
+47
+],
+"hangarshelf/stat-box-empty": [
+47,
+47
+],
+"hangarshelf/stat-label": [
+224,
+58
+],
+"hangarshelf/stats-paper": [
+750,
+530
+],
+"hud/arrow-double": [
+54,
+54
+],
+"hud/bracket": [
+81,
+81
+],
+"hud/frame-scribble": [
+2759,
+1080
+],
+"hud/key-box": [
+47,
+47
+],
+"hud/note-incoming": [
+600,
+197
+],
+"hud/pin-blue": [
+28,
+28
+],
+"hud/pin-red": [
+34,
+34
+],
+"hud/ring": [
+135,
+135
+],
+"hud/slip-notebook": [
+449,
+54
+],
+"hud/strip-notebook": [
+800,
+150
+],
+"ingame/clipboard": [
+700,
+999
+],
+"ingame/index-card": [
+680,
+999
+],
+"ingame/sticky-note": [
+836,
+310
+],
+"ingame/tape-label": [
+800,
+120
+],
+"mainmenu/bg-1": [
+1378,
+775
+],
+"mainmenu/bg-2": [
+1378,
+775
+],
+"mainmenu/bg-3": [
+1378,
+775
+],
+"mainmenu/bg-4": [
+1378,
+775
+],
+"mainmenu/card-stats": [
+639,
+812
+],
+"mainmenu/drawing-1": [
+390,
+399
+],
+"mainmenu/drawing-2": [
+449,
+379
+],
+"mainmenu/photo-1": [
+560,
+419
+],
+"mainmenu/plane": [
+279,
+189
+],
+"mainmenu/strip-blue": [
+499,
+120
+],
+"mainmenu/strip-green": [
+499,
+120
+],
+"mainmenu/strip-red": [
+489,
+120
+],
+"mainmenu/strip-yellow": [
+539,
+139
+],
+"mainmenu/title": [
+1010,
+340
+],
+"range/strip-red": [
+270,
+109
+],
+"results/gold-star": [
+88,
+88
+],
+"results/row-highlight": [
+584,
+43
+],
+"results/strip-blue": [
+399,
+129
+],
+"results/strip-green": [
+399,
+129
+],
+"results/strip-pink": [
+399,
+129
+],
+"results/xp-bar-fill": [
+533,
+38
+],
+"results/xp-bar-frame": [
+556,
+57
+],
+"settings/bg-1": [
+1378,
+775
+],
+"settings/bg-2": [
+1378,
+775
+],
+"settings/bg-3": [
+1378,
+775
+],
+"settings/bg-4": [
+1378,
+775
+],
+"settings/check": [
+59,
+59
+],
+"settings/crosshair-card": [
+179,
+179
+],
+"settings/pencil": [
+150,
+51
+],
+"settings/ruler": [
+510,
+71
+],
+"settings/sticker-blue": [
+81,
+81
+],
+"settings/sticker-green": [
+81,
+81
+],
+"settings/sticker-purple": [
+81,
+81
+],
+"settings/sticker-red": [
+81,
+81
+],
+"settings/sticker-white": [
+81,
+81
+],
+"settings/sticker-yellow": [
+81,
+81
+],
+"settings/tab-green": [
+200,
+89
+],
+"settings/tab-off": [
+185,
+81
+],
+"settings/tab-on": [
+185,
+81
+],
+"settings/tag": [
+120,
+88
+],
+"trainingboard/bg-1": [
+816,
+458
+],
+"trainingboard/bg-2": [
+816,
+458
+],
+"trainingboard/bg-3": [
+816,
+458
+],
+"trainingboard/bg-4": [
+816,
+458
+],
+"trainingboard/paper-combat": [
+356,
+510
+],
+"trainingboard/paper-flight": [
+356,
+510
+],
+"trainingboard/paper-hangar": [
+356,
+510
+],
+"trainingboard/paper-range": [
+356,
+510
+],
+"trainingboard/strip-green": [
+301,
+97
+],
+"trainingboard/strip-red": [
+229,
+144
+],
+"trainingboard/tick": [
+93,
+85
+],
+"trainingboard/title": [
+994,
+245
+],
+"tutorial/arrow-big": [
+175,
+111
+],
+"tutorial/burst": [
+81,
+30
+],
+"tutorial/tag": [
+431,
+102
+]
+}

@@ -25,20 +25,12 @@ return {
 		crosshairCard = "rbxassetid://94736097855757",
 	},
 	hangar = {
-		bg = { "rbxassetid://79778639138066", "rbxassetid://132568400298663", "rbxassetid://76022165880333", "rbxassetid://101332652907481" },
 		tab = "rbxassetid://115834678067841",
-		tabSelected = "rbxassetid://79324501369328",
 		card = "rbxassetid://84312204714104",
 		cardSelected = "rbxassetid://118872852149517",
 		preview = "rbxassetid://80540963066312",
-		statsSheet = "rbxassetid://124702004184836",
-		statRow = { red = "rbxassetid://74166245364488", blue = "rbxassetid://83398318100494", green = "rbxassetid://70725847047003", yellow = "rbxassetid://133852297040442" },
 		bar = { red = "rbxassetid://125915066273285", blue = "rbxassetid://78667835427454", green = "rbxassetid://100029801723584", orange = "rbxassetid://101578956565177", empty = "rbxassetid://88470216324199" },
-		slot = "rbxassetid://92798158654184",
-		slotSelected = "rbxassetid://88893390484207",
 		buttonGreen = "rbxassetid://83467354769758",
-		-- The folder alone, see-through around it, for the in-game hangar menu (assets/ui/deskhangar/).
-		folder = { "rbxassetid://90477686865340", "rbxassetid://106131906433035", "rbxassetid://99506492567038", "rbxassetid://74385525106617" },
 	},
 	-- Desk quick menu (assets/ui/deskmenu/; concept desk-quick-menu-b). Uploaded 2026-10-22 after Alan OK'd the preview.
 	deskMenu = {
@@ -59,11 +51,9 @@ return {
 		statBox = "rbxassetid://80213400784355", statBoxEmpty = "rbxassetid://138489607891947",
 	},
 	results = {
-		bg = { "rbxassetid://115001392503048", "rbxassetid://96562871734090", "rbxassetid://87591984146456", "rbxassetid://83555563405703" },
 		goldStar = "rbxassetid://120331771075457",
 		rowHighlight = "rbxassetid://137797402914609",
 		strip = { blue = "rbxassetid://129866047095335", pink = "rbxassetid://82556466719896", green = "rbxassetid://78583732906300" },
-		unlockCard = "rbxassetid://113216079197527",
 		xpCard = "rbxassetid://76765257093865",
 		xpFrame = "rbxassetid://87963878165241",
 		xpFill = "rbxassetid://86284438244594",
