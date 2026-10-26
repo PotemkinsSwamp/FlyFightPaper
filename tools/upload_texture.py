@@ -48,7 +48,8 @@ def main():
             raise SystemExit(f"Polling failed with HTTP {response.status_code}; operation was saved.")
         operation = response.json()
         args.output.write_text(json.dumps(operation, indent=2))
-        if operation.get("done"):
+        # (2026-10-25: Roblox sometimes says done a moment before it adds the response)
+        if operation.get("done") and ("response" in operation or "error" in operation):
             if "error" in operation:
                 raise SystemExit("Roblox rejected this upload; inspect the saved operation.")
             asset = operation["response"]

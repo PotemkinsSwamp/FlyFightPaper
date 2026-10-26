@@ -5,8 +5,9 @@ then the small ones packed into a few 1024 sheets.
     python tools/ui_sheets.py --upload   # upload them (Alan's go), then write src/first/UISheets.luau
 
 Shrinking: sizes.json holds each piece's largest drawn size on a 1080-tall screen (measured 2026-10-25 in Studio Play
-from every label's AbsoluteSize, menus opened with the DevScreen attribute). A piece keeps ROOM x that (a 1440-tall
-screen draws it 1.33x), shrunk only when that saves 15% or more. Packing: each piece's edge pixels are repeated PAD px
+from every label's AbsoluteSize, menus opened with the DevScreen attribute). A piece keeps ROOM x that: 1.0, sharp on
+phones and 1080p screens, a little soft on 1440p ones (Alan 2026-10-25: everything faster), shrunk only when that
+saves 15% or more. Packing: each piece's edge pixels are repeated PAD px
 outwards so a shrunk drawing never picks up a neighbour. Not packed: the loading screen's own pieces (LoadingFirst
 fetches them first, alone; they still shrink, as files of their own). Left alone: background tiles (drawn full size),
 9-slice pieces (their SliceCenter is in the piece's own pixels) and the guide-line dash (a Beam texture, not a label).
@@ -19,7 +20,7 @@ import rectpack  # pip package (free)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "assets/ui/sheets"
-SIZE, PAD, ROOM = 1024, 8, 1.33
+SIZE, PAD, ROOM = 1024, 8, 1.0
 MENUS = ("mainmenu", "results", "tutorial", "trainingboard", "hangar", "settings", "ingame", "hud", "deskMenu", "hangarShelf")
 FIRST = {"mainmenu/title", "mainmenu/plane", "results/xp-card", "results/xp-bar-fill", "results/xp-bar-frame"}  # loading screen
 ALONE = {"ingame/tape-label", "hangarshelf/outline", "tutorial/frame-box", "tutorial/tag", "tutorial/dash"}  # 9-slice, Beam
@@ -56,8 +57,8 @@ def shrunk(png, key, sizes):
 def build():
     sizes = json.loads((OUT / "sizes.json").read_text())
     (OUT / "ready").mkdir(parents=True, exist_ok=True)
-    for old in (OUT / "ready").glob("*.png"):
-        old.unlink()
+    for old in [*(OUT / "ready").glob("*.png"), *(OUT / "uploads").glob("*.json")]:
+        old.unlink()  # a new build is new files: its old upload records stay in git history
     images, layout, packed = {}, {}, {}
     packer = rectpack.newPacker(rotation=False, pack_algo=rectpack.MaxRectsBssf, sort_algo=rectpack.SORT_AREA)
     for asset, (png, key) in pieces().items():

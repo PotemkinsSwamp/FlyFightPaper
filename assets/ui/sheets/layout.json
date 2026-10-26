@@ -3,9 +3,17 @@
   "file": "mainmenu-plane",
   "x": 0,
   "y": 0,
-  "w": 371,
-  "h": 321,
+  "w": 279,
+  "h": 242,
   "piece": "assets/ui/mainmenu/ready/plane.png"
+ },
+ "86284438244594": {
+  "file": "results-xp-bar-fill",
+  "x": 0,
+  "y": 0,
+  "w": 613,
+  "h": 80,
+  "piece": "assets/ui/results/ready/xp-bar-fill.png"
  },
  "110535459444634": {
   "file": "sheet-1",
@@ -15,13 +23,13 @@
   "h": 954,
   "piece": "assets/ui/hangarshelf/ready/binder-right.png"
  },
- "96658237976750": {
+ "105160400934566": {
   "file": "sheet-1",
-  "x": 8,
-  "y": 978,
-  "w": 38,
-  "h": 37,
-  "piece": "assets/ui/hud/ready/pin-blue.png"
+  "x": 708,
+  "y": 8,
+  "w": 292,
+  "h": 144,
+  "piece": "assets/ui/trainingboard/ready/strip-red.png"
  },
  "113985177433175": {
   "file": "sheet-2",
@@ -39,572 +47,588 @@
   "h": 875,
   "piece": "assets/ui/mainmenu/ready/card-stats.png"
  },
- "120331771075457": {
+ "112102301676610": {
   "file": "sheet-3",
   "x": 8,
   "y": 899,
-  "w": 120,
-  "h": 117,
-  "piece": "assets/ui/results/ready/gold-star.png"
+  "w": 963,
+  "h": 63,
+  "piece": "assets/ui/settings/ready/ruler.png"
  },
- "83093020395376": {
-  "file": "sheet-4",
-  "x": 8,
+ "116436557781990": {
+  "file": "sheet-3",
+  "x": 693,
   "y": 8,
-  "w": 876,
-  "h": 662,
-  "piece": "assets/ui/mainmenu/ready/photo-1.png"
+  "w": 322,
+  "h": 97,
+  "piece": "assets/ui/trainingboard/ready/strip-green.png"
  },
- "101822327681119": {
-  "file": "sheet-4",
-  "x": 8,
-  "y": 686,
-  "w": 1000,
-  "h": 236,
-  "piece": "assets/ui/deskmenu/ready/strip-blue.png"
- },
- "99725754287779": {
-  "file": "sheet-4",
-  "x": 8,
-  "y": 938,
-  "w": 682,
-  "h": 72,
-  "piece": "assets/ui/hud/ready/slip-notebook.png"
- },
- "95167817947211": {
-  "file": "sheet-4",
-  "x": 900,
-  "y": 8,
-  "w": 108,
-  "h": 108,
-  "piece": "assets/ui/settings/ready/sticker-red.png"
- },
- "136617162696979": {
-  "file": "sheet-4",
-  "x": 900,
-  "y": 132,
-  "w": 108,
-  "h": 108,
-  "piece": "assets/ui/settings/ready/sticker-blue.png"
- },
- "139451901251339": {
-  "file": "sheet-4",
-  "x": 900,
-  "y": 256,
-  "w": 108,
-  "h": 108,
-  "piece": "assets/ui/settings/ready/sticker-yellow.png"
- },
- "108439521706833": {
-  "file": "sheet-4",
-  "x": 900,
-  "y": 380,
-  "w": 108,
-  "h": 108,
-  "piece": "assets/ui/settings/ready/sticker-purple.png"
- },
- "133288006521198": {
-  "file": "sheet-4",
-  "x": 900,
-  "y": 504,
-  "w": 108,
-  "h": 108,
-  "piece": "assets/ui/hud/ready/bracket.png"
- },
- "135193433305930": {
-  "file": "sheet-4",
-  "x": 706,
-  "y": 938,
-  "w": 83,
-  "h": 78,
-  "piece": "assets/ui/settings/ready/check.png"
- },
- "93844659261583": {
-  "file": "sheet-4",
-  "x": 805,
-  "y": 938,
-  "w": 81,
-  "h": 72,
-  "piece": "assets/ui/hud/ready/arrow-double.png"
- },
- "136087187968614": {
-  "file": "sheet-4",
-  "x": 900,
-  "y": 628,
-  "w": 108,
-  "h": 40,
-  "piece": "assets/ui/tutorial/ready/burst.png"
+ "130611353722432": {
+  "file": "sheet-3",
+  "x": 693,
+  "y": 121,
+  "w": 323,
+  "h": 92,
+  "piece": "assets/ui/hangarshelf/ready/shelf-tab.png"
  },
  "109589083209118": {
-  "file": "sheet-5",
+  "file": "sheet-4",
   "x": 8,
   "y": 8,
   "w": 720,
   "h": 800,
   "piece": "assets/ui/hangarshelf/ready/stats-paper.png"
  },
- "71812846184948": {
-  "file": "sheet-5",
+ "110123970547575": {
+  "file": "sheet-4",
   "x": 8,
   "y": 824,
-  "w": 783,
-  "h": 185,
-  "piece": "assets/ui/deskmenu/ready/strip-green.png"
+  "w": 984,
+  "h": 124,
+  "piece": "assets/ui/hud/ready/strip-notebook.png"
  },
- "114300284068045": {
-  "file": "sheet-5",
-  "x": 807,
-  "y": 8,
-  "w": 208,
-  "h": 208,
-  "piece": "assets/ui/hud/ready/ring.png"
+ "137797402914609": {
+  "file": "sheet-4",
+  "x": 8,
+  "y": 964,
+  "w": 584,
+  "h": 46,
+  "piece": "assets/ui/results/ready/row-highlight.png"
  },
- "118269057146968": {
-  "file": "sheet-5",
+ "116159439019263": {
+  "file": "sheet-4",
   "x": 744,
   "y": 8,
-  "w": 46,
-  "h": 45,
-  "piece": "assets/ui/hud/ready/pin-red.png"
+  "w": 259,
+  "h": 89,
+  "piece": "assets/ui/settings/ready/tab-green.png"
  },
- "78667835427454": {
-  "file": "sheet-5",
+ "94076303094566": {
+  "file": "sheet-4",
   "x": 744,
-  "y": 69,
-  "w": 46,
-  "h": 41,
-  "piece": "assets/ui/hangar/ready/bar-blue.png"
+  "y": 113,
+  "w": 266,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/tab-off.png"
  },
- "100029801723584": {
-  "file": "sheet-5",
-  "x": 744,
-  "y": 126,
-  "w": 46,
-  "h": 41,
-  "piece": "assets/ui/hangar/ready/bar-green.png"
- },
- "101578956565177": {
-  "file": "sheet-5",
-  "x": 744,
-  "y": 183,
-  "w": 46,
-  "h": 41,
-  "piece": "assets/ui/hangar/ready/bar-orange.png"
+ "131402918337135": {
+  "file": "sheet-4",
+  "x": 608,
+  "y": 964,
+  "w": 150,
+  "h": 52,
+  "piece": "assets/ui/settings/ready/pencil.png"
  },
  "97874141587630": {
-  "file": "sheet-6",
+  "file": "sheet-5",
   "x": 8,
   "y": 8,
   "w": 740,
   "h": 776,
   "piece": "assets/ui/ingame/ready/sticky-note.png"
  },
- "76762960710746": {
-  "file": "sheet-6",
+ "76239099114989": {
+  "file": "sheet-5",
   "x": 8,
   "y": 800,
-  "w": 783,
-  "h": 185,
-  "piece": "assets/ui/deskmenu/ready/strip-red.png"
- },
- "94736097855757": {
-  "file": "sheet-6",
-  "x": 764,
-  "y": 8,
-  "w": 238,
-  "h": 240,
-  "piece": "assets/ui/settings/ready/crosshair-card.png"
- },
- "94679570912477": {
-  "file": "sheet-6",
-  "x": 764,
-  "y": 264,
-  "w": 249,
-  "h": 131,
-  "piece": "assets/ui/settings/ready/tag.png"
- },
- "131402918337135": {
-  "file": "sheet-6",
-  "x": 764,
-  "y": 411,
-  "w": 233,
-  "h": 81,
-  "piece": "assets/ui/settings/ready/pencil.png"
- },
- "71935281954018": {
-  "file": "sheet-7",
-  "x": 8,
-  "y": 8,
-  "w": 473,
-  "h": 714,
-  "piece": "assets/ui/trainingboard/ready/paper-hangar.png"
- },
- "73124461274469": {
-  "file": "sheet-7",
-  "x": 497,
-  "y": 8,
-  "w": 488,
-  "h": 678,
-  "piece": "assets/ui/trainingboard/ready/paper-flight.png"
- },
- "76239099114989": {
-  "file": "sheet-7",
-  "x": 8,
-  "y": 738,
-  "w": 798,
-  "h": 264,
+  "w": 600,
+  "h": 198,
   "piece": "assets/ui/hud/ready/note-incoming.png"
  },
- "96038284662893": {
-  "file": "sheet-8",
+ "76160948676401": {
+  "file": "sheet-5",
+  "x": 764,
+  "y": 8,
+  "w": 244,
+  "h": 94,
+  "piece": "assets/ui/hangarshelf/ready/index-tab.png"
+ },
+ "92620076840621": {
+  "file": "sheet-5",
+  "x": 764,
+  "y": 118,
+  "w": 224,
+  "h": 64,
+  "piece": "assets/ui/hangarshelf/ready/stat-label.png"
+ },
+ "133288006521198": {
+  "file": "sheet-5",
+  "x": 624,
+  "y": 800,
+  "w": 81,
+  "h": 81,
+  "piece": "assets/ui/hud/ready/bracket.png"
+ },
+ "80540963066312": {
+  "file": "sheet-6",
   "x": 8,
   "y": 8,
-  "w": 473,
-  "h": 697,
-  "piece": "assets/ui/trainingboard/ready/paper-range.png"
- },
- "77127618909836": {
-  "file": "sheet-8",
-  "x": 497,
-  "y": 8,
-  "w": 473,
-  "h": 695,
-  "piece": "assets/ui/trainingboard/ready/paper-combat.png"
- },
- "80986580132881": {
-  "file": "sheet-8",
-  "x": 8,
-  "y": 721,
-  "w": 932,
-  "h": 280,
-  "piece": "assets/ui/deskmenu/ready/launch.png"
+  "w": 779,
+  "h": 573,
+  "piece": "assets/ui/hangar/ready/preview.png"
  },
  "87353912097125": {
-  "file": "sheet-9",
+  "file": "sheet-6",
   "x": 8,
-  "y": 8,
-  "w": 606,
-  "h": 531,
+  "y": 597,
+  "w": 456,
+  "h": 399,
   "piece": "assets/ui/mainmenu/ready/drawing-1.png"
  },
- "83467354769758": {
-  "file": "sheet-9",
-  "x": 8,
-  "y": 555,
-  "w": 866,
-  "h": 230,
-  "piece": "assets/ui/hangar/ready/button-green.png"
- },
- "127387145271610": {
-  "file": "sheet-9",
-  "x": 8,
-  "y": 801,
-  "w": 761,
-  "h": 195,
-  "piece": "assets/ui/mainmenu/ready/strip-blue.png"
- },
- "91100704633557": {
-  "file": "sheet-9",
-  "x": 890,
-  "y": 8,
-  "w": 124,
-  "h": 113,
-  "piece": "assets/ui/trainingboard/ready/tick.png"
- },
  "84778693355255": {
-  "file": "sheet-10",
-  "x": 8,
-  "y": 8,
-  "w": 597,
-  "h": 523,
+  "file": "sheet-6",
+  "x": 480,
+  "y": 597,
+  "w": 449,
+  "h": 393,
   "piece": "assets/ui/mainmenu/ready/drawing-2.png"
  },
- "118872852149517": {
-  "file": "sheet-10",
-  "x": 8,
-  "y": 547,
-  "w": 779,
-  "h": 254,
-  "piece": "assets/ui/hangar/ready/card-selected.png"
- },
- "81270758839816": {
-  "file": "sheet-10",
-  "x": 8,
-  "y": 817,
-  "w": 761,
-  "h": 197,
-  "piece": "assets/ui/mainmenu/ready/strip-yellow.png"
- },
- "132448330647455": {
-  "file": "sheet-10",
-  "x": 621,
-  "y": 8,
-  "w": 392,
-  "h": 325,
-  "piece": "assets/ui/deskmenu/ready/photo.png"
- },
- "115834678067841": {
-  "file": "sheet-10",
-  "x": 621,
-  "y": 349,
-  "w": 395,
-  "h": 147,
-  "piece": "assets/ui/hangar/ready/tab.png"
- },
  "77250322353606": {
-  "file": "sheet-10",
-  "x": 803,
-  "y": 512,
+  "file": "sheet-6",
+  "x": 945,
+  "y": 8,
   "w": 70,
   "h": 480,
   "piece": "assets/ui/hangarshelf/ready/shelf-end-left.png"
  },
  "70512922987121": {
-  "file": "sheet-10",
-  "x": 889,
-  "y": 512,
+  "file": "sheet-6",
+  "x": 945,
+  "y": 504,
   "w": 70,
   "h": 480,
   "piece": "assets/ui/hangarshelf/ready/shelf-end-right.png"
  },
+ "120331771075457": {
+  "file": "sheet-6",
+  "x": 803,
+  "y": 8,
+  "w": 94,
+  "h": 88,
+  "piece": "assets/ui/results/ready/gold-star.png"
+ },
+ "91100704633557": {
+  "file": "sheet-6",
+  "x": 803,
+  "y": 112,
+  "w": 93,
+  "h": 85,
+  "piece": "assets/ui/trainingboard/ready/tick.png"
+ },
+ "136096845362532": {
+  "file": "sheet-6",
+  "x": 803,
+  "y": 213,
+  "w": 82,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-white.png"
+ },
+ "95167817947211": {
+  "file": "sheet-6",
+  "x": 803,
+  "y": 310,
+  "w": 81,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-red.png"
+ },
+ "136617162696979": {
+  "file": "sheet-6",
+  "x": 803,
+  "y": 407,
+  "w": 81,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-blue.png"
+ },
+ "96658237976750": {
+  "file": "sheet-6",
+  "x": 901,
+  "y": 213,
+  "w": 28,
+  "h": 28,
+  "piece": "assets/ui/hud/ready/pin-blue.png"
+ },
  "70377535387263": {
-  "file": "sheet-11",
+  "file": "sheet-7",
   "x": 8,
   "y": 8,
   "w": 512,
   "h": 512,
   "piece": "assets/ui/tutorial/ready/frame-ring.png"
  },
- "84312204714104": {
-  "file": "sheet-11",
+ "83093020395376": {
+  "file": "sheet-7",
   "x": 8,
   "y": 536,
-  "w": 797,
-  "h": 247,
-  "piece": "assets/ui/hangar/ready/card.png"
+  "w": 560,
+  "h": 423,
+  "piece": "assets/ui/mainmenu/ready/photo-1.png"
  },
  "91837232661923": {
-  "file": "sheet-11",
-  "x": 536,
+  "file": "sheet-7",
+  "x": 584,
   "y": 8,
   "w": 400,
   "h": 480,
   "piece": "assets/ui/hangarshelf/ready/cubby-front.png"
  },
- "102293582971435": {
-  "file": "sheet-11",
-  "x": 8,
-  "y": 799,
-  "w": 755,
-  "h": 189,
-  "piece": "assets/ui/mainmenu/ready/strip-green.png"
- },
- "128216360516580": {
-  "file": "sheet-11",
-  "x": 779,
-  "y": 799,
-  "w": 236,
-  "h": 148,
-  "piece": "assets/ui/tutorial/ready/arrow-big.png"
+ "73124461274469": {
+  "file": "sheet-7",
+  "x": 584,
+  "y": 504,
+  "w": 367,
+  "h": 510,
+  "piece": "assets/ui/trainingboard/ready/paper-flight.png"
  },
  "80213400784355": {
-  "file": "sheet-11",
-  "x": 952,
-  "y": 8,
-  "w": 63,
-  "h": 63,
+  "file": "sheet-7",
+  "x": 967,
+  "y": 504,
+  "w": 47,
+  "h": 47,
   "piece": "assets/ui/hangarshelf/ready/stat-box.png"
  },
  "138489607891947": {
-  "file": "sheet-11",
-  "x": 952,
-  "y": 87,
-  "w": 63,
-  "h": 63,
+  "file": "sheet-7",
+  "x": 967,
+  "y": 567,
+  "w": 47,
+  "h": 47,
   "piece": "assets/ui/hangarshelf/ready/stat-box-empty.png"
  },
  "116389741682536": {
-  "file": "sheet-11",
-  "x": 952,
-  "y": 166,
-  "w": 63,
-  "h": 63,
+  "file": "sheet-7",
+  "x": 967,
+  "y": 630,
+  "w": 47,
+  "h": 47,
   "piece": "assets/ui/hud/ready/key-box.png"
  },
- "103396781406593": {
-  "file": "sheet-12",
+ "71935281954018": {
+  "file": "sheet-8",
   "x": 8,
   "y": 8,
+  "w": 356,
+  "h": 537,
+  "piece": "assets/ui/trainingboard/ready/paper-hangar.png"
+ },
+ "96038284662893": {
+  "file": "sheet-8",
+  "x": 380,
+  "y": 8,
+  "w": 356,
+  "h": 524,
+  "piece": "assets/ui/trainingboard/ready/paper-range.png"
+ },
+ "80986580132881": {
+  "file": "sheet-8",
+  "x": 8,
+  "y": 561,
+  "w": 756,
+  "h": 227,
+  "piece": "assets/ui/deskmenu/ready/launch.png"
+ },
+ "133931574927268": {
+  "file": "sheet-8",
+  "x": 780,
+  "y": 8,
+  "w": 234,
+  "h": 733,
+  "piece": "assets/ui/deskmenu/ready/cork-strip.png"
+ },
+ "84312204714104": {
+  "file": "sheet-8",
+  "x": 8,
+  "y": 804,
+  "w": 661,
+  "h": 205,
+  "piece": "assets/ui/hangar/ready/card.png"
+ },
+ "112038756025991": {
+  "file": "sheet-8",
+  "x": 780,
+  "y": 757,
+  "w": 223,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/tab-on.png"
+ },
+ "114300284068045": {
+  "file": "sheet-8",
+  "x": 685,
+  "y": 854,
+  "w": 135,
+  "h": 135,
+  "piece": "assets/ui/hud/ready/ring.png"
+ },
+ "139451901251339": {
+  "file": "sheet-8",
+  "x": 836,
+  "y": 854,
+  "w": 81,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-yellow.png"
+ },
+ "108439521706833": {
+  "file": "sheet-8",
+  "x": 933,
+  "y": 854,
+  "w": 81,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-purple.png"
+ },
+ "135193433305930": {
+  "file": "sheet-8",
+  "x": 836,
+  "y": 951,
+  "w": 62,
+  "h": 59,
+  "piece": "assets/ui/settings/ready/check.png"
+ },
+ "118269057146968": {
+  "file": "sheet-8",
+  "x": 685,
+  "y": 804,
+  "w": 34,
+  "h": 34,
+  "piece": "assets/ui/hud/ready/pin-red.png"
+ },
+ "77127618909836": {
+  "file": "sheet-9",
+  "x": 8,
+  "y": 8,
+  "w": 356,
+  "h": 522,
+  "piece": "assets/ui/trainingboard/ready/paper-combat.png"
+ },
+ "103396781406593": {
+  "file": "sheet-9",
+  "x": 8,
+  "y": 546,
   "w": 400,
   "h": 400,
   "piece": "assets/ui/hangarshelf/ready/cubby-back.png"
  },
- "110123970547575": {
-  "file": "sheet-12",
-  "x": 8,
-  "y": 424,
-  "w": 984,
-  "h": 124,
-  "piece": "assets/ui/hud/ready/strip-notebook.png"
- },
- "78583732906300": {
-  "file": "sheet-12",
-  "x": 8,
-  "y": 564,
-  "w": 672,
-  "h": 172,
-  "piece": "assets/ui/results/ready/strip-green.png"
- },
- "129866047095335": {
-  "file": "sheet-12",
-  "x": 8,
-  "y": 752,
-  "w": 671,
-  "h": 172,
-  "piece": "assets/ui/results/ready/strip-blue.png"
- },
- "112102301676610": {
-  "file": "sheet-12",
-  "x": 8,
-  "y": 940,
-  "w": 963,
-  "h": 63,
-  "piece": "assets/ui/settings/ready/ruler.png"
- },
- "130611353722432": {
-  "file": "sheet-12",
-  "x": 424,
+ "118872852149517": {
+  "file": "sheet-9",
+  "x": 380,
   "y": 8,
-  "w": 464,
-  "h": 132,
-  "piece": "assets/ui/hangarshelf/ready/shelf-tab.png"
- },
- "116159439019263": {
-  "file": "sheet-12",
-  "x": 424,
-  "y": 156,
-  "w": 405,
-  "h": 139,
-  "piece": "assets/ui/settings/ready/tab-green.png"
- },
- "92620076840621": {
-  "file": "sheet-12",
-  "x": 424,
-  "y": 311,
-  "w": 313,
-  "h": 90,
-  "piece": "assets/ui/hangarshelf/ready/stat-label.png"
- },
- "76160948676401": {
-  "file": "sheet-12",
-  "x": 753,
-  "y": 311,
-  "w": 244,
-  "h": 94,
-  "piece": "assets/ui/hangarshelf/ready/index-tab.png"
- },
- "72275865664553": {
-  "file": "sheet-12",
-  "x": 904,
-  "y": 8,
-  "w": 110,
-  "h": 108,
-  "piece": "assets/ui/settings/ready/sticker-green.png"
- },
- "136096845362532": {
-  "file": "sheet-12",
-  "x": 904,
-  "y": 132,
-  "w": 109,
-  "h": 108,
-  "piece": "assets/ui/settings/ready/sticker-white.png"
- },
- "82556466719896": {
-  "file": "sheet-13",
-  "x": 8,
-  "y": 8,
-  "w": 668,
-  "h": 172,
-  "piece": "assets/ui/results/ready/strip-pink.png"
- },
- "107829360251744": {
-  "file": "sheet-13",
-  "x": 8,
-  "y": 196,
-  "w": 692,
-  "h": 164,
-  "piece": "assets/ui/deskmenu/ready/strip-yellow.png"
- },
- "84891639571797": {
-  "file": "sheet-13",
-  "x": 8,
-  "y": 376,
-  "w": 650,
-  "h": 167,
-  "piece": "assets/ui/mainmenu/ready/strip-red.png"
+  "w": 629,
+  "h": 205,
+  "piece": "assets/ui/hangar/ready/card-selected.png"
  },
  "126851776000245": {
-  "file": "sheet-13",
-  "x": 8,
-  "y": 559,
+  "file": "sheet-9",
+  "x": 380,
+  "y": 229,
   "w": 612,
   "h": 172,
   "piece": "assets/ui/hangarshelf/ready/button-orange.png"
  },
- "105160400934566": {
-  "file": "sheet-13",
+ "83467354769758": {
+  "file": "sheet-9",
+  "x": 424,
+  "y": 417,
+  "w": 565,
+  "h": 150,
+  "piece": "assets/ui/hangar/ready/button-green.png"
+ },
+ "71812846184948": {
+  "file": "sheet-9",
+  "x": 424,
+  "y": 583,
+  "w": 589,
+  "h": 139,
+  "piece": "assets/ui/deskmenu/ready/strip-green.png"
+ },
+ "76762960710746": {
+  "file": "sheet-9",
+  "x": 424,
+  "y": 738,
+  "w": 589,
+  "h": 139,
+  "piece": "assets/ui/deskmenu/ready/strip-red.png"
+ },
+ "107829360251744": {
+  "file": "sheet-9",
+  "x": 424,
+  "y": 893,
+  "w": 521,
+  "h": 123,
+  "piece": "assets/ui/deskmenu/ready/strip-yellow.png"
+ },
+ "93844659261583": {
+  "file": "sheet-9",
   "x": 8,
-  "y": 747,
-  "w": 388,
-  "h": 192,
-  "piece": "assets/ui/trainingboard/ready/strip-red.png"
+  "y": 962,
+  "w": 61,
+  "h": 54,
+  "piece": "assets/ui/hud/ready/arrow-double.png"
  },
- "116436557781990": {
-  "file": "sheet-13",
-  "x": 412,
-  "y": 747,
-  "w": 429,
-  "h": 129,
-  "piece": "assets/ui/trainingboard/ready/strip-green.png"
- },
- "137797402914609": {
-  "file": "sheet-13",
+ "101822327681119": {
+  "file": "sheet-10",
   "x": 8,
-  "y": 955,
-  "w": 777,
-  "h": 61,
-  "piece": "assets/ui/results/ready/row-highlight.png"
- },
- "112038756025991": {
-  "file": "sheet-13",
-  "x": 716,
   "y": 8,
-  "w": 297,
-  "h": 108,
-  "piece": "assets/ui/settings/ready/tab-on.png"
+  "w": 661,
+  "h": 156,
+  "piece": "assets/ui/deskmenu/ready/strip-blue.png"
+ },
+ "129866047095335": {
+  "file": "sheet-10",
+  "x": 8,
+  "y": 180,
+  "w": 645,
+  "h": 129,
+  "piece": "assets/ui/results/ready/strip-blue.png"
+ },
+ "82556466719896": {
+  "file": "sheet-10",
+  "x": 8,
+  "y": 325,
+  "w": 645,
+  "h": 129,
+  "piece": "assets/ui/results/ready/strip-pink.png"
+ },
+ "81270758839816": {
+  "file": "sheet-10",
+  "x": 8,
+  "y": 470,
+  "w": 539,
+  "h": 140,
+  "piece": "assets/ui/mainmenu/ready/strip-yellow.png"
+ },
+ "78583732906300": {
+  "file": "sheet-10",
+  "x": 8,
+  "y": 626,
+  "w": 576,
+  "h": 129,
+  "piece": "assets/ui/results/ready/strip-green.png"
+ },
+ "132448330647455": {
+  "file": "sheet-10",
+  "x": 8,
+  "y": 771,
+  "w": 295,
+  "h": 244,
+  "piece": "assets/ui/deskmenu/ready/photo.png"
+ },
+ "127387145271610": {
+  "file": "sheet-10",
+  "x": 319,
+  "y": 771,
+  "w": 499,
+  "h": 128,
+  "piece": "assets/ui/mainmenu/ready/strip-blue.png"
+ },
+ "115834678067841": {
+  "file": "sheet-10",
+  "x": 600,
+  "y": 470,
+  "w": 395,
+  "h": 147,
+  "piece": "assets/ui/hangar/ready/tab.png"
+ },
+ "94736097855757": {
+  "file": "sheet-10",
+  "x": 834,
+  "y": 633,
+  "w": 179,
+  "h": 180,
+  "piece": "assets/ui/settings/ready/crosshair-card.png"
+ },
+ "99725754287779": {
+  "file": "sheet-10",
+  "x": 319,
+  "y": 915,
+  "w": 512,
+  "h": 54,
+  "piece": "assets/ui/hud/ready/slip-notebook.png"
+ },
+ "128216360516580": {
+  "file": "sheet-10",
+  "x": 600,
+  "y": 633,
+  "w": 178,
+  "h": 111,
+  "piece": "assets/ui/tutorial/ready/arrow-big.png"
+ },
+ "94679570912477": {
+  "file": "sheet-10",
+  "x": 847,
+  "y": 829,
+  "w": 167,
+  "h": 88,
+  "piece": "assets/ui/settings/ready/tag.png"
+ },
+ "72275865664553": {
+  "file": "sheet-10",
+  "x": 847,
+  "y": 933,
+  "w": 83,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-green.png"
+ },
+ "136087187968614": {
+  "file": "sheet-10",
+  "x": 319,
+  "y": 985,
+  "w": 81,
+  "h": 30,
+  "piece": "assets/ui/tutorial/ready/burst.png"
  },
  "125915066273285": {
-  "file": "sheet-13",
-  "x": 412,
-  "y": 892,
-  "w": 50,
-  "h": 41,
+  "file": "sheet-10",
+  "x": 416,
+  "y": 985,
+  "w": 38,
+  "h": 31,
   "piece": "assets/ui/hangar/ready/bar-red.png"
  },
+ "78667835427454": {
+  "file": "sheet-10",
+  "x": 470,
+  "y": 985,
+  "w": 35,
+  "h": 31,
+  "piece": "assets/ui/hangar/ready/bar-blue.png"
+ },
+ "100029801723584": {
+  "file": "sheet-10",
+  "x": 521,
+  "y": 985,
+  "w": 35,
+  "h": 31,
+  "piece": "assets/ui/hangar/ready/bar-green.png"
+ },
+ "101578956565177": {
+  "file": "sheet-10",
+  "x": 572,
+  "y": 985,
+  "w": 35,
+  "h": 31,
+  "piece": "assets/ui/hangar/ready/bar-orange.png"
+ },
  "88470216324199": {
-  "file": "sheet-13",
-  "x": 478,
-  "y": 892,
-  "w": 46,
-  "h": 41,
+  "file": "sheet-10",
+  "x": 623,
+  "y": 985,
+  "w": 34,
+  "h": 31,
   "piece": "assets/ui/hangar/ready/bar-empty.png"
  },
- "94076303094566": {
-  "file": "sheet-14",
+ "102293582971435": {
+  "file": "sheet-11",
   "x": 8,
   "y": 8,
-  "w": 400,
-  "h": 122,
-  "piece": "assets/ui/settings/ready/tab-off.png"
+  "w": 499,
+  "h": 125,
+  "piece": "assets/ui/mainmenu/ready/strip-green.png"
+ },
+ "84891639571797": {
+  "file": "sheet-11",
+  "x": 523,
+  "y": 8,
+  "w": 489,
+  "h": 126,
+  "piece": "assets/ui/mainmenu/ready/strip-red.png"
  }
 }

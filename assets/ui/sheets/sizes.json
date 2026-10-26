@@ -225,7 +225,7 @@
 ],
 "mainmenu/plane": [
 279,
-189
+195
 ],
 "mainmenu/strip-blue": [
 499,
@@ -272,12 +272,16 @@
 129
 ],
 "results/xp-bar-fill": [
-533,
-38
+610,
+80
 ],
 "results/xp-bar-frame": [
-556,
-57
+640,
+110
+],
+"results/xp-card": [
+800,
+380
 ],
 "settings/bg-1": [
 1378,
