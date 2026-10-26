@@ -64,7 +64,7 @@ for _, item in first do
 	end)
 end
 local since = os.clock()
-while left > 0 and os.clock() - since < 20 do task.wait() end
+while left > 0 and os.clock() - since < 30 do task.wait() end
 script.Parent:SetAttribute("ArtFailed", failed) -- for the load recorder
 script.Parent:SetAttribute("ArtSlowest", string.format("%s %.1f", slowest, slowestAt))
 -- The loading screen shows once its own art is in (Loading.show), never as a bare brown board. Nothing else is fetched

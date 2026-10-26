@@ -74,7 +74,9 @@ local function run()
 	local started, times = game.ReplicatedFirst.FlyFightPaper:GetAttribute("FirstAt") or shownAt or os.clock(), {}
 	local function lap(step) table.insert(times, string.format("%s %.1f", step, os.clock() - started)); workspace:SetAttribute("LoadTimes", table.concat(times, ", ")) end
 	lap("game in")
-	while not game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtAt") and os.clock() - started < 10 do task.wait(0.05) end
+	-- Nothing else is asked for until the loading screen's own art is in (2026-10-25 phone: after a 10 s limit the menus
+	-- shared the slow connection with it, and its board stayed blurry for 25 s). 30 s at most.
+	while not game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtAt") and os.clock() - started < 30 do task.wait(0.05) end
 	local artFailed = game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtFailed") or 0
 	local first = game.ReplicatedFirst.FlyFightPaper
 	lap(string.format("loading screen (queue %s, slowest %s%s)", tostring(first:GetAttribute("QueueAtStart")), tostring(first:GetAttribute("ArtSlowest")),
@@ -165,7 +167,9 @@ local function run()
 		return (running > 0 or nextItem <= #items) and " cut" or ""
 	end
 	step(menus, 0, 0.4)
-	lap("menus" .. preload(menus, 1, 8, 8))
+	-- A phone's slow connection shared 8 ways finished nothing for 20 s, then everything at once (2026-10-25: the bar sat
+	-- near empty, then jumped); 3 at a time finish one after another, so the bar moves.
+	lap("menus" .. preload(menus, 1, game:GetService("UserInputService").TouchEnabled and 3 or 8, 8))
 	-- Only now does the server send the town (streaming, docs/plan/LOAD-PLAN.md step 1), so it doesn't queue in front
 	-- of the menus. Its parts arrive in a moment; with them in, Skip is safe: the game plays, and buildings still
 	-- without their pictures fill in while you fly.
