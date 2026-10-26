@@ -137,9 +137,9 @@ local function run()
 			while nextItem <= #items and os.clock() < stopAt do
 				local batch, back = table.move(items, nextItem, math.min(nextItem + size - 1, #items), 1, {}), false
 				nextItem += size
-				-- `limit` s per file at most (plus 1 s a file in a group): a few plane pieces kept in ReplicatedStorage never
-				-- report back (2026-10-25; they get 2 s, so they cost 2 s, not 8),
-				-- and each would hold a slot for good. It keeps loading on its own.
+				-- `limit` s per request at most: a few plane pieces kept in ReplicatedStorage never report back (2026-10-25;
+				-- they get 2 s, so they cost 2 s, not 8), and now and then a town group of 40 doesn't either (real PC v328:
+				-- 48 s waiting on one, when it was given 8 s + 1 s a file). Each would hold a slot for good. It keeps loading on its own.
 				task.spawn(function()
 					pcall(function()
 						Content:PreloadAsync(batch, function(_, fetch)
@@ -149,7 +149,7 @@ local function run()
 					back = true
 				end)
 				local asked = os.clock()
-				while not back and os.clock() - asked < limit + size do task.wait() end
+				while not back and os.clock() - asked < limit do task.wait() end
 				finished += #batch; heard = os.clock()
 				progress(from + span * finished / total)
 			end
@@ -181,7 +181,7 @@ local function run()
 	-- The town in groups of 40, 6 at a time. 2026-10-25 phone: 12 at a time took the town 49 s, 6 at a time 27 s (a phone
 	-- has to unpack each file; more at once only makes them queue).
 	step(town, 0.55, 0.45)
-	lap("preloaded" .. preload(town, 40, 6, 8))
+	lap("preloaded" .. preload(town, 40, 6, 12))
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")

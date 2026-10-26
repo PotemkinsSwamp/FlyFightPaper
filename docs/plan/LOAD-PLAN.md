@@ -130,3 +130,7 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   (12 at a time) 1 min 46 s. Menus are the wall: ~150 files, ~51 MB (PC: ~0.7 s per file; phone: ~1.3 MB/s).
   Smaller files don't help (Roblox re-stores every upload as its own PNG). Next: fewer files (sheets) and fewer
   pixels (right-size ~15%, one tinted strip, shared boards ~15 MB), previews before any upload.
+- 2026-10-25 (night, v328 real-PC cold join, menus 8 at a time): loading screen 1.1 s, Skip 23.6 s (was 28.2),
+  plane pieces done 31.0 s (was 44.8), but all 79.2 s: one town group of 40 never reported back and the step waited
+  45 s on it (Studio saw the same twice). Fix: every request gets a flat limit (town groups 12 s, not 48 s); the
+  pictures keep loading on their own. Menus are still the wall: ~1.2 s a file on the real PC even 8 side by side.
