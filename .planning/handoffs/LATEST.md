@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-25-load-lane-menus-are-the-wall.md
+# LATEST → handoff-2026-10-27-load-lane-30s-plan.md
 
-★ START HERE: Goal (Alan): a phone reaches a working menu in ~10 s, everything as fast as possible, same look.
-First: Alan publishes the open Studio build, cache cleared (`tools/cold_cache.py aside`), he joins on the PC, read
-`LoadLog.recent()`. Then cut the menus before Skip (sheets, right-size, tint, shared boards; previews before upload).
+★ START HERE: Goal (Alan): phone fresh join fully loaded in 30 s at most, same look. First: nonstop downloading in
+`src/client/Loading.luau` (8 at a time on phones, one queue, no waiting on stuck plane pieces), cold Studio test, then
+Alan publishes + phone join. Then the checked repacked town, then one shared cork board (previews first).
 
-Quick state: main c75e8b82 (+handoff); published v326 (one commit behind). Real PC cold: Skip 28 s, all 48.7 s; phone 1 min 46 s.
-Previous: handoff-2026-10-25-load-repack-uploaded.md (load lane), handoff-2026-10-24-ui-screen-fit.md (UI lane).
+Quick state: main cef0cfdb (+handoff); published v358 (without 826485a5, preload at real size). PC cold all 16.3 s; phone 58.6 s.
+Previous: handoff-2026-10-25-load-lane-menus-are-the-wall.md (load lane), handoff-2026-10-24-ui-screen-fit.md (UI lane).

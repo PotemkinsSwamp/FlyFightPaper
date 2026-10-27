@@ -4,7 +4,11 @@
 The game should run at a steady 60 frames per second with 12 planes in the match, with no buildings popping in, and
 Play should start in seconds, not minutes.
 
-## Where it stands (2026-10-15)
+## Where it stands (2026-10-27)
+Loading (details: [load plan](../plan/LOAD-PLAN.md)): real PC cold join Skip 5.3 s, all 16.3 s; phone fresh join
+all ~58 s (target 30 s). Menus are 46 files (shrunk to drawn size, packed in sheets, `first/UISheets`); the loading
+screen's art preloads alone and at real size first. Next: nonstop downloading, the checked repacked town, a shared
+cork board.
 The minutes-long Play start was fixed (2026-10-11) by computing exact building collision once in Studio and saving
 it in the place. Alan saw the frame rate drop inside the chalk cloud; the cloud was made cheaper. A full 12-plane
 frame-rate check on Alan's PC is still due before release (Stage 11).
