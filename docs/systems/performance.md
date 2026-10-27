@@ -7,8 +7,8 @@ Play should start in seconds, not minutes.
 ## Where it stands (2026-10-27)
 Loading (details: [load plan](../plan/LOAD-PLAN.md)): real PC cold join Skip 5.3 s, all 16.3 s; phone fresh join
 all ~58 s (target 30 s). Menus are 46 files (shrunk to drawn size, packed in sheets, `first/UISheets`); the loading
-screen's art preloads alone and at real size first. Next: nonstop downloading, the checked repacked town, a shared
-cork board.
+screen's art preloads alone and at real size first. Everything downloads from one queue, 8 at a time (Studio cold
+56.5 s -> 30.0 s). Next: phone check, the checked repacked town, a shared cork board.
 The minutes-long Play start was fixed (2026-10-11) by computing exact building collision once in Studio and saving
 it in the place. Alan saw the frame rate drop inside the chalk cloud; the cloud was made cheaper. A full 12-plane
 frame-rate check on Alan's PC is still due before release (Stage 11).

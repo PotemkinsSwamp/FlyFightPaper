@@ -148,3 +148,8 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   Repacked town swapped into the Studio copy (all 43, packs OK), then found a defect: a visible strip of the notebook
   tower's roof is flat grey in the repacked sheet (painted as a hidden underside); the old maps show lined paper.
   Swapped back (`swaplua FOLDER parts`); the repack needs a check of every blacked-out region before it ships.
+- 2026-10-27 (nonstop downloading): one queue for the whole load, 8 requests side by side on every device (phones
+  were at 3: ~1 MB/s vs ~2.2 MB/s at 8), from the first menu picture to the last town group; the town is asked for
+  once every menu picture is requested, the range's pictures fill the gap, plane pieces keep their 2 s limit without
+  holding up the rest. Studio cold test, same conditions: old all 56.5 s (44.2 s after the loading screen), new all
+  30.0 s (25.2 s after it); menus 7.0 s, Skip-ready 7.0 s. Next: Alan publishes, phone fresh join.

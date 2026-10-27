@@ -66,8 +66,11 @@ end
 
 local function run()
 
-	-- The words rotate on their own (see LINES); this only moves the crayon bar.
-	local function progress(fraction)
+	-- The words rotate on their own (see LINES); this only moves the crayon bar: each part of the load fills its share.
+	local parts = {}
+	local function progress()
+		local fraction = 0
+		for _, part in parts do fraction += part.span * part.done / math.max(part.total, 1) end
 		fill.Size = UDim2.fromOffset(610 * math.clamp(fraction, 0.02, 1), 80)
 	end
 	-- Seconds spent in each step, kept on workspace (LoadTimes) so slow joins can be traced.
@@ -127,70 +130,80 @@ local function run()
 			elseif item:IsA("SurfaceAppearance") or item:IsA("Decal") or item:IsA("Texture") then table.insert(town, item) end
 		end
 	end
-	-- The bar is the true share of everything handed in that has finished (Alan 2026-10-25). Menus one file per
-	-- request, 8 side by side (so the bar moves and none waits behind a whole list); the town's thousands in groups of
-	-- 40, 6 at a time. 2026-10-25: a PC took 27 s for the menus at 4 side by side (each file ~0.7 s whatever its size);
-	-- a phone was slower with 12 (1 min 45 s in all). A request can stall for good, so a step stops
-	-- waiting once nothing has finished for 45 s (3 minutes in all); a step cut short shows as "cut" in the times.
-	-- The bar: the menus fill its first 40%, the training range to 50%, the town the rest.
-	local total, finished, failures, from, span = 1, 0, 0, 0, 0
-	local function step(items, start, width) total, finished, from, span = math.max(#items, 1), 0, start, width end
+	-- One queue for the whole load, 8 downloads side by side from the first menu picture to the last town group, phones
+	-- too (Alan 2026-10-27): steps that each waited for their slowest file left the line idle (phone v358: ~1 MB/s at
+	-- 3 at a time, ~2.2 MB/s at 8). Menus one file per request (so the bar moves); the town's thousands in groups of 40.
+	-- `limit` s per request at most: a few plane pieces kept in ReplicatedStorage never report back (2 s), and now and
+	-- then a town group of 40 doesn't either (real PC v328: 48 s on one; 12 s now). Each would hold a slot for good; it
+	-- keeps loading on its own. A part's time is logged when its last request is back; one never finished shows "cut"
+	-- (3 minutes in all, or nothing back for 45 s). The bar: menus its first 40%, the training range to 50%, the town the rest.
+	local queue, nextJob, running, closed, failures = {}, 1, 0, false, 0
 	local stopAt, heard = os.clock() + 180, os.clock()
-	local function preload(items, size, slots, limit)
-		local nextItem, running = 1, 0
-		heard = os.clock()
-		local function worker()
-			running += 1
-			while nextItem <= #items and os.clock() < stopAt do
-				local batch, back = table.move(items, nextItem, math.min(nextItem + size - 1, #items), 1, {}), false
-				nextItem += size
-				-- `limit` s per request at most: a few plane pieces kept in ReplicatedStorage never report back (2026-10-25;
-				-- they get 2 s, so they cost 2 s, not 8), and now and then a town group of 40 doesn't either (real PC v328:
-				-- 48 s waiting on one, when it was given 8 s + 1 s a file). Each would hold a slot for good. It keeps loading on its own.
+	local function add(name, items, size, limit, span)
+		local part = { name = name, total = #items, done = 0, span = span }
+		table.insert(parts, part)
+		for i = 1, #items, size do
+			table.insert(queue, { part = part, limit = limit, batch = table.move(items, i, math.min(i + size - 1, #items), 1, {}) })
+		end
+		if #items == 0 then lap(name) end
+		return part
+	end
+	local function worker()
+		while os.clock() < stopAt do
+			local job = queue[nextJob]
+			if not job then
+				if closed then break end
+				task.wait(0.05)
+			else
+				nextJob += 1
+				local back = false
 				task.spawn(function()
 					pcall(function()
-						Content:PreloadAsync(batch, function(_, fetch)
+						Content:PreloadAsync(job.batch, function(_, fetch)
 							if fetch ~= Enum.AssetFetchStatus.Success then failures += 1 end
 						end)
 					end)
 					back = true
 				end)
 				local asked = os.clock()
-				while not back and os.clock() - asked < limit do task.wait() end
-				finished += #batch; heard = os.clock()
-				progress(from + span * finished / total)
+				while not back and os.clock() - asked < job.limit do task.wait() end
+				local part = job.part
+				part.done += #job.batch; heard = os.clock()
+				progress()
+				if part.done == part.total then lap(part.name) end
 			end
-			running -= 1
 		end
-		for _ = 1, slots do task.spawn(worker) end
-		while (running > 0 or nextItem <= #items) and os.clock() < stopAt and os.clock() - heard < 45 do task.wait(0.1) end
-		return (running > 0 or nextItem <= #items) and " cut" or ""
+		running -= 1
 	end
-	step(menus, 0, 0.4)
-	-- A phone's slow connection shared 8 ways finished nothing for 20 s, then everything at once (2026-10-25: the bar sat
-	-- near empty, then jumped); 3 at a time finish one after another, so the bar moves.
-	lap("menus" .. preload(menus, 1, game:GetService("UserInputService").TouchEnabled and 3 or 8, 8))
-	-- Only now does the server send the town (streaming, docs/plan/LOAD-PLAN.md step 1), so it doesn't queue in front
-	-- of the menus. Its parts arrive in a moment; with them in, Skip is safe: the game plays, and buildings still
-	-- without their pictures fill in while you fly.
+	local menuPart = add("menus", menus, 1, 8, 0.4)
+	local menuJobs = #queue
+	-- The training range's pictures keep the line busy while the town's parts come in.
+	add("range", world, 1, 8, 0.1)
+	running = 8
+	for _ = 1, running do task.spawn(worker) end
+	-- The server sends the town (streaming, docs/plan/LOAD-PLAN.md step 1) once every menu picture has been asked for, so
+	-- its parts don't queue in front of the menus but arrive while the last ones finish.
+	while nextJob <= menuJobs and os.clock() < stopAt do task.wait(0.05) end
 	Root:WaitForChild("RoundAction"):FireServer("sendTown")
 	room, assets = Loading.waitTown()
 	lap("town arrived")
+	-- Skip once the menus and the town's parts are in: the game plays, and buildings still without their pictures fill
+	-- in while you fly.
+	while menuPart.done < menuPart.total and os.clock() < stopAt do task.wait(0.05) end
 	skip.Visible, skipNote.Visible = true, true
+	-- The plane pieces before the town, one file each: a few never report back and must not hold up a group of 40.
 	collect(assets)
-	-- The plane pieces first, one file at a time: a few never report back and must not hold up a group of 40.
 	local planes = town
 	town = {}
 	collect(room)
 	if workspace:FindFirstChild("CityRug") then collect(workspace.CityRug) end
-	step(world, 0.4, 0.1)
-	lap("range" .. preload(world, 1, 8, 8))
-	step(planes, 0.5, 0.05)
-	lap("planes" .. preload(planes, 1, 8, 2))
-	-- The town in groups of 40, 6 at a time. 2026-10-25 phone: 12 at a time took the town 49 s, 6 at a time 27 s (a phone
-	-- has to unpack each file; more at once only makes them queue).
-	step(town, 0.55, 0.45)
-	lap("preloaded" .. preload(town, 40, 6, 12))
+	add("planes", planes, 1, 2, 0.05)
+	add("preloaded", town, 40, 12, 0.45)
+	closed, heard = true, os.clock()
+	while running > 0 and os.clock() < stopAt and os.clock() - heard < 45 do task.wait(0.1) end
+	for _, part in parts do
+		if part.done < part.total then lap(part.name .. " cut") end
+	end
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")

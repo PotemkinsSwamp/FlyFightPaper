@@ -1,13 +1,8 @@
-# Since Alan last checked (2026-10-25, late)
-- **PC cold join:** Skip 5.3 s (was 23.6), everything 16.3 s. **Phone:** Skip 27.8 s, everything 56 s; the phone
-  downloads ~1.7 MB/s, so size is what counts there.
-- **Fixed for the phone (needs a publish):** the loading screen's art downloads first, alone (no more blurry board);
-  menus come 3 at a time on phones so the bar moves; menu pieces sized for 1080 screens (~5 MB less).
-- **Found and fixed:** 7 results-screen pieces (gold star, vote strips, row highlight, level bar) in v335 came from
-  out-of-date files; rebuilt from what Roblox really has.
-- **Repacked town held back:** one roof strip on the notebook tower turned flat grey. Swapped back; every building's
-  blacked-out areas need checking before it ships.
-- **Waiting on you:** publish, then a phone fresh join.
+# Since Alan last checked (2026-10-27)
+- **Nonstop downloading:** the whole load is one line of downloads, 8 at a time on every device (phones were at 3).
+  Studio cold test: everything in at 30 s (was 56.5 s with the old code, same test). Looks unchanged.
+- **Waiting on you:** publish from the open Studio (it has this plus the sharp-loading-screen fix), then a phone
+  fresh join. Next for me: the repacked town checked building by building, then one shared cork board.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
