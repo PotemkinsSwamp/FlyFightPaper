@@ -57,6 +57,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `materials.py` | Separates toy-town materials from baked colour sheets |
 | `closeups.py` | Close-up render sheet to catch defects before upload |
 | `repack.py` | Repacks a building's pieces onto shared 2048 sheets by moving UV islands whole pixels only (same pixels, 4x fewer picture files); `--check` proves geometry and every texel unchanged. Output `FOLDER/repacked/` (pictures and FBXs not kept in git: re-run to remake), uploaded by `town_toys.py repack` |
+| `repack_compare.py` | Renders a building's `parts/` pieces and its `repacked/` pieces from 5 fixed views in Blender and diffs them (`--all` for every building); contact sheets and `summary.txt` in `.planning/repack-check/`. Checks the repack files only, not what Roblox draws |
 | `fill_gaps.py` | Fills black gaps in textures so moderation doesn't misread shapes. Run before uploading hero pieces |
 | `wind_sprites.py` | Draws the fan-wind particle pictures |
 | `carpet.py` | Bakes the one shared rug carpet normal + roughness map (`assets/rug/carpet/`) |

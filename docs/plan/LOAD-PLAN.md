@@ -153,3 +153,8 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   once every menu picture is requested, the range's pictures fill the gap, plane pieces keep their 2 s limit without
   holding up the rest. Studio cold test, same conditions: old all 56.5 s (44.2 s after the loading screen), new all
   30.0 s (25.2 s after it); menus 7.0 s, Skip-ready 7.0 s. Next: Alan publishes, phone fresh join.
+- 2026-10-27 (repack check, Codex): `tools/art/repack_compare.py` rendered all 46 repacked buildings against today's
+  pieces in Blender: 28 identical, 18 with only small highlight/seam spots (21-68 px). The notebook tower's grey bar is
+  NOT in the repack files: both versions draw lined paper there with byte-identical map values (evidence in
+  `.planning/repack-check/root-cause.txt`). So the bar came from Roblox's side of the Studio swap (the uploaded
+  shape or its texture pack). Next: swap the notebook tower alone in Studio and read the bar's mesh/pictures there.
