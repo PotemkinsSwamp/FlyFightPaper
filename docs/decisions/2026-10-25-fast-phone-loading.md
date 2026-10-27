@@ -37,5 +37,9 @@
 On Alan's phone the menus showed words without paper for a minute and the full load took about 2 minutes, even with
 files already on the phone; "I've seen mobile games with more advanced maps and menu UI and theirs loads no problem."
 
+- 2026-10-27 (later): no shared cork board (Alan): the main menu's board can't stand in for the hangar or Training
+  boards without looking odd, and one picture fewer saves little. Instead: why are menu pictures megabytes? (PC cache:
+  menus arrive as PNG, ~1.1 MB a board tile; the town's pictures arrive GPU-compressed, KTX2 BC1/BC3 + zstd.)
+
 ## Affects
 - [Load plan](../plan/LOAD-PLAN.md) · [Performance](../systems/performance.md) · [Never trade looks for frame rate](2026-10-10-no-quality-cuts-for-fps.md) (looks unchanged: checked side by side)
