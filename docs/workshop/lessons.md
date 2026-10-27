@@ -37,6 +37,9 @@ mistake would be easy to make twice.
 - **Changing an uploaded menu piece** (2026-10-19): `tools/ui_pieces.py` reuses an existing `uploads/<piece>.json` and
   never re-uploads; delete that record (git keeps it) before the upload run, then put the new id in UIAssets.
 
+- **Studio reads online pictures at 1024 at most** (2026-10-27): `CreateEditableImageAsync` of a 2048 sheet returns
+  1024 x 1024 (an EditableImage limit; Roblox itself keeps textures up to 4096). Compare such reads at 1024, or sample
+  by UV, never by pixel position.
 - **A piece's `ready/` file can differ from what Roblox has** (2026-10-25): `ui_pieces.py` reuses old upload records,
   so a later re-cut never went up (7 results pieces: other sizes, other crops). Before building anything from `ready/`
   files, read the online pixels in Studio (`AssetService:CreateEditableImageAsync` + `ReadPixelsBuffer`; return them

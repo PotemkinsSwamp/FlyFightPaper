@@ -1,8 +1,12 @@
 # Since Alan last checked (2026-10-27)
 - **Nonstop downloading:** the whole load is one line of downloads, 8 at a time on every device (phones were at 3).
   Studio cold test: everything in at 30 s (was 56.5 s with the old code, same test). Looks unchanged.
-- **Waiting on you:** publish from the open Studio (it has this plus the sharp-loading-screen fix), then a phone
-  fresh join. Next for me: the repacked town checked building by building, then one shared cork board.
+- **Repacked town checked (Codex):** all 46 buildings rendered old vs new: 28 identical, 18 with only tiny highlight
+  spots. The notebook tower's grey bar is NOT in the repacked files (both draw lined paper there, same pixels; Roblox's
+  uploaded copies show paper too). It came from Studio's side of the swap; next: swap that one tower alone and look.
+- **Waiting on you:** (1) publish from the open Studio, then a phone fresh join. (2) Shared cork board: the only free
+  option is the main menu's board under the hangar shelf (~4.8 MB less; its alphabet strip and props show at the
+  edges); Training's floating board would need new art. Bring Studio to the front and I'll make the previews.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
