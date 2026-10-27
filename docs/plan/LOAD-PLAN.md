@@ -158,3 +158,9 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   NOT in the repack files: both versions draw lined paper there with byte-identical map values (evidence in
   `.planning/repack-check/root-cause.txt`). So the bar came from Roblox's side of the Studio swap (the uploaded
   shape or its texture pack). Next: swap the notebook tower alone in Studio and read the bar's mesh/pictures there.
+- 2026-10-27 (picture formats, PC cache): menu pictures (ImageLabels) arrive as PNG (~1.1-1.2 MB a 960x540 cork
+  tile); 3D pictures (Decals, SurfaceAppearances) arrive GPU-compressed (KTX2, BC1 solid / BC3 see-through, zstd).
+  Test, no upload (an old unused 960x540 cork tile): on a Decal in a ViewportFrame it came as BC1 960x512, 153 KB
+  (~7x smaller), drawn in the menu with the same colour and ~15% softer grain up close
+  (`.planning/menu-3d-test-side-by-side.jpg`, `-zoom.png`). Roblox fetches it only as sharp as it's drawn.
+  Next: the menu backgrounds drawn this way, checked on a phone.
