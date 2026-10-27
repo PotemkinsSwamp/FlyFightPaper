@@ -28,6 +28,10 @@
 - Late: the goal is the whole load faster, not Skip sooner (putting everything after Skip is not the answer). Menu
   pieces sized for 1080 screens. The repacked town ships only after every blacked-out area is checked against the
   old pictures (Codex compares and fixes; close-ups for Alan before it ships).
+- 2026-10-27: target 30 s at most for the whole phone load. Do, in order: (1) nonstop downloading (8 at a time on
+  phones too: 3 at a time halved phone throughput; one queue for the whole load, no waiting on stuck plane pieces);
+  (2) the checked repacked town; (3) one shared cork board for the cork-board menus (previews first). Not now: town
+  pictures sized to viewing distance (would reverse "colour maps full size").
 
 ## Why
 On Alan's phone the menus showed words without paper for a minute and the full load took about 2 minutes, even with
