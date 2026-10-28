@@ -1,11 +1,10 @@
-# Since Alan last checked (2026-10-27)
-- **Nonstop downloading:** the whole load is one line of downloads, 8 at a time on every device (phones were at 3).
-  Studio cold test: everything in at 30 s (was 56.5 s with the old code, same test). Looks unchanged.
-- **Repacked town checked (Codex):** all 46 buildings rendered old vs new: 28 identical, 18 with only tiny highlight
-  spots. The notebook tower's grey bar is NOT in the repacked files (both draw lined paper there, same pixels; Roblox's
-  uploaded copies show paper too). It came from Studio's side of the swap; next: swap that one tower alone and look.
-- **Waiting on you:** (1) publish from the open Studio, then a phone fresh join. (2) Shared cork board dropped (your call).
-  Your question: why menu pictures are megabytes; answer and a test plan in chat.
+# Since Alan last checked (2026-10-27, night)
+- **Phone got slower** (v361): menus 50 s, everything 81 s (v358: 58.6 s). The 8-at-a-time downloads that helped the PC
+  hurt the phone. Phones are back to 3 at a time (in the open Studio, not yet published).
+- **Menu boards drawn as 3D pictures:** ~7x smaller downloads (18 MB -> ~2.5 MB); Studio cold 30.0 -> 25.9 s. Up close
+  the cork grain is softer (23-34% less fine detail): `.planning/board3d-menu-before-after.jpg`, `-zoom.png`.
+- **Repacked town files check clean** (Codex, 46 buildings); the notebook grey bar is from Studio's side of the swap.
+- **Waiting on you:** look at the board pictures (OK softer cork?), then publish and a phone join.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.

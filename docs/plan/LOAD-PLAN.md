@@ -164,3 +164,7 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   (~7x smaller), drawn in the menu with the same colour and ~15% softer grain up close
   (`.planning/menu-3d-test-side-by-side.jpg`, `-zoom.png`). Roblox fetches it only as sharp as it's drawn.
   Next: the menu backgrounds drawn this way, checked on a phone.
+- 2026-10-27 (night): phone fresh join v361 (one queue, 8 at a time): loading screen in 1.9 s but blurry until ~42 s,
+  menus 50.0 s, all 81.2 s: SLOWER than v358 (3 at a time: menus 35.5, all 58.6). Phones back to 3 at a time (one queue
+  kept). Menu boards now 3D pictures (`first/BoardPlate`): Studio cold all 25.9 s (was 30.0); the boards' fine grain is
+  23-34% softer close up (`.planning/board3d-*`), Alan to judge. Next: Alan's look, publish, phone join.
