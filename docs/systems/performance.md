@@ -4,12 +4,13 @@
 The game should run at a steady 60 frames per second with 12 planes in the match, with no buildings popping in, and
 Play should start in seconds, not minutes.
 
-## Where it stands (2026-10-27)
-Loading (details: [load plan](../plan/LOAD-PLAN.md)): one queue for the whole load (8 at a time, phones 3: phone v361
-at 8 was slower, 81 s). Menu pictures shown only out of flight are drawn as 3D pictures (`first/BoardPlate`,
-`first/MenuArt`) so Roblox sends them GPU-compressed (~4-7x smaller). Studio cold: all 19.3 s (was 30.0). Real PC
-cold (v335) 16.3 s; phone fresh join v361 81 s (v358 58.6 s); the 3D menus not yet on a phone. Next: phone join,
-then the checked repacked town.
+## Where it stands (2026-10-28)
+Loading (details: [load plan](../plan/LOAD-PLAN.md)): streaming is on again (Rojo serve had turned it off, so phones
+got the whole town at join and the loading screen stayed blurry 35 s). Phone fresh join v368: loading screen sharp at
+0.8 s, menus 4.4 s, all 59.3 s. After the town arrives Roblox fetches its ~3,000 files itself (~25 s on the phone);
+the bar now follows that line (`RequestQueueSize`) instead of asking again, and plane pieces are asked for before the
+town is sent. The repacked town (fewer, bigger files) was no faster and used ~8x the picture memory: reverted.
+`LoadLog.recent()` shows each join's times, frame rate / picture MB / files waiting, and flags streaming off.
 The minutes-long Play start was fixed (2026-10-11) by computing exact building collision once in Studio and saving
 it in the place. Alan saw the frame rate drop inside the chalk cloud; the cloud was made cheaper. A full 12-plane
 frame-rate check on Alan's PC is still due before release (Stage 11).
