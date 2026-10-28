@@ -187,3 +187,10 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   Tried in the same build: a free line after the loading screen shows (nothing else starts until the phone has no files
   waiting, 6 s at most; logged as "free line (waiting N)"), in case its full-size pictures queue behind the menus. If
   the screen turns sharp within seconds, that was it. The recorder also logs files waiting every 2.5 s.
+- 2026-10-28: phone v367: bar 13 s, sharp 35.8 s, all 88.7 s; the free line didn't help. The recorder found the cause:
+  at the loading screen the phone already had ~2,980 files waiting (Roblox's own line, not ours), draining to ~0 by
+  ~37 s, and picture memory stayed at 8 MB until then (the loading screen's pictures weren't in memory: the blur).
+  StreamingEnabled was OFF in the published place: `serve.project.json` set it false, so every Rojo connect turned it
+  off and the town (~2,800 files) went to every phone at join, ahead of everything. Fixed: serve sets it true, Studio
+  set true (Play check: menus 3.9, town arrived 5.2 after them, 9,256 town pieces on the client), and `LoadLog` marks
+  any join with streaming off ("STREAMING OFF"). Next: Alan publishes, phone join.

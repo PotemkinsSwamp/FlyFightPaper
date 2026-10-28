@@ -152,6 +152,9 @@ mistake would be easy to make twice.
 - **A phone downloads the whole map when streaming is off (2026-10-25).** ~4,500 assets made Alan's phone wait
   minutes, and the menus' pictures queued behind the town's. Preload the menu art first (`Loading.luau`), and count
   every texture map (SurfaceAppearance ones too) when judging a map's weight.
+- **Rojo serve can switch settings in the place, and publishing ships them (2026-10-28).** `serve.project.json` set
+  `StreamingEnabled` false, so streaming was off in published builds for days (phones got ~2,800 town files at join;
+  the loading screen stayed blurry 35 s). Serve now sets it true; `LoadLog.recent()` flags "STREAMING OFF" joins.
 - **New models need texture packs.** After placing new models, Play gets slow (over a minute) until Alan presses
   Ctrl+S and `python tools/town_toys.py packs FlyFightPaper-WORKING.rbxlx` then `build` harvest the packs.
 - **New maps on many pieces at once: Studio re-makes their texture packs and gets throttled (2026-10-25).** Swapping

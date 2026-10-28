@@ -52,7 +52,7 @@
     "Workspace": {
       "$ignoreUnknownInstances": true,
       "$properties": {
-        "StreamingEnabled": false
+        "StreamingEnabled": true
       }
     },
     "ServerStorage": {

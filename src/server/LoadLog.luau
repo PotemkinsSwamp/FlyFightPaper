@@ -10,6 +10,7 @@ function LoadLog.save(player,report)
  if type(report)~="table" or player:GetAttribute("LoadLogged") then return end
  player:SetAttribute("LoadLogged",true)
  local entry={at=os.time(),user=player.UserId,place=game.PlaceVersion,
+  noStreaming=not workspace.StreamingEnabled or nil, -- (v367: off by mistake, so phones got the whole town at once)
   times=type(report.times)=="string" and report.times:sub(1,300) or "?",
   device=type(report.device)=="string" and report.device:sub(1,40) or "?",
   health=type(report.health)=="string" and report.health:sub(1,500) or nil, -- "fps/texture MB/files waiting" every 2.5 s
@@ -28,7 +29,7 @@ function LoadLog.recent()
  local list=Store:GetAsync("recent") or {}
  local lines={}
  for _,e in list do
-  table.insert(lines,string.format("%s v%s %s user %d%s: %s%s%s",os.date("!%m-%d %H:%M",e.at),tostring(e.place),e.device,e.user,
+  table.insert(lines,string.format("%s v%s%s %s user %d%s: %s%s%s",os.date("!%m-%d %H:%M",e.at),tostring(e.place),e.noStreaming and " STREAMING OFF" or "",e.device,e.user,
    e.skipped and string.format(" (skip %.1f)",e.skipped) or "",e.times,e.failures and e.failures>0 and string.format(" [%d failed]",e.failures) or "",
    e.health and "\n   fps/texture MB/waiting every 2.5 s: "..e.health or ""))
  end
