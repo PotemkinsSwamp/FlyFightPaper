@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-28-load-lane-streaming-fixed.md
+# LATEST → handoff-2026-10-28-mobile-lane-notes-and-taps.md
 
-★ START HERE: Goal (Alan): phone fresh join fully loaded in 30 s at most, same look. First: dig into why the
-repacked town used ~575 MB picture memory (today's ~70 MB), in Studio one building at a time. No phone test for the
-small untimed changes in Studio (Alan); they ride along with the next real gain.
+★ START HERE: Goal (Alan): mobile works and looks good. First: after Alan's publish + phone tutorial run, read the
+join log's new room rows and fix why the private tutorial room doesn't know it is one. Then phone-check the screens
+not yet checked (Range menu, results, Training board, match desk, tips/Range notes moving, iPad).
 
-Quick state: main 459ddecc (+handoff); published v390 (repacked town, to be replaced); phone v368 59.3 s, sharp 0.8 s.
-Previous: handoff-2026-10-27-load-lane-3d-menus.md (load lane), handoff-2026-10-24-ui-screen-fit.md (UI lane).
+Quick state: main 82d8de11 (+handoff); load lane done (48.8 s first join accepted).
+Previous: handoff-2026-10-28-load-lane-streaming-fixed.md (load lane), handoff-2026-10-24-ui-screen-fit.md (UI lane).
