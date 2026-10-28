@@ -12,7 +12,8 @@ know it was a tutorial room. Cause not yet known: each join's log entry now carr
 (`RoomClass`: public, tutorial, rookie, regular or the error), and every room move or failed move is logged too.
 **Phones (Alan 2026-10-28):** the lesson note was too small and covered the middle of the view; on a phone it is now
 wide and short (1200 x 180 before scaling), words 20 points (were 15), Got it and Skip beside the words with no key
-names, a tip takes the title's line. Not yet seen by Alan.
+names, a tip takes the title's line, and it sits up in Roblox's top bar right of the Menu button (Alan: "moved up").
+Not yet seen by Alan.
 **Flight School, Combat School, the Hangar Tour and the Training board approved by Alan 2026-10-22**
 ([decision](../decisions/2026-10-22-tutorials-approved.md)). **Match Tips built 2026-10-23, not yet seen by Alan**:
 nine one-line tips in real matches, each once (saved), a small sticky note under the match strip, gone after 6 s or

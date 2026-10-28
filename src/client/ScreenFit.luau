@@ -47,8 +47,9 @@ function ScreenFit.atSide(piece, when) table.insert(sides, { piece = piece, when
 -- order: smaller goes higher (capture 1, news 2, lesson or Range note 3, warning or lock 4, match tip 5).
 -- covers: on a phone it stays up top over the other notes and the kill feed rather than dropping into the middle of
 -- the view (the match tip, Alan 2026-10-24); it still keeps off Health and Lift.
-function ScreenFit.inColumn(piece, order, covers)
-	table.insert(column, { piece = piece, order = order, covers = covers })
+-- high: on a phone it goes up into Roblox's top bar, right of the Menu button (the lesson note, Alan 2026-10-28).
+function ScreenFit.inColumn(piece, order, covers, high)
+	table.insert(column, { piece = piece, order = order, covers = covers, high = high })
 	table.sort(column, function(a, b) return a.order < b.order end)
 end
 local function shown(piece)
@@ -73,6 +74,8 @@ function ScreenFit.place(piece, base)
 	local width = piece.Size.X.Offset * parentScale * (base or 1)
 	local home = parent.AbsolutePosition.X + parent.AbsoluteSize.X / 2
 	local phoneCovers = entry.covers and ScreenFit.kind() == "phone"
+	local bar, inset = GuiService.TopbarInset, GuiService:GetGuiInset().Y
+	local phoneHigh = entry.high and ScreenFit.kind() == "phone" and bar.Width > 0
 	-- The gap between the corner pieces (the kill feed doesn't count for a note that covers).
 	local gapLeft, gapRight = ScreenFit.GAP * 2, view.X - ScreenFit.GAP * 2
 	for _, side in sides do
@@ -83,6 +86,14 @@ function ScreenFit.place(piece, base)
 			elseif not phoneCovers then gapRight = math.min(gapRight, low - ScreenFit.GAP * 2) end
 		end
 	end
+	if phoneHigh then
+		-- In the bar: clear of Roblox's own buttons and of the row's pieces on the left (the Menu button).
+		gapRight = math.min(gapRight, bar.Max.X - ScreenFit.GAP * 2)
+		for _, other in row do
+			local high = other.AbsolutePosition.X + other.AbsoluteSize.X
+			if shown(other) and (other.AbsolutePosition.X + high) / 2 < view.X / 2 then gapLeft = math.max(gapLeft, high + ScreenFit.GAP * 2) end
+		end
+	end
 	local centre, fit = home, 1
 	if home - width / 2 < gapLeft or home + width / 2 > gapRight then
 		fit = math.min(1, (gapRight - gapLeft) / width)
@@ -90,7 +101,7 @@ function ScreenFit.place(piece, base)
 		centre = math.clamp(home, gapLeft + half, math.max(gapLeft + half, gapRight - half))
 	end
 	local left, right = centre - width * fit / 2, centre + width * fit / 2
-	local y = GuiService.TopbarInset.Max.Y - GuiService:GetGuiInset().Y -- the bar's bottom in AbsolutePosition space
+	local y = (phoneHigh and bar.Min.Y or bar.Max.Y) - inset -- the bar's bottom (or top) in AbsolutePosition space
 	local function under(other)
 		if shown(other) and other.AbsolutePosition.X < right and other.AbsolutePosition.X + other.AbsoluteSize.X > left then
 			y = math.max(y, other.AbsolutePosition.Y + other.AbsoluteSize.Y)

@@ -102,7 +102,7 @@ function Tutorial.start(getPlane)
  local scale=Instance.new("UIScale");scale.Parent=note
  -- In the top middle's column (ScreenFit): under the top row (Menu button, match strip) and any news note.
  local ScreenFit=require(script.Parent.ScreenFit)
- ScreenFit.inColumn(note,3)
+ ScreenFit.inColumn(note,3,false,true) -- on a phone: up in the top bar
  -- (Sets the note's scale too: it shrinks to fit a small phone's gap.)
  local function noteTop()
   local s=ScreenFit.scale(ScreenFit.NOTE);local x,y,fit=ScreenFit.place(note,s);scale.Scale=s*fit
