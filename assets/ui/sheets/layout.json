@@ -5,7 +5,8 @@
   "y": 0,
   "w": 279,
   "h": 242,
-  "piece": "assets/ui/mainmenu/ready/plane.png"
+  "piece": "assets/ui/mainmenu/ready/plane.png",
+  "group": "3d"
  },
  "86284438244594": {
   "file": "results-xp-bar-fill",
@@ -13,622 +14,700 @@
   "y": 0,
   "w": 613,
   "h": 80,
-  "piece": "assets/ui/results/ready/xp-bar-fill.png"
+  "piece": "assets/ui/results/ready/xp-bar-fill.png",
+  "group": "3d"
  },
  "110535459444634": {
-  "file": "sheet-1",
+  "file": "sheet-3d-1",
   "x": 8,
   "y": 8,
   "w": 684,
   "h": 954,
-  "piece": "assets/ui/hangarshelf/ready/binder-right.png"
+  "piece": "assets/ui/hangarshelf/ready/binder-right.png",
+  "group": "3d"
  },
  "105160400934566": {
-  "file": "sheet-1",
+  "file": "sheet-3d-1",
   "x": 708,
   "y": 8,
   "w": 292,
   "h": 144,
-  "piece": "assets/ui/trainingboard/ready/strip-red.png"
+  "piece": "assets/ui/trainingboard/ready/strip-red.png",
+  "group": "3d"
+ },
+ "94076303094566": {
+  "file": "sheet-3d-1",
+  "x": 708,
+  "y": 168,
+  "w": 266,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/tab-off.png",
+  "group": "3d"
+ },
+ "100029801723584": {
+  "file": "sheet-3d-1",
+  "x": 8,
+  "y": 978,
+  "w": 35,
+  "h": 31,
+  "piece": "assets/ui/hangar/ready/bar-green.png",
+  "group": "3d"
+ },
+ "101578956565177": {
+  "file": "sheet-3d-1",
+  "x": 59,
+  "y": 978,
+  "w": 35,
+  "h": 31,
+  "piece": "assets/ui/hangar/ready/bar-orange.png",
+  "group": "3d"
  },
  "113985177433175": {
-  "file": "sheet-2",
+  "file": "sheet-3d-2",
   "x": 8,
   "y": 8,
   "w": 683,
   "h": 954,
-  "piece": "assets/ui/hangarshelf/ready/binder-left.png"
+  "piece": "assets/ui/hangarshelf/ready/binder-left.png",
+  "group": "3d"
  },
  "89622531819348": {
-  "file": "sheet-3",
+  "file": "sheet-3d-3",
   "x": 8,
   "y": 8,
   "w": 669,
   "h": 875,
-  "piece": "assets/ui/mainmenu/ready/card-stats.png"
+  "piece": "assets/ui/mainmenu/ready/card-stats.png",
+  "group": "3d"
  },
  "112102301676610": {
-  "file": "sheet-3",
+  "file": "sheet-3d-3",
   "x": 8,
   "y": 899,
   "w": 963,
   "h": 63,
-  "piece": "assets/ui/settings/ready/ruler.png"
+  "piece": "assets/ui/settings/ready/ruler.png",
+  "group": "3d"
  },
  "116436557781990": {
-  "file": "sheet-3",
+  "file": "sheet-3d-3",
   "x": 693,
   "y": 8,
   "w": 322,
   "h": 97,
-  "piece": "assets/ui/trainingboard/ready/strip-green.png"
+  "piece": "assets/ui/trainingboard/ready/strip-green.png",
+  "group": "3d"
  },
  "130611353722432": {
-  "file": "sheet-3",
+  "file": "sheet-3d-3",
   "x": 693,
   "y": 121,
   "w": 323,
   "h": 92,
-  "piece": "assets/ui/hangarshelf/ready/shelf-tab.png"
- },
- "109589083209118": {
-  "file": "sheet-4",
-  "x": 8,
-  "y": 8,
-  "w": 720,
-  "h": 800,
-  "piece": "assets/ui/hangarshelf/ready/stats-paper.png"
- },
- "110123970547575": {
-  "file": "sheet-4",
-  "x": 8,
-  "y": 824,
-  "w": 984,
-  "h": 124,
-  "piece": "assets/ui/hud/ready/strip-notebook.png"
- },
- "137797402914609": {
-  "file": "sheet-4",
-  "x": 8,
-  "y": 964,
-  "w": 584,
-  "h": 46,
-  "piece": "assets/ui/results/ready/row-highlight.png"
- },
- "116159439019263": {
-  "file": "sheet-4",
-  "x": 744,
-  "y": 8,
-  "w": 259,
-  "h": 89,
-  "piece": "assets/ui/settings/ready/tab-green.png"
- },
- "94076303094566": {
-  "file": "sheet-4",
-  "x": 744,
-  "y": 113,
-  "w": 266,
-  "h": 81,
-  "piece": "assets/ui/settings/ready/tab-off.png"
- },
- "131402918337135": {
-  "file": "sheet-4",
-  "x": 608,
-  "y": 964,
-  "w": 150,
-  "h": 52,
-  "piece": "assets/ui/settings/ready/pencil.png"
- },
- "97874141587630": {
-  "file": "sheet-5",
-  "x": 8,
-  "y": 8,
-  "w": 740,
-  "h": 776,
-  "piece": "assets/ui/ingame/ready/sticky-note.png"
- },
- "76239099114989": {
-  "file": "sheet-5",
-  "x": 8,
-  "y": 800,
-  "w": 600,
-  "h": 198,
-  "piece": "assets/ui/hud/ready/note-incoming.png"
- },
- "76160948676401": {
-  "file": "sheet-5",
-  "x": 764,
-  "y": 8,
-  "w": 244,
-  "h": 94,
-  "piece": "assets/ui/hangarshelf/ready/index-tab.png"
- },
- "92620076840621": {
-  "file": "sheet-5",
-  "x": 764,
-  "y": 118,
-  "w": 224,
-  "h": 64,
-  "piece": "assets/ui/hangarshelf/ready/stat-label.png"
- },
- "133288006521198": {
-  "file": "sheet-5",
-  "x": 624,
-  "y": 800,
-  "w": 81,
-  "h": 81,
-  "piece": "assets/ui/hud/ready/bracket.png"
+  "piece": "assets/ui/hangarshelf/ready/shelf-tab.png",
+  "group": "3d"
  },
  "80540963066312": {
-  "file": "sheet-6",
+  "file": "sheet-3d-4",
   "x": 8,
   "y": 8,
   "w": 779,
   "h": 573,
-  "piece": "assets/ui/hangar/ready/preview.png"
+  "piece": "assets/ui/hangar/ready/preview.png",
+  "group": "3d"
  },
  "87353912097125": {
-  "file": "sheet-6",
+  "file": "sheet-3d-4",
   "x": 8,
   "y": 597,
   "w": 456,
   "h": 399,
-  "piece": "assets/ui/mainmenu/ready/drawing-1.png"
+  "piece": "assets/ui/mainmenu/ready/drawing-1.png",
+  "group": "3d"
  },
  "84778693355255": {
-  "file": "sheet-6",
+  "file": "sheet-3d-4",
   "x": 480,
   "y": 597,
   "w": 449,
   "h": 393,
-  "piece": "assets/ui/mainmenu/ready/drawing-2.png"
+  "piece": "assets/ui/mainmenu/ready/drawing-2.png",
+  "group": "3d"
  },
  "77250322353606": {
-  "file": "sheet-6",
+  "file": "sheet-3d-4",
   "x": 945,
   "y": 8,
   "w": 70,
   "h": 480,
-  "piece": "assets/ui/hangarshelf/ready/shelf-end-left.png"
+  "piece": "assets/ui/hangarshelf/ready/shelf-end-left.png",
+  "group": "3d"
  },
  "70512922987121": {
-  "file": "sheet-6",
+  "file": "sheet-3d-4",
   "x": 945,
   "y": 504,
   "w": 70,
   "h": 480,
-  "piece": "assets/ui/hangarshelf/ready/shelf-end-right.png"
+  "piece": "assets/ui/hangarshelf/ready/shelf-end-right.png",
+  "group": "3d"
  },
- "120331771075457": {
-  "file": "sheet-6",
+ "136617162696979": {
+  "file": "sheet-3d-4",
   "x": 803,
   "y": 8,
-  "w": 94,
+  "w": 81,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-blue.png",
+  "group": "3d"
+ },
+ "139451901251339": {
+  "file": "sheet-3d-4",
+  "x": 803,
+  "y": 105,
+  "w": 81,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-yellow.png",
+  "group": "3d"
+ },
+ "108439521706833": {
+  "file": "sheet-3d-4",
+  "x": 803,
+  "y": 202,
+  "w": 81,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-purple.png",
+  "group": "3d"
+ },
+ "135193433305930": {
+  "file": "sheet-3d-4",
+  "x": 803,
+  "y": 299,
+  "w": 62,
+  "h": 59,
+  "piece": "assets/ui/settings/ready/check.png",
+  "group": "3d"
+ },
+ "80213400784355": {
+  "file": "sheet-3d-4",
+  "x": 881,
+  "y": 299,
+  "w": 47,
+  "h": 47,
+  "piece": "assets/ui/hangarshelf/ready/stat-box.png",
+  "group": "3d"
+ },
+ "83093020395376": {
+  "file": "sheet-3d-5",
+  "x": 8,
+  "y": 8,
+  "w": 560,
+  "h": 423,
+  "piece": "assets/ui/mainmenu/ready/photo-1.png",
+  "group": "3d"
+ },
+ "91837232661923": {
+  "file": "sheet-3d-5",
+  "x": 584,
+  "y": 8,
+  "w": 400,
+  "h": 480,
+  "piece": "assets/ui/hangarshelf/ready/cubby-front.png",
+  "group": "3d"
+ },
+ "71935281954018": {
+  "file": "sheet-3d-5",
+  "x": 8,
+  "y": 447,
+  "w": 356,
+  "h": 537,
+  "piece": "assets/ui/trainingboard/ready/paper-hangar.png",
+  "group": "3d"
+ },
+ "73124461274469": {
+  "file": "sheet-3d-5",
+  "x": 380,
+  "y": 504,
+  "w": 367,
+  "h": 510,
+  "piece": "assets/ui/trainingboard/ready/paper-flight.png",
+  "group": "3d"
+ },
+ "76160948676401": {
+  "file": "sheet-3d-5",
+  "x": 763,
+  "y": 504,
+  "w": 244,
+  "h": 94,
+  "piece": "assets/ui/hangarshelf/ready/index-tab.png",
+  "group": "3d"
+ },
+ "112038756025991": {
+  "file": "sheet-3d-5",
+  "x": 763,
+  "y": 614,
+  "w": 223,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/tab-on.png",
+  "group": "3d"
+ },
+ "96038284662893": {
+  "file": "sheet-3d-6",
+  "x": 8,
+  "y": 8,
+  "w": 356,
+  "h": 524,
+  "piece": "assets/ui/trainingboard/ready/paper-range.png",
+  "group": "3d"
+ },
+ "77127618909836": {
+  "file": "sheet-3d-6",
+  "x": 380,
+  "y": 8,
+  "w": 356,
+  "h": 522,
+  "piece": "assets/ui/trainingboard/ready/paper-combat.png",
+  "group": "3d"
+ },
+ "103396781406593": {
+  "file": "sheet-3d-6",
+  "x": 8,
+  "y": 548,
+  "w": 400,
+  "h": 400,
+  "piece": "assets/ui/hangarshelf/ready/cubby-back.png",
+  "group": "3d"
+ },
+ "83467354769758": {
+  "file": "sheet-3d-6",
+  "x": 424,
+  "y": 546,
+  "w": 565,
+  "h": 150,
+  "piece": "assets/ui/hangar/ready/button-green.png",
+  "group": "3d"
+ },
+ "78583732906300": {
+  "file": "sheet-3d-6",
+  "x": 424,
+  "y": 712,
+  "w": 576,
+  "h": 129,
+  "piece": "assets/ui/results/ready/strip-green.png",
+  "group": "3d"
+ },
+ "115834678067841": {
+  "file": "sheet-3d-6",
+  "x": 424,
+  "y": 857,
+  "w": 395,
+  "h": 147,
+  "piece": "assets/ui/hangar/ready/tab.png",
+  "group": "3d"
+ },
+ "116159439019263": {
+  "file": "sheet-3d-6",
+  "x": 752,
+  "y": 8,
+  "w": 259,
+  "h": 89,
+  "piece": "assets/ui/settings/ready/tab-green.png",
+  "group": "3d"
+ },
+ "131402918337135": {
+  "file": "sheet-3d-6",
+  "x": 8,
+  "y": 964,
+  "w": 150,
+  "h": 52,
+  "piece": "assets/ui/settings/ready/pencil.png",
+  "group": "3d"
+ },
+ "84312204714104": {
+  "file": "sheet-3d-7",
+  "x": 8,
+  "y": 8,
+  "w": 661,
+  "h": 205,
+  "piece": "assets/ui/hangar/ready/card.png",
+  "group": "3d"
+ },
+ "118872852149517": {
+  "file": "sheet-3d-7",
+  "x": 8,
+  "y": 229,
+  "w": 629,
+  "h": 205,
+  "piece": "assets/ui/hangar/ready/card-selected.png",
+  "group": "3d"
+ },
+ "129866047095335": {
+  "file": "sheet-3d-7",
+  "x": 8,
+  "y": 450,
+  "w": 645,
+  "h": 129,
+  "piece": "assets/ui/results/ready/strip-blue.png",
+  "group": "3d"
+ },
+ "82556466719896": {
+  "file": "sheet-3d-7",
+  "x": 8,
+  "y": 595,
+  "w": 645,
+  "h": 129,
+  "piece": "assets/ui/results/ready/strip-pink.png",
+  "group": "3d"
+ },
+ "94736097855757": {
+  "file": "sheet-3d-7",
+  "x": 653,
+  "y": 229,
+  "w": 179,
+  "h": 180,
+  "piece": "assets/ui/settings/ready/crosshair-card.png",
+  "group": "3d"
+ },
+ "137797402914609": {
+  "file": "sheet-3d-7",
+  "x": 8,
+  "y": 740,
+  "w": 584,
+  "h": 46,
+  "piece": "assets/ui/results/ready/row-highlight.png",
+  "group": "3d"
+ },
+ "94679570912477": {
+  "file": "sheet-3d-7",
+  "x": 848,
+  "y": 8,
+  "w": 167,
   "h": 88,
-  "piece": "assets/ui/results/ready/gold-star.png"
+  "piece": "assets/ui/settings/ready/tag.png",
+  "group": "3d"
  },
  "91100704633557": {
-  "file": "sheet-6",
-  "x": 803,
+  "file": "sheet-3d-7",
+  "x": 685,
   "y": 112,
   "w": 93,
   "h": 85,
-  "piece": "assets/ui/trainingboard/ready/tick.png"
+  "piece": "assets/ui/trainingboard/ready/tick.png",
+  "group": "3d"
+ },
+ "72275865664553": {
+  "file": "sheet-3d-7",
+  "x": 685,
+  "y": 8,
+  "w": 83,
+  "h": 81,
+  "piece": "assets/ui/settings/ready/sticker-green.png",
+  "group": "3d"
  },
  "136096845362532": {
-  "file": "sheet-6",
-  "x": 803,
-  "y": 213,
+  "file": "sheet-3d-7",
+  "x": 794,
+  "y": 112,
   "w": 82,
   "h": 81,
-  "piece": "assets/ui/settings/ready/sticker-white.png"
+  "piece": "assets/ui/settings/ready/sticker-white.png",
+  "group": "3d"
  },
  "95167817947211": {
-  "file": "sheet-6",
-  "x": 803,
-  "y": 310,
+  "file": "sheet-3d-7",
+  "x": 892,
+  "y": 112,
   "w": 81,
   "h": 81,
-  "piece": "assets/ui/settings/ready/sticker-red.png"
+  "piece": "assets/ui/settings/ready/sticker-red.png",
+  "group": "3d"
  },
- "136617162696979": {
-  "file": "sheet-6",
-  "x": 803,
-  "y": 407,
-  "w": 81,
-  "h": 81,
-  "piece": "assets/ui/settings/ready/sticker-blue.png"
+ "109589083209118": {
+  "file": "sheet-fly-1",
+  "x": 8,
+  "y": 8,
+  "w": 720,
+  "h": 800,
+  "piece": "assets/ui/hangarshelf/ready/stats-paper.png",
+  "group": "fly"
  },
- "96658237976750": {
-  "file": "sheet-6",
-  "x": 901,
-  "y": 213,
-  "w": 28,
-  "h": 28,
-  "piece": "assets/ui/hud/ready/pin-blue.png"
+ "110123970547575": {
+  "file": "sheet-fly-1",
+  "x": 8,
+  "y": 824,
+  "w": 984,
+  "h": 124,
+  "piece": "assets/ui/hud/ready/strip-notebook.png",
+  "group": "fly"
+ },
+ "97874141587630": {
+  "file": "sheet-fly-2",
+  "x": 8,
+  "y": 8,
+  "w": 740,
+  "h": 776,
+  "piece": "assets/ui/ingame/ready/sticky-note.png",
+  "group": "fly"
+ },
+ "76239099114989": {
+  "file": "sheet-fly-2",
+  "x": 8,
+  "y": 800,
+  "w": 600,
+  "h": 198,
+  "piece": "assets/ui/hud/ready/note-incoming.png",
+  "group": "fly"
  },
  "70377535387263": {
-  "file": "sheet-7",
+  "file": "sheet-fly-3",
   "x": 8,
   "y": 8,
   "w": 512,
   "h": 512,
-  "piece": "assets/ui/tutorial/ready/frame-ring.png"
- },
- "83093020395376": {
-  "file": "sheet-7",
-  "x": 8,
-  "y": 536,
-  "w": 560,
-  "h": 423,
-  "piece": "assets/ui/mainmenu/ready/photo-1.png"
- },
- "91837232661923": {
-  "file": "sheet-7",
-  "x": 584,
-  "y": 8,
-  "w": 400,
-  "h": 480,
-  "piece": "assets/ui/hangarshelf/ready/cubby-front.png"
- },
- "73124461274469": {
-  "file": "sheet-7",
-  "x": 584,
-  "y": 504,
-  "w": 367,
-  "h": 510,
-  "piece": "assets/ui/trainingboard/ready/paper-flight.png"
- },
- "80213400784355": {
-  "file": "sheet-7",
-  "x": 967,
-  "y": 504,
-  "w": 47,
-  "h": 47,
-  "piece": "assets/ui/hangarshelf/ready/stat-box.png"
- },
- "138489607891947": {
-  "file": "sheet-7",
-  "x": 967,
-  "y": 567,
-  "w": 47,
-  "h": 47,
-  "piece": "assets/ui/hangarshelf/ready/stat-box-empty.png"
- },
- "116389741682536": {
-  "file": "sheet-7",
-  "x": 967,
-  "y": 630,
-  "w": 47,
-  "h": 47,
-  "piece": "assets/ui/hud/ready/key-box.png"
- },
- "71935281954018": {
-  "file": "sheet-8",
-  "x": 8,
-  "y": 8,
-  "w": 356,
-  "h": 537,
-  "piece": "assets/ui/trainingboard/ready/paper-hangar.png"
- },
- "96038284662893": {
-  "file": "sheet-8",
-  "x": 380,
-  "y": 8,
-  "w": 356,
-  "h": 524,
-  "piece": "assets/ui/trainingboard/ready/paper-range.png"
+  "piece": "assets/ui/tutorial/ready/frame-ring.png",
+  "group": "fly"
  },
  "80986580132881": {
-  "file": "sheet-8",
+  "file": "sheet-fly-3",
   "x": 8,
-  "y": 561,
+  "y": 536,
   "w": 756,
   "h": 227,
-  "piece": "assets/ui/deskmenu/ready/launch.png"
+  "piece": "assets/ui/deskmenu/ready/launch.png",
+  "group": "fly"
  },
  "133931574927268": {
-  "file": "sheet-8",
+  "file": "sheet-fly-3",
   "x": 780,
   "y": 8,
   "w": 234,
   "h": 733,
-  "piece": "assets/ui/deskmenu/ready/cork-strip.png"
- },
- "84312204714104": {
-  "file": "sheet-8",
-  "x": 8,
-  "y": 804,
-  "w": 661,
-  "h": 205,
-  "piece": "assets/ui/hangar/ready/card.png"
- },
- "112038756025991": {
-  "file": "sheet-8",
-  "x": 780,
-  "y": 757,
-  "w": 223,
-  "h": 81,
-  "piece": "assets/ui/settings/ready/tab-on.png"
- },
- "114300284068045": {
-  "file": "sheet-8",
-  "x": 685,
-  "y": 854,
-  "w": 135,
-  "h": 135,
-  "piece": "assets/ui/hud/ready/ring.png"
- },
- "139451901251339": {
-  "file": "sheet-8",
-  "x": 836,
-  "y": 854,
-  "w": 81,
-  "h": 81,
-  "piece": "assets/ui/settings/ready/sticker-yellow.png"
- },
- "108439521706833": {
-  "file": "sheet-8",
-  "x": 933,
-  "y": 854,
-  "w": 81,
-  "h": 81,
-  "piece": "assets/ui/settings/ready/sticker-purple.png"
- },
- "135193433305930": {
-  "file": "sheet-8",
-  "x": 836,
-  "y": 951,
-  "w": 62,
-  "h": 59,
-  "piece": "assets/ui/settings/ready/check.png"
- },
- "118269057146968": {
-  "file": "sheet-8",
-  "x": 685,
-  "y": 804,
-  "w": 34,
-  "h": 34,
-  "piece": "assets/ui/hud/ready/pin-red.png"
- },
- "77127618909836": {
-  "file": "sheet-9",
-  "x": 8,
-  "y": 8,
-  "w": 356,
-  "h": 522,
-  "piece": "assets/ui/trainingboard/ready/paper-combat.png"
- },
- "103396781406593": {
-  "file": "sheet-9",
-  "x": 8,
-  "y": 546,
-  "w": 400,
-  "h": 400,
-  "piece": "assets/ui/hangarshelf/ready/cubby-back.png"
- },
- "118872852149517": {
-  "file": "sheet-9",
-  "x": 380,
-  "y": 8,
-  "w": 629,
-  "h": 205,
-  "piece": "assets/ui/hangar/ready/card-selected.png"
+  "piece": "assets/ui/deskmenu/ready/cork-strip.png",
+  "group": "fly"
  },
  "126851776000245": {
-  "file": "sheet-9",
-  "x": 380,
-  "y": 229,
+  "file": "sheet-fly-3",
+  "x": 8,
+  "y": 779,
   "w": 612,
   "h": 172,
-  "piece": "assets/ui/hangarshelf/ready/button-orange.png"
+  "piece": "assets/ui/hangarshelf/ready/button-orange.png",
+  "group": "fly"
  },
- "83467354769758": {
-  "file": "sheet-9",
-  "x": 424,
-  "y": 417,
-  "w": 565,
-  "h": 150,
-  "piece": "assets/ui/hangar/ready/button-green.png"
+ "92620076840621": {
+  "file": "sheet-fly-3",
+  "x": 536,
+  "y": 8,
+  "w": 224,
+  "h": 64,
+  "piece": "assets/ui/hangarshelf/ready/stat-label.png",
+  "group": "fly"
  },
- "71812846184948": {
-  "file": "sheet-9",
-  "x": 424,
-  "y": 583,
-  "w": 589,
-  "h": 139,
-  "piece": "assets/ui/deskmenu/ready/strip-green.png"
- },
- "76762960710746": {
-  "file": "sheet-9",
-  "x": 424,
-  "y": 738,
-  "w": 589,
-  "h": 139,
-  "piece": "assets/ui/deskmenu/ready/strip-red.png"
- },
- "107829360251744": {
-  "file": "sheet-9",
-  "x": 424,
-  "y": 893,
-  "w": 521,
-  "h": 123,
-  "piece": "assets/ui/deskmenu/ready/strip-yellow.png"
- },
- "93844659261583": {
-  "file": "sheet-9",
+ "136087187968614": {
+  "file": "sheet-fly-3",
   "x": 8,
-  "y": 962,
-  "w": 61,
-  "h": 54,
-  "piece": "assets/ui/hud/ready/arrow-double.png"
+  "y": 967,
+  "w": 81,
+  "h": 30,
+  "piece": "assets/ui/tutorial/ready/burst.png",
+  "group": "fly"
+ },
+ "138489607891947": {
+  "file": "sheet-fly-3",
+  "x": 105,
+  "y": 967,
+  "w": 47,
+  "h": 47,
+  "piece": "assets/ui/hangarshelf/ready/stat-box-empty.png",
+  "group": "fly"
+ },
+ "116389741682536": {
+  "file": "sheet-fly-3",
+  "x": 168,
+  "y": 967,
+  "w": 47,
+  "h": 47,
+  "piece": "assets/ui/hud/ready/key-box.png",
+  "group": "fly"
+ },
+ "125915066273285": {
+  "file": "sheet-fly-3",
+  "x": 231,
+  "y": 967,
+  "w": 38,
+  "h": 31,
+  "piece": "assets/ui/hangar/ready/bar-red.png",
+  "group": "fly"
+ },
+ "118269057146968": {
+  "file": "sheet-fly-3",
+  "x": 285,
+  "y": 967,
+  "w": 34,
+  "h": 34,
+  "piece": "assets/ui/hud/ready/pin-red.png",
+  "group": "fly"
+ },
+ "78667835427454": {
+  "file": "sheet-fly-3",
+  "x": 335,
+  "y": 967,
+  "w": 35,
+  "h": 31,
+  "piece": "assets/ui/hangar/ready/bar-blue.png",
+  "group": "fly"
+ },
+ "88470216324199": {
+  "file": "sheet-fly-3",
+  "x": 386,
+  "y": 967,
+  "w": 34,
+  "h": 31,
+  "piece": "assets/ui/hangar/ready/bar-empty.png",
+  "group": "fly"
+ },
+ "96658237976750": {
+  "file": "sheet-fly-3",
+  "x": 436,
+  "y": 967,
+  "w": 28,
+  "h": 28,
+  "piece": "assets/ui/hud/ready/pin-blue.png",
+  "group": "fly"
  },
  "101822327681119": {
-  "file": "sheet-10",
+  "file": "sheet-fly-4",
   "x": 8,
   "y": 8,
   "w": 661,
   "h": 156,
-  "piece": "assets/ui/deskmenu/ready/strip-blue.png"
+  "piece": "assets/ui/deskmenu/ready/strip-blue.png",
+  "group": "fly"
  },
- "129866047095335": {
-  "file": "sheet-10",
+ "71812846184948": {
+  "file": "sheet-fly-4",
   "x": 8,
   "y": 180,
-  "w": 645,
-  "h": 129,
-  "piece": "assets/ui/results/ready/strip-blue.png"
+  "w": 589,
+  "h": 139,
+  "piece": "assets/ui/deskmenu/ready/strip-green.png",
+  "group": "fly"
  },
- "82556466719896": {
-  "file": "sheet-10",
+ "76762960710746": {
+  "file": "sheet-fly-4",
   "x": 8,
-  "y": 325,
-  "w": 645,
-  "h": 129,
-  "piece": "assets/ui/results/ready/strip-pink.png"
+  "y": 335,
+  "w": 589,
+  "h": 139,
+  "piece": "assets/ui/deskmenu/ready/strip-red.png",
+  "group": "fly"
  },
  "81270758839816": {
-  "file": "sheet-10",
+  "file": "sheet-fly-4",
   "x": 8,
-  "y": 470,
+  "y": 490,
   "w": 539,
   "h": 140,
-  "piece": "assets/ui/mainmenu/ready/strip-yellow.png"
- },
- "78583732906300": {
-  "file": "sheet-10",
-  "x": 8,
-  "y": 626,
-  "w": 576,
-  "h": 129,
-  "piece": "assets/ui/results/ready/strip-green.png"
+  "piece": "assets/ui/mainmenu/ready/strip-yellow.png",
+  "group": "fly"
  },
  "132448330647455": {
-  "file": "sheet-10",
-  "x": 8,
-  "y": 771,
+  "file": "sheet-fly-4",
+  "x": 685,
+  "y": 8,
   "w": 295,
   "h": 244,
-  "piece": "assets/ui/deskmenu/ready/photo.png"
+  "piece": "assets/ui/deskmenu/ready/photo.png",
+  "group": "fly"
+ },
+ "107829360251744": {
+  "file": "sheet-fly-4",
+  "x": 8,
+  "y": 646,
+  "w": 521,
+  "h": 123,
+  "piece": "assets/ui/deskmenu/ready/strip-yellow.png",
+  "group": "fly"
  },
  "127387145271610": {
-  "file": "sheet-10",
-  "x": 319,
-  "y": 771,
+  "file": "sheet-fly-4",
+  "x": 8,
+  "y": 785,
   "w": 499,
   "h": 128,
-  "piece": "assets/ui/mainmenu/ready/strip-blue.png"
+  "piece": "assets/ui/mainmenu/ready/strip-blue.png",
+  "group": "fly"
  },
- "115834678067841": {
-  "file": "sheet-10",
-  "x": 600,
-  "y": 470,
-  "w": 395,
-  "h": 147,
-  "piece": "assets/ui/hangar/ready/tab.png"
- },
- "94736097855757": {
-  "file": "sheet-10",
-  "x": 834,
-  "y": 633,
-  "w": 179,
-  "h": 180,
-  "piece": "assets/ui/settings/ready/crosshair-card.png"
+ "84891639571797": {
+  "file": "sheet-fly-4",
+  "x": 523,
+  "y": 785,
+  "w": 489,
+  "h": 126,
+  "piece": "assets/ui/mainmenu/ready/strip-red.png",
+  "group": "fly"
  },
  "99725754287779": {
-  "file": "sheet-10",
-  "x": 319,
-  "y": 915,
+  "file": "sheet-fly-4",
+  "x": 8,
+  "y": 929,
   "w": 512,
   "h": 54,
-  "piece": "assets/ui/hud/ready/slip-notebook.png"
+  "piece": "assets/ui/hud/ready/slip-notebook.png",
+  "group": "fly"
  },
  "128216360516580": {
-  "file": "sheet-10",
-  "x": 600,
-  "y": 633,
+  "file": "sheet-fly-4",
+  "x": 545,
+  "y": 646,
   "w": 178,
   "h": 111,
-  "piece": "assets/ui/tutorial/ready/arrow-big.png"
+  "piece": "assets/ui/tutorial/ready/arrow-big.png",
+  "group": "fly"
  },
- "94679570912477": {
-  "file": "sheet-10",
-  "x": 847,
-  "y": 829,
-  "w": 167,
+ "114300284068045": {
+  "file": "sheet-fly-4",
+  "x": 563,
+  "y": 490,
+  "w": 135,
+  "h": 135,
+  "piece": "assets/ui/hud/ready/ring.png",
+  "group": "fly"
+ },
+ "120331771075457": {
+  "file": "sheet-fly-4",
+  "x": 536,
+  "y": 927,
+  "w": 94,
   "h": 88,
-  "piece": "assets/ui/settings/ready/tag.png"
+  "piece": "assets/ui/results/ready/gold-star.png",
+  "group": "fly"
  },
- "72275865664553": {
-  "file": "sheet-10",
-  "x": 847,
-  "y": 933,
-  "w": 83,
-  "h": 81,
-  "piece": "assets/ui/settings/ready/sticker-green.png"
- },
- "136087187968614": {
-  "file": "sheet-10",
-  "x": 319,
-  "y": 985,
+ "133288006521198": {
+  "file": "sheet-fly-4",
+  "x": 646,
+  "y": 927,
   "w": 81,
-  "h": 30,
-  "piece": "assets/ui/tutorial/ready/burst.png"
+  "h": 81,
+  "piece": "assets/ui/hud/ready/bracket.png",
+  "group": "fly"
  },
- "125915066273285": {
-  "file": "sheet-10",
-  "x": 416,
-  "y": 985,
-  "w": 38,
-  "h": 31,
-  "piece": "assets/ui/hangar/ready/bar-red.png"
- },
- "78667835427454": {
-  "file": "sheet-10",
-  "x": 470,
-  "y": 985,
-  "w": 35,
-  "h": 31,
-  "piece": "assets/ui/hangar/ready/bar-blue.png"
- },
- "100029801723584": {
-  "file": "sheet-10",
-  "x": 521,
-  "y": 985,
-  "w": 35,
-  "h": 31,
-  "piece": "assets/ui/hangar/ready/bar-green.png"
- },
- "101578956565177": {
-  "file": "sheet-10",
-  "x": 572,
-  "y": 985,
-  "w": 35,
-  "h": 31,
-  "piece": "assets/ui/hangar/ready/bar-orange.png"
- },
- "88470216324199": {
-  "file": "sheet-10",
-  "x": 623,
-  "y": 985,
-  "w": 34,
-  "h": 31,
-  "piece": "assets/ui/hangar/ready/bar-empty.png"
+ "93844659261583": {
+  "file": "sheet-fly-4",
+  "x": 743,
+  "y": 927,
+  "w": 61,
+  "h": 54,
+  "piece": "assets/ui/hud/ready/arrow-double.png",
+  "group": "fly"
  },
  "102293582971435": {
-  "file": "sheet-11",
+  "file": "sheet-fly-5",
   "x": 8,
   "y": 8,
   "w": 499,
   "h": 125,
-  "piece": "assets/ui/mainmenu/ready/strip-green.png"
- },
- "84891639571797": {
-  "file": "sheet-11",
-  "x": 523,
-  "y": 8,
-  "w": 489,
-  "h": 126,
-  "piece": "assets/ui/mainmenu/ready/strip-red.png"
+  "piece": "assets/ui/mainmenu/ready/strip-green.png",
+  "group": "fly"
  }
 }

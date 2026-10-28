@@ -12,6 +12,10 @@ outwards so a shrunk drawing never picks up a neighbour. Not packed: the loading
 fetches them first, alone; they still shrink, as files of their own). Left alone: background tiles (drawn full size),
 9-slice pieces (their SliceCenter is in the piece's own pixels) and the guide-line dash (a Beam texture, not a label).
 In the game, first/LoadingFirst points every label showing a changed piece at its new file and spot (ImageRectOffset/Size).
+Two groups (Alan 2026-10-27): pieces only the menus show (never on screen while flying) go on "3d" sheets, which
+first/MenuArt draws as 3D pictures (~4x smaller downloads); a piece any flying screen shows stays an ordinary picture.
+usage.json: piece id -> the ScreenGuis showing it (read in Studio Play, every screen built); a piece not seen there
+goes by its UIAssets block.
 """
 from pathlib import Path
 import json, re, subprocess, sys
@@ -23,6 +27,9 @@ OUT = ROOT / "assets/ui/sheets"
 SIZE, PAD, ROOM = 1024, 8, 1.0
 MENUS = ("mainmenu", "results", "tutorial", "trainingboard", "hangar", "settings", "ingame", "hud", "deskMenu", "hangarShelf")
 FIRST = {"mainmenu/title", "mainmenu/plane", "results/xp-card", "results/xp-bar-fill", "results/xp-bar-frame"}  # loading screen
+MENU_GUIS = {"LoadingClassroom", "KeepDrawn", "MenuBoard", "SettingsScreen", "HangarScreen", "ShopScreen", "WaitScreen",
+             "TrainingBoard", "RoundEnd"}  # (first/MenuArt has the same list)
+FLY_BLOCKS = {"ingame", "hud", "deskMenu", "tutorial"}
 ALONE = {"ingame/tape-label", "hangarshelf/outline", "tutorial/frame-box", "tutorial/tag", "tutorial/dash"}  # 9-slice, Beam
 
 
@@ -31,16 +38,22 @@ def pieces():
     for record in ROOT.glob("assets/ui/*/uploads/*.json"):
         files[json.loads(record.read_text())["response"]["assetId"]] = record.parent.parent / "ready" / (record.stem + ".png")
     text = (ROOT / "src/first/UIAssets.luau").read_text(encoding="utf-8")
-    chosen = {}
+    use = json.loads((OUT / "usage.json").read_text())
+    chosen, blocks = {}, {}
     for block in re.split(r"\n\t(?=\w+ = \{)", text):
         name = re.match(r"(\w+) = \{", block)
         if not name or name.group(1) not in MENUS:
             continue
         for asset in re.findall(r"rbxassetid://(\d+)", block):
+            blocks.setdefault(asset, set()).add(name.group(1))
             png = files[asset]
             key = f"{png.parent.parent.name}/{png.stem}"
             if not png.stem.startswith("bg-") and key not in ALONE:
                 chosen[asset] = (png, key)
+    for asset, (png, key) in chosen.items():
+        seen = set(use.get(asset, ()))
+        flying = bool(seen - MENU_GUIS) if seen else bool(blocks[asset] & FLY_BLOCKS)
+        chosen[asset] = (png, key, "fly" if flying else "3d")
     return chosen
 
 
@@ -59,24 +72,27 @@ def build():
     (OUT / "ready").mkdir(parents=True, exist_ok=True)
     for old in [*(OUT / "ready").glob("*.png"), *(OUT / "uploads").glob("*.json")]:
         old.unlink()  # a new build is new files: its old upload records stay in git history
-    images, layout, packed = {}, {}, {}
-    packer = rectpack.newPacker(rotation=False, pack_algo=rectpack.MaxRectsBssf, sort_algo=rectpack.SORT_AREA)
-    for asset, (png, key) in pieces().items():
+    images, layout, packed, group = {}, {}, {}, {}
+    packers = {g: rectpack.newPacker(rotation=False, pack_algo=rectpack.MaxRectsBssf, sort_algo=rectpack.SORT_AREA) for g in ("3d", "fly")}
+    for asset, (png, key, g) in pieces().items():
         piece, smaller = shrunk(png, key, sizes)
-        images[asset] = piece
+        images[asset], group[asset] = piece, g
         if key not in FIRST and max(piece.size) + 2 * PAD <= SIZE:
             packed[asset] = png
-            packer.add_rect(piece.width + 2 * PAD, piece.height + 2 * PAD, asset)
+            packers[g].add_rect(piece.width + 2 * PAD, piece.height + 2 * PAD, asset)
         elif smaller:  # a file of its own, just smaller
             name = key.replace("/", "-")
             piece.save(OUT / "ready" / f"{name}.png", optimize=True)
-            layout[asset] = {"file": name, "x": 0, "y": 0, "w": piece.width, "h": piece.height, "piece": png.relative_to(ROOT).as_posix()}
-    for _ in range(len(packed)):
-        packer.add_bin(SIZE, SIZE)
-    packer.pack()
-    assert sum(len(b) for b in packer) == len(packed), "a piece didn't fit"
+            layout[asset] = {"file": name, "x": 0, "y": 0, "w": piece.width, "h": piece.height, "piece": png.relative_to(ROOT).as_posix(), "group": g}
+    bins = []
+    for g, packer in packers.items():
+        for _ in range(len(packed)):
+            packer.add_bin(SIZE, SIZE)
+        packer.pack()
+        bins += [(f"sheet-{g}-{n}", b) for n, b in enumerate(packer, 1)]
+    assert sum(len(b) for _, b in bins) == len(packed), "a piece didn't fit"
     thumbs = []
-    for n, sheet_bin in enumerate(packer, 1):
+    for name, sheet_bin in bins:
         sheet = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
         for r in sheet_bin:
             piece = images[r.rid]
@@ -90,8 +106,8 @@ def build():
             sheet.paste(piece.crop((w - 1, 0, w, h)).resize((PAD, h)), (x + w, y))
             sheet.paste(piece, (x, y))
             assert sheet.crop((x, y, x + w, y + h)).tobytes() == piece.tobytes()  # pixel for pixel
-            layout[r.rid] = {"file": f"sheet-{n}", "x": x, "y": y, "w": w, "h": h, "piece": packed[r.rid].relative_to(ROOT).as_posix()}
-        sheet.save(OUT / "ready" / f"sheet-{n}.png", optimize=True)
+            layout[r.rid] = {"file": name, "x": x, "y": y, "w": w, "h": h, "piece": packed[r.rid].relative_to(ROOT).as_posix(), "group": group[r.rid]}
+        sheet.save(OUT / "ready" / f"{name}.png", optimize=True)
         thumbs.append(sheet)
     (OUT / "layout.json").write_text(json.dumps(layout, indent=1), encoding="utf-8")
     # Contact sheet on grey (see-through shows): look at every sheet before any upload (lessons: moderation).
@@ -108,7 +124,7 @@ def build():
 def compare(sizes, images):
     """compare.png: the most-shrunk pieces drawn at their screen size (1080 and 1440 tall), old file left, new right."""
     rows = []
-    for asset, (png, key) in pieces().items():
+    for asset, (png, key, _) in pieces().items():
         old = Image.open(png).convert("RGBA")
         if key in sizes and images[asset].size != old.size:
             rows.append((images[asset].width / old.width, key, old, images[asset]))
@@ -144,6 +160,11 @@ def upload():
              "-- each changed piece from its new file (a sheet, or a smaller copy), so the menus are fewer, smaller files.", "return {"]
     for asset, p in sorted(layout.items(), key=lambda kv: (kv[1]["file"], kv[0])):
         lines.append(f'\t["rbxassetid://{asset}"] = {{ "rbxassetid://{ids[p["file"]]}", {p["x"]}, {p["y"]}, {p["w"]}, {p["h"]} }}, -- {p["piece"]}')
+    # The files first/MenuArt draws as 3D pictures: the 3d group's files, and its pieces that kept their own file.
+    # file id -> its pixel size (MenuArt cuts pieces out of it).
+    flat = {ids[p["file"]]: Image.open(OUT / "ready" / f"{p['file']}.png").size for p in layout.values() if p["group"] == "3d"}
+    flat |= {a: Image.open(png).size for a, (png, _, g) in pieces().items() if g == "3d" and a not in layout}
+    lines.append('\t["3d"] = { ' + ", ".join(f'["rbxassetid://{a}"] = {{ {w}, {h} }}' for a, (w, h) in sorted(flat.items())) + " },")
     (ROOT / "src/first/UISheets.luau").write_text("\n".join(lines + ["}", ""]), encoding="utf-8")
     print("wrote src/first/UISheets.luau")
 
