@@ -111,10 +111,15 @@ function PaperUI.phone(piece, props)
 	local pc = {}
 	for key in props do pc[key] = piece[key] end
 	PaperUI.onPhone(function(phone)
-		for key, value in phone and props or pc do piece[key] = value end
-		if rest[piece] then rest[piece] = { size = piece.Size, rotation = piece.Rotation } end
+		PaperUI.set(piece, phone and props or pc)
 	end)
 	return piece
+end
+
+-- Sets a piece's properties now; a button keeps its new size as its resting size.
+function PaperUI.set(piece, props)
+	for key, value in props do piece[key] = value end
+	if rest[piece] then rest[piece] = { size = piece.Size, rotation = piece.Rotation } end
 end
 
 -- A paper button with a word on it: grows and tilts under the mouse, squishes when pressed.

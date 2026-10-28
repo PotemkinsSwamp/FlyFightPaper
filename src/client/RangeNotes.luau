@@ -61,6 +61,7 @@ function Notes.new(getStage)
 	local arrow = PaperUI.image(gui, "Arrow", Art.tutorial.arrow, 0, 0, 120, 75)
 	local arrowScale = Instance.new("UIScale")
 	arrowScale.Parent = arrow
+	local dodge = ScreenFit.dodger(note) -- off what it explains and the aim (Alan 2026-10-28)
 
 	local step, seen, saved, profileLoaded = 1, false, false, false
 	local viaHangar, hangarWasOpen = false, false
@@ -131,7 +132,7 @@ function Notes.new(getStage)
 		return low, high
 	end
 
-	RunService.RenderStepped:Connect(function()
+	RunService.RenderStepped:Connect(function(dt)
 		local current = STEPS[step]
 		-- The Back note: only after the Hangar note opened the Hangar; done when the Hangar closes.
 		if current and current.done == "back" and not hangarBack() then
@@ -157,10 +158,14 @@ function Notes.new(getStage)
 		-- Over the Hangar the note sits bottom right, like the Hangar Tour's (clear of the shelf); top middle otherwise.
 		note.AnchorPoint = if inHangar then Vector2.new(1, 1) else Vector2.new(0.5, 0)
 		if inHangar then
-			note.Position = UDim2.new(1, -20, 0.95, 0)
-		else -- the top middle's column, under the top row
+			note.Position, note.Rotation = UDim2.new(1, -20, 0.95, 0), -1
+		else -- the top middle's column, under the top row, out of the way
 			local x, y, fit = ScreenFit.place(note, s)
-			note.Position, scale.Scale = UDim2.new(0.5, x, 0, y), s * fit
+			local boxes = ScreenFit.matters(nil)
+			table.insert(boxes, { low, high })
+			local size = Vector2.new(note.Size.X.Offset, note.Size.Y.Offset) * s
+			local px, py, turn, spot, f = dodge(Vector2.new(gui.AbsoluteSize.X / 2 + x, y), function(at) return size * (at == "home" and fit or 1) end, step, boxes, -1, dt)
+			note.Position, note.Rotation, scale.Scale = UDim2.fromOffset(px, py), turn, s * (spot == "home" and fit or f)
 		end
 		arrow.Visible = low ~= nil
 		if not low then return end

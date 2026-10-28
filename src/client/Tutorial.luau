@@ -121,17 +121,30 @@ function Tutorial.start(getPlane)
  readBar.BackgroundTransparency=.3;readBar.AnchorPoint=Vector2.new(0,1);readBar.Position=UDim2.new(0,8,1,-5);readBar.ZIndex=gotIt.ZIndex+2;readBar.Visible=false;readBar.Parent=gotIt
  local skip=PaperUI.button(note,"Skip",Art.mainmenu.strip.red,"Skip  [K]",330,176,250,48,-1,function() end,24) -- works like K: see skipPress
  local skipFill=Instance.new("Frame");skipFill.BackgroundColor3=Color3.new(1,1,1);skipFill.BackgroundTransparency=.5;skipFill.BorderSizePixel=0;skipFill.Size=UDim2.fromScale(0,1);skipFill.Parent=skip
- -- Phones (Alan 2026-10-28: the words were too small and the note covered the middle of the view): wide and short,
- -- bigger words, the buttons beside the words instead of under them; a hint takes the title's line (showHint).
- PaperUI.phone(note,{Size=UDim2.fromOffset(1200,180)})
- PaperUI.phone(title,{Position=UDim2.fromOffset(36,14),Size=UDim2.fromOffset(820,34),TextSize=30})
- PaperUI.phone(hint,{Position=UDim2.fromOffset(36,14),Size=UDim2.fromOffset(820,34),TextSize=28})
- PaperUI.phone(text,{Position=UDim2.fromOffset(36,50),Size=UDim2.fromOffset(820,118),TextScaled=true})
+ -- The note's shapes: drawn for a PC; on a phone (Alan 2026-10-28: the words were too small and the note covered the
+ -- middle of the view) "wide" and short at the top or bottom, or "tall" at a side (ScreenFit.dodger moves it out of the
+ -- way), bigger words both ways, no key names on the buttons; a hint takes the title's line (showHint).
  Instance.new("UITextSizeConstraint",text).MaxTextSize=40 -- (only counts while TextScaled: phones; a long step shrinks)
- PaperUI.phone(key,{Position=UDim2.fromOffset(880,24),TextSize=30})
- PaperUI.phone(tick,{Position=UDim2.fromOffset(870,100),TextSize=40})
- PaperUI.phone(gotIt,{Position=UDim2.fromOffset(1100,51),Size=UDim2.fromOffset(160,70)});PaperUI.phone(gotIt.Label,{TextSize=32})
- PaperUI.phone(skip,{Position=UDim2.fromOffset(1100,131),Size=UDim2.fromOffset(160,70)});PaperUI.phone(skip.Label,{Text="Skip",TextSize=32})
+ Instance.new("UITextSizeConstraint",skip.Label).MaxTextSize=30 -- (a touch screen's "Skip  (hold: all)", TouchWords)
+ local pieces={note=note,title=title,hint=hint,text=text,key=key,tick=tick,gotIt=gotIt,gotItLabel=gotIt.Label,skip=skip,skipLabel=skip.Label}
+ local function at(x,y,w,h) return {Position=UDim2.fromOffset(x,y),Size=UDim2.fromOffset(w,h)} end
+ local function with(t,more) for k,v in more do t[k]=v end;return t end
+ local function button(x,y,w,h) return at(x+w/2,y+h/2,w,h) end -- (buttons sit by their middle)
+ local SHAPES={
+  wide={note={Size=UDim2.fromOffset(860,200)},title=with(at(30,14,600,32),{TextSize=30}),hint=with(at(30,14,600,32),{TextSize=28}),
+   text=with(at(30,48,600,140),{TextScaled=true}),key=with(at(660,16,170,48),{TextSize=28}),tick=with(at(480,150,150,44),{TextSize=36}),
+   gotIt=button(660,72,180,56),gotItLabel={TextSize=30},skip=button(660,134,180,56),skipLabel={TextScaled=true}},
+  tall={note={Size=UDim2.fromOffset(560,400)},title=with(at(30,20,500,34),{TextSize=30}),hint=with(at(30,20,500,34),{TextSize=28}),
+   text=with(at(30,58,500,200),{TextScaled=true}),key=with(at(30,266,110,56),{TextSize=30}),tick=with(at(160,262,130,56),{TextSize=40}),
+   gotIt=button(30,322,240,64),gotItLabel={TextSize=32},skip=button(290,322,240,64),skipLabel={TextScaled=true}},
+ }
+ SHAPES.pc={}
+ for name,props in SHAPES.wide do SHAPES.pc[name]={};for k in props do SHAPES.pc[name][k]=pieces[name][k] end end
+ local shapeNow="pc"
+ local function shape(which)
+  if which==shapeNow then return end
+  shapeNow=which;for name,props in SHAPES[which] do PaperUI.set(pieces[name],props) end
+ end
  local function showHint(words) hint.Text=words;title.Visible=words=="" or not PaperUI.isPhone() end
 
  -- A short card in the middle: lesson finished or skipped, and how to come back (Alan: always tell them).
@@ -576,9 +589,23 @@ function Tutorial.start(getPlane)
  -- Over a menu the note sits bottom right (the Hangar's Save corner: clear of the cards, the plane and the bars, Alan
  -- 2026-10-21: it hid the gear cards' names), and moves out of the spotlight's way: top middle, bottom middle, corners.
  local NOTE_SPOTS={{1,1},{.5,0},{.5,1},{1,0},{0,0},{0,1}}
- local function placeNote(menu,low,high)
+ -- In the air the note keeps out of the way of what the step is about (ScreenFit.dodger, Alan 2026-10-28).
+ local dodge=ScreenFit.dodger(note)
+ local function placeNote(menu,low,high,boxes,dt)
   note.AnchorPoint=Vector2.new(.5,0)
-  if not menu then note.Position=noteTop();return end
+  local phone=PaperUI.isPhone();local home=phone and "wide" or "pc"
+  if not menu then
+   local s=ScreenFit.scale(ScreenFit.NOTE);local x,y,fit=ScreenFit.place(note,s,SHAPES[home].note.Size.X.Offset)
+   local function size(spot)
+    local v=SHAPES[phone and (spot=="left" or spot=="right") and "tall" or home].note.Size
+    return Vector2.new(v.X.Offset,v.Y.Offset)*s*(spot=="home" and fit or 1)
+   end
+   local px,py,turn,spot,f=dodge(Vector2.new(gui.AbsoluteSize.X/2+x,y),size,Tutorial.lessonKey..Tutorial.index,boxes,-1,dt)
+   shape(phone and (spot=="left" or spot=="right") and "tall" or home)
+   scale.Scale=s*(spot=="home" and fit or f);note.Position=UDim2.fromOffset(px,py);note.Rotation=turn
+   return
+  end
+  shape(home);note.Rotation=-1
   scale.Scale=ScreenFit.scale(ScreenFit.NOTE)
   low,high=low or Vector2.new(-1e4,-1e4),high or Vector2.new(-1e4,-1e4)
   -- Corners hug the screen's sides; the note may cover the frame's outer edge, never the hole.
@@ -679,6 +706,8 @@ function Tutorial.start(getPlane)
   -- One focus look for everything: a button (spotlight, dims the rest) or the 3D target. A HUD bar the step
   -- talks about (pulse) gets its own breathing frame the whole step, so it shows next to a 3D target (Lift + fan).
   local low,high,words=drawMarker(ctx.body)
+  local matters=ScreenFit.matters(plane);table.insert(matters,{low,high}) -- what the note must keep off (placeNote)
+  for _,label in {tag,slowTag} do if label.Visible then table.insert(matters,{label.AbsolutePosition,label.AbsolutePosition+label.AbsoluteSize}) end end
   targetRing.Visible=spotNames~=nil and low~=nil
   local spotLow,spotHigh=nil,nil
   if spotNames then
@@ -702,7 +731,8 @@ function Tutorial.start(getPlane)
   if menu and not doneAt and not waiting then
    if step.gotIt then block(true) elseif spotLow then block(true,spotLow,spotHigh) end -- a lost button: nothing blocked, never stuck
   end
-  placeNote(menu,spotLow,spotHigh)
+  table.insert(matters,{spotLow,spotHigh});table.insert(matters,{barLow,barHigh})
+  placeNote(menu,spotLow,spotHigh,ctx.state=="FLYING" and matters or {},dt) -- at the desk it stays home (its buttons)
   if Tutorial.skipStep and not doneAt then doneAt=os.clock()-1 end
   -- step.linger: a done step stays a while, spotlight off, so its result can be seen (a new wing on the plane).
   if doneAt and os.clock()-doneAt>(step.linger or .8) then startStep(Tutorial.index+1) end

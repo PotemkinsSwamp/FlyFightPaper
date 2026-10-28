@@ -88,7 +88,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |
 | `src/client/PaperUI.luau` | Shared builder for the paper screens; phone sizes (`isPhone`, `phone`) and the notch-safe sheet |
-| `src/client/ScreenFit.luau` | The one size rule ([screen fit plan](../plan/SCREEN-FIT-PLAN.md)): screen kind (phone, tablet, PC) and each piece's scale between its least and most |
+| `src/client/ScreenFit.luau` | The one size rule ([screen fit plan](../plan/SCREEN-FIT-PLAN.md)): screen kind (phone, tablet, PC) and each piece's scale between its least and most; `dodger` keeps notes out of the way ([tutorial](tutorial.md)); Studio hooks `DevPhone`, `DevCover` |
 | `src/client/ScreenCheck.luau` | Studio tool: lists overlapping pieces, pieces under Roblox's buttons or off screen, small words and small taps |
 | `src/first/UIAssets.luau` | Uploaded menu and HUD image IDs (in ReplicatedFirst, so the loading screen can fetch them first; `src/shared/UIAssets.luau` points to it) |
 | `src/shared/UIAssets.luau` | One line: returns `src/first/UIAssets.luau` |

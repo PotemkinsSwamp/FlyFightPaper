@@ -11,9 +11,14 @@ lesson doesn't start; the menu shows and Play starts a match in that same room (
 know it was a tutorial room. Cause not yet known: each join's log entry now carries what the room thinks it is
 (`RoomClass`: public, tutorial, rookie, regular or the error), and every room move or failed move is logged too.
 **Phones (Alan 2026-10-28):** the lesson note was too small and covered the middle of the view; on a phone it is now
-wide and short (1200 x 180 before scaling), words 20 points (were 15), Got it and Skip beside the words with no key
-names, a tip takes the title's line, and it sits up in Roblox's top bar right of the Menu button (Alan: "moved up").
-Not yet seen by Alan.
+860 x 200 (before scaling) up in Roblox's top bar right of Health and Lift (Alan: "moved up"), words about 20 points
+(were 15), Got it and Skip beside the words with no key names; a tip takes the title's line. **Out of the way (Alan
+2026-10-28, all screens):** lesson notes, match tips and Range notes stay home unless they keep covering what matters
+(the step's target or highlight, its labels, the aim marks, enemies within 300 studs) for 0.4 s; then they slide to the
+right side, left side (tilted 3 degrees) or bottom middle until the step or tip changes (`ScreenFit.dodger`). Never at
+the desk. On a phone the lesson note turns 560 x 400 at a side. Seen in Studio at phone size (bottom and right spots,
+both shapes); match tips and Range notes not yet seen (an account that has seen them all doesn't get them). Not yet
+seen by Alan.
 **Flight School, Combat School, the Hangar Tour and the Training board approved by Alan 2026-10-22**
 ([decision](../decisions/2026-10-22-tutorials-approved.md)). **Match Tips built 2026-10-23, not yet seen by Alan**:
 nine one-line tips in real matches, each once (saved), a small sticky note under the match strip, gone after 6 s or

@@ -20,6 +20,7 @@ function ScreenFit.kind()
 	local view = ScreenFit.view()
 	local short = math.min(view.X, view.Y)
 	if short < 2 then return "pc" end -- not drawn yet
+	if Root:GetAttribute("DevPhone") and game:GetService("RunService"):IsStudio() then return "phone" end -- Studio test hook
 	return short < ScreenFit.PHONE and "phone" or short < ScreenFit.TABLET and "tablet" or "pc"
 end
 
@@ -65,13 +66,14 @@ local function scaleOf(parent) -- how much the parent's own points are scaled on
 end
 
 -- Where a column piece goes: x, y for UDim2.new(0.5, x, 0, y) in its parent's own points (AnchorPoint (0.5, 0)), and
--- fit (1 or less) to shrink it by. base: the piece's own scale before fitting (its UIScale's usual value).
-function ScreenFit.place(piece, base)
+-- fit (1 or less) to shrink it by. base: the piece's own scale before fitting (its UIScale's usual value). units: its
+-- width at home, when it has another shape now (a phone's lesson note at a side).
+function ScreenFit.place(piece, base, units)
 	local entry
 	for _, e in column do if e.piece == piece then entry = e end end
 	local parent, view = piece.Parent, ScreenFit.view()
 	local parentScale = scaleOf(parent)
-	local width = piece.Size.X.Offset * parentScale * (base or 1)
+	local width = (units or piece.Size.X.Offset) * parentScale * (base or 1)
 	local home = parent.AbsolutePosition.X + parent.AbsoluteSize.X / 2
 	local phoneCovers = entry.covers and ScreenFit.kind() == "phone"
 	local bar, inset = GuiService.TopbarInset, GuiService:GetGuiInset().Y
@@ -117,11 +119,121 @@ function ScreenFit.place(piece, base)
 	return (centre - home) / parentScale, (y + ScreenFit.GAP - parent.AbsolutePosition.Y) / parentScale, fit
 end
 
+-- Out of the way (Alan 2026-10-28: every note over the game, every screen): a note stays home unless it keeps covering
+-- something that matters for 0.4 s; then it slides to the first free spot of: home, the right side, the left side
+-- (each tilted a little) and the bottom middle. A spot is free when it clears the other pieces on the screen map,
+-- the touch buttons and every box that matters; a side or the bottom may shrink the note to 75% to fit. A new key (the
+-- next step or tip) sends it home. All in screen points (the notes' ScreenGuis ignore the inset).
+-- dodge(home, size, key, boxes, homeTurn, dt) -> x, y (the note's top middle), rotation, spot, fit. size(spot) = the
+-- note's size on screen there (a phone's lesson note changes shape at a side); boxes = { { low, high }, ... }.
+local SPOTS = { "home", "right", "left", "bottom" }
+local TURN = { right = 3, left = -3, bottom = 1 }
+local function gapIn(from, to, blocks) -- the longest free stretch of from..to between the blocks ({ a, b } each)
+	table.sort(blocks, function(a, b) return a[1] < b[1] end)
+	local best, at = { from, from }, from
+	for _, block in blocks do
+		local stop = math.min(block[1], to)
+		if stop - at > best[2] - best[1] then best = { at, stop } end
+		at = math.max(at, block[2])
+	end
+	if to - at > best[2] - best[1] then best = { at, to } end
+	return best[1], best[2]
+end
+function ScreenFit.dodger(piece)
+	local spot, key, coveredFor, at, turn, lastAt = "home", nil, 0, nil, 0, 0
+	return function(home, size, newKey, boxes, homeTurn, dt)
+		if newKey ~= key then key, spot, coveredFor = newKey, "home", 0 end
+		if os.clock() - lastAt > 0.5 then at = nil end -- shown again: no slide in from where it last was
+		lastAt = os.clock()
+		local view, m = ScreenFit.view(), ScreenFit.GAP * 4
+		local keep = {}
+		local function add(other)
+			if other ~= piece and shown(other) then table.insert(keep, { other.AbsolutePosition, other.AbsolutePosition + other.AbsoluteSize }) end
+		end
+		for _, other in row do add(other) end
+		for _, side in sides do add(side.piece) end
+		for _, e in column do add(e.piece) end
+		local touch = game.Players.LocalPlayer.PlayerGui:FindFirstChild("TouchControls")
+		if touch and touch.Enabled then for _, other in touch:GetChildren() do if other:IsA("GuiObject") then add(other) end end end
+		local function where(name)
+			if name == "home" then return home, 1, homeTurn end
+			local s = size(name)
+			local blocks = {}
+			if name == "bottom" then
+				for _, k in keep do if k[2].Y > view.Y - m - s.Y and k[1].Y < view.Y - m then table.insert(blocks, { k[1].X - ScreenFit.GAP, k[2].X + ScreenFit.GAP }) end end
+				local a, b = gapIn(m, view.X - m, blocks)
+				if b - a < s.X * 0.75 then return nil end
+				local fit = math.min(1, (b - a) / s.X)
+				return Vector2.new(math.clamp(view.X / 2, a + s.X * fit / 2, b - s.X * fit / 2), view.Y - m - s.Y * fit), fit, TURN.bottom
+			end
+			local x = name == "right" and view.X - m - s.X / 2 or m + s.X / 2
+			for _, k in keep do if k[2].X > x - s.X / 2 and k[1].X < x + s.X / 2 then table.insert(blocks, { k[1].Y - ScreenFit.GAP, k[2].Y + ScreenFit.GAP }) end end
+			local a, b = gapIn(GuiService.TopbarInset.Max.Y - GuiService:GetGuiInset().Y + ScreenFit.GAP, view.Y - m, blocks)
+			if b - a < s.Y * 0.75 then return nil end
+			local fit = math.min(1, (b - a) / s.Y)
+			x = name == "right" and view.X - m - s.X * fit / 2 or m + s.X * fit / 2
+			return Vector2.new(x, math.clamp(view.Y * 0.42 - s.Y * fit / 2, a, b - s.Y * fit)), fit, TURN[name]
+		end
+		local function covered(p, s)
+			local low, high = p - Vector2.new(s.X / 2, 0), p + Vector2.new(s.X / 2, s.Y)
+			for _, box in boxes do
+				if box[1] and box[2] and box[1].X < high.X + ScreenFit.GAP * 2 and box[2].X > low.X - ScreenFit.GAP * 2
+					and box[1].Y < high.Y + ScreenFit.GAP * 2 and box[2].Y > low.Y - ScreenFit.GAP * 2 then return true end
+			end
+			return false
+		end
+		local p, fit, r = where(spot)
+		if not p then spot, p, fit, r = "home", home, 1, homeTurn end
+		coveredFor = covered(p, size(spot) * fit) and coveredFor + dt or 0
+		if coveredFor >= 0.4 then
+			for _, name in SPOTS do
+				local q, g, t = nil, nil, nil
+				if name ~= spot then q, g, t = where(name) end
+				if q and not covered(q, size(name) * g) then spot, p, fit, r, coveredFor = name, q, g, t, 0; break end
+			end
+		end
+		local ease = math.min(1, dt * 12)
+		at = at and at:Lerp(p, ease) or p
+		turn = turn + (r - turn) * ease
+		return at.X, at.Y, turn, spot, fit
+	end
+end
+
+-- What a note over the game must not cover in a fight (screen points): the aim circle, nose dot, lead rings, eraser
+-- circle and lock, and every enemy plane within 300 studs.
+local AIM = { "AimCircle", "NoseDot", "EraserSeeker", "LockBox", "TargetBracket", "LeadPipper", "LeadPipper2" }
+function ScreenFit.matters(plane)
+	local boxes = {}
+	-- Studio test hook: DevCover (Rects) on ReplicatedStorage.FlyFightPaper counts as more things that matter.
+	for _, rect in game:GetService("RunService"):IsStudio() and { Root:GetAttribute("DevCover"), Root:GetAttribute("DevCover2"), Root:GetAttribute("DevCover3") } or {} do
+		if typeof(rect) == "Rect" then table.insert(boxes, { rect.Min, rect.Max }) end
+	end
+	local hud = game.Players.LocalPlayer.PlayerGui:FindFirstChild("FlightHUD")
+	if hud and hud.Enabled then
+		for _, name in AIM do
+			local mark = hud:FindFirstChild(name)
+			if mark and mark.Visible then table.insert(boxes, { mark.AbsolutePosition, mark.AbsolutePosition + mark.AbsoluteSize }) end
+		end
+	end
+	local planes, camera = workspace:FindFirstChild("Planes"), workspace.CurrentCamera
+	local team = plane and plane:GetAttribute("Team") or ""
+	for _, other in planes and planes:GetChildren() or {} do
+		local root = other:FindFirstChild("Root")
+		if other ~= plane and root and other:GetAttribute("State") == "FLYING" and (team == "" or other:GetAttribute("Team") ~= team)
+			and (root.Position - camera.CFrame.Position).Magnitude < 300 then
+			local point, onScreen = camera:WorldToViewportPoint(root.Position)
+			if onScreen then table.insert(boxes, { Vector2.new(point.X - 30, point.Y - 30), Vector2.new(point.X + 30, point.Y + 30) }) end
+		end
+	end
+	return boxes
+end
+
 -- fn() now and whenever the screen changes size or the player switches between touch and mouse.
 function ScreenFit.watch(fn)
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fn)
 	Input:GetPropertyChangedSignal("PreferredInput"):Connect(fn)
 	Root:GetAttributeChangedSignal("DevTouch"):Connect(fn)
+	Root:GetAttributeChangedSignal("DevPhone"):Connect(fn)
 	fn()
 end
 

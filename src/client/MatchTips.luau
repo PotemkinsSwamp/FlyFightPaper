@@ -60,6 +60,7 @@ function Tips.start(getPlane)
 	local arrow = PaperUI.image(gui, "Arrow", Art.tutorial.arrow, 0, 0, 120, 75)
 	local arrowScale = Instance.new("UIScale")
 	arrowScale.Parent = arrow
+	local dodge = ScreenFit.dodger(note) -- out of the fight's way (Alan 2026-10-28)
 
 	local lessons, profileLoaded, seen = {}, false, {}
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
@@ -125,11 +126,15 @@ function Tips.start(getPlane)
 		-- phone over them, a bit smaller: Alan 2026-10-24).
 		local s = ScreenFit.scale(ScreenFit.NOTE) * (ScreenFit.kind() == "phone" and 0.85 or 1)
 		local x, y, fit = ScreenFit.place(note, s)
-		scale.Scale, arrowScale.Scale = s * fit, s
-		gotIt.Visible = not Touch.active()
-		note.Position = UDim2.new(0.5, x, 0, y)
 		local low, high = nil, nil
 		if current.point then low, high = pointAt(current.point) end
+		local boxes = c.flying and ScreenFit.matters(plane) or {} -- at the desk it stays home (its buttons)
+		table.insert(boxes, { low, high })
+		local size = Vector2.new(note.Size.X.Offset, note.Size.Y.Offset) * s
+		local px, py, turn, spot, f = dodge(Vector2.new(gui.AbsoluteSize.X / 2 + x, y), function(at) return size * (at == "home" and fit or 1) end, current.key, boxes, 1, dt)
+		scale.Scale, arrowScale.Scale = s * (spot == "home" and fit or f), s
+		gotIt.Visible = not Touch.active()
+		note.Position, note.Rotation = UDim2.fromOffset(px, py), turn
 		arrow.Visible = low ~= nil
 		if low then PaperUI.pointArrow(arrow, note.AbsolutePosition - gui.AbsolutePosition + note.AbsoluteSize / 2, low, high, s) end
 	end)
