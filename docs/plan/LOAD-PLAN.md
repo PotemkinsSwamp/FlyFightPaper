@@ -184,3 +184,6 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   not one picture's download. Possible causes (forum reports, unconfirmed): Roblox softens pictures when a phone is
   short of memory; ViewportFrames draw at the phone's lower logical resolution. The load recorder now also saves
   frame rate / picture memory every 2.5 s ("fps/texture MB" in `LoadLog.recent()`), to line up with when it sharpens.
+  Tried in the same build: a free line after the loading screen shows (nothing else starts until the phone has no files
+  waiting, 6 s at most; logged as "free line (waiting N)"), in case its full-size pictures queue behind the menus. If
+  the screen turns sharp within seconds, that was it. The recorder also logs files waiting every 2.5 s.

@@ -77,7 +77,7 @@ local function run()
 	local started, times = game.ReplicatedFirst.FlyFightPaper:GetAttribute("FirstAt") or shownAt or os.clock(), {}
 	local function lap(step) table.insert(times, string.format("%s %.1f", step, os.clock() - started)); workspace:SetAttribute("LoadTimes", table.concat(times, ", ")) end
 	lap("game in")
-	-- Frame rate and picture memory every 2.5 s while loading, for the load recorder (phone v364: the whole screen
+	-- Frame rate, picture memory and files waiting every 2.5 s while loading, for the load recorder (phone v364: the whole screen
 	-- blurry until 35 s, then sharp all at once; Roblox is said to soften pictures when a phone is short of memory).
 	local health, frames, done = {}, 0, false
 	local counter = game:GetService("RunService").RenderStepped:Connect(function() frames += 1 end)
@@ -86,7 +86,7 @@ local function run()
 		while not done and #health < 60 do
 			frames = 0
 			task.wait(2.5)
-			table.insert(health, string.format("%d/%d", frames / 2.5, Stats:GetMemoryUsageMbForTag(Enum.DeveloperMemoryTag.GraphicsTexture)))
+			table.insert(health, string.format("%d/%d/%d", frames / 2.5, Stats:GetMemoryUsageMbForTag(Enum.DeveloperMemoryTag.GraphicsTexture), Content.RequestQueueSize))
 		end
 		counter:Disconnect()
 	end)
@@ -97,6 +97,17 @@ local function run()
 	local first = game.ReplicatedFirst.FlyFightPaper
 	lap(string.format("loading screen (queue %s, slowest %s%s)", tostring(first:GetAttribute("QueueAtStart")), tostring(first:GetAttribute("ArtSlowest")),
 		artFailed > 0 and (", " .. artFailed .. " failed") or ""))
+	-- A free line for the loading screen's own pictures (phone v364: they "arrived" in 1.3 s, yet the whole screen stayed
+	-- blurry until 35 s, as if the full-size pictures waited behind the menus): nothing else starts until the phone has
+	-- nothing waiting to download, 6 s at most.
+	local freeFrom, peak = os.clock(), 0
+	task.wait(0.5) -- (the screen draws and asks for its pictures)
+	while os.clock() - freeFrom < 6 do
+		peak = math.max(peak, Content.RequestQueueSize)
+		if Content.RequestQueueSize == 0 then break end
+		task.wait(0.1)
+	end
+	lap(string.format("free line (waiting %d)", peak))
 	-- Everything the game shows, before you get in (Alan 2026-10-25: on a phone the game let him in long before the
 	-- menus' paper and the town arrived): the menus' pictures first, then the town. PreloadAsync rejects mesh ids
 	-- given as text and scripts can't read a SurfaceAppearance's maps, so the town goes in as the things themselves
