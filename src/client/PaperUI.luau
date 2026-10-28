@@ -42,7 +42,7 @@ function PaperUI.screen(playerGui, name, backgroundIds, floating)
 	local sheet = page("Sheet")
 	local function fit()
 		local full, room = layer.AbsoluteSize, safe.AbsoluteSize
-		if full.X < 2 or room.X < 2 then return end
+		if full.X < 2 or room.X < 2 or not sheet.Parent then return end -- (a screen that was destroyed: the safe area's signal outlives it)
 		sheet.UIScale.Scale = math.min(room.X / PaperUI.W, room.Y / PaperUI.H) * (type(floating) == "number" and floating or 1)
 		local middle = safe.AbsolutePosition + room / 2 - layer.AbsolutePosition
 		sheet.Position = UDim2.fromOffset(middle.X, middle.Y)
