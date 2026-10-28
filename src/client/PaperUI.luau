@@ -2,6 +2,7 @@
 -- Each screen is a fixed 1920x1080 sheet that UIScale stretches to cover the screen; words are live text.
 local TweenService = game:GetService("TweenService")
 local ScreenFit = require(script.Parent.ScreenFit)
+local BoardPlate = require(game.ReplicatedFirst:WaitForChild("FlyFightPaper"):WaitForChild("BoardPlate"))
 local PaperUI = {}
 
 PaperUI.W, PaperUI.H = 1920, 1080
@@ -57,10 +58,10 @@ function PaperUI.screen(playerGui, name, backgroundIds, floating)
 		gui:GetPropertyChangedSignal("AbsolutePosition"):Connect(fit)
 	end
 	fit()
-	-- Background plates come as a 2x2 grid of tiles (Roblox images max out at 1024 pixels).
-	for i, id in backgroundIds do
-		local tile = PaperUI.image(backdrop or sheet, "Background" .. i, id, ((i - 1) % 2) * PaperUI.W / 2, math.floor((i - 1) / 2) * PaperUI.H / 2, PaperUI.W / 2, PaperUI.H / 2)
-		tile.ScaleType = Enum.ScaleType.Stretch
+	-- Background plates come as a 2x2 grid of tiles, drawn as one 3D board (first/BoardPlate: ~7x smaller downloads).
+	if #backgroundIds > 0 then
+		local board = BoardPlate.new(backgroundIds)
+		board.Size, board.Parent = UDim2.fromOffset(PaperUI.W, PaperUI.H), backdrop or sheet
 	end
 	return cover, sheet
 end

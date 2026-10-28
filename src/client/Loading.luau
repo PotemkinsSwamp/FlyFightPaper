@@ -98,9 +98,21 @@ local function run()
 	-- A piece packed into a menu sheet (first/UISheets) loads as its sheet.
 	local Sheets = require(game.ReplicatedFirst.FlyFightPaper.UISheets)
 	local seen = {}
+	local BoardPlate = require(game.ReplicatedFirst.FlyFightPaper.BoardPlate)
+	local keepDrawn = Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
 	local function walk(t, into)
-		for _, v in t do
-			if type(v) == "table" then walk(v, into)
+		for key, v in t do
+			if key == "bg" and type(v) == "table" then
+				-- A board loads the way the screens draw it (first/BoardPlate), drawn full size until the menu is up: a
+				-- phone fetches a 3D picture only as sharp as it's drawn, and as a menu picture it'd be another download.
+				-- ponytail: the main menu's board is drawn twice while loading (first/LoadingFirst has one too); harmless.
+				if not seen[v[1]] then
+					for _, id in v do seen[id] = true end
+					local board, decals = BoardPlate.new(v)
+					board.Size, board.ImageTransparency, board.Parent = UDim2.fromScale(1, 1), 0.99, keepDrawn
+					table.move(decals, 1, #decals, #into + 1, into)
+				end
+			elseif type(v) == "table" then walk(v, into)
 			elseif type(v) == "string" and v:find("^rbxassetid://%d") then
 				v = Sheets[v] and Sheets[v][1] or v
 				if not seen[v] then seen[v] = true; table.insert(into, image(v)) end
@@ -115,6 +127,7 @@ local function run()
 		local keep = name == "results" and Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
 		if keep then
 			for _, label in menus do
+				if label:IsA("Decal") then continue end -- (boards: already drawn, above)
 				label.Size, label.BackgroundTransparency, label.ImageTransparency, label.Parent = UDim2.fromScale(0.5, 0.5), 1, 0.99, keep -- (real size: see first/LoadingFirst)
 			end
 		end
@@ -130,9 +143,8 @@ local function run()
 			elseif item:IsA("SurfaceAppearance") or item:IsA("Decal") or item:IsA("Texture") then table.insert(town, item) end
 		end
 	end
-	-- One queue for the whole load, 8 downloads side by side from the first menu picture to the last town group, phones
-	-- too (Alan 2026-10-27): steps that each waited for their slowest file left the line idle (phone v358: ~1 MB/s at
-	-- 3 at a time, ~2.2 MB/s at 8). Menus one file per request (so the bar moves); the town's thousands in groups of 40.
+	-- One queue for the whole load, from the first menu picture to the last town group (Alan 2026-10-27): steps that
+	-- each waited for their slowest file left the line idle. 8 downloads side by side (phones 3, below). Menus one file per request (so the bar moves); the town's thousands in groups of 40.
 	-- `limit` s per request at most: a few plane pieces kept in ReplicatedStorage never report back (2 s), and now and
 	-- then a town group of 40 doesn't either (real PC v328: 48 s on one; 12 s now). Each would hold a slot for good; it
 	-- keeps loading on its own. A part's time is logged when its last request is back; one never finished shows "cut"
@@ -179,7 +191,9 @@ local function run()
 	local menuJobs = #queue
 	-- The training range's pictures keep the line busy while the town's parts come in.
 	add("range", world, 1, 8, 0.1)
-	running = 8
+	-- Phones 3 at a time: phone v361 at 8 took the menus 50 s (v358 at 3: 35.5 s); a phone unpacks each menu picture
+	-- itself, and more at once only makes them all wait (as with the town's groups).
+	running = game:GetService("UserInputService").TouchEnabled and 3 or 8
 	for _ = 1, running do task.spawn(worker) end
 	-- The server sends the town (streaming, docs/plan/LOAD-PLAN.md step 1) once every menu picture has been asked for, so
 	-- its parts don't queue in front of the menus but arrive while the last ones finish.
