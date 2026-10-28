@@ -230,3 +230,8 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   arrived. A phone-safe repack (1024 sheets, the documented map limit) saves only 559 -> 530 picture sets (2048: 224),
   so it is not worth doing. Next: one phone fresh join of today's town with the current loading code (Studio now)
   tells which change it was: ~70 MB means the 2048 sheets; ~575 MB means dropping the second pass (put it back).
+- 2026-10-28: phone fresh join v402 (today's town, no second pass, planes first): picture memory peaked at 49 MB, so
+  the 2048 sheets were the ~575 MB and the current loading code stays. Fully loaded 48.8 s (Alan: ~47; v368 59.3),
+  menus 6.6, planes 9.0, town arrived (Skip) 10.0, bar at 50% ~8 s. The rest is Roblox's own line of ~3,000 town
+  files: 3,003 -> 64 between ~10 and ~45 s (v368 drained the same ~3,000 in ~25 s, so its speed varies join to join).
+  Our queue no longer adds time; 30 s needs fewer or smaller town files at join.

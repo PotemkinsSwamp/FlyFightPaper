@@ -1,16 +1,14 @@
 # Since Alan last checked (2026-10-28, night)
 - **Loading screen sharp at once, menus in 4.4 s** on the phone (were blurry 35 s / 48 s): streaming had been switched
   off by our code-sync setup; back on, and the load log flags it if it ever happens again.
-- **Fully loaded: 59 s** (was 91). Since then: planes load before the town (not yet timed on the phone).
-- **Repack memory dig (2026-10-28):** v390 also carried the "no second pass" loading change, so the ~575 MB has two
-  suspects: the big 2048 sheets, or that loading change (in Studio now). Missing packs ruled out; a PC never shows it.
-  A phone-safe 1024 repack saves only 5% of files: not worth doing.
-- **Waiting on you:** publish the open Studio (today's town, current loading code), then one phone fresh join: ~70 MB
-  = the sheets were the cause (code is fine); ~575 MB = put the second pass back.
+- **Fully loaded: 48.8 s on the phone (v402; was 59, then 91).** Skip at 10 s. Picture memory 49 MB: the 575 MB was
+  the repack's big sheets, so the current loading code stays. A phone-safe repack saves only 5% of files: dropped.
+- **What's left of the wait:** Roblox's own download line of ~3,000 town files (10 s -> 45 s). 30 s needs fewer or
+  smaller town files at join.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: phone fresh join ~59 s (goal 30 s); v390's ~8x picture memory: sheets or loading change (one phone join tells).
+Broken: phone fresh join ~49 s (goal 30 s): the town's ~3,000 files.
 Not yet: small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
@@ -47,9 +45,7 @@ Zone 680-840 across by building density; bots on the zone 30/60/85% (rookie/regu
 Points: fold assist share rounded to 5 (10-80); outside-zone fold 40%; paper targets 50 points each, server-checked.
 
 Waiting on Alan
-- **Phone fresh join** (delete + reinstall Roblox): do the menus show in seconds? How long until the town is drawn?
-  (Your join is recorded; no need to read /console.)
-- Then switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
+- Switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
 - Touch: try the stick and buttons in the Device Simulator (now on): does the stick turn too fast or slow? Buttons
   the right size? Watch for the yellow dot in the Range.
