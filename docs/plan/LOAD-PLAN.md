@@ -173,3 +173,10 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   approved); a piece any flying screen shows stays an ordinary picture. Main menu and Training look the same
   (stretched level bar fixed); 60 fps in the menus with 80 little 3D windows. Studio cold: all 19.3 s (boards only 25.9,
   before 30.0). Phones 3 at a time. Next: Alan publishes, one phone fresh join.
+- 2026-10-28: phone fresh join v364 (3 at a time + 3D menus): bar moving 8.9 s, blurry until 35.5 s, menus 48.5, all
+  91.3 s: SLOWER again (v358: 58.6). Two causes found in `client/Loading`: (1) the 4 boards and 14 menu-only sheets were
+  put on screen (almost see-through) all at once at the start, and the engine fetches anything drawn by itself, so on
+  the phone they all came at once past the 3-at-a-time line; now each is put on screen only when its turn comes.
+  (2) Since the one queue, the town came in while the menus were still loading (v361 town 42.0 / menus 50.0) and the
+  engine fetched the town it drew alongside; phones now wait for the menus first, as v358 did (PC unchanged). The 3D
+  menus' own gain on a phone is still unmeasured (hidden by (1)). Studio cold tests can't show either. Next: phone join.

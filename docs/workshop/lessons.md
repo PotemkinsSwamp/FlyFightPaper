@@ -280,6 +280,10 @@ mistake would be easy to make twice.
 - **Phones load menu pictures slower 8 at a time than 3** (2026-10-27): phone v361 at 8: menus 50 s, all 81 s; v358
   at 3: menus 35.5 s, all 58.6 s (a phone unpacks each PNG itself). A PC cold test can't show this: judge download
   counts per device on the phone. Same as the town's groups (6 beat 12).
+- **Anything drawn is fetched at once, outside our queue** (2026-10-28): a label or 3D card put on screen, even 0.99
+  see-through, is downloaded by the engine straight away; 18 such at the start of phone v364 jumped the 3-at-a-time
+  line (all 91 s). Put a preload's picture on screen only when its turn in the queue comes. The same goes for the town:
+  once it streams in, the engine fetches what it draws. A PC shrugs this off, so only a phone join shows it.
 - **A ViewportFrame with a lower ZIndex than its parent isn't drawn at all** (2026-10-27): give it the parent's ZIndex
   and make it the parent's first child so the label's words stay on top (`first/MenuArt`).
 - **Smaller picture files don't shrink the download** (2026-10-25): Roblox stores every uploaded picture as its own

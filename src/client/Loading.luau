@@ -101,6 +101,10 @@ local function run()
 	local BoardPlate = require(game.ReplicatedFirst.FlyFightPaper.BoardPlate)
 	local MenuArt = require(game.ReplicatedFirst.FlyFightPaper.MenuArt)
 	local keepDrawn = Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
+	-- What each file is drawn on while loading, put on screen only when its turn in the queue comes: anything drawn
+	-- the engine fetches at once by itself (phone v364: 4 boards and 14 menu sheets drawn together at the start
+	-- jumped the 3-at-a-time line; menus 48.5 s, the loading screen blurry until 35 s).
+	local show = {}
 	local function walk(t, into)
 		for key, v in t do
 			if key == "bg" and type(v) == "table" then
@@ -110,14 +114,19 @@ local function run()
 				if not seen[v[1]] then
 					for _, id in v do seen[id] = true end
 					local board, decals = BoardPlate.new(v)
-					board.Size, board.ImageTransparency, board.Parent = UDim2.fromScale(1, 1), 0.99, keepDrawn
-					table.move(decals, 1, #decals, #into + 1, into)
+					board.Size, board.ImageTransparency = UDim2.fromScale(1, 1), 0.99
+					for _, decal in decals do show[decal] = board; table.insert(into, decal) end
 				end
 			elseif type(v) == "table" then walk(v, into)
 			elseif type(v) == "string" and v:find("^rbxassetid://%d") then
 				v = Sheets[v] and Sheets[v][1] or v
 				-- A menu-only file loads the way its screens draw it (first/MenuArt), drawn full size until the menu is up.
-				if not seen[v] then seen[v] = true; table.insert(into, MenuArt.preload(v, keepDrawn) or image(v)) end
+				if not seen[v] then
+					seen[v] = true
+					local texture = MenuArt.preload(v, nil)
+					if texture then show[texture] = texture:FindFirstAncestorOfClass("ViewportFrame") end
+					table.insert(into, texture or image(v))
+				end
 			end
 		end
 	end
@@ -129,8 +138,9 @@ local function run()
 		local keep = name == "results" and Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
 		if keep then
 			for _, label in menus do
-				if not label:IsA("ImageLabel") then continue end -- (boards and 3D cards: already drawn)
-				label.Size, label.BackgroundTransparency, label.ImageTransparency, label.Parent = UDim2.fromScale(0.5, 0.5), 1, 0.99, keep -- (real size: see first/LoadingFirst)
+				if not label:IsA("ImageLabel") then continue end -- (boards and 3D cards: drawn when their turn comes)
+				label.Size, label.BackgroundTransparency, label.ImageTransparency = UDim2.fromScale(0.5, 0.5), 1, 0.99 -- (real size: see first/LoadingFirst)
+				show[label] = label
 			end
 		end
 	end
@@ -170,6 +180,9 @@ local function run()
 				task.wait(0.05)
 			else
 				nextJob += 1
+				for _, item in job.batch do
+					if show[item] then show[item].Parent = keepDrawn end
+				end
 				local back = false
 				task.spawn(function()
 					pcall(function()
@@ -195,11 +208,14 @@ local function run()
 	add("range", world, 1, 8, 0.1)
 	-- Phones 3 at a time: phone v361 at 8 took the menus 50 s (v358 at 3: 35.5 s); a phone unpacks each menu picture
 	-- itself, and more at once only makes them all wait (as with the town's groups).
-	running = game:GetService("UserInputService").TouchEnabled and 3 or 8
+	local touch = game:GetService("UserInputService").TouchEnabled
+	running = touch and 3 or 8
 	for _ = 1, running do task.spawn(worker) end
 	-- The server sends the town (streaming, docs/plan/LOAD-PLAN.md step 1) once every menu picture has been asked for, so
-	-- its parts don't queue in front of the menus but arrive while the last ones finish.
-	while nextJob <= menuJobs and os.clock() < stopAt do task.wait(0.05) end
+	-- its parts don't queue in front of the menus but arrive while the last ones finish. Phones wait for the menus to be
+	-- in: the engine fetches whatever town it draws by itself, and on a phone that crowd held the menus back (v358 waited:
+	-- menus 35.5 s; v361/v364 overlapped: 50.0/48.5 s).
+	while (if touch then menuPart.done < menuPart.total else nextJob <= menuJobs) and os.clock() < stopAt do task.wait(0.05) end
 	Root:WaitForChild("RoundAction"):FireServer("sendTown")
 	room, assets = Loading.waitTown()
 	lap("town arrived")
