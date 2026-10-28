@@ -23,6 +23,12 @@ function Adapter:advertise(class)
  self.maps[class]:SetAsync(key,row,Config.entry_ttl_seconds,row.count)
  if game.PrivateServerId~="" then self.index:SetAsync(key,row,Config.entry_ttl_seconds,row.count) end
 end
+-- A closing room crosses itself off its list, so nobody is sent to a room that is gone (Alan's phone run
+-- 2026-10-28: left the public room, the tutorial sent him back to it 22 s later, "GameEnded" twice).
+function Adapter:forget(class)
+ if class=="tutorial" then return end
+ self.maps[class]:RemoveAsync(game.PrivateServerId~="" and game.PrivateServerId or game.JobId)
+end
 function Adapter:destination(class)
  if class~="tutorial" then
   for _,entry in ipairs(self.maps[class]:GetRangeAsync(Enum.SortDirection.Ascending,Config.destination_scan_limit)) do

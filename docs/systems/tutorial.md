@@ -6,10 +6,11 @@ fans, landing), shooting paper targets, then a fight with one enemy, then what e
 hangar, each weapon, and how building a plane works. It can be skipped and replayed, and never pays rewards.
 
 ## Where it stands (2026-10-22)
-**Bug (Alan, phone, 2026-10-28):** the private tutorial room is reached (two joins 16 s apart in the load log) but the
-lesson doesn't start; the menu shows and Play starts a match in that same room (no third join), so the room didn't
-know it was a tutorial room. Cause not yet known: each join's log entry now carries what the room thinks it is
-(`RoomClass`: public, tutorial, rookie, regular or the error), and every room move or failed move is logged too.
+**Room moves (Alan's phone runs, v413, 2026-10-28):** the private tutorial room does know it is one (every join and
+move there logs `RoomClass` tutorial). The failure was the way out: the tutorial sent him to the public room he had
+just left (its list entry was still fresh, under 45 s), which had closed, so the move failed twice ("GameEnded").
+Fix: a closing room crosses itself off its list (`Matchmaking` BindToClose → `MatchmakingAdapter:forget`).
+Each join's log entry carries `RoomClass` (public, tutorial, rookie, regular or the error) and every room move.
 **Phones (Alan 2026-10-28):** the lesson note was too small and covered the middle of the view; on a phone it is now
 860 x 200 (before scaling) up in Roblox's top bar right of Health and Lift (Alan: "moved up"), words about 20 points
 (were 15), Got it and Skip beside the words with no key names; a tip takes the title's line. **Out of the way (Alan

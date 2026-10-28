@@ -46,6 +46,7 @@ function Service.new(profiles,options)
     task.wait(math.min(Config.discovery_retry_max_seconds,2^math.min(attempt-1,Config.discovery_retry_exponent_cap)))
    end
   end)
+  game:BindToClose(function() if self.class then pcall(function()self.platform:forget(self.class)end) end end)
   task.spawn(function()
    while true do
     if self.class and not self:isTutorialRoom() then pcall(function()self.platform:advertise(self.class)end) end

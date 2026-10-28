@@ -5,15 +5,17 @@
   or the bottom) when they'd cover what matters; the phone lesson note is bigger-worded and sits up top beside Health
   and Lift. Every paper button has a finger-sized tap area on phones (welcome question, cards, menu, Hangar, Settings).
   Seen in Studio at a small notched phone's size; not yet on your phone.
-- **Tutorial room bug still open:** the join log now records what each room thinks it is, and every room move.
+- **Tutorial room bug found + fixed (your phone runs, v413):** the tutorial room worked; leaving it tried to send you
+  back to the public room you'd just left, which had closed ("GameEnded" twice). Closing rooms now cross themselves
+  off the list. In Studio, not yet published.
 
 # Now: mobile lane (make phones work and look good): tutorial room bug, then the screens not yet checked
 What works: everything in Stage 9, tutorials, desk quick menu; phone checks pass on menu, Hangar, Customize, Settings.
-Broken: tutorial on a live server (lesson doesn't start in its private room; cause unknown until your phone run).
+Fixed, needs your phone check: leaving the tutorial room right after joining (sent to a closed room).
 Not yet: Range menu, round results, Training board, match desk on a phone; iPad; match tips/Range notes moving.
 
-Waiting on you (first): publish the open Studio, then on your phone: start the tutorial once (I read the log), and
-look at the lesson note (readable? out of the way? Got it/Skip easy to tap?) and the menus' buttons.
+Waiting on you (first): publish the open Studio, then on your phone: join, start the tutorial, Skip out within
+20 s: you should land in a match room with no "transfer failed" message.
 
 Decisions to review
 Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).
