@@ -6,6 +6,10 @@ fans, landing), shooting paper targets, then a fight with one enemy, then what e
 hangar, each weapon, and how building a plane works. It can be skipped and replayed, and never pays rewards.
 
 ## Where it stands (2026-10-22)
+**Bug (Alan, phone, 2026-10-28):** the private tutorial room is reached (two joins 16 s apart in the load log) but the
+lesson doesn't start; the menu shows and Play starts a match in that same room (no third join), so the room didn't
+know it was a tutorial room. Cause not yet known: each join's log entry now carries what the room thinks it is
+(`RoomClass`: public, tutorial, rookie, regular or the error), and every room move or failed move is logged too.
 **Flight School, Combat School, the Hangar Tour and the Training board approved by Alan 2026-10-22**
 ([decision](../decisions/2026-10-22-tutorials-approved.md)). **Match Tips built 2026-10-23, not yet seen by Alan**:
 nine one-line tips in real matches, each once (saved), a small sticky note under the match strip, gone after 6 s or

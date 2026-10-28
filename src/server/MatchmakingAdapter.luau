@@ -53,6 +53,6 @@ function Adapter:send(player,destination,canSend)
  local teleport=self.teleport or Teleport;teleport:TeleportAsync(game.PlaceId,{player},options)
 end
 function Adapter:onFailure(callback)
- return Teleport.TeleportInitFailed:Connect(function(player)callback(player)end)
+ return Teleport.TeleportInitFailed:Connect(function(player,result,message)callback(player,result,message)end)
 end
 return Adapter

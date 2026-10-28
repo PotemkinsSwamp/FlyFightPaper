@@ -1,6 +1,7 @@
 local Run=game:GetService("RunService")
 local Gameplay=require(game.ReplicatedStorage.FlyFightPaper.Generated.Gameplay)
 local Config=require(game.ReplicatedStorage.FlyFightPaper.Generated.Server).routing
+local LoadLog=require(script.Parent.LoadLog) -- room moves are written beside the joins (tutorial room bug, Alan 2026-10-28)
 local TRANSFER_TIMEOUT=60 -- Bound the save wait so Play cannot stay stuck on routing.
 local TIMEOUT_MESSAGE="Room transfer timed out. Your progress is safe. Try Play again."
 local Service={};Service.__index=Service
@@ -32,12 +33,14 @@ function Service.new(profiles,options)
  local self=setmetatable({profiles=profiles,mock=mock,transfers={},loading=not mock,friendHere=options.friendHere or anyFriendHere,now=options.monotonic or os.clock},Service)
  if not mock then
   self.platform=options.platform or require(script.Parent.MatchmakingAdapter).new()
-  self.platform:onFailure(function(player)self:failed(player)end)
+  self.platform:onFailure(function(player,result,message)LoadLog.note(player,"move failed: "..tostring(result).." "..tostring(message));self:failed(player)end)
   task.spawn(function()
    local attempt=0
    while self.loading or self.unavailable do
     attempt+=1
     local ok,class=pcall(function()return self.platform:currentClass()end)
+    -- What this room thinks it is, shown in each join's log entry ("public", "tutorial", or the error).
+    game.ReplicatedStorage.FlyFightPaper:SetAttribute("RoomClass",ok and (class or "public") or "error "..tostring(class):sub(1,80))
     if ok then self.class=class;self.loading=false;self.unavailable=false;return end
     if attempt>=Config.discovery_failure_attempts then self.loading=false;self.unavailable=true end
     task.wait(math.min(Config.discovery_retry_max_seconds,2^math.min(attempt-1,Config.discovery_retry_exponent_cap)))
@@ -71,7 +74,8 @@ local function transferPlayer(self,player,class,message)
   local now=self.now or os.clock;local deadline=now()+TRANSFER_TIMEOUT
   local ok,destination=pcall(function()return self.platform:destination(class)end)
   if self.transfers[player]~=transfer then return end
-  if not ok then self:failed(player);return end
+  if not ok then LoadLog.note(player,"no room for "..class..": "..tostring(destination));self:failed(player);return end
+  LoadLog.note(player,"moving to "..class)
   if now()>=deadline then self:failed(player,TIMEOUT_MESSAGE);return end
   local e=self.profiles.entries[player]
   if not e then self:failed(player);return end
@@ -81,7 +85,8 @@ local function transferPlayer(self,player,class,message)
   if self.transfers[player]~=transfer then return end
   if not player.Parent then self.transfers[player]=nil;return end
   if now()>=deadline then self:failed(player,TIMEOUT_MESSAGE);return end
-  local sent=pcall(function()self.platform:send(player,destination,function()return self.transfers[player]==transfer and player.Parent and now()<deadline end)end)
+  local sent,err=pcall(function()self.platform:send(player,destination,function()return self.transfers[player]==transfer and player.Parent and now()<deadline end)end)
+  if not sent then LoadLog.note(player,"send failed: "..tostring(err)) end
   if not sent and self.transfers[player]==transfer then self:failed(player,now()>=deadline and TIMEOUT_MESSAGE or nil) end
  end)
  return true
