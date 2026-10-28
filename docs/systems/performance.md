@@ -5,10 +5,11 @@ The game should run at a steady 60 frames per second with 12 planes in the match
 Play should start in seconds, not minutes.
 
 ## Where it stands (2026-10-27)
-Loading (details: [load plan](../plan/LOAD-PLAN.md)): real PC cold join Skip 5.3 s, all 16.3 s; phone fresh join
-all ~58 s (target 30 s). Menus are 46 files (shrunk to drawn size, packed in sheets, `first/UISheets`); the loading
-screen's art preloads alone and at real size first. Everything downloads from one queue, 8 at a time (Studio cold
-56.5 s -> 30.0 s). Next: phone check, the checked repacked town, a shared cork board.
+Loading (details: [load plan](../plan/LOAD-PLAN.md)): one queue for the whole load (8 at a time, phones 3: phone v361
+at 8 was slower, 81 s). Menu pictures shown only out of flight are drawn as 3D pictures (`first/BoardPlate`,
+`first/MenuArt`) so Roblox sends them GPU-compressed (~4-7x smaller). Studio cold: all 19.3 s (was 30.0). Real PC
+cold (v335) 16.3 s; phone fresh join v361 81 s (v358 58.6 s); the 3D menus not yet on a phone. Next: phone join,
+then the checked repacked town.
 The minutes-long Play start was fixed (2026-10-11) by computing exact building collision once in Studio and saving
 it in the place. Alan saw the frame rate drop inside the chalk cloud; the cloud was made cheaper. A full 12-plane
 frame-rate check on Alan's PC is still due before release (Stage 11).

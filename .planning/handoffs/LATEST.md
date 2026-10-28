@@ -1,8 +1,8 @@
-# LATEST → handoff-2026-10-27-load-lane-30s-plan.md
+# LATEST → handoff-2026-10-27-load-lane-3d-menus.md
 
-★ START HERE: Goal (Alan): phone fresh join fully loaded in 30 s at most, same look. First: nonstop downloading in
-`src/client/Loading.luau` (8 at a time on phones, one queue, no waiting on stuck plane pieces), cold Studio test, then
-Alan publishes + phone join. Then the checked repacked town, then one shared cork board (previews first).
+★ START HERE: Goal (Alan): phone fresh join fully loaded in 30 s at most, (almost) same look. First: Alan's phone
+fresh-join times on the build he publishes from the open Studio (one queue, phones 3 at a time, menu boards and
+menu-only pieces drawn as 3D pictures), read his join with LoadLog.recent(). Then the repacked town's Roblox-side check.
 
-Quick state: main cef0cfdb (+handoff); published v358 (without 826485a5, preload at real size). PC cold all 16.3 s; phone 58.6 s.
-Previous: handoff-2026-10-25-load-lane-menus-are-the-wall.md (load lane), handoff-2026-10-24-ui-screen-fit.md (UI lane).
+Quick state: main 5377a74a (+handoff); published v361 (phone 81 s); Studio cold now 19.3 s (was 30.0).
+Previous: handoff-2026-10-27-load-lane-30s-plan.md (load lane), handoff-2026-10-24-ui-screen-fit.md (UI lane).

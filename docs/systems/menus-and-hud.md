@@ -3,7 +3,10 @@
 ## What the player sees
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
-## Where it stands (2026-10-17)
+## Where it stands (2026-10-27)
+Menu-only screens (loading, main menu, settings, hangar, shop, wait, Training, round end) draw their boards and
+pieces as 3D pictures inside little ViewportFrames (`first/BoardPlate`, `first/MenuArt`): same place, clicks and
+tilt, a little softer up close (Alan OK'd), much smaller downloads. Flying screens keep ordinary pictures.
 Stage 6 approved by Alan (2026-10-13) after the on-brand HUD restyle. Edge arrows now stay below the top strips.
 Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); death lines say how it happened (weapon, the
 building or thing hit, who chased or rammed you), the same line on your note and in the feed. Seen in Studio Play 2026-10-17 except the

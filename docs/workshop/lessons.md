@@ -277,6 +277,11 @@ mistake would be easy to make twice.
 - **Menu pictures download as PNG, 3D pictures compressed** (2026-10-27, PC cache `rbx-storage.db` + `rbx-storage/`):
   the same uploaded picture comes as PNG for an ImageLabel but as KTX2 BC1/BC3 + zstd (~7x smaller) for a Decal, even
   one inside a ViewportFrame. A Decal's height came back 540 -> 512.
+- **Phones load menu pictures slower 8 at a time than 3** (2026-10-27): phone v361 at 8: menus 50 s, all 81 s; v358
+  at 3: menus 35.5 s, all 58.6 s (a phone unpacks each PNG itself). A PC cold test can't show this: judge download
+  counts per device on the phone. Same as the town's groups (6 beat 12).
+- **A ViewportFrame with a lower ZIndex than its parent isn't drawn at all** (2026-10-27): give it the parent's ZIndex
+  and make it the parent's first child so the label's words stay on top (`first/MenuArt`).
 - **Smaller picture files don't shrink the download** (2026-10-25): Roblox stores every uploaded picture as its own
   PNG (a 255 KB JPG came back as 975 KB; a 281 KB 256-colour PNG as 650 KB). Only fewer or smaller pictures help.
 
