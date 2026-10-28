@@ -155,6 +155,8 @@ mistake would be easy to make twice.
 - **Fewer files is not faster by itself (2026-10-28).** Merging the town's pictures into 2048 sheets cut its files
   ~3,000 -> ~2,100, but the phone took longer per file (all 58.9 s vs 59.3) and its picture memory went ~70 -> ~575 MB.
   Measure a picture change with a phone join (time and `LoadLog` texture MB) before shipping it.
+  Change one thing per phone test: v390 also carried a loading change, so the memory jump has two suspects. Studio on
+  a PC can't show phone picture memory (it keeps everything full size).
 - **Rojo serve can switch settings in the place, and publishing ships them (2026-10-28).** `serve.project.json` set
   `StreamingEnabled` false, so streaming was off in published builds for days (phones got ~2,800 town files at join;
   the loading screen stayed blurry 35 s). Serve now sets it true; `LoadLog.recent()` flags "STREAMING OFF" joins.

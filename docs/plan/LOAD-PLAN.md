@@ -221,3 +221,12 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   maps, `town_toys.py send`, so it is not that; maybe a 2048 sheet stays sharp whenever any of its 4 pieces is near).
   Reverted (Alan): records back in `parts/`, Studio swapped back. The repack is parked: fewer files did not mean faster.
   Planes are now asked for all at once before the town is sent (they had waited behind its line, 10 s at the end).
+- 2026-10-28 (repack memory dig, Studio): v390 was not only the repack: it also ran the "no second pass" loading
+  (its log has the "town pictures" step; v368 has "preloaded"), so either change could be the ~575 MB. Ruled out:
+  missing texture packs (a repacked sheet already had its pack; a new picture combo gets one ~5 s after it appears);
+  the second pass on a PC (Studio Play, today's town: 177 MB without it, 178 with it; it costs ~11 s). Studio on a PC
+  never shows it: one building in an empty scene used 7.7 MB today vs 2.6 MB repacked. Phone clue: on the cold v390 join
+  memory climbed 24 -> 575 MB as the last ~1,000 files (the sheets) arrived; v368 stayed 29-68 MB while its ~3,000
+  arrived. A phone-safe repack (1024 sheets, the documented map limit) saves only 559 -> 530 picture sets (2048: 224),
+  so it is not worth doing. Next: one phone fresh join of today's town with the current loading code (Studio now)
+  tells which change it was: ~70 MB means the 2048 sheets; ~575 MB means dropping the second pass (put it back).

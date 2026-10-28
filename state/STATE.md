@@ -1,14 +1,16 @@
 # Since Alan last checked (2026-10-28, night)
 - **Loading screen sharp at once, menus in 4.4 s** on the phone (were blurry 35 s / 48 s): streaming had been switched
   off by our code-sync setup; back on, and the load log flags it if it ever happens again.
-- **Fully loaded: 59 s** (was 91). Since then: no second pass over the town (~15 s saved) and planes load before the
-  town; not yet timed on the phone.
-- **Repacked town tried and reverted:** no faster (58.9 s), picture memory ~8x. You asked to keep digging into why.
-- **Waiting on you:** publish the open Studio (today's buildings, new loading code), then one phone fresh join.
+- **Fully loaded: 59 s** (was 91). Since then: planes load before the town (not yet timed on the phone).
+- **Repack memory dig (2026-10-28):** v390 also carried the "no second pass" loading change, so the ~575 MB has two
+  suspects: the big 2048 sheets, or that loading change (in Studio now). Missing packs ruled out; a PC never shows it.
+  A phone-safe 1024 repack saves only 5% of files: not worth doing.
+- **Waiting on you:** publish the open Studio (today's town, current loading code), then one phone fresh join: ~70 MB
+  = the sheets were the cause (code is fine); ~575 MB = put the second pass back.
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: phone fresh join ~59 s (goal 30 s); the repacked town uses ~8x picture memory (reverted, being looked into).
+Broken: phone fresh join ~59 s (goal 30 s); v390's ~8x picture memory: sheets or loading change (one phone join tells).
 Not yet: small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review
