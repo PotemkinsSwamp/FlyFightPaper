@@ -41,5 +41,8 @@ files already on the phone; "I've seen mobile games with more advanced maps and 
   boards without looking odd, and one picture fewer saves little. Instead: why are menu pictures megabytes? (PC cache:
   menus arrive as PNG, ~1.1 MB a board tile; the town's pictures arrive GPU-compressed, KTX2 BC1/BC3 + zstd.)
 
+- 2026-10-27 (night): menu boards as 3D pictures approved (Alan): "they just look a lower resolution, which is fine"
+  (cork grain 23-34% softer close up, ~7x smaller downloads). The pieces on top stay menu pictures for now.
+
 ## Affects
 - [Load plan](../plan/LOAD-PLAN.md) · [Performance](../systems/performance.md) · [Never trade looks for frame rate](2026-10-10-no-quality-cuts-for-fps.md) (looks unchanged: checked side by side)
