@@ -25,10 +25,10 @@ function Board.new(playerGui, actions)
 	stats.TextYAlignment, stats.LineHeight = Enum.TextYAlignment.Top, 1.15
 	table.insert(pieces, card)
 	local levelBar = require(script.Parent.LevelBar).new(card, 56, 282, 280, 27)
-	-- Phones: the level words were 8-10 points.
-	PaperUI.phone(card.Level, { TextSize = 38, Size = UDim2.fromOffset(160, 34) })
-	PaperUI.phone(card.XPCount, { TextSize = 34 })
-	PaperUI.phone(card.NextUnlock, { TextSize = 34 })
+	-- Phones: the level words were 8-10 points (then 12-13 on a small phone: 40 is 14 points there, ScreenCheck).
+	PaperUI.phone(card.Level, { TextSize = 40, Size = UDim2.fromOffset(160, 34) })
+	PaperUI.phone(card.XPCount, { TextSize = 40 })
+	PaperUI.phone(card.NextUnlock, { TextSize = 40 })
 
 	local buttons = Instance.new("Frame")
 	buttons.Name, buttons.BackgroundTransparency, buttons.Size = "Buttons", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H)
@@ -37,13 +37,15 @@ function Board.new(playerGui, actions)
 	table.insert(pieces, button(buttons, "Hangar", Art.strip.blue, "Hangar", 710, 600, 500, 120, 1, actions.hangar))
 	table.insert(pieces, button(buttons, "Settings", Art.strip.green, "Settings", 710, 735, 500, 120, -1, actions.settings))
 	table.insert(pieces, button(buttons, "Tutorial", Art.strip.red, "Training", 715, 870, 490, 120, 0.5, actions.tutorial))
+	-- A small phone draws the sheet at a third: 130 tall is a 46-point tap there (ScreenCheck asks 44).
+	for _, name in { "Hangar", "Settings", "Tutorial" } do PaperUI.phone(buttons[name], { Size = UDim2.fromOffset(500, 130) }) end
 	if actions.shop then
 		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop (dev)", 1580, 560, 250, 70, 4, actions.shop, 34))
 	end
 	-- Prestige (docs/systems/economy-and-shop.md): a button on the stats card at max level, then a confirm sheet that
 	-- says what goes and what stays; holding the button for two seconds confirms, so it can't happen by accident.
 	local prestigeButton = button(card, "Prestige", Art.strip.red, "Prestige", 60, 400, 250, 56, -2, function() end, 32)
-	PaperUI.phone(prestigeButton, { Size = UDim2.fromOffset(280, 80) }) -- a finger-sized strip on a phone
+	PaperUI.phone(prestigeButton, { Size = UDim2.fromOffset(300, 128) }) -- a finger-sized strip on a phone (44+ points on a small one)
 	PaperUI.phone(prestigeButton.Label, { TextSize = 42 })
 	local confirm = Instance.new("Frame")
 	confirm.Name, confirm.BackgroundColor3, confirm.BackgroundTransparency = "PrestigeConfirm", Color3.fromRGB(20, 14, 8), 0.45
@@ -55,7 +57,8 @@ function Board.new(playerGui, actions)
 	local holdFill = Instance.new("Frame")
 	holdFill.Name, holdFill.BackgroundColor3, holdFill.BackgroundTransparency, holdFill.BorderSizePixel = "Fill", Color3.fromRGB(255, 255, 255), 0.55, 0
 	holdFill.Size, holdFill.Parent = UDim2.fromScale(0, 1), hold
-	button(note, "Cancel", Art.strip.green, "Cancel", 410, 628, 170, 80, 2, function() confirm.Visible = false end, 32)
+	local cancel = button(note, "Cancel", Art.strip.green, "Cancel", 410, 628, 170, 80, 2, function() confirm.Visible = false end, 32)
+	PaperUI.phone(hold, { Size = UDim2.fromOffset(300, 128) }); PaperUI.phone(cancel, { Size = UDim2.fromOffset(170, 128) }) -- 44+ point taps
 	local holding = 0
 	hold.MouseButton1Down:Connect(function()
 		holding += 1

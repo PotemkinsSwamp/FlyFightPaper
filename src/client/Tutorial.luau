@@ -126,24 +126,25 @@ function Tutorial.start(getPlane)
  -- way), bigger words both ways, no key names on the buttons; a hint takes the title's line (showHint).
  Instance.new("UITextSizeConstraint",text).MaxTextSize=40 -- (only counts while TextScaled: phones; a long step shrinks)
  Instance.new("UITextSizeConstraint",skip.Label).MaxTextSize=30 -- (a touch screen's "Skip  (hold: all)", TouchWords)
- local pieces={note=note,title=title,hint=hint,text=text,key=key,tick=tick,gotIt=gotIt,gotItLabel=gotIt.Label,skip=skip,skipLabel=skip.Label}
+ local notePieces={note=note,title=title,hint=hint,text=text,key=key,tick=tick,gotIt=gotIt,gotItLabel=gotIt.Label,skip=skip,skipLabel=skip.Label}
  local function at(x,y,w,h) return {Position=UDim2.fromOffset(x,y),Size=UDim2.fromOffset(w,h)} end
  local function with(t,more) for k,v in more do t[k]=v end;return t end
  local function button(x,y,w,h) return at(x+w/2,y+h/2,w,h) end -- (buttons sit by their middle)
  local SHAPES={
-  wide={note={Size=UDim2.fromOffset(860,200)},title=with(at(30,14,600,32),{TextSize=30}),hint=with(at(30,14,600,32),{TextSize=28}),
-   text=with(at(30,48,600,140),{TextScaled=true}),key=with(at(660,16,170,48),{TextSize=28}),tick=with(at(480,150,150,44),{TextSize=36}),
-   gotIt=button(660,72,180,56),gotItLabel={TextSize=30},skip=button(660,134,180,56),skipLabel={TextScaled=true}},
+  -- (Buttons 96 tall: a 44-point tap at a phone's scale, ScreenCheck.)
+  wide={note={Size=UDim2.fromOffset(860,200)},title=with(at(30,14,460,32),{TextSize=30}),hint=with(at(30,14,460,32),{TextSize=28}),
+   text=with(at(30,48,610,144),{TextScaled=true}),key=with(at(500,8,130,38),{TextSize=26}),tick=with(at(480,150,150,44),{TextSize=36}),
+   gotIt=button(660,4,180,96),gotItLabel={TextSize=30},skip=button(660,102,180,96),skipLabel={TextScaled=true}},
   tall={note={Size=UDim2.fromOffset(560,400)},title=with(at(30,20,500,34),{TextSize=30}),hint=with(at(30,20,500,34),{TextSize=28}),
-   text=with(at(30,58,500,200),{TextScaled=true}),key=with(at(30,266,110,56),{TextSize=30}),tick=with(at(160,262,130,56),{TextSize=40}),
-   gotIt=button(30,322,240,64),gotItLabel={TextSize=32},skip=button(290,322,240,64),skipLabel={TextScaled=true}},
+   text=with(at(30,58,500,182),{TextScaled=true}),key=with(at(30,246,110,46),{TextSize=28}),tick=with(at(160,242,130,52),{TextSize=40}),
+   gotIt=button(30,298,240,96),gotItLabel={TextSize=32},skip=button(290,298,240,96),skipLabel={TextScaled=true}},
  }
  SHAPES.pc={}
- for name,props in SHAPES.wide do SHAPES.pc[name]={};for k in props do SHAPES.pc[name][k]=pieces[name][k] end end
+ for name,props in SHAPES.wide do SHAPES.pc[name]={};for k in props do SHAPES.pc[name][k]=notePieces[name][k] end end
  local shapeNow="pc"
  local function shape(which)
   if which==shapeNow then return end
-  shapeNow=which;for name,props in SHAPES[which] do PaperUI.set(pieces[name],props) end
+  shapeNow=which;for name,props in SHAPES[which] do PaperUI.set(notePieces[name],props) end
  end
  local function showHint(words) hint.Text=words;title.Visible=words=="" or not PaperUI.isPhone() end
 
@@ -172,17 +173,25 @@ function Tutorial.start(getPlane)
  local ask=card:Clone();ask.Name="Ask";ask.Parent=gui;ask.Visible=false
  for _,child in ask:GetChildren() do if child:IsA("GuiButton") then child:Destroy() end end
  workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()ask.UIScale.Scale=scale.Scale end)
- -- Phones: the cards' small line was about 13 points.
- for _,piece in {card,ask} do PaperUI.phone(piece.Text,{Position=UDim2.fromOffset(30,84),Size=UDim2.fromOffset(560,84),TextSize=32}) end
+ -- Phones: the cards' small line was about 13 points, their buttons 30 tall (Alan 2026-10-28: make mobile good): a
+ -- taller card with 48-point taps (ScreenCheck asks 44).
+ for _,piece in {card,ask} do
+  PaperUI.phone(piece,{Size=UDim2.fromOffset(620,340)})
+  PaperUI.phone(piece.Text,{Position=UDim2.fromOffset(30,84),Size=UDim2.fromOffset(560,100),TextSize=32})
+ end
+ PaperUI.phone(nextButton,{Position=UDim2.fromOffset(460,260),Size=UDim2.fromOffset(280,96)});PaperUI.phone(nextButton.Label,{TextSize=36})
+ PaperUI.phone(matchButton,{Size=UDim2.fromOffset(300,96)});PaperUI.phone(matchButton.Label,{TextSize=36})
  local choices={}
  local function choose(title,words,options)
   ask.Title.Text,ask.Text.Text=title,words
   for _,button in choices do button:Destroy() end;table.clear(choices)
   for i,option in options do
    local x=#options==1 and 160 or (i==1 and 20 or 320)
-   table.insert(choices,PaperUI.button(ask,"Choice"..i,Art.mainmenu.strip[option[3] or "green"] or Art.mainmenu.strip.red,option[1],x,170,280,60,i==1 and -1 or 1,function() ask.Visible=false;option[2]() end,PaperUI.isPhone() and 36 or 28))
+   local phone=PaperUI.isPhone()
+   table.insert(choices,PaperUI.button(ask,"Choice"..i,Art.mainmenu.strip[option[3] or "green"] or Art.mainmenu.strip.red,option[1],x,phone and 212 or 170,280,phone and 96 or 60,i==1 and -1 or 1,function() ask.Visible=false;option[2]() end,phone and 36 or 28))
   end
-  local close=PaperUI.button(ask,"Close",Art.mainmenu.strip.red,"X",560,10,50,50,0,function() ask.Visible=false end,28)
+  local phone=PaperUI.isPhone()
+  local close=PaperUI.button(ask,"Close",Art.mainmenu.strip.red,"X",phone and 524 or 560,phone and 4 or 10,phone and 92 or 50,phone and 92 or 50,0,function() ask.Visible=false end,phone and 40 or 28)
   table.insert(choices,close)
   ask.Visible=true
  end
@@ -544,7 +553,7 @@ function Tutorial.start(getPlane)
   cardText.Text=Tutorial.lesson.doneText or "You can replay any lesson: Menu > Training."
   Tutorial.nextKey=Tutorial.lesson.next
   nextButton.Visible=Tutorial.nextKey~=nil;nextButton.Label.Text=Tutorial.nextKey and "Next: "..Lessons[Tutorial.nextKey].name or ""
-  matchButton.Position=UDim2.fromOffset(Tutorial.nextKey and 170 or 310,200) -- buttons sit by their middle
+  PaperUI.set(matchButton,{Position=UDim2.fromOffset(Tutorial.nextKey and 170 or 310,PaperUI.isPhone() and 260 or 200)}) -- buttons sit by their middle
   card.Visible=true
   -- The Hangar Tour ends in the Range, which carries on as the Range (lesson.stay). The mouse aims there, so the card
   -- has no buttons and goes by itself.
