@@ -172,7 +172,7 @@ function Touch.start(getPlane)
 	RunService.RenderStepped:Connect(function()
 		local plane = getPlane()
 		local flying = Touch.active() and plane ~= nil and plane.Parent ~= nil and plane:GetAttribute("State") == "FLYING"
-			and not plane:GetAttribute("Held") and not Root:GetAttribute("OverlayOpen")
+			and (not plane:GetAttribute("Held") or Root:GetAttribute("TutorialOpen")) and not Root:GetAttribute("OverlayOpen") -- (a lesson's read pause shows the buttons it talks about)
 		if flying ~= gui.Enabled then
 			gui.Enabled = flying
 			if not flying then releaseAll() end

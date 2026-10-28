@@ -232,8 +232,10 @@ function Hangar.new(playerGui, api)
 				local x = vx + vw * (0.5 + at.X / -at.Z / (2 * tan * vw / vh))
 				local y = vy + vh * (0.5 - at.Y / -at.Z / (2 * tan))
 				local chosen = i == state.mount
-				local r = chosen and 19 or 15
-				local tag = button(content, "Mount" .. i, "", tostring(i), x - r, y - r, r * 2, r * 2, 0, function() state.mount = i; render() end, chosen and 30 or 24)
+				-- Twice the size on a phone (Alan 2026-10-28: the numbers were too small to tap).
+				local big = PaperUI.isPhone() and 2 or 1
+				local r = (chosen and 19 or 15) * big
+				local tag = button(content, "Mount" .. i, "", tostring(i), x - r, y - r, r * 2, r * 2, 0, function() state.mount = i; render() end, (chosen and 30 or 24) * big)
 				tag.BackgroundTransparency, tag.BackgroundColor3, tag.ZIndex, tag.Label.ZIndex = 0, MOUNT_COLOURS[body.mount_types[i]], 3, 4
 				Instance.new("UICorner", tag).CornerRadius = UDim.new(0.5, 0)
 				local ring = Instance.new("UIStroke")

@@ -13,6 +13,9 @@ local Gameplay=require(Root.Generated.Gameplay)
 local PaperUI=require(script.Parent.PaperUI)
 local Audio=require(script.Parent.Audio)
 local Lessons=require(script.Parent.TutorialLessons)
+local Touch=require(script.Parent.TouchControls)
+-- The HUD rows a lesson points at, and the touch button that does that job on a phone (TouchControls).
+local PHONE_NAMES={LeftStrip="Fire",RightStrip="Fire2",BoostStrip="Boost"}
 local Course=require(Root.Shared.TrainingCourse)
 local Tutorial={active=false}
 local HINT_SECONDS=10
@@ -335,6 +338,7 @@ function Tutorial.start(getPlane)
   return cover and cover.Visible and not (pause and pause.Cover.Visible) and layer or nil
  end
  local function findGui(name)
+  name=Touch.active() and PHONE_NAMES[name] or name -- a phone has round buttons where a PC has HUD rows
   local layer=menuLayer()
   if layer then
    local item=layer:FindFirstChild(name,true)
@@ -635,7 +639,9 @@ function Tutorial.start(getPlane)
   -- A menu open over the lesson (Esc) is what the player is looking at: no dim, spotlight or note on top of it (Alan 2026-10-19),
   -- unless it's the menu the lesson teaches.
   local overlay=Root:GetAttribute("OverlayOpen") and not menu
-  if not Tutorial.active or overlay then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
+  -- Moving to the tutorial room (live): the lesson waits for the new room (Alan 2026-10-28: "Tap LAUNCH" showed on
+  -- the menu for the 3 s the save took).
+  if not Tutorial.active or overlay or player:GetAttribute("Routing") then note.Visible=false;barFrame.Visible=false;targetRing.Visible=false;drawMarker();drawSpot(nil,nil,nil,false,nil,dt);return end
   if Tutorial.index==0 then startStep(1) end
   local plane=getPlane()
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end

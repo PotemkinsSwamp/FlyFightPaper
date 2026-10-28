@@ -11,6 +11,9 @@ move there logs `RoomClass` tutorial). The failure was the way out: the tutorial
 just left (its list entry was still fresh, under 45 s), which had closed, so the move failed twice ("GameEnded").
 Fix: a closing room crosses itself off its list (`Matchmaking` BindToClose → `MatchmakingAdapter:forget`).
 Each join's log entry carries `RoomClass` (public, tutorial, rookie, regular or the error) and every room move.
+**Phone fixes from Alan's run (2026-10-28):** a step that points at a HUD weapon or Boost row frames the round touch
+button instead (FIRE, 2, BOOST; they show during a lesson's read pause); the note waits while the player moves to the
+tutorial room (it showed "Tap LAUNCH" on the menu for 3 s); the Hangar's mount numbers are twice the size on a phone.
 **Phones (Alan 2026-10-28):** the lesson note was too small and covered the middle of the view; on a phone it is now
 860 x 200 (before scaling) up in Roblox's top bar right of Health and Lift (Alan: "moved up"), words about 20 points
 (were 15), Got it and Skip beside the words with no key names; a tip takes the title's line. **Out of the way (Alan
