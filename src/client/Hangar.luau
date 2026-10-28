@@ -79,7 +79,7 @@ function Hangar.new(playerGui, api)
 	end, 54)
 	back.ZIndex = 5
 	-- Phones: under Roblox's own buttons (top left) a finger opened Roblox's menu instead; Back drops below them.
-	PaperUI.phone(back, { Position = UDim2.fromOffset(140, 225) })
+	PaperUI.phone(back, { Position = UDim2.fromOffset(140, 245), Size = UDim2.fromOffset(300, 130) }) -- (130: a 44-point tap on a small phone)
 
 	-- Tapping a cubby picks that build: the one you fly next (in the Range it swaps your plane).
 	local shelf = BuildShelf.new(sheet, Catalog, function(i)
@@ -169,7 +169,8 @@ function Hangar.new(playerGui, api)
 		nameBox.TextTruncate, nameBox.Parent = Enum.TextTruncate.AtEnd, parent
 		local pencil = Instance.new("ImageButton")
 		pencil.Name, pencil.Image, pencil.BackgroundTransparency, pencil.Rotation = "Rename", Assets.settings.pencil, 1, -35
-		pencil.AnchorPoint, pencil.Position, pencil.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(x + w - 55, y + h / 2), UDim2.fromOffset(96, 26)
+		-- (On a phone a bigger pencil: 26 tall was a 9-point tap.)
+		pencil.AnchorPoint, pencil.Position, pencil.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(x + w - 55, y + h / 2), UDim2.fromOffset(PaperUI.isPhone() and 130 or 96, PaperUI.isPhone() and 130 or 26)
 		pencil.ScaleType, pencil.Parent = Enum.ScaleType.Fit, parent
 		pencil.Activated:Connect(function() nameBox:CaptureFocus() end)
 		-- Clicking in selects the whole name, so typing replaces it (Ctrl+A isn't something a kid knows).
@@ -298,7 +299,7 @@ function Hangar.new(playerGui, api)
 			preview(draft, PHOTO)
 			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, 52)
 			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
-			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 564, 600, 120, -1, function()
+			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 564, 600, PaperUI.isPhone() and 130 or 120, -1, function()
 				state.page, state.slot, state.trying = "customize", "body", nil
 				render()
 			end, 72)

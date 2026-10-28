@@ -122,6 +122,27 @@ function PaperUI.set(piece, props)
 	if rest[piece] then rest[piece] = { size = piece.Size, rotation = piece.Rotation } end
 end
 
+PaperUI.TAP = 46 -- points: a phone's least tap size (44 asked, a little over so rounding never drops under)
+-- Phones (Alan 2026-10-28: make mobile work): a sheet drawn for 1080p shows at a third on a small phone, so a
+-- button can come out 18-37 points tall. An invisible tap area ("Hit") reaches at least TAP points each way around
+-- it, the size Apple and Google ask for; the art stays as drawn. It takes the taps, so code that listens to a
+-- button's own presses (a hold, a drag) listens to its Hit too. tallOnly: grow up and down only (a row of buttons
+-- close together, so one's tap area never covers its neighbour).
+function PaperUI.tapArea(button, tallOnly)
+	local hit = Instance.new("TextButton")
+	hit.Name, hit.Text, hit.BackgroundTransparency, hit.AutoButtonColor = "Hit", "", 1, false
+	hit.AnchorPoint, hit.Position, hit.Visible, hit.Parent = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5), false, button
+	local function grow()
+		local size = button.AbsoluteSize
+		local scale = size.X / math.max(button.Size.X.Offset, 1) -- screen points per drawn point
+		local wide, tall = tallOnly and 0 or math.max(0, PaperUI.TAP - size.X), math.max(0, PaperUI.TAP - size.Y)
+		hit.Visible = PaperUI.isPhone() and scale > 0 and (wide > 0 or tall > 0)
+		if hit.Visible then hit.Size = UDim2.new(1, wide / scale, 1, tall / scale) end
+	end
+	button:GetPropertyChangedSignal("AbsoluteSize"):Connect(grow)
+	grow()
+	return hit
+end
 -- A paper button with a word on it: grows and tilts under the mouse, squishes when pressed.
 function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback, size)
 	local button = Instance.new("ImageButton")
@@ -139,11 +160,14 @@ function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback,
 		local size = base.size
 		TweenService:Create(button, info, { Size = UDim2.fromOffset(size.X.Offset * sx, size.Y.Offset * sy), Rotation = base.rotation + turn }):Play()
 	end
-	button.MouseEnter:Connect(function() to(1.05, 1.05, -1.5) end)
-	button.MouseLeave:Connect(function() to(1, 1, 0) end)
-	button.MouseButton1Down:Connect(function() to(0.95, 0.92, -1.5) end)
-	button.MouseButton1Up:Connect(function() to(1.05, 1.05, -1.5) end)
-	button.Activated:Connect(callback)
+	local hit = PaperUI.tapArea(button)
+	for _, target in { button, hit } do
+		target.MouseEnter:Connect(function() to(1.05, 1.05, -1.5) end)
+		target.MouseLeave:Connect(function() to(1, 1, 0) end)
+		target.MouseButton1Down:Connect(function() to(0.95, 0.92, -1.5) end)
+		target.MouseButton1Up:Connect(function() to(1.05, 1.05, -1.5) end)
+		target.Activated:Connect(callback)
+	end
 	return button
 end
 

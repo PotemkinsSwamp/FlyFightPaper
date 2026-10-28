@@ -575,9 +575,11 @@ function Tutorial.start(getPlane)
  end)
  -- The Skip button works like K (phones have no K): a tap skips the step, held for HOLD_SKIP_SECONDS the whole lesson.
  local skipPress
- skip.InputBegan:Connect(function(input)
-  if Tutorial.active and (input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch) then skipPress=input;holdK=os.clock() end
- end)
+ for _,target in {skip,skip.Hit} do -- (Hit: its phone tap area, PaperUI.button)
+  target.InputBegan:Connect(function(input)
+   if Tutorial.active and (input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch) then skipPress=input;holdK=os.clock() end
+  end)
+ end
  Input.InputEnded:Connect(function(input)
   if (input.KeyCode==Enum.KeyCode.K or input==skipPress) and holdK then
    if os.clock()-holdK<HOLD_SKIP_SECONDS and Tutorial.active then Tutorial.skipStep=true end

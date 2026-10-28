@@ -109,8 +109,11 @@ function ScreenCheck.run()
 					local least = phone and MIN_TEXT_PHONE or MIN_TEXT
 					if points and points > 0 and points < least then report(string.format("SMALL TEXT %s %q %.0f pt", name(object), object.Text:sub(1, 24), points)) end
 				end
-				if touch and object:IsA("GuiButton") and math.min(object.AbsoluteSize.X, object.AbsoluteSize.Y) < MIN_TAP then
-					report(string.format("SMALL TAP %s %.0f x %.0f pt", name(object), object.AbsoluteSize.X, object.AbsoluteSize.Y))
+				local tap = object:IsA("GuiButton") and object:FindFirstChild("Hit")
+				tap = tap and tap.Visible and tap or object -- (a paper button's tap area, PaperUI.button)
+				local isHit = object.Name == "Hit" and object.Parent:IsA("GuiButton") -- (counted with its button)
+				if touch and object:IsA("GuiButton") and not isHit and math.min(tap.AbsoluteSize.X, tap.AbsoluteSize.Y) < MIN_TAP then
+					report(string.format("SMALL TAP %s %.0f x %.0f pt", name(object), tap.AbsoluteSize.X, tap.AbsoluteSize.Y))
 				end
 			end
 		end

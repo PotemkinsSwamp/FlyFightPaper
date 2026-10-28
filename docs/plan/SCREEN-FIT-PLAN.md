@@ -74,6 +74,13 @@ Plan OK; small PC moves OK with before/after pictures; 2 kill-feed lines on a ph
 - 2026-10-25: Alan's devices: desk stat sheet now level with the photo everywhere; on the small iPhone notes slide
   into the gap between Health/Lift and the kill feed and shrink (`ScreenFit.place`); match tip up top on phones.
   Checked clean: big phone, PC (2046 x 801). **Next:** small iPhone and iPad re-check, then steps 3-6.
+- 2026-10-28 (mobile lane): check run on a notched small phone (873 x 401, safe 749 x 381) through Studio's
+  `DevPhone` hook and `DevScreen`. Every paper button now has an invisible phone tap area of at least 46 points
+  (`PaperUI.tapArea`; the art stays as drawn; holds and drags listen to its `Hit` too); welcome question, lesson cards,
+  lesson note, main menu, Hangar (Back, Customize, a bigger rename pencil), Settings (pencils) all pass; main menu level
+  words 14 points. Left: Settings' colour stickers are 29 wide (the row is too close to grow sideways; 46 tall);
+  Shop (dev) is Studio only; Hangar photo and binder edge sit under Roblox's bar (art, no tap). Not yet checked this
+  round: Range menu, round results, Training board, desk quick menu in a match, iPad.
 
 ## Cost
 Code only: no uploads, $0. About two to three sessions.

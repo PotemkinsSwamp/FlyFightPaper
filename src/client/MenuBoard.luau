@@ -60,7 +60,7 @@ function Board.new(playerGui, actions)
 	local cancel = button(note, "Cancel", Art.strip.green, "Cancel", 410, 628, 170, 80, 2, function() confirm.Visible = false end, 32)
 	PaperUI.phone(hold, { Size = UDim2.fromOffset(300, 128) }); PaperUI.phone(cancel, { Size = UDim2.fromOffset(170, 128) }) -- 44+ point taps
 	local holding = 0
-	hold.MouseButton1Down:Connect(function()
+	local function press()
 		holding += 1
 		local mine, started = holding, os.clock()
 		while holding == mine and confirm.Visible do
@@ -70,10 +70,13 @@ function Board.new(playerGui, actions)
 			task.wait()
 		end
 		holdFill.Size = UDim2.fromScale(0, 1)
-	end)
+	end
 	local function release() holding += 1 end
-	hold.MouseButton1Up:Connect(release)
-	hold.MouseLeave:Connect(release)
+	for _, target in { hold, hold.Hit } do -- (Hit: its phone tap area, PaperUI.button)
+		target.MouseButton1Down:Connect(press)
+		target.MouseButton1Up:Connect(release)
+		target.MouseLeave:Connect(release)
+	end
 	local shown = { profile = nil }
 	prestigeButton.Activated:Connect(function()
 		local profile = shown.profile; if not profile then return end

@@ -54,6 +54,7 @@ function SettingsScreen.new(playerGui, api)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = input; follow(input.Position.X) end
 		end
 		pencil.InputBegan:Connect(grab)
+		PaperUI.tapArea(pencil, true).InputBegan:Connect(grab) -- (a phone's finger-sized grab, PaperUI.tapArea)
 		ruler.InputBegan:Connect(grab)
 		Input.InputChanged:Connect(function(input)
 			if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input == dragging) then follow(input.Position.X) end
@@ -74,7 +75,9 @@ function SettingsScreen.new(playerGui, api)
 		local dot = Instance.new("ImageButton")
 		dot.Name, dot.Image, dot.BackgroundTransparency = "Sticker" .. color, Art.sticker[color], 1
 		dot.Position, dot.Size, dot.Parent = UDim2.fromOffset(1010 + (i - 1) * 88, 345), UDim2.fromOffset(82, 82), sheet
-		dot.Activated:Connect(function() settings.crosshairColor = color; refresh.color(); save() end)
+		local function pick() settings.crosshairColor = color; refresh.color(); save() end
+		dot.Activated:Connect(pick)
+		PaperUI.tapArea(dot, true).Activated:Connect(pick) -- (taller on a phone; the row is too close to grow sideways)
 	end
 	local card = image(sheet, "CrosshairCard", Art.crosshairCard, 1570, 270, 180, 180, 2)
 	local ring = Instance.new("Frame")
