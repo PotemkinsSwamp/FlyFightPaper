@@ -199,3 +199,12 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   itself (7-33 s); our own pass over the town then took 15 s more re-checking files already in. Dropped: the town's
   share of the bar now follows Roblox's line (`RequestQueueSize`), done when it stays near empty for 1 s (60 s cap).
   Expected ~44 s on the phone; the rest is the town's file count (the repack is the next lever) and the planes (11 s).
+- 2026-10-28 (repack, Roblox side): notebook tower swapped alone in Studio: no grey bar this time (2026-10-25's bar was
+  most likely a pack still loading). But in Roblox its repacked bump sheet flattens the shading (paper creases and
+  window-frame depth gone); with no bump map, or a flat one, the creases come back, so the shapes are fine. Its shapes
+  (same normals, same UV handedness, read back with EditableMesh) and its bump pixels (uploaded = files) check out;
+  cause unknown, notebook only so far: the clock tower's repacked swap matches today's (1.5/255 mean difference). Note:
+  Studio had been drawing many town pictures soft (memory), so compare only freshly loaded pictures.
+  Town file count (Studio, unique downloads): buildings ~2,300, rug toys 262, rug 284, classroom decor 142 (3 plants
+  64, 6 pencil cups 30), ReplicatedStorage 503; desks, chairs and hangers are plain parts (nothing to download).
+  Next: every building swapped and photo-compared (`.planning/repack-swap/`); ones that differ stay as today's.
