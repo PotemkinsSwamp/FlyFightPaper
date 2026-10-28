@@ -43,6 +43,9 @@ files already on the phone; "I've seen mobile games with more advanced maps and 
 
 - 2026-10-27 (night): menu boards as 3D pictures approved (Alan): "they just look a lower resolution, which is fine"
   (cork grain 23-34% softer close up, ~7x smaller downloads). The pieces on top stay menu pictures for now.
+- 2026-10-28: the repacked town (41 buildings) approved on before/after pictures, published (v390), then reverted
+  (Alan): no faster on the phone (58.9 s) and picture memory ~70 -> ~575 MB. Alan: keep digging into why the repack
+  uses so much more memory (not parked). Planes load alongside the town (Alan: yes).
 
 ## Affects
 - [Load plan](../plan/LOAD-PLAN.md) · [Performance](../systems/performance.md) · [Never trade looks for frame rate](2026-10-10-no-quality-cuts-for-fps.md) (looks unchanged: checked side by side)

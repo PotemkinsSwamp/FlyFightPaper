@@ -170,7 +170,7 @@ local function run()
 	end
 	for _, name in WORLD do walk(UIAssets[name], world) end
 	walk(UIAssets, menus) -- any screen not listed above still loads before Skip
-	local town, shapes, assets = {}, {}, nil
+	local town, shapes = {}, {}
 	local function collect(parent)
 		for _, item in parent:GetDescendants() do
 			if item:IsA("MeshPart") then
@@ -240,16 +240,38 @@ local function run()
 	-- in: the engine fetches whatever town it draws by itself, and on a phone that crowd held the menus back (v358 waited:
 	-- menus 35.5 s; v361/v364 overlapped: 50.0/48.5 s).
 	while (if touch then menuPart.done < menuPart.total else nextJob <= menuJobs) and os.clock() < stopAt do task.wait(0.05) end
+	-- The plane pieces just before the town is sent, all asked for at once (phone v390: one at a time after the town,
+	-- they waited behind its ~2,000 files and took 10 s at the end). Asked together, they sit in Roblox's line ahead of
+	-- the town's files. A few kept in ReplicatedStorage never report back, so the part counts as in after 20 s at most.
+	collect(Root:WaitForChild("Assets"))
+	local planePart = { name = "planes", total = math.max(#town, 1), done = 0, span = 0.05 }
+	table.insert(parts, planePart)
+	running += 1
+	for _, item in town do
+		task.spawn(function()
+			pcall(Content.PreloadAsync, Content, { item }, function(_, fetch)
+				if fetch ~= Enum.AssetFetchStatus.Success then failures += 1 end
+			end)
+			if planePart.done < planePart.total then planePart.done += 1 end
+			heard = os.clock()
+			progress()
+		end)
+	end
+	task.spawn(function()
+		local since = os.clock()
+		while planePart.done < #town and os.clock() - since < 20 do task.wait(0.1) end
+		planePart.done = planePart.total
+		progress()
+		lap("planes")
+		running -= 1
+	end)
 	Root:WaitForChild("RoundAction"):FireServer("sendTown")
-	assets = select(2, Loading.waitTown())
+	Loading.waitTown()
 	lap("town arrived")
 	-- Skip once the menus and the town's parts are in: the game plays, and buildings still without their pictures fill
 	-- in while you fly.
 	while menuPart.done < menuPart.total and os.clock() < stopAt do task.wait(0.05) end
 	skip.Visible, skipNote.Visible = true, true
-	-- The plane pieces, one file each: a few never report back and must not hold up the rest.
-	collect(assets)
-	add("planes", town, 1, 2, 0.05)
 	-- The town's own pictures: Roblox fetches every piece's shape and maps by itself as the town arrives (phone v368:
 	-- ~3,000 files waiting, all in by 33 s), so asking for them again only re-checked them (15 s more). Its share of
 	-- the bar follows Roblox's line instead, done once the line stays (nearly) empty for a second.

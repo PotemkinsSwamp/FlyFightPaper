@@ -215,3 +215,9 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   No repack records: bell-tower, sweet-shop (left out on purpose), sticky-note-tower. Town downloads ~3,100 -> 2,153
   files. Studio Play: loads, 60 fps. Not yet done: copy the 41 buildings' records over `parts/` (so rebuilds keep the
   repack) and harvest their packs after Alan's Save to File; Alan's look, publish, phone join.
+- 2026-10-28: phone fresh join v390 (41 repacked buildings): all 58.9 s, no faster than v368 (59.3). The town's line
+  had ~2,100 files (was ~3,000) but took ~37 s (was ~25): each sheet file is bigger. Picture memory on the phone rose
+  from ~70 MB to ~575 MB; cause unknown (the repack uploads already went up with half-size bump/shine and shared flat
+  maps, `town_toys.py send`, so it is not that; maybe a 2048 sheet stays sharp whenever any of its 4 pieces is near).
+  Reverted (Alan): records back in `parts/`, Studio swapped back. The repack is parked: fewer files did not mean faster.
+  Planes are now asked for all at once before the town is sent (they had waited behind its line, 10 s at the end).

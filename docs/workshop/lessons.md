@@ -152,6 +152,9 @@ mistake would be easy to make twice.
 - **A phone downloads the whole map when streaming is off (2026-10-25).** ~4,500 assets made Alan's phone wait
   minutes, and the menus' pictures queued behind the town's. Preload the menu art first (`Loading.luau`), and count
   every texture map (SurfaceAppearance ones too) when judging a map's weight.
+- **Fewer files is not faster by itself (2026-10-28).** Merging the town's pictures into 2048 sheets cut its files
+  ~3,000 -> ~2,100, but the phone took longer per file (all 58.9 s vs 59.3) and its picture memory went ~70 -> ~575 MB.
+  Measure a picture change with a phone join (time and `LoadLog` texture MB) before shipping it.
 - **Rojo serve can switch settings in the place, and publishing ships them (2026-10-28).** `serve.project.json` set
   `StreamingEnabled` false, so streaming was off in published builds for days (phones got ~2,800 town files at join;
   the loading screen stayed blurry 35 s). Serve now sets it true; `LoadLog.recent()` flags "STREAMING OFF" joins.
