@@ -1,14 +1,14 @@
 # Since Alan last checked (2026-10-28, night)
 - **Loading screen sharp at once, menus in 4.4 s** on the phone (were blurry 35 s / 48 s): streaming had been switched
   off by our code-sync setup; back on, and the load log flags it if it ever happens again.
-- **Fully loaded: 48.8 s on the phone (v402; was 59, then 91).** Skip at 10 s. Picture memory 49 MB: the 575 MB was
-  the repack's big sheets, so the current loading code stays. A phone-safe repack saves only 5% of files: dropped.
-- **What's left of the wait:** Roblox's own download line of ~3,000 town files (10 s -> 45 s). 30 s needs fewer or
-  smaller town files at join.
+- **Load lane done (you, 2026-10-28):** phone first join 48.8 s, Skip at 10 s, rejoin ~16 s; the loading screen says
+  the first load is the longest. The repack's 575 MB was its big sheets.
+- **Mobile lane next.** Tutorial room bug (you, phone): the private room is reached but the lesson doesn't start and
+  Play starts a match in that room. Cause unknown; the join log now records what each room thinks it is.
 
-# Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
+# Now: mobile lane: tutorial room bug, tutorial note size on phones; UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: phone fresh join ~49 s (goal 30 s): the town's ~3,000 files.
+Broken: tutorial on a live server (lesson doesn't start in its private room).
 Not yet: small iPhone and iPad not re-checked since the gap change.
 
 Decisions to review

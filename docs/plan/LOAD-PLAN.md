@@ -1,5 +1,7 @@
 # Load plan: fast joins on a phone, same look
 
+**Done 2026-10-28 (Alan):** first phone join 48.8 s with Skip at 10 s accepted ([decision](../decisions/2026-10-25-fast-phone-loading.md)).
+
 Draft for Alan's OK (2026-10-25). Alan published privately and played on his phone: the menus showed their words but
 no paper art, and the town took minutes to appear. "I've seen mobile games with more advanced maps and menu UI and
 theirs loads no problem." Measured cause: [performance](../systems/performance.md) ("Phones").

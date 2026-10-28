@@ -46,6 +46,8 @@ files already on the phone; "I've seen mobile games with more advanced maps and 
 - 2026-10-28: the repacked town (41 buildings) approved on before/after pictures, published (v390), then reverted
   (Alan): no faster on the phone (58.9 s) and picture memory ~70 -> ~575 MB. Alan: keep digging into why the repack
   uses so much more memory (not parked). Planes load alongside the town (Alan: yes).
+- 2026-10-28: **load lane done (Alan).** Phone first join 48.8 s (Skip at 10 s) is good enough: only the first join
+  is slow (a rejoin ~16 s), and the loading screen now says so under the bar. The repack memory was its 2048 sheets.
 
 ## Affects
 - [Load plan](../plan/LOAD-PLAN.md) · [Performance](../systems/performance.md) · [Never trade looks for frame rate](2026-10-10-no-quality-cuts-for-fps.md) (looks unchanged: checked side by side)
