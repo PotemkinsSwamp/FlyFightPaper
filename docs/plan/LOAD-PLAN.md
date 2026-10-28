@@ -215,3 +215,7 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   No repack records: bell-tower, sweet-shop (left out on purpose), sticky-note-tower. Town downloads ~3,100 -> 2,153
   files. Studio Play: loads, 60 fps. Not yet done: copy the 41 buildings' records over `parts/` (so rebuilds keep the
   repack) and harvest their packs after Alan's Save to File; Alan's look, publish, phone join.
+- 2026-10-28: Alan OK'd the 41 repacked buildings from the before/after pages. Their records copied over `parts/`
+  (416 pieces), so builds now make the repacked town; Studio's copy checked equal to the records, building by building
+  (bell-tower: Studio has one piece more than its records, older and untouched). Packs for the new map sets still to
+  harvest after a Save to File (`town_toys.py packs`), before any `save_place` rebuild.
