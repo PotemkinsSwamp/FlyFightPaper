@@ -1,15 +1,19 @@
 # Since Alan last checked (2026-10-28, night)
-- **Loading screen sharp at once, menus in 4.4 s** on the phone (were blurry 35 s / 48 s): streaming had been switched
-  off by our code-sync setup; back on, and the load log flags it if it ever happens again.
 - **Load lane done (you, 2026-10-28):** phone first join 48.8 s, Skip at 10 s, rejoin ~16 s; the loading screen says
   the first load is the longest. The repack's 575 MB was its big sheets.
-- **Mobile lane next.** Tutorial room bug (you, phone): the private room is reached but the lesson doesn't start and
-  Play starts a match in that room. Cause unknown; the join log now records what each room thinks it is.
+- **Mobile lane (2026-10-28):** lesson notes, match tips and Range notes now slide out of the way (tilted, to a side
+  or the bottom) when they'd cover what matters; the phone lesson note is bigger-worded and sits up top beside Health
+  and Lift. Every paper button has a finger-sized tap area on phones (welcome question, cards, menu, Hangar, Settings).
+  Seen in Studio at a small notched phone's size; not yet on your phone.
+- **Tutorial room bug still open:** the join log now records what each room thinks it is, and every room move.
 
-# Now: mobile lane: tutorial room bug, tutorial note size on phones; UI lane: screen fit steps 3-6 waiting
-What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
-Broken: tutorial on a live server (lesson doesn't start in its private room).
-Not yet: small iPhone and iPad not re-checked since the gap change.
+# Now: mobile lane (make phones work and look good): tutorial room bug, then the screens not yet checked
+What works: everything in Stage 9, tutorials, desk quick menu; phone checks pass on menu, Hangar, Customize, Settings.
+Broken: tutorial on a live server (lesson doesn't start in its private room; cause unknown until your phone run).
+Not yet: Range menu, round results, Training board, match desk on a phone; iPad; match tips/Range notes moving.
+
+Waiting on you (first): publish the open Studio, then on your phone: start the tutorial once (I read the log), and
+look at the lesson note (readable? out of the way? Got it/Skip easy to tap?) and the menus' buttons.
 
 Decisions to review
 Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).
