@@ -157,6 +157,11 @@ mistake would be easy to make twice.
   Measure a picture change with a phone join (time and `LoadLog` texture MB) before shipping it.
   Change one thing per phone test: v390 also carried a loading change, so the memory jump has two suspects. Studio on
   a PC can't show phone picture memory (it keeps everything full size).
+- **The MCP's `require` is its own copy (2026-10-28):** a module required from `execute_luau` in the Client VM is a
+  separate instance from the game's, so patching it (e.g. `ScreenFit.kind`) changes nothing in the game. Test through
+  attributes the game reads (`DevPhone`, `DevTouch`, `DevCover`, `DevScreen`, `DevLesson`).
+- **Studio's simulated clicks can stop landing (2026-10-28):** `user_mouse_input` opened the Hangar, then later taps
+  on Customize and Back did nothing (nothing covered them). Open screens with the `DevScreen` attribute instead.
 - **A few files into Studio without Rojo (2026-10-28):** `python -m http.server 8765 --bind 127.0.0.1` in `src/`, then
   in Studio's Edit VM `script.Source = HttpService:GetAsync("http://127.0.0.1:8765/client/X.luau")` (works from the MCP;
   compare byte counts, check by requiring a clone). Stop the server after.
