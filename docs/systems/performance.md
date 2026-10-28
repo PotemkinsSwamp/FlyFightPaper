@@ -31,7 +31,9 @@ font queued behind the town. So a ReplicatedFirst script now asks for those befo
 30 s), and they never stream out. Planes, speed pick-ups and the Range stage are `Persistent` (everyone gets them,
 as before). The menus work while the town arrives; Play, Fly and Training wait for it. Loading order (Alan 2026-10-25):
 the loading screen's own art (it shows only once that is in), then every menu's pictures in the order a player meets
-them, then the town's parts; Skip appears only then, with a note that grey buildings fill in. After Skip: the training
+them, then the town's parts. Under the bar from the start: "the first load is the longest, next time is much faster"
+(Alan 2026-10-28); Skip appears only then, and that note takes turns (5 s each) with one that grey buildings fill
+in. After Skip: the training
 range, the plane pieces, then the town's pictures. Each file is its own request, many side by side (a list is fetched
 one file after another, slow on a phone); see lessons. The rest is the [load plan](../plan/LOAD-PLAN.md).
 

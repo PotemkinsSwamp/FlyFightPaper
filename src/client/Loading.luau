@@ -17,6 +17,7 @@ local LINES = {
 	"Winding up the toy train...", "Hanging the paper chains...", "Filling the paint jars...",
 	"Stacking the books into towers...", "Practising loop-the-loops...", "Picking the best paper...",
 }
+local FIRST_NOTE, PLAY_NOTE = "The first load is the longest. Next time it's much faster!", "You can play now! Grey buildings fill in as you fly."
 
 -- Called first thing on join so the player never sees the bare room while the game connects.
 function Loading.show()
@@ -37,9 +38,10 @@ function Loading.show()
 	-- Once the main menu's pictures are in, you can go in while the rest keeps loading (Alan 2026-10-25).
 	skip = PaperUI.button(sheet, "Skip", menu.strip.green, "Skip", 780, 920, 360, 110, -1, function() skipped = true end, 48)
 	skip.Visible = false
-	-- Said beside Skip, like other games do: you can play, the town is still painting in.
-	skipNote = words(card, "SkipNote", "You can play now! Grey buildings fill in as you fly.", 100, 295, 600, 70, 34)
-	skipNote.TextWrapped, skipNote.TextXAlignment, skipNote.Visible = true, Enum.TextXAlignment.Center, false
+	-- Under the bar from the start (Alan 2026-10-28): only a phone's first join is slow (v402 49 s, a rejoin ~16 s).
+	-- Once Skip shows, it takes turns with the note that you can play while the town paints in.
+	skipNote = words(card, "SkipNote", FIRST_NOTE, 100, 295, 600, 70, 34)
+	skipNote.TextWrapped, skipNote.TextXAlignment = true, Enum.TextXAlignment.Center
 	-- While loading, the plane keeps flying across nose first (Alan 2026-10-17), turned 24 degrees to its climb. No pin:
 	-- it only gets pinned on the menu board.
 	local plane = image(sheet, "Plane", menu.plane, 0, 0, 226, 195, 24)
@@ -271,7 +273,11 @@ local function run()
 	-- Skip once the menus and the town's parts are in: the game plays, and buildings still without their pictures fill
 	-- in while you fly.
 	while menuPart.done < menuPart.total and os.clock() < stopAt do task.wait(0.05) end
-	skip.Visible, skipNote.Visible = true, true
+	skip.Visible = true
+	task.spawn(function() -- the two notes take turns, 5 s each, "you can play" first
+		local mine, n = cover, 0
+		while mine.Parent do skipNote.Text = if n % 2 == 0 then PLAY_NOTE else FIRST_NOTE; n += 1; task.wait(5) end
+	end)
 	-- The town's own pictures: Roblox fetches every piece's shape and maps by itself as the town arrives (phone v368:
 	-- ~3,000 files waiting, all in by 33 s), so asking for them again only re-checked them (15 s more). Its share of
 	-- the bar follows Roblox's line instead, done once the line stays (nearly) empty for a second.
