@@ -1,21 +1,23 @@
 # Since Alan last checked (2026-10-28, night)
-- **Load lane done (you, 2026-10-28):** phone first join 48.8 s, Skip at 10 s, rejoin ~16 s; the loading screen says
-  the first load is the longest. The repack's 575 MB was its big sheets.
 - **Mobile lane (2026-10-28):** lesson notes, match tips and Range notes now slide out of the way (tilted, to a side
   or the bottom) when they'd cover what matters; the phone lesson note is bigger-worded and sits up top beside Health
   and Lift. Every paper button has a finger-sized tap area on phones (welcome question, cards, menu, Hangar, Settings).
   Seen in Studio at a small notched phone's size; not yet on your phone.
-- **Tutorial room bug found + fixed (your phone runs, v413):** the tutorial room worked; leaving it tried to send you
-  back to the public room you'd just left, which had closed ("GameEnded" twice). Closing rooms now cross themselves
-  off the list. In Studio, not yet published.
+- **Your phone run's problems (2026-10-28), fixed in Studio, not yet published:** leaving the tutorial sent you to a
+  closed room ("experience does not exist"); "Tap LAUNCH" showed on the menu before the move; lessons framed the PC's
+  weapon rows instead of the round FIRE / 2 / BOOST buttons (now a round ring, buttons shown in read pauses); notes that
+  slid left sat over Health/Lift; Skip's words were cut off; Hangar mount numbers twice as big. Checked in Studio at
+  phone size.
+- **Phone button art:** you picked C (peel stickers, `assets/references/ui-concepts/touch-buttons-c.png`). Pieces being
+  drawn; you see them in place before any upload.
 
-# Now: mobile lane (make phones work and look good): tutorial room bug, then the screens not yet checked
+# Now: mobile lane (make phones work and look good): tutorials tuned to phones, sticker buttons, unchecked screens
 What works: everything in Stage 9, tutorials, desk quick menu; phone checks pass on menu, Hangar, Customize, Settings.
-Fixed, needs your phone check: leaving the tutorial room right after joining (sent to a closed room).
+Fixed, needs your phone check: everything in the list above.
 Not yet: Range menu, round results, Training board, match desk on a phone; iPad; match tips/Range notes moving.
 
-Waiting on you (first): publish the open Studio, then on your phone: join, start the tutorial, Skip out within
-20 s: you should land in a match room with no "transfer failed" message.
+Waiting on you (first): publish the open Studio, then on your phone: start the tutorial from the menu (no note before
+the move; the 2 button ringed on the reload step), leave it and press Play (a match room), Hangar mount numbers.
 
 Decisions to review
 Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).
