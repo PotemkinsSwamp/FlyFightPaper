@@ -121,6 +121,18 @@ function Tutorial.start(getPlane)
  readBar.BackgroundTransparency=.3;readBar.AnchorPoint=Vector2.new(0,1);readBar.Position=UDim2.new(0,8,1,-5);readBar.ZIndex=gotIt.ZIndex+2;readBar.Visible=false;readBar.Parent=gotIt
  local skip=PaperUI.button(note,"Skip",Art.mainmenu.strip.red,"Skip  [K]",330,176,250,48,-1,function() end,24) -- works like K: see skipPress
  local skipFill=Instance.new("Frame");skipFill.BackgroundColor3=Color3.new(1,1,1);skipFill.BackgroundTransparency=.5;skipFill.BorderSizePixel=0;skipFill.Size=UDim2.fromScale(0,1);skipFill.Parent=skip
+ -- Phones (Alan 2026-10-28: the words were too small and the note covered the middle of the view): wide and short,
+ -- bigger words, the buttons beside the words instead of under them; a hint takes the title's line (showHint).
+ PaperUI.phone(note,{Size=UDim2.fromOffset(1200,180)})
+ PaperUI.phone(title,{Position=UDim2.fromOffset(36,14),Size=UDim2.fromOffset(820,34),TextSize=30})
+ PaperUI.phone(hint,{Position=UDim2.fromOffset(36,14),Size=UDim2.fromOffset(820,34),TextSize=28})
+ PaperUI.phone(text,{Position=UDim2.fromOffset(36,50),Size=UDim2.fromOffset(820,118),TextScaled=true})
+ Instance.new("UITextSizeConstraint",text).MaxTextSize=40 -- (only counts while TextScaled: phones; a long step shrinks)
+ PaperUI.phone(key,{Position=UDim2.fromOffset(880,24),TextSize=30})
+ PaperUI.phone(tick,{Position=UDim2.fromOffset(870,100),TextSize=40})
+ PaperUI.phone(gotIt,{Position=UDim2.fromOffset(1100,51),Size=UDim2.fromOffset(160,70)});PaperUI.phone(gotIt.Label,{TextSize=32})
+ PaperUI.phone(skip,{Position=UDim2.fromOffset(1100,131),Size=UDim2.fromOffset(160,70)});PaperUI.phone(skip.Label,{Text="Skip",TextSize=32})
+ local function showHint(words) hint.Text=words;title.Visible=words=="" or not PaperUI.isPhone() end
 
  -- A short card in the middle: lesson finished or skipped, and how to come back (Alan: always tell them).
  local card=Instance.new("ImageLabel");card.Image=Art.ingame.stickyNote;card.ScaleType=Enum.ScaleType.Stretch;card.BackgroundTransparency=1
@@ -570,7 +582,7 @@ function Tutorial.start(getPlane)
   scale.Scale=ScreenFit.scale(ScreenFit.NOTE)
   low,high=low or Vector2.new(-1e4,-1e4),high or Vector2.new(-1e4,-1e4)
   -- Corners hug the screen's sides; the note may cover the frame's outer edge, never the hole.
-  local view=gui.AbsoluteSize;local w,h=620*scale.Scale,230*scale.Scale;local m=view.Y*.05;local side=20;local pad=FRAME_OUTSET/2
+  local view=gui.AbsoluteSize;local w,h=note.Size.X.Offset*scale.Scale,note.Size.Y.Offset*scale.Scale;local m=view.Y*.05;local side=20;local pad=FRAME_OUTSET/2
   for _,spot in NOTE_SPOTS do
    local x=spot[1]==.5 and view.X/2 or spot[1]==1 and view.X-side-w/2 or side+w/2
    local y=spot[2]==0 and m or view.Y-m-h
@@ -614,7 +626,7 @@ function Tutorial.start(getPlane)
    local left=math.ceil(Gameplay.combat.respawn_seconds-(os.clock()-crashedAt))
    text.Text=left>0 and string.format("Folded! Walls fold paper planes. Back in the air in %d...",left) or "Taking off again..."
    key.Visible,gotIt.Visible,tick.Visible=false,false,false
-   hint.Text=crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or ""
+   showHint(crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or "")
    drawMarker();drawSpot(nil,nil,nil,false,nil,dt);barFrame.Visible=false;targetRing.Visible=false
    if ctx.state=="DESK" and os.clock()-relaunchAsked>1 then relaunchAsked=os.clock();Root.FlightAction:FireServer("launch") end
    return
@@ -650,11 +662,11 @@ function Tutorial.start(getPlane)
   if waiting then text.Text=Tutorial.lesson.waitText or "One moment..." end
   key.Text=step.key or "";key.Visible=step.key~=nil
   gotIt.Visible=step.gotIt==true and not waiting or reading==true
-  gotIt.Label.Text=reading==true and not step.gotIt and "Go  [Space]" or "Got it  [Space]"
+  gotIt.Label.Text=(reading==true and not step.gotIt and "Go" or "Got it")..(PaperUI.isPhone() and "" or "  [Space]") -- (phones have no Space)
   local left=reading==true and math.clamp(1-(os.clock()-readingAt)/readFor,0,1) or 0
   readBar.Visible=left>0;readBar.Size=UDim2.new(left,-16*left,0,6)
   local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt and not reading
-  hint.Text=stuck and step.hint and ("Tip: "..step.hint) or crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or ""
+  showHint(stuck and step.hint and ("Tip: "..step.hint) or crashes>=CRASH_TIP_AFTER and "Tip: fly higher, away from the buildings." or "")
   skipFill.Size=UDim2.fromScale(holdK and math.min(1,(os.clock()-holdK)/HOLD_SKIP_SECONDS) or 0,1)
   if holdK and os.clock()-holdK>=HOLD_SKIP_SECONDS then holdK=nil;finish(true);return end
   if finished and not doneAt then
