@@ -168,3 +168,8 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   menus 50.0 s, all 81.2 s: SLOWER than v358 (3 at a time: menus 35.5, all 58.6). Phones back to 3 at a time (one queue
   kept). Menu boards now 3D pictures (`first/BoardPlate`): Studio cold all 25.9 s (was 30.0); the boards' fine grain is
   23-34% softer close up (`.planning/board3d-*`), Alan to judge. Next: Alan's look, publish, phone join.
+- 2026-10-27 (late night): every menu-only piece drawn the 3D way too (`first/MenuArt`; Alan: menus only, frame rate
+  matters only while flying). Sheets regrouped into 7 menu-only + 5 flying sheets (same pixels, 14 free uploads, all
+  approved); a piece any flying screen shows stays an ordinary picture. Main menu and Training look the same
+  (stretched level bar fixed); 60 fps in the menus with 80 little 3D windows. Studio cold: all 19.3 s (boards only 25.9,
+  before 30.0). Phones 3 at a time. Next: Alan publishes, one phone fresh join.

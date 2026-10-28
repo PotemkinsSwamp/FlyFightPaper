@@ -1,10 +1,10 @@
-# Since Alan last checked (2026-10-27, night)
-- **Phone got slower** (v361): menus 50 s, everything 81 s (v358: 58.6 s). The 8-at-a-time downloads that helped the PC
-  hurt the phone. Phones are back to 3 at a time (in the open Studio, not yet published).
-- **Menu boards drawn as 3D pictures:** ~7x smaller downloads (18 MB -> ~2.5 MB); Studio cold 30.0 -> 25.9 s. Up close
-  the cork grain is softer (23-34% less fine detail): `.planning/board3d-menu-before-after.jpg`, `-zoom.png`.
+# Since Alan last checked (2026-10-27, late night)
+- **Phone got slower** with v361 (8 downloads at a time): everything 81 s (v358: 58.6 s). Phones back to 3 at a time.
+- **All menu pictures now drawn as 3D pictures** (boards + every piece only the menus show): ~4-7x smaller downloads;
+  cork a little softer close up (you OK'd it). Flying screens unchanged. Studio cold test: 30.0 -> 19.3 s.
 - **Repacked town files check clean** (Codex, 46 buildings); the notebook grey bar is from Studio's side of the swap.
-- **Waiting on you:** look at the board pictures (OK softer cork?), then publish and a phone join.
+- **Waiting on you:** publish from the open Studio (all 96 scripts checked), then ONE phone fresh join: when does the
+  bar move, when is the loading screen sharp, when is it all loaded? Also try a few menu buttons (they should work).
 
 # Now: load lane: docs/plan/LOAD-PLAN.md (fast phone joins, same look); UI lane: screen fit steps 3-6 waiting
 What works: everything in Stage 9, tutorials, desk quick menu; phones lay out cleanly on the big phone and PC.
