@@ -180,3 +180,7 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   (2) Since the one queue, the town came in while the menus were still loading (v361 town 42.0 / menus 50.0) and the
   engine fetched the town it drew alongside; phones now wait for the menus first, as v358 did (PC unchanged). The 3D
   menus' own gain on a phone is still unmeasured (hidden by (1)). Studio cold tests can't show either. Next: phone join.
+- 2026-10-28: Alan: the WHOLE loading screen was blurry (board, title, card, plane), then sharp all at once, so it is
+  not one picture's download. Possible causes (forum reports, unconfirmed): Roblox softens pictures when a phone is
+  short of memory; ViewportFrames draw at the phone's lower logical resolution. The load recorder now also saves
+  frame rate / picture memory every 2.5 s ("fps/texture MB" in `LoadLog.recent()`), to line up with when it sharpens.

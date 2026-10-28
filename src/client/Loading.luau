@@ -77,6 +77,19 @@ local function run()
 	local started, times = game.ReplicatedFirst.FlyFightPaper:GetAttribute("FirstAt") or shownAt or os.clock(), {}
 	local function lap(step) table.insert(times, string.format("%s %.1f", step, os.clock() - started)); workspace:SetAttribute("LoadTimes", table.concat(times, ", ")) end
 	lap("game in")
+	-- Frame rate and picture memory every 2.5 s while loading, for the load recorder (phone v364: the whole screen
+	-- blurry until 35 s, then sharp all at once; Roblox is said to soften pictures when a phone is short of memory).
+	local health, frames, done = {}, 0, false
+	local counter = game:GetService("RunService").RenderStepped:Connect(function() frames += 1 end)
+	task.spawn(function()
+		local Stats = game:GetService("Stats")
+		while not done and #health < 60 do
+			frames = 0
+			task.wait(2.5)
+			table.insert(health, string.format("%d/%d", frames / 2.5, Stats:GetMemoryUsageMbForTag(Enum.DeveloperMemoryTag.GraphicsTexture)))
+		end
+		counter:Disconnect()
+	end)
 	-- Nothing else is asked for until the loading screen's own art is in (2026-10-25 phone: after a 10 s limit the menus
 	-- shared the slow connection with it, and its board stayed blurry for 25 s). 30 s at most.
 	while not game.ReplicatedFirst.FlyFightPaper:GetAttribute("ArtAt") and os.clock() - started < 30 do task.wait(0.05) end
@@ -239,11 +252,12 @@ local function run()
 	workspace:SetAttribute("AssetLoadFailures", failures)
 	-- ponytail: no "pictures didn't load" note (Alan 2026-10-17: it showed every join; the count stays in AssetLoadFailures).
 	lap("done")
+	done = true
 	print("FlyFightPaper load times (seconds): " .. workspace:GetAttribute("LoadTimes")) -- readable on a phone: type /console in chat
 	-- The load recorder (server LoadLog): this join's times, read later in Studio.
 	local view = workspace.CurrentCamera.ViewportSize
 	Root.RoundAction:FireServer("loadTimes", { times = workspace:GetAttribute("LoadTimes"), skipped = workspace:GetAttribute("LoadSkippedAt"),
-		failures = failures, device = string.format("%s%s %dx%d", require(script.Parent.ScreenFit).kind(),
+		failures = failures, health = table.concat(health, " "), device = string.format("%s%s %dx%d", require(script.Parent.ScreenFit).kind(),
 			game:GetService("UserInputService").TouchEnabled and " touch" or "", view.X, view.Y) })
 end
 
