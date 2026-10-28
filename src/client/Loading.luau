@@ -99,6 +99,7 @@ local function run()
 	local Sheets = require(game.ReplicatedFirst.FlyFightPaper.UISheets)
 	local seen = {}
 	local BoardPlate = require(game.ReplicatedFirst.FlyFightPaper.BoardPlate)
+	local MenuArt = require(game.ReplicatedFirst.FlyFightPaper.MenuArt)
 	local keepDrawn = Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
 	local function walk(t, into)
 		for key, v in t do
@@ -115,7 +116,8 @@ local function run()
 			elseif type(v) == "table" then walk(v, into)
 			elseif type(v) == "string" and v:find("^rbxassetid://%d") then
 				v = Sheets[v] and Sheets[v][1] or v
-				if not seen[v] then seen[v] = true; table.insert(into, image(v)) end
+				-- A menu-only file loads the way its screens draw it (first/MenuArt), drawn full size until the menu is up.
+				if not seen[v] then seen[v] = true; table.insert(into, MenuArt.preload(v, keepDrawn) or image(v)) end
 			end
 		end
 	end
@@ -127,7 +129,7 @@ local function run()
 		local keep = name == "results" and Players.LocalPlayer.PlayerGui:FindFirstChild("KeepDrawn")
 		if keep then
 			for _, label in menus do
-				if label:IsA("Decal") then continue end -- (boards: already drawn, above)
+				if not label:IsA("ImageLabel") then continue end -- (boards and 3D cards: already drawn)
 				label.Size, label.BackgroundTransparency, label.ImageTransparency, label.Parent = UDim2.fromScale(0.5, 0.5), 1, 0.99, keep -- (real size: see first/LoadingFirst)
 			end
 		end

@@ -91,6 +91,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/shared/UIAssets.luau` | One line: returns `src/first/UIAssets.luau` |
 | `src/first/UISheets.luau` | Menu sheets (written by `tools/ui_sheets.py`): packed piece id -> its sheet and spot; `first/LoadingFirst` points every label showing one at its sheet |
 | `src/first/BoardPlate.luau` | Draws a menu board (the 2x2 background tiles) as a picture on a flat card inside the menu's own ViewportFrame: Roblox sends 3D pictures GPU-compressed (~7x smaller than as menu pictures). Used by `PaperUI.screen`, `first/LoadingFirst` and `Loading` (preloads) |
+| `src/first/MenuArt.luau` | Menu-only pieces (the "3d" group in `first/UISheets`, never on screen while flying) drawn as pictures on flat cards inside little ViewportFrames: downloaded GPU-compressed. `first/LoadingFirst` calls it for every label; `Loading` preloads those files as full-size cards |
 | `src/shared/Lines.luau` | Rotating event lines (plane down, landing, desk service, kill feed, between rounds); one is picked at random, never twice in a row ([decision](../decisions/2026-10-17-fresh-rotating-lines.md)) |
 
 ## Tuning numbers

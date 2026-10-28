@@ -10,9 +10,12 @@ local Art = require(script.Parent:WaitForChild("UIAssets"))
 -- ponytail: one watcher on PlayerGui (all menus live there); a helper per call site if this ever misses one.
 local Sheets = require(script.Parent:WaitForChild("UISheets"))
 local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+local MenuArt = require(script.Parent:WaitForChild("MenuArt"))
 local function fit(label)
 	local id = label.Image
-	if label:GetAttribute("Sheet") == id then return end -- (our own change, or a copy of a label already pointed)
+	if id == "" and label:GetAttribute("Art3D") then return end -- (drawn the 3D way: first/MenuArt)
+	if label:GetAttribute("Art3D") then MenuArt.forget(label) end -- its screen gave it a new picture
+	if label:GetAttribute("Sheet") == id then MenuArt.draw(label); return end -- (our own change, or a copy of a label already pointed)
 	local piece = Sheets[id]
 	if piece then
 		label:SetAttribute("Sheet", piece[1])
@@ -21,6 +24,7 @@ local function fit(label)
 		label:SetAttribute("Sheet", nil)
 		label.ImageRectOffset, label.ImageRectSize = Vector2.zero, Vector2.zero
 	end
+	MenuArt.draw(label)
 end
 local function watch(item)
 	if item:IsA("ImageLabel") or item:IsA("ImageButton") then
@@ -44,9 +48,9 @@ local function image(id)
 	-- Drawn about as big as the screen draws them: a phone fetches a picture only as sharp as its drawn size (2026-10-25:
 	-- at 8 x 8 px the art "loaded" in 0.5 s as postage stamps, and the loading screen stayed blurry for 30 s).
 	label.Image, label.Size, label.BackgroundTransparency, label.ImageTransparency = id, UDim2.fromScale(0.5, 0.5), 1, 0.99
-	fit(label) -- now, not when the watcher hears of it: the preload below fetches whatever the label shows
 	label.Parent = keep
-	return label
+	fit(label) -- now, not when the watcher hears of it: the preload below fetches whatever the label shows
+	return MenuArt.fetchable(label) -- (its 3D card's picture, for a menu-only piece: first/MenuArt)
 end
 local first = { image(menu.title), image(results.xpCard), image(results.xpFill), image(results.xpFrame), image(menu.plane) }
 -- The board comes the way the screens draw it (first/BoardPlate), full screen: as a menu picture it would be a second,
@@ -65,7 +69,7 @@ for _, item in first do
 		pcall(Content.PreloadAsync, Content, { item }, function(id, fetch) if id ~= "" and fetch ~= Enum.AssetFetchStatus.Success then failed += 1 end end) -- ("": the font label)
 		left -= 1
 		if os.clock() - start > slowestAt then -- for the load recorder: which file the screen waited for
-			slowestAt, slowest = os.clock() - start, item:IsA("ImageLabel") and item.Image:match("%d+$") or item:IsA("Decal") and item.Texture:match("%d+$") or "font"
+			slowestAt, slowest = os.clock() - start, item:IsA("ImageLabel") and item.Image:match("%d+$") or (item:IsA("Decal") or item:IsA("Texture")) and item.Texture:match("%d+$") or "font"
 		end
 	end)
 end

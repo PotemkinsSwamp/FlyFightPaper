@@ -31,7 +31,7 @@ local function shown(object)
 end
 
 local function draws(object)
-	if object:IsA("ImageLabel") or object:IsA("ImageButton") then return object.Image ~= "" and object.ImageTransparency < 0.95 end
+	if object:IsA("ImageLabel") or object:IsA("ImageButton") then return (object.Image ~= "" or object:GetAttribute("Art3D") ~= nil) and object.ImageTransparency < 0.95 end -- (Art3D: first/MenuArt)
 	if object:IsA("TextLabel") or object:IsA("TextButton") then return object.Text ~= "" and object.TextTransparency < 0.95 or object.BackgroundTransparency < 0.95 end
 	if object:IsA("ViewportFrame") then return true end
 	return object:IsA("Frame") and object.BackgroundTransparency < 0.95
