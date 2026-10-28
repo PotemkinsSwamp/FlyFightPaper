@@ -208,3 +208,10 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   Town file count (Studio, unique downloads): buildings ~2,300, rug toys 262, rug 284, classroom decor 142 (3 plants
   64, 6 pencil cups 30), ReplicatedStorage 503; desks, chairs and hangers are plain parts (nothing to download).
   Next: every building swapped and photo-compared (`.planning/repack-swap/`); ones that differ stay as today's.
+- 2026-10-28 (repack in the Studio copy): every building swapped and photographed before/after from a fixed camera
+  (`.planning/repack-swap/`, results.jsonl, contact pages page-1..5.jpg). 41 kept repacked (same look; a few sharper
+  only because Studio had been drawing the old pictures soft). Kept as today's: notebook-tower (bump sheet flattens the
+  shading) and open-book-hall (roof and walls on sheet 93875336326006 draw grey and metallic, still grey an hour on).
+  No repack records: bell-tower, sweet-shop (left out on purpose), sticky-note-tower. Town downloads ~3,100 -> 2,153
+  files. Studio Play: loads, 60 fps. Not yet done: copy the 41 buildings' records over `parts/` (so rebuilds keep the
+  repack) and harvest their packs after Alan's Save to File; Alan's look, publish, phone join.
