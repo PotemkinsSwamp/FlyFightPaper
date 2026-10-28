@@ -170,7 +170,7 @@ local function run()
 	end
 	for _, name in WORLD do walk(UIAssets[name], world) end
 	walk(UIAssets, menus) -- any screen not listed above still loads before Skip
-	local town, shapes, room, assets = {}, {}, nil, nil
+	local town, shapes, assets = {}, {}, nil
 	local function collect(parent)
 		for _, item in parent:GetDescendants() do
 			if item:IsA("MeshPart") then
@@ -241,20 +241,36 @@ local function run()
 	-- menus 35.5 s; v361/v364 overlapped: 50.0/48.5 s).
 	while (if touch then menuPart.done < menuPart.total else nextJob <= menuJobs) and os.clock() < stopAt do task.wait(0.05) end
 	Root:WaitForChild("RoundAction"):FireServer("sendTown")
-	room, assets = Loading.waitTown()
+	assets = select(2, Loading.waitTown())
 	lap("town arrived")
 	-- Skip once the menus and the town's parts are in: the game plays, and buildings still without their pictures fill
 	-- in while you fly.
 	while menuPart.done < menuPart.total and os.clock() < stopAt do task.wait(0.05) end
 	skip.Visible, skipNote.Visible = true, true
-	-- The plane pieces before the town, one file each: a few never report back and must not hold up a group of 40.
+	-- The plane pieces, one file each: a few never report back and must not hold up the rest.
 	collect(assets)
-	local planes = town
-	town = {}
-	collect(room)
-	if workspace:FindFirstChild("CityRug") then collect(workspace.CityRug) end
-	add("planes", planes, 1, 2, 0.05)
-	add("preloaded", town, 40, 12, 0.45)
+	add("planes", town, 1, 2, 0.05)
+	-- The town's own pictures: Roblox fetches every piece's shape and maps by itself as the town arrives (phone v368:
+	-- ~3,000 files waiting, all in by 33 s), so asking for them again only re-checked them (15 s more). Its share of
+	-- the bar follows Roblox's line instead, done once the line stays (nearly) empty for a second.
+	local townPart = { name = "town pictures", total = 1, done = 0, span = 0.45 }
+	table.insert(parts, townPart)
+	running += 1
+	task.spawn(function()
+		local peak, calm, since = 1, os.clock(), os.clock()
+		while os.clock() < stopAt and os.clock() - since < 60 do -- ponytail: 60 s cap, in case the line never quite empties
+			local waiting = Content.RequestQueueSize
+			peak = math.max(peak, waiting)
+			townPart.total, townPart.done, heard = peak, peak - waiting, os.clock()
+			progress()
+			if waiting > 5 then calm = os.clock() elseif os.clock() - calm > 1 then break end
+			task.wait(0.25)
+		end
+		townPart.done = townPart.total
+		progress()
+		lap(townPart.name)
+		running -= 1
+	end)
 	closed, heard = true, os.clock()
 	while running > 0 and os.clock() < stopAt and os.clock() - heard < 45 do task.wait(0.1) end
 	for _, part in parts do

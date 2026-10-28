@@ -194,3 +194,8 @@ Steps 1-3: $0 (code, place settings, a few tiny uploads). Step 4: Codex on Alan'
   off and the town (~2,800 files) went to every phone at join, ahead of everything. Fixed: serve sets it true, Studio
   set true (Play check: menus 3.9, town arrived 5.2 after them, 9,256 town pieces on the client), and `LoadLog` marks
   any join with streaming off ("STREAMING OFF"). Next: Alan publishes, phone join.
+- 2026-10-28: phone v368 (streaming on): loading screen sharp at 0.8 s (Alan: "sharp immediately"), menus 4.4 s (was
+  48.5), town arrived 7.3, range 33.3, planes 44.0, all 59.3 s. After the town arrives Roblox fetches its ~3,000 files
+  itself (7-33 s); our own pass over the town then took 15 s more re-checking files already in. Dropped: the town's
+  share of the bar now follows Roblox's line (`RequestQueueSize`), done when it stays near empty for 1 s (60 s cap).
+  Expected ~44 s on the phone; the rest is the town's file count (the repack is the next lever) and the planes (11 s).
