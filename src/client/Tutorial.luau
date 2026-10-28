@@ -704,7 +704,7 @@ function Tutorial.start(getPlane)
   -- A step's words can change with what's happening (a function of ctx), e.g. the eraser warnings.
   text.Text=(type(step.text)=="function" and step.text(ctx) or step.text)..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
   if waiting then text.Text=Tutorial.lesson.waitText or "One moment..." end
-  key.Text=step.key or "";key.Visible=step.key~=nil
+  key.Text=step.key or "";key.Visible=step.key~=nil and not (step.pcKey and Touch.active()) -- pcKey: a key a phone has no button for
   gotIt.Visible=step.gotIt==true and not waiting or reading==true
   gotIt.Label.Text=(reading==true and not step.gotIt and "Go" or "Got it")..(PaperUI.isPhone() and "" or "  [Space]") -- (phones have no Space)
   local left=reading==true and math.clamp(1-(os.clock()-readingAt)/readFor,0,1) or 0

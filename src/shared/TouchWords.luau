@@ -5,7 +5,7 @@ local TouchWords = {}
 
 local KEYS
 local SWAPS = {
-	{ "Skip  %[K%]", "Skip  (hold: all)" }, -- the lesson's Skip button: held, it skips the whole lesson (Tutorial)
+	{ "Skip  %[K%]", "Skip\n(hold: all)" }, -- the lesson's Skip button: held, it skips the whole lesson (Tutorial); two lines fit a phone
 	{ "%s*%[Space%]", "" }, { "%s*%[K%]", "" },
 	{ "Move the mouse to steer", "Push the stick to steer" },
 	{ "Hold Shift to boost", "Hold BOOST to go faster" },

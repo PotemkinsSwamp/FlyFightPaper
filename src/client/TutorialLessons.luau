@@ -130,6 +130,7 @@ local AIM_STEPS={
    hint="Wait for the dot to turn red: that means your pellets will hit. Then hold left click.",
    enter=function(ctx) ctx.lesson({drill="still"}) end,
    update=function(ctx)
+    ctx.pulse("Fire") -- (a phone's FIRE button gets a frame; a PC has no "Fire", so nothing shows there)
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
    end},
@@ -199,7 +200,7 @@ local FIGHT_STEPS={
 local ERASER_STEPS={
   {text="Last part: your eraser! Your plane now has an eraser launcher on right click. Erasers chase the plane you lock on to.",gotIt=true,
    enter=function(ctx) ctx.lesson({pal=false,eraser=true,slow=true,gentle=true}) end,
-   update=function(ctx) return false end},
+   update=function(ctx) ctx.pulse("Fire2");return false end}, -- (phones: frames the 2 button)
   -- Holding right click through the 1.5 s lock fires the eraser by itself (CombatService), so no "let go" step.
   {text="Your eraser chases planes. Hold right click and keep a target inside the big circle.",key="Right click",
    hint="Turn so the target sits inside the big circle round your nose.",
@@ -335,7 +336,7 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
     if s.preset~=ctx.data.from then return true end
     ctx.spotlight("Pick"..(ctx.data.from==1 and 2 or 1));return false
    end)},
-  {text="Name it! Click the pencil, type, press Enter.",key="Enter",page="shelf",hint="Like the name? Press K to skip this step.",
+  {text="Name it! Click the pencil, type, press Enter.",key="Enter",pcKey=true,page="shelf",hint="Like the name? Press K to skip this step.",
    update=watch(function(ctx,s)
     local name=s.builds[s.preset].name;ctx.data.name=ctx.data.name or name
     ctx.spotlight("NameTape","Rename")
