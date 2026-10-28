@@ -16,6 +16,8 @@ local Lessons=require(script.Parent.TutorialLessons)
 local Touch=require(script.Parent.TouchControls)
 -- The HUD rows a lesson points at, and the touch button that does that job on a phone (TouchControls).
 local PHONE_NAMES={LeftStrip="Fire",RightStrip="Fire2",BoostStrip="Boost"}
+local ROUND={Fire=true,Fire2=true,Boost=true} -- round buttons get the round crayon ring, not the box
+local function roundButton(names) local name=names and names[1];return Touch.active() and (ROUND[name] or ROUND[PHONE_NAMES[name]])==true end
 local Course=require(Root.Shared.TrainingCourse)
 local Tutorial={active=false}
 local HINT_SECONDS=10
@@ -724,13 +726,13 @@ function Tutorial.start(getPlane)
   -- talks about (pulse) gets its own breathing frame the whole step, so it shows next to a 3D target (Lift + fan).
   local low,high,words=drawMarker(ctx.body)
   local matters=ScreenFit.matters(plane);table.insert(matters,{low,high}) -- what the note must keep off (placeNote)
-  for _,label in {tag,slowTag} do if label.Visible then table.insert(matters,{label.AbsolutePosition,label.AbsolutePosition+label.AbsoluteSize}) end end
+  for _,label in {tag,slowTag} do if label.Visible then local a=label.AbsolutePosition-gui.AbsolutePosition;table.insert(matters,{a,a+label.AbsoluteSize}) end end
   targetRing.Visible=spotNames~=nil and low~=nil
   local spotLow,spotHigh=nil,nil
   if spotNames then
    local targetLow,targetHigh=low,high
    low,high=box(spotNames);spotLow,spotHigh=low,high
-   drawSpot(low,high,not softSpot and (ctx.state=="FLYING" and not menu and WORLD_DIM or GUI_DIM) or nil,false,softSpot and softTag or nil,dt,softSpot)
+   drawSpot(low,high,not softSpot and (ctx.state=="FLYING" and not menu and WORLD_DIM or GUI_DIM) or nil,roundButton(spotNames),softSpot and softTag or nil,dt,softSpot)
    if targetLow then
     local grow=6+(math.sin(os.clock()*5)+1)*4
     targetRing.Position=UDim2.fromOffset(targetLow.X-grow,targetLow.Y-grow);targetRing.Size=UDim2.fromOffset(targetHigh.X-targetLow.X+grow*2,targetHigh.Y-targetLow.Y+grow*2)
@@ -743,6 +745,8 @@ function Tutorial.start(getPlane)
   if barLow then
    local grow=FRAME_OUTSET+(math.sin(os.clock()*6)+1)*5
    barFrame.Position=UDim2.fromOffset(barLow.X-grow,barLow.Y-grow);barFrame.Size=UDim2.fromOffset(barHigh.X-barLow.X+grow*2,barHigh.Y-barLow.Y+grow*2)
+   local round=roundButton({pulseName})
+   barFrame.Image=round and Pieces.frameRing or Pieces.frameBox;barFrame.ScaleType=round and Enum.ScaleType.Stretch or Enum.ScaleType.Slice
    barFrame.Rotation=0;barFrame.ImageTransparency=0
   end
   if menu and not doneAt and not waiting then

@@ -160,6 +160,12 @@ mistake would be easy to make twice.
 - **The MCP's `require` is its own copy (2026-10-28):** a module required from `execute_luau` in the Client VM is a
   separate instance from the game's, so patching it (e.g. `ScreenFit.kind`) changes nothing in the game. Test through
   attributes the game reads (`DevPhone`, `DevTouch`, `DevCover`, `DevScreen`, `DevLesson`).
+- **AbsolutePosition and Position count from different tops (2026-10-28):** in a ScreenGui that ignores the inset,
+  `Position` offsets count from the screen's top, but `AbsolutePosition` counts from under Roblox's top bar (the
+  ScreenGui's own `AbsolutePosition` is (0, -58) on a phone). Subtract the ScreenGui's `AbsolutePosition` before mixing
+  them; `WorldToViewportPoint` already counts from the top. Unsubtracted, a dodging note sat 58 points high over Health.
+- **Pressing keys in a Device Simulator Play switches it to keyboard** (PC words, no touch buttons): set `DevTouch`
+  on ReplicatedStorage.FlyFightPaper in the Client VM before using `user_keyboard_input` (K skips lesson steps).
 - **Studio's simulated clicks can stop landing (2026-10-28):** `user_mouse_input` opened the Hangar, then later taps
   on Customize and Back did nothing (nothing covered them). Open screens with the `DevScreen` attribute instead.
 - **A few files into Studio without Rojo (2026-10-28):** `python -m http.server 8765 --bind 127.0.0.1` in `src/`, then

@@ -13,7 +13,10 @@ Fix: a closing room crosses itself off its list (`Matchmaking` BindToClose → `
 Each join's log entry carries `RoomClass` (public, tutorial, rookie, regular or the error) and every room move.
 **Phone fixes from Alan's run (2026-10-28):** a step that points at a HUD weapon or Boost row frames the round touch
 button instead (FIRE, 2, BOOST; they show during a lesson's read pause); the note waits while the player moves to the
-tutorial room (it showed "Tap LAUNCH" on the menu for 3 s); the Hangar's mount numbers are twice the size on a phone.
+tutorial room (it showed "Tap LAUNCH" on the menu for 3 s); the Hangar's mount numbers are twice the size on a phone. Round buttons get the round crayon ring; the first shot
+step frames FIRE and the eraser card frames 2; Skip reads "Skip / (hold: all)" on two lines; the naming step shows no
+key on a phone. A note that dodges to a side now sits under Health and Lift (it sat 58 points high: ScreenFit mixed
+two ways of counting from the top). Seen in Studio at a phone's size (2026-10-28); not yet on Alan's phone.
 **Phones (Alan 2026-10-28):** the lesson note was too small and covered the middle of the view; on a phone it is now
 860 x 200 (before scaling) up in Roblox's top bar right of Health and Lift (Alan: "moved up"), words about 20 points
 (were 15), Got it and Skip beside the words with no key names; a tip takes the title's line. **Out of the way (Alan

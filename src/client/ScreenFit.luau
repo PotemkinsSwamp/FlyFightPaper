@@ -123,7 +123,9 @@ end
 -- something that matters for 0.4 s; then it slides to the first free spot of: home, the right side, the left side
 -- (each tilted a little) and the bottom middle. A spot is free when it clears the other pieces on the screen map,
 -- the touch buttons and every box that matters; a side or the bottom may shrink the note to 75% to fit. A new key (the
--- next step or tip) sends it home. All in screen points (the notes' ScreenGuis ignore the inset).
+-- next step or tip) sends it home. All in the notes' own points from the screen's top (their ScreenGuis ignore the
+-- inset); an AbsolutePosition counts from under Roblox's top bar, so it is moved by its ScreenGui's AbsolutePosition
+-- (Alan's phone 2026-10-28: unmoved, a note parked at the left sat 58 points high, over Health and Lift).
 -- dodge(home, size, key, boxes, homeTurn, dt) -> x, y (the note's top middle), rotation, spot, fit. size(spot) = the
 -- note's size on screen there (a phone's lesson note changes shape at a side); boxes = { { low, high }, ... }.
 local SPOTS = { "home", "right", "left", "bottom" }
@@ -148,7 +150,10 @@ function ScreenFit.dodger(piece)
 		local view, m = ScreenFit.view(), ScreenFit.GAP * 4
 		local keep = {}
 		local function add(other)
-			if other ~= piece and shown(other) then table.insert(keep, { other.AbsolutePosition, other.AbsolutePosition + other.AbsoluteSize }) end
+			if other ~= piece and shown(other) then
+				local low = other.AbsolutePosition - other:FindFirstAncestorWhichIsA("ScreenGui").AbsolutePosition
+				table.insert(keep, { low, low + other.AbsoluteSize })
+			end
 		end
 		for _, other in row do add(other) end
 		for _, side in sides do add(side.piece) end
@@ -168,7 +173,7 @@ function ScreenFit.dodger(piece)
 			end
 			local x = name == "right" and view.X - m - s.X / 2 or m + s.X / 2
 			for _, k in keep do if k[2].X > x - s.X / 2 and k[1].X < x + s.X / 2 then table.insert(blocks, { k[1].Y - ScreenFit.GAP, k[2].Y + ScreenFit.GAP }) end end
-			local a, b = gapIn(GuiService.TopbarInset.Max.Y - GuiService:GetGuiInset().Y + ScreenFit.GAP, view.Y - m, blocks)
+			local a, b = gapIn(GuiService.TopbarInset.Max.Y + ScreenFit.GAP, view.Y - m, blocks) -- (under the top bar)
 			if b - a < s.Y * 0.75 then return nil end
 			local fit = math.min(1, (b - a) / s.Y)
 			x = name == "right" and view.X - m - s.X * fit / 2 or m + s.X * fit / 2
@@ -199,7 +204,7 @@ function ScreenFit.dodger(piece)
 	end
 end
 
--- What a note over the game must not cover in a fight (screen points): the aim circle, nose dot, lead rings, eraser
+-- What a note over the game must not cover in a fight (points from the screen's top, like the dodger): the aim circle, nose dot, lead rings, eraser
 -- circle and lock, and every enemy plane within 300 studs.
 local AIM = { "AimCircle", "NoseDot", "EraserSeeker", "LockBox", "TargetBracket", "LeadPipper", "LeadPipper2" }
 function ScreenFit.matters(plane)
@@ -212,7 +217,8 @@ function ScreenFit.matters(plane)
 	if hud and hud.Enabled then
 		for _, name in AIM do
 			local mark = hud:FindFirstChild(name)
-			if mark and mark.Visible then table.insert(boxes, { mark.AbsolutePosition, mark.AbsolutePosition + mark.AbsoluteSize }) end
+			local low = mark and mark.Visible and mark.AbsolutePosition - hud.AbsolutePosition
+			if low then table.insert(boxes, { low, low + mark.AbsoluteSize }) end
 		end
 	end
 	local planes, camera = workspace:FindFirstChild("Planes"), workspace.CurrentCamera
