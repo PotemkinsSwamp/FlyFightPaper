@@ -3,11 +3,11 @@
 **Labels:** kind=infra · lane=load · branch=main · issues= · areas=src/client/Loading.luau, src/server/LoadLog.luau, serve.project.json, assets/models/*/parts, docs/plan/LOAD-PLAN.md
 **Time:** 2026-10-28 01:10 -04:00
 
-★ START HERE: Goal (Alan): a phone fresh join fully loaded in 30 s at most, looking the same. Opening action: Alan
-publishes the open Studio (today's buildings + new loading code, NOT yet published) and does one phone fresh join;
-read it with `require(game.ServerScriptService.FlyFightPaper.LoadLog).recent()` (works in Studio Edit, no Play).
-Done when that join is timed (expect ~40-45 s: v368 59.3 minus the 15 s second pass, planes before the town). Then
-dig into why the repacked town used ~575 MB of picture memory (Alan's ruling).
+★ START HERE: Goal (Alan): a phone fresh join fully loaded in 30 s at most, looking the same. Opening action: dig
+into why the repacked town used ~575 MB of picture memory on the phone (today's town ~70 MB), measuring in Studio one
+building at a time (`Stats:GetMemoryUsageMbForTag(Enum.DeveloperMemoryTag.GraphicsTexture)`). Done when the cause is
+known and a fix is shown in Studio. No phone test for the small changes waiting in Studio (Alan 2026-10-28: "im not
+testing it on my phone for that"); they ride along with the next real gain.
 
 > Read on demand: AGENTS.md → THIS → `docs/plan/LOAD-PLAN.md` (last 8 Progress bullets) → `docs/workshop/lessons.md`
 > (loading lessons). Memories: alan-does-play-checks, studio-not-drawing, studio-play-is-shared.
@@ -27,15 +27,17 @@ dig into why the repacked town used ~575 MB of picture memory (Alan's ruling).
   primary context ~42%.
 
 ## NEXT ACTION + PLAN
-1. **Alan's publish + phone fresh join** (above). Read times + the `fps/texture MB/waiting` line.
-2. **Repack memory (Alan: keep digging, not parked).** Facts: v368 (today's town) texture ~70 MB, v390 (41 repacked)
+1. **Repack memory (Alan: keep digging, not parked).** Facts: v368 (today's town) texture ~70 MB, v390 (41 repacked)
    ~575 MB on the phone; repack uploads already went through `town_toys.py send` (half-size bump/shine, shared flat
    maps), so that is NOT the cause. Ideas to test: a 2048 sheet stays at full size whenever any of its 4 pieces is near;
    colour sheets 2048 vs today's 1024 per piece; mip/streaming differences. Measure in Studio
    (`Stats:GetMemoryUsageMbForTag(GraphicsTexture)`) swapping one building at a time, before any phone test.
    Also open: open-book-hall repacked sheet draws grey/metallic; notebook-tower repacked bump flattens shading.
-3. Then the next lever toward 30 s: the town's ~3,000 files take ~25 s on the phone (rug toys 262, rug 284, decor 142
+2. Then the next lever toward 30 s: the town's ~3,000 files take ~25 s on the phone (rug toys 262, rug 284, decor 142
    are smaller candidates).
+- Studio holds two untimed changes (no second pass over the town, ~15 s on v368's numbers; planes before the town).
+  Alan won't phone-test them alone: bundle them with the next real gain into one publish + phone join. The live build
+  (v390) still has the repacked town (~575 MB); suggest Alan publish the open Studio when convenient to replace it.
 - Stop rule: a change ships when a phone join shows it faster (Studio/PC timings misled three times today).
 HOLDS (Alan's go, each): publish, Save to File, any upload, desktop control, Meshy, anything paid, real product
 IDs/prices, sales on, Studio Play while he plays. Standing OK: close/reopen Studio and the windowless Roblox app for
