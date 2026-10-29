@@ -19,6 +19,8 @@ Settings: the steering bar runs 0.2-1.8 with the default 1 in the middle (was 0.
 1.8, Alan 2026-10-28). Menu pictures drawn as 3D cards lift their words to the card's layer (a word under the card
 was hidden: the Hangar shelf's "Range" tab looked like a blank second Back). A phone tap area is sized from the
 button's resting size, so the hover grow can no longer switch it off mid-tap (that lost taps on the Range Hangar's Back).
+Phone screen check 2026-10-29 (Device Simulator): Training board, match desk, Range menu good; the vote's cards and
+help line were ~13 points, now taller cards with ~17-point words; the results card's names are ~14 points (heads crowd).
 Phones (2026-10-24, seen in Studio's Device Simulator, not yet on a real phone): every paper screen has phone sizes
 (`PaperUI.phone`, a screen under 540 points tall; a PC keeps exactly what was drawn). Menu backgrounds reach past a
 phone's notch and crop from the bottom (titles stay whole); buttons stay in the safe area. Desk strips, lesson notes,

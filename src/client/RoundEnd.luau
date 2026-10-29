@@ -95,6 +95,8 @@ function RoundEnd.start()
 	vote.Name, vote.BackgroundTransparency, vote.Size, vote.Position, vote.Parent = "Vote", 1, UDim2.fromOffset(1920, 300), UDim2.fromOffset(0, 80), sheet
 	PaperUI.phone(vote, { Position = UDim2.fromOffset(0, 190) })
 	local voteHelp = words(vote, "Help", "", 360, 186, 1200, 50, 36)
+	-- Phones: the help line and the cards' words were about 13 points (2026-10-29 check); taller cards, ~17-point words.
+	PaperUI.phone(voteHelp, { Position = UDim2.fromOffset(110, 236), Size = UDim2.fromOffset(1700, 80), TextSize = 64 })
 	voteHelp.TextXAlignment, voteHelp.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(250, 245, 230)
 	local stroke = Instance.new("UIStroke")
 	stroke.Thickness, stroke.Parent = 3, voteHelp
@@ -103,6 +105,10 @@ function RoundEnd.start()
 		strips[i] = button(vote, "Vote" .. mode[1], UIArt.results.strip[mode[3]], "", 330 + (i - 1) * 430, 50, 400, 130, (i - 2) * 1.5, function()
 			Root.RoundAction:FireServer("vote", mode[1])
 		end, 38)
+		PaperUI.phone(strips[i], { Size = UDim2.fromOffset(400, 170), Position = strips[i].Position + UDim2.fromOffset(0, 20) })
+		PaperUI.phone(strips[i].Label, { TextScaled = true }) -- as big as fits, up to 50 ("3  Airspace Control" is long)
+		local most = Instance.new("UITextSizeConstraint")
+		most.MaxTextSize, most.Parent = 50, strips[i].Label
 	end
 
 	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, mine = nil, cardAt = 0 }
