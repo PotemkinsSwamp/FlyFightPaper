@@ -92,11 +92,8 @@ function Board.start()
 		elseif what == "hangar" then open(false); require(script.Parent.MenuController).show("hangar", true)
 		else action:FireServer("range", what) end
 	end
-	Input.InputBegan:Connect(function(input, processed)
-		-- A menu (the Hangar, the game menu) open over the Range takes the clicks: an empty spot on it is not a shot.
-		if processed or Root:GetAttribute("OverlayOpen") or not FlightState.aimPoint or not stage or not stage.Parent then return end
-		if KEYS[input.KeyCode] then click("load" .. KEYS[input.KeyCode]) return end
-		if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.MouseButton2 then return end
+	-- What the crosshair is on when a shot is fired: the game's Menu button, a strip or a row plate.
+	local function pick()
 		local eye = workspace.CurrentCamera.CFrame.Position
 		-- The game's Menu button (top left) under the crosshair opens the game menu, like Esc.
 		local spot = workspace.CurrentCamera:WorldToViewportPoint(eye + FlightState.aim * 1000)
@@ -114,7 +111,17 @@ function Board.start()
 		local what = part and (part:GetAttribute("RangeBoard") or part:GetAttribute("RangePick"))
 		if part and part:GetAttribute("RangePick") then notes.used("pick") end
 		if what then click(what) end
+	end
+	local function ready() return not Root:GetAttribute("OverlayOpen") and FlightState.aimPoint ~= nil and stage ~= nil and stage.Parent ~= nil end
+	Input.InputBegan:Connect(function(input, processed)
+		-- A menu (the Hangar, the game menu) open over the Range takes the clicks: an empty spot on it is not a shot.
+		if processed or not ready() then return end
+		if KEYS[input.KeyCode] then click("load" .. KEYS[input.KeyCode]) return end
+		if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.MouseButton2 then return end
+		pick()
 	end)
+	-- Phones: FIRE or 2 shoots strips and plates the same way (Alan 2026-10-28: shooting Reset did nothing).
+	require(script.Parent.TouchControls).onShot = function() if ready() then pick() end end
 	-- Phones: tap a strip on the stage itself (Reset, Hangar, a loadout, a difficulty); the plates are still shot.
 	Input.TouchTapInWorld:Connect(function(position, processed)
 		if processed or Root:GetAttribute("OverlayOpen") or not FlightState.aimPoint or not stage or not stage.Parent then return end

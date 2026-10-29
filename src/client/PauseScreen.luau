@@ -37,7 +37,14 @@ function PauseScreen.new(playerGui, api)
 	cover:GetPropertyChangedSignal("Visible"):Connect(function() if not cover.Visible then confirm.Visible = false end end)
 
 	local self = { frame = cover }
-	function self.update() end
+	-- In the Range there's no match to leave: say what Leave does there (Alan 2026-10-28).
+	local leave, matchAsk = sheet:FindFirstChild("Leave"), ask.Text
+	function self.update()
+		local Root = game.ReplicatedStorage.FlyFightPaper
+		local range = Root:GetAttribute("TutorialOpen") == true and Root:GetAttribute("TutorialLesson") == "range"
+		leave.Label.Text = range and "Leave Range" or "Leave match"
+		ask.Text = range and "Leave the Range?\nBack to the main menu." or matchAsk
+	end
 	return self
 end
 

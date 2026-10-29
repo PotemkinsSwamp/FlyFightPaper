@@ -131,6 +131,7 @@ render=function()
  player:GetAttributeChangedSignal("ProfileStatus"):Connect(render)
  player:GetAttributeChangedSignal("JoinQueued"):Connect(render)
  player:GetAttributeChangedSignal("MenuMessage"):Connect(render)
+ player:GetAttributeChangedSignal("Routing"):Connect(render)
  render();action:FireServer("profile")
  task.spawn(function()while gui.Parent do task.wait(3);action:FireServer("profile") end end)
 end

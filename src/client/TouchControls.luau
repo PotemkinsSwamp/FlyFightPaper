@@ -102,8 +102,9 @@ function Touch.start(getPlane)
 		table.insert(buttons, entry)
 		return button
 	end
-	local fire = holdButton("Fire", "FIRE", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(1, down) end end)
-	local fire2 = holdButton("Fire2", "2", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(2, down) end end)
+	-- onShot(): a FIRE or 2 press (RangeBoard: what the crosshair is on).
+	local fire = holdButton("Fire", "FIRE", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(1, down) end; if down and Touch.onShot then Touch.onShot() end end)
+	local fire2 = holdButton("Fire2", "2", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(2, down) end; if down and Touch.onShot then Touch.onShot() end end)
 	local boost = holdButton("Boost", "BOOST", CRAYON.blue, function(down) Touch.boost = down end)
 
 	-- Sizes follow the screen's short side, kept thumb-sized (points): a phone and a tablet both get pieces a thumb

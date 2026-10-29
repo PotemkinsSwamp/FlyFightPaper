@@ -33,7 +33,17 @@ function Board.new(playerGui, actions)
 	local buttons = Instance.new("Frame")
 	buttons.Name, buttons.BackgroundTransparency, buttons.Size = "Buttons", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H)
 	buttons.Parent = sheet
-	table.insert(pieces, button(buttons, "Play", Art.strip.yellow, "Play", 690, 445, 540, 140, -1, actions.play, 100))
+	-- Play answers at once (Alan 2026-10-28: no sign a tap landed, so players tap again and again): "Starting..." for
+	-- a moment, and while a room move is made (Routing) the server's message shows above it.
+	local play, pressedAt = nil, -9
+	play = button(buttons, "Play", Art.strip.yellow, "Play", 690, 445, 540, 140, -1, function()
+		pressedAt = os.clock(); play.Label.Text = "Starting..."
+		task.delay(3, function() if os.clock() - pressedAt >= 3 and not game:GetService("Players").LocalPlayer:GetAttribute("Routing") then play.Label.Text = "Play" end end)
+		actions.play()
+	end, 100)
+	table.insert(pieces, play)
+	local moving = PaperUI.words(buttons, "MenuMessage", "", 600, 395, 720, 46, 30)
+	moving.TextXAlignment, moving.TextScaled = Enum.TextXAlignment.Center, true
 	table.insert(pieces, button(buttons, "Hangar", Art.strip.blue, "Hangar", 710, 600, 500, 120, 1, actions.hangar))
 	table.insert(pieces, button(buttons, "Settings", Art.strip.green, "Settings", 710, 735, 500, 120, -1, actions.settings))
 	table.insert(pieces, button(buttons, "Tutorial", Art.strip.red, "Training", 715, 870, 490, 120, 0.5, actions.tutorial))
@@ -118,6 +128,9 @@ function Board.new(playerGui, actions)
 		prestigeButton.Visible = level == EconomyConfig.level_cap
 			and (player:GetAttribute("Prestige") or 0) < (EconomyConfig.prestige_max or 10)
 		if not prestigeButton.Visible then confirm.Visible = false end
+		local routing = player:GetAttribute("Routing") == true
+		moving.Text = player:GetAttribute("MenuMessage") or ""
+		if routing then play.Label.Text = "Starting..." elseif os.clock() - pressedAt >= 3 then play.Label.Text = "Play" end
 	end
 	return self
 end

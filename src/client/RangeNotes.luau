@@ -37,15 +37,17 @@ local STEPS = {
 	{ text = "Your 5 Range builds and how hard the targets are.", done = "menu", find = boardPart("menu") },
 	{ text = "Change your Range builds. Any part works here, even ones you don't own.", done = "hangar", find = boardPart("hangar") },
 	{ text = "Back takes you to the Range.", done = "back", gui = "back" },
-	-- The last note (Alan 2026-10-23: a "Menu, then Leave" note of its own made people leave): Got it, or opening the Menu.
-	{ text = "That's it! The Range is yours: practise as long as you like. To leave, press Menu, then Leave.", done = "pause", gui = "menu" },
+	{ text = "That's it! The Range is yours: practise as long as you like. To leave, press Menu.", done = "pause", gui = "menu" },
+	-- Over the open Menu (Alan 2026-10-28: once the Menu opened, nothing said how to leave; 2026-10-23 a plain
+	-- "Menu, then Leave" note made people leave, so this one says how to stay too).
+	{ text = "Leave Range takes you back to the main menu. Keep flying stays here.", done = "leave", gui = "leave" },
 }
 
 -- getStage() = the Range's stage model or nil.
 function Notes.new(getStage)
 	local player = Players.LocalPlayer
 	local gui = Instance.new("ScreenGui")
-	gui.Name, gui.IgnoreGuiInset, gui.ResetOnSpawn, gui.DisplayOrder, gui.Enabled = "RangeNotes", true, false, 11, false -- over the Hangar (10)
+	gui.Name, gui.IgnoreGuiInset, gui.ResetOnSpawn, gui.DisplayOrder, gui.Enabled = "RangeNotes", true, false, 12, false -- over the Hangar (10) and the Menu (11)
 	gui.Parent = player:WaitForChild("PlayerGui")
 	-- The tutorial's goal note (Tutorial.luau): same paper, size, place and words.
 	local note = Instance.new("ImageLabel")
@@ -109,6 +111,12 @@ function Notes.new(getStage)
 			if not back then return nil end
 			local low = back.AbsolutePosition - layer.AbsolutePosition
 			return low, low + back.AbsoluteSize
+		elseif current.gui == "leave" then
+			local menu = player.PlayerGui:FindFirstChild("GameMenu")
+			local button = menu and menu:FindFirstChild("Leave", true)
+			if not button or not button:IsA("GuiObject") or button.AbsoluteSize.X == 0 then return nil end
+			local low = button.AbsolutePosition - menu.AbsolutePosition
+			return low, low + button.AbsoluteSize
 		elseif current.gui == "menu" then
 			local menu = player.PlayerGui:FindFirstChild("GameMenu")
 			local button = menu and menu:FindFirstChild("OpenMenu")
@@ -145,7 +153,9 @@ function Notes.new(getStage)
 		local lesson = Root:GetAttribute("TutorialOpen") and Root:GetAttribute("TutorialLesson") ~= "range"
 		local inHangar = current ~= nil and current.done == "back"
 		if inHangar then hangarWasOpen = true end
-		local where = if inHangar then onStage else inRange and not Root:GetAttribute("OverlayOpen")
+		local where = if inHangar then onStage
+			elseif current ~= nil and current.gui == "leave" then onStage and Root:GetAttribute("OverlayOpen") == true
+			else inRange and not Root:GetAttribute("OverlayOpen")
 		local show = profileLoaded and not seen and current ~= nil and where and not lesson
 		local low, high
 		if show and (current.find or current.gui) then low, high = target() end
@@ -183,6 +193,9 @@ function Notes.new(getStage)
 		if what == "hangar" and active() and STEPS[step].done == "hangar" then viaHangar = true end
 		if active() and STEPS[step].done == what then advance() end
 	end
+	-- A row plate shot down (the server's hit, a touch FIRE, a held trigger sweeping on) counts as "pick" too (Alan
+	-- 2026-10-28: the row switched and the note stayed); the server sets RangeRows on every pick.
+	player:GetAttributeChangedSignal("RangeRows"):Connect(function() self.used("pick") end)
 	return self
 end
 

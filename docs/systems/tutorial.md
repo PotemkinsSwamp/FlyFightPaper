@@ -17,6 +17,13 @@ tutorial room (it showed "Tap LAUNCH" on the menu for 3 s); the Hangar's mount n
 step frames FIRE and the eraser card frames 2; Skip reads "Skip / (hold: all)" on two lines; the naming step shows no
 key on a phone. A note that dodges to a side now sits under Health and Lift (it sat 58 points high: ScreenFit mixed
 two ways of counting from the top). Seen in Studio at a phone's size (2026-10-28); not yet on Alan's phone.
+**Second phone run (Alan, 2026-10-28 night), fixed:** the tutorial room opens the lesson at once (teleport data;
+no menu or menu song; the menu shows after 20 s if the lesson never starts); the desk step ends on any desk service;
+Slow Motion tag small (on a phone under Health and Lift); notes on touch screens dodge only to the right; the tour's
+try-on and Select are two steps; its end card has a green Close. Walls: the contact normal must face the plane (a
+slide along a thin wall found the outer face and pushed planes through, `FlightRules.contact`); Flight School planes
+outside the room go back to the desk after 2 s. Range: a row plate counts however it is shot (`RangeRows`), FIRE
+and 2 shoot strips on a phone, a 7th note points at "Leave Range" in the open Menu.
 **Phones (Alan 2026-10-28):** the lesson note was too small and covered the middle of the view; on a phone it is now
 860 x 200 (before scaling) up in Roblox's top bar right of Health and Lift (Alan: "moved up"), words about 20 points
 (were 15), Got it and Skip beside the words with no key names; a tip takes the title's line. **Out of the way (Alan

@@ -293,7 +293,8 @@ function Hangar.new(playerGui, api)
 		if state.page == "shelf" then
 			shelf.set(builds, state.preset, range and "Range" or "My builds", range and RANGE_PINK or Color3.fromRGB(255, 215, 60))
 			if range then
-				local note = image(content, "RangeNote", Assets.range.stripRed, 20, 170, 300, 130, -4)
+				-- Purple, and under Back on a phone (Alan 2026-10-28: red and on top of the moved Back, it read as a second Back).
+				local note = image(content, "RangeNote", Assets.range.stripPurple, 20, PaperUI.isPhone() and 390 or 170, 300, 130, -4)
 				note.ScaleType = Enum.ScaleType.Stretch
 				local text = words(note, "Label", "Range builds: practice only", 20, 0, 270, 130, 36)
 				text.TextXAlignment, text.TextWrapped = Enum.TextXAlignment.Center, true

@@ -175,9 +175,15 @@ function Rules.contact(model, travel, overlap, single)
 			-- The face it entered: look back along the flight path; a side scrape falls back to the nearest surface.
 			single.FilterDescendantsInstances = { touching }
 			local reach = piece.Size.Magnitude + 10
+			-- A face counts only if it faces the plane's middle (Alan's phone 2026-10-28: sliding along a thin wall, the
+			-- look-back ray started beyond it and found its OUTER face, so "out" pointed into the playground and the
+			-- slide push carried the plane through). Then: look from the plane's middle toward the touching piece.
 			local face = workspace:Raycast(piece.Position - travel * reach, travel * reach * 2, single)
+			if face and (body.Position - face.Position):Dot(face.Normal) > 0 then return touching, face.Normal end
+			local toward = piece.Position - body.Position
+			face = toward.Magnitude > .01 and workspace:Raycast(body.Position, toward.Unit * reach, single)
 			if face then return touching, face.Normal end
-			local offset = piece.Position - touching:GetClosestPointOnSurface(piece.Position)
+			local offset = body.Position - touching:GetClosestPointOnSurface(body.Position)
 			return touching, offset.Magnitude > .01 and offset.Unit or -travel
 		end
 	end
