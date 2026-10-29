@@ -20,4 +20,7 @@ played on his phone: Settings, Flight School, Combat School, Skip all, the Hanga
   card (asked before; not done yet).
 
 ## What changed because of it
-To do next session (handoff `handoff-2026-10-28-mobile-lane-playtest-notes.md`).
+All seven fixed and checked in Studio at phone size (2026-10-29): auto-fire switch and 0.2-1.8 steering bar; skipping
+in the air no longer starts a match; Close shows its word; Slow Motion paper bigger than its words; the second "Back"
+was the shelf's "Range" tab with its word hidden (now shows) and the real Back ignored some taps (fixed); Range Menu
+and Hangar strips right of the score card on phones. Waiting on Alan's next phone run.

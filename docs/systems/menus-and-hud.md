@@ -3,7 +3,7 @@
 ## What the player sees
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
-## Where it stands (2026-10-27)
+## Where it stands (2026-10-29)
 Menu-only screens (loading, main menu, settings, hangar, shop, wait, Training, round end) draw their boards and
 pieces as 3D pictures inside little ViewportFrames (`first/BoardPlate`, `first/MenuArt`): same place, clicks and
 tilt, a little softer up close (Alan OK'd), much smaller downloads. Flying screens keep ordinary pictures.
@@ -15,6 +15,10 @@ Main-menu ruler repainted by Codex (reads 3 to 12, right way up; 1 and 2 behind 
 in Play 2026-10-17.
 Level bar with next unlock on the main menu board's stats card, in the hangar under the plane, and on the results card
 (seen 2026-10-17; partly filled bar seen on a test screen, the test account is at max level).
+Settings: the steering bar runs 0.2-1.8 with the default 1 in the middle (was 0.2-3; older saves above 1.8 fly at
+1.8, Alan 2026-10-28). Menu pictures drawn as 3D cards lift their words to the card's layer (a word under the card
+was hidden: the Hangar shelf's "Range" tab looked like a blank second Back). A phone tap area is sized from the
+button's resting size, so the hover grow can no longer switch it off mid-tap (that lost taps on the Range Hangar's Back).
 Phones (2026-10-24, seen in Studio's Device Simulator, not yet on a real phone): every paper screen has phone sizes
 (`PaperUI.phone`, a screen under 540 points tall; a PC keeps exactly what was drawn). Menu backgrounds reach past a
 phone's notch and crop from the bottom (titles stay whole); buttons stay in the safe area. Desk strips, lesson notes,
@@ -44,7 +48,10 @@ fake-pilot test there, not yet tried on a phone):** a wider gun assist that fade
 `touch_assist_inner_fraction` 0.5 of it, none past `touch_assist_max_range_studs` 800; never less than the mouse's), and the aim turns slower
 (`touch_slowdown_scale` 0.65 within `touch_slowdown_cone_deg` 8, easing in over `touch_slowdown_ease_in_s` 0.25) while
 the stick sweeps it over an enemy's ring, unless the stick is leaving it. The plane itself always turns at full speed.
-The nose dot turns yellow (and the ring fills faintly) when the shots land only thanks to that help. No auto-fire (Alan).
+The nose dot turns yellow (and the ring fills faintly) when the shots land only thanks to that help.
+**Phone auto-fire (Alan 2026-10-28, built 2026-10-29):** on a touch screen FIRE (weapon 1) shoots by itself while its
+ring is red or yellow (the shots land), on by default, with an Auto-fire switch in Settings (touch screens only;
+`settings.autoFire`, missing = on). The 2 weapon stays hold-to-use. `FlightHUD` sets `onTarget`, `CombatController` fires.
 Mouse players are unchanged.
 The orange ring follows the enemy whose ring (its lead) is nearest the aim circle, not the nearest plane, and keeps it
 until another's ring is 3 degrees nearer (Alan 2026-10-19, [decision](../decisions/2026-10-19-range-row-picker-and-aim-pick.md)).

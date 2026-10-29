@@ -7,6 +7,12 @@ local Controller={}
 function Controller.start(getPlane,effects)
  local remote=Root:WaitForChild("CombatInput")
  local held={false,false};local seq,life,clock=0,nil,0
+ local Touch=require(script.Parent.TouchControls)
+ local FlightState=require(script.Parent.FlightController).state
+ -- Phone auto-fire (Alan 2026-10-28, Settings): FIRE (weapon 1) shoots by itself while its ring says the shots land.
+ -- The 2 weapon stays hold-to-use.
+ local auto=false
+ local function down(which) return held[which] or which==1 and auto end
  local function groupFor(input)
   if input.UserInputType==Enum.UserInputType.MouseButton1 or input.KeyCode==Enum.KeyCode.ButtonR2 then return 1 end
   if input.UserInputType==Enum.UserInputType.MouseButton2 or input.KeyCode==Enum.KeyCode.ButtonL2 then return 2 end
@@ -17,7 +23,7 @@ function Controller.start(getPlane,effects)
   local body=p:FindFirstChild("Root");if not body then return end
   seq+=1
   local direction,range=effects.aim(body,which)
-  remote:FireServer({group=which,down=held[which] and not Root:GetAttribute("OverlayOpen"),direction=direction,range=range,at=workspace:GetServerTimeNow(),life=life,seq=seq})
+  remote:FireServer({group=which,down=down(which) and not Root:GetAttribute("OverlayOpen"),direction=direction,range=range,at=workspace:GetServerTimeNow(),life=life,seq=seq})
  end
  Input.InputBegan:Connect(function(input,processed)
   if processed or Input:GetFocusedTextBox() or Root:GetAttribute("OverlayOpen") then return end
@@ -30,7 +36,7 @@ function Controller.start(getPlane,effects)
  end)
  Input.WindowFocusReleased:Connect(function()held={false,false};effects.press(1,false);effects.press(2,false);send(1);send(2)end)
  -- Phones: the Fire buttons (TouchControls) hold the triggers like the mouse buttons.
- require(script.Parent.TouchControls).onFire=function(which,down) if Root:GetAttribute("OverlayOpen") then down=false end;held[which]=down;effects.press(which,down);send(which) end
+ Touch.onFire=function(which,isDown) if Root:GetAttribute("OverlayOpen") then isDown=false end;held[which]=isDown;effects.press(which,down(which));send(which) end
  -- Studio test hook: the player attribute DevFire holds the left trigger (Studio MCP can't press the game's mouse).
  if Run:IsStudio() then
   local player=Players.LocalPlayer
@@ -40,10 +46,12 @@ function Controller.start(getPlane,effects)
  -- and a 0.1 s old aim misses a turning plane at range. Idle triggers resync 10 times a second.
  Run.Heartbeat:Connect(function(dt)
   clock+=dt
-  local firing=held[1] or held[2]
+  local nowAuto=Touch.active() and Root:GetAttribute("AutoFire")~=false and FlightState.onTarget==true and not Root:GetAttribute("OverlayOpen")
+  if nowAuto~=auto then auto=nowAuto;effects.press(1,down(1));send(1) end
+  local firing=down(1) or held[2]
   if clock>=(firing and 1/30 or .1) then
    clock=0
-   for which=1,2 do if held[which] or not firing then send(which) end end
+   for which=1,2 do if down(which) or not firing then send(which) end end
   end
  end)
 end

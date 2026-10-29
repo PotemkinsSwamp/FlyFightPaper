@@ -4,6 +4,7 @@ local Input = game:GetService("UserInputService")
 local Root = game.ReplicatedStorage:WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets).settings
 local PaperUI = require(script.Parent.PaperUI)
+local Touch = require(script.Parent.TouchControls)
 local SettingsScreen = {}
 
 local COLORS = { "red", "blue", "green", "yellow", "purple", "white" }
@@ -38,7 +39,7 @@ function SettingsScreen.new(playerGui, api)
 		PaperUI.phone(max, { Position = UDim2.fromOffset(630, y + 74), Size = UDim2.fromOffset(160, 50), TextSize = 42 })
 		local left, width = 280 + 40, 510 - 80 -- the pencil's travel inside the ruler's ends
 		refresh[key] = function()
-			local t = (settings[key] - lo) / (hi - lo)
+			local t = math.clamp((settings[key] - lo) / (hi - lo), 0, 1) -- (older saves' steering went to 3)
 			pencil.Position = UDim2.fromOffset(left + width * t, y + 36)
 			value.Text = show(settings[key])
 		end
@@ -63,7 +64,8 @@ function SettingsScreen.new(playerGui, api)
 			if dragging and (input == dragging or input.UserInputType == Enum.UserInputType.MouseButton1 and dragging.UserInputType == Enum.UserInputType.MouseButton1) then dragging = false; save() end
 		end)
 	end
-	slider("sensitivity", "Mouse sensitivity", 345, 0.2, 3, 0.1, function(v) return string.format("%.1f", v) end, "0.2", "3.0")
+	-- 1 (the default) in the middle; the top was 3 until Alan's phone run (2026-10-28: "no reason why anybody's using 3").
+	slider("sensitivity", "Mouse sensitivity", 345, 0.2, 1.8, 0.1, function(v) return string.format("%.1f", v) end, "0.2", "1.8")
 	slider("sound", "Sound", 580, 0, 1, 0.05, function(v) return string.format("%d%%", math.round(v * 100)) end, "0%", "100%")
 	slider("music", "Music", 805, 0, 1, 0.05, function(v) return string.format("%d%%", math.round(v * 100)) end, "0%", "100%")
 
@@ -116,6 +118,16 @@ function SettingsScreen.new(playerGui, api)
 	tabs("reducedShake", "Reduced shake", 720, { true, false }, { "On", "Off" }, Art.tabGreen)
 	tabs("matchTips", "Match tips", 720, { true, false }, { "On", "Off" }, Art.tabGreen, 1440) -- the tips in your first matches
 	tabs("quality", "Graphics quality", 895, { "Low", "Medium", "High" }, { "Low", "Medium", "High" }, Art.tabOn)
+	-- Touch screens only: FIRE shoots by itself while the dot is on target (CombatController). One tab: tap to switch.
+	local autoLabel = words(sheet, "AutoFireLabel", "Auto-fire", 1640, 468, 260, 60, 52)
+	local auto = PaperUI.button(sheet, "AutoFire", Art.tabOff, "On", 1640, 540, 185, 82, 0,
+		function() settings.autoFire = not settings.autoFire; refresh.autoFire(); save() end, 40)
+	PaperUI.phone(auto, { Size = UDim2.fromOffset(185, 104) })
+	PaperUI.phone(auto.Label, { TextSize = 48 })
+	refresh.autoFire = function()
+		autoLabel.Visible, auto.Visible = Touch.active(), Touch.active()
+		auto.Image, auto.Label.Text = settings.autoFire and Art.tabGreen or Art.tabOff, settings.autoFire and "On" or "Off"
+	end
 	refresh.crosshairSize = (function(base)
 		return function()
 			base()
@@ -137,6 +149,7 @@ function SettingsScreen.new(playerGui, api)
 		settings.crosshairColor = settings.crosshairColor or "blue"
 		settings.crosshairSize = settings.crosshairSize or "Medium"
 		settings.matchTips = settings.matchTips ~= false
+		settings.autoFire = settings.autoFire ~= false
 		for _, fn in refresh do fn() end
 	end
 	return self

@@ -6,6 +6,7 @@ local Input = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local FlightState = require(script.Parent.FlightController).state
+local PaperUI = require(script.Parent.PaperUI)
 local Board = {}
 
 local LIFT = 90 -- studs the folded menu hangs above the view (RangeStage MENU_LIFT)
@@ -65,11 +66,35 @@ function Board.start()
 		if math.abs(goal - height) < 0.05 and math.abs(speed) < 0.1 then height, speed = goal, 0 end
 		sheet:PivotTo(up - Vector3.new(0, LIFT - height, 0))
 	end)
+	-- Phones: the Range Menu and Hangar strips (top left) sat under Roblox's own buttons, so they hang just right of the
+	-- score card there instead (Alan 2026-10-28). Moved on this screen only: a phone taps them (TouchTapInWorld), and the
+	-- taps and crosshair clicks are this screen's own raycasts.
+	local corner = {} -- part -> where the server hung it
+	local function fitCorner()
+		local card, tab = stage and stage:FindFirstChild("ScoreCard"), nil
+		for _, p in (stage and stage:GetChildren() or {}) do if p:GetAttribute("RangeBoard") == "menu" then tab = p end end
+		if not card or not tab then return end
+		if not next(corner) then
+			for _, p in stage:GetChildren() do
+				if not p:IsA("BasePart") then continue end
+				local what = p:GetAttribute("RangeBoard")
+				local along = (p.Position - tab.Position):Dot(card.CFrame.RightVector)
+				if what == "menu" or what == "hangar" or p.Name == "String" and math.abs(along) < tab.Size.X then corner[p] = p.CFrame end
+			end
+		end
+		local home = corner[tab]
+		local axis = card.CFrame.RightVector * math.sign((card.Position - home.Position):Dot(card.CFrame.RightVector))
+		local shift = PaperUI.isPhone() and axis * ((card.Position - home.Position):Dot(axis) + card.Size.X / 2 + 3 + tab.Size.X / 2) or Vector3.zero
+		for p, at in corner do p.CFrame = at + shift end
+	end
+	PaperUI.onPhone(function() fitCorner() end)
 	local function hook(model)
 		stage = model
+		table.clear(corner)
 		cast.FilterDescendantsInstances = { stage }
 		sheet = stage:WaitForChild("RangeMenu", 10)
 		if not sheet then return end
+		fitCorner()
 		up, isOpen, height, speed = sheet:GetPivot(), false, LIFT, 0
 		refresh()
 		score()

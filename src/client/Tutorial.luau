@@ -180,7 +180,9 @@ function Tutorial.start(getPlane)
  dismiss.Activated:Connect(function() card.Visible=false end)
  -- ...and shows a green Close too (Alan 2026-10-28: "(tap to close)" in the words was easy to miss).
  local closeButton=PaperUI.button(card,"Close",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Close  [Space]",310,200,300,60,1,function() card.Visible=false end,30)
- closeButton.ZIndex=6;closeButton.Visible=false
+ -- This screen stacks by global layers, so its word and tap area go up with it (Alan's phone run 2026-10-28: on layer 1
+ -- the word sat under the button, a blank paper).
+ closeButton.ZIndex=6;closeButton.Label.ZIndex=6;closeButton.Hit.ZIndex=6;closeButton.Visible=false
  PaperUI.phone(closeButton,{Position=UDim2.fromOffset(310,260),Size=UDim2.fromOffset(300,96)});PaperUI.phone(closeButton.Label,{TextSize=36})
  Input.InputBegan:Connect(function(input,processed) if not processed and card.Visible and dismiss.Visible and input.KeyCode==Enum.KeyCode.Space then card.Visible=false end end)
 
@@ -264,8 +266,12 @@ function Tutorial.start(getPlane)
  local slowTag=Instance.new("ImageLabel");slowTag.Name="SlowTag";slowTag.Image=Art.tutorial.tag;slowTag.ScaleType=Enum.ScaleType.Slice;slowTag.SliceCenter=TAG_SLICE;slowTag.SliceScale=.45
  slowTag.BackgroundTransparency=1;slowTag.AnchorPoint=Vector2.new(1,0);slowTag.Position=UDim2.new(1,-30,0,110);slowTag.Size=UDim2.fromOffset(220,52);slowTag.Rotation=3;slowTag.Visible=false;slowTag.Parent=gui
  -- Small, and on a phone tucked under Health and Lift (Alan 2026-10-28: it was big and in the way).
- PaperUI.phone(slowTag,{AnchorPoint=Vector2.new(0,0),Position=UDim2.fromOffset(16,158),Size=UDim2.fromOffset(150,36),Rotation=-2})
+ -- The words keep their phone size (150 x 36) and the paper is a little bigger round them (Alan 2026-10-28: the words
+ -- spilled past it; "like it's written on the piece of paper").
+ PaperUI.phone(slowTag,{AnchorPoint=Vector2.new(0,0),Position=UDim2.fromOffset(8,150),Size=UDim2.fromOffset(200,60),Rotation=-2})
  local slowWords=PaperUI.words(slowTag,"Text","SLOW MOTION",0,0,220,52,26);slowWords.Size=UDim2.fromScale(1,1);slowWords.TextScaled=true;slowWords.TextXAlignment=Enum.TextXAlignment.Center
+ slowWords.AnchorPoint,slowWords.Position=Vector2.new(.5,.5),UDim2.fromScale(.5,.5)
+ PaperUI.phone(slowWords,{Size=UDim2.fromOffset(150,36)})
  local slowOn=false
  local function setSlow(on)
   if on==slowOn then return end
@@ -580,10 +586,9 @@ function Tutorial.start(getPlane)
   matchButton.Visible,dismiss.Visible,closeButton.Visible=stay==nil,stay~=nil,stay~=nil
   cardText.Size=UDim2.fromOffset(540,stay and 150 or 60) -- no buttons: a longer end line gets their room
   if stay then nextButton.Visible=false;Tutorial.begin(stay,true);task.delay(7,function() card.Visible=false end);return end
-  -- Skipping mid-flight: the mouse steers the plane, so go straight on to the match and keep the card up a moment.
-  if skipped and ctx.state and ctx.state~="DESK" then Root.RoundAction:FireServer("practiceDone");task.delay(5,function()card.Visible=false end)
-  -- Finished in the air: everything holds still and the mouse is free to pick a button (Alan 2026-10-22).
-  elseif ctx.state=="FLYING" then ctx.lesson({freeze=true}) end
+  -- Finished or skipped in the air: everything holds still and the mouse is free to pick a button (Alan 2026-10-22).
+  -- (A skip used to go straight on to a match, so "Next: Hangar Tour" opened a match: Alan's phone run 2026-10-28.)
+  if ctx.state=="FLYING" then ctx.lesson({freeze=true}) end
  end
  Input.InputBegan:Connect(function(input,processed)
   if processed or not Tutorial.active then return end

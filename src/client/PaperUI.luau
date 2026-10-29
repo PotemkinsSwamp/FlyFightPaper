@@ -133,8 +133,11 @@ function PaperUI.tapArea(button, tallOnly)
 	hit.Name, hit.Text, hit.BackgroundTransparency, hit.AutoButtonColor = "Hit", "", 1, false
 	hit.AnchorPoint, hit.Position, hit.Visible, hit.Parent = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5), false, button
 	local function grow()
-		local size = button.AbsoluteSize
-		local scale = size.X / math.max(button.Size.X.Offset, 1) -- screen points per drawn point
+		-- Measured at the button's resting size: the hover grow (1.05x) once lifted a button just under TAP over it,
+		-- hiding the Hit mid-tap so the tap was lost (the Range Hangar's Back, Alan's phone run 2026-10-28).
+		local scale = button.AbsoluteSize.X / math.max(button.Size.X.Offset, 1) -- screen points per drawn point
+		local base = rest[button] and rest[button].size or button.Size
+		local size = Vector2.new(base.X.Offset, base.Y.Offset) * scale
 		local wide, tall = tallOnly and 0 or math.max(0, PaperUI.TAP - size.X), math.max(0, PaperUI.TAP - size.Y)
 		hit.Visible = PaperUI.isPhone() and scale > 0 and (wide > 0 or tall > 0)
 		if hit.Visible then hit.Size = UDim2.new(1, wide / scale, 1, tall / scale) end

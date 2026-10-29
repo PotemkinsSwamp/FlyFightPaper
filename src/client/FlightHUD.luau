@@ -569,6 +569,7 @@ function HUD.start(getPlane, action)
 			place(bracket, path and Course.pathAt(path, workspace:GetServerTimeNow()).Position or target.Position)
 			-- The nose dot sits at the left-click lead's range, so dot-on-marker means the guns really point there.
 			local anyHit, anyHelped, b = false, false, bracket.Position
+			FlightState.onTarget = false -- FIRE's ring is red or yellow (its shots land): phone auto-fire (CombatController)
 			for group, pipper in ipairs(pippers) do
 				local weapon, line = guns[group], leadLines[group]
 				if weapon then
@@ -585,6 +586,7 @@ function HUD.start(getPlane, action)
 					local reaches = pipper.Visible and CombatRules.travelTime(weapon, offset.Magnitude) < math.huge
 					local onTarget = reaches and lands
 					anyHit, anyHelped = anyHit or onTarget, anyHelped or (reaches and helped)
+					if group == 1 then FlightState.onTarget = onTarget or reaches and helped end
 					pipper.BackgroundTransparency = onTarget and 0.35 or reaches and helped and 0.65 or 1
 					local a = pipper.Position
 					local dx, dy = a.X.Offset - b.X.Offset, a.Y.Offset - b.Y.Offset
@@ -598,7 +600,7 @@ function HUD.start(getPlane, action)
 			local on = anyHit or anyHelped
 			noseDot.BackgroundColor3, noseDot.Size = anyHit and NOSE_ON or anyHelped and NOSE_HELPED or NOSE, UDim2.fromOffset((on and 11 or 10) * crosshairScale, (on and 11 or 10) * crosshairScale)
 		else
-			FlightState.leadFor, FlightState.leadPoint = nil, nil
+			FlightState.leadFor, FlightState.leadPoint, FlightState.onTarget = nil, nil, false
 			noseDot.BackgroundColor3, noseDot.Size = NOSE, UDim2.fromOffset(10 * crosshairScale, 10 * crosshairScale)
 			bracket.Visible = false
 			for group, pipper in ipairs(pippers) do pipper.Visible, leadLines[group].Visible = false, false end

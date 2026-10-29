@@ -10,8 +10,9 @@ local function applyQuality(quality)
 end
 function Options.apply(settings)
  applyQuality(settings.quality)
- Root:SetAttribute("Sensitivity",settings.sensitivity);Root:SetAttribute("SoundVolume",settings.sound);Root:SetAttribute("MusicVolume",settings.music)
+ Root:SetAttribute("Sensitivity",math.min(settings.sensitivity,1.8));Root:SetAttribute("SoundVolume",settings.sound);Root:SetAttribute("MusicVolume",settings.music)
  Root:SetAttribute("ReducedShake",settings.reducedShake);Root:SetAttribute("Quality",settings.quality);Root:SetAttribute("CrosshairColor",settings.crosshairColor);Root:SetAttribute("CrosshairSize",settings.crosshairSize)
  Root:SetAttribute("MatchTips",settings.matchTips~=false)
+ Root:SetAttribute("AutoFire",settings.autoFire~=false) -- phones: FIRE shoots by itself on target (CombatController)
 end
 return Options

@@ -23,7 +23,10 @@ Slow Motion tag small (on a phone under Health and Lift); notes on touch screens
 try-on and Select are two steps; its end card has a green Close. Walls: the contact normal must face the plane (a
 slide along a thin wall found the outer face and pushed planes through, `FlightRules.contact`); Flight School planes
 outside the room go back to the desk after 2 s. Range: a row plate counts however it is shot (`RangeRows`), FIRE
-and 2 shoot strips on a phone, a 7th note points at "Leave Range" in the open Menu.
+and 2 shoot strips on a phone, a 7th note points at "Leave Range" in the open Menu. On a phone the Range Menu and
+Hangar strips hang right of the score card (moved on the phone's own screen, `RangeBoard`; Alan 2026-10-28: top left they
+sat under Roblox's buttons). A skipped lesson in the air now holds still like a finished one, so "Next: ..." opens the
+next lesson (it used to go straight to a match). The end card's Close shows its word (the card stacks by global layers).
 **Phones (Alan 2026-10-28):** the lesson note was too small and covered the middle of the view; on a phone it is now
 860 x 200 (before scaling) up in Roblox's top bar right of Health and Lift (Alan: "moved up"), words about 20 points
 (were 15), Got it and Skip beside the words with no key names; a tip takes the title's line. **Out of the way (Alan

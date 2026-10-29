@@ -81,12 +81,13 @@ function MenuArt.draw(label)
 		stretch()
 	end
 	-- Same layer as the label and first among its children, so its words and pieces stay on top (a lower ZIndex
-	-- hides a ViewportFrame altogether, 2026-10-27).
+	-- hides a ViewportFrame altogether, 2026-10-27). A child on a lower layer than the label is lifted to it, or the
+	-- card covers it (Alan's phone run 2026-10-28: the Hangar shelf's "Range" tab showed as a blank strip).
 	view.ZIndex, view.ImageColor3, view.ImageTransparency = label.ZIndex, label.ImageColor3, label.ImageTransparency
 	local others = label:GetChildren()
 	view.Parent = label
 	for _, child in others do
-		if child:IsA("GuiObject") then child.Parent = nil; child.Parent = label end
+		if child:IsA("GuiObject") then child.ZIndex = math.max(child.ZIndex, label.ZIndex); child.Parent = nil; child.Parent = label end
 	end
 	label:SetAttribute("Art3D", id)
 	label.Image = "" -- (first/LoadingFirst's fit leaves a label with Art3D and no picture alone)
@@ -102,8 +103,14 @@ function MenuArt.draw(label)
 			label:GetPropertyChangedSignal(property):Connect(function()
 				local current = label:FindFirstChild("MenuArt3D")
 				if current then current[property] = label[property] end
+				if current and property == "ZIndex" then
+					for _, child in label:GetChildren() do if child:IsA("GuiObject") then child.ZIndex = math.max(child.ZIndex, label.ZIndex) end end
+				end
 			end)
 		end
+		label.ChildAdded:Connect(function(child) -- words added after the card (BuildShelf's tab)
+			if child:IsA("GuiObject") and child.Name ~= "MenuArt3D" and label:FindFirstChild("MenuArt3D") then child.ZIndex = math.max(child.ZIndex, label.ZIndex) end
+		end)
 	end
 end
 

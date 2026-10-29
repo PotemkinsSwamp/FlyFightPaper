@@ -170,8 +170,12 @@ mistake would be easy to make twice.
   put `\n` escapes into Luau with the Edit tool, and loadstring-check every synced file.
 - **Pressing keys in a Device Simulator Play switches it to keyboard** (PC words, no touch buttons): set `DevTouch`
   on ReplicatedStorage.FlyFightPaper in the Client VM before using `user_keyboard_input` (K skips lesson steps).
-- **Studio's simulated clicks can stop landing (2026-10-28):** `user_mouse_input` opened the Hangar, then later taps
-  on Customize and Back did nothing (nothing covered them). Open screens with the `DevScreen` attribute instead.
+- **"The test tool's clicks stopped landing" was a real bug (2026-10-29):** the Hangar's Back and Customize ignored
+  taps because the hover grow (1.05x) switched the phone tap area off mid-tap (fixed in `PaperUI.tapArea`). When a
+  tap does nothing, log the button's `InputBegan`/`Activated` before blaming the tool. Device Simulator taps: a
+  `user_mouse_input` click at (x, y) reaches GUI space at about (x - 62, y - 20) and `TouchTapInWorld` at (x - 62, y + 38).
+- **A ScreenGui made with `Instance.new` stacks by global layers (2026-10-29):** a button's word on layer 1 under a
+  layer-6 button is hidden (the Tutorial's Close). Raise the word with the button, or set `ZIndexBehavior` Sibling.
 - **A few files into Studio without Rojo (2026-10-28):** `python -m http.server 8765 --bind 127.0.0.1` in `src/`, then
   in Studio's Edit VM `script.Source = HttpService:GetAsync("http://127.0.0.1:8765/client/X.luau")` (works from the MCP;
   compare byte counts, check by requiring a clone). Stop the server after.
