@@ -164,6 +164,10 @@ mistake would be easy to make twice.
   `Position` offsets count from the screen's top, but `AbsolutePosition` counts from under Roblox's top bar (the
   ScreenGui's own `AbsolutePosition` is (0, -58) on a phone). Subtract the ScreenGui's `AbsolutePosition` before mixing
   them; `WorldToViewportPoint` already counts from the top. Unsubtracted, a dodging note sat 58 points high over Health.
+- **Right after Play starts, the viewport can read 1 x 1 with RenderStepped 0/s even with Studio in front**
+  (2026-10-28): wait a few seconds and measure again before blaming the window (Alan: "studio is upfront").
+- **Python heredocs turn `\n` into a real line break inside Luau strings** (twice, 2026-10-28: "Malformed string"):
+  put `\n` escapes into Luau with the Edit tool, and loadstring-check every synced file.
 - **Pressing keys in a Device Simulator Play switches it to keyboard** (PC words, no touch buttons): set `DevTouch`
   on ReplicatedStorage.FlyFightPaper in the Client VM before using `user_keyboard_input` (K skips lesson steps).
 - **Studio's simulated clicks can stop landing (2026-10-28):** `user_mouse_input` opened the Hangar, then later taps
