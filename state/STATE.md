@@ -54,8 +54,6 @@ Waiting on Alan
   Range menu, vote and results on the phone.
 - Switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
-- Touch: try the stick and buttons in the Device Simulator (now on): does the stick turn too fast or slow? Buttons
-  the right size? Watch for the yellow dot in the Range.
 - Later: bots' guns cross at 150 studs (your call); backlog: a new fan sound.
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK; then products, passes, VIP perks.
