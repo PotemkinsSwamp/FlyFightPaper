@@ -1,22 +1,21 @@
-# Since Alan last checked (2026-10-28, night)
-- **Your two phone runs (2026-10-28), fixed in Studio, not yet published:** tutorial room move + lesson starting at
-  once (no menu flash); lessons ring the round FIRE / 2 / BOOST; notes stay off Health/Lift and off the bottom/left on
-  phones; walls no longer push planes through (and a plane outside goes back to its desk); Range plates and strips
-  shoot with touch FIRE; Leave Range note; Play says "Starting..."; red Settings Back; tour try-on/Select split.
-- **Phone buttons are peel stickers with a crayon fill (your pick C, uploaded).**
-- **Your rulings:** steering bar finer (speed unchanged); phone auto-fire on FIRE only (decision note 2026-10-28).
-  Not built yet.
+# Since Alan last checked (2026-10-29)
+- **Your 7 phone-run notes: all fixed and checked in Studio at phone size, not yet published.** Auto-fire switch in
+  phone Settings (on by default; FIRE fires while the dot is red or yellow); steering bar 0.2-1.8 with 1 in the middle;
+  Skip all then "Next: ..." opens the next lesson; Close shows its word; Slow Motion paper bigger than its words; the
+  "second Back" was the shelf's "Range" tab with its word hidden (now shows), and the real Back sometimes ignored taps
+  (fixed: it hit every small button just under finger size); Range Menu / Hangar strips right of the score card.
+- **Phone screens checked:** Training board, match desk, Range menu good. Range notes now hide while the Range menu is
+  down (they covered half of it). Vote cards and help line were ~13 points: now ~17. Results card ~14 points.
 
-# Now: mobile lane (make phones work and look good): tutorials tuned to phones, sticker buttons, unchecked screens
-What works: everything in Stage 9, tutorials, desk quick menu; phone checks pass on menu, Hangar, Customize, Settings.
-Fixed, needs your phone check: everything in the list above.
-Not yet: Range menu, round results, Training board, match desk on a phone; iPad; match tips/Range notes moving.
-
-Your phone run (2026-10-28 night, docs/playtests/2026-10-28-phone-tutorial-run.md) found, to fix next: auto-fire
-setting (not built yet), steering bar's top too high, Slow Motion paper too small for its words, Skip all → Next
-lesson goes to a match, a blank card button, two Back buttons in the Range Hangar, Range "Hangar" strip still hidden.
+# Now: mobile lane (make phones work and look good)
+What works: Stage 9, tutorials, desk quick menu; phone checks pass on menu, Hangar, Customize, Settings, Training
+board, match desk, Range menu, vote, results.
+Needs your phone check: everything above (publish first).
+Not yet: iPad (needs the Device Simulator switched to an iPad); match tips moving on a phone.
 
 Decisions to review
+Auto-fire also fires on the yellow dot (shots land thanks to phone aim help), not only red; in the Range it fires on
+  targets too, so a phone's accuracy card reads high. The steering bar's new top (1.8) applies to the mouse too.
 Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).
 Smaller maps: bell tower + sweet-shop swirl roof keep full-size maps (moderation caution).
 Loading: Skip once all menus + town parts are in; a stuck file costs 8 s (plane pieces 2 s); 3 minutes at most.
@@ -50,6 +49,9 @@ Zone 680-840 across by building density; bots on the zone 30/60/85% (rookie/regu
 Points: fold assist share rounded to 5 (10-80); outside-zone fold 40%; paper targets 50 points each, server-checked.
 
 Waiting on Alan
+- Phone run of the 2026-10-29 fixes (publish first): Settings Auto-fire + steering bar; Skip all then Next in each
+  lesson; the Hangar Tour's end card Close; Range Hangar (one Back, "Range" tab); Range strips by the score card;
+  Range menu, vote and results on the phone.
 - Switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
 - Touch: try the stick and buttons in the Device Simulator (now on): does the stick turn too fast or slow? Buttons
