@@ -124,7 +124,8 @@ function SettingsScreen.new(playerGui, api)
 		end
 	end)(refresh.crosshairSize)
 
-	local back = PaperUI.button(sheet, "Back", Art.tabGreen, "Back", 1640, 930, 200, 90, 3, api.back, 48)
+	-- Red like every Back (Alan 2026-10-28: green, it looked like the tabs beside it).
+	local back = PaperUI.button(sheet, "Back", require(Root.Shared.UIAssets).range.stripRed, "Back", 1640, 930, 200, 90, 3, api.back, 48)
 	PaperUI.phone(back, { Position = UDim2.fromOffset(1730, 960), Size = UDim2.fromOffset(260, 120) })
 	PaperUI.phone(back.Label, { TextSize = 60 })
 

@@ -129,6 +129,7 @@ end
 -- dodge(home, size, key, boxes, homeTurn, dt) -> x, y (the note's top middle), rotation, spot, fit. size(spot) = the
 -- note's size on screen there (a phone's lesson note changes shape at a side); boxes = { { low, high }, ... }.
 local SPOTS = { "home", "right", "left", "bottom" }
+local TOUCH_SPOTS = { "home", "right" }
 local TURN = { right = 3, left = -3, bottom = 1 }
 local function gapIn(from, to, blocks) -- the longest free stretch of from..to between the blocks ({ a, b } each)
 	table.sort(blocks, function(a, b) return a[1] < b[1] end)
@@ -191,7 +192,9 @@ function ScreenFit.dodger(piece)
 		if not p then spot, p, fit, r = "home", home, 1, homeTurn end
 		coveredFor = covered(p, size(spot) * fit) and coveredFor + dt or 0
 		if coveredFor >= 0.4 then
-			for _, name in SPOTS do
+			-- Touch screens: never the left side or the bottom (Alan 2026-10-28: the left thumb steers there, so the note
+			-- fled the thumb back and forth; the buttons are bottom right).
+			for _, name in (Input.PreferredInput == Enum.PreferredInput.Touch or Root:GetAttribute("DevTouch") == true) and TOUCH_SPOTS or SPOTS do
 				local q, g, t = nil, nil, nil
 				if name ~= spot then q, g, t = where(name) end
 				if q and not covered(q, size(name) * g) then spot, p, fit, r, coveredFor = name, q, g, t, 0; break end

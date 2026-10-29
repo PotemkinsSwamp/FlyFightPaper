@@ -20,6 +20,13 @@ local ROUND={Fire=true,Fire2=true,Boost=true} -- round buttons get the round cra
 local function roundButton(names) local name=names and names[1];return Touch.active() and (ROUND[name] or ROUND[PHONE_NAMES[name]])==true end
 local Course=require(Root.Shared.TrainingCourse)
 local Tutorial={active=false}
+-- Arriving in the tutorial room (live): the move's teleport data says so at once, before the server knows its room
+-- (Alan 2026-10-28: the menu and its song showed for 1.5 s first). MenuController keeps the menu shut meanwhile.
+do
+ local ok,data=pcall(function() return game:GetService("TeleportService"):GetLocalPlayerTeleportData() end)
+ Tutorial.arriving=ok and type(data)=="table" and not data.tutorialSeen
+ Tutorial.arrivingLesson=Tutorial.arriving and data.lesson or nil
+end
 local HINT_SECONDS=10
 local HOLD_SKIP_SECONDS=1.5
 local HOOP_RADIUS=30
@@ -171,6 +178,10 @@ function Tutorial.start(getPlane)
  -- A card with no buttons (the Hangar Tour's, in the Range) closes on a click or Space (Alan 2026-10-22), or by itself.
  local dismiss=Instance.new("TextButton");dismiss.Name="Dismiss";dismiss.Text="";dismiss.BackgroundTransparency=1;dismiss.Size=UDim2.fromScale(1,1);dismiss.ZIndex=5;dismiss.Visible=false;dismiss.Parent=card
  dismiss.Activated:Connect(function() card.Visible=false end)
+ -- ...and shows a green Close too (Alan 2026-10-28: "(tap to close)" in the words was easy to miss).
+ local closeButton=PaperUI.button(card,"Close",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Close  [Space]",310,200,300,60,1,function() card.Visible=false end,30)
+ closeButton.ZIndex=6;closeButton.Visible=false
+ PaperUI.phone(closeButton,{Position=UDim2.fromOffset(310,260),Size=UDim2.fromOffset(300,96)});PaperUI.phone(closeButton.Label,{TextSize=36})
  Input.InputBegan:Connect(function(input,processed) if not processed and card.Visible and dismiss.Visible and input.KeyCode==Enum.KeyCode.Space then card.Visible=false end end)
 
  -- A question card (Alan 2026-10-19): which lesson (the Tutorial button), or, the first time in the game, would
@@ -251,8 +262,10 @@ function Tutorial.start(getPlane)
  -- Colours soften and cool, the music slows, a whoosh, and a crayon tag says so. Off again with a quick whoosh.
  local slowLook=Instance.new("ColorCorrectionEffect");slowLook.Name="TutorialSlowMo";slowLook.Enabled=false;slowLook.Parent=game:GetService("Lighting")
  local slowTag=Instance.new("ImageLabel");slowTag.Name="SlowTag";slowTag.Image=Art.tutorial.tag;slowTag.ScaleType=Enum.ScaleType.Slice;slowTag.SliceCenter=TAG_SLICE;slowTag.SliceScale=.45
- slowTag.BackgroundTransparency=1;slowTag.AnchorPoint=Vector2.new(1,0);slowTag.Position=UDim2.new(1,-30,0,110);slowTag.Size=UDim2.fromOffset(320,76);slowTag.Rotation=3;slowTag.Visible=false;slowTag.Parent=gui
- local slowWords=PaperUI.words(slowTag,"Text","SLOW MOTION",0,0,320,76,36);slowWords.Size=UDim2.fromScale(1,1);slowWords.TextXAlignment=Enum.TextXAlignment.Center
+ slowTag.BackgroundTransparency=1;slowTag.AnchorPoint=Vector2.new(1,0);slowTag.Position=UDim2.new(1,-30,0,110);slowTag.Size=UDim2.fromOffset(220,52);slowTag.Rotation=3;slowTag.Visible=false;slowTag.Parent=gui
+ -- Small, and on a phone tucked under Health and Lift (Alan 2026-10-28: it was big and in the way).
+ PaperUI.phone(slowTag,{AnchorPoint=Vector2.new(0,0),Position=UDim2.fromOffset(16,158),Size=UDim2.fromOffset(150,36),Rotation=-2})
+ local slowWords=PaperUI.words(slowTag,"Text","SLOW MOTION",0,0,220,52,26);slowWords.Size=UDim2.fromScale(1,1);slowWords.TextScaled=true;slowWords.TextXAlignment=Enum.TextXAlignment.Center
  local slowOn=false
  local function setSlow(on)
   if on==slowOn then return end
@@ -564,8 +577,7 @@ function Tutorial.start(getPlane)
   -- The Hangar Tour ends in the Range, which carries on as the Range (lesson.stay). The mouse aims there, so the card
   -- has no buttons and goes by itself.
   local stay=Tutorial.lesson.stay
-  matchButton.Visible,dismiss.Visible=stay==nil,stay~=nil
-  if stay then cardText.Text..=" (Click or press Space to close.)" end
+  matchButton.Visible,dismiss.Visible,closeButton.Visible=stay==nil,stay~=nil,stay~=nil
   cardText.Size=UDim2.fromOffset(540,stay and 150 or 60) -- no buttons: a longer end line gets their room
   if stay then nextButton.Visible=false;Tutorial.begin(stay,true);task.delay(7,function() card.Visible=false end);return end
   -- Skipping mid-flight: the mouse steers the plane, so go straight on to the match and keep the card up a moment.
@@ -595,8 +607,8 @@ function Tutorial.start(getPlane)
 
  -- The tutorial's own room (a new player's first join, or a replay) starts Flight School by itself, once.
  local function autoStart()
-  if Root:GetAttribute("TutorialRoom") and not Tutorial.autoStarted and not Tutorial.active then
-   Tutorial.autoStarted=true;task.delay(1,function() Tutorial.begin(player:GetAttribute("StartLesson")) end)
+  if (Root:GetAttribute("TutorialRoom") or Tutorial.arriving) and not Tutorial.autoStarted and not Tutorial.active then
+   Tutorial.autoStarted=true;task.delay(Tutorial.arriving and 0 or 1,function() Tutorial.begin(Tutorial.arrivingLesson or player:GetAttribute("StartLesson")) end)
   end
  end
  Root:GetAttributeChangedSignal("TutorialRoom"):Connect(autoStart);autoStart()
@@ -649,7 +661,7 @@ function Tutorial.start(getPlane)
   if not plane or not plane.Parent or not plane:GetAttribute("Practice") then plane=nil end
   ctx.plane=plane;ctx.body=plane and plane:FindFirstChild("Root");ctx.state=plane and plane:GetAttribute("State");ctx.dt=dt
   -- The server refuses practice until the classroom and the save have loaded: keep asking.
-  if not plane and os.clock()-Tutorial.askedAt>4 then Tutorial.askedAt=os.clock();Root.RoundAction:FireServer("practice",Tutorial.lessonKey) end
+  if not plane and os.clock()-Tutorial.askedAt>(Tutorial.arriving and 1 or 4) then Tutorial.askedAt=os.clock();Root.RoundAction:FireServer("practice",Tutorial.lessonKey) end
   local step=Tutorial.lesson.steps[Tutorial.index]
   if not step then finish(false);return end
   -- The Range is a room, not a lesson (Alan 2026-10-19): no note, no read pause, no skipping (K sent you to a match);

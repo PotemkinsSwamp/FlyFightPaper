@@ -96,7 +96,7 @@ render=function()
   local inMatch=player:GetAttribute("InMatch")==true
   local snap=state.snapshot
   local queued=player:GetAttribute("JoinQueued")==true
-  local open=not inMatch or state.overlay or queued
+  local open=(not inMatch and not Tutorial.arriving) or state.overlay or queued -- (arriving: the lesson opens instead)
   openButton.Visible=inMatch and not open
   -- Which paper screen shows: waiting for a desk, round results, the in-match clipboard, or the chosen screen.
   local key=queued and "queued" or state.screen=="home" and (inMatch and "pause") or state.screen
@@ -125,7 +125,9 @@ render=function()
   state.profile=profile;Options.apply(profile.settings)
   render() -- screens skip the redraw themselves when nothing they show changed
  end)
- player:GetAttributeChangedSignal("InMatch"):Connect(function()state.screen="home";state.overlay=false;Root:SetAttribute("OverlayOpen",false);render()end)
+ player:GetAttributeChangedSignal("InMatch"):Connect(function()if player:GetAttribute("InMatch") then Tutorial.arriving=false end;state.screen="home";state.overlay=false;Root:SetAttribute("OverlayOpen",false);render()end)
+ -- (never stuck without a menu: if the lesson hasn't started in 20 s, the menu shows after all)
+ if Tutorial.arriving then task.delay(20,function() if Tutorial.arriving then Tutorial.arriving=false;render() end end) end
  player:GetAttributeChangedSignal("ProfileStatus"):Connect(render)
  player:GetAttributeChangedSignal("JoinQueued"):Connect(render)
  player:GetAttributeChangedSignal("MenuMessage"):Connect(render)

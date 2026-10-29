@@ -88,7 +88,8 @@ Lessons.flight={
   {text="At your desk: Refill Lift and Repair are free. Full refold changes your plane. Fresh plane starts over.",gotIt=true,
    update=function(ctx)
     ctx.spotlight("Refill","Repair","Fresh","Refold")
-    return false
+    -- Using one ends the step too (Alan 2026-10-28: he tapped Repair and still had to press Got it).
+    return ctx.clicked("Refill") or ctx.clicked("Repair") or ctx.clicked("Fresh") or ctx.clicked("Refold")
    end},
  },
 }
@@ -283,6 +284,7 @@ local LOOK_AFTER=2.3 -- seconds a step with a visible change stays up after it (
 local GEAR_IDS={};for _,part in Catalog.weapons do table.insert(GEAR_IDS,part.id) end
 local function tour() local t=Hangar.tour;return t and t.state.draft and t.state or nil end
 local function watch(update) return function(ctx) local s=tour();return s~=nil and update(ctx,s) end end
+local tourWings -- the wings on the plane when the try-on steps began
 local function spot(s) return math.min(2,Catalog:get(s.draft.body).mount_count) end
 local function hangarOpen(ctx) local layer=ctx.player.PlayerGui:FindFirstChild("HangarScreen");return layer~=nil and layer.Cover.Visible end
 -- Step 4 walks down the stat sheet one row at a time, in kid words (Alan 2026-10-21: say what every bar means).
@@ -351,12 +353,18 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
    update=watch(function(ctx,s) ctx.spotlight("Customize");return s.page=="customize" end)},
   {text="Each tab is one part of the plane. Click Wings.",page="customize",
    update=watch(function(ctx,s) ctx.spotlight("Tabwings");return s.slot=="wings" end)},
-  {text="Click a card to try it on: the numbers show what it changes. Then click Select.",page="customize",hint="Pick a wing card that doesn't say Equipped, then Select.",
+  -- Two steps (Alan 2026-10-28: as one, it moved on before the numbers could be read): try a card on, then Select.
+  {text="Click a wing card to try it on: the numbers on the sheet show what it would change.",page="customize",hint="Pick a wing card that doesn't say Equipped.",
    linger=LOOK_AFTER,update=watch(function(ctx,s)
-    ctx.data.wings=ctx.data.wings or s.draft.wings
-    if s.draft.wings~=ctx.data.wings then return true end
-    if s.trying then ctx.spotlight("SelectPart");return false end -- trying one on: now Select
-    for _,part in Catalog.structuresBySlot.wings do if part.id~=ctx.data.wings then ctx.spotlight(part.id);break end end
+    tourWings=tourWings or s.draft.wings
+    if s.trying or s.draft.wings~=tourWings then return true end
+    for _,part in Catalog.structuresBySlot.wings do if part.id~=tourWings then ctx.spotlight(part.id);break end end
+    return false
+   end)},
+  {text="Like them? Click Select to put them on.",page="customize",hint="No Select? Click a wing card first.",
+   linger=LOOK_AFTER,update=watch(function(ctx,s)
+    if s.draft.wings~=tourWings then tourWings=nil;return true end
+    if s.trying then ctx.spotlight("SelectPart") else for _,part in Catalog.structuresBySlot.wings do if part.id~=tourWings then ctx.spotlight(part.id);break end end end
     return false
    end)},
   {text="Gear is what your plane shoots. Click Gear.",page="customize",
