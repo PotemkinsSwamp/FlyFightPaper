@@ -1,8 +1,7 @@
-# LATEST → handoff-2026-10-28-mobile-lane-playtest-notes.md
+# LATEST → handoff-2026-10-29-mobile-lane-phone-fixes-await-publish.md
 
-★ START HERE: Goal (Alan): mobile works and looks good. First: fix the 7 items from Alan's phone run
-(docs/playtests/2026-10-28-phone-tutorial-run.md): auto-fire + steering bar, Skip all → next lesson, blank card
-button, Slow Motion paper, two Back buttons in the Range Hangar, Range strips under Roblox's icons.
+★ START HERE: Goal (Alan): mobile works and looks good. Alan's 7 phone notes are fixed and checked in Studio (not
+published). First: Alan publishes at his PC (Publish As > Overwrite) and runs the phone list in STATE; fix what he finds.
 
-Quick state: main (handoff commit after d3779fc9); Studio holds the published build's code, not saved.
-Previous: handoff-2026-10-28-mobile-lane-phone-run-fixes.md (mobile lane), handoff-2026-10-28-load-lane-streaming-fixed.md (load lane).
+Quick state: main (handoff commit after f98962c1); Studio holds HEAD's code, not saved, not published.
+Previous: handoff-2026-10-28-mobile-lane-playtest-notes.md (mobile lane), handoff-2026-10-28-load-lane-streaming-fixed.md (load lane).

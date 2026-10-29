@@ -174,6 +174,9 @@ mistake would be easy to make twice.
   taps because the hover grow (1.05x) switched the phone tap area off mid-tap (fixed in `PaperUI.tapArea`). When a
   tap does nothing, log the button's `InputBegan`/`Activated` before blaming the tool. Device Simulator taps: a
   `user_mouse_input` click at (x, y) reaches GUI space at about (x - 62, y - 20) and `TouchTapInWorld` at (x - 62, y + 38).
+- **No publishing while Alan is away from his PC (2026-10-29):** the desktop-control approval box shows only on the
+  PC, and `FlyFightPaper-WORKING.rbxlx` lags Studio by days (art lives in the online copy), so an Open Cloud publish
+  of the file would roll art back. Publishing waits for Alan at the PC (Publish As > Overwrite).
 - **A ScreenGui made with `Instance.new` stacks by global layers (2026-10-29):** a button's word on layer 1 under a
   layer-6 button is hidden (the Tutorial's Close). Raise the word with the button, or set `ZIndexBehavior` Sibling.
 - **A few files into Studio without Rojo (2026-10-28):** `python -m http.server 8765 --bind 127.0.0.1` in `src/`, then
