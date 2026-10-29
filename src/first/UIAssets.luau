@@ -111,6 +111,14 @@ return {
 		arrow = "rbxassetid://128216360516580",
 		dash = "rbxassetid://98525696595946",
 	},
+	-- Phone thumb controls: peel stickers and a white crayon disc the game tints (assets/ui/touch/; Alan 2026-10-28,
+	-- concept ui-concepts/touch-buttons-c.png).
+	touch = {
+		button = "rbxassetid://99172959589315",
+		crayon = "rbxassetid://94809350640708",
+		knob = "rbxassetid://104777249893802",
+		pad = "rbxassetid://72128861834878",
+	},
 	-- Hidden paper targets (assets/ui/targets/; concept mode-concepts/paper-targets.png), keyed by design name.
 	targets = {
 		broccoli = "rbxassetid://108546335442787",

@@ -1,0 +1,23 @@
+{
+  "path": "operations/2d46d868-82a2-4183-85ba-fc5639744c86",
+  "operationId": "2d46d868-82a2-4183-85ba-fc5639744c86",
+  "done": true,
+  "response": {
+    "path": "assets/72128861834878",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-29T00:04:12.399Z",
+    "assetId": "72128861834878",
+    "displayName": "FlyFightPaper touch pad",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

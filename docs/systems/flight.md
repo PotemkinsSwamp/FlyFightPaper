@@ -43,7 +43,7 @@ held and augments speed by the equipped module; clamp stacked environmental spee
 | File | What it does |
 |---|---|
 | `src/client/FlightController.luau` | Mouse-aim steering on your screen (and the touch stick's turning) |
-| `src/client/TouchControls.luau` | Phones and tablets: the floating steering stick (left half), Fire / 2 / Boost buttons; only while flying on a touch screen; turns off Roblox's own walk stick and jump button |
+| `src/client/TouchControls.luau` | Phones and tablets: the floating steering stick (left half), Fire / 2 / Boost buttons, drawn as peel stickers with a tinted crayon fill rising inside (Alan 2026-10-28, `assets/ui/touch/`, concept `ui-concepts/touch-buttons-c.png`); only while flying on a touch screen (and in a lesson's read pause); turns off Roblox's own walk stick and jump button |
 | `src/client/ChaseCamera.luau` | Chase camera: smoothing, speed zoom, shake, stays in the room |
 | `src/server/FlightService.luau` | Server side of every plane: spawn at desk, takeoff, fans, speed pickups, death and landing hooks |
 | `src/shared/FlightRules.luau` | Lift drain and flight limits |

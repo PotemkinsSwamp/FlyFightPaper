@@ -10,6 +10,7 @@ local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Config = require(Root.Generated.Gameplay).flight
 local PaperUI = require(script.Parent.PaperUI)
 local Words = require(Root.Shared.TouchWords)
+local Art = require(Root.Shared.UIAssets).touch -- peel stickers (Alan 2026-10-28, ui-concepts/touch-buttons-c.png)
 
 local Touch = { stick = Vector2.zero, boost = false, onFire = nil } -- onFire(which, down): CombatController's triggers
 -- The HUD's crayon colours (the weapon rows' cells): each button fills with its own weapon's state.
@@ -29,15 +30,16 @@ function Touch.active()
 end
 
 local PAPER = Color3.fromRGB(250, 246, 232)
-local function disc(name, color, parent)
+-- A sticker: its picture drawn 1.1x the piece (room for the peel's shadow), centred; the piece itself is the circle.
+local function sticker(name, image, parent, z)
 	local frame = Instance.new("Frame")
-	frame.Name, frame.BackgroundColor3, frame.AnchorPoint, frame.Parent = name, color, Vector2.new(0.5, 0.5), parent
-	local corner = Instance.new("UICorner")
-	corner.CornerRadius, corner.Parent = UDim.new(0.5, 0), frame
-	local stroke = Instance.new("UIStroke")
-	stroke.Color, stroke.Thickness, stroke.Parent = PaperUI.INK, 3, frame
-	return frame
+	frame.Name, frame.BackgroundTransparency, frame.AnchorPoint, frame.Parent = name, 1, Vector2.new(0.5, 0.5), parent
+	local art = Instance.new("ImageLabel")
+	art.Name, art.Image, art.BackgroundTransparency, art.ZIndex = "Art", image, 1, z or 2
+	art.AnchorPoint, art.Position, art.Size, art.Parent = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5), UDim2.fromScale(1.1, 1.1), frame
+	return frame, art
 end
+local function round(frame) local corner = Instance.new("UICorner"); corner.CornerRadius, corner.Parent = UDim.new(0.5, 0), frame end
 
 function Touch.start(getPlane)
 	local player = Players.LocalPlayer
@@ -45,52 +47,56 @@ function Touch.start(getPlane)
 	gui.Name, gui.ResetOnSpawn, gui.IgnoreGuiInset, gui.DisplayOrder, gui.Enabled = "TouchControls", false, true, 5, false
 	gui.Parent = player:WaitForChild("PlayerGui")
 
-	-- The stick: a see-through ring and its knob, hidden until a thumb lands.
-	local base = disc("StickBase", PAPER, gui)
-	base.BackgroundTransparency, base.Visible = 0.65, false
-	local knob = disc("Knob", PAPER, base)
-	knob.BackgroundTransparency = 0.1
+	-- The stick: a clear sticker and its knob, hidden until a thumb lands.
+	local base, baseArt = sticker("StickBase", Art.pad, gui)
+	baseArt.ImageTransparency, base.Visible = 0.35, false
+	local knob = sticker("Knob", Art.knob, base, 3)
 	local stickTouch, stickFrom, radius = nil, Vector2.zero, 60
 
 	-- Held buttons: each follows the one touch that pressed it, so sliding a thumb off doesn't stick it on.
 	local buttons = {}
 	local function holdButton(name, label, color, onHold)
-		-- Paper discs with a crayon fill rising from the bottom (the weapon's heat, reload or lock; Boost's charge),
-		-- drawn with a hard-edged gradient so the round edge stays round.
-		local button = disc(name, Color3.new(1, 1, 1), gui)
+		-- Peel stickers with a crayon fill rising from the bottom (the weapon's heat, reload or lock; Boost's charge):
+		-- a paper disc inside the sticker's ink ring, the crayon disc clipped from the bottom, the sticker on top.
+		local button = sticker(name, Art.button, gui, 3)
 		button.Active = true
-		local fill = Instance.new("UIGradient")
-		fill.Rotation, fill.Parent = -90, button
+		local paper = Instance.new("Frame")
+		paper.Name, paper.BackgroundColor3, paper.AnchorPoint, paper.ZIndex = "Paper", PAPER, Vector2.new(0.5, 0.5), 1
+		paper.Position, paper.Size, paper.Parent = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(0.9, 0.9), button
+		round(paper)
+		local clip = Instance.new("Frame")
+		clip.Name, clip.BackgroundTransparency, clip.ClipsDescendants, clip.AnchorPoint = "Fill", 1, true, Vector2.new(0, 1)
+		clip.Position, clip.ZIndex, clip.Parent = UDim2.fromScale(0, 1), 2, button
+		local crayon = Instance.new("ImageLabel")
+		crayon.Name, crayon.Image, crayon.BackgroundTransparency, crayon.AnchorPoint, crayon.ZIndex = "Crayon", Art.crayon, 1, Vector2.new(0.5, 0.5), 2
+		crayon.Parent = clip
 		local words = PaperUI.words(button, "Label", label, 0, 0, 10, 10, 24)
 		words.AnchorPoint, words.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.45)
-		words.Size, words.TextXAlignment, words.TextScaled = UDim2.fromScale(0.7, 0.34), Enum.TextXAlignment.Center, true
+		words.Size, words.TextXAlignment, words.TextScaled, words.ZIndex = UDim2.fromScale(0.7, 0.34), Enum.TextXAlignment.Center, true, 4
 		local caption = PaperUI.words(button, "Caption", "", 0, 0, 10, 10, 14)
 		caption.AnchorPoint, caption.Position = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.72)
-		caption.Size, caption.TextXAlignment, caption.TextScaled = UDim2.fromScale(0.62, 0.16), Enum.TextXAlignment.Center, true
-		gauges[name] = function(share, crayon, text)
-			local tint, edge = CRAYON[crayon] or color, math.clamp(share, 0, 1)
-			local points = { ColorSequenceKeypoint.new(0, tint), ColorSequenceKeypoint.new(1, PAPER) }
-			if edge > 0.001 and edge < 0.999 then
-				table.insert(points, 2, ColorSequenceKeypoint.new(edge, tint))
-				table.insert(points, 3, ColorSequenceKeypoint.new(math.min(edge + 0.001, 0.9999), PAPER))
-			elseif edge >= 0.999 then points[2] = ColorSequenceKeypoint.new(1, tint)
-			else points[1] = ColorSequenceKeypoint.new(0, PAPER) end
-			fill.Color = ColorSequence.new(points)
+		caption.Size, caption.TextXAlignment, caption.TextScaled, caption.ZIndex = UDim2.fromScale(0.62, 0.16), Enum.TextXAlignment.Center, true, 4
+		-- The clip is the bottom `share` of the button; the crayon disc inside it stays put on the button's middle.
+		gauges[name] = function(share, tint, text)
+			local edge = math.clamp(share, 0, 1)
+			clip.Visible, clip.Size = edge > 0.001, UDim2.fromScale(1, edge)
+			if edge > 0.001 then crayon.Position, crayon.Size = UDim2.fromScale(0.5, 1 - 0.5 / edge), UDim2.fromScale(0.9, 0.9 / edge) end
+			crayon.ImageColor3 = CRAYON[tint] or color
 			caption.Text = text or ""
 		end
 		gauges[name](1, nil)
-		button.BackgroundTransparency = 0.12 -- the game shows faintly through a small screen's biggest pieces
+		paper.BackgroundTransparency = 0.12 -- the game shows faintly through a small screen's biggest pieces
 		local entry = { frame = button, touch = nil }
 		button.InputBegan:Connect(function(input)
 			if input.UserInputType ~= Enum.UserInputType.Touch or entry.touch then return end
 			entry.touch = input
-			button.BackgroundTransparency = 0.3
+			paper.BackgroundTransparency = 0.3
 			onHold(true)
 		end)
 		function entry.release()
 			if not entry.touch then return end
 			entry.touch = nil
-			button.BackgroundTransparency = 0.12
+			paper.BackgroundTransparency = 0.12
 			onHold(false)
 		end
 		table.insert(buttons, entry)

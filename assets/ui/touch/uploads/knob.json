@@ -1,0 +1,23 @@
+{
+  "path": "operations/59a2afbb-486b-476d-9581-db31a9f3822e",
+  "operationId": "59a2afbb-486b-476d-9581-db31a9f3822e",
+  "done": true,
+  "response": {
+    "path": "assets/104777249893802",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-29T00:04:08.281Z",
+    "assetId": "104777249893802",
+    "displayName": "FlyFightPaper touch knob",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}

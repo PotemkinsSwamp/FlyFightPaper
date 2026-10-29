@@ -1,0 +1,23 @@
+{
+  "path": "operations/e2d101f4-68c4-4778-9b1a-dd6c7487d9f8",
+  "operationId": "e2d101f4-68c4-4778-9b1a-dd6c7487d9f8",
+  "done": true,
+  "response": {
+    "path": "assets/94809350640708",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-10-29T00:04:05.371Z",
+    "assetId": "94809350640708",
+    "displayName": "FlyFightPaper touch crayon",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active"
+  }
+}
