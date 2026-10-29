@@ -12,8 +12,9 @@ What works: everything in Stage 9, tutorials, desk quick menu; phone checks pass
 Fixed, needs your phone check: everything in the list above.
 Not yet: Range menu, round results, Training board, match desk on a phone; iPad; match tips/Range notes moving.
 
-Waiting on you (first): publish, then on your phone: tutorial from the menu (lesson at once), slide along a wall
-(stays inside), the Range (shoot the plates and Reset with FIRE; Menu shows a Leave Range note), sticker buttons.
+Your phone run (2026-10-28 night, docs/playtests/2026-10-28-phone-tutorial-run.md) found, to fix next: auto-fire
+setting (not built yet), steering bar's top too high, Slow Motion paper too small for its words, Skip all → Next
+lesson goes to a match, a blank card button, two Back buttons in the Range Hangar, Range "Hangar" strip still hidden.
 
 Decisions to review
 Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).

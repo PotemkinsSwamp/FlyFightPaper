@@ -5,6 +5,7 @@ final on these.
 
 - [2026-10-25: a fresh join on Alan's phone](2026-10-25-phone-fresh-join.md)
 - [2026-10-28: four fresh joins on Alan's phone (loading)](2026-10-28-phone-joins.md)
+- [2026-10-28: Alan's phone run of the tutorials, Settings and the Range](2026-10-28-phone-tutorial-run.md)
 - [2026-10-21: the Hangar Tour](2026-10-21-hangar-tour.md)
 - [2026-10-21: the new Hangar](2026-10-21-new-hangar.md)
 - [2026-10-21: Range cards and the long row](2026-10-21-range-long-row.md)
