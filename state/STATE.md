@@ -1,23 +1,19 @@
 # Since Alan last checked (2026-10-28, night)
-- **Mobile lane (2026-10-28):** lesson notes, match tips and Range notes now slide out of the way (tilted, to a side
-  or the bottom) when they'd cover what matters; the phone lesson note is bigger-worded and sits up top beside Health
-  and Lift. Every paper button has a finger-sized tap area on phones (welcome question, cards, menu, Hangar, Settings).
-  Seen in Studio at a small notched phone's size; not yet on your phone.
-- **Your phone run's problems (2026-10-28), fixed in Studio, not yet published:** leaving the tutorial sent you to a
-  closed room ("experience does not exist"); "Tap LAUNCH" showed on the menu before the move; lessons framed the PC's
-  weapon rows instead of the round FIRE / 2 / BOOST buttons (now a round ring, buttons shown in read pauses); notes that
-  slid left sat over Health/Lift; Skip's words were cut off; Hangar mount numbers twice as big. Checked in Studio at
-  phone size.
-- **Phone button art:** you picked C (peel stickers, `assets/references/ui-concepts/touch-buttons-c.png`). Pieces being
-  drawn; you see them in place before any upload.
+- **Your two phone runs (2026-10-28), fixed in Studio, not yet published:** tutorial room move + lesson starting at
+  once (no menu flash); lessons ring the round FIRE / 2 / BOOST; notes stay off Health/Lift and off the bottom/left on
+  phones; walls no longer push planes through (and a plane outside goes back to its desk); Range plates and strips
+  shoot with touch FIRE; Leave Range note; Play says "Starting..."; red Settings Back; tour try-on/Select split.
+- **Phone buttons are peel stickers with a crayon fill (your pick C, uploaded).**
+- **Your rulings:** steering bar finer (speed unchanged); phone auto-fire on FIRE only (decision note 2026-10-28).
+  Not built yet.
 
 # Now: mobile lane (make phones work and look good): tutorials tuned to phones, sticker buttons, unchecked screens
 What works: everything in Stage 9, tutorials, desk quick menu; phone checks pass on menu, Hangar, Customize, Settings.
 Fixed, needs your phone check: everything in the list above.
 Not yet: Range menu, round results, Training board, match desk on a phone; iPad; match tips/Range notes moving.
 
-Waiting on you (first): publish the open Studio, then on your phone: start the tutorial from the menu (no note before
-the move; the 2 button ringed on the reload step), leave it and press Play (a match room), Hangar mount numbers.
+Waiting on you (first): publish, then on your phone: tutorial from the menu (lesson at once), slide along a wall
+(stays inside), the Range (shoot the plates and Reset with FIRE; Menu shows a Leave Range note), sticker buttons.
 
 Decisions to review
 Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).
