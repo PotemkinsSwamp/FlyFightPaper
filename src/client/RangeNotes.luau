@@ -44,7 +44,7 @@ local STEPS = {
 }
 
 -- getStage() = the Range's stage model or nil.
-function Notes.new(getStage)
+function Notes.new(getStage, menuOpen) -- menuOpen(): the Range menu is down
 	local player = Players.LocalPlayer
 	local gui = Instance.new("ScreenGui")
 	gui.Name, gui.IgnoreGuiInset, gui.ResetOnSpawn, gui.DisplayOrder, gui.Enabled = "RangeNotes", true, false, 12, false -- over the Hangar (10) and the Menu (11)
@@ -155,7 +155,7 @@ function Notes.new(getStage)
 		if inHangar then hangarWasOpen = true end
 		local where = if inHangar then onStage
 			elseif current ~= nil and current.gui == "leave" then onStage and Root:GetAttribute("OverlayOpen") == true
-			else inRange and not Root:GetAttribute("OverlayOpen")
+			else inRange and not Root:GetAttribute("OverlayOpen") and not menuOpen() -- (on a phone it covered half the open Range menu)
 		local show = profileLoaded and not seen and current ~= nil and where and not lesson
 		local low, high
 		if show and (current.find or current.gui) then low, high = target() end

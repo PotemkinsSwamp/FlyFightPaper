@@ -23,7 +23,8 @@ function Board.start()
 	local stage, sheet, up, isOpen = nil, nil, nil, false
 	local height, speed = LIFT, 0 -- how far above its open spot the menu hangs, and how fast that is changing
 	local presets = {}
-	local notes = require(script.Parent.RangeNotes).new(function() return stage and stage.Parent and stage or nil end)
+	local notes = require(script.Parent.RangeNotes).new(function() return stage and stage.Parent and stage or nil end,
+		function() return isOpen end)
 
 	local function strip(what)
 		for _, p in (sheet and sheet:GetChildren() or {}) do
