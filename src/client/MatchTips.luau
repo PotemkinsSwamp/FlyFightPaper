@@ -50,12 +50,16 @@ function Tips.start(getPlane)
 	local scale = Instance.new("UIScale")
 	scale.Parent = note
 	ScreenFit.inColumn(note, 5, true) -- on a phone it stays up top (Alan 2026-10-24: not in the middle of the view)
-	local title = PaperUI.phone(PaperUI.words(note, "Title", "Match tip", 34, 16, 300, 30, 22), { TextSize = 28 })
+	-- The words fill the note (Alan 2026-10-29: about 4 times bigger, too small to read on a phone): as big as fits,
+	-- on as many lines as the tip needs (a short tip fills it on one big line). On a PC Got it hangs off the note's bottom right corner, under the words.
+	local title = PaperUI.words(note, "Title", "Match tip", 28, 2, 320, 48, 46)
 	title.TextColor3 = Color3.fromRGB(150, 60, 40)
-	local words = PaperUI.words(note, "Text", "", 34, 44, 492, 40, 28)
-	words.TextWrapped, words.TextYAlignment = true, Enum.TextYAlignment.Top
+	local words = PaperUI.words(note, "Text", "", 28, 46, 504, 88, 88)
+	words.TextYAlignment, words.TextScaled, words.TextWrapped = Enum.TextYAlignment.Top, true, true
+	local most = Instance.new("UITextSizeConstraint")
+	most.MaxTextSize, most.Parent = 88, words
 	local current, shownFor, lastEnded = nil, 0, -math.huge
-	local gotIt = PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "Got it  [Space]", 34, 86, 220, 42, 1, function() shownFor = SHOW_SECONDS end, 22)
+	local gotIt = PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "Got it  [Space]", 330, 116, 200, 40, 1, function() shownFor = SHOW_SECONDS end, 22)
 	note.Activated:Connect(function() shownFor = SHOW_SECONDS end)
 	local arrow = PaperUI.image(gui, "Arrow", Art.tutorial.arrow, 0, 0, 120, 75)
 	local arrowScale = Instance.new("UIScale")
@@ -137,6 +141,7 @@ function Tips.start(getPlane)
 		local px, py, turn, spot, f = dodge(Vector2.new(gui.AbsoluteSize.X / 2 + x, y), function(at) return size * (at == "home" and fit or 1) end, current.key, boxes, 1, dt)
 		scale.Scale, arrowScale.Scale = s * (spot == "home" and fit or f), s
 		gotIt.Visible = not Touch.active()
+		words.Size = UDim2.fromOffset(504, gotIt.Visible and 68 or 88) -- (above Got it on a PC)
 		note.Position, note.Rotation = UDim2.fromOffset(px, py), turn
 		arrow.Visible = low ~= nil
 		if low then PaperUI.pointArrow(arrow, note.AbsolutePosition - gui.AbsolutePosition + note.AbsoluteSize / 2, low, high, s) end
