@@ -106,8 +106,8 @@ function Touch.start(getPlane)
 	local fire = holdButton("Fire", "FIRE", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(1, down) end; if down and Touch.onShot then Touch.onShot() end end)
 	local fire2 = holdButton("Fire2", "2", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(2, down) end; if down and Touch.onShot then Touch.onShot() end end)
 	local boost = holdButton("Boost", "BOOST", CRAYON.blue, function(down) Touch.boost = down end)
-	-- The brake (Alan 2026-10-29): only for players who turned Speed match off in Settings (FlightController).
-	local brake = holdButton("Brake", "FLAPS", CRAYON.orange, function(down) Touch.brake = down end)
+	-- The brake (Alan 2026-10-29), always there, Speed match or not (FlightController).
+	local brake = holdButton("Brake", "BRAKE", CRAYON.orange, function(down) Touch.brake = down end)
 
 	-- Sizes follow the screen's short side, kept thumb-sized (points): a phone and a tablet both get pieces a thumb
 	-- can hit, and a tablet's don't grow huge.
@@ -192,8 +192,6 @@ function Touch.start(getPlane)
 		boost.Visible = boostMax > 0
 		if boost.Visible then Touch.gauge("Boost", (plane:GetAttribute("Boost") or 0) / boostMax, "blue") end
 		fire2.Visible = flying and (plane:GetAttribute("AlternateName") or "None") ~= "None"
-		brake.Visible = flying and Root:GetAttribute("SpeedMatch") == false
-		if not brake.Visible then Touch.brake = false end
 		if controls and controlsOff ~= Touch.active() then
 			controlsOff = Touch.active()
 			if controlsOff then controls:Disable() else controls:Enable() end

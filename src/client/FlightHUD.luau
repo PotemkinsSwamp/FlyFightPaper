@@ -729,7 +729,7 @@ function HUD.start(getPlane, action)
 		boostRow.show(tenths(plane:GetAttribute("Boost") or 0, boostMax), "blue")
 		boostRow.value.Text = string.format("%.1fs", plane:GetAttribute("Boost") or 0)
 		local flyingNow = plane:GetAttribute("State") == "FLYING"
-		slowTag.Text = flyingNow and (plane:GetAttribute("Braking") and "FLAPS UP" or FlightState.matching and "SPEED MATCH") or ""
+		slowTag.Text = flyingNow and (plane:GetAttribute("Braking") and "BRAKE" or FlightState.matching and "SPEED MATCH") or ""
 		slowTag.Visible = slowTag.Text ~= ""
 		left.Visible = not plane:GetAttribute("Pinned") -- the Range: nothing hurts you and Lift never runs out
 		local ids=string.split(plane:GetAttribute("Mounts") or "",",")

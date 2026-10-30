@@ -8,10 +8,10 @@ Works and approved in play. A scrape knocks the nose and aim away from the surfa
 waits on Alan's feel check; rule in [damage and deaths](damage-and-deaths.md)). Boost now pushes along the nose even with no Lift. Open: Toilet Roll body jitter Alan saw once (not reproduced; needs his description).
 Touch (2026-10-23): steering stick and Fire/2/Boost buttons built, not yet tried in the phone simulator or on a phone.
 **Brake and phone speed matching (2026-10-29, Alan's pick from [phone aim options](../plan/PHONE-AIM-OPTIONS.md)):
-built for testing, not yet felt by Alan.** PC: hold Space, "FLAPS UP" under the view. Phones: no button; close
+built for testing, not yet felt by Alan.** PC: hold Space, "BRAKE" under the view. Phones: a BRAKE button (above Boost), and close
 behind an enemy the speed eases down to its speed, "SPEED MATCH" under the view (Settings > Speed match, on by
-default; Alan tried it on his phone 2026-10-29 and keeps it). With Speed match off, a FLAPS button (above Boost) is
-the brake (Alan 2026-10-29). The paper-flaps look on the plane comes after Alan likes the feel.
+default; Alan tried it on his phone 2026-10-29 and keeps it). Braking while speed matching doesn't stack: the
+brake's speed wins. The paper-flaps look on the plane comes after Alan likes the feel.
 
 ## Rules
 - **Cheat checks (2026-10-17 audit):** the server compares each human plane's position and turn every 0.25 s and
@@ -53,13 +53,13 @@ held and augments speed by the equipped module; clamp stacked environmental spee
   `keep_range_studs`/`keep_cone_deg` (another plane passing in front can't steal it) and lets go `lost_seconds` after
   losing it, or at once when it folds. Your speed eases to the enemy's, a little faster while further back than
   `follow_studs` (so you close in), never faster than your own speed nor below `floor_factor`. Boost cancels it. No
-  extra Lift cost (it only works while tailing). Off: Settings > Speed match (phones only); then the FLAPS button brakes.
+  extra Lift cost (it only works while tailing). Off: Settings > Speed match (phones only).
 
 ## Code
 | File | What it does |
 |---|---|
 | `src/client/FlightController.luau` | Mouse-aim steering on your screen (and the touch stick's turning) |
-| `src/client/TouchControls.luau` | Phones and tablets: the floating steering stick (left half), Fire / 2 / Boost buttons (and FLAPS, the brake, when Speed match is off), drawn as peel stickers with a tinted crayon fill rising inside (Alan 2026-10-28, `assets/ui/touch/`, concept `ui-concepts/touch-buttons-c.png`); only while flying on a touch screen (and in a lesson's read pause); turns off Roblox's own walk stick and jump button |
+| `src/client/TouchControls.luau` | Phones and tablets: the floating steering stick (left half), Fire / 2 / Boost / Brake buttons, drawn as peel stickers with a tinted crayon fill rising inside (Alan 2026-10-28, `assets/ui/touch/`, concept `ui-concepts/touch-buttons-c.png`); only while flying on a touch screen (and in a lesson's read pause); turns off Roblox's own walk stick and jump button |
 | `src/client/ChaseCamera.luau` | Chase camera: smoothing, speed zoom, shake, stays in the room |
 | `src/server/FlightService.luau` | Server side of every plane: spawn at desk, takeoff, fans, speed pickups, death and landing hooks |
 | `src/shared/FlightRules.luau` | Lift drain and flight limits |
