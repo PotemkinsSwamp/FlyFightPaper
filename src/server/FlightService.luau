@@ -76,8 +76,8 @@ function Service.new()
  self.remote=Instance.new("RemoteEvent");self.remote.Name="FlightAction";self.remote.Parent=Root
  self.remote.OnServerEvent:Connect(function(player,action,value)
   local p=self.pilots[player];if not p then return end
-  if action=="boost" then
-   if type(value)=="boolean" then p.boostHeld=value end
+  if action=="boost" or action=="brake" then
+   if type(value)=="boolean" then p[action.."Held"]=value end
    return
   end
   local now=workspace:GetServerTimeNow();if now-p.lastAction<0.35 then return end;p.lastAction=now
@@ -517,8 +517,11 @@ function Service:step(dt)
    p.model:SetAttribute("BoostSpeedFactor",(boosting and utility.speed_factor or 1)*(1+(now<(p.pickupUntil or 0) and p.pickupBonus or 0))*blown)
    -- Boost drives the plane along its nose even with no Lift (Alan 2026-10-14), so it counts as powered flight.
    p.model:SetAttribute("Boosting",boosting==true);if boosting then p.boostedAt=now end
+   -- The brake (Space; FlightController flies the plane slower) costs Lift, so it can't be held all match.
+   local braking=p.brakeHeld==true and not boosting
+   if p.model:GetAttribute("Braking")~=braking then p.model:SetAttribute("Braking",braking) end
    -- Drain in 0.2 s steps so these attributes replicate at 5 Hz, not every frame.
-   p.liftDrain=(p.liftDrain or 0)+dt;p.boostDrain=(p.boostDrain or 0)+(boosting and dt or 0)
+   p.liftDrain=(p.liftDrain or 0)+dt*(braking and Gameplay.flight.brake_lift_drain_factor or 1);p.boostDrain=(p.boostDrain or 0)+(boosting and dt or 0)
    if p.liftDrain>=.2 then
     -- Slow motion (the tutorial's aiming) keeps Lift full: you only turn and aim there (Alan 2026-10-19).
     p.model:SetAttribute("Lift",(p.slow or p.keepLift) and p.stats.lift or math.max(p.gentle and 1 or 0,Rules.lift(p.model:GetAttribute("Lift"),p.stats.lift,p.liftDrain)));p.liftDrain=0

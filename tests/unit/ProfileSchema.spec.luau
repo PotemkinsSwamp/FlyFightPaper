@@ -66,11 +66,13 @@ function Spec.run()
 		assert(p.settings.crosshairColor=="blue" and p.settings.crosshairSize=="Medium")
 		assert(Schema.validate(p,catalog))
 	end)
-	test("auto-fire is on for new profiles, optional for older saves and only true or false",function()
-		local p=fresh(); assert(p.settings.autoFire==true and Schema.validate(p,catalog))
-		p.settings.autoFire=false; assert(Schema.validate(p,catalog))
-		p.settings.autoFire=nil; assert(Schema.validate(p,catalog))
-		p.settings.autoFire="on"; assert(not Schema.validate(p,catalog))
+	test("auto-fire and speed match are on for new profiles, optional for older saves and only true or false",function()
+		for _,key in ipairs({"autoFire","speedMatch"}) do
+			local p=fresh(); assert(p.settings[key]==true and Schema.validate(p,catalog))
+			p.settings[key]=false; assert(Schema.validate(p,catalog))
+			p.settings[key]=nil; assert(Schema.validate(p,catalog))
+			p.settings[key]="on"; assert(not Schema.validate(p,catalog))
+		end
 	end)
 	test("every allowed crosshair color and size validates",function()
 		for _,color in ipairs({"green","red","blue","yellow","purple","white"}) do

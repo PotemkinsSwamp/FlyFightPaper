@@ -8,7 +8,10 @@ local SWAPS = {
 	{ "Skip  %[K%]", "Skip\n(hold: all)" }, -- the lesson's Skip button: held, it skips the whole lesson (Tutorial); two lines fit a phone
 	{ "%s*%[Space%]", "" }, { "%s*%[K%]", "" },
 	{ "Move the mouse to steer", "Push the stick to steer" },
-	{ "Hold Shift to boost", "Hold BOOST to go faster" },
+	{ "Hold Shift for 1 second to boost", "Hold BOOST for 1 second to go faster" },
+	{ "Move the mouse all the way", "Push the stick all the way" },
+	-- On a phone the dot also turns yellow when the touch aim help makes the shots land (FlightHUD).
+	{ "When the dot turns red, hold left click", "When the dot turns red or yellow, hold FIRE" },
 	{ "Press K to skip this step", "Tap Skip to skip this step" },
 	{ "press Enter", "tap Done" },
 	{ "Click or press Space to close", "Tap to close" },

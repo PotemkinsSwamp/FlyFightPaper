@@ -516,7 +516,7 @@ function Tutorial.start(getPlane)
  end
  -- The lesson's server side (RoundRuntime:lesson): targets, the Pal, slow motion, a repair.
  ctx.player=player
- ctx.lesson=function(cmd) if cmd.slow~=nil then setSlow(cmd.slow) end;Root.RoundAction:FireServer("lesson",cmd) end
+ ctx.lesson=function(cmd) if cmd.slow~=nil then setSlow(cmd.slow==true) end;Root.RoundAction:FireServer("lesson",cmd) end
  -- Practice target planes still in the air, nearest first.
  ctx.targets=function()
   local list={}

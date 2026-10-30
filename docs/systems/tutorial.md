@@ -6,6 +6,15 @@ fans, landing), shooting paper targets, then a fight with one enemy, then what e
 hangar, each weapon, and how building a plane works. It can be skipped and replayed, and never pays rewards.
 
 ## Where it stands (2026-10-22)
+**Rewrite for young players (Alan 2026-10-29, [playtest](../playtests/2026-10-29-young-testers-tutorial.md) notes
+3-6; words OK'd in chat): built, not yet seen in Play.** Every note says what to do, where (by the colour of what's
+on screen: the yellow line, the green dot, the orange ring, the pink circle), how many or how long, and which button;
+steps with a marker say "Follow the yellow line". The hoops step flies at 80% speed (Alan: so you can't just miss
+them). Landing is two steps: line up at LINE UP HERE, then at half speed with the desk's paper ring glowing, "fly
+straight into the glowing circle" (wander off the approach: full speed and the line-up sign again). The desk step
+keeps Full refold and Fresh plane (Alan). Every Pal flies straight and turns 90 degrees only at a wall or building,
+the same way when it can, so it flies a square between the buildings (Alan: a circling Pal is very hard to hit on a
+phone). Flight School has 8 steps.
 **Room moves (Alan's phone runs, v413, 2026-10-28):** the private tutorial room does know it is one (every join and
 move there logs `RoomClass` tutorial). The failure was the way out: the tutorial sent him to the public room he had
 just left (its list entry was still fresh, under 45 s), which had closed, so the move failed twice ("GameEnded").
@@ -125,8 +134,8 @@ against the room's exact shapes; the course points are the fallback), held still
 (`src/shared/TrainingCourse.luau`), so every aim help works on them as in a match. Part 2, fighting: one "Paper Pal"
 at a time, at full speed again, appearing in the air 400-700 studs ahead (within 40 degrees of the nose, hidden behind
 a building when it can be; never out of a hangar or off to the side: Alan 2026-10-19, "coming out of nowhere";
-BotService:placePal), facing away, your speed when you're near and 85% while you're over 250 studs off (Alan 2026-10-21: chasing one took a minute; 2026-10-22: 70%/95% was too easy, no chase), turning at 80%, keeping its own heading and banking 25-50 degrees one way or the other every 2.5-4 s
-and turning further only when blocked, never a stunt and never away from you (Alan 2026-10-19/21: noob-level, "in a straight line"; turning away from you made you both circle): one that never shoots, and one that starts behind you, off to one side, 400-500 studs back, flying away
+BotService:placePal), facing away, your speed when you're near and 85% while you're over 250 studs off (Alan 2026-10-21: chasing one took a minute; 2026-10-22: 70%/95% was too easy, no chase), turning at 80%, flying straight and turning 90 degrees only when a wall or building is 250 studs ahead (2026-10-29: a square between the buildings),
+never a stunt and never away from you (Alan 2026-10-19/21: noob-level, "in a straight line"; turning away from you made you both circle): one that never shoots, and one that starts behind you, off to one side, 400-500 studs back, flying away
 (always placed afresh when the step starts or restarts; Alan 2026-10-21: it kept appearing ahead). Its "shots" are fakes (BotService:palAmbush; Alan 2026-10-21/22): from the moment the note lets you go, pellets appear 70 studs from you on its side (closer if a wall is in the way), out of sight, and hit,
 only while it is over 60 degrees off your nose, until your Health is down to half (its hits can't fold you; Alan: "whittle your health down"; measured in Play: hits from 0.5 s after the note, about 8 Health a second); once you've been hit the note says "It's shooting you from behind!" while it's back there. You turn round, see it running, and chase it down. Neither carries an eraser. Part 3, the eraser:
 the plane refolds in the air with an eraser on right click (`eraser=true`), then in slow motion the big lock circle and

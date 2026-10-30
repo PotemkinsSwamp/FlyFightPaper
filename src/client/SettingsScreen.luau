@@ -128,6 +128,15 @@ function SettingsScreen.new(playerGui, api)
 		autoLabel.Visible, auto.Visible = Touch.active(), Touch.active()
 		auto.Image, auto.Label.Text = settings.autoFire and Art.tabGreen or Art.tabOff, settings.autoFire and "On" or "Off"
 	end
+	-- Touch screens only: close behind an enemy your speed eases down to its speed (FlightController, SpeedMatch).
+	local matchLabel = words(sheet, "SpeedMatchLabel", "Speed match", 285, 945, 300, 60, 52)
+	local match = PaperUI.button(sheet, "SpeedMatch", Art.tabOff, "On", 600, 935, 185, 82, 0,
+		function() settings.speedMatch = not settings.speedMatch; refresh.speedMatch(); save() end, 40)
+	PaperUI.phone(match.Label, { TextSize = 48 })
+	refresh.speedMatch = function()
+		matchLabel.Visible, match.Visible = Touch.active(), Touch.active()
+		match.Image, match.Label.Text = settings.speedMatch and Art.tabGreen or Art.tabOff, settings.speedMatch and "On" or "Off"
+	end
 	refresh.crosshairSize = (function(base)
 		return function()
 			base()
@@ -150,6 +159,7 @@ function SettingsScreen.new(playerGui, api)
 		settings.crosshairSize = settings.crosshairSize or "Medium"
 		settings.matchTips = settings.matchTips ~= false
 		settings.autoFire = settings.autoFire ~= false
+		settings.speedMatch = settings.speedMatch ~= false
 		for _, fn in refresh do fn() end
 	end
 	return self

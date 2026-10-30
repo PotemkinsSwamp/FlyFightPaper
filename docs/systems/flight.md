@@ -7,6 +7,10 @@ You point the mouse where you want to go and the plane flies itself there, banki
 Works and approved in play. A scrape knocks the nose and aim away from the surface and wobbles the plane (2026-10-18,
 waits on Alan's feel check; rule in [damage and deaths](damage-and-deaths.md)). Boost now pushes along the nose even with no Lift. Open: Toilet Roll body jitter Alan saw once (not reproduced; needs his description).
 Touch (2026-10-23): steering stick and Fire/2/Boost buttons built, not yet tried in the phone simulator or on a phone.
+**Brake and phone speed matching (2026-10-29, Alan's pick from [phone aim options](../plan/PHONE-AIM-OPTIONS.md)):
+built for testing, not yet felt by Alan.** PC: hold Space, "FLAPS UP" under the view. Phones: no button; close
+behind an enemy the speed eases down to its speed, "SPEED MATCH" under the view (Settings > Speed match, on by
+default). The paper-flaps look on the plane comes after Alan likes the feel.
 
 ## Rules
 - **Cheat checks (2026-10-17 audit):** the server compares each human plane's position and turn every 0.25 s and
@@ -39,6 +43,17 @@ second you stay in its gust (clamped to maximum, every pass, no reuse timer) and
 than multiply overlapping copies. Fans do not refill optional boost. Boost drains its separate seconds while
 held and augments speed by the equipped module; clamp stacked environmental speed to a safe validated limit.
 
+- **Brake (Space, PC; Alan 2026-10-29):** while held (and not boosting) the plane flies at `brake_speed_factor` of
+  its speed and turns `brake_turn_factor` tighter; the server drains Lift `brake_lift_drain_factor` times as fast
+  (attribute `Braking`), so it can't be held all match. Speed changes ease at `speed_ease_per_s`.
+- **Speed match (phones; `SpeedMatch`):** it follows only a plane you are really tailing: within `pick_range_studs`
+  and `pick_cone_deg` of your nose, flying within `same_way_deg` of your heading (a plane crossing in front or coming
+  head-on never counts; the nearest such plane is picked). It keeps that plane while it stays within
+  `keep_range_studs`/`keep_cone_deg` (another plane passing in front can't steal it) and lets go `lost_seconds` after
+  losing it, or at once when it folds. Your speed eases to the enemy's, a little faster while further back than
+  `follow_studs` (so you close in), never faster than your own speed nor below `floor_factor`. Boost cancels it. No
+  extra Lift cost (it only works while tailing). Off: Settings > Speed match (phones only).
+
 ## Code
 | File | What it does |
 |---|---|
@@ -47,6 +62,7 @@ held and augments speed by the equipped module; clamp stacked environmental spee
 | `src/client/ChaseCamera.luau` | Chase camera: smoothing, speed zoom, shake, stays in the room |
 | `src/server/FlightService.luau` | Server side of every plane: spawn at desk, takeoff, fans, speed pickups, death and landing hooks |
 | `src/shared/FlightRules.luau` | Lift drain and flight limits |
+| `src/shared/SpeedMatch.luau` | Phones: which enemy you are tailing and the share of speed that matches it (tests: `tests/unit/SpeedMatch.spec.luau`) |
 | `src/client/SpeedPickups.luau` | Spinning speed-bolt markers |
 | `src/client/FanSpin.luau, src/client/FanWind.luau` | Fan blades turning and wind swirls |
 

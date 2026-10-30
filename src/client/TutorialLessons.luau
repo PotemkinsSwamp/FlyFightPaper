@@ -43,12 +43,37 @@ local function launch()
   end}
 end
 
+-- Flight School's hoops and landing pull the plane's speed back (Alan 2026-10-29: so you can't just miss them); not
+-- slow motion, which only the aiming steps use.
+local HOOP_SLOW=.8
+local LAND_SLOW=.5
+-- Landing: your desk's approach ring (FlightService PracticeRing), where the plane is from it, and the desk's paper
+-- ring that glows (DeskPieces' "landing-ring" parts; the one nearest the approach ring).
+local LINE_UP=CFrame.new(0,10,-260)
+local function approach(ctx)
+ local ring=ctx.plane and ctx.plane:GetAttribute("PracticeRing")
+ return ring,ring and ctx.body and ring:PointToObjectSpace(ctx.body.Position)
+end
+local function lined(rel) return rel~=nil and rel.Z<-80 and math.abs(rel.X)<30 and math.abs(rel.Y)<40 end
+local function drifted(rel) return rel~=nil and (math.abs(rel.X)>80 or math.abs(rel.Y)>80 or rel.Z<-450) end
+local function ringPart(ctx,ring)
+ if ctx.data.ringPart==nil then
+  ctx.data.ringPart=false
+  for _,part in workspace:GetDescendants() do
+   if part.Name=="landing-ring" and part:IsA("BasePart") and (part.Position-ring.Position).Magnitude<60 then ctx.data.ringPart=part;break end
+  end
+ end
+ return ctx.data.ringPart or nil
+end
+
+-- Every note says what to do, where (by the colour of what's on screen), how many or how long, and which button
+-- (Alan 2026-10-29: a 10-year-old must manage each step from its note alone; docs/systems/tutorial.md).
 Lessons.flight={
  name="Flight School",next="combat",
  steps={
   launch(),
-  {text="Move the mouse to steer through the hoops.",key="Mouse",count=3,hint="Your plane turns toward the circle.",
-   enter=function(ctx) ctx.data.passed=0 end,
+  {text="Move the mouse to steer. Follow the yellow line through 3 hoops.",key="Mouse",count=3,hint="Lost? The paper arrow by your circle points the way to turn.",
+   enter=function(ctx) ctx.data.passed=0;ctx.lesson({slow=HOOP_SLOW}) end,
    update=function(ctx)
     if ctx.state~="FLYING" and ctx.state~="TAKEOFF" then return ctx.data.passed end
     local hoop,model=ctx.hoop()
@@ -56,36 +81,51 @@ Lessons.flight={
     if ctx.passedHoop() then ctx.data.passed+=1;ctx.ding();ctx.clearHoop() end
     return ctx.data.passed
    end},
-  {text="Your Lift drops every second. Fill it up in a fan: follow the line!",key=nil,hint="Follow the yellow line, then fly up into the fan's wind.",
+  {text="Your Lift bar goes down as you fly. Follow the yellow line to the fan, then fly up into its wind.",key=nil,hint="Fly into the glowing fan. Its wind fills your Lift.",
+   enter=function(ctx) ctx.lesson({slow=false}) end,
    update=function(ctx)
     ctx.spotlight("LiftStrip") -- everything greyed out but the Lift bar (Alan); the line and glow show the fan
     local fan=ctx.body and nearestFan(ctx.body.Position)
     if fan then ctx.marker(fan.center,"FLY UP HERE",fan.half.X,blades(fan)) end
     return ctx.state=="FLYING" and ctx.body~=nil and inFan(ctx.body.Position)
    end},
-  {text="Fly through a speed bolt for extra speed.",hint="Bolts spin inside the rings and tubes.",
+  {text="Follow the yellow line to the spinning speed bolt. Fly right through it.",hint="Bolts spin inside the rings and tubes. Fly through the middle.",
    enter=function(ctx) ctx.data.before=ctx.plane and ctx.plane:GetAttribute("PickupUntil") or 0 end,
    update=function(ctx)
     local bolt=ctx.body and ctx.nearestBolt(ctx.body.Position)
     if bolt then ctx.marker(bolt.Position,"SPEED BOLT",14,bolt) end
     return ctx.plane~=nil and (ctx.plane:GetAttribute("PickupUntil") or 0)>ctx.data.before
    end},
-  {text="Hold Shift to boost.",key="Shift",
+  {text="Hold Shift for 1 second to boost.",key="Shift",
    enter=function(ctx) ctx.data.boosted=0 end,
    update=function(ctx)
     ctx.pulse("BoostStrip")
     if ctx.plane and ctx.plane:GetAttribute("Boosting") then ctx.data.boosted+=ctx.dt end
     return ctx.data.boosted>=1
    end},
-  {text="Land: fly through your desk's ring.",hint="Line up in front of the desk first, then fly straight in.",land=true,
+  -- Landing in two steps (Alan 2026-10-29): line up first, then slowed down with the desk's ring glowing, fly in.
+  {text="Time to land! Follow the yellow line to the LINE UP HERE sign in front of your desk.",hint="Fly to the sign, then turn so your desk is straight ahead.",land=true,
    update=function(ctx)
-    local ring=ctx.plane and ctx.plane:GetAttribute("PracticeRing")
-    local rel=ring and ctx.body and ring:PointToObjectSpace(ctx.body.Position)
-    local lined=rel and rel.Z<-80 and math.abs(rel.X)<30 and math.abs(rel.Y)<40
-    if ring and ctx.state=="FLYING" then ctx.marker(lined and ring.Position or (ring*CFrame.new(0,10,-260)).Position,lined and "YOUR DESK: STRAIGHT ON" or "LINE UP HERE",24) end
-    return ctx.state=="DESK" and ctx.data.flew
+    local ring,rel=approach(ctx)
+    if ring and ctx.state=="FLYING" then ctx.marker((ring*LINE_UP).Position,"LINE UP HERE",24) end
+    return ctx.state=="FLYING" and lined(rel) or ctx.state=="DESK" and ctx.data.flew
    end},
-  {text="At your desk: Refill Lift and Repair are free. Full refold changes your plane. Fresh plane starts over.",gotIt=true,
+  {text=function(ctx) return ctx.data.off and "Turn back: follow the yellow line to LINE UP HERE." or "Slowing you down... Now fly straight into the glowing circle at your desk!" end,
+   hint="Missed it? Follow the line back to LINE UP HERE and try again.",land=true,
+   enter=function(ctx) ctx.data.home=ctx.state=="DESK";ctx.lesson({slow=LAND_SLOW}) end,
+   update=function(ctx)
+    local ring,rel=approach(ctx)
+    if ring and ctx.state=="FLYING" then
+     -- Wandered off the approach: full speed and the line-up sign again until lined up once more.
+     local off=ctx.data.off
+     if off and lined(rel) then off=false elseif not off and drifted(rel) then off=true end
+     if off~=ctx.data.off then ctx.data.off=off;ctx.lesson({slow=not off and LAND_SLOW or false}) end
+     if off then ctx.marker((ring*LINE_UP).Position,"LINE UP HERE",24) else ctx.marker(ring.Position,"FLY IN HERE",24,ringPart(ctx,ring)) end
+    end
+    return ctx.state=="DESK" and (ctx.data.flew or ctx.data.home)
+   end},
+  {text="You landed! Click a glowing button. Refill Lift and Repair are free. Full refold: change your plane. Fresh plane: start over.",gotIt=true,
+   enter=function(ctx) ctx.lesson({slow=false}) end,
    update=function(ctx)
     ctx.spotlight("Refill","Repair","Fresh","Refold")
     -- Using one ends the step too (Alan 2026-10-28: he tapped Repair and still had to press Got it).
@@ -114,8 +154,8 @@ local Course=require(Root.Shared.TrainingCourse)
 -- the circle, the dot and the orange ring work; then once more at full speed. Walls only bounce
 -- you off here (gentle). HUD pieces get the soft frame (thin, see-through, no dim) so the crosshair stays visible.
 local AIM_STEPS={
-  {text="Slow motion! The circle is where you steer. The dot is where your guns point. Put the dot on the star.",key="Mouse",
-   hint="Hold the circle on the star and wait: the dot slides over to it.",
+  {text="Slow motion! Move your circle onto the yellow star. Keep it there until the green dot reaches the star, then hold it 1 second.",key="Mouse",
+   hint="The dot is slow. Keep your circle still on the star and wait.",
    enter=function(ctx) ctx.lesson({slow=true,gentle=true});ctx.data.point=1;ctx.data.held=0 end,
    update=function(ctx)
     if ctx.state~="FLYING" then return false end
@@ -127,8 +167,8 @@ local AIM_STEPS={
     ctx.data.held=not ctx.reading and noseOn(ctx,star.Position,4) and ctx.data.held+ctx.dt or 0
     return ctx.data.held>=1
    end},
-  {text=shootText("Put the dot on a target. When the dot turns red, hold left click!"),key="Left click",count=3,
-   hint="Wait for the dot to turn red: that means your pellets will hit. Then hold left click.",
+  {text=shootText("Put the green dot on a paper plane. When the dot turns red, hold left click until the plane falls. Do 3."),key="Left click",count=3,
+   hint="Red dot = your shots will hit. Keep holding until it falls.",
    enter=function(ctx) ctx.lesson({drill="still"}) end,
    update=function(ctx)
     ctx.pulse("Fire") -- (a phone's FIRE button gets a frame; a PC has no "Fire", so nothing shows there)
@@ -136,22 +176,22 @@ local AIM_STEPS={
     return ctx.count("DrillDown")
    end},
   -- Leading (Alan 2026-10-19: nothing taught it): first just look at the ring in front of a plane flying past.
-  {text="Pellets take time to get there. The orange ring is where the plane WILL be: aim there. That's called leading.",gotIt=true,
+  {text="Shots take time to fly. The orange ring shows where the plane WILL be. Aim at the ring, not the plane.",gotIt=true,
    enter=function(ctx) ctx.lesson({drill="moving"}) end,
    update=function(ctx)
     ctx.softSpot("LeadPipper");ctx.softTag("AIM HERE")
     markTarget(ctx,"WATCH")
     return false
    end},
-  {text=shootText("Put the dot on the orange ring. When the dot turns red, hold left click!"),key="Left click",count=2,
-   hint="Red means you're on the ring: your pellets will meet the plane. Steer a little ahead of it.",
+  {text=shootText("Put the green dot on the orange ring. When the dot turns red, hold left click until the plane falls. Do 2."),key="Left click",count=2,
+   hint="Steer a little ahead of the plane, onto its ring.",
    update=function(ctx)
     ctx.softSpot("LeadPipper");ctx.softTag("AIM HERE")
     markTarget(ctx,"SHOOT")
     return ctx.count("DrillDown")
    end},
-  {text=shootText("This one's fast! The faster it goes, the further ahead the ring. Dot on the ring!"),key="Left click",count=1,
-   hint="Keep the dot on the orange ring as it zooms across, and hold left click.",
+  {text=shootText("This one is fast, so its ring is further ahead. Keep the dot on the orange ring and hold left click until it falls."),key="Left click",count=1,
+   hint="Follow the ring as it zooms across.",
    enter=function(ctx) ctx.lesson({drill="fast"}) end,
    update=function(ctx)
     markTarget(ctx,"SHOOT")
@@ -166,8 +206,8 @@ local function markPal(ctx,words)
  if pal then ctx.marker(pal.Root.Position,words,16,pal) end
 end
 local FIGHT_STEPS={
-  {text=shootText("An enemy! It's slow and won't shoot. Shoot it down: dot on the orange ring."),key="Left click",
-   hint="Follow the line to it, then put the dot on the orange ring and hold left click.",
+  {text=shootText("An enemy plane! It's slow and won't shoot. Follow the yellow line to it. Put the dot on its orange ring and hold left click."),key="Left click",
+   hint="Get behind it first. Then aim at the ring.",
    enter=function(ctx) ctx.lesson({drill=false,pal="circle",gentle=false,slow=false});ctx.data.start=ctx.count("PalFolds") end,
    update=function(ctx)
     markPal(ctx,"ENEMY")
@@ -182,11 +222,11 @@ local FIGHT_STEPS={
     local pal=ctx.pal()
     local hit=plane and plane:GetAttribute("Health")<(plane:GetAttribute("MaxHealth") or 0)
     if hit and not low and pal and ctx.body and (pal.Root.Position-ctx.body.Position):Dot(ctx.body.CFrame.LookVector)<0 then
-     return "It's shooting you from behind! Turn round and find it."
+     return "It's behind you, shooting! Turn round and follow the yellow line to it."
     end
-    return low and "It hit you: your Health went down. Now it's stopped. Shoot it down!" or "This one shoots back! Watch your Health bar."
+    return low and "It stopped shooting and is flying away. Chase it! Dot on its orange ring, hold left click." or "This one shoots back! Follow the yellow line and chase it."
    end,key="Left click",
-   hint="It only shoots until you're at half Health. Then chase it and shoot.",
+   hint="It shoots only until your Health bar is half full. Then it runs. Get behind it.",
    enter=function(ctx) ctx.lesson({pal="pellet"});ctx.data.start=ctx.count("PalFolds") end,
    update=function(ctx)
     ctx.pulse("HealthStrip")
@@ -199,12 +239,12 @@ local FIGHT_STEPS={
 -- sounds don't distract from aiming; it is the one weapon that works differently). Slow motion again to lock on,
 -- full speed once, then dodge a Pal's eraser and fire one back.
 local ERASER_STEPS={
-  {text="Last part: your eraser! Your plane now has an eraser launcher on right click. Erasers chase the plane you lock on to.",gotIt=true,
+  {text="Last part: erasers! Hold right click to fire an eraser that chases the plane you lock on to.",gotIt=true,
    enter=function(ctx) ctx.lesson({pal=false,eraser=true,slow=true,gentle=true}) end,
    update=function(ctx) ctx.pulse("Fire2");return false end}, -- (phones: frames the 2 button)
   -- Holding right click through the 1.5 s lock fires the eraser by itself (CombatService), so no "let go" step.
-  {text="Your eraser chases planes. Hold right click and keep a target inside the big circle.",key="Right click",
-   hint="Turn so the target sits inside the big circle round your nose.",
+  {text="Hold right click. Keep the paper plane inside the big pink circle.",key="Right click",
+   hint="Turn so the plane sits inside the pink circle round your nose.",
    enter=function(ctx) ctx.lesson({drill="eraser"}) end,
    update=function(ctx)
     ctx.softSpot("EraserSeeker")
@@ -213,22 +253,22 @@ local ERASER_STEPS={
    end},
   {text=function(ctx)
     local progress=ctx.plane and ctx.plane:GetAttribute("LockProgress") or 0
-    return progress>0 and progress<1 and "Keep holding... when the box turns red, the eraser fires!" or "Keep it in the circle until the box turns red: the eraser fires and chases!"
+    return progress>0 and progress<1 and "Keep holding... it fires when the box turns red!" or "Keep holding right click with the plane in the pink circle. Count to 2: the box turns red and the eraser fires by itself!"
    end,key="Right click",count=1,
-   hint="Lost it? The box starts over when the target leaves the big circle. A quick click fires straight, with no chase.",
+   hint="Lost it? The box starts over if the plane leaves the pink circle.",
    update=function(ctx)
     markTarget(ctx,"LOCK ON")
     return ctx.count("DrillDown")
    end},
   -- The reload card comes between the first eraser shot and the full-speed one, while the reload fills (Alan
   -- 2026-10-19; a second slow-motion lock was cut as redundant).
-  {text="Erasers take 4 seconds to reload: watch the right-click row fill up.",gotIt=true,
+  {text="Erasers take 4 seconds to reload. Watch the right-click row fill up.",gotIt=true,
    update=function(ctx)
     ctx.spotlight("RightStrip")
     return false
    end},
-  {text="Now lock on with your eraser: hold right click.",key="Right click",count=1,
-   hint="Keep the target in the big circle until the box turns red.",
+  {text="Now at full speed! Hold right click and keep the plane in the pink circle until the eraser fires.",key="Right click",count=1,
+   hint="Count to 2 with it in the circle.",
    enter=function(ctx) ctx.lesson({slow=false,drill="fastEraser"}) end,
    update=function(ctx)
     markTarget(ctx,"LOCK ON")
@@ -237,21 +277,21 @@ local ERASER_STEPS={
   {text=function(ctx)
     local plane=ctx.plane;local now=workspace:GetServerTimeNow()
     if plane and now<(plane:GetAttribute("EraserIncomingUntil") or 0) then
-     return (plane:GetAttribute("EraserDistance") or math.huge)<Gameplay.combat.eraser_break_studs and "BREAK NOW! Turn hard, right now!" or "INCOMING! An eraser is chasing you. Wait for BREAK NOW!"
+     return (plane:GetAttribute("EraserDistance") or math.huge)<Gameplay.combat.eraser_break_studs and "BREAK NOW! Move the mouse all the way to one side!" or "An eraser is chasing you! Don't turn yet. Wait for BREAK NOW!"
     end
-    if plane and now<(plane:GetAttribute("IncomingLockUntil") or 0) then return "LOCKED ON! It's about to fire an eraser at you." end
-    if ctx.data.hitOnce then return "It hit you! The next one is slower. Turn hard as soon as you see BREAK NOW!" end
-    return "This one fires slow erasers. Dodge one: when you see BREAK NOW!, turn hard."
+    if plane and now<(plane:GetAttribute("IncomingLockUntil") or 0) then return "It's locking on to you. An eraser is coming!" end
+    if ctx.data.hitOnce then return "It hit you. The next one is slower. Turn hard when you see BREAK NOW!" end
+    return "This enemy fires erasers at you. Wait for BREAK NOW!, then turn hard."
    end,
-   hint="Turn hard the moment BREAK NOW! shows. Turning too early lets it follow you.",
+   hint="Turning too early lets the eraser follow you. Wait for the words.",
    enter=function(ctx) ctx.lesson({drill=false,gentle=false,repair=true,pal="eraser"});ctx.data.misses=ctx.count("PalEraserMisses");ctx.data.hits=ctx.count("PalEraserHits") end,
    update=function(ctx)
     if ctx.count("PalEraserHits")>ctx.data.hits then ctx.data.hitOnce=true end
     markPal(ctx,"ENEMY")
     return ctx.count("PalEraserMisses")>ctx.data.misses
    end},
-  {text="Dodged it! Your turn: hold right click with the enemy inside the big circle.",key="Right click",
-   hint="Keep it in the big circle until the box turns red: your eraser fires and chases it.",
+  {text="Dodged it! Your turn. Hold right click and keep the enemy in the pink circle until your eraser fires.",key="Right click",
+   hint="Count to 2 with it in the circle.",
    enter=function(ctx) ctx.lesson({pal="circle"});ctx.data.start=ctx.count("EraserHits") end,
    update=function(ctx)
     ctx.softSpot("EraserSeeker")
@@ -332,13 +372,13 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
  steps={
   {text="This is your Hangar. Each cubby holds one of your planes.",gotIt=true,page="shelf",
    update=function(ctx) ctx.spotlight("EndLeft","EndRight");return false end},
-  {text="Click a cubby to pick that plane.",page="shelf",hint="Click the cubby in the bright frame.",
+  {text="Click the glowing cubby to pick that plane.",page="shelf",hint="Click the cubby in the bright frame.",
    update=watch(function(ctx,s)
     ctx.data.from=ctx.data.from or s.preset
     if s.preset~=ctx.data.from then return true end
     ctx.spotlight("Pick"..(ctx.data.from==1 and 2 or 1));return false
    end)},
-  {text="Name it! Click the pencil, type, press Enter.",key="Enter",pcKey=true,page="shelf",hint="Like the name? Press K to skip this step.",
+  {text="Name it! Click the glowing pencil, type a name, press Enter.",key="Enter",pcKey=true,page="shelf",hint="Like the name? Press K to skip this step.",
    update=watch(function(ctx,s)
     local name=s.builds[s.preset].name;ctx.data.name=ctx.data.name or name
     ctx.spotlight("NameTape","Rename")
@@ -349,9 +389,9 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
    end)},
   {text=function(ctx) local page=ctx.data.page or 1;return STATS[page][2].."  "..page.."/"..#STATS end,gotIt=true,pages=#STATS,page="shelf",
    update=function(ctx) ctx.spotlight(statRow(STATS[ctx.data.page or 1][1]));return false end},
-  {text="Click Customize to change its parts.",page="shelf",
+  {text="Click the glowing Customize button to change its parts.",page="shelf",
    update=watch(function(ctx,s) ctx.spotlight("Customize");return s.page=="customize" end)},
-  {text="Each tab is one part of the plane. Click Wings.",page="customize",
+  {text="Each tab is one part of the plane. Click the glowing Wings tab.",page="customize",
    update=watch(function(ctx,s) ctx.spotlight("Tabwings");return s.slot=="wings" end)},
   -- Two steps (Alan 2026-10-28: as one, it moved on before the numbers could be read): try a card on, then Select.
   {text="Click a wing card to try it on: the numbers on the sheet show what it would change.",page="customize",hint="Pick a wing card that doesn't say Equipped.",
@@ -367,7 +407,7 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
     if s.trying then ctx.spotlight("SelectPart") else for _,part in Catalog.structuresBySlot.wings do if part.id~=tourWings then ctx.spotlight(part.id);break end end end
     return false
    end)},
-  {text="Gear is what your plane shoots. Click Gear.",page="customize",
+  {text="Gear is what your plane shoots. Click the glowing Gear tab.",page="customize",
    update=watch(function(ctx,s) ctx.spotlight("Tabweapons");return s.slot=="weapons" end)},
   {text=function(ctx) return "These numbers are your gear spots. Click spot "..(ctx.data.spot or 2).."." end,page="customize",
    update=watch(function(ctx,s) ctx.data.spot=spot(s);ctx.spotlight("Mount"..ctx.data.spot);return s.mount==ctx.data.spot end)},
@@ -392,14 +432,14 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
     if page==1 then ctx.spotlight(statRow("Weight")) elseif page==2 then ctx.spotlight("MountInfo") else ctx.spotlight(crossedCard(ctx) or "MountInfo") end
     return false
    end},
-  {text="Click Save to keep your build.",page="customize",
+  {text="Click the glowing Save button to keep your build.",page="customize",
    update=watch(function(ctx,s)
     ctx.spotlight("SavePreset");ctx.data.dirty=ctx.data.dirty or s.unsaved
     return ctx.clicked("SavePreset") or ctx.data.dirty and not s.unsaved
    end)},
-  {text="Click Test in Range to fly it.",page="customize",
+  {text="Click the glowing Test in Range button to fly it.",page="customize",
    update=function(ctx) ctx.spotlight("SaveFly");return ctx.clicked("SaveFly") end},
-  {text="Now try it! Hit 3 different targets.",key="Left click",count=3,out=true,hint="Put the green dot on a target and hold left click.",
+  {text="Now try it! Put the green dot on 3 different targets and hold left click.",key="Left click",count=3,out=true,hint="A target counts once its Health drops. Try a different one each time.",
    update=function(ctx)
     -- Different targets (Alan 2026-10-21: one target hit three times finished it): a card counts once its Health drops.
     -- A torn-down card is replaced by a new one, which counts as another target.

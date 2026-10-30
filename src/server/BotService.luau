@@ -15,20 +15,26 @@ local Service={};Service.__index=Service
 -- Combat Training's Pals (p.pal, set by RoundRuntime:lesson): they only fight while their player has been flying
 -- for 2 seconds (Alan: smooth after a crash), so a player back from a crash isn't jumped on takeoff.
 -- Pals are easy prey (Alan 2026-10-19: a Pal that turned back or chased you only made you both fly in circles;
--- 2026-10-21: still circled, "it needs to be pretty dumb when it's running"; 2026-10-22: then too dumb, killed before
--- any chase): they keep their own heading and every 2.5-4 s bank 25-50 degrees one way or the other, turning further
--- only when the way is blocked. Never away from you (that turned them every time you turned, so you both circled).
+-- 2026-10-21: still circled, "it needs to be pretty dumb when it's running"; 2026-10-29: on a phone a circling Pal is
+-- very hard to hit, "they need to just fly in a square"): a Pal flies straight on its heading and turns 90 degrees
+-- only when a wall or building is ahead, the same way each time if it can (so it flies a square between the
+-- buildings), else the other way, else back. Never away from you.
+local PAL_LOOK_STUDS=250 -- how far ahead a Pal checks for a wall before it turns
 local function wander(self,b,position,now)
- if b.wanderGoal and now<b.wanderUntil and (position-b.wanderGoal).Magnitude>80 then return b.wanderGoal end
- local heading=b.heading*Vector3.new(1,0,1)
+ local heading=b.palHeading or b.heading*Vector3.new(1,0,1)
  heading=heading.Magnitude>.1 and heading.Unit or Vector3.zAxis
- local climb=math.clamp((Course.POINTS[2].Y-position.Y)*.3,-40,40) -- drift back toward the course's height
- local first=b.random:NextNumber(25,50)*(b.random:NextNumber()<.5 and -1 or 1)
- for _,turn in {first,first+40,first-40,90,-90,135,-135,180} do
-  local goal=position+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*250+Vector3.yAxis*climb
-  if self.routes:clear(position,goal,25) then b.wanderGoal,b.wanderUntil=goal,now+b.random:NextNumber(2.5,4);return goal end
+ local climb=Vector3.yAxis*math.clamp((Course.POINTS[2].Y-position.Y)*.3,-40,40) -- drift back toward the course's height
+ if not self.routes:clear(position,position+heading*PAL_LOOK_STUDS+climb,25) then
+  b.palSide=b.palSide or (b.random:NextNumber()<.5 and -1 or 1)
+  for _,turn in {90*b.palSide,-90*b.palSide,180} do
+   local turned=CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)
+   if self.routes:clear(position,position+turned*PAL_LOOK_STUDS+climb,25) then
+    heading=turned;if math.abs(turn)==90 then b.palSide=turn>0 and 1 or -1 end;break
+   end
+  end
  end
- b.wanderGoal,b.wanderUntil=Course.POINTS[2],now+3;return b.wanderGoal
+ b.palHeading=heading
+ return position+heading*PAL_LOOK_STUDS+climb
 end
 -- Pals appear in the air, never out of a hangar (Alan 2026-10-19: "it's like the enemy's coming out of nowhere"):
 -- 400-700 studs ahead of their player (within 40 degrees of the nose; Alan: not off to the side), in clear air inside
@@ -66,7 +72,7 @@ function Service:placePal(p)
  p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
  -- Half a normal plane's Health in lessons (Alan 2026-10-19: full Health made them frustrating).
  p.model:SetAttribute("MaxHealth",p.stats.health/2);p.model:SetAttribute("Health",p.stats.health/2)
- local b=self.brains[p.id];if b then b.mode="launch" end
+ local b=self.brains[p.id];if b then b.mode,b.palHeading,b.palSide="launch",nil,nil end
 end
 -- The eraser Pal's erasers appear on their own 300 studs ahead of you, toward the Pal, already chasing you, one at a
 -- time with 1.5 s between (Alan 2026-10-19: not waiting for the Pal to lock; ahead so you see it coming and dodge).

@@ -41,4 +41,4 @@ split the player's attention and reviewers hated it
 that, add option 2 on top, phones only or as a setting. Both are small and can be undone easily.
 
 ## Alan's answers
-(waiting)
+Brake on PC (Space) and automatic speed matching on phones, both to try out: [decision](../decisions/2026-10-29-brake-and-phone-speed-match.md).

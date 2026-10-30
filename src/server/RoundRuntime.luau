@@ -250,7 +250,7 @@ function Runtime:firstJoin(player)
  end)
 end
 -- What a lesson step asks the server for (docs/systems/tutorial.md), all at once or a piece at a time:
--- {freeze=true/false (hold the lesson still while its note is read), slow=true/false (aiming's slow motion), gentle=true/false (bounce off walls), repair=true (full Health), eraser=true (swap in the training plane with its eraser), drill=name in TrainingCourse.DRILLS or false
+-- {freeze=true/false (hold the lesson still while its note is read), slow=true/false (aiming's slow motion) or a share of speed, gentle=true/false (bounce off walls), repair=true (full Health), eraser=true (swap in the training plane with its eraser), drill=name in TrainingCourse.DRILLS or false
 -- (practice target planes), pal=mode or false (Combat Training's one enemy: "circle" flies the course and never
 -- shoots, "pellet" starts behind you and its shots hit you from behind until you're at half Health (BotService:palAmbush), "eraser" fires slow erasers until one misses)}.
 -- Targets and Pals fight only this player (CombatService:enemy) and can never fold them (CombatService:hit).
@@ -262,6 +262,8 @@ function Runtime:lesson(player,cmd)
  local p=self.flight.pilots[player]
  if type(cmd)~="table" or not p or not p.practice or not self:tutorialRoom() then return end
  if type(cmd.slow)=="boolean" then p.slow=cmd.slow and Course.SLOW_MO or nil;p.model:SetAttribute("SlowMo",p.slow) end
+ -- A share of speed (Flight School's hoops and landing: a little slower, not slow motion).
+ if type(cmd.slow)=="number" and cmd.slow>=Course.SLOW_MO and cmd.slow<=1 then p.slow=cmd.slow;p.model:SetAttribute("SlowMo",p.slow) end
  if cmd.repair==true then p.model:SetAttribute("Health",p.stats.health) end
  -- Combat School's last part hands over the eraser: the plane refolds in the air with one on right click.
  if cmd.eraser==true and not table.find(p.loadout.weapon_mounts,"eraser") then self.flight:refold(p,Loadouts.make(self.flight.catalog,"training")) end

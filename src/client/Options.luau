@@ -14,5 +14,6 @@ function Options.apply(settings)
  Root:SetAttribute("ReducedShake",settings.reducedShake);Root:SetAttribute("Quality",settings.quality);Root:SetAttribute("CrosshairColor",settings.crosshairColor);Root:SetAttribute("CrosshairSize",settings.crosshairSize)
  Root:SetAttribute("MatchTips",settings.matchTips~=false)
  Root:SetAttribute("AutoFire",settings.autoFire~=false) -- phones: FIRE shoots by itself on target (CombatController)
+ Root:SetAttribute("SpeedMatch",settings.speedMatch~=false) -- phones: slow to the enemy you tail (FlightController)
 end
 return Options

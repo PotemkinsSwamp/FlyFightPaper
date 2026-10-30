@@ -84,7 +84,7 @@ function Schema.defaults(catalog)
 	assert(integer(paper) and integer(xp),"invalid_initial_economy")
 	local p = { schemaVersion = Schema.VERSION, version = 0, generation = 0, paperMilli = paper, earnedPaperMilli = 0,
 		purchasedPaperMilli = 0, xpMilli = xp, prestige = 0, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
-		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium", matchTips = true, autoFire = true },
+		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium", matchTips = true, autoFire = true, speedMatch = true },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
 		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, lessons = {} }
 	for i = 1, Gameplay.menus.saved_loadouts do
@@ -115,9 +115,10 @@ function Schema.validate(record, catalog)
 			assert(catalog:validateLoadout(preset.loadout, nil, 1000000000))
 		end
 		assert(integer(p.rangeSlot) and p.rangeSlot>=1 and p.rangeSlot<=Gameplay.menus.saved_loadouts, "invalid_range_slot")
-		exact(p.settings, {music=1,sound=1,sensitivity=1,reducedShake=1,quality=1,crosshairColor=1,crosshairSize=1,matchTips=0,autoFire=0}) -- matchTips, autoFire: missing = on (older saves)
+		exact(p.settings, {music=1,sound=1,sensitivity=1,reducedShake=1,quality=1,crosshairColor=1,crosshairSize=1,matchTips=0,autoFire=0,speedMatch=0}) -- matchTips, autoFire, speedMatch: missing = on (older saves)
 		assert(p.settings.matchTips==nil or type(p.settings.matchTips)=="boolean", "invalid_settings")
 		assert(p.settings.autoFire==nil or type(p.settings.autoFire)=="boolean", "invalid_settings")
+		assert(p.settings.speedMatch==nil or type(p.settings.speedMatch)=="boolean", "invalid_settings")
 		for _, k in ipairs({"music","sound"}) do assert(type(p.settings[k])=="number" and p.settings[k]>=0 and p.settings[k]<=1, "invalid_volume") end
 		assert(type(p.settings.sensitivity)=="number" and p.settings.sensitivity>=0.2 and p.settings.sensitivity<=3 and type(p.settings.reducedShake)=="boolean", "invalid_settings")
 		assert(p.settings.quality=="Low" or p.settings.quality=="Medium" or p.settings.quality=="High", "invalid_quality")

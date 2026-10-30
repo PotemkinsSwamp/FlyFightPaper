@@ -400,6 +400,10 @@ function HUD.start(getPlane, action)
 	local healthRow = bar(left, "Health", 160, 178, 630)
 	local liftRow = bar(left, "Lift", 85, 178, 630)
 	local boostRow = bar(left, "Boost", 10, 178, 630)
+	-- Under the middle of the view while the brake (Space) or a phone's speed matching is slowing the plane.
+	local slowTag = PaperUI.words(gui, "SlowTag", "", 0, 0, 400, 40, 30)
+	slowTag.AnchorPoint, slowTag.Position, slowTag.TextXAlignment = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.66), Enum.TextXAlignment.Center
+	slowTag.TextColor3, slowTag.TextStrokeTransparency, slowTag.TextStrokeColor3 = Color3.new(1, 1, 1), 0.3, PaperUI.INK
 	local right = corner("Weapons", Vector2.new(1, 1), 700)
 	local triggerRows = { bar(right, "Left", 85, 308, 700, "L"), bar(right, "Right", 160, 308, 700, "R") }
 
@@ -724,6 +728,9 @@ function HUD.start(getPlane, action)
 		boostRow.visible(boostMax > 0)
 		boostRow.show(tenths(plane:GetAttribute("Boost") or 0, boostMax), "blue")
 		boostRow.value.Text = string.format("%.1fs", plane:GetAttribute("Boost") or 0)
+		local flyingNow = plane:GetAttribute("State") == "FLYING"
+		slowTag.Text = flyingNow and (plane:GetAttribute("Braking") and "FLAPS UP" or FlightState.matching and "SPEED MATCH") or ""
+		slowTag.Visible = slowTag.Text ~= ""
 		left.Visible = not plane:GetAttribute("Pinned") -- the Range: nothing hurts you and Lift never runs out
 		local ids=string.split(plane:GetAttribute("Mounts") or "",",")
 		local groups=assert(CombatRules.triggerGroups({weapon_mounts=ids}));local eraserButton="right-click"

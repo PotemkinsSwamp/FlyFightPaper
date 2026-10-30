@@ -9,6 +9,7 @@ local Config = Gameplay.flight
 local Course = require(Root.Shared.TrainingCourse)
 local Touch = require(script.Parent.TouchControls)
 local AimHelp = require(Root.Shared.AimHelp)
+local SpeedMatch = require(Root.Shared.SpeedMatch)
 local Controller = {}
 -- Read by the camera and HUD. `aimOverride` lets dev tools fly the plane without a mouse.
 Controller.state = { aim = nil, aimUp = nil, aimOverride = nil }
@@ -31,6 +32,22 @@ function Controller.start(plane)
 	-- A scrape's wobble: when it started and which way the plane rolls.
 	local wobbleAt, wobbleSide = -math.huge, 0
 	local slowSince = nil -- when the touch aim came within the slowdown cone of an enemy's lead (AimHelp)
+	-- Brake and speed matching: the share of cruise speed flown (eased), the brake as last sent, the plane followed.
+	local share, brakeSent, match = 1, false, {}
+	local planes = workspace:WaitForChild("Planes")
+	-- Phones: the enemy you are tailing and the share of speed that matches it (SpeedMatch), or nil.
+	local function matched(now)
+		local team = plane:GetAttribute("Team") or ""
+		local others = {}
+		for _, other in planes:GetChildren() do
+			local root = other ~= plane and other:GetAttribute("State") == "FLYING" and (team == "" or other:GetAttribute("Team") ~= team) and other:FindFirstChild("Root")
+			if root then others[other] = { position = root.Position, velocity = root.AssemblyLinearVelocity } end
+		end
+		local me = { position = body.Position, look = body.CFrame.LookVector, velocity = body.AssemblyLinearVelocity }
+		local id = SpeedMatch.pick(match, me, others, now, Config.speed_match)
+		if not id or not others[id] then return nil end
+		return id, SpeedMatch.factor(me, others[id], plane:GetAttribute("Speed"), Config.speed_match)
+	end
 	local function setAim(direction)
 		local look = aimFrame.LookVector
 		local angle = math.acos(math.clamp(look:Dot(direction), -1, 1))
@@ -70,7 +87,7 @@ function Controller.start(plane)
 			return
 		end
 		if not wasFlying then
-			heading, bank, wasFlying = body.CFrame.LookVector, 0, true
+			heading, bank, wasFlying, share = body.CFrame.LookVector, 0, true, 1
 			aimFrame = CFrame.lookAt(Vector3.zero, heading)
 		end
 		if Deaths.dying(plane) then drive.VectorVelocity = Vector3.zero; return end
@@ -144,12 +161,27 @@ function Controller.start(plane)
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
 		local boost = not blocked and (Input:IsKeyDown(Enum.KeyCode.LeftShift) or Touch.boost)
 		if boost ~= boostSent then boostSent = boost; Root.FlightAction:FireServer("boost", boost) end
+		-- Brake (Space, Alan 2026-10-29): slower and a little tighter in turns while held; the server drains Lift faster.
+		-- Phones have no brake button: close behind an enemy their speed eases down to its speed instead (Settings).
+		local braking = not blocked and not boost and not pinned and Input:IsKeyDown(Enum.KeyCode.Space)
+		if braking ~= brakeSent then brakeSent = braking; Root.FlightAction:FireServer("brake", braking) end
+		local wanted = braking and Config.brake_speed_factor or 1
+		state.matching = nil
+		if not boost and not braking and not pinned and Touch.active() and Root:GetAttribute("SpeedMatch") ~= false then
+			local id, factor = matched(workspace:GetServerTimeNow())
+			if id then state.matching, wanted = id, factor end
+		elseif next(match) then
+			table.clear(match)
+		end
+		share += math.clamp(wanted - share, -Config.speed_ease_per_s * dt, Config.speed_ease_per_s * dt)
+		state.speedShare = share
+		local tight = braking and Config.brake_turn_factor or 1
 		local before = heading
-		heading, bank, orientation.CFrame = Rules.autopilot(heading, bank, steer or state.aim, plane:GetAttribute("YawRate"), plane:GetAttribute("PitchRate"), dt, state.aimUp)
+		heading, bank, orientation.CFrame = Rules.autopilot(heading, bank, steer or state.aim, plane:GetAttribute("YawRate") * tight, plane:GetAttribute("PitchRate") * tight, dt, state.aimUp)
 		if pinned then bank, orientation.CFrame = 0, CFrame.lookAt(Vector3.zero, heading) end -- wings stay level in the Range
 		local now = workspace:GetServerTimeNow()
 		-- SlowMo: the Aiming lesson's slow motion (the server allows any speed below cruise).
-		local cruise = plane:GetAttribute("Speed") * (plane:GetAttribute("BoostSpeedFactor") or 1) * (plane:GetAttribute("SlowMo") or 1)
+		local cruise = plane:GetAttribute("Speed") * (plane:GetAttribute("BoostSpeedFactor") or 1) * (plane:GetAttribute("SlowMo") or 1) * share
 		local speed = cruise * Rules.turnSpeedFactor(before, heading, dt, plane:GetAttribute("TurnRate"))
 		-- Boosting flies along the nose like having Lift, even when Lift is empty (Alan 2026-10-14).
 		local lift = plane:GetAttribute("Boosting") and math.max(plane:GetAttribute("Lift"), 1) or plane:GetAttribute("Lift")
