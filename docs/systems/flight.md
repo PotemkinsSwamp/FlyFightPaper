@@ -12,9 +12,12 @@ built for testing, not yet felt by Alan.** PC: hold Space, "BRAKE" under the vie
 behind an enemy the speed eases down to its speed, "SPEED MATCH" under the view (Settings > Speed match, on by
 default; Alan tried it on his phone 2026-10-29 and keeps it). Braking while speed matching doesn't stack: the
 brake's speed wins. The paper-flaps look on the plane comes after Alan likes the feel.
-**Moving the phone buttons (2026-10-30, [controls plan](../plan/CONTROLS-PLAN.md) part 1): built, not yet seen in
-Play.** Settings > Phone buttons > Move: drag FIRE, 2, BOOST and BRAKE anywhere on the right half (the left half is the
-stick's), clear of each other and the top bar; Save, Reset, Cancel. Saved as shares of the screen (`touchLayout`).
+**Moving the phone buttons (2026-10-30, [controls plan](../plan/CONTROLS-PLAN.md) part 1): checked in Studio
+Play 2026-10-30 (phone view), waiting on Alan's phone try.** Settings > Phone buttons > Move: drag FIRE, 2, BOOST and
+BRAKE anywhere on the right half (the left half is the stick's), clear of each other and the top bar; a button in a bad
+spot is drawn on top with a red disc and slides back to its last good spot when let go; Save, Reset, Cancel. Saved as
+shares of the screen (`touchLayout`); lesson frames follow a moved button. Studio Play uses a throwaway profile, so
+"still there after rejoining" can only be checked in the published game.
 
 ## Rules
 - **Cheat checks (2026-10-17 audit):** the server compares each human plane's position and turn every 0.25 s and

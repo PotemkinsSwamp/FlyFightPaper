@@ -130,11 +130,13 @@ function SettingsScreen.new(playerGui, api)
 	end
 	-- Touch screens only: move FIRE, 2, BOOST and BRAKE (TouchControls' editor; docs/plan/CONTROLS-PLAN.md). The sheet
 	-- steps aside while you drag them over the game.
-	local buttonsLabel = words(sheet, "PhoneButtonsLabel", "Phone buttons", 1640, 280, 260, 60, 52)
-	local move = PaperUI.button(sheet, "MoveButtons", Art.tabOn, "Move", 1640, 352, 185, 82, 0, function()
-		cover.Visible = false
+	-- (Right of the crosshair card. The whole ScreenGui is switched off while editing: MenuController re-shows the
+	-- cover on every profile refresh.)
+	local buttonsLabel = words(sheet, "PhoneButtonsLabel", "Phone buttons", 1775, 262, 260, 60, 52)
+	local move = PaperUI.button(sheet, "MoveButtons", Art.tabOn, "Move", 1775, 334, 185, 82, 0, function()
+		cover.Parent.Enabled = false
 		Touch.editLayout(function(layout)
-			cover.Visible = true
+			cover.Parent.Enabled = true
 			if layout ~= false then settings.touchLayout = layout; save() end
 		end)
 	end, 40)

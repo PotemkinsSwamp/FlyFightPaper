@@ -175,14 +175,30 @@ function Touch.start(getPlane)
 	PaperUI.button(note, "Save", strip.green, "Save", 18, 112, 96, 48, 1, function() finish("save") end, 24)
 	PaperUI.button(note, "Reset", strip.yellow, "Reset", 117, 112, 96, 48, -1, function() finish("reset") end, 24)
 	PaperUI.button(note, "Cancel", strip.red, "Cancel", 216, 112, 96, 48, 1, function() finish("cancel") end, 24)
-	local RED = Color3.fromRGB(255, 110, 110)
-	local function tint(name, bad) frames[name].Art.ImageColor3 = bad and RED or Color3.new(1, 1, 1) end
+	-- A see-through red disc over a button in a bad spot (tinting the art alone barely showed on blue or green).
+	local warns = {}
+	for name, frame in frames do
+		local warn = Instance.new("Frame")
+		warn.Name, warn.Size, warn.BackgroundColor3, warn.BackgroundTransparency = "Warn", UDim2.fromScale(1, 1), Color3.fromRGB(230, 30, 30), 0.35
+		warn.ZIndex, warn.Visible, warn.Parent = 5, false, frame
+		Instance.new("UICorner", warn).CornerRadius = UDim.new(0.5, 0)
+		warns[name] = warn
+	end
+	local function tint(name, bad) warns[name].Visible = bad end
+	-- The dragged button is drawn over the others (ZIndex is global in this gui).
+	local function lift(name, by)
+		local frame = frames[name]
+		for _, piece in { frame, unpack(frame:GetDescendants()) } do
+			if piece:IsA("GuiObject") then piece.ZIndex += by end
+		end
+	end
 	local drag
 	for name, frame in frames do
 		frame.InputBegan:Connect(function(input)
 			if not editing or drag then return end
 			if input.UserInputType ~= Enum.UserInputType.Touch and input.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
 			drag = { name = name, input = input, from = Vector2.new(input.Position.X, input.Position.Y), start = spots[name], good = spots[name] }
+			lift(name, 10)
 		end)
 	end
 	Input.InputChanged:Connect(function(input)
@@ -198,7 +214,7 @@ function Touch.start(getPlane)
 		if not drag or (input ~= drag.input and not mouse) then return end
 		local name = drag.name
 		spots[name] = drag.good; drag = nil
-		tint(name, false)
+		tint(name, false); lift(name, -10)
 		TweenService:Create(frames[name], TweenInfo.new(0.15), { Position = UDim2.fromOffset(spots[name].X, spots[name].Y) }):Play()
 	end)
 	-- Opens the editor; done(layout) gets the shares to save (nil = the game's layout), or false when cancelled.
@@ -214,6 +230,7 @@ function Touch.start(getPlane)
 				for name in frames do show(name) end
 				return
 			end
+			if drag then lift(drag.name, -10) end
 			drag, editing, editor.Enabled = nil, nil, false
 			for name in frames do tint(name, false) end
 			if how == "cancel" then

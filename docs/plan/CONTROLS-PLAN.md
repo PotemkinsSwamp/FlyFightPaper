@@ -1,11 +1,11 @@
 # Controls plan: move your phone buttons, then change your PC keys
 
-**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built 2026-10-30, not yet seen in Play. Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
+**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built and checked in Studio Play 2026-10-30; waiting on Alan's phone try. Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
 well"; he wants players to set controls up their own way: on a phone, move the buttons; on a keyboard, change the
 keys. Phone buttons first (Alan).
 
 ## What the player sees
-**Phone (part 1).** Settings has a new **Phone buttons: Move** tab (phones only, above Auto-fire). Tapping
+**Phone (part 1).** Settings has a new **Phone buttons: Move** tab (phones only, right of the crosshair card). Tapping
 it closes Settings and shows the layout editor over the game:
 - FIRE, 2, BOOST and BRAKE where they are now; the left half of the
   screen shaded with the words "Steering stick" (the stick appears wherever your left thumb lands there, so buttons
