@@ -322,6 +322,13 @@ mistake would be easy to make twice.
 - **Smaller picture files don't shrink the download** (2026-10-25): Roblox stores every uploaded picture as its own
   PNG (a 255 KB JPG came back as 975 KB; a 281 KB 256-colour PNG as 650 KB). Only fewer or smaller pictures help.
 
+- **TextScaled turns off if TextWrapped is set false after it** (2026-10-29): `label.TextScaled, label.TextWrapped =
+  true, false` leaves TextScaled false (words never shrink). Set `TextWrapped = false` first, then `TextScaled = true`.
+- **Studio MCP `instance_path` clicks miss buttons in a frame with a UIScale and a centred AnchorPoint** (2026-10-29:
+  the dev panel's "end" buttons). Fire the button's remote from the Client datamodel instead, or click real
+  coordinates. A small Studio window counts as a phone (`ScreenFit`, under 540 points tall): PC layouts can't be seen
+  in it.
+
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
   code alone (the red dot, the eraser during the freeze, step 8's Pal) were wrong, and each cost Alan a playtest.

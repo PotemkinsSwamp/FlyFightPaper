@@ -1,7 +1,7 @@
 # Dev mode on Alan's own account in the published game
 
 **Decided:** 2026-10-29 (Alan)  
-**Status:** in force (not built yet)
+**Status:** in force (built 2026-10-29: server marks the game owner's account `Dev`; checked in Studio)
 
 ## Decision
 Alan's own Roblox account gets the Studio test controls (end the match, modes, endings, the results card, the other

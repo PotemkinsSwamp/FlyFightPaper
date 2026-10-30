@@ -1,4 +1,8 @@
 # Since Alan last checked (2026-10-29)
+- **Since then (Studio, not yet published):** team rounds show a results page per team side by side; match tip
+  words fill the sticky note (note size kept, your call). Your younger tester's notes are recorded
+  (docs/playtests/2026-10-29-young-testers-tutorial.md): next is a tutorial rewrite plan for your OK, then research
+  on phone aiming (how other games handle it) before you decide anything.
 - **Your 4 phone notes are fixed and checked in Studio Play (phone size), not yet published:**
   kill feed now fills top-down beside the match strip, 4 slips, fades 6 s after the last kill; dev panel on your own
   account in live servers (the game's owner account; the server refuses anyone else), with a "tips again" button;
@@ -7,7 +11,8 @@
 
 # Now: mobile lane (make phones work and look good)
 What works: Stage 9, tutorials, desk quick menu; phone fixes published (auto-fire confirmed); your 2026-10-29 notes
-fixed in Studio. Next: your publish + phone run; later paper planes behind the winners; iPad; match tips on a phone.
+fixed in Studio. Next: tutorial rewrite plan (your OK first), phone-aiming research; your publish + phone run any
+time; later paper planes behind the winners; iPad.
 
 Decisions to review
 Auto-fire also fires on the yellow dot (shots land thanks to phone aim help), not only red; in the Range it fires on
