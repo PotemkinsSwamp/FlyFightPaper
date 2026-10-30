@@ -124,7 +124,10 @@ function Touch.start(getPlane)
 		boost.Size = UDim2.fromOffset(small, small)
 		boost.Position = UDim2.new(1, -big - small * 0.5 - short * 0.12, 1, -small * 0.5 - short * 0.08)
 		brake.Size = UDim2.fromOffset(small, small)
-		brake.Position = UDim2.new(1, -big - small * 0.5 - short * 0.12, 1, -big - small * 0.5 - short * 0.12)
+		-- Hugging FIRE's top-left edge, between 2 and BOOST, where the thumb rolls to it (Alan 2026-10-29: the corner
+		-- above BOOST was too far out).
+		local reach = (big + small) * 0.5 + short * 0.05
+		brake.Position = UDim2.new(1, -big * 0.5 - short * 0.06 - reach * 0.707, 1, -big * 0.5 - short * 0.08 - reach * 0.707)
 	end
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
 	fit()
