@@ -23,5 +23,10 @@ Each note: what Alan asked, then how it will be checked. ✅ = done.
    away straight; when you catch up, one 90-degree turn and then straight again. Today it circles round you, which on a
    phone is very hard to hit.
 
+7. **Phones: keeping your aim on a plane is too hard** ("like catching a fly with chopsticks"). On a PC it is just
+   skill; on a phone the screen is small, planes look small and race past. With no way to change your speed you
+   overshoot a slow big plane. More aim help is not the answer. Alan wants a discussion first: how other games handle
+   it, then options for his ruling (no building before that).
+
 ## What changed because of it
-Notes 1-2 done 2026-10-29. Notes 3-6: next session (plan for Alan's OK first: memory plan-before-building-features).
+Notes 1-2 done 2026-10-29. Notes 3-6: next session; note 7: research + options for Alan first (plan for Alan's OK first: memory plan-before-building-features).
