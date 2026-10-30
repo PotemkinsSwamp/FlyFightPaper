@@ -16,7 +16,7 @@ local LevelBar = require(script.Parent.LevelBar)
 
 local MODES = { { "FFA", "Free-for-all", "blue" }, { "TDM", "Team dogfight", "pink" }, { "CONTROL", "Airspace Control", "green" } }
 local KEYS = { [Enum.KeyCode.One] = 1, [Enum.KeyCode.Two] = 2, [Enum.KeyCode.Three] = 3 }
-local PLACES = { "1st", "2nd", "3rd" }
+local PLACES = { "1st", "2nd", "3rd" } -- then "4th".."12th" (ponytail: a room holds 12; 21st and up would need more)
 
 local RoundEnd = {}
 
@@ -42,49 +42,43 @@ function RoundEnd.start()
 	local subline = PaperUI.phone(words(banner, "Subline", "", 40, 92, 720, 44, 34), { TextSize = 40 })
 	subline.TextXAlignment = Enum.TextXAlignment.Center
 
-	-- Results card (right): every pilot's folds, assists, crashes and points; team totals in team rounds; your
-	-- Paper and XP from the round with your level bar filling up.
-	-- The index card art has tape above the paper: the paper itself runs x 44-639, y 150-974 inside this box.
-	local card = image(sheet, "Results", UIArt.ingame.indexCard, 1220, 40, 680, 1000, 1)
+	-- Results card (right): the top five and your own row with folds, assists, crashes and points; team totals in
+	-- team rounds; your Paper and XP from the round with your level bar filling up. The notebook page is drawn for
+	-- this layout (tools/art/results_page.py, Alan 2026-10-29): loose-leaf with binder holes, a torn edge and tape;
+	-- each row sits on a ruled line, the place column between the holes and the red margin, the level part below.
+	local card = image(sheet, "Results", UIArt.results.page, 1220, 40, 680, 900)
 	card.ScaleType = Enum.ScaleType.Stretch
-	local title = words(card, "Title", "Results", 44, 158, 595, 56, 50)
+	local title = words(card, "Title", "Results", 20, 40, 640, 56, 50)
 	title.TextXAlignment = Enum.TextXAlignment.Center
-	local teams = words(card, "Teams", "", 44, 210, 595, 44, 38)
+	local teams = words(card, "Teams", "", 20, 92, 640, 44, 38)
 	teams.TextXAlignment, teams.RichText = Enum.TextXAlignment.Center, true
-	local function cell(name, text, x, y, w, size, centred)
-		local label = words(card, name, text, x, y, w, 44, size)
-		label.TextTruncate = Enum.TextTruncate.AtEnd
+	-- Every cell keeps to its own column (Alan 2026-10-29: a long name ran into the numbers): its words are `size`
+	-- points (`phoneSize` on a phone) and shrink, on one line, until they fit.
+	local function cell(name, text, x, y, w, h, size, centred, phoneSize)
+		local label = words(card, name, text, x, y, w, h, size)
+		label.TextWrapped, label.TextScaled = false, true -- (this order: turning wrap off after turns shrink off)
 		if centred then label.TextXAlignment = Enum.TextXAlignment.Center end
+		local cap = Instance.new("UITextSizeConstraint")
+		cap.Parent = label
+		PaperUI.onPhone(function(phone) cap.MaxTextSize = phone and phoneSize or size end)
 		return label
 	end
-	local COLUMNS = { { "Folds", 300, 74, "kills" }, { "Assists", 374, 84, "assists" }, { "Crashes", 458, 90, "deaths" }, { "Pts", 548, 80, "contribution" } }
-	-- Phones (words were 8-10 points): six taller rows with bigger words instead of nine; the heads shrink to fit.
-	local function head(label)
-		label.TextColor3 = Color3.fromRGB(30, 60, 140)
-		local cap = Instance.new("UITextSizeConstraint")
-		cap.MaxTextSize, cap.Parent = 28, label
-		PaperUI.phone(label, { TextScaled = true, Position = label.Position - UDim2.fromOffset(0, 4), Size = UDim2.fromOffset(label.Size.X.Offset, 50) })
-	end
-	head(cell("HeadPilot", "Pilot", 100, 256, 200, 26))
-	for _, column in COLUMNS do head(cell("Head" .. column[1], column[1], column[2], 256, column[3], 24, true)) end
+	-- Gaps between the columns, so the heads read as separate words (they ran together as one).
+	local COLUMNS = { { "Folds", 300, 80, "kills" }, { "Assists", 388, 90, "assists" }, { "Crashes", 486, 90, "deaths" }, { "Pts", 584, 66, "contribution" } }
+	local ROWS, ROW_TOP, ROW_PITCH = 6, 190, 72 -- the page's ruled lines (results_page.py)
+	local function head(label) label.TextColor3 = Color3.fromRGB(30, 60, 140) end
+	head(cell("HeadPilot", "Pilot", 128, 140, 168, 44, 26, false, 28))
+	for _, column in COLUMNS do head(cell("Head" .. column[1], column[1], column[2], 140, column[3], 44, 26, true, 28)) end
 	local rows = {}
-	local PHONE_ROWS = 6
-	for i = 1, 9 do
-		local y, py = 248 + i * 44, 254 + i * 64
-		local highlight = image(card, "Mine" .. i, UIArt.results.rowHighlight, 50, y - 2, 584, 44)
+	for i = 1, ROWS do
+		local y = ROW_TOP + (i - 1) * ROW_PITCH + 18
+		local highlight = image(card, "Mine" .. i, UIArt.results.rowHighlight, 40, y - 2, 620, 60)
 		highlight.ScaleType, highlight.Visible = Enum.ScaleType.Stretch, false
-		PaperUI.phone(highlight, { Position = UDim2.fromOffset(342, py + 28), Size = UDim2.fromOffset(584, 62) })
-		rows[i] = { highlight = highlight, place = cell("Place" .. i, "", 56, y, 46, 26), name = cell("Name" .. i, "", 100, y, 200, 30), numbers = {} }
-		PaperUI.phone(rows[i].place, { Position = UDim2.fromOffset(52, py), Size = UDim2.fromOffset(60, 56), TextSize = 36 })
-		PaperUI.phone(rows[i].name, { Position = UDim2.fromOffset(110, py), Size = UDim2.fromOffset(190, 56), TextSize = 40 })
-		for _, column in COLUMNS do
-			local number = cell(column[1] .. i, "", column[2], y, column[3], 30, true)
-			PaperUI.phone(number, { Position = UDim2.fromOffset(column[2], py), Size = UDim2.fromOffset(column[3], 56), TextSize = 40 })
-			rows[i].numbers[column[4]] = number
-		end
+		rows[i] = { highlight = highlight, place = cell("Place" .. i, "", 56, y, 60, 56, 32, true, 38), name = cell("Name" .. i, "", 128, y, 168, 56, 32, false, 38), numbers = {} }
+		for _, column in COLUMNS do rows[i].numbers[column[4]] = cell(column[1] .. i, "", column[2], y, column[3], 56, 32, true, 40) end
 	end
-	local earned = cell("Earned", "", 44, 746, 595, 36, true)
-	local xpBar = LevelBar.new(card, 64, 790, 556, 34)
+	local earned = cell("Earned", "", 20, 630, 640, 44, 36, true, 36)
+	local xpBar = LevelBar.new(card, 64, 700, 556, 34)
 	PaperUI.phone(card.Level, { TextSize = 44, Size = UDim2.fromOffset(250, 41) })
 	PaperUI.phone(card.XPCount, { TextSize = 36 })
 	PaperUI.phone(card.NextUnlock, { TextSize = 36 })
@@ -122,13 +116,13 @@ function RoundEnd.start()
 		local me = player.DisplayName
 		state.mine = nil
 		for _, p in list do if p.displayName == me then state.mine = p end end
-		local shown = PaperUI.isPhone() and PHONE_ROWS or #rows
+		local shown = #rows
 		for i, row in rows do
 			local p = i <= shown and list[i] or nil
 			-- The last line is always you, if you didn't make the top ones.
 			local myLine = state.mine and table.find(list, state.mine)
 			if i == shown and myLine and myLine >= shown then p = state.mine end
-			row.place.Text = p and (PLACES[p.place] or tostring(p.place or "")) or ""
+			row.place.Text = p and p.place and (PLACES[p.place] or p.place .. "th") or ""
 			row.name.Text = p and p.displayName or ""
 			row.name.TextColor3 = p and TEAM_INK[p.teamId] or PaperUI.INK
 			for key, label in row.numbers do label.Text = p and tostring(math.floor(p[key] or 0)) or "" end
@@ -170,7 +164,7 @@ function RoundEnd.start()
 			if state.stopSound then state.stopSound(); state.stopSound = nil end
 			Root:SetAttribute("WinnersMoment", snap.phase == "RESULTS" and inMatch or nil) -- the match music fades out for it (Audio)
 			if snap.phase == "RESULTS" and inMatch then
-				local song = RunService:IsStudio() and WinnersSound.TRACKS[Root:GetAttribute("DevWinnersSong")] -- Studio's "end: <song>" buttons, once
+				local song = WinnersSound.TRACKS[Root:GetAttribute("DevWinnersSong")] -- the dev panel's "end: <song>" buttons, once
 				Root:SetAttribute("DevWinnersSong", nil)
 				state.stopSound = WinnersSound.play(song or WinnersSound.TRACKS[WinnersSound.pick()])
 				state.stage, state.cardAt = "card", os.clock() -- stays on the card if the cutscene can't play

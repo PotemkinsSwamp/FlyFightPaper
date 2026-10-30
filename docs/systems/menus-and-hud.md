@@ -24,7 +24,13 @@ help line were ~13 points, now taller cards with ~17-point words; the results ca
 Phones (2026-10-24, seen in Studio's Device Simulator, not yet on a real phone): every paper screen has phone sizes
 (`PaperUI.phone`, a screen under 540 points tall; a PC keeps exactly what was drawn). Menu backgrounds reach past a
 phone's notch and crop from the bottom (titles stay whole); buttons stay in the safe area. Desk strips, lesson notes,
-tips, the round end and the vote sit below Roblox's top bar (the Menu button); the results card shows 6 bigger rows.
+tips, the round end and the vote sit below Roblox's top bar (the Menu button).
+Results card (Alan 2026-10-29, PC and phone): six rows (places 1-5 and your own) on a notebook page drawn to fit
+(`tools/art/results_page.py`: one ruled line under each row, the place column left of the red margin, heads spaced
+apart); built, the page itself waits for Alan's OK on the preview before upload (old index card until then).
+Dev mode: in Studio, and on the game owner's own account in live servers (server-set `Dev` attribute,
+[decision](../decisions/2026-10-29-dev-mode-on-alans-account.md)), the desk shows the dev panel (modes, end match,
+weapons, bots, "tips again"); every other account sees nothing and the server refuses its dev requests.
 Top of the screen (screen fit step 2, every screen): one row (Roblox's bar, the Menu button, the match strip, which
 moves right of the Menu button when centred would hit it), then one column under it in a fixed order: Airspace
 capture strip, news note, lesson or Range note, warning or lock note, match tip; each sits under the real bottom of
@@ -33,8 +39,9 @@ note that would touch a top-corner piece (the kill feed, a touch screen's Health
 between them and shrinks to fit (small phones, Alan 2026-10-24). On a phone the match tip is a bit smaller and stays
 up top over the news note and kill feed (never over Health and Lift) instead of dropping into the middle of the view. The desk's
 stat sheet's top is level with the photo's on every screen (Alan 2026-10-24); the photo's plane rebuilds when more
-of its parts arrive from the server (it once showed without a wing). Kill feed: 2 slips on a phone, under the top bar;
-the desk's service strips start under the feed's real bottom; edge arrows stay below Health and Lift on touch
+of its parts arrive from the server (it once showed without a wing). Kill feed: up to 4 slips, level with the match
+strip on every screen, filling top down (newest at the bottom) and fading oldest-first after 6 s with no new kill (Alan
+2026-10-29); the desk's service strips start under the feed's real bottom; edge arrows stay below Health and Lift on touch
 screens. Match tip on a touch screen: tap the note (no Got it button).
 
 ## Rules
@@ -92,7 +99,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/PauseScreen.luau` | In-match clipboard menu |
 | `src/client/RoundEnd.luau` | Round end in the room: "Pencils down!", the winners' cutscene with the results card, vote card (1/2/3), next round's name |
 | `src/client/LevelBar.luau` | Your level, XP bar and next unlock: on the results card, the main menu board and the hangar |
-| `src/client/WinnersCutscene.luau` | Camera glides to the chalkboard-row desks (the two outside ones slide in next to the middle one on this screen only) for a close-up of each winner in turn (3rd, 2nd, 1st) as their local copy stands up, hops on the desk and starts a Roblox emote; then one steady group shot of all three, a little from above, with paper name plates and confetti, fading on this screen only what would block them and what hangs from the ceiling in front; then it glides back as the results card comes up. Plays the hop animation in `rounds.winner_hop_animation` once uploaded. 1st plays `rounds.winner_plane_emote` (Meshy full-body clip, empty until uploaded) holding a copy of their own plane in the right hand, nose turning the way the hand moves |
+| `src/client/WinnersCutscene.luau` | Camera glides to the chalkboard-row desks (the two outside ones slide in next to the middle one on this screen only) for a close-up of each winner in turn (3rd, 2nd, 1st) as their local copy stands up, hops on the desk and starts a Roblox emote; then one steady group shot of all three, a little from above, with paper name plates and confetti (falling in from above the top edge of every shot, never seen starting: Alan 2026-10-29), fading on this screen only what would block them and what hangs from the ceiling in front; then it glides back as the results card comes up. Plays the hop animation in `rounds.winner_hop_animation` once uploaded. 1st plays `rounds.winner_plane_emote` (Meshy full-body clip, empty until uploaded) holding a copy of their own plane in the right hand, nose turning the way the hand moves |
 | `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |

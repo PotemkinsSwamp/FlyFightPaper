@@ -60,6 +60,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `repack_compare.py` | Renders a building's `parts/` pieces and its `repacked/` pieces from 5 fixed views in Blender and diffs them (`--all` for every building); contact sheets and `summary.txt` in `.planning/repack-check/`. Checks the repack files only, not what Roblox draws |
 | `fill_gaps.py` | Fills black gaps in textures so moderation doesn't misread shapes. Run before uploading hero pieces |
 | `wind_sprites.py` | Draws the fan-wind particle pictures |
+| `results_page.py` | Draws the results card's notebook page (ruled lines under its six rows) into `assets/ui/results/source/` |
 | `carpet.py` | Bakes the one shared rug carpet normal + roughness map (`assets/rug/carpet/`) |
 
 ## Docs

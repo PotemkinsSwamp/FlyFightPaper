@@ -52,6 +52,7 @@ return {
 	},
 	results = {
 		goldStar = "rbxassetid://120331771075457",
+		page = "rbxassetid://132705728947699", -- the results card's loose-leaf page (tools/art/results_page.py)
 		rowHighlight = "rbxassetid://137797402914609",
 		strip = { blue = "rbxassetid://129866047095335", pink = "rbxassetid://82556466719896", green = "rbxassetid://78583732906300" },
 		xpCard = "rbxassetid://76765257093865",
