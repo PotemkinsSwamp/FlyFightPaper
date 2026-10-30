@@ -162,8 +162,8 @@ function Controller.start(plane)
 		local boost = not blocked and (Input:IsKeyDown(Enum.KeyCode.LeftShift) or Touch.boost)
 		if boost ~= boostSent then boostSent = boost; Root.FlightAction:FireServer("boost", boost) end
 		-- Brake (Space, Alan 2026-10-29): slower and a little tighter in turns while held; the server drains Lift faster.
-		-- Phones have no brake button: close behind an enemy their speed eases down to its speed instead (Settings).
-		local braking = not blocked and not boost and not pinned and Input:IsKeyDown(Enum.KeyCode.Space)
+		-- Phones: close behind an enemy their speed eases down to its speed instead; with that off in Settings, a FLAPS button.
+		local braking = not blocked and not boost and not pinned and (Input:IsKeyDown(Enum.KeyCode.Space) or Touch.brake)
 		if braking ~= brakeSent then brakeSent = braking; Root.FlightAction:FireServer("brake", braking) end
 		local wanted = braking and Config.brake_speed_factor or 1
 		state.matching = nil

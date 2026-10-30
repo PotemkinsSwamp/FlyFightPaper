@@ -46,7 +46,9 @@ function Controller.start(getPlane,effects)
  -- and a 0.1 s old aim misses a turning plane at range. Idle triggers resync 10 times a second.
  Run.Heartbeat:Connect(function(dt)
   clock+=dt
-  local nowAuto=Touch.active() and Root:GetAttribute("AutoFire")~=false and FlightState.onTarget==true and not Root:GetAttribute("OverlayOpen")
+  -- Not in the lessons (Alan 2026-10-29: they teach firing when the dot turns red); the Range keeps it.
+  local lesson=Root:GetAttribute("TutorialOpen")==true and Root:GetAttribute("TutorialLesson")~="range"
+  local nowAuto=Touch.active() and Root:GetAttribute("AutoFire")~=false and FlightState.onTarget==true and not Root:GetAttribute("OverlayOpen") and not lesson
   if nowAuto~=auto then auto=nowAuto;effects.press(1,down(1));send(1) end
   local firing=down(1) or held[2]
   if clock>=(firing and 1/30 or .1) then

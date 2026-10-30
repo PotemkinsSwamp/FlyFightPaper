@@ -39,7 +39,8 @@ end
 -- Pals appear in the air, never out of a hangar (Alan 2026-10-19: "it's like the enemy's coming out of nowhere"):
 -- 400-700 studs ahead of their player (within 40 degrees of the nose; Alan: not off to the side), in clear air inside
 -- the room, hidden behind a building if one of those spots is, facing away so the player chases it. Only if nothing
--- ahead is clear: further round, then the course's middle point. The pellet Pal (step 8) instead starts behind you,
+-- ahead is clear: further round, then the course point furthest from you. The eraser Pal starts 800-1100 studs off,
+-- any way round. The pellet Pal (step 8) instead starts behind you,
 -- off to one side where you don't see it, 400-500 studs back in clear sight, flying away from you: you turn round and
 -- see it running (Alan 2026-10-19/21; its "shots" are palAmbush's).
 function Service:placePal(p)
@@ -52,8 +53,11 @@ function Service:placePal(p)
  local half=self.flight.boundsSize/2-Vector3.one*60
  local open,hidden
  local attack=p.pal.mode=="pellet"
- for _,turn in attack and {150,-150,130,-130,170,-170,110,-110} or {0,20,-20,40,-40,70,-70,110,-110,180} do
-  for _,range in attack and {450,500,400} or {600,500,700,400} do
+ -- The eraser Pal starts far off, any way round (Alan 2026-10-29: flying in a corner, it appeared right in front of
+ -- you and ruined the step): its erasers come at you from 300 studs anyway (palEraser).
+ local far=p.pal.mode=="eraser"
+ for _,turn in attack and {150,-150,130,-130,170,-170,110,-110} or far and {0,30,-30,60,-60,90,-90,120,-120,150,-150,180} or {0,20,-20,40,-40,70,-70,110,-110,180} do
+  for _,range in attack and {450,500,400} or far and {1100,1000,900,800} or {600,500,700,400} do
    local at=from+CFrame.Angles(0,math.rad(turn),0):VectorToWorldSpace(heading)*range+Vector3.yAxis*20
    local inside=self.flight.boundsCF:PointToObjectSpace(at)
    ball.Position=at
@@ -61,13 +65,18 @@ function Service:placePal(p)
     open=open or at
     local blocked=workspace:Raycast(from,at-from,self.flight.cast)
     -- `hidden` = the spot wanted: behind a building ahead, or (attacking) behind you with a clear shot
-    if attack and not blocked or not attack and math.abs(turn)<=40 and blocked then hidden=at;break end
+    if far or attack and not blocked or not attack and math.abs(turn)<=40 and blocked then hidden=at;break end
    end
   end
   if hidden or not attack and open and (turn==-40 or math.abs(turn)>40) then break end
  end
  ball:Destroy()
- local at=hidden or open or Course.POINTS[2]
+ -- Nothing clear: the course point furthest from you.
+ local at=hidden or open
+ if not at then
+  at=Course.POINTS[1]
+  for _,point in Course.POINTS do if (point-from).Magnitude>(at-from).Magnitude then at=point end end
+ end
  local away=(at-from)*Vector3.new(1,0,1);away=away.Magnitude>1 and away.Unit or heading
  p.body.CFrame=CFrame.lookAt(at,at+away);p.hasLaunched=true;self.flight:fly(p)
  -- Half a normal plane's Health in lessons (Alan 2026-10-19: full Health made them frustrating).

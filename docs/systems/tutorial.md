@@ -14,7 +14,9 @@ them). Landing is two steps: line up at LINE UP HERE, then at half speed with th
 straight into the glowing circle" (wander off the approach: full speed and the line-up sign again). The desk step
 keeps Full refold and Fresh plane (Alan). Every Pal flies straight and turns 90 degrees only at a wall or building,
 the same way when it can, so it flies a square between the buildings (Alan: a circling Pal is very hard to hit on a
-phone). Flight School has 8 steps.
+phone). Flight School has 8 steps. **After Alan's phone try (2026-10-29):** phones don't auto-fire in lessons (the
+Range keeps it): the steps teach firing when the dot turns red; the eraser Pal starts 800-1100 studs away, any way
+round (in a corner it had appeared right in front of him).
 **Room moves (Alan's phone runs, v413, 2026-10-28):** the private tutorial room does know it is one (every join and
 move there logs `RoomClass` tutorial). The failure was the way out: the tutorial sent him to the public room he had
 just left (its list entry was still fresh, under 45 s), which had closed, so the move failed twice ("GameEnded").

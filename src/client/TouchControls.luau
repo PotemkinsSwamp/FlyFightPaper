@@ -12,7 +12,7 @@ local PaperUI = require(script.Parent.PaperUI)
 local Words = require(Root.Shared.TouchWords)
 local Art = require(Root.Shared.UIAssets).touch -- peel stickers (Alan 2026-10-28, ui-concepts/touch-buttons-c.png)
 
-local Touch = { stick = Vector2.zero, boost = false, onFire = nil } -- onFire(which, down): CombatController's triggers
+local Touch = { stick = Vector2.zero, boost = false, brake = false, onFire = nil } -- onFire(which, down): CombatController's triggers
 -- The HUD's crayon colours (the weapon rows' cells): each button fills with its own weapon's state.
 local CRAYON = { green = Color3.fromRGB(110, 200, 95), red = Color3.fromRGB(230, 75, 60), orange = Color3.fromRGB(245, 155, 50),
 	blue = Color3.fromRGB(85, 150, 235) }
@@ -106,6 +106,8 @@ function Touch.start(getPlane)
 	local fire = holdButton("Fire", "FIRE", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(1, down) end; if down and Touch.onShot then Touch.onShot() end end)
 	local fire2 = holdButton("Fire2", "2", CRAYON.green, function(down) if Touch.onFire then Touch.onFire(2, down) end; if down and Touch.onShot then Touch.onShot() end end)
 	local boost = holdButton("Boost", "BOOST", CRAYON.blue, function(down) Touch.boost = down end)
+	-- The brake (Alan 2026-10-29): only for players who turned Speed match off in Settings (FlightController).
+	local brake = holdButton("Brake", "FLAPS", CRAYON.orange, function(down) Touch.brake = down end)
 
 	-- Sizes follow the screen's short side, kept thumb-sized (points): a phone and a tablet both get pieces a thumb
 	-- can hit, and a tablet's don't grow huge.
@@ -121,6 +123,8 @@ function Touch.start(getPlane)
 		fire2.Position = UDim2.new(1, -big * 0.5 - short * 0.06, 1, -big - small * 0.5 - short * 0.12)
 		boost.Size = UDim2.fromOffset(small, small)
 		boost.Position = UDim2.new(1, -big - small * 0.5 - short * 0.12, 1, -small * 0.5 - short * 0.08)
+		brake.Size = UDim2.fromOffset(small, small)
+		brake.Position = UDim2.new(1, -big - small * 0.5 - short * 0.12, 1, -big - small * 0.5 - short * 0.12)
 	end
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
 	fit()
@@ -188,6 +192,8 @@ function Touch.start(getPlane)
 		boost.Visible = boostMax > 0
 		if boost.Visible then Touch.gauge("Boost", (plane:GetAttribute("Boost") or 0) / boostMax, "blue") end
 		fire2.Visible = flying and (plane:GetAttribute("AlternateName") or "None") ~= "None"
+		brake.Visible = flying and Root:GetAttribute("SpeedMatch") == false
+		if not brake.Visible then Touch.brake = false end
 		if controls and controlsOff ~= Touch.active() then
 			controlsOff = Touch.active()
 			if controlsOff then controls:Disable() else controls:Enable() end
