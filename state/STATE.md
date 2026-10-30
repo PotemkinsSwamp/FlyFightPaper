@@ -1,17 +1,12 @@
 # Since Alan last checked (2026-10-29)
-- **Your 7 phone-run notes: all fixed and checked in Studio at phone size, not yet published.** Auto-fire switch in
-  phone Settings (on by default; FIRE fires while the dot is red or yellow); steering bar 0.2-1.8 with 1 in the middle;
-  Skip all then "Next: ..." opens the next lesson; Close shows its word; Slow Motion paper bigger than its words; the
-  "second Back" was the shelf's "Range" tab with its word hidden (now shows), and the real Back sometimes ignored taps
-  (fixed: it hit every small button just under finger size); Range Menu / Hangar strips right of the score card.
-- **Phone screens checked:** Training board, match desk, Range menu good. Range notes now hide while the Range menu is
-  down (they covered half of it). Vote cards and help line were ~13 points: now ~17. Results card ~14 points.
+- **You published and played the phone fixes:** auto-fire works. Your notes (docs/playtests/2026-10-29-phone-run-
+  published-fixes.md) are the next to-do list: kill feed top-down list of ~4 that fades; dev mode on your account in
+  live servers (decision 2026-10-29); results card paper made to fit 6 ruled lines, place column on the paper,
+  heads spaced; winners' confetti from the ceiling. Later idea: paper planes flying behind the winners.
 
 # Now: mobile lane (make phones work and look good)
-What works: Stage 9, tutorials, desk quick menu; phone checks pass on menu, Hangar, Customize, Settings, Training
-board, match desk, Range menu, vote, results.
-Needs your phone check: everything above (publish first).
-Not yet: iPad (needs the Device Simulator switched to an iPad); match tips moving on a phone.
+What works: Stage 9, tutorials, desk quick menu; phone fixes published and in your hands (auto-fire confirmed).
+Next: your 2026-10-29 notes above. Not yet: iPad; match tips on a phone (needs dev mode to reset them).
 
 Decisions to review
 Auto-fire also fires on the yellow dot (shots land thanks to phone aim help), not only red; in the Range it fires on
@@ -49,9 +44,6 @@ Zone 680-840 across by building density; bots on the zone 30/60/85% (rookie/regu
 Points: fold assist share rounded to 5 (10-80); outside-zone fold 40%; paper targets 50 points each, server-checked.
 
 Waiting on Alan
-- Phone run of the 2026-10-29 fixes (publish first): Settings Auto-fire + steering bar; Skip all then Next in each
-  lesson; the Hangar Tour's end card Close; Range Hangar (one Back, "Range" tab); Range strips by the score card;
-  Range menu, vote and results on the phone.
 - Switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
 - Later: bots' guns cross at 150 studs (your call); backlog: a new fan sound.
