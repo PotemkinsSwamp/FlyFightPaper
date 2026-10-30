@@ -28,7 +28,10 @@ tips, the round end and the vote sit below Roblox's top bar (the Menu button).
 Results card (Alan 2026-10-29, PC and phone): six rows (places 1-5 and your own) on a loose-leaf page drawn to fit
 (`tools/art/results_page.py`: binder holes, torn edge, masking tape; one ruled line under each row, the place column
 between the holes and the red margin, heads spaced apart). Every cell shrinks its words to fit its own column (long
-names). A tied team round shows no places (no podium). Seen in Studio Play at phone size 2026-10-29.
+names). A tied team round shows no places (no podium). Team rounds (Alan 2026-10-29): a page per team side by side
+(Red left, Blue right) with its folds (Airspace: zone points) and pilots; gold star + "Winner!" on the winners, "Your
+team" tape and the level part on yours. Match tips: the words fill the sticky note, as big as fits. Seen in Studio
+Play at phone size 2026-10-29.
 Dev mode: in Studio, and on the game owner's own account in live servers (server-set `Dev` attribute,
 [decision](../decisions/2026-10-29-dev-mode-on-alans-account.md)), the desk shows the dev panel (modes, end match,
 weapons, bots, "tips again"); every other account sees nothing and the server refuses its dev requests.

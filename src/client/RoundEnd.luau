@@ -42,20 +42,18 @@ function RoundEnd.start()
 	local subline = PaperUI.phone(words(banner, "Subline", "", 40, 92, 720, 44, 34), { TextSize = 40 })
 	subline.TextXAlignment = Enum.TextXAlignment.Center
 
-	-- Results card (right): the top five and your own row with folds, assists, crashes and points; team totals in
-	-- team rounds; your Paper and XP from the round with your level bar filling up. The notebook page is drawn for
-	-- this layout (tools/art/results_page.py, Alan 2026-10-29): loose-leaf with binder holes, a torn edge and tape;
-	-- each row sits on a ruled line, the place column between the holes and the red margin, the level part below.
-	local card = image(sheet, "Results", UIArt.results.page, 1220, 40, 680, 900)
-	card.ScaleType = Enum.ScaleType.Stretch
-	local title = words(card, "Title", "Results", 20, 40, 640, 56, 50)
-	title.TextXAlignment = Enum.TextXAlignment.Center
-	local teams = words(card, "Teams", "", 20, 92, 640, 44, 38)
-	teams.TextXAlignment, teams.RichText = Enum.TextXAlignment.Center, true
+	-- Results card: the top five and your own row with folds, assists, crashes and points; your Paper and XP from the
+	-- round with your level bar filling up. The notebook page is drawn for this layout (tools/art/results_page.py,
+	-- Alan 2026-10-29): loose-leaf with binder holes, a torn edge and tape; each row sits on a ruled line, the place
+	-- column between the holes and the red margin, the level part below. Free-for-all: one page on the right. Team
+	-- rounds (Alan 2026-10-29: see both scores side by side): a page per team, Red left and Blue right, each with its
+	-- points and pilots; the winners' page has the gold star, yours a "Your team" tape and the level part.
+	local card = Instance.new("Frame")
+	card.Name, card.BackgroundTransparency, card.Size, card.Parent = "Results", 1, UDim2.fromOffset(1920, 1080), sheet
 	-- Every cell keeps to its own column (Alan 2026-10-29: a long name ran into the numbers): its words are `size`
 	-- points (`phoneSize` on a phone) and shrink, on one line, until they fit.
-	local function cell(name, text, x, y, w, h, size, centred, phoneSize)
-		local label = words(card, name, text, x, y, w, h, size)
+	local function cell(page, name, text, x, y, w, h, size, centred, phoneSize)
+		local label = words(page, name, text, x, y, w, h, size)
 		label.TextWrapped, label.TextScaled = false, true -- (this order: turning wrap off after turns shrink off)
 		if centred then label.TextXAlignment = Enum.TextXAlignment.Center end
 		local cap = Instance.new("UITextSizeConstraint")
@@ -66,22 +64,40 @@ function RoundEnd.start()
 	-- Gaps between the columns, so the heads read as separate words (they ran together as one).
 	local COLUMNS = { { "Folds", 300, 80, "kills" }, { "Assists", 388, 90, "assists" }, { "Crashes", 486, 90, "deaths" }, { "Pts", 584, 66, "contribution" } }
 	local ROWS, ROW_TOP, ROW_PITCH = 6, 190, 72 -- the page's ruled lines (results_page.py)
-	local function head(label) label.TextColor3 = Color3.fromRGB(30, 60, 140) end
-	head(cell("HeadPilot", "Pilot", 128, 140, 168, 44, 26, false, 28))
-	for _, column in COLUMNS do head(cell("Head" .. column[1], column[1], column[2], 140, column[3], 44, 26, true, 28)) end
-	local rows = {}
-	for i = 1, ROWS do
-		local y = ROW_TOP + (i - 1) * ROW_PITCH + 18
-		local highlight = image(card, "Mine" .. i, UIArt.results.rowHighlight, 40, y - 2, 620, 60)
-		highlight.ScaleType, highlight.Visible = Enum.ScaleType.Stretch, false
-		rows[i] = { highlight = highlight, place = cell("Place" .. i, "", 56, y, 60, 56, 32, true, 38), name = cell("Name" .. i, "", 128, y, 168, 56, 32, false, 38), numbers = {} }
-		for _, column in COLUMNS do rows[i].numbers[column[4]] = cell(column[1] .. i, "", column[2], y, column[3], 56, 32, true, 40) end
+	local function makePage(name)
+		local page = image(card, name, UIArt.results.page, 1220, 40, 680, 900)
+		page.ScaleType = Enum.ScaleType.Stretch
+		local fit = Instance.new("UIScale")
+		fit.Name, fit.Parent = "Fit", page
+		local it = { page = page, rows = {} }
+		it.title = cell(page, "Title", "Results", 20, 40, 640, 62, 56, true, 56)
+		it.points = cell(page, "Points", "", 20, 96, 640, 44, 38, true, 38)
+		local function head(label) label.TextColor3 = Color3.fromRGB(30, 60, 140) end
+		head(cell(page, "HeadPilot", "Pilot", 128, 140, 168, 44, 26, false, 28))
+		for _, column in COLUMNS do head(cell(page, "Head" .. column[1], column[1], column[2], 140, column[3], 44, 26, true, 28)) end
+		for i = 1, ROWS do
+			local y = ROW_TOP + (i - 1) * ROW_PITCH + 18
+			local highlight = image(page, "Mine" .. i, UIArt.results.rowHighlight, 40, y - 2, 620, 60)
+			highlight.ScaleType, highlight.Visible = Enum.ScaleType.Stretch, false
+			local row = { highlight = highlight, place = cell(page, "Place" .. i, "", 56, y, 60, 56, 32, true, 38), name = cell(page, "Name" .. i, "", 128, y, 168, 56, 32, false, 38), numbers = {} }
+			for _, column in COLUMNS do row.numbers[column[4]] = cell(page, column[1] .. i, "", column[2], y, column[3], 56, 32, true, 40) end
+			it.rows[i] = row
+		end
+		it.earned = cell(page, "Earned", "", 20, 630, 640, 44, 36, true, 36)
+		it.xpBar = LevelBar.new(page, 64, 700, 556, 34)
+		PaperUI.phone(page.Level, { TextSize = 44, Size = UDim2.fromOffset(250, 41) })
+		PaperUI.phone(page.XPCount, { TextSize = 36 })
+		PaperUI.phone(page.NextUnlock, { TextSize = 36 })
+		-- Team rounds: the winners' gold star, and masking tape saying "Your team" across the top.
+		it.star = image(page, "Star", UIArt.results.goldStar, 524, 6, 150, 150)
+		it.winner = cell(page, "Winner", "Winner!", 470, -14, 210, 52, 40, true, 40)
+		it.winner.TextColor3 = Color3.fromRGB(190, 120, 0)
+		it.yours = image(page, "YourTeam", UIArt.ingame.tapeLabel, 190, -22, 300, 62) -- over the page's top edge
+		it.yours.ScaleType = Enum.ScaleType.Stretch
+		cell(it.yours, "Words", "Your team", 0, 4, 300, 54, 36, true, 38)
+		return it
 	end
-	local earned = cell("Earned", "", 20, 630, 640, 44, 36, true, 36)
-	local xpBar = LevelBar.new(card, 64, 700, 556, 34)
-	PaperUI.phone(card.Level, { TextSize = 44, Size = UDim2.fromOffset(250, 41) })
-	PaperUI.phone(card.XPCount, { TextSize = 36 })
-	PaperUI.phone(card.NextUnlock, { TextSize = 36 })
+	local pages = { makePage("Page1"), makePage("Page2") }
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -105,39 +121,74 @@ function RoundEnd.start()
 		most.MaxTextSize, most.Parent = 50, strips[i].Label
 	end
 
-	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, mine = nil, cardAt = 0 }
+	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, mine = nil, minePage = 1, cardAt = 0 }
 	local function show(part) for _, child in { banner, card, vote } do child.Visible = child == part or (type(part) == "table" and table.find(part, child) ~= nil) end end
 
 	local TEAM_INK = { ["team:1"] = Color3.fromRGB(200, 40, 40), ["team:2"] = Color3.fromRGB(40, 80, 200) }
-	local function fillResults(snap)
-		local result = snap.result or {}
-		local list = table.clone(result.participants or {})
-		table.sort(list, function(a, b) return (a.place or 99) < (b.place or 99) end)
-		local me = player.DisplayName
-		state.mine = nil
-		for _, p in list do if p.displayName == me then state.mine = p end end
-		local shown = #rows
-		for i, row in rows do
-			local p = i <= shown and list[i] or nil
-			-- The last line is always you, if you didn't make the top ones.
-			local myLine = state.mine and table.find(list, state.mine)
-			if i == shown and myLine and myLine >= shown then p = state.mine end
-			row.place.Text = p and p.place and (PLACES[p.place] or p.place .. "th") or ""
+	local TEAM_NAMES = { ["team:1"] = "Red team", ["team:2"] = "Blue team" }
+	-- Where the pages sit (centre x, y, scale, turn): free-for-all one page on the right; team rounds two smaller pages
+	-- side by side, turned a little.
+	local LAYOUT = { solo = { { 1560, 490, 1, 0 } }, teams = { { 1069, 439, 0.82, 1.5 }, { 1624, 439, 0.82, -1.5 } } }
+	-- A page's rows: the top five of `list` and, if you're not among them, you on the last line.
+	local function fillRows(it, list, rank)
+		local myLine = state.mine and table.find(list, state.mine)
+		for i, row in it.rows do
+			local p = list[i]
+			if i == ROWS and myLine and myLine >= ROWS then p = state.mine end
+			local place = p and rank(p, p == state.mine and myLine or i)
+			row.place.Text = place and (PLACES[place] or place .. "th") or ""
 			row.name.Text = p and p.displayName or ""
 			row.name.TextColor3 = p and TEAM_INK[p.teamId] or PaperUI.INK
 			for key, label in row.numbers do label.Text = p and tostring(math.floor(p[key] or 0)) or "" end
 			row.highlight.Visible = p ~= nil and p == state.mine
 		end
-		local totals = snap.mode ~= "FFA" and snap.teams
-		teams.Text = totals and string.format('<font color="#C82828">Red %d</font>  -  <font color="#2850C8">Blue %d</font>', math.floor(totals["team:1"] or 0), math.floor(totals["team:2"] or 0)) or ""
-		earned.Text = state.mine and string.format("You: +%d Paper   +%d XP", state.mine.paper or 0, state.mine.xp or 0) or ""
+	end
+	local function fillResults(snap)
+		local result = snap.result or {}
+		local list = table.clone(result.participants or {})
+		table.sort(list, function(a, b)
+			if (a.place or 99) ~= (b.place or 99) then return (a.place or 99) < (b.place or 99) end
+			return (a.contribution or 0) > (b.contribution or 0)
+		end)
+		local me = player.DisplayName
+		state.mine = nil
+		for _, p in list do if p.displayName == me then state.mine = p end end
+		local teamRound = snap.mode ~= "FFA" and snap.teams ~= nil
+		for k, spot in LAYOUT[teamRound and "teams" or "solo"] do
+			local page = pages[k].page
+			page.Position, page.Fit.Scale, page.Rotation = UDim2.fromOffset(spot[1], spot[2]), spot[3], spot[4]
+		end
+		pages[2].page.Visible = teamRound
+		state.minePage = 1
+		for k, it in pages do
+			local teamId = teamRound and "team:" .. k or nil
+			local mine = state.mine ~= nil and (not teamRound or state.mine.teamId == teamId)
+			if mine then state.minePage = k end
+			it.star.Visible = teamRound and not result.draw and result.winningTeam == teamId
+			it.winner.Visible, it.yours.Visible = it.star.Visible, teamRound and mine
+			it.title.Text = teamId and TEAM_NAMES[teamId] or "Results"
+			it.title.TextColor3 = teamId and TEAM_INK[teamId] or PaperUI.INK
+			-- (a team dogfight counts folds; Airspace Control counts zone points)
+			local score = teamId and math.floor(snap.teams[teamId] or 0)
+			it.points.Text = score and (snap.mode == "TDM" and (score == 1 and "1 fold" or score .. " folds") or score .. " points") or ""
+			it.points.TextColor3 = it.title.TextColor3
+			it.earned.Text = mine and string.format("You: +%d Paper   +%d XP", state.mine.paper or 0, state.mine.xp or 0) or ""
+			if teamId then
+				local team = {}
+				for _, p in list do if p.teamId == teamId then table.insert(team, p) end end
+				fillRows(it, team, function(_, line) return line end) -- places inside the team
+			else
+				fillRows(it, list, function(p) return p.place end)
+			end
+		end
 	end
 	-- Your level bar fills from where you were before this round to where you are now.
 	RunService.RenderStepped:Connect(function()
 		local mine = state.mine
 		local shown = cover.Visible and card.Visible and mine ~= nil and state.profileXP ~= nil
-		xpBar.show(shown)
+		for k, it in pages do it.xpBar.show(shown and k == state.minePage) end
 		if not shown then return end
+		local xpBar = pages[state.minePage].xpBar
 		-- ponytail: "before" assumes the profile already holds this round's XP (it is paid as it is earned).
 		local after = math.max(state.profileXP, mine.xp or 0)
 		local before = math.max(0, after - (mine.xp or 0))
