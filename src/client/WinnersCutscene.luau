@@ -52,6 +52,9 @@ local NEAR_CLEAR = 120 -- anything right in front of the lens fades; the rest bl
 local BLUR_RADIUS, BLUR_NEAR, BLUR_FAR = 200, 0.8, 0.2
 -- Confetti: Roblox's own square particle, in five crayon colours, falling over the three from when 1st lands.
 local CONFETTI = "rbxasset://textures/particles/SquareParticle.png"
+-- It starts above the top edge of every shot, so it falls in from the ceiling's direction and is never seen
+-- appearing (Alan 2026-10-29: it began a foot over their heads); CONFETTI_FALL: its falling speed, heights a second.
+local CONFETTI_OVER, CONFETTI_FALL = 0.3, 0.6
 local CONFETTI_COLORS = { Color3.fromRGB(230, 60, 60), Color3.fromRGB(60, 110, 230), Color3.fromRGB(250, 205, 40),
 	Color3.fromRGB(70, 190, 90), Color3.fromRGB(240, 120, 200) }
 -- Only what would block a winner in their shot fades out on this screen; the rest of the town and the ceiling
@@ -376,8 +379,9 @@ local function makePlates(rows)
 	return gui, plates
 end
 
--- Confetti over the three: an invisible box at `at`, `size` big, that rains it down while it is on.
-local function makeConfetti(at, size, height)
+-- Confetti over the three: an invisible box at `at`, `size` big, that rains it down while it is on; each piece lives
+-- long enough to fall `fall` studs (to the floor under the shots).
+local function makeConfetti(at, size, height, fall)
 	local cloud = Instance.new("Part")
 	cloud.Name, cloud.Anchored, cloud.CanCollide, cloud.CanQuery, cloud.CanTouch, cloud.Transparency = "WinnerConfetti", true, false, false, false, 1
 	cloud.CFrame, cloud.Size = at, size
@@ -388,9 +392,11 @@ local function makeConfetti(at, size, height)
 		emitter.Texture, emitter.Color, emitter.LightInfluence, emitter.Enabled = CONFETTI, ColorSequence.new(color), 0, false
 		emitter.EmissionDirection, emitter.Shape = Enum.NormalId.Bottom, Enum.ParticleEmitterShape.Box
 		emitter.Size, emitter.Squash = NumberSequence.new(height * 0.022), NumberSequence.new(flutter)
-		emitter.Lifetime, emitter.Rate = NumberRange.new(4, 6), 14
+		-- Falls at about CONFETTI_FALL winner heights a second (gravity over drag), however high it starts.
+		local seconds = fall / (CONFETTI_FALL * height)
+		emitter.Lifetime, emitter.Rate = NumberRange.new(seconds + 1, seconds + 3), 14
 		emitter.Speed, emitter.SpreadAngle = NumberRange.new(height * 0.05, height * 0.2), Vector2.new(30, 30)
-		emitter.Acceleration, emitter.Drag = Vector3.new(0, -height * 0.3, 0), 1
+		emitter.Acceleration, emitter.Drag = Vector3.new(0, -CONFETTI_FALL * height, 0), 1
 		emitter.Rotation, emitter.RotSpeed = NumberRange.new(0, 360), NumberRange.new(-220, 220)
 		emitter.Parent = cloud
 	end
@@ -523,7 +529,22 @@ function Cutscene.play(winners, onStage)
 	state.overhead = { view = group, depth = groupDistance, y = deskTop + 1.5 * height }
 	local drift = group + group.LookVector * groupDistance * PUSH_IN
 	state.plateGui, state.plates = makePlates(winners)
-	state.confetti = makeConfetti(CFrame.new(middle + Vector3.new(0, 1.5 * height, 0)), Vector3.new(2 * across + height, 1, height * 0.8), height)
+	-- The lowest height where the whole confetti box is above every shot's top edge, plus a margin.
+	local spread = Vector3.new(2 * across + height, 1, height * 0.8)
+	local function seen(y)
+		for _, shot in state.shots do
+			for i = 0, 3 do
+				local corner = CFrame.fromMatrix(Vector3.new(middle.X, y, middle.Z), right, Vector3.yAxis) * (spread * Vector3.new(i % 2 - 0.5, -0.5, i // 2 - 0.5))
+				local q = shot.view:PointToObjectSpace(corner)
+				if q.Z < 0 and q.Y / -q.Z < tanHalf then return true end
+			end
+		end
+		return false
+	end
+	local confettiY = deskTop + 1.5 * height
+	while seen(confettiY) and confettiY < deskTop + 40 * height do confettiY += height / 4 end
+	confettiY += CONFETTI_OVER * height
+	state.confetti = makeConfetti(CFrame.new(middle.X, confettiY, middle.Z), spread, height, confettiY - deskTop + height)
 
 	-- Roblox scales an animation's hip movement twice on a scaled-up avatar (27 x 27 instead of 27, measured
 	-- 2026-10-17), which throws the body far off its root. Once standing, take the extra scale back out each step.
