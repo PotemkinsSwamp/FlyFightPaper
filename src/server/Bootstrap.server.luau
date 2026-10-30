@@ -3,6 +3,14 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
 Players.CharacterAutoLoads = false
+-- Dev mode (Alan 2026-10-29): the server marks who may use the test controls; every dev request checks the server's
+-- own copy of this attribute (a client's change to it never reaches the server).
+local ServiceRules = require(ReplicatedStorage:WaitForChild("FlyFightPaper").Shared.ServiceRules)
+local function markDev(player)
+ player:SetAttribute("Dev", ServiceRules.devAllowed(player.UserId, game:GetService("RunService"):IsStudio(), game.CreatorType.Name, game.CreatorId))
+end
+Players.PlayerAdded:Connect(markDev)
+for _, player in Players:GetPlayers() do markDev(player) end
 -- Keep unused saved art out of the replicated game.
 local archive = ServerStorage:FindFirstChild("DormantArt") or Instance.new("Folder")
 archive.Name = "DormantArt"

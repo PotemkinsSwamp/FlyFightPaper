@@ -104,7 +104,7 @@ function Effects.start(getPlane)
   if shreds>0 then a.Shreds:Emit(shreds) end
   if puffs>0 then a.Puff:Emit(puffs) end
  end
- local feed={}
+ local feed,feedAt,fading={},0,{}
  local myId=tostring(Players.LocalPlayer.UserId)
  -- Damage direction: a red bar on a ring around the screen centre, on the side the shot came from.
  local function incoming(gui,attackerId)
@@ -149,13 +149,34 @@ function Effects.start(getPlane)
    if event.kind=="death" then
    if event.killerId==myId then marker(gui,true);Audio.play("kill") end
    -- Lesson crashes and leaving a lesson never reach the kill feed (Alan: they carried into the next match).
-   if not event.practice then table.insert(feed,1,Lines.death(event.how or {kind=event.cause=="weapon" and "weapon" or "crash"},event.victimId==myId and "you" or event.victim,event.killer and (event.killerId==myId and "you" or event.killer))) end
-   while #feed>4 do table.remove(feed) end
-   -- One notebook slip per line (FlightHUD makes Slip1..4, newest on top).
-   -- (On FlightHUD's MatchInfo layer, which stays up at the desk too.)
+   -- The list fills from the top down, newest at the bottom (Alan 2026-10-29); four slips, the oldest drops off the top.
+   if event.practice then return end
+   table.insert(feed,Lines.death(event.how or {kind=event.cause=="weapon" and "weapon" or "crash"},event.victimId==myId and "you" or event.victim,event.killer and (event.killerId==myId and "you" or event.killer)))
+   while #feed>4 do table.remove(feed,1) end
+   -- One notebook slip per line (FlightHUD makes Slip1..4), on FlightHUD's MatchInfo layer, which stays up at the desk too.
    local info=Players.LocalPlayer.PlayerGui:FindFirstChild("MatchInfo");local slips=info and info:FindFirstChild("KillFeed")
-   local shown=require(script.Parent.ScreenFit).kind()=="phone" and 2 or 4 -- two lines on a phone (Alan 2026-10-24)
-   for i=1,4 do local slip=slips and slips:FindFirstChild("Slip"..i);if slip then slip.Visible=feed[i]~=nil and i<=shown;slip.Words.Text=feed[i] or "" end end
+   if not slips then return end
+   local function paint(i,clear)
+    local slip=slips:FindFirstChild("Slip"..i);if not slip then return end
+    slip.Visible=feed[i]~=nil;slip.Words.Text=feed[i] or ""
+    for _,piece in {slip,slip.Pin} do piece.ImageTransparency=clear end;slip.Words.TextTransparency=clear
+   end
+   for _,tween in fading do tween:Cancel() end;table.clear(fading)
+   for i=1,4 do paint(i,0) end
+   -- After 6 s with nothing new the slips fade, oldest first, and the list starts empty again.
+   feedAt=os.clock();local at=feedAt
+   task.delay(6,function()
+    for i=1,#feed do
+     if feedAt~=at then return end
+     local slip=slips:FindFirstChild("Slip"..i)
+     for piece,goal in slip and {[slip]={ImageTransparency=1},[slip.Pin]={ImageTransparency=1},[slip.Words]={TextTransparency=1}} or {} do
+      local tween=Tween:Create(piece,TweenInfo.new(.6),goal);table.insert(fading,tween);tween:Play()
+     end
+     task.wait(.25)
+    end
+    task.wait(.6);if feedAt~=at then return end
+    table.clear(feed);for i=1,4 do paint(i,0) end
+   end)
    end
   end
  end

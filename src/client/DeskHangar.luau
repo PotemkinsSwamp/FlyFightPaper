@@ -91,7 +91,7 @@ function DeskHangar.new(playerGui, api)
 		local leftScale = math.min(s, (view.Y - 4 - bar) / (1068 - PHOTO_Y))
 		left.UIScale.Scale = leftScale
 		left.Position, bottom.Position = UDim2.fromOffset(16, math.max(8, bar - PHOTO_Y * leftScale)), UDim2.new(0.5, 0, 1, -12)
-		-- The service strips start under the kill feed's real bottom (FlightHUD: 4 slips, 2 on a phone); they shrink
+		-- The service strips start under the kill feed's real bottom (FlightHUD: 4 slips); they shrink
 		-- if needed so Customize still fits above the bottom edge.
 		local top = api.feed.AbsolutePosition.Y + api.feed.AbsoluteSize.Y - layer.AbsolutePosition.Y + ScreenFit.GAP
 		right.Position = UDim2.new(1, -16, 0, top)

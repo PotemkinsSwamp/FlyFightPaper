@@ -83,17 +83,17 @@ function Service.new()
   local now=workspace:GetServerTimeNow();if now-p.lastAction<0.35 then return end;p.lastAction=now
   if action=="launch" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:launch(p)
   elseif action=="fresh" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:destroy(p,{kind="fresh"},"fresh")
-  elseif action=="loadout" and Run:IsStudio() and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then
-   -- Studio test flights: a desk picker name or a whole hangar build, with every part unlocked.
+  elseif action=="loadout" and player:GetAttribute("Dev")==true and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then
+   -- Dev test flights (Studio, or the owner's account live): a desk picker name or a whole hangar build, with every part unlocked.
    -- It lasts until the player picks a hangar preset and is never saved to the profile.
    local loadout=type(value)=="string" and Loadouts.make(self.catalog,value) or type(value)=="table" and self.catalog:validateLoadout(value,nil,50) and value
    if loadout then p.testLoadout=loadout;p.loadoutName=type(value)=="string" and value or "test build";self:replace(p) end
-  elseif action=="mixedBots" and Run:IsStudio() then
-   -- Studio test: replace every bot with an even mix of all builds, skills, personalities and quirks.
+  elseif action=="mixedBots" and player:GetAttribute("Dev")==true then
+   -- Dev test: replace every bot with an even mix of all builds, skills, personalities and quirks.
    self.eraserDuel=false;self.mixedBots=(self.mixedBots or 0)+1
    for _,bot in pairs(self.pilots) do if bot.kind=="bot" then self:remove(bot,"vacancy") end end
-  elseif action=="eraserBots" and Run:IsStudio() then
-   -- Studio dodge practice: one enemy bot with only an eraser hunts you; the other bots leave (until Play stops).
+  elseif action=="eraserBots" and player:GetAttribute("Dev")==true then
+   -- Dev dodge practice: one enemy bot with only an eraser hunts you; the other bots leave (until Play stops).
    self.eraserDuel=true
    local hunter
    for _,bot in pairs(self.pilots) do if bot.kind=="bot" then

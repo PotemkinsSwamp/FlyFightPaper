@@ -66,6 +66,8 @@ function Tips.start(getPlane)
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
 		if type(profile) == "table" and type(profile.lessons) == "table" then profileLoaded, lessons = true, profile.lessons end
 	end)
+	-- Dev "tips again" button (FlightHUD's dev panel): every tip shows again this session, seen or not.
+	Root:GetAttributeChangedSignal("DevTipsAgain"):Connect(function() seen = {} end)
 	local snapshot = {}
 	Root:WaitForChild("RoundView").OnClientEvent:Connect(function(s) if type(s) == "table" then snapshot = s end end)
 	local foldedAt
@@ -111,7 +113,8 @@ function Tips.start(getPlane)
 		if current and shownFor >= SHOW_SECONDS then current, lastEnded = nil, os.clock() end
 		if not current and os.clock() - lastEnded >= GAP_SECONDS then
 			for _, tip in TIPS do
-				if not seen[tip.key] and lessons[tip.key] ~= true and not (tip.skip and lessons[tip.skip] == true) and tip.when(c) then
+				local known = Root:GetAttribute("DevTipsAgain") and {} or lessons
+				if not seen[tip.key] and known[tip.key] ~= true and not (tip.skip and known[tip.skip] == true) and tip.when(c) then
 					current, shownFor, seen[tip.key] = tip, 0, true
 					words.Text = type(tip.text) == "function" and tip.text(c) or tip.text
 					Root.RoundAction:FireServer("lessonDone", tip.key)

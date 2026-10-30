@@ -72,4 +72,8 @@ function Rules.linedUp(home, position, look, cfg)
     end
     return look.Unit:Dot(-home.LookVector) >= math.cos(math.rad(cfg.approach_max_angle_degrees))
 end
+-- Dev mode (Alan 2026-10-29): Studio, or the account that owns the game (a user, not a group) in live servers.
+function Rules.devAllowed(userId, studio, creatorType, creatorId)
+    return studio == true or creatorType == "User" and type(creatorId) == "number" and creatorId > 0 and userId == creatorId
+end
 return Rules

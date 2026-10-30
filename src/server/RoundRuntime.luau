@@ -57,7 +57,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    player:SetAttribute("MenuTokens",tokens);player:SetAttribute("LastMenuAction",now)
   end
   if action=="join" then self:join(player)
-  elseif action=="devMode" and Run:IsStudio() and (MatchRules.mode(value) or value=="NEXTSPOT") then
+  elseif action=="devMode" and player:GetAttribute("Dev")==true and (MatchRules.mode(value) or value=="NEXTSPOT") then
    -- Studio test mode: the next round uses this mode, and a running round ends now so the switch is quick.
    -- "NEXTSPOT" (Alan 2026-10-16): Airspace with the zone held still; each click moves it to the next spot, so every
    -- spot can be seen in one round. From another mode, the first click starts an Airspace round on spot 1.
@@ -67,8 +67,8 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    self.engine.devZone=value=="NEXTSPOT" and (current or self.engine.devZone or 0)%#Config.rounds.control_zones+1 or nil
    Root:SetAttribute("DevMode",value=="NEXTSPOT" and "CONTROL" or value)
    if not spotOnly and (self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN") then self.engine:_close(self.engine:_clock(),"dev_mode") end
-  elseif action=="endMatch" and Run:IsStudio() then
-   -- Studio test button: end the running round now; the next mode is left as it was.
+  elseif action=="endMatch" and player:GetAttribute("Dev")==true then
+   -- Dev test button: end the running round now; the next mode is left as it was.
    if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_end") end
   elseif action=="practice" then self:practice(player,value)
   elseif action=="lesson" then self:lesson(player,value)
@@ -453,7 +453,7 @@ function Runtime:join(player)
  if not self.matchmaking:admit(player) then return end
  self.joined[player]=true;player:SetAttribute("InMatch",true)
  -- Studio test hook: ReplicatedStorage.FlyFightPaper's DevMode attribute ("TDM"/"CONTROL") picks the first round's mode.
- if not self.engine.round or self.engine.phase=="READY" then self:begin(Run:IsStudio() and Root:GetAttribute("DevMode") or "FFA")
+ if not self.engine.round or self.engine.phase=="READY" then self:begin(Root:GetAttribute("DevMode") or "FFA")
  elseif self.engine.phase=="ACTIVE" and not self.flight.pilots[player] then
   local profile=self.profiles:view(player)
   local p=self.flight:add(player,{loadout=profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout})
@@ -560,7 +560,7 @@ function Runtime:step(dt)
   if self.engine.phase~=self.lastPhase then self.lastPhase=self.engine.phase;self:phaseChanged(self.engine.phase) end
   if self.engine.phase=="VOTE" then self:watchRings() end
   if self.finished and not self.settled then self:queueSettlement() end
-  if self.engine.phase=="READY" and self.settled and next(self.joined) then self:begin(Run:IsStudio() and Root:GetAttribute("DevMode") or self.engine.nextMode or "FFA") end
+  if self.engine.phase=="READY" and self.settled and next(self.joined) then self:begin(Root:GetAttribute("DevMode") or self.engine.nextMode or "FFA") end
  end
  local snapshot=table.clone(self.engine:publicSnapshot())
  if self.engine.phase=="VOTE" then self.rings:update(snapshot.voteTotals or {}) end

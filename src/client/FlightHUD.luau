@@ -231,7 +231,7 @@ function HUD.start(getPlane, action)
 	ScreenFit.inRow(round)
 	ScreenFit.inColumn(capture, 1); ScreenFit.inColumn(status, 2); ScreenFit.inColumn(threat, 4); ScreenFit.inColumn(lockInfo, 4)
 	for _, piece in { capture, status, threat, lockInfo } do Instance.new("UIScale", piece).Name = "Fit" end -- shrinks it into a small phone's gap
-	-- Top right: the last four knock-downs, one torn notebook slip each (CombatEffects fills them), pinned with a
+	-- Top right: the last four knock-downs, oldest on top, one torn notebook slip each (CombatEffects fills and fades them), pinned with a
 	-- blue pin when the line is about you and a red one otherwise.
 	local feed = panel("KillFeed", Vector2.new(1, 0), UDim2.new(1, -16, 0, 10), UDim2.fromOffset(450, 240))
 	ScreenFit.atSide(feed)
@@ -268,6 +268,7 @@ function HUD.start(getPlane, action)
 		button.BackgroundColor3=Color3.fromRGB(70,60,120);button.Parent=picker
 		button.Activated:Connect(function()Root.RoundAction:FireServer("devMode",mode[1])end)
 	end
+	-- Dev panel: in Studio, and on the owner's own account in live servers (Alan 2026-10-29; the server checks).
 	-- Test buttons (Alan 2026-10-17, 2026-10-23): end this round now to see the round end, with each finalist winners'
 	-- song (WinnersSound.TRACKS) to compare them in the real moment.
 	for index, song in ipairs({ "parade", "carnival", "show" }) do
@@ -275,6 +276,13 @@ function HUD.start(getPlane, action)
 		endMatch.BackgroundColor3=Color3.fromRGB(150,40,40);endMatch.Parent=picker
 		endMatch.Activated:Connect(function()Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
 	end
+	-- Every match tip again, seen or not (Alan 2026-10-29: his account had seen them all).
+	local tipsAgain=eraserBots:Clone();tipsAgain.Name="TipsAgain";tipsAgain.Text="tips again";tipsAgain.Position=UDim2.fromOffset(770,-80)
+	tipsAgain.BackgroundColor3=Color3.fromRGB(150,110,30);tipsAgain.Parent=picker
+	tipsAgain.Activated:Connect(function()Root:SetAttribute("DevTipsAgain",true);tipsAgain.Text="tips: on"end)
+	-- A phone's screen is narrower than the panel: it shrinks to fit.
+	local pickerFit=Instance.new("UIScale");pickerFit.Parent=picker
+	ScreenFit.watch(function() pickerFit.Scale=math.min(1,(workspace.CurrentCamera.ViewportSize.X-16)/880) end)
 	-- Crayon colours for the round strip's words.
 	local function crayon(text, hex) return string.format('<font color="#%s">%s</font>', hex, text) end
 	game.ReplicatedStorage.FlyFightPaper:WaitForChild("RoundView").OnClientEvent:Connect(function(snapshot)
@@ -313,9 +321,9 @@ function HUD.start(getPlane, action)
 		capture.Visible = control
 		round.Words.UIPadding.PaddingRight = UDim.new(first and 0.14 or 0.07, 0)
 	end)
-	-- In the hangar: the crayon hangar menu (service, builds, LAUNCH). Studio's dev picker rides on its sheet.
+	-- In the hangar: the crayon hangar menu (service, builds, LAUNCH). The dev picker rides on its sheet.
 	local desk = require(script.Parent.DeskHangar).new(gui.Parent, { flight = action, round = game.ReplicatedStorage.FlyFightPaper.RoundAction, feed = feed })
-	picker.Position, picker.Parent = UDim2.new(0.5, -440, 0.6, 0), desk.sheet
+	picker.AnchorPoint, picker.Position, picker.Parent = Vector2.new(0.5, 0), UDim2.new(0.5, 0, 0.6, 0), desk.sheet
 	-- The match strip and the kill feed stay up at the desk too (Alan 2026-10-22: the quick menu leaves them in
 	-- view), so they live on their own layer that hides only with the rest of the game's HUD.
 	local matchInfo = Instance.new("ScreenGui")
@@ -643,18 +651,17 @@ function HUD.start(getPlane, action)
 		-- In the hangar the hangar menu shows Lift, health, score and buttons, so the flight HUD steps aside.
 		local inHangar=shown and plane:GetAttribute("State")=="DESK"
 		desk.update(plane,inHangar)
-		picker.Visible=inHangar and RunService:IsStudio()
+		picker.Visible=inHangar and Players.LocalPlayer:GetAttribute("Dev")==true -- Studio, or the owner's account live (server-set)
 		gui.Enabled=shown and not inHangar
 		matchInfo.Enabled=shown
 		-- The match strip is centred unless that runs into the Menu button: then just right of its real edge (phones).
-		-- On a phone the kill feed drops under the top bar on the right, two slips; at the desk too.
-		local bar, touch, phone = GuiService.TopbarInset, Touch.active(), ScreenFit.kind() == "phone"
+		-- The kill feed starts level with the match strip, four slips, on a phone too (Alan 2026-10-29); at the desk too.
+		local touch, phone = Touch.active(), ScreenFit.kind() == "phone"
 		local menu = Players.LocalPlayer.PlayerGui:FindFirstChild("GameMenu")
 		local menuButton = menu and menu:FindFirstChild("OpenMenu")
 		local menuRight = menuButton and menuButton.Visible and menuButton.AbsolutePosition.X + menuButton.AbsoluteSize.X or 0
 		top.Position = UDim2.fromOffset(math.max(workspace.CurrentCamera.ViewportSize.X / 2, menuRight + ScreenFit.GAP * 2 + 320 * top.UIScale.Scale), 8)
-		feed.Position = phone and UDim2.new(1, -8, 0, bar.Max.Y + 4) or UDim2.new(1, -16, 0, 10)
-		feed.Size = UDim2.fromOffset(450, phone and 2 * 58 - 4 or 240)
+		feed.Position = phone and UDim2.new(1, -8, 0, 8) or UDim2.new(1, -16, 0, 10)
 		for _, piece in { capture, status, threat, lockInfo } do
 			local x, y, fit = ScreenFit.place(piece)
 			piece.Position, piece.Fit.Scale = UDim2.new(0.5, x, 0, y), fit

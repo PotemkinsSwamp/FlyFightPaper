@@ -76,6 +76,13 @@ function Spec.run()
         assert(not Rules.clickBudget(tokens, last, last + 0.1, 6, 0.25), "empty budget should refuse")
         assert(Rules.clickBudget(tokens, last, last + 0.3, 6, 0.25), "a quarter second refills one click")
     end)
+    test("dev mode: Studio, or only the owner's own account live", function()
+        assert(Rules.devAllowed(1, true, "User", 0), "Studio always")
+        assert(Rules.devAllowed(777, false, "User", 777), "the owner live")
+        assert(not Rules.devAllowed(778, false, "User", 777), "anyone else live")
+        assert(not Rules.devAllowed(777, false, "Group", 777), "a group's id is not a user")
+        assert(not Rules.devAllowed(0, false, "User", 0), "unpublished place, nobody")
+    end)
     return result
 end
 return Spec
