@@ -15,5 +15,7 @@ function Options.apply(settings)
  Root:SetAttribute("MatchTips",settings.matchTips~=false)
  Root:SetAttribute("AutoFire",settings.autoFire~=false) -- phones: FIRE shoots by itself on target (CombatController)
  Root:SetAttribute("SpeedMatch",settings.speedMatch~=false) -- phones: slow to the enemy you tail (FlightController)
+ -- phones: where the player moved their buttons (TouchControls; nil = the game's layout)
+ Root:SetAttribute("TouchLayout",settings.touchLayout and game:GetService("HttpService"):JSONEncode(settings.touchLayout) or nil)
 end
 return Options

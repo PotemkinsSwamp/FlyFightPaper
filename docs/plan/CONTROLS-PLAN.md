@@ -1,16 +1,16 @@
 # Controls plan: move your phone buttons, then change your PC keys
 
-Draft for Alan's OK (2026-10-29). Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
+**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built 2026-10-30, not yet seen in Play. Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
 well"; he wants players to set controls up their own way: on a phone, move the buttons; on a keyboard, change the
 keys. Phone buttons first (Alan).
 
 ## What the player sees
-**Phone (part 1).** Settings has a new **Move buttons** tab (phones only, beside Auto-fire and Speed match). Tapping
+**Phone (part 1).** Settings has a new **Phone buttons: Move** tab (phones only, above Auto-fire). Tapping
 it closes Settings and shows the layout editor over the game:
-- FIRE, 2, BOOST and BRAKE where they are now, each a little brighter with a dashed outline; the left half of the
+- FIRE, 2, BOOST and BRAKE where they are now; the left half of the
   screen shaded with the words "Steering stick" (the stick appears wherever your left thumb lands there, so buttons
   can't go there).
-- A sticky note at the top: "Drag a button to move it." and three buttons: **Save**, **Reset** (back to the game's
+- A sticky note on the shaded half (out of the buttons' way): "Drag a button to move it." and three buttons: **Save**, **Reset** (back to the game's
   layout) and **Cancel**.
 - You drag a button with your finger; it follows smoothly. While it would overlap another button or leave the
   screen it turns red; let go there and it slides back to its last good spot.
@@ -46,15 +46,9 @@ another action has swaps the two. Every note, tip and lesson that names a key sa
 ## Checks
 Unit tests for the rules and the save; Studio Play at phone size with screenshots; Alan's phone run is the sign-off.
 
-## Questions for Alan
-1. Button **size** too (a slider per button, like many phone shooters)? My pick: not now; add it if you want it after
-   trying the moving.
-2. Should the **steering stick** be movable too (a fixed stick instead of "wherever your thumb lands")? My pick: no;
-   today's floating stick is the usual phone choice.
-
 ## Cost
 No assets, uploads or paid tools: the editor reuses the stickers, notes and tabs we have. Part 1 about one session,
 part 2 about half a session, each plus a phone or PC try by Alan.
 
 ## Alan's answers
-(waiting)
+2026-10-30: OK, phone buttons first. No size slider; the steering stick stays where your thumb lands.

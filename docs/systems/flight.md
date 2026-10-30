@@ -12,6 +12,9 @@ built for testing, not yet felt by Alan.** PC: hold Space, "BRAKE" under the vie
 behind an enemy the speed eases down to its speed, "SPEED MATCH" under the view (Settings > Speed match, on by
 default; Alan tried it on his phone 2026-10-29 and keeps it). Braking while speed matching doesn't stack: the
 brake's speed wins. The paper-flaps look on the plane comes after Alan likes the feel.
+**Moving the phone buttons (2026-10-30, [controls plan](../plan/CONTROLS-PLAN.md) part 1): built, not yet seen in
+Play.** Settings > Phone buttons > Move: drag FIRE, 2, BOOST and BRAKE anywhere on the right half (the left half is the
+stick's), clear of each other and the top bar; Save, Reset, Cancel. Saved as shares of the screen (`touchLayout`).
 
 ## Rules
 - **Cheat checks (2026-10-17 audit):** the server compares each human plane's position and turn every 0.25 s and
@@ -63,6 +66,7 @@ held and augments speed by the equipped module; clamp stacked environmental spee
 | `src/client/ChaseCamera.luau` | Chase camera: smoothing, speed zoom, shake, stays in the room |
 | `src/server/FlightService.luau` | Server side of every plane: spawn at desk, takeoff, fans, speed pickups, death and landing hooks |
 | `src/shared/FlightRules.luau` | Lift drain and flight limits |
+| `src/shared/TouchLayout.luau` | Phones: where a moved button may go and where saved buttons land on any screen (tests: `tests/unit/TouchLayout.spec.luau`) |
 | `src/shared/SpeedMatch.luau` | Phones: which enemy you are tailing and the share of speed that matches it (tests: `tests/unit/SpeedMatch.spec.luau`) |
 | `src/client/SpeedPickups.luau` | Spinning speed-bolt markers |
 | `src/client/FanSpin.luau, src/client/FanWind.luau` | Fan blades turning and wind swirls |

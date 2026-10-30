@@ -74,6 +74,12 @@ function Spec.run()
 			p.settings[key]="on"; assert(not Schema.validate(p,catalog))
 		end
 	end)
+	test("a moved phone button layout saves; anything else in it rejects",function()
+		local p=fresh(); assert(p.settings.touchLayout==nil and Schema.validate(p,catalog))
+		p.settings.touchLayout={Brake={x=.7,y=.4}}; assert(Schema.validate(p,catalog))
+		p.settings.touchLayout={Brake={x=7,y=.4}}; assert(not Schema.validate(p,catalog))
+		p.settings.touchLayout={Stick={x=.2,y=.4}}; assert(not Schema.validate(p,catalog))
+	end)
 	test("every allowed crosshair color and size validates",function()
 		for _,color in ipairs({"green","red","blue","yellow","purple","white"}) do
 			local p=fresh(); p.settings.crosshairColor=color; assert(Schema.validate(p,catalog))

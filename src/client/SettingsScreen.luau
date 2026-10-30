@@ -128,6 +128,19 @@ function SettingsScreen.new(playerGui, api)
 		autoLabel.Visible, auto.Visible = Touch.active(), Touch.active()
 		auto.Image, auto.Label.Text = settings.autoFire and Art.tabGreen or Art.tabOff, settings.autoFire and "On" or "Off"
 	end
+	-- Touch screens only: move FIRE, 2, BOOST and BRAKE (TouchControls' editor; docs/plan/CONTROLS-PLAN.md). The sheet
+	-- steps aside while you drag them over the game.
+	local buttonsLabel = words(sheet, "PhoneButtonsLabel", "Phone buttons", 1640, 280, 260, 60, 52)
+	local move = PaperUI.button(sheet, "MoveButtons", Art.tabOn, "Move", 1640, 352, 185, 82, 0, function()
+		cover.Visible = false
+		Touch.editLayout(function(layout)
+			cover.Visible = true
+			if layout ~= false then settings.touchLayout = layout; save() end
+		end)
+	end, 40)
+	PaperUI.phone(move, { Size = UDim2.fromOffset(185, 96) })
+	PaperUI.phone(move.Label, { TextSize = 48 })
+	refresh.moveButtons = function() buttonsLabel.Visible, move.Visible = Touch.active(), Touch.active() end
 	-- Touch screens only: close behind an enemy your speed eases down to its speed (FlightController, SpeedMatch).
 	local matchLabel = words(sheet, "SpeedMatchLabel", "Speed match", 285, 945, 300, 60, 52)
 	local match = PaperUI.button(sheet, "SpeedMatch", Art.tabOff, "On", 600, 935, 185, 82, 0,

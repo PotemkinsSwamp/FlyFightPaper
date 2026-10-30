@@ -6,10 +6,15 @@
 local Players = game:GetService("Players")
 local Input = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Config = require(Root.Generated.Gameplay).flight
 local PaperUI = require(script.Parent.PaperUI)
 local Words = require(Root.Shared.TouchWords)
+local Layout = require(Root.Shared.TouchLayout)
+local GuiService = game:GetService("GuiService")
+local HttpService = game:GetService("HttpService")
+local UI = require(Root.Shared.UIAssets)
 local Art = require(Root.Shared.UIAssets).touch -- peel stickers (Alan 2026-10-28, ui-concepts/touch-buttons-c.png)
 
 local Touch = { stick = Vector2.zero, boost = false, brake = false, onFire = nil } -- onFire(which, down): CombatController's triggers
@@ -53,6 +58,8 @@ function Touch.start(getPlane)
 	local knob = sticker("Knob", Art.knob, base, 3)
 	local stickTouch, stickFrom, radius = nil, Vector2.zero, 60
 
+	-- Moving the buttons (Settings > Phone buttons): while `editing`, presses move buttons instead of using them.
+	local editing, releaseAll = nil, nil
 	-- Held buttons: each follows the one touch that pressed it, so sliding a thumb off doesn't stick it on.
 	local buttons = {}
 	local function holdButton(name, label, color, onHold)
@@ -88,7 +95,7 @@ function Touch.start(getPlane)
 		paper.BackgroundTransparency = 0.12 -- the game shows faintly through a small screen's biggest pieces
 		local entry = { frame = button, touch = nil }
 		button.InputBegan:Connect(function(input)
-			if input.UserInputType ~= Enum.UserInputType.Touch or entry.touch then return end
+			if editing or input.UserInputType ~= Enum.UserInputType.Touch or entry.touch then return end
 			entry.touch = input
 			paper.BackgroundTransparency = 0.3
 			onHold(true)
@@ -110,34 +117,123 @@ function Touch.start(getPlane)
 	local brake = holdButton("Brake", "BRAKE", CRAYON.orange, function(down) Touch.brake = down end)
 
 	-- Sizes follow the screen's short side, kept thumb-sized (points): a phone and a tablet both get pieces a thumb
-	-- can hit, and a tablet's don't grow huge.
+	-- can hit, and a tablet's don't grow huge. Spots: the player's own layout where it fits (TouchLayout), else these.
+	local frames = { Fire = fire, Fire2 = fire2, Boost = boost, Brake = brake }
+	local sizes, defaults, spots, view, top = {}, {}, {}, Vector2.one, 0
+	local function show(name) frames[name].Position = UDim2.fromOffset(spots[name].X, spots[name].Y) end
+	local function saved()
+		local ok, layout = pcall(HttpService.JSONDecode, HttpService, Root:GetAttribute("TouchLayout") or "null")
+		return ok and Layout.valid(layout) and layout or nil
+	end
 	local function fit()
-		local view = workspace.CurrentCamera.ViewportSize
+		view = workspace.CurrentCamera.ViewportSize
+		top = GuiService.TopbarInset.Max.Y
 		local short = math.min(view.X, view.Y)
 		radius = math.clamp(short * Config.touch_stick_radius, 44, 80)
 		base.Size, knob.Size = UDim2.fromOffset(radius * 2, radius * 2), UDim2.fromOffset(radius * 0.9, radius * 0.9)
 		local big, small = math.clamp(short * 0.24, 76, 120), math.clamp(short * 0.16, 52, 84)
-		fire.Size = UDim2.fromOffset(big, big)
-		fire.Position = UDim2.new(1, -big * 0.5 - short * 0.06, 1, -big * 0.5 - short * 0.08)
-		fire2.Size = UDim2.fromOffset(small, small)
-		fire2.Position = UDim2.new(1, -big * 0.5 - short * 0.06, 1, -big - small * 0.5 - short * 0.12)
-		boost.Size = UDim2.fromOffset(small, small)
-		boost.Position = UDim2.new(1, -big - small * 0.5 - short * 0.12, 1, -small * 0.5 - short * 0.08)
-		brake.Size = UDim2.fromOffset(small, small)
-		-- Hugging FIRE's top-left edge, between 2 and BOOST, where the thumb rolls to it (Alan 2026-10-29: the corner
+		sizes = { Fire = big, Fire2 = small, Boost = small, Brake = small }
+		local fireAt = view - Vector2.new(big * 0.5 + short * 0.06, big * 0.5 + short * 0.08)
+		-- BRAKE hugs FIRE's top-left edge, between 2 and BOOST, where the thumb rolls to it (Alan 2026-10-29: the corner
 		-- above BOOST was too far out).
 		local reach = (big + small) * 0.5 + short * 0.05
-		brake.Position = UDim2.new(1, -big * 0.5 - short * 0.06 - reach * 0.707, 1, -big * 0.5 - short * 0.08 - reach * 0.707)
+		defaults = {
+			Fire = fireAt,
+			Fire2 = Vector2.new(fireAt.X, view.Y - big - small * 0.5 - short * 0.12),
+			Boost = Vector2.new(view.X - big - small * 0.5 - short * 0.12, view.Y - small * 0.5 - short * 0.08),
+			Brake = fireAt - Vector2.new(reach, reach) * 0.707,
+		}
+		for name, frame in frames do frame.Size = UDim2.fromOffset(sizes[name], sizes[name]) end
+		if editing then return end
+		spots = Layout.place(saved(), defaults, sizes, view, top)
+		for name in frames do show(name) end
 	end
 	workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(fit)
+	Root:GetAttributeChangedSignal("TouchLayout"):Connect(fit)
 	fit()
 
-	local function releaseAll()
+	-- The editor (docs/plan/CONTROLS-PLAN.md, Alan 2026-10-30): the left half shaded for the stick, a sticky note with
+	-- Save / Reset / Cancel, and every button draggable. A button that would leave its area or touch another turns red
+	-- and slides back to its last good spot when let go.
+	local editor = Instance.new("ScreenGui")
+	editor.Name, editor.ResetOnSpawn, editor.IgnoreGuiInset, editor.DisplayOrder, editor.Enabled = "TouchLayoutEditor", false, true, 6, false
+	editor.Parent = gui.Parent
+	local shade = Instance.new("Frame")
+	shade.Name, shade.BackgroundColor3, shade.BackgroundTransparency, shade.Size = "StickHalf", Color3.new(0, 0, 0), 0.55, UDim2.fromScale(0.5, 1)
+	shade.Parent = editor
+	local stickWords = PaperUI.words(shade, "StickWords", "Steering stick", 0, 0, 10, 10, 26)
+	stickWords.AnchorPoint, stickWords.Position, stickWords.Size = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.85), UDim2.fromScale(0.9, 0.1)
+	stickWords.TextXAlignment, stickWords.TextColor3 = Enum.TextXAlignment.Center, Color3.new(1, 1, 1)
+	local note = Instance.new("ImageLabel")
+	note.Name, note.Image, note.ScaleType, note.BackgroundTransparency = "Note", UI.ingame.stickyNote, Enum.ScaleType.Stretch, 1
+	note.AnchorPoint, note.Position, note.Size, note.Rotation = Vector2.new(0.5, 0.5), UDim2.fromScale(0.25, 0.45), UDim2.fromOffset(330, 190), -1
+	note.Parent = editor
+	local noteWords = PaperUI.words(note, "Words", "Drag a button to move it.", 20, 22, 290, 60, 26)
+	noteWords.TextXAlignment, noteWords.TextWrapped = Enum.TextXAlignment.Center, true
+	local strip = UI.mainmenu.strip
+	local finish -- finish(saveIt)
+	PaperUI.button(note, "Save", strip.green, "Save", 18, 112, 96, 48, 1, function() finish("save") end, 24)
+	PaperUI.button(note, "Reset", strip.yellow, "Reset", 117, 112, 96, 48, -1, function() finish("reset") end, 24)
+	PaperUI.button(note, "Cancel", strip.red, "Cancel", 216, 112, 96, 48, 1, function() finish("cancel") end, 24)
+	local RED = Color3.fromRGB(255, 110, 110)
+	local function tint(name, bad) frames[name].Art.ImageColor3 = bad and RED or Color3.new(1, 1, 1) end
+	local drag
+	for name, frame in frames do
+		frame.InputBegan:Connect(function(input)
+			if not editing or drag then return end
+			if input.UserInputType ~= Enum.UserInputType.Touch and input.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
+			drag = { name = name, input = input, from = Vector2.new(input.Position.X, input.Position.Y), start = spots[name], good = spots[name] }
+		end)
+	end
+	Input.InputChanged:Connect(function(input)
+		if not drag or (input ~= drag.input and input.UserInputType ~= Enum.UserInputType.MouseMovement) then return end
+		if input.UserInputType == Enum.UserInputType.MouseMovement and drag.input.UserInputType ~= Enum.UserInputType.MouseButton1 then return end
+		local at = drag.start + Vector2.new(input.Position.X, input.Position.Y) - drag.from
+		local fits = Layout.fits(drag.name, at, spots, sizes, view, top)
+		if fits then drag.good = at end
+		spots[drag.name] = at; show(drag.name); tint(drag.name, not fits)
+	end)
+	Input.InputEnded:Connect(function(input)
+		local mouse = input.UserInputType == Enum.UserInputType.MouseButton1 and drag and drag.input.UserInputType == Enum.UserInputType.MouseButton1
+		if not drag or (input ~= drag.input and not mouse) then return end
+		local name = drag.name
+		spots[name] = drag.good; drag = nil
+		tint(name, false)
+		TweenService:Create(frames[name], TweenInfo.new(0.15), { Position = UDim2.fromOffset(spots[name].X, spots[name].Y) }):Play()
+	end)
+	-- Opens the editor; done(layout) gets the shares to save (nil = the game's layout), or false when cancelled.
+	function Touch.editLayout(done)
+		releaseAll()
+		local before = table.clone(spots)
+		editing = done
+		for name in frames do frames[name].Visible = true end
+		editor.Enabled = true
+		finish = function(how)
+			if how == "reset" then
+				spots = table.clone(defaults)
+				for name in frames do show(name) end
+				return
+			end
+			drag, editing, editor.Enabled = nil, nil, false
+			for name in frames do tint(name, false) end
+			if how == "cancel" then
+				spots = before
+				for name in frames do show(name) end
+				done(false)
+				return
+			end
+			local moved = {}
+			for name, at in spots do if (at - defaults[name]).Magnitude > 1 then moved[name] = at end end
+			done(next(moved) and Layout.shares(moved, view) or nil)
+		end
+	end
+
+	function releaseAll()
 		stickTouch, Touch.stick, base.Visible = nil, Vector2.zero, false
 		for _, entry in buttons do entry.release() end
 	end
 	Input.TouchStarted:Connect(function(touch, processed)
-		if processed or stickTouch or not gui.Enabled then return end
+		if processed or stickTouch or not gui.Enabled or editing then return end
 		local at = Vector2.new(touch.Position.X, touch.Position.Y)
 		if at.X > workspace.CurrentCamera.ViewportSize.X * 0.5 then return end
 		stickTouch, stickFrom = touch, at
@@ -187,10 +283,12 @@ function Touch.start(getPlane)
 		local plane = getPlane()
 		local flying = Touch.active() and plane ~= nil and plane.Parent ~= nil and plane:GetAttribute("State") == "FLYING"
 			and (not plane:GetAttribute("Held") or Root:GetAttribute("TutorialOpen")) and not Root:GetAttribute("OverlayOpen") -- (a lesson's read pause shows the buttons it talks about)
-		if flying ~= gui.Enabled then
-			gui.Enabled = flying
-			if not flying then releaseAll() end
+		local showing = flying or editing ~= nil
+		if showing ~= gui.Enabled then
+			gui.Enabled = showing
+			if not showing then releaseAll() end
 		end
+		if editing then return end
 		local boostMax = flying and plane:GetAttribute("BoostMax") or 0
 		boost.Visible = boostMax > 0
 		if boost.Visible then Touch.gauge("Boost", (plane:GetAttribute("Boost") or 0) / boostMax, "blue") end

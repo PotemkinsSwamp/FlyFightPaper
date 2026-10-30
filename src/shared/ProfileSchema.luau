@@ -3,6 +3,7 @@ local Economy = require(script.Parent.EconomyRules)
 local EconomyConfig = require(script.Parent.Parent.Generated.Economy)
 local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
+local TouchLayout = require(script.Parent.TouchLayout)
 local Schema = { VERSION = 7, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
@@ -115,10 +116,11 @@ function Schema.validate(record, catalog)
 			assert(catalog:validateLoadout(preset.loadout, nil, 1000000000))
 		end
 		assert(integer(p.rangeSlot) and p.rangeSlot>=1 and p.rangeSlot<=Gameplay.menus.saved_loadouts, "invalid_range_slot")
-		exact(p.settings, {music=1,sound=1,sensitivity=1,reducedShake=1,quality=1,crosshairColor=1,crosshairSize=1,matchTips=0,autoFire=0,speedMatch=0}) -- matchTips, autoFire, speedMatch: missing = on (older saves)
+		exact(p.settings, {music=1,sound=1,sensitivity=1,reducedShake=1,quality=1,crosshairColor=1,crosshairSize=1,matchTips=0,autoFire=0,speedMatch=0,touchLayout=0}) -- matchTips, autoFire, speedMatch: missing = on (older saves); touchLayout: missing = the game's buttons
 		assert(p.settings.matchTips==nil or type(p.settings.matchTips)=="boolean", "invalid_settings")
 		assert(p.settings.autoFire==nil or type(p.settings.autoFire)=="boolean", "invalid_settings")
 		assert(p.settings.speedMatch==nil or type(p.settings.speedMatch)=="boolean", "invalid_settings")
+		assert(TouchLayout.valid(p.settings.touchLayout), "invalid_touch_layout")
 		for _, k in ipairs({"music","sound"}) do assert(type(p.settings[k])=="number" and p.settings[k]>=0 and p.settings[k]<=1, "invalid_volume") end
 		assert(type(p.settings.sensitivity)=="number" and p.settings.sensitivity>=0.2 and p.settings.sensitivity<=3 and type(p.settings.reducedShake)=="boolean", "invalid_settings")
 		assert(p.settings.quality=="Low" or p.settings.quality=="Medium" or p.settings.quality=="High", "invalid_quality")
