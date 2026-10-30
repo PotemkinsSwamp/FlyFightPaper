@@ -1,12 +1,13 @@
 # Since Alan last checked (2026-10-29)
-- **You published and played the phone fixes:** auto-fire works. Your notes (docs/playtests/2026-10-29-phone-run-
-  published-fixes.md) are the next to-do list: kill feed top-down list of ~4 that fades; dev mode on your account in
-  live servers (decision 2026-10-29); results card paper made to fit 6 ruled lines, place column on the paper,
-  heads spaced; winners' confetti from the ceiling. Later idea: paper planes flying behind the winners.
+- **Your 4 phone notes are fixed and checked in Studio Play (phone size), not yet published:**
+  kill feed now fills top-down beside the match strip, 4 slips, fades 6 s after the last kill; dev panel on your own
+  account in live servers (the game's owner account; the server refuses anyone else), with a "tips again" button;
+  results card on a new loose-leaf page (holes, torn edge, tape) with 6 rows on its lines, long names shrink to fit,
+  heads spaced; winners' confetti starts above the top of every shot. Cost: one free image upload. Tests 427/0.
 
 # Now: mobile lane (make phones work and look good)
-What works: Stage 9, tutorials, desk quick menu; phone fixes published and in your hands (auto-fire confirmed).
-Next: your 2026-10-29 notes above. Not yet: iPad; match tips on a phone (needs dev mode to reset them).
+What works: Stage 9, tutorials, desk quick menu; phone fixes published (auto-fire confirmed); your 2026-10-29 notes
+fixed in Studio. Next: your publish + phone run; later paper planes behind the winners; iPad; match tips on a phone.
 
 Decisions to review
 Auto-fire also fires on the yellow dot (shots land thanks to phone aim help), not only red; in the Range it fires on
@@ -44,6 +45,9 @@ Zone 680-840 across by building density; bots on the zone 30/60/85% (rookie/regu
 Points: fold assist share rounded to 5 (10-80); outside-zone fold 40%; paper targets 50 points each, server-checked.
 
 Waiting on Alan
+- Publish (File > Publish As > Overwrite), then on your phone, as your owner account: kill feed (top right, top-down,
+  fades), desk dev panel (end: parade for the round end; "tips again" then fly for match tips), results card, confetti.
+  Same on PC: the card and the confetti (my Studio window was phone-sized, so PC size wasn't seen).
 - Switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
 - Later: bots' guns cross at 150 studs (your call); backlog: a new fan sound.

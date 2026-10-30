@@ -30,4 +30,6 @@ Each note: what Alan asked, then how it will be checked. ✅ = done.
 8. **Idea, later:** paper airplanes flying behind the winners, through the confetti. Not needed now.
 
 ## What changed because of it
-To do next session (handoff `handoff-2026-10-29-mobile-lane-phone-run-2-notes.md`).
+Notes 2-7 fixed 2026-10-29 and checked in Studio Play at phone size (kill feed, dev panel + refusal, results card on
+a new loose-leaf page, confetti above every shot); note 3 via the dev panel's "tips again". Waiting on Alan's publish
+and phone run. Note 8 later.
