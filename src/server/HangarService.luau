@@ -94,11 +94,10 @@ function Service:handle(player,action,value)
    self:message(player,ok and "Prestige! Your new rank star is on your level bar." or "Prestige was not completed. Nothing changed.")
   end)
  elseif action=="settings" then
-  local settings=Schema.copy(value);local candidate=Schema.copy(profile)
-  if not settings or not candidate then return end
-  candidate.settings=settings
-  if not Schema.validate(candidate,self.catalog) then return end
-  self:enqueue(player,{kind="settings",settings=settings})
+  local settings,why=Schema.copy(value);local candidate=Schema.copy(profile);local valid=settings and candidate
+  if valid then candidate.settings=settings;valid,why=Schema.validate(candidate,self.catalog) end
+  if not valid then warn("Settings refused for player "..player.UserId..": "..tostring(why));self:message(player,"Settings could not be saved.");return end
+  self:enqueue(player,{kind="settings",settings=settings},function(saved) if not saved then self:message(player,"Settings could not be saved.") end end)
  elseif action=="buyProduct" and type(value)=="string" then
   if self.commerce then
    local ok=self.commerce:prompt(player,value)

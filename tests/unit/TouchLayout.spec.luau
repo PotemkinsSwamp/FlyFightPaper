@@ -35,6 +35,16 @@ function Spec.run()
   spots=TouchLayout.place({Brake={x=730/800,y=320/390}},DEFAULTS,SIZES,VIEW,TOP) -- right on FIRE
   assert(spots.Brake==DEFAULTS.Brake)
  end)
+ test("a button dropped right up against another stays there after saving",function()
+  -- (a share is rounded, so the saved spot can land a hair closer than the closest spot the editor allows)
+  local closest=SIZES.Fire/2+SIZES.Brake/2+TouchLayout.GAP+.01
+  for degrees=185,265,5 do
+   local at=DEFAULTS.Fire+Vector2.new(math.cos(math.rad(degrees)),math.sin(math.rad(degrees)))*closest
+   assert(TouchLayout.fits("Brake",at,DEFAULTS,SIZES,VIEW,TOP),degrees)
+   local spots=TouchLayout.place(TouchLayout.shares({Brake=at},VIEW),DEFAULTS,SIZES,VIEW,TOP)
+   assert((spots.Brake-at).Magnitude<2,"BRAKE went back to its own spot at "..degrees)
+  end
+ end)
  test("the save check takes only the four buttons with x and y from 0 to 1",function()
   assert(TouchLayout.valid(nil) and TouchLayout.valid({}) and TouchLayout.valid({Fire={x=.9,y=.8}}))
   assert(not TouchLayout.valid({Jump={x=.5,y=.5}}))

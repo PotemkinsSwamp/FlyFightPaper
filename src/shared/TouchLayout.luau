@@ -5,14 +5,16 @@ local TouchLayout = {}
 
 TouchLayout.BUTTONS = { "Fire", "Fire2", "Boost", "Brake" }
 TouchLayout.GAP = 8 -- points kept clear between two buttons (the closest the game's own layout puts them)
+local ROUNDING = 2 -- points: how much closer two saved spots can land than where they were dropped (`shares` rounds them)
 
 -- Whether button `name` with its middle at `at` (points) is allowed: whole on the screen's right half (the left half
 -- is the steering stick's), below Roblox's top bar (`top` points), and clear of every other button in `spots`.
-function TouchLayout.fits(name, at, spots, sizes, view, top)
+-- `slack`: points of that gap to forgive.
+function TouchLayout.fits(name, at, spots, sizes, view, top, slack)
 	local r = sizes[name] / 2
 	if at.X - r < view.X / 2 or at.X + r > view.X or at.Y - r < top or at.Y + r > view.Y then return false end
 	for other, spot in spots do
-		if other ~= name and (spot - at).Magnitude < r + sizes[other] / 2 + TouchLayout.GAP then return false end
+		if other ~= name and (spot - at).Magnitude < r + sizes[other] / 2 + TouchLayout.GAP - (slack or 0) then return false end
 	end
 	return true
 end
@@ -40,7 +42,7 @@ function TouchLayout.place(saved, defaults, sizes, view, top)
 	while clash do
 		clash = false
 		for _, name in TouchLayout.BUTTONS do
-			if moved[name] and not TouchLayout.fits(name, spots[name], spots, sizes, view, top) then
+			if moved[name] and not TouchLayout.fits(name, spots[name], spots, sizes, view, top, ROUNDING) then
 				spots[name], moved[name], clash = defaults[name], nil, true
 				break
 			end
