@@ -173,6 +173,10 @@ function Notes.new(getStage, menuOpen) -- menuOpen(): the Range menu is down
 		note.AnchorPoint = if inHangar then Vector2.new(1, 1) else Vector2.new(0.5, 0)
 		if inHangar then
 			note.Position, note.Rotation = UDim2.new(1, -20, 0.95, 0), -1
+		elseif current.gui == "leave" then -- over the Menu's title, shrunk to stay above Keep flying (it talks about that button)
+			local menu = player.PlayerGui.PauseScreen
+			local room = menu:FindFirstChild("Resume", true).AbsolutePosition.Y - menu.AbsolutePosition.Y - ScreenFit.GAP * 2
+			note.Position, note.Rotation, scale.Scale = UDim2.new(0.5, 0, 0, ScreenFit.GAP), -1, math.min(s, room / note.Size.Y.Offset)
 		else -- the top middle's column, under the top row, out of the way
 			local x, y, fit = ScreenFit.place(note, s)
 			local boxes = ScreenFit.matters(nil)
