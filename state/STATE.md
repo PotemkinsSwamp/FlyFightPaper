@@ -9,8 +9,8 @@
 
 # Now: mobile lane (make phones work and look good)
 What works: Stage 9, tutorials, desk quick menu; phone fixes published (auto-fire confirmed); your 2026-10-29 notes
-fixed in Studio. Next: tutorial rewrite plan (your OK first), phone-aiming research; your publish + phone run any
-time; later paper planes behind the winners; iPad.
+fixed in Studio. Next: the beta must feel finished (decision 2026-11-06). The classes, weapons and mastery plan waits on your OK
+(docs/plan/CLASSES-PLAN.md); then winners' circle + emotes, skins, shop. Your publish + phone run any time.
 
 Decisions to review
 PC keys: letters (not K or R), Shift, Ctrl, Alt, Space on offer; Got it may share a key with Boost or Brake.
