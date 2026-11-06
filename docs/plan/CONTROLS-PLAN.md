@@ -1,6 +1,6 @@
 # Controls plan: move your phone buttons, then change your PC keys
 
-**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built and checked in Studio Play 2026-10-30; on Alan's phone 2026-11-04 the layout saved but didn't show; likely cause fixed 2026-11-05, waits on his phone try. Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
+**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built and checked in Studio Play 2026-10-30; on Alan's phone 2026-11-04 the layout saved but didn't show; fixed and confirmed on his phone 2026-11-05. Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
 well"; he wants players to set controls up their own way: on a phone, move the buttons; on a keyboard, change the
 keys. Phone buttons first (Alan).
 

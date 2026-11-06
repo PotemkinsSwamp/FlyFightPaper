@@ -1,13 +1,10 @@
-# Since Alan last checked (2026-10-29)
+# Since Alan last checked (2026-11-05)
 - **Since then (Studio, not yet published):** team rounds show a results page per team side by side; match tip
   words fill the sticky note (note size kept, your call). Your younger tester's notes are recorded
   (docs/playtests/2026-10-29-young-testers-tutorial.md): next is a tutorial rewrite plan for your OK, then research
   on phone aiming (how other games handle it) before you decide anything.
-- **Your 4 phone notes are fixed and checked in Studio Play (phone size), not yet published:**
-  kill feed now fills top-down beside the match strip, 4 slips, fades 6 s after the last kill; dev panel on your own
-  account in live servers (the game's owner account; the server refuses anyone else), with a "tips again" button;
-  results card on a new loose-leaf page (holes, torn edge, tape) with 6 rows on its lines, long names shrink to fit,
-  heads spaced; winners' confetti starts above the top of every shot. Cost: one free image upload. Tests 427/0.
+- **Phone buttons work (2026-11-05, your phone):** move them in Settings, Save keeps them. Brake and speed match are in
+  too. PC key changes (part 2) wait on your OK of part 1.
 
 # Now: mobile lane (make phones work and look good)
 What works: Stage 9, tutorials, desk quick menu; phone fixes published (auto-fire confirmed); your 2026-10-29 notes
