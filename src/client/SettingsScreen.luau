@@ -148,11 +148,11 @@ function SettingsScreen.new(playerGui, api)
 	-- Click a tab, press a key. Clicking outside the note closes it.
 	local UI = require(Root.Shared.UIAssets)
 	local panel = Instance.new("TextButton")
-	panel.Name, panel.Text, panel.AutoButtonColor, panel.BackgroundColor3, panel.BackgroundTransparency = "KeysPanel", "", false, Color3.new(0, 0, 0), 0.55
+	panel.Name, panel.Text, panel.AutoButtonColor, panel.BackgroundTransparency = "KeysPanel", "", false, 1
 	panel.Size, panel.ZIndex, panel.Visible, panel.Parent = UDim2.fromScale(1, 1), 8, false, sheet
 	local note = image(panel, "Note", UI.ingame.stickyNote, 560, 170, 800, 740, -1)
 	note.Active = true -- (a click on the note isn't a click outside it)
-	local hint = words(note, "Hint", "", 70, 70, 660, 70, 44)
+	local hint = words(note, "Hint", "", 70, 96, 660, 70, 44)
 	local waiting -- the action whose key the next key press sets
 	local keyTabs = {}
 	local function row(action, label, i)

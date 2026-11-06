@@ -50,7 +50,7 @@ second you stay in its gust (clamped to maximum, every pass, no reuse timer) and
 than multiply overlapping copies. Fans do not refill optional boost. Boost drains its separate seconds while
 held and augments speed by the equipped module; clamp stacked environmental speed to a safe validated limit.
 
-- **Your keys (PC; [controls plan](../plan/CONTROLS-PLAN.md) part 2, built 2026-11-05, not yet tried in Play):** Boost, Brake and
+- **Your keys (PC; [controls plan](../plan/CONTROLS-PLAN.md) part 2, built and checked in Studio Play 2026-11-05):** Boost, Brake and
   Got it can be changed in Settings > Controls; saved as `keys`, rules in `KeyBinds`. Names below are the game's keys.
 - **Brake (Space, PC; Alan 2026-10-29):** while held (and not boosting) the plane flies at `brake_speed_factor` of
   its speed and turns `brake_turn_factor` tighter; the server drains Lift `brake_lift_drain_factor` times as fast
