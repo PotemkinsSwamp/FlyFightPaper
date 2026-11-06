@@ -38,12 +38,21 @@ function Spec.run()
  test("a button dropped right up against another stays there after saving",function()
   -- (a share is rounded, so the saved spot can land a hair closer than the closest spot the editor allows)
   local closest=SIZES.Fire/2+SIZES.Brake/2+TouchLayout.GAP+.01
+  local homes={Fire=DEFAULTS.Fire,Fire2=Vector2.new(730,80),Boost=Vector2.new(450,350),Brake=DEFAULTS.Brake} -- (2 and BOOST out of the way)
   for degrees=185,265,5 do
    local at=DEFAULTS.Fire+Vector2.new(math.cos(math.rad(degrees)),math.sin(math.rad(degrees)))*closest
-   assert(TouchLayout.fits("Brake",at,DEFAULTS,SIZES,VIEW,TOP),degrees)
-   local spots=TouchLayout.place(TouchLayout.shares({Brake=at},VIEW),DEFAULTS,SIZES,VIEW,TOP)
+   assert(TouchLayout.fits("Brake",at,homes,SIZES,VIEW,TOP),degrees)
+   local spots=TouchLayout.place(TouchLayout.shares({Brake=at},VIEW),homes,SIZES,VIEW,TOP)
    assert((spots.Brake-at).Magnitude<2,"BRAKE went back to its own spot at "..degrees)
   end
+ end)
+ test("a tight layout survives a screen of another shape",function()
+  -- (Alan's real save, 2026-11-05: all four moved, FIRE and BRAKE only 3 points apart on this shorter screen)
+  local saved={Fire={x=.938,y=.848},Fire2={x=.945,y=.624},Boost={x=.815,y=.864},Brake={x=.855,y=.701}}
+  local view=Vector2.new(667,375)
+  local sizes={Fire=90,Fire2=60,Boost=60,Brake=60}
+  local spots=TouchLayout.place(saved,{Fire=view-Vector2.new(68,75),Fire2=Vector2.new(599,210),Boost=view-Vector2.new(165,60),Brake=Vector2.new(530,240)},sizes,view,TOP)
+  for name,share in saved do assert((spots[name]-Vector2.new(share.x*view.X,share.y*view.Y)).Magnitude<5,name) end -- (FIRE is pulled 4 back on screen)
  end)
  test("the save check takes only the four buttons with x and y from 0 to 1",function()
   assert(TouchLayout.valid(nil) and TouchLayout.valid({}) and TouchLayout.valid({Fire={x=.9,y=.8}}))

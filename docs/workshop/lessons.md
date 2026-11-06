@@ -432,3 +432,5 @@ Back to [HOME](../HOME.md)
   when a team round starts) reset the plane's network owner to the server. The pilot's mouse still turned the aim but
   nothing moved the plane: it flew straight into a wall until it folded (no pointer, control back only on a new life).
   After changing a client-flown plane's parts on the server, call `SetNetworkOwner(pilot)` again.
+
+- **Reading a live save (2026-11-05).** Studio in edit mode can list save stores but opening one says "Access forbidden". From a running Play server (`execute_luau` with `Server`) `GetAsync` on `Player_<id>` works, read-only; Play itself still uses the throwaway profile.

@@ -5,11 +5,10 @@ local TouchLayout = {}
 
 TouchLayout.BUTTONS = { "Fire", "Fire2", "Boost", "Brake" }
 TouchLayout.GAP = 8 -- points kept clear between two buttons (the closest the game's own layout puts them)
-local ROUNDING = 2 -- points: how much closer two saved spots can land than where they were dropped (`shares` rounds them)
 
 -- Whether button `name` with its middle at `at` (points) is allowed: whole on the screen's right half (the left half
 -- is the steering stick's), below Roblox's top bar (`top` points), and clear of every other button in `spots`.
--- `slack`: points of that gap to forgive.
+-- `slack`: points of that gap to forgive (`place` forgives all of it).
 function TouchLayout.fits(name, at, spots, sizes, view, top, slack)
 	local r = sizes[name] / 2
 	if at.X - r < view.X / 2 or at.X + r > view.X or at.Y - r < top or at.Y + r > view.Y then return false end
@@ -26,8 +25,9 @@ function TouchLayout.clamp(name, at, sizes, view, top)
 end
 
 -- Where each button goes: the saved shares (`saved[name] = {x, y}`) where they fit, else the game's spot
--- (`defaults[name]`, points). A saved spot that clashes with another button goes back to its default, one at a time,
--- until nothing clashes (the defaults never clash with each other).
+-- (`defaults[name]`, points). Only a saved spot truly on top of another button goes back to its default, one at a time,
+-- until nothing overlaps (the defaults never do). Closer than the editor's gap is fine here: rounded shares and a
+-- differently shaped screen both nudge a tight layout, and one going home used to knock the others home too.
 function TouchLayout.place(saved, defaults, sizes, view, top)
 	local spots, moved = {}, {}
 	for _, name in TouchLayout.BUTTONS do
@@ -42,7 +42,7 @@ function TouchLayout.place(saved, defaults, sizes, view, top)
 	while clash do
 		clash = false
 		for _, name in TouchLayout.BUTTONS do
-			if moved[name] and not TouchLayout.fits(name, spots[name], spots, sizes, view, top, ROUNDING) then
+			if moved[name] and not TouchLayout.fits(name, spots[name], spots, sizes, view, top, TouchLayout.GAP) then
 				spots[name], moved[name], clash = defaults[name], nil, true
 				break
 			end

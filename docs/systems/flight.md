@@ -13,7 +13,7 @@ behind an enemy the speed eases down to its speed, "SPEED MATCH" under the view 
 default; Alan tried it on his phone 2026-10-29 and keeps it). Braking while speed matching doesn't stack: the
 brake's speed wins. The paper-flaps look on the plane comes after Alan likes the feel.
 **Moving the phone buttons (2026-10-30, [controls plan](../plan/CONTROLS-PLAN.md) part 1): checked in Studio
-Play 2026-10-30 (phone view). Alan's phone try 2026-11-04: Save didn't keep the buttons; cause not found yet.** Settings > Phone buttons > Move: drag FIRE, 2, BOOST and
+Play 2026-10-30 (phone view). Alan's phone try 2026-11-04: Save kept the layout on his account (read from the live save 2026-11-05) but the buttons showed in the game's spots. Likely cause fixed, waits on his phone try: one tight saved button going home knocked the others home.** Settings > Phone buttons > Move: drag FIRE, 2, BOOST and
 BRAKE anywhere on the right half (the left half is the stick's), clear of each other and the top bar; a button in a bad
 spot is drawn on top with a red disc and slides back to its last good spot when let go; Save, Reset, Cancel. Saved as
 shares of the screen (`touchLayout`); lesson frames follow a moved button. Studio Play uses a throwaway profile, so

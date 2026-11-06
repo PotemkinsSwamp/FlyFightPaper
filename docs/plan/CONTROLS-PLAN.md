@@ -1,6 +1,6 @@
 # Controls plan: move your phone buttons, then change your PC keys
 
-**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built and checked in Studio Play 2026-10-30; on Alan's phone 2026-11-04 Save didn't keep the buttons (being traced). Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
+**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built and checked in Studio Play 2026-10-30; on Alan's phone 2026-11-04 the layout saved but didn't show; likely cause fixed 2026-11-05, waits on his phone try. Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
 well"; he wants players to set controls up their own way: on a phone, move the buttons; on a keyboard, change the
 keys. Phone buttons first (Alan).
 
@@ -27,7 +27,7 @@ another action has swaps the two. Every note, tip and lesson that names a key sa
    need nothing. The save check accepts only those four buttons and numbers 0 to 1 (unit tests, like Auto-fire's).
 2. **Placing:** `TouchControls` places each button from the saved shares; sizes stay as today (thumb-sized for the
    screen). On a screen of a different shape (phone vs tablet) a saved spot can land off-screen or on another button:
-   it is pushed back on screen and apart; if that still fails, that button uses the game's spot.
+   it is pulled back on screen; only a button truly on top of another uses the game's spot (closer than the editor's gap is fine).
 3. **The rules** (a small shared module with unit tests, `TouchLayout`): on screen and below Roblox's top bar; the
    whole button on the right half; no two buttons touching (an 8-point gap, the closest today).
 4. **The editor:** a layer in `TouchControls` (it owns the buttons). It also takes mouse drags, so it can be checked
