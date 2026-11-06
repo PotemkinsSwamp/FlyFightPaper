@@ -6,6 +6,9 @@ fans, landing), shooting paper targets, then a fight with one enemy, then what e
 hangar, each weapon, and how building a plane works. It can be skipped and replayed, and never pays rewards.
 
 ## Where it stands (2026-10-22)
+**Phone-size check 2026-11-05 (Device Simulator, 733 x 392), steps skipped one by one, not played through:** every note in Flight School,
+Combat School, the Hangar Tour and the Range fits and says phone words; the eraser plane starts about 1,080 studs off. Fixed: the Range's
+notes stopped after note 2 (notes 3, 4 and 7 looked for the wrong or edge-touching button); they also wait for the Hangar Tour's end card.
 **Rewrite for young players (Alan 2026-10-29, [playtest](../playtests/2026-10-29-young-testers-tutorial.md) notes
 3-6; words OK'd in chat): built, not yet seen in Play.** Every note says what to do, where (by the colour of what's
 on screen: the yellow line, the green dot, the orange ring, the pink circle), how many or how long, and which button;

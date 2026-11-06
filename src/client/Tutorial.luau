@@ -179,6 +179,7 @@ function Tutorial.start(getPlane)
  -- A card with no buttons (the Hangar Tour's, in the Range) closes on a click or Space (Alan 2026-10-22), or by itself.
  local dismiss=Instance.new("TextButton");dismiss.Name="Dismiss";dismiss.Text="";dismiss.BackgroundTransparency=1;dismiss.Size=UDim2.fromScale(1,1);dismiss.ZIndex=5;dismiss.Visible=false;dismiss.Parent=card
  dismiss.Activated:Connect(function() card.Visible=false end)
+ card:GetPropertyChangedSignal("Visible"):Connect(function() Root:SetAttribute("TutorialCard",card.Visible) end) -- (the Range's notes wait for it)
  -- ...and shows a green Close too (Alan 2026-10-28: "(tap to close)" in the words was easy to miss).
  local closeButton=PaperUI.button(card,"Close",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"",310,200,300,60,1,function() card.Visible=false end,30)
  Options.gotItLabel(closeButton.Label,"Close")

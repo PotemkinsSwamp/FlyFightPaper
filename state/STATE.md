@@ -5,6 +5,7 @@
   on phone aiming (how other games handle it) before you decide anything.
 - **Phone buttons work (2026-11-05, your phone):** move them in Settings, Save keeps them. Brake and speed match are in
   too. You approved that; PC key changes are built and checked in Studio Play (Settings > Controls > Keys), not published. Tests 447/0.
+- **Tutorial checked at phone size (Studio, 2026-11-05):** all notes fit; the Range's notes 3-7 never showed, fixed. Not published.
 
 # Now: mobile lane (make phones work and look good)
 What works: Stage 9, tutorials, desk quick menu; phone fixes published (auto-fire confirmed); your 2026-10-29 notes

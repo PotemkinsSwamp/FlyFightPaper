@@ -17,7 +17,7 @@ local Notes = {}
 local function boardPart(what)
 	return function(stage)
 		for _, p in stage:GetDescendants() do
-			if p:IsA("BasePart") and p:GetAttribute("RangeBoard") == what then return p end
+			if p:IsA("BasePart") and p:GetAttribute("RangeBoard") == what and not p:FindFirstAncestor("RangeMenu") then return p end -- (the raised menu has a Hangar strip of its own)
 		end
 	end
 end
@@ -113,7 +113,7 @@ function Notes.new(getStage, menuOpen) -- menuOpen(): the Range menu is down
 			local low = back.AbsolutePosition - layer.AbsolutePosition
 			return low, low + back.AbsoluteSize
 		elseif current.gui == "leave" then
-			local menu = player.PlayerGui:FindFirstChild("GameMenu")
+			local menu = player.PlayerGui:FindFirstChild("PauseScreen")
 			local button = menu and menu:FindFirstChild("Leave", true)
 			if not button or not button:IsA("GuiObject") or button.AbsoluteSize.X == 0 then return nil end
 			local low = button.AbsolutePosition - menu.AbsolutePosition
@@ -128,17 +128,20 @@ function Notes.new(getStage, menuOpen) -- menuOpen(): the Range menu is down
 		local stage = getStage()
 		local part = stage and current.find(stage)
 		if not part then return nil end
+		-- Its middle must be on screen; a corner past the edge is fine (on a phone the board's strips touch the edge, and
+		-- one point off used to hide this note, so the notes after it never came).
+		local camera = workspace.CurrentCamera
+		if not select(2, camera:WorldToViewportPoint(part.Position)) then return nil end
 		local low, high = Vector2.new(math.huge, math.huge), Vector2.new(-math.huge, -math.huge)
 		for _, x in { -0.5, 0.5 } do
 			for _, y in { -0.5, 0.5 } do
 				for _, z in { -0.5, 0.5 } do
-					local point, onScreen = workspace.CurrentCamera:WorldToViewportPoint((part.CFrame * CFrame.new(part.Size * Vector3.new(x, y, z))).Position)
-					if not onScreen then return nil end
+					local point = camera:WorldToViewportPoint((part.CFrame * CFrame.new(part.Size * Vector3.new(x, y, z))).Position)
 					low, high = low:Min(Vector2.new(point.X, point.Y)), high:Max(Vector2.new(point.X, point.Y))
 				end
 			end
 		end
-		return low, high
+		return low:Max(Vector2.zero), high:Min(camera.ViewportSize)
 	end
 
 	RunService.RenderStepped:Connect(function(dt)
@@ -157,7 +160,7 @@ function Notes.new(getStage, menuOpen) -- menuOpen(): the Range menu is down
 		local where = if inHangar then onStage
 			elseif current ~= nil and current.gui == "leave" then onStage and Root:GetAttribute("OverlayOpen") == true
 			else inRange and not Root:GetAttribute("OverlayOpen") and not menuOpen() -- (on a phone it covered half the open Range menu)
-		local show = profileLoaded and not seen and current ~= nil and where and not lesson
+		local show = profileLoaded and not seen and current ~= nil and where and not lesson and not Root:GetAttribute("TutorialCard")
 		local low, high
 		if show and (current.find or current.gui) then low, high = target() end
 		gui.Enabled = show and (low ~= nil or not (current.find or current.gui))

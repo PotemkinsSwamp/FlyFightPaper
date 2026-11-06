@@ -13,7 +13,7 @@ local SWAPS = {
 	-- On a phone the dot also turns yellow when the touch aim help makes the shots land (FlightHUD).
 	{ "When the dot turns red, hold left click", "When the dot turns red or yellow, hold FIRE" },
 	{ "Press K to skip this step", "Tap Skip to skip this step" },
-	{ "press Enter", "tap Done" },
+	{ "press Enter", "tap Done" }, { "press Menu", "tap Menu" },
 	{ "Click or press Space to close", "Tap to close" },
 	{ "or press 1, 2 or 3", "or tap a card" },
 	{ "one gear type on left click, the other on right", "one gear type on FIRE, the other on 2" },
