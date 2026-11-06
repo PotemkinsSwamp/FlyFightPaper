@@ -1,6 +1,6 @@
 # Classes, new weapons and mastery plan
 
-Draft for Alan's OK (2026-11-06). Nothing here is built. It serves
+Alan's answers are in (2026-11-06, [decision](../decisions/2026-11-06-classes-and-mastery.md)); building starts at step 1. It serves
 [the beta has to feel like a finished game](../decisions/2026-11-06-beta-feels-finished.md). Winners' circle and emotes,
 skins and the shop get their own plans after this one.
 
@@ -11,7 +11,8 @@ skins and the shop get their own plans after this one.
 - New weapons: Hole Punch, Stubby Crayon, Spitball, Thumbtack. No mini eraser.
 - Spitball has a very high drop-off and weighs its target down: their Lift falls faster.
 - Building your own plane has no extra gate: it starts once you've unlocked parts.
-- Mastery for each class and each weapon, with small, earned improvements.
+- Mastery for each class, weapon and part: a long-term goal that never makes long-time players overpowered.
+- Bots have no mastery.
 
 ## The six classes
 Speed, Health, Turn and Lift are measured from the game's own stat rules with today's parts and weapons. Crayons and
@@ -54,14 +55,21 @@ Pellet gun does in the right situation, or less. Prices follow the ladder.
 | 40 | Pencil | Today's |
 
 ## Mastery
-- **Earned by playing:** a weapon by hits and folds with it, a plane by flying and fighting in it. Folds on bots count
-  the same as folds on people (VISION).
-- **Five mastery levels each.** The first comes quickly; the last takes many matches. Exact numbers come from the XP
-  measurement in step 1.
-- **The ceiling:** about +10% on any one stat at full mastery, so skill still beats time played.
+- **Earned by playing:** a weapon by hits and folds with it, a part by flying and fighting with it. Folds on bots count
+  the same as folds on people (VISION), but bots themselves have no mastery.
+- **Ten ranks each, slow on purpose.** First guess, tuned after step 1: rank 1 after about 8 matches with that weapon
+  or part, rank 5 after about 100, rank 10 after about 500.
+- **The first rank is the big one, the rest are small:** the full ceiling is +10% on any one stat.
+
+| Rank | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Total bonus | +5% | +5.5% | +6% | +6.5% | +7% | +7.5% | +8% | +8.5% | +9% | +10% |
+
+- **Rank 1 feels like an event:** a "Mastered!" card after the match and a star on the weapon or part in the Hangar.
+- **Prestige opens the top ranks:** ranks 1-5 are open to everyone. Each prestige opens one more rank, so rank 10 needs
+  prestige 5. Mastery stays through prestige.
 - **Never for Robux:** 2x XP doesn't speed it up, and it can't be bought.
 - **Not earned in the Range or lessons.**
-- **Stays through prestige** (Claude's suggestion, Alan's call).
 
 | Mastery of | Improves |
 |---|---|
@@ -82,9 +90,9 @@ Pellet gun does in the right situation, or less. Prices follow the ladder.
 raises its parts' mastery, the class's mastery bar shows their progress, and that progress carries into your own
 builds. Class mastery also earns rewards at each level (titles first, skins and emotes once they exist).
 
-**Fairness watch:** veterans will fly slightly better planes than new players. Rookie rooms already keep beginners
-apart, and the ceiling keeps the gap small. Alan's eraser worry: no class carries one, and matches get watched
-for eraser spam once more people reach level 22.
+**Fairness watch:** long-time players fly slightly better planes than new players; the ranks' small steps and the
+ceiling keep that gap small. Alan's eraser worry: no class carries one, and matches get watched for eraser spam once
+more people reach level 22.
 
 ## Build steps
 Each step ends in something Alan can try.
@@ -98,13 +106,10 @@ Each step ends in something Alan can try.
    "you unlocked" moment after a match. Tutorial and bots updated to match.
 5. **Mastery:** save change (needs old servers shut down at publish), the earning rules, the stat changes on the
    server, and the Hangar's mastery bars. Codex can build and test the pure rules; Claude reviews.
-6. **Balance pass:** bot matches with every class, then Alan's playtest.
+6. **Bot skill follows the lobby:** bots match the lobby's average level, weighted towards its lower-level players, so
+   one level 50 among level 1s doesn't bring veterans. Today a room's bots come from whether its players have
+   graduated from rookie rooms (after 5 matches), not their levels.
+7. **Balance pass:** bot matches with every class, then Alan's playtest.
 
 **Cost:** free so far. New models try free Creator Store items first; Meshy would use existing credits and only with
 Alan's go, like every upload.
-
-## Open questions for Alan
-1. Are Scout and Marksman the right names and jobs for the third and sixth classes?
-2. Is mastery per part OK, with classes showing their parts' progress?
-3. Is +10% the right ceiling?
-4. Should mastery stay through prestige?

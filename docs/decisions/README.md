@@ -8,6 +8,7 @@ Claude's own smaller calls waiting for Alan's review live in [STATE](../../state
 
 - 2026-10-24: [Screen fit: every piece in its place on any screen](2026-10-24-screen-fit.md)
 - 2026-10-25: [Fast phone loading: menu first, Skip, smaller bump and shine maps](2026-10-25-fast-phone-loading.md)
+- 2026-11-06: [Six classes, four new weapons and mastery](2026-11-06-classes-and-mastery.md)
 - 2026-11-06: [The beta has to feel like a finished game](2026-11-06-beta-feels-finished.md)
 - 2026-10-29: [A brake on PC, automatic speed matching on phones](2026-10-29-brake-and-phone-speed-match.md)
 - 2026-10-29: [Dev mode on Alan's own account in the published game](2026-10-29-dev-mode-on-alans-account.md)
