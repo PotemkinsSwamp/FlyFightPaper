@@ -10,6 +10,7 @@ local Course = require(Root.Shared.TrainingCourse)
 local Touch = require(script.Parent.TouchControls)
 local AimHelp = require(Root.Shared.AimHelp)
 local SpeedMatch = require(Root.Shared.SpeedMatch)
+local Options = require(script.Parent.Options)
 local Controller = {}
 -- Read by the camera and HUD. `aimOverride` lets dev tools fly the plane without a mouse.
 Controller.state = { aim = nil, aimUp = nil, aimOverride = nil }
@@ -159,12 +160,12 @@ function Controller.start(plane)
 			if toward.Magnitude > 1 then steer = toward.Unit end
 		end
 		state.aim, state.aimUp = aimFrame.LookVector, aimFrame.UpVector
-		local boost = not blocked and (Input:IsKeyDown(Enum.KeyCode.LeftShift) or Touch.boost)
+		local boost = not blocked and (Input:IsKeyDown(Options.keys.boost) or Touch.boost)
 		if boost ~= boostSent then boostSent = boost; Root.FlightAction:FireServer("boost", boost) end
 		-- Brake (Space, Alan 2026-10-29): slower and a little tighter in turns while held; the server drains Lift faster.
 		-- Phones also have a BRAKE button, and close behind an enemy their speed eases down to its speed (Settings > Speed
 		-- match). Both at once never stack: the brake's speed wins (it is never above speed matching's lowest).
-		local braking = not blocked and not boost and not pinned and (Input:IsKeyDown(Enum.KeyCode.Space) or Touch.brake)
+		local braking = not blocked and not boost and not pinned and (Input:IsKeyDown(Options.keys.brake) or Touch.brake)
 		if braking ~= brakeSent then brakeSent = braking; Root.FlightAction:FireServer("brake", braking) end
 		local wanted = braking and Config.brake_speed_factor or 1
 		state.matching = nil

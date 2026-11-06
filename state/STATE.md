@@ -4,7 +4,7 @@
   (docs/playtests/2026-10-29-young-testers-tutorial.md): next is a tutorial rewrite plan for your OK, then research
   on phone aiming (how other games handle it) before you decide anything.
 - **Phone buttons work (2026-11-05, your phone):** move them in Settings, Save keeps them. Brake and speed match are in
-  too. PC key changes (part 2) wait on your OK of part 1.
+  too. You approved that; PC key changes are built (Settings > Controls > Keys), not yet tried in Play.
 
 # Now: mobile lane (make phones work and look good)
 What works: Stage 9, tutorials, desk quick menu; phone fixes published (auto-fire confirmed); your 2026-10-29 notes
@@ -12,6 +12,7 @@ fixed in Studio. Next: tutorial rewrite plan (your OK first), phone-aiming resea
 time; later paper planes behind the winners; iPad.
 
 Decisions to review
+PC keys: letters (not K or R), Shift, Ctrl, Alt, Space on offer; Got it may share a key with Boost or Brake.
 Auto-fire also fires on the yellow dot (shots land thanks to phone aim help), not only red; in the Range it fires on
   targets too, so a phone's accuracy card reads high. The steering bar's new top (1.8) applies to the mouse too.
 Repack: bell tower + sweet shop keep their pictures (moderation caution); 111 pieces keep theirs (sharing would add pixels).

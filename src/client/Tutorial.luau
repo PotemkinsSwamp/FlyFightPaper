@@ -14,6 +14,7 @@ local PaperUI=require(script.Parent.PaperUI)
 local Audio=require(script.Parent.Audio)
 local Lessons=require(script.Parent.TutorialLessons)
 local Touch=require(script.Parent.TouchControls)
+local Options=require(script.Parent.Options)
 -- The HUD rows a lesson points at, and the touch button that does that job on a phone (TouchControls).
 local PHONE_NAMES={LeftStrip="Fire",RightStrip="Fire2",BoostStrip="Boost"}
 local ROUND={Fire=true,Fire2=true,Boost=true} -- round buttons get the round crayon ring, not the box
@@ -179,12 +180,13 @@ function Tutorial.start(getPlane)
  local dismiss=Instance.new("TextButton");dismiss.Name="Dismiss";dismiss.Text="";dismiss.BackgroundTransparency=1;dismiss.Size=UDim2.fromScale(1,1);dismiss.ZIndex=5;dismiss.Visible=false;dismiss.Parent=card
  dismiss.Activated:Connect(function() card.Visible=false end)
  -- ...and shows a green Close too (Alan 2026-10-28: "(tap to close)" in the words was easy to miss).
- local closeButton=PaperUI.button(card,"Close",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"Close  [Space]",310,200,300,60,1,function() card.Visible=false end,30)
+ local closeButton=PaperUI.button(card,"Close",Art.mainmenu.strip.green or Art.mainmenu.strip.red,"",310,200,300,60,1,function() card.Visible=false end,30)
+ Options.gotItLabel(closeButton.Label,"Close")
  -- This screen stacks by global layers, so its word and tap area go up with it (Alan's phone run 2026-10-28: on layer 1
  -- the word sat under the button, a blank paper).
  closeButton.ZIndex=6;closeButton.Label.ZIndex=6;closeButton.Hit.ZIndex=6;closeButton.Visible=false
  PaperUI.phone(closeButton,{Position=UDim2.fromOffset(310,260),Size=UDim2.fromOffset(300,96)});PaperUI.phone(closeButton.Label,{TextSize=36})
- Input.InputBegan:Connect(function(input,processed) if not processed and card.Visible and dismiss.Visible and input.KeyCode==Enum.KeyCode.Space then card.Visible=false end end)
+ Input.InputBegan:Connect(function(input,processed) if not processed and card.Visible and dismiss.Visible and input.KeyCode==Options.keys.gotIt then card.Visible=false end end)
 
  -- A question card (Alan 2026-10-19): which lesson (the Tutorial button), or, the first time in the game, would
  -- you like the tutorial (most games ask once, can be skipped in one click, and say where to find it again).
@@ -592,7 +594,7 @@ function Tutorial.start(getPlane)
  end
  Input.InputBegan:Connect(function(input,processed)
   if processed or not Tutorial.active then return end
-  if input.KeyCode==Enum.KeyCode.Space then Tutorial.gotIt=true
+  if input.KeyCode==Options.keys.gotIt then Tutorial.gotIt=true
   elseif input.KeyCode==Enum.KeyCode.Return then clicked.Launch=true
   elseif input.KeyCode==Enum.KeyCode.K then holdK=os.clock() end
  end)
@@ -721,11 +723,13 @@ function Tutorial.start(getPlane)
   end
   local finished=count and type(result)=="number" and result>=count or result==true or (step.gotIt and Tutorial.gotIt)
   -- A step's words can change with what's happening (a function of ctx), e.g. the eraser warnings.
-  text.Text=(type(step.text)=="function" and step.text(ctx) or step.text)..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
+  local words=type(step.text)=="function" and step.text(ctx) or step.text
+  if not Touch.active() then words=words:gsub("Hold Shift","Hold "..Options.keyName("boost")) end -- (your key; a phone swaps its words from this text)
+  text.Text=words..(count and type(result)=="number" and string.format("  %d/%d",math.min(result,count),count) or "")
   if waiting then text.Text=Tutorial.lesson.waitText or "One moment..." end
-  key.Text=step.key or "";key.Visible=step.key~=nil and not (step.pcKey and Touch.active()) -- pcKey: a key a phone has no button for
+  key.Text=step.key=="Shift" and not Touch.active() and Options.keyName("boost") or step.key or "";key.Visible=step.key~=nil and not (step.pcKey and Touch.active()) -- pcKey: a key a phone has no button for
   gotIt.Visible=step.gotIt==true and not waiting or reading==true
-  gotIt.Label.Text=(reading==true and not step.gotIt and "Go" or "Got it")..(PaperUI.isPhone() and "" or "  [Space]") -- (phones have no Space)
+  gotIt.Label.Text=(reading==true and not step.gotIt and "Go" or "Got it")..(PaperUI.isPhone() and "" or "  ["..Options.keyName("gotIt").."]") -- (phones have no keys)
   local left=reading==true and math.clamp(1-(os.clock()-readingAt)/readFor,0,1) or 0
   readBar.Visible=left>0;readBar.Size=UDim2.new(left,-16*left,0,6)
   local stuck=os.clock()-stepStarted>HINT_SECONDS and not doneAt and not reading

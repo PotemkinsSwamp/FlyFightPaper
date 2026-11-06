@@ -5,6 +5,7 @@ local Root = game.ReplicatedStorage:WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets).settings
 local PaperUI = require(script.Parent.PaperUI)
 local Touch = require(script.Parent.TouchControls)
+local KeyBinds = require(Root.Shared.KeyBinds)
 local SettingsScreen = {}
 
 local COLORS = { "red", "blue", "green", "yellow", "purple", "white" }
@@ -143,6 +144,49 @@ function SettingsScreen.new(playerGui, api)
 	PaperUI.phone(move, { Size = UDim2.fromOffset(185, 96) })
 	PaperUI.phone(move.Label, { TextSize = 48 })
 	refresh.moveButtons = function() buttonsLabel.Visible, move.Visible = Touch.active(), Touch.active() end
+	-- PC only: change your keys (docs/plan/CONTROLS-PLAN.md part 2): a sticky note over the sheet, one tab per action.
+	-- Click a tab, press a key. Clicking outside the note closes it.
+	local UI = require(Root.Shared.UIAssets)
+	local panel = Instance.new("TextButton")
+	panel.Name, panel.Text, panel.AutoButtonColor, panel.BackgroundColor3, panel.BackgroundTransparency = "KeysPanel", "", false, Color3.new(0, 0, 0), 0.55
+	panel.Size, panel.ZIndex, panel.Visible, panel.Parent = UDim2.fromScale(1, 1), 8, false, sheet
+	local note = image(panel, "Note", UI.ingame.stickyNote, 560, 170, 800, 740, -1)
+	note.Active = true -- (a click on the note isn't a click outside it)
+	local hint = words(note, "Hint", "", 70, 70, 660, 70, 44)
+	local waiting -- the action whose key the next key press sets
+	local keyTabs = {}
+	local function row(action, label, i)
+		words(note, action .. "Word", label, 90, 40 + i * 130, 280, 80, 56)
+		keyTabs[action] = PaperUI.button(note, action .. "Key", Art.tabOff, "", 400, 40 + i * 130, 300, 100, 0, function() waiting = action; refresh.keys() end, 44)
+	end
+	row("boost", "Boost", 1)
+	row("brake", "Brake", 2)
+	row("gotIt", "Got it", 3)
+	refresh.keys = function()
+		local keys = KeyBinds.current(settings.keys)
+		for action, tab in keyTabs do
+			tab.Image, tab.Label.Text = waiting == action and Art.tabOn or Art.tabOff, waiting == action and "Press a key" or KeyBinds.name(keys[action])
+		end
+		hint.Text = waiting and "Press the key you want." or "Click a key to change it."
+	end
+	local function closeKeys() waiting, panel.Visible = nil, false end
+	panel.Activated:Connect(closeKeys)
+	cover:GetPropertyChangedSignal("Visible"):Connect(function() if not cover.Visible then closeKeys() end end)
+	PaperUI.button(note, "Reset", UI.mainmenu.strip.yellow, "Reset", 150, 590, 230, 80, -1, function() waiting, settings.keys = nil, nil; refresh.keys(); save() end, 44)
+	PaperUI.button(note, "Done", UI.mainmenu.strip.green, "Done", 420, 590, 230, 80, 1, closeKeys, 44)
+	Input.InputBegan:Connect(function(input)
+		if not waiting or input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+		local key = input.KeyCode.Name
+		if KeyBinds.name(key) then
+			settings.keys, waiting = KeyBinds.set(settings.keys, waiting, key), nil
+			refresh.keys(); save()
+		else
+			hint.Text = "That key has another job. Try a letter, Shift, Ctrl, Alt or Space."
+		end
+	end)
+	local keysLabel = words(sheet, "ControlsLabel", "Controls", 1775, 262, 260, 60, 52)
+	local change = PaperUI.button(sheet, "ChangeKeys", Art.tabOn, "Keys", 1775, 334, 185, 82, 0, function() panel.Visible = true; refresh.keys() end, 40)
+	refresh.controls = function() keysLabel.Visible, change.Visible = not Touch.active(), not Touch.active() end
 	-- Touch screens only: close behind an enemy your speed eases down to its speed (FlightController, SpeedMatch).
 	local matchLabel = words(sheet, "SpeedMatchLabel", "Speed match", 285, 945, 300, 60, 52)
 	local match = PaperUI.button(sheet, "SpeedMatch", Art.tabOff, "On", 600, 935, 185, 82, 0,

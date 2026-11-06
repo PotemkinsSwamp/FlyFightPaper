@@ -12,6 +12,7 @@ local Lines = require(Root.Shared.Lines)
 local PaperUI = require(script.Parent.PaperUI)
 local ScreenFit = require(script.Parent.ScreenFit)
 local Touch = require(script.Parent.TouchControls)
+local Options = require(script.Parent.Options)
 local FlightState = require(script.Parent.FlightController).state
 local Zone = require(script.Parent.ControlZone).state
 local Tips = {}
@@ -59,7 +60,8 @@ function Tips.start(getPlane)
 	local most = Instance.new("UITextSizeConstraint")
 	most.MaxTextSize, most.Parent = 88, words
 	local current, shownFor, lastEnded = nil, 0, -math.huge
-	local gotIt = PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "Got it  [Space]", 330, 116, 200, 40, 1, function() shownFor = SHOW_SECONDS end, 22)
+	local gotIt = PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "", 330, 116, 200, 40, 1, function() shownFor = SHOW_SECONDS end, 22)
+	Options.gotItLabel(gotIt.Label, "Got it")
 	note.Activated:Connect(function() shownFor = SHOW_SECONDS end)
 	local arrow = PaperUI.image(gui, "Arrow", Art.tutorial.arrow, 0, 0, 120, 75)
 	local arrowScale = Instance.new("UIScale")
@@ -81,7 +83,7 @@ function Tips.start(getPlane)
 		end
 	end)
 	Input.InputBegan:Connect(function(input, processed)
-		if not processed and current and gui.Enabled and input.KeyCode == Enum.KeyCode.Space then shownFor = SHOW_SECONDS end
+		if not processed and current and gui.Enabled and input.KeyCode == Options.keys.gotIt then shownFor = SHOW_SECONDS end
 	end)
 
 	local function recent(at) return at ~= nil and os.clock() - at < RECENT_SECONDS end

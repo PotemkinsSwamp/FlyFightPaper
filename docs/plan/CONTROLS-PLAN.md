@@ -1,6 +1,6 @@
 # Controls plan: move your phone buttons, then change your PC keys
 
-**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built and checked in Studio Play 2026-10-30; on Alan's phone 2026-11-04 the layout saved but didn't show; fixed and confirmed on his phone 2026-11-05. Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
+**OK'd by Alan 2026-10-30** (no size slider, no movable stick); part 1 built and checked in Studio Play 2026-10-30; on Alan's phone 2026-11-04 the layout saved but didn't show; fixed and confirmed on his phone 2026-11-05 (part 1 approved). Part 2 built 2026-11-05, not yet tried in Play. Alan, after trying the BRAKE button on his phone: "it's not ergonomically placed
 well"; he wants players to set controls up their own way: on a phone, move the buttons; on a keyboard, change the
 keys. Phone buttons first (Alan).
 
@@ -17,9 +17,10 @@ it closes Settings and shows the layout editor over the game:
 - Save keeps it on your account: the same layout on any phone or tablet you play on.
 - In a match the editor works like the other menus over the game: your plane keeps flying (the Settings rule today).
 
-**PC (part 2, after part 1 is approved).** Settings gets a **Controls** page: Boost (Shift), Brake (Space) and Got it
-(Space) listed with their keys; click one, press a key. Esc and Roblox's own menu keys can't be used; choosing a key
-another action has swaps the two. Every note, tip and lesson that names a key says *your* key ("Hold Ctrl to brake").
+**PC (part 2).** Settings > Controls > **Keys** opens a sticky note: Boost (Shift), Brake (Space) and Got it (Space)
+with their keys; click one, press a key; Reset and Done. On offer: letters (not K or R), Shift, Ctrl, Alt and Space;
+every other key already has a job. Boost and Brake taking each other's key swaps the two; Got it may share a key.
+Every note, tip and lesson that names a key says *your* key ("Hold Ctrl for 1 second to boost").
 
 ## How it works (part 1)
 1. **Saving:** the profile's settings get `touchLayout`: for each button that was moved, where its middle sits as a

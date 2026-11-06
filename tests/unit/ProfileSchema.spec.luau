@@ -79,6 +79,8 @@ function Spec.run()
 		p.settings.touchLayout={Brake={x=.7,y=.4}}; assert(Schema.validate(p,catalog))
 		p.settings.touchLayout={Brake={x=7,y=.4}}; assert(not Schema.validate(p,catalog))
 		p.settings.touchLayout={Stick={x=.2,y=.4}}; assert(not Schema.validate(p,catalog))
+		p.settings.touchLayout=nil;p.settings.keys={boost="E"}; assert(Schema.validate(p,catalog))
+		p.settings.keys={boost="Escape"}; assert(not Schema.validate(p,catalog))
 	end)
 	test("every allowed crosshair color and size validates",function()
 		for _,color in ipairs({"green","red","blue","yellow","purple","white"}) do

@@ -50,6 +50,8 @@ second you stay in its gust (clamped to maximum, every pass, no reuse timer) and
 than multiply overlapping copies. Fans do not refill optional boost. Boost drains its separate seconds while
 held and augments speed by the equipped module; clamp stacked environmental speed to a safe validated limit.
 
+- **Your keys (PC; [controls plan](../plan/CONTROLS-PLAN.md) part 2, built 2026-11-05, not yet tried in Play):** Boost, Brake and
+  Got it can be changed in Settings > Controls; saved as `keys`, rules in `KeyBinds`. Names below are the game's keys.
 - **Brake (Space, PC; Alan 2026-10-29):** while held (and not boosting) the plane flies at `brake_speed_factor` of
   its speed and turns `brake_turn_factor` tighter; the server drains Lift `brake_lift_drain_factor` times as fast
   (attribute `Braking`), so it can't be held all match. Speed changes ease at `speed_ease_per_s`.
@@ -70,6 +72,7 @@ held and augments speed by the equipped module; clamp stacked environmental spee
 | `src/server/FlightService.luau` | Server side of every plane: spawn at desk, takeoff, fans, speed pickups, death and landing hooks |
 | `src/shared/FlightRules.luau` | Lift drain and flight limits |
 | `src/shared/TouchLayout.luau` | Phones: where a moved button may go and where saved buttons land on any screen (tests: `tests/unit/TouchLayout.spec.luau`) |
+| `src/shared/KeyBinds.luau` | PC: the keys a player can change, swapping and the save check (tests: `tests/unit/KeyBinds.spec.luau`) |
 | `src/shared/SpeedMatch.luau` | Phones: which enemy you are tailing and the share of speed that matches it (tests: `tests/unit/SpeedMatch.spec.luau`) |
 | `src/client/SpeedPickups.luau` | Spinning speed-bolt markers |
 | `src/client/FanSpin.luau, src/client/FanWind.luau` | Fan blades turning and wind swirls |

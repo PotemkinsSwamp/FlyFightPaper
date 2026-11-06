@@ -10,6 +10,7 @@ local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Art = require(Root.Shared.UIAssets)
 local PaperUI = require(script.Parent.PaperUI)
 local ScreenFit = require(script.Parent.ScreenFit)
+local Options = require(script.Parent.Options)
 local FlightState = require(script.Parent.FlightController).state
 local Notes = {}
 
@@ -91,11 +92,11 @@ function Notes.new(getStage, menuOpen) -- menuOpen(): the Range menu is down
 	local function active()
 		return gui.Enabled and not seen and STEPS[step] ~= nil
 	end
-	PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "Got it  [Space]", 40, 176, 240, 48, 1, function() if active() then advance() end end, 24)
+	Options.gotItLabel(PaperUI.button(note, "GotIt", Art.mainmenu.strip.green or Art.mainmenu.strip.red, "", 40, 176, 240, 48, 1, function() if active() then advance() end end, 24).Label, "Got it")
 	local skip = PaperUI.button(note, "Skip", Art.mainmenu.strip.red, "Skip all  [K]", 330, 176, 250, 48, -1, function() if active() then finish() end end, 24)
 	Input.InputBegan:Connect(function(input, processed)
 		if processed or not active() then return end
-		if input.KeyCode == Enum.KeyCode.Space then advance() elseif input.KeyCode == Enum.KeyCode.K then finish() end
+		if input.KeyCode == Options.keys.gotIt then advance() elseif input.KeyCode == Enum.KeyCode.K then finish() end
 	end)
 
 	local function hangarBack()
