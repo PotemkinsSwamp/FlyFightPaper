@@ -19,7 +19,7 @@ end
 local function slotOf(value) return type(value)=="table" and type(value.slot)=="number" and value.slot%1==0 and value.slot>=1 and value.slot<=PresetCount end
 -- The picked build is the one the next refold or fresh plane flies; picking one ends a Studio test build.
 function Service:select(player,slot)
- player:SetAttribute("SelectedPreset",slot)
+ player:SetAttribute("SelectedPreset",slot);player:SetAttribute("SelectedClass",nil)
  local p=self.flight.pilots[player]
  if p then p.testLoadout=nil end
 end
@@ -32,6 +32,14 @@ function Service:handle(player,action,value)
   if type(value)~="number" or value%1~=0 or value<1 or value>PresetCount then return end
   self:select(player,value)
   self:message(player,self.flight.pilots[player] and ("Build "..value.." picked. Full refold at your desk flies it.") or ("Build "..value.." picked for your next flight."))
+ elseif action=="selectClass" then
+  local class=self.catalog:classById(value)
+  if not class then return end
+  if not self.catalog:classLoadout(value,Economy.levelForXP(profile.xpMilli)) then self:message(player,class.name.." opens at level "..class.min_level..".");return end
+  player:SetAttribute("SelectedClass",value)
+  local p=self.flight.pilots[player]
+  if p then p.testLoadout=nil end
+  self:message(player,self.flight.pilots[player] and (class.name.." picked. Full refold at your desk flies it.") or (class.name.." picked for your next flight."))
  elseif action=="savePreset" then
   if not slotOf(value) then return end
   local candidate=Schema.copy(profile);local preset=Schema.copy({name=profile.presets[value.slot].name,loadout=value.loadout}) -- renaming is its own action

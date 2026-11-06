@@ -83,12 +83,35 @@ function Hangar.new(playerGui, api)
 
 	-- Tapping a cubby picks that build: the one you fly next (in the Range it swaps your plane).
 	local shelf = BuildShelf.new(sheet, Catalog, function(i)
-		if i == state.preset then return end
+		if i == state.preset and not player:GetAttribute("SelectedClass") then return end
 		state.preset, state.trying, state.dropAsk = i, nil, nil
 		state.builder:reset(state.builds[i].loadout, i)
 		if state.range then api.action:FireServer("range", "load" .. i) else api.action:FireServer("selectPreset", i) end
 		render()
 	end)
+
+	-- The Classes shelf: ready-made planes you can fly but not change. Six cubbies, so narrower ones.
+	local classShelf = BuildShelf.new(sheet, Catalog, function(i)
+		local class = state.builds[i]
+		if class.locked or class.id == player:GetAttribute("SelectedClass") then return end
+		state.preset = i
+		state.builder:reset(class.loadout, i)
+		api.action:FireServer("selectClass", class.id)
+		render()
+	end, 300)
+	player:GetAttributeChangedSignal("SelectedClass"):Connect(function() if render and state.page == "shelf" then render() end end)
+	-- My builds <-> Classes: the tab beside the group's name.
+	local function switchShelf(classes)
+		state.classes, state.builder, state.trying, state.dropAsk = classes, nil, nil, nil
+		state.preset = 1
+		local picked = player:GetAttribute("SelectedClass")
+		if classes then
+			for i, class in Catalog:classes() do if class.id == picked then state.preset = i end end
+		elseif not picked then
+			state.preset = player:GetAttribute("SelectedPreset") or 1
+		end
+		render()
+	end
 
 	local function choose(pick, ...)
 		state.builder.message = ""
@@ -269,12 +292,20 @@ function Hangar.new(playerGui, api)
 
 	render = function()
 		for _, child in content:GetChildren() do child:Destroy() end
-		shelf.frame.Visible = state.page == "shelf"
+		shelf.frame.Visible, classShelf.frame.Visible = state.page == "shelf" and not state.classes, state.page == "shelf" and state.classes == true
 		if not profile then return end
 		local range = state.range and profile.rangePresets ~= nil
+		local classes = state.classes and not range
 		local builds = range and profile.rangePresets or profile.presets
-		local level = (dev or range) and 50 or player:GetAttribute("Level") or 1
-		local ownership = (dev or range) and everything or profile.ownership
+		if classes then
+			builds = {}
+			for i, class in Catalog:classes() do
+				local own = player:GetAttribute("Level") or 1
+				builds[i] = { id = class.id, name = class.name, loadout = Catalog:classLoadout(class.id, 50), locked = own < class.min_level and class.min_level or nil }
+			end
+		end
+		local level = (dev or range or classes) and 50 or player:GetAttribute("Level") or 1
+		local ownership = (dev or range or classes) and everything or profile.ownership
 		local saved = builds[state.preset].loadout
 		state.builder = state.builder or Builder.new(Catalog, saved, ownership, level)
 		state.builder:update({ selectedLoadout = saved, selectedRevision = state.preset, profile = { ownership = ownership, level = level } })
@@ -291,7 +322,16 @@ function Hangar.new(playerGui, api)
 		state.unsaved = not Builder.equal(draft, savedBuild)
 
 		if state.page == "shelf" then
-			shelf.set(builds, state.preset, range and "Range" or "My builds", range and RANGE_PINK or Color3.fromRGB(255, 215, 60))
+			local class = player:GetAttribute("SelectedClass")
+			if classes then
+				local picked
+				for i, build in builds do if build.id == class then picked = i end end
+				classShelf.set(builds, picked, "Classes", Color3.fromRGB(120, 200, 255))
+			else shelf.set(builds, not (class and not range) and state.preset or nil, range and "Range" or "My builds", range and RANGE_PINK or Color3.fromRGB(255, 215, 60)) end
+			if not range then
+				local other = button(content, "ShelfSwitch", Shelf.shelfTab, classes and "My builds" or "Classes", 440, 582, 320, 92, 0, function() switchShelf(not classes) end, 46)
+				other.ZIndex = 3
+			end
 			if range then
 				-- Purple, and under Back on a phone (Alan 2026-10-28: red and on top of the moved Back, it read as a second Back).
 				local note = image(content, "RangeNote", Assets.range.stripPurple, 20, PaperUI.isPhone() and 390 or 170, 300, 130, -4)
@@ -300,8 +340,15 @@ function Hangar.new(playerGui, api)
 				text.TextXAlignment, text.TextWrapped = Enum.TextXAlignment.Center, true
 			end
 			preview(draft, PHOTO)
-			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, 52)
 			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
+			if classes then
+				image(content, "NameTape", Assets.ingame.tapeLabel, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100).ScaleType = Enum.ScaleType.Stretch
+				words(content, "BuildName", builds[state.preset].name, PHOTO[1] + 155, PHOTO[2] + PHOTO[4] - 75, 470, 100, 52).TextXAlignment = Enum.TextXAlignment.Center
+				local fixed = words(content, "ClassNote", "Class planes can't be changed. Level up to unlock parts for your own builds.", 1140, 545, 750, 95, 42)
+				fixed.TextXAlignment, fixed.TextWrapped = Enum.TextXAlignment.Center, true
+				return
+			end
+			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, 52)
 			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 564, 600, PaperUI.isPhone() and 130 or 120, -1, function()
 				state.page, state.slot, state.trying = "customize", "body", nil
 				render()
@@ -343,11 +390,18 @@ function Hangar.new(playerGui, api)
 		local unsaved = range == state.range and state.unsaved
 		if range ~= state.range then state.builder = nil end
 		state.range = range
+		-- A class plane opens on the Classes shelf; the Hangar Tour and Customize always use your own builds.
+		local classes = not range and not unsaved and page ~= "customize" and not Root:GetAttribute("TutorialOpen") and player:GetAttribute("SelectedClass") ~= nil
+		if classes ~= (state.classes == true) then state.builder = nil end
+		state.classes = classes
+		if classes then
+			for i, class in Catalog:classes() do if class.id == player:GetAttribute("SelectedClass") then selected = i end end
+		end
 		state.page, state.dropAsk, state.trying = (unsaved or page == "customize") and "customize" or "shelf", nil, nil
 		if page == "customize" and not unsaved then state.slot = "body" end
 		if not unsaved then
 			state.preset = selected
-			if state.builder and state.builds then state.builder:reset(state.builds[selected].loadout, selected) end
+			if state.builder and state.builds and state.builds[selected] then state.builder:reset(state.builds[selected].loadout, selected) end
 		end
 		shown = nil
 	end

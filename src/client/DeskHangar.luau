@@ -262,9 +262,16 @@ function DeskHangar.new(playerGui, api)
 		if profile and profile.presets then showPresets(profile.presets) end
 	end)
 
+	-- What the next refold flies: the picked class, or the picked build.
+	local function picked_()
+		local class = Players.LocalPlayer:GetAttribute("SelectedClass")
+		return class and Catalog:classById(class) or presets and presets[preset]
+	end
 	-- The picked build when it isn't the one you fly: its model, and its stats read like a fresh plane's.
 	local function pickedBuild(plane)
-		local loadout = presets and presets[preset] and presets[preset].loadout
+		local class = Players.LocalPlayer:GetAttribute("SelectedClass")
+		local build = picked_()
+		local loadout = class and Catalog:classLoadout(class, 50) or build and build.loadout
 		local ok, flying = pcall(HttpService.JSONDecode, HttpService, plane:GetAttribute("LoadoutData") or "")
 		if not loadout or not ok or Builder.equal(loadout, flying) then return nil end
 		local stats = Catalog:deriveStats(loadout)
@@ -319,10 +326,10 @@ function DeskHangar.new(playerGui, api)
 		if not visible then shownPlane = nil; return end
 		showPlane(plane)
 		local loadout, pickedStats = pickedBuild(plane)
-		local build = presets and presets[preset]
+		local build = picked_()
 		name.Text = build and build.name or ""
 		notYet.Text = loadout and "Not flying yet" or ""
-		for i, slot in slots do slot.outline.Visible = i == preset end
+		for i, slot in slots do slot.outline.Visible = i == preset and not Players.LocalPlayer:GetAttribute("SelectedClass") end
 		for _, row in rows do
 			local value, max = row[3](pickedStats or plane)
 			local cells = math.max(row.least or 0, max > 0 and math.ceil(math.clamp(value / max, 0, 1) * 5) or 0)

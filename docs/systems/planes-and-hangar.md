@@ -5,7 +5,12 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-10-22)
+## Where it stands (2026-11-06)
+**Class planes (step 2 of the [classes plan](../plan/CLASSES-PLAN.md)):** the Hangar shelf has a Classes tab with six fixed
+planes, each open from its level (`classes` in `config/catalog.json`, stand-in weapons until the new ones exist). A class
+flies without owning its parts (`Catalog:classLoadout`, `SelectedClass`) and can't be changed; a refold accepts it
+(`Catalog:isClassLoadout`). The pick isn't saved yet, like a picked build: rejoining goes back to build 1.
+
 **Hangar rework built; Alan played it and OK'd it 2026-10-21; try-on/Select approved with the tutorials 2026-10-22** (the desk's quick menu is next) ([plan](../plan/HANGAR-PLAN.md),
 [decision](../decisions/2026-10-20-hangar-build-shelf.md)): the first screen is a cubby shelf (one still 3D plane per
 build, `BuildShelf`), the big photo, tape name label (click to rename), reference-style stat sheet (each row: label, five boxes, the real number; Weight "2/6"; Alan 2026-10-21) and Customize. In Customize a card click only tries the part on (crayon ring, "Trying it on"): the plane shows it and each number shows its change from what you have on now, in green or red; **Select** puts it on and it becomes what the next card is compared with; Cancel or clicking the equipped card stops trying (a part you don't own shows Buy instead of Select). Gear you own skips this: pick a spot number, click the gear, it goes on. A new name shows straight away while it saves. Booster cards say how much speed for how long. Gear comes off with Clear spot
@@ -69,7 +74,7 @@ progress. Pending refolds still recover normally, including the once-only refund
 | `src/shared/Aircraft.luau` | Puts the plane meshes together, mounts, team colours |
 | `src/shared/BuilderModel.luau` | The build you are editing in the hangar |
 | `src/client/Hangar.luau` | Main-menu hangar: the shelf screen, stat sheet, name label, plane photo |
-| `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build |
+| `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build or class (tests for classes: `tests/unit/Classes.spec.luau`) |
 | `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save |
 | `src/server/HangarService.luau` | Saving builds and buying parts |
 

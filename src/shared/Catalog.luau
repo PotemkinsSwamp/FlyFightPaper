@@ -125,6 +125,42 @@ function Catalog:starterLoadout()
 	}
 end
 
+-- The ready-made class planes (docs/plan/CLASSES-PLAN.md): fixed builds that ignore what you own, each open from its level.
+function Catalog:classes()
+	return self.config.classes
+end
+
+function Catalog:classById(id)
+	for _, class in ipairs(self.config.classes) do
+		if class.id == id then return class end
+	end
+	return nil
+end
+
+-- A fresh copy of a class's plane, or nil when that class is unknown or above `level`.
+function Catalog:classLoadout(id, level)
+	local class = self:classById(id)
+	if not class or level < class.min_level then return nil end
+	local loadout = table.clone(class.loadout)
+	loadout.weapon_mounts = table.clone(class.loadout.weapon_mounts)
+	if loadout.utility == JSONTypes.Null then loadout.utility = nil end
+	return loadout
+end
+
+-- Is this exactly a class plane open at `level`? (A refold checks this: you don't own a class's parts.)
+function Catalog:isClassLoadout(loadout, level)
+	for _, class in ipairs(self.config.classes) do
+		local plane = self:classLoadout(class.id, level)
+		if plane and plane.body == loadout.body and plane.nose == loadout.nose and plane.wings == loadout.wings
+			and plane.tail == loadout.tail and plane.utility == loadout.utility and #plane.weapon_mounts == #loadout.weapon_mounts then
+			local same = true
+			for i, weapon in ipairs(plane.weapon_mounts) do same = same and (weapon or false) == (loadout.weapon_mounts[i] or false) end
+			if same then return true end
+		end
+	end
+	return false
+end
+
 function Catalog:validateLoadout(loadout, ownership, level)
 	if not isPlainTable(loadout) then
 		return nil, "loadout must be a plain table"

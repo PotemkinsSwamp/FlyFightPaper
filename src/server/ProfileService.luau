@@ -187,7 +187,8 @@ function Service:_effect(p,op,boostState)
 	elseif op.kind=="refoldIntent" then
 		if not Schema.id(op.intentId) or type(op.fence)~="table" or type(op.loadout)~="table" then return nil,"invalid_refold_intent" end
 		if op.fence.nonce~=p.lease.nonce or op.fence.generation~=p.generation then return nil,"refold_fence_lost" end
-		if not self.catalog:validateLoadout(op.loadout,p.ownership,assert(Economy.levelForXP(p.xpMilli))) then return nil,"invalid_refold_build" end
+		local level=assert(Economy.levelForXP(p.xpMilli))
+		if not self.catalog:validateLoadout(op.loadout,p.ownership,level) and not self.catalog:isClassLoadout(op.loadout,level) then return nil,"invalid_refold_build" end
 		p.refolds=p.refolds or {}
 		if p.refolds[op.intentId] then return nil,"intent_exists" end
 		if count(p.refolds)>=Config.max_refolds then return nil,"refold_backpressure" end

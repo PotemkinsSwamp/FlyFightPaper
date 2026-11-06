@@ -6,7 +6,9 @@ skins and the shop get their own plans after this one.
 
 ## What Alan decided
 - Six ready-made class planes: three open at the start, the other three unlocking up to about level 10.
-- Class planes can't be changed. They carry low-tier weapons, at most two paperclips, and never an eraser.
+- Class planes are separate from a player's saved builds, in their own area, like a shooter's game loadouts under your
+  own. No part of one can be changed or copied into a build. Skins and trails can apply to them later.
+- They carry low-tier weapons, at most two paperclips, and never an eraser.
 - The Carrier needs care: lots of small guns is a big advantage even on a slow plane.
 - New weapons: Hole Punch, Stubby Crayon, Spitball, Thumbtack. No mini eraser.
 - Spitball has a very high drop-off and weighs its target down: their Lift falls faster.
@@ -63,7 +65,7 @@ Pellet gun does in the right situation, or less. Prices follow the ladder.
 
 | Rank | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Total bonus | +5% | +5.5% | +6% | +6.5% | +7% | +7.5% | +8% | +8.5% | +9% | +10% |
+| Total bonus | +5% | +5.6% | +6.1% | +6.7% | +7.2% | +7.8% | +8.3% | +8.9% | +9.4% | +10% |
 
 - **Rank 1 feels like an event:** a "Mastered!" card after the match and a star on the weapon or part in the Hangar.
 - **Prestige opens the top ranks:** ranks 1-5 are open to everyone. Each prestige opens one more rank, so rank 10 needs

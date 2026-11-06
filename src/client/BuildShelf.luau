@@ -1,7 +1,8 @@
 -- The cubby shelf on the Hangar's first screen (Alan's pick 2026-10-20: assets/references/ui-concepts/
 -- hangar-shelf-screen.png). Each saved build stands in its own cubby as its real 3D plane, with its name on masking
 -- tape; the picked one has a yellow crayon outline. A cubby's plane is a still ViewportFrame, rebuilt only when that
--- build changes, so the shelf costs no more than a row of pictures. Tapping a cubby calls pick(i).
+-- build changes, so the shelf costs no more than a row of pictures. Tapping a cubby calls pick(i). A build with
+-- `locked` set (a class above your level) stands dark with its level on the tape.
 local HttpService = game:GetService("HttpService")
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Aircraft = require(Root.Shared.Aircraft)
@@ -28,7 +29,9 @@ local function draw(view, catalog, loadout)
 	camera.CFrame = CFrame.new(box.Position) * CFrame.Angles(0, 0.5, 0) * CFrame.Angles(-0.6, 0, 0) * CFrame.new(0, 0, distance)
 end
 
-function BuildShelf.new(parent, catalog, pick)
+-- width: a cubby's width, narrower for a group of more than five (default CUBBY).
+function BuildShelf.new(parent, catalog, pick, width)
+	local CUBBY = width or CUBBY
 	local frame = Instance.new("Frame")
 	frame.Name, frame.BackgroundTransparency, frame.Size, frame.Parent = "Shelf", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), parent
 	-- The group's tab on the top rail: My builds, or Range in the Range (Special joins when special planes exist).
@@ -37,6 +40,7 @@ function BuildShelf.new(parent, catalog, pick)
 	local group = PaperUI.words(tab, "Label", "", 0, 4, 320, 84, 46)
 	group.TextXAlignment = Enum.TextXAlignment.Center
 	local outline = PaperUI.image(frame, "Picked", Art.outline, 0, 0, CUBBY + 20, FRONT_H - TOP_FACE + 20)
+	outline.Visible = false
 	-- The crayon band sits in the outer 48 px of the trimmed 480 px piece.
 	outline.ScaleType, outline.SliceCenter, outline.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 3
 	local cubbies = {}
@@ -75,7 +79,8 @@ function BuildShelf.new(parent, catalog, pick)
 				cubby = { x = x, view = view, name = name }
 				cubbies[i] = cubby
 			end
-			cubby.name.Text = build.name
+			cubby.name.Text = build.locked and ("Level " .. build.locked) or build.name
+			cubby.view.ImageColor3 = build.locked and Color3.fromRGB(70, 70, 80) or Color3.new(1, 1, 1)
 			local key = HttpService:JSONEncode(build.loadout)
 			if key ~= cubby.key then
 				cubby.key = key
@@ -83,6 +88,7 @@ function BuildShelf.new(parent, catalog, pick)
 			end
 			if i == picked then outline.Position = UDim2.fromOffset(cubby.x + CUBBY / 2, TOP + (TOP_FACE + FRONT_H) / 2) end
 		end
+		outline.Visible = builds[picked] ~= nil
 	end
 	return self
 end

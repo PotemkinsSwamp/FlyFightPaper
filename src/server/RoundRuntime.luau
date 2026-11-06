@@ -7,6 +7,7 @@ local Match=require(script.Parent.MatchService)
 local MatchRules=require(game.ReplicatedStorage.FlyFightPaper.Shared.MatchRules)
 local Config=require(Root.Generated.Gameplay)
 local Economy=require(Root.Generated.Economy)
+local EconomyRules=require(Root.Shared.EconomyRules)
 local ServerConfig=require(Root.Generated.Server)
 local ServiceRules=require(Root.Shared.ServiceRules)
 local RewardQueue=require(script.Parent.RewardQueue)
@@ -35,7 +36,9 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
  self.hangar=require(script.Parent.HangarService).new(flight,profiles,commerce)
  flight.selectedLoadout=function(player)
   local profile=profiles:view(player)
-  return profile and profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout
+  if not profile then return nil end
+  local class=player:GetAttribute("SelectedClass")
+  return class and flight.catalog:classLoadout(class,EconomyRules.levelForXP(profile.xpMilli)) or profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout
  end
  self.action.OnServerEvent:Connect(function(player,action,value)
   if type(action)~="string" then return end
@@ -218,7 +221,7 @@ function Runtime:begin(mode)
  for player in pairs(self.joined) do
   if player.Parent and self.profiles:view(player) and not self.flight.pilots[player] then
    local profile=self.profiles:view(player)
-   local p=self.flight:add(player,{loadout=profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout})
+   local p=self.flight:add(player,{loadout=self.flight.selectedLoadout(player)})
    if p then self:bind(p);player:SetAttribute("JoinQueued",false) end
   end
  end
@@ -458,7 +461,7 @@ function Runtime:join(player)
  if not self.engine.round or self.engine.phase=="READY" then self:begin(Root:GetAttribute("DevMode") or "FFA")
  elseif self.engine.phase=="ACTIVE" and not self.flight.pilots[player] then
   local profile=self.profiles:view(player)
-  local p=self.flight:add(player,{loadout=profile.presets[player:GetAttribute("SelectedPreset") or 1].loadout})
+  local p=self.flight:add(player,{loadout=self.flight.selectedLoadout(player)})
   if p then self:bind(p);player:SetAttribute("JoinQueued",false)
   else player:SetAttribute("JoinQueued",true);player:SetAttribute("MenuMessage","Waiting for a safe desk vacancy. You'll join automatically.") end
  end

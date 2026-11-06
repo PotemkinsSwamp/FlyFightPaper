@@ -487,6 +487,14 @@
       "speed_factor": 1.5
     }
   ],
+  "classes": [
+    {"id": "fighter", "name": "Fighter", "min_level": 1, "loadout": {"body": "body_standard", "nose": "nose_0", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["pellet", "pellet", "pellet", false], "utility": null}},
+    {"id": "striker", "name": "Striker", "min_level": 1, "loadout": {"body": "body_slim", "nose": "nose_1", "wings": "wings_1", "tail": "tail_0", "weapon_mounts": ["staple", "staple", false], "utility": "boost_band"}},
+    {"id": "scout", "name": "Scout", "min_level": 1, "loadout": {"body": "body_standard_mk2", "nose": "nose_0", "wings": "wings_2", "tail": "tail_2", "weapon_mounts": ["rubber", false, false, false], "utility": "boost_band"}},
+    {"id": "marksman", "name": "Marksman", "min_level": 5, "loadout": {"body": "body_standard", "nose": "nose_0", "wings": "wings_0", "tail": "tail_2", "weapon_mounts": ["paperclip", "paperclip", false, false], "utility": null}},
+    {"id": "bomber", "name": "Bomber", "min_level": 8, "loadout": {"body": "body_heavy_mk2", "nose": "nose_2", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["paperclip", "paperclip", false, false, "pellet", "pellet"], "utility": null}},
+    {"id": "carrier", "name": "Carrier", "min_level": 10, "loadout": {"body": "body_heavy", "nose": "nose_0", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["pellet", "pellet", false, false, "pellet", "pellet"], "utility": null}}
+  ],
   "starter_loadout": {
     "body": "body_standard",
     "nose": "nose_0",
