@@ -11,7 +11,7 @@ local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog)
 local ClipGlint = {}
 
 local WHITE, RED = Color3.fromRGB(255, 252, 240), Color3.fromRGB(255, 80, 60)
-local BEHIND_PEAK = 0.13 -- how strong the bottom glint gets (0-1): really faint on purpose
+local BEHIND_PEAK = 0.08 -- how strong the bottom glint gets (0-1): really faint on purpose
 local FLASH_EVERY = 1.2
 
 local function fade(...)
@@ -52,28 +52,29 @@ function ClipGlint.flare(parent)
 	star.Parent = parent
 	return star
 end
--- The bottom-of-screen glint: a wide soft band with one thin bright line low down, fading out at both sides. It is
--- layers of different heights stacked up from the bottom, so it thins upward with no seams (a CanvasGroup's fade didn't
--- draw, and side-by-side strips showed lines). Returns the band and paint(strength).
+-- The bottom-of-screen glint: a soft dome with one thin bright line low down, fading out at the sides and upward. It is
+-- layers stacked from the bottom, each shorter one wider, so their fades end at different places (a CanvasGroup's fade
+-- didn't draw, strips showed lines, and same-width layers all stepped to nothing at once: a hard side edge, Alan
+-- 2026-11-06). Returns the band and paint(strength).
 function ClipGlint.behind(parent)
 	local band = Instance.new("Frame")
 	band.Name, band.AnchorPoint, band.BackgroundTransparency = "Behind", Vector2.new(0.5, 1), 1
 	band.Position, band.Size = UDim2.fromScale(0.5, 1), UDim2.fromScale(0.8, 0.26)
-	local function layer(y, height, colour)
+	local function layer(y, size, colour)
 		local piece = Instance.new("Frame")
-		piece.AnchorPoint, piece.Position, piece.Size = Vector2.new(0, 1), y, height
+		piece.AnchorPoint, piece.Position, piece.Size = Vector2.new(0.5, 1), y, size
 		piece.BackgroundColor3, piece.BorderSizePixel, piece.BackgroundTransparency = colour, 0, 1
 		fade({ 0, 1 }, { 0.25, 0.5 }, { 0.5, 0 }, { 0.75, 0.5 }, { 1, 1 }).Parent = piece
 		piece.Parent = band
 		return piece
 	end
-	local layers, count = {}, 12
-	for i = 1, count do layers[i] = layer(UDim2.fromScale(0, 1), UDim2.fromScale(1, i / count), RED) end
-	local line = layer(UDim2.fromScale(0, 0.86), UDim2.new(1, 0, 0, 3), Color3.fromRGB(255, 190, 170))
+	local layers, count = {}, 8
+	for i = 1, count do layers[i] = layer(UDim2.fromScale(0.5, 1), UDim2.fromScale(1 - 0.55 * (i - 1) / (count - 1), i / count), RED) end
+	local line = layer(UDim2.fromScale(0.5, 0.86), UDim2.new(0.7, 0, 0, 2), Color3.fromRGB(255, 190, 170))
 	band.Parent = parent
 	return band, function(strength)
 		for _, piece in layers do piece.BackgroundTransparency = 1 - strength * 1.2 / count end
-		line.BackgroundTransparency = 1 - strength * 1.5
+		line.BackgroundTransparency = 1 - strength
 	end
 end
 -- How big the flash is, `t` seconds in: it bursts, settles, shimmers, and bursts again while the aim holds.
