@@ -3,8 +3,9 @@
 ## What the player sees
 Six weapon families made of school supplies: paper pellets, staples, rubber bands, paperclips (a fast "railgun"), guided erasers (slow homing missiles) and pencils (huge, slow, deadly). Left and right mouse fire the two weapon types on your plane. Every weapon fires the instant you click.
 
-## Where it stands (2026-10-15)
+## Where it stands (2026-11-07)
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
+Paperclip reworked and the shot timing fixed 2026-11-06; Alan confirmed staples and set the glint's strength in the air.
 **Match aim measured (2026-10-21, Alan asked if matches miss like the Range did):** in a match shots leave along the
 nose, where the green dot is drawn (the Range bug can't happen there). 30 s of 11 bots' real flight recorded on the
 server, then "dot exactly on the ring" shots fired at it with the real hit shapes: pellets hit 99% at 150 studs, 88%

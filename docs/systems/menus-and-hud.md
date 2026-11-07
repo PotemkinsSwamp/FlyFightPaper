@@ -3,7 +3,9 @@
 ## What the player sees
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
-## Where it stands (2026-10-29)
+## Where it stands (2026-11-07)
+Tab's live standings are built (2026-11-06); the live columns are not confirmed in play yet.
+
 Menu-only screens (loading, main menu, settings, hangar, shop, wait, Training, round end) draw their boards and
 pieces as 3D pictures inside little ViewportFrames (`first/BoardPlate`, `first/MenuArt`): same place, clicks and
 tilt, a little softer up close (Alan OK'd), much smaller downloads. Flying screens keep ordinary pictures.

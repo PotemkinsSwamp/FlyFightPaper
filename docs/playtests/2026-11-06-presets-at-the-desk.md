@@ -39,3 +39,6 @@ All eight were changed the same day, and Alan's Studio check is still to come:
   [the decision](../decisions/2026-11-06-paperclip-rewards-distance.md).
 - Tab should show the live standings during a match: same decision.
 - Refill Lift removed from the desk: landing already fills Lift and Boost.
+- The paperclip's glint went in. Alan set the red glint's strength by eye in the air: anything under 4x the first try
+  vanished over the bright town. He said "looks good" right after the clip hunters dev button; that may not cover the
+  paperclip's damage, Tab, the desk column or notes 1, 6 and 8, so ask.

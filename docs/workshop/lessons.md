@@ -440,3 +440,9 @@ Back to [HOME](../HOME.md)
   accuracy with the pilot's aim. `DevShotLog` now marks RING or free; only RING shots test the game. To measure screen
   delay, record server positions and compare them on the client against the drawn positions at each delay: it gave one
   clean answer (0.18 s) and no pilot was involved.
+- **Edit-mode `require` keeps old code (2026-11-06).** Studio's Edit VM caches a module for good, so a fresh change looks
+  missing. Clone the code and tests into a temp folder in ServerStorage, point their paths at it, run, delete it: most
+  tests run with no Play and no mouse grab. Three suites need a real server and two need plane models.
+- **Stacked see-through layers can make a hard edge (2026-11-07).** Same-width layers at 1-2% strength all round to
+  nothing at the same spot. Give each a different width. A faint overlay also has to be judged over the bright town,
+  not a dark road; `screen_capture` doesn't show a StarterGui overlay from a moved camera, so judge it in Play.

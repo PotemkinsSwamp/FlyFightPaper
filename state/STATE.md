@@ -1,12 +1,14 @@
-# Since Alan last checked (2026-11-06)
+# Since Alan last checked (2026-11-07)
 - **The beta must feel finished (your decision):** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md.
-- **Presets are in (Studio, not published):** six fixed planes, stand-in weapons, unlocking to level 10. The Hangar has
-  Loadouts and Presets tabs; the desk's "Switch to presets" flips the cork strip. Tests 455/0.
-- **Free swap:** a plane that hasn't flown this life changes at once; after flying, Fresh plane, Full refold or a fold.
-- **PC keys and Range fixes:** done in Studio; none of today's work is published yet.
-- **Your 8 notes:** staples confirmed; desk reload, ramming and pickups still need your word. Paperclip rework and Tab standings built, not played.
+- **Presets are in (Studio, not published):** six fixed planes, stand-in weapons, unlocking to level 10.
+- **Your 8 notes are built:** staples confirmed; the rest are in Studio. A shot timing fix helps every gun.
+- **Paperclip:** takes turns, 1.75 s reload, 12 damage close up to 60 at full reach; its glint warns the target.
+- **Tab shows live standings;** phones tap the score strip. Refill Lift is gone. Desk dev button: clip hunters.
+- **None of this is published yet.**
+
 # Now: finish the game for the beta
-Next: you play the 8 notes; then the 8-minute bot match, the phone check and the four new weapons. After that the unlock ladder, mastery, bots following the lobby,
+Next: the 8-minute bot match (rams may fold bots far more now), the phone check, the four new weapons. After that the
+unlock ladder, mastery, bots following the lobby,
 then winners' circle + emotes, skins, shop. Publish and phone runs any time.
 
 Decisions to review
