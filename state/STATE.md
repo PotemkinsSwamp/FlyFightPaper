@@ -4,13 +4,15 @@
   Loadouts and Presets tabs; the desk's "Switch to presets" flips the cork strip. Tests 455/0.
 - **Free swap:** a plane that hasn't flown this life changes at once; after flying, Fresh plane, Full refold or a fold.
 - **PC keys and Range fixes:** done in Studio; none of today's work is published yet.
-- **Your notes today are not fixed yet:** docs/playtests/2026-11-06-presets-at-the-desk.md (8 items).
+- **Your 8 notes are changed, not yet played:** docs/playtests/2026-11-06-presets-at-the-desk.md says what changed.
 
 # Now: finish the game for the beta
-Next: fix your 8 notes, then the four new weapons. After that the unlock ladder, mastery, bots following the lobby,
+Next: you play the 8 notes; then the 8-minute bot match, the phone check and the four new weapons. After that the unlock ladder, mastery, bots following the lobby,
 then winners' circle + emotes, skins, shop. Publish and phone runs any time.
 
 Decisions to review
+Rams: stronger plane loses 15 extra, always survives; rams still earn no kill; teammates and practice flights never ram.
+Paperclips: 3600 speed, ~2420 range; held, two clips fire together every 1.5 s instead of taking turns. Pickups' Boost stops at a full tank.
 PC keys: letters (not K or R), Shift, Ctrl, Alt, Space on offer; Got it may share a key with Boost or Brake.
 Auto-fire also fires on the yellow dot (shots land thanks to phone aim help), not only red; in the Range it fires on
   targets too, so a phone's accuracy card reads high. The steering bar's new top (1.8) applies to the mouse too.

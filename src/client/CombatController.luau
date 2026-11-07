@@ -12,7 +12,11 @@ function Controller.start(getPlane,effects)
  -- Phone auto-fire (Alan 2026-10-28, Settings): FIRE (weapon 1) shoots by itself while its ring says the shots land.
  -- The 2 weapon stays hold-to-use.
  local auto=false
- local function down(which) return held[which] or which==1 and auto end
+ -- A burst stays "held" until its last round is out, so a quick click's later rounds still get a fresh aim
+ -- (Alan 2026-11-06: tapped staples drifted off the ring; after the release they flew along a stale aim).
+ local burstUntil={0,0}
+ local function down(which) return held[which] or which==1 and auto or os.clock()<burstUntil[which] end
+ local function burst(which) local seconds=effects.burstSeconds(which);if seconds then burstUntil[which]=os.clock()+seconds end end
  local function groupFor(input)
   if input.UserInputType==Enum.UserInputType.MouseButton1 or input.KeyCode==Enum.KeyCode.ButtonR2 then return 1 end
   if input.UserInputType==Enum.UserInputType.MouseButton2 or input.KeyCode==Enum.KeyCode.ButtonL2 then return 2 end
@@ -28,7 +32,7 @@ function Controller.start(getPlane,effects)
  Input.InputBegan:Connect(function(input,processed)
   if processed or Input:GetFocusedTextBox() or Root:GetAttribute("OverlayOpen") then return end
   local which=groupFor(input)
-  if which then held[which]=true;effects.press(which,true);send(which) end
+  if which then held[which]=true;burst(which);effects.press(which,true);send(which) end
  end)
  Input.InputEnded:Connect(function(input)
   local which=groupFor(input)
@@ -36,7 +40,7 @@ function Controller.start(getPlane,effects)
  end)
  Input.WindowFocusReleased:Connect(function()held={false,false};effects.press(1,false);effects.press(2,false);send(1);send(2)end)
  -- Phones: the Fire buttons (TouchControls) hold the triggers like the mouse buttons.
- Touch.onFire=function(which,isDown) if Root:GetAttribute("OverlayOpen") then isDown=false end;held[which]=isDown;effects.press(which,down(which));send(which) end
+ Touch.onFire=function(which,isDown) if Root:GetAttribute("OverlayOpen") then isDown=false end;held[which]=isDown;if isDown then burst(which) end;effects.press(which,down(which));send(which) end
  -- Studio test hook: the player attribute DevFire holds the left trigger (Studio MCP can't press the game's mouse).
  if Run:IsStudio() then
   local player=Players.LocalPlayer
@@ -50,7 +54,8 @@ function Controller.start(getPlane,effects)
   local lesson=Root:GetAttribute("TutorialOpen")==true and Root:GetAttribute("TutorialLesson")~="range"
   local nowAuto=Touch.active() and Root:GetAttribute("AutoFire")~=false and FlightState.onTarget==true and not Root:GetAttribute("OverlayOpen") and not lesson
   if nowAuto~=auto then auto=nowAuto;effects.press(1,down(1));send(1) end
-  local firing=down(1) or held[2]
+  for which=1,2 do if burstUntil[which]>0 and os.clock()>=burstUntil[which] then burstUntil[which]=0;effects.press(which,down(which));send(which) end end
+  local firing=down(1) or down(2)
   if clock>=(firing and 1/30 or .1) then
    clock=0
    for which=1,2 do if down(which) or not firing then send(which) end end

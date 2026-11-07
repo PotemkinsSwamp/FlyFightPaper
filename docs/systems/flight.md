@@ -55,6 +55,8 @@ held and augments speed by the equipped module; clamp stacked environmental spee
 - **Brake (Space, PC; Alan 2026-10-29):** while held (and not boosting) the plane flies at `brake_speed_factor` of
   its speed and turns `brake_turn_factor` tighter; the server drains Lift `brake_lift_drain_factor` times as fast
   (attribute `Braking`), so it can't be held all match. Speed changes ease at `speed_ease_per_s`.
+- **Speed pickups:** each adds speed for a few seconds and `boost_seconds` of Boost, up to a full tank (Alan 2026-11-06);
+  a plane with no booster gets only the speed.
 - **Speed match (phones; `SpeedMatch`):** it follows only a plane you are really tailing: within `pick_range_studs`
   and `pick_cone_deg` of your nose, flying within `same_way_deg` of your heading (a plane crossing in front or coming
   head-on never counts; the nearest such plane is picked). It keeps that plane while it stays within

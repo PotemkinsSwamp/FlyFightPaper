@@ -37,13 +37,17 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Paper Pellet Gun | 2 | 1 | 1500, ~750 studs range | Hold; 0.1 s per shot; 30 shots then 1.5 s cooling |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
-| Precision Paperclip | 24 | 2 | 1900, ~1400 studs range | One shot per click; 1.5 s reload per mount |
+| Precision Paperclip | 24 | 2 | 3600, ~2420 studs range | Hold; every mount fires when its 1.5 s reload ends (Alan 2026-11-06) |
 | Guided Eraser | 30 | 3 | 200, slowing to 110 | Click to launch unguided or hold through the 1.5 s lock; 4 s reload |
 | Pencil Launcher | 260 | 5 | 650, ~1800 studs range | One shot per click, fires on the click; 4 s reload |
 
 Speeds above are launch speeds. Unguided shots lose speed with distance (drag, down to 55-70% of launch speed at the end of
 flight) and fall a little (drop, 80 studs/s^2 for pellets down to 3 for pencils); `drag`, `drop` and `lifetime` in
-`config/catalog.json` set the range. Range runs pellet < staple < rubber < paperclip < pencil. Erasers keep their own rule below.
+`config/catalog.json` set the range. Range runs pellet < staple < rubber < pencil < paperclip. Erasers keep their own rule below.
+
+A quick click on a burst weapon stays held until the burst's last round is out, so every round leaves on a fresh aim
+(CombatController). Before 2026-11-06 the later rounds of a tapped burst flew along the plain nose. The lead ring
+already used each weapon's speed, drag and drop; that was not the cause of Alan's staple note.
 
 Automatic weapons fire while held at per-mount cadence. Burst staples queue three rounds with 0.09-second
 spacing and 1.2 seconds between burst starts; releasing before a new burst stops new bursts. Paperclips and
@@ -66,7 +70,8 @@ at service completion, and reused mounts retain any later prior readyAt. A real 
 with spawn rules. Do not use ordinary repair/refold to reset projectile counts.
 
 A player's guns meet at the range of the target they're aiming at (the client sends it with the aim; the server clamps
-it to 20-1000 studs); with no target, and for bots, at `combat.gun_convergence_studs` (150). Fixed at 150, the two
+it to 20-3000 studs); with no target, at the weapon's full reach, so the streams never cross on the way (Alan
+2026-11-06: an X past 150 studs); bots keep `combat.gun_convergence_studs` (150). Fixed at 150, the two
 wing guns crossed and flew past either side of a plane seen from behind at 300 studs even with the dot red on the
 ring (measured 2026-10-19; Alan: "the shots don't make it"). After the fix, Play: 12 of 12 aimed pellets hit
 targets crossing at 220 studs, and 6 of 6 at 130.

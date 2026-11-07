@@ -35,7 +35,15 @@ function Spec.run()
   a.model:SetAttribute("State","DESTROYED");assert(f:padAvailable("pad","b"))
   b.model:Destroy();assert(f:padAvailable("pad","new"));a.model:Destroy()
  end)
- test("a ram destroys the plane with less health and costs the other that much; a brush costs both a little",function()
+ test("a replaced plane goes only after the new one is in, so the screen never has no plane",function()
+  local old=Instance.new("Folder");old.Parent=workspace
+  local stillThere
+  local f=setmetatable({build=function(self,p) stillThere=old.Parent~=nil;p.model=Instance.new("Folder") end},Flight)
+  local p={model=old};f:replace(p)
+  assert(stillThere and old.Parent==nil and p.model~=old)
+  p.model:Destroy()
+ end)
+ test("a ram folds the plane with less health and costs the other that much plus a bit; a brush costs both a little",function()
   local function run(ha,hb,speed)
    local taken={}
    local f=setmetatable({damage=function(_,p,amount) taken[p.id]=(taken[p.id] or 0)+amount end},Flight)
@@ -46,7 +54,8 @@ function Spec.run()
    f:ram(pilot("a",ha,0,-speed),pilot("b",hb,-10,speed),1)
    return taken.a or 0,taken.b or 0
   end
-  local a,b=run(50,80,100);assert(a==50 and b==50,"weaker plane must be destroyed, stronger loses 50: "..a..","..b)
+  local a,b=run(50,80,100);assert(a==50 and b==65,"weaker plane must fold, stronger loses 50 plus the extra: "..a..","..b)
+  a,b=run(50,55,100);assert(a==50 and b==54,"the stronger plane always survives: "..a..","..b)
   a,b=run(70,70,100);assert(a==70 and b==70,"equal health: both destroyed")
   a,b=run(50,80,5);assert(a==12 and b==12,"slow brush: both lose a little: "..a..","..b)
  end)

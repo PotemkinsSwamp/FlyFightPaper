@@ -173,8 +173,8 @@
       }
     ],
     "speed_pickups": {
-      "_comment": "Fly through one: +speed_bonus speed, adding up to max_bonus, and the timer restarts at seconds (Alan 2026-10-12: bolts add, time does not). Comes back after respawn_seconds. Each spot: 'at' = middle of the hole (token shown there), 'box' = the opening measured in Studio (world axes, studs): 7 ceiling rings, 3 cardboard tubes, under the bell tower, the gateway-towers arch; then (2026-10-16, Alan: more in fly-through spots, measured in Studio) the porthole book tower's porthole, the tape roll's hole, under the ruler-stilt tower, the abacus hall's slot, the block arch, under the pencil-case bridge, under the north station (below the train's tunnel), under the south station's lunch tin.",
-      "speed_bonus": 0.25, "max_bonus": 1.0, "seconds": 5, "respawn_seconds": 1,
+      "_comment": "Fly through one: +speed_bonus speed, adding up to max_bonus, and the timer restarts at seconds (Alan 2026-10-12: bolts add, time does not). Comes back after respawn_seconds. Each also adds boost_seconds to a plane with a booster, up to its full tank (Alan 2026-11-06). Each spot: 'at' = middle of the hole (token shown there), 'box' = the opening measured in Studio (world axes, studs): 7 ceiling rings, 3 cardboard tubes, under the bell tower, the gateway-towers arch; then (2026-10-16, Alan: more in fly-through spots, measured in Studio) the porthole book tower's porthole, the tape roll's hole, under the ruler-stilt tower, the abacus hall's slot, the block arch, under the pencil-case bridge, under the north station (below the train's tunnel), under the south station's lunch tin.",
+      "speed_bonus": 0.25, "max_bonus": 1.0, "seconds": 5, "respawn_seconds": 1, "boost_seconds": 0.5,
       "spots": [
         {"at": [120, 450, -330], "box": [16, 60, 60]}, {"at": [270, 450, -330], "box": [16, 60, 60]},
         {"at": [420, 450, -330], "box": [16, 60, 60]}, {"at": [600, 440, 330], "box": [16, 60, 60]},
@@ -305,6 +305,7 @@
     "collision_crash_angle_deg": 25,
     "collision_scrape_health_per_second": 0.15,
     "ram_closing_speed": 30,
+    "ram_extra_health": 15,
     "collision_scrape_doubling_seconds": 0.5
   },
   "service": {

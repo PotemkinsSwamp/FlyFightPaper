@@ -126,7 +126,7 @@ function Service:receive(p,packet,now)
   local arc=math.rad(math.min(Config.input_max_aim_deg,Config.input_aim_slack_deg+(p.stats.turn)*(age+.1)))
   if p.body.CFrame.LookVector:Dot(packet.direction)<math.cos(arc) then return false end
   -- Where the guns meet: the client's target range (clamped; only moves where the two streams cross).
-  local range=FlightRules.finite(packet.range) and math.clamp(packet.range,20,1000) or nil
+  local range=FlightRules.finite(packet.range) and math.clamp(packet.range,20,3000) or nil
   info.aimData[packet.group]={arc=arc,at=now,latency=age,range=range};info.latency=age
  end
  info.seq=packet.seq;self:trigger(p,packet.group,packet.down,packet.down and packet.direction or nil)
@@ -181,8 +181,9 @@ function Service:trigger(p,which,down,aim)
  local info=self.info[p.id];if not info then return end
  local now=workspace:GetServerTimeNow();local old=info.held[which]
  for _,mount in ipairs(info.mounts) do if mount.group==which then self:coolMount(mount,old and self:eligible(p) and not p.overlay,now) end end
- info.held[which]=down;info.aim=aim or p.body.CFrame.LookVector
- info.aims=info.aims or {};info.aims[which]=info.aim
+ -- A release keeps the last aim: a burst's later rounds may still be on their way out.
+ info.held[which]=down;info.aim=aim or info.aim or p.body.CFrame.LookVector
+ info.aims=info.aims or {};info.aims[which]=aim or info.aims[which] or info.aim
  if not down or not self:eligible(p) or p.overlay then return end
  if not old then
   -- A short click may arrive and release between server frames. Fire its first round here.

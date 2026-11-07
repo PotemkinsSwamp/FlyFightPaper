@@ -572,6 +572,7 @@ return JSONTypes.map({
         ["pencil_reload_seconds"] = 4,
         ["plane_contact_health_fraction"] = 0.1,
         ["ram_closing_speed"] = 30,
+        ["ram_extra_health"] = 15,
         ["ramming_awards_without_recent_weapon_damage"] = false,
         ["reference_health"] = 120,
         ["respawn_seconds"] = 4,
@@ -1212,7 +1213,8 @@ return JSONTypes.map({
         }),
         ["seed"] = 17029,
         ["speed_pickups"] = JSONTypes.map({
-            ["_comment"] = "Fly through one: +speed_bonus speed, adding up to max_bonus, and the timer restarts at seconds (Alan 2026-10-12: bolts add, time does not). Comes back after respawn_seconds. Each spot: 'at' = middle of the hole (token shown there), 'box' = the opening measured in Studio (world axes, studs): 7 ceiling rings, 3 cardboard tubes, under the bell tower, the gateway-towers arch; then (2026-10-16, Alan: more in fly-through spots, measured in Studio) the porthole book tower's porthole, the tape roll's hole, under the ruler-stilt tower, the abacus hall's slot, the block arch, under the pencil-case bridge, under the north station (below the train's tunnel), under the south station's lunch tin.",
+            ["_comment"] = "Fly through one: +speed_bonus speed, adding up to max_bonus, and the timer restarts at seconds (Alan 2026-10-12: bolts add, time does not). Comes back after respawn_seconds. Each also adds boost_seconds to a plane with a booster, up to its full tank (Alan 2026-11-06). Each spot: 'at' = middle of the hole (token shown there), 'box' = the opening measured in Studio (world axes, studs): 7 ceiling rings, 3 cardboard tubes, under the bell tower, the gateway-towers arch; then (2026-10-16, Alan: more in fly-through spots, measured in Studio) the porthole book tower's porthole, the tape roll's hole, under the ruler-stilt tower, the abacus hall's slot, the block arch, under the pencil-case bridge, under the north station (below the train's tunnel), under the south station's lunch tin.",
+            ["boost_seconds"] = 0.5,
             ["max_bonus"] = 1.0,
             ["respawn_seconds"] = 1,
             ["seconds"] = 5,

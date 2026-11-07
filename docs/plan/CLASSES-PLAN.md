@@ -28,9 +28,9 @@ Thumbtacks don't exist yet, so those rows used stand-ins and will shift a little
 |---|---|---|---|---|---:|---:|---:|---:|
 | Fighter | Level 1 | All-rounder | Classic Fold, classic parts | 2 Pellets, 1 Thumbtack | 106 | 120 | 116 | 88 |
 | Striker | Level 1 | Fast glass cannon | Swift Fold, Needle Nose, Swept Wings | 2 Staples, Elastic Booster | 150 | 79 | 136-141 | 96 |
-| Scout | Level 1 | Stays up longest, good for holding the zone | Courier Fold, Broad Wings, Ridge Tail | 1 Rubber Band, Elastic Booster | 98 | 140 | 105-123 | 107 |
+| Scout | Level 1 | Stays up longest, good for holding the zone | Courier Fold, Broad Wings, Ridge Tail | 2 Rubber Bands, Elastic Booster | 96 | 140 | 103-121 | 105 |
 | Marksman | Level 5 | Few shots, must aim | Classic Fold, Ridge Tail | 2 Paperclips | 110 | 128 | 110-114 | 89 |
-| Bomber | Level 8 | Big slow hits | Toilet Roll Gunship, Blunt Nose | 2 Stubby Crayons, 2 Pellets | 65 | 316 | 77 | 71 |
+| Bomber | Level 8 | Big slow hits | Toilet Roll Gunship, Blunt Nose | 1 Stubby Crayon, 2 Pellets | 65 | 316 | 77 | 71 |
 | Carrier | Level 10 | Huge health, many small guns | Cardboard Gunship | 4 Pellets | 64 | 330 | 73 | 77 |
 
 - **Pace:** levels 5, 8 and 10 take 1,040, 2,240 and 3,240 XP. At a guessed 600 XP a match, that's a new class about

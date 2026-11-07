@@ -2,12 +2,12 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 local Rules=require(Root.Shared.CombatRules)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
-local RANGES={pellet=750,staple=900,rubber=1050,paperclip=1400,pencil=1800}
-local ORDER={"pellet","staple","rubber","paperclip","pencil"}
+local RANGES={pellet=750,staple=900,rubber=1050,pencil=1800,paperclip=2420}
+local ORDER={"pellet","staple","rubber","pencil","paperclip"}
 function Spec.run()
 	local result,test=Suite.new()
 	local catalog=require(Root.Shared.Catalog).new(require(Root.Generated.Catalog),require(Root.Generated.Gameplay))
-	test("each gun reaches its design range and ranges grow from pellet to pencil",function()
+	test("each gun reaches its design range and ranges grow from pellet to paperclip",function()
 		local previous=0
 		for _,id in ipairs(ORDER) do
 			local weapon=catalog:get(id);local range=Rules.shotRange(weapon)

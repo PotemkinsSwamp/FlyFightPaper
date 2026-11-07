@@ -40,7 +40,7 @@ function Spec.run()
 	end)
 	test("paperclips keep their damage and capacity with the 1.5 s reload and fast projectile",function()
 		local weapon=catalog:get("paperclip")
-		assert(weapon.damage==24 and weapon.capacity==2 and weapon.shot_interval==1.5 and weapon.projectile_speed==1900)
+		assert(weapon.damage==24 and weapon.capacity==2 and weapon.shot_interval==1.5 and weapon.projectile_speed==3600)
 	end)
 	test("holding either automatic button does not block clicks on the other precision button",function()
 		for _,ids in ipairs({{"paperclip",false,"rubber",false},{"rubber","paperclip",false,false}}) do

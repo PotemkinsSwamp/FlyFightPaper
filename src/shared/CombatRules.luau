@@ -92,6 +92,12 @@ function Rules.lead(weapon, from, ahead)
 	end
 	return lead
 end
+-- What a ram costs a plane with `mine` health against one with `theirs`: the weaker folds, the stronger loses the
+-- weaker's health plus `extra` but always keeps 1 (Alan 2026-11-06); equal health folds both.
+function Rules.ramLoss(mine, theirs, extra)
+	if mine <= theirs then return mine end
+	return math.min(theirs + extra, mine - 1)
+end
 function Rules.shotOffset(weapon, direction, t)
 	return direction*Rules.shotDistance(weapon,t)-Vector3.yAxis*(0.5*(weapon.drop or 0)*t*t)
 end

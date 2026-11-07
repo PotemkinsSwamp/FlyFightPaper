@@ -36,7 +36,9 @@ function Effects.aim(body,weapon)
   if bend>0 then return look:Lerp(offset.Unit,bend).Unit,offset.Magnitude end
   return look,offset.Magnitude
  end
- return body.CFrame.LookVector
+ -- No target: the guns meet at the shot's full reach, so the streams never cross and spread out on the way
+ -- (Alan 2026-11-06: an X past the old fixed 150 studs).
+ return body.CFrame.LookVector,weapon and Rules.shotRange(weapon)
 end
 local colors={pellet=Color3.fromRGB(255,240,170),staple=Color3.fromRGB(220,230,240),rubber=Color3.fromRGB(250,180,100),paperclip=Color3.fromRGB(125,225,255),eraser=Color3.fromRGB(255,145,175),pencil=Color3.fromRGB(255,210,70)}
 function Effects.start(getPlane)
@@ -417,7 +419,13 @@ function Effects.start(getPlane)
   for _,mount in ipairs(mounts) do if mount.group==group then return Effects.aim(body,mount.weapon) end end
   return body.CFrame.LookVector
  end
- return {aim=aimFor,press=function(which,down)
+ -- How long a burst on this trigger takes to leave the guns (nil: not a burst weapon).
+ local function burstSeconds(group)
+  for _,mount in ipairs(mounts) do
+   if mount.group==group and mount.weapon.fire_mode=="burst" then return mount.weapon.burst_count*mount.weapon.burst_spacing end
+  end
+ end
+ return {aim=aimFor,burstSeconds=burstSeconds,press=function(which,down)
   local plane=flying();local now=workspace:GetServerTimeNow()
   if plane then refresh(plane);for _,mount in ipairs(mounts) do if mount.group==which then coolMount(plane,mount,held[which],now) end end end
   held[which]=down

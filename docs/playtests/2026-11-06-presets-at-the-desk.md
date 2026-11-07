@@ -17,5 +17,15 @@ Played a match in Studio with the six presets (stand-in weapons), switching plan
 8. **Speed pickups should add Boost:** about 0.5 s of Boost each.
 
 ## What it meant
-All eight wait for the next session, before the new weapons. Item 1 only shows now that a pick can swap the plane straight
-away. Nothing here is fixed yet.
+All eight were changed the same day, and Alan's Studio check is still to come:
+1. A swap took the old plane away before the new one arrived, so the HUD could catch a moment with no plane and pop the
+   whole menu in again. The new plane now goes in first.
+2. Paperclips: 3600 launch speed, about 2420 studs of range, same damage; holding fires at each reload.
+3. With a target the guns already met at its range. With no target they crossed at 150 studs and spread; they now meet
+   at the weapon's full reach.
+4-5. Bomber 1 Paperclip + 2 Pellets; Scout 2 Rubber Bands.
+6. The check needed the two planes' thin flight bodies to overlap, which almost never happens. It now goes by distance,
+   then the exact shapes. The stronger plane also loses 15 extra and always survives.
+7. The ring already used shot speed, drag and drop. Tapped bursts were the fault: their later rounds flew along the
+   plain nose, because the aim stopped when the button came up.
+8. A pickup adds 0.5 s of Boost, up to a full tank, on top of its speed. Planes with no booster get only the speed.

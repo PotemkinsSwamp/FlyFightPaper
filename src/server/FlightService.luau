@@ -7,6 +7,8 @@ local Tween=game:GetService("TweenService")
 local Physics=game:GetService("PhysicsService")
 local Root=RS:WaitForChild("FlyFightPaper")
 local Rules=require(Root.Shared.FlightRules)
+local CombatRules=require(Root.Shared.CombatRules)
+local RAM_NEAR_STUDS=60 -- centre to centre; even two of the biggest planes can't touch from further away
 local Landing=require(Root.Shared.ServiceRules)
 local Catalog=require(Root.Shared.Catalog)
 local Lines=require(Root.Shared.Lines)
@@ -224,8 +226,11 @@ function Service:replace(p)
  if p.testLoadout then p.loadout=p.testLoadout
  -- A practice plane respawns as the same training plane, not the player's own build (it may have no booster).
  elseif p.player and self.selectedLoadout and not p.practice then p.loadout=self.selectedLoadout(p.player) or p.loadout end
- if p.model then p.model:Destroy() end
+ -- The new plane goes in before the old one goes, so the pilot's screen never has a moment with no plane
+ -- (Alan 2026-11-06: a swap at the desk could catch the HUD in that gap and pop the whole desk menu in again).
+ local old=p.model
  self:build(p)
+ if old then old:Destroy() end
 end
 -- The picked plane goes on the desk now if this one hasn't flown yet (ServiceRules.freeSwap). Hangar safety carries over: a swap never tops it up.
 function Service:swapAtDesk(p)
@@ -421,8 +426,8 @@ function Service:touching(a,b)
  for _,piece in ipairs(mine:GetChildren()) do if #workspace:GetPartsInPart(piece,self.other)>0 then return true end end
  return false
 end
--- Two planes' exact shapes meet. A brush costs both a little; a real ram destroys the plane with less health
--- and costs the other that much health (equal health: both go).
+-- Two planes' exact shapes meet. A brush costs both a little; a real ram folds the plane with less health and the
+-- other loses that much plus combat.ram_extra_health, always surviving it (equal health: both go; Alan 2026-11-06).
 function Service:ram(a,b,now)
  a.lastContact,b.lastContact=now,now
  local closing=((a.previousVelocity or Vector3.zero)-(b.previousVelocity or Vector3.zero)):Dot((b.body.Position-a.body.Position).Unit)
@@ -432,8 +437,9 @@ function Service:ram(a,b,now)
  end
  local ha,hb=a.model:GetAttribute("Health"),b.model:GetAttribute("Health")
  local hitA,hitB={kind="ram",other=b.name},{kind="ram",other=a.name}
- if ha<=hb then self:damage(b,ha,"collision",nil,hitB);self:damage(a,ha,"collision",nil,hitA) end
- if hb<ha then self:damage(a,hb,"collision",nil,hitA);self:damage(b,hb,"collision",nil,hitB) end
+ local extra=Gameplay.combat.ram_extra_health
+ self:damage(a,CombatRules.ramLoss(ha,hb,extra),"collision",nil,hitA)
+ self:damage(b,CombatRules.ramLoss(hb,ha,extra),"collision",nil,hitB)
 end
 function Service:inServiceZone(p,origin)
  local homes={}
@@ -476,6 +482,7 @@ function Service:regionsFor(p,now)
    if now>=marker:GetAttribute("ReadyAt") and Rules.segmentHitsBox(marker.Position,marker.Size,from,to) then
     marker:SetAttribute("ReadyAt",now+Pickups.respawn_seconds);p.pickupBonus,p.pickupUntil=Rules.stackPickup(p.pickupBonus or 0,p.pickupUntil or 0,now,Pickups)
     p.model:SetAttribute("PickupUntil",p.pickupUntil);p.model:SetAttribute("Message",Lines.pick("speedPickup"))
+    p.model:SetAttribute("Boost",math.min(p.model:GetAttribute("BoostMax") or 0,(p.model:GetAttribute("Boost") or 0)+Pickups.boost_seconds))
    end
   end
  end
@@ -615,10 +622,13 @@ function Service:step(dt)
    end
    if p.model:GetAttribute("State")~="FLYING" then continue end
    if now-p.lastContact>.6 then
-    for _,other in ipairs(workspace:GetPartsInPart(p.body,self.regions)) do
-     local q=other~=p.body and other.Name=="Root" and self.byId[other.Parent.Name]
-     -- A lesson's targets and Pals never ram their player (Alan: a Pal can't fold you).
-     if q and not (p.foeOf or q.foeOf) and q.model:GetAttribute("State")=="FLYING" and now-q.lastContact>.6 and self:touching(p,q) then self:ram(p,q,now);break end
+    -- Near enough by distance, then the exact shapes decide. (Root is a thin 8 x 1.2 x 10 slab: waiting for two Roots
+    -- to overlap meant planes flew through each other, Alan 2026-11-06.)
+    -- ponytail: every pair, every step; 12 planes is 66 distance checks. Overlap only, no sweep (see above).
+    for _,q in pairs(self.pilots) do
+     -- A lesson's targets and Pals never ram their player (Alan: a Pal can't fold you); nor do practice flights or teammates.
+     if q~=p and not (p.foeOf or q.foeOf or p.practice or q.practice) and not (p.team and p.team==q.team) and q.model:GetAttribute("State")=="FLYING" and now-q.lastContact>.6
+      and (q.body.Position-p.body.Position).Magnitude<RAM_NEAR_STUDS and self:touching(p,q) then self:ram(p,q,now);break end
     end
    end
    p.lastPosition,p.lastCFrame=p.body.Position,p.body.CFrame;p.previousVelocity=p.body.AssemblyLinearVelocity
