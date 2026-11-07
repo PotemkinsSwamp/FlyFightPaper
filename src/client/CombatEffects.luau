@@ -40,7 +40,7 @@ function Effects.aim(body,weapon)
  -- (Alan 2026-11-06: an X past the old fixed 150 studs).
  return body.CFrame.LookVector,weapon and Rules.shotRange(weapon)
 end
-local colors={pellet=Color3.fromRGB(255,240,170),staple=Color3.fromRGB(220,230,240),rubber=Color3.fromRGB(250,180,100),paperclip=Color3.fromRGB(125,225,255),eraser=Color3.fromRGB(255,145,175),pencil=Color3.fromRGB(255,210,70)}
+local colors={pellet=Color3.fromRGB(255,240,170),staple=Color3.fromRGB(220,230,240),rubber=Color3.fromRGB(250,180,100),popper=Color3.fromRGB(90,90,100),paperclip=Color3.fromRGB(125,225,255),eraser=Color3.fromRGB(255,145,175),pencil=Color3.fromRGB(255,210,70)}
 function Effects.start(getPlane)
  local folder=Instance.new("Folder");folder.Name="CombatEffects";folder.Parent=workspace
  local pool,active={},{}
@@ -59,7 +59,7 @@ function Effects.start(getPlane)
   end
   created+=1;activeCount+=1
   local look=Aircraft.shotLook(weapon)
-  local template=look or weapon and equipment and equipment:FindFirstChild("ammo_"..weapon)
+  local template=look or weapon and equipment and equipment:FindFirstChild("ammo_"..Aircraft.look(weapon))
   local p=template and template.MeshId~="" and template:Clone() or Instance.new("Part")
   p:SetAttribute("OwnLook",look~=nil)
   p:SetAttribute("EffectKind",kind);p:SetAttribute("EffectRotation",template and template.CFrame.Rotation or CFrame.identity)
@@ -182,7 +182,7 @@ function Effects.start(getPlane)
    end
   end
  end
- local function drawShot(id,weapon,position,direction,speed,expires,time,enemy)
+ local function drawShot(id,weapon,position,direction,speed,expires,time,enemy,fan)
   local part=acquire(weapon)
   if not part then return end
   -- Erasers are missiles: drawn big, with a smoke trail, so everyone can see one coming.
@@ -206,7 +206,7 @@ function Effects.start(getPlane)
   part.StreakEnd.Position=rotation:VectorToObjectSpace(Vector3.new(0,0,length))
   part.Streak.Color=ColorSequence.new(colors[weapon]);part.Streak.Enabled=true
   Audio.flight(part,weapon)
-  active[id]={part=part,position=position,direction=direction,speed=speed,expires=expires,time=time,homing=missile,ballistic=row and not missile and row or nil,flown=0,wobble=row and row.wobble_studs or 0,enemy=enemy}
+  active[id]={part=part,position=position,direction=direction,speed=speed,expires=expires,time=time,homing=missile,ballistic=row and not missile and row or nil,flown=0,wobble=row and row.wobble_studs or 0,enemy=enemy,fan=fan}
  end
  local function hostile(ownerId)
   local mine=workspace.Planes:FindFirstChild(myId);local other=workspace.Planes:FindFirstChild(ownerId)
@@ -218,7 +218,10 @@ function Effects.start(getPlane)
    if event.kind=="shot" then
     if event.owner==myId and event.weapon=="eraser" then Players.LocalPlayer:SetAttribute("EraserAwayAt",os.clock()) end
     -- The shooter already drew its own shots on the click frame (erasers wait for the server's lock check).
-    if event.owner~=myId or event.weapon=="eraser" then Motion.fired(workspace.Planes:FindFirstChild(event.owner),event.slot);drawShot(event.id,event.weapon,event.position,event.direction,event.speed,event.expires,event.time,hostile(event.owner)) end
+    if event.owner~=myId or event.weapon=="eraser" then
+     if (event.lead or 1)==1 then Motion.fired(workspace.Planes:FindFirstChild(event.owner),event.slot) end
+     drawShot(event.id,event.weapon,event.position,event.direction,event.speed,event.expires,event.time,hostile(event.owner),event.fan)
+    end
    elseif event.kind=="end" then
     local shot=active[event.id]
     if shot and event.wall then burst(event.position,2,2,.8) end
@@ -242,7 +245,7 @@ function Effects.start(getPlane)
    else
     local elapsed=math.max(0,now-shot.time)
     local speed=shot.homing and Rules.eraserSpeed(shot.speed,shot.flown,Config) or shot.speed
-    local position=shot.follow and shot.follow.CFrame:PointToWorldSpace(shot.offset) or shot.ballistic and shot.position+Rules.shotOffset(shot.ballistic,shot.direction,elapsed) or shot.position+shot.direction*speed*(shot.homing and math.min(elapsed,.5) or elapsed)
+    local position=shot.follow and shot.follow.CFrame:PointToWorldSpace(shot.offset) or shot.ballistic and shot.position+Rules.shotOffset(shot.ballistic,shot.direction,elapsed,shot.fan) or shot.position+shot.direction*speed*(shot.homing and math.min(elapsed,.5) or elapsed)
     if shot.homing then shot.flown+=(position-shot.position).Magnitude;shot.position=position;shot.time=now end
     -- Near miss: an enemy shot passing within a few studs this frame shakes the camera and whooshes.
     if shot.enemy and body and not shot.passed and shot.last then
@@ -375,18 +378,22 @@ function Effects.start(getPlane)
    local spread=math.rad(weapon.spread_deg)
    direction=(CFrame.lookAt(Vector3.zero,direction)*CFrame.Angles(spreadRandom:NextNumber(-spread,spread),spreadRandom:NextNumber(-spread,spread),0)).LookVector
   end
-  serial+=1
-  -- The wall or floor this shot meets along its arc (it falls past its range): cast in short steps.
-  local life,hitAfter,wallAt=Rules.shotLife(weapon),nil,nil
-  local last,steps=position,24
-  for i=1,steps do
-   local at=position+Rules.shotOffset(weapon,direction,life*i/steps)
-   local wall=workspace:Raycast(last,at-last,room)
-   if wall then hitAfter=life*(i-1+wall.Distance/(at-last).Magnitude)/steps;wallAt=wall.Position;break end
-   last=at
+  local fans=Rules.leadFans(weapon,direction,body.CFrame.UpVector)
+  for lead=1,fans and #fans or 1 do
+   local fan=fans and fans[lead]
+   serial+=1
+   -- The wall or floor this shot meets along its arc (it falls past its range): cast in short steps.
+   local life,hitAfter,wallAt=Rules.shotLife(weapon),nil,nil
+   local last,steps=position,24
+   for i=1,steps do
+    local at=position+Rules.shotOffset(weapon,direction,life*i/steps,fan)
+    local wall=workspace:Raycast(last,at-last,room)
+    if wall then hitAfter=life*(i-1+wall.Distance/(at-last).Magnitude)/steps;wallAt=wall.Position;break end
+    last=at
+   end
+   if hitAfter then task.delay(hitAfter,burst,wallAt,2,2,.8) end
+   drawShot("local"..serial,weapon.id,position,direction,weapon.projectile_speed,now+(hitAfter or life),now,nil,fan)
   end
-  if hitAfter then task.delay(hitAfter,burst,wallAt,2,2,.8) end
-  drawShot("local"..serial,weapon.id,position,direction,weapon.projectile_speed,now+(hitAfter or life),now)
   local flash=acquire()
   if flash then
    flash.Material=Enum.Material.Neon;flash.Color=Color3.fromRGB(255,240,180);flash.Size=Vector3.new(.7,.7,1.6);flash.Parent=folder

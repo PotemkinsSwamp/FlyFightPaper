@@ -527,6 +527,29 @@ return JSONTypes.map({
             ["wobble_studs"] = 0,
         }),
         [2] = JSONTypes.map({
+            ["capacity"] = 3,
+            ["class"] = "medium",
+            ["damage"] = 5,
+            ["drag"] = 2,
+            ["drop"] = 30,
+            ["fan_after_studs"] = 20,
+            ["fan_deg"] = 20,
+            ["fire_mode"] = "automatic",
+            ["homing"] = false,
+            ["id"] = "popper",
+            ["leads"] = 5,
+            ["lifetime"] = 0.255,
+            ["mass"] = 2.5,
+            ["min_level"] = 2,
+            ["name"] = "Point Popper",
+            ["paper_price"] = 300,
+            ["projectile_radius"] = 0.3,
+            ["projectile_speed"] = 500,
+            ["shot_interval"] = 1,
+            ["spread_deg"] = 0,
+            ["wobble_studs"] = 0,
+        }),
+        [3] = JSONTypes.map({
             ["burst_count"] = 3,
             ["burst_period"] = 0.8,
             ["burst_spacing"] = 0.09,
@@ -548,7 +571,7 @@ return JSONTypes.map({
             ["spread_deg"] = 0,
             ["wobble_studs"] = 0,
         }),
-        [3] = JSONTypes.map({
+        [4] = JSONTypes.map({
             ["capacity"] = 2,
             ["class"] = "light",
             ["cooldown_seconds"] = 1.5,
@@ -570,7 +593,7 @@ return JSONTypes.map({
             ["spread_deg"] = 2.5,
             ["wobble_studs"] = 0.8,
         }),
-        [4] = JSONTypes.map({
+        [5] = JSONTypes.map({
             ["capacity"] = 2,
             ["class"] = "medium",
             ["damage"] = 24,
@@ -608,7 +631,7 @@ return JSONTypes.map({
             ["spread_deg"] = 0,
             ["wobble_studs"] = 0,
         }),
-        [5] = JSONTypes.map({
+        [6] = JSONTypes.map({
             ["capacity"] = 3,
             ["class"] = "medium",
             ["damage"] = 30,
@@ -627,7 +650,7 @@ return JSONTypes.map({
             ["spread_deg"] = 0,
             ["wobble_studs"] = 0,
         }),
-        [6] = JSONTypes.map({
+        [7] = JSONTypes.map({
             ["capacity"] = 5,
             ["class"] = "heavy",
             ["damage"] = 260,

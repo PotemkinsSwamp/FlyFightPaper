@@ -131,13 +131,31 @@ function Rules.ramLoss(mine, theirs, extra)
 end
 -- Past its range (`lifetime`, Alan 2026-11-07) a shot stops flying true: it slows hard (shot_fall_drag) and arcs down
 -- (shot_fall_gravity) until it hits something or shot_fall_seconds pass. Still a real shot, with its usual damage.
-function Rules.shotOffset(weapon, direction, t)
+-- `fan` (a weapon with `leads`, the Point Popper): this lead's sideways drift per stud once it has flown
+-- `fan_after_studs`; until then every lead flies in one tight bundle.
+function Rules.shotOffset(weapon, direction, t, fan)
 	local drop=0.5*(weapon.drop or 0)*t*t
 	local u=t-weapon.lifetime
-	if u<=0 then return direction*Rules.shotDistance(weapon,t)-Vector3.yAxis*drop end
-	local k=Config.shot_fall_drag
-	local along=Rules.shotDistance(weapon,weapon.lifetime)+Rules.shotSpeed(weapon,weapon.lifetime)/k*(1-math.exp(-k*u))
-	return direction*along-Vector3.yAxis*(drop+0.5*Config.shot_fall_gravity*u*u)
+	local along,fall
+	if u<=0 then along,fall=Rules.shotDistance(weapon,t),0
+	else
+		local k=Config.shot_fall_drag
+		along=Rules.shotDistance(weapon,weapon.lifetime)+Rules.shotSpeed(weapon,weapon.lifetime)/k*(1-math.exp(-k*u))
+		fall=0.5*Config.shot_fall_gravity*u*u
+	end
+	local spread=fan and fan*math.max(0,along-weapon.fan_after_studs) or Vector3.zero
+	return direction*along+spread-Vector3.yAxis*(drop+fall)
+end
+-- The leads of one shot fan out flat, side to side along the wings (a plane seen from behind is a thin T), evenly
+-- from -fan_deg to +fan_deg: one sideways drift per lead for shotOffset. nil for a one-shot weapon.
+function Rules.leadFans(weapon, direction, up)
+	local leads=weapon.leads or 1
+	if leads<2 then return nil end
+	local right=direction:Cross(up)
+	right=right.Magnitude>1e-6 and right.Unit or direction:Cross(Vector3.zAxis).Unit
+	local fans={}
+	for i=1,leads do fans[i]=right*math.tan(math.rad(weapon.fan_deg*(2*(i-1)/(leads-1)-1))) end
+	return fans
 end
 function Rules.shotLife(weapon)
 	return weapon.lifetime+Config.shot_fall_seconds

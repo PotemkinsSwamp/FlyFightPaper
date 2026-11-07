@@ -6,6 +6,9 @@ local Aircraft={}
 -- Hardpoints were checked on every body x wings x nose x weapon against the meshes' real triangles (2026-10-13):
 -- only the paperclip railgun on the body slots rose into the wing root, so it hangs this much lower there (studs
 -- before scale). Pellet tubes pass through the wing root on purpose (plane A's design).
+-- Weapons still waiting for their own model borrow another's (Alan 2026-11-07: test with models we have).
+Aircraft.STAND_IN={popper="pellet"}
+function Aircraft.look(weaponId) return weaponId and Aircraft.STAND_IN[weaponId] or weaponId end
 local BODY_SLOT_DROP={paperclip=.5}
 local NEIGHBOUR_GAP=.1 -- studs before scale between two guns under one wing
 -- Wing attachment points (Alan, 2026-10-13). A body may carry WingFront/WingBack (the front and back ends of its flat
@@ -42,7 +45,7 @@ function Aircraft.mountOffset(slot,factor,fit,weaponId)
  local side=slot%2==1 and -1 or 1
  if type(fit)~="table" then fit=Aircraft.wingFit(nil,nil,fit) end
  local wing=pair>0 and fit.mounts and fit.mounts[pair]
- local at=pair==0 and Vector3.new(side*1.76,.08-(BODY_SLOT_DROP[weaponId] or 0),-1.3134)
+ local at=pair==0 and Vector3.new(side*1.76,.08-(BODY_SLOT_DROP[Aircraft.look(weaponId)] or 0),-1.3134)
   or wing and Vector3.new(side*wing.X,wing.Y,wing.Z) or Vector3.new(side*(3.7+(pair-1)*1.5),.38,-.6)
  return Aircraft.fitPoint(fit,at)*factor
 end
@@ -51,7 +54,7 @@ end
 function Aircraft.muzzleOffset(slot,factor,weaponId,fit)
  if type(fit)~="table" then fit=Aircraft.wingFit(nil,nil,fit) end
  local pieces=Root:FindFirstChild("Assets") and Root.Assets:FindFirstChild("AircraftPieces")
- local launcher=pieces and weaponId and pieces:FindFirstChild("launcher_"..weaponId)
+ local launcher=pieces and weaponId and pieces:FindFirstChild("launcher_"..Aircraft.look(weaponId))
  local muzzle=launcher and launcher:GetAttribute("Muzzle")
  if not muzzle then return Aircraft.mountOffset(slot,factor,fit,weaponId)+Vector3.new(0,0,-1.5566*factor*fit.scale) end
  local x,y,z=string.match(muzzle,"([^,]+),([^,]+),([^,]+)")
@@ -159,7 +162,7 @@ function Aircraft.build(model,loadout,catalog,preview)
  local reach={}
  local function extent(id)
   if reach[id]==nil then
-   local launcher=pieces and id and pieces:FindFirstChild("launcher_"..id);local lo,hi=0,0
+   local launcher=pieces and id and pieces:FindFirstChild("launcher_"..Aircraft.look(id));local lo,hi=0,0
    for _,child in ipairs(launcher and launcher:GetChildren() or {}) do if child:IsA("MeshPart") then
     lo=math.min(lo,child.Position.X-child.Size.X/2);hi=math.max(hi,child.Position.X+child.Size.X/2)
    end end
@@ -178,7 +181,7 @@ function Aircraft.build(model,loadout,catalog,preview)
   end
  end
  for slot,id in ipairs(loadout.weapon_mounts) do if id then
-  local launcher=pieces and pieces:FindFirstChild("launcher_"..id)
+  local launcher=pieces and pieces:FindFirstChild("launcher_"..Aircraft.look(id))
   if launcher then
    -- Pieces are modelled on the left tube; the right side mirrors them in X (they are symmetric).
    -- Each piece carries the 180-degree turn every uploaded FBX needs (Roblox imports them facing backwards).
@@ -188,8 +191,8 @@ function Aircraft.build(model,loadout,catalog,preview)
     local at=child.Position
     put(child,"Mount"..slot.."-"..child.Name,Aircraft.mountOffset(slot,factor,fit,id)+Vector3.new(side*at.X,at.Y,at.Z)*factor*scale,child.CFrame.Rotation,scale)
    end end
-  elseif equipment and equipment:FindFirstChild("launcher_"..id) then
-   local template=equipment["launcher_"..id]
+  elseif equipment and equipment:FindFirstChild("launcher_"..Aircraft.look(id)) then
+   local template=equipment["launcher_"..Aircraft.look(id)]
    put(template,"Mount"..slot,Aircraft.mountOffset(slot,factor,fit,id),template.CFrame.Rotation,fit.scale)
   end
  end end
@@ -228,7 +231,7 @@ end
 -- Projectiles are drawn from their ammo model (erasers 2.5x so they read as missiles); hits use the same box.
 function Aircraft.projectile(weaponId,homing)
  local equipment=Root:FindFirstChild("Assets") and Root.Assets:FindFirstChild("EquipmentParts")
- local template=equipment and weaponId and equipment:FindFirstChild("ammo_"..weaponId)
+ local template=equipment and weaponId and equipment:FindFirstChild("ammo_"..Aircraft.look(weaponId))
  if not template then return nil end
  return template.Size*(homing and 2.5 or 1),template.CFrame.Rotation
 end
@@ -237,7 +240,7 @@ end
 -- Launchers without one (rubber band) keep the ammo model. Pieces turn by 90-degree steps, so axes map one to one.
 function Aircraft.shotLook(weaponId)
  local pieces=Root:FindFirstChild("Assets") and Root.Assets:FindFirstChild("AircraftPieces")
- local launcher=pieces and weaponId and pieces:FindFirstChild("launcher_"..weaponId)
+ local launcher=pieces and weaponId and pieces:FindFirstChild("launcher_"..Aircraft.look(weaponId))
  if not launcher then return nil end
  for _,child in ipairs(launcher:GetChildren()) do
   local role=child:GetAttribute("Role")

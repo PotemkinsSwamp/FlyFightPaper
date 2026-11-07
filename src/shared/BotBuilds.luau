@@ -53,7 +53,7 @@ function BotBuilds.weapon(catalog,weaponId,range)
 	assert(weapon and weapon.class,"Unknown weapon: "..tostring(weaponId))
 	local dps
 	if weapon.fire_mode=="burst" then dps=weapon.damage*weapon.burst_count/weapon.burst_period
-	else dps=weapon.damage/weapon.shot_interval end
+	else dps=weapon.damage*(weapon.leads or 1)/weapon.shot_interval end
 	local time=Rules.travelTime(weapon,range) -- math.huge when out of range
 	return {
 		dps=dps,timeToTarget=time,leadStuds=110*time,

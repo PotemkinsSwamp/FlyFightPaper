@@ -36,6 +36,7 @@ Lines.sets = {
 -- How a plane went down. Weapon kills by weapon id; crashes by what was hit (see THINGS); then the other ways.
 Lines.weapons = {
 	pellet = { "{k} riddled {v} with paper pellets", "{k} turned {v} into a hole-punch sample", "{v} took one paper pellet too many from {k}", "{k} peppered {v} with spitballs" },
+	popper = { "{k} popped {v} at point-blank range", "{k} sprayed {v} with pencil lead", "{v} flew too close to {kp} Point Popper" },
 	staple = { "{k} stapled {v} to the homework pile", "{k} pinned {v} to the bulletin board", "{v} got stapled shut by {k}", "{v} got filed away by {kp} stapler" },
 	rubber = { "{k} snapped {v} out of the air with a rubber band", "{k} flicked {v} across the classroom", "{k} showed {v} why rubber bands are banned in class" },
 	paperclip = { "{k} clipped {v} together for good", "{kp} paperclip found the gap in {vp} wings", "{k} clipped {v} to the pile of finished work" },

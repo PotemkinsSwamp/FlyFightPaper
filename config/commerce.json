@@ -324,6 +324,15 @@
       "enabled": false
     },
     {
+      "key": "part_popper",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "popper",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
       "key": "part_staple",
       "kind": "developer_product",
       "benefit": "part_unlock",

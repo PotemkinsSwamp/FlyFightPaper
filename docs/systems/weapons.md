@@ -1,10 +1,11 @@
 # Weapons
 
 ## What the player sees
-Six weapon families made of school supplies: paper pellets, staples, rubber bands, paperclips (a fast "railgun"), guided erasers (slow homing missiles) and pencils (huge, slow, deadly). Left and right mouse fire the two weapon types on your plane. Every weapon fires the instant you click.
+Seven weapon families made of school supplies: paper pellets, the Point Popper (a pencil-lead tube that sprays leads), staples, rubber bands, paperclips (a fast "railgun"), guided erasers (slow homing missiles) and pencils (huge, slow, deadly). Left and right mouse fire the two weapon types on your plane. Every weapon fires the instant you click.
 
 ## Where it stands (2026-11-07)
-Shots now fall in an arc past their range (2026-11-07, tests pass; Alan's feel check to come).
+Shots now fall in an arc past their range (2026-11-07, tests pass; Alan's feel check to come). The Point Popper's rules
+are in (2026-11-07), flying on the pellet gun's model and sound as stand-ins until its own are made.
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
 Paperclip reworked and the shot timing fixed 2026-11-06; Alan confirmed staples and set the glint's strength in the air.
 **Match aim measured (2026-10-21, Alan asked if matches miss like the Range did):** in a match shots leave along the
@@ -39,6 +40,7 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Weapon | Damage | Capacity | Speed (studs/s) | Fire timing |
 |---|---:|---:|---:|---|
 | Paper Pellet Gun | 2 | 1 | 1500, ~750 studs range | Hold; 0.1 s per shot; 30 shots then 1.5 s cooling |
+| Point Popper | 5 per lead, 5 leads | 3 | 500, ~100 studs range | Hold; one shot a second |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
 | Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | Hold; mounts take turns, 1.75 s reload each |
@@ -52,6 +54,11 @@ flight) and fall a little (drop, 80 studs/s^2 for pellets down to 3 for pencils)
 Past its range (the end of `lifetime`) a shot doesn't vanish: it slows hard (`combat.shot_fall_drag`) and arcs down
 (`combat.shot_fall_gravity`) for up to `combat.shot_fall_seconds`, nose first, and still hits with its usual damage
 (`CombatRules.shotOffset`; an Eraser whose time is up stops seeking and falls the same way, `CombatRules.eraserFall`).
+A weapon with `leads` (the Point Popper) fires that many shots at once (`CombatRules.leadFans`): they fly in one tight
+bundle for `fan_after_studs`, then fan out flat along the wings, evenly up to `fan_deg` either side, so every lead hits
+close in and only the middle one far out. Its DPS counts every lead. Weapons without their own model yet borrow
+another's (`Aircraft.STAND_IN`).
+
 A fold made by a falling shot pays the fold-at-a-distance bonus ([economy](economy-and-shop.md)). See
 [the decision](../decisions/2026-11-07-four-new-weapons-and-falling-shots.md).
 

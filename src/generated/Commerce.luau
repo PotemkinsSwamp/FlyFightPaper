@@ -329,13 +329,22 @@ return JSONTypes.map({
         [36] = JSONTypes.map({
             ["approved_robux_price"] = JSONTypes.Null,
             ["benefit"] = "part_unlock",
+            ["catalog_id"] = "popper",
+            ["enabled"] = false,
+            ["key"] = "part_popper",
+            ["kind"] = "developer_product",
+            ["roblox_product_id"] = JSONTypes.Null,
+        }),
+        [37] = JSONTypes.map({
+            ["approved_robux_price"] = JSONTypes.Null,
+            ["benefit"] = "part_unlock",
             ["catalog_id"] = "staple",
             ["enabled"] = false,
             ["key"] = "part_staple",
             ["kind"] = "developer_product",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [37] = JSONTypes.map({
+        [38] = JSONTypes.map({
             ["approved_robux_price"] = JSONTypes.Null,
             ["benefit"] = "part_unlock",
             ["catalog_id"] = "rubber",
@@ -344,7 +353,7 @@ return JSONTypes.map({
             ["kind"] = "developer_product",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [38] = JSONTypes.map({
+        [39] = JSONTypes.map({
             ["approved_robux_price"] = JSONTypes.Null,
             ["benefit"] = "part_unlock",
             ["catalog_id"] = "paperclip",
@@ -353,7 +362,7 @@ return JSONTypes.map({
             ["kind"] = "developer_product",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [39] = JSONTypes.map({
+        [40] = JSONTypes.map({
             ["approved_robux_price"] = JSONTypes.Null,
             ["benefit"] = "part_unlock",
             ["catalog_id"] = "eraser",
@@ -362,7 +371,7 @@ return JSONTypes.map({
             ["kind"] = "developer_product",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [40] = JSONTypes.map({
+        [41] = JSONTypes.map({
             ["approved_robux_price"] = JSONTypes.Null,
             ["benefit"] = "part_unlock",
             ["catalog_id"] = "pencil",
@@ -371,7 +380,7 @@ return JSONTypes.map({
             ["kind"] = "developer_product",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [41] = JSONTypes.map({
+        [42] = JSONTypes.map({
             ["approved_robux_price"] = JSONTypes.Null,
             ["benefit"] = "part_unlock",
             ["catalog_id"] = "boost_band",
@@ -380,7 +389,7 @@ return JSONTypes.map({
             ["kind"] = "developer_product",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [42] = JSONTypes.map({
+        [43] = JSONTypes.map({
             ["approved_robux_price"] = JSONTypes.Null,
             ["benefit"] = "part_unlock",
             ["catalog_id"] = "boost_spool",
@@ -389,7 +398,7 @@ return JSONTypes.map({
             ["kind"] = "developer_product",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [43] = JSONTypes.map({
+        [44] = JSONTypes.map({
             ["approved_robux_price"] = JSONTypes.Null,
             ["benefit"] = "part_unlock",
             ["catalog_id"] = "boost_twin",

@@ -15,7 +15,7 @@ local WEAPON,MISSILE=.4,.7
 local FAN_WHOOSH_SHARE=.25 -- how much of the speed whoosh plays inside a fan's updraft
 local WEAPON_HEARING_STUDS=250 -- other planes' weapons are heard only this close (Alan's note 12)
 local definitions={
- pellet={110204084658828,1.3,WEAPON},staple={9113075143,1,WEAPON*.85},rubber={12222103,1.1,WEAPON},
+ pellet={110204084658828,1.3,WEAPON},popper={110204084658828,.8,WEAPON*1.3},staple={9113075143,1,WEAPON*.85},rubber={12222103,1.1,WEAPON},
  -- Paperclip (Alan 2026-10-19): the metal ting the instant it fires, louder, with a soft railgun zap under it (it
  -- used to be a quiet zap with the ting 0.15 s later, after the shot had gone).
  paperclip={9116163687,1.25,WEAPON*1.5,.6,after={"paperclipzap",0}},paperclipzap={9114237705,1.4,WEAPON*.7,.35},

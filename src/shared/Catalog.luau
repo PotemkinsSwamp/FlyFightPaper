@@ -315,7 +315,7 @@ end
 -- Damage per second from one gun firing nonstop (bursts count their pause; ignores misses and reloads).
 function Catalog.weaponDPS(weapon)
 	if weapon.fire_mode == "burst" then return weapon.damage * weapon.burst_count / weapon.burst_period end
-	return weapon.damage / weapon.shot_interval
+	return weapon.damage * (weapon.leads or 1) / weapon.shot_interval
 end
 
 -- How hard one shot hits, 1-5, for the hangar's pips (per-shot damage runs from 1.6 to 260).

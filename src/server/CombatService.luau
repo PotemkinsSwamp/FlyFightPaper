@@ -279,7 +279,6 @@ function Service:launch(p,mount,now,target,origin)
   position,direction=origin,(at+target.body.AssemblyLinearVelocity*((at-origin).Magnitude/weapon.projectile_speed)-origin).Unit
  elseif self.flight.inServiceZone and self.flight:inServiceZone(p,position) then return false end
  p.spawnProtectionUntil=0
- self.serial+=1
  -- Humans aim at where they saw targets. Their view is one trip old (positions reaching them) plus Roblox's
  -- display smoothing, and their shot took another trip to get here, so rewind two trips plus smoothing, capped.
  local latency=aimData and aimData.latency or 0
@@ -287,15 +286,20 @@ function Service:launch(p,mount,now,target,origin)
  -- Practice targets fly a set path drawn on the client's synced clock, so only the trigger message's own trip is
  -- rewound for them: exactly the moment the pilot aimed (TrainingCourse.pathAt).
  local pathRewind=p.kind=="human" and aimData and math.min(Config.max_rewind_seconds,latency+now-aimData.at) or 0
- local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+Rules.shotLife(weapon),rewind=rewind,pathRewind=pathRewind,flown=0,
-  target=weapon.homing and target or nil,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
- -- Studio shot recorder: how close each of a player's shots came to the nearest enemy (see :finish).
- if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range,onRing=aimData and aimData.onRing} end
- self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1
- local record=self.flight.records[p.id];if record then record.shots+=1 end
- if p.pin and p.player then p.player:SetAttribute("RangeShots",(p.player:GetAttribute("RangeShots") or 0)+1) end -- the Range's score card
- if weapon.homing then info.activeErasers+=1 end
- self:emit({kind="shot",id=shot.id,owner=p.id,slot=mount.slot,weapon=weapon.id,position=position,direction=direction,speed=shot.speed,expires=shot.expires,time=now})
+ -- A many-lead weapon (the Point Popper) launches every lead at once: one bundle that fans out (Rules.leadFans).
+ local fans=Rules.leadFans(weapon,direction,p.body.CFrame.UpVector)
+ for lead=1,fans and #fans or 1 do
+  self.serial+=1
+  local shot={id=self.serial,fan=fans and fans[lead],owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+Rules.shotLife(weapon),rewind=rewind,pathRewind=pathRewind,flown=0,
+   target=weapon.homing and target or nil,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
+  -- Studio shot recorder: how close each of a player's shots came to the nearest enemy (see :finish).
+  if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range,onRing=aimData and aimData.onRing} end
+  self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1
+  local record=self.flight.records[p.id];if record then record.shots+=1 end
+  if p.pin and p.player then p.player:SetAttribute("RangeShots",(p.player:GetAttribute("RangeShots") or 0)+1) end -- the Range's score card
+  if weapon.homing then info.activeErasers+=1 end
+  self:emit({kind="shot",id=shot.id,owner=p.id,slot=mount.slot,weapon=weapon.id,position=position,direction=direction,speed=shot.speed,expires=shot.expires,time=now,fan=shot.fan,lead=fans and lead or nil})
+ end
  return true
 end
 function Service:finish(shot,position,wall)
@@ -508,7 +512,7 @@ function Service:step(dt)
   elseif shot.weapon.homing then delta=shot.direction*Rules.eraserSpeed(shot.speed,shot.flown,Config)*math.min(dt,.5)
   else
    if dt>.5 then shot.born+=dt-.5 end
-   delta=shot.origin+Rules.shotOffset(shot.weapon,shot.direction0,now-shot.born)-shot.position
+   delta=shot.origin+Rules.shotOffset(shot.weapon,shot.direction0,now-shot.born,shot.fan)-shot.position
   end
   -- A fast shot after a long hitch could still pass the cast limit: it catches up over the next steps instead.
   if delta.Magnitude>1000 then delta=delta.Unit*1000 end

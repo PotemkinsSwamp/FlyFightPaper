@@ -6,6 +6,7 @@ local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), require(Root.Generated.Gameplay))
 local Deaths = require(script.Parent.PlaneDeaths)
+local Aircraft = require(Root.Shared.Aircraft)
 
 local SPIN_TURNS_PER_SECOND = 3
 local HINGE_DEGREES = 40
@@ -43,7 +44,7 @@ local function track(model)
 	for _, part in ipairs(appearance:GetChildren()) do
 		local slot, name = string.match(part.Name, "^Mount(%d+)%-(.+)$")
 		slot = tonumber(slot)
-		local launcher = slot and ids[slot] and launchers:FindFirstChild("launcher_" .. ids[slot])
+		local launcher = slot and ids[slot] and launchers:FindFirstChild("launcher_" .. Aircraft.look(ids[slot]))
 		local template = launcher and launcher:FindFirstChild(name)
 		local role = template and template:GetAttribute("Role")
 		if part:IsA("BasePart") and role and role ~= "static" then
