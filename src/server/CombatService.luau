@@ -127,7 +127,7 @@ function Service:receive(p,packet,now)
   if p.body.CFrame.LookVector:Dot(packet.direction)<math.cos(arc) then return false end
   -- Where the guns meet: the client's target range (clamped; only moves where the two streams cross).
   local range=FlightRules.finite(packet.range) and math.clamp(packet.range,20,3000) or nil
-  info.aimData[packet.group]={arc=arc,at=now,latency=age,range=range};info.latency=age
+  info.aimData[packet.group]={arc=arc,at=now,latency=age,range=range,onRing=packet.onRing==true};info.latency=age
  end
  info.seq=packet.seq;self:trigger(p,packet.group,packet.down,packet.down and packet.direction or nil)
  return true
@@ -284,7 +284,7 @@ function Service:launch(p,mount,now,target,origin)
  local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+weapon.lifetime,rewind=rewind,pathRewind=pathRewind,flown=0,
   target=weapon.homing and target or nil,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
  -- Studio shot recorder: how close each of a player's shots came to the nearest enemy (see :finish).
- if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range} end
+ if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range,onRing=aimData and aimData.onRing} end
  self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1
  local record=self.flight.records[p.id];if record then record.shots+=1 end
  if p.pin and p.player then p.player:SetAttribute("RangeShots",(p.player:GetAttribute("RangeShots") or 0)+1) end -- the Range's score card
@@ -295,12 +295,13 @@ end
 function Service:finish(shot,position,wall)
  if not self.shots[shot.id] then return end
  self.shots[shot.id]=nil;self.shotCount-=1
- -- Studio: the player attribute DevShotLog keeps the last 40 shots: H(it)/W(all)/A(ir), the gun range sent, how far
+ -- Studio: the player attribute DevShotLog keeps the last 40 shots: the weapon, RING if it left on the lead ring (only
+ -- those are the game's own accuracy; the rest are the pilot's aim), H(it)/W(all)/A(ir), the gun range sent, how far
  -- the shot passed from the target's centre, and where (target's right, up, back), all in studs.
  local owner=shot.dev and self.flight.byId[shot.owner]
  if owner and owner.player then
   local d,o=shot.dev,shot.dev.off or Vector3.zero
-  local entry=string.format("%s r%s m%.1f(%.1f,%.1f,%.1f)@%.0f",shot.struck and "H" or wall and "W" or "A",d.range and string.format("%.0f",d.range) or "-",math.min(d.miss,99),o.X,o.Y,o.Z,d.dist or 0)
+  local entry=string.format("%s %s %s r%s m%.1f(%.1f,%.1f,%.1f)@%.0f",shot.weapon.id,d.onRing and "RING" or "free",shot.struck and "H" or wall and "W" or "A",d.range and string.format("%.0f",d.range) or "-",math.min(d.miss,99),o.X,o.Y,o.Z,d.dist or 0)
   local log=string.split(owner.player:GetAttribute("DevShotLog") or "","|");if log[1]=="" then table.remove(log,1) end
   table.insert(log,entry);while #log>40 do table.remove(log,1) end
   owner.player:SetAttribute("DevShotLog",table.concat(log,"|"))

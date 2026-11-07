@@ -32,7 +32,7 @@ function Effects.aim(body,weapon)
   local offset=leadFor(weapon)-body.Position
   local look=body.CFrame.LookVector
   local bend=AimHelp.bend(Config,math.deg(math.acos(math.clamp(look:Dot(offset.Unit),-1,1))),offset.Magnitude,Touch.active() or nil)
-  if bend>=1 then return offset.Unit,offset.Magnitude end
+  if bend>=1 then return offset.Unit,offset.Magnitude,true end -- true: this shot leaves right on the ring (Studio's shot log)
   if bend>0 then return look:Lerp(offset.Unit,bend).Unit,offset.Magnitude end
   return look,offset.Magnitude
  end

@@ -191,7 +191,7 @@ Studio: set `DevLesson` (flight / combat) on `ReplicatedStorage.FlyFightPaper` o
 aiming, the player attribute `DevAimLead` (DevTools.luau) steers at the HUD's orange ring when there's clear air to it
 (else it flies the loop above the city) and holds the trigger (`DevFire`, CombatController) only while the dot is on
 the ring; `DevAim` steers at a direction.
-Every player's last 40 shots are recorded in Studio on the player attribute `DevShotLog` (CombatService): hit, wall or
+Every player's last 40 shots are recorded in Studio on the player attribute `DevShotLog` (CombatService): the weapon, RING if the shot left on the lead ring (free if not; only RING shots test the game, the rest test the pilot), hit, wall or
 air, the gun range sent, and how far and where each passed the nearest enemy's centre, so a playtest's misses can be read.
 
 ## Code
