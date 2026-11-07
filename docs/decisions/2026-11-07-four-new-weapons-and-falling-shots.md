@@ -25,7 +25,8 @@
   a Codex reference picture, then Codex builds it in Blender. If that can't get it right, Alan finds another modeler.
 - **One shot per click** for every weapon that isn't automatic (Point Popper, Thumbtack, Paperclip, Crayon, Pencil,
   Eraser): holding the button on a computer fires once. Pellets, rubber bands and staple bursts stay hold-to-fire. On
-  phones, holding FIRE keeps firing as each weapon is ready (Alan: "at least on PC").
+  phones, holding FIRE (and auto-fire) keeps firing as each weapon is ready: Alan confirmed it, since a phone is
+  already harder to play on.
 - **Cardboard Gunship mounts:** heavy, heavy, medium, medium, medium, light (the Toilet Roll Gunship keeps two light), so
   the heavier, slower body can carry a fifth medium gun such as a fifth Thumbtack.
 - Later: look again at every weapon's range for balance.
