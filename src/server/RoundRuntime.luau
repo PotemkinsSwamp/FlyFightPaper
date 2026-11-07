@@ -103,14 +103,14 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
  Players.PlayerRemoving:Connect(function(player) self.joined[player]=nil end)
  flight.onRemoved=function(p) if self.engine.phase=="ACTIVE" then self.engine:withdraw(p.id) end end
  combat.onDamage=function(attacker,victim,amount,at) self:combatEvent("weaponDamage",victim,{attacker=attacker.identity,amount=amount},at) end
- combat.onDeath=function(victim,cause,killer,assists,history,damage,total,finisher)
-  self:combatDeath(victim,cause,killer,assists,history,damage,total,finisher)
+ combat.onDeath=function(victim,cause,killer,assists,history,damage,total,finisher,far)
+  self:combatDeath(victim,cause,killer,assists,history,damage,total,finisher,far)
  end
  Run.Heartbeat:Connect(function(dt) self:step(dt) end)
  flight.active=false;bots.enabled=false;combat.enabled=false
  return self
 end
-function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total,finisher)
+function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total,finisher,far)
  local identities={}
  local function identity(id)
   for i=#history,1,-1 do if history[i].attacker==id and history[i].identity then return history[i].identity end end
@@ -123,7 +123,7 @@ function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total,fi
    table.insert(identities,value)
   end
  end
- self:combatEvent("lifeEnded",victim,{killer=killer and identity(killer),assists=identities,reason=cause=="fresh" and "fresh_plane" or cause})
+ self:combatEvent("lifeEnded",victim,{killer=killer and identity(killer),assists=identities,far=far or nil,reason=cause=="fresh" and "fresh_plane" or cause})
 end
 function Runtime:bind(p)
  -- A practice flight is never in the match: it can't hold the zone, score, earn or qualify (2026-10-17 audit).

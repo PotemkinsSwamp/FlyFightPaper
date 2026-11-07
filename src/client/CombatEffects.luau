@@ -253,9 +253,12 @@ function Effects.start(getPlane)
       if os.clock()-nearMissAt>.25 then nearMissAt=os.clock();Players.LocalPlayer:SetAttribute("NearMissAt",nearMissAt) end
      end
     end
+    -- A falling shot noses down along its arc.
+    local step=shot.ballistic and shot.last and position-shot.last
+    local look=step and step.Magnitude>.01 and step.Unit or shot.direction
     shot.last=position
     if shot.wobble and shot.wobble>0 then position+=CFrame.lookAt(Vector3.zero,shot.direction).RightVector*math.sin(elapsed*40)*shot.wobble end
-    shot.part.CFrame=CFrame.lookAt(position,position+shot.direction)*(shot.part:GetAttribute("EffectRotation") or CFrame.identity)
+    shot.part.CFrame=CFrame.lookAt(position,position+look)*(shot.part:GetAttribute("EffectRotation") or CFrame.identity)
    end
   end
  end)
@@ -372,12 +375,18 @@ function Effects.start(getPlane)
    local spread=math.rad(weapon.spread_deg)
    direction=(CFrame.lookAt(Vector3.zero,direction)*CFrame.Angles(spreadRandom:NextNumber(-spread,spread),spreadRandom:NextNumber(-spread,spread),0)).LookVector
   end
-  local wall=workspace:Raycast(position,direction*Rules.shotRange(weapon),room)
   serial+=1
-  -- ponytail: the wall is found along the straight aim line; the drop is a few studs over the shot's life.
-  local hitAfter=wall and math.min(weapon.lifetime,Rules.travelTime(weapon,wall.Distance))
-  if wall then task.delay(hitAfter,burst,wall.Position,2,2,.8) end
-  drawShot("local"..serial,weapon.id,position,direction,weapon.projectile_speed,now+(hitAfter or weapon.lifetime),now)
+  -- The wall or floor this shot meets along its arc (it falls past its range): cast in short steps.
+  local life,hitAfter,wallAt=Rules.shotLife(weapon),nil,nil
+  local last,steps=position,24
+  for i=1,steps do
+   local at=position+Rules.shotOffset(weapon,direction,life*i/steps)
+   local wall=workspace:Raycast(last,at-last,room)
+   if wall then hitAfter=life*(i-1+wall.Distance/(at-last).Magnitude)/steps;wallAt=wall.Position;break end
+   last=at
+  end
+  if hitAfter then task.delay(hitAfter,burst,wallAt,2,2,.8) end
+  drawShot("local"..serial,weapon.id,position,direction,weapon.projectile_speed,now+(hitAfter or life),now)
   local flash=acquire()
   if flash then
    flash.Material=Enum.Material.Neon;flash.Color=Color3.fromRGB(255,240,180);flash.Size=Vector3.new(.7,.7,1.6);flash.Parent=folder

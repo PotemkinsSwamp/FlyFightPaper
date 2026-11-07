@@ -32,7 +32,8 @@ times 100, rounded to five and clamped to 10-80. Eligibility still requires at l
 original maximum health. In Airspace only, if both the credited pilot and victim were outside the current
 zone, a fold pays 40 and an assist pays 40% of its normal points, rounded to five with a five-point minimum.
 Each fold from the third onward in a life earns a separate 25-point streak bonus. Revenge earns 25 once
-for folding your most recent folder; the first fold of a round earns 100. These bonuses are never reduced.
+for folding your most recent folder; the first fold of a round earns 100. A fold by a shot already falling past its
+range earns 50 more, shown as FOLD AT A DISTANCE (Alan 2026-11-07). These bonuses are never reduced.
 Airborne uncontested zone contribution is 20 per five eligible seconds, capped at 1,920 per match so a full
 480-second round can pay throughout. Paper targets pay 50 each with their own 500-point cap per participation.
 Small props stay at 2 each with a separate 20-point cap. Team victory score is separate. Human and AI

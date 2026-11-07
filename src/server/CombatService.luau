@@ -287,7 +287,7 @@ function Service:launch(p,mount,now,target,origin)
  -- Practice targets fly a set path drawn on the client's synced clock, so only the trigger message's own trip is
  -- rewound for them: exactly the moment the pilot aimed (TrainingCourse.pathAt).
  local pathRewind=p.kind=="human" and aimData and math.min(Config.max_rewind_seconds,latency+now-aimData.at) or 0
- local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+weapon.lifetime,rewind=rewind,pathRewind=pathRewind,flown=0,
+ local shot={id=self.serial,owner=p.id,life=p.life,weapon=weapon,position=position,origin=position,direction=direction,direction0=direction,born=now,expires=now+Rules.shotLife(weapon),rewind=rewind,pathRewind=pathRewind,flown=0,
   target=weapon.homing and target or nil,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
  -- Studio shot recorder: how close each of a player's shots came to the nearest enemy (see :finish).
  if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range,onRing=aimData and aimData.onRing} end
@@ -324,7 +324,7 @@ function Service:finish(shot,position,wall)
  end
  self:emit({kind="end",id=shot.id,position=position or shot.position,wall=wall})
 end
-function Service:hit(attacker,target,amount,now,position,weaponId)
+function Service:hit(attacker,target,amount,now,position,weaponId,far)
  if not attacker or not self:enemy(attacker,target) or target.model:GetAttribute("State")=="DESTROYED" or self.flight:protected(target,now) then return end
  -- Lessons: an eraser-only practice target ignores everything else, and a Pal can never fold its player.
  local homing=weaponId and self.flight.catalog:get(weaponId).homing
@@ -335,7 +335,7 @@ function Service:hit(attacker,target,amount,now,position,weaponId)
  if target.card then return self:cardHit(attacker,target,health-actual,actual,position) end
  local history=self.info[target.id].history
  for i=#history,1,-1 do if now-history[i].at>Config.assist_window_seconds then table.remove(history,i) end end
- table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity,weapon=weaponId})
+ table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity,weapon=weaponId,far=far or nil})
  local record=self.flight.records[attacker.id];record.damage+=actual;record.hits+=1;self.totalHits+=1
  target.lastHitAt=now;target.lastHitBy=attacker
  if self.onDamage then self.onDamage(attacker,target,actual,os.clock()) end
@@ -373,7 +373,11 @@ function Service:death(p,cause)
  how.template,how.t=Lines.plan(how,killerName)
  if p.model and p.model:GetAttribute("State")=="DESTROYED" then p.model:SetAttribute("Message",Lines.death(how,"you",killerName)) end
  p.deathHow=how
- if self.onDeath then self.onDeath(p,cause,killer,assists,info and info.history or {},damage,total,finisher) end
+ -- Fold at a distance (Alan 2026-11-07): the folding hit was a shot already falling past its range.
+ -- ponytail: paid to the folder only; a falling finishing shot by an assist gets its usual finishing bonus.
+ local last=info and info.history[#info.history]
+ local far=killer~=nil and last~=nil and last.attacker==killer and last.far==true
+ if self.onDeath then self.onDeath(p,cause,killer,assists,info and info.history or {},damage,total,finisher,far) end
  for _,shot in pairs(self.shots) do if shot.owner==p.id then self:finish(shot) end end
  if info then info.held={false,false};info.history={} end
  self:emit({kind="death",victim=p.name,victimId=p.id,killer=killer and self.flight.records[killer].name or nil,killerId=killer,cause=cause,how=p.deathHow,position=p.body.Position,practice=p.practice or p.foeOf and how.kind=="left" or nil})
@@ -496,7 +500,12 @@ function Service:step(dt)
    end
   end
   local delta -- ponytail: a server hitch slows shots instead of breaking the 1024-stud cast limit
-  if shot.weapon.homing then delta=shot.direction*Rules.eraserSpeed(shot.speed,shot.flown,Config)*math.min(dt,.5)
+  local falling=now-shot.born>shot.weapon.lifetime
+  if shot.weapon.homing and falling then
+   shot.target=nil
+   shot.fall=Rules.eraserFall(shot.fall or shot.direction*Rules.eraserSpeed(shot.speed,shot.flown,Config),math.min(dt,.5))
+   shot.direction=shot.fall.Unit;delta=shot.fall*math.min(dt,.5)
+  elseif shot.weapon.homing then delta=shot.direction*Rules.eraserSpeed(shot.speed,shot.flown,Config)*math.min(dt,.5)
   else
    if dt>.5 then shot.born+=dt-.5 end
    delta=shot.origin+Rules.shotOffset(shot.weapon,shot.direction0,now-shot.born)-shot.position
@@ -525,7 +534,7 @@ function Service:step(dt)
    if taken then -- a paper sign took the shot
    elseif target and (not result or t*delta.Magnitude<=result.Distance) then
     local at=shot.position+delta*t
-    shot.struck=target;self:hit(attacker,target,Rules.shotDamage(shot.weapon,(at-shot.origin).Magnitude),now,at,shot.weapon.id);self:finish(shot,at)
+    shot.struck=target;self:hit(attacker,target,Rules.shotDamage(shot.weapon,(at-shot.origin).Magnitude),now,at,shot.weapon.id,falling);self:finish(shot,at)
    elseif result then
     self:chalkHit(result.Instance,now)
     if attacker and self.onProp then self.onProp(attacker,result.Instance) end

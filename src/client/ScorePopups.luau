@@ -11,6 +11,7 @@ local WORDS = {
 	streak = { "STREAK", Color3.fromRGB(255, 140, 50) },
 	revenge = { "REVENGE", Color3.fromRGB(255, 90, 80) },
 	finishing_shot = { "FINAL TEAR", Color3.fromRGB(255, 205, 40) }, -- Alan 2026-10-17: themed name for the finishing shot
+	fold_at_distance = { "FOLD AT A DISTANCE", Color3.fromRGB(120, 200, 255) }, -- Alan 2026-11-07: a falling shot's fold
 	zone = { "ZONE", Color3.fromRGB(255, 225, 90) },
 	target = { "TARGET", Color3.fromRGB(110, 225, 120) },
 	prop = { "", Color3.fromRGB(235, 235, 235) },

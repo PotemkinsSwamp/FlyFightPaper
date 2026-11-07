@@ -14,8 +14,8 @@ skins and the shop get their own plans after this one.
   trails can apply to them later.
 - They carry low-tier weapons, at most two paperclips, and never an eraser.
 - The Carrier needs care: lots of small guns is a big advantage even on a slow plane.
-- New weapons: Hole Punch, Stubby Crayon, Spitball, Thumbtack. No mini eraser.
-- Spitball has a very high drop-off and weighs its target down: their Lift falls faster.
+- New weapons: Point Popper, Stubby Crayon, Spitball, Thumbtack. No mini eraser. How each plays, and that every shot
+  falls past its range: [the 2026-11-07 decision](../decisions/2026-11-07-four-new-weapons-and-falling-shots.md).
 - Building your own plane has no extra gate: it starts once you've unlocked parts.
 - Mastery for each class, weapon and part: a long-term goal that never makes long-time players overpowered.
 - Bots have no mastery.
@@ -51,12 +51,12 @@ Pellet gun does in the right situation, or less. Prices follow the ladder.
 | Level | Weapon | How it plays |
 |---|---|---|
 | 1 | Pellet | Today's |
-| 2 | **Hole Punch** (new) | Short-range scatter of paper dots |
+| 2 | **Point Popper** (new) | A spray of pencil leads, only strong very close |
 | 3 | Staple | Today's |
-| 4 | **Thumbtack** (new) | Steady single shots |
-| 6 | **Stubby Crayon** (new) | A small, slow, heavy hit, a taste of the Pencil |
+| 4 | **Thumbtack** (new) | Steady single shots, weaker with distance |
+| 6 | **Stubby Crayon** (new) | A slow, heavy hit, hard to land unless close |
 | 7 | Rubber Band | Today's |
-| 9 | **Spitball** (new) | Short reach with a very high drop-off. A hit makes the target's Lift fall faster for a few seconds (repeat hits restart the timer and don't stack) |
+| 9 | **Spitball** (new) | Slow and short; up to 5 stick, burning the target's Lift and slowing it until they fall off |
 | 12 | Paperclip | Today's |
 | 22 | Eraser | Today's; still limited to two in the air per pilot |
 | 40 | Pencil | Today's |
@@ -81,9 +81,9 @@ Pellet gun does in the right situation, or less. Prices follow the ladder.
 | Mastery of | Improves |
 |---|---|
 | Pellet, Staple, Thumbtack, Rubber Band | Range, bullet speed |
-| Hole Punch | Range, tighter scatter |
+| Point Popper | Range, tighter scatter |
 | Stubby Crayon | Reload, shot speed |
-| Spitball | Range, how long the weight lasts |
+| Spitball | Range, how long the spitballs stick |
 | Paperclip | Range, bullet speed |
 | Eraser | Speed, flight time, faster lock |
 | Pencil | Shot speed, reload |
@@ -107,7 +107,7 @@ Each step ends in something Alan can try.
 1. **Measure:** real XP per match from a bot match. Settle the class levels and mastery pace.
 2. **Classes with today's weapons:** a class row on the Hangar shelf, locked ones showing their level, and the server
    lets a class plane fly with parts you don't own. Stand-in weapons until step 3. No new art. Tests first.
-3. **Four new weapons:** rules and tests, then models (Creator Store first, then Codex Blender, Meshy last), sounds,
+3. **Four new weapons:** rules and tests, then models (stand-ins from our own models to test; then a Codex picture and a Codex Blender model, no Meshy), sounds,
    kill-feed lines and hangar cards. Alan sees the assembled models before any upload.
 4. **New unlock ladder:** new weapon levels and prices, a reward at every level up to about 15, and a clear
    "you unlocked" moment after a match. Tutorial and bots updated to match.

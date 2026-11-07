@@ -34,6 +34,7 @@ return JSONTypes.map({
         ["fold"] = 100,
         ["fold_assist_max"] = 80,
         ["fold_assist_min"] = 10,
+        ["fold_at_distance"] = 50,
         ["prop"] = 2,
         ["prop_points_max_per_participation"] = 20,
         ["revenge"] = 25,

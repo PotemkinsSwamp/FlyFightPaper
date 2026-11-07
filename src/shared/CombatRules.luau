@@ -129,8 +129,23 @@ function Rules.ramLoss(mine, theirs, extra)
 	if mine <= theirs then return mine end
 	return math.min(theirs + extra, mine - 1)
 end
+-- Past its range (`lifetime`, Alan 2026-11-07) a shot stops flying true: it slows hard (shot_fall_drag) and arcs down
+-- (shot_fall_gravity) until it hits something or shot_fall_seconds pass. Still a real shot, with its usual damage.
 function Rules.shotOffset(weapon, direction, t)
-	return direction*Rules.shotDistance(weapon,t)-Vector3.yAxis*(0.5*(weapon.drop or 0)*t*t)
+	local drop=0.5*(weapon.drop or 0)*t*t
+	local u=t-weapon.lifetime
+	if u<=0 then return direction*Rules.shotDistance(weapon,t)-Vector3.yAxis*drop end
+	local k=Config.shot_fall_drag
+	local along=Rules.shotDistance(weapon,weapon.lifetime)+Rules.shotSpeed(weapon,weapon.lifetime)/k*(1-math.exp(-k*u))
+	return direction*along-Vector3.yAxis*(drop+0.5*Config.shot_fall_gravity*u*u)
+end
+function Rules.shotLife(weapon)
+	return weapon.lifetime+Config.shot_fall_seconds
+end
+-- The eraser has no fixed path: once its time is up it stops seeking and falls the same way, step by step.
+function Rules.eraserFall(velocity, dt)
+	local flat=Vector3.new(velocity.X,0,velocity.Z)*math.exp(-Config.shot_fall_drag*dt)
+	return flat+Vector3.yAxis*(velocity.Y-Config.shot_fall_gravity*dt)
 end
 function Rules.shotRange(weapon)
 	return Rules.shotDistance(weapon,weapon.lifetime)

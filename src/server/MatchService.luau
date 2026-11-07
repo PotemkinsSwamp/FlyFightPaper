@@ -376,6 +376,9 @@ function Match:consumeCombat(event)
                     earn(killer, points.streak_bonus, "streak", event.eventId .. ":streak", event.killer)
                 end
             end
+            if event.far == true then
+                earn(killer, points.fold_at_distance, "fold_at_distance", event.eventId .. ":far", event.killer)
+            end
             if killer.lastFolderKey == victim.key then
                 earn(killer, points.revenge, "revenge", event.eventId .. ":revenge", event.killer)
                 killer.lastFolderKey = nil

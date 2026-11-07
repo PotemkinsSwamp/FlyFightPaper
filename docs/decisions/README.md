@@ -75,3 +75,4 @@ Claude's own smaller calls waiting for Alan's review live in [STATE](../../state
 - 2026-10-07: [Bot planes are balanced on purpose, never random](2026-10-07-balanced-bot-builds.md)
 - 2026-10-01: [Chalkboard says FOLD / FLY / FIGHT](2026-10-01-chalkboard-fold-fly-fight.md)
 - 2026-10-01: [Art target is the approved reference picture](2026-10-01-art-target-reference-image.md)
+- 2026-11-07: [The four new weapons; every shot falls past its range](2026-11-07-four-new-weapons-and-falling-shots.md)
