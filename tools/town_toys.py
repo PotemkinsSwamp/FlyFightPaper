@@ -54,6 +54,12 @@ FIT = {"house": 30, "stall": 22, "playground": 50, "picnic": 12, "goal": 24, "po
 # Planes crash into these (like buildings); small toys stay see-through to flight so they cost nothing.
 SOLID = {"tree", "pine", "house", "stall", "boathouse", "barn", "petrol_station", "fire_station", "hangar", "terminal", "fountain",
          "monorail-pylon"}
+# Every real object in the room is solid (Alan 2026-11-07: planes flew through things); these toys were see-through
+# before. Still see-through on purpose: landing rings, threads, desk hangars, runway lights (the landing path).
+ALSO_SOLID = {"cubby-shelf", "crane", "site-building", "site-cabin", "site-toilet", "site-fence", "playground",
+              "street-lamp", "tugboat", "bus", "bus-stop", "digger", "dump-truck", "fire-truck", "cement-mixer",
+              "car-van", "car-taxi", "car-sedan", "car-hatchback", "rowing-boat", "paper-boat", "tree-bushy", "bench",
+              "picnic", "barrier", "cone", "ducks", "gravel-pile", "sand-pile", "pipe-stack", "brick-stack"}
 
 
 FLAT_FILE = ROOT / "assets/models/flat-maps.json"     # "key value" -> the shared tiny map's asset id
@@ -106,6 +112,7 @@ def place(x, z, angle, size):
 
 
 def part(name, rec, color, cf, size, solid):
+    solid = solid or name in ALSO_SOLID
     sx, sy, sz = size
     rot = "".join(f"<R{i // 3}{i % 3}>{v:.4f}</R{i // 3}{i % 3}>" for i, v in enumerate(cf[3:]))
     flag = lambda b: "true" if b else "false"

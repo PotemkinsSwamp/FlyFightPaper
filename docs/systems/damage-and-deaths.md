@@ -18,6 +18,9 @@ it; `tests/unit/HitShapes.spec.luau` fails without the fix). Not yet seen in a m
   server and the pilot's client. The pilot's client crumples its own plane the moment it feels a crash and tells the
   server, which agrees if the plane is really beside that solid part of the room (`FlightService:crashed`; Alan
   2026-11-07: a thin rail folded a plane that came back, because the server's 10-a-second check missed the touch).
+- **What planes hit** (Alan 2026-11-07): every real object in the room is solid, including the hanging Earth and the
+  rug's small toys (cars, lamps, boats, the building site); `SOLID` and `ALSO_SOLID` in `tools/town_toys.py`. See-through
+  on purpose: landing rings, hanging threads, desk hangars and runway lights (the landing path), and wall pictures.
   The old rulebook text below is superseded where it differs.
 
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
