@@ -131,8 +131,7 @@ function Rules.ramLoss(mine, theirs, extra)
 end
 -- Past its range (`lifetime`, Alan 2026-11-07) a shot stops flying true: it slows hard (shot_fall_drag) and arcs down
 -- (shot_fall_gravity) until it hits something or shot_fall_seconds pass. Still a real shot, with its usual damage.
--- `fan` (a weapon with `leads`, the Point Popper): this lead's sideways drift per stud once it has flown
--- `fan_after_studs`; until then every lead flies in one tight bundle.
+-- `fan` (a weapon with `leads`, the Point Popper): which way this lead drifts off the aim (Rules.leadFans).
 function Rules.shotOffset(weapon, direction, t, fan)
 	local drop=0.5*(weapon.drop or 0)*t*t
 	local u=t-weapon.lifetime
@@ -143,23 +142,28 @@ function Rules.shotOffset(weapon, direction, t, fan)
 		along=Rules.shotDistance(weapon,weapon.lifetime)+Rules.shotSpeed(weapon,weapon.lifetime)/k*(1-math.exp(-k*u))
 		fall=0.5*Config.shot_fall_gravity*u*u
 	end
-	local spread=fan and fan*math.max(0,along-weapon.fan_after_studs) or Vector3.zero
+	local spread=fan and fan*Rules.fanRadius(weapon,along) or Vector3.zero
 	return direction*along+spread-Vector3.yAxis*(drop+fall)
 end
--- The leads of one shot spray out in a circle (Alan 2026-11-07): one straight down the aim, the rest evenly round a
--- ring `fan_deg` out, starting straight up so none sits level with the wings. A plane seen from behind is a thin T,
--- so past the bundle only the middle lead keeps hitting. One drift per lead for shotOffset; nil for a one-shot weapon.
+-- How far the spray's ring has opened after `along` studs (Alan 2026-11-07): one tight bundle to fan_after_studs, then
+-- opening gradually, slowly at first and faster further out, to fan_studs across the ring's radius at fan_full_studs.
+function Rules.fanRadius(weapon, along)
+	local s=math.max(0,along-weapon.fan_after_studs)/(weapon.fan_full_studs-weapon.fan_after_studs)
+	return weapon.fan_studs*s*s
+end
+-- The leads of one shot spray out in a circle: one straight down the aim, the rest evenly round a ring, starting
+-- straight up so none sits level with the wings. A plane seen from behind is a thin T, so as the ring opens the leads
+-- above and below miss first. One drift direction per lead for shotOffset; nil for a one-shot weapon.
 function Rules.leadFans(weapon, direction, up)
 	local leads=weapon.leads or 1
 	if leads<2 then return nil end
 	local right=direction:Cross(up)
 	right=right.Magnitude>1e-6 and right.Unit or direction:Cross(Vector3.zAxis).Unit
 	local above=right:Cross(direction).Unit
-	local reach=math.tan(math.rad(weapon.fan_deg))
 	local fans={Vector3.zero}
 	for i=2,leads do
 		local angle=math.pi/2+2*math.pi*(i-2)/(leads-1)
-		fans[i]=(right*math.cos(angle)+above*math.sin(angle))*reach
+		fans[i]=right*math.cos(angle)+above*math.sin(angle)
 	end
 	return fans
 end

@@ -55,9 +55,10 @@ Past its range (the end of `lifetime`) a shot doesn't vanish: it slows hard (`co
 (`combat.shot_fall_gravity`) for up to `combat.shot_fall_seconds`, nose first, and still hits with its usual damage
 (`CombatRules.shotOffset`; an Eraser whose time is up stops seeking and falls the same way, `CombatRules.eraserFall`).
 A weapon with `leads` (the Point Popper) fires that many shots at once (`CombatRules.leadFans`): they fly in one tight
-bundle for `fan_after_studs`, then spray out in a circle: one lead straight on, the rest evenly round a ring `fan_deg`
-out, starting straight up. Every lead hits close in; a plane seen from behind is a thin T, so past the bundle only the
-middle one does. Its DPS counts every lead. Weapons without their own model yet borrow
+bundle for `fan_after_studs`, then spray out in a circle: one lead straight on, the rest evenly round a ring starting
+straight up. The ring opens gradually, slowly at first and faster further out, to `fan_studs` across its radius at
+`fan_full_studs` (`CombatRules.fanRadius`). A plane seen from behind is a thin T: all 7 leads hit to about 40 studs,
+the ones above and below miss first (5 hit at 50), and from about 55 only the middle one does. Its DPS counts every lead. Weapons without their own model yet borrow
 another's (`Aircraft.STAND_IN`).
 
 A fold made by a falling shot pays the fold-at-a-distance bonus ([economy](economy-and-shop.md)). See

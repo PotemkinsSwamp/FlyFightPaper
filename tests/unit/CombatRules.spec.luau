@@ -299,7 +299,7 @@ function Spec.run()
 		assert(down(wings.Size.X*.25,0),"a shot through the wing must hit")
 		HitShapes.forget(p);model:Destroy()
 	end)
-	test("Point Popper: 7 leads in one bundle to 20 studs, then a round spray; it falls past about 100 (Alan 2026-11-07)",function()
+	test("Point Popper: 7 leads in one bundle to 30 studs, then a round spray opening gradually; it falls past about 100 (Alan 2026-11-07)",function()
 		local weapon=catalog:get("popper");local dir=Vector3.new(0,0,-1)
 		assert(weapon.leads==7 and weapon.damage==5 and weapon.shot_interval==1 and weapon.class=="medium" and weapon.capacity==3)
 		assert(math.abs(Rules.shotRange(weapon)-100)<3,"range before falling "..Rules.shotRange(weapon))
@@ -307,7 +307,7 @@ function Spec.run()
 		local sum=Vector3.zero
 		for i,fan in ipairs(fans) do
 			sum+=fan;assert(math.abs(fan.Z)<1e-6,"across the aim")
-			if i>1 then assert(math.abs(fan.Magnitude-math.tan(math.rad(15)))<1e-6,"on the ring") end
+			if i>1 then assert(math.abs(fan.Magnitude-1)<1e-6,"on the ring") end
 		end
 		assert(#fans==7 and fans[1].Magnitude==0 and sum.Magnitude<1e-5,"a middle lead and an even ring")
 		assert(fans[2].Y>0 and math.abs(fans[2].X)<1e-6,"the ring starts straight up")
@@ -321,8 +321,11 @@ function Spec.run()
 			end
 			return count
 		end
-		assert(landing(10)==7 and landing(20)==7,"all seven close in")
-		assert(landing(30)==1 and landing(60)==1 and landing(90)==1,"past the bundle only the middle lead")
+		assert(Rules.fanRadius(weapon,30)==0 and Rules.fanRadius(weapon,100)==15)
+		assert(Rules.fanRadius(weapon,40)<Rules.fanRadius(weapon,50)-Rules.fanRadius(weapon,40),"opens slowly, then faster")
+		assert(landing(10)==7 and landing(30)==7 and landing(40)==7,"all seven to about 40")
+		assert(landing(50)==5,"the leads above and below miss first: "..landing(50))
+		assert(landing(60)==1 and landing(90)==1,"far out only the middle lead")
 		assert(Catalog.weaponDPS(weapon)==35)
 	end)
 	test("one Point Popper click launches seven leads, each with its own fan",function()
