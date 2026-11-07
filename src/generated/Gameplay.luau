@@ -783,11 +783,12 @@ return JSONTypes.map({
     ["schema_version"] = 1,
     ["service"] = JSONTypes.map({
         ["approach_box_studs"] = JSONTypes.array({
-            [1] = 70,
-            [2] = 50,
-            [3] = 60,
+            [1] = 90,
+            [2] = 90,
+            [3] = 70,
         }),
         ["approach_max_angle_degrees"] = 35,
+        ["approach_max_pitch_degrees"] = 60,
         ["approach_out_studs"] = 145,
         ["approach_up_studs"] = 15,
         ["forced_launch"] = false,

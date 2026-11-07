@@ -52,8 +52,8 @@ function Spec.run()
         assert(math.abs(climb.seconds - (climb.cframe.Position - roll.cframe.Position).Magnitude / 100) < 1e-6)
     end)
     test("landing needs the ring box and a runway-aligned heading", function()
-        local cfg = { approach_out_studs = 145, approach_up_studs = 15, approach_box_studs = { 70, 50, 60 },
-            approach_max_angle_degrees = 35, hangar_back_studs = 69 }
+        local cfg = { approach_out_studs = 145, approach_up_studs = 15, approach_box_studs = { 90, 90, 70 },
+            approach_max_angle_degrees = 35, approach_max_pitch_degrees = 60, hangar_back_studs = 69 }
         local home = CFrame.new(0, 110, -850) * CFrame.Angles(0, math.pi, 0) -- north desk: faces the room (+Z)
         local ring = Rules.approach(home, cfg).Position
         assert((ring - Vector3.new(0, 125, -705)).Magnitude < 1e-3, tostring(ring))
@@ -63,8 +63,17 @@ function Spec.run()
         assert(Rules.linedUp(home, ring, (inbound + Vector3.new(0.5, -0.2, 0)), cfg)) -- ~27 degrees off: assisted
         assert(not Rules.linedUp(home, ring, Vector3.new(1, 0, 0), cfg))             -- from the side
         assert(not Rules.linedUp(home, ring, -inbound, cfg))                         -- flying away
-        assert(not Rules.linedUp(home, ring + Vector3.new(40, 0, 0), inbound, cfg))  -- beside the ring
+        assert(not Rules.linedUp(home, ring + Vector3.new(50, 0, 0), inbound, cfg))  -- beside the ring
         assert(not Rules.linedUp(home, ring + Vector3.new(0, 0, 40), inbound, cfg))  -- before it
+        -- Forgiving (Alan 2026-11-07): the drawn ring is 74 across, its centre 2.8 above the box's; the box reaches past it.
+        for _, edge in ipairs({ Vector3.new(0, 2.8 + 40, 0), Vector3.new(0, 2.8 - 40, 0), Vector3.new(41, 2.8, 0), Vector3.new(-41, 2.8, 0) }) do
+            assert(Rules.linedUp(home, ring + edge, inbound, cfg), "just outside the ring's edge " .. tostring(edge))
+        end
+        local function dive(degrees) return Vector3.new(0, -math.sin(math.rad(degrees)), -math.cos(math.rad(degrees))) end
+        assert(Rules.linedUp(home, ring + Vector3.new(0, 30, 0), dive(50), cfg), "a steep dive through the top")
+        assert(Rules.linedUp(home, ring + Vector3.new(0, -30, 0), dive(-50), cfg), "climbing up through the bottom")
+        assert(not Rules.linedUp(home, ring, dive(75), cfg), "straight down is not an approach")
+        assert(not Rules.linedUp(home, ring, Vector3.new(0, -1, 0), cfg))
     end)
     test("menu click budget lets a burst land, then refills", function()
         local tokens, last, landed = nil, nil, 0

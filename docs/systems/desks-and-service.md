@@ -38,6 +38,8 @@ normal movement/Lift and damage; stop accepting new firing input. Saved presets 
 to a flying actor. No auto-return to safety.
 
 Landing approach accepts eligible direction/speed inside a marked ring and reserves a free pad atomically.
+The catch box (`approach_box_studs`) reaches past the drawn ring on every side, and a plane may dive or climb at it
+up to `approach_max_pitch_degrees` (Alan 2026-11-07: clipping the ring's edge or diving at it crashed you).
 Initial guided final approach lasts 1.5 seconds; no hard landing minigame. Invalid/enemy desks reject service.
 For team mates/neutral pads provide small queued holding approaches rather than stacking planes. Pad capacity
 and visual slots must match; each personal desk starts with one service pad, each neutral desk with two.

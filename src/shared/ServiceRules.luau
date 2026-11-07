@@ -62,15 +62,20 @@ function Rules.takeoff(home, cfg, speed)
         { cframe = CFrame.lookAt(exit, exit + climb, home.UpVector), seconds = (exit - liftoff.Position).Magnitude / speed },
     }
 end
--- A plane may land only from inside the ring's box while flying down the runway line (toward the wall),
--- within `approach_max_angle_degrees` of it: never from the side.
+-- A plane may land from anywhere in the ring's box, which reaches a little past the drawn ring all round (Alan
+-- 2026-11-07: clipping the ring's edge should still bring you in), while heading down the runway toward the wall:
+-- within `approach_max_angle_degrees` of it left or right (never from the side), and diving or climbing at up to
+-- `approach_max_pitch_degrees` (a steep dive at the ring is fine).
 function Rules.linedUp(home, position, look, cfg)
     local local_ = Rules.approach(home, cfg):PointToObjectSpace(position)
     local box = cfg.approach_box_studs
     if math.abs(local_.X) > box[1] / 2 or math.abs(local_.Y) > box[2] / 2 or math.abs(local_.Z) > box[3] / 2 then
         return false
     end
-    return look.Unit:Dot(-home.LookVector) >= math.cos(math.rad(cfg.approach_max_angle_degrees))
+    local heading = home:VectorToObjectSpace(look.Unit)
+    local flat = Vector3.new(heading.X, 0, heading.Z)
+    if math.abs(heading.Y) > math.sin(math.rad(cfg.approach_max_pitch_degrees)) or flat.Magnitude < 1e-6 then return false end
+    return flat.Unit:Dot(Vector3.new(0, 0, 1)) >= math.cos(math.rad(cfg.approach_max_angle_degrees))
 end
 -- Dev mode (Alan 2026-10-29): Studio, or the account that owns the game (a user, not a group) in live servers.
 -- A plane still waiting at its desk, never flown this life, changes to the picked plane at once and free (Alan 2026-11-06:
