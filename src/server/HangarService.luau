@@ -31,7 +31,7 @@ function Service:handle(player,action,value)
  if action=="selectPreset" then
   if type(value)~="number" or value%1~=0 or value<1 or value>PresetCount then return end
   self:select(player,value)
-  self:message(player,self.flight.pilots[player] and ("Build "..value.." picked. Full refold at your desk flies it.") or ("Build "..value.." picked for your next flight."))
+  self:message(player,self.flight.pilots[player] and ("Loadout "..value.." picked. Full refold at your desk flies it.") or ("Loadout "..value.." picked for your next flight."))
  elseif action=="selectClass" then
   local class=self.catalog:classById(value)
   if not class then return end
@@ -49,12 +49,12 @@ function Service:handle(player,action,value)
   if reason=="two weapon types per plane" then self:message(player,"Two weapon types per plane: one for left click, one for right click.");return end
   if not Schema.validate(candidate,self.catalog) then self:message(player,Run:IsStudio() and "Not saved: saving keeps only parts you own at your level. Use Fly this build to test any parts." or "Build refused. Check ownership, level, capacity and mount types.");return end
   self:enqueue(player,{kind="preset",slot=value.slot,name=preset.name,loadout=preset.loadout},function(ok)
-   if not ok then self:message(player,"Build could not be saved.");return end
+   if not ok then self:message(player,"Loadout could not be saved.");return end
    self:select(player,value.slot)
    local p=self.flight.pilots[player]
    local atDesk=p and p.model and p.model:GetAttribute("State")=="DESK"
    if value.fly==true and atDesk and self.flight.onService then self:message(player,"Saved. Refolding it at your desk.");self.flight.onService(p,"refold")
-   else self:message(player,not p and "Saved. You fly this build next." or atDesk and "Saved. Full refold at your desk flies it." or "Saved. Land at your desk to fly it.") end
+   else self:message(player,not p and "Saved. You fly this loadout next." or atDesk and "Saved. Full refold at your desk flies it." or "Saved. Land at your desk to fly it.") end
   end)
  elseif action=="saveRangePreset" then
   -- The Range's own builds (TUTORIAL-PLAN "Range loadouts"): any part, still a legal plane; saving swaps your plane
@@ -64,7 +64,7 @@ function Service:handle(player,action,value)
   local ok,reason=loadout and self.catalog:validateLoadout(loadout,nil,1000000000)
   if not ok then self:message(player,reason=="two weapon types per plane" and "Two weapon types per plane: one for left click, one for right click." or "That plane can't be built. Check capacity and mount types.");return end
   self:enqueue(player,{kind="rangePreset",slot=value.slot,name=profile.rangePresets[value.slot].name,loadout=loadout},function(saved)
-   if not saved then self:message(player,"Build could not be saved.");return end
+   if not saved then self:message(player,"Loadout could not be saved.");return end
    local p=self.flight.pilots[player]
    if p and p.pin then
     player:SetAttribute("RangeSlot",value.slot);self.flight:refold(p,loadout)

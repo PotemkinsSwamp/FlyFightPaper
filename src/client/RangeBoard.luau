@@ -41,7 +41,7 @@ function Board.start()
 		for slot = 1, 5 do
 			local word = strip("load" .. slot) and strip("load" .. slot).SurfaceGui:FindFirstChildOfClass("TextLabel")
 			local preset = presets[slot]
-			if word then word.Text = slot .. "   " .. (preset and (preset.name ~= "" and preset.name or "Build " .. slot) or "(empty)") end
+			if word then word.Text = slot .. "   " .. (preset and (preset.name ~= "" and preset.name or "Loadout " .. slot) or "(empty)") end
 		end
 	end
 	local function score()

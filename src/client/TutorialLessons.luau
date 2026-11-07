@@ -432,7 +432,7 @@ Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="soft
     if page==1 then ctx.spotlight(statRow("Weight")) elseif page==2 then ctx.spotlight("MountInfo") else ctx.spotlight(crossedCard(ctx) or "MountInfo") end
     return false
    end},
-  {text="Click the glowing Save button to keep your build.",page="customize",
+  {text="Click the glowing Save button to keep your loadout.",page="customize",
    update=watch(function(ctx,s)
     ctx.spotlight("SavePreset");ctx.data.dirty=ctx.data.dirty or s.unsaved
     return ctx.clicked("SavePreset") or ctx.data.dirty and not s.unsaved

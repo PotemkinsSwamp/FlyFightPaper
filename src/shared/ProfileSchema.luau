@@ -90,7 +90,7 @@ function Schema.defaults(catalog)
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
 		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, lessons = {} }
 	for i = 1, Gameplay.menus.saved_loadouts do
-		p.presets[i] = { name = "Preset " .. i, loadout = catalog:starterLoadout() }
+		p.presets[i] = { name = "Loadout " .. i, loadout = catalog:starterLoadout() }
 		p.rangePresets[i] = { name = "Range " .. i, loadout = catalog:starterLoadout() }
 	end
 	return p
@@ -201,7 +201,12 @@ function Schema.migrate(record, catalog)
 		local _,reason=catalog:validateLoadout(entry.loadout,ownership,entryLevel)
 		if reason=="weapon capacity exceeds body capacity" or reason=="two weapon types per plane" then entry.loadout=catalog:starterLoadout() end
 	end
-	if type(p.presets)=="table" then for _,preset in ipairs(p.presets) do recover(preset,p.ownership,level) end end
+	if type(p.presets)=="table" then
+		for i,preset in ipairs(p.presets) do
+			recover(preset,p.ownership,level)
+			if type(preset)=="table" and preset.name=="Preset "..i then preset.name="Loadout "..i end -- "presets" now means the fixed planes (Alan 2026-11-06)
+		end
+	end
 	if type(p.rangePresets)=="table" then for _,preset in ipairs(p.rangePresets) do recover(preset,nil,1000000000) end end
 	-- Pending refolds still pass validation so the normal join recovery can refund reserved Paper.
 	if type(p.refolds)=="table" then for _,intent in pairs(p.refolds) do recover(intent,p.ownership,level) end end

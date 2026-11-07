@@ -6,9 +6,9 @@ The hangar opens on the build you fly; saving makes a build the one you fly next
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-06)
-**Class planes (step 2 of the [classes plan](../plan/CLASSES-PLAN.md)):** the Hangar shelf has a Classes tab with six fixed
-planes, each open from its level (`classes` in `config/catalog.json`, stand-in weapons until the new ones exist). A class
-flies without owning its parts (`Catalog:classLoadout`, `SelectedClass`) and can't be changed; a refold accepts it
+**Presets (step 2 of the [classes plan](../plan/CLASSES-PLAN.md)):** "Switch to presets" flips the Hangar's pin board over
+to six fixed planes, each open from its level (`classes` in `config/catalog.json`, stand-in weapons until the new ones
+exist). Players call their own builds loadouts; `Hangar.luau` has the flip. A preset flies without owning its parts (`Catalog:classLoadout`, `SelectedClass`) and can't be changed; a refold accepts it
 (`Catalog:isClassLoadout`). The pick isn't saved yet, like a picked build: rejoining goes back to build 1.
 
 **Hangar rework built; Alan played it and OK'd it 2026-10-21; try-on/Select approved with the tutorials 2026-10-22** (the desk's quick menu is next) ([plan](../plan/HANGAR-PLAN.md),

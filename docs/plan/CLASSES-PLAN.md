@@ -1,13 +1,16 @@
 # Classes, new weapons and mastery plan
 
+**Words (Alan 2026-11-06):** players see **presets** (the six fixed planes, called classes on this page) and **loadouts**
+(their own builds). In the code `class` is a preset and `preset` is a saved loadout, because the save keeps its field names.
+
 Alan's answers are in (2026-11-06, [decision](../decisions/2026-11-06-classes-and-mastery.md)); building starts at step 1. It serves
 [the beta has to feel like a finished game](../decisions/2026-11-06-beta-feels-finished.md). Winners' circle and emotes,
 skins and the shop get their own plans after this one.
 
 ## What Alan decided
 - Six ready-made class planes: three open at the start, the other three unlocking up to about level 10.
-- Class planes are separate from a player's saved builds, in their own area, like a shooter's game loadouts under your
-  own. No part of one can be changed or copied into a build. Skins and trails can apply to them later.
+- Presets are separate from a player's loadouts. A "Switch to presets" button flips the pin board over to the six of
+  them. No part of one can be changed or copied into a loadout. Skins and trails can apply to them later.
 - They carry low-tier weapons, at most two paperclips, and never an eraser.
 - The Carrier needs care: lots of small guns is a big advantage even on a slow plane.
 - New weapons: Hole Punch, Stubby Crayon, Spitball, Thumbtack. No mini eraser.

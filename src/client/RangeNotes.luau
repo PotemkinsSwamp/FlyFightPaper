@@ -35,8 +35,8 @@ end
 local STEPS = {
 	{ text = "Shoot a plate to pick which row moves.", done = "pick", find = upPlate },
 	{ text = "Your shots, hits and aim. Shoot Reset to start over.", done = "reset", find = boardPart("reset") },
-	{ text = "Your 5 Range builds and how hard the targets are.", done = "menu", find = boardPart("menu") },
-	{ text = "Change your Range builds. Any part works here, even ones you don't own.", done = "hangar", find = boardPart("hangar") },
+	{ text = "Your 5 Range loadouts and how hard the targets are.", done = "menu", find = boardPart("menu") },
+	{ text = "Change your Range loadouts. Any part works here, even ones you don't own.", done = "hangar", find = boardPart("hangar") },
 	{ text = "Back takes you to the Range.", done = "back", gui = "back" },
 	{ text = "That's it! The Range is yours: practise as long as you like. To leave, press Menu.", done = "pause", gui = "menu" },
 	-- Over the open Menu (Alan 2026-10-28: once the Menu opened, nothing said how to leave; 2026-10-23 a plain

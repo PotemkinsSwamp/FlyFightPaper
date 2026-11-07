@@ -2,7 +2,7 @@
 -- hangar-shelf-screen.png). Each saved build stands in its own cubby as its real 3D plane, with its name on masking
 -- tape; the picked one has a yellow crayon outline. A cubby's plane is a still ViewportFrame, rebuilt only when that
 -- build changes, so the shelf costs no more than a row of pictures. Tapping a cubby calls pick(i). A build with
--- `locked` set (a class above your level) stands dark with its level on the tape.
+-- `locked` set (a preset above your level) stands dark with its level on the tape.
 local HttpService = game:GetService("HttpService")
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Aircraft = require(Root.Shared.Aircraft)
@@ -34,7 +34,7 @@ function BuildShelf.new(parent, catalog, pick, width)
 	local CUBBY = width or CUBBY
 	local frame = Instance.new("Frame")
 	frame.Name, frame.BackgroundTransparency, frame.Size, frame.Parent = "Shelf", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), parent
-	-- The group's tab on the top rail: My builds, or Range in the Range (Special joins when special planes exist).
+	-- The group's tab on the top rail: Loadouts, Presets, or Range in the Range (Special joins when special planes exist).
 	local tab = PaperUI.image(frame, "GroupTab", Art.shelfTab, 110, TOP - 58, 320, 92) -- standing on the top board
 	tab.ScaleType, tab.ImageColor3, tab.ZIndex = Enum.ScaleType.Stretch, Color3.fromRGB(255, 215, 60), 2
 	local group = PaperUI.words(tab, "Label", "", 0, 4, 320, 84, 46)

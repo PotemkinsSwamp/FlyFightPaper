@@ -181,7 +181,7 @@ function Customize.draw(content, ctx)
 	local stats = ctx.catalog:deriveStats(draft)
 	local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
 		or state.dropAsk and "You have changes you haven't saved. Click Back again to drop them."
-		or game.Players.LocalPlayer:GetAttribute("MenuMessage") or (ctx.range and "Range builds: every part works here, only in the Range." or "")
+		or game.Players.LocalPlayer:GetAttribute("MenuMessage") or (ctx.range and "Range loadouts: every part works here, only in the Range." or "")
 	-- Bottom of the right page: Select / Cancel for a card you're trying on (Buy / Cancel for one you don't own yet), else
 	-- the mount line (Gear) and the no-booster card (Boost). Trying on: each number shows its change from what you have on.
 	if state.trying then
@@ -237,7 +237,7 @@ function Customize.draw(content, ctx)
 		button(content, "SavePreset", Art.buttonGreen, "Save", 1425, 775, 220, 150, -1, function() ctx.save(false) end, 52)
 		button(content, "SaveFly", Art.buttonGreen, second, 1655, 775, 250, 150, 1, function() ctx.save(true) end, 32)
 	else
-		button(content, "SavePreset", Art.buttonGreen, "Save build", 1440, 775, 460, 150, -1, function() ctx.save(false) end, 60)
+		button(content, "SavePreset", Art.buttonGreen, "Save loadout", 1440, 775, 460, 150, -1, function() ctx.save(false) end, 60)
 	end
 	-- Studio only: fly the draft straight away, nothing saved.
 	if ctx.dev and not ctx.range then button(content, "FlyBuild", Art.buttonGreen, "Fly this build", 1505, 945, 330, 90, -2, function() ctx.api.fly() end, 40) end

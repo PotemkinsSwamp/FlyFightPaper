@@ -34,7 +34,7 @@ local TIPS = {
 	{ key = "tipTeam", text = function(c) return "You're on " .. TEAM_NAMES[c.plane:GetAttribute("Team")] .. ". Blue outlines are your team: fold the orange ones." end,
 		when = function(c) return c.flying and c.mode == "TDM" and TEAM_NAMES[c.plane:GetAttribute("Team")] ~= nil end },
 	{ key = "tipFfa", text = "Fold enemy planes for points. Most points wins.", when = function(c) return c.flying and c.mode == "FFA" end },
-	{ key = "tipDesk", skip = "flight", text = "Your desk: change your build here, then LAUNCH.", when = function(c) return c.state == "DESK" end },
+	{ key = "tipDesk", skip = "flight", text = "Your desk: change your loadout here, then LAUNCH.", when = function(c) return c.state == "DESK" end },
 }
 
 function Tips.start(getPlane)
