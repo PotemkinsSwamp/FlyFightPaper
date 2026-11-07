@@ -113,9 +113,34 @@ def place(x, z, angle, size):
     return [x, 0.6 + size[1] / 2, z, c, 0, s, 0, 1, 0, -s, 0, c]
 
 
+# Toys whose box would fill open air (a plane under the lamp's head, under the crane's arm) collide by invisible blocks
+# that follow their real pieces instead (Alan 2026-11-07: tight, not a straight box); the mesh itself is see-through.
+# Each block: (low, high) corners as shares of the toy's size, -0.5..0.5 on each axis, measured from the mesh in Studio.
+SHAPED = {
+    "street-lamp": [((-.385, -.5, -.5), (.385, .5, -.095)),          # base and pole (at the back)
+                    ((-.5, .19, -.095), (.5, .5, .5))],               # arm and head, hanging forward
+    "crane": [((-.5, -.5, .048), (.5, -.403, .406)),                 # base
+              ((-.151, -.403, .171), (.151, .302, .291)),            # tower
+              ((-.183, .302, -.5), (.183, .403, .5)),                # arm across the top
+              ((-.096, .403, .209), (.096, .5, .488))],              # top
+}
+
+def shaped_blocks(name, cf, size):
+    """The invisible blocks standing in for a SHAPED toy's collision, children of its mesh part."""
+    out = []
+    for (x0, y0, z0), (x1, y1, z1) in SHAPED[name]:
+        lx, ly, lz = (x0 + x1) / 2 * size[0], (y0 + y1) / 2 * size[1], (z0 + z1) / 2 * size[2]
+        r = cf[3:]
+        at = [cf[0] + r[0] * lx + r[1] * ly + r[2] * lz, cf[1] + r[3] * lx + r[4] * ly + r[5] * lz, cf[2] + r[6] * lx + r[7] * ly + r[8] * lz]
+        out.append(wall(name, at + list(r), [(x1 - x0) * size[0], (y1 - y0) * size[1], (z1 - z0) * size[2]]))
+    return "".join(out)
+
+
 def part(name, rec, color, cf, size, solid):
     # Nothing outside the room is solid: planes can't fly out there (Alan 2026-11-07).
     solid = (solid or name in ALSO_SOLID) and abs(cf[0]) < 1400 and abs(cf[2]) < 1100
+    blocks = shaped_blocks(name, cf, size) if solid and name in SHAPED else ""
+    solid = solid and not blocks
     sx, sy, sz = size
     rot = "".join(f"<R{i // 3}{i % 3}>{v:.4f}</R{i // 3}{i % 3}>" for i, v in enumerate(cf[3:]))
     flag = lambda b: "true" if b else "false"
@@ -137,7 +162,7 @@ def part(name, rec, color, cf, size, solid):
             + (f'<Content name="MetalnessMap"><url>rbxassetid://{rec["metalness"]}</url></Content>' if "metalness" in rec else "")
             + (f'<Content name="TexturePack"><url>{pack}</url></Content>' if (pack := PACKS.get(pack_key(
                 rec[color], rec["normal"], rec["roughness"], rec.get("metalness", "")))) else "") +
-            '</Properties></Item></Item>')
+            '</Properties></Item>' + blocks + '</Item>')
 
 
 def thread(cf, size):
