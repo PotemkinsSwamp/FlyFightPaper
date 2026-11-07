@@ -329,6 +329,11 @@ mistake would be easy to make twice.
   coordinates. A small Studio window counts as a phone (`ScreenFit`, under 540 points tall): PC layouts can't be seen
   in it.
 
+- **Run the full tests in the background and poll** (2026-11-07): a long `TestRunner.run()` call through Studio MCP can
+  fail with "Target is not reachable" though the tests are fine. Start it with `task.spawn`, write the result to a
+  workspace attribute, then read that attribute in a second call. Check `get_studio_state` before any Edit call: Alan
+  may be in Play, and a start-Play call then does nothing.
+
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
   code alone (the red dot, the eraser during the freeze, step 8's Pal) were wrong, and each cost Alan a playtest.
