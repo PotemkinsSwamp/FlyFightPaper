@@ -32,6 +32,8 @@
   past the range is skill (or luck) worth a bonus.
 - A round shotgun cone would miss a thin plane above and below even very close, so the leads stay together first.
   Past that, a round spray (not a flat line) means one gun lands about one lead: getting close is the whole point.
+- Seven leads (35 damage a second per gun point-blank) stay for testing: Alan found holding 20 studs or closer behind a
+  plane very hard, since it's easy for them to shake you, so the reward fits the skill.
 
 ## Affects
 - [Weapons](../systems/weapons.md), [Economy and shop](../systems/economy-and-shop.md)
