@@ -39,7 +39,7 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Paper Pellet Gun | 2 | 1 | 1500, ~750 studs range | Hold; 0.1 s per shot; 30 shots then 1.5 s cooling |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
-| Precision Paperclip | 24 at 500 studs (12 close, 36 far) | 2 | 3600, ~2420 studs range | Hold; mounts take turns, 1.75 s reload each |
+| Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | Hold; mounts take turns, 1.75 s reload each |
 | Guided Eraser | 30 | 3 | 200, slowing to 110 | Click to launch unguided or hold through the 1.5 s lock; 4 s reload |
 | Pencil Launcher | 260 | 5 | 650, ~1800 studs range | One shot per click, fires on the click; 4 s reload |
 
@@ -48,7 +48,8 @@ flight) and fall a little (drop, 80 studs/s^2 for pellets down to 3 for pencils)
 `config/catalog.json` set the range. Range runs pellet < staple < rubber < pencil < paperclip. Erasers keep their own rule below.
 
 Paperclip damage follows how far the shot flew (`damage_by_range` in `config/catalog.json`): 12 at 150 studs or less, 24
-at 500, 36 at 1000 or more, in straight lines between. See
+at 500, 36 at 1000, 60 at 2400, in straight lines between. The lead ring picks targets out to 1000 studs, or to the shot's
+full reach for a gun like this. See
 [the decision](../decisions/2026-11-06-paperclip-rewards-distance.md).
 
 A quick click on a burst weapon stays held until the burst's last round is out, so every round leaves on a fresh aim

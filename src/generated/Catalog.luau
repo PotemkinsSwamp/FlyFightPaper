@@ -587,6 +587,10 @@ return JSONTypes.map({
                     [1] = 1000,
                     [2] = 1.5,
                 }),
+                [4] = JSONTypes.array({
+                    [1] = 2400,
+                    [2] = 2.5,
+                }),
             }),
             ["drag"] = 0.45,
             ["drop"] = 6,

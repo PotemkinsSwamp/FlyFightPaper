@@ -11,7 +11,7 @@ then winners' circle + emotes, skins, shop. Publish and phone runs any time.
 
 Decisions to review
 Rams: stronger plane loses 15 extra, always survives; rams still earn no kill; teammates and practice flights never ram.
-Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000+ (my numbers). Tab list shows all 12. Pickups' Boost stops at a full tank.
+Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000, 60 at 2400 (my numbers). Tab list shows all 12. Pickups' Boost stops at a full tank.
 PC keys: letters (not K or R), Shift, Ctrl, Alt, Space on offer; Got it may share a key with Boost or Brake.
 Auto-fire also fires on the yellow dot (shots land thanks to phone aim help), not only red; in the Range it fires on
   targets too, so a phone's accuracy card reads high. The steering bar's new top (1.8) applies to the mouse too.

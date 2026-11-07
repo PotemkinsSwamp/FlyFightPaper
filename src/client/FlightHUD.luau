@@ -477,7 +477,9 @@ function HUD.start(getPlane, action)
 				end
 				if next(guns) and other:GetAttribute("State") == "FLYING" and enemy(plane, other) and seen(root) then
 					local offset = (gun and leadOf(root, m, gun, body) or root.Position) - body.Position
-					local angle = (root.Position - body.Position).Magnitude < 1000 and math.acos(math.clamp(look:Dot(offset.Unit), -1, 1)) or math.pi
+					-- The ring reaches 1000 studs; a gun that pays for long shots gets it out to the shot's full reach (Alan 2026-11-06).
+					local reach = gun and gun.damage_by_range and CombatRules.shotRange(gun) or 1000
+					local angle = (root.Position - body.Position).Magnitude < reach and math.acos(math.clamp(look:Dot(offset.Unit), -1, 1)) or math.pi
 					if root == picked then angle -= STICKY end
 					if angle < best then target, best = root, angle end
 				end
