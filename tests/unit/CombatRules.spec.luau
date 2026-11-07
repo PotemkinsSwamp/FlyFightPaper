@@ -299,36 +299,39 @@ function Spec.run()
 		assert(down(wings.Size.X*.25,0),"a shot through the wing must hit")
 		HitShapes.forget(p);model:Destroy()
 	end)
-	test("Point Popper: 5 leads in one bundle to 20 studs, then a flat fan; it falls past about 100 (Alan 2026-11-07)",function()
+	test("Point Popper: 7 leads in one bundle to 20 studs, then a round spray; it falls past about 100 (Alan 2026-11-07)",function()
 		local weapon=catalog:get("popper");local dir=Vector3.new(0,0,-1)
-		assert(weapon.leads==5 and weapon.damage==5 and weapon.shot_interval==1 and weapon.class=="medium" and weapon.capacity==3)
+		assert(weapon.leads==7 and weapon.damage==5 and weapon.shot_interval==1 and weapon.class=="medium" and weapon.capacity==3)
 		assert(math.abs(Rules.shotRange(weapon)-100)<3,"range before falling "..Rules.shotRange(weapon))
 		local fans=assert(Rules.leadFans(weapon,dir,Vector3.yAxis))
-		assert(#fans==5 and fans[3].Magnitude<1e-9 and (fans[1]+fans[5]).Magnitude<1e-9,"symmetric about the aim")
-		for _,fan in ipairs(fans) do assert(math.abs(fan.Y)<1e-9 and math.abs(fan.Z)<1e-9,"flat, along the wings") end
-		assert(math.abs(fans[5].Magnitude-math.tan(math.rad(20)))<1e-6)
+		local sum=Vector3.zero
+		for i,fan in ipairs(fans) do
+			sum+=fan;assert(math.abs(fan.Z)<1e-6,"across the aim")
+			if i>1 then assert(math.abs(fan.Magnitude-math.tan(math.rad(15)))<1e-6,"on the ring") end
+		end
+		assert(#fans==7 and fans[1].Magnitude==0 and sum.Magnitude<1e-5,"a middle lead and an even ring")
+		assert(fans[2].Y>0 and math.abs(fans[2].X)<1e-6,"the ring starts straight up")
 		assert(Rules.leadFans(catalog:get("pellet"),dir,Vector3.yAxis)==nil)
-		-- How many leads land within a plane's half-width (4 studs + the lead's 0.3) at a distance along the aim.
+		-- How many leads land on a plane seen from behind: about 8 wide, 1.2 tall, plus the lead's 0.3.
 		local function landing(studs)
 			local t=Rules.travelTime(weapon,studs);local count=0
 			for _,fan in ipairs(fans) do
 				local at=Rules.shotOffset(weapon,dir,t,fan)-Rules.shotOffset(weapon,dir,t)
-				if at.Magnitude<=4.3 then count+=1 end
+				if math.abs(at.X)<=4.3 and math.abs(at.Y)<=0.9 then count+=1 end
 			end
 			return count
 		end
-		assert(landing(10)==5 and landing(20)==5,"all five close in")
-		assert(landing(40)==3,"three at 40: "..landing(40))
-		assert(landing(60)==1 and landing(90)==1,"only the middle lead far out")
-		assert(Catalog.weaponDPS(weapon)==25)
+		assert(landing(10)==7 and landing(20)==7,"all seven close in")
+		assert(landing(30)==1 and landing(60)==1 and landing(90)==1,"past the bundle only the middle lead")
+		assert(Catalog.weaponDPS(weapon)==35)
 	end)
-	test("one Point Popper click launches five leads, each with its own fan",function()
+	test("one Point Popper click launches seven leads, each with its own fan",function()
 		local service,p,model=firingFixture("popper")
 		service:trigger(p,1,true);service:trigger(p,1,false)
-		assert(service.totalFired==5 and service.shotCount==5)
+		assert(service.totalFired==7 and service.shotCount==7)
 		local sum,count=Vector3.zero,0
 		for _,shot in pairs(service.shots) do assert(shot.fan and shot.weapon.id=="popper");sum+=shot.fan;count+=1 end
-		assert(count==5 and sum.Magnitude<1e-6)
+		assert(count==7 and sum.Magnitude<1e-5)
 		model:Destroy()
 	end)
 	test("a quick pellet click fires even when released before the next server step",function()

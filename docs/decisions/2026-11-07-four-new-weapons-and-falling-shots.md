@@ -16,7 +16,7 @@
 
 | Weapon | Class, capacity | How it plays | Range before falling |
 |---|---|---|---|
-| **Point Popper** (a pencil-lead tube) | medium, 3 | One shot a second: 5 leads of 5 damage. The leads fly in a tight bundle for 20 studs (all 5 hit there; from behind a plane is a thin T), then fan out flat side to side, wide like a shotgun. Most 1 / 2 / 3 | 100 studs |
+| **Point Popper** (a pencil-lead tube) | medium, 3 | One shot a second: 7 leads of 5 damage. The leads fly in a tight bundle for 20 studs (all 7 hit there), then spray out in a circle like a shotgun (Alan changed this from a flat fan): past 20 studs only about one lead per gun can hit. Most 1 / 2 / 3 | 100 studs |
 | **Thumbtack** | medium, 2, mass 2.0 | 6 damage, 3 shots a second; half damage at 300 studs, a quarter at 500. Most 1 / 2 / 4 | 500 |
 | **Stubby Crayon** | medium, 3 | 40 damage, 2 s reload, a slow heavy shot (about 850 studs/s), hard to hit unless close. Most 1 / 2 / 3 | 600 |
 | **Spitball** | light, 2 | 1 damage, 2 shots a second, slow. Up to 5 stick and show on the plane; each burns Lift faster and slows it (a full load about 2.5x Lift burn, 20% slower). None fall off for 6 s after the last hit, then one every 3 s; a fan blows them all off; the desk clears them. Most 2 / 3 / 5 | 350 |
@@ -31,6 +31,7 @@
 - A shot that just vanishes at its range looks wrong; a falling arc is what a thrown or shot object does, and a hit from
   past the range is skill (or luck) worth a bonus.
 - A round shotgun cone would miss a thin plane above and below even very close, so the leads stay together first.
+  Past that, a round spray (not a flat line) means one gun lands about one lead: getting close is the whole point.
 
 ## Affects
 - [Weapons](../systems/weapons.md), [Economy and shop](../systems/economy-and-shop.md)

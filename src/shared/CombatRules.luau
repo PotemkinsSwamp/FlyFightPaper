@@ -146,15 +146,21 @@ function Rules.shotOffset(weapon, direction, t, fan)
 	local spread=fan and fan*math.max(0,along-weapon.fan_after_studs) or Vector3.zero
 	return direction*along+spread-Vector3.yAxis*(drop+fall)
 end
--- The leads of one shot fan out flat, side to side along the wings (a plane seen from behind is a thin T), evenly
--- from -fan_deg to +fan_deg: one sideways drift per lead for shotOffset. nil for a one-shot weapon.
+-- The leads of one shot spray out in a circle (Alan 2026-11-07): one straight down the aim, the rest evenly round a
+-- ring `fan_deg` out, starting straight up so none sits level with the wings. A plane seen from behind is a thin T,
+-- so past the bundle only the middle lead keeps hitting. One drift per lead for shotOffset; nil for a one-shot weapon.
 function Rules.leadFans(weapon, direction, up)
 	local leads=weapon.leads or 1
 	if leads<2 then return nil end
 	local right=direction:Cross(up)
 	right=right.Magnitude>1e-6 and right.Unit or direction:Cross(Vector3.zAxis).Unit
-	local fans={}
-	for i=1,leads do fans[i]=right*math.tan(math.rad(weapon.fan_deg*(2*(i-1)/(leads-1)-1))) end
+	local above=right:Cross(direction).Unit
+	local reach=math.tan(math.rad(weapon.fan_deg))
+	local fans={Vector3.zero}
+	for i=2,leads do
+		local angle=math.pi/2+2*math.pi*(i-2)/(leads-1)
+		fans[i]=(right*math.cos(angle)+above*math.sin(angle))*reach
+	end
 	return fans
 end
 function Rules.shotLife(weapon)

@@ -40,7 +40,7 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Weapon | Damage | Capacity | Speed (studs/s) | Fire timing |
 |---|---:|---:|---:|---|
 | Paper Pellet Gun | 2 | 1 | 1500, ~750 studs range | Hold; 0.1 s per shot; 30 shots then 1.5 s cooling |
-| Point Popper | 5 per lead, 5 leads | 3 | 500, ~100 studs range | Hold; one shot a second |
+| Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | Hold; one shot a second |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
 | Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | Hold; mounts take turns, 1.75 s reload each |
@@ -55,8 +55,9 @@ Past its range (the end of `lifetime`) a shot doesn't vanish: it slows hard (`co
 (`combat.shot_fall_gravity`) for up to `combat.shot_fall_seconds`, nose first, and still hits with its usual damage
 (`CombatRules.shotOffset`; an Eraser whose time is up stops seeking and falls the same way, `CombatRules.eraserFall`).
 A weapon with `leads` (the Point Popper) fires that many shots at once (`CombatRules.leadFans`): they fly in one tight
-bundle for `fan_after_studs`, then fan out flat along the wings, evenly up to `fan_deg` either side, so every lead hits
-close in and only the middle one far out. Its DPS counts every lead. Weapons without their own model yet borrow
+bundle for `fan_after_studs`, then spray out in a circle: one lead straight on, the rest evenly round a ring `fan_deg`
+out, starting straight up. Every lead hits close in; a plane seen from behind is a thin T, so past the bundle only the
+middle one does. Its DPS counts every lead. Weapons without their own model yet borrow
 another's (`Aircraft.STAND_IN`).
 
 A fold made by a falling shot pays the fold-at-a-distance bonus ([economy](economy-and-shop.md)). See
