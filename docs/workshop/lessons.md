@@ -334,6 +334,10 @@ mistake would be easy to make twice.
   workspace attribute, then read that attribute in a second call. Check `get_studio_state` before any Edit call: Alan
   may be in Play, and a start-Play call then does nothing.
 
+- **Exact collision shapes cost phone load time** (2026-11-07): making 510 small rug toys solid with exact shapes took
+  the phone's "town arrived" from ~10 s (v402) to ~40 s (v493); every part stores its own shape and phones download it
+  with the town. Small toys collide as plain boxes (`ALSO_SOLID`). Read `LoadLog.recent()` after any change to the town.
+
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
   code alone (the red dot, the eraser during the freeze, step 8's Pal) were wrong, and each cost Alan a playtest.

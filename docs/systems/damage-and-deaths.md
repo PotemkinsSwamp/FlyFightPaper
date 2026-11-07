@@ -19,7 +19,8 @@ it; `tests/unit/HitShapes.spec.luau` fails without the fix). Not yet seen in a m
   server, which agrees if the plane is really beside that solid part of the room (`FlightService:crashed`; Alan
   2026-11-07: a thin rail folded a plane that came back, because the server's 10-a-second check missed the touch).
 - **What planes hit** (Alan 2026-11-07): every real object in the room is solid, including the hanging Earth and the
-  rug's small toys (cars, lamps, boats, the building site); `SOLID` and `ALSO_SOLID` in `tools/town_toys.py`. See-through
+  rug's small toys (cars, lamps, boats, the building site); `SOLID` and `ALSO_SOLID` in `tools/town_toys.py`. The
+  `ALSO_SOLID` toys collide as plain boxes, which carry no shape data for phones to download. See-through
   on purpose: landing rings, hanging threads, desk hangars and runway lights (the landing path), and wall pictures.
   The old rulebook text below is superseded where it differs.
 

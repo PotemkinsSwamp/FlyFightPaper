@@ -7,12 +7,15 @@ import re
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 PLACE = ROOT / "FlyFightPaper-WORKING.rbxlx"
+sys.path.insert(0, str(ROOT / "tools"))
+from town_toys import ALSO_SOLID as BOX_COLLISION  # noqa: E402
 
 
 def name(item):
@@ -90,6 +93,8 @@ def exact_shapes(old_arena, new_arena, strings):
     for item in new_arena.iter("Item"):
         if item.get("class") != "MeshPart" or not mesh_id(item) or not solid(item) or is_precise(item):
             continue
+        if item.findtext('./Properties/string[@name="Name"]') in BOX_COLLISION:
+            continue                                        # small toys collide as plain boxes (town_toys.ALSO_SOLID)
         props = item.find("Properties")
         for n in COLLISION + ("CollisionFidelity",):
             if (old := prop(item, n)) is not None:

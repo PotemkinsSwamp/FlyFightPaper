@@ -56,6 +56,8 @@ SOLID = {"tree", "pine", "house", "stall", "boathouse", "barn", "petrol_station"
          "monorail-pylon"}
 # Every real object in the room is solid (Alan 2026-11-07: planes flew through things); these toys were see-through
 # before. Still see-through on purpose: landing rings, threads, desk hangars, runway lights (the landing path).
+# They collide as plain boxes: an exact shape is stored in every part and phones download it with the town (510 exact
+# shapes took the phone's town from ~10 s to ~40 s, v493). save_place.py leaves them as boxes.
 ALSO_SOLID = {"cubby-shelf", "crane", "site-building", "site-cabin", "site-toilet", "site-fence", "playground",
               "street-lamp", "tugboat", "bus", "bus-stop", "digger", "dump-truck", "fire-truck", "cement-mixer",
               "car-van", "car-taxi", "car-sedan", "car-hatchback", "rowing-boat", "paper-boat", "tree-bushy", "bench",
@@ -121,9 +123,9 @@ def part(name, rec, color, cf, size, solid):
             f'<Vector3 name="InitialSize"><X>{rec["initial"][0]}</X><Y>{rec["initial"][1]}</Y><Z>{rec["initial"][2]}</Z></Vector3>'
             f'<bool name="Anchored">true</bool><bool name="CanCollide">{flag(solid)}</bool><bool name="CanQuery">{flag(solid)}</bool>'
             '<bool name="CanTouch">false</bool><bool name="CastShadow">true</bool>'
-            # Exact shape for solid toys (save_place.py reuses the one Studio saved); see-through ones get Box so
+            # Exact shape for solid toys (save_place.py reuses the one Studio saved), a plain box for ALSO_SOLID; see-through ones get Box so
             # Studio never computes a mesh shape for them.
-            f'<token name="CollisionFidelity">{3 if solid else 2}</token>'
+            f'<token name="CollisionFidelity">{3 if solid and name not in ALSO_SOLID else 2}</token>'
             '<token name="RenderFidelity">0</token>'
             f'<Vector3 name="size"><X>{sx:.3f}</X><Y>{sy:.3f}</Y><Z>{sz:.3f}</Z></Vector3>'
             f'<CoordinateFrame name="CFrame"><X>{cf[0]}</X><Y>{cf[1]:.3f}</Y><Z>{cf[2]}</Z>{rot}</CoordinateFrame>'
