@@ -35,6 +35,7 @@ All eight were changed the same day, and Alan's Studio check is still to come:
 8. A pickup adds 0.5 s of Boost, up to a full tank, on top of its speed. Planes with no booster get only the speed.
 
 ## Later the same day
-- Paperclips are now far too strong in play: two hits from two clips fold most planes. Options went to Alan.
-- Tab should show the live standings during a match. Plan went to Alan.
+- Paperclips were far too strong in play: two hits from two clips folded most planes. Alan's answer is in
+  [the decision](../decisions/2026-11-06-paperclip-rewards-distance.md).
+- Tab should show the live standings during a match: same decision.
 - Refill Lift removed from the desk: landing already fills Lift and Boost.

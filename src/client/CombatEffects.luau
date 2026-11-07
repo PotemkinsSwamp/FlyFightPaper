@@ -323,7 +323,7 @@ function Effects.start(getPlane)
  -- mounts and reload times as the server. The server still decides every hit.
  local room=RaycastParams.new();room.FilterType=Enum.RaycastFilterType.Include
  room.FilterDescendantsInstances={workspace:FindFirstChild("Arena") or workspace:WaitForChild("GreyboxRoom")}
- local held,mounts,mountKey,serial,roundRobin={false,false},{},nil,0,{0,0}
+ local held,mounts,mountKey,serial,roundRobin,altAt={false,false},{},nil,0,{0,0},{0,0}
  local mountPlane,mountLife=nil,nil
  local function flying()
   local plane=getPlane()
@@ -393,6 +393,12 @@ function Effects.start(getPlane)
     if weapon.fire_mode=="automatic" then
      local heat,cooling,allowed=Rules.heatShot(mount.heat,mount.cooling,weapon)
      if allowed then shoot(plane,mount,now);mount.readyAt=now+weapon.shot_interval;mount.heat,mount.cooling=heat,cooling end
+    elseif weapon.fire_mode=="alternate" then
+     local index,nextAt=Rules.alternateMount(mounts,mount.group,now,roundRobin[mount.group],altAt[mount.group])
+     if index then
+      local turn=mounts[index]
+      shoot(plane,turn,now);turn.readyAt=now+weapon.shot_interval;roundRobin[mount.group],altAt[mount.group]=index,nextAt
+     end
     elseif weapon.fire_mode=="burst" and mount.burstLeft==0 then mount.burstLeft,mount.burstNext,mount.readyAt=weapon.burst_count,now,now+weapon.burst_period end
    end
    while mount.burstLeft>0 and now>=mount.burstNext do shoot(plane,mount,now);mount.burstLeft-=1;mount.burstNext+=weapon.burst_spacing end

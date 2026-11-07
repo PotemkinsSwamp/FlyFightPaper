@@ -189,6 +189,7 @@ function Service:trigger(p,which,down,aim)
   -- A short click may arrive and release between server frames. Fire its first round here.
   for _,mount in ipairs(info.mounts) do if mount.group==which and mount.readyAt<=now then
    if mount.weapon.fire_mode=="automatic" then self:fire(p,mount,now)
+   elseif mount.weapon.fire_mode=="alternate" then self:fireAlternate(p,info,which,now)
    elseif mount.weapon.fire_mode=="burst" and mount.burstLeft==0 and self:fire(p,mount,now) then
     mount.readyAt=now+mount.weapon.burst_period;mount.burstLeft=mount.weapon.burst_count-1;mount.burstNext=now+mount.weapon.burst_spacing
    end
@@ -198,6 +199,11 @@ function Service:trigger(p,which,down,aim)
    if self:fire(p,info.mounts[index],workspace:GetServerTimeNow()) then info.roundRobin[which]=index end
   end
  end
+end
+function Service:fireAlternate(p,info,group,now)
+ info.altAt=info.altAt or {}
+ local index,nextAt=Rules.alternateMount(info.mounts,group,now,info.roundRobin[group],info.altAt[group] or 0)
+ if index and self:fire(p,info.mounts[index],now) then info.roundRobin[group],info.altAt[group]=index,nextAt end
 end
 function Service:lock(p,info,now)
  local hasEraser=false
@@ -449,6 +455,7 @@ function Service:step(dt)
      if weapon.homing then
       if info.lockPilot and now-info.lockAt>=Config.eraser_lock_seconds then self:fire(p,mount,now) end
      elseif weapon.fire_mode=="automatic" then self:fire(p,mount,now)
+     elseif weapon.fire_mode=="alternate" then self:fireAlternate(p,info,mount.group,now)
      elseif weapon.fire_mode=="burst" and mount.burstLeft==0 then mount.burstLeft=weapon.burst_count;mount.burstNext=now;mount.readyAt=now+weapon.burst_period end
     end
     if mount.burstLeft>0 then
@@ -518,7 +525,7 @@ function Service:step(dt)
    if taken then -- a paper sign took the shot
    elseif target and (not result or t*delta.Magnitude<=result.Distance) then
     local at=shot.position+delta*t
-    shot.struck=target;self:hit(attacker,target,shot.weapon.damage,now,at,shot.weapon.id);self:finish(shot,at)
+    shot.struck=target;self:hit(attacker,target,Rules.shotDamage(shot.weapon,(at-shot.origin).Magnitude),now,at,shot.weapon.id);self:finish(shot,at)
    elseif result then
     self:chalkHit(result.Instance,now)
     if attacker and self.onProp then self.onProp(attacker,result.Instance) end

@@ -94,7 +94,7 @@ function Customize.draw(content, ctx)
 			words(card, "HitLabel", "Hit", 18, 60, 50, 34, 26)
 			local hit = ctx.catalog.hitRating(part)
 			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, 62 + (k - 1) * 30, 64, 27, 26) end
-			words(card, "DPS", string.format("%.0f damage per second", ctx.catalog.weaponDPS(part)), 18, 96, 216, 30, 24)
+			words(card, "DPS", part.damage_by_range and "Hits harder the further away" or string.format("%.0f damage per second", ctx.catalog.weaponDPS(part)), 18, 96, 216, 30, 24)
 			detail = string.format("%s, weight %d. %s", part.class, part.capacity, detail)
 			if blocked then
 				detail = blocked

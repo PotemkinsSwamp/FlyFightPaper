@@ -574,9 +574,23 @@ return JSONTypes.map({
             ["capacity"] = 2,
             ["class"] = "medium",
             ["damage"] = 24,
+            ["damage_by_range"] = JSONTypes.array({
+                [1] = JSONTypes.array({
+                    [1] = 150,
+                    [2] = 0.5,
+                }),
+                [2] = JSONTypes.array({
+                    [1] = 500,
+                    [2] = 1,
+                }),
+                [3] = JSONTypes.array({
+                    [1] = 1000,
+                    [2] = 1.5,
+                }),
+            }),
             ["drag"] = 0.45,
             ["drop"] = 6,
-            ["fire_mode"] = "automatic",
+            ["fire_mode"] = "alternate",
             ["homing"] = false,
             ["id"] = "paperclip",
             ["lifetime"] = 0.8,
@@ -586,7 +600,7 @@ return JSONTypes.map({
             ["paper_price"] = 1500,
             ["projectile_radius"] = 0.3,
             ["projectile_speed"] = 3600,
-            ["shot_interval"] = 1.5,
+            ["shot_interval"] = 1.75,
             ["spread_deg"] = 0,
             ["wobble_studs"] = 0,
         }),

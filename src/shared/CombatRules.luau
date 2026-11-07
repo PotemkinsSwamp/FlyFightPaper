@@ -48,6 +48,31 @@ function Rules.readyMount(mounts, group, now, after, fireMode)
 	end
 	return nil
 end
+-- Guns that take turns: the next ready mount of this group, and when the one after it may fire (a reload shared out
+-- across the mounts, so two paperclips never hit at once; Alan 2026-11-06). nil while the last shot's turn lasts.
+function Rules.alternateMount(mounts, group, now, after, notBefore)
+	if now < notBefore then return nil end
+	local index = Rules.readyMount(mounts, group, now, after, "alternate")
+	if not index then return nil end
+	local count = 0
+	for _, mount in ipairs(mounts) do if mount.group == group and mount.weapon.fire_mode == "alternate" then count += 1 end end
+	return index, now + mounts[index].weapon.shot_interval / count
+end
+-- What a hit does after flying `distance` studs. `damage_by_range` = {{studs, share of the labelled damage}, ...}, nearest
+-- first, straight lines between them and flat past each end: a marksman's long shot pays more (Alan 2026-11-06).
+function Rules.shotDamage(weapon, distance)
+	local points = weapon.damage_by_range
+	if not points then return weapon.damage end
+	local share = points[#points][2]
+	if distance <= points[1][1] then share = points[1][2]
+	else
+		for i = 2, #points do
+			local a, b = points[i - 1], points[i]
+			if distance <= b[1] then share = a[2] + (b[2] - a[2]) * (distance - a[1]) / (b[1] - a[1]); break end
+		end
+	end
+	return math.round(weapon.damage * share)
+end
 -- Like a real seeker: a target that gets too far off the eraser's nose is lost (nil) for good.
 -- A hard break turn timed as the eraser closes in is how you dodge.
 function Rules.eraserSteer(direction, toTarget, dt)
