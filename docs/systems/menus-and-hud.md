@@ -53,7 +53,9 @@ screens. Match tip on a touch screen: tap the note (no Got it button).
 ## Rules
 **Live standings (Alan 2026-11-06):** during a round, Tab (a tap on the score strip on a phone) opens and closes every
 pilot's Folds, Assists, Crashes and Pts on the Results pages, small at each side so the middle stays clear to fly. Each
-round starts with it closed. It reads the same round news as the score strip. Code: `RoundEnd.luau`.
+round starts with it closed. It reads the same round news as the score strip. On a phone (checked 2026-11-07, Device
+Simulator) the left page sits lower so Health, Lift and Boost stay in view, and names over 11 characters are cut short so
+they stay readable. Code: `RoundEnd.luau`.
 
 Esc over the Hangar opens the clipboard menu on top of it, with the Hangar still showing underneath; Keep flying (or Esc
 when Roblox's own menu isn't open) goes back to the Hangar, not the room (Alan 2026-10-22). Esc always toggles Roblox's

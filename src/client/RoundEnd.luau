@@ -130,7 +130,9 @@ function RoundEnd.start()
 	-- side by side, turned a little.
 	-- live: Tab's standings, a small page at each side so the middle of the screen stays clear to fly.
 	local LAYOUT = { solo = { { 1560, 490, 1, 0 } }, teams = { { 1069, 439, 0.82, 1.5 }, { 1624, 439, 0.82, -1.5 } },
-		live = { { 250, 470, 0.7, 1 }, { 1670, 470, 0.7, -1 } } }
+		live = { { 250, 470, 0.7, 1 }, { 1670, 470, 0.7, -1 } },
+		-- A phone's Health, Lift and Boost sit top left, so the left page goes below them (phone check 2026-11-07).
+		livePhone = { { 250, 750, 0.7, 1 }, { 1670, 470, 0.7, -1 } } }
 	-- A page's rows: the top five of `list` and, if you're not among them, you on the last line.
 	local function fillRows(it, list, rank)
 		local myLine = state.mine and table.find(list, state.mine)
@@ -139,7 +141,10 @@ function RoundEnd.start()
 			if i == ROWS and myLine and myLine >= ROWS then p = state.mine end
 			local place = p and rank(p, p == state.mine and myLine or i)
 			row.place.Text = place and (PLACES[place] or place .. "th") or ""
-			row.name.Text = p and p.displayName or ""
+			local name, cut = p and p.displayName or "", nil
+			-- A phone's Tab page is small: a long name would shrink too far to read, so it's cut short instead.
+			if state.live and PaperUI.isPhone() and utf8.len(name) and utf8.len(name) > 11 then cut = utf8.offset(name, 11) end
+			row.name.Text = cut and name:sub(1, cut - 1) .. ".." or name
 			row.name.TextColor3 = p and TEAM_INK[p.teamId] or PaperUI.INK
 			for key, label in row.numbers do label.Text = p and tostring(math.floor(p[key] or 0)) or "" end
 			row.highlight.Visible = p ~= nil and p == state.mine
@@ -155,7 +160,7 @@ function RoundEnd.start()
 		it.points.TextColor3 = it.title.TextColor3
 	end
 	local function layOut(name, count)
-		for k, spot in LAYOUT[name] do
+		for k, spot in LAYOUT[name == "live" and PaperUI.isPhone() and "livePhone" or name] do
 			local page = pages[k].page
 			page.Position, page.Fit.Scale, page.Rotation = UDim2.fromOffset(spot[1], spot[2]), spot[3], spot[4]
 		end
