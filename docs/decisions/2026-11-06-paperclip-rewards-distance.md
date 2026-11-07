@@ -12,6 +12,9 @@
 - Tab opens and closes the live standings (press, not hold), over the game, updating as scores change. On a phone, a tap
   on the score strip does the same. The Menu button and Esc open the menu; Roblox's player list stays off.
 
+- A paperclip aimed at you glints, like a sniper's scope: a real, bright flash on their plane when in view; when not, a
+  really faint reddish glint spread along the bottom of the screen, not an arrow. No sound.
+
 ## Why
 - In play two clips folded most planes in two hits, because each hit was 48 at once and almost never missed. On paper
   pellets do more damage per second, but they miss a lot.

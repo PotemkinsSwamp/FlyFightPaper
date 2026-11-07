@@ -307,6 +307,8 @@
     "collision_scrape_health_per_second": 0.15,
     "ram_closing_speed": 30,
     "ram_extra_health": 15,
+    "glint_min_studs": 300,
+    "glint_hold_seconds": 0.3,
     "collision_scrape_doubling_seconds": 0.5
   },
   "service": {

@@ -117,6 +117,12 @@ function Rules.lead(weapon, from, ahead)
 	end
 	return lead
 end
+-- Is a plane at `from` with its nose on `nose` aimed well enough to hit a target at `target` flying at `velocity`?
+-- Within `coneDeg` of the lead, the same test as the gun assist (the paperclip glint, ClipGlint).
+function Rules.aimedAt(weapon, from, nose, target, velocity, coneDeg)
+	local lead = Rules.lead(weapon, from, function(t) return target + velocity * t end)
+	return nose:Dot((lead - from).Unit) >= math.cos(math.rad(coneDeg))
+end
 -- What a ram costs a plane with `mine` health against one with `theirs`: the weaker folds, the stronger loses the
 -- weaker's health plus `extra` but always keeps 1 (Alan 2026-11-06); equal health folds both.
 function Rules.ramLoss(mine, theirs, extra)

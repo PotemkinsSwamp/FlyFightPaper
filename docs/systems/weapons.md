@@ -52,6 +52,12 @@ at 500, 36 at 1000, 60 at 2400, in straight lines between. The lead ring picks t
 full reach for a gun like this. See
 [the decision](../decisions/2026-11-06-paperclip-rewards-distance.md).
 
+A paperclip aimed at you glints (`ClipGlint.luau`; Alan 2026-11-06): the enemy is over `combat.glint_min_studs` away, in
+clear view, and their nose has stayed within `gun_assist_deg` of hitting you for `combat.glint_hold_seconds`. In view, a
+bright flash on their plane; out of view, a very faint reddish glint spread along the bottom of the screen, leaning to
+their side. No sound and no picture file. In Studio the attribute `DevGlint` on `ReplicatedStorage.FlyFightPaper` makes
+every enemy glint, to judge the look.
+
 A quick click on a burst weapon stays held until the burst's last round is out, so every round leaves on a fresh aim
 (CombatController). Before 2026-11-06 the later rounds of a tapped burst flew along the plain nose. The lead ring
 already used each weapon's speed, drag and drop.

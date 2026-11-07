@@ -424,6 +424,7 @@ function HUD.start(getPlane, action)
 			return path and Course.pathAt(path, now + t).Position or root.Position + m.velocity * t + m.acceleration * (0.5 * t * t)
 		end)
 	end
+	local glint = require(script.Parent.ClipGlint).start()
 	local STICKY, picked = math.rad(3), nil -- how much closer another enemy's lead must be to take the marker
 	-- Reticles move every frame, after the camera.
 	RunService:BindToRenderStep("FlightReticles", Enum.RenderPriority.Camera.Value + 3, function()
@@ -447,6 +448,7 @@ function HUD.start(getPlane, action)
 			end
 			return sightline[root]
 		end
+		glint(plane, body, flying and not Root:GetAttribute("TutorialOpen"), enemy, seen, camera)
 		-- Pick the enemy whose lead (where you'd shoot to hit it) is closest to where the pilot is aiming, not the plane
 		-- itself: a far plane is aimed at well ahead of it, so a near one crossing the sight mustn't steal the marker
 		-- (Alan 2026-10-19). The current pick holds until another is clearly closer. Track each plane's turning so the

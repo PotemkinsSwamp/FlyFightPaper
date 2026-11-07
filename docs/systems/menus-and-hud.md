@@ -98,6 +98,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 ## Code
 | File | What it does |
 |---|---|
+| `src/client/ClipGlint.luau` | The paperclip's warning glint (rules on the weapons page) |
 | `src/client/MenuController.luau` | Which screen shows; Esc; Tab opens the live standings |
 | `src/shared/TouchWords.luau` | Phone wording: "Click" becomes "Tap", "hold left click" "hold FIRE", key hints like [Space] go; TouchControls rewrites every text on screen with it on a touch screen (tests: `tests/unit/TouchWords.spec.luau`, which also checks every lesson's text) |
 | `src/shared/AimHelp.luau` | Phone aim help numbers: how far a shot bends to the ring, how much the stick slows over an enemy (tests: `tests/unit/AimHelp.spec.luau`) |
