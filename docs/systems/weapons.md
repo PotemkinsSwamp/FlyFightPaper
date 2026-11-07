@@ -47,7 +47,7 @@ flight) and fall a little (drop, 80 studs/s^2 for pellets down to 3 for pencils)
 
 A quick click on a burst weapon stays held until the burst's last round is out, so every round leaves on a fresh aim
 (CombatController). Before 2026-11-06 the later rounds of a tapped burst flew along the plain nose. The lead ring
-already used each weapon's speed, drag and drop; that was not the cause of Alan's staple note.
+already used each weapon's speed, drag and drop.
 
 Automatic weapons fire while held at per-mount cadence. Burst staples queue three rounds with 0.09-second
 spacing and 1.2 seconds between burst starts; releasing before a new burst stops new bursts. Paperclips and

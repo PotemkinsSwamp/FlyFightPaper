@@ -26,6 +26,9 @@ All eight were changed the same day, and Alan's Studio check is still to come:
 4-5. Bomber 1 Paperclip + 2 Pellets; Scout 2 Rubber Bands.
 6. The check needed the two planes' thin flight bodies to overlap, which almost never happens. It now goes by distance,
    then the exact shapes. The stronger plane also loses 15 extra and always survives.
-7. The ring already used shot speed, drag and drop. Tapped bursts were the fault: their later rounds flew along the
-   plain nose, because the aim stopped when the button came up.
+7. The ring already used shot speed, drag and drop. Tapped bursts had a fault, fixed: their later rounds flew along the
+   plain nose. Whether that was all of it isn't known. Alan's first shot log couldn't say, as it didn't record whether he
+   was on the ring. With that mark added, 28 on-ring staple shots (about 7 bursts, so a small sample): 12 of 18 hit out
+   to 300 studs, 2 of 10 from 575 to 760. No on-ring miss passed in front of the plane; four pairs passed about 10 studs
+   behind. Open: is that the ring's guess at a moving bot, or a small steady lag?
 8. A pickup adds 0.5 s of Boost, up to a full tank, on top of its speed. Planes with no booster get only the speed.
