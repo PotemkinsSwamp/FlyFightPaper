@@ -11,7 +11,7 @@ local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog)
 local ClipGlint = {}
 
 local WHITE, RED = Color3.fromRGB(255, 252, 240), Color3.fromRGB(255, 50, 40)
-local BEHIND_PEAK = 0.45 -- how strong the bottom glint gets (0-1); Alan 2026-11-07: fainter was invisible over the town
+local BEHIND_PEAK = 0.528 -- how strong the bottom glint gets (0-1); Alan 2026-11-07: fainter was invisible over the town
 local FLASH_EVERY = 1.2
 
 local function fade(...)
