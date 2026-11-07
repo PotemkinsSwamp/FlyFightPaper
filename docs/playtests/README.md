@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-07: 8-minute bot match, XP and rams](2026-11-07-bot-match-xp-and-rams.md)
 - [2026-11-06: Alan tries presets at the desk in Studio](2026-11-06-presets-at-the-desk.md)
 - [2026-11-05: Alan's phone run of moving the buttons](2026-11-05-phone-buttons-save.md)
 - [2026-10-25: a fresh join on Alan's phone](2026-10-25-phone-fresh-join.md)

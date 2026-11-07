@@ -33,8 +33,9 @@ Thumbtacks don't exist yet, so those rows used stand-ins and will shift a little
 | Bomber | Level 8 | Big slow hits | Toilet Roll Gunship, Blunt Nose | 1 Stubby Crayon, 2 Pellets | 65 | 316 | 77 | 71 |
 | Carrier | Level 10 | Huge health, many small guns | Cardboard Gunship | 4 Pellets | 64 | 330 | 73 | 77 |
 
-- **Pace:** levels 5, 8 and 10 take 1,040, 2,240 and 3,240 XP. At a guessed 600 XP a match, that's a new class about
-  every 2 rounds. Step 1 measures the real XP per match, and these levels move if it's off.
+- **Pace:** levels 5, 8 and 10 take 1,040, 2,240 and 3,240 XP. The first measured match gave about 340 XP a pilot
+  ([numbers](../playtests/2026-11-07-bot-match-xp-and-rams.md)), so a new class about every 3 rounds, not the guessed
+  2. Levels stay as they are until a real player's numbers say otherwise.
 - **Carrier guns:** 4 Pellets is twice the damage of the starter plane if every shot lands, on a very slow, very big
   target. Bot matches decide if it stays at 4 or drops to 3.
 

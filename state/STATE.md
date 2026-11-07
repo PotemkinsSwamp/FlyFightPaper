@@ -4,14 +4,17 @@
 - **Your 8 notes are built:** staples confirmed; the rest are in Studio. A shot timing fix helps every gun.
 - **Paperclip:** takes turns, 1.75 s reload, 12 damage close up to 60 at full reach; its glint warns the target.
 - **Tab shows live standings;** phones tap the score strip. Refill Lift is gone. Desk dev button: clip hunters.
+- **Bot match done:** about 340 XP a match (guess was 600), so a new preset every 3 rounds. No fold came from ramming.
+  Two bots earned 0 XP in 8 minutes; a struggling new player could too (your call). Tests 459 passed, 0 failed.
 - **None of this is published yet.**
 
 # Now: finish the game for the beta
-Next: the 8-minute bot match (rams may fold bots far more now), the phone check, the four new weapons. After that the
+Next: the phone check, the four new weapons. After that the
 unlock ladder, mastery, bots following the lobby,
 then winners' circle + emotes, skins, shop. Publish and phone runs any time.
 
 Decisions to review
+Preset levels stay at 5, 8 and 10 at about 340 XP a match (one mostly rookie bot match; recheck with a real player).
 Rams: stronger plane loses 15 extra, always survives; rams still earn no kill; teammates and practice flights never ram.
 Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000, 60 at 2400 (my numbers). Tab list shows all 12. Pickups' Boost stops at a full tank.
 PC keys: letters (not K or R), Shift, Ctrl, Alt, Space on offer; Got it may share a key with Boost or Brake.
@@ -58,4 +61,4 @@ Waiting on Alan
 - Backlog: a new fan sound.
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK; then products, passes, VIP perks.
-3. Before the next session: Device Simulator on, and a go for one 8-minute bot match (real XP per match).
+3. Device Simulator on for the phone check; and should a full match always pay some XP?
