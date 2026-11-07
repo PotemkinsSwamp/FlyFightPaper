@@ -146,10 +146,9 @@ function Rules.shotOffset(weapon, direction, t, fan)
 	return direction*along+spread-Vector3.yAxis*(drop+fall)
 end
 -- How far the spray's ring has opened after `along` studs (Alan 2026-11-07): one tight bundle to fan_after_studs, then
--- opening gradually, slowly at first and faster further out, to fan_studs across the ring's radius at fan_full_studs.
+-- opening at one steady rate, fan_studs (the ring's radius) more by fan_full_studs, and on at that rate as it falls.
 function Rules.fanRadius(weapon, along)
-	local s=math.max(0,along-weapon.fan_after_studs)/(weapon.fan_full_studs-weapon.fan_after_studs)
-	return weapon.fan_studs*s*s
+	return weapon.fan_studs*math.max(0,along-weapon.fan_after_studs)/(weapon.fan_full_studs-weapon.fan_after_studs)
 end
 -- The leads of one shot spray out in a circle: one straight down the aim, the rest evenly round a ring, starting
 -- straight up so none sits level with the wings. A plane seen from behind is a thin T, so as the ring opens the leads

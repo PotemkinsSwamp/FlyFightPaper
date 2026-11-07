@@ -16,7 +16,7 @@
 
 | Weapon | Class, capacity | How it plays | Range before falling |
 |---|---|---|---|
-| **Point Popper** (a pencil-lead tube) | medium, 3 | One shot a second: 7 leads of 5 damage. The leads fly in a tight bundle for 30 studs, then spray out in a circle like a shotgun (Alan changed this from a flat fan), opening gradually: slowly at first, faster further out (Alan: 20 studs was too hard to hold, and opening all at once was wrong). All 7 hit to about 40 studs, 5 at 50, then about one per gun. Most 1 / 2 / 3 | 100 studs |
+| **Point Popper** (a pencil-lead tube) | medium, 3 | One shot a second: 7 leads of 5 damage. The leads fly in a tight bundle for 50 studs, then spray out in a circle like a shotgun (Alan changed this from a flat fan), opening at one steady, narrow rate: about 3 studs out by 100 studs (Alan: 20 studs was too hard to hold, and it opened too far too fast). All 7 hit to about 65 studs, 5 to about 80, then about one per gun. Most 1 / 2 / 3 | 100 studs |
 | **Thumbtack** | medium, 2, mass 2.0 | 6 damage, 3 shots a second; half damage at 300 studs, a quarter at 500. Most 1 / 2 / 4 | 500 |
 | **Stubby Crayon** | medium, 3 | 40 damage, 2 s reload, a slow heavy shot (about 850 studs/s), hard to hit unless close. Most 1 / 2 / 3 | 600 |
 | **Spitball** | light, 2 | 1 damage, 2 shots a second, slow. Up to 5 stick and show on the plane; each burns Lift faster and slows it (a full load about 2.5x Lift burn, 20% slower). None fall off for 6 s after the last hit, then one every 3 s; a fan blows them all off; the desk clears them. Most 2 / 3 / 5 | 350 |
