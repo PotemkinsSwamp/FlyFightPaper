@@ -10,8 +10,8 @@ local Gameplay = require(Root.Generated.Gameplay)
 local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog), Gameplay)
 local ClipGlint = {}
 
-local WHITE, RED = Color3.fromRGB(255, 252, 240), Color3.fromRGB(255, 80, 60)
-local BEHIND_PEAK = 0.132 -- how strong the bottom glint gets (0-1): really faint on purpose
+local WHITE, RED = Color3.fromRGB(255, 252, 240), Color3.fromRGB(255, 50, 40)
+local BEHIND_PEAK = 0.45 -- how strong the bottom glint gets (0-1); Alan 2026-11-07: fainter was invisible over the town
 local FLASH_EVERY = 1.2
 
 local function fade(...)
@@ -143,7 +143,7 @@ function ClipGlint.start()
 			end
 		end
 		strength += ((nearest < math.huge and 1 or 0) - strength) * math.min(1, dt * 6)
-		paint(strength * BEHIND_PEAK * (0.75 + pulse * 0.25))
+		paint(strength * (dev and Root:GetAttribute("DevGlintPeak") or BEHIND_PEAK) * (0.75 + pulse * 0.25))
 		if nearest < math.huge then behind.Position = UDim2.fromScale(0.5 + side * 0.25, 1) end
 	end
 end

@@ -54,9 +54,9 @@ full reach for a gun like this. See
 
 A paperclip aimed at you glints (`ClipGlint.luau`; Alan 2026-11-06): the enemy is over `combat.glint_min_studs` away, in
 clear view, and their nose has stayed within `gun_assist_deg` of hitting you for `combat.glint_hold_seconds`. In view, a
-bright flash on their plane; out of view, a very faint reddish glint spread along the bottom of the screen, leaning to
+bright flash on their plane; out of view, a reddish glint spread along the bottom of the screen, leaning to
 their side. No sound and no picture file. In Studio the attribute `DevGlint` on `ReplicatedStorage.FlyFightPaper` makes
-every enemy glint, to judge the look.
+every enemy glint, to judge the look; `DevGlintPeak` there sets the red glint's strength live.
 
 A quick click on a burst weapon stays held until the burst's last round is out, so every round leaves on a fresh aim
 (CombatController). Before 2026-11-06 the later rounds of a tapped burst flew along the plain nose. The lead ring
