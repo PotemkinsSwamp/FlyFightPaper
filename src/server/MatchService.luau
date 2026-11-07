@@ -580,12 +580,15 @@ function Match:_end(at, reason)
         row.sample, row.activityUntil, row.eligibleIntervals, row.activityIntervals = nil, nil, nil, nil
         local eligible = p.present and not p.forfeited
             and Rules.qualified(p, e.completion_min_active_seconds, e.completion_min_qualifying_events)
+        -- Alan 2026-11-07: a full match always pays something, so a struggling new player never leaves with nothing.
+        -- Still needs real flying time: a plane left idle at the desk earns no XP.
+        local stayed = p.present and not p.forfeited and p.activeSeconds >= e.completion_min_active_seconds
         local win, place = eligible and winners[p.key] == true, places[p.key]
         local podium = eligible and not draw and place and place <= 3
         row.place, row.victory, row.completion = place, winners[p.key] == true, eligible
         row.finalPaper = (eligible and e.completion_paper or 0) + (win and e.win_paper or 0)
             + (podium and e.podium_paper_by_place[place] or 0)
-        row.finalXP = (eligible and e.completion_xp or 0) + (win and e.win_xp or 0)
+        row.finalXP = (eligible and e.completion_xp or stayed and e.stayed_xp or 0) + (win and e.win_xp or 0)
             + (podium and e.podium_xp_by_place[place] or 0)
         -- Bots occupy real places and receive the same calculated rates; bots never get persistent wallets.
         table.insert(rows, row)

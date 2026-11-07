@@ -59,6 +59,7 @@ return JSONTypes.map({
     }),
     ["schema_version"] = 1,
     ["status"] = "initial tuning, not measured retention or demand",
+    ["stayed_xp"] = 60,
     ["win_paper"] = 40,
     ["win_xp"] = 60,
     ["xp_next_level_base"] = 200,

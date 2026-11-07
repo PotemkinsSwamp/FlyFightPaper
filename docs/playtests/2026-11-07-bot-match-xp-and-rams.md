@@ -23,5 +23,5 @@ Claude read the numbers; nobody watched it. No script errors. Full tests in the 
 - One match, mostly rookie bots: treat these as rough until a real player's numbers are in.
 
 ## Follow-up
-Alan decides whether a full match should always pay something. Mastery pace waits for step 5 of the
+Alan said yes: staying to the end now pays at least 60 XP ([economy](../systems/economy-and-shop.md)). Mastery pace waits for step 5 of the
 [classes plan](../plan/CLASSES-PLAN.md).

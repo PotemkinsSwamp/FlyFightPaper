@@ -51,6 +51,8 @@ match. Substantial damage events are counted with anti-spam grouping, not every 
 fold/fold assist, one meaningful damage engagement, or ten eligible zone seconds can qualify; zone payments
 every five seconds do not double qualifying events. Target/prop-only activity
 cannot unlock completion. Do not award repeated completions for restarted or rapidly cancelled rounds.
+Staying to the end with the120 active seconds but without the three events pays 60 XP and no Paper (Alan 2026-11-07,
+`stayed_xp`): a struggling new player never ends a full match with nothing, and a plane left idle still earns nothing.
 Withdrawal forfeits final bonuses even after rejoin to the same round, not already-earned valid contribution.
 
 Keep economic subunits internally so fractional base earnings and boosts do not change outcome through
