@@ -193,6 +193,10 @@ function HUD.start(getPlane, action)
 	-- Top middle: round strip, news note, then either a warning (someone is after you) or your own eraser's lock.
 	local top = panel("Top", Vector2.new(0.5, 0), UDim2.new(0.5, 0, 0, 8), UDim2.fromOffset(900, 340))
 	local round = note(top, "Round", UIArt.hud.notebook, 640, 76, 0, 44)
+	-- Phones have no Tab: a tap on the score strip opens and closes the live standings (RoundEnd).
+	local standings = Instance.new("TextButton")
+	standings.Name, standings.Text, standings.BackgroundTransparency, standings.Size, standings.Parent = "Standings", "", 1, UDim2.fromScale(1, 1), round
+	standings.Activated:Connect(function() Root:SetAttribute("StandingsOpen", not Root:GetAttribute("StandingsOpen") or nil) end)
 	local star = PaperUI.image(round, "Star", UIArt.results.goldStar, 0, 0, 52, 52)
 	star.AnchorPoint, star.Position, star.Visible = Vector2.new(0.5, 0.5), UDim2.new(1, -40, 0.5, 2), false
 	-- News note: the crumpled tape label tinted yellow (Alan's pick), kept at the label's own shape (7.3:1) so

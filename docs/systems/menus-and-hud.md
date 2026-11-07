@@ -49,6 +49,10 @@ strip on every screen, filling top down (newest at the bottom) and fading oldest
 screens. Match tip on a touch screen: tap the note (no Got it button).
 
 ## Rules
+**Live standings (Alan 2026-11-06):** during a round, Tab (a tap on the score strip on a phone) opens and closes every
+pilot's Folds, Assists, Crashes and Pts on the Results pages, small at each side so the middle stays clear to fly. Each
+round starts with it closed. It reads the same round news as the score strip. Code: `RoundEnd.luau`.
+
 Esc over the Hangar opens the clipboard menu on top of it, with the Hangar still showing underneath; Keep flying (or Esc
 when Roblox's own menu isn't open) goes back to the Hangar, not the room (Alan 2026-10-22). Esc always toggles Roblox's
 system menu too, and the press that closes it never reaches the game.
@@ -94,7 +98,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 ## Code
 | File | What it does |
 |---|---|
-| `src/client/MenuController.luau` | Which screen shows; Esc and Tab |
+| `src/client/MenuController.luau` | Which screen shows; Esc; Tab opens the live standings |
 | `src/shared/TouchWords.luau` | Phone wording: "Click" becomes "Tap", "hold left click" "hold FIRE", key hints like [Space] go; TouchControls rewrites every text on screen with it on a touch screen (tests: `tests/unit/TouchWords.spec.luau`, which also checks every lesson's text) |
 | `src/shared/AimHelp.luau` | Phone aim help numbers: how far a shot bends to the ring, how much the stick slows over an enemy (tests: `tests/unit/AimHelp.spec.luau`) |
 | `src/client/MenuBoard.luau` | Bulletin-board main menu |

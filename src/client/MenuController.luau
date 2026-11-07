@@ -114,7 +114,9 @@ render=function()
  end
  openButton.Activated:Connect(Menu.pause)
  Input.InputBegan:Connect(function(input,processed)
-  if input.KeyCode==Enum.KeyCode.Tab and not Input:GetFocusedTextBox() and player:GetAttribute("InMatch") then state.screen="home";overlay(not state.overlay)
+  -- Tab shows the live standings over the game (RoundEnd); the Menu button and Esc open the menu (Alan 2026-11-06).
+  if input.KeyCode==Enum.KeyCode.Tab and not Input:GetFocusedTextBox() and player:GetAttribute("InMatch") then
+   if not state.overlay then Root:SetAttribute("StandingsOpen",not Root:GetAttribute("StandingsOpen") or nil) end
   elseif input.KeyCode==Enum.KeyCode.Escape and player:GetAttribute("InMatch") then escape() end
  end)
  GuiService.MenuOpened:Connect(function()if player:GetAttribute("InMatch") then overlay(true) end end)

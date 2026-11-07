@@ -1,5 +1,12 @@
 -- Synced from src/client by default.project.json.
 local Players = game:GetService("Players")
+-- Tab is the game's own live standings (RoundEnd), so Roblox's player list stays off.
+task.spawn(function()
+ for _ = 1, 20 do
+  if pcall(function() game:GetService("StarterGui"):SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false) end) then return end
+  task.wait(0.5)
+ end
+end)
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 require(script.Parent.Loading).show()
 local loadingEvents={Root:WaitForChild("RoundView").OnClientEvent:Connect(function()end),Root:WaitForChild("CombatEvents").OnClientEvent:Connect(function()end),Root:WaitForChild("CombatCosmetics").OnClientEvent:Connect(function()end)}

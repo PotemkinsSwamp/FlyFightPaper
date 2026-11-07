@@ -128,7 +128,9 @@ function RoundEnd.start()
 	local TEAM_NAMES = { ["team:1"] = "Red team", ["team:2"] = "Blue team" }
 	-- Where the pages sit (centre x, y, scale, turn): free-for-all one page on the right; team rounds two smaller pages
 	-- side by side, turned a little.
-	local LAYOUT = { solo = { { 1560, 490, 1, 0 } }, teams = { { 1069, 439, 0.82, 1.5 }, { 1624, 439, 0.82, -1.5 } } }
+	-- live: Tab's standings, a small page at each side so the middle of the screen stays clear to fly.
+	local LAYOUT = { solo = { { 1560, 490, 1, 0 } }, teams = { { 1069, 439, 0.82, 1.5 }, { 1624, 439, 0.82, -1.5 } },
+		live = { { 250, 470, 0.7, 1 }, { 1670, 470, 0.7, -1 } } }
 	-- A page's rows: the top five of `list` and, if you're not among them, you on the last line.
 	local function fillRows(it, list, rank)
 		local myLine = state.mine and table.find(list, state.mine)
@@ -143,6 +145,51 @@ function RoundEnd.start()
 			row.highlight.Visible = p ~= nil and p == state.mine
 		end
 	end
+	-- A page's title and team score; teamId nil on a free-for-all page.
+	local function heading(it, snap, teamId, title)
+		it.title.Text = teamId and TEAM_NAMES[teamId] or title
+		it.title.TextColor3 = teamId and TEAM_INK[teamId] or PaperUI.INK
+		-- (a team dogfight counts folds; Airspace Control counts zone points)
+		local score = teamId and math.floor(snap.teams[teamId] or 0)
+		it.points.Text = score and (snap.mode == "TDM" and (score == 1 and "1 fold" or score .. " folds") or score .. " points") or ""
+		it.points.TextColor3 = it.title.TextColor3
+	end
+	local function layOut(name, count)
+		for k, spot in LAYOUT[name] do
+			local page = pages[k].page
+			page.Position, page.Fit.Scale, page.Rotation = UDim2.fromOffset(spot[1], spot[2]), spot[3], spot[4]
+		end
+		pages[2].page.Visible = count > 1
+	end
+	-- Tab's live standings (Alan 2026-11-06): every pilot, best first, from the same round news as the score strip, so
+	-- it keeps up by itself. A free-for-all fills page 1 then page 2; a team round has a page per team.
+	local function fillLive(snap)
+		local list = table.clone(snap.pilots)
+		table.sort(list, function(a, b)
+			if (a.contribution or 0) ~= (b.contribution or 0) then return (a.contribution or 0) > (b.contribution or 0) end
+			return a.displayName < b.displayName
+		end)
+		state.mine = nil
+		for _, p in list do if p.displayName == player.DisplayName or p.displayName == player.Name then state.mine = p end end
+		local function place(p)
+			local at = 1
+			for _, other in list do if (other.contribution or 0) > (p.contribution or 0) then at += 1 end end
+			return at
+		end
+		local teamRound = snap.mode ~= "FFA" and snap.teams ~= nil
+		layOut("live", (teamRound or #list > ROWS) and 2 or 1)
+		for k, it in pages do
+			local teamId = teamRound and "team:" .. k or nil
+			it.star.Visible, it.winner.Visible, it.earned.Text = false, false, ""
+			it.yours.Visible = teamRound and state.mine ~= nil and state.mine.teamId == teamId
+			heading(it, snap, teamId, k == 1 and "Standings" or "")
+			local shown = {}
+			for i, p in list do
+				if teamId and p.teamId == teamId or not teamId and (i - 1) // ROWS + 1 == k then table.insert(shown, p) end
+			end
+			fillRows(it, shown, function(p) return place(p) end)
+		end
+	end
 	local function fillResults(snap)
 		local result = snap.result or {}
 		local list = table.clone(result.participants or {})
@@ -154,11 +201,7 @@ function RoundEnd.start()
 		state.mine = nil
 		for _, p in list do if p.displayName == me then state.mine = p end end
 		local teamRound = snap.mode ~= "FFA" and snap.teams ~= nil
-		for k, spot in LAYOUT[teamRound and "teams" or "solo"] do
-			local page = pages[k].page
-			page.Position, page.Fit.Scale, page.Rotation = UDim2.fromOffset(spot[1], spot[2]), spot[3], spot[4]
-		end
-		pages[2].page.Visible = teamRound
+		layOut(teamRound and "teams" or "solo", teamRound and 2 or 1)
 		state.minePage = 1
 		for k, it in pages do
 			local teamId = teamRound and "team:" .. k or nil
@@ -166,12 +209,7 @@ function RoundEnd.start()
 			if mine then state.minePage = k end
 			it.star.Visible = teamRound and not result.draw and result.winningTeam == teamId
 			it.winner.Visible, it.yours.Visible = it.star.Visible, teamRound and mine
-			it.title.Text = teamId and TEAM_NAMES[teamId] or "Results"
-			it.title.TextColor3 = teamId and TEAM_INK[teamId] or PaperUI.INK
-			-- (a team dogfight counts folds; Airspace Control counts zone points)
-			local score = teamId and math.floor(snap.teams[teamId] or 0)
-			it.points.Text = score and (snap.mode == "TDM" and (score == 1 and "1 fold" or score .. " folds") or score .. " points") or ""
-			it.points.TextColor3 = it.title.TextColor3
+			heading(it, snap, teamId, "Results")
 			it.earned.Text = mine and string.format("You: +%d Paper   +%d XP", state.mine.paper or 0, state.mine.xp or 0) or ""
 			if teamId then
 				local team = {}
@@ -185,7 +223,7 @@ function RoundEnd.start()
 	-- Your level bar fills from where you were before this round to where you are now.
 	RunService.RenderStepped:Connect(function()
 		local mine = state.mine
-		local shown = cover.Visible and card.Visible and mine ~= nil and state.profileXP ~= nil
+		local shown = cover.Visible and card.Visible and mine ~= nil and state.profileXP ~= nil and not state.live
 		for k, it in pages do it.xpBar.show(shown and k == state.minePage) end
 		if not shown then return end
 		local xpBar = pages[state.minePage].xpBar
@@ -211,6 +249,7 @@ function RoundEnd.start()
 		local inMatch = player:GetAttribute("InMatch")
 		if snap.phase ~= state.phase then
 			state.phase = snap.phase
+			Root:SetAttribute("StandingsOpen", nil) -- each round starts with it closed
 			Cutscene.stop()
 			if state.stopSound then state.stopSound(); state.stopSound = nil end
 			Root:SetAttribute("WinnersMoment", snap.phase == "RESULTS" and inMatch or nil) -- the match music fades out for it (Audio)
@@ -225,6 +264,14 @@ function RoundEnd.start()
 					if state.snap then update(state.snap) end
 				end)
 			end
+		end
+		state.live = inMatch and snap.phase == "ACTIVE" and snap.pilots ~= nil and Root:GetAttribute("StandingsOpen") == true
+			and not Root:GetAttribute("TutorialOpen")
+		if state.live then
+			fillLive(snap)
+			show(card)
+			cover.Visible = true
+			return
 		end
 		if not inMatch or snap.phase == "ACTIVE" or snap.phase == "READY" or snap.phase == "ENDING" then
 			cover.Visible = false
@@ -250,6 +297,7 @@ function RoundEnd.start()
 	end
 	Root:WaitForChild("RoundView").OnClientEvent:Connect(update)
 	player:GetAttributeChangedSignal("Vote"):Connect(function() if state.snap then update(state.snap) end end)
+	Root:GetAttributeChangedSignal("StandingsOpen"):Connect(function() if state.snap then update(state.snap) end end)
 	Input.InputBegan:Connect(function(input, processed)
 		local index = KEYS[input.KeyCode]
 		if index and not processed and state.phase == "VOTE" and not Input:GetFocusedTextBox() then
