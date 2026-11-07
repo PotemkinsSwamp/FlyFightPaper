@@ -40,7 +40,7 @@ function Effects.aim(body,weapon)
  -- (Alan 2026-11-06: an X past the old fixed 150 studs).
  return body.CFrame.LookVector,weapon and Rules.shotRange(weapon)
 end
-local colors={pellet=Color3.fromRGB(255,240,170),staple=Color3.fromRGB(220,230,240),rubber=Color3.fromRGB(250,180,100),popper=Color3.fromRGB(90,90,100),paperclip=Color3.fromRGB(125,225,255),eraser=Color3.fromRGB(255,145,175),pencil=Color3.fromRGB(255,210,70)}
+local colors={pellet=Color3.fromRGB(255,240,170),staple=Color3.fromRGB(220,230,240),rubber=Color3.fromRGB(250,180,100),popper=Color3.fromRGB(90,90,100),thumbtack=Color3.fromRGB(235,60,60),paperclip=Color3.fromRGB(125,225,255),eraser=Color3.fromRGB(255,145,175),pencil=Color3.fromRGB(255,210,70)}
 function Effects.start(getPlane)
  local folder=Instance.new("Folder");folder.Name="CombatEffects";folder.Parent=workspace
  local pool,active={},{}

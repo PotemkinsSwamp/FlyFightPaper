@@ -333,6 +333,15 @@
       "enabled": false
     },
     {
+      "key": "part_thumbtack",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "thumbtack",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
       "key": "part_staple",
       "kind": "developer_product",
       "benefit": "part_unlock",

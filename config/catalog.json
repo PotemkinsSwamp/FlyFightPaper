@@ -401,6 +401,27 @@
       "wobble_studs": 0
     },
     {
+      "id": "thumbtack",
+      "name": "Thumbtack Shooter",
+      "class": "medium",
+      "capacity": 2,
+      "mass": 2.0,
+      "paper_price": 600,
+      "min_level": 4,
+      "damage": 6,
+      "damage_by_range": [[100, 1], [300, 0.5], [500, 0.25]],
+      "projectile_speed": 900,
+      "drag": 1.2,
+      "drop": 60,
+      "fire_mode": "automatic",
+      "shot_interval": 0.3333333,
+      "lifetime": 0.9155,
+      "homing": false,
+      "projectile_radius": 0.3,
+      "spread_deg": 0,
+      "wobble_studs": 0
+    },
+    {
       "id": "rubber",
       "name": "Rubber Band Repeater",
       "class": "light",

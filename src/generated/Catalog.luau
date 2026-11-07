@@ -574,6 +574,40 @@ return JSONTypes.map({
         }),
         [4] = JSONTypes.map({
             ["capacity"] = 2,
+            ["class"] = "medium",
+            ["damage"] = 6,
+            ["damage_by_range"] = JSONTypes.array({
+                [1] = JSONTypes.array({
+                    [1] = 100,
+                    [2] = 1,
+                }),
+                [2] = JSONTypes.array({
+                    [1] = 300,
+                    [2] = 0.5,
+                }),
+                [3] = JSONTypes.array({
+                    [1] = 500,
+                    [2] = 0.25,
+                }),
+            }),
+            ["drag"] = 1.2,
+            ["drop"] = 60,
+            ["fire_mode"] = "automatic",
+            ["homing"] = false,
+            ["id"] = "thumbtack",
+            ["lifetime"] = 0.9155,
+            ["mass"] = 2.0,
+            ["min_level"] = 4,
+            ["name"] = "Thumbtack Shooter",
+            ["paper_price"] = 600,
+            ["projectile_radius"] = 0.3,
+            ["projectile_speed"] = 900,
+            ["shot_interval"] = 0.3333333,
+            ["spread_deg"] = 0,
+            ["wobble_studs"] = 0,
+        }),
+        [5] = JSONTypes.map({
+            ["capacity"] = 2,
             ["class"] = "light",
             ["cooldown_seconds"] = 1.5,
             ["damage"] = 1.6,
@@ -594,7 +628,7 @@ return JSONTypes.map({
             ["spread_deg"] = 2.5,
             ["wobble_studs"] = 0.8,
         }),
-        [5] = JSONTypes.map({
+        [6] = JSONTypes.map({
             ["capacity"] = 2,
             ["class"] = "medium",
             ["damage"] = 24,
@@ -632,7 +666,7 @@ return JSONTypes.map({
             ["spread_deg"] = 0,
             ["wobble_studs"] = 0,
         }),
-        [6] = JSONTypes.map({
+        [7] = JSONTypes.map({
             ["capacity"] = 3,
             ["class"] = "medium",
             ["damage"] = 30,
@@ -651,7 +685,7 @@ return JSONTypes.map({
             ["spread_deg"] = 0,
             ["wobble_studs"] = 0,
         }),
-        [7] = JSONTypes.map({
+        [8] = JSONTypes.map({
             ["capacity"] = 5,
             ["class"] = "heavy",
             ["damage"] = 260,

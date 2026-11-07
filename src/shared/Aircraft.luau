@@ -7,7 +7,7 @@ local Aircraft={}
 -- only the paperclip railgun on the body slots rose into the wing root, so it hangs this much lower there (studs
 -- before scale). Pellet tubes pass through the wing root on purpose (plane A's design).
 -- Weapons still waiting for their own model borrow another's (Alan 2026-11-07: test with models we have).
-Aircraft.STAND_IN={popper="pellet"}
+Aircraft.STAND_IN={popper="pellet",thumbtack="staple"}
 function Aircraft.look(weaponId) return weaponId and Aircraft.STAND_IN[weaponId] or weaponId end
 local BODY_SLOT_DROP={paperclip=.5}
 local NEIGHBOUR_GAP=.1 -- studs before scale between two guns under one wing
