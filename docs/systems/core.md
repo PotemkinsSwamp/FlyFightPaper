@@ -12,6 +12,9 @@ Works. On start, the server moves unused saved art into `ServerStorage.DormantAr
   [Glossary](../GLOSSARY.md) ("Server / client").
 - Every value from a client is checked before use (finite numbers, valid vectors).
 
+In Studio, the workspace attribute `DevMute` set in Edit before Play silences every sound for that run (Claude's test
+runs, Alan 2026-11-07); clear it after.
+
 ## Code
 | File | What it does |
 |---|---|

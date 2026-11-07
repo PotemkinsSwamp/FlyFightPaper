@@ -7,6 +7,16 @@ task.spawn(function()
   task.wait(0.5)
  end
 end)
+-- Claude's Studio test runs (Alan 2026-11-07): the workspace attribute DevMute, set in Edit before Play, silences
+-- every sound so a test doesn't play over Alan's work. Studio only; cleared again after the run.
+if game:GetService("RunService"):IsStudio() and workspace:GetAttribute("DevMute") then
+ local quiet=Instance.new("SoundGroup");quiet.Name="DevMute";quiet.Volume=0;quiet.Parent=game:GetService("SoundService")
+ local function hush(d) if d:IsA("Sound") then d.SoundGroup=quiet end end
+ for _,place in ipairs({workspace,game:GetService("SoundService"),game:GetService("ReplicatedStorage"),Players.LocalPlayer}) do
+  for _,d in ipairs(place:GetDescendants()) do hush(d) end
+ end
+ game.DescendantAdded:Connect(function(d) pcall(hush,d) end)
+end
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 require(script.Parent.Loading).show()
 local loadingEvents={Root:WaitForChild("RoundView").OnClientEvent:Connect(function()end),Root:WaitForChild("CombatEvents").OnClientEvent:Connect(function()end),Root:WaitForChild("CombatCosmetics").OnClientEvent:Connect(function()end)}
