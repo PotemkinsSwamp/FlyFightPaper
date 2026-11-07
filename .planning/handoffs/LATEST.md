@@ -1,8 +1,6 @@
-# LATEST → handoff-2026-10-29-mobile-lane-tutorial-rewrite-next.md
+# LATEST → handoff-2026-11-06-beta-lane-presets-in-notes-next.md
 
-★ START HERE: Goal (Alan): mobile works and looks good; a 10-year-old can do every tutorial step from its note.
-First: a tutorial rewrite plan (clear words, arrows with words, new landing step, simpler Pal) for Alan's OK, then
-build and check in Studio. Then research phone aiming (other games) before Alan decides. Nothing published since 6eec885b.
+★ START HERE: Goal (Alan): the beta feels like a finished game, one map, strong first-session hook. First fix his 8 notes in docs/playtests/2026-11-06-presets-at-the-desk.md, then the four new weapons.
 
-Quick state: main (handoff commit after 4419afcf); tests 427/0; docs OK.
-Previous: handoff-2026-10-29-mobile-lane-phone-run-2-notes.md (mobile lane), handoff-2026-10-28-load-lane-streaming-fixed.md (load lane).
+Quick state: main; tests 455/0; docs OK. Today's work isn't published.
+Previous: handoff-2026-10-29-mobile-lane-tutorial-rewrite-next.md (mobile lane).

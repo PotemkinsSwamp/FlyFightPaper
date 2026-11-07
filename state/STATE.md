@@ -1,16 +1,14 @@
-# Since Alan last checked (2026-11-05)
-- **Since then (Studio, not yet published):** team rounds show a results page per team side by side; match tip
-  words fill the sticky note (note size kept, your call). Your younger tester's notes are recorded
-  (docs/playtests/2026-10-29-young-testers-tutorial.md): next is a tutorial rewrite plan for your OK, then research
-  on phone aiming (how other games handle it) before you decide anything.
-- **Phone buttons work (2026-11-05, your phone):** move them in Settings, Save keeps them. Brake and speed match are in
-  too. You approved that; PC key changes are built and checked in Studio Play (Settings > Controls > Keys), not published. Tests 447/0.
-- **Tutorial checked at phone size (Studio, 2026-11-05):** all notes fit; the Range's notes 3-7 never showed, fixed. Not published.
+# Since Alan last checked (2026-11-06)
+- **The beta must feel finished (your decision):** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md.
+- **Presets are in (Studio, not published):** six fixed planes, stand-in weapons, unlocking to level 10. The Hangar has
+  Loadouts and Presets tabs; the desk's "Switch to presets" flips the cork strip. Tests 455/0.
+- **Free swap:** a plane that hasn't flown this life changes at once; after flying, Fresh plane, Full refold or a fold.
+- **PC keys and Range fixes:** done in Studio; none of today's work is published yet.
+- **Your notes today are not fixed yet:** docs/playtests/2026-11-06-presets-at-the-desk.md (8 items).
 
-# Now: mobile lane (make phones work and look good)
-What works: Stage 9, tutorials, desk quick menu; phone fixes published (auto-fire confirmed); your 2026-10-29 notes
-fixed in Studio. Next: the beta must feel finished (decision 2026-11-06). The classes, weapons and mastery plan waits on your OK
-(docs/plan/CLASSES-PLAN.md); then winners' circle + emotes, skins, shop. Your publish + phone run any time.
+# Now: finish the game for the beta
+Next: fix your 8 notes, then the four new weapons. After that the unlock ladder, mastery, bots following the lobby,
+then winners' circle + emotes, skins, shop. Publish and phone runs any time.
 
 Decisions to review
 PC keys: letters (not K or R), Shift, Ctrl, Alt, Space on offer; Got it may share a key with Boost or Brake.
@@ -54,7 +52,7 @@ Waiting on Alan
   Same on PC: the card and the confetti (my Studio window was phone-sized, so PC size wasn't seen).
 - Switch the Device Simulator to the small iPhone and the iPad for my re-check (screen fit steps 3-6 follow).
 - Winners' moment: watch 2-3 endings in Play (Studio's "end: parade / carnival / show" buttons in the desk hangar).
-- Later: bots' guns cross at 150 studs (your call); backlog: a new fan sound.
+- Backlog: a new fan sound.
 1. Drawing pass outside AI check: costs money per drawing; your go before it is built.
 2. Prices: draft ladder in docs/research/PRICING-RESEARCH-2026-10-18.md for your OK; then products, passes, VIP perks.
-3. Touch step 6: a private publish so you can play on your phone (your go then).
+3. Before the next session: Device Simulator on, and a go for one 8-minute bot match (real XP per match).

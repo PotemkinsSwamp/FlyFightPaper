@@ -349,6 +349,8 @@ mistake would be easy to make twice.
   (`AvatarEditorService:SearchCatalog`, asset type EmoteAnimation, creator "Roblox"), then
   `game:GetObjects("rbxassetid://<catalog id>")` gives the Animation inside with its real animation id. All 24 tried
   played on our big avatars; Hero Landing and Break Dance dip below the desk.
+- **Play started right after a save can miss it (2026-11-06):** a run reported 454 tests when the new test made 455. Check the
+  test count went up, or read the script's Source in Edit, before trusting a run started just after an edit.
 - **Rojo can die with a Studio reconnect** (2026-10-18): when the Studio tools come back under a new id, check that
   `rojo serve` still answers on port 34872 before trusting a test; Alan reconnects the plugin.
 - **Check a collision change by outcome before Alan plays it** (2026-10-18): the first train fix made wing touches
