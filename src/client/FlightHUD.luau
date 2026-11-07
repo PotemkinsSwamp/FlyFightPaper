@@ -267,7 +267,7 @@ function HUD.start(getPlane, action)
 	local mixedBots=eraserBots:Clone();mixedBots.Name="MixedBots";mixedBots.Text="mixed bots";mixedBots.Position=UDim2.fromOffset(770,-40)
 	mixedBots.BackgroundColor3=Color3.fromRGB(45,95,70);mixedBots.Parent=picker;mixedBots.Activated:Connect(function()action("mixedBots")end)
 	-- Three bots with only paperclips hunt you, to see the glint.
-	local clipBots=eraserBots:Clone();clipBots.Name="ClipBots";clipBots.Text="clip hunters";clipBots.Position=UDim2.fromOffset(770,-80)
+	local clipBots=eraserBots:Clone();clipBots.Name="ClipBots";clipBots.Text="clip hunters";clipBots.Position=UDim2.fromOffset(880,0)
 	clipBots.BackgroundColor3=Color3.fromRGB(45,70,120);clipBots.Parent=picker;clipBots.Activated:Connect(function()action("clipBots")end)
 	-- Test mode (Alan, 2026-10-14): end this round and start the next one in the picked mode.
 	for index, mode in ipairs({ { "FFA", "free-for-all" }, { "TDM", "team DM" }, { "CONTROL", "airspace" }, { "NEXTSPOT", "next spot" } }) do
