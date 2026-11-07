@@ -30,5 +30,11 @@ All eight were changed the same day, and Alan's Studio check is still to come:
    plain nose. Whether that was all of it isn't known. Alan's first shot log couldn't say, as it didn't record whether he
    was on the ring. With that mark added, 28 on-ring staple shots (about 7 bursts, so a small sample): 12 of 18 hit out
    to 300 studs, 2 of 10 from 575 to 760. No on-ring miss passed in front of the plane; four pairs passed about 10 studs
-   behind. Open: is that the ring's guess at a moving bot, or a small steady lag?
+   behind. Then measured: Alan's screen draws bots 0.18 s behind the server, and the game allowed 0.1 s, so shots fell
+   about 7 studs behind a 90 studs/s bot. Allowance set to 0.18; Alan: the staples work now.
 8. A pickup adds 0.5 s of Boost, up to a full tank, on top of its speed. Planes with no booster get only the speed.
+
+## Later the same day
+- Paperclips are now far too strong in play: two hits from two clips fold most planes. Options went to Alan.
+- Tab should show the live standings during a match. Plan went to Alan.
+- Refill Lift removed from the desk: landing already fills Lift and Boost.

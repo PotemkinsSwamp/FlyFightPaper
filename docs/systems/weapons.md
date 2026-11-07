@@ -10,8 +10,10 @@ nose, where the green dot is drawn (the Range bug can't happen there). 30 s of 1
 server, then "dot exactly on the ring" shots fired at it with the real hit shapes: pellets hit 99% at 150 studs, 88%
 at 300, 61% at 450; pencils 89% / 47% / 21%. Knowing where the bot really went, 100% at every range, so every miss is
 the ring's guess (bots turn and jink during a long flight); a turn-following guess gained only 0-7 points, not built.
-Timing in Studio: end-to-end shots with the dot on the ring passed within a few studs of the bot's centre, with no
-steady lag behind it; live servers' lag can't be measured from Studio.
+**Screen delay measured (2026-11-06):** five bots' server positions against where Alan's screen drew them, in his Play:
+every bot drawn 0.18 s behind (to within a third of a stud). The server allowed 0.1 s, so on-ring shots at a 90 studs/s
+bot passed about 7 studs behind it. `combat.view_delay_seconds` is now 0.18; `max_rewind_seconds` went from 0.25 to 0.33
+to keep the same room for ping. Live servers' delay can't be measured from Studio.
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*

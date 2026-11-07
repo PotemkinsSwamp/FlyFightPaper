@@ -436,3 +436,7 @@ Back to [HOME](../HOME.md)
   After changing a client-flown plane's parts on the server, call `SetNetworkOwner(pilot)` again.
 
 - **Reading a live save (2026-11-05).** Studio in edit mode can list save stores but opening one says "Access forbidden". From a running Play server (`execute_luau` with `Server`) `GetAsync` on `Player_<id>` works, read-only; Play itself still uses the throwaway profile.
+- **Before judging aim from hits, record whether the shot was on the ring (2026-11-06).** A hit count mixes the game's
+  accuracy with the pilot's aim. `DevShotLog` now marks RING or free; only RING shots test the game. To measure screen
+  delay, record server positions and compare them on the client against the drawn positions at each delay: it gave one
+  clean answer (0.18 s) and no pilot was involved.

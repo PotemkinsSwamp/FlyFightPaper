@@ -407,7 +407,7 @@ function Service:planeHit(shot,delta,now)
     -- Erasers are slow and dodged on sight: a human pilot is only hit if the eraser also reaches where they
     -- already are on their own screen (the server sees their plane a moment late).
     if t and shot.weapon.homing and target.kind=="human" then
-     local t2=at(cf+target.body.AssemblyLinearVelocity*(Config.view_delay_seconds+(info.latency or 0)));t=t2 and math.max(t,t2)
+     local t2=at(cf+target.body.AssemblyLinearVelocity*(Config.eraser_server_late_seconds+(info.latency or 0)));t=t2 and math.max(t,t2)
     end
     if t and t<bestT then best,bestT=target,t end
    end
