@@ -336,6 +336,20 @@ function Spec.run()
 		assert(Rules.shotDamage(weapon,300)==3 and Rules.shotDamage(weapon,500)==2 and Rules.shotDamage(weapon,800)==2,"half at 300, a quarter at 500")
 		assert(Rules.shotSpeed(weapon,weapon.lifetime)<weapon.projectile_speed*.4,"heavy: lots of drag")
 	end)
+	test("one shot per click for weapons that aren't automatic; a phone's held FIRE keeps firing (Alan 2026-11-07)",function()
+		for _,id in ipairs({"paperclip","thumbtack"}) do
+			local service,p,model=firingFixture(id)
+			service.clock=0;service.trackClock=0;service.flushClock=-1;service.flight.pilots={tap=p};service.flight.byId={[p.id]=p}
+			service.worldCast=RaycastParams.new();service.worldCast.FilterType=Enum.RaycastFilterType.Include;service.worldCast.FilterDescendantsInstances={}
+			local mount=service.info.tap.mounts[1]
+			service:trigger(p,1,true);assert(service.totalFired==1,id.." the click fires")
+			mount.readyAt=0;service.info.tap.altAt={};service:step(.016)
+			assert(service.totalFired==1,id.." holding the button doesn't fire again")
+			service.info.tap.repeating={true};service:step(.016)
+			assert(service.totalFired==2,id.." a phone's held FIRE fires again once ready")
+			model:Destroy()
+		end
+	end)
 	test("one Point Popper click launches seven leads, each with its own fan",function()
 		local service,p,model=firingFixture("popper")
 		service:trigger(p,1,true);service:trigger(p,1,false)

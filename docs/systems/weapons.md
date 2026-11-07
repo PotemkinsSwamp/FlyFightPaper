@@ -41,13 +41,17 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Weapon | Damage | Capacity | Speed (studs/s) | Fire timing |
 |---|---:|---:|---:|---|
 | Paper Pellet Gun | 2 | 1 | 1500, ~750 studs range | Hold; 0.1 s per shot; 30 shots then 1.5 s cooling |
-| Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | Hold; one shot a second |
+| Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | One shot per click, up to one a second |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
-| Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | Hold; 3 shots a second |
+| Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | One shot per click, up to 3 a second |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
-| Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | Hold; mounts take turns, 1.75 s reload each |
+| Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | One shot per click; mounts take turns, 1.75 s reload each |
 | Guided Eraser | 30 | 3 | 200, slowing to 110 | Click to launch unguided or hold through the 1.5 s lock; 4 s reload |
 | Pencil Launcher | 260 | 5 | 650, ~1800 studs range | One shot per click, fires on the click; 4 s reload |
+
+Only automatic weapons (pellets, rubber bands, staple bursts) keep firing while the button is held; every other weapon fires
+once per click (Alan 2026-11-07). On phones, holding FIRE (or auto-fire) keeps those firing as each is ready: the client
+sends `repeating` with the trigger (`CombatService.receive`). Bots press again for each shot.
 
 Speeds above are launch speeds. Unguided shots lose speed with distance (drag, down to 55-70% of launch speed at the end of
 flight) and fall a little (drop, 80 studs/s^2 for pellets down to 3 for pencils); `drag`, `drop` and `lifetime` in

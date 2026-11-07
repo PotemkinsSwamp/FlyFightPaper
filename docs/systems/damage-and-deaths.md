@@ -15,7 +15,10 @@ it; `tests/unit/HitShapes.spec.luau` fails without the fix). Not yet seen in a m
   is a scrape: health that grows the longer contact lasts, and the pilot's client knocks the nose and aim 10 degrees
   away and rolls the plane into a fading wobble (`flight.scrape_*`). More head-on is a crash. Empty Lift on the floor
   and the train's moving front always kill. Judged by `Rules.crashes` in `src/shared/FlightRules.luau` on both the
-  server and the pilot's client. The old rulebook text below is superseded where it differs.
+  server and the pilot's client. The pilot's client crumples its own plane the moment it feels a crash and tells the
+  server, which agrees if the plane is really beside that solid part of the room (`FlightService:crashed`; Alan
+  2026-11-07: a thin rail folded a plane that came back, because the server's 10-a-second check missed the touch).
+  The old rulebook text below is superseded where it differs.
 
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
 

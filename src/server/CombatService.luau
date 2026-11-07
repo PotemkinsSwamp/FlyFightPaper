@@ -129,6 +129,9 @@ function Service:receive(p,packet,now)
   local range=FlightRules.finite(packet.range) and math.clamp(packet.range,20,3000) or nil
   info.aimData[packet.group]={arc=arc,at=now,latency=age,range=range,onRing=packet.onRing==true};info.latency=age
  end
+ -- One shot per click for every weapon that isn't automatic (Alan 2026-11-07); phones say `repeating` while FIRE is held
+ -- (or auto-firing), and then those weapons keep firing as each one is ready.
+ info.repeating=info.repeating or {};info.repeating[packet.group]=packet.down and packet.repeating==true or nil
  info.seq=packet.seq;self:trigger(p,packet.group,packet.down,packet.down and packet.direction or nil)
  return true
 end
@@ -463,7 +466,8 @@ function Service:step(dt)
      if weapon.homing then
       if info.lockPilot and now-info.lockAt>=Config.eraser_lock_seconds then self:fire(p,mount,now) end
      elseif weapon.fire_mode=="automatic" then self:fire(p,mount,now)
-     elseif weapon.fire_mode=="alternate" then self:fireAlternate(p,info,mount.group,now)
+     elseif weapon.fire_mode=="alternate" and info.repeating and info.repeating[mount.group] then self:fireAlternate(p,info,mount.group,now)
+     elseif weapon.fire_mode=="semiautomatic" and info.repeating and info.repeating[mount.group] then self:fire(p,mount,now)
      elseif weapon.fire_mode=="burst" and mount.burstLeft==0 then mount.burstLeft=weapon.burst_count;mount.burstNext=now;mount.readyAt=now+weapon.burst_period end
     end
     if mount.burstLeft>0 then

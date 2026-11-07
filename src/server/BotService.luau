@@ -624,7 +624,7 @@ function Service:steer(p,b,dt,now)
   local semi,eraser=false,false
   for _,mount in ipairs(self.combat.info[p.id].mounts) do if mount.group==group then
    eraser=eraser or mount.weapon.homing
-   semi=semi or (mount.weapon.fire_mode=="semiautomatic" and not mount.weapon.homing)
+   semi=semi or ((mount.weapon.fire_mode=="semiautomatic" or mount.weapon.fire_mode=="alternate") and not mount.weapon.homing)
   end end
   if semi then self.combat:trigger(p,group,false,aim) end
   -- Bots are smart with erasers: they wait for a full lock. Guns and pencils need alignment.

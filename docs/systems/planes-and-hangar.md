@@ -62,6 +62,9 @@ Mount rules: use ordered compatible attachment positions. Heavy accepts heavy/me
 medium/light; light accepts light. Total capacity AND mount types AND owned/level-eligible selections must
 pass. No free heavy compatibility from other parts. Purchasing a weapon unlocks its type, not consumable
 copies. Each utility costs mass and supplies its own boost meter; one utility slot, starter empty.
+The two Gunships share capacity 10 but not mounts: the Toilet Roll Gunship has heavy, heavy, medium, medium, light,
+light; the heavier, slower Cardboard Gunship has heavy, heavy, medium, medium, medium, light (Alan 2026-11-07: room for
+a fifth medium gun, such as a fifth Thumbtack).
 
 Precision Paperclip uses 2 capacity; Rubber Band Repeater uses 2. Weapon class still controls mount
 compatibility (paperclip medium, rubber light). Saved presets that exceed capacity or contain more than two

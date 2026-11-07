@@ -27,7 +27,7 @@ function Controller.start(getPlane,effects)
   local body=p:FindFirstChild("Root");if not body then return end
   seq+=1
   local direction,range,onRing=effects.aim(body,which)
-  remote:FireServer({group=which,down=down(which) and not Root:GetAttribute("OverlayOpen"),direction=direction,range=range,onRing=Run:IsStudio() and onRing or nil,at=workspace:GetServerTimeNow(),life=life,seq=seq})
+  remote:FireServer({group=which,down=down(which) and not Root:GetAttribute("OverlayOpen"),repeating=Touch.active() or nil,direction=direction,range=range,onRing=Run:IsStudio() and onRing or nil,at=workspace:GetServerTimeNow(),life=life,seq=seq})
  end
  Input.InputBegan:Connect(function(input,processed)
   if processed or Input:GetFocusedTextBox() or Root:GetAttribute("OverlayOpen") then return end
@@ -52,6 +52,7 @@ function Controller.start(getPlane,effects)
   clock+=dt
   -- Not in the lessons (Alan 2026-10-29: they teach firing when the dot turns red); the Range keeps it.
   local lesson=Root:GetAttribute("TutorialOpen")==true and Root:GetAttribute("TutorialLesson")~="range"
+  effects.setRepeating(Touch.active())
   local nowAuto=Touch.active() and Root:GetAttribute("AutoFire")~=false and FlightState.onTarget==true and not Root:GetAttribute("OverlayOpen") and not lesson
   if nowAuto~=auto then auto=nowAuto;effects.press(1,down(1));send(1) end
   for which=1,2 do if burstUntil[which]>0 and os.clock()>=burstUntil[which] then burstUntil[which]=0;effects.press(which,down(which));send(which) end end

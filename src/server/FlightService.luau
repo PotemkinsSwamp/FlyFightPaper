@@ -82,6 +82,7 @@ function Service.new()
    if type(value)=="boolean" then p[action.."Held"]=value end
    return
   end
+  if action=="crashed" then self:crashed(p,value);return end
   local now=workspace:GetServerTimeNow();if now-p.lastAction<0.35 then return end;p.lastAction=now
   if action=="launch" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:launch(p)
   elseif action=="fresh" and p.model:GetAttribute("State")=="DESK" and not p.serviceBusy then self:destroy(p,{kind="fresh"},"fresh")
@@ -408,6 +409,17 @@ function Service:impact(p,normal,part,now,dt,pushed)
  self:damage(p,amount,"collision",true,how)
  p.model:SetAttribute("CollisionNormal",normal);p.model:SetAttribute("DeflectUntil",now+.35)
  say(p,"scraping")
+end
+-- The pilot's client flies the plane and felt a head-on crash (FlightController): it has already crumpled the plane on
+-- screen, so the server agrees whenever the plane is really beside that solid part of the room (Alan 2026-11-07: a thin
+-- rail folded a plane that then came back, because the server's own 10-a-second check missed the touch). A client can
+-- only ever crash itself this way.
+function Service:crashed(p,part)
+ if p.model:GetAttribute("State")~="FLYING" or self.safe or p.gentle then return false end
+ if typeof(part)~="Instance" or not part:IsA("BasePart") or not part:IsDescendantOf(self.room) or not part.CanCollide then return false end
+ if not table.find(workspace:GetPartBoundsInRadius(p.body.Position,40,self.overlap),part) then return false end
+ self:destroy(p,{kind="crash",part=part.Name,outOfLift=p.model:GetAttribute("Lift")<=0},"collision")
+ return true
 end
 -- A duct fan blade: a big bite out of the plane and a shove the way the blade was moving.
 function Service:fanHit(p,push,now)

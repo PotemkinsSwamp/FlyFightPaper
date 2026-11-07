@@ -202,6 +202,8 @@ function Controller.start(plane)
 			local into = math.max(0, -drive.VectorVelocity:Dot(normal), -heading:Dot(normal) * speed)
 			-- Flight School planes (Gentle) never crash: the server only bounces them off, so the client mustn't crumple.
 			if not plane:GetAttribute("Gentle") and not Root:GetAttribute("WallsSafe") and (Rules.crashes(into, math.max(drive.VectorVelocity.Magnitude, speed)) or part.Name == "Floor" and lift <= 0) then
+				-- Tell the server once: it may have missed a brief touch (a thin rail) and would bring the plane back.
+				if not Deaths.dying(plane) then Root.FlightAction:FireServer("crashed", part) end
 				Deaths.predict(plane)
 			else
 				scrape(normal, now)

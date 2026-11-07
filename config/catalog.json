@@ -56,14 +56,7 @@
       "base_lift": 83,
       "mount_count": 6,
       "capacity": 10,
-      "mount_types": [
-        "heavy",
-        "heavy",
-        "medium",
-        "medium",
-        "light",
-        "light"
-      ],
+      "mount_types": ["heavy", "heavy", "medium", "medium", "medium", "light"],
       "visual_scale": 3.19,
       "wing_shift": 2.65
     },
@@ -370,7 +363,7 @@
       "projectile_speed": 500,
       "drag": 2,
       "drop": 30,
-      "fire_mode": "automatic",
+      "fire_mode": "semiautomatic",
       "shot_interval": 1,
       "lifetime": 0.255,
       "homing": false,
@@ -413,7 +406,7 @@
       "projectile_speed": 900,
       "drag": 1.2,
       "drop": 60,
-      "fire_mode": "automatic",
+      "fire_mode": "semiautomatic",
       "shot_interval": 0.3333333,
       "lifetime": 0.9155,
       "homing": false,

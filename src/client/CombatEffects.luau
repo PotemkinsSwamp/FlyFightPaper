@@ -401,6 +401,8 @@ function Effects.start(getPlane)
   end
   Audio.play(weapon.id)
  end
+ -- Phones: FIRE held keeps the one-shot-per-click weapons firing as each is ready (CombatService.receive).
+ local repeating=false
  local function step(plane,now,pressed)
   for _,mount in ipairs(mounts) do
    local weapon=mount.weapon
@@ -409,13 +411,14 @@ function Effects.start(getPlane)
     if weapon.fire_mode=="automatic" then
      local heat,cooling,allowed=Rules.heatShot(mount.heat,mount.cooling,weapon)
      if allowed then shoot(plane,mount,now);mount.readyAt=now+weapon.shot_interval;mount.heat,mount.cooling=heat,cooling end
-    elseif weapon.fire_mode=="alternate" then
+    elseif weapon.fire_mode=="alternate" and (pressed==mount.group or repeating) then
      local index,nextAt=Rules.alternateMount(mounts,mount.group,now,roundRobin[mount.group],altAt[mount.group])
      if index then
       local turn=mounts[index]
       shoot(plane,turn,now);turn.readyAt=now+weapon.shot_interval;roundRobin[mount.group],altAt[mount.group]=index,nextAt
      end
-    elseif weapon.fire_mode=="burst" and mount.burstLeft==0 then mount.burstLeft,mount.burstNext,mount.readyAt=weapon.burst_count,now,now+weapon.burst_period end
+    elseif weapon.fire_mode=="burst" and mount.burstLeft==0 then mount.burstLeft,mount.burstNext,mount.readyAt=weapon.burst_count,now,now+weapon.burst_period
+    elseif weapon.fire_mode=="semiautomatic" and repeating and not weapon.homing and pressed==nil then shoot(plane,mount,now);mount.readyAt=now+weapon.shot_interval end
    end
    while mount.burstLeft>0 and now>=mount.burstNext do shoot(plane,mount,now);mount.burstLeft-=1;mount.burstNext+=weapon.burst_spacing end
   end
@@ -447,7 +450,7 @@ function Effects.start(getPlane)
    if mount.group==group and mount.weapon.fire_mode=="burst" then return mount.weapon.burst_count*mount.weapon.burst_spacing end
   end
  end
- return {aim=aimFor,burstSeconds=burstSeconds,press=function(which,down)
+ return {aim=aimFor,burstSeconds=burstSeconds,setRepeating=function(on) repeating=on end,press=function(which,down)
   local plane=flying();local now=workspace:GetServerTimeNow()
   if plane then refresh(plane);for _,mount in ipairs(mounts) do if mount.group==which then coolMount(plane,mount,held[which],now) end end end
   held[which]=down
