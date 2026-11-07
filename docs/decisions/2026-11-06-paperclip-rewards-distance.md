@@ -13,7 +13,8 @@
   on the score strip does the same. The Menu button and Esc open the menu; Roblox's player list stays off.
 
 - A paperclip aimed at you glints, like a sniper's scope: a real, bright flash on their plane when in view; when not, a
-  really faint reddish glint spread along the bottom of the screen, not an arrow. No sound.
+  reddish glint spread along the bottom of the screen, not an arrow. No sound. Its strength was set by eye in the air
+  (2026-11-07, `BEHIND_PEAK` 0.528): anything fainter vanished over the bright town.
 
 ## Why
 - In play two clips folded most planes in two hits, because each hit was 48 at once and almost never missed. On paper
