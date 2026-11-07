@@ -124,12 +124,12 @@ Lessons.flight={
     end
     return ctx.state=="DESK" and (ctx.data.flew or ctx.data.home)
    end},
-  {text="You landed! Click a glowing button. Refill Lift and Repair are free. Full refold: change your plane. Fresh plane: start over.",gotIt=true,
+  {text="You landed! Your Lift fills up by itself. Click a glowing button. Repair is free. Full refold: change your plane. Fresh plane: start over.",gotIt=true,
    enter=function(ctx) ctx.lesson({slow=false}) end,
    update=function(ctx)
-    ctx.spotlight("Refill","Repair","Fresh","Refold")
+    ctx.spotlight("Repair","Fresh","Refold")
     -- Using one ends the step too (Alan 2026-10-28: he tapped Repair and still had to press Got it).
-    return ctx.clicked("Refill") or ctx.clicked("Repair") or ctx.clicked("Fresh") or ctx.clicked("Refold")
+    return ctx.clicked("Repair") or ctx.clicked("Fresh") or ctx.clicked("Refold")
    end},
  },
 }

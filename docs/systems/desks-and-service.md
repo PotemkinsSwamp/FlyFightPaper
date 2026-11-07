@@ -1,7 +1,7 @@
 # Desks and service
 
 ## What the player sees
-Every pilot has a desk. You launch from it and can fly back to land: refill Lift for free, repair for free (each repair wears your maximum health down a little), pay 120 Paper for a full refold that keeps your streak, or take a free fresh plane that ends it. While parked you get up to 120 seconds of protection per life. The desk's hangar shows your five builds: pick one and
+Every pilot has a desk. You launch from it and can fly back to land: Lift and Boost fill by themselves, repair is free (each repair wears your maximum health down a little), pay 120 Paper for a full refold that keeps your streak, or take a free fresh plane that ends it. While parked you get up to 120 seconds of protection per life. The desk's hangar shows your five builds: pick one and
 the preview shows it; **Edit build** opens the full hangar on it; a full refold flies it.
 
 ## Where it stands
@@ -58,7 +58,7 @@ Do not let one plane's expiry remove a teammate's protection. Document this as t
 owner's per-pilot timeout, not a universal glass wall that accidentally protects everyone forever.
 
 ### Repair math (delegated starting resolution)
-Track original maximum H, current life maximum M, and health h. Free refill restores Lift/boost after two
+Track original maximum H, current life maximum M, and health h. Landing refills Lift/boost by itself after two
 seconds and never changes M. Free health repair after three seconds increases health but accumulates wear
 proportional to health actually restored. Initial equation:
 

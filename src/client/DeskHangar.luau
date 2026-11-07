@@ -80,7 +80,7 @@ function DeskHangar.new(playerGui, api)
 		return group
 	end
 	local left = panel("Left", Vector2.new(0, 0), 640, 1068)
-	local right = panel("Right", Vector2.new(1, 0), 490, 820)
+	local right = panel("Right", Vector2.new(1, 0), 490, 642)
 	local bottom = panel("Bottom", Vector2.new(0.5, 1), 760, 300)
 	local function fit()
 		local view = workspace.CurrentCamera.ViewportSize
@@ -96,7 +96,7 @@ function DeskHangar.new(playerGui, api)
 		-- if needed so Customize still fits above the bottom edge.
 		local top = api.feed.AbsolutePosition.Y + api.feed.AbsoluteSize.Y - layer.AbsolutePosition.Y + ScreenFit.GAP
 		right.Position = UDim2.new(1, -16, 0, top)
-		right.UIScale.Scale = math.min(s, (view.Y - top - 12) / 820)
+		right.UIScale.Scale = math.min(s, (view.Y - top - 12) / 642)
 	end
 	ScreenFit.watch(fit)
 	api.feed:GetPropertyChangedSignal("AbsolutePosition"):Connect(fit)
@@ -166,14 +166,13 @@ function DeskHangar.new(playerGui, api)
 	PaperUI.phone(note.UITextSizeConstraint, { MaxTextSize = 40 })
 	local launch = button(bottom, "Launch", Desk.launch, "LAUNCH!", 0, 72, 760, 228, -1, function() api.flight("launch") end, 120)
 
-	-- Down the right: the service strips, then Customize (the Hangar's orange). Alan 2026-10-22: big, middle, small,
-	-- middle, big, so the column curves and fills the side.
+	-- Down the right: the service strips, then Customize (the Hangar's orange). Alan 2026-10-22: the column curves.
+	-- No Refill Lift strip: landing fills Lift and Boost by itself (Alan 2026-11-06).
 	local service = function(kind) return function() api.round:FireServer("service", kind) end end
 	local REFOLD = "Full refold - 120 Paper"
 	local buttons = {}
 	local top = 0
 	for _, entry in {
-		{ "Refill", "Refill Lift", Desk.stripBlue, service("refill"), 490, 160, -1.5, 52 },
 		{ "Repair", "Repair", Desk.stripGreen, service("repair"), 450, 142, 1, 48 },
 		{ "Fresh", "Fresh plane", Desk.stripYellow, function() api.flight("fresh") end, 410, 126, -1, 46 },
 		{ "Refold", REFOLD, Desk.stripRed, function()
@@ -303,7 +302,7 @@ function DeskHangar.new(playerGui, api)
 	Players.LocalPlayer:GetAttributeChangedSignal("SelectedClass"):Connect(function()
 		if not flipping and (Players.LocalPlayer:GetAttribute("SelectedClass") ~= nil) ~= onPresets then setBoard(not onPresets) end
 	end)
-	PaperUI.popIn(cover, { buttons.Refill, buttons.Repair, buttons.Fresh, buttons.Refold, customize, launch })
+	PaperUI.popIn(cover, { buttons.Repair, buttons.Fresh, buttons.Refold, customize, launch })
 	Players.LocalPlayer:GetAttributeChangedSignal("SelectedPreset"):Connect(function()
 		preset = Players.LocalPlayer:GetAttribute("SelectedPreset") or 1
 	end)
