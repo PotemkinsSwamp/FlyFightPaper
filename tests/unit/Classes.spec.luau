@@ -1,5 +1,6 @@
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Catalog=require(Root.Shared.Catalog)
+local Rules=require(Root.Shared.ServiceRules)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local catalog=Catalog.new(require(Root.Generated.Catalog),require(Root.Generated.Gameplay))
 local Spec={}
@@ -40,6 +41,12 @@ function Spec.run()
   assert(catalog:isClassLoadout(plane,10) and not catalog:isClassLoadout(plane,9))
   plane.weapon_mounts[3]="pellet"
   assert(not catalog:isClassLoadout(plane,50))
+ end)
+ test("a plane swaps free only at its desk, before it has flown this life",function()
+  assert(Rules.freeSwap("DESK",false,false,nil))
+  assert(not Rules.freeSwap("DESK",true,false,nil)) -- landed without dying
+  assert(not Rules.freeSwap("FLYING",true,false,nil) and not Rules.freeSwap("DESK",false,true,nil))
+  assert(not Rules.freeSwap("DESK",false,false,true)) -- lessons keep their plane
  end)
  test("a saved build's parts don't pass as a class",function()
   local plane=catalog:classLoadout("striker",50)

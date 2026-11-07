@@ -73,6 +73,11 @@ function Rules.linedUp(home, position, look, cfg)
     return look.Unit:Dot(-home.LookVector) >= math.cos(math.rad(cfg.approach_max_angle_degrees))
 end
 -- Dev mode (Alan 2026-10-29): Studio, or the account that owns the game (a user, not a group) in live servers.
+-- A plane still waiting at its desk, never flown this life, changes to the picked plane at once and free (Alan 2026-11-06:
+-- at a match's start and after every respawn). Once it has flown it waits for a fold, a fresh plane or a full refold.
+function Rules.freeSwap(state, hasLaunched, serviceBusy, practice)
+    return state == "DESK" and not hasLaunched and not serviceBusy and not practice
+end
 function Rules.devAllowed(userId, studio, creatorType, creatorId)
     return studio == true or creatorType == "User" and type(creatorId) == "number" and creatorId > 0 and userId == creatorId
 end

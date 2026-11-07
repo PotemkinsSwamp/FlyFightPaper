@@ -404,7 +404,7 @@ function DeskHangar.new(playerGui, api)
 		local message = plane:GetAttribute("Message")
 		if message ~= lastMessage then lastMessage, messageAt = message, os.clock() end
 		note.Text = (plane:GetAttribute("ServiceBusy") or os.clock() - messageAt < 4) and message and message ~= "" and message
-			or os.clock() - picked < 4 and string.format("%s picked: Full refold flies it, Customize changes it.", build and build.name or "Loadout")
+			or os.clock() - picked < 4 and string.format(loadout and "%s picked: Fresh plane or Full refold flies it." or "%s is on your desk.", build and build.name or "Loadout")
 			or remaining <= 0 and "Hangar safety used up: back after 2 minutes out, or with a kill."
 			or string.format("Safe in the hangar: %.0fs. Repair leaves %.0f max health. A fresh plane ends your streak.", remaining, repair and repair.lifeMaxHealth or 0)
 		note.TextColor3 = remaining <= 10 and Color3.fromRGB(200, 40, 30) or remaining <= 30 and Color3.fromRGB(200, 110, 20) or PaperUI.INK

@@ -227,6 +227,14 @@ function Service:replace(p)
  if p.model then p.model:Destroy() end
  self:build(p)
 end
+-- The picked plane goes on the desk now if this one hasn't flown yet (ServiceRules.freeSwap). Hangar safety carries over: a swap never tops it up.
+function Service:swapAtDesk(p)
+ if not p.player or not Landing.freeSwap(p.model:GetAttribute("State"),p.hasLaunched,p.serviceBusy,p.practice) then return false end
+ local left=p.protectionRemaining
+ self:replace(p)
+ p.protectionRemaining=left
+ return true
+end
 function Service:remove(p,cause)
  if p.model:GetAttribute("State")~="DESTROYED" then self:destroy(p,{kind="left"},cause) end
  p.model:Destroy();self.pilots[p.key]=nil;self.byId[p.id]=nil;self.seats[p.seat]=nil

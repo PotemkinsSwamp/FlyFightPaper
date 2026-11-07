@@ -23,6 +23,13 @@ function Service:select(player,slot)
  local p=self.flight.pilots[player]
  if p then p.testLoadout=nil end
 end
+-- Says what happens to the plane just picked, swapping it onto the desk when that's free.
+function Service:picked(player,name)
+ local p=self.flight.pilots[player]
+ if p and self.flight:swapAtDesk(p) then self:message(player,name.." is on your desk.")
+ elseif p then self:message(player,name.." picked. Fresh plane or Full refold flies it.")
+ else self:message(player,name.." picked for your next flight.") end
+end
 function Service:enqueue(player,input,callback)
  if not self.profiles:enqueue(player,input,nil,callback) then self:message(player,"Saving is busy. Try again shortly.") end
 end
@@ -31,7 +38,7 @@ function Service:handle(player,action,value)
  if action=="selectPreset" then
   if type(value)~="number" or value%1~=0 or value<1 or value>PresetCount then return end
   self:select(player,value)
-  self:message(player,self.flight.pilots[player] and ("Loadout "..value.." picked. Full refold at your desk flies it.") or ("Loadout "..value.." picked for your next flight."))
+  self:picked(player,"Loadout "..value)
  elseif action=="selectClass" then
   local class=self.catalog:classById(value)
   if not class then return end
@@ -39,7 +46,7 @@ function Service:handle(player,action,value)
   player:SetAttribute("SelectedClass",value)
   local p=self.flight.pilots[player]
   if p then p.testLoadout=nil end
-  self:message(player,self.flight.pilots[player] and (class.name.." picked. Full refold at your desk flies it.") or (class.name.." picked for your next flight."))
+  self:picked(player,class.name)
  elseif action=="savePreset" then
   if not slotOf(value) then return end
   local candidate=Schema.copy(profile);local preset=Schema.copy({name=profile.presets[value.slot].name,loadout=value.loadout}) -- renaming is its own action
@@ -53,8 +60,9 @@ function Service:handle(player,action,value)
    self:select(player,value.slot)
    local p=self.flight.pilots[player]
    local atDesk=p and p.model and p.model:GetAttribute("State")=="DESK"
-   if value.fly==true and atDesk and self.flight.onService then self:message(player,"Saved. Refolding it at your desk.");self.flight.onService(p,"refold")
-   else self:message(player,not p and "Saved. You fly this loadout next." or atDesk and "Saved. Full refold at your desk flies it." or "Saved. Land at your desk to fly it.") end
+   if p and self.flight:swapAtDesk(p) then self:message(player,"Saved. It's on your desk.")
+   elseif value.fly==true and atDesk and self.flight.onService then self:message(player,"Saved. Refolding it at your desk.");self.flight.onService(p,"refold")
+   else self:message(player,not p and "Saved. You fly this loadout next." or atDesk and "Saved. Fresh plane or Full refold flies it." or "Saved. Land at your desk to fly it.") end
   end)
  elseif action=="saveRangePreset" then
   -- The Range's own builds (TUTORIAL-PLAN "Range loadouts"): any part, still a legal plane; saving swaps your plane

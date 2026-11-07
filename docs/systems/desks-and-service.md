@@ -4,7 +4,11 @@
 Every pilot has a desk. You launch from it and can fly back to land: refill Lift for free, repair for free (each repair wears your maximum health down a little), pay 120 Paper for a full refold that keeps your streak, or take a free fresh plane that ends it. While parked you get up to 120 seconds of protection per life. The desk's hangar shows your five builds: pick one and
 the preview shows it; **Edit build** opens the full hangar on it; a full refold flies it.
 
-## Where it stands (2026-10-22)
+## Where it stands
+**Changing planes (Alan 2026-11-06):** a plane that hasn't flown this life swaps to the picked loadout or preset at once
+and free, at a match's start and after every respawn (`ServiceRules.freeSwap`); hangar safety doesn't top up. Once it has
+flown, the pick waits for a fold, Fresh plane or Full refold, and the game says so.
+ (2026-10-22)
 **New quick menu approved by Alan in a match (2026-10-22)** ([decision](../decisions/2026-10-22-desk-quick-menu.md)):
 photo, name and a four-row stat sheet top left, the five builds as small turned photos on a cork strip down the left,
 pinned service strips and Customize (opens the Hangar's binder) down the right, the note and LAUNCH! bottom middle; the
