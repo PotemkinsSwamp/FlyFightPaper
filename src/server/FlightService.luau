@@ -94,17 +94,19 @@ function Service.new()
    -- Dev test: replace every bot with an even mix of all builds, skills, personalities and quirks.
    self.eraserDuel=false;self.mixedBots=(self.mixedBots or 0)+1
    for _,bot in pairs(self.pilots) do if bot.kind=="bot" then self:remove(bot,"vacancy") end end
-  elseif action=="eraserBots" and player:GetAttribute("Dev")==true then
-   -- Dev dodge practice: one enemy bot with only an eraser hunts you; the other bots leave (until Play stops).
+  elseif (action=="eraserBots" or action=="clipBots") and player:GetAttribute("Dev")==true then
+   -- Dev practice: enemy bots hunt you (one with only an eraser, or three with paperclips to see the glint); the other
+   -- bots leave (until Play stops).
    self.eraserDuel=true
-   local hunter
+   local choice,keep=action=="clipBots" and "paperclip_only" or "eraser_only",action=="clipBots" and 3 or 1
    for _,bot in pairs(self.pilots) do if bot.kind=="bot" then
-    if hunter then self:remove(bot,"vacancy") else hunter=bot end
+    if keep==0 then self:remove(bot,"vacancy")
+    else
+     keep-=1
+     bot.team=nil;bot.testLoadout=Loadouts.make(self.catalog,choice);bot.loadoutName=choice
+     if bot.model:GetAttribute("State")=="DESK" then self:replace(bot) else self:destroy(bot,{kind="fresh"},"fresh") end
+    end
    end end
-   if hunter then
-    hunter.team=nil;hunter.testLoadout=Loadouts.make(self.catalog,"eraser_only");hunter.loadoutName="eraser_only"
-    if hunter.model:GetAttribute("State")=="DESK" then self:replace(hunter) else self:destroy(hunter,{kind="fresh"},"fresh") end
-   end
   end
  end)
  Players.PlayerRemoving:Connect(function(player) local p=self.pilots[player];if p then self:remove(p,"departure") end end)

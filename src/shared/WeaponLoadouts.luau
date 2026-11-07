@@ -5,6 +5,7 @@ function Loadouts.make(catalog, choice)
 	elseif choice == "paperclip" then loadout.weapon_mounts={"paperclip",false,"pellet",false}
 	elseif choice == "eraser" then loadout.weapon_mounts={"eraser",false,"pellet",false}
 	elseif choice == "eraser_only" then loadout.weapon_mounts={"eraser",false,false,false}
+	elseif choice == "paperclip_only" then loadout.weapon_mounts={"paperclip","paperclip",false,false}
 	elseif choice == "pencil" then loadout.weapon_mounts={"pencil",false,"pellet",false}
 	-- The tutorial's fixed training plane (Alan 2026-10-18): pellets on left click, an eraser on right, a booster.
 	elseif choice == "training" then loadout.weapon_mounts={"pellet","eraser",false,false};loadout.utility="boost_band"
