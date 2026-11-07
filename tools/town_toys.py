@@ -114,7 +114,8 @@ def place(x, z, angle, size):
 
 
 def part(name, rec, color, cf, size, solid):
-    solid = solid or name in ALSO_SOLID
+    # Nothing outside the room is solid: planes can't fly out there (Alan 2026-11-07).
+    solid = (solid or name in ALSO_SOLID) and abs(cf[0]) < 1400 and abs(cf[2]) < 1100
     sx, sy, sz = size
     rot = "".join(f"<R{i // 3}{i % 3}>{v:.4f}</R{i // 3}{i % 3}>" for i, v in enumerate(cf[3:]))
     flag = lambda b: "true" if b else "false"
