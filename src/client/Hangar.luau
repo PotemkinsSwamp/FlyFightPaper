@@ -109,37 +109,10 @@ function Hangar.new(playerGui, api)
 		elseif not picked then
 			state.preset = player:GetAttribute("SelectedPreset") or 1
 		end
+		render()
 	end
-	-- "Switch to presets" (Alan 2026-11-06): the pin board really flips over. The board is a 3D card (first/BoardPlate), so
-	-- it turns edge-on, the other list goes on it there, and it turns back with the new pictures. Presets are the fixed
-	-- planes, loadouts your own (in this code `class` is a preset and `preset` a saved loadout: the save keeps its names).
-	local FLIP = 0.22
-	local function flipBoard(classes)
-		if state.flipping then return end
-		state.flipping = true
-		local board = cover:FindFirstChild("Board", true)
-		local cards = {}
-		for _, card in board:GetChildren() do
-			if card:IsA("BasePart") then cards[card] = card.CFrame end
-		end
-		content.Visible, shelf.frame.Visible, classShelf.frame.Visible, back.Visible = false, false, false, false
-		local function turn(from, to, ease)
-			local start = os.clock()
-			repeat
-				RunService.RenderStepped:Wait()
-				local t = math.min((os.clock() - start) / FLIP, 1)
-				local turned = CFrame.Angles(0, math.rad(from + (to - from) * ease(t)), 0)
-				for card, rest in cards do card.CFrame = turned * rest end
-			until t >= 1
-		end
-		task.spawn(function()
-			turn(0, 90, function(t) return t * t end)
-			switchShelf(classes)
-			turn(-90, 0, function(t) return 1 - (1 - t) ^ 2 end)
-			content.Visible, back.Visible, state.flipping = true, true, nil
-			render()
-		end)
-	end
+	-- Presets are the fixed planes, loadouts your own (in this code `class` is a preset and `preset` a saved loadout: the
+	-- save keeps its names).
 
 	local function choose(pick, ...)
 		state.builder.message = ""
@@ -320,7 +293,6 @@ function Hangar.new(playerGui, api)
 
 	render = function()
 		for _, child in content:GetChildren() do child:Destroy() end
-		if state.flipping then return end
 		shelf.frame.Visible, classShelf.frame.Visible = state.page == "shelf" and not state.classes, state.page == "shelf" and state.classes == true
 		if not profile then return end
 		local range = state.range and profile.rangePresets ~= nil
@@ -358,10 +330,8 @@ function Hangar.new(playerGui, api)
 				classShelf.set(builds, picked, "Presets", Color3.fromRGB(120, 200, 255))
 			else shelf.set(builds, not (class and not range) and state.preset or nil, range and "Range" or "Loadouts", range and RANGE_PINK or Color3.fromRGB(255, 215, 60)) end
 			if not range and not Root:GetAttribute("TutorialOpen") then
-				-- A phone gets a taller one (a 44-point tap), reaching down over the shelf's top board.
-				local phone = PaperUI.isPhone()
-				local switch = button(content, "ShelfSwitch", Shelf.buttonOrange, classes and "Switch to loadouts" or "Switch to presets", 450, phone and 560 or 570, 460, phone and 130 or 100, 0, function() flipBoard(not classes) end, phone and 50 or 44)
-				switch.ZIndex = 3
+				local other = button(content, "ShelfSwitch", Shelf.shelfTab, classes and "Loadouts" or "Presets", 440, 582, 320, 92, 0, function() switchShelf(not classes) end, 46)
+				other.ZIndex = 3
 			end
 			if range then
 				-- Purple, and under Back on a phone (Alan 2026-10-28: red and on top of the moved Back, it read as a second Back).

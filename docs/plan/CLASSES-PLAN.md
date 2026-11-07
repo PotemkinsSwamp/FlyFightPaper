@@ -9,8 +9,9 @@ skins and the shop get their own plans after this one.
 
 ## What Alan decided
 - Six ready-made class planes: three open at the start, the other three unlocking up to about level 10.
-- Presets are separate from a player's loadouts. A "Switch to presets" button flips the pin board over to the six of
-  them. No part of one can be changed or copied into a loadout. Skins and trails can apply to them later.
+- Presets are separate from a player's loadouts: the Hangar has a tab for each, and the desk menu's "Switch to presets"
+  button flips the cork strip over to the six of them. No part of one can be changed or copied into a loadout. Skins and
+  trails can apply to them later.
 - They carry low-tier weapons, at most two paperclips, and never an eraser.
 - The Carrier needs care: lots of small guns is a big advantage even on a slow plane.
 - New weapons: Hole Punch, Stubby Crayon, Spitball, Thumbtack. No mini eraser.

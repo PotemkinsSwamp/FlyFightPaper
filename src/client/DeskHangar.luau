@@ -1,7 +1,8 @@
 -- In-game desk quick menu, shown while your plane sits in its desk hangar (Alan's pick 2026-10-22: concept
 -- assets/references/ui-concepts/desk-quick-menu-b.png). Pieces pinned round the screen edges with the new Hangar's
 -- art, so the runway, the match strip (top middle) and the kill feed (top right) stay in view: top left the plane's
--- photo, name tape and a short stat sheet; down the left your five builds as small photos; down the right the
+-- photo, name tape and a short stat sheet; down the left your five loadouts as small photos, or flipped over the six
+-- presets; down the right the
 -- service strips and Customize; bottom middle the hangar note and LAUNCH!.
 -- Picking a build selects it and shows it on the photo; Full refold (or a fresh plane) flies it. Customize opens the
 -- full Hangar's binder on it: builds only change at the desk (Alan 2026-10-17).
@@ -102,10 +103,10 @@ function DeskHangar.new(playerGui, api)
 	api.feed:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	-- A turned group of pieces (a photo and its tape turn together); x, y, w, h like PaperUI.image.
-	local function turned(name, x, y, w, h, rotation)
+	local function turned(name, x, y, w, h, rotation, parent)
 		local group = Instance.new("Frame")
 		group.Name, group.BackgroundTransparency, group.AnchorPoint = name, 1, Vector2.new(0.5, 0.5)
-		group.Position, group.Size, group.Rotation, group.Parent = UDim2.fromOffset(x + w / 2, y + h / 2), UDim2.fromOffset(w, h), rotation, left
+		group.Position, group.Size, group.Rotation, group.Parent = UDim2.fromOffset(x + w / 2, y + h / 2), UDim2.fromOffset(w, h), rotation, parent or left
 		return group
 	end
 	local function centred(label, size)
@@ -217,31 +218,91 @@ function DeskHangar.new(playerGui, api)
 	local cork = image(left, "Cork", Desk.corkStrip, 0, corkY, 214, 1068 - corkY)
 	cork.ScaleType, cork.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(240, 225, 210)
 	local preset, presets, shownPresets, picked = Players.LocalPlayer:GetAttribute("SelectedPreset") or 1, nil, nil, -9
-	local slots = {}
-	for i = 1, 5 do
-		local y = corkY + 12 + (i - 1) * 146
-		local tilt = BUILD_TILTS[i]
-		local back = turned("BuildPhoto" .. i, 19, y, 176, 146, tilt)
-		image(back, "Photo", Desk.photo, 0, 0, 176, 146).ScaleType = Enum.ScaleType.Stretch
-		local view = viewport(left, "BuildPlane" .. i, 19 + 176 * BLUE[1], y + 146 * BLUE[2], 176 * (BLUE[3] - BLUE[1]), 146 * (BLUE[4] - BLUE[2]))
-		local front = turned("BuildTag" .. i, 19, y, 176, 146, tilt)
-		local tape = image(front, "Tape", Assets.ingame.tapeLabel, 5, 112, 166, 34)
-		tape.ScaleType = Enum.ScaleType.Stretch
-		local tag = centred(words(front, "Name", "", 18, 114, 140, 30, 24), 24)
-		-- Phones: a taller tape with bigger words (they were about 8 points).
-		PaperUI.phone(tape, { Position = UDim2.fromOffset(88, 122), Size = UDim2.fromOffset(176, 52) })
-		PaperUI.phone(tag, { Position = UDim2.fromOffset(8, 98), Size = UDim2.fromOffset(160, 46) })
-		PaperUI.phone(tag.UITextSizeConstraint, { MaxTextSize = 38 })
-		local outline = image(front, "Picked", Shelf.outline, -4, -4, 184, 154)
-		outline.ScaleType, outline.SliceCenter, outline.SliceScale = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.4
-		local hit = Instance.new("TextButton")
-		hit.Name, hit.Text, hit.BackgroundTransparency = "Pick", "", 1
-		hit.Size, hit.Parent = UDim2.fromScale(1, 1), front
-		hit.Activated:Connect(function()
-			preset = i; api.round:FireServer("selectPreset", i); picked = os.clock()
-		end)
-		slots[i] = { view = view, tag = tag, outline = outline, tilt = tilt }
+	-- One board of photos on the cork: rows of `count` (six presets take smaller photos), pick(i) on a tap.
+	local function photoBoard(boardName, count, pick)
+		local group = Instance.new("Frame")
+		group.Name, group.BackgroundTransparency, group.Size, group.Parent = boardName, 1, left.Size, left
+		local k = math.min(1, 730 / (count * 146))
+		local slots = {}
+		for i = 1, count do
+			local y = corkY + 12 + (i - 1) * 146 * k
+			local tilt = BUILD_TILTS[(i - 1) % 5 + 1]
+			local x, w, h = 107 - 88 * k, 176 * k, 146 * k
+			local back = turned("BuildPhoto" .. i, x, y, w, h, tilt, group)
+			image(back, "Photo", Desk.photo, 0, 0, w, h).ScaleType = Enum.ScaleType.Stretch
+			local view = viewport(group, "BuildPlane" .. i, x + w * BLUE[1], y + h * BLUE[2], w * (BLUE[3] - BLUE[1]), h * (BLUE[4] - BLUE[2]))
+			local front = turned("BuildTag" .. i, x, y, w, h, tilt, group)
+			local tape = image(front, "Tape", Assets.ingame.tapeLabel, 5 * k, 112 * k, 166 * k, 34 * k)
+			tape.ScaleType = Enum.ScaleType.Stretch
+			local tag = centred(words(front, "Name", "", 18 * k, 114 * k, 140 * k, 30 * k, 24), 24)
+			-- Phones: a taller tape with bigger words (they were about 8 points).
+			PaperUI.phone(tape, { Position = UDim2.fromOffset(88 * k, 122 * k), Size = UDim2.fromOffset(176 * k, 52 * k) })
+			PaperUI.phone(tag, { Position = UDim2.fromOffset(8 * k, 98 * k), Size = UDim2.fromOffset(160 * k, 46 * k) })
+			PaperUI.phone(tag.UITextSizeConstraint, { MaxTextSize = 38 })
+			local outline = image(front, "Picked", Shelf.outline, -4, -4, w + 8, h + 8)
+			outline.ScaleType, outline.SliceCenter, outline.SliceScale = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.4
+			local hit = Instance.new("TextButton")
+			hit.Name, hit.Text, hit.BackgroundTransparency = "Pick", "", 1
+			hit.Size, hit.Parent = UDim2.fromScale(1, 1), front
+			hit.Activated:Connect(function() pick(i) end)
+			slots[i] = { view = view, tag = tag, outline = outline, tilt = tilt }
+		end
+		return group, slots
 	end
+	local loadoutBoard, slots = photoBoard("Loadouts", 5, function(i)
+		preset = i; api.round:FireServer("selectPreset", i); picked = os.clock()
+	end)
+	local classes = Catalog:classes()
+	local function locked(class) return (Players.LocalPlayer:GetAttribute("Level") or 1) < class.min_level end
+	local presetBoard, classSlots = photoBoard("Presets", #classes, function(i)
+		if locked(classes[i]) then return end
+		api.round:FireServer("selectClass", classes[i].id); picked = os.clock()
+	end)
+	presetBoard.Visible = false
+	local function showClasses()
+		for i, slot in classSlots do
+			local shut = locked(classes[i])
+			slot.tag.Text = shut and ("Level " .. classes[i].min_level) or classes[i].name
+			slot.view.ImageColor3 = shut and Color3.fromRGB(70, 70, 80) or Color3.new(1, 1, 1)
+			if not slot.drawn then
+				slot.drawn = true
+				showBuild(slot.view, Catalog:classLoadout(classes[i].id, 50), 0.85, slot.tilt)
+			end
+		end
+	end
+	Players.LocalPlayer:GetAttributeChangedSignal("Level"):Connect(function() if presetBoard.Visible then showClasses() end end)
+	-- Beside the cork: flips it over between your loadouts and the presets (Alan 2026-11-06). The cork turns edge-on and
+	-- back; the new photos go up when it's flat again. A phone gets a bigger button (a 44-point tap).
+	local onPresets, flipping = false, false
+	local switch
+	local function setBoard(toPresets)
+		onPresets = toPresets
+		if toPresets then showClasses() end
+		loadoutBoard.Visible, presetBoard.Visible = not toPresets, toPresets
+		switch.Label.Text = toPresets and "Switch to loadouts" or "Switch to presets"
+	end
+	switch = button(left, "SwitchBoard", Shelf.buttonOrange, "Switch to presets", 226, 400, 300, 96, -1, function()
+		if flipping then return end
+		flipping = true
+		local toPresets = not onPresets
+		local wide, tall = cork.Size.X.Offset, cork.Size.Y.Offset
+		loadoutBoard.Visible, presetBoard.Visible = false, false
+		local turn = TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+		local out = TweenService:Create(cork, turn, { Size = UDim2.fromOffset(0, tall) })
+		out:Play()
+		out.Completed:Wait()
+		local home = TweenService:Create(cork, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.fromOffset(wide, tall) })
+		home:Play()
+		home.Completed:Wait()
+		setBoard(toPresets)
+		flipping = false
+	end, 34)
+	PaperUI.phone(switch, { Size = UDim2.fromOffset(340, 140) })
+	PaperUI.phone(switch.Label, { TextSize = 46 })
+	-- A preset picked in the Hangar shows here too.
+	Players.LocalPlayer:GetAttributeChangedSignal("SelectedClass"):Connect(function()
+		if not flipping and (Players.LocalPlayer:GetAttribute("SelectedClass") ~= nil) ~= onPresets then setBoard(not onPresets) end
+	end)
 	PaperUI.popIn(cover, { buttons.Refill, buttons.Repair, buttons.Fresh, buttons.Refold, customize, launch })
 	Players.LocalPlayer:GetAttributeChangedSignal("SelectedPreset"):Connect(function()
 		preset = Players.LocalPlayer:GetAttribute("SelectedPreset") or 1
@@ -329,7 +390,10 @@ function DeskHangar.new(playerGui, api)
 		local build = picked_()
 		name.Text = build and build.name or ""
 		notYet.Text = loadout and "Not flying yet" or ""
-		for i, slot in slots do slot.outline.Visible = i == preset and not Players.LocalPlayer:GetAttribute("SelectedClass") end
+		local class = Players.LocalPlayer:GetAttribute("SelectedClass")
+		for i, slot in slots do slot.outline.Visible = i == preset and not class end
+		for i, slot in classSlots do slot.outline.Visible = classes[i].id == class end
+		switch.Visible = not Root:GetAttribute("TutorialOpen")
 		for _, row in rows do
 			local value, max = row[3](pickedStats or plane)
 			local cells = math.max(row.least or 0, max > 0 and math.ceil(math.clamp(value / max, 0, 1) * 5) or 0)
