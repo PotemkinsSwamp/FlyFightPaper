@@ -16,9 +16,8 @@ veterans' builds.
 **Tricks** ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md), `BotTactics`): every bot flies its
 build's trick and skill sets how well (`trick_reliability`, `trick_error`). Popper dart: closes (boosting while far),
 brakes, blasts 1.5 s, boosts out past the target and comes round again (the Popper Dart got an Elastic Booster for it).
-Crayon stand-off: never brakes to hang back (that made it slow and easy prey); one hard turn away when it gets within
-about 200 studs of a target ahead. Spitball first: only the spitball until two are stuck on the target (at most 3 s),
-then the other gun. Everything else: a close turn fight.
+Spitball first: only the spitball until two are stuck on the target (at most 3 s), then the other gun. Everything else,
+the Crayon Tank included (Alan 2026-11-08: its stand-off made it easy prey), a close turn fight.
 **Brake**: each approach brakes at about 80 studs (an Ace almost exactly, a veteran 80-100, lower tiers sloppier and
 sometimes not at all); eased to 60% speed, 15% tighter turns, Lift burns twice as fast; not below a quarter of its Lift.
 **Kill-stealing and switching**: bots notice damaged planes in view (`steal_notice`) and go for the fold; damaged
@@ -27,8 +26,9 @@ about to fold and never hops from one damaged plane to another; a poor one hops 
 planes within 500 studs.
 **Firing** (Alan 2026-11-08): like a player, a bot shoots whenever the targeting ring would show on its target (within
 1000 studs), whatever the gun's range: players don't know ranges, and far planes are easier to hit. Each gun aims at its
-own lead, like the player's per-gun markers (until 2026-11-08 a bot's second gun used the first gun's lead and missed).
-Not yet flown in a match (needs Alan's go).
+own lead, like the player's per-gun markers (until 2026-11-08 a bot's second gun used the first gun's lead and missed),
+and the guns meet at that lead's distance like a player's (until 2026-11-08 at a fixed 150 studs, so wing guns flew past
+either side of planes further out and an Ace's better aim was wasted there). Not yet flown in a match (needs Alan's go).
 In Studio, the workspace attribute `DevBotTier` (e.g. `experienced`, `ace`) gives every bot that skill, for measuring matches;
 `ace_mix` gives one Ace per three veterans.
 Passed Alan's vertical-slice gate (2026-10-11: "the bots pass, it is fun"). Every bot plays the Airspace zone, more often the better it is. Bots still to be checked in every mode; rookie graduation check open.

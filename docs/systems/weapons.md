@@ -133,7 +133,8 @@ with spawn rules. Do not use ordinary repair/refold to reset projectile counts.
 
 A player's guns meet at the range of the target they're aiming at (the client sends it with the aim; the server clamps
 it to 20-3000 studs); with no target, at the weapon's full reach, so the streams never cross on the way (Alan
-2026-11-06: an X past 150 studs); bots keep `combat.gun_convergence_studs` (150). Fixed at 150, the two
+2026-11-06: an X past 150 studs); a bot's at its lead point (2026-11-08; until then bots kept
+`combat.gun_convergence_studs`, 150, which is now only the fallback). Fixed at 150, the two
 wing guns crossed and flew past either side of a plane seen from behind at 300 studs even with the dot red on the
 ring (measured 2026-10-19; Alan: "the shots don't make it"). After the fix, Play: 12 of 12 aimed pellets hit
 targets crossing at 220 studs, and 6 of 6 at 130.

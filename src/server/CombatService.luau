@@ -180,13 +180,15 @@ function Service:enemy(a,b)
  if a~=b and (a.foeOf==b.id or b.foeOf==a.id) then return true end
  return a~=b and not a.practice and not b.practice and (not a.team or not b.team or a.team~=b.team)
 end
-function Service:trigger(p,which,down,aim)
+-- `range`: a bot's distance to its lead point, where its guns meet (a player's comes with its aim, in aimData).
+function Service:trigger(p,which,down,aim,range)
  local info=self.info[p.id];if not info then return end
  local now=workspace:GetServerTimeNow();local old=info.held[which]
  for _,mount in ipairs(info.mounts) do if mount.group==which then self:coolMount(mount,old and self:eligible(p) and not p.overlay,now) end end
  -- A release keeps the last aim: a burst's later rounds may still be on their way out.
  info.held[which]=down;info.aim=aim or info.aim or p.body.CFrame.LookVector
  info.aims=info.aims or {};info.aims[which]=aim or info.aims[which] or info.aim
+ info.ranges=info.ranges or {};info.ranges[which]=range and math.clamp(range,20,3000)
  if not down or not self:eligible(p) or p.overlay then return end
  if not old then
   -- A short click may arrive and release between server frames. Fire its first round here.
@@ -269,8 +271,9 @@ function Service:launch(p,mount,now,target,origin)
  if p.body.CFrame.LookVector:Dot(direction)<math.cos(arc) then direction=p.body.CFrame.LookVector end
  local factor=self.flight.catalog:get(p.loadout.body).visual_scale/2
  local position=p.body.CFrame:PointToWorldSpace(Aircraft.muzzleOffset(mount.slot,factor,mount.weapon.id,Aircraft.fitOf(p.model)))
- -- Bots' guns meet at 150 studs.
- direction=Aircraft.converge(p.body,position,direction,p.kind=="human" and aimData and aimData.range or Config.gun_convergence_studs)
+ -- Guns meet at the pilot's target range (a bot's from trigger); 150 studs without one.
+ local range=p.kind=="human" and aimData and aimData.range or p.kind=="bot" and info.ranges and info.ranges[mount.group]
+ direction=Aircraft.converge(p.body,position,direction,range or Config.gun_convergence_studs)
  if weapon.spread_deg>0 then
   local spread=math.rad(weapon.spread_deg)
   direction=(CFrame.lookAt(Vector3.zero,direction)*CFrame.Angles(self.random:NextNumber(-spread,spread),self.random:NextNumber(-spread,spread),0)).LookVector

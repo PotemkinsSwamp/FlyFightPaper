@@ -346,30 +346,23 @@ function Service:chooseTarget(p,b,now,zone)
  end
  b.target=target;b.pursueUntil=now+b.random:NextNumber(b.profile.pursuit_seconds[1],b.profile.pursuit_seconds[2])*b.style.pursuit_factor
 end
--- The build's trick (Alan 2026-11-08; Tactics): each approach on a target rolls how well it's flown (brakeAt 0 = fumbled,
--- holdAt for a stand-off). A Popper dart closes (boosting while far), brakes, blasts for DART_BLAST seconds, then
--- boosts out past the target and comes back round. A Crayon stands off: it never brakes to hang back (that made it slow
--- and easy to shoot), it just peels off with one hard turn when it gets inside holdAt-100 (about 200 studs) of a target
--- ahead. Braking itself and the spitball-first trigger are in steer.
+-- The build's trick (Alan 2026-11-08; Tactics): each approach on a target rolls how well it's flown (brakeAt 0 = fumbled).
+-- A Popper dart closes (boosting while far), brakes, blasts for DART_BLAST seconds, then boosts out past the target
+-- and comes back round. Braking itself and the spitball-first trigger are in steer.
 function Service:trickStep(p,b,now,delta)
  local gap=delta.Magnitude
  if b.extendUntil and now<b.extendUntil then return end
- if b.brakeFor~=b.target or gap>Tactics.HOLD_STUDS+150 then
+ if b.brakeFor~=b.target or gap>Tactics.REAPPROACH_STUDS then
   b.brakeFor,b.blastAt,b.spitSince=b.target,nil,nil
-  b.brakeAt,b.holdAt=Tactics.approach(b.profile,function(lo,hi) return b.random:NextNumber(lo,hi) end)
+  b.brakeAt=Tactics.approach(b.profile,function(lo,hi) return b.random:NextNumber(lo,hi) end)
  end
- if b.brakeAt<=0 then return end
- local side=p.body.CFrame.LookVector:Cross(Vector3.yAxis):Dot(delta)>=0 and -1 or 1 -- away from the target
- if b.trick=="dart" then
-  if not b.blastAt and gap<math.max(b.brakeAt,40)+15 then b.blastAt=now end
-  if b.blastAt and now-b.blastAt>Tactics.DART_BLAST then
-   b.brakeFor=nil
-   b.extendUntil=self:startMove(b,now,"extend",{"extend",self:pickMove(b,b.profile.reverse_moves,p.body.Position)},-side)
-   b.dartOutUntil=b.extendUntil
-  end
- elseif b.trick=="standoff" and gap<b.holdAt-100 and p.body.CFrame.LookVector:Dot(delta.Unit)>.5 then
+ if b.brakeAt<=0 or b.trick~="dart" then return end
+ if not b.blastAt and gap<math.max(b.brakeAt,40)+15 then b.blastAt=now end
+ if b.blastAt and now-b.blastAt>Tactics.DART_BLAST then
   b.brakeFor=nil
-  b.extendUntil=self:startMove(b,now,"extend",{"break_turn"},side)
+  local side=p.body.CFrame.LookVector:Cross(Vector3.yAxis):Dot(delta)>=0 and 1 or -1 -- toward the target: out past it
+  b.extendUntil=self:startMove(b,now,"extend",{"extend",self:pickMove(b,b.profile.reverse_moves,p.body.Position)},side)
+  b.dartOutUntil=b.extendUntil
  end
 end
 -- Priority state machine, run at the bot's reaction rate. Steering (every frame) adds the avoid override.
@@ -663,10 +656,9 @@ function Service:steer(p,b,dt,now)
  -- Brake (Alan 2026-11-08): close behind a target it is catching, a bot brakes like a player to stay on its tail and
  -- keep firing: slower and a little tighter in turns while held, eased like the player's; FlightService burns its Lift
  -- twice as fast meanwhile. Where it starts braking is this approach's roll (trickStep): about 80 studs, exactly for an
- -- Ace, sloppier lower down, sometimes not at all. A Crayon stand-off doesn't brake.
+ -- Ace, sloppier lower down, sometimes not at all.
  local gap=(b.mode=="chase" and b.target) and b.target.body.Position-position or nil
- local brakeAt=b.trick~="standoff" and b.brakeAt or 0
- local braking=gap~=nil and not p.pal and gap.Magnitude>1 and gap.Magnitude<brakeAt
+ local braking=gap~=nil and not p.pal and gap.Magnitude>1 and gap.Magnitude<(b.brakeAt or 0)
   and (p.body.AssemblyLinearVelocity-b.target.body.AssemblyLinearVelocity):Dot(gap.Unit)>0
   and (p.model:GetAttribute("Lift") or 0)>p.stats.lift*.25
  p.brakeHeld=braking
@@ -717,13 +709,15 @@ function Service:steer(p,b,dt,now)
    spit=spit or mount.weapon.id=="spitball"
    if not mount.weapon.homing then gun=gun or mount.weapon end
   end end
-  local aim,aligned=self.combat.info[p.id].aim or look,false
+  local aim,aligned,range=self.combat.info[p.id].aim or look,false,nil
   if inRing and gun then
    local point=gun==self:weaponFor(p) and lead or self:leadWith(p,b,now,gun)
    local to=point-position
-   if to.Magnitude>.1 then aim,aligned=aimError(to.Unit,b,now),look:Dot(to.Unit)>math.cos(math.rad(12)) end
+   -- The guns meet at the lead point, like a player's at their target's range (they met at 150 studs before
+   -- 2026-11-08, so wing guns missed wide further out and an Ace's better aim was wasted there).
+   if to.Magnitude>.1 then aim,aligned,range=aimError(to.Unit,b,now),look:Dot(to.Unit)>math.cos(math.rad(12)),to.Magnitude end
   end
-  if semi then self.combat:trigger(p,group,false,aim) end
+  if semi then self.combat:trigger(p,group,false,aim,range) end
   -- Bots are smart with erasers: they wait for a full lock. Guns and pencils need alignment.
   local fire=eraser and (p.model:GetAttribute("LockProgress") or 0)>=1 or not eraser and aligned and (not spitFirst or spit==wantSpit)
   if fire and spitFirst and spit then b.spitSince=b.spitSince or now end
@@ -733,7 +727,7 @@ function Service:steer(p,b,dt,now)
    fire=false
    if eraser and victim and p.pal.mode=="eraser" then self:palEraser(p,victim,now) end
   end
-  self.combat:trigger(p,group,fire,aim)
+  self.combat:trigger(p,group,fire,aim,range)
  end
 end
 -- Aim tracks the target every frame like a human's hand, but from what the bot saw `lag` seconds ago (a short

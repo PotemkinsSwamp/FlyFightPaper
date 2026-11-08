@@ -4,30 +4,29 @@
 local Tactics = {}
 
 Tactics.BRAKE_STUDS = 80 -- where a perfect pilot starts braking behind its target
-Tactics.HOLD_STUDS = 300 -- a Crayon stand-off's distance (Alan: 200-400)
+Tactics.REAPPROACH_STUDS = 450 -- once the target is this far off, the next approach rolls its trick afresh
 Tactics.DAMAGED = 0.5 -- health share at which a plane is worth stealing
 Tactics.DART_BLAST = 1.5 -- seconds a Popper dart fires before it boosts out
 Tactics.SPIT_WANT = 2 -- spitballs stuck on the target before the other gun takes over
 Tactics.SPIT_SECONDS = 3 -- after this long trying for spitballs, both guns fire
 Tactics.STEAL_STUDS = 500 -- a damaged plane further off than this isn't worth leaving your target for
 
--- The trick comes from the build's guns: a Popper darts in and out, a Crayon stands off, a Spitball goes first;
--- anything else turn-fights with the brake.
+-- The trick comes from the build's guns: a Popper darts in and out, a Spitball goes first; anything else (the Crayon
+-- Tank too: its stand-off made it easy prey, Alan 2026-11-08) turn-fights with the brake.
 function Tactics.trick(weaponIds)
 	local has = {}
 	for _, id in ipairs(weaponIds) do
 		if id then has[id] = true end
 	end
-	return has.popper and "dart" or has.crayon and "standoff" or has.spitball and "spitball" or "turnfight"
+	return has.popper and "dart" or has.spitball and "spitball" or "turnfight"
 end
 
 -- One approach on a target. roll(a, b) gives a number between a and b. Returns where this approach brakes (0: the
--- pilot fumbles the trick this time) and the stand-off distance. A sloppy pilot mostly brakes too early, sometimes late.
+-- pilot fumbles the trick this time). A sloppy pilot mostly brakes too early, sometimes late.
 function Tactics.approach(profile, roll)
-	local hold = Tactics.HOLD_STUDS + roll(-1, 1) * 100 * profile.trick_error
-	if roll(0, 1) >= profile.trick_reliability then return 0, hold end
+	if roll(0, 1) >= profile.trick_reliability then return 0 end
 	local spread = Tactics.BRAKE_STUDS * profile.trick_error
-	return Tactics.BRAKE_STUDS + roll(-0.3 * spread, spread), hold
+	return Tactics.BRAKE_STUDS + roll(-0.3 * spread, spread)
 end
 
 -- Leave the current target (health share, nil = none in sight) for a damaged one in view? Judged well (smart): finish
