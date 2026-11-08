@@ -430,18 +430,12 @@ def popper():
 
 
 def thumbtack():
-    """A wide clear pin tub, paper tray and open cardboard barrel, muzzle +Y."""
+    """A wide clear pin tub (clear floor too) and open cardboard barrel, muzzle +Y. The tub hangs from the wing by its
+    solid rim; no paper tray (Alan 2026-11-07: "It's connected via the rim")."""
     clear = paint(bmesh.new(), [120, 200, 235], cup_shell, -.75, -.31, .31, .62, .62, .04)
-    # One continuous sheet with its long edges folded down, seated against the tub's floor.
-    profile = [(-.69, -.43), (-.69, -.31), (.69, -.31), (.69, -.43),
-               (.66, -.43), (.66, -.34), (-.66, -.34), (-.66, -.43)]
-    body = paint(bmesh.new(), [60, 150, 235], slab, [(x, -.70, z) for x, z in profile], (0, 1.5, 0))
-    layer = body.loops.layers.float_color["Color"]
-    for face in body.faces:
-        if all(v.co.x >= .65999 for v in face.verts) or all(v.co.x <= -.65999 for v in face.verts):
-            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [35, 100, 180]], 1)
     # Keep the rim solid while the tub itself remains the game's see-through piece.
-    paint(body, [40, 120, 220], ring_z, -.75, .285, .325, .64, .575)
+    body = paint(bmesh.new(), [40, 120, 220], ring_z, -.75, .285, .325, .64, .575)
+    layer = body.loops.layers.float_color["Color"]
     before = set(body.faces)
     paint(body, [190, 115, 50], collar, -.15, 1.15, .22, .17, sides=12)
     for face in set(body.faces) - before:
