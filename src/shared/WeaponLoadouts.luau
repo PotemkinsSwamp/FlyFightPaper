@@ -5,6 +5,7 @@ function Loadouts.make(catalog, choice)
 	elseif choice == "popper" then loadout.weapon_mounts={"popper",false,"pellet",false}
 	elseif choice == "thumbtack" then loadout.weapon_mounts={"thumbtack",false,"pellet",false}
 	elseif choice == "crayon" then loadout.weapon_mounts={"crayon",false,"pellet",false}
+	elseif choice == "spitball" then loadout.weapon_mounts={"pellet",false,"spitball",false}
 	elseif choice == "paperclip" then loadout.weapon_mounts={"paperclip",false,"pellet",false}
 	elseif choice == "eraser" then loadout.weapon_mounts={"eraser",false,"pellet",false}
 	elseif choice == "eraser_only" then loadout.weapon_mounts={"eraser",false,false,false}

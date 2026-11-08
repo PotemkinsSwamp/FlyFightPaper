@@ -1,12 +1,13 @@
 # Weapons
 
 ## What the player sees
-Nine weapon families made of school supplies: paper pellets, the Point Popper (a pencil-lead tube that sprays leads), staples, thumbtacks, the Stubby Crayon (a slow, heavy hit), rubber bands, paperclips (a fast "railgun"), guided erasers (slow homing missiles) and pencils (huge, slow, deadly). Left and right mouse fire the two weapon types on your plane. Every weapon fires the instant you click.
+Ten weapon families made of school supplies: paper pellets, the Point Popper (a pencil-lead tube that sprays leads), staples, thumbtacks, the Stubby Crayon (a slow, heavy hit), rubber bands, spitballs (they stick and weigh you down), paperclips (a fast "railgun"), guided erasers (slow homing missiles) and pencils (huge, slow, deadly). Left and right mouse fire the two weapon types on your plane. Every weapon fires the instant you click.
 
 ## Where it stands (2026-11-07)
 Shots now fall in an arc past their range (2026-11-07, tests pass; Alan's feel check to come). The Point Popper's rules
 are in (2026-11-07), flying on the pellet gun's model and sound as stand-ins until its own are made. The Thumbtack's too (on the staple gun's
-model and sound), and the Stubby Crayon's (on the pencil's model, the rubber band's sound pitched down; waiting on Alan's try).
+model and sound), and the Stubby Crayon's (on the pencil's model, the rubber band's sound pitched down; Alan made it heavy, slower and
+shorter after his first try). The Spitball's are in too (on the pellet gun's model; waiting on Alan's try).
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
 Paperclip reworked and the shot timing fixed 2026-11-06; Alan confirmed staples and set the glint's strength in the air.
 **Match aim measured (2026-10-21, Alan asked if matches miss like the Range did):** in a match shots leave along the
@@ -44,7 +45,8 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | One shot per click, up to one a second |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
 | Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | One shot per click, up to 3 a second |
-| Stubby Crayon | 40 | 3 | 850, ~600 studs range | One shot per click, 2 s reload |
+| Stubby Crayon | 40 (heavy mount) | 3 | 400, ~350 studs range | One shot per click, 2 s reload |
+| Spitball Straw | 1, and it sticks | 2 | 600, ~350 studs range | One shot per click, up to 2 a second |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
 | Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | One shot per click; mounts take turns, 1.75 s reload each |
 | Guided Eraser | 30 | 3 | 200, slowing to 110 | Click to launch unguided or hold through the 1.5 s lock; 4 s reload |
@@ -70,6 +72,13 @@ another's (`Aircraft.STAND_IN`).
 
 A fold made by a falling shot pays the fold-at-a-distance bonus ([economy](economy-and-shop.md)). See
 [the decision](../decisions/2026-11-07-four-new-weapons-and-falling-shots.md).
+
+A Spitball sticks to the plane it hits (`sticks` in the catalog; `FlightService:spit`), up to 5 from every shooter
+together. Each one burns Lift 30% faster and slows the plane 4% (a full load: 2.5x Lift burn, 20% slower;
+`CombatRules.spitballLiftBurn` / `spitballSpeed`, through `BoostSpeedFactor` so bots slow too). None fall off for 6 s
+after the last hit, then one every 3 s (`CombatRules.spitballsLeft`); any fan blows them all off, landing at the desk
+clears them, and a new plane starts clean. Every plane shows a wet paper blob on itself per spitball, and your own
+screen gets a splatter per spitball that slides off when they go (client `Spitballs`). No HUD counter (Alan 2026-11-07).
 
 Thumbtack damage falls with distance the same way: full to 100 studs, half at 300, a quarter at 500. The Hangar card
 says which way a weapon's damage goes.
@@ -136,6 +145,7 @@ attackers can each have two; this is not a global target shield.
 |---|---|
 | `src/client/CombatController.luau` | Mouse buttons to weapon groups, sends shots to the server |
 | `src/client/CombatEffects.luau` | Your own shots drawn on the click frame, tracers, hit markers, damage ring |
+| `src/client/Spitballs.luau` | Wet blobs on planes and the splatter on your screen for stuck spitballs |
 | `src/client/WeaponMotion.luau` | Launcher pieces moving when they fire |
 | `src/shared/CombatRules.luau` | Heat, reloads, bullet drop and drag, eraser homing, hit tests |
 | `src/shared/WeaponLoadouts.luau` | Weapon choice to a legal starter loadout |

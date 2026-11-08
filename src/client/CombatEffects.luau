@@ -40,7 +40,7 @@ function Effects.aim(body,weapon)
  -- (Alan 2026-11-06: an X past the old fixed 150 studs).
  return body.CFrame.LookVector,weapon and Rules.shotRange(weapon)
 end
-local colors={pellet=Color3.fromRGB(255,240,170),staple=Color3.fromRGB(220,230,240),rubber=Color3.fromRGB(250,180,100),popper=Color3.fromRGB(90,90,100),thumbtack=Color3.fromRGB(235,60,60),crayon=Color3.fromRGB(60,110,230),paperclip=Color3.fromRGB(125,225,255),eraser=Color3.fromRGB(255,145,175),pencil=Color3.fromRGB(255,210,70)}
+local colors={pellet=Color3.fromRGB(255,240,170),staple=Color3.fromRGB(220,230,240),rubber=Color3.fromRGB(250,180,100),popper=Color3.fromRGB(90,90,100),thumbtack=Color3.fromRGB(235,60,60),crayon=Color3.fromRGB(60,110,230),spitball=Color3.fromRGB(235,235,225),paperclip=Color3.fromRGB(125,225,255),eraser=Color3.fromRGB(255,145,175),pencil=Color3.fromRGB(255,210,70)}
 function Effects.start(getPlane)
  local folder=Instance.new("Folder");folder.Name="CombatEffects";folder.Parent=workspace
  local pool,active={},{}
@@ -314,7 +314,7 @@ function Effects.start(getPlane)
      local trail=Instance.new("Trail");trail.Name="BoostTrail";trail.Attachment0,trail.Attachment1=top,bottom;trail.Lifetime=.4;trail.FaceCamera=true
      trail.Transparency=NumberSequence.new(.25,1);trail.Enabled=false;trail.Parent=root
     end
-    root.BoostTrail.Enabled=flying and (plane:GetAttribute("BoostSpeedFactor") or 1)>1
+    root.BoostTrail.Enabled=flying and (plane:GetAttribute("Boosting") or (plane:GetAttribute("BoostSpeedFactor") or 1)>1)
     -- A light-blue bubble while the plane can't be hurt (takeoff and the launch protection).
     local state=plane:GetAttribute("State")
     domes[plane]=plane:GetAttribute("Protected") and (flying or state=="TAKEOFF") and (domes[plane] or dome(plane)) or nil

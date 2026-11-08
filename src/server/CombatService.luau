@@ -347,6 +347,7 @@ function Service:hit(attacker,target,amount,now,position,weaponId,far)
  target.lastHitAt=now;target.lastHitBy=attacker
  if self.onDamage then self.onDamage(attacker,target,actual,os.clock()) end
  self.flight:damage(target,actual,"weapon",nil,{kind="weapon",weapon=weaponId})
+ if weaponId and self.flight.catalog:get(weaponId).sticks and target.model:GetAttribute("State")=="FLYING" then self.flight:spit(target,now) end
  self:emit({kind="hit",owner=attacker.id,target=target.id,damage=actual,position=position or target.body.Position})
 end
 -- A Range card takes the hit itself; folded, it tears (client RangeTargets) and is cleared after the respawn wait, and

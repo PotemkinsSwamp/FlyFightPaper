@@ -351,6 +351,15 @@
       "enabled": false
     },
     {
+      "key": "part_spitball",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "spitball",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
       "key": "part_staple",
       "kind": "developer_product",
       "benefit": "part_unlock",

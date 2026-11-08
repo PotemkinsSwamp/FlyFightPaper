@@ -217,7 +217,7 @@ function Service:build(p)
  p.hangar=Landing.hangar(p.home,Desk)
  model.Parent=self.planes;model:PivotTo(p.hangar)
  p.model,p.body,p.drive,p.orientation=model,body,drive,orientation
- p.lastAction,p.lastImpact,p.lastContact=0,0,0;p.fanInside={};p.lastPosition=body.Position;p.checkCFrame=body.CFrame
+ p.lastAction,p.lastImpact,p.lastContact=0,0,0;p.fanInside={};p.lastPosition=body.Position;p.checkCFrame=body.CFrame;p.spitStuck=nil
  p.checkAt=workspace:GetServerTimeNow();p.regionClock=0;p.protectionRemaining=Desk.protected_seconds_per_life;p.outOfHangar=0;p.spawnProtectionUntil=0;p.outSince=nil;p.lastCFrame=body.CFrame
  p.launchAt=nil;p.respawnAt=nil;p.hasLaunched=false;p.serviceBusy=false;p.serviceHome=p.hangar
  local utility=p.loadout.utility and self.catalog:get(p.loadout.utility)
@@ -359,7 +359,20 @@ function Service:queueLanding(p,home,key)
  p.model:SetAttribute("DeskQueuePosition",index)
  p.model:SetAttribute("DeskAvailable",false);say(p,"deskBusy")
 end
+-- A Spitball hit sticks one more, up to spitball_max, and starts the wait before they fall off again. `Spitballs` on the
+-- model is what every screen draws (client Spitballs).
+function Service:spitballs(p,now)
+ return p.spitStuck and CombatRules.spitballsLeft(p.spitStuck,now-p.spitAt) or 0
+end
+function Service:spit(p,now)
+ p.spitStuck,p.spitAt=math.min(Gameplay.combat.spitball_max,self:spitballs(p,now)+1),now
+ p.model:SetAttribute("Spitballs",p.spitStuck)
+end
+function Service:clearSpit(p)
+ p.spitStuck=nil;p.model:SetAttribute("Spitballs",nil)
+end
 function Service:land(p,home,padKey)
+ self:clearSpit(p) -- the desk clears them
  padKey=padKey or "desk:"..p.seat
  home=home or p.home
  if not self:padAvailable(padKey,p.id) then self:queueLanding(p,home,padKey);return false end
@@ -480,6 +493,7 @@ function Service:regionsFor(p,now)
    updraft=Gameplay.flight.fan_updraft_studs_s
   end
   p.fanInside[name]=inside
+  if inside and p.spitStuck then self:clearSpit(p) end -- any fan blows spitballs off
  end
  p.model:SetAttribute("Updraft",updraft)
  -- Moving air in the ducts (fans, the blower): faster with it, slower against it.
@@ -543,14 +557,16 @@ function Service:step(dt)
    local utility=p.loadout.utility and self.catalog:get(p.loadout.utility)
    local boosting=utility and p.boostHeld and (p.model:GetAttribute("Boost") or 0)>0
    local blown=p.wind or 1
-   p.model:SetAttribute("BoostSpeedFactor",(boosting and utility.speed_factor or 1)*(1+(now<(p.pickupUntil or 0) and p.pickupBonus or 0))*blown)
+   local spit=self:spitballs(p,now)
+   if p.spitStuck and spit~=p.model:GetAttribute("Spitballs") then if spit>0 then p.model:SetAttribute("Spitballs",spit) else self:clearSpit(p) end end
+   p.model:SetAttribute("BoostSpeedFactor",(boosting and utility.speed_factor or 1)*(1+(now<(p.pickupUntil or 0) and p.pickupBonus or 0))*blown*CombatRules.spitballSpeed(spit))
    -- Boost drives the plane along its nose even with no Lift (Alan 2026-10-14), so it counts as powered flight.
    p.model:SetAttribute("Boosting",boosting==true);if boosting then p.boostedAt=now end
    -- The brake (Space; FlightController flies the plane slower) costs Lift, so it can't be held all match.
    local braking=p.brakeHeld==true and not boosting
    if p.model:GetAttribute("Braking")~=braking then p.model:SetAttribute("Braking",braking) end
    -- Drain in 0.2 s steps so these attributes replicate at 5 Hz, not every frame.
-   p.liftDrain=(p.liftDrain or 0)+dt*(braking and Gameplay.flight.brake_lift_drain_factor or 1);p.boostDrain=(p.boostDrain or 0)+(boosting and dt or 0)
+   p.liftDrain=(p.liftDrain or 0)+dt*(braking and Gameplay.flight.brake_lift_drain_factor or 1)*CombatRules.spitballLiftBurn(spit);p.boostDrain=(p.boostDrain or 0)+(boosting and dt or 0)
    if p.liftDrain>=.2 then
     -- Slow motion (the tutorial's aiming) keeps Lift full: you only turn and aim there (Alan 2026-10-19).
     p.model:SetAttribute("Lift",(p.slow or p.keepLift) and p.stats.lift or math.max(p.gentle and 1 or 0,Rules.lift(p.model:GetAttribute("Lift"),p.stats.lift,p.liftDrain)));p.liftDrain=0

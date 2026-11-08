@@ -174,6 +174,14 @@ function Rules.eraserFall(velocity, dt)
 	local flat=Vector3.new(velocity.X,0,velocity.Z)*math.exp(-Config.shot_fall_drag*dt)
 	return flat+Vector3.yAxis*(velocity.Y-Config.shot_fall_gravity*dt)
 end
+-- Spitballs (Alan 2026-11-07): `stuck` were on the plane at the last hit. None fall off for spitball_hold_seconds,
+-- then one every spitball_drop_seconds. Each burns Lift faster and slows the plane. A fan or the desk clears them all.
+function Rules.spitballsLeft(stuck, since)
+	if since < Config.spitball_hold_seconds then return stuck end
+	return math.max(0, stuck - 1 - math.floor((since - Config.spitball_hold_seconds) / Config.spitball_drop_seconds))
+end
+function Rules.spitballLiftBurn(count) return 1 + count * Config.spitball_lift_burn_each end
+function Rules.spitballSpeed(count) return 1 - count * Config.spitball_slow_each end
 function Rules.shotRange(weapon)
 	return Rules.shotDistance(weapon,weapon.lifetime)
 end

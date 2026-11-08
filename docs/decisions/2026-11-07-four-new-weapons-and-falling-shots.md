@@ -18,8 +18,8 @@
 |---|---|---|---|
 | **Point Popper** (a pencil-lead tube) | medium, 3 | One shot a second: 7 leads of 5 damage. The leads fly in a tight bundle for 50 studs, then spray out in a circle like a shotgun (Alan changed this from a flat fan), opening at one steady, narrow rate: about 3 studs out by 100 studs (Alan: 20 studs was too hard to hold, and it opened too far too fast). All 7 hit to about 65 studs, 5 to about 80, then about one per gun. Most 1 / 2 / 3 | 100 studs |
 | **Thumbtack** | medium, 2, mass 2.0 | 6 damage, 3 shots a second; half damage at 300 studs, a quarter at 500. Most 1 / 2 / 4 | 500 |
-| **Stubby Crayon** | medium, 3 | 40 damage, 2 s reload, a slow heavy shot (about 850 studs/s), hard to hit unless close. Most 1 / 2 / 3 | 600 |
-| **Spitball** | light, 2 | 1 damage, 2 shots a second, slow. Up to 5 stick and show on the plane; each burns Lift faster and slows it (a full load about 2.5x Lift burn, 20% slower). None fall off for 6 s after the last hit, then one every 3 s; a fan blows them all off; the desk clears them. Most 2 / 3 / 5 | 350 |
+| **Stubby Crayon** | heavy, 3 | 40 damage, 2 s reload, a slow heavy shot (about 400 studs/s), hard to hit unless close. Alan made it heavy, much slower and shorter after trying 850 studs/s and 600 studs: too strong. Most 0 / 1 / 2 | 350 |
+| **Spitball** | light, 2 | 1 damage, 2 shots a second, slow. Up to 5 stick and show on the plane; each burns Lift faster and slows it (a full load about 2.5x Lift burn, 20% slower). None fall off for 6 s after the last hit, then one every 3 s; a fan blows them all off; the desk clears them. One shot per click (Alan, after the plan). Each shows as a wet blob on the plane and a splatter on the victim's screen that slides off when it goes. Most 2 / 3 / 5 | 350 |
 
 - **Models:** for testing, the new weapons borrow models we already have. For the real ones Alan has no Meshy any more:
   a Codex reference picture, then Codex builds it in Blender. If that can't get it right, Alan finds another modeler.

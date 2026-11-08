@@ -60,6 +60,7 @@ for _, model in ipairs(planes:GetChildren()) do attach(model) end
 Camera.start(function() return plane end)
 HUD.start(function() return plane end, function(name,value) action:FireServer(name,value) end)
 local effects=require(script.Parent.CombatEffects).start(function() return plane end)
+require(script.Parent.Spitballs).start(function() return plane end)
 require(script.Parent.CombatController).start(function() return plane end,effects)
 require(script.Parent.TouchControls).start(function() return plane end)
 require(script.Parent.Audio).start(function()return plane end)
