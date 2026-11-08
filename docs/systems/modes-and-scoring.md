@@ -60,8 +60,8 @@ the same active-time/event requirements; do not create a completion farm from in
 ### Personal points (Alan's points workshop, 2026-10-14)
 A knockout is called a **fold**. Every point a pilot earns pops up on their screen as number + word
 ("+100 FOLD", "+35 FOLD ASSIST", "+20 ZONE", "+25 STREAK", "+25 REVENGE", "+100 FIRST FOLD", "+50 TARGET").
-Points (contribution) rank the results in every mode. Win conditions are unchanged (FFA 20 folds, TDM 60 team
-folds, Airspace 240 team zone points).
+Points (contribution) rank the results in every mode. Win conditions: FFA ends only when time runs out (no fold cap,
+Alan 2026-11-08: like other games), TDM at 60 team folds, Airspace at 240 team zone points.
 
 | Earned for | Points |
 |---|---|

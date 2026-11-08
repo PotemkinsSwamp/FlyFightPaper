@@ -345,18 +345,16 @@ function Spec.run()
         assert(row(f,"a").kills == 0 and before.endedAt == 480)
         assert(f.m.round.result and f.m.round.settlementId==f.matchId..":final")
     end)
-    test("MT01 target20 exact once event and end, target event includes assists", function()
+    test("MT01 free-for-all has no fold cap: 25 folds and the round keeps going (Alan 2026-11-08)", function()
         local f = Spec.fixture(); f:join("a"); f:join("b"); f:join("c",true)
-        for i = 1,20 do
+        for i = 1,25 do
             if i > 1 then f:newLife("b") end
             local e = f:event("lifeEnded","a","b", { assists = { f:assist("c", 0.4) } })
             assert(f.m:consumeCombat(e))
         end
-        assert(f.m:snapshot().phase == "ENDING")
-        f:seal(); f:seal()
-        assert(row(f,"a").kills == 20 and row(f,"c").assists == 20 and row(f,"b").deaths == 20)
-        assert(row(f,"a").contribution == 2550 and row(f,"c").contribution == 800)
-        assert(f.m.round.result and f.m.round.settlementId==f.matchId..":final")
+        assert(f.m:snapshot().phase == "ACTIVE")
+        f:timer() -- only time ends it
+        assert(row(f,"a").kills == 25 and row(f,"c").assists == 25 and row(f,"b").deaths == 25)
     end)
     test("MT02 TDM60 and history team stability, no friendly damage", function()
         local f = Spec.fixture("TDM"); f:join("a"); f:join("b",true)

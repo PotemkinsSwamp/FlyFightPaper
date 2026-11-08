@@ -346,7 +346,6 @@
   "rounds": {
     "_comment": "Airspace Control moves every 90 seconds among these fixed cylinders, with a 15-second warning and no consecutive repeats. The Ceiling zone is wide and flat. Zone positions and sizes are a first pass, tuned in playtest (Alan 2026-10-14: tried 3x wider, then halved that: 300 radius; the ceiling zone moved over the east ceiling obstacles and stretched down well under the rings and cardboard rolls, 340-620 up).",
     "duration_seconds": 480,
-    "ffa_elimination_target": 20,
     "tdm_elimination_target": 60,
     "control_target": 240,
     "control_points_per_second": 1,

@@ -47,6 +47,9 @@
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 
+- **Free-for-all has no fold cap** (built): it ends only when time runs out, like other games; only goal modes end
+  early. Revisit later if it plays badly.
+
 ## Why
 - Alan: the weaker weapons should be free and the stronger ones paid, thinking about how strong they are alone and
   together. "We kind of want it to be a grind."

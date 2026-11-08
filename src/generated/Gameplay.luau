@@ -740,7 +740,6 @@ return JSONTypes.map({
         }),
         ["control_zones_comment"] = "Zone size follows how crowded the spot is (Alan 2026-10-16: denser = larger and shorter, so pilots chase between buildings): radius 340-420 and half height 100-65, scaled by the share of the zone's floor under new-town buildings (9% -> 28%). Ceiling spot unchanged.",
         ["duration_seconds"] = 480,
-        ["ffa_elimination_target"] = 20,
         ["launch_countdown_seconds"] = 3,
         ["results_seconds"] = 27,
         ["round_end_comment"] = "Rounds never stop (Alan 2026-10-17): results_seconds is the winners' moment (planes hold still; a cutscene shows the top 3 on the winner_desks), vote_seconds the safe vote lap (no damage, walls bounce you off; fly through a mode's ring or press 1/2/3), then the next round starts where everyone is.",

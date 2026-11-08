@@ -400,8 +400,8 @@ function Match:consumeCombat(event)
             if identity.finisher == true then earn(p, points.finishing_shot, "finishing_shot", event.eventId .. ":finish", identity) end
             p.qualifyingEvents += 1; self:_activity(p, event.at, assistIdentities[p.key]); self:_qualify(p)
         end
-        local target = r.mode == "FFA" and self.context.config.rounds.ffa_elimination_target
-            or r.mode == "TDM" and self.context.config.rounds.tdm_elimination_target or math.huge
+        -- Free-for-all ends only on time, like other games (Alan 2026-11-08); team rounds can still end at their target.
+        local target = r.mode == "TDM" and self.context.config.rounds.tdm_elimination_target or math.huge
         local score = r.mode == "FFA" and killer and killer.kills or r.mode == "TDM" and killer and r.teams[killer.teamId] or 0
         if score >= target then self:_close(event.at, "target", event.serverSequence) end
     end
