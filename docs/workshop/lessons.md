@@ -87,6 +87,10 @@ mistake would be easy to make twice.
   (`tools/art/closeups.py`) and melted parts are replaced through `touchup.json` before anyone sees it.
 - **Plain Blender vertex colours show correctly in Roblox.** Pieces built from plain shapes with per-face colours
   avoid texture smudges and moderation risk.
+- **Concept pictures are game renders, never photos** (Alan, 2026-11-07, on the four new weapons): "they need to look
+  like they are in a roblox game". Give Codex the approved reference picture as the style and show the piece in the
+  game's scene (a gadget under a paper plane's wing over the toy city), stylized and chunky, not a product photo on a
+  plain background.
 - **Codex's picture tool refuses weapon words** ("illicit"), even for office-supply launchers, and once refused an
   empty cardboard tube with plugs. Keep weapon words out of picture briefs; model launchers straight from a written
   spec. When Alan sends real photos, model from the photos and get his OK on the render.
