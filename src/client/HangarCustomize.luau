@@ -40,7 +40,7 @@ function Customize.draw(content, ctx)
 		local picked = tab.slot == state.slot
 		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 225 + (i - 1) * 100, 200, 88, 0,
 			function()
-				if tab.slot ~= state.slot then state.turn = true end
+				if tab.slot ~= state.slot then state.turn, state.cardPage = true, 1 end
 				state.slot, state.trying = tab.slot, nil
 				ctx.render()
 			end, PaperUI.isPhone() and 50 or 40)
@@ -56,9 +56,19 @@ function Customize.draw(content, ctx)
 		page.ScaleType, page.ImageColor3 = Enum.ScaleType.Stretch, tints[i]
 	end
 
-	-- Right page: the cards, 2 across and 3 down (no category has more than 6 today; more would flip to a page 2).
+	-- Right page: the cards, 2 across and 3 down; more than 6 (the weapons) flip to further pages with the arrows on top.
 	local definitions = ctx.catalog.structuresBySlot[state.slot] or (state.slot == "weapons" and ctx.catalog.weapons) or ctx.catalog.utilities
-	for i, part in definitions do
+	local pages = math.ceil(#definitions / 6)
+	state.cardPage = math.clamp(state.cardPage or 1, 1, math.max(pages, 1))
+	for _, to in { state.cardPage - 1, state.cardPage + 1 } do
+		if to >= 1 and to <= pages then
+			button(content, to < state.cardPage and "PrevCards" or "NextCards", Art.tab, to < state.cardPage and "< Page " .. to or "Page " .. to .. " >",
+				to < state.cardPage and 700 or 1084, 182, 150, 56, 0, function() state.cardPage, state.turn = to, true; ctx.render() end, PaperUI.isPhone() and 40 or 30)
+		end
+	end
+	for index, part in definitions do
+		local i = index - (state.cardPage - 1) * 6
+		if i < 1 or i > 6 then continue end
 		local owned = ctx.owned(part)
 		local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
 			or state.slot == "weapons" and table.find(draft.weapon_mounts, part.id) ~= nil
@@ -96,7 +106,8 @@ function Customize.draw(content, ctx)
 			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, 62 + (k - 1) * 30, 64, 27, 26) end
 			local range = part.damage_by_range
 			local dps = ctx.catalog.weaponDPS(part)
-			words(card, "DPS", range and range[#range][2] > range[1][2] and "Hits harder the further away"
+			words(card, "DPS", part.sticks and "Sticks on and slows them down"
+				or range and range[#range][2] > range[1][2] and "Hits harder the further away"
 				or range and string.format("%.0f a second close in, less far away", dps)
 				or string.format("%.0f damage per second", dps), 18, 96, 216, 30, 24)
 			detail = string.format("%s, weight %d. %s", part.class, part.capacity, detail)
