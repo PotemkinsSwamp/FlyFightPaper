@@ -355,9 +355,11 @@ function Spec.run()
 		assert(weapon.class=="medium" and weapon.capacity==4 and weapon.damage==40 and weapon.min_level==6)
 		assert(weapon.fire_mode=="semiautomatic" and weapon.shot_interval==2,"one shot per click, 2 s reload")
 		assert(Catalog.weaponDPS(weapon)==20,"20 a second at best")
-		assert(math.abs(Rules.shotRange(weapon)-350)<3,"range before falling "..Rules.shotRange(weapon))
-		assert(Rules.shotDamage(weapon,50)==40 and Rules.shotDamage(weapon,350)==40,"flat damage")
-		assert(weapon.projectile_speed==400 and Rules.travelTime(weapon,200)>.5,"slow: 200 studs takes over half a second")
+		-- Alan 2026-11-08: 400 studs/s, 350 range and drop 30 made it "impossible to hit anybody"; 600, 450 and drop 8.
+		assert(math.abs(Rules.shotRange(weapon)-450)<3,"range before falling "..Rules.shotRange(weapon))
+		assert(Rules.shotDamage(weapon,50)==40 and Rules.shotDamage(weapon,450)==40,"flat damage")
+		assert(weapon.projectile_speed==600 and Rules.travelTime(weapon,300)>.5,"still slow: 300 studs takes over half a second")
+		assert(0.5*weapon.drop*Rules.travelTime(weapon,300)^2<2,"falls under 2 studs by 300")
 		-- Weight 4 (Alan 2026-11-07): a 6-capacity body carries one, only the 10-capacity Gunships two, never three.
 		local loadout=catalog:starterLoadout();loadout.weapon_mounts={"crayon","crayon",false,false}
 		assert(not catalog:validateLoadout(loadout,nil,50),"two on a standard plane is over its weight")

@@ -10,7 +10,8 @@ built in Blender by `tools/art/weapons.py`, uploaded; waiting on Alan's look in 
 orange cradle, a clear pin tub hanging by its rim with a cardboard barrel, a crayon in a striped crayon-box sleeve with a
 red band, and a striped party cup hung upside down on a yellow strap with a green straw. Each has its own sound (Alan's
 picks 2026-11-07: a balloon pop, a pneumatic air burst, a soft heavy thump, a wet splat; client `Audio`). Alan made
-the Crayon slower, shorter and weight 4 after his first try, so no plane carries more than two and the Pencil keeps the
+the Crayon slower, shorter and weight 4 after his first try (then, 2026-11-08, a bit faster and flatter again: 400
+studs/s, 350 range and drop 30 made it impossible to hit with), so no plane carries more than two and the Pencil keeps the
 heavy mount to itself; he approved the Spitball as a support weapon.
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
 Paperclip reworked and the shot timing fixed 2026-11-06; Alan confirmed staples and set the glint's strength in the air.
@@ -49,7 +50,7 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | One shot per click, up to one a second |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
 | Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | One shot per click, up to 3 a second |
-| Stubby Crayon | 40 | 4 | 400, ~350 studs range | One shot per click, 2 s reload |
+| Stubby Crayon | 40 | 4 | 600, ~450 studs range, drop 8 | One shot per click, 2 s reload |
 | Spitball Straw | 1, and it sticks | 2 | 600, ~350 studs range | One shot per click, up to 2 a second |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
 | Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | One shot per click; mounts take turns, 1.75 s reload each |
