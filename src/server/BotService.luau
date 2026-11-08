@@ -221,10 +221,13 @@ function Service:fill()
  local eligibility=self.eligibility or "rookie"
  local plan=assert(Roster.plan({eligibility=eligibility,serverClass=eligibility,seed=Config.world.seed,mode=self.mode or "FFA",config=Config,actors=actors,pendingHumanQueue={},botIdentitySerial=self.serial+1}))
  for _,row in ipairs(plan.botAdds) do
-  self.serial=row.identitySerial;local loadout,build=Builds.pick(row.profileName,self.serial)
-  local p=self.flight:add(nil,{id=row.actorKey,name=row.displayName,tier=row.profileName,loadout=loadout,loadoutName=build})
+  -- Studio only: workspace DevBotTier sets every bot's skill, for measuring matches (e.g. all veterans as stand-ins
+  -- for real players, Alan 2026-11-08).
+  local tier=game:GetService("RunService"):IsStudio() and workspace:GetAttribute("DevBotTier") or row.profileName
+  self.serial=row.identitySerial;local loadout,build=Builds.pick(tier,self.serial)
+  local p=self.flight:add(nil,{id=row.actorKey,name=row.displayName,tier=tier,loadout=loadout,loadoutName=build})
   if not p then break end
-  if p.tier=="experienced" and p.team then
+  if p.tier=="experienced" and p.team and not workspace:GetAttribute("DevBotTier") then
    local experienced=0;for _,other in pairs(self.flight.pilots) do if other.team==p.team and other.tier=="experienced" then experienced+=1 end end
    if experienced>1 then p.tier="regular";self:reset(p) end
   end

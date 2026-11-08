@@ -13,6 +13,7 @@ Hunter (Rubber Bands plus a Spitball), Tack Skirmisher. No bot carries a Papercl
 **Brake** (2026-11-08): close behind a target it is catching (`brake_within`: rookies 0, never; regulars 110 studs;
 veterans 170) a bot holds the brake like a player: eased to 60% speed, 15% tighter turns, Lift burns twice as fast; not
 below a quarter of its Lift. Not yet seen in a match (needs a bot match, Alan's go).
+In Studio, the workspace attribute `DevBotTier` (e.g. `experienced`) gives every bot that skill, for measuring matches.
 Passed Alan's vertical-slice gate (2026-10-11: "the bots pass, it is fun"). Every bot plays the Airspace zone, more often the better it is. Bots still to be checked in every mode; rookie graduation check open.
 Veterans (Experienced) use the ceiling ducts (2026-10-15): when shot at they sometimes run for a vent within 500
 studs (`duct_escape_chance` 40%), and now and then wander through instead of to the next patrol spot
