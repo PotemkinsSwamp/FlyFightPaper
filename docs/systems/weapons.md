@@ -73,11 +73,14 @@ another's (`Aircraft.STAND_IN`).
 A fold made by a falling shot pays the fold-at-a-distance bonus ([economy](economy-and-shop.md)). See
 [the decision](../decisions/2026-11-07-four-new-weapons-and-falling-shots.md).
 
-A Spitball sticks to the plane it hits (`sticks` in the catalog; `FlightService:spit`), up to 5 from every shooter
-together. Each one burns Lift twice as fast and slows the plane 6% (a full load: 6x Lift burn, 30% slower; Alan testing whether
-it should make planes fall, 2026-11-07, after 30% and 4% did almost nothing;
-`CombatRules.spitballLiftBurn` / `spitballSpeed`, through `BoostSpeedFactor` so bots slow too). None fall off for 6 s
-after the last hit, then one every 3 s (`CombatRules.spitballsLeft`); any fan blows them all off, landing at the desk
+A Spitball sticks to the plane it hits (`sticks` in the catalog; `FlightService:spit`), up to 5 on a plane in all,
+whoever shot them; a hit on a full plane knocks the oldest off (`CombatRules.stickSpitball`). Each one is weight
+(Alan 2026-11-07): it burns Lift 50% faster, slows the plane 6% and pulls it down 2.5 studs/s (a full load: 3.5x Lift
+burn, 30% slower, sinking 12.5 studs/s, so holding height takes about a 10 degree climb; `spitballLiftBurn` /
+`spitballSpeed` through `BoostSpeedFactor`, `spitballSink` through `Updraft`, so bots feel it too). Each of your
+spitballs still stuck when the plane folds counts as 4 damage toward credit (`spitballCredit`): about 3 earn an
+assist; if the plane goes down with no hit in the last 15 s, the most spitballs gets the fold. None fall off for 6 s
+after the last hit, then the oldest every 3 s (`CombatRules.spitballsLeft`); any fan blows them all off, landing at the desk
 clears them, and a new plane starts clean. Every plane shows a wet paper blob on itself per spitball, and your own
 screen gets a splatter per spitball that slides off when they go (client `Spitballs`). No HUD counter (Alan 2026-11-07). The desk's
 "spitball hunters" dev button sends four bots with two spitball guns each after you; the "spitball" picker button gives you

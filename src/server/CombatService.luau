@@ -347,7 +347,7 @@ function Service:hit(attacker,target,amount,now,position,weaponId,far)
  target.lastHitAt=now;target.lastHitBy=attacker
  if self.onDamage then self.onDamage(attacker,target,actual,os.clock()) end
  self.flight:damage(target,actual,"weapon",nil,{kind="weapon",weapon=weaponId})
- if weaponId and self.flight.catalog:get(weaponId).sticks and target.model:GetAttribute("State")=="FLYING" then self.flight:spit(target,now) end
+ if weaponId and self.flight.catalog:get(weaponId).sticks and target.model:GetAttribute("State")=="FLYING" then self.flight:spit(target,now,attacker.id) end
  self:emit({kind="hit",owner=attacker.id,target=target.id,damage=actual,position=position or target.body.Position})
 end
 -- A Range card takes the hit itself; folded, it tears (client RangeTargets) and is cleared after the respawn wait, and
@@ -363,7 +363,7 @@ function Service:cardHit(attacker,c,left,actual,position)
 end
 function Service:death(p,cause)
  local now=workspace:GetServerTimeNow();local info=self.info[p.id]
- local killer,assists,damage,total,finisher=Rules.credit(info and info.history or {},now,p.stats.health,p.id,p.repairedAt)
+ local killer,assists,damage,total,finisher=Rules.credit(info and info.history or {},now,p.stats.health,p.id,p.repairedAt,self.flight:spitCredit(p,now))
  if cause=="vacancy" or cause=="round_end" then killer=nil;assists={} end
  if killer and self.flight.records[killer] then
   local record=self.flight.records[killer];record.kills+=1

@@ -19,7 +19,9 @@ end
 -- repair (`since`), counts. The last hit gets the fold, unless another pilot did at least fold_majority_fraction of
 -- the plane's health and more than the last hitter: then that pilot gets it, and the last hitter is the `finisher`
 -- (always an assist, plus a finishing bonus). No stealing a fold with one shot; finishing still pays.
-function Rules.credit(history, now, maximum, victim, since)
+-- `weight` (optional, Alan 2026-11-07): attacker -> credit for their spitballs still stuck on the plane, counted like
+-- damage toward assists and payout shares (never the last hit).
+function Rules.credit(history, now, maximum, victim, since, weight)
 	local damage, total, last, latest = {}, 0, nil, -math.huge
 	for _, hit in ipairs(history) do
 		if hit.attacker ~= victim and hit.at <= now and now-hit.at <= Config.assist_window_seconds and hit.at >= (since or -math.huge) then
@@ -28,7 +30,14 @@ function Rules.credit(history, now, maximum, victim, since)
 			if hit.at >= latest then last, latest = hit.attacker, hit.at end
 		end
 	end
+	for attacker, amount in pairs(weight or {}) do
+		if attacker ~= victim then damage[attacker] = (damage[attacker] or 0)+amount; total += amount end
+	end
 	local killer, finisher = last, nil
+	if not killer then -- no hit in the window, only spitballs: the most weight
+		for attacker, amount in pairs(damage) do if amount > (damage[killer] or 0) then killer = attacker end end
+		last = killer
+	end
 	for attacker, amount in pairs(damage) do
 		if attacker ~= last and amount >= maximum*Config.fold_majority_fraction and amount > (damage[killer] or 0) then killer = attacker end
 	end
@@ -175,13 +184,29 @@ function Rules.eraserFall(velocity, dt)
 	return flat+Vector3.yAxis*(velocity.Y-Config.shot_fall_gravity*dt)
 end
 -- Spitballs (Alan 2026-11-07): `stuck` were on the plane at the last hit. None fall off for spitball_hold_seconds,
--- then one every spitball_drop_seconds. Each burns Lift faster and slows the plane. A fan or the desk clears them all.
+-- then one every spitball_drop_seconds, oldest first. Each is weight: it burns Lift faster, slows the plane and pulls it
+-- down (spitball_sink_each studs/s, through Updraft). A fan or the desk clears them all.
 function Rules.spitballsLeft(stuck, since)
 	if since < Config.spitball_hold_seconds then return stuck end
 	return math.max(0, stuck - 1 - math.floor((since - Config.spitball_hold_seconds) / Config.spitball_drop_seconds))
 end
 function Rules.spitballLiftBurn(count) return 1 + count * Config.spitball_lift_burn_each end
 function Rules.spitballSpeed(count) return 1 - count * Config.spitball_slow_each end
+function Rules.spitballSink(count) return count * Config.spitball_sink_each end
+-- Whose spitballs are on a plane: `owners` oldest first, of which the newest `left` are still stuck. A hit on a full
+-- plane knocks the oldest off (Alan 2026-11-07: a plane holds spitball_max in all, whoever shot them).
+function Rules.stickSpitball(owners, left, shooter)
+	local kept = table.move(owners, #owners-left+1, #owners, 1, {})
+	table.insert(kept, shooter)
+	if #kept > Config.spitball_max then table.remove(kept, 1) end
+	return kept
+end
+-- Fold credit for the stuck ones: spitball_credit_each per spitball, per owner.
+function Rules.spitballCredit(owners, left)
+	local credit = {}
+	for i = #owners-left+1, #owners do credit[owners[i]] = (credit[owners[i]] or 0)+Config.spitball_credit_each end
+	return credit
+end
 function Rules.shotRange(weapon)
 	return Rules.shotDistance(weapon,weapon.lifetime)
 end

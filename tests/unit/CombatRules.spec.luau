@@ -366,7 +366,7 @@ function Spec.run()
 		loadout.weapon_mounts={false,false,"crayon","crayon","crayon",false}
 		assert(not catalog:validateLoadout(loadout,nil,50),"never three")
 	end)
-	test("Spitball: one slow, light shot per click; up to 5 stick, burn Lift and slow the plane (Alan 2026-11-07)",function()
+	test("Spitball: one slow, light shot per click; up to 5 stick and weigh the plane down (Alan 2026-11-07)",function()
 		local weapon=catalog:get("spitball")
 		assert(weapon.class=="light" and weapon.capacity==2 and weapon.damage==1 and weapon.sticks and weapon.min_level==9)
 		assert(weapon.fire_mode=="semiautomatic" and weapon.shot_interval==.5,"one shot per click, 2 a second")
@@ -374,8 +374,28 @@ function Spec.run()
 		assert(Rules.spitballsLeft(5,0)==5 and Rules.spitballsLeft(5,5.9)==5,"none fall off for 6 s")
 		assert(Rules.spitballsLeft(5,6)==4 and Rules.spitballsLeft(5,8.9)==4 and Rules.spitballsLeft(5,9)==3,"then one every 3 s")
 		assert(Rules.spitballsLeft(5,18)==0 and Rules.spitballsLeft(2,60)==0,"never below none")
-		assert(math.abs(Rules.spitballLiftBurn(5)-6)<1e-9 and Rules.spitballLiftBurn(0)==1,"a full load burns Lift 6x")
+		assert(math.abs(Rules.spitballLiftBurn(5)-3.5)<1e-9 and Rules.spitballLiftBurn(0)==1,"a full load burns Lift 3.5x")
 		assert(math.abs(Rules.spitballSpeed(5)-.7)<1e-9 and Rules.spitballSpeed(0)==1,"a full load is 30% slower")
+		-- Gentle sink: holding height at a full load on a 100-studs/s plane takes about a 10 degree climb, not a wall.
+		local climb=math.deg(math.asin(Rules.spitballSink(5)/(100*Rules.spitballSpeed(5))))
+		assert(Rules.spitballSink(0)==0 and climb>6 and climb<15,"full-load climb to hold height "..climb)
+	end)
+	test("Spitball ownership: 5 per plane in all, oldest off first, credit per spitball (Alan 2026-11-07)",function()
+		local owners={}
+		for _,who in ipairs({"a","a","b","c","c"}) do owners=Rules.stickSpitball(owners,#owners,who) end
+		owners=Rules.stickSpitball(owners,5,"d")
+		assert(#owners==5 and owners[1]=="a" and owners[5]=="d","full plane: the oldest is knocked off")
+		local credit=Rules.spitballCredit(owners,3) -- the two oldest fell off
+		assert(credit.a==nil and credit.b==nil and credit.c==8 and credit.d==4,"only stuck ones count, 4 each")
+		owners=Rules.stickSpitball(owners,1,"e")
+		assert(#owners==2 and owners[1]=="d" and owners[2]=="e","falling off drops the oldest")
+		-- Three of yours (12) earn an assist on a 120-health plane, even with tiny damage; the last hitter keeps the fold.
+		local killer,assists=Rules.credit({{attacker="spit",at=1,damage=1},{attacker="gun",at=2,damage=60}},3,120,"victim",nil,{spit=12})
+		assert(killer=="gun" and #assists==1 and assists[1]=="spit","spitter assists")
+		local _,few=Rules.credit({{attacker="gun",at=2,damage=60}},3,120,"victim",nil,{spit=8})
+		assert(#few==0,"two spitballs are not enough")
+		-- Weighed down into the floor with no hit in the window: the most weight folds it.
+		assert(Rules.credit({},30,120,"victim",nil,{x=4,y=8})=="y","the heaviest load gets the fold")
 	end)
 	test("one Point Popper click launches seven leads, each with its own fan",function()
 		local service,p,model=firingFixture("popper")

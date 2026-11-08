@@ -360,17 +360,21 @@ function Service:queueLanding(p,home,key)
  p.model:SetAttribute("DeskQueuePosition",index)
  p.model:SetAttribute("DeskAvailable",false);say(p,"deskBusy")
 end
--- A Spitball hit sticks one more, up to spitball_max, and starts the wait before they fall off again. `Spitballs` on the
--- model is what every screen draws (client Spitballs).
+-- A Spitball hit sticks one more (`by` owns it), up to spitball_max, and starts the wait before they fall off again.
+-- `Spitballs` on the model is what every screen draws (client Spitballs).
 function Service:spitballs(p,now)
  return p.spitStuck and CombatRules.spitballsLeft(p.spitStuck,now-p.spitAt) or 0
 end
-function Service:spit(p,now)
- p.spitStuck,p.spitAt=math.min(Gameplay.combat.spitball_max,self:spitballs(p,now)+1),now
+function Service:spit(p,now,by)
+ p.spitBy=CombatRules.stickSpitball(p.spitBy or {},self:spitballs(p,now),by)
+ p.spitStuck,p.spitAt=#p.spitBy,now
  p.model:SetAttribute("Spitballs",p.spitStuck)
 end
 function Service:clearSpit(p)
- p.spitStuck=nil;p.model:SetAttribute("Spitballs",nil)
+ p.spitStuck,p.spitBy=nil,nil;p.model:SetAttribute("Spitballs",nil)
+end
+function Service:spitCredit(p,now)
+ return p.spitBy and CombatRules.spitballCredit(p.spitBy,self:spitballs(p,now)) or nil
 end
 function Service:land(p,home,padKey)
  self:clearSpit(p) -- the desk clears them
@@ -496,7 +500,8 @@ function Service:regionsFor(p,now)
   p.fanInside[name]=inside
   if inside and p.spitStuck then self:clearSpit(p) end -- any fan blows spitballs off
  end
- p.model:SetAttribute("Updraft",updraft)
+ -- Spitballs are weight: they pull the plane down, a negative updraft (Alan 2026-11-07).
+ p.model:SetAttribute("Updraft",updraft-CombatRules.spitballSink(self:spitballs(p,now)))
  -- Moving air in the ducts (fans, the blower): faster with it, slower against it.
  local wind=DuctRules.wind(p.body.Position,p.body.CFrame.LookVector)
  if (wind>1.05)~=((p.wind or 1)>1.05) and wind>1.05 then p.model:SetAttribute("Message",Lines.pick("tailwind")) end

@@ -13,7 +13,7 @@ function Spec.run()
    local now=workspace:GetServerTimeNow()
    local history={{attacker=helper.actorId,at=now,damage=case[1],identity=helper},
     {attacker=folder.actorId,at=now,damage=case[2],identity=folder}}
-   local flight={byId={},records={}}
+   local flight={byId={},records={},spitCredit=function() end}
    for _,identity in ipairs({folder,victim,helper}) do flight.records[identity.actorId]={name=identity.actorId,kills=0,assists=0,points=17} end
    local runtime=setmetatable({engine=f.m,flight=flight,earningCursor=0},Runtime)
    function runtime:combatEvent(kind,p,extra)
@@ -37,7 +37,7 @@ function Spec.run()
   local folder,victim,finisher=f:identity("folder"),f:identity("victim"),f:identity("finisher")
   local now=workspace:GetServerTimeNow()
   local history={{attacker=folder.actorId,at=now-2,damage=96,identity=folder},{attacker=finisher.actorId,at=now,damage=24,identity=finisher}}
-  local flight={byId={},records={}}
+  local flight={byId={},records={},spitCredit=function() end}
   for _,identity in ipairs({folder,victim,finisher}) do flight.records[identity.actorId]={name=identity.actorId,kills=0,assists=0,points=0} end
   local runtime=setmetatable({engine=f.m,flight=flight,earningCursor=0},Runtime)
   function runtime:combatEvent(kind,p,extra)

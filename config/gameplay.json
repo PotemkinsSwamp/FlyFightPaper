@@ -276,7 +276,7 @@
     "shot_fall_gravity": 196.2,
     "shot_fall_seconds": 3,
     "spitball_max": 5,
-    "spitball_lift_burn_each": 1.0,
+    "spitball_lift_burn_each": 0.5, "spitball_sink_each": 2.5, "spitball_credit_each": 4,
     "spitball_slow_each": 0.06,
     "spitball_hold_seconds": 6,
     "spitball_drop_seconds": 3,
