@@ -37,6 +37,16 @@
   (`.planning/unlock-concept2/`), crisp separate 2D pieces, real game text.
 - **All the game's text should look better** (bolder, outlined, shadowed, like the concept pictures): a style test first.
 
+- **Switching targets is a skill** (Alan, later the same day): a good bot that is about to fold the plane it's on
+  finishes it first, then goes after the damaged one; it never hops from damaged plane to damaged plane (fewer points
+  over time). Aces judge this best, Veterans less, and so on down.
+- **Concept review:** frames 1-2 are right. The backpack is bigger and wider, stays at the bottom edge of the screen
+  and never shows its bottom (so frames 3-4 as drawn are wrong). Items poking past the paper's edge (frames 6-7) are OK
+  if the background is darkened enough.
+- **Order:** text style test, then Aces and bot tricks (and their measuring matches), then the unlock moment.
+- **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
+  bots), 25+ a really good one. Price from those, not from the average bot.
+
 ## Why
 - Alan: the weaker weapons should be free and the stronger ones paid, thinking about how strong they are alone and
   together. "We kind of want it to be a grind."
