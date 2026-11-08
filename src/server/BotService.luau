@@ -601,7 +601,7 @@ function Service:steer(p,b,dt,now)
  -- Brake (Alan 2026-11-08): close behind a target it is catching, a skilled bot brakes like a player to stay on its
  -- tail and keep firing: slower and a little tighter in turns while held, eased like the player's; FlightService burns
  -- its Lift twice as fast meanwhile. Rookies never brake (brake_within 0).
- local gap=b.mode=="chase" and b.target and b.target.body.Position-position
+ local gap=(b.mode=="chase" and b.target) and b.target.body.Position-position or nil
  local braking=gap~=nil and not p.pal and gap.Magnitude>1 and gap.Magnitude<(b.profile.brake_within or 0)
   and (p.body.AssemblyLinearVelocity-b.target.body.AssemblyLinearVelocity):Dot(gap.Unit)>0
   and (p.model:GetAttribute("Lift") or 0)>p.stats.lift*.25

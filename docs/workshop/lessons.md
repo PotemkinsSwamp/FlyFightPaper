@@ -342,6 +342,11 @@ mistake would be easy to make twice.
   the phone's "town arrived" from ~10 s (v402) to ~40 s (v493); every part stores its own shape and phones download it
   with the town. Small toys collide as plain boxes (`ALSO_SOLID`). Read `LoadLog.recent()` after any change to the town.
 
+- **After any bot code change, fly a one-minute bot match and read the errors** (2026-11-08). The unit tests never run
+  `BotService:steer`, and menus have no bots, so "471 passed, no errors" hid a brake check that errored every frame
+  (`x and y and z` gives `false`, not `nil`, when `x` is false): every bot stopped steering and flew into walls.
+  Alan saw it in the first veteran match. Check `kills`, `collision` and `LogService` errors after 60 s.
+
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
   code alone (the red dot, the eraser during the freeze, step 8's Pal) were wrong, and each cost Alan a playtest.
