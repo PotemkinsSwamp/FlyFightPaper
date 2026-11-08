@@ -65,7 +65,7 @@ end
 function BotBuilds.measure(catalog,loadout,tier)
 	local profile=assert(Config.bots.profiles[tier],"Unknown bot tier: "..tostring(tier))
 	local stats=assert(catalog:deriveStats(loadout))
-	local speed=stats.speed*profile.speed_factor
+	local speed=stats.speed
 	local pitch,yaw=stats.pitch*profile.turn_factor,stats.yaw*profile.turn_factor
 	local dps,dodge,erasers,pencils=0,math.huge,0,0
 	for _,id in ipairs(loadout.weapon_mounts) do

@@ -3,7 +3,9 @@
 ## What the player sees
 Computer pilots fill empty seats so a match always has up to 12 planes. They fly with the same controls and limits as you, can't see behind them, and come in skill levels (rookie, regular, veteran) with separate personalities and quirks. They never wear an "AI" label. New players face rookies until they graduate.
 
-## Where it stands (2026-10-15)
+## Where it stands (2026-11-07)
+Bots fly at their plane's full top speed, like a player ([decision](../decisions/2026-11-07-bots-fly-full-speed.md)); skill
+changes only how hard they turn and pitch (`turn_factor`).
 Passed Alan's vertical-slice gate (2026-10-11: "the bots pass, it is fun"). Every bot plays the Airspace zone, more often the better it is. Bots still to be checked in every mode; rookie graduation check open.
 Veterans (Experienced) use the ceiling ducts (2026-10-15): when shot at they sometimes run for a vent within 500
 studs (`duct_escape_chance` 40%), and now and then wander through instead of to the next patrol spot

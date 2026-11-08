@@ -74,7 +74,8 @@ A fold made by a falling shot pays the fold-at-a-distance bonus ([economy](econo
 [the decision](../decisions/2026-11-07-four-new-weapons-and-falling-shots.md).
 
 A Spitball sticks to the plane it hits (`sticks` in the catalog; `FlightService:spit`), up to 5 from every shooter
-together. Each one burns Lift 30% faster and slows the plane 4% (a full load: 2.5x Lift burn, 20% slower;
+together. Each one burns Lift twice as fast and slows the plane 6% (a full load: 6x Lift burn, 30% slower; Alan testing whether
+it should make planes fall, 2026-11-07, after 30% and 4% did almost nothing;
 `CombatRules.spitballLiftBurn` / `spitballSpeed`, through `BoostSpeedFactor` so bots slow too). None fall off for 6 s
 after the last hit, then one every 3 s (`CombatRules.spitballsLeft`); any fan blows them all off, landing at the desk
 clears them, and a new plane starts clean. Every plane shows a wet paper blob on itself per spitball, and your own

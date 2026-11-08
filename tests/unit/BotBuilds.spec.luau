@@ -58,14 +58,14 @@ function Spec.run()
 			assert(beyond.timeToTarget==math.huge and beyond.leadStuds==math.huge)
 		end
 	end)
-	test("measure uses derived health and each tier's speed and turn factors",function()
+	test("measure uses derived health, the plane's full speed and each tier's turn factor",function()
 		local loadout=catalog:starterLoadout()
 		loadout.wings="wings_2";loadout.tail="tail_1"
 		local stats=catalog:deriveStats(loadout)
 		for tier,profile in pairs(Config.bots.profiles) do
 			local measured=BotBuilds.measure(catalog,loadout,tier)
 			assert(measured.health==stats.health)
-			near(measured.speed,stats.speed*profile.speed_factor)
+			near(measured.speed,stats.speed)
 			near(measured.pitch,stats.pitch*profile.turn_factor)
 			near(measured.yaw,stats.yaw*profile.turn_factor)
 			near(measured.turnRadius,measured.speed/math.rad(math.min(measured.pitch,measured.yaw)))

@@ -276,8 +276,8 @@
     "shot_fall_gravity": 196.2,
     "shot_fall_seconds": 3,
     "spitball_max": 5,
-    "spitball_lift_burn_each": 0.3,
-    "spitball_slow_each": 0.04,
+    "spitball_lift_burn_each": 1.0,
+    "spitball_slow_each": 0.06,
     "spitball_hold_seconds": 6,
     "spitball_drop_seconds": 3,
     "eraser_lock_range": 750,
@@ -426,7 +426,6 @@
       "rookie": {
         "lead_accuracy": 0.7,
         "turn_factor": 0.72,
-        "speed_factor": 0.88,
         "evade_cooldown_seconds": 5,
         "evade_boost": false,
         "reaction_seconds": [
@@ -456,7 +455,6 @@
       "regular": {
         "lead_accuracy": 0.92,
         "turn_factor": 0.82,
-        "speed_factor": 0.93,
         "evade_cooldown_seconds": 3.5,
         "evade_boost": false,
         "reaction_seconds": [
@@ -486,7 +484,6 @@
       "experienced": {
         "lead_accuracy": 0.95,
         "turn_factor": 0.92,
-        "speed_factor": 0.98,
         "evade_cooldown_seconds": 2.5,
         "evade_boost": true,
         "reaction_seconds": [

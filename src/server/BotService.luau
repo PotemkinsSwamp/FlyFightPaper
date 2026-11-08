@@ -296,7 +296,7 @@ function Service:tryDuct(p,b,now,chance,reach)
  local position=p.body.Position
  if position.Y>Config.world.height_studs or p.model:GetAttribute("Lift")<p.stats.lift*.5 or self.mode=="CONTROL" and b.onObjective then return false end
  local near={}
- local lift,speed=p.model:GetAttribute("Lift"),p.stats.speed*b.profile.speed_factor
+ local lift,speed=p.model:GetAttribute("Lift"),p.stats.speed
  for _,run in ipairs(DuctRules.botRuns()) do
   local length,at=0,position
   for _,point in ipairs(run.points) do length+=(point-at).Magnitude;at=point end
@@ -606,7 +606,8 @@ function Service:steer(p,b,dt,now)
  -- so you catch it by cutting inside its turns (Alan 2026-10-22: 70%/95% made it too easy, no chase).
  local foe=p.pal and self.flight.byId[p.foeOf]
  local catchUp=foe and (foe.body.Position-position).Magnitude>250 and .85 or 1
- local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*catchUp or b.profile.speed_factor)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
+ -- Bots fly at their plane's full top speed like a player (Alan 2026-11-07); skill changes turning, not speed.
+ local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*catchUp or 1)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
  if p.model:GetAttribute("Boosting") then lift=math.max(lift,1) end -- boost flies along the nose even with no Lift
  local speed=cruise*bleed
  b.glide=lift<=0 and FlightRules.glide(b.glide or b.momentum,desired,cruise,dt) or nil
