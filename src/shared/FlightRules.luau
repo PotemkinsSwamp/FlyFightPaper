@@ -107,6 +107,16 @@ function Rules.velocity(direction, speed, lift, updraft, glide, cruise)
 	end
 	return velocity + Vector3.new(0, updraft - Config.empty_lift_descent_studs_s * (1 - above), 0)
 end
+-- How close two planes' centres came in the last `window` seconds, flying straight at their relative velocity (`offset`
+-- = other minus mine now). Catches a fast pass that the step-by-step overlap misses: a head-on pair closes 200+
+-- studs/s and a player's plane reaches the server in jumps of several studs (Alan 2026-11-07: a bot flew through him).
+function Rules.closestPass(offset, relativeVelocity, window)
+	local travel = relativeVelocity * window
+	local start = offset - travel
+	local length = travel:Dot(travel)
+	local t = length < 1e-9 and 1 or math.clamp(-start:Dot(travel) / length, 0, 1)
+	return (start + travel * t).Magnitude
+end
 -- Does the straight path a->b cross the world-axis box (centre, size)? Speed power-up holes are boxes measured
 -- around each opening, so a plane passing between server checks still counts (slab test).
 function Rules.segmentHitsBox(centre, size, a, b)

@@ -9,6 +9,8 @@ local Root=RS:WaitForChild("FlyFightPaper")
 local Rules=require(Root.Shared.FlightRules)
 local CombatRules=require(Root.Shared.CombatRules)
 local RAM_NEAR_STUDS=60 -- centre to centre; even two of the biggest planes can't touch from further away
+-- A pass between checks counts when the centres came this close in the last RAM_PASS_SECONDS (Rules.closestPass).
+local RAM_PASS_STUDS,RAM_PASS_SECONDS=2.5,.1
 local Landing=require(Root.Shared.ServiceRules)
 local Catalog=require(Root.Shared.Catalog)
 local Lines=require(Root.Shared.Lines)
@@ -462,7 +464,9 @@ end
 -- other loses that much plus combat.ram_extra_health, always surviving it (equal health: both go; Alan 2026-11-06).
 function Service:ram(a,b,now)
  a.lastContact,b.lastContact=now,now
- local closing=((a.previousVelocity or Vector3.zero)-(b.previousVelocity or Vector3.zero)):Dot((b.body.Position-a.body.Position).Unit)
+ -- Relative speed, not speed along the line between them: a pass caught just after the planes crossed points that
+ -- line backwards.
+ local closing=((a.previousVelocity or Vector3.zero)-(b.previousVelocity or Vector3.zero)).Magnitude
  if closing<Gameplay.combat.ram_closing_speed then
   for _,p in ipairs({a,b}) do self:damage(p,p.stats.health*Gameplay.combat.plane_contact_health_fraction,"contact",nil,{kind="ram",other=(p==a and b or a).name}) end
   return
@@ -664,7 +668,10 @@ function Service:step(dt)
     for _,q in pairs(self.pilots) do
      -- A lesson's targets and Pals never ram their player (Alan: a Pal can't fold you); nor do practice flights or teammates.
      if q~=p and not (p.foeOf or q.foeOf or p.practice or q.practice) and not (p.team and p.team==q.team) and q.model:GetAttribute("State")=="FLYING" and now-q.lastContact>.6
-      and (q.body.Position-p.body.Position).Magnitude<RAM_NEAR_STUDS and self:touching(p,q) then self:ram(p,q,now);break end
+      and (q.body.Position-p.body.Position).Magnitude<RAM_NEAR_STUDS and (self:touching(p,q)
+       or Rules.closestPass(q.body.Position-p.body.Position,q.body.AssemblyLinearVelocity-p.body.AssemblyLinearVelocity,RAM_PASS_SECONDS)<RAM_PASS_STUDS) then
+      self:ram(p,q,now);break
+     end
     end
    end
    p.lastPosition,p.lastCFrame=p.body.Position,p.body.CFrame;p.previousVelocity=p.body.AssemblyLinearVelocity

@@ -34,8 +34,10 @@ thresholds: under 15 normal studs/s no damage; 15–45 scale 0–25% original ma
 100% by 95. Use a 0.6-second contact damage gate and push away from the surface to prevent repeated overlap
 callbacks deleting the plane. Tune based on observed forgiveness, not just formula output.
 
-Planes pass through each other (no bounce); the server decides when their exact shapes touch. A slow brush costs each
-10% of original max health. A real ram (closing at `combat.ram_closing_speed` or more) folds the plane with less health
+Planes pass through each other (no bounce); the server decides when their exact shapes touch, or when their centres
+passed within 2.5 studs between two checks (`FlightRules.closestPass`, so a fast head-on pass is never missed; Alan
+2026-11-07). A slow brush costs each 10% of original max health. A real ram (relative speed `combat.ram_closing_speed`
+or more) folds the plane with less health
 and the other loses that much plus `combat.ram_extra_health`, always keeping 1; equal health folds both (Alan
 2026-11-06). Teammates, practice flights and lesson targets never ram. Ramming alone earns no elimination; a recent eligible weapon attacker may still
 get credit if a damaged plane crashes. Friendly aircraft cannot be used as high-damage missiles.
