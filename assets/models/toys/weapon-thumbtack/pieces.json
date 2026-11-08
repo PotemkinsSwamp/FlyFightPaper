@@ -22,15 +22,15 @@
       "role": "static",
       "centre": [
         0.0,
-        0.0075,
+        0.0,
         0.75
       ],
       "size": [
-        1.28,
-        0.635,
-        1.28
+        1.24,
+        0.62,
+        1.24
       ],
-      "triangles": 252,
+      "triangles": 124,
       "textured": false,
       "color": [
         255,
@@ -45,15 +45,15 @@
       "role": "static",
       "centre": [
         0.0,
-        -0.105,
+        -0.0525,
         0.15
       ],
       "size": [
         1.38,
-        0.65,
+        0.755,
         2.6
       ],
-      "triangles": 614,
+      "triangles": 838,
       "textured": false,
       "color": [
         255,

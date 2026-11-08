@@ -23,14 +23,14 @@
       "centre": [
         0.0,
         0.0,
-        0.4
+        0.395
       ],
       "size": [
-        0.86,
-        0.74,
-        2.3
+        0.88,
+        0.76,
+        2.31
       ],
-      "triangles": 32,
+      "triangles": 96,
       "textured": false,
       "color": [
         255,
@@ -49,11 +49,11 @@
         0.05
       ],
       "size": [
-        0.6,
-        0.6,
+        0.62,
+        0.62,
         2.8
       ],
-      "triangles": 236,
+      "triangles": 428,
       "textured": false,
       "color": [
         255,

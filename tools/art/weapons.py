@@ -399,18 +399,30 @@ def lump(bm, centre, radius, seed, floor=None):
 
 def popper():
     """Seven thin flat-ended leads in a clear tube and folded paper cradle, muzzle +Y."""
-    clear = paint(bmesh.new(), [205, 225, 235], collar, -1.45, 1.35, .32, .29, sides=12)
-    body = paint(bmesh.new(), [220, 43, 42], tube, [(0, -1.72, 0), (0, -1.45, 0)], .36, sides=12)
+    clear = paint(bmesh.new(), [120, 200, 235], collar, -1.45, 1.35, .32, .29, sides=12)
+    body = paint(bmesh.new(), [230, 30, 35], tube, [(0, -1.72, 0), (0, -1.45, 0)], .36, sides=12)
+    paint(body, [160, 15, 20], collar, -1.52, -1.45, .37, .35, sides=12)
+    paint(body, [230, 30, 35], collar, 1.16, 1.25, .33, .31, sides=12)
     # The inside slopes are tangent to the tube's lower half; the base is only .03 thick.
     profile = [(-.3312, -.1642), (-.12, -.3754), (.12, -.3754), (.3312, -.1642),
                (.31, -.143), (.108, -.345), (-.108, -.345), (-.31, -.143)]
-    paint(body, [240, 240, 236], slab, [(x, -.10, z) for x, z in profile], (0, 2.2, 0))
+    before = set(body.faces)
+    paint(body, [250, 140, 20], slab, [(x, -.10, z) for x, z in profile], (0, 2.2, 0))
+    layer = body.loops.layers.float_color["Color"]
+    for face in set(body.faces) - before:
+        if all(any(abs(v.co.x - x) < 1e-5 and abs(v.co.z - z) < 1e-5 for x, z in profile[4:])
+               for v in face.verts):
+            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [205, 95, 10]], 1)
+    # Painted crease lines sit .01 proud of the outside, with their backs embedded in the paper.
+    for side in (-1, 1):
+        paint(body, [205, 95, 10], box, (side * .12 - .01, -1.19, -.3854),
+              (side * .12 + .01, .99, -.3654))
     leads = bmesh.new()
     for k in range(6):
         t = 2 * math.pi * k / 6
         x, z = .13 * math.cos(t), .13 * math.sin(t)
-        paint(leads, [58, 60, 66], tube, [(x, -1.40, z), (x, 1.55, z)], .045, sides=6)
-    lead = paint(bmesh.new(), [58, 60, 66], tube, [(0, -1.40, 0), (0, 1.55, 0)], .045, sides=6)
+        paint(leads, [40, 42, 50], tube, [(x, -1.40, z), (x, 1.55, z)], .045, sides=6)
+    lead = paint(bmesh.new(), [40, 42, 50], tube, [(0, -1.40, 0), (0, 1.55, 0)], .045, sides=6)
     return {"clear": plain_piece("clear", clear, [255, 255, 255]),
             "body": plain_piece("body", body, [255, 255, 255]),
             "leads": plain_piece("leads", leads, [255, 255, 255]),
@@ -419,18 +431,35 @@ def popper():
 
 def thumbtack():
     """A wide clear pin tub, paper tray and open cardboard barrel, muzzle +Y."""
-    clear = paint(bmesh.new(), [205, 225, 235], cup_shell, -.75, -.31, .31, .62, .62, .04)
-    paint(clear, [205, 225, 235], ring_z, -.75, .285, .325, .64, .575)
+    clear = paint(bmesh.new(), [120, 200, 235], cup_shell, -.75, -.31, .31, .62, .62, .04)
     # One continuous sheet with its long edges folded down, seated against the tub's floor.
     profile = [(-.69, -.43), (-.69, -.31), (.69, -.31), (.69, -.43),
                (.66, -.43), (.66, -.34), (-.66, -.34), (-.66, -.43)]
-    body = paint(bmesh.new(), [240, 240, 236], slab, [(x, -.70, z) for x, z in profile], (0, 1.5, 0))
-    paint(body, [165, 115, 70], collar, -.15, 1.15, .22, .17, sides=12)
+    body = paint(bmesh.new(), [60, 150, 235], slab, [(x, -.70, z) for x, z in profile], (0, 1.5, 0))
     layer = body.loops.layers.float_color["Color"]
     for face in body.faces:
+        if all(v.co.x >= .65999 for v in face.verts) or all(v.co.x <= -.65999 for v in face.verts):
+            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [35, 100, 180]], 1)
+    # Keep the rim solid while the tub itself remains the game's see-through piece.
+    paint(body, [40, 120, 220], ring_z, -.75, .285, .325, .64, .575)
+    before = set(body.faces)
+    paint(body, [190, 115, 50], collar, -.15, 1.15, .22, .17, sides=12)
+    for face in set(body.faces) - before:
         if all(abs(math.hypot(v.co.x, v.co.z) - .17) < 1e-5 for v in face.verts):
-            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [120, 80, 45]], 1)
-    red, yellow, blue, green = [220, 43, 42], [249, 200, 42], [25, 110, 219], [36, 165, 83]
+            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [110, 65, 30]], 1)
+    paint(body, [225, 40, 40], collar, .94, 1.05, .23, .21, sides=12)
+    red, yellow, blue, green = [235, 35, 35], [255, 205, 20], [30, 110, 235], [30, 185, 80]
+
+    def coloured_pin(bm, head, direction, rgb, shaft=0):
+        # Repaint the shared helper's silver locally, keeping the other gadgets untouched.
+        before = set(bm.faces)
+        push_pin(bm, head, direction, rgb, shaft=shaft)
+        layer = bm.loops.layers.float_color["Color"]
+        silver = [(v / 255) ** 2.2 for v in [190, 196, 204]]
+        for face in set(bm.faces) - before:
+            if all(abs(face.loops[0][layer][k] - silver[k]) < 1e-6 for k in range(3)):
+                for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [200, 205, 215]], 1)
+        return bm
     # Loose pins lie at varied angles. Settle each onto the inner floor instead of leaving it suspended.
     pins = [((0, -.75, 0), (.866, .50, .08), red)]
     for angle, radius, twist, tilt, rgb in ((4, .39, -.10, -.10, yellow), (67, .38, -.22, .08, blue),
@@ -441,11 +470,11 @@ def thumbtack():
                      (-math.sin(t + twist), math.cos(t + twist), tilt), rgb))
     for head, direction, rgb in pins:
         before = set(body.verts)
-        push_pin(body, head, direction, rgb)
+        coloured_pin(body, head, direction, rgb)
         verts = list(set(body.verts) - before)
         bmesh.ops.translate(body, vec=(0, 0, -.27 - min(v.co.z for v in verts)), verts=verts)
     # The loaded pin has a visible silver shank; its .14-long point ends at y=1.55.
-    pin = push_pin(bmesh.new(), (0, .95, 0), (0, 1, 0), red, shaft=.30)
+    pin = coloured_pin(bmesh.new(), (0, .95, 0), (0, 1, 0), red, shaft=.30)
     return {"clear": plain_piece("clear", clear, [255, 255, 255]),
             "body": plain_piece("body", body, [255, 255, 255]),
             "pin": plain_piece("pin", pin, [255, 255, 255])}
@@ -465,11 +494,24 @@ def crayon():
                 bm.faces.new((rings[a][k], rings[a][j], rings[b][j], rings[b][k]))
         return bm
 
-    body = paint(bmesh.new(), [245, 190, 40], sleeve)
+    body = paint(bmesh.new(), [255, 200, 20], sleeve)
     layer = body.loops.layers.float_color["Color"]
     for face in body.faces:
         if all(abs(v.co.x) <= .38001 and abs(v.co.z) <= .32001 for v in face.verts):
-            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [215, 160, 30]], 1)
+            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [215, 150, 0]], 1)
+
+    def sleeve_band(bm, y0, y1, outer, inner):
+        # A rectangular paper ring follows all four faces, .01 above the sleeve's surface.
+        rings = [[bm.verts.new((x, y, z)) for x, z in ((-w, -h), (w, -h), (w, h), (-w, h))]
+                 for y, (w, h) in ((y0, outer), (y1, outer), (y0, inner), (y1, inner))]
+        for a, b in ((0, 1), (1, 3), (3, 2), (2, 0)):
+            for k in range(4):
+                j = (k + 1) % 4
+                bm.faces.new((rings[a][k], rings[a][j], rings[b][j], rings[b][k]))
+        return bm
+
+    paint(body, [35, 165, 70], sleeve_band, -.54, -.26, (.44, .38), (.42, .36))
+    paint(body, [20, 110, 45], sleeve_band, .72, .76, (.44, .38), (.37, .31))
 
     def worn_wax(bm):
         # A continuous cylinder and rounded, flat-ended dome, without an internal cap or sharp apex.
@@ -483,14 +525,16 @@ def crayon():
         bm.faces.new(rings[0][::-1]); bm.faces.new(rings[-1])
         return bm
 
-    wax = paint(bmesh.new(), [40, 80, 200], worn_wax)
+    wax = paint(bmesh.new(), [25, 70, 215], worn_wax)
     before = set(wax.verts)
-    paint(wax, [150, 190, 230], collar, -1.40, .40, .30, .291, sides=12)
+    paint(wax, [120, 180, 245], collar, -1.40, .40, .30, .291, sides=12)
     ragged = (.02, -.06, .05, -.03, .08, -.07, .01, -.05, .06, -.02, .04, -.08)
     for v in set(wax.verts) - before:
         if v.co.y > 0:
             k = round(math.atan2(v.co.z, v.co.x) * 12 / (2 * math.pi)) % 12
             v.co.y += ragged[k]
+    for y0, y1 in ((-1.20, -1.15), (.20, .25)):
+        paint(wax, [20, 45, 140], collar, y0, y1, .31, .295, sides=12)
 
     def back_band(bm):
         # ribbon() is drawn flat, then stood in XZ so its thin direction follows the barrel.
@@ -503,7 +547,7 @@ def crayon():
         box(bm, (-.50, -1.50, -.07), (.50, -1.45, .07))
         return bm
 
-    rubber = paint(bmesh.new(), [200, 160, 110], back_band)
+    rubber = paint(bmesh.new(), [215, 45, 35], back_band)
     return {"body": plain_piece("body", body, [255, 255, 255]),
             "crayon": plain_piece("crayon", wax, [255, 255, 255]),
             "band": plain_piece("band", rubber, [255, 255, 255])}
