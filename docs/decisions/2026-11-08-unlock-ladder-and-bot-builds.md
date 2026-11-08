@@ -52,6 +52,11 @@
   hit hard at medium range before they scatter, so they need a plane that gets close; a slow tank can't, so nobody
   would build it. Ace builds must be strong and make sense on the numbers. Replaced by the Staple Tank (same heavy
   body, six Staple guns: fast, straight, full damage at any distance, 105 damage a second at 500 studs).
+- **Bots are the balance test, not the thing to tune** (Alan, after the Staple Tank): Aces play like above-average
+  players and veterans like average ones (no bot can play like the best). So build the reasonable combinations real
+  players would make, let the bots fly them, and balance the weapons from what comes out. A build that is too strong
+  points at a weapon or capacity problem to fix in the game, never at the bot build to weaken (taking a Staple off the
+  tank would hide it). Balance holistically: e.g. raising weapon capacities would leave small fast planes one gun.
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 
