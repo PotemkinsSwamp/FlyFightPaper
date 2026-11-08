@@ -261,14 +261,17 @@ function HUD.start(getPlane, action)
 		button.Text=choice:gsub("_"," ");button.Parent=picker;button.Activated:Connect(function()action("loadout",choice)end)
 	end
 	-- Dodge practice: one bot with only an eraser hunts you.
-	local eraserBots=picker.pellet:Clone();eraserBots.Name="EraserBots";eraserBots.Text="eraser hunter";eraserBots.Position=UDim2.fromOffset(770,0)
+	local eraserBots=picker.pellet:Clone();eraserBots.Name="EraserBots";eraserBots.Text="eraser hunter";eraserBots.Position=UDim2.fromOffset(0,-80)
 	eraserBots.BackgroundColor3=Color3.fromRGB(120,45,70);eraserBots.Parent=picker;eraserBots.Activated:Connect(function()action("eraserBots")end)
 	-- Every bot build, skill, personality and quirk at once (F10 shows which is which).
 	local mixedBots=eraserBots:Clone();mixedBots.Name="MixedBots";mixedBots.Text="mixed bots";mixedBots.Position=UDim2.fromOffset(770,-40)
 	mixedBots.BackgroundColor3=Color3.fromRGB(45,95,70);mixedBots.Parent=picker;mixedBots.Activated:Connect(function()action("mixedBots")end)
 	-- Three bots with only paperclips hunt you, to see the glint.
-	local clipBots=eraserBots:Clone();clipBots.Name="ClipBots";clipBots.Text="clip hunters";clipBots.Position=UDim2.fromOffset(880,0)
+	local clipBots=eraserBots:Clone();clipBots.Name="ClipBots";clipBots.Text="clip hunters";clipBots.Position=UDim2.fromOffset(110,-80)
 	clipBots.BackgroundColor3=Color3.fromRGB(45,70,120);clipBots.Parent=picker;clipBots.Activated:Connect(function()action("clipBots")end)
+	-- Four bots with only spitballs hunt you, to feel them stick (Alan 2026-11-07).
+	local spitBots=eraserBots:Clone();spitBots.Name="SpitBots";spitBots.Text="spitball hunters";spitBots.Position=UDim2.fromOffset(220,-80)
+	spitBots.BackgroundColor3=Color3.fromRGB(110,105,80);spitBots.Parent=picker;spitBots.Activated:Connect(function()action("spitBots")end)
 	-- Test mode (Alan, 2026-10-14): end this round and start the next one in the picked mode.
 	for index, mode in ipairs({ { "FFA", "free-for-all" }, { "TDM", "team DM" }, { "CONTROL", "airspace" }, { "NEXTSPOT", "next spot" } }) do
 		local button=eraserBots:Clone();button.Name="Mode"..mode[1];button.Text="mode: "..mode[2];button.Position=UDim2.fromOffset((index-1)*110,-40)

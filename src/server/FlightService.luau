@@ -95,11 +95,12 @@ function Service.new()
    -- Dev test: replace every bot with an even mix of all builds, skills, personalities and quirks.
    self.eraserDuel=false;self.mixedBots=(self.mixedBots or 0)+1
    for _,bot in pairs(self.pilots) do if bot.kind=="bot" then self:remove(bot,"vacancy") end end
-  elseif (action=="eraserBots" or action=="clipBots") and player:GetAttribute("Dev")==true then
-   -- Dev practice: enemy bots hunt you (one with only an eraser, or three with paperclips to see the glint); the other
-   -- bots leave (until Play stops).
+  elseif (action=="eraserBots" or action=="clipBots" or action=="spitBots") and player:GetAttribute("Dev")==true then
+   -- Dev practice: enemy bots hunt you (one with only an eraser, three with paperclips to see the glint, or four with
+   -- spitballs to feel them stick); the other bots leave (until Play stops).
    self.eraserDuel=true
-   local choice,keep=action=="clipBots" and "paperclip_only" or "eraser_only",action=="clipBots" and 3 or 1
+   local choice=({clipBots="paperclip_only",spitBots="spitball"})[action] or "eraser_only"
+   local keep=({clipBots=3,spitBots=4})[action] or 1
    for _,bot in pairs(self.pilots) do if bot.kind=="bot" then
     if keep==0 then self:remove(bot,"vacancy")
     else

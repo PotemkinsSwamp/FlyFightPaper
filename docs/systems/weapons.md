@@ -78,7 +78,9 @@ together. Each one burns Lift 30% faster and slows the plane 4% (a full load: 2.
 `CombatRules.spitballLiftBurn` / `spitballSpeed`, through `BoostSpeedFactor` so bots slow too). None fall off for 6 s
 after the last hit, then one every 3 s (`CombatRules.spitballsLeft`); any fan blows them all off, landing at the desk
 clears them, and a new plane starts clean. Every plane shows a wet paper blob on itself per spitball, and your own
-screen gets a splatter per spitball that slides off when they go (client `Spitballs`). No HUD counter (Alan 2026-11-07).
+screen gets a splatter per spitball that slides off when they go (client `Spitballs`). No HUD counter (Alan 2026-11-07). The desk's
+"spitball hunters" dev button sends four bots with two spitball guns each after you; the "spitball" picker button gives you
+the same plane.
 
 Thumbtack damage falls with distance the same way: full to 100 studs, half at 300, a quarter at 500. The Hangar card
 says which way a weapon's damage goes.
