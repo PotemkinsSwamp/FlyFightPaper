@@ -1,7 +1,7 @@
 # Weapon unlock order, free and paid weapons, a grind, and bot builds
 
 **Decided:** 2026-11-08 (Alan)
-**Status:** planned ([CLASSES-PLAN](../plan/CLASSES-PLAN.md) step 4; not built)
+**Status:** in progress (order, free weapons and bot builds built; Aces, tricks and the unlock moment next)
 
 ## Decision
 - **Order** (the unlock ladder and the Hangar's Gear sheet): Paper Pellet (level 1), Point Popper (2), Staple (3),
@@ -21,6 +21,21 @@
   not the Marksman. Veterans fly their own builds, made with reason the way a player would build: a big body with
   speed parts around it to fit better weapons; or a fast plane with a Point Popper that zips in, brakes, fires and
   zips out. No bot carries a Paperclip, Eraser or Pencil.
+
+- **Every bot steals folds:** it sees a damaged plane (paper flying off) and goes for it to take the fold; better bots
+  do it more.
+- **Every bot tries its build's tricks**, and skill sets how well: an Ace brakes at about 80 studs almost exactly, a
+  Veteran at 80-100 and less reliably, lower tiers worse. Tricks come from the build: Popper dart (in, brake, blast,
+  boost out), Crayon stand-off (200-400 studs), Spitball first then the other gun, close turn fights with the brake.
+- **Ace tier** above Veteran: better turning, aim and reactions, hunts more. In measuring matches one Ace per three
+  Veterans. Whether real lobbies get Aces is for step 6.
+- **Unlock moment details:** you drag the zipper yourself (right to left; the screen shakes slightly while you drag on
+  PC, phones vibrate if Roblox allows, else shake); "Drag to unzip" arrow after about 2 s for the first few times; a
+  small Skip jumps to everything out; several unlocks all come out of one backpack and you swipe or drag between them
+  (arrows on PC too), Later removes one; free: "Now in your Hangar" + Put it on; paid: "Now available for purchase in
+  the Hangar" + See it (no price). Look: as close as possible to the gpt-image-2 concept frames
+  (`.planning/unlock-concept2/`), crisp separate 2D pieces, real game text.
+- **All the game's text should look better** (bolder, outlined, shadowed, like the concept pictures): a style test first.
 
 ## Why
 - Alan: the weaker weapons should be free and the stronger ones paid, thinking about how strong they are alone and

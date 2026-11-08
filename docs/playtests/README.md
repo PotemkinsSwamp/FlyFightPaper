@@ -33,3 +33,5 @@ final on these.
 New playtest: copy the shape of [2026-10-13](2026-10-13.md): numbered notes, how each will be checked, a ✅ when done.
 
 Back to [HOME](../HOME.md)
+
+- 2026-11-08: [Three all-veteran bot matches: Paper and XP a match](2026-11-08-veteran-bot-matches.md)
