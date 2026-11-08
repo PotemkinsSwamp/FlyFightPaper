@@ -1,27 +1,23 @@
-# Since Alan last checked (2026-11-08)
-- **The beta must feel finished:** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md, step 4
-  (unlock ladder) in progress; your calls: docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
-- **Gear page:** all ten weapons on one page in shorter cards; the box under them says what the weapon does, plain words.
-- **Weapon order + free weapons:** Pellet 1, Popper 2, Staple 3, Thumbtack 4 are free at their level; Spitball 6, Rubber
-  Band 7, Paperclip 9, Crayon 12, Eraser 22, Pencil 40 cost Paper (old prices until the numbers are in).
-- **Presets:** the Fighter now carries a Thumbtack and the Bomber a Crayon (their stand-ins were never swapped).
-- **Bots:** rookies fly the level-1 presets, regulars every preset but the Marksman, veterans four player-style builds;
-  no bot carries a Paperclip, Eraser or Pencil. Regulars and veterans brake when closing on a target.
-- **Free-for-all ends only on time** (no 20-fold cap).
-- **Bug I caused and fixed:** the brake broke bot steering (bots flew into walls); fixed, lesson added.
-- **Veteran matches:** about 6 folds, 370 Paper, 650 XP a bot a match (top 11-13 folds). You: 6 = weak player, 11-13 =
-  average, 25+ = really good.
-- **Unlock moment concept:** 8 frames + crisp test pieces in .planning/unlock-concept2/ (gpt-image-2).
-- **Text style picked: C** (Kalam heavier + light outline + shadow: "like a child wrote it with a crayon");
-  rolling it out to every menu is queued.
+# Since Alan last checked (2026-11-08, evening)
+- **The beta must feel finished:** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md step 4; your
+  calls: docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
+- **Text style picked: C** (Kalam heavier + light outline + soft shadow, "like a child wrote it with a crayon").
+- **Bots built:** Aces (Studio-only for now), every bot flies its plane's trick (Popper dart, close turn fight with the
+  brake, spitball first), steals folds from damaged planes, judges target switches by skill.
+- **Bot fixes after your review:** each gun aims at its own lead (a bot's second gun always missed before), bots shoot
+  whenever the targeting ring would show (no range rule), Aces fly different planes. My mistakes: all Aces on one
+  plane, a Crayon trick that braked itself into easy prey, a loosened firing limit; lesson added.
+- **Fixed Ace matches:** veterans ~7 folds and ~900 points a match (top 11-16). By plane: Tack Skirmisher ~12, Popper
+  Dart ~9, Spitball Hunter ~5, Crayon Tank ~2. Aces aren't clearly better than veterans yet.
 - **Not saved or published yet:** the new weapon models are synced into your open Studio; Save to File and publish need
-  your go.
+  your go. Rojo's Studio plugin is disconnected: click Connect (port 34872) before the next code change.
 
 # Now: finish the game for the beta
-Next, in order: (1) Aces + bot tricks + smart target switching (built, not yet flown: your go for a test run),
-then Ace/veteran measuring matches (your go); (2) prices and levels from the numbers (your OK);
-(3) the unlock moment (backpack bigger, at the screen's bottom edge, drag-to-unzip). Then the text rollout (style C), mastery, bots follow the lobby,
-balance pass, winners' circle, skins, shop.
+Next, in order (your call, 2026-11-08): (1) fix the bots: Crayon Tank turn-fights instead of standing off, find why
+Aces don't beat veterans, re-measure (your go) for a real simulated-player XP and Paper a match; (2) roll text style C
+out to everything; (3) the unlock moment (backpack bigger, at the screen's bottom edge, drag-to-unzip). Prices and
+levels come from the step-1 numbers (your OK). Then mastery, bots follow the lobby, balance pass, winners' circle,
+skins, shop.
 
 Decisions to review
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.

@@ -44,6 +44,10 @@
   and never shows its bottom (so frames 3-4 as drawn are wrong). Items poking past the paper's edge (frames 6-7) are OK
   if the background is darkened enough.
 - **Order:** text style test, then Aces and bot tricks (and their measuring matches), then the unlock moment.
+- **After the Ace matches** (Alan, later the same day): the Crayon Tank turn-fights like the best planes (drop its
+  stand-off; rebuild its weapons only if it's still weak). Order now: fix the bots (Crayon Tank, why Aces don't beat
+  veterans) so a match gives a real simulated-player measure of XP and Paper a match; then roll the chosen text style
+  out to everything; then the unlock moment. Bots shoot whenever the targeting ring would show, no range rule.
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 
