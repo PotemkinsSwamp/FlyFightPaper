@@ -129,6 +129,7 @@ function Service:palAmbush(p,victim,now)
  self.combat:launch(p,mount,now,victim,frame.Position+offset)
 end
 local MIXED_SKILLS={"rookie","regular","experienced"}
+local RING_STUDS=1000 -- the player's targeting ring shows on enemies this close (FlightHUD)
 local function aimError(direction,b,now)
  local drift=math.sin(now*.8+b.seed)*b.error
  return (CFrame.lookAt(Vector3.zero,direction)*CFrame.fromOrientation(drift*math.sin(now*.29+b.seed)*.4,drift,0)).LookVector
@@ -224,11 +225,19 @@ function Service:fill()
  for _,row in ipairs(plan.botAdds) do
   -- Studio only: workspace DevBotTier sets every bot's skill, for measuring matches (e.g. all veterans as stand-ins
   -- for real players, Alan 2026-11-08).
-  -- "ace_mix" gives one Ace per three veterans (Alan 2026-11-08).
+  -- "ace_mix" gives one Ace per three veterans (Alan 2026-11-08). Each tier works through its own builds in turn,
+  -- from a random one each match, so Aces fly different builds (Alan: three Aces on one build is a bad test).
   self.serial=row.identitySerial
-  local tier=Run:IsStudio() and workspace:GetAttribute("DevBotTier") or row.profileName
+  local dev=Run:IsStudio() and workspace:GetAttribute("DevBotTier")
+  local tier=dev or row.profileName
   if tier=="ace_mix" then tier=self.serial%4==1 and "ace" or "experienced" end
-  local loadout,build=Builds.pick(tier,self.serial)
+  local pick=self.serial
+  if dev then
+   self.devPicks=self.devPicks or {}
+   self.devPicks[tier]=(self.devPicks[tier] or Random.new():NextInteger(0,#Builds.TIERS[tier]-1))+1
+   pick=self.devPicks[tier]
+  end
+  local loadout,build=Builds.pick(tier,pick)
   local p=self.flight:add(nil,{id=row.actorKey,name=row.displayName,tier=tier,loadout=loadout,loadoutName=build})
   if not p then break end
   if p.tier=="experienced" and p.team and not workspace:GetAttribute("DevBotTier") then
@@ -339,13 +348,14 @@ function Service:chooseTarget(p,b,now,zone)
 end
 -- The build's trick (Alan 2026-11-08; Tactics): each approach on a target rolls how well it's flown (brakeAt 0 = fumbled,
 -- holdAt for a stand-off). A Popper dart closes (boosting while far), brakes, blasts for DART_BLAST seconds, then
--- boosts out past the target and comes back round. A Crayon holds off at holdAt: inside holdAt-100 it turns away,
--- opens the distance and turns back. Braking itself and the spitball-first trigger are in steer.
+-- boosts out past the target and comes back round. A Crayon stands off: it never brakes to hang back (that made it slow
+-- and easy to shoot), it just peels off with one hard turn when it gets inside holdAt-100 (about 200 studs) of a target
+-- ahead. Braking itself and the spitball-first trigger are in steer.
 function Service:trickStep(p,b,now,delta)
  local gap=delta.Magnitude
  if b.extendUntil and now<b.extendUntil then return end
  if b.brakeFor~=b.target or gap>Tactics.HOLD_STUDS+150 then
-  b.brakeFor,b.blastAt=b.target,nil
+  b.brakeFor,b.blastAt,b.spitSince=b.target,nil,nil
   b.brakeAt,b.holdAt=Tactics.approach(b.profile,function(lo,hi) return b.random:NextNumber(lo,hi) end)
  end
  if b.brakeAt<=0 then return end
@@ -357,9 +367,9 @@ function Service:trickStep(p,b,now,delta)
    b.extendUntil=self:startMove(b,now,"extend",{"extend",self:pickMove(b,b.profile.reverse_moves,p.body.Position)},-side)
    b.dartOutUntil=b.extendUntil
   end
- elseif b.trick=="standoff" and gap<b.holdAt-100 then
+ elseif b.trick=="standoff" and gap<b.holdAt-100 and p.body.CFrame.LookVector:Dot(delta.Unit)>.5 then
   b.brakeFor=nil
-  b.extendUntil=self:startMove(b,now,"extend",{"break_turn","extend","flat_reverse"},side)
+  b.extendUntil=self:startMove(b,now,"extend",{"break_turn"},side)
  end
 end
 -- Priority state machine, run at the bot's reaction rate. Steering (every frame) adds the avoid override.
@@ -469,18 +479,20 @@ function Service:decide(p,b,now)
    if seen then b.lastSeen=now;b.lastKnown=b.target.body.Position;b.lastVelocity=b.target.body.AssemblyLinearVelocity end
   end
   -- Kill-stealing (Alan 2026-11-08): now and then (steal_notice a second) a bot notices a damaged plane in view and
-  -- goes for its fold; how well it judges leaving its own target is skill (switch_judgment, Tactics.shouldSteal).
+  -- goes for its fold; how well it judges leaving its own target is skill (switch_judgment, Tactics.shouldSteal),
+  -- rolled once per target so a good pilot doesn't still hop every few seconds. Only planes within STEAL_STUDS.
+  if b.judgedFor~=b.target then b.judgedFor,b.judgedWell=b.target,b.random:NextNumber()<b.profile.switch_judgment end
   if b.random:NextNumber()<b.profile.steal_notice*b.reaction then
    local best,health=nil,math.huge
    for _,other in pairs(self.flight.pilots) do
     if other~=b.target and self.combat:enemy(p,other) and self.combat:targetable(other,now) and other.model:GetAttribute("State")=="FLYING"
      and not (zone and not nearZone(other.body.Position,zone,b.profile.objective_leash)) then
      local share=other.model:GetAttribute("Health")/other.stats.health
-     if share<health and self:sees(p,other) then best,health=other,share end
+     if share<health and (other.body.Position-position).Magnitude<Tactics.STEAL_STUDS and self:sees(p,other) then best,health=other,share end
     end
    end
    local current=seen and b.target.model:GetAttribute("Health")/b.target.stats.health or nil
-   if best and Tactics.shouldSteal(current,health,b.random:NextNumber()<b.profile.switch_judgment) then
+   if best and Tactics.shouldSteal(current,health,b.judgedWell) then
     b.target,seen=best,true
     b.lastSeen=now;b.lastKnown=best.body.Position;b.lastVelocity=best.body.AssemblyLinearVelocity
     b.pursueUntil=now+b.random:NextNumber(b.profile.pursuit_seconds[1],b.profile.pursuit_seconds[2])*b.style.pursuit_factor
@@ -651,9 +663,9 @@ function Service:steer(p,b,dt,now)
  -- Brake (Alan 2026-11-08): close behind a target it is catching, a bot brakes like a player to stay on its tail and
  -- keep firing: slower and a little tighter in turns while held, eased like the player's; FlightService burns its Lift
  -- twice as fast meanwhile. Where it starts braking is this approach's roll (trickStep): about 80 studs, exactly for an
- -- Ace, sloppier lower down, sometimes not at all; a Crayon stand-off brakes to hold off at holdAt instead.
+ -- Ace, sloppier lower down, sometimes not at all. A Crayon stand-off doesn't brake.
  local gap=(b.mode=="chase" and b.target) and b.target.body.Position-position or nil
- local brakeAt=(b.brakeAt or 0)>0 and (b.trick=="standoff" and b.holdAt or b.brakeAt) or 0
+ local brakeAt=b.trick~="standoff" and b.brakeAt or 0
  local braking=gap~=nil and not p.pal and gap.Magnitude>1 and gap.Magnitude<brakeAt
   and (p.body.AssemblyLinearVelocity-b.target.body.AssemblyLinearVelocity):Dot(gap.Unit)>0
   and (p.model:GetAttribute("Lift") or 0)>p.stats.lift*.25
@@ -685,28 +697,36 @@ function Service:steer(p,b,dt,now)
  if now<(p.model:GetAttribute("DeflectUntil") or 0) then local normal=p.model:GetAttribute("CollisionNormal") or Vector3.zero;velocity-=normal*math.min(0,velocity:Dot(normal));velocity+=normal*Config.flight.graze_slide_push_studs_s end
  p.drive.VectorVelocity=p.drive.VectorVelocity:Lerp(velocity,1-math.exp(-Config.flight.velocity_response*dt))
  if lead and (lead-position).Magnitude>.1 then self.combat.info[p.id].aim=aimError((lead-position).Unit,b,now) end
- -- Triggers are hand work too: checked every frame against the live lead, not held between decisions.
- local aim=self.combat.info[p.id].aim or p.body.CFrame.LookVector
- local aligned=lead~=nil and p.body.CFrame.LookVector:Dot((lead-position).Unit)>math.cos(math.rad(12))
- local distance=aligned and (b.target.body.Position-position).Magnitude or math.huge
- -- Spitball first (a Spitball build flying its trick): only the spitball until SPIT_WANT are stuck, then the other gun.
- local spitFirst=b.trick=="spitball" and (b.brakeAt or 0)>0 and b.target
+ -- Triggers are hand work too: checked every frame against the live lead, not held between decisions. Like a player,
+ -- a bot shoots whenever the targeting ring would show on its target (within RING_STUDS, the HUD's reach), whatever the
+ -- gun's range (Alan 2026-11-08: players don't know ranges; far planes are easier to hit). Each gun aims at its own lead,
+ -- like the player's per-gun lead markers: a fast and a slow gun need different leads.
+ local look=p.body.CFrame.LookVector
+ local inRing=lead~=nil and (b.target.body.Position-position).Magnitude<RING_STUDS
+ -- Spitball first (a Spitball build flying its trick): only the spitball until SPIT_WANT are stuck, then the other gun;
+ -- both after SPIT_SECONDS of trying.
+ local spitFirst=b.trick=="spitball" and (b.brakeAt or 0)>0 and b.target and now-(b.spitSince or now)<Tactics.SPIT_SECONDS
  local wantSpit=spitFirst and (b.target.model:GetAttribute("Spitballs") or 0)<Tactics.SPIT_WANT
  local foe=p.pal and p.pal.mode=="pellet" and self.flight.byId[p.foeOf]
  if foe then self:palAmbush(p,foe,now) end
  for group=1,2 do
-  local semi,eraser,spit,reach=false,false,false,math.huge
+  local semi,eraser,spit,gun=false,false,false,nil
   for _,mount in ipairs(self.combat.info[p.id].mounts) do if mount.group==group then
    eraser=eraser or mount.weapon.homing
    semi=semi or ((mount.weapon.fire_mode=="semiautomatic" or mount.weapon.fire_mode=="alternate") and not mount.weapon.homing)
    spit=spit or mount.weapon.id=="spitball"
-   reach=math.min(reach,CombatRules.shotRange(mount.weapon))
+   if not mount.weapon.homing then gun=gun or mount.weapon end
   end end
-  -- Better bots fire only inside the gun's reach (fires_in_range); the rest open up within 450 studs.
-  local inRange=distance<(b.profile.fires_in_range and reach or 450)
+  local aim,aligned=self.combat.info[p.id].aim or look,false
+  if inRing and gun then
+   local point=gun==self:weaponFor(p) and lead or self:leadWith(p,b,now,gun)
+   local to=point-position
+   if to.Magnitude>.1 then aim,aligned=aimError(to.Unit,b,now),look:Dot(to.Unit)>math.cos(math.rad(12)) end
+  end
   if semi then self.combat:trigger(p,group,false,aim) end
   -- Bots are smart with erasers: they wait for a full lock. Guns and pencils need alignment.
-  local fire=eraser and (p.model:GetAttribute("LockProgress") or 0)>=1 or not eraser and aligned and inRange and (not spitFirst or spit==wantSpit)
+  local fire=eraser and (p.model:GetAttribute("LockProgress") or 0)>=1 or not eraser and aligned and (not spitFirst or spit==wantSpit)
+  if fire and spitFirst and spit then b.spitSince=b.spitSince or now end
   if p.pal then
    -- A Pal's own guns never fire (step 8's shots are palAmbush's); one slow eraser at a time.
    local victim=self:palReady(p,now)
@@ -734,10 +754,15 @@ function Service:lead(p,b,now)
  local seen,old=samples[1],samples[1]
  for _,sample in ipairs(samples) do if sample.at<=now-lag then seen=sample else break end end
  b.view=seen
- local turning=seen.at-old.at>.05 and (seen.velocity-old.velocity)/(seen.at-old.at) or Vector3.zero
+ b.turning=seen.at-old.at>.05 and (seen.velocity-old.velocity)/(seen.at-old.at) or Vector3.zero
+ return self:leadWith(p,b,now,self:weaponFor(p))
+end
+-- Where a shot from `weapon` meets the target, from what lead() saw this frame (b.view, b.turning).
+function Service:leadWith(p,b,now,weapon)
+ local seen,turning=b.view,b.turning
  -- Skill sets lead accuracy: experts follow the whole turn, rookies lead short and shoot behind.
  local accuracy=b.profile.lead_accuracy
- local origin,weapon,age=p.body.Position,self:weaponFor(p),now-seen.at
+ local origin,age=p.body.Position,now-seen.at
  local predicted=seen.position
  for _=1,3 do
   local flight=CombatRules.travelTime(weapon,(predicted-origin).Magnitude)

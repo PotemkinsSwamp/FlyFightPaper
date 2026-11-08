@@ -51,8 +51,6 @@ function Spec.run()
 		end
 		-- An Ace brakes at about 80 studs almost exactly, a veteran at 80-100 (Alan).
 		assert(80*(1+Config.bots.profiles.ace.trick_error)<=85 and math.abs(80*(1+Config.bots.profiles.experienced.trick_error)-100)<1e-9)
-		assert(Config.bots.profiles.ace.fires_in_range and Config.bots.profiles.experienced.fires_in_range)
-		assert(not Config.bots.profiles.rookie.fires_in_range)
 	end)
 	return result
 end

@@ -28,7 +28,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
  self.rings=VoteRings.new(flight.room)
  if Run:IsStudio() then
   local status=Instance.new("BindableFunction");status.Name="MatchStatus";status.Parent=game.ServerStorage
-  status.OnInvoke=function()return self.engine:snapshot(),self.engine.round and self.engine.round.lifeBounds,self.rejections,{records=flight.records,lastRound=self.lastRound,elapsed=self.engine.round and self.engine.now-self.engine.round.startedAt,fired=combat.totalFired,hits=combat.totalHits,flightMs=flight.lastWorkMs,combatMs=combat.lastWorkMs,botMs=bots.lastWorkMs} end
+  status.OnInvoke=function()return self.engine:snapshot(),self.engine.round and self.engine.round.lifeBounds,self.rejections,{records=flight.records,lastRound=self.lastRound,elapsed=self.engine.round and self.engine.now-self.engine.round.startedAt,fired=combat.totalFired,hits=combat.totalHits,liveShots=combat.shotCount,peakShots=combat.peakShots,refusedShots=combat.refusedShots,flightMs=flight.lastWorkMs,combatMs=combat.lastWorkMs,botMs=bots.lastWorkMs} end
  end
  self.view=Instance.new("RemoteEvent");self.view.Name="RoundView";self.view.Parent=Root
  self.profileView=Instance.new("RemoteEvent");self.profileView.Name="ProfileView";self.profileView.Parent=Root

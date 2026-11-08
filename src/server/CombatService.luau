@@ -239,6 +239,7 @@ function Service:lock(p,info,now)
  if candidate then candidate.model:SetAttribute(progress>=1 and "IncomingLockUntil" or "LockingUntil",now+.25) end
 end
 function Service:fire(p,mount,now)
+ if self.shotCount>=768 then self.refusedShots=(self.refusedShots or 0)+1 end -- shown in MatchStatus (measuring)
  if self.shotCount>=768 or not self:eligible(p) or p.overlay or (mount.readyAt>now and mount.weapon.fire_mode~="burst") then return false end
  local info=self.info[p.id];local weapon=mount.weapon
  self:coolMount(mount,info.held and info.held[mount.group] and self:eligible(p) and not p.overlay,now)
@@ -297,7 +298,7 @@ function Service:launch(p,mount,now,target,origin)
    target=weapon.homing and target or nil,targetLife=target and target.life,radius=weapon.projectile_radius,speed=weapon.projectile_speed*(weapon.homing and p.pal and p.pal.eraserSlow or 1)}
   -- Studio shot recorder: how close each of a player's shots came to the nearest enemy (see :finish).
   if Run:IsStudio() and p.player and not weapon.homing then shot.dev={miss=math.huge,range=aimData and aimData.range,onRing=aimData and aimData.onRing} end
-  self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1
+  self.shots[shot.id]=shot;self.shotCount+=1;self.totalFired+=1;self.peakShots=math.max(self.peakShots or 0,self.shotCount)
   local record=self.flight.records[p.id];if record then record.shots+=1 end
   if p.pin and p.player then p.player:SetAttribute("RangeShots",(p.player:GetAttribute("RangeShots") or 0)+1) end -- the Range's score card
   if weapon.homing then info.activeErasers+=1 end

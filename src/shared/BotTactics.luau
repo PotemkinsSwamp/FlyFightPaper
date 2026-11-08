@@ -8,6 +8,8 @@ Tactics.HOLD_STUDS = 300 -- a Crayon stand-off's distance (Alan: 200-400)
 Tactics.DAMAGED = 0.5 -- health share at which a plane is worth stealing
 Tactics.DART_BLAST = 1.5 -- seconds a Popper dart fires before it boosts out
 Tactics.SPIT_WANT = 2 -- spitballs stuck on the target before the other gun takes over
+Tactics.SPIT_SECONDS = 3 -- after this long trying for spitballs, both guns fire
+Tactics.STEAL_STUDS = 500 -- a damaged plane further off than this isn't worth leaving your target for
 
 -- The trick comes from the build's guns: a Popper darts in and out, a Crayon stands off, a Spitball goes first;
 -- anything else turn-fights with the brake.

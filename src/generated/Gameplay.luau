@@ -369,7 +369,6 @@ return JSONTypes.map({
                     ["split_s"] = 2,
                     ["wingover"] = 1,
                 }),
-                ["fires_in_range"] = true,
                 ["hand_delay_seconds"] = JSONTypes.array({
                     [1] = 0.06,
                     [2] = 0.1,
@@ -427,7 +426,6 @@ return JSONTypes.map({
                     ["split_s"] = 2,
                     ["wingover"] = 1,
                 }),
-                ["fires_in_range"] = true,
                 ["hand_delay_seconds"] = JSONTypes.array({
                     [1] = 0.15,
                     [2] = 0.2,
@@ -484,7 +482,6 @@ return JSONTypes.map({
                     ["snake"] = 2,
                     ["split_s"] = 1,
                 }),
-                ["fires_in_range"] = false,
                 ["hand_delay_seconds"] = JSONTypes.array({
                     [1] = 0.075,
                     [2] = 0.15,
@@ -539,7 +536,6 @@ return JSONTypes.map({
                     ["break_turn"] = 4,
                     ["snake"] = 2,
                 }),
-                ["fires_in_range"] = false,
                 ["hand_delay_seconds"] = JSONTypes.array({
                     [1] = 0.16,
                     [2] = 0.26,
@@ -613,7 +609,7 @@ return JSONTypes.map({
             ["regular"] = 0.15,
             ["rookie"] = 0.0,
         }),
-        ["tricks_comment"] = "Alan 2026-11-08. Every bot flies its build's trick (BotTactics.trick: Popper dart, Crayon stand-off, Spitball first, else a close turn fight with the brake) and skill sets how well: each approach flies the trick (brakes, blasts, holds off, spitballs first) with chance trick_reliability, braking at 80 studs plus up to trick_error x 80 (a little under too); a stand-off holds 300 +- trick_error x 100. steal_notice: chances a second to notice a damaged plane in view and go for its fold; steal_bonus: studs a fully damaged plane is nearer when picking a target; switch_judgment: chance a switch is judged well (finish the plane about to fold, never hop damaged to damaged). fires_in_range: fires only inside the gun's reach (else within 450 studs). ace is Studio-only for now (DevBotTier ace or ace_mix); real lobbies decide in plan step 6.",
+        ["tricks_comment"] = "Alan 2026-11-08. Every bot flies its build's trick (BotTactics.trick: Popper dart, Crayon stand-off, Spitball first, else a close turn fight with the brake) and skill sets how well: each approach flies the trick (brakes, blasts, holds off, spitballs first) with chance trick_reliability, braking at 80 studs plus up to trick_error x 80 (a little under too); a stand-off peels off inside 200 +- trick_error x 100. steal_notice: chances a second to notice a damaged plane in view and go for its fold; steal_bonus: studs a fully damaged plane is nearer when picking a target; switch_judgment: chance a switch is judged well (rolled once per target: finish the plane about to fold, never hop damaged to damaged; only planes within 500 studs). Bots fire whenever the targeting ring would show (1000 studs), each gun at its own lead. ace is Studio-only for now (DevBotTier ace or ace_mix); real lobbies decide in plan step 6.",
         ["visible_ai_labels"] = false,
     }),
     ["combat"] = JSONTypes.map({
