@@ -316,7 +316,7 @@ function Suite.run()
 		local dps, hit = {}, {}
 		for _, weapon in ipairs(catalog.weapons) do dps[weapon.id] = Catalog.weaponDPS(weapon); hit[weapon.id] = Catalog.hitRating(weapon) end
 		expect(math.abs(dps.pellet - 20) < 1e-6, "pellet dps " .. tostring(dps.pellet))
-		expect(math.abs(dps.staple - 17.5) < 1e-6, "burst dps counts the pause between bursts: " .. tostring(dps.staple))
+		expect(math.abs(dps.staple - 14 / 1.05) < 1e-6, "burst dps counts the pause between bursts: " .. tostring(dps.staple))
 		expect(math.abs(dps.pencil - 65) < 1e-6, "pencil dps " .. tostring(dps.pencil))
 		expect(hit.rubber == 1 and hit.staple == 2 and hit.paperclip == 3 and hit.eraser == 4 and hit.pencil == 5, "hit ratings")
 	end)

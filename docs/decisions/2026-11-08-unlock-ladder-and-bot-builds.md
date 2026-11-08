@@ -57,6 +57,12 @@
   players would make, let the bots fly them, and balance the weapons from what comes out. A build that is too strong
   points at a weapon or capacity problem to fix in the game, never at the bot build to weaken (taking a Staple off the
   tank would hide it). Balance holistically: e.g. raising weapon capacities would leave small fast planes one gun.
+- **The Staple was too strong** (Alan, after the baseline matches: Staple Tank veterans ~14 folds, other builds 4-10):
+  per capacity point it out-damaged everything, with no catch (fast, straight, no overheat, full damage at any
+  distance, free). Its damage per staple stays; its bursts come 1.05 s apart instead of 0.8 (13.3 a second, a
+  Pellet's), and it reaches ~800 studs instead of ~900 (just past the Pellet's 750, keeping the range order). Gentle
+  damage loss with distance for every weapon is an idea for the balance pass (whole-number damage would make small
+  hits jump, e.g. a Pellet's 2 to 1).
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 

@@ -18,8 +18,8 @@ BotBuilds.TIERS={
 	rookie=presets(1),
 	regular=presets(math.huge),
 	experienced={
-		-- A big body for health, slow, so it fights from far: six Staple guns (fast, straight, no damage lost with distance),
-		-- 105 damage a second at 500 studs. Replaced the Crayon Tank (Alan 2026-11-08: Rubber Bands on a slow tank that can't
+		-- A big body for health, slow, so it fights from far: six Staple guns (fast, straight, no damage lost with distance).
+		-- It showed the Staple was too strong (17.5 a second each); now 13.3 like a Pellet's. Replaced the Crayon Tank (Alan 2026-11-08: Rubber Bands on a slow tank that can't
 		-- get close is a build nobody would make; a 1-minute check had it hitting 5-7%).
 		{name="Staple Tank",loadout={
 			body="body_heavy_mk2",nose="nose_3",wings="wings_3",tail="tail_3",

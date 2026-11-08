@@ -554,7 +554,7 @@ return JSONTypes.map({
         }),
         [3] = JSONTypes.map({
             ["burst_count"] = 3,
-            ["burst_period"] = 0.8,
+            ["burst_period"] = 1.05,
             ["burst_spacing"] = 0.09,
             ["capacity"] = 1,
             ["class"] = "light",
@@ -565,7 +565,7 @@ return JSONTypes.map({
             ["fire_mode"] = "burst",
             ["homing"] = false,
             ["id"] = "staple",
-            ["lifetime"] = 0.825,
+            ["lifetime"] = 0.705,
             ["mass"] = 1.2,
             ["min_level"] = 3,
             ["name"] = "Staple Burst Gun",

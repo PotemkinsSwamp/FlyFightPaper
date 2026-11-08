@@ -48,7 +48,7 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 |---|---:|---:|---:|---|
 | Paper Pellet Gun | 2 | 1 | 1500, ~750 studs range | Hold; 0.1 s per shot; 30 shots then 1.5 s cooling |
 | Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | One shot per click, up to one a second |
-| Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
+| Staple Burst Gun | 4.7 (14 a burst) | 1 | 1450, ~800 studs range | Hold; 3 shots, 0.09 s apart; 1.05 s between burst starts (2026-11-08: 13.3 a second like a Pellet's, was 17.5 and ~900 studs) |
 | Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | One shot per click, up to 3 a second |
 | Spitball Straw | 1, and it sticks | 2 | 600, ~350 studs range | One shot per click, up to 2 a second |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |

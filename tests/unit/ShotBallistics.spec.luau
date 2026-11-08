@@ -2,7 +2,7 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 local Rules=require(Root.Shared.CombatRules)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
-local RANGES={pellet=750,staple=900,rubber=1050,pencil=1800,paperclip=2420}
+local RANGES={pellet=750,staple=800,rubber=1050,pencil=1800,paperclip=2420}
 local ORDER={"pellet","staple","rubber","pencil","paperclip"}
 function Spec.run()
 	local result,test=Suite.new()
