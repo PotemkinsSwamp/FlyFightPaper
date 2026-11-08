@@ -227,7 +227,7 @@ function Service:fill()
   -- "ace_mix" gives one Ace per three veterans (Alan 2026-11-08).
   self.serial=row.identitySerial
   local tier=Run:IsStudio() and workspace:GetAttribute("DevBotTier") or row.profileName
-  if tier=="ace_mix" then tier=self.serial%4==0 and "ace" or "experienced" end
+  if tier=="ace_mix" then tier=self.serial%4==1 and "ace" or "experienced" end
   local loadout,build=Builds.pick(tier,self.serial)
   local p=self.flight:add(nil,{id=row.actorKey,name=row.displayName,tier=tier,loadout=loadout,loadoutName=build})
   if not p then break end

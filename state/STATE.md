@@ -18,8 +18,8 @@
   your go.
 
 # Now: finish the game for the beta
-Next, in order: (1) Aces + bot tricks + smart (built, not yet flown: your go for a test run)
-target switching, then Ace/veteran measuring matches (your go); (2) prices and levels from the numbers (your OK);
+Next, in order: (1) Aces + bot tricks + smart target switching (built, not yet flown: your go for a test run),
+then Ace/veteran measuring matches (your go); (2) prices and levels from the numbers (your OK);
 (3) the unlock moment (backpack bigger, at the screen's bottom edge, drag-to-unzip). Then the text rollout (style C), mastery, bots follow the lobby,
 balance pass, winners' circle, skins, shop.
 
