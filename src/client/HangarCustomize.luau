@@ -60,7 +60,7 @@ function Customize.draw(content, ctx)
 	-- shorter cards, with what the weapon does in the box under them.
 	local definitions = ctx.catalog.structuresBySlot[state.slot] or (state.slot == "weapons" and ctx.catalog.weapons) or ctx.catalog.utilities
 	local gear = state.slot == "weapons"
-	local cardH, top = gear and 126 or 205, gear and 180 or 245
+	local cardH, top = gear and 120 or 205, gear and 236 or 245 -- gear cards start where the others do, inside the page
 	for i, part in definitions do
 		local owned = ctx.owned(part)
 		local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
@@ -109,7 +109,7 @@ function Customize.draw(content, ctx)
 					stroke.Parent = card
 				end
 			end
-			local status = words(card, "Status", detail, 18, 80, 226, 40, 23)
+			local status = words(card, "Status", detail, 18, 76, 226, 38, 23)
 			status.TextWrapped = true
 			if blocked then status.TextColor3, status.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
 		elseif state.slot == "boost" then
@@ -188,7 +188,7 @@ function Customize.draw(content, ctx)
 	-- the mount line (Gear) and the no-booster card (Boost). Trying on: each number shows its change from what you have on.
 	-- Gear: what the weapon does and its numbers (catalog description), in the box under the cards (Alan 2026-11-08).
 	local function about(text)
-		local info = words(content, "MountInfo", text, 700, 838, 540, 92, 26)
+		local info = words(content, "MountInfo", text, 700, 860, 540, 92, 26)
 		info.TextXAlignment, info.TextWrapped, info.TextScaled = Enum.TextXAlignment.Center, true, true
 		local cap = Instance.new("UITextSizeConstraint")
 		cap.MaxTextSize, cap.Parent = PaperUI.isPhone() and 40 or 26, info
@@ -235,9 +235,14 @@ function Customize.draw(content, ctx)
 			button(content, "NoBoost", Art.tab, "No booster", 840, 980, 260, 70, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
 		end
 	end
-	local message = words(content, "Message", note, 700, 932, 540, 46, 26)
+	local message = words(content, "Message", note, 700, gear and 950 or 932, 540, gear and 32 or 46, 26)
 	local problem = builder.message ~= "" or not valid or state.dropAsk ~= nil
 	message.TextColor3, message.TextWrapped = problem and Color3.fromRGB(170, 30, 30) or Color3.fromRGB(30, 110, 50), true
+	if gear then -- a thinner line under the gear box: long messages shrink instead of running onto the buttons
+		message.TextScaled = true
+		local cap = Instance.new("UITextSizeConstraint")
+		cap.MaxTextSize, cap.Parent = PaperUI.isPhone() and 40 or 26, message
+	end
 
 	-- Save, and a clearly separate second button: Save & fly at the desk (spends Paper, Alan 2026-10-17), Test in Range
 	-- in the Range (saves and drops you back in flying it, Alan 2026-10-20).

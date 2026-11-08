@@ -328,7 +328,7 @@
     {
       "id": "pellet",
       "name": "Paper Pellet Gun",
-      "description": "Hold to spray paper pellets: 2 damage each, 10 a second, reaching about 750 studs. After 30 shots it cools down for 1.5 s.",
+      "description": "Hold to spray little paper pellets. Weak, but fast and with a long reach.",
       "class": "light",
       "capacity": 1,
       "mass": 1,
@@ -351,7 +351,7 @@
     {
       "id": "popper",
       "name": "Point Popper",
-      "description": "One click fires 7 pencil leads at once, 5 damage each. They spread out past 50 studs and drop after about 100, so get close.",
+      "description": "Fires a scatter of pencil leads. Strong up close, but they spread out and drop fast, so it has a short range.",
       "class": "medium",
       "capacity": 3,
       "mass": 2.5,
@@ -376,7 +376,7 @@
     {
       "id": "staple",
       "name": "Staple Burst Gun",
-      "description": "Hold for bursts of 3 staples, 14 damage a burst, one burst every 0.8 s. Fast and straight, reaching about 900 studs.",
+      "description": "Hold for quick bursts of three staples. They fly fast and straight, a long way.",
       "class": "light",
       "capacity": 1,
       "mass": 1.2,
@@ -399,7 +399,7 @@
     {
       "id": "thumbtack",
       "name": "Thumbtack Shooter",
-      "description": "Click for steady tacks, up to 3 a second. 6 damage up close, half that at 300 studs, a quarter at 500.",
+      "description": "Steady single tacks, as fast as you click. Hits hardest close in and gets weaker far away.",
       "class": "medium",
       "capacity": 2,
       "mass": 2.0,
@@ -421,7 +421,7 @@
     {
       "id": "spitball",
       "name": "Spitball Straw",
-      "description": "Wet spitballs stick on, up to 5 a plane. Each one makes it 6% slower, sink a little and burn Lift faster. 3 of yours stuck = an assist.",
+      "description": "Sticky spitballs that cling to planes. Each one slows them down and makes them sink. Barely hurts.",
       "class": "light",
       "capacity": 2,
       "mass": 1.4,
@@ -443,7 +443,7 @@
     {
       "id": "crayon",
       "name": "Stubby Crayon",
-      "description": "A heavy crayon stub: 40 damage a hit, but one shot every 2 s and it flies slowly, so aim ahead. Reaches about 450 studs.",
+      "description": "A big, heavy crayon hit, but it flies slowly and reloads slowly. Aim ahead of them.",
       "class": "medium",
       "capacity": 4,
       "mass": 2.8,
@@ -464,7 +464,7 @@
     {
       "id": "rubber",
       "name": "Rubber Band Repeater",
-      "description": "Hold for a fast stream of rubber bands: 1.6 damage each, about 17 a second, reaching about 1050 studs. 40 shots, then it cools 1.5 s.",
+      "description": "Hold for a stream of rubber bands. Each one is weak, but there are lots and they fly far.",
       "class": "light",
       "capacity": 2,
       "mass": 1.6,
@@ -487,7 +487,7 @@
     {
       "id": "paperclip",
       "name": "Precision Paperclip",
-      "description": "A long shot that hits harder the further it flies: 12 close in, 24 at 500 studs, up to 60 far away. Spots take turns; 1.75 s reload.",
+      "description": "A fast sniper shot. The further it flies, the harder it hits. Slow to reload.",
       "class": "medium",
       "capacity": 2,
       "mass": 2.4,
@@ -509,7 +509,7 @@
     {
       "id": "eraser",
       "name": "Guided Eraser",
-      "description": "A slow eraser that chases planes: hold for 1.5 s to lock on, or click to fire straight. 30 damage, 4 s reload, 2 in the air at once.",
+      "description": "A slow eraser that chases the plane you lock on to. Hold to lock on, or click to fire straight.",
       "class": "medium",
       "capacity": 3,
       "mass": 3.0,
@@ -529,7 +529,7 @@
     {
       "id": "pencil",
       "name": "Pencil Launcher",
-      "description": "The big one: 260 damage, enough to fold most planes in one hit. Fires on the click, 4 s reload, reaches about 1800 studs.",
+      "description": "The biggest hit in the game: one pencil can fold most planes. Slow to reload.",
       "class": "heavy",
       "capacity": 5,
       "mass": 5.5,
