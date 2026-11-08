@@ -6,8 +6,8 @@ Ten weapon families made of school supplies: paper pellets, the Point Popper (a 
 ## Where it stands (2026-11-07)
 Shots now fall in an arc past their range (2026-11-07, tests pass; Alan's feel check to come). The Point Popper's rules
 are in (2026-11-07), flying on the pellet gun's model and sound as stand-ins until its own are made. The Thumbtack's too (on the staple gun's
-model and sound), and the Stubby Crayon's (on the pencil's model, the rubber band's sound pitched down; Alan made it heavy, slower and
-shorter after his first try). The Spitball's are in too (on the pellet gun's model; waiting on Alan's try).
+model and sound), and the Stubby Crayon's (on the pencil's model, the rubber band's sound pitched down; Alan made it slower, shorter and
+weight 4 after his first try, so no plane carries more than two and the Pencil keeps the heavy mount to itself). The Spitball's are in too (on the pellet gun's model; waiting on Alan's try).
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
 Paperclip reworked and the shot timing fixed 2026-11-06; Alan confirmed staples and set the glint's strength in the air.
 **Match aim measured (2026-10-21, Alan asked if matches miss like the Range did):** in a match shots leave along the
@@ -45,7 +45,7 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | One shot per click, up to one a second |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
 | Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | One shot per click, up to 3 a second |
-| Stubby Crayon | 40 (heavy mount) | 3 | 400, ~350 studs range | One shot per click, 2 s reload |
+| Stubby Crayon | 40 | 4 | 400, ~350 studs range | One shot per click, 2 s reload |
 | Spitball Straw | 1, and it sticks | 2 | 600, ~350 studs range | One shot per click, up to 2 a second |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
 | Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | One shot per click; mounts take turns, 1.75 s reload each |

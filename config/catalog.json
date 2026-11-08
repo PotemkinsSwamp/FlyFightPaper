@@ -438,8 +438,8 @@
     {
       "id": "crayon",
       "name": "Stubby Crayon",
-      "class": "heavy",
-      "capacity": 3,
+      "class": "medium",
+      "capacity": 4,
       "mass": 2.8,
       "paper_price": 750,
       "min_level": 6,

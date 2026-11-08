@@ -628,8 +628,8 @@ return JSONTypes.map({
             ["wobble_studs"] = 0,
         }),
         [6] = JSONTypes.map({
-            ["capacity"] = 3,
-            ["class"] = "heavy",
+            ["capacity"] = 4,
+            ["class"] = "medium",
             ["damage"] = 40,
             ["drag"] = 0.5,
             ["drop"] = 30,
