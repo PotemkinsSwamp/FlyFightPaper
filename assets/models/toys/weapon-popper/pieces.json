@@ -1,0 +1,112 @@
+{
+  "weapon": "popper",
+  "length_studs": 3.4,
+  "size": [
+    0.72,
+    0.7354,
+    3.27
+  ],
+  "mount": {
+    "side": "top",
+    "point": [
+      0.0,
+      0.36,
+      0.085
+    ]
+  },
+  "maps": {},
+  "pieces": [
+    {
+      "piece": "clear",
+      "file": "parts/clear.fbx",
+      "role": "static",
+      "centre": [
+        0.0,
+        0.0,
+        0.05
+      ],
+      "size": [
+        0.64,
+        0.64,
+        2.8
+      ],
+      "triangles": 96,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "body",
+      "file": "parts/body.fbx",
+      "role": "static",
+      "centre": [
+        0.0,
+        -0.0077,
+        0.36
+      ],
+      "size": [
+        0.72,
+        0.7354,
+        2.72
+      ],
+      "triangles": 72,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "leads",
+      "file": "parts/leads.fbx",
+      "role": "static",
+      "centre": [
+        0.0,
+        0.0,
+        -0.075
+      ],
+      "size": [
+        0.35,
+        0.3031,
+        2.95
+      ],
+      "triangles": 120,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "lead",
+      "file": "parts/lead.fbx",
+      "role": "fire",
+      "centre": [
+        0.0,
+        0.0,
+        -0.075
+      ],
+      "size": [
+        0.09,
+        0.0779,
+        2.95
+      ],
+      "triangles": 20,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    }
+  ]
+}

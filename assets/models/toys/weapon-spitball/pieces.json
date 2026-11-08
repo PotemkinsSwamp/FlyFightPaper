@@ -1,0 +1,66 @@
+{
+  "weapon": "spitball",
+  "length_studs": 3.2,
+  "size": [
+    1.28,
+    1.4704,
+    3.1114
+  ],
+  "mount": {
+    "side": "top",
+    "point": [
+      0.0,
+      0.1204,
+      -0.0657
+    ]
+  },
+  "maps": {},
+  "pieces": [
+    {
+      "piece": "body",
+      "file": "parts/body.fbx",
+      "role": "static",
+      "centre": [
+        0.0,
+        -0.6349,
+        -0.03
+      ],
+      "size": [
+        1.28,
+        1.4301,
+        3.04
+      ],
+      "triangles": 1212,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "wad",
+      "file": "parts/wad.fbx",
+      "role": "fire",
+      "centre": [
+        -0.0028,
+        0.009,
+        -1.5164
+      ],
+      "size": [
+        0.2293,
+        0.2227,
+        0.21
+      ],
+      "triangles": 80,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    }
+  ]
+}

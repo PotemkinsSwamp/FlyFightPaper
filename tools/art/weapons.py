@@ -11,7 +11,7 @@ maps. Axes in pieces.json are Roblox (X right, Y up, -Z forward = muzzle), studs
 "axis" through "pivot"), hinge (swings about "axis" through "pivot"), slide (moves along "axis"), snap (springs
 forward), drop (falls, then flies).
 """
-import json, math, sys
+import json, math, random, sys
 from pathlib import Path
 
 import bmesh, bpy, numpy
@@ -49,6 +49,22 @@ WEAPONS = {
         ("body", "static", None, None),
         ("band", "snap", None, None),
         ("pencil", "fire", None, None)]),
+    "popper": dict(length=3.4, mount="top", build="popper", pieces=[
+        ("clear", "static", None, None),
+        ("body", "static", None, None),
+        ("leads", "static", None, None),
+        ("lead", "fire", None, None)]),
+    "thumbtack": dict(length=3.4, mount="top", build="thumbtack", pieces=[
+        ("clear", "static", None, None),
+        ("body", "static", None, None),
+        ("pin", "fire", None, None)]),
+    "crayon": dict(length=3.6, mount="top", build="crayon", pieces=[
+        ("body", "static", None, None),
+        ("crayon", "fire", None, None),
+        ("band", "snap", None, None)]),
+    "spitball": dict(length=3.2, mount="top", build="spitball", pieces=[
+        ("body", "static", None, None),
+        ("wad", "fire", None, None)]),
 }
 
 
@@ -321,6 +337,226 @@ def clip():
             "missile": plain_piece("missile", missile, [255, 255, 255])}
 
 
+def slab(bm, pts, thickness):
+    """Extrude a thin folded-sheet profile, as in clip()."""
+    offset = Vector(thickness) / 2
+    rings = [[bm.verts.new(Vector(p) + sign * offset) for p in pts] for sign in (-1, 1)]
+    bm.faces.new(rings[0][::-1]); bm.faces.new(rings[1])
+    for k in range(len(pts)):
+        j = (k + 1) % len(pts)
+        bm.faces.new((rings[0][k], rings[0][j], rings[1][j], rings[1][k]))
+    return bm
+
+
+def ring_z(bm, y, z0, z1, outer, inner, sides=16):
+    """Stand an existing hollow collar on Z, centred at (0, y)."""
+    before = set(bm.verts)
+    collar(bm, z0, z1, outer, inner, sides)
+    turn = Matrix.Translation((0, y, 0)) @ Matrix.Rotation(math.pi / 2, 4, "X")
+    bmesh.ops.transform(bm, matrix=turn, verts=list(set(bm.verts) - before))
+    return bm
+
+
+def cup_shell(bm, y, z0, z1, bottom, top, wall, sides=16):
+    """A real open cup: outer wall, lip, inner wall, and a solid thin floor."""
+    rings = [[bm.verts.new((r * math.cos(t), y + r * math.sin(t), z))
+              for t in (2 * math.pi * k / sides for k in range(sides))]
+             for z, r in ((z0, bottom), (z1, top), (z1, top - wall), (z0 + wall, bottom - wall))]
+    for a, b in ((0, 1), (1, 2), (2, 3)):
+        for k in range(sides):
+            j = (k + 1) % sides
+            bm.faces.new((rings[a][k], rings[a][j], rings[b][j], rings[b][k]))
+    bm.faces.new(rings[0][::-1]); bm.faces.new(rings[3])
+    return bm
+
+
+def push_pin(bm, head, direction, rgb, shaft=0):
+    """Chunky plastic head and neck, followed by a silver stem and conical point."""
+    head, direction = Vector(head), Vector(direction).normalized()
+    paint(bm, rgb, tube, [head - direction * .06, head + direction * .06], .13, sides=8)
+    paint(bm, rgb, tube, [head + direction * .06, head + direction * .16], .07, sides=8)
+    silver = [190, 196, 204]
+    if shaft:
+        paint(bm, silver, tube, [head + direction * .16, head + direction * (.16 + shaft)], .035, sides=6)
+    centre = head + direction * (.23 + shaft)
+    transform = Matrix.Translation(centre) @ direction.to_track_quat("Z", "Y").to_matrix().to_4x4()
+    paint(bm, silver, bmesh.ops.create_cone, cap_ends=True, cap_tris=False, segments=8,
+          radius1=.05, radius2=0, depth=.14, matrix=transform)
+    return bm
+
+
+def lump(bm, centre, radius, seed, floor=None):
+    """A repeatable low-poly wet paper ball, with uneven radial creases."""
+    rng = random.Random(seed)
+    verts = bmesh.ops.create_icosphere(bm, subdivisions=2, radius=radius)["verts"]
+    for v in verts:
+        v.co *= rng.uniform(.83, 1.14)
+    bmesh.ops.translate(bm, vec=Vector(centre), verts=verts)
+    if floor is not None:
+        bmesh.ops.translate(bm, vec=(0, 0, floor - min(v.co.z for v in verts)), verts=verts)
+    return bm
+
+
+def popper():
+    """Seven thin flat-ended leads in a clear tube and folded paper cradle, muzzle +Y."""
+    clear = paint(bmesh.new(), [205, 225, 235], collar, -1.45, 1.35, .32, .29, sides=12)
+    body = paint(bmesh.new(), [220, 43, 42], tube, [(0, -1.72, 0), (0, -1.45, 0)], .36, sides=12)
+    # The inside slopes are tangent to the tube's lower half; the base is only .03 thick.
+    profile = [(-.3312, -.1642), (-.12, -.3754), (.12, -.3754), (.3312, -.1642),
+               (.31, -.143), (.108, -.345), (-.108, -.345), (-.31, -.143)]
+    paint(body, [240, 240, 236], slab, [(x, -.10, z) for x, z in profile], (0, 2.2, 0))
+    leads = bmesh.new()
+    for k in range(6):
+        t = 2 * math.pi * k / 6
+        x, z = .13 * math.cos(t), .13 * math.sin(t)
+        paint(leads, [58, 60, 66], tube, [(x, -1.40, z), (x, 1.55, z)], .045, sides=6)
+    lead = paint(bmesh.new(), [58, 60, 66], tube, [(0, -1.40, 0), (0, 1.55, 0)], .045, sides=6)
+    return {"clear": plain_piece("clear", clear, [255, 255, 255]),
+            "body": plain_piece("body", body, [255, 255, 255]),
+            "leads": plain_piece("leads", leads, [255, 255, 255]),
+            "lead": plain_piece("lead", lead, [255, 255, 255])}
+
+
+def thumbtack():
+    """A wide clear pin tub, paper tray and open cardboard barrel, muzzle +Y."""
+    clear = paint(bmesh.new(), [205, 225, 235], cup_shell, -.75, -.31, .31, .62, .62, .04)
+    paint(clear, [205, 225, 235], ring_z, -.75, .285, .325, .64, .575)
+    # One continuous sheet with its long edges folded down, seated against the tub's floor.
+    profile = [(-.69, -.43), (-.69, -.31), (.69, -.31), (.69, -.43),
+               (.66, -.43), (.66, -.34), (-.66, -.34), (-.66, -.43)]
+    body = paint(bmesh.new(), [240, 240, 236], slab, [(x, -.70, z) for x, z in profile], (0, 1.5, 0))
+    paint(body, [165, 115, 70], collar, -.15, 1.15, .22, .17, sides=12)
+    layer = body.loops.layers.float_color["Color"]
+    for face in body.faces:
+        if all(abs(math.hypot(v.co.x, v.co.z) - .17) < 1e-5 for v in face.verts):
+            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [120, 80, 45]], 1)
+    red, yellow, blue, green = [220, 43, 42], [249, 200, 42], [25, 110, 219], [36, 165, 83]
+    # Loose pins lie at varied angles. Settle each onto the inner floor instead of leaving it suspended.
+    pins = [((0, -.75, 0), (.866, .50, .08), red)]
+    for angle, radius, twist, tilt, rgb in ((4, .39, -.10, -.10, yellow), (67, .38, -.22, .08, blue),
+                                          (132, .40, -.06, -.16, green), (188, .37, -.25, .18, red),
+                                          (245, .40, -.14, .05, blue), (307, .38, -.15, -.12, yellow)):
+        t = math.radians(angle)
+        pins.append(((radius * math.cos(t), -.75 + radius * math.sin(t), 0),
+                     (-math.sin(t + twist), math.cos(t + twist), tilt), rgb))
+    for head, direction, rgb in pins:
+        before = set(body.verts)
+        push_pin(body, head, direction, rgb)
+        verts = list(set(body.verts) - before)
+        bmesh.ops.translate(body, vec=(0, 0, -.27 - min(v.co.z for v in verts)), verts=verts)
+    # The loaded pin has a visible silver shank; its .14-long point ends at y=1.55.
+    pin = push_pin(bmesh.new(), (0, .95, 0), (0, 1, 0), red, shaft=.30)
+    return {"clear": plain_piece("clear", clear, [255, 255, 255]),
+            "body": plain_piece("body", body, [255, 255, 255]),
+            "pin": plain_piece("pin", pin, [255, 255, 255])}
+
+
+def crayon():
+    """An open yellow box sleeve, torn blue wrapper and a blunt worn wax crayon."""
+    def sleeve(bm):
+        rings = [[bm.verts.new((x, y, z)) for x, z in profile]
+                 for y, profile in ((-1.55, [(-.43, -.37), (.43, -.37), (.43, .37), (-.43, .37)]),
+                                    (.75, [(-.43, -.37), (.43, -.37), (.43, .37), (-.43, .37)]),
+                                    (-1.55, [(-.38, -.32), (.38, -.32), (.38, .32), (-.38, .32)]),
+                                    (.75, [(-.38, -.32), (.38, -.32), (.38, .32), (-.38, .32)]))]
+        for a, b in ((0, 1), (1, 3), (3, 2), (2, 0)):
+            for k in range(4):
+                j = (k + 1) % 4
+                bm.faces.new((rings[a][k], rings[a][j], rings[b][j], rings[b][k]))
+        return bm
+
+    body = paint(bmesh.new(), [245, 190, 40], sleeve)
+    layer = body.loops.layers.float_color["Color"]
+    for face in body.faces:
+        if all(abs(v.co.x) <= .38001 and abs(v.co.z) <= .32001 for v in face.verts):
+            for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in [215, 160, 30]], 1)
+
+    def worn_wax(bm):
+        # A continuous cylinder and rounded, flat-ended dome, without an internal cap or sharp apex.
+        profile = [(-1.45, .29), (.85, .29), (1.03, .28), (1.19, .22), (1.30, .13), (1.35, .045)]
+        rings = [[bm.verts.new((r * math.cos(2 * math.pi * k / 12), y, r * math.sin(2 * math.pi * k / 12)))
+                  for k in range(12)] for y, r in profile]
+        for a, b in zip(rings, rings[1:]):
+            for k in range(12):
+                j = (k + 1) % 12
+                bm.faces.new((a[k], a[j], b[j], b[k]))
+        bm.faces.new(rings[0][::-1]); bm.faces.new(rings[-1])
+        return bm
+
+    wax = paint(bmesh.new(), [40, 80, 200], worn_wax)
+    before = set(wax.verts)
+    paint(wax, [150, 190, 230], collar, -1.40, .40, .30, .291, sides=12)
+    ragged = (.02, -.06, .05, -.03, .08, -.07, .01, -.05, .06, -.02, .04, -.08)
+    for v in set(wax.verts) - before:
+        if v.co.y > 0:
+            k = round(math.atan2(v.co.z, v.co.x) * 12 / (2 * math.pi)) % 12
+            v.co.y += ragged[k]
+
+    def back_band(bm):
+        # ribbon() is drawn flat, then stood in XZ so its thin direction follows the barrel.
+        pts = [(-.50, -.35, 0), (-.50, .35, 0), (-.41, .44, 0), (.41, .44, 0),
+               (.50, .35, 0), (.50, -.35, 0), (.41, -.44, 0), (-.41, -.44, 0)]
+        ribbon(bm, pts, .14, .05)
+        bmesh.ops.transform(bm, matrix=Matrix.Translation((0, -1.475, 0)) @ Matrix.Rotation(math.pi / 2, 4, "X"),
+                            verts=list(bm.verts))
+        # The taut rear strand touches both sides of the loop, just behind the flat wax end.
+        box(bm, (-.50, -1.50, -.07), (.50, -1.45, .07))
+        return bm
+
+    rubber = paint(bmesh.new(), [200, 160, 110], back_band)
+    return {"body": plain_piece("body", body, [255, 255, 255]),
+            "crayon": plain_piece("crayon", wax, [255, 255, 255]),
+            "band": plain_piece("band", rubber, [255, 255, 255])}
+
+
+def spitball():
+    """A lidded paper cup and a level, forward-pointing hollow bendy straw."""
+    body = paint(bmesh.new(), [240, 240, 235], cup_shell, -.85, -.40, .30, .50, .60, .04)
+    paint(body, [240, 240, 235], ring_z, -.85, .28, .325, .625, .57)
+    # The lid rests on the rolled rim. Its small central hole is filled by the straw's wall.
+    paint(body, [230, 230, 225], ring_z, -.85, .325, .395, .64, .06)
+    paint(body, [230, 230, 225], ring_z, -.85, .395, .425, .64, .59)
+    for centre, seed in (((-.27, -.98, .52), 17), ((.26, -.72, .52), 29)):
+        paint(body, [205, 205, 195], lump, centre, .14, seed, floor=.395)
+
+    def straw(bm):
+        pts = [Vector((0, -.85, .37))]
+        pts += [Vector((0, -.85 + .20 * (1 - math.cos(t)), .75 + .20 * math.sin(t)))
+                for t in (math.pi / 2 * k / 6 for k in range(7))]
+        pts.append(Vector((0, 1.55, .95)))
+        rings = []
+        for i, p in enumerate(pts):
+            d = (pts[min(i + 1, len(pts) - 1)] - pts[max(i - 1, 0)]).normalized()
+            across, up = Vector((1, 0, 0)), d.cross(Vector((1, 0, 0))).normalized()
+            rings.append([[bm.verts.new(p + r * (across * math.cos(t) + up * math.sin(t)))
+                           for t in (2 * math.pi * k / 8 for k in range(8))] for r in (.075, .052)])
+        for a, b in zip(rings, rings[1:]):
+            for side in range(2):
+                for k in range(8):
+                    j = (k + 1) % 8
+                    bm.faces.new((a[side][k], a[side][j], b[side][j], b[side][k]))
+        for ring in (rings[0], rings[-1]):
+            for k in range(8):
+                j = (k + 1) % 8
+                bm.faces.new((ring[0][k], ring[0][j], ring[1][j], ring[1][k]))
+        return bm
+
+    paint(body, [150, 215, 90], straw)
+    for k in range(1, 5):
+        t = math.pi / 2 * k / 5
+        centre = Vector((0, -.85 + .20 * (1 - math.cos(t)), .75 + .20 * math.sin(t)))
+        tangent = Vector((0, math.sin(t), math.cos(t)))
+        before = set(body.verts)
+        paint(body, [120, 185, 70], collar, -.014, .014, .09, .072, sides=8)
+        turn = Matrix.Translation(centre) @ Vector((0, 1, 0)).rotation_difference(tangent).to_matrix().to_4x4()
+        bmesh.ops.transform(body, matrix=turn, verts=list(set(body.verts) - before))
+    wad = paint(bmesh.new(), [205, 205, 195], lump, (0, 1.52, .95), .11, 43)
+    # Keep the actual shot axis at X=Z=0 in both exported pieces.
+    for bm in (body, wad): bmesh.ops.translate(bm, vec=(0, 0, -.95), verts=list(bm.verts))
+    return {"body": plain_piece("body", body, [255, 255, 255]),
+            "wad": plain_piece("wad", wad, [255, 255, 255])}
+
+
 def bounds(objs):
     pts = [o.matrix_world @ v.co for o in objs for v in o.data.vertices]
     lo = Vector([min(p[i] for p in pts) for i in range(3)]); hi = Vector([max(p[i] for p in pts) for i in range(3)])
@@ -335,9 +571,12 @@ def build(name):
     plain = {}
     if spec.get("build"):
         bpy.ops.wm.read_factory_settings(use_empty=True)
-        plain = {"railgun": railgun, "gatling": gatling, "slingshot": slingshot, "clip": clip}[spec["build"]]()
+        plain = {"railgun": railgun, "gatling": gatling, "slingshot": slingshot, "clip": clip,
+                 "popper": popper, "thumbtack": thumbtack, "crayon": crayon, "spitball": spitball}[spec["build"]]()
         pieces = {k: v[0] for k, v in plain.items()}
         lo, hi = bounds(pieces.values()); frame = Matrix.Translation(-(lo + hi) / 2)
+        # These four are already authored around the shot axis; box centring would move it off Z=0.
+        if name in {"popper", "thumbtack", "crayon", "spitball"}: frame = Matrix()
     else:
         obj, image = load(name)
         glb_lo, glb_hi = bounds([obj])
@@ -406,6 +645,13 @@ def review(name):
                 vertex.layer_name = o.data.color_attributes[0].name
                 m.node_tree.links.new(vertex.outputs["Color"], bsdf.inputs[0])
             bsdf.inputs["Metallic"].default_value = .7 if r.get("material") == "Metal" else 0
+            # Preview the new clear shells as the game will, so the loaded contents are not hidden.
+            if name in {"popper", "thumbtack"} and r["piece"] == "clear":
+                bsdf.inputs["Alpha"].default_value = .20
+                bsdf.inputs["Roughness"].default_value = .18
+                m.blend_method = "BLEND"; m.show_transparent_back = False; m.use_screen_refraction = True
+                if hasattr(m, "shadow_method"): m.shadow_method = "NONE"
+            if name == "spitball" and r["piece"] == "wad": bsdf.inputs["Roughness"].default_value = .18
             o.data.materials.append(m)
         else: o.data.materials.append(tex)
         objs.append((o, r))
@@ -415,6 +661,7 @@ def review(name):
     L = man["length_studs"]
     # Show the eraser's open tail as well as its cone; other weapons keep their muzzle-side view.
     view = Vector((-4, -2.5, 3) if name == "eraser" else (-4, 2.5, 3))
+    if name == "spitball": view = Vector((-3, 4, 2.6))  # Show the small open straw mouth.
     beside = Vector((-view.y, view.x, 0)).normalized() * L * 1.3
     for o, r in objs:   # second copy beside it with the moving pieces lifted
         t = o.copy(); sc.collection.objects.link(t)
@@ -424,6 +671,13 @@ def review(name):
     cam = bpy.data.objects.new("c", bpy.data.cameras.new("c")); cam.data.type = "ORTHO"; cam.data.ortho_scale = L * (3 if name == "eraser" else 2.6)
     sc.collection.objects.link(cam); sc.camera = cam
     target = beside / 2 + Vector((0, 0, L * (.20 if name == "eraser" else .15))); cam.location = target + view.normalized() * 40; cam.data.clip_end = 200
+    if name in {"crayon", "spitball"}:
+        # The raised crayon and the low cup exceed the old box-centred framing.
+        bpy.context.view_layer.update()
+        lo, hi = bounds([o for o in sc.objects if o.type == "MESH"])
+        target = (lo + hi) / 2
+        cam.location = target + view.normalized() * 40
+        cam.data.ortho_scale = L * (3 if name == "crayon" else 2.6)
     cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
     sc.render.filepath = D + "pieces.png"; bpy.ops.render.render(write_still=True)
 

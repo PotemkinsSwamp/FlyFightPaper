@@ -1,0 +1,89 @@
+{
+  "weapon": "crayon",
+  "length_studs": 3.6,
+  "size": [
+    1.1391,
+    1.0193,
+    2.9
+  ],
+  "mount": {
+    "side": "top",
+    "point": [
+      0.0,
+      0.5097,
+      0.1
+    ]
+  },
+  "maps": {},
+  "pieces": [
+    {
+      "piece": "body",
+      "file": "parts/body.fbx",
+      "role": "static",
+      "centre": [
+        0.0,
+        0.0,
+        0.4
+      ],
+      "size": [
+        0.86,
+        0.74,
+        2.3
+      ],
+      "triangles": 32,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "crayon",
+      "file": "parts/crayon.fbx",
+      "role": "fire",
+      "centre": [
+        0.0,
+        0.0,
+        0.05
+      ],
+      "size": [
+        0.6,
+        0.6,
+        2.8
+      ],
+      "triangles": 236,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    },
+    {
+      "piece": "band",
+      "file": "parts/band.fbx",
+      "role": "snap",
+      "centre": [
+        0.0,
+        0.0,
+        1.475
+      ],
+      "size": [
+        1.1391,
+        1.0193,
+        0.05
+      ],
+      "triangles": 76,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    }
+  ]
+}
