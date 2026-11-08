@@ -12,13 +12,15 @@
 - **Veteran matches:** about 6 folds, 370 Paper, 650 XP a bot a match (top 11-13 folds). You: 6 = weak player, 11-13 =
   average, 25+ = really good.
 - **Unlock moment concept:** 8 frames + crisp test pieces in .planning/unlock-concept2/ (gpt-image-2).
+- **Text style picked: C** (Kalam heavier + light outline + shadow: "like a child wrote it with a crayon");
+  rolling it out to every menu is queued.
 - **Not saved or published yet:** the new weapon models are synced into your open Studio; Save to File and publish need
   your go.
 
 # Now: finish the game for the beta
-Next, in order: (1) text style test (bolder, outlined, shadowed text; pick in Studio); (2) Aces + bot tricks + smart
-target switching, then Ace/veteran measuring matches (your go); (3) prices and levels from the numbers (your OK);
-(4) the unlock moment (backpack bigger, at the screen's bottom edge, drag-to-unzip). Then mastery, bots follow the lobby,
+Next, in order: (1) Aces + bot tricks + smart
+target switching, then Ace/veteran measuring matches (your go); (2) prices and levels from the numbers (your OK);
+(3) the unlock moment (backpack bigger, at the screen's bottom edge, drag-to-unzip). Then the text rollout (style C), mastery, bots follow the lobby,
 balance pass, winners' circle, skins, shop.
 
 Decisions to review
