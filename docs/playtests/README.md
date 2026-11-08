@@ -34,4 +34,5 @@ New playtest: copy the shape of [2026-10-13](2026-10-13.md): numbered notes, how
 
 Back to [HOME](../HOME.md)
 
+- 2026-11-08: [Ace and veteran bot matches: tricks, stealing, switching](2026-11-08-ace-bot-matches.md)
 - 2026-11-08: [Three all-veteran bot matches: Paper and XP a match](2026-11-08-veteran-bot-matches.md)

@@ -346,6 +346,12 @@ mistake would be easy to make twice.
   `BotService:steer`, and menus have no bots, so "471 passed, no errors" hid a brake check that errored every frame
   (`x and y and z` gives `false`, not `nil`, when `x` is false): every bot stopped steering and flew into walls.
   Alan saw it in the first veteran match. Check `kills`, `collision` and `LogService` errors after 60 s.
+- **Attack a bot change before any match** (2026-11-08): list how each new rule misfires in real play first. The first
+  Ace matches were wasted: all three Aces got the same build (the test hands builds out in a fixed order), the Crayon
+  stand-off braked itself into easy prey, and "fire within the gun's range" loosened the old 450-stud limit. Ask what a
+  real player would do (Alan: players shoot whenever they see the targeting ring). Per-bot hit rates in a one-minute
+  match show a broken build fast: the Crayon Tank hit 2% while others hit 20-30%, which exposed that a bot's second gun
+  had always aimed with the first gun's lead.
 
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
