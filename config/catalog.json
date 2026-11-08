@@ -328,6 +328,7 @@
     {
       "id": "pellet",
       "name": "Paper Pellet Gun",
+      "description": "Hold to spray paper pellets: 2 damage each, 10 a second, reaching about 750 studs. After 30 shots it cools down for 1.5 s.",
       "class": "light",
       "capacity": 1,
       "mass": 1,
@@ -350,6 +351,7 @@
     {
       "id": "popper",
       "name": "Point Popper",
+      "description": "One click fires 7 pencil leads at once, 5 damage each. They spread out past 50 studs and drop after about 100, so get close.",
       "class": "medium",
       "capacity": 3,
       "mass": 2.5,
@@ -374,6 +376,7 @@
     {
       "id": "staple",
       "name": "Staple Burst Gun",
+      "description": "Hold for bursts of 3 staples, 14 damage a burst, one burst every 0.8 s. Fast and straight, reaching about 900 studs.",
       "class": "light",
       "capacity": 1,
       "mass": 1.2,
@@ -396,6 +399,7 @@
     {
       "id": "thumbtack",
       "name": "Thumbtack Shooter",
+      "description": "Click for steady tacks, up to 3 a second. 6 damage up close, half that at 300 studs, a quarter at 500.",
       "class": "medium",
       "capacity": 2,
       "mass": 2.0,
@@ -417,6 +421,7 @@
     {
       "id": "spitball",
       "name": "Spitball Straw",
+      "description": "Wet spitballs stick on, up to 5 a plane. Each one makes it 6% slower, sink a little and burn Lift faster. 3 of yours stuck = an assist.",
       "class": "light",
       "capacity": 2,
       "mass": 1.4,
@@ -438,6 +443,7 @@
     {
       "id": "crayon",
       "name": "Stubby Crayon",
+      "description": "A heavy crayon stub: 40 damage a hit, but one shot every 2 s and it flies slowly, so aim ahead. Reaches about 450 studs.",
       "class": "medium",
       "capacity": 4,
       "mass": 2.8,
@@ -458,6 +464,7 @@
     {
       "id": "rubber",
       "name": "Rubber Band Repeater",
+      "description": "Hold for a fast stream of rubber bands: 1.6 damage each, about 17 a second, reaching about 1050 studs. 40 shots, then it cools 1.5 s.",
       "class": "light",
       "capacity": 2,
       "mass": 1.6,
@@ -480,6 +487,7 @@
     {
       "id": "paperclip",
       "name": "Precision Paperclip",
+      "description": "A long shot that hits harder the further it flies: 12 close in, 24 at 500 studs, up to 60 far away. Spots take turns; 1.75 s reload.",
       "class": "medium",
       "capacity": 2,
       "mass": 2.4,
@@ -501,6 +509,7 @@
     {
       "id": "eraser",
       "name": "Guided Eraser",
+      "description": "A slow eraser that chases planes: hold for 1.5 s to lock on, or click to fire straight. 30 damage, 4 s reload, 2 in the air at once.",
       "class": "medium",
       "capacity": 3,
       "mass": 3.0,
@@ -520,6 +529,7 @@
     {
       "id": "pencil",
       "name": "Pencil Launcher",
+      "description": "The big one: 260 damage, enough to fold most planes in one hit. Fires on the click, 4 s reload, reaches about 1800 studs.",
       "class": "heavy",
       "capacity": 5,
       "mass": 5.5,

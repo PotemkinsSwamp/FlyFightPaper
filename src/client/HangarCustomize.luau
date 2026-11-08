@@ -40,7 +40,7 @@ function Customize.draw(content, ctx)
 		local picked = tab.slot == state.slot
 		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 225 + (i - 1) * 100, 200, 88, 0,
 			function()
-				if tab.slot ~= state.slot then state.turn, state.cardPage = true, 1 end
+				if tab.slot ~= state.slot then state.turn = true end
 				state.slot, state.trying = tab.slot, nil
 				ctx.render()
 			end, PaperUI.isPhone() and 50 or 40)
@@ -56,29 +56,22 @@ function Customize.draw(content, ctx)
 		page.ScaleType, page.ImageColor3 = Enum.ScaleType.Stretch, tints[i]
 	end
 
-	-- Right page: the cards, 2 across and 3 down; more than 6 (the weapons) flip to further pages with the arrows on top.
+	-- Right page: the cards, 2 across and 3 down. Gear (ten weapons, Alan 2026-11-08: all on one page) has 5 rows of
+	-- shorter cards, with what the weapon does in the box under them.
 	local definitions = ctx.catalog.structuresBySlot[state.slot] or (state.slot == "weapons" and ctx.catalog.weapons) or ctx.catalog.utilities
-	local pages = math.ceil(#definitions / 6)
-	state.cardPage = math.clamp(state.cardPage or 1, 1, math.max(pages, 1))
-	for _, to in { state.cardPage - 1, state.cardPage + 1 } do
-		if to >= 1 and to <= pages then
-			button(content, to < state.cardPage and "PrevCards" or "NextCards", Art.tab, to < state.cardPage and "< Page " .. to or "Page " .. to .. " >",
-				to < state.cardPage and 700 or 1084, 182, 150, 56, 0, function() state.cardPage, state.turn = to, true; ctx.render() end, PaperUI.isPhone() and 40 or 30)
-		end
-	end
-	for index, part in definitions do
-		local i = index - (state.cardPage - 1) * 6
-		if i < 1 or i > 6 then continue end
+	local gear = state.slot == "weapons"
+	local cardH, top = gear and 126 or 205, gear and 180 or 245
+	for i, part in definitions do
 		local owned = ctx.owned(part)
 		local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
 			or state.slot == "weapons" and table.find(draft.weapon_mounts, part.id) ~= nil
-		local x, y = 700 + (i - 1) % 2 * 272, 245 + math.floor((i - 1) / 2) * 215
+		local x, y = 700 + (i - 1) % 2 * 272, top + math.floor((i - 1) / 2) * (cardH + (gear and 6 or 10))
 		-- Gear that can't go on this plane at all right now: a crayon X and why, so a kid sees what to change (note 21).
 		local blocked = state.slot == "weapons" and owned and not equipped and select(2, builder:findPlace(part.id, state.mount))
 		-- Clicking a card tries it on (Alan 2026-10-21): the plane and the numbers show it against what you have on now,
 		-- and Select puts it on. The card you already have on stops trying. Gear you own skips that (Alan 2026-10-21):
 		-- pick a spot number, click the gear, it goes on.
-		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 262, 205, 0, function()
+		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 262, cardH, 0, function()
 			if blocked or state.slot == "weapons" and owned then -- blocked: says why not
 				state.trying = nil
 				ctx.choose(function() return ctx.placeWeapon(part.id) end)
@@ -90,26 +83,20 @@ function Customize.draw(content, ctx)
 			ctx.render()
 		end)
 		if state.trying == part then
-			local ring = image(content, "Trying", Binder.outline, x - 14, y - 14, 290, 233)
+			local ring = image(content, "Trying", Binder.outline, x - 14, y - 14, 290, cardH + 28)
 			ring.ScaleType, ring.SliceCenter, ring.SliceScale, ring.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.5, 3
 		end
 		local name = words(card, "Name", part.name, 18, 14, 216, 96, 36)
 		name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
 		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and ctx.profile.ownership[part.id] ~= true and "Range only" or "Owned") or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
 		if state.slot == "weapons" then
-			-- Damage (Alan): pips for how hard one shot hits, then damage per second.
-			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(216, 44), false, true -- long names shrink to one line
+			-- Pips for how hard one shot hits (Alan); damage a second and the rest are in the box under the cards.
+			name.Position, name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(18, 6), UDim2.fromOffset(226, 40), false, true -- long names shrink to one line
 			local cap = Instance.new("UITextSizeConstraint")
-			cap.MaxTextSize, cap.Parent = 34, name
-			words(card, "HitLabel", "Hit", 18, 60, 50, 34, 26)
+			cap.MaxTextSize, cap.Parent = 32, name
+			words(card, "HitLabel", "Hit", 18, 46, 50, 32, 24)
 			local hit = ctx.catalog.hitRating(part)
-			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, 62 + (k - 1) * 30, 64, 27, 26) end
-			local range = part.damage_by_range
-			local dps = ctx.catalog.weaponDPS(part)
-			words(card, "DPS", part.sticks and "Sticks on and slows them down"
-				or range and range[#range][2] > range[1][2] and "Hits harder the further away"
-				or range and string.format("%.0f a second close in, less far away", dps)
-				or string.format("%.0f damage per second", dps), 18, 96, 216, 30, 24)
+			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, 62 + (k - 1) * 30, 50, 27, 25) end
 			detail = string.format("%s, weight %d. %s", part.class, part.capacity, detail)
 			if blocked then
 				detail = blocked
@@ -122,7 +109,7 @@ function Customize.draw(content, ctx)
 					stroke.Parent = card
 				end
 			end
-			local status = words(card, "Status", detail, 18, 128, 216, 50, 21)
+			local status = words(card, "Status", detail, 18, 80, 226, 40, 23)
 			status.TextWrapped = true
 			if blocked then status.TextColor3, status.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
 		elseif state.slot == "boost" then
@@ -199,8 +186,16 @@ function Customize.draw(content, ctx)
 		or game.Players.LocalPlayer:GetAttribute("MenuMessage") or (ctx.range and "Range loadouts: every part works here, only in the Range." or "")
 	-- Bottom of the right page: Select / Cancel for a card you're trying on (Buy / Cancel for one you don't own yet), else
 	-- the mount line (Gear) and the no-booster card (Boost). Trying on: each number shows its change from what you have on.
+	-- Gear: what the weapon does and its numbers (catalog description), in the box under the cards (Alan 2026-11-08).
+	local function about(text)
+		local info = words(content, "MountInfo", text, 700, 838, 540, 92, 26)
+		info.TextXAlignment, info.TextWrapped, info.TextScaled = Enum.TextXAlignment.Center, true, true
+		local cap = Instance.new("UITextSizeConstraint")
+		cap.MaxTextSize, cap.Parent = PaperUI.isPhone() and 40 or 26, info
+	end
 	if state.trying then
 		local part = state.trying
+		if state.slot == "weapons" then about(part.name .. ": " .. part.description) end
 		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, 1415, 140, 490, 610)
 		if ctx.owned(part) then
 			note = part.name .. ": the numbers show what it changes. Select puts it on."
@@ -233,9 +228,8 @@ function Customize.draw(content, ctx)
 				dot.Parent = content
 				words(content, "Key" .. size, size, PHOTO[1] + 93 + (k - 1) * 150, PHOTO[2] + 67, 110, 40, 34)
 			end
-			local info = words(content, "MountInfo", string.format("Spot %d: %s%s. %s", m, body.mount_types[m],
-				part and (groups[m] == 1 and ", left click" or ", right click") or "", part and part.name or "Empty: pick a gear card."), 700, 888, 540, 44, 28)
-			info.TextXAlignment, info.TextWrapped = Enum.TextXAlignment.Center, true
+			about(string.format("Spot %d: %s%s. %s", m, body.mount_types[m], part and (groups[m] == 1 and ", left click" or ", right click") or "",
+				part and part.name .. ": " .. part.description or "Empty: pick a gear card."))
 			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 840, 980, 260, 70, 2, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
 		elseif state.slot == "boost" then
 			button(content, "NoBoost", Art.tab, "No booster", 840, 980, 260, 70, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
