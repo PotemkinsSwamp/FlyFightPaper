@@ -1,21 +1,21 @@
-# Since Alan last checked (2026-11-07)
-- **The beta must feel finished:** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md (step 3 now).
-- **Weapons (your design, docs/decisions/2026-11-07-four-new-weapons-and-falling-shots.md):** every shot now falls in
-  an arc past its range; a fold by a falling shot pays +50 (FOLD AT A DISTANCE). **Point Popper** (7 leads, bundle to
-  50 studs, then a narrow steady spray) and **Thumbtack** (18/s close, weaker far) are in, on stand-in models. You
-  checked both: good. Stubby Crayon and Spitball are next.
-- **One shot per click** on PC for every weapon that isn't automatic (Paperclip too); phones keep hold-to-fire.
-- **Cardboard Gunship:** heavy, heavy, medium, medium, medium, light (a fifth medium gun).
-- **Fixed:** a thin rail folded a plane that then came back (the pilot's felt crash now counts); the desk landing ring
-  catches its edge and steep dives; the Earth and the rug toys are solid (small toys as boxes, lamps and crane fitted).
-- **Bot match:** about 340 XP a match; staying to the end pays at least 60 XP. Phone simulator check passed.
-- **Published v495.** Phone town loads in ~4 s again (exact toy shapes had made it ~40 s). Studio tests are muted.
+# Since Alan last checked (2026-11-08)
+- **The beta must feel finished:** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md (step 3 done
+  apart from a hangar-card check; step 4, the unlock ladder, is next).
+- **Four new weapons, all yours to keep:** Point Popper, Thumbtack, Stubby Crayon (now 600 studs/s, 450 range, drop 8)
+  and Spitball Straw (sticks; each is weight: slower, gentle sink, Lift burns faster; 5 per plane; 3 of yours = assist).
+  Each has its own model (game-render concepts, Blender, uploaded) and its own sound. You: "everything is good".
+- **Bots fly at full top speed**; skill changes only turning and pitch.
+- **Head-on rams no longer fly through** (fast passes between checks now count).
+- **Not saved or published yet:** the new models are synced into your open Studio; Save to File and publish need your go.
 
 # Now: finish the game for the beta
-Next: Stubby Crayon, then Spitball (rules and tests first, stand-in models), then their real models (Codex picture,
-then Codex Blender; no Meshy), then the unlock ladder, mastery, bots following the lobby, winners' circle, skins, shop.
+Next: CLASSES-PLAN step 4 (new unlock ladder: levels and prices for the new weapons, a reward every level to ~15, a
+"you unlocked" moment), then mastery, bots following the lobby, balance pass, winners' circle, skins, shop.
 
 Decisions to review
+Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.
+Crayon 600 studs/s, 450 range, drop 8. New weapons keep their stand-in hit boxes; Popper lead drawn 0.15 x 1.2.
+Ram catch: centres within 2.5 studs in the last 0.1 s; ram strength by relative speed.
 Point Popper: 7 leads x 5, one a second, bundle to 50 studs, ring 3 studs out by 100, falls past ~100; level 2, 300 Paper.
 Thumbtack: 900 studs/s, heavy drag, falls past ~500; full damage to 100 studs; level 4, 600 Paper; "Thumbtack Shooter".
 Falling shots: slow hard (drag 3) and fall (196 studs/s^2) for up to 3 s; Paperclip carries ~840 studs while falling.
@@ -42,7 +42,7 @@ Duct props see-through; veterans flee to the ducts 40% when shot at. Chalk erase
 Zone 680-840 across; bots on the zone 30/60/85%. Points: assist share rounded to 5 (10-80); outside-zone fold 40%.
 
 Waiting on Alan
-- Try the Point Popper, Thumbtack, one-click Paperclip and the solid toys when you like (stand-in weapon models).
+- Save to File / publish when you want the new weapon models in the place and live (your go each).
 - Publish (File > Publish As > Overwrite), then on your phone: kill feed, desk dev panel, results card, confetti.
 - Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings.
 - Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go). Prices: draft ladder in
