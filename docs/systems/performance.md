@@ -4,7 +4,11 @@
 The game should run at a steady 60 frames per second with 12 planes in the match, with no buildings popping in, and
 Play should start in seconds, not minutes.
 
-## Where it stands (2026-10-28)
+## Where it stands (2026-11-07)
+**Phone joins v495 (2026-11-07):** town arrived 3.8 s and 4.3 s, after v493 took 38-41 s because 510 rug toys carried
+exact collision shapes (now plain boxes or fitted blocks; [lesson](../workshop/lessons.md)). The second join waited
+~25 s more for Roblox's own line of town pictures (371 files), the first had them cached; Skip works during that wait.
+
 Loading (details: [load plan](../plan/LOAD-PLAN.md)): streaming is on again (Rojo serve had turned it off, so phones
 got the whole town at join and the loading screen stayed blurry 35 s). Phone fresh join v368: loading screen sharp at
 0.8 s, menus 4.4 s, all 59.3 s. After the town arrives Roblox fetches its ~3,000 files itself (~25 s on the phone);
