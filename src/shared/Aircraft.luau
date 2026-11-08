@@ -7,7 +7,7 @@ local Aircraft={}
 -- only the paperclip railgun on the body slots rose into the wing root, so it hangs this much lower there (studs
 -- before scale). Pellet tubes pass through the wing root on purpose (plane A's design).
 -- Weapons still waiting for their own model borrow another's (Alan 2026-11-07: test with models we have).
-Aircraft.STAND_IN={popper="pellet",thumbtack="staple",crayon="pencil",spitball="pellet"}
+Aircraft.STAND_IN={}
 function Aircraft.look(weaponId) return weaponId and Aircraft.STAND_IN[weaponId] or weaponId end
 local BODY_SLOT_DROP={paperclip=.5}
 local NEIGHBOUR_GAP=.1 -- studs before scale between two guns under one wing
@@ -229,9 +229,12 @@ function Aircraft.converge(body,position,direction,distance)
  return (body.Position+direction*distance-position).Unit
 end
 -- Projectiles are drawn from their ammo model (erasers 2.5x so they read as missiles); hits use the same box.
+-- The newer weapons keep the hit box they were tested and balanced with (Alan 2026-11-07); their own models only change
+-- the look.
+Aircraft.AMMO={popper="pellet",thumbtack="staple",crayon="pencil",spitball="pellet"}
 function Aircraft.projectile(weaponId,homing)
  local equipment=Root:FindFirstChild("Assets") and Root.Assets:FindFirstChild("EquipmentParts")
- local template=equipment and weaponId and equipment:FindFirstChild("ammo_"..Aircraft.look(weaponId))
+ local template=equipment and weaponId and equipment:FindFirstChild("ammo_"..(Aircraft.AMMO[weaponId] or Aircraft.look(weaponId)))
  if not template then return nil end
  return template.Size*(homing and 2.5 or 1),template.CFrame.Rotation
 end
@@ -248,7 +251,10 @@ function Aircraft.shotLook(weaponId)
  end
  return nil
 end
+-- A pencil lead scaled to its hit box is a hair too thin to see: it draws as a short, thicker lead (2026-11-07).
+local DRAWN={popper=Vector3.new(.15,.13,1.2)}
 function Aircraft.shotSize(weaponId,homing,look)
+ if look and DRAWN[weaponId] then return DRAWN[weaponId] end
  local size,rotation=Aircraft.projectile(weaponId,homing)
  if not size or not look then return size end
  local abs=function(v) return Vector3.new(math.abs(v.X),math.abs(v.Y),math.abs(v.Z)) end

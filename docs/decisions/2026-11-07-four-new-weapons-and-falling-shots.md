@@ -1,7 +1,7 @@
 # The four new weapons; every shot falls past its range
 
 **Decided:** 2026-11-07 (Alan)  
-**Status:** falling shots and the bonus built; the Point Popper, Thumbtack and Stubby Crayon in (Alan: the Crayon "is good... balanced", 2026-11-07); the Spitball in (Alan: "a good support weapon... I'd call this spitball good", 2026-11-07); the four weapons not built yet ([classes plan](../plan/CLASSES-PLAN.md) step 3)
+**Status:** falling shots and the bonus built; the Point Popper, Thumbtack and Stubby Crayon in (Alan: the Crayon "is good... balanced", 2026-11-07); the Spitball in (Alan: "a good support weapon... I'd call this spitball good", 2026-11-07); all four have their own models (concepts redrawn as game renders, built in Blender, uploaded 2026-11-07; [classes plan](../plan/CLASSES-PLAN.md) step 3)
 
 ## Decision
 - **No hidden abilities.** What a weapon does must read from the real object: its size, weight and what it would

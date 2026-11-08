@@ -22,7 +22,9 @@ PARTS = {"body_standard": ["body-paper"], "nose_0": ["nose-paper", "nose-accent"
          "tail_0": ["tail-paper", "tail-accent"]}
 # catalog weapon id -> assets/models/toys/weapon-<folder>
 WEAPONS = {"pellet": "pellet", "staple": "staple", "rubber": "gatling-b", "paperclip": "paperclip",
-           "eraser": "eraser", "pencil": "pencil-b"}
+           "eraser": "eraser", "pencil": "pencil-b", "popper": "popper", "thumbtack": "thumbtack", "crayon": "crayon",
+           "spitball": "spitball"}
+CLEAR = .55        # a weapon piece named "clear" (the popper's tube, the pin tub, the cup lid) is see-through plastic
 TUBE_TOP = .41     # a hanging weapon's top sits where plane A's pellet tube top was, just under the wing
 WING_TOP = .63     # a weapon mounted on top (the paperclip rails) sits on the wing's upper face
 BODY_EDGE = 1.32   # body half-width + a little: weapons on the body-side slot (x 1.76) are pushed out past it
@@ -67,7 +69,7 @@ def attributes(**values):
     return base64.b64encode(blob).decode()
 
 
-def mesh_part(name, size, position, color, region=None, mesh=None, attrs=None, material="SmoothPlastic", paint=""):
+def mesh_part(name, size, position, color, region=None, mesh=None, attrs=None, material="SmoothPlastic", paint="", transparency=0):
     r, g, b = color
     x, y, z = position
     sx, sy, sz = size
@@ -81,7 +83,8 @@ def mesh_part(name, size, position, color, region=None, mesh=None, attrs=None, m
         <bool name="CanCollide">false</bool>
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
-        <bool name="CastShadow">true</bool>
+        <bool name="CastShadow">{str(not transparency).lower()}</bool>
+        <float name="Transparency">{transparency}</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">{MATERIALS[material]}</token>
@@ -171,7 +174,7 @@ def weapon(folder):
             if key in row: attrs[key.title()] = ",".join(str(v) for v in (at(row[key]) if key == "pivot" else row[key]))
         xml += mesh_part(row["piece"], row["size"], at(row["centre"]), row.get("color", [255, 255, 255]), attrs=attrs,
                          mesh=up["meshes"][row["piece"]]["mesh"], material=row.get("material", "SmoothPlastic"),
-                         paint=paint if row["textured"] else "")
+                         paint=paint if row["textured"] else "", transparency=CLEAR if row["piece"] == "clear" else 0)
     # Shots leave from the front of what the weapon fires (or spins), in the left slot's frame.
     shot = next((r for r in man["pieces"] if r["role"] in ("fire", "drop", "spin")), None)
     muzzle = at([shot["centre"][0], shot["centre"][1], -man["size"][2] / 2] if shot else [0, 0, -man["size"][2] / 2])

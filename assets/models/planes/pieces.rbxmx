@@ -18,6 +18,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -63,6 +64,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -113,6 +115,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -158,6 +161,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -203,6 +207,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -254,6 +259,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -299,6 +305,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -344,6 +351,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -389,6 +397,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -434,6 +443,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -476,6 +486,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -523,6 +534,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -568,6 +580,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -613,6 +626,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -664,6 +678,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -709,6 +724,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -754,6 +770,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -805,6 +822,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -850,6 +868,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -895,6 +914,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -940,6 +960,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -991,6 +1012,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1036,6 +1058,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1081,6 +1104,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1132,6 +1156,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1177,6 +1202,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1222,6 +1248,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1273,6 +1300,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1318,6 +1346,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1363,6 +1392,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1408,6 +1438,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1453,6 +1484,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1498,6 +1530,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1543,6 +1576,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1593,6 +1627,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1638,6 +1673,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1683,6 +1719,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1733,6 +1770,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1778,6 +1816,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1823,6 +1862,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1873,6 +1913,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1918,6 +1959,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -1963,6 +2005,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2013,6 +2056,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2058,6 +2102,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2103,6 +2148,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2153,6 +2199,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2198,6 +2245,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2243,6 +2291,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2288,6 +2337,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2339,6 +2389,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2384,6 +2435,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2429,6 +2481,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2474,6 +2527,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2519,6 +2573,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2561,6 +2616,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2609,6 +2665,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2654,6 +2711,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2699,6 +2757,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2744,6 +2803,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2789,6 +2849,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2831,6 +2892,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2879,6 +2941,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2924,6 +2987,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -2969,6 +3033,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3014,6 +3079,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3059,6 +3125,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3101,6 +3168,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3149,6 +3217,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3194,6 +3263,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3239,6 +3309,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3284,6 +3355,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3329,6 +3401,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3374,6 +3447,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3419,6 +3493,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3461,6 +3536,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3509,6 +3585,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3554,6 +3631,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3599,6 +3677,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3644,6 +3723,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3689,6 +3769,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3731,6 +3812,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3778,6 +3860,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3823,6 +3906,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3868,6 +3952,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3918,6 +4003,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -3963,6 +4049,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4008,6 +4095,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4058,6 +4146,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4103,6 +4192,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4148,6 +4238,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4198,6 +4289,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4243,6 +4335,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4288,6 +4381,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4338,6 +4432,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4383,6 +4478,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4428,6 +4524,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4473,6 +4570,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4523,6 +4621,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4568,6 +4667,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4613,6 +4713,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4658,6 +4759,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4703,6 +4805,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4748,6 +4851,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4793,6 +4897,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4843,6 +4948,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4888,6 +4994,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4933,6 +5040,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -4978,6 +5086,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5023,6 +5132,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5068,6 +5178,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5113,6 +5224,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5163,6 +5275,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5208,6 +5321,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5253,6 +5367,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5298,6 +5413,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5343,6 +5459,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5388,6 +5505,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5433,6 +5551,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5484,6 +5603,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5529,6 +5649,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5580,6 +5701,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5625,6 +5747,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5670,6 +5793,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5715,6 +5839,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5766,6 +5891,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5808,6 +5934,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5850,6 +5977,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">1088</token>
@@ -5892,6 +6020,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5940,6 +6069,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -5982,6 +6112,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -6024,6 +6155,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">1088</token>
@@ -6066,6 +6198,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -6108,6 +6241,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">1088</token>
@@ -6156,6 +6290,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -6198,6 +6333,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -6246,6 +6382,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -6288,6 +6425,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -6330,6 +6468,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -6364,6 +6503,589 @@
       </Properties>
     </Item>
   </Item>
+  <Item class="Model" referent="launcher_popper">
+    <Properties>
+      <string name="Name">launcher_popper</string>
+      <BinaryString name="AttributesSerialize">AQAAAAYAAABNdXp6bGUCDgAAADAuMCwwLjA0LC0xLjcy</BinaryString>
+    </Properties>
+    <Item class="MeshPart" referent="clear">
+      <Properties>
+        <string name="Name">clear</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgYAAABzdGF0aWM=</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">false</bool>
+        <float name="Transparency">0.55</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://102382070442195</url>
+        </Content>
+        <Vector3 name="size">
+          <X>0.64</X>
+          <Y>0.64</Y>
+          <Z>2.8</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>0.0</X>
+          <Y>0.04</Y>
+          <Z>-0.035</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>0.64</X>
+          <Y>0.64</Y>
+          <Z>2.8</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="body">
+      <Properties>
+        <string name="Name">body</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgYAAABzdGF0aWM=</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://75686893941521</url>
+        </Content>
+        <Vector3 name="size">
+          <X>0.74</X>
+          <Y>0.7554</Y>
+          <Z>2.97</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>0.0</X>
+          <Y>0.0323</Y>
+          <Z>0.15</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>0.74</X>
+          <Y>0.7554</Y>
+          <Z>2.97</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="leads">
+      <Properties>
+        <string name="Name">leads</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgYAAABzdGF0aWM=</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://96235813716791</url>
+        </Content>
+        <Vector3 name="size">
+          <X>0.35</X>
+          <Y>0.3031</Y>
+          <Z>2.95</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>0.0</X>
+          <Y>0.04</Y>
+          <Z>-0.16</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>0.35</X>
+          <Y>0.3031</Y>
+          <Z>2.95</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="lead">
+      <Properties>
+        <string name="Name">lead</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgQAAABmaXJl</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://90205573713049</url>
+        </Content>
+        <Vector3 name="size">
+          <X>0.09</X>
+          <Y>0.0779</Y>
+          <Z>2.95</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>0.0</X>
+          <Y>0.04</Y>
+          <Z>-0.16</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>0.09</X>
+          <Y>0.0779</Y>
+          <Z>2.95</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+  </Item>
+  <Item class="Model" referent="launcher_thumbtack">
+    <Properties>
+      <string name="Name">launcher_thumbtack</string>
+      <BinaryString name="AttributesSerialize">AQAAAAYAAABNdXp6bGUCEAAAAC0wLjIsMC4wODUsLTEuMzk=</BinaryString>
+    </Properties>
+    <Item class="MeshPart" referent="clear">
+      <Properties>
+        <string name="Name">clear</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgYAAABzdGF0aWM=</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">false</bool>
+        <float name="Transparency">0.55</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://76512140168480</url>
+        </Content>
+        <Vector3 name="size">
+          <X>1.24</X>
+          <Y>0.62</Y>
+          <Z>1.24</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.2</X>
+          <Y>0.085</Y>
+          <Z>0.83</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>1.24</X>
+          <Y>0.62</Y>
+          <Z>1.24</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="body">
+      <Properties>
+        <string name="Name">body</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgYAAABzdGF0aWM=</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://78783941427855</url>
+        </Content>
+        <Vector3 name="size">
+          <X>1.28</X>
+          <Y>0.595</Y>
+          <Z>2.54</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.2</X>
+          <Y>0.1125</Y>
+          <Z>0.2</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>1.28</X>
+          <Y>0.595</Y>
+          <Z>2.54</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="pin">
+      <Properties>
+        <string name="Name">pin</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgQAAABmaXJl</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://91327463710212</url>
+        </Content>
+        <Vector3 name="size">
+          <X>0.26</X>
+          <Y>0.26</Y>
+          <Z>0.66</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.2</X>
+          <Y>0.085</Y>
+          <Z>-1.14</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>0.26</X>
+          <Y>0.26</Y>
+          <Z>0.66</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+  </Item>
+  <Item class="Model" referent="launcher_crayon">
+    <Properties>
+      <string name="Name">launcher_crayon</string>
+      <BinaryString name="AttributesSerialize">AQAAAAYAAABNdXp6bGUCFQAAAC0wLjEyOTYsLTAuMDk5NywtMS41NQ==</BinaryString>
+    </Properties>
+    <Item class="MeshPart" referent="body">
+      <Properties>
+        <string name="Name">body</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgYAAABzdGF0aWM=</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://80937054941971</url>
+        </Content>
+        <Vector3 name="size">
+          <X>0.88</X>
+          <Y>0.76</Y>
+          <Z>2.31</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.1296</X>
+          <Y>-0.0997</Y>
+          <Z>0.295</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>0.88</X>
+          <Y>0.76</Y>
+          <Z>2.31</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="crayon">
+      <Properties>
+        <string name="Name">crayon</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgQAAABmaXJl</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://75274555741610</url>
+        </Content>
+        <Vector3 name="size">
+          <X>0.62</X>
+          <Y>0.62</Y>
+          <Z>2.8</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.1296</X>
+          <Y>-0.0997</Y>
+          <Z>-0.05</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>0.62</X>
+          <Y>0.62</Y>
+          <Z>2.8</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="band">
+      <Properties>
+        <string name="Name">band</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgQAAABzbmFw</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://112193039074659</url>
+        </Content>
+        <Vector3 name="size">
+          <X>1.1391</X>
+          <Y>1.0193</Y>
+          <Z>0.05</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.1296</X>
+          <Y>-0.0997</Y>
+          <Z>1.375</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>1.1391</X>
+          <Y>1.0193</Y>
+          <Z>0.05</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+  </Item>
+  <Item class="Model" referent="launcher_spitball">
+    <Properties>
+      <string name="Name">launcher_spitball</string>
+      <BinaryString name="AttributesSerialize">AQAAAAYAAABNdXp6bGUCFQAAAC0wLjQ1MjgsLTAuNzAxLC0xLjAyNQ==</BinaryString>
+    </Properties>
+    <Item class="MeshPart" referent="clear">
+      <Properties>
+        <string name="Name">clear</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgYAAABzdGF0aWM=</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">false</bool>
+        <float name="Transparency">0.55</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://121951234866235</url>
+        </Content>
+        <Vector3 name="size">
+          <X>1.24</X>
+          <Y>0.065</Y>
+          <Z>1.24</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.45</X>
+          <Y>-0.4575</Y>
+          <Z>0.6982</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>1.24</X>
+          <Y>0.065</Y>
+          <Z>1.24</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="body">
+      <Properties>
+        <string name="Name">body</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgYAAABzdGF0aWM=</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://117466294069810</url>
+        </Content>
+        <Vector3 name="size">
+          <X>1.78</X>
+          <Y>1.195</Y>
+          <Z>2.575</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.45</X>
+          <Y>-0.1875</Y>
+          <Z>0.0357</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>1.78</X>
+          <Y>1.195</Y>
+          <Z>2.575</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+    <Item class="MeshPart" referent="wad">
+      <Properties>
+        <string name="Name">wad</string>
+        <BinaryString name="AttributesSerialize">AQAAAAQAAABSb2xlAgQAAABmaXJl</BinaryString>
+        <bool name="Anchored">true</bool>
+        <bool name="CanCollide">false</bool>
+        <bool name="CanTouch">false</bool>
+        <bool name="CanQuery">false</bool>
+        <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
+        <token name="CollisionFidelity">2</token>
+        <token name="RenderFidelity">0</token>
+        <token name="Material">272</token>
+        <Color3uint8 name="Color3uint8">4294967295</Color3uint8>
+        <Content name="MeshId">
+          <url>rbxassetid://134048759398474</url>
+        </Content>
+        <Vector3 name="size">
+          <X>0.2293</X>
+          <Y>0.2227</Y>
+          <Z>0.21</Z>
+        </Vector3>
+        <CoordinateFrame name="CFrame">
+          <X>-0.4528</X>
+          <Y>-0.701</Y>
+          <Z>-1.2182</Z>
+          <R00>-1</R00>
+          <R01>0</R01>
+          <R02>0</R02>
+          <R10>0</R10>
+          <R11>1</R11>
+          <R12>0</R12>
+          <R20>0</R20>
+          <R21>0</R21>
+          <R22>-1</R22>
+        </CoordinateFrame>
+        <Vector3 name="InitialSize">
+          <X>0.2293</X>
+          <Y>0.2227</Y>
+          <Z>0.21</Z>
+        </Vector3>
+      </Properties>
+    </Item>
+  </Item>
   <Item class="Folder" referent="Stickers">
     <Properties>
       <string name="Name">Stickers</string>
@@ -6376,6 +7098,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>
@@ -6417,6 +7140,7 @@
         <bool name="CanTouch">false</bool>
         <bool name="CanQuery">false</bool>
         <bool name="CastShadow">true</bool>
+        <float name="Transparency">0</float>
         <token name="CollisionFidelity">2</token>
         <token name="RenderFidelity">0</token>
         <token name="Material">272</token>

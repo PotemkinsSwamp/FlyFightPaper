@@ -4,10 +4,14 @@
 Ten weapon families made of school supplies: paper pellets, the Point Popper (a pencil-lead tube that sprays leads), staples, thumbtacks, the Stubby Crayon (a slow, heavy hit), rubber bands, spitballs (they stick and weigh you down), paperclips (a fast "railgun"), guided erasers (slow homing missiles) and pencils (huge, slow, deadly). Left and right mouse fire the two weapon types on your plane. Every weapon fires the instant you click.
 
 ## Where it stands (2026-11-07)
-Shots now fall in an arc past their range (2026-11-07, tests pass; Alan's feel check to come). The Point Popper's rules
-are in (2026-11-07), flying on the pellet gun's model and sound as stand-ins until its own are made. The Thumbtack's too (on the staple gun's
-model and sound), and the Stubby Crayon's (on the pencil's model, the rubber band's sound pitched down; Alan made it slower, shorter and
-weight 4 after his first try, so no plane carries more than two and the Pencil keeps the heavy mount to itself). The Spitball's are in too (on the pellet gun's model; Alan approved it as a support weapon, 2026-11-07).
+Shots now fall in an arc past their range (2026-11-07, tests pass; Alan's feel check to come). The Point Popper,
+Thumbtack, Stubby Crayon and Spitball Straw are in with their own models (2026-11-07: Codex concept renders Alan picked,
+built in Blender by `tools/art/weapons.py`, uploaded; waiting on Alan's look in Play): a clear tube of pencil leads on an
+orange cradle, a clear pin tub hanging by its rim with a cardboard barrel, a crayon in a striped crayon-box sleeve with a
+red band, and a striped party cup hung upside down on a yellow strap with a green straw. Sounds are still borrowed (the
+Popper and Spitball the pellet gun's, the Thumbtack the staple gun's, the Crayon the rubber band's pitched down). Alan made
+the Crayon slower, shorter and weight 4 after his first try, so no plane carries more than two and the Pencil keeps the
+heavy mount to itself; he approved the Spitball as a support weapon.
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
 Paperclip reworked and the shot timing fixed 2026-11-06; Alan confirmed staples and set the glint's strength in the air.
 **Match aim measured (2026-10-21, Alan asked if matches miss like the Range did):** in a match shots leave along the
@@ -67,8 +71,10 @@ A weapon with `leads` (the Point Popper) fires that many shots at once (`CombatR
 bundle for `fan_after_studs`, then spray out in a circle: one lead straight on, the rest evenly round a ring starting
 straight up. The ring opens at one steady rate, `fan_studs` out by `fan_full_studs` (`CombatRules.fanRadius`). A plane
 seen from behind is a thin T: all 7 leads hit to about 65 studs, the ones above and below miss first (5 hit to about
-80), and past that only the middle one does. Its DPS counts every lead. Weapons without their own model yet borrow
-another's (`Aircraft.STAND_IN`).
+80), and past that only the middle one does. Its DPS counts every lead. A weapon without its own model can borrow another's
+(`Aircraft.STAND_IN`, empty now). The four newer weapons keep the hit box they were balanced with (`Aircraft.AMMO`:
+pellet, staple, pencil and pellet ammo boxes); a piece named `clear` is see-through plastic (`plane_pieces.py`), and the
+Popper's lead draws thicker than its hit box would make it so it can be seen.
 
 A fold made by a falling shot pays the fold-at-a-distance bonus ([economy](economy-and-shop.md)). See
 [the decision](../decisions/2026-11-07-four-new-weapons-and-falling-shots.md).

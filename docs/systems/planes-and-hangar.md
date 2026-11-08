@@ -7,7 +7,7 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-06)
 **Presets (step 2 of the [classes plan](../plan/CLASSES-PLAN.md)):** six fixed planes, each open from its level (`classes`
-in `config/catalog.json`, stand-in weapons until the new ones exist). The Hangar shows them on their own tab; the desk
+in `config/catalog.json`, the newer weapons now have their own models). The Hangar shows them on their own tab; the desk
 menu's "Switch to presets" flips its cork strip over to them (`DeskHangar.luau`). Players call their own builds loadouts.
 A preset flies without owning its parts (`Catalog:classLoadout`, `SelectedClass`) and can't be changed; a refold accepts it
 (`Catalog:isClassLoadout`). The pick isn't saved yet, like a picked build: rejoining goes back to build 1.
