@@ -10,12 +10,14 @@ local Audio={}
 -- "Rubber band sling shot" and "electronicpingshort". Text = Roblox's built-in sounds. Added 2026-10-13 (Alan's
 -- notes 8-13): paperclip charge "Electric Arcing 6", torn paper "Paper Tear Fast Harsh Rip 1", shots in flight
 -- "Zip Bys Airy Rips 26". `after` = {sound, seconds later} plays a second sound (pencil: band thwap, then the pencil).
+-- The newer weapons' own sounds (Alan's picks 2026-11-07, ProSoundEffects): Popper "Balloon Pops 2", Thumbtack "Nail Gun
+-- Pneumatic Air Bursts 4", Crayon "Magic Poofs Thumpy Wheezy Exhale 2", Spitball "Cake Wet Splats 4".
 -- Weapons share one loudness (WEAPON); missiles (eraser, pencil) are louder (MISSILE); the stapler a touch quieter.
 local WEAPON,MISSILE=.4,.7
 local FAN_WHOOSH_SHARE=.25 -- how much of the speed whoosh plays inside a fan's updraft
 local WEAPON_HEARING_STUDS=250 -- other planes' weapons are heard only this close (Alan's note 12)
 local definitions={
- pellet={110204084658828,1.3,WEAPON},popper={110204084658828,.8,WEAPON*1.3},staple={9113075143,1,WEAPON*.85},thumbtack={9113075143,1.35,WEAPON*.8},crayon={12222103,.6,WEAPON*1.2},spitball={110204084658828,.6,WEAPON*.9},rubber={12222103,1.1,WEAPON},
+ pellet={110204084658828,1.3,WEAPON},popper={9113263758,1.1,WEAPON,.35},staple={9113075143,1,WEAPON*.85},thumbtack={9117050945,1.2,WEAPON*.9,.35},crayon={9116406643,.9,WEAPON*1.3,.6},spitball={9113663566,1.1,WEAPON,.45},rubber={12222103,1.1,WEAPON},
  -- Paperclip (Alan 2026-10-19): the metal ting the instant it fires, louder, with a soft railgun zap under it (it
  -- used to be a quiet zap with the ting 0.15 s later, after the shot had gone).
  paperclip={9116163687,1.25,WEAPON*1.5,.6,after={"paperclipzap",0}},paperclipzap={9114237705,1.4,WEAPON*.7,.35},

@@ -8,8 +8,8 @@ Shots now fall in an arc past their range (2026-11-07, tests pass; Alan's feel c
 Thumbtack, Stubby Crayon and Spitball Straw are in with their own models (2026-11-07: Codex concept renders Alan picked,
 built in Blender by `tools/art/weapons.py`, uploaded; waiting on Alan's look in Play): a clear tube of pencil leads on an
 orange cradle, a clear pin tub hanging by its rim with a cardboard barrel, a crayon in a striped crayon-box sleeve with a
-red band, and a striped party cup hung upside down on a yellow strap with a green straw. Sounds are still borrowed (the
-Popper and Spitball the pellet gun's, the Thumbtack the staple gun's, the Crayon the rubber band's pitched down). Alan made
+red band, and a striped party cup hung upside down on a yellow strap with a green straw. Each has its own sound (Alan's
+picks 2026-11-07: a balloon pop, a pneumatic air burst, a soft heavy thump, a wet splat; client `Audio`). Alan made
 the Crayon slower, shorter and weight 4 after his first try, so no plane carries more than two and the Pencil keeps the
 heavy mount to itself; he approved the Spitball as a support weapon.
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
