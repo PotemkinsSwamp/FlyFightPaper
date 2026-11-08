@@ -2,52 +2,44 @@ local Config=require(script.Parent.Parent.Generated.Gameplay)
 local Rules=require(script.Parent.CombatRules)
 local BotBuilds={}
 
+local catalog=require(script.Parent.Catalog).new(require(script.Parent.Parent.Generated.Catalog),Config)
+-- Rookies fly the presets a new player has (level 1), regulars every preset but the Marksman, veterans their own builds
+-- made the way a player builds (Alan 2026-11-08). No bot carries a Paperclip, Eraser or Pencil.
+local function presets(maxLevel)
+	local list={}
+	for _,class in ipairs(catalog:classes()) do
+		if class.id~="marksman" and class.min_level<=maxLevel then
+			table.insert(list,{name=class.name,loadout=catalog:classLoadout(class.id,50)})
+		end
+	end
+	return list
+end
 BotBuilds.TIERS={
-	rookie={
-		{name="Starter Burst",loadout={
-			body="body_standard",nose="nose_0",wings="wings_0",tail="tail_0",
-			weapon_mounts={"staple","staple",false,false},
-		}},
-		-- The plane every new player starts with.
-		{name="Classic Pellets",loadout={
-			body="body_standard",nose="nose_0",wings="wings_0",tail="tail_0",
-			weapon_mounts={"pellet","pellet",false,false},
-		}},
-		{name="Rubber Scout",loadout={
-			body="body_slim",nose="nose_2",wings="wings_0",tail="tail_2",
-			weapon_mounts={"rubber",false,false},
-		}},
-	},
-	regular={
-		{name="Clip Skirmisher",loadout={
-			body="body_slim",nose="nose_4",wings="wings_2",tail="tail_3",
-			weapon_mounts={"paperclip","pellet",false},
-		}},
-		{name="Guided Escort",loadout={
-			body="body_standard",nose="nose_4",wings="wings_2",tail="tail_3",
-			weapon_mounts={"eraser",false,"staple","staple"},
-		}},
-		{name="Burst Duelist",loadout={
-			body="body_standard",nose="nose_4",wings="wings_3",tail="tail_1",
-			weapon_mounts={"staple","staple","rubber",false},
-		}},
-	},
+	rookie=presets(1),
+	regular=presets(math.huge),
 	experienced={
-		{name="Clip Ace",loadout={
-			body="body_slim",nose="nose_4",wings="wings_5",tail="tail_4",
-			weapon_mounts={"paperclip","pellet","pellet"},
+		-- A big body for health with speed parts around it, so it can carry better guns; still slowish (Alan's way).
+		{name="Crayon Tank",loadout={
+			body="body_heavy_mk2",nose="nose_1",wings="wings_1",tail="tail_1",
+			weapon_mounts={"crayon",false,false,false,"rubber","rubber"},
 		}},
-		{name="Guided Gunship",loadout={
-			body="body_heavy",nose="nose_4",wings="wings_5",tail="tail_4",
-			weapon_mounts={"eraser","pellet","pellet","pellet",false,false},
+		-- A fast plane on a moderate body with the Popper: zip in, brake, fire, zip out (Alan's way).
+		{name="Popper Dart",loadout={
+			body="body_standard",nose="nose_1",wings="wings_1",tail="tail_1",
+			weapon_mounts={false,"popper","staple","staple"},
 		}},
-		{name="Pencil Interceptor",loadout={
-			body="body_standard_mk2",nose="nose_4",wings="wings_5",tail="tail_4",
-			weapon_mounts={"pencil",false,"pellet",false},
+		-- Rubber bands to hurt, spitballs to slow the target down for them.
+		{name="Spitball Hunter",loadout={
+			body="body_standard_mk2",nose="nose_2",wings="wings_2",tail="tail_2",
+			weapon_mounts={"rubber","rubber","spitball",false},
+		}},
+		-- Steady tacks close in, staple bursts further out; good turning.
+		{name="Tack Skirmisher",loadout={
+			body="body_standard_mk2",nose="nose_3",wings="wings_3",tail="tail_3",
+			weapon_mounts={"thumbtack","thumbtack","staple","staple"},
 		}},
 	},
 }
-
 function BotBuilds.weapon(catalog,weaponId,range)
 	local weapon=catalog:get(weaponId)
 	assert(weapon and weapon.class,"Unknown weapon: "..tostring(weaponId))

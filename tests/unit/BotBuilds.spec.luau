@@ -21,8 +21,6 @@ function Spec.run()
 		for _,choice in ipairs({"pellet","staple","rubber","paperclip","eraser","eraser_only","pencil","twin_pencils"}) do
 			assert(catalog:validateLoadout(Loadouts.make(catalog,choice),nil,50),choice)
 		end
-		local escort=BotBuilds.TIERS.regular[2].loadout
-		assert(escort.weapon_mounts[3]=="staple" and escort.weapon_mounts[4]=="staple")
 	end)
 	test("pellets and staple bursts have the catalog sustained damage",function()
 		assert(BotBuilds.weapon(catalog,"pellet",300).dps==20)
@@ -96,8 +94,8 @@ function Spec.run()
 	end)
 	for _,tier in ipairs({"rookie","regular","experienced"}) do
 		local builds=BotBuilds.TIERS[tier]
-		test(tier.." has three or four named legal level-50 builds",function()
-			assert(#builds>=3 and #builds<=4)
+		test(tier.." has three to five named legal level-50 builds",function()
+			assert(#builds>=3 and #builds<=5)
 			local names={}
 			for _,build in ipairs(builds) do
 				assert(type(build.name)=="string" and #build.name>0 and not names[build.name])
@@ -127,7 +125,7 @@ function Spec.run()
 				assert(catalog:validateLoadout(build.loadout,nil,50))
 			end
 		end)
-		test(tier.." kill times stay within 35 percent of their median",function()
+		if tier=="experienced" then test(tier.." kill times stay within 35 percent of their median",function()
 			local times={}
 			for _,build in ipairs(builds) do table.insert(times,BotBuilds.measure(catalog,build.loadout,tier).ttk) end
 			table.sort(times)
@@ -137,35 +135,34 @@ function Spec.run()
 			for _,time in ipairs(times) do
 				assert(time>=median*.65 and time<=median*1.35,tostring(time).." outside median "..tostring(median))
 			end
-		end)
+		end) end -- rookies and regulars fly the presets, which differ on purpose (each has a weak spot)
 	end
-	test("rookies use forgiving light guns and take at least three seconds to kill",function()
-		for _,build in ipairs(BotBuilds.TIERS.rookie) do
-			assert(build.loadout.body=="body_standard" or build.loadout.body=="body_slim")
-			for _,id in ipairs(build.loadout.weapon_mounts) do
-				if id~=false then
-					assert(id~="eraser" and id~="pencil" and catalog:get(id).class=="light")
+	test("rookies fly the level-1 presets, regulars every preset but the Marksman (Alan 2026-11-08)",function()
+		local function names(list) local out={} for _,build in ipairs(list) do table.insert(out,build.name) end return table.concat(out,",") end
+		assert(names(BotBuilds.TIERS.rookie)=="Fighter,Striker,Scout",names(BotBuilds.TIERS.rookie))
+		assert(names(BotBuilds.TIERS.regular)=="Fighter,Striker,Scout,Bomber,Carrier",names(BotBuilds.TIERS.regular))
+		for _,tier in ipairs({"rookie","regular"}) do
+			for _,build in ipairs(BotBuilds.TIERS[tier]) do
+				local class=assert(catalog:classLoadout(string.lower(build.name),50))
+				assert(catalog:isClassLoadout(build.loadout,50) and class.body==build.loadout.body,build.name)
+			end
+		end
+	end)
+	test("no bot carries a Paperclip, Eraser or Pencil (Alan 2026-11-08)",function()
+		for tier,builds in pairs(BotBuilds.TIERS) do
+			for _,build in ipairs(builds) do
+				for _,id in ipairs(build.loadout.weapon_mounts) do
+					assert(id~="paperclip" and id~="eraser" and id~="pencil",tier.." "..build.name.." carries "..tostring(id))
 				end
 			end
-			assert(BotBuilds.measure(catalog,build.loadout,"rookie").ttk>=3,build.name)
 		end
 	end)
-	test("regulars have at most one paperclip or eraser and experienced have at most one pencil build",function()
-		for _,build in ipairs(BotBuilds.TIERS.regular) do
-			local medium=0
-			for _,id in ipairs(build.loadout.weapon_mounts) do
-				assert(id~="pencil")
-				if id=="paperclip" or id=="eraser" then medium+=1 end
-			end
-			assert(medium<=1,build.name)
-		end
-		local pencils=0
-		for _,build in ipairs(BotBuilds.TIERS.experienced) do
-			if BotBuilds.measure(catalog,build.loadout,"experienced").pencils>0 then pencils+=1 end
-		end
-		assert(pencils<=1)
+	test("rookies never brake; better bots brake from further out",function()
+		local profiles=Config.bots.profiles
+		assert(profiles.rookie.brake_within==0 and profiles.regular.brake_within>0)
+		assert(profiles.experienced.brake_within>profiles.regular.brake_within)
 	end)
-	test("D8 tier averages increase damage and turn while reducing non-homing dodge time",function()
+	test("D8 tier averages increase damage; veterans out-turn regulars",function()
 		local previous
 		for _,tier in ipairs({"rookie","regular","experienced"}) do
 			local builds=BotBuilds.TIERS[tier]
@@ -188,9 +185,9 @@ function Spec.run()
 			end
 			if previous then
 				assert(average.dps>previous.dps,tier.." damage must increase")
-				assert(average.turn>previous.turn,tier.." turn must increase")
-				assert(average.dodge<previous.dodge,tier.." dodge time must decrease")
-				assert(average.unguided<previous.unguided,tier.." non-homing dodge time must decrease")
+				-- Regulars fly the slow Bomber and Carrier presets too (Alan 2026-11-08), so only veterans must out-turn
+				-- the tier below; every bot gun now has about the same flight time, so dodge time no longer separates tiers.
+				if tier=="experienced" then assert(average.turn>previous.turn,tier.." turn must increase") end
 			end
 			previous=average
 		end

@@ -11,7 +11,7 @@ return JSONTypes.map({
                 ["utility"] = JSONTypes.Null,
                 ["weapon_mounts"] = JSONTypes.array({
                     [1] = "pellet",
-                    [2] = "pellet",
+                    [2] = "thumbtack",
                     [3] = "pellet",
                     [4] = false,
                 }),
@@ -81,7 +81,7 @@ return JSONTypes.map({
                 ["tail"] = "tail_0",
                 ["utility"] = JSONTypes.Null,
                 ["weapon_mounts"] = JSONTypes.array({
-                    [1] = "paperclip",
+                    [1] = "crayon",
                     [2] = false,
                     [3] = false,
                     [4] = false,

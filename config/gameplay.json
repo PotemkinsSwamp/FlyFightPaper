@@ -426,6 +426,7 @@
       "rookie": {
         "lead_accuracy": 0.7,
         "turn_factor": 0.72,
+        "brake_within": 0,
         "evade_cooldown_seconds": 5,
         "evade_boost": false,
         "reaction_seconds": [
@@ -455,6 +456,7 @@
       "regular": {
         "lead_accuracy": 0.92,
         "turn_factor": 0.82,
+        "brake_within": 110,
         "evade_cooldown_seconds": 3.5,
         "evade_boost": false,
         "reaction_seconds": [
@@ -484,6 +486,7 @@
       "experienced": {
         "lead_accuracy": 0.95,
         "turn_factor": 0.92,
+        "brake_within": 170,
         "evade_cooldown_seconds": 2.5,
         "evade_boost": true,
         "reaction_seconds": [

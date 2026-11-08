@@ -595,9 +595,20 @@ function Service:steer(p,b,dt,now)
   end
  end
  if b.avoid then direction=b.avoid end
+ -- Brake (Alan 2026-11-08): close behind a target it is catching, a skilled bot brakes like a player to stay on its
+ -- tail and keep firing: slower and a little tighter in turns while held, eased like the player's; FlightService burns
+ -- its Lift twice as fast meanwhile. Rookies never brake (brake_within 0).
+ local gap=b.mode=="chase" and b.target and b.target.body.Position-position
+ local braking=gap~=nil and not p.pal and gap.Magnitude>1 and gap.Magnitude<(b.profile.brake_within or 0)
+  and (p.body.AssemblyLinearVelocity-b.target.body.AssemblyLinearVelocity):Dot(gap.Unit)>0
+  and (p.model:GetAttribute("Lift") or 0)>p.stats.lift*.25
+ p.brakeHeld=braking
+ local ease=Config.flight.speed_ease_per_s*dt
+ b.brakeShare=(b.brakeShare or 1)+math.clamp((braking and Config.flight.brake_speed_factor or 1)-(b.brakeShare or 1),-ease,ease)
+ local tight=braking and Config.flight.brake_turn_factor or 1
  -- Same autopilot as human pilots: the bot only chooses where to aim.
  local desired
- desired,b.bank,p.orientation.CFrame=FlightRules.autopilot(b.heading,b.bank,direction,p.stats.yaw*b.profile.turn_factor*(p.pal and .8 or 1),p.stats.pitch*b.profile.turn_factor*(p.pal and .8 or 1),dt)
+ desired,b.bank,p.orientation.CFrame=FlightRules.autopilot(b.heading,b.bank,direction,p.stats.yaw*b.profile.turn_factor*(p.pal and .8 or 1)*tight,p.stats.pitch*b.profile.turn_factor*(p.pal and .8 or 1)*tight,dt)
  local bleed=FlightRules.turnSpeedFactor(b.heading,desired,dt,turn)
  b.heading=desired
  p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost
@@ -609,7 +620,7 @@ function Service:steer(p,b,dt,now)
  -- Bots fly at their plane's full top speed like a player (Alan 2026-11-07); skill changes turning, not speed.
  local cruise,lift=p.stats.speed*(p.pal and p.pal.speed*catchUp or 1)*(p.model:GetAttribute("BoostSpeedFactor") or 1),p.model:GetAttribute("Lift")
  if p.model:GetAttribute("Boosting") then lift=math.max(lift,1) end -- boost flies along the nose even with no Lift
- local speed=cruise*bleed
+ local speed=cruise*bleed*b.brakeShare
  b.glide=lift<=0 and FlightRules.glide(b.glide or b.momentum,desired,cruise,dt) or nil
  b.momentum=lift>0 and FlightRules.dive(b.momentum,desired,cruise,dt) or nil
  local velocity=FlightRules.velocity(desired,speed*(b.momentum or cruise)/cruise,lift,p.model:GetAttribute("Updraft") or 0,b.glide,cruise)
