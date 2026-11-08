@@ -53,7 +53,8 @@ local function validMode(mode)
 end
 
 local function validProfile(profile)
-	return profile == "rookie" or profile == "regular" or profile == "experienced"
+	-- "ace" is never planned (no mix has it): only Studio measuring matches add Aces (DevBotTier).
+	return profile == "rookie" or profile == "regular" or profile == "experienced" or profile == "ace"
 end
 
 local function validate(input)

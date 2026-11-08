@@ -1,7 +1,7 @@
 # Weapon unlock order, free and paid weapons, a grind, and bot builds
 
 **Decided:** 2026-11-08 (Alan)
-**Status:** in progress (order, free weapons and bot builds built; Aces, tricks and the unlock moment next)
+**Status:** in progress (order, free weapons, bot builds, Aces, tricks and switching built; Ace matches, prices and the unlock moment next)
 
 ## Decision
 - **Order** (the unlock ladder and the Hangar's Gear sheet): Paper Pellet (level 1), Point Popper (2), Staple (3),

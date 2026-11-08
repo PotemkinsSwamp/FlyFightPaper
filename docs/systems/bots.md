@@ -10,10 +10,23 @@ changes how hard they turn and pitch (`turn_factor`) and how they brake.
 Striker, Scout), regulars every preset but the Marksman (adds Bomber, Carrier), veterans four builds made the way a
 player builds: Crayon Tank (big body, speed parts), Popper Dart (fast, moderate body, Popper and Staples), Spitball
 Hunter (Rubber Bands plus a Spitball), Tack Skirmisher. No bot carries a Paperclip, Eraser or Pencil.
-**Brake** (2026-11-08): close behind a target it is catching (`brake_within`: rookies 0, never; regulars 110 studs;
-veterans 170) a bot holds the brake like a player: eased to 60% speed, 15% tighter turns, Lift burns twice as fast; not
-below a quarter of its Lift. Not yet seen in a match (needs a bot match, Alan's go).
-In Studio, the workspace attribute `DevBotTier` (e.g. `experienced`) gives every bot that skill, for measuring matches.
+**Skill tiers:** rookie, regular, veteran (`experienced`) and **Ace** (2026-11-08, Studio-only until plan step 6 decides
+real lobbies): Aces turn at full rate, aim within about half a degree, react in 0.15-0.25 s, hunt longer, and fly the
+veterans' builds.
+**Tricks** ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md), `BotTactics`): every bot flies its
+build's trick and skill sets how well (`trick_reliability`, `trick_error`). Popper dart: closes (boosting while far),
+brakes, blasts 1.5 s, boosts out past the target and comes round again (the Popper Dart got an Elastic Booster for it).
+Crayon stand-off: holds off at about 300 studs (braking), turns away and comes back if closer than ~200. Spitball
+first: only the spitball until two are stuck on the target, then the other gun. Everything else: a close turn fight.
+**Brake**: each approach brakes at about 80 studs (an Ace almost exactly, a veteran 80-100, lower tiers sloppier and
+sometimes not at all); eased to 60% speed, 15% tighter turns, Lift burns twice as fast; not below a quarter of its Lift.
+**Kill-stealing and switching**: bots notice damaged planes in view (`steal_notice`) and go for the fold; damaged
+planes are better picks (`steal_bonus`). A well-judged switch (`switch_judgment`) finishes the plane about to fold
+and never hops from one damaged plane to another; a poor one hops to whichever looks weaker.
+**Firing**: veterans and Aces fire only inside their gun's reach (`fires_in_range`); others within 450 studs.
+Not yet flown in a match (needs Alan's go).
+In Studio, the workspace attribute `DevBotTier` (e.g. `experienced`, `ace`) gives every bot that skill, for measuring matches;
+`ace_mix` gives one Ace per three veterans.
 Passed Alan's vertical-slice gate (2026-10-11: "the bots pass, it is fun"). Every bot plays the Airspace zone, more often the better it is. Bots still to be checked in every mode; rookie graduation check open.
 Veterans (Experienced) use the ceiling ducts (2026-10-15): when shot at they sometimes run for a vent within 500
 studs (`duct_escape_chance` 40%), and now and then wander through instead of to the next patrol spot
@@ -77,13 +90,14 @@ invulnerable debug bots or target-board practice.
 | `src/server/BotService.luau` | Bot brain: vision, targets, states, zone play |
 | `src/shared/AirRoutes.luau` | Flight routes through the room and pathfinding (also the tutorial guide line) |
 | `src/shared/BotBuilds.luau` | Bot planes per skill tier |
+| `src/shared/BotTactics.luau` | Each build's trick, where a bot brakes or holds off, when it steals a damaged plane |
 | `src/shared/BotNames.luau` | Made-up pilot names in present-day styles (2026-10-18: lowercase handles, stretched names, x-swaps, nonsense words, ALL-CAPS jokes) |
 | `src/shared/BotRosterRules.luau` | How many bots and which skill |
 | `src/server/AvatarService.luau` | Seated avatars at desks (none for lesson planes: Pals and practice targets, Alan 2026-10-22), bot looks (`Service.look`) |
 | `src/server/Matchmaking.luau, src/server/MatchmakingAdapter.luau` | Rookie or regular servers, transfers |
 
 ## Tuning numbers
-`config/gameplay.json` `bots` (mixes, personalities, quirks, eraser skill, objective share); `config/server.json` `routing`.
+`config/gameplay.json` `bots` (mixes, personalities, quirks, eraser skill, objective share; tricks: `tricks_comment`); `config/server.json` `routing`.
 
 ## Related
 - [What bots do first](../decisions/2026-10-07-bot-scope.md)

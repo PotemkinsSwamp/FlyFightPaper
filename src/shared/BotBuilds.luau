@@ -24,8 +24,9 @@ BotBuilds.TIERS={
 			weapon_mounts={"crayon",false,false,false,"rubber","rubber"},
 		}},
 		-- A fast plane on a moderate body with the Popper: zip in, brake, fire, zip out (Alan's way).
+		-- (a booster to zip in and out: BotTactics' dart, Alan 2026-11-08).
 		{name="Popper Dart",loadout={
-			body="body_standard",nose="nose_1",wings="wings_1",tail="tail_1",
+			body="body_standard",nose="nose_1",wings="wings_1",tail="tail_1",utility="boost_band",
 			weapon_mounts={false,"popper","staple","staple"},
 		}},
 		-- Rubber bands to hurt, spitballs to slow the target down for them.
@@ -40,6 +41,8 @@ BotBuilds.TIERS={
 		}},
 	},
 }
+-- Aces (Alan 2026-11-08) fly the veterans' builds, better.
+BotBuilds.TIERS.ace=BotBuilds.TIERS.experienced
 function BotBuilds.weapon(catalog,weaponId,range)
 	local weapon=catalog:get(weaponId)
 	assert(weapon and weapon.class,"Unknown weapon: "..tostring(weaponId))

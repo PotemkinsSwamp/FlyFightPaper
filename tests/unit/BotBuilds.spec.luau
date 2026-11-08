@@ -157,10 +157,11 @@ function Spec.run()
 			end
 		end
 	end)
-	test("rookies never brake; better bots brake from further out",function()
-		local profiles=Config.bots.profiles
-		assert(profiles.rookie.brake_within==0 and profiles.regular.brake_within>0)
-		assert(profiles.experienced.brake_within>profiles.regular.brake_within)
+	test("Aces fly the veterans' builds; the Popper Dart carries a booster to zip in and out",function()
+		assert(BotBuilds.TIERS.ace==BotBuilds.TIERS.experienced)
+		for _,build in ipairs(BotBuilds.TIERS.experienced) do
+			if build.name=="Popper Dart" then assert(build.loadout.utility=="boost_band") end
+		end
 	end)
 	test("D8 tier averages increase damage; veterans out-turn regulars",function()
 		local previous

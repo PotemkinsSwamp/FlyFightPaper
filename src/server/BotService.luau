@@ -11,6 +11,7 @@ local Routes=require(Root.Shared.AirRoutes)
 local Landing=require(Root.Shared.ServiceRules)
 local DuctRules=require(Root.Shared.DuctRules)
 local Course=require(Root.Shared.TrainingCourse)
+local Tactics=require(Root.Shared.BotTactics)
 local Service={};Service.__index=Service
 -- Combat Training's Pals (p.pal, set by RoundRuntime:lesson): they only fight while their player has been flying
 -- for 2 seconds (Alan: smooth after a crash), so a player back from a crash isn't jumped on takeoff.
@@ -223,8 +224,11 @@ function Service:fill()
  for _,row in ipairs(plan.botAdds) do
   -- Studio only: workspace DevBotTier sets every bot's skill, for measuring matches (e.g. all veterans as stand-ins
   -- for real players, Alan 2026-11-08).
-  local tier=game:GetService("RunService"):IsStudio() and workspace:GetAttribute("DevBotTier") or row.profileName
-  self.serial=row.identitySerial;local loadout,build=Builds.pick(tier,self.serial)
+  -- "ace_mix" gives one Ace per three veterans (Alan 2026-11-08).
+  self.serial=row.identitySerial
+  local tier=Run:IsStudio() and workspace:GetAttribute("DevBotTier") or row.profileName
+  if tier=="ace_mix" then tier=self.serial%4==0 and "ace" or "experienced" end
+  local loadout,build=Builds.pick(tier,self.serial)
   local p=self.flight:add(nil,{id=row.actorKey,name=row.displayName,tier=tier,loadout=loadout,loadoutName=build})
   if not p then break end
   if p.tier=="experienced" and p.team and not workspace:GetAttribute("DevBotTier") then
@@ -245,6 +249,7 @@ function Service:reset(p)
   goal=Vector3.new(p.home.Position.X*.5,210,p.home.Position.Z*.4),heading=p.body.CFrame.LookVector,bank=0,profile=profile}
  local b=self.brains[p.id]
  b.lag=random:NextNumber(profile.hand_delay_seconds[1],profile.hand_delay_seconds[2]);b.tier=tier
+ b.trick=Tactics.trick(p.loadout.weapon_mounts)
  -- Personality is independent of skill. Quirks make bots feel like people: veterans get more and bolder ones,
  -- some rookies get one too.
  local names={"aggressive","cautious","opportunist","objective"}
@@ -260,7 +265,7 @@ function Service:reset(p)
  end
  if Run:IsStudio() then
   local list={};for quirk in pairs(b.quirks) do table.insert(list,quirk) end;table.sort(list)
-  p.model:SetAttribute("BotStyle",tier.." "..b.personality..(#list>0 and ", "..table.concat(list,"+") or ""))
+  p.model:SetAttribute("BotStyle",tier.." "..b.personality.." "..b.trick..(#list>0 and ", "..table.concat(list,"+") or ""))
  end
 end
 -- Bots notice planes like people do: only in front of them (a 120 degree view), never through walls and never
@@ -315,7 +320,8 @@ local function nearZone(position,zone,leash)
  local c=zone.center
  return math.abs(position.Y-c[2])<=zone.half_height+150 and (position.X-c[1])^2+(position.Z-c[3])^2<=(zone.radius*leash)^2
 end
--- Spread out: each bot already chasing a plane makes it a worse pick, so bots don't all swarm one pilot.
+-- Spread out: each bot already chasing a plane makes it a worse pick, so bots don't all swarm one pilot. Damaged planes
+-- are better picks (a fold to take), more so for better bots (steal_bonus) and opportunists.
 function Service:chooseTarget(p,b,now,zone)
  local chasers={}
  for id,other in pairs(self.brains) do if id~=p.id and other.target then chasers[other.target]=(chasers[other.target] or 0)+1 end end
@@ -325,11 +331,36 @@ function Service:chooseTarget(p,b,now,zone)
    and not (zone and not nearZone(other.body.Position,zone,b.profile.objective_leash)) then
    local delta=other.body.Position-p.body.Position
    local score=delta.Magnitude+(chasers[other] or 0)*300*b.style.crowd_penalty_factor+(1-p.body.CFrame.LookVector:Dot(delta.Unit))*150
-    -b.style.wounded_bonus*(1-other.model:GetAttribute("Health")/other.stats.health)
+    -(b.style.wounded_bonus+b.profile.steal_bonus)*(1-other.model:GetAttribute("Health")/other.stats.health)
    if score<best then best,target=score,other end
   end
  end
  b.target=target;b.pursueUntil=now+b.random:NextNumber(b.profile.pursuit_seconds[1],b.profile.pursuit_seconds[2])*b.style.pursuit_factor
+end
+-- The build's trick (Alan 2026-11-08; Tactics): each approach on a target rolls how well it's flown (brakeAt 0 = fumbled,
+-- holdAt for a stand-off). A Popper dart closes (boosting while far), brakes, blasts for DART_BLAST seconds, then
+-- boosts out past the target and comes back round. A Crayon holds off at holdAt: inside holdAt-100 it turns away,
+-- opens the distance and turns back. Braking itself and the spitball-first trigger are in steer.
+function Service:trickStep(p,b,now,delta)
+ local gap=delta.Magnitude
+ if b.extendUntil and now<b.extendUntil then return end
+ if b.brakeFor~=b.target or gap>Tactics.HOLD_STUDS+150 then
+  b.brakeFor,b.blastAt=b.target,nil
+  b.brakeAt,b.holdAt=Tactics.approach(b.profile,function(lo,hi) return b.random:NextNumber(lo,hi) end)
+ end
+ if b.brakeAt<=0 then return end
+ local side=p.body.CFrame.LookVector:Cross(Vector3.yAxis):Dot(delta)>=0 and -1 or 1 -- away from the target
+ if b.trick=="dart" then
+  if not b.blastAt and gap<math.max(b.brakeAt,40)+15 then b.blastAt=now end
+  if b.blastAt and now-b.blastAt>Tactics.DART_BLAST then
+   b.brakeFor=nil
+   b.extendUntil=self:startMove(b,now,"extend",{"extend",self:pickMove(b,b.profile.reverse_moves,p.body.Position)},-side)
+   b.dartOutUntil=b.extendUntil
+  end
+ elseif b.trick=="standoff" and gap<b.holdAt-100 then
+  b.brakeFor=nil
+  b.extendUntil=self:startMove(b,now,"extend",{"break_turn","extend","flat_reverse"},side)
+ end
 end
 -- Priority state machine, run at the bot's reaction rate. Steering (every frame) adds the avoid override.
 function Service:decide(p,b,now)
@@ -437,6 +468,24 @@ function Service:decide(p,b,now)
    seen=b.target and self:sees(p,b.target)
    if seen then b.lastSeen=now;b.lastKnown=b.target.body.Position;b.lastVelocity=b.target.body.AssemblyLinearVelocity end
   end
+  -- Kill-stealing (Alan 2026-11-08): now and then (steal_notice a second) a bot notices a damaged plane in view and
+  -- goes for its fold; how well it judges leaving its own target is skill (switch_judgment, Tactics.shouldSteal).
+  if b.random:NextNumber()<b.profile.steal_notice*b.reaction then
+   local best,health=nil,math.huge
+   for _,other in pairs(self.flight.pilots) do
+    if other~=b.target and self.combat:enemy(p,other) and self.combat:targetable(other,now) and other.model:GetAttribute("State")=="FLYING"
+     and not (zone and not nearZone(other.body.Position,zone,b.profile.objective_leash)) then
+     local share=other.model:GetAttribute("Health")/other.stats.health
+     if share<health and self:sees(p,other) then best,health=other,share end
+    end
+   end
+   local current=seen and b.target.model:GetAttribute("Health")/b.target.stats.health or nil
+   if best and Tactics.shouldSteal(current,health,b.random:NextNumber()<b.profile.switch_judgment) then
+    b.target,seen=best,true
+    b.lastSeen=now;b.lastKnown=best.body.Position;b.lastVelocity=best.body.AssemblyLinearVelocity
+    b.pursueUntil=now+b.random:NextNumber(b.profile.pursuit_seconds[1],b.profile.pursuit_seconds[2])*b.style.pursuit_factor
+   end
+  end
   if seen then
    b.mode="chase";b.goal=b.target.body.Position
    -- Rammers fly straight into a weaker plane on purpose: the plane with less health loses a ram.
@@ -450,6 +499,7 @@ function Service:decide(p,b,now)
     local side=forward:Cross(Vector3.yAxis):Dot(delta)>=0 and 1 or -1
     b.extendUntil=self:startMove(b,now,"extend",{"extend",self:pickMove(b,b.profile.reverse_moves,position)},side)
    end
+   self:trickStep(p,b,now,delta)
   elseif not zone and b.target and b.lastKnown and now-(b.lastSeen or 0)<5 then
    b.mode="search";b.goal=b.lastKnown+b.lastVelocity*math.min(2,now-b.lastSeen)
    if (position-b.goal).Magnitude<90 then b.target=nil end
@@ -598,11 +648,13 @@ function Service:steer(p,b,dt,now)
   end
  end
  if b.avoid then direction=b.avoid end
- -- Brake (Alan 2026-11-08): close behind a target it is catching, a skilled bot brakes like a player to stay on its
- -- tail and keep firing: slower and a little tighter in turns while held, eased like the player's; FlightService burns
- -- its Lift twice as fast meanwhile. Rookies never brake (brake_within 0).
+ -- Brake (Alan 2026-11-08): close behind a target it is catching, a bot brakes like a player to stay on its tail and
+ -- keep firing: slower and a little tighter in turns while held, eased like the player's; FlightService burns its Lift
+ -- twice as fast meanwhile. Where it starts braking is this approach's roll (trickStep): about 80 studs, exactly for an
+ -- Ace, sloppier lower down, sometimes not at all; a Crayon stand-off brakes to hold off at holdAt instead.
  local gap=(b.mode=="chase" and b.target) and b.target.body.Position-position or nil
- local braking=gap~=nil and not p.pal and gap.Magnitude>1 and gap.Magnitude<(b.profile.brake_within or 0)
+ local brakeAt=(b.brakeAt or 0)>0 and (b.trick=="standoff" and b.holdAt or b.brakeAt) or 0
+ local braking=gap~=nil and not p.pal and gap.Magnitude>1 and gap.Magnitude<brakeAt
   and (p.body.AssemblyLinearVelocity-b.target.body.AssemblyLinearVelocity):Dot(gap.Unit)>0
   and (p.model:GetAttribute("Lift") or 0)>p.stats.lift*.25
  p.brakeHeld=braking
@@ -615,7 +667,9 @@ function Service:steer(p,b,dt,now)
  desired,b.bank,p.orientation.CFrame=FlightRules.autopilot(b.heading,b.bank,direction,p.stats.yaw*b.profile.turn_factor*(p.pal and .8 or 1)*tight,p.stats.pitch*b.profile.turn_factor*(p.pal and .8 or 1)*tight,dt)
  local bleed=FlightRules.turnSpeedFactor(b.heading,desired,dt,turn)
  b.heading=desired
- p.boostHeld=(b.mode=="evade" or b.mode=="extend") and b.profile.evade_boost
+ -- A Popper dart boosts in while far off and boosts out after its blast (trickStep), at any skill.
+ p.boostHeld=(b.mode=="evade" or b.mode=="extend") and (b.profile.evade_boost or now<(b.dartOutUntil or 0))
+  or b.trick=="dart" and gap~=nil and gap.Magnitude>250 and (b.brakeAt or 0)>0
  -- A Pal flies at `pal.speed` times its plane's own speed, not a bot's slower share (RoundRuntime:lesson), and
  -- slower while you're far from it (Alan 2026-10-21: chasing one took a minute): you close in, then it matches you,
  -- so you catch it by cutting inside its turns (Alan 2026-10-22: 70%/95% made it too easy, no chase).
@@ -633,18 +687,26 @@ function Service:steer(p,b,dt,now)
  if lead and (lead-position).Magnitude>.1 then self.combat.info[p.id].aim=aimError((lead-position).Unit,b,now) end
  -- Triggers are hand work too: checked every frame against the live lead, not held between decisions.
  local aim=self.combat.info[p.id].aim or p.body.CFrame.LookVector
- local aligned=lead~=nil and p.body.CFrame.LookVector:Dot((lead-position).Unit)>math.cos(math.rad(12)) and (b.target.body.Position-position).Magnitude<450
+ local aligned=lead~=nil and p.body.CFrame.LookVector:Dot((lead-position).Unit)>math.cos(math.rad(12))
+ local distance=aligned and (b.target.body.Position-position).Magnitude or math.huge
+ -- Spitball first (a Spitball build flying its trick): only the spitball until SPIT_WANT are stuck, then the other gun.
+ local spitFirst=b.trick=="spitball" and (b.brakeAt or 0)>0 and b.target
+ local wantSpit=spitFirst and (b.target.model:GetAttribute("Spitballs") or 0)<Tactics.SPIT_WANT
  local foe=p.pal and p.pal.mode=="pellet" and self.flight.byId[p.foeOf]
  if foe then self:palAmbush(p,foe,now) end
  for group=1,2 do
-  local semi,eraser=false,false
+  local semi,eraser,spit,reach=false,false,false,math.huge
   for _,mount in ipairs(self.combat.info[p.id].mounts) do if mount.group==group then
    eraser=eraser or mount.weapon.homing
    semi=semi or ((mount.weapon.fire_mode=="semiautomatic" or mount.weapon.fire_mode=="alternate") and not mount.weapon.homing)
+   spit=spit or mount.weapon.id=="spitball"
+   reach=math.min(reach,CombatRules.shotRange(mount.weapon))
   end end
+  -- Better bots fire only inside the gun's reach (fires_in_range); the rest open up within 450 studs.
+  local inRange=distance<(b.profile.fires_in_range and reach or 450)
   if semi then self.combat:trigger(p,group,false,aim) end
   -- Bots are smart with erasers: they wait for a full lock. Guns and pencils need alignment.
-  local fire=eraser and (p.model:GetAttribute("LockProgress") or 0)>=1 or not eraser and aligned
+  local fire=eraser and (p.model:GetAttribute("LockProgress") or 0)>=1 or not eraser and aligned and inRange and (not spitFirst or spit==wantSpit)
   if p.pal then
    -- A Pal's own guns never fire (step 8's shots are palAmbush's); one slow eraser at a time.
    local victim=self:palReady(p,now)
