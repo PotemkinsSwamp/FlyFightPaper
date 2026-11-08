@@ -606,6 +606,7 @@ function Service:steer(p,b,dt,now)
   and (p.body.AssemblyLinearVelocity-b.target.body.AssemblyLinearVelocity):Dot(gap.Unit)>0
   and (p.model:GetAttribute("Lift") or 0)>p.stats.lift*.25
  p.brakeHeld=braking
+ if p.model:GetAttribute("Braking")~=braking then p.model:SetAttribute("Braking",braking) end -- shown for measuring
  local ease=Config.flight.speed_ease_per_s*dt
  b.brakeShare=(b.brakeShare or 1)+math.clamp((braking and Config.flight.brake_speed_factor or 1)-(b.brakeShare or 1),-ease,ease)
  local tight=braking and Config.flight.brake_turn_factor or 1
