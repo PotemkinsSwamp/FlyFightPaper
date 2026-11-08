@@ -48,6 +48,10 @@
   stand-off; rebuild its weapons only if it's still weak). Order now: fix the bots (Crayon Tank, why Aces don't beat
   veterans) so a match gives a real simulated-player measure of XP and Paper a match; then roll the chosen text style
   out to everything; then the unlock moment. Bots shoot whenever the targeting ring would show, no range rule.
+- **The Crayon Tank was a bad build** (Alan, after the fixed bots' first 1-minute check): Rubber Bands fire fast and
+  hit hard at medium range before they scatter, so they need a plane that gets close; a slow tank can't, so nobody
+  would build it. Ace builds must be strong and make sense on the numbers. Replaced by the Staple Tank (same heavy
+  body, six Staple guns: fast, straight, full damage at any distance, 105 damage a second at 500 studs).
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 

@@ -8,7 +8,7 @@ Bots fly at their plane's full top speed, like a player ([decision](../decisions
 changes how hard they turn and pitch (`turn_factor`) and how they brake.
 **Planes** ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)): rookies fly the level-1 presets (Fighter,
 Striker, Scout), regulars every preset but the Marksman (adds Bomber, Carrier), veterans four builds made the way a
-player builds: Crayon Tank (big body, speed parts), Popper Dart (fast, moderate body, Popper and Staples), Spitball
+player builds: Staple Tank (big slow body, six Staple guns to fight from far; replaced the Crayon Tank 2026-11-08), Popper Dart (fast, moderate body, Popper and Staples), Spitball
 Hunter (Rubber Bands plus a Spitball), Tack Skirmisher. No bot carries a Paperclip, Eraser or Pencil.
 **Skill tiers:** rookie, regular, veteran (`experienced`) and **Ace** (2026-11-08, Studio-only until plan step 6 decides
 real lobbies): Aces turn at full rate, aim within about half a degree, react in 0.15-0.25 s, hunt longer, and fly the
@@ -16,8 +16,8 @@ veterans' builds.
 **Tricks** ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md), `BotTactics`): every bot flies its
 build's trick and skill sets how well (`trick_reliability`, `trick_error`). Popper dart: closes (boosting while far),
 brakes, blasts 1.5 s, boosts out past the target and comes round again (the Popper Dart got an Elastic Booster for it).
-Spitball first: only the spitball until two are stuck on the target (at most 3 s), then the other gun. Everything else,
-the Crayon Tank included (Alan 2026-11-08: its stand-off made it easy prey), a close turn fight.
+Spitball first: only the spitball until two are stuck on the target (at most 3 s), then the other gun. Everything else:
+a close turn fight (the old Crayon Tank's stand-off made it easy prey, Alan 2026-11-08).
 **Brake**: each approach brakes at about 80 studs (an Ace almost exactly, a veteran 80-100, lower tiers sloppier and
 sometimes not at all); eased to 60% speed, 15% tighter turns, Lift burns twice as fast; not below a quarter of its Lift.
 **Kill-stealing and switching**: bots notice damaged planes in view (`steal_notice`) and go for the fold; damaged
