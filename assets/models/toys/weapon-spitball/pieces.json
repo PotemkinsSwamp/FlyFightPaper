@@ -2,35 +2,58 @@
   "weapon": "spitball",
   "length_studs": 3.2,
   "size": [
-    1.28,
-    1.4704,
-    3.1114
+    1.78,
+    1.2223,
+    2.6464
   ],
   "mount": {
     "side": "top",
     "point": [
       0.0,
-      0.1204,
-      -0.0657
+      1.12,
+      -0.2982
     ]
   },
   "maps": {},
   "pieces": [
+    {
+      "piece": "clear",
+      "file": "parts/clear.fbx",
+      "role": "static",
+      "centre": [
+        0.0,
+        0.2525,
+        0.4
+      ],
+      "size": [
+        1.24,
+        0.065,
+        1.24
+      ],
+      "triangles": 160,
+      "textured": false,
+      "color": [
+        255,
+        255,
+        255
+      ],
+      "material": "SmoothPlastic"
+    },
     {
       "piece": "body",
       "file": "parts/body.fbx",
       "role": "static",
       "centre": [
         0.0,
-        -0.6349,
-        -0.03
+        0.5225,
+        -0.2625
       ],
       "size": [
-        1.28,
-        1.4301,
-        3.04
+        1.78,
+        1.195,
+        2.575
       ],
-      "triangles": 1212,
+      "triangles": 1156,
       "textured": false,
       "color": [
         255,

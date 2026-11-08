@@ -63,6 +63,7 @@ WEAPONS = {
         ("crayon", "fire", None, None),
         ("band", "snap", None, None)]),
     "spitball": dict(length=3.2, mount="top", build="spitball", pieces=[
+        ("clear", "static", None, None),
         ("body", "static", None, None),
         ("wad", "fire", None, None)]),
 }
@@ -548,50 +549,145 @@ def crayon():
 
 
 def spitball():
-    """A lidded paper cup and a level, forward-pointing hollow bendy straw."""
-    body = paint(bmesh.new(), [240, 240, 235], cup_shell, -.85, -.40, .30, .50, .60, .04)
-    paint(body, [240, 240, 235], ring_z, -.85, .28, .325, .625, .57)
-    # The lid rests on the rolled rim. Its small central hole is filled by the straw's wall.
-    paint(body, [230, 230, 225], ring_z, -.85, .325, .395, .64, .06)
-    paint(body, [230, 230, 225], ring_z, -.85, .395, .425, .64, .59)
-    for centre, seed in (((-.27, -.98, .52), 17), ((.26, -.72, .52), 29)):
-        paint(body, [205, 205, 195], lump, centre, .14, seed, floor=.395)
+    """An inverted striped party cup, yellow wing strap and hollow green straw on the shot axis."""
+    red, white = [225, 40, 40], [245, 245, 238]
+    yellow, edge = [255, 200, 20], [215, 150, 0]
+    wet, shine = [150, 170, 210], [195, 210, 235]
+    # Turn the helper's open cup upside down: the closed narrow base is against the wing.
+    body = paint(bmesh.new(), [235, 228, 222], cup_shell, 0, .25, 1.10, .45, .60, .04, sides=16)
+    bmesh.ops.transform(body, matrix=Matrix.Translation((0, -.40, 1.35)) @ Matrix.Rotation(math.pi, 4, "X"),
+                        verts=list(body.verts))
+    layer = body.loops.layers.float_color["Color"]
+
+    def colour(face, rgb):
+        for loop in face.loops: loop[layer] = (*[(v / 255) ** 2.2 for v in rgb], 1)
+
+    for face in body.faces:
+        if any(abs(v.co.z - 1.10) < 1e-5 for v in face.verts):
+            centre = face.calc_center_median()
+            k = int((math.atan2(centre.y + .40, centre.x) % (2 * math.pi)) * 16 / (2 * math.pi))
+            colour(face, red if len(face.verts) == 16 or k % 2 == 0 else white)
+        elif all(abs(v.co.z - .25) < 1e-5 for v in face.verts):
+            colour(face, white)
+    paint(body, white, ring_z, -.40, .245, .275, .625, .590, sides=16)
+
+    def strap_band(bm):
+        before_v, before_f = set(bm.verts), set(bm.faces)
+        radius = .60 - .15 * (.92 - .25) / .85
+        ring_z(bm, -.40, .92, 1.08, radius + .025, radius + .004, sides=16)
+        # The hidden back of this cardboard band is the cup wall, saving covered triangles.
+        hidden = [f for f in bm.faces if f not in before_f
+                  and all(abs(math.hypot(v.co.x, v.co.y + .40) - radius - .004) < 1e-5 for v in f.verts)]
+        bmesh.ops.delete(bm, geom=hidden, context="FACES_ONLY")
+        for v in set(bm.verts) - before_v:
+            r = math.hypot(v.co.x, v.co.y + .40)
+            scale = (r - .15 * (v.co.z - .92) / .85) / r
+            v.co.x *= scale; v.co.y = -.40 + (v.co.y + .40) * scale
+        return bm
+
+    before = set(body.faces)
+    paint(body, yellow, strap_band)
+    for face in set(body.faces) - before:
+        if max(v.co.z for v in face.verts) - min(v.co.z for v in face.verts) < 1e-5:
+            colour(face, edge)
+    for side in (-1, 1):
+        before = set(body.faces)
+        # Small clipped corners read as cut cardboard; both glue faces finish at exactly z=1.12.
+        pts = [(side * x, y, 1.10) for x, y in
+               ((.44, -.60), (.85, -.60), (.89, -.56), (.89, -.24), (.85, -.20), (.44, -.20))]
+        paint(body, yellow, slab, pts, (0, 0, .04))
+        for face in set(body.faces) - before:
+            if not all(abs(v.co.z - 1.12) < 1e-5 for v in face.verts): colour(face, edge)
+
+    def wet_wad(bm, centre, radius, seed, floor=None):
+        # Sphere creation can invalidate existing vertex handles, so build each wad separately.
+        paper = paint(bmesh.new(), wet, lump, centre, radius, seed, floor=floor)
+        if floor is not None:
+            # Slightly squashed wet paper stays above the lid and below z=.65.
+            height = max(v.co.z for v in paper.verts) - floor
+            for v in paper.verts: v.co.z = floor + (v.co.z - floor) * min(1, (.65 - floor) / height)
+        wad_layer = paper.loops.layers.float_color["Color"]
+        for face in random.Random(seed).sample(list(paper.faces), 4 if floor is not None else 2):
+            for loop in face.loops: loop[wad_layer] = (*[(v / 255) ** 2.2 for v in shine], 1)
+        mesh = bpy.data.meshes.new("spitball_wad")
+        paper.to_mesh(mesh); paper.free(); bm.from_mesh(mesh); bpy.data.meshes.remove(mesh)
+        return bm
+
+    for centre, radius, seed in (((0, -.40, .47), .17, 17), ((-.285, -.40, .47), .16, 29),
+                                  ((.285, -.40, .47), .17, 37), ((0, -.685, .47), .16, 53),
+                                  ((0, -.115, .47), .165, 61)):
+        wet_wad(body, centre, radius, seed, floor=.30)
+
+    straw_inside = []
 
     def straw(bm):
-        pts = [Vector((0, -.85, .37))]
-        pts += [Vector((0, -.85 + .20 * (1 - math.cos(t)), .75 + .20 * math.sin(t)))
-                for t in (math.pi / 2 * k / 6 for k in range(7))]
-        pts.append(Vector((0, 1.55, .95)))
+        pts = [(Vector((0, -.05, .25)), Vector((0, 0, -1)))]
+        pts += [(Vector((0, -.05 + .12 * (1 - math.cos(t)), .12 - .12 * math.sin(t))),
+                 Vector((0, math.sin(t), -math.cos(t))))
+                for t in (math.pi / 2 * k / 4 for k in range(5))]
+        pts.append((Vector((0, 1.55, 0)), Vector((0, 1, 0))))
         rings = []
-        for i, p in enumerate(pts):
-            d = (pts[min(i + 1, len(pts) - 1)] - pts[max(i - 1, 0)]).normalized()
-            across, up = Vector((1, 0, 0)), d.cross(Vector((1, 0, 0))).normalized()
+        for p, d in pts:
+            across, up = Vector((1, 0, 0)), d.cross(Vector((1, 0, 0)))
             rings.append([[bm.verts.new(p + r * (across * math.cos(t) + up * math.sin(t)))
                            for t in (2 * math.pi * k / 8 for k in range(8))] for r in (.075, .052)])
         for a, b in zip(rings, rings[1:]):
             for side in range(2):
                 for k in range(8):
                     j = (k + 1) % 8
-                    bm.faces.new((a[side][k], a[side][j], b[side][j], b[side][k]))
+                    face = bm.faces.new((a[side][k], a[side][j], b[side][j], b[side][k]))
+                    if side == 1: straw_inside.append(face)
         for ring in (rings[0], rings[-1]):
             for k in range(8):
                 j = (k + 1) % 8
                 bm.faces.new((ring[0][k], ring[0][j], ring[1][j], ring[1][k]))
         return bm
 
-    paint(body, [150, 215, 90], straw)
-    for k in range(1, 5):
-        t = math.pi / 2 * k / 5
-        centre = Vector((0, -.85 + .20 * (1 - math.cos(t)), .75 + .20 * math.sin(t)))
-        tangent = Vector((0, math.sin(t), math.cos(t)))
+    paint(body, [110, 210, 40], straw)
+    layer = body.loops.layers.float_color["Color"]
+    for face in straw_inside: colour(face, [75, 160, 25])
+
+    def neck_rib(bm):
+        before = set(bm.faces)
+        collar(bm, -.009, .009, .085, .073, sides=8)
+        hidden = [f for f in bm.faces if f not in before
+                  and all(abs(math.hypot(v.co.x, v.co.z) - .073) < 1e-5 for v in f.verts)]
+        bmesh.ops.delete(bm, geom=hidden, context="FACES_ONLY")
+        return bm
+
+    for k in range(1, 4):
+        t = math.pi / 2 * k / 4
+        centre = Vector((0, -.05 + .12 * (1 - math.cos(t)), .12 - .12 * math.sin(t)))
+        tangent = Vector((0, math.sin(t), -math.cos(t)))
         before = set(body.verts)
-        paint(body, [120, 185, 70], collar, -.014, .014, .09, .072, sides=8)
+        paint(body, [75, 160, 25], neck_rib)
         turn = Matrix.Translation(centre) @ Vector((0, 1, 0)).rotation_difference(tangent).to_matrix().to_4x4()
         bmesh.ops.transform(body, matrix=turn, verts=list(set(body.verts) - before))
-    wad = paint(bmesh.new(), [205, 205, 195], lump, (0, 1.52, .95), .11, 43)
-    # Keep the actual shot axis at X=Z=0 in both exported pieces.
-    for bm in (body, wad): bmesh.ops.translate(bm, vec=(0, 0, -.95), verts=list(bm.verts))
-    return {"body": plain_piece("body", body, [255, 255, 255]),
+
+    def lid(bm):
+        # An off-centre straw hole, a thin disk, and its raised edge share one continuous shell.
+        rings = [[bm.verts.new((r * math.cos(t), y + r * math.sin(t), z))
+                  for t in (2 * math.pi * k / sides for k in range(sides))]
+                 for y, z, r, sides in ((-.05, .22, .079, 8), (-.40, .22, .62, 16),
+                                        (-.40, .285, .62, 16), (-.40, .285, .58, 16),
+                                        (-.40, .26, .58, 16), (-.05, .26, .079, 8))]
+        for a, b in zip(rings, rings[1:] + rings[:1]):
+            if len(a) == len(b):
+                for k in range(len(a)):
+                    j = (k + 1) % len(a)
+                    bm.faces.new((a[k], a[j], b[j], b[k]))
+            else:
+                small, large = (a, b) if len(a) < len(b) else (b, a)
+                for k in range(8):
+                    j = (k + 1) % 8
+                    bm.faces.new((small[k], large[2 * k], large[2 * k + 1]))
+                    bm.faces.new((small[k], large[2 * k + 1], large[(2 * k + 2) % 16], small[j]))
+        return bm
+
+    clear = paint(bmesh.new(), [120, 200, 235], lid)
+    wad = wet_wad(bmesh.new(), (0, 1.52, 0), .11, 43)
+    return {"clear": plain_piece("clear", clear, [255, 255, 255]),
+            "body": plain_piece("body", body, [255, 255, 255]),
             "wad": plain_piece("wad", wad, [255, 255, 255])}
 
 
