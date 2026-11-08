@@ -1,6 +1,6 @@
-# LATEST → handoff-2026-11-07-beta-lane-popper-thumbtack-solid-toys.md
+# LATEST → handoff-2026-11-07-1927-beta-lane-load-fixed-crayon-next.md
 
-★ START HERE: Goal (Alan): the beta feels like a finished game, one map, a strong first-session hook. Ask Alan whether he did File > Save to File (510 newly solid toys live only in his open Studio), then check the phone-loading cost; then build the Stubby Crayon (rules + tests first, stand-in model).
+★ START HERE: Goal (Alan): the beta feels like a finished game, one map, a strong first-session hook. Build the Stubby Crayon (rules + tests first, stand-in model); then the Spitball plan for Alan's OK.
 
-Quick state: main 0690a4d6; tests 467/0 in Play at 3948b949; docs OK. Nothing from the last three sessions is published.
-Previous: handoff-2026-11-07-beta-lane-notes-paperclip-tab-built.md (beta lane).
+Quick state: main 79178c8d; published v495; phone town loads in ~4 s again; tests 467/0 in Play; docs OK.
+Previous: handoff-2026-11-07-beta-lane-popper-thumbtack-solid-toys.md (beta lane).

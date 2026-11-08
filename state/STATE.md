@@ -7,9 +7,9 @@
 - **One shot per click** on PC for every weapon that isn't automatic (Paperclip too); phones keep hold-to-fire.
 - **Cardboard Gunship:** heavy, heavy, medium, medium, medium, light (a fifth medium gun).
 - **Fixed:** a thin rail folded a plane that then came back (the pilot's felt crash now counts); the desk landing ring
-  catches its edge and steep dives; the Earth and 510 rug toys are now solid (only the open Studio has their shapes).
+  catches its edge and steep dives; the Earth and the rug toys are solid (small toys as boxes, lamps and crane fitted).
 - **Bot match:** about 340 XP a match; staying to the end pays at least 60 XP. Phone simulator check passed.
-- **None of this is published yet.** Studio test runs are muted (DevMute).
+- **Published v495.** Phone town loads in ~4 s again (exact toy shapes had made it ~40 s). Studio tests are muted.
 
 # Now: finish the game for the beta
 Next: Stubby Crayon, then Spitball (rules and tests first, stand-in models), then their real models (Codex picture,
@@ -42,8 +42,6 @@ Duct props see-through; veterans flee to the ducts 40% when shot at. Chalk erase
 Zone 680-840 across; bots on the zone 30/60/85%. Points: assist share rounded to 5 (10-80); outside-zone fold 40%.
 
 Waiting on Alan
-- **File > Save to File in Studio** so the new solid toys keep their exact shapes (else Studio recomputes them).
-  Then Claude checks whether the place file grew enough to slow phone loading (fix if so: box shapes for small toys).
 - Try the Point Popper, Thumbtack, one-click Paperclip and the solid toys when you like (stand-in weapon models).
 - Publish (File > Publish As > Overwrite), then on your phone: kill feed, desk dev panel, results card, confetti.
 - Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings.
