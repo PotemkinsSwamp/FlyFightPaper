@@ -359,7 +359,7 @@ function Hangar.new(playerGui, api)
 		end
 		Customize.draw(content, {
 			state = state, builder = builder, draft = draft, profile = profile, range = range, dev = dev, catalog = Catalog,
-			owned = function(part) return dev or range or profile.ownership[part.id] == true end,
+			owned = function(part) return dev or range or Catalog:owns(profile.ownership, part.id, player:GetAttribute("Level") or 1) end,
 			choose = choose, placeWeapon = placeWeapon, statSheet = statSheet, preview = preview, nameTag = nameTag,
 			-- A card being tried on: the same change on a scratch copy of the build, so the real one is untouched.
 			tryOn = function(pick) local scratch = Builder.new(Catalog, draft, ownership, level); return pick(scratch) and scratch.candidate or nil end,

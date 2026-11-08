@@ -246,11 +246,18 @@ function Catalog:validateLoadout(loadout, ownership, level)
 			return nil, id .. " requires level " .. tostring(definition.min_level)
 		end
 		-- nil ownership is reserved for trusted internal all-owned analysis.
-		if ownership ~= nil and ownership[id] ~= true then
+		if ownership ~= nil and not self:owns(ownership, id, level) then
 			return nil, "not owned: " .. id
 		end
 	end
 	return true
+end
+
+-- Free gear (Paper price 0) is yours from its level on, with nothing written to the save (Alan 2026-11-08: the
+-- first four weapons are free, everything after costs Paper).
+function Catalog:owns(ownership, id, level)
+	local definition = self.byId[id]
+	return ownership[id] == true or definition ~= nil and definition.paper_price == 0 and level >= definition.min_level
 end
 
 function Catalog:deriveStats(loadout)

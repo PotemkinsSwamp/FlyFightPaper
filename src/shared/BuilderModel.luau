@@ -70,7 +70,7 @@ function BuilderModel:selectStructure(slot, id)
 	local definition = self.catalog:get(id)
 	if not definition or definition.slot ~= slot then return false, "This selection is not a " .. slot end
 	if definition.min_level > self.level then return false, id .. " requires level " .. tostring(definition.min_level) end
-	if self.ownership[id] ~= true then return false, "not owned: " .. id end
+	if not self.catalog:owns(self.ownership, id, self.level) then return false, "not owned: " .. id end
 	local nextBuild = cloneLoadout(self.candidate)
 	nextBuild[slot] = id
 	if slot == "body" then

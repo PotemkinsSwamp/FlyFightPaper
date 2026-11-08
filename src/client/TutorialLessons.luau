@@ -344,7 +344,7 @@ local function crossedCard(ctx)
  for _,id in GEAR_IDS do local card=layer and layer:FindFirstChild(id,true);if card and card:FindFirstChild("CrayonX") then return id end end
 end
 Lessons.hangar={name="Hangar Tour",screen="HangarScreen",stay="range",ding="softDing",waitText="Opening your Hangar...",doneTitle="Hangar Tour done!",
- doneText="Your match planes are in the main menu's Hangar: same screens. In matches, some parts unlock with levels and Paper. The Range is yours now!",
+ doneText="Your match planes are in the main menu's Hangar: same screens. New weapons and parts open up as you level. Some are free; the rest cost Paper. The Range is yours now!",
  ready=function(ctx,step)
   -- First the plane onto the Range stage (asked again until the server has made it), then the Hangar open on the right page.
   if not ctx.plane or ctx.plane:GetAttribute("Pinned")==nil then

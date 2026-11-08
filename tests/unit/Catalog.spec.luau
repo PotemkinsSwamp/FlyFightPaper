@@ -154,7 +154,9 @@ function Suite.run()
 
 	check("CFG02 ownership and level validation", function()
 		local starter = catalog:starterLoadout()
-		expectRejected(catalog, starter, { body_standard = true, nose_0 = true, wings_0 = true }, 1, "not owned")
+		local paid = cloneLoadout(starter) -- starter parts cost nothing, so they are always yours; a paid gun is not
+		paid.weapon_mounts[1] = "rubber"
+		expectRejected(catalog, paid, { body_standard = true, nose_0 = true, wings_0 = true }, 50, "not owned")
 		expectRejected(catalog, starter, false, 1, "ownership")
 		local locked = cloneLoadout(starter)
 		locked.weapon_mounts[1] = "staple"
@@ -317,6 +319,17 @@ function Suite.run()
 		expect(math.abs(dps.staple - 17.5) < 1e-6, "burst dps counts the pause between bursts: " .. tostring(dps.staple))
 		expect(math.abs(dps.pencil - 65) < 1e-6, "pencil dps " .. tostring(dps.pencil))
 		expect(hit.rubber == 1 and hit.staple == 2 and hit.paperclip == 3 and hit.eraser == 4 and hit.pencil == 5, "hit ratings")
+	end)
+	check("Free gear is yours from its level on; paid gear still needs buying (Alan 2026-11-08)", function()
+		local loadout = cloneLoadout(catalog:starterLoadout())
+		loadout.weapon_mounts[1] = "thumbtack"
+		expectRejected(catalog, loadout, {}, 3, "requires level")
+		expect(catalog:validateLoadout(loadout, {}, 4) == true, "free thumbtack refused at its level")
+		expect(catalog:owns({}, "popper", 2) and not catalog:owns({}, "popper", 1), "popper not free from level 2")
+		expect(not catalog:owns({}, "spitball", 50) and catalog:owns({ spitball = true }, "spitball", 6), "paid spitball owned without buying")
+		local order = {}
+		for _, weapon in catalog.weapons do table.insert(order, weapon.id) end
+		expect(table.concat(order, " ") == "pellet popper staple thumbtack spitball rubber paperclip crayon eraser pencil", "weapon order changed: " .. table.concat(order, " "))
 	end)
 	return output
 end

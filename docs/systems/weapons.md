@@ -50,10 +50,10 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | One shot per click, up to one a second |
 | Staple Burst Gun | 7 | 1 | 1450, ~900 studs range | Hold; 3 shots, 0.09 s apart; 1.2 s between burst starts |
 | Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | One shot per click, up to 3 a second |
-| Stubby Crayon | 40 | 4 | 600, ~450 studs range, drop 8 | One shot per click, 2 s reload |
 | Spitball Straw | 1, and it sticks | 2 | 600, ~350 studs range | One shot per click, up to 2 a second |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
 | Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | One shot per click; mounts take turns, 1.75 s reload each |
+| Stubby Crayon | 40 | 4 | 600, ~450 studs range, drop 8 | One shot per click, 2 s reload |
 | Guided Eraser | 30 | 3 | 200, slowing to 110 | Click to launch unguided or hold through the 1.5 s lock; 4 s reload |
 | Pencil Launcher | 260 | 5 | 650, ~1800 studs range | One shot per click, fires on the click; 4 s reload |
 

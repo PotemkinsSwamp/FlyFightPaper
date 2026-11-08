@@ -88,7 +88,7 @@ function Customize.draw(content, ctx)
 		end
 		local name = words(card, "Name", part.name, 18, 14, 216, 96, 36)
 		name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
-		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and ctx.profile.ownership[part.id] ~= true and "Range only" or "Owned") or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
+		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and not ctx.catalog:owns(ctx.profile.ownership, part.id, game.Players.LocalPlayer:GetAttribute("Level") or 1) and "Range only" or "Owned") or part.paper_price == 0 and string.format("Free at level %d", part.min_level) or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
 		if state.slot == "weapons" then
 			-- Pips for how hard one shot hits (Alan); damage a second and the rest are in the box under the cards.
 			name.Position, name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(18, 6), UDim2.fromOffset(226, 40), false, true -- long names shrink to one line
@@ -206,10 +206,11 @@ function Customize.draw(content, ctx)
 				else ctx.choose(builder.selectStructure, state.slot, part.id) end
 			end, 46)
 		else
-			note = string.format("%s: %d Paper, level %d. The numbers show what it changes.", part.name, part.paper_price, part.min_level)
-			button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
+			note = part.paper_price == 0 and string.format("%s: free at level %d. The numbers show what it changes.", part.name, part.min_level)
+				or string.format("%s: %d Paper, level %d. The numbers show what it changes.", part.name, part.paper_price, part.min_level)
+			if part.paper_price > 0 then button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
 				ctx.api.action:FireServer("purchasePart", part.id); state.trying = nil; ctx.render()
-			end, 46)
+			end, 46) end
 		end
 		button(content, "CancelTry", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.trying = nil; ctx.render() end, 40)
 	else

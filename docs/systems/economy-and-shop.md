@@ -15,6 +15,10 @@ and is switched off: with `mode` "mock" it never talks to Roblox's shop.
   owned pass or a timed boost the permanent pass already covers. No live shop screen yet (needs real prices to show).
 - **To switch on (Alan's go):** create the products and passes on Roblox, put their IDs and approved prices in
   `config/commerce.json`, set `enabled`, `mode` "live" and `live_sales_authorized` true, then test on a private server.
+- **Free gear** (2026-11-08): anything with a Paper price of 0 is yours from its level on (`Catalog:owns`), with
+  nothing written to the save, so a prestige takes it away until you level again. Today: the starter parts and the
+  first four weapons (Pellet, Popper, Staple, Thumbtack); everything after costs Paper
+  ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Its Hangar card says "Free at level N".
 - **Early part unlocks:** one Roblox product per part above level 1 (28, `part_<id>` in `config/commerce.json`), all
   off. A part you own flies at any level; Paper purchases still need the level. Buying an owned part is refused.
   Prestige takes bought parts back like any other. Still to do with prices: the hangar's "Unlock now" button and its
