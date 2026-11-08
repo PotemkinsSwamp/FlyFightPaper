@@ -70,7 +70,7 @@ function Suite.run()
 			expect(count == expected, slot .. " count mismatch")
 		end
 		expect(#catalogConfig.structures == 24, "structure count mismatch")
-		expect(#catalogConfig.weapons == 8, "weapon count mismatch")
+		expect(#catalogConfig.weapons == 9, "weapon count mismatch")
 		expect(#catalogConfig.utilities == 3, "utility count mismatch")
 		for _, list in ipairs({ catalogConfig.structures, catalogConfig.weapons, catalogConfig.utilities }) do
 			for _, definition in ipairs(list) do

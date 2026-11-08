@@ -342,6 +342,15 @@
       "enabled": false
     },
     {
+      "key": "part_crayon",
+      "kind": "developer_product",
+      "benefit": "part_unlock",
+      "catalog_id": "crayon",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
       "key": "part_staple",
       "kind": "developer_product",
       "benefit": "part_unlock",

@@ -415,6 +415,26 @@
       "wobble_studs": 0
     },
     {
+      "id": "crayon",
+      "name": "Stubby Crayon",
+      "class": "medium",
+      "capacity": 3,
+      "mass": 2.8,
+      "paper_price": 750,
+      "min_level": 6,
+      "damage": 40,
+      "projectile_speed": 850,
+      "drag": 0.5,
+      "drop": 30,
+      "fire_mode": "semiautomatic",
+      "shot_interval": 2,
+      "lifetime": 0.8706,
+      "homing": false,
+      "projectile_radius": 0.5,
+      "spread_deg": 0,
+      "wobble_studs": 0
+    },
+    {
       "id": "rubber",
       "name": "Rubber Band Repeater",
       "class": "light",

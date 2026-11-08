@@ -607,6 +607,26 @@ return JSONTypes.map({
             ["wobble_studs"] = 0,
         }),
         [5] = JSONTypes.map({
+            ["capacity"] = 3,
+            ["class"] = "medium",
+            ["damage"] = 40,
+            ["drag"] = 0.5,
+            ["drop"] = 30,
+            ["fire_mode"] = "semiautomatic",
+            ["homing"] = false,
+            ["id"] = "crayon",
+            ["lifetime"] = 0.8706,
+            ["mass"] = 2.8,
+            ["min_level"] = 6,
+            ["name"] = "Stubby Crayon",
+            ["paper_price"] = 750,
+            ["projectile_radius"] = 0.5,
+            ["projectile_speed"] = 850,
+            ["shot_interval"] = 2,
+            ["spread_deg"] = 0,
+            ["wobble_studs"] = 0,
+        }),
+        [6] = JSONTypes.map({
             ["capacity"] = 2,
             ["class"] = "light",
             ["cooldown_seconds"] = 1.5,
@@ -628,7 +648,7 @@ return JSONTypes.map({
             ["spread_deg"] = 2.5,
             ["wobble_studs"] = 0.8,
         }),
-        [6] = JSONTypes.map({
+        [7] = JSONTypes.map({
             ["capacity"] = 2,
             ["class"] = "medium",
             ["damage"] = 24,
@@ -666,7 +686,7 @@ return JSONTypes.map({
             ["spread_deg"] = 0,
             ["wobble_studs"] = 0,
         }),
-        [7] = JSONTypes.map({
+        [8] = JSONTypes.map({
             ["capacity"] = 3,
             ["class"] = "medium",
             ["damage"] = 30,
@@ -685,7 +705,7 @@ return JSONTypes.map({
             ["spread_deg"] = 0,
             ["wobble_studs"] = 0,
         }),
-        [8] = JSONTypes.map({
+        [9] = JSONTypes.map({
             ["capacity"] = 5,
             ["class"] = "heavy",
             ["damage"] = 260,
