@@ -1,16 +1,25 @@
 # Since Alan last checked (2026-11-08)
-- **The beta must feel finished:** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md (step 3 done
-  apart from a hangar-card check; step 4, the unlock ladder, is next).
-- **Four new weapons, all yours to keep:** Point Popper, Thumbtack, Stubby Crayon (now 600 studs/s, 450 range, drop 8)
-  and Spitball Straw (sticks; each is weight: slower, gentle sink, Lift burns faster; 5 per plane; 3 of yours = assist).
-  Each has its own model (game-render concepts, Blender, uploaded) and its own sound. You: "everything is good".
-- **Bots fly at full top speed**; skill changes only turning and pitch.
-- **Head-on rams no longer fly through** (fast passes between checks now count).
-- **Not saved or published yet:** the new models are synced into your open Studio; Save to File and publish need your go.
+- **The beta must feel finished:** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md, step 4
+  (unlock ladder) in progress; your calls: docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
+- **Gear page:** all ten weapons on one page in shorter cards; the box under them says what the weapon does, plain words.
+- **Weapon order + free weapons:** Pellet 1, Popper 2, Staple 3, Thumbtack 4 are free at their level; Spitball 6, Rubber
+  Band 7, Paperclip 9, Crayon 12, Eraser 22, Pencil 40 cost Paper (old prices until the numbers are in).
+- **Presets:** the Fighter now carries a Thumbtack and the Bomber a Crayon (their stand-ins were never swapped).
+- **Bots:** rookies fly the level-1 presets, regulars every preset but the Marksman, veterans four player-style builds;
+  no bot carries a Paperclip, Eraser or Pencil. Regulars and veterans brake when closing on a target.
+- **Free-for-all ends only on time** (no 20-fold cap).
+- **Bug I caused and fixed:** the brake broke bot steering (bots flew into walls); fixed, lesson added.
+- **Veteran matches:** about 6 folds, 370 Paper, 650 XP a bot a match (top 11-13 folds). You: 6 = weak player, 11-13 =
+  average, 25+ = really good.
+- **Unlock moment concept:** 8 frames + crisp test pieces in .planning/unlock-concept2/ (gpt-image-2).
+- **Not saved or published yet:** the new weapon models are synced into your open Studio; Save to File and publish need
+  your go.
 
 # Now: finish the game for the beta
-Next: CLASSES-PLAN step 4 (new unlock ladder: levels and prices for the new weapons, a reward every level to ~15, a
-"you unlocked" moment), then mastery, bots following the lobby, balance pass, winners' circle, skins, shop.
+Next, in order: (1) text style test (bolder, outlined, shadowed text; pick in Studio); (2) Aces + bot tricks + smart
+target switching, then Ace/veteran measuring matches (your go); (3) prices and levels from the numbers (your OK);
+(4) the unlock moment (backpack bigger, at the screen's bottom edge, drag-to-unzip). Then mastery, bots follow the lobby,
+balance pass, winners' circle, skins, shop.
 
 Decisions to review
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.
