@@ -45,21 +45,9 @@ Thumbtacks don't exist yet, so those rows used stand-ins and will shift a little
 3. **Mastery** keeps every weapon and plane improving after it's unlocked.
 
 ## New weapon ladder
-Ten weapons, eight of them by level 12 (today: four). Damage figures are first guesses; each gun does about what a
-Pellet gun does in the right situation, or less. Prices follow the ladder.
-
-| Level | Weapon | How it plays |
-|---|---|---|
-| 1 | Pellet | Today's |
-| 2 | **Point Popper** (new) | A spray of pencil leads, only strong very close |
-| 3 | Staple | Today's |
-| 4 | **Thumbtack** (new) | Steady single shots, weaker with distance |
-| 6 | **Stubby Crayon** (new) | A slow, heavy hit, hard to land unless close |
-| 7 | Rubber Band | Today's |
-| 9 | **Spitball** (new) | Slow and short; up to 5 stick, burning the target's Lift and slowing it until they fall off |
-| 12 | Paperclip | Today's |
-| 22 | Eraser | Today's; still limited to two in the air per pilot |
-| 40 | Pencil | Today's |
+Ten weapons, eight of them by level 12. The order, levels and which are free:
+[the 2026-11-08 decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md). How each plays:
+[the 2026-11-07 decision](../decisions/2026-11-07-four-new-weapons-and-falling-shots.md). Prices come from step 4c.
 
 ## Mastery
 - **Earned by playing:** a weapon by hits and folds with it, a part by flying and fighting with it. Folds on bots count
@@ -109,8 +97,14 @@ Each step ends in something Alan can try.
    lets a class plane fly with parts you don't own. Stand-in weapons until step 3. No new art. Tests first.
 3. **Four new weapons:** rules and tests, then models (stand-ins from our own models to test; then a Codex picture and a Codex Blender model, no Meshy), sounds,
    kill-feed lines and hangar cards. Alan sees the assembled models before any upload.
-4. **New unlock ladder:** new weapon levels and prices, a reward at every level up to about 15, and a clear
-   "you unlocked" moment after a match. Tutorial and bots updated to match.
+4. **New unlock ladder** (Alan's answers: [decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). In order:
+   a. The new weapon order on the Gear sheet and the ladder; the first four free at their level, the rest paid.
+   b. Veteran bot builds made with reason; rookies and regulars on the presets (not the Marksman); no Paperclip,
+      Eraser or Pencil on bots.
+   c. Measure: a few all-veteran bot matches (Alan's go) for Paper and XP a match, plus research on how other games
+      pace unlocks. Then set levels, prices and level gifts so unlocking is a grind (Alan's OK on the numbers).
+   d. The "you unlocked" moment: backpack concept picture for Alan's OK, then build it.
+   e. Tutorial line: "New weapons and parts open up as you level. Some are free; the rest cost Paper." 
 5. **Mastery:** save change (needs old servers shut down at publish), the earning rules, the stat changes on the
    server, and the Hangar's mastery bars. Codex can build and test the pure rules; Claude reviews.
 6. **Bot skill follows the lobby:** bots match the lobby's average level, weighted towards its lower-level players, so

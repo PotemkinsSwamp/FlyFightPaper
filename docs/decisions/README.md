@@ -8,6 +8,7 @@ Claude's own smaller calls waiting for Alan's review live in [STATE](../../state
 
 - 2026-10-24: [Screen fit: every piece in its place on any screen](2026-10-24-screen-fit.md)
 - 2026-10-25: [Fast phone loading: menu first, Skip, smaller bump and shine maps](2026-10-25-fast-phone-loading.md)
+- 2026-11-08: [Weapon unlock order, free and paid weapons, a grind, and bot builds](2026-11-08-unlock-ladder-and-bot-builds.md)
 - 2026-11-07: [Bots fly at full top speed](2026-11-07-bots-fly-full-speed.md)
 - 2026-11-06: [The paperclip rewards long shots; Tab shows live standings](2026-11-06-paperclip-rewards-distance.md)
 - 2026-11-06: [Six classes, four new weapons and mastery](2026-11-06-classes-and-mastery.md)
