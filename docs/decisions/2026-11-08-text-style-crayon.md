@@ -15,6 +15,12 @@
   (buttons such as Play, Hangar, Launch, Repair, Customize; titles; card and build names; the HUD's round strip; the
   build-name box). Descriptive words (stat names, gear details, help text) get a thin cream edge and a fainter shadow
   and no extra weight, because the full look made them hard to read.
+- **Words fit their boxes** (Alan, same night): letters centred in the art they sit on with even room all round, not
+  filling it (Hangar stat names fixed; method in [lessons](../workshop/lessons.md)).
+- **The pictures behind the words are the real problem** (Alan, 2026-11-09): menu art looks low-resolution and stretched
+  (the Back button's tack squashed, soft edges, nothing pops), so sharp text looks worse on it. Next session, before the
+  unlock moment: crisp menu pictures (stop stretching: `PaperUI.button` and many images use `ScaleType.Stretch`; pins as
+  separate pieces; re-make blurry pieces bigger), shown to Alan before any upload.
 - Rejected: the rounded Fredoka styles (D, E), Luckiest Guy and Permanent Marker titles, Patrick Hand, Comic Neue.
 
 ## Why

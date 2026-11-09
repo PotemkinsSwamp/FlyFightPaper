@@ -480,3 +480,6 @@ Back to [HOME](../HOME.md)
   with a p or g), and a torn-paper picture's visible part is smaller than the picture (the stat label's: 2-98% across,
   7-88% down; measure the PNG's alpha). The Hangar's stat names show the method (`LABEL_INK` in `Hangar.luau`). Then
   measure the gaps in a Play screenshot. Roblox caps TextSize at 100.
+- **Never `git stash` while Rojo or Studio has the repo open (2026-11-08):** on Windows it stopped half-way ("unable to
+  unlink ... Invalid argument"), leaving 4 files changed and 8 reverted. Recovered with `git checkout stash@{0} -- <files>`
+  and `git diff stash@{0}` (empty = same). To see an old version use `git show HEAD:<path>` instead.
