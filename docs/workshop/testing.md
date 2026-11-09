@@ -25,8 +25,9 @@ Flight feel, combat, visuals and frame rate are checked by playing in Studio:
   through a fly-through hole, window side, chalkboard wall, chase cam in a dogfight, hangar. The latest set is in the
   git-ignored `captures/` folder. Compare against the reference picture and the previous set.
 - F9 shows the performance overlay; see [Performance](../systems/performance.md).
-- **Timed bot matches** (bots only) measure bot changes: deaths by cause, kills, shots, hits. The
-  `match-runner-haiku` helper runs these.
+- **Timed bot matches** (bots only) measure bot changes: deaths by cause, kills, shots, hits.
+  `python tools/run_bot_matches.py 1 75` is the one-minute check; `python tools/run_bot_matches.py` three full matches
+  (run it in the background; almost no tokens, where the `match-runner-haiku` helper cost ~120k a run).
 - Alan's playtest is the final sign-off. Nothing is called fun or balanced without him.
 
 ## Requirement reviews

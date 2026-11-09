@@ -11,6 +11,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `tools/push_github.py` | Copies new `main` commits to GitHub (no Blender files or review pictures); runs by itself after every commit (`.githooks/post-commit`) |
 | `tools/exact_collision.lua` | Run in Studio after a rebuild: new meshes load as solid boxes until this turns on their exact shapes; then Ctrl+S |
 | `tools/studio_cli.py` | Calls Studio tools from the shell |
+| `tools/run_bot_matches.py` | Muted bots-only measuring matches in the open Studio (`[count] [report_at] [tier]`, default 3, 462 s, `ace_mix`): per-bot skill, plane, shots, hits, folds, points, seconds in each state, script errors. Run in the background; needs Alan's go |
 | `tools/cold_cache.py` | Cold-load tests on the PC: `aside` moves Roblox's download cache to a backup folder (Studio and Roblox closed), `open` reopens the cloud place in Studio, `push FILE...` puts changed `src/` files into it (no Rojo link after a reopen); then Play and read `LoadLog.recent()` |
 | `tools/studio_shot.sh`, `studio_grab.ps1`, `studio_top.ps1` | Screenshot of the Studio window (only when Studio is in front) |
 | `tools/studio_export.lua` | Exports the classroom wall decor from Studio after editing it there |

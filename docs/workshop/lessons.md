@@ -342,6 +342,10 @@ mistake would be easy to make twice.
   the phone's "town arrived" from ~10 s (v402) to ~40 s (v493); every part stores its own shape and phones download it
   with the town. Small toys collide as plain boxes (`ALSO_SOLID`). Read `LoadLog.recent()` after any change to the town.
 
+- **Studio MCP drops the reply to long server calls** (2026-11-08): `execute_luau` on Server answered "Target is not
+  reachable" for calls that waited (tests, a minute's sampling) though the code ran; short calls through
+  `tools/studio_cli.py` kept working. Start long work with `task.spawn`, write the result to a workspace attribute and
+  read it in a short call; for bot matches use `tools/run_bot_matches.py` in the background.
 - **After any bot code change, fly a one-minute bot match and read the errors** (2026-11-08). The unit tests never run
   `BotService:steer`, and menus have no bots, so "471 passed, no errors" hid a brake check that errored every frame
   (`x and y and z` gives `false`, not `nil`, when `x` is false): every bot stopped steering and flew into walls.
