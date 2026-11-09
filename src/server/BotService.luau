@@ -302,31 +302,30 @@ function Service:objectiveZone(b,now)
  if b.profile.objective_preposition and moveAt-os.clock()<=Config.rounds.control_warning_seconds then zone=Config.rounds.control_zones[nextIndex] end
  return zone
 end
--- Veterans sometimes shake a pursuer (or just wander) through the ceiling ducts: up a vent, along the rooms, out
--- another vent (DuctRules.botRuns). Only with over half their Lift and enough of it to fly the whole run (Lift drains
--- a second per second; a dry plane sinks to the duct floor), never while holding a zone, from a run that starts
--- within `reach` studs (fleeing flies straight, no dodging, so only to a near vent). Studio: workspace attribute DevDuctRuns makes every veteran take one whenever it can.
--- Only the short runs (DUCT_TRIP_STUDS: 2 of the 7, ~15 s; the rest are 3800-5200 studs), and a minute's rest after
--- each (Alan 2026-11-08: one Ace spent 35-40% of every match on long trips across the ceiling).
-local DUCT_TRIP_STUDS=2000
-function Service:tryDuct(p,b,now,chance,reach)
- if b.duct or not chance or chance<=0 then return false end
- local dev=Run:IsStudio() and workspace:GetAttribute("DevDuctRuns")
- if not dev and (now<(b.ductReadyAt or 0) or b.random:NextNumber()>=chance) then return false end
- local position=p.body.Position
- if position.Y>Config.world.height_studs or p.model:GetAttribute("Lift")<p.stats.lift*.5 or self.mode=="CONTROL" and b.onObjective then return false end
- local near={}
- local lift,speed=p.model:GetAttribute("Lift"),p.stats.speed
+-- The ducts are for players (Alan 2026-11-08): a bot never takes them on its own, it only follows a plane it was
+-- chasing up the vent it just went into (duct_follow_chance, one roll per target), along one of that vent's runs
+-- (DuctRules.botRuns: up the vent, along the rooms, out another vent). Only with over half its Lift and enough to fly
+-- the whole run (a dry plane sinks to the duct floor), never while holding a zone. Inside it never dodges.
+function Service:followDuct(p,b,now)
+ local target,position=b.target,p.body.Position
+ if b.duct or b.followFor==target or not b.lastKnown or now-(b.lastSeen or 0)>3 or target.body.Position.Y<=Config.world.height_studs then return false end
+ b.followFor=target
+ if b.random:NextNumber()>=(b.profile.duct_follow_chance or 0) or position.Y>Config.world.height_studs
+  or p.model:GetAttribute("Lift")<p.stats.lift*.5 or self.mode=="CONTROL" and b.onObjective then return false end
+ -- The vent it went up: the one nearest where it was last seen (points[3] is the vent, in the duct).
+ local vent,best=nil,400
+ for _,run in ipairs(DuctRules.botRuns()) do
+  local d=(run.points[3]-b.lastKnown).Magnitude
+  if d<best then vent,best=run.vent,d end
+ end
+ local runs,lift,speed={},p.model:GetAttribute("Lift"),p.stats.speed
  for _,run in ipairs(DuctRules.botRuns()) do
   local length,at=0,position
   for _,point in ipairs(run.points) do length+=(point-at).Magnitude;at=point end
-  local approach=(run.points[1]-position).Magnitude
-  if (dev or approach<reach and length-approach<=DUCT_TRIP_STUDS) and lift>=length/speed*1.3+5 then table.insert(near,{run=run,length=length}) end
+  if run.vent==vent and lift>=length/speed*1.3+5 then table.insert(runs,run) end
  end
- if #near==0 then return false end
- local pick=near[b.random:NextInteger(1,#near)]
- b.duct={points=pick.run.points,i=1,untilAt=now+75};b.target=nil;b.move=nil
- b.ductReadyAt=now+pick.length/speed+60
+ if #runs==0 then return false end
+ b.duct={points=runs[b.random:NextInteger(1,#runs)].points,i=1,untilAt=now+75};b.target=nil;b.move=nil
  return true
 end
 -- While playing the zone a bot only fights planes near it (leash = how far out, in zone radii).
@@ -415,8 +414,8 @@ function Service:decide(p,b,now)
  local shotAt=math.max(p.lastHitAt or 0,p.shotAtAt or 0)
  if now>=(b.nextEvade or 0) and shotAt>(b.lastEvadedHit or 0) then
   b.lastEvadedHit=shotAt
-  -- A veteran may run for the ducts instead of dodging (inside them it never dodges).
-  if not b.duct and not self:tryDuct(p,b,now,b.profile.duct_escape_chance,500) then
+  -- Inside the ducts it never dodges.
+  if not b.duct then
    -- Good pilots turn into the attacker (the shots show where from), forcing an overshoot; rookies pick at random.
    local attacker=(p.shotAtAt or 0)>(p.lastHitAt or 0) and p.shotAtBy or p.lastHitBy
    local side=b.random:NextNumber()<.5 and -1 or 1
@@ -449,7 +448,8 @@ function Service:decide(p,b,now)
   if not p.model:GetAttribute("DeskAvailable") and (b.goal-position).Magnitude<75 then b.goal+=p.home.RightVector*(p.seat%2==0 and 140 or -140) end
  elseif b.recoverUntil and now<b.recoverUntil then
   b.mode="unstuck";b.goal=b.recoverGoal
- elseif lift<reserveNeeded or b.mode=="fan" and lift<p.stats.lift*.45 then
+ elseif lift<reserveNeeded or b.mode=="fan" and lift<p.stats.lift*.45 or (model:GetAttribute("Spitballs") or 0)>=2 then
+  -- (Two or more spitballs stuck: they soak through, so off to a fan to dry, like a player.)
   if p.waitingPad then self.flight:clearLandingQueue(p) end
   b.mode="fan";b.target=nil
   if nearestFan then
@@ -510,6 +510,8 @@ function Service:decide(p,b,now)
     b.extendUntil=self:startMove(b,now,"extend",{"extend",self:pickMove(b,b.profile.reverse_moves,position)},side)
    end
    self:trickStep(p,b,now,delta)
+  elseif b.target and self:followDuct(p,b,now) then
+   b.mode="duct";b.goal=b.duct.points[1]
   elseif not zone and b.target and b.lastKnown and now-(b.lastSeen or 0)<5 then
    b.mode="search";b.goal=b.lastKnown+b.lastVelocity*math.min(2,now-b.lastSeen)
    if (position-b.goal).Magnitude<90 then b.target=nil end
@@ -520,14 +522,12 @@ function Service:decide(p,b,now)
    b.goal=Vector3.new(c[1]+math.cos(now*.2+b.seed)*r,c[2]+math.sin(b.seed*3.1)*zone.half_height*.5,c[3]+math.sin(now*.2+b.seed)*r)
   else
    b.target=nil;b.mode="patrol"
-   if (not b.patrol or (position-b.patrol).Magnitude<90) and self:tryDuct(p,b,now,b.profile.duct_patrol_chance,900) then
-    b.mode="duct";b.goal=b.duct.points[1]
-   elseif not b.patrol or (position-b.patrol).Magnitude<90 then
+   if not b.patrol or (position-b.patrol).Magnitude<90 then
     -- Sometimes circle for a look around before heading to the next spot.
     if b.patrol and b.random:NextNumber()<.35 then self:startMove(b,now,"patrol",{"orbit"},b.random:NextNumber()<.5 and -1 or 1) end
     b.patrol=self.routes.nodes[b.random:NextInteger(1,#self.routes.nodes)]
    end
-   b.goal=b.duct and b.goal or b.patrol
+   b.goal=b.patrol
    -- Studio eraser practice: the hunter always knows where you are.
    if self.flight.eraserDuel then for _,other in pairs(self.flight.pilots) do if other.kind=="human" and self.combat:targetable(other,now) then b.goal=other.body.Position end end end
   end

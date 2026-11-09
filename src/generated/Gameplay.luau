@@ -352,8 +352,7 @@ return JSONTypes.map({
                     [1] = 0.3,
                     [2] = 0.7,
                 }),
-                ["duct_escape_chance"] = 0.4,
-                ["duct_patrol_chance"] = 0.12,
+                ["duct_follow_chance"] = 0.9,
                 ["eraser_break"] = 0.85,
                 ["eraser_break_late_seconds"] = JSONTypes.array({
                     [1] = 0.03,
@@ -409,8 +408,7 @@ return JSONTypes.map({
                     [1] = 1.0,
                     [2] = 2.0,
                 }),
-                ["duct_escape_chance"] = 0.4,
-                ["duct_patrol_chance"] = 0.12,
+                ["duct_follow_chance"] = 0.6,
                 ["eraser_break"] = 0.75,
                 ["eraser_break_late_seconds"] = JSONTypes.array({
                     [1] = 0.05,
@@ -466,8 +464,7 @@ return JSONTypes.map({
                     [1] = 1.5,
                     [2] = 3,
                 }),
-                ["duct_escape_chance"] = 0,
-                ["duct_patrol_chance"] = 0,
+                ["duct_follow_chance"] = 0,
                 ["eraser_break"] = 0.55,
                 ["eraser_break_late_seconds"] = JSONTypes.array({
                     [1] = 0.2,
@@ -521,8 +518,7 @@ return JSONTypes.map({
                     [1] = 5,
                     [2] = 10,
                 }),
-                ["duct_escape_chance"] = 0,
-                ["duct_patrol_chance"] = 0,
+                ["duct_follow_chance"] = 0,
                 ["eraser_break"] = 0.35,
                 ["eraser_break_late_seconds"] = JSONTypes.array({
                     [1] = 0.4,
@@ -664,6 +660,7 @@ return JSONTypes.map({
         ["spitball_max"] = 5,
         ["spitball_sink_each"] = 2.5,
         ["spitball_slow_each"] = 0.06,
+        ["spitball_soak_damage"] = 2,
         ["touch_assist_inner_fraction"] = 0.5,
         ["touch_assist_max_range_studs"] = 800,
         ["touch_gun_assist_deg"] = 6,

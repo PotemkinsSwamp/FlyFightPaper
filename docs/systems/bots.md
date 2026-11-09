@@ -33,12 +33,11 @@ either side of planes further out and an Ace's better aim was wasted there). Not
 In Studio, the workspace attribute `DevBotTier` (e.g. `experienced`, `ace`) gives every bot that skill, for measuring matches;
 `ace_mix` gives one Ace per three veterans.
 Passed Alan's vertical-slice gate (2026-10-11: "the bots pass, it is fun"). Every bot plays the Airspace zone, more often the better it is. Bots still to be checked in every mode; rookie graduation check open.
-Veterans (Experienced) use the ceiling ducts (2026-10-15): when shot at they sometimes run for a vent within 500
-studs (`duct_escape_chance` 40%), and now and then wander through instead of to the next patrol spot
-(`duct_patrol_chance` 12%), only the short runs (2 of the 7, about 1,550 studs; the others are 3,800-5,200) and at most one run a minute
-(2026-11-08: one Ace spent 35-40% of every match on long trips across the ceiling). They fly up a vent, room to room, and dive out another vent, skipping the fan ducts and
-the round pipe (`DuctRules.botRuns`), only with over half their Lift and enough to finish. Inside they never dodge.
-Tested: 5 minutes of forced runs, no crashes; 3 minutes of normal play, one run.
+The ceiling ducts are for players (Alan 2026-11-08): bots never take them on their own (until then veterans fled and
+wandered into them, and one Ace spent 35-40% of every match there). A veteran or Ace chasing a plane that goes up a
+vent may follow it (`duct_follow_chance` 60% / 90%, one roll per target), along one of that vent's runs: up the vent,
+room to room, out another vent, skipping the fan ducts and the round pipe (`DuctRules.botRuns`), only with over half
+their Lift and enough to finish. Inside they never dodge. Bots with two or more spitballs stuck fly to a fan to dry off.
 
 Bot looks (2026-10-18): each bot wears an outfit a real Roblox player saved, from a list of dressed-up ones
 (`avatar_display.bot_look_outfits`, 157 of them, found once by `tools/find_bot_looks.luau`: layered clothing or 4+ accessories and

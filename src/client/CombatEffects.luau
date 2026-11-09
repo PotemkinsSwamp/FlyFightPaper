@@ -138,8 +138,9 @@ function Effects.start(getPlane)
   end
  end
  local function notify(event)
-  if event.kind=="hit" then
+  if event.kind=="hit" or event.kind=="soak" then
    -- (Deaths have their own animation: PlaneDeaths.) Bigger hits tear off more paper: a pellet a few scraps, a pencil a shower.
+   -- A soaking spitball (CombatService:soak) only sheds a few scraps: no hit marker or sound.
    burst(event.position,math.clamp(math.floor(3+event.damage/2),3,30),event.damage>=20 and 2 or 1,event.damage>=20 and 1.6 or 1)
   end
   local gui=Players.LocalPlayer.PlayerGui:FindFirstChild("FlightHUD");if not gui then return end

@@ -421,7 +421,7 @@
     {
       "id": "spitball",
       "name": "Spitball Straw",
-      "description": "Sticky spitballs that cling to planes. Each one slows them down and makes them sink. Barely hurts.",
+      "description": "Sticky spitballs that cling to planes. Each one slows them down, makes them sink and soaks the paper until a fan dries it.",
       "class": "light",
       "capacity": 2,
       "mass": 1.4,

@@ -67,6 +67,10 @@
   belongs on a medium plane: a fast one just catches up and brakes, a medium one sometimes can't catch small planes.
   Two veteran builds: Spitball with two Rubber Bands, and Spitball with the Point Popper. The old Spitball Hunter's
   parts made it slow (90 studs/s) for its health.
+- **Ducts are for players; spitballs soak** (Alan, after the third run): bots never take the ducts on their own, only
+  follow a plane they were chasing up a vent. The Spitball Popper (1.5 folds) and Spitball Hunter (4.3) proved the
+  Spitball too weak even as support, so stuck spitballs now soak the paper: 2 damage a second each until a fan dries
+  them. The price table: 12 folds a match is an average player, 25 a really good one; Paper and XP from those.
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 

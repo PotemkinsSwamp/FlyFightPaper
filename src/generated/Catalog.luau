@@ -614,7 +614,7 @@ return JSONTypes.map({
             ["capacity"] = 2,
             ["class"] = "light",
             ["damage"] = 1,
-            ["description"] = "Sticky spitballs that cling to planes. Each one slows them down and makes them sink. Barely hurts.",
+            ["description"] = "Sticky spitballs that cling to planes. Each one slows them down, makes them sink and soaks the paper until a fan dries it.",
             ["drag"] = 1.0,
             ["drop"] = 50,
             ["fire_mode"] = "semiautomatic",

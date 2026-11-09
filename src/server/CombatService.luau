@@ -335,7 +335,8 @@ function Service:finish(shot,position,wall)
  end
  self:emit({kind="end",id=shot.id,position=position or shot.position,wall=wall})
 end
-function Service:hit(attacker,target,amount,now,position,weaponId,far)
+-- `soak`: a stuck spitball's soak damage (Service:soak): no new spitball, no hit marker, no dodge.
+function Service:hit(attacker,target,amount,now,position,weaponId,far,soak)
  if not attacker or not self:enemy(attacker,target) or target.model:GetAttribute("State")=="DESTROYED" or self.flight:protected(target,now) then return end
  -- Lessons: an eraser-only practice target ignores everything else, and a Pal can never fold its player.
  local homing=weaponId and self.flight.catalog:get(weaponId).homing
@@ -347,12 +348,12 @@ function Service:hit(attacker,target,amount,now,position,weaponId,far)
  local history=self.info[target.id].history
  for i=#history,1,-1 do if now-history[i].at>Config.assist_window_seconds then table.remove(history,i) end end
  table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity,weapon=weaponId,far=far or nil})
- local record=self.flight.records[attacker.id];record.damage+=actual;record.hits+=1;self.totalHits+=1
- target.lastHitAt=now;target.lastHitBy=attacker
+ local record=self.flight.records[attacker.id];record.damage+=actual
+ if not soak then record.hits+=1;self.totalHits+=1;target.lastHitAt=now;target.lastHitBy=attacker end
  if self.onDamage then self.onDamage(attacker,target,actual,os.clock()) end
  self.flight:damage(target,actual,"weapon",nil,{kind="weapon",weapon=weaponId})
- if weaponId and self.flight.catalog:get(weaponId).sticks and target.model:GetAttribute("State")=="FLYING" then self.flight:spit(target,now,attacker.id) end
- self:emit({kind="hit",owner=attacker.id,target=target.id,damage=actual,position=position or target.body.Position})
+ if not soak and weaponId and self.flight.catalog:get(weaponId).sticks and target.model:GetAttribute("State")=="FLYING" then self.flight:spit(target,now,attacker.id) end
+ self:emit({kind=soak and "soak" or "hit",owner=attacker.id,target=target.id,damage=actual,position=position or target.body.Position})
 end
 -- A Range card takes the hit itself; folded, it tears (client RangeTargets) and is cleared after the respawn wait, and
 -- RoundRuntime:rangeTargets puts up a fresh one.
@@ -444,8 +445,21 @@ function Service:planeHit(shot,delta,now)
  end
  return best,bestT
 end
+-- Wet spitballs soak through (Alan 2026-11-08: like wet paper falling apart): each one stuck on a flying plane does
+-- spitball_soak_damage a second, as its shooter's damage (fold credit), until a fan or the desk clears them.
+function Service:soak(p,now)
+ local left=self.flight:spitballs(p,now)
+ if left==0 or not p.soakAt or now-p.soakAt>1 then p.soakAt=now+1;return end
+ if now<p.soakAt or p.model:GetAttribute("State")~="FLYING" then return end
+ p.soakAt+=1
+ for i=#p.spitBy-left+1,#p.spitBy do
+  local by=self.flight.byId[p.spitBy[i]]
+  if by then self:hit(by,p,Config.spitball_soak_damage,now,nil,"spitball",nil,true) end
+ end
+end
 function Service:step(dt)
  local now=workspace:GetServerTimeNow();self.clock+=dt;self.trackClock+=dt
+ for _,p in pairs(self.flight.pilots) do if p.spitStuck then self:soak(p,now) end end
  for _,c in pairs(self.cards) do if c.model:GetAttribute("State")=="FLYING" then c.body.CFrame=self:cardPose(c,now) end end
  if self.trackClock>=1/Config.track_hz then
   self.trackClock=0
