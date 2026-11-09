@@ -69,7 +69,7 @@ specific old fact. Never copy them back, and never recreate that evidence system
   |---|---|---|
   | **Opus 5.5** (main session) | Talking to Alan, product and design calls, feel and visual checks in Studio, debugging across systems, fitting pieces together, reviewing every delegated change, commits | — |
   | **Sonnet 5.5** (`luau-builder-sonnet`, `Explore`) | One fully specified edit in named files; code searches; drafting docs from facts given to it | Design choices, Studio feel checks, commits |
-  | **Haiku**, newest (`match-runner-haiku`) | Mechanical runs with exact steps: timed bot matches and their numbers, the test suite, place rebuilds | Writing code, judging results |
+  | **Haiku**, newest | Mechanical runs with exact steps: the test suite, place rebuilds | Writing code, judging results, bot matches (`tools/run_bot_matches.py` in the background instead: almost no tokens; Alan 2026-11-08) |
   | **Codex GPT-6.1 Sol** (the only Codex model, fast mode on; Alan 2026-10-12) | Pure logic with unit tests, balance math, Blender scripts, pictures, second opinions, Track C saving. Runs on Alan's ChatGPT plan, not Claude usage | Studio feel, files Claude is editing |
 
   Step up one level after one clear failure on a complete spec (Haiku → Sonnet → Opus); never retry the same job
