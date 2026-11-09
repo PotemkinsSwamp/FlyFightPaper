@@ -6,19 +6,15 @@
 - **Bot test of the new weights** (your go): no errors in 3 full matches; tanks no longer run away (Pellet Tank 9.6
   folds, Cardboard 14 but swingy); Tack Skirmisher top (16); Spitball builds still weakest (4-6). Veterans 10.1 folds.
   docs/playtests/2026-11-08-weights-and-tanks-matches.md.
-- **Bots fixed and measured** (your go, 13 bot matches run by script, near-zero tokens): bots' guns meet at the
-  target's distance (they missed past 150 studs), Aces now beat veterans on every plane (by 15-45%), bots only follow
-  targets into the ducts. Results: docs/playtests/2026-11-08-bot-fixes-staple-matches.md.
-- **Your calls:** Crayon Tank was a bad build (Staple Tank instead); bots are the balance test, fix weapons not bots;
-  Staple slowed to a Pellet's 13.3 a second, ~800 studs; Spitball builds on a medium plane (with Rubber Bands / the
-  Popper); stuck spitballs soak (3 on impact, 1 a second each; not yet flown); Staple weighs 2, Crayon heavy, Spitball 1,
-  lighter tank bodies, weight slows planes more (not built yet). All in docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
+- **Earlier tonight:** bots fixed and measured (docs/playtests/2026-11-08-bot-fixes-staple-matches.md); your calls on
+  the Staple, Spitball builds, spitball soak (flown now) and weights, all in docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
 - **My mistake:** I built the spitball soak before showing you its numbers; you then set them. Memory updated.
 - **Price anchors (yours):** 12 folds a match is an average player (~660 Paper, ~1,190 XP), 25 a really good one
   (~1,280 Paper, ~2,350 XP), 6 a weak one; before win and podium bonuses.
 
 # Now: finish the game for the beta
-Next, in order: (1) the bot test of the new weights is done (see above); (2) prices and unlocks from the 12 / 25 folds table (your OK); (3) text style C; (4) the unlock moment.
+Next, in order: (1) prices and unlocks from the 12 / 25 folds table (draft shown, your OK); (2) text style C;
+(3) the unlock moment.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
 Backlog, must do: the results card becomes a report card.
 
