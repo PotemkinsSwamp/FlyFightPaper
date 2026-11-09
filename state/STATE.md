@@ -1,25 +1,26 @@
-# Since Alan last checked (2026-11-08, evening)
-- **The beta must feel finished:** one map, a strong first-session hook. Plan: docs/plan/CLASSES-PLAN.md step 4; your
-  calls: docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
-- **Text style picked: C** (Kalam heavier + light outline + soft shadow, "like a child wrote it with a crayon").
-- **Bots built:** Aces (Studio-only for now), every bot flies its plane's trick (Popper dart, close turn fight with the
-  brake, spitball first), steals folds from damaged planes, judges target switches by skill.
-- **Bot fixes after your review:** each gun aims at its own lead (a bot's second gun always missed before), bots shoot
-  whenever the targeting ring would show (no range rule), Aces fly different planes. My mistakes: all Aces on one
-  plane, a Crayon trick that braked itself into easy prey, a loosened firing limit; lesson added.
-- **Fixed Ace matches:** veterans ~7 folds and ~900 points a match (top 11-16). By plane: Tack Skirmisher ~12, Popper
-  Dart ~9, Spitball Hunter ~5, Crayon Tank ~2. Aces aren't clearly better than veterans yet.
-- **Not saved or published yet:** the new weapon models are synced into your open Studio; Save to File and publish need
-  your go. Rojo's Studio plugin is disconnected: click Connect (port 34872) before the next code change.
+# Since Alan last checked (2026-11-08, night)
+- **Bots fixed and measured** (your go, 13 bot matches run by script, near-zero tokens): bots' guns meet at the
+  target's distance (they missed past 150 studs), Aces now beat veterans on every plane (by 15-45%), bots only follow
+  targets into the ducts. Results: docs/playtests/2026-11-08-bot-fixes-staple-matches.md.
+- **Your calls:** Crayon Tank was a bad build (Staple Tank instead); bots are the balance test, fix weapons not bots;
+  Staple slowed to a Pellet's 13.3 a second, ~800 studs; Spitball builds on a medium plane (with Rubber Bands / the
+  Popper); stuck spitballs soak (3 on impact, 1 a second each; not yet flown); Staple becomes medium (weighs 2), Crayon
+  heavy, Spitball weighs 1 (not built yet). All in docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
+- **My mistake:** I built the spitball soak before showing you its numbers; you then set them. Memory updated.
+- **Price anchors (yours):** 12 folds a match is an average player (~660 Paper, ~1,190 XP), 25 a really good one
+  (~1,280 Paper, ~2,350 XP), 6 a weak one; before win and podium bonuses.
 
 # Now: finish the game for the beta
-Next, in order (your call, 2026-11-08): (1) fix the bots: Crayon Tank turn-fights instead of standing off, find why
-Aces don't beat veterans, re-measure (your go) for a real simulated-player XP and Paper a match; (2) roll text style C
-out to everything; (3) the unlock moment (backpack bigger, at the screen's bottom edge, drag-to-unzip). Prices and
-levels come from the step-1 numbers (your OK). Then mastery, bots follow the lobby, balance pass, winners' circle,
-skins, shop.
+Next, in order: (1) build the weapon sizes (Staple medium 2, Crayon heavy, Spitball 1; Striker preset gets a light
+weapon; bot builds re-made, shown to you first), then a bot test with the new Spitball (your go); (2) prices and
+unlocks from the 12 / 25 folds table, fun vs grind so the impatient buy 2x XP / 2x Paper / Paper (your OK);
+(3) text style C everywhere; (4) the unlock moment. Balance pass later: the Staple Tank is still the strongest plane
+(six Staples at range), the Spitball planes the weakest, the Rubber Band is light but weighs 2.
+Backlog, must do: the results card becomes a report card.
 
 Decisions to review
+Bots follow a target up a vent: veterans 60%, Aces 90%. Bots with 2+ spitballs stuck fly to a fan. Staple ~800 studs.
+Spitball builds: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s). Paper check skips spitball builds (matches judge them).
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.
 Crayon 600 studs/s, 450 range, drop 8. New weapons keep their stand-in hit boxes; Popper lead drawn 0.15 x 1.2.
 Ram catch: centres within 2.5 studs in the last 0.1 s; ram strength by relative speed.

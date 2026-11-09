@@ -25,11 +25,15 @@ instead), bots are the balance test, the Staple was too strong, Spitball builds 
 - Veterans averaged 1,074 points a match (about 131 a fold): ~480 Paper and ~850 XP with the finishing bonus, before
   win and podium bonuses. Aces beat veterans on every plane (by 15-45%); their overall average (9.0) is low only
   because 5 of their 9 seats drew the two Spitball builds.
-- Still wrong: some Aces spent 109-145 s of the 470 in the ducts even with short trips only (the fix limits how often a
-  run starts, counted from its start, not how long one takes).
+- Still wrong after run 3: some Aces spent 109-145 s of the 470 in the ducts even with short trips only; Alan: bots
+  don't take the ducts on their own at all, only follow a target in (run 4: no duct time).
+
+- **Run 4 (one match: soak at 1 on impact + 2 a second, bots follow into ducts only):** no errors, no duct time, bots
+  spent 5-41 s drying at fans. Spitball Popper 6 and 2 folds (was 1.5), Spitball Hunter 5 and 2 (Ace 6), Staple Tank
+  16 (Ace 26). Alan then set the soak to 3 on impact + 1 a second (not yet flown).
 
 ## What changed because of it
 - Built: Staple Tank, Staple nerf, Spitball builds, duct limits ([bots](../systems/bots.md),
   [weapons](../systems/weapons.md), [decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)).
-- Open: the duct time; the Staple Tank is still the strongest plane and both Spitball builds the weakest (balance
+- Open: the Staple Tank is still the strongest plane and both Spitball builds the weakest (balance
   pass, Alan: later).

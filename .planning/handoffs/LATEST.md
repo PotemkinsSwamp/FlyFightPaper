@@ -1,6 +1,6 @@
-# LATEST → handoff-2026-11-08-1727-beta-lane-aces-tricks-built-fix-bots-next.md
+# LATEST → handoff-2026-11-08-2144-beta-lane-bots-fixed-weapon-sizes-then-prices.md
 
-★ START HERE: Goal (Alan): the beta feels like a finished game. Text style C picked; Aces, bot tricks and switching built and measured. Next: fix the bots (Crayon Tank turn-fights; why Aces don't beat veterans), re-measure XP and Paper a match (Alan's go), then roll out text style C, then the unlock moment.
+★ START HERE: Goal (Alan): the beta feels like a finished game. Bots fixed and measured (Aces above veterans on every plane). Next: build the weapon sizes Alan set (Staple medium/2, Crayon heavy, Spitball 1; new bot builds shown to Alan first), a bot test (his go), then prices and unlocks from his 12 / 25 folds table, then text style C, then the unlock moment.
 
-Quick state: HEAD f9a4a599 on main (copied to GitHub by the hook); tests 476/0 in Play; docs OK; Rojo's Studio plugin disconnected (click Connect); published v495, new models not saved/published (Alan's go).
-Previous: handoff-2026-11-08-1528-beta-lane-ladder-bots-built-text-test-next.md (beta lane).
+Quick state: HEAD after d7a9e822 on main (copied to GitHub by the hook); tests 476/0 in Play; docs OK; Rojo connected; published v495, nothing saved/published tonight (Alan's go).
+Previous: handoff-2026-11-08-1727-beta-lane-aces-tricks-built-fix-bots-next.md (beta lane).
