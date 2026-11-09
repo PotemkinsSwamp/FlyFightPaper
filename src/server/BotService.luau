@@ -306,8 +306,9 @@ end
 -- another vent (DuctRules.botRuns). Only with over half their Lift and enough of it to fly the whole run (Lift drains
 -- a second per second; a dry plane sinks to the duct floor), never while holding a zone, from a run that starts
 -- within `reach` studs (fleeing flies straight, no dodging, so only to a near vent). Studio: workspace attribute DevDuctRuns makes every veteran take one whenever it can.
--- One of the shorter half of the runs from here, and a minute's rest after each (Alan 2026-11-08: picking any exit
--- often meant the longest trip across the ceiling; one Ace spent 35-40% of every match in the ducts).
+-- Only the short runs (DUCT_TRIP_STUDS: 2 of the 7, ~15 s; the rest are 3800-5200 studs), and a minute's rest after
+-- each (Alan 2026-11-08: one Ace spent 35-40% of every match on long trips across the ceiling).
+local DUCT_TRIP_STUDS=2000
 function Service:tryDuct(p,b,now,chance,reach)
  if b.duct or not chance or chance<=0 then return false end
  local dev=Run:IsStudio() and workspace:GetAttribute("DevDuctRuns")
@@ -319,11 +320,11 @@ function Service:tryDuct(p,b,now,chance,reach)
  for _,run in ipairs(DuctRules.botRuns()) do
   local length,at=0,position
   for _,point in ipairs(run.points) do length+=(point-at).Magnitude;at=point end
-  if (dev or (run.points[1]-position).Magnitude<reach) and lift>=length/speed*1.3+5 then table.insert(near,{run=run,length=length}) end
+  local approach=(run.points[1]-position).Magnitude
+  if (dev or approach<reach and length-approach<=DUCT_TRIP_STUDS) and lift>=length/speed*1.3+5 then table.insert(near,{run=run,length=length}) end
  end
  if #near==0 then return false end
- table.sort(near,function(x,y) return x.length<y.length end)
- local pick=near[b.random:NextInteger(1,math.ceil(#near/2))]
+ local pick=near[b.random:NextInteger(1,#near)]
  b.duct={points=pick.run.points,i=1,untilAt=now+75};b.target=nil;b.move=nil
  b.ductReadyAt=now+pick.length/speed+60
  return true

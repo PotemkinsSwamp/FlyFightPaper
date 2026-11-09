@@ -35,8 +35,8 @@ In Studio, the workspace attribute `DevBotTier` (e.g. `experienced`, `ace`) give
 Passed Alan's vertical-slice gate (2026-10-11: "the bots pass, it is fun"). Every bot plays the Airspace zone, more often the better it is. Bots still to be checked in every mode; rookie graduation check open.
 Veterans (Experienced) use the ceiling ducts (2026-10-15): when shot at they sometimes run for a vent within 500
 studs (`duct_escape_chance` 40%), and now and then wander through instead of to the next patrol spot
-(`duct_patrol_chance` 12%), always one of the shorter half of the runs from there and at most one run a minute
-(2026-11-08: a random exit often meant the longest trip; one Ace spent 35-40% of every match in the ducts). They fly up a vent, room to room, and dive out another vent, skipping the fan ducts and
+(`duct_patrol_chance` 12%), only the short runs (2 of the 7, about 1,550 studs; the others are 3,800-5,200) and at most one run a minute
+(2026-11-08: one Ace spent 35-40% of every match on long trips across the ceiling). They fly up a vent, room to room, and dive out another vent, skipping the fan ducts and
 the round pipe (`DuctRules.botRuns`), only with over half their Lift and enough to finish. Inside they never dodge.
 Tested: 5 minutes of forced runs, no crashes; 3 minutes of normal play, one run.
 
