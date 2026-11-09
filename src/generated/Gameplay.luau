@@ -660,7 +660,7 @@ return JSONTypes.map({
         ["spitball_max"] = 5,
         ["spitball_sink_each"] = 2.5,
         ["spitball_slow_each"] = 0.06,
-        ["spitball_soak_damage"] = 2,
+        ["spitball_soak_damage"] = 1,
         ["touch_assist_inner_fraction"] = 0.5,
         ["touch_assist_max_range_studs"] = 800,
         ["touch_gun_assist_deg"] = 6,

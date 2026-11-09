@@ -69,8 +69,12 @@
   parts made it slow (90 studs/s) for its health.
 - **Ducts are for players; spitballs soak** (Alan, after the third run): bots never take the ducts on their own, only
   follow a plane they were chasing up a vent. The Spitball Popper (1.5 folds) and Spitball Hunter (4.3) proved the
-  Spitball too weak even as support, so stuck spitballs now soak the paper: 2 damage a second each until a fan dries
-  them. The price table: 12 folds a match is an average player, 25 a really good one; Paper and XP from those.
+  Spitball too weak even as support, so stuck spitballs now soak the paper until a fan dries them. Numbers Alan
+  locked after seeing them: 3 damage on impact (was 1), soak 1 a second per stuck spitball (5 stuck at most): one
+  launcher hitting every shot does 11 a second, two do 17, and a fully soaked plane takes up to 60 more without a fan. The price table: 12 folds a match is an average player, 25 a really good one; Paper and XP from those.
+- **For the balance pass** (Alan, after the soak test): the Staple Burst Gun becomes a medium weapon and the Stubby
+  Crayon a heavy one (so a body can't stack six Staples). Next: draft the prices and move the unlocks from the
+  12 / 25 folds table.
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 

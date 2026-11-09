@@ -427,7 +427,7 @@
       "mass": 1.4,
       "paper_price": 1100,
       "min_level": 6,
-      "damage": 1,
+      "damage": 3,
       "sticks": true,
       "projectile_speed": 600,
       "drag": 1.0,

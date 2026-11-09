@@ -50,7 +50,7 @@ with 40. Eraser damage is 30. Table data defines all six gun families.
 | Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | One shot per click, up to one a second |
 | Staple Burst Gun | 4.7 (14 a burst) | 1 | 1450, ~800 studs range | Hold; 3 shots, 0.09 s apart; 1.05 s between burst starts (2026-11-08: 13.3 a second like a Pellet's, was 17.5 and ~900 studs) |
 | Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | One shot per click, up to 3 a second |
-| Spitball Straw | 1, and it sticks; each stuck one soaks 2 a second | 2 | 600, ~350 studs range | One shot per click, up to 2 a second |
+| Spitball Straw | 3, and it sticks; each stuck one soaks 1 a second | 2 | 600, ~350 studs range | One shot per click, up to 2 a second |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
 | Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | One shot per click; mounts take turns, 1.75 s reload each |
 | Stubby Crayon | 40 | 4 | 600, ~450 studs range, drop 8 | One shot per click, 2 s reload |
@@ -89,7 +89,8 @@ spitballs still stuck when the plane folds counts as 4 damage toward credit (`sp
 assist; if the plane goes down with no hit in the last 15 s, the most spitballs gets the fold. None fall off for 6 s
 after the last hit, then the oldest every 3 s (`CombatRules.spitballsLeft`); any fan blows them all off, landing at the desk
 clears them, and a new plane starts clean. While stuck, each one soaks the paper (Alan 2026-11-08: wet paper falls apart):
-`combat.spitball_soak_damage` (2) a second, as its shooter's damage toward the fold, shedding a few paper scraps but no
+`combat.spitball_soak_damage` (1) a second (Alan 2026-11-08: one launcher hitting every shot does 6 + 5 = 11 a
+second, the weakest gun but comparable; a fully soaked plane takes up to 60 more without a fan), as its shooter's damage toward the fold, shedding a few paper scraps but no
 hit marker (`CombatService:soak`), so a soaked pilot heads for a fan. Every plane shows a wet paper blob on itself per spitball, and your own
 screen gets a splatter per spitball that slides off when they go (client `Spitballs`). No HUD counter (Alan 2026-11-07). The desk's
 "spitball hunters" dev button sends four bots with two spitball guns each after you; the "spitball" picker button gives you
