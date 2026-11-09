@@ -11,7 +11,7 @@ local Spec={}
 local function fixture()
  local catalog=Catalog.new(require(Root.Generated.Catalog),Gameplay)
  local data=Schema.defaults(catalog)
- for level=1,EconomyConfig.level_cap-1 do data.xpMilli+=(EconomyConfig.xp_next_level_base+EconomyConfig.xp_next_level_step*(level-1))*1000 end
+ for level=1,EconomyConfig.level_cap-1 do data.xpMilli+=(EconomyConfig.xp_next_level_base+math.floor(EconomyConfig.xp_next_level_step*(level-1)^EconomyConfig.xp_next_level_power))*1000 end
  data.paperMilli=1234567;data.earnedPaperMilli=2345678;data.purchasedPaperMilli=900000
  data.ownership.staple=true;data.presets[1].name="Keep this name";data.presets[1].loadout.weapon_mounts[1]="staple"
  data.presets[2].name="Legal starter build";data.presets[2].loadout.weapon_mounts[1]=false
@@ -113,7 +113,7 @@ function Spec.run()
   local after=Schema.canonical(profile.Data)
   local retry=service:apply("user",op)
   assert(retry.status=="ok" and retry.value.prestige==1 and Schema.canonical(profile.Data)==after)
-  local reward=assert(service:prepare("user",{kind="contribution",points=100000,multipliers={paper=1,xp=1}}))
+  local reward=assert(service:prepare("user",{kind="contribution",points=300000,multipliers={paper=1,xp=1}}))
   assert(service:apply("user",reward).status=="ok" and Economy.levelForXP(profile.Data.xpMilli)==EconomyConfig.level_cap)
   local purchase=assert(service:prepare("user",{kind="equipmentPurchase",catalogID="staple"}))
   assert(service:apply("user",purchase).status=="ok")

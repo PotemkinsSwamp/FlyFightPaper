@@ -19,7 +19,7 @@ end
 local function xpAtCap(config)
 	config = config or EconomyConfig
 	local xp = 0
-	for level = 1, config.level_cap - 1 do xp += (config.xp_next_level_base + config.xp_next_level_step * (level - 1)) * 1000 end
+	for level = 1, config.level_cap - 1 do xp += (config.xp_next_level_base + math.floor(config.xp_next_level_step * (level - 1) ^ (config.xp_next_level_power or 1))) * 1000 end
 	return xp
 end
 
@@ -105,15 +105,15 @@ function Spec.run()
 	test("XP exact boundaries, jumps, cap50 and continued cumulative XP", function()
 		local lvl, rem = Rules.levelForXP(199999, EconomyConfig); assert(lvl == 1 and rem == 199999)
 		lvl, rem = Rules.levelForXP(200000, EconomyConfig); assert(lvl == 2 and rem == 0)
-		lvl, rem = Rules.levelForXP(439999, EconomyConfig); assert(lvl == 2 and rem == 239999)
-		lvl, rem = Rules.levelForXP(440000, EconomyConfig); assert(lvl == 3 and rem == 0)
+		lvl, rem = Rules.levelForXP(421999, EconomyConfig); assert(lvl == 2 and rem == 221999) -- level 2 needs 200 + 22
+		lvl, rem = Rules.levelForXP(422000, EconomyConfig); assert(lvl == 3 and rem == 0)
 		local totalTo50 = 0
-		for level = 1, 49 do totalTo50 += (200 + 40 * (level - 1)) * 1000 end
+		for level = 1, 49 do totalTo50 += (200 + math.floor(22 * (level - 1) ^ 1.5)) * 1000 end
 		lvl, rem = Rules.levelForXP(totalTo50, EconomyConfig); assert(lvl == 50 and rem == 0)
 		lvl, rem = Rules.levelForXP(totalTo50 + 1234567, EconomyConfig); assert(lvl == 50 and rem == 1234567)
 		lvl = Rules.levelForXP(totalTo50 * 100, EconomyConfig); assert(lvl == 50)
 		local tuned = table.clone(EconomyConfig)
-		tuned.xp_next_level_base, tuned.xp_next_level_step = 100, 25
+		tuned.xp_next_level_base, tuned.xp_next_level_step, tuned.xp_next_level_power = 100, 25, 1
 		lvl, rem = Rules.levelForXP(225000, tuned); assert(lvl == 3 and rem == 0)
 		tuned.xp_next_level_base = 0
 		local bad, err = Rules.levelForXP(0, tuned); rejected(bad, err, "invalid_level_config")
@@ -135,7 +135,7 @@ function Spec.run()
 		local richLow = profile(100000000, 0, {})
 		local result, err = Rules.validateEquipmentPurchase(richLow, catalog, "pencil", "blocked-level")
 		rejected(result, err, "level_locked")
-		local poorHigh = profile(4999999, 37440000, {})
+		local poorHigh = profile(31999999, 88711000, {}) -- level 40, one Paper short of the Pencil
 		result, err = Rules.validateEquipmentPurchase(poorHigh, catalog, "pencil", "blocked-price")
 		rejected(result, err, "insufficient_paper")
 	end)
@@ -152,8 +152,8 @@ function Spec.run()
 		local p = profile(10000000, 5000000, {})
 		local first = assert(Rules.validateEquipmentPurchase(p, catalog, "spitball", "buy-spitball"))
 		local second = assert(Rules.validateEquipmentPurchase(first.profile, catalog, "rubber", "buy-rubber"))
-		assert(first.operation.chargedMilli == 1100000 and second.operation.chargedMilli == 900000)
-		assert(second.profile.paperMilli == 8000000 and second.profile.ownership.spitball and second.profile.ownership.rubber)
+		assert(first.operation.chargedMilli == 2300000 and second.operation.chargedMilli == 2100000)
+		assert(second.profile.paperMilli == 5600000 and second.profile.ownership.spitball and second.profile.ownership.rubber)
 		assert(first.profile.ownership.rubber == nil and p.ownership.spitball == nil)
 	end)
 	test("purchased Paper never becomes earned Paper, receives no multiplier and grants no XP or level", function()

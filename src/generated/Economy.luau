@@ -64,6 +64,7 @@ return JSONTypes.map({
     ["win_paper"] = 40,
     ["win_xp"] = 60,
     ["xp_next_level_base"] = 200,
-    ["xp_next_level_step"] = 40,
+    ["xp_next_level_power"] = 1.5,
+    ["xp_next_level_step"] = 22,
     ["xp_per_point"] = 0.68,
 })

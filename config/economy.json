@@ -7,7 +7,8 @@
   "level_cap": 50,
   "prestige_max": 10,
   "xp_next_level_base": 200,
-  "xp_next_level_step": 40,
+  "xp_next_level_step": 22,
+  "xp_next_level_power": 1.5,
   "points": {
     "fold": 100,
     "fold_assist_max": 80,

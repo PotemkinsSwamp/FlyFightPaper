@@ -96,6 +96,17 @@
     only the Striker preset still carries it.
   - After the test: prices and unlocks from the 12 / 25 folds table, fun vs grind so impatient players buy 2x XP,
     2x Paper or Paper.
+- **Prices and level pace** (Alan, end of 2026-11-08; built): grindier, and Paper is the gate, not levels, so
+  players who never buy take longer and choose what to save for, Robux (Paper, 2x Paper/XP) is the shortcut, and
+  prestige comes sooner. An average player (12 folds) reaches level 50 in ~18 h (each level needs 200 +
+  22*(level-1)^1.5 XP, so every level takes longer than the last) and could own everything in ~36 h of Paper. Prices
+  scale with level from the old ones (each kept its place among its neighbours): parts at levels 2/5/10/16/24 cost
+  700/1,200/2,500/4,900/8,500; Swift Fold 1,600, Toilet Roll 3,500, Courier 6,000, Racing 11,000, Cardboard 18,500;
+  Spitball 2,300, Rubber Band 2,100, Paperclip 4,000, Crayon 2,400, Eraser 11,500, Pencil 32,000; boosters
+  1,300/4,800/13,000. Item levels unchanged.
+  - Alan wants offers timed well to funnel players to Robux ethically. Agreed line for the shop step: offers tied to
+    the player's own goal ("1,200 Paper from the Toilet Roll; 2x Paper gets it 3 matches sooner"), capped, never after a
+    loss or as fake urgency (players are 9-16; the FTC fined Epic $245M over purchase tricks in 2022).
 - **Backlog, must do** (Alan): the results card becomes a report card and looks like one.
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.

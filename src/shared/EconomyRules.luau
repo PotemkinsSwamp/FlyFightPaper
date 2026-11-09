@@ -201,10 +201,13 @@ function EconomyRules.levelForXP(cumulativeXPmilli, config)
 	if not validSafeInteger(cumulativeXPmilli) then return failure("invalid_xp", "cumulative XP must be a nonnegative safe integer") end
 	config = economyConfig(config)
 	if not config then return failure("invalid_level_config", "economy config must be a plain table") end
-	local cap, base, step = config.level_cap, config.xp_next_level_base, config.xp_next_level_step
+	-- Each level needs base + step * (level - 1)^power XP: a curve, so every level takes longer than the last (Alan
+	-- 2026-11-08: level 50 in about 18 hours of play for an average player; Paper, not levels, is the long wait).
+	local cap, base, step, power = config.level_cap, config.xp_next_level_base, config.xp_next_level_step, config.xp_next_level_power or 1
 	if not validSafeInteger(cap) or cap < 1 or cap > EconomyRules.LEVEL_CAP
-		or not validSafeInteger(base) or base < 1 or not validSafeInteger(step) then
-		return failure("invalid_level_config", "level cap must be 1..50, base positive, and step nonnegative safe integers")
+		or not validSafeInteger(base) or base < 1 or not validSafeInteger(step)
+		or type(power) ~= "number" or power < 1 or power > 3 then
+		return failure("invalid_level_config", "level cap must be 1..50, base positive, step nonnegative safe integers, power 1..3")
 	end
 	local required = safeMultiply(base, MILLI)
 	if not required then return failure("overflow", "level threshold exceeds safe integer range") end
@@ -212,7 +215,8 @@ function EconomyRules.levelForXP(cumulativeXPmilli, config)
 	while level < cap and remaining >= required do
 		remaining -= required
 		level += 1
-		local increment = safeMultiply(step, level - 1)
+		local increment = math.floor(step * (level - 1) ^ power)
+		increment = validSafeInteger(increment) and increment or nil
 		local units = increment and safeAdd(base, increment)
 		required = units and safeMultiply(units, MILLI)
 		if not required then return failure("overflow", "level threshold exceeds safe integer range") end

@@ -6,15 +6,15 @@
 - **Bot test of the new weights** (your go): no errors in 3 full matches; tanks no longer run away (Pellet Tank 9.6
   folds, Cardboard 14 but swingy); Tack Skirmisher top (16); Spitball builds still weakest (4-6). Veterans 10.1 folds.
   docs/playtests/2026-11-08-weights-and-tanks-matches.md.
+- **Prices and level pace built** (your 36 h): level 50 in ~18 h on a curve, everything owned in ~36 h of Paper;
+  prices 4x overall (Pencil 32,000). Tests 476/0. Try: the Hangar's price tags with 5-digit prices.
 - **Earlier tonight:** bots fixed and measured (docs/playtests/2026-11-08-bot-fixes-staple-matches.md); your calls on
   the Staple, Spitball builds, spitball soak (flown now) and weights, all in docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
 - **My mistake:** I built the spitball soak before showing you its numbers; you then set them. Memory updated.
-- **Price anchors (yours):** 12 folds a match is an average player (~660 Paper, ~1,190 XP), 25 a really good one
-  (~1,280 Paper, ~2,350 XP), 6 a weak one; before win and podium bonuses.
 
 # Now: finish the game for the beta
-Next, in order: (1) prices and unlocks from the 12 / 25 folds table (draft shown, your OK); (2) text style C;
-(3) the unlock moment.
+Next, in order: (1) text style C; (2) the unlock moment. Shop step later: re-scale Paper packs and Robux part
+prices; goal-based offers (decision note).
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
 Backlog, must do: the results card becomes a report card.
 

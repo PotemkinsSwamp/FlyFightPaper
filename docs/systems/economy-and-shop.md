@@ -4,6 +4,13 @@
 You earn **Paper** (money) and **XP** (levels) from points in every match. Paper buys plane parts and weapons; levels unlock them. The shop sells Paper packs and 2x XP / 2x Paper boosts, but real sales are switched off until Alan approves products and prices.
 
 ## Where it stands (2026-10-18)
+**Pacing (Alan, 2026-11-08):** Paper is the long wait, levels just open things up. An average player (12 folds a
+match, ~660 Paper and ~1,190 XP) reaches level 50 in about 18 hours of play and could own everything (167,400 Paper)
+in about 36; for the first 6 hours ~13 unlocked things are always waiting to be saved for. Prices scale up with level
+(Pencil 32,000, Cardboard 18,500, first parts 700; table in the
+[decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Paper packs and Robux part prices still follow
+the old draft and get re-scaled in the shop step; offers there are tied to the player's own goal, capped, and never
+shown after a loss.
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Studio-only practice
 shop with no Robux. The real Roblox purchase code is built for the 15 products and part unlocks (Stage 10, Codex, reviewed; 388 tests)
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
@@ -152,7 +159,7 @@ conversion and profitability require first-party evidence and actual receipts/co
 *Moved word for word from the old rulebook (GAME_SPEC.md section 8).*
 
 Use `economy.json` and the economy details above. Contribution pays exactly the same for AI/humans.
-Level L needs 200+40*(L-1) XP to reach L+1; initial cap50. Paper prices and minimum levels both apply. No
+Level L needs 200 + floor(22*(L-1)^1.5) XP to reach L+1 (a curve; was 200+40*(L-1)); cap 50. Paper prices and minimum levels both apply. No
 buying levels. Starting ownership contains baseline structures and pellets; starting wallet/XP is zero.
 No daily-streak system, random loot, paid ammunition, premium revives, or unrequested currency.
 
