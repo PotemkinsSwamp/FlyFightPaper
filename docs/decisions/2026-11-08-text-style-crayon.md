@@ -25,6 +25,9 @@
   drawing it in a box of its own shape. Only where a screen needs a shape no picture has (the wide Match tip note) does
   a new piece get made, in the same style, shown to Alan before any upload. The menus keep the 3D drawing way (the main
   menu was already sharp). Examples: [playtest](../playtests/2026-11-09-menu-stretch-examples.md).
+- **Papers fit inside papers; make paper bigger rather than cram** (Alan, same night): a button, note or X sits fully on
+  the paper under it, nothing overlaps another piece, and when rows don't fit, the paper grows. Small square buttons
+  (the note's X) stay little square red paper boxes, not round stickers.
 - Rejected: the rounded Fredoka styles (D, E), Luckiest Guy and Permanent Marker titles, Patrick Hand, Comic Neue.
 
 ## Why

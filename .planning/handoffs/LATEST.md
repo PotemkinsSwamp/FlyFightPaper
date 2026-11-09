@@ -1,6 +1,6 @@
-# LATEST → handoff-2026-11-09-0058-beta-lane-crisp-try-undone-fix-stretched-boxes-next.md
+# LATEST → handoff-2026-11-09-0150-beta-lane-stretch-fix-try2-on-branch-alan-notes.md
 
-★ START HERE: Goal (Alan): the beta feels like a finished game. My crisp-menus try (scrubbed tacks, code tacks/tape) was rejected and fully undone. Next: fix STRETCHED pictures on every screen by drawing each in a box of its own shape, never changing a picture; measure all screens, show Alan one fixed screen first. Also: FFA strip stays over the Hangar Range after a match.
+★ START HERE: Goal (Alan): menus where nothing is stretched, every word inside its paper, papers inside papers, no overlaps (new AGENTS.md rule). Try 2 is parked on branch wip/stretch-fix-2026-11-09 (60939e73); Alan's notes on it (docs/playtests/2026-11-09-menu-stretch-examples.md, "Second look") are the list: keep the sharp Range signs, redo the rest, fix 3 bugs. Show him one before/after per screen.
 
-Quick state: HEAD 77fdb859 + this handoff on main; code/art unchanged since 77fdb859; tests 476/0 (77fdb859); docs OK; published v495, nothing saved/published/uploaded.
-Previous: handoff-2026-11-09-0003-beta-lane-weights-prices-text-done-crisp-menu-art-next.md.
+Quick state: main code/art = 77fdb859; tests 476/0; docs OK; published v495, nothing saved/published/uploaded.
+Previous: handoff-2026-11-09-0058-beta-lane-crisp-try-undone-fix-stretched-boxes-next.md.

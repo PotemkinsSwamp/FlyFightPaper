@@ -84,6 +84,9 @@ specific old fact. Never copy them back, and never recreate that evidence system
 - **Look at the game.** Every change to feel or visuals is checked in real Play at 1280×720 or larger, with
   screenshots of the fixed viewpoints compared against the reference image and the previous set. A 1×1 or
   missing viewport is not a check. Tests passing does not mean the game is good.
+- **Words and papers fit (Alan, corrected 2026-11-08 and 2026-11-09):** before showing any screen, check every word
+  sits inside the paper under it, centred with even room, and every piece of paper sits fully on its parent paper with
+  no overlaps; when it doesn't fit, make the paper bigger. Check it on a screenshot, not in code.
 - Performance target: steady 60 FPS on Alan's PC in a 12-plane match, no buildings popping in.
 - At the end of each milestone, put a short "what to try" list in STATE.md under "Waiting on Alan" and keep
   going. His playtest is the final sign-off. Never claim something is fun or balanced without him.

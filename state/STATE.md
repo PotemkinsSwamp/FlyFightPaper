@@ -7,6 +7,11 @@
 - **Your examples** of what looks bad: docs/playtests/2026-11-09-menu-stretch-examples.md (Back tacks, Customize
   stats paper and part cards, Presets overlapping the Loadout tape, Match tip (worst), desk strips, Esc menu strips,
   Range notes and Range board). Bug: the FFA strip stays over the Hangar Range after a match.
+- **Try 2 (fix the boxes) is on a side branch, not in the game:** `wip/stretch-fix-2026-11-09`. You liked the sharp
+  Range board; you found a round X (want the little square box, on the paper), a smudge on the widened stats paper,
+  words not fitting, overlaps, papers too small for their rows, and 3 bugs (Range note stays on the main menu, FFA
+  strip missing at the desk, Range Menu strip not clickable). All in the playtest note. Nothing uploaded.
+- New standing rule in AGENTS.md: words and papers fit, no overlaps, bigger paper rather than cramming.
 - Earlier: weights, prices, level pace and text style C (2026-11-08; decision notes in docs/decisions/).
 
 # Now: finish the game for the beta
