@@ -191,6 +191,7 @@ function Hangar.new(playerGui, api)
 		nameBox.Position, nameBox.Size, nameBox.BackgroundTransparency = UDim2.fromOffset(x + 30, y), UDim2.fromOffset(w - 130, h), 1
 		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3 = PaperUI.font, size, PaperUI.INK
 		nameBox.TextTruncate, nameBox.Parent = Enum.TextTruncate.AtEnd, parent
+		PaperUI.loud(PaperUI.crayon(nameBox)) -- the build's name reads like a title (Alan 2026-11-08)
 		local pencil = Instance.new("ImageButton")
 		pencil.Name, pencil.Image, pencil.BackgroundTransparency, pencil.Rotation = "Rename", Assets.settings.pencil, 1, -35
 		-- (On a phone a bigger pencil: 26 tall was a 9-point tap.)

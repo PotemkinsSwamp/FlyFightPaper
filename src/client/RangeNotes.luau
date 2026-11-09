@@ -57,7 +57,7 @@ function Notes.new(getStage, menuOpen) -- menuOpen(): the Range menu is down
 	local scale = Instance.new("UIScale")
 	scale.Parent = note
 	ScreenFit.inColumn(note, 3)
-	local title = PaperUI.words(note, "Title", "", 40, 24, 540, 34, 24)
+	local title = PaperUI.loud(PaperUI.words(note, "Title", "", 40, 24, 540, 34, 24))
 	title.TextColor3 = Color3.fromRGB(150, 60, 40)
 	local words = PaperUI.words(note, "Text", "", 40, 58, 540, 96, 30)
 	words.TextWrapped, words.TextYAlignment = true, Enum.TextYAlignment.Top

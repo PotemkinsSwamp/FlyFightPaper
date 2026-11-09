@@ -53,7 +53,7 @@ function Tips.start(getPlane)
 	ScreenFit.inColumn(note, 5, true) -- on a phone it stays up top (Alan 2026-10-24: not in the middle of the view)
 	-- The words fill the note (Alan 2026-10-29: about 4 times bigger, too small to read on a phone): as big as fits,
 	-- on as many lines as the tip needs (a short tip fills it on one big line). On a PC Got it hangs off the note's bottom right corner, under the words.
-	local title = PaperUI.words(note, "Title", "Match tip", 28, 2, 320, 48, 46)
+	local title = PaperUI.loud(PaperUI.words(note, "Title", "Match tip", 28, 2, 320, 48, 46))
 	title.TextColor3 = Color3.fromRGB(150, 60, 40)
 	local words = PaperUI.words(note, "Text", "", 28, 46, 504, 88, 88)
 	words.TextYAlignment, words.TextScaled, words.TextWrapped = Enum.TextYAlignment.Top, true, true

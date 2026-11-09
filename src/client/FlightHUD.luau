@@ -181,7 +181,7 @@ function HUD.start(getPlane, action)
 		local paper = Instance.new("ImageLabel")
 		paper.Name, paper.Image, paper.BackgroundTransparency, paper.ScaleType = name, id, 1, Enum.ScaleType.Stretch
 		paper.AnchorPoint, paper.Position, paper.Size, paper.Visible = Vector2.new(0.5, 0), UDim2.new(0.5, 0, 0, y), UDim2.fromOffset(w, h), false
-		local words = PaperUI.words(paper, "Words", "", 0, 0, 0, 0, textSize)
+		local words = PaperUI.loud(PaperUI.words(paper, "Words", "", 0, 0, 0, 0, textSize))
 		words.Size, words.TextXAlignment, words.TextScaled, words.RichText = UDim2.fromScale(1, 1), Enum.TextXAlignment.Center, true, true
 		local cap = Instance.new("UITextSizeConstraint")
 		cap.MaxTextSize, cap.Parent = textSize, words

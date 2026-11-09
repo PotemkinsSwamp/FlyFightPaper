@@ -5,10 +5,12 @@ Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-fo
 
 ## Where it stands (2026-11-07)
 **Text style C** (2026-11-08, [decision](../decisions/2026-11-08-text-style-crayon.md)): every word made by
-`PaperUI.words` (and so every `PaperUI.button`) is drawn heavier in warm black with a cream outline and a soft shadow
-(`PaperUI.crayon`: the label's own letters are hidden and three child copies draw the look, since a label shows only
-one UIStroke). Checked in Studio Play on the main menu and the Hangar binder. Not styled: text you type into (build
-names), the 13 labels made directly (score pop-ups, dev buttons, some HUD), and words that add their own outline.
+`PaperUI.words` is warm black over a cream edge and a soft shadow (`PaperUI.crayon`: the label's own letters are hidden
+and three child copies draw the look, since a label shows only one UIStroke). Loud words (`PaperUI.loud`: every
+`PaperUI.button`, titles, card and build names, the HUD's paper slips, the build-name box) are heavier with the full
+edge; all other words are quiet, a thin edge and fainter shadow (Alan: descriptive words with the full look were hard
+to read). Checked in Studio Play on the main menu and the Hangar binder's Gear page. Not styled: the 13 labels made
+directly (score pop-ups, dev buttons, some HUD) and words that add their own outline.
 Tab's live standings are built (2026-11-06); the live columns are not confirmed in play yet.
 
 Menu-only screens (loading, main menu, settings, hangar, shop, wait, Training, round end) draw their boards and

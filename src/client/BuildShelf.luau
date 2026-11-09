@@ -37,7 +37,7 @@ function BuildShelf.new(parent, catalog, pick, width)
 	-- The group's tab on the top rail: Loadouts, Presets, or Range in the Range (Special joins when special planes exist).
 	local tab = PaperUI.image(frame, "GroupTab", Art.shelfTab, 110, TOP - 58, 320, 92) -- standing on the top board
 	tab.ScaleType, tab.ImageColor3, tab.ZIndex = Enum.ScaleType.Stretch, Color3.fromRGB(255, 215, 60), 2
-	local group = PaperUI.words(tab, "Label", "", 0, 4, 320, 84, 46)
+	local group = PaperUI.loud(PaperUI.words(tab, "Label", "", 0, 4, 320, 84, 46))
 	group.TextXAlignment = Enum.TextXAlignment.Center
 	local outline = PaperUI.image(frame, "Picked", Art.outline, 0, 0, CUBBY + 20, FRONT_H - TOP_FACE + 20)
 	outline.Visible = false
@@ -68,7 +68,7 @@ function BuildShelf.new(parent, catalog, pick, width)
 				view.Parent = frame
 				PaperUI.image(frame, "Front" .. i, Art.cubbyFront, x, TOP, CUBBY, FRONT_H).ScaleType = Enum.ScaleType.Stretch
 				PaperUI.image(frame, "Tape" .. i, Assets.ingame.tapeLabel, x + 24, TOP + FRONT_H - 84, CUBBY - 48, 66).ScaleType = Enum.ScaleType.Stretch
-				local name = PaperUI.words(frame, "Name" .. i, "", x + 40, TOP + FRONT_H - 80, CUBBY - 80, 58, 34)
+				local name = PaperUI.loud(PaperUI.words(frame, "Name" .. i, "", x + 40, TOP + FRONT_H - 80, CUBBY - 80, 58, 34))
 				name.TextXAlignment, name.TextScaled = Enum.TextXAlignment.Center, true -- long names shrink to fit
 				local cap = Instance.new("UITextSizeConstraint")
 				cap.MaxTextSize, cap.Parent = 34, name

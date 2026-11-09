@@ -12,7 +12,7 @@ function WaitScreen.new(playerGui, api)
 	local dim = Instance.new("Frame")
 	dim.Name, dim.Size, dim.BackgroundColor3, dim.BackgroundTransparency, dim.Parent = "Dim", UDim2.fromScale(1, 1), Color3.new(0, 0, 0), 0.45, sheet
 	local note = PaperUI.image(sheet, "Sticky", Art.ingame.stickyNote, 610, 200, 700, 640, -2)
-	local title = PaperUI.words(note, "Title", "Waiting for a desk...", 60, 130, 580, 90, 60)
+	local title = PaperUI.loud(PaperUI.words(note, "Title", "Waiting for a desk...", 60, 130, 580, 90, 60))
 	title.TextXAlignment = Enum.TextXAlignment.Center
 	local body = PaperUI.words(note, "Body", "Every desk is taken right now. Your plane appears as soon as a pilot lands or respawns.", 80, 230, 540, 190, 40)
 	body.TextXAlignment, body.TextWrapped = Enum.TextXAlignment.Center, true

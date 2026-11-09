@@ -233,7 +233,7 @@ function DeskHangar.new(playerGui, api)
 			local front = turned("BuildTag" .. i, x, y, w, h, tilt, group)
 			local tape = image(front, "Tape", Assets.ingame.tapeLabel, 5 * k, 112 * k, 166 * k, 34 * k)
 			tape.ScaleType = Enum.ScaleType.Stretch
-			local tag = centred(words(front, "Name", "", 18 * k, 114 * k, 140 * k, 30 * k, 24), 24)
+			local tag = centred(PaperUI.loud(words(front, "Name", "", 18 * k, 114 * k, 140 * k, 30 * k, 24)), 24)
 			-- Phones: a taller tape with bigger words (they were about 8 points).
 			PaperUI.phone(tape, { Position = UDim2.fromOffset(88 * k, 122 * k), Size = UDim2.fromOffset(176 * k, 52 * k) })
 			PaperUI.phone(tag, { Position = UDim2.fromOffset(8 * k, 98 * k), Size = UDim2.fromOffset(160 * k, 46 * k) })

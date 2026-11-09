@@ -11,6 +11,10 @@
   - Heavier: a stroke of the same colour, `size x 0.03` thick on titles and buttons, `size x 0.018` on small words.
   - Light outline: a cream (`255,248,232`) copy behind it, stroke = heavier stroke + `max(2, size x 0.07)`.
   - Soft shadow: a black copy behind both, 72% see-through, offset `size x 0.04 + 1` right and `size x 0.06 + 1` down.
+- **Loud and quiet** (Alan, after seeing it in the menus the same night): the full look only where words grab attention
+  (buttons such as Play, Hangar, Launch, Repair, Customize; titles; card and build names; the HUD's round strip; the
+  build-name box). Descriptive words (stat names, gear details, help text) get a thin cream edge and a fainter shadow
+  and no extra weight, because the full look made them hard to read.
 - Rejected: the rounded Fredoka styles (D, E), Luckiest Guy and Permanent Marker titles, Patrick Hand, Comic Neue.
 
 ## Why

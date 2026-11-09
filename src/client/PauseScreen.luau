@@ -12,7 +12,7 @@ function PauseScreen.new(playerGui, api)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local strip = Art.mainmenu.strip
 	local board = image(sheet, "Clipboard", Art.ingame.clipboard, 610, 40, 700, 1000, 0)
-	local title = words(sheet, "Title", "Still flying!", 700, 215, 520, 90, 70)
+	local title = PaperUI.loud(words(sheet, "Title", "Still flying!", 700, 215, 520, 90, 70))
 	title.TextXAlignment = Enum.TextXAlignment.Center
 	local note = words(sheet, "Note", "Your plane keeps flying and can be hit while this is open.", 700, 300, 520, 80, 30)
 	note.TextXAlignment, note.TextWrapped = Enum.TextXAlignment.Center, true

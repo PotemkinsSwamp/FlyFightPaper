@@ -38,7 +38,7 @@ function ShopScreen.new(playerGui, api)
 	content.Name, content.BackgroundTransparency, content.Size, content.Parent = "Content", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), sheet
 	local header = image(sheet, "Header", Art.ingame.tapeLabel, 560, 95, 800, 120, -1)
 	header.ScaleType, header.SliceCenter, header.SliceScale = Enum.ScaleType.Slice, Rect.new(90, 30, 894, 104), 0.9
-	local title = words(header, "Title", "Practice shop", 0, 4, 800, 70, 64)
+	local title = PaperUI.loud(words(header, "Title", "Practice shop", 0, 4, 800, 70, 64))
 	title.TextXAlignment = Enum.TextXAlignment.Center
 	local warn = words(header, "Note", "Practice only: nothing is really bought.", 0, 66, 800, 44, 34)
 	warn.TextXAlignment, warn.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(170, 30, 30)
@@ -57,7 +57,7 @@ function ShopScreen.new(playerGui, api)
 			local x = 165 + (c - 1) * 545
 			local card = image(content, "Card" .. c, Art.ingame.indexCard, x, 235, 500, 180, (c - 2) * 1.5)
 			card.ScaleType = Enum.ScaleType.Stretch
-			words(card, "Title", column.title, 30, 42, 440, 60, 54).TextXAlignment = Enum.TextXAlignment.Center
+			PaperUI.loud(words(card, "Title", column.title, 30, 42, 440, 60, 54)).TextXAlignment = Enum.TextXAlignment.Center
 			local status = ""
 			local forever = column.boost and boosts[column.boost == "xp" and "permanentXP" or "permanentPaper"]
 			if column.boost then

@@ -33,7 +33,7 @@ function Customize.draw(content, ctx)
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
 	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 500, 12, 700, 140)
 	title.ScaleType = Enum.ScaleType.Stretch
-	words(title, "Label", ctx.range and "Range Customize" or "Customize", 0, 0, 700, 140, ctx.range and 72 or 88).TextXAlignment = Enum.TextXAlignment.Center
+	PaperUI.loud(words(title, "Label", ctx.range and "Range Customize" or "Customize", 0, 0, 700, 140, ctx.range and 72 or 88)).TextXAlignment = Enum.TextXAlignment.Center
 
 	-- Index tabs first so they tuck under the right page; the picked one sticks out further.
 	for i, tab in Customize.TABS do
@@ -86,7 +86,7 @@ function Customize.draw(content, ctx)
 			local ring = image(content, "Trying", Binder.outline, x - 14, y - 14, 290, cardH + 28)
 			ring.ScaleType, ring.SliceCenter, ring.SliceScale, ring.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.5, 3
 		end
-		local name = words(card, "Name", part.name, 18, 14, 216, 96, 36)
+		local name = PaperUI.loud(words(card, "Name", part.name, 18, 14, 216, 96, 36))
 		name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
 		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and not ctx.catalog:owns(ctx.profile.ownership, part.id, game.Players.LocalPlayer:GetAttribute("Level") or 1) and "Range only" or "Owned") or part.paper_price == 0 and string.format("Free at level %d", part.min_level) or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
 		if state.slot == "weapons" then
