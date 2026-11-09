@@ -6,7 +6,7 @@ local BoardPlate = require(game.ReplicatedFirst:WaitForChild("FlyFightPaper"):Wa
 local PaperUI = {}
 
 PaperUI.W, PaperUI.H = 1920, 1080
-PaperUI.INK = Color3.fromRGB(28, 26, 30)
+PaperUI.INK = Color3.fromRGB(40, 30, 24) -- warm black (text style C)
 PaperUI.font = Font.new("rbxasset://fonts/families/Kalam.json", Enum.FontWeight.Bold)
 
 -- A full-screen layer (own ScreenGui so its pieces stack simply) holding a hidden cover and the scaled sheet.
@@ -84,6 +84,57 @@ function PaperUI.words(parent, name, value, x, y, w, h, size)
 	label.FontFace, label.TextSize, label.TextColor3 = PaperUI.font, size, PaperUI.INK
 	label.TextXAlignment = Enum.TextXAlignment.Left
 	label.Parent = parent
+	return PaperUI.crayon(label)
+end
+
+-- Style C (Alan 2026-11-08, docs/decisions/2026-11-08-text-style-crayon.md): Kalam made heavier by a stroke of its own
+-- colour, a light cream outline and a soft shadow. A label draws only one UIStroke, so the label's own letters are hidden
+-- (MaxVisibleGraphemes 0 keeps its TextBounds) and three child copies draw the look, following its text, colour and
+-- fades. A label that gets its own UIStroke later keeps that look instead.
+local CREAM, SHADOW = Color3.fromRGB(255, 248, 232), Color3.new(0, 0, 0)
+local FOLLOW = { "Text", "TextSize", "TextScaled", "TextWrapped", "RichText", "FontFace", "TextXAlignment",
+	"TextYAlignment", "LineHeight", "TextTruncate" }
+local WATCH = { TextColor3 = true, TextTransparency = true, TextBounds = true }
+for _, key in FOLLOW do WATCH[key] = true end
+function PaperUI.crayon(label)
+	local copies, watching = {}, nil
+	for _, name in { "CrayonShadow", "CrayonOutline", "CrayonInk" } do -- later children draw on top
+		local copy = Instance.new("TextLabel")
+		copy.Name, copy.BackgroundTransparency, copy.Size = name, 1, UDim2.fromScale(1, 1)
+		local stroke = Instance.new("UIStroke")
+		stroke.LineJoinMode, stroke.Parent = Enum.LineJoinMode.Round, copy
+		copy.Parent = label
+		table.insert(copies, copy)
+	end
+	local shadow, outline, ink = copies[1], copies[2], copies[3]
+	local function refresh()
+		for _, copy in copies do for _, key in FOLLOW do copy[key] = label[key] end end
+		-- Sheet-sized letters: a scaled label's TextBounds are screen pixels, its offset height is sheet units.
+		local size = label.TextSize
+		if label.TextScaled and label.AbsoluteSize.Y > 0 then
+			size = ink.TextBounds.Y * (label.Size.Y.Offset > 0 and label.Size.Y.Offset / label.AbsoluteSize.Y or 1)
+		end
+		local heavy = size * (size >= 40 and 0.03 or 0.018)
+		local edge, t = heavy + math.max(2, size * 0.07), label.TextTransparency
+		local dim = 0.72 + 0.28 * t
+		ink.TextColor3, ink.TextTransparency = label.TextColor3, t
+		ink.UIStroke.Color, ink.UIStroke.Thickness, ink.UIStroke.Transparency = label.TextColor3, heavy, t
+		outline.TextColor3, outline.TextTransparency = CREAM, t
+		outline.UIStroke.Color, outline.UIStroke.Thickness, outline.UIStroke.Transparency = CREAM, edge, t
+		shadow.TextColor3, shadow.TextTransparency = SHADOW, dim
+		shadow.UIStroke.Color, shadow.UIStroke.Thickness, shadow.UIStroke.Transparency = SHADOW, edge, dim
+		shadow.Position = UDim2.fromOffset(size * 0.04 + 1, size * 0.06 + 1)
+	end
+	label.MaxVisibleGraphemes = 0
+	refresh()
+	watching = label.Changed:Connect(function(key) if WATCH[key] then refresh() end end)
+	label.ChildAdded:Connect(function(child)
+		if child:IsA("UIStroke") and watching then
+			watching:Disconnect(); watching = nil
+			for _, copy in copies do copy:Destroy() end
+			label.MaxVisibleGraphemes = -1
+		end
+	end)
 	return label
 end
 

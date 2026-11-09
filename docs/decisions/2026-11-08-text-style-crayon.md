@@ -1,7 +1,7 @@
 # Game text: hand-written Kalam, heavier, with a light outline and a soft shadow
 
 **Decided:** 2026-11-08 (Alan)
-**Status:** picked; rolling it out to every menu and the HUD is its own job, queued in [STATE](../../state/STATE.md)
+**Status:** built for every `PaperUI` word and button (2026-11-08); see [Menus and HUD](../systems/menus-and-hud.md)
 
 ## Decision
 - All game text uses **style C** from the text style test: today's font (Kalam Bold) made heavier, in warm black, with a
