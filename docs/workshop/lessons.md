@@ -483,3 +483,16 @@ Back to [HOME](../HOME.md)
 - **Never `git stash` while Rojo or Studio has the repo open (2026-11-08):** on Windows it stopped half-way ("unable to
   unlink ... Invalid argument"), leaving 4 files changed and 8 reverted. Recovered with `git checkout stash@{0} -- <files>`
   and `git diff stash@{0}` (empty = same). To see an old version use `git show HEAD:<path>` instead.
+- **A quality fix keeps the pictures (2026-11-09, Alan rejected a try):** "make it crisp" means the same art, sharper.
+  Scrubbing painted tacks/tape off a picture leaves marks and loses their shadows, and code-drawn replacements look
+  generic. Fix how a picture is drawn (its box's shape), never what it shows; show one piece before changing many.
+- **9-slice bends anything that crosses a slice line (2026-11-09):** a painted tack across the line became a teardrop at
+  every SliceScale tried. SliceCenter counts from the ImageRect cut (works with the menu sheets). Under a UIScale the
+  corners did not come out at the size SliceScale x pixels predicts, so check by eye.
+- **Preview a picture in Studio without uploading (2026-11-09):** copy the PNG into the running Studio's
+  `%LOCALAPPDATA%\Roblox\Versions\<version>\content\textures\<folder>\` and use `rbxasset://textures/<folder>/<file>.png`
+  (loads in Play; Studio only; delete the folder after). Find the version from the RobloxStudioBeta process path.
+- **Measure stretch (2026-11-09):** in Play, for every shown ImageLabel/ImageButton compare its AbsoluteSize shape with its
+  ImageRectSize shape (the menu sheets set it): `(w/h) / (rectW/rectH)` off by more than 10% is a stretched picture.
+  Open screens with the `DevScreen` player attribute. 2026-11-09 menus: 60 of 151 off; worst the Customize part cards
+  (0.40), the Ask note's X (0.26), both Back strips (about 0.5), Customize stats paper, shop strips (1.6).

@@ -1,21 +1,18 @@
-# Since Alan last checked (2026-11-08, night)
-- **Weights and tank bodies built** (your numbers): a gun's weight now fills the plane and slows it 2 studs/s a point;
-  Staple 2, Spitball 1, Crayon heavy; Cardboard 8 / 220 health; Toilet Roll 180 health, 87 speed, 5 slots, capacity 7.
-  Bots re-made as you OK'd (Pellet Tank, Cardboard Tank, Popper Dart and Tack Skirmisher with Pellets). Tests 476/0.
-  Bad news: at weight 2 the Staple loses to the free Pellet; only the Striker preset still carries it.
-- **Bot test of the new weights** (your go): no errors in 3 full matches; tanks no longer run away (Pellet Tank 9.6
-  folds, Cardboard 14 but swingy); Tack Skirmisher top (16); Spitball builds still weakest (4-6). Veterans 10.1 folds.
-  docs/playtests/2026-11-08-weights-and-tanks-matches.md.
-- **Prices and level pace built** (your 36 h): level 50 in ~18 h on a curve, everything owned in ~36 h of Paper
-  (Pencil 32,000). Tests 476/0. Try: the Hangar's price tags with 5-digit prices.
-- **Text style C is in**: loud on buttons, titles, names; quiet on descriptive words; stat names centred (your notes).
-- **Earlier tonight:** bots fixed and measured (docs/playtests/2026-11-08-bot-fixes-staple-matches.md); your calls on
-  the Staple, Spitball builds, spitball soak (flown now) and weights, all in docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
+# Since Alan last checked (2026-11-09)
+- **Crisp menus, first try rejected and fully undone.** I scrubbed painted tacks/tape off 10 pictures and drew new ones
+  in code; you said it looked worse (lost shadows, scrub marks, red-dot Back and taped Save were what you liked). Every
+  picture and all code are back to the morning's state; nothing was uploaded or committed.
+- **Your ruling:** keep the pictures exactly; fix stretching by drawing each picture in a box of its own shape; new
+  pieces only where no picture has the shape (the wide Match tip note), shown to you first.
+- **Your examples** of what looks bad: docs/playtests/2026-11-09-menu-stretch-examples.md (Back tacks, Customize
+  stats paper and part cards, Presets overlapping the Loadout tape, Match tip (worst), desk strips, Esc menu strips,
+  Range notes and Range board). Bug: the FFA strip stays over the Hangar Range after a match.
+- Earlier: weights, prices, level pace and text style C (2026-11-08; decision notes in docs/decisions/).
 
 # Now: finish the game for the beta
-Next: (1) crisp menu pictures (your call: stretched, blurry art behind the new text; preview before uploads);
-(2) the unlock moment (concept frames in .planning/unlock-concept2/). Shop step later: re-scale Paper packs and Robux part
-prices; goal-based offers (decision note).
+Next: (1) fix the stretched menu pictures, every screen (menus, desk, Esc menu, notes, Range board), keeping the
+pictures; FFA strip bug; (2) the unlock moment (concept frames in .planning/unlock-concept2/). Shop step later: re-scale
+Paper packs and Robux part prices; goal-based offers (decision note).
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
 Backlog, must do: the results card becomes a report card.
 
