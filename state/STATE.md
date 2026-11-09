@@ -4,18 +4,18 @@
   targets into the ducts. Results: docs/playtests/2026-11-08-bot-fixes-staple-matches.md.
 - **Your calls:** Crayon Tank was a bad build (Staple Tank instead); bots are the balance test, fix weapons not bots;
   Staple slowed to a Pellet's 13.3 a second, ~800 studs; Spitball builds on a medium plane (with Rubber Bands / the
-  Popper); stuck spitballs soak (3 on impact, 1 a second each; not yet flown); Staple becomes medium (weighs 2), Crayon
-  heavy, Spitball weighs 1 (not built yet). All in docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
+  Popper); stuck spitballs soak (3 on impact, 1 a second each; not yet flown); Staple weighs 2, Crayon heavy, Spitball 1,
+  lighter tank bodies, weight slows planes more (not built yet). All in docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
 - **My mistake:** I built the spitball soak before showing you its numbers; you then set them. Memory updated.
 - **Price anchors (yours):** 12 folds a match is an average player (~660 Paper, ~1,190 XP), 25 a really good one
   (~1,280 Paper, ~2,350 XP), 6 a weak one; before win and podium bonuses.
 
 # Now: finish the game for the beta
-Next, in order: (1) build the weapon sizes (Staple medium 2, Crayon heavy, Spitball 1; Striker preset gets a light
-weapon; bot builds re-made, shown to you first), then a bot test with the new Spitball (your go); (2) prices and
-unlocks from the 12 / 25 folds table, fun vs grind so the impatient buy 2x XP / 2x Paper / Paper (your OK);
-(3) text style C everywhere; (4) the unlock moment. Balance pass later: the Staple Tank is still the strongest plane
-(six Staples at range), the Spitball planes the weakest, the Rubber Band is light but weighs 2.
+Next, in order: (1) build the weapon weights and tank bodies you set (Staple light weighing 2, Crayon heavy, Spitball 1;
+weight slows planes 2 studs/s a point; Cardboard capacity 8 / health 220; Toilet Roll midway between Courier and
+Cardboard: 180 health, 87 speed, 135 turn, 92 Lift, 5 slots, capacity 7); re-made bots shown to you first; then a bot
+test (your go); (2) prices and unlocks from the 12 / 25 folds table (your OK); (3) text style C; (4) the unlock moment.
+Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
 Backlog, must do: the results card becomes a report card.
 
 Decisions to review

@@ -72,13 +72,24 @@
   Spitball too weak even as support, so stuck spitballs now soak the paper until a fan dries them. Numbers Alan
   locked after seeing them: 3 damage on impact (was 1), soak 1 a second per stuck spitball (5 stuck at most): one
   launcher hitting every shot does 11 a second, two do 17, and a fully soaked plane takes up to 60 more without a fan. The price table: 12 folds a match is an average player, 25 a really good one; Paper and XP from those.
-- **Weapon sizes** (Alan, after the soak test; next to build, then a bot test with the new Spitball): the Staple Burst
-  Gun becomes a medium weapon weighing 2 (a medium weighs 2; it then fits only heavy and medium slots, so a standard
-  plane carries 2, a heavy one 4); the Stubby Crayon a heavy weapon; the Spitball Straw weighs 1 (a light weighs 1).
-  The Striker preset keeps one Staple and gets a light weapon in its small slots; the Popper Dart bot carries the
-  Popper and one Staple. No saved-plane handling: there are no real players yet. Open for the balance pass: the
-  Rubber Band is light but weighs 2. After the test: the prices and unlocks from the 12 / 25 folds table, balancing
-  fun against grind so impatient players buy 2x XP, 2x Paper or Paper.
+- **Weapon weights and the tank bodies** (Alan, end of 2026-11-08; next to build, then a bot test). Why: a plane's
+  health and its guns multiply in a straight fight; with a Pellet in every slot the Toilet Roll was ~3.8x a Classic
+  Fold and the Cardboard ~4.2x, and being slower didn't pay for it (no need to chase in a room-sized arena).
+  - Staple Burst Gun stays light but weighs 2 (it was briefly going to be medium); Stubby Crayon heavy; Spitball
+    Straw weighs 1. Rubber Band stays light at 2 (Alan is fine with it).
+  - One weight per gun: the weight you see (capacity) both fills the plane and slows it (the hidden "mass" goes), and
+    each point now costs 2 studs/s of speed (was 1.2 per mass); turning and Lift costs unchanged.
+  - Cardboard Gunship: weight capacity 8 (was 10), health 220 (was 330); rest unchanged.
+  - Toilet Roll Gunship: the midpoint of the Courier Fold and the new Cardboard on every stat: health 180 (was 300),
+    speed 87 (76), turning 135 (120), Lift 92 (78), 5 gun slots (6), weight capacity 7 (10).
+  - Expected: Toilet Roll ~1.9x and Cardboard ~2.8x a Classic Fold with Pellets in every slot. The bot test flies the
+    strongest reasonable tank loadouts (all Pellets, Staples); if the Cardboard still dominates, next lever is its
+    health or slots. Toilet Roll (level 8) unlocks before the Courier Fold (12): for the prices step.
+  - Breaks to re-make (bots shown to Alan first): Popper Dart (Popper + 2 Staples weighs 7 > 6), Tack Skirmisher (8 >
+    6), Staple Tank (6 Staples), Bomber preset (Toilet Roll loses a slot). Striker and the Spitball builds still fit.
+    No saved-plane handling: no real players yet.
+  - After the test: prices and unlocks from the 12 / 25 folds table, fun vs grind so impatient players buy 2x XP,
+    2x Paper or Paper.
 - **Backlog, must do** (Alan): the results card becomes a report card and looks like one.
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
