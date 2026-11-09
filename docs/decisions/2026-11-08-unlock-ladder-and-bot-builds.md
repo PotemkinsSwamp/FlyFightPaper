@@ -63,6 +63,10 @@
   Pellet's), and it reaches ~800 studs instead of ~900 (just past the Pellet's 750, keeping the range order). Gentle
   damage loss with distance for every weapon is an idea for the balance pass (whole-number damage would make small
   hits jump, e.g. a Pellet's 2 to 1).
+- **Spitball builds** (Alan, same evening): the Spitball is support (it slows a plane and makes it fall), so it
+  belongs on a medium plane: a fast one just catches up and brakes, a medium one sometimes can't catch small planes.
+  Two veteran builds: Spitball with two Rubber Bands, and Spitball with the Point Popper. The old Spitball Hunter's
+  parts made it slow (90 studs/s) for its health.
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 

@@ -8,8 +8,9 @@ Bots fly at their plane's full top speed, like a player ([decision](../decisions
 changes how hard they turn and pitch (`turn_factor`) and how they brake.
 **Planes** ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)): rookies fly the level-1 presets (Fighter,
 Striker, Scout), regulars every preset but the Marksman (adds Bomber, Carrier), veterans four builds made the way a
-player builds: Staple Tank (big slow body, six Staple guns to fight from far; replaced the Crayon Tank 2026-11-08), Popper Dart (fast, moderate body, Popper and Staples), Spitball
-Hunter (Rubber Bands plus a Spitball), Tack Skirmisher. No bot carries a Paperclip, Eraser or Pencil.
+player builds: Staple Tank (big slow body, six Staple guns to fight from far; replaced the Crayon Tank 2026-11-08), Popper Dart (fast, moderate body, Popper and Staples), and on a
+medium plane (Alan 2026-11-08: the Spitball slows planes a medium plane can't catch) Spitball Hunter (Spitball plus Rubber
+Bands) and Spitball Popper (Spitball plus Point Popper), Tack Skirmisher. No bot carries a Paperclip, Eraser or Pencil.
 **Skill tiers:** rookie, regular, veteran (`experienced`) and **Ace** (2026-11-08, Studio-only until plan step 6 decides
 real lobbies): Aces turn at full rate, aim within about half a degree, react in 0.15-0.25 s, hunt longer, and fly the
 veterans' builds.
@@ -34,7 +35,8 @@ In Studio, the workspace attribute `DevBotTier` (e.g. `experienced`, `ace`) give
 Passed Alan's vertical-slice gate (2026-10-11: "the bots pass, it is fun"). Every bot plays the Airspace zone, more often the better it is. Bots still to be checked in every mode; rookie graduation check open.
 Veterans (Experienced) use the ceiling ducts (2026-10-15): when shot at they sometimes run for a vent within 500
 studs (`duct_escape_chance` 40%), and now and then wander through instead of to the next patrol spot
-(`duct_patrol_chance` 12%). They fly up a vent, room to room, and dive out another vent, skipping the fan ducts and
+(`duct_patrol_chance` 12%), always one of the shorter half of the runs from there and at most one run a minute
+(2026-11-08: a random exit often meant the longest trip; one Ace spent 35-40% of every match in the ducts). They fly up a vent, room to room, and dive out another vent, skipping the fan ducts and
 the round pipe (`DuctRules.botRuns`), only with over half their Lift and enough to finish. Inside they never dodge.
 Tested: 5 minutes of forced runs, no crashes; 3 minutes of normal play, one run.
 

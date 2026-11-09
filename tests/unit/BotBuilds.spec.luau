@@ -128,7 +128,11 @@ function Spec.run()
 		end)
 		if tier=="experienced" then test(tier.." kill times stay within 35 percent of their median",function()
 			local times={}
-			for _,build in ipairs(builds) do table.insert(times,BotBuilds.measure(catalog,build.loadout,tier).ttk) end
+			-- Spitball builds trade damage for slowing the target (Alan 2026-11-08), which time-to-kill can't see:
+			-- bot matches judge them (bots are the balance test).
+			for _,build in ipairs(builds) do
+				if not table.find(build.loadout.weapon_mounts,"spitball") then table.insert(times,BotBuilds.measure(catalog,build.loadout,tier).ttk) end
+			end
 			table.sort(times)
 			local middle=(#times+1)/2
 			local median=(times[math.floor(middle)]+times[math.ceil(middle)])/2

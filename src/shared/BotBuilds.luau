@@ -31,10 +31,16 @@ BotBuilds.TIERS={
 			body="body_standard",nose="nose_1",wings="wings_1",tail="tail_1",utility="boost_band",
 			weapon_mounts={false,"popper","staple","staple"},
 		}},
-		-- Rubber bands to hurt, spitballs to slow the target down for them.
+		-- Spitballs on a medium plane (Alan 2026-11-08): too fast and it just catches up and brakes; a medium plane
+		-- sometimes can't catch small ones, so it slows them or makes them fall. Two ways to finish them: Rubber Bands at
+		-- medium range, or the Point Popper up close. Both: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s, tight turns).
 		{name="Spitball Hunter",loadout={
-			body="body_standard_mk2",nose="nose_2",wings="wings_2",tail="tail_2",
+			body="body_standard_mk2",nose="nose_1",wings="wings_3",tail="tail_3",
 			weapon_mounts={"rubber","rubber","spitball",false},
+		}},
+		{name="Spitball Popper",loadout={
+			body="body_standard_mk2",nose="nose_1",wings="wings_3",tail="tail_3",
+			weapon_mounts={"spitball","popper",false,false},
 		}},
 		-- Steady tacks close in, staple bursts further out; good turning.
 		{name="Tack Skirmisher",loadout={
