@@ -474,3 +474,9 @@ Back to [HOME](../HOME.md)
 - **Stacked see-through layers can make a hard edge (2026-11-07).** Same-width layers at 1-2% strength all round to
   nothing at the same spot. Give each a different width. A faint overlay also has to be judged over the bright town,
   not a dark road; `screen_capture` doesn't show a StarterGui overlay from a moved camera, so judge it in Play.
+
+- **Words must sit inside what they're on** (2026-11-08, Alan, more than once): check text against the art under it, not
+  just that it reads. Centre the letters, not the line: Kalam Bold's letters fill only 0.16-0.66 of a line (to 0.83
+  with a p or g), and a torn-paper picture's visible part is smaller than the picture (the stat label's: 2-98% across,
+  7-88% down; measure the PNG's alpha). The Hangar's stat names show the method (`LABEL_INK` in `Hangar.luau`). Then
+  measure the gaps in a Play screenshot. Roblox caps TextSize at 100.

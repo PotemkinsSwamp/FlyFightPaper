@@ -139,6 +139,12 @@ function Hangar.new(playerGui, api)
 	-- against (the saved build while you try parts, or your build while looking at a part to buy); each number then
 	-- shows its change in green or red (Alan 2026-10-21: the boxes alone lost the exact numbers).
 	local GAIN, LOSS = "#1e7a32", "#b4231e"
+	-- Where each stat name's letters fall inside a Kalam Bold line, in text sizes (left, right, top, bottom; measured in
+	-- Studio 2026-11-08). Speed and Weight reach lower for their p and g.
+	local LABEL_INK = {
+		Health = { 0.032, 1.832, 0.160, 0.660 }, Speed = { 0, 1.651, 0.149, 0.819 }, Climb = { 0.021, 1.576, 0.160, 0.660 },
+		Swerve = { 0, 1.907, 0.192, 0.660 }, Lift = { 0.032, 1.076, 0.160, 0.660 }, Weight = { 0.043, 1.917, 0.160, 0.830 },
+	}
 	local function statSheet(stats, compare, x, y, w, h)
 		image(content, "StatsSheet", Shelf.statsPaper, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
 		local rowH = h * 0.8 / (#STATS + 1)
@@ -157,10 +163,16 @@ function Hangar.new(playerGui, api)
 			local top = y + h * 0.13 + (i - 1) * rowH
 			local strip = image(content, name .. "Row", Shelf.statLabel, labelX, top + rowH * 0.08, labelW, rowH * 0.84)
 			strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, tint
-			local label = words(content, name .. "Name", name, labelX + 10, top, labelW - 20, rowH, 40)
-			label.TextXAlignment, label.TextScaled = Enum.TextXAlignment.Center, true
-			local cap = Instance.new("UITextSizeConstraint")
-			cap.MaxTextSize, cap.Parent = math.floor(rowH * 0.55), label
+			-- The name sits in the middle of the label's visible paper (the art's opaque part: 2-98% across, 7-88% down),
+			-- its letters with even room above and below and to the sides (Alan 2026-11-08: they filled the box). One size
+			-- for every row: the tallest word (Weight, with its g) keeps 18% of the paper's height above and below.
+			local boxX, boxW = labelX + labelW * 0.022, labelW * 0.962
+			local boxY, boxH = top + rowH * (0.08 + 0.84 * 0.067), rowH * 0.84 * 0.811
+			local size = math.min(boxH * 0.64 / 0.67, boxW * 0.8 / 1.91)
+			local ink = LABEL_INK[name] or LABEL_INK.Health
+			local label = words(content, name .. "Name", name, boxX + boxW / 2 - (ink[1] + ink[2]) / 2 * size,
+				boxY + boxH / 2 - (ink[3] + ink[4]) / 2 * size, 2.2 * size, size, size)
+			label.TextYAlignment = Enum.TextYAlignment.Top
 			local size = math.min(rowH * 0.72, w * 0.36 / (math.max(cells, 5) * 1.12))
 			for k = 1, cells do
 				local cell = image(content, name .. "Box" .. k, k <= filled and Shelf.statBox or Shelf.statBoxEmpty, labelX + labelW + 14 + (k - 1) * size * 1.12, top + (rowH - size) / 2, size, size)
