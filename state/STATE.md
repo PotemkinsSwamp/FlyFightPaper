@@ -6,13 +6,12 @@
 - **Bot test of the new weights** (your go): no errors in 3 full matches; tanks no longer run away (Pellet Tank 9.6
   folds, Cardboard 14 but swingy); Tack Skirmisher top (16); Spitball builds still weakest (4-6). Veterans 10.1 folds.
   docs/playtests/2026-11-08-weights-and-tanks-matches.md.
-- **Prices and level pace built** (your 36 h): level 50 in ~18 h on a curve, everything owned in ~36 h of Paper;
-  prices 4x overall (Pencil 32,000). Tests 476/0. Try: the Hangar's price tags with 5-digit prices.
+- **Prices and level pace built** (your 36 h): level 50 in ~18 h on a curve, everything owned in ~36 h of Paper
+  (Pencil 32,000). Tests 476/0. Try: the Hangar's price tags with 5-digit prices.
 - **Text style C is in** on every menu word and button (heavier, cream outline, soft shadow). Look at: main menu,
   Hangar, Settings, round end, and small words on a phone-sized window. Pictures: .planning/text-style-c-*.jpg.
 - **Earlier tonight:** bots fixed and measured (docs/playtests/2026-11-08-bot-fixes-staple-matches.md); your calls on
   the Staple, Spitball builds, spitball soak (flown now) and weights, all in docs/decisions/2026-11-08-unlock-ladder-and-bot-builds.md.
-- **My mistake:** I built the spitball soak before showing you its numbers; you then set them. Memory updated.
 
 # Now: finish the game for the beta
 Next: the unlock moment (concept frames in .planning/unlock-concept2/). Shop step later: re-scale Paper packs and Robux part
