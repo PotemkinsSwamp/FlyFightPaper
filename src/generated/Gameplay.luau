@@ -708,7 +708,7 @@ return JSONTypes.map({
         ["simulation_hz"] = 60,
         ["snapshot_hz"] = 15,
         ["speed_ease_per_s"] = 1.5,
-        ["speed_equipment_penalty_per_mass"] = 1.2,
+        ["speed_equipment_penalty_per_mass"] = 2,
         ["speed_match"] = JSONTypes.map({
             ["close_per_stud"] = 0.5,
             ["floor_factor"] = 0.6,

@@ -39,12 +39,12 @@ actor ID, controller type (internal), life ID, participant ID and match ID. A lo
 ordered weapon mounts, optional utility ID, and at most two distinct weapon types. Never equate a bot actor ID with
 a Roblox UserId. Validate catalog versions and references server-side.
 
-Each body has base speed/health/turn/Lift. Other parts contribute additive deltas. Equipped weapon/utility
-mass is summed separately. Initial formulas:
+Each body has base speed/health/turn/Lift. Other parts contribute additive deltas. Equipment mass is the guns'
+weight (the capacity they use: one weight per gun, Alan 2026-11-08) plus the booster's own hidden weight. Formulas:
 
 ```
 health = clamp(body.base_health + sum(part.health_delta), 45, 400)
-speed = clamp(body.base_speed + sum(part.speed_delta) - 1.2 * equipment_mass, 45, 155)
+speed = clamp(body.base_speed + sum(part.speed_delta) - 2 * equipment_mass, 45, 155)
 turn = clamp(body.base_turn + sum(part.turn_delta) - 1.5 * equipment_mass, 45, 240)
 full_lift_seconds = clamp(body.base_lift + sum(part.lift_delta) - 1.5 * equipment_mass, 45, 125)
 ```
@@ -54,17 +54,18 @@ stats before purchase/equip. Equipment mass never appears in the health formula.
 visible body scale; it cannot shrink to slim while keeping heavy mounts. Large bodies must retain a maneuver/
 speed disadvantage after legal part combinations. Use stat enumeration to catch unintended dominant builds.
 
-Starter: classic standard body/parts, two pellet guns, no utility. This yields 120 health, 107.6 speed,
-167 degrees/second turning, and 90 seconds Lift. Heavy reference with two pencils and default parts yields
-300 health, 62.8 speed, 103.5 turning, 61.5 Lift. These are arithmetic fixtures, not measured flight behavior.
+Starter: classic standard body/parts, two pellet guns, no utility. This yields 120 health, 106 speed,
+167 degrees/second turning, and 90 seconds Lift. A Toilet Roll with a Pencil, two Pellets and default parts yields
+180 health, 73 speed, 124.5 turning, 81.5 Lift. These are arithmetic fixtures, not measured flight behavior.
 
 Mount rules: use ordered compatible attachment positions. Heavy accepts heavy/medium/light; medium accepts
 medium/light; light accepts light. Total capacity AND mount types AND owned/level-eligible selections must
 pass. No free heavy compatibility from other parts. Purchasing a weapon unlocks its type, not consumable
 copies. Each utility costs mass and supplies its own boost meter; one utility slot, starter empty.
-The two Gunships share capacity 10 but not mounts: the Toilet Roll Gunship has heavy, heavy, medium, medium, light,
-light; the heavier, slower Cardboard Gunship has heavy, heavy, medium, medium, medium, light (Alan 2026-11-07: room for
-a fifth medium gun, such as a fifth Thumbtack).
+The Gunships (Alan 2026-11-08, so health times guns no longer runs away): the Cardboard Gunship carries 8 with 220
+health on heavy, heavy, medium, medium, medium, light; the Toilet Roll sits midway between it and the Courier Fold on
+every stat (180 health, 87 speed, 135 turn, 92 Lift, capacity 7) with five mounts: heavy, heavy, medium, light, light
+(the fifth on the left wing only, like the Swift Fold's third).
 
 Precision Paperclip uses 2 capacity; Rubber Band Repeater uses 2. Weapon class still controls mount
 compatibility (paperclip medium, rubber light). Saved presets that exceed capacity or contain more than two

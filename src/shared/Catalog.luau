@@ -285,7 +285,7 @@ function Catalog:deriveStats(loadout)
 		local weaponId = loadout.weapon_mounts[mountIndex]
 		if weaponId ~= false then
 			local weapon = self.byId[weaponId]
-			mass += weapon.mass
+			mass += weapon.capacity -- one weight per gun: what fills the plane also slows it (Alan 2026-11-08)
 			usedCapacity += weapon.capacity
 		end
 	end

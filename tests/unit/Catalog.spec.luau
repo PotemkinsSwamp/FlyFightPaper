@@ -123,14 +123,14 @@ function Suite.run()
 		local wrongMount = cloneLoadout(starter)
 		wrongMount.weapon_mounts[3] = "pencil"
 		expectRejected(catalog, wrongMount, nil, 40, "incompatible")
-		local full = {
+		local full = { -- the Cardboard carries 8: a Pencil (5) and three Pellets
 			body = "body_heavy", nose = "nose_0", wings = "wings_0", tail = "tail_0",
-			weapon_mounts = { "pencil", "pencil", false, false, false, false }, utility = nil,
+			weapon_mounts = { "pencil", false, false, "pellet", "pellet", "pellet" }, utility = nil,
 		}
 		local accepted, err = catalog:validateLoadout(full, nil, 40)
 		expect(accepted == true, err)
 		local overCapacity = cloneLoadout(full)
-		overCapacity.weapon_mounts[4] = "paperclip"
+		overCapacity.weapon_mounts[3] = "pellet"
 		expectRejected(catalog, overCapacity, nil, 40, "capacity")
 		local tooManyHeavy = cloneLoadout(full)
 		tooManyHeavy.weapon_mounts[3] = "pencil"
@@ -190,7 +190,7 @@ function Suite.run()
 		local stats, err = catalog:deriveStats(catalog:starterLoadout())
 		expect(stats ~= nil, err)
 		expect(stats.health == 120, "starter health mismatch")
-		expect(math.abs(stats.speed - 107.6) < 1e-8, "starter speed mismatch")
+		expect(math.abs(stats.speed - 106) < 1e-8, "starter speed mismatch") -- 2 studs/s a weight point
 		expect(math.abs(stats.turn - 116.9) < 1e-6 and stats.lift == 90, "starter turn/lift mismatch")
 		expect(stats.mass == 2 and stats.capacity == 6 and stats.used_capacity == 2
 			and stats.remaining_capacity == 4, "starter mass/capacity metrics mismatch")
@@ -211,18 +211,18 @@ function Suite.run()
 		expect(fin.pitch > base.pitch * 1.4 and fin.yaw == base.yaw, "best tail must pitch far faster and leave yaw alone")
 	end)
 
-	check("CFG03 heavy twin-pencil reference stats", function()
+	check("CFG03 full Toilet Roll reference stats", function()
 		local heavy = {
 			body = "body_heavy_mk2", nose = "nose_0", wings = "wings_0", tail = "tail_0",
-			weapon_mounts = { "pencil", "pencil", false, false, false, false }, utility = nil,
+			weapon_mounts = { "pencil", false, false, "pellet", "pellet" }, utility = nil,
 		}
 		local stats, err = catalog:deriveStats(heavy)
 		expect(stats ~= nil, err)
-		expect(stats.health == 300, "heavy health mismatch")
-		expect(math.abs(stats.speed - 62.8) < 1e-8, "heavy speed mismatch")
-		expect(math.abs(stats.turn - 72.45) < 1e-8 and math.abs(stats.lift - 61.5) < 1e-8,
+		expect(stats.health == 180, "heavy health mismatch")
+		expect(math.abs(stats.speed - 73) < 1e-8, "heavy speed mismatch")
+		expect(math.abs(stats.turn - 87.15) < 1e-8 and math.abs(stats.lift - 81.5) < 1e-8,
 			"heavy turn/lift mismatch")
-		expect(stats.mass == 11 and stats.capacity == 10 and stats.used_capacity == 10
+		expect(stats.mass == 7 and stats.capacity == 7 and stats.used_capacity == 7
 			and stats.remaining_capacity == 0, "heavy mass/capacity metrics mismatch")
 	end)
 
@@ -262,7 +262,7 @@ function Suite.run()
 
 		local heavy = {
 			body = "body_heavy", nose = "nose_0", wings = "wings_0", tail = "tail_0",
-			weapon_mounts = { "pencil", "pencil", false, false, false, false }, utility = nil,
+			weapon_mounts = { "pencil", false, false, false, false, "pellet" }, utility = nil,
 		}
 		local heavyStats, heavyError = highSpeedCatalog:deriveStats(heavy)
 		expect(heavyStats ~= nil, heavyError)

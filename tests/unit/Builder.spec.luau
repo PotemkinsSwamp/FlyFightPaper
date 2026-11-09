@@ -33,7 +33,7 @@ function Spec.run()
 		local stats = assert(model:stats())
 		local expected = assert(catalog:deriveStats(starter))
 		assert(stats.health == expected.health and stats.speed == expected.speed and stats.turn == expected.turn and stats.lift == expected.lift)
-		assert(stats.health == 120 and stats.speed == 107.6 and math.abs(stats.turn - 116.9) < 1e-6 and stats.lift == 90)
+		assert(stats.health == 120 and stats.speed == 106 and math.abs(stats.turn - 116.9) < 1e-6 and stats.lift == 90)
 	end)
 	test("ordered six-mount heavy body pads every empty position with false", function()
 		local model = BuilderModel.new(catalog, starter, ownership, 50)
@@ -97,20 +97,20 @@ function Spec.run()
 	end)
 	test("heavy reference stats stay identical to Catalog calculation", function()
 		local heavy = { body = "body_heavy_mk2", nose = "nose_0", wings = "wings_0", tail = "tail_0", utility = nil,
-			weapon_mounts = { "pencil", "pencil", false, false, false, false } }
+			weapon_mounts = { "pencil", false, false, "pellet", "pellet" } }
 		local model = BuilderModel.new(catalog, heavy, ownership, 50)
 		local stats = assert(model:stats())
-		assert(stats.health == 300 and stats.speed == 62.8 and math.abs(stats.turn - 72.45) < 1e-6 and stats.lift == 61.5)
+		assert(stats.health == 180 and stats.speed == 73 and math.abs(stats.turn - 87.15) < 1e-6 and stats.lift == 81.5)
 	end)
 	test("smart placing: a weapon too big for the chosen mount goes where it fits and moves what was there", function()
 		local heavy = { body = "body_heavy", nose = "nose_0", wings = "wings_0", tail = "tail_0",
-			weapon_mounts = { "paperclip", "paperclip", false, false, false, false } }
+			weapon_mounts = { "pellet", "pellet", false, false, false, false } }
 		local model = BuilderModel.new(catalog, heavy, ownership, 50)
-		local ok, index = model:placeWeapon("pencil", 3) -- a medium mount is chosen; the heavy mounts hold paperclips
+		local ok, index = model:placeWeapon("pencil", 3) -- a medium mount is chosen; the heavy mounts hold pellets
 		assert(ok and index == 1 and model.candidate.weapon_mounts[1] == "pencil", tostring(index))
-		local clips = 0
-		for _, w in model.candidate.weapon_mounts do if w == "paperclip" then clips += 1 end end
-		assert(clips == 2, "both paperclips kept, one moved to a medium mount")
+		local pellets = 0
+		for _, w in model.candidate.weapon_mounts do if w == "pellet" then pellets += 1 end end
+		assert(pellets == 2, "both pellets kept, one moved to another mount")
 	end)
 	test("a weapon that can't go on says why: no mount of its size, or no room", function()
 		local slim = { body = "body_slim", nose = "nose_0", wings = "wings_0", tail = "tail_0", weapon_mounts = { false, false, false } }

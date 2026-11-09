@@ -206,7 +206,7 @@
     "max_catchup_steps": 5,
     "pitch_limit_deg": 80,
     "bank_visual_limit_deg": 65,
-    "speed_equipment_penalty_per_mass": 1.2,
+    "speed_equipment_penalty_per_mass": 2,
     "turn_equipment_penalty_per_mass": 1.5,
     "lift_equipment_penalty_per_mass": 1.5,
     "lift_min_seconds": 45,

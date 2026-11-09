@@ -18,7 +18,7 @@ function Spec.run()
 	test("weapon presets stay legal after the paperclip and rubber capacity changes",function()
 		local Loadouts=require(Root.Shared.WeaponLoadouts)
 		assert(catalog:get("paperclip").capacity==2 and catalog:get("rubber").capacity==2)
-		for _,choice in ipairs({"pellet","staple","rubber","paperclip","eraser","eraser_only","pencil","twin_pencils"}) do
+		for _,choice in ipairs({"pellet","staple","rubber","paperclip","eraser","eraser_only","pencil"}) do
 			assert(catalog:validateLoadout(Loadouts.make(catalog,choice),nil,50),choice)
 		end
 	end)
@@ -95,8 +95,8 @@ function Spec.run()
 	end)
 	for _,tier in ipairs({"rookie","regular","experienced"}) do
 		local builds=BotBuilds.TIERS[tier]
-		test(tier.." has three to five named legal level-50 builds",function()
-			assert(#builds>=3 and #builds<=5)
+		test(tier.." has three to six named legal level-50 builds",function()
+			assert(#builds>=3 and #builds<=6)
 			local names={}
 			for _,build in ipairs(builds) do
 				assert(type(build.name)=="string" and #build.name>0 and not names[build.name])

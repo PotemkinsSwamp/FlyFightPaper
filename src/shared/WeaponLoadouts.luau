@@ -15,7 +15,6 @@ function Loadouts.make(catalog, choice)
 	elseif choice == "training" then loadout.weapon_mounts={"pellet","eraser",false,false};loadout.utility="boost_band"
 	-- Combat School's plane until its eraser part (Alan 2026-10-19: the eraser's circle and sounds distract from aiming).
 	elseif choice == "training_pellets" then loadout.weapon_mounts={"pellet","pellet",false,false};loadout.utility="boost_band"
-	elseif choice == "twin_pencils" then loadout.body="body_heavy";loadout.weapon_mounts={"pencil","pencil",false,false,false,false}
 	elseif choice ~= "pellet" then return nil end
 	return assert(catalog:validateLoadout(loadout,nil,50)) and loadout
 end

@@ -329,7 +329,7 @@ function Spec.run()
 	end)
 	test("Thumbtack: steady shots, weaker with distance, falling past about 500 studs (Alan 2026-11-07)",function()
 		local weapon=catalog:get("thumbtack")
-		assert(weapon.class=="medium" and weapon.capacity==2 and weapon.mass==2 and weapon.damage==6 and weapon.min_level==4)
+		assert(weapon.class=="medium" and weapon.capacity==2 and weapon.damage==6 and weapon.min_level==4)
 		assert(math.abs(Catalog.weaponDPS(weapon)-18)<1e-3,"18 a second up close")
 		assert(math.abs(Rules.shotRange(weapon)-500)<3,"range before falling "..Rules.shotRange(weapon))
 		assert(Rules.shotDamage(weapon,50)==6 and Rules.shotDamage(weapon,100)==6)
@@ -352,7 +352,7 @@ function Spec.run()
 	end)
 	test("Stubby Crayon: a slow heavy hit every 2 s, falling past about 350 studs (Alan 2026-11-07)",function()
 		local weapon=catalog:get("crayon")
-		assert(weapon.class=="medium" and weapon.capacity==4 and weapon.damage==40 and weapon.min_level==12)
+		assert(weapon.class=="heavy" and weapon.capacity==4 and weapon.damage==40 and weapon.min_level==12)
 		assert(weapon.fire_mode=="semiautomatic" and weapon.shot_interval==2,"one shot per click, 2 s reload")
 		assert(Catalog.weaponDPS(weapon)==20,"20 a second at best")
 		-- Alan 2026-11-08: 400 studs/s, 350 range and drop 30 made it "impossible to hit anybody"; 600, 450 and drop 8.
@@ -360,17 +360,19 @@ function Spec.run()
 		assert(Rules.shotDamage(weapon,50)==40 and Rules.shotDamage(weapon,450)==40,"flat damage")
 		assert(weapon.projectile_speed==600 and Rules.travelTime(weapon,300)>.5,"still slow: 300 studs takes over half a second")
 		assert(0.5*weapon.drop*Rules.travelTime(weapon,300)^2<2,"falls under 2 studs by 300")
-		-- Weight 4 (Alan 2026-11-07): a 6-capacity body carries one, only the 10-capacity Gunships two, never three.
-		local loadout=catalog:starterLoadout();loadout.weapon_mounts={"crayon","crayon",false,false}
-		assert(not catalog:validateLoadout(loadout,nil,50),"two on a standard plane is over its weight")
-		loadout.body="body_heavy";loadout.weapon_mounts={false,false,"crayon","crayon",false,false}
-		assert(catalog:validateLoadout(loadout,nil,50),"two on the Gunship")
-		loadout.weapon_mounts={false,false,"crayon","crayon","crayon",false}
-		assert(not catalog:validateLoadout(loadout,nil,50),"never three")
+		-- Heavy, weight 4 (Alan 2026-11-08): heavy mounts only; two fit only the Cardboard (capacity 8), never three.
+		local loadout=catalog:starterLoadout();loadout.weapon_mounts={false,"crayon",false,false}
+		assert(not catalog:validateLoadout(loadout,nil,50),"a medium mount can't take it")
+		loadout.weapon_mounts={"crayon",false,false,false}
+		assert(catalog:validateLoadout(loadout,nil,50),"one on the Classic Fold's heavy mount")
+		loadout.body="body_heavy_mk2";loadout.weapon_mounts={"crayon","crayon",false,false,false}
+		assert(not catalog:validateLoadout(loadout,nil,50),"two are over the Toilet Roll's weight")
+		loadout.body="body_heavy";loadout.weapon_mounts={"crayon","crayon",false,false,false,false}
+		assert(catalog:validateLoadout(loadout,nil,50),"two on the Cardboard")
 	end)
 	test("Spitball: one slow, light shot per click; up to 5 stick and weigh the plane down (Alan 2026-11-07)",function()
 		local weapon=catalog:get("spitball")
-		assert(weapon.class=="light" and weapon.capacity==2 and weapon.damage==1 and weapon.sticks and weapon.min_level==6)
+		assert(weapon.class=="light" and weapon.capacity==1 and weapon.damage==3 and weapon.sticks and weapon.min_level==6)
 		assert(weapon.fire_mode=="semiautomatic" and weapon.shot_interval==.5,"one shot per click, 2 a second")
 		assert(math.abs(Rules.shotRange(weapon)-350)<3,"range before falling "..Rules.shotRange(weapon))
 		assert(Rules.spitballsLeft(5,0)==5 and Rules.spitballsLeft(5,5.9)==5,"none fall off for 6 s")

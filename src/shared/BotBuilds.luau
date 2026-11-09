@@ -18,18 +18,21 @@ BotBuilds.TIERS={
 	rookie=presets(1),
 	regular=presets(math.huge),
 	experienced={
-		-- A big body for health, slow, so it fights from far: six Staple guns (fast, straight, no damage lost with distance).
-		-- It showed the Staple was too strong (17.5 a second each); now 13.3 like a Pellet's. Replaced the Crayon Tank (Alan 2026-11-08: Rubber Bands on a slow tank that can't
-		-- get close is a build nobody would make; a 1-minute check had it hitting 5-7%).
-		{name="Staple Tank",loadout={
+		-- Tanks: a big body with speed parts and a Pellet in every slot, the strongest reasonable tank once Staples weighed 2
+		-- (Alan 2026-11-08; replaced the Staple Tank). The Cardboard one checks whether that body still dominates.
+		{name="Pellet Tank",loadout={
 			body="body_heavy_mk2",nose="nose_3",wings="wings_3",tail="tail_3",
-			weapon_mounts={"staple","staple","staple","staple","staple","staple"},
+			weapon_mounts={"pellet","pellet","pellet","pellet","pellet"},
+		}},
+		{name="Cardboard Tank",loadout={
+			body="body_heavy",nose="nose_3",wings="wings_3",tail="tail_3",
+			weapon_mounts={"pellet","pellet","pellet","pellet","pellet","pellet"},
 		}},
 		-- A fast plane on a moderate body with the Popper: zip in, brake, fire, zip out (Alan's way).
 		-- (a booster to zip in and out: BotTactics' dart, Alan 2026-11-08).
 		{name="Popper Dart",loadout={
 			body="body_standard",nose="nose_1",wings="wings_1",tail="tail_1",utility="boost_band",
-			weapon_mounts={false,"popper","staple","staple"},
+			weapon_mounts={false,"popper","pellet","pellet"},
 		}},
 		-- Spitballs on a medium plane (Alan 2026-11-08): too fast and it just catches up and brakes; a medium plane
 		-- sometimes can't catch small ones, so it slows them or makes them fall. Two ways to finish them: Rubber Bands at
@@ -42,10 +45,10 @@ BotBuilds.TIERS={
 			body="body_standard_mk2",nose="nose_1",wings="wings_3",tail="tail_3",
 			weapon_mounts={"spitball","popper",false,false},
 		}},
-		-- Steady tacks close in, staple bursts further out; good turning.
+		-- Steady tacks close in, Pellets further out; good turning.
 		{name="Tack Skirmisher",loadout={
 			body="body_standard_mk2",nose="nose_3",wings="wings_3",tail="tail_3",
-			weapon_mounts={"thumbtack","thumbtack","staple","staple"},
+			weapon_mounts={"thumbtack","thumbtack","pellet","pellet"},
 		}},
 	},
 }

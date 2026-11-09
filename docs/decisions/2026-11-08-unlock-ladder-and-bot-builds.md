@@ -88,6 +88,12 @@
   - Breaks to re-make (bots shown to Alan first): Popper Dart (Popper + 2 Staples weighs 7 > 6), Tack Skirmisher (8 >
     6), Staple Tank (6 Staples), Bomber preset (Toilet Roll loses a slot). Striker and the Spitball builds still fit.
     No saved-plane handling: no real players yet.
+  - **Built** (same night; Alan OK'd the bot builds first): Pellet Tank (Toilet Roll, Long Point / Delta / Wide, five
+    Pellets) replaces the Staple Tank; a Cardboard Tank (same parts, six Pellets) tests the Cardboard; Popper Dart and
+    Tack Skirmisher swap their Staples for Pellets; the Bomber keeps Crayon + 2 Pellets. Alan OK'd two side calls: the
+    Toilet Roll's mounts are heavy, heavy, medium, light, light, and boosters keep their weight (the Elastic now costs 3
+    studs/s). Seen on the numbers: at weight 2 the Staple loses to the free Pellet (13.3 a second for 2 vs 20 for 1), so
+    only the Striker preset still carries it.
   - After the test: prices and unlocks from the 12 / 25 folds table, fun vs grind so impatient players buy 2x XP,
     2x Paper or Paper.
 - **Backlog, must do** (Alan): the results card becomes a report card and looks like one.

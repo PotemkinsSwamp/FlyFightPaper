@@ -254,7 +254,7 @@ function HUD.start(getPlane, action)
 	local alarm = scribble("LockAlarm", Color3.fromRGB(255, 60, 40))
 	local picker = Instance.new("Frame")
 	picker.Name="WeaponPicker";picker.Size=UDim2.fromOffset(1210,80);picker.Position=UDim2.new(.5,-605,.5,64);picker.BackgroundTransparency=1;picker.Parent=gui
-	for index, choice in ipairs({"pellet","popper","staple","thumbtack","crayon","rubber","spitball","paperclip","eraser","pencil","twin_pencils"}) do
+	for index, choice in ipairs({"pellet","popper","staple","thumbtack","crayon","rubber","spitball","paperclip","eraser","pencil"}) do
 		local button=Instance.new("TextButton");button.Size=UDim2.fromOffset(104,34);button.Position=UDim2.fromOffset((index-1)*110,0)
 		button.Name=choice
 		button.BackgroundColor3=Color3.fromRGB(45,55,66);button.TextColor3=Color3.new(1,1,1);button.Font=Enum.Font.GothamMedium;button.TextSize=13

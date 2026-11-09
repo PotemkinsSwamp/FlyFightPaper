@@ -11,8 +11,9 @@ orange cradle, a clear pin tub hanging by its rim with a cardboard barrel, a cra
 red band, and a striped party cup hung upside down on a yellow strap with a green straw. Each has its own sound (Alan's
 picks 2026-11-07: a balloon pop, a pneumatic air burst, a soft heavy thump, a wet splat; client `Audio`). Alan made
 the Crayon slower, shorter and weight 4 after his first try (then, 2026-11-08, a bit faster and flatter again: 400
-studs/s, 350 range and drop 30 made it impossible to hit with), so no plane carries more than two and the Pencil keeps the
-heavy mount to itself; he approved the Spitball as a support weapon.
+studs/s, 350 range and drop 30 made it impossible to hit with); since 2026-11-08 it is heavy (heavy mounts only), so
+only the Cardboard Gunship carries two; he approved the Spitball as a support weapon. A gun's weight both fills the body
+and slows the plane ([Planes and hangar](planes-and-hangar.md#rules); Staple 2, Spitball 1 since 2026-11-08).
 All six work, look and sound different; combat approved by Alan (2026-10-07). Sound levels from the 2026-10-13 playtest are in, waiting on Alan's ears.
 Paperclip reworked and the shot timing fixed 2026-11-06; Alan confirmed staples and set the glint's strength in the air.
 **Match aim measured (2026-10-21, Alan asked if matches miss like the Range did):** in a match shots leave along the
@@ -44,16 +45,16 @@ misses and first-shot timing). Test all legal whole-loadout extremes; a six-gun 
 one-gun metrics. Pencil 260 damage means ordinary planes usually die, heavy 300-health reference survives
 with 40. Eraser damage is 30. Table data defines all six gun families.
 
-| Weapon | Damage | Capacity | Speed (studs/s) | Fire timing |
+| Weapon | Damage | Weight | Speed (studs/s) | Fire timing |
 |---|---:|---:|---:|---|
 | Paper Pellet Gun | 2 | 1 | 1500, ~750 studs range | Hold; 0.1 s per shot; 30 shots then 1.5 s cooling |
 | Point Popper | 5 per lead, 7 leads | 3 | 500, ~100 studs range | One shot per click, up to one a second |
-| Staple Burst Gun | 4.7 (14 a burst) | 1 | 1450, ~800 studs range | Hold; 3 shots, 0.09 s apart; 1.05 s between burst starts (2026-11-08: 13.3 a second like a Pellet's, was 17.5 and ~900 studs) |
+| Staple Burst Gun | 4.7 (14 a burst) | 2 | 1450, ~800 studs range | Hold; 3 shots, 0.09 s apart; 1.05 s between burst starts (2026-11-08: 13.3 a second like a Pellet's, was 17.5 and ~900 studs) |
 | Thumbtack Shooter | 6 close in, 3 at 300 studs, 2 at 500 | 2 | 900, ~500 studs range | One shot per click, up to 3 a second |
-| Spitball Straw | 3, and it sticks; each stuck one soaks 1 a second | 2 | 600, ~350 studs range | One shot per click, up to 2 a second |
+| Spitball Straw | 3, and it sticks; each stuck one soaks 1 a second | 1 | 600, ~350 studs range | One shot per click, up to 2 a second |
 | Rubber Band Repeater | 1.6 | 2 | 1400, ~1050 studs range | Hold; 0.06 s per shot; 40 shots then 1.5 s cooling |
 | Precision Paperclip | 24 at 500 studs (12 close, 60 at full reach) | 2 | 3600, ~2420 studs range | One shot per click; mounts take turns, 1.75 s reload each |
-| Stubby Crayon | 40 | 4 | 600, ~450 studs range, drop 8 | One shot per click, 2 s reload |
+| Stubby Crayon | 40 | 4, heavy mount | 600, ~450 studs range, drop 8 | One shot per click, 2 s reload |
 | Guided Eraser | 30 | 3 | 200, slowing to 110 | Click to launch unguided or hold through the 1.5 s lock; 4 s reload |
 | Pencil Launcher | 260 | 5 | 650, ~1800 studs range | One shot per click, fires on the click; 4 s reload |
 

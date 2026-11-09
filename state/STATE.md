@@ -1,4 +1,8 @@
 # Since Alan last checked (2026-11-08, night)
+- **Weights and tank bodies built** (your numbers): a gun's weight now fills the plane and slows it 2 studs/s a point;
+  Staple 2, Spitball 1, Crayon heavy; Cardboard 8 / 220 health; Toilet Roll 180 health, 87 speed, 5 slots, capacity 7.
+  Bots re-made as you OK'd (Pellet Tank, Cardboard Tank, Popper Dart and Tack Skirmisher with Pellets). Tests 476/0.
+  Bad news: at weight 2 the Staple loses to the free Pellet; only the Striker preset still carries it.
 - **Bots fixed and measured** (your go, 13 bot matches run by script, near-zero tokens): bots' guns meet at the
   target's distance (they missed past 150 studs), Aces now beat veterans on every plane (by 15-45%), bots only follow
   targets into the ducts. Results: docs/playtests/2026-11-08-bot-fixes-staple-matches.md.
@@ -11,14 +15,13 @@
   (~1,280 Paper, ~2,350 XP), 6 a weak one; before win and podium bonuses.
 
 # Now: finish the game for the beta
-Next, in order: (1) build the weapon weights and tank bodies you set (Staple light weighing 2, Crayon heavy, Spitball 1;
-weight slows planes 2 studs/s a point; Cardboard capacity 8 / health 220; Toilet Roll midway between Courier and
-Cardboard: 180 health, 87 speed, 135 turn, 92 Lift, 5 slots, capacity 7); re-made bots shown to you first; then a bot
-test (your go); (2) prices and unlocks from the 12 / 25 folds table (your OK); (3) text style C; (4) the unlock moment.
+Next, in order: (1) bot test of the new weights (your go): no errors, no plane far off the rest; (2) prices and unlocks from the 12 / 25 folds table (your OK); (3) text style C; (4) the unlock moment.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
 Backlog, must do: the results card becomes a report card.
 
 Decisions to review
+Toilet Roll mounts heavy, heavy, medium, light, light; boosters keep their weight (Elastic now -3 studs/s). Dev picker
+  lost "twin pencils" (two Pencils no longer fit any body).
 Bots follow a target up a vent: veterans 60%, Aces 90%. Bots with 2+ spitballs stuck fly to a fan. Staple ~800 studs.
 Spitball builds: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s). Paper check skips spitball builds (matches judge them).
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.

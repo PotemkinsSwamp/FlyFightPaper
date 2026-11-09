@@ -7,10 +7,12 @@ Computer pilots fill empty seats so a match always has up to 12 planes. They fly
 Bots fly at their plane's full top speed, like a player ([decision](../decisions/2026-11-07-bots-fly-full-speed.md)); skill
 changes how hard they turn and pitch (`turn_factor`) and how they brake.
 **Planes** ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)): rookies fly the level-1 presets (Fighter,
-Striker, Scout), regulars every preset but the Marksman (adds Bomber, Carrier), veterans four builds made the way a
-player builds: Staple Tank (big slow body, six Staple guns to fight from far; replaced the Crayon Tank 2026-11-08), Popper Dart (fast, moderate body, Popper and Staples), and on a
+Striker, Scout), regulars every preset but the Marksman (adds Bomber, Carrier), veterans six builds made the way a
+player builds: Pellet Tank (Toilet Roll, speed parts, five Pellets) and Cardboard Tank (six Pellets), the strongest
+tanks once Staples weighed 2 (replaced the Staple Tank 2026-11-08); Popper Dart (fast, moderate body, Popper and two
+Pellets), and on a
 medium plane (Alan 2026-11-08: the Spitball slows planes a medium plane can't catch) Spitball Hunter (Spitball plus Rubber
-Bands) and Spitball Popper (Spitball plus Point Popper), Tack Skirmisher. No bot carries a Paperclip, Eraser or Pencil.
+Bands) and Spitball Popper (Spitball plus Point Popper), Tack Skirmisher (two Thumbtacks, two Pellets). No bot carries a Paperclip, Eraser or Pencil.
 **Skill tiers:** rookie, regular, veteran (`experienced`) and **Ace** (2026-11-08, Studio-only until plan step 6 decides
 real lobbies): Aces turn at full rate, aim within about half a degree, react in 0.15-0.25 s, hunt longer, and fly the
 veterans' builds.
