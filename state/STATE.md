@@ -3,6 +3,9 @@
   Staple 2, Spitball 1, Crayon heavy; Cardboard 8 / 220 health; Toilet Roll 180 health, 87 speed, 5 slots, capacity 7.
   Bots re-made as you OK'd (Pellet Tank, Cardboard Tank, Popper Dart and Tack Skirmisher with Pellets). Tests 476/0.
   Bad news: at weight 2 the Staple loses to the free Pellet; only the Striker preset still carries it.
+- **Bot test of the new weights** (your go): no errors in 3 full matches; tanks no longer run away (Pellet Tank 9.6
+  folds, Cardboard 14 but swingy); Tack Skirmisher top (16); Spitball builds still weakest (4-6). Veterans 10.1 folds.
+  docs/playtests/2026-11-08-weights-and-tanks-matches.md.
 - **Bots fixed and measured** (your go, 13 bot matches run by script, near-zero tokens): bots' guns meet at the
   target's distance (they missed past 150 studs), Aces now beat veterans on every plane (by 15-45%), bots only follow
   targets into the ducts. Results: docs/playtests/2026-11-08-bot-fixes-staple-matches.md.
@@ -15,7 +18,7 @@
   (~1,280 Paper, ~2,350 XP), 6 a weak one; before win and podium bonuses.
 
 # Now: finish the game for the beta
-Next, in order: (1) bot test of the new weights (your go): no errors, no plane far off the rest; (2) prices and unlocks from the 12 / 25 folds table (your OK); (3) text style C; (4) the unlock moment.
+Next, in order: (1) the bot test of the new weights is done (see above); (2) prices and unlocks from the 12 / 25 folds table (your OK); (3) text style C; (4) the unlock moment.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
 Backlog, must do: the results card becomes a report card.
 
