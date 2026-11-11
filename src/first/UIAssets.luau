@@ -99,6 +99,19 @@ return {
 		indexCard = "rbxassetid://127869005862718",
 		tapeLabel = "rbxassetid://72074243508272",
 	},
+	-- The unlock backpack (docs/plan/UNLOCK-PLAN.md; tools/art/unlock_pieces.py, uploaded 2026-11-11). unzip1/2: twelve
+	-- in-between pictures of the zipper's part of the bag, 512x280 each, two across and three down per sheet.
+	unlock = {
+		sheet = "rbxassetid://82152248568520",
+		sheetTapes = "rbxassetid://131799596325771",
+		tape = "rbxassetid://111070777272720",
+		bagClosed = "rbxassetid://88477284146371",
+		bagOpen = "rbxassetid://82620452622887",
+		pull = "rbxassetid://77723405812234",
+		buttonCream = "rbxassetid://135556616351772",
+		unzip1 = "rbxassetid://74726486836587",
+		unzip2 = "rbxassetid://80741297978873",
+	},
 	-- Flight HUD pieces (assets/ui/hud/; concepts hud-concept-1/2). White pieces are tinted in the game.
 	hud = {
 		notebook = "rbxassetid://110123970547575",

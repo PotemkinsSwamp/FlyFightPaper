@@ -57,6 +57,9 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `blocks.py` | Blender-built town buildings (replan v3): one function per building, hero-piece output for `town_toys.py hero` |
 | `materials.py` | Separates toy-town materials from baked colour sheets |
 | `closeups.py` | Close-up render sheet to catch defects before upload |
+| `square_from_strip.py` | Not Blender: cuts a little torn square from a menu strip's plain middle (the notes' red X box) |
+| `unlock_pieces.py` | Not Blender: the unlock backpack's upload pictures from `assets/ui/unlock/source` (12 unzip frames that gape like a real zipper, the sheet's corner tapes cut out, a cream button) and the numbers `UnlockMoment.luau` needs |
+| `widen_paper.py` | Not Blender: makes a ruled paper wider by repeating plain bands on both sides of its tape, lines kept continuous (the Hangar stats paper) |
 | `repack.py` | Repacks a building's pieces onto shared 2048 sheets by moving UV islands whole pixels only (same pixels, 4x fewer picture files); `--check` proves geometry and every texel unchanged. Output `FOLDER/repacked/` (pictures and FBXs not kept in git: re-run to remake), uploaded by `town_toys.py repack` |
 | `repack_compare.py` | Renders a building's `parts/` pieces and its `repacked/` pieces from 5 fixed views in Blender and diffs them (`--all` for every building); contact sheets and `summary.txt` in `.planning/repack-check/`. Checks the repack files only, not what Roblox draws |
 | `fill_gaps.py` | Fills black gaps in textures so moderation doesn't misread shapes. Run before uploading hero pieces |

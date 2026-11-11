@@ -1,6 +1,6 @@
 # Unlock moment plan (draft for Alan's OK)
 
-**Status:** draft, revised 2026-11-11 with Alan's notes (preset planes come out too; no backpack during the vote lap:
+**Status:** approved and built 2026-11-11 (Alan: "build it"; unzip redone so it opens like a real zipper; corner tapes over the LEVEL strip); waiting on his Play check. Drafted with Alan's notes (preset planes come out too; no backpack during the vote lap:
 a small level-up note in the game, the backpack when you open the Menu). Nothing built yet. Builds on Alan's choices in
 [the unlock ladder decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md). Look: the concept frames in
 `.planning/unlock-concept2/`.

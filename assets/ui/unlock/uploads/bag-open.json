@@ -1,0 +1,24 @@
+{
+  "path": "operations/ca015fe5-c94b-46e4-9657-9429a61b207d",
+  "operationId": "ca015fe5-c94b-46e4-9657-9429a61b207d",
+  "done": true,
+  "response": {
+    "path": "assets/82620452622887",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-11T23:14:18.060Z",
+    "assetId": "82620452622887",
+    "displayName": "FlyFightPaper unlock bag-open",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

@@ -25,6 +25,7 @@
     },
     {
       "id": "body_slim",
+      "description": "A light, fast body that turns sharp, but tears easily. Room for 3 guns.",
       "name": "Swift Fold",
       "slot": "body",
       "archetype": "slim",
@@ -45,6 +46,7 @@
     },
     {
       "id": "body_heavy",
+      "description": "The toughest body, with room for 6 guns. Slow and heavy.",
       "name": "Cardboard Gunship",
       "slot": "body",
       "archetype": "heavy",
@@ -62,6 +64,7 @@
     },
     {
       "id": "body_standard_mk2",
+      "description": "Like the Classic Fold, but a little tougher and it lifts better.",
       "name": "Courier Fold",
       "slot": "body",
       "archetype": "standard",
@@ -83,6 +86,7 @@
     },
     {
       "id": "body_slim_mk2",
+      "description": "The fastest body, but very light: a few hits fold it. Room for 3 guns.",
       "name": "Racing Fold",
       "slot": "body",
       "archetype": "slim",
@@ -103,6 +107,7 @@
     },
     {
       "id": "body_heavy_mk2",
+      "description": "A big, tough body with room for 5 guns. Slow to turn.",
       "name": "Toilet Roll Gunship",
       "slot": "body",
       "archetype": "heavy",
@@ -137,6 +142,7 @@
     },
     {
       "id": "nose_1",
+      "description": "Faster, but a little weaker.",
       "name": "Needle Nose",
       "slot": "nose",
       "paper_price": 700,
@@ -148,6 +154,7 @@
     },
     {
       "id": "nose_2",
+      "description": "Tougher, but a little slower.",
       "name": "Blunt Nose",
       "slot": "nose",
       "paper_price": 1200,
@@ -159,6 +166,7 @@
     },
     {
       "id": "nose_3",
+      "description": "Much faster, but weaker, and it turns a bit less.",
       "name": "Long Point",
       "slot": "nose",
       "paper_price": 2500,
@@ -170,6 +178,7 @@
     },
     {
       "id": "nose_4",
+      "description": "Turns a bit sharper and lifts a bit better.",
       "name": "Compact Nose",
       "slot": "nose",
       "paper_price": 4900,
@@ -181,6 +190,7 @@
     },
     {
       "id": "nose_5",
+      "description": "Taped up: tougher, but a little slower.",
       "name": "Tape Nose",
       "slot": "nose",
       "paper_price": 8500,
@@ -203,6 +213,7 @@
     },
     {
       "id": "wings_1",
+      "description": "Faster, but they turn a little less.",
       "name": "Swept Wings",
       "slot": "wings",
       "paper_price": 700,
@@ -214,6 +225,7 @@
     },
     {
       "id": "wings_2",
+      "description": "Turn sharper and lift better, but slower.",
       "name": "Broad Wings",
       "slot": "wings",
       "paper_price": 1200,
@@ -225,6 +237,7 @@
     },
     {
       "id": "wings_3",
+      "description": "Turn much sharper, but they tear more easily.",
       "name": "Delta Wings",
       "slot": "wings",
       "paper_price": 2500,
@@ -236,6 +249,7 @@
     },
     {
       "id": "wings_4",
+      "description": "Stiff card: tougher, but slower.",
       "name": "Cardstock Wings",
       "slot": "wings",
       "paper_price": 4900,
@@ -247,6 +261,7 @@
     },
     {
       "id": "wings_5",
+      "description": "Very sharp turns and good lift, but they tear easily.",
       "name": "Feather Folds",
       "slot": "wings",
       "paper_price": 8500,
@@ -269,6 +284,7 @@
     },
     {
       "id": "tail_1",
+      "description": "Turns much sharper, but it tears more easily.",
       "name": "Split Tail",
       "slot": "tail",
       "paper_price": 700,
@@ -280,6 +296,7 @@
     },
     {
       "id": "tail_2",
+      "description": "A little faster and tougher, but turns a bit less.",
       "name": "Ridge Tail",
       "slot": "tail",
       "paper_price": 1200,
@@ -291,6 +308,7 @@
     },
     {
       "id": "tail_3",
+      "description": "Turns sharper, but a little slower.",
       "name": "Wide Tail",
       "slot": "tail",
       "paper_price": 2500,
@@ -302,6 +320,7 @@
     },
     {
       "id": "tail_4",
+      "description": "The sharpest turns of any tail, but much weaker.",
       "name": "Guide Fin",
       "slot": "tail",
       "paper_price": 4900,
@@ -313,6 +332,7 @@
     },
     {
       "id": "tail_5",
+      "description": "Much tougher, but slower to turn.",
       "name": "Tape Tail",
       "slot": "tail",
       "paper_price": 8500,
@@ -540,6 +560,7 @@
   "utilities": [
     {
       "id": "boost_band",
+      "description": "Press Boost for 4 seconds of extra speed.",
       "name": "Elastic Booster",
       "paper_price": 1300,
       "min_level": 5,
@@ -549,6 +570,7 @@
     },
     {
       "id": "boost_spool",
+      "description": "A longer boost: 7 seconds of extra speed.",
       "name": "Spool Booster",
       "paper_price": 4800,
       "min_level": 14,
@@ -558,6 +580,7 @@
     },
     {
       "id": "boost_twin",
+      "description": "The strongest boost: 5 seconds, very fast.",
       "name": "Twin Elastic Booster",
       "paper_price": 13000,
       "min_level": 26,
@@ -570,9 +593,9 @@
     {"id": "fighter", "name": "Fighter", "min_level": 1, "loadout": {"body": "body_standard", "nose": "nose_0", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["pellet", "thumbtack", "pellet", false], "utility": null}},
     {"id": "striker", "name": "Striker", "min_level": 1, "loadout": {"body": "body_slim", "nose": "nose_1", "wings": "wings_1", "tail": "tail_0", "weapon_mounts": ["staple", "staple", false], "utility": "boost_band"}},
     {"id": "scout", "name": "Scout", "min_level": 1, "loadout": {"body": "body_standard_mk2", "nose": "nose_0", "wings": "wings_2", "tail": "tail_2", "weapon_mounts": ["rubber", "rubber", false, false], "utility": "boost_band"}},
-    {"id": "marksman", "name": "Marksman", "min_level": 5, "loadout": {"body": "body_standard", "nose": "nose_0", "wings": "wings_0", "tail": "tail_2", "weapon_mounts": ["paperclip", "paperclip", false, false], "utility": null}},
-    {"id": "bomber", "name": "Bomber", "min_level": 8, "loadout": {"body": "body_heavy_mk2", "nose": "nose_2", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["crayon", false, false, "pellet", "pellet"], "utility": null}},
-    {"id": "carrier", "name": "Carrier", "min_level": 10, "loadout": {"body": "body_heavy", "nose": "nose_0", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["pellet", "pellet", false, false, "pellet", "pellet"], "utility": null}}
+    {"id": "marksman", "name": "Marksman", "description": "A ready-made plane with two Precision Paperclips for long shots.", "min_level": 5, "loadout": {"body": "body_standard", "nose": "nose_0", "wings": "wings_0", "tail": "tail_2", "weapon_mounts": ["paperclip", "paperclip", false, false], "utility": null}},
+    {"id": "bomber", "name": "Bomber", "description": "A ready-made heavy plane: a Stubby Crayon and two Pellet guns.", "min_level": 8, "loadout": {"body": "body_heavy_mk2", "nose": "nose_2", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["crayon", false, false, "pellet", "pellet"], "utility": null}},
+    {"id": "carrier", "name": "Carrier", "description": "A ready-made big plane with four Pellet guns.", "min_level": 10, "loadout": {"body": "body_heavy", "nose": "nose_0", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["pellet", "pellet", false, false, "pellet", "pellet"], "utility": null}}
   ],
   "starter_loadout": {
     "body": "body_standard",

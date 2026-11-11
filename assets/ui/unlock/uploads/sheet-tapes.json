@@ -1,0 +1,24 @@
+{
+  "path": "operations/e10a0759-8ed2-4466-9b25-1717cc2dbe89",
+  "operationId": "e10a0759-8ed2-4466-9b25-1717cc2dbe89",
+  "done": true,
+  "response": {
+    "path": "assets/131799596325771",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-11T23:14:00.755Z",
+    "assetId": "131799596325771",
+    "displayName": "FlyFightPaper unlock sheet-tapes",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

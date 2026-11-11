@@ -1,0 +1,24 @@
+{
+  "path": "operations/1b2d12cd-cbe3-49a9-b0cd-00d8e8a982e4",
+  "operationId": "1b2d12cd-cbe3-49a9-b0cd-00d8e8a982e4",
+  "done": true,
+  "response": {
+    "path": "assets/80741297978873",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-11T23:14:34.403Z",
+    "assetId": "80741297978873",
+    "displayName": "FlyFightPaper unlock unzip-2",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

@@ -56,6 +56,7 @@ return JSONTypes.map({
             ["name"] = "Scout",
         }),
         [4] = JSONTypes.map({
+            ["description"] = "A ready-made plane with two Precision Paperclips for long shots.",
             ["id"] = "marksman",
             ["loadout"] = JSONTypes.map({
                 ["body"] = "body_standard",
@@ -74,6 +75,7 @@ return JSONTypes.map({
             ["name"] = "Marksman",
         }),
         [5] = JSONTypes.map({
+            ["description"] = "A ready-made heavy plane: a Stubby Crayon and two Pellet guns.",
             ["id"] = "bomber",
             ["loadout"] = JSONTypes.map({
                 ["body"] = "body_heavy_mk2",
@@ -93,6 +95,7 @@ return JSONTypes.map({
             ["name"] = "Bomber",
         }),
         [6] = JSONTypes.map({
+            ["description"] = "A ready-made big plane with four Pellet guns.",
             ["id"] = "carrier",
             ["loadout"] = JSONTypes.map({
                 ["body"] = "body_heavy",
@@ -157,6 +160,7 @@ return JSONTypes.map({
             ["base_speed"] = 137,
             ["base_turn"] = 210,
             ["capacity"] = 5,
+            ["description"] = "A light, fast body that turns sharp, but tears easily. Room for 3 guns.",
             ["id"] = "body_slim",
             ["min_level"] = 4,
             ["mount_count"] = 3,
@@ -177,6 +181,7 @@ return JSONTypes.map({
             ["base_speed"] = 69,
             ["base_turn"] = 110,
             ["capacity"] = 8,
+            ["description"] = "The toughest body, with room for 6 guns. Slow and heavy.",
             ["id"] = "body_heavy",
             ["min_level"] = 28,
             ["mount_count"] = 6,
@@ -201,6 +206,7 @@ return JSONTypes.map({
             ["base_speed"] = 104,
             ["base_turn"] = 160,
             ["capacity"] = 6,
+            ["description"] = "Like the Classic Fold, but a little tougher and it lifts better.",
             ["id"] = "body_standard_mk2",
             ["min_level"] = 12,
             ["mount_count"] = 4,
@@ -222,6 +228,7 @@ return JSONTypes.map({
             ["base_speed"] = 146,
             ["base_turn"] = 200,
             ["capacity"] = 5,
+            ["description"] = "The fastest body, but very light: a few hits fold it. Room for 3 guns.",
             ["id"] = "body_slim_mk2",
             ["min_level"] = 20,
             ["mount_count"] = 3,
@@ -242,6 +249,7 @@ return JSONTypes.map({
             ["base_speed"] = 87,
             ["base_turn"] = 135,
             ["capacity"] = 7,
+            ["description"] = "A big, tough body with room for 5 guns. Slow to turn.",
             ["id"] = "body_heavy_mk2",
             ["min_level"] = 8,
             ["mount_count"] = 5,
@@ -270,6 +278,7 @@ return JSONTypes.map({
             ["turn_delta"] = 0,
         }),
         [8] = JSONTypes.map({
+            ["description"] = "Faster, but a little weaker.",
             ["health_delta"] = -12,
             ["id"] = "nose_1",
             ["lift_delta"] = -1,
@@ -281,6 +290,7 @@ return JSONTypes.map({
             ["turn_delta"] = -2,
         }),
         [9] = JSONTypes.map({
+            ["description"] = "Tougher, but a little slower.",
             ["health_delta"] = 16,
             ["id"] = "nose_2",
             ["lift_delta"] = 0,
@@ -292,6 +302,7 @@ return JSONTypes.map({
             ["turn_delta"] = -3,
         }),
         [10] = JSONTypes.map({
+            ["description"] = "Much faster, but weaker, and it turns a bit less.",
             ["health_delta"] = -18,
             ["id"] = "nose_3",
             ["lift_delta"] = -4,
@@ -303,6 +314,7 @@ return JSONTypes.map({
             ["turn_delta"] = -5,
         }),
         [11] = JSONTypes.map({
+            ["description"] = "Turns a bit sharper and lifts a bit better.",
             ["health_delta"] = -4,
             ["id"] = "nose_4",
             ["lift_delta"] = 2,
@@ -314,6 +326,7 @@ return JSONTypes.map({
             ["turn_delta"] = 5,
         }),
         [12] = JSONTypes.map({
+            ["description"] = "Taped up: tougher, but a little slower.",
             ["health_delta"] = 10,
             ["id"] = "nose_5",
             ["lift_delta"] = -2,
@@ -336,6 +349,7 @@ return JSONTypes.map({
             ["turn_delta"] = 0,
         }),
         [14] = JSONTypes.map({
+            ["description"] = "Faster, but they turn a little less.",
             ["health_delta"] = 6,
             ["id"] = "wings_1",
             ["lift_delta"] = 3,
@@ -347,6 +361,7 @@ return JSONTypes.map({
             ["turn_delta"] = -8,
         }),
         [15] = JSONTypes.map({
+            ["description"] = "Turn sharper and lift better, but slower.",
             ["health_delta"] = -6,
             ["id"] = "wings_2",
             ["lift_delta"] = 8,
@@ -358,6 +373,7 @@ return JSONTypes.map({
             ["turn_delta"] = 20,
         }),
         [16] = JSONTypes.map({
+            ["description"] = "Turn much sharper, but they tear more easily.",
             ["health_delta"] = -14,
             ["id"] = "wings_3",
             ["lift_delta"] = -2,
@@ -369,6 +385,7 @@ return JSONTypes.map({
             ["turn_delta"] = 40,
         }),
         [17] = JSONTypes.map({
+            ["description"] = "Stiff card: tougher, but slower.",
             ["health_delta"] = 20,
             ["id"] = "wings_4",
             ["lift_delta"] = -8,
@@ -380,6 +397,7 @@ return JSONTypes.map({
             ["turn_delta"] = -15,
         }),
         [18] = JSONTypes.map({
+            ["description"] = "Very sharp turns and good lift, but they tear easily.",
             ["health_delta"] = -26,
             ["id"] = "wings_5",
             ["lift_delta"] = 6,
@@ -402,6 +420,7 @@ return JSONTypes.map({
             ["turn_delta"] = 0,
         }),
         [20] = JSONTypes.map({
+            ["description"] = "Turns much sharper, but it tears more easily.",
             ["health_delta"] = -20,
             ["id"] = "tail_1",
             ["lift_delta"] = 0,
@@ -413,6 +432,7 @@ return JSONTypes.map({
             ["turn_delta"] = 55,
         }),
         [21] = JSONTypes.map({
+            ["description"] = "A little faster and tougher, but turns a bit less.",
             ["health_delta"] = 8,
             ["id"] = "tail_2",
             ["lift_delta"] = 3,
@@ -424,6 +444,7 @@ return JSONTypes.map({
             ["turn_delta"] = -6,
         }),
         [22] = JSONTypes.map({
+            ["description"] = "Turns sharper, but a little slower.",
             ["health_delta"] = -10,
             ["id"] = "tail_3",
             ["lift_delta"] = 2,
@@ -435,6 +456,7 @@ return JSONTypes.map({
             ["turn_delta"] = 25,
         }),
         [23] = JSONTypes.map({
+            ["description"] = "The sharpest turns of any tail, but much weaker.",
             ["health_delta"] = -38,
             ["id"] = "tail_4",
             ["lift_delta"] = -1,
@@ -446,6 +468,7 @@ return JSONTypes.map({
             ["turn_delta"] = 110,
         }),
         [24] = JSONTypes.map({
+            ["description"] = "Much tougher, but slower to turn.",
             ["health_delta"] = 18,
             ["id"] = "tail_5",
             ["lift_delta"] = -3,
@@ -460,6 +483,7 @@ return JSONTypes.map({
     ["utilities"] = JSONTypes.array({
         [1] = JSONTypes.map({
             ["boost_seconds"] = 4,
+            ["description"] = "Press Boost for 4 seconds of extra speed.",
             ["id"] = "boost_band",
             ["mass"] = 1.5,
             ["min_level"] = 5,
@@ -469,6 +493,7 @@ return JSONTypes.map({
         }),
         [2] = JSONTypes.map({
             ["boost_seconds"] = 7,
+            ["description"] = "A longer boost: 7 seconds of extra speed.",
             ["id"] = "boost_spool",
             ["mass"] = 2.6,
             ["min_level"] = 14,
@@ -478,6 +503,7 @@ return JSONTypes.map({
         }),
         [3] = JSONTypes.map({
             ["boost_seconds"] = 5,
+            ["description"] = "The strongest boost: 5 seconds, very fast.",
             ["id"] = "boost_twin",
             ["mass"] = 3.8,
             ["min_level"] = 26,

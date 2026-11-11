@@ -4,6 +4,12 @@
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
 ## Where it stands (2026-11-11)
+**Unlock moment (built 2026-11-11, waiting on Alan's Play check):** leveling up in a match unfolds a taped index card at
+the top with confetti ("You unlocked 2 new things! Open Menu to see them."); the Menu button carries a red count of
+unopened unlocks; opening the Menu plays the backpack: drag the zipper, each thing pops out turning in 3D with Put it on /
+See it and Later. How it works and its numbers: [the unlock plan](../plan/UNLOCK-PLAN.md); saving: [saving](saving.md).
+Studio tests: `DevUnlock` = a level on ReplicatedStorage.FlyFightPaper opens a backpack of everything up to it (not saved),
+`DevLevelNote` = a level shows its note.
 **Menus fit (branch `wip/stretch-fix-2026-11-09`, not in the game yet):** every picture is drawn at its own shape
 (`PaperUI.button` and `image` use Fit; boxes set to the picture's shape) and words sit inside their paper
 (`PaperUI.fitWords` shrinks only words too long for their strip). Stats papers: Hangar uses the original paper widened on
@@ -130,12 +136,14 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/SettingsScreen.luau`, `src/client/Options.luau` | Settings screen and applying settings |
 | `src/client/PauseScreen.luau` | In-match clipboard menu |
 | `src/client/RoundEnd.luau` | Round end in the room: "Pencils down!", the winners' cutscene with the results card, vote card (1/2/3), next round's name |
+| `src/client/UnlockMoment.luau` | The level-up note in a match and the backpack you unzip in the Menu, with a card per unlocked thing (3D) |
 | `src/client/LevelBar.luau` | Your level, XP bar and next unlock: on the results card, the main menu board and the hangar |
 | `src/client/WinnersCutscene.luau` | Camera glides to the chalkboard-row desks (the two outside ones slide in next to the middle one on this screen only) for a close-up of each winner in turn (3rd, 2nd, 1st) as their local copy stands up, hops on the desk and starts a Roblox emote; then one steady group shot of all three, a little from above, with paper name plates and confetti (falling in from above the top edge of every shot, never seen starting: Alan 2026-10-29), fading on this screen only what would block them and what hangs from the ceiling in front; then it glides back as the results card comes up. Plays the hop animation in `rounds.winner_hop_animation` once uploaded. 1st plays `rounds.winner_plane_emote` (Meshy full-body clip, empty until uploaded) holding a copy of their own plane in the right hand, nose turning the way the hand moves |
 | `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |
 | `src/client/PaperUI.luau` | Shared builder for the paper screens; phone sizes (`isPhone`, `phone`) and the notch-safe sheet; `button` draws its picture at its own shape (Fit) and `fitWords` shrinks words only when they're too long for their paper |
+| `tools/art/unlock_pieces.py` | The unlock backpack's pictures: sheet, its corner tapes, title tape, bags, pull, cream button and the 12 unzip frames (a real zipper's gap), plus the numbers UnlockMoment needs |
 | `tools/art/square_from_strip.py` | Cuts a little square of torn paper from a strip's plain middle (the notes' red X box), torn all round from the strip's own edge |
 | `src/client/ScreenFit.luau` | The one size rule ([screen fit plan](../plan/SCREEN-FIT-PLAN.md)): screen kind (phone, tablet, PC) and each piece's scale between its least and most; `dodger` keeps notes out of the way ([tutorial](tutorial.md)); Studio hooks `DevPhone`, `DevCover` |
 | `src/client/ScreenCheck.luau` | Studio tool: lists overlapping pieces, pieces under Roblox's buttons or off screen, small words and small taps |

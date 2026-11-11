@@ -70,7 +70,7 @@ function Hangar.new(playerGui, api)
 	local profile, render
 
 	-- Back: from Customize to the shelf (unsaved changes ask once first), from the shelf out of the Hangar.
-	local back = button(sheet, "Back", Assets.range.stripRed, "Back", 30, 25, 270, 110, -3, function()
+	local back = button(sheet, "Back", Assets.range.stripRed, "Back", 22, 47, 300, 66, -3, function() -- the strip's own shape, clear of the photo
 		if state.page == "shelf" then api.back(); return end
 		if state.unsaved and not state.dropAsk then state.dropAsk = true; render(); return end
 		state.page, state.trying, state.dropAsk = "shelf", nil, nil
@@ -145,59 +145,105 @@ function Hangar.new(playerGui, api)
 		Health = { 0.032, 1.832, 0.160, 0.660 }, Speed = { 0, 1.651, 0.149, 0.819 }, Climb = { 0.021, 1.576, 0.160, 0.660 },
 		Swerve = { 0, 1.907, 0.192, 0.660 }, Lift = { 0.032, 1.076, 0.160, 0.660 }, Weight = { 0.043, 1.917, 0.160, 0.830 },
 	}
-	local function statSheet(stats, compare, x, y, w, h)
-		image(content, "StatsSheet", Shelf.statsPaper, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
-		local rowH = h * 0.8 / (#STATS + 1)
-		local labelX, labelW = x + w * 0.08, w * 0.3
+	-- The two stats papers at their own shapes and where they can be written on (fractions of the picture: right of the red
+	-- margin, left of the torn right edge, under the tape, above the torn bottom edge).
+	local PAPERS = {
+		-- The original paper (Customize): each row written between two of its ruled lines (`lines`: where they cross the
+		-- paper's middle, the first under the tape), the label, boxes and number at the sizes they always had (Alan
+		-- 2026-11-10: "it fits inside the paper, like it's written on the lines"). label, box: widths, as shares of the paper.
+		tall = { id = Shelf.statsPaper, shape = 720 / 800, area = { 0.15, 0.156, 0.955, 0.94 },
+			lines = { 190 / 800, 266 / 800, 346 / 800, 431 / 800, 513 / 800, 597 / 800, 680 / 800 }, label = 0.3, box = 0.0583 },
+		-- The same paper widened on both sides of its tape (tools/art/widen_paper.py; Hangar page): rows fill it evenly.
+		wide = { id = Shelf.statsWide, shape = 926 / 800, area = { 0.12, 0.155, 0.94, 0.925 } },
+	}
+	local LABEL_SHAPE = 313 / 90 -- the stat label strip's own shape
+	-- The stats paper at (x, y), `w` across, at its own shape (Alan 2026-11-09: papers never stretch, and the rows sit
+	-- inside the paper with the same room above them, under the tape, as below them). `note`: a line written under the
+	-- rows (the Presets page). Returns its height.
+	local function statSheet(stats, compare, x, y, w, kind, note)
+		local paper = PAPERS[kind or "tall"]
+		local h = w / paper.shape
+		image(content, "StatsSheet", paper.id, x, y, w, h)
+		local ax, ay = x + w * paper.area[1], y + h * paper.area[2]
+		local aw, ah = w * (paper.area[3] - paper.area[1]), h * (paper.area[4] - paper.area[2])
+		local rowTop, rowHeight, labelH, boxSize, gap, cap, wordScale
+		if paper.lines then
+			rowTop = function(i) return y + h * paper.lines[i] end
+			rowHeight = function(i) return h * (paper.lines[i + 1] - paper.lines[i]) end
+			labelH, boxSize, gap, wordScale = w * paper.label / LABEL_SHAPE, w * paper.box, w * 0.026, 1.15
+			cap = function(i) return math.floor(rowHeight(i) * 0.9) end
+		else
+			local rows = #STATS + 1 + (note and 0.8 or 0)
+			local rowH = ah / (rows + 0.7) -- 0.35 of a row free above and below
+			ay += rowH * 0.35
+			if note then
+				local line = words(content, "ClassNote", note, ax, ay + rowH * (#STATS + 1), aw, rowH * 0.8, math.floor(rowH * 0.42))
+				line.TextXAlignment = Enum.TextXAlignment.Center
+				PaperUI.fitWords(line, aw) -- one line
+			end
+			-- Label, five boxes and the number share the row's width: on a narrow paper they all shrink together.
+			labelH, boxSize, gap, wordScale = rowH * 0.82, rowH * 0.62, rowH * 0.2, 1
+			local fit = math.min(1, (aw - rowH * 1.1 - gap * 2) / (labelH * LABEL_SHAPE + 5 * boxSize * 1.14))
+			labelH, boxSize = labelH * fit, boxSize * fit
+			rowTop = function(i) return ay + (i - 1) * rowH end
+			rowHeight = function() return rowH end
+			cap = function() return math.floor(rowH * 0.62 * math.max(fit, 0.8)) end
+		end
+		local labelW = labelH * LABEL_SHAPE
 		-- The number after the boxes, with its change when there is one (the font shrinks to fit the column).
-		local function number(name, top, from, text, change)
-			local value = words(content, name .. "Value", text, from, top, x + w * 0.96 - from, rowH, 40)
+		local function number(i, name, from, text, change)
+			local top, rowH = rowTop(i), rowHeight(i)
+			local value = words(content, name .. "Value", text, from, top + rowH * 0.1, ax + aw - from, rowH * 0.8, 40)
 			value.RichText, value.TextScaled = true, true
-			local cap = Instance.new("UITextSizeConstraint")
-			cap.MaxTextSize, cap.Parent = math.floor(rowH * 0.6), value
+			local most = Instance.new("UITextSizeConstraint")
+			most.MaxTextSize, most.Parent = cap(i), value
 			if change and math.abs(change) >= 0.5 then
 				value.Text = string.format('%s <font color="%s">%+.0f</font>', text, change > 0 and GAIN or LOSS, change)
 			end
 		end
 		local function row(i, name, tint, filled, cells)
-			local top = y + h * 0.13 + (i - 1) * rowH
-			local strip = image(content, name .. "Row", Shelf.statLabel, labelX, top + rowH * 0.08, labelW, rowH * 0.84)
-			strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, tint
+			local top, rowH = rowTop(i), rowHeight(i)
+			local strip = image(content, name .. "Row", Shelf.statLabel, ax, top + (rowH - labelH) / 2, labelW, labelH)
+			strip.ImageColor3 = tint
 			-- The name sits in the middle of the label's visible paper (the art's opaque part: 2-98% across, 7-88% down),
 			-- its letters with even room above and below and to the sides (Alan 2026-11-08: they filled the box). One size
 			-- for every row: the tallest word (Weight, with its g) keeps 18% of the paper's height above and below.
-			local boxX, boxW = labelX + labelW * 0.022, labelW * 0.962
-			local boxY, boxH = top + rowH * (0.08 + 0.84 * 0.067), rowH * 0.84 * 0.811
-			local size = math.min(boxH * 0.64 / 0.67, boxW * 0.8 / 1.91)
+			local boxX, boxW = ax + labelW * 0.022, labelW * 0.962
+			local boxY, boxH = top + (rowH - labelH) / 2 + labelH * 0.067, labelH * 0.811
+			local size = math.min(boxH * 0.64 / 0.67 * wordScale, boxW * 0.8 / 1.91)
 			local ink = LABEL_INK[name] or LABEL_INK.Health
 			local label = words(content, name .. "Name", name, boxX + boxW / 2 - (ink[1] + ink[2]) / 2 * size,
 				boxY + boxH / 2 - (ink[3] + ink[4]) / 2 * size, 2.2 * size, size, size)
 			label.TextYAlignment = Enum.TextYAlignment.Top
-			local size = math.min(rowH * 0.72, w * 0.36 / (math.max(cells, 5) * 1.12))
+			-- More than five boxes (Weight on a big body) share the five boxes' width.
+			local cell = math.min(boxSize, boxSize * 5 / math.max(cells, 5))
+			local from = ax + labelW + gap
 			for k = 1, cells do
-				local cell = image(content, name .. "Box" .. k, k <= filled and Shelf.statBox or Shelf.statBoxEmpty, labelX + labelW + 14 + (k - 1) * size * 1.12, top + (rowH - size) / 2, size, size)
-				cell.ImageColor3 = tint
+				local box = image(content, name .. "Box" .. k, k <= filled and Shelf.statBox or Shelf.statBoxEmpty, from + (k - 1) * cell * 1.14, top + (rowH - cell) / 2, cell, cell)
+				box.ImageColor3 = tint
 			end
-			return label, top, labelX + labelW + 14 + cells * size * 1.12 + 8
+			return label, from + 5 * boxSize * 1.14 + gap * 0.6
 		end
 		for i, entry in STATS do
 			local name, _, _, get, lo, hi, format = table.unpack(entry)
 			local value = stats and get(stats) or lo
-			local _, top, after = row(i, name, STAT_COLOURS[name], math.clamp(math.ceil((value - lo) / (hi - lo) * 5), 1, 5), 5)
-			if stats then number(name, top, after, string.format(format, value), compare and value - get(compare)) end
+			local _, after = row(i, name, STAT_COLOURS[name], math.clamp(math.ceil((value - lo) / (hi - lo) * 5), 1, 5), 5)
+			if stats then number(i, name, after, string.format(format, value), compare and value - get(compare)) end
 		end
 		if stats then
-			local label, top, after = row(#STATS + 1, "Weight", STAT_COLOURS.Weight, stats.used_capacity, math.max(stats.capacity, 1))
+			local i = #STATS + 1
+			local label, after = row(i, "Weight", STAT_COLOURS.Weight, stats.used_capacity, math.max(stats.capacity, 1))
 			if stats.used_capacity >= stats.capacity then label.TextColor3 = Color3.fromRGB(170, 30, 30) end
-			number("Weight", top, after, string.format("%d/%d", stats.used_capacity, stats.capacity)) -- its boxes already show the change
+			number(i, "Weight", after, string.format("%d/%d", stats.used_capacity, stats.capacity)) -- its boxes already show the change
 		end
+		return h
 	end
 
 	-- The build's name on masking tape with a pencil (concept hangar-name-tape-a.png), on both screens: click the name
 	-- or the pencil to type a new one (up to NAME_MAX letters, Roblox-filtered on the server). size = letter size.
 	local function nameTag(parent, x, y, w, h, size)
 		local build = state.builds[state.preset]
-		image(parent, "NameTape", Assets.ingame.tapeLabel, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
+		image(parent, "NameTape", Assets.ingame.tapeLabel, x, y, w, h) -- (the tape keeps its own shape)
 		local nameBox = Instance.new("TextBox")
 		nameBox.Name, nameBox.Text, nameBox.PlaceholderText, nameBox.ClearTextOnFocus = "BuildName", build.name, "Name this build", false
 		nameBox.Position, nameBox.Size, nameBox.BackgroundTransparency = UDim2.fromOffset(x + 30, y), UDim2.fromOffset(w - 130, h), 1
@@ -228,13 +274,15 @@ function Hangar.new(playerGui, api)
 	-- The plane in 3D. box = (x, y, w, h). On the shelf screen it sits on taped sky-blue paper; bare (the binder's
 	-- left page, which is blue already) it fills the box with no paper (Alan 2026-10-21: a stretched photo looked bad).
 	-- diagram (Gear page): a still view from above and behind (nose up) with a numbered tag on every mount.
-	local function preview(draft, box, diagram, bare)
+	-- under: room kept free at the photo's bottom (its name tape sits there, on the photo).
+	local function preview(draft, box, diagram, bare, under, parent)
+		local content = parent or content
 		local px, py, pw, ph = table.unpack(box)
 		local vx, vy, vw, vh = px, py, pw, ph
 		if not bare then
 			local paper = image(content, "PreviewPaper", Art.preview, px, py, pw, ph, 0)
 			paper.ScaleType, paper.ImageColor3 = Enum.ScaleType.Stretch, state.range and Color3.fromRGB(235, 165, 195) or SKY_BLUE
-			vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74
+			vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74 - (under or 0)
 		end
 		local view = Instance.new("ViewportFrame")
 		view.Name, view.BackgroundTransparency = "PlanePreview", 1
@@ -348,21 +396,25 @@ function Hangar.new(playerGui, api)
 			end
 			if range then
 				-- Purple, and under Back on a phone (Alan 2026-10-28: red and on top of the moved Back, it read as a second Back).
-				local note = image(content, "RangeNote", Assets.range.stripPurple, 20, PaperUI.isPhone() and 390 or 170, 300, 130, -4)
-				note.ScaleType = Enum.ScaleType.Stretch
-				local text = words(note, "Label", "Range loadouts: practice only", 20, 0, 270, 130, 36)
-				text.TextXAlignment, text.TextWrapped = Enum.TextXAlignment.Center, true
+				-- At the strip's own shape (1024 x 227), the words between its ends.
+				local note = image(content, "RangeNote", Assets.range.stripPurple, 15, PaperUI.isPhone() and 390 or 170, 300, 67, -4)
+				local text = words(note, "Label", "Range loadouts: practice only", 30, 0, 240, 67, 24)
+				text.TextXAlignment = Enum.TextXAlignment.Center
+				PaperUI.fitWords(text, 240)
 			end
-			preview(draft, PHOTO)
-			statSheet(Catalog:deriveStats(draft), nil, 1140, 8, 750, 530)
+			-- The name tape sits on the photo's paper, between its two bottom corner tapes (Alan 2026-11-09: no paper
+			-- hanging off another); the plane's view stops above it.
+			local TAPE = { PHOTO[1] + 140, 441, 500, 68 } -- the tape's own shape (984 x 134)
+			preview(draft, PHOTO, nil, nil, PHOTO[2] + PHOTO[4] * 0.87 - TAPE[2] + 6)
+			-- Presets: what they are, written on the stats paper under the rows (it floated on the cork).
+			statSheet(Catalog:deriveStats(draft), nil, 1535 - 316, 8, 632, "wide", -- centred over Customize
+				classes and "Presets can't be changed. Level up to unlock parts for your own loadouts." or nil)
 			if classes then
-				image(content, "NameTape", Assets.ingame.tapeLabel, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100).ScaleType = Enum.ScaleType.Stretch
-				words(content, "BuildName", builds[state.preset].name, PHOTO[1] + 155, PHOTO[2] + PHOTO[4] - 75, 470, 100, 52).TextXAlignment = Enum.TextXAlignment.Center
-				local fixed = words(content, "ClassNote", "Presets can't be changed. Level up to unlock parts for your own loadouts.", 1140, 545, 750, 95, 42)
-				fixed.TextXAlignment, fixed.TextWrapped = Enum.TextXAlignment.Center, true
+				image(content, "NameTape", Assets.ingame.tapeLabel, table.unpack(TAPE))
+				words(content, "BuildName", builds[state.preset].name, TAPE[1] + 30, TAPE[2], TAPE[3] - 60, TAPE[4], 46).TextXAlignment = Enum.TextXAlignment.Center
 				return
 			end
-			nameTag(content, PHOTO[1] + 125, PHOTO[2] + PHOTO[4] - 75, 530, 100, 52)
+			nameTag(content, TAPE[1], TAPE[2], TAPE[3], TAPE[4], 46)
 			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 564, 600, PaperUI.isPhone() and 130 or 120, -1, function()
 				state.page, state.slot, state.trying = "customize", "body", nil
 				render()
@@ -370,7 +422,13 @@ function Hangar.new(playerGui, api)
 			open.ZIndex = 2
 			return
 		end
-		Customize.draw(content, {
+		local binder = Instance.new("Frame")
+		binder.Name, binder.BackgroundTransparency, binder.Size, binder.Parent = "BinderSide", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), content
+		binder.Position = UDim2.fromOffset(0, PaperUI.H * (1 - Customize.BINDER_SCALE) / 2) -- the same cork above and below
+		local shrink = Instance.new("UIScale")
+		shrink.Scale, shrink.Parent = Customize.BINDER_SCALE, binder
+		Customize.draw(binder, {
+			side = content, -- the unshrunk sheet: the stats paper, Save and Fly sit there
 			state = state, builder = builder, draft = draft, profile = profile, range = range, dev = dev, catalog = Catalog,
 			owned = function(part) return dev or range or Catalog:owns(profile.ownership, part.id, player:GetAttribute("Level") or 1) end,
 			choose = choose, placeWeapon = placeWeapon, statSheet = statSheet, preview = preview, nameTag = nameTag,
@@ -397,8 +455,9 @@ function Hangar.new(playerGui, api)
 	function self.draft() return state.draft end
 	-- Opening the hangar shows the shelf on the build you fly, unless you left changes unsaved: then it reopens
 	-- Customize on them. Opened in the Range it shows the Range's builds (switching lists drops the other list's draft).
-	-- page "customize" (the desk's Customize button) opens straight on the binder.
-	function self.open(page)
+	-- page "customize" (the desk's Customize button) opens straight on the binder; slot: on that tab, on your own
+	-- loadout even if you fly a preset (the unlock card's Put it on / See it).
+	function self.open(page, slot)
 		local range = inRange()
 		local selected = range and (player:GetAttribute("RangeSlot") or 1) or player:GetAttribute("SelectedPreset") or 1
 		local unsaved = range == state.range and state.unsaved
@@ -406,7 +465,7 @@ function Hangar.new(playerGui, api)
 		state.range = range
 		-- A preset opens on the Presets board, even from the desk's Customize (nothing on it can be changed); the Hangar Tour
 		-- always uses your own loadouts.
-		local classes = not range and not unsaved and not Root:GetAttribute("TutorialOpen") and player:GetAttribute("SelectedClass") ~= nil
+		local classes = not slot and not range and not unsaved and not Root:GetAttribute("TutorialOpen") and player:GetAttribute("SelectedClass") ~= nil
 		if classes then page = nil end
 		if classes ~= (state.classes == true) then state.builder = nil end
 		state.classes = classes
@@ -414,7 +473,7 @@ function Hangar.new(playerGui, api)
 			for i, class in Catalog:classes() do if class.id == player:GetAttribute("SelectedClass") then selected = i end end
 		end
 		state.page, state.dropAsk, state.trying = (unsaved or page == "customize") and "customize" or "shelf", nil, nil
-		if page == "customize" and not unsaved then state.slot = "body" end
+		if page == "customize" and not unsaved then state.slot = slot or "body" end
 		if not unsaved then
 			state.preset = selected
 			if state.builder and state.builds and state.builds[selected] then state.builder:reset(state.builds[selected].loadout, selected) end
