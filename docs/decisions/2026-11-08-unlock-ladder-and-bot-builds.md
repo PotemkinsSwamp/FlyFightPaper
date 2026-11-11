@@ -46,6 +46,10 @@
 - **When it plays** (Alan, 2026-11-11): not during the vote lap (it would interrupt play). Leveling up shows a small
   "you unlocked something, open Menu" note with confetti; the backpack plays when you open the Menu, and unlocks pile
   up until you do. Preset planes come out of the backpack too. How it works: [the unlock plan](../plan/UNLOCK-PLAN.md).
+- **Backpack details** (Alan, 2026-11-11, trying it in Studio): the zipper opens like a real one (shut at the pull,
+  gaping behind it); the red and blue corner tapes sit over the LEVEL strip; the item is the real 3D part; back/next are
+  ink chevrons on the page (never over the binder holes); the zipper sound is the nylon backpack zip, looping while you
+  hold the pull, louder the faster you pull, at 72% loudness.
 - **Order:** text style test, then Aces and bot tricks (and their measuring matches), then the unlock moment.
 - **After the Ace matches** (Alan, later the same day): the Crayon Tank turn-fights like the best planes (drop its
   stand-off; rebuild its weapons only if it's still weak). Order now: fix the bots (Crayon Tank, why Aces don't beat

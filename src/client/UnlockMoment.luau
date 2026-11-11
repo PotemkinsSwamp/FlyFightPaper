@@ -20,6 +20,10 @@ local Audio = require(script.Parent.Audio)
 local Unlock = {}
 
 local INK = PaperUI.INK
+local MID, ROW_Y = 985, 532 -- the card's middle across (the page's writing area); its arrows-and-dots row
+-- "Bag Zipper From Nylon Bag Backpack Luggage 1" (Pro Sound Effects, Roblox library; Alan's pick 2026-11-11). Its steady
+-- zip (0.10-0.58 s, measured) loops while you hold the zipper.
+local ZIP_SOUND, ZIP_LOOP = "rbxassetid://9113260699", NumberRange.new(0.1, 0.58)
 local NOTE_SECONDS, HINT_AFTER, HINT_UP_TO = 4, 2, 4 -- level-up note on screen; drag hint after idle seconds, while seen <= this level
 local FRAMES = 12 -- in-between zipper pictures (tools/art/unlock_pieces.py)
 local FRAME_BOX = { 0.0336, 0.1508, 0.9444, 0.4535 } -- where they sit on the bag (shares of the bag picture)
@@ -85,8 +89,11 @@ local function view(parent, item, x, y, w, h)
 	end
 	local camera = Instance.new("Camera")
 	camera.FieldOfView, camera.Parent, frame.CurrentCamera = 40, frame, camera
+	-- Close enough that it fills most of its box as it turns: its widest turn across 85% of the width, its height 85% of
+	-- the height, measured from its near side.
 	local center, size = look:GetBoundingBox()
-	local distance = math.max(size.X, size.Y, size.Z) / 2 * 1.15 / math.sin(math.rad(20)) / math.min(1, w / h)
+	local across, tan = math.max(size.X, size.Z), math.tan(math.rad(20))
+	local distance = math.max(across / 2 / (tan * w / h * 0.85), size.Y / 2 / (tan * 0.85)) + across / 2
 	local function turn(angle)
 		camera.CFrame = CFrame.new(center.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(-0.35, 0, 0) * CFrame.new(0, 0, distance)
 	end
@@ -101,7 +108,23 @@ function Unlock.start(api)
 
 	-- ===== The backpack (over the Menu) =====
 	local cover, sheet = PaperUI.screen(playerGui, "UnlockMoment", {})
-	cover.Parent.DisplayOrder, cover.BackgroundTransparency = 20, 0.55
+	-- Over the menus and the tutorial's questions (20), under the loading screen (100); the menu underneath can't be clicked.
+	cover.Parent.DisplayOrder, cover.BackgroundTransparency, cover.Active = 25, 0.55, true
+	-- Ink strokes (Path2D) don't follow a UIScale: their points are shares of their parent's box (w x h units) and
+	-- their thickness follows the sheet's scale.
+	local function ink(parent, points, thickness, w, h)
+		local path = Instance.new("Path2D")
+		path.Color3, path.ZIndex, path.Parent = INK, 6, parent
+		local controls = {}
+		for _, pt in points do
+			local tangent = UDim2.fromScale((pt[3] or 0) / w, 0)
+			table.insert(controls, Path2DControlPoint.new(UDim2.fromScale(pt[1] / w, pt[2] / h), UDim2.new() - tangent, tangent))
+		end
+		path:SetControlPoints(controls)
+		local function thick() path.Thickness = thickness * sheet.UIScale.Scale end
+		sheet.UIScale:GetPropertyChangedSignal("Scale"):Connect(thick); thick()
+		return path
+	end
 	local group = Instance.new("Frame") -- the paper and everything on it (shakes while you drag)
 	group.Name, group.BackgroundTransparency, group.Size, group.Parent = "Paper", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), sheet
 	local paper = image(group, "Sheet", Art.sheet, 585, 30, 750, 1020)
@@ -144,18 +167,8 @@ function Unlock.start(api)
 	local hint = Instance.new("Frame")
 	hint.Name, hint.BackgroundTransparency, hint.Size, hint.Visible, hint.Parent = "Hint", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), false, group
 	PaperUI.loud(words(hint, "Words", "Drag to unzip", 630, 432, 660, 76, 64)).TextXAlignment = Enum.TextXAlignment.Center
-	local function stroke(points)
-		local path = Instance.new("Path2D")
-		path.Color3, path.Thickness, path.Parent = INK, 9, hint
-		local controls = {}
-		for i, p in points do
-			local tangent = p[3] and UDim2.fromOffset(p[3], 0) or UDim2.new()
-			table.insert(controls, Path2DControlPoint.new(UDim2.fromOffset(p[1], p[2]), -tangent, tangent))
-		end
-		path:SetControlPoints(controls)
-	end
-	stroke({ { 1150, 560 }, { 960, 522, -110 }, { 785, 552 } })
-	stroke({ { 812, 528 }, { 772, 556 }, { 814, 578 } })
+	ink(hint, { { 1150, 560 }, { 960, 522, -110 }, { 785, 552 } }, 9, PaperUI.W, PaperUI.H)
+	ink(hint, { { 812, 528 }, { 772, 556 }, { 814, 578 } }, 9, PaperUI.W, PaperUI.H)
 
 	-- The card for each unlocked thing.
 	local card = Instance.new("Frame")
@@ -163,12 +176,16 @@ function Unlock.start(api)
 	card.ZIndex = 5
 	local dots = Instance.new("Frame")
 	dots.Name, dots.BackgroundTransparency, dots.Size, dots.Parent = "Dots", 1, UDim2.fromOffset(PaperUI.W, 30), card
-	local you = PaperUI.loud(words(card, "YouUnlocked", "You unlocked", 660, 545, 600, 54, 44))
-	local name = PaperUI.loud(words(card, "Name", "", 620, 592, 680, 96, 88))
-	local desc = words(card, "Description", "", 670, 700, 580, 112, 32)
-	local status = words(card, "Status", "", 620, 815, 680, 46, 34)
+	-- Everything on the card is centred on the page's writing area (MID: between its red margin line and its right
+	-- edge), clear of the binder holes (Alan 2026-11-11).
+	local you = PaperUI.loud(words(card, "YouUnlocked", "You unlocked", MID - 300, 560, 600, 54, 44))
+	local name = PaperUI.loud(words(card, "Name", "", MID - 300, 606, 600, 96, 88))
+	local desc = words(card, "Description", "", MID - 280, 712, 560, 108, 32)
+	local status = words(card, "Status", "", MID - 300, 824, 600, 46, 34)
+	local counter = PaperUI.loud(words(card, "Counter", "", MID - 90, ROW_Y - 24, 180, 48, 34)) -- "3 of 18" when dots won't fit
+	counter.TextXAlignment = Enum.TextXAlignment.Center
 	for _, label in { you, name, desc, status } do label.TextXAlignment = Enum.TextXAlignment.Center end
-	PaperUI.fitWords(name, 600); PaperUI.fitWords(status, 600)
+	PaperUI.fitWords(name, 560); PaperUI.fitWords(status, 560)
 	desc.TextScaled, desc.TextWrapped = true, true
 	local most = Instance.new("UITextSizeConstraint")
 	most.MaxTextSize, most.Parent = 32, desc
@@ -207,6 +224,14 @@ function Unlock.start(api)
 		pull.Position, pull.Visible = UDim2.fromScale(at.X, at.Y), p > 0 and p < 1
 	end
 
+	-- The zipper's sound, done the way games do drag sounds (2026-11-11 research): a short zip loops the whole time the
+	-- backpack is up and never jumps or restarts (Roblox clicks when a sound is moved); how fast you pull sets how loud
+	-- it is, smoothed, silent below a slow crawl, with a slight rise in pitch when pulled faster.
+	local zipSound = Instance.new("Sound")
+	zipSound.Name, zipSound.SoundId, zipSound.Looped, zipSound.Volume = "Zipper", ZIP_SOUND, true, 0
+	zipSound.PlaybackRegionsEnabled, zipSound.LoopRegion = true, ZIP_LOOP
+	zipSound.Parent = game:GetService("SoundService")
+	local dragSpeed, zipLevel = 0, 0 -- the pull's speed along the zipper (shares of it a second); the sound's loudness (0-1)
 	local haptic = Instance.new("HapticEffect")
 	haptic.Type, haptic.Parent = Enum.HapticEffectType.UIClick, cover.Parent
 	local function buzz() pcall(function() haptic:Play() end) end
@@ -217,13 +242,13 @@ function Unlock.start(api)
 		if mainView then mainView:Destroy() end
 		for _, v in sideViews do v:Destroy() end
 		sideViews = {}
-		mainView, turnMain = view(card, item, 700, 255, 520, 290)
+		mainView, turnMain = view(card, item, MID - 260, 250, 520, 262)
 		mainView.ZIndex = 6
 		-- Its neighbours peek past the paper's edges (the concept's frame 7; Alan: fine with the background this dark).
 		for side, k in { [-1] = index - 1, [1] = index + 1 } do
 			local other = items[k]
 			if other then
-				local v, turn = view(card, other, side < 0 and 300 or 1360, 300, 260, 160)
+				local v, turn = view(card, other, side < 0 and 250 or 1370, 290, 300, 190)
 				v.ImageTransparency = 0.35; turn(0.6 + side * 0.4)
 				table.insert(sideViews, v)
 			end
@@ -233,15 +258,16 @@ function Unlock.start(api)
 		card.Action.Label.Text = item.free and "Put it on" or "See it"
 		card.Back.Visible, card.Next.Visible = #items > 1, #items > 1
 		dots:ClearAllChildren()
-		for i = 1, #items do
+		counter.Text = #items > 8 and (index .. " of " .. #items) or ""
+		for i = 1, #items <= 8 and #items or 0 do
 			local dot = Instance.new("Frame")
 			dot.BorderSizePixel, dot.Size = 0, UDim2.fromOffset(16, 16)
-			dot.Position = UDim2.fromOffset(960 - (#items - 1) * 12 + (i - 1) * 24 - 8, 517)
+			dot.Position = UDim2.fromOffset(MID - (#items - 1) * 12 + (i - 1) * 24 - 8, ROW_Y - 8)
 			dot.BackgroundColor3 = i == index and INK or Color3.fromRGB(190, 180, 165)
 			Instance.new("UICorner", dot).CornerRadius = UDim.new(0.5, 0)
 			dot.Parent = dots
 		end
-		dots.Visible = #items > 1
+		dots.Visible, counter.Visible = #items > 1, #items > 1
 		spin = 0
 	end
 
@@ -266,7 +292,7 @@ function Unlock.start(api)
 		if not item then close(); return end
 		showCard()
 		card.Visible = true
-		for _, label in { you, name, desc, status } do label.Visible = false end
+		for _, label in { you, name, desc, status, counter } do label.Visible = false end
 		card.Action.Visible, card.Later.Visible, card.Back.Visible, card.Next.Visible, dots.Visible = false, false, false, false, false
 		mainView.Position, mainView.Size = UDim2.fromOffset(960, 700), UDim2.fromOffset(120, 70)
 		TweenService:Create(mainView, TweenInfo.new(0.9, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
@@ -277,7 +303,7 @@ function Unlock.start(api)
 			stage = "card"
 			TweenService:Create(bag, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
 				{ Position = UDim2.fromOffset(BAG_X + 667 / 2, BAG_Y + 317 + 700) }):Play()
-			for _, label in { you, name, desc, status } do label.Visible = true end
+			for _, label in { you, name, desc, status, counter } do label.Visible = true end
 			card.Action.Visible, card.Later.Visible, card.Back.Visible, card.Next.Visible, dots.Visible = true, true, #items > 1, #items > 1, #items > 1
 		end)
 	end
@@ -285,6 +311,8 @@ function Unlock.start(api)
 	-- Opens the backpack for these unlocks (a test from Studio passes its own list and doesn't save).
 	local function play(list, newLevel, test)
 		if stage or #list == 0 then return end
+		zipSound.Volume, zipLevel, dragSpeed = 0, 0, 0
+		zipSound:Play()
 		items, index, level, stage, testing = list, 1, newLevel, "zip", test == true
 		title.Text = "LEVEL " .. newLevel .. "!"
 		p, dragging, idle = 0, false, 0
@@ -306,14 +334,29 @@ function Unlock.start(api)
 		index = (index - 1 + d) % #items + 1
 		showCard()
 	end
-	PaperUI.button(card, "Back", Art.buttonCream, "<", 640, 355, 74, 64, -1, function() step(-1) end, 42)
-	PaperUI.button(card, "Next", Art.buttonCream, ">", 1206, 355, 74, 64, -1, function() step(1) end, 42)
-	PaperUI.button(card, "Action", Assets.hangar.buttonGreen, "Put it on", 704, 880, 240, 76, -1, function()
+	-- Back and next: ink chevrons drawn on the page either side of the dots (Alan 2026-11-11: paper tags over the
+	-- binder holes looked bad).
+	local function chevron(name, x, dir)
+		local b = Instance.new("TextButton")
+		b.Name, b.Text, b.BackgroundTransparency, b.AutoButtonColor = name, "", 1, false
+		b.AnchorPoint, b.Position, b.Size, b.ZIndex, b.Parent = Vector2.new(0.5, 0.5), UDim2.fromOffset(x, ROW_Y), UDim2.fromOffset(70, 70), 6, card
+		ink(b, { { 35 - 10 * dir, 14 }, { 35 + 12 * dir, 35 }, { 35 - 10 * dir, 56 } }, 10, 70, 70)
+		local grow = Instance.new("UIScale")
+		grow.Parent = b
+		b.MouseEnter:Connect(function() grow.Scale = 1.15 end)
+		b.MouseLeave:Connect(function() grow.Scale = 1 end)
+		local hit = PaperUI.tapArea(b)
+		for _, target in { b, hit } do target.Activated:Connect(function() step(dir) end) end
+		return b
+	end
+	chevron("Back", MID - 150, -1)
+	chevron("Next", MID + 150, 1)
+	PaperUI.button(card, "Action", Assets.hangar.buttonGreen, "Put it on", MID - 268, 885, 240, 76, -1, function()
 		local item = items[index]
 		close()
 		if item then api.open(item.kind ~= "class" and item.kind or nil) end
 	end, 42)
-	PaperUI.button(card, "Later", Art.buttonCream, "Later", 976, 880, 240, 76, -1, function()
+	PaperUI.button(card, "Later", Art.buttonCream, "Later", MID + 28, 885, 240, 76, -1, function()
 		table.remove(items, index)
 		if #items == 0 then close(); return end
 		index = math.min(index, #items)
@@ -356,7 +399,9 @@ function Unlock.start(api)
 		local q = nearest(screenPoint(input))
 		if math.abs(q - p) < 0.3 then
 			local before = math.floor(p * (FRAMES + 1))
-			p, lastMove = q, os.clock()
+			local now = os.clock()
+			dragSpeed = dragSpeed * 0.6 + math.abs(q - p) / math.max(now - lastMove, 1 / 60) * 0.4
+			p, lastMove = q, now
 			if math.floor(p * (FRAMES + 1)) ~= before then buzz() end
 			drawZip()
 			if p >= 0.96 then popOut() end
@@ -382,6 +427,12 @@ function Unlock.start(api)
 		local shaking = dragging and os.clock() - lastMove < 0.1
 		group.Position = shaking and UDim2.fromOffset(math.random(-3, 3), math.random(-3, 3)) or UDim2.new()
 		bottom.Position = shaking and UDim2.new(0.5, math.random(-3, 3), 1, math.random(-3, 3)) or UDim2.fromScale(0.5, 1)
+		if os.clock() - lastMove > 0.04 then dragSpeed *= math.exp(-dt * 18) end -- no movement: the speed falls away
+		local want = stage == "zip" and dragging and math.clamp((dragSpeed - 0.08) / 0.5, 0, 1) or 0
+		zipLevel += (want - zipLevel) * math.min(1, dt * (want > zipLevel and 25 or 12)) -- quick to start, a little slower to stop
+		zipSound.Volume = zipLevel * 0.72 * (Root:GetAttribute("SoundVolume") or 1)
+		zipSound.PlaybackSpeed = 0.95 + 0.15 * math.clamp(dragSpeed, 0, 1)
+		if stage ~= "zip" and zipLevel < 0.01 and zipSound.IsPlaying then zipSound:Stop() end
 		if stage == "zip" then
 			idle += dt
 			hint.Visible = not dragging and p == 0 and idle > HINT_AFTER and api.seenLevel() <= HINT_UP_TO
