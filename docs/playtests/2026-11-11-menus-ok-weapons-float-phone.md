@@ -8,8 +8,9 @@ and played it on his real phone. Sent two screenshots of one build in the Hangar
 - **Menus: approved.** "All the text and images look good."
 - **Weapons don't attach to the planes** (two examples on one build): the popcorn Poppers hang under the wings with a
   gap; a gun on the body spot sits in the body's side.
-- **Phone:** "the speed match and the buttons look bad now, something didn't port right." (Speed match is the
-  phone-only Settings row; not yet pinned down: waiting on a phone screenshot.)
+- **Phone:** "the speed match and the buttons look bad now, something didn't port right." His phone screenshot (in a
+  match): the FIRE and BRAKE buttons' crayon fill sits over their words, and the "SPEED MATCH" tag under the view is
+  white words that don't match the game's text.
 
 ## What changed
 - Every gun now hangs by its highest point and touches what it hangs from: the wing root on the body pair (they hung up
@@ -17,5 +18,7 @@ and played it on his real phone. Sent two screenshots of one build in the Hangar
   Wings hung lower still), and crowded guns shrink toward their top. Checked on exact shapes: all 1,500 placements
   (6 bodies x 6 wing sets x 10 weapons x every spot) touch, none pokes through a wing. Details:
   [planes and hangar](../systems/planes-and-hangar.md).
-- Phone: measured every phone-sized menu button in Studio's phone mode (paper drawn vs words): nothing differs from the
-  PC look Alan approved (the Hangar Back's tight words are the same on PC). Nothing changed yet; waiting on a screenshot.
+- Phone: both came from text style C (2026-11-08), never checked on a phone. The crayon words' three copies stayed at
+  ZIndex 1 and drew under the buttons' crayon fill (the touch screen layers globally): copies now take the label's
+  ZIndex, for every word in the game. The BRAKE / SPEED MATCH tag is now a notebook strip with crayon words, like the
+  match strip. Checked in Studio's phone mode by numbers (layers, words on the strip); not yet seen on the phone.

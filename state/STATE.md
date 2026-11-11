@@ -3,11 +3,11 @@
 - **Guns now touch the plane** (your two Hangar screenshots): body-spot guns hung up to half a stud under the wing root
   on every plane, Swept Wings guns hung low, crowded guns shrank off the wing. All 1,500 body x wings x gun x spot
   placements checked on exact shapes: all touch, none pokes through. Not published yet.
-- **Phone "speed match and buttons look bad": not fixed yet.** Phone-mode measuring of every menu button found nothing
-  different from the PC look you approved. Need a phone screenshot to see what you saw.
+- **Phone fixed (from your screenshot), not published:** FIRE/BRAKE/BOOST words now draw over their crayon fill (every
+  word's style copies now keep its layer), and SPEED MATCH / BRAKE under the view is a notebook strip with crayon words.
 
 # Now: finish the game for the beta
-Next: (1) the phone look (your screenshot); (2) the unlock moment
+Next: (1) your look at guns + phone fixes, then publish; (2) the unlock moment
 (concept frames in .planning/unlock-concept2/). Shop step later: re-scale Paper packs and Robux part prices.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
 Backlog, must do: the results card becomes a report card. Phones: the lesson goal note's phone shapes still use the old
@@ -48,8 +48,7 @@ Duct props see-through; veterans flee to the ducts 40% when shot at. Chalk erase
 Zone 680-840 across; bots on the zone 30/60/85%. Points: assist share rounded to 5 (10-80); outside-zone fold 40%.
 
 Waiting on Alan
-- A phone screenshot of what looks bad (Speed match row, buttons). Guns: look at a few builds in the Hangar, then
-  publish. In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
+- Guns: look at a few builds in the Hangar. Then publish and check on your phone: FIRE/BRAKE words, SPEED MATCH strip. In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
 - Save to File / publish when you want the new weapon models in the place and live (your go each).
 - Publish (File > Publish As > Overwrite), then on your phone: kill feed, desk dev panel, results card, confetti.
 - Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings.

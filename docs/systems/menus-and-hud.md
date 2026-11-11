@@ -3,14 +3,26 @@
 ## What the player sees
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
-## Where it stands (2026-11-07)
+## Where it stands (2026-11-11)
+**Menus fit (branch `wip/stretch-fix-2026-11-09`, not in the game yet):** every picture is drawn at its own shape
+(`PaperUI.button` and `image` use Fit; boxes set to the picture's shape) and words sit inside their paper
+(`PaperUI.fitWords` shrinks only words too long for their strip). Stats papers: Hangar uses the original paper widened on
+both sides of its tape (`tools/art/widen_paper.py`), rows filling it evenly, centred over Customize; Customize uses the
+original paper at 540 wide, rows written between its ruled lines at their original sizes, the binder drawn at 95%.
+Sticky notes (lesson goal note, Range notes, Match tips, the welcome/end card) use the wide sticky note at its own
+shape with everything on its paper; the note's X is a little torn red square (`tools/art/square_from_strip.py`).
+Alan approved the Hangar and Customize stats on 2026-11-10; the 7 new pictures were uploaded 2026-11-11 (all approved
+by Roblox, online pixels match the files) and the work merged to main. Phones: the lesson goal note keeps its old square note (its phone shapes not redone yet).
+
 **Text style C** (2026-11-08, [decision](../decisions/2026-11-08-text-style-crayon.md)): every word made by
 `PaperUI.words` is warm black over a cream edge and a soft shadow (`PaperUI.crayon`: the label's own letters are hidden
 and three child copies draw the look, since a label shows only one UIStroke). Loud words (`PaperUI.loud`: every
 `PaperUI.button`, titles, card and build names, the HUD's paper slips, the build-name box) are heavier with the full
 edge; all other words are quiet, a thin edge and fainter shadow (Alan: descriptive words with the full look were hard
-to read). Checked in Studio Play on the main menu and the Hangar binder's Gear page. Not styled: the 13 labels made
-directly (score pop-ups, dev buttons, some HUD) and words that add their own outline.
+to read). Checked in Studio Play on the main menu and the Hangar binder's Gear page. The copies take the label's ZIndex
+(Alan's phone 2026-11-11: in the touch buttons, a Global-layered screen, the crayon fill covered FIRE's words). Not
+styled: the labels made directly (score pop-ups, dev buttons) and words that add their own outline. The BRAKE /
+SPEED MATCH tag under the view is a notebook strip with crayon words since 2026-11-11 (it was white words).
 Tab's live standings are built (2026-11-06); the live columns are not confirmed in play yet.
 
 Menu-only screens (loading, main menu, settings, hangar, shop, wait, Training, round end) draw their boards and
@@ -123,7 +135,8 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |
-| `src/client/PaperUI.luau` | Shared builder for the paper screens; phone sizes (`isPhone`, `phone`) and the notch-safe sheet |
+| `src/client/PaperUI.luau` | Shared builder for the paper screens; phone sizes (`isPhone`, `phone`) and the notch-safe sheet; `button` draws its picture at its own shape (Fit) and `fitWords` shrinks words only when they're too long for their paper |
+| `tools/art/square_from_strip.py` | Cuts a little square of torn paper from a strip's plain middle (the notes' red X box), torn all round from the strip's own edge |
 | `src/client/ScreenFit.luau` | The one size rule ([screen fit plan](../plan/SCREEN-FIT-PLAN.md)): screen kind (phone, tablet, PC) and each piece's scale between its least and most; `dodger` keeps notes out of the way ([tutorial](tutorial.md)); Studio hooks `DevPhone`, `DevCover` |
 | `src/client/ScreenCheck.luau` | Studio tool: lists overlapping pieces, pieces under Roblox's buttons or off screen, small words and small taps |
 | `src/first/UIAssets.luau` | Uploaded menu and HUD image IDs (in ReplicatedFirst, so the loading screen can fetch them first; `src/shared/UIAssets.luau` points to it) |

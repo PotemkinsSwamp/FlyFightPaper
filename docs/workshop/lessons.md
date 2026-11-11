@@ -509,6 +509,8 @@ Back to [HOME](../HOME.md)
   letters and draws three copies. A `UITextSizeConstraint` on the label capped only the hidden letters, so every scaled
   label (stat numbers, cubby names, gear names) drew at its whole box's size. `crayon` now copies the cap. A cloned label
   (`card:Clone()`) loses the link to its copies and keeps showing its old words: draw the look again on the clone.
+  The copies must take the label's ZIndex too: in a ScreenGui with `ZIndexBehavior` Global (TouchControls, FlightHUD)
+  copies left at 1 draw under whatever the label sits over (FIRE's crayon fill on Alan's phone, 2026-11-11).
 - **A picture at its own shape is smaller than its box (2026-11-09):** with `ScaleType.Fit` the paper no longer fills a
   box of another shape, so words placed in the box land off the paper. Give every box the picture's own shape and place
   words inside the paper's measured area (sticky notes: paper 16-95% down, tape 42-67% across down to 30%).

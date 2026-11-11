@@ -295,6 +295,14 @@ function HUD.start(getPlane, action)
 	ScreenFit.watch(function() pickerFit.Scale=math.min(1,(workspace.CurrentCamera.ViewportSize.X-16)/880) end)
 	-- Crayon colours for the round strip's words.
 	local function crayon(text, hex) return string.format('<font color="#%s">%s</font>', hex, text) end
+	-- The strip hides in the tutorial room (lessons, the Hangar Range). Its round pauses there and sends nothing, so the
+	-- room's own flag re-checks it (Alan 2026-11-09: the FFA strip stayed over the Range after a match).
+	local stripShown = { match = false, first = false }
+	function stripShown.refresh()
+		local on = stripShown.match and not Root:GetAttribute("TutorialRoom")
+		round.Visible, star.Visible = on, stripShown.first and on
+	end
+	Root:GetAttributeChangedSignal("TutorialRoom"):Connect(stripShown.refresh)
 	game.ReplicatedStorage.FlyFightPaper:WaitForChild("RoundView").OnClientEvent:Connect(function(snapshot)
 		votePhase = snapshot.phase == "VOTE"
 		local remaining=snapshot.endsAt and math.max(0,math.ceil(snapshot.endsAt-snapshot.serverTime)) or 0
@@ -324,8 +332,8 @@ function HUD.start(getPlane, action)
 		end
 		-- The gold star sits at the strip's right end, so 1st-place words make room for it.
 		-- No round running (the Range, the tutorial's own room): no clock, mode or place.
-		local match = text ~= nil and snapshot.endsAt ~= nil and FlightState.aimPoint == nil and not game.ReplicatedStorage.FlyFightPaper:GetAttribute("TutorialRoom")
-		round.Words.Text, round.Visible, star.Visible = text or "", match, first and match
+		round.Words.Text, stripShown.match, stripShown.first = text or "", text ~= nil and snapshot.endsAt ~= nil and FlightState.aimPoint == nil, first
+		stripShown.refresh()
 		local control = snapshot.mode == "CONTROL"
 		teams = snapshot.teams or teams
 		capture.Visible = control
@@ -410,10 +418,9 @@ function HUD.start(getPlane, action)
 	local healthRow = bar(left, "Health", 160, 178, 630)
 	local liftRow = bar(left, "Lift", 85, 178, 630)
 	local boostRow = bar(left, "Boost", 10, 178, 630)
-	-- Under the middle of the view while the brake (Space) or a phone's speed matching is slowing the plane.
-	local slowTag = PaperUI.words(gui, "SlowTag", "", 0, 0, 400, 40, 30)
-	slowTag.AnchorPoint, slowTag.Position, slowTag.TextXAlignment = Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.66), Enum.TextXAlignment.Center
-	slowTag.TextColor3, slowTag.TextStrokeTransparency, slowTag.TextStrokeColor3 = Color3.new(1, 1, 1), 0.3, PaperUI.INK
+	-- Under the middle of the view while the brake (Space) or a phone's speed matching is slowing the plane: crayon words
+	-- on a notebook strip at the strip's own shape, like the match strip (Alan 2026-11-11: white words didn't match).
+	local slowTag = note(panel("Slow", Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.66), UDim2.fromOffset(520, 66)), "SlowTag", UIArt.hud.notebook, 520, 66, 0, 36)
 	local right = corner("Weapons", Vector2.new(1, 1), 700)
 	local triggerRows = { bar(right, "Left", 85, 308, 700, "L"), bar(right, "Right", 160, 308, 700, "R") }
 
@@ -743,8 +750,8 @@ function HUD.start(getPlane, action)
 		boostRow.show(tenths(plane:GetAttribute("Boost") or 0, boostMax), "blue")
 		boostRow.value.Text = string.format("%.1fs", plane:GetAttribute("Boost") or 0)
 		local flyingNow = plane:GetAttribute("State") == "FLYING"
-		slowTag.Text = flyingNow and (plane:GetAttribute("Braking") and "BRAKE" or FlightState.matching and "SPEED MATCH") or ""
-		slowTag.Visible = slowTag.Text ~= ""
+		local slow = flyingNow and (plane:GetAttribute("Braking") and "BRAKE" or FlightState.matching and "SPEED MATCH") or ""
+		slowTag.Words.Text, slowTag.Visible = slow, slow ~= ""
 		left.Visible = not plane:GetAttribute("Pinned") -- the Range: nothing hurts you and Lift never runs out
 		local ids=string.split(plane:GetAttribute("Mounts") or "",",")
 		local groups=assert(CombatRules.triggerGroups({weapon_mounts=ids}));local eraserButton="right-click"

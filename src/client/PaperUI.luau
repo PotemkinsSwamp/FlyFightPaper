@@ -94,8 +94,10 @@ end
 -- (MaxVisibleGraphemes 0 keeps its TextBounds) and three child copies draw the look, following its text, colour and
 -- fades. A label that gets its own UIStroke later keeps that look; a text box shows its own letters while typing or empty.
 local CREAM, SHADOW = Color3.fromRGB(255, 248, 232), Color3.new(0, 0, 0)
+-- ZIndex too: copies left at 1 drew under whatever the label sits over (Alan's phone 2026-11-11: FIRE's crayon fill
+-- covered its words).
 local FOLLOW = { "Text", "TextSize", "TextScaled", "TextWrapped", "RichText", "FontFace", "TextXAlignment",
-	"TextYAlignment", "LineHeight", "TextTruncate" }
+	"TextYAlignment", "LineHeight", "TextTruncate", "ZIndex" }
 local WATCH = { TextColor3 = true, TextTransparency = true, TextBounds = true }
 for _, key in FOLLOW do WATCH[key] = true end
 function PaperUI.crayon(label)
@@ -112,9 +114,14 @@ function PaperUI.crayon(label)
 	local function refresh()
 		local own = typing or label:IsA("TextBox") and label.Text == ""
 		label.MaxVisibleGraphemes = own and -1 or 0
+		-- A size cap on the label caps its copies too (they drew scaled words at full box size: 2026-11-09).
+		local cap = label:FindFirstChildOfClass("UITextSizeConstraint")
 		for _, copy in copies do
 			copy.Visible = not own
 			for _, key in FOLLOW do copy[key] = label[key] end
+			local mine = copy:FindFirstChildOfClass("UITextSizeConstraint")
+			if cap and not mine then mine = Instance.new("UITextSizeConstraint"); mine.Parent = copy end
+			if mine then mine.MaxTextSize, mine.MinTextSize = cap and cap.MaxTextSize or 1000, cap and cap.MinTextSize or 1 end
 		end
 		-- Sheet-sized letters: a scaled label's TextBounds are screen pixels, its offset height is sheet units.
 		local size = label.TextSize
@@ -142,6 +149,10 @@ function PaperUI.crayon(label)
 		label.FocusLost:Connect(function() typing = false; if watching then refresh() end end)
 	end
 	label.ChildAdded:Connect(function(child)
+		if child:IsA("UITextSizeConstraint") and watching then
+			refresh()
+			child.Changed:Connect(function() if watching then refresh() end end)
+		end
 		if child:IsA("UIStroke") and watching then
 			watching:Disconnect(); watching = nil
 			for _, copy in copies do copy:Destroy() end
@@ -215,17 +226,48 @@ function PaperUI.tapArea(button, tallOnly)
 	grow()
 	return hit
 end
+-- Words too long for `room` (sheet units across, or a function giving it) get smaller until they fit; words that fit
+-- keep their size (Alan 2026-11-09: "Paper Pellet Gun" ran off its card while "Spitball Straw" fit). Follows later
+-- changes of the text.
+local TextService = game:GetService("TextService")
+function PaperUI.fitWords(label, room)
+	local want, mine, asked = label.TextSize, nil, 0
+	local function fit()
+		asked += 1
+		local ticket = asked
+		task.spawn(function()
+			local params = Instance.new("GetTextBoundsParams")
+			params.Text, params.Font, params.Size, params.Width = label.Text, label.FontFace, want, 100000
+			params.RichText = label.RichText
+			local ok, bounds = pcall(TextService.GetTextBoundsAsync, TextService, params)
+			if not ok or ticket ~= asked then return end
+			local across = type(room) == "function" and room() or room
+			mine = bounds.X > across and math.floor(want * across / bounds.X) or want
+			label.TextSize = mine
+		end)
+	end
+	label:GetPropertyChangedSignal("Text"):Connect(fit)
+	-- A size set from outside (a phone's bigger words) is the new size to aim for.
+	label:GetPropertyChangedSignal("TextSize"):Connect(function()
+		if label.TextSize ~= mine then want = label.TextSize; fit() end
+	end)
+	fit()
+end
+
 -- A paper button with a word on it: grows and tilts under the mouse, squishes when pressed.
 function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback, size)
 	local button = Instance.new("ImageButton")
 	button.Name, button.Image, button.BackgroundTransparency = name, id, 1
 	button.AnchorPoint = Vector2.new(0.5, 0.5)
 	button.Position, button.Size, button.Rotation = UDim2.fromOffset(x + w / 2, y + h / 2), UDim2.fromOffset(w, h), rotation or 0
-	button.ScaleType = Enum.ScaleType.Stretch
+	-- The picture keeps its own shape inside the box (Alan 2026-11-09: stretched strips squashed their painted tacks);
+	-- the box is still what takes the clicks.
+	button.ScaleType = Enum.ScaleType.Fit
 	button.Parent = parent
 	rest[button] = { size = button.Size, rotation = button.Rotation }
 	local text = PaperUI.loud(PaperUI.words(button, "Label", label, 0, 0, w, h, size or 80))
 	text.Size, text.TextXAlignment = UDim2.fromScale(1, 1), Enum.TextXAlignment.Center
+	PaperUI.fitWords(text, function() return (rest[button] or { size = button.Size }).size.X.Offset * 0.7 end) -- between a strip's painted tacks
 	local info = TweenInfo.new(0.12, Enum.EasingStyle.Quad)
 	local function to(sx, sy, turn)
 		local base = rest[button]
