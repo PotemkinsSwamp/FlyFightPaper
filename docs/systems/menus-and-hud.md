@@ -22,7 +22,7 @@ edge; all other words are quiet, a thin edge and fainter shadow (Alan: descripti
 to read). Checked in Studio Play on the main menu and the Hangar binder's Gear page. The copies take the label's ZIndex
 (Alan's phone 2026-11-11: in the touch buttons, a Global-layered screen, the crayon fill covered FIRE's words). Not
 styled: the labels made directly (score pop-ups, dev buttons) and words that add their own outline. The BRAKE /
-SPEED MATCH tag under the view is a notebook strip with crayon words since 2026-11-11 (it was white words).
+SPEED MATCH tag under the view is crayon words since 2026-11-11 (it was white words; Alan didn't want paper behind it).
 Tab's live standings are built (2026-11-06); the live columns are not confirmed in play yet.
 
 Menu-only screens (loading, main menu, settings, hangar, shop, wait, Training, round end) draw their boards and

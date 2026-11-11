@@ -3,8 +3,8 @@
 - **Guns now touch the plane** (your two Hangar screenshots): body-spot guns hung up to half a stud under the wing root
   on every plane, Swept Wings guns hung low, crowded guns shrank off the wing. All 1,500 body x wings x gun x spot
   placements checked on exact shapes: all touch, none pokes through. Not published yet.
-- **Phone fixed (from your screenshot), not published:** FIRE/BRAKE/BOOST words now draw over their crayon fill (every
-  word's style copies now keep its layer), and SPEED MATCH / BRAKE under the view is a notebook strip with crayon words.
+- **Phone fixed (from your screenshots):** FIRE/BRAKE/BOOST words now draw over their crayon fill (every
+  word's style copies now keep its layer; you saw it work), and SPEED MATCH / BRAKE is crayon words, no paper.
 
 # Now: finish the game for the beta
 Next: (1) your look at guns + phone fixes, then publish; (2) the unlock moment

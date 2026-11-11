@@ -418,9 +418,10 @@ function HUD.start(getPlane, action)
 	local healthRow = bar(left, "Health", 160, 178, 630)
 	local liftRow = bar(left, "Lift", 85, 178, 630)
 	local boostRow = bar(left, "Boost", 10, 178, 630)
-	-- Under the middle of the view while the brake (Space) or a phone's speed matching is slowing the plane: crayon words
-	-- on a notebook strip at the strip's own shape, like the match strip (Alan 2026-11-11: white words didn't match).
-	local slowTag = note(panel("Slow", Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.66), UDim2.fromOffset(520, 66)), "SlowTag", UIArt.hud.notebook, 520, 66, 0, 36)
+	-- Under the middle of the view while the brake (Space) or a phone's speed matching is slowing the plane: the game's
+	-- crayon words, no paper (Alan 2026-11-11: white words didn't match; a notebook strip behind them, he didn't like).
+	local slowTag = PaperUI.loud(PaperUI.words(panel("Slow", Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.66), UDim2.fromOffset(520, 66)), "SlowTag", "", 0, 0, 520, 66, 36))
+	slowTag.TextXAlignment = Enum.TextXAlignment.Center
 	local right = corner("Weapons", Vector2.new(1, 1), 700)
 	local triggerRows = { bar(right, "Left", 85, 308, 700, "L"), bar(right, "Right", 160, 308, 700, "R") }
 
@@ -751,7 +752,7 @@ function HUD.start(getPlane, action)
 		boostRow.value.Text = string.format("%.1fs", plane:GetAttribute("Boost") or 0)
 		local flyingNow = plane:GetAttribute("State") == "FLYING"
 		local slow = flyingNow and (plane:GetAttribute("Braking") and "BRAKE" or FlightState.matching and "SPEED MATCH") or ""
-		slowTag.Words.Text, slowTag.Visible = slow, slow ~= ""
+		slowTag.Text, slowTag.Visible = slow, slow ~= ""
 		left.Visible = not plane:GetAttribute("Pinned") -- the Range: nothing hurts you and Lift never runs out
 		local ids=string.split(plane:GetAttribute("Mounts") or "",",")
 		local groups=assert(CombatRules.triggerGroups({weapon_mounts=ids}));local eraserButton="right-click"

@@ -20,5 +20,6 @@ and played it on his real phone. Sent two screenshots of one build in the Hangar
   [planes and hangar](../systems/planes-and-hangar.md).
 - Phone: both came from text style C (2026-11-08), never checked on a phone. The crayon words' three copies stayed at
   ZIndex 1 and drew under the buttons' crayon fill (the touch screen layers globally): copies now take the label's
-  ZIndex, for every word in the game. The BRAKE / SPEED MATCH tag is now a notebook strip with crayon words, like the
-  match strip. Checked in Studio's phone mode by numbers (layers, words on the strip); not yet seen on the phone.
+  ZIndex, for every word in the game. The BRAKE / SPEED MATCH tag got the crayon words.
+- Phone, second look (published): FIRE / BRAKE words and the weapon name now read on top. He didn't like the notebook
+  strip behind SPEED MATCH: it is crayon words alone now.
