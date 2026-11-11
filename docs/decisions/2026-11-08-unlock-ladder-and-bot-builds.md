@@ -43,6 +43,9 @@
 - **Concept review:** frames 1-2 are right. The backpack is bigger and wider, stays at the bottom edge of the screen
   and never shows its bottom (so frames 3-4 as drawn are wrong). Items poking past the paper's edge (frames 6-7) are OK
   if the background is darkened enough.
+- **When it plays** (Alan, 2026-11-11): not during the vote lap (it would interrupt play). Leveling up shows a small
+  "you unlocked something, open Menu" note with confetti; the backpack plays when you open the Menu, and unlocks pile
+  up until you do. Preset planes come out of the backpack too. How it works: [the unlock plan](../plan/UNLOCK-PLAN.md).
 - **Order:** text style test, then Aces and bot tricks (and their measuring matches), then the unlock moment.
 - **After the Ace matches** (Alan, later the same day): the Crayon Tank turn-fights like the best planes (drop its
   stand-off; rebuild its weapons only if it's still weak). Order now: fix the bots (Crayon Tank, why Aces don't beat
