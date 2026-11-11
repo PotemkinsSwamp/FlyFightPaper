@@ -246,9 +246,9 @@ function Customize.draw(content, ctx)
 			end
 			about(string.format("Spot %d: %s%s. %s", m, body.mount_types[m], part and (groups[m] == 1 and ", left click" or ", right click") or "",
 				part and part.name .. ": " .. part.description or "Empty: pick a gear card."))
-			-- In the Buy / Cancel pair's two places (Alan 2026-11-11: a Clear all for every spot).
+			-- In the Buy / Cancel pair's two places (Alan 2026-11-11: a Clear all for every spot, the same taped paper in red).
 			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 735, 980, 240, 70, -1, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
-			button(content, "ClearAll", Art.tab, "Clear all", 995, 980, 240, 70, 1, function() ctx.choose(builder.clearMounts) end, 32)
+			button(content, "ClearAll", Art.buttonRed, "Clear all", 995, 980, 240, 70, -1, function() ctx.choose(builder.clearMounts) end, 32)
 		elseif state.slot == "boost" then
 			button(content, "NoBoost", Art.tab, "No booster", 840, 980, 260, 70, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
 		end

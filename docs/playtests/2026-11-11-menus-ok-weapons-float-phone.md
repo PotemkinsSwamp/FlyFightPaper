@@ -24,4 +24,5 @@ and played it on his real phone. Sent two screenshots of one build in the Hangar
 - Phone, second look (published): FIRE / BRAKE words and the weapon name now read on top. He didn't like the notebook
   strip behind SPEED MATCH: it is crayon words alone now.
 - Guns attached: "looks good". He asked for a Clear all on the Gear page: built next to Clear spot (the Buy / Cancel
-  places), not yet seen by him.
+  places). He wanted it identical to Clear spot but red, with tape not a pin: the green taped paper recoloured red
+  (preview `.planning/menu-fit/10-clear-all-red-preview.jpg`, his OK, uploaded), same size and tilt.

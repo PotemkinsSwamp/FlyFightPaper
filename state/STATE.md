@@ -1,6 +1,6 @@
 # Since Alan last checked (2026-11-11)
 - **Menus fit is live and you approved it** (pictures uploaded, merged to main, you published).
-- **Clear all** on the Gear page (your ask): empties every spot; next to Clear spot. Not seen by you yet.
+- **Clear all** on the Gear page (your ask): empties every spot; Clear spot's taped paper in red (uploaded).
 - **Guns now touch the plane** (you OK'd it): body-spot guns hung up to half a stud under the wing root
   on every plane, Swept Wings guns hung low, crowded guns shrank off the wing. All 1,500 body x wings x gun x spot
   placements checked on exact shapes: all touch, none pokes through. Not published yet.

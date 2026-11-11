@@ -10,6 +10,8 @@ return {
 		drawing2 = "rbxassetid://84778693355255",
 		photo = "rbxassetid://83093020395376",
 		plane = "rbxassetid://118655728797714",
+		-- A little square cut from the red strip's plain middle, torn all round (tools/art/square_from_strip.py): the note's X.
+		boxRed = "rbxassetid://92292383792282",
 	},
 	settings = {
 		bg = { "rbxassetid://104052162768654", "rbxassetid://111560859395578", "rbxassetid://138034606283227", "rbxassetid://131649016886064" },
@@ -31,6 +33,10 @@ return {
 		preview = "rbxassetid://80540963066312",
 		bar = { red = "rbxassetid://125915066273285", blue = "rbxassetid://78667835427454", green = "rbxassetid://100029801723584", orange = "rbxassetid://101578956565177", empty = "rbxassetid://88470216324199" },
 		buttonGreen = "rbxassetid://83467354769758",
+		buttonRed = "rbxassetid://106732498442644", -- the green taped button recoloured red (Clear all, Alan 2026-11-11)
+		-- The card at the Customize cards' shapes: the same torn ends, less plain middle (Alan 2026-11-09: no stretching).
+		cardSquare = "rbxassetid://97198946223041", cardSelectedSquare = "rbxassetid://93613777070227",
+		cardWide = "rbxassetid://108833120652871", cardSelectedWide = "rbxassetid://127848279255936",
 	},
 	-- Desk quick menu (assets/ui/deskmenu/; concept desk-quick-menu-b). Uploaded 2026-10-22 after Alan OK'd the preview.
 	deskMenu = {
@@ -49,6 +55,7 @@ return {
 		indexTab = "rbxassetid://76160948676401", buttonOrange = "rbxassetid://126851776000245",
 		statsPaper = "rbxassetid://109589083209118", statLabel = "rbxassetid://92620076840621",
 		statBox = "rbxassetid://80213400784355", statBoxEmpty = "rbxassetid://138489607891947",
+		statsWide = "rbxassetid://116985768932063", -- the stats paper with more ruled paper in the middle
 	},
 	results = {
 		goldStar = "rbxassetid://120331771075457",
@@ -87,6 +94,8 @@ return {
 	ingame = {
 		clipboard = "rbxassetid://131222070269430",
 		stickyNote = "rbxassetid://97874141587630",
+		-- The sticky note with more plain paper (same tape, same peeled corner) for the wide notes over the game and menus.
+		stickyWide = "rbxassetid://91429942593722",
 		indexCard = "rbxassetid://127869005862718",
 		tapeLabel = "rbxassetid://72074243508272",
 	},
