@@ -117,6 +117,13 @@ function BuilderModel:selectMount(index, id)
 	return self:setCandidate(build)
 end
 
+-- Every gear spot emptied at once (Alan 2026-11-11: "Clear all").
+function BuilderModel:clearMounts()
+	local build = cloneLoadout(self.candidate)
+	for index in build.weapon_mounts do build.weapon_mounts[index] = false end
+	return self:setCandidate(build)
+end
+
 -- Every arrangement worth trying when weapon `id` is picked with mount `selected` chosen (Alan's note 20, for young
 -- kids: no "no" when a fix exists), best first: on the chosen mount; on an empty mount; on a taken mount whose
 -- weapon moves to an empty one (or the chosen one); finally swapping out every copy of the chosen mount's weapon.

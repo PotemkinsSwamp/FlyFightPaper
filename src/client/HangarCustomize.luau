@@ -23,17 +23,25 @@ Customize.TABS = {
 
 -- Binder layout (sheet pixels): the two halves meet at the rings; the plane photo fills the left page.
 local BINDER_X, BINDER_Y, PAGE_W, PAGE_H = 20, 165, 630, 920
+-- Everything of the binder (title, pages, tabs, cards, plane) is drawn this much smaller, from the sheet's top left,
+-- so the stats paper beside it can be bigger (Alan 2026-11-09). The stats paper, Save and Fly are on the full sheet.
+Customize.BINDER_SCALE = 0.95
 local PHOTO = { 75, 250, 530, 635 } -- the 3D plane on the left page, above its name tape
 
 -- ctx comes from Hangar: state, builder, draft, profile, range, dev, owned(part), choose(pick, ...),
--- placeWeapon(id), statSheet(stats, compare, x, y, w, h), preview(draft, box, diagram), nameTag(...), save(fly),
+-- placeWeapon(id), statSheet(stats, compare, x, y, w, kind, note), preview(draft, box, diagram), nameTag(...), save(fly),
 -- atDesk(), api, mountColours, tryOn(pick) (the build after pick(scratch builder), or nil).
+-- The stats paper: a little bigger than the 490 it was (at its own shape), right of the shrunk tabs, its bottom just
+-- above Save (Alan 2026-11-10). Save and Fly sit centred under it.
+local STATS_W, STATS_Y = 540, 160
+local STATS_X = 1900 - STATS_W
+local MID = STATS_X + STATS_W / 2
+
 function Customize.draw(content, ctx)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
-	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 500, 12, 700, 140)
-	title.ScaleType = Enum.ScaleType.Stretch
-	PaperUI.loud(words(title, "Label", ctx.range and "Range Customize" or "Customize", 0, 0, 700, 140, ctx.range and 72 or 88)).TextXAlignment = Enum.TextXAlignment.Center
+	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 400, 21, 900, 123) -- the tape's own shape
+	PaperUI.loud(words(title, "Label", ctx.range and "Range Customize" or "Customize", 0, 0, 900, 123, ctx.range and 72 or 88)).TextXAlignment = Enum.TextXAlignment.Center
 
 	-- Index tabs first so they tuck under the right page; the picked one sticks out further.
 	for i, tab in Customize.TABS do
@@ -71,7 +79,9 @@ function Customize.draw(content, ctx)
 		-- Clicking a card tries it on (Alan 2026-10-21): the plane and the numbers show it against what you have on now,
 		-- and Select puts it on. The card you already have on stops trying. Gear you own skips that (Alan 2026-10-21):
 		-- pick a spot number, click the gear, it goes on.
-		local card = button(content, part.id, equipped and Art.cardSelected or Art.card, "", x, y, 262, cardH, 0, function()
+		-- The card at this page's card shape (gear cards are wide and short), so it never stretches.
+		local art = gear and (equipped and Art.cardSelectedWide or Art.cardWide) or (equipped and Art.cardSelectedSquare or Art.cardSquare)
+		local card = button(content, part.id, art, "", x, y, 262, cardH, 0, function()
 			if blocked or state.slot == "weapons" and owned then -- blocked: says why not
 				state.trying = nil
 				ctx.choose(function() return ctx.placeWeapon(part.id) end)
@@ -86,17 +96,20 @@ function Customize.draw(content, ctx)
 			local ring = image(content, "Trying", Binder.outline, x - 14, y - 14, 290, cardH + 28)
 			ring.ScaleType, ring.SliceCenter, ring.SliceScale, ring.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.5, 3
 		end
-		local name = PaperUI.loud(words(card, "Name", part.name, 18, 14, 216, 96, 36))
+		-- Words stay inside every card picture's paper, the yellow picked border included: 9-87% across, 10-88% down
+		-- (Alan 2026-11-09: "Paper Pellet Gun" ran off its card). IN = that box on this card.
+		local IN = { x = 24, y = math.floor(cardH * 0.1), w = 204, h = math.floor(cardH * 0.78) }
+		local name = PaperUI.loud(words(card, "Name", part.name, IN.x, IN.y, IN.w, 80, 34))
 		name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
 		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and not ctx.catalog:owns(ctx.profile.ownership, part.id, game.Players.LocalPlayer:GetAttribute("Level") or 1) and "Range only" or "Owned") or part.paper_price == 0 and string.format("Free at level %d", part.min_level) or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
 		if state.slot == "weapons" then
 			-- Pips for how hard one shot hits (Alan); damage a second and the rest are in the box under the cards.
-			name.Position, name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(18, 6), UDim2.fromOffset(226, 40), false, true -- long names shrink to one line
+			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(IN.w, 32), false, true -- long names shrink to one line
 			local cap = Instance.new("UITextSizeConstraint")
-			cap.MaxTextSize, cap.Parent = 32, name
-			words(card, "HitLabel", "Hit", 18, 46, 50, 32, 24)
+			cap.MaxTextSize, cap.Parent = 30, name
+			words(card, "HitLabel", "Hit", IN.x, IN.y + 34, 44, 26, 22)
 			local hit = ctx.catalog.hitRating(part)
-			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, 62 + (k - 1) * 30, 50, 27, 25) end
+			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, IN.x + 42 + (k - 1) * 27, IN.y + 37, 24, 22) end
 			detail = string.format("%s, weight %d. %s", part.class, part.capacity, detail)
 			if blocked then
 				detail = blocked
@@ -109,20 +122,22 @@ function Customize.draw(content, ctx)
 					stroke.Parent = card
 				end
 			end
-			local status = words(card, "Status", detail, 18, 76, 226, 38, 23)
-			status.TextWrapped = true
+			local status = words(card, "Status", detail, IN.x, IN.y + 62, IN.w, IN.h - 62, 21)
+			status.TextWrapped, status.TextScaled = true, true
+			local fit = Instance.new("UITextSizeConstraint")
+			fit.MaxTextSize, fit.Parent = 21, status
 			if blocked then status.TextColor3, status.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
 		elseif state.slot == "boost" then
 			-- What each booster does (Alan 2026-10-21: three boosters looked the same).
-			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(216, 44), false, true
+			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(IN.w, 40), false, true
 			local cap = Instance.new("UITextSizeConstraint")
-			cap.MaxTextSize, cap.Parent = 34, name
-			local boost = words(card, "Boost", string.format("+%d%% speed for %d seconds", math.round((part.speed_factor - 1) * 100), part.boost_seconds), 18, 60, 216, 60, 26)
+			cap.MaxTextSize, cap.Parent = 32, name
+			local boost = words(card, "Boost", string.format("+%d%% speed for %d seconds", math.round((part.speed_factor - 1) * 100), part.boost_seconds), IN.x, IN.y + 44, IN.w, 60, 24)
 			boost.TextWrapped = true
-			local info = words(card, "Status", detail, 18, 128, 216, 50, 21)
+			local info = words(card, "Status", detail, IN.x, IN.y + 108, IN.w, IN.h - 108, 20)
 			info.TextWrapped = true
 		else
-			local info = words(card, "Status", detail, 18, 110, 216, 66, 24)
+			local info = words(card, "Status", detail, IN.x, IN.y + 92, IN.w, IN.h - 92, 22)
 			info.TextWrapped, info.TextYAlignment = true, Enum.TextYAlignment.Top
 		end
 		-- Phones: the card's words were 7-12 points; each grows as big as its box allows. (The binder is redrawn on
@@ -153,7 +168,7 @@ function Customize.draw(content, ctx)
 
 	-- Left page: the build's name, then the plane (the Gear page: a still diagram with a numbered tag on every mount).
 	local diagram = state.slot == "weapons" and not state.trying
-	ctx.nameTag(content, 115, 890, 450, 92, PaperUI.isPhone() and 54 or 44)
+	ctx.nameTag(content, 115, 905, 450, 61, PaperUI.isPhone() and 50 or 40) -- the tape's own shape
 	-- The plane as it would be with the card you're trying on: the same move Select makes, on a scratch copy; a part
 	-- you don't own yet is just swapped in.
 	local candidate = nil
@@ -178,7 +193,7 @@ function Customize.draw(content, ctx)
 			end
 		end
 	end
-	ctx.preview(candidate or draft, PHOTO, diagram, true)
+	ctx.preview(candidate or draft, PHOTO, diagram, true, nil, content)
 	local valid, reason = builder:validate(draft)
 	local stats = ctx.catalog:deriveStats(draft)
 	local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
@@ -196,7 +211,7 @@ function Customize.draw(content, ctx)
 	if state.trying then
 		local part = state.trying
 		if state.slot == "weapons" then about(part.name .. ": " .. part.description) end
-		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, 1415, 140, 490, 610)
+		ctx.statSheet(ctx.catalog:deriveStats(candidate) or stats, stats, STATS_X, STATS_Y, STATS_W, "tall")
 		if ctx.owned(part) then
 			note = part.name .. ": the numbers show what it changes. Select puts it on."
 			button(content, "SelectPart", Art.buttonGreen, "Select", 735, 980, 240, 70, -1, function()
@@ -214,7 +229,7 @@ function Customize.draw(content, ctx)
 		end
 		button(content, "CancelTry", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.trying = nil; ctx.render() end, 40)
 	else
-		ctx.statSheet(stats, nil, 1415, 140, 490, 610)
+		ctx.statSheet(stats, nil, STATS_X, STATS_Y, STATS_W, "tall")
 		if state.slot == "weapons" then
 			local body = ctx.catalog:get(draft.body)
 			local groups = assert(CombatRules.triggerGroups(draft))
@@ -231,7 +246,9 @@ function Customize.draw(content, ctx)
 			end
 			about(string.format("Spot %d: %s%s. %s", m, body.mount_types[m], part and (groups[m] == 1 and ", left click" or ", right click") or "",
 				part and part.name .. ": " .. part.description or "Empty: pick a gear card."))
-			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 840, 980, 260, 70, 2, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
+			-- In the Buy / Cancel pair's two places (Alan 2026-11-11: a Clear all for every spot).
+			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 735, 980, 240, 70, -1, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
+			button(content, "ClearAll", Art.tab, "Clear all", 995, 980, 240, 70, 1, function() ctx.choose(builder.clearMounts) end, 32)
 		elseif state.slot == "boost" then
 			button(content, "NoBoost", Art.tab, "No booster", 840, 980, 260, 70, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
 		end
@@ -249,13 +266,13 @@ function Customize.draw(content, ctx)
 	-- in the Range (saves and drops you back in flying it, Alan 2026-10-20).
 	local second = ctx.range and "Test in Range" or ctx.atDesk() and "Save & fly - 120 Paper"
 	if second then
-		button(content, "SavePreset", Art.buttonGreen, "Save", 1425, 775, 220, 150, -1, function() ctx.save(false) end, 52)
-		button(content, "SaveFly", Art.buttonGreen, second, 1655, 775, 250, 150, 1, function() ctx.save(true) end, 32)
+		button(ctx.side, "SavePreset", Art.buttonGreen, "Save", MID - 300, 810, 280, 74, -1, function() ctx.save(false) end, 48)
+		button(ctx.side, "SaveFly", Art.buttonGreen, second, MID + 10, 806, 300, 80, 1, function() ctx.save(true) end, 32)
 	else
-		button(content, "SavePreset", Art.buttonGreen, "Save loadout", 1440, 775, 460, 150, -1, function() ctx.save(false) end, 60)
+		button(ctx.side, "SavePreset", Art.buttonGreen, "Save loadout", MID - 230, 790, 460, 122, -1, function() ctx.save(false) end, 60)
 	end
 	-- Studio only: fly the draft straight away, nothing saved.
-	if ctx.dev and not ctx.range then button(content, "FlyBuild", Art.buttonGreen, "Fly this build", 1505, 945, 330, 90, -2, function() ctx.api.fly() end, 40) end
+	if ctx.dev and not ctx.range then button(ctx.side, "FlyBuild", Art.buttonGreen, "Fly this build", MID - 165, 945, 330, 88, -2, function() ctx.api.fly() end, 40) end
 end
 
 return Customize
