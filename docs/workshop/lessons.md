@@ -50,6 +50,10 @@ mistake would be easy to make twice.
   as the Luau). Alan caught a flat shelf (no top board), empty space and a stretched photo paper this way, before any
   upload (2026-10-21). Landscape paper art stretched into a tall box looks bad: drop it or get a piece in that shape.
 
+- **Merging a branch into main doesn't push to GitHub** (2026-11-11): git runs no post-commit hook for a merge, so
+  run `python tools/push_github.py` by hand after `git merge`. A test of the menu ids with `PreloadAsync` on id
+  text says "Failure" even for good pictures; check `IsLoaded` on a picture label instead.
+
 ## Making 3D models
 - **`toys.py` bakes go black in two cases** (2026-10-16): a `lathe()` profile listed top-to-bottom (list it bottom-
   to-top: its custom normals assume that), and beams split into overlapping pieces (coplanar overlaps). Look at
@@ -496,3 +500,10 @@ Back to [HOME](../HOME.md)
   ImageRectSize shape (the menu sheets set it): `(w/h) / (rectW/rectH)` off by more than 10% is a stretched picture.
   Open screens with the `DevScreen` player attribute. 2026-11-09 menus: 60 of 151 off; worst the Customize part cards
   (0.40), the Ask note's X (0.26), both Back strips (about 0.5), Customize stats paper, shop strips (1.6).
+- **The crayon words draw copies, so a size cap must reach them (2026-11-09):** `PaperUI.crayon` hides a label's own
+  letters and draws three copies. A `UITextSizeConstraint` on the label capped only the hidden letters, so every scaled
+  label (stat numbers, cubby names, gear names) drew at its whole box's size. `crayon` now copies the cap. A cloned label
+  (`card:Clone()`) loses the link to its copies and keeps showing its old words: draw the look again on the clone.
+- **A picture at its own shape is smaller than its box (2026-11-09):** with `ScaleType.Fit` the paper no longer fills a
+  box of another shape, so words placed in the box land off the paper. Give every box the picture's own shape and place
+  words inside the paper's measured area (sticky notes: paper 16-95% down, tape 42-67% across down to 30%).
