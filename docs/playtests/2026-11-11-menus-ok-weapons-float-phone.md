@@ -17,5 +17,5 @@ and played it on his real phone. Sent two screenshots of one build in the Hangar
   Wings hung lower still), and crowded guns shrink toward their top. Checked on exact shapes: all 1,500 placements
   (6 bodies x 6 wing sets x 10 weapons x every spot) touch, none pokes through a wing. Details:
   [planes and hangar](../systems/planes-and-hangar.md).
-- Phone: measured every phone-sized menu button in Studio's phone mode; only the Hangar Back strip stands out (drawn at
-  half its box height). Nothing changed yet.
+- Phone: measured every phone-sized menu button in Studio's phone mode (paper drawn vs words): nothing differs from the
+  PC look Alan approved (the Hangar Back's tight words are the same on PC). Nothing changed yet; waiting on a screenshot.

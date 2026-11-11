@@ -3,8 +3,8 @@
 - **Guns now touch the plane** (your two Hangar screenshots): body-spot guns hung up to half a stud under the wing root
   on every plane, Swept Wings guns hung low, crowded guns shrank off the wing. All 1,500 body x wings x gun x spot
   placements checked on exact shapes: all touch, none pokes through. Not published yet.
-- **Phone "speed match and buttons look bad": not fixed yet.** Phone-mode measuring found only the Hangar Back strip
-  (thin, words tight). Need a phone screenshot to see what you saw.
+- **Phone "speed match and buttons look bad": not fixed yet.** Phone-mode measuring of every menu button found nothing
+  different from the PC look you approved. Need a phone screenshot to see what you saw.
 
 # Now: finish the game for the beta
 Next: (1) the phone look (your screenshot); (2) the unlock moment
