@@ -17,6 +17,7 @@ function Spec.run()
 		end
 		assert(p.paperMilli==require(Root.Generated.Economy).initial_paper*1000)
 		assert(p.xpMilli==require(Root.Generated.Economy).initial_total_xp*1000)
+		assert(p.unlocksSeen==Economy.levelForXP(p.xpMilli))
 		assert(p.schemaVersion==Schema.VERSION and p.prestige==0 and next(p.lessons)==nil)
 	end)
 	test("Range presets allow unowned high-level parts while match presets still reject them",function()
@@ -60,6 +61,17 @@ function Spec.run()
 			local p=fresh(); p.prestige=rank; assert(not Schema.validate(p,catalog))
 		end
 		local p=fresh(); p.prestige=nil; assert(not Schema.validate(p,catalog))
+	end)
+	test("seen unlocks require a whole level from one through the configured cap",function()
+		for _,level in ipairs({0,1.5,"3",EconomyConfig.level_cap+1}) do
+			local p=fresh(); p.unlocksSeen=level
+			local valid,err=Schema.validate(p,catalog); assert(not valid and err:find("invalid_unlocks_seen",1,true))
+		end
+		local p=fresh(); p.unlocksSeen=nil; assert(not Schema.validate(p,catalog))
+	end)
+	test("seen unlocks may exceed the current level up to the configured cap",function()
+		local p=fresh(); p.unlocksSeen=EconomyConfig.level_cap
+		assert(p.unlocksSeen>Economy.levelForXP(p.xpMilli) and Schema.validate(p,catalog))
 	end)
 	test("new profiles have valid default crosshair settings",function()
 		local p=fresh()
@@ -114,7 +126,7 @@ function Spec.run()
 		expected.settings.crosshairColor="blue"; expected.settings.crosshairSize="Medium"
 		assert(Schema.canonical(migrated)==Schema.canonical(expected),"migration changed unrelated fields")
 	end)
-	test("v4 migration adds only prestige and schema version while keeping the complete save",function()
+	test("v4 migration adds current defaults while keeping the complete save",function()
 		local p=fresh(); p.schemaVersion=4; p.prestige=nil; p.version=12; p.generation=3
 		p.paperMilli=1234567; p.earnedPaperMilli=987654; p.purchasedPaperMilli=555000; p.xpMilli=60000000
 		p.ownership.staple=true; p.presets[1].name="Old build"; p.presets[1].loadout.weapon_mounts[1]="staple"
@@ -128,6 +140,7 @@ function Spec.run()
 			loadout=catalog:starterLoadout(),fence={nonce="old",generation=3,sessionGeneration=1,actorId="pilot",lifeId="1",matchId="match",participationId="pilot",padId="desk"}}}
 		local original=Schema.canonical(p); local expected=assert(Schema.copy(p))
 		expected.schemaVersion=Schema.VERSION; expected.prestige=0; expected.lessons={}
+		expected.unlocksSeen=assert(Economy.levelForXP(p.xpMilli))
 		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
 		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v4 migration changed unrelated fields")
 		assert(Schema.canonical(p)==original,"v4 migration mutated input")
@@ -149,6 +162,16 @@ function Spec.run()
 		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
 		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v6 migration changed unrelated fields")
 		assert(Schema.canonical(p)==original,"v6 migration mutated input")
+		assert(Schema.canonical(assert(Schema.migrate(migrated,catalog)))==Schema.canonical(migrated))
+	end)
+	test("v7 migration marks the current level's unlocks seen without changing the saved input",function()
+		local p=fresh(); p.schemaVersion=7; p.unlocksSeen=nil; p.xpMilli=EconomyConfig.xp_next_level_base*1000
+		local level=assert(Economy.levelForXP(p.xpMilli)); assert(level>fresh().unlocksSeen)
+		local original=Schema.canonical(p); local expected=assert(Schema.copy(p))
+		expected.schemaVersion=Schema.VERSION; expected.unlocksSeen=level
+		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
+		assert(Schema.canonical(migrated)==Schema.canonical(expected),"v7 migration changed unrelated fields")
+		assert(Schema.canonical(p)==original,"v7 migration mutated input")
 		assert(Schema.canonical(assert(Schema.migrate(migrated,catalog)))==Schema.canonical(migrated))
 	end)
 	test("lesson ticks accept only known lessons marked true",function()

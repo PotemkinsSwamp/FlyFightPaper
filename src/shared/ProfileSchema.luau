@@ -5,7 +5,7 @@ local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
 local TouchLayout = require(script.Parent.TouchLayout)
 local KeyBinds = require(script.Parent.KeyBinds)
-local Schema = { VERSION = 7, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
+local Schema = { VERSION = 8, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
@@ -84,8 +84,9 @@ end
 function Schema.defaults(catalog)
 	local paper, xp = EconomyConfig.initial_paper*1000, EconomyConfig.initial_total_xp*1000
 	assert(integer(paper) and integer(xp),"invalid_initial_economy")
+	local level = assert(Economy.levelForXP(xp))
 	local p = { schemaVersion = Schema.VERSION, version = 0, generation = 0, paperMilli = paper, earnedPaperMilli = 0,
-		purchasedPaperMilli = 0, xpMilli = xp, prestige = 0, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
+		purchasedPaperMilli = 0, xpMilli = xp, prestige = 0, unlocksSeen = level, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
 		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium", matchTips = true, autoFire = true, speedMatch = true },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
 		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, lessons = {} }
@@ -99,10 +100,11 @@ function Schema.validate(record, catalog)
 	local p, err = Schema.copy(record); if not p then return nil, err end
 	local ok, message = pcall(function()
 		exact(p, { schemaVersion=1, version=1, generation=1, lease=0, paperMilli=1, earnedPaperMilli=1, purchasedPaperMilli=1,
-			xpMilli=1, prestige=1, ownership=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, lessons=1, extensions=0, refolds=0 })
+			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, lessons=1, extensions=0, refolds=0 })
 		assert(p.schemaVersion == Schema.VERSION, "unsupported_schema")
 		assert(integer(p.version) and integer(p.generation), "invalid_version")
 		assert(integer(p.prestige) and p.prestige<=EconomyConfig.prestige_max, "invalid_prestige")
+		assert(integer(p.unlocksSeen) and p.unlocksSeen>=1 and p.unlocksSeen<=EconomyConfig.level_cap, "invalid_unlocks_seen")
 		for _, k in ipairs(moneyFields) do assert(integer(p[k]), "invalid_money") end
 		for id, owned in pairs(p.ownership) do assert(type(id)=="string" and catalog:get(id) and owned==true, "invalid_ownership") end
 		local level = assert(Economy.levelForXP(p.xpMilli))
@@ -193,6 +195,10 @@ function Schema.migrate(record, catalog)
 		p.rangePresets={};p.rangeSlot=1
 		for i=1,Gameplay.menus.saved_loadouts do p.rangePresets[i]={name="Range "..i,loadout=catalog:starterLoadout()} end
 		p.schemaVersion=7
+	end
+	if p.schemaVersion==7 then
+		p.unlocksSeen=Economy.levelForXP(p.xpMilli) or 1
+		p.schemaVersion=8
 	end
 	-- Loadout tuning can invalidate an otherwise readable save. Keep its account and preset names intact.
 	local level=Economy.levelForXP(p.xpMilli)

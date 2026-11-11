@@ -91,20 +91,61 @@ function Spec.run()
    assert(Schema.canonical(profile.Data)==before,"invalid Range build changed saved progress")
   end
  end)
- test("prestige exposes its rank in the view and preserves all unrelated saved progress",function()
+ test("seen unlocks raise once, keep higher seen levels and survive a save and rejoin",function()
+  local service,profile=fixture();assert(profile.Data.unlocksSeen<3)
+  local before=assert(Schema.copy(profile.Data));local op=assert(service:prepare("user",{kind="unlocksSeen",level=3}))
+  local applied=service:apply("user",op);assert(applied.status=="ok",applied.code)
+  assert(applied.value.type=="UnlocksSeen" and applied.value.level==3 and applied.value.operationID==op.id)
+  local expected=assert(Schema.copy(before));expected.unlocksSeen=3;expected.version+=1
+  expected.operationIds[service.sessions.user.token]=1
+  assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"seen unlocks changed unrelated saved progress")
+  for _,level in ipairs({2,3}) do
+   local lower=service:apply("user",assert(service:prepare("user",{kind="unlocksSeen",level=level})))
+   assert(lower.status=="ok" and lower.value.level==3 and profile.Data.unlocksSeen==3,lower.code)
+  end
+  local after=Schema.canonical(profile.Data)
+  assert(service:apply("user",op).status=="ok" and Schema.canonical(profile.Data)==after)
+  assert(profile:EndSession());service:detach("user")
+  local reopened=Fake.new(profile.LastSavedData)
+  assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
+  assert(service:view("user").value.unlocksSeen==3)
+ end)
+ test("seen unlocks clamp new levels to current XP without lowering an already higher seen level",function()
+  local service,profile=fixture();profile.Data.xpMilli=EconomyConfig.xp_next_level_base*1000
+  local level=assert(Economy.levelForXP(profile.Data.xpMilli));assert(level>profile.Data.unlocksSeen)
+  local applied=service:apply("user",assert(service:prepare("user",{kind="unlocksSeen",level=EconomyConfig.level_cap+1})))
+  assert(applied.status=="ok" and applied.value.type=="UnlocksSeen" and applied.value.level==level,applied.code)
+  assert(profile.Data.unlocksSeen==level)
+  profile.Data.xpMilli=0
+  applied=service:apply("user",assert(service:prepare("user",{kind="unlocksSeen",level=EconomyConfig.level_cap+1})))
+  assert(applied.status=="ok" and applied.value.level==level and profile.Data.unlocksSeen==level,applied.code)
+ end)
+ test("seen unlocks reject invalid levels without changing saved progress or the operation watermark",function()
+  local service,profile=fixture();local before=Schema.canonical(profile.Data)
+  for _,input in ipairs({{level=0},{level=-1},{level=1.5},{level="3"},{level=false},{}}) do
+   input.kind="unlocksSeen"
+   local applied=service:apply("user",assert(service:prepare("user",input)))
+   assert(applied.status=="error" and applied.code=="invalid_level",applied.code)
+   assert(Schema.canonical(profile.Data)==before,"invalid seen level changed saved progress")
+  end
+ end)
+ test("prestige resets seen unlocks to the new level and preserves all unrelated saved progress",function()
   local service,profile,catalog=fixture()
+  profile.Data.unlocksSeen=EconomyConfig.level_cap
   assert(service:view("user").value.prestige==0)
   local before=assert(Schema.copy(profile.Data));local op=assert(service:prepare("user",{kind="prestige"}))
   local applied=service:apply("user",op)
   assert(applied.status=="ok",applied.code)
   assert(applied.value.type=="Prestiged" and applied.value.prestige==1 and applied.value.operationID==op.id)
   local expected=assert(Schema.copy(before));expected.prestige=1;expected.xpMilli=EconomyConfig.initial_total_xp*1000
+  expected.unlocksSeen=assert(Economy.levelForXP(expected.xpMilli))
   expected.ownership=assert(Schema.copy(assert(Economy.starterOwnership(catalog))))
   expected.presets[1].loadout=catalog:starterLoadout();expected.version+=1
   expected.operationIds[service.sessions.user.token]=1
   assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"prestige changed unrelated saved progress")
   local view=service:view("user").value
   assert(view.prestige==1 and table.isfrozen(view) and profile.writes==0)
+  assert(view.unlocksSeen==Economy.levelForXP(view.xpMilli) and view.unlocksSeen<before.unlocksSeen)
   assert(view.rangeSlot==4 and Schema.canonical(view.rangePresets)==Schema.canonical(before.rangePresets),"prestige changed the Range builds")
  end)
  test("retrying a prestige operation applies it once even after earning back the level cap",function()

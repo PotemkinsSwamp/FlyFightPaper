@@ -89,6 +89,11 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    if profile and (self:tutorialRoom() or Schema.TIPS[value]) and not profile.lessons[value] then -- Match Tips: any room
     self.profiles:enqueue(player,{kind="lessonDone",lesson=value},nil,function(ok) if ok then self:sendProfile(player) end end)
    end
+  elseif action=="unlocksSeen" and type(value)=="number" then
+   local profile=self.profiles:view(player)
+   if profile and value%1==0 and value>profile.unlocksSeen then
+    self.profiles:enqueue(player,{kind="unlocksSeen",level=value},nil,function(ok) if ok then self:sendProfile(player) end end)
+   end
   elseif action=="withdraw" and value==true then self:withdraw(player)
   elseif action=="overlay" and type(value)=="boolean" then
    local p=flight.pilots[player];if p then p.overlay=value;if value then combat:trigger(p,1,false);combat:trigger(p,2,false) end end
@@ -536,7 +541,7 @@ function Runtime:sendProfile(player)
   local e=self.profiles.entries[player]
   local boost=self.profiles.service:liveBoostView(e.account)
   self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,
-   presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
+   presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,unlocksSeen=profile.unlocksSeen,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end
 end
 function Runtime:step(dt)

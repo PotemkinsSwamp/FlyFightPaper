@@ -5,6 +5,9 @@ Your Paper, XP, level, owned parts, five saved builds and settings are kept betw
 lost if a save fails for a moment; it retries without stopping the match for everyone else.
 
 ## Where it stands (2026-10-19)
+Schema 8 (2026-11-11) adds `unlocksSeen`: the highest level whose unlocks you've opened in the [unlock backpack](../plan/UNLOCK-PLAN.md).
+It only rises, never past your level (`RoundAction` "unlocksSeen"); older saves and prestige set it to the current level,
+so nothing old piles up. Shut down old servers when publishing it (below).
 Schema 7 adds the Range's own five builds (`rangePresets`, any part allowed) and the last Range build flown (`rangeSlot`); the shut-down-old-servers rule applies.
 The save now keeps which lessons you've finished (schema 6, `lessons`: the [Training board](tutorial.md)'s ticks; a
 new lesson name only widens `ProfileSchema.LESSONS`, no migration; Match Tips save there too, one tick each, from any room:
