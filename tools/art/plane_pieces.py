@@ -192,15 +192,16 @@ ROOTS = {"wings_0": 4.56, "wings_1": 3.42, "wings_2": 4.15, "wings_3": 5.12, "wi
 point = lambda v: ",".join(str(n) for n in v)
 ATTACH = {model: dict(WingFront=point(front), WingBack=point(back)) for model, (front, back) in WING_WALLS.items()}
 # Under-wing gun pairs (Alan, 2026-10-13: same spot on every wing): 0.8 behind the wing's own leading edge at x 3.7
-# and 5.2 (one fixed spot left swept wings' guns in mid-air), hung as far below the wing as on Classic.
-# Measured per wing: (leading edge z, underside y) at x 3.7 and 5.2.
-EDGES = {"wings_0": ((.29, .816), (1.85, .839)), "wings_1": ((.67, .815), (2.47, .838)), "wings_2": ((-2.03, .81), (-1.92, .829)),
-         "wings_3": ((.66, .816), (2.44, .839)), "wings_4": ((-1.78, .709), (-1.52, .734)), "wings_5": ((-1.85, .736), (-1.65, .759))}
-CLASSIC_UNDER = (.816, .839)
+# and 5.2 (one fixed spot left swept wings' guns in mid-air). A gun's top (TUBE_TOP above the spot) touches the wing:
+# the lowest underside under any gun's footprint there (Alan 2026-11-11: guns hung below; measured in Studio on exact
+# shapes, x -0.6..+1.2 and z +-2.3 around the spot). Swept Wings (wings_5) use their main underside: their thicker
+# trailing lip hangs lower, and long guns' backs tuck into it. Per wing: (leading edge z, underside y) at x 3.7 and 5.2.
+EDGES = {"wings_0": ((.29, .808), (1.85, .831)), "wings_1": ((.67, .807), (2.47, .829)), "wings_2": ((-2.03, .804), (-1.92, .823)),
+         "wings_3": ((.66, .808), (2.44, .831)), "wings_4": ((-1.78, .700), (-1.52, .725)), "wings_5": ((-1.85, .839), (-1.65, .862))}
 for model, back in ROOTS.items():
     ATTACH[model] = dict(RootFront=point((1.32, .83, -2.18)), RootBack=point((1.32, .83, back)))
     for pair, (x, (edge, under)) in enumerate(zip((3.7, 5.2), EDGES[model]), 1):
-        ATTACH[model][f"Mount{pair}"] = point((x, round(.38 + under - CLASSIC_UNDER[pair - 1], 3), round(edge + .8, 3)))
+        ATTACH[model][f"Mount{pair}"] = point((x, round(under - TUBE_TOP, 3), round(edge + .8, 3)))
 for model, drop in BOOSTER_DROP.items(): ATTACH.setdefault(model, {})["BoosterDrop"] = drop
 # Body models also carry how far below the standard spot their booster hangs (boosters are placed for the standard body).
 body = "".join(container("Model", model, "".join(piece(s) for s in stems), ATTACH.get(model)) for model, stems in PARTS.items())

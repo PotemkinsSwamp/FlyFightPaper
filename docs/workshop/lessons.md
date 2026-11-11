@@ -111,6 +111,11 @@ mistake would be easy to make twice.
   so all its pieces upload again.
 - **Windows sometimes holds just-written files** (Errno 22 on overwrite, 2026-10-16; probably a scanner): they can be
   moved aside but not overwritten. `hero.py` and `fill_gaps.py` move old files aside before writing.
+- **Plane pieces collide as boxes** (2026-11-11): every `AircraftPieces` MeshPart has `CollisionFidelity` Box, so a
+  raycast measures its bounding box, not the paper. For an exact fit check (guns against wings), build the planes in
+  a scratch folder in Edit, set the copies to `PreciseConvexDecomposition` and `CanQuery`, wait a moment, then cast;
+  delete the folder after. Require a fresh copy of a changed module (`Clone()` it beside the original) or Edit runs
+  the cached old one.
 
 ## Studio and the place file
 - **Compare looks in the same spot.** Copies of a building 300 studs apart, high above the map, drew visibly darker

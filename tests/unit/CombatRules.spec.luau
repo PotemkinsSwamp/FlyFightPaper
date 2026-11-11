@@ -608,7 +608,13 @@ function Spec.run()
 		assert(math.abs(heavy[1].hi-heavy[1].lo-missile)<.01,"guns with room keep their full size")
 		assert(heavy[5].hi-heavy[5].lo<missile-.1,"the crowded outer gun is shrunk")
 		local factor=catalog:get("body_standard").visual_scale/2
-		near(Aircraft.mountOffset(1,factor,0,"paperclip").Y,Aircraft.mountOffset(1,factor,0,"pellet").Y-.5*factor)
+		-- Guns on the body pair hang by their highest point from the wing root (Classic Wings: .78 before scale).
+		local classic=Aircraft.wingFit("body_standard","wings_0",0)
+		for _,id in ipairs({"paperclip","popper","eraser"}) do
+			local top=0
+			for _,p in ipairs(Root.Assets.AircraftPieces["launcher_"..id]:GetChildren()) do if p:IsA("MeshPart") then top=math.max(top,p.Position.Y+p.Size.Y/2) end end
+			near(Aircraft.mountOffset(1,factor,classic,id).Y+top*factor,.78*factor)
+		end
 		-- Wing attachment points: a wing's root front/back corners land on the body's wall front/back, evenly scaled,
 		-- and the gun slots go with the wing.
 		local pieces=Root.Assets.AircraftPieces

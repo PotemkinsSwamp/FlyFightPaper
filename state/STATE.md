@@ -1,27 +1,20 @@
-# Since Alan last checked (2026-11-09)
-- **Crisp menus, first try rejected and fully undone.** I scrubbed painted tacks/tape off 10 pictures and drew new ones
-  in code; you said it looked worse (lost shadows, scrub marks, red-dot Back and taped Save were what you liked). Every
-  picture and all code are back to the morning's state; nothing was uploaded or committed.
-- **Your ruling:** keep the pictures exactly; fix stretching by drawing each picture in a box of its own shape; new
-  pieces only where no picture has the shape (the wide Match tip note), shown to you first.
-- **Your examples** of what looks bad: docs/playtests/2026-11-09-menu-stretch-examples.md (Back tacks, Customize
-  stats paper and part cards, Presets overlapping the Loadout tape, Match tip (worst), desk strips, Esc menu strips,
-  Range notes and Range board). Bug: the FFA strip stays over the Hangar Range after a match.
-- **Try 2 (fix the boxes) is on a side branch, not in the game:** `wip/stretch-fix-2026-11-09`. You liked the sharp
-  Range board; you found a round X (want the little square box, on the paper), a smudge on the widened stats paper,
-  words not fitting, overlaps, papers too small for their rows, and 3 bugs (Range note stays on the main menu, FFA
-  strip missing at the desk, Range Menu strip not clickable). All in the playtest note. Nothing uploaded.
-- New standing rule in AGENTS.md: words and papers fit, no overlaps, bigger paper rather than cramming.
-- Earlier: weights, prices, level pace and text style C (2026-11-08; decision notes in docs/decisions/).
+# Since Alan last checked (2026-11-11)
+- **Menus fit is live and you approved it** (pictures uploaded, merged to main, you published).
+- **Guns now touch the plane** (your two Hangar screenshots): body-spot guns hung up to half a stud under the wing root
+  on every plane, Swept Wings guns hung low, crowded guns shrank off the wing. All 1,500 body x wings x gun x spot
+  placements checked on exact shapes: all touch, none pokes through. Not published yet.
+- **Phone "speed match and buttons look bad": not fixed yet.** Phone-mode measuring found only the Hangar Back strip
+  (thin, words tight). Need a phone screenshot to see what you saw.
 
 # Now: finish the game for the beta
-Next: (1) fix the stretched menu pictures, every screen (menus, desk, Esc menu, notes, Range board), keeping the
-pictures; FFA strip bug; (2) the unlock moment (concept frames in .planning/unlock-concept2/). Shop step later: re-scale
-Paper packs and Robux part prices; goal-based offers (decision note).
+Next: (1) the phone look (your screenshot); (2) the unlock moment
+(concept frames in .planning/unlock-concept2/). Shop step later: re-scale Paper packs and Robux part prices.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
-Backlog, must do: the results card becomes a report card.
+Backlog, must do: the results card becomes a report card. Phones: the lesson goal note's phone shapes still use the old
+square note (redo with a phone check).
 
 Decisions to review
+Customize binder drawn at 95% so the stats paper fits beside it. Welcome card sits over Play (a pop-up question).
 Toilet Roll mounts heavy, heavy, medium, light, light; boosters keep their weight (Elastic now -3 studs/s). Dev picker
   lost "twin pencils" (two Pencils no longer fit any body).
 Bots follow a target up a vent: veterans 60%, Aces 90%. Bots with 2+ spitballs stuck fly to a fan. Staple ~800 studs.
@@ -55,6 +48,8 @@ Duct props see-through; veterans flee to the ducts 40% when shot at. Chalk erase
 Zone 680-840 across; bots on the zone 30/60/85%. Points: assist share rounded to 5 (10-80); outside-zone fold 40%.
 
 Waiting on Alan
+- A phone screenshot of what looks bad (Speed match row, buttons). Guns: look at a few builds in the Hangar, then
+  publish. In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
 - Save to File / publish when you want the new weapon models in the place and live (your go each).
 - Publish (File > Publish As > Overwrite), then on your phone: kill feed, desk dev panel, results card, confetti.
 - Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings.

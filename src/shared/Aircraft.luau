@@ -3,13 +3,26 @@ local Root=script.Parent.Parent
 local Aircraft={}
 -- Plane A: slots 1/2 sit on the body at the pellet tubes' centres, 3/4 under the wings, 5/6 further out (odd = left).
 -- `fit` (Aircraft.wingFit) moves every slot with the wings onto a wider body.
--- Hardpoints were checked on every body x wings x nose x weapon against the meshes' real triangles (2026-10-13):
--- only the paperclip railgun on the body slots rose into the wing root, so it hangs this much lower there (studs
--- before scale). Pellet tubes pass through the wing root on purpose (plane A's design).
+-- Every gun hangs by its highest point: under the wing on slots 3-6 (the wing's Mount1/Mount2), under the wing root on
+-- the body pair (Alan 2026-11-11: guns floated up to half a stud below; checked on exact shapes, every body x wings x
+-- weapon). Pellet tubes pass through the wing root on purpose (plane A's design), so they keep plane A's spot.
 -- Weapons still waiting for their own model borrow another's (Alan 2026-11-07: test with models we have).
 Aircraft.STAND_IN={}
 function Aircraft.look(weaponId) return weaponId and Aircraft.STAND_IN[weaponId] or weaponId end
-local BODY_SLOT_DROP={paperclip=.5}
+-- The wing root's underside beside the body (lowest under a gun's footprint; Swept Wings: the main underside, their
+-- trailing lip hangs lower), per wing set, studs before scale. Measured in Studio on exact shapes.
+local ROOT_UNDER={wings_0=.78,wings_1=.78,wings_2=.78,wings_3=.78,wings_4=.67,wings_5=.81}
+local tops={}
+local function topOf(look) -- a gun's highest point above its mount point
+ if tops[look]==nil then
+  local pieces=Root:FindFirstChild("Assets") and Root.Assets:FindFirstChild("AircraftPieces")
+  local launcher=pieces and pieces:FindFirstChild("launcher_"..look)
+  local top=0
+  for _,child in ipairs(launcher and launcher:GetChildren() or {}) do if child:IsA("MeshPart") then top=math.max(top,child.Position.Y+child.Size.Y/2) end end
+  tops[look]=top
+ end
+ return tops[look]
+end
 local NEIGHBOUR_GAP=.1 -- studs before scale between two guns under one wing
 -- Wing attachment points (Alan, 2026-10-13). A body may carry WingFront/WingBack (the front and back ends of its flat
 -- side wall, right side) and every wing set RootFront/RootBack (its root's front and back corners, or custom points
@@ -26,13 +39,14 @@ function Aircraft.wingFit(bodyId,wingsId,shift)
  local body=pieces and bodyId and pieces:FindFirstChild(bodyId);local wings=pieces and wingsId and pieces:FindFirstChild(wingsId)
  local bf,bb,wf,wb=point(body,"WingFront"),point(body,"WingBack"),point(wings,"RootFront"),point(wings,"RootBack")
  local mounts={point(wings,"Mount1"),point(wings,"Mount2")}
- if bf and bb and wf and wb then return {scale=(bb-bf).Magnitude/(wb-wf).Magnitude,from=wf,to=bf,mounts=mounts} end
- return {scale=1,from=Vector3.zero,to=Vector3.new(shift or 0,0,0),mounts=mounts}
+ local under=ROOT_UNDER[wingsId]
+ if bf and bb and wf and wb then return {scale=(bb-bf).Magnitude/(wb-wf).Magnitude,from=wf,to=bf,mounts=mounts,under=under} end
+ return {scale=1,from=Vector3.zero,to=Vector3.new(shift or 0,0,0),mounts=mounts,under=under}
 end
 -- The same fit, as the built plane carries it for code that only has the model (muzzles, aim markers).
 function Aircraft.fitOf(model)
  return {scale=model:GetAttribute("WingScale") or 1,from=model:GetAttribute("WingFrom") or Vector3.zero,to=model:GetAttribute("WingTo") or Vector3.zero,
-  mounts={model:GetAttribute("WingMount1"),model:GetAttribute("WingMount2")}}
+  mounts={model:GetAttribute("WingMount1"),model:GetAttribute("WingMount2")},under=model:GetAttribute("WingRootUnder")}
 end
 -- Where a point of the wings (or under them) goes on this body; points left of centre mirror the right side's fit.
 function Aircraft.fitPoint(fit,p)
@@ -45,7 +59,9 @@ function Aircraft.mountOffset(slot,factor,fit,weaponId)
  local side=slot%2==1 and -1 or 1
  if type(fit)~="table" then fit=Aircraft.wingFit(nil,nil,fit) end
  local wing=pair>0 and fit.mounts and fit.mounts[pair]
- local at=pair==0 and Vector3.new(side*1.76,.08-(BODY_SLOT_DROP[Aircraft.look(weaponId)] or 0),-1.3134)
+ local look=Aircraft.look(weaponId)
+ local bodyY=fit.under and look and look~="pellet" and fit.under-topOf(look) or .08
+ local at=pair==0 and Vector3.new(side*1.76,bodyY,-1.3134)
   or wing and Vector3.new(side*wing.X,wing.Y,wing.Z) or Vector3.new(side*(3.7+(pair-1)*1.5),.38,-.6)
  return Aircraft.fitPoint(fit,at)*factor
 end
@@ -135,7 +151,7 @@ function Aircraft.build(model,loadout,catalog,preview)
  local fit=Aircraft.wingFit(loadout.body,loadout.wings,catalog:get(loadout.body).wing_shift)
  appearance:SetAttribute("Factor",factor)
  model:SetAttribute("WingScale",fit.scale);model:SetAttribute("WingFrom",fit.from);model:SetAttribute("WingTo",fit.to)
- model:SetAttribute("WingMount1",fit.mounts[1]);model:SetAttribute("WingMount2",fit.mounts[2])
+ model:SetAttribute("WingMount1",fit.mounts[1]);model:SetAttribute("WingMount2",fit.mounts[2]);model:SetAttribute("WingRootUnder",fit.under)
  local function put(template,name,offset,rotation,scale)
   local part=template:Clone();part.Name=name;part.Size*=factor*(scale or 1)
   part.CFrame=(body and body.CFrame or CFrame.identity)*CFrame.new(offset)*rotation
@@ -186,10 +202,13 @@ function Aircraft.build(model,loadout,catalog,preview)
    -- Pieces are modelled on the left tube; the right side mirrors them in X (they are symmetric).
    -- Each piece carries the 180-degree turn every uploaded FBX needs (Roblox imports them facing backwards).
    local side=slot%2==1 and 1 or -1
-   local scale=(scales[slot] or 1)*fit.scale -- guns scale with the wing they hang from
+   local shrink=scales[slot] or 1
+   local scale=shrink*fit.scale -- guns scale with the wing they hang from
    for _,child in ipairs(launcher:GetChildren()) do if child:IsA("MeshPart") then
+    -- A shrunk gun shrinks toward its top, so it still touches what it hangs from (Alan 2026-11-11).
     local at=child.Position
-    put(child,"Mount"..slot.."-"..child.Name,Aircraft.mountOffset(slot,factor,fit,id)+Vector3.new(side*at.X,at.Y,at.Z)*factor*scale,child.CFrame.Rotation,scale)
+    local y=at.Y+(topOf(Aircraft.look(id))-at.Y)*(1-shrink)
+    put(child,"Mount"..slot.."-"..child.Name,Aircraft.mountOffset(slot,factor,fit,id)+Vector3.new(side*at.X*shrink,y,at.Z*shrink)*factor*fit.scale,child.CFrame.Rotation,scale)
    end end
   elseif equipment and equipment:FindFirstChild("launcher_"..Aircraft.look(id)) then
    local template=equipment["launcher_"..Aircraft.look(id)]

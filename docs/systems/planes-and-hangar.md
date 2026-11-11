@@ -5,7 +5,13 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-11-06)
+## Where it stands (2026-11-11)
+**Guns touch the plane (Alan 2026-11-11: they floated).** Every gun hangs by its highest point (`Aircraft` `topOf`):
+on the body pair from the wing root (`ROOT_UNDER`, per wing set), on the wing spots from the wing (`Mount1`/`Mount2`,
+`tools/art/plane_pieces.py`), and a crowded gun shrinks toward its top. The pellet tube keeps plane A's spot through the
+root. Checked on exact shapes in Studio: all 1,500 body x wings x weapon x spot placements touch, none pokes through.
+Not yet seen by Alan.
+
 **Presets (step 2 of the [classes plan](../plan/CLASSES-PLAN.md)):** six fixed planes, each open from its level (`classes`
 in `config/catalog.json`, the newer weapons now have their own models). The Hangar shows them on their own tab; the desk
 menu's "Switch to presets" flips its cork strip over to them (`DeskHangar.luau`). Players call their own builds loadouts.

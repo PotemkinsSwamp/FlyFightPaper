@@ -248,7 +248,7 @@
   <Item class="Model" referent="wings_0">
     <Properties>
       <string name="Name">wings_0</string>
-      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDQuNTYGAAAATW91bnQxAg0AAAAzLjcsMC4zOCwxLjA5BgAAAE1vdW50MgINAAAANS4yLDAuMzgsMi42NQ==</BinaryString>
+      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDQuNTYGAAAATW91bnQxAg4AAAAzLjcsMC4zOTgsMS4wOQYAAABNb3VudDICDgAAADUuMiwwLjQyMSwyLjY1</BinaryString>
     </Properties>
     <Item class="MeshPart" referent="wings-paper-L">
       <Properties>
@@ -2378,7 +2378,7 @@
   <Item class="Model" referent="wings_1">
     <Properties>
       <string name="Name">wings_1</string>
-      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDMuNDIGAAAATW91bnQxAg4AAAAzLjcsMC4zNzksMS40NwYAAABNb3VudDICDgAAADUuMiwwLjM3OSwzLjI3</BinaryString>
+      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDMuNDIGAAAATW91bnQxAg4AAAAzLjcsMC4zOTcsMS40NwYAAABNb3VudDICDgAAADUuMiwwLjQxOSwzLjI3</BinaryString>
     </Properties>
     <Item class="MeshPart" referent="wings_1-paper-L">
       <Properties>
@@ -2654,7 +2654,7 @@
   <Item class="Model" referent="wings_2">
     <Properties>
       <string name="Name">wings_2</string>
-      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDQuMTUGAAAATW91bnQxAg8AAAAzLjcsMC4zNzQsLTEuMjMGAAAATW91bnQyAg4AAAA1LjIsMC4zNywtMS4xMg==</BinaryString>
+      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDQuMTUGAAAATW91bnQxAg8AAAAzLjcsMC4zOTQsLTEuMjMGAAAATW91bnQyAg8AAAA1LjIsMC40MTMsLTEuMTI=</BinaryString>
     </Properties>
     <Item class="MeshPart" referent="wings_2-paper-L">
       <Properties>
@@ -2930,7 +2930,7 @@
   <Item class="Model" referent="wings_3">
     <Properties>
       <string name="Name">wings_3</string>
-      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDUuMTIGAAAATW91bnQxAg0AAAAzLjcsMC4zOCwxLjQ2BgAAAE1vdW50MgINAAAANS4yLDAuMzgsMy4yNA==</BinaryString>
+      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDUuMTIGAAAATW91bnQxAg4AAAAzLjcsMC4zOTgsMS40NgYAAABNb3VudDICDgAAADUuMiwwLjQyMSwzLjI0</BinaryString>
     </Properties>
     <Item class="MeshPart" referent="wings_3-paper-L">
       <Properties>
@@ -3206,7 +3206,7 @@
   <Item class="Model" referent="wings_4">
     <Properties>
       <string name="Name">wings_4</string>
-      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDQuMzUGAAAATW91bnQxAg8AAAAzLjcsMC4yNzMsLTAuOTgGAAAATW91bnQyAg8AAAA1LjIsMC4yNzUsLTAuNzI=</BinaryString>
+      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDQuMzUGAAAATW91bnQxAg4AAAAzLjcsMC4yOSwtMC45OAYAAABNb3VudDICDwAAADUuMiwwLjMxNSwtMC43Mg==</BinaryString>
     </Properties>
     <Item class="MeshPart" referent="wings_4-paper-L">
       <Properties>
@@ -3574,7 +3574,7 @@
   <Item class="Model" referent="wings_5">
     <Properties>
       <string name="Name">wings_5</string>
-      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDQuNDYGAAAATW91bnQxAg0AAAAzLjcsMC4zLC0xLjA1BgAAAE1vdW50MgINAAAANS4yLDAuMywtMC44NQ==</BinaryString>
+      <BinaryString name="AttributesSerialize">BAAAAAkAAABSb290RnJvbnQCDwAAADEuMzIsMC44MywtMi4xOAgAAABSb290QmFjawIOAAAAMS4zMiwwLjgzLDQuNDYGAAAATW91bnQxAg8AAAAzLjcsMC40MjksLTEuMDUGAAAATW91bnQyAg8AAAA1LjIsMC40NTIsLTAuODU=</BinaryString>
     </Properties>
     <Item class="MeshPart" referent="wings_5-paper-L">
       <Properties>
