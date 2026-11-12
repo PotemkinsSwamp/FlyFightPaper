@@ -25,6 +25,9 @@ Flight feel, combat, visuals and frame rate are checked by playing in Studio:
   through a fly-through hole, window side, chalkboard wall, chase cam in a dogfight, hangar. The latest set is in the
   git-ignored `captures/` folder. Compare against the reference picture and the previous set.
 - F9 shows the performance overlay; see [Performance](../systems/performance.md).
+- **The Studio account** owns everything at level 34 with 100,000 Paper (nothing is saved in Studio). To see what a
+  new player sees (buy buttons, locked parts): in Edit, set workspace attribute `DevAccountLevel` (e.g. 12) and
+  optionally `DevAccountPaper` (default 3,000), then Play; remove them for the full account (`ProfileRuntime.luau`).
 - **Timed bot matches** (bots only) measure bot changes: deaths by cause, kills, shots, hits.
   `python tools/run_bot_matches.py 1 75` is the one-minute check; `python tools/run_bot_matches.py` three full matches
   (run it in the background; almost no tokens, where the `match-runner-haiku` helper cost ~120k a run).
