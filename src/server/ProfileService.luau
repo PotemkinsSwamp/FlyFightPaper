@@ -4,6 +4,8 @@ local Run=game:GetService("RunService")
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
+local Commerce=require(Root.Shared.CommerceRules)
+local EconomyConfig=require(Root.Generated.Economy)
 local BoostClock=require(Root.Shared.BoostClock)
 local Gameplay=require(Root.Generated.Gameplay)
 local ServerConfig=require(Root.Generated.Server)
@@ -31,7 +33,10 @@ local function validReceiptGrant(grant)
  local fields
  if grant.kind=="purchasedPaper" then
   if not Schema.integer(grant.wholePaper) or grant.wholePaper<1 then return false end
-  fields={kind=true,wholePaper=true}
+  if grant.packKey~=nil and Commerce.paperPackAmount(grant.packKey)~=grant.wholePaper then return false end
+  fields={kind=true,wholePaper=true,packKey=true}
+ elseif grant.kind=="starterPack" then
+  fields={kind=true}
  elseif grant.kind=="boostIntent" then
   if (grant.resource~="xp" and grant.resource~="paper") or grant.action~="duration"
    or not Schema.integer(grant.seconds) or grant.seconds<1 then return false end
@@ -44,7 +49,7 @@ local function validReceiptGrant(grant)
  return true
 end
 function Service.new(options)
- return setmetatable({catalog=options.catalog,mono=options.monotonic or os.clock,
+ return setmetatable({catalog=options.catalog,mono=options.monotonic or os.clock,unix=options.unix or os.time,
   mock=Run:IsStudio() and options.mock==true,sessions={}},Service)
 end
 function Service:operationID() return Http:GenerateGUID(false):gsub("%-",""):sub(1,24) end
@@ -53,6 +58,11 @@ function Service:attach(account,profile,availability)
  if not profile:IsActive() then return outcome("error","session_lost") end
  local data,why=Schema.migrate(profile.Data,self.catalog)
  if not data then return outcome("error",why) end
+ if data.starterPack.offeredAt==0 then
+  local now=self.unix()
+  if not Schema.integer(now) or now==0 then return outcome("error","invalid_time") end
+  data.starterPack.offeredAt=now
+ end
  -- An old plane cannot survive a server hop. Reserved but unused Paper returns once.
  for _,intent in pairs(data.refolds or {}) do
   if intent.state=="reserved" or intent.state=="delivered" then
@@ -130,6 +140,23 @@ function Service:detach(account)
  self.sessions[account]=nil
 end
 local function safeAdd(a,b) if not Schema.integer(b) or a>Economy.MAX_SAFE_INTEGER-b then return nil end; return a+b end
+local function giftReward(p,day)
+ if not Schema.integer(day) then return nil,"invalid_daily_gift_day" end
+ if day<=p.dailyGift.lastDay then return nil,"daily_gift_claimed" end
+ local reward=EconomyConfig.daily_gift.rewards[p.dailyGift.next]
+ if (reward.xp_seconds and p.boosts.permanentXP) or (reward.paper_seconds and p.boosts.permanentPaper) then
+  return {paper=EconomyConfig.daily_gift.boost_covered_paper}
+ end
+ return reward
+end
+function Service:_recordBuy(p)
+ local now=self.unix();if not Schema.integer(now) then return nil,"invalid_time" end
+ local day=math.floor(now/86400)
+ local value=safeAdd(p.buysToday.day==day and p.buysToday.count or 0,1)
+ if not value then return nil,"overflow" end
+ p.buysToday={day=day,count=value}
+ return true
+end
 function Service:_effect(p,op,boostState)
 	if op.kind=="receipt" then
 		local key=Service.receiptKey(op.receiptId)
@@ -163,7 +190,31 @@ function Service:_effect(p,op,boostState)
 			p.prestige=applied.profile.prestige;p.presets=assert(Schema.copy(applied.profile.presets))
 			p.unlocksSeen=assert(Economy.levelForXP(applied.profile.xpMilli))
 		end
-	elseif op.kind=="purchasedPaper" then applied,err=Economy.addPurchasedPaper(v,op.wholePaper,op.id)
+	elseif op.kind=="purchasedPaper" then
+		local amount=op.wholePaper
+		if op.packKey~=nil then
+			if Commerce.paperPackAmount(op.packKey)~=amount then return nil,"invalid_pack" end
+			if not p.firstBuys[op.packKey] then amount*=2 end
+		end
+		applied,err=Economy.addPurchasedPaper(v,amount,op.id)
+		if applied and op.packKey then p.firstBuys[op.packKey]=true end
+	elseif op.kind=="dailyGift" then
+		local reward,why=giftReward(p,op.day);if not reward then return nil,why end
+		if reward.paper then
+			local paid,rejected=Economy.applyFinalBonuses(v,{finalPaper=reward.paper,finalXP=0},{paper=1,xp=1},op.id)
+			if not paid then return nil,rejected.code end
+			Schema.mergeEconomic(p,paid.profile)
+		end
+		p.dailyGift.lastDay=op.day;p.dailyGift.next=p.dailyGift.next%7+1
+		result={type="DailyGiftClaimed",paper=reward.paper,seconds=reward.xp_seconds or reward.paper_seconds,
+			resource=reward.xp_seconds and "xp" or reward.paper_seconds and "paper" or nil}
+	elseif op.kind=="starterPack" then
+		local pack=EconomyConfig.starter_pack
+		if not self.catalog:get(pack.part) then return nil,"unknown_part" end
+		local paid,rejected=Economy.addPurchasedPaper(v,pack.paper,op.id)
+		if not paid then return nil,rejected.code end
+		Schema.mergeEconomic(p,paid.profile);p.ownership[pack.part]=true;p.starterPack.bought=true
+		result={type="StarterPackGranted"}
 	elseif op.kind=="preset" then
 		if not Schema.integer(op.slot) or op.slot<1 or op.slot>Gameplay.menus.saved_loadouts then return nil,"invalid_slot" end
 		p.presets[op.slot]={name=op.name,loadout=op.loadout}; result={type="PresetSaved",slot=op.slot}
@@ -248,7 +299,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={receipt=true,passGrant=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
+local allowed={receipt=true,passGrant=true,dailyGift=true,starterPack=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
@@ -265,7 +316,10 @@ function Service:apply(account,input)
  if sequence<=(s.profile.Data.operationIds[token] or 0) then
   return outcome("ok",nil,cached and cached.value or {type="AlreadyApplied",operationID=op.id})
  end
- if (op.kind=="purchasedPaper" or op.kind=="boostIntent") and not self.mock then return outcome("error","studio_only") end
+ local mockBuy=op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack"
+ if mockBuy and not self.mock then return outcome("error","studio_only") end
+ if mockBuy and count(s.profile.Data.receiptIds)>=ServerConfig.schema.max_receipts then return outcome("error","receipt_cap") end
+ if op.kind=="starterPack" and Commerce.starterPackEnds(s.profile.Data,self.unix())==0 then return outcome("error","starter_pack_ended") end
  local intent=op
  if op.kind=="receipt" then
   if type(op.receiptId)~="string" or #op.receiptId==0 then return outcome("error","invalid_receipt") end
@@ -283,6 +337,15 @@ function Service:apply(account,input)
   else intent={kind="boostIntent",resource=op.resource,action="permanent"} end
  end
  local advanced,why=self:_advance(s);if not advanced then return outcome("retry",why) end
+ -- Composite rewards use the same clock preview as a paid timed boost. Nothing is
+ -- installed until the entire profile (including money, ownership and IDs) validates.
+ if intent and intent.kind=="dailyGift" then
+  local reward,err=giftReward(s.profile.Data,op.day);if not reward then return outcome("error",err) end
+  intent=reward.xp_seconds and {kind="boostIntent",resource="xp",action="duration",seconds=reward.xp_seconds}
+   or reward.paper_seconds and {kind="boostIntent",resource="paper",action="duration",seconds=reward.paper_seconds} or nil
+ elseif intent and intent.kind=="starterPack" then
+  intent={kind="boostIntent",resource="xp",action="duration",seconds=EconomyConfig.starter_pack.xp_seconds}
+ end
  local clock=s.clock
  if intent and intent.kind=="boostIntent" then
   clock=BoostClock.new(s.clock:snapshot(),s.clock.now,s.clock.eligible,{historyLimit=Config.boost_history_limit})
@@ -296,6 +359,11 @@ function Service:apply(account,input)
  local data=assert(Schema.copy(s.profile.Data));data.lease={nonce=s.token,generation=data.generation,expires=0}
  local result,err=self:_effect(data,op,clock:snapshot())
  if not result then return outcome("error",err) end
+ if mockBuy or (op.kind=="receipt" and result.type~="ReceiptAlreadyGranted") then
+  local recorded,code=self:_recordBuy(data);if not recorded then return outcome("error",code) end
+  -- Practice buys leave the same purchase history as receipts, in mock profiles only.
+  if mockBuy then data.receiptIds[Service.receiptKey("mock:"..op.id)]=true end
+ end
  -- Reward streams reuse the saved operation watermarks across receiving sessions.
  if data.operationIds[token]==nil then
   table.insert(data.operationSessions,token)

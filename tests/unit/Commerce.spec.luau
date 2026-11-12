@@ -13,14 +13,16 @@ end
 local function boosts() return {xpSeconds=1800,paperSeconds=900,permanentXP=false,permanentPaper=false} end
 function Spec.run()
     local result,test=Suite.new()
-    test("all fifteen immutable configured offers and generated null sentinel",function()
+    test("all eighteen immutable configured offers and generated null sentinel",function()
         local c=assert(Rules.catalog(Config)); assert(#c.offers==#Config.products and #c.offers>15)
         assert(c.mode=="mock" and not c.authorized)
         for _,p in ipairs(Config.products) do assert(not p.enabled and p.roblox_product_id==JSON.Null and p.approved_robux_price==JSON.Null) end
         for _,r in ipairs({"xp","paper"}) do
             for _,m in ipairs({15,30,60,180,300}) do assert(c.byKey[r.."_boost_"..m.."m"].amount==m*60) end
         end
-        for _,n in ipairs({1500,5000,15000}) do assert(c.byKey["paper_pack_"..n].amount==n) end
+        for _,n in ipairs({1500,5000,7500,15000,40000}) do assert(c.byKey["paper_pack_"..n].amount==n) end
+        local starter=c.byKey.starter_pack
+        assert(starter.kind=="developer_product" and starter.benefit=="starter_pack" and starter.amount==nil)
         assert(c.byKey.permanent_2x_xp.kind=="pass" and c.byKey.permanent_2x_paper.amount==2)
     end)
     test("part offers cover exactly the parts that cost Paper (free gear needs none)",function()
@@ -34,13 +36,14 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==15+count)
-        for i,offer in ipairs(c.offers) do assert((offer.benefit=="part_unlock")== (i>15)) end
+        assert(#c.offers==18+count)
+        local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" then fixed+=1 end end
+        assert(fixed==18)
     end)
     test("zero or additional part offers are accepted without a Catalog dependency",function()
         local raw=copy(Config)
-        while #raw.products>15 do table.remove(raw.products) end
-        assert(#assert(Rules.catalog(raw)).offers==15)
+        for i=#raw.products,1,-1 do if raw.products[i].benefit=="part_unlock" then table.remove(raw.products,i) end end
+        assert(#assert(Rules.catalog(raw)).offers==18)
         table.insert(raw.products,{key="part_future_part",kind="developer_product",benefit="part_unlock",catalog_id="future_part",
             roblox_product_id=JSON.Null,approved_robux_price=JSON.Null,enabled=false})
         local offer=assert(Rules.catalog(raw)).byKey.part_future_part
@@ -49,9 +52,11 @@ function Spec.run()
         assert(op.kind=="partUnlock" and op.catalogID=="future_part" and fields==2 and table.isfrozen(op))
     end)
     test("every fixed offer is still required even when the array contains part offers",function()
-        for i=1,15 do
-            local raw=copy(Config);table.remove(raw.products,i)
-            assert(Rules.catalog(raw)==nil)
+        for i,p in ipairs(Config.products) do
+            if p.benefit~="part_unlock" then
+                local raw=copy(Config);table.remove(raw.products,i)
+                assert(Rules.catalog(raw)==nil,p.key)
+            end
         end
         local raw=copy(Config);raw.products[#raw.products+2]=copy(raw.products[16]);assert(Rules.catalog(raw)==nil)
         raw=copy(Config);raw.products[0]=copy(raw.products[16]);assert(Rules.catalog(raw)==nil)
@@ -134,11 +139,23 @@ function Spec.run()
     test("typed semantic operations contain no XP for purchased Paper and no client CAS or amount path",function()
         local c=assert(Rules.catalog(Config))
         local paper=Rules.operation(c.byKey.paper_pack_5000,"mock-purchase:abc",7)
-        assert(paper.kind=="purchasedPaper" and paper.wholePaper==5000 and paper.points==nil and paper.multipliers==nil)
+        assert(paper.kind=="purchasedPaper" and paper.wholePaper==5000 and paper.packKey=="paper_pack_5000" and paper.points==nil and paper.multipliers==nil)
         local duration=Rules.operation(c.byKey.xp_boost_300m,"mock-purchase:def",8)
         assert(duration.kind=="boostIntent" and duration.resource=="xp" and duration.seconds==18000)
         local pass=Rules.operation(c.byKey.permanent_2x_paper,"mock-purchase:ghi",9)
         assert(pass.action=="permanent" and pass.seconds==nil and table.isfrozen(pass))
+        local starter=Rules.operation(c.byKey.starter_pack)
+        assert(starter.kind=="starterPack" and starter.wholePaper==nil and starter.resource==nil and table.isfrozen(starter))
+    end)
+    test("new packs and bundle reject mismatched benefits amounts and unexpected fields",function()
+        for _,key in ipairs({"paper_pack_7500","paper_pack_40000","starter_pack"}) do
+            for _,change in ipairs({function(p)p.kind="pass"end,function(p)p.benefit="xp_seconds"end,
+                function(p)p.amount=1 end,function(p)p.catalog_id="wings_1"end,function(p)p.extra=true end}) do
+                local raw=copy(Config)
+                for _,p in ipairs(raw.products) do if p.key==key then change(p) end end
+                assert(Rules.catalog(raw)==nil,key)
+            end
+        end
     end)
     test("live DTO cannot initiate checkout or display fixture prices",function()
         local c=copy(Config); c.mode="live"; c.live_sales_authorized=true

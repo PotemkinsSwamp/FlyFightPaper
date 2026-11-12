@@ -3,23 +3,25 @@
 ## What the player sees
 You earn **Paper** (money) and **XP** (levels) from points in every match. Paper buys plane parts and weapons; levels unlock them. The shop sells Paper packs and 2x XP / 2x Paper boosts, but real sales are switched off until Alan approves products and prices.
 
-## Where it stands (2026-10-18)
+## Where it stands (2026-11-12)
 **Pacing (Alan, 2026-11-08):** Paper is the long wait, levels just open things up. An average player (12 folds a
 match, ~660 Paper and ~1,190 XP) reaches level 50 in about 18 hours of play and could own everything (167,400 Paper)
 in about 36; for the first 6 hours ~13 unlocked things are always waiting to be saved for. Prices scale up with level
 (Pencil 32,000, Cardboard 18,500, first parts 700; table in the
 [decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Paper packs and Robux part prices were re-scaled to
-match (Alan 2026-11-11, [shop prices plan](../plan/SHOP-PRICES-PLAN.md): packs 1,500 / 5,000 / 15,000 Paper; each part's
-Robux price from its Paper price). Still to come: the personal shop and offers ([picks](../decisions/2026-11-12-personal-shop-picks.md)).
+match (Alan 2026-11-11, [shop prices plan](../plan/SHOP-PRICES-PLAN.md): each part's Robux price comes from its Paper
+price; current packs are listed below). The server save rules for the daily gift, starter bundle, first-buy doubles and daily buy count are built with unit
+tests (2026-11-12), awaiting Claude's Studio run and client wiring. Other personal shop offers remain in the
+[picks](../decisions/2026-11-12-personal-shop-picks.md).
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Roblox-style shop window in our paper look
-(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 15 products and part unlocks (Stage 10, Codex, reviewed; 388 tests)
+(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 18 fixed offers and part unlocks
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
 - **Receipts:** a paid boost or Paper pack is added together with its receipt ID in one save change, then the game
   waits for that save to reach Roblox before telling Roblox "granted". A failed save means "not yet": Roblox resends
   and the receipt ID stops a second payout. A product switched off after someone paid is still delivered.
 - **Passes:** ownership is asked from Roblox on join and after a pass purchase; an error grants nothing.
 - **Buying:** the server opens Roblox's buy window (`buyProduct`), only when live, enabled and mapped; never for an
-  owned pass or a timed boost the permanent pass already covers. The shop window shows the approved prices from the plan; live, they must come from Roblox's product info.
+  owned pass, a timed boost the permanent pass already covers, or an ended starter offer. The shop window shows the approved prices from the plan; live, they must come from Roblox's product info.
 - **To switch on (Alan's go):** create the products and passes on Roblox, put their IDs and approved prices in
   `config/commerce.json`, set `enabled`, `mode` "live" and `live_sales_authorized` true, then test on a private server.
 - **Free gear** (2026-11-08): anything with a Paper price of 0 is yours from its level on (`Catalog:owns`), with
@@ -73,6 +75,12 @@ Ordinary UI shows whole units. Event identities prevent duplicate rewards on ret
 multipliers are captured independently at earning time. Final bonus events use eligibility at finalization,
 not retroactive multiplication of the full ledger.
 
+The free daily gift is a seven-step row: 100 Paper, 150 Paper, 15 minutes of 2x XP, 250 Paper, 300 Paper,
+15 minutes of 2x Paper, then 1,000 Paper. One claim per UTC calendar day, with the date supplied by the server.
+Missed days keep the next step; step seven wraps to step one. Gift Paper counts as earned Paper but is never
+boosted. Timed gifts extend the same online boost balance as a purchase. If a permanent pass already covers
+that resource, its gift becomes 250 earned Paper instead. A claim changes the reward and saved row together.
+
 ## Levels and purchases
 XP to advance level L: 200+40*(L-1), initial cap50. Maintain cumulative earned XP even at cap for statistics;
 no implied future level or refund. Unlock requires both current level and Paper balance, validated together.
@@ -119,10 +127,56 @@ Do not extend the free grind solely to justify a costly permanent product. Real 
 
 ## Products
 Ten distinct temporary products: XP and earned Paper separately for900,1800,3600,10800,18000 online seconds.
-Three Paper packs (1,500 / 5,000 / 15,000, approved 2026-11-11) and two permanent passes. Robux prices are the
+Five Paper packs (1,500 / 5,000 / 7,500 / 15,000 / 40,000), one starter bundle and two permanent passes. The new
+packs and bundle follow the approved [money plan](../plan/SHOP-MONEY-PLAN.md). Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
 DEVELOPMENT ONLY, cannot prompt real checkout, and cannot write mock purchases into production profiles.
+
+The first buy of each Paper pack gives twice its Paper, whether bought through a receipt or the Studio practice
+shop. Later buys of that pack give its normal amount. The pack key travels with the grant; the save operation
+decides and records its first buy together with the purchased Paper. Receipt replays give nothing extra. This
+bonus does not apply to the starter bundle, daily gifts or other purchased Paper.
+
+The starter bundle gives Swept Wings (`wings_1`), 1,500 purchased Paper and 3,600 seconds of 2x XP together in one
+save operation. Owning the wings already is fine. An in-flight receipt after a permanent XP upgrade adds dormant
+XP time, just like a paid timed boost. The offer starts on the first server load that sees no saved start time and
+lasts 259,200 real seconds, including time away. It never restarts. It is offered only before any purchase, with
+no receipt history or permanent pass, and only once. An expired or previously used offer cannot open checkout;
+a paid receipt still grants the entire bundle after expiry or a racing purchase. The practice shop applies the
+same bundle and availability rules, only to Studio mock profiles. It explicitly refuses individual part products.
+Practice buys record simulated receipt history in mock profiles so an earlier buy closes this offer there too.
+
+Every newly granted developer-product receipt and every practice buy adds one to the current UTC day's buy
+count. Replaying an operation or receipt adds nothing. A new day's first buy resets the saved count; until then
+the displayed count is zero. At three buys, client offer lines and pop-ups should stop; the server still accepts
+ordinary checkout and receipts. Pass ownership restoration is not a developer-product receipt and does not add
+to this count. Claiming a daily gift does not count as a buy.
+
+Schema 9 adds these saved fields; older saves receive the defaults without losing existing progress:
+
+| Field | Meaning and default |
+|---|---|
+| `dailyGift` | `{next=1,lastDay=-1}`; next step 1-7 and last claimed UTC day, with -1 meaning never |
+| `starterPack` | `{offeredAt=0,bought=false}`; first offer Unix time (0 before first load) and whether the bundle was bought |
+| `firstBuys` | Empty map initially; each used Paper pack key maps to `true` |
+| `buysToday` | `{day=-1,count=0}` initially; UTC day and number of granted receipts/practice buys that day |
+
+`ProfileRuntime` refreshes these Player attributes on load, after operations, and on its normal one-second
+status update, including UTC midnight and starter expiry. Clients read them; clients cannot set saved rewards.
+
+| Player attribute | Meaning |
+|---|---|
+| `DailyGiftNext` | Next gift step, 1-7 |
+| `DailyGiftReady` | Whether the server's current UTC day is later than the saved last claim |
+| `DailyGiftSecondsLeft` | Seconds to the next UTC midnight when claimed; 0 when ready |
+| `StarterPackEnds` | Saved offer start plus 259,200 seconds while available; otherwise 0 |
+| `FirstBuysUsed` | Comma-separated used pack keys, sorted by key; empty string before any pack buy |
+| `BuysToday` | Saved buy count when its UTC day is today; otherwise 0 |
+
+The new Hangar action is `claimDailyGift`, with no client date or reward. Existing `buyProduct` and `mockProduct`
+accept `starter_pack` and both new pack keys. Successful claims report the actual Paper or timed reward. A repeat
+claim says "Already claimed today. Come back tomorrow." An unavailable starter offer says "The starter pack has ended."
 
 Same-resource multipliers cap2×. Timed purchases add duration; five hours is not a balance cap. Permanent
 ownership disables new same-resource timed offers. On permanent upgrade retain remaining seconds dormant,
@@ -162,7 +216,7 @@ conversion and profitability require first-party evidence and actual receipts/co
 Use `economy.json` and the economy details above. Contribution pays exactly the same for AI/humans.
 Level L needs 200 + floor(22*(L-1)^1.5) XP to reach L+1 (a curve; was 200+40*(L-1)); cap 50. Paper prices and minimum levels both apply. No
 buying levels. Starting ownership contains baseline structures and pellets; starting wallet/XP is zero.
-No daily-streak system, random loot, paid ammunition, premium revives, or unrequested currency.
+The daily gift row above is not a streak: missed days never reset it. No random loot, paid ammunition, premium revives, or unrequested currency.
 
 Two independent remaining-seconds boost balances. Consume trusted loaded online intervals, not calendar
 elapsed time; pause offline/loading/transfer/unavailable recovery. Menu/desk/intermission counts under the
@@ -186,10 +240,12 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `src/server/HangarService.luau` | Buying parts, the practice shop |
 | `src/client/ShopScreen.luau` | The shop window (Studio only until go-live): built to the approved concept's measurements, pictures named in `UIAssets.shop`, animations; starter pack, free gift and gift buttons are previews ([shop screen plan](../plan/SHOP-SCREEN-PLAN.md)) |
 | `src/server/CommerceService.luau` | Real Roblox purchases: receipts, pass checks, buy prompts (off) |
-| `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts |
+| `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts; late starter bundles |
+| `tests/unit/ShopSave.spec.luau` | Gift rows, starter timing and bundles, first-buy doubles, buy counts, schema migration and Player attributes |
+| `tests/unit/MockShop.spec.luau` | Practice-only guards, typed grants and refusal of individual part products |
 
 ## Tuning numbers
-`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price); `config/commerce.json` (15 shop products; `mode` is "mock", live sales off); prices in `config/catalog.json`.
+`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts and starter bundle); `config/commerce.json` (18 fixed offers plus part unlocks; `mode` is "mock", live sales off); prices in `config/catalog.json`.
 
 ## Related
 - [Points system decision](../decisions/2026-10-14-points-system.md)

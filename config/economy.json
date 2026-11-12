@@ -52,6 +52,24 @@
   "full_refold_cost_paper": 120,
   "boost_bonus_affects_score": false,
   "currency_rounding": "sum exact internal milli-units, floor credited integer, retain residual",
+  "daily_gift": {
+    "rewards": [
+      {"paper": 100},
+      {"paper": 150},
+      {"xp_seconds": 900},
+      {"paper": 250},
+      {"paper": 300},
+      {"paper_seconds": 900},
+      {"paper": 1000}
+    ],
+    "boost_covered_paper": 250
+  },
+  "starter_pack": {
+    "part": "wings_1",
+    "paper": 1500,
+    "xp_seconds": 3600,
+    "offer_seconds": 259200
+  },
   "reference_match": {
     "eliminations": 6,
     "assists": 4,

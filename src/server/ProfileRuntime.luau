@@ -8,6 +8,7 @@ local ProfileStore=require(script.Parent.Packages.ProfileStore)
 local Profile=require(script.Parent.ProfileService)
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
+local Commerce=require(Root.Shared.CommerceRules)
 local Gameplay=require(Root.Generated.Gameplay)
 local Config=require(Root.Generated.Server).profiles
 local Runtime={};Runtime.__index=Runtime
@@ -108,7 +109,8 @@ function Runtime:load(player)
   -- Paper, so every build can be saved and tested. self.mock is only true in Studio; live saves never get this.
   -- A fresh Studio account instead (Alan 2026-11-12, to see the buy buttons): set workspace attribute DevAccountLevel
   -- (and optionally DevAccountPaper, default 3,000): that level, only its free gear, that Paper. Remove it for the full one.
-  local fresh=self.mock and workspace:GetAttribute("DevAccountLevel")
+  -- Real players only: the unit tests' stand-in players keep the full dev account they were written for.
+  local fresh=self.mock and typeof(player)=="Instance" and workspace:GetAttribute("DevAccountLevel")
   if type(fresh)=="number" then
    local data,want,lo,hi=profile.Data,math.clamp(math.floor(fresh),1,50),0,1e12
    while lo<hi do local mid=(lo+hi)//2; if (Economy.levelForXP(mid) or 1)>=want then hi=mid else lo=mid+1 end end
@@ -206,6 +208,15 @@ function Runtime:update(e)
  e.player:SetAttribute("Level",Economy.levelForXP(e.snapshot.xpMilli))
  e.player:SetAttribute("Prestige",e.snapshot.prestige or 0)
  e.player:SetAttribute("Graduated",e.snapshot.qualification.count>=Gameplay.bots.rookie_qualifying_matches)
+ local now=self.service.unix();local day=math.floor(now/86400)
+ local ready=day>e.snapshot.dailyGift.lastDay
+ e.player:SetAttribute("DailyGiftNext",e.snapshot.dailyGift.next)
+ e.player:SetAttribute("DailyGiftReady",ready)
+ e.player:SetAttribute("DailyGiftSecondsLeft",ready and 0 or 86400-now%86400)
+ e.player:SetAttribute("StarterPackEnds",Commerce.starterPackEnds(e.snapshot,now))
+ local used={};for key in pairs(e.snapshot.firstBuys) do table.insert(used,key) end;table.sort(used)
+ e.player:SetAttribute("FirstBuysUsed",table.concat(used,","))
+ e.player:SetAttribute("BuysToday",e.snapshot.buysToday.day==day and e.snapshot.buysToday.count or 0)
  e.player:SetAttribute("ProfileStatus",self.mock and "Studio session only" or (e.saveDelayed and "Saving delayed. Progress is held in this server." or (e.lastSavedVersion>=e.snapshot.version and "Saved" or "Waiting to save")))
 end
 function Runtime:view(player)

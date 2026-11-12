@@ -3,10 +3,11 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
 local Commerce=require(Root.Generated.Commerce)
+local CommerceRules=require(Root.Shared.CommerceRules)
 local PresetCount=require(Root.Generated.Gameplay).menus.saved_loadouts
 local Service={};Service.__index=Service
-function Service.new(flight,profiles,commerce)
- return setmetatable({flight=flight,profiles=profiles,commerce=commerce,catalog=flight.catalog},Service)
+function Service.new(flight,profiles,commerce,deps)
+ return setmetatable({flight=flight,profiles=profiles,commerce=commerce,catalog=flight.catalog,unix=deps and deps.unix or os.time},Service)
 end
 function Service:message(player,text) player:SetAttribute("MenuMessage",text) end
 -- Player-typed names go through Roblox's text filter (shown only to their owner); a failed filter keeps the fallback.
@@ -114,10 +115,19 @@ function Service:handle(player,action,value)
   if valid then candidate.settings=settings;valid,why=Schema.validate(candidate,self.catalog) end
   if not valid then warn("Settings refused for player "..player.UserId..": "..tostring(why));self:message(player,"Settings could not be saved.");return end
   self:enqueue(player,{kind="settings",settings=settings},function(saved) if not saved then self:message(player,"Settings could not be saved.") end end)
+ elseif action=="claimDailyGift" then
+  -- The client supplies no date or reward. Queued claims re-check the saved day.
+  self:enqueue(player,{kind="dailyGift",day=math.floor(self.unix()/86400)},function(ok,result)
+   if not ok then
+    self:message(player,result=="daily_gift_claimed" and "Already claimed today. Come back tomorrow." or "Gift could not be claimed. Try again shortly.")
+   elseif result.paper then self:message(player,"Gift claimed: +"..result.paper.." Paper.")
+   else self:message(player,"Gift claimed: "..string.format("%d",result.seconds/60).." minutes of 2x "..(result.resource=="xp" and "XP" or "Paper")..".") end
+  end)
  elseif action=="buyProduct" and type(value)=="string" then
+  if value=="starter_pack" and CommerceRules.starterPackEnds(profile,self.unix())==0 then self:message(player,"The starter pack has ended.");return end
   if self.commerce then
-   local ok=self.commerce:prompt(player,value)
-   if not ok then self:message(player,"Shop is closed for now.") end
+   local ok,why=self.commerce:prompt(player,value)
+   if not ok then self:message(player,why=="starter_pack_ended" and "The starter pack has ended." or "Shop is closed for now.") end
   end
  elseif action=="mockProduct" and Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
   if type(value)~="string" then return end
@@ -125,13 +135,18 @@ function Service:handle(player,action,value)
   for _,item in ipairs(Commerce.products) do if item.key==value then product=item;break end end
   if not product then return end
   local input
-  if product.benefit=="paper_balance" then input={kind="purchasedPaper",wholePaper=product.amount}
+  if product.benefit=="paper_balance" then input={kind="purchasedPaper",wholePaper=product.amount,packKey=product.key}
+  elseif product.benefit=="starter_pack" then
+   if CommerceRules.starterPackEnds(profile,self.unix())==0 then self:message(player,"The starter pack has ended.");return end
+   input={kind="starterPack"}
+  elseif product.benefit=="part_unlock" then
+   self:message(player,"Part checkout is unavailable in the practice shop.");return
   else
    local resource=product.benefit:find("xp") and "xp" or "paper"
    local permanent=product.benefit:find("permanent")~=nil
    local view=self.profiles.service:liveBoostView(self.profiles.entries[player].account)
    local boosts=view.status=="ok" and view.value.boosts or profile.boosts
-   if not permanent and boosts[resource=="xp" and "permanentXP" or "permanentPaper"] then self:message(player,"Permanent 2x already covers this resource. Remaining temporary time is preserved.");return end
+   if boosts[resource=="xp" and "permanentXP" or "permanentPaper"] then self:message(player,"Permanent 2x already covers this resource. Remaining temporary time is preserved.");return end
    input={kind="boostIntent",resource=resource,action=permanent and "permanent" or "duration"}
    if not permanent then input.seconds=product.amount end
   end

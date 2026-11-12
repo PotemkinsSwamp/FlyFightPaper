@@ -29,7 +29,7 @@ local function signal()
 end
 local function fixture(options)
  options=options or {}
- local f={time=0,waits=0,inputs={},sources={},outcomes={},saveTimes={},unloaded=options.unloaded==true}
+ local f={time=0,unix=20000*86400+100,waits=0,inputs={},sources={},outcomes={},saveTimes={},unloaded=options.unloaded==true}
  f.catalog=Catalog.new(require(Root.Generated.Catalog),require(Root.Generated.Gameplay))
  local data=Schema.defaults(f.catalog)
  f.profile=Fake.new(data)
@@ -54,7 +54,7 @@ local function fixture(options)
   table.insert(self.calls,{kind="pass",player=player,id=id})
   if self.promptError then error("fake prompt failure") end
  end
- f.service=Profile.new({catalog=f.catalog,monotonic=function()return f.time end})
+ f.service=Profile.new({catalog=f.catalog,monotonic=function()return f.time end,unix=function()return f.unix end})
  assert(f.service:attach("user",f.profile,{connected=true,mapLoaded=false}).status=="ok")
  local entry={profile=f.profile,account="user"}
  f.profiles={catalog=f.catalog,entries={[f.player]=entry}}
@@ -82,7 +82,7 @@ local function fixture(options)
  end
  f.config=options.config or liveConfig()
  f.deps={marketplace=f.marketplace,players=f.players,config=f.config,timeoutSeconds=options.timeoutSeconds or 3,
-  now=function()return f.time end,wait=function(seconds)
+  unix=function()return f.unix end,now=function()return f.time end,wait=function(seconds)
    f.time+=seconds;f.waits+=1
    if f.onWait then f.onWait() end
   end}
@@ -150,10 +150,10 @@ function Spec.run()
  test("Paper receipts grant once under different operation ids and save their receipt and balance together",function()
   local f=fixture();local info=f:receipt("paper_pack_1500");local key=Profile.receiptKey(info.PurchaseId)
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
-  assert(f.profile.Data.paperMilli==1500000 and f.profile.Data.purchasedPaperMilli==1500000 and f.profile.Data.earnedPaperMilli==0)
-  assert(f.profile.LastSavedData.receiptIds[key] and f.profile.LastSavedData.paperMilli==1500000)
+  assert(f.profile.Data.paperMilli==3000000 and f.profile.Data.purchasedPaperMilli==3000000 and f.profile.Data.earnedPaperMilli==0)
+  assert(f.profile.LastSavedData.receiptIds[key] and f.profile.LastSavedData.paperMilli==3000000)
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
-  assert(f.profile.Data.paperMilli==1500000 and f.profile.Data.purchasedPaperMilli==1500000 and #f.inputs==2)
+  assert(f.profile.Data.paperMilli==3000000 and f.profile.Data.purchasedPaperMilli==3000000 and #f.inputs==2)
   assert(f.outcomes[1].value.operationID~=f.outcomes[2].value.operationID and f.outcomes[2].value.type=="ReceiptAlreadyGranted")
   assert(f.sources[1]==false and f.sources[2]==false,"source dedupe would suppress a replay's callback")
  end)
@@ -161,12 +161,12 @@ function Spec.run()
   local f=fixture({timeoutSeconds=4.5});f.profile.failSave=true
   local info=f:receipt("paper_pack_5000");local key=Profile.receiptKey(info.PurchaseId)
   assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
-  assert(f.profile.Data.paperMilli==5000000 and f.profile.Data.receiptIds[key] and not f.profile.LastSavedData.receiptIds[key])
+  assert(f.profile.Data.paperMilli==10000000 and f.profile.Data.receiptIds[key] and not f.profile.LastSavedData.receiptIds[key])
   assert(#f.saveTimes>=2 and #f.saveTimes<=3)
   for i=2,#f.saveTimes do assert(f.saveTimes[i]-f.saveTimes[i-1]>=2) end
   f.profile.failSave=false
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
-  assert(f.profile.Data.paperMilli==5000000 and f.profile.LastSavedData.paperMilli==5000000 and f.profile.LastSavedData.receiptIds[key])
+  assert(f.profile.Data.paperMilli==10000000 and f.profile.LastSavedData.paperMilli==10000000 and f.profile.LastSavedData.receiptIds[key])
  end)
  test("early part receipts acknowledge only saved ownership and replay without granting more",function()
   local f=fixture();f.profile.failSave=true
@@ -192,7 +192,7 @@ function Spec.run()
    if f.time>=0.3 then f.profile.LastSavedData=pending;f.onWait=nil end
   end
   assert(f.commerce:processReceipt(f:receipt("paper_pack_1500","async/save"))==Decisions.PurchaseGranted)
-  assert(f.time>=0.3 and f.profile.writes==1 and f.profile.LastSavedData.paperMilli==1500000)
+  assert(f.time>=0.3 and f.profile.writes==1 and f.profile.LastSavedData.paperMilli==3000000)
  end)
  test("unknown products, pass ids, absent players and profiles that never load grant nothing",function()
   for _,case in ipairs({"unknown","pass","absent","unloaded"}) do
@@ -212,7 +212,7 @@ function Spec.run()
    if f.time>=0.4 and f.pending then local apply=f.pending;f.pending=nil;apply() end
   end
   assert(f.commerce:processReceipt(f:receipt("paper_pack_1500"))==Decisions.PurchaseGranted)
-  assert(f.time>=0.4 and f.profile.LastSavedData.paperMilli==1500000)
+  assert(f.time>=0.4 and f.profile.LastSavedData.paperMilli==3000000)
  end)
  test("queue refusal, callback failure and callback timeout all leave receipts pending",function()
   for _,case in ipairs({"queue","failure","callback"}) do
@@ -226,7 +226,7 @@ function Spec.run()
    if case=="callback" then
     f.dropCallback=false
     assert(f.commerce:processReceipt(f:receipt("paper_pack_1500"))==Decisions.PurchaseGranted)
-    assert(f.profile.LastSavedData.paperMilli==1500000)
+    assert(f.profile.LastSavedData.paperMilli==3000000)
    end
   end
  end)
@@ -243,16 +243,20 @@ function Spec.run()
    if offer.kind=="developer_product" then
     n+=1
     assert(f.commerce:processReceipt(f:receipt(offer.key))==Decisions.PurchaseGranted,offer.key)
-    if offer.benefit=="paper_balance" then paper+=offer.amount*1000
+    if offer.benefit=="paper_balance" then paper+=offer.amount*2000
     elseif offer.benefit=="xp_seconds" then xpSeconds+=offer.amount
     elseif offer.benefit=="paper_seconds" then paperSeconds+=offer.amount
+    elseif offer.benefit=="starter_pack" then
+     local pack=require(Root.Generated.Economy).starter_pack
+     paper+=pack.paper*1000;xpSeconds+=pack.xp_seconds
+     assert(f.profile.LastSavedData.starterPack.bought and f.profile.LastSavedData.ownership[pack.part])
     else
      assert(offer.benefit=="part_unlock" and f.profile.LastSavedData.ownership[offer.catalogID])
      parts+=1
     end
    end
   end
-  assert(parts>0 and n==13+parts and n==#f.commerce.catalog.offers-2)
+  assert(parts>0 and n==16+parts and n==#f.commerce.catalog.offers-2)
   assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)
   for i=2,#f.saveTimes do assert(f.saveTimes[i]-f.saveTimes[i-1]>=2,"receipts must share the save cooldown") end
@@ -266,7 +270,7 @@ function Spec.run()
   end
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and second==Decisions.PurchaseGranted)
   assert(#f.inputs==2 and f.outcomes[2].value.type=="ReceiptAlreadyGranted")
-  assert(f.profile.LastSavedData.paperMilli==1500000 and f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
+  assert(f.profile.LastSavedData.paperMilli==3000000 and f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
   assert(#f.saveTimes==2 and f.saveTimes[2]-f.saveTimes[1]>=2)
  end)
  test("in-flight timed receipts still grant dormant seconds after a permanent upgrade",function()
@@ -282,7 +286,7 @@ function Spec.run()
   f.onWait=function()f.profile.active=false end
   local info=f:receipt("paper_pack_1500")
   assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
-  assert(f.profile.Data.paperMilli==1500000 and not f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
+  assert(f.profile.Data.paperMilli==3000000 and not f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
  end)
  test("player leaving during profile loading stops the wait without granting",function()
   local f=fixture();f.unloaded=true;f.onWait=function()f.player.Parent=nil end
@@ -395,6 +399,33 @@ function Spec.run()
   local oldSignature=Hangar.new({catalog=f.catalog},f.profiles)
   oldSignature:handle(f.player,"buyProduct","paper_pack_1500")
   assert(#f.marketplace.calls==1)
+ end)
+ test("starter prompts end exactly at three days and after an earlier buy or pass",function()
+  for _,reason in ipairs({"expired","receipt","pass","bought"}) do
+   local f=fixture();local ok,why=f.commerce:prompt(f.player,"starter_pack")
+   assert(ok and why=="prompted" and #f.marketplace.calls==1 and #f.inputs==0)
+   if reason=="expired" then
+    f.unix+=259199;assert(f.commerce:prompt(f.player,"starter_pack"));f.unix+=1
+   elseif reason=="receipt" then assert(f.commerce:processReceipt(f:receipt("xp_boost_15m"))==Decisions.PurchaseGranted)
+   elseif reason=="pass" then assert(f.profiles:enqueue(f.player,{kind="passGrant",resource="paper"}))
+   else f.profile.Data.starterPack.bought=true end
+   local calls=#f.marketplace.calls
+   ok,why=f.commerce:prompt(f.player,"starter_pack")
+   assert(not ok and why=="starter_pack_ended" and #f.marketplace.calls==calls)
+  end
+ end)
+ test("expired disabled starter receipts wait for a durable complete bundle and redeliver once",function()
+  local config=liveConfig();for _,p in ipairs(config.products) do if p.key=="starter_pack" then p.enabled=false end end
+  local f=fixture({config=config});f.unix+=259200;f.profile.failSave=true
+  local info=f:receipt("starter_pack");local key=Profile.receiptKey(info.PurchaseId)
+  assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
+  assert(f.profile.Data.receiptIds[key] and f.profile.Data.starterPack.bought and f.profile.Data.ownership.wings_1)
+  assert(f.profile.Data.paperMilli==1500000 and f.profile.Data.purchasedPaperMilli==1500000 and f.profile.Data.boosts.xpSeconds==3600)
+  assert(not f.profile.LastSavedData.receiptIds[key] and not f.profile.LastSavedData.starterPack.bought)
+  f.profile.failSave=false;assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  local saved=f.profile.LastSavedData
+  assert(saved.receiptIds[key] and saved.starterPack.bought and saved.ownership.wings_1)
+  assert(saved.paperMilli==1500000 and saved.purchasedPaperMilli==1500000 and saved.boosts.xpSeconds==3600 and saved.buysToday.count==1)
  end)
  return result
 end

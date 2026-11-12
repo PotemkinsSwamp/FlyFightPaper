@@ -237,6 +237,7 @@ function Spec.run()
    local op=assert(service:prepare("user",input));local first=service:apply("user",op)
    assert(first.status=="ok" and first.value.type=="PartUnlocked" and first.value.catalogID==id,first.code)
    local expected=assert(Schema.copy(before));expected.ownership[id]=true;expected.receiptIds[Service.receiptKey(input.receiptId)]=true
+   expected.buysToday={day=math.floor(service.unix()/86400),count=1}
    expected.version+=1;expected.operationIds[service.sessions.user.token]=2
    assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"part unlock changed unrelated progress")
    local after=Schema.canonical(profile.Data)
@@ -256,6 +257,7 @@ function Spec.run()
   local first=service:apply("user",assert(service:prepare("user",input)))
   assert(first.status=="ok" and first.value.type=="PartAlreadyOwned",first.code)
   local expected=assert(Schema.copy(before));expected.receiptIds[Service.receiptKey(input.receiptId)]=true
+  expected.buysToday={day=math.floor(service.unix()/86400),count=1}
   expected.version+=1;expected.operationIds[service.sessions.user.token]=1
   assert(Schema.canonical(profile.Data)==Schema.canonical(expected))
   local replay=service:apply("user",assert(service:prepare("user",input)))

@@ -403,9 +403,35 @@
       "roblox_product_id": null,
       "approved_robux_price": null,
       "enabled": false
+    },
+    {
+      "key": "paper_pack_7500",
+      "kind": "developer_product",
+      "benefit": "paper_balance",
+      "amount": 7500,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "paper_pack_40000",
+      "kind": "developer_product",
+      "benefit": "paper_balance",
+      "amount": 40000,
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
+    },
+    {
+      "key": "starter_pack",
+      "kind": "developer_product",
+      "benefit": "starter_pack",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
     }
   ],
-  "paper_pack_amounts_status": "approved by Alan 2026-11-11 (docs/plan/SHOP-PRICES-PLAN.md); live activation requires owner authorization",
-  "mock_ui_label": "DEVELOPMENT ONLY — no real purchase",
+  "paper_pack_amounts_status": "approved by Alan 2026-11-11 and 2026-11-12 (docs/plan/SHOP-PRICES-PLAN.md, docs/plan/SHOP-MONEY-PLAN.md); live activation requires owner authorization",
+  "mock_ui_label": "DEVELOPMENT ONLY \u00e2\u20ac\u201d no real purchase",
   "source_of_live_display_price": "platform-returned current product information, not fixture"
 }

@@ -4,7 +4,8 @@
 Your Paper, XP, level, owned parts, five saved builds and settings are kept between visits. Nothing you earned is
 lost if a save fails for a moment; it retries without stopping the match for everyone else.
 
-## Where it stands (2026-10-19)
+## Where it stands (2026-11-12)
+Schema 9 (2026-11-12) adds the [shop save fields](economy-and-shop.md#products), with defaults for older saves.
 Schema 8 (2026-11-11) adds `unlocksSeen`: the highest level whose unlocks you've opened in the [unlock backpack](../plan/UNLOCK-PLAN.md).
 It only rises, never past your level (`RoundAction` "unlocksSeen"); older saves and prestige set it to the current level,
 so nothing old piles up. Shut down old servers when publishing it (below).

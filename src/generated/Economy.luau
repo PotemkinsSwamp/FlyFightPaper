@@ -9,6 +9,32 @@ return JSONTypes.map({
     ["completion_xp"] = 120,
     ["control_personal_points_max_per_match"] = 1920,
     ["currency_rounding"] = "sum exact internal milli-units, floor credited integer, retain residual",
+    ["daily_gift"] = JSONTypes.map({
+        ["boost_covered_paper"] = 250,
+        ["rewards"] = JSONTypes.array({
+            [1] = JSONTypes.map({
+                ["paper"] = 100,
+            }),
+            [2] = JSONTypes.map({
+                ["paper"] = 150,
+            }),
+            [3] = JSONTypes.map({
+                ["xp_seconds"] = 900,
+            }),
+            [4] = JSONTypes.map({
+                ["paper"] = 250,
+            }),
+            [5] = JSONTypes.map({
+                ["paper"] = 300,
+            }),
+            [6] = JSONTypes.map({
+                ["paper_seconds"] = 900,
+            }),
+            [7] = JSONTypes.map({
+                ["paper"] = 1000,
+            }),
+        }),
+    }),
     ["damage_engagement_idle_seconds"] = 5,
     ["damage_engagement_min_actual_damage"] = 30,
     ["full_refold_cost_paper"] = 120,
@@ -59,6 +85,12 @@ return JSONTypes.map({
         ["seconds_including_intermission"] = 510,
     }),
     ["schema_version"] = 1,
+    ["starter_pack"] = JSONTypes.map({
+        ["offer_seconds"] = 259200,
+        ["paper"] = 1500,
+        ["part"] = "wings_1",
+        ["xp_seconds"] = 3600,
+    }),
     ["status"] = "initial tuning, not measured retention or demand",
     ["stayed_xp"] = 60,
     ["win_paper"] = 40,

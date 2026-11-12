@@ -1,6 +1,7 @@
 -- Pure catalog and narrow display contract. No platform or persistence authority.
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local JSON = require(Root.Generated.JSONTypes)
+local EconomyConfig = require(Root.Generated.Economy)
 local Rules = {}
 local MAX = 9007199254740991
 local expected = {}
@@ -10,8 +11,20 @@ for _, resource in ipairs({"xp", "paper"}) do
     end
     expected["permanent_2x_" .. resource] = {kind="pass", benefit="permanent_" .. resource, amount=2}
 end
-for _, amount in ipairs({1500, 5000, 15000}) do -- docs/plan/SHOP-PRICES-PLAN.md
+for _, amount in ipairs({1500, 5000, 7500, 15000, 40000}) do -- docs/plan/SHOP-MONEY-PLAN.md
     expected["paper_pack_" .. amount] = {kind="developer_product", benefit="paper_balance", amount=amount}
+end
+expected.starter_pack = {kind="developer_product", benefit="starter_pack"} -- Bundle amounts live in economy.json.
+function Rules.paperPackAmount(key)
+    local offer=type(key)=="string" and expected[key]
+    return offer and offer.benefit=="paper_balance" and offer.amount or nil
+end
+function Rules.starterPackEnds(profile,now)
+    local pack=profile.starterPack
+    if pack.offeredAt==0 or pack.bought or next(profile.receiptIds)~=nil
+        or profile.boosts.permanentXP or profile.boosts.permanentPaper then return 0 end
+    local ends=pack.offeredAt+EconomyConfig.starter_pack.offer_seconds
+    return now<ends and ends or 0
 end
 function Rules.positiveInteger(n)
     return type(n)=="number" and n==n and n>0 and n<=MAX and n%1==0
@@ -36,7 +49,7 @@ function Rules.catalog(config)
         if type(i)~="number" or i%1~=0 or i<1 then return nil,"invalid_offer_array" end
         n+=1
     end
-    if n<15 then return nil,"offer_count" end
+    if n<18 then return nil,"offer_count" end
     local fields={key=true,kind=true,benefit=true,amount=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     local partFields={key=true,kind=true,benefit=true,catalog_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     for i=1,n do
@@ -83,8 +96,9 @@ function Rules.owned(offer,boosts)
 end
 function Rules.operation(offer,source,version)
     if offer.benefit=="part_unlock" then return table.freeze({kind="partUnlock",catalogID=offer.catalogID}) end
+    if offer.benefit=="starter_pack" then return table.freeze({kind="starterPack"}) end
     local op={sourceIdentity=source,expectedVersion=version}
-    if offer.benefit=="paper_balance" then op.kind="purchasedPaper"; op.wholePaper=offer.amount
+    if offer.benefit=="paper_balance" then op.kind="purchasedPaper"; op.wholePaper=offer.amount; op.packKey=offer.key
     else
         op.kind="boostIntent"; op.resource=Rules.resource(offer)
         op.action=offer.kind=="pass" and "permanent" or "duration"
