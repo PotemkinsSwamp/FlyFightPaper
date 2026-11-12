@@ -84,6 +84,10 @@ function ShopScreen.new(playerGui, api)
 		return label
 	end
 	local function fit(label) label.ScaleType = Enum.ScaleType.Fit; return label end
+	-- Faded chalk green behind every picture (Alan 2026-11-12 picked it, docs/workshop/design-examples.md): middle
+	-- brightness, so white pieces and dark pieces both stand out; the board's own colour family. Made before the picture.
+	local BACKING = Color3.fromRGB(104, 133, 118)
+	local function backing(parent, x0, y0, x1, y1) local circle = fit(pic(parent, "Backing", Art.circlePale, x0, y0, x1, y1)); circle.ImageColor3 = BACKING; return circle end
 	-- Words in a box (concept px), centred unless told; size in concept px. outline: a plain ink (or given) stroke instead
 	-- of the cream crayon edge, for words on bright paper like the concept's titles.
 	local function say(parent, name, text, x0, y0, x1, y1, size, opts)
@@ -270,6 +274,7 @@ function ShopScreen.new(playerGui, api)
 		for i, item in STARTER.items do
 			local x0 = 310 + (i - 1) * 185
 			local square = pic(card, "Item" .. i, Art.itemSquare, x0, 113, x0 + 176, 303)
+			backing(square, 18, 4, 158, 126)
 			ticks(card, x0 + 105, 113, x0 + 165, 148, 15, i)
 			if item.part then
 				local part = Catalog:get(item.part)
@@ -356,6 +361,7 @@ function ShopScreen.new(playerGui, api)
 			local x0 = 57 + (d - 1) * 166
 			local square = pic(content, "Day" .. d, Art.itemSquare, x0, top, x0 + 156, top + 168)
 			say(square, "Day", "Day " .. d, 0, 6, 156, 42, 28, { loud = true })
+			backing(square, 32, 40, 124, 120)
 			move(fit(pic(square, "Icon", giftIcon(reward, d), 30, 44, 126, 116)), "bob", d * 0.5)
 			say(square, "Gift", giftWords(reward), 6, 118, 150, 160, 24, { loud = true })
 			if d < day then -- claimed this week: faded, with a green crayon tick
@@ -420,7 +426,7 @@ function ShopScreen.new(playerGui, api)
 		card.Parent = content
 		pic(card, "PaperL", Art.cardFeatured[1], 0, 0, 620, 325)
 		pic(card, "PaperR", Art.cardFeatured[2], 618, 0, 1237, 325)
-		pic(card, "Circle", Art.circlePale, 35, 25, 305, 295)
+		backing(card, 35, 25, 305, 295)
 		partView(card, pick, 50, 40, 240, 240, 0)
 		say(card, "Tag", "YOUR NEXT PART", 340, 18, 920, 64, 36, { color = WHITE, outline = INK })
 		say(card, "Name", part.name, 340, 62, 920, 142, 70, { color = Color3.fromRGB(255, 222, 40), outline = INK, thick = 5 })
@@ -450,6 +456,7 @@ function ShopScreen.new(playerGui, api)
 			local part, x0, top = item.part, 22 + (i - 1) * 411, y + 125
 			local card = pic(content, "Today" .. i, Art.itemSquare, x0, top, x0 + 405, top + 405)
 			say(card, "Name", part.name, 15, 12, 390, 66, 40, { loud = true })
+			backing(card, 100, 64, 305, 269)
 			partView(card, item, 70, 64, 265, 205, i)
 			pic(card, "PricePaper", Art.labelDark, 50, 272, 355, 318)
 			say(card, "Price", level < part.min_level and "Unlocks at level " .. part.min_level or commas(part.paper_price) .. " Paper", 50, 272, 355, 318, 32, { color = WHITE })
@@ -473,7 +480,7 @@ function ShopScreen.new(playerGui, api)
 			{ "permanent_2x_xp", Art.cardPassPurple, Art.iconPassStar, "2x XP Forever", "Double XP from\nevery match!", "permanentXP" } } do
 			local key, paper, icon, title, words, owned = table.unpack(info)
 			local card = pic(content, "Pass" .. i, paper, 17 + (i - 1) * 625, y + 47, 632 + (i - 1) * 625, y + 222)
-			pic(card, "Circle", Art.circlePale, 15, 13, 165, 158)
+			backing(card, 15, 13, 165, 158)
 			move(fit(pic(card, "Icon", icon, 35, 33, 145, 143)), "bob", i)
 			ticks(card, 5, 22, 45, 62, -45, i * 0.7)
 			pic(card, "TwoPill", Art.labelDark, 105, 110, 170, 150)

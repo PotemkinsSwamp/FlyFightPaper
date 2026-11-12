@@ -9,9 +9,10 @@
   Paper; otherwise what you're waiting for ("Wait for level N" / "Need N more"). Always a Buy now for Robux button.
 - It starts on the fold screen and carries into the Hangar; it goes away with its X, LAUNCH, or going elsewhere.
 - **Once per part per play session.**
-- **Shop pictures stay on the off-white paper for now.** Alan asked for a colour that contrasts with white parts and
-  the white Paper icons; brown kraft circles were tried and "looked very bad", so they were taken out. Open until he
-  picks something ([options](../workshop/design-examples.md)).
+- **Shop pictures sit on faded chalk green** (RGB 104,133,118), Alan's pick from real-part mock-ups
+  ([design examples](../workshop/design-examples.md)): middle brightness, so white and dark pieces both show; brown
+  kraft ("looked very bad") and midnight indigo (dark pieces sank) were rejected.
+- **Fold card: no circle, a soft shadow** under the turning part (picked over an indigo circle).
 - **Today's parts timer:** one line ("New parts in 1h 44m") on dark paper between the heading and the cards, counted
   on the server's clock so it ends at the same moment for everyone.
 
