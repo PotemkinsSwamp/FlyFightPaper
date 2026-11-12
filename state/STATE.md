@@ -6,10 +6,10 @@
   from its Paper price (49 to 1,699, Pencil 1,699). Nothing on sale until you create the products on Roblox.
 
 # Now: finish the game for the beta
-Next: (1) Shop step part 2: the Hangar's "Unlock now" button, shop screen, goal offers (pictures for your OK first).
+Next: (1) Shop ([research](../docs/research/SHOP-RESEARCH-2026-11-11.md) done; you chose a store counter, sticker album, daily prize box,
+starter pack with a real 3-day timer): a concept picture for your OK, then "Unlock now" and offers.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
-Not seen yet: a real level-up in a match (tested with the Studio pretend level-up, same note); on a phone the note may
-sit over a centred match tip for its 4 s. Report card: PC size in real Play, and the team-round grade fix (below).
+Not seen yet: a real level-up in a match; on a phone the level-up note may sit over a match tip. Report card: PC size.
 
 Decisions to review
 Report card: team cards moved apart a little (they touched); winners' note just "Red team wins!" (scores are in the
