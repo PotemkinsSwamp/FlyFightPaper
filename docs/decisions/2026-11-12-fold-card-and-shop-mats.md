@@ -1,4 +1,4 @@
-# Fold card in the Hangar, and kraft paper behind shop pictures
+# Fold card in the Hangar, and shop picture backgrounds
 
 **Decided:** 2026-11-12 (Alan, playtest of the money plan)
 **Status:** decided and built; not yet seen in Play.
@@ -9,8 +9,11 @@
   Paper; otherwise what you're waiting for ("Wait for level N" / "Need N more"). Always a Buy now for Robux button.
 - It starts on the fold screen and carries into the Hangar; it goes away with its X, LAUNCH, or going elsewhere.
 - **Once per part per play session.**
-- **Shop pictures sit on a colour that contrasts with white**, not an off-white: white parts and the white Paper
-  icons vanished on the white paper. Built as brown kraft paper circles (one colour, `MAT`, easy to change).
+- **Shop pictures stay on the off-white paper for now.** Alan asked for a colour that contrasts with white parts and
+  the white Paper icons; brown kraft circles were tried and "looked very bad", so they were taken out. Open until he
+  picks something.
+- **Today's parts timer:** one line ("New parts in 1h 44m") on dark paper between the heading and the cards, counted
+  on the server's clock so it ends at the same moment for everyone.
 
 ## Why
 Alan: the line on the top note was in a place that didn't drive the point home; the card shows what got you and how to
