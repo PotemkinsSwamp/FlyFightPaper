@@ -34,8 +34,9 @@ local PRICE = {
 -- Paper packs per Robux: 40,000 20.0, 15,000 18.8, 5,000 16.7, 1,500 15.2, the 7,500 decoy 13.7 (SHOP-MONEY-PLAN).
 local BADGE = { paper_pack_15000 = "Good Value", paper_pack_40000 = "Most Value",
 	paper_boost_180m = "Good Value", paper_boost_300m = "Most Value", xp_boost_180m = "Good Value", xp_boost_300m = "Most Value" }
-local PACK_ICON = { paper_pack_1500 = "iconPaperSmall", paper_pack_5000 = "iconPaperPile", paper_pack_7500 = "iconPaperPile",
-	paper_pack_15000 = "iconPaperBox", paper_pack_40000 = "iconStack" }
+-- Pictures grow with the amount: small, stack (5,000 and the 7,500 decoy), pile, box (the 40,000 anchor).
+local PACK_ICON = { paper_pack_1500 = "iconPaperSmall", paper_pack_5000 = "iconStack", paper_pack_7500 = "iconStack",
+	paper_pack_15000 = "iconPaperPile", paper_pack_40000 = "iconPaperBox" }
 local DAILY = require(Root.Generated.Economy).daily_gift -- the 7-day gift row (nil until its save rules are in)
 -- How a real part is shown in a card, by kind: { turn, tilt } in degrees. Flat parts from nearly above, the rest at a
 -- three-quarter angle. An item can give its own `pose` instead.
@@ -340,7 +341,7 @@ function ShopScreen.new(playerGui, api)
 		else -- the time to the next gift, on the dark label the starter pack's timer uses
 			pic(card, "WaitPaper", Art.labelDark, 820, 22, 1115, 100)
 			local wait = say(card, "Wait", "", 820, 22, 1115, 100, 40, { color = WHITE })
-			move(wait, "timer", 0, { ends = os.time() + (player:GetAttribute("DailyGiftSecondsLeft") or 0), short = true })
+			move(wait, "timer", 0, { ends = (os.time() // 86400 + 1) * 86400, short = true }) -- the next gift: UTC midnight, as on the server
 		end
 		if not rewards then return y + 165 end
 		-- The week: 7 squares on the board under the card.
@@ -423,8 +424,8 @@ function ShopScreen.new(playerGui, api)
 			end
 			if BADGE[product.key] then
 				local most = BADGE[product.key] == "Most Value"
-				local x = first and 165 or (most and 93 or 22) -- beside the First buy burst, never under it
-				sticker(card, BADGE[product.key], x, most and -10 or -8, x + (most and 230 or 230), most and 55 or 70, 40, -6)
+				local x = first and 180 or (most and 93 or 22) -- beside the First buy burst, never touching it
+				sticker(card, BADGE[product.key], x, most and -10 or -8, x + (first and 218 or 230), most and 55 or 70, first and 36 or 40, -6)
 			end
 		end
 		return y + 55 + math.ceil(#packs / 3) * 350

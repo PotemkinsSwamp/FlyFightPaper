@@ -175,7 +175,6 @@ function Customize.draw(content, ctx)
 				sx, sw = sx + size * 0.9, sw - size * 0.9
 			end
 			local label = words(card, "Status", detail, sx, sy, sw, sh, size)
-			if locked then label.TextColor3 = Color3.fromRGB(70, 60, 55) end
 			return label
 		end
 		if state.slot == "weapons" then
@@ -183,9 +182,10 @@ function Customize.draw(content, ctx)
 			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(IN.w, 32), false, true -- long names shrink to one line
 			local cap = Instance.new("UITextSizeConstraint")
 			cap.MaxTextSize, cap.Parent = 30, name
-			words(card, "HitLabel", "Hit", IN.x, IN.y + 34, 44, 26, 22)
+			-- A slimmer Hit row so the size-and-weight line under it can be bigger (Alan 2026-11-12: card words too small).
+			words(card, "HitLabel", "Hit", IN.x, IN.y + 31, 40, 22, 20)
 			local hit = ctx.catalog.hitRating(part)
-			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, IN.x + 42 + (k - 1) * 27, IN.y + 37, 24, 22) end
+			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, IN.x + 38 + (k - 1) * 24, IN.y + 33, 20, 18) end
 			-- Owned or equipped (the yellow card says which): just its size and weight, big enough to read.
 			if owned and state.trying ~= part then
 				detail = string.format("%s, weight %d%s", part.class, part.capacity, detail == "Range only" and ". Range only" or "")
@@ -201,10 +201,10 @@ function Customize.draw(content, ctx)
 					stroke.Parent = card
 				end
 			end
-			local line = status(IN.x, IN.y + 62, IN.w, IN.h - 62, 28)
+			local line = status(IN.x, IN.y + 54, IN.w, IN.h - 54, 34)
 			line.TextWrapped, line.TextScaled = true, true
 			local fit = Instance.new("UITextSizeConstraint")
-			fit.MaxTextSize, fit.Parent = 28, line
+			fit.MaxTextSize, fit.Parent = 34, line
 			if blocked then line.TextColor3, line.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
 		elseif state.slot == "boost" then
 			-- What each booster does (Alan 2026-10-21: three boosters looked the same).
@@ -216,7 +216,7 @@ function Customize.draw(content, ctx)
 			local info = status(IN.x, IN.y + 108, IN.w, IN.h - 108, 30)
 			info.TextWrapped = true
 		else
-			local info = status(IN.x, IN.y + 100, IN.w, IN.h - 100, 36)
+			local info = status(IN.x, IN.y + 92, IN.w, IN.h - 92, 46)
 			info.TextWrapped, info.TextYAlignment = true, Enum.TextYAlignment.Top
 		end
 		-- Phones: the card's words were 7-12 points; each grows as big as its box allows. (The binder is redrawn on
@@ -305,8 +305,8 @@ function Customize.draw(content, ctx)
 				note = string.format("%s: free at level %d. The numbers show what it changes.", part.name, part.min_level)
 			elseif level < part.min_level then
 				-- Above your level: no Paper buy; "Unlock now" for Robux in its place (Alan 2026-11-12).
-				note = string.format("%s unlocks at level %d. Unlock now skips the wait; a prestige takes it back.", part.name, part.min_level)
-				robuxButton(content, "UnlockNow", 700, 980, 280, 70, "Unlock now", robux, 32, function()
+				note = string.format("Level %d, or unlock it now. A prestige takes it back.", part.min_level)
+				robuxButton(content, "UnlockNow", 695, 975, 290, 80, "Unlock now", robux, 38, function()
 					ctx.api.action:FireServer("buyProduct", "part_" .. part.id)
 				end)
 			else
@@ -363,21 +363,21 @@ function Customize.draw(content, ctx)
 		local ask, side = state.ask, ctx.side
 		local dim = Instance.new("TextButton") -- takes the clicks under it
 		dim.Name, dim.Text, dim.AutoButtonColor, dim.BackgroundColor3, dim.BackgroundTransparency = "Ask", "", false, Color3.fromRGB(20, 14, 8), 0.45
-		dim.Size, dim.Parent = UDim2.fromOffset(PaperUI.W, PaperUI.H), side
-		local X0, Y0 = (PaperUI.W - 1100) / 2, (PaperUI.H - 388) / 2
+		dim.Position, dim.Size, dim.Parent = UDim2.fromOffset(-PaperUI.W, -PaperUI.H), UDim2.fromOffset(3 * PaperUI.W, 3 * PaperUI.H), side -- past the sheet: wide screens too
+		local X0, Y0 = PaperUI.W + (PaperUI.W - 1100) / 2, PaperUI.H + (PaperUI.H - 388) / 2 -- (the dim starts a sheet up and left)
 		local card = image(dim, "Note", Assets.ingame.stickyWide, X0, Y0, 1100, 388)
 		local head = PaperUI.loud(words(card, "Title", "Not enough Paper", 117, 112, 858, 64, 56))
 		head.TextXAlignment = Enum.TextXAlignment.Center
 		local short = ask.part.paper_price - ask.paper
 		local text = words(card, "Text", string.format("%s costs %s Paper. You have %s, so you need %s more.", ask.part.name,
-			PaperUI.commas(ask.part.paper_price), PaperUI.commas(ask.paper), PaperUI.commas(short)), 117, 182, 858, 92, 36)
+			PaperUI.commas(ask.part.paper_price), PaperUI.commas(ask.paper), PaperUI.commas(short)), 117, 178, 858, 96, 42)
 		text.TextXAlignment, text.TextWrapped = Enum.TextXAlignment.Center, true
 		local function close() state.ask = nil; ctx.render() end
-		button(card, "GetPaper", Assets.mainmenu.strip.blue, "Get Paper", 370 - 160, 312 - 38, 320, 76, -1, function()
+		button(card, "GetPaper", Assets.mainmenu.strip.blue, "Get Paper", 370 - 160, 312 - 40, 320, 80, -1, function()
 			close()
 			if ctx.api.shop then ctx.api.shop() end
-		end, 36)
-		robuxButton(card, "UnlockNow", 722 - 170, 312 - 38, 340, 76, "Unlock now", ask.robux, 34, function()
+		end, 46)
+		robuxButton(card, "UnlockNow", 722 - 175, 312 - 40, 350, 80, "Unlock now", ask.robux, 40, function()
 			close()
 			ctx.api.action:FireServer("buyProduct", "part_" .. ask.part.id)
 		end)
