@@ -1,9 +1,23 @@
-# Shop direction: a school store counter, a starter pack with a real timer
+# Shop direction: a Roblox shop window in our materials, a starter pack with a real timer
 
 **Decided:** 2026-11-11 (Alan, after the [shop research](../research/SHOP-RESEARCH-2026-11-11.md))
-**Status:** decided; nothing built (next: a concept picture for Alan's OK)
+**Status:** decided; the store counter look was replaced the same night (below); nothing built
 
-## Decision
+## Change, same night: a normal Roblox shop window in our materials
+- Alan turned down the store-counter concept (a counter with jars, bags and a sticker-album book): "completely
+  unrecognizable from all other roblox uis". He showed shops from other games (screenshots in
+  `.planning/shop-concept/roblox-examples/`, not in git).
+- **The shop is laid out like the shops players know:** a window over the game with a title bar and a big red X,
+  a scrolling body with section headings (Featured, Passes, Paper, Boosts), bright cards with a glow behind one big
+  icon, the amount on a dark label, a big green Robux buy button, value stickers that climb ("Good Value", "Most
+  Value"), big icon tabs beside the window, and movement (shines, hue shifts, bobbing icons). Our paper, crayon and
+  classroom materials go on top; the layout stays familiar.
+- **"Limited time!"** is fine on the starter pack (its timer is real). **Gift to a friend** buttons are wanted
+  beside the buy buttons (a new feature: plan it before building).
+- The store counter, the sticker album and the prize box below are replaced by this; the free daily gift stays as a
+  "Free gift" card in the shop.
+
+## Decision (first version)
 - **Research first** (Alan): Roblox buying habits, what players like, the rules for kids, and how to make it tempting,
   all turned into our classroom style. Done: [shop research](../research/SHOP-RESEARCH-2026-11-11.md).
 - **What the shop is:** the paid shop is a **school store window / counter** (a big "this week" poster, price tags on
