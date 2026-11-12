@@ -45,7 +45,8 @@ Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); death l
 building or thing hit, who chased or rammed you), the same line on your note and in the feed. Seen in Studio Play 2026-10-17 except the
 between-rounds lines. Warnings (INCOMING!, LOCKED ON!), zone words and error messages stay fixed on purpose.
 Folded by a part you don't own ([Alan 2026-11-12](../decisions/2026-11-12-fold-card-and-shop-mats.md)): a card under the
-"folded by" note (the shop's Featured card, smaller) with the part in 3D and, down the middle, "Folded by Mia's", its
+"folded by" note (the shop's Featured card, smaller) with the part in 3D turning slowly over a soft shadow (Alan's pick
+over a backing circle, [design examples](../workshop/design-examples.md)) and, down the middle, "Folded by Mia's", its
 name, the level it unlocks at and its Paper price, then the buttons: Buy with Paper and Buy now (Robux) side by side when
 you have the level and the Paper (a red X closes it), else one big Buy now and a red corner button "Wait for level N" /
 "Save N more Paper" that closes it. It shows on the fold screen and stays at the desk; its X, LAUNCH, a menu over the desk, the

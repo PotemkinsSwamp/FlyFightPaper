@@ -55,7 +55,17 @@ function FoldOffer.new(playerGui)
 		card.Parent = sheet
 		PaperUI.image(card, "PaperL", Art.cardFeatured[1], 0, 0, 620, H).ScaleType = Enum.ScaleType.Stretch
 		PaperUI.image(card, "PaperR", Art.cardFeatured[2], 618, 0, 619, H).ScaleType = Enum.ScaleType.Stretch
-		PaperUI.image(card, "Circle", Art.circlePale, 35, 25, 270, 270)
+		-- No circle: a soft shadow under the part (Alan 2026-11-12 picked it over a backing circle,
+		-- docs/workshop/design-examples.md). Stacked faint ovals make the soft edge; it stays still as the part turns,
+		-- like a real shadow under a spinning thing.
+		for i, oval in { { 220, 46 }, { 180, 36 }, { 140, 28 }, { 100, 20 } } do
+			local shade = Instance.new("Frame")
+			shade.Name, shade.AnchorPoint, shade.BorderSizePixel = "Shadow" .. i, Vector2.new(0.5, 0.5), 0
+			shade.Position, shade.Size = UDim2.fromOffset(170, 252), UDim2.fromOffset(oval[1], oval[2])
+			shade.BackgroundColor3, shade.BackgroundTransparency = Color3.fromRGB(10, 10, 40), 0.85
+			Instance.new("UICorner", shade).CornerRadius = UDim.new(0.5, 0)
+			shade.Parent = card
+		end
 		-- Turning slowly round its own middle (Alan 2026-11-12: it should spin), until the card goes.
 		local _, turn = Unlock.view(card, item, 50, 40, 240, 240)
 		local angle, spin = 0.6, nil
