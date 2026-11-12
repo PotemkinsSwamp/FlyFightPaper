@@ -58,12 +58,15 @@ Phones (2026-10-24, seen in Studio's Device Simulator, not yet on a real phone):
 (`PaperUI.phone`, a screen under 540 points tall; a PC keeps exactly what was drawn). Menu backgrounds reach past a
 phone's notch and crop from the bottom (titles stay whole); buttons stay in the safe area. Desk strips, lesson notes,
 tips, the round end and the vote sit below Roblox's top bar (the Menu button).
-Results card (Alan 2026-10-29, PC and phone): six rows (places 1-5 and your own) on a loose-leaf page drawn to fit
-(`tools/art/results_page.py`: binder holes, torn edge, masking tape; one ruled line under each row, the place column
-between the holes and the red margin, heads spaced apart). Every cell shrinks its words to fit its own column (long
-names). A tied team round shows no places (no podium). Team rounds (Alan 2026-10-29): a page per team side by side
-(Red left, Blue right) with its folds (Airspace: zone points) and pilots; gold star + "Winner!" on the winners, "Your
-team" tape and the level part on yours. Match tips: the words fill the sticky note, as big as fits. Seen in Studio
+Results card = a school report card (Alan 2026-11-11, [plan](../plan/REPORT-CARD-PLAN.md)): six rows (places 1-5
+and your own, yellow highlighter) in a printed table with a red-pen grade per pilot (`MatchRules.grade`: 1st A+, top
+quarter A, top half B, the rest C, from the place shown; team rounds by points across both teams), the top right box
+your place circled (team rounds: the team's score), a teacher's note about the round, your pocket money and level bar.
+The card picture is paper, printing and lines only (`tools/art/report_card.py`); every word is game text. Every cell
+shrinks its words to fit its own column (long names). Team rounds: a card per team side by side (Red left, Blue
+right, spaced so they don't touch); the winners' card has the gold star by its note. Tab's live standings use the same
+card ("so far", no grades or note). Seen in Studio Play at phone size 2026-11-11 (Alan: "looks good"); PC size not yet
+seen in Play (only the put-together preview). Match tips: the words fill the sticky note, as big as fits. Seen in Studio
 Play at phone size 2026-10-29.
 Dev mode: in Studio, and on the game owner's own account in live servers (server-set `Dev` attribute,
 [decision](../decisions/2026-10-29-dev-mode-on-alans-account.md)), the desk shows the dev panel (modes, end match,

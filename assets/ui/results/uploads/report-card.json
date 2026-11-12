@@ -1,0 +1,24 @@
+{
+  "path": "operations/be4978b3-08f5-4768-bec6-ab602bb53350",
+  "operationId": "be4978b3-08f5-4768-bec6-ab602bb53350",
+  "done": true,
+  "response": {
+    "path": "assets/128117594054510",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T03:08:29.909Z",
+    "assetId": "128117594054510",
+    "displayName": "FlyFightPaper results report-card",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

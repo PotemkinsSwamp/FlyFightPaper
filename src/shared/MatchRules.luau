@@ -102,6 +102,14 @@ function Rules.winners(result)
     for i = 1, math.min(3, #rows) do top[i] = rows[i].row end
     return top
 end
+-- The report card's grade for a pilot's place among `count` pilots (Alan OK'd 2026-11-11): 1st A+, top quarter A,
+-- top half B, the rest C. No D or F (players are 9-16).
+function Rules.grade(place, count)
+    if place <= 1 then return "A+" end
+    if place <= math.ceil(count / 4) then return "A" end
+    if place <= math.ceil(count / 2) then return "B" end
+    return "C"
+end
 -- Did a plane fly through a vote ring this step? The step from `from` to `to` must cross the ring's face (its local
 -- Z plane) inside `radius` of the centre, in either direction.
 function Rules.throughRing(from, to, ring, radius)

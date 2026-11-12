@@ -1,19 +1,19 @@
 # Since Alan last checked (2026-11-11)
-- **Unlock moment built and OK'd by you in Studio** (not published yet). Leveling up in a match: a small tilted note
-  flies in at the top left, unfolds with confetti, sits 4 s, flies out ("See them in the main menu"). The main menu
-  then plays the backpack: you drag the zipper (nylon zip sound that follows your pull), each new thing pops out as
-  its real 3D model with Put it on / See it and Later; ink arrows between them. Checked at phone size too. Your saved
-  profile now remembers which levels' unlocks you've opened (save version 8). Its 9 pictures passed Roblox review.
+- **You published** (guns, phone words, SPEED MATCH, Clear all, unlock moment) and shut down old servers.
+- **Results card is now a school report card** (built, not published). Same facts as before (places 1-5 and you,
+  folds, assists, crashes, points, your Paper/XP and level bar) on a printed report card, with a red-pen grade per
+  pilot (1st A+, top quarter A, top half B, the rest C), your place circled top right (team rounds: team score) and a
+  teacher's note about the round. Seen in Studio Play at phone size ("looks good"). 2 pictures passed Roblox review.
 
 # Now: finish the game for the beta
-Next: (1) you publish (guns, phone words, Clear all, the unlock moment). When you publish, shut down old servers
-(Creator Hub > your game > Servers): the save version changed. (2) The results card becomes a report card (backlog,
-must do). (3) Shop step: re-scale Paper packs and Robux part prices. Balance pass later: Spitball planes weakest;
+Next: (1) Shop step: re-scale Paper packs and Robux part prices. Balance pass later: Spitball planes weakest;
 a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
 Not seen yet: a real level-up in a match (tested with the Studio pretend level-up, same note); on a phone the note may
-sit over a centred match tip for its 4 s.
+sit over a centred match tip for its 4 s. Report card: PC size in real Play, and the team-round grade fix (below).
 
 Decisions to review
+Report card: team cards moved apart a little (they touched); winners' note just "Red team wins!" (scores are in the
+  boxes); Tab's live standings use the same card without grades or note.
 Unlock: the red count sticker on the in-match Menu button is gone (the backpack plays on the main menu only now);
   on phones the level-up note keeps its first size so its words stay readable (PC is 20% smaller, as you asked).
 Customize binder drawn at 95% so the stats paper fits beside it. Welcome card sits over Play (a pop-up question).
@@ -50,8 +50,9 @@ Duct props see-through; veterans flee to the ducts 40% when shot at. Chalk erase
 Zone 680-840 across; bots on the zone 30/60/85%. Points: assist share rounded to 5 (10-80); outside-zone fold 40%.
 
 Waiting on Alan
-- Publish when you like (guns, phone words, SPEED MATCH without paper, Clear all, unlock moment), then shut down old
-  servers. After publishing, on your phone: level up in a match (note), then the main menu's backpack.
+- Publish when you like (the report card). In a team round: the losing team's top scorer should get a good grade
+  (fixed after the Studio check showed a C for the round's best; not re-checked in Play).
+- On PC: end a free-for-all and a team round; check the report card's words all sit inside their boxes.
 - Save to File when you want the new weapon models in the place file (your go).
 - In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
 - Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings.

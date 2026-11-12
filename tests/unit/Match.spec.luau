@@ -626,6 +626,12 @@ function Spec.run()
         local few=Rules.winners({participants={rows[1]}})
         assert(few[1].actorId=="a" and few[2]==nil and few[3]==nil)
     end)
+    test("report card grades: 1st A+, top quarter A, top half B, the rest C", function()
+        local twelve={}
+        for place=1,12 do twelve[place]=Rules.grade(place,12) end
+        assert(table.concat(twelve," ")=="A+ A A B B B C C C C C C")
+        assert(Rules.grade(1,1)=="A+" and Rules.grade(2,2)=="C" and Rules.grade(2,5)=="A" and Rules.grade(3,5)=="B")
+    end)
     test("vote ring: a step through its face inside the radius counts, either way; past the rim or alongside does not", function()
         local ring=CFrame.new(0,400,0)
         assert(Rules.throughRing(Vector3.new(10,410,-20),Vector3.new(12,405,25),ring,80))

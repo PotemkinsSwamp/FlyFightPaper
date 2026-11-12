@@ -116,7 +116,8 @@
   - Alan wants offers timed well to funnel players to Robux ethically. Agreed line for the shop step: offers tied to
     the player's own goal ("1,200 Paper from the Toilet Roll; 2x Paper gets it 3 matches sooner"), capped, never after a
     loss or as fake urgency (players are 9-16; the FTC fined Epic $245M over purchase tricks in 2022).
-- **Backlog, must do** (Alan): the results card becomes a report card and looks like one.
+- **Backlog, must do** (Alan): the results card becomes a report card and looks like one. Built 2026-11-11: the
+  class's results on a school report card with a grade per pilot ([report card plan](../plan/REPORT-CARD-PLAN.md)).
 - **What players earn, for prices** (Alan): about 6 folds a match is a weak player, 11-13 average (the best veteran
   bots), 25+ a really good one. Price from those, not from the average bot.
 
