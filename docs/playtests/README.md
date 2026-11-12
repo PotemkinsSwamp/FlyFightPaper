@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-12: the new shop window; buying in the Hangar as a fresh player](2026-11-12-shop-window-and-hangar-buying.md)
 - [2026-11-11: the unlock backpack in Studio (zipper, arrows, sound)](2026-11-11-unlock-moment.md)
 - [2026-11-11: menus approved; weapons float; phone flight screen](2026-11-11-menus-ok-weapons-float-phone.md)
 - [2026-11-07: Crayon, Spitball, rams and the four new weapon models](2026-11-07-new-weapons-crayon-spitball-models.md)
