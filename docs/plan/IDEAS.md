@@ -21,6 +21,8 @@ and a stage.
   Once skins exist, the shop's Today's parts row can rotate skins for players who own every part (Alan 2026-11-12).
 - **Redo the part models, boosters first** (Alan 2026-11-12): the booster models don't read as what they do, and
   every part should look more appealing. Revisit all part models later.
+- **Bots that use the town** (Alan 2026-11-12): bots never fly through the tubes, rings and holes, never go for
+  boosts, and follow one recognisable path. A bot development pass: use fly-throughs, grab boosts, vary routes.
 
 ## Later scope (from the vision)
 The [vision](../vision/VISION.md) lists what waits until after the first release: cosmetics, more maps, full touch

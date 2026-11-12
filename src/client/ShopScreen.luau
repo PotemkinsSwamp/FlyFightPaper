@@ -48,6 +48,7 @@ local STARTER = { price = 99, worth = 227, seconds = (2 * 24 + 14) * 3600 + 5 * 
 	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockStar", label = "1 hour\n2x XP" } } } -- Alan 2026-11-12: 2x XP, not 2x Paper
 
 local commas = PaperUI.commas
+local function now() return math.floor(workspace:GetServerTimeNow()) end -- the server's clock: every timer and day ends at once for everyone
 
 local function duration(seconds)
 	local minutes = seconds // 60
@@ -83,10 +84,6 @@ function ShopScreen.new(playerGui, api)
 		return label
 	end
 	local function fit(label) label.ScaleType = Enum.ScaleType.Fit; return label end
-	-- Brown kraft paper behind every picture on the cream cards (Alan 2026-11-12: white parts and the Paper icons
-	-- vanished on white paper; an off-white is no better). Made before the picture so it sits underneath.
-	local MAT = Color3.fromRGB(176, 128, 84)
-	local function mat(parent, x0, y0, x1, y1) local circle = fit(pic(parent, "Mat", Art.circlePale, x0, y0, x1, y1)); circle.ImageColor3 = MAT; return circle end
 	-- Words in a box (concept px), centred unless told; size in concept px. outline: a plain ink (or given) stroke instead
 	-- of the cream crayon edge, for words on bright paper like the concept's titles.
 	local function say(parent, name, text, x0, y0, x1, y1, size, opts)
@@ -268,12 +265,11 @@ function ShopScreen.new(playerGui, api)
 		pic(card, "TimerPaper", Art.labelDark, 945, 18, 1220, 75)
 		local timer = say(card, "Timer", "", 945, 18, 1220, 75, 40, { color = WHITE })
 		-- The real timer: from the first time the player came in, saved (StarterPackEnds); Studio before the save rules: a preview.
-		local ends = game.Players.LocalPlayer:GetAttribute("StarterPackEnds") or os.time() + STARTER.seconds
+		local ends = game.Players.LocalPlayer:GetAttribute("StarterPackEnds") or now() + STARTER.seconds
 		move(timer, "timer", 0, { ends = ends })
 		for i, item in STARTER.items do
 			local x0 = 310 + (i - 1) * 185
 			local square = pic(card, "Item" .. i, Art.itemSquare, x0, 113, x0 + 176, 303)
-			mat(square, 18, 4, 158, 126)
 			ticks(card, x0 + 105, 113, x0 + 165, 148, 15, i)
 			if item.part then
 				local part = Catalog:get(item.part)
@@ -351,7 +347,7 @@ function ShopScreen.new(playerGui, api)
 		else -- the time to the next gift, on the dark label the starter pack's timer uses
 			pic(card, "WaitPaper", Art.labelDark, 820, 22, 1115, 100)
 			local wait = say(card, "Wait", "", 820, 22, 1115, 100, 40, { color = WHITE })
-			move(wait, "timer", 0, { ends = (os.time() // 86400 + 1) * 86400, short = true }) -- the next gift: UTC midnight, as on the server
+			move(wait, "timer", 0, { ends = (now() // 86400 + 1) * 86400, short = true }) -- the next gift: UTC midnight, as on the server
 		end
 		if not rewards then return y + 165 end
 		-- The week: 7 squares on the board under the card.
@@ -360,7 +356,6 @@ function ShopScreen.new(playerGui, api)
 			local x0 = 57 + (d - 1) * 166
 			local square = pic(content, "Day" .. d, Art.itemSquare, x0, top, x0 + 156, top + 168)
 			say(square, "Day", "Day " .. d, 0, 6, 156, 42, 28, { loud = true })
-			mat(square, 32, 40, 124, 120)
 			move(fit(pic(square, "Icon", giftIcon(reward, d), 30, 44, 126, 116)), "bob", d * 0.5)
 			say(square, "Gift", giftWords(reward), 6, 118, 150, 160, 24, { loud = true })
 			if d < day then -- claimed this week: faded, with a green crayon tick
@@ -425,7 +420,7 @@ function ShopScreen.new(playerGui, api)
 		card.Parent = content
 		pic(card, "PaperL", Art.cardFeatured[1], 0, 0, 620, 325)
 		pic(card, "PaperR", Art.cardFeatured[2], 618, 0, 1237, 325)
-		mat(card, 35, 25, 305, 295)
+		pic(card, "Circle", Art.circlePale, 35, 25, 305, 295)
 		partView(card, pick, 50, 40, 240, 240, 0)
 		say(card, "Tag", "YOUR NEXT PART", 340, 18, 920, 64, 36, { color = WHITE, outline = INK })
 		say(card, "Name", part.name, 340, 62, 920, 142, 70, { color = Color3.fromRGB(255, 222, 40), outline = INK, thick = 5 })
@@ -443,7 +438,7 @@ function ShopScreen.new(playerGui, api)
 	-- a new three every day at UTC midnight (the daily gift's day) for everyone; which three is personal.
 	local function todaysParts(y, owned)
 		local me = game.Players.LocalPlayer
-		local level, day = me:GetAttribute("Level") or 1, os.time() // 86400
+		local level, day = me:GetAttribute("Level") or 1, now() // 86400
 		local near = lockedParts(owned)
 		table.sort(near, function(a, b) return math.abs(a.part.min_level - level) < math.abs(b.part.min_level - level) end)
 		local pool = table.move(near, 1, math.min(6, #near), 1, {})
@@ -452,10 +447,9 @@ function ShopScreen.new(playerGui, api)
 		local rng = Random.new(day * 7919 + me.UserId) -- ponytail: picked on the client; a server pick if it ever matters
 		for i = 1, math.min(3, #pool) do
 			local item = table.remove(pool, rng:NextInteger(1, #pool))
-			local part, x0, top = item.part, 22 + (i - 1) * 411, y + 55
+			local part, x0, top = item.part, 22 + (i - 1) * 411, y + 125
 			local card = pic(content, "Today" .. i, Art.itemSquare, x0, top, x0 + 405, top + 405)
 			say(card, "Name", part.name, 15, 12, 390, 66, 40, { loud = true })
-			mat(card, 100, 64, 305, 269)
 			partView(card, item, 70, 64, 265, 205, i)
 			pic(card, "PricePaper", Art.labelDark, 50, 272, 355, 318)
 			say(card, "Price", level < part.min_level and "Unlocks at level " .. part.min_level or commas(part.paper_price) .. " Paper", 50, 272, 355, 318, 32, { color = WHITE })
@@ -466,9 +460,11 @@ function ShopScreen.new(playerGui, api)
 				buy(card, "Buy", 102, 326, 302, 392, Customize.unlockRobux(part.paper_price), 44, function() unlockNow(part) end)
 			end
 		end
-		say(content, "TodayNew", "New parts in", 22, y + 470, 300, y + 515, 34, { left = true, color = CHALK })
-		move(say(content, "TodayTimer", "", 300, y + 470, 520, y + 515, 34, { left = true, color = CHALK }), "timer", 0, { ends = (day + 1) * 86400, short = true })
-		return y + 530
+		-- New parts in: on dark paper (chalk words were hard to read on the board, Alan 2026-11-12), under the heading.
+		pic(content, "TodayTimerPaper", Art.labelDark, 432, y + 58, 862, y + 112)
+		move(say(content, "TodayTimer", "", 432, y + 58, 862, y + 112, 34, { color = WHITE, grow = true }), "timer", 0,
+			{ ends = (day + 1) * 86400, short = true, prefix = "New parts in " })
+		return y + 545
 	end
 
 	local function passes(y, boosts)
@@ -477,7 +473,7 @@ function ShopScreen.new(playerGui, api)
 			{ "permanent_2x_xp", Art.cardPassPurple, Art.iconPassStar, "2x XP Forever", "Double XP from\nevery match!", "permanentXP" } } do
 			local key, paper, icon, title, words, owned = table.unpack(info)
 			local card = pic(content, "Pass" .. i, paper, 17 + (i - 1) * 625, y + 47, 632 + (i - 1) * 625, y + 222)
-			mat(card, 15, 13, 165, 158)
+			pic(card, "Circle", Art.circlePale, 15, 13, 165, 158)
 			move(fit(pic(card, "Icon", icon, 35, 33, 145, 143)), "bob", i)
 			ticks(card, 5, 22, 45, 62, -45, i * 0.7)
 			pic(card, "TwoPill", Art.labelDark, 105, 110, 170, 150)
@@ -601,9 +597,9 @@ function ShopScreen.new(playerGui, api)
 			elseif m.kind == "shine" then
 				inst.Position = UDim2.fromScale(-0.2 + 1.4 * math.clamp((t % 4) / 1.2, 0, 1), 0.5)
 			elseif m.kind == "timer" then
-				local left = math.max(0, m.ends - os.time())
-				inst.Text = m.short and string.format("%dh %02dm", left // 3600, left % 3600 // 60)
-					or string.format("%dd %dh %02dm", left // 86400, left % 86400 // 3600, left % 3600 // 60)
+				local left = math.max(0, m.ends - now())
+				inst.Text = (m.prefix or "") .. (m.short and string.format("%dh %02dm", left // 3600, left % 3600 // 60)
+					or string.format("%dd %dh %02dm", left // 86400, left % 86400 // 3600, left % 3600 // 60))
 			end
 		end
 		if #rainbow > 0 then -- "Most Value": the rainbow's colours slide along
@@ -632,7 +628,7 @@ function ShopScreen.new(playerGui, api)
 		local count = 0
 		for _ in owned do count += 1 end
 		local key = game:GetService("HttpService"):JSONEncode({ boosts.permanentXP, boosts.permanentPaper, count,
-			me:GetAttribute("Paper"), me:GetAttribute("Level"), me:GetAttribute("FoldGoal"), os.time() // 86400,
+			me:GetAttribute("Paper"), me:GetAttribute("Level"), me:GetAttribute("FoldGoal"), now() // 86400,
 			math.floor((boosts.xpSeconds or 0) / 60), math.floor((boosts.paperSeconds or 0) / 60),
 			me:GetAttribute("DailyGiftNext"), me:GetAttribute("DailyGiftReady"), me:GetAttribute("StarterPackEnds"), me:GetAttribute("FirstBuysUsed") })
 		if key == shown then return end
@@ -643,7 +639,7 @@ function ShopScreen.new(playerGui, api)
 		if PREVIEW then
 			sections.Featured = y * K
 			local starter = me:GetAttribute("StarterPackEnds")
-			y = (starter == nil or starter > os.time()) and featured(y) or nextPart(y, owned)
+			y = (starter == nil or starter > now()) and featured(y) or nextPart(y, owned)
 			y = freeGift(y)
 			y = todaysParts(y, owned)
 		end
