@@ -8,8 +8,10 @@ Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-fo
 the top with confetti ("You unlocked 2 new things! Open Menu to see them."); the Menu button carries a red count of
 unopened unlocks; opening the Menu plays the backpack: drag the zipper, each thing pops out turning in 3D with Put it on /
 See it and Later. How it works and its numbers: [the unlock plan](../plan/UNLOCK-PLAN.md); saving: [saving](saving.md).
-Back/next are ink chevrons (Path2D: their points are shares of the box, they ignore UIScale); the zipper sound loops while
-you hold the pull, its loudness from your pull speed. Studio tests: `DevUnlock` = a level on ReplicatedStorage.FlyFightPaper opens a backpack of everything up to it (not saved),
+Back/next are ink chevrons (Path2D: their points are shares of the box, they ignore UIScale); the zipper sound is one 1.3 s
+nylon zip (no loop): moving the pull either way earns a little of it (2 s per whole pull, 0.3 s banked at most), so it
+pauses when you stop, carries on when you go on, plays back and forth, starts over at its end and plays out when the bag
+opens (moving a playing Sound's TimePosition gaps on Roblox, so it only pauses and resumes). Studio tests: `DevUnlock` = a level on ReplicatedStorage.FlyFightPaper opens a backpack of everything up to it (not saved),
 `DevLevelNote` = a level shows its note.
 **Menus fit (branch `wip/stretch-fix-2026-11-09`, not in the game yet):** every picture is drawn at its own shape
 (`PaperUI.button` and `image` use Fit; boxes set to the picture's shape) and words sit inside their paper

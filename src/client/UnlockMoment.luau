@@ -21,9 +21,10 @@ local Unlock = {}
 
 local INK = PaperUI.INK
 local MID, ROW_Y = 985, 532 -- the card's middle across (the page's writing area); its arrows-and-dots row
--- "Bag Zipper From Nylon Bag Backpack Luggage 1" (Pro Sound Effects, Roblox library; Alan's pick 2026-11-11). Its steady
--- zip (0.10-0.58 s, measured) loops while you hold the zipper.
-local ZIP_SOUND, ZIP_LOOP = "rbxassetid://9113260699", NumberRange.new(0.1, 0.58)
+-- "Bag Zipper From Nylon Bag Backpack Luggage 5" (Pro Sound Effects, Roblox library): one unbroken zip from 1.0 s to
+-- 2.3 s (measured), long enough to play straight through as you pull (Alan 2026-11-11: a looped zip sounded like a car starting).
+local ZIP_SOUND, ZIP_FROM, ZIP_LONG = "rbxassetid://9113260940", 1.0, 1.3
+local ZIP_PER_PULL = 2 -- seconds of zip sound a whole pull along the zipper is worth
 local NOTE_SECONDS, HINT_AFTER, HINT_UP_TO = 4, 2, 4 -- level-up note on screen; drag hint after idle seconds, while seen <= this level
 local FRAMES = 12 -- in-between zipper pictures (tools/art/unlock_pieces.py)
 local FRAME_BOX = { 0.0336, 0.1508, 0.9444, 0.4535 } -- where they sit on the bag (shares of the bag picture)
@@ -224,14 +225,14 @@ function Unlock.start(api)
 		pull.Position, pull.Visible = UDim2.fromScale(at.X, at.Y), p > 0 and p < 1
 	end
 
-	-- The zipper's sound, done the way games do drag sounds (2026-11-11 research): a short zip loops the whole time the
-	-- backpack is up and never jumps or restarts (Roblox clicks when a sound is moved); how fast you pull sets how loud
-	-- it is, smoothed, silent below a slow crawl, with a slight rise in pitch when pulled faster.
+	-- The zipper's sound: one long zip at its own pitch. Moving the pull, either way, earns zip sound for the distance
+	-- moved (Alan 2026-11-11: stop and it pauses, carry on and it carries on, back and forth zips too); stopped, it
+	-- pauses where it is. At the zip's end it starts the zip again; it plays out as the bag pops open.
 	local zipSound = Instance.new("Sound")
-	zipSound.Name, zipSound.SoundId, zipSound.Looped, zipSound.Volume = "Zipper", ZIP_SOUND, true, 0
-	zipSound.PlaybackRegionsEnabled, zipSound.LoopRegion = true, ZIP_LOOP
+	zipSound.Name, zipSound.SoundId, zipSound.Looped, zipSound.Volume = "Zipper", ZIP_SOUND, false, 0
+	local zipBudget = 0 -- seconds of zip the pull has earned and not yet played
 	zipSound.Parent = game:GetService("SoundService")
-	local dragSpeed, zipLevel = 0, 0 -- the pull's speed along the zipper (shares of it a second); the sound's loudness (0-1)
+	task.spawn(function() game:GetService("ContentProvider"):PreloadAsync({ zipSound }) end)
 	local haptic = Instance.new("HapticEffect")
 	haptic.Type, haptic.Parent = Enum.HapticEffectType.UIClick, cover.Parent
 	local function buzz() pcall(function() haptic:Play() end) end
@@ -311,8 +312,9 @@ function Unlock.start(api)
 	-- Opens the backpack for these unlocks (a test from Studio passes its own list and doesn't save).
 	local function play(list, newLevel, test)
 		if stage or #list == 0 then return end
-		zipSound.Volume, zipLevel, dragSpeed = 0, 0, 0
-		zipSound:Play()
+		-- Ready at the zip's start, paused (Resume later continues from here).
+		zipSound.Volume = 0; zipSound:Play(); zipSound:Pause(); zipSound.TimePosition = ZIP_FROM
+		zipBudget = 0
 		items, index, level, stage, testing = list, 1, newLevel, "zip", test == true
 		title.Text = "LEVEL " .. newLevel .. "!"
 		p, dragging, idle = 0, false, 0
@@ -399,9 +401,8 @@ function Unlock.start(api)
 		local q = nearest(screenPoint(input))
 		if math.abs(q - p) < 0.3 then
 			local before = math.floor(p * (FRAMES + 1))
-			local now = os.clock()
-			dragSpeed = dragSpeed * 0.6 + math.abs(q - p) / math.max(now - lastMove, 1 / 60) * 0.4
-			p, lastMove = q, now
+			zipBudget = math.min(zipBudget + math.abs(q - p) * ZIP_PER_PULL, 0.3)
+			p, lastMove = q, os.clock()
 			if math.floor(p * (FRAMES + 1)) ~= before then buzz() end
 			drawZip()
 			if p >= 0.96 then popOut() end
@@ -427,12 +428,22 @@ function Unlock.start(api)
 		local shaking = dragging and os.clock() - lastMove < 0.1
 		group.Position = shaking and UDim2.fromOffset(math.random(-3, 3), math.random(-3, 3)) or UDim2.new()
 		bottom.Position = shaking and UDim2.new(0.5, math.random(-3, 3), 1, math.random(-3, 3)) or UDim2.fromScale(0.5, 1)
-		if os.clock() - lastMove > 0.04 then dragSpeed *= math.exp(-dt * 18) end -- no movement: the speed falls away
-		local want = stage == "zip" and dragging and math.clamp((dragSpeed - 0.08) / 0.5, 0, 1) or 0
-		zipLevel += (want - zipLevel) * math.min(1, dt * (want > zipLevel and 25 or 12)) -- quick to start, a little slower to stop
-		zipSound.Volume = zipLevel * 0.72 * (Root:GetAttribute("SoundVolume") or 1)
-		zipSound.PlaybackSpeed = 0.95 + 0.15 * math.clamp(dragSpeed, 0, 1)
-		if stage ~= "zip" and zipLevel < 0.01 and zipSound.IsPlaying then zipSound:Stop() end
+		if stage == "zip" then
+			if zipSound.IsPlaying then zipBudget -= dt end
+			if dragging and zipBudget > 0.05 and not zipSound.IsPlaying then
+				if zipSound.TimePosition >= ZIP_FROM + ZIP_LONG - 0.05 then zipSound.TimePosition = ZIP_FROM end
+				zipSound.Volume = 0.6 * (Root:GetAttribute("SoundVolume") or 1)
+				zipSound:Resume()
+			elseif zipSound.IsPlaying and (zipBudget <= 0 or not dragging) then
+				zipSound:Pause()
+			elseif zipSound.IsPlaying and zipSound.TimePosition >= ZIP_FROM + ZIP_LONG then
+				zipSound:Pause(); zipSound.TimePosition = ZIP_FROM; zipSound:Resume() -- the zip again
+			end
+		elseif zipSound.TimePosition < ZIP_FROM + ZIP_LONG - 0.05 and zipSound.TimePosition > ZIP_FROM then
+			if not zipSound.IsPlaying then zipSound:Resume() end -- the bag is open: the zip plays out
+		elseif zipSound.IsPlaying then
+			zipSound:Stop()
+		end
 		if stage == "zip" then
 			idle += dt
 			hint.Visible = not dragging and p == 0 and idle > HINT_AFTER and api.seenLevel() <= HINT_UP_TO
