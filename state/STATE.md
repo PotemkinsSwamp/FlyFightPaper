@@ -7,8 +7,8 @@
 - Earlier: report card and new shop prices built, not published.
 
 # Now: finish the game for the beta
-Next: (1) Personalised shop research ("an algorithm": the shop changes with the player; includes personal discounts
-and offers after a fold, you decide after). (2) Hangar buying: a locked look, "Unlock now" for Robux, pop-ups instead
+Done: personalised shop research, options A-P for your picks ([page](../docs/research/PERSONAL-SHOP-RESEARCH-2026-11-12.md));
+the new EU law proposal (2026-11-11) is on it. Next: (2) Hangar buying: a locked look, "Unlock now" for Robux, pop-ups instead
 of the small bottom line, bigger words ([your notes](../docs/playtests/2026-11-12-shop-window-and-hangar-buying.md)).
 Then the starter pack price, the daily gift and Gift a friend, each with a note for your OK.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
@@ -51,6 +51,7 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
+- Pick from the personal shop options (A-P) on the research page.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
 - On PC: end a free-for-all and a team round; check the report card's words all sit inside their boxes.
 - Save to File when you want the new weapon models in the place file (your go).
