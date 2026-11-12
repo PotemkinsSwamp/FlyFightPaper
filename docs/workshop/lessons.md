@@ -373,6 +373,13 @@ mistake would be easy to make twice.
   match show a broken build fast: the Crayon Tank hit 2% while others hit 20-30%, which exposed that a bot's second gun
   had always aimed with the first gun's lead.
 
+- **A pop-up's dim must cover the whole screen** (2026-11-12): a dim frame sized to the 1920x1080 sheet stops at the
+  sheet's edge, so wide screens keep bright side borders (Alan spotted it). Make it 3x the sheet, offset one sheet up
+  and left (`HangarCustomize` Not enough Paper note).
+- **Studio dev switches must skip the unit tests' stand-in players** (2026-11-12): the `DevAccountLevel` switch also
+  rewrote the test fixtures' profiles, so two ProfileRuntime tests failed until it checked `typeof(player)=="Instance"`.
+  Run the tests after adding any Studio-only switch to profile loading.
+
 ## Working with Alan
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
   code alone (the red dot, the eraser during the freeze, step 8's Pal) were wrong, and each cost Alan a playtest.

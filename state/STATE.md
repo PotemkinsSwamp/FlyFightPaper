@@ -1,29 +1,31 @@
-# Since Alan last checked (2026-11-12)
-- **The shop is a Roblox-style shop window in our paper look** (built in Studio, not published): chalkboard body,
-  title bar, tabs, Featured starter pack (preview), free gift (preview), passes, Paper packs, boosts; rays, stars and
-  the rainbow sticker move. You checked it in Play: "it works". 48 pictures uploaded.
-- **Studio:** your test account no longer opens the unlock backpack every Play. `DevAccountLevel` / `DevAccountPaper`
-  on Workspace = a fresh account (now 12 / 3,000); delete both for the everything-unlocked one.
-- Earlier: report card and new shop prices built, not published.
+# Since Alan last checked (2026-11-12, late)
+- **Shop money plan approved and its first pieces built** (Studio, not published): daily gift row (7 days, Claim, ticks),
+  starter pack with a real saved 3-day timer, first buy of each Paper pack gives double, two new packs (549 R$ decoy for
+  7,500; 1,999 R$ for 40,000), packs biggest first, a buys-today count. Save rules by Codex, checked; 512 tests pass.
+- **Hangar buying built:** locked cards greyed with a padlock and level, bigger card words, "Unlock now" for Robux
+  above your level, a "Not enough Paper" note (Get Paper / Unlock now) dimming the whole screen. You: "it's good".
+- **Research:** personal shop ([picks](../docs/decisions/2026-11-12-personal-shop-picks.md)), cosmetics and playtime rewards
+  ([page](../docs/research/COSMETICS-RESEARCH-2026-11-12.md), options A-L for you).
+- Studio: Workspace `DevAccountLevel` 12 / `DevAccountPaper` 3000 = fresh account (delete both for the full one).
 
 # Now: finish the game for the beta
-Done: personal shop research; you picked A, B, F, G, H, J, N, P, offers after a fold when they fit, and a funnel
-([decision](../docs/decisions/2026-11-12-personal-shop-picks.md)). Built in Studio, not committed: Hangar buying (locked
-cards, Unlock now, Not enough Paper pop-up, bigger words). Next: the money plan below, then Gift a friend.
-Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note. Not seen yet: a real level-up in a match; on a phone the level-up note may sit over a match tip. Report card: PC size.
+Next: the rest of the [money plan](../docs/plan/SHOP-MONEY-PLAN.md): report-card "2x Paper would have given you +X"
+line, Paper jar, fold-screen line (N), Featured "your next part" (F), Today's parts (H), calm rule (3 buys). Then Gift a
+friend (a how-it-works note first). Shop bug: the right-side tab buttons scroll too far (Paper hides its heading).
+Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard. Phones: the lesson goal note's phone shapes still use the old square note. Not seen yet: a real level-up in a match; on a phone the level-up note may sit over a match tip. Report card: PC size.
 
 Decisions to review
-Shop: chalk headings crisp white with a dark outline (the crayon edge blurred them); parts in cards sit still at
-  their best angle and bob; starter pack preview = Swept Wings, 1,500 Paper, 1 hour 2x XP for 99 R$ (price not OK'd).
+Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
+  Value", 15,000 "Good Value" (5,000 lost its sticker). Pack pictures grow with the amount. Daily gift days turn over at
+  UTC midnight; a boost gift you already own forever gives 250 Paper. Gear cards: slimmer Hit row, bigger words.
 Report card: team cards moved apart a little (they touched); winners' note just "Red team wins!" (scores are in the
   boxes); Tab's live standings use the same card without grades or note.
-Unlock: the red count sticker on the in-match Menu button is gone (the backpack plays on the main menu only now);
-  on phones the level-up note keeps its first size so its words stay readable (PC is 20% smaller, as you asked).
-Customize binder drawn at 95% so the stats paper fits beside it. Welcome card sits over Play (a pop-up question).
+Unlock: no count sticker on the in-match Menu button; phones keep the level-up note's first size. Customize binder at
+  95% so the stats paper fits. Welcome card sits over Play.
 Toilet Roll mounts heavy, heavy, medium, light, light; boosters keep their weight (Elastic now -3 studs/s). Dev picker
   lost "twin pencils" (two Pencils no longer fit any body).
-Bots follow a target up a vent: veterans 60%, Aces 90%. Bots with 2+ spitballs stuck fly to a fan. Staple ~800 studs.
-Spitball builds: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s). Paper check skips spitball builds (matches judge them).
+Bots follow a target up a vent: veterans 60%, Aces 90%; with 2+ spitballs stuck they fly to a fan. Staple ~800 studs.
+  Spitball builds: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s); the Paper check skips them.
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.
 Crayon 600 studs/s, 450 range, drop 8. New weapons keep their stand-in hit boxes; Popper lead drawn 0.15 x 1.2.
 Ram catch: centres within 2.5 studs in the last 0.1 s; ram strength by relative speed.
@@ -49,11 +51,9 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
-- Tick the shop money plan (daily gift, starter pack 99 R$, first-buy double, decoy/anchor packs, Paper jar):
-  [plan](../docs/plan/SHOP-MONEY-PLAN.md). Look at the Hangar buying version in Studio (locked cards, Unlock now, pop-up).
+- Pick from the cosmetics and playtime rewards options (A-L) on the research page.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
 - On PC: end a free-for-all and a team round; check the report card's words all sit inside their boxes.
 - Save to File when you want the new weapon models in the place file (your go).
 - In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
-- Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings.
-- Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go).
+- Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings. Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go).

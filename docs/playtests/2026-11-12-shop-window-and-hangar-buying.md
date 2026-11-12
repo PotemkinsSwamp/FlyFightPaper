@@ -26,6 +26,8 @@ Opened the new shop window in Studio Play (practice-bought "2x Paper Forever"), 
 ## What changed
 Shop: [shop screen plan](../plan/SHOP-SCREEN-PLAN.md). Studio: the test account no longer opens a 34-item backpack every
 Play; the fresh-account switch (`DevAccountLevel`, `DevAccountPaper`) also turns off the Hangar's Studio "own
-everything" mode. Hangar buying: not changed yet.
+everything" mode. Hangar buying: built the same night and checked in Play by Claude (pictures in
+`.planning/hangar-buying/`); Alan's only note on them: the Not enough Paper note must dim the whole screen, not
+leave bright borders (fixed). Then "it's good" ([Hangar page](../systems/planes-and-hangar.md)).
 
 Back to [playtests](README.md)

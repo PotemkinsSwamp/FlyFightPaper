@@ -11,7 +11,8 @@ A part above your level is greyed with a drawn padlock and "Level 20"; one you c
 are bigger (gear cards show size and weight only). Above your level, "Unlock now" with the part's Robux price (from
 `Customize.unlockRobux`, the approved table) replaces Buy. Buy without enough Paper opens a "Not enough Paper" note over
 the sheet with Get Paper (the shop) and Unlock now. A card click clears the last buy's reply. Gear cards: a slimmer Hit
-row so size and weight read bigger. Pictures: `.planning/hangar-buying/` (not in git). Waits for Alan's OK.
+row so size and weight read bigger. The note dims the whole screen (past the sheet). Pictures: `.planning/hangar-buying/`
+(not in git). Alan OK'd the pictures 2026-11-12 ("it's good").
 
 **Guns touch the plane (Alan 2026-11-11: they floated).** Every gun hangs by its highest point (`Aircraft` `topOf`):
 on the body pair from the wing root (`ROOT_UNDER`, per wing set), on the wing spots from the wing (`Mount1`/`Mount2`,
