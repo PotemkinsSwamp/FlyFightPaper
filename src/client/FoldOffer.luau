@@ -56,7 +56,14 @@ function FoldOffer.new(playerGui)
 		PaperUI.image(card, "PaperL", Art.cardFeatured[1], 0, 0, 620, H).ScaleType = Enum.ScaleType.Stretch
 		PaperUI.image(card, "PaperR", Art.cardFeatured[2], 618, 0, 619, H).ScaleType = Enum.ScaleType.Stretch
 		PaperUI.image(card, "Circle", Art.circlePale, 35, 25, 270, 270)
-		Unlock.view(card, item, 50, 40, 240, 240)
+		-- Turning slowly round its own middle (Alan 2026-11-12: it should spin), until the card goes.
+		local _, turn = Unlock.view(card, item, 50, 40, 240, 240)
+		local angle, spin = 0.6, nil
+		spin = game:GetService("RunService").RenderStepped:Connect(function(dt)
+			if not card or not card.Parent then spin:Disconnect(); return end
+			angle += dt * 0.8
+			turn(angle)
+		end)
 		-- Down the middle (Alan 2026-11-12: the buy button in the middle of your view, not off to the right): who, what,
 		-- when and how much, then the buttons.
 		words(card, "Tag", "Folded by " .. killer .. "'s", 320, 10, 840, 52, 40, WHITE, 3)

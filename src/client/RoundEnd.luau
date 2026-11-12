@@ -274,7 +274,9 @@ function RoundEnd.start()
 			if mine then state.minePage = k end
 			heading(it, snap, teamId, false, state.mine and state.mine.place)
 			it.pocket.Visible = mine
-			it.earned.Text = mine and string.format("+%d Paper   +%d XP", state.mine.paper or 0, state.mine.xp or 0) or ""
+			-- "(2x)" when 2x Paper paid part of it (Alan 2026-11-12 couldn't tell whether his 2x had worked)
+			local doubled = mine and (state.mine.paper or 0) > (state.mine.missedPaper or state.mine.paper or 0)
+			it.earned.Text = mine and string.format("+%d Paper%s   +%d XP", state.mine.paper or 0, doubled and " (2x)" or "", state.mine.xp or 0) or ""
 			if teamId then
 				-- (both scores are in the cards' top boxes, side by side)
 				local won = not result.draw and result.winningTeam == teamId

@@ -23,6 +23,8 @@ and a stage.
   every part should look more appealing. Revisit all part models later.
 - **Bots that use the town** (Alan 2026-11-12): bots never fly through the tubes, rings and holes, never go for
   boosts, and follow one recognisable path. A bot development pass: use fly-throughs, grab boosts, vary routes.
+- **Skill bonuses** (Alan 2026-11-12): a few extra points for moments that show skill, e.g. folding someone by
+  ramming them and surviving it (no bonus if you go down too). Small, named in the score pop-up.
 
 ## Later scope (from the vision)
 The [vision](../vision/VISION.md) lists what waits until after the first release: cosmetics, more maps, full touch
