@@ -30,6 +30,7 @@ otherwise.
 - [Unlock moment plan](plan/UNLOCK-PLAN.md): the backpack that opens when you level up (draft for Alan's OK)
 - [Report card plan](plan/REPORT-CARD-PLAN.md): the round's results on a school report card (built 2026-11-11)
 - [Shop prices plan](plan/SHOP-PRICES-PLAN.md): Paper packs and Robux part prices after the price rise (approved 2026-11-11)
+- [Shop screen plan](plan/SHOP-SCREEN-PLAN.md): the shop as a Roblox-style shop window in our materials, with movement (waiting for Alan's OK)
 - [Release notes](plan/RELEASE_NOTES.md) (2026-10-07 build)
 
 ## The game, system by system
