@@ -20,13 +20,6 @@ function Menu.start()
  local gui=Instance.new("ScreenGui");gui.Name="GameMenu";gui.DisplayOrder=6;gui.IgnoreGuiInset=true;gui.ResetOnSpawn=false;gui.Parent=player:WaitForChild("PlayerGui")
  local openButton=PaperUI.button(gui,"OpenMenu",require(Root.Shared.UIAssets).mainmenu.strip.yellow,"Menu",16,64,180,46,-2,function()end,28) -- 46 tall: a thumb-sized tap (44+); 180 wide: the strip's own shape
  openButton.Label.TextColor3=PaperUI.INK
- local sticker=Instance.new("Frame") -- unlocks waiting in the backpack (UnlockMoment)
- sticker.Name,sticker.AnchorPoint,sticker.Position,sticker.Size="Unlocks",Vector2.new(0.5,0.5),UDim2.new(1,-4,0,4),UDim2.fromOffset(30,30)
- sticker.BackgroundColor3,sticker.Visible,sticker.ZIndex,sticker.Parent=Color3.fromRGB(214,52,44),false,5,openButton
- Instance.new("UICorner",sticker).CornerRadius=UDim.new(0.5,0)
- local ring=Instance.new("UIStroke");ring.Color,ring.Thickness,ring.Parent=Color3.fromRGB(255,248,232),2,sticker
- local count=Instance.new("TextLabel");count.Name,count.BackgroundTransparency,count.Size,count.FontFace="Count",1,UDim2.fromScale(1,1),PaperUI.font
- count.TextColor3,count.TextSize,count.ZIndex,count.Parent=Color3.new(1,1,1),20,6,sticker
  -- Up in Roblox's top bar, just right of Roblox's own buttons (Alan 2026-10-20: lower down it covered the Range Menu).
  local function dock()
   local bar=GuiService.TopbarInset
@@ -118,10 +111,8 @@ render=function()
   local under=key=="pause" and state.under and paper[state.under] -- stays as it was, under the pause menu
   for _,screen in pairs(paper) do if screen~=current and screen~=under then screen.frame.Visible=false end end
   if current then current.update(player,state.profile,snap);current.frame.Visible=true end
-  -- Things unlocked and not yet opened: a count on the Menu button, and the backpack when the menu's front page opens.
-  local waiting=#Unlock.waiting(state.profile)
-  sticker.Visible=waiting>0;sticker.Count.Text=tostring(waiting)
-  if current and (key=="pause" or key=="home") and waiting>0 and not Tutorial.arriving then Unlock.offer(state.profile) end
+  -- Things unlocked and not yet opened: the backpack when the main menu shows (Alan 2026-11-11: not the in-match menu).
+  if current and key=="home" and #Unlock.waiting(state.profile)>0 and not Tutorial.arriving then Unlock.offer(state.profile) end
  end
  -- Menu.pause: the Menu button's job, also for the Range's crosshair-as-cursor (RangeBoard).
  function Menu.pause() state.screen="home";overlay(true) end

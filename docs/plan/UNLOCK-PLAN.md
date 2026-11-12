@@ -6,15 +6,16 @@ a small level-up note in the game, the backpack when you open the Menu). Nothing
 `.planning/unlock-concept2/`.
 
 ## Part 1: the level-up note (in the game)
-- **The moment you level up** (mid-round too), a small piece of paper unfolds at the top middle of the screen with a
-  little pop of confetti: the level on yellow tape ("LEVEL 4!") and under it "You unlocked 2 new things! Open Menu to
-  see them." It doesn't take clicks or block your aim, and folds away after a few seconds.
+- **The moment you level up** (mid-round too), a small piece of paper flies in tilted at the top left (under the Menu
+  button; Alan 2026-11-11: smaller and shorter, not the top middle), unfolds with a little pop of confetti, sits 4 s
+  and flies back out: the level on yellow tape ("LEVEL 4!") and under it "You unlocked 2 new things! See them in the
+  main menu." It doesn't take clicks or block your aim.
 - A level with nothing new (11, 13...) shows just the level.
-- **The Menu button gets a sticker with the count** of things waiting ("3"), so you know they're there. They pile up
-  if you ignore them, across play sessions too (6, 7, more is fine: they all go in one backpack).
+- Unopened things pile up, across play sessions too (6, 7, more is fine: they all go in one backpack). (The count
+  sticker on the in-match Menu button was dropped once the backpack moved to the main menu, Alan 2026-11-11.)
 
 ## Part 2: the backpack (when you open the Menu)
-Plays when you open the Menu with things waiting: mid-match, or on the main menu when you join.
+Plays when the main menu shows with things waiting: when you join, or when you leave a match (never mid-match; Alan 2026-11-11).
 1. **The screen goes dark and blurry**; a taped, lined sheet drops in with your level on yellow tape (frame 1).
 2. **A backpack rises from the bottom edge** (frame 2): big and wide, its bottom never showing.
 3. **You drag the zipper, right to left.** The paper and backpack shake a little while you drag; phones vibrate if
@@ -58,5 +59,5 @@ paid. Six free picture uploads (your go, after the preview). About 3 hours. Chec
 switch while you aren't playing, then your Play check.
 
 ## Numbers to OK (my picks)
-Level-up note: unfolds in 0.4 s, stays 2 s (Alan 2026-11-11: was 4). Backpack: dark layer 45%, blur 16; drag hint after 2 s for the first three
+Level-up note: flies in 0.8 s, a 0.15 s beat, unfolds 0.7 s, sits 4 s, folds 0.4 s, flies out 0.55 s (Alan 2026-11-11); 0.52 of its first size on a PC. Backpack: dark layer 45%, blur 16; drag hint after 2 s for the first three
 backpacks; one full turn in 1.2 s as it pops; shake 3 pixels.

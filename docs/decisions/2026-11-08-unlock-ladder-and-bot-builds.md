@@ -46,6 +46,8 @@
 - **When it plays** (Alan, 2026-11-11): not during the vote lap (it would interrupt play). Leveling up shows a small
   "you unlocked something, open Menu" note with confetti; the backpack plays when you open the Menu, and unlocks pile
   up until you do. Preset planes come out of the backpack too. How it works: [the unlock plan](../plan/UNLOCK-PLAN.md).
+  Then (trying it): the backpack plays on the main menu only, not the in-match menu; the note is small, short and
+  tilted at the top left, flies in, unfolds, sits 4 s, flies out.
 - **Backpack details** (Alan, 2026-11-11, trying it in Studio): the zipper opens like a real one (shut at the pull,
   gaping behind it); the red and blue corner tapes sit over the LEVEL strip; the item is the real 3D part; back/next are
   ink chevrons on the page (never over the binder holes); the zipper sound is one long nylon backpack zip (no loop: the

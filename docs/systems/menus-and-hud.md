@@ -4,15 +4,18 @@
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
 ## Where it stands (2026-11-11)
-**Unlock moment (built 2026-11-11, waiting on Alan's Play check):** leveling up in a match unfolds a taped index card at
-the top with confetti ("You unlocked 2 new things! Open Menu to see them."); the Menu button carries a red count of
-unopened unlocks; opening the Menu plays the backpack: drag the zipper, each thing pops out turning in 3D with Put it on /
+**Unlock moment (built 2026-11-11, waiting on Alan's Play check):** leveling up in a match flies a small taped index card in
+at the top left, under the Menu button and tilted (`ScreenFit.topLeft`); it unfolds (the part below the fold shaded as it
+swings down, a faint crease after) with confetti that shoots up and tumbles down, sits 4 s, then folds and flies back
+out ("You unlocked 2 new things! See them in the main menu."). The card is the index card with three ruled rows cut out
+(two picture slices, nothing stretched). The main menu plays the backpack (never the in-match menu): drag the zipper, each thing pops out turning in 3D with Put it on /
 See it and Later. How it works and its numbers: [the unlock plan](../plan/UNLOCK-PLAN.md); saving: [saving](saving.md).
 Back/next are ink chevrons (Path2D: their points are shares of the box, they ignore UIScale); the zipper sound is one 1.3 s
 nylon zip (no loop): moving the pull either way earns a little of it (2 s per whole pull, 0.3 s banked at most), so it
 pauses when you stop, carries on when you go on, plays back and forth, starts over at its end and plays out when the bag
 opens (moving a playing Sound's TimePosition gaps on Roblox, so it only pauses and resumes). Studio tests: `DevUnlock` = a level on ReplicatedStorage.FlyFightPaper opens a backpack of everything up to it (not saved),
-`DevLevelNote` = a level shows its note.
+`DevLevelNote` = a level shows its note, `DevLevelUp` = a level is a pretend level-up in a match (its note, then its
+backpack when you open the Menu; while set, your saved unlocks don't wait).
 **Menus fit (branch `wip/stretch-fix-2026-11-09`, not in the game yet):** every picture is drawn at its own shape
 (`PaperUI.button` and `image` use Fit; boxes set to the picture's shape) and words sit inside their paper
 (`PaperUI.fitWords` shrinks only words too long for their strip). Stats papers: Hangar uses the original paper widened on

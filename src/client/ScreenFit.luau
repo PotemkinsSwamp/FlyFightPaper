@@ -119,6 +119,27 @@ function ScreenFit.place(piece, base, units)
 	return (centre - home) / parentScale, (y + ScreenFit.GAP - parent.AbsolutePosition.Y) / parentScale, fit
 end
 
+-- The top-left spot for a piece of this size on screen (the level-up note, Alan 2026-11-11): x, y of its top left in
+-- gui's points (a ScreenGui that ignores the inset), under the row's left pieces (the Menu button) and right of a side
+-- piece it would sit beside (a touch screen's Health and Lift).
+function ScreenFit.topLeft(gui, size)
+	local origin, half = gui.AbsolutePosition, ScreenFit.view().X / 2
+	local x, y = ScreenFit.GAP * 4, GuiService.TopbarInset.Max.Y + ScreenFit.GAP * 2
+	for _, other in row do
+		if shown(other) and other.AbsolutePosition.X + other.AbsoluteSize.X / 2 < half then
+			y = math.max(y, other.AbsolutePosition.Y + other.AbsoluteSize.Y - origin.Y + ScreenFit.GAP * 3)
+		end
+	end
+	for _, side in sides do
+		local other, top = side.piece, side.piece.AbsolutePosition.Y - origin.Y
+		if shown(other) and (not side.when or side.when()) and other.AbsolutePosition.X + other.AbsoluteSize.X / 2 < half
+			and top < y + size.Y and top + other.AbsoluteSize.Y > y then
+			x = math.max(x, other.AbsolutePosition.X + other.AbsoluteSize.X - origin.X + ScreenFit.GAP * 3)
+		end
+	end
+	return x, y
+end
+
 -- Out of the way (Alan 2026-10-28: every note over the game, every screen): a note stays home unless it keeps covering
 -- something that matters for 0.4 s; then it slides to the first free spot of: home, the right side, the left side
 -- (each tilted a little) and the bottom middle. A spot is free when it clears the other pieces on the screen map,

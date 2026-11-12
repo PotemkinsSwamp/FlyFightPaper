@@ -25,7 +25,7 @@ local MID, ROW_Y = 985, 532 -- the card's middle across (the page's writing area
 -- 2.3 s (measured), long enough to play straight through as you pull (Alan 2026-11-11: a looped zip sounded like a car starting).
 local ZIP_SOUND, ZIP_FROM, ZIP_LONG = "rbxassetid://9113260940", 1.0, 1.3
 local ZIP_PER_PULL = 2 -- seconds of zip sound a whole pull along the zipper is worth
-local NOTE_SECONDS, HINT_AFTER, HINT_UP_TO = 2, 2, 4 -- level-up note on screen; drag hint after idle seconds, while seen <= this level
+local NOTE_SECONDS, HINT_AFTER, HINT_UP_TO = 4, 2, 4 -- level-up note on screen; drag hint after idle seconds, while seen <= this level
 local FRAMES = 12 -- in-between zipper pictures (tools/art/unlock_pieces.py)
 local FRAME_BOX = { 0.0336, 0.1508, 0.9444, 0.4535 } -- where they sit on the bag (shares of the bag picture)
 -- The pull's path from the closed pull (right) to the open pull (left), as shares of the bag picture.
@@ -457,77 +457,105 @@ function Unlock.start(api)
 	end)
 
 	-- ===== The level-up note (in a match) =====
+	-- Small and tilted at the top left (Alan 2026-11-11): it flies in folded, unfolds with a burst of confetti, stays,
+	-- then folds and flies back out.
 	local noteGui = Instance.new("ScreenGui")
 	noteGui.Name, noteGui.IgnoreGuiInset, noteGui.ResetOnSpawn, noteGui.DisplayOrder, noteGui.Enabled = "LevelUpNote", true, false, 7, false
 	noteGui.Parent = playerGui
 	local note = Instance.new("CanvasGroup") -- clips the unfold
-	note.Name, note.BackgroundTransparency, note.AnchorPoint, note.Size = "Note", 1, Vector2.new(0.5, 0), UDim2.fromOffset(640, 270)
+	note.Name, note.BackgroundTransparency, note.Size = "Note", 1, UDim2.fromOffset(640, 196)
 	note.Parent = noteGui
 	local noteScale = Instance.new("UIScale")
 	noteScale.Parent = note
-	ScreenFit.inColumn(note, 4.5, true)
 	local inner = Instance.new("Frame")
-	inner.Name, inner.BackgroundTransparency, inner.Size, inner.Parent = "Inner", 1, UDim2.fromOffset(640, 270), note
-	local cardImage = image(inner, "Card", Assets.ingame.indexCard, 10, 8, 620, 254, 1)
+	inner.Name, inner.BackgroundTransparency, inner.Size, inner.Parent = "Inner", 1, UDim2.fromOffset(640, 196), note
+	-- The index card three ruled lines shorter (Alan 2026-11-11: too tall): its top and bottom, the rows between cut out
+	-- whole so the lines stay evenly spaced (35 pixels apart in the 1024 x 414 picture), nothing stretched.
+	local cardTop = image(inner, "CardTop", Assets.ingame.indexCard, 10, 8, 620, 106)
+	local cardBottom = image(inner, "CardBottom", Assets.ingame.indexCard, 10, 114, 620, 80.5)
+	cardTop.ImageRectSize, cardBottom.ImageRectOffset, cardBottom.ImageRectSize = Vector2.new(1024, 175), Vector2.new(0, 281), Vector2.new(1024, 133)
+	cardTop.ScaleType, cardBottom.ScaleType = Enum.ScaleType.Stretch, Enum.ScaleType.Stretch
 	local noteTape = image(inner, "Tape", Art.tape, 60, 18, 300, 83, -3)
 	local noteTitle = PaperUI.loud(words(inner, "Title", "", 70, 28, 280, 60, 54))
 	noteTitle.TextXAlignment, noteTitle.Rotation = Enum.TextXAlignment.Center, -3
 	PaperUI.fitWords(noteTitle, 250)
 	local bits = { image(inner, "Bit1", Assets.ingame.tapeLabel, 40, 14, 80, 22, 35), image(inner, "Bit2", Assets.ingame.tapeLabel, 318, 8, 80, 22, -30) }
-	local line1 = PaperUI.loud(words(inner, "Line1", "", 30, 128, 580, 56, 42))
-	local line2 = words(inner, "Line2", "", 30, 186, 580, 48, 34)
+	local line1 = PaperUI.loud(words(inner, "Line1", "", 30, 103, 580, 44, 40))
+	local line2 = words(inner, "Line2", "", 30, 147, 580, 36, 32)
 	line1.TextXAlignment, line2.TextXAlignment = Enum.TextXAlignment.Center, Enum.TextXAlignment.Center
 	PaperUI.fitWords(line1, 570); PaperUI.fitWords(line2, 570)
-	cardImage.ZIndex, noteTape.ZIndex, noteTitle.ZIndex, bits[1].ZIndex, bits[2].ZIndex = 1, 2, 3, 4, 4
+	cardTop.ZIndex, cardBottom.ZIndex, noteTape.ZIndex, noteTitle.ZIndex, bits[1].ZIndex, bits[2].ZIndex = 1, 1, 2, 3, 4, 4
+	-- The unfold: the part below the fold shows shaded while it swings down to face you, and keeps a faint crease.
+	local FOLDED = 104 -- the fold: what shows while it flies (the title tape and the card's top)
+	local shade = Instance.new("Frame")
+	shade.Name, shade.BorderSizePixel, shade.BackgroundColor3, shade.ZIndex = "Shade", 0, Color3.fromRGB(60, 45, 30), 6
+	shade.Position, shade.Size, shade.Parent = UDim2.fromOffset(10, FOLDED), UDim2.fromOffset(620, 96), inner
+	local crease = Instance.new("Frame")
+	crease.Name, crease.BorderSizePixel, crease.BackgroundColor3, crease.BackgroundTransparency = "Crease", 0, Color3.fromRGB(90, 70, 50), 0.82
+	crease.Position, crease.Size, crease.ZIndex, crease.Parent = UDim2.fromOffset(14, FOLDED), UDim2.fromOffset(612, 2), 5, inner
 	local confetti = Instance.new("Frame")
-	confetti.Name, confetti.BackgroundTransparency, confetti.Size, confetti.Parent = "Confetti", 1, UDim2.fromScale(1, 1), noteGui
+	confetti.Name, confetti.BackgroundTransparency, confetti.Size, confetti.ZIndex, confetti.Parent = "Confetti", 1, UDim2.fromScale(1, 1), 2, noteGui
 	local COLOURS = { Color3.fromRGB(230, 60, 50), Color3.fromRGB(40, 110, 220), Color3.fromRGB(250, 200, 30), Color3.fromRGB(60, 170, 70), Color3.fromRGB(240, 130, 30), Color3.fromRGB(170, 80, 200) }
-	local noteUntil, noteHeight = 0, 270
+	local TILT, LIFE = -4, 1.8 -- the note's tilt; a confetti bit's seconds
+	-- Its moments in seconds (Alan 2026-11-11: see it come in, then unfold, then sit 4 s, then leave).
+	local IN, BEAT, UNFOLD, FOLD, OUT = 0.8, 0.15, 0.7, 0.4, 0.55
+	local OPEN = IN + BEAT + UNFOLD
+	local noteAt, noteHeight, popped, pieces = -math.huge, 196, true, {}
 
+	-- Confetti shoots up out of the note as it unfolds, then tumbles down and fades.
 	local function burst()
-		local centre = note.AbsolutePosition + note.AbsoluteSize / 2 - noteGui.AbsolutePosition
 		local s = noteScale.Scale
-		for _ = 1, 40 do
+		local from, w = note.AbsolutePosition - noteGui.AbsolutePosition, note.AbsoluteSize.X
+		for _ = 1, 45 do
 			local bit = Instance.new("Frame")
-			bit.BorderSizePixel, bit.BackgroundColor3 = 0, COLOURS[math.random(#COLOURS)]
-			bit.AnchorPoint, bit.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(math.random(8, 16) * s, math.random(5, 9) * s)
-			bit.Position, bit.Rotation, bit.Parent = UDim2.fromOffset(centre.X, centre.Y), math.random(0, 180), confetti
-			local away = Vector2.new(math.random(-420, 420), math.random(-150, 220)) * s
-			TweenService:Create(bit, TweenInfo.new(1.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-				Position = UDim2.fromOffset(centre.X + away.X, centre.Y + away.Y), Rotation = bit.Rotation + math.random(-360, 360),
-				BackgroundTransparency = 1 }):Play()
-			task.delay(1.5, function() bit:Destroy() end)
+			bit.BorderSizePixel, bit.BackgroundColor3, bit.AnchorPoint = 0, COLOURS[math.random(#COLOURS)], Vector2.new(0.5, 0.5)
+			bit.Size, bit.Rotation, bit.Parent = UDim2.fromOffset(math.random(16, 26) * s, math.random(9, 14) * s), math.random(0, 180), confetti
+			local x = math.random()
+			table.insert(pieces, { bit = bit, age = 0, wave = math.random() * 6, spin = math.random(-500, 500),
+				at = from + Vector2.new(x * w, FOLDED * s), v = Vector2.new((x - 0.5) * 700 + math.random(-120, 120), math.random(-1050, -550)) * s })
 		end
 	end
 
 	local function levelNote(newLevel, unlocked)
 		noteTitle.Text = "LEVEL " .. newLevel .. "!"
 		local any = #unlocked > 0
-		cardImage.Visible, line1.Visible, line2.Visible, bits[1].Visible, bits[2].Visible = any, any, any, any, any
+		for _, piece in { cardTop, cardBottom, line1, line2, bits[1], bits[2], shade, crease } do piece.Visible = any end
 		line1.Text = #unlocked == 1 and "You unlocked something new!" or ("You unlocked " .. #unlocked .. " new things!")
-		line2.Text = #unlocked == 1 and "Open Menu to see it." or "Open Menu to see them."
-		noteHeight = any and 270 or 110
-		noteUntil = os.clock() + NOTE_SECONDS
-		note.Size, note.GroupTransparency = UDim2.fromOffset(640, 0), 0
+		line2.Text = #unlocked == 1 and "See it in the main menu." or "See them in the main menu."
+		noteHeight, noteAt, popped = any and 196 or 110, os.clock(), false
 		noteGui.Enabled = true
-		TweenService:Create(note, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Size = UDim2.fromOffset(640, noteHeight) }):Play()
-		task.delay(0.15, burst)
 		Audio.play("ding")
 	end
 	Unlock.levelNote = levelNote
 
-	RunService.RenderStepped:Connect(function()
-		if not noteGui.Enabled then return end
-		if os.clock() > noteUntil then
-			if note.GroupTransparency == 0 then
-				TweenService:Create(note, TweenInfo.new(0.3), { GroupTransparency = 1 }):Play()
-				task.delay(0.35, function() if os.clock() > noteUntil then noteGui.Enabled = false end end)
-			end
-			return
+	local function ease(a, style, direction) return TweenService:GetValue(math.clamp(a, 0, 1), style, direction) end
+	RunService.RenderStepped:Connect(function(dt)
+		for i = #pieces, 1, -1 do
+			local c = pieces[i]
+			c.age += dt
+			c.v = c.v * (1 - 1.6 * dt) + Vector2.new(0, 2000 * noteScale.Scale * dt) -- air and gravity
+			c.at += (c.v + Vector2.new(math.sin(c.age * 9 + c.wave) * 90 * noteScale.Scale, 0)) * dt -- a flutter side to side
+			c.bit.Position, c.bit.Rotation = UDim2.fromOffset(c.at.X, c.at.Y), c.bit.Rotation + c.spin * dt
+			c.bit.BackgroundTransparency = math.clamp((c.age - (LIFE - 0.6)) / 0.6, 0, 1)
+			if c.age > LIFE then c.bit:Destroy(); table.remove(pieces, i) end
 		end
-		local s = ScreenFit.scale(ScreenFit.NOTE) * (ScreenFit.kind() == "phone" and 0.85 or 1)
-		local x, y, fit = ScreenFit.place(note, s)
-		note.Position, noteScale.Scale = UDim2.new(0.5, x, 0, y), s * fit
+		if not noteGui.Enabled then return end
+		local t = os.clock() - noteAt
+		local leave = OPEN + NOTE_SECONDS -- when it starts folding up
+		if t > leave + FOLD + OUT then noteGui.Enabled = false; return end
+		-- 20% smaller than first built on a PC (Alan 2026-11-11); a phone keeps its size so the words stay readable.
+		local s = ScreenFit.scale(ScreenFit.NOTE) * (ScreenFit.kind() == "phone" and 0.85 or 0.52)
+		local x, y = ScreenFit.topLeft(noteGui, Vector2.new(640, noteHeight) * s)
+		local fly = t < IN and 1 - ease(t / IN, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+			or ease((t - leave - FOLD) / OUT, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+		local open = ease((t - IN - BEAT) / UNFOLD, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+			* (1 - ease((t - leave) / FOLD, Enum.EasingStyle.Quad, Enum.EasingDirection.In))
+		local folded = math.min(FOLDED, noteHeight)
+		noteScale.Scale, note.Rotation = s, TILT - 18 * fly
+		note.Size = UDim2.fromOffset(640, folded + (noteHeight - folded) * open)
+		note.Position = UDim2.fromOffset(x - fly * (x + 640 * s + 40), y)
+		shade.BackgroundTransparency = math.clamp(0.25 + open * 0.75, 0, 1) -- dark while it faces away, clear once flat
+		if t >= OPEN - 0.25 and not popped then popped = true; burst() end
 	end)
 
 	-- A level-up while playing shows the note (the backpack waits for the Menu).
@@ -539,8 +567,12 @@ function Unlock.start(api)
 		lastLevel = now
 	end)
 
+	-- Studio test: while DevLevelUp is set, only its pretend level-up waits (your saved unlocks don't), and it isn't saved.
+	local testList, testLevel = {}, 0
+	local function pretend() return RunService:IsStudio() and Root:GetAttribute("DevLevelUp") ~= nil end
 	-- What's waiting to be opened: things above the level already opened, up to yours.
 	function Unlock.waiting(profile)
+		if pretend() then return testList end
 		if type(profile) ~= "table" or type(profile.unlocksSeen) ~= "number" then return {} end
 		if profile.unlocksSeen >= seenLocal then seenLocal = 0 end -- the server has caught up (or a prestige started over)
 		return Unlock.items(math.max(profile.unlocksSeen, seenLocal), Unlock.levelOf(profile))
@@ -549,13 +581,18 @@ function Unlock.start(api)
 	function Unlock.offer(profile)
 		if stage then return end
 		local list = Unlock.waiting(profile)
-		if #list > 0 then play(list, Unlock.levelOf(profile)) end
+		if pretend() then testList = {} end
+		if #list > 0 then play(list, pretend() and testLevel or Unlock.levelOf(profile), pretend()) end
 	end
 	function Unlock.playing() return stage ~= nil end
 
 	-- Studio tests: DevUnlock = a level opens a backpack with everything up to it (not saved); DevLevelNote = a level
-	-- shows that level's note.
+	-- shows that level's note; DevLevelUp = a level is a pretend level-up to it (the note, then the backpack in the Menu).
 	if RunService:IsStudio() then
+		Root:GetAttributeChangedSignal("DevLevelUp"):Connect(function()
+			local n = Root:GetAttribute("DevLevelUp")
+			if type(n) == "number" and n > 1 then testList, testLevel = Unlock.items(n - 1, n), n; levelNote(n, testList) end
+		end)
 		Root:GetAttributeChangedSignal("DevUnlock"):Connect(function()
 			local n = Root:GetAttribute("DevUnlock")
 			if type(n) == "number" then close(); play(Unlock.items(1, n), n, true) end

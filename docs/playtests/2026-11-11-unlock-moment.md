@@ -19,4 +19,7 @@ zipper, stepped through the cards and pressed Later and Put it on.
 ## What changed
 Chevrons, card centred on the page's writing area, the zip that plays as far as you pull (see
 [menus and HUD](../systems/menus-and-hud.md) and [the unlock plan](../plan/UNLOCK-PLAN.md)). The level-up note (seen in a match
-through `DevLevelNote`): "looks good", on screen 2 s instead of 4. Not yet seen: phones.
+through `DevLevelNote`): "looks good", on screen 2 s instead of 4; then:
+back to 4 s but smaller, shorter and tilted at the top left, with a fly-in he can see, a real unfold and confetti that
+moves (it just popped up and vanished); the backpack belongs on the main menu, not the in-match menu. Checked with
+`DevLevelUp`: the backpack followed him to the main menu after Leave match. Not yet seen: phones.
