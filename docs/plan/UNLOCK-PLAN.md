@@ -58,5 +58,5 @@ paid. Six free picture uploads (your go, after the preview). About 3 hours. Chec
 switch while you aren't playing, then your Play check.
 
 ## Numbers to OK (my picks)
-Level-up note: unfolds in 0.4 s, stays 4 s. Backpack: dark layer 45%, blur 16; drag hint after 2 s for the first three
+Level-up note: unfolds in 0.4 s, stays 2 s (Alan 2026-11-11: was 4). Backpack: dark layer 45%, blur 16; drag hint after 2 s for the first three
 backpacks; one full turn in 1.2 s as it pops; shake 3 pixels.

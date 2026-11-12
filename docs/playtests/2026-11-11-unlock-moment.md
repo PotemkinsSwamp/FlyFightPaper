@@ -18,5 +18,5 @@ zipper, stepped through the cards and pressed Later and Put it on.
 
 ## What changed
 Chevrons, card centred on the page's writing area, the zip that plays as far as you pull (see
-[menus and HUD](../systems/menus-and-hud.md) and [the unlock plan](../plan/UNLOCK-PLAN.md)). Not yet seen: the level-up
-note in a real match, phones.
+[menus and HUD](../systems/menus-and-hud.md) and [the unlock plan](../plan/UNLOCK-PLAN.md)). The level-up note (seen in a match
+through `DevLevelNote`): "looks good", on screen 2 s instead of 4. Not yet seen: phones.

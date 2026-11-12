@@ -25,7 +25,7 @@ local MID, ROW_Y = 985, 532 -- the card's middle across (the page's writing area
 -- 2.3 s (measured), long enough to play straight through as you pull (Alan 2026-11-11: a looped zip sounded like a car starting).
 local ZIP_SOUND, ZIP_FROM, ZIP_LONG = "rbxassetid://9113260940", 1.0, 1.3
 local ZIP_PER_PULL = 2 -- seconds of zip sound a whole pull along the zipper is worth
-local NOTE_SECONDS, HINT_AFTER, HINT_UP_TO = 4, 2, 4 -- level-up note on screen; drag hint after idle seconds, while seen <= this level
+local NOTE_SECONDS, HINT_AFTER, HINT_UP_TO = 2, 2, 4 -- level-up note on screen; drag hint after idle seconds, while seen <= this level
 local FRAMES = 12 -- in-between zipper pictures (tools/art/unlock_pieces.py)
 local FRAME_BOX = { 0.0336, 0.1508, 0.9444, 0.4535 } -- where they sit on the bag (shares of the bag picture)
 -- The pull's path from the closed pull (right) to the open pull (left), as shares of the bag picture.
