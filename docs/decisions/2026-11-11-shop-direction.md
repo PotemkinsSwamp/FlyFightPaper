@@ -18,7 +18,8 @@
   includes **personal discounts** (not decided; Alan: "whether we apply them or not is a different question") and
   **offers after a fold or a lost match** (research, then Alan decides; the Nov 11 "never after a loss" rule stands until
   then). Research done: [personal shop research](../research/PERSONAL-SHOP-RESEARCH-2026-11-12.md) (options A-P
-  for Alan's picks).
+  for Alan's picks). Picked: [personal shop picks](2026-11-12-personal-shop-picks.md) (the "never after a loss"
+  rule is replaced: offers that fit the moment are allowed).
 - **Starter pack contents so far** (Alan 2026-11-12): Swept Wings, 1,500 Paper and **1 hour of 2x XP** (not 2x Paper);
   worth 227 R$ bought separately; its price (99 R$ in the preview) still needs his OK.
 - **"Limited time!"** is fine on the starter pack (its timer is real). **Gift to a friend** buttons are wanted

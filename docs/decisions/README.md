@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-12: [Personal shop picks: A, B, F, G, H, J, N, P; offers after a fold or loss when they fit; funnel the buying](2026-11-12-personal-shop-picks.md)
 - 2026-11-11: [Shop direction: a normal Roblox shop window in our materials, a starter pack with a real timer](2026-11-11-shop-direction.md)
 - 2026-10-24: [Screen fit: every piece in its place on any screen](2026-10-24-screen-fit.md)
 - 2026-10-25: [Fast phone loading: menu first, Skip, smaller bump and shine maps](2026-10-25-fast-phone-loading.md)

@@ -10,7 +10,7 @@ in about 36; for the first 6 hours ~13 unlocked things are always waiting to be 
 (Pencil 32,000, Cardboard 18,500, first parts 700; table in the
 [decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Paper packs and Robux part prices were re-scaled to
 match (Alan 2026-11-11, [shop prices plan](../plan/SHOP-PRICES-PLAN.md): packs 1,500 / 5,000 / 15,000 Paper; each part's
-Robux price from its Paper price). Still to come: offers tied to the player's own goal, capped, never after a loss.
+Robux price from its Paper price). Still to come: the personal shop and offers ([picks](../decisions/2026-11-12-personal-shop-picks.md)).
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Roblox-style shop window in our paper look
 (2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 15 products and part unlocks (Stage 10, Codex, reviewed; 388 tests)
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
