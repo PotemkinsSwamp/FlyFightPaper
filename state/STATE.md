@@ -7,10 +7,9 @@
 - Earlier: report card and new shop prices built, not published.
 
 # Now: finish the game for the beta
-Done: personalised shop research, options A-P for your picks ([page](../docs/research/PERSONAL-SHOP-RESEARCH-2026-11-12.md));
-the new EU law proposal (2026-11-11) is on it. Next: (2) Hangar buying: a locked look, "Unlock now" for Robux, pop-ups instead
-of the small bottom line, bigger words ([your notes](../docs/playtests/2026-11-12-shop-window-and-hangar-buying.md)).
-Then the starter pack price, the daily gift and Gift a friend, each with a note for your OK.
+Done: personal shop research; you picked A, B, F, G, H, J, N, P, offers after a fold when they fit, and a funnel
+([decision](../docs/decisions/2026-11-12-personal-shop-picks.md)). Built in Studio, not committed: Hangar buying (locked
+cards, Unlock now, Not enough Paper pop-up, bigger words). Next: the money plan below, then Gift a friend.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
 Not seen yet: a real level-up in a match; on a phone the level-up note may sit over a match tip. Report card: PC size.
 
@@ -51,7 +50,8 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
-- Pick from the personal shop options (A-P) on the research page.
+- Tick the shop money plan (daily gift, starter pack 99 R$, first-buy double, decoy/anchor packs, Paper jar):
+  [plan](../docs/plan/SHOP-MONEY-PLAN.md). Look at the Hangar buying version in Studio (locked cards, Unlock now, pop-up).
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
 - On PC: end a free-for-all and a team round; check the report card's words all sit inside their boxes.
 - Save to File when you want the new weapon models in the place file (your go).
