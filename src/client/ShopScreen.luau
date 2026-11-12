@@ -36,7 +36,7 @@ local BADGE = { paper_pack_5000 = "Good Value", paper_pack_15000 = "Most Value",
 local PACK_ICON = { paper_pack_1500 = "iconPaperSmall", paper_pack_5000 = "iconPaperPile", paper_pack_15000 = "iconPaperBox" }
 -- The starter pack preview (example contents, Alan's OK pending: docs/decisions/2026-11-11-shop-direction.md).
 local STARTER = { price = 99, worth = 227, seconds = (2 * 24 + 14) * 3600 + 5 * 60,
-	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockPaper", label = "1 hour\n2x Paper" } } }
+	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockStar", label = "1 hour\n2x XP" } } } -- Alan 2026-11-12: 2x XP, not 2x Paper
 
 local function commas(n)
 	local s = tostring(n)

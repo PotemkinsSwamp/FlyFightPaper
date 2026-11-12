@@ -12,6 +12,8 @@
   icon, the amount on a dark label, a big green Robux buy button, value stickers that climb ("Good Value", "Most
   Value"), big icon tabs beside the window, and movement (shines, hue shifts, bobbing icons). Our paper, crayon and
   classroom materials go on top; the layout stays familiar.
+- **Starter pack contents so far** (Alan 2026-11-12): Swept Wings, 1,500 Paper and **1 hour of 2x XP** (not 2x Paper);
+  worth 227 R$ bought separately; its price (99 R$ in the preview) still needs his OK.
 - **"Limited time!"** is fine on the starter pack (its timer is real). **Gift to a friend** buttons are wanted
   beside the buy buttons (a new feature: plan it before building).
 - The store counter, the sticker album and the prize box below are replaced by this; the free daily gift stays as a
