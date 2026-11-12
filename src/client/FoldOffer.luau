@@ -14,7 +14,6 @@ local FoldOffer = {}
 
 local W, H, SCALE = 1237, 325, 0.6
 local WHITE, YELLOW = Color3.new(1, 1, 1), Color3.fromRGB(255, 222, 40)
-local MAT = Color3.fromRGB(176, 128, 84) -- the shop's kraft paper behind pictures
 
 function FoldOffer.new(playerGui)
 	local cover, sheet = PaperUI.screen(playerGui, "FoldOffer", {}, true)
@@ -50,30 +49,34 @@ function FoldOffer.new(playerGui)
 		local level, paper = me:GetAttribute("Level") or 1, me:GetAttribute("Paper") or 0
 		card = Instance.new("Frame")
 		card.Name, card.BackgroundTransparency, card.AnchorPoint = "Card", 1, Vector2.new(0.5, 0)
-		card.Size, card.Position = UDim2.fromOffset(W, H), UDim2.fromOffset(PaperUI.W / 2, 150)
+		card.Size, card.Position = UDim2.fromOffset(W, H), UDim2.fromOffset(PaperUI.W / 2, 215) -- under the "folded by" note
 		local scale = Instance.new("UIScale")
 		scale.Scale, scale.Parent = SCALE, card
 		card.Parent = sheet
 		PaperUI.image(card, "PaperL", Art.cardFeatured[1], 0, 0, 620, H).ScaleType = Enum.ScaleType.Stretch
 		PaperUI.image(card, "PaperR", Art.cardFeatured[2], 618, 0, 619, H).ScaleType = Enum.ScaleType.Stretch
-		PaperUI.image(card, "Mat", Art.circlePale, 35, 25, 270, 270).ImageColor3 = MAT
+		PaperUI.image(card, "Circle", Art.circlePale, 35, 25, 270, 270)
 		Unlock.view(card, item, 50, 40, 240, 240)
-		words(card, "Tag", "Folded by " .. killer .. "'s", 330, 18, 620, 64, 40, WHITE, 3)
-		words(card, "Name", part.name, 330, 76, 620, 110, 76, YELLOW, 5)
+		-- Down the middle (Alan 2026-11-12: the buy button in the middle of your view, not off to the right): who, what,
+		-- when and how much, then the buttons.
+		words(card, "Tag", "Folded by " .. killer .. "'s", 320, 10, 840, 52, 40, WHITE, 3)
+		words(card, "Name", part.name, 320, 58, 840, 84, 74, YELLOW, 5)
 		local short = part.paper_price - paper
-		words(card, "Line", (level < part.min_level and "Unlocks at level " .. part.min_level .. ". " or "")
-			.. PaperUI.commas(part.paper_price) .. " Paper", 330, 196, 620, 90, 40)
-		if level >= part.min_level and short <= 0 then
+		words(card, "Line", (level < part.min_level and "Unlocks at level " .. part.min_level .. "  -  " or "")
+			.. PaperUI.commas(part.paper_price) .. " Paper", 320, 142, 840, 52, 42, WHITE, 3)
+		local robux = Customize.unlockRobux(part.paper_price)
+		local function buyRobux() action:FireServer("buyProduct", "part_" .. part.id) end
+		if level >= part.min_level and short <= 0 then -- Paper first, then Robux, side by side; the red X closes it
 			PaperUI.button(card, "BuyPaper", Assets.mainmenu.strip.green, "Buy: " .. PaperUI.commas(part.paper_price) .. " Paper",
-				967, 50, 250, 110, -1, function() action:FireServer("purchasePart", part.id) end, 34)
-		else -- what you're waiting for, on the shop's dark label (not a button)
-			PaperUI.image(card, "WaitPaper", Art.labelDark, 967, 60, 250, 90).ScaleType = Enum.ScaleType.Stretch
-			words(card, "Wait", level < part.min_level and "Wait for level " .. part.min_level
-				or "Need " .. PaperUI.commas(short) .. " more", 977, 60, 230, 90, 34, WHITE)
+				345, 205, 380, 100, -1, function() action:FireServer("purchasePart", part.id) end, 38)
+			PaperUI.robuxButton(card, "Buy", 755, 205, 380, 100, "Buy now", robux, 38, buyRobux)
+			PaperUI.button(card, "Close", Art.close, "", 1185, -35, 90, 90, 0, close, 10)
+		else -- one big Buy now; what you're waiting for is the red corner button that puts the card away
+			PaperUI.robuxButton(card, "Buy", 510, 205, 460, 100, "Buy now", robux, 42, buyRobux)
+			local wait = PaperUI.button(card, "Wait", Assets.mainmenu.strip.red, "", 985, -45, 320, 95, 3, close, 34)
+			words(wait, "Words", level < part.min_level and "Wait for level " .. part.min_level
+				or "Save " .. PaperUI.commas(short) .. " more Paper", 20, 0, 280, 95, 32, WHITE, 3)
 		end
-		PaperUI.robuxButton(card, "Buy", 967, 180, 250, 110, "Buy now", Customize.unlockRobux(part.paper_price), 34,
-			function() action:FireServer("buyProduct", "part_" .. part.id) end)
-		PaperUI.button(card, "Close", Art.close, "", 1185, -35, 90, 90, 0, close, 10)
 	end
 	-- Each HUD tick: shown on the fold screen and at the desk; anything else (after it has shown) puts it away.
 	function self.step(state, blocked)

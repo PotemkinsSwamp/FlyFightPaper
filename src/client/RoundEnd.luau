@@ -125,18 +125,21 @@ function RoundEnd.start()
 		return it
 	end
 	local pages = { makePage("Page1"), makePage("Page2") }
-	-- After a match (docs/plan/SHOP-MONEY-PLAN.md, Alan 2026-11-12): a sticky note by your card with the Paper 2x would
-	-- have added this match (the server counts the Paper you earned without 2x) and a 2x Paper button. Only while no 2x
-	-- Paper is running, and not after 3 buys today (the calm rule). It hangs off your own page: beside it in a
-	-- free-for-all, under it in a team round.
-	local offer = image(card, "PaperOffer", UIArt.ingame.stickyWide, 0, 0, 720, 254, 1.5)
-	offer.Visible = false
-	local offerLine = words(offer, "Line", "2x Paper would have given you", 40, 76, 590, 38, 32)
-	local offerAmount = PaperUI.loud(words(offer, "Amount", "", 40, 112, 590, 52, 48))
-	offerLine.TextXAlignment, offerAmount.TextXAlignment = Enum.TextXAlignment.Center, Enum.TextXAlignment.Center
-	PaperUI.robuxButton(offer, "Buy", 150, 168, 420, 58, "2x Paper, 1 hour", ShopScreen.PRICE.paper_boost_60m, 30, function()
+	-- After a match (docs/plan/SHOP-MONEY-PLAN.md, Alan 2026-11-12): one big green button taped under your own card (Alan:
+	-- on the card or attached to it, plainly something to click, up with the card) with the Paper 2x would have added
+	-- this match (the server counts the Paper you earned without 2x) and its price. Only while no 2x Paper is running
+	-- and not after 3 buys today (the calm rule P); once pressed it says so (Alan pressed it and saw nothing happen).
+	local pressedFor, pressedAt, offerMatch = nil, 0, nil
+	local offer = PaperUI.robuxButton(card, "PaperOffer", 60, 872, 560, 140, "", ShopScreen.PRICE.paper_boost_60m, 44, function()
+		if pressedFor == offerMatch then return end
+		pressedFor, pressedAt = offerMatch, os.clock()
 		Root.RoundAction:FireServer("mockProduct", "paper_boost_60m")
 	end)
+	offer.Visible = false
+	offer.Price.Position = UDim2.fromOffset(0, 24) -- the amount and price under the line
+	local offerLine = words(offer, "Line", "", 0, 14, 560, 40, 30)
+	offerLine.TextXAlignment = Enum.TextXAlignment.Center
+	local offerAmount, offerIcon, offerPrice = offer.Price.Word1, offer.Price.Robux, offer.Price.Word3
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -285,12 +288,17 @@ function RoundEnd.start()
 			end
 		end
 		local boosts, missed = state.boosts, state.mine and state.mine.missedPaper or 0
-		offer.Visible = missed > 0 and boosts ~= nil and not boosts.permanentPaper and (boosts.paperSeconds or 0) <= 0
-			and (player:GetAttribute("BuysToday") or 0) < 3
+		local running = boosts ~= nil and (boosts.permanentPaper or (boosts.paperSeconds or 0) > 0)
+		offerMatch = snap.matchId or true
+		-- pressed this match: "on" once the boost shows, back to the offer if nothing came within 5 s (a cancelled buy)
+		local pressed = pressedFor == offerMatch and (running or os.clock() - pressedAt < 5)
+		if not pressed and pressedFor == offerMatch then pressedFor = nil end
+		offer.Visible = missed > 0 and boosts ~= nil and (pressed or not running and (player:GetAttribute("BuysToday") or 0) < 3)
 		if offer.Visible then
-			offerAmount.Text = "+" .. PaperUI.commas(missed) .. " more Paper!"
+			offerLine.Text = pressed and (running and "Thanks! 2x Paper is on for 1 hour." or "Getting your 2x Paper...") or "2x Paper would have given you"
+			offerAmount.Text = pressed and (running and "Next match pays double!" or "One moment...") or "+" .. PaperUI.commas(missed) .. " more Paper!"
+			offerIcon.Visible, offerPrice.Visible = not pressed, not pressed
 			offer.Parent = pages[state.minePage].page
-			offer.Position = teamRound and UDim2.fromOffset(320, 1042) or UDim2.fromOffset(-380, 873)
 		end
 	end
 	-- Your level bar fills from where you were before this round to where you are now.

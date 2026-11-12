@@ -44,10 +44,11 @@ Stage 6 approved by Alan (2026-10-13) after the on-brand HUD restyle. Edge arrow
 Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); death lines say how it happened (weapon, the
 building or thing hit, who chased or rammed you), the same line on your note and in the feed. Seen in Studio Play 2026-10-17 except the
 between-rounds lines. Warnings (INCOMING!, LOCKED ON!), zone words and error messages stay fixed on purpose.
-Folded by a part you don't own ([Alan 2026-11-12](../decisions/2026-11-12-fold-card-and-shop-mats.md)): a card at the
-top (the shop's Featured card, smaller) with the part in 3D, "Folded by Mia's", its name, the level it unlocks at and its
-Paper price; Buy with Paper first when you have the level and the Paper, else "Wait for level N" / "Need N more", and
-always Buy now for Robux. It shows on the fold screen and stays at the desk; its X, LAUNCH, a menu over the desk, the
+Folded by a part you don't own ([Alan 2026-11-12](../decisions/2026-11-12-fold-card-and-shop-mats.md)): a card under the
+"folded by" note (the shop's Featured card, smaller) with the part in 3D and, down the middle, "Folded by Mia's", its
+name, the level it unlocks at and its Paper price, then the buttons: Buy with Paper and Buy now (Robux) side by side when
+you have the level and the Paper (a red X closes it), else one big Buy now and a red corner button "Wait for level N" /
+"Save N more Paper" that closes it. It shows on the fold screen and stays at the desk; its X, LAUNCH, a menu over the desk, the
 report card or owning the part put it away. Once per part a session; not in practice. That part also becomes the shop's
 Featured card (`FoldGoal`, this client only). Built 2026-11-12, not yet seen in Play (it replaced a line on the top
 note, which Alan found too easy to miss).
@@ -72,9 +73,9 @@ your place circled (team rounds: the team's score), a teacher's note about the r
 The card picture is paper, printing and lines only (`tools/art/report_card.py`); every word is game text. Every cell
 shrinks its words to fit its own column (long names). Team rounds: a card per team side by side (Red left, Blue
 right, spaced so they don't touch); the winners' card has the gold star by its note. Tab's live standings use the same
-card ("so far", no grades or note). After a match (money plan, Alan 2026-11-12): a sticky note by your own card (beside it
-in a free-for-all, under it in a team round) says "2x Paper would have given you +X more Paper!" with a 2x Paper, 1 hour
-button (79 R$). X is that match's Paper earned without 2x (the server counts it: true even if a boost ran out mid-match).
+card ("so far", no grades or note). After a match (money plan, Alan 2026-11-12): one big green button taped under your own
+card, up with the card, says "2x Paper would have given you / +X more Paper! (R$ 79)" and buys 2x Paper for 1 hour;
+once pressed it says "Thanks! 2x Paper is on for 1 hour." (Alan pressed the first version and saw nothing happen). X is that match's Paper earned without 2x (the server counts it: true even if a boost ran out mid-match).
 Only when X > 0, no 2x Paper is running and fewer than 3 buys today (the calm rule P). Alan's first two playtests
 didn't show it: in a free-for-all "your page" was the hidden page 2, so the note (and the level bar) hid with it; fixed
 2026-11-12, not yet seen in Play. Seen in Studio Play at phone size 2026-11-11 (Alan: "looks good"); PC size not yet
