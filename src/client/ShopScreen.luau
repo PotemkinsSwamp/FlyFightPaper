@@ -13,6 +13,7 @@ local Assets = require(Root.Shared.UIAssets)
 local Art = Assets.shop
 local PaperUI = require(script.Parent.PaperUI)
 local Unlock = require(script.Parent.UnlockMoment)
+local Customize = require(script.Parent.HangarCustomize) -- (a part's Unlock now price)
 local ShopScreen = {}
 
 local K = PaperUI.W / 1672 -- concept pixels -> sheet units
@@ -373,6 +374,96 @@ function ShopScreen.new(playerGui, api)
 		return top + 168 + 20
 	end
 
+	-- A part's 3D picture, still at its kind's best angle, bobbing (as the starter pack's items).
+	local function partView(parent, item, x, y, w, h, phase)
+		local view = Unlock.view(parent, item, x * K, y * K, w * K, h * K)
+		local model = view:FindFirstChildOfClass("WorldModel"):FindFirstChildOfClass("Model")
+		local centre, size = (model:FindFirstChild("Appearance") or model):GetBoundingBox()
+		local pose = POSE[item.kind] or POSE.default
+		view.CurrentCamera.CFrame = CFrame.new(centre.Position) * CFrame.Angles(0, math.rad(pose[1]), 0)
+			* CFrame.Angles(math.rad(pose[2]), 0, 0) * CFrame.new(0, 0, size.Magnitude / 2 / math.tan(math.rad(20)) * 1.05)
+		move(view, "bob", phase)
+	end
+	-- Paper buy (at your level) or Unlock now for Robux, the Hangar's two ways (Paper short: the shop's note says how much).
+	local function buyPaper(part)
+		local short = part.paper_price - (game.Players.LocalPlayer:GetAttribute("Paper") or 0)
+		if short > 0 then preview(string.format("%s costs %s Paper. You need %s more.", part.name, commas(part.paper_price), commas(short)))
+		else api.action:FireServer("purchasePart", part.id) end
+	end
+	local function unlockNow(part) api.action:FireServer("buyProduct", "part_" .. part.id) end
+	-- The parts you don't have yet (not the free ones or presets), lowest level first.
+	local function lockedParts(owned)
+		local list = {}
+		for _, item in Unlock.items(0, 999) do
+			if not item.free and not owned[item.part.id] then table.insert(list, item) end
+		end
+		return list
+	end
+
+	-- Your next part (docs/plan/SHOP-MONEY-PLAN.md F), the Featured card once the starter pack is gone: the part that
+	-- last folded you (the fold screen's goal), else the part you're closest to buying, else the next level's part.
+	local function nextPart(y, owned)
+		local me = game.Players.LocalPlayer
+		local level, paper = me:GetAttribute("Level") or 1, me:GetAttribute("Paper") or 0
+		local locked, pick = lockedParts(owned), nil
+		for _, item in locked do
+			if item.part.id == me:GetAttribute("FoldGoal") then pick = item; break end
+			if item.part.min_level <= level and (not pick or item.part.paper_price < pick.part.paper_price) then pick = item end
+		end
+		pick = pick or locked[1]
+		if not pick then return y end
+		local part = pick.part
+		heading(y, "FEATURED")
+		local card = Instance.new("Frame")
+		card.Name, card.BackgroundTransparency, card.Position, card.Size = "NextPart", 1, UDim2.fromOffset(17 * K, (y + 55) * K), UDim2.fromOffset(1237 * K, 325 * K)
+		card.Parent = content
+		pic(card, "PaperL", Art.cardFeatured[1], 0, 0, 620, 325)
+		pic(card, "PaperR", Art.cardFeatured[2], 618, 0, 1237, 325)
+		pic(card, "Circle", Art.circlePale, 35, 25, 305, 295)
+		partView(card, pick, 50, 40, 240, 240, 0)
+		say(card, "Tag", "YOUR NEXT PART", 340, 18, 920, 64, 36, { color = WHITE, outline = INK })
+		say(card, "Name", part.name, 340, 62, 920, 142, 70, { color = Color3.fromRGB(255, 222, 40), outline = INK, thick = 5 })
+		local gap = part.paper_price - paper
+		say(card, "Line", level < part.min_level and "Unlocks at level " .. part.min_level .. ", or unlock it now"
+			or gap > 0 and commas(gap) .. " more Paper, or unlock it now" or "You have the Paper: buy it now!", 330, 160, 930, 215, 38, { loud = true })
+		if level >= part.min_level then
+			buy(card, "BuyPaper", 977, 60, 1217, 165, 0, 44, function() buyPaper(part) end, commas(part.paper_price) .. " Paper")
+		end
+		buy(card, "Buy", 977, 185, 1217, 295, Customize.unlockRobux(part.paper_price), 74, function() unlockNow(part) end)
+		return y + 380
+	end
+
+	-- Today's parts (docs/plan/SHOP-MONEY-PLAN.md H): three of the six parts nearest your level that you don't have,
+	-- a new three every day at UTC midnight (the daily gift's day) for everyone; which three is personal.
+	local function todaysParts(y, owned)
+		local me = game.Players.LocalPlayer
+		local level, day = me:GetAttribute("Level") or 1, os.time() // 86400
+		local near = lockedParts(owned)
+		table.sort(near, function(a, b) return math.abs(a.part.min_level - level) < math.abs(b.part.min_level - level) end)
+		local pool = table.move(near, 1, math.min(6, #near), 1, {})
+		if #pool == 0 then return y end
+		heading(y, "TODAY'S PARTS")
+		local rng = Random.new(day * 7919 + me.UserId) -- ponytail: picked on the client; a server pick if it ever matters
+		for i = 1, math.min(3, #pool) do
+			local item = table.remove(pool, rng:NextInteger(1, #pool))
+			local part, x0, top = item.part, 22 + (i - 1) * 411, y + 55
+			local card = pic(content, "Today" .. i, Art.itemSquare, x0, top, x0 + 405, top + 405)
+			say(card, "Name", part.name, 15, 12, 390, 66, 40, { loud = true })
+			partView(card, item, 70, 64, 265, 205, i)
+			pic(card, "PricePaper", Art.labelDark, 50, 272, 355, 318)
+			say(card, "Price", level < part.min_level and "Unlocks at level " .. part.min_level or commas(part.paper_price) .. " Paper", 50, 272, 355, 318, 32, { color = WHITE })
+			if level >= part.min_level then
+				buy(card, "BuyPaper", 30, 326, 195, 392, 0, 40, function() buyPaper(part) end, "Buy")
+				buy(card, "Buy", 210, 326, 375, 392, Customize.unlockRobux(part.paper_price), 44, function() unlockNow(part) end)
+			else
+				buy(card, "Buy", 102, 326, 302, 392, Customize.unlockRobux(part.paper_price), 44, function() unlockNow(part) end)
+			end
+		end
+		say(content, "TodayNew", "New parts in", 22, y + 470, 300, 515, 34, { left = true, color = CHALK })
+		move(say(content, "TodayTimer", "", 300, y + 470, 520, 515, 34, { left = true, color = CHALK }), "timer", 0, { ends = (day + 1) * 86400, short = true })
+		return y + 530
+	end
+
 	local function passes(y, boosts)
 		heading(y, "PASSES")
 		for i, info in { { "permanent_2x_paper", Art.cardPassGreen, Art.iconPassPaper, "2x Paper Forever", "Double Paper from\nevery match!", "permanentPaper" },
@@ -530,7 +621,11 @@ function ShopScreen.new(playerGui, api)
 		-- Redraw only on a change, so a click never lands on a button that was just replaced.
 		local boosts = profile and profile.boosts or {}
 		local me = game.Players.LocalPlayer
-		local key = game:GetService("HttpService"):JSONEncode({ boosts.permanentXP, boosts.permanentPaper,
+		local owned = profile and profile.ownership or {}
+		local count = 0
+		for _ in owned do count += 1 end
+		local key = game:GetService("HttpService"):JSONEncode({ boosts.permanentXP, boosts.permanentPaper, count,
+			me:GetAttribute("Paper"), me:GetAttribute("Level"), me:GetAttribute("FoldGoal"), os.time() // 86400,
 			math.floor((boosts.xpSeconds or 0) / 60), math.floor((boosts.paperSeconds or 0) / 60),
 			me:GetAttribute("DailyGiftNext"), me:GetAttribute("DailyGiftReady"), me:GetAttribute("StarterPackEnds"), me:GetAttribute("FirstBuysUsed") })
 		if key == shown then return end
@@ -540,8 +635,10 @@ function ShopScreen.new(playerGui, api)
 		local y = 2
 		if PREVIEW then
 			sections.Featured = y * K
-			y = featured(y)
+			local starter = me:GetAttribute("StarterPackEnds")
+			y = (starter == nil or starter > os.time()) and featured(y) or nextPart(y, owned)
 			y = freeGift(y)
+			y = todaysParts(y, owned)
 		end
 		sections.Passes = y * K
 		if not PREVIEW then sections.Featured = y * K end

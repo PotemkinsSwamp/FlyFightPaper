@@ -209,6 +209,22 @@ function HUD.start(getPlane, action)
 		pin.Position = UDim2.new(x, 0, 0.5, -2)
 	end
 	status.Words.UIPadding.PaddingLeft, status.Words.UIPadding.PaddingRight = UDim.new(0.12, 0), UDim.new(0.12, 0) -- words stay clear of the pins
+	-- Folded by a part you don't have yet (docs/plan/SHOP-MONEY-PLAN.md N, no price): after the death line, the note
+	-- says whose part it was and when it unlocks, a goal the shop's Featured card picks up.
+	local owned, goal = {}, nil
+	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) owned = profile.ownership or owned end)
+	Root:WaitForChild("CombatEvents").OnClientEvent:Connect(function(events)
+		for _, event in events do
+			local part = event.kind == "death" and not event.practice and event.victimId == tostring(Players.LocalPlayer.UserId) and event.killer
+				and event.killerId ~= event.victimId and event.how and Catalog:get(event.how.weapon or "")
+			if part and not owned[part.id] then
+				Players.LocalPlayer:SetAttribute("FoldGoal", part.id) -- the shop's Featured card picks it up (this client only)
+				local level = Players.LocalPlayer:GetAttribute("Level") or 1
+				goal = { at = os.clock(), text = string.format("Folded by %s's %s. %s", event.killer, part.name,
+					part.min_level > level and "It unlocks at level " .. part.min_level .. "." or "Unlock it in the Hangar.") }
+			end
+		end
+	end)
 	local threat = note(top, "Threat", UIArt.hud.incoming, 600, 198, 150, 56)
 	threat.Words.Size, threat.Words.UIPadding.PaddingTop = UDim2.fromScale(1, 0.66), UDim.new(0.2, 0)
 	threat.Words.FontFace = Font.fromEnum(Enum.Font.PermanentMarker) -- the heavy marker of concept 2's INCOMING!
@@ -723,6 +739,7 @@ function HUD.start(getPlane, action)
 		-- The top note shows only real news (the controls are taught by the tutorial, not a standing note).
 		-- In flight a note fades after 4 seconds; at the desk or when shot down it stays.
 		local message = plane:GetAttribute("Message") or ""
+		if state ~= "DESTROYED" then goal = nil elseif goal and os.clock() - goal.at > 2 then message = goal.text end
 		if message ~= status.Words.Text then status.Words.Text, noteAt = message, os.clock() end
 		-- During a lesson the news note and the kill feed stay hidden: the lesson's own note is the only text (Alan).
 		local lesson = Root:GetAttribute("TutorialOpen") == true

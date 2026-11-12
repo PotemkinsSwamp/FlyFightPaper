@@ -82,7 +82,7 @@ function Menu.start()
   tutorial=function()Tutorial.choose(function()overlay(false)end)end, -- the Training board
   leave=function()if not Tutorial.quit() then action:FireServer("withdraw",true) end;overlay(false);home()end,
  })
- local shopScreen=ShopScreen.new(gui.Parent,{buy=function(key)action:FireServer("mockProduct",key)end,claimGift=function()action:FireServer("claimDailyGift")end,back=function()home()end})
+ local shopScreen=ShopScreen.new(gui.Parent,{action=action,buy=function(key)action:FireServer("mockProduct",key)end,claimGift=function()action:FireServer("claimDailyGift")end,back=function()home()end})
  local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})
  local paper={home=board,settings=settingsScreen,hangar=hangarScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen}
  Unlock.start({
