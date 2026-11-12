@@ -80,6 +80,7 @@ otherwise.
 - [Tutorial research 2026-10-18](research/TUTORIAL-RESEARCH-2026-10-18.md): how most games teach new players.
 - [Range and hangar research 2026-10-19](research/RANGE-HANGAR-RESEARCH-2026-10-19.md): how other games do practice ranges, moving targets, difficulty and hangar onboarding.
 - [Pricing research 2026-10-18](research/PRICING-RESEARCH-2026-10-18.md): what Roblox games charge, and our draft price ladder.
+- [Shop research 2026-11-11](research/SHOP-RESEARCH-2026-11-11.md): what makes Roblox players buy, the rules for kids, and a tempting shop in our classroom style.
 - [Unlock pacing research 2026-11-08](research/UNLOCK-PACING-2026-11-08.md): how fast other games unlock things, and targets for our ladder.
 - [Performance research 2026-10-11](research/PERFORMANCE-RESEARCH-2026-10-11.md): why Play was slow, and the fixes.
 - [QA review 2026-10-07](research/QA-2026-10-07.md): requirement-by-requirement check.
