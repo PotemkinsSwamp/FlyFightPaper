@@ -391,6 +391,11 @@ mistake would be easy to make twice.
   Run the tests after adding any Studio-only switch to profile loading.
 
 ## Working with Alan
+- **Screen grabs only when there is no other way** (Alan 2026-11-12): read layouts as numbers first (`AbsolutePosition`,
+  `GetGuiObjectsAtPosition`, `ScreenCheck`), prints, rays. A grab is allowed only when it is truly blocking.
+- **To catch something in Alan's own Play, put a temporary print in the code before he starts** (2026-11-12): Rojo
+  syncs it, Studio's Output keeps the line after Play stops, and `studio_cli.py get_console_output` reads it from
+  Edit. A watcher started by hand once Play is running misses moments (Alan: "You're not that fast"). Remove it after.
 - **A behaviour fix isn't fixed until it's seen in Play** (2026-10-19): three Combat School fixes made by reading the
   code alone (the red dot, the eraser during the freeze, step 8's Pal) were wrong, and each cost Alan a playtest.
   One logged Play run found each real cause in minutes (BotIntent, Held, distances each second). For aim, read where
