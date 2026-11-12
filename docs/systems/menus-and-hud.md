@@ -44,9 +44,13 @@ Stage 6 approved by Alan (2026-10-13) after the on-brand HUD restyle. Edge arrow
 Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); death lines say how it happened (weapon, the
 building or thing hit, who chased or rammed you), the same line on your note and in the feed. Seen in Studio Play 2026-10-17 except the
 between-rounds lines. Warnings (INCOMING!, LOCKED ON!), zone words and error messages stay fixed on purpose.
-Folded by a part you don't own (money plan N, no price): after 2 s the note swaps the death line for "Folded by
-Mia's Thumbtack Shooter. It unlocks at level 4." (or "Unlock it in the Hangar." once your level has it); not in practice.
-That part becomes the shop's Featured card (`FoldGoal`, this client only). Built 2026-11-12, not yet seen in Play.
+Folded by a part you don't own ([Alan 2026-11-12](../decisions/2026-11-12-fold-card-and-shop-mats.md)): a card at the
+top (the shop's Featured card, smaller) with the part in 3D, "Folded by Mia's", its name, the level it unlocks at and its
+Paper price; Buy with Paper first when you have the level and the Paper, else "Wait for level N" / "Need N more", and
+always Buy now for Robux. It shows on the fold screen and stays at the desk; its X, LAUNCH, a menu over the desk, the
+report card or owning the part put it away. Once per part a session; not in practice. That part also becomes the shop's
+Featured card (`FoldGoal`, this client only). Built 2026-11-12, not yet seen in Play (it replaced a line on the top
+note, which Alan found too easy to miss).
 Main-menu ruler repainted by Codex (reads 3 to 12, right way up; 1 and 2 behind the paper ball), uploaded and seen
 in Play 2026-10-17.
 Level bar with next unlock on the main menu board's stats card, in the hangar under the plane, and on the results card
@@ -71,7 +75,9 @@ right, spaced so they don't touch); the winners' card has the gold star by its n
 card ("so far", no grades or note). After a match (money plan, Alan 2026-11-12): a sticky note by your own card (beside it
 in a free-for-all, under it in a team round) says "2x Paper would have given you +X more Paper!" with a 2x Paper, 1 hour
 button (79 R$). X is that match's Paper earned without 2x (the server counts it: true even if a boost ran out mid-match).
-Only when X > 0, no 2x Paper is running and fewer than 3 buys today (the calm rule P). Not yet seen in Play. Seen in Studio Play at phone size 2026-11-11 (Alan: "looks good"); PC size not yet
+Only when X > 0, no 2x Paper is running and fewer than 3 buys today (the calm rule P). Alan's first two playtests
+didn't show it: in a free-for-all "your page" was the hidden page 2, so the note (and the level bar) hid with it; fixed
+2026-11-12, not yet seen in Play. Seen in Studio Play at phone size 2026-11-11 (Alan: "looks good"); PC size not yet
 seen in Play (only the put-together preview). Match tips: the words fill the sticky note, as big as fits. Seen in Studio
 Play at phone size 2026-10-29.
 Dev mode: in Studio, and on the game owner's own account in live servers (server-set `Dev` attribute,
@@ -157,6 +163,7 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/client/WaitScreen.luau` | "Waiting for a desk" note (only when 12 real players fill the server) |
 | `src/client/Loading.luau` | Loading screen |
 | `src/client/FlightHUD.luau` | Everything on screen while flying |
+| `src/client/FoldOffer.luau` | The "Folded by" card: the part that folded you, its level and price, Paper/Robux buy buttons |
 | `src/client/PaperUI.luau` | Shared builder for the paper screens; phone sizes (`isPhone`, `phone`) and the notch-safe sheet; `button` draws its picture at its own shape (Fit) and `fitWords` shrinks words only when they're too long for their paper |
 | `tools/art/unlock_pieces.py` | The unlock backpack's pictures: sheet, its corner tapes, title tape, bags, pull, cream button and the 12 unzip frames (a real zipper's gap), plus the numbers UnlockMoment needs |
 | `tools/art/square_from_strip.py` | Cuts a little square of torn paper from a strip's plain middle (the notes' red X box), torn all round from the strip's own edge |

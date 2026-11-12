@@ -209,9 +209,9 @@ function HUD.start(getPlane, action)
 		pin.Position = UDim2.new(x, 0, 0.5, -2)
 	end
 	status.Words.UIPadding.PaddingLeft, status.Words.UIPadding.PaddingRight = UDim.new(0.12, 0), UDim.new(0.12, 0) -- words stay clear of the pins
-	-- Folded by a part you don't have yet (docs/plan/SHOP-MONEY-PLAN.md N, no price): after the death line, the note
-	-- says whose part it was and when it unlocks, a goal the shop's Featured card picks up.
-	local owned, goal = {}, nil
+	-- Folded by a part you don't have yet (docs/plan/SHOP-MONEY-PLAN.md N): a card with that part and how to get it
+	-- (FoldOffer), and a goal the shop's Featured card picks up.
+	local owned, foldOffer = {}, require(script.Parent.FoldOffer).new(gui.Parent)
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) owned = profile.ownership or owned end)
 	Root:WaitForChild("CombatEvents").OnClientEvent:Connect(function(events)
 		for _, event in events do
@@ -219,9 +219,7 @@ function HUD.start(getPlane, action)
 				and event.killerId ~= event.victimId and event.how and Catalog:get(event.how.weapon or "")
 			if part and not owned[part.id] then
 				Players.LocalPlayer:SetAttribute("FoldGoal", part.id) -- the shop's Featured card picks it up (this client only)
-				local level = Players.LocalPlayer:GetAttribute("Level") or 1
-				goal = { at = os.clock(), text = string.format("Folded by %s's %s. %s", event.killer, part.name,
-					part.min_level > level and "It unlocks at level " .. part.min_level .. "." or "Unlock it in the Hangar.") }
+				foldOffer.show(part, event.killer)
 			end
 		end
 	end)
@@ -693,6 +691,10 @@ function HUD.start(getPlane, action)
 		-- In the hangar the hangar menu shows Lift, health, score and buttons, so the flight HUD steps aside.
 		local inHangar=shown and plane:GetAttribute("State")=="DESK"
 		desk.update(plane,inHangar)
+		if plane then -- the fold card: put away by a menu over the desk, photo mode or the report card
+			local roundEnd=gui.Parent:FindFirstChild("RoundEnd")
+			foldOffer.step(plane:GetAttribute("State"),Root:GetAttribute("OverlayOpen")==true or Root:GetAttribute("PhotoMode")==true or (roundEnd~=nil and roundEnd.Cover.Visible))
+		end
 		picker.Visible=inHangar and Players.LocalPlayer:GetAttribute("Dev")==true -- Studio, or the owner's account live (server-set)
 		gui.Enabled=shown and not inHangar
 		matchInfo.Enabled=shown
@@ -739,7 +741,6 @@ function HUD.start(getPlane, action)
 		-- The top note shows only real news (the controls are taught by the tutorial, not a standing note).
 		-- In flight a note fades after 4 seconds; at the desk or when shot down it stays.
 		local message = plane:GetAttribute("Message") or ""
-		if state ~= "DESTROYED" then goal = nil elseif goal and os.clock() - goal.at > 2 then message = goal.text end
 		if message ~= status.Words.Text then status.Words.Text, noteAt = message, os.clock() end
 		-- During a lesson the news note and the kill feed stay hidden: the lesson's own note is the only text (Alan).
 		local lesson = Root:GetAttribute("TutorialOpen") == true
