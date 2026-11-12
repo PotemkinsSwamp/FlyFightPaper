@@ -271,7 +271,7 @@ function ShopScreen.new(playerGui, api)
 				local model = view:FindFirstChildOfClass("WorldModel"):FindFirstChildOfClass("Model")
 				local look = model:FindFirstChild("Appearance") or model -- just the part's own pieces (as UnlockMoment frames it)
 				local centre, size = look:GetBoundingBox()
-				local far = math.max(size.X, size.Z) * 1.25 / math.tan(math.rad(20))
+				local far = math.max(size.X, size.Z) * 0.6 / math.tan(math.rad(20)) -- its widest turn across ~85% of the square
 				move(view, "turn", i, { turn = function(angle)
 					view.CurrentCamera.CFrame = CFrame.new(centre.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(-0.95, 0, 0) * CFrame.new(0, 0, far)
 				end })
