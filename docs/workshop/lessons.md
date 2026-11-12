@@ -158,7 +158,9 @@ mistake would be easy to make twice.
   working file, so ask for Save to File (not just Ctrl+S) before any rebuild, and re-publish with Publish As after.
 - **Exact collision can fill a hollow piece's opening.** The south station's lunch tin got a shape that blocked a
   wedge of its own track tunnel (2026-10-17). Check tunnels with a grid of raycasts after new shapes are computed;
-  a piece that fails goes in `WALLS` in `tools/town_toys.py` (see-through mesh + plain invisible walls).
+  a piece that fails goes in `WALLS` in `tools/town_toys.py` (see-through mesh + plain invisible walls). Again
+  2026-11-12: the tape-roll tower's roll had its left half's hole filled (Alan folded in it every time); the walls
+  are the good half measured with rays and mirrored. The porthole, binder rings and ruler stilts were checked open.
 - **Game scripts can't read a SurfaceAppearance's maps (2026-10-25).** `ColorMap` and the other maps need plugin
   rights: reading one in a LocalScript errors, and it kept a published build on the loading screen for good. Hand
   PreloadAsync the SurfaceAppearance itself. Loading is wrapped so any error still lets the player in.
