@@ -106,7 +106,16 @@ function Runtime:load(player)
   profile:AddUserId(player.UserId)
   -- Studio dev account (Alan, 2026-10-08): a real player in Studio owns every part at max level with plenty of
   -- Paper, so every build can be saved and tested. self.mock is only true in Studio; live saves never get this.
-  if self.mock then
+  -- A fresh Studio account instead (Alan 2026-11-12, to see the buy buttons): set workspace attribute DevAccountLevel
+  -- (and optionally DevAccountPaper, default 3,000): that level, only its free gear, that Paper. Remove it for the full one.
+  local fresh=self.mock and workspace:GetAttribute("DevAccountLevel")
+  if type(fresh)=="number" then
+   local data,want,lo,hi=profile.Data,math.clamp(math.floor(fresh),1,50),0,1e12
+   while lo<hi do local mid=(lo+hi)//2; if (Economy.levelForXP(mid) or 1)>=want then hi=mid else lo=mid+1 end end
+   data.xpMilli=lo;data.paperMilli=math.floor(tonumber(workspace:GetAttribute("DevAccountPaper")) or 3000)*1000
+   data.unlocksSeen=math.max(1,Economy.levelForXP(lo) or 1)
+   attached=self.service:view(e.account)
+  elseif self.mock then
    local data=profile.Data
    for _,list in ipairs({self.catalog.weapons,self.catalog.utilities}) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
    for _,list in pairs(self.catalog.structuresBySlot) do for _,part in ipairs(list) do data.ownership[part.id]=true end end

@@ -12,6 +12,12 @@
   icon, the amount on a dark label, a big green Robux buy button, value stickers that climb ("Good Value", "Most
   Value"), big icon tabs beside the window, and movement (shines, hue shifts, bobbing icons). Our paper, crayon and
   classroom materials go on top; the layout stays familiar.
+- **Next: a personalised shop, research first** (Alan 2026-11-12): "it needs to have an algorithm": the shop changes
+  for the player looking at it (spenders vs. players who haven't spent), timers and rotations change. Research brief:
+  how personalised shops and offers work (mobile games, Roblox), what Roblox and the law allow. A broad search that
+  includes **personal discounts** (not decided; Alan: "whether we apply them or not is a different question") and
+  **offers after a fold or a lost match** (research, then Alan decides; the Nov 11 "never after a loss" rule stands until
+  then).
 - **Starter pack contents so far** (Alan 2026-11-12): Swept Wings, 1,500 Paper and **1 hour of 2x XP** (not 2x Paper);
   worth 227 R$ bought separately; its price (99 R$ in the preview) still needs his OK.
 - **"Limited time!"** is fine on the starter pack (its timer is real). **Gift to a friend** buttons are wanted
