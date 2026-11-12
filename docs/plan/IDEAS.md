@@ -12,6 +12,12 @@ and a stage.
 
 - **Personal report card** (Alan 2026-11-11): your own grades per subject (folds, assists, aim, crashes) for
   all-time stats, on its own screen; not for the end of a round ([report card plan](REPORT-CARD-PLAN.md)).
+- **Playtime rewards for retention** (Alan 2026-11-12): little rewards for staying and playing, on a growing scale
+  (5 minutes, 10, 30, an hour, 2 hours...), shown as a little calendar you fill in. What fills them is open: it waits
+  on cosmetics, and small rewards could lead up to them.
+- **Cosmetics: skins, trails, emotes** (Alan 2026-11-12: "we have to start looking at" them and the other small
+  buys): what to sell and how players earn some of them, maybe a whole system for getting them. Needed before the
+  playtime rewards can be filled.
 
 ## Later scope (from the vision)
 The [vision](../vision/VISION.md) lists what waits until after the first release: cosmetics, more maps, full touch

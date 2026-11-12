@@ -1,6 +1,6 @@
 # Shop money plan: the funnel
 
-**Status:** for Alan's OK (2026-11-12). Nothing built. Every number below is new and needs his OK. Builds on his
+**Status:** approved 2026-11-12 (Alan: "great ideas, I like them"); the offer chain stays for later. Nothing built yet. Builds on his
 [personal shop picks](../decisions/2026-11-12-personal-shop-picks.md) and the
 [shop prices plan](SHOP-PRICES-PLAN.md) (packs, part prices and boosts stay as approved unless a line here changes them).
 
