@@ -17,7 +17,7 @@ and a stage.
   on cosmetics, and small rewards could lead up to them.
 - **Cosmetics: skins, trails, emotes** (Alan 2026-11-12: "we have to start looking at" them and the other small
   buys): what to sell and how players earn some of them, maybe a whole system for getting them. Needed before the
-  playtime rewards can be filled.
+  playtime rewards can be filled. Research: [cosmetics research](../research/COSMETICS-RESEARCH-2026-11-12.md).
 
 ## Later scope (from the vision)
 The [vision](../vision/VISION.md) lists what waits until after the first release: cosmetics, more maps, full touch

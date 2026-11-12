@@ -30,7 +30,7 @@ otherwise.
 - [Unlock moment plan](plan/UNLOCK-PLAN.md): the backpack that opens when you level up (draft for Alan's OK)
 - [Report card plan](plan/REPORT-CARD-PLAN.md): the round's results on a school report card (built 2026-11-11)
 - [Shop prices plan](plan/SHOP-PRICES-PLAN.md): Paper packs and Robux part prices after the price rise (approved 2026-11-11)
-- [Shop money plan](plan/SHOP-MONEY-PLAN.md): the buying funnel: daily gift, starter pack, first-buy double, decoy and anchor packs, Paper jar (waiting for Alan's OK)
+- [Shop money plan](plan/SHOP-MONEY-PLAN.md): the buying funnel: daily gift, starter pack, first-buy double, decoy and anchor packs, Paper jar (approved 2026-11-12)
 - [Shop screen plan](plan/SHOP-SCREEN-PLAN.md): the shop as a Roblox-style shop window in our materials, with movement (waiting for Alan's OK)
 - [Release notes](plan/RELEASE_NOTES.md) (2026-10-07 build)
 
@@ -83,6 +83,7 @@ otherwise.
 - [Range and hangar research 2026-10-19](research/RANGE-HANGAR-RESEARCH-2026-10-19.md): how other games do practice ranges, moving targets, difficulty and hangar onboarding.
 - [Pricing research 2026-10-18](research/PRICING-RESEARCH-2026-10-18.md): what Roblox games charge, and our draft price ladder.
 - [Shop research 2026-11-11](research/SHOP-RESEARCH-2026-11-11.md): what makes Roblox players buy, the rules for kids, and a tempting shop in our classroom style.
+- [Cosmetics research 2026-11-12](research/COSMETICS-RESEARCH-2026-11-12.md): skins, trails, fold effects, emotes for a paper plane, and playtime rewards; options for Alan.
 - [Personal shop research 2026-11-12](research/PERSONAL-SHOP-RESEARCH-2026-11-12.md): a shop that changes with the player (spenders, timers, personal discounts, offers after a fold), the new EU law proposal, and options to pick from.
 - [Unlock pacing research 2026-11-08](research/UNLOCK-PACING-2026-11-08.md): how fast other games unlock things, and targets for our ladder.
 - [Performance research 2026-10-11](research/PERFORMANCE-RESEARCH-2026-10-11.md): why Play was slow, and the fixes.
