@@ -1,0 +1,24 @@
+{
+  "path": "operations/ae39f2aa-b9af-413a-8856-caad30730a57",
+  "operationId": "ae39f2aa-b9af-413a-8856-caad30730a57",
+  "done": true,
+  "response": {
+    "path": "assets/89472568490471",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:55:44.252Z",
+    "assetId": "89472568490471",
+    "displayName": "FlyFightPaper shop gift-button",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

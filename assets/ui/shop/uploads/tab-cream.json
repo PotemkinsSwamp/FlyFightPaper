@@ -1,0 +1,24 @@
+{
+  "path": "operations/8fcb266b-9b9f-48d9-bf53-63dcc6c87c26",
+  "operationId": "8fcb266b-9b9f-48d9-bf53-63dcc6c87c26",
+  "done": true,
+  "response": {
+    "path": "assets/75306423156269",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:56:56.564Z",
+    "assetId": "75306423156269",
+    "displayName": "FlyFightPaper shop tab-cream",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

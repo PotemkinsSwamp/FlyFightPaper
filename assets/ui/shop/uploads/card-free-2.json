@@ -1,0 +1,24 @@
+{
+  "path": "operations/f9c6eb65-2353-4756-854f-e3e317da8dcc",
+  "operationId": "f9c6eb65-2353-4756-854f-e3e317da8dcc",
+  "done": true,
+  "response": {
+    "path": "assets/129567415203527",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:55:14.027Z",
+    "assetId": "129567415203527",
+    "displayName": "FlyFightPaper shop card-free-2",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

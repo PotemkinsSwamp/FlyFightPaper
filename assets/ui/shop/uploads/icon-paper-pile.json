@@ -1,0 +1,24 @@
+{
+  "path": "operations/77285bea-da94-447d-9cc4-d12242f555a9",
+  "operationId": "77285bea-da94-447d-9cc4-d12242f555a9",
+  "done": true,
+  "response": {
+    "path": "assets/84608007092732",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:56:10.355Z",
+    "assetId": "84608007092732",
+    "displayName": "FlyFightPaper shop icon-paper-pile",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

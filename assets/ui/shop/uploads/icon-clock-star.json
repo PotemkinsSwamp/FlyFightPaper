@@ -1,0 +1,24 @@
+{
+  "path": "operations/9c1b6654-ac49-49ba-a50a-dc5bdad09837",
+  "operationId": "9c1b6654-ac49-49ba-a50a-dc5bdad09837",
+  "done": true,
+  "response": {
+    "path": "assets/86817474055375",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:55:57.097Z",
+    "assetId": "86817474055375",
+    "displayName": "FlyFightPaper shop icon-clock-star",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

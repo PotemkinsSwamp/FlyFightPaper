@@ -1,0 +1,24 @@
+{
+  "path": "operations/c0360f86-f876-4d21-a6f1-5540028905ba",
+  "operationId": "c0360f86-f876-4d21-a6f1-5540028905ba",
+  "done": true,
+  "response": {
+    "path": "assets/78927535946546",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:56:52.124Z",
+    "assetId": "78927535946546",
+    "displayName": "FlyFightPaper shop tab-clock",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

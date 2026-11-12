@@ -1,0 +1,24 @@
+{
+  "path": "operations/63fc834f-b376-474e-8c61-68f28618ce54",
+  "operationId": "63fc834f-b376-474e-8c61-68f28618ce54",
+  "done": true,
+  "response": {
+    "path": "assets/94393638307695",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:55:18.678Z",
+    "assetId": "94393638307695",
+    "displayName": "FlyFightPaper shop card-pack-orange",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

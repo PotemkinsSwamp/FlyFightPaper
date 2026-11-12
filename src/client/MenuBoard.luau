@@ -50,7 +50,7 @@ function Board.new(playerGui, actions)
 	-- A small phone draws the sheet at a third: 130 tall is a 46-point tap there (ScreenCheck asks 44).
 	for _, name in { "Hangar", "Settings", "Tutorial" } do PaperUI.phone(buttons[name], { Size = UDim2.fromOffset(500, 130) }) end
 	if actions.shop then
-		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop (dev)", 1580, 560, 250, 70, 4, actions.shop, 34))
+		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop", 1580, 560, 250, 70, 4, actions.shop, 34))
 	end
 	-- Prestige (docs/systems/economy-and-shop.md): a button on the stats card at max level, then a confirm sheet that
 	-- says what goes and what stays; holding the button for two seconds confirms, so it can't happen by accident.

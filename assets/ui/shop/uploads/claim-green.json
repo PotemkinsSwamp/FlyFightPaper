@@ -1,0 +1,24 @@
+{
+  "path": "operations/f26e5f0d-a948-42bb-a434-1521d275be6d",
+  "operationId": "f26e5f0d-a948-42bb-a434-1521d275be6d",
+  "done": true,
+  "response": {
+    "path": "assets/104327351071076",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:55:37.748Z",
+    "assetId": "104327351071076",
+    "displayName": "FlyFightPaper shop claim-green",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

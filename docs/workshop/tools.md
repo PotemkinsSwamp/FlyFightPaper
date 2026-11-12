@@ -64,6 +64,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `repack_compare.py` | Renders a building's `parts/` pieces and its `repacked/` pieces from 5 fixed views in Blender and diffs them (`--all` for every building); contact sheets and `summary.txt` in `.planning/repack-check/`. Checks the repack files only, not what Roblox draws |
 | `fill_gaps.py` | Fills black gaps in textures so moderation doesn't misread shapes. Run before uploading hero pieces |
 | `wind_sprites.py` | Draws the fan-wind particle pictures |
+| `shop_pieces.py` | Turns Codex's shop pieces (`assets/ui/shop/raw/`) into upload-ready ones in `assets/ui/shop/source/` (trims, splits the big ones, makes the white gift icon and the ray ticks); then `tools/ui_pieces.py shop --keep-size --upload`. How to swap one picture is in its header |
 | `report_card.py` | Draws the results card's report card (paper, border, seal, table lines; no words) and the red pen ring into `assets/ui/results/ready/` |
 | `carpet.py` | Bakes the one shared rug carpet normal + roughness map (`assets/rug/carpet/`) |
 

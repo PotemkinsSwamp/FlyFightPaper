@@ -1,0 +1,24 @@
+{
+  "path": "operations/76894477-c1a4-493d-9d2e-4c580b59cda4",
+  "operationId": "76894477-c1a4-493d-9d2e-4c580b59cda4",
+  "done": true,
+  "response": {
+    "path": "assets/110888203612570",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:57:15.500Z",
+    "assetId": "110888203612570",
+    "displayName": "FlyFightPaper shop ticks",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

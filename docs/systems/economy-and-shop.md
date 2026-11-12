@@ -11,15 +11,15 @@ in about 36; for the first 6 hours ~13 unlocked things are always waiting to be 
 [decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Paper packs and Robux part prices were re-scaled to
 match (Alan 2026-11-11, [shop prices plan](../plan/SHOP-PRICES-PLAN.md): packs 1,500 / 5,000 / 15,000 Paper; each part's
 Robux price from its Paper price). Still to come: offers tied to the player's own goal, capped, never after a loss.
-Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Studio-only practice
-shop with no Robux. The real Roblox purchase code is built for the 15 products and part unlocks (Stage 10, Codex, reviewed; 388 tests)
+Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Roblox-style shop window in our paper look
+(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 15 products and part unlocks (Stage 10, Codex, reviewed; 388 tests)
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
 - **Receipts:** a paid boost or Paper pack is added together with its receipt ID in one save change, then the game
   waits for that save to reach Roblox before telling Roblox "granted". A failed save means "not yet": Roblox resends
   and the receipt ID stops a second payout. A product switched off after someone paid is still delivered.
 - **Passes:** ownership is asked from Roblox on join and after a pass purchase; an error grants nothing.
 - **Buying:** the server opens Roblox's buy window (`buyProduct`), only when live, enabled and mapped; never for an
-  owned pass or a timed boost the permanent pass already covers. No live shop screen yet (needs real prices to show).
+  owned pass or a timed boost the permanent pass already covers. The shop window shows the approved prices from the plan; live, they must come from Roblox's product info.
 - **To switch on (Alan's go):** create the products and passes on Roblox, put their IDs and approved prices in
   `config/commerce.json`, set `enabled`, `mode` "live" and `live_sales_authorized` true, then test on a private server.
 - **Free gear** (2026-11-08): anything with a Paper price of 0 is yours from its level on (`Catalog:owns`), with
@@ -184,7 +184,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |
 | `src/server/HangarService.luau` | Buying parts, the practice shop |
-| `src/client/ShopScreen.luau` | Studio-only practice shop screen |
+| `src/client/ShopScreen.luau` | The shop window (Studio only until go-live): built to the approved concept's measurements, pictures named in `UIAssets.shop`, animations; starter pack, free gift and gift buttons are previews ([shop screen plan](../plan/SHOP-SCREEN-PLAN.md)) |
 | `src/server/CommerceService.luau` | Real Roblox purchases: receipts, pass checks, buy prompts (off) |
 | `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts |
 

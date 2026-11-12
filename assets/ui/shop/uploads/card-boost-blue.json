@@ -1,0 +1,24 @@
+{
+  "path": "operations/f46a2558-fc00-4d8c-afad-9187afb89e18",
+  "operationId": "f46a2558-fc00-4d8c-afad-9187afb89e18",
+  "done": true,
+  "response": {
+    "path": "assets/131203161452247",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:54:56.631Z",
+    "assetId": "131203161452247",
+    "displayName": "FlyFightPaper shop card-boost-blue",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

@@ -1,6 +1,9 @@
 # Shop screen plan
 
-**Status:** waiting for Alan's OK (2026-11-11). Look approved: "this could work... as close to this as possible,
+**Status:** approved and built in Studio 2026-11-12 (Alan: "yes upload them and build it"; 48 pictures uploaded),
+not published; Alan checking it in Studio Play. Changes from the concept, his calls: no "Every part can be earned by
+playing" line (boosts can't be earned); chalk headings plain white with a dark outline (the crayon edge blurred them);
+part pictures are our real 3D parts, never made-up drawings. Was: waiting for Alan's OK (2026-11-11). Look approved: "this could work... as close to this as possible,
 proportions and all", plus movement. Concept: `.planning/shop-concept/shop2-a.png` (top) and `shop2-b.png`
 (scrolled), from the [shop direction](../decisions/2026-11-11-shop-direction.md). Replaces the Studio practice shop.
 

@@ -101,6 +101,7 @@ local function view(parent, item, x, y, w, h)
 	turn(0.6)
 	return frame, turn
 end
+Unlock.view = view -- (the shop shows a part the same way)
 
 function Unlock.start(api)
 	local player = Players.LocalPlayer

@@ -1,0 +1,24 @@
+{
+  "path": "operations/0cb9a1ad-94f1-4311-a171-f334c5145317",
+  "operationId": "0cb9a1ad-94f1-4311-a171-f334c5145317",
+  "done": true,
+  "response": {
+    "path": "assets/116958490813168",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:55:26.585Z",
+    "assetId": "116958490813168",
+    "displayName": "FlyFightPaper shop card-pass-purple",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

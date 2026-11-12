@@ -1,0 +1,24 @@
+{
+  "path": "operations/7bdf5fe4-e5b0-4709-8e3e-173077f1512f",
+  "operationId": "7bdf5fe4-e5b0-4709-8e3e-173077f1512f",
+  "done": true,
+  "response": {
+    "path": "assets/100661516398576",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:56:34.220Z",
+    "assetId": "100661516398576",
+    "displayName": "FlyFightPaper shop pin-purple",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

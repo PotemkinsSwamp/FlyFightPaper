@@ -1,0 +1,24 @@
+{
+  "path": "operations/5833fe1f-353f-4c47-88b5-e91f69fdc410",
+  "operationId": "5833fe1f-353f-4c47-88b5-e91f69fdc410",
+  "done": true,
+  "response": {
+    "path": "assets/129278568963634",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:57:19.017Z",
+    "assetId": "129278568963634",
+    "displayName": "FlyFightPaper shop titlebar-1",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

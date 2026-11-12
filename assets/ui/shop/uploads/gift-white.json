@@ -1,0 +1,24 @@
+{
+  "path": "operations/391f75ce-d180-4831-93f6-fce2ac5dfe76",
+  "operationId": "391f75ce-d180-4831-93f6-fce2ac5dfe76",
+  "done": true,
+  "response": {
+    "path": "assets/92713322166615",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-12T04:55:50.264Z",
+    "assetId": "92713322166615",
+    "displayName": "FlyFightPaper shop gift-white",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}
