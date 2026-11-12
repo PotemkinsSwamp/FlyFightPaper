@@ -10,7 +10,8 @@ backing; body words 4.5:1.
 
 **Where it stands (2026-11-12):** fold card: Alan chose **no circle, soft shadow** (being built). Shop: Alan turned
 down midnight indigo (too dark: black and dark purple pieces blend in); the third study below compares mid-brightness
-backings; recommended **faded chalk green**, waiting on Alan.
+backings; Alan picked **faded chalk green** ([decision](../decisions/2026-11-12-fold-card-and-shop-mats.md)). Why
+the research agrees: [design research](../research/DESIGN-RESEARCH-2026-11-12.md#what-it-says-about-this-weeks-picks).
 
 ## The colour study (2026-11-12)
 ![Backings compared on the shop square and the fold card](design-examples-backings.jpg)

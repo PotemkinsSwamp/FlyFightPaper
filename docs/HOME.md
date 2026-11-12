@@ -86,6 +86,7 @@ otherwise.
 - [Shop research 2026-11-11](research/SHOP-RESEARCH-2026-11-11.md): what makes Roblox players buy, the rules for kids, and a tempting shop in our classroom style.
 - [Cosmetics research 2026-11-12](research/COSMETICS-RESEARCH-2026-11-12.md): skins, trails, fold effects, emotes for a paper plane, and playtime rewards; options for Alan.
 - [Personal shop research 2026-11-12](research/PERSONAL-SHOP-RESEARCH-2026-11-12.md): a shop that changes with the player (spenders, timers, personal discounts, offers after a fold), the new EU law proposal, and options to pick from.
+- [Design and colour research 2026-11-12](research/DESIGN-RESEARCH-2026-11-12.md): what studies on games, kids and toys say about colour, layout, reading and tapping; the evidence behind the `design-theory` skill.
 - [Unlock pacing research 2026-11-08](research/UNLOCK-PACING-2026-11-08.md): how fast other games unlock things, and targets for our ladder.
 - [Performance research 2026-10-11](research/PERFORMANCE-RESEARCH-2026-10-11.md): why Play was slow, and the fixes.
 - [QA review 2026-10-07](research/QA-2026-10-07.md): requirement-by-requirement check.
