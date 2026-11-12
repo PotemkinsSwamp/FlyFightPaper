@@ -1,20 +1,21 @@
 # Since Alan last checked (2026-11-11)
-- **Menus fit is live and you approved it** (pictures uploaded, merged to main, you published).
-- **Clear all** on the Gear page (your ask): empties every spot; Clear spot's taped paper in red (uploaded).
-- **Guns now touch the plane** (you OK'd it): body-spot guns hung up to half a stud under the wing root
-  on every plane, Swept Wings guns hung low, crowded guns shrank off the wing. All 1,500 body x wings x gun x spot
-  placements checked on exact shapes: all touch, none pokes through. Not published yet.
-- **Phone fixed (from your screenshots):** FIRE/BRAKE/BOOST words now draw over their crayon fill (every
-  word's style copies now keep its layer; you saw it work), and SPEED MATCH / BRAKE is crayon words, no paper.
+- **Unlock moment built and OK'd by you in Studio** (not published yet). Leveling up in a match: a small tilted note
+  flies in at the top left, unfolds with confetti, sits 4 s, flies out ("See them in the main menu"). The main menu
+  then plays the backpack: you drag the zipper (nylon zip sound that follows your pull), each new thing pops out as
+  its real 3D model with Put it on / See it and Later; ink arrows between them. Checked at phone size too. Your saved
+  profile now remembers which levels' unlocks you've opened (save version 8). Its 9 pictures passed Roblox review.
 
 # Now: finish the game for the beta
-Next: (1) your look at guns + phone fixes, then publish; (2) the unlock moment
-(concept frames in .planning/unlock-concept2/). Shop step later: re-scale Paper packs and Robux part prices.
-Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it).
-Backlog, must do: the results card becomes a report card. Phones: the lesson goal note's phone shapes still use the old
-square note (redo with a phone check).
+Next: (1) you publish (guns, phone words, Clear all, the unlock moment). When you publish, shut down old servers
+(Creator Hub > your game > Servers): the save version changed. (2) The results card becomes a report card (backlog,
+must do). (3) Shop step: re-scale Paper packs and Robux part prices. Balance pass later: Spitball planes weakest;
+a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
+Not seen yet: a real level-up in a match (tested with the Studio pretend level-up, same note); on a phone the note may
+sit over a centred match tip for its 4 s.
 
 Decisions to review
+Unlock: the red count sticker on the in-match Menu button is gone (the backpack plays on the main menu only now);
+  on phones the level-up note keeps its first size so its words stay readable (PC is 20% smaller, as you asked).
 Customize binder drawn at 95% so the stats paper fits beside it. Welcome card sits over Play (a pop-up question).
 Toilet Roll mounts heavy, heavy, medium, light, light; boosters keep their weight (Elastic now -3 studs/s). Dev picker
   lost "twin pencils" (two Pencils no longer fit any body).
@@ -49,9 +50,10 @@ Duct props see-through; veterans flee to the ducts 40% when shot at. Chalk erase
 Zone 680-840 across; bots on the zone 30/60/85%. Points: assist share rounded to 5 (10-80); outside-zone fold 40%.
 
 Waiting on Alan
-- Clear all on the Gear page. Publish when you like (guns, phone words, SPEED MATCH without paper, Clear all). In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
-- Save to File / publish when you want the new weapon models in the place and live (your go each).
-- Publish (File > Publish As > Overwrite), then on your phone: kill feed, desk dev panel, results card, confetti.
+- Publish when you like (guns, phone words, SPEED MATCH without paper, Clear all, unlock moment), then shut down old
+  servers. After publishing, on your phone: level up in a match (note), then the main menu's backpack.
+- Save to File when you want the new weapon models in the place file (your go).
+- In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
 - Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings.
 - Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go). Prices: draft ladder in
-  docs/research/PRICING-RESEARCH-2026-10-18.md. Real-phone check after publishing.
+  docs/research/PRICING-RESEARCH-2026-10-18.md.

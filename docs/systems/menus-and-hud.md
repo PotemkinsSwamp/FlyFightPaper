@@ -4,7 +4,7 @@
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
 ## Where it stands (2026-11-11)
-**Unlock moment (built 2026-11-11, waiting on Alan's Play check):** leveling up in a match flies a small taped index card in
+**Unlock moment (built 2026-11-11, Alan OK'd it in Studio Play; not published yet):** leveling up in a match flies a small taped index card in
 at the top left, under the Menu button and tilted (`ScreenFit.topLeft`); it unfolds (the part below the fold shaded as it
 swings down, a faint crease after) with confetti that shoots up and tumbles down, sits 4 s, then folds and flies back
 out ("You unlocked 2 new things! See them in the main menu."). The card is the index card with three ruled rows cut out

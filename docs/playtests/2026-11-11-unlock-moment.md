@@ -22,4 +22,5 @@ Chevrons, card centred on the page's writing area, the zip that plays as far as 
 through `DevLevelNote`): "looks good", on screen 2 s instead of 4; then:
 back to 4 s but smaller, shorter and tilted at the top left, with a fly-in he can see, a real unfold and confetti that
 moves (it just popped up and vanished); the backpack belongs on the main menu, not the in-match menu. Checked with
-`DevLevelUp`: the backpack followed him to the main menu after Leave match. Not yet seen: phones.
+`DevLevelUp`: the backpack followed him to the main menu after Leave match;
+the new note "looked good". Not yet seen: phones.
