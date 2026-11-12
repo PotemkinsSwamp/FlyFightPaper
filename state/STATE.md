@@ -1,18 +1,17 @@
-# Since Alan last checked (2026-11-12, late)
-- **Shop money plan approved and its first pieces built** (Studio, not published): daily gift row (7 days, Claim, ticks),
-  starter pack with a real saved 3-day timer, first buy of each Paper pack gives double, two new packs (549 R$ decoy for
-  7,500; 1,999 R$ for 40,000), packs biggest first, a buys-today count. Save rules by Codex, checked; 512 tests pass.
-- **Hangar buying built:** locked cards greyed with a padlock and level, bigger card words, "Unlock now" for Robux
-  above your level, a "Not enough Paper" note (Get Paper / Unlock now) dimming the whole screen. You: "it's good".
-- **Research:** personal shop ([picks](../docs/decisions/2026-11-12-personal-shop-picks.md)), cosmetics and playtime rewards
-  ([page](../docs/research/COSMETICS-RESEARCH-2026-11-12.md), options A-L for you).
-- Studio: Workspace `DevAccountLevel` 12 / `DevAccountPaper` 3000 = fresh account (delete both for the full one).
+# Since Alan last checked (2026-11-12, evening)
+- **Money plan in Play** ([playtest](../docs/playtests/2026-11-12-money-plan-report-card-fold-card.md)): report card's
+  2x Paper button now shows (it sat on the hidden page 2) and says when 2x is on; card says "(2x)". Fold card (part
+  turning over a soft shadow, Paper then Robux buy, red Wait button). Shop: faded chalk green behind pictures, Today's
+  parts timer on the server clock. Paper jar breaks from 3,000 Paper (save rules only, no card yet). 529 tests pass.
+- **Tape-roll tower hole open** (Studio; keep with Ctrl+S). Design theory skill made (`.claude/skills/design-theory`).
+- **Decided, not built:** [Double this match](../docs/decisions/2026-11-12-double-this-match.md) (25% off its worth,
+  Paper and XP) replaces the report card's 2x button; 2x boosts drop to 10/15/25/69/99 R$.
 
 # Now: finish the game for the beta
-Next: the rest of the [money plan](../docs/plan/SHOP-MONEY-PLAN.md): report-card "2x Paper would have given you +X"
-line, Paper jar, fold-screen line (N), Featured "your next part" (F), Today's parts (H), calm rule (3 buys). Then Gift a
-friend (a how-it-works note first). Shop bug: the right-side tab buttons scroll too far (Paper hides its heading).
-Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard. Phones: the lesson goal note's phone shapes still use the old square note. Not seen yet: a real level-up in a match; on a phone the level-up note may sit over a match tip. Report card: PC size.
+Next: build Double this match + the new boost prices (Alan's go given). Then the Paper jar's shop card and its "wait
+for more" warning (jar picture needs his upload go), Gift a friend (how-it-works note first), a goals review with Alan.
+Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard. Phones: the lesson goal note's phone shapes still
+use the old square note. Not seen yet: a real level-up in a match; report card on PC; the fold card's words measured.
 
 Decisions to review
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
@@ -52,6 +51,7 @@ Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
 - Pick from the cosmetics and playtime rewards options (A-L) on the research page.
+- Which screen showed a part "revolving around a tip"? (shop, fold card and Hangar measure centred).
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
 - On PC: end a free-for-all and a team round; check the report card's words all sit inside their boxes.
 - Save to File when you want the new weapon models in the place file (your go).

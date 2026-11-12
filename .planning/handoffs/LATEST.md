@@ -1,6 +1,6 @@
-# LATEST → handoff-2026-11-12-0152-beta-lane-money-plan-built.md
+# LATEST → handoff-2026-11-12-1847-beta-lane-double-this-match-decided.md
 
-★ START HERE: Goal (Alan): the beta feels finished and the shop makes money. Money plan approved and half built (daily gift row, starter pack timer, first-buy double, decoy/anchor packs; Hangar buying with locked look, Unlock now and a Not enough Paper note: "it's good"). Next: the report-card "2x Paper would have given you +X" line, then Paper jar, fold-screen line, Featured next part, Today's parts, calm rule; then Gift a friend (note first).
+★ START HERE: Goal (Alan): the beta feels finished and the shop makes money. Build Double this match on the report card (25% off its worth, Paper and XP, price steps 10-299 R$) and the new 2x boost prices (10/15/25/69/99 R$), as in docs/decisions/2026-11-12-double-this-match.md; Alan's go is given. Done = grant unit-tested (once, amount locked) and seen in his Studio Play with words measured inside their paper. Then the Paper jar card, Gift a friend note, a goals review.
 
-Quick state: main 65b3bac5 + handoff, pushed; tests 512/0 in Studio Play; docs OK; Studio fresh account on (DevAccountLevel 12); nothing published.
-Previous: handoff-2026-11-12-0040-beta-lane-shop-window-built.md
+Quick state: main cd965cee + handoff, pushed; tests 529/0 (client UI changes since have no unit tests); docs OK; Studio Edit, rojo serve running; nothing published; tape-roll tower fix needs Alan's Ctrl+S.
+Previous: handoff-2026-11-12-0152-beta-lane-money-plan-built.md

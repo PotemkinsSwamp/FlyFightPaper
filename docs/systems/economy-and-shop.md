@@ -128,7 +128,10 @@ Do not extend the free grind solely to justify a costly permanent product. Real 
 ## Products
 Ten distinct temporary products: XP and earned Paper separately for900,1800,3600,10800,18000 online seconds.
 Five Paper packs (1,500 / 5,000 / 7,500 / 15,000 / 40,000), one starter bundle, one Paper jar and two permanent passes. The new
-packs, bundle and jar follow the approved [money plan](../plan/SHOP-MONEY-PLAN.md). Robux prices are the
+packs, bundle and jar follow the approved [money plan](../plan/SHOP-MONEY-PLAN.md). Next (Alan 2026-11-12, not built):
+[Double this match](../decisions/2026-11-12-double-this-match.md) on the report card (25% off its worth, Paper and XP,
+price steps 10-299 R$) replaces its 2x Paper button, and 2x boosts drop to 10/15/25/69/99 R$. The shop's clocks
+(daily gift, Today's parts, starter pack) run on the server's time; pictures sit on faded chalk green. Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
 DEVELOPMENT ONLY, cannot prompt real checkout, and cannot write mock purchases into production profiles.
