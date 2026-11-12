@@ -11,7 +11,7 @@
 - **Once per part per play session.**
 - **Shop pictures stay on the off-white paper for now.** Alan asked for a colour that contrasts with white parts and
   the white Paper icons; brown kraft circles were tried and "looked very bad", so they were taken out. Open until he
-  picks something.
+  picks something ([options](../workshop/design-examples.md)).
 - **Today's parts timer:** one line ("New parts in 1h 44m") on dark paper between the heading and the cards, counted
   on the server's clock so it ends at the same moment for everyone.
 

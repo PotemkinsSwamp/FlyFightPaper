@@ -74,6 +74,7 @@ otherwise.
 - [Tools](workshop/tools.md): every script in `tools/`.
 - [Testing](workshop/testing.md): rule tests and checking by eye.
 - [Lessons learned](workshop/lessons.md): hard-won rules (uploads, models, Studio).
+- [Design examples](workshop/design-examples.md): the design-theory skill applied (fold card circle, shop picture backings).
 - Who does what (Claude, Codex, helper models): [AGENTS.md](../AGENTS.md).
 
 ## Research
