@@ -335,7 +335,7 @@ function Service:apply(account,input)
  if mockBuy and not self.mock then return outcome("error","studio_only") end
  if mockBuy and count(s.profile.Data.receiptIds)>=ServerConfig.schema.max_receipts then return outcome("error","receipt_cap") end
  if op.kind=="starterPack" and Commerce.starterPackEnds(s.profile.Data,self.unix())==0 then return outcome("error","starter_pack_ended") end
- if op.kind=="paperJar" and s.profile.Data.paperJarMilli<Economy.MILLI then return outcome("error","jar_empty") end
+ if op.kind=="paperJar" and s.profile.Data.paperJarMilli<EconomyConfig.paper_jar.min_break_paper*Economy.MILLI then return outcome("error","jar_low") end
  local intent=op
  if op.kind=="receipt" then
   if type(op.receiptId)~="string" or #op.receiptId==0 then return outcome("error","invalid_receipt") end

@@ -18,6 +18,7 @@ and a stage.
 - **Cosmetics: skins, trails, emotes** (Alan 2026-11-12: "we have to start looking at" them and the other small
   buys): what to sell and how players earn some of them, maybe a whole system for getting them. Needed before the
   playtime rewards can be filled. Research: [cosmetics research](../research/COSMETICS-RESEARCH-2026-11-12.md).
+  Once skins exist, the shop's Today's parts row can rotate skins for players who own every part (Alan 2026-11-12).
 
 ## Later scope (from the vision)
 The [vision](../vision/VISION.md) lists what waits until after the first release: cosmetics, more maps, full touch

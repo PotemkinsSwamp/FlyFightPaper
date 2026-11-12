@@ -44,6 +44,7 @@ return JSONTypes.map({
     ["level_cap"] = 50,
     ["paper_jar"] = JSONTypes.map({
         ["cap_paper"] = 10000,
+        ["min_break_paper"] = 3000,
         ["share"] = 0.25,
     }),
     ["paper_per_point"] = 0.363,

@@ -151,8 +151,9 @@ The Paper jar fills with an extra 25% of the Paper actually credited by match co
 operations, after 2x Paper boosts, capped at 10,000 Paper; ordinary earnings stay unchanged. Gifts, purchases
 and refunds never fill it. Breaking it (`paper_jar`, planned 199 R$, disabled and unmapped) grants its whole
 Paper as purchased Paper without first-buy doubling, keeping any fractional remainder so it can fill again.
-An empty jar (less than one whole Paper) refuses checkout and practice buys with `jar_empty`; paid receipts
-still grant and record whatever remains, including zero. [Saved field](saving.md#where-it-stands-2026-11-12).
+A jar under 3,000 Paper (`min_break_paper`, [Alan 2026-11-12](../decisions/2026-11-12-paper-jar-rules.md)) refuses
+checkout and practice buys with `jar_low`; paid receipts still grant and record whatever remains, including zero.
+The jar's shop card and its "wait for more" warning are not built yet. [Saved field](saving.md#where-it-stands-2026-11-12).
 
 Every newly granted developer-product receipt and every practice buy adds one to the current UTC day's buy
 count. Replaying an operation or receipt adds nothing. A new day's first buy resets the saved count; until then

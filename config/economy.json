@@ -72,7 +72,8 @@
   },
   "paper_jar": {
     "share": 0.25,
-    "cap_paper": 10000
+    "cap_paper": 10000,
+    "min_break_paper": 3000
   },
   "reference_match": {
     "eliminations": 6,

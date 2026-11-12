@@ -169,11 +169,11 @@ function Spec.run()
    assert(f.player.attributes.BuysToday==1)
   end
  end)
- test("empty practice jars refuse but real receipts grant zero and record a buy",function()
+ test("practice jars under 3,000 Paper refuse but real receipts grant what is there and record a buy",function()
   for _,fraction in ipairs({0,999}) do
    local f=fixture({mock=true,setup=function(p)p.paperJarMilli=fraction;p.paperMilli=Economy.MAX_SAFE_INTEGER end})
    local before=Schema.canonical(f.profile.Data)
-   assert(f:apply({kind="paperJar"}).code=="jar_empty" and Schema.canonical(f.profile.Data)==before)
+   assert(f:apply({kind="paperJar"}).code=="jar_low" and Schema.canonical(f.profile.Data)==before)
    local paid=f:receipt("paper_jar");assert(paid.status=="ok" and paid.value.type=="PaperJarBroken" and paid.value.paper==0)
    assert(f.profile.Data.paperMilli==Economy.MAX_SAFE_INTEGER and f.profile.Data.purchasedPaperMilli==0 and f.profile.Data.paperJarMilli==fraction)
    assert(f.profile.Data.receiptIds[Profile.receiptKey("receipt/paper_jar")] and f.player.attributes.BuysToday==1)
@@ -190,12 +190,12 @@ function Spec.run()
   assert(f.profile.Data.receiptIds[Profile.receiptKey("jar/1")] and f.profile.Data.receiptIds[Profile.receiptKey("jar/2")])
  end)
  test("practice jar breaks count once and direct jar grants cannot reach real profiles",function()
-  local f=fixture({mock=true,setup=function(p)p.paperJarMilli=1000 end})
-  local paid,op=f:apply({kind="paperJar"});assert(paid.status=="ok" and paid.value.paper==1)
-  assert(f.profile.Data.paperMilli==1000 and f.profile.Data.paperJarMilli==0 and f.player.attributes.BuysToday==1)
+  local f=fixture({mock=true,setup=function(p)p.paperJarMilli=3000000 end})
+  local paid,op=f:apply({kind="paperJar"});assert(paid.status=="ok" and paid.value.paper==3000)
+  assert(f.profile.Data.paperMilli==3000000 and f.profile.Data.paperJarMilli==0 and f.player.attributes.BuysToday==1)
   assert(f.profile.Data.receiptIds[Profile.receiptKey("mock:"..op.id)] and f.player.attributes.StarterPackEnds==0)
-  local after=Schema.canonical(f.profile.Data);assert(f.service:apply("user",op).value.paper==1 and Schema.canonical(f.profile.Data)==after)
-  f=fixture({setup=function(p)p.paperJarMilli=1000 end});after=Schema.canonical(f.profile.Data)
+  local after=Schema.canonical(f.profile.Data);assert(f.service:apply("user",op).value.paper==3000 and Schema.canonical(f.profile.Data)==after)
+  f=fixture({setup=function(p)p.paperJarMilli=3000000 end});after=Schema.canonical(f.profile.Data)
   assert(f:apply({kind="paperJar"}).code=="studio_only" and Schema.canonical(f.profile.Data)==after)
  end)
  test("failed match credits and jar grants roll back the jar money receipt and buy count together",function()
@@ -435,35 +435,35 @@ function Spec.run()
  test("Hangar refuses empty jars before prompting and reports a racing commerce refusal",function()
   local f=fixture();local calls=0
   local profiles={view=function()return f.service:view("user").value end}
-  local commerce={prompt=function()calls+=1;return false,"jar_empty" end}
+  local commerce={prompt=function()calls+=1;return false,"jar_low" end}
   local hangar=Hangar.new({catalog=f.catalog},profiles,commerce)
-  for _,amount in ipairs({0,999}) do
+  for _,amount in ipairs({0,999,2999999}) do
    f.profile.Data.paperJarMilli=amount;hangar:handle(f.player,"buyProduct","paper_jar")
-   assert(calls==0 and f.player.attributes.MenuMessage=="Your Paper jar is empty. Play a match to fill it.")
+   assert(calls==0 and f.player.attributes.MenuMessage=="Your Paper jar breaks at 3,000 Paper. Play a match to fill it.")
   end
-  f.profile.Data.paperJarMilli=1000;hangar:handle(f.player,"buyProduct","paper_jar")
-  assert(calls==1 and f.player.attributes.MenuMessage=="Your Paper jar is empty. Play a match to fill it.")
+  f.profile.Data.paperJarMilli=3000000;hangar:handle(f.player,"buyProduct","paper_jar")
+  assert(calls==1 and f.player.attributes.MenuMessage=="Your Paper jar breaks at 3,000 Paper. Play a match to fill it.")
  end)
  test("Hangar practice jars refuse empty and racing buys and enqueue only the jar kind",function()
   local f=fixture({mock=true});local inputs={};local race=false
   local profiles={mock=true,view=function()return f.service:view("user").value end}
   function profiles:enqueue(_,input,_,callback)
    table.insert(inputs,assert(Schema.copy(input)))
-   if race then f.profile.Data.paperJarMilli=999 end
+   if race then f.profile.Data.paperJarMilli=2999999 end
    local saved=f:apply(input);callback(saved.status=="ok",saved.value or saved.code);return true
   end
   local hangar=Hangar.new({catalog=f.catalog},profiles)
-  for _,amount in ipairs({0,999}) do
+  for _,amount in ipairs({0,999,2999999}) do
    f.profile.Data.paperJarMilli=amount;hangar:handle(f.player,"mockProduct","paper_jar")
-   assert(#inputs==0 and f.player.attributes.MenuMessage=="Your Paper jar is empty. Play a match to fill it.")
+   assert(#inputs==0 and f.player.attributes.MenuMessage=="Your Paper jar breaks at 3,000 Paper. Play a match to fill it.")
   end
-  f.profile.Data.paperJarMilli=1000;hangar:handle(f.player,"mockProduct","paper_jar")
+  f.profile.Data.paperJarMilli=3000000;hangar:handle(f.player,"mockProduct","paper_jar")
   assert(#inputs==1 and Schema.canonical(inputs[1])==Schema.canonical({kind="paperJar"}))
-  assert(f.profile.Data.paperMilli==1000 and f.profile.Data.paperJarMilli==0 and f.player.attributes.BuysToday==1)
+  assert(f.profile.Data.paperMilli==3000000 and f.profile.Data.paperJarMilli==0 and f.player.attributes.BuysToday==1)
   assert(f.player.attributes.MenuMessage=="Development simulation complete. No real purchase.")
-  race=true;f.profile.Data.paperJarMilli=1000;hangar:handle(f.player,"mockProduct","paper_jar")
-  assert(#inputs==2 and f.profile.Data.paperMilli==1000 and f.profile.Data.paperJarMilli==999 and f.player.attributes.BuysToday==1)
-  assert(f.player.attributes.MenuMessage=="Your Paper jar is empty. Play a match to fill it.")
+  race=true;f.profile.Data.paperJarMilli=3000000;hangar:handle(f.player,"mockProduct","paper_jar")
+  assert(#inputs==2 and f.profile.Data.paperMilli==3000000 and f.profile.Data.paperJarMilli==2999999 and f.player.attributes.BuysToday==1)
+  assert(f.player.attributes.MenuMessage=="Your Paper jar breaks at 3,000 Paper. Play a match to fill it.")
  end)
  return result
 end

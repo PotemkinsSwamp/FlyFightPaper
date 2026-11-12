@@ -430,17 +430,17 @@ function Spec.run()
   assert(saved.receiptIds[key] and saved.starterPack.bought and saved.ownership.wings_1)
   assert(saved.paperMilli==1500000 and saved.purchasedPaperMilli==1500000 and saved.boosts.xpSeconds==3600 and saved.buysToday.count==1)
  end)
- test("jar checkout refuses below one whole Paper before prompting and grants nothing on prompt",function()
+ test("jar checkout refuses below 3,000 Paper before prompting and grants nothing on prompt",function()
   local f=fixture()
-  for _,amount in ipairs({0,999}) do
+  for _,amount in ipairs({0,999,2999999}) do
    f.profile.Data.paperJarMilli=amount
    local ok,why=f.commerce:prompt(f.player,"paper_jar")
-   assert(not ok and why=="jar_empty" and #f.marketplace.calls==0 and #f.inputs==0)
+   assert(not ok and why=="jar_low" and #f.marketplace.calls==0 and #f.inputs==0)
   end
-  f.profile.Data.paperJarMilli=1000
+  f.profile.Data.paperJarMilli=3000000
   local ok,why=f.commerce:prompt(f.player,"paper_jar");local call=f.marketplace.calls[1]
   assert(ok and why=="prompted" and #f.marketplace.calls==1 and call.kind=="product" and call.id==f:offer("paper_jar").productID)
-  assert(f.profile.Data.paperJarMilli==1000 and f.profile.Data.paperMilli==0 and #f.inputs==0)
+  assert(f.profile.Data.paperJarMilli==3000000 and f.profile.Data.paperMilli==0 and #f.inputs==0)
  end)
  test("disabled jar receipts wait for their saved grant and then honour a racing zero grant",function()
   local config=liveConfig();for _,offer in ipairs(config.products) do if offer.key=="paper_jar" then offer.enabled=false end end
