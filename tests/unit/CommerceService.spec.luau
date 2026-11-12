@@ -250,13 +250,16 @@ function Spec.run()
      local pack=require(Root.Generated.Economy).starter_pack
      paper+=pack.paper*1000;xpSeconds+=pack.xp_seconds
      assert(f.profile.LastSavedData.starterPack.bought and f.profile.LastSavedData.ownership[pack.part])
+    elseif offer.benefit=="paper_jar" then
+     assert(f.outcomes[#f.outcomes].value.type=="PaperJarBroken" and f.outcomes[#f.outcomes].value.paper==0)
+     assert(f.profile.LastSavedData.paperJarMilli==0)
     else
      assert(offer.benefit=="part_unlock" and f.profile.LastSavedData.ownership[offer.catalogID])
      parts+=1
     end
    end
   end
-  assert(parts>0 and n==16+parts and n==#f.commerce.catalog.offers-2)
+  assert(parts>0 and n==17+parts and n==#f.commerce.catalog.offers-2)
   assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)
   for i=2,#f.saveTimes do assert(f.saveTimes[i]-f.saveTimes[i-1]>=2,"receipts must share the save cooldown") end
@@ -426,6 +429,34 @@ function Spec.run()
   local saved=f.profile.LastSavedData
   assert(saved.receiptIds[key] and saved.starterPack.bought and saved.ownership.wings_1)
   assert(saved.paperMilli==1500000 and saved.purchasedPaperMilli==1500000 and saved.boosts.xpSeconds==3600 and saved.buysToday.count==1)
+ end)
+ test("jar checkout refuses below one whole Paper before prompting and grants nothing on prompt",function()
+  local f=fixture()
+  for _,amount in ipairs({0,999}) do
+   f.profile.Data.paperJarMilli=amount
+   local ok,why=f.commerce:prompt(f.player,"paper_jar")
+   assert(not ok and why=="jar_empty" and #f.marketplace.calls==0 and #f.inputs==0)
+  end
+  f.profile.Data.paperJarMilli=1000
+  local ok,why=f.commerce:prompt(f.player,"paper_jar");local call=f.marketplace.calls[1]
+  assert(ok and why=="prompted" and #f.marketplace.calls==1 and call.kind=="product" and call.id==f:offer("paper_jar").productID)
+  assert(f.profile.Data.paperJarMilli==1000 and f.profile.Data.paperMilli==0 and #f.inputs==0)
+ end)
+ test("disabled jar receipts wait for their saved grant and then honour a racing zero grant",function()
+  local config=liveConfig();for _,offer in ipairs(config.products) do if offer.key=="paper_jar" then offer.enabled=false end end
+  local f=fixture({config=config});f.profile.Data.paperJarMilli=123456;f.profile.failSave=true
+  local info=f:receipt("paper_jar");local key=Profile.receiptKey(info.PurchaseId)
+  assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
+  assert(f.profile.Data.paperMilli==123000 and f.profile.Data.paperJarMilli==456 and f.profile.Data.receiptIds[key])
+  assert(not f.profile.LastSavedData.receiptIds[key] and f.profile.LastSavedData.paperMilli==0)
+  f.profile.failSave=false;assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  assert(f.profile.LastSavedData.paperMilli==123000 and f.profile.LastSavedData.purchasedPaperMilli==123000)
+  assert(f.profile.LastSavedData.paperJarMilli==456 and f.profile.LastSavedData.receiptIds[key] and f.profile.LastSavedData.buysToday.count==1)
+  local second=f:receipt("paper_jar","jar/racing");local secondKey=Profile.receiptKey(second.PurchaseId)
+  assert(f.commerce:processReceipt(second)==Decisions.PurchaseGranted)
+  local paid=f.outcomes[#f.outcomes].value;assert(paid.type=="PaperJarBroken" and paid.paper==0)
+  assert(f.profile.LastSavedData.receiptIds[secondKey] and f.profile.LastSavedData.buysToday.count==2)
+  assert(f.profile.LastSavedData.paperJarMilli==456 and f.profile.LastSavedData.paperMilli==123000)
  end)
  return result
 end

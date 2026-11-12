@@ -42,6 +42,10 @@ return JSONTypes.map({
     ["initial_paper"] = 0,
     ["initial_total_xp"] = 0,
     ["level_cap"] = 50,
+    ["paper_jar"] = JSONTypes.map({
+        ["cap_paper"] = 10000,
+        ["share"] = 0.25,
+    }),
     ["paper_per_point"] = 0.363,
     ["podium_paper_by_place"] = JSONTypes.array({
         [1] = 30,

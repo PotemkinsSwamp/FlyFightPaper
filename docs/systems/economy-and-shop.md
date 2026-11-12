@@ -10,11 +10,11 @@ in about 36; for the first 6 hours ~13 unlocked things are always waiting to be 
 (Pencil 32,000, Cardboard 18,500, first parts 700; table in the
 [decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Paper packs and Robux part prices were re-scaled to
 match (Alan 2026-11-11, [shop prices plan](../plan/SHOP-PRICES-PLAN.md): each part's Robux price comes from its Paper
-price; current packs are listed below). The server save rules for the daily gift, starter bundle, first-buy doubles and daily buy count are built with unit
+price; current packs are listed below). The server save rules for the daily gift, starter bundle, Paper jar, first-buy doubles and daily buy count are built with unit
 tests (2026-11-12), awaiting Claude's Studio run and client wiring. Other personal shop offers remain in the
 [picks](../decisions/2026-11-12-personal-shop-picks.md).
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Roblox-style shop window in our paper look
-(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 18 fixed offers and part unlocks
+(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 19 fixed offers and part unlocks
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
 - **Receipts:** a paid boost or Paper pack is added together with its receipt ID in one save change, then the game
   waits for that save to reach Roblox before telling Roblox "granted". A failed save means "not yet": Roblox resends
@@ -127,8 +127,8 @@ Do not extend the free grind solely to justify a costly permanent product. Real 
 
 ## Products
 Ten distinct temporary products: XP and earned Paper separately for900,1800,3600,10800,18000 online seconds.
-Five Paper packs (1,500 / 5,000 / 7,500 / 15,000 / 40,000), one starter bundle and two permanent passes. The new
-packs and bundle follow the approved [money plan](../plan/SHOP-MONEY-PLAN.md). Robux prices are the
+Five Paper packs (1,500 / 5,000 / 7,500 / 15,000 / 40,000), one starter bundle, one Paper jar and two permanent passes. The new
+packs, bundle and jar follow the approved [money plan](../plan/SHOP-MONEY-PLAN.md). Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
 DEVELOPMENT ONLY, cannot prompt real checkout, and cannot write mock purchases into production profiles.
@@ -146,6 +146,13 @@ no receipt history or permanent pass, and only once. An expired or previously us
 a paid receipt still grants the entire bundle after expiry or a racing purchase. The practice shop applies the
 same bundle and availability rules, only to Studio mock profiles. It explicitly refuses individual part products.
 Practice buys record simulated receipt history in mock profiles so an earlier buy closes this offer there too.
+
+The Paper jar fills with an extra 25% of the Paper actually credited by match contribution and final-bonus
+operations, after 2x Paper boosts, capped at 10,000 Paper; ordinary earnings stay unchanged. Gifts, purchases
+and refunds never fill it. Breaking it (`paper_jar`, planned 199 R$, disabled and unmapped) grants its whole
+Paper as purchased Paper without first-buy doubling, keeping any fractional remainder so it can fill again.
+An empty jar (less than one whole Paper) refuses checkout and practice buys with `jar_empty`; paid receipts
+still grant and record whatever remains, including zero. [Saved field](saving.md#where-it-stands-2026-11-12).
 
 Every newly granted developer-product receipt and every practice buy adds one to the current UTC day's buy
 count. Replaying an operation or receipt adds nothing. A new day's first buy resets the saved count; until then
@@ -171,12 +178,14 @@ status update, including UTC midnight and starter expiry. Clients read them; cli
 | `DailyGiftReady` | Whether the server's current UTC day is later than the saved last claim |
 | `DailyGiftSecondsLeft` | Seconds to the next UTC midnight when claimed; 0 when ready |
 | `StarterPackEnds` | Saved offer start plus 259,200 seconds while available; otherwise 0 |
+| `PaperJar` | Whole Paper currently held in the jar, rounded down |
 | `FirstBuysUsed` | Comma-separated used pack keys, sorted by key; empty string before any pack buy |
 | `BuysToday` | Saved buy count when its UTC day is today; otherwise 0 |
 
 The new Hangar action is `claimDailyGift`, with no client date or reward. Existing `buyProduct` and `mockProduct`
-accept `starter_pack` and both new pack keys. Successful claims report the actual Paper or timed reward. A repeat
+accept `starter_pack`, `paper_jar` and both new pack keys. Successful claims report the actual Paper or timed reward. A repeat
 claim says "Already claimed today. Come back tomorrow." An unavailable starter offer says "The starter pack has ended."
+An empty jar says "Your Paper jar is empty. Play a match to fill it."
 
 Same-resource multipliers cap2×. Timed purchases add duration; five hours is not a balance cap. Permanent
 ownership disables new same-resource timed offers. On permanent upgrade retain remaining seconds dormant,
@@ -245,7 +254,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `tests/unit/MockShop.spec.luau` | Practice-only guards, typed grants and refusal of individual part products |
 
 ## Tuning numbers
-`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts and starter bundle); `config/commerce.json` (18 fixed offers plus part unlocks; `mode` is "mock", live sales off); prices in `config/catalog.json`.
+`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts, starter bundle and jar); `config/commerce.json` (19 fixed offers plus part unlocks; `mode` is "mock", live sales off); prices in `config/catalog.json`.
 
 ## Related
 - [Points system decision](../decisions/2026-10-14-points-system.md)

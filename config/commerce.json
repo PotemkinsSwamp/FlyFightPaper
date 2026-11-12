@@ -429,6 +429,14 @@
       "roblox_product_id": null,
       "approved_robux_price": null,
       "enabled": false
+    },
+    {
+      "key": "paper_jar",
+      "kind": "developer_product",
+      "benefit": "paper_jar",
+      "roblox_product_id": null,
+      "approved_robux_price": null,
+      "enabled": false
     }
   ],
   "paper_pack_amounts_status": "approved by Alan 2026-11-11 and 2026-11-12 (docs/plan/SHOP-PRICES-PLAN.md, docs/plan/SHOP-MONEY-PLAN.md); live activation requires owner authorization",

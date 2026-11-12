@@ -15,6 +15,7 @@ for _, amount in ipairs({1500, 5000, 7500, 15000, 40000}) do -- docs/plan/SHOP-M
     expected["paper_pack_" .. amount] = {kind="developer_product", benefit="paper_balance", amount=amount}
 end
 expected.starter_pack = {kind="developer_product", benefit="starter_pack"} -- Bundle amounts live in economy.json.
+expected.paper_jar = {kind="developer_product", benefit="paper_jar"}
 function Rules.paperPackAmount(key)
     local offer=type(key)=="string" and expected[key]
     return offer and offer.benefit=="paper_balance" and offer.amount or nil
@@ -49,7 +50,7 @@ function Rules.catalog(config)
         if type(i)~="number" or i%1~=0 or i<1 then return nil,"invalid_offer_array" end
         n+=1
     end
-    if n<18 then return nil,"offer_count" end
+    if n<19 then return nil,"offer_count" end
     local fields={key=true,kind=true,benefit=true,amount=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     local partFields={key=true,kind=true,benefit=true,catalog_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     for i=1,n do
@@ -97,6 +98,7 @@ end
 function Rules.operation(offer,source,version)
     if offer.benefit=="part_unlock" then return table.freeze({kind="partUnlock",catalogID=offer.catalogID}) end
     if offer.benefit=="starter_pack" then return table.freeze({kind="starterPack"}) end
+    if offer.benefit=="paper_jar" then return table.freeze({kind="paperJar"}) end
     local op={sourceIdentity=source,expectedVersion=version}
     if offer.benefit=="paper_balance" then op.kind="purchasedPaper"; op.wholePaper=offer.amount; op.packKey=offer.key
     else

@@ -50,12 +50,12 @@ function Spec.run()
  local result,test=Suite.new()
  test("schema 8 migration adds shop defaults and preserves the entire old save without mutating it",function()
   local f=fixture();local old=assert(Schema.copy(f.profile.Data))
-  old.schemaVersion=8;old.dailyGift=nil;old.starterPack=nil;old.firstBuys=nil;old.buysToday=nil
+  old.schemaVersion=8;old.dailyGift=nil;old.starterPack=nil;old.firstBuys=nil;old.buysToday=nil;old.paperJarMilli=nil
   old.paperMilli=123456;old.receiptIds.old_receipt=true;old.extensions={keep="old data"}
   local before=Schema.canonical(old);local migrated=assert(Schema.migrate(old,f.catalog))
   local expected=assert(Schema.copy(old));expected.schemaVersion=Schema.VERSION
   expected.dailyGift={next=1,lastDay=-1};expected.starterPack={offeredAt=0,bought=false}
-  expected.firstBuys={};expected.buysToday={day=-1,count=0}
+  expected.firstBuys={};expected.buysToday={day=-1,count=0};expected.paperJarMilli=0
   assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
   assert(not Schema.validate(old,f.catalog),"validation must not silently migrate")
  end)
@@ -78,6 +78,142 @@ function Spec.run()
   local copy=assert(Schema.copy(f.profile.Data));copy.dailyGift.next=7;copy.firstBuys.paper_pack_40000=true
   assert(f.profile.Data.dailyGift.next==1 and not f.profile.Data.firstBuys.paper_pack_40000)
   assert(Schema.validate(copy,f.catalog))
+ end)
+ test("schema 9 migration adds an empty jar and preserves the old save without mutating it",function()
+  local f=fixture();assert(Schema.VERSION==10 and f.profile.Data.paperJarMilli==0 and f.player.attributes.PaperJar==0)
+  local old=assert(Schema.copy(f.profile.Data));old.schemaVersion=9;old.paperJarMilli=nil
+  old.paperMilli=123456;old.firstBuys.paper_pack_1500=true;old.extensions={keep="old data"}
+  local before=Schema.canonical(old);local expected=assert(Schema.copy(old))
+  expected.schemaVersion=10;expected.paperJarMilli=0
+  local migrated=assert(Schema.migrate(Schema.freeze(old),f.catalog))
+  assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
+  assert(Schema.canonical(assert(Schema.migrate(migrated,f.catalog)))==Schema.canonical(migrated))
+  assert(not Schema.validate(old,f.catalog))
+ end)
+ test("jar saves reject missing fractional negative over-cap and nonnumeric values",function()
+  local f=fixture();local cap=EconomyConfig.paper_jar.cap_paper*Economy.MILLI
+  for _,value in ipairs({-1,cap+1,1.5,"1000",false}) do
+   local data=assert(Schema.copy(f.profile.Data));data.paperJarMilli=value
+   assert(not Schema.validate(data,f.catalog) and not Schema.migrate(data,f.catalog))
+   data.schemaVersion=9;assert(not Schema.migrate(data,f.catalog),"migration must not hide a corrupt jar")
+  end
+  local data=assert(Schema.copy(f.profile.Data));data.paperJarMilli=nil;assert(not Schema.validate(data,f.catalog))
+  data.paperJarMilli=cap;assert(Schema.validate(data,f.catalog))
+ end)
+ test("contributions fill an extra quarter of actual credited Paper at 1x and 2x retaining milliunits",function()
+  for _,multiplier in ipairs({1,2}) do
+   local f=fixture({setup=function(p)p.boosts.paperSeconds=multiplier==2 and 900 or 0 end})
+   local capture=f.service:producerCapture("user").value;assert(capture.paper==multiplier)
+   local paid=f:apply({kind="contribution",points=101,multipliers=capture})
+   local credited=36663*multiplier
+   assert(paid.status=="ok" and paid.value.paperMilli==credited,paid.code)
+   assert(f.profile.Data.paperMilli==credited and f.profile.Data.earnedPaperMilli==credited and f.profile.Data.purchasedPaperMilli==0)
+   assert(f.profile.Data.paperJarMilli==math.floor(credited/4) and f.player.attributes.PaperJar==math.floor(credited/4000))
+   f:rejoin();assert(f.profile.Data.paperJarMilli==math.floor(credited/4))
+  end
+ end)
+ test("final bonuses fill from their own boosted credit and XP-only bonuses leave the jar alone",function()
+  for _,multiplier in ipairs({1,2}) do
+   local f=fixture()
+   local paid=f:apply({kind="finalBonus",finalPaper=131,finalXP=3,multipliers={paper=multiplier,xp=1}})
+   assert(paid.status=="ok" and f.profile.Data.paperMilli==131000*multiplier)
+   assert(f.profile.Data.paperJarMilli==32750*multiplier)
+   assert(f:apply({kind="finalBonus",finalPaper=0,finalXP=60,multipliers={paper=multiplier,xp=2}}).status=="ok")
+   assert(f.profile.Data.paperJarMilli==32750*multiplier)
+  end
+ end)
+ test("contributions and final bonuses cap the jar without capping normal Paper",function()
+  local cap=EconomyConfig.paper_jar.cap_paper*Economy.MILLI;assert(cap==10000000 and EconomyConfig.paper_jar.share==0.25)
+  for _,input in ipairs({{kind="contribution",points=100},{kind="finalBonus",finalPaper=90,finalXP=120}}) do
+   local f=fixture({setup=function(p)p.paperJarMilli=cap-1 end});input.multipliers={paper=2,xp=1}
+   local first=f:apply(input);assert(first.status=="ok" and f.profile.Data.paperJarMilli==cap)
+   local second=f:apply(input);assert(second.status=="ok" and f.profile.Data.paperJarMilli==cap and f.player.attributes.PaperJar==10000)
+   assert(f.profile.Data.paperMilli==first.value.paperMilli+second.value.paperMilli)
+  end
+ end)
+ test("replayed match operation ids fill the jar only once",function()
+  local f=fixture()
+  for _,input in ipairs({{kind="contribution",points=100},{kind="finalBonus",finalPaper=90,finalXP=120}}) do
+   input.multipliers={paper=2,xp=1};local paid,op=f:apply(input);assert(paid.status=="ok")
+   local after=Schema.canonical(f.profile.Data);local replay=f.service:apply("user",op)
+   assert(replay.status=="ok" and replay.value.paperMilli==paid.value.paperMilli and Schema.canonical(f.profile.Data)==after)
+  end
+  assert(f.profile.Data.paperJarMilli==63150)
+ end)
+ test("daily gifts packs starter Paper and direct purchased Paper never fill the jar",function()
+  for _,kind in ipairs({"dailyGift","pack","starter","purchased"}) do
+   local f=fixture({mock=true,setup=function(p)p.paperJarMilli=1234 end})
+   local paid
+   if kind=="dailyGift" then paid=f:claim()
+   elseif kind=="pack" then paid=f:receipt("paper_pack_1500")
+   elseif kind=="starter" then paid=f:receipt("starter_pack")
+   else paid=f:apply({kind="purchasedPaper",wholePaper=100}) end
+   assert(paid.status=="ok" and f.profile.Data.paperMilli>0 and f.profile.Data.paperJarMilli==1234)
+  end
+ end)
+ test("breaking a jar buys only its whole Paper retains fractions and never takes a first-buy double",function()
+  for _,fraction in ipairs({0,725}) do
+   local f=fixture({setup=function(p)p.paperJarMilli=250000+fraction;p.paperMilli=5000;p.earnedPaperMilli=5000;p.boosts.permanentPaper=true end})
+   local broken,op=f:receipt("paper_jar")
+   assert(broken.status=="ok" and broken.value.type=="PaperJarBroken" and broken.value.paper==250,broken.code)
+   assert(f.profile.Data.paperMilli==255000 and f.profile.Data.purchasedPaperMilli==250000 and f.profile.Data.earnedPaperMilli==5000)
+   assert(f.profile.Data.paperJarMilli==fraction and f.player.attributes.PaperJar==0 and f.player.attributes.BuysToday==1)
+   assert(next(f.profile.Data.firstBuys)==nil and f.profile.Data.receiptIds[Profile.receiptKey("receipt/paper_jar")])
+   local after=Schema.canonical(f.profile.Data)
+   assert(f.service:apply("user",op).value.paper==250 and Schema.canonical(f.profile.Data)==after)
+   f:rejoin();assert(f.profile.Data.paperJarMilli==fraction)
+   assert(f:apply({kind="contribution",points=100,multipliers={paper=1,xp=1}}).status=="ok")
+   local filled=f.profile.Data.paperJarMilli
+   assert(filled==fraction+9075 and f.player.attributes.PaperJar==math.floor(filled/1000))
+   assert(f:receipt("paper_jar").value.type=="ReceiptAlreadyGranted" and f.profile.Data.paperJarMilli==filled)
+   assert(f.player.attributes.BuysToday==1)
+  end
+ end)
+ test("empty practice jars refuse but real receipts grant zero and record a buy",function()
+  for _,fraction in ipairs({0,999}) do
+   local f=fixture({mock=true,setup=function(p)p.paperJarMilli=fraction;p.paperMilli=Economy.MAX_SAFE_INTEGER end})
+   local before=Schema.canonical(f.profile.Data)
+   assert(f:apply({kind="paperJar"}).code=="jar_empty" and Schema.canonical(f.profile.Data)==before)
+   local paid=f:receipt("paper_jar");assert(paid.status=="ok" and paid.value.type=="PaperJarBroken" and paid.value.paper==0)
+   assert(f.profile.Data.paperMilli==Economy.MAX_SAFE_INTEGER and f.profile.Data.purchasedPaperMilli==0 and f.profile.Data.paperJarMilli==fraction)
+   assert(f.profile.Data.receiptIds[Profile.receiptKey("receipt/paper_jar")] and f.player.attributes.BuysToday==1)
+   assert(f:receipt("paper_jar").value.type=="ReceiptAlreadyGranted" and f.player.attributes.BuysToday==1)
+  end
+ end)
+ test("two queued receipts each honour the jar available when they apply including zero",function()
+  local f=fixture({setup=function(p)p.paperJarMilli=123456 end})
+  local grant=Commerce.operation(assert(Commerce.catalog(require(Root.Generated.Commerce))).byKey.paper_jar)
+  local first=assert(f.service:prepare("user",{kind="receipt",receiptId="jar/1",grant=grant}))
+  local second=assert(f.service:prepare("user",{kind="receipt",receiptId="jar/2",grant=grant}))
+  assert(f.service:apply("user",first).value.paper==123 and f.service:apply("user",second).value.paper==0)
+  assert(f.profile.Data.paperMilli==123000 and f.profile.Data.paperJarMilli==456 and f.profile.Data.buysToday.count==2)
+  assert(f.profile.Data.receiptIds[Profile.receiptKey("jar/1")] and f.profile.Data.receiptIds[Profile.receiptKey("jar/2")])
+ end)
+ test("practice jar breaks count once and direct jar grants cannot reach real profiles",function()
+  local f=fixture({mock=true,setup=function(p)p.paperJarMilli=1000 end})
+  local paid,op=f:apply({kind="paperJar"});assert(paid.status=="ok" and paid.value.paper==1)
+  assert(f.profile.Data.paperMilli==1000 and f.profile.Data.paperJarMilli==0 and f.player.attributes.BuysToday==1)
+  assert(f.profile.Data.receiptIds[Profile.receiptKey("mock:"..op.id)] and f.player.attributes.StarterPackEnds==0)
+  local after=Schema.canonical(f.profile.Data);assert(f.service:apply("user",op).value.paper==1 and Schema.canonical(f.profile.Data)==after)
+  f=fixture({setup=function(p)p.paperJarMilli=1000 end});after=Schema.canonical(f.profile.Data)
+  assert(f:apply({kind="paperJar"}).code=="studio_only" and Schema.canonical(f.profile.Data)==after)
+ end)
+ test("failed match credits and jar grants roll back the jar money receipt and buy count together",function()
+  for _,input in ipairs({{kind="contribution",points=100,multipliers={paper=1,xp=1}},
+   {kind="finalBonus",finalPaper=90,finalXP=120,multipliers={paper=1,xp=1}},
+   {kind="receipt",receiptId="jar/overflow",grant={kind="paperJar"}}}) do
+   local f=fixture({setup=function(p)p.paperMilli=Economy.MAX_SAFE_INTEGER;p.paperJarMilli=1000 end})
+   local before=Schema.canonical(f.profile.Data)
+   assert(f:apply(input).code=="overflow" and Schema.canonical(f.profile.Data)==before)
+  end
+ end)
+ test("jar receipts accept only the kind with no client amount pack key or boost",function()
+  for _,grant in ipairs({{kind="paperJar",wholePaper=999},{kind="paperJar",packKey="paper_pack_1500"},
+   {kind="paperJar",paperJarMilli=999999},{kind="paperJar",multipliers={paper=2,xp=1}}}) do
+   local f=fixture({setup=function(p)p.paperJarMilli=1000 end});local before=Schema.canonical(f.profile.Data)
+   assert(f:apply({kind="receipt",receiptId="bad/jar",grant=grant}).code=="invalid_receipt_grant")
+   assert(Schema.canonical(f.profile.Data)==before)
+  end
  end)
  test("daily gift claims pay once per UTC day and a repeated operation returns its original result",function()
   local f=fixture();local first,op=f:claim()
@@ -295,6 +431,39 @@ function Spec.run()
   hangar:handle(f.player,"buyProduct","starter_pack");assert(calls==1)
   f.now+=259200;hangar:handle(f.player,"buyProduct","starter_pack")
   assert(calls==1 and f.player.attributes.MenuMessage=="The starter pack has ended.")
+ end)
+ test("Hangar refuses empty jars before prompting and reports a racing commerce refusal",function()
+  local f=fixture();local calls=0
+  local profiles={view=function()return f.service:view("user").value end}
+  local commerce={prompt=function()calls+=1;return false,"jar_empty" end}
+  local hangar=Hangar.new({catalog=f.catalog},profiles,commerce)
+  for _,amount in ipairs({0,999}) do
+   f.profile.Data.paperJarMilli=amount;hangar:handle(f.player,"buyProduct","paper_jar")
+   assert(calls==0 and f.player.attributes.MenuMessage=="Your Paper jar is empty. Play a match to fill it.")
+  end
+  f.profile.Data.paperJarMilli=1000;hangar:handle(f.player,"buyProduct","paper_jar")
+  assert(calls==1 and f.player.attributes.MenuMessage=="Your Paper jar is empty. Play a match to fill it.")
+ end)
+ test("Hangar practice jars refuse empty and racing buys and enqueue only the jar kind",function()
+  local f=fixture({mock=true});local inputs={};local race=false
+  local profiles={mock=true,view=function()return f.service:view("user").value end}
+  function profiles:enqueue(_,input,_,callback)
+   table.insert(inputs,assert(Schema.copy(input)))
+   if race then f.profile.Data.paperJarMilli=999 end
+   local saved=f:apply(input);callback(saved.status=="ok",saved.value or saved.code);return true
+  end
+  local hangar=Hangar.new({catalog=f.catalog},profiles)
+  for _,amount in ipairs({0,999}) do
+   f.profile.Data.paperJarMilli=amount;hangar:handle(f.player,"mockProduct","paper_jar")
+   assert(#inputs==0 and f.player.attributes.MenuMessage=="Your Paper jar is empty. Play a match to fill it.")
+  end
+  f.profile.Data.paperJarMilli=1000;hangar:handle(f.player,"mockProduct","paper_jar")
+  assert(#inputs==1 and Schema.canonical(inputs[1])==Schema.canonical({kind="paperJar"}))
+  assert(f.profile.Data.paperMilli==1000 and f.profile.Data.paperJarMilli==0 and f.player.attributes.BuysToday==1)
+  assert(f.player.attributes.MenuMessage=="Development simulation complete. No real purchase.")
+  race=true;f.profile.Data.paperJarMilli=1000;hangar:handle(f.player,"mockProduct","paper_jar")
+  assert(#inputs==2 and f.profile.Data.paperMilli==1000 and f.profile.Data.paperJarMilli==999 and f.player.attributes.BuysToday==1)
+  assert(f.player.attributes.MenuMessage=="Your Paper jar is empty. Play a match to fill it.")
  end)
  return result
 end

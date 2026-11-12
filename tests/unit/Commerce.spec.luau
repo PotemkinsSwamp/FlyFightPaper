@@ -13,7 +13,7 @@ end
 local function boosts() return {xpSeconds=1800,paperSeconds=900,permanentXP=false,permanentPaper=false} end
 function Spec.run()
     local result,test=Suite.new()
-    test("all eighteen immutable configured offers and generated null sentinel",function()
+    test("all nineteen immutable configured offers and generated null sentinel",function()
         local c=assert(Rules.catalog(Config)); assert(#c.offers==#Config.products and #c.offers>15)
         assert(c.mode=="mock" and not c.authorized)
         for _,p in ipairs(Config.products) do assert(not p.enabled and p.roblox_product_id==JSON.Null and p.approved_robux_price==JSON.Null) end
@@ -23,6 +23,8 @@ function Spec.run()
         for _,n in ipairs({1500,5000,7500,15000,40000}) do assert(c.byKey["paper_pack_"..n].amount==n) end
         local starter=c.byKey.starter_pack
         assert(starter.kind=="developer_product" and starter.benefit=="starter_pack" and starter.amount==nil)
+        local jar=c.byKey.paper_jar
+        assert(jar.kind=="developer_product" and jar.benefit=="paper_jar" and jar.amount==nil)
         assert(c.byKey.permanent_2x_xp.kind=="pass" and c.byKey.permanent_2x_paper.amount==2)
     end)
     test("part offers cover exactly the parts that cost Paper (free gear needs none)",function()
@@ -36,14 +38,14 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==18+count)
+        assert(#c.offers==19+count)
         local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" then fixed+=1 end end
-        assert(fixed==18)
+        assert(fixed==19)
     end)
     test("zero or additional part offers are accepted without a Catalog dependency",function()
         local raw=copy(Config)
         for i=#raw.products,1,-1 do if raw.products[i].benefit=="part_unlock" then table.remove(raw.products,i) end end
-        assert(#assert(Rules.catalog(raw)).offers==18)
+        assert(#assert(Rules.catalog(raw)).offers==19)
         table.insert(raw.products,{key="part_future_part",kind="developer_product",benefit="part_unlock",catalog_id="future_part",
             roblox_product_id=JSON.Null,approved_robux_price=JSON.Null,enabled=false})
         local offer=assert(Rules.catalog(raw)).byKey.part_future_part
@@ -146,9 +148,12 @@ function Spec.run()
         assert(pass.action=="permanent" and pass.seconds==nil and table.isfrozen(pass))
         local starter=Rules.operation(c.byKey.starter_pack)
         assert(starter.kind=="starterPack" and starter.wholePaper==nil and starter.resource==nil and table.isfrozen(starter))
+        local jar=Rules.operation(c.byKey.paper_jar,"unused",7);local fields=0
+        for _ in pairs(jar) do fields+=1 end
+        assert(jar.kind=="paperJar" and fields==1 and table.isfrozen(jar))
     end)
-    test("new packs and bundle reject mismatched benefits amounts and unexpected fields",function()
-        for _,key in ipairs({"paper_pack_7500","paper_pack_40000","starter_pack"}) do
+    test("new packs bundle and jar reject mismatched benefits amounts and unexpected fields",function()
+        for _,key in ipairs({"paper_pack_7500","paper_pack_40000","starter_pack","paper_jar"}) do
             for _,change in ipairs({function(p)p.kind="pass"end,function(p)p.benefit="xp_seconds"end,
                 function(p)p.amount=1 end,function(p)p.catalog_id="wings_1"end,function(p)p.extra=true end}) do
                 local raw=copy(Config)

@@ -70,6 +70,10 @@
     "xp_seconds": 3600,
     "offer_seconds": 259200
   },
+  "paper_jar": {
+    "share": 0.25,
+    "cap_paper": 10000
+  },
   "reference_match": {
     "eliminations": 6,
     "assists": 4,

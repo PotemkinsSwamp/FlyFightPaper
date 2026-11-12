@@ -125,9 +125,10 @@ function Service:handle(player,action,value)
   end)
  elseif action=="buyProduct" and type(value)=="string" then
   if value=="starter_pack" and CommerceRules.starterPackEnds(profile,self.unix())==0 then self:message(player,"The starter pack has ended.");return end
+  if value=="paper_jar" and profile.paperJarMilli<Economy.MILLI then self:message(player,"Your Paper jar is empty. Play a match to fill it.");return end
   if self.commerce then
    local ok,why=self.commerce:prompt(player,value)
-   if not ok then self:message(player,why=="starter_pack_ended" and "The starter pack has ended." or "Shop is closed for now.") end
+   if not ok then self:message(player,why=="starter_pack_ended" and "The starter pack has ended." or why=="jar_empty" and "Your Paper jar is empty. Play a match to fill it." or "Shop is closed for now.") end
   end
  elseif action=="mockProduct" and Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
   if type(value)~="string" then return end
@@ -139,6 +140,9 @@ function Service:handle(player,action,value)
   elseif product.benefit=="starter_pack" then
    if CommerceRules.starterPackEnds(profile,self.unix())==0 then self:message(player,"The starter pack has ended.");return end
    input={kind="starterPack"}
+  elseif product.benefit=="paper_jar" then
+   if profile.paperJarMilli<Economy.MILLI then self:message(player,"Your Paper jar is empty. Play a match to fill it.");return end
+   input={kind="paperJar"}
   elseif product.benefit=="part_unlock" then
    self:message(player,"Part checkout is unavailable in the practice shop.");return
   else
@@ -150,7 +154,7 @@ function Service:handle(player,action,value)
    input={kind="boostIntent",resource=resource,action=permanent and "permanent" or "duration"}
    if not permanent then input.seconds=product.amount end
   end
-  self:enqueue(player,input,function(ok)self:message(player,ok and "Development simulation complete. No real purchase." or "Development simulation failed.")end)
+  self:enqueue(player,input,function(ok,result)self:message(player,ok and "Development simulation complete. No real purchase." or result=="jar_empty" and "Your Paper jar is empty. Play a match to fill it." or "Development simulation failed.")end)
  end
 end
 return Service

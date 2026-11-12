@@ -5,6 +5,9 @@ Your Paper, XP, level, owned parts, five saved builds and settings are kept betw
 lost if a save fails for a moment; it retries without stopping the match for everyone else.
 
 ## Where it stands (2026-11-12)
+Schema 10 (2026-11-12) adds `paperJarMilli`: integer Paper subunits held in the jar, from 0 to the configured
+cap in milliunits. New and older saves start at 0; malformed or over-cap values are rejected. Jar fill and breaks
+share the reward/receipt transaction and its duplicate protection. [Jar rules](economy-and-shop.md#products).
 Schema 9 (2026-11-12) adds the [shop save fields](economy-and-shop.md#products), with defaults for older saves.
 Schema 8 (2026-11-11) adds `unlocksSeen`: the highest level whose unlocks you've opened in the [unlock backpack](../plan/UNLOCK-PLAN.md).
 It only rises, never past your level (`RoundAction` "unlocksSeen"); older saves and prestige set it to the current level,

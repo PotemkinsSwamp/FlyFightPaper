@@ -35,7 +35,7 @@ local function validReceiptGrant(grant)
   if not Schema.integer(grant.wholePaper) or grant.wholePaper<1 then return false end
   if grant.packKey~=nil and Commerce.paperPackAmount(grant.packKey)~=grant.wholePaper then return false end
   fields={kind=true,wholePaper=true,packKey=true}
- elseif grant.kind=="starterPack" then
+ elseif grant.kind=="starterPack" or grant.kind=="paperJar" then
   fields={kind=true}
  elseif grant.kind=="boostIntent" then
   if (grant.resource~="xp" and grant.resource~="paper") or grant.action~="duration"
@@ -215,6 +215,15 @@ function Service:_effect(p,op,boostState)
 		if not paid then return nil,rejected.code end
 		Schema.mergeEconomic(p,paid.profile);p.ownership[pack.part]=true;p.starterPack.bought=true
 		result={type="StarterPackGranted"}
+	elseif op.kind=="paperJar" then
+		local paper=math.floor(p.paperJarMilli/Economy.MILLI)
+		if paper>0 then
+			local paid,rejected=Economy.addPurchasedPaper(v,paper,op.id)
+			if not paid then return nil,rejected.code end
+			Schema.mergeEconomic(p,paid.profile)
+		end
+		p.paperJarMilli%=Economy.MILLI
+		result={type="PaperJarBroken",paper=paper}
 	elseif op.kind=="preset" then
 		if not Schema.integer(op.slot) or op.slot<1 or op.slot>Gameplay.menus.saved_loadouts then return nil,"invalid_slot" end
 		p.presets[op.slot]={name=op.name,loadout=op.loadout}; result={type="PresetSaved",slot=op.slot}
@@ -295,11 +304,17 @@ function Service:_effect(p,op,boostState)
 		result={type="StatisticsApplied"}
 	end
 	if err then return nil,err.code end
-	if applied then Schema.mergeEconomic(p,applied.profile); result=applied.operation end
+	if applied then
+		Schema.mergeEconomic(p,applied.profile); result=applied.operation
+		if op.kind=="contribution" or op.kind=="finalBonus" then
+			local jar=EconomyConfig.paper_jar
+			p.paperJarMilli=math.min(jar.cap_paper*Economy.MILLI,p.paperJarMilli+math.floor(result.paperMilli*jar.share))
+		end
+	end
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={receipt=true,passGrant=true,dailyGift=true,starterPack=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
+local allowed={receipt=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
@@ -316,10 +331,11 @@ function Service:apply(account,input)
  if sequence<=(s.profile.Data.operationIds[token] or 0) then
   return outcome("ok",nil,cached and cached.value or {type="AlreadyApplied",operationID=op.id})
  end
- local mockBuy=op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack"
+ local mockBuy=op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack" or op.kind=="paperJar"
  if mockBuy and not self.mock then return outcome("error","studio_only") end
  if mockBuy and count(s.profile.Data.receiptIds)>=ServerConfig.schema.max_receipts then return outcome("error","receipt_cap") end
  if op.kind=="starterPack" and Commerce.starterPackEnds(s.profile.Data,self.unix())==0 then return outcome("error","starter_pack_ended") end
+ if op.kind=="paperJar" and s.profile.Data.paperJarMilli<Economy.MILLI then return outcome("error","jar_empty") end
  local intent=op
  if op.kind=="receipt" then
   if type(op.receiptId)~="string" or #op.receiptId==0 then return outcome("error","invalid_receipt") end
