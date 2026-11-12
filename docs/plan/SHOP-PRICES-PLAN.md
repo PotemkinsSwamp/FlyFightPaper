@@ -16,6 +16,7 @@ hours for an average player).
 | 99 R$ (about $1.25) | 1,000 | **1,500** | 15.2 | 2.3 |
 | 299 R$ (about $3.75) | 3,500 | **5,000** | 16.7 (+10%) | 7.6 |
 | 799 R$ (about $10) | 10,000 | **15,000** | 18.8 (+24%) | 23 |
+
 Bigger packs give a bit more per Robux, like Roblox's own Robux packs. The small one buys any level 2-5 part; the big
 one a Racing Fold or Guided Eraser with some left over.
 
@@ -33,9 +34,10 @@ price at the big pack's rate (about 18.75 Paper a Robux), rounded to a usual Rob
 | 11,000-13,000 | Racing Fold, Guided Eraser, Twin Elastic Booster | 599 |
 | 18,500 | Cardboard Gunship | 999 |
 | 32,000 | Pencil Launcher | 1,699 |
+
 All 29 together: about 8,950 R$ (about $110), close to buying their Paper in big packs. The free weapons (Pellet,
-Popper, Staple, Thumbtack) need no product: their three old ones come out of `config/commerce.json`. Choice for Alan: the Pencil at 1,699 (its Paper value; it's the strongest
-weapon, so a high price keeps "buy the best gun on day one" rare) or capped at 999.
+Popper, Staple, Thumbtack) need no product: their three old ones come out of `config/commerce.json`.
+Choice for Alan: the Pencil at 1,699 (its Paper value; it's the strongest weapon, so a high price keeps "buy the best gun on day one" rare) or capped at 999.
 
 ## Unchanged
 2x XP / 2x Paper boosts 25 / 45 / 79 / 199 / 299 R$ for 15 / 30 / 60 / 180 / 300 minutes; permanent 2x Paper 999, 2x
