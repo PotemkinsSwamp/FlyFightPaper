@@ -225,7 +225,9 @@ mistake would be easy to make twice.
 - **Undoing a commit when someone else has staged changes:** `git revert` refuses; restore the files instead with
   `git checkout <commit>~1 -- <paths>` and commit that.
 - **Alan plays in the same Play session.** Before driving the plane from tools, check whether Play is already
-  running; if Alan started it, read-only checks only.
+  running; if Alan started it, read-only checks only. Even in a Play I started, he may join in and fly: before
+  opening a test screen (`DevUnlock`) or sending mouse input, ask whether he is playing (2026-11-11: a test backpack
+  popped over his match and a test drag went into his game).
 - **Claude's test copy.** For tests that need their own Play, build a copy of the place in the session scratchpad
   (`FlightTest.rbxlx`) and push code into it; details in [Studio and Rojo](studio-and-rojo.md).
 - **After Codex jobs, Studio tools can vanish** because Codex starts its own Studio link. Codex's Studio link is now
