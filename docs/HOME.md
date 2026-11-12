@@ -28,6 +28,7 @@ otherwise.
 - [Phone aim options](plan/PHONE-AIM-OPTIONS.md): staying on a tail on a phone (research, waiting on Alan)
 - [Load plan](plan/LOAD-PLAN.md): fast joins on a phone, same look (draft for Alan's OK)
 - [Unlock moment plan](plan/UNLOCK-PLAN.md): the backpack that opens when you level up (draft for Alan's OK)
+- [Report card plan](plan/REPORT-CARD-PLAN.md): the round's results on a school report card (draft for Alan's OK)
 - [Release notes](plan/RELEASE_NOTES.md) (2026-10-07 build)
 
 ## The game, system by system

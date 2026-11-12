@@ -10,6 +10,9 @@ and a stage.
 - **Which weapon the aim marker follows** when two different weapons are fitted (open question from the
   [2026-10-12 playtest](../playtests/2026-10-12.md)).
 
+- **Personal report card** (Alan 2026-11-11): your own grades per subject (folds, assists, aim, crashes) for
+  all-time stats, on its own screen; not for the end of a round ([report card plan](REPORT-CARD-PLAN.md)).
+
 ## Later scope (from the vision)
 The [vision](../vision/VISION.md) lists what waits until after the first release: cosmetics, more maps, full touch
 then controller support, better desk equipment, collapsing cities, capture/payload and escort modes, advanced
