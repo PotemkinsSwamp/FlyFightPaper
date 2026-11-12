@@ -1,6 +1,6 @@
-# LATEST → handoff-2026-11-11-2145-beta-lane-unlock-moment-approved-publish-next.md
+# LATEST → handoff-2026-11-11-2246-beta-lane-report-card-prices-shop-research.md
 
-★ START HERE: Goal (Alan): the beta feels finished. The unlock moment is done and Alan OK'd it in Studio Play (level-up note top left, backpack on the main menu). Next: ask whether he has published (then shut down old servers, save version 8); then a how-it-works note and concept for the results card → report card, for his OK before code.
+★ START HERE: Goal (Alan): the beta feels finished. Report card built (Alan: "looks good"), shop prices set, shop research done. Next: a concept picture of the shop in classroom style (store counter + sticker album + daily prize box + starter pack with a real 3-day timer) for his OK before any code.
 
-Quick state: main 444a948f pushed; 483 tests passed at e131eeb7 (client UI only since); docs OK; not yet published: guns, phone words, SPEED MATCH, Clear all, unlock moment; Save to File not done.
-Previous: handoff-2026-11-11-1725-beta-lane-clear-all-red-unlock-next.md
+Quick state: main 69b8c940 (+handoff) pushed; 484 tests in Play after the report card, Commerce suites pass after the prices (Edit run); docs OK; not published: report card, new prices; Save to File not done.
+Previous: handoff-2026-11-11-2145-beta-lane-unlock-moment-approved-publish-next.md

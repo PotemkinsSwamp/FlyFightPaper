@@ -348,6 +348,11 @@ mistake would be easy to make twice.
   fail with "Target is not reachable" though the tests are fine. Start it with `task.spawn`, write the result to a
   workspace attribute, then read that attribute in a second call. Check `get_studio_state` before any Edit call: Alan
   may be in Play, and a start-Play call then does nothing.
+- **Unit tests in Edit, no Play (2026-11-11):** clone `ReplicatedStorage`/`ReplicatedFirst`/`ServerScriptService`
+  `FlyFightPaper` and `ServerStorage.FlyFightPaperTests`, rename the real ones aside, run `TestRunner.run()` in a
+  `task.spawn` that writes a workspace attribute, then restore the names. 35 of 39 suites run; ProfileRuntime,
+  RewardQueue, RoundRuntime and ProfilePersistence fail to load in Edit (ProfileStore's `BindToClose` is server-only),
+  so they still need Play. Saves grabbing Alan's mouse for a quick check.
 
 - **Exact collision shapes cost phone load time** (2026-11-07): making 510 small rug toys solid with exact shapes took
   the phone's "town arrived" from ~10 s (v402) to ~40 s (v493); every part stores its own shape and phones download it
