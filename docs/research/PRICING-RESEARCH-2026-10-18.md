@@ -265,10 +265,10 @@ Ground rules
 | What | Draft price (R$) | Why |
 |---|---|---|
 | Starter pack (once per player): 1,500 Paper + 1 trail + 30 min 2x XP | 99 | Cheap first purchase is the hardest step |
-| Paper packs: 1,000 / 3,500 / 10,000 | 99 / 299 / 799 | Bonus grows with size (+17%, +25%) |
+| Paper packs: re-scaled 2026-11-11 ([shop prices plan](../plan/SHOP-PRICES-PLAN.md)) | 99 / 299 / 799 | Bonus grows with size |
 | 2x XP or 2x Paper for 15 / 30 / 60 / 180 / 300 min | 25 / 45 / 79 / 199 / 299 | 5 h nearly the pass price |
 | Permanent 2x XP / 2x Paper | 1,499 / 999 | Alan: permanent costs a lot, XP the most |
-| Early part unlock, by the part's level: 2-5 / 7-12 / 14-20 / 22-28 / 40 | 49 / 149 / 199 / 279 / 399 | About its Paper value; cheaper because prestige takes parts back |
+| Early part unlock: replaced 2026-11-11 by the [shop prices plan](../plan/SHOP-PRICES-PLAN.md) | 49-1,699 | Its Paper price at the big pack's rate |
 | Body bundle: one body and its matching parts unlocked early | about 699 | Alan: no unlock-everything button |
 | VIP: +5 build slots, name colour, VIP desk spot | 499 | Big games: 375-800 |
 | Cosmetics (emotes, trails, stickers, fold effects, paper types): sliding scale by how detailed and how wanted | about 25-279 ($0.30-3.49) | Alan: simple ones cost cents, detailed popular ones a few dollars |

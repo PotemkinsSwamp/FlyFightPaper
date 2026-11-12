@@ -8,9 +8,9 @@ You earn **Paper** (money) and **XP** (levels) from points in every match. Paper
 match, ~660 Paper and ~1,190 XP) reaches level 50 in about 18 hours of play and could own everything (167,400 Paper)
 in about 36; for the first 6 hours ~13 unlocked things are always waiting to be saved for. Prices scale up with level
 (Pencil 32,000, Cardboard 18,500, first parts 700; table in the
-[decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Paper packs and Robux part prices still follow
-the old draft and get re-scaled in the shop step; offers there are tied to the player's own goal, capped, and never
-shown after a loss.
+[decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Paper packs and Robux part prices were re-scaled to
+match (Alan 2026-11-11, [shop prices plan](../plan/SHOP-PRICES-PLAN.md): packs 1,500 / 5,000 / 15,000 Paper; each part's
+Robux price from its Paper price). Still to come: offers tied to the player's own goal, capped, never after a loss.
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Studio-only practice
 shop with no Robux. The real Roblox purchase code is built for the 15 products and part unlocks (Stage 10, Codex, reviewed; 388 tests)
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
@@ -26,8 +26,8 @@ and is switched off: with `mode` "mock" it never talks to Roblox's shop.
   nothing written to the save, so a prestige takes it away until you level again. Today: the starter parts and the
   first four weapons (Pellet, Popper, Staple, Thumbtack); everything after costs Paper
   ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Its Hangar card says "Free at level N".
-- **Early part unlocks:** one Roblox product per part above level 1 (28, `part_<id>` in `config/commerce.json`), all
-  off. A part you own flies at any level; Paper purchases still need the level. Buying an owned part is refused.
+- **Early part unlocks:** one Roblox product per part that costs Paper (29, `part_<id>` in `config/commerce.json`;
+  free gear has none), all off; Robux prices in the [shop prices plan](../plan/SHOP-PRICES-PLAN.md). A part you own flies at any level; Paper purchases still need the level. Buying an owned part is refused.
   Prestige takes bought parts back like any other. Still to do with prices: the hangar's "Unlock now" button and its
   "prestige takes this back" warning.
 - **Not built yet:** VIP pass (benefits not chosen), private
@@ -119,8 +119,9 @@ Do not extend the free grind solely to justify a costly permanent product. Real 
 
 ## Products
 Ten distinct temporary products: XP and earned Paper separately for900,1800,3600,10800,18000 online seconds.
-Three provisional Paper packs (1000/3500/10000 units) and two permanent passes. Pack quantities are delegated
-starting values; no actual Robux prices or live product IDs are assigned. The shop's mock state is explicitly
+Three Paper packs (1,500 / 5,000 / 15,000, approved 2026-11-11) and two permanent passes. Robux prices are the
+[shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
+are assigned yet. The shop's mock state is explicitly
 DEVELOPMENT ONLY, cannot prompt real checkout, and cannot write mock purchases into production profiles.
 
 Same-resource multipliers cap2×. Timed purchases add duration; five hours is not a balance cap. Permanent

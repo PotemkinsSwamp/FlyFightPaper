@@ -101,7 +101,7 @@ function Spec.run()
   local f=fixture({config=require(Root.Generated.Commerce)})
   assert(f.commerce.live==false and f.marketplace.ProcessReceipt==nil)
   assert(f.marketplace.PromptGamePassPurchaseFinished.connections==0 and f.players.PlayerAdded.connections==0)
-  local ok,why=f.commerce:prompt(f.player,"paper_pack_1000");assert(not ok and why=="off")
+  local ok,why=f.commerce:prompt(f.player,"paper_pack_1500");assert(not ok and why=="off")
   ok,why=f.commerce:checkPasses(f.player);assert(not ok and why=="off")
   assert(f.commerce:processReceipt({})==Decisions.NotProcessedYet)
   assert(#f.marketplace.calls==0 and #f.inputs==0 and f.waits==0)
@@ -113,7 +113,7 @@ function Spec.run()
    local marketplace=setmetatable({},{__index=function()error("off adapter touched marketplace")end,
     __newindex=function()error("off adapter bound marketplace")end})
    local service=Commerce.new({}, {config=config,marketplace=marketplace,players={}})
-   assert(service.live==false and not service:prompt({},"paper_pack_1000") and not service:checkPasses({}))
+   assert(service.live==false and not service:prompt({},"paper_pack_1500") and not service:checkPasses({}))
    assert(service:processReceipt({})==Decisions.NotProcessedYet)
   end
  end)
@@ -121,7 +121,7 @@ function Spec.run()
   local f=fixture()
   assert(f.commerce.live and type(f.marketplace.ProcessReceipt)=="function")
   assert(f.marketplace.PromptGamePassPurchaseFinished.connections==1 and f.players.PlayerAdded.connections==1)
-  assert(f.marketplace.ProcessReceipt(f:receipt("paper_pack_1000"))==Decisions.PurchaseGranted)
+  assert(f.marketplace.ProcessReceipt(f:receipt("paper_pack_1500"))==Decisions.PurchaseGranted)
  end)
  test("live catalogs naming unknown parts stay off before touching marketplace even for disabled offers",function()
   local catalog=Catalog.new(require(Root.Generated.Catalog),require(Root.Generated.Gameplay))
@@ -148,25 +148,25 @@ function Spec.run()
   assert(Commerce.new(f.profiles,f.deps).live==true)
  end)
  test("Paper receipts grant once under different operation ids and save their receipt and balance together",function()
-  local f=fixture();local info=f:receipt("paper_pack_1000");local key=Profile.receiptKey(info.PurchaseId)
+  local f=fixture();local info=f:receipt("paper_pack_1500");local key=Profile.receiptKey(info.PurchaseId)
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
-  assert(f.profile.Data.paperMilli==1000000 and f.profile.Data.purchasedPaperMilli==1000000 and f.profile.Data.earnedPaperMilli==0)
-  assert(f.profile.LastSavedData.receiptIds[key] and f.profile.LastSavedData.paperMilli==1000000)
+  assert(f.profile.Data.paperMilli==1500000 and f.profile.Data.purchasedPaperMilli==1500000 and f.profile.Data.earnedPaperMilli==0)
+  assert(f.profile.LastSavedData.receiptIds[key] and f.profile.LastSavedData.paperMilli==1500000)
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
-  assert(f.profile.Data.paperMilli==1000000 and f.profile.Data.purchasedPaperMilli==1000000 and #f.inputs==2)
+  assert(f.profile.Data.paperMilli==1500000 and f.profile.Data.purchasedPaperMilli==1500000 and #f.inputs==2)
   assert(f.outcomes[1].value.operationID~=f.outcomes[2].value.operationID and f.outcomes[2].value.type=="ReceiptAlreadyGranted")
   assert(f.sources[1]==false and f.sources[2]==false,"source dedupe would suppress a replay's callback")
  end)
  test("failed save remains pending and redelivery saves without granting Paper twice",function()
   local f=fixture({timeoutSeconds=4.5});f.profile.failSave=true
-  local info=f:receipt("paper_pack_3500");local key=Profile.receiptKey(info.PurchaseId)
+  local info=f:receipt("paper_pack_5000");local key=Profile.receiptKey(info.PurchaseId)
   assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
-  assert(f.profile.Data.paperMilli==3500000 and f.profile.Data.receiptIds[key] and not f.profile.LastSavedData.receiptIds[key])
+  assert(f.profile.Data.paperMilli==5000000 and f.profile.Data.receiptIds[key] and not f.profile.LastSavedData.receiptIds[key])
   assert(#f.saveTimes>=2 and #f.saveTimes<=3)
   for i=2,#f.saveTimes do assert(f.saveTimes[i]-f.saveTimes[i-1]>=2) end
   f.profile.failSave=false
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
-  assert(f.profile.Data.paperMilli==3500000 and f.profile.LastSavedData.paperMilli==3500000 and f.profile.LastSavedData.receiptIds[key])
+  assert(f.profile.Data.paperMilli==5000000 and f.profile.LastSavedData.paperMilli==5000000 and f.profile.LastSavedData.receiptIds[key])
  end)
  test("early part receipts acknowledge only saved ownership and replay without granting more",function()
   local f=fixture();f.profile.failSave=true
@@ -191,12 +191,12 @@ function Spec.run()
    assert(not f.profile.LastSavedData.receiptIds[Profile.receiptKey("async/save")])
    if f.time>=0.3 then f.profile.LastSavedData=pending;f.onWait=nil end
   end
-  assert(f.commerce:processReceipt(f:receipt("paper_pack_1000","async/save"))==Decisions.PurchaseGranted)
-  assert(f.time>=0.3 and f.profile.writes==1 and f.profile.LastSavedData.paperMilli==1000000)
+  assert(f.commerce:processReceipt(f:receipt("paper_pack_1500","async/save"))==Decisions.PurchaseGranted)
+  assert(f.time>=0.3 and f.profile.writes==1 and f.profile.LastSavedData.paperMilli==1500000)
  end)
  test("unknown products, pass ids, absent players and profiles that never load grant nothing",function()
   for _,case in ipairs({"unknown","pass","absent","unloaded"}) do
-   local f=fixture();local info=f:receipt("paper_pack_1000")
+   local f=fixture();local info=f:receipt("paper_pack_1500")
    if case=="unknown" then info.ProductId=999999
    elseif case=="pass" then info.ProductId=f:offer("permanent_2x_xp").productID
    elseif case=="absent" then info.PlayerId=999
@@ -211,8 +211,8 @@ function Spec.run()
    if f.time>=0.2 then f.unloaded=false end
    if f.time>=0.4 and f.pending then local apply=f.pending;f.pending=nil;apply() end
   end
-  assert(f.commerce:processReceipt(f:receipt("paper_pack_1000"))==Decisions.PurchaseGranted)
-  assert(f.time>=0.4 and f.profile.LastSavedData.paperMilli==1000000)
+  assert(f.commerce:processReceipt(f:receipt("paper_pack_1500"))==Decisions.PurchaseGranted)
+  assert(f.time>=0.4 and f.profile.LastSavedData.paperMilli==1500000)
  end)
  test("queue refusal, callback failure and callback timeout all leave receipts pending",function()
   for _,case in ipairs({"queue","failure","callback"}) do
@@ -220,13 +220,13 @@ function Spec.run()
    if case=="queue" then f.queueFull=true
    elseif case=="failure" then f.profile.Data.paperMilli=9007199254740991
    else f.dropCallback=true end
-   assert(f.commerce:processReceipt(f:receipt("paper_pack_1000"))==Decisions.NotProcessedYet,case)
+   assert(f.commerce:processReceipt(f:receipt("paper_pack_1500"))==Decisions.NotProcessedYet,case)
    assert(f.profile.writes==0 and next(f.profile.LastSavedData.receiptIds)==nil,case)
    if case=="failure" then assert(f.outcomes[1].status=="error") end
    if case=="callback" then
     f.dropCallback=false
-    assert(f.commerce:processReceipt(f:receipt("paper_pack_1000"))==Decisions.PurchaseGranted)
-    assert(f.profile.LastSavedData.paperMilli==1000000)
+    assert(f.commerce:processReceipt(f:receipt("paper_pack_1500"))==Decisions.PurchaseGranted)
+    assert(f.profile.LastSavedData.paperMilli==1500000)
    end
   end
  end)
@@ -258,7 +258,7 @@ function Spec.run()
   for i=2,#f.saveTimes do assert(f.saveTimes[i]-f.saveTimes[i-1]>=2,"receipts must share the save cooldown") end
  end)
  test("overlapping deliveries of the same unsaved receipt both acknowledge one durable grant",function()
-  local f=fixture();local info=f:receipt("paper_pack_1000","overlapping/receipt");local second
+  local f=fixture();local info=f:receipt("paper_pack_1500","overlapping/receipt");local second
   f.profile.failSave=true
   f.onWait=function()
    f.onWait=nil;f.profile.failSave=false
@@ -266,7 +266,7 @@ function Spec.run()
   end
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and second==Decisions.PurchaseGranted)
   assert(#f.inputs==2 and f.outcomes[2].value.type=="ReceiptAlreadyGranted")
-  assert(f.profile.LastSavedData.paperMilli==1000000 and f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
+  assert(f.profile.LastSavedData.paperMilli==1500000 and f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
   assert(#f.saveTimes==2 and f.saveTimes[2]-f.saveTimes[1]>=2)
  end)
  test("in-flight timed receipts still grant dormant seconds after a permanent upgrade",function()
@@ -280,23 +280,23 @@ function Spec.run()
  test("session loss while waiting for a save leaves the receipt pending",function()
   local f=fixture();f.profile.failSave=true
   f.onWait=function()f.profile.active=false end
-  local info=f:receipt("paper_pack_1000")
+  local info=f:receipt("paper_pack_1500")
   assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
-  assert(f.profile.Data.paperMilli==1000000 and not f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
+  assert(f.profile.Data.paperMilli==1500000 and not f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
  end)
  test("player leaving during profile loading stops the wait without granting",function()
   local f=fixture();f.unloaded=true;f.onWait=function()f.player.Parent=nil end
-  assert(f.commerce:processReceipt(f:receipt("paper_pack_1000"))==Decisions.NotProcessedYet)
+  assert(f.commerce:processReceipt(f:receipt("paper_pack_1500"))==Decisions.NotProcessedYet)
   assert(f.waits==1 and #f.inputs==0)
  end)
  test("unexpected receipt and save errors never escape ProcessReceipt",function()
   local f=fixture()
   assert(f.commerce:processReceipt(nil)==Decisions.NotProcessedYet)
   assert(f.commerce:processReceipt({})==Decisions.NotProcessedYet)
-  local bad=f:receipt("paper_pack_1000");bad.PurchaseId=false
+  local bad=f:receipt("paper_pack_1500");bad.PurchaseId=false
   assert(f.commerce:processReceipt(bad)==Decisions.NotProcessedYet and #f.inputs==0)
   function f.profile:Save()error("fake save error")end
-  assert(f.commerce:processReceipt(f:receipt("paper_pack_1000"))==Decisions.NotProcessedYet)
+  assert(f.commerce:processReceipt(f:receipt("paper_pack_1500"))==Decisions.NotProcessedYet)
  end)
  test("owned passes grant permanent boosts once and a second check queues nothing",function()
   local f=fixture()
@@ -359,7 +359,7 @@ function Spec.run()
  end)
  test("prompts call the matching Roblox checkout with the right ids and grant nothing",function()
   local f=fixture()
-  for _,key in ipairs({"paper_pack_10000","xp_boost_60m","permanent_2x_paper","part_eraser"}) do
+  for _,key in ipairs({"paper_pack_15000","xp_boost_60m","permanent_2x_paper","part_eraser"}) do
    local offer=f:offer(key);local ok,why=f.commerce:prompt(f.player,key)
    assert(ok and why=="prompted")
    local call=f.marketplace.calls[#f.marketplace.calls]
@@ -374,26 +374,26 @@ function Spec.run()
   local f=fixture({config=config})
   for _,key in ipairs({"unknown","xp_boost_15m","xp_boost_30m"}) do assert(not f.commerce:prompt(f.player,key)) end
   assert(not f.commerce:prompt(f.player,{}))
-  f.unloaded=true;local ok,why=f.commerce:prompt(f.player,"paper_pack_1000")
+  f.unloaded=true;local ok,why=f.commerce:prompt(f.player,"paper_pack_1500")
   assert(not ok and why=="profile_unavailable" and #f.marketplace.calls==0 and #f.inputs==0)
  end)
  test("failed checkout calls return refusal and grant nothing",function()
   local f=fixture();f.marketplace.promptError=true
-  for _,key in ipairs({"paper_pack_1000","permanent_2x_xp"}) do
+  for _,key in ipairs({"paper_pack_1500","permanent_2x_xp"}) do
    local ok,why=f.commerce:prompt(f.player,key);assert(not ok and why=="marketplace_error")
   end
   assert(#f.inputs==0)
  end)
  test("hangar forwards buyProduct keys and reports a closed shop when checkout refuses",function()
   local f=fixture();local hangar=Hangar.new({catalog=f.catalog},f.profiles,f.commerce)
-  hangar:handle(f.player,"buyProduct","paper_pack_1000")
+  hangar:handle(f.player,"buyProduct","paper_pack_1500")
   assert(#f.marketplace.calls==1 and f.marketplace.calls[1].kind=="product" and #f.inputs==0)
   hangar:handle(f.player,"buyProduct",{})
   assert(#f.marketplace.calls==1)
   hangar:handle(f.player,"buyProduct","unknown")
   assert(f.player.attributes.MenuMessage=="Shop is closed for now.")
   local oldSignature=Hangar.new({catalog=f.catalog},f.profiles)
-  oldSignature:handle(f.player,"buyProduct","paper_pack_1000")
+  oldSignature:handle(f.player,"buyProduct","paper_pack_1500")
   assert(#f.marketplace.calls==1)
  end)
  return result

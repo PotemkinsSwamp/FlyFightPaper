@@ -1,13 +1,13 @@
 # Since Alan last checked (2026-11-11)
 - **You published** (guns, phone words, SPEED MATCH, Clear all, unlock moment) and shut down old servers.
-- **Results card is now a school report card** (built, not published). Same facts as before (places 1-5 and you,
-  folds, assists, crashes, points, your Paper/XP and level bar) on a printed report card, with a red-pen grade per
-  pilot (1st A+, top quarter A, top half B, the rest C), your place circled top right (team rounds: team score) and a
-  teacher's note about the round. Seen in Studio Play at phone size ("looks good"). 2 pictures passed Roblox review.
+- **Results card is now a school report card** (built, not published): same facts, plus a red-pen grade per pilot,
+  your place circled (team rounds: team score) and a teacher's note. Seen at phone size in Studio ("looks good").
+- **Shop prices set** (your OK): Paper packs 1,500 / 5,000 / 15,000 for 99 / 299 / 799 R$; each part's Robux price
+  from its Paper price (49 to 1,699, Pencil 1,699). Nothing on sale until you create the products on Roblox.
 
 # Now: finish the game for the beta
-Next: (1) Shop step: re-scale Paper packs and Robux part prices. Balance pass later: Spitball planes weakest;
-a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
+Next: (1) Shop step part 2: the Hangar's "Unlock now" button, shop screen, goal offers (pictures for your OK first).
+Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
 Not seen yet: a real level-up in a match (tested with the Studio pretend level-up, same note); on a phone the note may
 sit over a centred match tip for its 4 s. Report card: PC size in real Play, and the team-round grade fix (below).
 

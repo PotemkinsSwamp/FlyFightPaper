@@ -12,13 +12,13 @@ local COLUMNS = {
 	{ title = "Paper packs", strip = "yellow", match = function(p) return p.benefit == "paper_balance" end },
 }
 
--- Placeholder Robux prices (Alan picked the "typical set", 2026-10-08). Display only: real prices must come from
--- Roblox's product info once live sales are approved (docs/systems/economy-and-shop.md).
+-- The Robux prices Alan approved (docs/plan/SHOP-PRICES-PLAN.md, 2026-11-11). Display only: real prices must come
+-- from Roblox's product info once live sales are approved (docs/systems/economy-and-shop.md).
 local PRICE = {
-	xp_boost_15m = 25, xp_boost_30m = 45, xp_boost_60m = 75, xp_boost_180m = 179, xp_boost_300m = 249,
-	paper_boost_15m = 25, paper_boost_30m = 45, paper_boost_60m = 75, paper_boost_180m = 179, paper_boost_300m = 249,
-	paper_pack_1000 = 49, paper_pack_3500 = 149, paper_pack_10000 = 399,
-	permanent_2x_xp = 499, permanent_2x_paper = 499,
+	xp_boost_15m = 25, xp_boost_30m = 45, xp_boost_60m = 79, xp_boost_180m = 199, xp_boost_300m = 299,
+	paper_boost_15m = 25, paper_boost_30m = 45, paper_boost_60m = 79, paper_boost_180m = 199, paper_boost_300m = 299,
+	paper_pack_1500 = 99, paper_pack_5000 = 299, paper_pack_15000 = 799,
+	permanent_2x_xp = 1499, permanent_2x_paper = 999,
 }
 local ROBUX_ICON = "rbxasset://textures/ui/common/robux@3x.png" -- Roblox's own Robux symbol, shipped with the client
 
@@ -42,7 +42,7 @@ function ShopScreen.new(playerGui, api)
 	title.TextXAlignment = Enum.TextXAlignment.Center
 	local warn = words(header, "Note", "Practice only: nothing is really bought.", 0, 66, 800, 44, 34)
 	warn.TextXAlignment, warn.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(170, 30, 30)
-	button(sheet, "Back", Art.mainmenu.strip.red, "Back", 1560, 120, 240, 90, 3, api.back, 50)
+	button(sheet, "Back", Art.mainmenu.strip.red, "Back", 1530, 127, 300, 77, 3, api.back, 50) -- the strip's own shape
 
 	local self = { frame = cover }
 	local shown
@@ -55,8 +55,7 @@ function ShopScreen.new(playerGui, api)
 		local boosts = profile and profile.boosts or {}
 		for c, column in COLUMNS do
 			local x = 165 + (c - 1) * 545
-			local card = image(content, "Card" .. c, Art.ingame.indexCard, x, 235, 500, 180, (c - 2) * 1.5)
-			card.ScaleType = Enum.ScaleType.Stretch
+			local card = image(content, "Card" .. c, Art.ingame.indexCard, x, 225, 500, 202, (c - 2) * 1.5) -- its own shape (1024 x 414)
 			PaperUI.loud(words(card, "Title", column.title, 30, 42, 440, 60, 54)).TextXAlignment = Enum.TextXAlignment.Center
 			local status = ""
 			local forever = column.boost and boosts[column.boost == "xp" and "permanentXP" or "permanentPaper"]
@@ -69,14 +68,15 @@ function ShopScreen.new(playerGui, api)
 			for _, product in Commerce.products do
 				-- Once a boost is forever, its timed versions are hidden (they would do nothing).
 				if column.match(product) and not (forever and product.kind ~= "pass") then
-					-- What you get on the left, the price with the Robux symbol on the right, like Roblox's own shops.
+					-- What you get on the left, the price with the Robux symbol on the right, like Roblox's own shops. The strip
+					-- at its own shape (3.9 x 1), the words between its painted tacks (12-88% across).
 					local strip = button(content, product.key, Art.mainmenu.strip[product.kind == "pass" and "red" or column.strip], "",
-						x + 20, 432 + row * 78, 460, 72, (row % 2 == 0 and -1 or 1), function() api.buy(product.key) end)
-					words(strip, "What", label(product), 34, 6, 250, 60, 38)
+						x + 70, 440 + row * 98, 360, 92, (row % 2 == 0 and -1 or 1), function() api.buy(product.key) end)
+					PaperUI.fitWords(words(strip, "What", label(product), 46, 16, 170, 60, 34), 166)
 					local icon = Instance.new("ImageLabel")
 					icon.Name, icon.Image, icon.BackgroundTransparency, icon.ImageColor3 = "Robux", ROBUX_ICON, 1, Color3.fromRGB(28, 26, 30)
-					icon.Position, icon.Size, icon.Parent = UDim2.fromOffset(300, 18), UDim2.fromOffset(34, 34), strip
-					words(strip, "Price", tostring(PRICE[product.key] or "?"), 338, 6, 100, 60, 40)
+					icon.Position, icon.Size, icon.Parent = UDim2.fromOffset(222, 30), UDim2.fromOffset(32, 32), strip
+					words(strip, "Price", tostring(PRICE[product.key] or "?"), 258, 16, 60, 60, 34)
 					row += 1
 				end
 			end

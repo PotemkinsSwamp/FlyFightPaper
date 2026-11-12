@@ -20,15 +20,15 @@ function Spec.run()
         for _,r in ipairs({"xp","paper"}) do
             for _,m in ipairs({15,30,60,180,300}) do assert(c.byKey[r.."_boost_"..m.."m"].amount==m*60) end
         end
-        for _,n in ipairs({1000,3500,10000}) do assert(c.byKey["paper_pack_"..n].amount==n) end
+        for _,n in ipairs({1500,5000,15000}) do assert(c.byKey["paper_pack_"..n].amount==n) end
         assert(c.byKey.permanent_2x_xp.kind=="pass" and c.byKey.permanent_2x_paper.amount==2)
     end)
-    test("part offers cover exactly the nonstarter catalog parts above level one",function()
+    test("part offers cover exactly the parts that cost Paper (free gear needs none)",function()
         local parts=Catalog.new(require(Root.Generated.Catalog));local starter=assert(Economy.starterOwnership(parts))
         local c=assert(Rules.catalog(Config));local count=0
         for id,definition in pairs(parts.byId) do
             local offer=c.byKey["part_"..id]
-            if not starter[id] and definition.min_level>1 then
+            if not starter[id] and definition.paper_price>0 then
                 count+=1
                 assert(offer and offer.catalogID==id and offer.kind=="developer_product" and offer.benefit=="part_unlock")
                 assert(offer.amount==nil and table.isfrozen(offer))
@@ -133,8 +133,8 @@ function Spec.run()
     end)
     test("typed semantic operations contain no XP for purchased Paper and no client CAS or amount path",function()
         local c=assert(Rules.catalog(Config))
-        local paper=Rules.operation(c.byKey.paper_pack_3500,"mock-purchase:abc",7)
-        assert(paper.kind=="purchasedPaper" and paper.wholePaper==3500 and paper.points==nil and paper.multipliers==nil)
+        local paper=Rules.operation(c.byKey.paper_pack_5000,"mock-purchase:abc",7)
+        assert(paper.kind=="purchasedPaper" and paper.wholePaper==5000 and paper.points==nil and paper.multipliers==nil)
         local duration=Rules.operation(c.byKey.xp_boost_300m,"mock-purchase:def",8)
         assert(duration.kind=="boostIntent" and duration.resource=="xp" and duration.seconds==18000)
         local pass=Rules.operation(c.byKey.permanent_2x_paper,"mock-purchase:ghi",9)

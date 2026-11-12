@@ -1,6 +1,6 @@
 # Shop prices plan
 
-**Status:** draft for Alan's OK (2026-11-11). The shop step from the
+**Status:** approved 2026-11-11 (Alan: "build it, pencil at 1,699"); pack amounts built. Nothing on sale yet. The shop step from the
 [unlock ladder decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md): Paper prices went up a lot on
 2026-11-08 (parts 700-32,000), so the Robux side has to follow. Replaces the Paper pack and early unlock rows of the
 [draft price ladder](../research/PRICING-RESEARCH-2026-10-18.md) once approved. Nothing is on sale either way.
@@ -37,7 +37,8 @@ price at the big pack's rate (about 18.75 Paper a Robux), rounded to a usual Rob
 
 All 29 together: about 8,950 R$ (about $110), close to buying their Paper in big packs. The free weapons (Pellet,
 Popper, Staple, Thumbtack) need no product: their three old ones come out of `config/commerce.json`.
-Choice for Alan: the Pencil at 1,699 (its Paper value; it's the strongest weapon, so a high price keeps "buy the best gun on day one" rare) or capped at 999.
+Alan chose the Pencil at 1,699 (its Paper value; it's the strongest weapon, so a high price keeps "buy the best gun on
+day one" rare).
 
 ## Unchanged
 2x XP / 2x Paper boosts 25 / 45 / 79 / 199 / 299 R$ for 15 / 30 / 60 / 180 / 300 minutes; permanent 2x Paper 999, 2x
@@ -45,7 +46,8 @@ XP 1,499. An hour of 2x Paper gives an average player about 4,650 extra Paper fo
 only if they play: it rewards playing, as before.
 
 ## How it's built (cheap)
-- `config/commerce.json`: the three packs' amounts (keys renamed `paper_pack_small/medium/large`, tests updated).
+- `config/commerce.json`: the three packs' amounts (keys `paper_pack_1500/5000/15000`, tests updated); the Studio practice
+  shop shows these Robux prices.
 - The Robux prices are typed in on Roblox when you create the products (Roblox can lower them by region); I'd write
   you the exact list then. Nothing goes on sale until you create the products and say go.
 - Next, each with its own picture for your OK first: the Hangar's "Unlock now" button (with "a prestige takes this

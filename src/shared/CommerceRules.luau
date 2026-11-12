@@ -10,7 +10,7 @@ for _, resource in ipairs({"xp", "paper"}) do
     end
     expected["permanent_2x_" .. resource] = {kind="pass", benefit="permanent_" .. resource, amount=2}
 end
-for _, amount in ipairs({1000, 3500, 10000}) do
+for _, amount in ipairs({1500, 5000, 15000}) do -- docs/plan/SHOP-PRICES-PLAN.md
     expected["paper_pack_" .. amount] = {kind="developer_product", benefit="paper_balance", amount=amount}
 end
 function Rules.positiveInteger(n)
