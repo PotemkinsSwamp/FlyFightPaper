@@ -93,7 +93,7 @@ Prefer this over new art for a colour change.
 | Featured card crayon | about 36, 79, 230 to 101, 40, 236 | blue to violet with magenta, orange, cyan streaks |
 | Card colours | orange 248,140,4; sky 7,199,247; green 63,201,33; purple 165,49,226 | the shop's loud papers |
 | Part names | 255, 222, 40 | yellow with an ink edge |
-| Picture mat (recommended, not yet approved) | 34, 30, 88 | midnight indigo; see design examples |
+| Shop picture circle (recommended, not yet approved) | 104, 133, 118 | faded chalk green at middle brightness; fold card has no circle (soft shadow); see design examples |
 
 ## 5. Checklist (run on a real screenshot before Alan sees anything)
 
