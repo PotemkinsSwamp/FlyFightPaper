@@ -17,7 +17,8 @@ local Hangar = {}
 -- Studio dev mode: every part counts as owned at the level cap, and "Fly this build" sends the draft straight
 -- to your plane for testing. Nothing here is saved or bought; live servers ignore it.
 local RunService = game:GetService("RunService")
-local dev = RunService:IsStudio()
+-- Not with a fresh test account (workspace DevAccountLevel, docs/workshop/testing.md): it shows what a new player sees.
+local dev = RunService:IsStudio() and workspace:GetAttribute("DevAccountLevel") == nil
 local everything = {}
 for _, list in { Catalog.weapons, Catalog.utilities } do for _, part in list do everything[part.id] = true end end
 for _, list in Catalog.structuresBySlot do for _, part in list do everything[part.id] = true end end
