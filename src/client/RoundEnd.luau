@@ -266,7 +266,8 @@ function RoundEnd.start()
 		state.minePage = 1
 		for k, it in pages do
 			local teamId = teamRound and "team:" .. k or nil
-			local mine = state.mine ~= nil and (not teamRound or state.mine.teamId == teamId)
+			-- Free-for-all: your card is page 1 (page 2 is hidden; the 2x note and level bar hid with it, Alan 2026-11-12).
+			local mine = state.mine ~= nil and (teamRound and state.mine.teamId == teamId or not teamRound and k == 1)
 			if mine then state.minePage = k end
 			heading(it, snap, teamId, false, state.mine and state.mine.place)
 			it.pocket.Visible = mine
