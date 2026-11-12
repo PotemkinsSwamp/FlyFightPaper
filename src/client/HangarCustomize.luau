@@ -369,8 +369,8 @@ function Customize.draw(content, ctx)
 		local head = PaperUI.loud(words(card, "Title", "Not enough Paper", 117, 112, 858, 64, 56))
 		head.TextXAlignment = Enum.TextXAlignment.Center
 		local short = ask.part.paper_price - ask.paper
-		local text = words(card, "Text", string.format("%s costs %s Paper. You have %s, so you need %s more.", ask.part.name,
-			PaperUI.commas(ask.part.paper_price), PaperUI.commas(ask.paper), PaperUI.commas(short)), 117, 178, 858, 96, 42)
+		local text = words(card, "Text", string.format("%s costs %s Paper. You need %s more.", ask.part.name,
+			PaperUI.commas(ask.part.paper_price), PaperUI.commas(short)), 117, 178, 858, 96, 42)
 		text.TextXAlignment, text.TextWrapped = Enum.TextXAlignment.Center, true
 		local function close() state.ask = nil; ctx.render() end
 		button(card, "GetPaper", Assets.mainmenu.strip.blue, "Get Paper", 370 - 160, 312 - 40, 320, 80, -1, function()
