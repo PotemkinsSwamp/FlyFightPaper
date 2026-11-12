@@ -44,7 +44,9 @@ not found. Treat the look-and-feel numbers as starting points to tune in Play.
   one blog, untested); show what you get right on the card.
 
 ## 3. The rules and the fair line (kids)
-Research only, not legal advice; most law was read through law-firm summaries.
+Research only, not legal advice; most law was read through law-firm summaries. Alan expects the main audience not to
+be children ([decision](../decisions/2026-11-11-shop-direction.md)); these rules still apply because younger players
+will be there and Roblox's rules cover everyone.
 - **Must not:** fake scarcity or timers that reset; "sales" that aren't lower than normal; pushy words to minors
   (Roblox's own example: "See Price", not "LAST CHANCE"); random paid items without odds (we have none); urging kids
   to buy or get others to buy; one-press charges or easy accidental buys (the FTC's $245M Epic order, 2022); working

@@ -12,6 +12,9 @@
 - **Starter pack: yes, with a real 3-day timer** (Roblox's own recipe: one purchase only, about 99 R$, 2-5 things, a
   big discount, a small HUD button while it runs). The timer is real time and never resets or comes back
   ([Roblox's rule](https://create.roblox.com/docs/production/monetization)); no pop-up after a loss.
+- **Audience** (Alan): the main audience is probably **not children**, so don't tune everything to kids (looks, words,
+  difficulty). The platform rules still apply to everyone (Roblox's monetization rules, no fake urgency, no random
+  paid items), and younger players will be there too, so the fair-play checklist stays.
 - **Next step:** straight to a concept picture of the shop in our style (Codex picture), no picture board first.
 - Unchanged: prices in the [shop prices plan](../plan/SHOP-PRICES-PLAN.md); offers only for the player's own goal,
   capped, never after a loss or a death, calm words; the research's checklist runs before any design is shown.
