@@ -189,8 +189,10 @@ function Runtime:earnings()
   if event.controllerType=="human" then
    local totals=self.earnedTotals
    self:reward(event.userId,event.factId,{kind="contribution",points=event.points},event.at,function(input)
-    local total=totals[event.actorId] or {paper=0,xp=0};totals[event.actorId]=total
+    local total=totals[event.actorId] or {paper=0,xp=0,missed=0};totals[event.actorId]=total
     total.paper+=event.points*Economy.paper_per_point*input.multipliers.paper
+    -- Paper earned without 2x: the report card's "2x Paper would have given you +X" (true even if a boost ran out mid-match).
+    if input.multipliers.paper==1 then total.missed+=event.points*Economy.paper_per_point end
     total.xp+=event.points*Economy.xp_per_point*input.multipliers.xp
    end)
    self:scorePopup(event)
@@ -524,8 +526,8 @@ function Runtime:queueSettlement()
   if row.controllerType=="human" and not self.settledRows[row.key] then
    local rewards=self.finalRewards
    if row.finalPaper>0 or row.finalXP>0 then self:reward(row.userId,r.id..":bonus:"..row.key,{kind="finalBonus",finalPaper=row.finalPaper,finalXP=row.finalXP},r.endedAt,function(input)
-    rewards[row.key]={paper=row.finalPaper*input.multipliers.paper,xp=row.finalXP*input.multipliers.xp}
-   end) else rewards[row.key]={paper=0,xp=0} end
+    rewards[row.key]={paper=row.finalPaper*input.multipliers.paper,xp=row.finalXP*input.multipliers.xp,missed=input.multipliers.paper==1 and row.finalPaper or 0}
+   end) else rewards[row.key]={paper=0,xp=0,missed=0} end
    if row.qualified then self:reward(row.userId,r.id..":qualification:"..row.key,{kind="qualification",matchId=r.id,activeSeconds=row.activeSeconds,events=row.qualifyingEvents}) end
    self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths}})
    self.settledRows[row.key]=true
@@ -584,6 +586,7 @@ function Runtime:step(dt)
      local earned=self.earnedTotals[private.actorId] or {paper=private.contribution*Economy.paper_per_point,xp=private.contribution*Economy.xp_per_point}
      local final=self.finalRewards[private.key] or {paper=private.finalPaper,xp=private.finalXP}
      copy.paper=math.floor(earned.paper+final.paper)
+     copy.missedPaper=math.floor((earned.missed or earned.paper)+(final.missed or final.paper)) -- (not paid yet: counted as 1x)
      copy.xp=math.floor(earned.xp+final.xp)
     end
    end

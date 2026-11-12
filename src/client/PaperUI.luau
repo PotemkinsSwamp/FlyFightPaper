@@ -323,4 +323,29 @@ function PaperUI.popIn(cover, pieces)
 	end)
 end
 
+-- A green strip with words, Roblox's own Robux symbol and a price, centred: "Unlock now (R) 49" (Hangar), "2x Paper (R) 79"
+-- (report card).
+function PaperUI.robuxButton(parent, name, x, y, w, h, label, price, size, callback)
+	local button = PaperUI.button(parent, name, require(game.ReplicatedStorage.FlyFightPaper.Shared.UIAssets).mainmenu.strip.green, "", x, y, w, h, -1, callback, size)
+	local row = Instance.new("Frame")
+	row.Name, row.BackgroundTransparency, row.Size, row.ZIndex = "Price", 1, UDim2.fromScale(1, 1), button.ZIndex
+	local list = Instance.new("UIListLayout")
+	list.FillDirection, list.HorizontalAlignment, list.VerticalAlignment = Enum.FillDirection.Horizontal, Enum.HorizontalAlignment.Center, Enum.VerticalAlignment.Center
+	list.Padding, list.SortOrder, list.Parent = UDim.new(0, size * 0.25), Enum.SortOrder.LayoutOrder, row
+	for i, text in { label, false, tostring(price) } do
+		local piece
+		if text then
+			piece = PaperUI.loud(PaperUI.words(row, "Word" .. i, text, 0, 0, 0, h, size))
+			piece.AutomaticSize = Enum.AutomaticSize.X
+		else
+			piece = Instance.new("ImageLabel")
+			piece.Name, piece.Image, piece.BackgroundTransparency, piece.ImageColor3 = "Robux", "rbxasset://textures/ui/common/robux@3x.png", 1, PaperUI.INK
+			piece.Size = UDim2.fromOffset(size * 0.9, size * 0.9)
+		end
+		piece.LayoutOrder, piece.Parent = i, row
+	end
+	row.Parent = button
+	return button
+end
+
 return PaperUI

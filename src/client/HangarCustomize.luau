@@ -44,7 +44,6 @@ function Customize.unlockRobux(paperPrice)
 	for _, row in UNLOCK_ROBUX do if paperPrice <= row[1] then return row[2] end end
 	return 1699
 end
-local ROBUX_ICON = "rbxasset://textures/ui/common/robux@3x.png" -- Roblox's own Robux symbol
 local LOCKED_TINT = Color3.fromRGB(175, 170, 165) -- a locked card: the same paper, greyed
 
 -- A padlock drawn in ink (a shackle ring over a rounded body), `h` tall, its top left at (x, y).
@@ -64,29 +63,7 @@ local function padlock(parent, x, y, h)
 	body.Parent = parent
 end
 
--- A green strip with words, the Robux symbol and a price, centred: "Unlock now (R) 49".
-local function robuxButton(parent, name, x, y, w, h, label, price, size, callback)
-	local button = PaperUI.button(parent, name, Assets.mainmenu.strip.green, "", x, y, w, h, -1, callback, size)
-	local row = Instance.new("Frame")
-	row.Name, row.BackgroundTransparency, row.Size, row.ZIndex = "Price", 1, UDim2.fromScale(1, 1), button.ZIndex
-	local list = Instance.new("UIListLayout")
-	list.FillDirection, list.HorizontalAlignment, list.VerticalAlignment = Enum.FillDirection.Horizontal, Enum.HorizontalAlignment.Center, Enum.VerticalAlignment.Center
-	list.Padding, list.SortOrder, list.Parent = UDim.new(0, size * 0.25), Enum.SortOrder.LayoutOrder, row
-	for i, text in { label, false, tostring(price) } do
-		local piece
-		if text then
-			piece = PaperUI.loud(PaperUI.words(row, "Word" .. i, text, 0, 0, 0, h, size))
-			piece.AutomaticSize = Enum.AutomaticSize.X
-		else
-			piece = Instance.new("ImageLabel")
-			piece.Name, piece.Image, piece.BackgroundTransparency, piece.ImageColor3 = "Robux", ROBUX_ICON, 1, PaperUI.INK
-			piece.Size = UDim2.fromOffset(size * 0.9, size * 0.9)
-		end
-		piece.LayoutOrder, piece.Parent = i, row
-	end
-	row.Parent = button
-	return button
-end
+local robuxButton = PaperUI.robuxButton
 
 -- Everything under `root` drawn above the binder (the pop-up).
 local function lift(root, z)

@@ -13,6 +13,7 @@ local PaperUI = require(script.Parent.PaperUI)
 local Cutscene = require(script.Parent.WinnersCutscene)
 local WinnersSound = require(script.Parent.WinnersSound)
 local LevelBar = require(script.Parent.LevelBar)
+local ShopScreen = require(script.Parent.ShopScreen)
 
 local MODES = { { "FFA", "Free-for-all", "blue" }, { "TDM", "Team dogfight", "pink" }, { "CONTROL", "Airspace Control", "green" } }
 local KEYS = { [Enum.KeyCode.One] = 1, [Enum.KeyCode.Two] = 2, [Enum.KeyCode.Three] = 3 }
@@ -124,6 +125,18 @@ function RoundEnd.start()
 		return it
 	end
 	local pages = { makePage("Page1"), makePage("Page2") }
+	-- After a match (docs/plan/SHOP-MONEY-PLAN.md, Alan 2026-11-12): a sticky note by your card with the Paper 2x would
+	-- have added this match (the server counts the Paper you earned without 2x) and a 2x Paper button. Only while no 2x
+	-- Paper is running, and not after 3 buys today (the calm rule). It hangs off your own page: beside it in a
+	-- free-for-all, under it in a team round.
+	local offer = image(card, "PaperOffer", UIArt.ingame.stickyWide, 0, 0, 720, 254, 1.5)
+	offer.Visible = false
+	local offerLine = words(offer, "Line", "2x Paper would have given you", 40, 76, 590, 38, 32)
+	local offerAmount = PaperUI.loud(words(offer, "Amount", "", 40, 112, 590, 52, 48))
+	offerLine.TextXAlignment, offerAmount.TextXAlignment = Enum.TextXAlignment.Center, Enum.TextXAlignment.Center
+	PaperUI.robuxButton(offer, "Buy", 150, 168, 420, 58, "2x Paper, 1 hour", ShopScreen.PRICE.paper_boost_60m, 30, function()
+		Root.RoundAction:FireServer("mockProduct", "paper_boost_60m")
+	end)
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -147,7 +160,7 @@ function RoundEnd.start()
 		most.MaxTextSize, most.Parent = 50, strips[i].Label
 	end
 
-	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, mine = nil, minePage = 1, cardAt = 0 }
+	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, boosts = nil, mine = nil, minePage = 1, cardAt = 0 }
 	local function show(part) for _, child in { banner, card, vote } do child.Visible = child == part or (type(part) == "table" and table.find(part, child) ~= nil) end end
 
 	local TEAM_NAMES = { ["team:1"] = "Red team", ["team:2"] = "Blue team" }
@@ -215,6 +228,7 @@ function RoundEnd.start()
 		end
 		local teamRound = snap.mode ~= "FFA" and snap.teams ~= nil
 		layOut("live", (teamRound or #list > ROWS) and 2 or 1)
+		offer.Visible = false
 		for k, it in pages do
 			local teamId = teamRound and "team:" .. k or nil
 			note(it, "", false)
@@ -269,6 +283,14 @@ function RoundEnd.start()
 				fillRows(it, list, function(p) return p.place end, gradeOf)
 			end
 		end
+		local boosts, missed = state.boosts, state.mine and state.mine.missedPaper or 0
+		offer.Visible = missed > 0 and boosts ~= nil and not boosts.permanentPaper and (boosts.paperSeconds or 0) <= 0
+			and (player:GetAttribute("BuysToday") or 0) < 3
+		if offer.Visible then
+			offerAmount.Text = "+" .. PaperUI.commas(missed) .. " more Paper!"
+			offer.Parent = pages[state.minePage].page
+			offer.Position = teamRound and UDim2.fromOffset(320, 1042) or UDim2.fromOffset(-380, 873)
+		end
 	end
 	-- Your level bar fills from where you were before this round to where you are now.
 	RunService.RenderStepped:Connect(function()
@@ -283,7 +305,7 @@ function RoundEnd.start()
 		local t = math.clamp((os.clock() - state.cardAt - 0.5) / 1.5, 0, 1)
 		xpBar.set(before + (after - before) * (1 - (1 - t) ^ 2))
 	end)
-	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) state.profileXP = profile.xp end)
+	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) state.profileXP, state.boosts = profile.xp, profile.boosts end)
 
 	local function winnerLine(snap)
 		local result = snap.result or {}

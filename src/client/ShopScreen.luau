@@ -30,6 +30,7 @@ local PRICE = {
 	paper_pack_1500 = 99, paper_pack_5000 = 299, paper_pack_7500 = 549, paper_pack_15000 = 799, paper_pack_40000 = 1999,
 	permanent_2x_xp = 1499, permanent_2x_paper = 999,
 }
+ShopScreen.PRICE = PRICE -- (the report card's 2x Paper button)
 -- Value stickers (true per Robux: bigger packs and longer boosts give more for each Robux).
 -- Paper packs per Robux: 40,000 20.0, 15,000 18.8, 5,000 16.7, 1,500 15.2, the 7,500 decoy 13.7 (SHOP-MONEY-PLAN).
 local BADGE = { paper_pack_15000 = "Good Value", paper_pack_40000 = "Most Value",
@@ -150,13 +151,16 @@ function ShopScreen.new(playerGui, api)
 	-- ===== Tabs beside the window: jump to a section; the one you're in lights up =====
 	local TABS = { { "Featured", "tabStar", 175, 345 }, { "Passes", "tabTicket", 365, 520 }, { "Boosts", "tabClock", 540, 695 }, { "Paper", "tabPaper", 720, 880 } }
 	local sections = {} -- tab name -> top of its section in the scroll (sheet units), filled by each redraw
+	-- CanvasPosition is in screen pixels, not sheet units: the sheet's UIScale shrinks a small window's sheet (2026-11-12:
+	-- the Paper tab scrolled past its heading and top row).
+	local function perUnit() return scroll.AbsoluteSize.Y > 0 and scroll.AbsoluteSize.Y / scroll.Size.Y.Offset or 1 end -- (1: not drawn yet)
 	local tabs = {}
 	for _, tab in TABS do
 		local name, icon, y0, y1 = tab[1], tab[2], tab[3], tab[4]
 		local paper = press(board, "Tab" .. name, Art.tabCream, 1450, y0, 1650, y1, function()
 			local top = sections[name]
 			if top then
-				TweenService:Create(scroll, TweenInfo.new(0.35, Enum.EasingStyle.Quad), { CanvasPosition = Vector2.new(0, top) }):Play()
+				TweenService:Create(scroll, TweenInfo.new(0.35, Enum.EasingStyle.Quad), { CanvasPosition = Vector2.new(0, top * perUnit()) }):Play()
 			end
 		end)
 		fit(pic(paper, "Icon", Art[icon], 40, 15, 160, 105))
@@ -165,7 +169,7 @@ function ShopScreen.new(playerGui, api)
 		tabs[name] = paper
 	end
 	local function scrolled()
-		local y, lit, best = scroll.CanvasPosition.Y, "Featured", -1
+		local y, lit, best = scroll.CanvasPosition.Y / perUnit(), "Featured", -1
 		local bottom = y >= scroll.CanvasSize.Y.Offset - scroll.Size.Y.Offset - 2
 		for name, top in sections do
 			-- The last section you've scrolled to (at the very bottom: the last one, even if its top can't reach the top).
