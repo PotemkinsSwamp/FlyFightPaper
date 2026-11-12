@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-12: [Double this match on the report card (25% off its worth, Paper and XP); cheaper 2x boosts](2026-11-12-double-this-match.md)
 - 2026-11-12: [Fold card in the Hangar (part, level, price, Paper first then Robux; once per part a session); shop pictures on faded chalk green; fold card soft shadow; Today's parts timer on the server clock](2026-11-12-fold-card-and-shop-mats.md)
 - 2026-11-12: [Paper jar rules: breaks at 3,000 Paper with a "wait for more" warning; 2x fills it too; Today's parts as built](2026-11-12-paper-jar-rules.md)
 - 2026-11-12: [Personal shop picks: A, B, F, G, H, J, N, P; offers after a fold or loss when they fit; funnel the buying](2026-11-12-personal-shop-picks.md)
