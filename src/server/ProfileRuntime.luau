@@ -111,6 +111,9 @@ function Runtime:load(player)
    for _,list in ipairs({self.catalog.weapons,self.catalog.utilities}) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
    for _,list in pairs(self.catalog.structuresBySlot) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
    data.xpMilli=math.max(data.xpMilli,60000000);data.paperMilli=math.max(data.paperMilli,100000000)
+   -- Its unlocks count as opened (Alan 2026-11-12: the unsaved test account opened a 34-item backpack every Play).
+   -- Test the backpack with the DevUnlock / DevLevelUp attributes (UnlockMoment.luau, its Studio tests).
+   data.unlocksSeen=math.max(data.unlocksSeen,Economy.levelForXP(data.xpMilli) or 1)
    attached=self.service:view(e.account)
   end
   e.profile=profile;e.loaded=true;e.snapshot=attached.value;e.lastSavedVersion=profile.LastSavedData and profile.LastSavedData.version or -1

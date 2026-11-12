@@ -331,7 +331,12 @@ function Unlock.start(api)
 	end
 	Unlock.play = play
 
-	skip = PaperUI.button(bottom, "Skip", Art.buttonCream, "Skip", 1395, 585, 150, 58, -1, function() popOut() end, 34)
+	-- Skip closes the whole backpack; everything in it counts as seen (Alan 2026-11-12: not one Later per item).
+	skip = PaperUI.button(bottom, "Skip", Art.buttonCream, "Skip", 1395, 585, 150, 58, -1, function()
+		if stage ~= "zip" then return end
+		if not testing and level > seenLocal then seenLocal = level; api.seen(level) end
+		close()
+	end, 34)
 	local function step(d)
 		if stage ~= "card" or #items < 2 then return end
 		index = (index - 1 + d) % #items + 1
