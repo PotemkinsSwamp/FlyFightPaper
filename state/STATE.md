@@ -1,17 +1,22 @@
-# Since Alan last checked (2026-11-11)
-- **You published** (guns, phone words, SPEED MATCH, Clear all, unlock moment) and shut down old servers.
-- **Results card is now a school report card** (built, not published): same facts, plus a red-pen grade per pilot,
-  your place circled (team rounds: team score) and a teacher's note. Seen at phone size in Studio ("looks good").
-- **Shop prices set** (your OK): Paper packs 1,500 / 5,000 / 15,000 for 99 / 299 / 799 R$; each part's Robux price
-  from its Paper price (49 to 1,699, Pencil 1,699). Nothing on sale until you create the products on Roblox.
+# Since Alan last checked (2026-11-12)
+- **The shop is a Roblox-style shop window in our paper look** (built in Studio, not published): chalkboard body,
+  title bar, tabs, Featured starter pack (preview), free gift (preview), passes, Paper packs, boosts; rays, stars and
+  the rainbow sticker move. You checked it in Play: "it works". 48 pictures uploaded.
+- **Studio:** your test account no longer opens the unlock backpack every Play. `DevAccountLevel` / `DevAccountPaper`
+  on Workspace = a fresh account (now 12 / 3,000); delete both for the everything-unlocked one.
+- Earlier: report card and new shop prices built, not published.
 
 # Now: finish the game for the beta
-Next: (1) Shop ([research](../docs/research/SHOP-RESEARCH-2026-11-11.md) done; you chose a store counter, sticker album, daily prize box,
-starter pack with a real 3-day timer): a concept picture for your OK, then "Unlock now" and offers.
+Next: (1) Personalised shop research ("an algorithm": the shop changes with the player; includes personal discounts
+and offers after a fold, you decide after). (2) Hangar buying: a locked look, "Unlock now" for Robux, pop-ups instead
+of the small bottom line, bigger words ([your notes](../docs/playtests/2026-11-12-shop-window-and-hangar-buying.md)).
+Then the starter pack price, the daily gift and Gift a friend, each with a note for your OK.
 Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
 Not seen yet: a real level-up in a match; on a phone the level-up note may sit over a match tip. Report card: PC size.
 
 Decisions to review
+Shop: chalk headings crisp white with a dark outline (the crayon edge blurred them); parts in cards sit still at
+  their best angle and bob; starter pack preview = Swept Wings, 1,500 Paper, 1 hour 2x XP for 99 R$ (price not OK'd).
 Report card: team cards moved apart a little (they touched); winners' note just "Red team wins!" (scores are in the
   boxes); Tab's live standings use the same card without grades or note.
 Unlock: the red count sticker on the in-match Menu button is gone (the backpack plays on the main menu only now);
@@ -44,17 +49,11 @@ Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st
 Match Tips: 6 s on screen, 20 s apart. Walls stay soft 2 s into a new round. Classroom chatter 0.08.
 Combat School Pals, Range targets and Hangar behaviour: as listed on docs/systems/tutorial.md and planes-and-hangar.md.
 Eraser lock stays on after firing while the target stays in the circle.
-Early part unlocks: one Roblox product per part (you'd create 30); a part you own flies at ANY level.
-Scrape wobble 10 degrees, crash angle 25; stapler 17.5/s; fan 15 Lift/s, updraft 30; dive with Lift 1.25x max.
-Duct props see-through; veterans flee to the ducts 40% when shot at. Chalk eraser cloud hides planes inside it.
-Zone 680-840 across; bots on the zone 30/60/85%. Points: assist share rounded to 5 (10-80); outside-zone fold 40%.
 
 Waiting on Alan
-- Publish when you like (the report card). In a team round: the losing team's top scorer should get a good grade
-  (fixed after the Studio check showed a C for the round's best; not re-checked in Play).
+- Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
 - On PC: end a free-for-all and a team round; check the report card's words all sit inside their boxes.
 - Save to File when you want the new weapon models in the place file (your go).
 - In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
 - Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings.
-- Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go). Prices: draft ladder in
-  docs/research/PRICING-RESEARCH-2026-10-18.md.
+- Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go).
