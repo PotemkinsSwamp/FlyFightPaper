@@ -10,8 +10,7 @@
 Done: personal shop research; you picked A, B, F, G, H, J, N, P, offers after a fold when they fit, and a funnel
 ([decision](../docs/decisions/2026-11-12-personal-shop-picks.md)). Built in Studio, not committed: Hangar buying (locked
 cards, Unlock now, Not enough Paper pop-up, bigger words). Next: the money plan below, then Gift a friend.
-Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note.
-Not seen yet: a real level-up in a match; on a phone the level-up note may sit over a match tip. Report card: PC size.
+Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard (bots can't test it). Phones: the lesson goal note's phone shapes still use the old square note. Not seen yet: a real level-up in a match; on a phone the level-up note may sit over a match tip. Report card: PC size.
 
 Decisions to review
 Shop: chalk headings crisp white with a dark outline (the crayon edge blurred them); parts in cards sit still at
