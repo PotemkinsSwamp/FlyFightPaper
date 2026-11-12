@@ -217,6 +217,14 @@ mistake would be easy to make twice.
   view only redraws while the mouse moves over it. Point the Play camera with the player attribute `DevCamera`
   (setting the camera directly gets overwritten). Judge sun shadows only with Studio in front at graphics level 21;
   Play quality resets to Automatic each start. For screenshots, hide every PlayerGui ScreenGui, then set `DevView`.
+- **Edit-mode `screen_capture` shows only the 3D world (2026-11-12):** no ScreenGuis (CoreGui ones neither) and no
+  ViewportFrames, even inside a SurfaceGui (the SurfaceGui's own frames do show). To picture a part as a menu shows
+  it without Play: build it in the world far from the map, camera at the picture's own angle (pass
+  `camera_position`/`look_at_position`; a scripted roll is lost), post effects off, shoot it on a black then a white
+  SurfaceGui sign (LightInfluence 0) and cut it out from the pair. The first shot after building can miss new pieces:
+  take a throwaway shot first. White comes out 223 (tone curve: 0, 8, 31, 62, 97, 130, 158, 181, 199, 213, 223 for
+  0 to 255 in tenths); undo it before cutting out. Put the camera, field of view and effects back after
+  ([design examples](design-examples.md)).
 - **Getting pictures when Studio won't draw** (2026-10-15): a PowerShell `AppActivate` isn't enough, and
   `screen_capture` still timed out even with Studio in front. What worked (desktop control, Alan's OK): click Studio's
   title bar so it draws, point the Edit camera by script (`workspace.CurrentCamera`, Scriptable, CFrame), then
