@@ -161,6 +161,16 @@ function PaperUI.crayon(label)
 	end)
 	return label
 end
+-- 18500 -> "18,500".
+function PaperUI.commas(n)
+	local s = tostring(n)
+	while true do
+		local next, k = s:gsub("^(-?%d+)(%d%d%d)", "%1,%2")
+		s = next
+		if k == 0 then return s end
+	end
+end
+
 -- Words that grab attention (buttons, titles, names) get the full style C.
 function PaperUI.loud(label)
 	label:SetAttribute("Loud", true)

@@ -5,7 +5,13 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-11-11)
+## Where it stands (2026-11-12)
+**Hangar buying, built, not yet seen on screen (Alan's notes 2026-11-12, [playtest](../playtests/2026-11-12-shop-window-and-hangar-buying.md)).**
+A part above your level is greyed with a drawn padlock and "Level 20"; one you can buy shows "3,500 Paper"; card words
+are bigger (gear cards show size and weight only). Above your level, "Unlock now" with the part's Robux price (from
+`Customize.unlockRobux`, the approved table) replaces Buy. Buy without enough Paper opens a "Not enough Paper" note over
+the sheet with Get Paper (the shop) and Unlock now. A card click clears the last buy's reply. Waits for Alan's look.
+
 **Guns touch the plane (Alan 2026-11-11: they floated).** Every gun hangs by its highest point (`Aircraft` `topOf`):
 on the body pair from the wing root (`ROOT_UNDER`, per wing set), on the wing spots from the wing (`Mount1`/`Mount2`,
 `tools/art/plane_pieces.py`), and a crowded gun shrinks toward its top. The pellet tube keeps plane A's spot through the

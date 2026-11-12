@@ -27,13 +27,16 @@ local ROBUX_ICON = "rbxasset://textures/ui/common/robux@3x.png" -- Roblox's own 
 local PRICE = {
 	xp_boost_15m = 25, xp_boost_30m = 45, xp_boost_60m = 79, xp_boost_180m = 199, xp_boost_300m = 299,
 	paper_boost_15m = 25, paper_boost_30m = 45, paper_boost_60m = 79, paper_boost_180m = 199, paper_boost_300m = 299,
-	paper_pack_1500 = 99, paper_pack_5000 = 299, paper_pack_15000 = 799,
+	paper_pack_1500 = 99, paper_pack_5000 = 299, paper_pack_7500 = 549, paper_pack_15000 = 799, paper_pack_40000 = 1999,
 	permanent_2x_xp = 1499, permanent_2x_paper = 999,
 }
 -- Value stickers (true per Robux: bigger packs and longer boosts give more for each Robux).
-local BADGE = { paper_pack_5000 = "Good Value", paper_pack_15000 = "Most Value",
+-- Paper packs per Robux: 40,000 20.0, 15,000 18.8, 5,000 16.7, 1,500 15.2, the 7,500 decoy 13.7 (SHOP-MONEY-PLAN).
+local BADGE = { paper_pack_15000 = "Good Value", paper_pack_40000 = "Most Value",
 	paper_boost_180m = "Good Value", paper_boost_300m = "Most Value", xp_boost_180m = "Good Value", xp_boost_300m = "Most Value" }
-local PACK_ICON = { paper_pack_1500 = "iconPaperSmall", paper_pack_5000 = "iconPaperPile", paper_pack_15000 = "iconPaperBox" }
+local PACK_ICON = { paper_pack_1500 = "iconPaperSmall", paper_pack_5000 = "iconPaperPile", paper_pack_7500 = "iconPaperPile",
+	paper_pack_15000 = "iconPaperBox", paper_pack_40000 = "iconStack" }
+local DAILY = require(Root.Generated.Economy).daily_gift -- the 7-day gift row (nil until its save rules are in)
 -- How a real part is shown in a card, by kind: { turn, tilt } in degrees. Flat parts from nearly above, the rest at a
 -- three-quarter angle. An item can give its own `pose` instead.
 local POSE = { wings = { 0, -65 }, tail = { 0, -60 }, default = { 35, -25 } }
@@ -41,14 +44,7 @@ local POSE = { wings = { 0, -65 }, tail = { 0, -60 }, default = { 35, -25 } }
 local STARTER = { price = 99, worth = 227, seconds = (2 * 24 + 14) * 3600 + 5 * 60,
 	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockStar", label = "1 hour\n2x XP" } } } -- Alan 2026-11-12: 2x XP, not 2x Paper
 
-local function commas(n)
-	local s = tostring(n)
-	while true do
-		local next, k = s:gsub("^(-?%d+)(%d%d%d)", "%1,%2")
-		s = next
-		if k == 0 then return s end
-	end
-end
+local commas = PaperUI.commas
 
 local function duration(seconds)
 	local minutes = seconds // 60
@@ -261,7 +257,8 @@ function ShopScreen.new(playerGui, api)
 		say(card, "Limited", "Limited time!", 380, 70, 645, 110, 36, { color = WHITE, outline = INK })
 		pic(card, "TimerPaper", Art.labelDark, 945, 18, 1220, 75)
 		local timer = say(card, "Timer", "", 945, 18, 1220, 75, 40, { color = WHITE })
-		local ends = os.time() + STARTER.seconds -- preview: a real timer counts from the first offer, saved (not built yet)
+		-- The real timer: from the first time the player came in, saved (StarterPackEnds); Studio before the save rules: a preview.
+		local ends = game.Players.LocalPlayer:GetAttribute("StarterPackEnds") or os.time() + STARTER.seconds
 		move(timer, "timer", 0, { ends = ends })
 		for i, item in STARTER.items do
 			local x0 = 310 + (i - 1) * 185
@@ -299,12 +296,30 @@ function ShopScreen.new(playerGui, api)
 		cross.Position, cross.Size, cross.Rotation, cross.Parent = UDim2.fromScale(0.5, 0.55), UDim2.new(0.75, 0, 0, 6 * K), -6, worth
 		ticks(card, 1160, 130, 1205, 180, 30, 2.2)
 		gift(card, 875, 188, 965, 280)
-		buy(card, "Buy", 977, 185, 1217, 295, STARTER.price, 74, function() preview("The starter pack comes next, after you OK what's in it.") end)
+		buy(card, "Buy", 977, 185, 1217, 295, STARTER.price, 74, function() api.buy("starter_pack") end)
 		return y + 380
 	end
 
+	-- "100 Paper" / "15 min 2x XP"
+	local function giftWords(reward)
+		if reward.paper then return commas(reward.paper) .. " Paper" end
+		local seconds = reward.xp_seconds or reward.paper_seconds
+		return math.floor(seconds / 60) .. " min 2x " .. (reward.xp_seconds and "XP" or "Paper")
+	end
+	local function giftIcon(reward, day)
+		if day == 7 then return Art.iconGiftBox end
+		if reward.xp_seconds then return Art.iconClockStar elseif reward.paper_seconds then return Art.iconClockPaper end
+		return reward.paper <= 150 and Art.iconPaperSmall or Art.iconPaperPile
+	end
+
+	-- The free daily gift (docs/plan/SHOP-MONEY-PLAN.md): today's gift and Claim on the card, the week's 7 gifts in a
+	-- row under it (claimed ones ticked). A missed day doesn't reset the row; the server keeps the count.
 	local function freeGift(y)
 		heading(y, "FREE GIFT")
+		local player = game.Players.LocalPlayer
+		local rewards = DAILY and DAILY.rewards
+		local day = player:GetAttribute("DailyGiftNext") or 1
+		local ready = player:GetAttribute("DailyGiftReady") ~= false
 		local cx, cy = 175 - 118, y + 48
 		local card = Instance.new("Frame")
 		card.Name, card.BackgroundTransparency, card.Position, card.Size = "FreeGift", 1, UDim2.fromOffset(cx * K, cy * K), UDim2.fromOffset(1160 * K, 120 * K)
@@ -314,12 +329,43 @@ function ShopScreen.new(playerGui, api)
 		ticks(card, 60, 15, 110, 80, -90, 0.5)
 		move(fit(pic(card, "Box", Art.iconGiftBox, 125, -8, 285, 122)), "bob", 0.8)
 		say(card, "Line1", "Free daily gift", 300, 8, 700, 55, 42, { loud = true })
-		say(card, "Line2", "Today: 150 Paper", 300, 55, 700, 102, 42, { loud = true })
+		say(card, "Line2", rewards and ((ready and "Today: " or "Next: ") .. giftWords(rewards[day])) or "Today: 150 Paper", 300, 55, 700, 102, 42, { loud = true })
 		ticks(card, 690, 25, 740, 90, 90, 1.4)
-		local claim = press(card, "Claim", Art.claimGreen, 820, 15, 1115, 107, function() preview("The daily gift comes next, after you OK how much it gives.") end)
-		say(claim, "Words", "Claim!", 0, 0, 295, 92, 64, { loud = true })
-		move(claim, "pulse")
-		return y + 165
+		if ready then
+			local claim = press(card, "Claim", Art.claimGreen, 820, 15, 1115, 107, function()
+				if rewards then api.claimGift() else preview("The daily gift's saving comes next.") end
+			end)
+			say(claim, "Words", "Claim!", 0, 0, 295, 92, 64, { loud = true })
+			move(claim, "pulse")
+		else -- the time to the next gift, on the dark label the starter pack's timer uses
+			pic(card, "WaitPaper", Art.labelDark, 820, 22, 1115, 100)
+			local wait = say(card, "Wait", "", 820, 22, 1115, 100, 40, { color = WHITE })
+			move(wait, "timer", 0, { ends = os.time() + (player:GetAttribute("DailyGiftSecondsLeft") or 0), short = true })
+		end
+		if not rewards then return y + 165 end
+		-- The week: 7 squares on the board under the card.
+		local top = y + 48 + 132
+		for d, reward in rewards do
+			local x0 = 57 + (d - 1) * 166
+			local square = pic(content, "Day" .. d, Art.itemSquare, x0, top, x0 + 156, top + 168)
+			say(square, "Day", "Day " .. d, 0, 6, 156, 42, 28, { loud = true })
+			move(fit(pic(square, "Icon", giftIcon(reward, d), 30, 44, 126, 116)), "bob", d * 0.5)
+			say(square, "Gift", giftWords(reward), 6, 118, 150, 160, 24, { loud = true })
+			if d < day then -- claimed this week: faded, with a green crayon tick
+				square.ImageTransparency = 0.35
+				for _, stroke in { { 0.36, 0.62, 0.25, 45 }, { 0.6, 0.5, 0.55, -55 } } do
+					local line = Instance.new("Frame")
+					line.Name, line.AnchorPoint, line.BorderSizePixel = "Tick", Vector2.new(0.5, 0.5), 0
+					line.Position, line.Size = UDim2.fromScale(stroke[1], stroke[2]), UDim2.new(stroke[3], 0, 0, 12 * K)
+					line.Rotation, line.BackgroundColor3, line.ZIndex = stroke[4], Color3.fromRGB(40, 160, 60), 3
+					Instance.new("UICorner", line).CornerRadius = UDim.new(0.5, 0)
+					line.Parent = square
+				end
+			elseif d == day and ready then
+				move(square, "pulse")
+			end
+		end
+		return top + 168 + 20
 	end
 
 	local function passes(y, boosts)
@@ -348,25 +394,40 @@ function ShopScreen.new(playerGui, api)
 
 	local function paperPacks(y)
 		heading(y, "PAPER")
-		local i = 0
+		-- Biggest first, so the first price seen is the big one; the 7,500 decoy sits beside the 15,000 it sells
+		-- (docs/plan/SHOP-MONEY-PLAN.md). Three to a row; a short last row is centred.
+		local packs = {}
 		for _, product in Commerce.products do
-			if product.benefit == "paper_balance" then
-				i += 1
-				local x0 = 22 + (i - 1) * 411
-				local card = pic(content, product.key, Art.cardPackOrange, x0, y + 55, x0 + 405, y + 395)
-				move(pic(card, "Rays", Art.rays, 55, 8, 355, 218), "spin", i)
-				move(fit(pic(card, "Icon", Art[PACK_ICON[product.key] or "iconPaperSmall"], 105, 58, 310, 205)), "bob", i)
-				pic(card, "AmountPaper", Art.labelDark, 55, 205, 360, 253)
-				say(card, "Amount", "+" .. commas(product.amount) .. " Paper", 55, 205, 360, 253, 40, { color = WHITE })
-				gift(card, 55, 260, 130, 330)
-				buy(card, "Buy", 143, 257, 355, 330, PRICE[product.key], 60, function() api.buy(product.key) end)
-				if BADGE[product.key] then
-					local most = BADGE[product.key] == "Most Value"
-					sticker(card, BADGE[product.key], most and 93 or 22, most and -10 or -8, most and 323 or 252, most and 55 or 70, 40, -6)
-				end
+			if product.benefit == "paper_balance" then table.insert(packs, product) end
+		end
+		table.sort(packs, function(a, b) return a.amount > b.amount end)
+		local used = string.split(game.Players.LocalPlayer:GetAttribute("FirstBuysUsed") or "", ",")
+		for i, product in packs do
+			local row, col = (i - 1) // 3, (i - 1) % 3
+			local inRow = math.min(3, #packs - row * 3)
+			local x0, top = 22 + col * 411 + (3 - inRow) * 411 / 2, y + 55 + row * 350
+			-- The first buy of each pack gives double (the server decides; this only shows it).
+			local first = not table.find(used, product.key)
+			local card = pic(content, product.key, Art.cardPackOrange, x0, top, x0 + 405, top + 340)
+			move(pic(card, "Rays", Art.rays, 55, 8, 355, 218), "spin", i)
+			move(fit(pic(card, "Icon", Art[PACK_ICON[product.key] or "iconPaperSmall"], 105, 58, 310, 205)), "bob", i)
+			pic(card, "AmountPaper", Art.labelDark, 55, 205, 360, 253)
+			say(card, "Amount", "+" .. commas(product.amount * (first and 2 or 1)) .. " Paper", 55, 205, 360, 253, 40, { color = WHITE })
+			gift(card, 55, 260, 130, 330)
+			buy(card, "Buy", 143, 257, 355, 330, PRICE[product.key], 60, function() api.buy(product.key) end)
+			if first then
+				local burst = pic(card, "FirstBuy", Art.burstNew, -12, -18, 153, 94, -10)
+				say(burst, "Words1", "First buy", 0, 16, 165, 56, 28, { loud = true })
+				say(burst, "Words2", "2x!", 0, 48, 165, 98, 40, { loud = true })
+				move(burst, "wobble")
+			end
+			if BADGE[product.key] then
+				local most = BADGE[product.key] == "Most Value"
+				local x = first and 165 or (most and 93 or 22) -- beside the First buy burst, never under it
+				sticker(card, BADGE[product.key], x, most and -10 or -8, x + (most and 230 or 230), most and 55 or 70, 40, -6)
 			end
 		end
-		return y + 405
+		return y + 55 + math.ceil(#packs / 3) * 350
 	end
 
 	local function boostRows(y, boosts)
@@ -438,7 +499,8 @@ function ShopScreen.new(playerGui, api)
 				inst.Position = UDim2.fromScale(-0.2 + 1.4 * math.clamp((t % 4) / 1.2, 0, 1), 0.5)
 			elseif m.kind == "timer" then
 				local left = math.max(0, m.ends - os.time())
-				inst.Text = string.format("%dd %dh %02dm", left // 86400, left % 86400 // 3600, left % 3600 // 60)
+				inst.Text = m.short and string.format("%dh %02dm", left // 3600, left % 3600 // 60)
+					or string.format("%dd %dh %02dm", left // 86400, left % 86400 // 3600, left % 3600 // 60)
 			end
 		end
 		if #rainbow > 0 then -- "Most Value": the rainbow's colours slide along
@@ -456,13 +518,16 @@ function ShopScreen.new(playerGui, api)
 	end)
 
 	local self = { frame = cover }
-	local shown
+	local shown, lastProfile
 	function self.update(player, profile)
+		lastProfile = profile
 		showNote()
 		-- Redraw only on a change, so a click never lands on a button that was just replaced.
 		local boosts = profile and profile.boosts or {}
+		local me = game.Players.LocalPlayer
 		local key = game:GetService("HttpService"):JSONEncode({ boosts.permanentXP, boosts.permanentPaper,
-			math.floor((boosts.xpSeconds or 0) / 60), math.floor((boosts.paperSeconds or 0) / 60) })
+			math.floor((boosts.xpSeconds or 0) / 60), math.floor((boosts.paperSeconds or 0) / 60),
+			me:GetAttribute("DailyGiftNext"), me:GetAttribute("DailyGiftReady"), me:GetAttribute("StarterPackEnds"), me:GetAttribute("FirstBuysUsed") })
 		if key == shown then return end
 		shown = key
 		for _, child in content:GetChildren() do child:Destroy() end
@@ -484,6 +549,11 @@ function ShopScreen.new(playerGui, api)
 		scroll.CanvasSize = UDim2.fromOffset(0, (y + 20) * K)
 		scrolled()
 	end
+	-- The server's gift, starter pack and first-buy answers arrive as attributes: redraw when one changes.
+	local WATCHED = { DailyGiftNext = true, DailyGiftReady = true, StarterPackEnds = true, FirstBuysUsed = true }
+	game.Players.LocalPlayer.AttributeChanged:Connect(function(name)
+		if WATCHED[name] and cover.Visible then self.update(game.Players.LocalPlayer, lastProfile) end
+	end)
 	return self
 end
 

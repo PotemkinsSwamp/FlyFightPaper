@@ -37,6 +37,64 @@ local STATS_W, STATS_Y = 540, 160
 local STATS_X = 1900 - STATS_W
 local MID = STATS_X + STATS_W / 2
 
+-- "Unlock now": a part's Robux price from its Paper price (docs/plan/SHOP-PRICES-PLAN.md, approved 2026-11-11).
+-- ponytail: display only, like ShopScreen's PRICE; live, the price comes from Roblox's product info.
+local UNLOCK_ROBUX = { { 700, 49 }, { 1600, 79 }, { 2500, 129 }, { 4000, 199 }, { 6000, 279 }, { 8500, 449 }, { 13000, 599 }, { 18500, 999 } }
+function Customize.unlockRobux(paperPrice)
+	for _, row in UNLOCK_ROBUX do if paperPrice <= row[1] then return row[2] end end
+	return 1699
+end
+local ROBUX_ICON = "rbxasset://textures/ui/common/robux@3x.png" -- Roblox's own Robux symbol
+local LOCKED_TINT = Color3.fromRGB(175, 170, 165) -- a locked card: the same paper, greyed
+
+-- A padlock drawn in ink (a shackle ring over a rounded body), `h` tall, its top left at (x, y).
+local function padlock(parent, x, y, h)
+	local w = h * 0.8
+	local shackle = Instance.new("Frame")
+	shackle.Name, shackle.BackgroundTransparency = "LockShackle", 1
+	shackle.Position, shackle.Size = UDim2.fromOffset(x + w * 0.2, y), UDim2.fromOffset(w * 0.6, h * 0.6)
+	Instance.new("UICorner", shackle).CornerRadius = UDim.new(0.5, 0)
+	local ring = Instance.new("UIStroke")
+	ring.Thickness, ring.Color, ring.Parent = math.max(3, h * 0.12), PaperUI.INK, shackle
+	shackle.Parent = parent
+	local body = Instance.new("Frame")
+	body.Name, body.BackgroundColor3, body.BorderSizePixel = "LockBody", PaperUI.INK, 0
+	body.Position, body.Size = UDim2.fromOffset(x, y + h * 0.38), UDim2.fromOffset(w, h * 0.62)
+	Instance.new("UICorner", body).CornerRadius = UDim.new(0.2, 0)
+	body.Parent = parent
+end
+
+-- A green strip with words, the Robux symbol and a price, centred: "Unlock now (R) 49".
+local function robuxButton(parent, name, x, y, w, h, label, price, size, callback)
+	local button = PaperUI.button(parent, name, Assets.mainmenu.strip.green, "", x, y, w, h, -1, callback, size)
+	local row = Instance.new("Frame")
+	row.Name, row.BackgroundTransparency, row.Size, row.ZIndex = "Price", 1, UDim2.fromScale(1, 1), button.ZIndex
+	local list = Instance.new("UIListLayout")
+	list.FillDirection, list.HorizontalAlignment, list.VerticalAlignment = Enum.FillDirection.Horizontal, Enum.HorizontalAlignment.Center, Enum.VerticalAlignment.Center
+	list.Padding, list.SortOrder, list.Parent = UDim.new(0, size * 0.25), Enum.SortOrder.LayoutOrder, row
+	for i, text in { label, false, tostring(price) } do
+		local piece
+		if text then
+			piece = PaperUI.loud(PaperUI.words(row, "Word" .. i, text, 0, 0, 0, h, size))
+			piece.AutomaticSize = Enum.AutomaticSize.X
+		else
+			piece = Instance.new("ImageLabel")
+			piece.Name, piece.Image, piece.BackgroundTransparency, piece.ImageColor3 = "Robux", ROBUX_ICON, 1, PaperUI.INK
+			piece.Size = UDim2.fromOffset(size * 0.9, size * 0.9)
+		end
+		piece.LayoutOrder, piece.Parent = i, row
+	end
+	row.Parent = button
+	return button
+end
+
+-- Everything under `root` drawn above the binder (the pop-up).
+local function lift(root, z)
+	for _, item in { root, table.unpack(root:GetDescendants()) } do
+		if item:IsA("GuiObject") then item.ZIndex = z + (item.ZIndex - 1) end
+	end
+end
+
 function Customize.draw(content, ctx)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
@@ -69,8 +127,13 @@ function Customize.draw(content, ctx)
 	local definitions = ctx.catalog.structuresBySlot[state.slot] or (state.slot == "weapons" and ctx.catalog.weapons) or ctx.catalog.utilities
 	local gear = state.slot == "weapons"
 	local cardH, top = gear and 120 or 205, gear and 236 or 245 -- gear cards start where the others do, inside the page
+	local player = game.Players.LocalPlayer
+	local level = player:GetAttribute("Level") or 1
 	for i, part in definitions do
 		local owned = ctx.owned(part)
+		-- Locked (Alan 2026-11-12: nothing said so at a glance): above your level, so the card is greyed with a padlock
+		-- and its level; a part you can buy shows its Paper price instead.
+		local locked = not owned and level < part.min_level
 		local equipped = draft[state.slot] == part.id or draft.utility == part.id and state.slot == "boost"
 			or state.slot == "weapons" and table.find(draft.weapon_mounts, part.id) ~= nil
 		local x, y = 700 + (i - 1) % 2 * 272, top + math.floor((i - 1) / 2) * (cardH + (gear and 6 or 10))
@@ -82,6 +145,7 @@ function Customize.draw(content, ctx)
 		-- The card at this page's card shape (gear cards are wide and short), so it never stretches.
 		local art = gear and (equipped and Art.cardSelectedWide or Art.cardWide) or (equipped and Art.cardSelectedSquare or Art.cardSquare)
 		local card = button(content, part.id, art, "", x, y, 262, cardH, 0, function()
+			player:SetAttribute("MenuMessage", nil) -- the last buy's reply is about another card (Alan 2026-11-12)
 			if blocked or state.slot == "weapons" and owned then -- blocked: says why not
 				state.trying = nil
 				ctx.choose(function() return ctx.placeWeapon(part.id) end)
@@ -101,7 +165,19 @@ function Customize.draw(content, ctx)
 		local IN = { x = 24, y = math.floor(cardH * 0.1), w = 204, h = math.floor(cardH * 0.78) }
 		local name = PaperUI.loud(words(card, "Name", part.name, IN.x, IN.y, IN.w, 80, 34))
 		name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
-		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and not ctx.catalog:owns(ctx.profile.ownership, part.id, game.Players.LocalPlayer:GetAttribute("Level") or 1) and "Range only" or "Owned") or part.paper_price == 0 and string.format("Free at level %d", part.min_level) or string.format("%d Paper, lvl %d", part.paper_price, part.min_level)
+		if locked then card.ImageColor3 = LOCKED_TINT end
+		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and not ctx.catalog:owns(ctx.profile.ownership, part.id, level) and "Range only" or "Owned")
+			or locked and string.format("Level %d", part.min_level) or string.format("%s Paper", PaperUI.commas(part.paper_price))
+		-- The status words, with the padlock in front when locked.
+		local function status(sx, sy, sw, sh, size)
+			if locked and state.trying ~= part then
+				padlock(card, sx, sy + 2, size * 0.9)
+				sx, sw = sx + size * 0.9, sw - size * 0.9
+			end
+			local label = words(card, "Status", detail, sx, sy, sw, sh, size)
+			if locked then label.TextColor3 = Color3.fromRGB(70, 60, 55) end
+			return label
+		end
 		if state.slot == "weapons" then
 			-- Pips for how hard one shot hits (Alan); damage a second and the rest are in the box under the cards.
 			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(IN.w, 32), false, true -- long names shrink to one line
@@ -110,7 +186,10 @@ function Customize.draw(content, ctx)
 			words(card, "HitLabel", "Hit", IN.x, IN.y + 34, 44, 26, 22)
 			local hit = ctx.catalog.hitRating(part)
 			for k = 1, 5 do image(card, "Hit" .. k, k <= hit and Art.bar.red or Art.bar.empty, IN.x + 42 + (k - 1) * 27, IN.y + 37, 24, 22) end
-			detail = string.format("%s, weight %d. %s", part.class, part.capacity, detail)
+			-- Owned or equipped (the yellow card says which): just its size and weight, big enough to read.
+			if owned and state.trying ~= part then
+				detail = string.format("%s, weight %d%s", part.class, part.capacity, detail == "Range only" and ". Range only" or "")
+			end
 			if blocked then
 				detail = blocked
 				for _, angle in { 37, -37 } do
@@ -122,11 +201,11 @@ function Customize.draw(content, ctx)
 					stroke.Parent = card
 				end
 			end
-			local status = words(card, "Status", detail, IN.x, IN.y + 62, IN.w, IN.h - 62, 21)
-			status.TextWrapped, status.TextScaled = true, true
+			local line = status(IN.x, IN.y + 62, IN.w, IN.h - 62, 28)
+			line.TextWrapped, line.TextScaled = true, true
 			local fit = Instance.new("UITextSizeConstraint")
-			fit.MaxTextSize, fit.Parent = 21, status
-			if blocked then status.TextColor3, status.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
+			fit.MaxTextSize, fit.Parent = 28, line
+			if blocked then line.TextColor3, line.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
 		elseif state.slot == "boost" then
 			-- What each booster does (Alan 2026-10-21: three boosters looked the same).
 			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(IN.w, 40), false, true
@@ -134,10 +213,10 @@ function Customize.draw(content, ctx)
 			cap.MaxTextSize, cap.Parent = 32, name
 			local boost = words(card, "Boost", string.format("+%d%% speed for %d seconds", math.round((part.speed_factor - 1) * 100), part.boost_seconds), IN.x, IN.y + 44, IN.w, 60, 24)
 			boost.TextWrapped = true
-			local info = words(card, "Status", detail, IN.x, IN.y + 108, IN.w, IN.h - 108, 20)
+			local info = status(IN.x, IN.y + 108, IN.w, IN.h - 108, 30)
 			info.TextWrapped = true
 		else
-			local info = words(card, "Status", detail, IN.x, IN.y + 92, IN.w, IN.h - 92, 22)
+			local info = status(IN.x, IN.y + 100, IN.w, IN.h - 100, 36)
 			info.TextWrapped, info.TextYAlignment = true, Enum.TextYAlignment.Top
 		end
 		-- Phones: the card's words were 7-12 points; each grows as big as its box allows. (The binder is redrawn on
@@ -221,11 +300,27 @@ function Customize.draw(content, ctx)
 				else ctx.choose(builder.selectStructure, state.slot, part.id) end
 			end, 46)
 		else
-			note = part.paper_price == 0 and string.format("%s: free at level %d. The numbers show what it changes.", part.name, part.min_level)
-				or string.format("%s: %d Paper, level %d. The numbers show what it changes.", part.name, part.paper_price, part.min_level)
-			if part.paper_price > 0 then button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
-				ctx.api.action:FireServer("purchasePart", part.id); state.trying = nil; ctx.render()
-			end, 46) end
+			local robux = Customize.unlockRobux(part.paper_price)
+			if part.paper_price == 0 then -- the free weapons: no product, they come with the level
+				note = string.format("%s: free at level %d. The numbers show what it changes.", part.name, part.min_level)
+			elseif level < part.min_level then
+				-- Above your level: no Paper buy; "Unlock now" for Robux in its place (Alan 2026-11-12).
+				note = string.format("%s unlocks at level %d. Unlock now skips the wait; a prestige takes it back.", part.name, part.min_level)
+				robuxButton(content, "UnlockNow", 700, 980, 280, 70, "Unlock now", robux, 32, function()
+					ctx.api.action:FireServer("buyProduct", "part_" .. part.id)
+				end)
+			else
+				note = string.format("%s: %s Paper. The numbers show what it changes.", part.name, PaperUI.commas(part.paper_price))
+				button(content, "BuyPart", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
+					local paper = player:GetAttribute("Paper") or 0
+					if paper < part.paper_price then -- short of Paper: a pop-up with both ways to get it (Alan 2026-11-12)
+						state.ask = { part = part, robux = robux, paper = paper }
+					else
+						ctx.api.action:FireServer("purchasePart", part.id); state.trying = nil
+					end
+					ctx.render()
+				end, 46)
+			end
 		end
 		button(content, "CancelTry", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.trying = nil; ctx.render() end, 40)
 	else
@@ -260,6 +355,34 @@ function Customize.draw(content, ctx)
 		message.TextScaled = true
 		local cap = Instance.new("UITextSizeConstraint")
 		cap.MaxTextSize, cap.Parent = PaperUI.isPhone() and 40 or 26, message
+	end
+
+	-- Short of Paper (Alan 2026-11-12: a pop-up, not the small line under the cards): the welcome card's sticky note over
+	-- the whole sheet, the game dimmed, with both ways to get the part. Sizes: Tutorial's note, 1.3x on the sheet.
+	if state.ask then
+		local ask, side = state.ask, ctx.side
+		local dim = Instance.new("TextButton") -- takes the clicks under it
+		dim.Name, dim.Text, dim.AutoButtonColor, dim.BackgroundColor3, dim.BackgroundTransparency = "Ask", "", false, Color3.fromRGB(20, 14, 8), 0.45
+		dim.Size, dim.Parent = UDim2.fromOffset(PaperUI.W, PaperUI.H), side
+		local X0, Y0 = (PaperUI.W - 1100) / 2, (PaperUI.H - 388) / 2
+		local card = image(dim, "Note", Assets.ingame.stickyWide, X0, Y0, 1100, 388)
+		local head = PaperUI.loud(words(card, "Title", "Not enough Paper", 117, 112, 858, 64, 56))
+		head.TextXAlignment = Enum.TextXAlignment.Center
+		local short = ask.part.paper_price - ask.paper
+		local text = words(card, "Text", string.format("%s costs %s Paper. You have %s, so you need %s more.", ask.part.name,
+			PaperUI.commas(ask.part.paper_price), PaperUI.commas(ask.paper), PaperUI.commas(short)), 117, 182, 858, 92, 36)
+		text.TextXAlignment, text.TextWrapped = Enum.TextXAlignment.Center, true
+		local function close() state.ask = nil; ctx.render() end
+		button(card, "GetPaper", Assets.mainmenu.strip.blue, "Get Paper", 370 - 160, 312 - 38, 320, 76, -1, function()
+			close()
+			if ctx.api.shop then ctx.api.shop() end
+		end, 36)
+		robuxButton(card, "UnlockNow", 722 - 170, 312 - 38, 340, 76, "Unlock now", ask.robux, 34, function()
+			close()
+			ctx.api.action:FireServer("buyProduct", "part_" .. ask.part.id)
+		end)
+		button(card, "Close", Assets.mainmenu.boxRed, "X", 980, 75, 62, 62, 2, close, 38)
+		lift(dim, 40)
 	end
 
 	-- Save, and a clearly separate second button: Save & fly at the desk (spends Paper, Alan 2026-10-17), Test in Range
