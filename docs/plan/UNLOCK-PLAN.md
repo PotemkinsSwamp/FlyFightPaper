@@ -29,8 +29,7 @@ Plays when the main menu shows with things waiting: when you join, or when you l
    - Preset planes (Marksman, Bomber, Carrier) come out as whole planes, with "Put it on".
 6. **Several items:** swipe or drag between them (arrows on PC too; dots show how many). Free ones first. **Later**
    takes one off; Later on the last one opens the Menu as normal. Put it on / See it go to the Hangar.
-- **Skip** (small, bottom corner): closes the whole backpack; everything in it counts as seen (Alan 2026-11-12; it
-  used to open it and go to the cards, so many unlocks meant one Later each).
+- **Skip** (small, bottom corner): opens the backpack at once and goes straight to the cards.
 - Once a backpack is open, its items count as seen and the sticker goes.
 
 ## What comes out at each level (today's catalog)

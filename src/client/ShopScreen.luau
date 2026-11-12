@@ -34,6 +34,9 @@ local PRICE = {
 local BADGE = { paper_pack_5000 = "Good Value", paper_pack_15000 = "Most Value",
 	paper_boost_180m = "Good Value", paper_boost_300m = "Most Value", xp_boost_180m = "Good Value", xp_boost_300m = "Most Value" }
 local PACK_ICON = { paper_pack_1500 = "iconPaperSmall", paper_pack_5000 = "iconPaperPile", paper_pack_15000 = "iconPaperBox" }
+-- How a real part is shown in a card, by kind: { turn, tilt } in degrees. Flat parts from nearly above, the rest at a
+-- three-quarter angle. An item can give its own `pose` instead.
+local POSE = { wings = { 0, -65 }, tail = { 0, -60 }, default = { 35, -25 } }
 -- The starter pack preview (example contents, Alan's OK pending: docs/decisions/2026-11-11-shop-direction.md).
 local STARTER = { price = 99, worth = 227, seconds = (2 * 24 + 14) * 3600 + 5 * 60,
 	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockStar", label = "1 hour\n2x XP" } } } -- Alan 2026-11-12: 2x XP, not 2x Paper
@@ -267,14 +270,16 @@ function ShopScreen.new(playerGui, api)
 			if item.part then
 				local part = Catalog:get(item.part)
 				local view = Unlock.view(square, { kind = item.kind, part = part }, 10 * K, 6 * K, 156 * K, 118 * K)
-				-- Seen from above (flat parts like wings are a sliver from the side), turning slowly.
+				-- Still, at its kind's best angle (or the item's own pose), bobbing like the other pictures (Alan 2026-11-12:
+				-- turning in circles looked bad). Framed on its own pieces, whatever its shape.
 				local model = view:FindFirstChildOfClass("WorldModel"):FindFirstChildOfClass("Model")
-				local look = model:FindFirstChild("Appearance") or model -- just the part's own pieces (as UnlockMoment frames it)
+				local look = model:FindFirstChild("Appearance") or model
 				local centre, size = look:GetBoundingBox()
-				local far = math.max(size.X, size.Z) * 0.6 / math.tan(math.rad(20)) -- its widest turn across ~85% of the square
-				move(view, "turn", i, { turn = function(angle)
-					view.CurrentCamera.CFrame = CFrame.new(centre.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(-0.95, 0, 0) * CFrame.new(0, 0, far)
-				end })
+				local pose = item.pose or POSE[item.kind] or POSE.default
+				local far = size.Magnitude / 2 / math.tan(math.rad(20)) * 1.05
+				view.CurrentCamera.CFrame = CFrame.new(centre.Position) * CFrame.Angles(0, math.rad(pose[1]), 0)
+					* CFrame.Angles(math.rad(pose[2]), 0, 0) * CFrame.new(0, 0, far)
+				move(view, "bob", i)
 				say(square, "Label", part.name, 0, 122, 176, 180, 27, { loud = true })
 			else
 				move(fit(pic(square, "Icon", Art[item.icon], 18, 12, 158, 120)), "bob", i)
@@ -431,8 +436,6 @@ function ShopScreen.new(playerGui, api)
 				if inst.Rotation == m.rot then inst.Size = UDim2.fromOffset(m.size.X.Offset * s, m.size.Y.Offset * s) end -- (not while the mouse is on it)
 			elseif m.kind == "shine" then
 				inst.Position = UDim2.fromScale(-0.2 + 1.4 * math.clamp((t % 4) / 1.2, 0, 1), 0.5)
-			elseif m.kind == "turn" then
-				m.turn(0.6 + t * 0.8)
 			elseif m.kind == "timer" then
 				local left = math.max(0, m.ends - os.time())
 				inst.Text = string.format("%dd %dh %02dm", left // 86400, left % 86400 // 3600, left % 3600 // 60)
