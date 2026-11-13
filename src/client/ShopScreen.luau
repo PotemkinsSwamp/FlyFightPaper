@@ -84,9 +84,10 @@ function ShopScreen.new(playerGui, api)
 		return label
 	end
 	local function fit(label) label.ScaleType = Enum.ScaleType.Fit; return label end
-	-- Faded chalk green behind every picture (Alan 2026-11-12 picked it, docs/workshop/design-examples.md): middle
-	-- brightness, so white pieces and dark pieces both stand out; the board's own colour family. Made before the picture.
-	local BACKING = Color3.fromRGB(104, 133, 118)
+	-- Mint green paper behind every picture on white cards (Alan 2026-11-12 picked it over the faded chalk green, which
+	-- came out olive; docs/workshop/design-examples.md): white and dark pieces both stand out. The tint multiplies the
+	-- cream circle, so this is the tint, not the colour on screen. Made before the picture.
+	local BACKING = Color3.fromRGB(96, 170, 153)
 	local function backing(parent, x0, y0, x1, y1) local circle = fit(pic(parent, "Backing", Art.circlePale, x0, y0, x1, y1)); circle.ImageColor3 = BACKING; return circle end
 	-- Words in a box (concept px), centred unless told; size in concept px. outline: a plain ink (or given) stroke instead
 	-- of the cream crayon edge, for words on bright paper like the concept's titles.
@@ -456,7 +457,7 @@ function ShopScreen.new(playerGui, api)
 			local part, x0, top = item.part, 22 + (i - 1) * 411, y + 125
 			local card = pic(content, "Today" .. i, Art.itemSquare, x0, top, x0 + 405, top + 405)
 			say(card, "Name", part.name, 15, 12, 390, 66, 40, { loud = true })
-			backing(card, 100, 64, 305, 269)
+			backing(card, 109, 73, 295, 259) -- (a little smaller: clear of the price label)
 			partView(card, item, 70, 64, 265, 205, i)
 			pic(card, "PricePaper", Art.labelDark, 50, 272, 355, 318)
 			say(card, "Price", level < part.min_level and "Unlocks at level " .. part.min_level or commas(part.paper_price) .. " Paper", 50, 272, 355, 318, 32, { color = WHITE })

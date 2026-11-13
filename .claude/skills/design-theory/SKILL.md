@@ -27,7 +27,7 @@ plastic-looking things "babyish" (C6): our real paper, cardboard and crayon mate
    medium). Check every screen in greyscale: if something disappears, fix its brightness, not its hue.
 2. **A picture needs 3:1 against its backing** (L9, G5, standard). When a picture has both white and black pieces, the
    backing that keeps both visible is middle brightness (relative luminance about 0.21: 3.8:1 to each). That's why
-   the shop uses faded chalk green; dark backings hide dark pieces, light ones hide white.
+   the shop circles are middle-brightness mint green; dark backings hide dark pieces, light ones hide white.
 3. **Muted ground, saturated focus.** Keep backgrounds and panels muted and calm; put the strong colour on the one
    thing that matters (G1, practice; L11, strong: one strong peak stands out, many equal peaks cancel).
 4. **Panels in one colour family, with a clear light/dark step.** People like pairs of similar hue with a big
@@ -99,7 +99,7 @@ plastic-looking things "babyish" (C6): our real paper, cardboard and crayon mate
 | Featured card crayon | about 36, 79, 230 to 101, 40, 236 | blue to violet with magenta, orange, cyan streaks |
 | Card colours | orange 248,140,4; sky 7,199,247; green 63,201,33; purple 165,49,226 | the shop's loud papers |
 | Part names | 255, 222, 40 | yellow with an ink edge |
-| Shop picture circle | 98, 117, 96 on screen | meant as faded chalk green 104,133,118 but tinted wrong, came out olive; Alan doesn't like it in Play; options in [design examples](../../../docs/workshop/design-examples.md#why-the-green-looks-wrong-in-play-fourth-study-2026-11-12) |
+| Shop picture circle | tint 96, 170, 153 | mint green paper, Alan's pick 2026-11-12 (the faded chalk green came out olive 98,117,96 because the tint multiplies the cream circle; [design examples](../../../docs/workshop/design-examples.md#why-the-green-looks-wrong-in-play-fourth-study-2026-11-12)). Check the colour on a Play screenshot |
 | Team paper | red 214,78,72; blue 70,128,214 | middle brightness: on a middle backing they stand out by colour, not brightness |
 
 ## 6. Checklist (on a real screenshot, before Alan sees anything)
