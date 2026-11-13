@@ -190,7 +190,9 @@ function RoundEnd.start()
 		local inside = player:GetAttribute("PaperJar") or 0
 		local added = math.max(0, inside - (state.jarStart or inside))
 		local full = inside >= JarRules.cap_paper
-		jarTag.Visible = layout ~= nil and RunService:IsStudio() and state.mine ~= nil and (added > 0 or full)
+		-- Off: Alan 2026-11-12 didn't like the shop card pasted here ("add something distinctive... to catch your eye"); a
+		-- redesign replaces it (docs/decisions/2026-11-12-paper-jar-rules.md).
+		jarTag.Visible = false and layout ~= nil and RunService:IsStudio() and state.mine ~= nil and (added > 0 or full)
 		if not jarTag.Visible then return end
 		local spot = JAR_SPOT[layout]
 		jarTag.Position = UDim2.fromOffset(spot[1] + 150, spot[2] + 126)
