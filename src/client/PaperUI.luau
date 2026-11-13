@@ -325,6 +325,19 @@ end
 
 -- A green strip with words, Roblox's own Robux symbol and a price, centred: "Unlock now (R) 49" (Hangar), "2x Paper (R) 79"
 -- (report card).
+-- A soft shadow under a picture instead of a backing circle (Alan 2026-11-12, docs/workshop/design-examples.md):
+-- stacked faint ovals centred on x, y, the widest w across. Make it before the picture so the picture sits on top.
+function PaperUI.shadow(parent, x, y, w)
+	for i, f in { 1, 0.82, 0.64, 0.45 } do
+		local shade = Instance.new("Frame")
+		shade.Name, shade.AnchorPoint, shade.BorderSizePixel = "Shadow" .. i, Vector2.new(0.5, 0.5), 0
+		shade.Position, shade.Size = UDim2.fromOffset(x, y), UDim2.fromOffset(w * f, w * f * 0.21)
+		shade.BackgroundColor3, shade.BackgroundTransparency = Color3.fromRGB(10, 10, 40), 0.85
+		Instance.new("UICorner", shade).CornerRadius = UDim.new(0.5, 0)
+		shade.Parent = parent
+	end
+end
+
 function PaperUI.robuxButton(parent, name, x, y, w, h, label, price, size, callback)
 	local button = PaperUI.button(parent, name, require(game.ReplicatedStorage.FlyFightPaper.Shared.UIAssets).mainmenu.strip.green, "", x, y, w, h, -1, callback, size)
 	local row = Instance.new("Frame")
