@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-13: [Skins: same hitbox, four tiers, team outline](2026-11-13-skin-rules.md)
 - 2026-11-13: [A gift's arrival: the board's plane brings it, you open it, music turns right down](2026-11-13-gift-arrival-story-and-sounds.md)
 - 2026-11-13: [Gift a friend: Paper packs and timed 2x boosts, to friends who have played](2026-11-13-gift-a-friend.md)
 - 2026-11-12: [Big bodies get 3 mounts; Cardboard carries 10, Toilet Roll 8](2026-11-12-big-bodies-three-mounts.md)
