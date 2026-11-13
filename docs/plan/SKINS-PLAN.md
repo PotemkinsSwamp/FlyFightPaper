@@ -54,7 +54,10 @@ water spray (shark) · tiny bees (bumblebee) · rocket smoke · exhaust flames (
 lightning (thunderbird).
 
 ## Still to settle
-- The printed sheet: a Blender test (no upload) on two different planes, 2026-11-13.
+- The printed sheet: **tested in Blender 2026-11-13 (no upload), it works**: one picture each (hazard stripes, lava)
+  wrapped itself onto a standard plane and the heavy plane, carrying on across nose, body, wings and tail
+  (`.planning/skins/printed-sheet-test.jpg`). To fix in the real script: faces pointing forward or back smear (they
+  need a third, front-on view), and the paper creases must be moved onto the new layout so plain planes look as now.
 - How Legendary and Mythical shapes fit any part mix and still look good (no plain stretching).
 - What a Mythical does to weapons.
 - Prices and earn rules per tier.
