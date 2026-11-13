@@ -44,13 +44,15 @@ Stage 6 approved by Alan (2026-10-13) after the on-brand HUD restyle. Edge arrow
 Event messages and kill-feed lines now rotate (`src/shared/Lines.luau`); death lines say how it happened (weapon, the
 building or thing hit, who chased or rammed you), the same line on your note and in the feed. Seen in Studio Play 2026-10-17 except the
 between-rounds lines. Warnings (INCOMING!, LOCKED ON!), zone words and error messages stay fixed on purpose.
-Folded by a part you don't own ([Alan 2026-11-12](../decisions/2026-11-12-fold-card-and-shop-mats.md)): a card under the
+Folded by a paid part you don't own ([Alan 2026-11-12](../decisions/2026-11-12-fold-card-and-shop-mats.md)): a card under the
 "folded by" note (the shop's Featured card, smaller) with the part in 3D turning slowly over a soft shadow (Alan's pick
 over a backing circle, [design examples](../workshop/design-examples.md)) and, down the middle, "Folded by Mia's", its
 name, the level it unlocks at and its Paper price, then the buttons: Buy with Paper and Buy now (Robux) side by side when
-you have the level and the Paper (a red X closes it), else one big Buy now and a red corner button "Wait for level N" /
-"Save N more Paper" that closes it. It shows on the fold screen and stays at the desk; its X, LAUNCH, a menu over the desk, the
-report card or owning the part put it away. Once per part a session; not in practice. That part also becomes the shop's
+you have the level and the Paper, else one big Buy now. A red corner button closes it and says why: "Not now" when you
+could buy it already (Alan 2026-11-12, was a red X), else "Wait for level N" / "Save N more Paper". Free gear (0 Paper,
+yours at its level, no Robux product) never gets the card (Alan was offered the Thumbtack Shooter he had). It shows on
+the fold screen and stays at the desk; its red button, LAUNCH, a menu over the desk, the report card or owning the part
+put it away. Once per part a session; not in practice. That part also becomes the shop's
 Featured card (`FoldGoal`, this client only). Built 2026-11-12, not yet seen in Play (it replaced a line on the top
 note, which Alan found too easy to miss).
 Main-menu ruler repainted by Codex (reads 3 to 12, right way up; 1 and 2 behind the paper ball), uploaded and seen

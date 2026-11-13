@@ -1,6 +1,6 @@
--- Folded by a part you don't own (Alan 2026-11-12): a card with that part, whose it was, the level it unlocks at and
+-- Folded by a paid part you don't own (Alan 2026-11-12): a card with that part, whose it was, the level it unlocks at and
 -- its Paper price, and how to get it: Buy with Paper first when you can (level and Paper), else what you're waiting
--- for, and always Buy now for Robux. It comes up on the fold screen and stays at the desk; its X, LAUNCH, a menu
+-- for, and always Buy now for Robux. It comes up on the fold screen and stays at the desk; its red corner button, LAUNCH, a menu
 -- opening over the desk, the round ending or buying the part put it away. Once per part a session.
 -- The card is the shop's Featured card (same art, smaller), so the offer looks the same in and out of a match.
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
@@ -41,7 +41,9 @@ function FoldOffer.new(playerGui)
 		if seen[part.id] or owned[part.id] then return end
 		local item
 		for _, each in Unlock.items(0, 999) do if each.part.id == part.id then item = each end end
-		if not item then return end
+		-- Free gear (0 Paper) comes with its level and has no Robux product: never offered (Alan 2026-11-12 was offered
+		-- the Thumbtack Shooter he already had at level 12).
+		if not item or item.free then return end
 		seen[part.id] = true
 		close()
 		current, shownAt = part, os.clock()
@@ -83,17 +85,19 @@ function FoldOffer.new(playerGui)
 			.. PaperUI.commas(part.paper_price) .. " Paper", 320, 142, 840, 52, 42, WHITE, 3)
 		local robux = Customize.unlockRobux(part.paper_price)
 		local function buyRobux() action:FireServer("buyProduct", "part_" .. part.id) end
-		if level >= part.min_level and short <= 0 then -- Paper first, then Robux, side by side; the red X closes it
+		local canBuy = level >= part.min_level and short <= 0
+		if canBuy then -- Paper first, then Robux, side by side
 			PaperUI.button(card, "BuyPaper", Assets.mainmenu.strip.green, "Buy: " .. PaperUI.commas(part.paper_price) .. " Paper",
 				345, 205, 380, 100, -1, function() action:FireServer("purchasePart", part.id) end, 38)
 			PaperUI.robuxButton(card, "Buy", 755, 205, 380, 100, "Buy now", robux, 38, buyRobux)
-			PaperUI.button(card, "Close", Art.close, "", 1185, -35, 90, 90, 0, close, 10)
-		else -- one big Buy now; what you're waiting for is the red corner button that puts the card away
+		else -- one big Buy now
 			PaperUI.robuxButton(card, "Buy", 510, 205, 460, 100, "Buy now", robux, 42, buyRobux)
-			local wait = PaperUI.button(card, "Wait", Assets.mainmenu.strip.red, "", 985, -45, 320, 95, 3, close, 34)
-			words(wait, "Words", level < part.min_level and "Wait for level " .. part.min_level
-				or "Save " .. PaperUI.commas(short) .. " more Paper", 20, 0, 280, 95, 32, WHITE, 3)
 		end
+		-- The red corner button puts the card away and says why: what you're waiting for, or "Not now" when you could
+		-- buy it already (Alan 2026-11-12: instead of the red X).
+		local wait = PaperUI.button(card, "Wait", Assets.mainmenu.strip.red, "", 985, -45, 320, 95, 3, close, 34)
+		words(wait, "Words", canBuy and "Not now" or level < part.min_level and "Wait for level " .. part.min_level
+			or "Save " .. PaperUI.commas(short) .. " more Paper", 20, 0, 280, 95, 32, WHITE, 3)
 	end
 	-- Each HUD tick: shown on the fold screen and at the desk; anything else (after it has shown) puts it away.
 	function self.step(state, blocked)
