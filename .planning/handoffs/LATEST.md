@@ -1,6 +1,6 @@
-# LATEST → handoff-2026-11-13-0155-beta-lane-gift-arrival-done-goals-review-next.md
+# LATEST → handoff-2026-11-13-1724-beta-lane-skins-designed-first-batch-next.md
 
-★ START HERE: Goal (Alan): the beta feels finished and the shop makes money. Next: the goals review with Alan (what "the beta feels finished" still needs; backlog in state/STATE.md); done = he has picked the next thing to build and it is written in STATE. The gift arrival is finished unless he says otherwise.
+★ START HERE: Goal (Alan): the beta feels finished and the shop makes money; skins and trails are the build. Next: build the first batch he picked (Hazard Stripes, Tiger Stripes, Flame Decals, Gold Foil, Lava, Galaxy, Shark Jet, Dragon; trails Confetti, Rainbow Marker, Gold Stars), starting with a numbers note (prices, earning) for his OK and the one-time Blender re-layout of the plane pieces. Done when Alan plays them in Studio and OKs them.
 
-Quick state: main d574889e + handoff, pushed; tests 599/0 (2026-11-13, before the sound changes); docs OK; Studio Edit, Dev switches cleared, rojo serve running; nothing published, uploaded or Saved to File. Gift arrival redone to Alan's story and tuned by ear with him ("Yeah, that's it"); try it with the "Dev: send me a gift" button in Studio Play.
-Previous: handoff-2026-11-13-beta-lane-gift-built-arrival-redo-next.md
+Quick state: main ec14b514 + handoff, pushed; tests 599/0 (2026-11-13; no game code changed since); docs OK; rojo serve restarted (Studio plugin connect not confirmed); nothing published, uploaded or Saved to File. Rules: docs/decisions/2026-11-13-skin-rules.md; plan: docs/plan/SKINS-PLAN.md.
+Previous: handoff-2026-11-13-0155-beta-lane-gift-arrival-done-goals-review-next.md

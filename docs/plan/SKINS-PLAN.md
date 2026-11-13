@@ -15,7 +15,8 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
 
 ## How the game fits one design to any plane
 - **Hitbox:** the server tests shots against the real shapes of your plane's parts (`src/server/HitShapes.luau`).
-  Today it copies every *visible* piece, so skin pieces must be left out of that copy and hidden parts kept in it.
+  It copies every visible piece, so skins are drawn (and the real parts hidden) only on players' screens; the
+  server's copy never sees a skin (see "Keeping skins cheap").
 - **Common and Rare: a printed sheet.** Think of drawing on the paper before folding the plane. Each skin is one
   picture laid out like a flat plane seen from above (nose area, body stripe, wing areas, tail area). Every part's
   pieces get their picture position from where they sit on the plane, so any wings show the sheet's wing art and any
@@ -24,8 +25,8 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
   go). After that, each Common or Rare skin is one picture.
 - **Legendary: your plane plus add-ons.** The printed sheet plus a few pieces (a shark's fin and jaw, a bee's stinger
   and wings) the game places on the body and nose and scales with the plane.
-- **Mythical: a whole new shape.** One model the game stretches to your plane's length, span and height, shown
-  instead of the parts. Weapons and boosters stay visible so everyone can still read what you carry.
+- **Mythical: a whole new shape.** One model scaled evenly to your plane's length, with joints moved onto the real
+  wing and tail corners (tested below), shown instead of the parts. Weapons and boosters stay visible so everyone can still read what you carry.
 - **Players are told:** "Skins change how you look, never your hitbox", on the shop card and the Looks tab.
 
 ## Tiers
@@ -77,7 +78,7 @@ Commons Hazard Stripes, Tiger Stripes, Flame Decals; Rares Gold Foil, Lava, Gala
 Dragon; trails Confetti, Rainbow Marker, Gold Stars. It proves every piece (printed sheet, add-ons, joints, trails,
 Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `crane-2.png` (blue and silver).
 
-## Still to settle
+## Tests done and still to settle
 - The printed sheet: **tested in Blender 2026-11-13 (no upload), it works**: one picture each (hazard stripes, lava)
   wrapped itself onto a standard plane and the heavy plane, carrying on across nose, body, wings and tail
   (`.planning/skins/printed-sheet-test.jpg`). To fix in the real script: faces pointing forward or back smear (they

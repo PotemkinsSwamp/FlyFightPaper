@@ -117,6 +117,13 @@ mistake would be easy to make twice.
   delete the folder after. Require a fresh copy of a changed module (`Clone()` it beside the original) or Edit runs
   the cached old one.
 
+- **Putting a whole plane together in Blender** (2026-11-13, skins tests): the `paper-set` FBX pieces import centred
+  on zero at a hundredth of a stud. Place each one by the CFrame and Size `Aircraft.build` gives it in Studio Edit
+  (read `Appearance`, then destroy the test model); no flip is needed (a nose narrows towards -z). Scripts:
+  `.planning/skins/tests/` (`pieces.json` holds two builds).
+- **Codex picture job with a reference picture** (2026-11-13): `codex exec -s workspace-write - -i ref.png < prompt.txt`,
+  with `-i` last (it takes several files). About 45,000-80,000 Codex tokens for 2-5 pictures.
+
 ## Studio and the place file
 - **`ImageColor3` multiplies the picture (2026-11-12).** Setting the colour you want as the tint of a cream paper
   picture comes out darker and yellower: the shop's faded chalk green (104,133,118) showed as olive 98,117,96 in Play,
