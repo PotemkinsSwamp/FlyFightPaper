@@ -92,27 +92,34 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
 - What a Mythical does to weapons.
 - Prices and earn rules per tier: drafted below, waiting on Alan's OK.
 
-## Prices, earning and bots (draft for Alan's OK, 2026-11-13)
-Paper prices use the same rate as early part unlocks (about 18.75 Paper per Robux, the big pack's rate). An average
-player earns about 660 Paper a match (about 8.5 minutes).
+## Prices, earning and bots (Alan, 2026-11-13; his rulings in the [skin rules](../decisions/2026-11-13-skin-rules.md))
+Robux prices OK'd for the first build ("they need to be adjusted" later). Common and Rare Paper prices use the same
+rate as early part unlocks (about 18.75 Paper per Robux, the big pack's rate); an average player earns about 660 Paper
+a match (about 8.5 minutes). Legendary and Mythical can be bought with Paper but cost far more, so Robux is the
+sensible way (Alan); the Paper numbers below are a draft waiting on his OK.
 | What | Robux | Paper | Average matches to earn |
 |---|---|---|---|
 | Common skin (Hazard Stripes, Tiger Stripes, Flame Decals) | 149 | 2,800 | about 4 |
 | Rare skin (Gold Foil, Lava, Galaxy) | 299 | 5,600 | about 8.5 |
-| Legendary skin + its trail (Shark Jet + water spray) | 599 | Robux only | - |
-| Mythical skin + its trail (Dragon + embers) | 999 | Robux only | - |
+| Legendary skin + its trail (Shark Jet + water spray) | 599 | 30,000 (draft) | about 45 (6.5 hours) |
+| Mythical skin + its trail (Dragon + embers) | 999 | 60,000 (draft) | about 90 (13 hours) |
 | Trail (Confetti, Rainbow Marker, Gold Stars) | 49 | 900 | about 1.5 |
 Compared with Rivals (Roblox's big shooter): its shop sells 299 / 449 / 599. Ours start lower (a new game, kids' pocket
-money) and meet it at Legendary. Common and Rare stay cheap in Paper so every player gets one early; the money is in
-Legendary, Mythical and Paper packs.
-- **Earning (Common and Rare):** buy them with Paper. Proposed first hook: **Hazard Stripes free at level 5** (about
-  the first hour), so every player opens the Looks tab and flies a skin early. Later rewards (missions, playtime
-  calendar, a pass, top players) can give any tier; none are in this batch.
-- **Legendary and Mythical:** Robux only for now, as decided.
+money) and meet it at Legendary. For scale: the Pencil, the dearest part, is 32,000 Paper.
+- **No free skins** (Alan). Later rewards (missions, playtime calendar, a pass, top players) can give skins or boxes.
 - **Kept through prestige** (cosmetics already are). One skin and one trail for all your planes.
-- **Bots:** about 1 in 3 bots wears a skin, picked when the match starts and kept all match: half Common, 30% Rare,
-  15% Legendary, 5% Mythical. With 11 bots, about every other match shows a Legendary or Mythical. About 1 in 3 bots
-  has a trail. Drawn on players' screens like every skin, so no server cost.
+- **Bots all wear skins, by difficulty** (Alan): aces Mythical, experienced (veteran) bots Legendary, regulars Rare,
+  rookies Common, each a random skin of its tier, picked when the match starts. Bots wearing a Legendary or Mythical
+  show its matching trail; the others get a random plain trail (Claude's pick). Drawn on players' screens like every
+  skin, so no server cost. In this batch every veteran is a Shark Jet and every ace a Dragon (aces are Studio-only
+  for now).
+- **Skin boxes, maybe later (Alan's idea, not in this batch):** a cheap box (Paper, or Robux) rolls a random skin, with
+  Mythicals very rare; every skin can still be bought outright. A free box of Commons and very rare Rares as the reward
+  for a player's first weekly mission (his pick over the tutorial). Roblox's rules
+  ([research](../research/PRICING-RESEARCH-2026-10-18.md), section 9): every prize and its exact odds shown before
+  buying; boxes bought with Paper count as paid too, because Paper can be bought with Robux; players where paid random
+  items are restricted (`PolicyService`) can't open paid boxes, so outright buying stays for them; free reward boxes
+  need no odds. Odds, price and what happens with a skin you already own come as their own numbers note.
 - **Looks tab (hangar):** a new tab beside the parts. Every skin and trail as a card (worn, owned, price, or how to
   get it), your plane turns in front of you wearing your pick, and the line "Skins change how you look, never your
   hitbox".

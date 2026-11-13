@@ -49,6 +49,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `planes.py`, `plane_set.py`, `plane_pieces.py` | Build the plane parts and write `planes/pieces.rbxmx` |
 | `plane_paper.py` | Paper retexture sample of the Classic plane (UVs, paper colour/normal/roughness maps) into `planes/paper-sample/` |
 | `plane_paper.py -- --set` | UVs, paper maps and reviews for the 95 set meshes in [planes/paper-set/README.md](../../assets/models/planes/paper-set/README.md) |
+| `skin_sheet.py` | Printed-sheet skin copies of the 54 plane paper pieces (sheet UVs, creases baked into each piece's normal map, sheet template) into `planes/skin-sheet/` ([skins plan](../plan/SKINS-PLAN.md)) |
 | `upload_paper.py` | Uploads paper plane pieces and maps (`set` for paper-set/; resumable; ids in `<folder>/uploads.json`), then `lua` / `meshes` record each upload's inner MeshId (FBXs upload as Models) |
 | `split_halves.py` | Cuts plane pieces into left and right halves (wing fit, two-colour free-for-all planes) |
 | `weapons.py` | Weapon models in moving pieces |

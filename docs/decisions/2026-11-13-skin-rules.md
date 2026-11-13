@@ -18,15 +18,22 @@
   matching trail; Common and Rare only change the look.
 - **Cool first:** skins don't have to be school or animal themed. They should be things players really want.
 - **No very white skins:** white is hard to see against the town.
-- **Earning:** the lower two tiers can be earned. The top two can only be bought, except later through things that
-  keep players coming back: a pass like Fortnite's, the playtime calendar, weekly missions, or being among the top
+- **Earning:** the lower two tiers can be earned. The top two are bought (Robux, or a very high Paper price: see
+  Prices below), except later through things that keep players coming back: a pass like Fortnite's, the playtime calendar, weekly missions, or being among the top
   players.
 - **Team games: no team colours on skins.** A team shows through three signs: a faint red or blue outline on the
   plane, the name in team colour, and the square or circle under the name (made easier to see from far away). Aim
   help already never locks onto a teammate.
 - **One skin for all your planes:** the game fits it to whatever parts you fly (tied to a body only if fitting
   fails).
-- **Bots wear skins,** so players see them in matches and want them.
+- **Bots wear skins,** so players see them in matches and want them. **All of them, by difficulty** (Alan, same day):
+  aces Mythical, veterans Legendary, and so on down.
+- **Prices** (Alan, same day): the drafted Robux prices are OK for the first build and will be adjusted later
+  ([skins plan](../plan/SKINS-PLAN.md)). Legendary and Mythical can also be bought with Paper, but extremely
+  expensive, so players would rather use Robux. **No free skins.**
+- **Skin boxes, maybe** (Alan, same day): a cheap box (Paper or Robux) with a small chance of a Mythical, like CS:GO
+  crates, while every skin can still be bought outright. A free box of mostly Commons (Rares very rare) as the reward
+  for the first weekly mission. Not decided yet; Roblox's odds rules apply.
 - **Legendary and Mythical hide the plane** (the parts they cover): the hidden parts stay the hitbox, the skin has no
   collision, and the red or blue outline goes round the skin. They must still look good on every part mix, so no
   plain stretching: the way they fit is to be worked out.
