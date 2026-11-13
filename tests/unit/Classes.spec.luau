@@ -39,7 +39,7 @@ function Spec.run()
  test("a refold accepts only an open class's exact plane",function()
   local plane=catalog:classLoadout("carrier",50)
   assert(catalog:isClassLoadout(plane,10) and not catalog:isClassLoadout(plane,9))
-  plane.weapon_mounts[3]="pellet"
+  plane.weapon_mounts[3]=false
   assert(not catalog:isClassLoadout(plane,50))
  end)
  test("a plane swaps free only at its desk, before it has flown this life",function()

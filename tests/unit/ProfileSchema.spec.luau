@@ -59,6 +59,18 @@ function Spec.run()
 		end
 		local p=fresh();p.doubleLocks.match_double_10={matchId="m",paper=1,xp=0};assert(Schema.validate(p,catalog))
 	end)
+	test("builds saved when big bodies had 6 and 5 mounts load with the guns that fit their 3 mounts (2026-11-12)",function()
+		local p=fresh();p.ownership.body_heavy=true;p.ownership.body_heavy_mk2=true;p.ownership.crayon=true
+		p.xpMilli=500000000 -- (high enough for every part)
+		p.presets[1].loadout={body="body_heavy",nose="nose_0",wings="wings_0",tail="tail_0",weapon_mounts={"pellet","pellet",false,false,"pellet","pellet"}}
+		p.presets[2].loadout={body="body_heavy_mk2",nose="nose_0",wings="wings_0",tail="tail_0",weapon_mounts={"crayon",false,false,"pellet","pellet"}}
+		p.rangePresets[1].loadout={body="body_heavy",nose="nose_0",wings="wings_0",tail="tail_0",weapon_mounts={"pencil",false,"eraser",false,false,false}}
+		local migrated=assert(Schema.migrate(p,catalog))
+		assert(Schema.canonical(migrated.presets[1].loadout.weapon_mounts)==Schema.canonical({"pellet","pellet","pellet"}))
+		assert(Schema.canonical(migrated.presets[2].loadout.weapon_mounts)==Schema.canonical({"crayon","pellet","pellet"}))
+		assert(Schema.canonical(migrated.rangePresets[1].loadout.weapon_mounts)==Schema.canonical({"pencil","eraser",false}))
+		assert(catalog:fitMounts(migrated.presets[1].loadout)==nil,"a build that fits is left alone")
+	end)
 	test("Range presets allow unowned high-level parts while match presets still reject them",function()
 		local p=fresh(); local loadout=p.rangePresets[1].loadout
 		loadout.nose="nose_5"; loadout.weapon_mounts[1]="eraser"; loadout.utility="boost_twin"

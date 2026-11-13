@@ -360,15 +360,21 @@ function Spec.run()
 		assert(Rules.shotDamage(weapon,50)==40 and Rules.shotDamage(weapon,450)==40,"flat damage")
 		assert(weapon.projectile_speed==600 and Rules.travelTime(weapon,300)>.5,"still slow: 300 studs takes over half a second")
 		assert(0.5*weapon.drop*Rules.travelTime(weapon,300)^2<2,"falls under 2 studs by 300")
-		-- Heavy, weight 4 (Alan 2026-11-08): heavy mounts only; two fit only the Cardboard (capacity 8), never three.
+		-- Heavy, weight 4 (Alan 2026-11-08): heavy mounts only; two fit the Cardboard (capacity 10) and the Toilet Roll (8).
 		local loadout=catalog:starterLoadout();loadout.weapon_mounts={false,"crayon",false,false}
 		assert(not catalog:validateLoadout(loadout,nil,50),"a medium mount can't take it")
 		loadout.weapon_mounts={"crayon",false,false,false}
 		assert(catalog:validateLoadout(loadout,nil,50),"one on the Classic Fold's heavy mount")
-		loadout.body="body_heavy_mk2";loadout.weapon_mounts={"crayon","crayon",false,false,false}
-		assert(not catalog:validateLoadout(loadout,nil,50),"two are over the Toilet Roll's weight")
-		loadout.body="body_heavy";loadout.weapon_mounts={"crayon","crayon",false,false,false,false}
-		assert(catalog:validateLoadout(loadout,nil,50),"two on the Cardboard")
+		loadout.body="body_heavy_mk2";loadout.weapon_mounts={"crayon","crayon",false}
+		assert(catalog:validateLoadout(loadout,nil,50),"two on the Toilet Roll")
+		loadout.weapon_mounts={"crayon","crayon","pellet"}
+		assert(not catalog:validateLoadout(loadout,nil,50),"two and a Pellet are over the Toilet Roll's weight")
+		loadout.body="body_heavy"
+		assert(catalog:validateLoadout(loadout,nil,50),"two and a Pellet on the Cardboard")
+		loadout.weapon_mounts={"pencil","pencil",false}
+		assert(catalog:validateLoadout(loadout,nil,50),"two Pencils on the Cardboard")
+		loadout.body="body_heavy_mk2"
+		assert(not catalog:validateLoadout(loadout,nil,50),"never two Pencils on the Toilet Roll")
 	end)
 	test("Spitball: one slow, light shot per click; up to 5 stick and weigh the plane down (Alan 2026-11-07)",function()
 		local weapon=catalog:get("spitball")
@@ -459,8 +465,8 @@ function Spec.run()
 		local old={slot=1,weapon={id="pencil"},readyAt=now+6}
 		local service=setmetatable({info={test={mounts={old},held={true,true},history=history,activeErasers=2}},flight={catalog={get=function(_,id)return {id=id,shot_interval=4,visual_scale=2}end}}},Combat)
 		local model=Instance.new("Folder")
-		service:refit({id="test",model=model,loadout={body="body_heavy",weapon_mounts={"pencil","pencil",false,false,false,false}}})
-		assert(model:GetAttribute("Mounts")=="pencil,pencil,,,,","the shooter's client needs the new mounts")
+		service:refit({id="test",model=model,loadout={body="body_heavy",weapon_mounts={"pencil","pencil",false}}})
+		assert(model:GetAttribute("Mounts")=="pencil,pencil,","the shooter's client needs the new mounts")
 		local info=service.info.test
 		assert(info.history==history and info.activeErasers==2 and info.held[1]==false)
 		assert(info.mounts[1].readyAt==now+6 and info.mounts[2].readyAt>=now+4)
@@ -601,12 +607,11 @@ function Spec.run()
 			model:Destroy()
 			return x
 		end
-		local heavy=across({body="body_heavy",nose="nose_0",wings="wings_0",tail="tail_0",weapon_mounts={"eraser","eraser","eraser","eraser","eraser","eraser"}})
-		assert(heavy[3].lo-heavy[5].hi>0 and heavy[6].lo-heavy[4].hi>0,"outer erasers overlap their neighbours")
+		-- (no body has crowded wing mounts since big bodies went to 3 mounts, 2026-11-12)
+		local heavy=across({body="body_heavy",nose="nose_0",wings="wings_0",tail="tail_0",weapon_mounts={"eraser","eraser","eraser"}})
 		-- guns scale with the wing they hang from (the cardboard body fits Classic Wings at 83%)
 		local missile=Root.Assets.AircraftPieces.launcher_eraser.missile.Size.X*catalog:get("body_heavy").visual_scale/2*Aircraft.wingFit("body_heavy","wings_0",0).scale
 		assert(math.abs(heavy[1].hi-heavy[1].lo-missile)<.01,"guns with room keep their full size")
-		assert(heavy[5].hi-heavy[5].lo<missile-.1,"the crowded outer gun is shrunk")
 		local factor=catalog:get("body_standard").visual_scale/2
 		-- Guns on the body pair hang by their highest point from the wing root (Classic Wings: .78 before scale).
 		local classic=Aircraft.wingFit("body_standard","wings_0",0)

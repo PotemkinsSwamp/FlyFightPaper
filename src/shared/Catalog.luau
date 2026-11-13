@@ -253,6 +253,25 @@ function Catalog:validateLoadout(loadout, ownership, level)
 	return true
 end
 
+-- A build saved when its body had more mounts (big bodies went from 6 and 5 to 3, Alan 2026-11-12): its guns packed in
+-- order into the first free mount that takes them; the rest are dropped. nil when the build already fits.
+function Catalog:fitMounts(loadout)
+	local body = type(loadout) == "table" and self.byId[loadout.body]
+	local old = body and loadout.weapon_mounts
+	if type(old) ~= "table" or type(body.mount_count) ~= "number" or #old <= body.mount_count then return nil end
+	local mounts = table.create(body.mount_count, false)
+	for _, id in ipairs(old) do
+		local weapon = type(id) == "string" and self.byId[id]
+		for i = 1, body.mount_count do
+			local fits = weapon and COMPATIBLE[body.mount_types[i]]
+			if fits and fits[weapon.class] and mounts[i] == false then mounts[i] = id; break end
+		end
+	end
+	local fitted = table.clone(loadout)
+	fitted.weapon_mounts = mounts
+	return fitted
+end
+
 -- Free gear (Paper price 0) is yours from its level on, with nothing written to the save (Alan 2026-11-08: the
 -- first four weapons are free, everything after costs Paper).
 function Catalog:owns(ownership, id, level)

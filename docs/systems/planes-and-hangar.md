@@ -77,15 +77,18 @@ Mount rules: use ordered compatible attachment positions. Heavy accepts heavy/me
 medium/light; light accepts light. Total capacity AND mount types AND owned/level-eligible selections must
 pass. No free heavy compatibility from other parts. Purchasing a weapon unlocks its type, not consumable
 copies. Each utility costs mass and supplies its own boost meter; one utility slot, starter empty.
-The Gunships (Alan 2026-11-08, so health times guns no longer runs away): the Cardboard Gunship carries 8 with 220
-health on heavy, heavy, medium, medium, medium, light; the Toilet Roll sits midway between it and the Courier Fold on
-every stat (180 health, 87 speed, 135 turn, 92 Lift, capacity 7) with five mounts: heavy, heavy, medium, light, light
-(the fifth on the left wing only, like the Swift Fold's third).
+The Gunships (Alan 2026-11-08, so health times guns no longer runs away; mounts cut to 3 on 2026-11-12, still too
+strong): both have three mounts, heavy, heavy, medium. The Cardboard Gunship (220 health) carries 10: two Pencils, or two
+Crayons and a light or medium gun. The Toilet Roll sits midway between it and the Courier Fold on every stat (180 health,
+87 speed, 135 turn, 92 Lift) and carries 8: two Crayons, or one Pencil and a medium gun, never two Pencils (Alan leaned 8
+over 9; one number in `config/catalog.json`). The fixed planes on them: Bomber a Crayon and two Pellets, Carrier three
+Pellets.
 
 Precision Paperclip uses 2 capacity; Rubber Band Repeater uses 2. Weapon class still controls mount
 compatibility (paperclip medium, rubber light). Saved presets that exceed capacity or contain more than two
 weapon types after tuning fall back to the starter build on join, keeping their names, ownership and account
-progress. Pending refolds still recover normally, including the once-only refund of reserved or delivered refolds.
+progress. A build saved when its body had more mounts keeps its guns, packed in order into the mounts that take them;
+the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normally, including the once-only refund of reserved or delivered refolds.
 
 ## Code
 | File | What it does |

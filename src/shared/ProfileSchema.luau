@@ -244,6 +244,7 @@ function Schema.migrate(record, catalog)
 	local level=Economy.levelForXP(p.xpMilli)
 	local function recover(entry, ownership, entryLevel)
 		if type(entry)~="table" then return end
+		entry.loadout=catalog:fitMounts(entry.loadout) or entry.loadout -- (fewer mounts than when it was saved)
 		local _,reason=catalog:validateLoadout(entry.loadout,ownership,entryLevel)
 		if reason=="weapon capacity exceeds body capacity" or reason=="two weapon types per plane" then entry.loadout=catalog:starterLoadout() end
 	end

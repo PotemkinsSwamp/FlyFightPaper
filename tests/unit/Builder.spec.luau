@@ -41,21 +41,21 @@ function Spec.run()
 		assert(stats.health == expected.health and stats.speed == expected.speed and stats.turn == expected.turn and stats.lift == expected.lift)
 		assert(stats.health == 120 and stats.speed == 106 and math.abs(stats.turn - 116.9) < 1e-6 and stats.lift == 90)
 	end)
-	test("ordered six-mount heavy body pads every empty position with false", function()
+	test("ordered three-mount heavy body pads every empty position with false", function()
 		local model = BuilderModel.new(catalog, starter, ownership, 50)
 		assert(model:selectStructure("body", "body_heavy"))
-		assert(#model.candidate.weapon_mounts == 6)
-		for index = 3, 6 do assert(model.candidate.weapon_mounts[index] == false) end
+		assert(#model.candidate.weapon_mounts == 3)
+		assert(model.candidate.weapon_mounts[3] == false)
 		assert(catalog:validateLoadout(model.candidate, ownership, 50))
 	end)
 	test("standard-to-heavy and heavy-to-slim normalize ordered mounts and report local clears", function()
 		local model = BuilderModel.new(catalog, starter, ownership, 50)
 		assert(model:selectStructure("body", "body_heavy"))
-		for index = 3, 6 do assert(model:selectMount(index, "pellet")) end
-		assert(#model.candidate.weapon_mounts == 6)
-		assert(model:selectStructure("body", "body_slim"))
+		assert(model:selectMount(1, "crayon") and model:selectMount(2, "crayon") and model:selectMount(3, "pellet"))
 		assert(#model.candidate.weapon_mounts == 3)
-		assert(string.find(model.message, "3 incompatible or excess", 1, true))
+		assert(model:selectStructure("body", "body_slim")) -- (no heavy mounts: both Crayons go)
+		assert(#model.candidate.weapon_mounts == 3)
+		assert(string.find(model.message, "2 incompatible or excess", 1, true), model.message)
 		assert(model:validate(model.candidate))
 	end)
 	test("capacity, mount compatibility, unowned and level restrictions reject", function()
@@ -103,14 +103,14 @@ function Spec.run()
 	end)
 	test("heavy reference stats stay identical to Catalog calculation", function()
 		local heavy = { body = "body_heavy_mk2", nose = "nose_0", wings = "wings_0", tail = "tail_0", utility = nil,
-			weapon_mounts = { "pencil", false, false, "pellet", "pellet" } }
+			weapon_mounts = { "pencil", "pellet", "pellet" } }
 		local model = BuilderModel.new(catalog, heavy, ownership, 50)
 		local stats = assert(model:stats())
 		assert(stats.health == 180 and stats.speed == 73 and math.abs(stats.turn - 87.15) < 1e-6 and stats.lift == 81.5)
 	end)
 	test("smart placing: a weapon too big for the chosen mount goes where it fits and moves what was there", function()
 		local heavy = { body = "body_heavy", nose = "nose_0", wings = "wings_0", tail = "tail_0",
-			weapon_mounts = { "pellet", "pellet", false, false, false, false } }
+			weapon_mounts = { "pellet", "pellet", false } }
 		local model = BuilderModel.new(catalog, heavy, ownership, 50)
 		local ok, index = model:placeWeapon("pencil", 3) -- a medium mount is chosen; the heavy mounts hold pellets
 		assert(ok and index == 1 and model.candidate.weapon_mounts[1] == "pencil", tostring(index))

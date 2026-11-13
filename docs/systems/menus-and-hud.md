@@ -78,7 +78,7 @@ shrinks its words to fit its own column (long names). Team rounds: a card per te
 right, spaced so they don't touch); the winners' card has the gold star by its note. Tab's live standings use the same
 card ("so far", no grades or note). After a match: one big green button taped under your own card, up with the card: [Double this match](../decisions/2026-11-12-double-this-match.md) (built 2026-11-12, replaces the 2x Paper button). It reads "Double this match! Ns left" over "+P Paper  +X XP (R$ price)", with a blue "Worth N R$!" sticker propped on its corner that pops in with a bounce as the card comes up and then gently pulses. Pressing it asks the server (`doubleMatch`), which locks the amounts; it says "One moment..." until it pays, then "Doubled! Thanks!" (the server sets `MatchDoubled` to the match). Only at 75+ Paper, while the card is up, once a match, and fewer than 3 buys today (the calm rule P). Price and worth: `CommerceRules.matchDoublePrice`. Alan's first two playtests
 didn't show it: in a free-for-all "your page" was the hidden page 2, so the note (and the level bar) hid with it; fixed
-2026-11-12. Double this match: not yet seen in Play. Seen in Studio Play at phone size 2026-11-11 (Alan: "looks good"); PC size not yet
+2026-11-12. Double this match: seen working in Alan's Play 2026-11-12. Seen in Studio Play at phone size 2026-11-11 (Alan: "looks good"); PC size not yet
 seen in Play (only the put-together preview). Match tips: the words fill the sticky note, as big as fits. Seen in Studio
 Play at phone size 2026-10-29.
 Dev mode: in Studio, and on the game owner's own account in live servers (server-set `Dev` attribute,

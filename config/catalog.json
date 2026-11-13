@@ -46,7 +46,7 @@
     },
     {
       "id": "body_heavy",
-      "description": "The toughest body, with room for 6 guns. Slow and heavy.",
+      "description": "The toughest body: room for 3 guns, big enough for two Pencils. Slow and heavy.",
       "name": "Cardboard Gunship",
       "slot": "body",
       "archetype": "heavy",
@@ -56,9 +56,9 @@
       "base_health": 220,
       "base_turn": 110,
       "base_lift": 83,
-      "mount_count": 6,
-      "capacity": 8,
-      "mount_types": ["heavy", "heavy", "medium", "medium", "medium", "light"],
+      "mount_count": 3,
+      "capacity": 10,
+      "mount_types": ["heavy", "heavy", "medium"],
       "visual_scale": 3.19,
       "wing_shift": 2.65
     },
@@ -107,7 +107,7 @@
     },
     {
       "id": "body_heavy_mk2",
-      "description": "A big, tough body with room for 5 guns. Slow to turn.",
+      "description": "A big, tough body with room for 3 guns (not two Pencils). Slow to turn.",
       "name": "Toilet Roll Gunship",
       "slot": "body",
       "archetype": "heavy",
@@ -117,14 +117,12 @@
       "base_health": 180,
       "base_turn": 135,
       "base_lift": 92,
-      "mount_count": 5,
-      "capacity": 7,
+      "mount_count": 3,
+      "capacity": 8,
       "mount_types": [
         "heavy",
         "heavy",
-        "medium",
-        "light",
-        "light"
+        "medium"
       ],
       "visual_scale": 3.19,
       "wing_shift": 1.35
@@ -594,8 +592,8 @@
     {"id": "striker", "name": "Striker", "min_level": 1, "loadout": {"body": "body_slim", "nose": "nose_1", "wings": "wings_1", "tail": "tail_0", "weapon_mounts": ["staple", "staple", false], "utility": "boost_band"}},
     {"id": "scout", "name": "Scout", "min_level": 1, "loadout": {"body": "body_standard_mk2", "nose": "nose_0", "wings": "wings_2", "tail": "tail_2", "weapon_mounts": ["rubber", "rubber", false, false], "utility": "boost_band"}},
     {"id": "marksman", "name": "Marksman", "description": "A ready-made plane with two Precision Paperclips for long shots.", "min_level": 5, "loadout": {"body": "body_standard", "nose": "nose_0", "wings": "wings_0", "tail": "tail_2", "weapon_mounts": ["paperclip", "paperclip", false, false], "utility": null}},
-    {"id": "bomber", "name": "Bomber", "description": "A ready-made heavy plane: a Stubby Crayon and two Pellet guns.", "min_level": 8, "loadout": {"body": "body_heavy_mk2", "nose": "nose_2", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["crayon", false, false, "pellet", "pellet"], "utility": null}},
-    {"id": "carrier", "name": "Carrier", "description": "A ready-made big plane with four Pellet guns.", "min_level": 10, "loadout": {"body": "body_heavy", "nose": "nose_0", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["pellet", "pellet", false, false, "pellet", "pellet"], "utility": null}}
+    {"id": "bomber", "name": "Bomber", "description": "A ready-made heavy plane: a Stubby Crayon and two Pellet guns.", "min_level": 8, "loadout": {"body": "body_heavy_mk2", "nose": "nose_2", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["crayon", "pellet", "pellet"], "utility": null}},
+    {"id": "carrier", "name": "Carrier", "description": "A ready-made big plane with three Pellet guns.", "min_level": 10, "loadout": {"body": "body_heavy", "nose": "nose_0", "wings": "wings_0", "tail": "tail_0", "weapon_mounts": ["pellet", "pellet", "pellet"], "utility": null}}
   ],
   "starter_loadout": {
     "body": "body_standard",

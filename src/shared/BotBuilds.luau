@@ -18,15 +18,15 @@ BotBuilds.TIERS={
 	rookie=presets(1),
 	regular=presets(math.huge),
 	experienced={
-		-- Tanks: a big body with speed parts and a Pellet in every slot, the strongest reasonable tank once Staples weighed 2
-		-- (Alan 2026-11-08; replaced the Staple Tank). The Cardboard one checks whether that body still dominates.
+		-- Tanks: a big body with speed parts. Big bodies have 3 mounts (Alan 2026-11-12): the Toilet Roll with a Pellet in
+		-- every slot; the Cardboard (capacity 10) with two Crayons and a Pellet, checking whether that body still dominates.
 		{name="Pellet Tank",loadout={
 			body="body_heavy_mk2",nose="nose_3",wings="wings_3",tail="tail_3",
-			weapon_mounts={"pellet","pellet","pellet","pellet","pellet"},
+			weapon_mounts={"pellet","pellet","pellet"},
 		}},
 		{name="Cardboard Tank",loadout={
 			body="body_heavy",nose="nose_3",wings="wings_3",tail="tail_3",
-			weapon_mounts={"pellet","pellet","pellet","pellet","pellet","pellet"},
+			weapon_mounts={"crayon","crayon","pellet"},
 		}},
 		-- A fast plane on a moderate body with the Popper: zip in, brake, fire, zip out (Alan's way).
 		-- (a booster to zip in and out: BotTactics' dart, Alan 2026-11-08).

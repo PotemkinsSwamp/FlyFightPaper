@@ -123,9 +123,9 @@ function Suite.run()
 		local wrongMount = cloneLoadout(starter)
 		wrongMount.weapon_mounts[3] = "pencil"
 		expectRejected(catalog, wrongMount, nil, 40, "incompatible")
-		local full = { -- the Cardboard carries 8: a Pencil (5) and three Pellets
+		local full = { -- the Cardboard carries 10: two Pencils (5 each) (Alan 2026-11-12)
 			body = "body_heavy", nose = "nose_0", wings = "wings_0", tail = "tail_0",
-			weapon_mounts = { "pencil", false, false, "pellet", "pellet", "pellet" }, utility = nil,
+			weapon_mounts = { "pencil", "pencil", false }, utility = nil,
 		}
 		local accepted, err = catalog:validateLoadout(full, nil, 40)
 		expect(accepted == true, err)
@@ -214,7 +214,7 @@ function Suite.run()
 	check("CFG03 full Toilet Roll reference stats", function()
 		local heavy = {
 			body = "body_heavy_mk2", nose = "nose_0", wings = "wings_0", tail = "tail_0",
-			weapon_mounts = { "pencil", false, false, "pellet", "pellet" }, utility = nil,
+			weapon_mounts = { "pencil", "pellet", "pellet" }, utility = nil,
 		}
 		local stats, err = catalog:deriveStats(heavy)
 		expect(stats ~= nil, err)
@@ -222,8 +222,8 @@ function Suite.run()
 		expect(math.abs(stats.speed - 73) < 1e-8, "heavy speed mismatch")
 		expect(math.abs(stats.turn - 87.15) < 1e-8 and math.abs(stats.lift - 81.5) < 1e-8,
 			"heavy turn/lift mismatch")
-		expect(stats.mass == 7 and stats.capacity == 7 and stats.used_capacity == 7
-			and stats.remaining_capacity == 0, "heavy mass/capacity metrics mismatch")
+		expect(stats.mass == 7 and stats.capacity == 8 and stats.used_capacity == 7
+			and stats.remaining_capacity == 1, "heavy mass/capacity metrics mismatch")
 	end)
 
 	check("equipment mass changes mobility but never health", function()
@@ -262,7 +262,7 @@ function Suite.run()
 
 		local heavy = {
 			body = "body_heavy", nose = "nose_0", wings = "wings_0", tail = "tail_0",
-			weapon_mounts = { "pencil", false, false, false, false, "pellet" }, utility = nil,
+			weapon_mounts = { "pencil", false, "pellet" }, utility = nil,
 		}
 		local heavyStats, heavyError = highSpeedCatalog:deriveStats(heavy)
 		expect(heavyStats ~= nil, heavyError)

@@ -81,7 +81,7 @@ function Spec.run()
 	test("measure counts erasers and pencils and gives homing zero dodge time",function()
 		local loadout=catalog:starterLoadout()
 		loadout.body="body_heavy"
-		loadout.weapon_mounts={"pencil",false,"eraser",false,false,false}
+		loadout.weapon_mounts={"pencil",false,"eraser"}
 		local measured=BotBuilds.measure(catalog,loadout,"experienced")
 		assert(measured.dps==72.5 and measured.erasers==1 and measured.pencils==1)
 		assert(measured.dodge==0)
