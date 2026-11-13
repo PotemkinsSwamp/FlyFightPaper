@@ -211,8 +211,8 @@ function ShopScreen.new(playerGui, api)
 	shade.Position, shade.Size, shade.Parent = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(3, 3), jarNote
 	local sticky = fit(pic(jarNote, "Note", Assets.ingame.stickyWide, 265, 310, 1265, 662))
 	say(sticky, "Title", "Are you sure?", 90, 70, 910, 125, 44, { loud = true })
-	local why = say(sticky, "Words", "The jar always costs 199 R$, and it keeps filling up to " .. commas(JAR.cap_paper)
-		.. " Paper. Wait, and you get more Paper for the same price.", 90, 125, 910, 240, 30, { grow = true })
+	local why = say(sticky, "Words", "The jar always costs 199 R$, and it keeps filling up to " .. commas(JAR.cap_paper) .. " Paper.",
+		90, 125, 910, 240, 30, { grow = true }) -- (Alan 2026-11-12: no more than that)
 	why.TextWrapped = true
 	local strip = Assets.mainmenu.strip
 	PaperUI.button(sticky, "Break", strip.green, "Break it now", 190 * K, 256 * K, 280 * K, 72 * K, -1, function()
@@ -534,13 +534,13 @@ function ShopScreen.new(playerGui, api)
 		say(card, "Name", "Paper jar", 15, 8, 390, 58, 40, { loud = true })
 		-- The empty jar, and the full one showing below the paper's level (the two drawings line up exactly). The box is
 		-- wider than the jar, so the picture's height fills it and the level shares hold.
-		local jar = fit(pic(card, "Jar", Art.jarEmpty or Art.iconPaperPile, 70, 52, 335, 212))
+		local jar = fit(pic(card, "Jar", Art.jarEmpty, 70, 52, 335, 212))
 		local level = JAR_BOTTOM - (JAR_BOTTOM - JAR_TOP) * math.clamp(inside / JAR.cap_paper, 0, 1)
 		if inside > 0 then
 			local clip = Instance.new("Frame")
 			clip.Name, clip.BackgroundTransparency, clip.ClipsDescendants = "Filled", 1, true
 			clip.Position, clip.Size, clip.Parent = UDim2.fromScale(0, level), UDim2.fromScale(1, 1 - level), jar
-			local paper = fit(pic(clip, "Full", Art.jarFull or Art.iconPaperPile, 0, 0, 1, 1))
+			local paper = fit(pic(clip, "Full", Art.jarFull, 0, 0, 1, 1))
 			paper.Position, paper.Size = UDim2.fromScale(0.5, (0.5 - level) / (1 - level)), UDim2.fromScale(1, 1 / (1 - level)) -- (pictures sit by their middle)
 		end
 		move(jar, "bob", phase)

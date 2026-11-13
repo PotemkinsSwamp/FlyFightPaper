@@ -165,6 +165,7 @@ return {
 		claimGreen = "rbxassetid://104327351071076", close = "rbxassetid://134979180797968", giftButton = "rbxassetid://89472568490471",
 		giftFriend = "rbxassetid://102619503794948", giftWhite = "rbxassetid://92713322166615", iconClockPaper = "rbxassetid://111323307940989",
 		iconClockStar = "rbxassetid://86817474055375", iconGiftBag = "rbxassetid://86378458829477", iconGiftBox = "rbxassetid://87776816300043",
+		jarEmpty = "rbxassetid://138886973609009", jarFull = "rbxassetid://87510712237686", -- the Paper jar: the same jar empty and full (they line up)
 		iconPaperBox = "rbxassetid://73638284862498", iconPaperPile = "rbxassetid://84608007092732", iconPaperSmall = "rbxassetid://80162590764517",
 		iconPassPaper = "rbxassetid://117490948455704", iconPassStar = "rbxassetid://84672388952268", iconStack = "rbxassetid://109929418349896",
 		itemSquare = "rbxassetid://73215115302648", labelDark = "rbxassetid://126046584555047", pin = "rbxassetid://100661516398576",
