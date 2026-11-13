@@ -250,6 +250,8 @@ function Service:handle(player,action,value)
    input={kind="paperJar"}
   elseif product.benefit=="part_unlock" then
    self:message(player,"Part checkout is unavailable in the practice shop.");return
+  elseif product.benefit=="look_unlock" then
+   self:message(player,"Skin and trail checkout is unavailable in the practice shop.");return
   else
    local resource=product.benefit:find("xp") and "xp" or "paper"
    local permanent=product.benefit:find("permanent")~=nil

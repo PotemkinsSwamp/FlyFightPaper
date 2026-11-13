@@ -2,6 +2,7 @@
 -- Mock/unauthorized catalogs never even acquire MarketplaceService or bind events.
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Rules=require(Root.Shared.CommerceRules)
+local Looks=require(Root.Shared.LooksRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local Profile=require(script.Parent.ProfileService)
 local Service={};Service.__index=Service
@@ -187,6 +188,7 @@ function Service:prompt(player,key)
  if offer.benefit=="starter_pack" and Rules.starterPackEnds(view,self.unix())==0 then return false,"starter_pack_ended" end
  if offer.benefit=="paper_jar" and view.paperJarMilli<EconomyConfig.paper_jar.min_break_paper*1000 then return false,"jar_low" end
  if offer.benefit=="part_unlock" and view.ownership[offer.catalogID]==true then return false,"owned" end
+ if offer.benefit=="look_unlock" and Looks.owns(view,offer.lookID) then return false,"owned" end
  if Rules.owned(offer,view.boosts) then return false,offer.kind=="pass" and "owned" or "permanent_owned" end
  local ok=pcall(function()
   if offer.kind=="pass" then self.marketplace:PromptGamePassPurchase(player,offer.productID)

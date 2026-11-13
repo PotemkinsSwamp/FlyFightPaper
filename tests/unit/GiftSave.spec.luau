@@ -99,8 +99,8 @@ function Spec.run()
  test("schema 11 migrates gift ids without mutating an old save or its purchase history",function()
   local f=fixture();local old=assert(Schema.copy(f.profile.Data));old.schemaVersion=11;old.giftIds=nil
   old.receiptIds.old=true;old.firstBuys.paper_pack_5000=true;old.boosts.xpSeconds=17;old.extensions={keep="old"}
-  local before=Schema.canonical(old);local expected=assert(Schema.copy(old));expected.schemaVersion=12;expected.giftIds={}
-  assert(Schema.VERSION==12 and Schema.canonical(assert(Schema.migrate(Schema.freeze(old),f.catalog)))==Schema.canonical(expected))
+  local before=Schema.canonical(old);local expected=assert(Schema.copy(old));expected.schemaVersion=Schema.VERSION;expected.giftIds={}
+  assert(Schema.VERSION==13 and Schema.canonical(assert(Schema.migrate(Schema.freeze(old),f.catalog)))==Schema.canonical(expected))
   assert(Schema.canonical(old)==before and not Schema.validate(old,f.catalog))
  end)
  test("gift ids reject missing malformed duplicate sparse and over-cap history",function()

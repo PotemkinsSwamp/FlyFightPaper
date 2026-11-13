@@ -26,7 +26,7 @@ function Spec.run()
 		local before=Schema.canonical(p);local expected=assert(Schema.copy(p))
 		expected.schemaVersion=Schema.VERSION;expected.doubleLocks={}
 		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
-		assert(Schema.VERSION==12 and Schema.canonical(migrated)==Schema.canonical(expected))
+		assert(Schema.VERSION==13 and Schema.canonical(migrated)==Schema.canonical(expected))
 		assert(Schema.canonical(p)==before and not Schema.validate(p,catalog))
 		assert(Schema.canonical(assert(Schema.migrate(migrated,catalog)))==Schema.canonical(migrated))
 	end)

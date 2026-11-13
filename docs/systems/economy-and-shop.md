@@ -325,6 +325,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 |---|---|
 | `src/shared/EconomyRules.luau` | Points to Paper and XP, bonuses, levels, purchases |
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
+| `src/shared/LooksRules.luau` | Skins and trails: prices, buying with Paper or Robux, wearing, what bots wear ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |
 | `src/server/HangarService.luau` | Buying parts, the practice shop |
 | `src/client/ShopScreen.luau` | The shop window (Studio only until go-live): built to the approved concept's measurements, pictures named in `UIAssets.shop`, animations; the starter pack's saved timer, the free gift card with its 7-day row (Claim, ticks, time to the next), Paper packs biggest first with "First buy 2x!", pictures growing with the amount ([money plan](../plan/SHOP-MONEY-PLAN.md); checked in Play 2026-11-12; the tab buttons scroll too far, see STATE); the Gift a friend note: friends from Roblox (in this server first), the server's check, "A gift for Sam" with the price; from the title bar the shop stays "For Sam" until a card's gift button (Paper packs and boosts only) |

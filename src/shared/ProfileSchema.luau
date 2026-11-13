@@ -1,12 +1,13 @@
 -- Bounded JSON persistence contract. No load failure is interpreted as a new account.
 local Economy = require(script.Parent.EconomyRules)
 local Commerce = require(script.Parent.CommerceRules)
+local Looks = require(script.Parent.LooksRules)
 local EconomyConfig = require(script.Parent.Parent.Generated.Economy)
 local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
 local TouchLayout = require(script.Parent.TouchLayout)
 local KeyBinds = require(script.Parent.KeyBinds)
-local Schema = { VERSION = 12, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
+local Schema = { VERSION = 13, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
@@ -86,13 +87,14 @@ function Schema.validDoubleLock(key, lock)
 end
 local moneyFields = { "paperMilli", "earnedPaperMilli", "purchasedPaperMilli", "xpMilli" }
 function Schema.economicView(p)
-	local v = { ownership = assert(Schema.copy(p.ownership)) }
+	local v = { ownership = assert(Schema.copy(p.ownership)), looks = assert(Schema.copy(p.looks)) }
 	for _, k in ipairs(moneyFields) do v[k] = p[k] end
 	return freeze(v)
 end
 function Schema.mergeEconomic(p, v)
 	for _, k in ipairs(moneyFields) do p[k] = v[k] end
 	p.ownership = assert(Schema.copy(v.ownership))
+	p.looks = assert(Schema.copy(v.looks))
 end
 function Schema.defaults(catalog)
 	local paper, xp = EconomyConfig.initial_paper*1000, EconomyConfig.initial_total_xp*1000
@@ -100,6 +102,7 @@ function Schema.defaults(catalog)
 	local level = assert(Economy.levelForXP(xp))
 	local p = { schemaVersion = Schema.VERSION, version = 0, generation = 0, paperMilli = paper, earnedPaperMilli = 0, paperJarMilli = 0,
 		purchasedPaperMilli = 0, xpMilli = xp, prestige = 0, unlocksSeen = level, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
+		looks = { owned = {}, skin = "", trail = "" },
 		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium", matchTips = true, autoFire = true, speedMatch = true },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
 		dailyGift = { next = 1, lastDay = -1 }, starterPack = { offeredAt = 0, bought = false }, firstBuys = {}, buysToday = { day = -1, count = 0 }, doubleLocks = {},
@@ -114,7 +117,7 @@ function Schema.validate(record, catalog)
 	local p, err = Schema.copy(record); if not p then return nil, err end
 	local ok, message = pcall(function()
 		exact(p, { schemaVersion=1, version=1, generation=1, lease=0, paperMilli=1, earnedPaperMilli=1, purchasedPaperMilli=1, paperJarMilli=1,
-			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, dailyGift=1, starterPack=1, firstBuys=1, buysToday=1, doubleLocks=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, giftIds=1, lessons=1, extensions=0, refolds=0 })
+			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, looks=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, dailyGift=1, starterPack=1, firstBuys=1, buysToday=1, doubleLocks=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, giftIds=1, lessons=1, extensions=0, refolds=0 })
 		assert(p.schemaVersion == Schema.VERSION, "unsupported_schema")
 		assert(integer(p.version) and integer(p.generation), "invalid_version")
 		assert(integer(p.prestige) and p.prestige<=EconomyConfig.prestige_max, "invalid_prestige")
@@ -122,6 +125,13 @@ function Schema.validate(record, catalog)
 		for _, k in ipairs(moneyFields) do assert(integer(p[k]), "invalid_money") end
 		assert(integer(p.paperJarMilli) and p.paperJarMilli<=EconomyConfig.paper_jar.cap_paper*Economy.MILLI, "invalid_paper_jar")
 		for id, owned in pairs(p.ownership) do assert(type(id)=="string" and catalog:get(id) and owned==true, "invalid_ownership") end
+		exact(p.looks, {owned=1,skin=1,trail=1})
+		assert(type(p.looks.owned)=="table", "invalid_look_ownership")
+		for id, owned in pairs(p.looks.owned) do assert(Looks.item(id) and owned==true, "invalid_look_ownership") end
+		for _, kind in ipairs({"skin","trail"}) do
+			local id=p.looks[kind];local item=Looks.item(id)
+			assert(id=="" or (item and item.kind==kind and p.looks.owned[id]==true), "invalid_worn_look")
+		end
 		local level = assert(Economy.levelForXP(p.xpMilli))
 		assert(#p.presets == Gameplay.menus.saved_loadouts, "five_presets_required")
 		for _, preset in ipairs(p.presets) do
@@ -255,6 +265,20 @@ function Schema.migrate(record, catalog)
 	if p.schemaVersion==11 then
 		if p.giftIds==nil then p.giftIds={} end
 		p.schemaVersion=12
+	end
+	if p.schemaVersion==12 then
+		if p.looks==nil then p.looks={owned={},skin="",trail=""} end
+		p.schemaVersion=13
+	end
+	-- Catalog entries can retire without another schema change. Keep the account and known looks readable.
+	if p.schemaVersion==Schema.VERSION and type(p.looks)=="table" then
+		if type(p.looks.owned)=="table" then
+			for id in pairs(p.looks.owned) do if not Looks.item(id) then p.looks.owned[id]=nil end end
+		end
+		for _, kind in ipairs({"skin","trail"}) do
+			local id=p.looks[kind]
+			if type(id)=="string" and id~="" and not Looks.item(id) then p.looks[kind]="" end
+		end
 	end
 	-- Loadout tuning can invalidate an otherwise readable save. Keep its account and preset names intact.
 	local level=Economy.levelForXP(p.xpMilli)

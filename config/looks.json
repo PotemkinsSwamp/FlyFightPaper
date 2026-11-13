@@ -1,0 +1,28 @@
+{
+  "_comment": "Skins and trails stay owned through prestige. Prices are whole Paper or Robux; live Roblox sales stay disabled in commerce.json.",
+  "tiers": {
+    "common": { "paper": 2800, "robux": 149 },
+    "rare": { "paper": 5600, "robux": 299 },
+    "legendary": { "paper": 30000, "robux": 599 },
+    "mythical": { "paper": 60000, "robux": 999 },
+    "trail": { "paper": 900, "robux": 49 }
+  },
+  "skins": [
+    { "id": "hazard_stripes", "name": "Hazard Stripes", "tier": "common" },
+    { "id": "tiger_stripes", "name": "Tiger Stripes", "tier": "common" },
+    { "id": "flame_decals", "name": "Flame Decals", "tier": "common" },
+    { "id": "gold_foil", "name": "Gold Foil", "tier": "rare" },
+    { "id": "lava", "name": "Lava", "tier": "rare" },
+    { "id": "galaxy", "name": "Galaxy", "tier": "rare" },
+    { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "trail": "water_spray" },
+    { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers" }
+  ],
+  "trails": [
+    { "id": "confetti", "name": "Confetti", "tier": "trail", "sold": true },
+    { "id": "rainbow_marker", "name": "Rainbow Marker", "tier": "trail", "sold": true },
+    { "id": "gold_stars", "name": "Gold Stars", "tier": "trail", "sold": true },
+    { "id": "water_spray", "name": "Water Spray", "tier": "trail", "sold": false },
+    { "id": "dragon_embers", "name": "Dragon Embers", "tier": "trail", "sold": false }
+  ],
+  "bot_tiers": { "rookie": "common", "regular": "rare", "experienced": "legendary", "ace": "mythical" }
+}

@@ -354,7 +354,7 @@ function Spec.run()
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profile.Data.boosts.xpSeconds==900)
  end)
  test("all developer products use their catalog benefits including part ownership",function()
-  local f=fixture();local paper,xp,xpSeconds,paperSeconds,n,parts=0,0,0,0,0,0
+  local f=fixture();local paper,xp,xpSeconds,paperSeconds,n,parts,looks=0,0,0,0,0,0,0
   for _,offer in ipairs(f.commerce.catalog.offers) do
    if offer.kind=="developer_product" then
     n+=1
@@ -378,13 +378,16 @@ function Spec.run()
      if grant.kind=="purchasedPaper" then paper+=grant.wholePaper*1000
      elseif grant.resource=="xp" then xpSeconds+=grant.seconds
      else paperSeconds+=grant.seconds end
+    elseif offer.benefit=="look_unlock" then
+     assert(f.profile.LastSavedData.looks.owned[offer.lookID])
+     looks+=1
     else
      assert(offer.benefit=="part_unlock" and f.profile.LastSavedData.ownership[offer.catalogID])
      parts+=1
     end
    end
   end
-  assert(parts>0 and n==43+parts and n==#f.commerce.catalog.offers-2)
+  assert(parts>0 and looks==11 and n==43+parts+looks and n==#f.commerce.catalog.offers-2)
   assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
   assert(f.profile.LastSavedData.xpMilli==xp)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)

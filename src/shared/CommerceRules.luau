@@ -2,6 +2,7 @@
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local JSON = require(Root.Generated.JSONTypes)
 local EconomyConfig = require(Root.Generated.Economy)
+local Looks = require(script.Parent.LooksRules)
 local Rules = {}
 local MAX = 9007199254740991
 Rules.MATCH_DOUBLE_STEPS = table.freeze({10,15,25,35,49,69,99,149,199,249,299})
@@ -83,15 +84,21 @@ function Rules.catalog(config)
     if n<45 then return nil,"offer_count" end
     local fields={key=true,kind=true,benefit=true,amount=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     local partFields={key=true,kind=true,benefit=true,catalog_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
+    local lookFields={key=true,kind=true,benefit=true,look_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     for i=1,n do
         local p=config.products[i]
         if type(p)~="table" then return nil,"malformed_offer" end
         local part=p.benefit=="part_unlock"
-        local allowedFields=part and partFields or fields
+        local look=p.benefit=="look_unlock"
+        local allowedFields=part and partFields or look and lookFields or fields
         for k in pairs(p) do if not allowedFields[k] then return nil,"unknown_offer_field" end end
         if part then
             if p.kind~="developer_product" or type(p.catalog_id)~="string" or #p.catalog_id==0
                 or p.key~="part_"..p.catalog_id or type(p.enabled)~="boolean" then return nil,"invalid_part_offer" end
+        elseif look then
+            local item=Looks.item(p.look_id)
+            if p.kind~="developer_product" or not item or not item.sold
+                or p.key~="look_"..p.look_id or type(p.enabled)~="boolean" then return nil,"invalid_look_offer" end
         else
             local e=expected[p.key]
             if not e or p.kind~=e.kind or p.benefit~=e.benefit or p.amount~=e.amount or type(p.enabled)~="boolean" then
@@ -103,8 +110,10 @@ function Rules.catalog(config)
         local idNull, priceNull = p.roblox_product_id==JSON.Null, p.approved_robux_price==JSON.Null
         if (not idNull and not Rules.positiveInteger(p.roblox_product_id))
             or (not priceNull and not Rules.positiveInteger(p.approved_robux_price))
-            or idNull~=priceNull or (p.enabled and idNull) then return nil,"invalid_mapping" end
+            or (idNull~=priceNull and not (look and idNull and not priceNull and p.enabled==false))
+            or (p.enabled and idNull) then return nil,"invalid_mapping" end
         local offer=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,catalogID=p.catalog_id,
+            lookID=p.look_id,
             enabled=p.enabled,productID=not idNull and p.roblox_product_id or nil,
             approvedPrice=not priceNull and p.approved_robux_price or nil})
         if offer.productID then
@@ -121,13 +130,16 @@ function Rules.resource(offer)
     if offer.benefit=="xp_seconds" or offer.benefit=="permanent_xp" then return "xp" end
     if offer.benefit=="paper_seconds" or offer.benefit=="permanent_paper" then return "paper" end
 end
-function Rules.owned(offer,boosts)
+function Rules.owned(offer,boosts,profile)
+    if offer.benefit=="look_unlock" then return Looks.owns(profile,offer.lookID) end
+    if offer.benefit=="part_unlock" then return type(profile)=="table" and type(profile.ownership)=="table" and profile.ownership[offer.catalogID]==true or false end
     local resource=Rules.resource(offer)
     return resource and boosts[resource=="xp" and "permanentXP" or "permanentPaper"]==true or false
 end
 function Rules.operation(offer,source,version)
     if Rules.giftBase(offer.key) then return table.freeze({kind="giftSent"}) end
     if offer.benefit=="part_unlock" then return table.freeze({kind="partUnlock",catalogID=offer.catalogID}) end
+    if offer.benefit=="look_unlock" then return table.freeze({kind="lookUnlock",lookID=offer.lookID}) end
     if offer.benefit=="starter_pack" then return table.freeze({kind="starterPack"}) end
     if offer.benefit=="paper_jar" then return table.freeze({kind="paperJar"}) end
     if offer.benefit=="match_double" then
@@ -142,14 +154,16 @@ function Rules.operation(offer,source,version)
     end
     return table.freeze(op)
 end
-function Rules.preview(catalog,boosts)
+function Rules.preview(catalog,boosts,profile)
     local offers={}
     for i,p in ipairs(catalog.offers) do
-        local owned=Rules.owned(p,boosts)
+        local owned=Rules.owned(p,boosts,profile)
+        local unlock=p.benefit=="part_unlock" or p.benefit=="look_unlock"
         offers[i]=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,catalogID=p.catalogID,
+            lookID=p.lookID,owned=owned,
             label=catalog.mode=="mock" and "DEVELOPMENT ONLY - no real purchase" or "Live checkout unavailable",
-            available=catalog.mode=="mock" and p.benefit~="part_unlock" and not owned,ownedPermanent=owned,
-            reason=owned and "permanent_owned" or (catalog.mode~="mock" and "live_request_unavailable" or nil),
+            available=catalog.mode=="mock" and not unlock and not owned,ownedPermanent=owned and not unlock,
+            reason=owned and (unlock and "owned" or "permanent_owned") or (catalog.mode~="mock" and "live_request_unavailable" or nil),
             onlineTime=p.benefit=="xp_seconds" or p.benefit=="paper_seconds"})
     end
     return table.freeze({mode=catalog.mode,remainingTimeBasis="last_durable",label=catalog.mode=="mock" and "DEVELOPMENT ONLY - no real purchase" or "Live checkout unavailable",

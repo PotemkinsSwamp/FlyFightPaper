@@ -4,6 +4,7 @@ local Run=game:GetService("RunService")
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
+local Looks=require(Root.Shared.LooksRules)
 local Commerce=require(Root.Shared.CommerceRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local BoostClock=require(Root.Shared.BoostClock)
@@ -47,6 +48,9 @@ local function validReceiptGrant(grant)
  elseif grant.kind=="partUnlock" then
   if type(grant.catalogID)~="string" or #grant.catalogID==0 then return false end
   fields={kind=true,catalogID=true}
+ elseif grant.kind=="lookUnlock" then
+  if type(grant.lookID)~="string" or #grant.lookID==0 then return false end
+  fields={kind=true,lookID=true}
  else return false end
  for key in pairs(grant) do if not fields[key] then return false end end
  return true
@@ -191,6 +195,7 @@ function Service:_effect(p,op,boostState)
 		if not self.catalog:get(op.catalogID) then return nil,"unknown_part" end
 		if p.ownership[op.catalogID]==true then result={type="PartAlreadyOwned"}
 		else p.ownership[op.catalogID]=true;result={type="PartUnlocked",catalogID=op.catalogID} end
+	elseif op.kind=="lookUnlock" then applied,err=Looks.grant(v,op.lookID,op.id)
 	elseif op.kind=="prestige" then
 		-- Keep unrelated save fields outside the economy rules' smaller copy bounds.
 		local prestigeView=assert(Schema.copy(v))

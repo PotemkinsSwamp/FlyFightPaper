@@ -10,7 +10,7 @@ Rules logic (damage, economy, rewards, build legality, saving) has unit tests in
 require(game.ServerStorage.FlyFightPaperTests.unit.TestRunner).run()
 ```
 
-Run in Play, not Edit (Edit can reuse stale cached modules and report false failures). Last count: 559 passing, 40 suites (2026-11-12).
+Run in Play, not Edit (Edit can reuse stale cached modules and report false failures). Last count: 617 passing, 43 suites (2026-11-13).
 
 | Folder | What it covers |
 |---|---|

@@ -17,7 +17,7 @@ function Spec.run()
     test("all immutable configured offers and generated null sentinel",function()
         local c=assert(Rules.catalog(Config)); assert(#c.offers==#Config.products and #c.offers>15)
         assert(c.mode=="mock" and not c.authorized)
-        for _,p in ipairs(Config.products) do assert(not p.enabled and p.roblox_product_id==JSON.Null and p.approved_robux_price==JSON.Null) end
+        for _,p in ipairs(Config.products) do assert(not p.enabled and p.roblox_product_id==JSON.Null and (p.benefit=="look_unlock" or p.approved_robux_price==JSON.Null)) end
         for _,r in ipairs({"xp","paper"}) do
             for _,m in ipairs({15,30,60,180,300}) do assert(c.byKey[r.."_boost_"..m.."m"].amount==m*60) end
         end
@@ -75,14 +75,14 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==45+count)
-        local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" then fixed+=1 end end
+        assert(#c.offers==45+count+11)
+        local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" and offer.benefit~="look_unlock" then fixed+=1 end end
         assert(fixed==45)
     end)
     test("zero or additional part offers are accepted without a Catalog dependency",function()
         local raw=copy(Config)
         for i=#raw.products,1,-1 do if raw.products[i].benefit=="part_unlock" then table.remove(raw.products,i) end end
-        assert(#assert(Rules.catalog(raw)).offers==45)
+        assert(#assert(Rules.catalog(raw)).offers==56)
         table.insert(raw.products,{key="part_future_part",kind="developer_product",benefit="part_unlock",catalog_id="future_part",
             roblox_product_id=JSON.Null,approved_robux_price=JSON.Null,enabled=false})
         local offer=assert(Rules.catalog(raw)).byKey.part_future_part
@@ -92,7 +92,7 @@ function Spec.run()
     end)
     test("every fixed offer is still required even when the array contains part offers",function()
         for i,p in ipairs(Config.products) do
-            if p.benefit~="part_unlock" then
+            if p.benefit~="part_unlock" and p.benefit~="look_unlock" then
                 local raw=copy(Config);table.remove(raw.products,i)
                 local catalog,why=Rules.catalog(raw)
                 assert(catalog==nil and why=="offer_count",p.key)
@@ -131,7 +131,7 @@ function Spec.run()
         assert(dto.label=="DEVELOPMENT ONLY - no real purchase" and dto.remainingTimeBasis=="last_durable")
         assert(#dto.offers==#Config.products)
         for _,p in ipairs(dto.offers) do
-            assert(p.available==(p.benefit~="part_unlock") and p.robuxPrice==nil and p.productID==nil and p.label==dto.label)
+            assert(p.available==(p.benefit~="part_unlock" and p.benefit~="look_unlock") and p.robuxPrice==nil and p.productID==nil and p.label==dto.label)
             if p.benefit=="part_unlock" then assert(p.key=="part_"..p.catalogID and not p.onlineTime and not p.ownedPermanent) end
         end
         assert(dto.xp.remainingSeconds==1800 and dto.paper.remainingSeconds==900)
@@ -142,7 +142,7 @@ function Spec.run()
         assert(dto.xp.multiplier==2 and dto.paper.multiplier==2 and dto.xp.remainingSeconds==1800)
         for _,p in ipairs(dto.offers) do
             if p.benefit=="xp_seconds" or p.benefit=="permanent_xp" then assert(not p.available and p.reason=="permanent_owned")
-            else assert(p.available==(p.benefit~="part_unlock")) end
+            else assert(p.available==(p.benefit~="part_unlock" and p.benefit~="look_unlock")) end
         end
     end)
     test("nil and arbitrary empty tables do not impersonate generated JSON null",function()

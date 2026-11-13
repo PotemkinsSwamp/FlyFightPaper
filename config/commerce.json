@@ -463,7 +463,106 @@
     {"key":"gift_paper_pack_5000","kind":"developer_product","benefit":"gift","roblox_product_id":null,"approved_robux_price":null,"enabled":false},
     {"key":"gift_paper_pack_15000","kind":"developer_product","benefit":"gift","roblox_product_id":null,"approved_robux_price":null,"enabled":false},
     {"key":"gift_paper_pack_7500","kind":"developer_product","benefit":"gift","roblox_product_id":null,"approved_robux_price":null,"enabled":false},
-    {"key":"gift_paper_pack_40000","kind":"developer_product","benefit":"gift","roblox_product_id":null,"approved_robux_price":null,"enabled":false}
+    {"key":"gift_paper_pack_40000","kind":"developer_product","benefit":"gift","roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {
+      "key": "look_hazard_stripes",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "hazard_stripes",
+      "roblox_product_id": null,
+      "approved_robux_price": 149,
+      "enabled": false
+    },
+    {
+      "key": "look_tiger_stripes",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "tiger_stripes",
+      "roblox_product_id": null,
+      "approved_robux_price": 149,
+      "enabled": false
+    },
+    {
+      "key": "look_flame_decals",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "flame_decals",
+      "roblox_product_id": null,
+      "approved_robux_price": 149,
+      "enabled": false
+    },
+    {
+      "key": "look_gold_foil",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "gold_foil",
+      "roblox_product_id": null,
+      "approved_robux_price": 299,
+      "enabled": false
+    },
+    {
+      "key": "look_lava",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "lava",
+      "roblox_product_id": null,
+      "approved_robux_price": 299,
+      "enabled": false
+    },
+    {
+      "key": "look_galaxy",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "galaxy",
+      "roblox_product_id": null,
+      "approved_robux_price": 299,
+      "enabled": false
+    },
+    {
+      "key": "look_shark_jet",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "shark_jet",
+      "roblox_product_id": null,
+      "approved_robux_price": 599,
+      "enabled": false
+    },
+    {
+      "key": "look_dragon",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "dragon",
+      "roblox_product_id": null,
+      "approved_robux_price": 999,
+      "enabled": false
+    },
+    {
+      "key": "look_confetti",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "confetti",
+      "roblox_product_id": null,
+      "approved_robux_price": 49,
+      "enabled": false
+    },
+    {
+      "key": "look_rainbow_marker",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "rainbow_marker",
+      "roblox_product_id": null,
+      "approved_robux_price": 49,
+      "enabled": false
+    },
+    {
+      "key": "look_gold_stars",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "gold_stars",
+      "roblox_product_id": null,
+      "approved_robux_price": 49,
+      "enabled": false
+    }
   ],
   "paper_pack_amounts_status": "approved by Alan 2026-11-11 and 2026-11-12 (docs/plan/SHOP-PRICES-PLAN.md, docs/plan/SHOP-MONEY-PLAN.md); live activation requires owner authorization",
   "mock_ui_label": "DEVELOPMENT ONLY \u00e2\u20ac\u201d no real purchase",
