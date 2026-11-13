@@ -29,10 +29,13 @@ local definitions={
  -- The tutorial's ding (a hoop, a finished step): the coin sound, soft (Alan: 30% quieter, the same ding every time).
  ding={1169806635,1,.28,.8},
  softDing={1169806635,1,.22,.8}, -- the Hangar Tour's: 20% quieter (Alan 2026-10-21)
- -- A gift on its rays (Alan 2026-11-13: "a radiating sound, something shiny, brand new"): three to pick from by ear
- -- with the Dev gift button: APM "Beautiful Shimmer", Pro Sound Effects "Magic Tone Tonal Shimmer Shaking Rattle 1"
- -- and "Magic Tone Falling Shimmer Flanged 3". The two not picked go.
- shine1={1841209502,1,.5,6.1},shine2={9116420445,1,.5,5.2},shine3={9116418035,1,.5,3.3},
+ -- A gift on its rays (Alan's pick by ear 2026-11-13, "a radiating sound, something shiny, brand new"): Pro Sound
+ -- Effects "Magic Tone Tonal Shimmer Shaking Rattle 1". Before it, a rummage in the box and a pop as the gift comes
+ -- out (Alan: "you have to rustle and find it and pull it out"): three rustles to pick from by ear with the Dev gift
+ -- button (Pro Sound Effects "Paper Tear Tear Heavy Paper Bag Rustle 4", "... Slow Rustle 2", "Rip Perforated Computer
+ -- Paper Paper Rustle 3"; the two not picked go), and the Popper's balloon pop, higher and soft.
+ shine={9116420445,1,.5,5.2},rustle1={9117233449,1,.45,.75},rustle2={9125724963,1,.45,.75},rustle3={9118184346,1,.45,.75},
+ pop={9113263758,1.5,.35,.3},
  -- The Range's row-picker plate going down: the paperclip's metal ting, higher.
  plate={9116163687,1.6,.5,.5},
  -- The Aiming lesson's slow motion going on and off: the eraser's whoosh, low and slow, then high and quick.
@@ -126,7 +129,7 @@ function Audio.start(getPlane)
   -- A moment over the menu (a gift arriving, the unlock backpack) turns the music right down, like the dimmed board
   -- behind it (Alan 2026-11-13), so its own sounds are heard.
   local quiet=Root:GetAttribute("MusicQuiet")==true
-  game:GetService("TweenService"):Create(music,winners and TweenInfo.new(1.2) or quiet and TweenInfo.new(.5) or glide,{Volume=(winners and 0 or inLesson() and .067 or .2)*(quiet and .2 or 1)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
+  game:GetService("TweenService"):Create(music,winners and TweenInfo.new(1.2) or quiet and TweenInfo.new(.5) or glide,{Volume=(winners and 0 or inLesson() and .067 or .2)*(quiet and .1 or 1)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
  end
  Root:GetAttributeChangedSignal("MusicQuiet"):Connect(volumes)
  Root:GetAttributeChangedSignal("MusicVolume"):Connect(volumes);Root:GetAttributeChangedSignal("SoundVolume"):Connect(volumes)

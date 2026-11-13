@@ -10,8 +10,8 @@
 -- ("xp_boost_60m,paper_pack_5000"), plays pretend gifts (GiftMoment.pretend); DevGiftTime holds the moment at that many
 -- seconds and does the taps by itself (tools/film_gift.py).
 -- Sounds are ones the game already has: the paper whoosh as the plane passes over you and comes back, the box thump
--- as it lands, the backpack's ding and coin as it opens, the coin again as each later gift comes out; and a shine as
--- each gift rises onto its rays. The music is turned right down while the moment is up (Root MusicQuiet, Audio).
+-- as it lands; then for each gift a rummage in the box (it shakes), a pop as the gift comes out, and a shine as it
+-- sits on its rays. The music is turned right down while the moment is up (Root MusicQuiet, Audio).
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Http = game:GetService("HttpService")
@@ -23,9 +23,10 @@ local Audio = require(script.Parent.Audio)
 local GiftMoment = {}
 
 -- Seconds. The plane wiggles off its pin until LIFT and is over the top by AWAY. The box leaves the top at DROP and
--- has bounced to rest by LAND. After the Open tap the lid comes off at LID; after any tap the next gift starts rising
--- at RISE. After the last Thanks the plane starts back at BACK, is home at HOME, and the moment ends at DONE.
-local LIFT, AWAY, DROP, LAND, LID, RISE = 0.45, 2.9, 2.75, 3.45, 0.22, 0.25
+-- has bounced to rest by LAND. After the Open tap the lid comes off at LID; after a Thanks the old gift is gone by
+-- GONE; then the box shakes (a rummage) until the next gift pops out at RISE. After the last Thanks the plane starts
+-- back at BACK, is home at HOME, and the moment ends at DONE.
+local LIFT, AWAY, DROP, LAND, LID, GONE, RISE = 0.45, 2.9, 2.75, 3.45, 0.22, 0.25, 0.95
 local BACK, HOME, DONE = 0.35, 1.6, 2
 local SWAP = 1 -- seconds between the rays trading places
 -- Sheet units (1920 x 1080): where a gift floats on its rays; the box at rest (middle and size); the note's middle.
@@ -157,7 +158,7 @@ function GiftMoment.start(api)
 	item.ZIndex, box.ZIndex, note.ZIndex, shadow.ZIndex, plane.ZIndex, pin.ZIndex = 3, 4, 6, 7, 8, 9
 
 	-- gifts: the ones shown so far, in order. taps: when Open and each Thanks happened (bye: the last Thanks).
-	local playing, asked, started, filming, heard, shine = false, 0, nil, false, 0, "shine1"
+	local playing, asked, started, filming, heard, rustle = false, 0, nil, false, 0, "rustle1"
 	local gifts, taps = {}, { thanks = {} }
 	local said, shownItem, seenHere = nil, nil, 0
 	local fakes, fakeCount = {}, 0
@@ -189,7 +190,7 @@ function GiftMoment.start(api)
 		local t = now()
 		if not taps.open then
 			if t > LAND + 0.4 then taps.open = t end
-		elseif t > (taps.thanks[#taps.thanks] or taps.open) + 1 then
+		elseif t > (taps.thanks[#taps.thanks] or taps.open) + RISE + 0.5 then
 			if not gifts[#gifts].pretend then seenHere += 1; api.seen(1) end
 			local more = nextGift()
 			if more then table.insert(gifts, more); table.insert(taps.thanks, t) else taps.bye = t end
@@ -257,11 +258,14 @@ function GiftMoment.start(api)
 		local off = opened and t - taps.open - LID or -1
 		lid.Visible = opened and off < 0.6
 		if opened then
-			local k = 1 + 0.08 * spring(n > 0 and rising or off)
+			-- A rummage before each gift: the box shakes and hops, dips, then kicks as the gift pops out.
+			local shake = rising < 0 and smooth((t - tapped - (n > 0 and GONE or LID)) / 0.15) or 0
+			local sx, sy = 7 * math.sin(t * 48) * shake, -5 * math.abs(math.sin(t * 24)) * shake
+			local k = 1 + 0.08 * spring(rising) - 0.07 * shake * smooth((rising + 0.12) / 0.12)
 			if bye then local u = unit((bye - 0.15) / 0.3); k *= (1 - u) * (1 + 0.8 * u) end
 			body.Visible, inside.Visible = k > 0.01, k > 0.01
-			part(body, 322, 443.5, 644, 347, k)
-			part(inside, 322, 289, 644 * 0.91, 182, k)
+			part(body, 322, 443.5, 644, 347, k, sx, sy)
+			part(inside, 322, 289, 644 * 0.91, 182, k, sx, sy)
 			if lid.Visible then
 				part(lid, 322, 187, 644, 374, 1, 420 * off, -1500 * off + 900 * off * off, 300 * off)
 				for _, piece in lid:GetChildren() do piece.ImageTransparency = smooth((off - 0.3) / 0.3) end
@@ -270,8 +274,8 @@ function GiftMoment.start(api)
 
 		-- The gift: rises out of the box; at Thanks it comes at you and is gone, and the next one rises.
 		local index, leave = 0, nil
-		if rising >= 0 then index = n + 1 elseif n > 0 then index, leave = n, (t - taps.thanks[n]) / RISE end
-		if bye then leave = bye / RISE end
+		if rising >= 0 then index = n + 1 elseif n > 0 then index, leave = n, (t - taps.thanks[n]) / GONE end
+		if bye then leave = bye / GONE end
 		local gift = gifts[index]
 		item.Visible = gift ~= nil and (leave or 0) < 1
 		if item.Visible then
@@ -284,7 +288,7 @@ function GiftMoment.start(api)
 		-- Its rays: the ring turns; every other ray moves out and grows while its neighbours move in and shrink, then
 		-- they trade, with a bounce; the ring dips as one gift goes and springs back with the next.
 		local grow = taps.open and back((t - taps.open - RISE) / 0.5) or 0
-		if n > 0 then grow *= 1 - 0.35 * math.sin(unit((t - taps.thanks[n]) / 0.6) * math.pi) end
+		if n > 0 then grow *= rising < 0 and 1 - 0.4 * smooth((t - taps.thanks[n]) / 0.3) or 0.6 + 0.4 * back(rising / 0.4) end
 		if bye then grow *= 1 - smooth(bye / 0.3) end
 		local trade = swap(t)
 		for i, ray in rays do
@@ -301,14 +305,17 @@ function GiftMoment.start(api)
 		if n > 0 then ny -= 12 * math.sin(unit(rising / 0.3) * math.pi) end
 		if bye then ny = lerp(NOTE_Y, 1320, smooth(bye / 0.35)) end
 		place(note, 960, ny)
-		local says = bye and said or index -- (0: not opened yet)
+		-- Whose gift it tells of: the next one's as soon as the last is gone, "What's inside?" until it pops out.
+		local who = n > 0 and leave and leave < 1 and n or n + 1
+		local out = who == n or rising >= 0 -- (that gift is out of the box)
+		local says = bye and said or who * 2 + (out and 1 or 0)
 		if says ~= said then
 			said = says
-			local shown = gifts[math.max(says, 1)]
+			local shown = gifts[who]
 			local _, what = ShopScreen.itemLook(shown.key)
 			title.Text = "A gift from " .. tostring(shown.from) .. "!"
-			amount.Text = says == 0 and "What's inside?" or what
-			button.Label.Text = says == 0 and "Open it!" or "Thanks!"
+			amount.Text = out and what or "What's inside?"
+			button.Label.Text = who == 1 and not out and "Open it!" or "Thanks!"
 		end
 	end
 
@@ -324,15 +331,14 @@ function GiftMoment.start(api)
 	local function sounds(t)
 		local function at(when, name)
 			if not when or heard >= when or t < when then return end
-			if name == "hush" or name == shine then hush() end
+			if name == "hush" or name == "shine" then hush() end
 			local sound = name ~= "hush" and Audio.play(name)
-			if name == shine and sound then ringing, ringId = sound, sound.SoundId end
+			if name == "shine" and sound then ringing, ringId = sound, sound.SoundId end
 		end
 		at(taps.bye, "hush")
 		at(2, "flight"); at(DROP + 0.55 * (LAND - DROP), "land")
-		at(taps.open and taps.open + LID, "ding"); at(taps.open and taps.open + LID + 0.25, "purchase")
-		at(taps.open and taps.open + RISE + 0.1, shine)
-		for _, thanks in taps.thanks do at(thanks + RISE, "purchase"); at(thanks + RISE + 0.1, shine) end
+		at(taps.open and taps.open + LID, rustle); at(taps.open and taps.open + RISE, "pop"); at(taps.open and taps.open + RISE + 0.05, "shine")
+		for _, thanks in taps.thanks do at(thanks + GONE, rustle); at(thanks + RISE, "pop"); at(thanks + RISE + 0.05, "shine") end
 		at(taps.bye and taps.bye + BACK, "flight")
 		heard = t
 	end
@@ -351,8 +357,8 @@ function GiftMoment.start(api)
 		filming = RunService:IsStudio() and type(workspace:GetAttribute("DevGiftTime")) == "number"
 		if filming then -- the taps happen by themselves, every pretend gift in turn
 			taps.open = LAND + 1.4
-			local at = taps.open + 2.3
-			for more in nextGift do table.insert(gifts, more); table.insert(taps.thanks, at); at += 2.3 end
+			local at = taps.open + 2.8
+			for more in nextGift do table.insert(gifts, more); table.insert(taps.thanks, at); at += 2.8 end
 			taps.bye = at
 			workspace:SetAttribute("DevGiftEnds", at + DONE)
 		end
@@ -387,8 +393,8 @@ function GiftMoment.start(api)
 	player:GetAttributeChangedSignal("GiftInbox"):Connect(function() seenHere = 0 end)
 	-- Studio: lines up pretend gifts (product keys with commas between). They play now if the main menu is showing,
 	-- otherwise when it next shows; says which.
-	function GiftMoment.pretend(keys, sound) -- (sound: which shine to try, 1-3, while Alan picks one)
-		fakes, fakeCount, shine = keys:split(","), 0, "shine" .. (sound or 1)
+	function GiftMoment.pretend(keys, sound) -- (sound: which rustle to try, 1-3, while Alan picks one)
+		fakes, fakeCount, rustle = keys:split(","), 0, "rustle" .. (sound or 1)
 		if board.frame.Visible then GiftMoment.offer() end
 		return board.frame.Visible
 	end

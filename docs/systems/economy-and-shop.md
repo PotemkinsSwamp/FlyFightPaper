@@ -255,22 +255,23 @@ with gifts waiting:
    the top (the moment waits for the board's plane to be pinned first, then swaps in its own copy on the same spot).
 2. The wrapped box falls in, squashes and bounces; a sticky note slides up: "A gift from Sam!", "What's inside?",
    **Open it!** (the box itself can be tapped too).
-3. The lid pops off and the gift rises out of the open box onto its rays; the note says what it is, with **Thanks!**.
+3. The lid pops off, the box shakes for most of a second (a rummage: Alan wanted a little wait before the gift), then
+   the gift pops out of the open box onto its rays; the note says what it is, with **Thanks!**.
    The rays are sixteen separate strokes: the ring turns while every other ray moves out and grows as its neighbours
    move in and shrink, then they trade places with a bounce.
-4. Each Thanks! sends one `giftSeen`; the gift comes at you and is gone, and the next gift rises out of the same box.
+4. Each Thanks! sends one `giftSeen`; the gift comes at you and is gone, the note names the next friend with "What's
+   inside?", the box shakes again and the next gift pops out of it.
    After the last one the note and box go and the plane flies back to its pin.
 
 A second tap within a second of the last is ignored (the buttons share a spot). No new pictures were uploaded: the
 lid, box and its inside are parts of the one gift box picture, and each ray is a stroke cut from the rays picture.
-Sounds (Alan 2026-11-13: "add the sounds"), all ones the game already had: the backpack's ding and coin as the box
-opens, the coin again for each later gift; Claude's additions for him to judge: the paper whoosh as the plane passes
-over you and as it comes back, and the box thump when the box lands. His notes after hearing it (same day): **the
-music turns right down** (to a fifth) while the moment is up, like the dimmed board, and comes back after (Root
-attribute `MusicQuiet`, also set by the unlock backpack); and **a shine** rings as each gift rises onto its rays ("a
-radiating sound, something shiny, brand new"), fading when the next gift comes or the moment ends. Three shine sounds
-are in to pick from by ear (`Audio.luau` `shine1`-`shine3`; each click of the Dev gift button tries the next); the two
-not picked get deleted.
+Sounds (Alan by ear, 2026-11-13): the paper whoosh as the plane passes over you and as it comes back; the box
+thump as the box lands; for each gift a paper rustle while the box shakes, a soft pop as the gift comes out, and a
+shine while it sits on its rays ("a radiating sound, something shiny, brand new": his pick of three), fading when the
+next gift comes or the moment ends. He turned down the backpack's ding and coin here ("too strong"). Three rustles are
+in to pick from by ear (`Audio.luau` `rustle1`-`rustle3`; each click of the Dev gift button tries the next); the two
+not picked get deleted. **The music drops to a tenth** while the moment is up, like the dimmed board, and comes back
+after (Root attribute `MusicQuiet`, also set by the unlock backpack).
 
 ## Offline-pausing timer
 Both resources pause offline. Loaded online menus, desk time, spectating and intermission count under the
