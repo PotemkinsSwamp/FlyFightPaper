@@ -158,7 +158,7 @@ function RoundEnd.start()
 	-- the card shows, so it follows the PaperJar attribute. The row sits on the card frame, not the page: a turned page
 	-- (team rounds) switches off the clipping that draws the jar's level.
 	local JAR_ROW = { x = 260, y = 862, w = 420, h = 155 } -- page pixels: the right end on the card's right edge
-	local OFFER_AT = { home = 340, besideJar = -30 } -- the Double button's middle (page pixels): moves left for the jar
+	local OFFER_AT = { home = 340, besideJar = -60 } -- the Double button's middle (page pixels): moves left for the jar
 	local TEAM_DROP = 40 -- team rounds: the row a little lower, clear of the other team's card
 	local jarRow = Instance.new("Frame")
 	jarRow.Name, jarRow.BackgroundTransparency, jarRow.AnchorPoint = "JarRow", 1, Vector2.new(0.5, 0.5)
@@ -174,7 +174,7 @@ function RoundEnd.start()
 	local SCRAP_X = { -45, 35, -15, 55, -55, 15 } -- where each starts, beside the jar's middle
 	local scraps = {}
 	for i, box in SCRAPS do
-		local scrap = image(jarRow, "Scrap" .. i, UIArt.range.scrap, 0, 0, box[3] * 0.32, box[4] * 0.32)
+		local scrap = image(jarRow, "Scrap" .. i, UIArt.range.scrap, 0, 0, box[3] * 0.48, box[4] * 0.48)
 		scrap.ImageRectOffset, scrap.ImageRectSize, scrap.ZIndex = Vector2.new(box[1], box[2]), Vector2.new(box[3], box[4]), 3
 		scraps[i] = scrap
 	end
