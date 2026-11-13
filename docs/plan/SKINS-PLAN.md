@@ -1,61 +1,49 @@
 # Skins and trails plan
 
-**Status:** draft for Alan's OK (2026-11-13). Alan picked skins and trails as the next build at the goals review. Built
-to his rules in the [shop plan decision](../decisions/2026-10-18-shop-plan.md) (whole-plane skins, teams readable,
-Paper or Robux, kept through prestige); serves [the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).
+**Status:** talking it through with Alan (2026-11-13). Alan picked skins and trails as the next build at the goals
+review. Nothing gets made until the ideas and how they work are settled. Rules already decided: the
+[shop plan decision](../decisions/2026-10-18-shop-plan.md) (whole-plane skins that stretch to the build's real size,
+teams stay readable, Paper or Robux, kept through prestige). Serves
+[the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).
 
-## What the player sees
-- **A skin is a whole plane with its own look:** its own shape details and paint, made as one model. Your parts still
-  decide the stats; the skin draws over body, nose, wings and tail and stretches to your build's real size, so what
-  people see is what they can hit. Weapons and boosters stay where they are, on top.
-- **Teams stay readable:** a skinned plane gets a thin outline in its team colour (Roblox's own `Highlight`, hidden
-  behind walls so it gives nobody x-ray eyes).
-- **A trail is a short ribbon from your wingtips while you fly** (crayon scribble, rainbow marker, confetti, pencil
-  shavings). It hides while you boost, so the boost streak still shows who is boosting.
-- **Everyone sees them:** in matches, on the desk, in the Hangar and in the winners' moment.
-- **Picking:** a Looks tab in the Customize binder, with try-on like parts. **Getting them:** a Looks section in the
-  shop; once you own every part, Today's parts shows looks instead (Alan 2026-11-12).
-- **Bots wear them too** (about 1 bot in 3), so a new player sees them in the first match.
+## The order (Alan, 2026-11-13)
+1. A list of ideas for skins and for trails.
+2. Talk through how they work, especially in team deathmatch and the other team games.
+3. Concept pictures of the picked ideas (Codex).
+4. Build them in Blender and texture them.
+5. Only then prices, uploads (Alan's go) and the code.
 
-## First batch (ideas; concept pictures first, Alan picks)
-- **4 skins,** e.g. a shark jet with a crayon mouth, a dragon with scalloped wings, a newspaper glider, a gold foil
-  star fighter (the special one).
-- **4 trails:** crayon scribble, pencil shavings, rainbow marker, confetti.
+## Ideas (starter list for Alan to keep, drop or add to)
+Skins (whole planes in our hand-made classroom look):
+- Shark jet: crayon teeth and eyes on the nose
+- Dragon: scalloped wings, scale doodles
+- Newspaper glider: folded from the morning paper
+- Gold foil star: shiny foil with star stickers (a special one)
+- Homework A+: lined paper, red-pen marks and a big A+
+- Comic book: dots and a "ZOOM!" bubble
+- Origami crane: folded crane shape
+- Candy wrapper: shiny wrapper from the sweet shop
+- Old map: folded from a treasure map
+- Bat: black construction paper
+- Sticker bomb: covered in stickers
 
-## Prices (numbers for Alan's OK)
-Every look has a Robux price and a Paper price, linked by the big pack's rate (about 18.75 Paper a Robux, the same
-rate as parts in the [shop prices plan](SHOP-PRICES-PLAN.md)). An average match pays about 660 Paper.
+Trails:
+- Crayon scribble · rainbow marker · confetti · pencil shavings · glitter · bubbles · paper hearts · eraser crumbs ·
+  chalk dust · gold stars · ink splats · music notes
 
-| Look | Robux | or Paper | About |
-|---|---|---|---|
-| Trail | 99 R$ | 1,850 | 3 matches |
-| Skin | 249 R$ | 4,650 | 7 matches |
-| Special skin (gold foil) | 499 R$ | 9,350 | 14 matches |
+## To talk through
+- **Team games:** how a skin shows which team you're on (options below), and whether trails take the team colour.
+- **Shape:** may a skin change the plane's outline, or must it keep the body's shape so players can still read a
+  heavy plane from a slim one?
+- **One for all planes, or one per loadout?**
+- **Getting them:** bought (Paper or Robux), earned (levels, prestige-only, later missions and the playtime calendar),
+  or both.
+- **Bots wearing them,** so new players see them in their first match.
 
-## How it's built
-- **Models:** Creator Store first, then Codex Blender, Meshy last (house rule). Each skin is one mesh and one picture,
-  so 2 uploads a skin. Every picture goes on a contact sheet before upload ([lessons](../workshop/lessons.md):
-  "Uploads and Roblox moderation").
-- **Stretching:** the skin model is sized to the built plane's length, span and height; the part pieces hide under it.
-- **Trails:** Roblox's own `Trail` between two wingtip points, one picture each, like the boost streak.
-- **Save and buying:** owned looks and the chosen skin and trail in the save; Paper buys use the parts' server check;
-  Robux buys go through the receipt code already built (switched off until go-live).
-
-## Steps
-1. Alan's OK on this note.
-2. Concept pictures for skins and trails (Codex); Alan picks.
-3. Models for the picked skins; a preview of each on a plane in the scene, close up, for Alan's OK.
-4. Alan's go: upload (about 12 pictures and meshes, free).
-5. Build: save and buying rules with unit tests (Codex), Looks tab, shop section, trails, outlines, bots wearing them.
-6. Studio check, then Alan plays it.
-
-## Cost
-Codex for concepts, Blender models and the save rules (Alan's ChatGPT plan, not Claude usage); Opus for the rest.
-Meshy only if Blender can't (credits, stop at 300). One upload batch with Alan's go. No bot matches. About 3-4 sessions.
-
-## Leans for Alan to confirm
-- One skin and one trail for all your planes, not one per loadout.
-- Team outline on skinned planes only.
-- About 1 bot in 3 wears a look.
+### Team options
+- **A. Team paint areas:** each skin has spots (stripes, wingtips, nose band) painted in your team colour in team
+  games and in the skin's own colour in free-for-all. The game already paints plane pieces by area this way.
+- **B. Team outline:** the skin keeps its own colours; a thin team-colour outline shows the side.
+- **C. Team games show team colours only:** skins only show in free-for-all.
 
 Back to [HOME](../HOME.md)
