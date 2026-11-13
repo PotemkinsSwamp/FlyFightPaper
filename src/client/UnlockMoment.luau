@@ -95,11 +95,43 @@ local function view(parent, item, x, y, w, h)
 	local center, size = look:GetBoundingBox()
 	local across, tan = math.max(size.X, size.Z), math.tan(math.rad(20))
 	local distance = math.max(across / 2 / (tan * w / h * 0.85), size.Y / 2 / (tan * 0.85)) + across / 2
-	local function turn(angle)
-		camera.CFrame = CFrame.new(center.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(-0.35, 0, 0) * CFrame.new(0, 0, distance)
+	local parts = {}
+	for _, piece in look:GetDescendants() do if piece:IsA("BasePart") then table.insert(parts, piece) end end
+	-- The pieces' corners as seen from cf, in screen units (1 = tan of the angle from the middle).
+	local function spread(cf)
+		local lo, hi = Vector2.new(math.huge, math.huge), -Vector2.new(math.huge, math.huge)
+		for _, part in parts do
+			for i = 0, 7 do
+				local corner = part.Size / 2 * Vector3.new(i % 2 * 2 - 1, i // 2 % 2 * 2 - 1, i // 4 * 2 - 1)
+				local p = cf:PointToObjectSpace(part.CFrame:PointToWorldSpace(corner))
+				local s = Vector2.new(p.X, p.Y) / -p.Z
+				lo, hi = lo:Min(s), hi:Max(s)
+			end
+		end
+		return lo, hi
+	end
+	-- yaw and pitch in radians; far: the camera's distance (default: fills the box as it turns); fill instead: the share
+	-- of the box the picture fills as seen (for still pictures with no circle to stay inside).
+	local function turn(yaw, pitch, far, fill)
+		far = far or distance
+		local aim = CFrame.new(center.Position) * CFrame.Angles(0, yaw, 0) * CFrame.Angles(pitch or -0.35, 0, 0)
+		local cf = aim * CFrame.new(0, 0, far)
+		for _ = 1, fill and 2 or 0 do
+			local lo, hi = spread(cf)
+			far *= math.max((hi.X - lo.X) / (2 * tan * w / h), (hi.Y - lo.Y) / (2 * tan)) / fill
+			cf = aim * CFrame.new(0, 0, far)
+		end
+		-- Centre what you see, not the box's middle: the near end looks bigger, which pushed the picture off its circle
+		-- (Alan 2026-11-12). Slide the camera until the corners' on-screen spread is even (twice is plenty).
+		for _ = 1, 2 do
+			local lo, hi = spread(cf)
+			local mid = (lo + hi) / 2
+			cf *= CFrame.new(mid.X * far, mid.Y * far, 0)
+		end
+		camera.CFrame = cf
 	end
 	turn(0.6)
-	return frame, turn
+	return frame, turn, size
 end
 Unlock.view = view -- (the shop shows a part the same way)
 

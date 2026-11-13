@@ -17,8 +17,8 @@ local Hangar = {}
 -- Studio dev mode: every part counts as owned at the level cap, and "Fly this build" sends the draft straight
 -- to your plane for testing. Nothing here is saved or bought; live servers ignore it.
 local RunService = game:GetService("RunService")
--- Not with a fresh test account (workspace DevAccountLevel, docs/workshop/testing.md): it shows what a new player sees.
-local dev = RunService:IsStudio() and workspace:GetAttribute("DevAccountLevel") == nil
+-- Not with the level test account (Alan's dev switch, docs/workshop/testing.md): it shows what that player sees.
+local function devMode() return RunService:IsStudio() and game.Players.LocalPlayer:GetAttribute("DevAll") ~= false end
 local everything = {}
 for _, list in { Catalog.weapons, Catalog.utilities } do for _, part in list do everything[part.id] = true end end
 for _, list in Catalog.structuresBySlot do for _, part in list do everything[part.id] = true end end
@@ -367,6 +367,7 @@ function Hangar.new(playerGui, api)
 				builds[i] = { id = class.id, name = class.name, loadout = Catalog:classLoadout(class.id, 50), locked = own < class.min_level and class.min_level or nil }
 			end
 		end
+		local dev = devMode()
 		local level = (dev or range or classes) and 50 or player:GetAttribute("Level") or 1
 		local ownership = (dev or range or classes) and everything or profile.ownership
 		local saved = builds[state.preset].loadout
@@ -430,8 +431,8 @@ function Hangar.new(playerGui, api)
 		shrink.Scale, shrink.Parent = Customize.BINDER_SCALE, binder
 		Customize.draw(binder, {
 			side = content, -- the unshrunk sheet: the stats paper, Save and Fly sit there
-			state = state, builder = builder, draft = draft, profile = profile, range = range, dev = dev, catalog = Catalog,
-			owned = function(part) return dev or range or Catalog:owns(profile.ownership, part.id, player:GetAttribute("Level") or 1) end,
+			state = state, builder = builder, draft = draft, profile = profile, range = range, dev = devMode(), catalog = Catalog,
+			owned = function(part) return devMode() or range or Catalog:owns(profile.ownership, part.id, player:GetAttribute("Level") or 1) end,
 			choose = choose, placeWeapon = placeWeapon, statSheet = statSheet, preview = preview, nameTag = nameTag,
 			-- A card being tried on: the same change on a scratch copy of the build, so the real one is untouched.
 			tryOn = function(pick) local scratch = Builder.new(Catalog, draft, ownership, level); return pick(scratch) and scratch.candidate or nil end,

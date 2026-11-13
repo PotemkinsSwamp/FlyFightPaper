@@ -154,6 +154,8 @@ function Service:handle(player,action,value)
    local ok,why=self.commerce:prompt(player,value)
    if not ok then self:message(player,why=="starter_pack_ended" and "The starter pack has ended." or why=="jar_low" and "Your Paper jar breaks at 3,000 Paper. Play a match to fill it." or "Shop is closed for now.") end
   end
+ elseif action=="devAll" and Run:IsStudio() and self.profiles.mock==true and player:GetAttribute("Dev")==true then
+  self.profiles:devSwitch(player) -- Alan's Studio-only button: his level account <-> everything unlocked
  elseif action=="mockProduct" and Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
   if type(value)~="string" or value:match("^match_double_") then return end
   local product

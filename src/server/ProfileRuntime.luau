@@ -105,29 +105,13 @@ function Runtime:load(player)
    return
   end
   profile:AddUserId(player.UserId)
-  -- Studio dev account (Alan, 2026-10-08): a real player in Studio owns every part at max level with plenty of
-  -- Paper, so every build can be saved and tested. self.mock is only true in Studio; live saves never get this.
-  -- A fresh Studio account instead (Alan 2026-11-12, to see the buy buttons): set workspace attribute DevAccountLevel
-  -- (and optionally DevAccountPaper, default 3,000): that level, only its free gear, that Paper. Remove it for the full one.
-  -- Real players only: the unit tests' stand-in players keep the full dev account they were written for.
-  local fresh=self.mock and typeof(player)=="Instance" and workspace:GetAttribute("DevAccountLevel")
-  if type(fresh)=="number" then
-   local data,want,lo,hi=profile.Data,math.clamp(math.floor(fresh),1,50),0,1e12
-   while lo<hi do local mid=(lo+hi)//2; if (Economy.levelForXP(mid) or 1)>=want then hi=mid else lo=mid+1 end end
-   data.xpMilli=lo;data.paperMilli=math.floor(tonumber(workspace:GetAttribute("DevAccountPaper")) or 3000)*1000
-   data.unlocksSeen=math.max(1,Economy.levelForXP(lo) or 1)
-   attached=self.service:view(e.account)
-  elseif self.mock then
-   local data=profile.Data
-   for _,list in ipairs({self.catalog.weapons,self.catalog.utilities}) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
-   for _,list in pairs(self.catalog.structuresBySlot) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
-   data.xpMilli=math.max(data.xpMilli,60000000);data.paperMilli=math.max(data.paperMilli,100000000)
-   -- Its unlocks count as opened (Alan 2026-11-12: the unsaved test account opened a 34-item backpack every Play).
-   -- Test the backpack with the DevUnlock / DevLevelUp attributes (UnlockMoment.luau, its Studio tests).
-   data.unlocksSeen=math.max(data.unlocksSeen,Economy.levelForXP(data.xpMilli) or 1)
+  e.profile=profile
+  if self.mock then
+   -- Real players only: the unit tests' stand-in players keep the full dev account they were written for.
+   self:devAccount(e,not (typeof(player)=="Instance" and workspace:GetAttribute("DevAccountLevel")))
    attached=self.service:view(e.account)
   end
-  e.profile=profile;e.loaded=true;e.snapshot=attached.value;e.lastSavedVersion=profile.LastSavedData and profile.LastSavedData.version or -1
+  e.loaded=true;e.snapshot=attached.value;e.lastSavedVersion=profile.LastSavedData and profile.LastSavedData.version or -1
   profile.OnSave:Connect(function()
    self:flush(e)
    local session=self.service.sessions[e.account]
@@ -224,6 +208,41 @@ function Runtime:process(e)
  if result.status=="error" then warn("Profile operation refused for player "..e.player.UserId..": "..tostring(result.code)) end
  self:update(e)
  return true
+end
+-- Studio test accounts (self.mock is only true in Studio; live saves never get these).
+-- everything (Alan, 2026-10-08): every part owned at max level with plenty of Paper, so every build can be saved and
+-- tested. Its unlocks count as opened (Alan 2026-11-12: the unsaved test account opened a 34-item backpack every Play;
+-- test the backpack with the DevUnlock / DevLevelUp attributes, UnlockMoment.luau).
+-- A level account (Alan 2026-11-12, to see the buy buttons): workspace DevAccountLevel (default 12) and DevAccountPaper
+-- (default 3,000): that level, only its free gear, that Paper.
+-- Alan's Studio-only dev button (DevTools) switches between them in Play; the level account comes back as he left it.
+local KEPT={"xpMilli","paperMilli","unlocksSeen","ownership","presets"}
+function Runtime:devAccount(e,everything)
+ local data=e.profile.Data
+ if everything then
+  if e.player:GetAttribute("DevAll")==false then e.devLevel={};for _,key in KEPT do e.devLevel[key]=data[key] end end
+  data.ownership=table.clone(data.ownership);data.presets=assert(Schema.copy(data.presets))
+  for _,list in ipairs({self.catalog.weapons,self.catalog.utilities}) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
+  for _,list in pairs(self.catalog.structuresBySlot) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
+  data.xpMilli=math.max(data.xpMilli,60000000);data.paperMilli=math.max(data.paperMilli,100000000)
+  data.unlocksSeen=math.max(data.unlocksSeen,Economy.levelForXP(data.xpMilli) or 1)
+ elseif e.devLevel then
+  for _,key in KEPT do data[key]=e.devLevel[key] end
+ else
+  local fresh=Schema.defaults(self.catalog)
+  local want,lo,hi=math.clamp(math.floor(tonumber(workspace:GetAttribute("DevAccountLevel")) or 12),1,50),0,1e12
+  while lo<hi do local mid=(lo+hi)//2; if (Economy.levelForXP(mid) or 1)>=want then hi=mid else lo=mid+1 end end
+  data.xpMilli=lo;data.paperMilli=math.floor(tonumber(workspace:GetAttribute("DevAccountPaper")) or 3000)*1000
+  data.unlocksSeen=math.max(1,Economy.levelForXP(lo) or 1);data.ownership=fresh.ownership;data.presets=fresh.presets
+ end
+ if not everything then e.devLevel=nil end
+ e.player:SetAttribute("DevAll",everything)
+end
+function Runtime:devSwitch(player)
+ local e=self.entries[player]
+ if not (self.mock and e and e.loaded and not e.closing) then return end
+ self:devAccount(e,not e.player:GetAttribute("DevAll"))
+ self:update(e)
 end
 function Runtime:flush(e)
  while e.queue[1] do if not self:process(e) then return false end end

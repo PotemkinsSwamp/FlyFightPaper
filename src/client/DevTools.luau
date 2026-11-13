@@ -109,6 +109,24 @@ function DevTools.start(menu)
 	-- Studio MCP commands run in a separate Lua VM, so they drive these tools through player attributes.
 	local player = Players.LocalPlayer
 	player:GetAttributeChangedSignal("DevView"):Connect(function() DevTools.setView(player:GetAttribute("DevView") or 0) end)
+
+	-- Alan's dev switch (2026-11-12): bottom right, always on screen, Studio only (the server checks too): his level
+	-- account (workspace DevAccountLevel, default 12) <-> everything unlocked, to look at any part in the Hangar.
+	local switchGui = Instance.new("ScreenGui")
+	switchGui.Name, switchGui.ResetOnSpawn, switchGui.IgnoreGuiInset, switchGui.DisplayOrder = "DevSwitch", false, true, 90
+	switchGui.Parent = player.PlayerGui
+	local switch = Instance.new("TextButton")
+	switch.Name, switch.AnchorPoint, switch.Position, switch.Size = "Switch", Vector2.new(1, 1), UDim2.new(1, -10, 1, -10), UDim2.fromOffset(230, 40)
+	switch.BackgroundColor3, switch.TextColor3, switch.Font, switch.TextSize = Color3.fromRGB(45, 32, 26), Color3.new(1, 1, 1), Enum.Font.GothamBold, 15
+	switch.AutoButtonColor, switch.Parent = true, switchGui
+	Instance.new("UICorner", switch).CornerRadius = UDim.new(0, 10)
+	local function label()
+		switchGui.Enabled = player:GetAttribute("Dev") == true and player:GetAttribute("DevAll") ~= nil
+		switch.Text = player:GetAttribute("DevAll") == false and "Dev: level " .. (player:GetAttribute("Level") or "?") .. " account" or "Dev: everything unlocked"
+	end
+	for _, key in { "Dev", "DevAll", "Level" } do player:GetAttributeChangedSignal(key):Connect(label) end
+	label()
+	switch.Activated:Connect(function() Root:WaitForChild("RoundAction"):FireServer("devAll") end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()
 		local screen, page = string.match(player:GetAttribute("DevScreen") or "", "^([^:]+):?(.*)$")

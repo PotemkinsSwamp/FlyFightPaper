@@ -32,5 +32,8 @@ Played Studio matches after Double this match was built (team dogfight among the
 
 ## What changed
 Commits 61ea43a7 (exact saved lock), 1c9b7a9b (fold card), 1b4b8166 (pass cards), and the big-bodies change.
+Second look, built the next session: the dev switch (bottom right, Studio only), part pictures centred as seen (the near
+end looked bigger; `.planning/shop-centred-models-before-after.jpg`), starter pack items floating on a shadow with dark
+word plates (`.planning/starter-pack-floating-before-after.jpg`).
 
 Back to [playtests](README.md)

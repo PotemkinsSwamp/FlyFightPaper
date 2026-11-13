@@ -220,6 +220,8 @@ mistake would be easy to make twice.
   view only redraws while the mouse moves over it. Point the Play camera with the player attribute `DevCamera`
   (setting the camera directly gets overwritten). Judge sun shadows only with Studio in front at graphics level 21;
   Play quality resets to Automatic each start. For screenshots, hide every PlayerGui ScreenGui, then set `DevView`.
+- **A 3D picture aimed at its box's middle still looks off-centre (2026-11-12):** perspective makes the near end
+  bigger, so it pokes out of its circle. Centre the corners' on-screen spread instead (`UnlockMoment.view`'s `turn`).
 - **Edit-mode `screen_capture` shows only the 3D world (2026-11-12):** no ScreenGuis (CoreGui ones neither) and no
   ViewportFrames, even inside a SurfaceGui (the SurfaceGui's own frames do show). To picture a part as a menu shows
   it without Play: build it in the world far from the map, camera at the picture's own angle (pass

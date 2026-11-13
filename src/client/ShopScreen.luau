@@ -43,6 +43,14 @@ local DAILY = require(Root.Generated.Economy).daily_gift -- the 7-day gift row (
 -- How a real part is shown in a card, by kind: { turn, tilt } in degrees. Flat parts from nearly above, the rest at a
 -- three-quarter angle. An item can give its own `pose` instead.
 local POSE = { wings = { 0, -65 }, tail = { 0, -60 }, default = { 35, -25 } }
+-- A part's still 3D picture at its pose, centred as seen: inside its round reach (to stay in a circle), or filling that
+-- share of its box when given one.
+local function still(parent, item, x, y, w, h, pose, fill)
+	local view, turn, size = Unlock.view(parent, item, x, y, w, h)
+	pose = pose or POSE[item.kind] or POSE.default
+	turn(math.rad(pose[1]), math.rad(pose[2]), not fill and size.Magnitude / 2 / math.tan(math.rad(20)) * 1.05 or nil, fill)
+	return view
+end
 -- The starter pack preview (example contents, Alan's OK pending: docs/decisions/2026-11-11-shop-direction.md).
 local STARTER = { price = 99, worth = 227, seconds = (2 * 24 + 14) * 3600 + 5 * 60,
 	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockStar", label = "1 hour\n2x XP" } } } -- Alan 2026-11-12: 2x XP, not 2x Paper
@@ -274,31 +282,29 @@ function ShopScreen.new(playerGui, api)
 		move(timer, "timer", 0, { ends = ends })
 		for i, item in STARTER.items do
 			local x0 = 310 + (i - 1) * 185
-			local square = pic(card, "Item" .. i, Art.itemSquare, x0, 113, x0 + 176, 303)
-			backing(square, 18, 4, 158, 126)
+			-- Floating free on a soft shadow, the words on a small dark plate (Alan 2026-11-12: no cream square, no circle).
+			local slot = Instance.new("Frame")
+			slot.Name, slot.BackgroundTransparency = "Item" .. i, 1
+			slot.Position, slot.Size, slot.Parent = UDim2.fromOffset(x0 * K, 113 * K), UDim2.fromOffset(176 * K, 190 * K), card
 			ticks(card, x0 + 105, 113, x0 + 165, 148, 15, i)
+			PaperUI.shadow(slot, 88 * K, 126 * K, 120 * K)
+			local words = item.label
 			if item.part then
 				local part = Catalog:get(item.part)
-				local view = Unlock.view(square, { kind = item.kind, part = part }, 10 * K, 6 * K, 156 * K, 118 * K)
+				words = part.name
 				-- Still, at its kind's best angle (or the item's own pose), bobbing like the other pictures (Alan 2026-11-12:
 				-- turning in circles looked bad). Framed on its own pieces, whatever its shape.
-				local model = view:FindFirstChildOfClass("WorldModel"):FindFirstChildOfClass("Model")
-				local look = model:FindFirstChild("Appearance") or model
-				local centre, size = look:GetBoundingBox()
-				local pose = item.pose or POSE[item.kind] or POSE.default
-				local far = size.Magnitude / 2 / math.tan(math.rad(20)) * 1.05
-				view.CurrentCamera.CFrame = CFrame.new(centre.Position) * CFrame.Angles(0, math.rad(pose[1]), 0)
-					* CFrame.Angles(math.rad(pose[2]), 0, 0) * CFrame.new(0, 0, far)
-				move(view, "bob", i)
-				say(square, "Label", part.name, 0, 122, 176, 180, 27, { loud = true })
+				move(still(slot, { kind = item.kind, part = part }, 10 * K, 8 * K, 156 * K, 112 * K, item.pose, 0.9), "bob", i)
 			else
-				move(fit(pic(square, "Icon", Art[item.icon], 18, 12, 158, 120)), "bob", i)
-				local one, two = item.label:match("^(.-)\n(.*)$")
-				if one then
-					say(square, "Label1", one, 0, 116, 176, 150, 27, { loud = true }); say(square, "Label2", two, 0, 146, 176, 182, 27, { loud = true })
-				else
-					say(square, "Label", item.label, 0, 122, 176, 180, 27, { loud = true })
-				end
+				move(fit(pic(slot, "Icon", Art[item.icon], 18, 8, 158, 116)), "bob", i)
+			end
+			local one, two = words:match("^(.-)\n(.*)$")
+			local top = one and 134 or 144
+			pic(slot, "Plate", Art.labelDark, 4, top, 172, 188)
+			if one then
+				say(slot, "Label1", one, 4, top + 2, 172, top + 27, 25, { color = WHITE }); say(slot, "Label2", two, 4, top + 25, 172, top + 50, 25, { color = WHITE })
+			else
+				say(slot, "Label", words, 4, top, 172, 188, 26, { color = WHITE })
 			end
 		end
 		move(fit(pic(card, "Sparkle", Art.sparkle, 860, 30, 925, 85, 12)), "twinkle", 0)
@@ -384,13 +390,7 @@ function ShopScreen.new(playerGui, api)
 
 	-- A part's 3D picture, still at its kind's best angle, bobbing (as the starter pack's items).
 	local function partView(parent, item, x, y, w, h, phase)
-		local view = Unlock.view(parent, item, x * K, y * K, w * K, h * K)
-		local model = view:FindFirstChildOfClass("WorldModel"):FindFirstChildOfClass("Model")
-		local centre, size = (model:FindFirstChild("Appearance") or model):GetBoundingBox()
-		local pose = POSE[item.kind] or POSE.default
-		view.CurrentCamera.CFrame = CFrame.new(centre.Position) * CFrame.Angles(0, math.rad(pose[1]), 0)
-			* CFrame.Angles(math.rad(pose[2]), 0, 0) * CFrame.new(0, 0, size.Magnitude / 2 / math.tan(math.rad(20)) * 1.05)
-		move(view, "bob", phase)
+		move(still(parent, item, x * K, y * K, w * K, h * K), "bob", phase)
 	end
 	-- Paper buy (at your level) or Unlock now for Robux, the Hangar's two ways (Paper short: the shop's note says how much).
 	local function buyPaper(part)

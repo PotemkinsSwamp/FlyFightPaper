@@ -1,7 +1,11 @@
 # Big bodies get 3 mounts; Cardboard carries 10, Toilet Roll 8
 
 **Decided:** 2026-11-12 (Alan, after playing: the big planes are still too strong)
-**Status:** built 2026-11-12 ([planes and Hangar](../systems/planes-and-hangar.md)); not yet seen in Play, no bot match yet.
+**Status:** built 2026-11-12 ([planes and Hangar](../systems/planes-and-hangar.md)); not yet seen in Play by Alan.
+Bot match 2026-11-12 (3 matches, `tools/run_bot_matches.py`): the tanks no longer dominate. Experienced bots per match:
+Cardboard 8 kills / 9.5 deaths, Toilet Roll 9.3 / 10, against Tack Skirmisher 14 / 8.3 and Popper Dart 9 / 8.3; the
+Spitball builds stay weakest (Hunter 6.6 / 9.4, Popper 3 / 8.6). One ace Cardboard had 17 kills, but aces top every
+build (the Popper Dart ace had 14-15 each match).
 
 ## Decision
 - The **Cardboard Gunship** and the **Toilet Roll Gunship** both get three mounts: heavy, heavy, medium (were six and
