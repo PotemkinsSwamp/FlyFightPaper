@@ -27,8 +27,12 @@
 - **One skin for all your planes:** the game fits it to whatever parts you fly (tied to a body only if fitting
   fails).
 - **Bots wear skins,** so players see them in matches and want them.
-- **Ideas kept so far:** dragon, bat, origami crane, shark jet, bumblebee, gold foil (not star stickers: tacky); the
-  trail list on the [skins plan](../plan/SKINS-PLAN.md). The rest of the list needs to be cooler.
+- **Legendary and Mythical hide the plane** (the parts they cover): the hidden parts stay the hitbox, the skin has no
+  collision, and the red or blue outline goes round the skin. They must still look good on every part mix, so no
+  plain stretching: the way they fit is to be worked out.
+- **Only Mythicals change weapons,** to give them a real effect.
+- **Trails keep their own colours** in team games.
+- **Ideas:** every skin and trail on the [skins plan](../plan/SKINS-PLAN.md) list (Alan approved the whole list).
 
 ## Why
 Alan: skins that change hitboxes are a big problem in many games and must not be one here. Tiers let prices and

@@ -36,26 +36,27 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
 | Legendary | printed sheet + add-on pieces, matching trail | Robux (later: a pass, missions, top players) |
 | Mythical | a whole new shape, matching trail | Robux (later: a pass, missions, top players) |
 
-## Ideas (✓ = Alan kept)
+## Ideas (Alan approved the whole list, 2026-11-13)
 **Common:** hazard stripes · racing stripes · checkered flag · tiger stripes · jungle camo · desert camo · carbon
 fibre · tie-dye · 8-bit pixels · flame decals · lightning bolts · neon grid.
-**Rare:** ✓ gold foil · galaxy · lava (glowing cracks) · frozen (deep blue ice) · toxic slime · graffiti · holographic
+**Rare:** gold foil · galaxy · lava (glowing cracks) · frozen (deep blue ice) · toxic slime · graffiti · holographic
 · chrome · glitch · glowing circuit board · thunderstorm · cherry blossom · diamond. From the first list, if still
 wanted: comic book, treasure map, candy wrapper, sticker bomb.
-**Legendary:** ✓ shark jet · ✓ bumblebee · rocket (fins and nozzles) · hot rod (chrome exhausts, flames) · stealth
+**Legendary:** shark jet · bumblebee · rocket (fins and nozzles) · hot rod (chrome exhausts, flames) · stealth
 fighter (dark angled plates) · mech (armour plates, glowing eye) · pirate (sails, skull flag) · ninja (scarf
 streamers) · race car (spoiler, number).
-**Mythical:** ✓ dragon · ✓ bat · ✓ origami crane · phoenix · thunderbird (lightning) · UFO · ghost pirate ship (dark
+**Mythical:** dragon · bat · origami crane · phoenix · thunderbird (lightning) · UFO · ghost pirate ship (dark
 wood, green glow) · kraken.
-**Trails (✓ all):** chalk dust · pencil shavings · eraser crumbs · confetti · rainbow marker · glitter · bubbles ·
+**Trails (all):** chalk dust · pencil shavings · eraser crumbs · confetti · rainbow marker · glitter · bubbles ·
 music notes · ink splats · paper hearts · gold stars · crayon scribble.
 **Matching trails:** dragon embers · little paper bats · falling folded petals (crane) · fire feathers (phoenix) ·
 water spray (shark) · tiny bees (bumblebee) · rocket smoke · exhaust flames (hot rod) · gold coins (pirate) ·
 lightning (thunderbird).
 
 ## Still to settle
-- Which new ideas stay, and their tiers.
-- Trails in team games: their own colours or the team's.
-- Prices and earn rules per tier (after the list).
+- The printed sheet: a Blender test (no upload) on two different planes, 2026-11-13.
+- How Legendary and Mythical shapes fit any part mix and still look good (no plain stretching).
+- What a Mythical does to weapons.
+- Prices and earn rules per tier.
 
 Back to [HOME](../HOME.md)
