@@ -5,7 +5,6 @@
   4,000 triangles per shape skin, drawn only on players' screens.
 - Two Blender tests (no upload) proved the fitting: one printed picture wraps onto any plane; a shape skin with joints
   fits swept and straight wings. Concepts for every approved skin and trail: `.planning/skins/concepts/`.
-- Gift arrival (2026-11-13, 2 am) finished to your story; tests 599/0 then (client sound changes since).
 
 # Now: finish the game for the beta
 Next: build the first skin batch you picked (Hazard Stripes, Tiger Stripes, Flame Decals, Gold Foil, Lava, Galaxy,
@@ -45,7 +44,6 @@ Rams: stronger plane loses 15 extra, always survives; rams earn no kill; teammat
 Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000, 60 at 2400. Tab list shows all 12.
 PC keys: letters (not K or R), Shift, Ctrl, Alt, Space; Got it may share a key with Boost or Brake.
 Auto-fire fires on the yellow dot too; in the Range it fires on targets, so a phone's accuracy card reads high.
-Repack and smaller maps: bell tower + sweet shop keep full-size pictures (moderation caution).
 Loading: Skip once menus + town parts are in; a stuck file costs 8 s; 3 minutes at most.
 Screen fit: phone under 540 points, tablet under 900; FIRE 76-120 points; small PC window gets tablet sizes.
 Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degrees; held Skip (1.5 s) skips a lesson.
