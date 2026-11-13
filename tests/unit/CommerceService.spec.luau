@@ -36,6 +36,7 @@ local function fixture(options)
  f.players={PlayerAdded=signal(),list={}}
  f.player={UserId=123,Parent=f.players,attributes={}}
  function f.player:SetAttribute(key,value)self.attributes[key]=value end
+ function f.player:GetAttribute(key)return self.attributes[key] end
  function f.players:GetPlayers()return self.list end
  function f.players:GetPlayerByUserId(id)
   if id==f.player.UserId and f.player.Parent==self then return f.player end
@@ -100,6 +101,7 @@ function Spec.run()
  test("real mock config binds nothing and every public Roblox method refuses without marketplace calls",function()
   local f=fixture({config=require(Root.Generated.Commerce)})
   assert(f.commerce.live==false and f.marketplace.ProcessReceipt==nil)
+  assert(type(f.commerce.doubles)=="table" and getmetatable(f.commerce.doubles).__mode=="k")
   assert(f.marketplace.PromptGamePassPurchaseFinished.connections==0 and f.players.PlayerAdded.connections==0)
   local ok,why=f.commerce:prompt(f.player,"paper_pack_1500");assert(not ok and why=="off")
   ok,why=f.commerce:checkPasses(f.player);assert(not ok and why=="off")
@@ -167,6 +169,68 @@ function Spec.run()
   f.profile.failSave=false
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
   assert(f.profile.Data.paperMilli==10000000 and f.profile.LastSavedData.paperMilli==10000000 and f.profile.LastSavedData.receiptIds[key])
+ end)
+ test("match double checkout prompts its price step and a later receipt pays locked amounts once",function()
+  local f=fixture();local hangar=Hangar.new({catalog=f.catalog},f.profiles,f.commerce)
+  f.profile.Data.paperJarMilli=123456
+  local match={matchId="m1",paper=500,xp=900};hangar:doubleMatch(f.player,match)
+  local lock=f.commerce.doubles[f.player];local call=f.marketplace.calls[1]
+  assert(lock.matchId=="m1" and lock.paper==500 and lock.xp==900 and lock.key=="match_double_49")
+  assert(#f.marketplace.calls==1 and call.kind=="product" and call.id==f:offer("match_double_49").productID and #f.inputs==0)
+  assert(f.player:GetAttribute("MatchDoubled")==nil)
+  match.paper=999;match.xp=999
+  local info=f:receipt("match_double_49","double/locked")
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  assert(Schema.canonical(f.inputs[1].grant)==Schema.canonical({kind="matchDouble",paper=500,xp=900}))
+  local saved=f.profile.LastSavedData
+  assert(saved.paperMilli==500000 and saved.purchasedPaperMilli==500000 and saved.xpMilli==900000)
+  assert(saved.earnedPaperMilli==0 and saved.paperJarMilli==123456 and saved.buysToday.count==1)
+  assert(f.player:GetAttribute("MatchDoubled")=="m1" and f.commerce.doubles[f.player]==nil)
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.outcomes[2].value.type=="ReceiptAlreadyGranted")
+  assert(f.profile.LastSavedData.paperMilli==500000 and f.profile.LastSavedData.xpMilli==900000 and f.profile.LastSavedData.buysToday.count==1)
+  hangar:doubleMatch(f.player,{matchId="m1",paper=500,xp=900})
+  assert(#f.marketplace.calls==1 and f.player:GetAttribute("MenuMessage")=="You already doubled this match.")
+  local fallback=Rules.operation(f:offer("match_double_49"))
+  assert(f.commerce:processReceipt(f:receipt("match_double_49","double/another-server"))==Decisions.PurchaseGranted)
+  assert(f.inputs[3].grant.paper==490 and f.inputs[3].grant.xp==fallback.xp)
+  assert(f.profile.LastSavedData.paperMilli==990000 and f.profile.LastSavedData.xpMilli==(900+fallback.xp)*1000)
+  assert(f.profile.LastSavedData.buysToday.count==2 and f.profile.LastSavedData.paperJarMilli==123456)
+ end)
+ test("a different match double receipt pays its fallback and preserves the pending lock",function()
+  local f=fixture();local hangar=Hangar.new({catalog=f.catalog},f.profiles,f.commerce)
+  hangar:doubleMatch(f.player,{matchId="m1",paper=500,xp=900})
+  local lock=f.commerce.doubles[f.player];local fallback=Rules.operation(f:offer("match_double_99"))
+  assert(f.commerce:processReceipt(f:receipt("match_double_99"))==Decisions.PurchaseGranted)
+  assert(f.inputs[1].grant.paper==990 and f.inputs[1].grant.xp==fallback.xp)
+  assert(f.profile.LastSavedData.paperMilli==990000 and f.profile.LastSavedData.xpMilli==fallback.xp*1000)
+  assert(f.commerce.doubles[f.player]==lock and f.player:GetAttribute("MatchDoubled")==nil)
+  assert(f.commerce:processReceipt(f:receipt("match_double_49"))==Decisions.PurchaseGranted)
+  assert(f.profile.LastSavedData.paperMilli==1490000 and f.profile.LastSavedData.xpMilli==(fallback.xp+900)*1000)
+  assert(f.commerce.doubles[f.player]==nil and f.player:GetAttribute("MatchDoubled")=="m1")
+ end)
+ test("cancelled match double checkout can prompt again and a refused receipt keeps its lock",function()
+  local f=fixture();local hangar=Hangar.new({catalog=f.catalog},f.profiles,f.commerce)
+  local match={matchId="m1",paper=500,xp=900}
+  hangar:doubleMatch(f.player,match);hangar:doubleMatch(f.player,match)
+  assert(#f.marketplace.calls==2 and #f.inputs==0 and f.player:GetAttribute("MatchDoubled")==nil)
+  local lock=f.commerce.doubles[f.player];f.queueFull=true
+  assert(f.commerce:processReceipt(f:receipt("match_double_49"))==Decisions.NotProcessedYet)
+  assert(f.commerce.doubles[f.player]==lock and f.player:GetAttribute("MatchDoubled")==nil)
+  f.queueFull=false;f.marketplace.promptError=true;hangar:doubleMatch(f.player,match)
+  assert(f.player:GetAttribute("MenuMessage")=="Shop is closed for now." and f.commerce.doubles[f.player].key=="match_double_49")
+  assert(#f.inputs==0)
+ end)
+ test("a match double survives a failed save and its receipt replay cannot pay the fallback twice",function()
+  local f=fixture();local hangar=Hangar.new({catalog=f.catalog},f.profiles,f.commerce)
+  hangar:doubleMatch(f.player,{matchId="m1",paper=500,xp=900});f.profile.failSave=true
+  local info=f:receipt("match_double_49")
+  assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
+  assert(f.profile.Data.paperMilli==500000 and f.profile.Data.xpMilli==900000 and f.profile.Data.buysToday.count==1)
+  assert(f.commerce.doubles[f.player]==nil and f.player:GetAttribute("MatchDoubled")=="m1")
+  assert(f.profile.LastSavedData.paperMilli==0 and not f.profile.LastSavedData.receiptIds[Profile.receiptKey(info.PurchaseId)])
+  f.profile.failSave=false
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.outcomes[2].value.type=="ReceiptAlreadyGranted")
+  assert(f.profile.LastSavedData.paperMilli==500000 and f.profile.LastSavedData.xpMilli==900000 and f.profile.LastSavedData.buysToday.count==1)
  end)
  test("early part receipts acknowledge only saved ownership and replay without granting more",function()
   local f=fixture();f.profile.failSave=true
@@ -238,7 +302,7 @@ function Spec.run()
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profile.Data.boosts.xpSeconds==900)
  end)
  test("all developer products use their catalog benefits including part ownership",function()
-  local f=fixture();local paper,xpSeconds,paperSeconds,n,parts=0,0,0,0,0
+  local f=fixture();local paper,xp,xpSeconds,paperSeconds,n,parts=0,0,0,0,0,0
   for _,offer in ipairs(f.commerce.catalog.offers) do
    if offer.kind=="developer_product" then
     n+=1
@@ -253,14 +317,19 @@ function Spec.run()
     elseif offer.benefit=="paper_jar" then
      assert(f.outcomes[#f.outcomes].value.type=="PaperJarBroken" and f.outcomes[#f.outcomes].value.paper==0)
      assert(f.profile.LastSavedData.paperJarMilli==0)
+    elseif offer.benefit=="match_double" then
+     local fallback=Rules.operation(offer)
+     paper+=fallback.paper*1000;xp+=fallback.xp*1000
+     assert(f.outcomes[#f.outcomes].value.type=="MatchDoubled")
     else
      assert(offer.benefit=="part_unlock" and f.profile.LastSavedData.ownership[offer.catalogID])
      parts+=1
     end
    end
   end
-  assert(parts>0 and n==17+parts and n==#f.commerce.catalog.offers-2)
+  assert(parts>0 and n==28+parts and n==#f.commerce.catalog.offers-2)
   assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
+  assert(f.profile.LastSavedData.xpMilli==xp)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)
   for i=2,#f.saveTimes do assert(f.saveTimes[i]-f.saveTimes[i-1]>=2,"receipts must share the save cooldown") end
  end)

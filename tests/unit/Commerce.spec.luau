@@ -4,6 +4,7 @@ local JSON=require(Root.Generated.JSONTypes)
 local Config=require(Root.Generated.Commerce)
 local Catalog=require(Root.Shared.Catalog)
 local Economy=require(Root.Shared.EconomyRules)
+local EconomyConfig=require(Root.Generated.Economy)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
 local function copy(v)
@@ -13,7 +14,7 @@ end
 local function boosts() return {xpSeconds=1800,paperSeconds=900,permanentXP=false,permanentPaper=false} end
 function Spec.run()
     local result,test=Suite.new()
-    test("all nineteen immutable configured offers and generated null sentinel",function()
+    test("all immutable configured offers and generated null sentinel",function()
         local c=assert(Rules.catalog(Config)); assert(#c.offers==#Config.products and #c.offers>15)
         assert(c.mode=="mock" and not c.authorized)
         for _,p in ipairs(Config.products) do assert(not p.enabled and p.roblox_product_id==JSON.Null and p.approved_robux_price==JSON.Null) end
@@ -26,6 +27,38 @@ function Spec.run()
         local jar=c.byKey.paper_jar
         assert(jar.kind=="developer_product" and jar.benefit=="paper_jar" and jar.amount==nil)
         assert(c.byKey.permanent_2x_xp.kind=="pass" and c.byKey.permanent_2x_paper.amount==2)
+        for _,step in ipairs(Rules.MATCH_DOUBLE_STEPS) do
+            local offer=assert(c.byKey["match_double_"..step])
+            assert(offer.kind=="developer_product" and offer.benefit=="match_double" and offer.amount==step)
+        end
+    end)
+    test("match doubling prices follow the nearest step with lower ties and a 299 cap",function()
+        assert(table.isfrozen(Rules.MATCH_DOUBLE_STEPS))
+        local steps={10,15,25,35,49,69,99,149,199,249,299}
+        assert(#Rules.MATCH_DOUBLE_STEPS==#steps)
+        for i,step in ipairs(steps) do assert(Rules.MATCH_DOUBLE_STEPS[i]==step) end
+        for _,example in ipairs({{75,10,10},{90,10,12},{250,25,33},{500,49,67},
+            {1000,99,133},{2000,199,267},{10000,299,1333},{125,10,17},{200,15,27},{420,35,56}}) do
+            local price,worth=Rules.matchDoublePrice(example[1])
+            assert(price==example[2] and worth==example[3],tostring(example[1]))
+        end
+        assert(Rules.matchDoublePrice(nil)==nil)
+        for _,paper in ipairs({74,0,-1,75.5,"500",false,{},math.huge,0/0,9007199254740992}) do
+            assert(Rules.matchDoublePrice(paper)==nil)
+        end
+    end)
+    test("match doubling fallback uses the price step and economy rates without boost ownership",function()
+        local catalog=assert(Rules.catalog(Config));local b=boosts();b.permanentXP=true;b.permanentPaper=true
+        local dto=Rules.preview(catalog,b)
+        for _,step in ipairs(Rules.MATCH_DOUBLE_STEPS) do
+            local offer=catalog.byKey["match_double_"..step];local op=Rules.operation(offer,"unused",7)
+            local fields=0;for _ in pairs(op) do fields+=1 end
+            assert(op.kind=="matchDouble" and op.paper==step*10 and fields==3 and table.isfrozen(op))
+            assert(op.xp==math.round(step*10*EconomyConfig.xp_per_point/EconomyConfig.paper_per_point))
+            assert(Rules.resource(offer)==nil and not Rules.owned(offer,b))
+            local preview;for _,p in ipairs(dto.offers) do if p.key==offer.key then preview=p end end
+            assert(preview and preview.available and not preview.ownedPermanent and not preview.onlineTime)
+        end
     end)
     test("part offers cover exactly the parts that cost Paper (free gear needs none)",function()
         local parts=Catalog.new(require(Root.Generated.Catalog));local starter=assert(Economy.starterOwnership(parts))
@@ -38,14 +71,14 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==19+count)
+        assert(#c.offers==30+count)
         local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" then fixed+=1 end end
-        assert(fixed==19)
+        assert(fixed==30)
     end)
     test("zero or additional part offers are accepted without a Catalog dependency",function()
         local raw=copy(Config)
         for i=#raw.products,1,-1 do if raw.products[i].benefit=="part_unlock" then table.remove(raw.products,i) end end
-        assert(#assert(Rules.catalog(raw)).offers==19)
+        assert(#assert(Rules.catalog(raw)).offers==30)
         table.insert(raw.products,{key="part_future_part",kind="developer_product",benefit="part_unlock",catalog_id="future_part",
             roblox_product_id=JSON.Null,approved_robux_price=JSON.Null,enabled=false})
         local offer=assert(Rules.catalog(raw)).byKey.part_future_part
@@ -57,7 +90,8 @@ function Spec.run()
         for i,p in ipairs(Config.products) do
             if p.benefit~="part_unlock" then
                 local raw=copy(Config);table.remove(raw.products,i)
-                assert(Rules.catalog(raw)==nil,p.key)
+                local catalog,why=Rules.catalog(raw)
+                assert(catalog==nil and why=="offer_count",p.key)
             end
         end
         local raw=copy(Config);raw.products[#raw.products+2]=copy(raw.products[16]);assert(Rules.catalog(raw)==nil)

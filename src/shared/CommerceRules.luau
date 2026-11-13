@@ -4,6 +4,7 @@ local JSON = require(Root.Generated.JSONTypes)
 local EconomyConfig = require(Root.Generated.Economy)
 local Rules = {}
 local MAX = 9007199254740991
+Rules.MATCH_DOUBLE_STEPS = table.freeze({10,15,25,35,49,69,99,149,199,249,299})
 local expected = {}
 for _, resource in ipairs({"xp", "paper"}) do
     for _, minutes in ipairs({15, 30, 60, 180, 300}) do
@@ -16,6 +17,9 @@ for _, amount in ipairs({1500, 5000, 7500, 15000, 40000}) do -- docs/plan/SHOP-M
 end
 expected.starter_pack = {kind="developer_product", benefit="starter_pack"} -- Bundle amounts live in economy.json.
 expected.paper_jar = {kind="developer_product", benefit="paper_jar"}
+for _, step in ipairs(Rules.MATCH_DOUBLE_STEPS) do
+    expected["match_double_"..step] = {kind="developer_product", benefit="match_double", amount=step}
+end
 function Rules.paperPackAmount(key)
     local offer=type(key)=="string" and expected[key]
     return offer and offer.benefit=="paper_balance" and offer.amount or nil
@@ -29,6 +33,15 @@ function Rules.starterPackEnds(profile,now)
 end
 function Rules.positiveInteger(n)
     return type(n)=="number" and n==n and n>0 and n<=MAX and n%1==0
+end
+function Rules.matchDoublePrice(paper)
+    if not Rules.positiveInteger(paper) or paper<75 then return nil end
+    local target=paper/10
+    local price=Rules.MATCH_DOUBLE_STEPS[1]
+    for _,step in ipairs(Rules.MATCH_DOUBLE_STEPS) do
+        if math.abs(step-target)<math.abs(price-target) then price=step end
+    end
+    return price,math.round(2*paper/15)
 end
 function Rules.catalog(config)
     if type(config)~="table" or (config.mode~="mock" and config.mode~="live")
@@ -50,7 +63,7 @@ function Rules.catalog(config)
         if type(i)~="number" or i%1~=0 or i<1 then return nil,"invalid_offer_array" end
         n+=1
     end
-    if n<19 then return nil,"offer_count" end
+    if n<30 then return nil,"offer_count" end
     local fields={key=true,kind=true,benefit=true,amount=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     local partFields={key=true,kind=true,benefit=true,catalog_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     for i=1,n do
@@ -99,6 +112,12 @@ function Rules.operation(offer,source,version)
     if offer.benefit=="part_unlock" then return table.freeze({kind="partUnlock",catalogID=offer.catalogID}) end
     if offer.benefit=="starter_pack" then return table.freeze({kind="starterPack"}) end
     if offer.benefit=="paper_jar" then return table.freeze({kind="paperJar"}) end
+    if offer.benefit=="match_double" then
+        -- ponytail: used only when the server has no lock for this buyer (receipt arrived in another server);
+        -- pays what that price was set for.
+        local paper=offer.amount*10
+        return table.freeze({kind="matchDouble",paper=paper,xp=math.round(paper*EconomyConfig.xp_per_point/EconomyConfig.paper_per_point)})
+    end
     local op={sourceIdentity=source,expectedVersion=version}
     if offer.benefit=="paper_balance" then op.kind="purchasedPaper"; op.wholePaper=offer.amount; op.packKey=offer.key
     else

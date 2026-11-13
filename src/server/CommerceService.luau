@@ -15,6 +15,7 @@ function Service.new(profiles,deps)
  local self=setmetatable({profiles=profiles,catalog=catalog,live=catalog~=nil and catalog.mode=="live" and catalog.authorized==true,
   wait=deps.wait or task.wait,now=deps.now or os.clock,unix=deps.unix or os.time,timeoutSeconds=deps.timeoutSeconds or 20},Service)
  if not catalog then warn("Commerce disabled: "..tostring(why)) end
+ self.doubles=setmetatable({},{__mode="k"})
  if not self.live then return self end
  local parts=profiles.catalog or deps.catalog
  for _,offer in ipairs(catalog.offers) do
@@ -63,9 +64,17 @@ function Service:_processReceipt(info)
  if type(info.PurchaseId)~="string" or #info.PurchaseId==0 then return Decisions.NotProcessedYet end
  local key=Profile.receiptKey(info.PurchaseId)
  local completed,granted,code=false,false,nil
+ local grant=Rules.operation(offer)
+ local lock
+ if offer.benefit=="match_double" then
+  local pending=self.doubles[player]
+  if pending and pending.key==offer.key then
+   lock=pending;grant={kind="matchDouble",paper=lock.paper,xp=lock.xp}
+  end
+ end
  -- No source dedupe: ProfileRuntime suppresses callbacks for seen sources.
  -- Receipt IDs inside Profile.Data provide the durable dedupe instead.
- local queued=self.profiles:enqueue(player,{kind="receipt",receiptId=info.PurchaseId,grant=Rules.operation(offer)},nil,function(ok,value)
+ local queued=self.profiles:enqueue(player,{kind="receipt",receiptId=info.PurchaseId,grant=grant},nil,function(ok,value)
   granted=ok;code=value;completed=true
  end)
  if not queued then return Decisions.NotProcessedYet end
@@ -75,6 +84,10 @@ function Service:_processReceipt(info)
  if not granted then
   warn("Receipt grant refused: "..tostring(code))
   return Decisions.NotProcessedYet
+ end
+ if lock then
+  self.doubles[player]=nil
+  player:SetAttribute("MatchDoubled",lock.matchId)
  end
  local entry=self.profiles.entries[player]
  local profile=entry and entry.profile

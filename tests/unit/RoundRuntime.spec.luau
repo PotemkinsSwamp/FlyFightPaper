@@ -5,6 +5,50 @@ local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
 function Spec.run()
  local result,test=Suite.new()
+ test("match doubling uses the same floored totals and match id as the report snapshot",function()
+  local f=MatchSpec.fixture();f:join("pilot");f:timer()
+  local row=MatchSpec.row(f,"pilot");local player={UserId=1};local offered,snapshot
+  local runtime=setmetatable({engine=f.m,clock=0,lastPhase="RESULTS",flight={pilots={}},
+   earnedTotals={[row.actorId]={paper=400.75,xp=700.6,missed=50.2}},
+   finalRewards={[row.key]={paper=99.65,xp=199.8,missed=0}},
+   view={FireAllClients=function(_,value)snapshot=value end},
+   hangar={doubleMatch=function(_,buyer,match)assert(buyer==player);offered=match end}},Runtime)
+  function runtime:tutorialRoom()return false end
+  function runtime:earnings()end
+  local Root=game.ReplicatedStorage.FlyFightPaper;local previous=Root:GetAttribute("TutorialRoom")
+  runtime:step(require(Root.Generated.Server).round.step_seconds)
+  Root:SetAttribute("TutorialRoom",previous)
+  runtime:doubleMatch(player)
+  assert(snapshot and snapshot.matchId==f.m.round.id and offered.matchId==snapshot.matchId)
+  local public;for _,p in ipairs(snapshot.result.participants) do if p.actorId==row.actorId then public=p end end
+  assert(public and public.paper==500 and public.xp==900 and public.missedPaper==50)
+  assert(offered.paper==public.paper and offered.xp==public.xp)
+ end)
+ test("match totals retain their unboosted fallback when reward captures are not ready",function()
+  local economy=require(game.ReplicatedStorage.FlyFightPaper.Generated.Economy)
+  local runtime=setmetatable({earnedTotals={},finalRewards={}},Runtime)
+  local row={actorId="pilot",key="pilot",contribution=277,finalPaper=15.5,finalXP=25.75}
+  local totals=runtime:matchTotals(row)
+  assert(totals.paper==math.floor(277*economy.paper_per_point+15.5) and totals.missedPaper==totals.paper)
+  assert(totals.xp==math.floor(277*economy.xp_per_point+25.75))
+ end)
+ test("match double actions require results and a human row belonging to the requesting account",function()
+  local calls=0;local player={UserId=1}
+  local round={id="m1",result={participants={{controllerType="bot",userId=1},
+   {controllerType="human",userId=2},{controllerType="human",userId=1,actorId="pilot",key="pilot",contribution=0,finalPaper=75,finalXP=90}}}}
+  local runtime=setmetatable({engine={round=round},earnedTotals={},finalRewards={},
+   hangar={doubleMatch=function(_,buyer,match)
+    assert(buyer==player and match.matchId=="m1" and match.paper==75 and match.xp==90);calls+=1
+   end}},Runtime)
+  for _,phase in ipairs({"READY","ACTIVE","ENDING","VOTE","COUNTDOWN"}) do
+   runtime.engine.phase=phase;runtime:doubleMatch(player)
+  end
+  assert(calls==0)
+  runtime.engine.phase="RESULTS";runtime:doubleMatch({UserId=99});assert(calls==0)
+  runtime:doubleMatch(player,{paper=99999,xp=99999,matchId="forged"});assert(calls==1)
+  local result=round.result;round.result=nil;runtime:doubleMatch(player);assert(calls==1)
+  round.result=result;runtime.engine.round=nil;runtime:doubleMatch(player);assert(calls==1)
+ end)
  test("combat death carries damage shares without changing history identities and updates record points",function()
   local Combat=require(Server.CombatService)
   for _,case in ipairs({{60,60,50},{12,228,10},{58,2,80}}) do

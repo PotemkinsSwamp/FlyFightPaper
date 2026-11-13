@@ -13,7 +13,7 @@ local PaperUI = require(script.Parent.PaperUI)
 local Cutscene = require(script.Parent.WinnersCutscene)
 local WinnersSound = require(script.Parent.WinnersSound)
 local LevelBar = require(script.Parent.LevelBar)
-local ShopScreen = require(script.Parent.ShopScreen)
+local CommerceRules = require(Root.Shared.CommerceRules)
 
 local MODES = { { "FFA", "Free-for-all", "blue" }, { "TDM", "Team dogfight", "pink" }, { "CONTROL", "Airspace Control", "green" } }
 local KEYS = { [Enum.KeyCode.One] = 1, [Enum.KeyCode.Two] = 2, [Enum.KeyCode.Three] = 3 }
@@ -125,21 +125,29 @@ function RoundEnd.start()
 		return it
 	end
 	local pages = { makePage("Page1"), makePage("Page2") }
-	-- After a match (docs/plan/SHOP-MONEY-PLAN.md, Alan 2026-11-12): one big green button taped under your own card (Alan:
-	-- on the card or attached to it, plainly something to click, up with the card) with the Paper 2x would have added
-	-- this match (the server counts the Paper you earned without 2x) and its price. Only while no 2x Paper is running
-	-- and not after 3 buys today (the calm rule P); once pressed it says so (Alan pressed it and saw nothing happen).
-	local pressedFor, pressedAt, offerMatch = nil, 0, nil
-	local offer = PaperUI.robuxButton(card, "PaperOffer", 60, 872, 560, 140, "", ShopScreen.PRICE.paper_boost_60m, 44, function()
-		if pressedFor == offerMatch then return end
+	-- Double this match (docs/decisions/2026-11-12-double-this-match.md, Alan 2026-11-12): one big green button taped
+	-- under your own card: pay once to get this match's Paper and XP again. Only at 75+ Paper, while the card is up (the
+	-- time left runs down on it), once a match, and not after 3 buys today (the calm rule P). The server locks the
+	-- amounts when you press; a "Worth N R$!" sticker pops in with a bounce and keeps gently pulsing.
+	local pressedFor, pressedAt, offerMatch, offerEnds = nil, 0, nil, 0
+	local offer = PaperUI.robuxButton(card, "PaperOffer", 60, 872, 560, 140, "", "", 40, function()
+		if pressedFor == offerMatch or player:GetAttribute("MatchDoubled") == offerMatch then return end
 		pressedFor, pressedAt = offerMatch, os.clock()
-		Root.RoundAction:FireServer("mockProduct", "paper_boost_60m")
+		Root.RoundAction:FireServer("doubleMatch")
 	end)
 	offer.Visible = false
-	offer.Price.Position = UDim2.fromOffset(0, 24) -- the amount and price under the line
-	local offerLine = words(offer, "Line", "", 0, 14, 560, 40, 30)
+	offer.Price.Position = UDim2.fromOffset(0, 24) -- the amounts and price under the line
+	-- The line sits left of the sticker; the sticker stays on the button (above it is the card's next-unlock line).
+	local offerLine = words(offer, "Line", "", 20, 14, 380, 40, 30)
 	offerLine.TextXAlignment = Enum.TextXAlignment.Center
 	local offerAmount, offerIcon, offerPrice = offer.Price.Word1, offer.Price.Robux, offer.Price.Word3
+	local worth = image(offer, "Worth", UIArt.shop.stickerWhite, 390, -12, 200, 66, 8)
+	worth.ImageColor3, worth.ZIndex = Color3.fromRGB(40, 110, 240), offer.ZIndex + 2 -- the shop's "Good Value" sticker
+	local worthWords = PaperUI.loud(words(worth, "Words", "", 0, 0, 200, 66, 30))
+	worthWords.TextXAlignment, worthWords.ZIndex = Enum.TextXAlignment.Center, worth.ZIndex
+	local worthScale = Instance.new("UIScale")
+	worthScale.Parent = worth
+	local offerLeft -- whole seconds shown on the button
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -163,7 +171,7 @@ function RoundEnd.start()
 		most.MaxTextSize, most.Parent = 50, strips[i].Label
 	end
 
-	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, boosts = nil, mine = nil, minePage = 1, cardAt = 0 }
+	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, mine = nil, minePage = 1, cardAt = 0 }
 	local function show(part) for _, child in { banner, card, vote } do child.Visible = child == part or (type(part) == "table" and table.find(part, child) ~= nil) end end
 
 	local TEAM_NAMES = { ["team:1"] = "Red team", ["team:2"] = "Blue team" }
@@ -289,17 +297,23 @@ function RoundEnd.start()
 				fillRows(it, list, function(p) return p.place end, gradeOf)
 			end
 		end
-		local boosts, missed = state.boosts, state.mine and state.mine.missedPaper or 0
-		local running = boosts ~= nil and (boosts.permanentPaper or (boosts.paperSeconds or 0) > 0)
+		local paper, xp = state.mine and state.mine.paper or 0, state.mine and state.mine.xp or 0
+		local price, worthRobux = CommerceRules.matchDoublePrice(paper)
 		offerMatch = snap.matchId or true
-		-- pressed this match: "on" once the boost shows, back to the offer if nothing came within 5 s (a cancelled buy)
-		local pressed = pressedFor == offerMatch and (running or os.clock() - pressedAt < 5)
-		if not pressed and pressedFor == offerMatch then pressedFor = nil end
-		offer.Visible = missed > 0 and boosts ~= nil and (pressed or not running and (player:GetAttribute("BuysToday") or 0) < 3)
+		offerEnds = os.clock() + (snap.phaseEndsAt and snap.serverTime and snap.phaseEndsAt - snap.serverTime or 0)
+		local paid = player:GetAttribute("MatchDoubled") == offerMatch
+		-- pressed: "One moment..." until it pays; back to the offer if nothing came within 10 s (a cancelled buy)
+		local pressed = not paid and pressedFor == offerMatch and os.clock() - pressedAt < 10
+		if not pressed and not paid and pressedFor == offerMatch then pressedFor = nil end
+		offer.Visible = price ~= nil and (paid or pressed or (player:GetAttribute("BuysToday") or 0) < 3)
 		if offer.Visible then
-			offerLine.Text = pressed and (running and "Thanks! 2x Paper is on for 1 hour." or "Getting your 2x Paper...") or "2x Paper would have given you"
-			offerAmount.Text = pressed and (running and "Next match pays double!" or "One moment...") or "+" .. PaperUI.commas(missed) .. " more Paper!"
-			offerIcon.Visible, offerPrice.Visible = not pressed, not pressed
+			offerLine.Text = paid and "Doubled! Thanks!" or pressed and "One moment..." or "Double this match!"
+			offerLeft = nil -- (the time left goes back on next frame)
+			offerAmount.Text = string.format("+%s Paper  +%s XP", PaperUI.commas(paper), PaperUI.commas(xp))
+			local selling = not (paid or pressed)
+			offerIcon.Visible, offerPrice.Visible, worth.Visible = selling, selling, selling
+			offerLine.Position, offerLine.Size = UDim2.fromOffset(selling and 20 or 0, 14), UDim2.fromOffset(selling and 380 or 560, 40)
+			offerPrice.Text, worthWords.Text = tostring(price), "Worth " .. worthRobux .. " R$!"
 			offer.Parent = pages[state.minePage].page
 		end
 	end
@@ -307,6 +321,14 @@ function RoundEnd.start()
 	RunService.RenderStepped:Connect(function()
 		local mine = state.mine
 		local shown = cover.Visible and card.Visible and mine ~= nil and state.profileXP ~= nil and not state.live
+		if offer.Visible and worth.Visible then
+			local left = math.max(0, math.ceil(offerEnds - os.clock()))
+			if left ~= offerLeft then offerLeft = left; offerLine.Text = "Double this match! " .. left .. "s left" end
+			-- pop in with a bounce (an overshooting ease) as the card comes up, then a gentle pulse
+			local t = os.clock() - state.cardAt - 0.8
+			local x = math.clamp(t / 0.45, 0, 1) - 1
+			worthScale.Scale = t < 0.45 and math.max(0, 1 + 2.70158 * x ^ 3 + 1.70158 * x ^ 2) or 1 + 0.06 * math.sin((t - 0.45) * 4)
+		end
 		for k, it in pages do it.xpBar.show(shown and k == state.minePage) end
 		if not shown then return end
 		local xpBar = pages[state.minePage].xpBar
@@ -316,7 +338,7 @@ function RoundEnd.start()
 		local t = math.clamp((os.clock() - state.cardAt - 0.5) / 1.5, 0, 1)
 		xpBar.set(before + (after - before) * (1 - (1 - t) ^ 2))
 	end)
-	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) state.profileXP, state.boosts = profile.xp, profile.boosts end)
+	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) state.profileXP = profile.xp end)
 
 	local function winnerLine(snap)
 		local result = snap.result or {}
@@ -380,6 +402,7 @@ function RoundEnd.start()
 	end
 	Root:WaitForChild("RoundView").OnClientEvent:Connect(update)
 	player:GetAttributeChangedSignal("Vote"):Connect(function() if state.snap then update(state.snap) end end)
+	player:GetAttributeChangedSignal("MatchDoubled"):Connect(function() if state.snap then update(state.snap) end end)
 	Root:GetAttributeChangedSignal("StandingsOpen"):Connect(function() if state.snap then update(state.snap) end end)
 	Input.InputBegan:Connect(function(input, processed)
 		local index = KEYS[input.KeyCode]

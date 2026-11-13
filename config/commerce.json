@@ -437,7 +437,18 @@
       "roblox_product_id": null,
       "approved_robux_price": null,
       "enabled": false
-    }
+    },
+    {"key":"match_double_10","kind":"developer_product","benefit":"match_double","amount":10,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_15","kind":"developer_product","benefit":"match_double","amount":15,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_25","kind":"developer_product","benefit":"match_double","amount":25,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_35","kind":"developer_product","benefit":"match_double","amount":35,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_49","kind":"developer_product","benefit":"match_double","amount":49,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_69","kind":"developer_product","benefit":"match_double","amount":69,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_99","kind":"developer_product","benefit":"match_double","amount":99,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_149","kind":"developer_product","benefit":"match_double","amount":149,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_199","kind":"developer_product","benefit":"match_double","amount":199,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_249","kind":"developer_product","benefit":"match_double","amount":249,"roblox_product_id":null,"approved_robux_price":null,"enabled":false},
+    {"key":"match_double_299","kind":"developer_product","benefit":"match_double","amount":299,"roblox_product_id":null,"approved_robux_price":null,"enabled":false}
   ],
   "paper_pack_amounts_status": "approved by Alan 2026-11-11 and 2026-11-12 (docs/plan/SHOP-PRICES-PLAN.md, docs/plan/SHOP-MONEY-PLAN.md); live activation requires owner authorization",
   "mock_ui_label": "DEVELOPMENT ONLY \u00e2\u20ac\u201d no real purchase",

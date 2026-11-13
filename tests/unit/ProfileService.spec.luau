@@ -8,7 +8,7 @@ local Catalog=require(Root.Shared.Catalog)
 local Fake=require(script.Parent.Parent.fixtures.FakeProfiles)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
-local function fixture()
+local function fixture(mock)
  local catalog=Catalog.new(require(Root.Generated.Catalog),Gameplay)
  local data=Schema.defaults(catalog)
  for level=1,EconomyConfig.level_cap-1 do data.xpMilli+=(EconomyConfig.xp_next_level_base+math.floor(EconomyConfig.xp_next_level_step*(level-1)^EconomyConfig.xp_next_level_power))*1000 end
@@ -24,7 +24,7 @@ local function fixture()
  -- Valid unrelated save data can exceed the economy rules' narrower copy bounds.
  data.extensions={kept={description=string.rep("x",600),nested={a={b={c={d={e={value=true}}}}}}}}
  local profile=Fake.new(data)
- local service=Service.new({catalog=catalog,monotonic=function()return 100 end})
+ local service=Service.new({catalog=catalog,mock=mock,monotonic=function()return 100 end})
  assert(service:attach("user",profile,{connected=true,mapLoaded=true}).status=="ok")
  return service,profile,catalog
 end
@@ -226,6 +226,59 @@ function Spec.run()
   assert(reopened.Data.paperMilli==before.paperMilli+1000000 and reopened.Data.purchasedPaperMilli==before.purchasedPaperMilli+1000000)
   assert(reopened.Data.version==version+1 and reopened.Data.operationIds[service.sessions.user.token]==1)
  end)
+ test("match doubling pays the locked Paper and XP once without boosts or a jar share",function()
+  local service,profile=fixture();local day=math.floor(service.unix()/86400)
+  profile.Data.paperJarMilli=123456;profile.Data.buysToday={day=day,count=2}
+  local before=assert(Schema.copy(profile.Data))
+  local input={kind="receipt",receiptId="double/m1",grant={kind="matchDouble",paper=500,xp=900}}
+  local first=service:apply("user",assert(service:prepare("user",input)))
+  assert(first.status=="ok" and first.value.type=="MatchDoubled" and first.value.paper==500 and first.value.xp==900,first.code)
+  local expected=assert(Schema.copy(before))
+  expected.paperMilli+=500000;expected.purchasedPaperMilli+=500000;expected.xpMilli+=900000
+  expected.buysToday.count+=1;expected.receiptIds[Service.receiptKey(input.receiptId)]=true
+  expected.version+=1;expected.operationIds[service.sessions.user.token]=1
+  assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"double changed unrelated progress or applied boosts")
+  local again=service:apply("user",assert(service:prepare("user",input)))
+  assert(again.status=="ok" and again.value.type=="ReceiptAlreadyGranted",again.code)
+  expected.version+=1;expected.operationIds[service.sessions.user.token]=2
+  assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"duplicate receipt changed its payout or buy count")
+  assert(profile:EndSession());service:detach("user")
+  local reopened=Fake.new(profile.LastSavedData)
+  assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
+  local replay=service:apply("user",assert(service:prepare("user",input)))
+  assert(replay.status=="ok" and replay.value.type=="ReceiptAlreadyGranted",replay.code)
+  assert(reopened.Data.paperMilli==expected.paperMilli and reopened.Data.purchasedPaperMilli==expected.purchasedPaperMilli)
+  assert(reopened.Data.xpMilli==expected.xpMilli and reopened.Data.paperJarMilli==before.paperJarMilli and reopened.Data.buysToday.count==3)
+ end)
+ test("match doubling accepts zero XP and rolls back Paper and receipt on XP overflow",function()
+  local service,profile=fixture();local before=profile.Data.xpMilli
+  local paid=service:apply("user",assert(service:prepare("user",{kind="receipt",receiptId="double/zero",
+   grant={kind="matchDouble",paper=1,xp=0}})))
+  assert(paid.status=="ok" and paid.value.xp==0 and profile.Data.xpMilli==before,paid.code)
+  for _,overflow in ipairs({function()profile.Data.xpMilli=Economy.MAX_SAFE_INTEGER-999 end,
+   function()profile.Data.xpMilli=0 end}) do
+   overflow();local snapshot=Schema.canonical(profile.Data)
+   local xp=profile.Data.xpMilli==0 and Economy.MAX_SAFE_INTEGER or 1
+   local refused=service:apply("user",assert(service:prepare("user",{kind="receipt",receiptId="double/overflow",
+    grant={kind="matchDouble",paper=500,xp=xp}})))
+   assert(refused.status=="error" and refused.code=="overflow",refused.code)
+   assert(Schema.canonical(profile.Data)==snapshot,"failed double left a partial grant")
+  end
+ end)
+ test("practice match doubling counts a buy and respects the same receipt ceiling",function()
+  local service,profile=fixture(true);local jar=profile.Data.paperJarMilli
+  local op=assert(service:prepare("user",{kind="matchDouble",paper=500,xp=900}))
+  local before=assert(Schema.copy(profile.Data));local paid=service:apply("user",op)
+  assert(paid.status=="ok" and paid.value.type=="MatchDoubled",paid.code)
+  assert(profile.Data.paperMilli==before.paperMilli+500000 and profile.Data.purchasedPaperMilli==before.purchasedPaperMilli+500000)
+  assert(profile.Data.xpMilli==before.xpMilli+900000 and profile.Data.paperJarMilli==jar and profile.Data.buysToday.count==1)
+  assert(profile.Data.receiptIds[Service.receiptKey("mock:"..op.id)])
+  profile.Data.receiptIds={}
+  for i=1,require(Root.Generated.Server).schema.max_receipts do profile.Data.receiptIds[Service.receiptKey("saved_"..i)]=true end
+  local snapshot=Schema.canonical(profile.Data)
+  local refused=service:apply("user",assert(service:prepare("user",{kind="matchDouble",paper=500,xp=900})))
+  assert(refused.status=="error" and refused.code=="receipt_cap" and Schema.canonical(profile.Data)==snapshot,refused.code)
+ end)
  test("part receipts unlock each part category at level one without Paper or XP changes",function()
   for _,id in ipairs({"nose_5","eraser","boost_twin"}) do
    local service,profile=fixture();profile.Data.xpMilli=0
@@ -329,7 +382,10 @@ function Spec.run()
    {kind="boostIntent",resource="xp",action="duration",seconds=0},{kind="boostIntent",resource="xp",action="duration",seconds=1.5},
    {kind="boostIntent",resource="xp",action="duration",seconds=1,wholePaper=10},{kind="statistics",deltas={wins=1}},
    {kind="partUnlock"},{kind="partUnlock",catalogID=""},{kind="partUnlock",catalogID=1},
-   {kind="partUnlock",catalogID="eraser",wholePaper=1},{kind="partUnlock",catalogID="eraser",extra=true}}
+   {kind="partUnlock",catalogID="eraser",wholePaper=1},{kind="partUnlock",catalogID="eraser",extra=true},
+   {kind="matchDouble",paper=0,xp=900},{kind="matchDouble",paper=500,xp=900,extra=true},
+   {kind="matchDouble",paper=1.5,xp=900},{kind="matchDouble",paper=500,xp=-1},
+   {kind="matchDouble",paper=500,xp=0.5},{kind="matchDouble",paper=500},{kind="matchDouble",xp=900}}
   for _,grant in ipairs(grants) do
    local refused=service:apply("user",assert(service:prepare("user",{kind="receipt",receiptId="invalid",grant=grant})))
    assert(refused.status=="error" and refused.code=="invalid_receipt_grant",refused.code)
@@ -352,7 +408,8 @@ function Spec.run()
  end)
  test("plain practice grants still refuse non-mock profiles",function()
   local service,profile=fixture();local before=Schema.canonical(profile.Data)
-  for _,input in ipairs({{kind="purchasedPaper",wholePaper=1000},{kind="boostIntent",resource="xp",action="permanent"}}) do
+  for _,input in ipairs({{kind="purchasedPaper",wholePaper=1000},{kind="boostIntent",resource="xp",action="permanent"},
+   {kind="matchDouble",paper=500,xp=900}}) do
    local refused=service:apply("user",assert(service:prepare("user",input)))
    assert(refused.status=="error" and refused.code=="studio_only" and Schema.canonical(profile.Data)==before)
   end

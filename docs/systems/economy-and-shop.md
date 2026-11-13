@@ -14,7 +14,7 @@ price; current packs are listed below). The server save rules for the daily gift
 tests (2026-11-12), awaiting Claude's Studio run and client wiring. Other personal shop offers remain in the
 [picks](../decisions/2026-11-12-personal-shop-picks.md).
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Roblox-style shop window in our paper look
-(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 19 fixed offers and part unlocks
+(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 30 fixed offers and part unlocks
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
 - **Receipts:** a paid boost or Paper pack is added together with its receipt ID in one save change, then the game
   waits for that save to reach Roblox before telling Roblox "granted". A failed save means "not yet": Roblox resends
@@ -128,9 +128,15 @@ Do not extend the free grind solely to justify a costly permanent product. Real 
 ## Products
 Ten distinct temporary products: XP and earned Paper separately for900,1800,3600,10800,18000 online seconds.
 Five Paper packs (1,500 / 5,000 / 7,500 / 15,000 / 40,000), one starter bundle, one Paper jar and two permanent passes. The new
-packs, bundle and jar follow the approved [money plan](../plan/SHOP-MONEY-PLAN.md). Next (Alan 2026-11-12, not built):
-[Double this match](../decisions/2026-11-12-double-this-match.md) on the report card (25% off its worth, Paper and XP,
-price steps 10-299 R$) replaces its 2x Paper button, and 2x boosts drop to 10/15/25/69/99 R$. The shop's clocks
+packs, bundle and jar follow the approved [money plan](../plan/SHOP-MONEY-PLAN.md). 2x boosts cost 10/15/25/69/99 R$
+(2026-11-12). Eleven **Double this match** products (`match_double_10` ... `match_double_299`, one per price step;
+[decision](../decisions/2026-11-12-double-this-match.md), built 2026-11-12): the report card's button pays this match's
+Paper and XP once more. `CommerceRules.matchDoublePrice` gives the price (nearest step to 25% off the worth, worth =
+2 x Paper / 15 R$; none under 75 Paper). Pressing it (`doubleMatch`, only in the results phase) has the server lock that
+match's Paper and XP for the buyer (`CommerceService.doubles`); the receipt pays exactly the locked amounts as bought
+Paper plus XP (no Paper jar share) and sets the player's `MatchDoubled` to the match, which stops a second press. A
+receipt with no lock (it reached another server) pays what its price was set for: price x 10 Paper and matching XP.
+Studio's practice buy pays at once. The shop's clocks
 (daily gift, Today's parts, starter pack) run on the server's time; pictures sit on faded chalk green. Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
@@ -258,7 +264,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `tests/unit/MockShop.spec.luau` | Practice-only guards, typed grants and refusal of individual part products |
 
 ## Tuning numbers
-`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts, starter bundle and jar); `config/commerce.json` (19 fixed offers plus part unlocks; `mode` is "mock", live sales off); prices in `config/catalog.json`.
+`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts, starter bundle and jar); `config/commerce.json` (30 fixed offers plus part unlocks; `mode` is "mock", live sales off); prices in `config/catalog.json`.
 
 ## Related
 - [Points system decision](../decisions/2026-10-14-points-system.md)

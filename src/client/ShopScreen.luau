@@ -26,12 +26,12 @@ local ROBUX_ICON = "rbxasset://textures/ui/common/robux@3x.png" -- Roblox's own 
 -- The Robux prices Alan approved (docs/plan/SHOP-PRICES-PLAN.md). Display only: real prices must come from Roblox's
 -- product info once live sales are approved (docs/systems/economy-and-shop.md).
 local PRICE = {
-	xp_boost_15m = 25, xp_boost_30m = 45, xp_boost_60m = 79, xp_boost_180m = 199, xp_boost_300m = 299,
-	paper_boost_15m = 25, paper_boost_30m = 45, paper_boost_60m = 79, paper_boost_180m = 199, paper_boost_300m = 299,
+	-- 2x boosts cheaper so the order holds against Double this match (docs/decisions/2026-11-12-double-this-match.md)
+	xp_boost_15m = 10, xp_boost_30m = 15, xp_boost_60m = 25, xp_boost_180m = 69, xp_boost_300m = 99,
+	paper_boost_15m = 10, paper_boost_30m = 15, paper_boost_60m = 25, paper_boost_180m = 69, paper_boost_300m = 99,
 	paper_pack_1500 = 99, paper_pack_5000 = 299, paper_pack_7500 = 549, paper_pack_15000 = 799, paper_pack_40000 = 1999,
 	permanent_2x_xp = 1499, permanent_2x_paper = 999,
 }
-ShopScreen.PRICE = PRICE -- (the report card's 2x Paper button)
 -- Value stickers (true per Robux: bigger packs and longer boosts give more for each Robux).
 -- Paper packs per Robux: 40,000 20.0, 15,000 18.8, 5,000 16.7, 1,500 15.2, the 7,500 decoy 13.7 (SHOP-MONEY-PLAN).
 local BADGE = { paper_pack_15000 = "Good Value", paper_pack_40000 = "Most Value",

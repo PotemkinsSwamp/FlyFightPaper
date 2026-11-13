@@ -1,7 +1,7 @@
 # Double this match on the report card; cheaper 2x boosts
 
 **Decided:** 2026-11-12 (Alan, after his report-card playtest)
-**Status:** decided, **not built yet** (first job of the next session). Prices are for when live sales are switched on;
+**Status:** built 2026-11-12 ([economy and shop](../systems/economy-and-shop.md#products), [report card](../systems/menus-and-hud.md)); waiting for Alan's Play check. Prices are for when live sales are switched on;
 Studio uses practice buys.
 
 ## Decision

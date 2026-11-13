@@ -41,9 +41,8 @@ Alan chose the Pencil at 1,699 (its Paper value; it's the strongest weapon, so a
 day one" rare).
 
 ## Unchanged
-2x XP / 2x Paper boosts 25 / 45 / 79 / 199 / 299 R$ for 15 / 30 / 60 / 180 / 300 minutes; permanent 2x Paper 999, 2x
-XP 1,499. An hour of 2x Paper gives an average player about 4,650 extra Paper for 79 R$, much more than a pack, but
-only if they play: it rewards playing, as before.
+2x XP / 2x Paper boosts: 10 / 15 / 25 / 69 / 99 R$ for 15 / 30 / 60 / 180 / 300 minutes since 2026-11-12 (were 25 /
+45 / 79 / 199 / 299; [Double this match](../decisions/2026-11-12-double-this-match.md)); permanent 2x Paper 999, 2x XP 1,499.
 
 ## How it's built (cheap)
 - `config/commerce.json`: the three packs' amounts (keys `paper_pack_1500/5000/15000`, tests updated); the Studio practice

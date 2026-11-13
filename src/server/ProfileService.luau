@@ -37,6 +37,9 @@ local function validReceiptGrant(grant)
   fields={kind=true,wholePaper=true,packKey=true}
  elseif grant.kind=="starterPack" or grant.kind=="paperJar" then
   fields={kind=true}
+ elseif grant.kind=="matchDouble" then
+  if not Schema.integer(grant.paper) or grant.paper<1 or not Schema.integer(grant.xp) then return false end
+  fields={kind=true,paper=true,xp=true}
  elseif grant.kind=="boostIntent" then
   if (grant.resource~="xp" and grant.resource~="paper") or grant.action~="duration"
    or not Schema.integer(grant.seconds) or grant.seconds<1 then return false end
@@ -198,6 +201,14 @@ function Service:_effect(p,op,boostState)
 		end
 		applied,err=Economy.addPurchasedPaper(v,amount,op.id)
 		if applied and op.packKey then p.firstBuys[op.packKey]=true end
+	elseif op.kind=="matchDouble" then
+		if not Schema.integer(op.paper) or op.paper<1 or not Schema.integer(op.xp) then return nil,"invalid_amount" end
+		local paid,rejected=Economy.addPurchasedPaper(v,op.paper,op.id)
+		if not paid then return nil,rejected.code end
+		Schema.mergeEconomic(p,paid.profile)
+		local xp=safeAdd(p.xpMilli,op.xp*Economy.MILLI);if not xp then return nil,"overflow" end
+		p.xpMilli=xp
+		result={type="MatchDoubled",paper=op.paper,xp=op.xp}
 	elseif op.kind=="dailyGift" then
 		local reward,why=giftReward(p,op.day);if not reward then return nil,why end
 		if reward.paper then
@@ -314,7 +325,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={receipt=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
+local allowed={receipt=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
@@ -331,7 +342,7 @@ function Service:apply(account,input)
  if sequence<=(s.profile.Data.operationIds[token] or 0) then
   return outcome("ok",nil,cached and cached.value or {type="AlreadyApplied",operationID=op.id})
  end
- local mockBuy=op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack" or op.kind=="paperJar"
+ local mockBuy=op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack" or op.kind=="paperJar" or op.kind=="matchDouble"
  if mockBuy and not self.mock then return outcome("error","studio_only") end
  if mockBuy and count(s.profile.Data.receiptIds)>=ServerConfig.schema.max_receipts then return outcome("error","receipt_cap") end
  if op.kind=="starterPack" and Commerce.starterPackEnds(s.profile.Data,self.unix())==0 then return outcome("error","starter_pack_ended") end

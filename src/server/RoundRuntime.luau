@@ -60,6 +60,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    player:SetAttribute("MenuTokens",tokens);player:SetAttribute("LastMenuAction",now)
   end
   if action=="join" then self:join(player)
+  elseif action=="doubleMatch" then self:doubleMatch(player)
   elseif action=="devMode" and player:GetAttribute("Dev")==true and (MatchRules.mode(value) or value=="NEXTSPOT") then
    -- Studio test mode: the next round uses this mode, and a running round ends now so the switch is quick.
    -- "NEXTSPOT" (Alan 2026-10-16): Airspace with the zone held still; each click moves it to the next spot, so every
@@ -546,6 +547,23 @@ function Runtime:sendProfile(player)
    presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,unlocksSeen=profile.unlocksSeen,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end
 end
+function Runtime:matchTotals(row)
+ local earned=self.earnedTotals[row.actorId] or {paper=row.contribution*Economy.paper_per_point,xp=row.contribution*Economy.xp_per_point}
+ local final=self.finalRewards[row.key] or {paper=row.finalPaper,xp=row.finalXP}
+ return {paper=math.floor(earned.paper+final.paper),xp=math.floor(earned.xp+final.xp),
+  missedPaper=math.floor((earned.missed or earned.paper)+(final.missed or final.paper))} -- (not paid yet: counted as 1x)
+end
+function Runtime:doubleMatch(player)
+ local r=self.engine.round
+ if self.engine.phase~="RESULTS" or not r or not r.result then return end
+ for _,row in ipairs(r.result.participants) do
+  if row.controllerType=="human" and row.userId==player.UserId then
+   local totals=self:matchTotals(row)
+   self.hangar:doubleMatch(player,{matchId=r.id,paper=totals.paper,xp=totals.xp})
+   return
+  end
+ end
+end
 function Runtime:step(dt)
  self.clock+=dt;if self.clock<ServerConfig.round.step_seconds then return end;self.clock%=ServerConfig.round.step_seconds
  Root:SetAttribute("TutorialRoom",self:tutorialRoom())
@@ -583,11 +601,8 @@ function Runtime:step(dt)
    local copy=table.clone(public)
    for _,private in ipairs(self.engine.round.result.participants) do
     if public.actorId==private.actorId then
-     local earned=self.earnedTotals[private.actorId] or {paper=private.contribution*Economy.paper_per_point,xp=private.contribution*Economy.xp_per_point}
-     local final=self.finalRewards[private.key] or {paper=private.finalPaper,xp=private.finalXP}
-     copy.paper=math.floor(earned.paper+final.paper)
-     copy.missedPaper=math.floor((earned.missed or earned.paper)+(final.missed or final.paper)) -- (not paid yet: counted as 1x)
-     copy.xp=math.floor(earned.xp+final.xp)
+     local totals=self:matchTotals(private)
+     copy.paper=totals.paper;copy.missedPaper=totals.missedPaper;copy.xp=totals.xp
     end
    end
    table.insert(result.participants,copy)

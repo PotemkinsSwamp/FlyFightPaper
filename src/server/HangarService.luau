@@ -35,6 +35,23 @@ end
 function Service:enqueue(player,input,callback)
  if not self.profiles:enqueue(player,input,nil,callback) then self:message(player,"Saving is busy. Try again shortly.") end
 end
+function Service:doubleMatch(player,match)
+ if player:GetAttribute("MatchDoubled")==match.matchId then self:message(player,"You already doubled this match.");return end
+ local price=CommerceRules.matchDoublePrice(match.paper);if not price then return end
+ local key="match_double_"..price
+ if Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
+  player:SetAttribute("MatchDoubled",match.matchId)
+  local function completed(ok)
+   if not ok then player:SetAttribute("MatchDoubled",nil) end
+   self:message(player,ok and "Development simulation complete. No real purchase." or "Development simulation failed.")
+  end
+  if not self.profiles:enqueue(player,{kind="matchDouble",paper=match.paper,xp=match.xp},nil,completed) then completed(false) end
+ elseif self.commerce then
+  self.commerce.doubles[player]={matchId=match.matchId,paper=match.paper,xp=match.xp,key=key}
+  local ok=self.commerce:prompt(player,key)
+  if not ok then self:message(player,"Shop is closed for now.") end
+ else self:message(player,"Shop is closed for now.") end
+end
 function Service:handle(player,action,value)
  local profile=self.profiles:view(player);if not profile then return end
  if action=="selectPreset" then
@@ -132,7 +149,7 @@ function Service:handle(player,action,value)
    if not ok then self:message(player,why=="starter_pack_ended" and "The starter pack has ended." or why=="jar_low" and "Your Paper jar breaks at 3,000 Paper. Play a match to fill it." or "Shop is closed for now.") end
   end
  elseif action=="mockProduct" and Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
-  if type(value)~="string" then return end
+  if type(value)~="string" or value:match("^match_double_") then return end
   local product
   for _,item in ipairs(Commerce.products) do if item.key==value then product=item;break end end
   if not product then return end
