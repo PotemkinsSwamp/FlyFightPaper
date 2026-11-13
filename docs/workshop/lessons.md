@@ -393,6 +393,12 @@ mistake would be easy to make twice.
   rewrote the test fixtures' profiles, so two ProfileRuntime tests failed until it checked `typeof(player)=="Instance"`.
   Run the tests after adding any Studio-only switch to profile loading.
 
+- **"Owned" for a part means `Catalog:owns(ownership, id, level)`** (2026-11-12): free gear (0 Paper) is yours from
+  its level and is never written into the save's `ownership`. The fold card checked `ownership` only and offered Alan
+  the Thumbtack Shooter he had, for 49 R$. Any new "do you have it?" check goes through `Catalog:owns`.
+- **`ImageColor3` multiplies the picture** (2026-11-12): tinting the cream circle with chalk green 104,133,118 came out
+  olive 98,117,96 on screen. Pick the tint by the colour on a Play screenshot, not the number in the code.
+
 ## Working with Alan
 - **Screen grabs only when there is no other way** (Alan 2026-11-12): read layouts as numbers first (`AbsolutePosition`,
   `GetGuiObjectsAtPosition`, `ScreenCheck`), prints, rays. A grab is allowed only when it is truly blocking.

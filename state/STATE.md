@@ -1,17 +1,17 @@
-# Since Alan last checked (2026-11-12, evening)
-- **Money plan in Play** ([playtest](../docs/playtests/2026-11-12-money-plan-report-card-fold-card.md)): report card's
-  2x Paper button now shows (it sat on the hidden page 2) and says when 2x is on; card says "(2x)". Fold card (part
-  turning over a soft shadow, Paper then Robux buy, red Wait button). Shop: faded chalk green behind pictures, Today's
-  parts timer on the server clock. Paper jar breaks from 3,000 Paper (save rules only, no card yet). 529 tests pass.
-- **Tape-roll tower hole open** (Studio; keep with Ctrl+S). Design theory skill made (`.claude/skills/design-theory`).
-- **Decided, not built:** [Double this match](../docs/decisions/2026-11-12-double-this-match.md) (25% off its worth,
-  Paper and XP) replaces the report card's 2x button; 2x boosts drop to 10/15/25/69/99 R$.
+# Since Alan last checked (2026-11-12, night)
+- **Double this match works** ([playtest](../docs/playtests/2026-11-12-double-this-match-and-shop.md)): report card
+  button (75+ Paper, timer, "Worth N R$!" sticker); the locked Paper and XP live in the save, so the receipt pays
+  exactly once on any server. 2x boosts 10/15/25/69/99 R$. 75 minimum kept.
+- **Fold card:** never for free gear; red "Not now" when you can already buy. **Shop:** mint green circles on white
+  cards; passes and Your next part float on a soft shadow.
+- **Big bodies 3 mounts** ([decision](../docs/decisions/2026-11-12-big-bodies-three-mounts.md)): Cardboard carries 10,
+  Toilet Roll 8. Not seen in Play or a bot match yet. 559 tests pass.
 
 # Now: finish the game for the beta
-Next: build Double this match + the new boost prices (Alan's go given). Then the Paper jar's shop card and its "wait
-for more" warning (jar picture needs his upload go), Gift a friend (how-it-works note first), a goals review with Alan.
-Balance pass later: Spitball planes weakest; a 4-Paperclip Cardboard. Phones: the lesson goal note's phone shapes still
-use the old square note. Not seen yet: a real level-up in a match; report card on PC; the fold card's words measured.
+Next: a bot match on the 3-mount big bodies (Alan's go given). Then his notes: Studio-only dev toggle (his real level 12
+vs everything unlocked, bottom right, only him); centre the shop's models on their true middle; starter pack items float
+free with a shadow and dark word plates. Then the Paper jar card (art needs his upload go), Gift a friend note, goals
+review. Balance pass later: Spitball planes weakest. Not seen yet: a real level-up in a match.
 
 Decisions to review
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
@@ -21,8 +21,8 @@ Report card: team cards moved apart a little (they touched); winners' note just 
   boxes); Tab's live standings use the same card without grades or note.
 Unlock: no count sticker on the in-match Menu button; phones keep the level-up note's first size. Customize binder at
   95% so the stats paper fits. Welcome card sits over Play.
-Toilet Roll mounts heavy, heavy, medium, light, light; boosters keep their weight (Elastic now -3 studs/s). Dev picker
-  lost "twin pencils" (two Pencils no longer fit any body).
+Toilet Roll leaned 8 (not 9); boosters keep their weight (Elastic now -3 studs/s). Tank bots: Toilet Roll 3 Pellets,
+  Cardboard 2 Crayons + a Pellet.
 Bots follow a target up a vent: veterans 60%, Aces 90%; with 2+ spitballs stuck they fly to a fan. Staple ~800 studs.
   Spitball builds: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s); the Paper check skips them.
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.
@@ -50,10 +50,9 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
+- Look at: mint green circles, the shadows, the fold card fixes, the big bodies in the Hangar (after the dev toggle).
 - Pick from the cosmetics and playtime rewards options (A-L) on the research page.
-- Which screen showed a part "revolving around a tip"? (shop, fold card and Hangar measure centred).
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
-- On PC: end a free-for-all and a team round; check the report card's words all sit inside their boxes.
-- Save to File when you want the new weapon models in the place file (your go).
+- Save to File when you want the new weapon models and the tape-roll tower in the place file (your go).
 - In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
-- Device Simulator: small iPhone and iPad for the screen-fit re-check. Winners' moment: watch 2-3 endings. Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go).
+- Device Simulator: small iPhone and iPad for the screen-fit re-check. Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go).
