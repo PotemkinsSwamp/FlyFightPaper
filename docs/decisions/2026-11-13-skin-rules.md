@@ -34,8 +34,11 @@
   embers) but never change size or speed, so no skin makes anyone easier or harder to hit or dodge.
 - **Trails keep their own colours** in team games.
 - **No skin needs animation** (Alan, after the concepts): shine and sparkle are in the pictures, not moving effects.
-- **Skins must not cost frame rate or server work.** The detail budget is set on the [skins plan](../plan/SKINS-PLAN.md);
-  the Ghost Ship is the one concept that may be too detailed to build as drawn.
+- **Skins must not cost frame rate or server work:** drawn only on players' screens; at most about **4,000 triangles**
+  and one 1024 picture set per Legendary or Mythical (Alan OK'd the budget); detail baked into the pictures. The
+  Ghost Ship is built last, to that budget.
+- **First build batch** (Alan's pick): Hazard Stripes, Tiger Stripes, Flame Decals; Gold Foil, Lava, Galaxy; Shark
+  Jet; Dragon; trails Confetti, Rainbow Marker, Gold Stars.
 - **Concept changes:** the Origami Crane turns blue and silver (it looked too like the Phoenix); Chrome keeps white
   only as small reflection glints. The Mech stays as drawn.
 - **Ideas:** every skin and trail on the [skins plan](../plan/SKINS-PLAN.md) list (Alan approved the whole list).

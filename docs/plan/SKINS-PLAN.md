@@ -59,7 +59,7 @@ rare-1/2/3, legendary-1/2, mythical-1..4, trails-1/2; briefs `prompt-*.txt`, ref
 Alan's picks. Notes: the Mech's pistons look like gun barrels (weapons must read from the real object); Chrome is pale
 against the sky; shine, glow and the slime's drips are more than one picture (shine and glow maps, to check in Studio).
 
-## Keeping skins cheap (proposal, 2026-11-13)
+## Keeping skins cheap (Alan OK'd the budget, 2026-11-13)
 - **Drawn by each player's own computer only.** The server just saves which skin and trail a player wears. The skin
   pieces and the hiding of the real parts happen on each player's screen, so the server never loads a skin, never
   builds a collision shape for one, and its hitbox copy keeps using the real parts with no change.
@@ -71,6 +71,11 @@ against the sky; shine, glow and the slime's drips are more than one picture (sh
   thin things like torn sails are flat sheets with see-through edges. Roblox also swaps in simpler versions of a
   mesh far away by itself.
 - **Ghost Ship last:** built after the pipeline works on a simpler Mythical, to this budget.
+
+## First build batch (Alan's pick, 2026-11-13)
+Commons Hazard Stripes, Tiger Stripes, Flame Decals; Rares Gold Foil, Lava, Galaxy; Legendary Shark Jet; Mythical
+Dragon; trails Confetti, Rainbow Marker, Gold Stars. It proves every piece (printed sheet, add-ons, joints, trails,
+Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `crane-2.png` (blue and silver).
 
 ## Still to settle
 - The printed sheet: **tested in Blender 2026-11-13 (no upload), it works**: one picture each (hazard stripes, lava)
@@ -84,6 +89,6 @@ against the sky; shine, glow and the slime's drips are more than one picture (sh
   covered the wings of a swept and a straight-winged plane; the standard plane's tail fins stay uncovered (hitbox
   without skin, as Alan accepted). In Roblox each point would be a Bone. Not yet tried: flapping, real art.
 - What a Mythical does to weapons.
-- Prices and earn rules per tier.
+- Prices and earn rules per tier (a how-it-works note with numbers for Alan before code).
 
 Back to [HOME](../HOME.md)

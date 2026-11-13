@@ -1,14 +1,17 @@
-# Since Alan last checked (2026-11-13, about 2 am)
-- **Gift arrival redone to Alan's story and tuned by ear with him** (Studio only, nothing uploaded;
-  [decision](../docs/decisions/2026-11-13-gift-arrival-story-and-sounds.md)): the board's plane brings it, Open it!,
-  the box rustles and each gift pops out and shines, the plane is pinned again; music drops to a tenth under it. His
-  last word: "Yeah, that's it." Try it any time: **Dev: send me a gift** (bottom right in Studio Play, main menu).
-- Tests 599/0 after the redo (2026-11-13), before the sound changes (client sounds and drawing only since).
+# Since Alan last checked (2026-11-13, evening)
+- **Goals review done: skins and trails are next** ([skin rules](../docs/decisions/2026-11-13-skin-rules.md),
+  [plan](../docs/plan/SKINS-PLAN.md)). Your rules: a skin never changes the hitbox; Common/Rare/Legendary/Mythical;
+  one design per skin fitted by the game; team outline, no team colours; bots wear them; no animations; about
+  4,000 triangles per shape skin, drawn only on players' screens.
+- Two Blender tests (no upload) proved the fitting: one printed picture wraps onto any plane; a shape skin with joints
+  fits swept and straight wings. Concepts for every approved skin and trail: `.planning/skins/concepts/`.
+- Gift arrival (2026-11-13, 2 am) finished to your story; tests 599/0 then (client sound changes since).
 
 # Now: finish the game for the beta
-Next (Alan's pick at the goals review, 2026-11-13): **skins and trails** for the shop. Nothing made yet: idea list and how
-they work in team games talked through with him first ([skins plan](../docs/plan/SKINS-PLAN.md)). After it: daily and weekly missions,
-the playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
+Next: build the first skin batch you picked (Hazard Stripes, Tiger Stripes, Flame Decals, Gold Foil, Lava, Galaxy,
+Shark Jet, Dragon; trails Confetti, Rainbow Marker, Gold Stars). First the one-time Blender re-layout of the plane
+pieces (upload batch needs your go); prices and earning get a numbers note for your OK before code. After skins:
+daily and weekly missions, the playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Balance: Spitball planes weakest. Not checked: phone sizes of the report card row and the gift note and arrival; a
 real gift through the shop into the new arrival; the unlock backpack's music dip.
 
