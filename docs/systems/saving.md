@@ -4,7 +4,11 @@
 Your Paper, XP, level, owned parts, five saved builds and settings are kept between visits. Nothing you earned is
 lost if a save fails for a moment; it retries without stopping the match for everyone else.
 
-## Where it stands (2026-11-12)
+## Where it stands (2026-11-13)
+Schema 12 adds `giftIds`, an ordered list of the newest 200 received gift IDs, defaulting to empty for new and
+older saves. IDs are nonempty UTF-8 strings bounded by `max_id_bytes`; duplicate IDs, malformed lists and more than
+200 entries are rejected. Gift delivery has written unit tests and awaits Claude's Studio run.
+Schema 11 adds `doubleLocks` for the [match-double receipt](economy-and-shop.md#products).
 Schema 10 (2026-11-12) adds `paperJarMilli`: integer Paper subunits held in the jar, from 0 to the configured
 cap in milliunits. New and older saves start at 0; malformed or over-cap values are rejected. Jar fill and breaks
 share the reward/receipt transaction and its duplicate protection. [Jar rules](economy-and-shop.md#products).
@@ -43,6 +47,27 @@ Receipt IDs have a dedicated profile field: a paid product and its receipt ID ch
 receipt is acknowledged only once that save has reached Roblox ([economy and shop](economy-and-shop.md)). Switched off
 until Alan approves prices.
 
+## Friend gift delivery
+The selected ProfileRuntime store handles checks and messages, so Studio uses its mock store throughout.
+`MessageHandler` accepts validated `kind="gift"` messages beside reward messages and queues
+`giftReceived` with `{giftId,from,fromName,key}`. It calls `processed()` only after the operation succeeds.
+The grant and saved gift ID change together; a repeated gift ID succeeds without granting or showing it twice.
+Oldest IDs are removed when the history passes 200 entries.
+
+Received packs add their normal amount as purchased Paper. Timed boosts use BoostClock's verified paid grant,
+including dormant time when a forever pass already covers that resource. Receiving changes no `firstBuys`,
+`paperJarMilli`, `buysToday` or `receiptIds`, so the recipient's starter offer remains eligible.
+Sender receipts use `giftSent`, which only records the receipt and one daily buy, without giving an item.
+[Checkout and failure handling](economy-and-shop.md#friend-gifts) live on the shop page.
+The requested memory-only recipient has one crash gap: if delivery succeeds but the giver's receipt has not
+saved, a server restart can grant the fallback item to the giver as well. The waiting-gift check is a snapshot;
+concurrent senders can pass it before any of their messages arrive, so it is not a reservation of the tenth slot.
+
+After a new grant, session memory appends `{from=fromName,key=baseKey}` to the recipient's inbox.
+`Runtime:update` publishes it as JSON in the Player attribute `GiftInbox`, explicitly `[]` when empty.
+`giftSeen` removes the first nonnegative whole count, capped at the inbox length. The inbox is never saved;
+the reward is already granted even if its moment is never seen.
+
 ## Code
 | File | What it does |
 |---|---|
@@ -51,6 +76,8 @@ until Alan approves prices.
 | `src/server/RewardQueue.luau` | Retries a failed reward without blocking the round |
 | `src/shared/ProfileSchema.luau` | What a save file may contain |
 | `tests/unit/ProfileService.spec.luau` | Save changes, prestige and duplicate requests |
+| `tests/unit/ProfileRuntime.spec.luau` | Reward and gift message acknowledgments, session inbox and practice self-delivery |
+| `tests/fixtures/FakeProfiles.luau` | Controllable saves and mailbox reads/sends for unit tests |
 | `src/server/Packages/` | ProfileStore library (third party, unmodified) |
 
 ## Tuning numbers

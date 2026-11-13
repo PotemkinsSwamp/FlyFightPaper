@@ -17,6 +17,19 @@ for _, amount in ipairs({1500, 5000, 7500, 15000, 40000}) do -- docs/plan/SHOP-M
 end
 expected.starter_pack = {kind="developer_product", benefit="starter_pack"} -- Bundle amounts live in economy.json.
 expected.paper_jar = {kind="developer_product", benefit="paper_jar"}
+local giftBases={}
+for key,offer in pairs(expected) do
+    if offer.benefit=="paper_balance" or offer.benefit=="xp_seconds" or offer.benefit=="paper_seconds" then giftBases["gift_"..key]=key end
+end
+for key in pairs(giftBases) do expected[key]={kind="developer_product",benefit="gift"} end
+function Rules.giftBase(key) return type(key)=="string" and giftBases[key] or nil end
+function Rules.giftable(key) return type(key)=="string" and giftBases["gift_"..key]~=nil or false end
+function Rules.giftGrant(key)
+    if not Rules.giftable(key) then return nil end
+    local offer=expected[key]
+    if offer.benefit=="paper_balance" then return {kind="purchasedPaper",wholePaper=offer.amount} end
+    return {kind="boostIntent",resource=offer.benefit=="xp_seconds" and "xp" or "paper",action="duration",seconds=offer.amount}
+end
 for _, step in ipairs(Rules.MATCH_DOUBLE_STEPS) do
     expected["match_double_"..step] = {kind="developer_product", benefit="match_double", amount=step}
 end
@@ -67,7 +80,7 @@ function Rules.catalog(config)
         if type(i)~="number" or i%1~=0 or i<1 then return nil,"invalid_offer_array" end
         n+=1
     end
-    if n<30 then return nil,"offer_count" end
+    if n<45 then return nil,"offer_count" end
     local fields={key=true,kind=true,benefit=true,amount=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     local partFields={key=true,kind=true,benefit=true,catalog_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     for i=1,n do
@@ -113,6 +126,7 @@ function Rules.owned(offer,boosts)
     return resource and boosts[resource=="xp" and "permanentXP" or "permanentPaper"]==true or false
 end
 function Rules.operation(offer,source,version)
+    if Rules.giftBase(offer.key) then return table.freeze({kind="giftSent"}) end
     if offer.benefit=="part_unlock" then return table.freeze({kind="partUnlock",catalogID=offer.catalogID}) end
     if offer.benefit=="starter_pack" then return table.freeze({kind="starterPack"}) end
     if offer.benefit=="paper_jar" then return table.freeze({kind="paperJar"}) end

@@ -3,7 +3,12 @@
 ## What the player sees
 You earn **Paper** (money) and **XP** (levels) from points in every match. Paper buys plane parts and weapons; levels unlock them. The shop sells Paper packs and 2x XP / 2x Paper boosts, but real sales are switched off until Alan approves products and prices.
 
-## Where it stands (2026-11-12)
+## Where it stands (2026-11-13)
+**Gift a friend** is built to the [approved gift rules](../decisions/2026-11-13-gift-a-friend.md) (Studio only until
+go-live): the shop's friend note with search, the server check, "A gift for Sam", the practice gift, and the plane that
+brings it over the main menu. Checked in Studio Play 2026-11-13 by gifting to yourself (`DevGiftSelf`): tests 599/0, the
+friend got +5,000 Paper (not doubled), the giver's first-buy 2x stayed unused, one buy counted. Waiting on Alan's look; not
+checked on a phone size. All 15 gift products are disabled with no Roblox IDs yet. Server contract: [Friend gifts](#friend-gifts).
 **Pacing (Alan, 2026-11-08):** Paper is the long wait, levels just open things up. An average player (12 folds a
 match, ~660 Paper and ~1,190 XP) reaches level 50 in about 18 hours of play and could own everything (167,400 Paper)
 in about 36; for the first 6 hours ~13 unlocked things are always waiting to be saved for. Prices scale up with level
@@ -14,7 +19,7 @@ price; current packs are listed below). The server save rules for the daily gift
 tests (2026-11-12), awaiting Claude's Studio run and client wiring. Other personal shop offers remain in the
 [picks](../decisions/2026-11-12-personal-shop-picks.md).
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Roblox-style shop window in our paper look
-(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 30 fixed offers and part unlocks
+(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 45 fixed offers and part unlocks
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
 - **Receipts:** a paid boost or Paper pack is added together with its receipt ID in one save change, then the game
   waits for that save to reach Roblox before telling Roblox "granted". A failed save means "not yet": Roblox resends
@@ -178,7 +183,7 @@ and refunds never fill it. Breaking it (`paper_jar`, planned 199 R$, disabled an
 Paper as purchased Paper without first-buy doubling, keeping any fractional remainder so it can fill again.
 A jar under 3,000 Paper (`min_break_paper`, [Alan 2026-11-12](../decisions/2026-11-12-paper-jar-rules.md)) refuses
 checkout and practice buys with `jar_low`; paid receipts still grant and record whatever remains, including zero.
-The shop card and its "Are you sure?" note are built (above). [Saved field](saving.md#where-it-stands-2026-11-12).
+The shop card and its "Are you sure?" note are built (above). [Saved field](saving.md#where-it-stands-2026-11-13).
 
 Every newly granted developer-product receipt and every practice buy adds one to the current UTC day's buy
 count. Replaying an operation or receipt adds nothing. A new day's first buy resets the saved count; until then
@@ -219,6 +224,28 @@ ownership disables new same-resource timed offers. On permanent upgrade retain r
 explain no additional multiplier or automatic refund, and resolve already-in-flight receipts. No changing
 benefits because a player previously spent more. Native price display must use actual platform product info
 when live commerce is eventually authorized [P8]. Do not invent a dollars-per-Robux conversion.
+
+### Friend gifts
+The [decision](../decisions/2026-11-13-gift-a-friend.md) lists giftable items and product limits. Their separate
+developer-product keys are `gift_` plus the base item key; `CommerceRules.giftBase` and `giftable` enforce the list.
+These 15 offers use benefit `gift`, with no amount field; the base catalog supplies the grant amount.
+
+| Hangar action | Server response |
+|---|---|
+| `giftCheck`, positive friend user ID | `GiftCheck` JSON: `{id,status,waiting,ownsXP,ownsPaper}`. Status is `self`, `not_friend`, `not_played`, `full`, `busy`, `error` or `ok`. One saved-profile read after friendship passes; waiting counts only gift messages. Checks are limited to one per giver every two seconds and remembered per friend for 120 seconds. |
+| `buyGift`, `{friend=userId,key=baseKey}` | Refreshes an absent/expired check, refuses its failed status or a boost covered forever, then sends a practice gift or prompts the separate live gift product. Display names use Roblox UserService with `Your friend` as fallback. |
+| `giftSeen`, count | Removes that many entries from the session inbox; granted Paper and boost time stay granted. |
+
+Live checkout remembers `{friend,friendName,key,at}` only in server memory. A matching receipt less than an hour
+later sends ProfileStore's gift message before recording `giftSent` on the giver, then waits for the giver's
+saved receipt before acknowledging payment. Failed sends return `NotProcessedYet`. Retries in the same server
+keep the original recipient even when a newer selection replaces it. Replayed recorded receipts do not send again.
+Without a matching selection the base item goes to the giver, with no Paper first-buy bonus or first-buy mark.
+Practice gifts use the same mailbox followed by a `mock:` receipt and never prompt Roblox.
+
+Successful delivery says `Sent! <Name> gets it next time they play.`; practice says
+`Sent! (practice gift, no real purchase)`. Fallback says `Your gift couldn't be sent, so it's yours instead.`
+The receiver's grant and `GiftInbox` attribute are described on [Saving](saving.md#friend-gift-delivery).
 
 ## Offline-pausing timer
 Both resources pause offline. Loaded online menus, desk time, spectating and intermission count under the
@@ -274,14 +301,17 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |
 | `src/server/HangarService.luau` | Buying parts, the practice shop |
-| `src/client/ShopScreen.luau` | The shop window (Studio only until go-live): built to the approved concept's measurements, pictures named in `UIAssets.shop`, animations; the starter pack's saved timer, the free gift card with its 7-day row (Claim, ticks, time to the next), Paper packs biggest first with "First buy 2x!", pictures growing with the amount ([money plan](../plan/SHOP-MONEY-PLAN.md); checked in Play 2026-11-12; the tab buttons scroll too far, see STATE); gift buttons are previews ([shop screen plan](../plan/SHOP-SCREEN-PLAN.md)) |
+| `src/client/ShopScreen.luau` | The shop window (Studio only until go-live): built to the approved concept's measurements, pictures named in `UIAssets.shop`, animations; the starter pack's saved timer, the free gift card with its 7-day row (Claim, ticks, time to the next), Paper packs biggest first with "First buy 2x!", pictures growing with the amount ([money plan](../plan/SHOP-MONEY-PLAN.md); checked in Play 2026-11-12; the tab buttons scroll too far, see STATE); the Gift a friend note: friends from Roblox (in this server first), the server's check, "A gift for Sam" with the price; from the title bar the shop stays "For Sam" until a card's gift button (Paper packs and boosts only) |
 | `src/server/CommerceService.luau` | Real Roblox purchases: receipts, pass checks, buy prompts (off) |
+| `src/client/GiftMoment.luau` | A friend's gift arriving over the main menu: a paper plane brings the wrapped box, it bursts open, a sticky note says who sent what, Thanks! (Alan's pick 2026-11-13); Studio `DevGiftMoment` / `DevGiftTime` |
 | `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts; late starter bundles |
 | `tests/unit/ShopSave.spec.luau` | Gift rows, starter timing and bundles, first-buy doubles, buy counts, schema migration and Player attributes |
 | `tests/unit/MockShop.spec.luau` | Practice-only guards, typed grants and refusal of individual part products |
+| `tests/unit/GiftSave.spec.luau` | Gift catalog, sender receipts, receiver grants, duplicates and schema migration |
+| `tests/unit/GiftCheck.spec.luau` | Friend checks, waiting count, check lifetime, gift refusals and Studio practice sends |
 
 ## Tuning numbers
-`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts, starter bundle and jar); `config/commerce.json` (30 fixed offers plus part unlocks; `mode` is "mock", live sales off); prices in `config/catalog.json`.
+`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts, starter bundle and jar); `config/commerce.json` (45 fixed offers plus part unlocks; `mode` is "mock", live sales off); prices in `config/catalog.json`.
 
 ## Related
 - [Points system decision](../decisions/2026-10-14-points-system.md)

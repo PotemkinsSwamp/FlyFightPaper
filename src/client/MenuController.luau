@@ -13,6 +13,7 @@ local ShopScreen=require(script.Parent.ShopScreen)
 local WaitScreen=require(script.Parent.WaitScreen)
 local PaperUI=require(script.Parent.PaperUI)
 local Unlock=require(script.Parent.UnlockMoment)
+local GiftMoment=require(script.Parent.GiftMoment)
 local Menu={}
 function Menu.start()
  local player=Players.LocalPlayer
@@ -90,6 +91,7 @@ function Menu.start()
   seenLevel=function()return state.profile and state.profile.unlocksSeen or 0 end,
   open=function(slot)Menu.show("hangar",false,slot and "customize",slot)end, -- Put it on / See it: that part's tab
  })
+ GiftMoment.start({seen=function(n)action:FireServer("giftSeen",n)end})
  -- Open a menu screen directly (the desk's Customize button, the menu buttons, Studio photo mode).
  -- page: which Hangar page to open on ("customize" = the binder).
  -- slot: a Customize tab to open on (the unlock card's Put it on / See it).
@@ -115,6 +117,8 @@ render=function()
   if current then current.update(player,state.profile,snap);current.frame.Visible=true end
   -- Things unlocked and not yet opened: the backpack when the main menu shows (Alan 2026-11-11: not the in-match menu).
   if current and key=="home" and #Unlock.waiting(state.profile)>0 and not Tutorial.arriving then Unlock.offer(state.profile) end
+  -- A friend's gift: the plane brings it when the main menu shows (after the backpack).
+  if current and key=="home" and not Tutorial.arriving and not Unlock.playing() then GiftMoment.offer() end
  end
  -- Menu.pause: the Menu button's job, also for the Range's crosshair-as-cursor (RangeBoard).
  function Menu.pause() state.screen="home";overlay(true) end
@@ -145,6 +149,8 @@ render=function()
  player:GetAttributeChangedSignal("JoinQueued"):Connect(render)
  player:GetAttributeChangedSignal("MenuMessage"):Connect(render)
  player:GetAttributeChangedSignal("Routing"):Connect(render)
+ player:GetAttributeChangedSignal("GiftInbox"):Connect(render)
+ workspace:GetAttributeChangedSignal("DevGiftMoment"):Connect(render)
  render();action:FireServer("profile")
  task.spawn(function()while gui.Parent do task.wait(3);action:FireServer("profile") end end)
 end

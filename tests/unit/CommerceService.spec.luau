@@ -35,7 +35,7 @@ local function fixture(options)
  local data=options.data or Schema.defaults(f.catalog)
  f.profile=Fake.new(data)
  f.players={PlayerAdded=signal(),list={}}
- f.player={UserId=123,Parent=f.players,attributes={}}
+ f.player={UserId=123,DisplayName="Alex",Parent=f.players,attributes={}}
  function f.player:SetAttribute(key,value)self.attributes[key]=value end
  function f.player:GetAttribute(key)return self.attributes[key] end
  function f.players:GetPlayers()return self.list end
@@ -59,7 +59,7 @@ local function fixture(options)
  f.service=Profile.new({catalog=f.catalog,monotonic=function()return f.time end,unix=function()return f.unix end})
  assert(f.service:attach("user",f.profile,{connected=true,mapLoaded=false}).status=="ok")
  local entry={profile=f.profile,account="user"}
- f.profiles={catalog=f.catalog,entries={[f.player]=entry}}
+ f.profiles={catalog=f.catalog,entries={[f.player]=entry},store=Fake.store()}
  function f.profiles:view(player)
   if f.unloaded or player~=f.player or self.entries[player]~=entry then return nil end
   local view=f.service:view("user")
@@ -373,13 +373,18 @@ function Spec.run()
      local fallbackPaper=offer.amount*10
      paper+=fallbackPaper*1000;xp+=math.round(fallbackPaper*EconomyConfig.xp_per_point/EconomyConfig.paper_per_point)*1000
      assert(f.outcomes[#f.outcomes].value.type=="MatchDoubled")
+    elseif offer.benefit=="gift" then
+     local grant=Rules.giftGrant(Rules.giftBase(offer.key))
+     if grant.kind=="purchasedPaper" then paper+=grant.wholePaper*1000
+     elseif grant.resource=="xp" then xpSeconds+=grant.seconds
+     else paperSeconds+=grant.seconds end
     else
      assert(offer.benefit=="part_unlock" and f.profile.LastSavedData.ownership[offer.catalogID])
      parts+=1
     end
    end
   end
-  assert(parts>0 and n==28+parts and n==#f.commerce.catalog.offers-2)
+  assert(parts>0 and n==43+parts and n==#f.commerce.catalog.offers-2)
   assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
   assert(f.profile.LastSavedData.xpMilli==xp)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)
@@ -578,6 +583,112 @@ function Spec.run()
   local paid=f.outcomes[#f.outcomes].value;assert(paid.type=="PaperJarBroken" and paid.paper==0)
   assert(f.profile.LastSavedData.receiptIds[secondKey] and f.profile.LastSavedData.buysToday.count==2)
   assert(f.profile.LastSavedData.paperJarMilli==456 and f.profile.LastSavedData.paperMilli==123000)
+ end)
+ test("matching gift receipts send the original purchase id before granting and wait for its save",function()
+  local f=fixture();f.commerce:rememberGift(f.player,456,"Sam","paper_pack_5000")
+  local info=f:receipt("gift_paper_pack_5000");local key=Profile.receiptKey(info.PurchaseId)
+  local enqueue=f.profiles.enqueue
+  function f.profiles:enqueue(player,input,source,callback)
+   assert(#self.store.messages==1 and self.store.messages[1].message.giftId==info.PurchaseId)
+   assert(input.grant.kind=="giftSent" and not f.profile.LastSavedData.receiptIds[key])
+   return enqueue(self,player,input,source,callback)
+  end
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  local sent=f.profiles.store.messages[1];local saved=f.profile.LastSavedData
+  assert(sent.key=="Player_456" and sent.message.kind=="gift" and sent.message.key=="paper_pack_5000")
+  assert(sent.message.from==123 and sent.message.fromName=="Alex")
+  assert(saved.receiptIds[key] and saved.buysToday.count==1 and saved.paperMilli==0 and next(saved.firstBuys)==nil)
+  assert(f.commerce.gifts[f.player]==nil and f.player.attributes.MenuMessage=="Sent! Sam gets it next time they play.")
+ end)
+ test("gift send failures are pending with no receipt buy or balance change",function()
+  for _,failure in ipairs({"failSend","sendError"}) do
+   local f=fixture();f.commerce:rememberGift(f.player,456,"Sam","xp_boost_15m")
+   f.profiles.store[failure]=true;local info=f:receipt("gift_xp_boost_15m")
+   local before=Schema.canonical(f.profile.Data)
+   assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
+   assert(Schema.canonical(f.profile.Data)==before and #f.inputs==0 and f.profile.writes==0)
+   f.profiles.store[failure]=false
+   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+   assert(f.profile.LastSavedData.buysToday.count==1 and f.profile.LastSavedData.boosts.xpSeconds==0)
+  end
+ end)
+ test("gift receipt replay never sends again pays again or consumes a new gift selection",function()
+  local f=fixture();f.commerce:rememberGift(f.player,456,"Sam","paper_pack_5000")
+  local info=f:receipt("gift_paper_pack_5000")
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  f.commerce:rememberGift(f.player,789,"Taylor","paper_pack_5000");local pending=f.commerce.gifts[f.player]
+  f.player:SetAttribute("MenuMessage","newer message")
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  assert(f.profiles.store.sends==1 and f.profile.LastSavedData.buysToday.count==1 and f.profile.LastSavedData.paperMilli==0)
+  assert(f.commerce.gifts[f.player]==pending and f.player.attributes.MenuMessage=="newer message")
+ end)
+ test("an unsaved sent gift retries the save without sending the message twice",function()
+  local f=fixture();f.profile.failSave=true;f.commerce:rememberGift(f.player,456,"Sam","paper_pack_5000")
+  local info=f:receipt("gift_paper_pack_5000");local key=Profile.receiptKey(info.PurchaseId)
+  assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet)
+  assert(f.profiles.store.sends==1 and f.profile.Data.receiptIds[key] and not f.profile.LastSavedData.receiptIds[key])
+  assert(f.commerce.gifts[f.player] and f.profile.Data.buysToday.count==1)
+  f.profile.failSave=false;assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  assert(f.profiles.store.sends==1 and f.profile.LastSavedData.buysToday.count==1 and f.commerce.gifts[f.player]==nil)
+  assert(f.player.attributes.MenuMessage=="Sent! Sam gets it next time they play.")
+ end)
+ test("missing expired and mismatched gift selections give normal Paper to the giver without first buys",function()
+  for _,reason in ipairs({"missing","expired","mismatched"}) do
+   local f=fixture()
+   if reason=="expired" then f.commerce:rememberGift(f.player,456,"Sam","paper_pack_5000");f.time=3600
+   elseif reason=="mismatched" then f.commerce:rememberGift(f.player,456,"Sam","paper_pack_1500") end
+   local info=f:receipt("gift_paper_pack_5000");assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+   local saved=f.profile.LastSavedData
+   assert(saved.paperMilli==5000000 and saved.purchasedPaperMilli==5000000 and saved.buysToday.count==1)
+   assert(next(saved.firstBuys)==nil and saved.paperJarMilli==0 and f.profiles.store.sends==0)
+   assert(f.player.attributes.MenuMessage=="Your gift couldn't be sent, so it's yours instead.")
+   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profile.Data.paperMilli==5000000)
+   assert(f.profile.Data.buysToday.count==1 and f.profiles.store.sends==0)
+  end
+ end)
+ test("fallback gift boosts use normal paid boost rules including permanent dormant time",function()
+  for _,resource in ipairs({"xp","paper"}) do
+   local f=fixture();assert(f.profiles:enqueue(f.player,{kind="passGrant",resource=resource}))
+   local info=f:receipt("gift_"..resource.."_boost_30m")
+   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+   assert(f.profile.LastSavedData.boosts[resource.."Seconds"]==1800 and f.profile.LastSavedData.buysToday.count==1)
+   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profile.Data.boosts[resource.."Seconds"]==1800)
+  end
+ end)
+ test("a sent receipt keeps its first recipient when another pick arrives before its grant can queue",function()
+  local f=fixture();f.queueFull=true;f.commerce:rememberGift(f.player,456,"Sam","paper_pack_5000")
+  local info=f:receipt("gift_paper_pack_5000")
+  assert(f.commerce:processReceipt(info)==Decisions.NotProcessedYet and #f.profiles.store.messages==1)
+  f.commerce:rememberGift(f.player,789,"Taylor","paper_pack_5000");local pending=f.commerce.gifts[f.player]
+  f.queueFull=false;assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  assert(f.profiles.store.messages[2].key=="Player_456" and f.profiles.store.messages[2].message.giftId==info.PurchaseId)
+  assert(f.commerce.gifts[f.player]==pending and f.profile.Data.buysToday.count==1)
+ end)
+ test("gift prompts require their own remembered base key and use separate product ids",function()
+  local f=fixture();local ok,why=f.commerce:prompt(f.player,"gift_paper_pack_5000")
+  assert(not ok and why=="gift_unchecked" and #f.marketplace.calls==0)
+  f.commerce:rememberGift(f.player,456,"Sam","paper_pack_5000")
+  assert(f.commerce:prompt(f.player,"gift_paper_pack_5000"))
+  assert(f.marketplace.calls[1].id==f:offer("gift_paper_pack_5000").productID)
+  assert(f.marketplace.calls[1].id~=f:offer("paper_pack_5000").productID and #f.inputs==0)
+ end)
+ test("overlapping gift receipt calls send once and let the original finish its saved grant",function()
+  local f=fixture();f.commerce:rememberGift(f.player,456,"Sam","paper_pack_5000")
+  local info=f:receipt("gift_paper_pack_5000");local second;f.profile.failSave=true
+  f.onWait=function()
+   f.onWait=nil;second=f.commerce:processReceipt(info);f.profile.failSave=false
+  end
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and second==Decisions.NotProcessedYet)
+  assert(f.profiles.store.sends==1 and f.profile.LastSavedData.buysToday.count==1)
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profiles.store.sends==1)
+ end)
+ test("a restart after sending but before recording uses the specified giver fallback",function()
+  local original=fixture();original.queueFull=true;original.commerce:rememberGift(original.player,456,"Sam","paper_pack_5000")
+  local info=original:receipt("gift_paper_pack_5000")
+  assert(original.commerce:processReceipt(info)==Decisions.NotProcessedYet and original.profiles.store.sends==1)
+  local restarted=fixture({data=original.profile.LastSavedData})
+  assert(restarted.commerce:processReceipt(info)==Decisions.PurchaseGranted and restarted.profiles.store.sends==0)
+  assert(restarted.profile.LastSavedData.paperMilli==5000000 and restarted.profile.LastSavedData.buysToday.count==1)
  end)
  return result
 end

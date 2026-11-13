@@ -13,7 +13,8 @@ function Service.new(profiles,deps)
  deps=deps or {}
  local catalog,why=Rules.catalog(deps.config or require(Root.Generated.Commerce))
  local self=setmetatable({profiles=profiles,catalog=catalog,live=catalog~=nil and catalog.mode=="live" and catalog.authorized==true,
-  wait=deps.wait or task.wait,now=deps.now or os.clock,unix=deps.unix or os.time,timeoutSeconds=deps.timeoutSeconds or 20},Service)
+  wait=deps.wait or task.wait,now=deps.now or os.clock,unix=deps.unix or os.time,timeoutSeconds=deps.timeoutSeconds or 20,
+  gifts=setmetatable({},{__mode="k"}),giftReceipts={},receiptBusy={}},Service)
  if not catalog then warn("Commerce disabled: "..tostring(why)) end
  if not self.live then return self end
  local parts=profiles.catalog or deps.catalog
@@ -38,6 +39,10 @@ function Service.new(profiles,deps)
  self.players.PlayerAdded:Connect(joined)
  for _,player in ipairs(self.players:GetPlayers()) do joined(player) end
  return self
+end
+function Service:rememberGift(player,friend,friendName,key)
+ -- ponytail: memory only; a crash before the receipt falls back to granting the giver.
+ self.gifts[player]={friend=friend,friendName=friendName,key=key,at=self.now()}
 end
 
 function Service:_waitProfile(player)
@@ -64,6 +69,26 @@ function Service:_processReceipt(info)
  local key=Profile.receiptKey(info.PurchaseId)
  local completed,granted,code=false,false,nil
  local grant=Rules.operation(offer)
+ local base=Rules.giftBase(offer.key)
+ local gift
+ if base then
+  gift=self.giftReceipts[info.PurchaseId]
+  local pending=self.gifts[player]
+  local view=self.profiles:view(player)
+  if not view then return Decisions.NotProcessedYet end
+  if not view.receiptIds[key] then
+   if not gift and pending and pending.key==base and self.now()-pending.at<3600 then gift=pending end
+   if gift then
+    -- Bind retries to this recipient before MessageAsync yields or another pick replaces it.
+    self.giftReceipts[info.PurchaseId]=gift
+    local ok,sent=pcall(function()
+     return self.profiles.store:MessageAsync("Player_"..gift.friend,{kind="gift",giftId=info.PurchaseId,
+      from=player.UserId,fromName=player.DisplayName,key=base})
+    end)
+    if not ok or not sent then return Decisions.NotProcessedYet end
+   else grant=Rules.giftGrant(base) end
+  end
+ end
  -- No source dedupe: ProfileRuntime suppresses callbacks for seen sources.
  -- Receipt IDs inside Profile.Data provide the durable dedupe instead.
  local queued=self.profiles:enqueue(player,{kind="receipt",receiptId=info.PurchaseId,grant=grant},nil,function(ok,value)
@@ -86,7 +111,17 @@ function Service:_processReceipt(info)
  deadline=self.now()+self.timeoutSeconds
  while true do
   local saved=profile.LastSavedData
-  if saved and saved.receiptIds and saved.receiptIds[key]==true then return Decisions.PurchaseGranted end
+  if saved and saved.receiptIds and saved.receiptIds[key]==true then
+   if base then
+    if gift and self.gifts[player]==gift then self.gifts[player]=nil end
+    self.giftReceipts[info.PurchaseId]=nil
+    if code.type~="ReceiptAlreadyGranted" then
+     player:SetAttribute("MenuMessage",gift and "Sent! "..gift.friendName.." gets it next time they play."
+      or "Your gift couldn't be sent, so it's yours instead.")
+    elseif gift then player:SetAttribute("MenuMessage","Sent! "..gift.friendName.." gets it next time they play.") end
+   end
+   return Decisions.PurchaseGranted
+  end
   if not profile:IsActive() or self.profiles.entries[player]~=entry or self.now()>=deadline then return Decisions.NotProcessedYet end
   -- Concurrent receipts share this cooldown for the same ProfileStore session.
   if self.now()>=(self.saveAfter[profile] or 0) then
@@ -99,7 +134,13 @@ end
 
 function Service:processReceipt(info)
  if not self.live then return Decisions.NotProcessedYet end
+ if type(info)~="table" or type(info.PurchaseId)~="string" then return Decisions.NotProcessedYet end
+ local offer=self.catalog.byID[info.ProductId]
+ local gift=offer and Rules.giftBase(offer.key)
+ if gift and self.receiptBusy[info.PurchaseId] then return Decisions.NotProcessedYet end
+ if gift then self.receiptBusy[info.PurchaseId]=true end
  local ok,decision=pcall(self._processReceipt,self,info)
+ if gift then self.receiptBusy[info.PurchaseId]=nil end
  if not ok then
   warn("Receipt processing failed: "..tostring(decision))
   return Decisions.NotProcessedYet
@@ -138,6 +179,11 @@ function Service:prompt(player,key)
  if not offer.productID then return false,"unmapped" end
  local view=player.Parent and self.profiles:view(player)
  if not view then return false,"profile_unavailable" end
+ local base=Rules.giftBase(key)
+ if base then
+  local gift=self.gifts[player]
+  if not gift or gift.key~=base or self.now()-gift.at>=3600 then return false,"gift_unchecked" end
+ end
  if offer.benefit=="starter_pack" and Rules.starterPackEnds(view,self.unix())==0 then return false,"starter_pack_ended" end
  if offer.benefit=="paper_jar" and view.paperJarMilli<EconomyConfig.paper_jar.min_break_paper*1000 then return false,"jar_low" end
  if offer.benefit=="part_unlock" and view.ownership[offer.catalogID]==true then return false,"owned" end

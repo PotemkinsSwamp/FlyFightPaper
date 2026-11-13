@@ -1,4 +1,5 @@
 local Run=game:GetService("RunService")
+local Http=game:GetService("HttpService")
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
@@ -8,9 +9,83 @@ local CommerceRules=require(Root.Shared.CommerceRules)
 local PresetCount=require(Root.Generated.Gameplay).menus.saved_loadouts
 local Service={};Service.__index=Service
 function Service.new(flight,profiles,commerce,deps)
- return setmetatable({flight=flight,profiles=profiles,commerce=commerce,catalog=flight.catalog,unix=deps and deps.unix or os.time},Service)
+ deps=deps or {}
+ return setmetatable({flight=flight,profiles=profiles,commerce=commerce,catalog=flight.catalog,unix=deps.unix or os.time,
+  now=deps.now or os.clock,users=deps.users or game:GetService("UserService"),giftChecks=setmetatable({},{__mode="k"})},Service)
 end
 function Service:message(player,text) player:SetAttribute("MenuMessage",text) end
+function Service:giftSelf()
+ return Run:IsStudio() and self.profiles.mock==true and workspace:GetAttribute("DevGiftSelf")==true
+end
+function Service:giftCheck(player,friend)
+ if not CommerceRules.positiveInteger(friend) then return nil end
+ local state=self.giftChecks[player]
+ if not state then state={results={}};self.giftChecks[player]=state end
+ local now=self.now()
+ for id,check in pairs(state.results) do if now-check.at>120 then state.results[id]=nil end end
+ local result={id=friend,status="error",waiting=0,ownsXP=false,ownsPaper=false}
+ local function finish(status)
+  -- n: a new answer always changes the attribute (the client waits for that change). A busy answer never replaces a good one.
+  state.n=(state.n or 0)+1;result.status,result.n=status,state.n
+  if status~="busy" then state.results[friend]={at=self.now(),result=result} end
+  player:SetAttribute("GiftCheck",Http:JSONEncode(result));return result
+ end
+ if state.checking or (state.at and now-state.at<2) then return finish("busy") end
+ state.at=now
+ state.checking=true
+ local ok,status=pcall(function()
+  if not self.profiles:view(player) or not self.profiles.store or (self.profiles.giftsReady and not self.profiles:giftsReady()) then return "busy" end
+  if player.UserId==friend and not self:giftSelf() then return "self" end
+  if not (player.UserId==friend and self:giftSelf()) and not player:IsFriendsWith(friend) then return "not_friend" end
+  local view=self.profiles.store:GetAsync("Player_"..friend)
+  if not view then return "not_played" end
+  result.ownsXP=view.Data.boosts.permanentXP==true;result.ownsPaper=view.Data.boosts.permanentPaper==true
+  for _,update in ipairs(view.global_updates) do
+   local message=type(update)=="table" and update[#update]
+   if type(message)=="table" and message.kind=="gift" then result.waiting+=1 end
+  end
+  return result.waiting>=10 and "full" or "ok"
+ end)
+ state.checking=false
+ return finish(ok and status or "error")
+end
+function Service:giftName(friend)
+ local ok,infos=pcall(function()return self.users:GetUserInfosByUserIdsAsync({friend})end)
+ local name=ok and type(infos)=="table" and infos[1] and infos[1].DisplayName
+ return type(name)=="string" and #name>0 and name or "Your friend"
+end
+function Service:buyGift(player,value)
+ if type(value)~="table" or not CommerceRules.giftable(value.key) then self:message(player,"That can't be gifted.");return end
+ local friend,key=value.friend,value.key
+ if not CommerceRules.positiveInteger(friend) then self:message(player,"Gifts are busy. Try again shortly.");return end
+ local state=self.giftChecks[player];local check=state and state.results[friend]
+ local result=check and self.now()-check.at<=120 and check.result or self:giftCheck(player,friend)
+ local status=result and result.status or "error"
+ if friend==player.UserId and not self:giftSelf() then status="self" end
+ local name=self:giftName(friend)
+ if status~="ok" then
+  self:message(player,status=="not_played" and name.." hasn't played yet. Invite them first!"
+   or status=="full" and name.." has 10 gifts waiting! Try again after they play."
+   or (status=="not_friend" or status=="self") and "You can only send gifts to friends."
+   or "Gifts are busy. Try again shortly.");return
+ end
+ local grant=CommerceRules.giftGrant(key)
+ if grant.kind=="boostIntent" and (grant.resource=="xp" and result.ownsXP or grant.resource=="paper" and result.ownsPaper) then
+  self:message(player,name.." already has 2x "..(grant.resource=="xp" and "XP" or "Paper").." forever.");return
+ end
+ if not self.profiles:view(player) or (self.profiles.giftsReady and not self.profiles:giftsReady()) then self:message(player,"Gifts are busy. Try again shortly.");return end
+ if Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
+  local id="mock:"..Http:GenerateGUID(false)
+  local ok,sent=pcall(function()return self.profiles.store:MessageAsync("Player_"..friend,{kind="gift",giftId=id,from=player.UserId,fromName=player.DisplayName,key=key})end)
+  if not ok or not sent then self:message(player,"Gifts are busy. Try again shortly.");return end
+  if not self.profiles:enqueue(player,{kind="receipt",receiptId=id,grant={kind="giftSent"}},nil,function(applied)
+   self:message(player,applied and "Sent! (practice gift, no real purchase)" or "Gifts are busy. Try again shortly.")
+  end) then self:message(player,"Gifts are busy. Try again shortly.") end
+ elseif self.commerce then
+  self.commerce:rememberGift(player,friend,name,key)
+  if not self.commerce:prompt(player,"gift_"..key) then self:message(player,"Shop is closed for now.") end
+ else self:message(player,"Shop is closed for now.") end
+end
 -- Player-typed names go through Roblox's text filter (shown only to their owner); a failed filter keeps the fallback.
 local NAME_MAX=20
 local function filtered(player,name,fallback)
@@ -59,6 +134,9 @@ function Service:doubleMatch(player,match)
  else self:message(player,"Shop is closed for now.") end
 end
 function Service:handle(player,action,value)
+ if action=="giftCheck" then self:giftCheck(player,value);return end
+ if action=="buyGift" then self:buyGift(player,value);return end
+ if action=="giftSeen" then self.profiles:giftSeen(player,value);return end
  local profile=self.profiles:view(player);if not profile then return end
  if action=="selectPreset" then
   if type(value)~="number" or value%1~=0 or value<1 or value>PresetCount then return end
@@ -148,6 +226,7 @@ function Service:handle(player,action,value)
    else self:message(player,"Gift claimed: "..string.format("%d",result.seconds/60).." minutes of 2x "..(result.resource=="xp" and "XP" or "Paper")..".") end
   end)
  elseif action=="buyProduct" and type(value)=="string" then
+  if CommerceRules.giftBase(value) then self:message(player,"That can't be gifted.");return end
   if value=="starter_pack" and CommerceRules.starterPackEnds(profile,self.unix())==0 then self:message(player,"The starter pack has ended.");return end
   if value=="paper_jar" and profile.paperJarMilli<EconomyConfig.paper_jar.min_break_paper*Economy.MILLI then self:message(player,"Your Paper jar breaks at 3,000 Paper. Play a match to fill it.");return end
   if self.commerce then
@@ -157,7 +236,7 @@ function Service:handle(player,action,value)
  elseif action=="devAll" and Run:IsStudio() and self.profiles.mock==true and player:GetAttribute("Dev")==true then
   self.profiles:devSwitch(player) -- Alan's Studio-only button: his level account <-> everything unlocked
  elseif action=="mockProduct" and Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
-  if type(value)~="string" or value:match("^match_double_") then return end
+  if type(value)~="string" or value:match("^match_double_") or CommerceRules.giftBase(value) then return end
   local product
   for _,item in ipairs(Commerce.products) do if item.key==value then product=item;break end end
   if not product then return end

@@ -6,7 +6,7 @@ local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
 local TouchLayout = require(script.Parent.TouchLayout)
 local KeyBinds = require(script.Parent.KeyBinds)
-local Schema = { VERSION = 11, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
+local Schema = { VERSION = 12, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
@@ -21,6 +21,12 @@ Schema.LESSONS = (function()
 end)()
 function Schema.id(s) return type(s) == "string" and #s > 0 and #s <= Schema.MAX_OPERATION_ID and s:match("^[%w_%-:]+$") ~= nil end
 function Schema.nonce(s) return type(s)=="string" and #s>0 and #s<=64 and s:match("^[%w_%-:]+$")~=nil end
+function Schema.giftID(s) return type(s)=="string" and #s>0 and #s<=Schema.MAX_OPERATION_ID and utf8.len(s)~=nil end
+function Schema.validGift(gift)
+	return type(gift)=="table" and Schema.giftID(gift.giftId) and Commerce.positiveInteger(gift.from)
+		and type(gift.fromName)=="string" and #gift.fromName>0 and #gift.fromName<=128 and utf8.len(gift.fromName)~=nil
+		and Commerce.giftable(gift.key)
+end
 local function freeze(v)
 	if type(v) == "table" and not table.isfrozen(v) then for _, c in pairs(v) do freeze(c) end; table.freeze(v) end
 	return v
@@ -97,7 +103,7 @@ function Schema.defaults(catalog)
 		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium", matchTips = true, autoFire = true, speedMatch = true },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
 		dailyGift = { next = 1, lastDay = -1 }, starterPack = { offeredAt = 0, bought = false }, firstBuys = {}, buysToday = { day = -1, count = 0 }, doubleLocks = {},
-		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, lessons = {} }
+		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, giftIds = {}, lessons = {} }
 	for i = 1, Gameplay.menus.saved_loadouts do
 		p.presets[i] = { name = "Loadout " .. i, loadout = catalog:starterLoadout() }
 		p.rangePresets[i] = { name = "Range " .. i, loadout = catalog:starterLoadout() }
@@ -108,7 +114,7 @@ function Schema.validate(record, catalog)
 	local p, err = Schema.copy(record); if not p then return nil, err end
 	local ok, message = pcall(function()
 		exact(p, { schemaVersion=1, version=1, generation=1, lease=0, paperMilli=1, earnedPaperMilli=1, purchasedPaperMilli=1, paperJarMilli=1,
-			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, dailyGift=1, starterPack=1, firstBuys=1, buysToday=1, doubleLocks=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, lessons=1, extensions=0, refolds=0 })
+			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, dailyGift=1, starterPack=1, firstBuys=1, buysToday=1, doubleLocks=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, giftIds=1, lessons=1, extensions=0, refolds=0 })
 		assert(p.schemaVersion == Schema.VERSION, "unsupported_schema")
 		assert(integer(p.version) and integer(p.generation), "invalid_version")
 		assert(integer(p.prestige) and p.prestige<=EconomyConfig.prestige_max, "invalid_prestige")
@@ -177,6 +183,12 @@ function Schema.validate(record, catalog)
 			count+=1;assert(Schema.id(receipt) and granted==true,"invalid_receipt")
 		end
 		assert(count<=Config.schema.max_receipts,"receipt_cap")
+		assert(type(p.giftIds)=="table" and #p.giftIds<=200,"gift_id_cap")
+		local gifts={}
+		for i,id in pairs(p.giftIds) do
+			assert(integer(i) and i>=1 and i<=#p.giftIds and Schema.giftID(id) and not gifts[id],"invalid_gift_id")
+			gifts[id]=true
+		end
 		count=0
 		for id,intent in pairs(p.refolds or {}) do
 			count+=1; assert(Schema.id(id),"invalid_refold_id")
@@ -239,6 +251,10 @@ function Schema.migrate(record, catalog)
 	if p.schemaVersion==10 then
 		if p.doubleLocks==nil then p.doubleLocks={} end
 		p.schemaVersion=11
+	end
+	if p.schemaVersion==11 then
+		if p.giftIds==nil then p.giftIds={} end
+		p.schemaVersion=12
 	end
 	-- Loadout tuning can invalidate an otherwise readable save. Keep its account and preset names intact.
 	local level=Economy.levelForXP(p.xpMilli)

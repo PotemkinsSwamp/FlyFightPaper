@@ -6,14 +6,14 @@ Buy something in the shop for a Roblox friend. You pay; it lands in their save.
 
 ## What the player sees
 1. **Gift a friend** (top of the shop) or the small gift button on a Paper pack or boost card opens a "Pick a friend"
-   note: your Roblox friends, the ones in this server first, each with their picture and name.
+   note: your Roblox friends, the ones in this server first, each with their picture and name, and a search box.
 2. Pick one, then the item (if you came from a card's gift button, it's already picked). Before anything is paid, the
    note says if that friend can't get it: hasn't played yet ("Invite them first!"), already has 10 gifts waiting, or
    already has that 2x forever. Otherwise: "A gift for Sam: +5,000 Paper, 299 R$" with Roblox's own purchase pop-up, the
    same price as buying it for yourself.
 3. After paying: "Sent! Sam gets it next time they play." If Sam is playing right now, it arrives within seconds.
-4. **Sam's side:** a gift moment in the hangar or menu: a wrapped parcel drops in, unties, and shows "A gift from Alex!"
-   with the item. Paper goes into their Paper; a boost starts its timer.
+4. **Sam's side:** a gift moment on the main menu: a paper plane flies in carrying the wrapped box, drops it, the box
+   bursts open and a sticky note says "A gift from Alex!" with the item. Paper goes into their Paper; a boost starts its timer.
 
 ## What can be gifted
 - **Paper packs** and **timed 2x boosts**: yes.

@@ -20,6 +20,9 @@ ahead and build.")
 - **At most 10 gifts wait for one friend.** A full friend shows as unable to get a gift before anything is paid
   ("Sam has 10 gifts waiting!").
 - **No "ask a friend to buy me this" button.**
+- **The friend note has a search box** (Alan 2026-11-13, on seeing it): type part of a friend's name.
+- **The gift arrives by paper plane** (Alan's pick of three looks, 2026-11-13): over the main menu a plane swoops in
+  carrying the wrapped box, drops it, the box bursts open and a sticky note says who sent what, with Thanks!.
 
 ## Why
 Gifts are a second reason to buy without pushing anyone: the giver chooses, the friend never asks. Packs and boosts

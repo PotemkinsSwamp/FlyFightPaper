@@ -2,8 +2,8 @@
 -- (.planning/shop-concept/shop2-a.png and shop2-b.png). Every position below is in that picture's pixels (1672 wide,
 -- `K` turns them into sheet units), so the window keeps the concept's proportions. Every picture is one named piece in
 -- UIAssets.shop: swapping a picture is one line there (tools/art/shop_pieces.py says how to make the new one).
--- Studio only for now (live sales are off; the server refuses mock buys outside Studio). The starter pack, the free
--- gift and the gift buttons are previews with example numbers until Alan OKs their own notes.
+-- Studio only for now (live sales are off; the server refuses mock buys outside Studio). The starter pack and the free
+-- gift are previews with example numbers until Alan OKs their own notes. Gift a friend: the note further down.
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 local Root = game.ReplicatedStorage:WaitForChild("FlyFightPaper")
@@ -21,7 +21,7 @@ local TEXT = 1.3 -- Kalam draws smaller letters than the concept's lettering at 
 local INK, WHITE, CHALK = PaperUI.INK, Color3.new(1, 1, 1), Color3.fromRGB(240, 240, 232)
 -- Chalk words: white with a dark board-green outline (Alan 2026-11-12: the cream crayon edge blurred them on the board).
 local CHALKY = { color = CHALK, outline = Color3.fromRGB(12, 28, 18), thick = 3 }
-local PREVIEW = RunService:IsStudio() -- the not-yet-approved cards (starter pack, free gift, gifting)
+local PREVIEW = RunService:IsStudio() -- the not-yet-approved cards (starter pack, free gift)
 local ROBUX_ICON = "rbxasset://textures/ui/common/robux@3x.png" -- Roblox's own Robux symbol, shipped with the client
 -- The Robux prices Alan approved (docs/plan/SHOP-PRICES-PLAN.md). Display only: real prices must come from Roblox's
 -- product info once live sales are approved (docs/systems/economy-and-shop.md).
@@ -67,6 +67,20 @@ local function duration(seconds)
 	local hours = minutes / 60
 	return hours == 1 and "1 hour" or string.format("%g hours", hours)
 end
+
+-- A giftable item's picture and words ("+5,000 Paper", "30 min of 2x XP"): the gift note and the gift moment.
+function ShopScreen.itemLook(key)
+	for _, product in Commerce.products do
+		if product.key == key then
+			if product.benefit == "paper_balance" then return Art[PACK_ICON[key] or "iconPaperSmall"], "+" .. PaperUI.commas(product.amount) .. " Paper" end
+			local xp = product.benefit == "xp_seconds"
+			return xp and Art.iconClockStar or Art.iconClockPaper, duration(product.amount) .. " of 2x " .. (xp and "XP" or "Paper")
+		end
+	end
+	return Art.iconGiftBox, "A gift"
+end
+-- A Roblox player's head picture (their avatar, on a see-through background).
+function ShopScreen.headshot(id) return "rbxthumb://type=AvatarHeadShot&id=" .. id .. "&w=150&h=150" end
 
 -- The Paper jar picture (pixels in parent): the empty jar, and the full one showing below the paper's level (the two
 -- drawings line up exactly). Keep the box wider than the jar: the picture's height fills it, so the level shares hold.
@@ -178,12 +192,12 @@ function ShopScreen.new(playerGui, api)
 	pic(board, "TitleLeft", Art.titlebar[1], 120, 40, 766, 160)
 	pic(board, "TitleRight", Art.titlebar[2], 765, 40, 1410, 160)
 	say(board, "Title", "Shop", 160, 50, 420, 150, 82, { left = true, loud = true })
+	local openPicker, startGifting, endGifting, giftFor -- (the gift note, below; giftFor: the friend picked here before an item)
 	local friend = press(board, "GiftFriend", Art.giftFriend, 945, 58, 1282, 145, function()
-		preview("Gift a friend comes next, after you OK how it works.")
+		if giftFor then endGifting() else openPicker(nil) end
 	end)
-	friend.Visible = PREVIEW
 	fit(pic(friend, "Icon", Art.giftWhite, 20, 12, 90, 77))
-	say(friend, "Words", "Gift a friend", 100, 0, 325, 87, 38, { loud = true, color = WHITE, outline = INK })
+	local friendWords = say(friend, "Words", "Gift a friend", 100, 0, 325, 87, 38, { loud = true, color = WHITE, outline = INK })
 	press(board, "Close", Art.close, 1300, 48, 1405, 153, function() api.back() end)
 
 	-- ===== Tabs beside the window: jump to a section; the one you're in lights up =====
@@ -220,15 +234,21 @@ function ShopScreen.new(playerGui, api)
 	end
 	scroll:GetPropertyChangedSignal("CanvasPosition"):Connect(scrolled)
 
+	-- A note over a darkened shop that can't be clicked through.
+	local function overNote(name)
+		local frame = Instance.new("Frame")
+		frame.Name, frame.BackgroundTransparency, frame.Size, frame.ZIndex, frame.Visible = name, 1, UDim2.fromScale(1, 1), 7, false
+		frame.Parent = board
+		local shade = Instance.new("TextButton") -- past the screen's edges, so nothing behind can be clicked
+		shade.Name, shade.Text, shade.AutoButtonColor, shade.BorderSizePixel = "Shade", "", false, 0
+		shade.BackgroundColor3, shade.BackgroundTransparency, shade.AnchorPoint = Color3.new(0, 0, 0), 0.45, Vector2.new(0.5, 0.5)
+		shade.Position, shade.Size, shade.Parent = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(3, 3), frame
+		return frame
+	end
+
 	-- ===== "Wait for more?" before breaking a Paper jar that isn't full (Alan 2026-11-12) =====
-	-- The welcome note's sticky paper and the main menu's strips, over a darkened shop that can't be clicked through.
-	local jarNote = Instance.new("Frame")
-	jarNote.Name, jarNote.BackgroundTransparency, jarNote.Size, jarNote.ZIndex, jarNote.Visible = "JarNote", 1, UDim2.fromScale(1, 1), 7, false
-	jarNote.Parent = board
-	local shade = Instance.new("TextButton") -- past the screen's edges, so nothing behind can be clicked
-	shade.Name, shade.Text, shade.AutoButtonColor, shade.BorderSizePixel = "Shade", "", false, 0
-	shade.BackgroundColor3, shade.BackgroundTransparency, shade.AnchorPoint = Color3.new(0, 0, 0), 0.45, Vector2.new(0.5, 0.5)
-	shade.Position, shade.Size, shade.Parent = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(3, 3), jarNote
+	-- The welcome note's sticky paper and the main menu's strips.
+	local jarNote = overNote("JarNote")
 	local sticky = fit(pic(jarNote, "Note", Assets.ingame.stickyWide, 265, 310, 1265, 662))
 	say(sticky, "Title", "Are you sure?", 90, 70, 910, 125, 44, { loud = true })
 	local why = say(sticky, "Words", "The jar always costs 199 R$, and it keeps filling up to " .. commas(JAR.cap_paper) .. " Paper.",
@@ -269,9 +289,14 @@ function ShopScreen.new(playerGui, api)
 		label.AutomaticSize, label.LayoutOrder = Enum.AutomaticSize.X, 2
 		return button
 	end
-	local function gift(parent, x0, y0, x1, y1)
-		if not PREVIEW then return end
-		press(parent, "Gift", Art.giftButton, x0, y0, x1, y1, function() preview("Gift a friend comes next, after you OK how it works.") end)
+	local showConfirm -- (the gift note, below)
+	-- A card's gift button (Paper packs and timed boosts only: docs/decisions/2026-11-13-gift-a-friend.md). While gifting
+	-- to a friend picked from the title bar, they pulse and go straight to "A gift for Sam".
+	local function gift(parent, x0, y0, x1, y1, key)
+		local button = press(parent, "Gift", Art.giftButton, x0, y0, x1, y1, function()
+			if giftFor then showConfirm(giftFor, key) else openPicker(key) end
+		end)
+		if giftFor then move(button, "pulse") end
 	end
 	local rainbow = {}
 	local function sticker(parent, text, x0, y0, x1, y1, size, rot)
@@ -291,6 +316,178 @@ function ShopScreen.new(playerGui, api)
 	local function ticks(parent, x0, y0, x1, y1, rot, phase)
 		move(pic(parent, "Ticks", Art.ticks, x0, y0, x1, y1, rot), "twist", phase)
 	end
+
+	-- ===== Gift a friend (docs/decisions/2026-11-13-gift-a-friend.md, docs/plan/GIFT-PLAN.md) =====
+	-- Your Roblox friends (the ones in this server first); tap one and the server checks they can get it (played before,
+	-- under 10 gifts waiting, not already 2x forever), then "A gift for Sam" with the price. From the title bar's button no
+	-- item is picked yet: the shop stays "gifting to Sam" until a card's gift button.
+	local me = game.Players.LocalPlayer
+	local giftNote = overNote("GiftNote")
+	-- The sticky note grown taller: only its plain middle band stretches (tape and peeled corner keep their size).
+	local giftPaper = pic(giftNote, "Note", Assets.ingame.stickyWide, 236, 60, 1296, 910)
+	giftPaper.ScaleType, giftPaper.SliceCenter, giftPaper.SliceScale = Enum.ScaleType.Slice, Rect.new(110, 125, 900, 265), 1060 * K / 1024
+	local giftTitle = say(giftPaper, "Title", "", 60, 122, 940, 186, 52, { loud = true }) -- (only a very long name gets smaller)
+	-- Search (Alan 2026-11-13): type part of a friend's name, on the shop's paper tape label.
+	local searchPaper = pic(giftPaper, "SearchPaper", Assets.ingame.tapeLabel, 250, 192, 810, 254)
+	searchPaper.ScaleType, searchPaper.SliceCenter, searchPaper.SliceScale = Enum.ScaleType.Slice, Rect.new(90, 30, 894, 104), 0.5
+	local search = Instance.new("TextBox")
+	search.Name, search.BackgroundTransparency, search.ClearTextOnFocus, search.Text = "Search", 1, false, ""
+	search.PlaceholderText, search.PlaceholderColor3 = "Search for a friend", Color3.fromRGB(110, 92, 74)
+	search.FontFace, search.TextSize, search.TextColor3 = PaperUI.font, math.round(30 * K * TEXT), INK
+	search.Position, search.Size, search.Parent = UDim2.fromOffset(40 * K, 4 * K), UDim2.fromOffset(480 * K, 54 * K), searchPaper
+	local giftLine = say(giftPaper, "Line", "", 60, 256, 940, 326, 28, { grow = true })
+	giftLine.TextWrapped = true
+	press(giftPaper, "Close", Art.close, 955, 75, 1035, 155, function() giftNote.Visible = false end)
+	local list = Instance.new("ScrollingFrame")
+	list.Name, list.BackgroundTransparency, list.BorderSizePixel, list.ScrollBarThickness = "Friends", 1, 0, 6
+	list.ScrollBarImageColor3, list.ScrollingDirection, list.AutomaticCanvasSize = INK, Enum.ScrollingDirection.Y, Enum.AutomaticSize.Y
+	list.Position, list.Size, list.CanvasSize, list.Parent = UDim2.fromOffset(40 * K, 330 * K), UDim2.fromOffset(975 * K, 440 * K), UDim2.new(), giftPaper
+	local confirm = Instance.new("Frame")
+	confirm.Name, confirm.BackgroundTransparency, confirm.Size, confirm.Parent = "Confirm", 1, UDim2.fromScale(1, 1), giftPaper
+
+	local REASON = { not_played = "%s hasn't played yet. Invite them first!", full = "%s has 10 gifts waiting! Try again after they play.",
+		not_friend = "You can only send gifts to friends.", self = "You can't send a gift to yourself." }
+	local SHORT = { not_played = "Not played", full = "10 waiting", not_friend = "Not a friend", self = "You" }
+	local function reason(check, f) return string.format(REASON[check.status] or "Gifts are busy. Try again shortly.", f.name) end
+	local checks, tiles = {}, {} -- friend id -> the server's last answer; friend id -> their tile's pieces
+	local friends, fetchedAt, asking, giftItem = nil, -math.huge, nil, nil
+	local everyone, pickWords = {}, "" -- the friends found (before the search), and the line's words above them
+
+	-- Mint circle with the friend's head on it (the shop's picture backing).
+	local function face(parent, id, x0, y0, x1, y1)
+		return backing(parent, x0, y0, x1, y1), fit(pic(parent, "Face", ShopScreen.headshot(id), x0 + 10, y0 + 10, x1 - 10, y1 - 10))
+	end
+	-- A friend who can't get a gift: greyed, with a short why on a dark plate.
+	local function mark(id)
+		local tile, check = tiles[id], checks[id]
+		if not tile or not check or not SHORT[check.status] then return end
+		tile.circle.ImageColor3, tile.head.ImageTransparency = Color3.fromRGB(165, 165, 160), 0.45
+		pic(tile.frame, "WhyPaper", Art.labelDark, 15, 105, 175, 150)
+		say(tile.frame, "Why", SHORT[check.status], 15, 105, 175, 150, 24, { color = WHITE })
+	end
+	local function drawFriends(found)
+		for _, child in list:GetChildren() do child:Destroy() end
+		table.clear(tiles)
+		for i, f in found do
+			local x0, y0 = ((i - 1) % 5) * 193, ((i - 1) // 5) * 220
+			local tile = Instance.new("TextButton") -- the whole tile is the button: a big target (design-theory 2.4)
+			tile.Name, tile.Text, tile.BackgroundTransparency, tile.AutoButtonColor = "Friend" .. i, "", 1, false
+			tile.Position, tile.Size, tile.Parent = UDim2.fromOffset(x0 * K, y0 * K), UDim2.fromOffset(190 * K, 216 * K), list
+			local circle, head = face(tile, f.id, 22, 0, 168, 146)
+			local name = say(tile, "Name", f.name, 0, 150, 190, 214, 24, { grow = true })
+			name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
+			tiles[f.id] = { frame = tile, circle = circle, head = head }
+			mark(f.id)
+			tile.Activated:Connect(function()
+				local check = checks[f.id]
+				if check and check.status == "ok" and os.clock() - check.at < 90 then -- (the server keeps its answer for 120 s)
+					if giftItem then showConfirm(f, giftItem) else startGifting(f) end
+					return
+				end
+				if check and SHORT[check.status] and os.clock() - check.at < 60 then giftLine.Text = reason(check, f); return end
+				asking = f
+				giftLine.Text = "Checking " .. f.name .. "..."
+				api.action:FireServer("giftCheck", f.id)
+				task.delay(8, function() if asking == f then asking = nil; giftLine.Text = "Gifts are busy. Try again shortly." end end)
+			end)
+		end
+	end
+	-- Your Roblox friends, from Roblox (kept a minute). Studio: workspace DevGiftSelf puts you first, to test alone.
+	local function fetchFriends(done)
+		if friends and os.clock() - fetchedAt < 60 then done(friends, true); return end
+		task.spawn(function()
+			local found = {}
+			local ok = pcall(function()
+				local pages = game.Players:GetFriendsAsync(me.UserId)
+				while true do
+					for _, f in pages:GetCurrentPage() do
+						if f.Username == "Account Deleted" or f.DisplayName == "Account Deleted" then continue end -- (Roblox lists them; they can't play)
+						table.insert(found, { id = f.Id, name = f.DisplayName ~= "" and f.DisplayName or f.Username, user = f.Username, here = game.Players:GetPlayerByUserId(f.Id) ~= nil })
+					end
+					if pages.IsFinished then break end
+					pages:AdvanceToNextPageAsync()
+				end
+			end)
+			table.sort(found, function(a, b) if a.here ~= b.here then return a.here end; return a.name:lower() < b.name:lower() end)
+			if RunService:IsStudio() and workspace:GetAttribute("DevGiftSelf") then table.insert(found, 1, { id = me.UserId, name = me.DisplayName, user = me.Name, here = true }) end
+			if ok then friends, fetchedAt = found, os.clock() end
+			done(found, ok)
+		end)
+	end
+	-- The friends whose name or username has the search words in it.
+	local function matching()
+		local words = search.Text:lower()
+		if words == "" then return everyone end
+		local hits = {}
+		for _, f in everyone do
+			if f.name:lower():find(words, 1, true) or (f.user or ""):lower():find(words, 1, true) then table.insert(hits, f) end
+		end
+		return hits
+	end
+	search:GetPropertyChangedSignal("Text"):Connect(function()
+		if not list.Visible or #everyone == 0 then return end
+		local hits = matching()
+		drawFriends(hits)
+		giftLine.Text = #hits > 0 and pickWords or "No friend called \"" .. search.Text .. "\""
+	end)
+	openPicker = function(key)
+		giftItem = key
+		search.Text, everyone = "", {}
+		giftNote.Visible, confirm.Visible, list.Visible, searchPaper.Visible = true, false, true, true
+		giftTitle.Text = "Gift a friend"
+		local what = key and select(2, ShopScreen.itemLook(key))
+		giftLine.Text = "Finding your friends..."
+		fetchFriends(function(found, ok)
+			if not giftNote.Visible or confirm.Visible then return end
+			everyone = found
+			pickWords = what and "Who gets " .. what .. "?" or "Pick a friend"
+			local hits = matching()
+			drawFriends(hits)
+			giftLine.Text = #found == 0 and (ok and "Add friends on Roblox, then come back!" or "Couldn't find your friends. Try again shortly.")
+				or #hits == 0 and "No friend called \"" .. search.Text .. "\"" or pickWords
+		end)
+	end
+	showConfirm = function(f, key)
+		giftItem = key
+		giftNote.Visible, list.Visible, confirm.Visible, searchPaper.Visible = true, false, true, false
+		for _, child in confirm:GetChildren() do child:Destroy() end
+		giftTitle.Text = "A gift for " .. f.name
+		local check = checks[f.id] or {}
+		local icon, words = ShopScreen.itemLook(key)
+		-- Read order: what (the gift on its rays), who (their face), then the green buy button, the loudest thing.
+		face(confirm, f.id, 70, 345, 320, 595)
+		say(confirm, "Name", f.name, 40, 600, 350, 650, 30)
+		move(pic(confirm, "Rays", Art.rays, 385, 310, 695, 620), "spin", 0)
+		move(fit(pic(confirm, "Icon", icon, 440, 360, 640, 560)), "bob", 0)
+		pic(confirm, "AmountPaper", Art.labelDark, 365, 600, 715, 656)
+		say(confirm, "Amount", words, 365, 600, 715, 656, 32, { color = WHITE })
+		local xp = key:match("^xp_") ~= nil
+		if (xp and check.ownsXP) or (key:match("^paper_boost") and check.ownsPaper) then
+			giftLine.Text = f.name .. " already has 2x " .. (xp and "XP" or "Paper") .. " forever."
+		else
+			giftLine.Text = "They get it next time they play."
+			buy(confirm, "Buy", 755, 370, 995, 490, PRICE[key], 64, function()
+				giftNote.Visible = false
+				api.action:FireServer("buyGift", { friend = f.id, key = key })
+				if giftFor then endGifting() end
+			end)
+		end
+		PaperUI.button(confirm, "Back", Assets.mainmenu.strip.yellow, "Back", 770 * K, 520 * K, 210 * K, 72 * K, 1, function()
+			openPicker(key)
+		end, math.round(34 * K * TEXT))
+	end
+	me:GetAttributeChangedSignal("GiftCheck"):Connect(function()
+		local ok, check = pcall(function() return game:GetService("HttpService"):JSONDecode(me:GetAttribute("GiftCheck") or "") end)
+		if not ok or type(check) ~= "table" or type(check.id) ~= "number" then return end
+		check.at = os.clock(); checks[check.id] = check
+		mark(check.id)
+		local f = asking
+		if not f or f.id ~= check.id then return end
+		asking = nil
+		if check.status ~= "ok" then giftLine.Text = reason(check, f)
+		elseif giftItem then showConfirm(f, giftItem)
+		else startGifting(f) end
+	end)
 
 	-- ===== Sections (each draws from its top y in scroll pixels and returns the next top) =====
 	local function featured(y)
@@ -358,7 +555,6 @@ function ShopScreen.new(playerGui, api)
 		cross.Name, cross.BackgroundColor3, cross.BorderSizePixel, cross.AnchorPoint = "Cross", Color3.fromRGB(220, 30, 30), 0, Vector2.new(0.5, 0.5)
 		cross.Position, cross.Size, cross.Rotation, cross.Parent = UDim2.fromScale(0.5, 0.55), UDim2.new(0.75, 0, 0, 6 * K), -6, worth
 		ticks(card, 1160, 130, 1205, 180, 30, 2.2)
-		gift(card, 875, 188, 965, 280)
 		buy(card, "Buy", 977, 185, 1217, 295, STARTER.price, 74, function() api.buy("starter_pack") end)
 		return y + 380
 	end
@@ -534,7 +730,6 @@ function ShopScreen.new(playerGui, api)
 			say(card, "Name", title, 175, 6, 600, 54, 44, { left = true, color = WHITE, outline = INK, thick = 4 })
 			local one, two = words:match("^(.-)\n(.*)$")
 			say(card, "Desc1", one, 185, 56, 500, 84, 28, { left = true }); say(card, "Desc2", two, 185, 82, 500, 110, 28, { left = true })
-			gift(card, 370, 100, 430, 163)
 			if boosts[owned] then
 				buy(card, "Buy", 440, 88, 605, 163, 0, 40, function() end, "OWNED")
 			else
@@ -593,7 +788,7 @@ function ShopScreen.new(playerGui, api)
 			move(fit(pic(card, "Icon", Art[PACK_ICON[product.key] or "iconPaperSmall"], 105, 58, 310, 205)), "bob", i)
 			pic(card, "AmountPaper", Art.labelDark, 55, 205, 360, 253)
 			say(card, "Amount", "+" .. commas(product.amount * (first and 2 or 1)) .. " Paper", 55, 205, 360, 253, 40, { color = WHITE })
-			gift(card, 55, 260, 130, 330)
+			gift(card, 55, 260, 130, 330, product.key)
 			buy(card, "Buy", 143, 257, 355, 330, PRICE[product.key], 60, function() api.buy(product.key) end)
 			if first then
 				local burst = pic(card, "FirstBuy", Art.burstNew, -12, -18, 153, 94, -10)
@@ -637,7 +832,7 @@ function ShopScreen.new(playerGui, api)
 						move(fit(pic(card, "Icon", icon, 40, 65, 197, 153)), "bob", i * 0.6)
 						pic(card, "TimePaper", Art.labelDark, 35, 153, 205, 187)
 						say(card, "Time", duration(product.amount), 35, 153, 205, 187, 30, { color = WHITE })
-						gift(card, 15, 190, 70, 243)
+						gift(card, 15, 190, 70, 243, product.key)
 						buy(card, "Buy", 80, 190, 222, 243, PRICE[product.key], 42, function() api.buy(product.key) end)
 						if badge then sticker(card, badge, 30, -25, 205, 20, 30, -4) end
 					end
@@ -720,7 +915,7 @@ function ShopScreen.new(playerGui, api)
 		local key = game:GetService("HttpService"):JSONEncode({ boosts.permanentXP, boosts.permanentPaper, count,
 			me:GetAttribute("Paper"), me:GetAttribute("Level"), me:GetAttribute("FoldGoal"), now() // 86400,
 			math.floor((boosts.xpSeconds or 0) / 60), math.floor((boosts.paperSeconds or 0) / 60),
-			me:GetAttribute("DailyGiftNext"), me:GetAttribute("DailyGiftReady"), me:GetAttribute("StarterPackEnds"), me:GetAttribute("FirstBuysUsed"), me:GetAttribute("PaperJar") })
+			me:GetAttribute("DailyGiftNext"), me:GetAttribute("DailyGiftReady"), me:GetAttribute("StarterPackEnds"), me:GetAttribute("FirstBuysUsed"), me:GetAttribute("PaperJar"), giftFor and giftFor.id })
 		if key == shown then return end
 		shown = key
 		for _, child in content:GetChildren() do child:Destroy() end
@@ -743,6 +938,18 @@ function ShopScreen.new(playerGui, api)
 		content.Size = UDim2.fromOffset((1408 - 118) * K, (y + 20) * K)
 		scroll.CanvasSize = UDim2.fromOffset(0, (y + 20) * K)
 		scrolled()
+	end
+	-- Gifting to a friend picked from the title bar: its button says who, the gift buttons pulse; tap it again to stop.
+	startGifting = function(f)
+		giftFor, giftNote.Visible = f, false
+		friendWords.Text = "For " .. f.name -- (the title bar's paper can't grow: a long name gets smaller)
+		self.update(me, lastProfile)
+		self.jump("Paper")
+		preview("Now tap the gift button on a Paper pack or boost.")
+	end
+	endGifting = function()
+		giftFor, friendWords.Text = nil, "Gift a friend"
+		self.update(me, lastProfile)
 	end
 	-- The server's gift, starter pack and first-buy answers arrive as attributes: redraw when one changes.
 	local WATCHED = { DailyGiftNext = true, DailyGiftReady = true, StarterPackEnds = true, FirstBuysUsed = true, PaperJar = true }

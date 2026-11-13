@@ -35,7 +35,7 @@ local function validReceiptGrant(grant)
   if not Schema.integer(grant.wholePaper) or grant.wholePaper<1 then return false end
   if grant.packKey~=nil and Commerce.paperPackAmount(grant.packKey)~=grant.wholePaper then return false end
   fields={kind=true,wholePaper=true,packKey=true}
- elseif grant.kind=="starterPack" or grant.kind=="paperJar" then
+ elseif grant.kind=="starterPack" or grant.kind=="paperJar" or grant.kind=="giftSent" then
   fields={kind=true}
  elseif grant.kind=="matchDouble" then
   if not Commerce.isMatchDoubleKey(grant.key) then return false end
@@ -176,7 +176,14 @@ function Service:_effect(p,op,boostState)
 	if boostState then p.boosts=assert(Schema.copy(boostState)) end
 	local v=Schema.economicView(p)
 	local applied,err,result
-	if op.kind=="contribution" then applied,err=Economy.applyContribution(v,op.points,op.multipliers,op.id)
+	if op.kind=="giftSent" then result={type="GiftSent"}
+	elseif op.kind=="giftReceived" then
+		if table.find(p.giftIds,op.giftId) then return {type="GiftAlreadyReceived"} end
+		local grant=Commerce.giftGrant(op.key);grant.id=op.id
+		local granted,why=self:_effect(p,grant,boostState);if not granted then return nil,why end
+		table.insert(p.giftIds,op.giftId);if #p.giftIds>200 then table.remove(p.giftIds,1) end
+		result={type="GiftReceived",from=op.fromName,key=op.key}
+	elseif op.kind=="contribution" then applied,err=Economy.applyContribution(v,op.points,op.multipliers,op.id)
 	elseif op.kind=="finalBonus" then
 		applied,err=Economy.applyFinalBonuses(v,{finalPaper=op.finalPaper,finalXP=op.finalXP},op.multipliers,op.id)
 	elseif op.kind=="equipmentPurchase" then applied,err=Economy.validateEquipmentPurchase(v,self.catalog,op.catalogID,op.id)
@@ -338,7 +345,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={receipt=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
+local allowed={receipt=true,giftReceived=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
@@ -371,6 +378,9 @@ function Service:apply(account,input)
    -- oldest-acknowledged eviction; never evict a pending receipt to make room.
    return outcome("error","receipt_cap")
   else intent=op.grant end
+ elseif op.kind=="giftReceived" then
+  if not Schema.validGift(op) then return outcome("error","invalid_gift") end
+  intent=not table.find(s.profile.Data.giftIds,op.giftId) and Commerce.giftGrant(op.key) or nil
  elseif op.kind=="passGrant" then
   if op.resource~="xp" and op.resource~="paper" then return outcome("error","invalid_resource") end
   if s.profile.Data.boosts[op.resource=="xp" and "permanentXP" or "permanentPaper"] then intent=nil

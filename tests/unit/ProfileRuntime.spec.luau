@@ -247,6 +247,77 @@ function Spec.run()
   local sent=runtime.store.messages[1];assert(sent.key=="Player_1" and sent.message.input.id==input.id and sent.message.input.multipliers.paper==2)
   present=true;assert(not runtime:messageReward(1,input,"assist") and #runtime.store.messages==1)
  end)
+ test("gift messages grant once then publish a session inbox and acknowledge after applying",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player]
+  local before=profile.Data.paperMilli;local processed=0
+  assert(player.attributes.GiftInbox=="[]")
+  local message={kind="gift",giftId="gift/received",from=123,fromName="Alex",key="paper_pack_5000"}
+  profile.handler(message,function()processed+=1 end)
+  assert(processed==0 and #entry.queue==1 and profile.Data.paperMilli==before)
+  assert(runtime:flush(entry));waitFor(function()return processed==1 end)
+  local inbox=game:GetService("HttpService"):JSONDecode(player.attributes.GiftInbox)
+  assert(profile.Data.paperMilli==before+5000000 and profile.Data.giftIds[1]==message.giftId)
+  assert(#inbox==1 and inbox[1].from=="Alex" and inbox[1].key=="paper_pack_5000")
+  assert(profile.Data.buysToday.count==0 and next(profile.Data.receiptIds)==nil)
+  profile.handler(message,function()processed+=1 end)
+  assert(runtime:flush(entry));waitFor(function()return processed==2 end)
+  assert(profile.Data.paperMilli==before+5000000 and #entry.giftInbox==1)
+  runtime:giftSeen(player,1)
+  assert(player.attributes.GiftInbox=="[]" and profile.Data.paperMilli==before+5000000 and #profile.Data.giftIds==1)
+  assert(profile:Save() and profile.LastSavedData.giftInbox==nil and profile.LastSavedData.giftIds[1]==message.giftId)
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("giftSeen drops only the first count and never changes saved value",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player]
+  entry.giftInbox={{from="Alex",key="paper_pack_1500"},{from="Sam",key="xp_boost_15m"},{from="Taylor",key="paper_boost_30m"}}
+  runtime:update(entry);local before=Schema.canonical(profile.Data)
+  for _,n in ipairs({-1,1.5,"1",false,{},math.huge,0/0}) do runtime:giftSeen(player,n) end
+  assert(#entry.giftInbox==3);runtime:giftSeen(player,0);assert(#entry.giftInbox==3)
+  runtime:giftSeen(player,2);local inbox=game:GetService("HttpService"):JSONDecode(player.attributes.GiftInbox)
+  assert(#inbox==1 and inbox[1].from=="Taylor" and Schema.canonical(profile.Data)==before)
+  runtime:giftSeen(player,1000000);assert(player.attributes.GiftInbox=="[]" and Schema.canonical(profile.Data)==before)
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("a failing gift operation stays queued and cannot acknowledge its message early",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player];local processed=false
+  local message={kind="gift",giftId="gift/retry",from=123,fromName="Alex",key="xp_boost_15m"}
+  local apply=runtime.service.apply;runtime.service.apply=function()error("injected gift failure")end
+  profile.handler(message,function()processed=true end)
+  assert(not runtime:process(entry) and not processed and #entry.queue==1 and player.attributes.GiftInbox=="[]")
+  runtime.service.apply=apply;assert(runtime:flush(entry));waitFor(function()return processed end)
+  assert(profile.Data.boosts.xpSeconds==900 and #entry.giftInbox==1)
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("invalid gift messages are neither queued nor acknowledged",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player];local processed=false
+  for _,key in ipairs({"starter_pack","paper_jar","permanent_2x_xp","part_wings_1","gift_paper_pack_1500"}) do
+   profile.handler({kind="gift",giftId="gift/invalid",from=123,fromName="Alex",key=key},function()processed=true end)
+  end
+  assert(#entry.queue==0 and not processed and #profile.Data.giftIds==0 and player.attributes.GiftInbox=="[]")
+  runtime.entries[player]=nil;runtime.service:detach(entry.account)
+ end)
+ test("the practice self gift follows the selected store message handler and receipt path",function()
+  local runtime,player,profile=savingFixture();local entry=runtime.entries[player]
+  runtime.mock=true;player.DisplayName="Alex";local before=profile.Data.paperMilli
+  local store=Fake.store({["Player_"..player.UserId]=profile});runtime.store=store
+  local acknowledged=0
+  function store.deliver(key,message)
+   assert(key=="Player_"..player.UserId)
+   profile.handler(message,function()acknowledged+=1 end)
+  end
+  local previous=workspace:GetAttribute("DevGiftSelf");workspace:SetAttribute("DevGiftSelf",true)
+  local ok,why=pcall(function()
+   local hangar=require(Server.HangarService).new({catalog=runtime.catalog},runtime,nil,{users={GetUserInfosByUserIdsAsync=function()return {{DisplayName="Alex"}}end}})
+   hangar:handle(player,"giftCheck",player.UserId)
+   assert(game:GetService("HttpService"):JSONDecode(player.attributes.GiftCheck).status=="ok")
+   hangar:handle(player,"buyGift",{friend=player.UserId,key="paper_pack_1500"})
+   assert(runtime:flush(entry));waitFor(function()return acknowledged==1 and player.attributes.MenuMessage=="Sent! (practice gift, no real purchase)" end)
+   assert(profile.Data.paperMilli==before+1500000 and profile.Data.buysToday.count==1 and #profile.Data.giftIds==1)
+   assert(next(profile.Data.firstBuys)==nil and next(profile.Data.receiptIds)~=nil and #entry.giftInbox==1)
+   hangar:handle(player,"giftSeen",1);assert(player.attributes.GiftInbox=="[]" and profile.Data.paperMilli==before+1500000)
+  end)
+  workspace:SetAttribute("DevGiftSelf",previous);runtime.entries[player]=nil;runtime.service:detach(entry.account);assert(ok,why)
+ end)
  return result
 end
 return Spec

@@ -2,6 +2,7 @@
 -- autosaves and final saves are the only normal DataStore writes.
 local Players=game:GetService("Players")
 local Run=game:GetService("RunService")
+local Http=game:GetService("HttpService")
 local Root=game.ReplicatedStorage.FlyFightPaper
 require(script.Parent.RewardQueue) -- Register offline flushing before ProfileStore's close hook.
 local ProfileStore=require(script.Parent.Packages.ProfileStore)
@@ -60,6 +61,15 @@ function Runtime:rememberRewardMultipliers(player,e)
 end
 function Runtime:hasPlayer(userId)
  return Players:GetPlayerByUserId(userId)~=nil
+end
+function Runtime:giftsReady()
+ return not self.stopping and not ProfileStore.IsClosing and (self.mock or ProfileStore.DataStoreState=="Access")
+end
+function Runtime:giftSeen(player,n)
+ local e=self.entries[player]
+ if not e or not Schema.integer(n) then return end
+ for _=1,math.min(n,#(e.giftInbox or {})) do table.remove(e.giftInbox,1) end
+ self:update(e)
 end
 function Runtime:messageReward(userId,input,source)
  if self:hasPlayer(userId) or (not self.mock and ProfileStore.DataStoreState~="Access") then return false end
@@ -137,9 +147,15 @@ function Runtime:load(player)
    if player.Parent then player:Kick("Your profile was opened in another server. Please rejoin to continue safely.") end
   end)
   profile:MessageHandler(function(message,processed)
-   if type(message)~="table" or message.kind~="reward" then return end
-   local input=Schema.copy(message.input)
-   if type(input)~="table" or not rewardKinds[input.kind] or not Schema.id(input.id) or not input.id:match("^reward%w+:%d+$") or type(message.source)~="string" or input.rewardSource~=message.source then return end
+   if type(message)~="table" then return end
+   local input
+   if message.kind=="gift" then
+    if not Schema.validGift(message) then return end
+    input={kind="giftReceived",giftId=message.giftId,from=message.from,fromName=message.fromName,key=message.key}
+   elseif message.kind=="reward" then
+    input=Schema.copy(message.input)
+    if type(input)~="table" or not rewardKinds[input.kind] or not Schema.id(input.id) or not input.id:match("^reward%w+:%d+$") or type(message.source)~="string" or input.rewardSource~=message.source then return end
+   else return end
    while self.entries[player]==e and not e.closing and profile:IsActive() do
     if self:enqueue(player,input,nil,function(ok)if ok then processed()end end) then return end
     task.wait(Config.worker_seconds)
@@ -196,6 +212,9 @@ function Runtime:process(e)
  local success,result=pcall(function()return self.service:apply(e.account,op)end)
  if not success or (result.status~="ok" and result.status~="error") then return false end
  table.remove(e.queue,1);e.failures=0
+ if result.status=="ok" and result.value.type=="GiftReceived" then
+  e.giftInbox=e.giftInbox or {};table.insert(e.giftInbox,{from=result.value.from,key=result.value.key})
+ end
  local done=e.callbacks[op.id];e.callbacks[op.id]=nil
  if done then
   task.defer(function()
@@ -266,6 +285,7 @@ function Runtime:update(e)
  local used={};for key in pairs(e.snapshot.firstBuys) do table.insert(used,key) end;table.sort(used)
  e.player:SetAttribute("FirstBuysUsed",table.concat(used,","))
  e.player:SetAttribute("BuysToday",e.snapshot.buysToday.day==day and e.snapshot.buysToday.count or 0)
+ e.player:SetAttribute("GiftInbox",#(e.giftInbox or {})==0 and "[]" or Http:JSONEncode(e.giftInbox))
  e.player:SetAttribute("ProfileStatus",self.mock and "Studio session only" or (e.saveDelayed and "Saving delayed. Progress is held in this server." or (e.lastSavedVersion>=e.snapshot.version and "Saved" or "Waiting to save")))
 end
 function Runtime:view(player)
