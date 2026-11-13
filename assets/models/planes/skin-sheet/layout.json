@@ -1,0 +1,84 @@
+{
+  "resolution": [
+    1024,
+    1024
+  ],
+  "k": 40.61234173696031,
+  "padding_studs": 0.25,
+  "margin_pixels": 16,
+  "gap_pixels": 16,
+  "bounds": {
+    "min": [
+      -8.65,
+      -2.2621035000000003,
+      -8.641916
+    ],
+    "max": [
+      8.65,
+      4.47,
+      7.9000005
+    ]
+  },
+  "pixel_origin": "top-left; x right, y down; rectangles are [x,y,width,height]",
+  "regions": {
+    "TOP": {
+      "rect_pixels": [
+        16,
+        16,
+        702.5935120494134,
+        671.8059658822624
+      ]
+    },
+    "SIDE": {
+      "rect_pixels": [
+        734.5935120494134,
+        16,
+        273.4064879505866,
+        671.8059658822624
+      ]
+    },
+    "FRONT": {
+      "rect_pixels": [
+        16,
+        703.8059658822624,
+        702.5935120494134,
+        273.4064879505866
+      ]
+    }
+  },
+  "axes": "Roblox plane frame: x right, y up, nose -z",
+  "uv_origin": "bottom-left; u=px/1024, v=1-py/1024",
+  "selection": "dominant absolute triangle geometric normal after placement; tie order Y,X,Z",
+  "formulas": {
+    "TOP": "px=16+k*(x-xmin); py=16+k*(z-zmin)",
+    "SIDE": "px=32+k*(xmax-xmin)+k*(y-ymin); py=16+k*(z-zmin)",
+    "FRONT": "px=16+k*(x-xmin); py=32+k*(zmax-zmin)+k*(ymax-y)"
+  },
+  "normal_convention": "MikkTSpace, OpenGL +Y",
+  "checks": {
+    "fits": true,
+    "regions_disjoint": true
+  },
+  "import_basis_calibration": {
+    "nose_y_spread_at_raw_minus_z": 0.4526418149471283,
+    "nose_y_spread_at_raw_plus_z": 2.25,
+    "prototype_flip": false,
+    "blender_to_roblox_import_correction": [
+      [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        -1.0
+      ]
+    ]
+  }
+}
