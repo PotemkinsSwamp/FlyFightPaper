@@ -29,6 +29,10 @@ local definitions={
  -- The tutorial's ding (a hoop, a finished step): the coin sound, soft (Alan: 30% quieter, the same ding every time).
  ding={1169806635,1,.28,.8},
  softDing={1169806635,1,.22,.8}, -- the Hangar Tour's: 20% quieter (Alan 2026-10-21)
+ -- A gift on its rays (Alan 2026-11-13: "a radiating sound, something shiny, brand new"): three to pick from by ear
+ -- with the Dev gift button: APM "Beautiful Shimmer", Pro Sound Effects "Magic Tone Tonal Shimmer Shaking Rattle 1"
+ -- and "Magic Tone Falling Shimmer Flanged 3". The two not picked go.
+ shine1={1841209502,1,.5,6.1},shine2={9116420445,1,.5,5.2},shine3={9116418035,1,.5,3.3},
  -- The Range's row-picker plate going down: the paperclip's metal ting, higher.
  plate={9116163687,1.6,.5,.5},
  -- The Aiming lesson's slow motion going on and off: the eraser's whoosh, low and slow, then high and quick.
@@ -56,6 +60,7 @@ function Audio.play(name,position,reach)
  sound.SoundId=id(definition);sound.PlaybackSpeed=definition[2];sound.Volume=definition[3]*(Root:GetAttribute("SoundVolume") or 1)
  local token={};busy[sound]=token;sound:Play()
  task.delay(definition[4] or .22,function()if busy[sound]==token then sound:Stop();busy[sound]=nil;table.insert(available,sound) end end)
+ return sound -- (to fade it early; it goes back in the pool by itself)
 end
 -- A shot heard as it flies: the sound rides on its visual, so it passes you (missiles louder).
 function Audio.flight(part,weapon)
@@ -118,8 +123,12 @@ function Audio.start(getPlane)
  local function volumes()
   local winners=Root:GetAttribute("WinnersMoment")==true
   game:GetService("TweenService"):Create(ambience,glide,{Volume=(inClassroom() and .08 or 0)*(Root:GetAttribute("SoundVolume") or 1)}):Play()
-  game:GetService("TweenService"):Create(music,winners and TweenInfo.new(1.2) or glide,{Volume=(winners and 0 or inLesson() and .067 or .2)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
+  -- A moment over the menu (a gift arriving, the unlock backpack) turns the music right down, like the dimmed board
+  -- behind it (Alan 2026-11-13), so its own sounds are heard.
+  local quiet=Root:GetAttribute("MusicQuiet")==true
+  game:GetService("TweenService"):Create(music,winners and TweenInfo.new(1.2) or quiet and TweenInfo.new(.5) or glide,{Volume=(winners and 0 or inLesson() and .067 or .2)*(quiet and .2 or 1)*(Root:GetAttribute("MusicVolume") or 1)}):Play()
  end
+ Root:GetAttributeChangedSignal("MusicQuiet"):Connect(volumes)
  Root:GetAttributeChangedSignal("MusicVolume"):Connect(volumes);Root:GetAttributeChangedSignal("SoundVolume"):Connect(volumes)
  Root:GetAttributeChangedSignal("WinnersMoment"):Connect(volumes)
  Root:GetAttributeChangedSignal("TutorialOpen"):Connect(function() nextTrack();volumes() end)

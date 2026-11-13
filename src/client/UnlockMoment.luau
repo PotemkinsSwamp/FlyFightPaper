@@ -308,6 +308,7 @@ function Unlock.start(api)
 	local function close()
 		stage, dragging = nil, false
 		cover.Visible = false
+		Root:SetAttribute("MusicQuiet", false)
 		if blur then blur:Destroy(); blur = nil end
 		if mainView then mainView:Destroy(); mainView = nil end
 		for _, v in sideViews do v:Destroy() end
@@ -357,6 +358,7 @@ function Unlock.start(api)
 		blur = Instance.new("BlurEffect")
 		blur.Name, blur.Size, blur.Parent = "UnlockBlur", 16, Lighting
 		cover.Visible = true
+		Root:SetAttribute("MusicQuiet", true) -- the music turns right down under a moment like this (Audio; Alan 2026-11-13)
 		-- The backpack rises from the bottom edge.
 		TweenService:Create(bag, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
 			{ Position = UDim2.fromOffset(BAG_X + 667 / 2, BAG_Y + 317) }):Play()

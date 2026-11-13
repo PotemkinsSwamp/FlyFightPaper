@@ -10,7 +10,8 @@
 -- ("xp_boost_60m,paper_pack_5000"), plays pretend gifts (GiftMoment.pretend); DevGiftTime holds the moment at that many
 -- seconds and does the taps by itself (tools/film_gift.py).
 -- Sounds are ones the game already has: the paper whoosh as the plane passes over you and comes back, the box thump
--- as it lands, the backpack's ding and coin as it opens, the coin again as each later gift comes out.
+-- as it lands, the backpack's ding and coin as it opens, the coin again as each later gift comes out; and a shine as
+-- each gift rises onto its rays. The music is turned right down while the moment is up (Root MusicQuiet, Audio).
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Http = game:GetService("HttpService")
@@ -156,7 +157,7 @@ function GiftMoment.start(api)
 	item.ZIndex, box.ZIndex, note.ZIndex, shadow.ZIndex, plane.ZIndex, pin.ZIndex = 3, 4, 6, 7, 8, 9
 
 	-- gifts: the ones shown so far, in order. taps: when Open and each Thanks happened (bye: the last Thanks).
-	local playing, asked, started, filming, heard = false, 0, nil, false, 0
+	local playing, asked, started, filming, heard, shine = false, 0, nil, false, 0, "shine1"
 	local gifts, taps = {}, { thanks = {} }
 	local said, shownItem, seenHere = nil, nil, 0
 	local fakes, fakeCount = {}, 0
@@ -312,11 +313,26 @@ function GiftMoment.start(api)
 	end
 
 	-- Plays the sounds whose moments fall between the last frame's time and this one's.
+	-- (The shine rings for seconds: it fades out when the next gift's starts and at the last Thanks.)
+	local ringing, ringId
+	local function hush()
+		if ringing and ringing.IsPlaying and ringing.SoundId == ringId then
+			game:GetService("TweenService"):Create(ringing, TweenInfo.new(0.4), { Volume = 0 }):Play()
+		end
+		ringing = nil
+	end
 	local function sounds(t)
-		local function at(when, name) if when and heard < when and t >= when then Audio.play(name) end end
+		local function at(when, name)
+			if not when or heard >= when or t < when then return end
+			if name == "hush" or name == shine then hush() end
+			local sound = name ~= "hush" and Audio.play(name)
+			if name == shine and sound then ringing, ringId = sound, sound.SoundId end
+		end
+		at(taps.bye, "hush")
 		at(2, "flight"); at(DROP + 0.55 * (LAND - DROP), "land")
 		at(taps.open and taps.open + LID, "ding"); at(taps.open and taps.open + LID + 0.25, "purchase")
-		for _, thanks in taps.thanks do at(thanks + RISE, "purchase") end
+		at(taps.open and taps.open + RISE + 0.1, shine)
+		for _, thanks in taps.thanks do at(thanks + RISE, "purchase"); at(thanks + RISE + 0.1, shine) end
 		at(taps.bye and taps.bye + BACK, "flight")
 		heard = t
 	end
@@ -324,6 +340,7 @@ function GiftMoment.start(api)
 	-- The board's plane is pinned: ours takes its place (same spot, same size) and the moment starts.
 	local function begin()
 		started, heard = os.clock(), 0
+		Root:SetAttribute("MusicQuiet", true)
 		local at, size, pinAt = board.plane.Position, board.plane.Size, board.pin.Position
 		home, planeSize, pinHome = Vector2.new(at.X.Offset, at.Y.Offset), Vector2.new(size.X.Offset, size.Y.Offset), Vector2.new(pinAt.X.Offset, pinAt.Y.Offset)
 		-- { x, y, size }: off the pin the way its nose points, right, round the top of a loop, at you, up and away.
@@ -343,6 +360,7 @@ function GiftMoment.start(api)
 	end
 	local function finish()
 		playing, filming, cover.Visible = false, false, false
+		Root:SetAttribute("MusicQuiet", false)
 		board.plane.Visible, board.pin.Visible = true, true
 		GiftMoment.offer()
 	end
@@ -369,8 +387,8 @@ function GiftMoment.start(api)
 	player:GetAttributeChangedSignal("GiftInbox"):Connect(function() seenHere = 0 end)
 	-- Studio: lines up pretend gifts (product keys with commas between). They play now if the main menu is showing,
 	-- otherwise when it next shows; says which.
-	function GiftMoment.pretend(keys)
-		fakes, fakeCount = keys:split(","), 0
+	function GiftMoment.pretend(keys, sound) -- (sound: which shine to try, 1-3, while Alan picks one)
+		fakes, fakeCount, shine = keys:split(","), 0, "shine" .. (sound or 1)
 		if board.frame.Visible then GiftMoment.offer() end
 		return board.frame.Visible
 	end

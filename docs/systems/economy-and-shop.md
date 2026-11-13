@@ -265,7 +265,12 @@ A second tap within a second of the last is ignored (the buttons share a spot). 
 lid, box and its inside are parts of the one gift box picture, and each ray is a stroke cut from the rays picture.
 Sounds (Alan 2026-11-13: "add the sounds"), all ones the game already had: the backpack's ding and coin as the box
 opens, the coin again for each later gift; Claude's additions for him to judge: the paper whoosh as the plane passes
-over you and as it comes back, and the box thump when the box lands.
+over you and as it comes back, and the box thump when the box lands. His notes after hearing it (same day): **the
+music turns right down** (to a fifth) while the moment is up, like the dimmed board, and comes back after (Root
+attribute `MusicQuiet`, also set by the unlock backpack); and **a shine** rings as each gift rises onto its rays ("a
+radiating sound, something shiny, brand new"), fading when the next gift comes or the moment ends. Three shine sounds
+are in to pick from by ear (`Audio.luau` `shine1`-`shine3`; each click of the Dev gift button tries the next); the two
+not picked get deleted.
 
 ## Offline-pausing timer
 Both resources pause offline. Loaded online menus, desk time, spectating and intermission count under the
