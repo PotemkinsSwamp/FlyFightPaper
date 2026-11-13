@@ -1,60 +1,61 @@
 # Skins and trails plan
 
-**Status:** talking it through with Alan (2026-11-13). Nothing gets made until the ideas, tiers and how they work are
-settled. His rules so far: [skin rules](../decisions/2026-11-13-skin-rules.md) (same hitbox, four tiers, team outline,
-bots wear them), on top of the [shop plan decision](../decisions/2026-10-18-shop-plan.md) (Paper or Robux, kept
-through prestige). Serves [the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).
+**Status:** talking it through with Alan (2026-11-13). Nothing gets made until the ideas and tiers are settled. His
+rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
+the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top of the
+[shop plan decision](../decisions/2026-10-18-shop-plan.md) (Paper or Robux, kept through prestige). Serves
+[the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).
 
 ## The order (Alan, 2026-11-13)
 1. A list of ideas for skins and trails, sorted into tiers.
-2. Talk through how they work (team games, hitboxes, part mixes).
+2. Talk through how they work.
 3. Concept pictures of the picked ideas (Codex).
 4. Build them in Blender and texture them.
 5. Only then prices, uploads (Alan's go) and the code.
 
-## The hitbox today, and how skins keep it
-- **Today the hitbox is the plane's own visible pieces, exactly.** The server copies every visible piece (body, nose,
-  wings, tail, weapons, booster) and tests shots against their real mesh shapes (`src/server/HitShapes.luau`).
-- **Danger:** a skin added as extra visible pieces would join that copy and grow the hitbox. So the server's copy must
-  always come from the plain pieces, never from a skin.
-- **Paint skins (lower tiers):** the same pieces with a new picture on them. The shape can't change, so the hitbox is
-  identical. One design is turned into a picture for every piece by a Blender script.
-- **Shape skins (top tiers):** in Blender, each piece of the design starts from the real part's own shape and is
-  wrapped onto it. A measuring script checks every skin piece against its part before anything is uploaded: nothing
-  may stick out past the part or leave a gap bigger than a set amount (a first guess: a tenth of a stud). A dev
-  button in Studio shows the hitbox over the skin.
-- **Part mixes:** 6 bodies, 6 noses, 6 wings and 6 tails, so a shape skin needs 24 shaped pieces to fit every plane.
-  The Blender script makes them from one design. If a design can't fit a part well, that skin is tied to a body.
-- **Visibility:** no skin may be see-through or blend into the town (that is an advantage too). Names and team marks
-  show over every plane.
+## How the game fits one design to any plane
+- **Hitbox:** the server tests shots against the real shapes of your plane's parts (`src/server/HitShapes.luau`).
+  Today it copies every *visible* piece, so skin pieces must be left out of that copy and hidden parts kept in it.
+- **Common and Rare: a printed sheet.** Think of drawing on the paper before folding the plane. Each skin is one
+  picture laid out like a flat plane seen from above (nose area, body stripe, wing areas, tail area). Every part's
+  pieces get their picture position from where they sit on the plane, so any wings show the sheet's wing art and any
+  nose shows its nose art. Switching parts needs nothing new: the game puts the same picture on the new pieces. Cost,
+  once: a Blender script re-lays every part's picture layout this way (about 98 pieces, one upload batch with Alan's
+  go). After that, each Common or Rare skin is one picture.
+- **Legendary: your plane plus add-ons.** The printed sheet plus a few pieces (a shark's fin and jaw, a bee's stinger
+  and wings) the game places on the body and nose and scales with the plane.
+- **Mythical: a whole new shape.** One model the game stretches to your plane's length, span and height, shown
+  instead of the parts. Weapons and boosters stay visible so everyone can still read what you carry.
+- **Players are told:** "Skins change how you look, never your hitbox", on the shop card and the Looks tab.
 
-## Tiers (classroom names to pick)
+## Tiers
 | Tier | What it changes | How you get it |
 |---|---|---|
-| 1 | one simple print on the plane's own shape | earn or Paper |
-| 2 | detailed art on the plane's own shape | earn or Paper |
-| 3 | small shape changes inside the hitbox, plus a matching trail | Robux (later: pass, top players) |
-| 4 | the whole plane's form, plus a matching trail (and maybe a fold effect) | Robux (later: pass, top players) |
+| Common | a simple printed sheet | earn or Paper |
+| Rare | a detailed or shiny printed sheet | earn or Paper |
+| Legendary | printed sheet + add-on pieces, matching trail | Robux (later: a pass, missions, top players) |
+| Mythical | a whole new shape, matching trail | Robux (later: a pass, missions, top players) |
 
-Name ideas: **C, B, A, A+** (the report card's grades) · **Sticker, Silver Star, Gold Star, Gold Apple** ·
-**Homework, Honor Roll, Principal's List, Hall of Fame**.
-
-## Ideas (✓ = Alan kept; the rest are new, for him to keep or drop)
-**Tier 1, simple print:** ✓ newspaper glider · graph paper · notebook lines · construction paper (a colour) · sticky
-note · brown paper bag · polka dots · checkerboard · cardboard box · ruler marks.
-**Tier 2, detailed art:** ✓ gold foil · ✓ homework A+ · ✓ comic book · ✓ candy wrapper · ✓ old treasure map ·
-✓ sticker bomb · sheet music · spelling test · math worksheet · birthday card · fridge drawing (crayon art) ·
-permission slip · baseball card.
-**Tier 3, small shape change:** ✓ shark jet · swordfish · bumblebee · dragonfly · hawk · goldfish.
-**Tier 4, whole new form:** ✓ dragon · ✓ bat · ✓ origami crane (if its shape can match the hitbox) · phoenix · moth.
-**Trails:** chalk dust · pencil shavings · eraser crumbs · paper confetti · rainbow marker · glitter · bubbles · music
-notes · ink splats · paper hearts · gold stars · crayon scribble. Matching trails for tiers 3-4: dragon embers, little
-paper bats, falling folded petals for the crane, sparks for the phoenix.
+## Ideas (✓ = Alan kept)
+**Common:** hazard stripes · racing stripes · checkered flag · tiger stripes · jungle camo · desert camo · carbon
+fibre · tie-dye · 8-bit pixels · flame decals · lightning bolts · neon grid.
+**Rare:** ✓ gold foil · galaxy · lava (glowing cracks) · frozen (deep blue ice) · toxic slime · graffiti · holographic
+· chrome · glitch · glowing circuit board · thunderstorm · cherry blossom · diamond. From the first list, if still
+wanted: comic book, treasure map, candy wrapper, sticker bomb.
+**Legendary:** ✓ shark jet · ✓ bumblebee · rocket (fins and nozzles) · hot rod (chrome exhausts, flames) · stealth
+fighter (dark angled plates) · mech (armour plates, glowing eye) · pirate (sails, skull flag) · ninja (scarf
+streamers) · race car (spoiler, number).
+**Mythical:** ✓ dragon · ✓ bat · ✓ origami crane · phoenix · thunderbird (lightning) · UFO · ghost pirate ship (dark
+wood, green glow) · kraken.
+**Trails (✓ all):** chalk dust · pencil shavings · eraser crumbs · confetti · rainbow marker · glitter · bubbles ·
+music notes · ink splats · paper hearts · gold stars · crayon scribble.
+**Matching trails:** dragon embers · little paper bats · falling folded petals (crane) · fire feathers (phoenix) ·
+water spray (shark) · tiny bees (bumblebee) · rocket smoke · exhaust flames (hot rod) · gold coins (pirate) ·
+lightning (thunderbird).
 
 ## Still to settle
-- Tier names; which new ideas stay; which tier each sits in.
+- Which new ideas stay, and their tiers.
 - Trails in team games: their own colours or the team's.
-- How much a shape skin may differ from the hitbox (the tenth of a stud above is a guess).
 - Prices and earn rules per tier (after the list).
 
 Back to [HOME](../HOME.md)
