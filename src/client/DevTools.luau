@@ -127,6 +127,14 @@ function DevTools.start(menu)
 	for _, key in { "Dev", "DevAll", "Level" } do player:GetAttributeChangedSignal(key):Connect(label) end
 	label()
 	switch.Activated:Connect(function() Root:WaitForChild("RoundAction"):FireServer("devAll") end)
+	-- Above it (Alan 2026-11-13, to see and hear a gift arrive): two pretend gifts from pretend friends, on the main menu.
+	local gift = switch:Clone()
+	gift.Name, gift.Position, gift.Text, gift.Parent = "Gift", UDim2.new(1, -10, 1, -58), "Dev: send me a gift", switchGui
+	gift.Activated:Connect(function()
+		local now = require(script.Parent.GiftMoment).pretend("xp_boost_60m,paper_pack_5000")
+		gift.Text = now and "Dev: send me a gift" or "Gift waits at the main menu"
+		task.delay(3, function() gift.Text = "Dev: send me a gift" end)
+	end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()
 		local screen, page = string.match(player:GetAttribute("DevScreen") or "", "^([^:]+):?(.*)$")

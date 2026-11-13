@@ -6,8 +6,9 @@
 -- after the last one the plane flies back to its pin.
 -- The server lists unseen gifts in the player's GiftInbox attribute (JSON [{from, key}]) and drops one on "giftSeen".
 -- Everything drawn is worked out from the time and from when the taps happened, so a held time shows a still.
--- Studio: workspace DevGiftMoment = product keys with commas between ("xp_boost_60,paper_pack_5000") plays pretend
--- gifts; DevGiftTime holds the moment at that many seconds and does the taps by itself (tools/film_gift.py).
+-- Studio: the "Dev: send me a gift" button (DevTools), or workspace DevGiftMoment = product keys with commas between
+-- ("xp_boost_60m,paper_pack_5000"), plays pretend gifts (GiftMoment.pretend); DevGiftTime holds the moment at that many
+-- seconds and does the taps by itself (tools/film_gift.py).
 -- Sounds are ones the game already has: the paper whoosh as the plane passes over you and comes back, the box thump
 -- as it lands, the backpack's ding and coin as it opens, the coin again as each later gift comes out.
 local Players = game:GetService("Players")
@@ -158,13 +159,11 @@ function GiftMoment.start(api)
 	local playing, asked, started, filming, heard = false, 0, nil, false, 0
 	local gifts, taps = {}, { thanks = {} }
 	local said, shownItem, seenHere = nil, nil, 0
-	local fakes, fakeRead, fakeCount = {}, nil, 0
+	local fakes, fakeCount = {}, 0
 	local home, pinHome, planeSize, pathOut, pathBack
 
 	-- The next gift waiting: Studio's pretend ones first, then the inbox.
 	local function nextGift()
-		local fake = RunService:IsStudio() and workspace:GetAttribute("DevGiftMoment") or nil
-		if fake ~= fakeRead then fakeRead, fakeCount, fakes = fake, 0, type(fake) == "string" and fake:split(",") or {} end
 		local key = table.remove(fakes, 1)
 		if key and key ~= "" then
 			fakeCount += 1
@@ -368,6 +367,21 @@ function GiftMoment.start(api)
 		dim.BackgroundTransparency, sheet.Visible, cover.Visible = 1, false, true
 	end
 	player:GetAttributeChangedSignal("GiftInbox"):Connect(function() seenHere = 0 end)
+	-- Studio: lines up pretend gifts (product keys with commas between). They play now if the main menu is showing,
+	-- otherwise when it next shows; says which.
+	function GiftMoment.pretend(keys)
+		fakes, fakeCount = keys:split(","), 0
+		if board.frame.Visible then GiftMoment.offer() end
+		return board.frame.Visible
+	end
+	if RunService:IsStudio() then
+		local function read()
+			local keys = workspace:GetAttribute("DevGiftMoment")
+			if type(keys) == "string" then GiftMoment.pretend(keys) end
+		end
+		workspace:GetAttributeChangedSignal("DevGiftMoment"):Connect(read)
+		read()
+	end
 	function GiftMoment.playing() return playing end
 end
 

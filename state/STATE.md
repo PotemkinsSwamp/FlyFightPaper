@@ -50,7 +50,7 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
-- Gift arrival: watch `.planning/gift-arrival-redo.mp4`; hear it in Play (`DevGiftMoment`, see the testing page).
+- Gift arrival: in Studio Play, on the main menu, click **Dev: send me a gift** (bottom right) to see and hear it.
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - Pick from the cosmetics and playtime rewards options (A-L) on the research page.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).

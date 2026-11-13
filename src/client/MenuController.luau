@@ -150,7 +150,6 @@ render=function()
  player:GetAttributeChangedSignal("MenuMessage"):Connect(render)
  player:GetAttributeChangedSignal("Routing"):Connect(render)
  player:GetAttributeChangedSignal("GiftInbox"):Connect(render)
- workspace:GetAttributeChangedSignal("DevGiftMoment"):Connect(render)
  render();action:FireServer("profile")
  task.spawn(function()while gui.Parent do task.wait(3);action:FireServer("profile") end end)
 end
