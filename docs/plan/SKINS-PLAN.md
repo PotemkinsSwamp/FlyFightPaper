@@ -53,6 +53,12 @@ music notes · ink splats · paper hearts · gold stars · crayon scribble.
 water spray (shark) · tiny bees (bumblebee) · rocket smoke · exhaust flames (hot rod) · gold coins (pirate) ·
 lightning (thunderbird).
 
+## Concepts (2026-11-13)
+Codex drew every approved skin and trail on our plane shape: 13 pictures in `.planning/skins/concepts/` (common-1/2,
+rare-1/2/3, legendary-1/2, mythical-1..4, trails-1/2; briefs `prompt-*.txt`, reference `our-plane.png`). Waiting on
+Alan's picks. Notes: the Mech's pistons look like gun barrels (weapons must read from the real object); Chrome is pale
+against the sky; shine, glow and the slime's drips are more than one picture (shine and glow maps, to check in Studio).
+
 ## Still to settle
 - The printed sheet: **tested in Blender 2026-11-13 (no upload), it works**: one picture each (hazard stripes, lava)
   wrapped itself onto a standard plane and the heavy plane, carrying on across nose, body, wings and tail
