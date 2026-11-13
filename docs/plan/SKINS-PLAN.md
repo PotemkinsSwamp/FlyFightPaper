@@ -21,8 +21,16 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
   picture laid out like a flat plane seen from above (nose area, body stripe, wing areas, tail area). Every part's
   pieces get their picture position from where they sit on the plane, so any wings show the sheet's wing art and any
   nose shows its nose art. Switching parts needs nothing new: the game puts the same picture on the new pieces. Cost,
-  once: a Blender script re-lays every part's picture layout this way (about 98 pieces, one upload batch with Alan's
-  go). After that, each Common or Rare skin is one picture.
+  once: `tools/art/skin_sheet.py` makes a **copy** of each of the 54 paper, card and tube pieces with this layout and
+  bakes the piece's creases into its own normal map (2026-11-13, Claude's method, cheapest and safest): today's pieces
+  and the plain planes stay exactly as they are, and the copies replace them on screen only while a skin is worn. One
+  upload batch (54 meshes, 54 crease pictures) with Alan's go. After that, each Common or Rare skin is one picture
+  (plus a shine picture for Gold Foil, a glow mask for Lava). Accents, tape and boosters keep their own look.
+- **Drawing it at runtime:** a script can't set a SurfaceAppearance's pictures, but
+  `AssetService:CreateSurfaceAppearanceAsync` builds one while the game runs from uploaded pictures (the docs' own
+  example uses an asset ID), so each player's screen builds "skin picture + this piece's creases" when needed; no
+  pre-made combinations. Shine (metalness map) and glow (`EmissiveMask`, `EmissiveStrength`) go the same way. Still
+  to prove in a Studio Play test.
 - **Legendary: your plane plus add-ons.** The printed sheet plus a few pieces (a shark's fin and jaw, a bee's stinger
   and wings) the game places on the body and nose and scales with the plane.
 - **Mythical: a whole new shape.** One model scaled evenly to your plane's length, with joints moved onto the real
