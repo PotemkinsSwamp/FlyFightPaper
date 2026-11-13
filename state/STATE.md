@@ -1,17 +1,17 @@
-# Since Alan last checked (2026-11-12, night)
-- **Double this match works** ([playtest](../docs/playtests/2026-11-12-double-this-match-and-shop.md)): report card
-  button (75+ Paper, timer, "Worth N R$!" sticker); the locked Paper and XP live in the save, so the receipt pays
-  exactly once on any server. 2x boosts 10/15/25/69/99 R$. 75 minimum kept.
-- **Fold card:** never for free gear; red "Not now" when you can already buy. **Shop:** mint green circles on white
-  cards; passes and Your next part float on a soft shadow.
-- **Big bodies 3 mounts** ([decision](../docs/decisions/2026-11-12-big-bodies-three-mounts.md)): Cardboard carries 10,
-  Toilet Roll 8. Not seen in Play or a bot match yet. 559 tests pass.
+# Since Alan last checked (2026-11-12, late night)
+- **Bot match (3 matches):** the 3-mount Cardboard and Toilet Roll tanks no longer dominate (about 8-9 folds, 10
+  crashes a match, mid-pack); Spitball planes still weakest ([decision](../docs/decisions/2026-11-12-big-bodies-three-mounts.md)).
+- **His notes built and liked:** Studio-only dev switch bottom right (level 12 account or everything unlocked); shop
+  part pictures centred as seen; starter pack items float on a shadow with dark word plates. No tutorial question in Studio.
+- **Paper jar shop card** ([jar rules](../docs/decisions/2026-11-12-paper-jar-rules.md)): a glass jar that fills to the
+  Paper inside, Breaks at 3,000, Full!, "Are you sure?" note; pictures uploaded and approved. Fill rate stays.
+- **Report card jar piece:** first try disliked and switched off; redo picked (the jar on the Double this match row).
+  559 tests pass.
 
 # Now: finish the game for the beta
-Next: a bot match on the 3-mount big bodies (Alan's go given). Then his notes: Studio-only dev toggle (his real level 12
-vs everything unlocked, bottom right, only him); centre the shop's models on their true middle; starter pack items float
-free with a shadow and dark word plates. Then the Paper jar card (art needs his upload go), Gift a friend note, goals
-review. Balance pass later: Spitball planes weakest. Not seen yet: a real level-up in a match.
+Next: redo the report card's jar piece to Alan's pick (video to him first). Then the Gift a friend how-it-works note,
+the goals review with Alan. Backlog: daily and weekly missions. Balance pass later: Spitball planes weakest. Not seen
+yet: a real level-up in a match.
 
 Decisions to review
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
@@ -51,7 +51,7 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
-- Look at: mint green circles, the shadows, the fold card fixes, the big bodies in the Hangar (after the dev toggle).
+- Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - Pick from the cosmetics and playtime rewards options (A-L) on the research page.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
 - Save to File when you want the new weapon models and the tape-roll tower in the place file (your go).
