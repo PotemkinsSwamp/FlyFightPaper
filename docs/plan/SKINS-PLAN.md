@@ -90,6 +90,33 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
   covered the wings of a swept and a straight-winged plane; the standard plane's tail fins stay uncovered (hitbox
   without skin, as Alan accepted). In Roblox each point would be a Bone. Not yet tried: flapping, real art.
 - What a Mythical does to weapons.
-- Prices and earn rules per tier (a how-it-works note with numbers for Alan before code).
+- Prices and earn rules per tier: drafted below, waiting on Alan's OK.
+
+## Prices, earning and bots (draft for Alan's OK, 2026-11-13)
+Paper prices use the same rate as early part unlocks (about 18.75 Paper per Robux, the big pack's rate). An average
+player earns about 660 Paper a match (about 8.5 minutes).
+| What | Robux | Paper | Average matches to earn |
+|---|---|---|---|
+| Common skin (Hazard Stripes, Tiger Stripes, Flame Decals) | 149 | 2,800 | about 4 |
+| Rare skin (Gold Foil, Lava, Galaxy) | 299 | 5,600 | about 8.5 |
+| Legendary skin + its trail (Shark Jet + water spray) | 599 | Robux only | - |
+| Mythical skin + its trail (Dragon + embers) | 999 | Robux only | - |
+| Trail (Confetti, Rainbow Marker, Gold Stars) | 49 | 900 | about 1.5 |
+Compared with Rivals (Roblox's big shooter): its shop sells 299 / 449 / 599. Ours start lower (a new game, kids' pocket
+money) and meet it at Legendary. Common and Rare stay cheap in Paper so every player gets one early; the money is in
+Legendary, Mythical and Paper packs.
+- **Earning (Common and Rare):** buy them with Paper. Proposed first hook: **Hazard Stripes free at level 5** (about
+  the first hour), so every player opens the Looks tab and flies a skin early. Later rewards (missions, playtime
+  calendar, a pass, top players) can give any tier; none are in this batch.
+- **Legendary and Mythical:** Robux only for now, as decided.
+- **Kept through prestige** (cosmetics already are). One skin and one trail for all your planes.
+- **Bots:** about 1 in 3 bots wears a skin, picked when the match starts and kept all match: half Common, 30% Rare,
+  15% Legendary, 5% Mythical. With 11 bots, about every other match shows a Legendary or Mythical. About 1 in 3 bots
+  has a trail. Drawn on players' screens like every skin, so no server cost.
+- **Looks tab (hangar):** a new tab beside the parts. Every skin and trail as a card (worn, owned, price, or how to
+  get it), your plane turns in front of you wearing your pick, and the line "Skins change how you look, never your
+  hitbox".
+- **Shop:** a "Skins & Trails" row in the shop window, the same cards, buy with Robux or Paper; Legendary and Mythical
+  cards show their trail. Sold the same way as part unlocks (one Roblox product each, switched off until your go).
 
 Back to [HOME](../HOME.md)
