@@ -1,16 +1,17 @@
-# Since Alan last checked (2026-11-13, after midnight)
-- **Gift a friend: built (Studio only)** to Alan's OK ([decision](../docs/decisions/2026-11-13-gift-a-friend.md)):
-  Paper packs and timed 2x boosts, friends only, friend note with search, server check, practice gift, a paper plane
-  brings it over the main menu. Tests 599/0. Alan's notes: the arrival moment gets redone next session
-  ([playtest](../docs/playtests/2026-11-13-gift-a-friend.md)).
-- Report card jar piece done and OK'd (2026-11-12). Treasure chest for buyers added to the [ideas](../docs/plan/IDEAS.md).
+# Since Alan last checked (2026-11-13, afternoon)
+- **Gift arrival redone to Alan's story** (Studio only, nothing uploaded): the board's plane pops its pin, flies
+  right, loops and comes at you, away over the top; the box falls in; Open it!; the gift rises out on rays that move
+  in and out in turns; each Thanks! brings the next gift out; the plane flies back to its pin
+  ([how it plays](../docs/systems/economy-and-shop.md#the-gift-arriving)). Video: `.planning/gift-arrival-redo.mp4`.
+- Tests 599/0 after the redo (2026-11-13). The real Open it! and Thanks! taps were checked in Studio with two pretend gifts.
 
 # Now: finish the game for the beta
-Next: redo the gift's arrival (plane off its pin, rays pulsing in and out, one gift at a time out of the open box,
-plane back to its pin), then the goals review with Alan. Backlog: daily and weekly missions. Balance: Spitball planes
-weakest. Not checked: phone sizes of the report card row and the gift note.
+Next: Alan's OK on the gift arrival video, then the goals review with him. Backlog: daily and weekly missions.
+Balance: Spitball planes weakest. Not checked: phone sizes of the report card row and the gift note and arrival.
 
 Decisions to review
+Gift arrival: the box waits for an Open it! tap (the note first says who and "What's inside?"); on Thanks the gift
+  comes at you and fades; the stray star and both sparkles are gone; no sound yet (the old one had none).
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
@@ -49,6 +50,7 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
+- Watch `.planning/gift-arrival-redo.mp4`: the plane's flight, the rays, Open it!, the next gift out of the box.
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - Pick from the cosmetics and playtime rewards options (A-L) on the research page.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).

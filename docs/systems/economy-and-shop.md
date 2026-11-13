@@ -7,8 +7,9 @@ You earn **Paper** (money) and **XP** (levels) from points in every match. Paper
 **Gift a friend** is built to the [approved gift rules](../decisions/2026-11-13-gift-a-friend.md) (Studio only until
 go-live): the shop's friend note with search, the server check, "A gift for Sam", the practice gift, and the plane that
 brings it over the main menu. Checked in Studio Play 2026-11-13 by gifting to yourself (`DevGiftSelf`): tests 599/0, the
-friend got +5,000 Paper (not doubled), the giver's first-buy 2x stayed unused, one buy counted. Waiting on Alan's look; not
-checked on a phone size. All 15 gift products are disabled with no Roblox IDs yet. Server contract: [Friend gifts](#friend-gifts).
+friend got +5,000 Paper (not doubled), the giver's first-buy 2x stayed unused, one buy counted. **The arrival was redone
+to Alan's story the same day** ([how it plays](#the-gift-arriving)); waiting on his OK from the video
+(`.planning/gift-arrival-redo.mp4`). Not checked on a phone size. All 15 gift products are disabled with no Roblox IDs yet. Server contract: [Friend gifts](#friend-gifts).
 **Pacing (Alan, 2026-11-08):** Paper is the long wait, levels just open things up. An average player (12 folds a
 match, ~660 Paper and ~1,190 XP) reaches level 50 in about 18 hours of play and could own everything (167,400 Paper)
 in about 36; for the first 6 hours ~13 unlocked things are always waiting to be saved for. Prices scale up with level
@@ -247,6 +248,22 @@ Successful delivery says `Sent! <Name> gets it next time they play.`; practice s
 `Sent! (practice gift, no real purchase)`. Fallback says `Your gift couldn't be sent, so it's yours instead.`
 The receiver's grant and `GiftInbox` attribute are described on [Saving](saving.md#friend-gift-delivery).
 
+### The gift arriving
+Alan's story ([playtest 2026-11-13](../playtests/2026-11-13-gift-a-friend.md)), played over the main menu when it shows
+with gifts waiting:
+1. The board's own pinned plane pops its pin, flies right, loops round and comes at you getting bigger, then away over
+   the top (the moment waits for the board's plane to be pinned first, then swaps in its own copy on the same spot).
+2. The wrapped box falls in, squashes and bounces; a sticky note slides up: "A gift from Sam!", "What's inside?",
+   **Open it!** (the box itself can be tapped too).
+3. The lid pops off and the gift rises out of the open box onto its rays; the note says what it is, with **Thanks!**.
+   The rays are sixteen separate strokes: the ring turns while every other ray moves out and grows as its neighbours
+   move in and shrink, then they trade places with a bounce.
+4. Each Thanks! sends one `giftSeen`; the gift comes at you and is gone, and the next gift rises out of the same box.
+   After the last one the note and box go and the plane flies back to its pin.
+
+A second tap within a second of the last is ignored (the buttons share a spot). No new pictures were uploaded: the
+lid, box and its inside are parts of the one gift box picture, and each ray is a stroke cut from the rays picture.
+
 ## Offline-pausing timer
 Both resources pause offline. Loaded online menus, desk time, spectating and intermission count under the
 retained default; loading, transfer gaps and unavailable profile recovery do not. Another Roblox experience
@@ -303,7 +320,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `src/server/HangarService.luau` | Buying parts, the practice shop |
 | `src/client/ShopScreen.luau` | The shop window (Studio only until go-live): built to the approved concept's measurements, pictures named in `UIAssets.shop`, animations; the starter pack's saved timer, the free gift card with its 7-day row (Claim, ticks, time to the next), Paper packs biggest first with "First buy 2x!", pictures growing with the amount ([money plan](../plan/SHOP-MONEY-PLAN.md); checked in Play 2026-11-12; the tab buttons scroll too far, see STATE); the Gift a friend note: friends from Roblox (in this server first), the server's check, "A gift for Sam" with the price; from the title bar the shop stays "For Sam" until a card's gift button (Paper packs and boosts only) |
 | `src/server/CommerceService.luau` | Real Roblox purchases: receipts, pass checks, buy prompts (off) |
-| `src/client/GiftMoment.luau` | A friend's gift arriving over the main menu: a paper plane brings the wrapped box, it bursts open, a sticky note says who sent what, Thanks! (Alan's pick 2026-11-13); Studio `DevGiftMoment` / `DevGiftTime` |
+| `src/client/GiftMoment.luau` | [A friend's gift arriving](#the-gift-arriving) over the main menu: the board's plane leaves its pin and flies over, the box falls in, Open it!, each Thanks! brings the next gift out, the plane is pinned again (Alan's story 2026-11-13); Studio `DevGiftMoment` / `DevGiftTime` |
 | `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts; late starter bundles |
 | `tests/unit/ShopSave.spec.luau` | Gift rows, starter timing and bundles, first-buy doubles, buy counts, schema migration and Player attributes |
 | `tests/unit/MockShop.spec.luau` | Practice-only guards, typed grants and refusal of individual part products |

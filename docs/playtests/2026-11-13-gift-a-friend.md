@@ -18,5 +18,7 @@ Looked at the Gift a friend pieces in Studio (stills `.planning/gift-1-pick-a-fr
     but its own look); Thanks again for each; after the last one the plane flies back and is pinned on the board again.
 
 ## What changed
-Search box built. The arrival moment's redo is the next session's job (Alan: "have it do that next session", with
-Fable running it: "I want to see what Fable can do").
+Search box built. The arrival moment's redo was the next session's job (Alan: "have it do that next session", with
+Fable running it: "I want to see what Fable can do"): built that session to the story above
+([how it plays](../systems/economy-and-shop.md#the-gift-arriving)); one addition to check with him: the box waits for
+an **Open it!** tap (his "you open it"). Waiting on his OK from the video.

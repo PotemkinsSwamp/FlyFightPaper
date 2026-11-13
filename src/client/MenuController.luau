@@ -91,7 +91,7 @@ function Menu.start()
   seenLevel=function()return state.profile and state.profile.unlocksSeen or 0 end,
   open=function(slot)Menu.show("hangar",false,slot and "customize",slot)end, -- Put it on / See it: that part's tab
  })
- GiftMoment.start({seen=function(n)action:FireServer("giftSeen",n)end})
+ GiftMoment.start({seen=function(n)action:FireServer("giftSeen",n)end,board=board})
  -- Open a menu screen directly (the desk's Customize button, the menu buttons, Studio photo mode).
  -- page: which Hangar page to open on ("customize" = the binder).
  -- slot: a Customize tab to open on (the unlock card's Put it on / See it).

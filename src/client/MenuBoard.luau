@@ -117,7 +117,7 @@ function Board.new(playerGui, actions)
 		fly:Play()
 	end)
 
-	local self = { frame = cover }
+	local self = { frame = cover, plane = plane, pin = pin } -- (plane, pin: the gift moment flies this plane, GiftMoment)
 	function self.update(player, profile)
 		local s = profile and profile.statistics or {}
 		stats.Text = string.format("Paper %d\nPlanes downed %d\nWins %d\nMatches %d",

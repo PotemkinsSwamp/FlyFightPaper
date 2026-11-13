@@ -406,6 +406,14 @@ mistake would be easy to make twice.
   inside a ScrollingFrame and a note: read the button's `AbsolutePosition + AbsoluteSize/2` and click those coordinates.
 - **An overlay's darkening is its own Frame** (2026-11-13): the gift moment's `PaperUI.screen` cover colour at 0.5 didn't
   show over the main menu board in Play captures; a separate black "Dim" Frame (ZIndex 0, under the sheet) did.
+- **Cutting a picture on a slant with no new upload** (2026-11-13, the gift box's lid): an `ImageLabel` showing a box
+  of the picture (`ImageRectOffset/Size`) plus a `UIGradient` whose Transparency steps from 0 to 1 hides everything
+  past a slanted line. Measured: the gradient's direction turns in screen pixels, and its 0..1 runs along the line
+  through the label's middle in that direction, edge to edge (`min(w/|cos|, h/|sin|)` long). Its Color can shade the
+  kept part along the same direction. Two such parts make a V cut (`GiftMoment.luau` `group`). Squashing the label
+  unevenly moves the cut off the picture's line: grow such parts evenly.
+- **Edit-mode captures show StarterGui screens, not CoreGui** (2026-11-13): a test ScreenGui in `StarterGui` appears in
+  `screen_capture` without Play (good for layout and gradient tests; delete it after); one in `CoreGui` doesn't.
 - **`PaperUI.fitWords` once per label** (2026-11-13): it hooks the label's Text changes itself; calling it again on
   every change stacks hooks. `say()` without `grow` already attaches it.
 

@@ -12,6 +12,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `tools/exact_collision.lua` | Run in Studio after a rebuild: new meshes load as solid boxes until this turns on their exact shapes; then Ctrl+S |
 | `tools/studio_cli.py` | Calls Studio tools from the shell |
 | `tools/film_report_card.py` | Films the report card (and its Paper jar row) frame by frame in a running Studio Play and joins an MP4 (setup steps in its header; written 2026-11-12 from the scripts that made Alan's videos, not yet run as one piece) |
+| `tools/film_gift.py` | Films a friend's gift arriving (three pretend gifts by default) frame by frame in a running, muted Studio Play on the main menu and joins an MP4: `python tools/film_gift.py OUT.mp4 [KEYS] [FPS]` (about 5 minutes; no flying, so no mouse grab) |
 | `tools/run_bot_matches.py` | Muted bots-only measuring matches in the open Studio (`[count] [report_at] [tier]`, default 3, 462 s, `ace_mix`): per-bot skill, plane, shots, hits, folds, points, seconds in each state, script errors. Run in the background; needs Alan's go |
 | `tools/cold_cache.py` | Cold-load tests on the PC: `aside` moves Roblox's download cache to a backup folder (Studio and Roblox closed), `open` reopens the cloud place in Studio, `push FILE...` puts changed `src/` files into it (no Rojo link after a reopen); then Play and read `LoadLog.recent()` |
 | `tools/studio_shot.sh`, `studio_grab.ps1`, `studio_top.ps1` | Screenshot of the Studio window (only when Studio is in front) |
