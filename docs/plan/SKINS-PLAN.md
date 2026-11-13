@@ -58,7 +58,12 @@ lightning (thunderbird).
   wrapped itself onto a standard plane and the heavy plane, carrying on across nose, body, wings and tail
   (`.planning/skins/printed-sheet-test.jpg`). To fix in the real script: faces pointing forward or back smear (they
   need a third, front-on view), and the paper creases must be moved onto the new layout so plain planes look as now.
-- How Legendary and Mythical shapes fit any part mix and still look good (no plain stretching).
+- How Legendary and Mythical shapes fit any part mix: **joints test in Blender 2026-11-13 (no upload)**
+  (`.planning/skins/joints-test-bat.jpg`). A rough bat is scaled evenly to the plane's length (head and ears keep their
+  shape), its body sides move out to the real body (at most 60%), and each point of its wing outline sits on a corner
+  of the real wing seen from above, the scallops redrawn between them; the tail webbing spans the real tail. It
+  covered the wings of a swept and a straight-winged plane; the standard plane's tail fins stay uncovered (hitbox
+  without skin, as Alan accepted). In Roblox each point would be a Bone. Not yet tried: flapping, real art.
 - What a Mythical does to weapons.
 - Prices and earn rules per tier.
 
