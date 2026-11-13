@@ -68,6 +68,21 @@ local function duration(seconds)
 	return hours == 1 and "1 hour" or string.format("%g hours", hours)
 end
 
+-- The Paper jar picture (pixels in parent): the empty jar, and the full one showing below the paper's level (the two
+-- drawings line up exactly). Keep the box wider than the jar: the picture's height fills it, so the level shares hold.
+function ShopScreen.jarPicture(parent, inside, x, y, w, h)
+	local jar = PaperUI.image(parent, "Jar", Art.jarEmpty, x, y, w, h)
+	local level = JAR_BOTTOM - (JAR_BOTTOM - JAR_TOP) * math.clamp(inside / JAR.cap_paper, 0, 1)
+	if inside > 0 then
+		local clip = Instance.new("Frame")
+		clip.Name, clip.BackgroundTransparency, clip.ClipsDescendants = "Filled", 1, true
+		clip.Position, clip.Size, clip.Parent = UDim2.fromScale(0, level), UDim2.fromScale(1, 1 - level), jar
+		local paper = PaperUI.image(clip, "Full", Art.jarFull, 0, 0, 1, 1)
+		paper.Position, paper.Size = UDim2.fromScale(0.5, (0.5 - level) / (1 - level)), UDim2.fromScale(1, 1 / (1 - level)) -- (pictures sit by their middle)
+	end
+	return jar
+end
+
 -- api = { buy(key), back() }
 function ShopScreen.new(playerGui, api)
 	local cover, sheet = PaperUI.screen(playerGui, "ShopScreen", Assets.mainmenu.bg)
@@ -532,18 +547,7 @@ function ShopScreen.new(playerGui, api)
 		local card = pic(content, "PaperJar", Art.cardPackOrange, x0, top, x0 + 405, top + 340)
 		move(pic(card, "Rays", Art.rays, 55, 8, 355, 218), "spin", phase)
 		say(card, "Name", "Paper jar", 15, 8, 390, 58, 40, { loud = true })
-		-- The empty jar, and the full one showing below the paper's level (the two drawings line up exactly). The box is
-		-- wider than the jar, so the picture's height fills it and the level shares hold.
-		local jar = fit(pic(card, "Jar", Art.jarEmpty, 70, 52, 335, 212))
-		local level = JAR_BOTTOM - (JAR_BOTTOM - JAR_TOP) * math.clamp(inside / JAR.cap_paper, 0, 1)
-		if inside > 0 then
-			local clip = Instance.new("Frame")
-			clip.Name, clip.BackgroundTransparency, clip.ClipsDescendants = "Filled", 1, true
-			clip.Position, clip.Size, clip.Parent = UDim2.fromScale(0, level), UDim2.fromScale(1, 1 - level), jar
-			local paper = fit(pic(clip, "Full", Art.jarFull, 0, 0, 1, 1))
-			paper.Position, paper.Size = UDim2.fromScale(0.5, (0.5 - level) / (1 - level)), UDim2.fromScale(1, 1 / (1 - level)) -- (pictures sit by their middle)
-		end
-		move(jar, "bob", phase)
+		move(ShopScreen.jarPicture(card, inside, 70 * K, 52 * K, 265 * K, 160 * K), "bob", phase)
 		pic(card, "AmountPaper", Art.labelDark, 55, 212, 360, 258)
 		say(card, "Amount", "+" .. commas(inside) .. " Paper", 55, 212, 360, 258, 40, { color = WHITE })
 		if inside >= JAR.min_break_paper then
@@ -689,6 +693,15 @@ function ShopScreen.new(playerGui, api)
 	end)
 
 	local self = { frame = cover }
+	-- Open on a section, or on one card by name (the report card's "See your jar" opens on PaperJar), once the window
+	-- has drawn (its scale is known only then).
+	function self.jump(name)
+		task.delay(0.2, function()
+			local piece = content:FindFirstChild(name)
+			local top = sections[name] or piece and piece.Position.Y.Offset - piece.Size.Y.Offset / 2 - 20 * K
+			if top then scroll.CanvasPosition = Vector2.new(0, top * perUnit()) end
+		end)
+	end
 	local shown, lastProfile
 	function self.update(player, profile)
 		lastProfile = profile

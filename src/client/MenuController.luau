@@ -98,6 +98,7 @@ function Menu.start()
   state.under=nil
   if screen=="hangar" then hangarScreen.open(page,slot) end
   state.screen=screen;state.fromDesk=fromDesk==true;action:FireServer("profile");render()
+  if screen=="shop" and page then shopScreen.jump(page) end -- page: a shop section ("Paper") or card ("PaperJar")
  end
 -- Rounds never stop (Alan 2026-10-17): the round end plays out in the room (RoundEnd), so no menu opens by itself.
 render=function()

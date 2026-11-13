@@ -14,6 +14,7 @@ local Cutscene = require(script.Parent.WinnersCutscene)
 local WinnersSound = require(script.Parent.WinnersSound)
 local LevelBar = require(script.Parent.LevelBar)
 local CommerceRules = require(Root.Shared.CommerceRules)
+local JarRules = require(Root.Generated.Economy).paper_jar
 
 local MODES = { { "FFA", "Free-for-all", "blue" }, { "TDM", "Team dogfight", "pink" }, { "CONTROL", "Airspace Control", "green" } }
 local KEYS = { [Enum.KeyCode.One] = 1, [Enum.KeyCode.Two] = 2, [Enum.KeyCode.Three] = 3 }
@@ -149,6 +150,19 @@ function RoundEnd.start()
 	worthScale.Parent = worth
 	local offerLeft -- whole seconds shown on the button
 
+	-- What went into your Paper jar this match (Alan 2026-11-12): a little orange card left of the report cards (clear of
+	-- them in either layout) with the jar, the amount and "See your jar", which opens the shop on Paper. Only where the
+	-- shop is (Studio until go-live, like the menu's Shop button). The amount is the jar's change since the round
+	-- started; the final bonus can land after the card shows, so it follows the PaperJar attribute.
+	local JAR_SPOT = { solo = { 900, 660 }, teams = { 480, 575 } } -- the card's top left, sheet pixels
+	local jarTag = image(card, "JarTag", UIArt.shop.cardPackOrange, 900, 660, 300, 252)
+	jarTag.ScaleType, jarTag.Visible = Enum.ScaleType.Stretch, false
+	local jarWords = PaperUI.loud(words(jarTag, "Words", "", 10, 122, 280, 42, 30))
+	jarWords.TextXAlignment = Enum.TextXAlignment.Center
+	button(jarTag, "See", UIArt.mainmenu.strip.green, "See your jar", 40, 172, 220, 62, -1, function()
+		require(script.Parent.MenuController).show("shop", false, "PaperJar")
+	end, 28)
+
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
 	-- Below the match strip, which shows the vote lap's clock (Alan 2026-10-23: the cards covered it).
@@ -172,6 +186,19 @@ function RoundEnd.start()
 	end
 
 	local state = { phase = nil, snap = nil, stage = "banner", profileXP = nil, mine = nil, minePage = 1, cardAt = 0 }
+	local function showJar(layout)
+		local inside = player:GetAttribute("PaperJar") or 0
+		local added = math.max(0, inside - (state.jarStart or inside))
+		local full = inside >= JarRules.cap_paper
+		jarTag.Visible = layout ~= nil and RunService:IsStudio() and state.mine ~= nil and (added > 0 or full)
+		if not jarTag.Visible then return end
+		local spot = JAR_SPOT[layout]
+		jarTag.Position = UDim2.fromOffset(spot[1] + 150, spot[2] + 126)
+		jarWords.Text = full and "Your jar is full!" or "+" .. PaperUI.commas(added) .. " Paper in your jar"
+		local old = jarTag:FindFirstChild("Jar")
+		if old then old:Destroy() end
+		require(script.Parent.ShopScreen).jarPicture(jarTag, inside, 60, 8, 180, 112)
+	end
 	local function show(part) for _, child in { banner, card, vote } do child.Visible = child == part or (type(part) == "table" and table.find(part, child) ~= nil) end end
 
 	local TEAM_NAMES = { ["team:1"] = "Red team", ["team:2"] = "Blue team" }
@@ -231,6 +258,7 @@ function RoundEnd.start()
 			return a.displayName < b.displayName
 		end)
 		state.mine = nil
+		showJar(nil) -- (not on Tab's live standings)
 		for _, p in list do if p.displayName == player.DisplayName or p.displayName == player.Name then state.mine = p end end
 		local function place(p)
 			local at = 1
@@ -316,6 +344,7 @@ function RoundEnd.start()
 			offerPrice.Text, worthWords.Text = tostring(price), "Worth " .. worthRobux .. " R$!"
 			offer.Parent = pages[state.minePage].page
 		end
+		showJar(teamRound and "teams" or "solo")
 	end
 	-- Your level bar fills from where you were before this round to where you are now.
 	RunService.RenderStepped:Connect(function()
@@ -354,6 +383,7 @@ function RoundEnd.start()
 		local inMatch = player:GetAttribute("InMatch")
 		if snap.phase ~= state.phase then
 			state.phase = snap.phase
+			if snap.phase == "ACTIVE" then state.jarStart = player:GetAttribute("PaperJar") or 0 end -- (the jar line's start)
 			Root:SetAttribute("StandingsOpen", nil) -- each round starts with it closed
 			Cutscene.stop()
 			if state.stopSound then state.stopSound(); state.stopSound = nil end
@@ -403,6 +433,7 @@ function RoundEnd.start()
 	Root:WaitForChild("RoundView").OnClientEvent:Connect(update)
 	player:GetAttributeChangedSignal("Vote"):Connect(function() if state.snap then update(state.snap) end end)
 	player:GetAttributeChangedSignal("MatchDoubled"):Connect(function() if state.snap then update(state.snap) end end)
+	player:GetAttributeChangedSignal("PaperJar"):Connect(function() if state.snap and state.snap.phase == "RESULTS" then update(state.snap) end end)
 	Root:GetAttributeChangedSignal("StandingsOpen"):Connect(function() if state.snap then update(state.snap) end end)
 	Input.InputBegan:Connect(function(input, processed)
 		local index = KEYS[input.KeyCode]

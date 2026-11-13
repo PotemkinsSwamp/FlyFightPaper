@@ -143,7 +143,9 @@ practice buy runs the same lock-then-pay path at once. The shop's clocks
 (daily gift, Today's parts, starter pack) run on the server's time; pictures sit on mint green circles (Alan 2026-11-12, was faded chalk green), except the coloured cards (the passes and Your next part), which have a soft shadow instead (`PaperUI.shadow`, Alan 2026-11-12); the starter pack's items float on a shadow with their words on a dark plate (Alan 2026-11-12). The Paper jar is the last
 card in the Paper section: a glass jar that fills to the Paper inside (two drawings, empty and full, the full one cut at
 the level), the amount, and 199 R$ from 3,000 (below: "Breaks at 3,000"); "Full!" at 10,000; before full, an "Are you
-sure?" note offers Break it now or Keep filling ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)). 3D part pictures are centred as seen, not on their box's middle (the near end looks bigger; `UnlockMoment.view`'s `turn`). Robux prices are the
+sure?" note offers Break it now or Keep filling ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)). The report
+card shows what went into the jar this match on a small orange card beside it (the `PaperJar` change since the round
+started) with "See your jar", which opens the shop on the jar card (`Menu.show("shop", false, "PaperJar")`). 3D part pictures are centred as seen, not on their box's middle (the near end looks bigger; `UnlockMoment.view`'s `turn`). Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
 DEVELOPMENT ONLY, cannot prompt real checkout, and cannot write mock purchases into production profiles.
