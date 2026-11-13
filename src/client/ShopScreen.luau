@@ -29,7 +29,7 @@ local PRICE = {
 	-- 2x boosts cheaper so the order holds against Double this match (docs/decisions/2026-11-12-double-this-match.md)
 	xp_boost_15m = 10, xp_boost_30m = 15, xp_boost_60m = 25, xp_boost_180m = 69, xp_boost_300m = 99,
 	paper_boost_15m = 10, paper_boost_30m = 15, paper_boost_60m = 25, paper_boost_180m = 69, paper_boost_300m = 99,
-	paper_pack_1500 = 99, paper_pack_5000 = 299, paper_pack_7500 = 549, paper_pack_15000 = 799, paper_pack_40000 = 1999,
+	paper_pack_1500 = 99, paper_pack_5000 = 299, paper_pack_7500 = 549, paper_pack_15000 = 799, paper_pack_40000 = 1999, paper_jar = 199,
 	permanent_2x_xp = 1499, permanent_2x_paper = 999,
 }
 -- Value stickers (true per Robux: bigger packs and longer boosts give more for each Robux).
@@ -40,6 +40,9 @@ local BADGE = { paper_pack_15000 = "Good Value", paper_pack_40000 = "Most Value"
 local PACK_ICON = { paper_pack_1500 = "iconPaperSmall", paper_pack_5000 = "iconStack", paper_pack_7500 = "iconStack",
 	paper_pack_15000 = "iconPaperPile", paper_pack_40000 = "iconPaperBox" }
 local DAILY = require(Root.Generated.Economy).daily_gift -- the 7-day gift row (nil until its save rules are in)
+local JAR = require(Root.Generated.Economy).paper_jar -- share, cap_paper, min_break_paper
+-- The jar drawings (empty, and the same jar full): where the paper sits, as shares of the picture's height from its top.
+local JAR_BOTTOM, JAR_TOP = 0.97, 0.2
 -- How a real part is shown in a card, by kind: { turn, tilt } in degrees. Flat parts from nearly above, the rest at a
 -- three-quarter angle. An item can give its own `pose` instead.
 local POSE = { wings = { 0, -65 }, tail = { 0, -60 }, default = { 35, -25 } }
@@ -196,6 +199,27 @@ function ShopScreen.new(playerGui, api)
 		handle.Position = UDim2.fromOffset(1392 * K, (210 + share * 640) * K)
 	end
 	scroll:GetPropertyChangedSignal("CanvasPosition"):Connect(scrolled)
+
+	-- ===== "Wait for more?" before breaking a Paper jar that isn't full (Alan 2026-11-12) =====
+	-- The welcome note's sticky paper and the main menu's strips, over a darkened shop that can't be clicked through.
+	local jarNote = Instance.new("Frame")
+	jarNote.Name, jarNote.BackgroundTransparency, jarNote.Size, jarNote.ZIndex, jarNote.Visible = "JarNote", 1, UDim2.fromScale(1, 1), 7, false
+	jarNote.Parent = board
+	local shade = Instance.new("TextButton") -- past the screen's edges, so nothing behind can be clicked
+	shade.Name, shade.Text, shade.AutoButtonColor, shade.BorderSizePixel = "Shade", "", false, 0
+	shade.BackgroundColor3, shade.BackgroundTransparency, shade.AnchorPoint = Color3.new(0, 0, 0), 0.45, Vector2.new(0.5, 0.5)
+	shade.Position, shade.Size, shade.Parent = UDim2.fromScale(0.5, 0.5), UDim2.fromScale(3, 3), jarNote
+	local sticky = fit(pic(jarNote, "Note", Assets.ingame.stickyWide, 265, 310, 1265, 662))
+	say(sticky, "Title", "Are you sure?", 90, 70, 910, 125, 44, { loud = true })
+	local why = say(sticky, "Words", "The jar always costs 199 R$, and it keeps filling up to " .. commas(JAR.cap_paper)
+		.. " Paper. Wait, and you get more Paper for the same price.", 90, 125, 910, 240, 30, { grow = true })
+	why.TextWrapped = true
+	local strip = Assets.mainmenu.strip
+	PaperUI.button(sticky, "Break", strip.green, "Break it now", 190 * K, 256 * K, 280 * K, 72 * K, -1, function()
+		jarNote.Visible = false
+		api.buy("paper_jar")
+	end, math.round(36 * K * TEXT))
+	PaperUI.button(sticky, "Keep", strip.red, "Keep filling", 530 * K, 256 * K, 280 * K, 72 * K, 1, function() jarNote.Visible = false end, math.round(36 * K * TEXT))
 
 	-- ===== Card pieces =====
 	local function heading(y, text)
@@ -500,6 +524,43 @@ function ShopScreen.new(playerGui, api)
 		return y + 232
 	end
 
+	-- The Paper jar (docs/decisions/2026-11-12-paper-jar-rules.md): it fills as you play (an extra 25% of the Paper you
+	-- earn, up to 10,000); from 3,000 it breaks for 199 R$, after a "wait for more" note unless it's full.
+	local function jarCard(x0, top, phase)
+		local inside = game.Players.LocalPlayer:GetAttribute("PaperJar") or 0
+		local full = inside >= JAR.cap_paper
+		local card = pic(content, "PaperJar", Art.cardPackOrange, x0, top, x0 + 405, top + 340)
+		move(pic(card, "Rays", Art.rays, 55, 8, 355, 218), "spin", phase)
+		say(card, "Name", "Paper jar", 15, 8, 390, 58, 40, { loud = true })
+		-- The empty jar, and the full one showing below the paper's level (the two drawings line up exactly). The box is
+		-- wider than the jar, so the picture's height fills it and the level shares hold.
+		local jar = fit(pic(card, "Jar", Art.jarEmpty or Art.iconPaperPile, 70, 52, 335, 212))
+		local level = JAR_BOTTOM - (JAR_BOTTOM - JAR_TOP) * math.clamp(inside / JAR.cap_paper, 0, 1)
+		if inside > 0 then
+			local clip = Instance.new("Frame")
+			clip.Name, clip.BackgroundTransparency, clip.ClipsDescendants = "Filled", 1, true
+			clip.Position, clip.Size, clip.Parent = UDim2.fromScale(0, level), UDim2.fromScale(1, 1 - level), jar
+			local paper = fit(pic(clip, "Full", Art.jarFull or Art.iconPaperPile, 0, 0, 1, 1))
+			paper.Position, paper.Size = UDim2.fromScale(0.5, (0.5 - level) / (1 - level)), UDim2.fromScale(1, 1 / (1 - level)) -- (pictures sit by their middle)
+		end
+		move(jar, "bob", phase)
+		pic(card, "AmountPaper", Art.labelDark, 55, 212, 360, 258)
+		say(card, "Amount", "+" .. commas(inside) .. " Paper", 55, 212, 360, 258, 40, { color = WHITE })
+		if inside >= JAR.min_break_paper then
+			buy(card, "Buy", 102, 264, 302, 334, PRICE.paper_jar, 60, function()
+				if full then api.buy("paper_jar") else jarNote.Visible = true end
+			end)
+		else
+			pic(card, "WaitPaper", Art.labelDark, 72, 270, 332, 326)
+			say(card, "Wait", "Breaks at " .. commas(JAR.min_break_paper), 72, 270, 332, 326, 34, { color = WHITE })
+		end
+		if full then
+			local burst = pic(card, "Full", Art.burstNew, 278, 78, 400, 166, 10) -- beside the jar, clear of its name, on the card
+			say(burst, "Words", "Full!", 0, 0, 122, 88, 36, { loud = true })
+			move(burst, "wobble")
+		end
+	end
+
 	local function paperPacks(y)
 		heading(y, "PAPER")
 		-- Biggest first, so the first price seen is the big one; the 7,500 decoy sits beside the 15,000 it sells
@@ -509,11 +570,13 @@ function ShopScreen.new(playerGui, api)
 			if product.benefit == "paper_balance" then table.insert(packs, product) end
 		end
 		table.sort(packs, function(a, b) return a.amount > b.amount end)
+		table.insert(packs, { jar = true }) -- the Paper jar closes the last row
 		local used = string.split(game.Players.LocalPlayer:GetAttribute("FirstBuysUsed") or "", ",")
 		for i, product in packs do
 			local row, col = (i - 1) // 3, (i - 1) % 3
 			local inRow = math.min(3, #packs - row * 3)
 			local x0, top = 22 + col * 411 + (3 - inRow) * 411 / 2, y + 55 + row * 350
+			if product.jar then jarCard(x0, top, i); continue end
 			-- The first buy of each pack gives double (the server decides; this only shows it).
 			local first = not table.find(used, product.key)
 			local card = pic(content, product.key, Art.cardPackOrange, x0, top, x0 + 405, top + 340)
@@ -639,7 +702,7 @@ function ShopScreen.new(playerGui, api)
 		local key = game:GetService("HttpService"):JSONEncode({ boosts.permanentXP, boosts.permanentPaper, count,
 			me:GetAttribute("Paper"), me:GetAttribute("Level"), me:GetAttribute("FoldGoal"), now() // 86400,
 			math.floor((boosts.xpSeconds or 0) / 60), math.floor((boosts.paperSeconds or 0) / 60),
-			me:GetAttribute("DailyGiftNext"), me:GetAttribute("DailyGiftReady"), me:GetAttribute("StarterPackEnds"), me:GetAttribute("FirstBuysUsed") })
+			me:GetAttribute("DailyGiftNext"), me:GetAttribute("DailyGiftReady"), me:GetAttribute("StarterPackEnds"), me:GetAttribute("FirstBuysUsed"), me:GetAttribute("PaperJar") })
 		if key == shown then return end
 		shown = key
 		for _, child in content:GetChildren() do child:Destroy() end
@@ -664,7 +727,7 @@ function ShopScreen.new(playerGui, api)
 		scrolled()
 	end
 	-- The server's gift, starter pack and first-buy answers arrive as attributes: redraw when one changes.
-	local WATCHED = { DailyGiftNext = true, DailyGiftReady = true, StarterPackEnds = true, FirstBuysUsed = true }
+	local WATCHED = { DailyGiftNext = true, DailyGiftReady = true, StarterPackEnds = true, FirstBuysUsed = true, PaperJar = true }
 	game.Players.LocalPlayer.AttributeChanged:Connect(function(name)
 		if WATCHED[name] and cover.Visible then self.update(game.Players.LocalPlayer, lastProfile) end
 	end)

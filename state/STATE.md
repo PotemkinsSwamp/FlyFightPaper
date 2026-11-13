@@ -14,6 +14,7 @@ free with a shadow and dark word plates. Then the Paper jar card (art needs his 
 review. Balance pass later: Spitball planes weakest. Not seen yet: a real level-up in a match.
 
 Decisions to review
+Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
   Value", 15,000 "Good Value" (5,000 lost its sticker). Pack pictures grow with the amount. Daily gift days turn over at
   UTC midnight; a boost gift you already own forever gives 250 Paper. Gear cards: slimmer Hit row, bigger words.

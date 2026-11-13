@@ -1,8 +1,8 @@
 # Paper jar rules: breaks at 3,000 Paper with a "wait for more" warning; 2x fills it too; Today's parts as built
 
 **Decided:** 2026-11-12 (Alan, after the money plan's jar was built)
-**Status:** decided. The save rules are built (`paper_jar` in `config/economy.json`); the jar's shop card and the warning
-are not built yet.
+**Status:** decided. The save rules are built (`paper_jar` in `config/economy.json`). The shop card and the warning are
+built in Studio (2026-11-12, preview `.planning/paper-jar-preview.jpg`); the two jar pictures wait for Alan's upload go.
 
 ## Decision
 - **The jar breaks from 3,000 Paper**, just under what 199 R$ buys in the small Paper packs (99 R$ gives 15.2 Paper per
