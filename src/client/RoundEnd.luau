@@ -152,16 +152,16 @@ function RoundEnd.start()
 	local offerLeft -- whole seconds shown on the button
 	worthWords.Size = UDim2.fromScale(1, 1)
 	-- Beside the Paper jar (Alan 2026-11-12: the row fits inside the card's width; the Double panel big, with words big
-	-- enough to read and a buy button that looks like one): the same green paper (sliced so its tacks keep their shape)
-	-- holds the heading, the amounts and the time left on the left, and the shop's bright green buy button with the price
-	-- on the right, bouncing gently, the "Worth" sticker under it.
+	-- enough to read and a buy button that looks like one): yellow paper (two greens clashed; sliced so its tacks keep
+	-- their shape) holds the heading, the amounts and the time left on the left, and on the right the "Worth" sticker
+	-- above the shop's bright green buy button with the price, bouncing.
 	local PANEL = Vector2.new(466, 160)
-	local offerAmounts = words(offer, "Amounts", "", 12, 58, 290, 34, 26)
-	local offerTime = words(offer, "Time", "", 12, 98, 290, 34, 26)
+	local offerAmounts = words(offer, "Amounts", "", 12, 58, 290, 40, 34)
+	local offerTime = words(offer, "Time", "", 12, 102, 290, 40, 32)
 	for _, label in { offerAmounts, offerTime } do label.TextXAlignment = Enum.TextXAlignment.Center end
 	PaperUI.fitWords(offerAmounts, 280) -- big amounts: smaller, never past the column
-	offer.SliceCenter, offer.SliceScale = Rect.new(90, 70, 665, 120), 0.6
-	local offerBuy = PaperUI.robuxButton(offer, "Buy", 296, 40, 160, 66, "", "", 42, pressDouble)
+	offer.SliceScale = 0.6
+	local offerBuy = PaperUI.robuxButton(offer, "Buy", 296, 64, 160, 66, "", "", 42, pressDouble)
 	offerBuy.Image, offerBuy.Price.Word1.Visible, offerBuy.ZIndex = UIArt.shop.buyGreen, false, offer.ZIndex + 1
 	local buyBounce = Instance.new("UIScale")
 	buyBounce.Parent = offerBuy
@@ -170,14 +170,16 @@ function RoundEnd.start()
 		offerCompact, offerSelling = compact, selling
 		PaperUI.set(offer, { Size = compact and UDim2.fromOffset(PANEL.X, PANEL.Y) or UDim2.fromOffset(560, 140) })
 		offer.ScaleType = compact and Enum.ScaleType.Slice or Enum.ScaleType.Fit
+		offer.Image = compact and UIArt.mainmenu.strip.yellow or UIArt.mainmenu.strip.green
+		offer.SliceCenter = compact and Rect.new(90, 75, 671, 127) or Rect.new(0, 0, 0, 0) -- (the tacks stay in the corners)
 		offer.Price.Visible, offerAmount.Visible = not compact, not compact
 		offerAmounts.Visible, offerTime.Visible, offerBuy.Visible = compact, compact and selling, compact and selling
-		offerLine.TextSize = compact and (selling and 34 or 38) or 30
+		offerLine.TextSize = compact and (selling and 44 or 46) or 30
 		if compact then
 			-- selling: words on the left, buy button on the right; paid or pressed: the words across the middle
-			offerLine.Position, offerLine.Size = UDim2.fromOffset(selling and 12 or 0, selling and 12 or 30), UDim2.fromOffset(selling and 290 or PANEL.X, 46)
-			offerAmounts.Position, offerAmounts.Size = UDim2.fromOffset(selling and 12 or 0, selling and 58 or 84), UDim2.fromOffset(selling and 290 or PANEL.X, 34)
-			worth.Position, worth.Size, worth.Rotation, worthWords.TextSize = UDim2.fromOffset(376, 131), UDim2.fromOffset(152, 46), 6, 24
+			offerLine.Position, offerLine.Size = UDim2.fromOffset(selling and 12 or 0, selling and 6 or 26), UDim2.fromOffset(selling and 290 or PANEL.X, 52)
+			offerAmounts.Position, offerAmounts.Size = UDim2.fromOffset(selling and 12 or 0, selling and 58 or 84), UDim2.fromOffset(selling and 290 or PANEL.X, 40)
+			worth.Position, worth.Size, worth.Rotation, worthWords.TextSize = UDim2.fromOffset(376, 30), UDim2.fromOffset(164, 50), 6, 28
 		else
 			offerLine.Position, offerLine.Size = UDim2.fromOffset(selling and 20 or 0, 14), UDim2.fromOffset(selling and 380 or 560, 40)
 			worth.Position, worth.Size, worth.Rotation, worthWords.TextSize = UDim2.fromOffset(490, 21), UDim2.fromOffset(200, 66), 8, 30
@@ -213,9 +215,12 @@ function RoundEnd.start()
 		scrap.ImageRectOffset, scrap.ImageRectSize, scrap.ZIndex = Vector2.new(box[1], box[2]), Vector2.new(box[3], box[4]), 3
 		scraps[i] = scrap
 	end
-	local AMOUNT_AT = Vector2.new(-26, 4) -- where "+165!" comes to rest (row pixels): the card's blank corner, left of the jar
-	local jarAmount = PaperUI.loud(words(jarRow, "Amount", "", 0, 0, 260, 90, 60))
-	jarAmount.AnchorPoint, jarAmount.TextXAlignment, jarAmount.TextColor3, jarAmount.ZIndex, jarAmount.Rotation = Vector2.new(0.5, 0.5), Enum.TextXAlignment.Center, Color3.fromRGB(255, 222, 40), 4, -6
+	-- Where "+165!" comes to rest (row pixels; Alan 2026-11-12): above the jar's right shoulder, turned 30 degrees, its "+"
+	-- (the box's left end: the words start there, so longer amounts reach right) just under the level bar, never over it.
+	local AMOUNT_AT = Vector2.new(172, 20)
+	local jarAmount = PaperUI.loud(words(jarRow, "Amount", "", 0, 0, 150, 66, 52))
+	jarAmount.AnchorPoint, jarAmount.TextXAlignment, jarAmount.TextColor3, jarAmount.ZIndex, jarAmount.Rotation = Vector2.new(0.5, 0.5), Enum.TextXAlignment.Left, Color3.fromRGB(255, 222, 40), 4, 30
+	PaperUI.fitWords(jarAmount, 150)
 	local amountInk = Instance.new("UIStroke") -- the shop's part-name look: yellow crayon with a thick ink edge
 	amountInk.Color, amountInk.Thickness, amountInk.LineJoinMode, amountInk.Parent = PaperUI.INK, 5, Enum.LineJoinMode.Round, jarAmount
 	local amountPop = Instance.new("UIScale")
@@ -438,8 +443,7 @@ function RoundEnd.start()
 			end
 			-- pop in with a bounce (an overshooting ease) as the card comes up, then a gentle pulse
 			local t = since - 0.8
-			-- beside the jar the buy button bounces instead, so one thing moves (the sticker just pops in)
-			worthScale.Scale = t < 0.45 and popIn(t, 0.45) or offerCompact and 1 or 1 + 0.06 * math.sin((t - 0.45) * 4)
+			worthScale.Scale = t < 0.45 and popIn(t, 0.45) or 1 + 0.06 * math.sin((t - 0.45) * 4)
 			buyBounce.Scale = t < 0.45 and popIn(t, 0.45) or 1 + 0.08 * math.abs(math.sin((t - 0.45) * 3.2))
 		end
 		if jarRow.Visible then
