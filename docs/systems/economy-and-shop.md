@@ -144,8 +144,7 @@ practice buy runs the same lock-then-pay path at once. The shop's clocks
 card in the Paper section: a glass jar that fills to the Paper inside (two drawings, empty and full, the full one cut at
 the level), the amount, and 199 R$ from 3,000 (below: "Breaks at 3,000"); "Full!" at 10,000; before full, an "Are you
 sure?" note offers Break it now or Keep filling ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)). The report
-card shows what went into the jar this match on a small orange card beside it (the `PaperJar` change since the round
-started) with "See your jar", which opens the shop on the jar card (`Menu.show("shop", false, "PaperJar")`). 3D part pictures are centred as seen, not on their box's middle (the near end looks bigger; `UnlockMoment.view`'s `turn`). Robux prices are the
+card's jar piece is switched off for a redo to Alan's pick ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)). 3D part pictures are centred as seen, not on their box's middle (the near end looks bigger; `UnlockMoment.view`'s `turn`). Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
 DEVELOPMENT ONLY, cannot prompt real checkout, and cannot write mock purchases into production profiles.

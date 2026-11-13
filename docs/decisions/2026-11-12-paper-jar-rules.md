@@ -3,7 +3,7 @@
 **Decided:** 2026-11-12 (Alan, after the money plan's jar was built)
 **Status:** decided. The save rules are built (`paper_jar` in `config/economy.json`). The shop card and the warning are
 built in Studio (2026-11-12, preview `.planning/paper-jar-preview.jpg`); the two jar pictures uploaded and approved
-(Alan's go). The report card's jar card (below) is built.
+(Alan's go). The report card's jar piece (below) is being redone to Alan's pick.
 
 ## Decision
 - **The jar breaks from 3,000 Paper**, just under what 199 R$ buys in the small Paper packs (99 R$ gives 15.2 Paper per
@@ -16,9 +16,15 @@ built in Studio (2026-11-12, preview `.planning/paper-jar-preview.jpg`); the two
   61 matches, roughly 9 hours, to fill it, so it can't replace the packs; "the point is to give them a deal and make
   them want to buy it for what they earned"). A slower refill (a tenth after the first break) was weighed and dropped.
 - **The report card says what went into the jar** (Alan 2026-11-12): at the end of every match, how much Paper went
-  into your jar this match, with a small button ("See your jar") that opens the shop at the jar. Built 2026-11-12 and seen in Studio Play: a
-  small orange card left of the report cards with the jar, "+N Paper in your jar" (or "Your jar is full!") and the
-  button; shown only where the shop is (Studio until go-live, like the menu's Shop button).
+  into your jar this match, with a button that opens the shop at the jar. First try (2026-11-12, the shop's orange card pasted left of the report
+  card with "See your jar") Alan disliked: "you didn't make it look different, add something distinctive... something
+  to catch your eye"; it is switched off (`RoundEnd.luau` `showJar`). **His pick for the redo:** the jar sits at the
+  end of the Double this match row under your card: the glass jar itself (no card behind it), paper scraps dropping
+  into it as the card comes up, the level rising from before the match to now, a big crayon "+165!" popping out, and
+  its own small yellow button beside it ("Break the jar!" from 3,000, "See your jar" before), gently pulsing. Shown
+  every match where something went in or the jar is full, even when the Double button isn't there. Video to Alan
+  before anything else. The amount (the `PaperJar` change since the round started) and "See your jar" opening the
+  shop on the jar card (`Menu.show("shop", false, "PaperJar")`) are built and work.
 - **Today's parts:** 3 picked from the 6 parts nearest your level that you don't own. OK as built. Later, when a player
   owns every part, the row can rotate skins instead (once skins exist; see [ideas](../plan/IDEAS.md)).
 

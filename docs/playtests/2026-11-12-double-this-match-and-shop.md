@@ -30,6 +30,15 @@ Played Studio matches after Double this match was built (team dogfight among the
   look at the big bodies in the Hangar. It must never exist outside Studio.
 - Not commented on yet: the mint green itself, the big bodies in the Hangar (couldn't, locked), the fold card fixes.
 
+## Third look (dev switch, centred models, starter items, Paper jar)
+- "Those look good" for the centred shop models, the floating starter pack items and the dev switch pictures.
+- **Paper jar card in the shop:** "looks good, it fits"; upload approved. The note shortened to the price and the
+  10,000 cap. Fill rate stays as is (it already takes long; the point is a deal for what they earned).
+- **Tutorial question in Studio:** he's done it; it no longer pops up in Studio.
+- **Report card jar piece:** disliked ("you just cut it out and pasted it... add something distinctive, something to
+  catch your eye"); switched off; redo picked: the jar on the Double this match row ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)).
+- Backlog: daily and weekly missions ([ideas](../plan/IDEAS.md)).
+
 ## What changed
 Commits 61ea43a7 (exact saved lock), 1c9b7a9b (fold card), 1b4b8166 (pass cards), and the big-bodies change.
 Second look, built the next session: the dev switch (bottom right, Studio only), part pictures centred as seen (the near
