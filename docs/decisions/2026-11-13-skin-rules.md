@@ -30,7 +30,7 @@
   aces Mythical, veterans Legendary, and so on down.
 - **Prices** (Alan, same day): the drafted Robux prices are OK for the first build and will be adjusted later
   ([skins plan](../plan/SKINS-PLAN.md)). Legendary and Mythical can also be bought with Paper, but extremely
-  expensive, so players would rather use Robux. **No free skins.**
+  expensive (Legendary 30,000, Mythical 60,000 Paper), so players would rather use Robux. **No free skins.**
 - **Skin boxes, maybe** (Alan, same day): a cheap box (Paper or Robux) with a small chance of a Mythical, like CS:GO
   crates, while every skin can still be bought outright. A free box of mostly Commons (Rares very rare) as the reward
   for the first weekly mission. Not decided yet; Roblox's odds rules apply.

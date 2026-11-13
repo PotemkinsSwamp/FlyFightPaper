@@ -96,13 +96,13 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
 Robux prices OK'd for the first build ("they need to be adjusted" later). Common and Rare Paper prices use the same
 rate as early part unlocks (about 18.75 Paper per Robux, the big pack's rate); an average player earns about 660 Paper
 a match (about 8.5 minutes). Legendary and Mythical can be bought with Paper but cost far more, so Robux is the
-sensible way (Alan); the Paper numbers below are a draft waiting on his OK.
+sensible way (Alan; he OK'd 30,000 and 60,000 the same day).
 | What | Robux | Paper | Average matches to earn |
 |---|---|---|---|
 | Common skin (Hazard Stripes, Tiger Stripes, Flame Decals) | 149 | 2,800 | about 4 |
 | Rare skin (Gold Foil, Lava, Galaxy) | 299 | 5,600 | about 8.5 |
-| Legendary skin + its trail (Shark Jet + water spray) | 599 | 30,000 (draft) | about 45 (6.5 hours) |
-| Mythical skin + its trail (Dragon + embers) | 999 | 60,000 (draft) | about 90 (13 hours) |
+| Legendary skin + its trail (Shark Jet + water spray) | 599 | 30,000 | about 45 (6.5 hours) |
+| Mythical skin + its trail (Dragon + embers) | 999 | 60,000 | about 90 (13 hours) |
 | Trail (Confetti, Rainbow Marker, Gold Stars) | 49 | 900 | about 1.5 |
 Compared with Rivals (Roblox's big shooter): its shop sells 299 / 449 / 599. Ours start lower (a new game, kids' pocket
 money) and meet it at Legendary. For scale: the Pencil, the dearest part, is 32,000 Paper.
