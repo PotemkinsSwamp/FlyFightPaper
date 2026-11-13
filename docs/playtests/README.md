@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-13: Gift a friend: search box; the gift's arrival to redo (plane off its pin, rays, one gift at a time)](2026-11-13-gift-a-friend.md)
 - [2026-11-12: Double this match works; fold card fixes; the shop's green](2026-11-12-double-this-match-and-shop.md)
 - [2026-11-12: the money plan in Play (report card 2x, fold card, shop rows, tape-roll tower)](2026-11-12-money-plan-report-card-fold-card.md)
 - [2026-11-12: the new shop window; buying in the Hangar as a fresh player](2026-11-12-shop-window-and-hangar-buying.md)

@@ -400,6 +400,14 @@ mistake would be easy to make twice.
   the Thumbtack Shooter he had, for 49 R$. Any new "do you have it?" check goes through `Catalog:owns`.
 - **`ImageColor3` multiplies the picture** (2026-11-12): tinting the cream circle with chalk green 104,133,118 came out
   olive 98,117,96 on screen. Pick the tint by the colour on a Play screenshot, not the number in the code.
+- **Driving menus from `execute_luau`** (2026-11-13): the tool's code has its own module cache, so `require`ing
+  MenuController gives a copy where `Menu.show` is nil; set the player attribute `DevScreen` ("shop", "home") instead.
+  `VirtualInputManager` is refused there. `user_mouse_input` clicks work, but an `instance_path` click missed buttons
+  inside a ScrollingFrame and a note: read the button's `AbsolutePosition + AbsoluteSize/2` and click those coordinates.
+- **An overlay's darkening is its own Frame** (2026-11-13): the gift moment's `PaperUI.screen` cover colour at 0.5 didn't
+  show over the main menu board in Play captures; a separate black "Dim" Frame (ZIndex 0, under the sheet) did.
+- **`PaperUI.fitWords` once per label** (2026-11-13): it hooks the label's Text changes itself; calling it again on
+  every change stacks hooks. `say()` without `grow` already attaches it.
 
 ## Working with Alan
 - **A row under a card stays inside the card's edges** (Alan 2026-11-12, report card jar row, four looks): line pieces

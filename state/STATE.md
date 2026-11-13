@@ -1,16 +1,14 @@
-# Since Alan last checked (2026-11-12, late night)
-- **Report card jar piece: done, Alan OK'd** after four looks ([jar rules](../docs/decisions/2026-11-12-paper-jar-rules.md)):
-  under your card, inside its edges: a big yellow Double this match panel with a bouncing green buy button and the
-  pulsing "Worth" sticker above it; a smaller glass jar on the right with scraps dropping in, the level rising, "+165!"
-  popping out (turned 30 degrees, under the level bar) and a pulsing green "See your jar" / "Break the jar!" button.
-  Studio only until go-live. Video: `.planning/report-card-jar-redo.mp4`.
-- **Gift a friend how-it-works note drafted** ([gift plan](../docs/plan/GIFT-PLAN.md)), not yet shown to Alan.
-- Bot match (3 matches): the 3-mount tanks are mid-pack now; Spitball planes still weakest.
+# Since Alan last checked (2026-11-13, after midnight)
+- **Gift a friend: built (Studio only)** to Alan's OK ([decision](../docs/decisions/2026-11-13-gift-a-friend.md)):
+  Paper packs and timed 2x boosts, friends only, friend note with search, server check, practice gift, a paper plane
+  brings it over the main menu. Tests 599/0. Alan's notes: the arrival moment gets redone next session
+  ([playtest](../docs/playtests/2026-11-13-gift-a-friend.md)).
+- Report card jar piece done and OK'd (2026-11-12). Treasure chest for buyers added to the [ideas](../docs/plan/IDEAS.md).
 
 # Now: finish the game for the beta
-Next: walk Alan through the Gift a friend note (no code before his OK), then the goals review with him. Backlog: daily
-and weekly missions. Balance pass later: Spitball planes weakest. Not seen yet: a real level-up in a match. Phone
-check of the new report card row not done.
+Next: redo the gift's arrival (plane off its pin, rays pulsing in and out, one gift at a time out of the open box,
+plane back to its pin), then the goals review with Alan. Backlog: daily and weekly missions. Balance: Spitball planes
+weakest. Not checked: phone sizes of the report card row and the gift note.
 
 Decisions to review
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
