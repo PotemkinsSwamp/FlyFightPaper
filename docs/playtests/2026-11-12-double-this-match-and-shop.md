@@ -17,6 +17,19 @@ Played Studio matches after Double this match was built (team dogfight among the
   white cards. Done.
 - **Balance:** the big planes are still too strong: [3 mounts on the big bodies](../decisions/2026-11-12-big-bodies-three-mounts.md).
 
+## Second look (after mint green, shadows, 3-mount bodies)
+- **Models aren't centred in their circles** (Today's parts: Long Point and Spool Booster poke out to the left; his
+  pictures `.planning/shop-off-centre-models-alan-2026-11-12.webp`). The models turn around a point that isn't their
+  true middle: centre each model on its bounding-box middle. This is the "a part revolves around a tip" note from the
+  last handoff.
+- **Starter pack items** (and any card of that design): no cream square and no mint circle; the models float free with a
+  soft shadow under them, and the words sit on a small darker plate so they read, like the in-game version (picture
+  `.planning/starter-pack-items-alan-2026-11-12.webp`).
+- **Dev toggle he needs:** a button always on screen (bottom right, not at the desk), only for him and only in Studio,
+  switching between his real profile (level 12, free gear unlocked at its level) and everything unlocked, so he can
+  look at the big bodies in the Hangar. It must never exist outside Studio.
+- Not commented on yet: the mint green itself, the big bodies in the Hangar (couldn't, locked), the fold card fixes.
+
 ## What changed
 Commits 61ea43a7 (exact saved lock), 1c9b7a9b (fold card), 1b4b8166 (pass cards), and the big-bodies change.
 
