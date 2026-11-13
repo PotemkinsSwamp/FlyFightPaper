@@ -24,6 +24,7 @@ otherwise.
 - [Touch plan](plan/TOUCH-PLAN.md): phones and tablets (approved 2026-10-23)
 - [Screen fit plan](plan/SCREEN-FIT-PLAN.md): every piece in its place on any screen (approved 2026-10-24)
 - [Classes plan](plan/CLASSES-PLAN.md): six class planes, new weapons and mastery (draft for Alan's OK)
+- [Skins and trails plan](plan/SKINS-PLAN.md): whole-plane skins and wingtip trails for the shop (draft for Alan's OK)
 - [Controls plan](plan/CONTROLS-PLAN.md): move your phone buttons, then change your PC keys (draft for Alan's OK)
 - [Phone aim options](plan/PHONE-AIM-OPTIONS.md): staying on a tail on a phone (research, waiting on Alan)
 - [Load plan](plan/LOAD-PLAN.md): fast joins on a phone, same look (draft for Alan's OK)

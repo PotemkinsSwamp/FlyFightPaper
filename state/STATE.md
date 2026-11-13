@@ -6,8 +6,8 @@
 - Tests 599/0 after the redo (2026-11-13), before the sound changes (client sounds and drawing only since).
 
 # Now: finish the game for the beta
-Next (Alan's pick at the goals review, 2026-11-13): **paper skins and trails** for the shop. Step 1: how a skin goes on
-a plane (no uploads), then a how-it-works note and concept pictures for his OK. After it: daily and weekly missions,
+Next (Alan's pick at the goals review, 2026-11-13): **skins and trails** for the shop. Step 1: his OK on the
+[skins plan](../docs/plan/SKINS-PLAN.md) (whole-plane skins, as he decided 2026-10-18). After it: daily and weekly missions,
 the playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Balance: Spitball planes weakest. Not checked: phone sizes of the report card row and the gift note and arrival; a
 real gift through the shop into the new arrival; the unlock backpack's music dip.
