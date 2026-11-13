@@ -414,6 +414,8 @@ mistake would be easy to make twice.
   unevenly moves the cut off the picture's line: grow such parts evenly.
 - **Edit-mode captures show StarterGui screens, not CoreGui** (2026-11-13): a test ScreenGui in `StarterGui` appears in
   `screen_capture` without Play (good for layout and gradient tests; delete it after); one in `CoreGui` doesn't.
+- **Studio captures are JPEG pictures** (2026-11-13): `screen_capture` hands back JPEG data; saved under a `.png` name,
+  ffmpeg refuses the frames (PIL opens them anyway). Save frames as `.jpg` (`tools/film_gift.py`).
 - **`PaperUI.fitWords` once per label** (2026-11-13): it hooks the label's Text changes itself; calling it again on
   every change stacks hooks. `say()` without `grow` already attaches it.
 
