@@ -30,7 +30,8 @@
 - **Legendary and Mythical hide the plane** (the parts they cover): the hidden parts stay the hitbox, the skin has no
   collision, and the red or blue outline goes round the skin. They must still look good on every part mix, so no
   plain stretching: the way they fit is to be worked out.
-- **Only Mythicals change weapons,** to give them a real effect.
+- **Only Mythicals change weapons,** to give them a real effect. Their shots may look different (a dragon fires
+  embers) but never change size or speed, so no skin makes anyone easier or harder to hit or dodge.
 - **Trails keep their own colours** in team games.
 - **Ideas:** every skin and trail on the [skins plan](../plan/SKINS-PLAN.md) list (Alan approved the whole list).
 
