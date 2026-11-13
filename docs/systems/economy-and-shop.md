@@ -270,8 +270,8 @@ Sounds (Alan by ear, 2026-11-13): the paper whoosh as the plane passes over you 
 thump as the box lands; for each gift a paper rustle while the box shakes, a soft pop as the gift comes out, and a
 shine while it sits on its rays ("a radiating sound, something shiny, brand new": his pick of three), fading when the
 next gift comes or the moment ends. He turned down the backpack's ding and coin here ("too strong") and picked the
-rustle of three too. **The music drops to a tenth** while the moment is up, like the dimmed board, and comes back
-after (Root attribute `MusicQuiet`, also set by the unlock backpack).
+rustle of three too. The music turns right down while the moment is up
+([sound rules](sound-and-effects.md#rules)).
 
 ## Offline-pausing timer
 Both resources pause offline. Loaded online menus, desk time, spectating and intermission count under the

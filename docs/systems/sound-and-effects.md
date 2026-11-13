@@ -22,6 +22,9 @@ Roblox's free audio library or the Creator Store. Music: a shuffled playlist of 
 Each tutorial lesson has one song of its own, looped and quiet, no classroom chatter, and a
 rising two-note chime for every finished step (Alan, 2026-10-18). Lesson songs (Alan's picks by ear, 2026-10-18): Flight School APM "Daisy Fresh"
 (1839864816); Combat Training APM "Liberty Bell (a) 60" (105397100521450).
+**Music turns down to a tenth under a moment over the menu** (a gift arriving, the unlock backpack), like the dimmed
+board behind it, and comes back after (Alan 2026-11-13: a fifth was still too loud). The moment sets the Root
+attribute `MusicQuiet`; `Audio.luau` does the fade.
 Sounds without a place play straight in SoundService (before 2026-10-18 they sat at the room's middle and faded with
 distance); every sound is loaded when the game starts.
 The paperclip fires with two sounds at once (Alan 2026-10-19): the metal ting ("Key Dings Metal Clinking 11", louder than

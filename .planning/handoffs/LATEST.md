@@ -1,6 +1,6 @@
-# LATEST → handoff-2026-11-13-beta-lane-gift-built-arrival-redo-next.md
+# LATEST → handoff-2026-11-13-0155-beta-lane-gift-arrival-done-goals-review-next.md
 
-★ START HERE: Goal (Alan): the beta feels finished and the shop makes money. Next: redo the gift's arrival moment (src/client/GiftMoment.luau) to Alan's story in docs/playtests/2026-11-13-gift-a-friend.md (menu plane off its pin, rays pulsing unevenly, gifts one at a time out of the open box, plane back to its pin); done = Alan OKs it from a video. Alan runs this session on Fable. Then the goals review.
+★ START HERE: Goal (Alan): the beta feels finished and the shop makes money. Next: the goals review with Alan (what "the beta feels finished" still needs; backlog in state/STATE.md); done = he has picked the next thing to build and it is written in STATE. The gift arrival is finished unless he says otherwise.
 
-Quick state: main 1a18ad9a + handoff, pushed; tests 599/0 (2026-11-13); docs OK; Studio Edit, Dev switches cleared, rojo serve running; nothing published, uploaded or Saved to File. Gift a friend built (Studio only).
-Previous: handoff-2026-11-12-2326-beta-lane-report-card-jar-okd-gift-note-next.md
+Quick state: main d574889e + handoff, pushed; tests 599/0 (2026-11-13, before the sound changes); docs OK; Studio Edit, Dev switches cleared, rojo serve running; nothing published, uploaded or Saved to File. Gift arrival redone to Alan's story and tuned by ear with him ("Yeah, that's it"); try it with the "Dev: send me a gift" button in Studio Play.
+Previous: handoff-2026-11-13-beta-lane-gift-built-arrival-redo-next.md

@@ -1,4 +1,4 @@
-# Since Alan last checked (2026-11-13, evening)
+# Since Alan last checked (2026-11-13, about 2 am)
 - **Gift arrival redone to Alan's story and tuned by ear with him** (Studio only, nothing uploaded;
   [decision](../docs/decisions/2026-11-13-gift-arrival-story-and-sounds.md)): the board's plane brings it, Open it!,
   the box rustles and each gift pops out and shines, the plane is pinned again; music drops to a tenth under it. His
