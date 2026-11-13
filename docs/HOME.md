@@ -29,7 +29,7 @@ otherwise.
 - [Load plan](plan/LOAD-PLAN.md): fast joins on a phone, same look (draft for Alan's OK)
 - [Unlock moment plan](plan/UNLOCK-PLAN.md): the backpack that opens when you level up (draft for Alan's OK)
 - [Report card plan](plan/REPORT-CARD-PLAN.md): the round's results on a school report card (built 2026-11-11)
-- [Gift a friend plan](plan/GIFT-PLAN.md): buy a shop item for a Roblox friend (draft for Alan's OK)
+- [Gift a friend plan](plan/GIFT-PLAN.md): buy a Paper pack or boost for a Roblox friend (approved 2026-11-13, being built)
 - [Shop prices plan](plan/SHOP-PRICES-PLAN.md): Paper packs and Robux part prices after the price rise (approved 2026-11-11)
 - [Shop money plan](plan/SHOP-MONEY-PLAN.md): the buying funnel: daily gift, starter pack, first-buy double, decoy and anchor packs, Paper jar (approved 2026-11-12)
 - [Shop screen plan](plan/SHOP-SCREEN-PLAN.md): the shop as a Roblox-style shop window in our materials, with movement (waiting for Alan's OK)

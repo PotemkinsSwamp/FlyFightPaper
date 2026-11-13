@@ -27,6 +27,10 @@ and a stage.
   for finishing them. What the goals are and what they pay is open.
 - **Skill bonuses** (Alan 2026-11-12): a few extra points for moments that show skill, e.g. folding someone by
   ramming them and surviving it (no bonus if you go down too). Small, named in the score pop-up.
+- **Treasure chest for buyers** (Alan 2026-11-13): like the class treasure box at school, but earned by buying:
+  after a number of purchases you get to pick something from a chest (e.g. 10,000 Paper), the prizes growing the more
+  you've bought, a goal players can see. Not a punch card and never framed as "good" for spending. Check first that
+  it's fair to kids and allowed on Roblox (the player picks, so it's not random).
 
 ## Later scope (from the vision)
 The [vision](../vision/VISION.md) lists what waits until after the first release: cosmetics, more maps, full touch
