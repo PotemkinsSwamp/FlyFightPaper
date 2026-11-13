@@ -80,7 +80,7 @@ Lessons follow the agreed [tutorial plan](../plan/TUTORIAL-PLAN.md). **Flight Sc
 `training-board-c.png`): Flight School, Combat School, Hangar Tour and the Range, each a pinned sheet with a Play strip;
 a lesson gets a tick and Replay once finished (saved on the account: the end card sends `lessonDone`, the server
 ticks it only in the tutorial room). From a match, Play first asks "Leave this match?"
-(the lesson runs on another server). The welcome question goes only to a player with no matches and no ticks. The
+(the lesson runs on another server). The welcome question goes only to a player with no matches and no ticks, and never in Studio (Alan 2026-11-12; set the player attribute `OfferTutorial` to see it there). The
 Training Room has no time limit (Alan 2026-10-19: people leave, or Roblox kicks them for being idle).
 **The Hangar Range** (built 2026-10-19; Alan has played each step; last layout not yet seen in Play;
 decisions: [stage and picker](../decisions/2026-10-19-range-row-picker-and-aim-pick.md),

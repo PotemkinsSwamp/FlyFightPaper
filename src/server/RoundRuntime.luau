@@ -257,7 +257,9 @@ function Runtime:firstJoin(player)
   local deadline=os.clock()+30
   while player.Parent and not self.profiles:view(player) and os.clock()<deadline do task.wait(.5) end
   local profile=self.profiles:view(player)
-  if profile and self.matchmaking.needsTutorial(profile) and not player:GetAttribute("InMatch") then player:SetAttribute("OfferTutorial",true) end
+  -- Never in Studio (Alan 2026-11-12: he's done it; Studio saves nothing, so it asked every Play). To see the offer
+  -- there, set the player attribute OfferTutorial to true.
+  if profile and not Run:IsStudio() and self.matchmaking.needsTutorial(profile) and not player:GetAttribute("InMatch") then player:SetAttribute("OfferTutorial",true) end
  end)
 end
 -- What a lesson step asks the server for (docs/systems/tutorial.md), all at once or a piece at a time:
