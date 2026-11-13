@@ -2,6 +2,7 @@
 
 Run from D:/FlyFightPaper:  python tools/art/upload_paper.py         (Classic, paper-sample/: 12 pieces)
                             python tools/art/upload_paper.py set     (the other parts, paper-set/: every manifest entry)
+                            python tools/art/upload_paper.py sheet   (skin copies, skin-sheet/: mesh + crease normal map)
 Then read each uploaded Model's inner MeshId in Studio (the FBX uploads as a Model wrapping a MeshPart; the game
 needs the mesh id): `python tools/art/upload_paper.py [set] lua` prints Luau for Studio's execute_luau (Server);
 save its JSON output to a file and run `python tools/art/upload_paper.py [set] meshes <file>` to add "mesh" ids.
@@ -16,9 +17,10 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 args = sys.argv[1:]
-SET = args[:1] == ["set"]
-args = args[1:] if SET else args
-D = ROOT / "assets/models/planes" / ("paper-set" if SET else "paper-sample")
+MODE = args[0] if args[:1] in (["set"], ["sheet"]) else ""
+SET = MODE == "set"
+args = args[1:] if MODE else args
+D = ROOT / "assets/models/planes" / {"set": "paper-set", "sheet": "skin-sheet"}.get(MODE, "paper-sample")
 RECORD = D / "uploads.json"
 # The Classic pieces the game shows (AircraftPieces body_standard, nose_0, wings_0, tail_0); stickers are swapped for
 # team stickers in game, so they are not needed.
@@ -26,6 +28,9 @@ NAMES = ["body-paper-L", "body-paper-R", "nose-paper-L", "nose-paper-R", "nose-a
          "wings-paper-R", "wings-accent-L", "wings-accent-R", "tail-paper-L", "tail-paper-R", "tail-accent"]
 if SET:
     NAMES = [e["object"] for e in json.loads((D / "manifest.json").read_text())["exports"]]
+if MODE == "sheet":  # skins use the skin's own colour picture; each copy brings only its creases
+    NAMES = [e["piece_name"] for e in json.loads((D / "manifest.json").read_text())["pieces"]]
+MAPS = ("normal",) if MODE == "sheet" else ("color", "normal", "roughness")
 
 rec = json.loads(RECORD.read_text()) if RECORD.exists() else {}
 if args[:1] == ["lua"]:
@@ -39,7 +44,7 @@ if args[:1] == ["meshes"]:
     RECORD.write_text(json.dumps(rec, indent=2) + "\n")
     sys.exit(print("Mesh ids added:", sum("mesh" in v for v in rec.values()), "of", len(rec)))
 for name in NAMES:
-    files = [(D / f"{name}.fbx", "model")] + [(D / f"{name}-{k}.png", k) for k in ("color", "normal", "roughness")]
+    files = [(D / f"{name}.fbx", "model")] + [(D / f"{name}-{k}.png", k) for k in MAPS]
     for path, key in files:
         rec.setdefault(name, {})
         if key in rec[name]:
@@ -47,7 +52,7 @@ for name in NAMES:
         out = D / "upload-tmp.json"
         out.unlink(missing_ok=True)
         done = subprocess.run([sys.executable, str(ROOT / "tools/upload_texture.py"), str(path), "--creator", "52064999",
-                               "--name", f"FFP plane {name} {key}"[:50], "--output", str(out)]
+                               "--name", f"FFP {'skin ' if MODE == 'sheet' else 'plane '}{name} {key}"[:50], "--output", str(out)]
                               + (["--model"] if key == "model" else []))
         if done.returncode:
             sys.exit(f"Stopped at {name} {key}; see {out}. Re-run to continue.")

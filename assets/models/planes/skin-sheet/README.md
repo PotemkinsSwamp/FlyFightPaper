@@ -18,9 +18,9 @@ Rows: three-quarter, top, side, front, bottom. Columns: today / creaseold / crea
 
 ## Layout
 
-One 1024 x 1024 skin picture, shared across all 54 copies. SheetUV is derived from each piece's unscaled template placement in pieces.rbxmx.
+One 1024 x 1024 skin picture, shared across all 83 copies. SheetUV is derived from each piece's unscaled template placement in pieces.rbxmx.
 TOP uses x/z, SIDE uses y/z, FRONT uses x/y. Nose is up in TOP and SIDE; FRONT has up at the top. Both sides share the same print. Regional seams are intentional.
-Bounds are the union of all in-scope XML boxes, including CFrame rotation, padded 0.25 stud. There are 16 pixel outer margins and 16 pixel gaps. All regions share k=40.612341736960 pixels/stud.
+Bounds are the union of all in-scope XML boxes, including CFrame rotation, padded 0.25 stud. There are 16 pixel outer margins and 16 pixel gaps. All regions share k=40.420076411752 pixels/stud.
 See layout.json for exact bounds, floating-point rectangles, dominant-normal selection and coordinate-to-UV formulas. Rectangles use top-left pixel coordinates, [x,y,width,height]; UV origin is bottom-left.
 
 sheet-template.png has white backing, slot-coloured triangle outlines, regional guides, nose arrows and a word legend. Keep guide lines off a finished skin picture.
@@ -45,64 +45,93 @@ When a skin is worn, select the same-named sheet copy for each structural paper/
 
 Every output FBX is reimported. Bounds/raw FBX units, vertex positions/count, triangle surfaces/count, shading-normal corners, a single named UV layer, finite UVs in [0,1] and agreement with the coordinate formulas are checked. Source needle faces are retained; projected areas and faces below UV float precision are counted, without inflating their projection. Required-check failures raise an error and exit Blender with status 1.
 Normal checks: facing priority over all raster candidates, object-space reconstruction, under 1 degree quantization error at selected texel centres, unit normals, saved PNG bytes/resolution and every empty background texel. Render dimensions/nonempty contents, JPEG dimensions/colour agreement and pre-existing file metadata are checked. Input FBX/map/XML/upload files also receive before/after SHA-256 checks. No Studio or engine integration check was performed.
-All 54 in-scope MeshIds match their folder's uploads.json. Review-only sticker placeholders reuse the existing paper-sample wings-sticker-left/right geometry/maps; they have no uploads.json entry and are excluded from the 54-source comparison.
+All 83 in-scope MeshIds match their folder's uploads.json. Review-only sticker placeholders reuse the existing paper-sample wings-sticker-left/right geometry/maps; they have no uploads.json entry and are excluded from the 83-source comparison.
 
 ## Meshes
 
 | Part | Piece | Triangles | Regions |
 |---|---|---:|---|
+| body_heavy | body_heavy-accent | 24 | FRONT, SIDE, TOP |
 | body_heavy | body_heavy-cardboard-L | 186 | FRONT, SIDE, TOP |
 | body_heavy | body_heavy-cardboard-R | 186 | FRONT, SIDE, TOP |
+| body_heavy_mk2 | body_heavy_mk2-accent | 192 | FRONT, SIDE, TOP |
 | body_heavy_mk2 | body_heavy_mk2-cardboard-L | 82 | SIDE, TOP |
 | body_heavy_mk2 | body_heavy_mk2-cardboard-R | 106 | SIDE, TOP |
 | body_heavy_mk2 | body_heavy_mk2-paper-L | 74 | FRONT, SIDE, TOP |
 | body_heavy_mk2 | body_heavy_mk2-paper-R | 74 | FRONT, SIDE, TOP |
 | body_heavy_mk2 | body_heavy_mk2-tube-L | 400 | FRONT, SIDE, TOP |
 | body_heavy_mk2 | body_heavy_mk2-tube-R | 391 | FRONT, SIDE, TOP |
+| body_slim | body_slim-accent | 24 | FRONT, SIDE, TOP |
 | body_slim | body_slim-paper-L | 140 | FRONT, SIDE, TOP |
 | body_slim | body_slim-paper-R | 141 | FRONT, SIDE, TOP |
+| body_slim_mk2 | body_slim_mk2-accent | 64 | FRONT, SIDE, TOP |
 | body_slim_mk2 | body_slim_mk2-paper-L | 140 | FRONT, SIDE, TOP |
 | body_slim_mk2 | body_slim_mk2-paper-R | 141 | FRONT, SIDE, TOP |
 | body_standard | body-paper-L | 108 | FRONT, SIDE, TOP |
 | body_standard | body-paper-R | 108 | FRONT, SIDE, TOP |
+| body_standard_mk2 | body_standard_mk2-accent | 24 | FRONT, SIDE, TOP |
 | body_standard_mk2 | body_standard_mk2-paper-L | 162 | FRONT, SIDE, TOP |
 | body_standard_mk2 | body_standard_mk2-paper-R | 160 | FRONT, SIDE, TOP |
+| nose_0 | nose-accent | 86 | FRONT, SIDE, TOP |
 | nose_0 | nose-paper-L | 52 | FRONT, SIDE, TOP |
 | nose_0 | nose-paper-R | 52 | FRONT, SIDE, TOP |
+| nose_1 | nose_1-accent | 86 | FRONT, SIDE, TOP |
 | nose_1 | nose_1-paper-L | 54 | FRONT, SIDE, TOP |
 | nose_1 | nose_1-paper-R | 56 | FRONT, SIDE, TOP |
+| nose_2 | nose_2-accent | 32 | FRONT, SIDE, TOP |
 | nose_2 | nose_2-paper-L | 52 | FRONT, SIDE, TOP |
 | nose_2 | nose_2-paper-R | 52 | FRONT, SIDE, TOP |
+| nose_3 | nose_3-accent | 86 | FRONT, SIDE, TOP |
 | nose_3 | nose_3-paper-L | 54 | FRONT, SIDE, TOP |
 | nose_3 | nose_3-paper-R | 56 | FRONT, SIDE, TOP |
+| nose_4 | nose_4-accent | 86 | FRONT, SIDE, TOP |
 | nose_4 | nose_4-paper-L | 52 | FRONT, SIDE, TOP |
 | nose_4 | nose_4-paper-R | 52 | FRONT, SIDE, TOP |
+| nose_5 | nose_5-accent | 82 | FRONT, SIDE, TOP |
 | nose_5 | nose_5-paper-L | 52 | FRONT, SIDE, TOP |
 | nose_5 | nose_5-paper-R | 52 | FRONT, SIDE, TOP |
+| tail_0 | tail-accent | 24 | FRONT, SIDE, TOP |
 | tail_0 | tail-paper-L | 92 | FRONT, SIDE, TOP |
 | tail_0 | tail-paper-R | 92 | FRONT, SIDE, TOP |
+| tail_1 | tail_1-accent | 48 | FRONT, SIDE, TOP |
 | tail_1 | tail_1-paper-L | 110 | FRONT, SIDE, TOP |
 | tail_1 | tail_1-paper-R | 112 | FRONT, SIDE, TOP |
+| tail_2 | tail_2-accent | 36 | FRONT, SIDE, TOP |
 | tail_2 | tail_2-paper-L | 182 | FRONT, SIDE, TOP |
 | tail_2 | tail_2-paper-R | 182 | FRONT, SIDE, TOP |
+| tail_3 | tail_3-accent | 48 | FRONT, SIDE, TOP |
 | tail_3 | tail_3-paper-L | 244 | FRONT, SIDE, TOP |
 | tail_3 | tail_3-paper-R | 246 | FRONT, SIDE, TOP |
+| tail_4 | tail_4-accent | 24 | FRONT, SIDE, TOP |
 | tail_4 | tail_4-paper-L | 138 | FRONT, SIDE, TOP |
 | tail_4 | tail_4-paper-R | 138 | FRONT, SIDE, TOP |
+| tail_5 | tail_5-accent | 24 | FRONT, SIDE, TOP |
 | tail_5 | tail_5-paper-L | 132 | FRONT, SIDE, TOP |
 | tail_5 | tail_5-paper-R | 134 | FRONT, SIDE, TOP |
+| wings_0 | wings-accent-L | 20 | FRONT, SIDE, TOP |
+| wings_0 | wings-accent-R | 20 | FRONT, SIDE, TOP |
 | wings_0 | wings-paper-L | 38 | FRONT, SIDE, TOP |
 | wings_0 | wings-paper-R | 38 | FRONT, SIDE, TOP |
+| wings_1 | wings_1-accent-L | 12 | FRONT, SIDE, TOP |
+| wings_1 | wings_1-accent-R | 12 | FRONT, SIDE, TOP |
 | wings_1 | wings_1-paper-L | 30 | FRONT, SIDE, TOP |
 | wings_1 | wings_1-paper-R | 30 | FRONT, SIDE, TOP |
+| wings_2 | wings_2-accent-L | 12 | FRONT, SIDE, TOP |
+| wings_2 | wings_2-accent-R | 12 | FRONT, SIDE, TOP |
 | wings_2 | wings_2-paper-L | 30 | FRONT, SIDE, TOP |
 | wings_2 | wings_2-paper-R | 30 | FRONT, SIDE, TOP |
+| wings_3 | wings_3-accent-L | 12 | FRONT, SIDE, TOP |
+| wings_3 | wings_3-accent-R | 12 | FRONT, SIDE, TOP |
 | wings_3 | wings_3-paper-L | 30 | FRONT, SIDE, TOP |
 | wings_3 | wings_3-paper-R | 30 | FRONT, SIDE, TOP |
+| wings_4 | wings_4-accent-L | 24 | FRONT, SIDE, TOP |
+| wings_4 | wings_4-accent-R | 24 | FRONT, SIDE, TOP |
 | wings_4 | wings_4-cardboard-L | 30 | FRONT, SIDE, TOP |
 | wings_4 | wings_4-cardboard-R | 30 | FRONT, SIDE, TOP |
 | wings_4 | wings_4-paper-L | 46 | FRONT, SIDE, TOP |
 | wings_4 | wings_4-paper-R | 46 | FRONT, SIDE, TOP |
+| wings_5 | wings_5-accent-L | 108 | FRONT, SIDE, TOP |
+| wings_5 | wings_5-accent-R | 108 | FRONT, SIDE, TOP |
 | wings_5 | wings_5-paper-L | 198 | FRONT, SIDE, TOP |
 | wings_5 | wings_5-paper-R | 198 | FRONT, SIDE, TOP |
 
@@ -111,8 +140,18 @@ All 54 in-scope MeshIds match their folder's uploads.json. Review-only sticker p
 The metadata watch found changes outside this tool's output paths. They were left alone. This is not an unchanged-repository result; source FBX/map/XML/upload SHA-256 checks still passed.
 - .planning/skins/save-rules-run.log
 - .planning/skins/sheet/codex-run.log
+- .planning/skins/sheet/rebuild-trim.log
 - config/commerce.json
 - docs/decisions/2026-11-13-skin-rules.md
+- docs/workshop/testing.md
+- docs/workshop/tools.md
+- src/generated/Catalog.luau
+- src/generated/Commerce.luau
+- src/generated/Economy.luau
+- src/generated/Gameplay.luau
+- src/generated/JSONTypes.luau
+- src/generated/MonorailTrack.luau
+- src/generated/Server.luau
 - src/server/CommerceService.luau
 - src/server/HangarService.luau
 - src/server/ProfileService.luau
@@ -122,5 +161,6 @@ The metadata watch found changes outside this tool's output paths. They were lef
 - tests/unit/CommerceService.spec.luau
 - tests/unit/GiftSave.spec.luau
 - tests/unit/ProfileSchema.spec.luau
+- tools/art/upload_paper.py
 
-Build wall time: 186.2 seconds. No uploads or Studio review.
+Build wall time: 566.9 seconds. No uploads or Studio review.

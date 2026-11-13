@@ -178,10 +178,10 @@ def inventory():
                 centre=centre, size=size, rotation=rotation, source=path, mesh_id=mesh_id,
                 source_name=source_name,
                 upload_mesh_id=expected, mesh_id_match=mesh_id.split("//")[-1] == expected,
-                scope=any(tag in name for tag in ("-paper-", "-cardboard-", "-tube-"))))
+                scope=any(tag in name for tag in ("-paper-", "-cardboard-", "-tube-", "-accent"))))
     records.sort(key=lambda r: (r["part"], r["name"]))
-    check(sum(r["scope"] for r in records) == 54, "Scope must be exactly 54 pieces")
-    check(len({r["name"] for r in records if r["scope"]}) == 54, "Duplicate output piece names")
+    check(sum(r["scope"] for r in records) == 83, "Scope must be exactly 83 pieces")
+    check(len({r["name"] for r in records if r["scope"]}) == 83, "Duplicate output piece names")
     for r in records:
         check(r["source"].is_file(), "Missing FBX: " + str(r["source"]))
         for kind in ("color", "normal", "roughness"):
@@ -1012,7 +1012,7 @@ def readme(manifest, layout):
         "The tool refuses to overwrite files that predate its first run. To rebuild its own outputs explicitly, append -- --rebuild. After an interrupted run, -- --resume reuses completed renders only if all FBX/normal/test-skin bytes remain identical.", "",
         "## Review", "", "../../../.. is the repository root. Reviews are in .planning/skins/sheet/: 50 PNGs at 1600 x 900, two test-skin PNGs, starter/review.jpg and heavy/review.jpg, plus the combined review.jpg.",
         "Rows: three-quarter, top, side, front, bottom. Columns: today / creaseold / crease / hazard / lava. Each cell is 480 x 270.", "",
-        "## Layout", "", "One 1024 x 1024 skin picture, shared across all 54 copies. SheetUV is derived from each piece's unscaled template placement in pieces.rbxmx.",
+        "## Layout", "", "One 1024 x 1024 skin picture, shared across all 83 copies. SheetUV is derived from each piece's unscaled template placement in pieces.rbxmx.",
         "TOP uses x/z, SIDE uses y/z, FRONT uses x/y. Nose is up in TOP and SIDE; FRONT has up at the top. Both sides share the same print. Regional seams are intentional.",
         "Bounds are the union of all in-scope XML boxes, including CFrame rotation, padded 0.25 stud. There are 16 pixel outer margins and 16 pixel gaps. All regions share k=%.12f pixels/stud." % layout["k"],
         "See layout.json for exact bounds, floating-point rectangles, dominant-normal selection and coordinate-to-UV formulas. Rectangles use top-left pixel coordinates, [x,y,width,height]; UV origin is bottom-left.", "",
@@ -1026,7 +1026,7 @@ def readme(manifest, layout):
         "## Using a skin", "", "When a skin is worn, select the same-named sheet copy for each structural paper/cardboard/tube piece. SurfaceAppearance.ColorMap = that skin's shared picture; NormalMap = the piece's own <piece>-normal.png. Colour pictures are sRGB, normals non-colour; use roughness 0.7 (a constant roughness image in Roblox). Keep the colour tint white so it does not alter the skin picture. Accents, tape, elastic and stickers keep their current meshes/maps.", "",
         "## Checks", "", "Every output FBX is reimported. Bounds/raw FBX units, vertex positions/count, triangle surfaces/count, shading-normal corners, a single named UV layer, finite UVs in [0,1] and agreement with the coordinate formulas are checked. Source needle faces are retained; projected areas and faces below UV float precision are counted, without inflating their projection. Required-check failures raise an error and exit Blender with status 1.",
         "Normal checks: facing priority over all raster candidates, object-space reconstruction, under 1 degree quantization error at selected texel centres, unit normals, saved PNG bytes/resolution and every empty background texel. Render dimensions/nonempty contents, JPEG dimensions/colour agreement and pre-existing file metadata are checked. Input FBX/map/XML/upload files also receive before/after SHA-256 checks. No Studio or engine integration check was performed.",
-        "All 54 in-scope MeshIds match their folder's uploads.json. Review-only sticker placeholders reuse the existing paper-sample wings-sticker-left/right geometry/maps; they have no uploads.json entry and are excluded from the 54-source comparison.", "",
+        "All 83 in-scope MeshIds match their folder's uploads.json. Review-only sticker placeholders reuse the existing paper-sample wings-sticker-left/right geometry/maps; they have no uploads.json entry and are excluded from the 83-source comparison.", "",
         "## Meshes", "", "| Part | Piece | Triangles | Regions |", "|---|---|---:|---|"]
     rows.extend("| %s | %s | %d | %s |" % (entry["part_id"], entry["piece_name"], entry["triangle_count"], ", ".join(entry["regions_used"])) for entry in manifest["pieces"])
     if manifest.get("existing_files_changed"):
@@ -1117,7 +1117,7 @@ def main():
         BUILD_STATE["pieces"] = entries
         checkpoint()
         obj.hide_set(True)
-        log("piece %d/54 %s: geometry/UV/normal PASS (%d triangles, %d subpixel)" %
+        log("piece %d/83 %s: geometry/UV/normal PASS (%d triangles, %d subpixel)" %
             (len(entries), r["name"], entry["triangle_count"], bake["subpixel_triangles_without_pixel_centres"]))
     make_template(records, layout)
     make_skins(layout)
@@ -1125,7 +1125,7 @@ def main():
     RESUME_RENDERS = "--resume" in sys.argv and render_hashes_before == render_hashes_after
     if "--resume" in sys.argv:
         log("Completed renders may be reused: " + str(RESUME_RENDERS) + "; all 110 render-asset hashes compared")
-    log("All 54 FBX roundtrips and normal transfers checked; rendering 50 review images")
+    log("All 83 FBX roundtrips and normal transfers checked; rendering 50 review images")
     reviews = render_reviews(records, correction)
     changed = [relative(path) for path, stat in existing.items()
                if not path.is_file() or (path.stat().st_size, path.stat().st_mtime_ns) != stat]
@@ -1141,7 +1141,7 @@ def main():
         known_source_mesh_ids_checked=sum(r["upload_mesh_id"] != "MISSING" for r in records),
         existing_files_changed=observed_changes,
         layout="layout.json", review=reviews, wall_time_seconds=time.perf_counter()-begin,
-        checks=dict(all_54_roundtrips="PASS", all_54_normal_transfers="PASS", layout="PASS",
+        checks=dict(all_83_roundtrips="PASS", all_83_normal_transfers="PASS", layout="PASS",
                     render_dimensions_and_nonempty="PASS", existing_files_metadata_unchanged="FAIL" if observed_changes else "PASS",
                     existing_files_checked=len(existing), input_hashes_unchanged="PASS", input_files_hashed=len(hashes)),
         input_sha256=hashes,
