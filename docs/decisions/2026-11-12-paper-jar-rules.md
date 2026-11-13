@@ -2,13 +2,15 @@
 
 **Decided:** 2026-11-12 (Alan, after the money plan's jar was built)
 **Status:** decided. The save rules are built (`paper_jar` in `config/economy.json`). The shop card and the warning are
-built in Studio (2026-11-12, preview `.planning/paper-jar-preview.jpg`); the two jar pictures wait for Alan's upload go.
+built in Studio (2026-11-12, preview `.planning/paper-jar-preview.jpg`); the two jar pictures uploaded and approved
+(Alan's go). Open: a slower refill after the first break (Alan 2026-11-12), numbers waiting for his OK.
 
 ## Decision
 - **The jar breaks from 3,000 Paper**, just under what 199 R$ buys in the small Paper packs (99 R$ gives 15.2 Paper per
   Robux, so 199 R$ is about 3,000). Breaking it early is the player's choice.
 - **A warning before breaking:** "Are you sure? The jar always costs 199 R$, and it keeps filling up to 10,000
-  Paper. Wait and you get more Paper for the same price." with Break now / Keep filling.
+  Paper." with Break it now / Keep filling (Alan 2026-11-12, after the preview: drop "Wait and you get more Paper for
+  the same price").
 - **2x Paper fills the jar twice as fast** (the jar takes 25% of the Paper you actually earn). OK as built.
 - **Today's parts:** 3 picked from the 6 parts nearest your level that you don't own. OK as built. Later, when a player
   owns every part, the row can rotate skins instead (once skins exist; see [ideas](../plan/IDEAS.md)).

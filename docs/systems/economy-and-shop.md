@@ -168,7 +168,7 @@ and refunds never fill it. Breaking it (`paper_jar`, planned 199 R$, disabled an
 Paper as purchased Paper without first-buy doubling, keeping any fractional remainder so it can fill again.
 A jar under 3,000 Paper (`min_break_paper`, [Alan 2026-11-12](../decisions/2026-11-12-paper-jar-rules.md)) refuses
 checkout and practice buys with `jar_low`; paid receipts still grant and record whatever remains, including zero.
-The jar's shop card and its "wait for more" warning are not built yet. [Saved field](saving.md#where-it-stands-2026-11-12).
+The shop card and its "Are you sure?" note are built (above). [Saved field](saving.md#where-it-stands-2026-11-12).
 
 Every newly granted developer-product receipt and every practice buy adds one to the current UTC day's buy
 count. Replaying an operation or receipt adds nothing. A new day's first buy resets the saved count; until then
