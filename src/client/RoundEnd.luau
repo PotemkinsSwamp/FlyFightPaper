@@ -131,11 +131,12 @@ function RoundEnd.start()
 	-- time left runs down on it), once a match, and not after 3 buys today (the calm rule P). The server locks the
 	-- amounts when you press; a "Worth N R$!" sticker pops in with a bounce and keeps gently pulsing.
 	local pressedFor, pressedAt, offerMatch, offerEnds = nil, 0, nil, 0
-	local offer = PaperUI.robuxButton(card, "PaperOffer", 60, 872, 560, 140, "", "", 40, function()
+	local function pressDouble()
 		if pressedFor == offerMatch or player:GetAttribute("MatchDoubled") == offerMatch then return end
 		pressedFor, pressedAt = offerMatch, os.clock()
 		Root.RoundAction:FireServer("doubleMatch")
-	end)
+	end
+	local offer = PaperUI.robuxButton(card, "PaperOffer", 60, 872, 560, 140, "", "", 40, pressDouble)
 	offer.Visible = false
 	offer.Price.Position = UDim2.fromOffset(0, 24) -- the amounts and price under the line
 	-- The line sits left of the sticker; the sticker stays on the button (above it is the card's next-unlock line).
@@ -150,27 +151,35 @@ function RoundEnd.start()
 	worthScale.Parent = worth
 	local offerLeft -- whole seconds shown on the button
 	worthWords.Size = UDim2.fromScale(1, 1)
-	-- Beside the Paper jar (Alan 2026-11-12: the row fits inside the card's width, the jar on its middle line) the button
-	-- folds up into the row's left part: the same green paper, sliced so its tacks keep their shape, the words on short
-	-- lines (heading, amounts, price with the sticker beside it, time left).
-	local offerAmounts = words(offer, "Amounts", "", 0, 42, 258, 28, 21)
-	local offerTime = words(offer, "Time", "", 0, 124, 258, 26, 20)
+	-- Beside the Paper jar (Alan 2026-11-12: the row fits inside the card's width; the Double panel big, with words big
+	-- enough to read and a buy button that looks like one): the same green paper (sliced so its tacks keep their shape)
+	-- holds the heading, the amounts and the time left on the left, and the shop's bright green buy button with the price
+	-- on the right, bouncing gently, the "Worth" sticker under it.
+	local PANEL = Vector2.new(466, 160)
+	local offerAmounts = words(offer, "Amounts", "", 12, 58, 290, 34, 26)
+	local offerTime = words(offer, "Time", "", 12, 98, 290, 34, 26)
 	for _, label in { offerAmounts, offerTime } do label.TextXAlignment = Enum.TextXAlignment.Center end
+	PaperUI.fitWords(offerAmounts, 280) -- big amounts: smaller, never past the column
 	offer.SliceCenter, offer.SliceScale = Rect.new(90, 70, 665, 120), 0.6
+	local offerBuy = PaperUI.robuxButton(offer, "Buy", 296, 40, 160, 66, "", "", 42, pressDouble)
+	offerBuy.Image, offerBuy.Price.Word1.Visible, offerBuy.ZIndex = UIArt.shop.buyGreen, false, offer.ZIndex + 1
+	local buyBounce = Instance.new("UIScale")
+	buyBounce.Parent = offerBuy
 	local offerCompact, offerSelling = false, true
 	local function shapeOffer(compact, selling)
 		offerCompact, offerSelling = compact, selling
-		PaperUI.set(offer, { Size = UDim2.fromOffset(compact and 258 or 560, compact and 160 or 140) })
+		PaperUI.set(offer, { Size = compact and UDim2.fromOffset(PANEL.X, PANEL.Y) or UDim2.fromOffset(560, 140) })
 		offer.ScaleType = compact and Enum.ScaleType.Slice or Enum.ScaleType.Fit
-		offerAmount.Visible, offerAmounts.Visible, offerTime.Visible = not compact, compact, compact and selling
-		offerLine.TextSize = compact and 26 or 30
+		offer.Price.Visible, offerAmount.Visible = not compact, not compact
+		offerAmounts.Visible, offerTime.Visible, offerBuy.Visible = compact, compact and selling, compact and selling
+		offerLine.TextSize = compact and (selling and 34 or 38) or 30
 		if compact then
-			offerLine.Position, offerLine.Size = UDim2.fromOffset(0, 12), UDim2.fromOffset(258, 30)
-			offer.Price.Position, offer.Price.Size = UDim2.fromOffset(8, 74), UDim2.fromOffset(112, 46)
-			worth.Position, worth.Size, worth.Rotation, worthWords.TextSize = UDim2.fromOffset(186, 98), UDim2.fromOffset(132, 46), 6, 22
+			-- selling: words on the left, buy button on the right; paid or pressed: the words across the middle
+			offerLine.Position, offerLine.Size = UDim2.fromOffset(selling and 12 or 0, selling and 12 or 30), UDim2.fromOffset(selling and 290 or PANEL.X, 46)
+			offerAmounts.Position, offerAmounts.Size = UDim2.fromOffset(selling and 12 or 0, selling and 58 or 84), UDim2.fromOffset(selling and 290 or PANEL.X, 34)
+			worth.Position, worth.Size, worth.Rotation, worthWords.TextSize = UDim2.fromOffset(376, 131), UDim2.fromOffset(152, 46), 6, 24
 		else
 			offerLine.Position, offerLine.Size = UDim2.fromOffset(selling and 20 or 0, 14), UDim2.fromOffset(selling and 380 or 560, 40)
-			offer.Price.Position, offer.Price.Size = UDim2.fromOffset(0, 24), UDim2.fromScale(1, 1)
 			worth.Position, worth.Size, worth.Rotation, worthWords.TextSize = UDim2.fromOffset(490, 21), UDim2.fromOffset(200, 66), 8, 30
 		end
 	end
@@ -181,17 +190,18 @@ function RoundEnd.start()
 	-- button ("Break the jar!" from 3,000, else "See your jar"; both open the shop on the jar card). Only where the shop
 	-- is (Studio until go-live). The amount is the jar's change since the round started; the final bonus can land after
 	-- the card shows, so it follows the PaperJar attribute. The whole row fits inside the card's width (Alan 2026-11-12):
-	-- the folded-up Double button on the left, the jar on the card's middle line, the yellow button on the right. The jar
-	-- sits on the card frame, not the page: a turned page (team rounds) switches off the clipping that draws its level.
-	local JAR_ROW = { x = 270, y = 862, w = 410, h = 155 } -- page pixels: the jar's middle on the card's (340)
-	local OFFER_AT = { home = 340, besideJar = 133 } -- the Double button's middle (page pixels)
+	-- the Double panel on the left, the jar with its short yellow button under it on the right. The jar sits on the card
+	-- frame, not the page: a turned page (team rounds) switches off the clipping that draws its level.
+	local JAR_ROW = { x = 478, y = 836, w = 200, h = 186 } -- page pixels: the right end on the card's right edge
+	local OFFER_AT = { home = 340, besideJar = 237 } -- the Double button's middle (page pixels)
+	local JAR_MID = Vector2.new(100, 63) -- the jar's middle (row pixels): where the scraps fall and "+165!" pops from
 	local jarRow = Instance.new("Frame")
 	jarRow.Name, jarRow.BackgroundTransparency, jarRow.AnchorPoint = "JarRow", 1, Vector2.new(0.5, 0.5)
 	jarRow.Size, jarRow.Visible, jarRow.Parent = UDim2.fromOffset(JAR_ROW.w, JAR_ROW.h), false, card
 	local jarFit = Instance.new("UIScale")
 	jarFit.Parent = jarRow
 	local Shop = require(script.Parent.ShopScreen)
-	local jar = Shop.jarPicture(jarRow, 0, 0, 0, 140, 155)
+	local jar = Shop.jarPicture(jarRow, 0, 43, 0, 114, 126)
 	local jarBump = Instance.new("UIScale")
 	jarBump.Parent = jar
 	-- The six torn scraps on the Range's scrap picture (pixel boxes), each falling into the jar.
@@ -203,16 +213,16 @@ function RoundEnd.start()
 		scrap.ImageRectOffset, scrap.ImageRectSize, scrap.ZIndex = Vector2.new(box[1], box[2]), Vector2.new(box[3], box[4]), 3
 		scraps[i] = scrap
 	end
-	local AMOUNT_AT = Vector2.new(150, -30) -- where "+165!" comes to rest (row pixels), above the jar's right shoulder
-	local jarAmount = PaperUI.loud(words(jarRow, "Amount", "", 0, 0, 320, 100, 80))
+	local AMOUNT_AT = Vector2.new(-26, 4) -- where "+165!" comes to rest (row pixels): the card's blank corner, left of the jar
+	local jarAmount = PaperUI.loud(words(jarRow, "Amount", "", 0, 0, 260, 90, 60))
 	jarAmount.AnchorPoint, jarAmount.TextXAlignment, jarAmount.TextColor3, jarAmount.ZIndex, jarAmount.Rotation = Vector2.new(0.5, 0.5), Enum.TextXAlignment.Center, Color3.fromRGB(255, 222, 40), 4, -6
 	local amountInk = Instance.new("UIStroke") -- the shop's part-name look: yellow crayon with a thick ink edge
 	amountInk.Color, amountInk.Thickness, amountInk.LineJoinMode, amountInk.Parent = PaperUI.INK, 5, Enum.LineJoinMode.Round, jarAmount
 	local amountPop = Instance.new("UIScale")
 	amountPop.Parent = jarAmount
-	local jarButton = button(jarRow, "SeeJar", UIArt.mainmenu.strip.yellow, "See your jar", 148, 42, 260, 70, 2, function()
+	local jarButton = button(jarRow, "SeeJar", UIArt.mainmenu.strip.yellow, "See your jar", 0, 130, 200, 56, 2, function()
 		require(script.Parent.MenuController).show("shop", false, "PaperJar")
-	end, 34)
+	end, 28)
 	local jarPulse = Instance.new("UIScale")
 	jarPulse.Parent = jarButton
 	-- 0 to 1 with an overshoot: the bounce the Double button's sticker and the jar pieces pop in with
@@ -404,11 +414,12 @@ function RoundEnd.start()
 			offerLine.Text = paid and "Doubled! Thanks!" or pressed and "One moment..." or "Double this match!"
 			offerLeft = nil -- (the time left goes back on next frame)
 			offerAmount.Text = string.format("+%s Paper  +%s XP", PaperUI.commas(paper), PaperUI.commas(xp))
-			offerAmounts.Text = offerAmount.Text
+			offerAmounts.Text = offerAmount.Text:gsub("  ", "   ")
 			local selling = not (paid or pressed)
 			offerIcon.Visible, offerPrice.Visible, worth.Visible = selling, selling, selling
 			offerSelling = selling -- (laid out by shapeOffer, from showJar below)
 			offerPrice.Text, worthWords.Text = tostring(price), "Worth " .. worthRobux .. " R$!"
+			offerBuy.Price.Word3.Text = tostring(price)
 			offer.Parent = pages[state.minePage].page
 		end
 		showJar(teamRound and "teams" or "solo")
@@ -427,7 +438,9 @@ function RoundEnd.start()
 			end
 			-- pop in with a bounce (an overshooting ease) as the card comes up, then a gentle pulse
 			local t = since - 0.8
-			worthScale.Scale = t < 0.45 and popIn(t, 0.45) or 1 + 0.06 * math.sin((t - 0.45) * 4)
+			-- beside the jar the buy button bounces instead, so one thing moves (the sticker just pops in)
+			worthScale.Scale = t < 0.45 and popIn(t, 0.45) or offerCompact and 1 or 1 + 0.06 * math.sin((t - 0.45) * 4)
+			buyBounce.Scale = t < 0.45 and popIn(t, 0.45) or 1 + 0.08 * math.abs(math.sin((t - 0.45) * 3.2))
 		end
 		if jarRow.Visible then
 			-- The jar pops in, six scraps drop in one after another (the jar bumps as each lands), the level rises from
@@ -438,7 +451,7 @@ function RoundEnd.start()
 				local p = (t - 0.6 - (i - 1) * 0.2) / 0.6 -- each falls for 0.6 s
 				scrap.Visible = added > 0 and p >= 0 and p < 1
 				if scrap.Visible then
-					scrap.Position = UDim2.fromOffset(70 + SCRAP_X[i] * (1 - p * 0.8), -260 + 340 * p * p) -- falling faster, into the middle
+					scrap.Position = UDim2.fromOffset(JAR_MID.X + SCRAP_X[i] * (1 - p * 0.8), JAR_MID.Y - 330 + 340 * p * p) -- falling faster, into the middle
 					scrap.Rotation, scrap.ImageTransparency = i * 60 + p * (i % 2 == 0 and 240 or -240), math.max(0, p - 0.7) / 0.3
 				end
 				bump += math.max(0, 1 - math.abs(p - 1) * 6) * 0.05
@@ -448,7 +461,8 @@ function RoundEnd.start()
 			Shop.jarLevel(jar, state.jarInside - added * (1 - fill) ^ 2)
 			local at = added > 0 and 2.5 or 0.6 -- "Full!" with nothing new: right away
 			local out = math.clamp((t - at) / 0.35, 0, 1)
-			jarAmount.Position = UDim2.fromOffset(70 + (AMOUNT_AT.X - 70) * out, 70 + (AMOUNT_AT.Y - 70) * out - (out == 1 and 4 * math.sin((t - at) * 3) or 0))
+			local at2 = JAR_MID:Lerp(AMOUNT_AT, out)
+			jarAmount.Position = UDim2.fromOffset(at2.X, at2.Y - (out == 1 and 4 * math.sin((t - at) * 3) or 0))
 			amountPop.Scale = popIn(t - at, 0.45)
 			jarPulse.Scale = popIn(t - 0.4, 0.4) * (1 + 0.05 * math.sin(t * 4))
 		end

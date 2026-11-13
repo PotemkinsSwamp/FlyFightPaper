@@ -145,12 +145,13 @@ card in the Paper section: a glass jar that fills to the Paper inside (two drawi
 the level), the amount, and 199 R$ from 3,000 (below: "Breaks at 3,000"); "Full!" at 10,000; before full, an "Are you
 sure?" note offers Break it now or Keep filling ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)). The report
 card's jar piece (Alan's pick, [jar rules](../decisions/2026-11-12-paper-jar-rules.md); Studio only until go-live) shares
-a row with Double this match, all inside the card's width (Alan 2026-11-12): the Double button folded up on the left (same
-green paper, sliced so its tacks keep their shape; heading, amounts, price with its sticker, time left), the glass jar
-(no card) on the card's middle line, six torn scraps dropping in
-(the Range's scrap picture, cut with `ImageRectOffset`), the level rising from before the match to now
-(`ShopScreen.jarLevel`), a big yellow "+165!" (or "Full!") popping out above it, and a small pulsing yellow button
-("Break the jar!" from 3,000, else "See your jar"; both open the shop on the jar card). It sits on the card frame, not
+a row with Double this match, all inside the card's width (Alan 2026-11-12, third look): on the left the Double panel
+(same green paper, sliced so its tacks keep their shape; heading, amounts and time left in big words, and the shop's
+bright green buy button with the price, bouncing, the "Worth" sticker under it); on the right the glass jar (no card),
+a little smaller, with a short yellow button under it. Six torn scraps drop in
+(the Range's scrap picture, cut with `ImageRectOffset`), the level rises from before the match to now
+(`ShopScreen.jarLevel`), a big yellow "+165!" (or "Full!") pops out into the card's blank corner beside it, and the
+yellow button pulses ("Break the jar!" from 3,000, else "See your jar"; both open the shop on the jar card). It sits on the card frame, not
 the page, because a turned page (team rounds) switches off the clipping that draws the level. 3D part pictures are centred as seen, not on their box's middle (the near end looks bigger; `UnlockMoment.view`'s `turn`). Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
