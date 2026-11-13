@@ -118,6 +118,9 @@ mistake would be easy to make twice.
   the cached old one.
 
 ## Studio and the place file
+- **`ImageColor3` multiplies the picture (2026-11-12).** Setting the colour you want as the tint of a cream paper
+  picture comes out darker and yellower: the shop's faded chalk green (104,133,118) showed as olive 98,117,96 in Play,
+  and Alan disliked it. Tint = target / the picture's own colour x 255, then read the colour off a screenshot.
 - **Compare looks in the same spot.** Copies of a building 300 studs apart, high above the map, drew visibly darker
   in one place than another (2026-10-25): move both to one spot (or swap them) before blaming the pictures.
 - **Roblox keeps pictures up to 2048 (tested 2026-10-25), but `EditableImage` reads at most 1024**, so a readback can't

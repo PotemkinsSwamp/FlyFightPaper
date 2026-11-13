@@ -14,8 +14,12 @@ cites the numbered findings here (C = colour, L = layout and reading, G = games)
   word on 2026-11-12: C2, L4, G1, G4 and the WCAG basis in L9.
 
 ## Colour (C)
-- **C1. Saturated colours are liked most; muddy browns and olives least.** Palmer & Schloss 2010, PNAS, 48 adults,
-  32 colours ([PDF](https://palmerlab.berkeley.edu/pdf/Palmer%26Schloss%282010%29.pdf)). Strong (adults).
+- **C1. Saturated colours are liked most; muddy browns and olives least.** Liking peaks broadly at blue and dips
+  sharply at chartreuse (yellow-green); saturated colours beat light and muted ones (which tie); dark orange (brown)
+  and dark yellow (olive) are the lowest, while dark green and dark red are liked more than other greens and reds.
+  People like the colours of things they like (sky, clean water) and dislike those of mould, mud and rot. Palmer &
+  Schloss 2010, PNAS, 48 adults, 32 colours ([PDF](https://palmerlab.berkeley.edu/pdf/Palmer%26Schloss%282010%29.pdf)).
+  Strong (adults). Details re-read 2026-11-12.
 - **C2. Colour pairs: similar hues plus a clear light/dark difference are liked; opposite (complementary) hues are
   not liked more.** Preference was "governed primarily by component color preferences, coolness, hue similarity, and
   lightness contrast"; "no increases in preference for complementary colors". Schloss & Palmer 2011, Attention,
@@ -142,7 +146,9 @@ cites the numbered findings here (C = colour, L = layout and reading, G = games)
   bad feelings (C4).
 - **Faded chalk green (Alan's pick for the shop):** middle brightness keeps white and black pieces visible (C7, L9);
   a cool, muted ground under warm, saturated parts matches what people like in figure-on-ground pairs (C2) and
-  Valve's muted-ground, saturated-focus rule (G1).
+  Valve's muted-ground, saturated-focus rule (G1). **In Play it looked wrong** (Alan): built as a tint on cream paper
+  it came out a darker olive grey-green, the least-liked hue region (C1), the only dull colour on a bright screen, and
+  touching the dark price label (L1). Reasons and fixes: [fourth study](../workshop/design-examples.md#why-the-green-looks-wrong-in-play-fourth-study-2026-11-12).
 - **The skill's old rules that had no backing:** 60-30-10 (C11), complementary pairs as harmony (C2 found no gain),
   F/Z reading patterns for game screens (L12). The rebuilt skill drops or relabels them.
 

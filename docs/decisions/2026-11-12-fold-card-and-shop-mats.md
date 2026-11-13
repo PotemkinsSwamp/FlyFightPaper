@@ -11,7 +11,9 @@
 - **Once per part per play session.**
 - **Shop pictures sit on faded chalk green** (RGB 104,133,118), Alan's pick from real-part mock-ups
   ([design examples](../workshop/design-examples.md)): middle brightness, so white and dark pieces both show; brown
-  kraft ("looked very bad") and midnight indigo (dark pieces sank) were rejected.
+  kraft ("looked very bad") and midnight indigo (dark pieces sank) were rejected. Reopened the same day: in Play it
+  "just doesn't look right" (it came out olive); three fixes wait for his pick
+  ([fourth study](../workshop/design-examples.md#why-the-green-looks-wrong-in-play-fourth-study-2026-11-12)).
 - **Fold card: no circle, a soft shadow** under the turning part (picked over an indigo circle).
 - **Today's parts timer:** one line ("New parts in 1h 44m") on dark paper between the heading and the cards, counted
   on the server's clock so it ends at the same moment for everyone.

@@ -36,8 +36,9 @@ plastic-looking things "babyish" (C6): our real paper, cardboard and crayon mate
    a panel.
 5. **Calm screens light, exciting moments saturated.** Brightness drives pleasure, saturation drives excitement (C3,
    medium-strong): menus soft and light; the loudest colour for rewards, kills and warnings.
-6. **No muddy browns or olives; no big dark panels for good news.** Browns and olives are the least-liked colours
-   (C1, strong); children link brown, black and grey with bad feelings (C4, medium). Cardboard stays light and warm;
+6. **No muddy browns or olives; no big dark panels for good news.** Browns and olives are the least-liked colours,
+   and liking dips at yellow-green (C1, strong): a greyed green leaning yellow reads as mould, as the shop circle did
+   in Play; lean greens toward blue instead. Children link brown, black and grey with bad feelings (C4, medium). Cardboard stays light and warm;
    dark paper is for small plates (price labels, word backings), losing or locked states.
 7. **Crayon-bright, not neon.** Older kids lean to less saturated colours than young ones (C5, weak-medium).
 8. **Objects keep their real-world colours** (C8, strong): a pencil is yellow, an eraser pink.
@@ -98,7 +99,7 @@ plastic-looking things "babyish" (C6): our real paper, cardboard and crayon mate
 | Featured card crayon | about 36, 79, 230 to 101, 40, 236 | blue to violet with magenta, orange, cyan streaks |
 | Card colours | orange 248,140,4; sky 7,199,247; green 63,201,33; purple 165,49,226 | the shop's loud papers |
 | Part names | 255, 222, 40 | yellow with an ink edge |
-| Shop picture circle | 104, 133, 118 | faded chalk green, middle brightness (Alan 2026-11-12); `ImageColor3 = 111,151,145` on the pale circle |
+| Shop picture circle | 98, 117, 96 on screen | meant as faded chalk green 104,133,118 but tinted wrong, came out olive; Alan doesn't like it in Play; options in [design examples](../../../docs/workshop/design-examples.md#why-the-green-looks-wrong-in-play-fourth-study-2026-11-12) |
 | Team paper | red 214,78,72; blue 70,128,214 | middle brightness: on a middle backing they stand out by colour, not brightness |
 
 ## 6. Checklist (on a real screenshot, before Alan sees anything)
@@ -107,7 +108,8 @@ plastic-looking things "babyish" (C6): our real paper, cardboard and crayon mate
 3. **Squint:** is the first thing you see the thing that matters? One loud thing per card? (rules 1.3, 2.2)
 4. **Grey:** does every picture and word still stand off its backing? White on cream and black on dark fail. (1.1, 1.2)
 5. **Measure:** `contrast.py shot.png x,y x,y` for words on their worst patch (4.5:1, titles 3:1) and pictures on
-   their backing (3:1). (1.2, 3.1)
+   their backing (3:1). (1.2, 3.1) Read the colours off the screenshot, not the code: `ImageColor3` multiplies the
+   picture, so a tint on cream paper comes out darker and yellower (set target / picture colour x 255).
 6. **Colour:** muted ground, saturated focus; panel in one hue family; no muddy brown or olive; nothing colour-only.
    (1.3-1.9)
 7. **Layout:** gaps between cards bigger than inside; read order ends on the button; buttons in their usual places,

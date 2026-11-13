@@ -10,8 +10,8 @@ backing; body words 4.5:1.
 
 **Where it stands (2026-11-12):** fold card: Alan chose **no circle, soft shadow** (being built). Shop: Alan turned
 down midnight indigo (too dark: black and dark purple pieces blend in); the third study below compares mid-brightness
-backings; Alan picked **faded chalk green** ([decision](../decisions/2026-11-12-fold-card-and-shop-mats.md)). Why
-the research agrees: [design research](../research/DESIGN-RESEARCH-2026-11-12.md#what-it-says-about-this-weeks-picks).
+backings; Alan picked **faded chalk green** ([decision](../decisions/2026-11-12-fold-card-and-shop-mats.md)), then
+saw it in Play and said it "just doesn't look right": the fourth study says why and gives three fixes for him to pick.
 
 ## The colour study (2026-11-12)
 ![Backings compared on the shop square and the fold card](design-examples-backings.jpg)
@@ -97,6 +97,55 @@ helps white and hides black; lighter does the opposite. So (b) and (c) were solv
   or (c) it stands out by colour, not by light and dark (strong saturated red and blue on a soft dull green: clear in
   colour, it fades only in the greyscale copy). Most shop parts are team paper (bodies, noses, wings, tails), so check
   a few in Play before committing to it.
+
+## Why the green looks wrong in Play (fourth study, 2026-11-12)
+Alan, after seeing faded chalk green in the shop in Play: "It just doesn't look right." Checked on his screenshot
+(`.planning/shop-green-alan-2026-11-12.webp`) with the `design-theory` skill:
+
+1. **It isn't the colour he picked.** The game tints the cream circle picture (`ImageColor3` multiplies), and the code
+   sets the target colour itself (104,133,118) as the tint, so cream times green came out **98,117,96** on screen:
+   darker, greyer and turned toward yellow-green (hue 141 instead of 161 on the CIELAB colour wheel). The right tint
+   for 104,133,118 is 111,151,145.
+2. **That olive grey-green is the least-liked kind of colour.** In the main colour study the dip in liking sits at
+   yellow-green, the lowest point is olive, and saturated colours beat muted ones (C1). People link it with mould and
+   mud; a dull, dirty-looking disc sits under a bright toy.
+3. **It's the only dull colour on a bright screen.** Everything around it is clean: cream paper, lime buttons, the
+   yellow banner, crayon-bright cards. One greyed-down colour among them reads as dirt or a shadow, not paper (C1;
+   older kids like softer colours, but attention fell when colours went washed-out, C5).
+4. **It reads as a hole, and it touches the price label.** A darker disc in the board's own colour family, with no
+   edge, looks like a hole through the paper (L1: same colour = same thing). Its bottom is 3 concept pixels from the
+   dark price label, so the two dark shapes merge into one blob (L1: nearness groups).
+5. **The parts look flat on it.** The red and blue paper are the same brightness as the circle (1.0 to 1.4), so they
+   stand out by colour only (C7: same brightness looks flat). That was the known price of middle brightness.
+
+![Alan's screenshot with today's circle and three fixes, with grey copies](design-examples-green-options.jpg)
+
+![The same options with parts that have black, dark purple and white pieces](design-examples-green-parts.jpg)
+
+Made by repainting the circles on Alan's own screenshot (the parts are untouched), and on the third study's real-part
+squares. The options use a circle 186 across instead of 205, centred where it was, which leaves 13 concept pixels of
+cream above the price label.
+
+| Option | On screen | `ImageColor3` on the pale circle | White | Black frame | Navy | Dark purple | Red / blue paper |
+|---|---|---|---|---|---|---|---|
+| Now (in the game) | 98,117,96 | 104,133,118 | 4.5 | 3.7 | 3.2 | 2.2 | 1.0 to 1.4 |
+| **A** the green he picked, built right | 104,133,118 | 111,151,145 | 3.8 | 4.3 | 3.8 | 2.6 | 1.1 to 1.2 |
+| **B** mint green paper | 90,150,125 | 96,170,153 | 3.3 | 5.1 | 4.5 | 3.0 | 1.0 to 1.4 |
+| **C** lilac paper | 150,130,190 | 159,147,233 | 3.2 | 5.2 | 4.6 | 3.1 | 1.0 to 1.4 |
+
+- **Recommended: B, mint green paper.** It keeps green, the one colour family far from both the red and the blue
+  parts, but moves it away from yellow-green toward the sea-glass side that people like (C1: liking peaks at blue and
+  cyan), lighter (C3: brightness drives pleasure) and almost twice as colourful, while staying well below the lime
+  buttons, so it doesn't pull the eye off the part (C3, L11). It clears 3:1 for white and for every dark piece,
+  including the Eraser's dark purple, which A doesn't. Cleaner and lighter, with the gap, it reads less like a hole
+  (judge that on the picture: it's an eye call, not a measurement).
+- **A** is the cheapest fix (the right tint and the gap), and it is the colour Alan saw in the mock-ups, but still
+  muted and grey.
+- **C** is a different colour family: nothing like the board, so no hole, and it goes with the purple 2x XP card.
+  Blue parts sit next to its hue, so they stand out least of the three.
+- **For all three:** shrink the circle so it doesn't touch the price label. In `ShopScreen.luau`'s Today's parts,
+  `backing(card, 109, 73, 295, 259)` instead of `backing(card, 100, 64, 305, 269)`; check the starter pack and week
+  squares the same way on a screenshot.
 
 ## Fold card: the pale circle
 `src/client/FoldOffer.luau` puts the part on `Art.circlePale` on the Featured card's blue-violet crayon. Alan: the
