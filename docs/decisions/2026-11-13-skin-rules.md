@@ -33,7 +33,7 @@
   expensive (Legendary 30,000, Mythical 60,000 Paper), so players would rather use Robux. **No free skins.**
 - **Skin boxes, maybe** (Alan, same day): a cheap box (Paper or Robux) with a small chance of a Mythical, like CS:GO
   crates, while every skin can still be bought outright. A free box of mostly Commons (Rares very rare) as the reward
-  for the first weekly mission. Not decided yet; Roblox's odds rules apply.
+  for the first weekly mission. Not decided yet. Roblox's rule to show every prize's odds is fine with Alan ("we can show percentages").
 - **Legendary and Mythical hide the plane** (the parts they cover): the hidden parts stay the hitbox, the skin has no
   collision, and the red or blue outline goes round the skin. They must still look good on every part mix, so no
   plain stretching: the way they fit is to be worked out.
