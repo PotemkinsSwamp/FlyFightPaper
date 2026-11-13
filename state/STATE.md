@@ -11,7 +11,7 @@ Balance: Spitball planes weakest. Not checked: phone sizes of the report card ro
 
 Decisions to review
 Gift arrival: the box waits for an Open it! tap (the note first says who and "What's inside?"); on Thanks the gift
-  comes at you and fades; the stray star and both sparkles are gone; no sound yet (the old one had none).
+  comes at you and fades; both sparkles gone. Sounds beyond the ding and coin you asked for: whoosh, box thump.
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
@@ -50,7 +50,8 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
-- Watch `.planning/gift-arrival-redo.mp4`: the plane's flight, the rays, Open it!, the next gift out of the box.
+- Gift arrival: watch `.planning/gift-arrival-redo.mp4`; hear it in Studio Play (workspace `DevGiftMoment` =
+  `xp_boost_60m,paper_pack_5000`).
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - Pick from the cosmetics and playtime rewards options (A-L) on the research page.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).

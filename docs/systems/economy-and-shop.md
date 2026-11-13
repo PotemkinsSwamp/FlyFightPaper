@@ -263,6 +263,9 @@ with gifts waiting:
 
 A second tap within a second of the last is ignored (the buttons share a spot). No new pictures were uploaded: the
 lid, box and its inside are parts of the one gift box picture, and each ray is a stroke cut from the rays picture.
+Sounds (Alan 2026-11-13: "add the sounds"), all ones the game already had: the backpack's ding and coin as the box
+opens, the coin again for each later gift; Claude's additions for him to judge: the paper whoosh as the plane passes
+over you and as it comes back, and the box thump when the box lands.
 
 ## Offline-pausing timer
 Both resources pause offline. Loaded online menus, desk time, spectating and intermission count under the

@@ -8,6 +8,8 @@
 -- Everything drawn is worked out from the time and from when the taps happened, so a held time shows a still.
 -- Studio: workspace DevGiftMoment = product keys with commas between ("xp_boost_60,paper_pack_5000") plays pretend
 -- gifts; DevGiftTime holds the moment at that many seconds and does the taps by itself (tools/film_gift.py).
+-- Sounds are ones the game already has: the paper whoosh as the plane passes over you and comes back, the box thump
+-- as it lands, the backpack's ding and coin as it opens, the coin again as each later gift comes out.
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Http = game:GetService("HttpService")
@@ -15,6 +17,7 @@ local Root = game.ReplicatedStorage:WaitForChild("FlyFightPaper")
 local Assets = require(Root.Shared.UIAssets)
 local PaperUI = require(script.Parent.PaperUI)
 local ShopScreen = require(script.Parent.ShopScreen)
+local Audio = require(script.Parent.Audio)
 local GiftMoment = {}
 
 -- Seconds. The plane wiggles off its pin until LIFT and is over the top by AWAY. The box leaves the top at DROP and
@@ -152,7 +155,7 @@ function GiftMoment.start(api)
 	item.ZIndex, box.ZIndex, note.ZIndex, shadow.ZIndex, plane.ZIndex, pin.ZIndex = 3, 4, 6, 7, 8, 9
 
 	-- gifts: the ones shown so far, in order. taps: when Open and each Thanks happened (bye: the last Thanks).
-	local playing, asked, started, filming = false, 0, nil, false
+	local playing, asked, started, filming, heard = false, 0, nil, false, 0
 	local gifts, taps = {}, { thanks = {} }
 	local said, shownItem, seenHere = nil, nil, 0
 	local fakes, fakeRead, fakeCount = {}, nil, 0
@@ -309,9 +312,19 @@ function GiftMoment.start(api)
 		end
 	end
 
+	-- Plays the sounds whose moments fall between the last frame's time and this one's.
+	local function sounds(t)
+		local function at(when, name) if when and heard < when and t >= when then Audio.play(name) end end
+		at(2, "flight"); at(DROP + 0.55 * (LAND - DROP), "land")
+		at(taps.open and taps.open + LID, "ding"); at(taps.open and taps.open + LID + 0.25, "purchase")
+		for _, thanks in taps.thanks do at(thanks + RISE, "purchase") end
+		at(taps.bye and taps.bye + BACK, "flight")
+		heard = t
+	end
+
 	-- The board's plane is pinned: ours takes its place (same spot, same size) and the moment starts.
 	local function begin()
-		started = os.clock()
+		started, heard = os.clock(), 0
 		local at, size, pinAt = board.plane.Position, board.plane.Size, board.pin.Position
 		home, planeSize, pinHome = Vector2.new(at.X.Offset, at.Y.Offset), Vector2.new(size.X.Offset, size.Y.Offset), Vector2.new(pinAt.X.Offset, pinAt.Y.Offset)
 		-- { x, y, size }: off the pin the way its nose points, right, round the top of a loop, at you, up and away.
@@ -342,7 +355,7 @@ function GiftMoment.start(api)
 		end
 		local t = now()
 		draw(t)
-		if taps.bye and t - taps.bye >= DONE then finish() end
+		if taps.bye and t - taps.bye >= DONE then finish() elseif not filming then sounds(t) end
 	end)
 
 	-- Plays the gifts waiting, if any (MenuController calls this when the main menu shows).
