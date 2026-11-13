@@ -11,8 +11,7 @@ Balance: Spitball planes weakest. Not checked: phone sizes of the report card ro
 
 Decisions to review
 Gift arrival: the box waits for an Open it! tap (the note first says who and "What's inside?"); on Thanks the gift
-  comes at you and fades; both sparkles gone. Sounds: ding, coin, whoosh, box thump, a shine (pick 1 of 3); music
-  drops to a fifth under the gift and the unlock backpack.
+  comes at you and fades. Sounds: ding, coin, whoosh, thump, a shine; music drops to a fifth (backpack too).
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
