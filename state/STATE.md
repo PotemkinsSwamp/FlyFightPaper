@@ -3,8 +3,7 @@
   [plan](../docs/plan/SKINS-PLAN.md)). Your rules: a skin never changes the hitbox; Common/Rare/Legendary/Mythical;
   one design per skin fitted by the game; team outline, no team colours; bots wear them; no animations; about
   4,000 triangles per shape skin, drawn only on players' screens.
-- Two Blender tests (no upload) proved the fitting: one printed picture wraps onto any plane; a shape skin with joints
-  fits swept and straight wings. Concepts for every approved skin and trail: `.planning/skins/concepts/`.
+- Blender tests (no upload) proved the fitting; concepts for every skin and trail: `.planning/skins/concepts/`.
 
 # Now: finish the game for the beta
 Next: build the first skin batch you picked (Hazard Stripes, Tiger Stripes, Flame Decals, Gold Foil, Lava, Galaxy,
@@ -54,7 +53,6 @@ Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
-- Pick from the cosmetics and playtime rewards options (A-L) on the research page.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
 - Save to File when you want the new weapon models and the tape-roll tower in the place file (your go).
 - In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
