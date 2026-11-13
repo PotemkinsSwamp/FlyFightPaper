@@ -31,6 +31,11 @@ Flight feel, combat, visuals and frame rate are checked by playing in Studio:
   `DevAccountPaper`, default 3,000), which comes back as you left it. Setting `DevAccountLevel` in Edit starts Play on
   the level account. The Hangar's Studio "own everything" mode follows the switch (`ProfileRuntime.luau` `devAccount`,
   `HangarService.luau` `devAll`, `DevTools.luau`, `Hangar.luau`).
+- **Report card checks** (Studio only, `RoundEnd.luau`): workspace `DevMatchPaper` fakes your Paper this match (XP to
+  match) so the Double button and the Paper jar piece show without earning it; set the client's `PaperJar` attribute
+  after a round starts to fake what went into the jar; workspace `DevCardTime` holds the card's animations at that many
+  seconds after it came up (frame-by-frame videos: Studio captures about one frame a second). The results phase is
+  27 s (`results_seconds` in `config/gameplay.json`), too short for frame-by-frame filming: raise it for the shoot only.
 - **Timed bot matches** (bots only) measure bot changes: deaths by cause, kills, shots, hits.
   `python tools/run_bot_matches.py 1 75` is the one-minute check; `python tools/run_bot_matches.py` three full matches
   (run it in the background; almost no tokens, where the `match-runner-haiku` helper cost ~120k a run).

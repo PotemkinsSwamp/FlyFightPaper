@@ -70,16 +70,21 @@ end
 
 -- The Paper jar picture (pixels in parent): the empty jar, and the full one showing below the paper's level (the two
 -- drawings line up exactly). Keep the box wider than the jar: the picture's height fills it, so the level shares hold.
+-- The jar's paper level for `inside` Paper (the report card animates it). Clipping is switched off under a turned
+-- frame, so keep the jar out of rotated parents.
+function ShopScreen.jarLevel(jar, inside)
+	local level = JAR_BOTTOM - (JAR_BOTTOM - JAR_TOP) * math.clamp(inside / JAR.cap_paper, 0, 1)
+	local clip = jar.Filled
+	clip.Visible, clip.Position, clip.Size = inside > 0, UDim2.fromScale(0, level), UDim2.fromScale(1, 1 - level)
+	clip.Full.Position, clip.Full.Size = UDim2.fromScale(0.5, (0.5 - level) / (1 - level)), UDim2.fromScale(1, 1 / (1 - level)) -- (pictures sit by their middle)
+end
+
 function ShopScreen.jarPicture(parent, inside, x, y, w, h)
 	local jar = PaperUI.image(parent, "Jar", Art.jarEmpty, x, y, w, h)
-	local level = JAR_BOTTOM - (JAR_BOTTOM - JAR_TOP) * math.clamp(inside / JAR.cap_paper, 0, 1)
-	if inside > 0 then
-		local clip = Instance.new("Frame")
-		clip.Name, clip.BackgroundTransparency, clip.ClipsDescendants = "Filled", 1, true
-		clip.Position, clip.Size, clip.Parent = UDim2.fromScale(0, level), UDim2.fromScale(1, 1 - level), jar
-		local paper = PaperUI.image(clip, "Full", Art.jarFull, 0, 0, 1, 1)
-		paper.Position, paper.Size = UDim2.fromScale(0.5, (0.5 - level) / (1 - level)), UDim2.fromScale(1, 1 / (1 - level)) -- (pictures sit by their middle)
-	end
+	local clip = Instance.new("Frame")
+	clip.Name, clip.BackgroundTransparency, clip.ClipsDescendants, clip.Parent = "Filled", 1, true, jar
+	PaperUI.image(clip, "Full", Art.jarFull, 0, 0, 1, 1)
+	ShopScreen.jarLevel(jar, inside)
 	return jar
 end
 

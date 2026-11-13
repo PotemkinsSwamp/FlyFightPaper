@@ -3,7 +3,8 @@
 **Decided:** 2026-11-12 (Alan, after the money plan's jar was built)
 **Status:** decided. The save rules are built (`paper_jar` in `config/economy.json`). The shop card and the warning are
 built in Studio (2026-11-12, preview `.planning/paper-jar-preview.jpg`); the two jar pictures uploaded and approved
-(Alan's go). The report card's jar piece (below) is being redone to Alan's pick.
+(Alan's go). The report card's jar piece (below) is rebuilt to Alan's pick (2026-11-12, Studio only; video sent for
+his OK).
 
 ## Decision
 - **The jar breaks from 3,000 Paper**, just under what 199 R$ buys in the small Paper packs (99 R$ gives 15.2 Paper per

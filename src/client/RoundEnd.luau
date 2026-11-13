@@ -150,18 +150,51 @@ function RoundEnd.start()
 	worthScale.Parent = worth
 	local offerLeft -- whole seconds shown on the button
 
-	-- What went into your Paper jar this match (Alan 2026-11-12): a little orange card left of the report cards (clear of
-	-- them in either layout) with the jar, the amount and "See your jar", which opens the shop on Paper. Only where the
-	-- shop is (Studio until go-live, like the menu's Shop button). The amount is the jar's change since the round
-	-- started; the final bonus can land after the card shows, so it follows the PaperJar attribute.
-	local JAR_SPOT = { solo = { 900, 660 }, teams = { 480, 575 } } -- the card's top left, sheet pixels
-	local jarTag = image(card, "JarTag", UIArt.shop.cardPackOrange, 900, 660, 300, 252)
-	jarTag.ScaleType, jarTag.Visible = Enum.ScaleType.Stretch, false
-	local jarWords = PaperUI.loud(words(jarTag, "Words", "", 10, 122, 280, 42, 30))
-	jarWords.TextXAlignment = Enum.TextXAlignment.Center
-	button(jarTag, "See", UIArt.mainmenu.strip.green, "See your jar", 40, 172, 220, 62, -1, function()
+	-- What went into your Paper jar this match (Alan's pick 2026-11-12, docs/decisions/2026-11-12-paper-jar-rules.md): the
+	-- glass jar at the end of the Double this match row under your card, paper scraps dropping in as the card comes up,
+	-- the level rising from before the match to now, a big crayon "+165!" popping out, and its own small pulsing yellow
+	-- button ("Break the jar!" from 3,000, else "See your jar"; both open the shop on the jar card). Only where the shop
+	-- is (Studio until go-live). The amount is the jar's change since the round started; the final bonus can land after
+	-- the card shows, so it follows the PaperJar attribute. The row sits on the card frame, not the page: a turned page
+	-- (team rounds) switches off the clipping that draws the jar's level.
+	local JAR_ROW = { x = 260, y = 862, w = 420, h = 155 } -- page pixels: the right end on the card's right edge
+	local OFFER_AT = { home = 340, besideJar = -30 } -- the Double button's middle (page pixels): moves left for the jar
+	local TEAM_DROP = 40 -- team rounds: the row a little lower, clear of the other team's card
+	local jarRow = Instance.new("Frame")
+	jarRow.Name, jarRow.BackgroundTransparency, jarRow.AnchorPoint = "JarRow", 1, Vector2.new(0.5, 0.5)
+	jarRow.Size, jarRow.Visible, jarRow.Parent = UDim2.fromOffset(JAR_ROW.w, JAR_ROW.h), false, card
+	local jarFit = Instance.new("UIScale")
+	jarFit.Parent = jarRow
+	local Shop = require(script.Parent.ShopScreen)
+	local jar = Shop.jarPicture(jarRow, 0, 0, 0, 140, 155)
+	local jarBump = Instance.new("UIScale")
+	jarBump.Parent = jar
+	-- The six torn scraps on the Range's scrap picture (pixel boxes), each falling into the jar.
+	local SCRAPS = { { 93, 0, 130, 167 }, { 248, 29, 75, 100 }, { 310, 85, 138, 115 }, { 0, 140, 128, 104 }, { 280, 216, 99, 105 }, { 115, 218, 111, 148 } }
+	local SCRAP_X = { -45, 35, -15, 55, -55, 15 } -- where each starts, beside the jar's middle
+	local scraps = {}
+	for i, box in SCRAPS do
+		local scrap = image(jarRow, "Scrap" .. i, UIArt.range.scrap, 0, 0, box[3] * 0.32, box[4] * 0.32)
+		scrap.ImageRectOffset, scrap.ImageRectSize, scrap.ZIndex = Vector2.new(box[1], box[2]), Vector2.new(box[3], box[4]), 3
+		scraps[i] = scrap
+	end
+	local AMOUNT_AT = Vector2.new(150, -30) -- where "+165!" comes to rest (row pixels), above the jar's right shoulder
+	local jarAmount = PaperUI.loud(words(jarRow, "Amount", "", 0, 0, 320, 100, 80))
+	jarAmount.AnchorPoint, jarAmount.TextXAlignment, jarAmount.TextColor3, jarAmount.ZIndex, jarAmount.Rotation = Vector2.new(0.5, 0.5), Enum.TextXAlignment.Center, Color3.fromRGB(255, 222, 40), 4, -6
+	local amountInk = Instance.new("UIStroke") -- the shop's part-name look: yellow crayon with a thick ink edge
+	amountInk.Color, amountInk.Thickness, amountInk.LineJoinMode, amountInk.Parent = PaperUI.INK, 5, Enum.LineJoinMode.Round, jarAmount
+	local amountPop = Instance.new("UIScale")
+	amountPop.Parent = jarAmount
+	local jarButton = button(jarRow, "SeeJar", UIArt.mainmenu.strip.yellow, "See your jar", 150, 42, 270, 70, 2, function()
 		require(script.Parent.MenuController).show("shop", false, "PaperJar")
-	end, 28)
+	end, 34)
+	local jarPulse = Instance.new("UIScale")
+	jarPulse.Parent = jarButton
+	-- 0 to 1 with an overshoot: the bounce the Double button's sticker and the jar pieces pop in with
+	local function popIn(t, length)
+		local x = math.clamp(t / length, 0, 1) - 1
+		return math.max(0, 1 + 2.70158 * x ^ 3 + 1.70158 * x ^ 2)
+	end
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -190,16 +223,19 @@ function RoundEnd.start()
 		local inside = player:GetAttribute("PaperJar") or 0
 		local added = math.max(0, inside - (state.jarStart or inside))
 		local full = inside >= JarRules.cap_paper
-		-- Off: Alan 2026-11-12 didn't like the shop card pasted here ("add something distinctive... to catch your eye"); a
-		-- redesign replaces it (docs/decisions/2026-11-12-paper-jar-rules.md).
-		jarTag.Visible = false and layout ~= nil and RunService:IsStudio() and state.mine ~= nil and (added > 0 or full)
-		if not jarTag.Visible then return end
-		local spot = JAR_SPOT[layout]
-		jarTag.Position = UDim2.fromOffset(spot[1] + 150, spot[2] + 126)
-		jarWords.Text = full and "Your jar is full!" or "+" .. PaperUI.commas(added) .. " Paper in your jar"
-		local old = jarTag:FindFirstChild("Jar")
-		if old then old:Destroy() end
-		require(script.Parent.ShopScreen).jarPicture(jarTag, inside, 60, 8, 180, 112)
+		jarRow.Visible = layout ~= nil and RunService:IsStudio() and state.mine ~= nil and (added > 0 or full)
+		state.jarInside, state.jarAdded = inside, added
+		local drop = layout == "teams" and TEAM_DROP or 0
+		offer.Position = UDim2.fromOffset(jarRow.Visible and OFFER_AT.besideJar or OFFER_AT.home, 942 + (jarRow.Visible and drop or 0))
+		if not jarRow.Visible then return end
+		-- the row's middle on screen: the page's middle plus the row's spot on the page, scaled and turned with it
+		local page = pages[state.minePage].page
+		local scale, turn = page.Fit.Scale, math.rad(page.Rotation)
+		local off = Vector2.new(JAR_ROW.x + JAR_ROW.w / 2 - 340, JAR_ROW.y + drop + JAR_ROW.h / 2 - 450) * scale
+		jarRow.Position = page.Position + UDim2.fromOffset(off.X * math.cos(turn) - off.Y * math.sin(turn), off.X * math.sin(turn) + off.Y * math.cos(turn))
+		jarFit.Scale = scale
+		jarAmount.Text = added > 0 and "+" .. PaperUI.commas(added) .. "!" or "Full!"
+		jarButton.Label.Text = inside >= JarRules.min_break_paper and "Break the jar!" or "See your jar"
 	end
 	local function show(part) for _, child in { banner, card, vote } do child.Visible = child == part or (type(part) == "table" and table.find(part, child) ~= nil) end end
 
@@ -292,6 +328,9 @@ function RoundEnd.start()
 		local me = player.DisplayName
 		state.mine = nil
 		for _, p in list do if p.displayName == me then state.mine = p end end
+		-- Studio: workspace DevMatchPaper fakes your Paper this match (XP to match), to see the Double button and the jar
+		local fake = RunService:IsStudio() and workspace:GetAttribute("DevMatchPaper")
+		if fake and state.mine then state.mine.paper, state.mine.xp = fake, math.floor(fake * 0.68 / 0.363) end
 		local teamRound = snap.mode ~= "FFA" and snap.teams ~= nil
 		-- Grades from each pilot's place in the whole class: free-for-all the place shown; a team round by points across
 		-- both teams (its places only rank the winning team, so the losing team's best got a C; seen in Play 2026-11-11).
@@ -350,15 +389,39 @@ function RoundEnd.start()
 	end
 	-- Your level bar fills from where you were before this round to where you are now.
 	RunService.RenderStepped:Connect(function()
+		-- seconds since the card came up; Studio's workspace DevCardTime holds it still (frame-by-frame videos)
+		local since = RunService:IsStudio() and workspace:GetAttribute("DevCardTime") or os.clock() - state.cardAt
 		local mine = state.mine
 		local shown = cover.Visible and card.Visible and mine ~= nil and state.profileXP ~= nil and not state.live
 		if offer.Visible and worth.Visible then
 			local left = math.max(0, math.ceil(offerEnds - os.clock()))
 			if left ~= offerLeft then offerLeft = left; offerLine.Text = "Double this match! " .. left .. "s left" end
 			-- pop in with a bounce (an overshooting ease) as the card comes up, then a gentle pulse
-			local t = os.clock() - state.cardAt - 0.8
-			local x = math.clamp(t / 0.45, 0, 1) - 1
-			worthScale.Scale = t < 0.45 and math.max(0, 1 + 2.70158 * x ^ 3 + 1.70158 * x ^ 2) or 1 + 0.06 * math.sin((t - 0.45) * 4)
+			local t = since - 0.8
+			worthScale.Scale = t < 0.45 and popIn(t, 0.45) or 1 + 0.06 * math.sin((t - 0.45) * 4)
+		end
+		if jarRow.Visible then
+			-- The jar pops in, six scraps drop in one after another (the jar bumps as each lands), the level rises from
+			-- before the match to now, then "+165!" pops out of the jar to above it; the button pulses all along.
+			local t, added = since, state.jarAdded
+			local bump = 0
+			for i, scrap in scraps do
+				local p = (t - 0.6 - (i - 1) * 0.2) / 0.6 -- each falls for 0.6 s
+				scrap.Visible = added > 0 and p >= 0 and p < 1
+				if scrap.Visible then
+					scrap.Position = UDim2.fromOffset(70 + SCRAP_X[i] * (1 - p * 0.8), -260 + 340 * p * p) -- falling faster, into the middle
+					scrap.Rotation, scrap.ImageTransparency = i * 60 + p * (i % 2 == 0 and 240 or -240), math.max(0, p - 0.7) / 0.3
+				end
+				bump += math.max(0, 1 - math.abs(p - 1) * 6) * 0.05
+			end
+			jarBump.Scale = popIn(t - 0.2, 0.4) * (1 + bump)
+			local fill = math.clamp((t - 0.8) / 1.6, 0, 1)
+			Shop.jarLevel(jar, state.jarInside - added * (1 - fill) ^ 2)
+			local at = added > 0 and 2.5 or 0.6 -- "Full!" with nothing new: right away
+			local out = math.clamp((t - at) / 0.35, 0, 1)
+			jarAmount.Position = UDim2.fromOffset(70 + (AMOUNT_AT.X - 70) * out, 70 + (AMOUNT_AT.Y - 70) * out - (out == 1 and 4 * math.sin((t - at) * 3) or 0))
+			amountPop.Scale = popIn(t - at, 0.45)
+			jarPulse.Scale = popIn(t - 0.4, 0.4) * (1 + 0.05 * math.sin(t * 4))
 		end
 		for k, it in pages do it.xpBar.show(shown and k == state.minePage) end
 		if not shown then return end
@@ -366,7 +429,7 @@ function RoundEnd.start()
 		-- ponytail: "before" assumes the profile already holds this round's XP (it is paid as it is earned).
 		local after = math.max(state.profileXP, mine.xp or 0)
 		local before = math.max(0, after - (mine.xp or 0))
-		local t = math.clamp((os.clock() - state.cardAt - 0.5) / 1.5, 0, 1)
+		local t = math.clamp((since - 0.5) / 1.5, 0, 1)
 		xpBar.set(before + (after - before) * (1 - (1 - t) ^ 2))
 	end)
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) state.profileXP = profile.xp end)

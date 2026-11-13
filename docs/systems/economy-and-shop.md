@@ -144,7 +144,13 @@ practice buy runs the same lock-then-pay path at once. The shop's clocks
 card in the Paper section: a glass jar that fills to the Paper inside (two drawings, empty and full, the full one cut at
 the level), the amount, and 199 R$ from 3,000 (below: "Breaks at 3,000"); "Full!" at 10,000; before full, an "Are you
 sure?" note offers Break it now or Keep filling ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)). The report
-card's jar piece is switched off for a redo to Alan's pick ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)). 3D part pictures are centred as seen, not on their box's middle (the near end looks bigger; `UnlockMoment.view`'s `turn`). Robux prices are the
+card's jar piece (Alan's pick, [jar rules](../decisions/2026-11-12-paper-jar-rules.md); Studio only until go-live) sits at
+the end of the Double this match row, which moves left to make room: the glass jar (no card), six torn scraps dropping in
+(the Range's scrap picture, cut with `ImageRectOffset`), the level rising from before the match to now
+(`ShopScreen.jarLevel`), a big yellow "+165!" (or "Full!") popping out above it, and a small pulsing yellow button
+("Break the jar!" from 3,000, else "See your jar"; both open the shop on the jar card). It sits on the card frame, not
+the page, because a turned page (team rounds) switches off the clipping that draws the level; in team rounds the row is
+40 pixels lower, clear of the other team's card. 3D part pictures are centred as seen, not on their box's middle (the near end looks bigger; `UnlockMoment.view`'s `turn`). Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
 DEVELOPMENT ONLY, cannot prompt real checkout, and cannot write mock purchases into production profiles.
