@@ -3,8 +3,8 @@
 **Decided:** 2026-11-12 (Alan, after the money plan's jar was built)
 **Status:** decided. The save rules are built (`paper_jar` in `config/economy.json`). The shop card and the warning are
 built in Studio (2026-11-12, preview `.planning/paper-jar-preview.jpg`); the two jar pictures uploaded and approved
-(Alan's go). The report card's jar piece (below) is rebuilt to Alan's pick (2026-11-12, Studio only; video sent for
-his OK).
+(Alan's go). The report card's jar piece (below) is built and **OK'd by Alan** (2026-11-12, after four looks; Studio
+only until go-live).
 
 ## Decision
 - **The jar breaks from 3,000 Paper**, just under what 199 R$ buys in the small Paper packs (99 R$ gives 15.2 Paper per
@@ -23,9 +23,15 @@ his OK).
   end of the Double this match row under your card: the glass jar itself (no card behind it), paper scraps dropping
   into it as the card comes up, the level rising from before the match to now, a big crayon "+165!" popping out, and
   its own small yellow button beside it ("Break the jar!" from 3,000, "See your jar" before), gently pulsing. Shown
-  every match where something went in or the jar is full, even when the Double button isn't there. Video to Alan
-  before anything else. The amount (the `PaperJar` change since the round started) and "See your jar" opening the
-  shop on the jar card (`Menu.show("shop", false, "PaperJar")`) are built and work.
+  every match where something went in or the jar is full, even when the Double button isn't there. The amount (the
+  `PaperJar` change since the round started) and "See your jar" opening the shop on the jar card
+  (`Menu.show("shop", false, "PaperJar")`) work. **Final layout, Alan's OK 2026-11-12** after four looks (videos
+  `.planning/report-card-jar-redo.mp4`, still `.planning/report-card-jar-row-fit.png`): everything fits inside the
+  card's edges ("uncentred" otherwise); the Double this match panel big on the left, on yellow paper (two greens
+  clashed), with words big enough to read (heading, amounts, time left) and a distinct buy button with the price that
+  bounces, the "Worth" sticker pulsing above it; the jar a little smaller on the right with a short "See your jar"
+  button under it; both buttons on the old green paper (the lime buy button looked bad on yellow); "+165!" above the
+  jar's right shoulder, turned 30 degrees, just under the level bar, never covering it.
 - **Today's parts:** 3 picked from the 6 parts nearest your level that you don't own. OK as built. Later, when a player
   owns every part, the row can rotate skins instead (once skins exist; see [ideas](../plan/IDEAS.md)).
 

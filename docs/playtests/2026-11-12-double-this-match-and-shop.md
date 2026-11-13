@@ -39,6 +39,15 @@ Played Studio matches after Double this match was built (team dogfight among the
   catch your eye"); switched off; redo picked: the jar on the Double this match row ([jar rules](../decisions/2026-11-12-paper-jar-rules.md)).
 - Backlog: daily and weekly missions ([ideas](../plan/IDEAS.md)).
 
+## Fourth look: the report card's jar piece (videos, 2026-11-12)
+- First video (jar at the end of the Double row): "the animation looks good", but the row hung off the card's left
+  edge: everything must fit between the card's edges, the jar centred.
+- Second (Double button folded small): too small, "you can't tell it's a button"; the buy button must look distinct
+  and bounce or pulse; "See your jar" too large: put it under a slightly smaller jar at the side; words bigger.
+- Third: "+165" must sit above the jar's right shoulder, turned 30 degrees, not over the level bar; the "Worth"
+  sticker above the buy button, animated; yellow panel paper (two greens clash); words bigger still.
+- Fourth: both buttons on the old green paper (lime looked bad on yellow). **OK** ("Yes, that's good").
+
 ## What changed
 Commits 61ea43a7 (exact saved lock), 1c9b7a9b (fold card), 1b4b8166 (pass cards), and the big-bodies change.
 Second look, built the next session: the dev switch (bottom right, Studio only), part pictures centred as seen (the near

@@ -1,19 +1,19 @@
 # Since Alan last checked (2026-11-12, late night)
-- **Bot match (3 matches):** the 3-mount Cardboard and Toilet Roll tanks no longer dominate (about 8-9 folds, 10
-  crashes a match, mid-pack); Spitball planes still weakest ([decision](../docs/decisions/2026-11-12-big-bodies-three-mounts.md)).
-- **His notes built and liked:** Studio-only dev switch bottom right (level 12 account or everything unlocked); shop
-  part pictures centred as seen; starter pack items float on a shadow with dark word plates. No tutorial question in Studio.
-- **Paper jar shop card** ([jar rules](../docs/decisions/2026-11-12-paper-jar-rules.md)): a glass jar that fills to the
-  Paper inside, Breaks at 3,000, Full!, "Are you sure?" note; pictures uploaded and approved. Fill rate stays.
-- **Report card jar piece:** first try disliked and switched off; redo picked (the jar on the Double this match row).
-  559 tests pass.
+- **Report card jar piece: done, Alan OK'd** after four looks ([jar rules](../docs/decisions/2026-11-12-paper-jar-rules.md)):
+  under your card, inside its edges: a big yellow Double this match panel with a bouncing green buy button and the
+  pulsing "Worth" sticker above it; a smaller glass jar on the right with scraps dropping in, the level rising, "+165!"
+  popping out (turned 30 degrees, under the level bar) and a pulsing green "See your jar" / "Break the jar!" button.
+  Studio only until go-live. Video: `.planning/report-card-jar-redo.mp4`.
+- **Gift a friend how-it-works note drafted** ([gift plan](../docs/plan/GIFT-PLAN.md)), not yet shown to Alan.
+- Bot match (3 matches): the 3-mount tanks are mid-pack now; Spitball planes still weakest.
 
 # Now: finish the game for the beta
-Next: redo the report card's jar piece to Alan's pick (video to him first). Then the Gift a friend how-it-works note,
-the goals review with Alan. Backlog: daily and weekly missions. Balance pass later: Spitball planes weakest. Not seen
-yet: a real level-up in a match.
+Next: walk Alan through the Gift a friend note (no code before his OK), then the goals review with him. Backlog: daily
+and weekly missions. Balance pass later: Spitball planes weakest. Not seen yet: a real level-up in a match. Phone
+check of the new report card row not done.
 
 Decisions to review
+Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
   Value", 15,000 "Good Value" (5,000 lost its sticker). Pack pictures grow with the amount. Daily gift days turn over at
