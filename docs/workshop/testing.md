@@ -36,6 +36,8 @@ Flight feel, combat, visuals and frame rate are checked by playing in Studio:
   after a round starts to fake what went into the jar; workspace `DevCardTime` holds the card's animations at that many
   seconds after it came up (frame-by-frame videos: Studio captures about one frame a second). The results phase is
   27 s (`results_seconds` in `config/gameplay.json`), too short for frame-by-frame filming: raise it for the shoot only.
+  The card only shows in the last 10 s of results; hiding one winners' desk on your screen skips the winners' scene so
+  the card stays up all along. `tools/film_report_card.py` does the whole shoot.
 - **Timed bot matches** (bots only) measure bot changes: deaths by cause, kills, shots, hits.
   `python tools/run_bot_matches.py 1 75` is the one-minute check; `python tools/run_bot_matches.py` three full matches
   (run it in the background; almost no tokens, where the `match-runner-haiku` helper cost ~120k a run).

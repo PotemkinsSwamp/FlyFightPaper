@@ -402,6 +402,13 @@ mistake would be easy to make twice.
   olive 98,117,96 on screen. Pick the tint by the colour on a Play screenshot, not the number in the code.
 
 ## Working with Alan
+- **A row under a card stays inside the card's edges** (Alan 2026-11-12, report card jar row, four looks): line pieces
+  up with the card's left edge, middle and right edge; a piece hanging past an edge reads as "uncentred". Measure it in
+  page pixels before showing (card 0..680 wide; middle 340).
+- **"Make the words bigger" means clearly bigger** (Alan 2026-11-12: "I just told you to make that text larger"):
+  on a selling piece the main lines (heading, amounts, price, time left) at least 30 px at 1080p (Alan OK'd 32-44;
+  21-26 was "too small to read"; the 18 px floor is for reading, not for selling), and
+  grow the paper rather than shrink a line. Same for buttons: a buy button gets its own look and movement.
 - **Screen grabs only when there is no other way** (Alan 2026-11-12): read layouts as numbers first (`AbsolutePosition`,
   `GetGuiObjectsAtPosition`, `ScreenCheck`), prints, rays. A grab is allowed only when it is truly blocking.
 - **To catch something in Alan's own Play, put a temporary print in the code before he starts** (2026-11-12): Rojo
