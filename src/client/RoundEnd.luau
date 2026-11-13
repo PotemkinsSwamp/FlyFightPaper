@@ -154,7 +154,7 @@ function RoundEnd.start()
 	-- Beside the Paper jar (Alan 2026-11-12: the row fits inside the card's width; the Double panel big, with words big
 	-- enough to read and a buy button that looks like one): yellow paper (two greens clashed; sliced so its tacks keep
 	-- their shape) holds the heading, the amounts and the time left on the left, and on the right the "Worth" sticker
-	-- above the shop's bright green buy button with the price, bouncing.
+	-- above the buy button with the price, bouncing: the green paper the panel used to be (lime looked bad on yellow).
 	local PANEL = Vector2.new(466, 160)
 	local offerAmounts = words(offer, "Amounts", "", 12, 58, 290, 40, 34)
 	local offerTime = words(offer, "Time", "", 12, 102, 290, 40, 32)
@@ -162,7 +162,8 @@ function RoundEnd.start()
 	PaperUI.fitWords(offerAmounts, 280) -- big amounts: smaller, never past the column
 	offer.SliceScale = 0.6
 	local offerBuy = PaperUI.robuxButton(offer, "Buy", 296, 64, 160, 66, "", "", 42, pressDouble)
-	offerBuy.Image, offerBuy.Price.Word1.Visible, offerBuy.ZIndex = UIArt.shop.buyGreen, false, offer.ZIndex + 1
+	offerBuy.Price.Word1.Visible, offerBuy.ZIndex = false, offer.ZIndex + 1
+	offerBuy.ScaleType, offerBuy.SliceCenter, offerBuy.SliceScale = Enum.ScaleType.Slice, Rect.new(90, 70, 665, 120), 0.35
 	local buyBounce = Instance.new("UIScale")
 	buyBounce.Parent = offerBuy
 	local offerCompact, offerSelling = false, true
@@ -225,7 +226,7 @@ function RoundEnd.start()
 	amountInk.Color, amountInk.Thickness, amountInk.LineJoinMode, amountInk.Parent = PaperUI.INK, 5, Enum.LineJoinMode.Round, jarAmount
 	local amountPop = Instance.new("UIScale")
 	amountPop.Parent = jarAmount
-	local jarButton = button(jarRow, "SeeJar", UIArt.mainmenu.strip.yellow, "See your jar", 0, 130, 200, 56, 2, function()
+	local jarButton = button(jarRow, "SeeJar", UIArt.mainmenu.strip.green, "See your jar", 0, 130, 200, 56, 2, function()
 		require(script.Parent.MenuController).show("shop", false, "PaperJar")
 	end, 28)
 	local jarPulse = Instance.new("UIScale")
