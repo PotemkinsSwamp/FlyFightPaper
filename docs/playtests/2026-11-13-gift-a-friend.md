@@ -20,5 +20,17 @@ Looked at the Gift a friend pieces in Studio (stills `.planning/gift-1-pick-a-fr
 ## What changed
 Search box built. The arrival moment's redo was the next session's job (Alan: "have it do that next session", with
 Fable running it: "I want to see what Fable can do"): built that session to the story above
-([how it plays](../systems/economy-and-shop.md#the-gift-arriving)); one addition to check with him: the box waits for
-an **Open it!** tap (his "you open it"). Waiting on his OK from the video.
+([how it plays](../systems/economy-and-shop.md#the-gift-arriving)); one addition: the box waits for an **Open it!**
+tap (his "you open it").
+
+## Second look, same day: Alan played it in Studio
+- He couldn't set the workspace switch ("I can't access the workspace like you're saying"): he needs **a button on
+  screen**. Built: "Dev: send me a gift", above the dev account switch.
+- **Music:** "I hate that I hear the music right now. It should be dimmed down... just like the background is dimmed."
+  A fifth was still too loud: a tenth ("really faint"). A menu song of its own: raised, then dropped ("perhaps not").
+- **A gift sound:** "a radiating sound. Like something shiny, brand new." Picked shine 2 of three by ear.
+- **The ding on Thanks:** "I just don't like the ding... too strong... It should be more like a pop, like it's coming
+  out of the box... a rustling sound... you have to rustle and find it and pull it out... the gift should have a
+  little bit of anticipation before it pops out." Built: the box shakes with a rustle, then a pop. Picked rustle 2 of
+  three by ear. The pop (the Popper's balloon pop, higher and soft) he didn't remark on.
+- His last word: "we'll go with rustle 2. Yeah, that's it." (Claude's reading: the arrival is accepted.)

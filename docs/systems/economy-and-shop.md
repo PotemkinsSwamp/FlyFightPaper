@@ -8,8 +8,9 @@ You earn **Paper** (money) and **XP** (levels) from points in every match. Paper
 go-live): the shop's friend note with search, the server check, "A gift for Sam", the practice gift, and the plane that
 brings it over the main menu. Checked in Studio Play 2026-11-13 by gifting to yourself (`DevGiftSelf`): tests 599/0, the
 friend got +5,000 Paper (not doubled), the giver's first-buy 2x stayed unused, one buy counted. **The arrival was redone
-to Alan's story the same day** ([how it plays](#the-gift-arriving)); waiting on his OK from the video
-(`.planning/gift-arrival-redo.mp4`). Not checked on a phone size. All 15 gift products are disabled with no Roblox IDs yet. Server contract: [Friend gifts](#friend-gifts).
+to Alan's story the same day** ([how it plays](#the-gift-arriving)); he played it in Studio, tuned its sounds by ear
+and ended on "Yeah, that's it" ([playtest](../playtests/2026-11-13-gift-a-friend.md)). Not checked on a phone size, nor
+with a real gift sent through the shop. All 15 gift products are disabled with no Roblox IDs yet. Server contract: [Friend gifts](#friend-gifts).
 **Pacing (Alan, 2026-11-08):** Paper is the long wait, levels just open things up. An average player (12 folds a
 match, ~660 Paper and ~1,190 XP) reaches level 50 in about 18 hours of play and could own everything (167,400 Paper)
 in about 36; for the first 6 hours ~13 unlocked things are always waiting to be saved for. Prices scale up with level
@@ -268,9 +269,8 @@ lid, box and its inside are parts of the one gift box picture, and each ray is a
 Sounds (Alan by ear, 2026-11-13): the paper whoosh as the plane passes over you and as it comes back; the box
 thump as the box lands; for each gift a paper rustle while the box shakes, a soft pop as the gift comes out, and a
 shine while it sits on its rays ("a radiating sound, something shiny, brand new": his pick of three), fading when the
-next gift comes or the moment ends. He turned down the backpack's ding and coin here ("too strong"). Three rustles are
-in to pick from by ear (`Audio.luau` `rustle1`-`rustle3`; each click of the Dev gift button tries the next); the two
-not picked get deleted. **The music drops to a tenth** while the moment is up, like the dimmed board, and comes back
+next gift comes or the moment ends. He turned down the backpack's ding and coin here ("too strong") and picked the
+rustle of three too. **The music drops to a tenth** while the moment is up, like the dimmed board, and comes back
 after (Root attribute `MusicQuiet`, also set by the unlock backpack).
 
 ## Offline-pausing timer

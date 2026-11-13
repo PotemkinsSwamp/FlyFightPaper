@@ -130,12 +130,10 @@ function DevTools.start(menu)
 	-- Above it (Alan 2026-11-13, to see and hear a gift arrive): two pretend gifts from pretend friends, on the main menu.
 	local gift = switch:Clone()
 	gift.Name, gift.Position, gift.Text, gift.Parent = "Gift", UDim2.new(1, -10, 1, -58), "Dev: send me a gift", switchGui
-	-- Each click tries the next of three rustle sounds for the rummage in the box, until Alan picks one (Audio rustle1-3).
-	local try = 0
 	gift.Activated:Connect(function()
-		try = try % 3 + 1
-		local now = require(script.Parent.GiftMoment).pretend("xp_boost_60m,paper_pack_5000", try)
-		gift.Text = now and "Dev gift: rustle sound " .. try or "Gift waits at the main menu"
+		local now = require(script.Parent.GiftMoment).pretend("xp_boost_60m,paper_pack_5000")
+		gift.Text = now and "Dev: send me a gift" or "Gift waits at the main menu"
+		task.delay(3, function() gift.Text = "Dev: send me a gift" end)
 	end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()

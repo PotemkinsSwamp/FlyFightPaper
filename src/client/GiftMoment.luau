@@ -158,7 +158,7 @@ function GiftMoment.start(api)
 	item.ZIndex, box.ZIndex, note.ZIndex, shadow.ZIndex, plane.ZIndex, pin.ZIndex = 3, 4, 6, 7, 8, 9
 
 	-- gifts: the ones shown so far, in order. taps: when Open and each Thanks happened (bye: the last Thanks).
-	local playing, asked, started, filming, heard, rustle = false, 0, nil, false, 0, "rustle1"
+	local playing, asked, started, filming, heard = false, 0, nil, false, 0
 	local gifts, taps = {}, { thanks = {} }
 	local said, shownItem, seenHere = nil, nil, 0
 	local fakes, fakeCount = {}, 0
@@ -337,8 +337,8 @@ function GiftMoment.start(api)
 		end
 		at(taps.bye, "hush")
 		at(2, "flight"); at(DROP + 0.55 * (LAND - DROP), "land")
-		at(taps.open and taps.open + LID, rustle); at(taps.open and taps.open + RISE, "pop"); at(taps.open and taps.open + RISE + 0.05, "shine")
-		for _, thanks in taps.thanks do at(thanks + GONE, rustle); at(thanks + RISE, "pop"); at(thanks + RISE + 0.05, "shine") end
+		at(taps.open and taps.open + LID, "rustle"); at(taps.open and taps.open + RISE, "pop"); at(taps.open and taps.open + RISE + 0.05, "shine")
+		for _, thanks in taps.thanks do at(thanks + GONE, "rustle"); at(thanks + RISE, "pop"); at(thanks + RISE + 0.05, "shine") end
 		at(taps.bye and taps.bye + BACK, "flight")
 		heard = t
 	end
@@ -393,8 +393,8 @@ function GiftMoment.start(api)
 	player:GetAttributeChangedSignal("GiftInbox"):Connect(function() seenHere = 0 end)
 	-- Studio: lines up pretend gifts (product keys with commas between). They play now if the main menu is showing,
 	-- otherwise when it next shows; says which.
-	function GiftMoment.pretend(keys, sound) -- (sound: which rustle to try, 1-3, while Alan picks one)
-		fakes, fakeCount, rustle = keys:split(","), 0, "rustle" .. (sound or 1)
+	function GiftMoment.pretend(keys)
+		fakes, fakeCount = keys:split(","), 0
 		if board.frame.Visible then GiftMoment.offer() end
 		return board.frame.Visible
 	end

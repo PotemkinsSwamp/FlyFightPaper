@@ -1,17 +1,17 @@
-# Since Alan last checked (2026-11-13, afternoon)
-- **Gift arrival redone to Alan's story** (Studio only, nothing uploaded): the board's plane pops its pin, flies
-  right, loops and comes at you, away over the top; the box falls in; Open it!; the gift rises out on rays that move
-  in and out in turns; each Thanks! brings the next gift out; the plane flies back to its pin
-  ([how it plays](../docs/systems/economy-and-shop.md#the-gift-arriving)). Video: `.planning/gift-arrival-redo.mp4`.
-- Tests 599/0 after the redo (2026-11-13). The real Open it! and Thanks! taps were checked in Studio with two pretend gifts.
+# Since Alan last checked (2026-11-13, evening)
+- **Gift arrival redone to Alan's story and tuned by ear with him** (Studio only, nothing uploaded;
+  [decision](../docs/decisions/2026-11-13-gift-arrival-story-and-sounds.md)): the board's plane brings it, Open it!,
+  the box rustles and each gift pops out and shines, the plane is pinned again; music drops to a tenth under it. His
+  last word: "Yeah, that's it." Try it any time: **Dev: send me a gift** (bottom right in Studio Play, main menu).
+- Tests 599/0 after the redo (2026-11-13), before the sound changes (client sounds and drawing only since).
 
 # Now: finish the game for the beta
-Next: Alan's OK on the gift arrival video, then the goals review with him. Backlog: daily and weekly missions.
-Balance: Spitball planes weakest. Not checked: phone sizes of the report card row and the gift note and arrival.
+Next: the goals review with Alan (what "the beta feels finished" still needs). Backlog: daily and weekly missions.
+Balance: Spitball planes weakest. Not checked: phone sizes of the report card row and the gift note and arrival; a
+real gift through the shop into the new arrival; the unlock backpack's music dip.
 
 Decisions to review
-Gift arrival: the box waits for an Open it! tap (the note first says who and "What's inside?"); on Thanks the gift
-  comes at you and fades; the box shakes ~0.7 s before each gift pops out. Music drops to a tenth (backpack too).
+Gift arrival: Open it! is a tap; on Thanks the gift comes at you and fades; the pop is the Popper's, higher and soft.
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
@@ -50,7 +50,6 @@ Combat School Pals, Range targets and Hangar behaviour: as listed on docs/system
 Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
-- Gift arrival: click **Dev: send me a gift** on the main menu (Studio); pick rustle sound 1, 2 or 3; judge the pop.
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - Pick from the cosmetics and playtime rewards options (A-L) on the research page.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).

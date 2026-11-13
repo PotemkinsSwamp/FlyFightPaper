@@ -31,11 +31,9 @@ local definitions={
  softDing={1169806635,1,.22,.8}, -- the Hangar Tour's: 20% quieter (Alan 2026-10-21)
  -- A gift on its rays (Alan's pick by ear 2026-11-13, "a radiating sound, something shiny, brand new"): Pro Sound
  -- Effects "Magic Tone Tonal Shimmer Shaking Rattle 1". Before it, a rummage in the box and a pop as the gift comes
- -- out (Alan: "you have to rustle and find it and pull it out"): three rustles to pick from by ear with the Dev gift
- -- button (Pro Sound Effects "Paper Tear Tear Heavy Paper Bag Rustle 4", "... Slow Rustle 2", "Rip Perforated Computer
- -- Paper Paper Rustle 3"; the two not picked go), and the Popper's balloon pop, higher and soft.
- shine={9116420445,1,.5,5.2},rustle1={9117233449,1,.45,.75},rustle2={9125724963,1,.45,.75},rustle3={9118184346,1,.45,.75},
- pop={9113263758,1.5,.35,.3},
+ -- out (Alan: "you have to rustle and find it and pull it out"): Pro Sound Effects "Paper Tear Tear Heavy Paper Bag
+ -- Slow Rustle 2" (his pick by ear), and the Popper's balloon pop, higher and soft.
+ shine={9116420445,1,.5,5.2},rustle={9125724963,1,.45,.75},pop={9113263758,1.5,.35,.3},
  -- The Range's row-picker plate going down: the paperclip's metal ting, higher.
  plate={9116163687,1.6,.5,.5},
  -- The Aiming lesson's slow motion going on and off: the eraser's whoosh, low and slow, then high and quick.
