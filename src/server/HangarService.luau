@@ -39,17 +39,23 @@ function Service:doubleMatch(player,match)
  if player:GetAttribute("MatchDoubled")==match.matchId then self:message(player,"You already doubled this match.");return end
  local price=CommerceRules.matchDoublePrice(match.paper);if not price then return end
  local key="match_double_"..price
+ local lock={kind="doubleLock",key=key,matchId=match.matchId,paper=match.paper,xp=match.xp}
  if Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then
   player:SetAttribute("MatchDoubled",match.matchId)
   local function completed(ok)
    if not ok then player:SetAttribute("MatchDoubled",nil) end
    self:message(player,ok and "Development simulation complete. No real purchase." or "Development simulation failed.")
   end
-  if not self.profiles:enqueue(player,{kind="matchDouble",paper=match.paper,xp=match.xp},nil,completed) then completed(false) end
+  if not self.profiles:enqueue(player,lock,nil,function(ok)
+   if not ok then completed(false);return end
+   if not self.profiles:enqueue(player,{kind="matchDouble",key=key},nil,completed) then completed(false) end
+  end) then completed(false) end
  elseif self.commerce then
-  self.commerce.doubles[player]={matchId=match.matchId,paper=match.paper,xp=match.xp,key=key}
-  local ok=self.commerce:prompt(player,key)
-  if not ok then self:message(player,"Shop is closed for now.") end
+  local function locked(ok)
+   if not ok then self:message(player,"Saving is busy. Try again shortly.");return end
+   if not self.commerce:prompt(player,key) then self:message(player,"Shop is closed for now.") end
+  end
+  if not self.profiles:enqueue(player,lock,nil,locked) then locked(false) end
  else self:message(player,"Shop is closed for now.") end
 end
 function Service:handle(player,action,value)

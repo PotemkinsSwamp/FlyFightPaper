@@ -47,17 +47,21 @@ function Spec.run()
             assert(Rules.matchDoublePrice(paper)==nil)
         end
     end)
-    test("match doubling fallback uses the price step and economy rates without boost ownership",function()
+    test("match doubling grants carry only a real price key without boost ownership",function()
         local catalog=assert(Rules.catalog(Config));local b=boosts();b.permanentXP=true;b.permanentPaper=true
         local dto=Rules.preview(catalog,b)
         for _,step in ipairs(Rules.MATCH_DOUBLE_STEPS) do
             local offer=catalog.byKey["match_double_"..step];local op=Rules.operation(offer,"unused",7)
             local fields=0;for _ in pairs(op) do fields+=1 end
-            assert(op.kind=="matchDouble" and op.paper==step*10 and fields==3 and table.isfrozen(op))
-            assert(op.xp==math.round(step*10*EconomyConfig.xp_per_point/EconomyConfig.paper_per_point))
+            assert(op.kind=="matchDouble" and op.key==offer.key and fields==2 and table.isfrozen(op))
+            assert(Rules.isMatchDoubleKey(op.key)==true)
             assert(Rules.resource(offer)==nil and not Rules.owned(offer,b))
             local preview;for _,p in ipairs(dto.offers) do if p.key==offer.key then preview=p end end
             assert(preview and preview.available and not preview.ownedPermanent and not preview.onlineTime)
+        end
+        assert(not Rules.isMatchDoubleKey(nil))
+        for _,key in ipairs({false,{},49,"match_double_049","match_double_50","match_double_300","paper_pack_1500","match_double_49extra"}) do
+            assert(Rules.isMatchDoubleKey(key)==false)
         end
     end)
     test("part offers cover exactly the parts that cost Paper (free gear needs none)",function()

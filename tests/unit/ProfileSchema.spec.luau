@@ -19,6 +19,45 @@ function Spec.run()
 		assert(p.xpMilli==require(Root.Generated.Economy).initial_total_xp*1000)
 		assert(p.unlocksSeen==Economy.levelForXP(p.xpMilli))
 		assert(p.schemaVersion==Schema.VERSION and p.prestige==0 and next(p.lessons)==nil)
+		assert(type(p.doubleLocks)=="table" and next(p.doubleLocks)==nil)
+	end)
+	test("schema 10 migration adds empty double locks without changing the old save",function()
+		local p=fresh();p.schemaVersion=10;p.doubleLocks=nil;p.paperMilli=123456;p.extensions={keep=true}
+		local before=Schema.canonical(p);local expected=assert(Schema.copy(p))
+		expected.schemaVersion=Schema.VERSION;expected.doubleLocks={}
+		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
+		assert(Schema.VERSION==11 and Schema.canonical(migrated)==Schema.canonical(expected))
+		assert(Schema.canonical(p)==before and not Schema.validate(p,catalog))
+		assert(Schema.canonical(assert(Schema.migrate(migrated,catalog)))==Schema.canonical(migrated))
+	end)
+	test("all eleven double locks fit the copy bounds with maximum match ids and receipt history",function()
+		local p=fresh();local Commerce=require(Root.Shared.CommerceRules)
+		for _,step in ipairs(Commerce.MATCH_DOUBLE_STEPS) do
+			p.doubleLocks["match_double_"..step]={matchId=string.rep("m",120),paper=step*10,xp=0}
+		end
+		for i=1,require(Root.Generated.Server).schema.max_receipts do p.receiptIds["receipt_"..i]=true end
+		local copied=assert(Schema.copy(p));assert(Schema.validate(copied,catalog))
+		assert(Schema.canonical(copied.doubleLocks)==Schema.canonical(p.doubleLocks))
+	end)
+	test("double locks require exact entries, real product keys, whole amounts and bounded match ids",function()
+		local changes={
+			function(p)p.doubleLocks=nil end,function(p)p.doubleLocks=false end,
+			function(p)p.doubleLocks.match_double_50=p.doubleLocks.match_double_49 end,
+			function(p)p.doubleLocks.paper_pack_1500=p.doubleLocks.match_double_49 end,
+			function(p)p.doubleLocks.match_double_49=false end,
+			function(p)p.doubleLocks.match_double_49.paper=0 end,function(p)p.doubleLocks.match_double_49.paper=-1 end,
+			function(p)p.doubleLocks.match_double_49.paper=1.5 end,function(p)p.doubleLocks.match_double_49.paper="500" end,
+			function(p)p.doubleLocks.match_double_49.paper=nil end,function(p)p.doubleLocks.match_double_49.xp=-1 end,
+			function(p)p.doubleLocks.match_double_49.xp=0.5 end,function(p)p.doubleLocks.match_double_49.xp="900" end,
+			function(p)p.doubleLocks.match_double_49.xp=nil end,function(p)p.doubleLocks.match_double_49.matchId=nil end,
+			function(p)p.doubleLocks.match_double_49.matchId="" end,function(p)p.doubleLocks.match_double_49.matchId=1 end,
+			function(p)p.doubleLocks.match_double_49.matchId=string.rep("m",121) end,
+			function(p)p.doubleLocks.match_double_49.extra=true end}
+		for _,change in ipairs(changes) do
+			local p=fresh();p.doubleLocks.match_double_49={matchId="m1",paper=500,xp=900};change(p)
+			assert(not Schema.validate(p,catalog) and not Schema.migrate(p,catalog))
+		end
+		local p=fresh();p.doubleLocks.match_double_10={matchId="m",paper=1,xp=0};assert(Schema.validate(p,catalog))
 	end)
 	test("Range presets allow unowned high-level parts while match presets still reject them",function()
 		local p=fresh(); local loadout=p.rangePresets[1].loadout

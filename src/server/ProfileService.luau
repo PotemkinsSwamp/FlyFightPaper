@@ -38,8 +38,8 @@ local function validReceiptGrant(grant)
  elseif grant.kind=="starterPack" or grant.kind=="paperJar" then
   fields={kind=true}
  elseif grant.kind=="matchDouble" then
-  if not Schema.integer(grant.paper) or grant.paper<1 or not Schema.integer(grant.xp) then return false end
-  fields={kind=true,paper=true,xp=true}
+  if not Commerce.isMatchDoubleKey(grant.key) then return false end
+  fields={kind=true,key=true}
  elseif grant.kind=="boostIntent" then
   if (grant.resource~="xp" and grant.resource~="paper") or grant.action~="duration"
    or not Schema.integer(grant.seconds) or grant.seconds<1 then return false end
@@ -201,14 +201,27 @@ function Service:_effect(p,op,boostState)
 		end
 		applied,err=Economy.addPurchasedPaper(v,amount,op.id)
 		if applied and op.packKey then p.firstBuys[op.packKey]=true end
+	elseif op.kind=="doubleLock" then
+		for field in pairs(op) do
+			if field~="kind" and field~="id" and field~="key" and field~="matchId" and field~="paper" and field~="xp" then return nil,"invalid_double_lock" end
+		end
+		local lock={matchId=op.matchId,paper=op.paper,xp=op.xp}
+		if not Schema.validDoubleLock(op.key,lock) then return nil,"invalid_double_lock" end
+		p.doubleLocks[op.key]=lock
+		result={type="DoubleLocked",key=op.key}
 	elseif op.kind=="matchDouble" then
-		if not Schema.integer(op.paper) or op.paper<1 or not Schema.integer(op.xp) then return nil,"invalid_amount" end
-		local paid,rejected=Economy.addPurchasedPaper(v,op.paper,op.id)
+		if not Commerce.isMatchDoubleKey(op.key) then return nil,"invalid_double_key" end
+		for field in pairs(op) do if field~="kind" and field~="key" and field~="id" then return nil,"invalid_double_grant" end end
+		local lock=p.doubleLocks[op.key]
+		local paper=lock and lock.paper or tonumber(op.key:match("^match_double_(%d+)$"))*10
+		local amountXP=lock and lock.xp or math.round(paper*EconomyConfig.xp_per_point/EconomyConfig.paper_per_point)
+		local paid,rejected=Economy.addPurchasedPaper(v,paper,op.id)
 		if not paid then return nil,rejected.code end
 		Schema.mergeEconomic(p,paid.profile)
-		local xp=safeAdd(p.xpMilli,op.xp*Economy.MILLI);if not xp then return nil,"overflow" end
+		local xp=safeAdd(p.xpMilli,amountXP*Economy.MILLI);if not xp then return nil,"overflow" end
 		p.xpMilli=xp
-		result={type="MatchDoubled",paper=op.paper,xp=op.xp}
+		p.doubleLocks[op.key]=nil
+		result={type="MatchDoubled",paper=paper,xp=amountXP,matchId=lock and lock.matchId or nil}
 	elseif op.kind=="dailyGift" then
 		local reward,why=giftReward(p,op.day);if not reward then return nil,why end
 		if reward.paper then
@@ -325,7 +338,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={receipt=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
+local allowed={receipt=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}

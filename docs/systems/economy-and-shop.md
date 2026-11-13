@@ -132,11 +132,14 @@ packs, bundle and jar follow the approved [money plan](../plan/SHOP-MONEY-PLAN.m
 (2026-11-12). Eleven **Double this match** products (`match_double_10` ... `match_double_299`, one per price step;
 [decision](../decisions/2026-11-12-double-this-match.md), built 2026-11-12): the report card's button pays this match's
 Paper and XP once more. `CommerceRules.matchDoublePrice` gives the price (nearest step to 25% off the worth, worth =
-2 x Paper / 15 R$; none under 75 Paper). Pressing it (`doubleMatch`, only in the results phase) has the server lock that
-match's Paper and XP for the buyer (`CommerceService.doubles`); the receipt pays exactly the locked amounts as bought
-Paper plus XP (no Paper jar share) and sets the player's `MatchDoubled` to the match, which stops a second press. A
-receipt with no lock (it reached another server) pays what its price was set for: price x 10 Paper and matching XP.
-Studio's practice buy pays at once. The shop's clocks
+2 x Paper / 15 R$; none under 75 Paper). Pressing it (`doubleMatch`, only in the results phase) writes a lock into the
+player's save (`doubleLocks`, Alan 2026-11-12: exact on any server): that match's Paper and XP under the price's
+product key. The lock pays nothing; Roblox's buy window opens only once the lock is confirmed stored
+(`ProfileRuntime:confirmDoubleLock`). The receipt reads the lock in the same save change as its receipt ID, pays
+exactly those amounts as bought Paper plus XP (no Paper jar share), deletes the lock and sets the player's
+`MatchDoubled` to the match (stops a second press). A receipt with no lock pays what its price was set for (price x 10
+Paper and matching XP). One lock per price, so a second unpaid press at the same price replaces the first. Studio's
+practice buy runs the same lock-then-pay path at once. The shop's clocks
 (daily gift, Today's parts, starter pack) run on the server's time; pictures sit on faded chalk green. Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
@@ -178,6 +181,7 @@ Schema 9 adds these saved fields; older saves receive the defaults without losin
 | `starterPack` | `{offeredAt=0,bought=false}`; first offer Unix time (0 before first load) and whether the bundle was bought |
 | `firstBuys` | Empty map initially; each used Paper pack key maps to `true` |
 | `buysToday` | `{day=-1,count=0}` initially; UTC day and number of granted receipts/practice buys that day |
+| `doubleLocks` | `{}` initially (schema 11); Double this match locks: product key -> `{matchId, paper, xp}`, removed when its receipt pays |
 
 `ProfileRuntime` refreshes these Player attributes on load, after operations, and on its normal one-second
 status update, including UTC midnight and starter expiry. Clients read them; clients cannot set saved rewards.

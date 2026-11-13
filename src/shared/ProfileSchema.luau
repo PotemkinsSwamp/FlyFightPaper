@@ -6,7 +6,7 @@ local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
 local TouchLayout = require(script.Parent.TouchLayout)
 local KeyBinds = require(script.Parent.KeyBinds)
-local Schema = { VERSION = 10, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
+local Schema = { VERSION = 11, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
@@ -72,6 +72,12 @@ local function exact(t, fields)
 	for k in pairs(t) do assert(fields[k], "unknown_field:" .. tostring(k)) end
 	for k, required in pairs(fields) do if required == 1 then assert(t[k] ~= nil, "missing_field:" .. k) end end
 end
+function Schema.validDoubleLock(key, lock)
+	if not Commerce.isMatchDoubleKey(key) or type(lock)~="table" then return false end
+	for field in pairs(lock) do if field~="matchId" and field~="paper" and field~="xp" then return false end end
+	return type(lock.matchId)=="string" and #lock.matchId>=1 and #lock.matchId<=120
+		and integer(lock.paper) and lock.paper>=1 and integer(lock.xp)
+end
 local moneyFields = { "paperMilli", "earnedPaperMilli", "purchasedPaperMilli", "xpMilli" }
 function Schema.economicView(p)
 	local v = { ownership = assert(Schema.copy(p.ownership)) }
@@ -90,7 +96,7 @@ function Schema.defaults(catalog)
 		purchasedPaperMilli = 0, xpMilli = xp, prestige = 0, unlocksSeen = level, ownership = assert(Schema.copy(assert(Economy.starterOwnership(catalog)))),
 		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium", matchTips = true, autoFire = true, speedMatch = true },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
-		dailyGift = { next = 1, lastDay = -1 }, starterPack = { offeredAt = 0, bought = false }, firstBuys = {}, buysToday = { day = -1, count = 0 },
+		dailyGift = { next = 1, lastDay = -1 }, starterPack = { offeredAt = 0, bought = false }, firstBuys = {}, buysToday = { day = -1, count = 0 }, doubleLocks = {},
 		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, lessons = {} }
 	for i = 1, Gameplay.menus.saved_loadouts do
 		p.presets[i] = { name = "Loadout " .. i, loadout = catalog:starterLoadout() }
@@ -102,7 +108,7 @@ function Schema.validate(record, catalog)
 	local p, err = Schema.copy(record); if not p then return nil, err end
 	local ok, message = pcall(function()
 		exact(p, { schemaVersion=1, version=1, generation=1, lease=0, paperMilli=1, earnedPaperMilli=1, purchasedPaperMilli=1, paperJarMilli=1,
-			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, dailyGift=1, starterPack=1, firstBuys=1, buysToday=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, lessons=1, extensions=0, refolds=0 })
+			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, dailyGift=1, starterPack=1, firstBuys=1, buysToday=1, doubleLocks=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, lessons=1, extensions=0, refolds=0 })
 		assert(p.schemaVersion == Schema.VERSION, "unsupported_schema")
 		assert(integer(p.version) and integer(p.generation), "invalid_version")
 		assert(integer(p.prestige) and p.prestige<=EconomyConfig.prestige_max, "invalid_prestige")
@@ -146,6 +152,12 @@ function Schema.validate(record, catalog)
 		exact(p.buysToday, {day=1,count=1})
 		assert((p.buysToday.day==-1 or integer(p.buysToday.day)) and integer(p.buysToday.count)
 			and (p.buysToday.day~=-1 or p.buysToday.count==0), "invalid_buys_today")
+		assert(type(p.doubleLocks)=="table", "missing_double_locks")
+		local lockCount=0
+		for key, lock in pairs(p.doubleLocks) do
+			assert(Schema.validDoubleLock(key,lock), "invalid_double_lock");lockCount+=1
+		end
+		assert(lockCount<=#Commerce.MATCH_DOUBLE_STEPS, "double_lock_cap")
 		exact(p.qualification, {count=1,history=1}); assert(integer(p.qualification.count) and p.qualification.count<=Gameplay.bots.rookie_qualifying_matches, "qualification_cap")
 		local historyCount=0; for id, yes in pairs(p.qualification.history) do assert(Schema.id(id) and yes==true, "invalid_history"); historyCount+=1 end
 		assert(historyCount==p.qualification.count, "qualification_count_mismatch")
@@ -223,6 +235,10 @@ function Schema.migrate(record, catalog)
 	if p.schemaVersion==9 then
 		if p.paperJarMilli==nil then p.paperJarMilli=0 end
 		p.schemaVersion=10
+	end
+	if p.schemaVersion==10 then
+		if p.doubleLocks==nil then p.doubleLocks={} end
+		p.schemaVersion=11
 	end
 	-- Loadout tuning can invalidate an otherwise readable save. Keep its account and preset names intact.
 	local level=Economy.levelForXP(p.xpMilli)

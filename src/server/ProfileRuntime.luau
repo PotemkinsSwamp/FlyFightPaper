@@ -185,13 +185,42 @@ function Runtime:load(player)
   end
  end)
 end
+-- Checkout must wait for the lock in storage, not just the operation in Data.
+-- Run outside the worker so a slow save never holds up this player's other rewards.
+function Runtime:confirmDoubleLock(e,op,version)
+ local profile=e.profile;if not profile or not Schema.integer(version) then return false end
+ local deadline=os.clock()+Config.access_wait_seconds
+ local requested=false
+ local function matches(lock)
+  return lock and lock.matchId==op.matchId and lock.paper==op.paper and lock.xp==op.xp
+ end
+ while self.entries[e.player]==e and not e.leaving and not e.closing and profile:IsActive() do
+  if not matches(profile.Data.doubleLocks[op.key]) then return false end
+  local saved=profile.LastSavedData
+  if saved and saved.version>=version and saved.doubleLocks and matches(saved.doubleLocks[op.key]) then return true end
+  if os.clock()>=deadline then return false end
+  if not requested then
+   requested=true
+   local ok,sent=pcall(profile.Save,profile)
+   if not ok or sent==false then return false end
+  else task.wait(Config.worker_seconds) end
+ end
+ return false
+end
 function Runtime:process(e)
  local op=e.queue[1];if not op then return true end
  local success,result=pcall(function()return self.service:apply(e.account,op)end)
  if not success or (result.status~="ok" and result.status~="error") then return false end
  table.remove(e.queue,1);e.failures=0
  local done=e.callbacks[op.id];e.callbacks[op.id]=nil
- if done then task.defer(done,result.status=="ok",result.value or result.code) end
+ if done then
+  task.defer(function()
+   if op.kind=="doubleLock" and result.status=="ok" and not self.mock then
+    if not self:confirmDoubleLock(e,op,result.value.version) then done(false,"double_lock_unsaved");return end
+   end
+   done(result.status=="ok",result.value or result.code)
+  end)
+ end
  if result.status=="error" then warn("Profile operation refused for player "..e.player.UserId..": "..tostring(result.code)) end
  self:update(e)
  return true

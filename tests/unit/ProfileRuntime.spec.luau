@@ -59,6 +59,66 @@ local function savingFixture(messages)
 end
 function Spec.run()
  local result,test=Suite.new()
+ test("live doubleLock callbacks wait for the actual saved lock without blocking other queued rewards",function()
+  local runtime,players=fixture();runtime.mock=false
+  local player=players[1];local entry=runtime.entries[player]
+  local profile=runtime.service.sessions[entry.account].profile;entry.profile=profile
+  local callback,pending
+  function profile:Save()
+   self.writes+=1;pending=assert(Schema.copy(self.Data))
+  end
+  assert(runtime:enqueue(player,{kind="doubleLock",key="match_double_49",matchId="m1",paper=500,xp=900},nil,function(ok,value)
+   callback={ok=ok,value=value}
+  end))
+  assert(runtime:process(entry) and profile.Data.doubleLocks.match_double_49.paper==500 and callback==nil)
+  waitFor(function()return pending~=nil end)
+  assert(callback==nil and next(profile.LastSavedData.doubleLocks)==nil and profile.writes==1)
+  assert(runtime:enqueue(player,{kind="contribution",points=10},"while-saving") and runtime:flush(entry))
+  assert(player.attributes.Paper==3 and callback==nil)
+  profile.LastSavedData=pending;waitFor(function()return callback~=nil end)
+  assert(callback.ok and callback.value.type=="DoubleLocked" and callback.value.key=="match_double_49")
+  assert(profile.LastSavedData.paperMilli==0 and profile.LastSavedData.xpMilli==0)
+ end)
+ test("an older saved copy of the same lock cannot confirm a newer lock operation",function()
+  local runtime,players=fixture();runtime.mock=false
+  local player=players[1];local entry=runtime.entries[player]
+  local profile=runtime.service.sessions[entry.account].profile;entry.profile=profile
+  profile.LastSavedData.doubleLocks.match_double_49={matchId="m1",paper=500,xp=900}
+  local callback
+  assert(runtime:enqueue(player,{kind="doubleLock",key="match_double_49",matchId="m1",paper=500,xp=900},nil,function(ok)callback=ok end))
+  assert(runtime:flush(entry));waitFor(function()return callback~=nil end)
+  assert(callback and profile.writes==1 and profile.LastSavedData.version==profile.Data.version)
+ end)
+ test("failed saves, lost sessions and replaced locks fail the live doubleLock callback",function()
+  for _,failure in ipairs({"save","error","inactive","leaving","replaced"}) do
+   local runtime,players=fixture();runtime.mock=false
+   local player=players[1];local entry=runtime.entries[player]
+   local profile=runtime.service.sessions[entry.account].profile;entry.profile=profile
+   function profile:Save()
+    self.writes+=1
+    if failure=="save" then return false
+    elseif failure=="error" then error("fake lock save failure")
+    elseif failure=="inactive" then self.active=false
+    elseif failure=="leaving" then entry.leaving=true
+    else self.Data.doubleLocks.match_double_49={matchId="m2",paper=600,xp=1000} end
+   end
+   local callback
+   assert(runtime:enqueue(player,{kind="doubleLock",key="match_double_49",matchId="m1",paper=500,xp=900},nil,function(ok,value)
+    callback={ok=ok,value=value}
+   end))
+   assert(runtime:flush(entry));waitFor(function()return callback~=nil end)
+   assert(not callback.ok and callback.value=="double_lock_unsaved",failure)
+   assert(profile.Data.paperMilli==0 and profile.Data.xpMilli==0 and profile.Data.buysToday.count==0)
+   assert(next(profile.LastSavedData.doubleLocks)==nil and next(profile.Data.receiptIds)==nil)
+  end
+ end)
+ test("Studio doubleLock callbacks succeed without requesting a live storage write",function()
+  local runtime,players=fixture();local player=players[1];local entry=runtime.entries[player]
+  local profile=runtime.service.sessions[entry.account].profile;local callback
+  assert(runtime:enqueue(player,{kind="doubleLock",key="match_double_49",matchId="m1",paper=500,xp=900},nil,function(ok)callback=ok end))
+  assert(runtime:flush(entry));waitFor(function()return callback~=nil end)
+  assert(callback and profile.writes==0 and profile.Data.doubleLocks.match_double_49.matchId=="m1")
+ end)
  test("an autosave completing after EndSession cannot confirm the final write",function()
   local runtime,player,profile,store=savingFixture();local entry=runtime.entries[player]
   local data=assert(Schema.copy(profile.Data));store.saved.autosave={Data=data,Session={JobId="source"}}

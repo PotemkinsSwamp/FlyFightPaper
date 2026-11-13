@@ -24,6 +24,10 @@ function Rules.paperPackAmount(key)
     local offer=type(key)=="string" and expected[key]
     return offer and offer.benefit=="paper_balance" and offer.amount or nil
 end
+function Rules.isMatchDoubleKey(key)
+    local offer=type(key)=="string" and expected[key]
+    return offer and offer.benefit=="match_double" or false
+end
 function Rules.starterPackEnds(profile,now)
     local pack=profile.starterPack
     if pack.offeredAt==0 or pack.bought or next(profile.receiptIds)~=nil
@@ -113,10 +117,7 @@ function Rules.operation(offer,source,version)
     if offer.benefit=="starter_pack" then return table.freeze({kind="starterPack"}) end
     if offer.benefit=="paper_jar" then return table.freeze({kind="paperJar"}) end
     if offer.benefit=="match_double" then
-        -- ponytail: used only when the server has no lock for this buyer (receipt arrived in another server);
-        -- pays what that price was set for.
-        local paper=offer.amount*10
-        return table.freeze({kind="matchDouble",paper=paper,xp=math.round(paper*EconomyConfig.xp_per_point/EconomyConfig.paper_per_point)})
+        return table.freeze({kind="matchDouble",key=offer.key})
     end
     local op={sourceIdentity=source,expectedVersion=version}
     if offer.benefit=="paper_balance" then op.kind="purchasedPaper"; op.wholePaper=offer.amount; op.packKey=offer.key

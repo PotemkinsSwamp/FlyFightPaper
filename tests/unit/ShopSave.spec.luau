@@ -80,11 +80,11 @@ function Spec.run()
   assert(Schema.validate(copy,f.catalog))
  end)
  test("schema 9 migration adds an empty jar and preserves the old save without mutating it",function()
-  local f=fixture();assert(Schema.VERSION==10 and f.profile.Data.paperJarMilli==0 and f.player.attributes.PaperJar==0)
+  local f=fixture();assert(f.profile.Data.paperJarMilli==0 and f.player.attributes.PaperJar==0)
   local old=assert(Schema.copy(f.profile.Data));old.schemaVersion=9;old.paperJarMilli=nil
   old.paperMilli=123456;old.firstBuys.paper_pack_1500=true;old.extensions={keep="old data"}
   local before=Schema.canonical(old);local expected=assert(Schema.copy(old))
-  expected.schemaVersion=10;expected.paperJarMilli=0
+  expected.schemaVersion=Schema.VERSION;expected.paperJarMilli=0
   local migrated=assert(Schema.migrate(Schema.freeze(old),f.catalog))
   assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
   assert(Schema.canonical(assert(Schema.migrate(migrated,f.catalog)))==Schema.canonical(migrated))
