@@ -59,6 +59,19 @@ rare-1/2/3, legendary-1/2, mythical-1..4, trails-1/2; briefs `prompt-*.txt`, ref
 Alan's picks. Notes: the Mech's pistons look like gun barrels (weapons must read from the real object); Chrome is pale
 against the sky; shine, glow and the slime's drips are more than one picture (shine and glow maps, to check in Studio).
 
+## Keeping skins cheap (proposal, 2026-11-13)
+- **Drawn by each player's own computer only.** The server just saves which skin and trail a player wears. The skin
+  pieces and the hiding of the real parts happen on each player's screen, so the server never loads a skin, never
+  builds a collision shape for one, and its hitbox copy keeps using the real parts with no change.
+- **Budget per Legendary or Mythical skin: about 4,000 triangles and one set of pictures (colour, bumps, shine) at
+  1024.** That is Roblox's own limit for an avatar hat; mobile shooters give a whole character 5,000-8,000. Today's
+  plane is about 500-700 triangles; 12 planes at 4,000 is under 5% of the town's ~1 million.
+- **Detail lives in the pictures, not the shape** (normal-map baking, how other games do it): a detailed model in
+  Blender, its bumps and edges baked into a picture laid on a simpler model. Ropes, railings and scales are painted;
+  thin things like torn sails are flat sheets with see-through edges. Roblox also swaps in simpler versions of a
+  mesh far away by itself.
+- **Ghost Ship last:** built after the pipeline works on a simpler Mythical, to this budget.
+
 ## Still to settle
 - The printed sheet: **tested in Blender 2026-11-13 (no upload), it works**: one picture each (hazard stripes, lava)
   wrapped itself onto a standard plane and the heavy plane, carrying on across nose, body, wings and tail
