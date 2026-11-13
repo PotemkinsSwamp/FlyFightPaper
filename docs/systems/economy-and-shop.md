@@ -140,7 +140,7 @@ exactly those amounts as bought Paper plus XP (no Paper jar share), deletes the 
 `MatchDoubled` to the match (stops a second press). A receipt with no lock pays what its price was set for (price x 10
 Paper and matching XP). One lock per price, so a second unpaid press at the same price replaces the first. Studio's
 practice buy runs the same lock-then-pay path at once. The shop's clocks
-(daily gift, Today's parts, starter pack) run on the server's time; pictures sit on mint green circles (Alan 2026-11-12, was faded chalk green), except the coloured pass cards, which have a soft shadow instead (`PaperUI.shadow`, Alan 2026-11-12). Robux prices are the
+(daily gift, Today's parts, starter pack) run on the server's time; pictures sit on mint green circles (Alan 2026-11-12, was faded chalk green), except the coloured cards (the passes and Your next part), which have a soft shadow instead (`PaperUI.shadow`, Alan 2026-11-12). Robux prices are the
 [shop prices plan](../plan/SHOP-PRICES-PLAN.md)'s, typed in on Roblox when the products are made; no live product IDs
 are assigned yet. The shop's mock state is explicitly
 DEVELOPMENT ONLY, cannot prompt real checkout, and cannot write mock purchases into production profiles.

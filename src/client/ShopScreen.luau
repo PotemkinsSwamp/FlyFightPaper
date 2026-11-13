@@ -427,7 +427,7 @@ function ShopScreen.new(playerGui, api)
 		card.Parent = content
 		pic(card, "PaperL", Art.cardFeatured[1], 0, 0, 620, 325)
 		pic(card, "PaperR", Art.cardFeatured[2], 618, 0, 1237, 325)
-		backing(card, 35, 25, 305, 295)
+		PaperUI.shadow(card, 170 * K, 252 * K, 220 * K) -- (a coloured card: a soft shadow, like the fold card, Alan 2026-11-12)
 		partView(card, pick, 50, 40, 240, 240, 0)
 		say(card, "Tag", "YOUR NEXT PART", 340, 18, 920, 64, 36, { color = WHITE, outline = INK })
 		say(card, "Name", part.name, 340, 62, 920, 142, 70, { color = Color3.fromRGB(255, 222, 40), outline = INK, thick = 5 })

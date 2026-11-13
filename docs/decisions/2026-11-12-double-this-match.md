@@ -20,6 +20,9 @@ Studio uses practice buys.
   about equal, longer ones better): 15 min 10 R$ (was 25), 30 min 15 (45), 1 hour 25 (79), 3 hours 69 (199), 5 hours
   99 (299). Their clocks still run while online (menus too).
 
+- **The 75-Paper minimum stays** (Alan 2026-11-12, after a 36-Paper match showed no button): below it the cheapest
+  price is worth more than what you'd get.
+
 ## Why
 Alan: a 15-minute boost covers about 1.5 matches for 79 R$-class prices, "not worth it", and a player would see that
 (boosts paid 5-10 Paper per Robux against 15-20 for Paper packs). Doubling the match you just played sells the moment
