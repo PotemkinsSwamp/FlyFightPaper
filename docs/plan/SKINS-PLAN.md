@@ -103,6 +103,13 @@ views, bumps and glow from the art). **Tool fixed 2026-11-14:** the Shark's nose
 (it was scrambled on the jaw and underside: cause and fix in [lessons](../workshop/lessons.md), "Painting a model from
 an AI model sheet"). Still true of any long pointy nose: seen straight from the front, the side painting stretches
 into stripes (teeth, ridges), and teeth drawn low on the side wrap under the chin (body `mid` lower would move them up).
+**Dragon head test built, waiting on Alan's judgement** (`.planning/skins/dragon/test-head/for-alan.jpg`, spec beside
+it): clean, and close to the sheet from the side and from above. Short of the sheet: from the three-quarter angle the
+crest (one ridge each side reaching the drawn outline, `crown` in the spec) is a solid gold wall, not separate blades
+with green between, and hides half the eye; the horns are straight cones (the sheet's curve). Splitting the crest into
+a top ridge and a side ridge was tried and was worse (the eye smeared). The sheet's FRONT view is left out of the
+painting (`paint`): it draws the head 1.6x too wide and put stripes on the horn bases. Options for Alan: go on to the
+full Dragon at this level, or build each crest blade as its own measured piece first (slower, closer).
 Then the full Dragon and Shark Jet, each beside its sheet before any upload. Codex picture
 jobs for the six printed sheets (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy) come after.
 

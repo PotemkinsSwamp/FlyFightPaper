@@ -137,7 +137,9 @@ mistake would be easy to make twice.
   one view and cross-fade only in a thin band where two tie (a hard per-triangle switch leaves a zig-zag). A depth test
   tighter than a few pixels fails in speckles on steep faces: test whole faces. **The real cause of the Shark's
   scrambled belly:** cream bellies and white teeth are nearly the sheet's background grey, so a colour-difference
-  outline has holes there; fill holes (background = only what the box edge reaches). And `blender -b
+  outline has holes there; fill holes (background = only what the box edge reaches). The sheets also draw a thin
+  white halo round every shape: a model's outermost edge picks it up as a white rim unless edge colours come from a
+  few pixels inside. A view that doesn't draw a part (horns seen from below) must not paint it. And `blender -b
   --factory-startup` keeps the 2-unit default cube: delete it, or it hides a model built at unit length.
 
 ## Studio and the place file
