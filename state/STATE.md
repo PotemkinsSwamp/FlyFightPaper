@@ -1,7 +1,7 @@
 # Since Alan last checked (2026-11-14)
 - **Your crane playtest list is fixed** (tabs, Buy not Try on, paper-and-tape buttons, crumpled ball wears the skin,
-  crane guns under the wing, shelf wears the skin). From your replay: the **crane's body is narrower** (never wider than
-  the starter's own shape), the **hangar keeps the plane picture between clicks** (a new plane loads behind the old one
+  crane guns under the wing, shelf wears the skin). From your replay: the **crane is shorter** (shallower belly, lower roof),
+  its **wings sit on the body's edge**, the **grey crane is blue again**, the **hangar keeps the plane picture between clicks** (a new plane loads behind the old one
   and swaps in when ready) and **gets the shop's answer right after Buy** (it waited for a 3-second refresh).
 - **Boosters under the crane wear its blue wave paper** (sheet uploaded with your go, free; tests 635/0). Your answers
   are in the [notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md) and [skin rules](../docs/decisions/2026-11-13-skin-rules.md).
@@ -16,7 +16,7 @@ real gift through the shop; the unlock backpack's music dip.
 Decisions to review
 Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
   has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices); Trails tab lists, draws nothing.
-  Crane wing join: only the body was narrowed; if the wings still look loose, next step tucks their roots into the roof.
+  Crane: about a quarter shorter (belly to the real body's bottom, roof 0.5 of a step up, was 0.9); width as before.
 Gift arrival: Open it! is a tap; on Thanks the gift comes at you and fades; the pop is the Popper's, higher and soft.
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
@@ -51,7 +51,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- Replay the hangar: click skins, tabs and Cancel (no reload flash?), the crane's narrower body and wing join, a
+- Replay the hangar: click skins, tabs and Cancel (no reload flash?), the crane's height and wing join, a
   booster under the crane, and Buy on a skin (the screen should change right away).
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).

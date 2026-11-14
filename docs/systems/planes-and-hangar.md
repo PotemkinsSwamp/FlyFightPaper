@@ -11,8 +11,9 @@ drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); th
 skins on your plane. Boosters and the hangar photo wear it too. Players wear their saved skin (bought with Paper and
 picked in Customize's **Skins** tab; a **Trails** tab lists trails, not drawn yet). Shape skins (the Origami Crane) are
 fitted by `SkinShapes.luau` from `config/skin-shapes.json` (the crane: five pieces uploaded 2026-11-13, guns hung under
-the wings with their whole length under the wing, drawn shots start from the moved gun; the body is never wider than the
-starter's own shape; boosters wear its printed sheet, uploaded 2026-11-14) ([skins plan](../plan/SKINS-PLAN.md)).
+the wings with their whole length under the wing, drawn shots start from the moved gun; the body's belly stops at the real body's bottom
+and its roof is low, and the wings, neck and tail join the stretched body's side edge; boosters wear its printed sheet,
+uploaded 2026-11-14) ([skins plan](../plan/SKINS-PLAN.md)).
 The shelf's big photo and its cubbies wear your skin too; a crash crumples into a ball of the skin's printed pieces.
 A skin you don't own shows Buy (or Unlock now); Studio's try-on is only the "Dev: skin" button (it lists the crane).
 The hangar keeps each plane photo between clicks and swaps a new plane in only once it has loaded; after a buy the

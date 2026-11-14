@@ -22,22 +22,24 @@ def item(cls, name, body=""):
 
 out = ['<?xml version="1.0" encoding="utf-8"?>\n<roblox version="4">', item("Folder", "SkinLooks")]
 count = 0
+# One folder per skin: a shape skin with a printed sheet (the crane) keeps its Shape look and its sheet copies together
+# (two folders of one name hid the Shape look and the crane drew grey, 2026-11-14).
+folders = {}
 for skin in looks["skins"]:
     if not skin.get("picture"):
         continue
-    out.append(item("Folder", skin["id"]))
     for name, ids in sorted(pieces.items()):
         maps = (f'<Content name="ColorMap"><url>rbxassetid://{skin["picture"]}</url></Content>'
                 f'<Content name="NormalMap"><url>rbxassetid://{ids["normal"]}</url></Content>')
-        out.append(item("SurfaceAppearance", name, maps) + "</Item>")
-        count += 1
-    out.append("</Item>")
+        folders.setdefault(skin["id"], []).append(item("SurfaceAppearance", name, maps) + "</Item>")
 for sid, shape in sorted(shapes.items()):
     pics = shape["pictures"]
     maps = "".join(f'<Content name="{key}"><url>rbxassetid://{pics[k]}</url></Content>'
                    for key, k in (("ColorMap", "color"), ("NormalMap", "normal"), ("RoughnessMap", "roughness")))
-    out.append(item("Folder", sid) + item("SurfaceAppearance", "Shape", maps) + "</Item></Item>")
-    count += 1
+    folders.setdefault(sid, []).append(item("SurfaceAppearance", "Shape", maps) + "</Item>")
+for sid, items in folders.items():
+    out.append(item("Folder", sid) + "\n".join(items) + "</Item>")
+    count += len(items)
 out.append("</Item>\n</roblox>\n")
 (ROOT / "assets/models/planes/skin-looks.rbxmx").write_text("\n".join(out), encoding="utf-8")
 print("skin-looks.rbxmx:", count, "looks")

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <roblox version="4">
 <Item class="Folder"><Properties><string name="Name">SkinLooks</string></Properties>
-<Item class="Folder"><Properties><string name="Name">hazard_stripes</string></Properties>
-<Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-L</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://110256268044698</url></Content></Properties></Item>
+<Item class="Folder"><Properties><string name="Name">hazard_stripes</string></Properties><Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-L</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://110256268044698</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-R</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://137502311194544</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body_heavy-accent</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://116576251864335</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body_heavy-cardboard-L</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://120666776034605</url></Content></Properties></Item>
@@ -99,10 +98,8 @@
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-accent-L</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://96680339891588</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-accent-R</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://106219734651169</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-L</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://90196978725538</url></Content></Properties></Item>
-<Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-R</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://102206257936810</url></Content></Properties></Item>
-</Item>
-<Item class="Folder"><Properties><string name="Name">lava</string></Properties>
-<Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-L</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://110256268044698</url></Content></Properties></Item>
+<Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-R</string><Content name="ColorMap"><url>rbxassetid://124257520246805</url></Content><Content name="NormalMap"><url>rbxassetid://102206257936810</url></Content></Properties></Item></Item>
+<Item class="Folder"><Properties><string name="Name">lava</string></Properties><Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-L</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://110256268044698</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-R</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://137502311194544</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body_heavy-accent</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://116576251864335</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body_heavy-cardboard-L</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://120666776034605</url></Content></Properties></Item>
@@ -199,10 +196,8 @@
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-accent-L</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://96680339891588</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-accent-R</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://106219734651169</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-L</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://90196978725538</url></Content></Properties></Item>
-<Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-R</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://102206257936810</url></Content></Properties></Item>
-</Item>
-<Item class="Folder"><Properties><string name="Name">origami_crane</string></Properties>
-<Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-L</string><Content name="ColorMap"><url>rbxassetid://86508406688555</url></Content><Content name="NormalMap"><url>rbxassetid://110256268044698</url></Content></Properties></Item>
+<Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-R</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://102206257936810</url></Content></Properties></Item></Item>
+<Item class="Folder"><Properties><string name="Name">origami_crane</string></Properties><Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-L</string><Content name="ColorMap"><url>rbxassetid://86508406688555</url></Content><Content name="NormalMap"><url>rbxassetid://110256268044698</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body-paper-R</string><Content name="ColorMap"><url>rbxassetid://86508406688555</url></Content><Content name="NormalMap"><url>rbxassetid://137502311194544</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body_heavy-accent</string><Content name="ColorMap"><url>rbxassetid://86508406688555</url></Content><Content name="NormalMap"><url>rbxassetid://116576251864335</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">body_heavy-cardboard-L</string><Content name="ColorMap"><url>rbxassetid://86508406688555</url></Content><Content name="NormalMap"><url>rbxassetid://120666776034605</url></Content></Properties></Item>
@@ -300,7 +295,6 @@
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-accent-R</string><Content name="ColorMap"><url>rbxassetid://86508406688555</url></Content><Content name="NormalMap"><url>rbxassetid://106219734651169</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-L</string><Content name="ColorMap"><url>rbxassetid://86508406688555</url></Content><Content name="NormalMap"><url>rbxassetid://90196978725538</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-R</string><Content name="ColorMap"><url>rbxassetid://86508406688555</url></Content><Content name="NormalMap"><url>rbxassetid://102206257936810</url></Content></Properties></Item>
-</Item>
-<Item class="Folder"><Properties><string name="Name">origami_crane</string></Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Shape</string><Content name="ColorMap"><url>rbxassetid://84766972761508</url></Content><Content name="NormalMap"><url>rbxassetid://83364938011334</url></Content><Content name="RoughnessMap"><url>rbxassetid://126539059666330</url></Content></Properties></Item></Item>
+<Item class="SurfaceAppearance"><Properties><string name="Name">Shape</string><Content name="ColorMap"><url>rbxassetid://84766972761508</url></Content><Content name="NormalMap"><url>rbxassetid://83364938011334</url></Content><Content name="RoughnessMap"><url>rbxassetid://126539059666330</url></Content></Properties></Item></Item>
 </Item>
 </roblox>

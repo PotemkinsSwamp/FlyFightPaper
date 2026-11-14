@@ -39,8 +39,11 @@ Alan replayed the fixes. Good: the crumpled ball wears the skin ("it actually lo
 - **Toilet Roll still jitters** (only that body).
 
 What changed the same day:
-- **Crane body:** at most the starter's own width (it grew up to a third wider on big bodies), so the roof between
-  the wings is narrower.
+- **Crane body:** Alan meant **tall**, not wide (he corrected it the same night; the narrowing was undone). The belly
+  now stops at the real body's bottom (it reached down to the booster) and the roof is lower: about a quarter shorter.
+  The wings, neck and tail now join the body's side edge wherever the stretch puts it (they hung at the real wing's
+  height, which on most bodies left a gap). **The crane drew grey** after the sheet went in: two look folders of the
+  same name hid its own look; `skin_looks.py` now writes one folder per skin.
 - **Hangar:** the plane photo now stays put between clicks; a new plane loads behind the old one and swaps in when
   ready (checked in Play: no blank frame). After any buy the server sends the fresh profile at once, instead of the
   next 3-second refresh.

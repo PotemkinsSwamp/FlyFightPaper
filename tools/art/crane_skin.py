@@ -151,7 +151,7 @@ def crane(o):
     def poly(part, ids):
         for i in range(1, len(ids) - 1): tri(part, ids[0], ids[i], ids[i + 1])
     unit = lambda a: a / np.linalg.norm(a)
-    wy = o["wy"]; cw = min(max(0.8 * o["bw"], 0.9 * s), 1.3 * s); ky = min(o["by0"], o["boost_y"])
+    wy = o["wy"]; cw = min(max(0.95 * o["bw"], 0.9 * s), 1.7 * s); ky = min(o["by0"], o["boost_y"])
     zF, zB = o["bz0"] + 0.2 * s, o["bz1"] - 0.2 * s; blen = zB - zF
     # wings keep their own shape (scaled evenly, a little bigger or smaller to suit the real wing) and hinge on the body
     run = (o["xo"] + 0.3 * s - cw) / math.cos(RISE) / s; chord = (o["TI"] - o["LI"]) / s

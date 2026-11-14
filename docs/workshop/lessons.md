@@ -320,6 +320,9 @@ mistake would be easy to make twice.
 - **A click on an empty spot of a menu is NOT "processed"** (`InputBegan`'s flag is false unless a button took it), so
   world click handlers must also check `Root:GetAttribute("OverlayOpen")`: the Range turned such clicks into shots and
   closed Customize (2026-10-21).
+- **Two children with the same name: `FindFirstChild` returns only one** (2026-11-14, the crane drew grey): giving the
+  crane a printed sheet made `skin_looks.py` write a second `origami_crane` folder, and `SkinShapes` found the one without
+  its `Shape` look. One folder per id; check a generated model's names are unique.
 - **A picture drawn over a button does not stop its clicks** (2026-11-13, Customize tabs "click on and off"): the
   index tabs tuck under the binder page, and a click on the page beside the cards turned the tab hidden under it.
   `Active = true` on the ImageLabel did not help; a see-through `TextButton` over the page (drawn before the cards)

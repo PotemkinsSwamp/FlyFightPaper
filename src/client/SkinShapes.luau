@@ -61,8 +61,8 @@ local function fit(shape, o)
 	local rise = math.rad(K.RISE)
 	local s = (o.zT - o.zN) / 16
 	local wy = o.wy
-	local cw = clamp(0.8 * o.bw, 0.9 * s, 1.3 * s) -- (Alan 2026-11-14: wider looked odd; the starter's own shape is 1.29 s)
-	local ky = math.min(o.by0, o.boostY or o.by0)
+	local cw = clamp(0.95 * o.bw, 0.9 * s, 1.7 * s)
+	local ky = o.by0 -- the belly stops at the real body's bottom (Alan 2026-11-14: reaching down to the booster made it too tall)
 	local zF, zB = o.bz0 + 0.2 * s, o.bz1 - 0.2 * s
 	local blen = zB - zF
 	local run = (o.xo + 0.3 * s - cw) / math.cos(rise) / s
@@ -70,13 +70,16 @@ local function fit(shape, o)
 	local ks = math.min(math.max(math.sqrt(math.max(run / K.R0 * chord / K.C0, 0)), 0.85), 1.2, 0.9 * blen / (K.C0 * s)) * s
 	-- The body stretches per axis to the real body; the wings hinge on the middle of its sides (where the stretched
 	-- starter body has them), so a wing root never floats off the body.
-	local top, bottom = wy + 0.9 * s, ky - 0.35 * s
+	local top, bottom = wy + 0.5 * s, ky -- (the roof was 0.9 s up: too tall, Alan 2026-11-14)
 	local refTop, refBottom = ref.wy + 0.9 * ref.s, ref.ky - 0.35 * ref.s
 	local scale = Vector3.new(cw / ref.cw, (top - bottom) / (refTop - refBottom), blen / (ref.zB - ref.zF))
 	local function body(p) return Vector3.new(p.X * scale.X, bottom + (p.Y - refBottom) * scale.Y, zF + (p.Z - ref.zF) * scale.Z) end
 	local zc = body(Vector3.new(0, 0, ref.zc)).Z
-	local O = Vector3.new(0, wy + 0.05 * s, zF + 0.15 * s)
-	local T0 = Vector3.new(0, wy - 0.2 * s, zB - 0.7 * s)
+	-- The wings, neck and tail join the stretched body's side edge, wherever the stretch puts it (Alan 2026-11-14: hinged at the real
+	-- wing's height they floated off the body).
+	local hy = body(Vector3.new(0, ref.wy, 0)).Y
+	local O = Vector3.new(0, hy + 0.05 * s, zF + 0.15 * s)
+	local T0 = Vector3.new(0, hy - 0.2 * s, zB - 0.7 * s)
 	local Tt = Vector3.new(0, math.max(o.yT, wy + 1.3 * s) + 0.5 * s, o.zT + 0.7 * s)
 	local along = (Tt - T0).Unit
 	local tailFrame = CFrame.fromMatrix(T0, Vector3.xAxis, along:Cross(Vector3.xAxis), along)
@@ -87,7 +90,7 @@ local function fit(shape, o)
 		if name == "head" then
 			out[name] = { CFrame.new(O + centre * s), size * s }
 		elseif name == "wingL" or name == "wingR" then
-			local hinge = Vector3.new((name == "wingL" and -1 or 1) * cw * 0.97, wy + 0.02 * s, zc)
+			local hinge = Vector3.new((name == "wingL" and -1 or 1) * cw * 0.97, hy + 0.02 * s, zc)
 			out[name] = { CFrame.new(hinge + centre * ks), size * ks }
 		elseif name == "tail" then
 			local stretch = Vector3.new(s, s, (Tt - T0).Magnitude)
@@ -105,7 +108,7 @@ local function fit(shape, o)
 		local front, back = -K.C0 / 2 + u * (K.SW + K.C0 / 2) / K.R0 + m, K.C0 / 2 - u * (K.C0 / 2 - K.SW) / K.R0 - m
 		local w = front <= back and clamp((z - zc) / ks, front, back) or (front + back) / 2
 		local xx = cw * 0.97 + u * ks * math.cos(rise)
-		return Vector3.new(x < 0 and -xx or xx, wy + 0.02 * s + u * ks * math.sin(rise) - 0.035 * s, zc + w * ks)
+		return Vector3.new(x < 0 and -xx or xx, hy + 0.02 * s + u * ks * math.sin(rise) - 0.035 * s, zc + w * ks)
 	end
 	return out, under, rise
 end
