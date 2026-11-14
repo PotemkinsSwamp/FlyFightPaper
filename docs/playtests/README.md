@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-13: Crane in the game: tabs click unreliably, boosters and crumples miss the crane, guns float, Buy not Try on, no cardboard tabs, wing hitbox question](2026-11-13-crane-and-skins-tabs.md)
 - [2026-11-13: Printed-sheet skins: Commons and Rares work; boosters skinned too; Skins and Trails tabs; Origami Crane next](2026-11-13-printed-sheet-skins.md)
 - [2026-11-13: Gift a friend: search box; the gift's arrival to redo (plane off its pin, rays, one gift at a time)](2026-11-13-gift-a-friend.md)
 - [2026-11-12: Double this match works; fold card fixes; the shop's green](2026-11-12-double-this-match-and-shop.md)
