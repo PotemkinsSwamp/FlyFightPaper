@@ -2,7 +2,7 @@
 
 **Status:** building the first batch (2026-11-13). Printed-sheet Commons and Rares work in Studio (Alan OK'd, test
 pictures; [playtest](../playtests/2026-11-13-printed-sheet-skins.md)); saving and buying built; the Origami Crane is
-the first Mythical, in Blender. Still to make: real pictures, boosters, Shark Jet, Dragon, trails, Skins and Trails
+the first Mythical, in Blender. Boosters wear the skin (15 copies uploaded 2026-11-13). Still to make: real pictures, Shark Jet, Dragon, trails, Skins and Trails
 tabs. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
 the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top of the
 [shop plan decision](../decisions/2026-10-18-shop-plan.md) (Paper or Robux, kept through prestige). Serves
@@ -27,7 +27,7 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
   bakes the piece's creases into its own normal map (2026-11-13, Claude's method, cheapest and safest): today's pieces
   and the plain planes stay exactly as they are, and the copies replace them on screen only while a skin is worn. One
   upload batch (54 meshes, 54 crease pictures) with Alan's go. After that, each Common or Rare skin is one picture
-  (plus a shine picture for Gold Foil, a glow mask for Lava). Accents, tape and boosters keep their own look.
+  (plus a shine picture for Gold Foil, a glow mask for Lava). Accents and boosters wear the skin too (Alan); tape keeps its own look.
 - **Drawing it at runtime:** a script can't set a SurfaceAppearance's pictures, but
   `AssetService:CreateSurfaceAppearanceAsync` builds one while the game runs from uploaded pictures (the docs' own
   example uses an asset ID), so each player's screen builds "skin picture + this piece's creases" when needed; no

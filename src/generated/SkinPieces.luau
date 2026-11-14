@@ -87,6 +87,66 @@ return JSONTypes.map({
             ["mesh"] = 109364875300324,
             ["normal"] = 140666424651893,
         }),
+        ["boost_band-accent"] = JSONTypes.map({
+            ["mesh"] = 75491309554832,
+            ["normal"] = 127534392542660,
+        }),
+        ["boost_band-cardboard-L"] = JSONTypes.map({
+            ["mesh"] = 82738576465702,
+            ["normal"] = 125688516089971,
+        }),
+        ["boost_band-cardboard-R"] = JSONTypes.map({
+            ["mesh"] = 102058743879225,
+            ["normal"] = 129181810186958,
+        }),
+        ["boost_band-paper-L"] = JSONTypes.map({
+            ["mesh"] = 98228422428935,
+            ["normal"] = 93796203683216,
+        }),
+        ["boost_band-paper-R"] = JSONTypes.map({
+            ["mesh"] = 72716393438220,
+            ["normal"] = 116126942970392,
+        }),
+        ["boost_spool-accent"] = JSONTypes.map({
+            ["mesh"] = 75491309554832,
+            ["normal"] = 114052517196510,
+        }),
+        ["boost_spool-cardboard-L"] = JSONTypes.map({
+            ["mesh"] = 120696345461120,
+            ["normal"] = 88662542310257,
+        }),
+        ["boost_spool-cardboard-R"] = JSONTypes.map({
+            ["mesh"] = 98563325302746,
+            ["normal"] = 123573796866585,
+        }),
+        ["boost_spool-paper-L"] = JSONTypes.map({
+            ["mesh"] = 82078007913426,
+            ["normal"] = 116309798684940,
+        }),
+        ["boost_spool-paper-R"] = JSONTypes.map({
+            ["mesh"] = 81317335112276,
+            ["normal"] = 92440360007133,
+        }),
+        ["boost_twin-accent"] = JSONTypes.map({
+            ["mesh"] = 99041675812932,
+            ["normal"] = 91986867997889,
+        }),
+        ["boost_twin-cardboard-L"] = JSONTypes.map({
+            ["mesh"] = 87471821747134,
+            ["normal"] = 139712334023270,
+        }),
+        ["boost_twin-cardboard-R"] = JSONTypes.map({
+            ["mesh"] = 124141392706665,
+            ["normal"] = 121866234254524,
+        }),
+        ["boost_twin-paper-L"] = JSONTypes.map({
+            ["mesh"] = 93416620853176,
+            ["normal"] = 93363021758040,
+        }),
+        ["boost_twin-paper-R"] = JSONTypes.map({
+            ["mesh"] = 110682964942441,
+            ["normal"] = 123065182560275,
+        }),
         ["nose-accent"] = JSONTypes.map({
             ["mesh"] = 117873844323001,
             ["normal"] = 76694456812931,

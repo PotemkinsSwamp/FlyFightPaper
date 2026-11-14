@@ -1,7 +1,7 @@
 -- Skins drawn on each player's own screen only (skins plan, "Keeping skins cheap"): the server marks a plane with a
 -- Skin attribute; here every paper and trim piece of it swaps, on this screen, to its printed-sheet copy
 -- (assets/models/planes/skin-sheet) wearing the skin's picture plus the piece's own creases. The server's pieces and
--- hitbox never change. Pieces with no copy (tape, team stickers, weapons, boosters) keep their own look.
+-- hitbox never change. Boosters wear it too; pieces with no copy (tape, team stickers, weapons) keep their own look.
 local AssetService = game:GetService("AssetService")
 local Players = game:GetService("Players")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
