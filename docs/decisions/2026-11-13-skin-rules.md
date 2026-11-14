@@ -46,6 +46,7 @@
   Ghost Ship is built last, to that budget.
 - **First build batch** (Alan's pick): Hazard Stripes, Tiger Stripes, Flame Decals; Gold Foil, Lava, Galaxy; Shark
   Jet; Dragon; trails Confetti, Rainbow Marker, Gold Stars.
+- **After the first Studio look** (Alan, same day, [playtest](../playtests/2026-11-13-printed-sheet-skins.md)): the printed sheet works for Commons and Rares. **Boosters wear the skin too** (they carry the team colour, so they are part of the plane). A **Skins tab and a Trails tab** in the customization menu show your pick on your plane. **The first Mythical is the Origami Crane** (blue and silver; "push the boundaries"), built in Blender by Fable itself next session.
 - **Concept changes:** the Origami Crane turns blue and silver (it looked too like the Phoenix); Chrome keeps white
   only as small reflection glints. The Mech stays as drawn.
 - **Ideas:** every skin and trail on the [skins plan](../plan/SKINS-PLAN.md) list (Alan approved the whole list).
