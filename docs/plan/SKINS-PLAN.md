@@ -109,7 +109,13 @@ into stripes (teeth, ridges), and teeth drawn low on the side wrap under the chi
 Alan): five crest blades a side (tips on the sheet's drawn outline, laid back), brow and cheek blades, eye and socket,
 two horns, green scales and a gold jaw; 1,526 triangles. Clean from every side. Short of the sheet: the blades are
 straight daggers (the sheet's are curved leaves), the horns straight cones, the face slimmer than the three-quarter
-drawing, the gold flatter. Next if Alan agrees: leaf-shaped and curved blades and horns, a fuller face, then the rest.
+drawing, the gold flatter.
+**Dragon head, painted skin + built pieces** (Alan's idea; `.planning/skins/dragon/test-head-hybrid/for-alan.jpg`;
+waiting on Alan): the skin (scales, eye, flat gold cheek plates, jaw) is painted from the sheet; the crest blades and
+horns are built; where a view's picture shows a built piece in front of the skin, that view does not paint there
+(`cut` in the spec) and skin no view shows gets matching scales. The face and eye are the closest to the sheet yet.
+Short of it: the blades and horns are still straight daggers and cones; small scraps of drawn gold left at a few seams
+(snout's lower edge, behind the crest from above); the chin smears when seen straight from the front.
 Then the full Dragon and Shark Jet, each beside its sheet before any upload. Codex picture
 jobs for the six printed sheets (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy) come after.
 

@@ -24,6 +24,7 @@ points in sheet pixels):
           spine [[x, y, z], ...], radius [r, ...] (one per spine point; or [across, up] pairs), sides   (a tube), or
           kind "blade", base [x, y, z], tip [x, y, z], width, thick, facing [x, y, z] (optional; default: out from
           the head's middle line)}],
+  cut (optional pixels: the sheet's drawings of built pieces are cut out of the painted skin, this much wider),
   sun, ambient (optional render light strengths, default 1.5 and 1.0: plain-colour pieces want about 3.5 and 0.45),
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
   degrees: yaw 0 = from the side, 90 = from the front; pitch above level), front_scale (optional px per length),
@@ -259,6 +260,21 @@ for v in ("side", "top", "bottom", "front"):
         ys_, xs_, L = r; d = L @ dep[t]; np.maximum.at(zb_, (ys_, xs_), d)
     ZBUF[v] = zb_
 
+# Built pieces over painted skin (Alan, 2026-11-14): where a view's picture shows a horn or blade we built in 3D, that
+# view must not paint the skin under it (it would put a flat copy of the blade there). The pieces' own outlines in each
+# view, widened by `cut` pixels, mark those spots; skin no view shows gets the body's own scales (body_paint).
+PMASK = {}
+if spec.get("cut"):
+    for v in ("side", "top", "bottom", "front"):
+        zp, zs = np.full((H_, W_), -1e9), np.full((H_, W_), -1e9); pic, dep = to_pic(v, Vn)
+        for t, part in zip(Tri, TPART):
+            r = raster(pic[t], W_, H_)
+            if r is not None: np.maximum.at(zp if part else zs, (r[0], r[1]), r[2] @ dep[t])
+        m = zp > zs                  # only where the piece is in front of the skin (blades above the head: not from below)
+        for _ in range(spec["cut"]): m = m | np.roll(m, 1, 0) | np.roll(m, -1, 0) | np.roll(m, 1, 1) | np.roll(m, -1, 1)
+        PMASK[v] = m
+    np.save(os.path.join(OUT, "cut.npy"), np.stack([PMASK[v] for v in ("side", "top", "bottom", "front")]))
+
 def sample(pic):
     x = np.clip(pic[:, 0] - 0.5, 0, W_ - 1.001); y = np.clip(pic[:, 1] - 0.5, 0, H_ - 1.001)
     x0, y0 = x.astype(int), y.astype(int); fx, fy = (x - x0)[:, None], (y - y0)[:, None]
@@ -307,7 +323,7 @@ for fi, t in enumerate(Tri):
             a2 = abs(np.cross(t2[1] - t2[0], t2[2] - t2[0])); d = (L * (a2 / np.maximum(e, 1e-9))).min(1)
             c *= 0.45 + 0.55 * np.clip((d - 0.5) / 1.5, 0, 1)[:, None]                 # soft-edged, not jagged
         col[ys_, xs_] = c; done[ys_, xs_] = True; continue
-    if nm == "body" and "colors" in B:                                          # the body's own scales and underside
+    if nm == "body" and "colors" in B and not PMASK:                            # the body's own scales and underside
         col[ys_, xs_] = body_paint(L @ Pt); done[ys_, xs_] = True; continue
     seen, drawn = [], []
     for v in DIRS:
@@ -318,10 +334,18 @@ for fi, t in enumerate(Tri):
         if fn @ DIRS[v] > 0 and (dep >= ZBUF[v][yi, xi] - SEE_TOL).sum() >= 3: seen.append(v)
     seen = seen or [max(drawn or DIRS, key=lambda v: fn @ DIRS[v])]
     N = L @ Nt; N /= np.maximum(np.linalg.norm(N, axis=1, keepdims=True), 1e-9); P = L @ Pt
+    pics = {v: to_pic(v, P)[0] for v in seen}
     S = np.stack([N @ DIRS[v] + BIAS.get(v, 0) for v in seen], 1)
-    Wt = np.clip((S - S.max(1, keepdims=True) + BAND) / BAND, 0, 1)
-    acc = sum(sample(to_pic(v, P)[0]) * Wt[:, k:k + 1] for k, v in enumerate(seen))
-    col[ys_, xs_] = acc / Wt.sum(1, keepdims=True); done[ys_, xs_] = True
+    ok = np.ones_like(S, bool)
+    if PMASK and nm == "body":                       # a view whose picture shows a built piece there can't paint it
+        ok = np.stack([~PMASK[v][np.clip(pics[v][:, 1].astype(int), 0, H_ - 1), np.clip(pics[v][:, 0].astype(int), 0, W_ - 1)]
+                       & (N @ DIRS[v] > 0.35) for v in seen], 1)        # and no view at a glancing angle: scales instead
+        S = np.where(ok, S, -9.0)
+    Wt = np.clip((S - S.max(1, keepdims=True) + BAND) / BAND, 0, 1) * ok
+    ws = Wt.sum(1, keepdims=True); c = sum(sample(pics[v]) * Wt[:, k:k + 1] for k, v in enumerate(seen)) / np.maximum(ws, 1e-9)
+    bare = ws[:, 0] == 0
+    if bare.any(): c[bare] = body_paint(P[bare])            # skin the sheet never shows (under a blade): its own scales
+    col[ys_, xs_] = c; done[ys_, xs_] = True
 grow(col, done, TEX // 64)                                           # fill gaps and pad islands from their neighbours
 col[~done] = col[done].mean(0)
 
