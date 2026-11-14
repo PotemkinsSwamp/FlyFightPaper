@@ -89,6 +89,9 @@ specific old fact. Never copy them back, and never recreate that evidence system
   no overlaps; when it doesn't fit, make the paper bigger. Check it on a screenshot, not in code.
 - **Design and colour theory (Alan, 2026-11-12):** before building or showing any screen, menu, card, HUD piece or
   picture, load the `design-theory` skill (`.claude/skills/design-theory/`) and run its screenshot checklist.
+- **Measure the concept first (Alan, 2026-11-13):** before building or briefing any 3D model that has a concept
+  picture, load the `concept-to-blender` skill (`.claude/skills/concept-to-blender/`): measured sheet to Alan first,
+  then build to the numbers and check the model laid over the picture.
 - Performance target: steady 60 FPS on Alan's PC in a 12-plane match, no buildings popping in.
 - At the end of each milestone, put a short "what to try" list in STATE.md under "Waiting on Alan" and keep
   going. His playtest is the final sign-off. Never claim something is fun or balanced without him.

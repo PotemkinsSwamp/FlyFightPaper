@@ -84,7 +84,9 @@ mistake would be easy to make twice.
 - **Measure the concept picture before writing a model brief.** The bell tower took 4 rounds because the sizes in
   the brief didn't match the approved picture. Measure each part in pixels, convert with one scale, write a size
   table, then check the sums (posts x2 + opening = outer width; parts stack to the total height). The approved
-  concept wins over old in-game templates.
+  concept wins over old in-game templates. The full method (read the camera, measure every part, surface, line and
+  colour, show Alan the sheet, then build and lay the model over the picture) is the `concept-to-blender` skill
+  (`.claude/skills/concept-to-blender/`), made after the Origami Crane took four passes (2026-11-13).
 - **Meshy fuses thin parts.** It turns wires into flat blades and makes every model one fused shell. Anything
   thinner than about 2% of the model's length, or anything that must move, gets built in Blender instead.
 - **Meshy melts railings, rulers, crayons and pencils.** Every building gets a close-up sheet

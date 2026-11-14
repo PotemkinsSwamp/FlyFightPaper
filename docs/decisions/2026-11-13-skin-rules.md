@@ -49,6 +49,9 @@
   may stop short of the nose tip (hitbox there with no skin over it).
 - **A Mythical must look like its concept** (Alan, same day): layers on layers, the concept's shapes (the crane's
   Z-shaped neck, big folded head), judged from above and behind as well as from the side. Measure the concept first.
+- **The crane's lines are bright white, not metal** (Alan, same day, after the fourth pass): deep blues and bright
+  whites like the concept; the metal look came out "almost purple" and "takes away from the detail". White stays in
+  lines, waves and petals only, so the skin is still not a very white one.
 - **Guns go under a Mythical, never on top** (Alan, same day): "we don't want the weapons blocking the skin". Where
   shots then leave from (Alan, same evening): the game's real shot spot stays, so a skin never changes play; only
   the drawn bullet starts from the gun you see. Skinning the weapons to match a Mythical is a maybe for later, not now.

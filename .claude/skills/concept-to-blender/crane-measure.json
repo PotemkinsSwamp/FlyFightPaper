@@ -1,0 +1,27 @@
+{
+  "image": ".planning/skins/concepts/crane-2.png",
+  "out": ".planning/skins/crane/crane-measure-example.jpg",
+  "title": "Origami Crane: the concept's head and neck, measured",
+  "crop": [70, 240, 1090, 790],
+  "zoom": 2,
+  "camera": {"yaw": 47, "pitch": 25},
+  "facing": "left",
+  "ref": {"a": [578, 550], "b": [1022, 317], "studs": 7.9, "spot": [790, 395],
+          "what": "The body, breast to where the tail starts (everything else is a share of this)"},
+  "lines": [
+    {"tag": "A", "what": "Head: top of the head to where the beak starts", "a": [312.5, 530], "b": [200, 624], "spot": [268, 500]},
+    {"tag": "B", "what": "Beak", "a": [200, 624], "b": [115, 735], "spot": [118, 668]},
+    {"tag": "C", "what": "Head: height at the back", "a": [312.5, 530], "b": [311, 596], "spot": [338, 498], "old": 0.76},
+    {"tag": "D", "what": "Neck, first stroke: out from the breast, almost level", "a": [572, 505], "b": [412, 586], "spot": [500, 512], "old": 3.4},
+    {"tag": "E", "what": "Neck, second stroke: folds back up (its near top edge)", "a": [450, 652], "b": [313, 530], "spot": [430, 560], "old": 2.0},
+    {"tag": "F", "what": "Neck height where it leaves the breast", "a": [574, 505], "b": [582, 665], "spot": [610, 705], "old": 1.3},
+    {"tag": "G", "what": "Neck height at the fold", "a": [412, 586], "b": [399, 680], "spot": [398, 722], "old": 0.65},
+    {"tag": "H", "what": "Second stroke: height of the strip", "a": [375, 585], "b": [342, 622], "spot": [318, 660], "old": 0.53},
+    {"tag": "W", "what": "Head: half its width (the far half of its top, seen from above)", "a": [262, 572], "b": [236, 548], "spot": [200, 520], "old": 0.09}
+  ],
+  "colours": {"lit blue": [700, 380], "blue in shadow": [520, 640], "darkest fold": [560, 480], "line white": [313, 530]},
+  "notes": [
+    "The picture is a three-quarter view from the front-left, about 25 degrees above. Numbers are good to about one part in ten.",
+    "At these sizes the neck and head reach about one body length ahead of the breast: about 2 studs past the starter plane's nose."
+  ]
+}

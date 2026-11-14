@@ -99,10 +99,17 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
   of the real wing seen from above, the scallops redrawn between them; the tail webbing spans the real tail. It
   covered the wings of a swept and a straight-winged plane; the standard plane's tail fins stay uncovered (hitbox
   without skin, as Alan accepted). In Roblox each point would be a Bone. Not yet tried: flapping, real art.
-- **The Origami Crane, built in Blender 2026-11-13 (third pass; no upload, waiting on Alan's OK)**
-  (`tools/art/crane_skin.py`, renders in `.planning/skins/crane/`): 466 triangles and one 1024 set (colour, bumps,
-  shine, silver). The neck is a Z of three pieces tucked into each other, the head a folded kite with a crest, and
-  folded layers are stacked on the back, shoulders, breast, neck and tail (Alan: "layers on layers"). Scaled evenly to the plane's length; the beak sits at the nose tip, the tail tip over the real
+- **The Origami Crane, built in Blender 2026-11-13 (fourth pass: head and neck rebuilt; no upload, waiting on Alan's OK)**
+  (`tools/art/crane_skin.py`, renders in `.planning/skins/crane/`): 396 triangles and one 1024 set (colour, bumps,
+  shine). **Deep blue paper with bright white lines, waves and blossoms, no metal** (Alan, same day: the metal
+  look hid the detail). **Head and neck are one fixed shape** (Alan's ruling: they never stretch), measured from the concept
+  (`.planning/skins/crane/crane-concept-measured.jpg`, Alan OK'd) as shares of the crane's body length: head 0.25, beak
+  0.21, neck's first stroke 0.36 (almost level, 0.26 deep at the breast, 0.16 at the fold), second stroke 0.34 (rising
+  about 40 degrees), widths 0.14 narrowing to 0.10, whole reach about one body length. They scale only with the plane's
+  length and hang on a tall breast fold, so **the beak ends past the real nose** (Alan chose the concept's size: 2.2
+  studs past on the starter, 2.3 heavy, 1.2 swept; no hitbox there). Neck and head are folded strips with real width
+  (a fold on top, a corner each side), a Z: out from the breast, back up, the flat-topped kite head folded down, one
+  closed beak. Folded layers are stacked on the back, shoulders, flanks and tail; the neck folds over itself and the head over the neck (Alan: "layers on layers"). The tail tip sits over the real
   tail's top back corner, the body on the real body (width capped at 1.7 x the scale), its keel on the real body's
   bottom and back over the booster spot. The wings keep one shape on every plane (0.85-1.2 x, to suit the real wing)
   and rise 32 degrees from the body's sides, so the blossoms never stretch; the real wings stay flat underneath, so
@@ -110,7 +117,10 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
   Mythical): each keeps its spot seen from above where that is under the wing, tilts with the wing and hangs by its
   top. In the renders that moved guns up to 3.4 studs up and 3.1 back (heavy plane's outer pair); whether shots then
   leave from the moved gun or the old spot is a rule for Alan before any code. Tried on the starter, heavy and
-  swept-wing builds.
+  swept-wing builds. **Still short of the concept** (independent review, 2026-11-13): the wings are about two thirds of
+  the concept's size against the body and rise more steeply (so the neck looks big beside them and the near wing shows
+  edge-on from the concept's angle), the tail is shorter and thinner, and the body has fewer big
+  layers.
 - What a Mythical does to weapons.
 - Prices and earn rules per tier: drafted below, waiting on Alan's OK.
 
