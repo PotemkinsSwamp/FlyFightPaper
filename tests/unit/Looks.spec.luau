@@ -42,7 +42,7 @@ function Spec.run()
 	test("looks config and item identities are cached frozen and match the approved prices", function()
 		local cfg = Looks.config()
 		assert(cfg == Looks.config() and table.isfrozen(cfg) and table.isfrozen(cfg.skins[1]) and table.isfrozen(cfg.tiers.common))
-		assert(#cfg.skins == 8 and #cfg.trails == 5)
+		assert(#cfg.skins == 9 and #cfg.trails == 5)
 		for tier, prices in pairs({ common = {2800,149}, rare = {5600,299}, legendary = {30000,599}, mythical = {60000,999}, trail = {900,49} }) do
 			assert(cfg.tiers[tier].paper == prices[1] and cfg.tiers[tier].robux == prices[2])
 		end
@@ -193,10 +193,10 @@ function Spec.run()
 			end
 		end
 	end)
-	test("all eleven look products are disabled priced and produce frozen lookUnlock grants", function()
+	test("all twelve look products are disabled priced and produce frozen lookUnlock grants", function()
 		local commerce = assert(Commerce.catalog(CommerceConfig)); local count = 0
 		local prices = { hazard_stripes=149,tiger_stripes=149,flame_decals=149,gold_foil=299,lava=299,galaxy=299,
-			shark_jet=599,dragon=999,confetti=49,rainbow_marker=49,gold_stars=49 }
+			shark_jet=599,dragon=999,origami_crane=999,confetti=49,rainbow_marker=49,gold_stars=49 }
 		for _, product in ipairs(CommerceConfig.products) do
 			if product.benefit == "look_unlock" then
 				count += 1
@@ -209,7 +209,7 @@ function Spec.run()
 			end
 		end
 		for id in pairs(prices) do assert(commerce.byKey["look_" .. id]) end
-		assert(count == 11 and not commerce.byKey.look_water_spray and not commerce.byKey.look_dragon_embers)
+		assert(count == 12 and not commerce.byKey.look_water_spray and not commerce.byKey.look_dragon_embers)
 		local owned = assert(Looks.grant(fresh(), "shark_jet", "preview-grant")).profile
 		local dto = Commerce.preview(commerce, owned.boosts, owned)
 		for _, offer in ipairs(dto.offers) do

@@ -2,14 +2,16 @@
 -- Skin attribute; here every paper and trim piece of it swaps, on this screen, to its printed-sheet copy
 -- (assets/models/planes/skin-sheet) wearing the skin's picture plus the piece's own creases. The server's pieces and
 -- hitbox never change. Boosters wear it too; pieces with no copy (tape, team stickers, weapons) keep their own look.
+-- Skins that change the plane's shape (the Origami Crane) are fitted by SkinShapes.
 local AssetService = game:GetService("AssetService")
 local Players = game:GetService("Players")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Looks = require(Root.Shared.LooksRules)
 local Pieces = require(Root:WaitForChild("Generated"):WaitForChild("SkinPieces")).pieces
+local SkinShapes = require(script.Parent.SkinShapes)
 local PlaneLooks = {}
 local meshes = {} -- piece -> MeshPart carrying the copy's mesh
-local mine = tostring(Players.LocalPlayer.UserId)
+local mine = Players.LocalPlayer and tostring(Players.LocalPlayer.UserId) -- nil when a server test loads the menus
 
 -- One load per key, shared by every plane that asks at the same time (false = loading).
 local function once(cache, key, make)
@@ -60,16 +62,38 @@ local function dressPart(model, part)
 	part:SetAttribute("Skin", want)
 end
 
+-- Shape skins (Legendary, Mythical: SkinShapes) go on once a burst of new parts has arrived, one fit at a time.
+local busy = setmetatable({}, { __mode = "k" })
+local function shape(model)
+	if busy[model] then busy[model] = "again"; return end
+	busy[model] = true
+	task.spawn(function()
+		repeat
+			busy[model] = true
+			task.wait(0.2)
+			local skin = skinOf(model)
+			if skin and SkinShapes.has(skin.id) then SkinShapes.wear(model, skin.id) else SkinShapes.clear(model) end
+		until busy[model] ~= "again" or not model.Parent
+		busy[model] = nil
+	end)
+end
+
 function PlaneLooks.dress(model)
 	local appearance = model:FindFirstChild("Appearance")
 	if not appearance then return end
+	shape(model)
 	for _, part in appearance:GetChildren() do task.spawn(dressPart, model, part) end
 end
 
 local function watch(model)
 	local function appearance(child)
 		if child.Name ~= "Appearance" then return end
-		child.ChildAdded:Connect(function(part) task.spawn(dressPart, model, part) end)
+		child.ChildAdded:Connect(function(part)
+			if part:GetAttribute("SkinPiece") then return end -- a shape skin's own piece
+			task.spawn(dressPart, model, part)
+			local skin = skinOf(model)
+			if skin and SkinShapes.has(skin.id) then shape(model) end
+		end)
 		PlaneLooks.dress(model)
 	end
 	model.ChildAdded:Connect(appearance)

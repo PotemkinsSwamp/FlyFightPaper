@@ -387,7 +387,7 @@ function Spec.run()
     end
    end
   end
-  assert(parts>0 and looks==11 and n==43+parts+looks and n==#f.commerce.catalog.offers-2)
+  assert(parts>0 and looks==12 and n==43+parts+looks and n==#f.commerce.catalog.offers-2)
   assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
   assert(f.profile.LastSavedData.xpMilli==xp)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)

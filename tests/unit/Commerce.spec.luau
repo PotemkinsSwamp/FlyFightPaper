@@ -75,14 +75,14 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==45+count+11)
+        assert(#c.offers==45+count+12)
         local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" and offer.benefit~="look_unlock" then fixed+=1 end end
         assert(fixed==45)
     end)
     test("zero or additional part offers are accepted without a Catalog dependency",function()
         local raw=copy(Config)
         for i=#raw.products,1,-1 do if raw.products[i].benefit=="part_unlock" then table.remove(raw.products,i) end end
-        assert(#assert(Rules.catalog(raw)).offers==56)
+        assert(#assert(Rules.catalog(raw)).offers==57)
         table.insert(raw.products,{key="part_future_part",kind="developer_product",benefit="part_unlock",catalog_id="future_part",
             roblox_product_id=JSON.Null,approved_robux_price=JSON.Null,enabled=false})
         local offer=assert(Rules.catalog(raw)).byKey.part_future_part

@@ -12,6 +12,7 @@ local Art, Shelf = Assets.hangar, Assets.hangarShelf
 local PaperUI = require(script.Parent.PaperUI)
 local BuildShelf = require(script.Parent.BuildShelf)
 local Customize = require(script.Parent.HangarCustomize)
+local PlaneLooks = require(script.Parent.PlaneLooks)
 local Hangar = {}
 
 -- Studio dev mode: every part counts as owned at the level cap, and "Fly this build" sends the draft straight
@@ -276,7 +277,7 @@ function Hangar.new(playerGui, api)
 	-- left page, which is blue already) it fills the box with no paper (Alan 2026-10-21: a stretched photo looked bad).
 	-- diagram (Gear page): a still view from above and behind (nose up) with a numbered tag on every mount.
 	-- under: room kept free at the photo's bottom (its name tape sits there, on the photo).
-	local function preview(draft, box, diagram, bare, under, parent)
+	local function preview(draft, box, diagram, bare, under, parent, skin)
 		local content = parent or content
 		local px, py, pw, ph = table.unpack(box)
 		local vx, vy, vw, vh = px, py, pw, ph
@@ -296,6 +297,7 @@ function Hangar.new(playerGui, api)
 		local model = Instance.new("Model")
 		model.Parent = world
 		Aircraft.build(model, draft, Catalog, true)
+		if skin then model:SetAttribute("Skin", skin); PlaneLooks.dress(model) end -- the skin you wear or are trying on
 		local camera = Instance.new("Camera")
 		camera.Parent, view.CurrentCamera, camera.FieldOfView = view, camera, 45
 		-- Every build fills the same frame (Alan): the camera backs off until the plane's longer side (wingspan or
@@ -448,7 +450,7 @@ function Hangar.new(playerGui, api)
 	-- lands on a replaced button is lost (the menu refreshes the profile every 3 seconds).
 	local shown
 	function self.update(player, newProfile)
-		local key = newProfile and game:GetService("HttpService"):JSONEncode({ newProfile.paper, newProfile.ownership, newProfile.presets, newProfile.rangePresets,
+		local key = newProfile and game:GetService("HttpService"):JSONEncode({ newProfile.paper, newProfile.ownership, newProfile.looks, newProfile.presets, newProfile.rangePresets,
 			player:GetAttribute("MenuMessage"), atDesk() })
 		if key == shown and #content:GetChildren() > 0 then return end
 		shown, profile = key, newProfile

@@ -8,7 +8,10 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 ## Where it stands (2026-11-13)
 **Skins (Studio only):** a plane with a `Skin` attribute (bots get one by difficulty from `FlightService`) is
 drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); the "Dev: skin" button tries the test
-skins on your plane. Hangar previews and boosters are not skinned yet ([skins plan](../plan/SKINS-PLAN.md)).
+skins on your plane. Boosters and the hangar photo wear it too. Players wear their saved skin (bought with Paper and
+picked in Customize's **Skins** tab; a **Trails** tab lists trails, not drawn yet). Shape skins (the Origami Crane) are
+fitted by `SkinShapes.luau` from `config/skin-shapes.json`; the crane's pieces are not uploaded yet
+([skins plan](../plan/SKINS-PLAN.md)).
 
 **Hangar buying, built and checked in Play 2026-11-12 (Alan's notes, [playtest](../playtests/2026-11-12-shop-window-and-hangar-buying.md)).**
 A part above your level is greyed with a drawn padlock and "Level 20"; one you can buy shows "3,500 Paper"; card words
@@ -103,7 +106,8 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/shared/BuilderModel.luau` | The build you are editing in the hangar |
 | `src/client/Hangar.luau` | Main-menu hangar: the shelf screen, stat sheet, name label, plane photo |
 | `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build or class (tests for classes: `tests/unit/Classes.spec.luau`) |
-| `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save |
+| `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the Skins and Trails tabs (try on, Wear, Buy, Unlock now, Take off) |
+| `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): places and sizes the skin's pieces from the plane's own parts on this screen, hides what they cover, hangs the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/server/HangarService.luau` | Saving builds and buying parts |
 
 ## Tuning numbers

@@ -38,7 +38,7 @@ local function pieces(model)
 	local out = {}
 	local look = model:FindFirstChild("Appearance")
 	for _, part in ipairs(look and look:GetDescendants() or {}) do
-		if part:IsA("BasePart") then
+		if part:IsA("BasePart") and not part:GetAttribute("SkinHidden") then -- under a shape skin: the skin crumples instead
 			local copy = part:Clone()
 			for _, child in ipairs(copy:GetChildren()) do
 				if not (child:IsA("SurfaceAppearance") or child:IsA("Decal") or child:IsA("Texture")) then child:Destroy() end
