@@ -1,7 +1,7 @@
 """Origami Crane, the first Mythical skin (Alan's pick, 2026-11-13; concept .planning/skins/concepts/crane-2.png).
 Builds the crane, paints its pictures, fits it to real planes the way the game will, and renders previews. Blender:
 
-    D:/Blender/blender.exe -b --factory-startup --python tools/art/crane_skin.py -- OUTDIR [--quick] [--no-render] [--scene-only] [--views=side,top]
+    D:/Blender/blender.exe -b --factory-startup --python tools/art/crane_skin.py -- OUTDIR [--quick] [--no-render] [--scene-only] [--views=side,top] [--export=DIR]
 
 How it fits any plane (docs/plan/SKINS-PLAN.md "Mythical: a whole new shape"): the crane is scaled evenly to the
 plane's length (s = length / 16) and its joints (a Bone each in Roblox) are placed from the real plane: the tail tip
@@ -13,6 +13,8 @@ Pictures: one 1024 set (colour, normal, roughness, metalness), painted from the 
 a bright white line on every fold and paper edge, white seigaiha waves, a cherry blossom sprig on each wing (white
 only as lines and petals, never whole areas; no metal: Alan, 2026-11-13).
 Writes into OUTDIR: crane-*.png, crane.blend (rest pose), renders, crane-report.json.
+--export=DIR writes what the game needs (first test, no bones): five rigid pieces as FBX (head, body, tail, wingL,
+wingR; each in its own normalised frame, see export_pieces), the pictures and crane-fit.json.
 """
 import bpy, bmesh, sys, os, math, json
 import numpy as np
@@ -24,6 +26,7 @@ import plane_assembly as pa
 ARGS = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 OUT = os.path.abspath(ARGS[0] if ARGS else "crane-out")
 QUICK, RENDER, SCENE_ONLY = "--quick" in ARGS, "--no-render" not in ARGS, "--scene-only" in ARGS
+EXPORT = next((os.path.abspath(a[9:]) for a in ARGS if a.startswith("--export=")), None)   # write the game files here
 VIEWS = next((a[8:].split(",") for a in ARGS if a.startswith("--views=")), None)   # render only these views
 os.makedirs(OUT, exist_ok=True)
 TEX = 1024
@@ -139,9 +142,9 @@ def wing_tri(u, w):
 def crane(o):
     """Crane corners (Roblox frame) placed from the plane outline `o`: faces, part per face, joint per corner."""
     s = (o["zT"] - o["zN"]) / 16.0
-    V, F, P, J = [], [], [], []
+    V, F, P, J, G, grp = [], [], [], [], [], ["body"]   # G: which rigid piece each face belongs to (export_pieces)
     def v(p, joint): V.append(np.array(p, float)); J.append(joint); return len(V) - 1
-    def tri(part, a, b, c): F.append((a, b, c)); P.append(part)
+    def tri(part, a, b, c): F.append((a, b, c)); P.append(part); G.append(grp[0])
     def poly(part, ids):
         for i in range(1, len(ids) - 1): tri(part, ids[0], ids[i], ids[i + 1])
     unit = lambda a: a / np.linalg.norm(a)
@@ -202,6 +205,7 @@ def crane(o):
     # neck and head: ONE fixed shape that only scales with s (Alan, 2026-11-13: they never stretch; the beak may end
     # short of or past the real nose). Sizes are the concept's, measured (docs/plan/SKINS-PLAN.md). (f, u) = s forward
     # of / above the spot where the neck's top fold leaves the breast; DIP tips the whole thing nose-down.
+    grp[0] = "head"
     O = np.array((0, wy + 0.05 * s, zF + 0.15 * s)); cd, sd = math.cos(DIP), math.sin(DIP)
     def SP(f, u, x=0.0): return O + np.array((x, -f * sd + u * cd, -(f * cd + u * sd))) * s
     def sect(top, keel, w, e, joint, mid=None):
@@ -223,6 +227,7 @@ def crane(o):
     # the beak: one long closed point from under the head (its top edge meets the head's point)
     bk = sect((5.6, 0.72), (5.6, 0.2), 0.6, 0.35, "Head"); Bq = v(SP(7.72, -0.29), "Beak"); spike("beak", bk, Bq); cap("beak", bk)
     # tail: rising to over the real tail's top back corner: a sleeve at the body, then two crimped pieces
+    grp[0] = "tail"
     T0 = np.array((0, wy - 0.2 * s, zB - 0.7 * s)); Tt = np.array((0, max(o["yT"], wy + 1.3 * s) + 0.5 * s, o["zT"] + 0.7 * s))
     bwd = unit(Tt - T0); Rt = lambda t: lerp(T0, Tt, t)
     t0a = section(Rt(0) + (0, 0.1 * s, 0), 1.15 * s, 0.95 * s, "BodyBack"); t0b = section(Rt(0.24), 0.85 * s, 0.78 * s, "Tail", bwd * 0.32 * s)
@@ -234,7 +239,7 @@ def crane(o):
     # wings
     panels = {}
     for sx in (-1, 1):
-        LR = "LR"[sx > 0]
+        LR = "LR"[sx > 0]; grp[0] = "wing" + LR
         def at(u, w, h=0.0):  # wing point: u out along the wing, w back along the root, h up off the paper (all in s)
             u, w, h = u * ks, w * ks, h * s
             return np.array((sx * (cw * 0.97 + u * math.cos(RISE) - h * math.sin(RISE)), wy + 0.02 * s + u * math.sin(RISE) + h * math.cos(RISE), zc + w))
@@ -248,7 +253,7 @@ def crane(o):
         layer([(0.03, 1.95), (0.03, 2.9), (1.45, 2.55)], 0.06)            # root flap by the tail
         layer([(2.7, -1.5), (6.8, 0.66), (2.7, -0.95)], 0.06)             # hem along the leading edge
         panels[sx] = dict(o=at(0, 0), eu=unit(at(1, 0) - at(0, 0)), ew=np.array((0, 0, 1.0)), ks=ks)
-    return dict(V=np.array(V), F=F, P=P, J=J, s=s, cw=cw, panels=panels, head=Hr, zc=zc, ks=ks,
+    return dict(V=np.array(V), F=F, P=P, J=J, G=G, fit=dict(O=O, T0=T0, Tt=Tt, wy=wy, ky=ky, zF=zF, zB=zB), s=s, cw=cw, panels=panels, head=Hr, zc=zc, ks=ks,
                 small=[(SP(1.35, -0.5), 0.48 * s, 0.3), (Rt(0.38) + (0, -0.48 * s, 0), 0.17 * s, 1.0), (Rt(0.62) + (0, -0.17 * s, 0), 0.11 * s, 0.2)])
 
 def wing_under(c, x, z):
@@ -501,6 +506,48 @@ def hang_guns(plane, c):
         moves[slot] = [round(float(a), 2) for a in (x - top[0], y - top[1], z - top[2])]
     return moves
 
+def export_pieces(c, uvs, o, folder):
+    """The crane cut into five rigid pieces the game places and scales itself (c = the starter fit, Roblox frame:
+    x right, y up, -z forward). Each piece's corners are written in its own frame so the game only multiplies:
+    head (P - O) / s; wings (P - hinge) / ks; tail from T0 with +z towards the tail tip, x and y / s, z / length;
+    body as it sits on the starter plane. Every FBX uploaded through Open Cloud arrives turned half round (lessons.md),
+    so each mesh is written turned half round already: in Roblox it sits in the frame above with no correction."""
+    import shutil
+    os.makedirs(folder, exist_ok=True); f = c["fit"]; s, ks = c["s"], c["ks"]
+    L = float(np.linalg.norm(f["Tt"] - f["T0"])); zh = (f["Tt"] - f["T0"]) / L; xh = np.array((1.0, 0, 0)); yh = np.cross(zh, xh)
+    frames = {"head": lambda P: (P - f["O"]) / s, "body": lambda P: P,
+              "tail": lambda P: np.stack(((P - f["T0"]) @ xh / s, (P - f["T0"]) @ yh / s, (P - f["T0"]) @ zh / L), -1),
+              "wingL": lambda P: (P - c["panels"][-1]["o"]) / ks, "wingR": lambda P: (P - c["panels"][1]["o"]) / ks}
+    r = lambda a: [round(float(x), 5) for x in a]
+    fit = dict(reference_build="starter", frame="x right, y up, -z forward; meshes need no turn after an Open Cloud upload",
+               s_ref=c["s"], ks_ref=ks, cw_ref=c["cw"], zc_ref=c["zc"], wy_ref=f["wy"], zF_ref=f["zF"], zB_ref=f["zB"], ky_ref=f["ky"],
+               L_ref=L, O_ref=r(f["O"]), T0_ref=r(f["T0"]), Tt_ref=r(f["Tt"]), hinge_ref={"L": r(c["panels"][-1]["o"]), "R": r(c["panels"][1]["o"])},
+               outline={k: float(v) for k, v in o.items()}, constants=dict(RISE=RISE, C0=C0, R0=R0, SW=SW, DIP=DIP, HC=HC),
+               pictures=["crane-color.png", "crane-normal.png", "crane-roughness.png"], meshes={})
+    for name, local in frames.items():
+        idx = [i for i, g in enumerate(c["G"]) if g == name]
+        used = sorted({j for i in idx for j in c["F"][i]}); at = {j: k for k, j in enumerate(used)}
+        sub = dict(c, V=c["V"][used], F=[tuple(at[j] for j in c["F"][i]) for i in idx], P=[c["P"][i] for i in idx])
+        ob = crane_object(sub, "crane-" + name, 0.0, [uvs[i] for i in idx])
+        if any(part in SHEETS for part in sub["P"]): ob = thicken(ob, sub)
+        P = local(np.array([(v.co.x, v.co.z, -v.co.y) for v in ob.data.vertices]))
+        for v, q in zip(ob.data.vertices, P): v.co = (-q[0], q[2], q[1])          # turned half round, then Blender's axes
+        for x in bpy.data.objects: x.select_set(x is ob)
+        bpy.context.view_layer.objects.active = ob; path = os.path.join(folder, "crane-" + name + ".fbx")
+        bpy.ops.export_scene.fbx(filepath=path, use_selection=True, object_types={"MESH"}, global_scale=.01, apply_unit_scale=False,
+                                 apply_scale_options="FBX_SCALE_NONE", axis_forward="-Z", axis_up="Y", bake_space_transform=True,
+                                 use_mesh_modifiers=False, use_triangles=True, mesh_smooth_type="FACE", add_leaf_bones=False,
+                                 bake_anim=False, path_mode="STRIP", embed_textures=False, use_custom_props=False)   # as plane_paper.py
+        before = set(bpy.data.objects); bpy.ops.import_scene.fbx(filepath=path, global_scale=100)   # read it back: same shape?
+        back = next(x for x in bpy.data.objects if x not in before and x.type == "MESH")
+        Q = np.array([back.matrix_world @ v.co for v in back.data.vertices]); B = np.array([v.co for v in ob.data.vertices])
+        assert len(back.data.polygons) == len(ob.data.polygons) and np.allclose(Q.min(0), B.min(0), atol=1e-3) and np.allclose(Q.max(0), B.max(0), atol=1e-3), name
+        fit["meshes"][name] = dict(file="crane-" + name + ".fbx", min=r(P.min(0)), max=r(P.max(0)), triangles=len(ob.data.polygons))
+        for x in set(bpy.data.objects) - before | {ob}: bpy.data.objects.remove(x)
+    for pic in fit["pictures"]: shutil.copy(os.path.join(OUT, pic), os.path.join(folder, pic))
+    json.dump(fit, open(os.path.join(folder, "crane-fit.json"), "w"), indent=1)
+    print("EXPORTED", {k: m["triangles"] for k, m in fit["meshes"].items()}, sum(m["triangles"] for m in fit["meshes"].values()))
+
 # ---------------------------------------------------------------- run
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
@@ -529,6 +576,7 @@ report["triangles"] = len(rest_final.data.polygons)
 json.dump(report, open(os.path.join(OUT, "crane-report.json"), "w"), indent=1)
 print("TRIANGLES", report["triangles"])
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "crane.blend"))
+if EXPORT: export_pieces(rest, uvs, planes["starter"]["o"], EXPORT)
 
 if RENDER:
     world = bpy.data.worlds.new("Sky"); scene.world = world; world.use_nodes = True; wn = world.node_tree

@@ -117,7 +117,10 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
   Mythical): each keeps its spot seen from above where that is under the wing, tilts with the wing and hangs by its
   top. In the renders that moved guns up to 3.4 studs up and 3.1 back (heavy plane's outer pair); whether shots then
   leave from the moved gun or the old spot is a rule for Alan before any code. Tried on the starter, heavy and
-  swept-wing builds. **Still short of the concept** (independent review, 2026-11-13): the wings are about two thirds of
+  swept-wing builds. **Game files for the first test (no bones):** `crane_skin.py --export=DIR` cuts the crane into
+  five rigid pieces (head with neck, body, tail, each wing) in `assets/models/planes/skins/crane/`, each FBX in its
+  own frame so the game only places and scales it, with the three pictures, `crane-fit.json` (reference sizes and
+  each piece's box) and `crane-pieces.jpg` (the pieces read back from the files). **Still short of the concept** (independent review, 2026-11-13): the wings are about two thirds of
   the concept's size against the body and rise more steeply (so the neck looks big beside them and the near wing shows
   edge-on from the concept's angle), the tail is shorter and thinner, and the body has fewer big
   layers.
