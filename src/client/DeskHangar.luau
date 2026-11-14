@@ -21,6 +21,7 @@ local Hangar = require(script.Parent.Hangar)
 local BuildStats = {}
 for _, entry in Hangar.STATS do BuildStats[entry[1]] = entry end
 local PaperUI = require(script.Parent.PaperUI)
+local PlaneLooks = require(script.Parent.PlaneLooks)
 local ScreenFit = require(script.Parent.ScreenFit)
 local DeskHangar = {}
 
@@ -46,14 +47,16 @@ local function viewport(parent, name, x, y, w, h)
 	return view
 end
 
--- A fresh copy of a build's 3D plane in a view (the old one goes).
-local function showBuild(view, loadout, room, tilt)
+-- A fresh copy of a build's 3D plane in a view (the old one goes), wearing `skin` (the one you wear is on every build,
+-- like the Hangar's shelf).
+local function showBuild(view, loadout, room, tilt, skin)
 	view:ClearAllChildren()
 	local world = Instance.new("WorldModel")
 	world.Parent = view
 	local model = Instance.new("Model")
 	model.Parent = world
 	if Aircraft.build(model, loadout, Catalog, true) then frame(view, model, room, tilt) end
+	if skin and skin ~= "" then model:SetAttribute("Skin", skin); PlaneLooks.dress(model) end
 end
 
 -- The photo piece's sky-blue picture area, as shares of the piece (measured on assets/ui/deskmenu/ready/photo.png).
@@ -123,8 +126,8 @@ function DeskHangar.new(playerGui, api)
 	local notYet = PaperUI.phone(words(left, "NotFlyingYet", "", 30, PHOTO_Y + 36, 240, 26, 24), { TextSize = 36 })
 	notYet.TextXAlignment, notYet.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(190, 35, 30)
 	local tape = turned("NameTape", 25, PHOTO_Y + 204, 250, 48, BIG_TILT)
-	image(tape, "Tape", Assets.ingame.tapeLabel, 0, 0, 250, 48).ScaleType = Enum.ScaleType.Stretch
-	local name = centred(words(tape, "BuildName", "", 20, 3, 210, 42, 34), 34)
+	image(tape, "Tape", Assets.ingame.tapeLabel, 0, 0, 250, 48) -- (pictures keep their own shape)
+	local name = centred(words(tape, "BuildName", "", 30, 10, 190, 28, 26), 26) -- on the tape (drawn 250 x 34)
 
 	-- Health, Lift and Boost show what is left now; Speed shows the build (Alan 2026-10-22: these four, no turning
 	-- or weight here; Customize has the full sheet). Rows sit clear of the paper's binder holes and edges.
@@ -142,23 +145,22 @@ function DeskHangar.new(playerGui, api)
 	}
 	for i, row in rows do
 		local y = PHOTO_Y + 66 + (i - 1) * 56
-		local strip = image(left, row[1] .. "Row", Shelf.statLabel, 345, y + 7, 100, 42)
-		strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, row[2]
-		local label = centred(words(left, row[1] .. "Name", row[1], 351, y + 9, 88, 38, 26), 26)
-		PaperUI.phone(strip, { Size = UDim2.fromOffset(112, 48) })
-		PaperUI.phone(label, { Position = UDim2.fromOffset(345, y + 7), Size = UDim2.fromOffset(100, 42) })
-		PaperUI.phone(label.UITextSizeConstraint, { MaxTextSize = 36 })
+		-- The label at its own shape (313 x 90), the name inside its paper (Alan 2026-11-09: names filled the strip).
+		local strip = image(left, row[1] .. "Row", Shelf.statLabel, 340, y + 10, 125, 36)
+		strip.ImageColor3 = row[2]
+		local label = centred(words(left, row[1] .. "Name", row[1], 348, y + 14, 109, 28, 25), 25)
+		PaperUI.phone(label.UITextSizeConstraint, { MaxTextSize = 30 })
 		row.cells = {}
 		for k = 1, 5 do
-			row.cells[k] = image(left, row[1] .. "Box" .. k, Shelf.statBoxEmpty, 453 + (k - 1) * 29, y + 14, 27, 27)
+			row.cells[k] = image(left, row[1] .. "Box" .. k, Shelf.statBoxEmpty, 474 + (k - 1) * 26, y + 16, 24, 24)
 			row.cells[k].ImageColor3 = row[2]
 		end
 	end
 
 	-- Bottom middle: the hangar note on masking tape, and a big LAUNCH! on bright green paper (Alan 2026-10-22).
-	local notePaper = image(bottom, "NotePaper", Assets.ingame.tapeLabel, 50, 0, 660, 80)
-	notePaper.ScaleType = Enum.ScaleType.Stretch
-	local note = centred(words(bottom, "Note", "", 90, 8, 580, 64, 28), 28)
+	-- The tape at its own shape (984 x 134), big enough for two lines inside its torn ends (Alan 2026-11-09).
+	local notePaper = image(bottom, "NotePaper", Assets.ingame.tapeLabel, 13, -10, 734, 100)
+	local note = centred(words(bottom, "Note", "", 78, 4, 604, 72, 28), 28)
 	note.TextWrapped = true
 	-- Phones: wider and taller tape (reaching up over the runway) so the note reads at about 12 points.
 	PaperUI.phone(notePaper, { Position = UDim2.fromOffset(380, -10), Size = UDim2.fromOffset(820, 130) })
@@ -173,8 +175,8 @@ function DeskHangar.new(playerGui, api)
 	local buttons = {}
 	local top = 0
 	for _, entry in {
-		{ "Repair", "Repair", Desk.stripGreen, service("repair"), 450, 142, 1, 48 },
-		{ "Fresh", "Fresh plane", Desk.stripYellow, function() api.flight("fresh") end, 410, 126, -1, 46 },
+		{ "Repair", "Repair", Desk.stripGreen, service("repair"), 450, 106, 1, 48 }, -- (strips at their own shape: 4.24 x 1)
+		{ "Fresh", "Fresh plane", Desk.stripYellow, function() api.flight("fresh") end, 410, 97, -1, 46 },
 		{ "Refold", REFOLD, Desk.stripRed, function()
 			-- Spending Paper asks once: the first click turns the strip into a question for 3 seconds.
 			local text = buttons.Refold.Label
@@ -185,11 +187,11 @@ function DeskHangar.new(playerGui, api)
 			end
 			text.Text = REFOLD
 			service("refold")()
-		end, 450, 142, 1.5, 38 },
+		end, 450, 106, 1.5, 38 },
 		{ "Customize", "Customize", Shelf.buttonOrange, function()
 			Root:SetAttribute("HangarEdited", true)
 			require(script.Parent.MenuController).show("hangar", true, "customize")
-		end, 490, 160, -1, 62 },
+		end, 490, 138, -1, 62 }, -- (the orange paper's own shape: 3.56 x 1)
 	} do
 		local key, label, art, click, w, h, rotation, size = table.unpack(entry)
 		local strip = button(right, key, art, label, 490 - w, top, w, h, rotation, click, size)
@@ -217,6 +219,7 @@ function DeskHangar.new(playerGui, api)
 	local cork = image(left, "Cork", Desk.corkStrip, 0, corkY, 214, 1068 - corkY)
 	cork.ScaleType, cork.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(240, 225, 210)
 	local preset, presets, shownPresets, picked = Players.LocalPlayer:GetAttribute("SelectedPreset") or 1, nil, nil, -9
+	local worn -- the skin your plane wears (Studio's dev try-on first), on every photo
 	-- One board of photos on the cork: rows of `count` (six presets take smaller photos), pick(i) on a tap.
 	local function photoBoard(boardName, count, pick)
 		local group = Instance.new("Frame")
@@ -232,12 +235,11 @@ function DeskHangar.new(playerGui, api)
 			local view = viewport(group, "BuildPlane" .. i, x + w * BLUE[1], y + h * BLUE[2], w * (BLUE[3] - BLUE[1]), h * (BLUE[4] - BLUE[2]))
 			local front = turned("BuildTag" .. i, x, y, w, h, tilt, group)
 			local tape = image(front, "Tape", Assets.ingame.tapeLabel, 5 * k, 112 * k, 166 * k, 34 * k)
-			tape.ScaleType = Enum.ScaleType.Stretch
-			local tag = centred(PaperUI.loud(words(front, "Name", "", 18 * k, 114 * k, 140 * k, 30 * k, 24)), 24)
+			local tag = centred(PaperUI.loud(words(front, "Name", "", 22 * k, 119 * k, 132 * k, 20 * k, 18)), 18) -- on the tape (drawn 166 x 23)
 			-- Phones: a taller tape with bigger words (they were about 8 points).
 			PaperUI.phone(tape, { Position = UDim2.fromOffset(88 * k, 122 * k), Size = UDim2.fromOffset(176 * k, 52 * k) })
-			PaperUI.phone(tag, { Position = UDim2.fromOffset(8 * k, 98 * k), Size = UDim2.fromOffset(160 * k, 46 * k) })
-			PaperUI.phone(tag.UITextSizeConstraint, { MaxTextSize = 38 })
+			PaperUI.phone(tag, { Position = UDim2.fromOffset(14 * k, 112 * k), Size = UDim2.fromOffset(148 * k, 20 * k) })
+			PaperUI.phone(tag.UITextSizeConstraint, { MaxTextSize = 30 })
 			local outline = image(front, "Picked", Shelf.outline, -4, -4, w + 8, h + 8)
 			outline.ScaleType, outline.SliceCenter, outline.SliceScale = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.4
 			local hit = Instance.new("TextButton")
@@ -265,7 +267,7 @@ function DeskHangar.new(playerGui, api)
 			slot.view.ImageColor3 = shut and Color3.fromRGB(70, 70, 80) or Color3.new(1, 1, 1)
 			if not slot.drawn then
 				slot.drawn = true
-				showBuild(slot.view, Catalog:classLoadout(classes[i].id, 50), 0.85, slot.tilt)
+				showBuild(slot.view, Catalog:classLoadout(classes[i].id, 50), 0.85, slot.tilt, worn)
 			end
 		end
 	end
@@ -309,13 +311,13 @@ function DeskHangar.new(playerGui, api)
 
 	local function showPresets(list)
 		presets = list
-		local key = HttpService:JSONEncode(presets)
+		local key = HttpService:JSONEncode(presets) .. tostring(worn)
 		if key == shownPresets then return end
 		shownPresets = key
 		for i, slot in slots do
 			local build = presets[i]
 			slot.tag.Text = build and build.name or ("Loadout " .. i)
-			if build and build.loadout then showBuild(slot.view, build.loadout, 0.85, slot.tilt) else slot.view:ClearAllChildren() end
+			if build and build.loadout then showBuild(slot.view, build.loadout, 0.85, slot.tilt, worn) else slot.view:ClearAllChildren() end
 		end
 	end
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
@@ -348,10 +350,10 @@ function DeskHangar.new(playerGui, api)
 	local function showPlane(plane)
 		local loadout = pickedBuild(plane)
 		if loadout then
-			local key = HttpService:JSONEncode(loadout)
+			local key = HttpService:JSONEncode(loadout) .. tostring(worn)
 			if shownPlane == key then return end
 			shownPlane = key
-			showBuild(planeView, loadout, 0.75, BIG_TILT)
+			showBuild(planeView, loadout, 0.75, BIG_TILT, worn)
 			return
 		end
 		local appearance = plane:FindFirstChild("Appearance")
@@ -368,7 +370,8 @@ function DeskHangar.new(playerGui, api)
 		local model = Instance.new("Model")
 		model.Parent = world
 		for _, part in appearance:GetChildren() do
-			if part:IsA("BasePart") then
+			-- Under a shape skin the real body, wings and guns hide (SkinShapes): only the skin's pieces go in the photo.
+			if part:IsA("BasePart") and not part:GetAttribute("SkinHidden") then
 				local copy = part:Clone()
 				copy:ClearAllChildren()
 				for _, look in part:GetChildren() do if look:IsA("SurfaceAppearance") or look:IsA("Decal") then look:Clone().Parent = copy end end
@@ -384,6 +387,14 @@ function DeskHangar.new(playerGui, api)
 	function self.update(plane, visible)
 		cover.Visible = visible
 		if not visible then shownPlane = nil; return end
+		local skin = PlaneLooks.devSkin
+		if skin == nil then skin = plane:GetAttribute("Skin") end
+		if skin ~= worn then
+			worn = skin
+			for _, slot in classSlots do slot.drawn = nil end
+			if presets then showPresets(presets) end
+			if presetBoard.Visible then showClasses() end
+		end
 		showPlane(plane)
 		local loadout, pickedStats = pickedBuild(plane)
 		local build = picked_()

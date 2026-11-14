@@ -20,7 +20,9 @@ the server turns the real wings' hit and crash shapes up to the skin's wing angl
 the screen draws them, by the same fit (`SkinFit.luau`; built 2026-11-14, checked in Play: wings 32 degrees, same size,
 guns and boosters exactly on the drawn ones; boosters within 0.04 of touching the belly, mesh against mesh, on all 18
 body and booster builds; not yet flown past walls).
-The shelf's big photo and its cubbies wear your skin too; a crash crumples into a ball of the skin's printed pieces.
+The shelf's big photo and its cubbies wear your skin too, and so do the desk menu's big photo and its pinboard of
+loadouts and presets (2026-11-14: under the crane the big photo showed the real plane under it, the pinboard no skin);
+a crash crumples into a ball of the skin's printed pieces.
 A skin you don't own shows Buy (or Unlock now); Studio's try-on is only the "Dev: skin" button (it lists the crane).
 The hangar keeps each plane photo between clicks and swaps a new plane in only once it has loaded; after a buy the
 server sends the fresh profile at once. Playtest fixes and Alan's replay: [notes](../playtests/2026-11-13-crane-and-skins-tabs.md).
