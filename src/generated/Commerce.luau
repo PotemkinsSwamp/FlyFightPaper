@@ -733,6 +733,15 @@ return JSONTypes.map({
             ["roblox_product_id"] = JSONTypes.Null,
         }),
         [83] = JSONTypes.map({
+            ["approved_robux_price"] = 999,
+            ["benefit"] = "look_unlock",
+            ["enabled"] = false,
+            ["key"] = "look_origami_crane",
+            ["kind"] = "developer_product",
+            ["look_id"] = "origami_crane",
+            ["roblox_product_id"] = JSONTypes.Null,
+        }),
+        [84] = JSONTypes.map({
             ["approved_robux_price"] = 49,
             ["benefit"] = "look_unlock",
             ["enabled"] = false,
@@ -741,7 +750,7 @@ return JSONTypes.map({
             ["look_id"] = "confetti",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [84] = JSONTypes.map({
+        [85] = JSONTypes.map({
             ["approved_robux_price"] = 49,
             ["benefit"] = "look_unlock",
             ["enabled"] = false,
@@ -750,7 +759,7 @@ return JSONTypes.map({
             ["look_id"] = "rainbow_marker",
             ["roblox_product_id"] = JSONTypes.Null,
         }),
-        [85] = JSONTypes.map({
+        [86] = JSONTypes.map({
             ["approved_robux_price"] = 49,
             ["benefit"] = "look_unlock",
             ["enabled"] = false,

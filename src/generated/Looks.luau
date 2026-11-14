@@ -53,6 +53,11 @@ return JSONTypes.map({
             ["tier"] = "mythical",
             ["trail"] = "dragon_embers",
         }),
+        [9] = JSONTypes.map({
+            ["id"] = "origami_crane",
+            ["name"] = "Origami Crane",
+            ["tier"] = "mythical",
+        }),
     }),
     ["tiers"] = JSONTypes.map({
         ["common"] = JSONTypes.map({

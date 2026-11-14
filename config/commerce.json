@@ -537,6 +537,15 @@
       "enabled": false
     },
     {
+      "key": "look_origami_crane",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "origami_crane",
+      "roblox_product_id": null,
+      "approved_robux_price": 999,
+      "enabled": false
+    },
+    {
       "key": "look_confetti",
       "kind": "developer_product",
       "benefit": "look_unlock",

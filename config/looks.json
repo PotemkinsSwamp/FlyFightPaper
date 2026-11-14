@@ -15,7 +15,8 @@
     { "id": "lava", "name": "Lava", "tier": "rare", "picture": 127563698335848 },
     { "id": "galaxy", "name": "Galaxy", "tier": "rare" },
     { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "trail": "water_spray" },
-    { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers" }
+    { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers" },
+    { "id": "origami_crane", "name": "Origami Crane", "tier": "mythical" }
   ],
   "trails": [
     { "id": "confetti", "name": "Confetti", "tier": "trail", "sold": true },
