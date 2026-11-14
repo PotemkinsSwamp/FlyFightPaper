@@ -438,6 +438,8 @@ mistake would be easy to make twice.
   every change stacks hooks. `say()` without `grow` already attaches it.
 
 ## Working with Alan
+- **No little cardboard tabs as buttons** (Alan, told twice; 2026-11-13 on the Skins tab's Cancel): buttons are paper
+  and tape (`Art.buttonGreen`, `Art.buttonRed` and the main menu's taped strips), never `Art.tab`.
 - **A row under a card stays inside the card's edges** (Alan 2026-11-12, report card jar row, four looks): line pieces
   up with the card's left edge, middle and right edge; a piece hanging past an edge reads as "uncentred". Measure it in
   page pixels before showing (card 0..680 wide; middle 340).

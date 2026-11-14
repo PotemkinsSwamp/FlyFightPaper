@@ -55,9 +55,13 @@
 - **Guns go under a Mythical, never on top** (Alan, same day): "we don't want the weapons blocking the skin". Where
   shots then leave from (Alan, same evening): the game's real shot spot stays, so a skin never changes play; only
   the drawn bullet starts from the gun you see. Skinning the weapons to match a Mythical is a maybe for later, not now.
-- **The crane keeps its raised V wings although the hitbox stays flat** (Alan, same evening): the V is what makes it
-  an origami crane; players won't notice the gap and the shop's hitbox note covers it. Open: a raised wing that looks
-  like it goes through a building (or a real part that clips one where no skin shows) needs an answer before release.
+- **A shape skin may tilt the wing hitbox to match its wings, never resize it** (Alan, same evening, after flying the
+  crane: "you'll hit things and not realize ... because you don't know where the actual wing is"; a general rule, not
+  crane-only). The server tilts the real wings' hit and crash shapes up to the skin's angle (the crane: 32 degrees at the
+  root), same size, so shots hit the wing you see and you crash only where it really is. It replaces the earlier
+  "V wings over a flat hitbox".
+- **A Mythical gets a matching printed sheet** (Alan, same evening): the crane's blue wave-and-blossom paper as a
+  printed-sheet picture, so boosters (and later maybe guns) wear it like a Common or Rare.
 - **First build batch** (Alan's pick): Hazard Stripes, Tiger Stripes, Flame Decals; Gold Foil, Lava, Galaxy; Shark
   Jet; Dragon; trails Confetti, Rainbow Marker, Gold Stars.
 - **After the first Studio look** (Alan, same day, [playtest](../playtests/2026-11-13-printed-sheet-skins.md)): the printed sheet works for Commons and Rares. **Boosters wear the skin too** (they carry the team colour, so they are part of the plane). A **Skins tab and a Trails tab** in the customization menu show your pick on your plane. **The first Mythical is the Origami Crane** (blue and silver; "push the boundaries"), built in Blender by Fable itself next session.
