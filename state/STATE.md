@@ -3,12 +3,15 @@
   crane guns under the wing, shelf wears the skin). From your replay: the **crane is shorter** (shallower belly, lower roof),
   its **wings sit on the body's edge**, the **grey crane is blue again**, the **hangar keeps the plane picture between clicks** (a new plane loads behind the old one
   and swaps in when ready) and **gets the shop's answer right after Buy** (it waited for a 3-second refresh).
+- **Crane hitbox matches the drawn crane** (wings tilt 32 degrees, same size; guns and booster hit where drawn; the
+  booster now sits against the belly). Tests 650/0. Place saved to Roblox (version 735, not published).
 - **Boosters under the crane wear its blue wave paper** (sheet uploaded with your go, free; tests 635/0). Your answers
   are in the [notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md) and [skin rules](../docs/decisions/2026-11-13-skin-rules.md).
 
 # Now: finish the game for the beta
-Next: the wing-hitbox tilt with guns (server; [skins plan](../docs/plan/SKINS-PLAN.md)), the Toilet Roll shake in flight,
-then real skin pictures (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy), Shark Jet, Dragon, the three trails
+Next: the crane's moving gun pieces drawn at the old gun spot (WeaponMotion), the Toilet Roll shake in flight; skin
+art runs in its own session (model sheets picked: Shark Jet A, Dragon B; Dragon-head Blender test next), then the
+six printed skins, Shark Jet, Dragon, the three trails
 ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a
 real gift through the shop; the unlock backpack's music dip.
@@ -18,8 +21,6 @@ Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead 
   has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices); Trails tab lists, draws nothing.
   Crane: about a quarter shorter (belly to the real body's bottom, roof 0.5 of a step up, was 0.9); width as before.
 Gift arrival: Open it! is a tap; on Thanks the gift comes at you and fades; the pop is the Popper's, higher and soft.
-Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
-Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
   Value", 15,000 "Good Value" (5,000 lost its sticker). Pack pictures grow with the amount. Daily gift days turn over at
   UTC midnight; a boost gift you already own forever gives 250 Paper. Gear cards: slimmer Hit row, bigger words.
@@ -32,7 +33,6 @@ Toilet Roll leaned 8 (not 9); boosters keep their weight (Elastic now -3 studs/s
 Bots follow a target up a vent: veterans 60%, Aces 90%; with 2+ spitballs stuck they fly to a fan. Staple ~800 studs.
   Spitball builds: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s); the Paper check skips them.
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.
-Crayon 600 studs/s, 450 range, drop 8. New weapons keep their stand-in hit boxes; Popper lead drawn 0.15 x 1.2.
 Point Popper: 7 leads x 5, one a second, bundle to 50 studs, ring 3 studs out by 100, falls past ~100; level 2, 300 Paper.
 Thumbtack: 900 studs/s, heavy drag, falls past ~500; full damage to 100 studs; level 4, 600 Paper; "Thumbtack Shooter".
 Falling shots: slow hard (drag 3) and fall (196 studs/s^2) for up to 3 s; Paperclip carries ~840 studs while falling.
