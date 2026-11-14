@@ -101,7 +101,7 @@ local FOLLOW = { "Text", "TextSize", "TextScaled", "TextWrapped", "RichText", "F
 local WATCH = { TextColor3 = true, TextTransparency = true, TextBounds = true }
 for _, key in FOLLOW do WATCH[key] = true end
 function PaperUI.crayon(label)
-	local copies, watching, typing = {}, nil, false
+	local copies, strokes, watching, typing = {}, {}, nil, false
 	for _, name in { "CrayonShadow", "CrayonOutline", "CrayonInk" } do -- later children draw on top
 		local copy = Instance.new("TextLabel")
 		copy.Name, copy.BackgroundTransparency, copy.Size = name, 1, UDim2.fromScale(1, 1)
@@ -109,8 +109,10 @@ function PaperUI.crayon(label)
 		stroke.LineJoinMode, stroke.Parent = Enum.LineJoinMode.Round, copy
 		copy.Parent = label
 		table.insert(copies, copy)
+		table.insert(strokes, stroke) -- held, not looked up by name (a lookup threw when a stroke was gone, 2026-11-14)
 	end
 	local shadow, outline, ink = copies[1], copies[2], copies[3]
+	local shadowEdge, outlineEdge, inkEdge = strokes[1], strokes[2], strokes[3]
 	local function refresh()
 		local own = typing or label:IsA("TextBox") and label.Text == ""
 		label.MaxVisibleGraphemes = own and -1 or 0
@@ -134,11 +136,11 @@ function PaperUI.crayon(label)
 		local dim = (loud and 0.72 or 0.85) + (loud and 0.28 or 0.15) * t
 		local drop = loud and 1 or 0.6
 		ink.TextColor3, ink.TextTransparency = label.TextColor3, t
-		ink.UIStroke.Enabled, ink.UIStroke.Color, ink.UIStroke.Thickness, ink.UIStroke.Transparency = loud, label.TextColor3, heavy, t
+		inkEdge.Enabled, inkEdge.Color, inkEdge.Thickness, inkEdge.Transparency = loud, label.TextColor3, heavy, t
 		outline.TextColor3, outline.TextTransparency = CREAM, t
-		outline.UIStroke.Color, outline.UIStroke.Thickness, outline.UIStroke.Transparency = CREAM, edge, t
+		outlineEdge.Color, outlineEdge.Thickness, outlineEdge.Transparency = CREAM, edge, t
 		shadow.TextColor3, shadow.TextTransparency = SHADOW, dim
-		shadow.UIStroke.Color, shadow.UIStroke.Thickness, shadow.UIStroke.Transparency = SHADOW, edge, dim
+		shadowEdge.Color, shadowEdge.Thickness, shadowEdge.Transparency = SHADOW, edge, dim
 		shadow.Position = UDim2.fromOffset((size * 0.04 + 1) * drop, (size * 0.06 + 1) * drop)
 	end
 	refresh()
