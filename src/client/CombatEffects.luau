@@ -221,7 +221,8 @@ function Effects.start(getPlane)
     -- The shooter already drew its own shots on the click frame (erasers wait for the server's lock check).
     if event.owner~=myId or event.weapon=="eraser" then
      if (event.lead or 1)==1 then Motion.fired(workspace.Planes:FindFirstChild(event.owner),event.slot) end
-     drawShot(event.id,event.weapon,event.position,event.direction,event.speed,event.expires,event.time,hostile(event.owner),event.fan)
+     local shooter=workspace.Planes:FindFirstChild(event.owner);local move=shooter and shooter:FindFirstChild("Root") and shooter:GetAttribute("SkinGunMove"..tostring(event.slot))
+     drawShot(event.id,event.weapon,move and event.position+shooter.Root.CFrame:VectorToWorldSpace(move) or event.position,event.direction,event.speed,event.expires,event.time,hostile(event.owner),event.fan)
     end
    elseif event.kind=="end" then
     local shot=active[event.id]
@@ -373,6 +374,8 @@ function Effects.start(getPlane)
   Motion.fired(plane,mount.slot)
   local factor=plane:GetAttribute("MountScale") or 1
   local position=body.CFrame:PointToWorldSpace(Aircraft.muzzleOffset(mount.slot,factor,mount.weapon.id,Aircraft.fitOf(plane)))
+  -- Under a shape skin the gun you see hangs lower (SkinShapes): the drawn shot starts there; the server's doesn't move.
+  position+=body.CFrame:VectorToWorldSpace(plane:GetAttribute("SkinGunMove"..mount.slot) or Vector3.zero)
   local aim,range=Effects.aim(body,weapon)
   local direction=Aircraft.converge(body,position,aim,range or convergence)
   if weapon.spread_deg>0 then

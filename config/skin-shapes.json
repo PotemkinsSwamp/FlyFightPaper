@@ -1,4 +1,95 @@
 {
   "_comment": "Skins that change the plane's shape (Legendary, Mythical), fitted on each player's screen by src/client/SkinShapes.luau. Per skin: the uploaded pieces (mesh id and local box), the starter build's fit numbers (ref) and the shape's constants, from tools/art/crane_skin.py. Written by hand from its crane-fit.json.",
-  "shapes": {}
+  "shapes": {
+    "origami_crane": {
+      "pictures": {
+        "color": 84766972761508,
+        "normal": 83364938011334,
+        "roughness": 126539059666330
+      },
+      "ref": {
+        "s": 1.05188,
+        "ks": 1.20193,
+        "cw": 1.3585,
+        "wy": 0.9625,
+        "zF": -2.65668,
+        "zB": 5.74715,
+        "ky": -0.935,
+        "zc": 1.45335
+      },
+      "const": {
+        "RISE": 32.0,
+        "C0": 6.0,
+        "R0": 7.0,
+        "SW": 0.8
+      },
+      "pieces": {
+        "head": {
+          "mesh": 94348518374667,
+          "min": [
+            -0.6,
+            -1.91391,
+            -7.70518
+          ],
+          "max": [
+            0.6,
+            1.17262,
+            1.06744
+          ]
+        },
+        "body": {
+          "mesh": 117182533131460,
+          "min": [
+            -1.41796,
+            -1.30316,
+            -2.65668
+          ],
+          "max": [
+            1.41796,
+            2.03564,
+            5.74715
+          ]
+        },
+        "tail": {
+          "mesh": 81800070028183,
+          "min": [
+            -0.49183,
+            -0.85361,
+            -0.12628
+          ],
+          "max": [
+            0.49183,
+            0.08951,
+            1.0
+          ]
+        },
+        "wingL": {
+          "mesh": 89393065405501,
+          "min": [
+            -5.94653,
+            -0.01661,
+            -3.00024
+          ],
+          "max": [
+            0.0162,
+            3.72628,
+            3.00024
+          ]
+        },
+        "wingR": {
+          "mesh": 81912160342561,
+          "min": [
+            -0.0162,
+            -0.01661,
+            -3.00024
+          ],
+          "max": [
+            5.94653,
+            3.72628,
+            3.00024
+          ]
+        }
+      }
+    }
+  }
 }

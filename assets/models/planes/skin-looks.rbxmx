@@ -201,5 +201,6 @@
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-L</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://90196978725538</url></Content></Properties></Item>
 <Item class="SurfaceAppearance"><Properties><string name="Name">wings_5-paper-R</string><Content name="ColorMap"><url>rbxassetid://127563698335848</url></Content><Content name="NormalMap"><url>rbxassetid://102206257936810</url></Content></Properties></Item>
 </Item>
+<Item class="Folder"><Properties><string name="Name">origami_crane</string></Properties><Item class="SurfaceAppearance"><Properties><string name="Name">Shape</string><Content name="ColorMap"><url>rbxassetid://84766972761508</url></Content><Content name="NormalMap"><url>rbxassetid://83364938011334</url></Content><Content name="RoughnessMap"><url>rbxassetid://126539059666330</url></Content></Properties></Item></Item>
 </Item>
 </roblox>

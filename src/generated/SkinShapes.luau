@@ -2,5 +2,96 @@
 local JSONTypes = require(script.Parent.JSONTypes)
 return JSONTypes.map({
     ["_comment"] = "Skins that change the plane's shape (Legendary, Mythical), fitted on each player's screen by src/client/SkinShapes.luau. Per skin: the uploaded pieces (mesh id and local box), the starter build's fit numbers (ref) and the shape's constants, from tools/art/crane_skin.py. Written by hand from its crane-fit.json.",
-    ["shapes"] = JSONTypes.map({}),
+    ["shapes"] = JSONTypes.map({
+        ["origami_crane"] = JSONTypes.map({
+            ["const"] = JSONTypes.map({
+                ["C0"] = 6.0,
+                ["R0"] = 7.0,
+                ["RISE"] = 32.0,
+                ["SW"] = 0.8,
+            }),
+            ["pictures"] = JSONTypes.map({
+                ["color"] = 84766972761508,
+                ["normal"] = 83364938011334,
+                ["roughness"] = 126539059666330,
+            }),
+            ["pieces"] = JSONTypes.map({
+                ["body"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 1.41796,
+                        [2] = 2.03564,
+                        [3] = 5.74715,
+                    }),
+                    ["mesh"] = 117182533131460,
+                    ["min"] = JSONTypes.array({
+                        [1] = -1.41796,
+                        [2] = -1.30316,
+                        [3] = -2.65668,
+                    }),
+                }),
+                ["head"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 0.6,
+                        [2] = 1.17262,
+                        [3] = 1.06744,
+                    }),
+                    ["mesh"] = 94348518374667,
+                    ["min"] = JSONTypes.array({
+                        [1] = -0.6,
+                        [2] = -1.91391,
+                        [3] = -7.70518,
+                    }),
+                }),
+                ["tail"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 0.49183,
+                        [2] = 0.08951,
+                        [3] = 1.0,
+                    }),
+                    ["mesh"] = 81800070028183,
+                    ["min"] = JSONTypes.array({
+                        [1] = -0.49183,
+                        [2] = -0.85361,
+                        [3] = -0.12628,
+                    }),
+                }),
+                ["wingL"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 0.0162,
+                        [2] = 3.72628,
+                        [3] = 3.00024,
+                    }),
+                    ["mesh"] = 89393065405501,
+                    ["min"] = JSONTypes.array({
+                        [1] = -5.94653,
+                        [2] = -0.01661,
+                        [3] = -3.00024,
+                    }),
+                }),
+                ["wingR"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 5.94653,
+                        [2] = 3.72628,
+                        [3] = 3.00024,
+                    }),
+                    ["mesh"] = 81912160342561,
+                    ["min"] = JSONTypes.array({
+                        [1] = -0.0162,
+                        [2] = -0.01661,
+                        [3] = -3.00024,
+                    }),
+                }),
+            }),
+            ["ref"] = JSONTypes.map({
+                ["cw"] = 1.3585,
+                ["ks"] = 1.20193,
+                ["ky"] = -0.935,
+                ["s"] = 1.05188,
+                ["wy"] = 0.9625,
+                ["zB"] = 5.74715,
+                ["zF"] = -2.65668,
+                ["zc"] = 1.45335,
+            }),
+        }),
+    }),
 })

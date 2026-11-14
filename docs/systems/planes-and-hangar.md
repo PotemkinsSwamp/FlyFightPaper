@@ -10,8 +10,8 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); the "Dev: skin" button tries the test
 skins on your plane. Boosters and the hangar photo wear it too. Players wear their saved skin (bought with Paper and
 picked in Customize's **Skins** tab; a **Trails** tab lists trails, not drawn yet). Shape skins (the Origami Crane) are
-fitted by `SkinShapes.luau` from `config/skin-shapes.json`; the crane's pieces are not uploaded yet
-([skins plan](../plan/SKINS-PLAN.md)).
+fitted by `SkinShapes.luau` from `config/skin-shapes.json` (the crane: five pieces uploaded 2026-11-13, guns hung under
+the wings, drawn shots start from the moved gun; waiting on Alan's Studio test) ([skins plan](../plan/SKINS-PLAN.md)).
 
 **Hangar buying, built and checked in Play 2026-11-12 (Alan's notes, [playtest](../playtests/2026-11-12-shop-window-and-hangar-buying.md)).**
 A part above your level is greyed with a drawn padlock and "Level 20"; one you can buy shows "3,500 Paper"; card words
