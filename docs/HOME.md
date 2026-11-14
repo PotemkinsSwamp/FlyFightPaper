@@ -91,6 +91,7 @@ otherwise.
 - [Design and colour research 2026-11-12](research/DESIGN-RESEARCH-2026-11-12.md): what studies on games, kids and toys say about colour, layout, reading and tapping; the evidence behind the `design-theory` skill.
 - [Unlock pacing research 2026-11-08](research/UNLOCK-PACING-2026-11-08.md): how fast other games unlock things, and targets for our ladder.
 - [Performance research 2026-10-11](research/PERFORMANCE-RESEARCH-2026-10-11.md): why Play was slow, and the fixes.
+- [Optimization research 2026-11-13](research/OPTIMIZATION-RESEARCH-2026-11-13.md): faster without losing detail; the ten best fits for us, and the `roblox-optimization` skill behind it.
 - [QA review 2026-10-07](research/QA-2026-10-07.md): requirement-by-requirement check.
 
 [Glossary](GLOSSARY.md): plain meanings for the words used here.

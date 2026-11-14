@@ -66,6 +66,8 @@ None in config; graphics options are in Settings.
 ## Related
 - [Never trade looks for frame rate](../decisions/2026-10-10-no-quality-cuts-for-fps.md)
 - [Performance research 2026-10-11](../research/PERFORMANCE-RESEARCH-2026-10-11.md)
+- [Optimization research 2026-11-13](../research/OPTIMIZATION-RESEARCH-2026-11-13.md); before any speed work load the
+  `roblox-optimization` skill (`.claude/skills/roblox-optimization/`) and run its before/after checklist.
 - [Testing](../workshop/testing.md)
 - [Milestones, Stage 4g and 11](../plan/MILESTONES.md)
 
