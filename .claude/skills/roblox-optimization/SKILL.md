@@ -68,7 +68,9 @@ terrain" · "unions never instance" · "UnreliableRemoteEvent max 900 bytes" · 
 explained, with dates, in its reference file.
 
 ## Fly Fight Paper
-Ideas only; nothing here is decided. Alan's rule: [never trade looks for frame rate](../../../docs/decisions/2026-10-10-no-quality-cuts-for-fps.md).
+Ideas only; nothing here is decided. **Clean-up speed work waits until the content is done, before leaving beta**
+([decision](../../../docs/decisions/2026-11-13-optimize-after-content-is-done.md)); until then use this skill only to
+avoid building new things the slow way. Alan's rule: [never trade looks for frame rate](../../../docs/decisions/2026-10-10-no-quality-cuts-for-fps.md).
 Targets and history: [performance page](../../../docs/systems/performance.md), [lessons](../../../docs/workshop/lessons.md),
 [optimization research 2026-11-13](../../../docs/research/OPTIMIZATION-RESEARCH-2026-11-13.md) (the ten best fits,
 explained for Alan).

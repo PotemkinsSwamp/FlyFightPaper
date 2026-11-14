@@ -16,6 +16,9 @@ Words used: a **draw call** is one "please draw this" request from the game to t
 fine, thousands make frames slow. **Streaming** means a player's device only holds the part of the map near them.
 
 ## The ten findings most likely to help Fly Fight Paper
+Alan, 2026-11-13: none of these get built until the content is done, before leaving beta
+([decision](../decisions/2026-11-13-optimize-after-content-is-done.md)).
+
 | # | Idea | What it would mean in-game | Look | Rough cost to try |
 |---|---|---|---|---|
 | 1 | **A one-button speed check.** The F8 viewpoints already exist; add the engine's own counters (frame time, draw calls, triangles, shadow draws, memory) next to a screenshot of each spot. | Every future speed change comes with "before / after" numbers *and* pictures proving the look didn't change. | Same | Small (one session) |

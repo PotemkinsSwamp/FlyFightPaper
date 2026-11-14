@@ -44,6 +44,8 @@ one file after another, slow on a phone); see lessons. The rest is the [load pla
 ## Rules
 - Target: steady 60 FPS on Alan's PC in a 12-plane match, no pop-in (set in [AGENTS.md](../../AGENTS.md)).
 - Never trade looks for frame rate: see the decision below.
+- Speed clean-up waits until the content is done, before leaving beta
+  ([decision](../decisions/2026-11-13-optimize-after-content-is-done.md)).
 - Stage 4g numbers: 60 FPS, slowest 5% of frames under 20 ms, under 1M triangles, under 1,000 draw calls.
 - Measure first, in front-window Studio Play at the highest graphics level. A Studio window behind other windows
   reads about 15 FPS and does not count.
