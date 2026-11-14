@@ -54,7 +54,8 @@ import numpy as np
 from mathutils import Vector
 
 spec = json.load(open(sys.argv[sys.argv.index("--") + 1], encoding="utf-8"))
-OUT = spec["out"]; os.makedirs(OUT, exist_ok=True); TEX = spec.get("tex", 1024)
+OUT = os.path.abspath(spec["out"]); os.makedirs(OUT, exist_ok=True); TEX = spec.get("tex", 1024)
+for o in list(bpy.data.objects): bpy.data.objects.remove(o)        # the factory scene's cube would hide the model
 
 def load_rgb(path):
     img = bpy.data.images.load(os.path.abspath(path)); w, h = img.size
@@ -205,7 +206,7 @@ def sample(pic):
 DIRS = {"side": np.array((0, 1, 0)), "top": np.array((0, 0, 1)), "bottom": np.array((0, 0, -1)), "front": np.array((-1, 0, 0))}
 col = np.zeros((TEX, TEX, 3)); wsum = np.zeros((TEX, TEX)); done = np.zeros((TEX, TEX), bool)
 for fi, t in enumerate(Tri):
-    r = raster(UV[fi] * TEX, TEX, TEX)
+    r = raster(np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX, TEX, TEX)   # picture rows run down, UV v runs up
     if r is None: continue
     ys_, xs_, L = r; P = L @ Vn[t]; N = L @ VN[t] if B.get("smooth") else np.repeat([np.cross(Vn[t[1]] - Vn[t[0]], Vn[t[2]] - Vn[t[0]])], len(L), 0)
     N = N / np.maximum(np.linalg.norm(N, axis=1, keepdims=True), 1e-9)
@@ -260,15 +261,17 @@ sun = bpy.data.objects.new("sun", bpy.data.lights.new("sun", "SUN")); sun.data.e
 sun.rotation_euler = (math.radians(35), 0, math.radians(30)); sc.collection.objects.link(sun)
 cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); sc.collection.objects.link(cam); sc.camera = cam
 lo, hi = Vn.min(0), Vn.max(0); ctr = (lo + hi) / 2; size = float(max(hi - lo))
-def shoot(name, d, up=(0, 0, 1), ortho=True, res=(1200, 700)):
+def shoot(name, d, euler=None, ortho=True, res=(1200, 700)):
+    """Camera on side d of the model; the flat views are turned like the sheet's (nose left, seen from the left)."""
     d = Vector(d).normalized(); cam.location = Vector(ctr) + d * size * 4
-    cam.rotation_euler = (-d).to_track_quat("-Z", "Y" if up == (0, 0, 1) else "X").to_euler()
-    if up != (0, 0, 1): cam.rotation_euler = (-d).to_track_quat("-Z", "Y").to_euler()
+    cam.rotation_euler = euler if euler else (-d).to_track_quat("-Z", "Y").to_euler()
     cam.data.type = "ORTHO" if ortho else "PERSP"; cam.data.ortho_scale = size * 1.15; cam.data.lens = 85
     sc.render.resolution_x, sc.render.resolution_y = res; sc.render.filepath = os.path.join(OUT, "render-%s.png" % name)
     bpy.ops.render.render(write_still=True)
-shoot("side", (0, 1, 0)); shoot("top", (0, 0.0001, 1)); shoot("bottom", (0, 0.0001, -1)); shoot("front", (-1, 0, 0))
+h = math.pi / 2
+shoot("side", (0, -1, 0), (h, 0, 0)); shoot("top", (0, 0, 1), (0, 0, 0)); shoot("bottom", (0, 0, -1), (2 * h, 0, 0))
+shoot("front", (-1, 0, 0), (h, 0, -h))
 yaw, pitch = (math.radians(spec["camera"][k]) for k in ("yaw", "pitch"))
-shoot("three_quarter", (-math.sin(yaw) * math.cos(pitch), math.cos(yaw) * math.cos(pitch), math.sin(pitch)), ortho=False)
+shoot("three_quarter", (-math.sin(yaw) * math.cos(pitch), -math.cos(yaw) * math.cos(pitch), math.sin(pitch)), ortho=False)
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "model.blend"))
 print("triangles", len(Tri), "out", OUT)

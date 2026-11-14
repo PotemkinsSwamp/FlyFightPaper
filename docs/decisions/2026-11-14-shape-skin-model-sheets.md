@@ -16,7 +16,10 @@
   `dragon-b6.png`**, the Dragon on the shark's airframe (head as the nose cone, gold underside), picked over a
   paper-keel version (`dragon-b5.png`). But its details came out like a shark's (tall back fins, shark tail): "the shape
   is correct, but you made it look like the shark". It keeps Dragon B's own details (head crown and horns, dragon
-  spines, fanned tail, scalloped wings) on that shape (`dragon-b7.png`).
+  spines, fanned tail, scalloped wings) on that shape. **Dragons have legs** (Alan): four legs tucked up as in flight.
+  **The Dragon's sheet is `dragon-b8-legs.png`** ("Dragon is good"): `dragon-b8.png` with its front legs moved back by
+  hand about a tenth of the length, behind a neck ("that's not where its foot would be ... it has a neck"); a redraw
+  with jointed legs (`dragon-b9.png`) "looks worse". Its three-quarter view still shows the old front-leg spot.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
