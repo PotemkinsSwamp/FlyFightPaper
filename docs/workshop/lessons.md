@@ -133,8 +133,11 @@ mistake would be easy to make twice.
   only the Dragon's legs changed their whole look ("looks worse"); cutting the legs out of the approved sheet and
   pasting them further back (patching the gap from the band beside it) kept every other pixel and was approved at once.
 - **Painting a model from an AI model sheet** (2026-11-14, `tools/art/sheet_model.py`): the sheet's views never line
-  up exactly, so blending two views on one spot (by its normal) turns teeth and belly into noise; paint each face from
-  one view. A depth test tighter than a few pixels fails in speckles on steep faces. And `blender -b
+  up exactly, so blending two views on one spot (by its normal) turns teeth and belly into noise; paint each spot from
+  one view and cross-fade only in a thin band where two tie (a hard per-triangle switch leaves a zig-zag). A depth test
+  tighter than a few pixels fails in speckles on steep faces: test whole faces. **The real cause of the Shark's
+  scrambled belly:** cream bellies and white teeth are nearly the sheet's background grey, so a colour-difference
+  outline has holes there; fill holes (background = only what the box edge reaches). And `blender -b
   --factory-startup` keeps the 2-unit default cube: delete it, or it hides a model built at unit length.
 
 ## Studio and the place file

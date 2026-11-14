@@ -1,8 +1,8 @@
 """Model sheet -> Blender model coloured by projecting the sheet's own views: the shape-skin method Alan agreed on
 2026-11-14 (docs/decisions/2026-11-14-shape-skin-model-sheets.md). The body is a loft through the sheet's outlines
 (side view: top and bottom, top/bottom views: width); parts that stick out (horns, fins) are simple tubes or plates
-from measured numbers. Every texel is painted from the SIDE, TOP, BOTTOM or FRONT view that faces it best and can see
-it (a depth test per view, so a horn never paints its picture onto the head under it). Bumps come from the art's own
+from measured numbers. Every face is painted from ONE view, the SIDE, TOP, BOTTOM or FRONT view that faces it best and can
+see it (a depth test per view, so a horn never paints its picture onto the head under it). Bumps come from the art's own
 lines (dark line = groove) as a normal map; glow colours (eyes) become an emissive mask.
 
     python tools/art/sheet_model.py SPEC.json          (runs Blender, then writes the review picture)
@@ -66,18 +66,39 @@ SHEET = load_rgb(spec["sheet"])
 BG = np.median(np.concatenate([SHEET[:20, :20].reshape(-1, 3), SHEET[:20, -20:].reshape(-1, 3)]), 0)
 MASK = np.abs(SHEET - BG).sum(-1) > 0.12
 
+def grow(img, done, steps):
+    """Spread colours from the done pixels into their empty neighbours, one pixel per step (in place)."""
+    for _ in range(steps):
+        acc = np.zeros_like(img); cnt = np.zeros(done.shape)
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            sd = np.roll(done, (dy, dx), (0, 1)); acc += np.roll(img, (dy, dx), (0, 1)) * sd[..., None]; cnt += sd
+        g = (~done) & (cnt > 0); img[g] = acc[g] / cnt[g, None]; done |= g
+
 def view_mask(v):
-    x0, y0, x1, y1 = spec["views"][v]; m = np.zeros_like(MASK); m[y0:y1, x0:x1] = MASK[y0:y1, x0:x1]; return m
+    """The view's outline with its holes filled: background is only what the box edge reaches through
+    background-grey pixels (cream bellies and white teeth are close to the grey and would leave holes)."""
+    x0, y0, x1, y1 = spec["views"][v]; bgc = ~MASK[y0:y1, x0:x1]; reach = np.zeros_like(bgc)
+    for s in (np.s_[0, :], np.s_[-1, :], np.s_[:, 0], np.s_[:, -1]): reach[s] = bgc[s]
+    while True:
+        g = reach.copy(); g[1:] |= reach[:-1]; g[:-1] |= reach[1:]; g[:, 1:] |= reach[:, :-1]; g[:, :-1] |= reach[:, 1:]
+        g &= bgc
+        if (g == reach).all(): break
+        reach = g
+    m = np.zeros_like(MASK); m[y0:y1, x0:x1] = ~reach; return m
+
+VM = {v: view_mask(v) for v in ("side", "top", "bottom", "front")}
+SB = SHEET.copy(); inside = np.logical_or.reduce(list(VM.values()))
+grow(SB, inside.copy(), 12)        # colours run a little past each outline: a model edge a pixel out never gets grey
 
 # ---- each view's frame: nose tip and length in pixels from the outline (side, top, bottom); front by height
 FR = {}
 for v in ("side", "top", "bottom"):
-    m = view_mask(v); ys, xs = np.nonzero(m)
+    m = VM[v]; ys, xs = np.nonzero(m)
     nose_x, tail_x = xs.min(), xs.max(); nose_y = ys[xs <= nose_x + 2].mean()
     FR[v] = dict(x=float(nose_x), y=float(nose_y), L=float(tail_x - nose_x), m=m)
 mside = FR["side"]["m"]; ys, xs = np.nonzero(mside)
 Z_MAX = (FR["side"]["y"] - ys.min()) / FR["side"]["L"]; Z_MIN = (FR["side"]["y"] - ys.max()) / FR["side"]["L"]
-mf = view_mask("front"); ys, xs = np.nonzero(mf)
+mf = VM["front"]; ys, xs = np.nonzero(mf)
 SF = spec.get("front_scale") or (ys.max() - ys.min()) / (Z_MAX - Z_MIN)
 FR["front"] = dict(x=(xs.min() + xs.max()) / 2.0, y=ys.max() + Z_MIN * SF, L=SF, m=mf)
 
@@ -200,31 +221,35 @@ for v in ("side", "top", "bottom", "front"):
 def sample(pic):
     x = np.clip(pic[:, 0] - 0.5, 0, W_ - 1.001); y = np.clip(pic[:, 1] - 0.5, 0, H_ - 1.001)
     x0, y0 = x.astype(int), y.astype(int); fx, fy = (x - x0)[:, None], (y - y0)[:, None]
-    s = SHEET
+    s = SB
     return (s[y0, x0] * (1 - fx) * (1 - fy) + s[y0, x0 + 1] * fx * (1 - fy) + s[y0 + 1, x0] * (1 - fx) * fy + s[y0 + 1, x0 + 1] * fx * fy)
 
+# Each spot is painted from ONE view (blending many views per texel mixed the mouth into the belly): the view its smooth
+# normal faces best, the side preferred until it clearly points up, down or forward (about 60 degrees). Views are only
+# cross-faded in a thin BAND where two nearly tie, so the switch is a soft line, not a sawtooth. A view that can't see
+# the face (most of 4 inner points behind something nearer than SEE_TOL) is skipped for the whole face.
 DIRS = {"side": np.array((0, 1, 0)), "top": np.array((0, 0, 1)), "bottom": np.array((0, 0, -1)), "front": np.array((-1, 0, 0))}
-col = np.zeros((TEX, TEX, 3)); wsum = np.zeros((TEX, TEX)); done = np.zeros((TEX, TEX), bool)
+BIAS = {"side": 0.25}; SEE_TOL = 0.012; BAND = 0.08
+INNER = np.array([[4, 1, 1], [1, 4, 1], [1, 1, 4], [2, 2, 2]]) / 6.0
+col = np.zeros((TEX, TEX, 3)); done = np.zeros((TEX, TEX), bool)
 for fi, t in enumerate(Tri):
     r = raster(np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX, TEX, TEX)   # picture rows run down, UV v runs up
     if r is None: continue
-    ys_, xs_, L = r; P = L @ Vn[t]; N = L @ VN[t] if B.get("smooth") else np.repeat([np.cross(Vn[t[1]] - Vn[t[0]], Vn[t[2]] - Vn[t[0]])], len(L), 0)
-    N = N / np.maximum(np.linalg.norm(N, axis=1, keepdims=True), 1e-9)
-    flip = P[:, 1] < 0; Pm = P.copy(); Pm[flip, 1] *= -1; Nm = N.copy(); Nm[flip, 1] *= -1   # the far side uses the mirror
-    acc = np.zeros((len(L), 3)); ws = np.zeros(len(L))
-    for v, dvec in DIRS.items():
-        w = np.maximum(Nm @ dvec, 0) ** 4
-        pic, dep = to_pic(v, Pm); xi = np.clip(pic[:, 0].astype(int), 0, W_ - 1); yi = np.clip(pic[:, 1].astype(int), 0, H_ - 1)
-        seen = dep >= ZBUF[v][yi, xi] - 0.006
-        inside = view_mask(v)[yi, xi] if v == "front" else FR[v]["m"][yi, xi]
-        w = w * seen * inside; acc += sample(pic) * w[:, None]; ws += w
-    ok = ws > 1e-6
-    col[ys_[ok], xs_[ok]] = acc[ok] / ws[ok, None]; done[ys_[ok], xs_[ok]] = True
-for _ in range(TEX // 64):                                            # fill gaps and pad islands from their neighbours
-    acc = np.zeros_like(col); cnt = np.zeros((TEX, TEX))
-    for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-        sd = np.roll(done, (dy, dx), (0, 1)); acc += np.roll(col, (dy, dx), (0, 1)) * sd[..., None]; cnt += sd
-    grow = (~done) & (cnt > 0); col[grow] = acc[grow] / cnt[grow, None]; done |= grow
+    ys_, xs_, L = r; Pt = Vn[t].copy(); Nt = VN[t].copy(); fn = np.cross(Pt[1] - Pt[0], Pt[2] - Pt[0])
+    if Pt[:, 1].mean() < 0: Pt[:, 1] *= -1; Nt[:, 1] *= -1; fn[1] *= -1      # the far side uses the mirror
+    seen = []
+    for v in DIRS:
+        if fn @ DIRS[v] <= 0: continue
+        pic, dep = to_pic(v, INNER @ Pt)
+        xi = np.clip(pic[:, 0].astype(int), 0, W_ - 1); yi = np.clip(pic[:, 1].astype(int), 0, H_ - 1)
+        if (dep >= ZBUF[v][yi, xi] - SEE_TOL).sum() >= 3: seen.append(v)
+    seen = seen or [max(DIRS, key=lambda v: fn @ DIRS[v])]
+    N = L @ Nt; N /= np.maximum(np.linalg.norm(N, axis=1, keepdims=True), 1e-9); P = L @ Pt
+    S = np.stack([N @ DIRS[v] + BIAS.get(v, 0) for v in seen], 1)
+    Wt = np.clip((S - S.max(1, keepdims=True) + BAND) / BAND, 0, 1)
+    acc = sum(sample(to_pic(v, P)[0]) * Wt[:, k:k + 1] for k, v in enumerate(seen))
+    col[ys_, xs_] = acc / Wt.sum(1, keepdims=True); done[ys_, xs_] = True
+grow(col, done, TEX // 64)                                           # fill gaps and pad islands from their neighbours
 col[~done] = col[done].mean(0)
 
 def box(a, r):
