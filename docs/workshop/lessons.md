@@ -141,6 +141,12 @@ mistake would be easy to make twice.
   white halo round every shape: a model's outermost edge picks it up as a white rim unless edge colours come from a
   few pixels inside. A view that doesn't draw a part (horns seen from below) must not paint it. And `blender -b
   --factory-startup` keeps the 2-unit default cube: delete it, or it hides a model built at unit length.
+- **Count a sheet's pieces where left and right don't overlap** (Alan, 2026-11-14, on the Dragon head): from above
+  the sheet has 3 pieces a side; the build had 6, because blades were counted in the side view, where the far side's
+  pieces peek over the near side's, and then mirrored. Number every piece in every view first (the
+  `concept-to-blender` skill's piece map). Also: points read off a zoomed sheet by eye land 3-6 px off (snap them to
+  the drawn edge), overlapping plates of one colour can't be split by colour, and blades made from a few numbers
+  (base, tip, width) can only be straight daggers: trace the outline.
 
 ## Studio and the place file
 - **Runtime skin looks (2026-11-13):** `AssetService:CreateSurfaceAppearanceAsync` rejects uploaded pictures ("ColorMap

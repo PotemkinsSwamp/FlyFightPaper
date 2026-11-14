@@ -1,0 +1,30 @@
+{
+ "sheet": ".planning/skins/model-sheets/dragon-b8-legs.png",
+ "out": ".planning/research/dragon-trace-demo",
+ "zoom": 3,
+ "crops": {"top": [30, 600, 280, 730], "side": [15, 170, 280, 330], "front": [760, 170, 915, 335]},
+ "count_in": ["top"],
+ "pieces": [
+  {"id": 1, "name": "front crest blade", "kind": "plate", "count": 2,
+   "marks": {"top": [[101, 647], [101, 675]], "side": [[87, 270]], "front": [[824, 252], [852, 252]]}},
+  {"id": 2, "name": "rear crest blade", "kind": "plate", "count": 2,
+   "marks": {"top": [[130, 642], [135, 680]], "side": [[125, 260], [112, 251, "far"]], "front": [[811, 234], [864, 234]]}},
+  {"id": 3, "name": "horn (3 segments, tip curls up)", "kind": "tube", "count": 2,
+   "marks": {"top": [[210, 624], [210, 697]], "side": [[208, 213]], "front": [[795, 205], [880, 205]]}},
+  {"id": 4, "name": "big plate under the horn", "kind": "plate", "count": 2, "count_in": [],
+   "note": "hidden under the horn from above?",
+   "marks": {"top": [], "side": [[162, 260]], "front": []}},
+  {"id": 5, "name": "eye (glows)", "kind": "plate", "count": 2, "count_in": ["front"],
+   "marks": {"top": [], "side": [[115, 277]], "front": [[814, 266], [859, 265]]}},
+  {"id": 6, "name": "cheek guard under the eye", "kind": "plate", "count": 2, "count_in": ["front"],
+   "marks": {"top": [], "side": [[125, 288]], "front": [[809, 278], [868, 278]]}},
+  {"id": 7, "name": "gold snout edge", "kind": "plate", "count": 2,
+   "marks": {"top": [[55, 659], [55, 666]], "side": [[55, 293]], "front": [[834, 288], [841, 288]]}},
+  {"id": 8, "name": "head and neck", "kind": "body", "count": 1,
+   "marks": {"top": [[155, 661]], "side": [[215, 262]], "front": [[838, 222]]}}
+ ],
+ "questions": [
+  "From above each side shows 3 pieces (1, 2, 3). From the side 4 plates show: I read one as piece 2 of the far side (2').",
+  "Plate 4 under the horn shows only from the side and three-quarter: its own blade, or the horn's base? (old build: 5 blades + 2 horns a side)"
+ ]
+}
