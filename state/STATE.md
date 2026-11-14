@@ -36,16 +36,15 @@ Crayon 600 studs/s, 450 range, drop 8. New weapons keep their stand-in hit boxes
 Point Popper: 7 leads x 5, one a second, bundle to 50 studs, ring 3 studs out by 100, falls past ~100; level 2, 300 Paper.
 Thumbtack: 900 studs/s, heavy drag, falls past ~500; full damage to 100 studs; level 4, 600 Paper; "Thumbtack Shooter".
 Falling shots: slow hard (drag 3) and fall (196 studs/s^2) for up to 3 s; Paperclip carries ~840 studs while falling.
-Landing catch box 90 x 90 x 70 (ring is 74 across); dives or climbs up to 60 degrees count.
-A pilot's felt crash counts if the plane is within 40 studs of that solid part.
+Landing catch box 90 x 90 x 70 (ring 74 across), dives/climbs to 60 degrees count. Felt crash: within 40 studs of the part.
 Solid now: cars, buses, boats, lamps, trees, benches, building site, playground, cubby shelf, Earth. Still see-through:
   landing rings, threads, desk hangars, runway lights, wall pictures, your three models.
 Preset levels stay at 5, 8 and 10 at about 340 XP a match (one mostly rookie bot match; recheck with a real player).
 Rams: centres within 2.5 studs in the last 0.1 s, strength by relative speed; stronger plane loses 15 extra, always
   survives; rams earn no kill; teammates and practice flights never ram.
 Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000, 60 at 2400. Tab list shows all 12.
-PC keys: letters (not K or R), Shift, Ctrl, Alt, Space; Got it may share a key with Boost or Brake.
-Auto-fire fires on the yellow dot too; in the Range it fires on targets, so a phone's accuracy card reads high.
+PC keys: letters (not K or R), Shift, Ctrl, Alt, Space; Got it may share Boost/Brake's key. Auto-fire fires on the
+  yellow dot too, and on Range targets (a phone's accuracy card reads high).
 Loading: Skip once menus + town parts are in; a stuck file costs 8 s; 3 minutes at most.
 Screen fit: phone under 540 points, tablet under 900; FIRE 76-120 points; small PC window gets tablet sizes.
 Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degrees; held Skip (1.5 s) skips a lesson.
