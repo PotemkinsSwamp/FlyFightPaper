@@ -44,6 +44,13 @@
 - **Skins must not cost frame rate or server work:** drawn only on players' screens; at most about **4,000 triangles**
   and one 1024 picture set per Legendary or Mythical (Alan OK'd the budget); detail baked into the pictures. The
   Ghost Ship is built last, to that budget.
+- **A Mythical's head and neck never stretch** (Alan, same day, after the crane's third pass): they keep the
+  concept's proportions and only scale evenly with the plane, bigger or smaller. So on a long-nosed plane the beak
+  may stop short of the nose tip (hitbox there with no skin over it).
+- **A Mythical must look like its concept** (Alan, same day): layers on layers, the concept's shapes (the crane's
+  Z-shaped neck, big folded head), judged from above and behind as well as from the side. Measure the concept first.
+- **Guns go under a Mythical, never on top** (Alan, same day): "we don't want the weapons blocking the skin". Where
+  shots then leave from is still open ([skins plan](../plan/SKINS-PLAN.md)).
 - **First build batch** (Alan's pick): Hazard Stripes, Tiger Stripes, Flame Decals; Gold Foil, Lava, Galaxy; Shark
   Jet; Dragon; trails Confetti, Rainbow Marker, Gold Stars.
 - **After the first Studio look** (Alan, same day, [playtest](../playtests/2026-11-13-printed-sheet-skins.md)): the printed sheet works for Commons and Rares. **Boosters wear the skin too** (they carry the team colour, so they are part of the plane). A **Skins tab and a Trails tab** in the customization menu show your pick on your plane. **The first Mythical is the Origami Crane** (blue and silver; "push the boundaries"), built in Blender by Fable itself next session.
