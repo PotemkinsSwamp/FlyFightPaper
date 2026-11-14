@@ -12,7 +12,11 @@
   beside the sheet, before any full build.
 - **Picks:** Shark Jet **A** (blue-grey, white belly) and Dragon **B** (emerald and gold, crest of fins), from
   `.planning/skins/model-sheets/`. **The Shark Jet's sheet is `shark-jet-a4.png`** ("that version of the shark works
-  well"): a round jet fuselage with a cream underside, tapering to a sharp nose.
+  well"): a round jet fuselage with a cream underside, tapering to a sharp nose. **The Dragon's shape is
+  `dragon-b6.png`**, the Dragon on the shark's airframe (head as the nose cone, gold underside), picked over a
+  paper-keel version (`dragon-b5.png`). But its details came out like a shark's (tall back fins, shark tail): "the shape
+  is correct, but you made it look like the shark". It keeps Dragon B's own details (head crown and horns, dragon
+  spines, fanned tail, scalloped wings) on that shape (`dragon-b7.png`).
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
