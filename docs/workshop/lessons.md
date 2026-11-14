@@ -125,6 +125,10 @@ mistake would be easy to make twice.
   `.planning/skins/tests/` (`pieces.json` holds two builds).
 - **Codex picture job with a reference picture** (2026-11-13): `codex exec -s workspace-write - -i ref.png < prompt.txt`,
   with `-i` last (it takes several files). About 45,000-80,000 Codex tokens for 2-5 pictures.
+- **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,
+  living sharks and dragons (Alan: "they're paper airplanes"). For more body under the wings say "a barrel like a jet
+  fighter's fuselage, straight bottom line, not fat". The same image tool refuses "violent" pictures at random (shark
+  teeth): ask for "a fun cartoon grin of small simple white triangles" and let it retry.
 
 ## Studio and the place file
 - **Runtime skin looks (2026-11-13):** `AssetService:CreateSurfaceAppearanceAsync` rejects uploaded pictures ("ColorMap

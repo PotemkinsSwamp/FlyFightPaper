@@ -1,4 +1,4 @@
-# Shape skins: model sheets first, Shark Jet A and Dragon B, every skin has a real belly
+# Shape skins: model sheets first, Shark Jet A and Dragon B, a barrel body (not a belly)
 
 **Decided:** 2026-11-14 (Alan)  
 **Status:** in force. The redrawn sheets and the Dragon-head test are on the [skins plan](../plan/SKINS-PLAN.md).
@@ -12,11 +12,11 @@
   beside the sheet, before any full build.
 - **Picks:** Shark Jet **A** (blue-grey, white belly) and Dragon **B** (emerald and gold, crest of fins), from
   `.planning/skins/model-sheets/`.
-- **Every shape skin has a real belly, and its sheet shows the underside** (Alan, same day): "you don't know what the
-  bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine if that
-  was on the Toilet Roll"). The Toilet Roll and Cardboard Gunships hang about a fifth of the plane's length below the
-  wings, so a skin's belly is drawn about that deep and about a quarter of the length wide, rounded into nose and tail.
-  The Dragon in particular was "incredibly slim".
+- **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
+  what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
+  if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
+  a long straight tube under the wings, still sleek and hard-edged. **Not a belly:** the first redraw was briefed
+  with animal words ("deep belly", "chunky") and Codex drew fat creatures ("they're paper airplanes").
 - **Safety swaps (Claude's call, told to Alan before he picked):** Shark A's wing zigzags become soft rounded stripes, Dragon B's
   gold square spirals on the cheeks become plain gold bands. Bent or hooked shapes and paired lightning bolts are the
   kind of picture that got the account banned twice ([lessons](../workshop/lessons.md)).
