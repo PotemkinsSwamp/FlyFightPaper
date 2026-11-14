@@ -1,21 +1,23 @@
-# Since Alan last checked (2026-11-13, night)
-- **Skins work for Commons and Rares** (you played them in Studio: "pretty good"): 83 plane pieces got printed-sheet
-  copies with their creases, uploaded with your go; bots wear skins by difficulty; "Dev: skin" button (bottom right)
-  tries Hazard and Lava (rough test pictures) on your plane. Prices approved: Common 149 R$/2,800 Paper, Rare 299/5,600,
-  Legendary 599/30,000, Mythical 999/60,000, trails 49/900; no free skins; boxes a maybe (odds shown are fine).
-- Saving and buying skins and trails is built (save v13, tests 617/0); no Looks screen yet.
-- **Origami Crane** (first Mythical) is being built in Blender by a linked Fable session; renders come to you first.
+# Since Alan last checked (2026-11-13, late night)
+- **The Origami Crane is in the game** (you OK'd its fourth pass): five pieces fitted to any plane on each screen,
+  guns hung under the wings, shots drawn from the gun you see. **Skins and Trails tabs** in Customize; buying with
+  Paper, wearing and taking off are saved (tests 635/0). **Boosters wear printed skins.**
+- Your playtest found bugs (tabs click unreliably, boosters and crumples miss the crane, guns float off it, "Try on"
+  should be "Buy", cardboard tab buttons, the build shelf mixes skin and parts): fixed next session
+  ([notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md)). Your rulings: a shape skin may tilt the wing hitbox
+  to match (never resize); the crane gets a matching printed sheet for boosters ([skin rules](../docs/decisions/2026-11-13-skin-rules.md)).
+- New skills: Roblox optimization (speed without losing detail) and concept-to-blender (measure a concept first).
 
 # Now: finish the game for the beta
-Next: the Origami Crane (Blender, your OK on renders before upload), then skins on the boosters, the real skin
-pictures (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy), Shark Jet, Dragon, the three trails, and a Skins and a
-Trails tab in the customization menu ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the
-playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report
-card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
+Next: fix the playtest bugs above, then the wing-hitbox tilt (server), the crane's printed sheet, then real skin
+pictures (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy), Shark Jet, Dragon, the three trails
+([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
+([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a
+real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
-Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead in a file (`tools/art/skin_looks.py`)
-  because runtime-built looks need ~4 MB in-memory pictures; crease pictures are 1024 (can go 512 if memory shows).
+Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
+  has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices); Trails tab lists, draws nothing.
 Gift arrival: Open it! is a tap; on Thanks the gift comes at you and fades; the pop is the Popper's, higher and soft.
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
@@ -49,7 +51,6 @@ Loading: Skip once menus + town parts are in; a stuck file costs 8 s; 3 minutes 
 Screen fit: phone under 540 points, tablet under 900; FIRE 76-120 points; small PC window gets tablet sizes.
 Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degrees; held Skip (1.5 s) skips a lesson.
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
-Combat School Pals, Range targets and Hangar behaviour: as listed on docs/systems/tutorial.md and planes-and-hangar.md.
 
 Waiting on Alan
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
