@@ -41,6 +41,24 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
   wing and tail corners (tested below), shown instead of the parts. Weapons and boosters stay visible so everyone can still read what you carry.
 - **Players are told:** "Skins change how you look, never your hitbox", on the shop card and the Looks tab.
 
+## Wing-hitbox tilt: how it works (waiting on Alan's OK)
+From his ruling in the [skin rules](../decisions/2026-11-13-skin-rules.md) (a shape skin may tilt the wing hitbox, never
+resize it).
+- **What changes:** when a plane wears a shape skin whose wings rise, the server turns each real wing's hit shape and
+  crash shape up around the wing root by the skin's angle. Shots hit the wing you see; you crash where the wing you
+  see is.
+- **What stays:** the wings' size, the body, nose and tail shapes, speed, turning, health and weight. Planes without a
+  shape skin are untouched.
+- **Who:** everyone wearing one, players and bots alike.
+- **Numbers:** the crane's 32 degrees, its own angle from `config/skin-shapes.json`; the hinge is where the crane's wing
+  joins the body on screen, worked out by the same rule on the screen and the server, so they always agree.
+- **Fair both ways:** seen from above, a 32-degree wing covers 85% of the width it did flat; seen from the side or the
+  front it covers more. Nothing grows.
+- **Guns under the wing (question):** the drawn guns hang under the tilted wing. Suggest their hit shapes move with
+  them, same size, so hitting the gun you see counts; shots still leave from the real spot.
+- **Checks:** a test that each tilted wing keeps its size and its root stays on the body; a Studio flight of the crane
+  past walls and through gaps.
+
 ## Tiers
 | Tier | What it changes | How you get it |
 |---|---|---|
