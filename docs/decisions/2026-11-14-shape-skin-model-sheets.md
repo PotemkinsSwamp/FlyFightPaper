@@ -11,12 +11,16 @@
   glow, smoke and embers from Roblox's own effects, not modelled. **Proved on the Dragon's head first**, judged by Alan
   beside the sheet, before any full build.
 - **Picks:** Shark Jet **A** (blue-grey, white belly) and Dragon **B** (emerald and gold, crest of fins), from
-  `.planning/skins/model-sheets/`.
+  `.planning/skins/model-sheets/`. **The Shark Jet's sheet is `shark-jet-a4.png`** ("that version of the shark works
+  well"): a round jet fuselage with a cream underside, tapering to a sharp nose.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
-  a long straight tube under the wings, still sleek and hard-edged. **Not a belly:** the first redraw was briefed
-  with animal words ("deep belly", "chunky") and Codex drew fat creatures ("they're paper airplanes").
+  a long tube under the wings, still sleek. **Not a belly:** the first redraw was briefed with animal words ("deep
+  belly", "chunky") and Codex drew fat creatures ("they're paper airplanes"). **Not a box either:** a square barrel
+  made the Dragon "blocky", "not aerodynamic". **Not a sausage:** the round Dragon "looks like a balloon"; the shark
+  works because its head is the nose cone and the body tapers all the way. A skin must look like a paper airplane
+  and a cool fighter first, the creature second.
 - **Safety swaps (Claude's call, told to Alan before he picked):** Shark A's wing zigzags become soft rounded stripes, Dragon B's
   gold square spirals on the cheeks become plain gold bands. Bent or hooked shapes and paired lightning bolts are the
   kind of picture that got the account banned twice ([lessons](../workshop/lessons.md)).
