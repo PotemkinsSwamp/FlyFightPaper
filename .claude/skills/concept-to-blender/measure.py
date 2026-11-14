@@ -46,7 +46,7 @@ for name, (cx, cy) in spec.get("colours", {}).items():
     colours[name] = tuple(round(sum(p[k] for p in px) / len(px)) for k in range(3)); print("colour", name, colours[name])
 
 M, RH = 60, 58; notes = spec.get("notes", [])
-W = im.width + 2 * M; top = 150
+W = max(im.width + 2 * M, 2400); top = 150   # wide enough for the table and notes beside a narrow crop
 H = top + im.height + 50 + RH * (len(rows) + 1) + (130 if colours else 0) + 50 * len(notes) + 70
 sheet = Image.new("RGB", (W, H), BG); s = ImageDraw.Draw(sheet)
 s.text((M, 40), spec["title"], font=F(56, True), fill=INK); sheet.paste(im, (M, top))
