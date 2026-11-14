@@ -127,6 +127,8 @@ Tags: **keeps** = look unchanged, **adds** = more detail for the same cost, **ma
 - **`Highlight`: hard cap of 31 active per client** (extras silently don't draw; disabled ones still hold a slot).
   Each highlighted object is drawn again plus a screen effect; on phones the cost grows with screen area covered.
   One Highlight on a Model covers all its parts. [Highlighting](https://create.roblox.com/docs/effects/highlighting). High.
+- **Audio:** keep `SoundService.AcousticSimulationEnabled` off (the default) unless the game needs sound bouncing off
+  walls; testers reported a real CPU cost (2026 beta). Load sounds when needed. Medium. **keeps**
 - **Post effects** (Bloom, DepthOfField, SunRays, Atmosphere): no official per-effect numbers; Roblox scales them by
   quality level. Measure GPU time on and off. Low-medium.
 - **UI:** sprite sheets (`ImageRectOffset`/`ImageRectSize`) instead of many small images; keep siblings that use

@@ -70,6 +70,9 @@ Format: **tip**. Why. *Measure.* Source (date). Confidence.
 - **Find once, keep the reference.** No `FindFirstChild`/`WaitForChild`/`GetService`/`GetDescendants` inside
   per-frame loops; keep sets in a table or use CollectionService tags. Indexing vs FindFirstChild speed is argued
   both ways (a 2025 benchmark: indexing faster under ~100 children); caching beats both. Medium.
+- **Procedural animation: write `Motor6D.Transform` in `PreSimulation`**, not `C0`/`C1` (Transform is the per-frame
+  channel animators use). [Task scheduler](https://create.roblox.com/docs/performance-optimization/microprofiler/task-scheduler). Medium-high.
+- **No `print`/`warn` spam in live builds:** output in a hot loop costs time. Medium.
 - **Write one `CFrame`, not Position then Orientation** (each write is a separate engine call). Medium-low (2022
   benchmark, disputed).
 - **Many non-physics parts moving each frame: `workspace:BulkMoveTo(parts, cframes, Enum.BulkMoveMode.FireCFrameChanged)`**

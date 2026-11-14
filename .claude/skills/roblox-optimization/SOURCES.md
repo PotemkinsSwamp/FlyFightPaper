@@ -53,6 +53,7 @@ relying on it: Roblox changes fast.
 
 ## Community (experienced developers; medium confidence unless measured)
 - [The Hitchhiker's Guide to Optimization](https://devforum.roblox.com/t/the-hitchhikers-guide-to-optimization-optimize-your-game-using-just-one-post-instead-of-many/3358345) (2025-01, 37 posts): about half sound; replies dispute hollow terrain, Persistent-as-a-fix, "instances don't matter", SurfaceAppearance-vs-Texture
+- [The Definitive Tutorial to Game Optimization](https://devforum.roblox.com/t/the-definitive-tutorial-to-game-optimization-everything-you-need-to-know/4629258) (WoloPoints, 2026-05, ~7 posts, no staff, no corrections): accurate basic survey, ~90% overlaps this skill; added: properties before parenting, server-moved bandwidth test, ~80 KB/s, acoustic simulation, Motor6D.Transform. Its "docs say FindFirstChild 20% slower" figure isn't on the docs page; its SLIM numbers are Roblox's own
 - [Real world building and scripting optimization](https://devforum.roblox.com/t/real-world-building-and-scripting-optimization-for-roblox/3127146) (MrChickenRocket, 2024-09): budgets, baking, client-side movement
 - [RemoteEvents, replication and physics explained](https://devforum.roblox.com/t/in-depth-explanation-of-robloxs-remoteevents-instance-replication-and-physics-replication-w-sources/1847340) (2022-23): byte costs
 - [RTS with 200+ units](https://devforum.roblox.com/t/how-we-are-developing-an-rts-game-with-good-performance-for-more-than-200-units/3281168) (2024): BulkMoveTo, packing

@@ -64,11 +64,18 @@ Format: **tip**. Why. *Measure.* Source (date). Confidence.
 - **Pack high-rate data** (quantised 16-bit numbers or a `buffer`) to fit many entities under the 1,000-byte limit.
   Saving is real but unmeasured publicly; too coarse a quantisation shows as snapping. Medium.
 - **Don't send what clients can work out themselves** (the big "60x" RTS saving came mostly from this). Medium.
-- **Create and destroy big instance trees in chunks;** parent a model after filling it; destroy the parent, not
-  each child. Medium.
+- **Create and destroy big instance trees in chunks;** set all properties *before* parenting into Workspace (after
+  that, each change replicates on its own); parent a model after filling it; destroy the parent, not each child.
+  Medium.
+- **Moving things on the server is expensive to send:** one author measured 2,000 server-moved MeshParts at
+  ~2,500 KB/s received, client-moved ~0 ([Definitive tutorial](https://devforum.roblox.com/t/the-definitive-tutorial-to-game-optimization-everything-you-need-to-know/4629258), 2026-05; unreproduced). Medium-low.
 - **Budget:** no official per-player number. Community guides: under ~50 KB/s received per client (2021, dated),
-  investigate if server "Total Data KB/s" is over ~100. An empty baseplate already shows ~30 KB/s per player
+  investigate if server "Total Data KB/s" is over ~100, ~80 KB/s per client as a ceiling (2026 tutorial); read
+  "Total Data KB/s" and "Total Physics KB/s" in Server Stats. An empty baseplate already shows ~30 KB/s per player
   (2025). Treat as rough. Low-medium.
+- **Instance streaming isn't free for the server:** it adds network and server work. One RTS author turned it off
+  because the whole small map was always in view (2026). For a big detailed map on phones it still pays; for a
+  small arena, measure both. Medium.
 
 ## Replication changes in 2026 (check status before relying on old numbers)
 - `Workspace.ImprovedPhysicsReplication` rolled out 2026-06 ("eventual consistency"; Disabled kept as an escape
