@@ -60,7 +60,7 @@ local function track(model)
 			-- Pivot and Axis are in the launcher's own frame (left mount); the right mount mirrors X.
 			local mirror = function(v) return Vector3.new(side * v.X, v.Y, v.Z) end
 			local pivot = vector(template:GetAttribute("Pivot"))
-			table.insert(entry.pieces, { original = part, copy = copy, role = role, slot = slot, weapon = ids[slot], side = side, rest = rest,
+			table.insert(entry.pieces, { original = part, copy = copy, role = role, slot = slot, weapon = ids[slot], side = side, rest = rest, unrest = rest:Inverse(),
 				pivot = pivot and rest.Position + mirror(pivot - template.Position) * factor,
 				axis = vector(template:GetAttribute("Axis")) and mirror(vector(template:GetAttribute("Axis")).Unit), factor = factor })
 		end
@@ -124,13 +124,21 @@ function Motion.start()
 			local entry = body and track(model)
 			if not entry then continue end
 			local shown = SHOWN[model:GetAttribute("State")] and not Deaths.dying(model)
+			local appearance = model:FindFirstChild("Appearance")
 			for _, piece in ipairs(entry.pieces) do
+				-- Under a shape skin the gun is drawn moved (SkinShapes' "SkinMount1-pellet" copy) and the real piece stays
+				-- hidden: the piece moves from the moved spot, and only the moved copy shows at the desk.
+				local skin = appearance and appearance:FindFirstChild("Skin" .. piece.original.Name)
+				local still = skin or piece.original
 				-- Drawn by the copy while flying; the welded original shows again in the hangar (its preview copies it).
 				local hideOriginal = shown and 1 or (Deaths.dying(model) and 1 or 0)
-				if piece.original.LocalTransparencyModifier ~= hideOriginal then piece.original.LocalTransparencyModifier = hideOriginal end
+				if still.LocalTransparencyModifier ~= hideOriginal then still.LocalTransparencyModifier = hideOriginal end
 				local relative = shown and pose(entry, piece, now, dt)
 				piece.copy.LocalTransparencyModifier = relative and 0 or 1
-				if relative then table.insert(parts, piece.copy); table.insert(frames, body.CFrame * relative) end
+				if relative then
+					table.insert(parts, piece.copy)
+					table.insert(frames, (skin and skin.CFrame * piece.unrest or body.CFrame) * relative)
+				end
 			end
 		end
 		workspace:BulkMoveTo(parts, frames, Enum.BulkMoveMode.FireCFrameChanged)

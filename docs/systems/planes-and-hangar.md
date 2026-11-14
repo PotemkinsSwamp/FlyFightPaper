@@ -11,7 +11,8 @@ drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); th
 skins on your plane. Boosters and the hangar photo wear it too. Players wear their saved skin (bought with Paper and
 picked in Customize's **Skins** tab; a **Trails** tab lists trails, not drawn yet). Shape skins (the Origami Crane) are
 fitted by `SkinShapes.luau` from `config/skin-shapes.json` (the crane: five pieces uploaded 2026-11-13, guns hung under
-the wings with their whole length under the wing, drawn shots start from the moved gun; the body's belly stops at the real body's bottom
+the wings with their whole length under the wing, drawn shots start from the moved gun and its moving pieces (`WeaponMotion.luau`)
+move from there, the real ones staying hidden at the desk too; the body's belly stops at the real body's bottom
 and its roof is low, and the wings, neck and tail join the stretched body's side edge; boosters wear its printed sheet,
 uploaded 2026-11-14, and move straight up or down, never turned or resized, until their top touches the belly's middle,
 `ref.keel` in the config; their tape strap's top tucks inside) ([skins plan](../plan/SKINS-PLAN.md)). Under a shape skin

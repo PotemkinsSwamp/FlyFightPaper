@@ -9,7 +9,7 @@
   are in the [notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md) and [skin rules](../docs/decisions/2026-11-13-skin-rules.md).
 
 # Now: finish the game for the beta
-Next: the crane's moving gun pieces drawn at the old gun spot (WeaponMotion), the Toilet Roll shake in flight; skin
+Next: the Toilet Roll shake in flight (the crane's moving gun pieces now follow the moved guns, 2026-11-14); skin
 art runs in its own session (model sheets picked: Shark Jet A, Dragon B; Dragon-head Blender test next), then the
 six printed skins, Shark Jet, Dragon, the three trails
 ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town

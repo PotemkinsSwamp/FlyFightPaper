@@ -164,7 +164,7 @@ attackers can each have two; this is not a global target shield.
 | `src/client/CombatController.luau` | Mouse buttons to weapon groups, sends shots to the server |
 | `src/client/CombatEffects.luau` | Your own shots drawn on the click frame, tracers, hit markers, damage ring |
 | `src/client/Spitballs.luau` | Wet blobs on planes and the splatter on your screen for stuck spitballs |
-| `src/client/WeaponMotion.luau` | Launcher pieces moving when they fire |
+| `src/client/WeaponMotion.luau` | Launcher pieces moving when they fire (under a shape skin, from the moved gun) |
 | `src/shared/CombatRules.luau` | Heat, reloads, bullet drop and drag, eraser homing, hit tests |
 | `src/shared/WeaponLoadouts.luau` | Weapon choice to a legal starter loadout |
 | `src/server/CombatService.luau` | The server's final word on every shot and hit |
