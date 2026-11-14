@@ -135,6 +135,19 @@ function Aircraft.paint(model)
  end
  if owner and not body.Anchored then body:SetNetworkOwner(owner) end
 end
+-- How far `parts` reach from `frame` on each axis: half the box the fitted parts fill around the flight body (tail fins
+-- rise up to 4 studs past the 14x2x15 box). Twice it is the plane's ContactSize, which FlightRules.contact gates its
+-- exact-shape test on (FlightService widens it for a shape skin's turned wings).
+function Aircraft.reach(frame,parts)
+ local reach=Vector3.zero
+ for _,part in ipairs(parts) do if part:IsA("BasePart") then
+  for i=0,7 do
+   local corner=part.Size/2*Vector3.new(i%2*2-1,math.floor(i/2)%2*2-1,math.floor(i/4)*2-1)
+   reach=reach:Max(frame:PointToObjectSpace(part.CFrame:PointToWorldSpace(corner)):Abs())
+  end
+ end end
+ return reach
+end
 function Aircraft.build(model,loadout,catalog,preview)
  local assets=Root:FindFirstChild("Assets")
  local library=assets and assets:FindFirstChild("AircraftParts")
@@ -225,16 +238,7 @@ function Aircraft.build(model,loadout,catalog,preview)
   put(template,"Booster",Vector3.new(0,.9,2.4)*factor,template.CFrame.Rotation)
  end
  if body then body.Size=Vector3.new(14,2,15)*factor end
- -- The box the fitted parts fill around the flight body (tail fins rise up to 4 studs past the 14x2x15 box):
- -- FlightRules.contact gates its exact-shape test on it.
- local frame,reach=body and body.CFrame or CFrame.identity,Vector3.zero
- for _,part in ipairs(appearance:GetChildren()) do if part:IsA("BasePart") then
-  for i=0,7 do
-   local corner=part.Size/2*Vector3.new(i%2*2-1,math.floor(i/2)%2*2-1,math.floor(i/4)*2-1)
-   reach=reach:Max(frame:PointToObjectSpace(part.CFrame:PointToWorldSpace(corner)):Abs())
-  end
- end end
- model:SetAttribute("ContactSize",reach*2)
+ model:SetAttribute("ContactSize",Aircraft.reach(body and body.CFrame or CFrame.identity,appearance:GetChildren())*2)
  Aircraft.paint(model)
  if not model:GetAttribute("PaintBound") then
   model:SetAttribute("PaintBound",true)

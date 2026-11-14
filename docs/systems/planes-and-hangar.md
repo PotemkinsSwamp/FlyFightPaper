@@ -5,7 +5,7 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-11-13)
+## Where it stands (2026-11-14)
 **Skins (Studio only):** a plane with a `Skin` attribute (bots get one by difficulty from `FlightService`) is
 drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); the "Dev: skin" button tries the test
 skins on your plane. Boosters and the hangar photo wear it too. Players wear their saved skin (bought with Paper and
@@ -13,7 +13,10 @@ picked in Customize's **Skins** tab; a **Trails** tab lists trails, not drawn ye
 fitted by `SkinShapes.luau` from `config/skin-shapes.json` (the crane: five pieces uploaded 2026-11-13, guns hung under
 the wings with their whole length under the wing, drawn shots start from the moved gun; the body's belly stops at the real body's bottom
 and its roof is low, and the wings, neck and tail join the stretched body's side edge; boosters wear its printed sheet,
-uploaded 2026-11-14) ([skins plan](../plan/SKINS-PLAN.md)).
+uploaded 2026-11-14) ([skins plan](../plan/SKINS-PLAN.md)). Under a shape skin the server turns the real wings' hit and
+crash shapes up to the skin's wing angle and puts the guns' where the screen draws them, by the same fit
+(`SkinFit.luau`; built 2026-11-14, checked in Play on two builds: wings 32 degrees, same size, guns exactly on the drawn
+ones; not yet flown past walls).
 The shelf's big photo and its cubbies wear your skin too; a crash crumples into a ball of the skin's printed pieces.
 A skin you don't own shows Buy (or Unlock now); Studio's try-on is only the "Dev: skin" button (it lists the crane).
 The hangar keeps each plane photo between clicks and swaps a new plane in only once it has loaded; after a buy the
@@ -113,7 +116,9 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/client/Hangar.luau` | Main-menu hangar: the shelf screen, stat sheet, name label, plane photo |
 | `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build or class (tests for classes: `tests/unit/Classes.spec.luau`) |
 | `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the Skins and Trails tabs (try on, Wear, Buy, Unlock now, Take off) |
-| `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): places and sizes the skin's pieces from the plane's own parts on this screen, hides what they cover, hangs the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |
+| `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): draws the skin's pieces on this screen where `SkinFit` puts them, hides what they cover, draws the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |
+| `src/shared/SkinFit.luau` | Shape skins' one fit for screen and server: measures the plane's parts, places the skin's pieces, and says where each real wing turns (about the drawn hinge) and each gun hangs |
+| `tests/unit/SkinFit.spec.luau` | Under the crane, on two builds: wing shapes turn by its angle about the drawn hinge at the same size, gun shapes move by the screen's offsets, crash shapes refit on a skin change; no shape skin moves nothing |
 | `src/server/HangarService.luau` | Saving builds and buying parts |
 
 ## Tuning numbers

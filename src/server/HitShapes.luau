@@ -2,7 +2,9 @@
 -- tail, mounted weapons, booster). Each pilot gets a private copy of their plane in a server-only WorldModel,
 -- and a shot is tested by sweeping the projectile's own box through that copy, posed where the target was.
 local AssetService=game:GetService("AssetService")
-local Rules=require(game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper").Shared.CombatRules)
+local Shared=game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper").Shared
+local Rules=require(Shared.CombatRules)
+local SkinFit=require(Shared.SkinFit)
 local Shapes={}
 local world=Instance.new("WorldModel");world.Name="HitShapes";world.Parent=game:GetService("ServerStorage")
 local params=RaycastParams.new();params.FilterType=Enum.RaycastFilterType.Include
@@ -39,21 +41,40 @@ function Shapes.solid(part)
 	return piece,source~=nil
 end
 
--- The copy sits at the origin in the plane's own frame; rebuilt when the plane is rebuilt or shapes finish loading.
+-- A stand-in for every MeshPart in `appearance` (pieces[i] for parts[i]), placed in the plane's own frame (`frame`: its
+-- Root's CFrame). Under a shape skin (SkinFit) the wings turn up about the drawn hinge and the guns hang where the skin
+-- draws them: shots and crashes meet the plane you see (Alan 2026-11-14, docs/plan/SKINS-PLAN.md "Wing-hitbox tilt").
+-- Same sizes either way. A piece still waiting for its precise shape is a plain Part. The crash Colliders
+-- (FlightService) and the hit copies use this.
+function Shapes.place(appearance,frame,skin)
+	local fitted=SkinFit.plane(skin,appearance,frame)
+	local pieces,parts={},{}
+	for _,part in ipairs(appearance:GetChildren()) do
+		if part:IsA("MeshPart") then
+			local piece=Shapes.solid(part)
+			local move=fitted and (fitted.wings[part] or fitted.guns[part]) or CFrame.identity
+			piece.Name=part.Name;piece.CFrame=move*frame:ToObjectSpace(part.CFrame)
+			table.insert(pieces,piece);table.insert(parts,part)
+		end
+	end
+	return pieces,parts
+end
+
+-- The copy sits at the origin in the plane's own frame; rebuilt when the plane's parts or skin change or shapes finish loading.
 local function copyOf(p)
 	local copy=copies[p.id]
 	local appearance=p.model:FindFirstChild("Appearance")
 	if not appearance then return nil end
-	if copy and copy.model==p.model and copy.complete then return copy end
+	if copy and copy.appearance==appearance and copy.skin==p.skin and copy.complete then return copy end
 	if copy then copy.folder:Destroy() end
-	copy={model=p.model,folder=Instance.new("Model"),complete=true}
-	for _,part in ipairs(appearance:GetChildren()) do
-		if part:IsA("MeshPart") and part.Transparency<1 then -- hidden placeholder stickers are not hit shapes
-			-- ponytail: until the precise shape arrives (well under a second) the part's own box stands in.
-			local piece,exact=Shapes.solid(part)
-			if not exact then copy.complete=false end
-			piece.CFrame=p.body.CFrame:ToObjectSpace(part.CFrame);piece.Anchored=true;piece.CanQuery=true;piece.Parent=copy.folder
-		end
+	-- ponytail: until the precise shapes arrive (well under a second) each part's own box stands in.
+	local pieces,parts=Shapes.place(appearance,p.body.CFrame,p.skin)
+	copy={appearance=appearance,skin=p.skin,folder=Instance.new("Model"),complete=true}
+	for i,piece in ipairs(pieces) do
+		if parts[i].Transparency<1 then -- hidden placeholder stickers are not hit shapes
+			copy.complete=copy.complete and piece:IsA("MeshPart")
+			piece.Anchored=true;piece.CanQuery=true;piece.Parent=copy.folder
+		else piece:Destroy() end
 	end
 	copy.folder.Parent=world;copies[p.id]=copy
 	return copy

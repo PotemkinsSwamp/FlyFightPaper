@@ -23,6 +23,7 @@ local Aircraft=require(Root.Shared.Aircraft)
 local Looks=require(Root.Shared.LooksRules)
 local Roster=require(Root.Shared.BotRosterRules)
 local HitShapes=require(script.Parent.HitShapes)
+local SkinFit=require(Root.Shared.SkinFit)
 local DuctRules=require(Root.Shared.DuctRules)
 local MonorailRules=require(Root.Shared.MonorailRules)
 local Course=require(Root.Shared.TrainingCourse)
@@ -207,13 +208,7 @@ function Service:build(p)
  local color=Color3.fromHSV((p.seat*.133)%1,0.65,0.9)
  if Aircraft.build(model,p.loadout,self.catalog,false) then
   for _,part in ipairs(model:GetChildren()) do if part:IsA("BasePart") and part~=body then part:Destroy() end end
-  -- Invisible exact copies of every part (body, nose, wings, tail, mounts, booster), welded on.
-  local colliders=Instance.new("Folder");colliders.Name="Colliders";colliders.Parent=model
-  for _,part in ipairs(model.Appearance:GetChildren()) do if part:IsA("MeshPart") then
-   local piece=HitShapes.solid(part);piece.Name=part.Name;piece.CFrame=part.CFrame;piece.Transparency=1;piece.Massless=true
-   piece.Anchored=false;piece.CanQuery=true;piece.CastShadow=false;piece.Parent=colliders
-   local weld=Instance.new("WeldConstraint");weld.Part0=body;weld.Part1=piece;weld.Parent=piece
-  end end
+  self:colliders(p,model)
  end
  local attachment=Instance.new("Attachment");attachment.Name="FlightAttachment";attachment.Parent=body
  local drive=Instance.new("LinearVelocity");drive.Name="ForwardVelocity";drive.Attachment0=attachment;drive.RelativeTo=Enum.ActuatorRelativeTo.World
@@ -232,6 +227,34 @@ function Service:build(p)
  p.boostHeld=false;model:SetAttribute("BoostMax",utility and utility.boost_seconds or 0);model:SetAttribute("Boost",utility and utility.boost_seconds or 0);model:SetAttribute("BoostSpeedFactor",1)
  p.padKey="desk:"..p.seat;self.padReservations[p.padKey]=p.id
  if self.onSpawn then self.onSpawn(p) end
+end
+-- Invisible exact copies of every part (body, nose, wings, tail, mounts, booster), welded on: what the plane crashes
+-- and rams with. Under a shape skin the wings turn up and the guns sit where the skin draws them (HitShapes.place);
+-- rebuilt when the parts or the skin change.
+function Service:colliders(p,model)
+ model=model or p.model
+ local body=model.Root
+ local old=model:FindFirstChild("Colliders");if old then old:Destroy() end
+ local colliders=Instance.new("Folder");colliders.Name="Colliders"
+ for _,piece in ipairs((HitShapes.place(model.Appearance,body.CFrame,p.skin))) do
+  piece.CFrame=body.CFrame*piece.CFrame;piece.Transparency=1;piece.Massless=true
+  piece.Anchored=false;piece.CanQuery=true;piece.CastShadow=false;piece.Parent=colliders
+  local weld=Instance.new("WeldConstraint");weld.Part0=body;weld.Part1=piece;weld.Parent=piece
+ end
+ colliders.Parent=model
+ -- A turned wing reaches higher than the flat one: the contact gate must still cover it.
+ local frame=body.CFrame
+ model:SetAttribute("ContactSize",Aircraft.reach(frame,model.Appearance:GetChildren()):Max(Aircraft.reach(frame,colliders:GetChildren()))*2)
+ -- Parts welded on can hand a flying plane back to the server (see refold): give it back to its pilot.
+ if p.player and not body.Anchored then body:SetNetworkOwner(p.player) end
+end
+-- A new skin or trail, worn now (HangarService "wearLook"): a shape skin also moves the plane's crash and hit shapes.
+function Service:wear(p,skin,trail)
+ local shaped=SkinFit.has(p.skin) or SkinFit.has(skin)
+ p.skin,p.trail=skin,trail
+ if not p.model then return end
+ p.model:SetAttribute("Skin",skin);p.model:SetAttribute("Trail",trail)
+ if shaped and p.model:FindFirstChild("Colliders") then self:colliders(p) end
 end
 function Service:replace(p)
  if p.testLoadout then p.loadout=p.testLoadout
@@ -300,7 +323,7 @@ function Service:protected(p,now)
 end
 function Service:refold(p,loadout)
  p.loadout=loadout;p.stats=assert(self.catalog:deriveStats(loadout))
- Aircraft.build(p.model,loadout,self.catalog,false)
+ if Aircraft.build(p.model,loadout,self.catalog,false) then self:colliders(p) end -- the old crash shapes were the old build's
  -- New parts welded on can hand the plane back to the server, which then flies it straight off (Alan 2026-10-19,
  -- swapping loadouts in the Range): give it back to its pilot.
  if p.player and not p.body.Anchored then p.body:SetNetworkOwner(p.player) end

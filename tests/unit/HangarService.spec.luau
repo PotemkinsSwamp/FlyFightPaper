@@ -1,5 +1,6 @@
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Hangar=require(game.ServerScriptService.FlyFightPaper.HangarService)
+local Flight=require(game.ServerScriptService.FlyFightPaper.FlightService) -- its real wear (skin and trail onto the plane)
 local Catalog=require(Root.Shared.Catalog)
 local Schema=require(Root.Shared.ProfileSchema)
 local Looks=require(Root.Shared.LooksRules)
@@ -20,7 +21,7 @@ function Spec.run()
 		end
 		local player={attributes={}}
 		function player:SetAttribute(key,value) self.attributes[key]=value end
-		return Hangar.new({catalog=catalog,pilots={}},profiles),player,profiles,catalog,profile
+		return Hangar.new({catalog=catalog,pilots={},wear=Flight.wear},profiles),player,profiles,catalog,profile
 	end
 	test("buying a look previews without changing the profile and queues only its server purchase fields",function()
 		local service,player,profiles,_,profile=fixture();local item=Looks.item("shark_jet")

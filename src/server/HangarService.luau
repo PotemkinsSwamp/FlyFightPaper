@@ -222,10 +222,7 @@ function Service:handle(player,action,value)
   self:enqueue(player,{kind="lookWear",skinID=skinID,trailID=trailID},function(ok)
    if not ok then return end
    local p=self.flight.pilots[player]
-   if p then
-    p.skin,p.trail=skinID~="" and skinID or nil,trailID~="" and trailID or nil
-    if p.model then p.model:SetAttribute("Skin",p.skin);p.model:SetAttribute("Trail",p.trail) end
-   end
+   if p then self.flight:wear(p,skinID~="" and skinID or nil,trailID~="" and trailID or nil) end
   end)
  elseif action=="prestige" then
   -- From the menus only (docs/systems/economy-and-shop.md "Prestige"); the save rules re-check everything.

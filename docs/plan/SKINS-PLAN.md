@@ -3,7 +3,7 @@
 **Status:** building the first batch (2026-11-13). Printed-sheet Commons and Rares work in Studio (Alan OK'd, test
 pictures; [playtest](../playtests/2026-11-13-printed-sheet-skins.md)); buying with Paper, wearing and the Skins and
 Trails tabs built; boosters wear printed skins. The Origami Crane (first Mythical) is in the game as five fitted pieces
-(`SkinShapes.luau`), with playtest bugs to fix and the wing-hitbox tilt and its printed sheet next
+(`SkinShapes.luau`), with playtest bugs to fix and its printed sheet next; the wing-hitbox tilt is built
 ([playtest](../playtests/2026-11-13-crane-and-skins-tabs.md)). Still to make: real pictures, Shark Jet, Dragon,
 trails. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
 the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top of the
@@ -20,7 +20,8 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
 ## How the game fits one design to any plane
 - **Hitbox:** the server tests shots against the real shapes of your plane's parts (`src/server/HitShapes.luau`).
   It copies every visible piece, so skins are drawn (and the real parts hidden) only on players' screens; the
-  server's copy never sees a skin (see "Keeping skins cheap").
+  server's copy never sees a skin (see "Keeping skins cheap"), except that a shape skin turns the wings and moves the
+  guns (below).
 - **Common and Rare: a printed sheet.** Think of drawing on the paper before folding the plane. Each skin is one
   picture laid out like a flat plane seen from above (nose area, body stripe, wing areas, tail area). Every part's
   pieces get their picture position from where they sit on the plane, so any wings show the sheet's wing art and any
@@ -42,6 +43,7 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
 - **Players are told:** "Skins change how you look, never your hitbox", on the shop card and the Looks tab.
 
 ## Wing-hitbox tilt: how it works (Alan OK'd it 2026-11-14, guns too)
+**Built 2026-11-14** (`src/shared/SkinFit.luau`, guns included); the Studio flight past walls is still to do.
 From his ruling in the [skin rules](../decisions/2026-11-13-skin-rules.md) (a shape skin may tilt the wing hitbox, never
 resize it).
 - **What changes:** when a plane wears a shape skin whose wings rise, the server turns each real wing's hit shape and
