@@ -21,14 +21,15 @@ Tools beside this file (run from the repo root, e.g. `python .claude/skills/conc
 written `sheet_tools.py` below): `measure.py` (marked-up measuring sheet, colours), `overlay.py` (model over a one-angle
 concept), `sheet_tools.py` (grid, piece map and count check, trace,
 score; `plate()` builds a traced plate).
-Builder for model sheets: `tools/art/sheet_model.py` (body loft, painting from the sheet, tubes; it needs to
-learn `plate()` parts and `"map"` numbers, a small change to that file). House rules:
+Builder for model sheets: `tools/art/sheet_model.py` (body loft, painting from the sheet, tubes, traced `"kind":
+"plate"` parts carrying their `"map"` number; it writes `mesh.npz` for the checks). House rules:
 [lessons, "Making 3D models"](../../../docs/workshop/lessons.md#making-3d-models),
 [skin rules](../../../docs/decisions/2026-11-13-skin-rules.md). Holds as always: no upload, Save to File or Studio Play
 without Alan's go.
 
 ## 1. Get the sheet in order
-- **Master views:** the side gives length and height, the top gives width. The front view only says which way pieces
+- **Master views:** the side gives length and height, the top gives width, unless Alan ranks the views otherwise
+  (Dragon: the side view is drawn unlike the others, so top, three-quarter and front lead and the side only supports). The front view only says which way pieces
   face, never sizes (the Dragon's front draws the head 1.6x too wide). The three-quarter view is the likeness check at
   the end, not a source of sizes.
 - **Clash check before anything else:** compare every size two views share (length: side and top; height: side and
@@ -128,8 +129,9 @@ Fix in this order and don't move on while an earlier check fails: pieces, outlin
 colours, reviewer. The same failure twice means stop: write the lesson, rethink the method, then rebuild.
 For checks, render orthographic, from cameras framed on the model's bounding box, all views tiled into one
 contact sheet (the sheet's views beside them) so one picture shows everything.
-1. **Pieces:** render the model with each map piece in its own flat colour from the top, the side and the front,
-   beside the piece map: same count, same places, same directions, same bends? This catches what the score can't
+1. **Pieces:** `python sheet_tools.py views OUT/mesh.npz OUT` renders each map piece in its own flat colour from
+   the top, the side and the front (`pieces-*.png`) and the silhouettes for the score (`sil-side.png`, `sil-top.png`);
+   lay them beside the piece map: same count, same places, same directions, same bends? This catches what the score can't
    (two overlapping horns make one outline).
 2. **Score and landmarks:** render the model as a flat silhouette (one colour, transparent background) from the side
    and from the top, then
@@ -137,7 +139,8 @@ contact sheet (the sheet's views beside them) so one picture shows everything.
    horns included, as a share of the length; clip: compare only that far, e.g. where a head test ends). Aim for 0.9
    or better on the part being built (the hybrid Dragon head scores 0.87 from the side). Red on the picture: model
    too small there; blue: too big; it prints where along the body the biggest misses are. It judges the outline
-   only. Landmarks: every named point on the render lies within 2% of the length of its place on the sheet.
+   only (the background is read from the whole sheet: a crop's corner can sit on the model and wreck it). Landmarks:
+   every named point on the render lies within 2% of the length of its place on the sheet.
 3. **Likeness:** the three-quarter view laid over the sheet's (`overlay.py`, or the window's camera matched to it).
 4. **Other views:** straight above, behind and above (the game camera), the front, the back, edge-on. Nothing may
    shrink to a line; the painted skin must hold up where no sheet view looked (back, edges, underside). Check the

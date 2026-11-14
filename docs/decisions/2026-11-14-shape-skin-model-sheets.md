@@ -29,6 +29,11 @@
   top views (the sheet's front view draws head and body 1.6x wider). The body follows your plane's width (wider than
   drawn on every plane); the head keeps its drawn size and the neck widens into the body (he did not want the head to
   grow on big planes).
+  **Then, for the head built with the upgraded skill (Alan, same day):** the sheet's SIDE view is drawn unlike the
+  others and is the least trusted; build from the top, three-quarter and front views and use the side only for support
+  (heights). Read that way, each side of the head has an accent blade ahead of the eye, two small horns above the eye,
+  one big horn at the back, plus the eye, the gold trim under the eye that runs to the mouth, a cheek guard and the
+  snout's gold rim. The big plate the side view draws under the big horn is left out (no other view has it).
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:

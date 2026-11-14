@@ -23,7 +23,9 @@ points in sheet pixels):
   parts [{name (unique), color [r, g, b] (optional), mirror (default true), and either
           spine [[x, y, z], ...], radius [r, ...] (one per spine point; or [across, up] pairs), sides   (a tube), or
           kind "blade", base [x, y, z], tip [x, y, z], width, thick, facing [x, y, z] (optional; default: out from
-          the head's middle line)}],
+          the head's middle line), or
+          kind "plate", outline, tip, view, offset, tilt, thick (a traced plate: sheet_tools.plate, concept-to-blender
+          skill), map (its number on the piece map)}],
   cut (optional pixels: the sheet's drawings of built pieces are cut out of the painted skin, this much wider),
   sun, ambient (optional render light strengths, default 1.5 and 1.0: plain-colour pieces want about 3.5 and 0.45),
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
@@ -210,9 +212,15 @@ def blade(name, base, tip, width, thick, facing, mirror):
         for f in ((B_, R, up), (R, T, up), (T, Lf, up), (Lf, B_, up), (R, B_, dn), (T, R, dn), (Lf, T, dn), (B_, Lf, dn)):
             Fc.append(f); PART.append(name)
 
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "../../.claude/skills/concept-to-blender"))
+import sheet_tools                                                  # traced plates (concept-to-blender skill)
 for p in spec.get("parts", []):
     if p.get("kind") == "blade":
         blade(p["name"], p["base"], p["tip"], p["width"], p.get("thick", p["width"] * 0.25), p.get("facing"), p.get("mirror", True))
+    elif p.get("kind") == "plate":                                  # a traced outline (sheet_tools.py pieces)
+        new = sheet_tools.plate(V, Fc, p["outline"], p["tip"], p.get("view", "side"), p.get("offset", 0.0),
+                                p.get("thick", 0.004), p.get("ridge", 0.35), p.get("tilt", 0.0), mirror=p.get("mirror", True))
+        PART.extend([p["name"]] * len(new))
     else: tube(p["name"], p["spine"], p["radius"], p.get("sides", 6), p.get("mirror", True))
 PSPEC = {p["name"]: p for p in spec.get("parts", [])}; PNAMES = ["body"] + list(PSPEC)
 
@@ -225,6 +233,8 @@ for poly in me.polygons:      # pieces with a plain colour are faceted (flat lit
     nm = PNAMES[poly.material_index]
     poly.use_smooth = bool(B.get("smooth", False)) if nm == "body" else not PSPEC[nm].get("color")
 TPART = np.array([p.material_index for p in me.polygons])
+np.savez(os.path.join(OUT, "mesh.npz"), V=np.array([v.co[:] for v in me.vertices]), T=np.array([p.vertices[:] for p in me.polygons]),
+         part=TPART, names=np.array(PNAMES), map=np.array([0] + [PSPEC[n].get("map", 0) for n in PNAMES[1:]]))  # sheet_tools.py views
 for poly in me.polygons: poly.material_index = 0                                  # one material, one texture
 for o in bpy.data.objects: o.select_set(o is ob)
 bpy.context.view_layer.objects.active = ob

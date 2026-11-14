@@ -6,6 +6,7 @@ Part of the concept-to-blender skill. Plain Python (numpy; PIL and scipy only fo
     python sheet_tools.py map MAP.json [BUILD_SPEC.json]             numbered piece map of every view; counts vs the build
     python sheet_tools.py pieces SPEC.json                           plates and spines in model units + a check picture
     python sheet_tools.py score SHEET RENDER OUT nx ny L [upto clip] how well a render's outline matches the sheet's view
+    python sheet_tools.py views MESH.npz OUT                         piece-coloured and silhouette renders of a build
     python sheet_tools.py test                                       self-check
 
 Model units: nose tip 0 -> tail tip 1 along x; y across; z up (the same as tools/art/sheet_model.py).
@@ -261,7 +262,7 @@ def count_check(pieces, parts):
         if "map" not in part: problems.append("built part %s is not on the piece map" % part["name"]); continue
         built[part["map"]] = built.get(part["map"], 0) + (2 if part.get("mirror", True) else 1)
     for p in pieces:
-        if p.get("kind") != "body" and built.get(p["id"], 0) != p["count"]:
+        if p.get("kind") not in ("body", "paint", "later") and built.get(p["id"], 0) != p["count"]:   # painted / not in this build
             problems.append("piece %s (%s): built %d, the map says %d" % (p["id"], p["name"], built.get(p["id"], 0), p["count"]))
     return problems
 
@@ -288,7 +289,7 @@ def score(sheet, render, out, nx, ny, L, upto=1.0, clip=None):
     W, H = int(L * upto) + 1, int(mr.shape[0] * k) + 1; top = int(ny - ry * k)
     mr = np.asarray(Image.fromarray(mr).resize((int(mr.shape[1] * k), int(mr.shape[0] * k)), Image.NEAREST))
     mr = mr[:, int(rx0 * k):int(rx0 * k) + W]
-    ms = _mask(S.crop((int(nx), top, int(nx) + mr.shape[1], top + mr.shape[0])), halo=2)
+    ms = _mask(S, halo=2)[top:top + mr.shape[0], int(nx):int(nx) + mr.shape[1]]   # whole sheet: a crop's corner can sit on the model
     h, w = min(ms.shape[0], mr.shape[0]), min(ms.shape[1], mr.shape[1], int(L * (clip or upto)) + 1); ms, mr = ms[:h, :w], mr[:h, :w]
     iou = (ms & mr).sum() / max((ms | mr).sum(), 1)
     pic = np.full((h, w, 3), 245, np.uint8); pic[ms & mr] = (150, 150, 150); pic[ms & ~mr] = (220, 40, 40); pic[mr & ~ms] = (40, 90, 230)
@@ -300,6 +301,34 @@ def score(sheet, render, out, nx, ny, L, upto=1.0, clip=None):
             cy, cx = nd.center_of_mass(lab == i + 1)
             print("  %s: %d px around x=%.3f of the length" % (name, sizes[i], cx / L))
     return iou
+
+
+def views(mesh, out, px=1000):
+    """Check renders straight from the built mesh (sheet_model.py writes OUT/mesh.npz): each map piece in its own flat
+    colour from the top, side and front (pieces-*.png; the body grey), and black silhouettes on white for `score`
+    (sil-side.png, sil-top.png). Orthographic, nose to the left, px pixels per model unit length."""
+    from PIL import Image
+    m = np.load(mesh); V, T, part, mp = m["V"], m["T"], m["part"], m["map"]
+    pal = [(150, 150, 150)] + [tuple(int(c) for c in np.random.RandomState(k).randint(40, 230, 3)) for k in range(1, 40)]
+    cams = {"side": (V[:, 0], -V[:, 2], -V[:, 1]), "top": (V[:, 0], V[:, 1], V[:, 2]), "front": (V[:, 1], -V[:, 2], -V[:, 0])}
+    for v, (sx, sy, D) in cams.items():                        # screen right, screen down, nearer the camera = bigger
+        x0, y0 = sx.min(), sy.min(); W, H = int((sx.max() - x0) * px) + 4, int((sy.max() - y0) * px) + 4
+        X, Y = (sx - x0) * px + 2, (sy - y0) * px + 2
+        zb = np.full((H, W), -1e9); img = np.full((H, W, 3), 255, np.uint8)
+        for t, pt in zip(T, part):
+            a = np.c_[X[t], Y[t]]; xa, ya = np.floor(a.min(0)).astype(int); xb, yb = np.ceil(a.max(0)).astype(int) + 1
+            xs, ys = np.meshgrid(np.arange(xa, xb) + 0.5, np.arange(ya, yb) + 0.5)
+            (p0, p1, p2) = a; den = (p1[1] - p2[1]) * (p0[0] - p2[0]) + (p2[0] - p1[0]) * (p0[1] - p2[1])
+            if abs(den) < 1e-12: continue
+            l0 = ((p1[1] - p2[1]) * (xs - p2[0]) + (p2[0] - p1[0]) * (ys - p2[1])) / den
+            l1 = ((p2[1] - p0[1]) * (xs - p2[0]) + (p0[0] - p2[0]) * (ys - p2[1])) / den; l2 = 1 - l0 - l1
+            k = (l0 >= 0) & (l1 >= 0) & (l2 >= 0); d = l0 * D[t[0]] + l1 * D[t[1]] + l2 * D[t[2]]
+            yy, xx = (ys[k] - 0.5).astype(int), (xs[k] - 0.5).astype(int); nearer = d[k] > zb[yy, xx]
+            zb[yy[nearer], xx[nearer]] = d[k][nearer]; img[yy[nearer], xx[nearer]] = pal[int(mp[pt])]
+        Image.fromarray(img).save(os.path.join(out, "pieces-%s.png" % v))
+        if v != "front":
+            sil = np.where((zb > -1e9)[..., None], 0, 255).astype(np.uint8).repeat(3, 2); Image.fromarray(sil).save(os.path.join(out, "sil-%s.png" % v))
+    print("pieces-side/top/front.png, sil-side/top.png in", out)
 
 
 def test():
@@ -336,4 +365,5 @@ if __name__ == "__main__":
     elif cmd == "map": piece_map(a[0], a[1] if len(a) > 1 else None)
     elif cmd == "pieces": pieces(a[0])
     elif cmd == "score": score(a[0], a[1], a[2], *map(float, a[3:8]))
+    elif cmd == "views": views(a[0], a[1])
     elif cmd == "test": test()
