@@ -61,7 +61,7 @@ local function fit(shape, o)
 	local rise = math.rad(K.RISE)
 	local s = (o.zT - o.zN) / 16
 	local wy = o.wy
-	local cw = clamp(0.95 * o.bw, 0.9 * s, 1.7 * s)
+	local cw = clamp(0.8 * o.bw, 0.9 * s, 1.3 * s) -- (Alan 2026-11-14: wider looked odd; the starter's own shape is 1.29 s)
 	local ky = math.min(o.by0, o.boostY or o.by0)
 	local zF, zB = o.bz0 + 0.2 * s, o.bz1 - 0.2 * s
 	local blen = zB - zF

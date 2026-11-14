@@ -18,6 +18,8 @@ local Hangar = {}
 -- Studio dev mode: every part counts as owned at the level cap, and "Fly this build" sends the draft straight
 -- to your plane for testing. Nothing here is saved or bought; live servers ignore it.
 local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+local ContentProvider = game:GetService("ContentProvider")
 -- Not with the level test account (Alan's dev switch, docs/workshop/testing.md): it shows what that player sees.
 local function devMode() return RunService:IsStudio() and game.Players.LocalPlayer:GetAttribute("DevAll") ~= false end
 local everything = {}
@@ -70,6 +72,7 @@ function Hangar.new(playerGui, api)
 		return plane ~= nil and plane:GetAttribute("Pinned") ~= nil
 	end
 	local profile, render
+	local kept = {} -- plane photos from the last redraw, by what they show (preview)
 
 	-- Back: from Customize to the shelf (unsaved changes ask once first), from the shelf out of the Hangar.
 	local back = button(sheet, "Back", Assets.range.stripRed, "Back", 22, 47, 300, 66, -3, function() -- the strip's own shape, clear of the photo
@@ -286,32 +289,73 @@ function Hangar.new(playerGui, api)
 			paper.ScaleType, paper.ImageColor3 = Enum.ScaleType.Stretch, state.range and Color3.fromRGB(235, 165, 195) or SKY_BLUE
 			vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74 - (under or 0)
 		end
-		local view = Instance.new("ViewportFrame")
-		view.Name, view.BackgroundTransparency = "PlanePreview", 1
-		view.Position, view.Size = UDim2.fromOffset(vx, vy), UDim2.fromOffset(vw, vh)
-		-- Softer fill and a warm key light so the folds show shading instead of flat colour.
-		view.Ambient, view.LightColor, view.LightDirection = Color3.fromRGB(140, 140, 150), Color3.fromRGB(255, 250, 235), Vector3.new(-0.6, -1, -0.4)
-		view.Parent = content
-		local world = Instance.new("WorldModel")
-		world.Parent = view
-		local model = Instance.new("Model")
-		model.Parent = world
-		Aircraft.build(model, draft, Catalog, true)
-		if skin then model:SetAttribute("Skin", skin); PlaneLooks.dress(model) end -- the skin you wear or are trying on
-		local camera = Instance.new("Camera")
-		camera.Parent, view.CurrentCamera, camera.FieldOfView = view, camera, 45
-		-- Every build fills the same frame (Alan): the camera backs off until the plane's longer side (wingspan or
-		-- nose to tail) nearly fills the frame's height; the wider frame takes the corners when it turns.
-		local center, size = model:GetBoundingBox()
-		-- (A frame taller than wide is limited by its width instead.)
-		local distance = math.max(size.X, size.Z) / 2 * 1.05 / math.sin(math.rad(camera.FieldOfView / 2)) / math.min(1, vw / vh)
-		local function aim()
-			local angle, pitch = state.angle, state.pitch
-			if diagram then angle, pitch = 0, -1.2 end
-			camera.CFrame = CFrame.new(center.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(pitch, 0, 0) * CFrame.new(0, 0, distance)
+		-- The same plane in the same spot as the last redraw keeps its photo; a new plane loads behind the old one and
+		-- swaps in when its pictures are ready (Alan 2026-11-14: every click reloaded the whole screen).
+		local spot = content.Name .. table.concat(box, ",")
+		local key = spot .. HttpService:JSONEncode({ draft, skin or "", diagram == true, under or 0 })
+		local view = kept[key]
+		kept[key] = nil
+		if view then
+			view.Parent = content
+		else
+			view = Instance.new("ViewportFrame")
+			view:SetAttribute("PlaneKey", key)
+			view.Name, view.BackgroundTransparency = "PlanePreview", 1
+			view.Position, view.Size = UDim2.fromOffset(vx, vy), UDim2.fromOffset(vw, vh)
+			-- Softer fill and a warm key light so the folds show shading instead of flat colour.
+			view.Ambient, view.LightColor, view.LightDirection = Color3.fromRGB(140, 140, 150), Color3.fromRGB(255, 250, 235), Vector3.new(-0.6, -1, -0.4)
+			view.Parent = content
+			local world = Instance.new("WorldModel")
+			world.Parent = view
+			local model = Instance.new("Model")
+			model.Parent = world
+			Aircraft.build(model, draft, Catalog, true)
+			if skin then model:SetAttribute("Skin", skin); PlaneLooks.dress(model) end -- the skin you wear or are trying on
+			local camera = Instance.new("Camera")
+			camera.Parent, view.CurrentCamera, camera.FieldOfView = view, camera, 45
+			-- Every build fills the same frame (Alan): the camera backs off until the plane's longer side (wingspan or
+			-- nose to tail) nearly fills the frame's height; the wider frame takes the corners when it turns.
+			local center, size = model:GetBoundingBox()
+			-- (A frame taller than wide is limited by its width instead.)
+			local distance = math.max(size.X, size.Z) / 2 * 1.05 / math.sin(math.rad(camera.FieldOfView / 2)) / math.min(1, vw / vh)
+			local function aim()
+				local angle, pitch = state.angle, state.pitch
+				if diagram then angle, pitch = 0, -1.2 end
+				camera.CFrame = CFrame.new(center.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(pitch, 0, 0) * CFrame.new(0, 0, distance)
+			end
+			aim()
+			-- Drag to turn the plane (mouse or a finger): sideways spins it, up and down tips it over to see the top or the
+			-- underside.
+			local last, finger
+			local function press(input) return input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch end
+			view.InputBegan:Connect(function(input) if press(input) then last, finger = input.Position, input end end)
+			view.InputEnded:Connect(function(input) if input == finger or input.UserInputType == Enum.UserInputType.MouseButton1 then last, finger = nil, nil end end)
+			view.InputChanged:Connect(function(input)
+				if last and not diagram and (input.UserInputType == Enum.UserInputType.MouseMovement or input == finger) then
+					state.angle += (input.Position.X - last.X) * 0.015
+					state.pitch = math.clamp(state.pitch - (input.Position.Y - last.Y) * 0.015, -1.5, 1.5)
+					last = input.Position; aim()
+				end
+			end)
+			-- Turns slowly by itself while nobody is dragging it.
+			local spin = RunService.RenderStepped:Connect(function(dt) if not last and not diagram then state.angle += dt * 0.35; aim() end end)
+			view.Destroying:Connect(function() spin:Disconnect() end)
+			for oldKey, old in kept do
+				if string.sub(oldKey, 1, #spot) == spot then
+					kept[oldKey] = nil
+					old:SetAttribute("PlaneKey", nil) -- (the next redraw just clears it)
+					old.Parent, view.Visible = content, false
+					task.spawn(function()
+						ContentProvider:PreloadAsync({ model })
+						old:Destroy()
+						view.Visible = true
+					end)
+					break
+				end
+			end
 		end
-		aim()
 		if diagram then
+			local camera = view.CurrentCamera
 			local body = Catalog:get(draft.body)
 			local tan = math.tan(math.rad(camera.FieldOfView / 2))
 			for i = 1, body.mount_count do
@@ -330,22 +374,6 @@ function Hangar.new(playerGui, api)
 				ring.Thickness, ring.Color, ring.Parent = chosen and 5 or 3, chosen and Color3.fromRGB(255, 255, 255) or PaperUI.INK, tag
 			end
 		end
-		-- Drag to turn the plane (mouse or a finger): sideways spins it, up and down tips it over to see the top or the
-		-- underside.
-		local last, finger
-		local function press(input) return input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch end
-		view.InputBegan:Connect(function(input) if press(input) then last, finger = input.Position, input end end)
-		view.InputEnded:Connect(function(input) if input == finger or input.UserInputType == Enum.UserInputType.MouseButton1 then last, finger = nil, nil end end)
-		view.InputChanged:Connect(function(input)
-			if last and not diagram and (input.UserInputType == Enum.UserInputType.MouseMovement or input == finger) then
-				state.angle += (input.Position.X - last.X) * 0.015
-				state.pitch = math.clamp(state.pitch - (input.Position.Y - last.Y) * 0.015, -1.5, 1.5)
-				last = input.Position; aim()
-			end
-		end)
-		-- Turns slowly by itself while nobody is dragging it.
-		local spin = RunService.RenderStepped:Connect(function(dt) if not last and not diagram then state.angle += dt * 0.35; aim() end end)
-		view.Destroying:Connect(function() spin:Disconnect() end)
 	end
 
 	local function save(fly)
@@ -356,7 +384,15 @@ function Hangar.new(playerGui, api)
 	end
 
 	render = function()
+		-- Plane photos are lifted out before the clear-out; preview() reuses them, the rest go once this redraw is done.
+		local last = {}
+		for _, d in content:GetDescendants() do
+			local key = d:GetAttribute("PlaneKey")
+			if key then last[key] = d; d.Parent = nil end
+		end
 		for _, child in content:GetChildren() do child:Destroy() end
+		kept = last
+		task.defer(function() for _, v in last do if not v.Parent then v:Destroy() end end end)
 		shelf.frame.Visible, classShelf.frame.Visible = state.page == "shelf" and not state.classes, state.page == "shelf" and state.classes == true
 		if not profile then return end
 		local range = state.range and profile.rangePresets ~= nil

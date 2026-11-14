@@ -34,6 +34,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
  self.profileView=Instance.new("RemoteEvent");self.profileView.Name="ProfileView";self.profileView.Parent=Root
  self.action=Instance.new("RemoteEvent");self.action.Name="RoundAction";self.action.Parent=Root
  self.hangar=require(script.Parent.HangarService).new(flight,profiles,commerce)
+ self.hangar.onAnswer=function(player) self:sendProfile(player) end
  flight.selectedLoadout=function(player)
   local profile=profiles:view(player)
   if not profile then return nil end

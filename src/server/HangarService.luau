@@ -14,7 +14,9 @@ function Service.new(flight,profiles,commerce,deps)
  return setmetatable({flight=flight,profiles=profiles,commerce=commerce,catalog=flight.catalog,unix=deps.unix or os.time,
   now=deps.now or os.clock,users=deps.users or game:GetService("UserService"),giftChecks=setmetatable({},{__mode="k"})},Service)
 end
-function Service:message(player,text) player:SetAttribute("MenuMessage",text) end
+-- Every answer to a click also sends the fresh profile (Alan 2026-11-14: after Buy the screen waited for the 3-second
+-- refresh, then redrew). onAnswer: RoundRuntime's sendProfile.
+function Service:message(player,text) player:SetAttribute("MenuMessage",text);if self.onAnswer then self.onAnswer(player) end end
 function Service:giftSelf()
  return Run:IsStudio() and self.profiles.mock==true and workspace:GetAttribute("DevGiftSelf")==true
 end

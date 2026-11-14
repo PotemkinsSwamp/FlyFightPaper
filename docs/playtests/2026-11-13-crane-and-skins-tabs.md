@@ -30,4 +30,19 @@ Next session (2026-11-13, late), checked by clicking through in Studio Play:
 - **Booster under the crane:** needs the crane's printed sheet (next step; its upload is Alan's go).
 The wing-hitbox tilt: Alan's ruling is in the [skin rules](../decisions/2026-11-13-skin-rules.md); how-it-works note next.
 
+## Replay (2026-11-14)
+Alan replayed the fixes. Good: the crumpled ball wears the skin ("it actually looks good"). Still wrong:
+- **The crane's body is a little wide** and **the wings don't fully join the body** (his top-view screenshot).
+- **The booster still wore team paper:** the crane's printed sheet wasn't uploaded yet (waiting on his go).
+- **The hangar feels rigid:** every click visibly reloaded the whole screen; after Buy, Buy stayed up, then a moment
+  later the screen redrew ("like two UIs on top").
+- **Toilet Roll still jitters** (only that body).
+
+What changed the same day:
+- **Crane body:** at most the starter's own width (it grew up to a third wider on big bodies), so the roof between
+  the wings is narrower.
+- **Hangar:** the plane photo now stays put between clicks; a new plane loads behind the old one and swaps in when
+  ready (checked in Play: no blank frame). After any buy the server sends the fresh profile at once, instead of the
+  next 3-second refresh.
+
 Back to [playtests](README.md)
