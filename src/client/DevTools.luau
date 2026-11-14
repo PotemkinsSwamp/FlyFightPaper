@@ -135,14 +135,18 @@ function DevTools.start(menu)
 		gift.Text = now and "Dev: send me a gift" or "Gift waits at the main menu"
 		task.delay(3, function() gift.Text = "Dev: send me a gift" end)
 	end)
-	-- Above that (Alan 2026-11-13, skins test): wear each skin that has a picture on your own plane, on your screen only.
+	-- Above that (Alan 2026-11-13, skins test): wear each skin that has a picture or a shape (the crane) on your own plane,
+	-- on your screen only.
 	local skinButton = switch:Clone()
 	skinButton.Name, skinButton.Position, skinButton.Text, skinButton.Parent = "Skin", UDim2.new(1, -10, 1, -106), "Dev: skin: yours", switchGui
 	local skinTurn = 0
 	skinButton.Activated:Connect(function()
 		local Looks = require(Root.Shared.LooksRules)
 		local list = {}
-		for _, skin in Looks.config().skins do if Looks.item(skin.id).picture then table.insert(list, skin.id) end end
+		local SkinShapes = require(script.Parent.SkinShapes)
+		for _, skin in Looks.config().skins do
+			if Looks.item(skin.id).picture or SkinShapes.has(skin.id) then table.insert(list, skin.id) end
+		end
 		table.insert(list, "")
 		skinTurn = skinTurn % #list + 1
 		require(script.Parent.PlaneLooks).setDevSkin(list[skinTurn])

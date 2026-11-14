@@ -389,11 +389,12 @@ function Hangar.new(playerGui, api)
 
 		if state.page == "shelf" then
 			local class = player:GetAttribute("SelectedClass")
+			local skin = Customize.shownSkin({ state = {}, profile = profile }) -- the skin you wear (nothing tried on here)
 			if classes then
 				local picked
 				for i, build in builds do if build.id == class then picked = i end end
-				classShelf.set(builds, picked, "Presets", Color3.fromRGB(120, 200, 255))
-			else shelf.set(builds, not (class and not range) and state.preset or nil, range and "Range" or "Loadouts", range and RANGE_PINK or Color3.fromRGB(255, 215, 60)) end
+				classShelf.set(builds, picked, "Presets", Color3.fromRGB(120, 200, 255), skin)
+			else shelf.set(builds, not (class and not range) and state.preset or nil, range and "Range" or "Loadouts", range and RANGE_PINK or Color3.fromRGB(255, 215, 60), skin) end
 			if not range and not Root:GetAttribute("TutorialOpen") then
 				local other = button(content, "ShelfSwitch", Shelf.shelfTab, classes and "Loadouts" or "Presets", 440, 582, 320, 92, 0, function() switchShelf(not classes) end, 46)
 				other.ZIndex = 3
@@ -409,7 +410,7 @@ function Hangar.new(playerGui, api)
 			-- The name tape sits on the photo's paper, between its two bottom corner tapes (Alan 2026-11-09: no paper
 			-- hanging off another); the plane's view stops above it.
 			local TAPE = { PHOTO[1] + 140, 441, 500, 68 } -- the tape's own shape (984 x 134)
-			preview(draft, PHOTO, nil, nil, PHOTO[2] + PHOTO[4] * 0.87 - TAPE[2] + 6)
+			preview(draft, PHOTO, nil, nil, PHOTO[2] + PHOTO[4] * 0.87 - TAPE[2] + 6, nil, skin)
 			-- Presets: what they are, written on the stats paper under the rows (it floated on the cork).
 			statSheet(Catalog:deriveStats(draft), nil, 1535 - 316, 8, 632, "wide", -- centred over Customize
 				classes and "Presets can't be changed. Level up to unlock parts for your own loadouts." or nil)

@@ -96,10 +96,14 @@ local function fit(shape, o)
 			out[name] = { CFrame.new(body(centre)), size * scale }
 		end
 	end
-	-- crane_skin.py wing_under(): the spot under the wing nearest (x, z), and the wing's underside height there.
-	local function under(x, z)
+	-- crane_skin.py wing_under(): the spot under the wing nearest (x, z), and the wing's underside height there. `half`:
+	-- half the gun's length, so all of it hangs under the wing, front to back (Alan 2026-11-13: guns stuck out ahead of
+	-- the wing); a gun longer than the wing there sits in the wing's middle.
+	local function under(x, z, half)
 		local u = clamp((math.abs(x) - cw * 0.97) / (ks * math.cos(rise)), 0.25, K.R0 - 1.2)
-		local w = clamp((z - zc) / ks, -K.C0 / 2 + u * (K.SW + K.C0 / 2) / K.R0 + 0.9, K.C0 / 2 - u * (K.C0 / 2 - K.SW) / K.R0 - 0.9)
+		local m = math.max(0.9, half / ks + 0.3)
+		local front, back = -K.C0 / 2 + u * (K.SW + K.C0 / 2) / K.R0 + m, K.C0 / 2 - u * (K.C0 / 2 - K.SW) / K.R0 - m
+		local w = front <= back and clamp((z - zc) / ks, front, back) or (front + back) / 2
 		local xx = cw * 0.97 + u * ks * math.cos(rise)
 		return Vector3.new(x < 0 and -xx or xx, wy + 0.02 * s + u * ks * math.sin(rise) - 0.035 * s, zc + w * ks)
 	end
@@ -186,7 +190,7 @@ function SkinShapes.wear(model, id)
 			lo, hi = lo:Min(p - part.Size / 2), hi:Max(p + part.Size / 2)
 		end
 		local top = Vector3.new((lo.X + hi.X) / 2, hi.Y, (lo.Z + hi.Z) / 2)
-		local to = under(top.X, top.Z)
+		local to = under(top.X, top.Z, (hi.Z - lo.Z) / 2)
 		local move = CFrame.new(to) * CFrame.Angles(0, 0, to.X < 0 and -rise or rise) * CFrame.new(-top)
 		model:SetAttribute("SkinGunMove" .. mount, to - top) -- the drawn bullet starts from the gun you see
 		for _, part in parts do

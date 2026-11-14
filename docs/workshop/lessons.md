@@ -320,6 +320,10 @@ mistake would be easy to make twice.
 - **A click on an empty spot of a menu is NOT "processed"** (`InputBegan`'s flag is false unless a button took it), so
   world click handlers must also check `Root:GetAttribute("OverlayOpen")`: the Range turned such clicks into shots and
   closed Customize (2026-10-21).
+- **A picture drawn over a button does not stop its clicks** (2026-11-13, Customize tabs "click on and off"): the
+  index tabs tuck under the binder page, and a click on the page beside the cards turned the tab hidden under it.
+  `Active = true` on the ImageLabel did not help; a see-through `TextButton` over the page (drawn before the cards)
+  takes those clicks. Find it by clicking the edges of tucked-under buttons in Play and logging which one fires.
 - **Sounds in Edit mode (2026-10-23):** `Sound:Play()` does nothing in Edit (TimePosition stays 0), but the newer
   `AudioPlayer` wired (`Wire`) to an `AudioDeviceOutput` plays, fades and reports TimePosition in Edit, so a timed mix
   (WinnersSound) can be heard and checked without Play.

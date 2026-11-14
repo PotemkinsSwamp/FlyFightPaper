@@ -11,7 +11,10 @@ drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); th
 skins on your plane. Boosters and the hangar photo wear it too. Players wear their saved skin (bought with Paper and
 picked in Customize's **Skins** tab; a **Trails** tab lists trails, not drawn yet). Shape skins (the Origami Crane) are
 fitted by `SkinShapes.luau` from `config/skin-shapes.json` (the crane: five pieces uploaded 2026-11-13, guns hung under
-the wings, drawn shots start from the moved gun; waiting on Alan's Studio test) ([skins plan](../plan/SKINS-PLAN.md)).
+the wings with their whole length under the wing, drawn shots start from the moved gun) ([skins plan](../plan/SKINS-PLAN.md)).
+The shelf's big photo and its cubbies wear your skin too; a crash crumples into a ball of the skin's printed pieces.
+A skin you don't own shows Buy (or Unlock now); Studio's try-on is only the "Dev: skin" button (it lists the crane).
+Playtest fixes 2026-11-13 ([notes](../playtests/2026-11-13-crane-and-skins-tabs.md)); waiting on Alan's replay.
 
 **Hangar buying, built and checked in Play 2026-11-12 (Alan's notes, [playtest](../playtests/2026-11-12-shop-window-and-hangar-buying.md)).**
 A part above your level is greyed with a drawn padlock and "Level 20"; one you can buy shows "3,500 Paper"; card words

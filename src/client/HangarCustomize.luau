@@ -155,20 +155,15 @@ local function lookControls(content, ctx, about)
 	end
 	if not item then
 		if wearing(ctx, kind) ~= "" then
-			button(content, "TakeOff", Art.tab, "Take off", 840, 980, 260, 70, 0, function() wear("") end, 32)
+			button(content, "TakeOff", Art.buttonRed, "Take off", 840, 980, 260, 70, -1, function() wear("") end, 46)
 		end
 		return nil
 	end
-	button(content, "CancelTry", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.tryLook = nil; ctx.render() end, 40)
+	button(content, "CancelTry", Art.buttonRed, "Cancel", 995, 980, 240, 70, -1, function() state.tryLook = nil; ctx.render() end, 40)
 	if ownsLook(ctx, item.id) then
 		button(content, "WearLook", Art.buttonGreen, "Wear", 735, 980, 240, 70, -1, function() wear(item.id) end, 46)
 		return item.name .. ": yours. Wear puts it on every plane you fly."
-	elseif ctx.dev and kind == "skin" then -- Studio only: on your own screen, nothing bought or saved
-		button(content, "WearLook", Art.buttonGreen, "Try on", 735, 980, 240, 70, -1, function()
-			PlaneLooks.setDevSkin(item.id); state.tryLook = nil; ctx.render()
-		end, 46)
-		return "Studio: Try on shows it on your plane, on your screen only. Nothing is bought."
-	elseif not item.sold then
+	elseif not item.sold then -- (Studio's try-on is the "Dev: skin" button: Alan 2026-11-13, a card says Buy)
 		return string.format("%s comes with the %s skin.", item.name, bundledWith(item.id) or "matching")
 	end
 	local paper = player:GetAttribute("Paper") or 0
@@ -210,6 +205,11 @@ function Customize.draw(content, ctx)
 		local page = image(content, "Binder" .. i, half, BINDER_X + (i - 1) * PAGE_W, BINDER_Y, PAGE_W, PAGE_H)
 		page.ScaleType, page.ImageColor3 = Enum.ScaleType.Stretch, tints[i]
 	end
+	-- The right page takes the clicks that land on it: a picture lets them through, so a click on the page beside the
+	-- cards turned the tab tucked under it (Alan 2026-11-13: tabs "click on and off"). Cards drawn after sit on top.
+	local catch = Instance.new("TextButton")
+	catch.Name, catch.Text, catch.BackgroundTransparency, catch.AutoButtonColor = "PageCatch", "", 1, false
+	catch.Position, catch.Size, catch.Parent = UDim2.fromOffset(BINDER_X + PAGE_W, BINDER_Y), UDim2.fromOffset(PAGE_W, PAGE_H), content
 
 	-- Right page: the cards, 2 across and 3 down. Gear (ten weapons, Alan 2026-11-08: all on one page) has 5 rows of
 	-- shorter cards, with what the weapon does in the box under them.
@@ -413,7 +413,7 @@ function Customize.draw(content, ctx)
 				end, 46)
 			end
 		end
-		button(content, "CancelTry", Art.tab, "Cancel", 995, 980, 240, 70, 1, function() state.trying = nil; ctx.render() end, 40)
+		button(content, "CancelTry", Art.buttonRed, "Cancel", 995, 980, 240, 70, -1, function() state.trying = nil; ctx.render() end, 40)
 	else
 		ctx.statSheet(stats, nil, STATS_X, STATS_Y, STATS_W, "tall")
 		if state.slot == "weapons" then
@@ -436,7 +436,7 @@ function Customize.draw(content, ctx)
 			button(content, "ClearMount", Art.buttonGreen, "Clear spot", 735, 980, 240, 70, -1, function() ctx.choose(builder.selectMount, state.mount, false) end, 32)
 			button(content, "ClearAll", Art.buttonRed, "Clear all", 995, 980, 240, 70, -1, function() ctx.choose(builder.clearMounts) end, 32)
 		elseif state.slot == "boost" then
-			button(content, "NoBoost", Art.tab, "No booster", 840, 980, 260, 70, 0, function() ctx.choose(builder.selectUtility, nil) end, 32)
+			button(content, "NoBoost", Art.buttonRed, "No booster", 840, 980, 260, 70, -1, function() ctx.choose(builder.selectUtility, nil) end, 40)
 		end
 	end
 	if looks then

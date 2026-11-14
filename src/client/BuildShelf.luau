@@ -10,6 +10,7 @@ local Builder = require(Root.Shared.BuilderModel)
 local Assets = require(Root.Shared.UIAssets)
 local Art = Assets.hangarShelf
 local PaperUI = require(script.Parent.PaperUI)
+local PlaneLooks = require(script.Parent.PlaneLooks)
 local BuildShelf = {}
 
 -- Sheet pixels: a cubby's width (its inside is square), the front piece's height (the shelf's top board seen from a
@@ -17,11 +18,12 @@ local BuildShelf = {}
 local CUBBY, FRONT_H, TOP_FACE, END_W, TOP = 345, 414, 69, 60, 640
 
 -- The plane seen from above and behind, nose away and a little to the side, filling the cubby's opening.
-local function draw(view, catalog, loadout)
+local function draw(view, catalog, loadout, skin)
 	view:ClearAllChildren()
 	local model = Instance.new("Model")
 	model.Parent = view
 	Aircraft.build(model, Builder.new(catalog, loadout).candidate, catalog, true)
+	if skin then model:SetAttribute("Skin", skin); PlaneLooks.dress(model) end -- the skin you wear is on every build
 	local camera = Instance.new("Camera")
 	camera.FieldOfView, camera.Parent, view.CurrentCamera = 40, view, camera
 	local box, size = model:GetBoundingBox()
@@ -48,8 +50,8 @@ function BuildShelf.new(parent, catalog, pick, width)
 
 	-- ponytail: one row of up to five cubbies (every group has five builds); the arrow and sideways scroll come
 	-- with the first group that has more.
-	-- tint: the group tab's colour (the Range's is pink, so its separate builds look separate).
-	function self.set(builds, picked, groupName, tint)
+	-- tint: the group tab's colour (the Range's is pink, so its separate builds look separate). skin: the one you wear.
+	function self.set(builds, picked, groupName, tint, skin)
 		group.Text, tab.ImageColor3 = groupName, tint
 		local left = (PaperUI.W - #builds * CUBBY - 2 * END_W) / 2
 		if #cubbies == 0 then
@@ -67,11 +69,11 @@ function BuildShelf.new(parent, catalog, pick, width)
 				view.Ambient, view.LightColor, view.LightDirection = Color3.fromRGB(140, 140, 150), Color3.fromRGB(255, 250, 235), Vector3.new(-0.6, -1, -0.4)
 				view.Parent = frame
 				PaperUI.image(frame, "Front" .. i, Art.cubbyFront, x, TOP, CUBBY, FRONT_H).ScaleType = Enum.ScaleType.Stretch
-				PaperUI.image(frame, "Tape" .. i, Assets.ingame.tapeLabel, x + 24, TOP + FRONT_H - 84, CUBBY - 48, 66).ScaleType = Enum.ScaleType.Stretch
+				PaperUI.image(frame, "Tape" .. i, Assets.ingame.tapeLabel, x + 24, TOP + FRONT_H - 84, CUBBY - 48, 66) -- (its own shape)
 				local name = PaperUI.loud(PaperUI.words(frame, "Name" .. i, "", x + 40, TOP + FRONT_H - 80, CUBBY - 80, 58, 34))
 				name.TextXAlignment, name.TextScaled = Enum.TextXAlignment.Center, true -- long names shrink to fit
 				local cap = Instance.new("UITextSizeConstraint")
-				cap.MaxTextSize, cap.Parent = 34, name
+				cap.MaxTextSize, cap.Parent = math.floor((CUBBY - 48) / 7.34 * 0.7), name -- inside the tape at its own thin shape (984 x 134)
 				local hit = Instance.new("TextButton")
 				hit.Name, hit.Text, hit.BackgroundTransparency, hit.ZIndex = "Pick" .. i, "", 1, 4
 				hit.Position, hit.Size, hit.Parent = UDim2.fromOffset(x, TOP), UDim2.fromOffset(CUBBY, FRONT_H), frame
@@ -81,10 +83,10 @@ function BuildShelf.new(parent, catalog, pick, width)
 			end
 			cubby.name.Text = build.locked and ("Level " .. build.locked) or build.name
 			cubby.view.ImageColor3 = build.locked and Color3.fromRGB(70, 70, 80) or Color3.new(1, 1, 1)
-			local key = HttpService:JSONEncode(build.loadout)
+			local key = HttpService:JSONEncode({ build.loadout, skin or "" })
 			if key ~= cubby.key then
 				cubby.key = key
-				draw(cubby.view, catalog, build.loadout)
+				draw(cubby.view, catalog, build.loadout, skin)
 			end
 			if i == picked then outline.Position = UDim2.fromOffset(cubby.x + CUBBY / 2, TOP + (TOP_FACE + FRONT_H) / 2) end
 		end

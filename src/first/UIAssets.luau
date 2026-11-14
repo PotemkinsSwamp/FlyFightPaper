@@ -27,7 +27,6 @@ return {
 		crosshairCard = "rbxassetid://94736097855757",
 	},
 	hangar = {
-		tab = "rbxassetid://115834678067841",
 		card = "rbxassetid://84312204714104",
 		cardSelected = "rbxassetid://118872852149517",
 		preview = "rbxassetid://80540963066312",

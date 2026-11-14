@@ -78,18 +78,27 @@ end
 
 -- The paper ball: a few paper-white cubes turned every which way read as a crumpled sheet (like the Creator Store's
 -- free paper balls, whose geometry is just that).
-local function ball(model, at, velocity)
+local function ball(model, at, velocity, parts)
 	-- A crash into the floor leaves the plane's middle closer to it than the ball's size: start on top of it.
 	local floor = workspace:Raycast(at.Position + Vector3.yAxis * BALL_RADIUS, Vector3.yAxis * -BALL_RADIUS * 2, solid)
 	if floor then at = CFrame.new(floor.Position + Vector3.yAxis * BALL_RADIUS) end
+	-- A skinned plane crumples into its skin (Alan 2026-11-13): the cubes are its printed pieces squashed into cubes.
+	local printed = {}
+	for _, part in ipairs(parts) do
+		if part:IsA("MeshPart") and (part:GetAttribute("Skin") or string.match(part.Name, "^Skin%-")) then table.insert(printed, part) end
+	end
 	local cubes = {}
 	local colours = palette(model)
 	for i = 1, 7 do
-		local cube = Instance.new("Part")
-		-- Mostly the plane's colour(s); every third cube is a white stripe.
-		local colour = i % 3 == 0 and WHITE or colours[i % (#colours - 1) + 1]
-		cube.Color, cube.Material = colour, Enum.Material.SmoothPlastic
-		cube.Anchored, cube.CanCollide, cube.CanQuery, cube.CanTouch = true, false, false, false
+		local cube
+		if #printed > 0 then
+			cube = printed[(i - 1) % #printed + 1]:Clone()
+		else
+			cube = Instance.new("Part")
+			-- Mostly the plane's colour(s); every third cube is a white stripe.
+			cube.Color, cube.Material = i % 3 == 0 and WHITE or colours[i % (#colours - 1) + 1], Enum.Material.SmoothPlastic
+		end
+		cube.Anchored, cube.CanCollide, cube.CanQuery, cube.CanTouch, cube.LocalTransparencyModifier = true, false, false, false, 0
 		cube.Parent = folder
 		cubes[i] = { part = cube, turn = CFrame.Angles(math.random() * 6.3, math.random() * 6.3, math.random() * 6.3) }
 	end
@@ -103,7 +112,7 @@ local function crumple(model, parts)
 	for _, part in ipairs(parts) do
 		add(model, { part = part, kind = "fold", from = part.CFrame, size = part.Size, to = at.Position })
 	end
-	ball(model, CFrame.new(at.Position), -at.LookVector * 10 + Vector3.new(0, 45, 0)) -- pops up out of the crash
+	ball(model, CFrame.new(at.Position), -at.LookVector * 10 + Vector3.new(0, 45, 0), parts) -- pops up out of the crash
 end
 
 -- Shot down: the pieces fly apart a little, then flutter down, tumbling and swaying, in a shower of slow shreds.

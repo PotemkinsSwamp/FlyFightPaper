@@ -256,10 +256,13 @@ def crane(o):
     return dict(V=np.array(V), F=F, P=P, J=J, G=G, fit=dict(O=O, T0=T0, Tt=Tt, wy=wy, ky=ky, zF=zF, zB=zB), s=s, cw=cw, panels=panels, head=Hr, zc=zc, ks=ks,
                 small=[(SP(1.35, -0.5), 0.48 * s, 0.3), (Rt(0.38) + (0, -0.48 * s, 0), 0.17 * s, 1.0), (Rt(0.62) + (0, -0.17 * s, 0), 0.11 * s, 0.2)])
 
-def wing_under(c, x, z):
-    """Height of the wing's underside over plane spot (x, z), and that spot moved (if needed) to be under the wing."""
+def wing_under(c, x, z, half=0.0):
+    """Height of the wing's underside over plane spot (x, z), and that spot moved (if needed) to be under the wing.
+    half: half the gun's length, so all of it hangs under the wing (Alan 2026-11-13); too long = the wing's middle."""
     ks = c["ks"]; u = min(max((abs(x) - c["cw"] * 0.97) / (ks * math.cos(RISE)), 0.25), R0 - 1.2)
-    w = min(max((z - c["zc"]) / ks, -C0 / 2 + u * (SW + C0 / 2) / R0 + 0.9), C0 / 2 - u * (C0 / 2 - SW) / R0 - 0.9)
+    m = max(0.9, half / ks + 0.3)
+    front, back = -C0 / 2 + u * (SW + C0 / 2) / R0 + m, C0 / 2 - u * (C0 / 2 - SW) / R0 - m
+    w = min(max((z - c["zc"]) / ks, front), back) if front <= back else (front + back) / 2
     xx = c["cw"] * 0.97 + u * ks * math.cos(RISE)
     return math.copysign(xx, x), c["panels"][1]["o"][1] + u * ks * math.sin(RISE) - 0.035 * c["s"], c["zc"] + w * ks
 
@@ -497,7 +500,7 @@ def hang_guns(plane, c):
     for slot, group in plane["guns"].items():
         pts = np.concatenate([w for _, w in group]); lo, hi = pts.min(0), pts.max(0)
         top = np.array(((lo[0] + hi[0]) / 2, hi[1], (lo[2] + hi[2]) / 2))
-        x, y, z = wing_under(c, top[0], top[2]); roll = math.copysign(RISE, x)
+        x, y, z = wing_under(c, top[0], top[2], (hi[2] - lo[2]) / 2); roll = math.copysign(RISE, x)
         cs, sn = math.cos(roll), math.sin(roll)
         for ob, _ in group:
             for vert in ob.data.vertices:   # Blender: x right, y forward, z up

@@ -18,7 +18,16 @@ Crane on his own plane, Hazard Stripes on a plane with a booster, deaths with a 
 - **Build shelf:** the big photo shows a mix of the skin and the real parts, and the loadout cards don't show the skin.
 
 ## What changed
-Fixes listed in the next handoff; the wing-hitbox exception waits on his answer (recorded in the
-[skin rules](../decisions/2026-11-13-skin-rules.md) once given).
+Next session (2026-11-13, late), checked by clicking through in Studio Play:
+- **Tabs:** the page beside the cards let clicks through to the tab tucked under it, so a click there flipped tabs.
+  The page now takes those clicks (8 of 8 tab clicks land, 4 of 4 page-edge clicks do nothing). Lesson in
+  [lessons](../workshop/lessons.md).
+- **Buy, not Try on:** a skin you don't own shows Buy or Unlock now; the "Dev: skin" button lists the crane too.
+- **Paper and tape:** Cancel, Take off and No booster use the red taped paper (Clear all's), never the cardboard tab.
+- **Crumpled ball wears the skin:** its pieces are the skin's printed pieces squashed into the ball.
+- **Crane guns:** each gun's whole length hangs under the wing (the front half stuck out ahead of it).
+- **Build shelf:** the big photo and the five cubbies wear your skin.
+- **Booster under the crane:** needs the crane's printed sheet (next step; its upload is Alan's go).
+The wing-hitbox tilt: Alan's ruling is in the [skin rules](../decisions/2026-11-13-skin-rules.md); how-it-works note next.
 
 Back to [playtests](README.md)
