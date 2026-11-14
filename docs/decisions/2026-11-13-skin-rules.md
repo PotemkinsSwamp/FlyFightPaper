@@ -50,13 +50,14 @@
 - **A Mythical must look like its concept** (Alan, same day): layers on layers, the concept's shapes (the crane's
   Z-shaped neck, big folded head), judged from above and behind as well as from the side. Measure the concept first.
 - **Guns go under a Mythical, never on top** (Alan, same day): "we don't want the weapons blocking the skin". Where
-  shots then leave from is still open ([skins plan](../plan/SKINS-PLAN.md)).
+  shots then leave from (Alan, same evening): the game's real shot spot stays, so a skin never changes play; only
+  the drawn bullet starts from the gun you see. Skinning the weapons to match a Mythical is a maybe for later, not now.
+- **The crane keeps its raised V wings although the hitbox stays flat** (Alan, same evening): the V is what makes it
+  an origami crane; players won't notice the gap and the shop's hitbox note covers it. Open: a raised wing that looks
+  like it goes through a building (or a real part that clips one where no skin shows) needs an answer before release.
 - **First build batch** (Alan's pick): Hazard Stripes, Tiger Stripes, Flame Decals; Gold Foil, Lava, Galaxy; Shark
   Jet; Dragon; trails Confetti, Rainbow Marker, Gold Stars.
 - **After the first Studio look** (Alan, same day, [playtest](../playtests/2026-11-13-printed-sheet-skins.md)): the printed sheet works for Commons and Rares. **Boosters wear the skin too** (they carry the team colour, so they are part of the plane). A **Skins tab and a Trails tab** in the customization menu show your pick on your plane. **The first Mythical is the Origami Crane** (blue and silver; "push the boundaries"), built in Blender by Fable itself next session.
-- **After the first crane renders** (Alan, same day): it "doesn't look like what it's supposed to": it must look
-  more like the concept (more layers, bigger waves, the tall raised wings). **On Mythicals the weapons go on the bottom
-  side of the plane** so they don't block the skin. Skinning the weapons to match a Mythical is a maybe for later, not now.
 - **Concept changes:** the Origami Crane turns blue and silver (it looked too like the Phoenix); Chrome keeps white
   only as small reflection glints. The Mech stays as drawn.
 - **Ideas:** every skin and trail on the [skins plan](../plan/SKINS-PLAN.md) list (Alan approved the whole list).
