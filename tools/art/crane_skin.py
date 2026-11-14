@@ -15,6 +15,8 @@ only as lines and petals, never whole areas; no metal: Alan, 2026-11-13).
 Writes into OUTDIR: crane-*.png, crane.blend (rest pose), renders, crane-report.json.
 --export=DIR writes what the game needs (first test, no bones): five rigid pieces as FBX (head, body, tail, wingL,
 wingR; each in its own normalised frame, see export_pieces), the pictures and crane-fit.json.
+--sheet writes crane-sheet.png: the crane's paper as a printed-sheet picture (assets/models/planes/skin-sheet layout), so
+boosters wear it like a Common's (Alan, 2026-11-13); the renders' boosters wear it.
 """
 import bpy, bmesh, sys, os, math, json
 import numpy as np
@@ -28,6 +30,7 @@ OUT = os.path.abspath(ARGS[0] if ARGS else "crane-out")
 QUICK, RENDER, SCENE_ONLY = "--quick" in ARGS, "--no-render" not in ARGS, "--scene-only" in ARGS
 EXPORT = next((os.path.abspath(a[9:]) for a in ARGS if a.startswith("--export=")), None)   # write the game files here
 VIEWS = next((a[8:].split(",") for a in ARGS if a.startswith("--views=")), None)   # render only these views
+SHEET = "--sheet" in ARGS   # paint crane-sheet.png (its printed sheet: Alan 2026-11-13) and dress the renders' boosters in it
 os.makedirs(OUT, exist_ok=True)
 TEX = 1024
 BUILDS = {  # name: loadout (weapons and boosters stay visible)
@@ -480,6 +483,61 @@ def save_png(arr, name, srgb):
     path = os.path.join(OUT, name + ".png"); img.filepath_raw = path; img.file_format = "PNG"; img.save()
     return path
 
+def paint_sheet(ref):
+    """The crane's paper laid out on the printed sheet (layout.json): waves everywhere in patches, and on the top view's
+    wings the crane's own wing art (waves ahead of the fold line, the blossom sprig behind), at the starter's fit `ref`."""
+    L = json.load(open(os.path.join(pa.PLANES, "skin-sheet", "layout.json"))); k = L["k"]
+    (x0, y0, z0), (x1, y1, z1) = L["bounds"]["min"], L["bounds"]["max"]
+    py, px = np.mgrid[0:TEX, 0:TEX] + 0.5
+    a, b, region = np.zeros((TEX, TEX)), np.zeros((TEX, TEX)), np.zeros((TEX, TEX), int)
+    for i, (name, (rx, ry, rw, rh)) in enumerate(((n, L["regions"][n]["rect_pixels"]) for n in ("TOP", "SIDE", "FRONT")), 1):
+        inside = (px >= rx) & (px < rx + rw) & (py >= ry) & (py < ry + rh)
+        region[inside] = i
+        if name == "TOP": a[inside], b[inside] = x0 + (px[inside] - rx) / k, z0 + (py[inside] - ry) / k
+        elif name == "SIDE": a[inside], b[inside] = y0 + (px[inside] - rx) / k, z0 + (py[inside] - ry) / k
+        else: a[inside], b[inside] = x0 + (px[inside] - rx) / k, y1 - (py[inside] - ry) / k
+    s, ks = ref["s"], ref["ks"]
+    P3 = np.stack([a, b, region * 7.0], -1)
+    mott = noise3(P3 / s, (0.6, 1.3, 2.9), 3); grain = noise3(P3 / s, (23.0, 41.0), 5)
+    col = lerp(BLUE, BLUE2, np.clip(0.5 + 0.5 * mott, 0, 1)[..., None]) * (1 + 0.05 * grain)[..., None]
+    patch = smooth(noise3(P3 / s, (0.55, 0.9), 11) + 0.25, -0.08, 0.12)
+    ink = seigaiha(a / s, b / s, 1.15, 0.028) * 0.92 * patch
+    fill, dark = np.zeros_like(ink), np.zeros_like(ink)
+    u, w = (np.abs(a) - ref["cw"] * 0.97) / ks, (b - ref["zc"]) / ks   # the crane's wing frame, flat
+    wing = (region == 1) & (u > 0)
+    front = smooth(-0.3 + u * (SW + 0.3) / R0 - w, 0.05, 0.3)
+    ink = np.where(wing, seigaiha(w, -u, 1.05, 0.03) * 0.92 * front, ink)
+    br = np.full(ink.shape, 1e9)
+    for st in STEMS:
+        for p0, p1 in zip(st, st[1:]): br = np.minimum(br, seg_dist(u, w, np.array(p0), np.array(p1)))
+    ink = np.where(wing, np.maximum(ink, line(br, 0.055)), ink)
+    for bu, bw_ in BUDS: ink = np.where(wing, np.maximum(ink, line(np.hypot(u - bu, w - bw_), 0.13)), ink)
+    for fu, fw, rf, rot in SPRIG:
+        ln, fl, dk = blossom(u, w, fu, fw, rf, rot); fl = fl * wing; ln = ln * wing
+        ink = np.where(fl > 0, ln, np.maximum(ink, ln)); fill = np.maximum(fill, fl); dark = np.where(fl > 0, dk, dark)
+    col = lerp(col, PETAL * (1 + 0.06 * mott)[..., None], fill[..., None])
+    col = lerp(col, DEEP, (dark * fill)[..., None] * 0.85)
+    col = lerp(col, INK, ink[..., None])
+    return save_png(np.clip(col, 0, 1)[::-1], "crane-sheet", True), L   # (Blender's rows start at the bottom)
+
+def dress_boosters(objs, dx, path, L):
+    """Boosters wear the sheet in the renders: each face takes the sheet's TOP, SIDE or FRONT view by its main direction
+    (layout.json formulas), from where the piece sits on this plane (the game's copies use their template spot)."""
+    k = L["k"]; (x0, y0, z0), (x1, y1, z1) = L["bounds"]["min"], L["bounds"]["max"]
+    m = material("CraneSheet", image=path, rough=0.7)
+    for ob in objs:
+        uv = ob.data.uv_layers.new(name="Sheet"); ob.data.uv_layers.active = uv
+        for poly in ob.data.polygons:
+            n = poly.normal; nr = np.array((n.x, n.z, -n.y)); main = int(np.argmax(np.abs(nr)))
+            for li in poly.loop_indices:
+                v = ob.matrix_world @ ob.data.vertices[ob.data.loops[li].vertex_index].co
+                x, y, z = v.x - dx, v.z, -v.y
+                if main == 1: X, Y = 16 + k * (x - x0), 16 + k * (z - z0)
+                elif main == 0: X, Y = 32 + k * (x1 - x0) + k * (y - y0), 16 + k * (z - z0)
+                else: X, Y = 16 + k * (x - x0), 32 + k * (z1 - z0) + k * (y1 - y)
+                uv.data[li].uv = (X / TEX, 1 - Y / TEX)
+        ob.data.materials.clear(); ob.data.materials.append(m)
+
 def crane_material(paths):
     m = bpy.data.materials.new("Crane"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]
     def tex(path, nc):
@@ -572,6 +630,10 @@ for i, name in enumerate(BUILDS):
     report["builds"][name] = dict(triangles=len(ob.data.polygons), scale=round(c["s"], 3), wing_size=round(c["ks"] / c["s"], 2),
                                   guns_moved=hang_guns(planes[name], c),
                                   outline={k: round(float(v), 2) for k, v in planes[name]["o"].items()})
+if SHEET:
+    sheet, layout = paint_sheet(json.load(open(os.path.join(pa.ROOT, "config", "skin-shapes.json")))["shapes"]["origami_crane"]["ref"])
+    pieces = json.load(open(os.path.join(pa.ROOT, "config", "skin-pieces.json")))["pieces"]   # the pieces that have a sheet copy
+    for name, pl in planes.items(): dress_boosters([o for o in pl["extras"] if o.name in pieces], pl["dx"], sheet, layout)
 bpy.data.objects.remove(rest_ob)
 rest_final = thicken(crane_object(rest, "CraneRestPose", -GAP * 2, uvs), rest); rest_final.data.materials.append(mat)
 rest_final.hide_render = True
@@ -625,6 +687,9 @@ if RENDER:
         shoot(name, "head-top", neck + Vector((0, 0, 60)), neck + Vector((0, 0.01, 0)), ortho=L * 0.7)
         shoot(name, "head-behind", neck + Vector((0.3, -0.75, 0.42)) * L, neck, lens=60)
         shoot(name, "close-wing", wing + Vector((-0.28, 0.3, 0.32)) * L, wing, lens=50)
+        if any("boost" in ob.name for ob in planes[name]["extras"]):   # the booster under the crane, from behind and below
+            bst = to_bl((0, o["boost_y"], o["boost_z"]), i * GAP)
+            shoot(name, "booster", bst + Vector((0.45, -0.75, -0.3)) * L, bst, lens=80)
         shoot(name, "hitbox-top", c3 + Vector((0, 0, 60)), c3 + Vector((0, 0.01, 0)), ortho=max(L * 16 / 9, span) * 1.08, ghost=True)
         if not QUICK: shoot(name, "hitbox-behind", c3 + Vector((0.3, -1.3, 0.45)) * E, c3, ghost=True)
     # in the town (mock-up): transparent renders in warm classroom light, put over an in-game picture afterwards
