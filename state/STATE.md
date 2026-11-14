@@ -42,8 +42,7 @@ Solid now: cars, buses, boats, lamps, trees, benches, building site, playground,
 Preset levels stay at 5, 8 and 10 at about 340 XP a match (one mostly rookie bot match; recheck with a real player).
 Rams: centres within 2.5 studs in the last 0.1 s, strength by relative speed; stronger plane loses 15 extra, always
   survives; rams earn no kill; teammates and practice flights never ram.
-Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000, 60 at 2400. Tab list shows all 12.
-PC keys: letters (not K or R), Shift, Ctrl, Alt, Space; Got it may share Boost/Brake's key. Auto-fire fires on the
+Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000, 60 at 2400. Tab list shows all 12. PC keys: letters (not K or R), Shift, Ctrl, Alt, Space; Got it may share Boost/Brake's key. Auto-fire fires on the
   yellow dot too, and on Range targets (a phone's accuracy card reads high).
 Loading: Skip once menus + town parts are in; a stuck file costs 8 s; 3 minutes at most.
 Screen fit: phone under 540 points, tablet under 900; FIRE 76-120 points; small PC window gets tablet sizes.
@@ -54,7 +53,9 @@ Waiting on Alan
 - Replay the hangar: click skins, tabs and Cancel (no reload flash?), the crane's height and wing join, a
   booster under the crane, and Buy on a skin (the screen should change right away).
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
-- Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
-- Save to File when you want the new weapon models and the tape-roll tower in the place file (your go).
-- In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip.
-- Device Simulator: small iPhone and iPad for the screen-fit re-check. Backlog: a new fan sound. Drawing pass outside AI check (costs money; your go).
+  Under the crane: no gun piece floating off the drawn guns, at the desk and while firing.
+- Toilet Roll shake: fly it in a Studio match while my read-only recorder runs (your go), say roughly when it shook.
+- Publish when you like (report card, new shop window; shop button Studio-only until go-live). Save to File for the
+  new weapon models and the tape-roll tower (your go).
+- In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip. Device
+  Simulator: small iPhone and iPad. Backlog: a new fan sound; a drawing-pass outside AI check (costs money; your go).
