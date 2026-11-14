@@ -18,7 +18,7 @@ Rows: three-quarter, top, side, front, bottom. Columns: today / creaseold / crea
 
 ## Layout
 
-One 1024 x 1024 skin picture, shared across all 83 copies. SheetUV is derived from each piece's unscaled template placement in pieces.rbxmx.
+One 1024 x 1024 skin picture, shared across all 98 copies. SheetUV is derived from each piece's unscaled template placement in pieces.rbxmx.
 TOP uses x/z, SIDE uses y/z, FRONT uses x/y. Nose is up in TOP and SIDE; FRONT has up at the top. Both sides share the same print. Regional seams are intentional.
 Bounds are the union of all in-scope XML boxes, including CFrame rotation, padded 0.25 stud. There are 16 pixel outer margins and 16 pixel gaps. All regions share k=40.420076411752 pixels/stud.
 See layout.json for exact bounds, floating-point rectangles, dominant-normal selection and coordinate-to-UV formulas. Rectangles use top-left pixel coordinates, [x,y,width,height]; UV origin is bottom-left.
@@ -45,7 +45,7 @@ When a skin is worn, select the same-named sheet copy for each structural paper/
 
 Every output FBX is reimported. Bounds/raw FBX units, vertex positions/count, triangle surfaces/count, shading-normal corners, a single named UV layer, finite UVs in [0,1] and agreement with the coordinate formulas are checked. Source needle faces are retained; projected areas and faces below UV float precision are counted, without inflating their projection. Required-check failures raise an error and exit Blender with status 1.
 Normal checks: facing priority over all raster candidates, object-space reconstruction, under 1 degree quantization error at selected texel centres, unit normals, saved PNG bytes/resolution and every empty background texel. Render dimensions/nonempty contents, JPEG dimensions/colour agreement and pre-existing file metadata are checked. Input FBX/map/XML/upload files also receive before/after SHA-256 checks. No Studio or engine integration check was performed.
-All 83 in-scope MeshIds match their folder's uploads.json. Review-only sticker placeholders reuse the existing paper-sample wings-sticker-left/right geometry/maps; they have no uploads.json entry and are excluded from the 83-source comparison.
+All 98 in-scope MeshIds match their folder's uploads.json. Review-only sticker placeholders reuse the existing paper-sample wings-sticker-left/right geometry/maps; they have no uploads.json entry and are excluded from the 98-source comparison.
 
 ## Meshes
 
@@ -72,6 +72,21 @@ All 83 in-scope MeshIds match their folder's uploads.json. Review-only sticker p
 | body_standard_mk2 | body_standard_mk2-accent | 24 | FRONT, SIDE, TOP |
 | body_standard_mk2 | body_standard_mk2-paper-L | 162 | FRONT, SIDE, TOP |
 | body_standard_mk2 | body_standard_mk2-paper-R | 160 | FRONT, SIDE, TOP |
+| boost_band | boost_band-accent | 24 | FRONT, SIDE, TOP |
+| boost_band | boost_band-cardboard-L | 88 | FRONT, SIDE, TOP |
+| boost_band | boost_band-cardboard-R | 88 | FRONT, SIDE, TOP |
+| boost_band | boost_band-paper-L | 28 | FRONT, SIDE, TOP |
+| boost_band | boost_band-paper-R | 28 | FRONT, SIDE, TOP |
+| boost_spool | boost_spool-accent | 24 | FRONT, SIDE, TOP |
+| boost_spool | boost_spool-cardboard-L | 144 | FRONT, SIDE, TOP |
+| boost_spool | boost_spool-cardboard-R | 144 | FRONT, SIDE, TOP |
+| boost_spool | boost_spool-paper-L | 122 | FRONT, SIDE, TOP |
+| boost_spool | boost_spool-paper-R | 122 | FRONT, SIDE, TOP |
+| boost_twin | boost_twin-accent | 24 | FRONT, SIDE, TOP |
+| boost_twin | boost_twin-cardboard-L | 88 | FRONT, SIDE, TOP |
+| boost_twin | boost_twin-cardboard-R | 88 | FRONT, SIDE, TOP |
+| boost_twin | boost_twin-paper-L | 52 | FRONT, SIDE, TOP |
+| boost_twin | boost_twin-paper-R | 52 | FRONT, SIDE, TOP |
 | nose_0 | nose-accent | 86 | FRONT, SIDE, TOP |
 | nose_0 | nose-paper-L | 52 | FRONT, SIDE, TOP |
 | nose_0 | nose-paper-R | 52 | FRONT, SIDE, TOP |
@@ -138,8 +153,33 @@ All 83 in-scope MeshIds match their folder's uploads.json. Review-only sticker p
 ## Concurrent file changes
 
 The metadata watch found changes outside this tool's output paths. They were left alone. This is not an unchanged-repository result; source FBX/map/XML/upload SHA-256 checks still passed.
+- .planning/skins/crane/_review.jpg
+- .planning/skins/crane/crane-color.png
+- .planning/skins/crane/crane-normal.png
+- .planning/skins/crane/crane-report.json
+- .planning/skins/crane/crane-roughness.png
+- .planning/skins/crane/crane.blend
+- .planning/skins/crane/heavy-behind.png
+- .planning/skins/crane/heavy-close-up.png
+- .planning/skins/crane/heavy-hitbox-top.png
+- .planning/skins/crane/heavy-side.png
+- .planning/skins/crane/heavy-three-quarter.png
+- .planning/skins/crane/heavy-top.png
+- .planning/skins/crane/starter-behind.png
+- .planning/skins/crane/starter-close-up.png
+- .planning/skins/crane/starter-hitbox-top.png
+- .planning/skins/crane/starter-side.png
+- .planning/skins/crane/starter-three-quarter.png
+- .planning/skins/crane/starter-top.png
+- .planning/skins/crane/swept-behind.png
+- .planning/skins/crane/swept-close-up.png
+- .planning/skins/crane/swept-hitbox-top.png
+- .planning/skins/crane/swept-side.png
+- .planning/skins/crane/swept-three-quarter.png
+- .planning/skins/crane/swept-top.png
 - .planning/skins/save-rules-run.log
 - .planning/skins/sheet/codex-run.log
+- .planning/skins/sheet/rebuild-boosters.log
 - .planning/skins/sheet/rebuild-trim.log
 - config/commerce.json
 - docs/decisions/2026-11-13-skin-rules.md
@@ -161,6 +201,9 @@ The metadata watch found changes outside this tool's output paths. They were lef
 - tests/unit/CommerceService.spec.luau
 - tests/unit/GiftSave.spec.luau
 - tests/unit/ProfileSchema.spec.luau
+- tools/art/__pycache__/plane_assembly.cpython-313.pyc
+- tools/art/crane_skin.py
+- tools/art/plane_assembly.py
 - tools/art/upload_paper.py
 
-Build wall time: 566.9 seconds. No uploads or Studio review.
+Build wall time: 673.0 seconds. No uploads or Studio review.

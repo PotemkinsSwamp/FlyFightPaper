@@ -99,6 +99,13 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
   of the real wing seen from above, the scallops redrawn between them; the tail webbing spans the real tail. It
   covered the wings of a swept and a straight-winged plane; the standard plane's tail fins stay uncovered (hitbox
   without skin, as Alan accepted). In Roblox each point would be a Bone. Not yet tried: flapping, real art.
+- **The Origami Crane, built in Blender 2026-11-13 (no upload, waiting on Alan's OK)** (`tools/art/crane_skin.py`, renders
+  in `.planning/skins/crane/`): 116 triangles and one 1024 set (colour, bumps, shine). Fitted by 26 joints: scaled
+  evenly to the plane's length; the beak sits level with the nose tip, the tail tip over the real tail's top back
+  corner, the body on the real body's sides and bottom, its keel reaching back over the booster spot so a booster
+  hangs from it. The wings stay flat at the real wing's height out past the outer gun spot (guns on or under the wing
+  still touch it), then the tips fold up 50 degrees (they reach out at least 2.6 x the scale, so on small planes they
+  stick out past the hitbox). Tried on the starter, heavy and swept-wing builds with their guns and boosters.
 - What a Mythical does to weapons.
 - Prices and earn rules per tier: drafted below, waiting on Alan's OK.
 
