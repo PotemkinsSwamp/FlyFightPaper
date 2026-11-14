@@ -51,6 +51,8 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `plane_paper.py -- --set` | UVs, paper maps and reviews for the 95 set meshes in [planes/paper-set/README.md](../../assets/models/planes/paper-set/README.md) |
 | `skin_sheet.py` | Printed-sheet skin copies of the 98 plane paper, trim and booster pieces (sheet UVs, creases baked into each piece's normal map, sheet template) into `planes/skin-sheet/` ([skins plan](../plan/SKINS-PLAN.md)) |
 | `skin_looks.py` | Writes `planes/skin-looks.rbxmx`: one ready-made look (skin picture + piece creases) per skin and piece copy, cloned by `PlaneLooks.luau` (scripts can't set a look's pictures at runtime) |
+| `plane_assembly.py` | Not Blender (Blender can import it): where every piece, gun and booster of any part mix sits, worked out offline the same way `Aircraft.build` does it (`python tools/art/plane_assembly.py body_heavy nose_3 wings_4 tail_3 weapons=pellet,pellet boost=boost_band`); also the gun spots and booster spot a Mythical skin fits around |
+| `crane_skin.py` | The Origami Crane Mythical skin: builds the crane (joints placed from the real plane), paints its 1024 colour/normal/roughness pictures, fits it to three builds and renders previews (`-- OUTDIR [--quick]`; [skins plan](../plan/SKINS-PLAN.md)). Nothing uploaded |
 | `upload_paper.py` | Uploads paper plane pieces and maps (`set` for paper-set/, `sheet` for the skin copies in skin-sheet/: mesh + crease map; resumable; ids in `<folder>/uploads.json`), then `lua` / `meshes` record each upload's inner MeshId (FBXs upload as Models) |
 | `split_halves.py` | Cuts plane pieces into left and right halves (wing fit, two-colour free-for-all planes) |
 | `weapons.py` | Weapon models in moving pieces |
