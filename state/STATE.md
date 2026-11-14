@@ -1,16 +1,15 @@
-# Since Alan last checked (2026-11-13, late night)
-- **The Origami Crane is in the game** (you OK'd its fourth pass): five pieces fitted to any plane on each screen,
-  guns hung under the wings, shots drawn from the gun you see. **Skins and Trails tabs** in Customize; buying with
-  Paper, wearing and taking off are saved (tests 635/0). **Boosters wear printed skins.**
-- Your playtest found bugs (tabs click unreliably, boosters and crumples miss the crane, guns float off it, "Try on"
-  should be "Buy", cardboard tab buttons, the build shelf mixes skin and parts): fixed next session
-  ([notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md)). Your rulings: a shape skin may tilt the wing hitbox
-  to match (never resize); the crane gets a matching printed sheet for boosters ([skin rules](../docs/decisions/2026-11-13-skin-rules.md)).
-- New skills: Roblox optimization (speed without losing detail) and concept-to-blender (measure a concept first).
+# Since Alan last checked (2026-11-14)
+- **Your crane playtest list is fixed** (tabs, Buy not Try on, paper-and-tape buttons, crumpled ball wears the skin,
+  crane guns under the wing, shelf wears the skin). From your replay: the **crane's body is narrower** (never wider than
+  the starter's own shape), the **hangar keeps the plane picture between clicks** (a new plane loads behind the old one
+  and swaps in when ready) and **gets the shop's answer right after Buy** (it waited for a 3-second refresh).
+- **Boosters under the crane wear its blue wave paper** (the sheet uploaded with your go; free). Tests 635/0.
+- Your answers: build the wing-hitbox tilt, guns' hit spots move too; the Toilet Roll shake is the whole plane in a match
+  ([notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md), [skin rules](../docs/decisions/2026-11-13-skin-rules.md)).
 
 # Now: finish the game for the beta
-Next: fix the playtest bugs above, then the wing-hitbox tilt (server), the crane's printed sheet, then real skin
-pictures (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy), Shark Jet, Dragon, the three trails
+Next: the wing-hitbox tilt with guns (server; [skins plan](../docs/plan/SKINS-PLAN.md)), the Toilet Roll shake in flight,
+then real skin pictures (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy), Shark Jet, Dragon, the three trails
 ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a
 real gift through the shop; the unlock backpack's music dip.
@@ -18,6 +17,7 @@ real gift through the shop; the unlock backpack's music dip.
 Decisions to review
 Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
   has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices); Trails tab lists, draws nothing.
+  Crane wing join: only the body was narrowed; if the wings still look loose, next step tucks their roots into the roof.
 Gift arrival: Open it! is a tap; on Thanks the gift comes at you and fades; the pop is the Popper's, higher and soft.
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
@@ -53,6 +53,8 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
+- Replay the hangar: click skins, tabs and Cancel (no reload flash?), the crane's narrower body and wing join, a
+  booster under the crane, and Buy on a skin (the screen should change right away).
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - Publish when you like (report card, new shop window: the shop button only shows in Studio until go-live).
 - Save to File when you want the new weapon models and the tape-roll tower in the place file (your go).
