@@ -1,6 +1,6 @@
-# LATEST → handoff-2026-11-13-1724-beta-lane-skins-designed-first-batch-next.md
+# LATEST → handoff-2026-11-13-2015-beta-lane-skins-work-origami-crane-next.md
 
-★ START HERE: Goal (Alan): the beta feels finished and the shop makes money; skins and trails are the build. Next: build the first batch he picked (Hazard Stripes, Tiger Stripes, Flame Decals, Gold Foil, Lava, Galaxy, Shark Jet, Dragon; trails Confetti, Rainbow Marker, Gold Stars), starting with a numbers note (prices, earning) for his OK and the one-time Blender re-layout of the plane pieces. Done when Alan plays them in Studio and OKs them.
+★ START HERE: Goal (Alan): the beta feels finished and the shop makes money; skins and trails are the build. Commons and Rares work in Studio (Alan OK'd). Next: the linked session origami-crane (Fable 5.2 high) builds the Origami Crane in Blender; bring its renders to Alan, then skins on the boosters, real skin pictures, Shark Jet, Dragon, trails, Skins and Trails tabs. Done when Alan plays every first-batch skin and trail in Studio and OKs them.
 
-Quick state: main ec14b514 + handoff, pushed; tests 599/0 (2026-11-13; no game code changed since); docs OK; rojo serve restarted (Studio plugin connect not confirmed); nothing published, uploaded or Saved to File. Rules: docs/decisions/2026-11-13-skin-rules.md; plan: docs/plan/SKINS-PLAN.md.
-Previous: handoff-2026-11-13-0155-beta-lane-gift-arrival-done-goals-review-next.md
+Quick state: main, pushed; tests 617/0 (43 suites); docs OK; rojo serve connected; 166 skin copies/maps + 2 test skins uploaded with his go; nothing published or Saved to File.
+Previous: handoff-2026-11-13-1724-beta-lane-skins-designed-first-batch-next.md
