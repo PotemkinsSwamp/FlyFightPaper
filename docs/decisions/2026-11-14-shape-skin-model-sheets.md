@@ -20,6 +20,11 @@
   **The Dragon's sheet is `dragon-b8-legs.png`** ("Dragon is good"): `dragon-b8.png` with its front legs moved back by
   hand about a tenth of the length, behind a neck ("that's not where its foot would be ... it has a neck"); a redraw
   with jointed legs (`dragon-b9.png`) "looks worse". Its three-quarter view still shows the old front-leg spot.
+- **The Dragon measured, OK'd for the head test** (Alan, same day): `.planning/skins/dragon/dragon-measured.jpg`
+  (shares of its length; on the starter: head 4.6 studs, horns 3.5, wings 12.8 across). The build follows the side and
+  top views (the sheet's front view draws head and body 1.6x wider). The body follows your plane's width (wider than
+  drawn on every plane); the head keeps its drawn size and the neck widens into the body (he did not want the head to
+  grow on big planes).
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:

@@ -92,6 +92,17 @@ rare-1/2/3, legendary-1/2, mythical-1..4, trails-1/2; briefs `prompt-*.txt`, ref
 Alan's picks. Notes: the Mech's pistons look like gun barrels (weapons must read from the real object); Chrome is pale
 against the sky; shine, glow and the slime's drips are more than one picture (shine and glow maps, to check in Studio).
 
+## Model sheets and the Shark Jet and Dragon builds (2026-11-14)
+How shape skins are made now, the picks and the belly rule: [shape-skin decision](../decisions/2026-11-14-shape-skin-model-sheets.md).
+Sheets in `.planning/skins/model-sheets/` (briefs `prompt-model-sheets-*.txt`): **Shark Jet `shark-jet-a4.png`**,
+**Dragon `dragon-b8-legs.png`** (both views from the side, top, bottom and front). The Dragon is measured
+(`.planning/skins/dragon/dragon-measured.jpg`, spec `measure-spec.json`; Alan OK'd it). **Next: the Dragon's head
+test** with `tools/art/sheet_model.py` (body lofted through the sheet's outlines, painted by projecting the sheet's own
+views, bumps and glow from the art). The tool runs: on the Shark's nose it puts the eye, gills and colours where the
+sheet has them; still wrong there: the teeth (white noise along the jaw) and dark specks on the underside, so fix those
+before the Dragon's head. Then the full Dragon and Shark Jet, each beside its sheet before any upload. Codex picture
+jobs for the six printed sheets (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy) come after.
+
 ## Keeping skins cheap (Alan OK'd the budget, 2026-11-13)
 - **Drawn by each player's own computer only.** The server just saves which skin and trail a player wears. The skin
   pieces and the hiding of the real parts happen on each player's screen, so the server never loads a skin, never
