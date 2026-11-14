@@ -95,6 +95,7 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 |---|---|
 | `src/shared/Catalog.luau` | Parts and weapons, stats, which builds are legal |
 | `src/shared/Aircraft.luau` | Puts the plane meshes together, mounts, team colours |
+| `src/client/PlaneLooks.luau` | Draws skins on this screen only: swaps each paper and trim piece for its printed-sheet copy (`config/skin-pieces.json`) wearing the skin picture plus its creases ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/BuilderModel.luau` | The build you are editing in the hangar |
 | `src/client/Hangar.luau` | Main-menu hangar: the shelf screen, stat sheet, name label, plane photo |
 | `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build or class (tests for classes: `tests/unit/Classes.spec.luau`) |

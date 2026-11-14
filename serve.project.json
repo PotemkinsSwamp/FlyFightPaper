@@ -22,6 +22,9 @@
           "AircraftPieces": {
             "$path": "assets/models/planes/pieces.rbxmx"
           },
+          "SkinLooks": {
+            "$path": "assets/models/planes/skin-looks.rbxmx"
+          },
           "EquipmentParts": {
             "$path": "assets/models/equipment/equipment.rbxmx"
           }

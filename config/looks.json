@@ -8,11 +8,11 @@
     "trail": { "paper": 900, "robux": 49 }
   },
   "skins": [
-    { "id": "hazard_stripes", "name": "Hazard Stripes", "tier": "common" },
+    { "id": "hazard_stripes", "name": "Hazard Stripes", "tier": "common", "picture": 124257520246805 },
     { "id": "tiger_stripes", "name": "Tiger Stripes", "tier": "common" },
     { "id": "flame_decals", "name": "Flame Decals", "tier": "common" },
     { "id": "gold_foil", "name": "Gold Foil", "tier": "rare" },
-    { "id": "lava", "name": "Lava", "tier": "rare" },
+    { "id": "lava", "name": "Lava", "tier": "rare", "picture": 127563698335848 },
     { "id": "galaxy", "name": "Galaxy", "tier": "rare" },
     { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "trail": "water_spray" },
     { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers" }

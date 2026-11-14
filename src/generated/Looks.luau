@@ -12,6 +12,7 @@ return JSONTypes.map({
         [1] = JSONTypes.map({
             ["id"] = "hazard_stripes",
             ["name"] = "Hazard Stripes",
+            ["picture"] = 124257520246805,
             ["tier"] = "common",
         }),
         [2] = JSONTypes.map({
@@ -32,6 +33,7 @@ return JSONTypes.map({
         [5] = JSONTypes.map({
             ["id"] = "lava",
             ["name"] = "Lava",
+            ["picture"] = 127563698335848,
             ["tier"] = "rare",
         }),
         [6] = JSONTypes.map({

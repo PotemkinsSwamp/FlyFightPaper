@@ -1,0 +1,337 @@
+{
+ "_comment": "Printed-sheet skin copies of the plane pieces (mesh + crease normal map ids), written by tools/art/upload_paper.py sheet meshes.",
+ "pieces": {
+  "body-paper-L": {
+   "mesh": 80665186117762,
+   "normal": 110256268044698
+  },
+  "body-paper-R": {
+   "mesh": 78329282167286,
+   "normal": 137502311194544
+  },
+  "body_heavy-accent": {
+   "mesh": 88316272007203,
+   "normal": 116576251864335
+  },
+  "body_heavy-cardboard-L": {
+   "mesh": 119271848140112,
+   "normal": 120666776034605
+  },
+  "body_heavy-cardboard-R": {
+   "mesh": 83258150183791,
+   "normal": 111938341917207
+  },
+  "body_heavy_mk2-accent": {
+   "mesh": 81459431501102,
+   "normal": 90390023130767
+  },
+  "body_heavy_mk2-cardboard-L": {
+   "mesh": 76694558452561,
+   "normal": 139468788692635
+  },
+  "body_heavy_mk2-cardboard-R": {
+   "mesh": 80366219940583,
+   "normal": 131247476435671
+  },
+  "body_heavy_mk2-paper-L": {
+   "mesh": 74646912790085,
+   "normal": 134592737150759
+  },
+  "body_heavy_mk2-paper-R": {
+   "mesh": 105855387453900,
+   "normal": 110210345124643
+  },
+  "body_heavy_mk2-tube-L": {
+   "mesh": 92342477651482,
+   "normal": 118079673168248
+  },
+  "body_heavy_mk2-tube-R": {
+   "mesh": 140443997333981,
+   "normal": 88836756023915
+  },
+  "body_slim-accent": {
+   "mesh": 116198377175104,
+   "normal": 86478633125896
+  },
+  "body_slim-paper-L": {
+   "mesh": 125182721415435,
+   "normal": 94617416430102
+  },
+  "body_slim-paper-R": {
+   "mesh": 112599256262115,
+   "normal": 77971301448416
+  },
+  "body_slim_mk2-accent": {
+   "mesh": 86490091442526,
+   "normal": 100621738062918
+  },
+  "body_slim_mk2-paper-L": {
+   "mesh": 125182721415435,
+   "normal": 98291122286751
+  },
+  "body_slim_mk2-paper-R": {
+   "mesh": 112599256262115,
+   "normal": 128603563783443
+  },
+  "body_standard_mk2-accent": {
+   "mesh": 122478483060326,
+   "normal": 109387786255975
+  },
+  "body_standard_mk2-paper-L": {
+   "mesh": 109324840025348,
+   "normal": 83615569149632
+  },
+  "body_standard_mk2-paper-R": {
+   "mesh": 109364875300324,
+   "normal": 140666424651893
+  },
+  "nose-accent": {
+   "mesh": 117873844323001,
+   "normal": 76694456812931
+  },
+  "nose-paper-L": {
+   "mesh": 71648694539767,
+   "normal": 71886813552937
+  },
+  "nose-paper-R": {
+   "mesh": 77311558625662,
+   "normal": 89747399662753
+  },
+  "nose_1-accent": {
+   "mesh": 95605327241442,
+   "normal": 88716738142325
+  },
+  "nose_1-paper-L": {
+   "mesh": 91621996614159,
+   "normal": 82576982607205
+  },
+  "nose_1-paper-R": {
+   "mesh": 94299555041060,
+   "normal": 132768254802919
+  },
+  "nose_2-accent": {
+   "mesh": 106816741552800,
+   "normal": 86137349086831
+  },
+  "nose_2-paper-L": {
+   "mesh": 101328161974169,
+   "normal": 122327820033653
+  },
+  "nose_2-paper-R": {
+   "mesh": 116107394763752,
+   "normal": 105994181569909
+  },
+  "nose_3-accent": {
+   "mesh": 136302242501177,
+   "normal": 116856262207347
+  },
+  "nose_3-paper-L": {
+   "mesh": 118174541500284,
+   "normal": 81199656955223
+  },
+  "nose_3-paper-R": {
+   "mesh": 136500928451157,
+   "normal": 107161956385804
+  },
+  "nose_4-accent": {
+   "mesh": 126020380656071,
+   "normal": 139618802479418
+  },
+  "nose_4-paper-L": {
+   "mesh": 134286678241832,
+   "normal": 137385056492898
+  },
+  "nose_4-paper-R": {
+   "mesh": 89467904036010,
+   "normal": 97647759754640
+  },
+  "nose_5-accent": {
+   "mesh": 136324038913335,
+   "normal": 90411095346468
+  },
+  "nose_5-paper-L": {
+   "mesh": 134521957117431,
+   "normal": 88485647577189
+  },
+  "nose_5-paper-R": {
+   "mesh": 81155742039350,
+   "normal": 122515021306122
+  },
+  "tail-accent": {
+   "mesh": 103672395880157,
+   "normal": 72742326713069
+  },
+  "tail-paper-L": {
+   "mesh": 112527968513084,
+   "normal": 71164216250442
+  },
+  "tail-paper-R": {
+   "mesh": 105365794375924,
+   "normal": 113537856779638
+  },
+  "tail_1-accent": {
+   "mesh": 84445101766167,
+   "normal": 124909806571665
+  },
+  "tail_1-paper-L": {
+   "mesh": 109383606084412,
+   "normal": 80782242151799
+  },
+  "tail_1-paper-R": {
+   "mesh": 109764085156837,
+   "normal": 106955525496753
+  },
+  "tail_2-accent": {
+   "mesh": 94962913174548,
+   "normal": 126464128576069
+  },
+  "tail_2-paper-L": {
+   "mesh": 81534424745254,
+   "normal": 113056195315249
+  },
+  "tail_2-paper-R": {
+   "mesh": 126232092886670,
+   "normal": 139553848793159
+  },
+  "tail_3-accent": {
+   "mesh": 107013873305589,
+   "normal": 123532225097677
+  },
+  "tail_3-paper-L": {
+   "mesh": 76927661125165,
+   "normal": 74462998014715
+  },
+  "tail_3-paper-R": {
+   "mesh": 98360021053783,
+   "normal": 94322550638851
+  },
+  "tail_4-accent": {
+   "mesh": 118551710025219,
+   "normal": 93159368413000
+  },
+  "tail_4-paper-L": {
+   "mesh": 77510266285793,
+   "normal": 84022985224705
+  },
+  "tail_4-paper-R": {
+   "mesh": 75402376567712,
+   "normal": 114817869772292
+  },
+  "tail_5-accent": {
+   "mesh": 136541355003731,
+   "normal": 130320875744877
+  },
+  "tail_5-paper-L": {
+   "mesh": 100697680186024,
+   "normal": 93094859192330
+  },
+  "tail_5-paper-R": {
+   "mesh": 87487704859336,
+   "normal": 129458973114781
+  },
+  "wings-accent-L": {
+   "mesh": 84130025008490,
+   "normal": 125472078498477
+  },
+  "wings-accent-R": {
+   "mesh": 75464735290143,
+   "normal": 126901614298897
+  },
+  "wings-paper-L": {
+   "mesh": 88409273678237,
+   "normal": 130014518953544
+  },
+  "wings-paper-R": {
+   "mesh": 90393965881173,
+   "normal": 81250785893830
+  },
+  "wings_1-accent-L": {
+   "mesh": 120155184889075,
+   "normal": 135528390411451
+  },
+  "wings_1-accent-R": {
+   "mesh": 76628463337847,
+   "normal": 80584453589858
+  },
+  "wings_1-paper-L": {
+   "mesh": 73344245013098,
+   "normal": 72828917004521
+  },
+  "wings_1-paper-R": {
+   "mesh": 91021018604359,
+   "normal": 106684429812756
+  },
+  "wings_2-accent-L": {
+   "mesh": 135286278854953,
+   "normal": 78439365555891
+  },
+  "wings_2-accent-R": {
+   "mesh": 90622363562376,
+   "normal": 108170381342692
+  },
+  "wings_2-paper-L": {
+   "mesh": 122254842586586,
+   "normal": 95724793206644
+  },
+  "wings_2-paper-R": {
+   "mesh": 122654428710612,
+   "normal": 140069541438075
+  },
+  "wings_3-accent-L": {
+   "mesh": 138255676321729,
+   "normal": 77301249814518
+  },
+  "wings_3-accent-R": {
+   "mesh": 89460476262113,
+   "normal": 126338184236311
+  },
+  "wings_3-paper-L": {
+   "mesh": 95720478074143,
+   "normal": 115682500682546
+  },
+  "wings_3-paper-R": {
+   "mesh": 86226285836518,
+   "normal": 79626266340528
+  },
+  "wings_4-accent-L": {
+   "mesh": 118356831658939,
+   "normal": 98560761927886
+  },
+  "wings_4-accent-R": {
+   "mesh": 97299616391015,
+   "normal": 78323955646494
+  },
+  "wings_4-cardboard-L": {
+   "mesh": 75730700114991,
+   "normal": 97930045163289
+  },
+  "wings_4-cardboard-R": {
+   "mesh": 99530532381873,
+   "normal": 89092521088494
+  },
+  "wings_4-paper-L": {
+   "mesh": 137084215348302,
+   "normal": 139127017774567
+  },
+  "wings_4-paper-R": {
+   "mesh": 110189155443584,
+   "normal": 112593249887752
+  },
+  "wings_5-accent-L": {
+   "mesh": 125596312305992,
+   "normal": 96680339891588
+  },
+  "wings_5-accent-R": {
+   "mesh": 75401044747128,
+   "normal": 106219734651169
+  },
+  "wings_5-paper-L": {
+   "mesh": 129954662464948,
+   "normal": 90196978725538
+  },
+  "wings_5-paper-R": {
+   "mesh": 115509134146981,
+   "normal": 102206257936810
+  }
+ }
+}

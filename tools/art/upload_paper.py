@@ -42,6 +42,11 @@ if args[:1] == ["meshes"]:
     for k, v in json.loads(Path(args[1]).read_text()).items():
         rec[k]["mesh"] = v["mesh"]
     RECORD.write_text(json.dumps(rec, indent=2) + "\n")
+    if MODE == "sheet":  # the game reads the copies from config (PlaneLooks.luau); run tools/generate_config.py after
+        pieces = {k: {"mesh": int(v["mesh"]), "normal": int(v["normal"])} for k, v in sorted(rec.items()) if "mesh" in v}
+        (ROOT / "config/skin-pieces.json").write_text(json.dumps({"_comment": "Printed-sheet skin copies of the plane "
+            "pieces (mesh + crease normal map ids), written by tools/art/upload_paper.py sheet meshes.", "pieces": pieces},
+            indent=1) + "\n")
     sys.exit(print("Mesh ids added:", sum("mesh" in v for v in rec.values()), "of", len(rec)))
 for name in NAMES:
     files = [(D / f"{name}.fbx", "model")] + [(D / f"{name}-{k}.png", k) for k in MAPS]

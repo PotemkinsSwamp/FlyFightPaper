@@ -20,6 +20,7 @@ local Gameplay=require(Root.Generated.Gameplay)
 local Desk=Gameplay.service
 local Loadouts=require(Root.Shared.WeaponLoadouts)
 local Aircraft=require(Root.Shared.Aircraft)
+local Looks=require(Root.Shared.LooksRules)
 local Roster=require(Root.Shared.BotRosterRules)
 local HitShapes=require(script.Parent.HitShapes)
 local DuctRules=require(Root.Shared.DuctRules)
@@ -149,6 +150,8 @@ function Service:add(player,options)
  local home=CFrame.new(desk.Position+Vector3.new(0,desk.Size.Y/2+2.8,0))*CFrame.Angles(0,desk.Name:find("North") and math.pi or 0,0)
  local p={key=key,id=id,player=player,kind=player and "human" or "bot",name=player and player.DisplayName or options.name,
   seat=seat,home=home,loadout=options.loadout or self.catalog:starterLoadout(),loadoutName=options.loadoutName or "pellet",tier=options.tier or "regular",practice=options.practice,life=0}
+ -- Bots wear skins by difficulty (Alan 2026-11-13), picked once and kept all match; drawn on players' screens only.
+ if not player then p.skin,p.trail=Looks.botLooks(p.tier,function(n) return math.random(n) end) end
  self.records[id]=self.records[id] or self:newRecord(p)
  self.pilots[key]=p;self.byId[id]=p;self:build(p)
  return p
@@ -193,6 +196,7 @@ function Service:build(p)
  for key,value in pairs({OwnerId=p.player and p.player.UserId or 0,Life=p.life,State="DESK",LiftMax=p.stats.lift,Lift=p.stats.lift,Speed=p.stats.speed,
   TurnRate=p.stats.turn,PitchRate=p.stats.pitch,YawRate=p.stats.yaw,Health=p.stats.health,MaxHealth=p.stats.health,OriginalHealth=p.stats.health,DisplayName=p.name,ControllerType=p.kind,
   Message=Lines.pick("atDesk"),Loadout=p.loadoutName,LoadoutData=game:GetService("HttpService"):JSONEncode(p.loadout),Protected=true,Kills=self.records[p.id].kills}) do model:SetAttribute(key,value) end
+ model:SetAttribute("Skin",p.skin);model:SetAttribute("Trail",p.trail)
  -- A practice flight stays one through crashes: every new plane carries the mark and its desk ring.
  if p.practice then model:SetAttribute("Practice",true);model:SetAttribute("PracticeRing",Landing.approach(p.home,Desk)) end
  -- Flight School (p.gentle): the pilot's client must not crumple it either, only bounce it off.

@@ -42,7 +42,7 @@ def main():
     path = operation.get("path", "")
     if not path.startswith("operations/"):
         raise SystemExit("Upload response has no operation path; inspect output before retrying.")
-    for attempt in range(20):
+    for attempt in range(60):  # FBX models can take over a minute to process (2026-11-13)
         response = session.get(BASE + path, timeout=30)
         if not response.ok:
             raise SystemExit(f"Polling failed with HTTP {response.status_code}; operation was saved.")

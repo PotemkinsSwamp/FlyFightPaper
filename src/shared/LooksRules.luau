@@ -65,7 +65,9 @@ function LooksRules.config()
 			assert(kind == "skin" or type(entry.sold) == "boolean", "missing trail sold flag")
 			local prices = raw.tiers[entry.tier]
 			local item = { id = entry.id, name = entry.name, kind = kind, tier = entry.tier,
-				paper = prices.paper, robux = prices.robux, trail = entry.trail, sold = kind == "skin" or entry.sold }
+				paper = prices.paper, robux = prices.robux, trail = entry.trail, sold = kind == "skin" or entry.sold,
+				picture = entry.picture } -- uploaded printed-sheet picture (skins); none yet = drawn plain
+			assert(entry.picture == nil or integer(entry.picture), "invalid look picture")
 			byID[item.id] = item
 			if kind == "skin" then
 				byTier[item.tier] = byTier[item.tier] or {}; table.insert(byTier[item.tier], item.id)
