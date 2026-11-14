@@ -44,5 +44,9 @@ What changed the same day:
 - **Hangar:** the plane photo now stays put between clicks; a new plane loads behind the old one and swaps in when
   ready (checked in Play: no blank frame). After any buy the server sends the fresh profile at once, instead of the
   next 3-second refresh.
+- **Booster under the crane:** with Alan's go the crane's printed sheet was uploaded; boosters under the crane now wear
+  its blue paper (checked in Play on a Band booster; tape and elastic keep their own look).
+- Alan's answers: build the wing-hitbox tilt with the guns' hit spots moving too; the Toilet Roll shake is the whole
+  plane, in a match (next session's job).
 
 Back to [playtests](README.md)

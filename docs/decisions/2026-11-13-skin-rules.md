@@ -59,7 +59,8 @@
   crane: "you'll hit things and not realize ... because you don't know where the actual wing is"; a general rule, not
   crane-only). The server tilts the real wings' hit and crash shapes up to the skin's angle (the crane: 32 degrees at the
   root), same size, so shots hit the wing you see and you crash only where it really is. It replaces the earlier
-  "V wings over a flat hitbox".
+  "V wings over a flat hitbox". **Build it, and the gun hit spots move to where the skin draws the guns** (Alan
+  2026-11-14, after reading the how-it-works note).
 - **A Mythical gets a matching printed sheet** (Alan, same evening): the crane's blue wave-and-blossom paper as a
   printed-sheet picture, so boosters (and later maybe guns) wear it like a Common or Rare.
 - **First build batch** (Alan's pick): Hazard Stripes, Tiger Stripes, Flame Decals; Gold Foil, Lava, Galaxy; Shark

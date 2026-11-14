@@ -16,7 +16,7 @@
     { "id": "galaxy", "name": "Galaxy", "tier": "rare" },
     { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "trail": "water_spray" },
     { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers" },
-    { "id": "origami_crane", "name": "Origami Crane", "tier": "mythical" }
+    { "id": "origami_crane", "name": "Origami Crane", "tier": "mythical", "picture": 86508406688555 }
   ],
   "trails": [
     { "id": "confetti", "name": "Confetti", "tier": "trail", "sold": true },

@@ -56,6 +56,7 @@ return JSONTypes.map({
         [9] = JSONTypes.map({
             ["id"] = "origami_crane",
             ["name"] = "Origami Crane",
+            ["picture"] = 86508406688555,
             ["tier"] = "mythical",
         }),
     }),

@@ -41,7 +41,7 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
   wing and tail corners (tested below), shown instead of the parts. Weapons and boosters stay visible so everyone can still read what you carry.
 - **Players are told:** "Skins change how you look, never your hitbox", on the shop card and the Looks tab.
 
-## Wing-hitbox tilt: how it works (waiting on Alan's OK)
+## Wing-hitbox tilt: how it works (Alan OK'd it 2026-11-14, guns too)
 From his ruling in the [skin rules](../decisions/2026-11-13-skin-rules.md) (a shape skin may tilt the wing hitbox, never
 resize it).
 - **What changes:** when a plane wears a shape skin whose wings rise, the server turns each real wing's hit shape and
