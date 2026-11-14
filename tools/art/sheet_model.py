@@ -1,9 +1,12 @@
-"""Model sheet -> Blender model coloured by projecting the sheet's own views: the shape-skin method Alan agreed on
-2026-11-14 (docs/decisions/2026-11-14-shape-skin-model-sheets.md). The body is a loft through the sheet's outlines
-(side view: top and bottom, top/bottom views: width); parts that stick out (horns, fins) are simple tubes or plates
-from measured numbers. Every face is painted from ONE view, the SIDE, TOP, BOTTOM or FRONT view that faces it best and can
-see it (a depth test per view, so a horn never paints its picture onto the head under it). Bumps come from the art's own
-lines (dark line = groove) as a normal map; glow colours (eyes) become an emissive mask.
+"""Model sheet -> Blender model built from measured pieces (docs/decisions/2026-11-14-shape-skin-model-sheets.md). The
+body is a loft through the sheet's outlines (side view: top and bottom, top/bottom views: width); parts that stick out
+are tubes (horns) or faceted blades from measured numbers. A piece with a `color` is painted plainly (blades get dark
+facet-edge lines) and lit flat, so its facets show like the sheet's plates; a body with `colors` gets scales and an
+underside band. Anything without its own colour is painted by projecting the sheet: each spot from ONE view, the SIDE,
+TOP, BOTTOM or FRONT view that faces it best and can see it (a depth test per view, so a horn never paints its picture
+onto the head under it). That works on smooth bodies with art on their sides (the Shark), not on a crest of blades
+(the Dragon: Alan, 2026-11-14, "unusable"). Bumps come from the colours' own lines (dark line = groove) as a normal map;
+glow colours (eyes) become an emissive mask.
 
     python tools/art/sheet_model.py SPEC.json          (runs Blender, then writes the review picture)
 
@@ -15,9 +18,13 @@ points in sheet pixels):
         between bottom and top), smooth (bool), top_line [[x, z], ...], width_line [[x, half width], ...]  (where a
         horn, crest, fin or wing joins, the drawn outline is not the body: over the line's span the body follows these
         points instead), crown [a, b]  (over this span two ridges, up and out at 45 degrees, reach the DRAWN outline's
-        top (side view) and width (top view): a crest of blades on a head, as a V seen from the front)},
-  parts [{name, spine [[x, y, z], ...], radius [r, ...] (one per spine point; or [w, t] pairs for a flat blade),
-          sides, mirror}],
+        top (side view) and width (top view): a crest of blades on a head, as a V seen from the front),
+        colors {scales, under, under_share, scale}  (optional: see body_paint)},
+  parts [{name (unique), color [r, g, b] (optional), mirror (default true), and either
+          spine [[x, y, z], ...], radius [r, ...] (one per spine point; or [across, up] pairs), sides   (a tube), or
+          kind "blade", base [x, y, z], tip [x, y, z], width, thick, facing [x, y, z] (optional; default: out from
+          the head's middle line)}],
+  sun, ambient (optional render light strengths, default 1.5 and 1.0: plain-colour pieces want about 3.5 and 0.45),
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
   degrees: yaw 0 = from the side, 90 = from the front; pitch above level), front_scale (optional px per length),
   paint (optional list of the views to paint from, default all four: leave out one drawn unlike the others).
@@ -187,13 +194,37 @@ def tube(name, spine, radius, sides, mirror):
         Fc.append(tuple(rs[0][::-1]) if sgn > 0 else tuple(rs[0])); PART.append(name)
         Fc.append(tuple(rs[-1]) if sgn > 0 else tuple(rs[-1][::-1])); PART.append(name)
 
-for p in spec.get("parts", []): tube(p["name"], p["spine"], p["radius"], p.get("sides", 6), p.get("mirror", True))
+def blade(name, base, tip, width, thick, facing, mirror):
+    """A faceted leaf-shaped plate (a crest blade, a cheek guard, an eye): a ridge down the middle, widest a third of
+    the way from the base. It lies with its face out from the head's middle line, or towards `facing`."""
+    for sgn in ((1, -1) if mirror else (1,)):
+        b, t = np.array(base, float), np.array(tip, float); b[1] *= sgn; t[1] *= sgn
+        ax = t - b; L = np.linalg.norm(ax); ax /= L; c = (b + t) / 2
+        n = np.array(facing, float) * (1, sgn, 1) if facing else np.array((0, c[1], c[2] - np.interp(c[0], X, zm)))
+        n -= ax * (n @ ax); n /= np.linalg.norm(n); w = np.cross(ax, n); m = b + ax * L * 0.35
+        ids = []
+        for q in (b, m + w * width / 2, t, m - w * width / 2, m + n * thick, m - n * thick * 0.4):
+            ids.append(len(V)); V.append(tuple(map(float, q)))
+        B_, R, T, Lf, up, dn = ids
+        for f in ((B_, R, up), (R, T, up), (T, Lf, up), (Lf, B_, up), (R, B_, dn), (T, R, dn), (Lf, T, dn), (B_, Lf, dn)):
+            Fc.append(f); PART.append(name)
+
+for p in spec.get("parts", []):
+    if p.get("kind") == "blade":
+        blade(p["name"], p["base"], p["tip"], p["width"], p.get("thick", p["width"] * 0.25), p.get("facing"), p.get("mirror", True))
+    else: tube(p["name"], p["spine"], p["radius"], p.get("sides", 6), p.get("mirror", True))
+PSPEC = {p["name"]: p for p in spec.get("parts", [])}; PNAMES = ["body"] + list(PSPEC)
 
 me = bpy.data.meshes.new("skin"); me.from_pydata(V, [], Fc); me.update()
+for poly, nm in zip(me.polygons, PART): poly.material_index = PNAMES.index(nm)    # survives triangulating: the part
 ob = bpy.data.objects.new("skin", me); bpy.context.scene.collection.objects.link(ob)
 bm = bmesh.new(); bm.from_mesh(me); bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
 bmesh.ops.triangulate(bm, faces=bm.faces); bm.to_mesh(me); bm.free()
-for poly in me.polygons: poly.use_smooth = bool(B.get("smooth", False))
+for poly in me.polygons:      # pieces with a plain colour are faceted (flat lit facets, like the sheets' gold plates)
+    nm = PNAMES[poly.material_index]
+    poly.use_smooth = bool(B.get("smooth", False)) if nm == "body" else not PSPEC[nm].get("color")
+TPART = np.array([p.material_index for p in me.polygons])
+for poly in me.polygons: poly.material_index = 0                                  # one material, one texture
 for o in bpy.data.objects: o.select_set(o is ob)
 bpy.context.view_layer.objects.active = ob
 bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT")
@@ -234,6 +265,25 @@ def sample(pic):
     s = SB
     return (s[y0, x0] * (1 - fx) * (1 - fy) + s[y0, x0 + 1] * fx * (1 - fy) + s[y0 + 1, x0] * (1 - fx) * fy + s[y0 + 1, x0 + 1] * fx * fy)
 
+def body_paint(P):
+    """body.colors {scales [r, g, b], under [r, g, b], under_share (0..1 of the height from the bottom), scale (size)}:
+    overlapping round scales in rows (each covers the front of the one behind, so its rounded back edge shows, with a
+    dark rim), and a plain band underneath (jaw, belly) below under_share of the local height."""
+    C = B["colors"]; x, y, z = P.T; s = C.get("scale", 0.02)
+    top, bot, mid, w = (np.interp(x, X, a) for a in (zt, zb, zm, wt))
+    u = x / s; v = np.arctan2(np.abs(y), z - mid) * (w + (top - bot) / 2) / 2 / s     # along, and round from the top
+    best_d = np.ones(len(u)); best_cu = np.full(len(u), np.inf); j0 = np.floor(v + 0.5)
+    for dj in (-1, 0, 1):
+        j = j0 + dj; off = 0.5 * (j % 2)
+        for di in (-1, 0, 1):
+            cu = np.floor(u - off) + di + 0.5 + off; d = np.hypot((u - cu) / 0.9, (v - j) / 0.7)
+            k = (d < 1) & (cu < best_cu); best_d[k] = d[k]; best_cu[k] = cu[k]
+    g = np.array(C["scales"]) / 255.0 * (0.7 + 0.5 * (1 - best_d[:, None]))
+    g[best_d > 0.82] *= 0.55
+    h = (z - bot) / np.maximum(top - bot, 1e-6); sh = C.get("under_share", 0.4)
+    g[h < sh] = np.array(C["under"]) / 255.0; g[abs(h - sh) < 0.03] *= 0.6       # the band, with a line on its edge
+    return g
+
 # Each spot is painted from ONE view (blending many views per texel mixed the mouth into the belly): the view its smooth
 # normal faces best, the side preferred until it clearly points up, down or forward (about 60 degrees). Views are only
 # cross-faded in a thin BAND where two nearly tie, so the switch is a soft line, not a sawtooth. A view that can't see
@@ -248,6 +298,17 @@ for fi, t in enumerate(Tri):
     if r is None: continue
     ys_, xs_, L = r; Pt = Vn[t].copy(); Nt = VN[t].copy(); fn = np.cross(Pt[1] - Pt[0], Pt[2] - Pt[0])
     if Pt[:, 1].mean() < 0: Pt[:, 1] *= -1; Nt[:, 1] *= -1; fn[1] *= -1      # the far side uses the mirror
+    nm = PNAMES[TPART[fi]]
+    if nm != "body" and PSPEC[nm].get("color"):                                # a measured piece: its own colour
+        c = np.repeat([np.array(PSPEC[nm]["color"]) / 255.0], len(L), 0)
+        if PSPEC[nm].get("kind") == "blade":                     # dark lines on its facet edges, like the sheets' plates
+            t2 = np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX
+            e = np.linalg.norm(t2[[1, 2, 0]] - t2[[2, 0, 1]], axis=1)          # the edge facing each corner
+            a2 = abs(np.cross(t2[1] - t2[0], t2[2] - t2[0])); d = (L * (a2 / np.maximum(e, 1e-9))).min(1)
+            c *= 0.45 + 0.55 * np.clip((d - 0.5) / 1.5, 0, 1)[:, None]                 # soft-edged, not jagged
+        col[ys_, xs_] = c; done[ys_, xs_] = True; continue
+    if nm == "body" and "colors" in B:                                          # the body's own scales and underside
+        col[ys_, xs_] = body_paint(L @ Pt); done[ys_, xs_] = True; continue
     seen, drawn = [], []
     for v in DIRS:
         pic, dep = to_pic(v, INNER @ Pt)
@@ -293,8 +354,12 @@ ob.data.materials.append(mat)
 sc = bpy.context.scene; sc.render.engine = "BLENDER_EEVEE"; sc.render.film_transparent = False
 sc.view_settings.view_transform = "Standard"
 w = bpy.data.worlds.new("w"); sc.world = w; w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = (*BG ** 2.2, 1)
-w.node_tree.nodes["Background"].inputs[1].default_value = 1.0
-sun = bpy.data.objects.new("sun", bpy.data.lights.new("sun", "SUN")); sun.data.energy = 1.5
+wn = w.node_tree; wn.nodes["Background"].inputs[1].default_value = spec.get("ambient", 1.0)  # fill light on the model
+cb = wn.nodes.new("ShaderNodeBackground"); cb.inputs[0].default_value = (*BG ** 2.2, 1)   # what the camera sees behind:
+lp = wn.nodes.new("ShaderNodeLightPath"); mx = wn.nodes.new("ShaderNodeMixShader")       # always the sheet's grey
+wn.links.new(lp.outputs["Is Camera Ray"], mx.inputs[0]); wn.links.new(wn.nodes["Background"].outputs[0], mx.inputs[1])
+wn.links.new(cb.outputs[0], mx.inputs[2]); wn.links.new(mx.outputs[0], wn.nodes["World Output"].inputs[0])
+sun = bpy.data.objects.new("sun", bpy.data.lights.new("sun", "SUN")); sun.data.energy = spec.get("sun", 1.5)
 sun.rotation_euler = (math.radians(35), 0, math.radians(30)); sc.collection.objects.link(sun)
 cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); sc.collection.objects.link(cam); sc.camera = cam
 lo, hi = Vn.min(0), Vn.max(0); ctr = (lo + hi) / 2; size = float(max(hi - lo))
@@ -310,5 +375,6 @@ shoot("side", (0, -1, 0), (h, 0, 0)); shoot("top", (0, 0, 1), (0, 0, 0)); shoot(
 shoot("front", (-1, 0, 0), (h, 0, -h))
 yaw, pitch = (math.radians(spec["camera"][k]) for k in ("yaw", "pitch"))
 shoot("three_quarter", (-math.sin(yaw) * math.cos(pitch), -math.cos(yaw) * math.cos(pitch), math.sin(pitch)), ortho=False)
+shoot("chase", (0.82, -0.3, 0.48), ortho=False)               # behind and above, where the game's camera mostly looks from
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "model.blend"))
 print("triangles", len(Tri), "out", OUT)

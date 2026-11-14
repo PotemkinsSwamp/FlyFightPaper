@@ -103,13 +103,13 @@ views, bumps and glow from the art). **Tool fixed 2026-11-14:** the Shark's nose
 (it was scrambled on the jaw and underside: cause and fix in [lessons](../workshop/lessons.md), "Painting a model from
 an AI model sheet"). Still true of any long pointy nose: seen straight from the front, the side painting stretches
 into stripes (teeth, ridges), and teeth drawn low on the side wrap under the chin (body `mid` lower would move them up).
-**Dragon head test built, waiting on Alan's judgement** (`.planning/skins/dragon/test-head/for-alan.jpg`, spec beside
-it): clean, and close to the sheet from the side and from above. Short of the sheet: from the three-quarter angle the
-crest (one ridge each side reaching the drawn outline, `crown` in the spec) is a solid gold wall, not separate blades
-with green between, and hides half the eye; the horns are straight cones (the sheet's curve). Splitting the crest into
-a top ridge and a side ridge was tried and was worse (the eye smeared). The sheet's FRONT view is left out of the
-painting (`paint`): it draws the head 1.6x too wide and put stripes on the horn bases. Options for Alan: go on to the
-full Dragon at this level, or build each crest blade as its own measured piece first (slower, closer).
+**Dragon head, projected** (`.planning/skins/dragon/test-head/`): Alan, "atrocious ... unusable", so the Dragon is
+**built from measured pieces** ([decision](../decisions/2026-11-14-shape-skin-model-sheets.md)).
+**Dragon head, measured pieces** (`.planning/skins/dragon/test-head-pieces/for-alan.jpg`, spec beside it; waiting on
+Alan): five crest blades a side (tips on the sheet's drawn outline, laid back), brow and cheek blades, eye and socket,
+two horns, green scales and a gold jaw; 1,526 triangles. Clean from every side. Short of the sheet: the blades are
+straight daggers (the sheet's are curved leaves), the horns straight cones, the face slimmer than the three-quarter
+drawing, the gold flatter. Next if Alan agrees: leaf-shaped and curved blades and horns, a fuller face, then the rest.
 Then the full Dragon and Shark Jet, each beside its sheet before any upload. Codex picture
 jobs for the six printed sheets (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy) come after.
 

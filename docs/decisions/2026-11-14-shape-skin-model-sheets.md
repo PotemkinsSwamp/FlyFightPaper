@@ -10,6 +10,10 @@
   projecting the sheet's own views onto them; fine detail as painted colour plus a baked bump picture (normal map);
   glow, smoke and embers from Roblox's own effects, not modelled. **Proved on the Dragon's head first**, judged by Alan
   beside the sheet, before any full build.
+  **Changed the same day (Alan, on the projected Dragon head):** "atrocious ... just unusable"; projection does not
+  work on a crest of blades. **Build each piece as its own measured piece** (every blade, horn, the eye), coloured
+  plainly (gold facets, green scales); the sheet gives sizes, places and colours only. Projection may still suit a
+  smooth body with its art on the sides (the Shark: "I could maybe see it working").
 - **Picks:** Shark Jet **A** (blue-grey, white belly) and Dragon **B** (emerald and gold, crest of fins), from
   `.planning/skins/model-sheets/`. **The Shark Jet's sheet is `shark-jet-a4.png`** ("that version of the shark works
   well"): a round jet fuselage with a cream underside, tapering to a sharp nose. **The Dragon's shape is
