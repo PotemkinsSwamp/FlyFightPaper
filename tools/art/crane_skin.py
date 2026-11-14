@@ -147,58 +147,77 @@ def crane(o):
     k = min(max(math.sqrt(run / R0 * chord / C0), 0.85), 1.2, 0.9 * blen / (C0 * s)); ks = k * s
     zc = min(max((o["LI"] + o["TI"]) / 2, zF + 0.06 * blen + C0 * ks / 2), zB - 0.04 * blen - C0 * ks / 2)
     z1, z2 = zc - C0 * ks / 2, zc + C0 * ks / 2; zm = (z1 + z2) / 2
-    # body: six-sided from above (pointed front and back, straight sides the wings hinge on), a raised back,
+    # body: six-sided from above (pointed front and back, straight sides the wings hinge on), a roof with a ridge,
     # and a keel ridge on the real body's bottom that reaches back over the booster spot
     pF, pB = np.array((0, wy - 0.12 * s, zF)), np.array((0, wy - 0.05 * s, zB))
-    pP = np.array((0, wy + 0.9 * s, zm + 0.1 * s))
+    pR1, pR2 = np.array((0, wy + 0.9 * s, lerp(z1, z2, 0.1))), np.array((0, wy + 0.9 * s, lerp(z1, z2, 0.82)))
     pK1 = np.array((0, ky - 0.35 * s, lerp(zF, zB, 0.3))); pK2 = np.array((0, ky, min(max(lerp(zF, zB, 0.62), o["boost_z"]), zB - 0.4 * s)))
-    cen = (pF + pB + pP + pK1 + pK2) / 5
-    Fr, Bk, Pk, K1, K2 = v(pF, "BodyFront"), v(pB, "BodyBack"), v(pP, "Back"), v(pK1, "Keel"), v(pK2, "KeelBack")
+    cen = (pF + pB + pR1 + pR2 + pK1 + pK2) / 6; up = np.array((0, 1.0, 0))
+    Fr, Bk, R1, R2, K1, K2 = v(pF, "BodyFront"), v(pB, "BodyBack"), v(pR1, "BackFront"), v(pR2, "BackRear"), v(pK1, "Keel"), v(pK2, "KeelBack")
     def flap(part, pts, joint, out, lift=0.045):  # a second paper layer lying on a face
         n = unit(np.cross(pts[1] - pts[0], pts[2] - pts[0])); n = n if n @ out > 0 else -n
         poly(part, [v(q + n * lift * s, joint) for q in pts])
     for sx in (-1, 1):
         LR = "LR"[sx > 0]; pMf, pMb = np.array((sx * cw, wy, z1)), np.array((sx * cw, wy, z2))
         Mf, Mb = v(pMf, "BodySideFront" + LR), v(pMb, "BodySideBack" + LR)
-        tri("body", Fr, Mf, Pk); tri("body", Mf, Mb, Pk); tri("body", Mb, Bk, Pk)
+        tri("body", Fr, Mf, R1); tri("body", Mf, Mb, R2); tri("body", Mf, R2, R1); tri("body", Mb, Bk, R2)
         tri("body", Fr, K1, Mf); tri("body", Mf, K1, K2); tri("body", Mf, K2, Mb); tri("body", Mb, K2, Bk)
-        # layered flaps: two on the back, one on the breast, one on the flank, one by the tail
-        mid = lerp(pMf, pMb, 0.5)
-        flap("flap", [lerp(pMf, pMb, 0.04), lerp(pMf, pMb, 0.96), lerp(mid, pP, 0.72)], "Back", pP - cen)
-        flap("flap", [lerp(pMf, pMb, 0.22), lerp(pMf, pMb, 0.78), lerp(mid, pP, 0.5)], "Back", pP - cen, 0.1)
-        flap("flap", [lerp(pF, pMf, 0.06), lerp(pF, pMf, 0.94), lerp(pF, pP, 0.6) * 0.6 + pMf * 0.4], "BodyFront", pP - cen)
-        flap("flap", [lerp(pMb, pB, 0.06), lerp(pMb, pB, 0.94), lerp(pB, pP, 0.55) * 0.6 + pMb * 0.4], "BodyBack", pP - cen)
-        flap("flap", [lerp(pF, pK1, 0.08), lerp(pF, pK1, 0.92), lerp(pF, pMf, 0.75) * 0.75 + pK1 * 0.25], "BodyFront", pMf - cen)
-        flap("flap", [lerp(pMf, pMb, 0.1), lerp(pMf, pMb, 0.9), lerp(pK1, pK2, 0.5) * 0.7 + mid * 0.3], "Keel", pMf - cen)
-        flap("flap", [lerp(pB, pK2, 0.08), lerp(pB, pK2, 0.92), lerp(pB, pMb, 0.7) * 0.75 + pK2 * 0.25], "BodyBack", pMb - cen)
-    # folded points: a ridge on top and two lower corners, tapering; a "crimp" is one piece tucked into the next
+        side = np.array((sx, 0.0, 0.0))
+        # the back: three long layers stacked on each side of the ridge, their edges fanning towards the tail
+        flap("flap", [lerp(pMf, pMb, 0.03), lerp(pMf, pMb, 0.97), lerp(pMb, pR2, 0.93), lerp(pMf, pR1, 0.93)], "Back", up)
+        flap("flap", [lerp(pMf, pR1, 0.22), lerp(pMb, pR2, 0.8), lerp(pMb, pR2, 0.97), lerp(pMf, pR1, 0.97)], "Back", up, 0.09)
+        flap("flap", [lerp(pMf, pR1, 0.58), lerp(pMb, pR2, 0.93), lerp(pMb, pR2, 0.99), lerp(pMf, pR1, 0.99)], "Back", up, 0.135)
+        # the shoulders and the rump: two layers each
+        for a, b, r, name in ((pF, pMf, pR1, "BodyFront"), (pB, pMb, pR2, "BodyBack")):
+            flap("flap", [lerp(a, b, 0.06), lerp(a, b, 0.95), lerp(a, r, 0.9) * 0.55 + b * 0.45, lerp(a, r, 0.85)], name, up)
+            flap("flap", [lerp(a, b, 0.3), lerp(a, b, 0.92), lerp(a, r, 0.8) * 0.5 + b * 0.5], name, up, 0.09)
+        # the breast: two layers pointing down to the keel; the flank and the tail end: one each
+        flap("flap", [lerp(pF, pK1, 0.06), lerp(pF, pK1, 0.94), lerp(pF, pMf, 0.8) * 0.75 + pK1 * 0.25], "BodyFront", side)
+        flap("flap", [lerp(pF, pK1, 0.3), lerp(pF, pK1, 0.9), lerp(pF, pMf, 0.5) * 0.7 + pK1 * 0.3], "BodyFront", side, 0.09)
+        flap("flap", [lerp(pMf, pMb, 0.1), lerp(pMf, pMb, 0.9), lerp(pK1, pK2, 0.5) * 0.7 + lerp(pMf, pMb, 0.5) * 0.3], "Keel", side)
+        flap("flap", [lerp(pB, pK2, 0.08), lerp(pB, pK2, 0.92), lerp(pB, pMb, 0.7) * 0.75 + pK2 * 0.25], "BodyBack", side)
+    # folded points: a ridge on top, a corner each side (so each side shows two facets and a fold line) and a
+    # bottom edge, tapering; a "crimp" is one piece tucked into the open end of the one before
     def section(r, h, w, joint, lean=None):
         top = r if lean is None else r + lean
-        return [v(top, joint), v(r + (-w / 2, -h, 0), joint), v(r + (w / 2, -h, 0), joint)]
+        return [v(top, joint), v(r + (-w / 2, -h * 0.42, 0), joint), v(r + (0, -h, 0), joint), v(r + (w / 2, -h * 0.42, 0), joint)]
     def blade(part, a, b, cap=True):
-        for i, j in ((0, 1), (2, 0), (1, 2)): tri(part, a[i], a[j], b[j]); tri(part, a[i], b[j], b[i])
-        if cap: tri(part, b[0], b[1], b[2])
+        for i in range(4):
+            j = (i + 1) % 4; tri(part, a[i], a[j], b[j]); tri(part, a[i], b[j], b[i])
+        if cap: tri(part, b[0], b[1], b[2]); tri(part, b[0], b[2], b[3])
     def spike(part, a, tip):
-        for i, j in ((0, 1), (2, 0), (1, 2)): tri(part, a[i], a[j], tip)
+        for i in range(4): tri(part, a[i], a[(i + 1) % 4], tip)
+    def cheeks(a, b_or_tip, joint, lift=0.03, far=0.5):  # a layer on the upper facet of each side of a blade
+        tipL = V[b_or_tip] if isinstance(b_or_tip, int) else V[b_or_tip[1]]; tipR = V[b_or_tip] if isinstance(b_or_tip, int) else V[b_or_tip[3]]
+        topE = V[b_or_tip] if isinstance(b_or_tip, int) else V[b_or_tip[0]]
+        for sx, j, tp in ((-1, 1, tipL), (1, 3, tipR)):
+            flap("flap", [lerp(V[a[0]], V[a[j]], 0.1), lerp(V[a[0]], V[a[j]], 0.95), lerp(V[a[j]], tp, far) * 0.75 + lerp(V[a[0]], topE, far) * 0.25],
+                 joint, np.array((sx, 0.3, 0.0)), lift)
     step = np.array((0, -0.1 * s, 0))
-    # neck: stretched forward along the real nose, crimped once, then the head folded back down through its tip
-    N0 = np.array((0, wy - 0.3 * s, zF + 0.5 * s)); Hr = np.array((0, o["yN"] + 0.8 * s, o["zN"] + 1.5 * s))
-    fwd = unit(Hr - N0); Rn = lambda t: lerp(N0, Hr, t)
-    blade("neck1", section(Rn(0), 0.9 * s, 0.4 * s, "BodyFront"), section(Rn(0.56), 0.6 * s, 0.28 * s, "Neck", fwd * 0.3 * s))
-    blade("neck2", section(Rn(0.48) + step, 0.52 * s, 0.22 * s, "Neck"),
-          section(Hr + step * 0.6 - fwd * 0.15 * s, 0.48 * s, 0.19 * s, "Head", fwd * 0.45 * s))
-    # the head: a blade tucked into the neck's open tip, pointing down and forward (the neck's own tip is the crest)
-    hb = Hr + step - fwd * 0.2 * s
-    head = [v(hb + (0, -0.03 * s, 0) + fwd * 0.2 * s, "Head"), v(hb + (-0.07 * s, -0.58 * s, 0), "Head"), v(hb + (0.07 * s, -0.58 * s, 0), "Head")]
-    spike("head", head, v((0, o["yN"] - 0.75 * s, o["zN"] + 0.25 * s), "Beak")); bq = V[-1]
-    for sx, j in ((-1, 1), (1, 2)):   # a cheek layer on each side of the head
-        flap("flap", [lerp(V[head[0]], V[head[j]], 0.12), lerp(V[head[0]], V[head[j]], 0.95),
-                      lerp(V[head[j]], bq, 0.5) * 0.7 + lerp(V[head[0]], bq, 0.5) * 0.3], "Head", np.array((sx, 0.0, 0.0)), 0.03)
-    # tail: rising to over the real tail's top back corner, crimped once
-    T0 = np.array((0, wy - 0.25 * s, zB - 0.6 * s)); Tt = np.array((0, max(o["yT"], wy + 1.3 * s) + 0.5 * s, o["zT"] + 0.7 * s))
+    # neck: a Z like the concept: down and forward from the breast, a short fold back up, then the head folded down.
+    N0 = np.array((0, wy - 0.25 * s, zF + 0.6 * s)); E1 = np.array((0, o["yN"] - 0.45 * s, o["zN"] + 3.1 * s))
+    E2 = np.array((0, o["yN"] + 0.9 * s, o["zN"] + 1.75 * s)); beak = np.array((0, o["yN"] - 0.7 * s, o["zN"] + 0.05 * s))
+    dA, dB = unit(E1 - N0), unit(E2 - E1); Ra = lambda t: lerp(N0, E1, t)
+    n0a = section(Ra(0) + (0, 0.12 * s, 0), 1.2 * s, 0.52 * s, "BodyFront"); n0b = section(Ra(0.36) + (0, 0.06 * s, 0), 0.95 * s, 0.44 * s, "Neck", dA * 0.35 * s)
+    blade("neck0", n0a, n0b); cheeks(n0a, n0b, "BodyFront", 0.04, 0.8)
+    n1a = section(Ra(0.26) + step * 0.6, 0.8 * s, 0.36 * s, "Neck"); n1b = section(E1, 0.62 * s, 0.3 * s, "NeckFold", dA * 0.38 * s)
+    blade("neck1", n1a, n1b); cheeks(n1a, n1b, "Neck", 0.035, 0.7)
+    n2a = section(E1 - dA * 0.35 * s + step * 0.5 + (0, -0.05 * s, 0), 0.5 * s, 0.22 * s, "NeckFold"); n2b = section(E2 - dB * 0.2 * s + step, 0.5 * s, 0.2 * s, "Head", dB * 0.55 * s + (0, 0.1 * s, 0))
+    blade("neck2", n2a, n2b)
+    # the head: a kite-shaped blade tucked into the neck's open tip (the neck's own tip is the crest), with a cheek layer
+    hb = E2 + step * 1.2 + (0, 0, 0.12 * s)
+    head = [v(hb + (0, 0.0, -0.3 * s), "Head"), v(hb + (-0.085 * s, -0.34 * s, 0), "Head"), v(hb + (0, -0.72 * s, 0.1 * s), "Head"), v(hb + (0.085 * s, -0.34 * s, 0), "Head")]
+    Bq = v(beak, "Beak"); spike("head", head, Bq); cheeks(head, Bq, "Head", 0.028, 0.55)
+    # tail: rising to over the real tail's top back corner: a sleeve at the body, then two crimped pieces
+    T0 = np.array((0, wy - 0.2 * s, zB - 0.7 * s)); Tt = np.array((0, max(o["yT"], wy + 1.3 * s) + 0.5 * s, o["zT"] + 0.7 * s))
     bwd = unit(Tt - T0); Rt = lambda t: lerp(T0, Tt, t)
-    blade("tail1", section(Rt(0), 0.9 * s, 0.38 * s, "BodyBack"), section(Rt(0.42), 0.6 * s, 0.26 * s, "Tail", bwd * 0.3 * s))
-    spike("tail2", section(Rt(0.33) + step, 0.46 * s, 0.19 * s, "Tail"), v(Tt, "TailTip"))
+    t0a = section(Rt(0) + (0, 0.1 * s, 0), 1.15 * s, 0.5 * s, "BodyBack"); t0b = section(Rt(0.24), 0.85 * s, 0.4 * s, "Tail", bwd * 0.32 * s)
+    blade("tail0", t0a, t0b); cheeks(t0a, t0b, "BodyBack", 0.04, 0.8)
+    t1a = section(Rt(0.16) + step * 0.6, 0.72 * s, 0.32 * s, "Tail"); t1b = section(Rt(0.52), 0.52 * s, 0.24 * s, "Tail", bwd * 0.3 * s)
+    blade("tail1", t1a, t1b); cheeks(t1a, t1b, "Tail", 0.035, 0.7)
+    t2a = section(Rt(0.44) + step, 0.42 * s, 0.18 * s, "Tail"); Tq = v(Tt, "TailTip"); spike("tail2", t2a, Tq)
+    Hr = E2
+    Rn = lambda t: lerp(N0, E1, t * 0.9)
     # wings
     panels = {}
     for sx in (-1, 1):
@@ -217,7 +236,7 @@ def crane(o):
         layer([(2.7, -1.5), (6.8, 0.66), (2.7, -0.95)], 0.06)             # hem along the leading edge
         panels[sx] = dict(o=at(0, 0), eu=unit(at(1, 0) - at(0, 0)), ew=np.array((0, 0, 1.0)), ks=ks)
     return dict(V=np.array(V), F=F, P=P, J=J, s=s, cw=cw, panels=panels, head=Hr, zc=zc, ks=ks,
-                small=[(Rn(0.3) + (0, -0.42 * s, 0), 0.2 * s, 0.3), (Rt(0.2) + (0, -0.36 * s, 0), 0.2 * s, 1.0), (Rt(0.62) + (0, -0.17 * s, 0), 0.11 * s, 0.2)])
+                small=[(Ra(0.7) + (0, -0.52 * s, 0), 0.2 * s, 0.3), (Rt(0.38) + (0, -0.48 * s, 0), 0.17 * s, 1.0), (Rt(0.62) + (0, -0.17 * s, 0), 0.11 * s, 0.2)])
 
 def wing_under(c, x, z):
     """Height of the wing's underside over plane spot (x, z), and that spot moved (if needed) to be under the wing."""
@@ -334,7 +353,7 @@ STEMS = [[(0.0, 1.62), (1.05, 1.3), (2.75, 1.15), (4.15, 0.98), (5.15, 0.95), (6
          [(3.1, 1.12), (3.45, 1.62)], [(4.4, 0.98), (4.75, 1.3)], [(2.1, 1.2), (2.3, 0.62)]]
 BUDS = [(3.45, 1.62), (4.75, 1.3), (2.3, 0.62), (6.0, 0.9)]
 
-def shade(P3, n, part, d, c, fi):
+def shade(P3, n, part, d, c, fi, foilw):
     """Colour, roughness, height and metal for points P3 (rest pose) on a face with normal n; d = distance to its folds."""
     s = c["s"]; e1, e2 = basis(n)
     mott = noise3(P3 / s, (0.6, 1.3, 2.9), 3); grain = noise3(P3 / s, (23.0, 41.0), 5)
@@ -368,7 +387,7 @@ def shade(P3, n, part, d, c, fi):
     col = lerp(col, PETAL * (1 + 0.06 * mott)[..., None], fill[..., None])
     col = lerp(col, DEEP, (dark * fill)[..., None] * 0.85)
     col = lerp(col, INK, ink[..., None])
-    foil = line(d, 0.045 * s); shadow = smooth(-d, -0.2 * s, -0.045 * s) * (1 - foil)
+    foil = line(d, foilw); shadow = smooth(-d, -4.5 * foilw, -foilw) * (1 - foil)
     col = col * (1 - 0.22 * shadow[..., None])
     col = lerp(col, FOIL, foil[..., None])
     metal = np.clip(np.maximum(np.maximum(ink, fill * (1 - dark)), foil), 0, 1)
@@ -408,8 +427,9 @@ def paint(c, uvs):
         dist = np.full(l0.shape, 1e9)
         for k in range(3):
             if fold(i, k): dist = np.minimum(dist, np.maximum(L[..., k], 0) * a3 / np.linalg.norm(p[(k + 2) % 3] - p[(k + 1) % 3]))
-        part = c["P"][i]; part = {"neck1": "neck", "neck2": "neck", "tail1": "tail", "tail2": "tail"}.get(part, part)
-        cc, rr, hh, mm = shade(P3, normals[i], part, dist, c, i)
+        part = c["P"][i]; part = {"neck0": "neck", "neck1": "neck", "neck2": "neck", "tail0": "tail", "tail1": "tail", "tail2": "tail"}.get(part, part)
+        fw = min(max(0.07 * math.sqrt(a3 / 2), 0.02 * c["s"]), 0.04 * c["s"])   # thinner foil on small pieces
+        cc, rr, hh, mm = shade(P3, normals[i], part, dist, c, i, fw)
         sl = (slice(y0, y1), slice(x0, x1)); m = inside & ~done[sl]
         col[sl][m] = cc[m]; rough[sl][m] = rr[m]; height[sl][m] = hh[m]; metal[sl][m] = mm[m]; done[sl] |= inside
     # a short bleed of each island's paint, then plain blue paper between islands (no black gaps: lessons, uploads)

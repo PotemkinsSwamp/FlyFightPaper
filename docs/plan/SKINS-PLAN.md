@@ -99,9 +99,10 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
   of the real wing seen from above, the scallops redrawn between them; the tail webbing spans the real tail. It
   covered the wings of a swept and a straight-winged plane; the standard plane's tail fins stay uncovered (hitbox
   without skin, as Alan accepted). In Roblox each point would be a Bone. Not yet tried: flapping, real art.
-- **The Origami Crane, built in Blender 2026-11-13 (second pass; no upload, waiting on Alan's OK)**
-  (`tools/art/crane_skin.py`, renders in `.planning/skins/crane/`): 265 triangles and one 1024 set (colour, bumps,
-  shine, silver). Scaled evenly to the plane's length; the beak sits at the nose tip, the tail tip over the real
+- **The Origami Crane, built in Blender 2026-11-13 (third pass; no upload, waiting on Alan's OK)**
+  (`tools/art/crane_skin.py`, renders in `.planning/skins/crane/`): 466 triangles and one 1024 set (colour, bumps,
+  shine, silver). The neck is a Z of three pieces tucked into each other, the head a folded kite with a crest, and
+  folded layers are stacked on the back, shoulders, breast, neck and tail (Alan: "layers on layers"). Scaled evenly to the plane's length; the beak sits at the nose tip, the tail tip over the real
   tail's top back corner, the body on the real body (width capped at 1.7 x the scale), its keel on the real body's
   bottom and back over the booster spot. The wings keep one shape on every plane (0.85-1.2 x, to suit the real wing)
   and rise 32 degrees from the body's sides, so the blossoms never stretch; the real wings stay flat underneath, so
