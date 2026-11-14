@@ -3,9 +3,8 @@
   crane guns under the wing, shelf wears the skin). From your replay: the **crane's body is narrower** (never wider than
   the starter's own shape), the **hangar keeps the plane picture between clicks** (a new plane loads behind the old one
   and swaps in when ready) and **gets the shop's answer right after Buy** (it waited for a 3-second refresh).
-- **Boosters under the crane wear its blue wave paper** (the sheet uploaded with your go; free). Tests 635/0.
-- Your answers: build the wing-hitbox tilt, guns' hit spots move too; the Toilet Roll shake is the whole plane in a match
-  ([notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md), [skin rules](../docs/decisions/2026-11-13-skin-rules.md)).
+- **Boosters under the crane wear its blue wave paper** (sheet uploaded with your go, free; tests 635/0). Your answers
+  are in the [notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md) and [skin rules](../docs/decisions/2026-11-13-skin-rules.md).
 
 # Now: finish the game for the beta
 Next: the wing-hitbox tilt with guns (server; [skins plan](../docs/plan/SKINS-PLAN.md)), the Toilet Roll shake in flight,
@@ -34,7 +33,6 @@ Bots follow a target up a vent: veterans 60%, Aces 90%; with 2+ spitballs stuck 
   Spitball builds: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s); the Paper check skips them.
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.
 Crayon 600 studs/s, 450 range, drop 8. New weapons keep their stand-in hit boxes; Popper lead drawn 0.15 x 1.2.
-Ram catch: centres within 2.5 studs in the last 0.1 s; ram strength by relative speed.
 Point Popper: 7 leads x 5, one a second, bundle to 50 studs, ring 3 studs out by 100, falls past ~100; level 2, 300 Paper.
 Thumbtack: 900 studs/s, heavy drag, falls past ~500; full damage to 100 studs; level 4, 600 Paper; "Thumbtack Shooter".
 Falling shots: slow hard (drag 3) and fall (196 studs/s^2) for up to 3 s; Paperclip carries ~840 studs while falling.
@@ -43,7 +41,8 @@ A pilot's felt crash counts if the plane is within 40 studs of that solid part.
 Solid now: cars, buses, boats, lamps, trees, benches, building site, playground, cubby shelf, Earth. Still see-through:
   landing rings, threads, desk hangars, runway lights, wall pictures, your three models.
 Preset levels stay at 5, 8 and 10 at about 340 XP a match (one mostly rookie bot match; recheck with a real player).
-Rams: stronger plane loses 15 extra, always survives; rams earn no kill; teammates and practice flights never ram.
+Rams: centres within 2.5 studs in the last 0.1 s, strength by relative speed; stronger plane loses 15 extra, always
+  survives; rams earn no kill; teammates and practice flights never ram.
 Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000, 60 at 2400. Tab list shows all 12.
 PC keys: letters (not K or R), Shift, Ctrl, Alt, Space; Got it may share a key with Boost or Brake.
 Auto-fire fires on the yellow dot too; in the Range it fires on targets, so a phone's accuracy card reads high.
