@@ -98,9 +98,13 @@ Sheets in `.planning/skins/model-sheets/` (briefs `prompt-model-sheets-*.txt`): 
 **Dragon `dragon-b8-legs.png`** (both views from the side, top, bottom and front). The Dragon is measured
 (`.planning/skins/dragon/dragon-measured.jpg`, spec `measure-spec.json`; Alan OK'd it). **Next: the Dragon's head
 test** with `tools/art/sheet_model.py` (body lofted through the sheet's outlines, painted by projecting the sheet's own
-views, bumps and glow from the art). The tool runs: on the Shark's nose it puts the eye, gills and colours where the
-sheet has them; still wrong there: the teeth (white noise along the jaw) and dark specks on the underside, so fix those
-before the Dragon's head. Then the full Dragon and Shark Jet, each beside its sheet before any upload. Codex picture
+views, bumps and glow from the art). **The tool is not working yet:** on the Shark's nose the eye and gills land right,
+but the jaw and the whole underside come out scrambled (Alan: "horrible ... ruined and garbled",
+`.planning/skins/shark/test-nose/review.jpg`). Cause: each texel blends several views by its normal, and on surfaces
+facing sideways and down the side, bottom and front views (which never line up exactly) mix into noise; the depth test
+(0.006 of the length) also fails in a speckle pattern on steep faces. Fix first: paint each face from ONE view
+(side unless it clearly faces up, down or forward) and loosen the depth test; nothing from the tool goes to Alan until
+the Shark nose is clean beside its sheet. Then the full Dragon and Shark Jet, each beside its sheet before any upload. Codex picture
 jobs for the six printed sheets (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy) come after.
 
 ## Keeping skins cheap (Alan OK'd the budget, 2026-11-13)
