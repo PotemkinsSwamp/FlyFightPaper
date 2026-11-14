@@ -84,6 +84,25 @@ return JSONTypes.map({
             }),
             ["ref"] = JSONTypes.map({
                 ["cw"] = 1.3585,
+                ["keel"] = JSONTypes.array({
+                    [1] = JSONTypes.array({
+                        [1] = -1.09278,
+                        [2] = -2.4989,
+                    }),
+                    [2] = JSONTypes.array({
+                        [1] = -1.30316,
+                        [2] = -0.13553,
+                    }),
+                    [3] = JSONTypes.array({
+                        [1] = -0.935,
+                        [2] = 4.917,
+                    }),
+                    [4] = JSONTypes.array({
+                        [1] = 0.90991,
+                        [2] = 5.74715,
+                    }),
+                }),
+                ["keel_comment"] = "The body's underside down its middle, front to back, as [y, z] on the starter (crane_skin.py's breast, keel and back corners; matches the body mesh): boosters tuck up against it.",
                 ["ks"] = 1.20193,
                 ["ky"] = -0.935,
                 ["s"] = 1.05188,

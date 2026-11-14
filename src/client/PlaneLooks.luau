@@ -72,7 +72,13 @@ local function shape(model)
 			busy[model] = true
 			task.wait(0.2)
 			local skin = skinOf(model)
-			if skin and SkinShapes.has(skin.id) then SkinShapes.wear(model, skin.id) else SkinShapes.clear(model) end
+			if not (skin and SkinShapes.has(skin.id)) then SkinShapes.clear(model)
+			elseif SkinShapes.wear(model, skin.id) then
+				-- The moved booster's copies wear the sheet too, even when copied before their real part was dressed.
+				for _, part in model.Appearance:GetChildren() do
+					if string.match(part.Name, "^SkinBooster%-") then task.spawn(dressPart, model, part) end
+				end
+			end
 		until busy[model] ~= "again" or not model.Parent
 		busy[model] = nil
 	end)

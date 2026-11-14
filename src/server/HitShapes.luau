@@ -42,8 +42,8 @@ function Shapes.solid(part)
 end
 
 -- A stand-in for every MeshPart in `appearance` (pieces[i] for parts[i]), placed in the plane's own frame (`frame`: its
--- Root's CFrame). Under a shape skin (SkinFit) the wings turn up about the drawn hinge and the guns hang where the skin
--- draws them: shots and crashes meet the plane you see (Alan 2026-11-14, docs/plan/SKINS-PLAN.md "Wing-hitbox tilt").
+-- Root's CFrame). Under a shape skin (SkinFit) the wings turn up about the drawn hinge and the guns and booster sit where
+-- the skin draws them: shots and crashes meet the plane you see (Alan 2026-11-14, docs/plan/SKINS-PLAN.md "Wing-hitbox tilt").
 -- Same sizes either way. A piece still waiting for its precise shape is a plain Part. The crash Colliders
 -- (FlightService) and the hit copies use this.
 function Shapes.place(appearance,frame,skin)
@@ -52,7 +52,7 @@ function Shapes.place(appearance,frame,skin)
 	for _,part in ipairs(appearance:GetChildren()) do
 		if part:IsA("MeshPart") then
 			local piece=Shapes.solid(part)
-			local move=fitted and (fitted.wings[part] or fitted.guns[part]) or CFrame.identity
+			local move=fitted and (fitted.wings[part] or fitted.guns[part] or fitted.boosters[part]) or CFrame.identity
 			piece.Name=part.Name;piece.CFrame=move*frame:ToObjectSpace(part.CFrame)
 			table.insert(pieces,piece);table.insert(parts,part)
 		end

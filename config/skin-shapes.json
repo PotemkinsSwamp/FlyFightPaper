@@ -15,7 +15,14 @@
         "zF": -2.65668,
         "zB": 5.74715,
         "ky": -0.935,
-        "zc": 1.45335
+        "zc": 1.45335,
+        "keel_comment": "The body's underside down its middle, front to back, as [y, z] on the starter (crane_skin.py's breast, keel and back corners; matches the body mesh): boosters tuck up against it.",
+        "keel": [
+          [-1.09278, -2.4989],
+          [-1.30316, -0.13553],
+          [-0.935, 4.917],
+          [0.90991, 5.74715]
+        ]
       },
       "const": {
         "RISE": 32.0,

@@ -11,20 +11,26 @@ local function clamp(x, lo, hi) return math.min(math.max(x, lo), hi) end
 
 function SkinFit.has(id) return type(id) == "string" and Shapes[id] ~= nil end
 
+-- A part's box in the plane's frame, from its eight corners.
+local function box(part, frame)
+	local lo, hi = Vector3.one * math.huge, -Vector3.one * math.huge
+	for i = 0, 7 do
+		local c = part.Size / 2 * Vector3.new(i % 2 * 2 - 1, math.floor(i / 2) % 2 * 2 - 1, math.floor(i / 4) * 2 - 1)
+		local p = frame:PointToObjectSpace(part.CFrame:PointToWorldSpace(c))
+		lo, hi = lo:Min(p), hi:Max(p)
+	end
+	return lo, hi
+end
+
 -- The plane's outline in its own frame (crane_skin.py outline()), from the corners of each slot's part boxes.
 function SkinFit.outline(appearance, frame)
 	local o = { zN = math.huge, zT = -math.huge, yT = -math.huge, bw = 0, by0 = math.huge, bz0 = math.huge, bz1 = -math.huge,
-		xo = 0, xi = math.huge, boostY = nil, boostZ = nil }
+		xo = 0, xi = math.huge }
 	local wingY, wingBoxes = {}, {}
 	for _, part in appearance:GetChildren() do
 		if not part:IsA("BasePart") or part:GetAttribute("SkinPiece") then continue end
 		local slot = string.match(part.Name, "^(%a+)")
-		local lo, hi = Vector3.one * math.huge, -Vector3.one * math.huge
-		for i = 0, 7 do
-			local c = part.Size / 2 * Vector3.new(i % 2 * 2 - 1, math.floor(i / 2) % 2 * 2 - 1, math.floor(i / 4) * 2 - 1)
-			local p = frame:PointToObjectSpace(part.CFrame:PointToWorldSpace(c))
-			lo, hi = lo:Min(p), hi:Max(p)
-		end
+		local lo, hi = box(part, frame)
 		if slot == "nose" then o.zN = math.min(o.zN, lo.Z)
 		elseif slot == "tail" then o.zT, o.yT = math.max(o.zT, hi.Z), math.max(o.yT, hi.Y)
 		elseif slot == "body" then
@@ -36,8 +42,6 @@ function SkinFit.outline(appearance, frame)
 				o.xo, o.xi = math.max(o.xo, hi.X), math.min(o.xi, math.max(lo.X, 0))
 				table.insert(wingBoxes, { lo, hi })
 			end
-		elseif slot == "Booster" then
-			o.boostY, o.boostZ = math.max(o.boostY or -math.huge, hi.Y), math.max(o.boostZ or -math.huge, hi.Z)
 		end
 	end
 	if o.zN == math.huge or o.zT == -math.huge or o.bz0 == math.huge or #wingY == 0 then return nil end
@@ -108,30 +112,62 @@ function SkinFit.fit(shape, o)
 		local xx = hinge.X + u * ks * math.cos(rise)
 		return Vector3.new(x < 0 and -xx or xx, hinge.Y + u * ks * math.sin(rise) - 0.035 * s, zc + w * ks)
 	end
-	return out, under, rise, hinge
+	-- The stretched body's belly down its middle (ref.keel): its lowest height between z0 and z1, nil off the body.
+	-- The belly rises to each side, so a booster under the middle meets it there first.
+	local keel = {}
+	for i, p in ref.keel do keel[i] = body(Vector3.new(0, p[1], p[2])) end
+	local function belly(z0, z1)
+		local low
+		for i = 1, #keel - 1 do
+			local a, b = keel[i], keel[i + 1]
+			local from, to = math.max(z0, a.Z), math.min(z1, b.Z)
+			if from > to then continue end
+			for _, z in { from, to } do -- straight between corners: lowest at an end
+				local y = a.Y + (b.Y - a.Y) * (z - a.Z) / (b.Z - a.Z)
+				low = math.min(low or y, y)
+			end
+		end
+		return low
+	end
+	return out, under, rise, hinge, belly
 end
 
 -- Everything shape skin `id` moves on this plane (frame = its Root), in the plane's frame: the pieces to draw, and where
 -- each real wing part and gun part goes (`move * frame:ToObjectSpace(part.CFrame)`, same size). A wing part turns
 -- about its side's hinge line (front to back), tip up by the skin's rise; a gun hangs under the drawn wing by its top
--- (hang_guns()): it keeps its spot seen from above and rolls with the wing. `offsets[slot]`: how far that gun's top
--- moved; `hinge`: the right wing's hinge (the left one mirrors it in x). nil when `id` has no shape or the plane's parts
--- aren't there yet.
+-- (hang_guns()): it keeps its spot seen from above and rolls with the wing. The booster's parts move straight up or down
+-- together, never turned, until its top touches the belly (Alan 2026-11-14: it floated below the crane); its tape
+-- strap wraps the body, so the strap's top tucks inside. `offsets[slot]`: how far that gun's top moved; `hinge`: the
+-- right wing's hinge (the left one mirrors it in x). nil when `id` has no shape or the plane's parts aren't there yet.
 function SkinFit.plane(id, appearance, frame)
 	local shape = type(id) == "string" and Shapes[id]
 	local o = shape and appearance and SkinFit.outline(appearance, frame)
 	if not o then return nil end
-	local placed, under, rise, hinge = SkinFit.fit(shape, o)
-	local result, guns = { placed = placed, wings = {}, guns = {}, offsets = {}, hinge = hinge }, {}
+	local placed, under, rise, hinge, belly = SkinFit.fit(shape, o)
+	local result, guns, boosters = { placed = placed, wings = {}, guns = {}, boosters = {}, offsets = {}, hinge = hinge }, {}, {}
 	for _, part in appearance:GetChildren() do
 		if not part:IsA("BasePart") or part:GetAttribute("SkinPiece") then continue end
 		local mount = tonumber(string.match(part.Name, "^Mount(%d+)"))
-		if string.match(part.Name, "^(%a+)") == "wings" then
+		local slot = string.match(part.Name, "^(%a+)")
+		if slot == "wings" then
 			local left = frame:PointToObjectSpace(part.Position).X < 0
 			local at = left and hinge * Vector3.new(-1, 1, 1) or hinge
 			result.wings[part] = CFrame.new(at) * CFrame.Angles(0, 0, left and -rise or rise) * CFrame.new(-at)
+		elseif slot == "Booster" then table.insert(boosters, part)
 		elseif mount then guns[mount] = guns[mount] or {}; table.insert(guns[mount], part) end
 	end
+	-- ponytail: each part's box top against the belly's middle, over the middle 60% of its length (the parts' ends round
+	-- off): within 0.04 of touching, mesh against mesh, on all 18 body and booster builds (2026-11-14). Read the meshes'
+	-- tops instead if a new booster's top isn't flat down its middle.
+	local lift
+	for _, part in boosters do
+		if string.match(part.Name, "%-tape$") then continue end
+		local lo, hi = box(part, frame)
+		local trim = (hi.Z - lo.Z) * 0.2
+		local y = belly(lo.Z + trim, hi.Z - trim)
+		if y then lift = math.min(lift or math.huge, y - hi.Y) end
+	end
+	if lift then for _, part in boosters do result.boosters[part] = CFrame.new(0, lift, 0) end end
 	for mount, parts in guns do
 		local lo, hi = Vector3.one * math.huge, -Vector3.one * math.huge
 		for _, part in parts do

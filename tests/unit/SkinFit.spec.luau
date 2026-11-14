@@ -1,6 +1,7 @@
 -- Shape skins on the server (SkinFit + HitShapes.place + FlightService colliders/wear): under the crane the real wings'
--- hit and crash shapes turn up by the crane's rise about the hinge the screen draws, keep their exact size, and the
--- guns' shapes move by the same offsets the screen's fit gives. A plane without a shape skin is unchanged.
+-- hit and crash shapes turn up by the crane's rise about the hinge the screen draws, keep their exact size, the guns'
+-- shapes move by the same offsets the screen's fit gives, and the booster's rise or drop straight to the drawn belly. A
+-- plane without a shape skin is unchanged.
 local Root = game.ReplicatedStorage.FlyFightPaper
 local SkinFit = require(Root.Shared.SkinFit)
 local Aircraft = require(Root.Shared.Aircraft)
@@ -21,11 +22,13 @@ end
 function Spec.run()
 	local result, test = Suite.new()
 	local catalog = Catalog.new(require(Root.Generated.Catalog))
-	-- Two different builds with guns on the body and under a wing: the Fighter, and a slim body on swept wings with a
-	-- booster and a crayon under its left wing.
+	-- Three different builds with guns on the body and under a wing: the Fighter (no booster), a slim body on swept wings
+	-- with the Elastic Booster and a crayon under its left wing, and the Toilet Roll Gunship on swept wings with the Twin.
 	local swept = catalog:classLoadout("striker", 99)
 	swept.wings, swept.weapon_mounts[3] = "wings_4", "crayon"
-	local builds = { fighter = catalog:classLoadout("fighter", 99), swept = swept }
+	local heavy = catalog:classLoadout("bomber", 99)
+	heavy.wings, heavy.utility = "wings_1", "boost_twin"
+	local builds = { fighter = catalog:classLoadout("fighter", 99), swept = swept, heavy = heavy }
 	local function plane(loadout)
 		local model = Instance.new("Model")
 		local body = Instance.new("Part")
@@ -91,6 +94,61 @@ function Spec.run()
 			for _, id in loadout.weapon_mounts do if id then want += 1 end end
 			assert(count == want, count .. " guns of " .. want)
 		end)
+		if loadout.utility then test(name .. ": the booster moves straight up or down as one, same size, until it touches the drawn belly", function()
+			-- The belly's middle from where the drawn body piece sits (its box), not from SkinFit's own stretch.
+			local drawn, piece = fitted.placed.body, SkinFit.shapes[CRANE].pieces.body
+			local refLo, refHi = Vector3.new(table.unpack(piece.min)), Vector3.new(table.unpack(piece.max))
+			local keel = {}
+			for i, p in SkinFit.shapes[CRANE].ref.keel do
+				keel[i] = drawn[1] * ((Vector3.new(0, p[1], p[2]) - (refLo + refHi) / 2) * drawn[2] / (refHi - refLo))
+			end
+			local function belly(z)
+				for i = 1, #keel - 1 do
+					local a, b = keel[i], keel[i + 1]
+					if z >= a.Z and z <= b.Z then return a.Y + (b.Y - a.Y) * (z - a.Z) / (b.Z - a.Z) end
+				end
+				return nil
+			end
+			-- The belly's lowest height between z0 and z1 (at an end or a keel corner: straight between corners).
+			local function lowest(z0, z1)
+				local zs, low = { z0, z1 }, nil
+				for _, k in keel do if k.Z > z0 and k.Z < z1 then table.insert(zs, k.Z) end end
+				for _, z in zs do
+					local y = belly(z)
+					if y then low = math.min(low or y, y) end
+				end
+				return low
+			end
+			local plain, plainParts = HitShapes.place(model.Appearance, frame, nil)
+			local move, gap, sunk, count = nil, math.huge, 0, 0
+			for i, part in parts do
+				if not string.match(part.Name, "^Booster") then continue end
+				count += 1
+				local m = assert(fitted.boosters[part], part.Name .. " not moved")
+				move = move or m
+				assert(same(m, move), "the booster's parts moved apart")
+				assert(same(m, CFrame.new(0, m.Y, 0)), part.Name .. " moved sideways or turned")
+				assert(pieces[i].Size == part.Size, part.Name .. " changed size")
+				assert(same(pieces[i].CFrame, m * frame:ToObjectSpace(part.CFrame)), part.Name .. " hit shape not on the drawn booster")
+				assert(plainParts[i] == part and same(plain[i].CFrame, frame:ToObjectSpace(part.CFrame)), part.Name .. " moved without the skin")
+				if string.match(part.Name, "%-tape$") then continue end -- the strap wraps the body: its top tucks inside
+				local lo, hi = Vector3.one * math.huge, -Vector3.one * math.huge
+				for c = 0, 7 do
+					local corner = pieces[i].CFrame * (part.Size / 2 * Vector3.new(c % 2 * 2 - 1, math.floor(c / 2) % 2 * 2 - 1, math.floor(c / 4) * 2 - 1))
+					lo, hi = lo:Min(corner), hi:Max(corner)
+				end
+				-- Its top touches the belly over the middle of its length (the ends round off), and even its box's
+				-- square ends sink less than 0.1 into the belly.
+				local trim = (hi.Z - lo.Z) * 0.2
+				local middle, whole = lowest(lo.Z + trim, hi.Z - trim), lowest(lo.Z, hi.Z)
+				if middle then gap = math.min(gap, middle - hi.Y) end
+				if whole then sunk = math.max(sunk, hi.Y - whole) end
+			end
+			for _, piece in plain do piece:Destroy() end
+			assert(count >= 5, count .. " booster parts")
+			assert(math.abs(gap) < 0.01, "the booster's top is " .. gap .. " below the belly (negative: sunk in)")
+			assert(sunk < 0.1, "a booster box sinks " .. sunk .. " into the belly")
+		end) end
 		test(name .. ": without a shape skin nothing moves", function()
 			assert(SkinFit.plane(nil, model.Appearance, frame) == nil and SkinFit.plane("hazard_stripes", model.Appearance, frame) == nil)
 			for _, skin in { false, "hazard_stripes" } do
