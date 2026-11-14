@@ -125,6 +125,15 @@ mistake would be easy to make twice.
   with `-i` last (it takes several files). About 45,000-80,000 Codex tokens for 2-5 pictures.
 
 ## Studio and the place file
+- **Runtime skin looks (2026-11-13):** `AssetService:CreateSurfaceAppearanceAsync` rejects uploaded pictures ("ColorMap
+  value should be an EditableImage Content", NormalMap too), and an EditableImage is ~4 MB per 1024 picture. Make
+  SurfaceAppearances ahead in an `.rbxmx` instead (Rojo live-syncs their maps, unlike MeshId). `AssetService:
+  CreateMeshPartAsync(Content.fromUri(mesh))` does work on the client, and `MeshPart:ApplyMesh` swaps a mesh in place.
+- **Open Cloud FBX uploads can take over 40 s** (2026-11-13): `tools/upload_texture.py` now polls 2 minutes. A run that
+  stops on "still processing" saved the operation in `upload-tmp.json`: poll that operation for its asset id, never
+  upload the file again.
+- **A Play session whose window is behind others can sit on the loading screen** (2026-11-13): client modules started
+  late in `Bootstrap.client.luau` (DevTools, PlaneLooks) have not run yet. Test a module by requiring it and calling it.
 - **`ImageColor3` multiplies the picture (2026-11-12).** Setting the colour you want as the tint of a cream paper
   picture comes out darker and yellower: the shop's faded chalk green (104,133,118) showed as olive 98,117,96 in Play,
   and Alan disliked it. Tint = target / the picture's own colour x 255, then read the colour off a screenshot.

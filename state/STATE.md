@@ -1,19 +1,21 @@
-# Since Alan last checked (2026-11-13, evening)
-- **Goals review done: skins and trails are next** ([skin rules](../docs/decisions/2026-11-13-skin-rules.md),
-  [plan](../docs/plan/SKINS-PLAN.md)). Your rules: a skin never changes the hitbox; Common/Rare/Legendary/Mythical;
-  one design per skin fitted by the game; team outline, no team colours; bots wear them; no animations; about
-  4,000 triangles per shape skin, drawn only on players' screens.
-- Blender tests (no upload) proved the fitting; concepts for every skin and trail: `.planning/skins/concepts/`.
+# Since Alan last checked (2026-11-13, night)
+- **Skins work for Commons and Rares** (you played them in Studio: "pretty good"): 83 plane pieces got printed-sheet
+  copies with their creases, uploaded with your go; bots wear skins by difficulty; "Dev: skin" button (bottom right)
+  tries Hazard and Lava (rough test pictures) on your plane. Prices approved: Common 149 R$/2,800 Paper, Rare 299/5,600,
+  Legendary 599/30,000, Mythical 999/60,000, trails 49/900; no free skins; boxes a maybe (odds shown are fine).
+- Saving and buying skins and trails is built (save v13, tests 617/0); no Looks screen yet.
+- **Origami Crane** (first Mythical) is being built in Blender by a linked Fable session; renders come to you first.
 
 # Now: finish the game for the beta
-Next: build the first skin batch you picked (Hazard Stripes, Tiger Stripes, Flame Decals, Gold Foil, Lava, Galaxy,
-Shark Jet, Dragon; trails Confetti, Rainbow Marker, Gold Stars). First the one-time Blender re-layout of the plane
-pieces (upload batch needs your go); prices and earning get a numbers note for your OK before code. After skins:
-daily and weekly missions, the playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
-Balance: Spitball planes weakest. Not checked: phone sizes of the report card row and the gift note and arrival; a
-real gift through the shop into the new arrival; the unlock backpack's music dip.
+Next: the Origami Crane (Blender, your OK on renders before upload), then skins on the boosters, the real skin
+pictures (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy), Shark Jet, Dragon, the three trails, and a Skins and a
+Trails tab in the customization menu ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the
+playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report
+card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
+Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead in a file (`tools/art/skin_looks.py`)
+  because runtime-built looks need ~4 MB in-memory pictures; crease pictures are 1024 (can go 512 if memory shows).
 Gift arrival: Open it! is a tap; on Thanks the gift comes at you and fades; the pop is the Popper's, higher and soft.
 Flight HUD hides during the winners' moment (its weapon slip sat under the report card's jar button).
 Paper jar: the last card in the Paper section (orange like the packs, so the row of 3 is full); no gift button on it.
@@ -47,9 +49,7 @@ Loading: Skip once menus + town parts are in; a stuck file costs 8 s; 3 minutes 
 Screen fit: phone under 540 points, tablet under 900; FIRE 76-120 points; small PC window gets tablet sizes.
 Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degrees; held Skip (1.5 s) skips a lesson.
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
-Match Tips: 6 s on screen, 20 s apart. Walls stay soft 2 s into a new round. Classroom chatter 0.08.
 Combat School Pals, Range targets and Hangar behaviour: as listed on docs/systems/tutorial.md and planes-and-hangar.md.
-Eraser lock stays on after firing while the target stays in the circle.
 
 Waiting on Alan
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.

@@ -5,7 +5,11 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-11-12)
+## Where it stands (2026-11-13)
+**Skins (Studio only):** a plane with a `Skin` attribute (bots get one by difficulty from `FlightService`) is
+drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); the "Dev: skin" button tries the test
+skins on your plane. Hangar previews and boosters are not skinned yet ([skins plan](../plan/SKINS-PLAN.md)).
+
 **Hangar buying, built and checked in Play 2026-11-12 (Alan's notes, [playtest](../playtests/2026-11-12-shop-window-and-hangar-buying.md)).**
 A part above your level is greyed with a drawn padlock and "Level 20"; one you can buy shows "3,500 Paper"; card words
 are bigger (gear cards show size and weight only). Above your level, "Unlock now" with the part's Robux price (from

@@ -1,7 +1,9 @@
 # Skins and trails plan
 
-**Status:** talking it through with Alan (2026-11-13). Nothing gets made until the ideas and tiers are settled. His
-rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
+**Status:** building the first batch (2026-11-13). Printed-sheet Commons and Rares work in Studio (Alan OK'd, test
+pictures; [playtest](../playtests/2026-11-13-printed-sheet-skins.md)); saving and buying built; the Origami Crane is
+the first Mythical, in Blender. Still to make: real pictures, boosters, Shark Jet, Dragon, trails, Skins and Trails
+tabs. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
 the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top of the
 [shop plan decision](../decisions/2026-10-18-shop-plan.md) (Paper or Robux, kept through prestige). Serves
 [the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).
