@@ -1,7 +1,7 @@
 """Origami Crane, the first Mythical skin (Alan's pick, 2026-11-13; concept .planning/skins/concepts/crane-2.png).
 Builds the crane, paints its pictures, fits it to real planes the way the game will, and renders previews. Blender:
 
-    D:/Blender/blender.exe -b --factory-startup --python tools/art/crane_skin.py -- OUTDIR [--quick] [--no-render]
+    D:/Blender/blender.exe -b --factory-startup --python tools/art/crane_skin.py -- OUTDIR [--quick] [--no-render] [--scene-only]
 
 How it fits any plane (docs/plan/SKINS-PLAN.md "Mythical: a whole new shape"): every corner of the crane belongs to
 one joint (JOINTS below; a Bone each in Roblox). The crane is scaled evenly to the plane's length (s = length / 16), and
@@ -22,7 +22,7 @@ import plane_assembly as pa
 
 ARGS = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 OUT = os.path.abspath(ARGS[0] if ARGS else "crane-out")
-QUICK, RENDER = "--quick" in ARGS, "--no-render" not in ARGS
+QUICK, RENDER, SCENE_ONLY = "--quick" in ARGS, "--no-render" not in ARGS, "--scene-only" in ARGS
 os.makedirs(OUT, exist_ok=True)
 TEX = 1024
 BUILDS = {  # name: loadout (weapons and boosters stay visible)
@@ -435,7 +435,7 @@ if RENDER:
     scene.cycles.use_denoising = True
     scene.view_settings.view_transform = "Standard"
     scene.render.resolution_x, scene.render.resolution_y = (960, 540) if QUICK else (1600, 900)
-    for i, name in enumerate(BUILDS):
+    for i, name in enumerate([] if SCENE_ONLY else BUILDS):
         o = planes[name][2]; L = o["zT"] - o["zN"]; span = 2 * o["xo"]
         cx = i * GAP; c3 = Vector((cx, -(o["zN"] + o["zT"]) / 2, o["wy"]))
         everything = [ob for n2 in BUILDS for ob in planes[n2][0] + planes[n2][1]] + list(cranes.values())
@@ -465,6 +465,7 @@ if RENDER:
     # in the town (mock-up): transparent renders in warm classroom light, put over an in-game picture afterwards
     world.node_tree.nodes["Background"].inputs["Color"].default_value = (0.95, 0.86, 0.7, 1)
     sun.data.color = (1, 0.93, 0.82); scene.render.film_transparent = True
+    mat.node_tree.nodes["Principled BSDF"].inputs["Alpha"].default_value = 1.0
     for i, (name, vname, off, look) in enumerate((("starter", "scene-chase", (0.0, -2.1, 0.75), (0, 0.15, 0.1)),
                                                   ("heavy", "scene-bot", (-1.6, 1.1, 0.35), (0, 0, 0)))):
         o = planes[name][2]; L = o["zT"] - o["zN"]; cx = list(BUILDS).index(name) * GAP
