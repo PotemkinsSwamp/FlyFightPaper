@@ -2,6 +2,7 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 local Service=require(game.ServerScriptService.FlyFightPaper.ProfileService)
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
+local Looks=require(Root.Shared.LooksRules)
 local Commerce=require(Root.Shared.CommerceRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local Gameplay=require(Root.Generated.Gameplay)
@@ -31,6 +32,94 @@ local function fixture(mock)
 end
 function Spec.run()
  local result,test=Suite.new()
+ test("look purchases charge the tier price, include matching trails and preserve unrelated progress",function()
+  for _,id in ipairs({"hazard_stripes","gold_foil","shark_jet","dragon","confetti"}) do
+   local service,profile=fixture();local item=assert(Looks.item(id));local price=Looks.config().tiers[item.tier].paper*Economy.MILLI
+   profile.Data.paperMilli=price+123;profile.Data.xpMilli=0
+   local before=assert(Schema.copy(profile.Data));local op=assert(service:prepare("user",{kind="lookPurchase",lookID=id}))
+   local bought=service:apply("user",op)
+   assert(bought.status=="ok" and bought.value.type=="LookPurchase" and bought.value.chargedMilli==price and not bought.value.alreadyOwned,bought.code)
+   local expected=assert(Schema.copy(before));expected.paperMilli-=price;expected.looks.owned[id]=true
+   if item.trail then expected.looks.owned[item.trail]=true end
+   expected.version+=1;expected.operationIds[service.sessions.user.token]=1
+   assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"look buy changed unrelated saved progress or wore the look")
+  end
+ end)
+ test("look purchases refuse insufficient Paper, unknown looks and bundled trails without changing the save",function()
+  local service,profile=fixture();profile.Data.paperMilli=Looks.item("hazard_stripes").paper*Economy.MILLI-1
+  local before=Schema.canonical(profile.Data)
+  for id,code in pairs({hazard_stripes="insufficient_paper",missing="unknown_look",water_spray="not_sold"}) do
+   local refused=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID=id})))
+   assert(refused.status=="error" and refused.code==code,refused.code)
+   assert(Schema.canonical(profile.Data)==before,"refused buy changed the balance, ownership or operation watermark")
+  end
+ end)
+ test("look purchase retries and later buys never charge an owned skin twice, including after rejoining",function()
+  local service,profile=fixture();local price=Looks.item("shark_jet").paper*Economy.MILLI;profile.Data.paperMilli=price+123
+  local op=assert(service:prepare("user",{kind="lookPurchase",lookID="shark_jet"}))
+  assert(service:apply("user",op).status=="ok")
+  local after=Schema.canonical(profile.Data)
+  assert(service:apply("user",op).status=="ok" and Schema.canonical(profile.Data)==after)
+  local again=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID="shark_jet"})))
+  assert(again.status=="ok" and again.value.alreadyOwned and again.value.chargedMilli==0 and profile.Data.paperMilli==123,again.code)
+  op.lookID="dragon"
+  assert(service:apply("user",op).code=="operation_id_conflict")
+  assert(profile:EndSession());service:detach("user")
+  local reopened=Fake.new(profile.LastSavedData)
+  assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
+  assert(reopened.Data.looks.owned.shark_jet and reopened.Data.looks.owned.water_spray)
+  again=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID="shark_jet"})))
+  assert(again.status=="ok" and again.value.alreadyOwned and again.value.chargedMilli==0 and reopened.Data.paperMilli==123,again.code)
+ end)
+ test("wearing owned looks saves both choices, survives rejoining and removes them without removing ownership",function()
+  local service,profile=fixture();profile.Data.looks.owned={shark_jet=true,water_spray=true}
+  local before=assert(Schema.copy(profile.Data));local op=assert(service:prepare("user",{kind="lookWear",skinID="shark_jet",trailID="water_spray"}))
+  local worn=service:apply("user",op)
+  assert(worn.status=="ok" and worn.value.type=="LooksWorn",worn.code)
+  local expected=assert(Schema.copy(before));expected.looks.skin="shark_jet";expected.looks.trail="water_spray"
+  expected.version+=1;expected.operationIds[service.sessions.user.token]=1
+  assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"wear changed unrelated saved progress")
+  local after=Schema.canonical(profile.Data)
+  assert(service:apply("user",op).status=="ok" and Schema.canonical(profile.Data)==after)
+  assert(profile:EndSession());service:detach("user")
+  profile=Fake.new(profile.LastSavedData)
+  assert(service:attach("user",profile,{connected=true,mapLoaded=true}).status=="ok")
+  assert(profile.Data.looks.skin=="shark_jet" and profile.Data.looks.trail=="water_spray")
+  before=assert(Schema.copy(profile.Data))
+  local removed=service:apply("user",assert(service:prepare("user",{kind="lookWear",skinID="",trailID=""})))
+  assert(removed.status=="ok",removed.code)
+  expected=assert(Schema.copy(before));expected.looks.skin="";expected.looks.trail=""
+  expected.version+=1;expected.operationIds[service.sessions.user.token]=1
+  assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"taking looks off changed ownership or other progress")
+ end)
+ test("unowned or mismatched looks refuse the whole wear operation without advancing the saved operation",function()
+  local service,profile=fixture();profile.Data.looks={owned={shark_jet=true,water_spray=true},skin="shark_jet",trail="water_spray"}
+  local before=Schema.canonical(profile.Data)
+  for _,ids in ipairs({{"dragon","water_spray"},{"shark_jet","confetti"},{"water_spray",""},{"","shark_jet"}}) do
+   local refused=service:apply("user",assert(service:prepare("user",{kind="lookWear",skinID=ids[1],trailID=ids[2]})))
+   assert(refused.status=="error" and (refused.code=="not_owned" or refused.code=="wrong_kind"),refused.code)
+   assert(Schema.canonical(profile.Data)==before,"refused wear partially changed the save")
+  end
+ end)
+ test("look operations reject missing, oversized, non-string or extra fields without changing saved progress",function()
+  local service,profile=fixture();local before=Schema.canonical(profile.Data)
+  for _,input in ipairs({{kind="lookPurchase"},{kind="lookPurchase",lookID=""},{kind="lookPurchase",lookID=false},
+   {kind="lookPurchase",lookID=1},{kind="lookPurchase",lookID=string.rep("x",161)},
+   {kind="lookPurchase",lookID="confetti",extra=true},{kind="lookPurchase",lookID="confetti",price=0},
+   {kind="lookWear"},{kind="lookWear",skinID=""},{kind="lookWear",trailID=""},
+   {kind="lookWear",skinID=false,trailID=""},{kind="lookWear",skinID="",trailID=1},
+   {kind="lookWear",skinID=string.rep("x",161),trailID=""},{kind="lookWear",skinID="",trailID=string.rep("x",161)},
+   {kind="lookWear",skinID="",trailID="",extra=true},{kind="lookWear",skinID="",trailID="",lookID="confetti"}}) do
+   local refused=service:apply("user",assert(service:prepare("user",input)))
+   assert(refused.status=="error" and refused.code=="invalid_operation",refused.code)
+   assert(Schema.canonical(profile.Data)==before,"invalid look operation changed the save")
+  end
+  local bound=string.rep("x",160)
+  local refused=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID=bound})))
+  assert(refused.status=="error" and refused.code=="unknown_look" and Schema.canonical(profile.Data)==before,refused.code)
+  refused=service:apply("user",assert(service:prepare("user",{kind="lookWear",skinID=bound,trailID=""})))
+  assert(refused.status=="error" and refused.code=="not_owned" and Schema.canonical(profile.Data)==before,refused.code)
+ end)
  test("Range preset saves accept unowned parts and apply once without changing match builds",function()
   local service,profile,catalog=fixture();profile.Data.xpMilli=0
   local loadout=catalog:starterLoadout();loadout.nose="nose_5";loadout.weapon_mounts[1]="eraser";loadout.utility="boost_twin"

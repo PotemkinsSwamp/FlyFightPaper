@@ -196,6 +196,8 @@ function Service:_effect(p,op,boostState)
 		if p.ownership[op.catalogID]==true then result={type="PartAlreadyOwned"}
 		else p.ownership[op.catalogID]=true;result={type="PartUnlocked",catalogID=op.catalogID} end
 	elseif op.kind=="lookUnlock" then applied,err=Looks.grant(v,op.lookID,op.id)
+	elseif op.kind=="lookPurchase" then applied,err=Looks.buyWithPaper(v,op.lookID,op.id)
+	elseif op.kind=="lookWear" then applied,err=Looks.wear(v,op.skinID,op.trailID,op.id)
 	elseif op.kind=="prestige" then
 		-- Keep unrelated save fields outside the economy rules' smaller copy bounds.
 		local prestigeView=assert(Schema.copy(v))
@@ -351,7 +353,7 @@ function Service:_effect(p,op,boostState)
 	return assert(Schema.copy(result))
 end
 local allowed={receipt=true,giftReceived=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
- qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,
+ qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,lookPurchase=true,lookWear=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
 function Service:apply(account,input)
@@ -390,6 +392,16 @@ function Service:apply(account,input)
   if op.resource~="xp" and op.resource~="paper" then return outcome("error","invalid_resource") end
   if s.profile.Data.boosts[op.resource=="xp" and "permanentXP" or "permanentPaper"] then intent=nil
   else intent={kind="boostIntent",resource=op.resource,action="permanent"} end
+ elseif op.kind=="lookPurchase" or op.kind=="lookWear" then
+  local fields
+  if op.kind=="lookPurchase" then
+   if type(op.lookID)~="string" or #op.lookID==0 or #op.lookID>160 then return outcome("error","invalid_operation") end
+   fields={kind=true,id=true,lookID=true}
+  else
+   if type(op.skinID)~="string" or #op.skinID>160 or type(op.trailID)~="string" or #op.trailID>160 then return outcome("error","invalid_operation") end
+   fields={kind=true,id=true,skinID=true,trailID=true}
+  end
+  for field in pairs(op) do if not fields[field] then return outcome("error","invalid_operation") end end
  end
  local advanced,why=self:_advance(s);if not advanced then return outcome("retry",why) end
  -- Composite rewards use the same clock preview as a paid timed boost. Nothing is

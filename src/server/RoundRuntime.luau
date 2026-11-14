@@ -229,7 +229,7 @@ function Runtime:begin(mode)
  for player in pairs(self.joined) do
   if player.Parent and self.profiles:view(player) and not self.flight.pilots[player] then
    local profile=self.profiles:view(player)
-   local p=self.flight:add(player,{loadout=self.flight.selectedLoadout(player)})
+   local p=self.flight:add(player,{loadout=self.flight.selectedLoadout(player),skin=profile.looks.skin,trail=profile.looks.trail})
    if p then self:bind(p);player:SetAttribute("JoinQueued",false) end
   end
  end
@@ -452,7 +452,7 @@ function Runtime:practice(player,lesson)
  local range=lesson=="range" or lesson=="hangar"
  if range then player:SetAttribute("RangeSlot",profile.rangeSlot) end
  local loadout=range and profile.rangePresets[profile.rangeSlot].loadout or Loadouts.make(self.flight.catalog,lesson=="combat" and "training_pellets" or "training")
- local p=self.flight:add(player,{loadout=loadout,loadoutName=range and "range" or "training",practice=true})
+ local p=self.flight:add(player,{loadout=loadout,loadoutName=range and "range" or "training",practice=true,skin=profile.looks.skin,trail=profile.looks.trail})
  if not p then player:SetAttribute("MenuMessage","No free desk for practice right now. Try again in a moment.");return end
  -- Flight School can't be lost (Alan 2026-10-18): walls only bounce you off, Lift stops at 1 second and Boost at 0.01.
  -- Combat School's aiming part asks for gentle itself (lesson cmd); its fights keep crashes (Alan).
@@ -471,7 +471,7 @@ function Runtime:join(player)
  if not self.engine.round or self.engine.phase=="READY" then self:begin(Root:GetAttribute("DevMode") or "FFA")
  elseif self.engine.phase=="ACTIVE" and not self.flight.pilots[player] then
   local profile=self.profiles:view(player)
-  local p=self.flight:add(player,{loadout=self.flight.selectedLoadout(player)})
+  local p=self.flight:add(player,{loadout=self.flight.selectedLoadout(player),skin=profile.looks.skin,trail=profile.looks.trail})
   if p then self:bind(p);player:SetAttribute("JoinQueued",false)
   else player:SetAttribute("JoinQueued",true);player:SetAttribute("MenuMessage","Waiting for a safe desk vacancy. You'll join automatically.") end
  end
@@ -545,7 +545,7 @@ function Runtime:sendProfile(player)
  if profile then
   local e=self.profiles.entries[player]
   local boost=self.profiles.service:liveBoostView(e.account)
-  self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,
+  self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,looks=profile.looks,
    presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,unlocksSeen=profile.unlocksSeen,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end
 end

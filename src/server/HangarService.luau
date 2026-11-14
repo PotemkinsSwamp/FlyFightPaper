@@ -3,6 +3,7 @@ local Http=game:GetService("HttpService")
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
+local Looks=require(Root.Shared.LooksRules)
 local Commerce=require(Root.Generated.Commerce)
 local EconomyConfig=require(Root.Generated.Economy)
 local CommerceRules=require(Root.Shared.CommerceRules)
@@ -198,6 +199,31 @@ function Service:handle(player,action,value)
   if not legal then self:message(player,reason.code=="level_locked" and "Reach the required level first." or "You need more Paper.");return end
   self:enqueue(player,{kind="equipmentPurchase",catalogID=value},function(ok)
    self:message(player,ok and "Part unlocked. You can use it on every legal mount." or "Part purchase was not completed.")
+  end)
+ elseif action=="buyLook" then
+  if type(value)~="string" or #value>160 then return end
+  local legal,reason=Looks.buyWithPaper(Schema.economicView(profile),value,"preview")
+  if legal and legal.operation.alreadyOwned then self:message(player,"You already own it.");return end
+  if not legal then
+   self:message(player,reason.code=="insufficient_paper" and "You need more Paper." or reason.code=="not_sold" and "That trail comes with its skin." or "That can't be bought.")
+   return
+  end
+  local item=Looks.item(value)
+  self:enqueue(player,{kind="lookPurchase",lookID=value},function(ok)
+   self:message(player,ok and item.name.." is yours! Wear it from the Skins tab." or "The buy was not completed. Nothing changed.")
+  end)
+ elseif action=="wearLook" then
+  if type(value)~="table" or getmetatable(value)~=nil or type(value.skin)~="string" or #value.skin>160 or type(value.trail)~="string" or #value.trail>160 then return end
+  for field in pairs(value) do if field~="skin" and field~="trail" then return end end
+  local skinID,trailID=value.skin,value.trail
+  if not Looks.wear(Schema.economicView(profile),skinID,trailID,"preview") then self:message(player,"You don't own that yet.");return end
+  self:enqueue(player,{kind="lookWear",skinID=skinID,trailID=trailID},function(ok)
+   if not ok then return end
+   local p=self.flight.pilots[player]
+   if p then
+    p.skin,p.trail=skinID~="" and skinID or nil,trailID~="" and trailID or nil
+    if p.model then p.model:SetAttribute("Skin",p.skin);p.model:SetAttribute("Trail",p.trail) end
+   end
   end)
  elseif action=="prestige" then
   -- From the menus only (docs/systems/economy-and-shop.md "Prestige"); the save rules re-check everything.

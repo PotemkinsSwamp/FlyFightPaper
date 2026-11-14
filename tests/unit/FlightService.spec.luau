@@ -1,4 +1,6 @@
 local Flight=require(game.ServerScriptService.FlyFightPaper.FlightService)
+local Root=game.ReplicatedStorage.FlyFightPaper
+local Looks=require(Root.Shared.LooksRules)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
 function Spec.run()
@@ -12,6 +14,49 @@ function Spec.run()
   end
   return f,home,pilot
  end
+ local function withAddedPilot(player,options,check)
+  local container=Instance.new("Folder");container.Parent=game.ServerStorage
+  local template=Instance.new("Model");template.Parent=container
+  local body=Instance.new("Part");body.Name="Root";body.Anchored=true;body.Parent=template
+  local planes=Instance.new("Folder");planes.Parent=container
+  local desk=Instance.new("Part");desk.Name="DeskSouth1";desk.Anchored=true;desk.Parent=container
+  -- Keep the real flight builder; absent test parts skip art and mesh requests.
+  local catalog={starterLoadout=function()return {body="looks-test-body",nose="looks-test-nose",wings="looks-test-wings",tail="looks-test-tail",weapon_mounts={}} end,
+   deriveStats=function()return {health=100,lift=90,speed=100,turn=90,pitch=90,yaw=90} end,get=function()return nil end}
+  local f=setmetatable({catalog=catalog,
+   template=template,planes=planes,desks={desk},seats={},padReservations={},pilots={},byId={},records={}},Flight)
+  local ok,why=pcall(function() check(f,assert(f:add(player,options))) end)
+  container:Destroy();assert(ok,why)
+ end
+ test("a player added with saved looks wears them on the built model and on its replacement",function()
+  local player={UserId=12345,DisplayName="Test pilot"}
+  withAddedPilot(player,{skin="shark_jet",trail="water_spray"},function(f,p)
+   assert(p.kind=="human" and p.skin=="shark_jet" and p.trail=="water_spray")
+   assert(p.model:GetAttribute("Skin")=="shark_jet" and p.model:GetAttribute("Trail")=="water_spray")
+   local first=p.model;f:replace(p)
+   assert(first.Parent==nil and p.model~=first and p.model:GetAttribute("Skin")=="shark_jet" and p.model:GetAttribute("Trail")=="water_spray")
+  end)
+ end)
+ test("players with empty, missing or independent saved looks keep only their selected attributes",function()
+  for _,options in ipairs({{skin="",trail=""},{},{skin="shark_jet",trail=""},{skin="",trail="confetti"}}) do
+   withAddedPilot({UserId=12345,DisplayName="Test pilot"},options,function(_,p)
+    local skin=options.skin~="" and options.skin or nil;local trail=options.trail~="" and options.trail or nil
+    assert(p.skin==skin and p.trail==trail and p.model:GetAttribute("Skin")==skin and p.model:GetAttribute("Trail")==trail)
+   end)
+  end
+ end)
+ test("bots keep difficulty-based skins and trails even when player look options are supplied",function()
+  for _,tier in ipairs({"rookie","regular","experienced","ace"}) do
+   withAddedPilot(nil,{id="look-test-bot",name="Test bot",tier=tier,skin="dragon",trail="dragon_embers"},function(f,p)
+    local skin=assert(Looks.item(p.skin));local trail=assert(Looks.item(p.trail))
+    assert(p.kind=="bot" and skin.tier==Looks.config().bot_tiers[tier] and trail.kind=="trail")
+    assert(skin.trail and p.trail==skin.trail or not skin.trail and trail.sold)
+    assert(p.model:GetAttribute("Skin")==p.skin and p.model:GetAttribute("Trail")==p.trail)
+    local firstSkin,firstTrail=p.skin,p.trail;f:replace(p)
+    assert(p.skin==firstSkin and p.trail==firstTrail and p.model:GetAttribute("Skin")==firstSkin and p.model:GetAttribute("Trail")==firstTrail)
+   end)
+  end
+ end)
  test("occupied pads queue approaches in arrival order without stacking",function()
   local f,home,pilot=fixture();local a,b=pilot("a"),pilot("b")
   assert(not f:land(a,home,"pad") and not f:land(b,home,"pad"))
