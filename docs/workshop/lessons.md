@@ -129,6 +129,13 @@ mistake would be easy to make twice.
   living sharks and dragons (Alan: "they're paper airplanes"). For more body under the wings say "a barrel like a jet
   fighter's fuselage, straight bottom line, not fat". The same image tool refuses "violent" pictures at random (shark
   teeth): ask for "a fun cartoon grin of small simple white triangles" and let it retry.
+- **A small change to an approved sheet: edit the pixels, don't redraw** (2026-11-14): a Codex redraw asked to change
+  only the Dragon's legs changed their whole look ("looks worse"); cutting the legs out of the approved sheet and
+  pasting them further back (patching the gap from the band beside it) kept every other pixel and was approved at once.
+- **Painting a model from an AI model sheet** (2026-11-14, `tools/art/sheet_model.py`): the sheet's views never line
+  up exactly, so blending two views on one spot (by its normal) turns teeth and belly into noise; paint each face from
+  one view. A depth test tighter than a few pixels fails in speckles on steep faces. And `blender -b
+  --factory-startup` keeps the 2-unit default cube: delete it, or it hides a model built at unit length.
 
 ## Studio and the place file
 - **Runtime skin looks (2026-11-13):** `AssetService:CreateSurfaceAppearanceAsync` rejects uploaded pictures ("ColorMap
