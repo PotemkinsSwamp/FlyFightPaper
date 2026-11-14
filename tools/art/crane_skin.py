@@ -3,15 +3,14 @@ Builds the crane, paints its pictures, fits it to real planes the way the game w
 
     D:/Blender/blender.exe -b --factory-startup --python tools/art/crane_skin.py -- OUTDIR [--quick] [--no-render] [--scene-only]
 
-How it fits any plane (docs/plan/SKINS-PLAN.md "Mythical: a whole new shape"): every corner of the crane belongs to
-one joint (JOINTS below; a Bone each in Roblox). The crane is scaled evenly to the plane's length (s = length / 16), and
-each joint is placed from the real plane: the beak on the nose tip, the tail tip over the real tail's top back corner,
-the wing roots on the body, the shoulders on the real leading edge, the wingtips just past the real wingtips, the body
-sides and keel on the real body's sides and bottom. Head, neck and tail cross-sections keep their size (they scale
-with s only). The wings sit at the real wing's height so guns on or under the wing still touch it.
-Pictures: one 1024 set (colour, normal, roughness), painted from the crane's own 3D shape: deep blue paper, silver
-foil on every fold edge, silver seigaiha waves near the body and cherry blossom sprigs on the wings (no white areas).
-Writes into OUTDIR: crane-color/normal/roughness.png, crane.blend (rest pose), renders, crane-report.json.
+How it fits any plane (docs/plan/SKINS-PLAN.md "Mythical: a whole new shape"): the crane is scaled evenly to the
+plane's length (s = length / 16) and its joints (a Bone each in Roblox) are placed from the real plane: the beak at the
+nose tip, the tail tip over the real tail's top back corner, the body on the real body (width capped), its keel on the
+real body's bottom and back over the booster spot. The wings keep their own shape (a little bigger or smaller to suit
+the real wing) and rise in a V from the body's sides. Guns hang under the wings (Alan: nothing on top of a Mythical).
+Pictures: one 1024 set (colour, normal, roughness, metalness), painted from the crane's own 3D shape: deep blue paper,
+silver foil on every fold and paper edge, silver seigaiha waves, a cherry blossom sprig on each wing (no white areas).
+Writes into OUTDIR: crane-*.png, crane.blend (rest pose), renders, crane-report.json.
 """
 import bpy, bmesh, sys, os, math, json
 import numpy as np
@@ -80,7 +79,7 @@ def import_piece(piece, dx):
 def build_plane(loadout, dx):
     info = {}; pieces = pa.assemble(loadout, info)
     pts = {"nose": [], "tail": [], "wings": [], "body": []}
-    real, extras = [], []
+    real, extras, guns = [], [], {}
     for p in pieces:
         if not p["fbx"] or not os.path.exists(p["fbx"]): continue
         if "sticker" in p["name"]: continue
@@ -95,12 +94,13 @@ def build_plane(loadout, dx):
                 folder = os.path.dirname(os.path.dirname(p["fbx"]))
                 img = next((os.path.join(folder, f) for f in ("color.png", "meshy-base_color.png") if os.path.exists(os.path.join(folder, f))), None)
                 m = material("W-" + p["name"], image=img if obj.data.uv_layers else None, rgb=(0.7, 0.7, 0.7), rough=0.5)
+                guns.setdefault(p["name"].split("-")[0], []).append((obj, world))
             else:  # booster: blue team paper, dark card, yellow tape (Aircraft.paint)
                 tint = {"paper": (0.066, 0.216, 0.672), "cardboard": (0.026, 0.1, 0.4), "tape": (1, 0.66, 0.007)}.get(kind)
                 m = material("B-" + p["name"], image=os.path.join(pa.PLANES, "paper-set", p["name"] + "-color.png"), tint=tint)
             obj.data.materials.append(m); extras.append(obj)
     pts = {k: np.concatenate(v) for k, v in pts.items()}
-    return real, extras, outline(pts, info)
+    return dict(real=real, extras=extras, guns=guns, o=outline(pts, info), dx=dx)
 
 def outline(pts, info):
     """The plane's points the crane's joints move to (Roblox frame)."""
@@ -108,105 +108,138 @@ def outline(pts, info):
     zN = nose[:, 2].min(); tip = nose[nose[:, 2] < zN + 0.6]
     side = wings[wings[:, 0] > 0]; ax = np.abs(side[:, 0])
     xo, xi = ax.max(), ax.min()
-    outer, inner = side[ax > xo - 0.6], side[ax < xi + 0.6]
+    inner = side[ax < xi + 0.6]
     return dict(zN=zN, yN=tip[:, 1].mean(), zT=tail[:, 2].max(), yT=tail[:, 1].max(),
                 bw=np.abs(body[:, 0]).max(), by0=body[:, 1].min(), by1=body[:, 1].max(),
-                wy=float(np.median(wings[:, 1])), xo=xo, xi=xi,
-                LO=outer[:, 2].min(), TO=outer[:, 2].max(), LI=inner[:, 2].min(), TI=inner[:, 2].max(),
-                fold=info["mounts"][1][0] + 0.9 * info["factor"],  # the outer gun spot plus room for a gun
-                boost_y=info["booster"][0], boost_z=info["booster"][2])
+                bz0=body[:, 2].min(), bz1=body[:, 2].max(), wy=float(np.median(wings[:, 1])), xo=xo,
+                LI=inner[:, 2].min(), TI=inner[:, 2].max(), boost_y=info["booster"][0], boost_z=info["booster"][2])
 
 # ---------------------------------------------------------------- the crane
-FOLD_UP = math.radians(50)  # the wingtips fold up past the outer gun spot, and reach at least 2.6 s out
+RISE = math.radians(32)        # how steeply the wings rise from the body (the V seen from behind)
+C0, R0, SW = 6.0, 7.0, 0.8     # the wing's own shape, in s: root length, length out to the tip, how far back the tip sits
+HC = 0.07                      # the wing's fold line stands this far (s) off the paper
+SHEETS = ("wing", "wflap", "flap")   # thin paper (given real thickness); the rest are closed folded points
+
+def wing_tri(u, w):
+    """Which of the wing's four faces holds wing point (u, w), and the fold's height there."""
+    Fl, Ft, Fm, T = (0, -C0 / 2), (0, C0 / 2), (0, -0.3), (R0, SW); Cm = (R0 * 0.4, -0.3 + (SW + 0.3) * 0.4)
+    for a, b, c in ((Fl, Fm, Cm), (Fl, Cm, T), (Fm, Ft, Cm), (Cm, Ft, T)):
+        den = (b[1] - c[1]) * (a[0] - c[0]) + (c[0] - b[0]) * (a[1] - c[1])
+        l0 = ((b[1] - c[1]) * (u - c[0]) + (c[0] - b[0]) * (w - c[1])) / den
+        l1 = ((c[1] - a[1]) * (u - c[0]) + (a[0] - c[0]) * (w - c[1])) / den
+        l2 = 1 - l0 - l1
+        if min(l0, l1, l2) >= -1e-6: return HC * sum(l for l, q in zip((l0, l1, l2), (a, b, c)) if q == Cm)
+    return 0.0
 
 def crane(o):
     """Crane corners (Roblox frame) placed from the plane outline `o`: faces, part per face, joint per corner."""
     s = (o["zT"] - o["zN"]) / 16.0
     V, F, P, J = [], [], [], []
     def v(p, joint): V.append(np.array(p, float)); J.append(joint); return len(V) - 1
-    def f(part, *ids): F.append(ids); P.append(part)
-    wy = o["wy"]; cw = max(0.6 * s, 0.95 * o["bw"])
-    lead = lambda x: o["LI"] + (o["LO"] - o["LI"]) * (x - o["xi"]) / max(o["xo"] - o["xi"], 1e-6)
-    trail = lambda x: o["TI"] + (o["TO"] - o["TI"]) * (x - o["xi"]) / max(o["xo"] - o["xi"], 1e-6)
-    zf, zb = o["LI"], o["TI"]; zm = zf + 0.42 * (zb - zf)
-    up = np.array((0, 1.0, 0))
-    # body: a diamond seen from above with a raised back and a keel on the real body's bottom
-    Fr = v((0, wy - 0.1 * s, zf - 0.5 * s), "BodyFront"); Bk = v((0, wy, zb + 0.4 * s), "BodyBack")
-    Pk = v((0, max(wy + 0.95 * s, o["by1"]), zm + 0.3 * s), "Back")
-    # the keel is a ridge on the real body's bottom, reaching back over the booster spot so a booster hangs from it
-    kb = max(zm + 0.25 * (zb - zf), o["boost_z"]); ky = min(o["by0"], o["boost_y"])
-    K1 = v((0, ky, zm - 0.1 * (zb - zf)), "Keel"); K2 = v((0, ky, kb), "KeelBack")
-    Ms, Qs = {}, {}
+    def tri(part, a, b, c): F.append((a, b, c)); P.append(part)
+    def poly(part, ids):
+        for i in range(1, len(ids) - 1): tri(part, ids[0], ids[i], ids[i + 1])
+    unit = lambda a: a / np.linalg.norm(a)
+    wy = o["wy"]; cw = min(max(0.95 * o["bw"], 0.9 * s), 1.7 * s); ky = min(o["by0"], o["boost_y"])
+    zF, zB = o["bz0"] + 0.2 * s, o["bz1"] - 0.2 * s; blen = zB - zF
+    # wings keep their own shape (scaled evenly, a little bigger or smaller to suit the real wing) and hinge on the body
+    run = (o["xo"] + 0.3 * s - cw) / math.cos(RISE) / s; chord = (o["TI"] - o["LI"]) / s
+    k = min(max(math.sqrt(run / R0 * chord / C0), 0.85), 1.2, 0.9 * blen / (C0 * s)); ks = k * s
+    zc = min(max((o["LI"] + o["TI"]) / 2, zF + 0.06 * blen + C0 * ks / 2), zB - 0.04 * blen - C0 * ks / 2)
+    z1, z2 = zc - C0 * ks / 2, zc + C0 * ks / 2; zm = (z1 + z2) / 2
+    # body: six-sided from above (pointed front and back, straight sides the wings hinge on), a raised back,
+    # and a keel ridge on the real body's bottom that reaches back over the booster spot
+    pF, pB = np.array((0, wy - 0.12 * s, zF)), np.array((0, wy - 0.05 * s, zB))
+    pP = np.array((0, wy + 0.9 * s, zm + 0.1 * s))
+    pK1 = np.array((0, ky - 0.35 * s, lerp(zF, zB, 0.3))); pK2 = np.array((0, ky, min(max(lerp(zF, zB, 0.62), o["boost_z"]), zB - 0.4 * s)))
+    cen = (pF + pB + pP + pK1 + pK2) / 5
+    Fr, Bk, Pk, K1, K2 = v(pF, "BodyFront"), v(pB, "BodyBack"), v(pP, "Back"), v(pK1, "Keel"), v(pK2, "KeelBack")
+    def flap(part, pts, joint, out, lift=0.045):  # a second paper layer lying on a face
+        n = unit(np.cross(pts[1] - pts[0], pts[2] - pts[0])); n = n if n @ out > 0 else -n
+        poly(part, [v(q + n * lift * s, joint) for q in pts])
     for sx in (-1, 1):
-        Ms[sx] = v((sx * cw, wy, zm), "BodySide" + "LR"[sx > 0])
-        Qs[sx] = v((sx * cw * 0.6, (wy + ky) / 2, zm), "BodySide" + "LR"[sx > 0])
-        M, Q = Ms[sx], Qs[sx]
-        f("body", Fr, M, Pk); f("body", Pk, M, Bk); f("body", Fr, Q, M); f("body", M, Q, Bk)
-        f("body", Fr, K1, Q); f("body", Q, K1, K2); f("body", Q, K2, Bk)
-    # neck: a thin three-sided point rising forward from inside the body's front to the head
-    n0 = [v((0, wy + 0.1 * s, zf + 0.2 * s), "BodyFront"), v((-0.28 * s, wy - 0.55 * s, zf + 0.5 * s), "BodyFront"),
-          v((0.28 * s, wy - 0.55 * s, zf + 0.5 * s), "BodyFront")]
-    H = np.array((0, wy + 1.5 * s, o["zN"] + 1.5 * s))
-    n1 = [v(H + (0, 0.2 * s, 0), "Head"), v(H + (-0.1 * s, -0.12 * s, 0.05 * s), "Head"), v(H + (0.1 * s, -0.12 * s, 0.05 * s), "Head")]
-    for a, b in ((0, 1), (2, 0), (1, 2)):
-        f("neck", n0[a], n0[b], n1[b]); f("neck", n0[a], n1[b], n1[a])
-    # head: the inside-reverse fold, a crest then a beak pointing forward and down, level with the nose tip
-    Ht = v(H + (0, 0.45 * s, -0.3 * s), "Head"); Bq = v((0, H[1] - 0.75 * s, o["zN"]), "Beak")
-    f("head", n1[0], n1[1], Ht); f("head", n1[0], Ht, n1[2]); f("head", Ht, n1[1], Bq); f("head", n1[2], Ht, Bq); f("head", n1[1], n1[2], Bq)
-    # tail: a thin point rising from inside the body's back to over the real tail's top back corner
-    t0 = [v((0, wy + 0.1 * s, zb - 0.2 * s), "BodyBack"), v((-0.22 * s, wy - 0.6 * s, zb - 0.6 * s), "BodyBack"),
-          v((0.22 * s, wy - 0.6 * s, zb - 0.6 * s), "BodyBack")]
-    Tt = v((0, max(o["yT"], wy + 1.2 * s) + 0.15 * s, o["zT"] + 0.2 * s), "TailTip")
-    f("tail", t0[0], t0[1], Tt); f("tail", t0[2], t0[0], Tt); f("tail", t0[1], t0[2], Tt)
-    # wings: root on the body, flat at the real wing's height out past the outer gun spot (guns on or under the
-    # wing still touch it), then the tip folds up. One raised crease runs from the body to the fold.
-    top, side_fl, stems = [], [], []
+        LR = "LR"[sx > 0]; pMf, pMb = np.array((sx * cw, wy, z1)), np.array((sx * cw, wy, z2))
+        Mf, Mb = v(pMf, "BodySideFront" + LR), v(pMb, "BodySideBack" + LR)
+        tri("body", Fr, Mf, Pk); tri("body", Mf, Mb, Pk); tri("body", Mb, Bk, Pk)
+        tri("body", Fr, K1, Mf); tri("body", Mf, K1, K2); tri("body", Mf, K2, Mb); tri("body", Mb, K2, Bk)
+        # layered flaps: two on the back, one on the breast, one on the flank, one by the tail
+        mid = lerp(pMf, pMb, 0.5)
+        flap("flap", [lerp(pMf, pMb, 0.04), lerp(pMf, pMb, 0.96), lerp(mid, pP, 0.72)], "Back", pP - cen)
+        flap("flap", [lerp(pMf, pMb, 0.22), lerp(pMf, pMb, 0.78), lerp(mid, pP, 0.5)], "Back", pP - cen, 0.1)
+        flap("flap", [lerp(pF, pMf, 0.06), lerp(pF, pMf, 0.94), lerp(pF, pP, 0.6) * 0.6 + pMf * 0.4], "BodyFront", pP - cen)
+        flap("flap", [lerp(pMb, pB, 0.06), lerp(pMb, pB, 0.94), lerp(pB, pP, 0.55) * 0.6 + pMb * 0.4], "BodyBack", pP - cen)
+        flap("flap", [lerp(pF, pK1, 0.08), lerp(pF, pK1, 0.92), lerp(pF, pMf, 0.75) * 0.75 + pK1 * 0.25], "BodyFront", pMf - cen)
+        flap("flap", [lerp(pMf, pMb, 0.1), lerp(pMf, pMb, 0.9), lerp(pK1, pK2, 0.5) * 0.7 + mid * 0.3], "Keel", pMf - cen)
+        flap("flap", [lerp(pB, pK2, 0.08), lerp(pB, pK2, 0.92), lerp(pB, pMb, 0.7) * 0.75 + pK2 * 0.25], "BodyBack", pMb - cen)
+    # folded points: a ridge on top and two lower corners, tapering; a "crimp" is one piece tucked into the next
+    def section(r, h, w, joint, lean=None):
+        top = r if lean is None else r + lean
+        return [v(top, joint), v(r + (-w / 2, -h, 0), joint), v(r + (w / 2, -h, 0), joint)]
+    def blade(part, a, b, cap=True):
+        for i, j in ((0, 1), (2, 0), (1, 2)): tri(part, a[i], a[j], b[j]); tri(part, a[i], b[j], b[i])
+        if cap: tri(part, b[0], b[1], b[2])
+    def spike(part, a, tip):
+        for i, j in ((0, 1), (2, 0), (1, 2)): tri(part, a[i], a[j], tip)
+    step = np.array((0, -0.1 * s, 0))
+    # neck: stretched forward along the real nose, crimped once, then the head folded back down through its tip
+    N0 = np.array((0, wy - 0.3 * s, zF + 0.5 * s)); Hr = np.array((0, o["yN"] + 0.8 * s, o["zN"] + 1.5 * s))
+    fwd = unit(Hr - N0); Rn = lambda t: lerp(N0, Hr, t)
+    blade("neck1", section(Rn(0), 0.9 * s, 0.4 * s, "BodyFront"), section(Rn(0.56), 0.6 * s, 0.28 * s, "Neck", fwd * 0.3 * s))
+    blade("neck2", section(Rn(0.48) + step, 0.52 * s, 0.22 * s, "Neck"),
+          section(Hr + step * 0.6 - fwd * 0.15 * s, 0.48 * s, 0.19 * s, "Head", fwd * 0.45 * s))
+    # the head: a blade tucked into the neck's open tip, pointing down and forward (the neck's own tip is the crest)
+    hb = Hr + step - fwd * 0.2 * s
+    head = [v(hb + (0, -0.03 * s, 0) + fwd * 0.2 * s, "Head"), v(hb + (-0.07 * s, -0.58 * s, 0), "Head"), v(hb + (0.07 * s, -0.58 * s, 0), "Head")]
+    spike("head", head, v((0, o["yN"] - 0.75 * s, o["zN"] + 0.25 * s), "Beak")); bq = V[-1]
+    for sx, j in ((-1, 1), (1, 2)):   # a cheek layer on each side of the head
+        flap("flap", [lerp(V[head[0]], V[head[j]], 0.12), lerp(V[head[0]], V[head[j]], 0.95),
+                      lerp(V[head[j]], bq, 0.5) * 0.7 + lerp(V[head[0]], bq, 0.5) * 0.3], "Head", np.array((sx, 0.0, 0.0)), 0.03)
+    # tail: rising to over the real tail's top back corner, crimped once
+    T0 = np.array((0, wy - 0.25 * s, zB - 0.6 * s)); Tt = np.array((0, max(o["yT"], wy + 1.3 * s) + 0.5 * s, o["zT"] + 0.7 * s))
+    bwd = unit(Tt - T0); Rt = lambda t: lerp(T0, Tt, t)
+    blade("tail1", section(Rt(0), 0.9 * s, 0.38 * s, "BodyBack"), section(Rt(0.42), 0.6 * s, 0.26 * s, "Tail", bwd * 0.3 * s))
+    spike("tail2", section(Rt(0.33) + step, 0.46 * s, 0.19 * s, "Tail"), v(Tt, "TailTip"))
+    # wings
+    panels = {}
     for sx in (-1, 1):
-        LR = "LR"[sx > 0]; M = Ms[sx]
-        xf = min(max(o["fold"], cw + 0.4 * (o["xo"] - cw)), o["xo"] - 0.3 * s)
-        xm = cw + 0.5 * (xf - cw)
-        Wf = v(lerp(V[Fr], V[M], 0.4), "WingRootFront" + LR); Wb = v(lerp(V[M], V[Bk], 0.65), "WingRootBack" + LR)
-        Mw = v(V[M] + (0, 0.02 * s, 0), "BodySide" + LR)
-        S = v((sx * xm, wy + 0.03 * s, lead(xm) - 0.1 * s), "Shoulder" + LR)
-        R = v((sx * xm, wy - 0.02 * s, trail(xm) + 0.05 * s), "WingBack" + LR)
-        Fl = v((sx * xf, wy, lead(xf) - 0.05 * s), "FoldFront" + LR); Ft = v((sx * xf, wy, trail(xf)), "FoldBack" + LR)
-        Fm = v(lerp(V[Fl], V[Ft], 0.45), "FoldFront" + LR)
-        reach = max(o["xo"] + 0.3 * s - xf, 2.6 * s)
-        T = v((sx * (xf + reach * math.cos(FOLD_UP)), wy + reach * math.sin(FOLD_UP), lerp(o["LO"], o["TO"], 0.6)), "WingTip" + LR)
-        C = v(lerp(V[Mw], V[Fm], 0.5) + up * 0.14 * s, "Crease" + LR)
-        f("wing", Mw, C, S); f("wing", Mw, S, Wf); f("wing", C, Fl, S); f("wing", C, Fm, Fl)
-        f("wing", Mw, Wb, R); f("wing", Mw, R, C); f("wing", C, R, Ft); f("wing", C, Ft, Fm)
-        f("wing", Fl, Fm, T); f("wing", Fm, Ft, T)
-        # a second paper layer on the wing root (the folded flap of a real crane)
-        nrm = np.cross(V[S] - V[Mw], V[Wf] - V[Mw]); nrm = nrm / np.linalg.norm(nrm) * (1 if nrm[1] > 0 else -1)
-        a = v(V[Wf] + nrm * 0.04 * s, "WingRootFront" + LR); b = v(lerp(V[Wf], V[S], 0.75) + nrm * 0.04 * s, "Shoulder" + LR)
-        c = v(lerp(V[Mw], V[S], 0.5) + nrm * 0.04 * s, "Shoulder" + LR)
-        f("flap", a, b, c)
-        # cherry blossom sprig on the wing (painted, top view): along the crease, towards the fold
-        Mp, Fp, Sp, Rp = V[Mw], V[Fm], V[S], V[R]; across = (Sp - Rp) / max(np.linalg.norm(Sp - Rp), 1e-6) * s
-        pts = [lerp(Mp, Fp, 0.6) + across * 0.55, lerp(Mp, Fp, 0.8) - across * 0.35, lerp(Mp, Fp, 0.98) + across * 0.25]
-        top += [(q, r * s, 0.7 * k + (0.3 if sx > 0 else 1.1)) for k, (q, r) in enumerate(zip(pts, (0.62, 0.78, 0.5)))]
-        stems.append([lerp(Mp, Fp, 0.42) - across * 0.15] + pts + [lerp(V[Fm], V[T], 0.5)])
-    # small blossoms on the body sides, the tail and the neck (side view)
-    side_fl += [(np.array((0, (wy + ky) / 2 + 0.1 * s, zm - 0.45 * s)), 0.42 * s, 0.4), (lerp(V[t0[0]], V[Tt], 0.55), 0.2 * s, 1.0),
-                (lerp(V[n0[0]], H, 0.55), 0.18 * s, 0.2)]
-    return dict(V=np.array(V), F=F, P=P, J=J, s=s, cw=cw, fold=xf, top=top, side=side_fl, stems=stems)
+        LR = "LR"[sx > 0]
+        def at(u, w, h=0.0):  # wing point: u out along the wing, w back along the root, h up off the paper (all in s)
+            u, w, h = u * ks, w * ks, h * s
+            return np.array((sx * (cw * 0.97 + u * math.cos(RISE) - h * math.sin(RISE)), wy + 0.02 * s + u * math.sin(RISE) + h * math.cos(RISE), zc + w))
+        Fl, Ft, Fm, T = v(at(0, -C0 / 2), "WingRootFront" + LR), v(at(0, C0 / 2), "WingRootBack" + LR), v(at(0, -0.3), "WingRoot" + LR), v(at(R0, SW), "WingTip" + LR)
+        Cm = v(at(R0 * 0.4, -0.3 + (SW + 0.3) * 0.4, HC), "WingFold" + LR)
+        for a, b, c in ((Fl, Fm, Cm), (Fl, Cm, T), (Fm, Ft, Cm), (Cm, Ft, T)): tri("wing", a, b, c)
+        def layer(pts, lift):  # a folded-over layer on the wing
+            poly("wflap", [v(at(u, w, wing_tri(u, w) + lift), "WingRoot" + LR) for u, w in pts])
+        layer([(0.03, -2.75), (0.03, -0.55), (2.5, -0.8)], 0.06)          # big root flap, front half
+        layer([(0.06, -2.3), (0.06, -1.05), (1.45, -1.5)], 0.12)          # a smaller one on top of it
+        layer([(0.03, 1.95), (0.03, 2.9), (1.45, 2.55)], 0.06)            # root flap by the tail
+        layer([(2.7, -1.5), (6.8, 0.66), (2.7, -0.95)], 0.06)             # hem along the leading edge
+        panels[sx] = dict(o=at(0, 0), eu=unit(at(1, 0) - at(0, 0)), ew=np.array((0, 0, 1.0)), ks=ks)
+    return dict(V=np.array(V), F=F, P=P, J=J, s=s, cw=cw, panels=panels, head=Hr, zc=zc, ks=ks,
+                small=[(Rn(0.3) + (0, -0.42 * s, 0), 0.2 * s, 0.3), (Rt(0.2) + (0, -0.36 * s, 0), 0.2 * s, 1.0), (Rt(0.62) + (0, -0.17 * s, 0), 0.11 * s, 0.2)])
+
+def wing_under(c, x, z):
+    """Height of the wing's underside over plane spot (x, z), and that spot moved (if needed) to be under the wing."""
+    ks = c["ks"]; u = min(max((abs(x) - c["cw"] * 0.97) / (ks * math.cos(RISE)), 0.25), R0 - 1.2)
+    w = min(max((z - c["zc"]) / ks, -C0 / 2 + u * (SW + C0 / 2) / R0 + 0.9), C0 / 2 - u * (C0 / 2 - SW) / R0 - 0.9)
+    xx = c["cw"] * 0.97 + u * ks * math.cos(RISE)
+    return math.copysign(xx, x), c["panels"][1]["o"][1] + u * ks * math.sin(RISE) - 0.035 * c["s"], c["zc"] + w * ks
 
 def orient(c):
-    """Outward faces for closed parts, upward for paper sheets (wings, flap)."""
+    """Outward faces for the closed parts, upward for the wings (so their paper thickens evenly)."""
     V, F = c["V"], c["F"]
     groups = {}
-    for i, (ids, part) in enumerate(zip(F, c["P"])): groups.setdefault("neckhead" if part in ("neck", "head") else part, []).append(i)
+    for i, part in enumerate(c["P"]): groups.setdefault(part, []).append(i)
     for part, idx in groups.items():
+        if part in ("flap", "wflap"): continue
         cen = V[sorted({j for i in idx for j in F[i]})].mean(0)
         for i in idx:
             a, b, d = V[list(F[i])]; n = np.cross(b - a, d - a); fc = (a + b + d) / 3
-            flip = n[1] < 0 if part in ("wing", "flap") else np.dot(n, fc - cen) < 0
-            if flip: F[i] = (F[i][0], F[i][2], F[i][1])
+            if (n[1] < 0) if part == "wing" else (np.dot(n, fc - cen) < 0): F[i] = (F[i][0], F[i][2], F[i][1])
     return c
 
 def crane_object(c, name, dx, uvs=None):
-    """Mesh object for crane `c` (with loop UVs from the rest pose); wings and flap get real paper thickness."""
     me = bpy.data.meshes.new(name); me.from_pydata([to_bl(p, dx) for p in c["V"]], [], c["F"]); me.update()
     if uvs is not None:
         layer = me.uv_layers.new(name="UVMap")
@@ -217,14 +250,15 @@ def crane_object(c, name, dx, uvs=None):
 
 def thicken(ob, c):
     """Split the paper sheets off, give them thickness, join back. Returns the finished object."""
-    sheet = {i for i, p in enumerate(c["P"]) if p in ("wing", "flap")}
+    sheet = {i for i, p in enumerate(c["P"]) if p in SHEETS}
     bm = bmesh.new(); bm.from_mesh(ob.data); bm.faces.ensure_lookup_table()
     other = bm.copy(); other.faces.ensure_lookup_table()
     bmesh.ops.delete(bm, geom=[f for f in bm.faces if f.index not in sheet], context="FACES")
     bmesh.ops.delete(other, geom=[f for f in other.faces if f.index in sheet], context="FACES")
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     me2 = bpy.data.meshes.new(ob.name + "-sheet"); bm.to_mesh(me2); other.to_mesh(ob.data)
     sh = bpy.data.objects.new(ob.name + "-sheet", me2); bpy.context.scene.collection.objects.link(sh)
-    mod = sh.modifiers.new("Paper", "SOLIDIFY"); mod.thickness = 0.06 * c["s"]; mod.offset = 0; mod.use_rim = True
+    mod = sh.modifiers.new("Paper", "SOLIDIFY"); mod.thickness = 0.045 * c["s"]; mod.offset = 0; mod.use_rim = True
     for o in bpy.data.objects: o.select_set(o in (ob, sh))
     bpy.context.view_layer.objects.active = sh; bpy.ops.object.modifier_apply(modifier="Paper")
     bpy.context.view_layer.objects.active = ob; bpy.ops.object.join()
@@ -237,16 +271,17 @@ def unwrap(ob):
     for o in bpy.data.objects: o.select_set(o is ob)
     bpy.context.view_layer.objects.active = ob
     bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT")
-    bpy.ops.uv.smart_project(angle_limit=math.radians(12), island_margin=0.025, area_weight=0.0, correct_aspect=True)
+    bpy.ops.uv.smart_project(angle_limit=math.radians(12), island_margin=0.012, area_weight=0.0, correct_aspect=True)
     bpy.ops.object.mode_set(mode="OBJECT")
     layer = ob.data.uv_layers.active
     return [[tuple(layer.data[li].uv) for li in p.loop_indices] for p in ob.data.polygons]
 
 # ---------------------------------------------------------------- the pictures
-BLUE = np.array((0.09, 0.15, 0.56)); INK = np.array((0.69, 0.74, 0.83)); FOIL = np.array((0.77, 0.81, 0.89))
-PETAL = np.array((0.42, 0.5, 0.76)); DEEP = np.array((0.09, 0.14, 0.45))
+BLUE = np.array((0.075, 0.15, 0.6)); BLUE2 = np.array((0.12, 0.25, 0.78)); INK = np.array((0.72, 0.76, 0.85))
+FOIL = np.array((0.8, 0.83, 0.9)); PETAL = np.array((0.62, 0.68, 0.84)); DEEP = np.array((0.07, 0.11, 0.42))
 
 def smooth(x, a, b): t = np.clip((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t)
+def line(d, w): return smooth(-d, -w, -w * 0.45)   # 1 on a line of half-width w, soft edge
 
 def seigaiha(u, v, rc, w):
     """Silver wave scales: rows rc/2 apart, each row's circles 2rc apart; lower rows drawn over upper ones."""
@@ -257,17 +292,23 @@ def seigaiha(u, v, rc, w):
         j = np.round((u - off) / (2 * rc)); d = np.hypot(u - (j * 2 * rc + off), v - r * dy)
         new = (~hit) & (d < rc); dist[new] = d[new]; hit |= new
     ring = np.abs(np.mod(dist + rc / 8, rc / 4) - rc / 8)
-    return hit * smooth(-ring, -w, -w * 0.4) * (dist > rc * 0.12) + hit * (dist < rc * 0.12)
+    return hit * line(ring, w) * (dist > rc * 0.14) + hit * (dist < rc * 0.14)
 
-def blossom(u, v, cu, cv, rf, rot, w):
-    """Five-petal cherry blossom: returns (outline ink, petal fill, centre)."""
+def blossom(u, v, cu, cv, rf, rot):
+    """Five notched petals with a vein each, stamens and a centre: (outline, petal fill, dark detail)."""
     du, dv = u - cu, v - cv; rho = np.hypot(du, dv); th = np.arctan2(dv, du) - rot
-    ph = np.abs(np.cos(2.5 * th)); edge = rf * (0.5 + 0.5 * ph ** 0.5) - rf * 0.16 * np.exp(-((1 - ph) / 0.004))
-    line = smooth(-np.abs(rho - edge), -w, -w * 0.4)
+    ph = np.abs(np.cos(2.5 * th)); edge = rf * (0.42 + 0.58 * ph ** 0.45) - rf * 0.15 * np.exp(-((1 - ph) / 0.006))
     fill = (rho < edge).astype(float)
-    centre = smooth(-rho, -rf * 0.16, -rf * 0.1) + sum(smooth(-np.hypot(du - rf * 0.32 * np.cos(rot + a), dv - rf * 0.32 * np.sin(rot + a)), -rf * 0.06, -rf * 0.03)
-                                                     for a in np.arange(5) * 2 * np.pi / 5 + np.pi / 5)
-    return line, fill, np.clip(centre, 0, 1)
+    outline = line(np.abs(rho - edge), rf * 0.07)
+    between = line(rho * ph / 2.5, rf * 0.03) * (rho > rf * 0.2) * fill        # the gaps between petals
+    vein = line(rho * np.abs(np.sin(np.mod(th + np.pi / 5, 2 * np.pi / 5) - np.pi / 5)), rf * 0.022) * (rho > rf * 0.3) * (rho < rf * 0.78) * fill
+    stamen = np.zeros_like(rho)
+    for a in np.arange(10) * np.pi / 5 + 0.2:
+        ex, ey = rf * 0.36 * np.cos(rot + a), rf * 0.36 * np.sin(rot + a)
+        stamen = np.maximum(stamen, line(seg_dist(du, dv, np.zeros(2), np.array((ex, ey))), rf * 0.018))
+        stamen = np.maximum(stamen, line(np.hypot(du - ex, dv - ey), rf * 0.05))
+    dark = np.clip(between + vein * 0.6 + stamen + line(rho, rf * 0.13), 0, 1)
+    return outline, fill, dark
 
 def seg_dist(u, v, a, b):
     ab = b - a; t = np.clip(((u - a[0]) * ab[0] + (v - a[1]) * ab[1]) / max(ab @ ab, 1e-9), 0, 1)
@@ -287,44 +328,58 @@ def basis(n):
     e1 = ref - n * (ref @ n); e1 /= np.linalg.norm(e1)
     return e1, np.cross(n, e1)
 
-def shade(P3, n, part, d, c):
-    """Colour, roughness, height for points P3 (rest pose) on a face with normal n; d = distance to its folds."""
-    s = c["s"]; topview = abs(n[1]) > 0.6
-    e1, e2 = basis(n); u2, v2 = P3 @ e1, P3 @ e2
-    mott = noise3(P3 / s, (0.7, 1.6, 3.1), 3); grain = noise3(P3 / s, (19.0, 37.0), 5)
-    col = BLUE[None, None] * (1 + 0.09 * mott + 0.04 * grain)[..., None]
-    ink = np.zeros(P3.shape[:-1]); fill = np.zeros_like(ink); dot = np.zeros_like(ink)
-    span = (np.abs(P3[..., 0]) - c["cw"]) / max(c["fold"] - c["cw"], 1e-6)
-    if part in ("wing", "body", "flap"):
-        waves = seigaiha(u2, v2, 0.62 * s, 0.022 * s) * 0.8
-        if part != "body": waves = waves * (1 - smooth(span, 0.3, 0.45))
-        ink = np.maximum(ink, waves)
-    flowers = []
-    if topview and part in ("wing", "flap"):
-        flowers = c["top"]
+# the blossom sprig on each wing's back half, in wing coordinates (u out, w back; see crane())
+SPRIG = [(1.05, 1.3, 0.86, 0.3), (2.75, 1.15, 0.74, 1.0), (4.15, 0.98, 0.5, 0.1), (1.9, 2.02, 0.36, 0.7), (5.15, 0.95, 0.3, 0.5)]
+STEMS = [[(0.0, 1.62), (1.05, 1.3), (2.75, 1.15), (4.15, 0.98), (5.15, 0.95), (6.0, 0.9)], [(1.35, 1.3), (1.9, 2.02)],
+         [(3.1, 1.12), (3.45, 1.62)], [(4.4, 0.98), (4.75, 1.3)], [(2.1, 1.2), (2.3, 0.62)]]
+BUDS = [(3.45, 1.62), (4.75, 1.3), (2.3, 0.62), (6.0, 0.9)]
+
+def shade(P3, n, part, d, c, fi):
+    """Colour, roughness, height and metal for points P3 (rest pose) on a face with normal n; d = distance to its folds."""
+    s = c["s"]; e1, e2 = basis(n)
+    mott = noise3(P3 / s, (0.6, 1.3, 2.9), 3); grain = noise3(P3 / s, (23.0, 41.0), 5)
+    tone = 0.5 + 0.5 * mott + (((fi * 7919) % 13) / 13 - 0.5) * 0.35 + (0.35 if part in ("flap", "wflap") else 0)
+    col = lerp(BLUE, BLUE2, np.clip(tone, 0, 1)[..., None]) * (1 + 0.05 * grain)[..., None]
+    ink = np.zeros(P3.shape[:-1]); fill = np.zeros_like(ink); dark = np.zeros_like(ink)
+    if part == "wing":
+        pn = c["panels"][1 if P3[..., 0].mean() > 0 else -1]; q = P3 - pn["o"]
+        u, w = (q @ pn["eu"]) / pn["ks"], (q @ pn["ew"]) / pn["ks"]
+        front = smooth(-0.3 + u * (SW + 0.3) / R0 - w, 0.05, 0.3)        # ahead of the wing's fold line: waves
+        ink = seigaiha(w, -u, 1.05, 0.045) * 0.75 * front
         br = np.full(ink.shape, 1e9)
-        for stem in c["stems"]:
-            for a, b in zip(stem, stem[1:]): br = np.minimum(br, seg_dist(u2, v2, np.array((a @ e1, a @ e2)), np.array((b @ e1, b @ e2))))
-        ink = np.maximum(ink, smooth(-br, -0.05 * s, -0.025 * s))
-    elif not topview and part in ("body", "tail", "neck"):
-        flowers = c["side"]
-    for q, rf, rot in flowers:
-        qu, qv = q @ e1, q @ e2
-        ln, fl, ct = blossom(u2, v2, qu, qv, rf, rot, 0.04 * s)
-        fill = np.maximum(fill, fl * (1 - ln)); ink = np.maximum(ink, ln); dot = np.maximum(dot, ct)
-    col = col * (1 - fill[..., None]) + PETAL * fill[..., None]
-    col = col * (1 - dot[..., None]) + DEEP * dot[..., None]
-    col = col * (1 - ink[..., None]) + INK * ink[..., None]
-    foil = smooth(-d, -0.05 * s, -0.03 * s); shadow = smooth(-d, -0.16 * s, -0.05 * s) * (1 - foil)
-    col = col * (1 - 0.18 * shadow[..., None])
-    col = col * (1 - foil[..., None]) + FOIL * foil[..., None]
-    rough = 0.72 - 0.38 * np.maximum(ink, fill * 0.5) - 0.5 * foil + 0.04 * grain
-    height = 0.45 * ink + 0.25 * fill + 0.35 * foil - 0.5 * smooth(-d, -0.12 * s, 0) + 0.06 * grain + 0.03 * mott
-    return col, rough, height
+        for st in STEMS:
+            for a, b in zip(st, st[1:]): br = np.minimum(br, seg_dist(u, w, np.array(a), np.array(b)))
+        ink = np.maximum(ink, line(br, 0.055))
+        for bu, bw_ in BUDS: ink = np.maximum(ink, line(np.hypot(u - bu, w - bw_), 0.13))
+        for fu, fw, rf, rot in SPRIG:
+            ln, fl, dk = blossom(u, w, fu, fw, rf, rot)
+            ink = np.where(fl > 0, ln, np.maximum(ink, ln)); fill = np.maximum(fill, fl); dark = np.where(fl > 0, dk, dark)
+    elif part in ("body", "flap", "wflap"):
+        u2, v2 = P3 @ e1 / s, P3 @ e2 / s
+        patch = smooth(noise3(P3 / s, (0.55, 0.9), 11) + (0.25 if part == "body" else -0.05), -0.08, 0.12)
+        ink = seigaiha(u2, v2, 1.05, 0.045) * 0.75 * patch
+    else:
+        u2, v2 = P3 @ e1, P3 @ e2
+        for q, rf, rot in c["small"]:
+            ln, fl, dk = blossom(u2, v2, q @ e1, q @ e2, rf, rot)
+            ink = np.maximum(ink, ln); fill = np.maximum(fill, fl); dark = np.maximum(dark, dk * fl)
+        if part == "head":   # silver beak tip
+            ink = np.maximum(ink, smooth(-np.linalg.norm(P3 - c["V"][c["beak"]], axis=-1), -1.0 * s, -0.75 * s))
+    col = lerp(col, PETAL * (1 + 0.06 * mott)[..., None], fill[..., None])
+    col = lerp(col, DEEP, (dark * fill)[..., None] * 0.85)
+    col = lerp(col, INK, ink[..., None])
+    foil = line(d, 0.045 * s); shadow = smooth(-d, -0.2 * s, -0.045 * s) * (1 - foil)
+    col = col * (1 - 0.22 * shadow[..., None])
+    col = lerp(col, FOIL, foil[..., None])
+    metal = np.clip(np.maximum(np.maximum(ink, fill * (1 - dark)), foil), 0, 1)
+    rough = 0.6 - 0.3 * metal + 0.05 * grain
+    height = 0.4 * ink + 0.22 * fill - 0.15 * dark * fill + 0.4 * foil - 0.45 * smooth(-d, -0.1 * s, 0) + 0.07 * grain + 0.04 * mott
+    return col, rough, height, metal
 
 def paint(c, uvs):
     V, F = c["V"], c["F"]
-    col = np.zeros((TEX, TEX, 3)); rough = np.zeros((TEX, TEX)); height = np.zeros((TEX, TEX)); done = np.zeros((TEX, TEX), bool)
+    col = np.zeros((TEX, TEX, 3)); rough = np.zeros((TEX, TEX)); height = np.zeros((TEX, TEX)); metal = np.zeros((TEX, TEX))
+    done = np.zeros((TEX, TEX), bool)
     # fold edges: shared by two faces at an angle, or the paper's outer edge
     normals = []
     for ids in F:
@@ -333,9 +388,9 @@ def paint(c, uvs):
     for i, ids in enumerate(F):
         for k in range(3): edges.setdefault(frozenset((ids[(k + 1) % 3], ids[(k + 2) % 3])), []).append(i)
     def fold(i, k):
-        e = frozenset((F[i][(k + 1) % 3], F[i][(k + 2) % 3])); fs = edges[e]
+        fs = edges[frozenset((F[i][(k + 1) % 3], F[i][(k + 2) % 3]))]
         if len(fs) == 1: return True
-        return any(np.degrees(np.arccos(np.clip(normals[i] @ normals[j], -1, 1))) > 10 for j in fs if j != i)
+        return any(np.degrees(np.arccos(np.clip(abs(normals[i] @ normals[j]), -1, 1))) > 1.5 for j in fs if j != i)
     for i, ids in enumerate(F):
         p = V[list(ids)]; uv = np.array(uvs[i]) * TEX
         x0, y0 = np.maximum(np.floor(uv.min(0) - 2).astype(int), 0); x1, y1 = np.minimum(np.ceil(uv.max(0) + 2).astype(int), TEX)
@@ -345,7 +400,7 @@ def paint(c, uvs):
         l0 = ((b[1] - d[1]) * (xs - d[0]) + (d[0] - b[0]) * (ys - d[1])) / den
         l1 = ((d[1] - a[1]) * (xs - d[0]) + (a[0] - d[0]) * (ys - d[1])) / den
         L = np.stack([l0, l1, 1 - l0 - l1], -1)
-        area2 = abs(den); hpx = [area2 / max(np.linalg.norm(uv[(k + 2) % 3] - uv[(k + 1) % 3]), 1e-9) for k in range(3)]
+        hpx = [abs(den) / max(np.linalg.norm(uv[(k + 2) % 3] - uv[(k + 1) % 3]), 1e-9) for k in range(3)]
         inside = np.all(L >= -np.array([1.5 / h for h in hpx]), -1)
         if not inside.any(): continue
         P3 = L @ p
@@ -353,23 +408,24 @@ def paint(c, uvs):
         dist = np.full(l0.shape, 1e9)
         for k in range(3):
             if fold(i, k): dist = np.minimum(dist, np.maximum(L[..., k], 0) * a3 / np.linalg.norm(p[(k + 2) % 3] - p[(k + 1) % 3]))
-        cc, rr, hh = shade(P3, normals[i], c["P"][i], dist, c)
+        part = c["P"][i]; part = {"neck1": "neck", "neck2": "neck", "tail1": "tail", "tail2": "tail"}.get(part, part)
+        cc, rr, hh, mm = shade(P3, normals[i], part, dist, c, i)
         sl = (slice(y0, y1), slice(x0, x1)); m = inside & ~done[sl]
-        col[sl][m] = cc[m]; rough[sl][m] = rr[m]; height[sl][m] = hh[m]; done[sl] |= inside
-    # fill the space between islands with the nearest island's paint (no black gaps: lessons, uploads)
+        col[sl][m] = cc[m]; rough[sl][m] = rr[m]; height[sl][m] = hh[m]; metal[sl][m] = mm[m]; done[sl] |= inside
+    # a short bleed of each island's paint, then plain blue paper between islands (no black gaps: lessons, uploads)
     for _ in range(4):
-        if done.all(): break
-        acc = np.zeros_like(col); accr = np.zeros_like(rough); acch = np.zeros_like(height); cnt = np.zeros_like(rough)
+        acc = np.zeros_like(col); accr = np.zeros_like(rough); acch = np.zeros_like(height); accm = np.zeros_like(metal); cnt = np.zeros_like(rough)
         for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             sd = np.roll(done, (dy, dx), (0, 1)).astype(float)
             acc += np.roll(col, (dy, dx), (0, 1)) * sd[..., None]; accr += np.roll(rough, (dy, dx), (0, 1)) * sd
-            acch += np.roll(height, (dy, dx), (0, 1)) * sd; cnt += sd
+            acch += np.roll(height, (dy, dx), (0, 1)) * sd; accm += np.roll(metal, (dy, dx), (0, 1)) * sd; cnt += sd
         grow = (~done) & (cnt > 0)
-        col[grow] = acc[grow] / cnt[grow, None]; rough[grow] = accr[grow] / cnt[grow]; height[grow] = acch[grow] / cnt[grow]; done |= grow
-    col[~done] = BLUE; rough[~done] = 0.72
+        col[grow] = acc[grow] / cnt[grow, None]; rough[grow] = accr[grow] / cnt[grow]; height[grow] = acch[grow] / cnt[grow]
+        metal[grow] = accm[grow] / cnt[grow]; done |= grow
+    col[~done] = lerp(BLUE, BLUE2, 0.5); rough[~done] = 0.6
     gy, gx = np.gradient(height); k = 6.0
     nrm = np.stack([-gx * k, -gy * k, np.ones_like(gx)], -1); nrm /= np.linalg.norm(nrm, axis=-1, keepdims=True)
-    return np.clip(col, 0, 1), np.clip(rough, 0.05, 1), nrm * 0.5 + 0.5
+    return dict(color=np.clip(col, 0, 1), roughness=np.clip(rough, 0.05, 1), normal=nrm * 0.5 + 0.5, metalness=np.clip(metal, 0, 1))
 
 def save_png(arr, name, srgb):
     img = bpy.data.images.new(name, TEX, TEX, alpha=False)
@@ -387,33 +443,48 @@ def crane_material(paths):
         return t
     nt.links.new(tex(paths["color"], False).outputs["Color"], b.inputs["Base Color"])
     nt.links.new(tex(paths["roughness"], True).outputs["Color"], b.inputs["Roughness"])
+    nt.links.new(tex(paths["metalness"], True).outputs["Color"], b.inputs["Metallic"])
     nm = nt.nodes.new("ShaderNodeNormalMap"); nt.links.new(tex(paths["normal"], True).outputs["Color"], nm.inputs["Color"])
     nt.links.new(nm.outputs["Normal"], b.inputs["Normal"])
     return m
+
+def hang_guns(plane, c):
+    """Mythical rule (Alan, 2026-11-13): guns hang under the skin so they never hide it. Each gun keeps its spot
+    seen from above (moved only if that spot is not under the wing), rolls with the wing and hangs by its top."""
+    moves = {}
+    for slot, group in plane["guns"].items():
+        pts = np.concatenate([w for _, w in group]); lo, hi = pts.min(0), pts.max(0)
+        top = np.array(((lo[0] + hi[0]) / 2, hi[1], (lo[2] + hi[2]) / 2))
+        x, y, z = wing_under(c, top[0], top[2]); roll = math.copysign(RISE, x)
+        cs, sn = math.cos(roll), math.sin(roll)
+        for ob, _ in group:
+            for vert in ob.data.vertices:   # Blender: x right, y forward, z up
+                rx, rz = vert.co.x - plane["dx"] - top[0], vert.co.z - top[1]
+                vert.co.x = plane["dx"] + x + rx * cs - rz * sn; vert.co.z = y + rx * sn + rz * cs; vert.co.y += -(z - top[2])
+        moves[slot] = [round(float(a), 2) for a in (x - top[0], y - top[1], z - top[2])]
+    return moves
 
 # ---------------------------------------------------------------- run
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
 HITBOX = material("Hitbox", (0.9, 0.12, 0.1), alpha=0.55)
-planes = {}
-for i, (name, lo) in enumerate(BUILDS.items()):
-    planes[name] = build_plane(lo, i * GAP)
+planes = {name: build_plane(lo, i * GAP) for i, (name, lo) in enumerate(BUILDS.items())}
 
-rest = orient(crane(planes["starter"][2]))
+rest = orient(crane(planes["starter"]["o"])); rest["beak"] = rest["J"].index("Beak")
 rest_ob = crane_object(rest, "CraneRest", -GAP * 2)
 uvs = unwrap(rest_ob)
-col, rough, nrm = paint(rest, uvs)
-paths = dict(color=save_png(col, "crane-color", True), normal=save_png(nrm, "crane-normal", False),
-             roughness=save_png(rough, "crane-roughness", False))
+maps = paint(rest, uvs)
+paths = {k: save_png(a, "crane-" + k, k == "color") for k, a in maps.items()}
 mat = crane_material(paths)
 report = {"joints": sorted(set(rest["J"])), "builds": {}}
-cranes = {}
+cranes, fits = {}, {}
 for i, name in enumerate(BUILDS):
-    c = orient(crane(planes[name][2])); c["F"] = rest["F"]  # same faces as the rest pose, only the joints move
+    c = crane(planes[name]["o"]); c["F"] = rest["F"]  # same faces as the rest pose, only the joints move
     ob = thicken(crane_object(c, "Crane-" + name, i * GAP, uvs), c)
-    ob.data.materials.append(mat); cranes[name] = ob
-    report["builds"][name] = dict(triangles=len(ob.data.polygons), scale=round(c["s"], 3),
-                                  outline={k: round(float(v), 2) for k, v in planes[name][2].items()})
+    ob.data.materials.append(mat); cranes[name] = ob; fits[name] = c
+    report["builds"][name] = dict(triangles=len(ob.data.polygons), scale=round(c["s"], 3), wing_size=round(c["ks"] / c["s"], 2),
+                                  guns_moved=hang_guns(planes[name], c),
+                                  outline={k: round(float(v), 2) for k, v in planes[name]["o"].items()})
 bpy.data.objects.remove(rest_ob)
 rest_final = thicken(crane_object(rest, "CraneRestPose", -GAP * 2, uvs), rest); rest_final.data.materials.append(mat)
 rest_final.hide_render = True
@@ -423,56 +494,56 @@ print("TRIANGLES", report["triangles"])
 bpy.ops.wm.save_as_mainfile(filepath=os.path.join(OUT, "crane.blend"))
 
 if RENDER:
-    world = bpy.data.worlds.new("Sky"); scene.world = world; world.use_nodes = True
-    world.node_tree.nodes["Background"].inputs["Color"].default_value = (0.5, 0.66, 0.82, 1)
-    world.node_tree.nodes["Background"].inputs["Strength"].default_value = 0.9
+    world = bpy.data.worlds.new("Sky"); scene.world = world; world.use_nodes = True; wn = world.node_tree
+    tc = wn.nodes.new("ShaderNodeTexCoord"); sep = wn.nodes.new("ShaderNodeSeparateXYZ"); ramp = wn.nodes.new("ShaderNodeValToRGB")
+    wn.links.new(tc.outputs["Generated"], sep.inputs[0]); wn.links.new(sep.outputs["Z"], ramp.inputs[0])
+    ramp.color_ramp.elements[0].position = 0.0; ramp.color_ramp.elements[0].color = (0.56, 0.7, 0.86, 1)
+    ramp.color_ramp.elements[1].position = 0.7; ramp.color_ramp.elements[1].color = (0.25, 0.45, 0.82, 1)
+    wn.links.new(ramp.outputs["Color"], wn.nodes["Background"].inputs["Color"])
+    wn.nodes["Background"].inputs["Strength"].default_value = 0.9
     sun = bpy.data.objects.new("Sun", bpy.data.lights.new("Sun", "SUN")); scene.collection.objects.link(sun)
-    sun.data.energy = 3.2; sun.data.angle = math.radians(3); sun.rotation_euler = (math.radians(38), math.radians(-18), math.radians(35))
+    sun.data.energy = 3.0; sun.data.angle = math.radians(3); sun.rotation_euler = (math.radians(42), math.radians(-14), math.radians(40))
     cam = bpy.data.objects.new("Cam", bpy.data.cameras.new("Cam")); scene.collection.objects.link(cam); scene.camera = cam
     target = bpy.data.objects.new("T", None); scene.collection.objects.link(target)
     con = cam.constraints.new("TRACK_TO"); con.target = target; con.track_axis = "TRACK_NEGATIVE_Z"; con.up_axis = "UP_Y"
-    scene.render.engine = "CYCLES"; scene.cycles.device = "CPU"; scene.cycles.samples = 12 if QUICK else 40
+    scene.render.engine = "CYCLES"; scene.cycles.device = "CPU"; scene.cycles.samples = 12 if QUICK else 32
     scene.cycles.use_denoising = True
     scene.view_settings.view_transform = "Standard"
     scene.render.resolution_x, scene.render.resolution_y = (960, 540) if QUICK else (1600, 900)
+    cam.data.clip_end = 500
+    everything = [ob for p in planes.values() for ob in p["real"] + p["extras"]] + list(cranes.values())
+    alpha = mat.node_tree.nodes["Principled BSDF"].inputs["Alpha"]
+    def shoot(name, vname, loc, at, ortho=None, lens=35, ghost=False):
+        for ob in everything:
+            mine = ob in planes[name]["real"] + planes[name]["extras"] or ob is cranes[name]
+            ob.hide_render = not mine or (ob in planes[name]["real"] and not ghost)
+        alpha.default_value = 0.35 if ghost else 1.0
+        cam.location, target.location = loc, at
+        cam.data.type = "ORTHO" if ortho else "PERSP"
+        if ortho: cam.data.ortho_scale = ortho
+        else: cam.data.lens = lens
+        scene.render.filepath = os.path.join(OUT, f"{name}-{vname}.png"); bpy.ops.render.render(write_still=True)
     for i, name in enumerate([] if SCENE_ONLY else BUILDS):
-        o = planes[name][2]; L = o["zT"] - o["zN"]; span = 2 * o["xo"]
-        cx = i * GAP; c3 = Vector((cx, -(o["zN"] + o["zT"]) / 2, o["wy"]))
-        everything = [ob for n2 in BUILDS for ob in planes[n2][0] + planes[n2][1]] + list(cranes.values())
-        for ghost in (False, True):
-            for ob in everything:
-                mine = ob in planes[name][0] + planes[name][1] or ob is cranes[name]
-                ob.hide_render = not mine or (ob in planes[name][0] and not ghost)
-            cranes[name].color = (1, 1, 1, 1)
-            views = {"three-quarter": (c3 + Vector((-0.95, 1.05, 0.62)) * L * 1.05, c3, None, 35),
-                     "top": (c3 + Vector((0, 0, 60)), c3 + Vector((0, 0.01, 0)), max(L * 16 / 9, span) * 1.08, None),
-                     "side": (c3 + Vector((-60, 0, 0)), c3 + Vector((0, 0, 0.1)) * L, L * 1.15, None),
-                     "behind": (c3 + Vector((0.35, -1.25, 0.42)) * L, c3 + Vector((0, 0, 0.3)) * L * 0.1, None, 35),
-                     "close-up": (c3 + Vector((-0.42, 0.62, 0.3)) * L, c3 + Vector((0, 0.18, 0.02)) * L, None, 50)}
-            if ghost: views = {"top": views["top"]}
-            for vname, (loc, at, ortho, lens) in views.items():
-                cam.location, target.location = loc, at
-                cam.data.type = "ORTHO" if ortho else "PERSP"
-                if ortho: cam.data.ortho_scale = ortho
-                else: cam.data.lens = lens
-                cam.data.clip_end = 500
-                if ghost:  # see the red hitbox through the crane
-                    mat.node_tree.nodes["Principled BSDF"].inputs["Alpha"].default_value = 0.35
-                else:
-                    mat.node_tree.nodes["Principled BSDF"].inputs["Alpha"].default_value = 1.0
-                scene.render.filepath = os.path.join(OUT, f"{name}-{'hitbox-' if ghost else ''}{vname}.png")
-                bpy.ops.render.render(write_still=True)
+        o, c = planes[name]["o"], fits[name]; L = o["zT"] - o["zN"]; span = 2 * abs(c["V"][c["J"].index("WingTipR")][0])
+        E = max(L, span); c3 = Vector((i * GAP, -(o["zN"] + o["zT"]) / 2, o["wy"] + 0.08 * L))
+        head = to_bl(c["head"], i * GAP); wing = to_bl(c["panels"][-1]["o"] + c["panels"][-1]["eu"] * 2.6 * c["ks"], i * GAP)
+        shoot(name, "concept-angle", c3 + Vector((-0.8, 0.95, -0.2)) * E * 1.05, c3, lens=38)
+        shoot(name, "behind", c3 + Vector((0.3, -1.3, 0.45)) * E, c3)
+        shoot(name, "side", c3 + Vector((-60, 0, 0)), c3, ortho=L * 1.15)
+        shoot(name, "top", c3 + Vector((0, 0, 60)), c3 + Vector((0, 0.01, 0)), ortho=max(L * 16 / 9, span) * 1.08)
+        shoot(name, "close-head", head + Vector((-0.4, 0.16, 0.1)) * L, head + Vector((0, -0.05, -0.03)) * L, lens=50)
+        shoot(name, "close-wing", wing + Vector((-0.28, 0.3, 0.32)) * L, wing, lens=50)
+        shoot(name, "hitbox-top", c3 + Vector((0, 0, 60)), c3 + Vector((0, 0.01, 0)), ortho=max(L * 16 / 9, span) * 1.08, ghost=True)
+        if not QUICK: shoot(name, "hitbox-behind", c3 + Vector((0.3, -1.3, 0.45)) * E, c3, ghost=True)
     # in the town (mock-up): transparent renders in warm classroom light, put over an in-game picture afterwards
-    world.node_tree.nodes["Background"].inputs["Color"].default_value = (0.95, 0.86, 0.7, 1)
+    wn.nodes["Background"].inputs["Strength"].default_value = 0.75
+    ramp.color_ramp.elements[0].color = (0.95, 0.86, 0.7, 1); ramp.color_ramp.elements[1].color = (0.9, 0.84, 0.72, 1)
     sun.data.color = (1, 0.93, 0.82); scene.render.film_transparent = True
-    mat.node_tree.nodes["Principled BSDF"].inputs["Alpha"].default_value = 1.0
-    for i, (name, vname, off, look) in enumerate((("starter", "scene-chase", (0.0, -2.1, 0.75), (0, 0.15, 0.1)),
-                                                  ("heavy", "scene-bot", (-1.6, 1.1, 0.35), (0, 0, 0)))):
-        o = planes[name][2]; L = o["zT"] - o["zN"]; cx = list(BUILDS).index(name) * GAP
-        c3 = Vector((cx, -(o["zN"] + o["zT"]) / 2, o["wy"]))
-        for ob in [ob for n2 in BUILDS for ob in planes[n2][0] + planes[n2][1]] + list(cranes.values()):
-            ob.hide_render = not (ob in planes[name][1] or ob is cranes[name])
-        cam.data.type = "PERSP"; cam.data.lens = 40
+    for name, vname, off, look in (("starter", "scene-chase", (0.0, -2.1, 0.75), (0, 0.15, 0.1)), ("swept", "scene-bot", (-1.6, 1.1, 0.2), (0, 0, 0))):
+        o = planes[name]["o"]; L = o["zT"] - o["zN"]
+        c3 = Vector((list(BUILDS).index(name) * GAP, -(o["zN"] + o["zT"]) / 2, o["wy"]))
+        for ob in everything: ob.hide_render = not (ob in planes[name]["extras"] or ob is cranes[name])
+        alpha.default_value = 1.0; cam.data.type = "PERSP"; cam.data.lens = 40
         cam.location, target.location = c3 + Vector(off) * L, c3 + Vector(look) * L
         scene.render.filepath = os.path.join(OUT, f"{vname}.png"); bpy.ops.render.render(write_still=True)
 print("done")

@@ -99,13 +99,17 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
   of the real wing seen from above, the scallops redrawn between them; the tail webbing spans the real tail. It
   covered the wings of a swept and a straight-winged plane; the standard plane's tail fins stay uncovered (hitbox
   without skin, as Alan accepted). In Roblox each point would be a Bone. Not yet tried: flapping, real art.
-- **The Origami Crane, built in Blender 2026-11-13 (no upload, waiting on Alan's OK)** (`tools/art/crane_skin.py`, renders
-  in `.planning/skins/crane/`): 116 triangles and one 1024 set (colour, bumps, shine). Fitted by 26 joints: scaled
-  evenly to the plane's length; the beak sits level with the nose tip, the tail tip over the real tail's top back
-  corner, the body on the real body's sides and bottom, its keel reaching back over the booster spot so a booster
-  hangs from it. The wings stay flat at the real wing's height out past the outer gun spot (guns on or under the wing
-  still touch it), then the tips fold up 50 degrees (they reach out at least 2.6 x the scale, so on small planes they
-  stick out past the hitbox). Tried on the starter, heavy and swept-wing builds with their guns and boosters.
+- **The Origami Crane, built in Blender 2026-11-13 (second pass; no upload, waiting on Alan's OK)**
+  (`tools/art/crane_skin.py`, renders in `.planning/skins/crane/`): 265 triangles and one 1024 set (colour, bumps,
+  shine, silver). Scaled evenly to the plane's length; the beak sits at the nose tip, the tail tip over the real
+  tail's top back corner, the body on the real body (width capped at 1.7 x the scale), its keel on the real body's
+  bottom and back over the booster spot. The wings keep one shape on every plane (0.85-1.2 x, to suit the real wing)
+  and rise 32 degrees from the body's sides, so the blossoms never stretch; the real wings stay flat underneath, so
+  the hitbox and the skin differ most at the wings. **Guns hang under the skin** (Alan, same day: nothing on top of a
+  Mythical): each keeps its spot seen from above where that is under the wing, tilts with the wing and hangs by its
+  top. In the renders that moved guns up to 3.4 studs up and 3.1 back (heavy plane's outer pair); whether shots then
+  leave from the moved gun or the old spot is a rule for Alan before any code. Tried on the starter, heavy and
+  swept-wing builds.
 - What a Mythical does to weapons.
 - Prices and earn rules per tier: drafted below, waiting on Alan's OK.
 
