@@ -179,6 +179,18 @@
   Second pass (struts and tail ribs by code): clean and on-shape, but the code gold is one flat pale tone. Alan: gold
   needs shading, lighter and darker areas and light line work like the concept, and he would rather it not be code.
   Next: a painting per gold piece (alone, laid flat, filling the frame); fallback baked Blender light or richer code. Files and run order: `.planning/skins/dragon/paint/tools/README.md`. Tripo credits still 5,985.
+- **Dragon: stop projecting paintings; build in parts and bake** (2026-11-15, late; Alan). A third pass (each wing's
+  struts painted alone, then put back) still "looks bad" to Alan, so the projected-paintings method is stopped. What
+  practitioners do (two research passes; sources thin, mostly single creators): one object per concept picture, split
+  the model into parts, generate each part high-detail in the 3D tool, make the low-triangle version with a fresh
+  unwrap, then bake the high-detail part onto it in Blender. Roblox's own texture generator was tried on our mesh:
+  Fast mode is pale and soft, Quality mode ignored "gold" and made a teal leather dragon; it cannot follow a design.
+  **Head test (55 Tripo credits):** four head-only paintings to Tripo H3.1 (4K texture) gave a well sculpted head whose
+  colour is flat on purpose; the depth is in the shape. Baked onto our own low-triangle head pieces (bump picture,
+  metal picture, colour with creases darkened and edges brightened from the shape) it reads as clean faceted gold.
+  Alan on the high-detail version of that look: "looks decent, finish the test". Splitting rule he agreed to: cut only
+  where two materials meet (gold pieces, wing, tail fan, leg, fin), never through the scaled body; one wing, one leg
+  and one fin are made once and reused; colours are set to fixed numbers per part. Credits left 5,930.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:

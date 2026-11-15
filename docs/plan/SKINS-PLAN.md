@@ -136,6 +136,8 @@ gave the right shape at ~4,000 triangles; Tripo's own paint is too soft for the 
 shape and Blender paints it from the approved views ([details](../decisions/2026-11-14-shape-skin-model-sheets.md)).
 **Painting the Tripo shape (2026-11-15):** 3,720 triangles after clean-up; painted piece by piece (Alan): gold pieces
 by code, smooth pieces from paintings made over renders of this shape; second pass shown, gold still too flat (same note).
+**Parts and bake (2026-11-15, late):** projected paintings dropped (Alan); each part is made high-detail in Tripo and
+baked onto our low-triangle mesh in Blender; the head test is done and shown (same note).
 Rulings and all four lists:
 [model-sheet decision](../decisions/2026-11-14-shape-skin-model-sheets.md).
 

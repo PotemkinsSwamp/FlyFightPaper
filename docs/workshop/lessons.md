@@ -155,6 +155,18 @@ mistake would be easy to make twice.
   some faces point the wrong way (its material is two-sided). Its own texture is soft but sits exactly on the mesh:
   good as a flat colour guide and as the start picture for painting. Export (GLB) is free on Pro; the first click on
   Export sometimes does nothing, the second starts a ~20 s "Exporting" bar.
+- **AI 3D tools paint flat on purpose** (2026-11-15): Tripo's high-detail texture (with "Remove Lighting" on) is plain
+  colour; its look comes from light on sculpted shape plus its bump and metal pictures. Copying only the colour onto a
+  low-triangle mesh gives flat paint. The working route is the standard bake: bump picture from the high-detail shape,
+  and crease darkening plus edge brightening (Blender's ambient occlusion and pointiness) baked into the colour.
+- **Tripo multi-view: every view at ONE scale** (2026-11-15): four head views each scaled to fill its own frame came
+  back 20% too wide and tall; size each direction to our piece's box afterwards, or better, render all views at one
+  scale. "Generate in Parts" cannot be combined with texture. A 4K textured H3.1 model costs 55 credits.
+- **Roblox Studio's texture generator** (2026-11-15): Fast = 1K colour, pale; Quality = SurfaceAppearance with colour,
+  roughness and metal, real detail but its own design (it ignored "gold"); the hint picture argument failed through the
+  Studio tool. Good for generic props, not for an approved design.
+- **Cycles shows through twin faces lying on each other** (transparent back faces); preview one-sided meshes in Eevee
+  with backface culling.
 - **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,
   living sharks and dragons (Alan: "they're paper airplanes"). For more body under the wings say "a barrel like a jet
   fighter's fuselage, straight bottom line, not fat". The same image tool refuses "violent" pictures at random (shark
