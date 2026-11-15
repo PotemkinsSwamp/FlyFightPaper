@@ -134,6 +134,12 @@
   renders went to Codex in one job (`.planning/skins/dragon/six-views/`: `renders/`, `painted/`, `prompt-paint.txt`,
   about 100,000 Codex tokens); each painting keeps 95-99% of its render's outline, so the views agree piece for piece.
   Tripo's multi-view takes `front`, `left`, `back`, `right` (front required); its docs don't say whose left.
+  **Forge GUI, tried (same day):** its "Text to 3D Assets" runs other makers' models (Meshy 7.1, Tripo P1, v2.5, v3.1),
+  from text or one reference picture; on the free plan pressing Create only shows "Upgrade to generate 3D assets"
+  ($15.99 a month promo), so nothing was made and nothing spent. Paying is Alan's call. **Alan's next ask:** the
+  six views first get "more anatomically a dragon, like a top-quality model, one consistent design", same painted
+  finish (not realistic textures): three left-side options (A refined anatomy, B + folded real legs, C + one-creature
+  body), his pick then guides the other five views.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
