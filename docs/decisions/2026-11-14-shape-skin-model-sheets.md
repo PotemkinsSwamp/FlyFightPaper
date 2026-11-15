@@ -202,6 +202,11 @@
   (Studio Play: Alan's go) instead of guessing. Roblox's own levers stay on: automatic detail drop at distance
   (RenderFidelity Automatic), few parts and one picture set per plane, simple collision boxes. Roblox's per-mesh
   triangle cap is not verified (sources say 10,000 or about 20,000): check the official page before cutting pieces.
+  **Head count test** (`.planning/skins/dragon/parts/head/head-triangle-counts.jpg`; the count-test script sits with the Dragon's pipeline scripts): Tripo's own
+  head cut to 2,000, 4,000 and 8,000 triangles, each with a fresh unwrap and bake. The outline at 4,000 is close to the
+  56,892 original and 8,000 is nearly the same; 2,000 is visibly simpler. Sent to Alan, no pick yet. The gold shows brown
+  blotches at every count, the original included: Tripo's metal picture is patchy, so use one metal value per material.
+  Alan also parked Modddif ("we will wait") in favour of this higher-triangle modular route.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
