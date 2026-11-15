@@ -34,6 +34,11 @@
   (heights). Read that way, each side of the head has an accent blade ahead of the eye, two small horns above the eye,
   one big horn at the back, plus the eye, the gold trim under the eye that runs to the mouth, a cheek guard and the
   snout's gold rim. The big plate the side view draws under the big horn is left out (no other view has it).
+  **The head rebuilt from thick ridged plates (Alan, same day, on `.planning/skins/dragon/head-fable/`):** "definitely an
+  improvement" on the earlier head. Its dark definition lines were too strong (softened in its round 12) and it "just
+  needs an accent and design pass". **He is willing to let the whole body be tried the same way.** That head builds the
+  plate under the big horn after all, as the second small horn (the three-quarter and top views show it too). Still open:
+  which view wins for the big horns (top and front draw them spread wide and high, the three-quarter view low and swept back).
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
