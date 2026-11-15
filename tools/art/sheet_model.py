@@ -15,13 +15,15 @@ points in sheet pixels):
   sheet, out (folder), views {side, top, bottom, front, three_quarter: [x0, y0, x1, y1]}, review {view: box}
   (optional tighter crops of the sheet for review.jpg, e.g. just the head),
   body {from, to, stations, sides, round (2 ellipse, 1 diamond, 3+ boxier), mid (0..1, where the widest line sits
-        between bottom and top), smooth (bool), top_line [[x, z], ...], width_line [[x, half width], ...]  (where a
+        between bottom and top; round and mid are one number or [[x, value], ...] along the body), smooth (bool), top_line [[x, z], ...], width_line [[x, half width], ...]  (where a
         horn, crest, fin or wing joins, the drawn outline is not the body: over the line's span the body follows these
-        points instead), crown [a, b]  (over this span two ridges, up and out at 45 degrees, reach the DRAWN outline's
+        points instead), bottom_line [[x, z], ...] (the same for the underside: a leg hanging below it), crown [a, b]  (over this span two ridges, up and out at 45 degrees, reach the DRAWN outline's
         top (side view) and width (top view): a crest of blades on a head, as a V seen from the front),
         colors {scales, under, under_share, scale}  (optional: see body_paint)},
   parts [{name (unique), color [r, g, b] (optional), mirror (default true), and either
-          spine [[x, y, z], ...], radius [r, ...] (one per spine point; or [across, up] pairs), sides   (a tube), or
+          spine [[x, y, z], ...], radius [r, ...] (one per spine point; or [across, up] pairs), sides, roll (degrees
+          the section's top leans outwards: a blade lying on the head's sloped side), phase (degrees the section's
+          corners are turned: 6 sides at phase 30 = a plate with a ridge on top and a thick upright rim)   (a tube), or
           kind "blade", base [x, y, z], tip [x, y, z], width, thick, facing [x, y, z] (optional; default: out from
           the head's middle line), or
           kind "plate", outline, tip, view, offset, tilt, thick (a traced plate: sheet_tools.plate, concept-to-blender
@@ -30,7 +32,8 @@ points in sheet pixels):
   sun, ambient (optional render light strengths, default 1.5 and 1.0: plain-colour pieces want about 3.5 and 0.45),
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
   degrees: yaw 0 = from the side, 90 = from the front; pitch above level), front_scale (optional px per length),
-  paint (optional list of the views to paint from, default all four: leave out one drawn unlike the others).
+  paint (optional list of the views to paint from, default all four: leave out one drawn unlike the others),
+  facets (optional {light, dark, line, width}: plain-colour pieces get painted facet shading and dark crease lines).
 """
 import json, math, os, subprocess, sys
 
@@ -152,10 +155,11 @@ X = np.linspace(max(B["from"], 0.002), B["to"], NS)
 zt0, zb = runs_profile("side", X, 0)                               # the outline as drawn (horns, crest and all)
 wt_hi, wt_lo = runs_profile("top", X, 0); wt0 = np.maximum(abs(wt_hi), abs(wt_lo))
 wb_hi, wb_lo = runs_profile("bottom", X, 0); wb = np.maximum(abs(wb_hi), abs(wb_lo))
-zt = smooth1(line(X, zt0, B.get("top_line"))); zb = smooth1(zb)
+zt = smooth1(line(X, zt0, B.get("top_line"))); zb = smooth1(line(X, zb, B.get("bottom_line")))
 wt = smooth1(line(X, wt0, B.get("width_line"))); wb = smooth1(line(X, wb, B.get("width_line")))
 zc, wc = smooth1(zt0, 1), smooth1(wt0, 1); CR = B.get("crown")
-zm = zb + B.get("mid", 0.5) * (zt - zb); R = B.get("round", 2.0)
+along = lambda v: np.interp(X, *np.array(v, float).T) if isinstance(v, list) else np.full(NS, float(v))   # one number, or [[x, value], ...]
+zm = zb + along(B.get("mid", 0.5)) * (zt - zb); RR = along(B.get("round", 2.0))
 
 V, Fc, PART = [], [], []
 def sp(c, e): return np.sign(c) * abs(c) ** (2.0 / e)
@@ -164,7 +168,7 @@ if B["from"] <= 0.002: V.append((0.0, 0.0, float(zm[0]))); tip = 0
 for i, x in enumerate(X):
     ring = []
     for j in range(NK):
-        th = math.pi / 2 + 2 * math.pi * j / NK; c, s = math.cos(th), math.sin(th)
+        th = math.pi / 2 + 2 * math.pi * j / NK; c, s = math.cos(th), math.sin(th); R = RR[i]
         y = (wt[i] if s >= 0 else wb[i]) * sp(c, R)
         z = zm[i] + sp(s, R) * ((zt[i] - zm[i]) if s >= 0 else (zm[i] - zb[i]))
         f = min(x - CR[0], CR[1] - x) / 0.04 if CR else 0                  # fades in and out over 0.04, no step
@@ -179,16 +183,18 @@ for a, b in zip(rings, rings[1:]):
     for j in range(NK): Fc.append((a[j], a[(j + 1) % NK], b[(j + 1) % NK], b[j])); PART.append("body")
 Fc.append(tuple(rings[-1])); PART.append("body")                 # cap the back (the head test stops at the neck)
 
-def tube(name, spine, radius, sides, mirror):
+def tube(name, spine, radius, sides, mirror, roll=0.0, phase=0.0):
     for sgn in ((1, -1) if mirror else (1,)):
+        cr, sr = math.cos(math.radians(roll)), math.sin(math.radians(roll)) * sgn
         pts = [np.array((p[0], p[1] * sgn, p[2])) for p in spine]; rs = []
         for k, p in enumerate(pts):
             t = (pts[min(k + 1, len(pts) - 1)] - pts[max(k - 1, 0)]); t /= np.linalg.norm(t)
             u = np.cross(t, (0, 0, 1)); u = u / np.linalg.norm(u) if np.linalg.norm(u) > 1e-6 else np.array((0, 1, 0))
             w = np.cross(u, t); r = radius[k]; ry, rz = (r, r) if np.isscalar(r) else r
+            u, w = u * cr + w * sr, w * cr - u * sr              # roll: the section's top leans outwards
             ring = []
             for j in range(sides):
-                th = 2 * math.pi * j / sides; q = p + u * ry * math.cos(th) + w * rz * math.sin(th)
+                th = 2 * math.pi * j / sides + math.radians(phase); q = p + u * ry * math.cos(th) + w * rz * math.sin(th)
                 ring.append(len(V)); V.append(tuple(map(float, q)))
             rs.append(ring)
         for a, b in zip(rs, rs[1:]):
@@ -221,7 +227,7 @@ for p in spec.get("parts", []):
         new = sheet_tools.plate(V, Fc, p["outline"], p["tip"], p.get("view", "side"), p.get("offset", 0.0),
                                 p.get("thick", 0.004), p.get("ridge", 0.35), p.get("tilt", 0.0), mirror=p.get("mirror", True))
         PART.extend([p["name"]] * len(new))
-    else: tube(p["name"], p["spine"], p["radius"], p.get("sides", 6), p.get("mirror", True))
+    else: tube(p["name"], p["spine"], p["radius"], p.get("sides", 6), p.get("mirror", True), p.get("roll", 0.0), p.get("phase", 0.0))
 PSPEC = {p["name"]: p for p in spec.get("parts", [])}; PNAMES = ["body"] + list(PSPEC)
 
 me = bpy.data.meshes.new("skin"); me.from_pydata(V, [], Fc); me.update()
@@ -316,6 +322,19 @@ def body_paint(P):
 # the face (most of 4 inner points behind something nearer than SEE_TOL) is skipped for the whole face.
 DIRS = {"side": np.array((0, 1, 0)), "top": np.array((0, 0, 1)), "bottom": np.array((0, 0, -1)), "front": np.array((-1, 0, 0))}
 DIRS = {v: DIRS[v] for v in spec.get("paint", DIRS)}             # a view drawn unlike the others can be left out
+# Plain-colour pieces, optional "facets" {light [x, y, z] (y = outwards), dark (0..1: how dark a facet turned away gets),
+# line (0..1: how dark the lines are), width (texels)}: each facet is tinted by how it faces the light and gets a dark
+# line on its creases (edges where the surface turns more than 25 degrees), like the sheets' painted gold plates.
+FAC = spec.get("facets"); CREASE = np.zeros((len(Tri), 3), bool)
+if FAC:
+    FN = np.cross(Vn[Tri[:, 1]] - Vn[Tri[:, 0]], Vn[Tri[:, 2]] - Vn[Tri[:, 0]]); FN /= np.maximum(np.linalg.norm(FN, axis=1, keepdims=True), 1e-12)
+    edge = {}
+    for fi, t in enumerate(Tri):
+        for k in range(3): edge.setdefault(tuple(sorted((int(t[(k + 1) % 3]), int(t[(k + 2) % 3])))), []).append((fi, k))   # the edge facing corner k
+    for fs in edge.values():
+        hard = len(fs) != 2 or TPART[fs[0][0]] != TPART[fs[1][0]] or FN[fs[0][0]] @ FN[fs[1][0]] < math.cos(math.radians(25))
+        for fi, k in fs: CREASE[fi, k] = hard
+    FLIGHT = np.array(FAC.get("light", (-0.3, 0.45, 0.84)), float); FLIGHT /= np.linalg.norm(FLIGHT)
 BIAS = {"side": 0.25}; SEE_TOL = 0.012; BAND = 0.08
 INNER = np.array([[4, 1, 1], [1, 4, 1], [1, 1, 4], [2, 2, 2]]) / 6.0
 col = np.zeros((TEX, TEX, 3)); done = np.zeros((TEX, TEX), bool)
@@ -332,6 +351,13 @@ for fi, t in enumerate(Tri):
             e = np.linalg.norm(t2[[1, 2, 0]] - t2[[2, 0, 1]], axis=1)          # the edge facing each corner
             a2 = abs(np.cross(t2[1] - t2[0], t2[2] - t2[0])); d = (L * (a2 / np.maximum(e, 1e-9))).min(1)
             c *= 0.45 + 0.55 * np.clip((d - 0.5) / 1.5, 0, 1)[:, None]                 # soft-edged, not jagged
+        elif FAC:
+            n = fn / max(np.linalg.norm(fn), 1e-12); dk = np.array(FAC.get("dark", 0.6), float)    # one number, or [r, g, b]
+            c *= dk + (1 - dk) * min(max((n @ FLIGHT + 0.25) / 1.1, 0), 1)
+            t2 = np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX
+            e = np.linalg.norm(t2[[1, 2, 0]] - t2[[2, 0, 1]], axis=1); a2 = abs(np.cross(t2[1] - t2[0], t2[2] - t2[0]))
+            d = np.where(CREASE[fi], L * (a2 / np.maximum(e, 1e-9)), 1e9).min(1); ln = FAC.get("line", 0.5)
+            c *= ln + (1 - ln) * np.clip((d - 0.5) / FAC.get("width", 1.5), 0, 1)[:, None]
         col[ys_, xs_] = c; done[ys_, xs_] = True; continue
     if nm == "body" and "colors" in B and not PMASK:                            # the body's own scales and underside
         col[ys_, xs_] = body_paint(L @ Pt); done[ys_, xs_] = True; continue
