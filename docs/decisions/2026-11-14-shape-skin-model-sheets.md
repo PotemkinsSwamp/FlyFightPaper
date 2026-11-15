@@ -41,11 +41,15 @@
   horns are the one thing really off** (Alan, same day): "they come too far up and at an angle". They follow the
   three-quarter view: lower and swept back along the neck, less spread. The rest of the head is good enough to build the
   whole body from, with a tweaking pass at the end.
-  **The whole Dragon, first build (same day):** `.planning/skins/dragon/body-fable/round-07/` (picture
-  `body-fable/sheet-vs-model.jpg`): head with the horns lowered, barrel body, wings, four tucked legs, five back spines,
-  tail fan; one closed mesh, 3,166 triangles. Outline against the sheet: top 0.92, side 0.81 (the side view still draws
-  the old high horns). Independent reviewer: "close" overall, front view "not yet". Waiting on Alan's look and his
-  tweaking pass; nothing uploaded.
+  **The whole Dragon (same day):** first build `.planning/skins/dragon/body-fable/round-07/`. **Alan on it:** a lot of
+  detail is missing; the back fins do not match the reference; the tail is a little too large; the legs are very off; the
+  scales read as fish scales, not a dragon's layered scales; the eyes are too large and angled too much; the wings lack
+  detail. He wants a correction pass for structure and fine details, then a detailed pass. **Correction pass done:**
+  `body-fable/round-10/` (picture `body-fable/sheet-vs-model.jpg`): fins traced point by point from the side view (gold
+  arc, hooked tip, web curving in), tail rays 0.88 of their length, legs as scaled teardrops with two jointed claws,
+  eye smaller and level, layered pointed scales, belly plate lines, wing veins and bar joints. One closed mesh, 3,582
+  triangles; outline top 0.92, side 0.84. Not yet seen by Alan or the reviewer; the detailed pass is still to do.
+  Nothing uploaded.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:

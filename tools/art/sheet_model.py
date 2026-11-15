@@ -29,7 +29,9 @@ points in sheet pixels):
           kind "plate", outline, tip, view, offset, tilt, thick (a traced plate: sheet_tools.plate, concept-to-blender
           skill), map (its number on the piece map), or
           kind "sheet", points [[x, y, z], ...] (round the outline), thick (a thin closed slab with exactly that outline:
-          a wing skin, a fin's web), color_under (optional: its downward faces' colour)}],
+          a wing skin, a fin's web), color_under (optional: its downward faces' colour);
+          any plain-colour part: scales (true: painted with the body's scales, a leg), lines [[[x, y], [x, y]], ...] with
+          line_width and line_gain (lines painted on it as seen from above: a wing's leaf veins)}],
   cut (optional pixels: the sheet's drawings of built pieces are cut out of the painted skin, this much wider),
   sun, ambient (optional render light strengths, default 1.5 and 1.0: plain-colour pieces want about 3.5 and 0.45),
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
@@ -310,23 +312,31 @@ def sample(pic):
     s = SB
     return (s[y0, x0] * (1 - fx) * (1 - fy) + s[y0, x0 + 1] * fx * (1 - fy) + s[y0 + 1, x0] * (1 - fx) * fy + s[y0 + 1, x0 + 1] * fx * fy)
 
-def body_paint(P):
-    """body.colors {scales [r, g, b], under [r, g, b], under_share (0..1 of the height from the bottom), scale (size)}:
-    overlapping round scales in rows (each covers the front of the one behind, so its rounded back edge shows, with a
-    dark rim), and a plain band underneath (jaw, belly) below under_share of the local height."""
-    C = B["colors"]; x, y, z = P.T; s = C.get("scale", 0.02)
+def body_paint(P, under=True):
+    """body.colors {scales [r, g, b], under [r, g, b], under_share (0..1 of the height from the bottom), scale (size),
+    style ("pointed": layered scales with a point at the back, a light middle line and a little colour change from
+    scale to scale; default round), plates (optional spacing of the dark lines across the underside)}:
+    overlapping scales in rows (each covers the front of the one behind, so its back edge shows, with a dark rim), and
+    a plain band underneath (jaw, belly) below under_share of the local height (not with under=False: a leg)."""
+    C = B["colors"]; x, y, z = P.T; s = C.get("scale", 0.02); pointed = C.get("style") == "pointed"
     top, bot, mid, w = (np.interp(x, X, a) for a in (zt, zb, zm, wt))
     u = x / s; v = np.arctan2(np.abs(y), z - mid) * (w + (top - bot) / 2) / 2 / s     # along, and round from the top
-    best_d = np.ones(len(u)); best_cu = np.full(len(u), np.inf); j0 = np.floor(v + 0.5)
+    best_d = np.ones(len(u)); best_cu = np.full(len(u), np.inf); j0 = np.floor(v + 0.5); best_dv = np.ones(len(u)); best_j = j0.copy()
     for dj in (-1, 0, 1):
         j = j0 + dj; off = 0.5 * (j % 2)
-        for di in (-1, 0, 1):
-            cu = np.floor(u - off) + di + 0.5 + off; d = np.hypot((u - cu) / 0.9, (v - j) / 0.7)
-            k = (d < 1) & (cu < best_cu); best_d[k] = d[k]; best_cu[k] = cu[k]
-    g = np.array(C["scales"]) / 255.0 * (0.7 + 0.5 * (1 - best_d[:, None]))
-    g[best_d > 0.82] *= 0.55
+        for di in ((-2, -1, 0, 1) if pointed else (-1, 0, 1)):
+            cu = np.floor(u - off) + di + 0.5 + off; du, dv = u - cu, v - j
+            d = np.where(du >= 0, np.abs(dv) / 1.05 + du / 1.3, np.hypot(du / 0.8, dv / 1.05)) if pointed else np.hypot(du / 0.9, dv / 0.7)
+            k = (d < 1) & (cu < best_cu); best_d[k] = d[k]; best_cu[k] = cu[k]; best_dv[k] = dv[k]; best_j[k] = j[k]
+    g = np.array(C["scales"]) / 255.0 * ((0.64 + 0.52 * best_d[:, None]) if pointed else (0.7 + 0.5 * (1 - best_d[:, None])))
+    if pointed:                       # layered: dark where a scale comes out from under the one in front, light at its point
+        g *= (1 + 0.16 * (np.abs(best_dv) < 0.09))[:, None]                                     # the scale's middle line
+        g *= (0.9 + 0.2 * np.modf(np.abs(np.sin(best_cu * 12.9898 + best_j * 78.233)) * 43758.5)[0])[:, None]
+    g[best_d > (0.94 if pointed else 0.82)] *= 0.66 if pointed else 0.55
+    if not under: return g
     h = (z - bot) / np.maximum(top - bot, 1e-6); sh = C.get("under_share", 0.4)
     g[h < sh] = np.array(C["under"]) / 255.0; g[abs(h - sh) < 0.03] *= 0.6       # the band, with a line on its edge
+    if C.get("plates"): g[(h < sh - 0.03) & (np.abs((x / C["plates"]) % 1 - 0.5) > 0.465)] *= 0.74   # belly plates
     return g
 
 # Each spot is painted from ONE view (blending many views per texel mixed the mouth into the belly): the view its smooth
@@ -360,6 +370,11 @@ for fi, t in enumerate(Tri):
     if nm != "body" and PSPEC[nm].get("color"):                                # a measured piece: its own colour
         under = "color_under" in PSPEC[nm] and fn[2] < -0.5 * np.linalg.norm(fn)       # a wing's underside
         c = np.repeat([np.array(PSPEC[nm]["color_under" if under else "color"]) / 255.0], len(L), 0)
+        if PSPEC[nm].get("scales"): c = body_paint(L @ Pt, under=False)                         # a leg: the body's own scales
+        for a, b in PSPEC[nm].get("lines", []):                                                # painted lines (leaf veins), top view
+            a, b = np.array(a), np.array(b); q = (L @ Pt)[:, :2] - a; t = np.clip(q @ (b - a) / ((b - a) @ (b - a)), 0, 1)
+            dist = np.linalg.norm(q - np.outer(t, b - a), axis=1)
+            c *= (1 + PSPEC[nm].get("line_gain", 0.3) * np.clip(1 - dist / PSPEC[nm].get("line_width", 0.004), 0, 1))[:, None]
         if PSPEC[nm].get("kind") == "blade":                     # dark lines on its facet edges, like the sheets' plates
             t2 = np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX
             e = np.linalg.norm(t2[[1, 2, 0]] - t2[[2, 0, 1]], axis=1)          # the edge facing each corner
