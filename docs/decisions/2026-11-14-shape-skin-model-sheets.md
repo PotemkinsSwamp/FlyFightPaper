@@ -148,6 +148,10 @@
   Pro, $20 a month ($156 a year), 3,000 credits, private models, commercial use. The API (our `TRIPO_API` key) does
   multi-view for 20-30 credits a model; credits are $0.01 each, bought from $1 (developers.tripo3d.ai/en/pricing),
   not refundable; its terms give paid users the rights to outputs, without saying API buyers count as "paid users".
+  **Forge GUI's plans (checked same day):** Free = 10,000 credits, images only, no commercial rights; Creator $22 a
+  month ($15 the first month), 150,000 credits, advanced and premium models, commercial licence; Pro $50; Studio $200.
+  Its 3D reference box takes several pictures at once, but nothing on its site says whether they reach Tripo as one
+  multi-view job or as separate references, and it shows no credit cost per 3D model.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
