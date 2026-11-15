@@ -55,6 +55,11 @@ mistake would be easy to make twice.
   text says "Failure" even for good pictures; check `IsLoaded` on a picture label instead.
 
 ## Making 3D models
+- **Tripo's API** (2026-11-15): `tsk_` keys (`TRIPO_API` in `.env`) work only on `https://api.tripo3d.ai/v2/openapi`
+  (balance: `GET /user/balance`); the v3 address `openapi.tripo3d.com` says "Invalid API key". Plain Python requests
+  are blocked (Cloudflare 403, code 1010) until they send a `User-Agent`. API credits are bought separately from the
+  website's free plan: the key had 0, so free tests run on the website. Its multi-view mode takes front, left, back
+  and right only.
 - **`toys.py` bakes go black in two cases** (2026-10-16): a `lathe()` profile listed top-to-bottom (list it bottom-
   to-top: its custom normals assume that), and beams split into overlapping pieces (coplanar overlaps). Look at
   `render.png` after every build. Many thin beams fail the atlas check: unfold each plain box as one strip (`crane()`).

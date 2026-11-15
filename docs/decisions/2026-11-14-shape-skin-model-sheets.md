@@ -113,6 +113,18 @@
   short: the back fins are flat caps on stalks from the side, where the sheet's are tall hooks (they were lowered to
   0.55 of their height in round 15, when the front-view spike was thought to be a fin). **Open for Alan:** put the
   fins back to their drawn height, now that the spike is known to be the tail he approved?
+- **AI 3D test: Tripo, one picture (Alan, 2026-11-15).** Alan asked to try Tripo (an AI 3D maker) against the Blender
+  Dragon, and maybe Forge GUI too. The sheet's three-quarter view draws a back leg on top of the near wing ("the leg is
+  not supposed to be above the wing"); Codex repainted it without (`.planning/skins/dragon/tripo/input-three-quarter-fixed.png`).
+  Alan ran it on Tripo's website (free plan): "it came out really inconsistent", no back legs. **Ruling:** make
+  views that agree with each other, by **painting over renders of the Blender Dragon** (the outline is one 3D shape in
+  every view; Codex paints the sheet's look on it), in six views: **front, left, right, back** (Tripo's multi-view
+  takes only those, all at level height) **plus top and bottom** for Blender. Round 16's shape mistakes (flat back
+  fins) come with the renders unless fixed first. Free-plan Tripo outputs belong to Tripo (its terms), so any model we
+  ship is remade on a paid plan. **Forge GUI** (forgegui.com, key `FORGEGUI` in `.env`, an `fgmcp_` key for its
+  "ForgeMCP" link to Studio): mostly 2D Roblox art (GUIs, icons, thumbnails), but lists "3D assets" with GLB export;
+  free starter credits, assets yours to use commercially, and free-credit work may be shown in its public catalog
+  unless turned off (turn it off: unreleased skin). Its MCP setup and 3D details need a browser; not tried yet.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
