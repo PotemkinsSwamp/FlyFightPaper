@@ -10,7 +10,8 @@
 
 # Now: finish the game for the beta
 Next: the Toilet Roll shake in flight (the crane's moving gun pieces now follow the moved guns, 2026-11-14); skin
-art: the Dragon's shape now comes from Tripo (Pro, 2026-11-15) and Blender paints it from the approved views; then the
+art: the Dragon's shape comes from Tripo (3,720 triangles) and is being painted piece by piece (gold by code, smooth
+pieces from paintings; second pass shown to Alan 2026-11-15, gold still too flat); then the
 six printed skins, Shark Jet, Dragon, the three trails
 ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a

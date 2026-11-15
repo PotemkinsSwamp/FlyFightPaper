@@ -167,6 +167,18 @@
   project the six approved paintings onto it (each spot from the view facing it best, as `tools/art/sheet_model.py`
   does) plus a new seventh Codex painting of the player's behind-and-above view, flat gold, green or cream where no
   picture reaches, and check the player's view first. Credits left 5,985.
+- **Dragon: paint the Tripo shape piece by piece** (2026-11-15, evening; Alan's two methods). Shape: the 3,844-triangle
+  Smart Mesh version (best of three against the approved views: side 93%, top 96%), cleaned in Blender to 3,720
+  triangles: wing skin given an underside, 693 never-seen faces removed. Putting the six approved paintings straight on
+  smeared the thin parts, because their outlines are the old Blender model's, a few percent off Tripo's shape. So Codex
+  repainted ten views (six flat, the player's view, three more angles) over flat-colour renders of the Tripo shape
+  itself, the approved six as the look. Alan on the first result: artifacts, blur, "poor application". **His ruling on
+  method:** (1) work piece by piece: the mesh is 63 separate pieces; gold pieces get colour and line work by code, the
+  smooth pieces (body, wing skin, maybe horns, tail) get a painting, each on its own, then assemble; (2) if that fails,
+  Claude paints everything by code in Blender and Roblox's surface pictures (bump, shine, metal) add the depth.
+  Second pass (struts and tail ribs by code): clean and on-shape, but the code gold is one flat pale tone. Alan: gold
+  needs shading, lighter and darker areas and light line work like the concept, and he would rather it not be code.
+  Next: a painting per gold piece (alone, laid flat, filling the frame); fallback baked Blender light or richer code. Files and run order: `.planning/skins/dragon/paint/tools/README.md`. Tripo credits still 5,985.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:

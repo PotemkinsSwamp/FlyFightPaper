@@ -142,6 +142,19 @@ mistake would be easy to make twice.
 - **Judge a skin from the player's view first** (2026-11-15, Alan on the Tripo Dragon): behind and above the plane
   (`render-chase.png` in `tools/art/sheet_model.py`) is what players stare at; six straight-on views never show it, so
   a model that matches all six can still fail there. Paint a concept of that view too and compare it before the rest.
+- **Projecting paintings onto a model: what breaks it** (2026-11-15, the Tripo Dragon). (1) A painting made over one
+  model's renders does not fit another model: outlines a few percent apart smear every thin part; paint over renders of
+  the very mesh being painted. (2) Even then the generator keeps outlines only 94-98%, so thin, slanted pieces (struts,
+  fin rims, ribs) streak: paint those by code, piece by piece, and project only onto broad smooth pieces. (3) Never
+  fill the holes in a painting's outline before projecting: sky seen through a gap (under a horn) lands on the model
+  as paint. (4) A back-face twin that shares its other side's spot on the skin must not be painted again (it
+  overwrote gold with cream). (5) Blender's Smart UV with a 0.004 gap used only 40% of the picture; a 0.0015 gap and
+  undersides at 0.6 size gave 825 texels per length instead of 650.
+- **Tripo Smart Mesh, as delivered** (2026-11-15): parts are separate shells (the Dragon: 63 pieces), wing skin is ONE
+  sheet (same colour top and bottom unless it gets a twin), about a quarter of the faces are buried and never seen,
+  some faces point the wrong way (its material is two-sided). Its own texture is soft but sits exactly on the mesh:
+  good as a flat colour guide and as the start picture for painting. Export (GLB) is free on Pro; the first click on
+  Export sometimes does nothing, the second starts a ~20 s "Exporting" bar.
 - **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,
   living sharks and dragons (Alan: "they're paper airplanes"). For more body under the wings say "a barrel like a jet
   fighter's fuselage, straight bottom line, not fat". The same image tool refuses "violent" pictures at random (shark

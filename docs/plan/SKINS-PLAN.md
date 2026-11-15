@@ -134,6 +134,8 @@ folded bays, heavy fin caps): round 16 (one closed mesh, 3,926 triangles; `round
 waiting on his look. **Tripo test (2026-11-15):** a six-view set painted over Blender renders, fed to Tripo Pro nose-up,
 gave the right shape at ~4,000 triangles; Tripo's own paint is too soft for the player's view, so (Alan) Tripo makes the
 shape and Blender paints it from the approved views ([details](../decisions/2026-11-14-shape-skin-model-sheets.md)).
+**Painting the Tripo shape (2026-11-15):** 3,720 triangles after clean-up; painted piece by piece (Alan): gold pieces
+by code, smooth pieces from paintings made over renders of this shape; second pass shown, gold still too flat (same note).
 Rulings and all four lists:
 [model-sheet decision](../decisions/2026-11-14-shape-skin-model-sheets.md).
 
