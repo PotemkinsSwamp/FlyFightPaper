@@ -37,7 +37,9 @@ points in sheet pixels):
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
   degrees: yaw 0 = from the side, 90 = from the front; pitch above level), front_scale (optional px per length),
   paint (optional list of the views to paint from, default all four: leave out one drawn unlike the others),
-  facets (optional {light, dark, line, width}: plain-colour pieces get painted facet shading and dark crease lines).
+  facets (optional {light, dark, line, width}: plain-colour pieces get painted facet shading and dark crease lines),
+  only (optional list of map numbers: build just those pieces on the body, one module at a time, for the close-up
+  check of the concept-to-blender skill).
 """
 import json, math, os, subprocess, sys
 
@@ -75,6 +77,7 @@ import numpy as np
 from mathutils import Vector
 
 spec = json.load(open(sys.argv[sys.argv.index("--") + 1], encoding="utf-8"))
+if spec.get("only"): spec["parts"] = [p for p in spec.get("parts", []) if p.get("map") in spec["only"]]   # one module alone on the body
 OUT = os.path.abspath(spec["out"]); os.makedirs(OUT, exist_ok=True); TEX = spec.get("tex", 1024)
 for o in list(bpy.data.objects): bpy.data.objects.remove(o)        # the factory scene's cube would hide the model
 

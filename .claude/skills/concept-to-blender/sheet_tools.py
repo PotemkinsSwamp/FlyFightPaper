@@ -5,8 +5,11 @@ Part of the concept-to-blender skill. Plain Python (numpy; PIL and scipy only fo
     python sheet_tools.py grid SHEET x0 y0 x1 y1 OUT [zoom] [step]   zoomed crop with a labelled pixel grid, for reading points
     python sheet_tools.py map MAP.json [BUILD_SPEC.json]             numbered piece map of every view; counts vs the build
     python sheet_tools.py pieces SPEC.json                           plates and spines in model units + a check picture
-    python sheet_tools.py score SHEET RENDER OUT nx ny L [upto clip] how well a render's outline matches the sheet's view
+    python sheet_tools.py score SHEET RENDER OUT nx ny L [upto clip [MAP.json VIEW]]   how well a render's outline
+                                                                     matches the sheet's view (the map's exceptions left out)
     python sheet_tools.py views MESH.npz OUT                         piece-coloured and silhouette renders of a build
+    python sheet_tools.py numbers MAP.json MESH.npz                  every built piece's size, thickness and attachment
+                                                                     against its card on the map
     python sheet_tools.py test                                       self-check
 
 Model units: nose tip 0 -> tail tip 1 along x; y across; z up (the same as tools/art/sheet_model.py).
@@ -21,6 +24,14 @@ SPEC for `pieces`: sheet, out (folder), frames {view: [nose_x, nose_y, L]}, crop
   spines [{name, side [[px, py], ...], top [[px, py], ...], width [px, ...], joints [fraction, ...]}]: a horn's or
     spine's centre line, base to tip, in both views; `width` = its drawn thickness at each side point. The two views
     must agree on where along x it runs: the command prints their difference (AI sheets: about 3%).
+MAP.json for `map` and `numbers` (and match_views.py, which documents `cameras` and `modules`): sheet, out, zoom,
+  crops {view: [x0, y0, x1, y1]}, count_in [views], questions [text],
+  exceptions [{view, box [x0, y0, x1, y1], why, governs}]: a place where one view draws something that cannot be true
+    in 3D (a fin laid flat so its pattern shows). `governs` names the view that is right. The map draws them, `score`
+    leaves them out, and the reviewer is told not to mark the build down there.
+  pieces [{id, name, kind, count, marks {view: [[px, py] or [px, py, "far"], ...]}, note, count_in, and its card:
+    size [long, wide, thick] (sheet pixels, biggest first, one copy), parent (the id it is sized against; default the
+    body), of_parent (its length as a share of the parent's), min_thick (pixels), free (true: not attached to anything)}]
 Writes OUT/pieces.json ({plates: {name: {view, outline, tip}}, spines: {name: {spine, radius}}}; a spine is ready for
 sheet_model.py's tube parts) and OUT/pieces-check.png (every traced line over the sheet, zoomed).
 """
@@ -227,6 +238,10 @@ def piece_map(spec_path, build_path=None):
     for v, (x0, y0, x1, y1) in spec["crops"].items():
         im = sheet.crop((x0, y0, x1, y1)).resize(((x1 - x0) * Z, (y1 - y0) * Z), Image.LANCZOS); d = ImageDraw.Draw(im)
         d.text((10, 6), v, font=_font(30), fill=(0, 0, 0))
+        for i, e in enumerate(spec.get("exceptions", [])):
+            if e["view"] == v:
+                b = [(e["box"][0] - x0) * Z, (e["box"][1] - y0) * Z, (e["box"][2] - x0) * Z, (e["box"][3] - y0) * Z]
+                d.rectangle(b, outline=(230, 120, 0), width=4); d.text((b[0] + 6, b[1] + 4), "X%d" % (i + 1), font=_font(24), fill=(230, 120, 0))
         for p in spec["pieces"]:
             for m in p["marks"].get(v, []):
                 X, Y = (m[0] - x0) * Z, (m[1] - y0) * Z; far = len(m) > 2; tag = str(p["id"]) + ("'" if far else "")
@@ -240,9 +255,14 @@ def piece_map(spec_path, build_path=None):
                 problems.append("piece %s (%s): %d marked in the %s view, count says %d" % (p["id"], p["name"], len(near), v, p["count"]))
         for v in spec["crops"]:
             if v not in p["marks"]: problems.append("piece %s (%s): not placed in the %s view (mark it, or list it as hidden: [])" % (p["id"], p["name"], v))
-    if build_path: problems += count_check(spec["pieces"], json.load(open(build_path, encoding="utf-8")).get("parts", []))
+    if build_path:
+        build = json.load(open(build_path, encoding="utf-8")); only = build.get("only")     # a module built alone
+        problems += count_check([p for p in spec["pieces"] if not only or p["id"] in only],
+                                [q for q in build.get("parts", []) if not only or q.get("map") in only])
     rows = ["%s  %s  (%s, %s)%s" % (p["id"], p["name"], p["kind"], "x%d" % p["count"], ("  - " + p["note"]) if p.get("note") else "")
-            for p in spec["pieces"]] + [""] + ["Question: " + q for q in spec.get("questions", [])] + ["Check: " + q for q in problems]
+            for p in spec["pieces"]] + [""] + ["Question: " + q for q in spec.get("questions", [])] + [
+               "Exception X%d (%s view): %s The %s view is right here." % (i + 1, e["view"], e["why"], e["governs"])
+               for i, e in enumerate(spec.get("exceptions", []))] + ["Check: " + q for q in problems]
     import textwrap
     W = max(max(im.width for im in pics), 1400); rows = [w for r in rows for w in (textwrap.wrap(r, W // 14) or [""])]
     H = sum(im.height + 10 for im in pics) + 40 * len(rows) + 30
@@ -275,12 +295,13 @@ def _mask(im, halo=0):
     return nd.binary_erosion(m, iterations=halo) if halo else m
 
 
-def score(sheet, render, out, nx, ny, L, upto=1.0, clip=None):
+def score(sheet, render, out, nx, ny, L, upto=1.0, clip=None, skip=()):
     """Lay the render's outline on the sheet's (side or top view: nose tip on nose tip, render scaled so its own nose-
     to-end span is `upto` of the length: the model's furthest point back, horns included) and report IoU (shared
     area / combined area, 1 = identical) plus the biggest misses. Only the first `clip` of the length is compared
-    (a head test: where the head ends; the sheet goes on into the neck). Render the model alone, flat, from straight
-    on, on a plain background."""
+    (a head test: where the head ends; the sheet goes on into the neck). `skip`: boxes in sheet pixels left out of the
+    comparison (the map's exceptions for this view: places the view draws wrongly). Render the model alone, flat, from
+    straight on, on a plain background."""
     from PIL import Image
     from scipy import ndimage as nd
     S = Image.open(sheet); R = Image.open(render); mr = _mask(R)
@@ -291,8 +312,12 @@ def score(sheet, render, out, nx, ny, L, upto=1.0, clip=None):
     mr = mr[:, int(rx0 * k):int(rx0 * k) + W]
     ms = _mask(S, halo=2)[top:top + mr.shape[0], int(nx):int(nx) + mr.shape[1]]   # whole sheet: a crop's corner can sit on the model
     h, w = min(ms.shape[0], mr.shape[0]), min(ms.shape[1], mr.shape[1], int(L * (clip or upto)) + 1); ms, mr = ms[:h, :w], mr[:h, :w]
+    keep = np.ones((h, w), bool)
+    for x0, y0, x1, y1 in skip: keep[max(int(y0 - top), 0):max(int(y1 - top), 0), max(int(x0 - nx), 0):max(int(x1 - nx), 0)] = False
+    ms, mr = ms & keep, mr & keep
     iou = (ms & mr).sum() / max((ms | mr).sum(), 1)
     pic = np.full((h, w, 3), 245, np.uint8); pic[ms & mr] = (150, 150, 150); pic[ms & ~mr] = (220, 40, 40); pic[mr & ~ms] = (40, 90, 230)
+    pic[~keep] = (250, 225, 150)                                       # an exception: not judged
     Image.fromarray(pic).resize((w * 3, h * 3), Image.NEAREST).save(out)
     print("IoU %.3f   (red: sheet only = model too small there; blue: model only = too big)" % iou)
     for name, m in (("sheet only", ms & ~mr), ("model only", mr & ~ms)):
@@ -331,7 +356,85 @@ def views(mesh, out, px=1000):
     print("pieces-side/top/front.png, sil-side/top.png in", out)
 
 
+def _shells(T, n):
+    """Shell number per vertex: pieces are closed shells that share no vertices."""
+    from scipy.sparse import coo_matrix
+    from scipy.sparse.csgraph import connected_components
+    e = np.r_[T[:, [0, 1]], T[:, [1, 2]]]
+    return connected_components(coo_matrix((np.ones(len(e)), (e[:, 0], e[:, 1])), (n, n)), directed=False)[1]
+
+
+def _inside(P, V, T):
+    """Which points lie inside the closed shell (V, T): a ray from the point crosses its surface an odd number of times."""
+    d = np.array([0.0113, 0.0071, 1.0]); a, e1, e2 = V[T[:, 0]], V[T[:, 1]] - V[T[:, 0]], V[T[:, 2]] - V[T[:, 0]]
+    h = np.cross(d, e2); det = (e1 * h).sum(1); ok = np.abs(det) > 1e-14; det = np.where(ok, det, 1.0)
+    sv = P[:, None, :] - a[None]; u = (sv * h).sum(-1) / det; q = np.cross(sv, e1[None])
+    v = (q @ d) / det; t = (q * e2[None]).sum(-1) / det
+    return (ok & (u >= 0) & (v >= 0) & (u + v <= 1) & (t > 1e-9)).sum(1) % 2 == 1
+
+
+def numbers(map_path, mesh, tol=0.2):
+    """The build's own numbers against the map's cards, piece by piece (sheet_model.py writes the mesh.npz): length,
+    width and thickness of one copy in sheet pixels (measured along the piece's own axes, so a slanted blade is not
+    overstated), its length as a share of its parent's, and whether it is sunk into the body or another piece. Problems:
+    a size more than `tol` off its card, thinner than min_thick (2 px), not attached, or a piece with no size on its
+    card. Sizes need no eye: this is the check for 'too small', 'too thin' and 'floating'."""
+    spec = json.load(open(map_path, encoding="utf-8")); m = np.load(mesh); V, T, part, mp = m["V"], m["T"], m["part"], m["map"]
+    cams = spec.get("cameras", {}); L = float(next(iter(cams.values()))["px"]) if cams else float(spec.get("length_px", 1000))
+    shell = _shells(T, len(V)); tmap = np.where(part == 0, -1, mp[part]); body = T[part == 0]; kinds = {p["id"]: p for p in spec["pieces"]}
+
+    def extents(P):
+        c = P - P.mean(0); return np.sort(np.ptp(c @ np.linalg.svd(c, full_matrices=False)[2].T, 0))[::-1] * L
+
+    def tris(pid): return body if pid is None or kinds[pid].get("kind") == "body" else T[tmap == pid]
+
+    each = {k: T[shell[T[:, 0]] == k] for k in np.unique(shell[T[:, 0]])}          # every shell's own triangles
+
+    size = {None: extents(V[np.unique(body)])}; problems = []
+    for p in spec["pieces"]:
+        tr = tris(p["id"])
+        if len(tr): size[p["id"]] = np.median([extents(V[shell == k]) for k in np.unique(shell[tr[:, 0]])], 0)
+    print("%-4s %-40s %6s %6s %6s %9s  %s" % ("id", "piece (one copy, sheet px)", "long", "wide", "thick", "of parent", "attached"))
+    for p in spec["pieces"]:
+        tr = tris(p["id"]); tag = "piece %s (%s)" % (p["id"], p["name"][:40])
+        if not len(tr) or p.get("kind") == "body": continue
+        E = size[p["id"]]; par = p.get("parent"); share = E[0] / size.get(par, size[None])[0]; loose = 0
+        ks = np.unique(shell[tr[:, 0]]) if not p.get("free") else []
+        for k in ks:                                                  # attached = some of it is inside another shell
+            P = V[shell == k][:: max(1, (shell == k).sum() // 150)]
+            loose += not any(_inside(P, V, t).any() for j, t in each.items() if j != k)
+        if loose: problems.append("%s: %d of %d copies float: no part is inside the body or another piece (sink the root in)" % (tag, loose, len(ks)))
+        print("%-4s %-40s %6.1f %6.1f %6.1f %8.0f%%  %s" % (p["id"], p["name"][:40], *E, share * 100, "free" if p.get("free") else "no: %d loose" % loose if loose else "yes"))
+        if "size" not in p: problems.append("%s: no size on its card (long, wide, thick in sheet pixels)" % tag)
+        for name, got, want in zip(("long", "wide", "thick"), E, p.get("size", [])):
+            if abs(got / want - 1) > tol: problems.append("%s: %s %.1f px, its card says %.1f (%+d%%)" % (tag, name, got, want, round((got / want - 1) * 100)))
+        if "of_parent" in p and abs(share / p["of_parent"] - 1) > tol:
+            problems.append("%s: %.0f%% of its parent's length, its card says %.0f%%" % (tag, share * 100, p["of_parent"] * 100))
+        if E[2] < p.get("min_thick", spec.get("min_thick", 2)): problems.append("%s: paper-thin (%.1f px)" % (tag, E[2]))
+    print("\n".join(problems) or "every piece matches its card and is attached"); return problems
+
+
+def _box(lo, hi, V, T, part, k):
+    """A closed box for the self-check (appended to V, T; its triangles belong to part k)."""
+    i0 = len(V); (a, b, c), (d, e, f) = lo, hi
+    V.extend([(a, b, c), (d, b, c), (d, e, c), (a, e, c), (a, b, f), (d, b, f), (d, e, f), (a, e, f)])
+    for q in ((0, 3, 2, 1), (4, 5, 6, 7), (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)):
+        T.extend([(i0 + q[0], i0 + q[1], i0 + q[2]), (i0 + q[0], i0 + q[2], i0 + q[3])]); part.extend([k, k])
+
+
 def test():
+    import tempfile
+    V, T, part = [], [], []
+    _box((0, -.1, -.1), (1, .1, .1), V, T, part, 0)                                  # body
+    _box((.4, -.02, .08), (.5, .02, .2), V, T, part, 1)                              # fin sunk into the back
+    _box((.7, -.02, .15), (.8, .02, .25), V, T, part, 2)                             # fin floating above it
+    _box((.1, -.05, .09), (.3, .05, .0905), V, T, part, 3)                           # a paper-thin plate
+    with tempfile.TemporaryDirectory() as td:
+        np.savez(td + "/m.npz", V=np.array(V, float), T=np.array(T), part=np.array(part), names=np.array(list("bfgp")), map=np.array([0, 1, 2, 3]))
+        pc = lambda i, **k: dict(id=i, name="p%d" % i, kind="plate", count=1, marks={}, **k)
+        json.dump({"length_px": 100, "pieces": [pc(1, size=[12, 10, 4]), pc(2, size=[10, 10, 4]), pc(3, size=[20, 10, 0.05], of_parent=0.2)]}, open(td + "/map.json", "w"))
+        got = numbers(td + "/map.json", td + "/m.npz")
+    assert len(got) == 2 and "float" in got[0] and "paper-thin" in got[1], got
     leaf = np.array([[0, 0], [0.03, 0.012], [0.07, 0.02], [0.1, 0.03], [0.06, 0.004], [0.02, -0.004]])   # base, tip=3
     for tilt in (0, 35):
         V, F = [], []; plate(V, F, leaf, 3, "side", offset=0.01, tilt=tilt, mirror=False)
@@ -356,7 +459,7 @@ def test():
     pcs = [{"id": 1, "name": "blade", "kind": "plate", "count": 2}, {"id": 3, "name": "horn", "kind": "tube", "count": 2}]
     assert count_check(pcs, [{"name": "a", "map": 1}, {"name": "h", "map": 3}]) == []
     assert len(count_check(pcs, [{"name": "a", "map": 1}, {"name": "b", "map": 1}, {"name": "c"}])) == 3   # 4 blades, a stray, no horn
-    print("ok: plate closed, outward, keeps its drawn outline (tilt 0 and 35, fanned out); spine joins both views; count check catches extra and missing pieces")
+    print("ok: plate closed, outward, keeps its drawn outline (tilt 0 and 35, fanned out); spine joins both views; count check catches extra and missing pieces; numbers catches a floating and a paper-thin piece")
 
 
 if __name__ == "__main__":
@@ -364,6 +467,9 @@ if __name__ == "__main__":
     if cmd == "grid": grid(a[0], *map(int, a[1:5]), a[5], *map(int, a[6:8]))
     elif cmd == "map": piece_map(a[0], a[1] if len(a) > 1 else None)
     elif cmd == "pieces": pieces(a[0])
-    elif cmd == "score": score(a[0], a[1], a[2], *map(float, a[3:8]))
+    elif cmd == "score":
+        skip = [e["box"] for e in json.load(open(a[8], encoding="utf-8")).get("exceptions", []) if e["view"] == a[9]] if len(a) > 9 else ()
+        score(a[0], a[1], a[2], *map(float, a[3:8]), skip=skip)
+    elif cmd == "numbers": numbers(a[0], a[1])
     elif cmd == "views": views(a[0], a[1])
     elif cmd == "test": test()

@@ -6,6 +6,26 @@ bottom; claims from vendor blogs or forums are marked as such. **Applied 2026-11
 [sheet_tools.py](../../.claude/skills/concept-to-blender/sheet_tools.py) (tested on its own and on the Dragon
 sheet's pixels; no Blender build of the Dragon was run).
 
+## Update 2026-11-15: rebuilt round the AI's weak spots (Alan, with a skill Gemini drafted)
+After 14 Dragon rounds the structure was right and the details were not. The skill was restructured and re-applied
+with Alan's OK. Demo on the Dragon's round 14: [close-up-demo/](close-up-demo/) (`close-legs.jpg` shows it best).
+- **Taken from Gemini's draft:** each module built and passed alone in close-up beside the same crop of the sheet
+  (`match_views.py`); the build's sizes, thickness and attachment checked by numbers off the mesh (`sheet_tools.py
+  numbers`); the sheet's impossible drawings listed first and never marked down (`exceptions`: the Dragon's top-view
+  score rises from 0.870 to 0.938 once the flat-drawn tail fan is left out); a card per piece with thickness and its
+  size against its parent; reject rules (no plain primitives, no extra piece to fake a view); roots sunk in; one
+  shared surface recipe per material.
+- **Not taken:** Blender-only looks (Freestyle line art, shader nodes, displacement): Roblox gets one picture and
+  4,000 triangles, so the look is painted into the texture. "Side and front views win" as a fixed rule: Alan ranks
+  the views and rules on each clash. Shapes described in words ("cambered airfoil"): they are traced from the drawing.
+- **Kept from before:** the piece map and count, tracing, the outline score, Roblox limits, Alan's OK before building.
+- **Found while testing:** the Dragon's toes were built to a written rule (35% of the pod, curving down and back);
+  the sheet's side view draws them about half the pod long (29 of 57 px), straight, lying along the body. The numbers
+  check passes them on size; only the close-up shows the wrong shape and direction. Both checks are needed.
+- Limits: `numbers` measures along each piece's own axes, so a strongly curved horn reads shorter than its drawn
+  length; "attached" means some of the piece is inside another, not how deep; `match_views.py` needs a camera fitted
+  per view, and a front view drawn at another scale (the Dragon's) lines up badly until its own scale is set.
+
 ## The short answer
 0. **The biggest miss was not shape but pieces (Alan, on review).** From above, the sheet shows 3 pieces a side on
    top of the Dragon's head (two blades and the horn); the build had 6 a side (five blades and two horns), in the

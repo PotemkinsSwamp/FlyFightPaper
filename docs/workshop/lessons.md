@@ -147,6 +147,13 @@ mistake would be easy to make twice.
   `concept-to-blender` skill's piece map). Also: points read off a zoomed sheet by eye land 3-6 px off (snap them to
   the drawn edge), overlapping plates of one colour can't be split by colour, and blades made from a few numbers
   (base, tip, width) can only be straight daggers: trace the outline.
+- **Judge a model's parts one at a time, in close-up; a whole-model picture hides wrong details** (Alan and Gemini's
+  review, 2026-11-15, after 14 Dragon rounds): the outline scored 0.83-0.93 while legs, fins and wing ribs were plainly
+  off, because at whole-sheet size a leg is 40 pixels. Build one module alone and compare it with the same crop of the
+  sheet (`match_views.py`); check sizes, thickness and attachment by numbers off the mesh (`sheet_tools.py numbers`),
+  never by eye; list the sheet's impossible drawings (a fin laid flat for show) before building; never add an extra
+  piece to fake a view. Blender-only looks (Freestyle lines, shader nodes) don't reach Roblox: paint them into the
+  texture. The `concept-to-blender` skill has the steps.
 - **A model sheet's views can contradict each other: ask Alan which view wins before building that piece** (Dragon,
   2026-11-14/15). Horns: top and front views high and spread, three-quarter view low and swept back (he chose the
   three-quarter). Tail fan: upright in the side view, flat in the top and bottom views (he chose upright; "a drawing

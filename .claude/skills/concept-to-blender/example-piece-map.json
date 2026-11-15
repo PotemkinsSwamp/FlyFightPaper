@@ -1,30 +1,1304 @@
 {
  "sheet": ".planning/skins/model-sheets/dragon-b8-legs.png",
- "out": ".planning/skins/dragon/piece-map",
- "zoom": 3,
- "crops": {"top": [30, 600, 280, 730], "side": [15, 170, 280, 330], "front": [760, 170, 915, 335]},
- "count_in": ["top"],
+ "out": ".planning/research/close-up-demo",
+ "zoom": 2,
+ "crops": {
+  "top": [
+   20,
+   440,
+   600,
+   880
+  ],
+  "three_quarter": [
+   1085,
+   80,
+   1660,
+   390
+  ],
+  "side": [
+   15,
+   170,
+   600,
+   335
+  ],
+  "bottom": [
+   1080,
+   440,
+   1650,
+   880
+  ],
+  "front": [
+   600,
+   170,
+   1070,
+   335
+  ]
+ },
+ "count_in": [
+  "top"
+ ],
  "pieces": [
-  {"id": 1, "name": "front crest blade", "kind": "plate", "count": 2,
-   "marks": {"top": [[101, 647], [101, 675]], "side": [[87, 270]], "front": [[824, 252], [852, 252]]}},
-  {"id": 2, "name": "rear crest blade", "kind": "plate", "count": 2,
-   "marks": {"top": [[130, 642], [135, 680]], "side": [[125, 260], [112, 251, "far"]], "front": [[811, 234], [864, 234]]}},
-  {"id": 3, "name": "horn (3 segments, tip curls up)", "kind": "tube", "count": 2,
-   "marks": {"top": [[210, 624], [210, 697]], "side": [[208, 213]], "front": [[795, 205], [880, 205]]}},
-  {"id": 4, "name": "big plate under the horn", "kind": "plate", "count": 2, "count_in": [],
-   "note": "hidden under the horn from above?",
-   "marks": {"top": [], "side": [[162, 260]], "front": []}},
-  {"id": 5, "name": "eye (glows)", "kind": "plate", "count": 2, "count_in": ["front"],
-   "marks": {"top": [], "side": [[115, 277]], "front": [[814, 266], [859, 265]]}},
-  {"id": 6, "name": "cheek guard under the eye", "kind": "plate", "count": 2, "count_in": ["front"],
-   "marks": {"top": [], "side": [[125, 288]], "front": [[809, 278], [868, 278]]}},
-  {"id": 7, "name": "gold snout edge", "kind": "plate", "count": 2,
-   "marks": {"top": [[55, 659], [55, 666]], "side": [[55, 293]], "front": [[834, 288], [841, 288]]}},
-  {"id": 8, "name": "head and neck", "kind": "body", "count": 1,
-   "marks": {"top": [[155, 661]], "side": [[215, 262]], "front": [[838, 222]]}}
+  {
+   "id": 1,
+   "name": "accent blade ahead of the eye (flat diamond, points back and out)",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [
+     [
+      101,
+      648
+     ],
+     [
+      101,
+      679
+     ]
+    ],
+    "three_quarter": [
+     [
+      1163,
+      333
+     ],
+     [
+      1150,
+      322,
+      "far"
+     ]
+    ],
+    "front": [
+     [
+      824,
+      264
+     ],
+     [
+      850,
+      264
+     ]
+    ],
+    "side": [
+     [
+      84,
+      273
+     ]
+    ],
+    "bottom": []
+   }
+  },
+  {
+   "id": 2,
+   "name": "small horn 1, above the eye (chunky blade, tip up and back)",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [
+     [
+      127,
+      646
+     ],
+     [
+      127,
+      681
+     ]
+    ],
+    "three_quarter": [
+     [
+      1198,
+      312
+     ],
+     [
+      1180,
+      300,
+      "far"
+     ]
+    ],
+    "front": [
+     [
+      814,
+      246
+     ],
+     [
+      860,
+      246
+     ]
+    ],
+    "side": [
+     [
+      115,
+      262
+     ],
+     [
+      116,
+      248,
+      "far"
+     ]
+    ],
+    "bottom": []
+   }
+  },
+  {
+   "id": 3,
+   "name": "small horn 2, above and behind the eye (block with a spike pointing back under the big horn)",
+   "kind": "tube",
+   "count": 2,
+   "note": "from above only its front block shows, inboard of the big horn; the side view draws it as the big plate under the horn",
+   "marks": {
+    "top": [
+     [
+      150,
+      650
+     ],
+     [
+      150,
+      677
+     ]
+    ],
+    "three_quarter": [
+     [
+      1243,
+      301
+     ],
+     [
+      1203,
+      280,
+      "far"
+     ]
+    ],
+    "front": [
+     [
+      803,
+      243
+     ],
+     [
+      871,
+      243
+     ]
+    ],
+    "side": [
+     [
+      160,
+      256
+     ]
+    ],
+    "bottom": []
+   }
+  },
+  {
+   "id": 4,
+   "name": "big horn (base block + 3 segments), low and swept back along the neck (Alan)",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [
+     [
+      205,
+      626
+     ],
+     [
+      205,
+      700
+     ]
+    ],
+    "three_quarter": [
+     [
+      1262,
+      272
+     ],
+     [
+      1240,
+      258,
+      "far"
+     ]
+    ],
+    "front": [
+     [
+      797,
+      207
+     ],
+     [
+      877,
+      207
+     ]
+    ],
+    "side": [
+     [
+      200,
+      212
+     ]
+    ],
+    "bottom": []
+   }
+  },
+  {
+   "id": 5,
+   "name": "eye (glowing gem)",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [
+     [
+      141,
+      646
+     ],
+     [
+      141,
+      680
+     ]
+    ],
+    "three_quarter": [
+     [
+      1207,
+      330
+     ]
+    ],
+    "front": [
+     [
+      813,
+      265
+     ],
+     [
+      860,
+      265
+     ]
+    ],
+    "side": [
+     [
+      117,
+      279
+     ]
+    ],
+    "bottom": []
+   }
+  },
+  {
+   "id": 11,
+   "name": "dark green eye socket round the eye",
+   "kind": "tube",
+   "count": 2,
+   "count_in": [
+    "front"
+   ],
+   "marks": {
+    "top": [],
+    "three_quarter": [
+     [
+      1189,
+      337
+     ]
+    ],
+    "front": [
+     [
+      822,
+      270
+     ],
+     [
+      852,
+      270
+     ]
+    ],
+    "side": [
+     [
+      102,
+      284
+     ]
+    ],
+    "bottom": []
+   },
+   "note": "hidden under the small horn from above"
+  },
+  {
+   "id": 6,
+   "name": "cheek guard (bar under the eye, blade sweeping back and out)",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [
+     [
+      147,
+      629
+     ],
+     [
+      147,
+      696
+     ]
+    ],
+    "three_quarter": [
+     [
+      1228,
+      340
+     ]
+    ],
+    "front": [
+     [
+      805,
+      272
+     ],
+     [
+      868,
+      272
+     ]
+    ],
+    "side": [
+     [
+      137,
+      282
+     ]
+    ],
+    "bottom": []
+   }
+  },
+  {
+   "id": 7,
+   "name": "gold lip trim (from under the eye forward to the nose tip; the snout's gold rim from above)",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [
+     [
+      65,
+      655
+     ],
+     [
+      65,
+      671
+     ]
+    ],
+    "three_quarter": [
+     [
+      1160,
+      350
+     ],
+     [
+      1125,
+      357,
+      "far"
+     ]
+    ],
+    "front": [
+     [
+      823,
+      291
+     ],
+     [
+      850,
+      291
+     ]
+    ],
+    "side": [
+     [
+      62,
+      289
+     ]
+    ],
+    "bottom": []
+   }
+  },
+  {
+   "id": 8,
+   "name": "gold lower jaw",
+   "kind": "tube",
+   "count": 1,
+   "count_in": [],
+   "note": "hidden from above",
+   "marks": {
+    "top": [],
+    "three_quarter": [
+     [
+      1150,
+      363
+     ]
+    ],
+    "front": [
+     [
+      836,
+      304
+     ]
+    ],
+    "side": [
+     [
+      70,
+      300
+     ]
+    ],
+    "bottom": [
+     [
+      1150,
+      668
+     ]
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "name": "green ridge plates down the middle of the head",
+   "kind": "tube",
+   "count": 1,
+   "note": "hidden behind the blades from the side",
+   "marks": {
+    "top": [
+     [
+      110,
+      663
+     ]
+    ],
+    "three_quarter": [
+     [
+      1215,
+      284
+     ]
+    ],
+    "front": [
+     [
+      836,
+      262
+     ]
+    ],
+    "side": [],
+    "bottom": []
+   }
+  },
+  {
+   "id": 10,
+   "name": "head, neck and barrel body (green scales, cream underside), tapering to the tail",
+   "kind": "body",
+   "count": 1,
+   "marks": {
+    "top": [
+     [
+      190,
+      663
+     ]
+    ],
+    "three_quarter": [
+     [
+      1275,
+      322
+     ]
+    ],
+    "front": [
+     [
+      836,
+      225
+     ]
+    ],
+    "side": [
+     [
+      185,
+      278
+     ]
+    ],
+    "bottom": []
+   }
+  },
+  {
+   "id": 12,
+   "name": "wing skin (green above, cream below, scalloped back edge)",
+   "kind": "sheet",
+   "count": 2,
+   "marks": {
+    "top": [
+     [
+      385,
+      575
+     ],
+     [
+      385,
+      752
+     ]
+    ],
+    "three_quarter": [
+     [
+      1300,
+      180
+     ],
+     [
+      1470,
+      290
+     ]
+    ],
+    "side": [],
+    "bottom": [
+     [
+      1440,
+      560
+     ],
+     [
+      1440,
+      770
+     ]
+    ],
+    "front": [
+     [
+      700,
+      268
+     ],
+     [
+      980,
+      268
+     ]
+    ]
+   },
+   "note": "edge-on and hidden behind the body from the side"
+  },
+  {
+   "id": 13,
+   "name": "gold front strut of the wing (from the shared point at the wing root to the tip)",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [
+     [
+      345,
+      545
+     ],
+     [
+      345,
+      782
+     ]
+    ],
+    "three_quarter": [
+     [
+      1235,
+      180
+     ],
+     [
+      1470,
+      320
+     ]
+    ],
+    "side": [],
+    "bottom": [
+     [
+      1400,
+      545
+     ],
+     [
+      1400,
+      782
+     ]
+    ],
+    "front": [
+     [
+      690,
+      276
+     ],
+     [
+      990,
+      276
+     ]
+    ]
+   }
+  },
+  {
+   "id": 14,
+   "name": "wing struts to the two notches of the back edge (two per wing, from the same root point)",
+   "kind": "tube",
+   "count": 4,
+   "marks": {
+    "top": [
+     [
+      420,
+      514
+     ],
+     [
+      385,
+      582
+     ],
+     [
+      420,
+      812
+     ],
+     [
+      385,
+      745
+     ]
+    ],
+    "three_quarter": [
+     [
+      1265,
+      155
+     ],
+     [
+      1300,
+      200
+     ],
+     [
+      1500,
+      283
+     ],
+     [
+      1540,
+      312
+     ]
+    ],
+    "side": [],
+    "bottom": [
+     [
+      1470,
+      514
+     ],
+     [
+      1430,
+      582
+     ],
+     [
+      1470,
+      812
+     ],
+     [
+      1430,
+      745
+     ]
+    ],
+    "front": []
+   }
+  },
+  {
+   "id": 15,
+   "name": "back spine arcs (five, smaller towards the tail)",
+   "kind": "tube",
+   "count": 5,
+   "marks": {
+    "top": [
+     [
+      235,
+      652
+     ],
+     [
+      305,
+      652
+     ],
+     [
+      362,
+      656
+     ],
+     [
+      408,
+      658
+     ],
+     [
+      447,
+      660
+     ]
+    ],
+    "three_quarter": [
+     [
+      1345,
+      215
+     ],
+     [
+      1395,
+      208
+     ],
+     [
+      1440,
+      200
+     ],
+     [
+      1480,
+      193
+     ],
+     [
+      1515,
+      188
+     ]
+    ],
+    "side": [
+     [
+      240,
+      232
+     ],
+     [
+      310,
+      238
+     ],
+     [
+      367,
+      245
+     ],
+     [
+      412,
+      251
+     ],
+     [
+      452,
+      256
+     ]
+    ],
+    "bottom": [],
+    "front": [
+     [
+      836,
+      205
+     ]
+    ]
+   }
+  },
+  {
+   "id": 16,
+   "name": "green web under each spine arc",
+   "kind": "sheet",
+   "count": 5,
+   "marks": {
+    "top": [
+     [
+      232,
+      668
+     ],
+     [
+      300,
+      668
+     ],
+     [
+      355,
+      668
+     ],
+     [
+      402,
+      668
+     ],
+     [
+      440,
+      667
+     ]
+    ],
+    "three_quarter": [
+     [
+      1350,
+      232
+     ],
+     [
+      1400,
+      222
+     ],
+     [
+      1445,
+      213
+     ],
+     [
+      1485,
+      205
+     ],
+     [
+      1518,
+      198
+     ]
+    ],
+    "side": [
+     [
+      232,
+      244
+     ],
+     [
+      300,
+      248
+     ],
+     [
+      358,
+      252
+     ],
+     [
+      405,
+      257
+     ],
+     [
+      447,
+      261
+     ]
+    ],
+    "bottom": [],
+    "front": []
+   },
+   "count_in": []
+  },
+  {
+   "id": 17,
+   "name": "front legs: a pod with the body’s scales, tucked into the lower flank",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [],
+    "three_quarter": [
+     [
+      1310,
+      330
+     ]
+    ],
+    "side": [
+     [
+      228,
+      312
+     ]
+    ],
+    "bottom": [
+     [
+      1292,
+      628
+     ],
+     [
+      1292,
+      698
+     ]
+    ],
+    "front": [
+     [
+      800,
+      292
+     ],
+     [
+      872,
+      292
+     ]
+    ]
+   },
+   "count_in": [
+    "bottom"
+   ],
+   "size": [
+    57,
+    23,
+    20
+   ]
+  },
+  {
+   "id": 18,
+   "name": "hind legs: a pod with the body’s scales, tucked into the lower flank",
+   "kind": "tube",
+   "count": 2,
+   "marks": {
+    "top": [],
+    "three_quarter": [
+     [
+      1480,
+      245
+     ]
+    ],
+    "side": [
+     [
+      368,
+      312
+     ]
+    ],
+    "bottom": [
+     [
+      1435,
+      628
+     ],
+     [
+      1435,
+      698
+     ]
+    ],
+    "front": []
+   },
+   "count_in": [
+    "bottom"
+   ],
+   "size": [
+    57,
+    23,
+    20
+   ]
+  },
+  {
+   "id": 19,
+   "name": "gold talons (three per leg, thick, curving down and back, bases touching)",
+   "kind": "tube",
+   "count": 12,
+   "marks": {
+    "top": [],
+    "three_quarter": [
+     [
+      1335,
+      318
+     ],
+     [
+      1338,
+      335
+     ],
+     [
+      1512,
+      236
+     ],
+     [
+      1512,
+      250
+     ]
+    ],
+    "side": [
+     [
+      262,
+      307
+     ],
+     [
+      262,
+      319
+     ],
+     [
+      402,
+      305
+     ],
+     [
+      402,
+      317
+     ]
+    ],
+    "bottom": [
+     [
+      1330,
+      622
+     ],
+     [
+      1330,
+      634
+     ],
+     [
+      1330,
+      692
+     ],
+     [
+      1330,
+      704
+     ],
+     [
+      1475,
+      622
+     ],
+     [
+      1475,
+      634
+     ],
+     [
+      1475,
+      692
+     ],
+     [
+      1475,
+      704
+     ]
+    ],
+    "front": [
+     [
+      790,
+      303
+     ],
+     [
+      805,
+      303
+     ],
+     [
+      868,
+      303
+     ],
+     [
+      883,
+      303
+     ]
+    ]
+   },
+   "count_in": [],
+   "size": [
+    29,
+    10,
+    9
+   ],
+   "parent": 17,
+   "of_parent": 0.51
+  },
+  {
+   "id": 20,
+   "name": "tail fan rays (five, upright in one flat plane)",
+   "kind": "tube",
+   "count": 5,
+   "marks": {
+    "top": [
+     [
+      548,
+      614
+     ],
+     [
+      565,
+      626
+     ],
+     [
+      575,
+      650
+     ],
+     [
+      572,
+      690
+     ],
+     [
+      553,
+      710
+     ]
+    ],
+    "three_quarter": [
+     [
+      1568,
+      105
+     ],
+     [
+      1600,
+      120
+     ],
+     [
+      1620,
+      165
+     ],
+     [
+      1622,
+      200
+     ],
+     [
+      1600,
+      222
+     ]
+    ],
+    "side": [
+     [
+      521,
+      192
+     ],
+     [
+      546,
+      201
+     ],
+     [
+      563,
+      230
+     ],
+     [
+      564,
+      263
+     ],
+     [
+      549,
+      297
+     ]
+    ],
+    "bottom": [
+     [
+      1597,
+      614
+     ],
+     [
+      1620,
+      626
+     ],
+     [
+      1632,
+      650
+     ],
+     [
+      1628,
+      690
+     ],
+     [
+      1600,
+      710
+     ]
+    ],
+    "front": []
+   },
+   "count_in": [],
+   "note": "the top and bottom views draw the fan lying flat: a drawing error (Alan); built from the side view"
+  },
+  {
+   "id": 21,
+   "name": "green webs between the tail rays",
+   "kind": "sheet",
+   "count": 4,
+   "marks": {
+    "top": [
+     [
+      556,
+      622
+     ],
+     [
+      568,
+      638
+     ]
+    ],
+    "three_quarter": [
+     [
+      1585,
+      125
+     ],
+     [
+      1605,
+      150
+     ]
+    ],
+    "side": [
+     [
+      533,
+      205
+     ],
+     [
+      552,
+      220
+     ]
+    ],
+    "bottom": [
+     [
+      1607,
+      622
+     ],
+     [
+      1622,
+      638
+     ]
+    ],
+    "front": []
+   },
+   "count_in": []
+  }
  ],
  "questions": [
-  "From above each side shows 3 pieces (1, 2, 3). From the side 4 plates show: I read one as piece 2 of the far side (2').",
-  "Plate 4 under the horn shows only from the side and three-quarter: its own blade, or the horn's base? (old build: 5 blades + 2 horns a side)"
+  "Side view (least trusted) stacks 4 blades above the eye; the top and three-quarter views show 3 pieces a side ahead of the big horn. Built to those.",
+  "Big horns: Alan's ruling, lower and swept back as the three-quarter view draws them (the top and front views draw them spread wide and high).",
+  "Tail: Alan, 2026-11-15: upright, one flat vertical plane, as the side view draws it; the flat fan of the top and bottom views is a drawing error.",
+  "Wings: the side view does not draw them at all; height taken from the front view (level with the eyes).",
+  "Back spines: the top view draws them leaning to one side; built upright on the middle line."
+ ],
+ "cameras": {
+  "top": {
+   "at": [
+    33,
+    663
+   ],
+   "px": 544
+  },
+  "side": {
+   "at": [
+    25,
+    296.5
+   ],
+   "px": 544
+  },
+  "front": {
+   "at": [
+    836.5,
+    282.5
+   ],
+   "px": 544
+  },
+  "bottom": {
+   "at": [
+    1089,
+    663
+   ],
+   "px": 544
+  },
+  "three_quarter": {
+   "at": [
+    1097,
+    378
+   ],
+   "px": 714,
+   "right": [
+    0.6095,
+    -0.771,
+    0.184
+   ],
+   "up": [
+    0.256,
+    0.412,
+    0.874
+   ]
+  }
+ },
+ "modules": {
+  "head": {
+   "pieces": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    11,
+    6,
+    7,
+    8,
+    9
+   ],
+   "views": [
+    "three_quarter",
+    "side",
+    "top",
+    "front"
+   ]
+  },
+  "wing": {
+   "pieces": [
+    12,
+    13,
+    14
+   ],
+   "views": [
+    "three_quarter",
+    "top",
+    "bottom",
+    "front"
+   ]
+  },
+  "back-fins": {
+   "pieces": [
+    15,
+    16
+   ],
+   "views": [
+    "three_quarter",
+    "side",
+    "top"
+   ]
+  },
+  "legs": {
+   "pieces": [
+    17,
+    18,
+    19
+   ],
+   "views": [
+    "three_quarter",
+    "side",
+    "bottom",
+    "front"
+   ]
+  },
+  "tail": {
+   "pieces": [
+    20,
+    21
+   ],
+   "views": [
+    "three_quarter",
+    "side"
+   ]
+  }
+ },
+ "exceptions": [
+  {
+   "view": "top",
+   "box": [
+    480,
+    610,
+    600,
+    715
+   ],
+   "why": "The tail fan is drawn lying flat so its pattern shows; it stands upright (Alan, 2026-11-15).",
+   "governs": "side"
+  },
+  {
+   "view": "bottom",
+   "box": [
+    1525,
+    610,
+    1650,
+    715
+   ],
+   "why": "The same flat tail fan.",
+   "governs": "side"
+  }
  ]
 }
