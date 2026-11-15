@@ -37,8 +37,10 @@
   **The head rebuilt from thick ridged plates (Alan, same day, on `.planning/skins/dragon/head-fable/`):** "definitely an
   improvement" on the earlier head. Its dark definition lines were too strong (softened in its round 12) and it "just
   needs an accent and design pass". **He is willing to let the whole body be tried the same way.** That head builds the
-  plate under the big horn after all, as the second small horn (the three-quarter and top views show it too). Still open:
-  which view wins for the big horns (top and front draw them spread wide and high, the three-quarter view low and swept back).
+  plate under the big horn after all, as the second small horn (the three-quarter and top views show it too). **The big
+  horns are the one thing really off** (Alan, same day): "they come too far up and at an angle". They follow the
+  three-quarter view: lower and swept back along the neck, less spread. The rest of the head is good enough to build the
+  whole body from, with a tweaking pass at the end.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
