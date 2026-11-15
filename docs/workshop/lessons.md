@@ -165,6 +165,11 @@ mistake would be easy to make twice.
 - **Roblox Studio's texture generator** (2026-11-15): Fast = 1K colour, pale; Quality = SurfaceAppearance with colour,
   roughness and metal, real detail but its own design (it ignored "gold"); the hint picture argument failed through the
   Studio tool. Good for generic props, not for an approved design.
+- **"Photocraft" for texturing is a mix-up; the tool is Modddif** (2026-11-15, looked up for Alan): PhotoCraft
+  (photocraft.tech) is a free flat-image editor with no AI and no 3D. Modddif (modddif.com, web app) is the AI tool the
+  2026 tutorials use after Tripo: load the mesh (GLB), give reference pictures, it paints from 8 views onto the model's
+  own unwrap and lets you repaint one bad area at a time; free tier 2K, 150,000 triangles, projects PUBLIC (paid 4K;
+  prices not verified). Untested by us; it is the same idea as our projection, done by a tool built for it.
 - **Cycles shows through twin faces lying on each other** (transparent back faces); preview one-sided meshes in Eevee
   with backface culling.
 - **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,
