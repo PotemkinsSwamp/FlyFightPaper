@@ -134,6 +134,11 @@ mistake would be easy to make twice.
   straight on from each side and have Codex paint each render (one job, all views): the outline stays 95-99% the
   same, so the views agree. Painting a painting again blurs and "fries" it (Alan): the final pass starts from the
   render every time, and approved paintings go in only as guides ("copy the legs from this").
+- **Tripo multi-view with a flat flyer: feed it nose-up** (2026-11-15, Dragon): its four views (front, left, back,
+  right) are all level, so they see the wings edge-on and Tripo guesses the wing shape (narrow blades). Turn the
+  pictures so the nose points up and give it top, right side, bottom, left side as front, left, back, right
+  (`.planning/skins/dragon/six-views/tripo-noseup/`); the model comes out standing on its tail, turned back in Blender.
+  In Tripo Studio the cube icon is "Multi-view Images to 3D"; the stacked-pictures icon is "Batch", one model each.
 - **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,
   living sharks and dragons (Alan: "they're paper airplanes"). For more body under the wings say "a barrel like a jet
   fighter's fuselage, straight bottom line, not fat". The same image tool refuses "violent" pictures at random (shark

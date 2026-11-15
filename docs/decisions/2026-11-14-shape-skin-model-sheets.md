@@ -152,6 +152,11 @@
   month ($15 the first month), 150,000 credits, advanced and premium models, commercial licence; Pro $50; Studio $200.
   Its 3D reference box takes several pictures at once, but nothing on its site says whether they reach Tripo as one
   multi-view job or as separate references, and it shows no credit cost per 3D model.
+  **Tripo Pro, first models (Alan bought Pro, same day):** HD Model (H3.1) from the level views: one model, 18,649
+  triangles, wings wrong (narrow blades: every level view saw them edge-on). Smart Mesh (P2.0) from nose-up views,
+  triangles, 4,000, private, 4 versions: wing outline right in all four (one had holes between the struts); the
+  textured one has 3,844 triangles. Alan: "looks decent". Export offers GLB with a 512/1k/2k/4k texture and a
+  "Send to Roblox" bridge. Credits used 165 of 6,200.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
