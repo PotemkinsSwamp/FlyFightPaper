@@ -194,6 +194,14 @@
   **Alan on the low-triangle result: "it definitely breaks at low triangle."** The look lives in the shape, and a bump
   picture cannot fix a blocky outline. Next: Tripo's own head cut down to 2,000, 4,000 and 8,000 triangles side by side
   (no credits) to find the lowest count that holds; raising the Dragon's 4,000-triangle budget is Alan's ruling.
+- **Shape skins: the 4,000-triangle budget is lifted** (Alan, 2026-11-15, evening): "5,000 triangles is too low". Design
+  quality comes first; performance is protected in other ways. Triangles are spent by part: the hard, outline-making
+  pieces (horns, head plates, fins, tail) get many, smooth ones (belly, wing skin) get few. One wing is made and
+  mirrored, one leg made and reused (same paint, less work, exact match; each copy is still drawn). The total is not
+  fixed yet: find per part the lowest count that still holds, then MEASURE frame rate with 12 such planes in view
+  (Studio Play: Alan's go) instead of guessing. Roblox's own levers stay on: automatic detail drop at distance
+  (RenderFidelity Automatic), few parts and one picture set per plane, simple collision boxes. Roblox's per-mesh
+  triangle cap is not verified (sources say 10,000 or about 20,000): check the official page before cutting pieces.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
