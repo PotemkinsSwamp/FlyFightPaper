@@ -41,6 +41,11 @@
   horns are the one thing really off** (Alan, same day): "they come too far up and at an angle". They follow the
   three-quarter view: lower and swept back along the neck, less spread. The rest of the head is good enough to build the
   whole body from, with a tweaking pass at the end.
+  **The whole Dragon, first build (same day):** `.planning/skins/dragon/body-fable/round-07/` (picture
+  `body-fable/sheet-vs-model.jpg`): head with the horns lowered, barrel body, wings, four tucked legs, five back spines,
+  tail fan; one closed mesh, 3,166 triangles. Outline against the sheet: top 0.92, side 0.81 (the side view still draws
+  the old high horns). Independent reviewer: "close" overall, front view "not yet". Waiting on Alan's look and his
+  tweaking pass; nothing uploaded.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
