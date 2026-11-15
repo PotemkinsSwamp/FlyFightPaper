@@ -157,6 +157,16 @@
   triangles, 4,000, private, 4 versions: wing outline right in all four (one had holes between the struts); the
   textured one has 3,844 triangles. Alan: "looks decent". Export offers GLB with a 512/1k/2k/4k texture and a
   "Send to Roblox" bridge. Credits used 165 of 6,200.
+  **Then (Alan's go):** HD Model from the nose-up views (45 credits): right wings and glossier paint, 17,733
+  triangles; Tripo's plain Retopo (5 credits) to 4,022 triangles kept the texture; downloaded as
+  `.planning/skins/dragon/tripo/dragon-tripo-4k-tris.glb` (1024 colour, 512 normal, 1024 roughness-metal), turned
+  nose-forward in Blender (`tripo/renders/`, `concept-vs-tripo.jpg`): the shape matches the concept closely, but Alan,
+  from the player's view (behind and above): "a lot of problems, this view needs to be perfect"; Tripo's texturing
+  "butchers" the structure Smart Mesh gets right. **Ruling (Alan): Tripo for the shape only, Blender for the paint.**
+  Take the best untextured Smart Mesh version (about 4,000 triangles; three of the four have whole wings), unwrap it,
+  project the six approved paintings onto it (each spot from the view facing it best, as `tools/art/sheet_model.py`
+  does) plus a new seventh Codex painting of the player's behind-and-above view, flat gold, green or cream where no
+  picture reaches, and check the player's view first. Credits left 5,985.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
