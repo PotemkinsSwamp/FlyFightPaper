@@ -139,7 +139,10 @@
   ($15.99 a month promo), so nothing was made and nothing spent. Paying is Alan's call. **Alan's next ask:** the
   six views first get "more anatomically a dragon, like a top-quality model, one consistent design", same painted
   finish (not realistic textures): three left-side options (A refined anatomy, B + folded real legs, C + one-creature
-  body), his pick then guides the other five views.
+  body), his pick then guides the other five views. **Picked (Alan):** C's folded legs (thigh, folded shin, three
+  toes, straight gold claws trailing back) and its overlapping cream belly plates; the eye stays the glowing gem with
+  no pupil (A-C's slit pupils turned down). C itself looked "fried" from painting a painting, so the final six are
+  painted once from the renders with C as a guide (`six-views/final/`, `prompt-final.txt`).
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:

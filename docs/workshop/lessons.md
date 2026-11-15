@@ -130,6 +130,10 @@ mistake would be easy to make twice.
   `.planning/skins/tests/` (`pieces.json` holds two builds).
 - **Codex picture job with a reference picture** (2026-11-13): `codex exec -s workspace-write - -i ref.png < prompt.txt`,
   with `-i` last (it takes several files). About 45,000-80,000 Codex tokens for 2-5 pictures.
+- **Matching views of one model: paint over renders, once** (2026-11-15, Dragon six views): render the Blender model
+  straight on from each side and have Codex paint each render (one job, all views): the outline stays 95-99% the
+  same, so the views agree. Painting a painting again blurs and "fries" it (Alan): the final pass starts from the
+  render every time, and approved paintings go in only as guides ("copy the legs from this").
 - **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,
   living sharks and dragons (Alan: "they're paper airplanes"). For more body under the wings say "a barrel like a jet
   fighter's fuselage, straight bottom line, not fat". The same image tool refuses "violent" pictures at random (shark
