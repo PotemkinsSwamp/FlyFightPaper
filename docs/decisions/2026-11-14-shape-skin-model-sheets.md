@@ -191,6 +191,9 @@
   Alan on the high-detail version of that look: "looks decent, finish the test". Splitting rule he agreed to: cut only
   where two materials meet (gold pieces, wing, tail fan, leg, fin), never through the scaled body; one wing, one leg
   and one fin are made once and reused; colours are set to fixed numbers per part. Credits left 5,930.
+  **Alan on the low-triangle result: "it definitely breaks at low triangle."** The look lives in the shape, and a bump
+  picture cannot fix a blocky outline. Next: Tripo's own head cut down to 2,000, 4,000 and 8,000 triangles side by side
+  (no credits) to find the lowest count that holds; raising the Dragon's 4,000-triangle budget is Alan's ruling.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
