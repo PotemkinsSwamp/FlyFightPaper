@@ -139,6 +139,9 @@ mistake would be easy to make twice.
   pictures so the nose points up and give it top, right side, bottom, left side as front, left, back, right
   (`.planning/skins/dragon/six-views/tripo-noseup/`); the model comes out standing on its tail, turned back in Blender.
   In Tripo Studio the cube icon is "Multi-view Images to 3D"; the stacked-pictures icon is "Batch", one model each.
+- **Judge a skin from the player's view first** (2026-11-15, Alan on the Tripo Dragon): behind and above the plane
+  (`render-chase.png` in `tools/art/sheet_model.py`) is what players stare at; six straight-on views never show it, so
+  a model that matches all six can still fail there. Paint a concept of that view too and compare it before the rest.
 - **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,
   living sharks and dragons (Alan: "they're paper airplanes"). For more body under the wings say "a barrel like a jet
   fighter's fuselage, straight bottom line, not fat". The same image tool refuses "violent" pictures at random (shark

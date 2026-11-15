@@ -131,8 +131,9 @@ lists. He still saw "a lot of problems" and gave a third list: stop whole-body p
 armour, tail root and legs one part at a time, each checked alone in close-up (round 15). He approved the tail as
 built and gave a fourth list (straight claws as the side and bottom views draw them, one narrow wing root, veins and
 folded bays, heavy fin caps): round 16 (one closed mesh, 3,926 triangles; `round-16/check.jpg`, `close-*.jpg`),
-waiting on his look. **Tripo test (2026-11-15):** one picture gave an inconsistent model with no back legs; next,
-Codex draws a consistent six-view set (top, bottom, front, back, left, right), then Tripo and Forge GUI each build from it.
+waiting on his look. **Tripo test (2026-11-15):** a six-view set painted over Blender renders, fed to Tripo Pro nose-up,
+gave the right shape at ~4,000 triangles; Tripo's own paint is too soft for the player's view, so (Alan) Tripo makes the
+shape and Blender paints it from the approved views ([details](../decisions/2026-11-14-shape-skin-model-sheets.md)).
 Rulings and all four lists:
 [model-sheet decision](../decisions/2026-11-14-shape-skin-model-sheets.md).
 
