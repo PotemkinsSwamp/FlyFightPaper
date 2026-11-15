@@ -27,7 +27,9 @@ points in sheet pixels):
           kind "blade", base [x, y, z], tip [x, y, z], width, thick, facing [x, y, z] (optional; default: out from
           the head's middle line), or
           kind "plate", outline, tip, view, offset, tilt, thick (a traced plate: sheet_tools.plate, concept-to-blender
-          skill), map (its number on the piece map)}],
+          skill), map (its number on the piece map), or
+          kind "sheet", points [[x, y, z], ...] (round the outline), thick (a thin closed slab with exactly that outline:
+          a wing skin, a fin's web), color_under (optional: its downward faces' colour)}],
   cut (optional pixels: the sheet's drawings of built pieces are cut out of the painted skin, this much wider),
   sun, ambient (optional render light strengths, default 1.5 and 1.0: plain-colour pieces want about 3.5 and 0.45),
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
@@ -218,6 +220,16 @@ def blade(name, base, tip, width, thick, facing, mirror):
         for f in ((B_, R, up), (R, T, up), (T, Lf, up), (Lf, B_, up), (R, B_, dn), (T, R, dn), (Lf, T, dn), (B_, Lf, dn)):
             Fc.append(f); PART.append(name)
 
+def sheet(name, points, thick, mirror):
+    """A thin closed slab with exactly the given outline (wing skin, fin web): 3D points round the outline, `thick` across."""
+    for sgn in ((1, -1) if mirror else (1,)):
+        P = np.array(points, float) * (1, sgn, 1); n = np.zeros(3)
+        for a, b in zip(P, np.roll(P, -1, 0)): n += np.cross(a, b)             # the outline's own normal (Newell)
+        n /= np.linalg.norm(n); k = len(P); i0 = len(V)
+        V.extend(map(tuple, (P + n * thick / 2).tolist())); V.extend(map(tuple, (P - n * thick / 2).tolist()))
+        Fc.append(tuple(range(i0, i0 + k))); Fc.append(tuple(range(i0 + 2 * k - 1, i0 + k - 1, -1))); PART.extend([name] * 2)
+        for j in range(k): Fc.append((i0 + j, i0 + k + j, i0 + k + (j + 1) % k, i0 + (j + 1) % k)); PART.append(name)
+
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "../../.claude/skills/concept-to-blender"))
 import sheet_tools                                                  # traced plates (concept-to-blender skill)
 for p in spec.get("parts", []):
@@ -227,6 +239,7 @@ for p in spec.get("parts", []):
         new = sheet_tools.plate(V, Fc, p["outline"], p["tip"], p.get("view", "side"), p.get("offset", 0.0),
                                 p.get("thick", 0.004), p.get("ridge", 0.35), p.get("tilt", 0.0), mirror=p.get("mirror", True))
         PART.extend([p["name"]] * len(new))
+    elif p.get("kind") == "sheet": sheet(p["name"], p["points"], p.get("thick", 0.004), p.get("mirror", True))
     else: tube(p["name"], p["spine"], p["radius"], p.get("sides", 6), p.get("mirror", True), p.get("roll", 0.0), p.get("phase", 0.0))
 PSPEC = {p["name"]: p for p in spec.get("parts", [])}; PNAMES = ["body"] + list(PSPEC)
 
@@ -345,7 +358,8 @@ for fi, t in enumerate(Tri):
     if Pt[:, 1].mean() < 0: Pt[:, 1] *= -1; Nt[:, 1] *= -1; fn[1] *= -1      # the far side uses the mirror
     nm = PNAMES[TPART[fi]]
     if nm != "body" and PSPEC[nm].get("color"):                                # a measured piece: its own colour
-        c = np.repeat([np.array(PSPEC[nm]["color"]) / 255.0], len(L), 0)
+        under = "color_under" in PSPEC[nm] and fn[2] < -0.5 * np.linalg.norm(fn)       # a wing's underside
+        c = np.repeat([np.array(PSPEC[nm]["color_under" if under else "color"]) / 255.0], len(L), 0)
         if PSPEC[nm].get("kind") == "blade":                     # dark lines on its facet edges, like the sheets' plates
             t2 = np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX
             e = np.linalg.norm(t2[[1, 2, 0]] - t2[[2, 0, 1]], axis=1)          # the edge facing each corner
@@ -353,7 +367,7 @@ for fi, t in enumerate(Tri):
             c *= 0.45 + 0.55 * np.clip((d - 0.5) / 1.5, 0, 1)[:, None]                 # soft-edged, not jagged
         elif FAC:
             n = fn / max(np.linalg.norm(fn), 1e-12); dk = np.array(FAC.get("dark", 0.6), float)    # one number, or [r, g, b]
-            c *= dk + (1 - dk) * min(max((n @ FLIGHT + 0.25) / 1.1, 0), 1)
+            c *= dk + (1 - dk) * min(max((n @ FLIGHT + 0.25) / 1.1, 0.6 * max(-n[2], 0), 0), 1)     # undersides: bounce light
             t2 = np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX
             e = np.linalg.norm(t2[[1, 2, 0]] - t2[[2, 0, 1]], axis=1); a2 = abs(np.cross(t2[1] - t2[0], t2[2] - t2[0]))
             d = np.where(CREASE[fi], L * (a2 / np.maximum(e, 1e-9)), 1e9).min(1); ln = FAC.get("line", 0.5)
