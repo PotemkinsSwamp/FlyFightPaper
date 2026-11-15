@@ -207,6 +207,14 @@
   56,892 original and 8,000 is nearly the same; 2,000 is visibly simpler. Sent to Alan, no pick yet. The gold shows brown
   blotches at every count, the original included: Tripo's metal picture is patchy, so use one metal value per material.
   Alan also parked Modddif ("we will wait") in favour of this higher-triangle modular route.
+- **Shape skins: triangles only where the outline needs them** (Alan, 2026-11-15, on the count test): "it's wasting
+  triangles in places they don't need them"; "I just see a bunch of simple objects". Real shape for horns, head plates,
+  fins and struts; the body under them is a smooth simple surface, and scales, the eye, horn rings and plate lines are
+  pictures that give the illusion of depth (colour shading plus a bump picture baked from Tripo's sculpt). Never cut a
+  sculpt down with an automatic reducer: it spends triangles on every sculpted scale, leaves dents when it runs out
+  (the colour spots at 2,000) and moves the surface off the sculpt so the bake samples the wrong spot. Build clean
+  simple shapes that hug the sculpt (Tripo's own low-triangle rebuild, about 5 credits, or by hand in Blender), smooth
+  the body, then bake. One metal value per material.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
