@@ -124,6 +124,12 @@ definitely helped, but I just don't think you have the capability"; a **Fable 5.
 (`.planning/skins/dragon/head-fable/`, `compare.jpg`) is the comparison. Then the full Dragon and Shark Jet, each beside its sheet before any upload. Codex picture
 jobs for the six printed sheets (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy) come after.
 
+**Whole Dragon, Fable run** (2026-11-14 and 15; `.planning/skins/dragon/body-fable/`, picture `sheet-vs-model.jpg`):
+the rebuilt head won the blind comparison in three of four views and Alan called it "definitely an improvement"; the
+whole dragon followed (round 14: one closed mesh, 3,334 triangles) and went through three correction passes on his
+lists. He still sees "a lot of problems" and will give a new list. Rulings and both lists:
+[model-sheet decision](../decisions/2026-11-14-shape-skin-model-sheets.md).
+
 ## Keeping skins cheap (Alan OK'd the budget, 2026-11-13)
 - **Drawn by each player's own computer only.** The server just saves which skin and trail a player wears. The skin
   pieces and the hiding of the real parts happen on each player's screen, so the server never loads a skin, never

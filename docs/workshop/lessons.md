@@ -147,6 +147,20 @@ mistake would be easy to make twice.
   `concept-to-blender` skill's piece map). Also: points read off a zoomed sheet by eye land 3-6 px off (snap them to
   the drawn edge), overlapping plates of one colour can't be split by colour, and blades made from a few numbers
   (base, tip, width) can only be straight daggers: trace the outline.
+- **A model sheet's views can contradict each other: ask Alan which view wins before building that piece** (Dragon,
+  2026-11-14/15). Horns: top and front views high and spread, three-quarter view low and swept back (he chose the
+  three-quarter). Tail fan: upright in the side view, flat in the top and bottom views (he chose upright; "a drawing
+  error"). Guessing cost two rebuilds.
+- **Gold armour pieces are thick ridged tubes, not thin traced plates**: six sides with the corners turned 30 degrees
+  (`phase`), a `roll` so the face lies on the sloped surface, across and up radii read from two views
+  (`tools/art/sheet_model.py`). Thin plates read as petals; this won the blind comparison on the Dragon's head.
+- **A strut thinner than half the skin it lies on disappears inside it.** Thickening the wing skin to 6.5 px swallowed
+  the gold struts; keep a strut's height just proud of the skin all the way to its tip.
+- **Read outlines in numbers, not off zoomed crops by eye.** `.planning/skins/dragon/body-fable/profile.py` prints the
+  side outline, sheet against model; a crop read with the wrong origin put the Dragon's belly 8 px too high.
+- **The independent reviewer is good on clutter and thickness, unreliable on angles and sizes.** It asked for horns
+  less upright, then preferred the more upright round in a blind pair. It agrees with the outline scores on the scored
+  views: check its other claims against them.
 
 ## Studio and the place file
 - **Runtime skin looks (2026-11-13):** `AssetService:CreateSurfaceAppearanceAsync` rejects uploaded pictures ("ColorMap

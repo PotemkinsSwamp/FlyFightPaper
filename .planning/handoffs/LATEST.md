@@ -5,6 +5,6 @@
 Quick state: main 1b910e47 pushed; docs OK; place saved to Roblox v735 (not published); rojo serve connected.
 Previous: handoff-2026-11-14-beta-lane-crane-replay-fixed-wing-tilt-next.md
 
-Skins lane (side session) → handoff-2026-11-14-1835-skins-lane-dragon-head-skill-run-fable-comparing.md
-★ START HERE (skins): Dragon head built with the upgraded skill (top 0.908, reviewer "not yet"); Alan started a Fable 5.2 run of the same skill (side session dragon-head-fable). Next: show Alan its compare.jpg (sheet | Opus round 7 | Fable), worst part first; he picks what carries on.
-Previous (skins): handoff-2026-11-14-1710-skins-lane-dragon-head-start-over-with-new-skill.md
+Skins lane (side session) → handoff-2026-11-15-skins-lane-dragon-whole-body-round-14.md
+★ START HERE (skins): The whole Dragon is built as `.planning/skins/dragon/body-fable/round-14/` (3,334 triangles; picture `body-fable/sheet-vs-model.jpg`). Alan has seen it: "still a lot of problems"; he will give a new list. Next: build his list as round 15 and show him the sheet beside the model, what is still short first. Holds: upload, Save to File, publish, Studio.
+Previous (skins): handoff-2026-11-14-1835-skins-lane-dragon-head-skill-run-fable-comparing.md
