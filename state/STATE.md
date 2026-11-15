@@ -52,8 +52,8 @@ Waiting on Alan
 - Replay the hangar: click skins, tabs and Cancel (no reload flash?), the crane's height and wing join, a
   booster under the crane, and Buy on a skin (the screen should change right away).
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
-  Under the crane: no gun piece floating off the drawn guns, at the desk and while firing.
-- Toilet Roll shake: fly it in a Studio match while my read-only recorder runs (your go), say roughly when it shook.
+- After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);
+  no gun piece floating off the crane's guns, at the desk and firing; the Toilet Roll shake with my recorder (your go).
 - Publish when you like (report card, new shop window; shop button Studio-only until go-live). Save to File for the
   new weapon models and the tape-roll tower (your go).
 - In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip. Device

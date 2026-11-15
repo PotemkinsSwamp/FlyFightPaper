@@ -124,7 +124,7 @@
   ship is remade on a paid plan. **Forge GUI** (forgegui.com, key `FORGEGUI` in `.env`, an `fgmcp_` key for its
   "ForgeMCP" link to Studio): mostly 2D Roblox art (GUIs, icons, thumbnails), but lists "3D assets" with GLB export;
   free starter credits, assets yours to use commercially, and free-credit work may be shown in its public catalog
-  unless turned off (turn it off: unreleased skin). Its MCP setup and 3D details need a browser; not tried yet.
+  (Alan doesn't mind). Its MCP setup and 3D details need a browser; not tried yet.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
