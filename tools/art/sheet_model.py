@@ -29,7 +29,15 @@ points in sheet pixels):
           kind "plate", outline, tip, view, offset, tilt, thick (a traced plate: sheet_tools.plate, concept-to-blender
           skill), map (its number on the piece map), or
           kind "sheet", points [[x, y, z], ...] (round the outline), thick (a thin closed slab with exactly that outline:
-          a wing skin, a fin's web), color_under (optional: its downward faces' colour);
+          a wing skin, a fin's web), color_under (optional: its downward faces' colour), or
+          kind "fan", hub [x, y, z], edge [[x, y, z], ...] (the outline from the front tip round the back edge to the
+          root), bow [per edge point: how far its column bows forward, as the strut there does], bones [edge indexes
+          where a strut ends], dip (how far the skin sags between two bones, most at the back edge), thick [at the hub,
+          at the edge], rows [shares of the way out], ripples (per bay), ripple_gain, grain, grain_size, bone_shade (with bay, bone_half, shade_width) (a wing membrane
+          stretched over its struts: sagging bays, painted tension ripples fanning out to the edge and a fine hide grain);
+          a tube may have breaks [point indexes]: a new closed shell starts at each (a horn's rings, each tucked into
+          the one before);
+          any part: texel (its texel density against the rest, e.g. 1.6 for a wing the player looks at most);
           any plain-colour part: smooth (true: smooth-shaded, one plain colour, no facet lines), scales (true: painted with the body's scales, a leg), lines [[[x, y], [x, y]], ...] with
           line_width and line_gain (lines painted on it as seen from above: a wing's leaf veins)}],
   cut (optional pixels: the sheet's drawings of built pieces are cut out of the painted skin, this much wider),
@@ -37,7 +45,11 @@ points in sheet pixels):
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
   degrees: yaw 0 = from the side, 90 = from the front; pitch above level), front_scale (optional px per length),
   paint (optional list of the views to paint from, default all four: leave out one drawn unlike the others),
-  facets (optional {light, dark, line, width}: plain-colour pieces get painted facet shading and dark crease lines),
+  facets (optional {light, dark, line, width, highlight, angle}: plain-colour pieces get painted facet shading and
+  dark crease lines; with highlight (0..1) the raised edges get a light line instead and only the inward creases a dark one),
+  ao (optional {distance, strength, tint [r, g, b] 0..1, samples}: Blender bakes how hidden each spot is from open sky
+  within `distance` and that is multiplied into the colour picture: dark crevices where pieces overlap or meet the skin),
+  uv (optional {angle, margin}: the unwrap's angle limit in degrees, default 40, and the gap between islands, default 0.01),
   only (optional list of map numbers: build just those pieces on the body, one module at a time, for the close-up
   check of the concept-to-blender skill).
 """
@@ -235,6 +247,34 @@ def sheet(name, points, thick, mirror):
         Fc.append(tuple(range(i0, i0 + k))); Fc.append(tuple(range(i0 + 2 * k - 1, i0 + k - 1, -1))); PART.extend([name] * 2)
         for j in range(k): Fc.append((i0 + j, i0 + k + j, i0 + k + (j + 1) % k, i0 + (j + 1) % k)); PART.append(name)
 
+FANV = {}                                             # fan vertices: (column, counted in bays, times t; t = share of the way out)
+def fan(name, hub, edge, bow, bones, dip, thick, rows, mirror):
+    """A wing membrane stretched over its struts: a column runs from the hub to each outline point, bowed forward
+    by bow * 4t(1 - t) at share t of the way out, as the strut that ends there is; rows at the given shares of the way out. Between two bones the
+    skin sags by `dip` (most at the back edge); it thins from thick[0] at the hub to thick[1] at the edge."""
+    n, R = len(edge), len(rows); colm = []
+    for j in range(n):                                # whole numbers on the bones, shares of the bay between
+        a = max(b for b in bones if b <= j); nxt = [b for b in bones if b > j]
+        colm.append(bones.index(a) + ((j - a) / (nxt[0] - a) if nxt else 0.0))
+    for sgn in ((1, -1) if mirror else (1,)):
+        m = np.array((1, sgn, 1)); H = np.array(hub, float) * m; i0 = len(V)
+        for s in (1, -1): FANV[len(V)] = (0.0, 0.0); V.append(tuple(map(float, H + (0, 0, s * thick[0] / 2))))
+        for j in range(n):
+            E = np.array(edge[j], float) * m; bv = np.array((-0.5, sgn, 0)) * bow[j]
+            for t in rows:
+                P = H + (E - H) * t + bv * 4 * t * (1 - t)                                  # bowed like a drawn rib
+                z = -dip * math.sin(math.pi * (colm[j] % 1)) * t; th = thick[0] + (thick[1] - thick[0]) * t
+                for s in (1, -1): FANV[len(V)] = (colm[j] * t, t); V.append((float(P[0]), float(P[1]), float(P[2] + z + s * th / 2)))
+        at = lambda j, r, s: i0 + 2 + (j * R + r) * 2 + s                                  # s: 0 top, 1 underside
+        for s in (0, 1):
+            for j in range(n - 1):
+                Fc.append((i0 + s, at(j, 0, s), at(j + 1, 0, s))); PART.append(name)
+                for r in range(R - 1): Fc.append((at(j, r, s), at(j, r + 1, s), at(j + 1, r + 1, s), at(j + 1, r, s))); PART.append(name)
+        for j in range(n - 1): Fc.append((at(j, R - 1, 0), at(j, R - 1, 1), at(j + 1, R - 1, 1), at(j + 1, R - 1, 0))); PART.append(name)
+        for j in (0, n - 1):                                                               # the front edge and the root
+            Fc.append((i0, i0 + 1, at(j, 0, 1), at(j, 0, 0))); PART.append(name)
+            for r in range(R - 1): Fc.append((at(j, r, 0), at(j, r, 1), at(j, r + 1, 1), at(j, r + 1, 0))); PART.append(name)
+
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "../../.claude/skills/concept-to-blender"))
 import sheet_tools                                                  # traced plates (concept-to-blender skill)
 for p in spec.get("parts", []):
@@ -245,7 +285,10 @@ for p in spec.get("parts", []):
                                 p.get("thick", 0.004), p.get("ridge", 0.35), p.get("tilt", 0.0), mirror=p.get("mirror", True))
         PART.extend([p["name"]] * len(new))
     elif p.get("kind") == "sheet": sheet(p["name"], p["points"], p.get("thick", 0.004), p.get("mirror", True))
-    else: tube(p["name"], p["spine"], p["radius"], p.get("sides", 6), p.get("mirror", True), p.get("roll", 0.0), p.get("phase", 0.0))
+    elif p.get("kind") == "fan": fan(p["name"], p["hub"], p["edge"], p["bow"], p["bones"], p.get("dip", 0.0), p["thick"], p.get("rows", [0.5, 1.0]), p.get("mirror", True))
+    else:
+        cuts = [0] + list(p.get("breaks", [])) + [len(p["spine"])]                   # each stretch its own closed shell
+        for a, b in zip(cuts, cuts[1:]): tube(p["name"], p["spine"][a:b], p["radius"][a:b], p.get("sides", 6), p.get("mirror", True), p.get("roll", 0.0), p.get("phase", 0.0))
 PSPEC = {p["name"]: p for p in spec.get("parts", [])}; PNAMES = ["body"] + list(PSPEC)
 
 me = bpy.data.meshes.new("skin"); me.from_pydata(V, [], Fc); me.update()
@@ -263,11 +306,22 @@ for poly in me.polygons: poly.material_index = 0                                
 for o in bpy.data.objects: o.select_set(o is ob)
 bpy.context.view_layer.objects.active = ob
 bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT")
-bpy.ops.uv.smart_project(angle_limit=math.radians(40), island_margin=0.01, area_weight=0.0, correct_aspect=True)
+UVS = spec.get("uv", {})                 # fewer, bigger islands (a higher angle) leave more of the picture for the large surfaces
+bpy.ops.uv.smart_project(angle_limit=math.radians(UVS.get("angle", 40)), island_margin=UVS.get("margin", 0.01), area_weight=0.0, correct_aspect=True)
+if any(p.get("texel") for p in spec.get("parts", [])):       # a part's "texel": its share of the picture, times this (a hero surface: 1.6)
+    bpy.ops.object.mode_set(mode="OBJECT"); uvl = me.uv_layers.active.data
+    for poly, k in zip(me.polygons, TPART):
+        f = PSPEC[PNAMES[k]].get("texel", 1.0) if k else 1.0
+        if f != 1.0:
+            for li in poly.loop_indices: uvl[li].uv = uvl[li].uv * f
+    bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT"); bpy.ops.uv.select_all(action="SELECT")
+    bpy.ops.uv.pack_islands(margin=UVS.get("margin", 0.01))
 bpy.ops.object.mode_set(mode="OBJECT")
 Vn = np.array([v.co[:] for v in me.vertices]); Tri = np.array([p.vertices[:] for p in me.polygons])
 UV = np.array([[me.uv_layers.active.data[li].uv[:] for li in p.loop_indices] for p in me.polygons])
 VN = np.array([v.normal[:] for v in me.vertices])
+FAN = np.zeros((len(Vn), 2))
+if FANV: FAN[list(FANV)] = list(FANV.values())
 
 # ---- painting
 def raster(tri2, W, H):
@@ -354,15 +408,16 @@ DIRS = {v: DIRS[v] for v in spec.get("paint", DIRS)}             # a view drawn 
 # Plain-colour pieces, optional "facets" {light [x, y, z] (y = outwards), dark (0..1: how dark a facet turned away gets),
 # line (0..1: how dark the lines are), width (texels)}: each facet is tinted by how it faces the light and gets a dark
 # line on its creases (edges where the surface turns more than 25 degrees), like the sheets' painted gold plates.
-FAC = spec.get("facets"); CREASE = np.zeros((len(Tri), 3), bool)
+FAC = spec.get("facets"); CREASE = np.zeros((len(Tri), 3), bool); RIDGE = np.zeros((len(Tri), 3), bool)
 if FAC:
     FN = np.cross(Vn[Tri[:, 1]] - Vn[Tri[:, 0]], Vn[Tri[:, 2]] - Vn[Tri[:, 0]]); FN /= np.maximum(np.linalg.norm(FN, axis=1, keepdims=True), 1e-12)
     edge = {}
     for fi, t in enumerate(Tri):
         for k in range(3): edge.setdefault(tuple(sorted((int(t[(k + 1) % 3]), int(t[(k + 2) % 3])))), []).append((fi, k))   # the edge facing corner k
     for fs in edge.values():
-        hard = len(fs) != 2 or TPART[fs[0][0]] != TPART[fs[1][0]] or FN[fs[0][0]] @ FN[fs[1][0]] < math.cos(math.radians(25))
-        for fi, k in fs: CREASE[fi, k] = hard
+        hard = len(fs) != 2 or TPART[fs[0][0]] != TPART[fs[1][0]] or FN[fs[0][0]] @ FN[fs[1][0]] < math.cos(math.radians(FAC.get("angle", 25)))
+        vex = hard and len(fs) == 2 and (Vn[Tri[fs[1][0]]].mean(0) - Vn[Tri[fs[0][0]]].mean(0)) @ FN[fs[0][0]] < 0    # a raised edge
+        for fi, k in fs: CREASE[fi, k] = hard; RIDGE[fi, k] = vex
     FLIGHT = np.array(FAC.get("light", (-0.3, 0.45, 0.84)), float); FLIGHT /= np.linalg.norm(FLIGHT)
 BIAS = {"side": 0.25}; SEE_TOL = 0.012; BAND = 0.08
 INNER = np.array([[4, 1, 1], [1, 4, 1], [1, 1, 4], [2, 2, 2]]) / 6.0
@@ -377,6 +432,13 @@ for fi, t in enumerate(Tri):
         under = "color_under" in PSPEC[nm] and fn[2] < -0.5 * np.linalg.norm(fn)       # a wing's underside
         c = np.repeat([np.array(PSPEC[nm]["color_under" if under else "color"]) / 255.0], len(L), 0)
         if PSPEC[nm].get("scales"): c = body_paint(L @ Pt, under=False)                         # a leg: the body's own scales
+        if PSPEC[nm].get("kind") == "fan":                       # stretched hide: tension ripples fanning out to the edge, fine grain
+            a = L @ FAN[Tri[fi]]; tt = a[:, 1]; cc = a[:, 0] / np.maximum(tt, 1e-6); q = np.floor((L @ Pt) / PSPEC[nm].get("grain_size", 0.0035))
+            c *= (1 + PSPEC[nm].get("ripple_gain", 0.08) * np.cos(2 * math.pi * PSPEC[nm].get("ripples", 4) * cc) * np.clip(tt * 1.4 - 0.2, 0, 1))[:, None]
+            if PSPEC[nm].get("bone_shade"):                    # a soft dark band on the hide beside each bone (bay: a bay's width at the edge; bone_half: a bone's half width at the hub, at the edge)
+                bh = PSPEC[nm].get("bone_half", (0.012, 0.005)); dist = np.abs(cc - np.round(cc)) * tt * PSPEC[nm].get("bay", 0.11) - 0.55 * (bh[0] + (bh[1] - bh[0]) * tt)
+                c *= (1 - PSPEC[nm]["bone_shade"] * np.exp(-(np.maximum(dist, 0) / PSPEC[nm].get("shade_width", 0.006)) ** 2))[:, None]
+            c *= (1 + PSPEC[nm].get("grain", 0.06) * (np.modf(np.abs(np.sin(q @ np.array((12.9898, 78.233, 37.719)))) * 43758.5453)[0] * 2 - 1))[:, None]
         for a, b in PSPEC[nm].get("lines", []):                                                # painted lines (leaf veins), top view
             a, b = np.array(a), np.array(b); q = (L @ Pt)[:, :2] - a; t = np.clip(q @ (b - a) / ((b - a) @ (b - a)), 0, 1)
             dist = np.linalg.norm(q - np.outer(t, b - a), axis=1)
@@ -391,8 +453,12 @@ for fi, t in enumerate(Tri):
             c *= dk + (1 - dk) * min(max((n @ FLIGHT + 0.25) / 1.1, 0.6 * max(-n[2], 0), 0), 1)     # undersides: bounce light
             t2 = np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX
             e = np.linalg.norm(t2[[1, 2, 0]] - t2[[2, 0, 1]], axis=1); a2 = abs(np.cross(t2[1] - t2[0], t2[2] - t2[0]))
-            d = np.where(CREASE[fi], L * (a2 / np.maximum(e, 1e-9)), 1e9).min(1); ln = FAC.get("line", 0.5)
+            hl = FAC.get("highlight", 0); dk_edge = CREASE[fi] & ~RIDGE[fi] if hl else CREASE[fi]
+            d = np.where(dk_edge, L * (a2 / np.maximum(e, 1e-9)), 1e9).min(1); ln = FAC.get("line", 0.5)
             c *= ln + (1 - ln) * np.clip((d - 0.5) / FAC.get("width", 1.5), 0, 1)[:, None]
+            if hl:                                               # a worn, shiny edge where two faces of a plate meet
+                d = np.where(RIDGE[fi], L * (a2 / np.maximum(e, 1e-9)), 1e9).min(1)
+                c *= 1 + hl * (1 - np.clip((d - 0.5) / FAC.get("width", 1.5), 0, 1))[:, None]
         col[ys_, xs_] = c; done[ys_, xs_] = True; continue
     if nm == "body" and "colors" in B and not PMASK:                            # the body's own scales and underside
         col[ys_, xs_] = body_paint(L @ Pt); done[ys_, xs_] = True; continue
@@ -429,6 +495,19 @@ nrm = np.stack([-gx * k, gy * k, np.ones_like(gx)], -1); nrm /= np.linalg.norm(n
 glow = np.zeros((TEX, TEX))
 for r_, g_, b_, tol in spec.get("glow", []):
     glow = np.maximum(glow, np.clip(1 - np.abs(col * 255 - (r_, g_, b_)).sum(-1) / tol, 0, 1))
+
+if spec.get("ao"):                   # crevice shadow, baked: where pieces overlap, tuck under each other or meet the skin
+    A = spec["ao"]; s0 = bpy.context.scene; s0.render.engine = "CYCLES"; s0.cycles.device = "CPU"; s0.cycles.samples = A.get("samples", 48)
+    aoi = bpy.data.images.new("ao", TEX, TEX, alpha=False, float_buffer=True, is_data=True)
+    m0 = bpy.data.materials.new("bake"); m0.use_nodes = True; n0 = m0.node_tree.nodes.new("ShaderNodeTexImage"); n0.image = aoi
+    m0.node_tree.nodes.active = n0; ob.data.materials.append(m0)
+    if not s0.world: s0.world = bpy.data.worlds.new("bake")
+    s0.world.light_settings.distance = A.get("distance", 0.03)
+    bpy.ops.object.bake(type="AO", margin=8)
+    px = np.empty(TEX * TEX * 4, np.float32); aoi.pixels.foreach_get(px); ao = box(px.reshape(TEX, TEX, 4)[::-1, :, 0].astype(float), 1)
+    ob.data.materials.clear(); print("ao mean", round(float(ao[done].mean()), 3), "darkest 5%", round(float(np.percentile(ao[done], 5)), 3))
+    f = 1 - A.get("strength", 0.7) * (1 - np.clip(ao, 0, 1)); tint = np.array(A.get("tint", (0.3, 0.24, 0.18)))
+    col = col * (tint + (1 - tint) * f[..., None])
 
 def save(arr, name, srgb):
     a = np.atleast_3d(arr); a = np.repeat(a, 3, 2) if a.shape[2] == 1 else a

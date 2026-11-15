@@ -68,6 +68,31 @@
   **Built as `body-fable/round-14/`** (picture `body-fable/sheet-vs-model.jpg`): one closed mesh, 3,334 triangles,
   counts match the piece map. Still open from his first list: dark outlines where gold trim meets green skin. Not seen
   by the reviewer. Nothing uploaded.
+  **Alan's third list (2026-11-15): no more whole-body passes; four parts rebuilt one at a time**, each checked alone
+  in close-up before the dragon is put back together. (1) **Wings, the hero part** (the player mostly sees their top):
+  three gold bones (front bar and two ribs) from one heavy gold knuckle at the shoulder, diamond in section, at least
+  1.8 times as thick as the membrane beside them so they never sink into it, tapering to sharp points; the membrane a
+  taut hide that sags between the bones, with tension ripples, a fine grain and a dark band where hide meets bone; **no
+  leaf veins** (this replaces the "crisp leaf veins" of his first list). (2) **Horns and head armour:** no lines drawn
+  on gold at all; the lines on the sheet are gaps and shadow between separate overlapping plates; each big horn is a
+  base block and four tapered rings, each tucked into the one before, in a clean outward V; the back fins lowered so
+  they do not stand between the horns like a third horn from the front, and no wavy gold tube down the back from
+  above. (3) **Tail:** no blunt stump; from behind the hind legs the body narrows smoothly to a sharp point inside the
+  middle of the tail fan, and the five rays fan out of that end. (4) **Legs:** the three gold talons hook **down, the
+  tips forward and a little inward**, like a bird of prey's clenched foot (this replaces "pointing to the tail" and
+  "curving down and back" of his first two lists; the sheet draws them straight back).
+  **Built as `body-fable/round-15/`** (pictures `round-15/check.jpg` and `close-*.jpg`): one closed mesh, 3,982
+  triangles, counts match the map. What his list asked for as Blender shader effects (bump noise, an ambient-occlusion
+  node, bevel modifiers) is painted or baked into the one texture instead, because Roblox receives only the mesh and
+  its pictures; plate edges are the plates' own facets, since modifier bevels would break the 4,000-triangle budget.
+  The independent reviewer (once, on this round): whole model "not yet"; wing and tail "close"; head, legs and back
+  fins "not yet". On his four items it found the talons thin, the tail point low in the fan, the ribs thin and a square
+  tab at the wing's back root: all four changed after its look, not re-reviewed. Outside his list it ranks: scales
+  read as a woven zigzag, cheek blades spread flat, tail rays half the sheet's width, gold too lemon, back fins flat
+  where the sheet's hook.
+  **Open question for Alan:** from dead ahead a thin gold line still stands above the horns. It is the upright tail
+  fan seen edge-on (102 px tall against the horn tips' 82), not a back fin (those now top out at 60). Removing it means
+  a tail fan about 40% lower, which goes against the side view and his own tail ruling: his call.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:

@@ -168,6 +168,17 @@ mistake would be easy to make twice.
 - **The independent reviewer is good on clutter and thickness, unreliable on angles and sizes.** It asked for horns
   less upright, then preferred the more upright round in a blind pair. It agrees with the outline scores on the scored
   views: check its other claims against them.
+- **Look at the texture picture itself, not only the renders** (Dragon, 2026-11-15). Painted wing detail stayed
+  invisible for 14 rounds because the unwrap cut every gold facet into its own island: the 1024 picture was mostly
+  gaps and the wings got about one texel per sheet pixel. `sheet_model.py`: `uv {angle: 66, margin: 0.004}` makes
+  fewer, bigger islands, and `texel: 1.6` on a part gives a surface the player looks at more of the picture.
+- **Lines drawn on gold read as scratches; bake the shadow instead.** `sheet_model.py`'s `ao` has Blender bake how
+  hidden each spot is and multiplies that into the colour picture, so plates that overlap, rings tucked into each
+  other and gold meeting green all get a dark crevice that reaches Roblox. `facets.highlight` puts a light line on
+  raised edges and keeps dark lines for inward creases only.
+- **Find out what a "wrong piece" in a flat view really is before moving it** (Dragon, 2026-11-15). The spike between
+  the horns in the front view was read as a back fin; `mesh.npz` showed the tallest thing on the middle line was the
+  upright tail fan, 500 px behind the head. Print each part's highest point before changing any.
 
 ## Studio and the place file
 - **Runtime skin looks (2026-11-13):** `AssetService:CreateSurfaceAppearanceAsync` rejects uploaded pictures ("ColorMap
