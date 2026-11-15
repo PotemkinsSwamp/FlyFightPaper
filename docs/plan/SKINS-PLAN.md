@@ -128,8 +128,10 @@ jobs for the six printed sheets (Hazard, Tiger, Flame, Gold Foil, Lava, Galaxy) 
 the rebuilt head won the blind comparison in three of four views and Alan called it "definitely an improvement"; the
 whole dragon followed (round 14: one closed mesh, 3,334 triangles) and went through three correction passes on his
 lists. He still saw "a lot of problems" and gave a third list: stop whole-body passes and rebuild the wings, head
-armour, tail root and legs one part at a time, each checked alone in close-up. That is round 15 (one closed mesh,
-3,982 triangles; `round-15/check.jpg`, `close-*.jpg`), waiting on his look. Rulings and all three lists:
+armour, tail root and legs one part at a time, each checked alone in close-up (round 15). He approved the tail as
+built and gave a fourth list (straight claws as the side and bottom views draw them, one narrow wing root, veins and
+folded bays, heavy fin caps): round 16 (one closed mesh, 3,926 triangles; `round-16/check.jpg`, `close-*.jpg`),
+waiting on his look. Rulings and all four lists:
 [model-sheet decision](../decisions/2026-11-14-shape-skin-model-sheets.md).
 
 ## Keeping skins cheap (Alan OK'd the budget, 2026-11-13)

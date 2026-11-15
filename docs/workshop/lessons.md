@@ -179,6 +179,10 @@ mistake would be easy to make twice.
 - **Find out what a "wrong piece" in a flat view really is before moving it** (Dragon, 2026-11-15). The spike between
   the horns in the front view was read as a back fin; `mesh.npz` showed the tallest thing on the middle line was the
   upright tail fan, 500 px behind the head. Print each part's highest point before changing any.
+- **Pasted review lists can reverse each other; say so before building** (Dragon, 2026-11-15). Claws went back, down
+  and back, hooked forward, then straight back again; wing veins in, out, in; fin caps wide, slim, wide. Each list
+  goes in the decision note with what it replaces, and Alan's own typed words outrank a pasted list (he approved the
+  tail while the pasted list asked to remove what the tail causes).
 
 ## Studio and the place file
 - **Runtime skin looks (2026-11-13):** `AssetService:CreateSurfaceAppearanceAsync` rejects uploaded pictures ("ColorMap

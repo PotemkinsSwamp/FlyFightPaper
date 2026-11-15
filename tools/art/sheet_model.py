@@ -32,7 +32,7 @@ points in sheet pixels):
           a wing skin, a fin's web), color_under (optional: its downward faces' colour), or
           kind "fan", hub [x, y, z], edge [[x, y, z], ...] (the outline from the front tip round the back edge to the
           root), bow [per edge point: how far its column bows forward, as the strut there does], bones [edge indexes
-          where a strut ends], dip (how far the skin sags between two bones, most at the back edge), thick [at the hub,
+          where a strut ends], dip (how far the skin sags between two bones, most at the back edge), fold (true: a sharp crease down the middle of each bay instead of a round sag; crease_shade, crease_width paint it dark; fold_shade lights one plane and shades the other), thick [at the hub,
           at the edge], rows [shares of the way out], ripples (per bay), ripple_gain, grain, grain_size, bone_shade (with bay, bone_half, shade_width) (a wing membrane
           stretched over its struts: sagging bays, painted tension ripples fanning out to the edge and a fine hide grain);
           a tube may have breaks [point indexes]: a new closed shell starts at each (a horn's rings, each tucked into
@@ -248,7 +248,7 @@ def sheet(name, points, thick, mirror):
         for j in range(k): Fc.append((i0 + j, i0 + k + j, i0 + k + (j + 1) % k, i0 + (j + 1) % k)); PART.append(name)
 
 FANV = {}                                             # fan vertices: (column, counted in bays, times t; t = share of the way out)
-def fan(name, hub, edge, bow, bones, dip, thick, rows, mirror):
+def fan(name, hub, edge, bow, bones, dip, thick, rows, mirror, fold=False):
     """A wing membrane stretched over its struts: a column runs from the hub to each outline point, bowed forward
     by bow * 4t(1 - t) at share t of the way out, as the strut that ends there is; rows at the given shares of the way out. Between two bones the
     skin sags by `dip` (most at the back edge); it thins from thick[0] at the hub to thick[1] at the edge."""
@@ -263,7 +263,8 @@ def fan(name, hub, edge, bow, bones, dip, thick, rows, mirror):
             E = np.array(edge[j], float) * m; bv = np.array((-0.5, sgn, 0)) * bow[j]
             for t in rows:
                 P = H + (E - H) * t + bv * 4 * t * (1 - t)                                  # bowed like a drawn rib
-                z = -dip * math.sin(math.pi * (colm[j] % 1)) * t; th = thick[0] + (thick[1] - thick[0]) * t
+                u = colm[j] % 1; z = -dip * ((1 - abs(2 * u - 1)) if fold else math.sin(math.pi * u)) * t      # fold: two flat planes meeting in a crease
+                th = thick[0] + (thick[1] - thick[0]) * t
                 for s in (1, -1): FANV[len(V)] = (colm[j] * t, t); V.append((float(P[0]), float(P[1]), float(P[2] + z + s * th / 2)))
         at = lambda j, r, s: i0 + 2 + (j * R + r) * 2 + s                                  # s: 0 top, 1 underside
         for s in (0, 1):
@@ -285,7 +286,7 @@ for p in spec.get("parts", []):
                                 p.get("thick", 0.004), p.get("ridge", 0.35), p.get("tilt", 0.0), mirror=p.get("mirror", True))
         PART.extend([p["name"]] * len(new))
     elif p.get("kind") == "sheet": sheet(p["name"], p["points"], p.get("thick", 0.004), p.get("mirror", True))
-    elif p.get("kind") == "fan": fan(p["name"], p["hub"], p["edge"], p["bow"], p["bones"], p.get("dip", 0.0), p["thick"], p.get("rows", [0.5, 1.0]), p.get("mirror", True))
+    elif p.get("kind") == "fan": fan(p["name"], p["hub"], p["edge"], p["bow"], p["bones"], p.get("dip", 0.0), p["thick"], p.get("rows", [0.5, 1.0]), p.get("mirror", True), p.get("fold", False))
     else:
         cuts = [0] + list(p.get("breaks", [])) + [len(p["spine"])]                   # each stretch its own closed shell
         for a, b in zip(cuts, cuts[1:]): tube(p["name"], p["spine"][a:b], p["radius"][a:b], p.get("sides", 6), p.get("mirror", True), p.get("roll", 0.0), p.get("phase", 0.0))
@@ -438,6 +439,11 @@ for fi, t in enumerate(Tri):
             if PSPEC[nm].get("bone_shade"):                    # a soft dark band on the hide beside each bone (bay: a bay's width at the edge; bone_half: a bone's half width at the hub, at the edge)
                 bh = PSPEC[nm].get("bone_half", (0.012, 0.005)); dist = np.abs(cc - np.round(cc)) * tt * PSPEC[nm].get("bay", 0.11) - 0.55 * (bh[0] + (bh[1] - bh[0]) * tt)
                 c *= (1 - PSPEC[nm]["bone_shade"] * np.exp(-(np.maximum(dist, 0) / PSPEC[nm].get("shade_width", 0.006)) ** 2))[:, None]
+            if PSPEC[nm].get("fold_shade"):                    # the two planes of a folded bay: the front half lit, the back half in shade
+                c *= (1 + PSPEC[nm]["fold_shade"] * np.where(cc - np.floor(cc) < 0.5, 1.0, -1.0) * np.clip(tt * 2, 0, 1))[:, None]
+            if PSPEC[nm].get("crease_shade"):                  # a dark line down the fold in the middle of each bay
+                dist = np.abs(cc - np.floor(cc) - 0.5) * tt * PSPEC[nm].get("bay", 0.11)
+                c *= (1 - PSPEC[nm]["crease_shade"] * np.exp(-(dist / PSPEC[nm].get("crease_width", 0.003)) ** 2))[:, None]
             c *= (1 + PSPEC[nm].get("grain", 0.06) * (np.modf(np.abs(np.sin(q @ np.array((12.9898, 78.233, 37.719)))) * 43758.5453)[0] * 2 - 1))[:, None]
         for a, b in PSPEC[nm].get("lines", []):                                                # painted lines (leaf veins), top view
             a, b = np.array(a), np.array(b); q = (L @ Pt)[:, :2] - a; t = np.clip(q @ (b - a) / ((b - a) @ (b - a)), 0, 1)

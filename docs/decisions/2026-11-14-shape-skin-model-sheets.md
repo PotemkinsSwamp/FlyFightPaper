@@ -93,6 +93,26 @@
   **Open question for Alan:** from dead ahead a thin gold line still stands above the horns. It is the upright tail
   fan seen edge-on (102 px tall against the horn tips' 82), not a back fin (those now top out at 60). Removing it means
   a tail fan about 40% lower, which goes against the side view and his own tail ruling: his call.
+  **Alan on round 15 (2026-11-15): "the tail looks good i like it the way it is."** The tail fan and its tapered root
+  stay as built, so the thin line above the horns from dead ahead stays too: accepted.
+  **Alan's fourth list (same day).** A new rule first: **the sheet's front view cheats the legs and claws; they follow
+  the bottom, side and three-quarter views only**, and nothing is bent to show in the front view. (1) **Legs:** the
+  down-hooks of the third list are gone; each leg is a sleek scaly pod against the belly with three subtle green toe
+  bumps at its rear and three straight, level, bullet-shaped gold claws pointing straight back, their bases sunk a
+  third into the toes, a dark shadow where gold leaves green. (2) **Wings:** the three bones leave one narrow point at
+  the shoulder (the heavy knuckle of the third list is gone: it and the wide rib roots read as a yellow slab); the
+  membrane gets veins again, branching off the bones at 35 degrees towards the back edge (the third list had removed
+  the leaf veins), and each bay is folded once down its middle into two flat planes instead of sagging softly ("a
+  green felt blanket"). (3) The spike in the front view: the list asks to find and remove it; it is the tail fan he
+  approved, so nothing changed. (4) **Back fins from above:** heavy gold caps again, tips curving left and right in
+  turn, locking into a bold gold-and-green chain (the third list had slimmed them because they read as a wavy tube).
+  **Built as `body-fable/round-16/`** (`check.jpg`, `close-*.jpg`): one closed mesh, 3,926 triangles, counts match the
+  map (which gains piece 22, the toes); outline top 0.88, side 0.85. The reviewer (once, on this round): legs and
+  wing "close", back fins and the whole "not yet"; after its look the toes were made to show, the claws fattened, the
+  veins run one way only (both ways made a net), the folds got a lit and a shaded plane, the fin caps widened. Still
+  short: the back fins are flat caps on stalks from the side, where the sheet's are tall hooks (they were lowered to
+  0.55 of their height in round 15, when the front-view spike was thought to be a fin). **Open for Alan:** put the
+  fins back to their drawn height, now that the spike is known to be the tail he approved?
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
