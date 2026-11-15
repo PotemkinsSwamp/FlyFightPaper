@@ -143,6 +143,11 @@
   toes, straight gold claws trailing back) and its overlapping cream belly plates; the eye stays the glowing gem with
   no pupil (A-C's slit pupils turned down). C itself looked "fried" from painting a painting, so the final six are
   painted once from the renders with C as a guide (`six-views/final/`, `prompt-final.txt`).
+  **Tripo with the final six (Alan):** on the free website, six pictures made six separate one-picture models.
+  Multi-view is not on the free plan ("Upgrade to unlock Smart Mesh & Multi-Views"): the cheapest plan with it is
+  Pro, $20 a month ($156 a year), 3,000 credits, private models, commercial use. The API (our `TRIPO_API` key) does
+  multi-view for 20-30 credits a model; credits are $0.01 each, bought from $1 (developers.tripo3d.ai/en/pricing),
+  not refundable; its terms give paid users the rights to outputs, without saying API buyers count as "paid users".
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
