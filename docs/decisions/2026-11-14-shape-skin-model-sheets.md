@@ -129,6 +129,11 @@
   "ForgeMCP" link to Studio): mostly 2D Roblox art (GUIs, icons, thumbnails), but lists "3D assets" with GLB export;
   free starter credits, assets yours to use commercially, and free-credit work may be shown in its public catalog
   (Alan doesn't mind). Its MCP setup and 3D details need a browser; not tried yet.
+  **The six-view set (same day):** Alan chose **tall back fins again** (the sheet's drawn height; the low caps came from
+  mistaking the front-view tail for a fin), built as `body-fable/round-17/` (one number, `FH = 1.0`). Its six straight-on
+  renders went to Codex in one job (`.planning/skins/dragon/six-views/`: `renders/`, `painted/`, `prompt-paint.txt`,
+  about 100,000 Codex tokens); each painting keeps 95-99% of its render's outline, so the views agree piece for piece.
+  Tripo's multi-view takes `front`, `left`, `back`, `right` (front required); its docs don't say whose left.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
