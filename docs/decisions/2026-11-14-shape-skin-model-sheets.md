@@ -48,8 +48,18 @@
   `body-fable/round-10/` (picture `body-fable/sheet-vs-model.jpg`): fins traced point by point from the side view (gold
   arc, hooked tip, web curving in), tail rays 0.88 of their length, legs as scaled teardrops with two jointed claws,
   eye smaller and level, layered pointed scales, belly plate lines, wing veins and bar joints. One closed mesh, 3,582
-  triangles; outline top 0.92, side 0.84. Not yet seen by Alan or the reviewer; the detailed pass is still to do.
-  Nothing uploaded.
+  triangles; outline top 0.92, side 0.84.
+  **Alan's problem list on round 10 (2026-11-15) and what he asked for:** (1) front: remove the green fin or web between
+  the brow horns; two separate outward-sweeping gold horns in an open V; (2) legs: one smooth, unsegmented dark-green
+  teardrop pod with exactly 3 sharp, separate, conical gold claws pointing to the tail, flush against the lower body
+  from the front; (3) belly: no cross bands; one smooth tan surface from behind the chin to the tail with 2 subtle
+  lengthwise creases; wing undersides solid warm tan with smooth gold struts; no gold chin; (4) back fins: from above a
+  thick overlapping gold-and-green braid, from the side a thick gold leading edge over recessed dark green; (5) wing
+  spars smooth and tapered with no joints, crisp leaf veins, dark outlines round every scale and where gold meets green.
+  **Built as `body-fable/round-12/`** (picture `body-fable/sheet-vs-model.jpg`): 3,422 triangles, one closed mesh.
+  **Decision to review:** the tail fan is now FLAT, as the top and bottom views draw it, because the upright fan of the
+  side and three-quarter views was the green shape standing between the horns from the front. Dark outlines where gold
+  meets green are not done yet. Not seen by the reviewer. Nothing uploaded.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:

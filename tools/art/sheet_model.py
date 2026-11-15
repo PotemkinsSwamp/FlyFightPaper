@@ -30,7 +30,7 @@ points in sheet pixels):
           skill), map (its number on the piece map), or
           kind "sheet", points [[x, y, z], ...] (round the outline), thick (a thin closed slab with exactly that outline:
           a wing skin, a fin's web), color_under (optional: its downward faces' colour);
-          any plain-colour part: scales (true: painted with the body's scales, a leg), lines [[[x, y], [x, y]], ...] with
+          any plain-colour part: smooth (true: smooth-shaded, one plain colour, no facet lines), scales (true: painted with the body's scales, a leg), lines [[[x, y], [x, y]], ...] with
           line_width and line_gain (lines painted on it as seen from above: a wing's leaf veins)}],
   cut (optional pixels: the sheet's drawings of built pieces are cut out of the painted skin, this much wider),
   sun, ambient (optional render light strengths, default 1.5 and 1.0: plain-colour pieces want about 3.5 and 0.45),
@@ -252,7 +252,7 @@ bm = bmesh.new(); bm.from_mesh(me); bmesh.ops.recalc_face_normals(bm, faces=bm.f
 bmesh.ops.triangulate(bm, faces=bm.faces); bm.to_mesh(me); bm.free()
 for poly in me.polygons:      # pieces with a plain colour are faceted (flat lit facets, like the sheets' gold plates)
     nm = PNAMES[poly.material_index]
-    poly.use_smooth = bool(B.get("smooth", False)) if nm == "body" else not PSPEC[nm].get("color")
+    poly.use_smooth = bool(B.get("smooth", False)) if nm == "body" else PSPEC[nm].get("smooth", not PSPEC[nm].get("color"))
 TPART = np.array([p.material_index for p in me.polygons])
 np.savez(os.path.join(OUT, "mesh.npz"), V=np.array([v.co[:] for v in me.vertices]), T=np.array([p.vertices[:] for p in me.polygons]),
          part=TPART, names=np.array(PNAMES), map=np.array([0] + [PSPEC[n].get("map", 0) for n in PNAMES[1:]]))  # sheet_tools.py views
@@ -315,7 +315,9 @@ def sample(pic):
 def body_paint(P, under=True):
     """body.colors {scales [r, g, b], under [r, g, b], under_share (0..1 of the height from the bottom), scale (size),
     style ("pointed": layered scales with a point at the back, a light middle line and a little colour change from
-    scale to scale; default round), plates (optional spacing of the dark lines across the underside)}:
+    scale to scale; default round), edge ([from, darkness]: the dark line round each scale), plates (optional spacing of
+    dark lines across the underside), creases (optional: two lengthwise fold lines on the underside, at this share of
+    the half width)}:
     overlapping scales in rows (each covers the front of the one behind, so its back edge shows, with a dark rim), and
     a plain band underneath (jaw, belly) below under_share of the local height (not with under=False: a leg)."""
     C = B["colors"]; x, y, z = P.T; s = C.get("scale", 0.02); pointed = C.get("style") == "pointed"
@@ -332,10 +334,11 @@ def body_paint(P, under=True):
     if pointed:                       # layered: dark where a scale comes out from under the one in front, light at its point
         g *= (1 + 0.16 * (np.abs(best_dv) < 0.09))[:, None]                                     # the scale's middle line
         g *= (0.9 + 0.2 * np.modf(np.abs(np.sin(best_cu * 12.9898 + best_j * 78.233)) * 43758.5)[0])[:, None]
-    g[best_d > (0.94 if pointed else 0.82)] *= 0.66 if pointed else 0.55
+    e0, e1 = C.get("edge", (0.94, 0.66) if pointed else (0.82, 0.55)); g[best_d > e0] *= e1    # the dark line round each scale
     if not under: return g
     h = (z - bot) / np.maximum(top - bot, 1e-6); sh = C.get("under_share", 0.4)
     g[h < sh] = np.array(C["under"]) / 255.0; g[abs(h - sh) < 0.03] *= 0.6       # the band, with a line on its edge
+    if C.get("creases"): g[(h < sh - 0.03) & (np.abs(np.abs(y) / np.maximum(w, 1e-6) - C["creases"]) < 0.03)] *= 0.86   # lengthwise folds
     if C.get("plates"): g[(h < sh - 0.03) & (np.abs((x / C["plates"]) % 1 - 0.5) > 0.465)] *= 0.74   # belly plates
     return g
 
@@ -380,7 +383,7 @@ for fi, t in enumerate(Tri):
             e = np.linalg.norm(t2[[1, 2, 0]] - t2[[2, 0, 1]], axis=1)          # the edge facing each corner
             a2 = abs(np.cross(t2[1] - t2[0], t2[2] - t2[0])); d = (L * (a2 / np.maximum(e, 1e-9))).min(1)
             c *= 0.45 + 0.55 * np.clip((d - 0.5) / 1.5, 0, 1)[:, None]                 # soft-edged, not jagged
-        elif FAC:
+        elif FAC and not PSPEC[nm].get("smooth"):                # a smooth piece (a leg pod, a claw) keeps one plain colour
             n = fn / max(np.linalg.norm(fn), 1e-12); dk = np.array(FAC.get("dark", 0.6), float)    # one number, or [r, g, b]
             c *= dk + (1 - dk) * min(max((n @ FLIGHT + 0.25) / 1.1, 0.6 * max(-n[2], 0), 0), 1)     # undersides: bounce light
             t2 = np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX
