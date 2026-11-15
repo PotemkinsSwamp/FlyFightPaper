@@ -56,10 +56,18 @@
   lengthwise creases; wing undersides solid warm tan with smooth gold struts; no gold chin; (4) back fins: from above a
   thick overlapping gold-and-green braid, from the side a thick gold leading edge over recessed dark green; (5) wing
   spars smooth and tapered with no joints, crisp leaf veins, dark outlines round every scale and where gold meets green.
-  **Built as `body-fable/round-12/`** (picture `body-fable/sheet-vs-model.jpg`): 3,422 triangles, one closed mesh.
-  **Decision to review:** the tail fan is now FLAT, as the top and bottom views draw it, because the upright fan of the
-  side and three-quarter views was the green shape standing between the horns from the front. Dark outlines where gold
-  meets green are not done yet. Not seen by the reviewer. Nothing uploaded.
+  Built as `body-fable/round-12/`, with the tail fan laid flat to clear the front view.
+  **Alan's second list (2026-11-15):** (1) **the tail fan stands upright in one flat vertical plane**, as the side view
+  draws it; the sheet's top and bottom views draw it lying flat by mistake and are ignored for the tail; its root is
+  pushed forward into the body's rear tip; (2) no gold wave down the back: only the 5 raised hook fins, each with a thick
+  gold cap and a slight sideways curve, alternating; (3) legs built by a `create_detailed_leg()` function: a pod with the
+  body's own raised scales and 3 large thick gold talons (35% of the pod's length, bases touching across the foot,
+  curving down and back so the knuckles show under the body from the front); (4) wings with real thickness; the 3 gold
+  struts start from one shared point at the wing root, have a diamond section and taper evenly to a sharp point at the
+  back edge; no gold trim on the scalloped back edge underneath.
+  **Built as `body-fable/round-14/`** (picture `body-fable/sheet-vs-model.jpg`): one closed mesh, 3,334 triangles,
+  counts match the piece map. Still open from his first list: dark outlines where gold trim meets green skin. Not seen
+  by the reviewer. Nothing uploaded.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
