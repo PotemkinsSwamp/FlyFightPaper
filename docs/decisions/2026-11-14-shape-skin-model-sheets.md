@@ -116,12 +116,16 @@
 - **AI 3D test: Tripo, one picture (Alan, 2026-11-15).** Alan asked to try Tripo (an AI 3D maker) against the Blender
   Dragon, and maybe Forge GUI too. The sheet's three-quarter view draws a back leg on top of the near wing ("the leg is
   not supposed to be above the wing"); Codex repainted it without (`.planning/skins/dragon/tripo/input-three-quarter-fixed.png`).
-  Alan ran it on Tripo's website (free plan): "it came out really inconsistent", no back legs. **Ruling:** make
-  views that agree with each other, by **painting over renders of the Blender Dragon** (the outline is one 3D shape in
-  every view; Codex paints the sheet's look on it), in six views: **front, left, right, back** (Tripo's multi-view
-  takes only those, all at level height) **plus top and bottom** for Blender. Round 16's shape mistakes (flat back
-  fins) come with the renders unless fixed first. Free-plan Tripo outputs belong to Tripo (its terms), so any model we
-  ship is remade on a paid plan. **Forge GUI** (forgegui.com, key `FORGEGUI` in `.env`, an `fgmcp_` key for its
+  Alan ran it on Tripo's website (free plan): "it came out really inconsistent", no back legs. **Ruling (Alan, same
+  day):** the AI tools need a **consistent concept set with every side**: (1) Codex draws **top, bottom, front, back,
+  left and right** from the approved Dragon, each view checked against the others before use; (2) the set goes to
+  **Tripo** (its multi-view takes front, left, back and right, all at level height) and **Forge GUI**, and the two
+  models are compared; (3) Blender only on the winner: trimmed to the budget and cut into the five fit pieces. **The
+  tools do the modelling**, and no tool gets the one-picture view again. **Then Alan's own idea, same day:** Codex can make the
+  set from the Fable Blender Dragon: render it from each side and have Codex turn each render into a finished
+  concept picture ("make it look better, like a finished product with each side"); the shape then agrees across views
+  by construction. Try that first; drawing from the sheet is the fallback. Free-plan Tripo outputs belong to Tripo (its terms), so any
+  model we ship is remade on a paid plan. **Forge GUI** (forgegui.com, key `FORGEGUI` in `.env`, an `fgmcp_` key for its
   "ForgeMCP" link to Studio): mostly 2D Roblox art (GUIs, icons, thumbnails), but lists "3D assets" with GLB export;
   free starter credits, assets yours to use commercially, and free-credit work may be shown in its public catalog
   (Alan doesn't mind). Its MCP setup and 3D details need a browser; not tried yet.

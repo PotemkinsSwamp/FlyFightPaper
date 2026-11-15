@@ -132,7 +132,7 @@ armour, tail root and legs one part at a time, each checked alone in close-up (r
 built and gave a fourth list (straight claws as the side and bottom views draw them, one narrow wing root, veins and
 folded bays, heavy fin caps): round 16 (one closed mesh, 3,926 triangles; `round-16/check.jpg`, `close-*.jpg`),
 waiting on his look. **Tripo test (2026-11-15):** one picture gave an inconsistent model with no back legs; next,
-six matching views painted over renders of the Blender Dragon (front, left, right, back for Tripo; top, bottom).
+Codex draws a consistent six-view set (top, bottom, front, back, left, right), then Tripo and Forge GUI each build from it.
 Rulings and all four lists:
 [model-sheet decision](../decisions/2026-11-14-shape-skin-model-sheets.md).
 
