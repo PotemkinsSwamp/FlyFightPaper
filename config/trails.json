@@ -1,5 +1,5 @@
 {
-  "_comment": "How each trail is drawn (docs/plan/SKINS-PLAN.md, 'Trails: how it works'). A trail is ribbons (strips laid along the path just flown) plus pieces (small 3D models dropped behind, scattered round the path and tumbling). `life`: seconds a bit of trail lives, so the stream is as long as one second of flight. `width`: studs across at the plane's tail. `fast_growth`: how much bigger the trail gets, reached at `fast_at` times the build's own speed. `grow_in`: the share of its life a piece takes to grow to full size (pieces leave the tail small, so the ones passing under your own camera are still small). `hangar_length`: studs of trail shown on the still plane in the hangar. Ribbon: `picture` (assets/fx/trails/<name>.png, spanning the whole trail), `width` (times the common width), `taper` and `fade` (start to end: width share, see-through share), `twist` (turns a second: the strip is laid turning, like a streamer), `look` (foil). Piece: `model` (star, flake, puff, bolt: about 1 stud across), `look` (foil: crinkled metal; matte: cotton; glow: a light), `rate` (a second at the build's own speed; it rises with speed so the spacing stays even), `life` (seconds, least to most), `size` (studs at birth, smallest to biggest; more small ones than big), `shrink` (share of its size left at the end), `spread` (studs: how far from the path a piece can start), `drift` (studs a second, any direction), `rise` (studs a second squared, up), `spin` (degrees a second, about a random axis), `flash` (lightning: on, off, on, gone), `colors` (one picked for each piece).",
+  "_comment": "How each trail is drawn (docs/plan/SKINS-PLAN.md, 'Trails: how it works'). A trail is ribbons (strips laid along the path just flown) plus pieces (small 3D models dropped behind, scattered round the path and tumbling). Ids ending _b are second options waiting for Alan's pick; the loser is deleted. `life`: seconds a bit of trail lives, so the stream is as long as one second of flight. `width`: studs across at the plane's tail. `fast_growth`: how much bigger the trail gets, reached at `fast_at` times the build's own speed. `grow_in`: the share of its life a piece takes to grow to full size (pieces leave the tail small, so the ones passing under your own camera are still small). `hangar_length`: studs of trail shown on the still plane in the hangar. Ribbon: `picture` (assets/fx/trails/<name>.png, spanning the whole trail) and `width` (times the common width), or `strands` thin cords of `colors`, each `width` studs, wound `radius` studs round the path; `taper` and `fade` (start to end: width share, see-through share), `twist` (turns a second), `look` (foil). Piece: `model` (star, flake, shard, spark, puff, bolt: about 1 stud across; soft: a smoke card that faces the camera), `look` (foil: crinkled metal; matte: cotton; soft: smoke; glow: a light), `rate` (a second at the build's own speed; it rises with speed so the spacing stays even), `life` (seconds, least to most), `size` (studs at birth, smallest to biggest; more small ones than big), `shrink` (its size at the end, as a share: over 1 it swells like smoke), `vanish` (the last share of its life over which it fades out), `spread` (studs: how far from the path a piece can start), `drift` (studs a second, any direction), `rise` (studs a second squared, up), `spin` (degrees a second, about a random axis), `align` (lies along the flight path), `twinkle` (size flickers this many times a second), `flash` (lightning: on, off, on, gone), `light` (it lights what is round it, this strong), `rainbow` (its colour runs through `colors` along the stream), `colors` (else one picked for each piece).",
   "life": 1.0,
   "width": 1.5,
   "fast_growth": 1.3,
@@ -7,25 +7,39 @@
   "grow_in": 0.1,
   "hangar_length": 34,
   "trails": {
-    "holo_rainbow": {
-      "ribbons": [
-        { "picture": "trail-rainbow", "width": 1.0, "taper": [1, 0.12], "fade": [0, 1], "twist": 0.8, "look": "foil" }
-      ],
-      "pieces": [
-        { "model": "flake", "look": "foil", "rate": 36, "life": [0.6, 1.0], "size": [0.6, 1.5], "shrink": 0.3, "spread": 1.0, "drift": 2.2, "spin": 540,
-          "colors": [[255, 74, 200], [255, 154, 74], [255, 224, 74], [76, 240, 160], [50, 200, 255], [122, 92, 255]] }
-      ]
-    },
     "gold_stars": {
       "pieces": [
         { "model": "star", "look": "foil", "rate": 34, "life": [0.55, 0.85], "size": [0.9, 2.6], "shrink": 0.3, "spread": 1.6, "drift": 1.6, "spin": 220, "colors": [[255, 196, 40], [255, 214, 90]] },
-        { "model": "flake", "look": "foil", "rate": 40, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.2, "drift": 2.5, "spin": 720, "colors": [[255, 220, 110]] }
+        { "model": "flake", "look": "foil", "rate": 60, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.4, "drift": 2.5, "spin": 720, "colors": [[255, 220, 110]] },
+        { "model": "spark", "look": "glow", "rate": 170, "life": [0.4, 1.0], "size": [0.25, 0.75], "shrink": 0.4, "spread": 1.8, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 226, 120], [255, 244, 190]] }
+      ]
+    },
+    "holo_rainbow": {
+      "pieces": [
+        { "model": "shard", "look": "foil", "rate": 48, "life": [0.7, 1.0], "size": [0.8, 2.2], "shrink": 0.3, "spread": 1.3, "drift": 1.6, "spin": 300, "rainbow": true,
+          "colors": [[255, 74, 200], [255, 154, 74], [255, 224, 74], [76, 240, 160], [50, 200, 255], [122, 92, 255]] },
+        { "model": "spark", "look": "glow", "rate": 150, "life": [0.4, 1.0], "size": [0.25, 0.7], "shrink": 0.4, "spread": 1.6, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 255, 255], [220, 240, 255]] }
+      ]
+    },
+    "holo_rainbow_b": {
+      "ribbons": [
+        { "strands": 6, "radius": 0.75, "width": 0.34, "twist": 1.3, "taper": [1, 0.05], "fade": [0, 0.85],
+          "colors": [[255, 74, 200], [255, 154, 74], [255, 224, 74], [76, 240, 160], [50, 200, 255], [122, 92, 255]] }
+      ],
+      "pieces": [
+        { "model": "spark", "look": "glow", "rate": 150, "life": [0.4, 1.0], "size": [0.25, 0.7], "shrink": 0.4, "spread": 1.4, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 255, 255], [220, 240, 255]] }
       ]
     },
     "storm_sparks": {
       "pieces": [
-        { "model": "puff", "look": "matte", "rate": 40, "life": [0.8, 1.0], "size": [2.2, 4.4], "shrink": 0.2, "spread": 1.3, "drift": 0.8, "spin": 25, "colors": [[98, 92, 178], [78, 74, 150], [124, 118, 200]] },
-        { "model": "bolt", "look": "glow", "rate": 9, "life": [0.4, 0.55], "size": [3.0, 4.5], "shrink": 1, "spread": 1.0, "drift": 0.3, "spin": 0, "flash": true, "colors": [[255, 244, 170]] }
+        { "model": "puff", "look": "matte", "rate": 64, "life": [0.9, 1.0], "size": [2.6, 4.6], "shrink": 1.6, "vanish": 0.35, "spread": 1.4, "drift": 0.6, "spin": 15, "colors": [[70, 66, 128], [88, 84, 150], [58, 56, 108], [110, 106, 176]] },
+        { "model": "bolt", "look": "glow", "rate": 7, "life": [0.35, 0.5], "size": [4, 7], "shrink": 1, "spread": 1.8, "drift": 0.3, "align": true, "flash": true, "light": 9000, "colors": [[255, 244, 170]] }
+      ]
+    },
+    "storm_sparks_b": {
+      "pieces": [
+        { "model": "soft", "look": "soft", "rate": 90, "life": [0.9, 1.0], "size": [4.0, 6.5], "shrink": 1.7, "vanish": 0.45, "spread": 1.3, "drift": 0.6, "spin": 20, "colors": [[70, 66, 128], [88, 84, 150], [58, 56, 108], [110, 106, 176]] },
+        { "model": "bolt", "look": "glow", "rate": 7, "life": [0.35, 0.5], "size": [4, 7], "shrink": 1, "spread": 1.8, "drift": 0.3, "align": true, "flash": true, "light": 9000, "colors": [[255, 244, 170]] }
       ]
     }
   }

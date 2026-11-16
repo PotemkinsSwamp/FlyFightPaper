@@ -3,8 +3,9 @@
         -> .planning/skins/trails/<id>.mp4, or <id>-f<frame>.png stills when frames are given
 Plays config/trails.json in a 3D scene: the real starter plane (plane_assembly.py) flies a weaving path over a floor
 with boxes, at its normal speed, then boosting. First shot: the game's own chase camera (24 studs behind, 6 above,
-70 degrees). Second shot: from another plane flying alongside. Pieces are 3D models built here (star, flake, puff, bolt),
-scattered at random sizes round the path and tumbling; a ribbon is a real strip that turns as it is laid.
+70 degrees). Second shot: from another plane flying alongside. Pieces are 3D models built here (star, flake, shard,
+spark, puff, bolt; soft is a smoke card facing the camera), scattered at random sizes round the path and tumbling; a
+ribbon is a strip laid along the path, or several thin strands wound round each other.
 It imitates the game's drawing; the real look is confirmed in Studio after upload."""
 import sys, os, json, math, random, subprocess, tempfile, shutil, bpy, bmesh
 import numpy as np
@@ -58,21 +59,43 @@ def bolt(bm):                                                                # a
             for i in range(4): bm.faces.new((a[i], a[(i + 1) % 4], b[(i + 1) % 4], b[i]))
         bm.faces.new(rings[0]); bm.faces.new(rings[-1])
     limb(pts, 0.05); limb([pts[3], pts[3] + Vector((0.14, 0.2, 0.05)), pts[3] + Vector((0.3, 0.28, -0.04))], 0.032)
-MODELS = {"star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False)}
+def shard(bm):                                                              # a long foil crystal
+    pts = [bm.verts.new(q) for q in ((0.5, 0, 0), (-0.5, 0, 0), (0, 0.17, 0.1), (0, -0.17, 0.1), (0, 0, -0.19))]
+    for a, b in ((2, 3), (3, 4), (4, 2)): bm.faces.new((pts[0], pts[a], pts[b])); bm.faces.new((pts[1], pts[b], pts[a]))
+def spark(bm):                                                              # a tiny six-point glint
+    for axis in range(3):
+        for sign in (1, -1):
+            a, b = (axis + 1) % 3, (axis + 2) % 3; base = []
+            for da, db in ((1, 0), (0, 1), (-1, 0), (0, -1)):
+                q = [0, 0, 0]; q[a], q[b] = 0.06 * da, 0.06 * db; base.append(bm.verts.new(q))
+            tip = [0, 0, 0]; tip[axis] = 0.5 * sign; top = bm.verts.new(tip)
+            for i in range(4): bm.faces.new((top, base[i], base[(i + 1) % 4]))
+def soft(bm):                                                               # a card that always faces the camera: soft smoke
+    bm.faces.new([bm.verts.new(q) for q in ((-0.5, -0.5, 0), (0.5, -0.5, 0), (0.5, 0.5, 0), (-0.5, 0.5, 0))])
+MODELS = {"star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}
 
 def look(kind):
-    """A material that takes each piece's own colour: crinkled foil, matte cotton or a light."""
+    """A material that takes each piece's own colour and see-through share: crinkled foil, cotton, soft smoke or a light."""
     m = bpy.data.materials.new(kind); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]; own = nt.nodes.new("ShaderNodeObjectInfo")
+    m.surface_render_method = "DITHERED"; nt.links.new(own.outputs["Alpha"], b.inputs["Alpha"])
     nt.links.new(own.outputs["Color"], b.inputs["Base Color"]); nt.links.new(own.outputs["Color"], b.inputs["Emission Color"])
+    def bumpy(scale, strength):
+        n, bump = nt.nodes.new("ShaderNodeTexNoise"), nt.nodes.new("ShaderNodeBump"); n.inputs["Scale"].default_value = scale; n.inputs["Detail"].default_value = 7; bump.inputs["Strength"].default_value = strength
+        nt.links.new(n.outputs["Fac"], bump.inputs["Height"]); nt.links.new(bump.outputs["Normal"], b.inputs["Normal"])
     if kind == "foil":
-        b.inputs["Metallic"].default_value, b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 0.4, 0.32, 0.1
-        n, bump = nt.nodes.new("ShaderNodeTexNoise"), nt.nodes.new("ShaderNodeBump"); n.inputs["Scale"].default_value = 7; n.inputs["Detail"].default_value = 6; bump.inputs["Strength"].default_value = 0.7
-        nt.links.new(n.outputs["Fac"], bump.inputs["Height"]); nt.links.new(bump.outputs["Normal"], b.inputs["Normal"])
+        b.inputs["Metallic"].default_value, b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 0.4, 0.32, 0.1; bumpy(7, 0.7)
     elif kind == "glow": b.inputs["Emission Strength"].default_value = 9
-    else:                                                                    # cotton: soft, a little fluffy
-        b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 1.0, 0.05
-        n, bump = nt.nodes.new("ShaderNodeTexNoise"), nt.nodes.new("ShaderNodeBump"); n.inputs["Scale"].default_value = 5; n.inputs["Detail"].default_value = 8; bump.inputs["Strength"].default_value = 0.5
-        nt.links.new(n.outputs["Fac"], bump.inputs["Height"]); nt.links.new(bump.outputs["Normal"], b.inputs["Normal"])
+    elif kind == "soft":                                                     # a round patch, lumpy at its rim, fading to nothing
+        b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 1.0, 0.35
+        tc, ln, n = nt.nodes.new("ShaderNodeTexCoord"), nt.nodes.new("ShaderNodeVectorMath"), nt.nodes.new("ShaderNodeTexNoise")   # the card's own -0.5..0.5
+        ln.operation = "LENGTH"; n.noise_dimensions = "4D"; n.inputs["Scale"].default_value = 3.2; n.inputs["Detail"].default_value = 5
+        w = nt.nodes.new("ShaderNodeMath"); w.operation = "MULTIPLY"; w.inputs[1].default_value = 40; nt.links.new(own.outputs["Random"], w.inputs[0]); nt.links.new(w.outputs[0], n.inputs["W"])
+        nt.links.new(tc.outputs["Object"], ln.inputs[0]); nt.links.new(tc.outputs["Object"], n.inputs["Vector"])
+        lump = nt.nodes.new("ShaderNodeMath"); lump.operation = "MULTIPLY_ADD"; lump.inputs[1].default_value = 0.3; nt.links.new(n.outputs["Fac"], lump.inputs[0]); nt.links.new(ln.outputs["Value"], lump.inputs[2])
+        rim = nt.nodes.new("ShaderNodeMapRange"); rim.interpolation_type = "SMOOTHSTEP"; rim.inputs["From Min"].default_value, rim.inputs["From Max"].default_value = 0.2, 0.58
+        rim.inputs["To Min"].default_value, rim.inputs["To Max"].default_value = 0.9, 0.0; nt.links.new(lump.outputs[0], rim.inputs["Value"])
+        al = nt.nodes.new("ShaderNodeMath"); al.operation = "MULTIPLY"; nt.links.new(rim.outputs["Result"], al.inputs[0]); nt.links.new(own.outputs["Alpha"], al.inputs[1]); nt.links.new(al.outputs[0], b.inputs["Alpha"])
+    else: b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 1.0, 0.05; bumpy(5, 0.5)   # cotton
     return m
 
 # ---- the scene -----------------------------------------------------------------------------------------------------
@@ -118,7 +141,7 @@ for i in range(46):                                                           # 
     bpy.ops.mesh.primitive_cube_add(size=1, location=(side * r3.uniform(46, 150), i * 34 - 200 + r3.uniform(-10, 10), h / 2))
     box = bpy.context.object; box.scale = (w, d, h)
     box.data.materials.append(flat(r3.choice([(214, 178, 128), (226, 196, 150), (70, 128, 214), (214, 78, 72), (240, 225, 208), (63, 160, 90), (52, 60, 96)])))
-sc.render.engine = "BLENDER_EEVEE"; sc.view_settings.view_transform = "Standard"; sc.render.resolution_x, sc.render.resolution_y = 1280, 720; sc.eevee.taa_render_samples = 12
+sc.render.engine = "BLENDER_EEVEE"; sc.view_settings.view_transform = "Standard"; sc.render.resolution_x, sc.render.resolution_y = 1280, 720; sc.eevee.taa_render_samples = 24
 w = bpy.data.worlds.new("w"); sc.world = w; w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = lin((150, 190, 228)); w.node_tree.nodes["Background"].inputs[1].default_value = 0.9
 sun = bpy.data.objects.new("sun", bpy.data.lights.new("sun", "SUN")); sun.data.energy = 2.6; sun.rotation_euler = (0.75, 0, 0.5); sc.collection.objects.link(sun)
 cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); sc.collection.objects.link(cam); sc.camera = cam; cam.data.clip_end = 3000; cam.data.sensor_fit = "VERTICAL"
@@ -127,28 +150,38 @@ def aim(eye, target, fov):
 
 # ---- the trail's parts ---------------------------------------------------------------------------------------------
 N = 56
-def ribbon_object(r):
+def mix(pair, k): return pair[0] + (pair[1] - pair[0]) * k
+def ribbon_object(r, j):
     me = bpy.data.meshes.new("ribbon"); me.from_pydata([(0, 0, 0)] * (2 * N + 2), [], [(2 * i, 2 * i + 1, 2 * i + 3, 2 * i + 2) for i in range(N)])
     uv = me.uv_layers.new(); me.attributes.new("fade", "FLOAT", "POINT")
     m = bpy.data.materials.new("ribbon"); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]; m.surface_render_method = "BLENDED"; m.use_backface_culling = False
-    t = nt.nodes.new("ShaderNodeTexImage"); t.image = bpy.data.images.load(str(pa.ROOT / "assets/fx/trails" / (r["picture"] + ".png"))); fade = nt.nodes.new("ShaderNodeAttribute"); fade.attribute_name = "fade"
-    mul = nt.nodes.new("ShaderNodeMath"); mul.operation = "MULTIPLY"; nt.links.new(t.outputs["Alpha"], mul.inputs[0]); nt.links.new(fade.outputs["Fac"], mul.inputs[1]); nt.links.new(mul.outputs[0], b.inputs["Alpha"])
-    nt.links.new(t.outputs["Color"], b.inputs["Base Color"]); nt.links.new(t.outputs["Color"], b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = 0.35
+    fade = nt.nodes.new("ShaderNodeAttribute"); fade.attribute_name = "fade"
+    if "picture" in r:
+        t = nt.nodes.new("ShaderNodeTexImage"); t.image = bpy.data.images.load(str(pa.ROOT / "assets/fx/trails" / (r["picture"] + ".png")))
+        mul = nt.nodes.new("ShaderNodeMath"); mul.operation = "MULTIPLY"; nt.links.new(t.outputs["Alpha"], mul.inputs[0]); nt.links.new(fade.outputs["Fac"], mul.inputs[1]); nt.links.new(mul.outputs[0], b.inputs["Alpha"])
+        nt.links.new(t.outputs["Color"], b.inputs["Base Color"]); nt.links.new(t.outputs["Color"], b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = 0.35
+    else:                                                                    # a strand: one plain glowing colour
+        b.inputs["Base Color"].default_value = b.inputs["Emission Color"].default_value = lin(r["colors"][j]); b.inputs["Emission Strength"].default_value = 1.6; nt.links.new(fade.outputs["Fac"], b.inputs["Alpha"])
     if r.get("look") == "foil": b.inputs["Metallic"].default_value, b.inputs["Roughness"].default_value = 0.55, 0.3
     me.materials.append(m); ob = bpy.data.objects.new("ribbon", me); sc.collection.objects.link(ob); return ob, uv
-ribbons = [(r,) + ribbon_object(r) for r in SPEC.get("ribbons", [])]
-looks, pools = {}, []
+ribbons = [(r, j) + ribbon_object(r, j) for r in SPEC.get("ribbons", []) for j in range(r.get("strands", 1))]
+looks, pools, lamps = {}, [], []
 for piece in SPEC.get("pieces", []):
     build, smooth_shade = MODELS[piece["model"]]; me = mesh(piece["model"], build, smooth_shade)
     me.materials.append(looks.setdefault(piece["look"], look(piece["look"]))); pool = []
     for _ in range(int(piece["rate"] * 1.6 * piece["life"][1]) + 6):
         ob = bpy.data.objects.new(piece["model"], me); sc.collection.objects.link(ob); pool.append(ob)
-    pools.append(pool)
+    pools.append(pool); mine = []
+    for _ in range(8 if piece.get("light") else 0):                          # lightning lights the cloud round it
+        lamp = bpy.data.objects.new("flash", bpy.data.lights.new("flash", "POINT")); lamp.data.color = lin(piece["colors"][0])[:3]; lamp.data.use_shadow = False; lamp.data.shadow_soft_size = 1.5
+        sc.collection.objects.link(lamp); mine.append(lamp)
+    lamps.append(mine)
 
 hist = []; alive = [[] for _ in pools]; owed = [0.0] * len(pools); s = 0.0
 def past(t):
     """The tail's place, right and up directions and growth at an earlier moment."""
     i = min(max(int((t - hist[0][0]) * FPS * SUB), 0), len(hist) - 1); return hist[i]
+def rnd(): return Vector((rng.gauss(0, 1), rng.gauss(0, 1), rng.gauss(0, 1))).normalized()
 work = tempfile.mkdtemp(prefix="trail-")
 for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
     t = n / (FPS * SUB) - LIFE - 0.2; v = speed(t); s += v / (FPS * SUB); g = growth(v)
@@ -157,34 +190,49 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
     for i, piece in enumerate(SPEC.get("pieces", [])):
         alive[i] = [q for q in alive[i] if t - q["born"] < q["life"]]; owed[i] += piece["rate"] * v / NORMAL / (FPS * SUB)
         while owed[i] >= 1:
-            owed[i] -= 1; a, rad = rng.uniform(0, math.tau), piece["spread"] * math.sqrt(rng.random()); d = Vector((rng.gauss(0, 1), rng.gauss(0, 1), rng.gauss(0, 1))).normalized()
-            alive[i].append(dict(born=t, life=rng.uniform(*piece["life"]), at=tail + (right * math.cos(a) + up * math.sin(a)) * rad, vel=d * rng.uniform(0, piece["drift"]), g=g,
-                                 size=piece["size"][0] + (piece["size"][1] - piece["size"][0]) * rng.random() ** 2, axis=Vector((rng.gauss(0, 1), rng.gauss(0, 1), rng.gauss(0, 1))).normalized(),
+            owed[i] -= 1; a, rad = rng.uniform(0, math.tau), piece["spread"] * math.sqrt(rng.random())
+            alive[i].append(dict(born=t, life=rng.uniform(*piece["life"]), at=tail + (right * math.cos(a) + up * math.sin(a)) * rad, vel=rnd() * rng.uniform(0, piece["drift"]), g=g, seed=rng.random(),
+                                 size=piece["size"][0] + (piece["size"][1] - piece["size"][0]) * rng.random() ** 2, axis=rnd(), dir=(nose + rnd() * 0.45).normalized(),
                                  turn=rng.uniform(0, math.tau), spin=math.radians(piece.get("spin", 0)) * rng.uniform(0.5, 1) * rng.choice((-1, 1)), color=lin(rng.choice(piece["colors"]))))
     f = n // SUB - int((LIFE + 0.2) * FPS)
     if n % SUB or f < 0 or (STILLS and f not in STILLS): continue
     rig.matrix_world = Matrix(((right.x, nose.x, up.x, p.x), (right.y, nose.y, up.y, p.y), (right.z, nose.z, up.z, p.z), (0, 0, 0, 1)))
-    for r, ob, uv in ribbons:                                                # the strip: one cross-line for each moment of the last second
-        co, fade, us = [], [], []
+    if f / FPS < CUT: eye, target, fov = p - nose * 24 + Vector((0, 0, 6)), p + nose * 60, 70      # shot 1: the game's chase camera
+    else:                                                                    # shot 2: another player flying alongside, looking across
+        side = nose.cross(Vector((0, 0, 1))).normalized(); eye, target, fov = p + side * 40 + nose * 4 + Vector((0, 0, 7)), p - nose * 24, 50
+    aim(eye, target, fov); facing = cam.matrix_world.to_quaternion()
+    for r, j, ob, uv in ribbons:                                             # a strip: one cross-line for each moment of the last second
+        co, fade, mids, wide = [], [], [], []; strands = r.get("strands", 1)
         for i in range(N + 1):
-            k = i / N; te, c, rt, u_, gg = past(t - k * LIFE); ang = math.tau * r.get("twist", 0) * te
-            edge = (rt * math.cos(ang) + u_ * math.sin(ang)) * (CFG["width"] * r["width"] * (r["taper"][0] + (r["taper"][1] - r["taper"][0]) * k) * gg / 2)
-            co += [c + edge, c - edge]; fade += [1 - (r["fade"][0] + (r["fade"][1] - r["fade"][0]) * k)] * 2; us.append(k)
+            k = i / N; te, c, rt, u_, gg = past(t - k * LIFE); ang = math.tau * (r.get("twist", 0) * te + j / strands); out = rt * math.cos(ang) + u_ * math.sin(ang)
+            if strands > 1: mids.append(c + out * (r["radius"] * mix(r["taper"], k) * gg)); wide.append(r["width"] * mix(r["taper"], k) * gg / 2)
+            else: edge = out * (CFG["width"] * r["width"] * mix(r["taper"], k) * gg / 2); co += [c + edge, c - edge]
+            fade += [1 - mix(r["fade"], k)] * 2
+        for i, c in enumerate(mids):                                         # a strand faces the camera, so it reads as a round cord
+            edge = (mids[min(i + 1, N)] - mids[max(i - 1, 0)]).cross(c - eye).normalized() * wide[i]; co += [c + edge, c - edge]
         ob.data.vertices.foreach_set("co", [x for vv in co for x in vv]); ob.data.attributes["fade"].data.foreach_set("value", fade)
         for poly in ob.data.polygons:
-            for li, vi in zip(poly.loop_indices, poly.vertices): uv.data[li].uv = (us[vi // 2], vi % 2)
+            for li, vi in zip(poly.loop_indices, poly.vertices): uv.data[li].uv = (vi // 2 / N, vi % 2)
         ob.data.update()
-    for piece, pool, live in zip(SPEC.get("pieces", []), pools, alive):
+    for piece, pool, live, mine in zip(SPEC.get("pieces", []), pools, alive, lamps):
+        lit = 0
         for ob, q in zip(pool, live + [None] * len(pool)):
             if q is None: ob.scale = (0, 0, 0); continue
-            age = t - q["born"]; k = age / q["life"]; grow = CFG["grow_in"]; size = q["size"] * q["g"] * smooth(k / grow) * (1 + (piece["shrink"] - 1) * max(0, (k - grow) / (1 - grow)) ** 1.5)
+            age = t - q["born"]; k = age / q["life"]; grow = CFG["grow_in"]
+            size = q["size"] * q["g"] * smooth(k / grow) * (1 + (piece["shrink"] - 1) * max(0, (k - grow) / (1 - grow)) ** 1.5)
             if piece.get("flash") and not (k < 0.3 or 0.42 < k < 0.7): size = 0   # lightning: on, off, on, gone
+            if piece.get("twinkle"): size *= 0.3 + 0.7 * random.Random(int(q["seed"] * 1e6) + int(t * piece["twinkle"])).random()
             at = q["at"] + q["vel"] * age + Vector((0, 0, 0.5 * piece.get("rise", 0) * age * age))
-            ob.matrix_world = Matrix.Translation(at) @ Quaternion(q["axis"], q["turn"] + q["spin"] * age).to_matrix().to_4x4() @ Matrix.Diagonal((size, size, size, 1)); ob.color = q["color"]
-    if f / FPS < CUT:                                                         # shot 1: the game's chase camera
-        aim(p - nose * 24 + Vector((0, 0, 6)), p + nose * 60, 70)
-    else:                                                                    # shot 2: another player flying alongside, looking across
-        side = nose.cross(Vector((0, 0, 1))).normalized(); aim(p + side * 40 + nose * 4 + Vector((0, 0, 7)), p - nose * 24, 50)
+            if piece["model"] == "soft": turn = facing @ Quaternion((0, 0, 1), q["turn"] + q["spin"] * age)
+            elif piece.get("align"): turn = Vector((1, 0, 0)).rotation_difference(q["dir"]) @ Quaternion((1, 0, 0), q["turn"])
+            else: turn = Quaternion(q["axis"], q["turn"] + q["spin"] * age)
+            ob.matrix_world = Matrix.Translation(at) @ turn.to_matrix().to_4x4() @ Matrix.Diagonal((size, size, size, 1))
+            color = q["color"]
+            if piece.get("rainbow"):                                         # the colour runs through the list along the stream
+                x = k * (len(piece["colors"]) - 1); i = min(int(x), len(piece["colors"]) - 2); c0, c1 = lin(piece["colors"][i]), lin(piece["colors"][i + 1]); color = tuple(a + (b - a) * (x - i) for a, b in zip(c0, c1))
+            gone = piece.get("vanish", 0); ob.color = tuple(color[:3]) + ((1 - smooth((k - (1 - gone)) / gone)) if gone else 1.0,)
+            if mine and size > 0 and lit < len(mine): mine[lit].location = at; mine[lit].data.energy = piece["light"]; lit += 1
+        for lamp in mine[lit:]: lamp.data.energy = 0
     sc.render.filepath = os.path.join(work, "f%04d.png" % f) if not STILLS else str(OUT / ("%s-f%03d.png" % (TRAIL, f))); bpy.ops.render.render(write_still=True)
 if not STILLS:
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(work, "f%04d.png"), "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", str(OUT / (TRAIL + ".mp4"))], check=True)

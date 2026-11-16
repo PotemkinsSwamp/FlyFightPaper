@@ -1,7 +1,7 @@
 # Since Alan last checked (2026-11-16, third session)
 - Dragon's boosters, eight Commons, eight moving Rares are in. Rares seen right on Studio test planes, not in Play; layers move on up-facing sides only.
 - **Tests:** 665 passed, 2 failed (a shop test had a skin count typed by hand). Fixed; both pass on fresh copies; whole set not re-run in Play since.
-- **Trails:** note OK'd (13 trails, six matching Rares). First videos (flat) were "bad": redone in 3D (real 3D stars, puffs, bolts; a turning ribbon). Nothing uploaded.
+- **Trails:** note OK'd (13 trails, six matching Rares). Flat videos "bad"; 3D: Gold Stars "look good" (sparkle dust added); rainbow and storm redone as two options each. Nothing uploaded.
 
 # Now: finish the game for the beta
 Next (Alan 2026-11-16): **the trails**: your look at the three videos, then upload, the game code, and the other ten, each as a
@@ -48,7 +48,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **Three 3D trail videos** (`.planning/skins/trails/*.mp4`): is this the right direction? **Bots:** my numbers, 70% wear a skin, 50% a trail: yes or change?
+- **Trail videos** (`.planning/skins/trails/`): Gold Stars OK? Storm A or B? Rainbow A or B? **Bots:** my numbers, 70% wear a skin, 50% a trail: yes or change?
 - **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
 - Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?).
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.

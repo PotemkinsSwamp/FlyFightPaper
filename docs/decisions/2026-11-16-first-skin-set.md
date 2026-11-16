@@ -67,6 +67,13 @@
     texture. Because it doesn't look like you used 3D stars. I'm worried about how they're going to look when actually
     put into a 3D environment. Honestly, the width is fine ... the gold stars one in a straight line is kind of odd ...
     random variations, in almost a cloud formation ... We need to make them 3D." Redone as 3D models in a Blender scene.
+  - **The 3D videos:** "the gold stars look good, except it still needs that little particles that are around the gold
+    star as well to like fill in the rest of it." **Holo Rainbow, no:** "it looks like a banner ... It's just a 2D banner
+    that's rotating." **Storm Sparks, no:** "they just look like bubbles ... purple bubbles with little lightning ... it
+    should be actual like thick clouds coming out and then lightning, you know, exploding throughout it." Redone: Gold
+    Stars with sparkle dust; two options each for the other two (storm: A thick cotton cloud, B soft smoke, both lit
+    from inside by the lightning; rainbow: A foil crystals whose colour runs through the rainbow, B six coloured cords
+    wound round each other). Waiting for his picks.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
