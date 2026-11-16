@@ -12,7 +12,7 @@
 Next: the Toilet Roll shake in flight (the crane's moving gun pieces follow the moved guns); skin art: the Dragon is
 rebuilt in parts (head OK'd by Alan 2026-11-15: 1,600 triangles, glowing gem eyes; the wing sent through Tripo was
 rejected; wing rebuilt from the painting's outline, 1,130 triangles, OK'd 2026-11-15; tail fan rebuilt solid the same
-way, 840 triangles, **waiting on Alan's OK**: `.planning/skins/dragon/parts/tail/built/tail-close.jpg`); then the
+way, 840 triangles, OK'd too (4,700 so far); leg next); then the
 six printed skins, Shark Jet, Dragon, the three trails
 ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a

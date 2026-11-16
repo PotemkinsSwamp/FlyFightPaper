@@ -258,6 +258,13 @@
   Known and accepted as shown: ring joints are paint only, the skin is flat, small notches where the skin meets each
   rib tip. Rib height (a quarter of its width each side) and skin thickness are Claude's numbers. Script and run
   order: `.planning/skins/dragon/paint/tools/README.md`. Tail fan and back fins go the same way next.
+- **Tail fan built from a fresh side painting: accepted** (Alan, 2026-11-15, late night, on
+  `.planning/skins/dragon/parts/tail/built/tail-close.jpg`): "the tail looks great". Alan first flagged the old
+  placeholder tail's render: "that tail model is broken ... huge gaps". So the old tail was not used at all: Codex
+  painted a clean side view from the design sheet (one picture), and the wing's method measured it in rings round the
+  hub: five ribs on ONE solid skin sheet, both faces alike, 840 triangles, 0 see-through gaps (the builders now count
+  them). The fan is about 7% smaller than the sheet draws it so the Dragon keeps its length; hub position and rib
+  height are Claude's numbers. Dragon so far: 4,700 triangles (head, two wings, tail). Leg next.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
