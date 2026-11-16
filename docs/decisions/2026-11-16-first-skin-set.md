@@ -14,8 +14,10 @@
   idea." How each one moves is a new mechanic: a how-it-works note for his OK comes before code.
 - **Not in this set:** Gold Foil, Tiger Stripes and Frozen ("we just are not including them yet; we are starting with 8
   rare and 8 common"). They stay out of the game's list for now, not deleted from the ideas.
-- **Tools:** the work runs on the Fable model; TextureCraft (the hand-texturing desktop app,
-  [lessons](../workshop/lessons.md)) is worth trying for the pictures.
+- **Tools, tested first:** the work runs on the Fable model. Before making the set, one test skin two ways: Fable with
+  the tools it usually uses, and TextureCraft (the hand-texturing desktop app, [lessons](../workshop/lessons.md)); Alan
+  compares them ("we will try texture craft first though a test one with just fable ... and one with texture craft and
+  compare them").
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

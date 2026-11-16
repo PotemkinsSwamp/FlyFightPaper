@@ -277,6 +277,10 @@ mistake would be easy to make twice.
   tail while the pasted list asked to remove what the tail causes).
 
 ## Studio and the place file
+- **Test players are plain tables** (2026-11-16): `player:GetAttribute` in a server path the unit tests reach errors there
+  (FlightService.spec failed twice). Guard Studio-only player reads with `typeof(player)=="Instance"`.
+- **Fresh code in Edit without a restart** (2026-11-16): Edit keeps old `require` results; clone the module under a
+  new name in the same folder (and rename the generated modules it requires) to run the synced version, then delete the clones.
 - **Runtime skin looks (2026-11-13):** `AssetService:CreateSurfaceAppearanceAsync` rejects uploaded pictures ("ColorMap
   value should be an EditableImage Content", NormalMap too), and an EditableImage is ~4 MB per 1024 picture. Make
   SurfaceAppearances ahead in an `.rbxmx` instead (Rojo live-syncs their maps, unlike MeshId). `AssetService:
@@ -595,6 +599,13 @@ mistake would be easy to make twice.
   every change stacks hooks. `say()` without `grow` already attaches it.
 
 ## Working with Alan
+- **A Play report: ask how he did it before diagnosing, and answer his own suspicion first** (2026-11-16, Dragon). He
+  said shots that looked like misses hit him; Claude blamed the "Dev: skin" button ("I was equipping it in the hangar"),
+  then asked about a side cause ("has nothing to do with what I said"). He suspected the collision: check that first,
+  with evidence (the server's hit shape against the drawn one), then raise other causes in one sentence each.
+- **Quote sizes from the shapes the game uses** (2026-11-16): plane outlines from default collision boxes told Alan the
+  Dragon would be 1.3-1.45x the plane; on the exact hit shapes it was 0.96-1.48x. Measure on PreciseConvexDecomposition
+  copies (`tools/plane_areas.lua`) before giving a number.
 - **No little cardboard tabs as buttons** (Alan, told twice; 2026-11-13 on the Skins tab's Cancel): buttons are paper
   and tape (`Art.buttonGreen`, `Art.buttonRed` and the main menu's taped strips), never `Art.tab`.
 - **A row under a card stays inside the card's edges** (Alan 2026-11-12, report card jar row, four looks): line pieces
