@@ -183,6 +183,7 @@ function Effects.start(getPlane)
    end
   end
  end
+ local SLIDE=15 -- studs over which a shot drawn from a moved (shape-skin) gun joins its real path
  local function drawShot(id,weapon,position,direction,speed,expires,time,enemy,fan)
   local part=acquire(weapon)
   if not part then return end
@@ -222,7 +223,8 @@ function Effects.start(getPlane)
     if event.owner~=myId or event.weapon=="eraser" then
      if (event.lead or 1)==1 then Motion.fired(workspace.Planes:FindFirstChild(event.owner),event.slot) end
      local shooter=workspace.Planes:FindFirstChild(event.owner);local move=shooter and shooter:FindFirstChild("Root") and shooter:GetAttribute("SkinGunMove"..tostring(event.slot))
-     drawShot(event.id,event.weapon,move and event.position+shooter.Root.CFrame:VectorToWorldSpace(move) or event.position,event.direction,event.speed,event.expires,event.time,hostile(event.owner),event.fan)
+     drawShot(event.id,event.weapon,event.position,event.direction,event.speed,event.expires,event.time,hostile(event.owner),event.fan)
+     if move and active[event.id] then active[event.id].slide=shooter.Root.CFrame:VectorToWorldSpace(move) end
     end
    elseif event.kind=="end" then
     local shot=active[event.id]
@@ -249,6 +251,9 @@ function Effects.start(getPlane)
     local speed=shot.homing and Rules.eraserSpeed(shot.speed,shot.flown,Config) or shot.speed
     local position=shot.follow and shot.follow.CFrame:PointToWorldSpace(shot.offset) or shot.ballistic and shot.position+Rules.shotOffset(shot.ballistic,shot.direction,elapsed,shot.fan) or shot.position+shot.direction*speed*(shot.homing and math.min(elapsed,.5) or elapsed)
     if shot.homing then shot.flown+=(position-shot.position).Magnitude;shot.position=position;shot.time=now end
+    -- Under a shape skin the gun is drawn moved (SkinShapes): the shot starts there and slides onto its real path within
+    -- SLIDE studs, so near its target it is drawn exactly where it is (Alan 2026-11-16: hits looked like misses).
+    if shot.slide then position+=shot.slide*math.max(0,1-(shot.homing and shot.flown or shot.speed*elapsed)/SLIDE) end -- erasers count what they have flown
     -- Near miss: an enemy shot passing within a few studs this frame shakes the camera and whooshes.
     if shot.enemy and body and not shot.passed and shot.last then
      local step=position-shot.last;local rel=body.Position-shot.last
@@ -374,8 +379,8 @@ function Effects.start(getPlane)
   Motion.fired(plane,mount.slot)
   local factor=plane:GetAttribute("MountScale") or 1
   local position=body.CFrame:PointToWorldSpace(Aircraft.muzzleOffset(mount.slot,factor,mount.weapon.id,Aircraft.fitOf(plane)))
-  -- Under a shape skin the gun you see hangs lower (SkinShapes): the drawn shot starts there; the server's doesn't move.
-  position+=body.CFrame:VectorToWorldSpace(plane:GetAttribute("SkinGunMove"..mount.slot) or Vector3.zero)
+  -- Under a shape skin the gun you see hangs lower (SkinShapes): the drawn shot starts there and slides onto the real path.
+  local move=body.CFrame:VectorToWorldSpace(plane:GetAttribute("SkinGunMove"..mount.slot) or Vector3.zero)
   local aim,range=Effects.aim(body,weapon)
   local direction=Aircraft.converge(body,position,aim,range or convergence)
   if weapon.spread_deg>0 then
@@ -397,6 +402,7 @@ function Effects.start(getPlane)
    end
    if hitAfter then task.delay(hitAfter,burst,wallAt,2,2,.8) end
    drawShot("local"..serial,weapon.id,position,direction,weapon.projectile_speed,now+(hitAfter or life),now,nil,fan)
+   if move.Magnitude>0 and active["local"..serial] then active["local"..serial].slide=move end
   end
   local flash=acquire()
   if flash then
