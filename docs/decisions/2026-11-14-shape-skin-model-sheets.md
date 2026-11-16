@@ -249,6 +249,15 @@
   Simple parts (wing, tail fan, fins) are built straight from the reference picture's outline and measurements, checked
   against that picture, and textured afterwards (the Codex paintings laid straight onto flat faces, or TextureCraft
   materials by part). The wing is redone that way next; no verdict on the tail, body or legs yet.
+- **Wing built from the painting: accepted** (Alan, 2026-11-15, late night, on
+  `.planning/skins/dragon/parts/wing/built/wing-close.jpg` and `parts/whole2/dragon-new-wings.jpg`): "the wings look
+  good. I'd move on now." How: Codex's top painting is read column by column (the outline, each rib's two edges, the
+  bright line down each rib, the tip caps); three ribs and one skin sheet are built to those numbers (outline match
+  0.998) and the painting is laid straight on top; the skin's underside wears the underside painting with its gold
+  painted out. No Tripo, no credits. 1,130 triangles a wing (Dragon so far: 3,860 with both wings and the head).
+  Known and accepted as shown: ring joints are paint only, the skin is flat, small notches where the skin meets each
+  rib tip. Rib height (a quarter of its width each side) and skin thickness are Claude's numbers. Script and run
+  order: `.planning/skins/dragon/paint/tools/README.md`. Tail fan and back fins go the same way next.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
