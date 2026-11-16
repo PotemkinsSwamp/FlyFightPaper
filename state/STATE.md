@@ -28,8 +28,7 @@ Shop: chalk headings white with a dark outline; card parts sit still and bob. St
 Report card: team cards moved apart a little (they touched); winners' note just "Red team wins!" (scores are in the
   boxes); Tab's live standings use the same card without grades or note.
 Unlock: no count sticker on the in-match Menu button; phones keep the level-up note's first size. Customize binder at 95% so the stats paper fits. Welcome card sits over Play.
-Toilet Roll leaned 8 (not 9); boosters keep their weight (Elastic now -3 studs/s). Tank bots: Toilet Roll 3 Pellets,
-  Cardboard 2 Crayons + a Pellet.
+Toilet Roll leaned 8 (not 9); boosters keep their weight (Elastic now -3 studs/s). Tank bots: Toilet Roll 3 Pellets, Cardboard 2 Crayons + a Pellet.
 Bots follow a target up a vent: veterans 60%, Aces 90%; with 2+ spitballs stuck they fly to a fan. Staple ~800 studs.
   Spitball builds: Mk2 body, Nose 1, Wings 3, Tail 3 (105 studs/s); the Paper check skips them.
 Spitball: 5 per plane in all; each 6% slower, 1.5x Lift burn, 2.5 studs/s sink; stuck ones 4 credit each; hit box = pellet's.
@@ -52,7 +51,7 @@ Waiting on Alan
 - **Ten trail videos:** OK or what is wrong, each. My weakest two: Circuit Trace (its dark core is blotchy) and Chalk Dust (very white from your own seat). If OK'd, five small models need your OK on a safety sheet before upload: heart, note, note pair, petal, curl.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next trail on every plane (gold stars, holo rainbow, storm sparks, then each its own). Against your videos: is each one thick body? Stars 3D and foil? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Gold Stars is the heaviest)?
 - **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
-- Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?).
+- Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?). Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);
   no gun piece floating off the crane's guns, at the desk and firing; the Toilet Roll shake with my recorder (your go).
 - Publish when you like (report card, new shop window; shop button Studio-only until go-live). Save to File for the new weapon models and tape-roll tower (your go).
