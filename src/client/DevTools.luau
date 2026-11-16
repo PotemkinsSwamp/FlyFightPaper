@@ -162,7 +162,7 @@ function DevTools.start(menu)
 		for id, trail in require(Root.Generated.Trails).trails do table.insert(list, id) end
 		table.sort(list)
 		trailTurn = (trailTurn + 1) % (#list + 1)
-		require(script.Parent.PlaneTrails).setDevTrail(list[trailTurn])
+		player:SetAttribute("DevTrail", list[trailTurn]) -- PlaneTrails reads it
 		trailButton.Text = "Dev: trail: " .. (list[trailTurn] and string.gsub(list[trailTurn], "_", " ") or "each its own")
 	end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).

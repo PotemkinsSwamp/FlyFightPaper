@@ -86,6 +86,9 @@ function LooksRules.config()
 	end
 	for _, skill in ipairs({ "rookie", "regular", "experienced", "ace" }) do assert(raw.bot_tiers[skill], "missing bot skill") end
 	assert(#trails > 0, "bots need a sold trail")
+	local odds = raw.bot_looks -- chances in 100 (Alan 2026-11-16: one roll for a skin and a trail both)
+	assert(type(odds) == "table" and integer(odds.both) and integer(odds.skin) and integer(odds.trail) and integer(odds.neither), "invalid bot look chances")
+	assert(odds.both + odds.skin + odds.trail + odds.neither == 100, "bot look chances must add up to 100")
 	items, skinsByTier, soldTrails = freeze(byID), freeze(byTier), freeze(trails)
 	config = freeze(raw)
 	return config
@@ -158,15 +161,19 @@ function LooksRules.wear(profile, skinID, trailID, operationID)
 	updated.looks.skin, updated.looks.trail = skinID, trailID
 	return freeze({ profile = updated, operation = { type = "LooksWorn", operationID = operationID, skinID = skinID, trailID = trailID } })
 end
+-- One roll for each bot, four results (Alan 2026-11-16: "Not every bot needs skins. Not every bot needs trails. They
+-- also need a roll for having both"): a skin and a trail, a skin only, a trail only, or neither. A bot with both wears
+-- its skin's matching trail when the skin has one.
 function LooksRules.botLooks(skill, random)
 	local cfg = LooksRules.config()
-	local choices = skinsByTier[cfg.bot_tiers[skill] or cfg.bot_tiers.rookie]
-	local function choose(list)
-		local index = random(#list)
-		assert(integer(index) and index >= 1 and index <= #list, "random must return an integer in 1..n")
-		return list[index]
+	local function choose(list, n)
+		local index = random(n or #list)
+		assert(integer(index) and index >= 1 and index <= (n or #list), "random must return an integer in 1..n")
+		return list and list[index] or index
 	end
-	local skin = choose(choices)
-	return skin, items[skin].trail or choose(soldTrails)
+	local odds, roll = cfg.bot_looks, choose(nil, 100)
+	local skin = roll <= odds.both + odds.skin and choose(skinsByTier[cfg.bot_tiers[skill] or cfg.bot_tiers.rookie]) or nil
+	local trailed = roll <= odds.both or (roll > odds.both + odds.skin and roll <= 100 - odds.neither)
+	return skin, trailed and (skin and items[skin].trail or choose(soldTrails)) or nil
 end
 return table.freeze(LooksRules)

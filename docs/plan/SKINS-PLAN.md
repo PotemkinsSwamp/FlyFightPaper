@@ -157,7 +157,7 @@ Lava and Comic Book have no matching trail. Names are Claude's picks.
   Dragon Embers and Folded Petals come with their skin; anyone who already owns the crane gets its petals.
 - **Bots (Alan, 2026-11-16; replaces "bots all wear skins"):** "Not every bot needs skins. Not every bot needs trails."
   "They also need a roll for having both." So each bot makes one roll with four results: skin and trail 35%, skin only
-  35%, trail only 15%, neither 15% (Claude's numbers, the same as 70% a skin and 50% a trail; one line to change). A bot
+  35%, trail only 15%, neither 15% (Alan OK'd the numbers 2026-11-16; `bot_looks` in `config/looks.json`, one line to change). A bot
   with a trail wears its skin's matching trail when the skin has one; otherwise a random one.
 - **Looks OK'd by Alan (2026-11-16, 3D videos in `.planning/skins/trails/`, numbers in `config/trails.json`):** Gold Stars
   (foil stars, flakes, sparkle dust), Storm Sparks (thick soft smoke lit from inside by lightning), Holo Rainbow (thick
@@ -175,7 +175,8 @@ Lava and Comic Book have no matching trail. Names are Claude's picks.
   what they draw. **Built 2026-11-16 (`src/client/PlaneTrails.luau`, not yet seen in Play):** smoke and sparkle dust
   use the smoke and sparkle pictures Roblox ships (the game already used both), so no picture is uploaded; a foil
   flake (under half a stud) is a plain thin block; only the star and the lightning bolt are uploaded models
-  (`tools/art/trail_pieces.py`, ids in `config/trails.json` `meshes`). Sparkle dust became particles too: 170 a second
+  (`tools/art/trail_pieces.py`; uploaded and Approved 2026-11-16 after Alan's OK on the safety sheet, ids in
+  `config/trails.json` `meshes`). Sparkle dust became particles too: 170 a second
   as parts was too many. Gold Stars is about 70 to 90 moving parts a plane, so the 12-plane frame-rate check is still
   open. One short piece of code reads each trail's row in `config/trails.json`; no trail gets code of its own.
 - **How the pictures are made (written before the 3D change; now only ribbons and any flat glows use pictures):** most are drawn by code in PhotoCraft (free, on Alan's PC at

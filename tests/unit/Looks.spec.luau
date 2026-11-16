@@ -182,16 +182,30 @@ function Spec.run()
 		Schema.mergeEconomic(p, view); assert(Schema.canonical(p.looks) == saved and p.looks ~= view.looks)
 		assert(Schema.validate(prestiged.profile, catalog))
 	end)
-	test("bot looks use every skill tier with matching trails or a sold plain trail", function()
+	test("bots make one roll: a skin and a trail, a skin only, a trail only or neither, at the config's chances", function()
+		local odds = Looks.config().bot_looks
+		assert(odds.both == 35 and odds.skin == 35 and odds.trail == 15 and odds.neither == 15)
+		local seen = { both = 0, skin = 0, trail = 0, neither = 0 }
 		for skill, tier in pairs({ rookie = "common", regular = "rare", experienced = "legendary", ace = "mythical", unknown = "common" }) do
-			for _, last in ipairs({ false, true }) do
-				local skin, trail = Looks.botLooks(skill, function(n) return last and n or 1 end)
-				assert(Looks.item(skin).tier == tier)
-				if skin == "shark_jet" then assert(trail == "water_spray")
-				elseif skin == "dragon" then assert(trail == "dragon_embers")
-				else assert(Looks.item(trail).kind == "trail" and Looks.item(trail).sold) end
+			for roll = 1, 100 do
+				for _, last in ipairs({ false, true }) do
+					local first = true
+					local skin, trail = Looks.botLooks(skill, function(n)
+						if first then first = false; assert(n == 100); return roll end
+						return last and n or 1
+					end)
+					assert(skin == nil or Looks.item(skin).tier == tier)
+					if skin and trail then
+						if skin == "shark_jet" then assert(trail == "water_spray") elseif skin == "dragon" then assert(trail == "dragon_embers") end
+					end
+					assert(trail == nil or (Looks.item(trail).kind == "trail" and (Looks.item(trail).sold or Looks.item(skin).trail == trail)))
+					local result = skin and (trail and "both" or "skin") or (trail and "trail" or "neither")
+					seen[result] += 1
+				end
 			end
 		end
+		for result, chance in pairs(odds) do assert(seen[result] == chance * 10, result .. ": " .. seen[result]) end
+		assert(not pcall(Looks.botLooks, "rookie", function() return 0 end) and not pcall(Looks.botLooks, "rookie", function() return 101 end))
 	end)
 	test("all twenty-two look products are disabled priced and produce frozen lookUnlock grants", function()
 		local commerce = assert(Commerce.catalog(CommerceConfig)); local count = 0

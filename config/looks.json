@@ -35,5 +35,6 @@
     { "id": "water_spray", "name": "Water Spray", "tier": "trail", "sold": false },
     { "id": "dragon_embers", "name": "Dragon Embers", "tier": "trail", "sold": false }
   ],
-  "bot_tiers": { "rookie": "common", "regular": "rare", "experienced": "legendary", "ace": "mythical" }
+  "bot_tiers": { "rookie": "common", "regular": "rare", "experienced": "legendary", "ace": "mythical" },
+  "bot_looks": { "both": 35, "skin": 35, "trail": 15, "neither": 15 }
 }

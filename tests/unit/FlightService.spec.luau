@@ -45,12 +45,13 @@ function Spec.run()
    end)
   end
  end)
- test("bots keep difficulty-based skins and trails even when player look options are supplied",function()
+ test("bots roll their own difficulty-based skins and trails even when player look options are supplied",function()
   for _,tier in ipairs({"rookie","regular","experienced","ace"}) do
    withAddedPilot(nil,{id="look-test-bot",name="Test bot",tier=tier,skin="dragon",trail="dragon_embers"},function(f,p)
-    local skin=assert(Looks.item(p.skin));local trail=assert(Looks.item(p.trail))
-    assert(p.kind=="bot" and skin.tier==Looks.config().bot_tiers[tier] and trail.kind=="trail")
-    assert(skin.trail and p.trail==skin.trail or not skin.trail and trail.sold)
+    -- one roll (LooksRules.botLooks): a bot may wear a skin, a trail, both or neither, never the options' looks unless rolled
+    local skin,trail=Looks.item(p.skin),Looks.item(p.trail)
+    assert(p.kind=="bot" and (p.skin==nil or skin.tier==Looks.config().bot_tiers[tier]) and (p.trail==nil or trail.kind=="trail"))
+    assert(not (skin and trail) or (skin.trail and p.trail==skin.trail or not skin.trail and trail.sold))
     assert(p.model:GetAttribute("Skin")==p.skin and p.model:GetAttribute("Trail")==p.trail)
     local firstSkin,firstTrail=p.skin,p.trail;f:replace(p)
     assert(p.skin==firstSkin and p.trail==firstTrail and p.model:GetAttribute("Skin")==firstSkin and p.model:GetAttribute("Trail")==firstTrail)

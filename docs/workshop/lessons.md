@@ -830,5 +830,12 @@ Back to [HOME](../HOME.md)
   one colour from the seat (Holo Rainbow was all pink): repeat it (`rainbow`: 3 in `config/trails.json`).
 - **More pieces do not make a body.** Foil crystals at 170 a second still read as scattered bits from alongside; soft
   smoke cards at 90 a second read as a solid plume.
+- **Look for a picture Roblox already ships before drawing one.** The soft smoke and the sparkle glint are
+  `rbxasset://textures/particles/smoke_main.dds` and `sparkles_main.dds` (the game already used both): no drawing, no
+  safety sheet, no upload. A piece under half a stud (the foil flake) is a plain block. Three trails needed two uploads.
+- **Desktop control hides Alan's other windows and cannot see Studio (2026-11-16).** The computer-use grant for "Roblox
+  Studio" does not cover the running window (`robloxstudiobeta.exe` on D:), and its first screenshot hid every other
+  open app. Alan declined the second request. When Studio will not draw (viewport 1 x 1, no frames), stop Play, clear
+  DevMute and hand him a what-to-look-at list; do not reach for desktop control.
 - **A flat card in Blender needs Object coordinates** for a round fading patch (Generated gives nothing on a flat quad),
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.

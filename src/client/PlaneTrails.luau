@@ -3,10 +3,13 @@
 -- sparkle dust are Roblox particles (flat cards that face you are what particles are, and Roblox ships both pictures);
 -- stars, flakes and bolts are real small parts moved here every frame (no physics, nothing on the server).
 local AssetService = game:GetService("AssetService")
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Config = require(Root:WaitForChild("Generated"):WaitForChild("Trails"))
 local PlaneTrails = {}
+-- Studio only: the player attribute DevTrail (the "Dev: trail" button, or a test) puts one trail on every plane here.
+local dev = RunService:IsStudio() and Players.LocalPlayer
 
 local PICTURE = { soft = "rbxasset://textures/particles/smoke_main.dds", spark = "rbxasset://textures/particles/sparkles_main.dds" }
 local MATERIAL = { foil = Enum.Material.Foil, glow = Enum.Material.Neon, matte = Enum.Material.Fabric }
@@ -153,8 +156,9 @@ local function step(dt)
 	local planes = workspace:FindFirstChild("Planes")
 	if not planes then return end
 	for plane, w in worn do if not plane.Parent then dress(plane, nil) end end
+	local forced = dev and dev:GetAttribute("DevTrail")
 	for _, plane in planes:GetChildren() do
-		local id = PlaneTrails.devTrail or plane:GetAttribute("Trail")
+		local id = forced or plane:GetAttribute("Trail")
 		id = Config.trails[id] and id or nil
 		local w = worn[plane]
 		if (w and w.id) ~= id then dress(plane, id); w = worn[plane] end
@@ -211,8 +215,5 @@ function PlaneTrails.start()
 	end
 	RunService.RenderStepped:Connect(step)
 end
-
--- Studio dev button: every plane on this screen wears this trail (nil: each wears its own).
-function PlaneTrails.setDevTrail(id) PlaneTrails.devTrail = id end
 
 return PlaneTrails

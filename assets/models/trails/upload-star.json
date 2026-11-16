@@ -1,0 +1,24 @@
+{
+  "path": "operations/9e186edb-4ddd-41bb-9408-94b573c589a6",
+  "operationId": "9e186edb-4ddd-41bb-9408-94b573c589a6",
+  "done": true,
+  "response": {
+    "path": "assets/71293820950203",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-16T19:13:27.386Z",
+    "assetId": "71293820950203",
+    "displayName": "FFP trail star",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Model",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

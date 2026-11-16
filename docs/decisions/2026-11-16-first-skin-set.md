@@ -83,6 +83,12 @@
   - **Bots' chances:** asked "70% wear a skin and 50% a trail, rolled separately: yes?", he said "bots they also need a
     roll for having both." Claude's reading: one roll with four results, skin and trail 35%, skin only 35%, trail only
     15%, neither 15% (the same odds, with "both" its own result). The numbers are Claude's, his to change.
+    **Alan OK'd 35/35/15/15** (fourth session, asked with the four numbers written out); built as `bot_looks` in
+    `config/looks.json`.
+  - **Upload (fourth session):** shown the safety sheet of the only two pieces needing upload (a folded star, a
+    lightning bolt; smoke and sparkles use Roblox's own pictures), he chose "Upload both". Both came back Approved.
+    He also chose "Tests and screen grabs" for Claude's own Play run, then declined desktop access to the Studio
+    window when it would not draw: the looking is his.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

@@ -2,6 +2,12 @@
 local JSONTypes = require(script.Parent.JSONTypes)
 return JSONTypes.map({
     ["_comment"] = "Skins and trails stay owned through prestige. Prices are whole Paper or Robux; live Roblox sales stay disabled in commerce.json.",
+    ["bot_looks"] = JSONTypes.map({
+        ["both"] = 35,
+        ["neither"] = 15,
+        ["skin"] = 35,
+        ["trail"] = 15,
+    }),
     ["bot_tiers"] = JSONTypes.map({
         ["ace"] = "mythical",
         ["experienced"] = "legendary",
