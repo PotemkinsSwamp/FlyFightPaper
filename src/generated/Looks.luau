@@ -30,7 +30,7 @@ return JSONTypes.map({
         [4] = JSONTypes.map({
             ["id"] = "eight_bit",
             ["name"] = "8-Bit",
-            ["picture"] = 122622827211471,
+            ["picture"] = 124510593201399,
             ["tier"] = "common",
         }),
         [5] = JSONTypes.map({

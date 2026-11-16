@@ -62,10 +62,11 @@ def racing_stripe():
     side = pick(crest, red, pick(Y > 0.97, cream, red))                       # no line at the ridge's foot: one unbroken stripe a side
     return pick(SIDE, side, flat)
 
-def eight_bit(cover=0.5, colours=("#FF2FB0", "#19D3FF", "#FFE52A", "#FF8A1E", "#8B3DFF", "#3BE05A"), base="#1A1A4A"):
+def eight_bit(cover=0.5, colours=("#FF2FB0", "#19D3FF", "#FFE52A", "#8B3DFF", "#19D3FF", "#FF2FB0"), base="#1A1A4A"):
     """Chunky pixels: `cover` of the blocks bright (small same-colour patches), the rest the dark purple-blue base,
     spread evenly so every part shows both (Alan 2026-11-16: the first pass, 39% in clumps, was mostly purple with none
-    on top of the nose; the second, 75% and no purple, was "too much ... like rainbow")."""
+    on top of the nose; the second, 75% and no purple, was "too much ... like rainbow"; he took the third: half and
+    half, in pink, cyan, yellow and violet only, no orange or green)."""
     B = 20; gi, gj = (px // B).astype(int), (py // B).astype(int); g = N // B + 2
     rng = np.random.default_rng(8)
     def field(cell):                                                         # blotchy random field per block
@@ -80,12 +81,13 @@ def eight_bit(cover=0.5, colours=("#FF2FB0", "#19D3FF", "#FFE52A", "#FF8A1E", "#
         win = np.lib.stride_tricks.sliding_window_view(mask, (5, 5))
         return [(i, j, p) for p in (S, S[:, ::-1]) for i, j in zip(*np.nonzero((win == p).sum((2, 3)) >= 21))]
     for _ in range(200):
-        hits = [("on", h) for h in near(on)] + [("off", h) for h in near(~on)] + [(k, h) for k in range(6) for h in near(on & (hue == k))]
+        same = np.array([colours.index(colours[k % len(colours)]) for k in range(6)])[hue]   # blocks of one colour, whatever their index
+        hits = [("on", h) for h in near(on)] + [("off", h) for h in near(~on)] + [(k, h) for k in set(same.flat) for h in near(on & (same == k))]
         if not hits: break
         for kind, (i, j, p) in hits:
             if kind == "on": on[i:i + 5, j:j + 5] |= ~p                      # fill the gaps round a bright cross
             elif kind == "off": on[i:i + 5, j:j + 5] |= p                    # light up a dark cross
-            else: hue[i:i + 5, j:j + 5] = np.where(p & (rng.random((5, 5)) < 0.5), (kind + 1) % 6, hue[i:i + 5, j:j + 5])
+            else: hue[i:i + 5, j:j + 5] = np.where(p & (rng.random((5, 5)) < 0.5), (kind + 1) % len(set(colours)), hue[i:i + 5, j:j + 5])
     assert not hits, "8-Bit: a block shape too close to a hooked cross is left"
     pal = np.array([rgb(colours[k % len(colours)]) for k in range(6)])
     cell = np.where(on[..., None], pal[hue], rgb(base) * (0.85 + 0.3 * rng.random((g, g, 1))))
@@ -135,9 +137,7 @@ def jungle_camo():
     col = pick(a > 0.54, rgb("#2C6B32"), col); col = pick(b > 0.6, rgb("#6E4B2C"), col)
     return pick(c > 0.68, rgb("#1C2B1E"), col)
 
-def eight_bit_b(): return eight_bit(colours=("#FF2FB0", "#19D3FF", "#FFE52A", "#8B3DFF", "#19D3FF", "#FF2FB0"))   # option B: a tighter arcade set, no orange or green
-
-SKINS = dict(eight_bit_b=eight_bit_b, carbon_fiber=carbon_fiber, racing_stripe=racing_stripe, eight_bit=eight_bit, neon_grid=neon_grid,
+SKINS = dict(carbon_fiber=carbon_fiber, racing_stripe=racing_stripe, eight_bit=eight_bit, neon_grid=neon_grid,
              flame_decals=flame_decals, tie_dye=tie_dye, jungle_camo=jungle_camo)
 if __name__ == "__main__":
     for name in sys.argv[1:] or SKINS: finish(SKINS[name](), name)
