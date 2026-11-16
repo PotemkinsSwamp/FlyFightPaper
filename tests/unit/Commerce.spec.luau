@@ -75,7 +75,7 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==45+count+12)
+        assert(#c.offers==45+count+16)
         local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" and offer.benefit~="look_unlock" then fixed+=1 end end
         assert(fixed==45)
     end)

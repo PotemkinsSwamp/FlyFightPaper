@@ -1,7 +1,7 @@
 # The first skin set: 8 Commons, 8 animated Rares, after the Dragon's boosters
 
 **Decided:** 2026-11-16 (Alan)  
-**Status:** in force; nothing in this set is made yet.
+**Status:** in force; the Dragon's boosters and the eight Commons are made and in the game's list (2026-11-16, Tiger Stripes and Gold Foil taken off it); the Rares are next.
 
 ## Decision
 - **First: the Dragon's boosters.** "the boosters don't match the dragon skin, so that needs to be fixed" (the crane's

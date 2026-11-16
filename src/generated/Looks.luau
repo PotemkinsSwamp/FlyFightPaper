@@ -16,45 +16,72 @@ return JSONTypes.map({
             ["tier"] = "common",
         }),
         [2] = JSONTypes.map({
-            ["id"] = "tiger_stripes",
-            ["name"] = "Tiger Stripes",
+            ["id"] = "carbon_fiber",
+            ["name"] = "Carbon Fiber",
+            ["picture"] = 86774702077141,
             ["tier"] = "common",
         }),
         [3] = JSONTypes.map({
-            ["id"] = "flame_decals",
-            ["name"] = "Flame Decals",
+            ["id"] = "racing_stripe",
+            ["name"] = "Racing Stripe",
+            ["picture"] = 134339749988711,
             ["tier"] = "common",
         }),
         [4] = JSONTypes.map({
-            ["id"] = "gold_foil",
-            ["name"] = "Gold Foil",
-            ["tier"] = "rare",
+            ["id"] = "eight_bit",
+            ["name"] = "8-Bit",
+            ["picture"] = 122622827211471,
+            ["tier"] = "common",
         }),
         [5] = JSONTypes.map({
+            ["id"] = "neon_grid",
+            ["name"] = "Neon Grid",
+            ["picture"] = 101977023669143,
+            ["tier"] = "common",
+        }),
+        [6] = JSONTypes.map({
+            ["id"] = "flame_decals",
+            ["name"] = "Flame Decal",
+            ["picture"] = 75265625499827,
+            ["tier"] = "common",
+        }),
+        [7] = JSONTypes.map({
+            ["id"] = "tie_dye",
+            ["name"] = "Tie-Dye",
+            ["picture"] = 135993090941667,
+            ["tier"] = "common",
+        }),
+        [8] = JSONTypes.map({
+            ["id"] = "jungle_camo",
+            ["name"] = "Jungle Camo",
+            ["picture"] = 100341839287073,
+            ["tier"] = "common",
+        }),
+        [9] = JSONTypes.map({
             ["id"] = "lava",
             ["name"] = "Lava",
             ["picture"] = 127563698335848,
             ["tier"] = "rare",
         }),
-        [6] = JSONTypes.map({
+        [10] = JSONTypes.map({
             ["id"] = "galaxy",
             ["name"] = "Galaxy",
             ["tier"] = "rare",
         }),
-        [7] = JSONTypes.map({
+        [11] = JSONTypes.map({
             ["id"] = "shark_jet",
             ["name"] = "Shark Jet",
             ["tier"] = "legendary",
             ["trail"] = "water_spray",
         }),
-        [8] = JSONTypes.map({
+        [12] = JSONTypes.map({
             ["id"] = "dragon",
             ["name"] = "Dragon",
             ["picture"] = 71720517887759,
             ["tier"] = "mythical",
             ["trail"] = "dragon_embers",
         }),
-        [9] = JSONTypes.map({
+        [13] = JSONTypes.map({
             ["id"] = "origami_crane",
             ["name"] = "Origami Crane",
             ["picture"] = 86508406688555,

@@ -77,8 +77,9 @@ local function lift(root, z)
 	end
 end
 
--- Skins and Trails pages. Cards are Gear's wide, short ones so all nine skins fit one page; clicking a card tries it
--- on the plane photo, then Wear (owned), Buy (Paper) or Unlock now (Robux, when you're short of Paper).
+-- Skins and Trails pages. Cards are Gear's wide, short ones, five rows showing; more than ten scroll inside the page
+-- (13 skins from 2026-11-16). Clicking a card tries it on the plane photo, then Wear (owned), Buy (Paper) or Unlock now
+-- (Robux, when you're short of Paper).
 local TIER = { common = "Common", rare = "Rare", legendary = "Legendary", mythical = "Mythical", trail = "Trail" }
 local function lookList(slot)
 	local list = {}
@@ -106,8 +107,18 @@ end
 local function lookCards(content, ctx)
 	local state, image, words, button = ctx.state, PaperUI.image, PaperUI.words, PaperUI.button
 	local on = wearing(ctx, state.slot)
-	for i, item in lookList(state.slot) do
-		local x, y = 700 + (i - 1) % 2 * 272, 236 + math.floor((i - 1) / 2) * 126
+	local list = lookList(state.slot)
+	-- The cards' own scrolling window (Roblox's ScrollingFrame), 14 wider all round than the cards for the try-on ring.
+	-- A redraw (every click) keeps its place: CanvasPosition is in screen pixels (as ShopScreen), stored as read.
+	local page = Instance.new("ScrollingFrame")
+	page.Name, page.BackgroundTransparency, page.BorderSizePixel = "Looks", 1, 0
+	page.Position, page.Size = UDim2.fromOffset(686, 222), UDim2.fromOffset(580, 652)
+	page.CanvasSize = UDim2.fromOffset(0, math.ceil(#list / 2) * 126 + 22)
+	page.ScrollingDirection, page.ElasticBehavior = Enum.ScrollingDirection.Y, Enum.ElasticBehavior.Never
+	page.ScrollBarThickness, page.ScrollBarImageColor3 = 10, PaperUI.INK
+	page.Parent, content = content, page
+	for i, item in list do
+		local x, y = 14 + (i - 1) % 2 * 272, 14 + math.floor((i - 1) / 2) * 126
 		local worn = item.id == on
 		local card = button(content, item.id, worn and Art.cardSelectedWide or Art.cardWide, "", x, y, 262, 120, 0, function()
 			game.Players.LocalPlayer:SetAttribute("MenuMessage", nil)
@@ -132,6 +143,9 @@ local function lookCards(content, ctx)
 			cap.MaxTextSize, cap.Parent = PaperUI.isPhone() and 40 or 30, label
 		end
 	end
+	state.lookScroll = state.lookScroll or {}
+	page.CanvasPosition = Vector2.new(0, state.lookScroll[state.slot] or 0)
+	page:GetPropertyChangedSignal("CanvasPosition"):Connect(function() state.lookScroll[state.slot] = page.CanvasPosition.Y end)
 end
 
 -- Under the cards: what the look is, then Wear / Buy / Unlock now and Cancel, or Take off. Returns the note line.

@@ -49,10 +49,18 @@ def carbon_fiber():
     return pick(d < 4, pick(d < 2.6, rgb("#F53D38"), rgb("#4D050A")), col)
 
 def racing_stripe():
-    """Racing red with two cream stripes down the middle (and along the fin)."""
+    """Racing red with two wide cream stripes down the middle that run up and over the body's ridge and the tail fin
+    (Alan 2026-11-16: the ridge cut each stripe in half). The ridge's steep sides take the SIDE picture: every body's
+    crest is at y 1.40 (slim 1.24) and its side walls stop at 0.95 to 1.0, so SIDE is cream from y 0.97 up, with the
+    red line between the stripes on the crest (body and nose only: fins are taller). Measured from the sheet copies
+    (.planning/skins/tests/faces/faces.py)."""
     red = rgb("#C9202B") * (0.94 + 0.12 * noise(140, 3, 2))[..., None]
-    d = np.where(SIDE, np.abs(Y - 2.45), np.abs(X))                           # two stripes: 0.2 to 0.75 studs each side of the line
-    return pick((d > 0.2) & (d < 0.75), rgb("#F2E6CC"), pick((d > 0.14) & (d < 0.81), rgb("#7A0F18"), red))
+    cream, edge = rgb("#F2E6CC"), rgb("#7A0F18")
+    d = np.abs(X)                                                             # TOP and FRONT: cream out to 0.75 studs each side
+    flat = pick(d < 0.07, red, pick(d < 0.75, cream, pick(d < 0.81, edge, red)))
+    crest = (Y > 1.31) & (Z < 4.5)
+    side = pick(crest, red, pick(Y > 0.97, cream, red))                       # no line at the ridge's foot: one unbroken stripe a side
+    return pick(SIDE, side, flat)
 
 def eight_bit():
     """Chunky pixels: navy with clusters of bright blocks."""
@@ -62,6 +70,12 @@ def eight_bit():
         lo = rng.random((g // cell + 2, g // cell + 2)); f = np.kron(lo, np.ones((cell, cell)))[:g, :g]
         return 0.6 * f + 0.4 * rng.random((g, g))
     on, hue = field(3) > 0.56, (field(2) * 6).astype(int) % 6
+    # Safety (lessons.md, the 2026-10-12 bans): random blocks must never come near a hooked cross. Every 5 x 5 window,
+    # bright against navy and colour by colour, must differ from it (and its mirror) in at least 5 blocks; reseed if not.
+    S = np.array([[1, 0, 1, 1, 1], [1, 0, 1, 0, 0], [1, 1, 1, 1, 1], [0, 0, 1, 0, 1], [1, 1, 1, 0, 1]], bool)
+    for mask in [on] + [on & (hue == k) for k in range(6)]:
+        win = np.lib.stride_tricks.sliding_window_view(mask, (5, 5))
+        assert max((win == p).sum((2, 3)).max() for p in (S, S[:, ::-1])) <= 20, "8-Bit: a block shape too close to a hooked cross; change the seed"
     pal = np.array([rgb(h) for h in ("#FF2FB0", "#19D3FF", "#FFE52A", "#FF8A1E", "#8B3DFF", "#3BE05A")])
     cell = np.where(on[..., None], pal[hue], rgb("#1A1A4A") * (0.85 + 0.3 * rng.random((g, g, 1))))
     col = cell[gj, gi]

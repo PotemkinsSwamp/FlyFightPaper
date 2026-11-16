@@ -474,10 +474,37 @@
       "enabled": false
     },
     {
-      "key": "look_tiger_stripes",
+      "key": "look_carbon_fiber",
       "kind": "developer_product",
       "benefit": "look_unlock",
-      "look_id": "tiger_stripes",
+      "look_id": "carbon_fiber",
+      "roblox_product_id": null,
+      "approved_robux_price": 149,
+      "enabled": false
+    },
+    {
+      "key": "look_racing_stripe",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "racing_stripe",
+      "roblox_product_id": null,
+      "approved_robux_price": 149,
+      "enabled": false
+    },
+    {
+      "key": "look_eight_bit",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "eight_bit",
+      "roblox_product_id": null,
+      "approved_robux_price": 149,
+      "enabled": false
+    },
+    {
+      "key": "look_neon_grid",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "neon_grid",
       "roblox_product_id": null,
       "approved_robux_price": 149,
       "enabled": false
@@ -492,12 +519,21 @@
       "enabled": false
     },
     {
-      "key": "look_gold_foil",
+      "key": "look_tie_dye",
       "kind": "developer_product",
       "benefit": "look_unlock",
-      "look_id": "gold_foil",
+      "look_id": "tie_dye",
       "roblox_product_id": null,
-      "approved_robux_price": 299,
+      "approved_robux_price": 149,
+      "enabled": false
+    },
+    {
+      "key": "look_jungle_camo",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "jungle_camo",
+      "roblox_product_id": null,
+      "approved_robux_price": 149,
       "enabled": false
     },
     {

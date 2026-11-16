@@ -33,7 +33,7 @@ end
 function Spec.run()
  local result,test=Suite.new()
  test("look purchases charge the tier price, include matching trails and preserve unrelated progress",function()
-  for _,id in ipairs({"hazard_stripes","gold_foil","shark_jet","dragon","confetti"}) do
+  for _,id in ipairs({"hazard_stripes","lava","shark_jet","dragon","confetti"}) do
    local service,profile=fixture();local item=assert(Looks.item(id));local price=Looks.config().tiers[item.tier].paper*Economy.MILLI
    profile.Data.paperMilli=price+123;profile.Data.xpMilli=0
    local before=assert(Schema.copy(profile.Data));local op=assert(service:prepare("user",{kind="lookPurchase",lookID=id}))
