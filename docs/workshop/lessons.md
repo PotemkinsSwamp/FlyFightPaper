@@ -170,6 +170,12 @@ mistake would be easy to make twice.
   2026 tutorials use after Tripo: load the mesh (GLB), give reference pictures, it paints from 8 views onto the model's
   own unwrap and lets you repaint one bad area at a time; free tier 2K, 150,000 triangles, projects PUBLIC (paid 4K;
   prices not verified). Untested by us; it is the same idea as our projection, done by a tool built for it.
+- **TextureCraft is a free hand-texturing app, not AI** (2026-11-15, Alan installed it; getartcraft.com, Learning
+  Machines): like Substance Painter: bakes AO/curvature from a high-detail mesh (`bake.highPoly.add`), smart materials,
+  edge-wear/dirt/curvature generators, fill by part, paint with symmetry, exports colour/normal/rough/metal. No
+  auto-unwrap (UVs come from Blender). It has a command line and an MCP server (`texturecraft-cli commands`), so it
+  can be scripted. Installed on D (Alan's C is full): program `D:\TextureCraft\app` (MSI with
+  `INSTALLFOLDER=...`), data and exports in `D:\TextureCraft\data` and `\export` (its Preferences "Data folder").
 - **Cycles shows through twin faces lying on each other** (transparent back faces); preview one-sided meshes in Eevee
   with backface culling.
 - **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,
