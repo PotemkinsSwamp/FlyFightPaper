@@ -42,7 +42,7 @@ return JSONTypes.map({
         [6] = JSONTypes.map({
             ["id"] = "flame_decals",
             ["name"] = "Flame Decal",
-            ["picture"] = 75265625499827,
+            ["picture"] = 115201509315137,
             ["tier"] = "common",
         }),
         [7] = JSONTypes.map({
