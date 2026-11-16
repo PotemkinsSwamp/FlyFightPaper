@@ -5,7 +5,7 @@ local Looks = require(Root.Generated.Looks)
 local Suite = require(script.Parent.Parent.fixtures.Suite)
 local Spec = {}
 -- What tools/art/skin_motion.py (the preview videos Alan approved) works out: { skin, layer, time, the sheet-to-picture
--- map (a, b, tx, c, d, ty), how solid, glow }. Written by that tool's sums; redo them if config/skin-motion.json changes.
+-- map (a, b, tx, c, d, ty), how solid, glow }. Written by tools/art/skin_motion_spec.py; run it again when config/skin-motion.json changes.
 local SAME = {
 	{ "lava", 1, 0.37, 1.0000000, 0.0000000, 0.0000000, 0.0000000, 0.7500000, 0.2436207, 1.0000000, 0.4033626 },
 	{ "lava", 1, 3.3, 1.0000000, 0.0000000, 0.0000000, 0.0000000, 0.7500000, 0.1931034, 1.0000000, 0.5274531 },

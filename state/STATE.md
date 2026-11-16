@@ -1,25 +1,20 @@
 # Since Alan last checked (2026-11-16, second session)
-- **The Dragon's boosters wear its green scales** ("its good"). **All eight Commons are in the game**, pictures approved
-  ([your notes](../docs/playtests/2026-11-16-common-skins.md)); drawn in code (your pick over TextureCraft). Tiger Stripes
-  and Gold Foil are off the list; the Skins tab scrolls. Not checked: the tests since the list changed (665/0 before it).
-- **The 8 Rares move in preview videos** (third session, 2026-11-16): you OK'd the how-it-works note
-  ([skins plan](../docs/plan/SKINS-PLAN.md), "Moving Rares"); all eight are drawn in code and shown moving on real planes
-  (`.planning/skins/rares/<id>.mp4`). **Waiting on you: your notes on each video.** Nothing uploaded; the game's own
-  moving-skin code is not written yet (it comes after your OK, then a Play check with your go).
+- Earlier today: the Dragon's boosters and the eight Commons are in ([your notes](../docs/playtests/2026-11-16-common-skins.md)); Tiger Stripes and Gold Foil are off the list.
+- **The eight moving Rares are in the game** (2026-11-16): you OK'd the note and all eight preview videos; 44 pictures uploaded and approved. Seen right on
+  test planes in Studio, not yet in Play. The layers move on up-facing sides only: undersides and body sides wear the still skin.
 
 # Now: finish the game for the beta
-Next ([first skin set](../docs/decisions/2026-11-16-first-skin-set.md), Alan 2026-11-16): the 8 Rares (Galaxy, Lava, Slime,
-Holographic, Glitch, Thunderstorm, Circuit Board, Comic Book): Alan's notes on the preview videos, redo what he flags,
-then per skin his OK, the safety check, the uploads and the game code that moves the layers. Dragon leftovers: crash ball and shop card pictures, jaw leftover,
-frame-rate check (his go). Also queued: the Toilet Roll shake in flight. After skins: missions, the playtime calendar,
-bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift
-note and arrival; a real gift through the shop; the unlock backpack's music dip.
+Next (Alan 2026-11-16): **the trails**. First, with your go: watch the Rares move in Play and run the tests (not run since two skin-list
+changes; 665/0 before). Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: the Toilet Roll
+shake in flight, missions, the playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the
+report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
   shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
   (A = six colours, one line in `skin_sheets.py`); a flame patch shows small at the back of the body.
+Rares (my calls): Galaxy is one small solar system a wing (a big orbit was cut by the body); far planes keep their layers standing still; no underside layers yet; 39 pictures, not the 28 I first said.
 Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
   has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices); Trails tab lists, draws nothing.
   Crane: about a quarter shorter (belly to the real body's bottom, roof 0.5 of a step up, was 0.9); width as before.
@@ -52,6 +47,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
+- **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
 - Replay the hangar: click skins, tabs and Cancel (no reload flash?), the crane's height and wing join, a
   booster under the crane, and Buy on a skin (the screen should change right away).
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
