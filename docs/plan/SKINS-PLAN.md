@@ -103,9 +103,10 @@ answers from the talk are there).
   test that every loop ends where it starts (no jump); a frame-rate check with 12 planes all wearing Galaxy, which must
   hold 60 (if it dips, Galaxy's planets share one layer before anything else changes).
 
-## Trails: how it works (waiting for Alan's OK, 2026-11-16)
-From the trails talk ([first skin set](../decisions/2026-11-16-first-skin-set.md), Alan's words there). **No trail code is
-written until Alan OKs this note.** Today the Trails tab lists five names and draws nothing.
+## Trails: how it works (Alan OK'd it 2026-11-16)
+From the trails talk ([first skin set](../decisions/2026-11-16-first-skin-set.md), Alan's words there). He OK'd the length, the
+growth when fast and the list; he changed the bots rule and parked the price ("we're not worried about price right now.
+We're worried about just making them"). **Being built:** Holo Rainbow, Gold Stars and Storm Sparks first.
 - **What the player sees:** a thin stream from the back of the body, between the boosters. It starts about 1.5 studs wide
   (the white boost streak's size) and narrows to a point; its pieces shrink and fade toward the end. Always on while the
   plane flies; it stops when the plane lands or crashes and what is in the air fades out.
@@ -146,10 +147,13 @@ written until Alan OKs this note.** Today the Trails tab lists five names and dr
 
 Lava and Comic Book have no matching trail. Names are Claude's picks.
 - **How they are sold:** the five plain ones as today (49 Robux or 900 Paper). The six that match a Rare are sold **on
-  their own** (Alan) and can be worn with any skin: Claude's pick **99 Robux or 1,900 Paper** (the same Paper rate; about
-  3 matches). Dragon Embers and Folded Petals come with their skin; anyone who already owns the crane gets its petals.
-- **Bots:** a bot in a Rare that has a matching trail wears it (it shows players the set); every other Common or Rare bot
-  gets a random plain trail, as today. Aces in the Dragon show its embers.
+  their own** (Alan) and can be worn with any skin. **Price not set:** Alan: they "would probably be more expensive" than
+  a plain trail; decided later. Until then the list carries a stand-in of 99 Robux or 1,900 Paper (live sales are off).
+  Dragon Embers and Folded Petals come with their skin; anyone who already owns the crane gets its petals.
+- **Bots (Alan, 2026-11-16; replaces "bots all wear skins"):** "Not every bot needs skins. Not every bot needs trails."
+  Each bot rolls a skin and a trail separately, so a match shows all four kinds: skin and trail, skin only, trail only,
+  neither. A bot with a trail wears its skin's matching trail when the skin has one; otherwise a random one. The two
+  chances are Claude's numbers, not yet OK'd by Alan.
 - **How it is drawn (Claude's method):** every trail has the same bones, two things Roblox already has. A **ribbon**
   (Roblox calls it a Trail) is a strip stretched along the path just flown; it gives the stream and the taper. **Pieces**
   (Roblox calls them particles) are small pictures dropped behind that live a second. One short piece of code in

@@ -56,7 +56,13 @@
   - **Second answers:** "Yeah, I meant slime." Glitter becomes Galaxy's and Bubbles becomes Slime's ("those are great");
     "You could make rainbow kind of match with the holographic." Rare-matching trails are sold "on their own". "Build
     the crane petals." "We also need something to match with the dragon as well" (Dragon Embers, already on the list).
-    The how-it-works note is in the [skins plan](../plan/SKINS-PLAN.md) ("Trails: how it works"), waiting for his OK.
+    The how-it-works note is in the [skins plan](../plan/SKINS-PLAN.md) ("Trails: how it works").
+  - **The note OK'd, with two changes:** "Length, yeah. Bigger one fast, yeah." **Price parked:** "The rare matching
+    trails would probably be more expensive. But we're not worried about price right now. We're worried about just
+    making them." **Bots:** "they should wear their matching trail. And the common and rare ones, just get a random
+    one. They also don't all need them ... Not every bot needs skins. Not every bot needs trails. Some bot can have no
+    skin and a trail. Some bot can have a skin and no trail. Some bots can have skins and trails. Some bots can have
+    neither." This replaces "bots all wear skins" in the [skin rules](2026-11-13-skin-rules.md).
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
