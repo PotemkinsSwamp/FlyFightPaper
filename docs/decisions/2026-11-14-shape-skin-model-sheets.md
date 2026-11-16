@@ -335,6 +335,11 @@
   crash shape, as big a target as the plane, centred on it; this replaces "a skin never changes the hitbox"
   ([skin rules](2026-11-13-skin-rules.md)) for the Dragon. Measured on exact shapes it is 0.96 to 1.48 times the plane's
   length (I had first told him 1.3 to 1.45 from a rougher measure).
+- **Never smaller than the plane (Alan, 2026-11-16).** Flying the fastest frame (slim body, narrow wings) he found the
+  Dragon "a little too small, seemed like smaller than usually what a plane is" and suspected the collision. Checked: the
+  server's hit shape is the Dragon's own outline. Equal total size had left it 11 studs wingtip to wingtip against the
+  plane's 14 (the Dragon puts more of its size in its side view). Now it is also never shorter or narrower than the
+  plane: as wide as the plane on narrow-wing builds, a bigger target there (about half again on the narrowest).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

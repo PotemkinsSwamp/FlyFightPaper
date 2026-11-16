@@ -83,15 +83,17 @@ end
 -- Shapes that keep their proportions and are the plane's hit and crash shape (the Dragon; Alan 2026-11-15: "we can't
 -- stretch it and make it look odd"; "scale up the skin until it's the same ... surface area that would have been the plane
 -- that it's covering, so that it's still the same hitbox"): ONE size for the whole model, as big a target as the plane
--- (its outline from above, the side and behind, added, equals the plane's), centred on the plane, wings at the plane's
+-- (its outline from above, the side and behind, added, equals the plane's) but never shorter or narrower than the plane,
+-- centred on the plane, wings at the plane's
 -- wing height. HitShapes uses its pieces instead of the body, nose, wings and tail. Its wings are flat (rise 0).
 local function evenFit(shape, o)
 	local E, W = shape.even, shape.even.wing
 	local lo0, hi0 = Vector3.one * math.huge, -Vector3.one * math.huge
 	for _, piece in shape.pieces do lo0, hi0 = lo0:Min(v3(piece.min)), hi0:Max(v3(piece.max)) end
-	-- ponytail: a build missing from plane-areas.json (a new part) falls back to wingtips on the plane's wingtips;
-	-- re-run tools/plane_areas.lua after adding parts.
-	local k = o.area and math.sqrt(o.area / E.area) or o.xo / E.half_span
+	-- Never shorter or narrower than the plane it replaces (Alan 2026-11-16: on the fastest, narrow-winged frame it looked
+	-- "a little too small"), else as big a target. ponytail: a build missing from plane-areas.json (a new part) gets only
+	-- that floor; re-run tools/plane_areas.lua after adding parts.
+	local k = math.max(o.area and math.sqrt(o.area / E.area) or 0, (o.zT - o.zN) / (hi0.Z - lo0.Z), o.xo / E.half_span)
 	local midZ = (lo0.Z + hi0.Z) / 2
 	local function at(p) return Vector3.new(p.X * k, o.wy + (p.Y - E.wing_y) * k, (o.zN + o.zT) / 2 + (p.Z - midZ) * k) end
 	local out = {}
