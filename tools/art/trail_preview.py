@@ -3,14 +3,14 @@
         -> .planning/skins/trails/<id>.mp4, or <id>-f<frame>.png stills when frames are given
 Plays config/trails.json in a 3D scene: the real starter plane (plane_assembly.py) flies a weaving path over a floor
 with boxes, at its normal speed, then boosting. First shot: the game's own chase camera (24 studs behind, 6 above,
-70 degrees). Second shot: from another plane flying alongside. Pieces are 3D models built here (star, flake, shard,
-spark, puff, bolt; soft is a smoke card facing the camera), scattered at random sizes round the path and tumbling; a
+70 degrees). Second shot: from another plane flying alongside. Pieces are the 3D models of trail_pieces.py (star, flake,
+shard, spark, puff, bolt; soft is a smoke card facing the camera), scattered at random sizes round the path and tumbling; a
 ribbon is a strip laid along the path, or several thin strands wound round each other.
 It imitates the game's drawing; the real look is confirmed in Studio after upload."""
-import sys, os, json, math, random, subprocess, tempfile, shutil, bpy, bmesh
+import sys, os, json, math, random, subprocess, tempfile, shutil, bpy
 import numpy as np
-from mathutils import Vector, Matrix, Quaternion, noise
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import plane_assembly as pa
+from mathutils import Vector, Matrix, Quaternion
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import plane_assembly as pa, trail_pieces
 
 ARGS = sys.argv[sys.argv.index("--") + 1:]; TRAIL = ARGS[0]; STILLS = [int(a) for a in ARGS[1:]]
 CFG = json.load(open(pa.ROOT / "config/trails.json")); SPEC = CFG["trails"][TRAIL]; LIFE = CFG["life"]
@@ -29,50 +29,6 @@ def frame_at(s, v):
     q = Quaternion(nose, bank); right = q @ right
     return p, right, nose, right.cross(nose).normalized()
 def lin(c): return tuple(((x / 255 + 0.055) / 1.055) ** 2.4 if x > 10 else x / 255 / 12.92 for x in c) + (1.0,)
-
-# ---- the 3D pieces: each about 1 stud across, sized by the trail ----------------------------------------------------
-def mesh(name, build, smooth_shade=False):
-    bm = bmesh.new(); build(bm); bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
-    me = bpy.data.meshes.new(name); bm.to_mesh(me); bm.free()
-    for f in me.polygons: f.use_smooth = smooth_shade
-    return me
-def star(bm):                                                                # a folded foil star: ten ridges up to a point each side
-    ring = [bm.verts.new((r * math.sin(i * math.pi / 5), r * math.cos(i * math.pi / 5), 0)) for i, r in enumerate([0.5, 0.2] * 5)]
-    for z in (0.15, -0.15):
-        top = bm.verts.new((0, 0, z))
-        for i in range(10): bm.faces.new((top, ring[i], ring[(i + 1) % 10]))
-def flake(bm):                                                               # a thin diamond of foil
-    pts = [bm.verts.new(p) for p in ((0.5, 0, 0), (0, 0.3, 0), (-0.5, 0, 0), (0, -0.3, 0), (0, 0, 0.035), (0, 0, -0.035))]
-    for z in (4, 5):
-        for i in range(4): bm.faces.new((pts[z], pts[i], pts[(i + 1) % 4]))
-def puff(bm):                                                                # a lumpy cotton ball
-    bmesh.ops.create_icosphere(bm, subdivisions=2, radius=0.5)
-    for v in bm.verts: v.co *= 1 + 0.22 * noise.noise(v.co * 2.3)
-def bolt(bm):                                                                # a small jagged lightning fork, thick to thin
-    r2 = random.Random(3); pts = [Vector((-0.5 + i / 6, r2.uniform(-0.13, 0.13) if 0 < i < 6 else 0, r2.uniform(-0.06, 0.06))) for i in range(7)]
-    def limb(line, w0):
-        rings = []
-        for i, p in enumerate(line):
-            w = w0 * (1 - 0.8 * i / (len(line) - 1))
-            rings.append([bm.verts.new(p + Vector((0, a * w, b * w))) for a, b in ((1, 1), (-1, 1), (-1, -1), (1, -1))])
-        for a, b in zip(rings, rings[1:]):
-            for i in range(4): bm.faces.new((a[i], a[(i + 1) % 4], b[(i + 1) % 4], b[i]))
-        bm.faces.new(rings[0]); bm.faces.new(rings[-1])
-    limb(pts, 0.05); limb([pts[3], pts[3] + Vector((0.14, 0.2, 0.05)), pts[3] + Vector((0.3, 0.28, -0.04))], 0.032)
-def shard(bm):                                                              # a long foil crystal
-    pts = [bm.verts.new(q) for q in ((0.5, 0, 0), (-0.5, 0, 0), (0, 0.17, 0.1), (0, -0.17, 0.1), (0, 0, -0.19))]
-    for a, b in ((2, 3), (3, 4), (4, 2)): bm.faces.new((pts[0], pts[a], pts[b])); bm.faces.new((pts[1], pts[b], pts[a]))
-def spark(bm):                                                              # a tiny six-point glint
-    for axis in range(3):
-        for sign in (1, -1):
-            a, b = (axis + 1) % 3, (axis + 2) % 3; base = []
-            for da, db in ((1, 0), (0, 1), (-1, 0), (0, -1)):
-                q = [0, 0, 0]; q[a], q[b] = 0.06 * da, 0.06 * db; base.append(bm.verts.new(q))
-            tip = [0, 0, 0]; tip[axis] = 0.5 * sign; top = bm.verts.new(tip)
-            for i in range(4): bm.faces.new((top, base[i], base[(i + 1) % 4]))
-def soft(bm):                                                               # a card that always faces the camera: soft smoke
-    bm.faces.new([bm.verts.new(q) for q in ((-0.5, -0.5, 0), (0.5, -0.5, 0), (0.5, 0.5, 0), (-0.5, 0.5, 0))])
-MODELS = {"star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}
 
 def look(kind):
     """A material that takes each piece's own colour and see-through share: crinkled foil, cotton, soft smoke or a light."""
@@ -167,7 +123,7 @@ def ribbon_object(r, j):
 ribbons = [(r, j) + ribbon_object(r, j) for r in SPEC.get("ribbons", []) for j in range(r.get("strands", 1))]
 looks, pools, lamps = {}, [], []
 for piece in SPEC.get("pieces", []):
-    build, smooth_shade = MODELS[piece["model"]]; me = mesh(piece["model"], build, smooth_shade)
+    me = trail_pieces.mesh(piece["model"])
     me.materials.append(looks.setdefault(piece["look"], look(piece["look"]))); pool = []
     for _ in range(int(piece["rate"] * 1.6 * piece["life"][1]) + 6):
         ob = bpy.data.objects.new(piece["model"], me); sc.collection.objects.link(ob); pool.append(ob)

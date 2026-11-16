@@ -153,6 +153,18 @@ function DevTools.start(menu)
 		Root:WaitForChild("RoundAction"):FireServer("devSkin", list[skinTurn])
 		skinButton.Text = "Dev: skin: " .. (list[skinTurn] == "" and "plain" or Looks.item(list[skinTurn]).name)
 	end)
+	-- Above that (Alan 2026-11-16, trails test): every plane on this screen wears each drawn trail in turn, unsaved.
+	local trailButton = switch:Clone()
+	trailButton.Name, trailButton.Position, trailButton.Text, trailButton.Parent = "Trail", UDim2.new(1, -10, 1, -154), "Dev: trail: each its own", switchGui
+	local trailTurn = 0
+	trailButton.Activated:Connect(function()
+		local list = {}
+		for id, trail in require(Root.Generated.Trails).trails do table.insert(list, id) end
+		table.sort(list)
+		trailTurn = (trailTurn + 1) % (#list + 1)
+		require(script.Parent.PlaneTrails).setDevTrail(list[trailTurn])
+		trailButton.Text = "Dev: trail: " .. (list[trailTurn] and string.gsub(list[trailTurn], "_", " ") or "each its own")
+	end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()
 		local screen, page = string.match(player:GetAttribute("DevScreen") or "", "^([^:]+):?(.*)$")

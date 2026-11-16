@@ -172,9 +172,12 @@ Lava and Comic Book have no matching trail. Names are Claude's picks.
   the frame-rate check decides whether that holds 60; the fallback is flat particles showing a pre-rendered spinning
   3D model. Roblox's built-in Foil, Fabric and Neon materials give the texture with no picture to upload. Soft smoke (Storm
   Sparks, Holo Rainbow) is the exception that suits Roblox's own particles: soft flat cards that face you are exactly
-  what they draw, so those clouds need one smoke picture and cost little. One short
-  piece of code in `src/client/PlaneLooks.luau` reads each trail's row in `config/trails.json`; no trail gets code of
-  its own.
+  what they draw. **Built 2026-11-16 (`src/client/PlaneTrails.luau`, not yet seen in Play):** smoke and sparkle dust
+  use the smoke and sparkle pictures Roblox ships (the game already used both), so no picture is uploaded; a foil
+  flake (under half a stud) is a plain thin block; only the star and the lightning bolt are uploaded models
+  (`tools/art/trail_pieces.py`, ids in `config/trails.json` `meshes`). Sparkle dust became particles too: 170 a second
+  as parts was too many. Gold Stars is about 70 to 90 moving parts a plane, so the 12-plane frame-rate check is still
+  open. One short piece of code reads each trail's row in `config/trails.json`; no trail gets code of its own.
 - **How the pictures are made (written before the 3D change; now only ribbons and any flat glows use pictures):** most are drawn by code in PhotoCraft (free, on Alan's PC at
   `D:\ArtCraft\PhotoCraft`; a test streak drew fine, `.planning/skins/trails/photocraft-streak-test.png`), following the
   video Alan sent (YorusDevs, "How Opus 5.5 drew every visual effect in my Roblox game"): shapes in **white, in layers**,
