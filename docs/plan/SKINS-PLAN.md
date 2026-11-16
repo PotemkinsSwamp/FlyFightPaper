@@ -6,7 +6,7 @@ Trails tabs built; boosters wear printed skins. The Origami Crane (first Mythica
 (`SkinShapes.luau`), with playtest bugs to fix and its printed sheet next; the wing-hitbox tilt is built
 ([playtest](../playtests/2026-11-13-crane-and-skins-tabs.md)). The Dragon (second Mythical) is built as a shape skin that
 keeps its proportions and is the hitbox (Alan: "looks good now", 2026-11-16). **Done 2026-11-16 ([first skin set](../decisions/2026-11-16-first-skin-set.md)):** the Dragon's boosters wear its scales; the 8 Commons are drawn in code and in the game's list. **Next:**
-the 8 animated Rares (how-it-works note written 2026-11-16, waiting on Alan's OK: "Moving Rares" below). Later: Shark Jet, trails. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
+the 8 animated Rares (how-it-works note OK'd by Alan 2026-11-16, "Moving Rares" below; preview videos being made). Later: Shark Jet, trails. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
 the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top of the
 [shop plan decision](../decisions/2026-10-18-shop-plan.md) (Paper or Robux, kept through prestige). Serves
 [the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).
@@ -62,8 +62,11 @@ resize it).
 - **Checks:** a test that each tilted wing keeps its size and its root stays on the body; a Studio flight of the crane
   past walls and through gaps.
 
-## Moving Rares: how it works (waiting on Alan's OK, 2026-11-16)
-**Nothing is built.** From the [first skin set](../decisions/2026-11-16-first-skin-set.md) (Rares move and glow; Alan's
+## Moving Rares: how it works (Alan OK'd it 2026-11-16)
+**Alan: "Those rules or notes work. Go ahead and build them and then show me some videos"** (200 studs fine; glow up
+close, not a beacon). Being built: each Rare's pictures (`tools/art/rare_sheets.py`), its movement numbers
+(`config/skin-motion.json`) and a preview video (`tools/art/skin_motion.py`); the game's own code comes after his OK on
+the videos. From the [first skin set](../decisions/2026-11-16-first-skin-set.md) (Rares move and glow; Alan's
 answers from the talk are there).
 - **What the player sees:** a Rare is a still skin picture, plus moving layers on top of it, plus a glow. Everything stays
   on the plane's surface and loops. Nothing reacts to boosting, shooting or damage, and nothing flies off the plane (that

@@ -1,0 +1,89 @@
+{
+  "_comment": "How each Rare skin moves and glows (skins plan, 'Moving Rares'; Alan OK'd the numbers 2026-11-16). A layer is a see-through picture over the printed sheet (assets/models/planes/skins/<skin>-<layer>.png), drawn in list order. Places and sizes are in plane studs seen from above (x right, z back from the middle); zoom, at and travel are parts of the layer's picture. Read by tools/art/skin_motion.py (preview videos).",
+  "near_studs": 200,
+  "studs": { "u0": 0.35707, "v0": 0.39087, "per": 0.039473 },
+  "skins": {
+    "lava": {
+      "seconds": 6,
+      "glow": { "tint": [1.0, 0.45, 0.1], "strength": 1.0, "pulse": { "period": 3, "low": 0.5 } },
+      "layers": [
+        { "name": "flow", "kind": "slide", "zoom": [1, 0.75], "at": [0, 0.25], "travel": [0, -0.25], "period": 2.9,
+          "glow": { "tint": [1.0, 0.55, 0.15], "strength": 1.0, "pulse": { "period": 3, "low": 0.5 } } },
+        { "name": "rock", "kind": "still" }
+      ]
+    },
+    "galaxy": {
+      "seconds": 12,
+      "glow": { "tint": [0.85, 0.9, 1.0], "strength": 1.3, "pulse": { "period": 2, "low": 0.2 } },
+      "layers": [
+        { "name": "stars", "kind": "slide", "zoom": [1, 0.5], "at": [0, 0.5], "travel": [0, -0.5], "period": 29,
+          "glow": { "tint": [0.9, 0.93, 1.0], "strength": 1.3, "pulse": { "period": 2, "low": 0.2, "phase": 0.5 } } },
+        { "name": "planets-a", "kind": "spin", "centre": [0, 1.4], "size": 8.8, "period": 10,
+          "glow": { "tint": [1, 1, 1], "strength": 0.35 } },
+        { "name": "planets-b", "kind": "spin", "centre": [0, 1.4], "size": 13.2, "period": 18,
+          "glow": { "tint": [1, 1, 1], "strength": 0.35 } },
+        { "name": "comet", "kind": "pass", "size": [1.5, 5.0], "time": 1.5, "loop": 16.5, "at": [1, 6.5, 12],
+          "paths": [[-7.4, 5.6, 5.2, -3.6], [7.6, 2.2, -6.8, 5.6], [-2.6, -7.4, 7.2, 6.2]],
+          "glow": { "tint": [0.85, 0.95, 1.0], "strength": 1.6 } }
+      ]
+    },
+    "slime": {
+      "seconds": 10,
+      "glow": { "tint": [0.6, 1.0, 0.3], "strength": 0.6, "pulse": { "period": 2.5, "low": 0.3 } },
+      "layers": [
+        { "name": "goo", "kind": "slide", "zoom": [0.94, 0.5], "at": [0.03, 0.5], "travel": [0, -0.5], "period": 14.5,
+          "wobble": { "amount": [0.025, 0], "period": 5 },
+          "glow": { "tint": [0.6, 1.0, 0.3], "strength": 0.6, "pulse": { "period": 2.5, "low": 0.3 } } }
+      ]
+    },
+    "holographic": {
+      "seconds": 8,
+      "layers": [
+        { "name": "rainbow", "kind": "slide", "zoom": [1, 0.75], "at": [0, 0.25], "travel": [0, -0.25], "period": 1.93 },
+        { "name": "glint", "kind": "slide", "zoom": [1, 0.25], "at": [0, 0.75], "travel": [0, -0.75], "period": 5,
+          "glow": { "tint": [1, 1, 1], "strength": 1.2 } }
+      ]
+    },
+    "glitch": {
+      "seconds": 8,
+      "glow": { "tint": [1, 1, 1], "strength": 0.9, "flash": { "loop": 6, "at": [0.5, 1.7, 2.6, 4.2, 5.3], "hold": 0.1, "floor": 0.5 } },
+      "layers": [
+        { "name": "snap", "kind": "snap", "loop": 6, "at": [0.5, 1.7, 2.6, 4.2, 5.3], "hold": 0.1,
+          "shifts": [[0.02, 0], [-0.03, 0.13], [0.015, -0.21], [-0.02, 0.31], [0.035, -0.08]],
+          "glow": { "tint": [1, 1, 1], "strength": 0.9 } }
+      ]
+    },
+    "thunderstorm": {
+      "seconds": 13,
+      "glow": { "tint": [0.8, 0.85, 1.0], "strength": 1.3, "flash": { "loop": 13, "at": [0.8, 4.6, 9.9] } },
+      "layers": [
+        { "name": "clouds", "kind": "slide", "zoom": [1, 0.5], "at": [0, 0.5], "travel": [0, -0.5], "period": 17.4 },
+        { "name": "bolt", "kind": "flash", "size": [5, 10], "loop": 13, "at": [0.8, 4.6, 9.9],
+          "spots": [[-4.0, 2.4, 25], [4.2, 2.0, -30], [-2.8, 3.6, 165]],
+          "glow": { "tint": [0.85, 0.9, 1.0], "strength": 2.0 } }
+      ]
+    },
+    "circuit_board": {
+      "seconds": 8.7,
+      "glow": { "tint": [1, 1, 1], "strength": 0.9 },
+      "layers": [
+        { "name": "pulse", "kind": "slide", "zoom": [1, 0.5], "at": [0, 0.5], "travel": [0, -0.5], "period": 4.35,
+          "glow": { "tint": [1, 1, 1], "strength": 1.1 } },
+        { "name": "board", "kind": "still",
+          "glow": { "tint": [1, 1, 1], "strength": 1.5, "pulse": { "period": 1, "low": 0 } } }
+      ]
+    },
+    "comic_book": {
+      "seconds": 7.5,
+      "layers": [
+        { "name": "lines", "kind": "slide", "zoom": [1, 0.75], "at": [0, 0.25], "travel": [0, -0.25], "period": 0.72 },
+        { "name": "pow", "kind": "slam", "centre": [-3.9, 3.2], "size": [5.4, 3.7], "turn": -10, "loop": 7.5, "at": [0.3], "hold": 1.5,
+          "glow": { "tint": [1, 1, 1], "strength": 1.0 } },
+        { "name": "slam", "kind": "slam", "centre": [3.9, 3.2], "size": [5.4, 3.7], "turn": 10, "loop": 7.5, "at": [2.8], "hold": 1.5,
+          "glow": { "tint": [1, 1, 1], "strength": 1.0 } },
+        { "name": "zap", "kind": "slam", "centre": [-3.7, 3.3], "size": [5.4, 3.7], "turn": 8, "loop": 7.5, "at": [5.3], "hold": 1.5,
+          "glow": { "tint": [1, 1, 1], "strength": 1.0 } }
+      ]
+    }
+  }
+}

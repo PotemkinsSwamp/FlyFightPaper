@@ -3,12 +3,17 @@
 Each sheet (one 1024 picture in the assets/models/planes/skin-sheet layout) is worn by every piece that has a
 printed-sheet copy (its SheetUV plus its own creases), on two builds put together the way the game builds them
 (plane_assembly.py); tape, elastic and weapons keep their own look, team stickers are left off. Six views a build (VIEWS=front,chase renders only those),
-lit like the Dragon's previews. Writes OUT_DIR/<sheet name>-<build>-<view>.png. Nothing is uploaded."""
+lit like the Dragon's previews. Writes OUT_DIR/<sheet name>-<build>-<view>.png. Nothing is uploaded.
+FRAMES=1 (used by skin_motion.py for a moving Rare): the second argument is a folder of colour sheets c0000.png... and
+glow sheets e0000.png...; every build stands in one shot (first from behind, second from the front, third from above)
+and each pair is rendered to OUT_DIR/f0000.png..."""
 import sys, os, json, bpy
 import numpy as np
 from mathutils import Vector
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import plane_assembly as pa
 a = sys.argv[sys.argv.index("--") + 1:]; OUT = os.path.abspath(a[0]); SHEETS = [os.path.abspath(p) for p in a[1:]]; os.makedirs(OUT, exist_ok=True)
+FRAMES = os.path.abspath(a[1]) if os.environ.get("FRAMES") else None
+if FRAMES: SHEETS = [os.path.join(FRAMES, "c0000.png")]
 pa.FBX_DIRS = [pa.PLANES / "skin-sheet"] + pa.FBX_DIRS                       # the printed-sheet copies where a piece has one
 COPIES = json.load(open(pa.ROOT / "config" / "skin-pieces.json"))["pieces"]
 BUILDS = {"starter": dict(body="body_standard", nose="nose_0", wings="wings_0", tail="tail_0", weapon_mounts=["pellet", "thumbtack"], utility="boost_band"),
@@ -18,15 +23,16 @@ if os.environ.get("MORE"):                                                  # MO
                   heavy2=dict(body="body_heavy_mk2", nose="nose_3", wings="wings_4", tail="tail_4", weapon_mounts=["pellet", "pellet"], utility="boost_spool"),
                   slim=dict(body="body_slim", nose="nose_5", wings="wings_2", tail="tail_2", weapon_mounts=["pellet", "pellet"]),
                   blunt=dict(body="body_standard", nose="nose_2", wings="wings_3", tail="tail_3", weapon_mounts=["pellet", "pellet"]))
-if os.environ.get("ONLY"): BUILDS = {k: v for k, v in BUILDS.items() if k in os.environ["ONLY"].split(",")}   # ONLY=starter,blunt
+if os.environ.get("ONLY"): BUILDS = {k: BUILDS[k] for k in os.environ["ONLY"].split(",") if k in BUILDS}       # ONLY=starter,blunt (in that order)
 GAP = 80.0
 def to_bl(p, dx=0.0): return Vector((p[0] + dx, -p[2], p[1]))                # Roblox (x right, y up, nose -z) -> Blender
 bpy.ops.wm.read_factory_settings(use_empty=True); sc = bpy.context.scene
 
 def tex(nt, path, data):
     x = nt.nodes.new("ShaderNodeTexImage"); x.image = bpy.data.images.load(str(path), check_existing=True); x.image.colorspace_settings.name = "Non-Color" if data else "sRGB"; return x
-def material(name, color=None, normal=None, rough=0.7, tint=None, rgb=(0.7, 0.7, 0.7)):
+def material(name, color=None, normal=None, rough=0.7, tint=None, rgb=(0.7, 0.7, 0.7), emit=None):
     m = bpy.data.materials.new(name); m.use_nodes = True; nt = m.node_tree; b = nt.nodes["Principled BSDF"]; b.inputs["Roughness"].default_value = rough
+    if emit: nt.links.new(tex(nt, emit, False).outputs[0], b.inputs["Emission Color"]); b.inputs["Emission Strength"].default_value = 1.0
     if color and os.path.exists(color):
         out = tex(nt, color, False).outputs[0]
         if tint:
@@ -59,7 +65,7 @@ for i, (name, lo) in enumerate(BUILDS.items()):
         if not p["fbx"] or not os.path.exists(p["fbx"]) or "sticker" in p["name"]: continue
         ob, world = import_piece(p, dx); ob.data.materials.clear()
         if p["name"] in COPIES:
-            m = material("S-" + name + p["name"], SHEETS[0], str(pa.PLANES / "skin-sheet" / (p["name"] + "-normal.png"))); skinned.append(m)
+            m = material("S-" + name + p["name"], SHEETS[0], str(pa.PLANES / "skin-sheet" / (p["name"] + "-normal.png")), emit=FRAMES and os.path.join(FRAMES, "e0000.png")); skinned.append(m)
         elif p["slot"] == "weapon":
             folder = os.path.dirname(os.path.dirname(p["fbx"]))
             img = next((os.path.join(folder, f) for f in ("color.png", "meshy-base_color.png") if os.path.exists(os.path.join(folder, f))), None)
@@ -79,6 +85,20 @@ lp = wn.nodes.new("ShaderNodeLightPath"); wm = wn.nodes.new("ShaderNodeMixShader
 sun = bpy.data.objects.new("sun", bpy.data.lights.new("sun", "SUN")); sun.data.energy = 1.4; sun.rotation_euler = (0.70, 0, 0.44); sc.collection.objects.link(sun)
 cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); sc.collection.objects.link(cam); sc.camera = cam; cam.data.clip_end = 500
 tg = bpy.data.objects.new("T", None); sc.collection.objects.link(tg); con = cam.constraints.new("TRACK_TO"); con.target = tg; con.track_axis = "TRACK_NEGATIVE_Z"; con.up_axis = "UP_Y"
+if FRAMES:                                                                   # a moving skin: all builds in one shot, one render a frame
+    import math
+    poses = [(-28, 40, -12), (-3, 38, 150), (23, 66, 18)]                     # across the shot, tipped toward the camera, turned (degrees)
+    for (name, s), (x, tip, turn) in zip(scenes.items(), poses):
+        e = bpy.data.objects.new("pose-" + name, None); sc.collection.objects.link(e); e.location = s["mid"]; bpy.context.view_layer.update()
+        for ob in s["obs"]: ob.parent = e; ob.matrix_parent_inverse = e.matrix_world.inverted()
+        e.rotation_mode = "ZYX"; e.rotation_euler = (math.radians(tip), 0, math.radians(turn)); e.location = (x, 0, 0)
+    cam.location, tg.location, cam.data.lens = (0, -126, 38), (0, 0, -1), 56; sc.eevee.taa_render_samples = 16
+    col, glow = bpy.data.images.load(SHEETS[0], check_existing=True), bpy.data.images.load(os.path.join(FRAMES, "e0000.png"), check_existing=True)
+    i = 0
+    while os.path.exists(os.path.join(FRAMES, "c%04d.png" % i)):
+        col.filepath, glow.filepath = os.path.join(FRAMES, "c%04d.png" % i), os.path.join(FRAMES, "e%04d.png" % i); col.reload(); glow.reload()
+        sc.render.filepath = os.path.join(OUT, "f%04d.png" % i); bpy.ops.render.render(write_still=True); i += 1
+    print("frames", i); SHEETS = []
 for sheet in SHEETS:
     img = bpy.data.images.load(sheet, check_existing=True); tag = os.path.splitext(os.path.basename(sheet))[0]
     for m in skinned: next(n for n in m.node_tree.nodes if n.type == "TEX_IMAGE" and n.image.colorspace_settings.name == "sRGB").image = img

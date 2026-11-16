@@ -31,7 +31,9 @@
   as suggested. For all eight (his yes to each): everything stays on the plane's surface; slow and easy to read, not busy;
   movement just loops; it moves wherever the skin is worn. **Glow is for up close:** "There's no point in trying to make it
   seen from far away because planes move so fast." The how-it-works note is on the
-  [skins plan](../plan/SKINS-PLAN.md) ("Moving Rares"), waiting on his OK.
+  [skins plan](../plan/SKINS-PLAN.md) ("Moving Rares"). **He OK'd it the same day:** "200 studs, it's fine. Right up
+  close, not a beacon, yeah. Those rules or notes work. Go ahead and build them and then show me some videos." Still
+  pictures tell him nothing about movement ("I would need like a GIF or a video").
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
