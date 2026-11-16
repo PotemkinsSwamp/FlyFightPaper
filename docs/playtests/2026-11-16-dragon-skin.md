@@ -23,3 +23,5 @@ getting shot at by bots.
 - Shots from a skin's moved gun (ace bots wear the crane or the Dragon) were drawn 1-3 studs beside the real shot the
   whole way; now they slide onto the real path within 15 studs.
 - The "Dev: skin" try-on button now tells the server too (it changed only the screen before).
+- **Later the same day, boosters:** they were plain under the Dragon ("the boosters don't match the dragon skin"). They now
+  wear its printed sheet, its own green body scales; Alan looked in Studio: "its good".

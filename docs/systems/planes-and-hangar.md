@@ -26,7 +26,7 @@ the side and behind, added, equals the plane's: `config/plane-areas.json`, measu
 than the plane (Alan 2026-11-16; 1 to 1.48 times the plane's length), centred on the plane, wings at its wing height (`even` in the config;
 `Aircraft.build` stamps the build on the plane). On the server its own precise shape replaces the body, nose, wings and
 tail as the hit and crash shape (`HitShapes.place`); guns hang under its wing outside its body, the booster under its
-belly. Its boosters wear its printed sheet (its own body scales at the body's scale size, `picture` in `config/looks.json`; Alan OK'd the Blender preview 2026-11-16, his look in Studio still to come). Not checked in Play yet; the monorail train still tests the corners of each crash shape's box, which for the
+belly. Its boosters wear its printed sheet (its own body scales at the body's scale size, `picture` in `config/looks.json`; Alan saw it in Studio 2026-11-16: "its good"). Not checked in Play yet; the monorail train still tests the corners of each crash shape's box, which for the
 Dragon reach past its wings.
 The shelf's big photo and its cubbies wear your skin too, and so do the desk menu's big photo and its pinboard of
 loadouts and presets (2026-11-14: under the crane the big photo showed the real plane under it, the pinboard no skin);
