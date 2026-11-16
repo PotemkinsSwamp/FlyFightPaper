@@ -225,6 +225,17 @@
   rest roughness 0.5 (Claude's numbers, for Alan to judge). Tripo's own rebuild for comparison (Retopo, four-sided,
   10 credits; its "Smart Mesh" switch costs 40): 2,352 triangles in one fused skin, horn steps and plate edges
   rounded off; with the same bake it reads close at the player's distance. Credits left 5,920.
+- **Dragon head accepted; same method for the other parts; about 8,000 triangles** (Alan, 2026-11-15, night): "that
+  worked pretty well for the head", "it looks pretty good, actually". Mine is kept (not Tripo's rebuild). The Dragon
+  "does not need to be under 4,000 ... we're aiming for like 8,000"; parts that need more triangles get more. Next
+  part: one wing.
+- **The Dragon's eyes glow light emerald green, no pupil** (Alan, same message): "it just looks like a glowing
+  gemstone". Done the standard Roblox way: a glow picture (white over each eye, black elsewhere) baked with the
+  other pictures, for SurfaceAppearance's EmissiveMaskContent with EmissiveTint and EmissiveStrength
+  ([Roblox reference](https://create.roblox.com/docs/reference/engine/classes/SurfaceAppearance), read 2026-11-15;
+  the mask is set when the model is built, not by a script at run time). The eye is an oval on each flank, light
+  emerald in the colour picture too; preview `.planning/skins/dragon/parts/head/clean/blender-dragon-eye.png`. Glow
+  strength and exact colour are Claude's preview numbers until Alan sees it in Roblox.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
