@@ -302,6 +302,18 @@
   Claude's recommendation (one smooth tube read off the side, top and bottom views, Codex's scales and belly plates
   wrapped round it, no Tripo). **Ruling (Alan):** "we can go with your body recommendation." Any Tripo use still
   needs his go. About 1,100 triangles are left.
+- **Body accepted, and one skin from nose to tail** (Alan, 2026-11-15, late). The body is one closed tube (1,056
+  triangles; the Dragon is 7,964) wearing two swatches Codex painted, repeated along it by code
+  (`body_build.py`, beside the other Dragon builders). Three rounds, each his words: a body painted to the final views' finer, flatter
+  scales was "fully inconsistent with the head", so sizes, colours and bump depth were re-measured on the head; the
+  straight cut where head met body was "a huge visible seam", so the body's skin was carried onto the head's neck in
+  the head's own pictures; the cut that left behind the eye was still "not seamless", so the skin now covers the
+  whole head tube and the body's first ring copies the head tube's 12-sided outline. **Ruling:** "its good enough".
+  The accepted head's pictures are untouched; the repaint is a copy (`parts/head/reskin/`, `head_reskin.py`). Known
+  and told: a hairline at the join at far zoom (the head side reads about 10% brighter, cause not found), a small
+  leftover shape on the jaw, scales bigger and belly plates bolder than the final views draw. **Go given:** "lets
+  load the model into the game and see what it looks like when its in roblox" (the upload; Play and place saves
+  still need their own go).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

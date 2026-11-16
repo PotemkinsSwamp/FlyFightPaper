@@ -166,6 +166,19 @@ mistake would be easy to make twice.
   Dragon: "wrapped in plastic"). A painting already has its highlights; shine on top doubles them. Measure a preview
   against the reference by mean colour of gold and green before showing it: ours was 2.3 times too bright. Light the
   preview evenly from all round plus a sun, or faces turned down go dark brown and look like a paint fault.
+- **Parts that touch wear one skin and share one outline** (2026-11-15, the Dragon's body beside its head; Alan:
+  "fully inconsistent", then "a huge visible seam", then "not seamless"). Matching average colour and scale size does
+  not hide a join: two scale designs meeting in a straight cut read as a seam, and so do two tubes whose outlines
+  differ (12 flat sides against a smooth oval change the light and the silhouette). What worked: take size, colour
+  and bump depth from the accepted neighbour, not from the sheet; lay ONE pattern across both parts by a shared
+  layout (how far along, how far round), written into each part's own pictures; make the new part's first ring a
+  copy of the neighbour's outline, corner for corner, and ease to its own shape further on. Render the join close up
+  from the side, above and below BEFORE showing anything.
+- **Reading a back line under fins: the notches between fins are the fins' feet, not the back** (same day): that
+  reading sat 0.011 too high and buried the fins. Read the scales' top edge on a ruled zoom.
+- **A generated repeat pattern is cut from its middle** (same day): the swatch's first column at the picture's edge
+  was incomplete, and a tile cut there gave every belly plate a blunt tip. Codex's second swatch run also cost 107,000
+  tokens against 47,000 for the first: quote a range.
 - **Tripo multi-view: a row of things seen from two sides becomes a block** (2026-11-15, the Dragon's leg): four
   views that each showed three claws came back as nine claws, 3 by 3. Level views 90 degrees apart cannot show a
   slanted row. Give Tripo the part without the repeated pieces (plain cones are quicker built by hand), or expect to
