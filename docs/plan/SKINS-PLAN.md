@@ -151,6 +151,15 @@ how the game draws 3D pieces (see "How it is drawn").
 | Water Spray | Shark Jet (comes with it) | waits for the Shark Jet | later |
 
 Lava and Comic Book have no matching trail. Names are Claude's picks.
+**The other ten as 3D videos (2026-11-16, drafts in `tools/art/trail_drafts.json`, waiting for Alan's look; the table's
+"what you see" and "made by" were written before the 3D change):** each is built like an OK'd one. *Soft smoke bodies:*
+Chalk Dust (pastel puffs, chalk specks), Stardust (purple and blue cloud, small foil stars, sparkle dust), Dragon Embers
+(a flame plume, yellow to red to smoke, rising embers), Goo Bubbles (green mist with see-through bubbles and drips),
+Circuit Trace (a dark green core with neon traces at right angles and gold pads). *3D pieces with filler, like Gold
+Stars:* Confetti (paper strips and curls), Music Notes (gold and black notes standing up), Paper Hearts (folded hearts),
+Folded Petals (blue and silver petals, falling), Glitch Pixels (cubes and bars that blink and jump sideways). Uploads
+they would need: heart, note, note pair, petal, curl (five small models); everything else is plain shapes and Roblox's
+own particle pictures.
 - **How they are sold:** the five plain ones as today (49 Robux or 900 Paper). The six that match a Rare are sold **on
   their own** (Alan) and can be worn with any skin. **Price not set:** Alan: they "would probably be more expensive" than
   a plain trail; decided later. Until then the list carries a stand-in of 99 Robux or 1,900 Paper (live sales are off).

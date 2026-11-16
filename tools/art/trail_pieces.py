@@ -55,7 +55,46 @@ def spark(bm):                                                              # a 
             for i in range(4): bm.faces.new((top, base[i], base[(i + 1) % 4]))
 def soft(bm):                                                               # a card that always faces the camera: soft smoke
     bm.faces.new([bm.verts.new(q) for q in ((-0.5, -0.5, 0), (0.5, -0.5, 0), (0.5, 0.5, 0), (-0.5, 0.5, 0))])
-MODELS = {"star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}
+def box(bm, lo, hi, lean=0.0):                                               # a block; lean tips its far end up or down
+    v = [bm.verts.new((x, y + lean * (x - lo[0]), z)) for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])]
+    for f in ((0, 1, 3, 2), (4, 6, 7, 5), (0, 4, 5, 1), (2, 3, 7, 6), (0, 2, 6, 4), (1, 5, 7, 3)): bm.faces.new([v[i] for i in f])
+def blob(bm, at, radii, tilt=0.0):                                           # a squashed ball, turned in its own flat
+    c, sn = math.cos(tilt), math.sin(tilt)
+    for v in bmesh.ops.create_icosphere(bm, subdivisions=2, radius=1.0)["verts"]:
+        x, y, z = v.co.x * radii[0], v.co.y * radii[1], v.co.z * radii[2]; v.co = (x * c - y * sn + at[0], x * sn + y * c + at[1], z + at[2])
+def heart(bm):                                                              # a folded paper heart: facets up to a point each side
+    ts = [i * math.tau / 20 for i in range(20)]
+    ring = [bm.verts.new((16 * math.sin(t) ** 3 / 32, (13 * math.cos(t) - 5 * math.cos(2 * t) - 2 * math.cos(3 * t) - math.cos(4 * t)) / 32 + 0.08, 0)) for t in ts]
+    for z in (0.14, -0.14):
+        top = bm.verts.new((0, 0.02, z))
+        for i in range(20): bm.faces.new((top, ring[i], ring[(i + 1) % 20]))
+def note(bm):                                                               # a single music note: head, stem, flag
+    blob(bm, (-0.1, -0.36, 0), (0.2, 0.14, 0.11), 0.45); box(bm, (0.055, -0.36, -0.03), (0.105, 0.47, 0.03)); box(bm, (0.105, 0.30, -0.02), (0.36, 0.47, 0.02), -0.9)
+def notes(bm):                                                              # two notes joined by a beam
+    blob(bm, (-0.33, -0.36, 0), (0.2, 0.14, 0.11), 0.45); blob(bm, (0.27, -0.26, 0), (0.2, 0.14, 0.11), 0.45)
+    box(bm, (-0.175, -0.36, -0.03), (-0.125, 0.40, 0.03)); box(bm, (0.425, -0.26, -0.03), (0.475, 0.50, 0.03)); box(bm, (-0.175, 0.30, -0.03), (0.475, 0.42, 0.03), 0.16)
+def petal(bm):                                                              # a folded paper petal: a leaf creased down its middle, a little curled
+    xs, ws = (-0.5, -0.3, -0.05, 0.25, 0.5), (0, 0.16, 0.24, 0.17, 0)
+    mid = [bm.verts.new((x, 0, 0.3 * x * x)) for x in xs]
+    for side in (1, -1):
+        edge = [mid[i] if w == 0 else bm.verts.new((x, side * w, 0.3 * x * x + 0.42 * w)) for i, (x, w) in enumerate(zip(xs, ws))]
+        for i in range(4): bm.faces.new(list(dict.fromkeys((mid[i], mid[i + 1], edge[i + 1], edge[i]))))
+    bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.025)
+def curl(bm):                                                               # a curled paper streamer
+    rows = []
+    for j in range(13):
+        u = j / 12; a = u * 1.7 * math.pi; c = Vector((0.34 * math.cos(a), (u - 0.5) * 0.5, 0.34 * math.sin(a)))
+        rows.append((bm.verts.new(c + Vector((0, 0.11, 0))), bm.verts.new(c - Vector((0, 0.11, 0)))))
+    for a, b in zip(rows, rows[1:]): bm.faces.new((a[0], b[0], b[1], a[1]))
+    bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.02)
+def block(x, y, z):                                                         # plain blocks: the game draws these itself, no upload
+    def build(bm):
+        for v in bmesh.ops.create_cube(bm, size=1.0)["verts"]: v.co = (v.co.x * x, v.co.y * y, v.co.z * z)
+    return build
+def ball(bm): bmesh.ops.create_icosphere(bm, subdivisions=3, radius=0.5)
+MODELS = {"heart": (heart, False), "note": (note, False), "notes": (notes, False), "petal": (petal, False), "curl": (curl, False), "ball": (ball, True),
+          "cube": (block(1, 1, 1), False), "bar": (block(1, 0.045, 0.045), False), "strip": (block(1, 0.36, 0.02), False), "square": (soft, False),
+          "star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}
 
 if __name__ == "__main__":
     sc = bpy.context.scene

@@ -837,5 +837,11 @@ Back to [HOME](../HOME.md)
   Studio" does not cover the running window (`robloxstudiobeta.exe` on D:), and its first screenshot hid every other
   open app. Alan declined the second request. When Studio will not draw (viewport 1 x 1, no frames), stop Play, clear
   DevMute and hand him a what-to-look-at list; do not reach for desktop control.
+- **Judge a new trail against an approved one at the same moments.** Two stills (frames 36 and 126: your own seat, then
+  alongside) of the new trail beside the same two of Gold Stars show at once whether it is as full; stills alone made
+  the piece trails look too thin when they matched what Alan had OK'd. Ten trails' stills take about two minutes,
+  three at a time; fix what they show before any full video.
+- **A glow colour clips.** The glow look multiplies the colour by 9, so any channel over about 40 of 255 goes to full:
+  a green needs its red and blue under 40 or it turns cyan.
 - **A flat card in Blender needs Object coordinates** for a round fading patch (Generated gives nothing on a flat quad),
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.

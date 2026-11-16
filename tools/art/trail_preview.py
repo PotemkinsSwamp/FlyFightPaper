@@ -13,7 +13,9 @@ from mathutils import Vector, Matrix, Quaternion
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import plane_assembly as pa, trail_pieces
 
 ARGS = sys.argv[sys.argv.index("--") + 1:]; TRAIL = ARGS[0]; STILLS = [int(a) for a in ARGS[1:]]
-CFG = json.load(open(pa.ROOT / "config/trails.json")); SPEC = CFG["trails"][TRAIL]; LIFE = CFG["life"]
+CFG = json.load(open(pa.ROOT / "config/trails.json")); LIFE = CFG["life"]
+SPEC = CFG["trails"].get(TRAIL) or json.load(open(pa.ROOT / "tools/art/trail_drafts.json"))["trails"][TRAIL]   # drafts: not in the game yet
+CARDS = ("soft", "square")                                                    # flat cards that face the camera (particles in the game)
 OUT = pa.ROOT / ".planning/skins/trails"; FPS, SECONDS, SUB, NORMAL, BOOST, CUT = 24, 8.0, 4, 105.0, 150.0, 4.4
 rng = random.Random(7)
 
@@ -51,6 +53,11 @@ def look(kind):
         rim = nt.nodes.new("ShaderNodeMapRange"); rim.interpolation_type = "SMOOTHSTEP"; rim.inputs["From Min"].default_value, rim.inputs["From Max"].default_value = 0.2, 0.58
         rim.inputs["To Min"].default_value, rim.inputs["To Max"].default_value = 0.9, 0.0; nt.links.new(lump.outputs[0], rim.inputs["Value"])
         al = nt.nodes.new("ShaderNodeMath"); al.operation = "MULTIPLY"; nt.links.new(rim.outputs["Result"], al.inputs[0]); nt.links.new(own.outputs["Alpha"], al.inputs[1]); nt.links.new(al.outputs[0], b.inputs["Alpha"])
+    elif kind == "paper": b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 0.85, 0.12   # crisp folds
+    elif kind == "bright": b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 0.35, 0.9   # a lit block that still shades
+    elif kind == "glass":                                                    # a goo bubble: shiny, partly see-through
+        b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 0.06, 0.3
+        al = nt.nodes.new("ShaderNodeMath"); al.operation = "MULTIPLY"; al.inputs[1].default_value = 0.62; nt.links.new(own.outputs["Alpha"], al.inputs[0]); nt.links.new(al.outputs[0], b.inputs["Alpha"])
     else: b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 1.0, 0.05; bumpy(5, 0.5)   # cotton
     return m
 
@@ -146,8 +153,10 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
     for i, piece in enumerate(SPEC.get("pieces", [])):
         alive[i] = [q for q in alive[i] if t - q["born"] < q["life"]]; owed[i] += piece["rate"] * v / NORMAL / (FPS * SUB)
         while owed[i] >= 1:
-            owed[i] -= 1; a, rad = rng.uniform(0, math.tau), piece["spread"] * math.sqrt(rng.random())
-            alive[i].append(dict(born=t, life=rng.uniform(*piece["life"]), at=tail + (right * math.cos(a) + up * math.sin(a)) * rad, vel=rnd() * rng.uniform(0, piece["drift"]), g=g, seed=rng.random(),
+            owed[i] -= 1; a, rad = rng.uniform(0, math.tau), piece["spread"] * math.sqrt(rng.random()); ox, oy = math.cos(a) * rad, math.sin(a) * rad
+            if piece.get("lattice"): ox, oy = round(ox / piece["lattice"]) * piece["lattice"], round(oy / piece["lattice"]) * piece["lattice"]   # on a grid: pieces line up
+            axes = rng.choices(((nose, up, right), (right, nose, up), (up, right, nose)), piece.get("axes", (5, 3, 2)))[0]   # a grid piece's long side: along the path, across, up (`axes`: how often each)
+            alive[i].append(dict(born=t, life=rng.uniform(*piece["life"]), at=tail + right * ox + up * oy, right=right, grid=Matrix(axes).transposed().to_quaternion(), vel=rnd() * rng.uniform(0, piece["drift"]), g=g, seed=rng.random(),
                                  size=piece["size"][0] + (piece["size"][1] - piece["size"][0]) * rng.random() ** 2, axis=rnd(), dir=(nose + rnd() * 0.45).normalized(),
                                  turn=rng.uniform(0, math.tau), spin=math.radians(piece.get("spin", 0)) * rng.uniform(0.5, 1) * rng.choice((-1, 1)), color=lin(rng.choice(piece["colors"]))))
     f = n // SUB - int((LIFE + 0.2) * FPS)
@@ -179,7 +188,10 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             if piece.get("flash") and not (k < 0.3 or 0.42 < k < 0.7): size = 0   # lightning: on, off, on, gone
             if piece.get("twinkle"): size *= 0.3 + 0.7 * random.Random(int(q["seed"] * 1e6) + int(t * piece["twinkle"])).random()
             at = q["at"] + q["vel"] * age + Vector((0, 0, 0.5 * piece.get("rise", 0) * age * age))
-            if piece["model"] == "soft": turn = facing @ Quaternion((0, 0, 1), q["turn"] + q["spin"] * age)
+            if piece.get("jump"): at = at + q["right"] * (piece["jump"] * random.Random(int(q["seed"] * 1e6) + int(t * 8)).randint(-2, 2) / 2)   # snaps sideways 8 times a second
+            if piece["model"] in CARDS: turn = facing @ Quaternion((0, 0, 1), (q["turn"] if piece.get("spin") else 0) + q["spin"] * age)
+            elif piece.get("align") == "grid": turn = q["grid"]                 # square to the plane as it was when the piece left
+            elif piece.get("upright"): turn = Quaternion((0, 0, 1), q["turn"] + q["spin"] * age) @ Quaternion((1, 0, 0), math.pi / 2 + (q["seed"] - 0.5) * 0.5)   # stands up, turning like a sign
             elif piece.get("align"): turn = Vector((1, 0, 0)).rotation_difference(q["dir"]) @ Quaternion((1, 0, 0), q["turn"])
             else: turn = Quaternion(q["axis"], q["turn"] + q["spin"] * age)
             ob.matrix_world = Matrix.Translation(at) @ turn.to_matrix().to_4x4() @ Matrix.Diagonal((size, size, size, 1))

@@ -1,0 +1,78 @@
+{
+  "_comment": "Trail looks still being shown to Alan as 3D videos (tools/art/trail_preview.py reads this after config/trails.json; same words as there). Not in the game: a trail moves to config/trails.json once Alan OKs its video and src/client/PlaneTrails.luau can draw it. Extra words used here: models heart, note, notes, petal, curl (would be uploaded), ball, cube, bar, strip (plain shapes the game draws itself), square (a flat square particle, Roblox's own picture); looks paper (crisp folds), bright (a lit block), glass (a see-through goo bubble); `upright` (stands up, turning like a sign), `align: grid` (square to the plane as it was when the piece left, long side mostly along the path), `axes` (a grid piece's long side: how often along the path, across it, up), `lattice` (studs: pieces start on a grid this wide, so they line up), `jump` (studs: snaps sideways 8 times a second).",
+  "trails": {
+    "chalk_dust": {
+      "pieces": [
+        {"model": "soft", "look": "soft", "rate": 60, "life": [0.85, 1.0], "size": [3.4, 5.4], "shrink": 1.7, "vanish": 0.5, "spread": 1.1, "drift": 0.7, "spin": 25, "colors": [[236, 232, 224], [250, 196, 214], [196, 220, 250], [250, 236, 180], [196, 238, 212]]},
+        {"model": "square", "look": "paper", "rate": 130, "life": [0.5, 1.0], "size": [0.14, 0.34], "shrink": 0.4, "spread": 1.6, "drift": 2.2, "spin": 90, "colors": [[255, 255, 250], [255, 226, 236], [226, 238, 255]]},
+        {"model": "flake", "look": "paper", "rate": 30, "life": [0.5, 0.9], "size": [0.25, 0.6], "shrink": 0.3, "spread": 1.3, "drift": 2.0, "spin": 420, "rise": -5, "colors": [[255, 255, 250], [255, 214, 226], [255, 244, 200]]}
+      ]
+    },
+    "confetti": {
+      "pieces": [
+        {"model": "strip", "look": "paper", "rate": 46, "life": [0.6, 1.0], "size": [0.8, 1.8], "shrink": 0.6, "spread": 1.9, "drift": 2.4, "spin": 420, "rise": -3, "colors": [[235, 64, 52], [255, 200, 40], [60, 170, 90], [52, 120, 220], [240, 110, 180]]},
+        {"model": "curl", "look": "paper", "rate": 16, "life": [0.7, 1.0], "size": [1.2, 2.4], "shrink": 0.6, "spread": 1.8, "drift": 1.8, "spin": 260, "rise": -3, "colors": [[235, 64, 52], [255, 200, 40], [60, 170, 90], [52, 120, 220], [240, 110, 180]]},
+        {"model": "square", "look": "paper", "rate": 150, "life": [0.5, 1.0], "size": [0.25, 0.55], "shrink": 0.5, "spread": 2.0, "drift": 2.6, "spin": 300, "colors": [[235, 64, 52], [255, 200, 40], [60, 170, 90], [52, 120, 220], [240, 110, 180]]}
+      ]
+    },
+    "music_notes": {
+      "pieces": [
+        {"model": "note", "look": "foil", "rate": 20, "life": [0.7, 1.0], "size": [1.4, 2.8], "shrink": 0.4, "spread": 1.7, "drift": 1.2, "spin": 140, "upright": true, "colors": [[255, 200, 50], [30, 28, 36], [255, 200, 50]]},
+        {"model": "notes", "look": "foil", "rate": 11, "life": [0.7, 1.0], "size": [1.8, 3.2], "shrink": 0.4, "spread": 1.7, "drift": 1.2, "spin": 140, "upright": true, "colors": [[255, 200, 50], [30, 28, 36]]},
+        {"model": "flake", "look": "foil", "rate": 50, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.5, "drift": 2.5, "spin": 720, "colors": [[255, 220, 110]]},
+        {"model": "spark", "look": "glow", "rate": 150, "life": [0.4, 1.0], "size": [0.25, 0.75], "shrink": 0.4, "spread": 1.8, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 226, 120], [255, 250, 230]]}
+      ]
+    },
+    "paper_hearts": {
+      "pieces": [
+        {"model": "heart", "look": "paper", "rate": 34, "life": [0.6, 0.9], "size": [0.9, 2.5], "shrink": 0.3, "spread": 1.6, "drift": 1.5, "spin": 200, "colors": [[226, 52, 74], [255, 120, 160], [255, 170, 196], [240, 80, 110]]},
+        {"model": "flake", "look": "paper", "rate": 55, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.4, "drift": 2.5, "spin": 720, "colors": [[255, 170, 196], [255, 214, 226]]},
+        {"model": "spark", "look": "glow", "rate": 150, "life": [0.4, 1.0], "size": [0.25, 0.7], "shrink": 0.4, "spread": 1.8, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 200, 220], [255, 240, 246]]}
+      ]
+    },
+    "stardust": {
+      "pieces": [
+        {"model": "soft", "look": "soft", "rate": 85, "life": [0.9, 1.0], "size": [3.2, 5.4], "shrink": 1.6, "vanish": 0.45, "spread": 1.2, "drift": 0.6, "spin": 20, "colors": [[84, 44, 170], [44, 66, 190], [124, 64, 204], [34, 44, 132], [150, 70, 190]]},
+        {"model": "star", "look": "foil", "rate": 18, "life": [0.55, 0.9], "size": [0.4, 1.1], "shrink": 0.3, "spread": 1.8, "drift": 1.4, "spin": 220, "colors": [[255, 255, 255], [214, 226, 255]]},
+        {"model": "spark", "look": "glow", "rate": 200, "life": [0.4, 1.0], "size": [0.25, 0.85], "shrink": 0.4, "spread": 2.0, "drift": 1.2, "spin": 60, "twinkle": 14, "colors": [[255, 255, 255], [200, 220, 255], [255, 214, 250]]}
+      ]
+    },
+    "goo_bubbles": {
+      "pieces": [
+        {"model": "soft", "look": "soft", "rate": 60, "life": [0.85, 1.0], "size": [2.6, 4.2], "shrink": 1.4, "vanish": 0.5, "spread": 1.0, "drift": 0.5, "spin": 15, "colors": [[96, 210, 60], [130, 230, 70], [80, 190, 56]]},
+        {"model": "ball", "look": "glass", "rate": 46, "life": [0.6, 1.0], "size": [0.6, 2.2], "shrink": 1.25, "spread": 1.7, "drift": 1.3, "spin": 0, "colors": [[110, 230, 60], [150, 245, 80], [80, 200, 50]]},
+        {"model": "ball", "look": "glass", "rate": 30, "life": [0.5, 0.8], "size": [0.18, 0.42], "shrink": 0.8, "spread": 1.5, "drift": 1.6, "spin": 0, "rise": -9, "colors": [[150, 245, 80], [110, 230, 60]]}
+      ]
+    },
+    "glitch_pixels": {
+      "pieces": [
+        {"model": "cube", "look": "bright", "rate": 60, "life": [0.5, 0.9], "size": [0.4, 1.5], "shrink": 0.7, "spread": 1.9, "drift": 0.4, "spin": 0, "align": "grid", "jump": 1.6, "flash": true, "colors": [[0, 240, 255], [255, 50, 170], [255, 255, 255]]},
+        {"model": "bar", "look": "glow", "rate": 14, "life": [0.4, 0.7], "size": [2.5, 5.0], "shrink": 1.0, "spread": 1.6, "drift": 0, "spin": 0, "align": "grid", "jump": 1.2, "flash": true, "colors": [[0, 240, 255], [255, 50, 170]]},
+        {"model": "square", "look": "glow", "rate": 170, "life": [0.4, 1.0], "size": [0.2, 0.6], "shrink": 0.6, "spread": 2.1, "drift": 0.6, "spin": 0, "twinkle": 10, "colors": [[0, 240, 255], [255, 50, 170], [255, 255, 255]]}
+      ]
+    },
+    "circuit_trace": {
+      "pieces": [
+        {"model": "soft", "look": "soft", "rate": 80, "life": [0.85, 1.0], "size": [2.2, 3.4], "shrink": 1.4, "vanish": 0.5, "spread": 0.8, "drift": 0.4, "spin": 15, "colors": [[14, 96, 56], [18, 112, 64], [12, 84, 50]]},
+        {"model": "bar", "look": "glow", "rate": 30, "life": [0.8, 1.0], "size": [3.0, 6.5], "shrink": 0.3, "spread": 1.3, "lattice": 1.0, "drift": 0, "spin": 0, "align": "grid", "colors": [[30, 255, 40], [60, 255, 70]], "axes": [1, 0, 0]},
+        {"model": "bar", "look": "glow", "rate": 14, "life": [0.7, 1.0], "size": [2.0, 2.0], "shrink": 0.3, "spread": 1.3, "lattice": 1.0, "drift": 0, "spin": 0, "align": "grid", "colors": [[30, 255, 40], [60, 255, 70]], "axes": [0, 1, 1]},
+        {"model": "cube", "look": "foil", "rate": 24, "life": [0.7, 1.0], "size": [0.35, 0.6], "shrink": 0.5, "spread": 1.3, "lattice": 1.0, "drift": 0, "spin": 0, "align": "grid", "colors": [[230, 200, 90], [220, 226, 232]]},
+        {"model": "spark", "look": "glow", "rate": 110, "life": [0.4, 1.0], "size": [0.3, 0.8], "shrink": 0.4, "spread": 1.4, "drift": 0.8, "spin": 60, "twinkle": 12, "colors": [[90, 255, 110], [220, 255, 225]]}
+      ]
+    },
+    "dragon_embers": {
+      "pieces": [
+        {"model": "soft", "look": "soft", "rate": 90, "life": [0.85, 1.0], "size": [3.0, 5.0], "shrink": 1.6, "vanish": 0.5, "spread": 1.2, "drift": 0.6, "spin": 20, "rainbow": 1, "colors": [[255, 200, 70], [255, 130, 30], [220, 64, 20], [110, 36, 26], [56, 50, 54]]},
+        {"model": "spark", "look": "glow", "rate": 120, "life": [0.6, 1.0], "size": [0.3, 0.9], "shrink": 0.3, "spread": 1.8, "drift": 2.2, "spin": 60, "rise": 9, "twinkle": 12, "colors": [[255, 170, 40], [255, 214, 90], [255, 110, 30]]},
+        {"model": "flake", "look": "glow", "rate": 16, "life": [0.6, 1.0], "size": [0.4, 1.0], "shrink": 0.2, "spread": 1.6, "drift": 2.0, "spin": 300, "rise": 7, "colors": [[255, 150, 40], [255, 200, 70]]}
+      ]
+    },
+    "folded_petals": {
+      "pieces": [
+        {"model": "petal", "look": "foil", "rate": 50, "life": [0.7, 1.0], "size": [1.3, 3.0], "shrink": 0.5, "spread": 1.7, "drift": 1.4, "spin": 240, "rise": -7, "colors": [[70, 130, 230], [120, 170, 245], [214, 222, 236], [240, 244, 250]]},
+        {"model": "flake", "look": "foil", "rate": 50, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.5, "drift": 2.5, "spin": 720, "colors": [[226, 232, 244], [150, 190, 250]]},
+        {"model": "spark", "look": "glow", "rate": 130, "life": [0.4, 1.0], "size": [0.25, 0.7], "shrink": 0.4, "spread": 1.8, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 255, 255], [200, 224, 255]]}
+      ]
+    }
+  }
+}
