@@ -2,10 +2,11 @@
 - **The three OK'd trails are in the game** (Gold Stars, Storm Sparks, Holo Rainbow), drawn behind any flying plane. **Not yet seen in Play by anyone**: Studio would not draw for my screen grabs, and you declined desktop access, so the first look is yours.
 - **Uploaded (your OK on the safety sheet):** a star and a lightning bolt, both Approved. Smoke and sparkles use Roblox's own pictures, so nothing else was needed.
 - **Tests: 671 passed, 0 failed** in Play (4 new for trails). **Bots' one roll is in** at your 35/35/15/15.
+- **The other ten trails are with you as 3D videos** (`.planning/skins/trails/`), nothing uploaded, not in the game. Five smoke bodies (Stardust, Dragon Embers, Goo Bubbles, Chalk Dust, Circuit Trace), five 3D-piece clouds as full as Gold Stars (Confetti, Music Notes, Paper Hearts, Folded Petals, Glitch Pixels).
 
 # Now: finish the game for the beta
-Next (Alan 2026-11-16): **the trails**: your Play look at the three in the game and the 12-plane frame-rate check; then the full
-list of 13 in the shop and hangar and the other ten, each as a 3D video before upload. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
+Next (Alan 2026-11-16): **the trails**: your Play look at the three in the game and the 12-plane frame-rate check; your verdict on the ten
+videos (a turned-down one comes back as two options); then the OK'd ones into the game and the full list of 13 in the shop and hangar. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
 playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and
 arrival; a real gift through the shop; the unlock backpack's music dip.
 
@@ -48,10 +49,10 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
+- **Ten trail videos:** OK or what is wrong, each. My weakest two: Circuit Trace (its dark core is blotchy) and Chalk Dust (very white from your own seat). If OK'd, five small models need your OK on a safety sheet before upload: heart, note, note pair, petal, curl.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next trail on every plane (gold stars, holo rainbow, storm sparks, then each its own). Against your videos: is each one thick body? Stars 3D and foil? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Gold Stars is the heaviest)?
 - **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
 - Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?).
-- Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);
   no gun piece floating off the crane's guns, at the desk and firing; the Toilet Roll shake with my recorder (your go).
 - Publish when you like (report card, new shop window; shop button Studio-only until go-live). Save to File for the new weapon models and tape-roll tower (your go).
