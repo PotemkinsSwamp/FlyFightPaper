@@ -10,8 +10,8 @@
 
 # Now: finish the game for the beta
 Next: the Toilet Roll shake in flight (the crane's moving gun pieces follow the moved guns); skin art: the Dragon is rebuilt in parts from `.planning/skins/dragon/six-views/final/`
-(Alan's OKs 2026-11-15: head, wings, tail fan; 4,700 of about 8,000 triangles). Legs next: sculpt ONE folded leg in
-Tripo, his go given for 55 credits ([decision](../docs/decisions/2026-11-14-shape-skin-model-sheets.md)); then the
+(Alan's OKs 2026-11-15: head, wings, tail fan; 4,700 of about 8,000 triangles). Folded leg built (Tripo sculpt, 45
+credits, 5,820 left; four legs = 1,428 triangles), waiting on Alan's OK ([decision](../docs/decisions/2026-11-14-shape-skin-model-sheets.md)); then the
 six printed skins, Shark Jet, Dragon, the three trails
 ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a

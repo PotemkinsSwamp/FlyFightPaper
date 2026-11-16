@@ -273,6 +273,16 @@
   Codex's scale swatch stays (`parts/leg/painted/scales.png`). **Ruling (Alan, asked with the cost):** "Sculpt in
   Tripo": the head's recipe (Codex paints one leg's four views from the final views, Tripo sculpts, clean shapes,
   bake). His yes covers 55 credits (5,865 before), Claude driving Tripo Studio in his Chrome, and one model download.
+- **Folded leg built; waiting on Alan's OK** (2026-11-15, night). Codex painted the leg's side and underside from
+  the final views (the other two Tripo views are their mirror images: those faces sit against the body); Tripo H3.1
+  with a 2K texture cost 45 credits, not 55 (5,820 left). **Tripo made nine claws** (a 3 by 3 block): every view
+  showed three across. Kept: the three on the slant (outer-top, middle, inner-bottom), which is the one layout that
+  shows three claws from the side and from below as the final views do; the six others are painted over green. The
+  leg is one tube of 357 triangles plus three six-sided claws, fattened 1.3 times to the picture's thickness; one leg
+  is drawn four times (1,428 triangles; Dragon so far 6,128). Placing (box on the Dragon), the slant and the claw
+  thickness are Claude's numbers. Known flaws shown to Alan: blank green patches on the toe ends, a blunter thigh
+  and straighter outline than the picture, legs barely seen from the player's view
+  (`.planning/skins/dragon/parts/leg/leg-close.jpg`, `parts/whole3/dragon-new-legs.jpg`).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

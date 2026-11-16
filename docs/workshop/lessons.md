@@ -162,6 +162,10 @@ mistake would be easy to make twice.
 - **Tripo multi-view: every view at ONE scale** (2026-11-15): four head views each scaled to fill its own frame came
   back 20% too wide and tall; size each direction to our piece's box afterwards, or better, render all views at one
   scale. "Generate in Parts" cannot be combined with texture. A 4K textured H3.1 model costs 55 credits.
+- **Tripo multi-view: a row of things seen from two sides becomes a block** (2026-11-15, the Dragon's leg): four
+  views that each showed three claws came back as nine claws, 3 by 3. Level views 90 degrees apart cannot show a
+  slanted row. Give Tripo the part without the repeated pieces (plain cones are quicker built by hand), or expect to
+  keep one diagonal and paint the rest over. A 2K texture costs 45 credits instead of 55 and is plenty for a small part.
 - **Roblox Studio's texture generator** (2026-11-15): Fast = 1K colour, pale; Quality = SurfaceAppearance with colour,
   roughness and metal, real detail but its own design (it ignored "gold"); the hint picture argument failed through the
   Studio tool. Good for generic props, not for an approved design.
