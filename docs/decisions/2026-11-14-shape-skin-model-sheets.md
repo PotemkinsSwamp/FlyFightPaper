@@ -284,6 +284,19 @@
   thickness are Claude's numbers. Known flaws, accepted: blank green patches on the toe ends, a blunter thigh
   and straighter outline than the picture, legs barely seen from the player's view
   (`.planning/skins/dragon/parts/leg/leg-close.jpg`, `parts/whole3/dragon-new-legs.jpg`).
+- **Back fins: outline plus paint; built, waiting on Alan's OK** (Alan picked the method, 2026-11-15, night, shown the
+  final views' crop first). Codex painted fin 2 crisp from the final side view (one picture); the wing's method built
+  one gold spine on a thin web from it, and that fin is drawn five times, each stretched to its own length and height
+  from the side view and bowed sideways in turn as the top view draws them. 156 triangles a fin, 780 for five, no
+  credits. Spine width seen from above (0.175 of a fin's length), the bow (0.13 of its length) and the root's depth
+  are read off the views; all five being fin 2's shape is the "one fin reused" rule (fin 1 lacks its taller web).
+- **The Dragon looked "wrapped in plastic" and too bright next to the reference** (Alan, on the fins' close-up; he also
+  circled brown bands under the spines and orange specks at the fin roots). Measured: the previews were lit 2.3 times
+  too bright and the gold mirrored the sky. Changed for every part: gold metal 0.6 to 0.15, gold roughness 0.4 to 0.6,
+  everything else roughness 0.5 to 0.9 (the paintings already carry their highlights); the preview light now shows a
+  sunlit face in its painted colour, with even light from all round so undersides are not dark (that was the brown
+  band). Built and reference now agree within a few percent on gold and green. The orange specks are the old body's
+  paint and go with the body rebuild. How it reads in Roblox's own light is unknown until a Studio check (Alan's go).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

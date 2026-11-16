@@ -162,6 +162,10 @@ mistake would be easy to make twice.
 - **Tripo multi-view: every view at ONE scale** (2026-11-15): four head views each scaled to fill its own frame came
   back 20% too wide and tall; size each direction to our piece's box afterwards, or better, render all views at one
   scale. "Generate in Parts" cannot be combined with texture. A 4K textured H3.1 model costs 55 credits.
+- **Painted skins want a matte finish, and a preview light that shows the paint as painted** (2026-11-15, Alan on the
+  Dragon: "wrapped in plastic"). A painting already has its highlights; shine on top doubles them. Measure a preview
+  against the reference by mean colour of gold and green before showing it: ours was 2.3 times too bright. Light the
+  preview evenly from all round plus a sun, or faces turned down go dark brown and look like a paint fault.
 - **Tripo multi-view: a row of things seen from two sides becomes a block** (2026-11-15, the Dragon's leg): four
   views that each showed three claws came back as nine claws, 3 by 3. Level views 90 degrees apart cannot show a
   slanted row. Give Tripo the part without the repeated pieces (plain cones are quicker built by hand), or expect to
