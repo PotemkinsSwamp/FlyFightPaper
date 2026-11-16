@@ -284,8 +284,8 @@
   thickness are Claude's numbers. Known flaws, accepted: blank green patches on the toe ends, a blunter thigh
   and straighter outline than the picture, legs barely seen from the player's view
   (`.planning/skins/dragon/parts/leg/leg-close.jpg`, `parts/whole3/dragon-new-legs.jpg`).
-- **Back fins: outline plus paint; built, waiting on Alan's OK** (Alan picked the method, 2026-11-15, night, shown the
-  final views' crop first). Codex painted fin 2 crisp from the final side view (one picture); the wing's method built
+- **Back fins: outline plus paint; accepted** (Alan picked the method, 2026-11-15, night, shown the final views' crop
+  first; on the matte re-render: "ok it's good, let's move on to the body"). Codex painted fin 2 crisp from the final side view (one picture); the wing's method built
   one gold spine on a thin web from it, and that fin is drawn five times, each stretched to its own length and height
   from the side view and bowed sideways in turn as the top view draws them. 156 triangles a fin, 780 for five, no
   credits. Spine width seen from above (0.175 of a fin's length), the bow (0.13 of its length) and the root's depth
@@ -297,6 +297,11 @@
   sunlit face in its painted colour, with even light from all round so undersides are not dark (that was the brown
   band). Built and reference now agree within a few percent on gold and green. The orange specks are the old body's
   paint and go with the body rebuild. How it reads in Roblox's own light is unknown until a Studio check (Alan's go).
+- **Body next: outline plus paint is the plan** (2026-11-15, night). Alan was shown the body's crop
+  (`.planning/skins/dragon/parts/body/final-body.jpg`) and asked "sculpting, or outline plus paint?" twice with
+  Claude's recommendation (one smooth tube read off the side, top and bottom views, Codex's scales and belly plates
+  wrapped round it, no Tripo); he answered "let's move on to the body" without picking. No credits are at stake, so
+  the recommendation stands unless he says otherwise; any Tripo use still needs his go. About 1,100 triangles are left.
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

@@ -10,8 +10,8 @@
 
 # Now: finish the game for the beta
 Next: the Toilet Roll shake in flight (the crane's moving gun pieces follow the moved guns); skin art: the Dragon is rebuilt in parts from `.planning/skins/dragon/six-views/final/`
-(Alan's OKs 2026-11-15: head, wings, tail fan, legs; Tripo credits 5,820). Back fins built (outline plus paint, 780
-triangles; 6,908 of about 8,000) and the finish made matte, both waiting on his OK ([decision](../docs/decisions/2026-11-14-shape-skin-model-sheets.md)); then the
+(Alan's OKs 2026-11-15: head, wings, tail fan, legs, back fins, matte finish; 6,908 of about 8,000 triangles; Tripo
+credits 5,820). Body next: one tube, outline plus paint, no Tripo ([decision](../docs/decisions/2026-11-14-shape-skin-model-sheets.md)); then the
 six printed skins, Shark Jet, Dragon, the three trails
 ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a
