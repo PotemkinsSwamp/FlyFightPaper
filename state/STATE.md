@@ -2,11 +2,11 @@
 - **The three OK'd trails are in the game** (Gold Stars, Storm Sparks, Holo Rainbow), drawn behind any flying plane. **Not yet seen in Play by anyone**: Studio would not draw for my screen grabs, and you declined desktop access, so the first look is yours.
 - **Uploaded (your OK on the safety sheet):** a star and a lightning bolt, both Approved. Smoke and sparkles use Roblox's own pictures, so nothing else was needed.
 - **Tests: 671 passed, 0 failed** in Play (4 new for trails). **Bots' one roll is in** at your 35/35/15/15.
-- **Eight more trails are in the game, complete** (your OKs): Chalk Dust, Stardust, Goo Bubbles, Glitch Pixels, Confetti, Music Notes, Folded Petals, Dragon Embers (your pick B). Their four models are uploaded and Approved. The trail tests pass 5 of 5 and all eleven fly in a Studio Edit dry run; the whole test set has not been re-run in Play since.
+- **All 13 trails are in the game** (your OKs; Paper Hearts saved for a holiday set, Mini Paper Planes in its place; Circuit Trace on its third go). Eight models uploaded, all Approved. The trail tests pass 5 of 5 and all 13 fly in a Studio Edit dry run; the whole test set has not been re-run in Play since the first three.
 
 # Now: finish the game for the beta
-Next (Alan 2026-11-16): **the trails**: your Play look at the three in the game and the 12-plane frame-rate check; your verdict on the ten
-videos (a turned-down one comes back as two options); then the OK'd ones into the game and the full list of 13 in the shop and hangar. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
+Next (Alan 2026-11-16): **the trails**: your Play look at the 13 in the game and the 12-plane frame-rate check; then the full list of 13 in the shop
+and the Trails tab, and a trail on the plane in the Hangar. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
 playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and
 arrival; a real gift through the shop; the unlock backpack's music dip.
 
@@ -48,8 +48,8 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **Circuit Trace, third go** (video sent: bent traces, flashing LEDs, a slight green board cloud): OK or what is wrong. **Mini Paper Planes** (your pick; Paper Hearts is saved for a holiday set): OK to upload its little plane model (safety sheet sent)?
-- **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the eleven trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes standing the right way up? Dragon's embers glowing, not glittering? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Gold Stars and Glitch Pixels are the heaviest)?
+- **The shop list** (next for me, your OK on two things first): keep the saved name behind Rainbow Marker so testers who own it get Holo Rainbow (my lean: yes); the Rare-match price is still the 99 Robux / 1,900 Paper stand-in.
+- **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 13 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
 - Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?). Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);

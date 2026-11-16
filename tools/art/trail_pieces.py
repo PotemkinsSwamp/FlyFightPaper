@@ -11,7 +11,7 @@ import bpy, bmesh
 from mathutils import Vector, noise
 
 ROOT = Path(__file__).resolve().parents[2]
-UPLOADED = ("star", "bolt", "curl", "note", "notes", "petal", "dart")   # dart: Alan picked Mini Paper Planes; its upload waits for his OK on the safety sheet
+UPLOADED = ("star", "bolt", "curl", "note", "notes", "petal", "dart", "jog")   # dart: Alan picked Mini Paper Planes; its upload waits for his OK on the safety sheet
 
 def mesh(name, smooth_shade=None):
     build, smooth_default = MODELS[name]
@@ -94,7 +94,8 @@ def block(x, y, z):                                                         # pl
 def ball(bm): bmesh.ops.create_icosphere(bm, subdivisions=3, radius=0.5)
 def jog(bm):                                                                # a circuit-board trace: straight, a 45-degree step sideways, straight, a pad at each end
     box(bm, (-0.5, -0.115, -0.015), (-0.12, -0.085, 0.015)); box(bm, (-0.12, -0.115, -0.015), (0.12, -0.085, 0.015), 0.2 / 0.24); box(bm, (0.12, 0.085, -0.015), (0.5, 0.115, 0.015))
-    for x, y in ((-0.5, -0.1), (0.5, 0.1)): box(bm, (x - 0.035, y - 0.035, -0.02), (x + 0.035, y + 0.035, 0.02))
+    box(bm, (-0.33, -0.085, -0.015), (-0.30, 0.07, 0.015))                    # a short branch to a third pad: reads as a circuit, never as a bare zigzag
+    for x, y in ((-0.5, -0.1), (0.5, 0.1), (-0.315, 0.1)): box(bm, (x - 0.045, y - 0.045, -0.02), (x + 0.045, y + 0.045, 0.02))
 def dart(bm):                                                               # a tiny folded paper plane, nose along +x
     nose, back = bm.verts.new((0.5, 0, 0)), bm.verts.new((-0.5, 0, 0)); bm.faces.new((nose, bm.verts.new((-0.5, 0, -0.17)), back))   # the keel you hold
     for side in (1, -1): bm.faces.new((nose, bm.verts.new((-0.5, side * 0.05, 0.0)), bm.verts.new((-0.5, side * 0.37, 0.04))))       # a wing each side

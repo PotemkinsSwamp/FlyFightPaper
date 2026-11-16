@@ -856,5 +856,7 @@ Back to [HOME](../HOME.md)
   lying flat with Blender's up as +Z and Blender's +X as -X (`CreateEditableMeshAsync` on the note: its head, the heavy
   end, sat at -Z). `PlaneTrails.STAND` carries that for `upright` pieces; anything that must fly nose-first needs the
   same check.
+- **A bare zigzag line can be read as a rune.** The circuit's bent trace (straight, a 45-degree step, straight) got a
+  short branch and a third pad before upload, so its flat view is plainly a circuit.
 - **A flat card in Blender needs Object coordinates** for a round fading patch (Generated gives nothing on a flat quad),
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.

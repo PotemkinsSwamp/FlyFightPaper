@@ -7,25 +7,6 @@
         {"model": "flake", "look": "paper", "rate": 55, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.4, "drift": 2.5, "spin": 720, "colors": [[255, 170, 196], [255, 214, 226]]},
         {"model": "spark", "look": "glow", "rate": 150, "life": [0.4, 1.0], "size": [0.25, 0.7], "shrink": 0.4, "spread": 1.8, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 200, 220], [255, 240, 246]]}
       ]
-    },
-    "mini_planes": {
-      "pieces": [
-        {"model": "dart", "look": "paper", "rate": 28, "life": [0.7, 1.0], "size": [1.4, 2.8], "shrink": 0.5, "spread": 1.9, "drift": 1.0, "spin": 0, "align": true, "level": true, "colors": [[250, 248, 240], [214, 232, 255], [255, 244, 200], [255, 214, 226], [212, 246, 224]]},
-        {"model": "flake", "look": "paper", "rate": 50, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.5, "drift": 2.5, "spin": 720, "colors": [[250, 248, 240], [214, 232, 255]]},
-        {"model": "spark", "look": "glow", "rate": 130, "life": [0.4, 1.0], "size": [0.25, 0.7], "shrink": 0.4, "spread": 1.8, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 255, 255], [220, 236, 255]]}
-      ]
-    },
-    "circuit_trace": {
-      "pieces": [
-        {"model": "soft", "look": "soft", "rate": 45, "life": [0.85, 1.0], "size": [2.4, 3.6], "shrink": 1.4, "vanish": 0.6, "spread": 0.8, "drift": 0.4, "spin": 15, "colors": [[20, 110, 62], [26, 128, 70], [18, 98, 56]]},
-        {"model": "jog", "look": "glow", "rate": 34, "life": [0.85, 1.0], "size": [4.0, 7.0], "shrink": 0.4, "spread": 1.4, "lattice": 0.8, "drift": 0, "spin": 0, "align": "grid", "axes": [1, 0, 0], "colors": [[30, 255, 40], [60, 255, 70]]},
-        {"model": "bar", "look": "glow", "rate": 14, "life": [0.7, 1.0], "size": [1.6, 1.6], "shrink": 0.5, "spread": 1.4, "lattice": 0.8, "drift": 0, "spin": 0, "align": "grid", "axes": [0, 1, 1], "colors": [[30, 255, 40], [60, 255, 70]]},
-        {"model": "ball", "look": "glow", "rate": 30, "life": [0.6, 1.0], "size": [0.35, 0.6], "shrink": 1.0, "spread": 1.4, "lattice": 0.8, "drift": 0, "spin": 0, "flash": true, "colors": [[255, 40, 40], [40, 255, 60], [30, 60, 255], [255, 70, 10]]},
-        {"model": "ball", "look": "foil", "rate": 16, "life": [0.7, 1.0], "size": [0.3, 0.45], "shrink": 0.6, "spread": 1.4, "lattice": 0.8, "drift": 0, "spin": 0, "colors": [[236, 200, 80], [224, 228, 236]]},
-        {"model": "bar", "look": "glow", "rate": 16, "life": [0.5, 0.9], "size": [0.9, 1.6], "shrink": 0.8, "spread": 1.4, "lattice": 0.8, "drift": 0, "spin": 0, "align": "grid", "axes": [1, 0, 0], "run": 30, "colors": [[230, 255, 235]]},
-        {"model": "chip", "look": "paper", "rate": 6, "life": [0.8, 1.0], "size": [1.2, 1.8], "shrink": 0.6, "spread": 1.0, "lattice": 0.8, "drift": 0, "spin": 0, "align": "grid", "axes": [1, 0, 0], "colors": [[34, 36, 44]]},
-        {"model": "spark", "look": "glow", "rate": 60, "life": [0.4, 1.0], "size": [0.3, 0.7], "shrink": 0.4, "spread": 1.4, "drift": 0.8, "spin": 60, "twinkle": 12, "colors": [[90, 255, 110], [220, 255, 225]]}
-      ]
     }
   }
 }

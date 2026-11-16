@@ -21,10 +21,11 @@ function Spec.run()
 				assert(spec.life[1] > 0 and spec.life[1] <= spec.life[2] and spec.life[2] <= Config.life, name .. ": lives at most the trail's second")
 				assert(spec.size[1] > 0 and spec.size[1] <= spec.size[2], name .. ": sizes")
 				assert(not spec.rainbow or PlaneTrails.rainbow(spec), name .. ": rainbow")
-				assert(not (spec.light or spec.flash or spec.align or spec.upright or spec.jump) or not particle, name .. ": only parts flash, light, stand up, jump or lie along the path")
+				assert(not (spec.light or spec.flash or spec.align or spec.upright or spec.jump or spec.level or spec.lattice or spec.run) or not particle, name .. ": only parts flash, light, stand up, jump, race, line up or lie along the path")
+				assert(spec.axes == nil or (spec.align == "grid" and #spec.axes == 3 and spec.axes[1] + spec.axes[2] + spec.axes[3] > 0), name .. ": axes")
 			end
 		end
-		assert(trails >= 10)
+		assert(trails >= 13)
 	end)
 	test("a jumping piece keeps one of five sideways places for an eighth of a second", function()
 		local seen = {}

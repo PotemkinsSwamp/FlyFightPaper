@@ -18,7 +18,7 @@ local PICTURE = { soft = "rbxasset://textures/particles/smoke_main.dds", spark =
 local LIT = { soft = { emission = 0.3, influence = 0.8, clear = 0.2 }, glow = { emission = 1, influence = 0, clear = 0 }, paper = { emission = 0, influence = 1, clear = 0 },
 	fire = { emission = 1, influence = 0, clear = 0.1 } } -- fire is its own light: never shaded by the room
 -- Part pieces: plain shapes made here (size at 1 stud; true = a ball), or the uploaded models in the config's `meshes`.
-local PLAIN = { flake = Vector3.new(1, 0.07, 0.6), strip = Vector3.new(1, 0.02, 0.36), cube = Vector3.one, bar = Vector3.new(1, 0.045, 0.045), ball = true }
+local PLAIN = { flake = Vector3.new(1, 0.07, 0.6), strip = Vector3.new(1, 0.02, 0.36), cube = Vector3.one, bar = Vector3.new(1, 0.045, 0.045), chip = Vector3.new(1, 0.22, 0.6), ball = true }
 local MATERIAL = { foil = Enum.Material.Foil, glow = Enum.Material.Neon, matte = Enum.Material.Fabric, paper = Enum.Material.SmoothPlastic, bright = Enum.Material.SmoothPlastic, glass = Enum.Material.SmoothPlastic }
 local CLEAR, SHINE = { glass = 0.38 }, { glass = 0.25 } -- a goo bubble is see-through and shiny
 PlaneTrails.pictures, PlaneTrails.lit, PlaneTrails.plain, PlaneTrails.materials = PICTURE, LIT, PLAIN, MATERIAL
@@ -125,10 +125,12 @@ local function along(dir, long)
 	local look = CFrame.lookAlong(Vector3.zero, dir)
 	return long == "X" and look * CFrame.Angles(0, math.pi / 2, 0) or long == "Y" and look * CFrame.Angles(math.pi / 2, 0, 0) or look
 end
--- Square to the plane as it is now, the piece's long side mostly along the path, then across it, then up.
-local function grid(frame)
-	local pick = rng:NextNumber() * 10
-	local turn = pick < 5 and frame * CFrame.Angles(0, math.pi / 2, 0) or pick < 8 and frame or frame * CFrame.Angles(0, 0, math.pi / 2)
+-- Square to the plane as it is now, the piece's long side along the path, across it or up (`axes`: how often each).
+local function grid(frame, axes)
+	local along, across, upward = 5, 3, 2
+	if axes then along, across, upward = axes[1], axes[2], axes[3] end
+	local pick = rng:NextNumber() * (along + across + upward)
+	local turn = pick < along and frame * CFrame.Angles(0, math.pi / 2, 0) or pick < along + across and frame or frame * CFrame.Angles(0, 0, math.pi / 2)
 	return turn * CFrame.Angles(rng:NextInteger(0, 3) * math.pi / 2, 0, 0)
 end
 
@@ -149,7 +151,9 @@ local function emit(w, root, tail, dt)
 		while row.owed >= 1 do
 			row.owed -= 1
 			local a, reach = rng:NextNumber(0, 2 * math.pi), spec.spread * math.sqrt(rng:NextNumber())
-			local at = w.last + shift * rng:NextNumber() + (right * math.cos(a) + up * math.sin(a)) * reach
+			local across, above = math.cos(a) * reach, math.sin(a) * reach
+			if spec.lattice then across, above = math.round(across / spec.lattice) * spec.lattice, math.round(above / spec.lattice) * spec.lattice end -- on a grid: pieces line up
+			local at = w.last + shift * rng:NextNumber() + right * across + up * above
 			if row.emitters then
 				w.holder.WorldPosition = at
 				row.emitters[rng:NextInteger(1, #row.emitters)]:Emit(1)
@@ -159,9 +163,12 @@ local function emit(w, root, tail, dt)
 				part.Material, part.Color = MATERIAL[spec.look], color(spec.colors[rng:NextInteger(1, #spec.colors)])
 				part.Transparency, part.Reflectance = CLEAR[spec.look] or 0, SHINE[spec.look] or 0
 				local q = { part = part, model = spec.model, spec = spec, unit = shape.unit, born = now, life = rng:NextNumber(spec.life[1], spec.life[2]), at = at,
-					vel = rng:NextUnitVector() * rng:NextNumber(0, spec.drift or 0), shown = 0, right = right, seed = rng:NextNumber(0, 1000),
+					vel = rng:NextUnitVector() * rng:NextNumber(0, spec.drift or 0), shown = 0, right = right, nose = nose, seed = rng:NextNumber(0, 1000),
 					size = (spec.size[1] + (spec.size[2] - spec.size[1]) * rng:NextNumber() ^ 2) * g } -- more small ones than big
-				if spec.align == "grid" then q.turn = grid(root.CFrame.Rotation)
+				if spec.align == "grid" then q.turn = grid(root.CFrame.Rotation, spec.axes)
+				elseif spec.level then -- flies nose-first, right way up, banked a little (a model's nose, Blender +X, is its -X here)
+					local dir = (nose + rng:NextUnitVector() * 0.45).Unit
+					q.turn = CFrame.lookAlong(Vector3.zero, dir) * CFrame.Angles(0, -math.pi / 2, 0) * CFrame.Angles(rng:NextNumber(-0.6, 0.6), 0, 0)
 				elseif spec.align then
 					local dir = (nose + rng:NextUnitVector() * 0.45).Unit
 					q.turn = CFrame.fromAxisAngle(dir, rng:NextNumber(0, 2 * math.pi)) * along(dir, shape.long)
@@ -210,6 +217,7 @@ local function step(dt)
 			local size = math.max(q.size * PlaneTrails.sizeAt(spec, k), 0.02)
 			if math.abs(size - q.shown) > STEP * q.shown then q.shown = size; q.part.Size = q.unit * size end
 			local at = q.at + q.vel * age + Vector3.new(0, 0.5 * (spec.rise or 0) * age * age, 0)
+			if spec.run then at -= q.nose * (spec.run * age) end -- races back along the path, like a light along a wire
 			if spec.jump then at += q.right * (spec.jump * PlaneTrails.snap(q.seed, now)) end
 			frames[n] = CFrame.new(at) * (q.turn or (q.lean and CFrame.Angles(0, q.start + q.spin * age, 0) * q.lean) or CFrame.fromAxisAngle(q.axis, q.start + q.spin * age))
 		end

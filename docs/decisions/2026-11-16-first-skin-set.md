@@ -106,6 +106,10 @@
     Paper Planes** (its dart model's safety sheet is with him; not uploaded, not in the game). **The four models
     uploaded** (curl, note, note pair, petal; all Approved). **Circuit Trace: third go** with bent traces, flashing
     LEDs in four colours and a slight green cloud; video with him, verdict pending.
+  - **"Looks good upload all"** (Alan, on the third Circuit Trace video and the Mini Paper Planes safety sheet). So
+    **Circuit Trace is OK'd** and both models are uploaded (the paper plane and the bent trace, both Approved). The bent
+    trace got a short branch and a third pad before upload so it could not be read as a bare zigzag; Claude checked its
+    safety sheet and sent it to him after the upload. All 13 trails are now in the game.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
