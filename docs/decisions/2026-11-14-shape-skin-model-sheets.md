@@ -300,8 +300,8 @@
 - **Body next: outline plus paint is the plan** (2026-11-15, night). Alan was shown the body's crop
   (`.planning/skins/dragon/parts/body/final-body.jpg`) and asked "sculpting, or outline plus paint?" twice with
   Claude's recommendation (one smooth tube read off the side, top and bottom views, Codex's scales and belly plates
-  wrapped round it, no Tripo); he answered "let's move on to the body" without picking. No credits are at stake, so
-  the recommendation stands unless he says otherwise; any Tripo use still needs his go. About 1,100 triangles are left.
+  wrapped round it, no Tripo). **Ruling (Alan):** "we can go with your body recommendation." Any Tripo use still
+  needs his go. About 1,100 triangles are left.
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:
