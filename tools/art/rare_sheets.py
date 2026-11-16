@@ -131,16 +131,21 @@ def squash(a):
     a = np.asarray(a, np.float32); b = a.reshape(a.shape[0] // 2, 2, *a.shape[1:]).mean(1); return np.concatenate((b, b))
 
 def slime():
-    """Bright toxic goo creeping over dark paper (concept rare-1). The goo and its paper are one solid sliding layer;
-    the still sheet is the same picture where the slide starts."""
-    g = 0.55 * tnoise(N, N, 84, 71, (3.4, 0.75)) + 0.45 * tnoise(N, N, 40, 72, (2.0, 0.9))    # long thin runs down the plane
-    body, h = step(0.49, 0.53, g), step(0.49, 0.78, g)                                     # where the goo is, how thick
-    gy, gx = np.gradient(ndimage.gaussian_filter(h, 2.5, mode="wrap")); shine = np.clip((-gx - gy) * 30, 0, 1) ** 1.5
-    bub = dots(N, N, 110, 73, 3.4) * step(0.3, 0.6, h)
-    goo = mix(ramp(h, [(0, "#1F7A0C"), (0.3, "#4FC212"), (0.75, "#86EE22"), (1, "#B4FF45")]), rgb("#F1FFC2"), np.clip(shine * 0.85 + bub * 0.9, 0, 1))
-    ground = mix(rgb("#252C24") * (0.8 + 0.4 * tnoise(N, N, 40, 74))[..., None], rgb("#0E120D"), 0.7 * step(0.43, 0.49, g))   # the goo's shadow
-    col, gl = mix(ground, goo, body), np.clip(bub + 0.5 * shine + 0.15, 0, 1) * body
-    save("slime", col); save("slime-glow", gl); save("slime-goo", squash(col)); save("slime-goo-glow", squash(gl))
+    """Bright toxic goo on dark paper (concept rare-1): two layers of thick goo slide to the tail at different speeds,
+    the quick one over the slow one, so lobes push out, merge and split and the outline never holds still (Alan
+    2026-11-16: one sliding goo picture "doesn't really look like slime oozing"; pools with thin drips under them hid
+    the drips)."""
+    def layer(seed, size, cover):                                                          # one repeat: colour, how solid, glow
+        g = 0.6 * tnoise(N, N, size, seed, (2.4, 0.8)) + 0.4 * tnoise(N, N, size * 0.45, seed + 1, (1.8, 0.9))
+        lo = np.quantile(g, 1 - cover); h = step(lo, lo + 0.2, g); body = step(0.12, 0.30, h)
+        gy, gx = np.gradient(ndimage.gaussian_filter(h, 2.0, mode="wrap")); shine = np.clip((-gx - gy) * 26, 0, 1) ** 1.5
+        bub = dots(N, N, 70, seed + 2, 3.2) * step(0.5, 0.8, h)
+        col = mix(ramp(h, [(0, "#16600A"), (0.35, "#43B410"), (0.75, "#86EE22"), (1, "#B4FF45")]), rgb("#F1FFC2"), np.clip(shine * 0.85 + bub * 0.9, 0, 1))
+        return col, body, np.clip(bub + 0.5 * shine + 0.15, 0, 1) * body
+    (c1, b1, g1), (c2, b2, g2) = layer(71, 130, 0.42), layer(81, 92, 0.36)
+    paper = rgb("#252C24") * (0.8 + 0.4 * tnoise(N, N, 40, 74))[..., None]
+    save("slime", mix(mix(paper, c1, b1), c2, b2)); save("slime-glow", np.maximum(g1 * (1 - b2), g2))
+    save("slime-slow", squash(c1), squash(b1)); save("slime-slow-glow", squash(g1)); save("slime-fast", squash(c2), squash(b2)); save("slime-fast-glow", squash(g2))
 
 def holographic():
     """Crinkled silver foil with pastel facets (concept rare-2); rainbow bands and a glint line slide over it."""

@@ -34,6 +34,10 @@
   [skins plan](../plan/SKINS-PLAN.md) ("Moving Rares"). **He OK'd it the same day:** "200 studs, it's fine. Right up
   close, not a beacon, yeah. Those rules or notes work. Go ahead and build them and then show me some videos." Still
   pictures tell him nothing about movement ("I would need like a GIF or a video").
+- **The first videos (Alan, 2026-11-16):** six are good as shown (Galaxy, Holographic, Glitch, Thunderstorm, Circuit Board,
+  Comic Book): "if I didn't say anything about them, then the rest of them are good". **Lava was too fast:** "Lava is
+  very slow ... It's supposed to be kind of like a pulsing, slow-moving animation." **Slime did not ooze:** "it's just
+  moving it like up and down across the screen. I feel like it could be better." Both redone.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

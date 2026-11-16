@@ -81,8 +81,8 @@ answers from the talk are there).
 | Rare | Still picture | What moves | What glows |
 |---|---|---|---|
 | Galaxy | Blue and purple space clouds, a few still stars | Stars drift nose to tail (one pass in 20 s). One small solar system a wing, turning at two speeds: a sun with two planets (a lap in 9 s), a giant with two moons (14 s, the other way). First drawn as one big orbit round the plane's middle: every planet was cut in two where it crossed the body's step (2026-11-16). A comet with a tail crosses the plane in 1.5 s, one every 4 to 7 s | Stars twinkle in two groups, out of step (2 s each) |
-| Lava | Black cracked rock | Molten orange flows inside the cracks, nose to tail (one pass in 6 s) | Cracks breathe brighter and dimmer (3 s) |
-| Slime | Bright green goo | Thick drips creep back along the plane (one pass in 10 s) with a slow side-to-side wobble | Bubbles glow faint green (pulse 2.5 s) |
+| Lava | Black cracked rock | Molten orange creeps inside the cracks, nose to tail (one pass in 30 s; the first try at 6 s was "very, very fast") | Cracks breathe brighter and dimmer (4 s) |
+| Slime | Bright green goo on dark paper | Two layers of thick goo slide to the tail at different speeds (one pass in 34 s and in 16 s), the quick one over the slow one, so lobes push out, merge and split. The first try slid one whole goo picture and did not read as oozing; still pools with thin drips under them hid the drips | Bubbles glow faint green (pulse 2.5 s) |
 | Holographic | Silver foil | Rainbow bands sweep across at a slant (one pass in 4 s) | A glint line runs nose to tail every 5 s |
 | Glitch | Dark, broken colour blocks | Blocks and scan lines snap to a new spot for 0.1 s, every 0.8 to 2 s | Bright blocks flicker on each snap |
 | Thunderstorm | Dark storm clouds | Clouds roll back (one pass in 12 s) | A lightning bolt double-flashes every 3 to 6 s, in a new place each time |
