@@ -5,8 +5,8 @@
 - **All 13 trails are in the game** (your OKs; Paper Hearts saved for a holiday set, Mini Paper Planes in its place; Circuit Trace on its third go). Eight models uploaded, all Approved. The trail tests pass 5 of 5 and all 13 fly in a Studio Edit dry run; the whole test set has not been re-run in Play since the first three.
 
 # Now: finish the game for the beta
-Next (Alan 2026-11-16): **the trails**: your Play look at the 13 in the game and the 12-plane frame-rate check; then the full list of 13 in the shop
-and the Trails tab, and a trail on the plane in the Hangar. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
+Next (Alan 2026-11-16): **a Play test by script, no screen grabs**: the frame rate of a 12-plane match with every bot in a skin and a trail, and a list of
+anything wrong with each skin and trail read from the game itself. Then fixes, the list of 13 in the shop and the Trails tab, and a trail on the plane in the Hangar. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
 playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and
 arrival; a real gift through the shop; the unlock backpack's music dip.
 
