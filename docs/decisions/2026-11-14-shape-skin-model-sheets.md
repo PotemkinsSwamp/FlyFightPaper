@@ -340,6 +340,7 @@
   server's hit shape is the Dragon's own outline. Equal total size had left it 11 studs wingtip to wingtip against the
   plane's 14 (the Dragon puts more of its size in its side view). Now it is also never shorter or narrower than the
   plane: as wide as the plane on narrow-wing builds, a bigger target there (about half again on the narrowest).
+  Flown again with the shot-drawing fix: "Okay, it looks good now" ([playtest](../playtests/2026-11-16-dragon-skin.md)).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

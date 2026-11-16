@@ -1,22 +1,20 @@
-# Since Alan last checked (2026-11-14)
-- **Your crane playtest list is fixed** (tabs, Buy not Try on, paper-and-tape buttons, crumpled ball wears the skin,
-  crane guns under the wing, shelf wears the skin). From your replay: the **crane is shorter** (shallower belly, lower roof),
-  its **wings sit on the body's edge**, the **grey crane is blue again**, the **hangar keeps the plane picture between clicks** (a new plane loads behind the old one
-  and swaps in when ready) and **gets the shop's answer right after Buy** (it waited for a 3-second refresh).
-- **Crane hitbox matches the drawn crane** (wings tilt 32 degrees, same size; guns and booster hit where drawn; the
-  booster now sits against the belly). Tests 650/0. Place saved to Roblox (version 735, not published).
-- **Boosters under the crane wear its blue wave paper** (sheet uploaded with your go, free; tests 635/0). Your answers
-  are in the [notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md) and [skin rules](../docs/decisions/2026-11-13-skin-rules.md).
+# Since Alan last checked (2026-11-16)
+- **The Dragon is a plane skin** (you flew it: "looks good now"): wings forward, it is the hitbox at your plane's
+  size and never smaller; shots from skinned guns are drawn on their real path. Waiting on your go: the frame-rate check.
+- Older crane notes: [crane playtest](../docs/playtests/2026-11-13-crane-and-skins-tabs.md).
 
 # Now: finish the game for the beta
-Next: the Toilet Roll shake in flight (the crane's moving gun pieces follow the moved guns); the Dragon is a shape skin
-and the hitbox (Alan 2026-11-15: wings 0.69 studs forward, keeps its proportions, as big a target as the plane, centred;
-one mesh, one 1024 set; tests 665/0), waiting on Alan's Play look ([decision](../docs/decisions/2026-11-14-shape-skin-model-sheets.md)). Then the six
-printed skins, Shark Jet, Dragon, the three trails ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
+Next ([first skin set](../docs/decisions/2026-11-16-first-skin-set.md), Alan 2026-11-16): the Dragon's boosters wear the
+Dragon; then the 8 Commons and 8 animated Rares (how-it-works note for the movement first; Fable; TextureCraft). The Dragon
+is in the game as a shape skin and the hitbox ("looks good now"; [playtest](../docs/playtests/2026-11-16-dragon-skin.md));
+left on it: printed sheet for crash ball and shop card, frame-rate check (his go), jaw leftover. Also queued: the Toilet
+Roll shake in flight. After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a
 real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
+Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
+  shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
 Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
   has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices); Trails tab lists, draws nothing.
   Crane: about a quarter shorter (belly to the real body's bottom, roof 0.5 of a step up, was 0.9); width as before.
