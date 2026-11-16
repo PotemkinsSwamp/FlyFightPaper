@@ -18,6 +18,11 @@
   the tools it usually uses, and TextureCraft (the hand-texturing desktop app, [lessons](../workshop/lessons.md)); Alan
   compares them ("we will try texture craft first though a test one with just fable ... and one with texture craft and
   compare them").
+- **Comparison result (Alan, 2026-11-16): the code-drawn way ("A").** Carbon Fibre was made both ways and shown on the
+  same planes (`.planning/skins/tests/carbon/carbon-two-ways.jpg`). A Common or Rare is one flat picture shared by every
+  part, so TextureCraft's edge wear and crease dirt (read from one 3D shape) cannot be used; it works as a material
+  library (its carbon came out flat from the player's view). The set is drawn in code (`tools/art/skin_sheets.py`) and
+  shown on real planes with `tools/art/skin_preview.py` before each upload.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

@@ -2,7 +2,7 @@
     blender -b --factory-startup --python tools/art/skin_preview.py -- OUT_DIR SHEET.png [SHEET2.png ...]
 Each sheet (one 1024 picture in the assets/models/planes/skin-sheet layout) is worn by every piece that has a
 printed-sheet copy (its SheetUV plus its own creases), on two builds put together the way the game builds them
-(plane_assembly.py); tape, elastic and weapons keep their own look, team stickers are left off. Five views a build,
+(plane_assembly.py); tape, elastic and weapons keep their own look, team stickers are left off. Six views a build (VIEWS=front,chase renders only those),
 lit like the Dragon's previews. Writes OUT_DIR/<sheet name>-<build>-<view>.png. Nothing is uploaded."""
 import sys, os, json, bpy
 import numpy as np
@@ -82,6 +82,7 @@ for sheet in SHEETS:
         L, mid, E = s["L"], s["mid"], max(s["L"], s["span"])
         for view, off, look, lens in (("front", (-0.62, 0.66, 0.42), (0, 0, 0), 50), ("chase", (0.25, -1.0, 0.42), (0, 0, 0), 50), ("top", (0, -0.01, 1.3), (0, 0, 0), 50),
                                       ("side", (-1.2, 0, 0.08), (0, 0, 0), 50), ("close", (-0.35, 0.05, 0.35), (-0.08, 0.1, 0), 50), ("under", (0.4, -0.7, -0.6), (0, 0, 0), 50)):
+            if os.environ.get("VIEWS") and view not in os.environ["VIEWS"].split(","): continue
             cam.location, tg.location, cam.data.lens = mid + Vector(off) * E * 1.5, mid + Vector(look) * E, lens
             sc.render.filepath = os.path.join(OUT, "%s-%s-%s.png" % (tag, name, view)); bpy.ops.render.render(write_still=True)
 print("done")
