@@ -153,7 +153,7 @@ function Service:add(player,options)
   seat=seat,home=home,loadout=options.loadout or self.catalog:starterLoadout(),loadoutName=options.loadoutName or "pellet",tier=options.tier or "regular",practice=options.practice,life=0}
  -- Bots wear skins by difficulty (Alan 2026-11-13), picked once and kept all match; drawn on players' screens only.
  if player then p.skin,p.trail=options.skin~="" and options.skin or nil,options.trail~="" and options.trail or nil
-  local dev=Run:IsStudio() and player:GetAttribute("DevSkin") -- the Studio "Dev: skin" button (HangarService "devSkin")
+  local dev=Run:IsStudio() and typeof(player)=="Instance" and player:GetAttribute("DevSkin") -- the Studio "Dev: skin" button (HangarService "devSkin"; test players are tables)
   if type(dev)=="string" then p.skin=dev~="" and dev or nil end
  else p.skin,p.trail=Looks.botLooks(p.tier,function(n) return math.random(n) end) end
  self.records[id]=self.records[id] or self:newRecord(p)
