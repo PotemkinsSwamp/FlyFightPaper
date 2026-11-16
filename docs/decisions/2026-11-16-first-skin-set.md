@@ -73,7 +73,13 @@
     should be actual like thick clouds coming out and then lightning, you know, exploding throughout it." Redone: Gold
     Stars with sparkle dust; two options each for the other two (storm: A thick cotton cloud, B soft smoke, both lit
     from inside by the lightning; rainbow: A foil crystals whose colour runs through the rainbow, B six coloured cords
-    wound round each other). Waiting for his picks.
+    wound round each other).
+  - **His picks:** Gold Stars: "Stars are good." **Storm Sparks: B** ("definitely B"), the soft smoke lit from inside by
+    the lightning; option A (cotton cloud) deleted. **Holo Rainbow, no again:** "it still just looks like a bunch of
+    streamers attached to a plane. We need something with more body." Redone as a thick rainbow smoke cloud with foil
+    flakes and sparkles, built like the storm he picked (a dense stream of big foil crystals was tried and dropped
+    unseen: still no body). Two options: A the colour runs through the rainbow once along the stream (from your own
+    seat you see only the pink end), B three times (your own seat shows most colours). Waiting for his pick.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

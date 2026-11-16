@@ -228,8 +228,9 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             else: turn = Quaternion(q["axis"], q["turn"] + q["spin"] * age)
             ob.matrix_world = Matrix.Translation(at) @ turn.to_matrix().to_4x4() @ Matrix.Diagonal((size, size, size, 1))
             color = q["color"]
-            if piece.get("rainbow"):                                         # the colour runs through the list along the stream
-                x = k * (len(piece["colors"]) - 1); i = min(int(x), len(piece["colors"]) - 2); c0, c1 = lin(piece["colors"][i]), lin(piece["colors"][i + 1]); color = tuple(a + (b - a) * (x - i) for a, b in zip(c0, c1))
+            if piece.get("rainbow"):                                         # the colour runs through the list along the stream, `rainbow` times over
+                runs = float(piece["rainbow"]); cols = piece["colors"] + piece["colors"][:1] * (runs > 1); x = (k * runs % 1 if runs > 1 else min(k, 1)) * (len(cols) - 1)
+                i = min(int(x), len(cols) - 2); c0, c1 = lin(cols[i]), lin(cols[i + 1]); color = tuple(a + (b - a) * (x - i) for a, b in zip(c0, c1))
             gone = piece.get("vanish", 0); ob.color = tuple(color[:3]) + ((1 - smooth((k - (1 - gone)) / gone)) if gone else 1.0,)
             if mine and size > 0 and lit < len(mine): mine[lit].location = at; mine[lit].data.energy = piece["light"]; lit += 1
         for lamp in mine[lit:]: lamp.data.energy = 0
