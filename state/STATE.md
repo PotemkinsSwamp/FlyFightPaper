@@ -1,13 +1,13 @@
-# Since Alan last checked (2026-11-16, second session)
-- Earlier today: the Dragon's boosters and the eight Commons are in ([your notes](../docs/playtests/2026-11-16-common-skins.md)); Tiger Stripes and Gold Foil are off the list.
-- **The eight moving Rares are in the game** (2026-11-16): you OK'd the note and all eight preview videos; 44 pictures uploaded and approved. Seen right on
-  test planes in Studio, not yet in Play. The layers move on up-facing sides only: undersides and body sides wear the still skin.
+# Since Alan last checked (2026-11-16, third session)
+- Dragon's boosters, eight Commons, eight moving Rares are in. Rares seen right on Studio test planes, not in Play; layers move on up-facing sides only.
+- **Tests:** 665 passed, 2 failed (a shop test had a skin count typed by hand). Fixed; both pass on fresh copies; whole set not re-run in Play since.
+- **Trails:** talk done, how-it-works note written ([skins plan](../docs/plan/SKINS-PLAN.md), "Trails: how it works"): 13 trails, six matching Rares.
 
 # Now: finish the game for the beta
-Next (Alan 2026-11-16): **the trails**. First, with your go: watch the Rares move in Play and run the tests (not run since two skin-list
-changes; 665/0 before). Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: the Toilet Roll
-shake in flight, missions, the playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the
-report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
+Next (Alan 2026-11-16): **the trails**, once you OK the note (no trail code before it): Holo Rainbow, Gold Stars and Storm Sparks first, each as a
+video before upload. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
+playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and
+arrival; a real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
@@ -47,6 +47,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
+- **The trails note (your OK):** list and names; 1 s long; up to 1.3x bigger when fast; 99 Robux / 1,900 Paper for a Rare match; bots.
 - **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
 - Replay the hangar: click skins, tabs and Cancel (no reload flash?), the crane's height and wing join, a
   booster under the crane, and Buy on a skin (the screen should change right away).

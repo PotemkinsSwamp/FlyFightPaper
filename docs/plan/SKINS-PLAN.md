@@ -103,6 +103,76 @@ answers from the talk are there).
   test that every loop ends where it starts (no jump); a frame-rate check with 12 planes all wearing Galaxy, which must
   hold 60 (if it dips, Galaxy's planets share one layer before anything else changes).
 
+## Trails: how it works (waiting for Alan's OK, 2026-11-16)
+From the trails talk ([first skin set](../decisions/2026-11-16-first-skin-set.md), Alan's words there). **No trail code is
+written until Alan OKs this note.** Today the Trails tab lists five names and draws nothing.
+- **What the player sees:** a thin stream from the back of the body, between the boosters. It starts about 1.5 studs wide
+  (the white boost streak's size) and narrows to a point; its pieces shrink and fade toward the end. Always on while the
+  plane flies; it stops when the plane lands or crashes and what is in the air fades out.
+- **Longer when faster, by itself:** every bit of trail lives **1 second**, so the stream is as long as the distance flown
+  in that second: about 45 studs on the slowest plane, 105 on a typical one (6 plane lengths), 155 on the fastest. A boost,
+  a dive that builds speed and a speed bolt all stretch it with no special rule.
+- **A little bigger when faster than your build:** the trail reads your speed against your plane's normal speed and grows
+  up to **1.3 times** wider and brighter (boost, dive, speed bolt alike). The white boost streak and the damage smoke
+  stay as they are: both tell players something.
+- **Your own view:** the camera sits 24 studs behind you, so you see the first 24 studs of your own trail. It is a thin
+  line that passes under the camera: nothing drifts across your aim.
+- **Who sees it:** everyone, on every plane that wears one, bots too. Trails keep their own colours in team games
+  ([skin rules](../decisions/2026-11-13-skin-rules.md)). A trail makes a plane a little easier to spot; thin and one
+  second long keeps that small.
+- **Looks only:** no change to speed, hits or the hitbox. Drawn on each player's screen; the server only keeps the
+  trail's name (it already does).
+- **Hangar:** the plane stands still, so a short fixed version (about 2 plane lengths) blows gently back off it. Clicking
+  a trail in the Trails tab shows it on your plane at once. Shop and tab cards get a still picture of each trail.
+
+**The list (13 now, 1 later).** Cut by Alan: pencil shavings, eraser crumbs, ink splats, crayon scribble.
+
+| Trail | Goes with | What you see | Made by |
+|---|---|---|---|
+| Chalk Dust | plain | Soft pastel dust puffs on a faint chalk smear | code-drawn |
+| Confetti | plain | Paper strips and curls in five colours, tumbling | code-drawn |
+| Music Notes | plain | Black and gold notes bobbing along the stream | generated cut-outs |
+| Paper Hearts | plain | Folded red and pink paper hearts, shrinking to the tail | generated cut-out |
+| Gold Stars | plain | Gold foil stars that twinkle | generated cut-out + code-drawn twinkle |
+| Stardust (was Glitter) | Galaxy | Purple and blue dust with tiny white stars | code-drawn |
+| Goo Bubbles (was Bubbles) | Slime | Green goo bubbles that wobble and pop, on a thin dribble | code-drawn |
+| Holo Rainbow (was Rainbow Marker) | Holographic | A rainbow ribbon with a silver shine sliding along it | code-drawn |
+| Glitch Pixels | Glitch | Square blocks in cyan, pink and white that jump sideways and blink | code-drawn |
+| Storm Sparks | Thunderstorm | A grey cloud wisp with small lightning forks that flash | code-drawn |
+| Circuit Trace | Circuit Board | A green line stepping back in right angles, a light running along it | code-drawn |
+| Dragon Embers | Dragon (comes with it) | Orange and gold embers that flicker and rise, a thin smoke wisp | code-drawn |
+| Folded Petals | Origami Crane (comes with it) | Blue and silver folded paper petals, turning as they fall | generated cut-out |
+| Water Spray | Shark Jet (comes with it) | waits for the Shark Jet | later |
+
+Lava and Comic Book have no matching trail. Names are Claude's picks.
+- **How they are sold:** the five plain ones as today (49 Robux or 900 Paper). The six that match a Rare are sold **on
+  their own** (Alan) and can be worn with any skin: Claude's pick **99 Robux or 1,900 Paper** (the same Paper rate; about
+  3 matches). Dragon Embers and Folded Petals come with their skin; anyone who already owns the crane gets its petals.
+- **Bots:** a bot in a Rare that has a matching trail wears it (it shows players the set); every other Common or Rare bot
+  gets a random plain trail, as today. Aces in the Dragon show its embers.
+- **How it is drawn (Claude's method):** every trail has the same bones, two things Roblox already has. A **ribbon**
+  (Roblox calls it a Trail) is a strip stretched along the path just flown; it gives the stream and the taper. **Pieces**
+  (Roblox calls them particles) are small pictures dropped behind that live a second. One short piece of code in
+  `src/client/PlaneLooks.luau` reads each trail's row of numbers and pictures; no trail gets code of its own.
+- **How the pictures are made (Alan: a mix):** most are drawn by code in PhotoCraft (free, on Alan's PC at
+  `D:\ArtCraft\PhotoCraft`; a test streak drew fine, `.planning/skins/trails/photocraft-streak-test.png`), following the
+  video Alan sent (YorusDevs, "How Opus 5.5 drew every visual effect in my Roblox game"): shapes in **white, in layers**,
+  so the game colours each layer (one spark drawing serves several trails); a **frame sheet** (a 4 by 4 grid of frames
+  Roblox plays in turn) where a piece must change as it flies (twinkle, flicker, pop); nothing within 4 pixels of a
+  picture's edge (or a square shows); **red only as glow or flame, never drops** (reads as blood). Pieces that must look
+  like folded paper (hearts, stars, notes, petals) are generated pictures, cut out: code-drawn glow shapes look like any
+  Roblox game, and the hand-made look is the point.
+- **Cost:** no money, no Tripo credits. About 30 small free pictures (256 or 512 across). Codex draws the four
+  generated ones on Alan's ChatGPT plan; the rest is the main session.
+- **Order:** three first, one of each kind, to prove the bones: Holo Rainbow (ribbon), Gold Stars (generated pieces),
+  Storm Sparks (code-drawn frame sheet). Then the other ten.
+- **Checks:** each trail goes to Alan as a short video (a plane at normal speed, then boosting) before any upload; the
+  video is made by a script that imitates the game, so the real look is confirmed in Studio after upload. Then the
+  safety look at every picture, then upload. A test that every trail on the list has its pictures and its price; a
+  frame-rate check with 12 planes all wearing the heaviest trail, which must hold 60 (Alan's go). No distance cut-off to
+  start: that check decides whether far planes need one.
+- **Known limits:** on low graphics settings Roblox itself draws fewer pieces, so phones may show thinner trails.
+
 ## Tiers
 | Tier | What it changes | How you get it |
 |---|---|---|
@@ -122,7 +192,7 @@ fighter (dark angled plates) · mech (armour plates, glowing eye) · pirate (sai
 streamers) · race car (spoiler, number).
 **Mythical:** dragon · bat · origami crane · phoenix · thunderbird (lightning) · UFO · ghost pirate ship (dark
 wood, green glow) · kraken.
-**Trails (all):** chalk dust · pencil shavings · eraser crumbs · confetti · rainbow marker · glitter · bubbles ·
+**Trails (all; four cut and three renamed 2026-11-16, see "Trails: how it works"):** chalk dust · pencil shavings · eraser crumbs · confetti · rainbow marker · glitter · bubbles ·
 music notes · ink splats · paper hearts · gold stars · crayon scribble.
 **Matching trails:** dragon embers · little paper bats · falling folded petals (crane) · fire feathers (phoenix) ·
 water spray (shark) · tiny bees (bumblebee) · rocket smoke · exhaust flames (hot rod) · gold coins (pirate) ·

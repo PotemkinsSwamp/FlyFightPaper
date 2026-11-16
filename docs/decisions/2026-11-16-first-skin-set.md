@@ -53,6 +53,10 @@
   - **How they are made:** "a mixture of generated images and what's described in the YouTube video" (YorusDevs, "How
     Opus 5.5 drew every visual effect in my Roblox game": white layered shapes drawn by code in PhotoCraft, coloured by
     the game, frame sheets for movement). PhotoCraft is on Alan's PC at `D:\ArtCraft\PhotoCraft`; a test streak drew fine.
+  - **Second answers:** "Yeah, I meant slime." Glitter becomes Galaxy's and Bubbles becomes Slime's ("those are great");
+    "You could make rainbow kind of match with the holographic." Rare-matching trails are sold "on their own". "Build
+    the crane petals." "We also need something to match with the dragon as well" (Dragon Embers, already on the list).
+    The how-it-works note is in the [skins plan](../plan/SKINS-PLAN.md) ("Trails: how it works"), waiting for his OK.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
