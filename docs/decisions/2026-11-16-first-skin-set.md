@@ -41,6 +41,18 @@
   **"Lava and Slime is good now. Put them in the game."** All eight are uploaded (approved) and in the game's list.
 - **Next (Alan, same day):** "After you're done with that, we'll hand off, and then in the next session, we'll start the
   trails."
+- **Trails talk, first answers (Alan, 2026-11-16, third session; the how-it-works note is not written yet):**
+  - **Cut from the list:** "I don't like pencil shavings, eraser crumbs, ink splats, or crayon scribbles. So those got to
+    go." Eight stay: chalk dust, confetti, rainbow marker, glitter, bubbles, music notes, paper hearts, gold stars.
+  - **Trails that match Rares:** "it'd be cool to have one that matches Glitch, one that matches Thunderstorm ... maybe
+    one that matches Galaxy. Possibly one that matches Salon [Slime? to confirm]. One that matches Circuit Board." Some of
+    the eight can be "morph[ed]" to match a Rare; the rest "become the like more common ones".
+  - **Shape:** "it definitely just comes from the back. And it'll be like a thin stream that like tapers off."
+  - **Speed:** "when you hit a boost, it should extend because you're going faster. It should also do that whenever you
+    catch momentum by doing a nosedive and then picking back up." Always on while flying; shown in the hangar too.
+  - **How they are made:** "a mixture of generated images and what's described in the YouTube video" (YorusDevs, "How
+    Opus 5.5 drew every visual effect in my Roblox game": white layered shapes drawn by code in PhotoCraft, coloured by
+    the game, frame sheets for movement). PhotoCraft is on Alan's PC at `D:\ArtCraft\PhotoCraft`; a test streak drew fine.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
