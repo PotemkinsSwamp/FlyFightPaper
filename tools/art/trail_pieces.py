@@ -3,15 +3,15 @@ or glow). trail_preview.py builds its videos from these. Run alone to write the 
 safety sheet:
     blender -b --factory-startup --python tools/art/trail_pieces.py
         -> assets/models/trails/<piece>.fbx and .planning/skins/trails/safety-sheet.png (look at it before any upload)
-Only the star and the bolt are uploaded: the game draws flakes as plain thin blocks, and smoke and sparkle dust with
-Roblox's own particle pictures."""
+Name pieces after `--` to write only those (new ones waiting for upload). Only UPLOADED pieces are ever uploaded: the game
+makes the plain shapes itself, and draws smoke, sparkle dust and flat squares with Roblox's own particle pictures."""
 import math, random, sys
 from pathlib import Path
 import bpy, bmesh
 from mathutils import Vector, noise
 
 ROOT = Path(__file__).resolve().parents[2]
-UPLOADED = ("star", "bolt")
+UPLOADED = ("star", "bolt", "curl", "note", "notes", "petal")
 
 def mesh(name, smooth_shade=None):
     build, smooth_default = MODELS[name]
@@ -74,11 +74,11 @@ def notes(bm):                                                              # tw
     blob(bm, (-0.33, -0.36, 0), (0.2, 0.14, 0.11), 0.45); blob(bm, (0.27, -0.26, 0), (0.2, 0.14, 0.11), 0.45)
     box(bm, (-0.175, -0.36, -0.03), (-0.125, 0.40, 0.03)); box(bm, (0.425, -0.26, -0.03), (0.475, 0.50, 0.03)); box(bm, (-0.175, 0.30, -0.03), (0.475, 0.42, 0.03), 0.16)
 def petal(bm):                                                              # a folded paper petal: a leaf creased down its middle, a little curled
-    xs, ws = (-0.5, -0.3, -0.05, 0.25, 0.5), (0, 0.16, 0.24, 0.17, 0)
+    xs, ws = (-0.5, -0.25, 0.05, 0.3, 0.45, 0.5), (0, 0.11, 0.21, 0.24, 0.15, 0)   # a teardrop: narrow stem end, wide round tip
     mid = [bm.verts.new((x, 0, 0.3 * x * x)) for x in xs]
     for side in (1, -1):
         edge = [mid[i] if w == 0 else bm.verts.new((x, side * w, 0.3 * x * x + 0.42 * w)) for i, (x, w) in enumerate(zip(xs, ws))]
-        for i in range(4): bm.faces.new(list(dict.fromkeys((mid[i], mid[i + 1], edge[i + 1], edge[i]))))
+        for i in range(len(xs) - 1): bm.faces.new(list(dict.fromkeys((mid[i], mid[i + 1], edge[i + 1], edge[i]))))
     bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.025)
 def curl(bm):                                                               # a curled paper streamer
     rows = []
@@ -92,7 +92,16 @@ def block(x, y, z):                                                         # pl
         for v in bmesh.ops.create_cube(bm, size=1.0)["verts"]: v.co = (v.co.x * x, v.co.y * y, v.co.z * z)
     return build
 def ball(bm): bmesh.ops.create_icosphere(bm, subdivisions=3, radius=0.5)
-MODELS = {"heart": (heart, False), "note": (note, False), "notes": (notes, False), "petal": (petal, False), "curl": (curl, False), "ball": (ball, True),
+def dart(bm):                                                               # a tiny folded paper plane, nose along +x
+    nose, back = bm.verts.new((0.5, 0, 0)), bm.verts.new((-0.5, 0, 0)); bm.faces.new((nose, bm.verts.new((-0.5, 0, -0.17)), back))   # the keel you hold
+    for side in (1, -1): bm.faces.new((nose, bm.verts.new((-0.5, side * 0.05, 0.0)), bm.verts.new((-0.5, side * 0.37, 0.04))))       # a wing each side
+    bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.02)
+def butterfly(bm):                                                          # a folded paper butterfly, wings up in a V, head along +x
+    wing = ((0.12, 0.02), (0.38, 0.30), (0.30, 0.48), (0.05, 0.36), (-0.08, 0.42), (-0.30, 0.34), (-0.34, 0.14), (-0.12, 0.02))
+    for side in (1, -1): bm.faces.new([bm.verts.new((x, side * y, 0.7 * y)) for x, y in wing])
+    bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.02); box(bm, (-0.25, -0.025, -0.03), (0.28, 0.025, 0.03))
+MODELS = {"dart": (dart, False), "butterfly": (butterfly, False), "trace": (block(1, 0.02, 0.02), False), "board": (block(1, 0.55, 0.03), False), "chip": (block(1, 0.6, 0.22), False),
+          "heart": (heart, False), "note": (note, False), "notes": (notes, False), "petal": (petal, False), "curl": (curl, False), "ball": (ball, True),
           "cube": (block(1, 1, 1), False), "bar": (block(1, 0.045, 0.045), False), "strip": (block(1, 0.36, 0.02), False), "square": (soft, False),
           "star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}
 
@@ -106,7 +115,9 @@ if __name__ == "__main__":
         cu = bpy.data.curves.new("t", "FONT"); cu.body, cu.size, cu.align_x = text, size, "CENTER"
         ob = bpy.data.objects.new("t", cu); ob.location = (x, y, 0); sc.collection.objects.link(ob)
         ink = bpy.data.materials.get("ink") or bpy.data.materials.new("ink"); ink.diffuse_color = (0.05, 0.05, 0.08, 1); cu.materials.append(ink)
-    for row, name in enumerate(UPLOADED):
+    names = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else list(UPLOADED)
+    assert all(n in UPLOADED for n in names), "only UPLOADED pieces"
+    for row, name in enumerate(names):
         me = mesh(name); me.materials.append(grey)
         one = bpy.data.objects.new(name, me); sc.collection.objects.link(one)           # the upload: this one model, nothing else
         for o in bpy.data.objects: o.select_set(o is one)
@@ -116,9 +127,9 @@ if __name__ == "__main__":
             ob = bpy.data.objects.new(name, me); ob.location = (1.5 * col, -1.6 * row, 0); ob.rotation_euler = turn; sc.collection.objects.link(ob)
             label(word, 1.5 * col, -1.6 * row - 0.78)
     label("Trail pieces to upload (plain shapes, no pictures on them)", 3.0, 0.85, 0.16)
-    cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); cam.data.type, cam.data.ortho_scale, cam.location = "ORTHO", 8.2, (3.0, -0.75, 10)
+    cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); cam.data.type, cam.data.ortho_scale, cam.location = "ORTHO", 8.2, (3.0, 0.85 - 0.8 * len(names), 10); cam.data.sensor_fit = "HORIZONTAL"
     sc.collection.objects.link(cam); sc.camera = cam
     sc.render.engine = "BLENDER_WORKBENCH"; sh = sc.display.shading; sh.light, sh.color_type, sh.show_object_outline, sh.show_cavity, sh.show_shadows = "STUDIO", "MATERIAL", True, True, False
     sc.world = bpy.data.worlds.new("w"); sc.world.color = (1, 1, 1); sc.render.film_transparent = False; sc.view_settings.view_transform = "Standard"
-    sc.render.resolution_x, sc.render.resolution_y = 1640, 760; sc.render.filepath = str(ROOT / ".planning/skins/trails/safety-sheet.png")
-    bpy.ops.render.render(write_still=True); print("DONE", ", ".join(UPLOADED))
+    sc.render.resolution_x, sc.render.resolution_y = 1640, int(200 * (1.6 * len(names) + 0.6)); sc.render.filepath = str(ROOT / ".planning/skins/trails/safety-sheet.png")
+    bpy.ops.render.render(write_still=True); print("DONE", ", ".join(names))

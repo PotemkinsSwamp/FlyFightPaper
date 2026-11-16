@@ -43,8 +43,10 @@ def look(kind):
     if kind == "foil":
         b.inputs["Metallic"].default_value, b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 0.4, 0.32, 0.1; bumpy(7, 0.7)
     elif kind == "glow": b.inputs["Emission Strength"].default_value = 9
-    elif kind == "soft":                                                     # a round patch, lumpy at its rim, fading to nothing
+    elif kind in ("soft", "fire"):                                           # a round patch, lumpy at its rim, fading to nothing
         b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 1.0, 0.35
+        if kind == "fire":                                                   # fire is its own light: its exact colour, not shaded by the sun
+            nt.links.remove(b.inputs["Base Color"].links[0]); b.inputs["Base Color"].default_value = (0, 0, 0, 1); b.inputs["Emission Strength"].default_value = 1.0
         tc, ln, n = nt.nodes.new("ShaderNodeTexCoord"), nt.nodes.new("ShaderNodeVectorMath"), nt.nodes.new("ShaderNodeTexNoise")   # the card's own -0.5..0.5
         ln.operation = "LENGTH"; n.noise_dimensions = "4D"; n.inputs["Scale"].default_value = 3.2; n.inputs["Detail"].default_value = 5
         w = nt.nodes.new("ShaderNodeMath"); w.operation = "MULTIPLY"; w.inputs[1].default_value = 40; nt.links.new(own.outputs["Random"], w.inputs[0]); nt.links.new(w.outputs[0], n.inputs["W"])
@@ -156,7 +158,7 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             owed[i] -= 1; a, rad = rng.uniform(0, math.tau), piece["spread"] * math.sqrt(rng.random()); ox, oy = math.cos(a) * rad, math.sin(a) * rad
             if piece.get("lattice"): ox, oy = round(ox / piece["lattice"]) * piece["lattice"], round(oy / piece["lattice"]) * piece["lattice"]   # on a grid: pieces line up
             axes = rng.choices(((nose, up, right), (right, nose, up), (up, right, nose)), piece.get("axes", (5, 3, 2)))[0]   # a grid piece's long side: along the path, across, up (`axes`: how often each)
-            alive[i].append(dict(born=t, life=rng.uniform(*piece["life"]), at=tail + right * ox + up * oy, right=right, grid=Matrix(axes).transposed().to_quaternion(), vel=rnd() * rng.uniform(0, piece["drift"]), g=g, seed=rng.random(),
+            alive[i].append(dict(born=t, life=rng.uniform(*piece["life"]), at=tail + right * ox + up * oy, right=right, nose=nose, grid=Matrix(axes).transposed().to_quaternion() @ Quaternion((1, 0, 0), rng.randrange(4) * math.pi / 2), vel=rnd() * rng.uniform(0, piece["drift"]), g=g, seed=rng.random(),
                                  size=piece["size"][0] + (piece["size"][1] - piece["size"][0]) * rng.random() ** 2, axis=rnd(), dir=(nose + rnd() * 0.45).normalized(),
                                  turn=rng.uniform(0, math.tau), spin=math.radians(piece.get("spin", 0)) * rng.uniform(0.5, 1) * rng.choice((-1, 1)), color=lin(rng.choice(piece["colors"]))))
     f = n // SUB - int((LIFE + 0.2) * FPS)
@@ -188,10 +190,12 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             if piece.get("flash") and not (k < 0.3 or 0.42 < k < 0.7): size = 0   # lightning: on, off, on, gone
             if piece.get("twinkle"): size *= 0.3 + 0.7 * random.Random(int(q["seed"] * 1e6) + int(t * piece["twinkle"])).random()
             at = q["at"] + q["vel"] * age + Vector((0, 0, 0.5 * piece.get("rise", 0) * age * age))
+            if piece.get("run"): at = at - q["nose"] * (piece["run"] * age)     # races back along the path, like a light along a wire
             if piece.get("jump"): at = at + q["right"] * (piece["jump"] * random.Random(int(q["seed"] * 1e6) + int(t * 8)).randint(-2, 2) / 2)   # snaps sideways 8 times a second
             if piece["model"] in CARDS: turn = facing @ Quaternion((0, 0, 1), (q["turn"] if piece.get("spin") else 0) + q["spin"] * age)
             elif piece.get("align") == "grid": turn = q["grid"]                 # square to the plane as it was when the piece left
             elif piece.get("upright"): turn = Quaternion((0, 0, 1), q["turn"] + q["spin"] * age) @ Quaternion((1, 0, 0), math.pi / 2 + (q["seed"] - 0.5) * 0.5)   # stands up, turning like a sign
+            elif piece.get("level"): turn = q["dir"].to_track_quat("X", "Z") @ Quaternion((1, 0, 0), (q["seed"] - 0.5) * 1.2)   # flies nose-first, right way up, banked a little
             elif piece.get("align"): turn = Vector((1, 0, 0)).rotation_difference(q["dir"]) @ Quaternion((1, 0, 0), q["turn"])
             else: turn = Quaternion(q["axis"], q["turn"] + q["spin"] * age)
             ob.matrix_world = Matrix.Translation(at) @ turn.to_matrix().to_4x4() @ Matrix.Diagonal((size, size, size, 1))

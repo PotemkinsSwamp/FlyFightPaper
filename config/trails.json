@@ -1,6 +1,6 @@
 {
-  "_comment": "How each trail is drawn (docs/plan/SKINS-PLAN.md, 'Trails: how it works'). A trail is ribbons (strips laid along the path just flown) plus pieces (small 3D models dropped behind, scattered round the path and tumbling). `life`: seconds a bit of trail lives, so the stream is as long as one second of flight. `width`: studs across at the plane's tail. `fast_growth`: how much bigger the trail gets, reached at `fast_at` times the build's own speed. `grow_in`: the share of its life a piece takes to grow to full size (pieces leave the tail small, so the ones passing under your own camera are still small). `hangar_length`: studs of trail shown on the still plane in the hangar. Ribbon: `picture` (assets/fx/trails/<name>.png, spanning the whole trail) and `width` (times the common width), or `strands` thin cords of `colors`, each `width` studs, wound `radius` studs round the path; `taper` and `fade` (start to end: width share, see-through share), `twist` (turns a second), `look` (foil). Piece: `model` (star, flake, shard, spark, puff, bolt: about 1 stud across; soft: a smoke card that faces the camera), `look` (foil: crinkled metal; matte: cotton; soft: smoke; glow: a light), `rate` (a second at the build's own speed; it rises with speed so the spacing stays even), `life` (seconds, least to most), `size` (studs at birth, smallest to biggest; more small ones than big), `shrink` (its size at the end, as a share: over 1 it swells like smoke), `vanish` (the last share of its life over which it fades out), `spread` (studs: how far from the path a piece can start), `drift` (studs a second, any direction), `rise` (studs a second squared, up), `spin` (degrees a second, about a random axis), `align` (lies along the flight path), `twinkle` (size flickers this many times a second), `flash` (lightning: on, off, on, gone), `light` (it lights what is round it, this strong), `rainbow` (its colour runs through `colors` along the stream; a number runs through them that many times over), `colors` (else one picked for each piece). In the game (src/client/PlaneTrails.luau): soft and spark pieces are Roblox particles using Roblox's own smoke and sparkle pictures; a flake is a plain thin block; the others are the uploaded models in `meshes` (tools/art/trail_pieces.py makes them; uploaded 2026-11-16 as Models 71293820950203 and 120370251639180, these are their inner mesh ids).",
-  "meshes": {"star": 135137558897203, "bolt": 131261317836837},
+  "_comment": "How each trail is drawn (docs/plan/SKINS-PLAN.md, 'Trails: how it works'). A trail is ribbons (strips laid along the path just flown) plus pieces (small 3D models dropped behind, scattered round the path and tumbling). `life`: seconds a bit of trail lives, so the stream is as long as one second of flight. `width`: studs across at the plane's tail. `fast_growth`: how much bigger the trail gets, reached at `fast_at` times the build's own speed. `grow_in`: the share of its life a piece takes to grow to full size (pieces leave the tail small, so the ones passing under your own camera are still small). `hangar_length`: studs of trail shown on the still plane in the hangar. Ribbon: `picture` (assets/fx/trails/<name>.png, spanning the whole trail) and `width` (times the common width), or `strands` thin cords of `colors`, each `width` studs, wound `radius` studs round the path; `taper` and `fade` (start to end: width share, see-through share), `twist` (turns a second), `look` (foil). Piece: `model` (star, flake, shard, spark, puff, bolt: about 1 stud across; soft: a smoke card that faces the camera), `look` (foil: crinkled metal; matte: cotton; soft: smoke; glow: a light), `rate` (a second at the build's own speed; it rises with speed so the spacing stays even), `life` (seconds, least to most), `size` (studs at birth, smallest to biggest; more small ones than big), `shrink` (its size at the end, as a share: over 1 it swells like smoke), `vanish` (the last share of its life over which it fades out), `spread` (studs: how far from the path a piece can start), `drift` (studs a second, any direction), `rise` (studs a second squared, up), `spin` (degrees a second, about a random axis), `align` (lies along the flight path), `twinkle` (size flickers this many times a second), `flash` (lightning: on, off, on, gone), `light` (it lights what is round it, this strong), `rainbow` (its colour runs through `colors` along the stream; a number runs through them that many times over), `colors` (else one picked for each piece). More models: note, notes (a pair), petal, curl (uploaded), ball, cube, bar, strip (plain shapes), square (a flat square). More looks: paper (crisp folds), bright (a lit block), glass (a see-through goo bubble). More moves: `upright` (stands up, turning like a sign), `align: grid` (square to the plane as it was when the piece left, long side mostly along the path), `jump` (studs: snaps sideways 8 times a second). In the game (src/client/PlaneTrails.luau): soft, spark and square pieces are Roblox particles using Roblox's own smoke, sparkle and square pictures; flake, strip, cube, bar and ball are plain shapes made there; the others are the uploaded models in `meshes` (tools/art/trail_pieces.py makes them; star and bolt uploaded 2026-11-16 as Models 71293820950203 and 120370251639180, these are their inner mesh ids; 0 = not uploaded yet, so that piece is not drawn).",
+  "meshes": {"star": 135137558897203, "bolt": 131261317836837, "curl": 0, "note": 0, "notes": 0, "petal": 0},
   "life": 1.0,
   "width": 1.5,
   "fast_growth": 1.3,
@@ -26,6 +26,56 @@
       "pieces": [
         {"model": "soft", "look": "soft", "rate": 90, "life": [0.9, 1.0], "size": [4.0, 6.5], "shrink": 1.7, "vanish": 0.45, "spread": 1.3, "drift": 0.6, "spin": 20, "colors": [[70, 66, 128], [88, 84, 150], [58, 56, 108], [110, 106, 176]]},
         {"model": "bolt", "look": "glow", "rate": 7, "life": [0.35, 0.5], "size": [4, 7], "shrink": 1, "spread": 1.8, "drift": 0.3, "align": true, "flash": true, "light": 9000, "colors": [[255, 244, 170]]}
+      ]
+    },
+    "chalk_dust": {
+      "pieces": [
+        {"model": "soft", "look": "soft", "rate": 60, "life": [0.85, 1.0], "size": [3.4, 5.4], "shrink": 1.7, "vanish": 0.5, "spread": 1.1, "drift": 0.7, "spin": 25, "colors": [[236, 232, 224], [250, 196, 214], [196, 220, 250], [250, 236, 180], [196, 238, 212]]},
+        {"model": "square", "look": "paper", "rate": 130, "life": [0.5, 1.0], "size": [0.14, 0.34], "shrink": 0.4, "spread": 1.6, "drift": 2.2, "spin": 90, "colors": [[255, 255, 250], [255, 226, 236], [226, 238, 255]]},
+        {"model": "flake", "look": "paper", "rate": 30, "life": [0.5, 0.9], "size": [0.25, 0.6], "shrink": 0.3, "spread": 1.3, "drift": 2.0, "spin": 420, "rise": -5, "colors": [[255, 255, 250], [255, 214, 226], [255, 244, 200]]}
+      ]
+    },
+    "confetti": {
+      "pieces": [
+        {"model": "strip", "look": "paper", "rate": 46, "life": [0.6, 1.0], "size": [0.8, 1.8], "shrink": 0.6, "spread": 1.9, "drift": 2.4, "spin": 420, "rise": -3, "colors": [[235, 64, 52], [255, 200, 40], [60, 170, 90], [52, 120, 220], [240, 110, 180]]},
+        {"model": "curl", "look": "paper", "rate": 16, "life": [0.7, 1.0], "size": [1.2, 2.4], "shrink": 0.6, "spread": 1.8, "drift": 1.8, "spin": 260, "rise": -3, "colors": [[235, 64, 52], [255, 200, 40], [60, 170, 90], [52, 120, 220], [240, 110, 180]]},
+        {"model": "square", "look": "paper", "rate": 150, "life": [0.5, 1.0], "size": [0.25, 0.55], "shrink": 0.5, "spread": 2.0, "drift": 2.6, "spin": 300, "colors": [[235, 64, 52], [255, 200, 40], [60, 170, 90], [52, 120, 220], [240, 110, 180]]}
+      ]
+    },
+    "music_notes": {
+      "pieces": [
+        {"model": "note", "look": "foil", "rate": 20, "life": [0.7, 1.0], "size": [1.4, 2.8], "shrink": 0.4, "spread": 1.7, "drift": 1.2, "spin": 140, "upright": true, "colors": [[255, 200, 50], [30, 28, 36], [255, 200, 50]]},
+        {"model": "notes", "look": "foil", "rate": 11, "life": [0.7, 1.0], "size": [1.8, 3.2], "shrink": 0.4, "spread": 1.7, "drift": 1.2, "spin": 140, "upright": true, "colors": [[255, 200, 50], [30, 28, 36]]},
+        {"model": "flake", "look": "foil", "rate": 50, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.5, "drift": 2.5, "spin": 720, "colors": [[255, 220, 110]]},
+        {"model": "spark", "look": "glow", "rate": 150, "life": [0.4, 1.0], "size": [0.25, 0.75], "shrink": 0.4, "spread": 1.8, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 226, 120], [255, 250, 230]]}
+      ]
+    },
+    "stardust": {
+      "pieces": [
+        {"model": "soft", "look": "soft", "rate": 85, "life": [0.9, 1.0], "size": [3.2, 5.4], "shrink": 1.6, "vanish": 0.45, "spread": 1.2, "drift": 0.6, "spin": 20, "colors": [[84, 44, 170], [44, 66, 190], [124, 64, 204], [34, 44, 132], [150, 70, 190]]},
+        {"model": "star", "look": "foil", "rate": 18, "life": [0.55, 0.9], "size": [0.4, 1.1], "shrink": 0.3, "spread": 1.8, "drift": 1.4, "spin": 220, "colors": [[255, 255, 255], [214, 226, 255]]},
+        {"model": "spark", "look": "glow", "rate": 200, "life": [0.4, 1.0], "size": [0.25, 0.85], "shrink": 0.4, "spread": 2.0, "drift": 1.2, "spin": 60, "twinkle": 14, "colors": [[255, 255, 255], [200, 220, 255], [255, 214, 250]]}
+      ]
+    },
+    "goo_bubbles": {
+      "pieces": [
+        {"model": "soft", "look": "soft", "rate": 60, "life": [0.85, 1.0], "size": [2.6, 4.2], "shrink": 1.4, "vanish": 0.5, "spread": 1.0, "drift": 0.5, "spin": 15, "colors": [[96, 210, 60], [130, 230, 70], [80, 190, 56]]},
+        {"model": "ball", "look": "glass", "rate": 46, "life": [0.6, 1.0], "size": [0.6, 2.2], "shrink": 1.25, "spread": 1.7, "drift": 1.3, "spin": 0, "colors": [[110, 230, 60], [150, 245, 80], [80, 200, 50]]},
+        {"model": "ball", "look": "glass", "rate": 30, "life": [0.5, 0.8], "size": [0.18, 0.42], "shrink": 0.8, "spread": 1.5, "drift": 1.6, "spin": 0, "rise": -9, "colors": [[150, 245, 80], [110, 230, 60]]}
+      ]
+    },
+    "glitch_pixels": {
+      "pieces": [
+        {"model": "cube", "look": "bright", "rate": 60, "life": [0.5, 0.9], "size": [0.4, 1.5], "shrink": 0.7, "spread": 1.9, "drift": 0.4, "spin": 0, "align": "grid", "jump": 1.6, "flash": true, "colors": [[0, 240, 255], [255, 50, 170], [255, 255, 255]]},
+        {"model": "bar", "look": "glow", "rate": 14, "life": [0.4, 0.7], "size": [2.5, 5.0], "shrink": 1.0, "spread": 1.6, "drift": 0, "spin": 0, "align": "grid", "jump": 1.2, "flash": true, "colors": [[0, 240, 255], [255, 50, 170]]},
+        {"model": "square", "look": "glow", "rate": 170, "life": [0.4, 1.0], "size": [0.2, 0.6], "shrink": 0.6, "spread": 2.1, "drift": 0.6, "spin": 0, "twinkle": 10, "colors": [[0, 240, 255], [255, 50, 170], [255, 255, 255]]}
+      ]
+    },
+    "folded_petals": {
+      "pieces": [
+        {"model": "petal", "look": "foil", "rate": 50, "life": [0.7, 1.0], "size": [1.3, 3.0], "shrink": 0.5, "spread": 1.7, "drift": 1.4, "spin": 240, "rise": -7, "colors": [[70, 130, 230], [120, 170, 245], [214, 222, 236], [240, 244, 250]]},
+        {"model": "flake", "look": "foil", "rate": 50, "life": [0.5, 0.9], "size": [0.2, 0.5], "shrink": 0.2, "spread": 1.5, "drift": 2.5, "spin": 720, "colors": [[226, 232, 244], [150, 190, 250]]},
+        {"model": "spark", "look": "glow", "rate": 130, "life": [0.4, 1.0], "size": [0.25, 0.7], "shrink": 0.4, "spread": 1.8, "drift": 1.4, "spin": 60, "twinkle": 14, "colors": [[255, 255, 255], [200, 224, 255]]}
       ]
     }
   }

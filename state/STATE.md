@@ -2,7 +2,7 @@
 - **The three OK'd trails are in the game** (Gold Stars, Storm Sparks, Holo Rainbow), drawn behind any flying plane. **Not yet seen in Play by anyone**: Studio would not draw for my screen grabs, and you declined desktop access, so the first look is yours.
 - **Uploaded (your OK on the safety sheet):** a star and a lightning bolt, both Approved. Smoke and sparkles use Roblox's own pictures, so nothing else was needed.
 - **Tests: 671 passed, 0 failed** in Play (4 new for trails). **Bots' one roll is in** at your 35/35/15/15.
-- **The other ten trails are with you as 3D videos** (`.planning/skins/trails/`), nothing uploaded, not in the game. Five smoke bodies (Stardust, Dragon Embers, Goo Bubbles, Chalk Dust, Circuit Trace), five 3D-piece clouds as full as Gold Stars (Confetti, Music Notes, Paper Hearts, Folded Petals, Glitch Pixels).
+- **Seven more trails are in the game** (your OK on their videos): Chalk Dust, Stardust, Goo Bubbles and Glitch Pixels fly complete; Confetti, Music Notes and Folded Petals fly without their main pieces until four models are uploaded. The trail tests pass 5 of 5 in Studio Edit; the whole set has not been re-run in Play since.
 
 # Now: finish the game for the beta
 Next (Alan 2026-11-16): **the trails**: your Play look at the three in the game and the 12-plane frame-rate check; your verdict on the ten
@@ -48,8 +48,8 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **Ten trail videos:** OK or what is wrong, each. My weakest two: Circuit Trace (its dark core is blotchy) and Chalk Dust (very white from your own seat). If OK'd, five small models need your OK on a safety sheet before upload: heart, note, note pair, petal, curl.
-- **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next trail on every plane (gold stars, holo rainbow, storm sparks, then each its own). Against your videos: is each one thick body? Stars 3D and foil? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Gold Stars is the heaviest)?
+- **Your picks (three A-or-B videos, `.planning/skins/trails/`):** Dragon Embers A (roaring flame) or B (dark smoke full of embers); Circuit Trace A (boards, chips, traces) or B (neon lattice, faint glow); Paper Hearts' replacement A (Mini Paper Planes) or B (Paper Butterflies). **Upload of four models** (curl, note, note pair, petal; safety sheet sent): yes or no. Paper Hearts is saved for a holiday set.
+- **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the ten trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes standing the right way up? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
 - Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?). Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);

@@ -155,7 +155,7 @@ function DevTools.start(menu)
 	end)
 	-- Above that (Alan 2026-11-16, trails test): every plane on this screen wears each drawn trail in turn, unsaved.
 	local trailButton = switch:Clone()
-	trailButton.Name, trailButton.Position, trailButton.Text, trailButton.Parent = "Trail", UDim2.new(1, -10, 1, -154), "Dev: trail: each its own", switchGui
+	trailButton.Name, trailButton.Position, trailButton.Text, trailButton.TextSize, trailButton.Parent = "Trail", UDim2.new(1, -10, 1, -154), "Dev: trail: each its own", 14, switchGui
 	local trailTurn = 0
 	trailButton.Activated:Connect(function()
 		local list = {}

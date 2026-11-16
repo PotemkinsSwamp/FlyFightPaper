@@ -1,7 +1,8 @@
 -- Trails drawn on each player's own screen only (skins plan, "Trails: how it works"): the server marks a plane with a
--- Trail attribute; each row of config/trails.json is drawn here, out of the tail, while the plane flies. Soft smoke and
--- sparkle dust are Roblox particles (flat cards that face you are what particles are, and Roblox ships both pictures);
--- stars, flakes and bolts are real small parts moved here every frame (no physics, nothing on the server).
+-- Trail attribute; each row of config/trails.json is drawn here, out of the tail, while the plane flies. Soft smoke,
+-- sparkle dust and flat squares are Roblox particles (flat cards that face you are what particles are, and Roblox ships
+-- all three pictures); stars, notes, bubbles, cubes and the rest are real small parts moved here every frame (no
+-- physics, nothing on the server).
 local AssetService = game:GetService("AssetService")
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -11,10 +12,17 @@ local PlaneTrails = {}
 -- Studio only: the player attribute DevTrail (the "Dev: trail" button, or a test) puts one trail on every plane here.
 local dev = RunService:IsStudio() and Players.LocalPlayer
 
-local PICTURE = { soft = "rbxasset://textures/particles/smoke_main.dds", spark = "rbxasset://textures/particles/sparkles_main.dds" }
-local MATERIAL = { foil = Enum.Material.Foil, glow = Enum.Material.Neon, matte = Enum.Material.Fabric }
+-- Particle pieces: Roblox's own pictures, nothing uploaded.
+local PICTURE = { soft = "rbxasset://textures/particles/smoke_main.dds", spark = "rbxasset://textures/particles/sparkles_main.dds", square = "rbxasset://textures/particles/SquareParticle.png" }
 -- How each look takes the room's light as a particle: smoke is lit by the room and by lightning, a glint is its own light.
-local LIT = { soft = { emission = 0.3, influence = 0.8, clear = 0.2 }, glow = { emission = 1, influence = 0, clear = 0 } }
+local LIT = { soft = { emission = 0.3, influence = 0.8, clear = 0.2 }, glow = { emission = 1, influence = 0, clear = 0 }, paper = { emission = 0, influence = 1, clear = 0 } }
+-- Part pieces: plain shapes made here (size at 1 stud; true = a ball), or the uploaded models in the config's `meshes`.
+local PLAIN = { flake = Vector3.new(1, 0.07, 0.6), strip = Vector3.new(1, 0.02, 0.36), cube = Vector3.one, bar = Vector3.new(1, 0.045, 0.045), ball = true }
+local MATERIAL = { foil = Enum.Material.Foil, glow = Enum.Material.Neon, matte = Enum.Material.Fabric, paper = Enum.Material.SmoothPlastic, bright = Enum.Material.SmoothPlastic, glass = Enum.Material.SmoothPlastic }
+local CLEAR, SHINE = { glass = 0.38 }, { glass = 0.25 } -- a goo bubble is see-through and shiny
+PlaneTrails.pictures, PlaneTrails.lit, PlaneTrails.plain, PlaneTrails.materials = PICTURE, LIT, PLAIN, MATERIAL
+-- An uploaded model lies flat (Blender's up is its Z side here); this stands it up for `upright` pieces.
+local STAND = CFrame.Angles(math.pi / 2, 0, 0)
 local FAR = CFrame.new(0, 1e5, 0) -- where resting and blinked-off parts wait (moving a part is cheaper than hiding it)
 local STEP = 0.08 -- ponytail: a part is resized only when its size has changed by this share (resizing is the costly call); 0 if steps ever show
 local rng = Random.new()
@@ -53,13 +61,18 @@ function PlaneTrails.rainbow(spec)
 	for i = 0, count do points[i + 1] = ColorSequenceKeypoint.new(i / count, color(spec.colors[i % #spec.colors + 1])) end
 	return ColorSequence.new(points)
 end
+-- A jumping piece's sideways place: one of five (-1 to 1), a new one 8 times a second, the same all through that eighth.
+function PlaneTrails.snap(seed, now)
+	return math.floor((math.sin(math.floor(now * 8) * 12.9898 + seed) * 43758.5453) % 1 * 5) / 2 - 1
+end
 
 local function emitter(spec, tint, holder)
 	local lit = LIT[spec.look]
+	local spin = spec.spin or 0
 	local e = Instance.new("ParticleEmitter")
 	e.Enabled, e.Texture, e.Color = false, PICTURE[spec.model], tint
 	e.Lifetime, e.Speed, e.SpreadAngle = NumberRange.new(spec.life[1], spec.life[2]), NumberRange.new(0, spec.drift or 0), Vector2.new(180, 180)
-	e.Rotation, e.RotSpeed = NumberRange.new(0, 360), NumberRange.new(-(spec.spin or 0), spec.spin or 0)
+	e.Rotation, e.RotSpeed = NumberRange.new(0, spin > 0 and 360 or 0), NumberRange.new(-spin, spin) -- no spin: a square stays square
 	e.Acceleration, e.LightEmission, e.LightInfluence = Vector3.new(0, spec.rise or 0, 0), lit.emission, lit.influence
 	local gone = spec.vanish or 0
 	e.Transparency = gone > 0 and NumberSequence.new({ NumberSequenceKeypoint.new(0, lit.clear), NumberSequenceKeypoint.new(1 - gone, lit.clear), NumberSequenceKeypoint.new(1, 1) })
@@ -110,6 +123,12 @@ local function along(dir, long)
 	local look = CFrame.lookAlong(Vector3.zero, dir)
 	return long == "X" and look * CFrame.Angles(0, math.pi / 2, 0) or long == "Y" and look * CFrame.Angles(math.pi / 2, 0, 0) or look
 end
+-- Square to the plane as it is now, the piece's long side mostly along the path, then across it, then up.
+local function grid(frame)
+	local pick = rng:NextNumber() * 10
+	local turn = pick < 5 and frame * CFrame.Angles(0, math.pi / 2, 0) or pick < 8 and frame or frame * CFrame.Angles(0, 0, math.pi / 2)
+	return turn * CFrame.Angles(rng:NextInteger(0, 3) * math.pi / 2, 0, 0)
+end
 
 local function emit(w, root, tail, dt)
 	local shift = tail - w.last
@@ -136,15 +155,18 @@ local function emit(w, root, tail, dt)
 				local part, shape = take(spec)
 				if not part then break end
 				part.Material, part.Color = MATERIAL[spec.look], color(spec.colors[rng:NextInteger(1, #spec.colors)])
+				part.Transparency, part.Reflectance = CLEAR[spec.look] or 0, SHINE[spec.look] or 0
 				local q = { part = part, model = spec.model, spec = spec, unit = shape.unit, born = now, life = rng:NextNumber(spec.life[1], spec.life[2]), at = at,
-					vel = rng:NextUnitVector() * rng:NextNumber(0, spec.drift or 0), shown = 0,
+					vel = rng:NextUnitVector() * rng:NextNumber(0, spec.drift or 0), shown = 0, right = right, seed = rng:NextNumber(0, 1000),
 					size = (spec.size[1] + (spec.size[2] - spec.size[1]) * rng:NextNumber() ^ 2) * g } -- more small ones than big
-				if spec.align then
+				if spec.align == "grid" then q.turn = grid(root.CFrame.Rotation)
+				elseif spec.align then
 					local dir = (nose + rng:NextUnitVector() * 0.45).Unit
 					q.turn = CFrame.fromAxisAngle(dir, rng:NextNumber(0, 2 * math.pi)) * along(dir, shape.long)
 				else
 					q.axis, q.start = rng:NextUnitVector(), rng:NextNumber(0, 2 * math.pi)
 					q.spin = math.rad(spec.spin or 0) * rng:NextNumber(0.5, 1) * (rng:NextInteger(0, 1) * 2 - 1)
+					if spec.upright then q.lean = STAND * CFrame.Angles(rng:NextNumber(-0.25, 0.25), 0, 0) end -- stands up, turning like a sign
 				end
 				table.insert(live, q)
 			end
@@ -173,6 +195,7 @@ local function step(dt)
 	table.clear(movers); table.clear(frames)
 	for i = #live, 1, -1 do
 		local q = live[i]
+		local spec = q.spec
 		local age = now - q.born
 		local k = age / q.life
 		n += 1; movers[n] = q.part
@@ -180,12 +203,13 @@ local function step(dt)
 			frames[n] = FAR
 			table.insert(spare[q.model], q.part)
 			live[i] = live[#live]; live[#live] = nil
-		elseif q.spec.flash and not (k < 0.3 or (k > 0.42 and k < 0.7)) then frames[n] = FAR -- lightning: on, off, on, gone
+		elseif spec.flash and not (k < 0.3 or (k > 0.42 and k < 0.7)) then frames[n] = FAR -- lightning, a glitch: on, off, on, gone
 		else
-			local size = math.max(q.size * PlaneTrails.sizeAt(q.spec, k), 0.02)
+			local size = math.max(q.size * PlaneTrails.sizeAt(spec, k), 0.02)
 			if math.abs(size - q.shown) > STEP * q.shown then q.shown = size; q.part.Size = q.unit * size end
-			frames[n] = CFrame.new(q.at + q.vel * age + Vector3.new(0, 0.5 * (q.spec.rise or 0) * age * age, 0))
-				* (q.turn or CFrame.fromAxisAngle(q.axis, q.start + q.spin * age))
+			local at = q.at + q.vel * age + Vector3.new(0, 0.5 * (spec.rise or 0) * age * age, 0)
+			if spec.jump then at += q.right * (spec.jump * PlaneTrails.snap(q.seed, now)) end
+			frames[n] = CFrame.new(at) * (q.turn or (q.lean and CFrame.Angles(0, q.start + q.spin * age, 0) * q.lean) or CFrame.fromAxisAngle(q.axis, q.start + q.spin * age))
 		end
 	end
 	if n > 0 then workspace:BulkMoveTo(movers, frames, Enum.BulkMoveMode.FireCFrameChanged) end
@@ -202,9 +226,11 @@ end
 function PlaneTrails.start()
 	folder = Instance.new("Folder")
 	folder.Name, folder.Parent = "Trails", workspace
-	local chip = Instance.new("Part") -- a foil flake is too small to need a model: a thin chip
-	chip.Size = Vector3.new(1, 0.07, 0.6)
-	shape("flake", chip)
+	for model, size in PLAIN do
+		local part = Instance.new("Part")
+		if size == true then part.Shape, part.Size = Enum.PartType.Ball, Vector3.one else part.Size = size end
+		shape(model, part)
+	end
 	for model, id in Config.meshes do
 		if type(id) == "number" and id > 0 then
 			task.spawn(function()

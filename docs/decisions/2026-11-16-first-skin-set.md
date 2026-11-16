@@ -89,6 +89,16 @@
     lightning bolt; smoke and sparkles use Roblox's own pictures), he chose "Upload both". Both came back Approved.
     He also chose "Tests and screen grabs" for Claude's own Play run, then declined desktop access to the Studio
     window when it would not draw: the looking is his.
+  - **The other ten as videos (fourth session).** Alan: "The dragon embers just looks like orange glitter needs to look
+    more like actual ember and fire, the circuit board feels like it needs more circuit its kind if mainly cloud. Lets
+    not add the paper hearts lets just save it for later release and bring in another one, i might want to save paper
+    hearts for a holiday theme. ... Ok so if i didn't mention anything else then its good to put in." So **OK'd to put
+    in:** Chalk Dust, Confetti, Music Notes, Stardust, Goo Bubbles, Glitch Pixels, Folded Petals. **Redone as two
+    options each** (his pick pending): Dragon Embers (A a roaring flame, B dark smoke full of glowing embers), Circuit
+    Trace (A boards, chips and traces with no cloud, B a lattice of neon traces with a faint glow). **Paper Hearts is
+    saved for a holiday set**, not this release; its replacement is his pick between Mini Paper Planes and Paper
+    Butterflies (Claude's two ideas). He dismissed the upload question for the four new models (curl, note, note pair,
+    petal) without answering: not uploaded.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

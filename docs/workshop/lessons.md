@@ -843,5 +843,14 @@ Back to [HOME](../HOME.md)
   three at a time; fix what they show before any full video.
 - **A glow colour clips.** The glow look multiplies the colour by 9, so any channel over about 40 of 255 goes to full:
   a green needs its red and blue under 40 or it turns cyan.
+- **Twinkling glints read as glitter, whatever their colour.** Dragon Embers with orange sparkle dust: "just looks like
+  orange glitter". Fire is flame shapes that rise and taper (bright core, orange, red, then smoke) and embers are round
+  dots that cool as they rise; keep star glints for stars and sparkle.
+- **A cloud must not drown the theme.** Circuit Trace on a smoke core was "mainly cloud": when the idea is an object
+  (a circuit, a flock), build the body out of that object and leave the smoke out or faint.
+- **An almond shape with a crease can be misread as a body shape.** The first petal was one; it was reshaped as a
+  teardrop before the safety sheet went to Alan. Look at every new model's flat view for this.
+- **A dismissed question is not a yes.** Alan closed the upload question without answering: nothing was uploaded and
+  the question went into the handoff.
 - **A flat card in Blender needs Object coordinates** for a round fading patch (Generated gives nothing on a flat quad),
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.

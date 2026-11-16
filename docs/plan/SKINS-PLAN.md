@@ -151,15 +151,17 @@ how the game draws 3D pieces (see "How it is drawn").
 | Water Spray | Shark Jet (comes with it) | waits for the Shark Jet | later |
 
 Lava and Comic Book have no matching trail. Names are Claude's picks.
-**The other ten as 3D videos (2026-11-16, drafts in `tools/art/trail_drafts.json`, waiting for Alan's look; the table's
-"what you see" and "made by" were written before the 3D change):** each is built like an OK'd one. *Soft smoke bodies:*
-Chalk Dust (pastel puffs, chalk specks), Stardust (purple and blue cloud, small foil stars, sparkle dust), Dragon Embers
-(a flame plume, yellow to red to smoke, rising embers), Goo Bubbles (green mist with see-through bubbles and drips),
-Circuit Trace (a dark green core with neon traces at right angles and gold pads). *3D pieces with filler, like Gold
-Stars:* Confetti (paper strips and curls), Music Notes (gold and black notes standing up), Paper Hearts (folded hearts),
-Folded Petals (blue and silver petals, falling), Glitch Pixels (cubes and bars that blink and jump sideways). Uploads
-they would need: heart, note, note pair, petal, curl (five small models); everything else is plain shapes and Roblox's
-own particle pictures.
+**The other ten (2026-11-16; Alan's words in the decision note):** *In the game* (`config/trails.json`, drawn by
+`PlaneTrails.luau`, reached through the Dev: trail button until the shop list goes in): Chalk Dust (pastel puffs, chalk
+specks), Stardust (purple and blue cloud, small foil stars, sparkle dust), Goo Bubbles (green mist, see-through bubbles
+and drips), Glitch Pixels (cubes and bars that blink and jump sideways), Confetti (paper strips and curls), Music Notes
+(gold and black notes standing up), Folded Petals (blue and silver petals, falling). The last three fly without their
+main pieces until four models are uploaded (curl, note, note pair, petal: safety sheet shown, Alan has not answered).
+*Turned down, redone as two options each* (`tools/art/trail_drafts.json`, videos `<id>-A-or-B.mp4`): Dragon Embers
+("just looks like orange glitter": A a roaring flame, B dark smoke full of glowing embers) and Circuit Trace ("mainly
+cloud": A boards, chips and traces with no cloud, B a lattice of neon traces with a faint glow). *Paper Hearts is saved
+for a holiday set*; its replacement is Alan's pick between Mini Paper Planes and Paper Butterflies. The table above was
+written before the 3D change: its "what you see" and "made by" are out of date.
 - **How they are sold:** the five plain ones as today (49 Robux or 900 Paper). The six that match a Rare are sold **on
   their own** (Alan) and can be worn with any skin. **Price not set:** Alan: they "would probably be more expensive" than
   a plain trail; decided later. Until then the list carries a stand-in of 99 Robux or 1,900 Paper (live sales are off).
