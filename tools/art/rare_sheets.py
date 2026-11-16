@@ -24,6 +24,10 @@ def save(name, col, alpha=None):
     col = np.clip(fit(np.asarray(col, np.float32)), 0, 1)
     if alpha is not None: col = np.dstack((col, np.clip(fit(np.asarray(alpha, np.float32)), 0, 1)))
     OUT.mkdir(parents=True, exist_ok=True); Image.fromarray((col * 255 + 0.5).astype(np.uint8)).save(OUT / (name + ".png")); print(name, col.shape)
+def square(col, alpha):
+    """Pad a see-through picture to a square (the game can only turn a picture whose patch on the plane is square)."""
+    h, w = alpha.shape; n = max(h, w); c = np.zeros((n, n, 3), np.float32); c[:] = col.reshape(-1, 3).mean(0); a = np.zeros((n, n), np.float32)
+    y, x = (n - h) // 2, (n - w) // 2; c[y:y + h, x:x + w] = col; a[y:y + h, x:x + w] = alpha; return c, a
 def tnoise(h, w, size, seed, stretch=(1.0, 1.0), octaves=3):
     """Smooth noise that repeats at the picture's edges, spread evenly over 0..1 (a threshold is a share of the area).
     Blobs about `size` px wide; stretch = (down, across) makes them longer that way."""
@@ -123,7 +127,7 @@ def galaxy():
     head = np.exp(-(x * x * (w / 2) ** 2 + (y - 70) ** 2) / (2 * 19.0 ** 2)); halo = np.exp(-(x * x * (w / 2) ** 2 + (y - 70) ** 2) / (2 * 40.0 ** 2))
     tail = np.where(t > 0, np.exp(-(x / (0.16 + 0.5 * np.clip(t, 0, 1))) ** 2 * 2.2) * (1 - np.clip(t, 0, 1)) ** 1.6, 0) * (0.75 + 0.25 * tnoise(h, w, 30, 65, (6, 0.6)))
     al = np.clip(head * 1.5 + halo * 0.6 + tail * 1.25, 0, 1) * step(1.0, 0.86, np.abs(x)) * step(h, h - 30, y) * step(0, 16, y)
-    save("galaxy-comet", ramp(np.clip(head * 1.6 + tail * 0.35 + halo * 0.3, 0, 1), [(0, "#4A7BFF"), (0.35, "#7FD8FF"), (0.7, "#DFF6FF"), (1, "#FFFFFF")]), al)
+    save("galaxy-comet", *square(ramp(np.clip(head * 1.6 + tail * 0.35 + halo * 0.3, 0, 1), [(0, "#4A7BFF"), (0.35, "#7FD8FF"), (0.7, "#DFF6FF"), (1, "#FFFFFF")]), al))
 
 def squash(a):
     """A picture that repeats top to bottom, flattened to half its height and stacked twice: the game shows half of it
@@ -211,7 +215,7 @@ def thunderstorm():
     a, b = noise(230, 101, 4), noise(95, 102, 3); c = np.clip((0.6 * a + 0.4 * (1 - np.abs(b - 0.5) * 2) - 0.5) * 2.6 + 0.2, 0, 1)   # billows
     save("thunderstorm", ramp(c, [(0, "#10142E"), (0.4, "#232A5C"), (0.65, "#3B3F8E"), (0.85, "#6A63C0"), (1, "#A9A6E8")])); save("thunderstorm-glow", step(0.5, 0.95, c))
     t = tnoise(N, N, 150, 103, (1.0, 1.7)); save("thunderstorm-clouds", squash(ramp(t, [(0, "#5A60A8"), (1, "#B8BCF2")])), squash(0.6 * step(0.52, 0.86, t)))
-    save("thunderstorm-bolt", *bolt(104))
+    save("thunderstorm-bolt", *square(*bolt(104)))
 
 def circuit_board():
     """Dark green board with gold and cyan lines (concept rare-2). The lines are see-through cuts in the board layer; a
@@ -261,7 +265,7 @@ def word(name, text, burst, fill, seed, w=640, h=440, Q=2):
     t = Image.new("RGBA", (w * Q, h * Q), (0, 0, 0, 0))
     ImageDraw.Draw(t).text((w * Q / 2, h * Q / 2), text, font=ImageFont.truetype("impact.ttf", 150 * Q), fill=fill, anchor="mm", stroke_width=9 * Q, stroke_fill=(0, 0, 0, 255))
     t = t.transform(t.size, Image.AFFINE, (1, 0.2, -0.2 * h * Q / 2, 0, 1, 0), Image.BICUBIC).rotate(7, Image.BICUBIC)   # leaning forward and up
-    im.alpha_composite(t); im.resize((w, h), Image.LANCZOS).save(OUT / (name + ".png")); print(name)
+    im.alpha_composite(t); sq = Image.new("RGBA", (w, w), (0, 0, 0, 0)); sq.paste(im.resize((w, h), Image.LANCZOS), (0, (w - h) // 2)); sq.save(OUT / (name + ".png")); print(name)
 
 def comic_book():
     """Red, yellow and blue fields of printed dots split by jagged black lines (concept rare-3); speed lines and three

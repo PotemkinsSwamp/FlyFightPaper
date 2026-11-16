@@ -56,13 +56,13 @@ def state(layer, t):
             f = (tt - start) / layer["time"]
             if 0 <= f < 1:
                 x0, z0, x1, z1 = layer["paths"][i % len(layer["paths"])]
-                return placed(x0 + (x1 - x0) * f, z0 + (z1 - z0) * f, *layer["size"], x1 - x0, z1 - z0), min(1, f / 0.12, (1 - f) / 0.12), g
+                return placed(x0 + (x1 - x0) * f, z0 + (z1 - z0) * f, layer["size"], layer["size"], x1 - x0, z1 - z0), min(1, f / 0.12, (1 - f) / 0.12), g
         return None, 0.0, 0.0
     if k == "flash":                                                               # a sprite that flickers at one of its spots (lightning)
         i, s = since(layer, t); f = flicker(layer, t)
         if i is None or f <= 0: return None, 0.0, 0.0
         x, z, turn = layer["spots"][i % len(layer["spots"])]; a = math.radians(turn)
-        return placed(x, z, *layer["size"], math.sin(a), -math.cos(a)), f, g * f
+        return placed(x, z, layer["size"], layer["size"], math.sin(a), -math.cos(a)), f, g * f
     if k == "snap":                                                                # the whole layer jumps into view, shifted, for a moment (glitch)
         i, s = since(layer, t)
         if i is None or s >= layer["hold"]: return None, 0.0, 0.0
@@ -74,7 +74,7 @@ def state(layer, t):
         size = 1 + 1.9 * (1 - s / hit) ** 2 if s < hit else 1 - 0.13 * math.sin(math.pi * min(1, (s - hit) / 0.16)) * (1 if s < hit + 0.16 else 0)
         shake = 0.28 * math.sin((s - hit) * 70) * max(0, 1 - (s - hit) / 0.3) if s >= hit else 0
         a = math.radians(layer.get("turn", 0)); solid = min(1, s / 0.05) if s < hit + hold else max(0, 1 - (s - hit - hold) / 0.3)
-        return placed(layer["centre"][0] + shake, layer["centre"][1], layer["size"][0] * size, layer["size"][1] * size, math.sin(a), -math.cos(a)), solid, g * (math.exp(-(s - hit) / 0.22) if s >= hit else 0)
+        return placed(layer["centre"][0] + shake, layer["centre"][1], layer["size"] * size, layer["size"] * size, math.sin(a), -math.cos(a)), solid, g * (math.exp(-(s - hit) / 0.22) if s >= hit else 0)
     raise ValueError(k)
 
 def load(name):

@@ -14,6 +14,8 @@ ROOT = Path(__file__).resolve().parents[1].parent
 looks = json.loads((ROOT / "config/looks.json").read_text())
 pieces = json.loads((ROOT / "config/skin-pieces.json").read_text())["pieces"]
 shapes = json.loads((ROOT / "config/skin-shapes.json").read_text())["shapes"]  # shape skins: one look, folder <id>/Shape
+motion = json.loads((ROOT / "config/skin-motion.json").read_text())["skins"]    # Rares: the still sheet may glow too
+pictures = json.loads((ROOT / "config/skin-pictures.json").read_text())["pictures"]
 
 
 def item(cls, name, body=""):
@@ -28,9 +30,14 @@ folders = {}
 for skin in looks["skins"]:
     if not skin.get("picture"):
         continue
+    glow, mask = motion.get(skin["id"], {}).get("glow"), pictures.get(skin["id"] + "-glow")
     for name, ids in sorted(pieces.items()):
         maps = (f'<Content name="ColorMap"><url>rbxassetid://{skin["picture"]}</url></Content>'
                 f'<Content name="NormalMap"><url>rbxassetid://{ids["normal"]}</url></Content>')
+        if glow and mask:  # which bits of the sheet glow, its colour and resting strength (PlaneLooks makes it breathe)
+            maps += (f'<Content name="EmissiveMaskContent"><uri>rbxassetid://{mask}</uri></Content>'
+                     f'<float name="EmissiveStrength">{glow["strength"]}</float>'
+                     f'<Color3 name="EmissiveTint"><R>{glow["tint"][0]}</R><G>{glow["tint"][1]}</G><B>{glow["tint"][2]}</B></Color3>')
         folders.setdefault(skin["id"], []).append(item("SurfaceAppearance", name, maps) + "</Item>")
 for sid, shape in sorted(shapes.items()):
     pics = shape["pictures"]

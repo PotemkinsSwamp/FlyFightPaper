@@ -60,28 +60,65 @@ return JSONTypes.map({
         [9] = JSONTypes.map({
             ["id"] = "lava",
             ["name"] = "Lava",
-            ["picture"] = 127563698335848,
+            ["picture"] = 139287166429276,
             ["tier"] = "rare",
         }),
         [10] = JSONTypes.map({
             ["id"] = "galaxy",
             ["name"] = "Galaxy",
+            ["picture"] = 78099242255202,
             ["tier"] = "rare",
         }),
         [11] = JSONTypes.map({
+            ["id"] = "slime",
+            ["name"] = "Slime",
+            ["picture"] = 97791326588395,
+            ["tier"] = "rare",
+        }),
+        [12] = JSONTypes.map({
+            ["id"] = "holographic",
+            ["name"] = "Holographic",
+            ["picture"] = 84016567950951,
+            ["tier"] = "rare",
+        }),
+        [13] = JSONTypes.map({
+            ["id"] = "glitch",
+            ["name"] = "Glitch",
+            ["picture"] = 75539276800782,
+            ["tier"] = "rare",
+        }),
+        [14] = JSONTypes.map({
+            ["id"] = "thunderstorm",
+            ["name"] = "Thunderstorm",
+            ["picture"] = 91669790223044,
+            ["tier"] = "rare",
+        }),
+        [15] = JSONTypes.map({
+            ["id"] = "circuit_board",
+            ["name"] = "Circuit Board",
+            ["picture"] = 71382649943696,
+            ["tier"] = "rare",
+        }),
+        [16] = JSONTypes.map({
+            ["id"] = "comic_book",
+            ["name"] = "Comic Book",
+            ["picture"] = 103647805313090,
+            ["tier"] = "rare",
+        }),
+        [17] = JSONTypes.map({
             ["id"] = "shark_jet",
             ["name"] = "Shark Jet",
             ["tier"] = "legendary",
             ["trail"] = "water_spray",
         }),
-        [12] = JSONTypes.map({
+        [18] = JSONTypes.map({
             ["id"] = "dragon",
             ["name"] = "Dragon",
             ["picture"] = 71720517887759,
             ["tier"] = "mythical",
             ["trail"] = "dragon_embers",
         }),
-        [13] = JSONTypes.map({
+        [19] = JSONTypes.map({
             ["id"] = "origami_crane",
             ["name"] = "Origami Crane",
             ["picture"] = 86508406688555,

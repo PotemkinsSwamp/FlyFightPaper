@@ -64,9 +64,10 @@ resize it).
 
 ## Moving Rares: how it works (Alan OK'd it 2026-11-16)
 **Alan: "Those rules or notes work. Go ahead and build them and then show me some videos"** (200 studs fine; glow up
-close, not a beacon). Being built: each Rare's pictures (`tools/art/rare_sheets.py`), its movement numbers
-(`config/skin-motion.json`) and a preview video (`tools/art/skin_motion.py`); the game's own code comes after his OK on
-the videos. From the [first skin set](../decisions/2026-11-16-first-skin-set.md) (Rares move and glow; Alan's
+close, not a beacon). **Built and in the game (2026-11-16):** he OK'd all eight on preview videos ("Put them in the
+game"); 44 pictures uploaded and approved; `src/client/PlaneLooks.luau` draws the layers with `src/shared/SkinMotion.luau`'s
+sums. Seen right on test planes in Studio Edit (`.planning/skins/rares/rares-in-studio.jpg`). **Still to do, each on Alan's
+go:** see them move in Play, re-run the tests, the 12-plane frame-rate check. From the [first skin set](../decisions/2026-11-16-first-skin-set.md) (Rares move and glow; Alan's
 answers from the talk are there).
 - **What the player sees:** a Rare is a still skin picture, plus moving layers on top of it, plus a glow. Everything stays
   on the plane's surface and loops. Nothing reacts to boosting, shooting or damage, and nothing flies off the plane (that
@@ -91,12 +92,13 @@ answers from the talk are there).
 
 - **How it is drawn (Claude's method):** each moving layer is a see-through picture (a Roblox Decal) laid over the printed
   sheet; code slides it, turns it, sizes it and changes its glow. Lava and Circuit Board put the moving layer under a top
-  picture with holes. Tested on a real plane in Studio, 2026-11-16 (`.planning/skins/rares/sliding-layer-test.jpg`;
-  [lessons](../workshop/lessons.md), "Moving skin layers").
-- **Cost:** no money, no Tripo credits. About 28 free picture uploads for the eight (2 to 6 a Rare), each through the
-  safety check. Each moving layer draws the plane's skin once more: Galaxy is heaviest (5 draws), most are 2 or 3.
-- **Known limits:** from underneath, Comic Book's words read backwards (a wing's top and bottom share one picture).
-  Planets, comets and words live on the wings and the top of the body; the body's sides get the stars, dots and flows only.
+  picture with holes. A Decal stretches its picture over each piece's own box, so the code sets every piece's layers from
+  where that piece sits on the sheet ([lessons](../workshop/lessons.md), "Moving skin layers").
+- **Cost:** no money, no Tripo credits. 44 free pictures for the eight (3 to 8 a Rare; 5 more were re-sent as squares and
+  their first copies are unused). Each moving layer draws a piece's top once more: Galaxy is heaviest (5 draws).
+- **Known limits:** the layers draw on up-facing sides only, so **undersides and the body's sides wear the still sheet**
+  (the preview videos moved there too; a second set of Decals facing down would move the undersides, at twice the layers).
+  Planets, comets and words live on the wings and the top of the body.
 - **Checks:** each Rare goes to Alan as a short video on real planes (starter, blunt nose, heavy) before any upload; a
   test that every loop ends where it starts (no jump); a frame-rate check with 12 planes all wearing Galaxy, which must
   hold 60 (if it dips, Galaxy's planets share one layer before anything else changes).

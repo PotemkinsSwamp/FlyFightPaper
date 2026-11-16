@@ -784,8 +784,16 @@ Back to [HOME](../HOME.md)
   room (it scrolls from 11 skins up).
 
 ## Moving skin layers (2026-11-16, Studio Edit test on the Lava plane)
-- **A Decal draws over a SurfaceAppearance on a MeshPart and follows the mesh's own picture layout**, so a second picture
-  lands on the printed sheet exactly like the skin. **Set `Face = Top`**: with the default (Front) nothing showed.
+- **A Decal draws over a SurfaceAppearance on a MeshPart, but it ignores the mesh's own picture layout.** It stretches its
+  picture over each piece's own box, seen from the Decal's `Face`, and only on the sides that face that way (`Top`: the
+  up-facing sides; body sides and undersides show nothing). Seen from above with the piece unturned, the picture comes out
+  half a turn round: its top-left corner is at the box's +X, +Z corner. I first read a tie-dye test as "it follows the
+  sheet" and built the Rares' layers on that; on real planes Lava's cracks came out about four times too small. Put a
+  picture with words on real pieces before trusting a layout. `SkinMotion.decal` corrects each piece from its template's
+  place and size in `Assets.AircraftPieces`.
+- **Where a Decal's picture lands:** turn(`UVScale` x (box spot - middle)) + `UVScale` x middle + `UVOffset`, the turn
+  being `Rotation` degrees clockwise about the middle. The scale comes before the turn, so a turned picture keeps its
+  shape only if its patch is square: pad placed pictures to squares.
 - **Scripts can change a Decal while the game runs:** `UVOffset` (slide), `UVScale` (size), `Rotation` (turn),
   `Transparency`, `EmissiveStrength` and `EmissiveTint`, and the pictures themselves. A SurfaceAppearance only lets a
   script change `Color`, `EmissiveStrength` and `EmissiveTint`: its pictures cannot slide.
@@ -793,6 +801,11 @@ Back to [HOME](../HOME.md)
   the picture, zoom in (`UVScale` 0.5) and slide half a picture, then start again. A small picture with a see-through
   border can be placed anywhere (`UVScale` above 1): the smear is see-through.
 - **Decals stack by `ZIndex`**, and a new Decal can take a few seconds to appear in Edit: wait before the screen grab.
+- **A Decal's glow keeps the picture's own colours** (colour x glow picture x tint x strength), and see-through pixels in
+  the picture work. With no glow picture, use the colour picture itself: it then glows by its red.
+- **Pure-logic tests run in Studio Edit without Play:** copy the spec into a fresh ModuleScript beside the others and
+  `require` it from `execute_luau`; copy any module that changed since Studio last loaded it (an old copy stays cached).
+- **Rojo's file watcher can hold a `src/` file for a moment:** a script's write fails with "Invalid argument"; retry.
 - A `Texture` (the repeating kind) did not show on the same MeshPart.
 - **Drawing for movement (the Rares' preview videos):** shapes in a sliding picture lie across the slide, not along it (a
   streak sliding along itself looks still: Lava's first flow). A round thing that crosses the body's step is cut in two

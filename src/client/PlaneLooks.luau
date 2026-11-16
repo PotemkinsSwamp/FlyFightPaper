@@ -2,13 +2,17 @@
 -- Skin attribute; here every paper and trim piece of it swaps, on this screen, to its printed-sheet copy
 -- (assets/models/planes/skin-sheet) wearing the skin's picture plus the piece's own creases. The server's pieces and
 -- hitbox never change. Boosters wear it too; pieces with no copy (tape, team stickers, weapons) keep their own look.
--- Skins that change the plane's shape (the Origami Crane) are fitted by SkinShapes.
+-- Skins that change the plane's shape (the Origami Crane) are fitted by SkinShapes. A Rare's moving layers are Decals over
+-- the sheet, slid, turned and lit here (SkinMotion has the sums).
 local AssetService = game:GetService("AssetService")
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Looks = require(Root.Shared.LooksRules)
 local Pieces = require(Root:WaitForChild("Generated"):WaitForChild("SkinPieces")).pieces
 local SkinShapes = require(script.Parent.SkinShapes)
+local SkinMotion = require(Root.Shared.SkinMotion)
+local Pictures = require(Root:WaitForChild("Generated"):WaitForChild("SkinPictures")).pictures
 local PlaneLooks = {}
 local meshes = {} -- piece -> MeshPart carrying the copy's mesh
 local mine = Players.LocalPlayer and tostring(Players.LocalPlayer.UserId) -- nil when a server test loads the menus
@@ -25,6 +29,65 @@ local function once(cache, key, make)
 	return cache[key]
 end
 local function asset(id) return Content.fromUri("rbxassetid://" .. id) end
+
+-- Rares move (skins plan, "Moving Rares"): every piece wearing one carries a Decal a layer, in the layers' order.
+-- A Decal only draws on a piece's up-facing sides, stretched over the piece's own box, so each one is set for its piece
+-- (SkinMotion.decal); sides and undersides show the still sheet.
+local moving = {} -- piece -> { spec, look (its sheet), decals, piece (where its box lies on the sheet) }
+local boxes = {} -- piece name -> SkinMotion.piece(...)
+local function place(decal, layer, piece, a, b, tx, c, d, ty, solid, glow)
+	if not a then decal.Transparency = 1; return end
+	local sx, sy, ox, oy, rot = SkinMotion.decal(piece, a, b, tx, c, d, ty)
+	decal.UVScale, decal.UVOffset, decal.Rotation, decal.Transparency = Vector2.new(sx, sy), Vector2.new(ox, oy), rot, 1 - solid
+	if layer.glow then decal.EmissiveStrength = glow end
+end
+local function layersOn(part, name, skin, look)
+	for _, old in part:GetChildren() do if old.Name == "SkinLayer" then old:Destroy() end end
+	local spec = skin and SkinMotion.skins[skin.id]
+	moving[part] = nil
+	if not spec then return end
+	local piece = boxes[name]
+	if not piece then -- the piece as it sits on the plane the sheet was drawn for
+		local made = Root.Assets.AircraftPieces:FindFirstChild(name, true)
+		if not made then return end
+		piece = SkinMotion.piece(made.CFrame, made.Size); boxes[name] = piece
+	end
+	local decals = {}
+	for i, layer in spec.layers do
+		local id = Pictures[skin.id .. "-" .. layer.name]
+		local decal = Instance.new("Decal")
+		decal.Name, decal.Face, decal.ZIndex, decal.ColorMapContent = "SkinLayer", Enum.NormalId.Top, i, asset(id) -- Top: the only face that draws on a mesh
+		if layer.glow then
+			decal.EmissiveMaskContent = asset(Pictures[skin.id .. "-" .. layer.name .. "-glow"] or id) -- no glow picture: it glows by its own red
+			decal.EmissiveTint = Color3.new(layer.glow.tint[1], layer.glow.tint[2], layer.glow.tint[3])
+		end
+		place(decal, layer, piece, SkinMotion.state(layer, 0))
+		decal.Parent = part
+		decals[i] = decal
+	end
+	moving[part] = { spec = spec, look = look, decals = decals, piece = piece }
+end
+-- One pass a frame: each layer's place is worked out once, then given to every near piece that wears it. Far pieces keep
+-- their layers standing still (Alan: planes are too fast to read a skin from far away).
+local function move()
+	local t, camera, now = os.clock(), workspace.CurrentCamera, {}
+	if not camera then return end
+	local eye = camera.CFrame.Position
+	for part, worn in moving do
+		if not part.Parent then moving[part] = nil
+		elseif (part.Position - eye).Magnitude <= SkinMotion.near then
+			local spec = worn.spec
+			if spec.glow and (spec.glow.pulse or spec.glow.flash) then worn.look.EmissiveStrength = SkinMotion.glow(spec.glow, t) end
+			for i, layer in spec.layers do
+				if layer.kind ~= "still" or (layer.glow and (layer.glow.pulse or layer.glow.flash)) then
+					local set = now[layer]
+					if not set then set = table.pack(SkinMotion.state(layer, t)); now[layer] = set end
+					place(worn.decals[i], layer, worn.piece, set[1], set[2], set[3], set[4], set[5], set[6], set[7], set[8])
+				end
+			end
+		end
+	end
+end
 
 local function skinOf(model)
 	if model.Name == mine and PlaneLooks.devSkin ~= nil then return Looks.item(PlaneLooks.devSkin) end
@@ -60,6 +123,7 @@ local function dressPart(model, part)
 	if not want then look.Color = part.Color end
 	look.Parent = part
 	part:SetAttribute("Skin", want)
+	layersOn(part, name, want and skin or nil, look)
 end
 
 -- Shape skins (Legendary, Mythical: SkinShapes) go on once a burst of new parts has arrived, one fit at a time.
@@ -109,6 +173,7 @@ local function watch(model)
 end
 
 function PlaneLooks.start()
+	RunService.RenderStepped:Connect(move)
 	local planes = workspace:WaitForChild("Planes")
 	planes.ChildAdded:Connect(watch)
 	for _, model in planes:GetChildren() do watch(model) end

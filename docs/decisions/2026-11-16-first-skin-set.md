@@ -1,7 +1,7 @@
 # The first skin set: 8 Commons, 8 animated Rares, after the Dragon's boosters
 
 **Decided:** 2026-11-16 (Alan)  
-**Status:** in force; the Dragon's boosters and the eight Commons are made and in the game's list (2026-11-16, Tiger Stripes and Gold Foil taken off it); the Rares are next.
+**Status:** in force; the Dragon's boosters, the eight Commons and the eight moving Rares are made and in the game's list (2026-11-16, Tiger Stripes and Gold Foil taken off it); the Rares are not yet seen in Play. Trails are next.
 
 ## Decision
 - **First: the Dragon's boosters.** "the boosters don't match the dragon skin, so that needs to be fixed" (the crane's
@@ -37,7 +37,10 @@
 - **The first videos (Alan, 2026-11-16):** six are good as shown (Galaxy, Holographic, Glitch, Thunderstorm, Circuit Board,
   Comic Book): "if I didn't say anything about them, then the rest of them are good". **Lava was too fast:** "Lava is
   very slow ... It's supposed to be kind of like a pulsing, slow-moving animation." **Slime did not ooze:** "it's just
-  moving it like up and down across the screen. I feel like it could be better." Both redone.
+  moving it like up and down across the screen. I feel like it could be better." Both redone, and on the second videos:
+  **"Lava and Slime is good now. Put them in the game."** All eight are uploaded (approved) and in the game's list.
+- **Next (Alan, same day):** "After you're done with that, we'll hand off, and then in the next session, we'll start the
+  trails."
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
