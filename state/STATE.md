@@ -1,14 +1,13 @@
-# Since Alan last checked (2026-11-16, fourth session)
-- **The three OK'd trails are in the game** (Gold Stars, Storm Sparks, Holo Rainbow), drawn behind any flying plane. **Not yet seen in Play by anyone**: Studio would not draw for my screen grabs, and you declined desktop access, so the first look is yours.
-- **Uploaded (your OK on the safety sheet):** a star and a lightning bolt, both Approved. Smoke and sparkles use Roblox's own pictures, so nothing else was needed.
-- **Tests: 671 passed, 0 failed** in Play (4 new for trails). **Bots' one roll is in** at your 35/35/15/15.
-- **All 13 trails are in the game** (your OKs; Paper Hearts saved for a holiday set, Mini Paper Planes in its place; Circuit Trace on its third go). Eight models uploaded, all Approved. The trail tests pass 5 of 5 and all 13 fly in a Studio Edit dry run; the whole test set has not been re-run in Play since the first three.
+# Since Alan last checked (2026-11-16, fifth session)
+- **The scripted Play test is done** ([numbers and the full list](../docs/playtests/2026-11-16-scripted-looks-check.md)). Frame rate, 12 planes: 60 with no looks; 59.7 with every plane in a skin and a trail as the game was; about 57 once the Rares move; 52 in the worst case (12 Galaxy + 12 Circuit Trace).
+- **All 8 Rares were broken in real Play** (no moving layers, no glow pulse): Roblox does not let a game script set a decal's glow picture, and every earlier test ran with extra rights. **Fixed in code** (layers made ahead), rehearsed in that same Play; the game's own fixed code has not run in Play yet.
+- **Trails: nothing differs from the config on any of the 13.** Commons, Dragon and Crane: nothing found. Shark Jet draws nothing (not made yet) and used to leave the old skin on: fixed.
+- **Not run: the whole test set** (671 passed at `dcabf8b5`; skins and trail code changed since). Play ran 50 minutes, not 12: your screen sleeps after 60 idle seconds and Studio stops drawing; I held it awake with a one-pixel mouse nudge (stopped).
 
 # Now: finish the game for the beta
-Next (Alan 2026-11-16): **a Play test by script, no screen grabs**: the frame rate of a 12-plane match with every bot in a skin and a trail, and a list of
-anything wrong with each skin and trail read from the game itself. Then fixes, the list of 13 in the shop and the Trails tab, and a trail on the plane in the Hangar. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
-playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and
-arrival; a real gift through the shop; the unlock backpack's music dip.
+Next: **one short Play (your go)** to run the fixed Rares as the game's own code, the whole test set, and Galaxy alone on 12 planes (is the lost frame rate the moving layers or the trail parts?). Then the frame-rate fix (fewer parts a second first, never a different look), the list of 13 in the shop and the Trails tab, and a trail on the plane in the Hangar.
+Dragon leftovers: crash ball and shop card pictures, jaw leftover. Queued: Toilet Roll shake, missions, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
+Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
@@ -50,7 +49,7 @@ Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st
 Waiting on Alan
 - **The shop list** (next for me, your OK on two things first): keep the saved name behind Rainbow Marker so testers who own it get Holo Rainbow (my lean: yes); the Rare-match price is still the 99 Robux / 1,900 Paper stand-in.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 13 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
-- **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
+- **The Rares in Play (your go), after the check Play above:** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem? Also only your eyes: do sparkles and smoke start in clumps?
 - Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?). Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);
   no gun piece floating off the crane's guns, at the desk and firing; the Toilet Roll shake with my recorder (your go).

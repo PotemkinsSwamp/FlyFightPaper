@@ -818,6 +818,12 @@ Back to [HOME](../HOME.md)
   save never keeps it, and delete it after.
 - **Never `git add -A <folder>`**: it swept an old untracked file (`tools/art/hero.py.old`) into a pushed commit. Name the
   files.
+- **A game script may not set a Decal's glow picture (found in Play 2026-11-16).** `Decal.EmissiveMaskContent` needs plugin
+  rights; `ColorMapContent`, `UVOffset`, `UVScale`, `Rotation`, `EmissiveStrength` and `EmissiveTint` can be written, and a
+  clone of a ready-made Decal keeps its glow picture. Every Edit test and preview ran with plugin rights (the Studio
+  link's code does), so all eight Rares passed there and none moved in real Play. Anything a look sets that is new to
+  Roblox gets proved from a real LocalScript in Play before it counts as working: the Studio link can make one
+  (`Instance.new("LocalScript")`, set `Source`, parent it to `PlayerScripts`), and it runs with a game script's rights.
 
 ## Trails (2026-11-16, the first three as 3D videos)
 - **Four rounds of videos for three trails; start the next ten where these ended.** Alan turned down, in order: flat
@@ -860,3 +866,22 @@ Back to [HOME](../HOME.md)
   short branch and a third pad before upload, so its flat view is plainly a circuit.
 - **A flat card in Blender needs Object coordinates** for a round fading patch (Generated gives nothing on a flat quad),
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.
+
+## Scripted Play tests (2026-11-16, the skins and trails check)
+- **A sleeping screen stops Studio drawing.** Alan's PC turns the screen off after 60 idle seconds: the view reads 1 x 1,
+  `RenderStepped` gives 0 frames, and trails and skins freeze while the server plays on. Asking Windows to keep the
+  screen on (`SetThreadExecutionState`) did not hold from a background PowerShell; a one-pixel mouse nudge every 20
+  seconds did (user32 `mouse_event`, there and back). Only with Alan's go (he asked for the wake-up), and stop it after.
+  Count `RenderStepped` frames before every measurement, not only at the start.
+- **The `loop` autopilot keeps its place in the route through a respawn**, so a new plane steers from its desk at a far
+  corner and flies into the town two seconds after takeoff, every life. Clear `DevAutopilot` on TAKEOFF and set it again
+  once flying (the looks check's client half does).
+- **Compare looks inside one flight.** Where the plane happens to be moves the frame rate more than a trail does: one
+  short run read 51 with Confetti and four later ones read 60. Switch the looks on and off every 13 seconds, several
+  times round (`ClaudePart` = `ab`), and add the runs up.
+- **The Studio link's own code keeps old copies of modules it has `require`d** for as long as Studio stays open: an Edit
+  read showed 3 trails when the game had 13. Clone the module (and what it requires) and require the clone.
+- **Looks forced through a plane's `Skin` and `Trail` attributes reach the drawing only**: the server's hit shapes for a
+  shape skin follow its own record, and a respawn puts the plane's own looks back until they are set again.
+- **One error printed hundreds of times fills the log the Studio link can read** (about 300 lines): quieter warnings
+  behind it are lost. Fix the loud one, then read the log again.
