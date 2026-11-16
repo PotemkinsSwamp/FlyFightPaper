@@ -107,6 +107,11 @@ answers from the talk are there).
 From the trails talk ([first skin set](../decisions/2026-11-16-first-skin-set.md), Alan's words there). He OK'd the length, the
 growth when fast and the list; he changed the bots rule and parked the price ("we're not worried about price right now.
 We're worried about just making them"). **Being built:** Holo Rainbow, Gold Stars and Storm Sparks first.
+**The first videos were "bad" (Alan, 2026-11-16): flat pictures, seen from above, stars in an even line.** He wants 3D
+depth and texture, pieces at random sizes "in almost a cloud formation", shown in a 3D scene ("We need to make them
+3D"); the width is fine. **So the method below changed: pieces are small 3D models, not flat pictures**, and the
+preview is a Blender scene from the game's own camera. Redone as 3D videos; waiting for his look. Not yet settled:
+how the game draws 3D pieces (see "How it is drawn").
 - **What the player sees:** a thin stream from the back of the body, between the boosters. It starts about 1.5 studs wide
   (the white boost streak's size) and narrows to a point; its pieces shrink and fade toward the end. Always on while the
   plane flies; it stops when the plane lands or crashes and what is in the air fades out.
@@ -154,11 +159,17 @@ Lava and Comic Book have no matching trail. Names are Claude's picks.
   Each bot rolls a skin and a trail separately, so a match shows all four kinds: skin and trail, skin only, trail only,
   neither. A bot with a trail wears its skin's matching trail when the skin has one; otherwise a random one. The two
   chances are Claude's numbers, not yet OK'd by Alan.
-- **How it is drawn (Claude's method):** every trail has the same bones, two things Roblox already has. A **ribbon**
-  (Roblox calls it a Trail) is a strip stretched along the path just flown; it gives the stream and the taper. **Pieces**
-  (Roblox calls them particles) are small pictures dropped behind that live a second. One short piece of code in
-  `src/client/PlaneLooks.luau` reads each trail's row of numbers and pictures; no trail gets code of its own.
-- **How the pictures are made (Alan: a mix):** most are drawn by code in PhotoCraft (free, on Alan's PC at
+- **How it is drawn (Claude's method, changed after the first videos):** every trail has the same bones. A **ribbon**
+  (Roblox calls it a Trail) is a strip laid along the path just flown; it can be laid turning, like a streamer.
+  **Pieces** are small 3D models (a folded foil star, a foil flake, a cotton puff, a lightning fork) dropped behind,
+  scattered round the path at random sizes, tumbling, growing out of the tail and shrinking away. Roblox's own
+  particles are flat pictures that always face you, so 3D pieces are real small parts moved by the player's own
+  computer (no physics, nothing on the server): about 30 to 60 a plane, a few hundred in a 12-plane match. **Open:**
+  the frame-rate check decides whether that holds 60; the fallback is flat particles showing a pre-rendered spinning
+  3D model. Roblox's built-in Foil, Fabric and Neon materials give the texture with no picture to upload. One short
+  piece of code in `src/client/PlaneLooks.luau` reads each trail's row in `config/trails.json`; no trail gets code of
+  its own.
+- **How the pictures are made (written before the 3D change; now only ribbons and any flat glows use pictures):** most are drawn by code in PhotoCraft (free, on Alan's PC at
   `D:\ArtCraft\PhotoCraft`; a test streak drew fine, `.planning/skins/trails/photocraft-streak-test.png`), following the
   video Alan sent (YorusDevs, "How Opus 5.5 drew every visual effect in my Roblox game"): shapes in **white, in layers**,
   so the game colours each layer (one spark drawing serves several trails); a **frame sheet** (a 4 by 4 grid of frames

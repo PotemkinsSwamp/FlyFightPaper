@@ -63,6 +63,10 @@
     one. They also don't all need them ... Not every bot needs skins. Not every bot needs trails. Some bot can have no
     skin and a trail. Some bot can have a skin and no trail. Some bots can have skins and trails. Some bots can have
     neither." This replaces "bots all wear skins" in the [skin rules](2026-11-13-skin-rules.md).
+  - **First three videos (flat pictures, from above): "bad."** "They need some kind of 3D depth to them, and maybe some
+    texture. Because it doesn't look like you used 3D stars. I'm worried about how they're going to look when actually
+    put into a 3D environment. Honestly, the width is fine ... the gold stars one in a straight line is kind of odd ...
+    random variations, in almost a cloud formation ... We need to make them 3D." Redone as 3D models in a Blender scene.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
