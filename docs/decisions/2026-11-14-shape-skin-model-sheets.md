@@ -316,7 +316,17 @@
   still need their own go).
 - **In Studio for the look (2026-11-15, night):** 21 pictures and one mesh file uploaded (free, all Approved; empty texture
   space filled first, every picture looked at). The Dragon stands in Studio as `Workspace.DragonLook`, plane-sized (8.4 studs),
-  not saved with the place. These uploads are for the look; the game gets the merged 1024 set. Waiting on Alan's verdict.
+  not saved with the place. These uploads are for the look; the game gets the merged 1024 set.
+- **Verdict and how it fits (Alan, same night):** "looks fine in roblox it needs to input as a plane skin though like we
+  did for the crane". **Wings forward:** he moved them up the body in Studio ("more close to the plane proportions"):
+  0.67 and 0.71 studs on the 8.4-stud model; "make them like the same number", so both 0.69 (about 8% of its length). His
+  right wing also slid out sideways: "that was a slip". **Fit:** shown A (keeps its shape) against B (body stretched to
+  cover): "it needs to maintain its proportions ... we can't stretch it and make it look odd", with a cap, because
+  "we just don't want ... people hitting the sides of buildings and not knowing why they crashed". So: one size, as big
+  as needed for its wingtips to reach the plane's, nose on the plane's nose; the cap, picked from a row of five planes
+  in Studio, is **1.25 times the plane's length** (wingtips match on 19 of 36 builds; on the widest wings the plane's
+  own tips stick out up to 3.1 studs each side). One mesh and one 1024 picture set (the budget rule): from the player's
+  view it reads the same, close up the scales are a little softer (`roblox/game/compare-one-set.jpg`).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

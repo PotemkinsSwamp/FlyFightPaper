@@ -205,6 +205,74 @@ function Spec.run()
 		for _, piece in pieces do piece:Destroy() end
 		model:Destroy()
 	end
+	-- The Dragon keeps its proportions (Alan 2026-11-15): one size, wingtips on the plane's unless that would make it longer
+	-- than its cap times the plane, nose on the plane's nose, wings at the plane's wing height; its flat wings never turn
+	-- the real ones. Four builds: the three above and the widest wings on the Heavy Mk2 (where the cap holds it back).
+	local DRAGON = "dragon"
+	local shape = SkinFit.shapes[DRAGON]
+	local E, box = shape.even, shape.pieces.whole
+	local wide = catalog:classLoadout("bomber", 99)
+	wide.body, wide.wings, wide.utility = "body_heavy_mk2", "wings_2", "boost_band"
+	builds.wide = wide
+	for name, loadout in builds do
+		local model, frame = plane(loadout)
+		local o = assert(SkinFit.outline(model.Appearance, frame))
+		local fitted = assert(SkinFit.plane(DRAGON, model.Appearance, frame))
+		local drawn = fitted.placed.whole
+		local lo, hi = Vector3.new(table.unpack(box.min)), Vector3.new(table.unpack(box.max))
+		local k = drawn[2].Z / (hi - lo).Z
+		test(name .. ": the Dragon keeps its proportions, nose on the nose, wings at the wings' height", function()
+			assert(near(drawn[2], (hi - lo) * k, 1e-4), "stretched: " .. tostring(drawn[2]))
+			local front = drawn[1].Position - drawn[2] / 2
+			assert(math.abs(front.Z - o.zN) < 1e-3, "nose " .. front.Z .. " vs the plane's " .. o.zN)
+			local wingY = drawn[1].Position.Y + (E.wing_y - (lo.Y + hi.Y) / 2) * k
+			assert(math.abs(wingY - o.wy) < 1e-3, "wings at " .. wingY .. ", the plane's at " .. o.wy)
+			local tips, long = E.half_span * k, drawn[2].Z
+			local cap = E.cap * (o.zT - o.zN)
+			assert(long <= cap + 1e-3, "longer than the cap")
+			assert(math.abs(tips - o.xo) < 1e-3 or (math.abs(long - cap) < 1e-3 and tips < o.xo), "wingtips " .. tips .. " vs the plane's " .. o.xo)
+			if name == "wide" then assert(tips < o.xo - 1, "the cap should hold the Heavy Mk2's widest wings back") end
+		end)
+		test(name .. ": the Dragon's flat wings leave the real wings' hit shapes where they are", function()
+			local wings = 0
+			for _, move in fitted.wings do wings += 1; assert(same(move, CFrame.identity), "a wing turned") end
+			assert(wings >= 4, "no wings found")
+		end)
+		test(name .. ": guns hang just under the Dragon's wing, outside its body", function()
+			local hinge, count = fitted.hinge, 0
+			for slot, offset in fitted.offsets do
+				count += 1
+				local parts = {}
+				for part, move in fitted.guns do if string.match(part.Name, "^Mount" .. slot .. "%f[%D]") then table.insert(parts, part) end end
+				local lo2, hi2 = Vector3.one * math.huge, -Vector3.one * math.huge
+				for _, part in parts do
+					local p = frame:PointToObjectSpace(part.Position)
+					lo2, hi2 = lo2:Min(p - part.Size / 2), hi2:Max(p + part.Size / 2)
+				end
+				local to = Vector3.new((lo2.X + hi2.X) / 2, hi2.Y, (lo2.Z + hi2.Z) / 2) + offset
+				local under = hinge.Y + (E.wing.under_y - E.wing_y) * k
+				assert(to.Y < under and to.Y > under - 0.1 * k, "slot " .. slot .. " top at " .. to.Y .. ", the wing's underside at " .. under)
+				assert(math.abs(to.X) > E.body_x * k and math.abs(to.X) < E.wing.tip_x * k, "slot " .. slot .. " not under the wing")
+			end
+			local want = 0
+			for _, id in loadout.weapon_mounts do if id then want += 1 end end
+			assert(count == want, count .. " guns of " .. want)
+		end)
+		if loadout.utility then test(name .. ": the booster rises or drops straight until its top touches the Dragon's belly", function()
+			local top, move = -math.huge, nil
+			for part, m in fitted.boosters do
+				assert(move == nil or same(m, move), "the booster's parts moved apart"); move = m
+				assert(same(m, CFrame.new(0, m.Y, 0)), part.Name .. " moved sideways or turned")
+				if string.match(part.Name, "%-tape$") then continue end
+				local p = (m * frame:ToObjectSpace(part.CFrame)).Position
+				top = math.max(top, p.Y + part.Size.Y / 2)
+			end
+			assert(move, "the booster did not move")
+			local belly = drawn[1].Position.Y + (math.min(E.keel[2][1], E.keel[3][1]) - (lo.Y + hi.Y) / 2) * k
+			assert(top < belly + 0.05 and top > belly - 0.3 * k, "the booster's top is at " .. top .. ", the belly at " .. belly)
+		end) end
+		model:Destroy()
+	end
 	return result
 end
 return Spec

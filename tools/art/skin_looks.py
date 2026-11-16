@@ -35,7 +35,13 @@ for skin in looks["skins"]:
 for sid, shape in sorted(shapes.items()):
     pics = shape["pictures"]
     maps = "".join(f'<Content name="{key}"><url>rbxassetid://{pics[k]}</url></Content>'
-                   for key, k in (("ColorMap", "color"), ("NormalMap", "normal"), ("RoughnessMap", "roughness")))
+                   for key, k in (("ColorMap", "color"), ("NormalMap", "normal"), ("RoughnessMap", "roughness"),
+                                  ("MetalnessMap", "metalness")) if k in pics)
+    if "glow" in pics:  # the Dragon's eye: a glow picture, its colour and strength (Studio saves it as a Content <uri>)
+        tint, strength = shape["glow"]["tint"], shape["glow"]["strength"]
+        maps += (f'<Content name="EmissiveMaskContent"><uri>rbxassetid://{pics["glow"]}</uri></Content>'
+                 f'<float name="EmissiveStrength">{strength}</float>'
+                 f'<Color3 name="EmissiveTint"><R>{tint[0]}</R><G>{tint[1]}</G><B>{tint[2]}</B></Color3>')
     folders.setdefault(sid, []).append(item("SurfaceAppearance", "Shape", maps) + "</Item>")
 for sid, items in folders.items():
     out.append(item("Folder", sid) + "\n".join(items) + "</Item>")

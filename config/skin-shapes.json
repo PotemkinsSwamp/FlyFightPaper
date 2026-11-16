@@ -1,5 +1,5 @@
 {
-  "_comment": "Skins that change the plane's shape (Legendary, Mythical), fitted on each player's screen by src/client/SkinShapes.luau. Per skin: the uploaded pieces (mesh id and local box), the starter build's fit numbers (ref) and the shape's constants, from tools/art/crane_skin.py. Written by hand from its crane-fit.json.",
+  "_comment": "Skins that change the plane's shape (Legendary, Mythical), fitted on each player's screen by src/client/SkinShapes.luau. Per skin: the uploaded pieces (mesh id and local box), the starter build's fit numbers (ref) and the shape's constants, from tools/art/crane_skin.py (written by hand from its crane-fit.json); the Dragon's from its pipeline under .planning/skins/dragon/ (roblox/game).",
   "shapes": {
     "origami_crane": {
       "pictures": {
@@ -18,10 +18,22 @@
         "zc": 1.45335,
         "keel_comment": "The body's underside down its middle, front to back, as [y, z] on the starter (crane_skin.py's breast, keel and back corners; matches the body mesh): boosters tuck up against it.",
         "keel": [
-          [-1.09278, -2.4989],
-          [-1.30316, -0.13553],
-          [-0.935, 4.917],
-          [0.90991, 5.74715]
+          [
+            -1.09278,
+            -2.4989
+          ],
+          [
+            -1.30316,
+            -0.13553
+          ],
+          [
+            -0.935,
+            4.917
+          ],
+          [
+            0.90991,
+            5.74715
+          ]
         ]
       },
       "const": {
@@ -94,6 +106,102 @@
             5.94653,
             3.72628,
             3.00024
+          ]
+        }
+      }
+    },
+    "dragon": {
+      "pictures": {
+        "color": 122860590910073,
+        "normal": 71703544093184,
+        "metalness": 128955046515458,
+        "roughness": 97740079573742,
+        "glow": 79976497080316
+      },
+      "glow": {
+        "tint": [
+          0.12,
+          0.85,
+          0.42
+        ],
+        "strength": 0.8
+      },
+      "even": {
+        "_comment": "Keeps its proportions (Alan 2026-11-15): one size, as big as needed for its wingtips to reach the plane's, never longer than cap x the plane; nose on the plane's nose, wings at the plane's wing height. Numbers in the uploaded mesh's own frame (studs, nose to -z), from .planning/skins/dragon/roblox/game/whole.npz.",
+        "cap": 1.25,
+        "nose_z": -4.19987,
+        "wing_y": -0.336,
+        "half_span": 3.42782,
+        "body_x": 0.38419,
+        "wing": {
+          "_comment": "Right wing seen from above as a triangle: root front and back where it meets the body, and its tip; under_y = its underside.",
+          "root_x": 0.16324,
+          "front_z": -1.82046,
+          "back_z": 1.73277,
+          "tip_x": 3.42782,
+          "tip_z": 1.67258,
+          "under_y": -0.3472
+        },
+        "keel_comment": "The body's underside down its middle, front to back, as [y, z]: boosters tuck up against it.",
+        "keel": [
+          [
+            -0.903,
+            -1.7052
+          ],
+          [
+            -0.9248,
+            -1.2936
+          ],
+          [
+            -0.9248,
+            -0.882
+          ],
+          [
+            -0.9245,
+            -0.0588
+          ],
+          [
+            -0.9245,
+            0.7644
+          ],
+          [
+            -0.9217,
+            1.176
+          ],
+          [
+            -0.9213,
+            1.5876
+          ],
+          [
+            -0.8967,
+            1.9992
+          ],
+          [
+            -0.6822,
+            2.4108
+          ],
+          [
+            -0.555,
+            2.8224
+          ],
+          [
+            -0.3217,
+            3.234
+          ]
+        ]
+      },
+      "pieces": {
+        "whole": {
+          "mesh": 110832316998528,
+          "min": [
+            -3.42782,
+            -0.92484,
+            -4.19987
+          ],
+          "max": [
+            3.42782,
+            0.79784,
+            4.19895
           ]
         }
       }

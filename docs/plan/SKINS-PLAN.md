@@ -4,8 +4,9 @@
 pictures; [playtest](../playtests/2026-11-13-printed-sheet-skins.md)); buying with Paper, wearing and the Skins and
 Trails tabs built; boosters wear printed skins. The Origami Crane (first Mythical) is in the game as five fitted pieces
 (`SkinShapes.luau`), with playtest bugs to fix and its printed sheet next; the wing-hitbox tilt is built
-([playtest](../playtests/2026-11-13-crane-and-skins-tabs.md)). Still to make: real pictures, Shark Jet, Dragon,
-trails. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
+([playtest](../playtests/2026-11-13-crane-and-skins-tabs.md)). The Dragon (second Mythical) is built as a shape skin that
+keeps its proportions (2026-11-15; [planes page](../systems/planes-and-hangar.md)), waiting on Alan's Play check. Still to make: real
+pictures, Shark Jet, trails. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
 the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top of the
 [shop plan decision](../decisions/2026-10-18-shop-plan.md) (Paper or Robux, kept through prestige). Serves
 [the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).

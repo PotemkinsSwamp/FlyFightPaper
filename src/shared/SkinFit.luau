@@ -1,4 +1,4 @@
--- Shape skins (Legendary, Mythical: the Origami Crane) measured and fitted to one plane: ONE rule for the screen
+-- Shape skins (Legendary, Mythical: the Origami Crane, the Dragon) measured and fitted to one plane: ONE rule for the screen
 -- (client/SkinShapes draws the pieces) and the server (HitShapes turns the real wings' hit and crash shapes up and
 -- moves the guns' to where the skin draws them; Alan 2026-11-14, docs/plan/SKINS-PLAN.md "Wing-hitbox tilt").
 -- The fit follows tools/art/crane_skin.py (crane(), wing_under(), hang_guns()); the pieces, their boxes and the
@@ -56,9 +56,59 @@ function SkinFit.outline(appearance, frame)
 	return o
 end
 
+-- A belly line (points down the drawn body's middle, front to back) as "its lowest height between z0 and z1", nil off
+-- the body. The belly rises to each side, so a booster under the middle meets it there first.
+local function bellyOf(keel)
+	return function(z0, z1)
+		local low
+		for i = 1, #keel - 1 do
+			local a, b = keel[i], keel[i + 1]
+			local from, to = math.max(z0, a.Z), math.min(z1, b.Z)
+			if from > to then continue end
+			for _, z in { from, to } do -- straight between corners: lowest at an end
+				local y = a.Y + (b.Y - a.Y) * (z - a.Z) / (b.Z - a.Z)
+				low = math.min(low or y, y)
+			end
+		end
+		return low
+	end
+end
+
+-- Shapes that keep their proportions (the Dragon; Alan 2026-11-15: "we can't stretch it and make it look odd"): ONE size
+-- for the whole model, as big as needed for its wingtips to reach the plane's (a wingtip crash happens where you see
+-- the wing), but never longer than `cap` times the plane; its nose on the plane's nose (head-on crashes match too) and
+-- its wings at the plane's wing height. Its wings are flat, so the real wings never turn (rise 0).
+local function evenFit(shape, o)
+	local E, W = shape.even, shape.even.wing
+	local length = 0
+	for _, piece in shape.pieces do length = math.max(length, piece.max[3] - piece.min[3]) end
+	local k = math.min(o.xo / E.half_span, E.cap * (o.zT - o.zN) / length)
+	local function at(p) return Vector3.new(p.X * k, o.wy + (p.Y - E.wing_y) * k, o.zN + (p.Z - E.nose_z) * k) end
+	local out = {}
+	for name, piece in shape.pieces do
+		local lo, hi = v3(piece.min), v3(piece.max)
+		out[name] = { CFrame.new(at((lo + hi) / 2)), (hi - lo) * k }
+	end
+	-- crane_skin.py's wing_under() for a wing seen from above as a triangle (root front, root back, tip): the spot under
+	-- the wing nearest (x, z), clear of the body's side, `half` (half the gun's length) inside the wing front and back.
+	local span, uMin = W.tip_x - W.root_x, (E.body_x - W.root_x) / (W.tip_x - W.root_x) + 0.05
+	local function under(x, z, half)
+		local u = clamp((math.abs(x) / k - W.root_x) / span, uMin, 0.7)
+		local front, back = W.front_z + u * (W.tip_z - W.front_z), W.back_z + u * (W.tip_z - W.back_z)
+		local m = half / k + 0.1 * (W.back_z - W.front_z) * (1 - u)
+		local w = front + m <= back - m and clamp(E.nose_z + (z - o.zN) / k, front + m, back - m) or (front + back) / 2
+		local p = at(Vector3.new(W.root_x + u * span, W.under_y, w))
+		return Vector3.new(x < 0 and -p.X or p.X, p.Y - 0.02 * k, p.Z)
+	end
+	local keel = {}
+	for i, p in E.keel do keel[i] = at(Vector3.new(0, p[1], p[2])) end
+	return out, under, 0, at(Vector3.new(W.root_x, E.wing_y, (W.front_z + W.back_z) / 2)), bellyOf(keel)
+end
+
 -- Where each piece goes (crane_skin.py crane()): CFrame and Size in the plane's frame, plus what the guns need and the
 -- right wing's hinge (the left one mirrors it in x).
 function SkinFit.fit(shape, o)
+	if shape.even then return evenFit(shape, o) end
 	local K, ref = shape.const, shape.ref
 	local rise = math.rad(K.RISE)
 	local s = (o.zT - o.zN) / 16
@@ -112,24 +162,10 @@ function SkinFit.fit(shape, o)
 		local xx = hinge.X + u * ks * math.cos(rise)
 		return Vector3.new(x < 0 and -xx or xx, hinge.Y + u * ks * math.sin(rise) - 0.035 * s, zc + w * ks)
 	end
-	-- The stretched body's belly down its middle (ref.keel): its lowest height between z0 and z1, nil off the body.
-	-- The belly rises to each side, so a booster under the middle meets it there first.
+	-- The stretched body's belly down its middle (ref.keel).
 	local keel = {}
 	for i, p in ref.keel do keel[i] = body(Vector3.new(0, p[1], p[2])) end
-	local function belly(z0, z1)
-		local low
-		for i = 1, #keel - 1 do
-			local a, b = keel[i], keel[i + 1]
-			local from, to = math.max(z0, a.Z), math.min(z1, b.Z)
-			if from > to then continue end
-			for _, z in { from, to } do -- straight between corners: lowest at an end
-				local y = a.Y + (b.Y - a.Y) * (z - a.Z) / (b.Z - a.Z)
-				low = math.min(low or y, y)
-			end
-		end
-		return low
-	end
-	return out, under, rise, hinge, belly
+	return out, under, rise, hinge, bellyOf(keel)
 end
 
 -- Everything shape skin `id` moves on this plane (frame = its Root), in the plane's frame: the pieces to draw, and where
