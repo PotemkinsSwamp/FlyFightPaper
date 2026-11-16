@@ -1,6 +1,6 @@
 -- Scripted looks check, server half (docs/workshop/tools.md, "looks_check"): run in the Play SERVER after the client
 -- half. Workspace attribute ClaudePart picks the plan before it starts: "main" (nothing; all dressed; each trail on all
--- planes; each skin on all planes), "trails", or "ab" (nothing / Confetti / Circuit Trace / all dressed / Galaxy + Circuit
+-- planes; each skin on all planes), "trails", "rares" (each Rare, then Galaxy alone / Circuit Trace alone / both), or "ab" (nothing / Confetti / Circuit Trace / all dressed / Galaxy + Circuit
 -- Trace, switched every 13 s, four times round: the fair frame-rate comparison). ClaudeBase offsets the step numbers.
 -- Runs the timeline. Every plane's Skin and Trail attributes are forced per segment (test rigging only:
 -- the server's own hit shapes do not follow), re-applied for respawned planes. Pauses outside the ACTIVE phase.
@@ -30,6 +30,15 @@ if PART == "main" then
 	add("bare-end", "bare", 4, 16, "", none)
 elseif PART == "trails" then
 	for _, id in TRAILS do add("trail " .. id, "trail", 3, 16, "", function() return nil, id end) end
+elseif PART == "rares" then -- each Rare on all 12, then where the worst case's time goes (Galaxy alone, Circuit Trace alone, both)
+	for _, id in { "lava", "galaxy", "slime", "holographic", "glitch", "thunderstorm", "circuit_board", "comic_book" } do add("skin " .. id, "skin", 6, 20, "", function() return id, nil end) end
+	for round = 1, 3 do
+		add("AB bare", "bare", 3, 12.5, "", none)
+		add("AB galaxy x12", "skin", 3, 12.5, "", function() return "galaxy", nil end)
+		add("AB circuit_trace x12", "trail", 3, 12.5, "", function() return nil, "circuit_trace" end)
+		add("AB galaxy+circuit x12", "mixed", 3, 12.5, "", function() return "galaxy", "circuit_trace" end)
+		add("AB all-dressed", "mixed", 3, 12.5, "", mix)
+	end
 elseif PART == "ab" then -- same flight, looks switched every 13 s, four times round: cancels out where the plane happens to be
 	for round = 1, 4 do
 		add("AB bare", "bare", 3, 12.5, "", none)

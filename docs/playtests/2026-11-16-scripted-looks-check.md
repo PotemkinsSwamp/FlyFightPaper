@@ -63,9 +63,25 @@ of the Rare error, so quieter warnings may have been hidden.
 ## What changed
 - **Rare layers are made ahead:** `tools/art/skin_looks.py` writes one Decal a layer (`SkinLooks/<skin>/Layers`), with
   its glow picture and colour; `PlaneLooks.layersOn` clones them. Rehearsed in the same Play by an ordinary script: all
-  layers on all 12 planes, Galaxy's stars, planets and comet moved and its glow pulsed. **Not yet run as the game's own
-  code in Play.**
+  layers on all 12 planes, Galaxy's stars, planets and comet moved and its glow pulsed. Then run as the game's own code
+  (check Play below).
 - **A skin with no picture now takes the old skin off** (`PlaneLooks.sheetOf`).
-- `SkinMotion.spec` checks every layer's ready-made Decal. The whole test set was not run in this Play.
-- Open: the frame rate with the Rares moving is under the bar (57, worst case 52); where the time goes is the next
-  measurement ([performance](../systems/performance.md)).
+- `SkinMotion.spec` checks every layer's ready-made Decal.
+
+## Check Play, same day (the game's own fixed code, 7 minutes)
+- **All 8 Rares work.** Each on all 12 planes: every layer on every piece (12 of 12 planes fine), 60.0 frames a second,
+  first load 25-190 ms (was 0.4-0.7 s). Read on the player's plane: Lava's flow slides and glows 0.35-1.0; Galaxy's stars
+  slide, both planet rings spin, the comet passes, glow 0.26-1.3; Slime's two layers slide; Holographic's rainbow and
+  glint slide; Glitch snaps on and off and the sheet flashes; Thunderstorm's clouds slide and the bolt flashes (glow to
+  2.0); Circuit Board's pulse slides and the board's glow breathes; Comic Book's lines slide and POW, SLAM and ZAP each
+  slam in and out. Slime's glow pulse was read over too few frames to show.
+- **Where the worst case's time goes** (looks switched every 13 s, three times round): nothing 60.0; Galaxy on all 12
+  with no trail 60.0; Circuit Trace on all 12 with no skin 60.0; both together 54.5 (53.4, 57.0, 55.5); the mixed set
+  58.5 (52.5 on 109 frames, 60.0, 59.0). Each half holds 60 alone; only the two together go under. Render time a frame
+  (Roblox's own count) 8-9 ms with nothing, 11-13 ms with both.
+- **Whole test set: 672 passed, 0 failed.** No `PlaneLooks` error in the log. The log shows 21 pictures answering "No
+  asset content representation found" (one is Holographic's rainbow, which then reads as loaded): Studio asking for a
+  packed copy that is not made yet ([lessons](../workshop/lessons.md), texture packs), not a missing picture. Glow
+  pictures' load state cannot be read by script.
+- Open: the worst case is under the bar (54.5 against 60); the next step is finding which work the two share
+  ([performance](../systems/performance.md)).

@@ -20,9 +20,10 @@ it in the place. Alan saw the frame rate drop inside the chalk cloud; the cloud 
 frame-rate check on Alan's PC is still due before release (Stage 11).
 
 **Skins and trails (2026-11-16, scripted check on Alan's PC in Studio, [numbers](../playtests/2026-11-16-scripted-looks-check.md)):** 60 with no
-looks; 59.7 with every plane in a skin and a trail while the Rares were not moving; about 57 with the Rares moving and
-52 in the worst case (12 Galaxy + 12 Circuit Trace). Under the bar: next is measuring where that time goes (moving
-layers or trail parts), then fewer parts a second before any change of look.
+looks; 60 with any one skin or any one Rare on all 12; 56.7-60 with one trail on all 12; 58.5 with a mixed set on every
+plane, Rares moving; 54.5 in the worst case (12 Galaxy + 12 Circuit Trace). Galaxy alone and Circuit Trace alone each
+hold 60: only the two together go under. Next: find the work they share (Roblox's frame profiler), then fewer parts a
+second before any change of look.
 30-minute 12-plane run in Studio (2026-10-17): server steady at 60 steps/s, 3 rounds cycled cleanly, the piece
 count returns to the same level every round (no build-up); memory crept about 1.7 MB a minute (3,156 -> 3,203 MB,
 Studio counts plugins and the client too). Check the live server's memory in the F9 console on a long session.

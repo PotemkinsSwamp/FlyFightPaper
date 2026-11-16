@@ -871,7 +871,8 @@ Back to [HOME](../HOME.md)
 - **A sleeping screen stops Studio drawing.** Alan's PC turns the screen off after 60 idle seconds: the view reads 1 x 1,
   `RenderStepped` gives 0 frames, and trails and skins freeze while the server plays on. Asking Windows to keep the
   screen on (`SetThreadExecutionState`) did not hold from a background PowerShell; a one-pixel mouse nudge every 20
-  seconds did (user32 `mouse_event`, there and back). Only with Alan's go (he asked for the wake-up), and stop it after.
+  seconds did (user32 `mouse_event`, there and back). Alan, 2026-11-16: "you are going to have to keep it awake while you
+  need the screen drawing": start the nudge before every Play that must draw, and stop it after.
   Count `RenderStepped` frames before every measurement, not only at the start.
 - **The `loop` autopilot keeps its place in the route through a respawn**, so a new plane steers from its desk at a far
   corner and flies into the town two seconds after takeoff, every life. Clear `DevAutopilot` on TAKEOFF and set it again
