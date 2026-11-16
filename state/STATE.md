@@ -14,7 +14,7 @@ Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as 
   shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
   (A = six colours, one line in `skin_sheets.py`); a flame patch shows small at the back of the body.
-Trails (my calls): names; 99 Robux / 1,900 Paper stand-in for a Rare match (price parked); stars, flakes and bolts are real small parts, smoke and sparkle dust are Roblox particles with Roblox's own pictures (sparkle dust as 3D parts was too many: about 170 a second a plane);
+Trails (my calls): names; 99 Robux / 1,900 Paper stand-in for a Rare match (price parked); the saved id `rainbow_marker` stays behind the name Holo Rainbow (my reading of your "Go", 2026-11-16); stars, flakes and bolts are real small parts, smoke and sparkle dust are Roblox particles with Roblox's own pictures (sparkle dust as 3D parts was too many: about 170 a second a plane);
   a foil flake is a plain thin chip; the Hangar and the Trails tab still show no trail; the shop list is still the old five (Holo Rainbow and Storm Sparks fly only through the Dev: trail button until the 13-trail list goes in).
 Rares (my calls): Galaxy is one small solar system a wing (a big orbit was cut by the body); far planes keep their layers standing still; no underside layers yet; 39 pictures, not the 28 I first said.
 Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
@@ -47,7 +47,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **The shop list** (next for me, your OK on two things first): keep the saved name behind Rainbow Marker so testers who own it get Holo Rainbow (my lean: yes); the Rare-match price is still the 99 Robux / 1,900 Paper stand-in.
+- **The shop list** (next for me): I asked about Rainbow Marker's saved id and the Rare-match price and you answered "Go". I read that as: keep the id behind Holo Rainbow (testers who own it keep it) and leave the 99 Robux / 1,900 Paper stand-in for now. Say if either is wrong.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 13 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem? Do sparkles and smoke start in clumps?
 - Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?). Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
