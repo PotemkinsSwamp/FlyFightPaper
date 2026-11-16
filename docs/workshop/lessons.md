@@ -818,3 +818,17 @@ Back to [HOME](../HOME.md)
   save never keeps it, and delete it after.
 - **Never `git add -A <folder>`**: it swept an old untracked file (`tools/art/hero.py.old`) into a pushed commit. Name the
   files.
+
+## Trails (2026-11-16, the first three as 3D videos)
+- **Four rounds of videos for three trails; start the next ten where these ended.** Alan turned down, in order: flat
+  pictures seen from above ("bad ... We need to make them 3D"), a turning ribbon ("a 2D banner that's rotating"), cotton
+  balls ("purple bubbles"), wound cords ("a bunch of streamers attached to a plane") and thin scattered pieces ("more
+  body"). He OK'd a dense cloud of 3D pieces with small filler round them (Gold Stars) and thick soft smoke (Storm
+  Sparks, Holo Rainbow). Build each new trail as one thick body first.
+- **Check the player's own seat before sending.** The chase camera sits 24 studs behind the plane and the trail is about
+  105 studs long, so the player sees only the newest quarter. A colour change that runs once along the whole trail shows
+  one colour from the seat (Holo Rainbow was all pink): repeat it (`rainbow`: 3 in `config/trails.json`).
+- **More pieces do not make a body.** Foil crystals at 170 a second still read as scattered bits from alongside; soft
+  smoke cards at 90 a second read as a solid plume.
+- **A flat card in Blender needs Object coordinates** for a round fading patch (Generated gives nothing on a flat quad),
+  and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.
