@@ -50,6 +50,7 @@ return JSONTypes.map({
         [8] = JSONTypes.map({
             ["id"] = "dragon",
             ["name"] = "Dragon",
+            ["picture"] = 71720517887759,
             ["tier"] = "mythical",
             ["trail"] = "dragon_embers",
         }),
