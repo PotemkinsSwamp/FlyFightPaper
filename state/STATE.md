@@ -5,7 +5,7 @@
 - **Tests: 672 passed, 0 failed** in Play after the fixes. Your screen sleeps after 60 idle seconds and Studio stops drawing: I keep it awake with a one-pixel mouse nudge during a Play that must draw (your word, 2026-11-16) and stop it after.
 
 # Now: finish the game for the beta
-Next: find what Galaxy and Circuit Trace share that costs the frames in the worst case (Roblox's frame profiler), then fewer parts a second before any change of look (a changed number is your OK). Then the list of 13 in the shop and the Trails tab, and a trail on the plane in the Hangar.
+Next (Alan 2026-11-16, evening): **the Legendary skins, the Shark Jet first**: look at our handoffs and past work, then a how-we-make-it plan for your OK before anything is built. After it: the list of 13 trails in the shop and the Trails tab (price parked), the worst-case frame rate (what Galaxy and Circuit Trace share; fewer parts a second before any change of look), and a trail on the plane in the Hangar.
 Dragon leftovers: crash ball and shop card pictures, jaw leftover. Queued: Toilet Roll shake, missions, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
@@ -47,7 +47,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **The shop list** (next for me): I asked about Rainbow Marker's saved id and the Rare-match price and you answered "Go". I read that as: keep the id behind Holo Rainbow (testers who own it keep it) and leave the 99 Robux / 1,900 Paper stand-in for now. Say if either is wrong.
+- **The shop list** (after the Shark; price parked, your word): I read your "Go" as yes to keeping Rainbow Marker's saved id behind Holo Rainbow, so testers who own it keep it. Say if that is wrong.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 13 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem? Do sparkles and smoke start in clumps?
 - Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?). Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
