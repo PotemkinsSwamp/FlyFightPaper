@@ -353,6 +353,19 @@
   made the Dragon "blocky", "not aerodynamic". **Not a sausage:** the round Dragon "looks like a balloon"; the shark
   works because its head is the nose cone and the body tapers all the way. A skin must look like a paper airplane
   and a cool fighter first, the creature second.
+- **Shark Jet: a whole shape that is the hitbox, built without Tripo** (Alan, 2026-11-16, on a how-we-make-it plan
+  with the sheet shown first). The skins plan said a Legendary is your plane plus add-on pieces; the approved sheet is
+  a whole shark. Asked which: "Whole shape". Asked whether the Shark is the hitbox like the Dragon: "Yes" (same sizing
+  rule: as big a target as the plane, never shorter or narrower; its tall back fin is hit and crashes too). The other
+  Legendaries are decided one by one. Method (Claude's; his "you choose the method; keep it cheap"): a measured piece
+  map first; then Blender, one part at a time (body with face, one wing mirrored, back fin with the fold strips, tail),
+  each shown alone in close-up beside the same crop of the sheet; painted from the sheet's own pixels, a Codex repaint
+  only for a part that looks soft; no Tripo, because nothing on it needs sculpting.
+  **Measured (same day), waiting on his OK:** `.planning/skins/shark/measure/piece-map.png` (13 pieces: 6 built, 7
+  painted; scripts beside it). The three flat views agree on the length within 1%. Of a length of 545: body 68 wide and
+  82 tall, wings 401 across with a straight back edge, back fin 107 tall, tail fin 150 tall. The front view draws the
+  body 1.4 times too wide (top and bottom rule); the side view leaves the wings out (high on the shoulder, from the
+  front and three-quarter views); the bottom view draws no teeth under the nose (teeth on the two sides only).
 - **Safety swaps (Claude's call, told to Alan before he picked):** Shark A's wing zigzags become soft rounded stripes, Dragon B's
   gold square spirals on the cheeks become plain gold bands. Bent or hooked shapes and paired lightning bolts are the
   kind of picture that got the account banned twice ([lessons](../workshop/lessons.md)).

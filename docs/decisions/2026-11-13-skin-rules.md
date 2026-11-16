@@ -5,7 +5,7 @@
 [skins plan](../plan/SKINS-PLAN.md). Nothing is made yet.
 
 ## Decision
-- **A skin never changes the hitbox** (except the Dragon, which is the hitbox at the plane's own target size: Alan 2026-11-15, [shape-skin decision](2026-11-14-shape-skin-model-sheets.md)). Your hitbox is always the parts you fly, inside the skin. A skin is only a
+- **A skin never changes the hitbox** (except the Dragon and the Shark Jet, which are the hitbox at the plane's own target size: Alan 2026-11-15 and 2026-11-16, [shape-skin decision](2026-11-14-shape-skin-model-sheets.md)). Your hitbox is always the parts you fly, inside the skin. A skin is only a
   look with no hitbox of its own, so wearing one is never an advantage or a disadvantage. It may be bigger or smaller
   than the plane to keep its look (an origami crane's head won't fit on a plane), so a shot can hit where no skin
   shows; the game tells players a skin changes only the look, not the hitbox. This replaces "the skin draws over the

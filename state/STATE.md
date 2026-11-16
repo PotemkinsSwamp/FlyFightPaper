@@ -5,7 +5,7 @@
 - **Tests: 672 passed, 0 failed** in Play after the fixes. Your screen sleeps after 60 idle seconds and Studio stops drawing: I keep it awake with a one-pixel mouse nudge during a Play that must draw (your word, 2026-11-16) and stop it after.
 
 # Now: finish the game for the beta
-Next (Alan 2026-11-16, evening): **the Legendary skins, the Shark Jet first**: look at our handoffs and past work, then a how-we-make-it plan for your OK before anything is built. After it: the list of 13 trails in the shop and the Trails tab (price parked), the worst-case frame rate (what Galaxy and Circuit Trace share; fewer parts a second before any change of look), and a trail on the plane in the Hangar.
+**The Legendary skins, the Shark Jet first** (Alan 2026-11-16): plan OK'd: a whole shape that is the hitbox like the Dragon, built in Blender one part at a time, no Tripo ([decision](../docs/decisions/2026-11-14-shape-skin-model-sheets.md)). **Its measured piece map waits on your OK** (`.planning/skins/shark/measure/piece-map.png`); nothing is built yet. After it: the list of 13 trails in the shop and the Trails tab (price parked), the worst-case frame rate (what Galaxy and Circuit Trace share; fewer parts a second before any change of look), and a trail on the plane in the Hangar.
 Dragon leftovers: crash ball and shop card pictures, jaw leftover. Queued: Toilet Roll shake, missions, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 

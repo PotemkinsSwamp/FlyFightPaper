@@ -38,7 +38,9 @@ the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top 
   pre-made combinations. Shine (metalness map) and glow (`EmissiveMask`, `EmissiveStrength`) go the same way. Still
   to prove in a Studio Play test.
 - **Legendary: your plane plus add-ons.** The printed sheet plus a few pieces (a shark's fin and jaw, a bee's stinger
-  and wings) the game places on the body and nose and scales with the plane.
+  and wings) the game places on the body and nose and scales with the plane. **The Shark Jet is instead a whole
+  shape that is the hitbox, like the Dragon** (Alan 2026-11-16; plan, method and measured sheet:
+  [shape-skin decision](../decisions/2026-11-14-shape-skin-model-sheets.md)); the other Legendaries are decided one by one.
 - **Mythical: a whole new shape.** One model scaled evenly to your plane's length, with joints moved onto the real
   wing and tail corners (tested below), shown instead of the parts. Weapons and boosters stay visible so everyone can still read what you carry.
 - **Players are told:** "Skins change how you look, never your hitbox", on the shop card and the Looks tab.
