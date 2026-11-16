@@ -12,7 +12,6 @@ local Looks = require(Root.Shared.LooksRules)
 local Pieces = require(Root:WaitForChild("Generated"):WaitForChild("SkinPieces")).pieces
 local SkinShapes = require(script.Parent.SkinShapes)
 local SkinMotion = require(Root.Shared.SkinMotion)
-local Pictures = require(Root:WaitForChild("Generated"):WaitForChild("SkinPictures")).pictures
 local PlaneLooks = {}
 local meshes = {} -- piece -> MeshPart carrying the copy's mesh
 local mine = Players.LocalPlayer and tostring(Players.LocalPlayer.UserId) -- nil when a server test loads the menus
@@ -52,15 +51,13 @@ local function layersOn(part, name, skin, look)
 		if not made then return end
 		piece = SkinMotion.piece(made.CFrame, made.Size); boxes[name] = piece
 	end
+	-- Each layer's Decal (pictures, glow picture and colour) is made ahead by tools/art/skin_looks.py: a game script may
+	-- not set a Decal's glow picture. Edit-mode tests have plugin rights and never see that; only real Play does.
+	local ahead = Root.Assets.SkinLooks[skin.id].Layers
 	local decals = {}
 	for i, layer in spec.layers do
-		local id = Pictures[skin.id .. "-" .. layer.name]
-		local decal = Instance.new("Decal")
-		decal.Name, decal.Face, decal.ZIndex, decal.ColorMapContent = "SkinLayer", Enum.NormalId.Top, i, asset(id) -- Top: the only face that draws on a mesh
-		if layer.glow then
-			decal.EmissiveMaskContent = asset(Pictures[skin.id .. "-" .. layer.name .. "-glow"] or id) -- no glow picture: it glows by its own red
-			decal.EmissiveTint = Color3.new(layer.glow.tint[1], layer.glow.tint[2], layer.glow.tint[3])
-		end
+		local decal = ahead[layer.name]:Clone()
+		decal.Name = "SkinLayer"
 		place(decal, layer, piece, SkinMotion.state(layer, 0))
 		decal.Parent = part
 		decals[i] = decal
@@ -94,12 +91,18 @@ local function skinOf(model)
 	return Looks.item(model:GetAttribute("Skin"))
 end
 
+-- The printed sheet a plane's pieces wear now: its skin's id, or nil (no skin, or a skin with no picture yet).
+local function sheetOf(model)
+	local skin = skinOf(model)
+	return skin and skin.picture and skin.id or nil, skin
+end
+
 local function dressPart(model, part)
 	local name = part:IsA("MeshPart") and string.match(part.Name, "^[^-]+%-(.+)$")
 	local ids = name and Pieces[name]
-	local skin = ids and skinOf(model)
-	local want = skin and skin.picture and skin.id or nil
-	if not ids or part:GetAttribute("Skin") == want then return end
+	if not ids then return end
+	local want, skin = sheetOf(model)
+	if part:GetAttribute("Skin") == want then return end
 	local mesh, face
 	if want then
 		mesh = once(meshes, name, function()
@@ -114,7 +117,7 @@ local function dressPart(model, part)
 		face = mesh and mesh:FindFirstChildOfClass("SurfaceAppearance")
 	end
 	-- The plane may have been rebuilt or re-skinned while the copy loaded.
-	if not (mesh and face and part.Parent and (skinOf(model) and skinOf(model).id) == want) then return end
+	if not (mesh and face and part.Parent and (sheetOf(model)) == want) then return end
 	local size = part.Size
 	part:ApplyMesh(mesh)
 	part.Size = size

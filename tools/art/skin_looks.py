@@ -39,6 +39,20 @@ for skin in looks["skins"]:
                      f'<float name="EmissiveStrength">{glow["strength"]}</float>'
                      f'<Color3 name="EmissiveTint"><R>{glow["tint"][0]}</R><G>{glow["tint"][1]}</G><B>{glow["tint"][2]}</B></Color3>')
         folders.setdefault(skin["id"], []).append(item("SurfaceAppearance", name, maps) + "</Item>")
+    # A Rare's moving layers, made ahead too (folder <id>/Layers, one Decal a layer): a game script may not set a Decal's
+    # glow picture (EmissiveMaskContent needs plugin rights; found in Play 2026-11-16). PlaneLooks clones and moves them.
+    decals = []
+    for i, layer in enumerate(motion.get(skin["id"], {}).get("layers", []), 1):
+        key = f'{skin["id"]}-{layer["name"]}'
+        body = (f'<token name="Face">1</token><int name="ZIndex">{i}</int>'  # Face 1 = Top: the only face that draws on a mesh
+                f'<Content name="ColorMapContent"><uri>rbxassetid://{pictures[key]}</uri></Content>')
+        if layer.get("glow"):  # no glow picture: it glows by its own red
+            tint = layer["glow"]["tint"]
+            body += (f'<Content name="EmissiveMaskContent"><uri>rbxassetid://{pictures.get(key + "-glow", pictures[key])}</uri></Content>'
+                     f'<Color3 name="EmissiveTint"><R>{tint[0]}</R><G>{tint[1]}</G><B>{tint[2]}</B></Color3>')
+        decals.append(item("Decal", layer["name"], body) + "</Item>")
+    if decals:
+        folders[skin["id"]].append(item("Folder", "Layers") + "\n".join(decals) + "</Item>")
 for sid, shape in sorted(shapes.items()):
     pics = shape["pictures"]
     maps = "".join(f'<Content name="{key}"><url>rbxassetid://{pics[k]}</url></Content>'

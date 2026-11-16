@@ -93,7 +93,9 @@ answers from the talk are there).
 - **How it is drawn (Claude's method):** each moving layer is a see-through picture (a Roblox Decal) laid over the printed
   sheet; code slides it, turns it, sizes it and changes its glow. Lava and Circuit Board put the moving layer under a top
   picture with holes. A Decal stretches its picture over each piece's own box, so the code sets every piece's layers from
-  where that piece sits on the sheet ([lessons](../workshop/lessons.md), "Moving skin layers").
+  where that piece sits on the sheet ([lessons](../workshop/lessons.md), "Moving skin layers"). Each layer's Decal is
+  made ahead by `tools/art/skin_looks.py` (a game script may not set a Decal's glow picture: in the first real Play no
+  Rare moved, [playtest](../playtests/2026-11-16-scripted-looks-check.md)); the code clones and moves them.
 - **Cost:** no money, no Tripo credits. 44 free pictures for the eight (3 to 8 a Rare; 5 more were re-sent as squares and
   their first copies are unused). Each moving layer draws a piece's top once more: Galaxy is heaviest (5 draws).
 - **Known limits:** the layers draw on up-facing sides only, so **undersides and the body's sides wear the still sheet**

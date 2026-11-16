@@ -106,6 +106,10 @@ function Spec.run()
 				assert(skin.picture == Pictures[skin.id] and (not spec.glow or Pictures[skin.id .. "-glow"]), skin.id .. " still sheet")
 				for _, layer in spec.layers do
 					assert(Pictures[skin.id .. "-" .. layer.name], skin.id .. " " .. layer.name .. " has no picture")
+					-- its Decal is made ahead with its pictures (a game script cannot set the glow picture: Play 2026-11-16)
+					local made = Root.Assets.SkinLooks[skin.id].Layers[layer.name]
+					assert(string.find(tostring(made.ColorMapContent.Uri), tostring(Pictures[skin.id .. "-" .. layer.name]), 1, true), skin.id .. " " .. layer.name .. " made-ahead picture")
+					assert((layer.glow ~= nil) == ((made.EmissiveMaskContent.Uri or "") ~= ""), skin.id .. " " .. layer.name .. " made-ahead glow picture") -- an empty Content's Uri is nil
 					if layer.kind == "slide" then
 						local a, b = { SkinMotion.state(layer, 0) }, { SkinMotion.state(layer, math.abs(layer.period)) }
 						local half = { SkinMotion.state(layer, math.abs(layer.period) / 2) }
