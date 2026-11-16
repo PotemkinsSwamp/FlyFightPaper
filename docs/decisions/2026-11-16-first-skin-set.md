@@ -79,7 +79,10 @@
     streamers attached to a plane. We need something with more body." Redone as a thick rainbow smoke cloud with foil
     flakes and sparkles, built like the storm he picked (a dense stream of big foil crystals was tried and dropped
     unseen: still no body). Two options: A the colour runs through the rainbow once along the stream (from your own
-    seat you see only the pink end), B three times (your own seat shows most colours). Waiting for his pick.
+    seat you see only the pink end), B three times (your own seat shows most colours). **His pick: B** ("B is good").
+  - **Bots' chances:** asked "70% wear a skin and 50% a trail, rolled separately: yes?", he said "bots they also need a
+    roll for having both." Claude's reading: one roll with four results, skin and trail 35%, skin only 35%, trail only
+    15%, neither 15% (the same odds, with "both" its own result). The numbers are Claude's, his to change.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

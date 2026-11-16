@@ -156,9 +156,13 @@ Lava and Comic Book have no matching trail. Names are Claude's picks.
   a plain trail; decided later. Until then the list carries a stand-in of 99 Robux or 1,900 Paper (live sales are off).
   Dragon Embers and Folded Petals come with their skin; anyone who already owns the crane gets its petals.
 - **Bots (Alan, 2026-11-16; replaces "bots all wear skins"):** "Not every bot needs skins. Not every bot needs trails."
-  Each bot rolls a skin and a trail separately, so a match shows all four kinds: skin and trail, skin only, trail only,
-  neither. A bot with a trail wears its skin's matching trail when the skin has one; otherwise a random one. The two
-  chances are Claude's numbers, not yet OK'd by Alan.
+  "They also need a roll for having both." So each bot makes one roll with four results: skin and trail 35%, skin only
+  35%, trail only 15%, neither 15% (Claude's numbers, the same as 70% a skin and 50% a trail; one line to change). A bot
+  with a trail wears its skin's matching trail when the skin has one; otherwise a random one.
+- **Looks OK'd by Alan (2026-11-16, 3D videos in `.planning/skins/trails/`, numbers in `config/trails.json`):** Gold Stars
+  (foil stars, flakes, sparkle dust), Storm Sparks (thick soft smoke lit from inside by lightning), Holo Rainbow (thick
+  soft rainbow smoke, the colours running through three times along the stream, foil flakes and sparkles). A trail must
+  read as one thick body: a turning ribbon, wound cords, cotton balls and sparse crystals were all turned down.
 - **How it is drawn (Claude's method, changed after the first videos):** every trail has the same bones. A **ribbon**
   (Roblox calls it a Trail) is a strip laid along the path just flown; it can be laid turning, like a streamer.
   **Pieces** are small 3D models (a folded foil star, a foil flake, a cotton puff, a lightning fork) dropped behind,
@@ -166,7 +170,9 @@ Lava and Comic Book have no matching trail. Names are Claude's picks.
   particles are flat pictures that always face you, so 3D pieces are real small parts moved by the player's own
   computer (no physics, nothing on the server): about 30 to 60 a plane, a few hundred in a 12-plane match. **Open:**
   the frame-rate check decides whether that holds 60; the fallback is flat particles showing a pre-rendered spinning
-  3D model. Roblox's built-in Foil, Fabric and Neon materials give the texture with no picture to upload. One short
+  3D model. Roblox's built-in Foil, Fabric and Neon materials give the texture with no picture to upload. Soft smoke (Storm
+  Sparks, Holo Rainbow) is the exception that suits Roblox's own particles: soft flat cards that face you are exactly
+  what they draw, so those clouds need one smoke picture and cost little. One short
   piece of code in `src/client/PlaneLooks.luau` reads each trail's row in `config/trails.json`; no trail gets code of
   its own.
 - **How the pictures are made (written before the 3D change; now only ribbons and any flat glows use pictures):** most are drawn by code in PhotoCraft (free, on Alan's PC at
