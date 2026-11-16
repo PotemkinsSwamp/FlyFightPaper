@@ -80,7 +80,7 @@ answers from the talk are there).
 
 | Rare | Still picture | What moves | What glows |
 |---|---|---|---|
-| Galaxy | Blue and purple space clouds, a few still stars | Stars drift nose to tail (one pass in 20 s). Planets orbit the middle of the plane at two speeds (one lap in 10 s and in 18 s). A comet with a tail crosses a wing in 1.5 s, one every 4 to 7 s | Stars twinkle in two groups, out of step (2 s each) |
+| Galaxy | Blue and purple space clouds, a few still stars | Stars drift nose to tail (one pass in 20 s). One small solar system a wing, turning at two speeds: a sun with two planets (a lap in 9 s), a giant with two moons (14 s, the other way). First drawn as one big orbit round the plane's middle: every planet was cut in two where it crossed the body's step (2026-11-16). A comet with a tail crosses the plane in 1.5 s, one every 4 to 7 s | Stars twinkle in two groups, out of step (2 s each) |
 | Lava | Black cracked rock | Molten orange flows inside the cracks, nose to tail (one pass in 6 s) | Cracks breathe brighter and dimmer (3 s) |
 | Slime | Bright green goo | Thick drips creep back along the plane (one pass in 10 s) with a slow side-to-side wobble | Bubbles glow faint green (pulse 2.5 s) |
 | Holographic | Silver foil | Rainbow bands sweep across at a slant (one pass in 4 s) | A glint line runs nose to tail every 5 s |

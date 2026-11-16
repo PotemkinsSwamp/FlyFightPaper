@@ -84,14 +84,18 @@ def planet(size, r, bands, seed, ring=None, tilt=0.35):
         col = mix(col, np.broadcast_to(rgb(ring[2]), col.shape) * (0.75 + 0.25 * light)[..., None], ra * np.where(a > 0, 1, 1)); a = np.maximum(a * (1 - ra) + ra, ra * 0.92)
     return np.clip(col, 0, 1), a
 def orbit(size, bodies):
-    """Planets set round the middle of a see-through picture the game turns: (distance from the middle as a share of
-    half the picture, angle, planet(...) arguments)."""
-    col, alpha = np.zeros((size, size, 3), np.float32), np.zeros((size, size), np.float32); col[:] = rgb("#30205A")
+    """A little solar system on a see-through picture the game turns about its middle: (distance from the middle as a
+    share of half the picture, angle, planet(...) arguments; bands "sun" = a glowing sun). Returns colour, how solid, glow."""
+    col, alpha, glow = np.zeros((size, size, 3), np.float32), np.zeros((size, size), np.float32), np.zeros((size, size), np.float32); col[:] = rgb("#30205A")
     for dist, ang, r, bands, seed, ring in bodies:
-        box = int(r * (2 * (ring[1] if ring else 1)) + 8) // 2 * 2; c, a = planet(box, r, bands, seed, ring)
+        box = int(r * (3.6 if bands == "sun" else 2 * (ring[1] if ring else 1)) + 8) // 2 * 2
+        if bands == "sun":
+            y, x = (np.mgrid[0:box, 0:box] + 0.5 - box / 2) / r; rr = np.hypot(x, y)
+            c = ramp(np.clip(rr, 0, 1), [(0, "#FFFFF0"), (0.55, "#FFE680"), (1, "#FF9A1A")]); a = np.clip(step(1.0, 0.9, rr) + 0.6 * np.exp(-(np.clip(rr - 0.9, 0, 9) / 0.3) ** 2), 0, 1) * step(1.8, 1.5, rr); g = a
+        else: c, a = planet(box, r, bands, seed, ring); g = 0.3 * a
         cx, cy = int(size / 2 + dist * size / 2 * np.cos(ang) - box / 2), int(size / 2 + dist * size / 2 * np.sin(ang) - box / 2)
-        sl = (slice(cy, cy + box), slice(cx, cx + box)); col[sl] = mix(col[sl], c, a); alpha[sl] = np.maximum(alpha[sl], a)
-    return col, alpha
+        sl = (slice(cy, cy + box), slice(cx, cx + box)); col[sl] = mix(col[sl], c, a); alpha[sl] = np.maximum(alpha[sl], a); glow[sl] = np.maximum(glow[sl], g)
+    return col, alpha, glow
 
 def galaxy():
     """Deep space with purple and blue clouds (concept rare-1) and still stars; drifting stars, two rings of orbiting
@@ -110,12 +114,15 @@ def galaxy():
     al = np.clip(s1 + s2 + s3 + cross, 0, 1); tint = (np.clip(s2, 0, 1)[..., None] * rgb("#9CC8FF") + np.clip(s3, 0, 1)[..., None] * rgb("#FFC8F0") + (1 - np.clip(s2 + s3, 0, 1))[..., None] * rgb("#FFFFFF"))
     save("galaxy-stars", np.tile(tint, (2, 1, 1)), np.tile(al, (2, 1)))
     jup, ice, teal, red = ("#F6D8A8", "#E08A3C", "#F2C48A", "#B85A2A", "#F0D2A0", "#D0763A"), ("#DFF8FF", "#7FD8F2", "#3FA8E0", "#BFF0FF"), ("#B8FFF0", "#2FD6C0", "#12908C", "#7FF0DC", "#1AA89C"), ("#FFB090", "#E8482C", "#A8241C", "#F0703C")
-    save("galaxy-planets-a", *orbit(768, [(0.74, 0.3, 66, jup, 61, None), (0.80, 0.3 + np.pi * 1.1, 38, ice, 62, None)]))
-    save("galaxy-planets-b", *orbit(1024, [(0.74, 2.0, 76, teal, 63, (1.35, 1.62, "#FFE08A")), (0.70, 2.0 + np.pi * 0.85, 34, red, 64, None)]))
+    pink = ("#FFD0F0", "#E06AD0", "#9A3AB0", "#F09AE0")
+    # One small system a wing, so no planet is cut by the body's step: a sun with two planets, a giant with two moons.
+    for name, bodies in (("a", [(0, 0, 54, "sun", 60, None), (0.45, 0.3, 33, ice, 62, None), (0.72, 3.6, 37, teal, 63, (1.3, 1.8, "#FFE08A"))]),
+                         ("b", [(0, 0, 78, jup, 61, None), (0.52, 2.0, 23, red, 64, None), (0.79, 5.2, 30, pink, 66, None)])):
+        c, a, g = orbit(512, bodies); save("galaxy-planets-" + name, c, a); save("galaxy-planets-" + name + "-glow", g)
     h, w = 800, 240; y, x = np.mgrid[0:h, 0:w] + 0.5; x = (x - w / 2) / (w / 2); t = (y - 70) / (h - 90)   # head near the top, tail down
-    head = np.exp(-(x * x * (w / 2) ** 2 + (y - 70) ** 2) / (2 * 15.0 ** 2)); halo = np.exp(-(x * x * (w / 2) ** 2 + (y - 70) ** 2) / (2 * 36.0 ** 2))
+    head = np.exp(-(x * x * (w / 2) ** 2 + (y - 70) ** 2) / (2 * 19.0 ** 2)); halo = np.exp(-(x * x * (w / 2) ** 2 + (y - 70) ** 2) / (2 * 40.0 ** 2))
     tail = np.where(t > 0, np.exp(-(x / (0.16 + 0.5 * np.clip(t, 0, 1))) ** 2 * 2.2) * (1 - np.clip(t, 0, 1)) ** 1.6, 0) * (0.75 + 0.25 * tnoise(h, w, 30, 65, (6, 0.6)))
-    al = np.clip(head * 1.4 + halo * 0.55 + tail * 0.85, 0, 1) * step(1.0, 0.86, np.abs(x)) * step(h, h - 30, y) * step(0, 16, y)
+    al = np.clip(head * 1.5 + halo * 0.6 + tail * 1.25, 0, 1) * step(1.0, 0.86, np.abs(x)) * step(h, h - 30, y) * step(0, 16, y)
     save("galaxy-comet", ramp(np.clip(head * 1.6 + tail * 0.35 + halo * 0.3, 0, 1), [(0, "#4A7BFF"), (0.35, "#7FD8FF"), (0.7, "#DFF6FF"), (1, "#FFFFFF")]), al)
 
 def squash(a):
@@ -141,14 +148,14 @@ def holographic():
     k = cid.astype(np.int64) * 2654435761; facet = (k % 1000 / 1000.0).astype(np.float32); edge = np.exp(-(d2 - d1) / 0.05)
     pal = np.array([rgb(h) for h in ("#C9B8F0", "#B4E2F2", "#F2C2E0", "#C4F0D6", "#D6D8E8")])[(k // 1000) % 5]
     still = np.stack([np.interp((px * 0.9 + py) / 300 % 1, [0, 0.25, 0.5, 0.75, 1], c) for c in np.array([rgb(h) for h in ("#FF9AD8", "#9AD8FF", "#B8FFC8", "#FFF0A0", "#FF9AD8")]).T], -1)
-    col = mix(rgb("#B4BACC") * 0.45 + pal * 0.55, still, np.full(px.shape, 0.35)) * (0.72 + 0.26 * facet + 0.12 * edge)[..., None]
+    col = mix(rgb("#B4BACC") * 0.45 + pal * 0.55, still, np.full(px.shape, 0.35)) * (0.62 + 0.26 * facet + 0.12 * edge)[..., None]
     save("holographic", col)
     y, x = np.mgrid[0:256, 0:N] + 0.5; t = tnoise(256, N, 90, 85)
     hue = (y / 256 + 1.6 * x / N + 0.5 * (t - 0.5)) % 1                                    # slanted bands, one 256 px repeat
-    band = np.stack([np.interp(hue, [0, 0.2, 0.4, 0.6, 0.8, 1], c) for c in np.array([rgb(h) for h in ("#FF6AD0", "#8A7CFF", "#5AD8FF", "#7CFFB8", "#FFF07A", "#FF6AD0")]).T], -1)
-    save("holographic-rainbow", np.tile(band, (4, 1, 1)), np.tile(0.5 + 0.3 * tnoise(256, N, 60, 86), (4, 1)))
+    band = np.stack([np.interp(hue, [0, 0.2, 0.4, 0.6, 0.8, 1], c) for c in np.array([rgb(h) for h in ("#FF4AC8", "#7A5CFF", "#32C8FF", "#4CF0A0", "#FFE04A", "#FF4AC8")]).T], -1)
+    save("holographic-rainbow", np.tile(band, (4, 1, 1)), np.tile(0.55 + 0.3 * tnoise(256, N, 60, 86), (4, 1)))
     y, x = np.mgrid[0:N, 0:N] + 0.5; d = y - (N * 0.5 + 0.10 * (x - N / 2))               # one slanted bright line in the middle of the picture
-    save("holographic-glint", np.ones((N, N, 3), np.float32), np.clip(np.exp(-(d / 5.0) ** 2) + 0.35 * np.exp(-(d / 16.0) ** 2), 0, 1) * 0.95)
+    save("holographic-glint", np.ones((N, N, 3), np.float32), np.clip(np.exp(-(d / 3.5) ** 2) + 0.3 * np.exp(-(d / 10.0) ** 2), 0, 1) * 0.9)
 
 def glitch():
     """Dark navy with broken bars of red, cyan and violet (concept rare-2). Bars are flat and never touch the bar above
@@ -207,21 +214,21 @@ def circuit_board():
     degrees, in bundles (no square corners, no crossings: lessons.md, hooked-cross scan)."""
     from PIL import ImageDraw
     Q, rng = 2, np.random.default_rng(111); im = Image.new("L", (N * Q, N * Q), 0); d = ImageDraw.Draw(im); holes = []
-    def pad(x, y, r=9): d.ellipse([(x - r) * Q, (y - r) * Q, (x + r) * Q, (y + r) * Q], fill=255); holes.append((x, y))
-    for x0 in np.arange(30, N, 84) + rng.integers(-18, 18, len(np.arange(30, N, 84))):
+    def pad(x, y, r=12): d.ellipse([(x - r) * Q, (y - r) * Q, (x + r) * Q, (y + r) * Q], fill=255); holes.append((x, y))
+    for x0 in np.arange(30, N, 112) + rng.integers(-20, 20, len(np.arange(30, N, 112))):
         mid, y = [(float(x0), -10.0)], -10.0; x = float(x0)
         while y < N + 10:                                                                  # the bundle's middle line: runs and 45-degree jogs
-            y += float(rng.integers(70, 260)); mid.append((x, y)); k = float(rng.choice([-1, 1]) * rng.integers(1, 4) * 13); x += k; y += abs(k); mid.append((x, y))
+            y += float(rng.integers(70, 260)); mid.append((x, y)); k = float(rng.choice([-1, 1]) * rng.integers(1, 4) * 19); x += k; y += abs(k); mid.append((x, y))
         for i in range(int(rng.integers(2, 5))):
             a, b = (0, len(mid)) if rng.random() < 0.45 else sorted(rng.choice(np.arange(0, len(mid), 2), 2, replace=False) + np.array([0, 2]))
-            pts = [(px_ + i * 13, py_) for px_, py_ in mid[a:b]]
+            pts = [(px_ + i * 19, py_) for px_, py_ in mid[a:b]]
             if len(pts) < 2: continue
-            d.line([(u * Q, v * Q) for u, v in pts], fill=255, width=5 * Q, joint="curve")
+            d.line([(u * Q, v * Q) for u, v in pts], fill=255, width=8 * Q, joint="curve")
             if a > 0: pad(*pts[0])
             if b < len(mid): pad(*pts[-1])
-    for _ in range(46): pad(float(rng.integers(20, N - 20)), float(rng.integers(20, N - 20)), 7)
+    for _ in range(40): pad(float(rng.integers(20, N - 20)), float(rng.integers(20, N - 20)), 9)
     line = np.asarray(im.resize((N, N), Image.BOX), np.float32) / 255; yy, xx = np.mgrid[0:N, 0:N] + 0.5
-    for x, y in holes: line = np.where((xx - x) ** 2 + (yy - y) ** 2 < 3.4 ** 2, 0, line)   # the pad's drilled middle is board again
+    for x, y in holes: line = np.where((xx - x) ** 2 + (yy - y) ** 2 < 4.6 ** 2, 0, line)   # the pad's drilled middle is board again
     board = mix(rgb("#0F4A33") * (0.85 + 0.3 * tnoise(N, N, 50, 112))[..., None], rgb("#23795A"), np.clip(ndimage.maximum_filter(line, 7) - line, 0, 1) * 0.8)
     alpha, led = 1 - line, np.zeros((N, N), np.float32)
     for _ in range(5):                                                                     # chips: dark blocks with silver feet down both sides
@@ -231,7 +238,7 @@ def circuit_board():
     for _ in range(18):                                                                    # small lights
         x, y = rng.integers(30, N - 30, 2); spot = (xx - x) ** 2 + (yy - y) ** 2 < 5.5 ** 2
         board[spot] = rgb(rng.choice(["#FF4A3A", "#4AFF6A", "#FFC83A"])); alpha[spot] = 1; led[spot] = 1
-    ph = np.repeat(rng.random(N // 22 + 1), 22)[:N]                                        # every line its own timing
+    ph = np.repeat(rng.random(N // 28 + 1), 28)[:N]                                        # every line its own timing
     glow = np.exp(-((ph[None, :] - (np.arange(N)[:, None] + 0.5) / N) % 1.0) / 0.10)       # bright head running to the tail, fading behind it
     cyan = (tnoise(8, N, 260, 113)[0] > 0.62)[None, :, None]
     pulse = mix(np.where(cyan, rgb("#1C98A0"), rgb("#B08A22")) + np.zeros((N, N, 3)), np.where(cyan, rgb("#9FFBFF"), rgb("#FFE680")) + np.zeros((N, N, 3)), glow)

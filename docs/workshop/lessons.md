@@ -794,6 +794,12 @@ Back to [HOME](../HOME.md)
   border can be placed anywhere (`UVScale` above 1): the smear is see-through.
 - **Decals stack by `ZIndex`**, and a new Decal can take a few seconds to appear in Edit: wait before the screen grab.
 - A `Texture` (the repeating kind) did not show on the same MeshPart.
+- **Drawing for movement (the Rares' preview videos):** shapes in a sliding picture lie across the slide, not along it (a
+  streak sliding along itself looks still: Lava's first flow). A round thing that crosses the body's step is cut in two
+  (Galaxy's first big orbit): keep placed things on one wing. When the moving part is the skin's main look (Slime's goo),
+  make that layer solid, paper included, so the still sheet under it never shows through as a second copy.
+- **Stills say nothing about movement to Alan** ("I would need like a GIF or a video"): `tools/art/skin_motion.py` makes
+  the video on real planes with no upload.
 - Build a test plane in Edit from `Assets.AircraftPieces` (pieces sit in plane space), the sheet copies
   (`Generated.SkinPieces`, `CreateMeshPartAsync`) and `Assets.SkinLooks`; give the test folder `Archivable = false` so a
   save never keeps it, and delete it after.

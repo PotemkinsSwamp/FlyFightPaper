@@ -92,7 +92,8 @@ if FRAMES:                                                                   # a
         e = bpy.data.objects.new("pose-" + name, None); sc.collection.objects.link(e); e.location = s["mid"]; bpy.context.view_layer.update()
         for ob in s["obs"]: ob.parent = e; ob.matrix_parent_inverse = e.matrix_world.inverted()
         e.rotation_mode = "ZYX"; e.rotation_euler = (math.radians(tip), 0, math.radians(turn)); e.location = (x, 0, 0)
-    cam.location, tg.location, cam.data.lens = (0, -126, 38), (0, 0, -1), 56; sc.eevee.taa_render_samples = 16
+    cam.location, tg.location, cam.data.lens = (0, -126, 38), (0, 0, 3), 56; sc.eevee.taa_render_samples = 16
+    sc.render.resolution_x, sc.render.resolution_y = 1600, 620               # a wide strip: the three planes fill it
     col, glow = bpy.data.images.load(SHEETS[0], check_existing=True), bpy.data.images.load(os.path.join(FRAMES, "e0000.png"), check_existing=True)
     i = 0
     while os.path.exists(os.path.join(FRAMES, "c%04d.png" % i)):
