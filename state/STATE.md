@@ -1,10 +1,10 @@
 # Since Alan last checked (2026-11-16, third session)
 - Dragon's boosters, eight Commons, eight moving Rares are in. Rares seen right on Studio test planes, not in Play; layers move on up-facing sides only.
 - **Tests:** 665 passed, 2 failed (a shop test had a skin count typed by hand). Fixed; both pass on fresh copies; whole set not re-run in Play since.
-- **Trails:** talk done, how-it-works note written ([skins plan](../docs/plan/SKINS-PLAN.md), "Trails: how it works"): 13 trails, six matching Rares.
+- **Trails:** you OK'd the note ([skins plan](../docs/plan/SKINS-PLAN.md), "Trails: how it works"): 13 trails, six matching Rares. First three are preview videos (nothing uploaded).
 
 # Now: finish the game for the beta
-Next (Alan 2026-11-16): **the trails**, once you OK the note (no trail code before it): Holo Rainbow, Gold Stars and Storm Sparks first, each as a
+Next (Alan 2026-11-16): **the trails**: your look at the three videos, then upload, the game code, and the other ten, each as a
 video before upload. Dragon leftovers: crash ball and shop card pictures, jaw leftover, frame-rate check (your go). Queued: Toilet Roll shake, missions,
 playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and
 arrival; a real gift through the shop; the unlock backpack's music dip.
@@ -14,6 +14,7 @@ Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as 
   shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
   (A = six colours, one line in `skin_sheets.py`); a flame patch shows small at the back of the body.
+Trails (my calls): names; 99 Robux / 1,900 Paper stand-in for a Rare match (price parked); stars drawn by code, not generated.
 Rares (my calls): Galaxy is one small solar system a wing (a big orbit was cut by the body); far planes keep their layers standing still; no underside layers yet; 39 pictures, not the 28 I first said.
 Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
   has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices); Trails tab lists, draws nothing.
@@ -47,14 +48,12 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **The trails note (your OK):** list and names; 1 s long; up to 1.3x bigger when fast; 99 Robux / 1,900 Paper for a Rare match; bots.
+- **Three trail videos** (`.planning/skins/trails/*.mp4`): OK or notes on each. **Bots:** my numbers, 70% wear a skin, 50% a trail: yes or change?
 - **The Rares in Play (your go):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem?
-- Replay the hangar: click skins, tabs and Cancel (no reload flash?), the crane's height and wing join, a
-  booster under the crane, and Buy on a skin (the screen should change right away).
+- Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?).
 - Look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);
   no gun piece floating off the crane's guns, at the desk and firing; the Toilet Roll shake with my recorder (your go).
-- Publish when you like (report card, new shop window; shop button Studio-only until go-live). Save to File for the
-  new weapon models and the tape-roll tower (your go).
+- Publish when you like (report card, new shop window; shop button Studio-only until go-live). Save to File for the new weapon models and tape-roll tower (your go).
 - In flight: Range notes + Range Menu strip click, leaving the Range, FFA strip at a desk, a Match tip. Device
   Simulator: small iPhone and iPad. Backlog: a new fan sound; a drawing-pass outside AI check (costs money; your go).
