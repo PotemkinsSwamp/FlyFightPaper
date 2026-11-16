@@ -6,7 +6,7 @@ Trails tabs built; boosters wear printed skins. The Origami Crane (first Mythica
 (`SkinShapes.luau`), with playtest bugs to fix and its printed sheet next; the wing-hitbox tilt is built
 ([playtest](../playtests/2026-11-13-crane-and-skins-tabs.md)). The Dragon (second Mythical) is built as a shape skin that
 keeps its proportions and is the hitbox (Alan: "looks good now", 2026-11-16). **Done 2026-11-16 ([first skin set](../decisions/2026-11-16-first-skin-set.md)):** the Dragon's boosters wear its scales; the 8 Commons are drawn in code and in the game's list. **Next:**
-the 8 animated Rares (a how-it-works note for Alan first). Later: Shark Jet, trails. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
+the 8 animated Rares (how-it-works note written 2026-11-16, waiting on Alan's OK: "Moving Rares" below). Later: Shark Jet, trails. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
 the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top of the
 [shop plan decision](../decisions/2026-10-18-shop-plan.md) (Paper or Robux, kept through prestige). Serves
 [the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).
@@ -61,6 +61,42 @@ resize it).
   them, same size, so hitting the gun you see counts; shots still leave from the real spot.
 - **Checks:** a test that each tilted wing keeps its size and its root stays on the body; a Studio flight of the crane
   past walls and through gaps.
+
+## Moving Rares: how it works (waiting on Alan's OK, 2026-11-16)
+**Nothing is built.** From the [first skin set](../decisions/2026-11-16-first-skin-set.md) (Rares move and glow; Alan's
+answers from the talk are there).
+- **What the player sees:** a Rare is a still skin picture, plus moving layers on top of it, plus a glow. Everything stays
+  on the plane's surface and loops. Nothing reacts to boosting, shooting or damage, and nothing flies off the plane (that
+  is the trails' job).
+- **Who and where:** every plane that wears one, bots included, in matches and in the hangar; boosters move with the rest.
+  Shop cards stay still pictures. Drawn on players' screens only: no change to hitboxes, speed or the server.
+- **Up close only:** movement runs on planes within about 200 studs of your camera (12 plane lengths). Farther planes
+  wear the same skin standing still (Alan: planes are too fast to read a skin from far away).
+- **Glow:** bright up close, not a beacon. Glowing bits stay lit in shadow; the soft halo round them shows on High
+  graphics only.
+
+| Rare | Still picture | What moves | What glows |
+|---|---|---|---|
+| Galaxy | Blue and purple space clouds, a few still stars | Stars drift nose to tail (one pass in 20 s). Planets orbit the middle of the plane at two speeds (one lap in 10 s and in 18 s). A comet with a tail crosses a wing in 1.5 s, one every 4 to 7 s | Stars twinkle in two groups, out of step (2 s each) |
+| Lava | Black cracked rock | Molten orange flows inside the cracks, nose to tail (one pass in 6 s) | Cracks breathe brighter and dimmer (3 s) |
+| Slime | Bright green goo | Thick drips creep back along the plane (one pass in 10 s) with a slow side-to-side wobble | Bubbles glow faint green (pulse 2.5 s) |
+| Holographic | Silver foil | Rainbow bands sweep across at a slant (one pass in 4 s) | A glint line runs nose to tail every 5 s |
+| Glitch | Dark, broken colour blocks | Blocks and scan lines snap to a new spot for 0.1 s, every 0.8 to 2 s | Bright blocks flicker on each snap |
+| Thunderstorm | Dark storm clouds | Clouds roll back (one pass in 12 s) | A lightning bolt double-flashes every 3 to 6 s, in a new place each time |
+| Circuit Board | Dark green board, copper lines | Pulses of light run along the lines (one pass in 3 s) | Lines glow; small lights blink (1 s) |
+| Comic Book | Bold panels, dots, thick black outlines | Speed lines streak back from the nose (one pass in 1.5 s). "POW!", "SLAM!" and "ZAP!" take turns: each slams in big, shakes, holds 1.5 s and fades, one every 2.5 s | The word's burst flashes as it slams |
+
+- **How it is drawn (Claude's method):** each moving layer is a see-through picture (a Roblox Decal) laid over the printed
+  sheet; code slides it, turns it, sizes it and changes its glow. Lava and Circuit Board put the moving layer under a top
+  picture with holes. Tested on a real plane in Studio, 2026-11-16 (`.planning/skins/rares/sliding-layer-test.jpg`;
+  [lessons](../workshop/lessons.md), "Moving skin layers").
+- **Cost:** no money, no Tripo credits. About 28 free picture uploads for the eight (2 to 6 a Rare), each through the
+  safety check. Each moving layer draws the plane's skin once more: Galaxy is heaviest (5 draws), most are 2 or 3.
+- **Known limits:** from underneath, Comic Book's words read backwards (a wing's top and bottom share one picture).
+  Planets, comets and words live on the wings and the top of the body; the body's sides get the stars, dots and flows only.
+- **Checks:** each Rare goes to Alan as a short video on real planes (starter, blunt nose, heavy) before any upload; a
+  test that every loop ends where it starts (no jump); a frame-rate check with 12 planes all wearing Galaxy, which must
+  hold 60 (if it dips, Galaxy's planets share one layer before anything else changes).
 
 ## Tiers
 | Tier | What it changes | How you get it |

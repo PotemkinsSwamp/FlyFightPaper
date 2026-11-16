@@ -782,5 +782,20 @@ Back to [HOME](../HOME.md)
 - **Changing the skin list touches five places:** `config/looks.json`, `config/commerce.json` (one `look_<id>` product
   each), the counts in `Looks.spec`, `Commerce.spec`, `CommerceService.spec`, `ProfileService.spec`, and the Skins tab's
   room (it scrolls from 11 skins up).
+
+## Moving skin layers (2026-11-16, Studio Edit test on the Lava plane)
+- **A Decal draws over a SurfaceAppearance on a MeshPart and follows the mesh's own picture layout**, so a second picture
+  lands on the printed sheet exactly like the skin. **Set `Face = Top`**: with the default (Front) nothing showed.
+- **Scripts can change a Decal while the game runs:** `UVOffset` (slide), `UVScale` (size), `Rotation` (turn),
+  `Transparency`, `EmissiveStrength` and `EmissiveTint`, and the pictures themselves. A SurfaceAppearance only lets a
+  script change `Color`, `EmissiveStrength` and `EmissiveTint`: its pictures cannot slide.
+- **A Decal's picture does not repeat past its edge: the edge pixels smear.** To loop a slide, draw the pattern twice in
+  the picture, zoom in (`UVScale` 0.5) and slide half a picture, then start again. A small picture with a see-through
+  border can be placed anywhere (`UVScale` above 1): the smear is see-through.
+- **Decals stack by `ZIndex`**, and a new Decal can take a few seconds to appear in Edit: wait before the screen grab.
+- A `Texture` (the repeating kind) did not show on the same MeshPart.
+- Build a test plane in Edit from `Assets.AircraftPieces` (pieces sit in plane space), the sheet copies
+  (`Generated.SkinPieces`, `CreateMeshPartAsync`) and `Assets.SkinLooks`; give the test folder `Archivable = false` so a
+  save never keeps it, and delete it after.
 - **Never `git add -A <folder>`**: it swept an old untracked file (`tools/art/hero.py.old`) into a pushed commit. Name the
   files.

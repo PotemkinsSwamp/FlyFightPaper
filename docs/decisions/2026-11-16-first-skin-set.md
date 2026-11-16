@@ -26,6 +26,12 @@
 - **Next (Alan, 2026-11-16, after the Commons):** "next session, we'll do all of the rares. And we'll talk about how to do
   the animations. And like glows and stuff, making it look like really good." So the Rares start with that talk (how each
   one moves and glows), then the how-it-works note, then the build.
+- **The Rares talk (Alan, 2026-11-16):** Galaxy: "Everything should move, like planets orbit ... comets going across the
+  sky, stars twinkle." Comic Book: onomatopoeias that "slam, like pulse slam", plus speed lines and bursts. The other six
+  as suggested. For all eight (his yes to each): everything stays on the plane's surface; slow and easy to read, not busy;
+  movement just loops; it moves wherever the skin is worn. **Glow is for up close:** "There's no point in trying to make it
+  seen from far away because planes move so fast." The how-it-works note is on the
+  [skins plan](../plan/SKINS-PLAN.md) ("Moving Rares"), waiting on his OK.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
