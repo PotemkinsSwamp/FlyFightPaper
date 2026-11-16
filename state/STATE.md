@@ -2,11 +2,15 @@
 - **The Dragon's boosters wear its green scales** ("its good"). **All eight Commons are in the game**, pictures approved
   ([your notes](../docs/playtests/2026-11-16-common-skins.md)); drawn in code (your pick over TextureCraft). Tiger Stripes
   and Gold Foil are off the list; the Skins tab scrolls. Not checked: the tests since the list changed (665/0 before it).
+- **The 8 Rares move in preview videos** (third session, 2026-11-16): you OK'd the how-it-works note
+  ([skins plan](../docs/plan/SKINS-PLAN.md), "Moving Rares"); all eight are drawn in code and shown moving on real planes
+  (`.planning/skins/rares/<id>.mp4`). **Waiting on you: your notes on each video.** Nothing uploaded; the game's own
+  moving-skin code is not written yet (it comes after your OK, then a Play check with your go).
 
 # Now: finish the game for the beta
 Next ([first skin set](../docs/decisions/2026-11-16-first-skin-set.md), Alan 2026-11-16): the 8 Rares (Galaxy, Lava, Slime,
-Holographic, Glitch, Thunderstorm, Circuit Board, Comic Book), starting with a talk about how they move and glow, then a
-how-it-works note for his OK, then the build. Dragon leftovers: crash ball and shop card pictures, jaw leftover,
+Holographic, Glitch, Thunderstorm, Circuit Board, Comic Book): Alan's notes on the preview videos, redo what he flags,
+then per skin his OK, the safety check, the uploads and the game code that moves the layers. Dragon leftovers: crash ball and shop card pictures, jaw leftover,
 frame-rate check (his go). Also queued: the Toilet Roll shake in flight. After skins: missions, the playtime calendar,
 bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift
 note and arrival; a real gift through the shop; the unlock backpack's music dip.
