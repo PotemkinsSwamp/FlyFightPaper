@@ -327,6 +327,14 @@
   in Studio, is **1.25 times the plane's length** (wingtips match on 19 of 36 builds; on the widest wings the plane's
   own tips stick out up to 3.1 studs each side). One mesh and one 1024 picture set (the budget rule): from the player's
   view it reads the same, close up the scales are a little softer (`roblox/game/compare-one-set.jpg`).
+- **Then the Dragon became the hitbox (Alan, same night), replacing the 1.25 cap.** Seeing the row in Studio: "this is
+  definitely a large enough gap that you will hit something and wonder why your plane crashed" (the heavy bodies hang
+  2.2-2.6 studs below the Dragon's belly). His idea: "make the collision box still follow the skins, and we just scale
+  them up or down depending on the size of the plane ... so that it's still the same hitbox". Asked which size to
+  match, he took Claude's pick: the outlines from above, the side and behind, added. So the Dragon is the plane's hit and
+  crash shape, as big a target as the plane, centred on it; this replaces "a skin never changes the hitbox"
+  ([skin rules](2026-11-13-skin-rules.md)) for the Dragon. Measured on exact shapes it is 0.96 to 1.48 times the plane's
+  length (I had first told him 1.3 to 1.45 from a rougher measure).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

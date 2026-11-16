@@ -205,12 +205,13 @@ function Spec.run()
 		for _, piece in pieces do piece:Destroy() end
 		model:Destroy()
 	end
-	-- The Dragon keeps its proportions (Alan 2026-11-15): one size, wingtips on the plane's unless that would make it longer
-	-- than its cap times the plane, nose on the plane's nose, wings at the plane's wing height; its flat wings never turn
-	-- the real ones. Four builds: the three above and the widest wings on the Heavy Mk2 (where the cap holds it back).
+	-- The Dragon keeps its proportions and IS the hitbox (Alan 2026-11-15): one size, as big a target as the plane
+	-- (config/plane-areas.json), centred on it, wings at the plane's wing height; on the server it replaces the body, nose,
+	-- wings and tail as the hit and crash shape. Four builds: the three above and the widest wings on the Heavy Mk2.
 	local DRAGON = "dragon"
 	local shape = SkinFit.shapes[DRAGON]
 	local E, box = shape.even, shape.pieces.whole
+	local Areas = require(Root.Generated.PlaneAreas).bodies
 	local wide = catalog:classLoadout("bomber", 99)
 	wide.body, wide.wings, wide.utility = "body_heavy_mk2", "wings_2", "boost_band"
 	builds.wide = wide
@@ -221,22 +222,29 @@ function Spec.run()
 		local drawn = fitted.placed.whole
 		local lo, hi = Vector3.new(table.unpack(box.min)), Vector3.new(table.unpack(box.max))
 		local k = drawn[2].Z / (hi - lo).Z
-		test(name .. ": the Dragon keeps its proportions, nose on the nose, wings at the wings' height", function()
+		test(name .. ": the Dragon keeps its proportions, is as big a target as the plane, centred, wings at the wings' height", function()
 			assert(near(drawn[2], (hi - lo) * k, 1e-4), "stretched: " .. tostring(drawn[2]))
-			local front = drawn[1].Position - drawn[2] / 2
-			assert(math.abs(front.Z - o.zN) < 1e-3, "nose " .. front.Z .. " vs the plane's " .. o.zN)
+			local a = Areas[loadout.body]
+			local area = a.wings[loadout.wings] + (a.nose[loadout.nose] or 0) + (a.tail[loadout.tail] or 0)
+			assert(math.abs(E.area * k * k - area) < 1e-3 * area, "target " .. E.area * k * k .. " vs the plane's " .. area)
+			assert(math.abs(drawn[1].Position.Z - (o.zN + o.zT) / 2) < 1e-3, "not centred on the plane")
 			local wingY = drawn[1].Position.Y + (E.wing_y - (lo.Y + hi.Y) / 2) * k
 			assert(math.abs(wingY - o.wy) < 1e-3, "wings at " .. wingY .. ", the plane's at " .. o.wy)
-			local tips, long = E.half_span * k, drawn[2].Z
-			local cap = E.cap * (o.zT - o.zN)
-			assert(long <= cap + 1e-3, "longer than the cap")
-			assert(math.abs(tips - o.xo) < 1e-3 or (math.abs(long - cap) < 1e-3 and tips < o.xo), "wingtips " .. tips .. " vs the plane's " .. o.xo)
-			if name == "wide" then assert(tips < o.xo - 1, "the cap should hold the Heavy Mk2's widest wings back") end
 		end)
-		test(name .. ": the Dragon's flat wings leave the real wings' hit shapes where they are", function()
-			local wings = 0
-			for _, move in fitted.wings do wings += 1; assert(same(move, CFrame.identity), "a wing turned") end
-			assert(wings >= 4, "no wings found")
+		test(name .. ": under the Dragon its shape replaces the body, nose, wings and tail as the hit and crash shape", function()
+			local pieces, parts = HitShapes.place(model.Appearance, frame, DRAGON)
+			local skins, guns, want = 0, 0, 0
+			for i, piece in pieces do
+				local slot = parts[i] and string.match(parts[i].Name, "^(%a+)")
+				assert(slot ~= "body" and slot ~= "nose" and slot ~= "wings" and slot ~= "tail", tostring(slot) .. " still a hit shape")
+				if not parts[i] then
+					skins += 1
+					assert(piece.Name == "Skin-whole" and near(piece.Size, drawn[2]) and same(piece.CFrame, drawn[1]), "the Dragon's shape is not where it is drawn")
+				elseif slot == "Mount" then guns += 1 end
+				piece:Destroy()
+			end
+			for _, part in model.Appearance:GetChildren() do if part:IsA("MeshPart") and string.match(part.Name, "^Mount") then want += 1 end end
+			assert(skins == 1 and guns == want, skins .. " Dragon shapes, " .. guns .. " gun shapes of " .. want)
 		end)
 		test(name .. ": guns hang just under the Dragon's wing, outside its body", function()
 			local hinge, count = fitted.hinge, 0

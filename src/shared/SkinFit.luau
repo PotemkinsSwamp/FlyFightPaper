@@ -3,7 +3,9 @@
 -- moves the guns' to where the skin draws them; Alan 2026-11-14, docs/plan/SKINS-PLAN.md "Wing-hitbox tilt").
 -- The fit follows tools/art/crane_skin.py (crane(), wing_under(), hang_guns()); the pieces, their boxes and the
 -- starter build's numbers come from config/skin-shapes.json.
-local Shapes = require(script.Parent.Parent:WaitForChild("Generated"):WaitForChild("SkinShapes")).shapes
+local Generated = script.Parent.Parent:WaitForChild("Generated")
+local Shapes = require(Generated:WaitForChild("SkinShapes")).shapes
+local Areas = require(Generated:WaitForChild("PlaneAreas")).bodies
 local SkinFit = { shapes = Shapes }
 
 local function v3(t) return Vector3.new(t[1], t[2], t[3]) end
@@ -45,6 +47,10 @@ function SkinFit.outline(appearance, frame)
 		end
 	end
 	if o.zN == math.huge or o.zT == -math.huge or o.bz0 == math.huge or #wingY == 0 then return nil end
+	-- How big a target the plane is (config/plane-areas.json, by the build Aircraft.build stamps on it); nil if unknown.
+	local body, nose, wings, tail = string.match(appearance:GetAttribute("Build") or "", "^([^|]+)|([^|]+)|([^|]+)|([^|]+)$")
+	local area = body and Areas[body]
+	o.area = area and area.wings[wings] and area.wings[wings] + (area.nose[nose] or 0) + (area.tail[tail] or 0)
 	table.sort(wingY)
 	o.wy = wingY[math.ceil(#wingY / 2)]
 	-- ponytail: the wing's root chord from the boxes that reach the root (a swept wing's box is longer than its root);
@@ -74,16 +80,20 @@ local function bellyOf(keel)
 	end
 end
 
--- Shapes that keep their proportions (the Dragon; Alan 2026-11-15: "we can't stretch it and make it look odd"): ONE size
--- for the whole model, as big as needed for its wingtips to reach the plane's (a wingtip crash happens where you see
--- the wing), but never longer than `cap` times the plane; its nose on the plane's nose (head-on crashes match too) and
--- its wings at the plane's wing height. Its wings are flat, so the real wings never turn (rise 0).
+-- Shapes that keep their proportions and are the plane's hit and crash shape (the Dragon; Alan 2026-11-15: "we can't
+-- stretch it and make it look odd"; "scale up the skin until it's the same ... surface area that would have been the plane
+-- that it's covering, so that it's still the same hitbox"): ONE size for the whole model, as big a target as the plane
+-- (its outline from above, the side and behind, added, equals the plane's), centred on the plane, wings at the plane's
+-- wing height. HitShapes uses its pieces instead of the body, nose, wings and tail. Its wings are flat (rise 0).
 local function evenFit(shape, o)
 	local E, W = shape.even, shape.even.wing
-	local length = 0
-	for _, piece in shape.pieces do length = math.max(length, piece.max[3] - piece.min[3]) end
-	local k = math.min(o.xo / E.half_span, E.cap * (o.zT - o.zN) / length)
-	local function at(p) return Vector3.new(p.X * k, o.wy + (p.Y - E.wing_y) * k, o.zN + (p.Z - E.nose_z) * k) end
+	local lo0, hi0 = Vector3.one * math.huge, -Vector3.one * math.huge
+	for _, piece in shape.pieces do lo0, hi0 = lo0:Min(v3(piece.min)), hi0:Max(v3(piece.max)) end
+	-- ponytail: a build missing from plane-areas.json (a new part) falls back to wingtips on the plane's wingtips;
+	-- re-run tools/plane_areas.lua after adding parts.
+	local k = o.area and math.sqrt(o.area / E.area) or o.xo / E.half_span
+	local midZ = (lo0.Z + hi0.Z) / 2
+	local function at(p) return Vector3.new(p.X * k, o.wy + (p.Y - E.wing_y) * k, (o.zN + o.zT) / 2 + (p.Z - midZ) * k) end
 	local out = {}
 	for name, piece in shape.pieces do
 		local lo, hi = v3(piece.min), v3(piece.max)
@@ -96,7 +106,7 @@ local function evenFit(shape, o)
 		local u = clamp((math.abs(x) / k - W.root_x) / span, uMin, 0.7)
 		local front, back = W.front_z + u * (W.tip_z - W.front_z), W.back_z + u * (W.tip_z - W.back_z)
 		local m = half / k + 0.1 * (W.back_z - W.front_z) * (1 - u)
-		local w = front + m <= back - m and clamp(E.nose_z + (z - o.zN) / k, front + m, back - m) or (front + back) / 2
+		local w = front + m <= back - m and clamp(midZ + (z - (o.zN + o.zT) / 2) / k, front + m, back - m) or (front + back) / 2
 		local p = at(Vector3.new(W.root_x + u * span, W.under_y, w))
 		return Vector3.new(x < 0 and -p.X or p.X, p.Y - 0.02 * k, p.Z)
 	end
@@ -168,7 +178,8 @@ function SkinFit.fit(shape, o)
 	return out, under, rise, hinge, bellyOf(keel)
 end
 
--- Everything shape skin `id` moves on this plane (frame = its Root), in the plane's frame: the pieces to draw, and where
+-- Everything shape skin `id` moves on this plane (frame = its Root), in the plane's frame: the pieces to draw (and, when
+-- `covers`, to hit), and where
 -- each real wing part and gun part goes (`move * frame:ToObjectSpace(part.CFrame)`, same size). A wing part turns
 -- about its side's hinge line (front to back), tip up by the skin's rise; a gun hangs under the drawn wing by its top
 -- (hang_guns()): it keeps its spot seen from above and rolls with the wing. The booster's parts move straight up or down
@@ -180,7 +191,8 @@ function SkinFit.plane(id, appearance, frame)
 	local o = shape and appearance and SkinFit.outline(appearance, frame)
 	if not o then return nil end
 	local placed, under, rise, hinge, belly = SkinFit.fit(shape, o)
-	local result, guns, boosters = { placed = placed, wings = {}, guns = {}, boosters = {}, offsets = {}, hinge = hinge }, {}, {}
+	local result, guns, boosters = { placed = placed, wings = {}, guns = {}, boosters = {}, offsets = {}, hinge = hinge,
+		covers = shape.even ~= nil }, {}, {} -- covers: the skin's pieces are the hit and crash shapes of the body, nose, wings and tail
 	for _, part in appearance:GetChildren() do
 		if not part:IsA("BasePart") or part:GetAttribute("SkinPiece") then continue end
 		local mount = tonumber(string.match(part.Name, "^Mount(%d+)"))

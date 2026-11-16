@@ -5,9 +5,9 @@ return JSONTypes.map({
     ["shapes"] = JSONTypes.map({
         ["dragon"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["_comment"] = "Keeps its proportions (Alan 2026-11-15): one size, as big as needed for its wingtips to reach the plane's, never longer than cap x the plane; nose on the plane's nose, wings at the plane's wing height. Numbers in the uploaded mesh's own frame (studs, nose to -z), from .planning/skins/dragon/roblox/game/whole.npz.",
+                ["_comment"] = "Keeps its proportions and IS the plane's hit and crash shape (Alan 2026-11-15): one size, as big a target as the plane it is on (config/plane-areas.json; area = its own outline from above, side and behind, added, on its precise shape at this size), centred on the plane, wings at the plane's wing height. Numbers in the uploaded mesh's own frame (studs, nose to -z), from .planning/skins/dragon/roblox/game/whole.npz.",
+                ["area"] = 25.2,
                 ["body_x"] = 0.38419,
-                ["cap"] = 1.25,
                 ["half_span"] = 3.42782,
                 ["keel"] = JSONTypes.array({
                     [1] = JSONTypes.array({
@@ -56,7 +56,6 @@ return JSONTypes.map({
                     }),
                 }),
                 ["keel_comment"] = "The body's underside down its middle, front to back, as [y, z]: boosters tuck up against it.",
-                ["nose_z"] = -4.19987,
                 ["wing"] = JSONTypes.map({
                     ["_comment"] = "Right wing seen from above as a triangle: root front and back where it meets the body, and its tip; under_y = its underside.",
                     ["back_z"] = 1.73277,

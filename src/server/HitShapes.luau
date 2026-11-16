@@ -43,19 +43,29 @@ end
 
 -- A stand-in for every MeshPart in `appearance` (pieces[i] for parts[i]), placed in the plane's own frame (`frame`: its
 -- Root's CFrame). Under a shape skin (SkinFit) the wings turn up about the drawn hinge and the guns and booster sit where
--- the skin draws them: shots and crashes meet the plane you see (Alan 2026-11-14, docs/plan/SKINS-PLAN.md "Wing-hitbox tilt").
+-- the skin draws them: shots and crashes meet the plane you see (Alan 2026-11-14, docs/plan/SKINS-PLAN.md "Wing-hitbox tilt");
+-- a skin that is the hitbox (the Dragon, Alan 2026-11-15) replaces the body, nose, wings and tail with itself.
 -- Same sizes either way. A piece still waiting for its precise shape is a plain Part. The crash Colliders
 -- (FlightService) and the hit copies use this.
 function Shapes.place(appearance,frame,skin)
 	local fitted=SkinFit.plane(skin,appearance,frame)
 	local pieces,parts={},{}
 	for _,part in ipairs(appearance:GetChildren()) do
-		if part:IsA("MeshPart") then
+		local slot=string.match(part.Name,"^(%a+)")
+		if part:IsA("MeshPart") and not (fitted and fitted.covers and (slot=="body" or slot=="nose" or slot=="wings" or slot=="tail")) then
 			local piece=Shapes.solid(part)
 			local move=fitted and (fitted.wings[part] or fitted.guns[part] or fitted.boosters[part]) or CFrame.identity
 			piece.Name=part.Name;piece.CFrame=move*frame:ToObjectSpace(part.CFrame)
 			table.insert(pieces,piece);table.insert(parts,part)
 		end
+	end
+	-- A skin that is the hitbox (the Dragon): its own precise shape, sized and placed as drawn, stands in for the parts
+	-- it covers (parts[i] is false for it).
+	for name,at in fitted and fitted.covers and fitted.placed or {} do
+		local source=shape("rbxassetid://"..SkinFit.shapes[skin].pieces[name].mesh)
+		local piece=source and source:Clone() or Instance.new("Part")
+		piece.Name,piece.Size,piece.CFrame,piece.CanCollide,piece.CanTouch="Skin-"..name,at[2],at[1],false,false
+		table.insert(pieces,piece);table.insert(parts,false)
 	end
 	return pieces,parts
 end
@@ -71,7 +81,7 @@ local function copyOf(p)
 	local pieces,parts=Shapes.place(appearance,p.body.CFrame,p.skin)
 	copy={appearance=appearance,skin=p.skin,folder=Instance.new("Model"),complete=true}
 	for i,piece in ipairs(pieces) do
-		if parts[i].Transparency<1 then -- hidden placeholder stickers are not hit shapes
+		if not parts[i] or parts[i].Transparency<1 then -- hidden placeholder stickers are not hit shapes
 			copy.complete=copy.complete and piece:IsA("MeshPart")
 			piece.Anchored=true;piece.CanQuery=true;piece.Parent=copy.folder
 		else piece:Destroy() end

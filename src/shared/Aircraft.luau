@@ -160,6 +160,7 @@ function Aircraft.build(model,loadout,catalog,preview)
  local body=model:FindFirstChild("Root")
  local old=model:FindFirstChild("Appearance");if old then old:Destroy() end
  local appearance=Instance.new("Model");appearance.Name="Appearance";appearance.Parent=model
+ appearance:SetAttribute("Build",loadout.body.."|"..loadout.nose.."|"..loadout.wings.."|"..loadout.tail) -- SkinFit: how big a target it is
  local factor=catalog:get(loadout.body).visual_scale/2
  local fit=Aircraft.wingFit(loadout.body,loadout.wings,catalog:get(loadout.body).wing_shift)
  appearance:SetAttribute("Factor",factor)

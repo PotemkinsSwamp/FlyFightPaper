@@ -7,6 +7,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | Script | What it does / when |
 |---|---|
 | `tools/generate_config.py` | Turns `config/*.json` into Luau in `src/generated/`. Run after every config edit |
+| `tools/plane_areas.lua` | Run in Studio's Edit, once per body: how big a target each build is (outline from above, side and behind, added, on the exact hit shapes) for `config/plane-areas.json`; `BODY = "dragon"` measures the Dragon. Re-run after adding plane parts |
 | `tools/save_place.py` | Rebuilds the working place with the art, keeping saved art and exact collision. Ctrl+S in Studio first |
 | `tools/push_github.py` | Copies new `main` commits to GitHub (no Blender files or review pictures); runs by itself after every commit (`.githooks/post-commit`) |
 | `tools/exact_collision.lua` | Run in Studio after a rebuild: new meshes load as solid boxes until this turns on their exact shapes; then Ctrl+S |

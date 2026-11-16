@@ -19,11 +19,14 @@ uploaded 2026-11-14, and move straight up or down, never turned or resized, unti
 the server turns the real wings' hit and crash shapes up to the skin's wing angle and puts the guns' and booster's where
 the screen draws them, by the same fit (`SkinFit.luau`; built 2026-11-14, checked in Play: wings 32 degrees, same size,
 guns and boosters exactly on the drawn ones; boosters within 0.04 of touching the belly, mesh against mesh, on all 18
-body and booster builds; not yet flown past walls). **The Dragon keeps its proportions** (Alan 2026-11-15): one mesh and one 1024 picture set
-(colour, bumps, shine, metal, the eye's glow), drawn at one size: big enough for its wingtips to reach the plane's, never
-longer than 1.25 times the plane, nose on the plane's nose, wings at the plane's wing height (`even` in the config).
-Its wings are flat, so the real wings' hit shapes never turn; guns hang under its wing outside its body, the booster
-under its belly. Not checked in Play yet.
+body and booster builds; not yet flown past walls). **The Dragon keeps its proportions and is the hitbox** (Alan 2026-11-15): one mesh and one 1024 picture set (colour,
+bumps, shine, metal, the eye's glow), drawn at one size: as big a target as the plane it is on (its outline from above,
+the side and behind, added, equals the plane's: `config/plane-areas.json`, measured by `tools/plane_areas.lua`; about
+0.96 to 1.48 times the plane's length), centred on the plane, wings at its wing height (`even` in the config;
+`Aircraft.build` stamps the build on the plane). On the server its own precise shape replaces the body, nose, wings and
+tail as the hit and crash shape (`HitShapes.place`); guns hang under its wing outside its body, the booster under its
+belly. Not checked in Play yet; the monorail train still tests the corners of each crash shape's box, which for the
+Dragon reach past its wings.
 The shelf's big photo and its cubbies wear your skin too, and so do the desk menu's big photo and its pinboard of
 loadouts and presets (2026-11-14: under the crane the big photo showed the real plane under it, the pinboard no skin);
 a crash crumples into a ball of the skin's printed pieces.
@@ -127,7 +130,7 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the Skins and Trails tabs (try on, Wear, Buy, Unlock now, Take off) |
 | `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): draws the skin's pieces on this screen where `SkinFit` puts them, hides what they cover, draws the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/SkinFit.luau` | Shape skins' one fit for screen and server: measures the plane's parts, places the skin's pieces, and says where each real wing turns (about the drawn hinge) and each gun hangs |
-| `tests/unit/SkinFit.spec.luau` | Under the Dragon, on four builds: one size, nose on nose, wingtips or the 1.25 cap, wings unturned, guns under its wing, booster on its belly. Under the crane, on two builds: wing shapes turn by its angle about the drawn hinge at the same size, gun shapes move by the screen's offsets, crash shapes refit on a skin change; no shape skin moves nothing |
+| `tests/unit/SkinFit.spec.luau` | Under the Dragon, on four builds: one size, as big a target as the plane, centred, its shape replacing the body, nose, wings and tail as hit shapes, guns under its wing, booster on its belly. Under the crane, on two builds: wing shapes turn by its angle about the drawn hinge at the same size, gun shapes move by the screen's offsets, crash shapes refit on a skin change; no shape skin moves nothing |
 | `src/server/HangarService.luau` | Saving builds and buying parts |
 
 ## Tuning numbers
