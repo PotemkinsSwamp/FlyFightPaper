@@ -258,6 +258,13 @@ function Service:handle(player,action,value)
    local ok,why=self.commerce:prompt(player,value)
    if not ok then self:message(player,why=="starter_pack_ended" and "The starter pack has ended." or why=="jar_low" and "Your Paper jar breaks at 3,000 Paper. Play a match to fill it." or "Shop is closed for now.") end
   end
+ elseif action=="devSkin" and Run:IsStudio() and player:GetAttribute("Dev")==true then
+  -- The Studio "Dev: skin" button: the server wears it too (not saved), so a shape skin's hits and crashes follow it
+  -- (Alan 2026-11-16: under the Dragon the server was still hitting his plain plane). FlightService reads DevSkin for new planes.
+  if type(value)~="string" or (value~="" and not Looks.item(value)) then return end
+  player:SetAttribute("DevSkin",value)
+  local p=self.flight.pilots[player]
+  if p then self.flight:wear(p,value~="" and value or nil,p.trail) end
  elseif action=="devAll" and Run:IsStudio() and self.profiles.mock==true and player:GetAttribute("Dev")==true then
   self.profiles:devSwitch(player) -- Alan's Studio-only button: his level account <-> everything unlocked
  elseif action=="mockProduct" and Run:IsStudio() and self.profiles.mock==true and Commerce.mode=="mock" and Commerce.live_sales_authorized==false then

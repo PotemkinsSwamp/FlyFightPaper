@@ -114,7 +114,7 @@ function PlaneLooks.start()
 	for _, model in planes:GetChildren() do watch(model) end
 end
 
--- Studio dev button: wear a skin on your own plane without owning it (only your screen sees it).
+-- Studio dev button: wear a skin on your own plane without owning it (DevTools also tells the server, for hit shapes).
 function PlaneLooks.setDevSkin(id)
 	PlaneLooks.devSkin = id
 	local plane = workspace:FindFirstChild("Planes") and workspace.Planes:FindFirstChild(mine)

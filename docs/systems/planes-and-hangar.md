@@ -30,7 +30,9 @@ Dragon reach past its wings.
 The shelf's big photo and its cubbies wear your skin too, and so do the desk menu's big photo and its pinboard of
 loadouts and presets (2026-11-14: under the crane the big photo showed the real plane under it, the pinboard no skin);
 a crash crumples into a ball of the skin's printed pieces.
-A skin you don't own shows Buy (or Unlock now); Studio's try-on is only the "Dev: skin" button (it lists the crane).
+A skin you don't own shows Buy (or Unlock now); Studio's try-on is only the "Dev: skin" button (it lists the crane and the Dragon); the server wears the
+tried skin too, unsaved (`HangarService` "devSkin"), so a shape skin's hits and crashes follow it (2026-11-16: before that
+the server kept hitting the plain plane under a tried-on Dragon).
 The hangar keeps each plane photo between clicks and swaps a new plane in only once it has loaded; after a buy the
 server sends the fresh profile at once. Playtest fixes and Alan's replay: [notes](../playtests/2026-11-13-crane-and-skins-tabs.md).
 

@@ -135,8 +135,8 @@ function DevTools.start(menu)
 		gift.Text = now and "Dev: send me a gift" or "Gift waits at the main menu"
 		task.delay(3, function() gift.Text = "Dev: send me a gift" end)
 	end)
-	-- Above that (Alan 2026-11-13, skins test): wear each skin that has a picture or a shape (the crane) on your own plane,
-	-- on your screen only.
+	-- Above that (Alan 2026-11-13, skins test): wear each skin that has a picture or a shape (the crane, the Dragon) on your
+	-- own plane, unsaved; the server wears it too, so a shape skin's hits and crashes follow it (HangarService "devSkin").
 	local skinButton = switch:Clone()
 	skinButton.Name, skinButton.Position, skinButton.Text, skinButton.Parent = "Skin", UDim2.new(1, -10, 1, -106), "Dev: skin: yours", switchGui
 	local skinTurn = 0
@@ -150,6 +150,7 @@ function DevTools.start(menu)
 		table.insert(list, "")
 		skinTurn = skinTurn % #list + 1
 		require(script.Parent.PlaneLooks).setDevSkin(list[skinTurn])
+		Root:WaitForChild("RoundAction"):FireServer("devSkin", list[skinTurn])
 		skinButton.Text = "Dev: skin: " .. (list[skinTurn] == "" and "plain" or Looks.item(list[skinTurn]).name)
 	end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
