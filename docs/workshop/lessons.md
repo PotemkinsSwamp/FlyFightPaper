@@ -176,6 +176,12 @@ mistake would be easy to make twice.
   auto-unwrap (UVs come from Blender). It has a command line and an MCP server (`texturecraft-cli commands`), so it
   can be scripted. Installed on D (Alan's C is full): program `D:\TextureCraft\app` (MSI with
   `INSTALLFOLDER=...`), data and exports in `D:\TextureCraft\data` and `\export` (its Preferences "Data folder").
+- **Before building a part, find the LATEST approved picture of it** (2026-11-15, the Dragon's legs; Alan: "that's
+  the wrong leg ... we redid the legs"). Claude measured the legs (and the tail fan) off
+  `model-sheets/dragon-b8-legs.png` because a handoff named that file for the wing; the design had since moved to the
+  six final views (`.planning/skins/dragon/six-views/final/`, folded legs). Check the decision page for the newest
+  "picked" entry and the newest picture folder, lay the part's crop from every candidate side by side, and show Alan
+  the reference crop before the build, not after.
 - **Do not send a simple, flat part through an image-to-3D tool** (2026-11-15, the Dragon's wing; Alan: "why did you
   feed it back through Tripo?"). Tripo earns its credits on sculpted detail (horn steps, plates). On a wing (bars and
   a sheet) it only re-guesses a shape we already had, fuses neighbours and roughens edges, and the bake copies every

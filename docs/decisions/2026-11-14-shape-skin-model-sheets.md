@@ -265,6 +265,18 @@
   hub: five ribs on ONE solid skin sheet, both faces alike, 840 triangles, 0 see-through gaps (the builders now count
   them). The fan is about 7% smaller than the sheet draws it so the Dragon keeps its length; hub position and rib
   height are Claude's numbers. Dragon so far: 4,700 triangles (head, two wings, tail). Leg next.
+- **Legs: the pods were the wrong design; the folded leg is sculpted in Tripo** (Alan, 2026-11-15, late night). Claude
+  built the legs as plain scaly pods with three talons, measured off `model-sheets/dragon-b8-legs.png`. Alan: "that's
+  the wrong leg ... we redid the legs and they look like actual dragon legs now. Like an actual folded leg." The
+  Dragon's reference is the final six views, `.planning/skins/dragon/six-views/final/` (thigh, shin folded back
+  under it, three toes, three straight gold claws); the b8 sheet is older. The pods and their script are deleted;
+  Codex's scale swatch stays (`parts/leg/painted/scales.png`). **Ruling (Alan, asked with the cost):** "Sculpt in
+  Tripo": the head's recipe (Codex paints one leg's four views from the final views, Tripo sculpts, clean shapes,
+  bake). His yes covers 55 credits (5,865 before), Claude driving Tripo Studio in his Chrome, and one model download.
+- **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
+  measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
+  the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:
+  "Keep the one I built". The wing matches the final views (its paintings came from the model made from them).
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
