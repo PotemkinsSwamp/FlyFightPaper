@@ -23,6 +23,9 @@
   part, so TextureCraft's edge wear and crease dirt (read from one 3D shape) cannot be used; it works as a material
   library (its carbon came out flat from the player's view). The set is drawn in code (`tools/art/skin_sheets.py`) and
   shown on real planes with `tools/art/skin_preview.py` before each upload.
+- **Next (Alan, 2026-11-16, after the Commons):** "next session, we'll do all of the rares. And we'll talk about how to do
+  the animations. And like glows and stuff, making it look like really good." So the Rares start with that talk (how each
+  one moves and glows), then the how-it-works note, then the build.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

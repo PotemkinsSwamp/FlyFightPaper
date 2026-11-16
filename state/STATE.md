@@ -1,20 +1,21 @@
-# Since Alan last checked (2026-11-16)
-- **The Dragon is a plane skin** (you flew it: "looks good now"): wings forward, it is the hitbox at your plane's
-  size and never smaller; shots from skinned guns are drawn on their real path. Waiting on your go: the frame-rate check.
-- Older crane notes: [crane playtest](../docs/playtests/2026-11-13-crane-and-skins-tabs.md).
+# Since Alan last checked (2026-11-16, second session)
+- **The Dragon's boosters wear its green scales** ("its good"). **All eight Commons are in the game**, pictures approved
+  ([your notes](../docs/playtests/2026-11-16-common-skins.md)); drawn in code (your pick over TextureCraft). Tiger Stripes
+  and Gold Foil are off the list; the Skins tab scrolls. Not checked: the tests since the list changed (665/0 before it).
 
 # Now: finish the game for the beta
-Next ([first skin set](../docs/decisions/2026-11-16-first-skin-set.md), Alan 2026-11-16): the Dragon's boosters wear the
-Dragon; then the 8 Commons and 8 animated Rares (how-it-works note for the movement first; Fable; TextureCraft). The Dragon
-is in the game as a shape skin and the hitbox ("looks good now"; [playtest](../docs/playtests/2026-11-16-dragon-skin.md));
-left on it: printed sheet for crash ball and shop card, frame-rate check (his go), jaw leftover. Also queued: the Toilet
-Roll shake in flight. After skins: missions, the playtime calendar, bots that use the town
-([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a
-real gift through the shop; the unlock backpack's music dip.
+Next ([first skin set](../docs/decisions/2026-11-16-first-skin-set.md), Alan 2026-11-16): the 8 Rares (Galaxy, Lava, Slime,
+Holographic, Glitch, Thunderstorm, Circuit Board, Comic Book), starting with a talk about how they move and glow, then a
+how-it-works note for his OK, then the build. Dragon leftovers: crash ball and shop card pictures, jaw leftover,
+frame-rate check (his go). Also queued: the Toilet Roll shake in flight. After skins: missions, the playtime calendar,
+bots that use the town ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift
+note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
   shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
+Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
+  (A = six colours, one line in `skin_sheets.py`); a flame patch shows small at the back of the body.
 Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
   has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices); Trails tab lists, draws nothing.
   Crane: about a quarter shorter (belly to the real body's bottom, roof 0.5 of a step up, was 0.9); width as before.

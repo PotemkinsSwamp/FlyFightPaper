@@ -767,3 +767,20 @@ Back to [HOME](../HOME.md)
 - **A picture at its own shape is smaller than its box (2026-11-09):** with `ScaleType.Fit` the paper no longer fills a
   box of another shape, so words placed in the box land off the paper. Give every box the picture's own shape and place
   words inside the paper's measured area (sticky notes: paper 16-95% down, tape 42-67% across down to 30%).
+## Printed-sheet skins (2026-11-16, the eight Commons)
+- **A steep face takes the SIDE picture, not TOP.** Every body's raised middle ridge (crest y 1.40, slim 1.24; side walls
+  stop at 0.95 to 1.0) is painted from SIDE, so a stripe drawn only in TOP is cut in half by it (Racing Stripe). Anything
+  that must cross the ridge is also painted in SIDE from y 0.97 up. Measure before guessing:
+  `.planning/skins/tests/faces/faces.py` lists every sheet-copy face with its view and position.
+- **FRONT is shared by the blunt nose's flat face and every back-facing edge** (nose_2: |x| < 1.3, y -0.85 to 1.4, 7 square
+  studs; wing, booster and tail ends). A design's nose colour goes in that box only (Flame Decal's dark cap).
+- **Preview a skin on the blunt nose and the tube body too**, not only the starter: `MORE=1 ONLY=starter,blunt,heavy2`
+  with `tools/art/skin_preview.py`.
+- **Random patterns: spread them evenly and count the share.** 8-Bit took three passes (39% bright in clumps: "too much
+  purple", none on the nose; 75%: "like rainbow"; 50% in four colours: good). Offer two options side by side on the redo.
+- **Random blocks get the hooked-cross scan** built into `skin_sheets.py` (`eight_bit`), as well as a look.
+- **Changing the skin list touches five places:** `config/looks.json`, `config/commerce.json` (one `look_<id>` product
+  each), the counts in `Looks.spec`, `Commerce.spec`, `CommerceService.spec`, `ProfileService.spec`, and the Skins tab's
+  room (it scrolls from 11 skins up).
+- **Never `git add -A <folder>`**: it swept an old untracked file (`tools/art/hero.py.old`) into a pushed commit. Name the
+  files.
