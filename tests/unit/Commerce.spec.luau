@@ -11,6 +11,8 @@ local function copy(v)
     if v==JSON.Null or type(v)~="table" then return v end
     local t={}; for k,x in pairs(v) do t[k]=copy(x) end; return t
 end
+-- Counted from the config, so adding a skin or trail never needs a number changed here.
+local function lookProducts() local n=0;for _,p in ipairs(Config.products) do if p.benefit=="look_unlock" then n+=1 end end;return n end
 local function boosts() return {xpSeconds=1800,paperSeconds=900,permanentXP=false,permanentPaper=false} end
 function Spec.run()
     local result,test=Suite.new()
@@ -75,14 +77,14 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==45+count+16)
+        assert(#c.offers==45+count+lookProducts())
         local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" and offer.benefit~="look_unlock" then fixed+=1 end end
         assert(fixed==45)
     end)
     test("zero or additional part offers are accepted without a Catalog dependency",function()
         local raw=copy(Config)
         for i=#raw.products,1,-1 do if raw.products[i].benefit=="part_unlock" then table.remove(raw.products,i) end end
-        assert(#assert(Rules.catalog(raw)).offers==57)
+        assert(#assert(Rules.catalog(raw)).offers==45+lookProducts())
         table.insert(raw.products,{key="part_future_part",kind="developer_product",benefit="part_unlock",catalog_id="future_part",
             roblox_product_id=JSON.Null,approved_robux_price=JSON.Null,enabled=false})
         local offer=assert(Rules.catalog(raw)).byKey.part_future_part
