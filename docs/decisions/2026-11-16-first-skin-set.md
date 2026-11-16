@@ -99,6 +99,13 @@
     saved for a holiday set**, not this release; its replacement is his pick between Mini Paper Planes and Paper
     Butterflies (Claude's two ideas). He dismissed the upload question for the four new models (curl, note, note pair,
     petal) without answering: not uploaded.
+  - **His picks (fourth session, last round).** Alan: "Dragon b, circuit still needs work it looked better before,
+    replacement A. The circuit trail just doesn't give a technology feel, the green circuit lines are to straight there
+    should be flashing LED and a slight green circuit board cloud. And upload the other models that are approved".
+    So: **Dragon Embers = B** (dark smoke full of glowing embers; in the game). **Paper Hearts' replacement = Mini
+    Paper Planes** (its dart model's safety sheet is with him; not uploaded, not in the game). **The four models
+    uploaded** (curl, note, note pair, petal; all Approved). **Circuit Trace: third go** with bent traces, flashing
+    LEDs in four colours and a slight green cloud; video with him, verdict pending.
 
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,

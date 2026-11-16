@@ -15,14 +15,16 @@ local dev = RunService:IsStudio() and Players.LocalPlayer
 -- Particle pieces: Roblox's own pictures, nothing uploaded.
 local PICTURE = { soft = "rbxasset://textures/particles/smoke_main.dds", spark = "rbxasset://textures/particles/sparkles_main.dds", square = "rbxasset://textures/particles/SquareParticle.png" }
 -- How each look takes the room's light as a particle: smoke is lit by the room and by lightning, a glint is its own light.
-local LIT = { soft = { emission = 0.3, influence = 0.8, clear = 0.2 }, glow = { emission = 1, influence = 0, clear = 0 }, paper = { emission = 0, influence = 1, clear = 0 } }
+local LIT = { soft = { emission = 0.3, influence = 0.8, clear = 0.2 }, glow = { emission = 1, influence = 0, clear = 0 }, paper = { emission = 0, influence = 1, clear = 0 },
+	fire = { emission = 1, influence = 0, clear = 0.1 } } -- fire is its own light: never shaded by the room
 -- Part pieces: plain shapes made here (size at 1 stud; true = a ball), or the uploaded models in the config's `meshes`.
 local PLAIN = { flake = Vector3.new(1, 0.07, 0.6), strip = Vector3.new(1, 0.02, 0.36), cube = Vector3.one, bar = Vector3.new(1, 0.045, 0.045), ball = true }
 local MATERIAL = { foil = Enum.Material.Foil, glow = Enum.Material.Neon, matte = Enum.Material.Fabric, paper = Enum.Material.SmoothPlastic, bright = Enum.Material.SmoothPlastic, glass = Enum.Material.SmoothPlastic }
 local CLEAR, SHINE = { glass = 0.38 }, { glass = 0.25 } -- a goo bubble is see-through and shiny
 PlaneTrails.pictures, PlaneTrails.lit, PlaneTrails.plain, PlaneTrails.materials = PICTURE, LIT, PLAIN, MATERIAL
--- An uploaded model lies flat (Blender's up is its Z side here); this stands it up for `upright` pieces.
-local STAND = CFrame.Angles(math.pi / 2, 0, 0)
+-- An uploaded model lies flat: Blender's up arrives as +Z and its +X as -X (read off the note's vertices in Studio,
+-- 2026-11-16: its head sits at -Z). This stands it up for `upright` pieces.
+local STAND = CFrame.Angles(-math.pi / 2, 0, 0)
 local FAR = CFrame.new(0, 1e5, 0) -- where resting and blinked-off parts wait (moving a part is cheaper than hiding it)
 local STEP = 0.08 -- ponytail: a part is resized only when its size has changed by this share (resizing is the costly call); 0 if steps ever show
 local rng = Random.new()

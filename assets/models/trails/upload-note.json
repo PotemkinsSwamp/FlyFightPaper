@@ -1,0 +1,24 @@
+{
+  "path": "operations/190a3df1-88a6-49a2-81d4-f5be139ede0e",
+  "operationId": "190a3df1-88a6-49a2-81d4-f5be139ede0e",
+  "done": true,
+  "response": {
+    "path": "assets/98915989683799",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-16T20:15:10.204Z",
+    "assetId": "98915989683799",
+    "displayName": "FFP trail note",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Model",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

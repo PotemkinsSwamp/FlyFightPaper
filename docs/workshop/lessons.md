@@ -852,5 +852,9 @@ Back to [HOME](../HOME.md)
   teardrop before the safety sheet went to Alan. Look at every new model's flat view for this.
 - **A dismissed question is not a yes.** Alan closed the upload question without answering: nothing was uploaded and
   the question went into the handoff.
+- **Read a new model's way up from its vertices, not from a picture.** A model uploaded from these Blender tools arrives
+  lying flat with Blender's up as +Z and Blender's +X as -X (`CreateEditableMeshAsync` on the note: its head, the heavy
+  end, sat at -Z). `PlaneTrails.STAND` carries that for `upright` pieces; anything that must fly nose-first needs the
+  same check.
 - **A flat card in Blender needs Object coordinates** for a round fading patch (Generated gives nothing on a flat quad),
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.

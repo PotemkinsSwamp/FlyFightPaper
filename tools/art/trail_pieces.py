@@ -11,7 +11,7 @@ import bpy, bmesh
 from mathutils import Vector, noise
 
 ROOT = Path(__file__).resolve().parents[2]
-UPLOADED = ("star", "bolt", "curl", "note", "notes", "petal")
+UPLOADED = ("star", "bolt", "curl", "note", "notes", "petal", "dart")   # dart: Alan picked Mini Paper Planes; its upload waits for his OK on the safety sheet
 
 def mesh(name, smooth_shade=None):
     build, smooth_default = MODELS[name]
@@ -92,6 +92,9 @@ def block(x, y, z):                                                         # pl
         for v in bmesh.ops.create_cube(bm, size=1.0)["verts"]: v.co = (v.co.x * x, v.co.y * y, v.co.z * z)
     return build
 def ball(bm): bmesh.ops.create_icosphere(bm, subdivisions=3, radius=0.5)
+def jog(bm):                                                                # a circuit-board trace: straight, a 45-degree step sideways, straight, a pad at each end
+    box(bm, (-0.5, -0.115, -0.015), (-0.12, -0.085, 0.015)); box(bm, (-0.12, -0.115, -0.015), (0.12, -0.085, 0.015), 0.2 / 0.24); box(bm, (0.12, 0.085, -0.015), (0.5, 0.115, 0.015))
+    for x, y in ((-0.5, -0.1), (0.5, 0.1)): box(bm, (x - 0.035, y - 0.035, -0.02), (x + 0.035, y + 0.035, 0.02))
 def dart(bm):                                                               # a tiny folded paper plane, nose along +x
     nose, back = bm.verts.new((0.5, 0, 0)), bm.verts.new((-0.5, 0, 0)); bm.faces.new((nose, bm.verts.new((-0.5, 0, -0.17)), back))   # the keel you hold
     for side in (1, -1): bm.faces.new((nose, bm.verts.new((-0.5, side * 0.05, 0.0)), bm.verts.new((-0.5, side * 0.37, 0.04))))       # a wing each side
@@ -100,7 +103,7 @@ def butterfly(bm):                                                          # a 
     wing = ((0.12, 0.02), (0.38, 0.30), (0.30, 0.48), (0.05, 0.36), (-0.08, 0.42), (-0.30, 0.34), (-0.34, 0.14), (-0.12, 0.02))
     for side in (1, -1): bm.faces.new([bm.verts.new((x, side * y, 0.7 * y)) for x, y in wing])
     bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.02); box(bm, (-0.25, -0.025, -0.03), (0.28, 0.025, 0.03))
-MODELS = {"dart": (dart, False), "butterfly": (butterfly, False), "trace": (block(1, 0.02, 0.02), False), "board": (block(1, 0.55, 0.03), False), "chip": (block(1, 0.6, 0.22), False),
+MODELS = {"jog": (jog, False), "dart": (dart, False), "butterfly": (butterfly, False), "trace": (block(1, 0.02, 0.02), False), "board": (block(1, 0.55, 0.03), False), "chip": (block(1, 0.6, 0.22), False),
           "heart": (heart, False), "note": (note, False), "notes": (notes, False), "petal": (petal, False), "curl": (curl, False), "ball": (ball, True),
           "cube": (block(1, 1, 1), False), "bar": (block(1, 0.045, 0.045), False), "strip": (block(1, 0.36, 0.02), False), "square": (soft, False),
           "star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}

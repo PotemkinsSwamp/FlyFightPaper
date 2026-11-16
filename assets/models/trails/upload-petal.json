@@ -1,0 +1,24 @@
+{
+  "path": "operations/841e769a-7da0-43e1-9837-9ef22ae2d59b",
+  "operationId": "841e769a-7da0-43e1-9837-9ef22ae2d59b",
+  "done": true,
+  "response": {
+    "path": "assets/107953287467767",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-16T20:15:44.739Z",
+    "assetId": "107953287467767",
+    "displayName": "FFP trail petal",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Model",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}
