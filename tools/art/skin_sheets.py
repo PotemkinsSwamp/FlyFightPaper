@@ -63,21 +63,32 @@ def racing_stripe():
     return pick(SIDE, side, flat)
 
 def eight_bit():
-    """Chunky pixels: navy with clusters of bright blocks."""
+    """Chunky pixels everywhere: three blocks in four are bright (pink, cyan, yellow, orange, green, red, in small
+    same-colour patches), the rest near-black blue gaps, spread evenly so every part shows them (Alan 2026-11-16: the
+    first pass was mostly dark purple, with the bright blocks missing on top of the nose)."""
     B = 20; gi, gj = (px // B).astype(int), (py // B).astype(int); g = N // B + 2
     rng = np.random.default_rng(8)
     def field(cell):                                                         # blotchy random field per block
         lo = rng.random((g // cell + 2, g // cell + 2)); f = np.kron(lo, np.ones((cell, cell)))[:g, :g]
-        return 0.6 * f + 0.4 * rng.random((g, g))
-    on, hue = field(3) > 0.56, (field(2) * 6).astype(int) % 6
-    # Safety (lessons.md, the 2026-10-12 bans): random blocks must never come near a hooked cross. Every 5 x 5 window,
-    # bright against navy and colour by colour, must differ from it (and its mirror) in at least 5 blocks; reseed if not.
+        return 0.45 * f + 0.55 * rng.random((g, g))
+    on, hue = field(2) > 0.31, (field(2) * 12).astype(int) % 6
+    # Safety (lessons.md, the 2026-10-12 bans): no 5 x 5 window may come near a hooked cross (or its mirror), as bright
+    # on dark, dark on bright or in one colour: 21 or more of its 25 blocks matching gets repaired (the cross's own
+    # blocks change group), then everything is checked again.
     S = np.array([[1, 0, 1, 1, 1], [1, 0, 1, 0, 0], [1, 1, 1, 1, 1], [0, 0, 1, 0, 1], [1, 1, 1, 0, 1]], bool)
-    for mask in [on] + [on & (hue == k) for k in range(6)]:
+    def near(mask):
         win = np.lib.stride_tricks.sliding_window_view(mask, (5, 5))
-        assert max((win == p).sum((2, 3)).max() for p in (S, S[:, ::-1])) <= 20, "8-Bit: a block shape too close to a hooked cross; change the seed"
-    pal = np.array([rgb(h) for h in ("#FF2FB0", "#19D3FF", "#FFE52A", "#FF8A1E", "#8B3DFF", "#3BE05A")])
-    cell = np.where(on[..., None], pal[hue], rgb("#1A1A4A") * (0.85 + 0.3 * rng.random((g, g, 1))))
+        return [(i, j, p) for p in (S, S[:, ::-1]) for i, j in zip(*np.nonzero((win == p).sum((2, 3)) >= 21))]
+    for _ in range(200):
+        hits = [("on", h) for h in near(on)] + [("off", h) for h in near(~on)] + [(k, h) for k in range(6) for h in near(on & (hue == k))]
+        if not hits: break
+        for kind, (i, j, p) in hits:
+            if kind == "on": on[i:i + 5, j:j + 5] |= ~p                      # fill the gaps round a bright cross
+            elif kind == "off": on[i:i + 5, j:j + 5] |= p                    # light up a dark cross
+            else: hue[i:i + 5, j:j + 5] = np.where(p & (rng.random((5, 5)) < 0.5), (kind + 1) % 6, hue[i:i + 5, j:j + 5])
+    assert not hits, "8-Bit: a block shape too close to a hooked cross is left"
+    pal = np.array([rgb(h) for h in ("#FF3FA8", "#19D3FF", "#FFE52A", "#FF8A1E", "#3BE05A", "#FF3B30")])
+    cell = np.where(on[..., None], pal[hue], rgb("#0E1230") * (0.85 + 0.3 * rng.random((g, g, 1))))
     col = cell[gj, gi]
     edge = (np.minimum(px % B, B - px % B) < 0.8) | (np.minimum(py % B, B - py % B) < 0.8)   # a thin dark line between blocks
     return np.where(edge[..., None], col * 0.72, col)
@@ -100,6 +111,11 @@ def flame_decals():
     col = np.broadcast_to(rgb("#1B2260"), px.shape + (3,)) * (0.9 + 0.2 * noise(120, 5, 2))[..., None]
     for k, back, c in ((1.0, -0.22, "#5A0A10"), (1.0, 0, "#E8361C"), (0.74, 0.5, "#F7861C"), (0.5, 1.1, "#FFD43A")):
         col = pick(inside(k, back) & ~FRONT, rgb(c), col)                    # FRONT is mostly back-facing edges (wing and booster ends): they stay blue
+    # ...but the blunt nose's flat face is there too (|x| < 1.3, y -0.85 to 1.4; Alan 2026-11-16: it was a dark cap on a
+    # flaming nose): a yellow heart with an orange and red rim where a nose's face can be, blue everywhere else.
+    r = np.maximum(np.abs(X) / 1.35, np.abs(Y - 0.3) / 1.15)
+    for lim, c in ((1.0, "#E8361C"), (0.86, "#F7861C"), (0.66, "#FFD43A")):
+        col = pick(FRONT & (r < lim), rgb(c), col)
     return col
 
 def tie_dye():

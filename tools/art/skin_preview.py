@@ -16,7 +16,9 @@ BUILDS = {"starter": dict(body="body_standard", nose="nose_0", wings="wings_0", 
 if os.environ.get("MORE"):                                                  # MORE=1: also the mk2 bodies and the twin-fin tail
     BUILDS.update(swept=dict(body="body_standard_mk2", nose="nose_1", wings="wings_1", tail="tail_1", weapon_mounts=["staple", "staple"], utility="boost_twin"),
                   heavy2=dict(body="body_heavy_mk2", nose="nose_3", wings="wings_4", tail="tail_4", weapon_mounts=["pellet", "pellet"], utility="boost_spool"),
-                  slim=dict(body="body_slim", nose="nose_5", wings="wings_2", tail="tail_2", weapon_mounts=["pellet", "pellet"]))
+                  slim=dict(body="body_slim", nose="nose_5", wings="wings_2", tail="tail_2", weapon_mounts=["pellet", "pellet"]),
+                  blunt=dict(body="body_standard", nose="nose_2", wings="wings_3", tail="tail_3", weapon_mounts=["pellet", "pellet"]))
+if os.environ.get("ONLY"): BUILDS = {k: v for k, v in BUILDS.items() if k in os.environ["ONLY"].split(",")}   # ONLY=starter,blunt
 GAP = 80.0
 def to_bl(p, dx=0.0): return Vector((p[0] + dx, -p[2], p[1]))                # Roblox (x right, y up, nose -z) -> Blender
 bpy.ops.wm.read_factory_settings(use_empty=True); sc = bpy.context.scene
