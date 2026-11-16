@@ -201,7 +201,8 @@
   fixed yet: find per part the lowest count that still holds, then MEASURE frame rate with 12 such planes in view
   (Studio Play: Alan's go) instead of guessing. Roblox's own levers stay on: automatic detail drop at distance
   (RenderFidelity Automatic), few parts and one picture set per plane, simple collision boxes. Roblox's per-mesh
-  triangle cap is not verified (sources say 10,000 or about 20,000): check the official page before cutting pieces.
+  triangle cap is 20,000 ("Individual meshes can not exceed 20,000 triangles",
+  [Roblox mesh specifications](https://create.roblox.com/docs/art/modeling/specifications), read 2026-11-15).
   **Head count test** (`.planning/skins/dragon/parts/head/head-triangle-counts.jpg`; the count-test script sits with the Dragon's pipeline scripts): Tripo's own
   head cut to 2,000, 4,000 and 8,000 triangles, each with a fresh unwrap and bake. The outline at 4,000 is close to the
   56,892 original and 8,000 is nearly the same; 2,000 is visibly simpler. Sent to Alan, no pick yet. The gold shows brown
@@ -215,6 +216,15 @@
   (the colour spots at 2,000) and moves the surface off the sculpt so the bake samples the wrong spot. Build clean
   simple shapes that hug the sculpt (Tripo's own low-triangle rebuild, about 5 credits, or by hand in Blender), smooth
   the body, then bake. One metal value per material.
+  **Head rebuilt that way** (2026-11-15, late; `.planning/skins/dragon/parts/head/head-clean-on-dragon.jpg` and
+  `head-clean-vs-tripo.jpg`, sent to Alan, no verdict yet): the sculpt is split along its inward creases into horn,
+  four plates a side and the body; each hard piece becomes a few straight-sided rings along its own length (kept only
+  where the outline bends), the body one smooth 12-sided tube, the right side's pieces mirrored to the left. 1,600
+  triangles after dropping faces nobody can see (horns 352 each, plates 36 to 120, body 288). Gold and body are baked
+  apart, each from its own share of the sculpt, so no green bleeds onto gold; gold is metal 0.6, roughness 0.4, the
+  rest roughness 0.5 (Claude's numbers, for Alan to judge). Tripo's own rebuild for comparison (Retopo, four-sided,
+  10 credits; its "Smart Mesh" switch costs 40): 2,352 triangles in one fused skin, horn steps and plate edges
+  rounded off; with the same bake it reads close at the player's distance. Credits left 5,920.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
