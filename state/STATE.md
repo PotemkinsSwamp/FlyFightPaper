@@ -9,11 +9,10 @@
   are in the [notes](../docs/playtests/2026-11-13-crane-and-skins-tabs.md) and [skin rules](../docs/decisions/2026-11-13-skin-rules.md).
 
 # Now: finish the game for the beta
-Next: the Toilet Roll shake in flight (the crane's moving gun pieces follow the moved guns); skin art: the Dragon is rebuilt in parts from `.planning/skins/dragon/six-views/final/`
-(Alan's OKs 2026-11-15: every part incl. the body, one skin nose to tail, 7,964 triangles; Tripo credits 5,820).
-Next: load it into Roblox to look at it (his go; [decision](../docs/decisions/2026-11-14-shape-skin-model-sheets.md)); then the
-six printed skins, Shark Jet, Dragon, the three trails
-([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
+Next: the Toilet Roll shake in flight (the crane's moving gun pieces follow the moved guns); skin art: the Dragon, rebuilt in parts
+(all OK'd by Alan 2026-11-15, 7,964 triangles), is in Studio as `Workspace.DragonLook` at 0, 260, -200 (22 free uploads, all approved;
+not saved with the place): waiting on Alan's verdict ([decision](../docs/decisions/2026-11-14-shape-skin-model-sheets.md)). Then the six
+printed skins, Shark Jet, Dragon, the three trails ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a
 real gift through the shop; the unlock backpack's music dip.
 

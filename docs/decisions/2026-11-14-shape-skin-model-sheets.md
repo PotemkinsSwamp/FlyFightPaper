@@ -314,6 +314,9 @@
   leftover shape on the jaw, scales bigger and belly plates bolder than the final views draw. **Go given:** "lets
   load the model into the game and see what it looks like when its in roblox" (the upload; Play and place saves
   still need their own go).
+- **In Studio for the look (2026-11-15, night):** 21 pictures and one mesh file uploaded (free, all Approved; empty texture
+  space filled first, every picture looked at). The Dragon stands in Studio as `Workspace.DragonLook`, plane-sized (8.4 studs),
+  not saved with the place. These uploads are for the look; the game gets the merged 1024 set. Waiting on Alan's verdict.
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

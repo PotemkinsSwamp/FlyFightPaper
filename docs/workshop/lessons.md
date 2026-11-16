@@ -27,6 +27,11 @@ mistake would be easy to make twice.
   re-uploads, 1,186 came back Approved and one plain grey roughness map (ring-binder roof) Rejected. Read each new
   id's final `moderationResult` (Assets API GET, read only) before using any; never re-send a rejected picture,
   keep the piece's earlier accepted one.
+- **Built parts get the same gap fill** (Dragon, 2026-11-15): fill every texel no triangle uses from the nearest used one
+  (`upload_prep.py`, with the Dragon's paint scripts under `.planning/skins/dragon/`). For two-value pictures (metal, roughness) count only texels inside a
+  triangle, or stray edge texels grow into rays. One FBX with several meshes arrives as a Model of MeshParts that keep their names.
+- **A model only for looking at:** `Archivable = false` keeps it out of saves, publishes and Play. SurfaceAppearance has a glow now
+  (`EmissiveMaskContent`, `EmissiveStrength`, `EmissiveTint`).
 - **A freshly uploaded mesh can look invisible for a few seconds** after a place rebuild. Look again before debugging.
 
 - **Fixing made-up text in AI pictures** (rulers, 2026-10-17): erase each dark glyph plus 3 px around it (AI text
