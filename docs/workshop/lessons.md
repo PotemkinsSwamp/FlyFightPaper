@@ -176,6 +176,13 @@ mistake would be easy to make twice.
   auto-unwrap (UVs come from Blender). It has a command line and an MCP server (`texturecraft-cli commands`), so it
   can be scripted. Installed on D (Alan's C is full): program `D:\TextureCraft\app` (MSI with
   `INSTALLFOLDER=...`), data and exports in `D:\TextureCraft\data` and `\export` (its Preferences "Data folder").
+- **Do not send a simple, flat part through an image-to-3D tool** (2026-11-15, the Dragon's wing; Alan: "why did you
+  feed it back through Tripo?"). Tripo earns its credits on sculpted detail (horn steps, plates). On a wing (bars and
+  a sheet) it only re-guesses a shape we already had, fuses neighbours and roughens edges, and the bake copies every
+  flaw. Ask per part: does it need sculpting, or only a correct outline plus paint? Outline-plus-paint parts are built
+  from the reference picture and textured on top (paintings projected onto flat faces, or TextureCraft).
+- **Pale and cream paint is not gold**: a metal mask taken from colour must test for strong yellow (saturation), or
+  cream skin turns into dark metal.
 - **Cycles shows through twin faces lying on each other** (transparent back faces); preview one-sided meshes in Eevee
   with backface culling.
 - **Creature skins: brief them in plane words** (2026-11-14): "deep belly", "chunky", "muscular" made Codex draw fat,

@@ -10,8 +10,8 @@
 
 # Now: finish the game for the beta
 Next: the Toilet Roll shake in flight (the crane's moving gun pieces follow the moved guns); skin art: the Dragon is
-rebuilt in parts (Tripo sculpts, Blender bakes onto clean simple shapes; head OK'd by Alan 2026-11-15 at 1,600
-triangles with glowing gem eyes; one wing next; whole Dragon about 8,000); then the
+rebuilt in parts (head OK'd by Alan 2026-11-15: 1,600 triangles, glowing gem eyes; the wing sent through Tripo was
+rejected, so it is redone structure-first from the reference with the texture painted on top; about 8,000 in all); then the
 six printed skins, Shark Jet, Dragon, the three trails
 ([skins plan](../docs/plan/SKINS-PLAN.md)). After skins: missions, the playtime calendar, bots that use the town
 ([ideas](../docs/plan/IDEAS.md)). Not checked: phone sizes of the report card row and the gift note and arrival; a

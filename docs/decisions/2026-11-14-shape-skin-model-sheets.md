@@ -236,6 +236,19 @@
   the mask is set when the model is built, not by a script at run time). The eye is an oval on each flank, light
   emerald in the colour picture too; preview `.planning/skins/dragon/parts/head/clean/blender-dragon-eye.png`. Glow
   strength and exact colour are Claude's preview numbers until Alan sees it in Roblox.
+- **Wing through Tripo: rejected. Structure first, texture painted on top** (Alan, 2026-11-15, night, on
+  `.planning/skins/dragon/parts/whole/dragon-head-and-wings.jpg`): "there's just very, very obvious problems in the
+  wing"; "why did you feed it back through Tripo ... you had already recoloured it"; "the structure is the most
+  important piece"; "if we can get the model's structure following the reference image, then we can paint the texture
+  on top" (TextureCraft is installed for that). What went wrong: Claude repeated the head's recipe without asking
+  whether a wing needs it. A wing is three bars and a flat sheet; Codex's top and underside paintings were already
+  the finished look. Tripo's sculpt (55 credits; 5,865 left) fused the two front ribs near the shoulder and left a
+  ragged skin edge beside them, and Claude's ring shapes and bake then added cracks where the ribs overlap and pale
+  slivers where ribs meet skin. From the player's distance it passes; close up it does not. **Rule from here:** a part
+  goes to Tripo only when it needs sculpted detail that pictures cannot give (the head's horns and plates did).
+  Simple parts (wing, tail fan, fins) are built straight from the reference picture's outline and measurements, checked
+  against that picture, and textured afterwards (the Codex paintings laid straight onto flat faces, or TextureCraft
+  materials by part). The wing is redone that way next; no verdict on the tail, body or legs yet.
 - **Every shape skin has a body with a bottom, and its sheet shows the underside** (Alan, same day): "you don't know
   what the bottom looks like", and a flat-bottomed, slim design looks very odd stretched over our deep bodies ("imagine
   if that was on the Toilet Roll"; the Dragon was "incredibly slim"). He means **a barrel, like a plane's fuselage**:
