@@ -857,6 +857,15 @@ Back to [HOME](../HOME.md)
   from behind, so give the back of the plane something (nozzle fire); a burst must go outward and back, never up into the view ahead;
   wet is darker, not paler; a shine that goes with spray moves at the spray's speed (Alan: "its lagging behind it"); uneven
   frame-to-frame change reads as a bug, steady drift reads as movement. Eevee's first frame differs: render one warm-up frame.
+- **Movement that follows the paint is a flipbook** (2026-11-17, `.planning/skins/motion/layers.py`): a Decal cannot be masked by
+  another picture, so "only the painted flames roll" or "a comet runs down the lines" cannot be one sliding picture. Draw 16 frames
+  of the whole box seen from above in one 4 x 4 picture (4 px of see-through edge inside each 256 px cell); the Decal zooms to one
+  cell and a second Decal fades the next frame in. Movement that ignores the paint (a shine streak, a water line) stays one sliding
+  picture. Layer pictures are drawn tail at the top, nose at the bottom, wing tip to wing tip across: no quarter turn needed.
+- **Check a rebuilt effect against the approved video frame by frame, same moment, side by side:** the Shark's water line came out
+  twice as wide because the mock-up's line only fades behind itself (a wrapped "seconds since" is never negative).
+- **Never type a `#` note in the middle of a line of several statements** (second time, 2026-11-17): everything after it on that
+  line is switched off. Notes go on their own line.
 - **Pure-logic tests run in Studio Edit without Play:** copy the spec into a fresh ModuleScript beside the others and
   `require` it from `execute_luau`; copy any module that changed since Studio last loaded it (an old copy stays cached).
 - **Rojo's file watcher can hold a `src/` file for a moment:** a script's write fails with "Invalid argument"; retry.

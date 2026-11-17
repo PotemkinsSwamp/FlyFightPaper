@@ -457,6 +457,9 @@
   skin behind it goes darker like wet paper, then dries. "The shine needs to follow the water ... its lagging behind it": the line
   now moves at the spray's speed, 0.12 s behind its start. Numbers: the `shark` branch of `.planning/skins/motion/preview.py`.
   A Blender mock-up; the game version is not built. The Ninja has his OK in its own session (`.planning/skins/ninja/build/tail-10/`).
+- **Ninja safety: "its safe i looked at it"** (Alan, 2026-11-17, before the reviewer reported). The reviewer agreed: colour picture
+  low risk (one curled red sash piece alone on black beside the wing; no pinwheel, no group of hooks), bump picture safe. My own
+  first read ("risky": red bent pieces on black) was too strong. Sheet: `.planning/skins/safety/sheets/ninja-sheet.jpg`.
 
 ## Why
 Concept pictures from one angle left the crane's builder guessing, and guessing cost three passes. A sheet with every
