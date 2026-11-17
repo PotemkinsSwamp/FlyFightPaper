@@ -375,6 +375,12 @@
   faces, the fold box from the side view's strip). Outline match 0.95 from above, 0.97 from the side; every piece within
   20% of its card. Known and told: from dead ahead the face is stretched stripes (needle nose); the tips of the teeth
   show from below as a thin zigzag along the jaw; the cream changes tone where the side and bottom pictures meet.
+  **The mouth carries under the nose (Alan, same day, on the preview):** "from the front, it looks pretty bad ... the
+  concept picture is not correct ... you need to be able to see a full smile, like you're about to be eaten by a shark
+  ... everywhere else is okay." This replaces "teeth on the two sides only". Done by code, no Codex (`build/mouth.py`):
+  an open mouth with teeth all round is painted into the sheet's bottom view, stretched along the nose by the floor's
+  slope so it reads true from dead ahead (a needle nose shows its floor at about 10 degrees). The side grin is untouched.
+  Round `whole-06/` (`mouth-views.jpg`) waits on his OK. Seen from straight below the teeth are long needles.
 - **Safety swaps (Claude's call, told to Alan before he picked):** Shark A's wing zigzags become soft rounded stripes, Dragon B's
   gold square spirals on the cheeks become plain gold bands. Bent or hooked shapes and paired lightning bolts are the
   kind of picture that got the account banned twice ([lessons](../workshop/lessons.md)).
