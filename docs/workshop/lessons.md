@@ -35,6 +35,10 @@ mistake would be easy to make twice.
   way up and packs without turning any (the Hot Rod lost 16% of its texels per length; six player's views showed no change).
   The safety sheet for such a skin: `.planning/skins/safety/` (`uv_dump.py` in Blender, then `sheet.py`: the gap fill and a
   before/after sheet to look at). A glow picture is always bright shapes on black: look at it hardest.
+- **"Same model, new layout" is proven with numbers, not eyes** (Hot Rod, 2026-11-16): a note typed after a `#` in the middle of a
+  spec line switched off five settings (light, bump); six side-by-side views looked the same to me and the reviewer measured the
+  underside 15% darker. After any change to a `make_spec.py`, compare the new `spec.json` key by key with the approved round's, and
+  compare each view's mean colour over the model's pixels (within 1 of 255 when only the layout changed).
 - **A model only for looking at:** `Archivable = false` keeps it out of saves, publishes and Play. SurfaceAppearance has a glow now
   (`EmissiveMaskContent`, `EmissiveStrength`, `EmissiveTint`).
 - **A freshly uploaded mesh can look invisible for a few seconds** after a place rebuild. Look again before debugging.
@@ -848,6 +852,11 @@ Back to [HOME](../HOME.md)
 - **A layer Decal also sits on a shape skin** (Edit test on the Dragon's one mesh, 2026-11-16): `Face` Top covers every up-facing
   surface of the whole model's box, a second Decal with `Face` Bottom covers the underside, its glow works, upright sides keep the
   skin's own paint. So a Legendary can carry Rare-style moving layers. Not yet run as the game's own code in Play.
+- **Movement on a Legendary, from five preview rounds** (2026-11-17, `.planning/skins/motion/preview.py`): at the chase camera's size a
+  subtle change is invisible (thin pulses, blue-on-blue glints: make one big clear thing); paint that moves on flat wings is edge-on
+  from behind, so give the back of the plane something (nozzle fire); a burst must go outward and back, never up into the view ahead;
+  wet is darker, not paler; a shine that goes with spray moves at the spray's speed (Alan: "its lagging behind it"); uneven
+  frame-to-frame change reads as a bug, steady drift reads as movement. Eevee's first frame differs: render one warm-up frame.
 - **Pure-logic tests run in Studio Edit without Play:** copy the spec into a fresh ModuleScript beside the others and
   `require` it from `execute_luau`; copy any module that changed since Studio last loaded it (an old copy stays cached).
 - **Rojo's file watcher can hold a `src/` file for a moment:** a script's write fails with "Invalid argument"; retry.
