@@ -390,6 +390,17 @@
   the sheet's bottom view. Fitting the whole grin made its 23 teeth 2.6 px each (a comb), so the floor shows the grin's
   middle 11 teeth at the side teeth's size and the grin's ends are the side rows on the walls. Waits on his OK. Short of
   the picture: the grin sits low and smaller (needle nose), and from straight underneath the teeth are long streaks.
+  **"Definitely nowhere close, make it look like Codex's picture" (Alan, same day).** Paint on the underside could not do
+  it, so the head's shape changed (Claude's reading of his words; he was told a shape change was the only way): the
+  head's walls and floor are 22 fine steps (`sheet_model.py` `terrace`). Faces that point forward wear Codex's face,
+  fitted to the model's real front (`build/front_face.py`); faces that point sideways keep the side grin; the roof stays
+  smooth. Round `whole-11/` (`mouth-views.jpg`, 2,510 triangles) waits on his OK. The cost, told to him: seen at an
+  angle the head's sides look slatted, and both faces show at once through the slats.
+- **The other eight Legendaries get model sheets now** (Alan, same day: "one image for each showing top bottom and sides
+  make sure it keeps it consistent"): bumblebee, rocket, hot rod, stealth fighter, mech, pirate ship, ninja, race car.
+  One Codex job each (`.planning/skins/model-sheets/legendary/`, `template.txt` + `make_briefs.py`). The brief carries what
+  the Shark's sheet got wrong: one scale, the front view as wide and tall as the other views say, wings drawn in the
+  side view, nothing laid flat, a blunt nose so a face reads head-on, a flat magenta background with no halo.
 - **Safety swaps (Claude's call, told to Alan before he picked):** Shark A's wing zigzags become soft rounded stripes, Dragon B's
   gold square spirals on the cheeks become plain gold bands. Bent or hooked shapes and paired lightning bolts are the
   kind of picture that got the account banned twice ([lessons](../workshop/lessons.md)).

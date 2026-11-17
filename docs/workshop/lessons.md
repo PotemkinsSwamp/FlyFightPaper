@@ -283,6 +283,12 @@ mistake would be easy to make twice.
   takes its paint from a view that is clean there. (4) Two views never give one colour the same tone: let the bottom
   view take the belly (`bias`), because the side picture's cream goes grey at its edge. Also: when two views disagree on
   how tall a strip looks, ask what shape under it makes both true (a sloped shoulder) before moving the strip.
+- **One skin cannot show two pictures, unless it is steps** (Shark Jet's face, 2026-11-16). A needle nose shows the
+  front its skin at about 10 degrees, so a grin painted for the side is stripes head-on, and a mouth painted on the
+  underside stays small however it is stretched (three rounds lost). Fine steps give each view faces of its own:
+  risers for the front picture, treads for the side (`sheet_model.py` `terrace`). Head-on it is the front picture; at
+  an angle the steps show, so keep them off the roof the player's camera sees. And when Alan names the route (Codex
+  redraws the view), take that route first: a cheaper one of mine cost two round trips.
 
 ## Studio and the place file
 - **Test players are plain tables** (2026-11-16): `player:GetAttribute` in a server path the unit tests reach errors there
