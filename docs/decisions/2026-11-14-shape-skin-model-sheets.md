@@ -414,7 +414,14 @@
   triangles, closed, every piece within its card. Three reviewers: the third said the front smile is there, underneath
   is clean, "close, one short pass away" (grey smudges under the teeth: fixed in `chin-09/`; still there: the sheet's
   dark lower lip at the mouth's corner reads as a wedge from below, the teeth change size near the corners from low
-  angles, the chin is a small bump under the nose from the side). `chin-09/mouth-views.jpg` waits on his OK.
+  angles, the chin is a small bump under the nose from the side).
+  **"So close to being done ... airbrush the mouth a bit to make it look continuous and consistent and remove this
+  stray mouth line on each side" (Alan, same day, circles on `chin-09`).** The stray line was the sheet's own lower
+  lip, which thickens into a dark crescent drooping under the back teeth. Painted out: one thin even lip traced under
+  the lower teeth up to the mouth's corner, the cheek's own cream below it. A first try filled the whole chin's
+  underside with one plain cream and a reviewer rejected the flat "bib"; the underside keeps the bottom view's own
+  fold lines again. Fifth reviewer: "yes with caveats" (up close the lip is thicker under the middle teeth than along
+  the cheeks). `chin-11/mouth-views.jpg` waits on his OK.
 - **The other eight Legendaries get model sheets** (Alan, same day: "one image for each showing top bottom and sides
   make sure it keeps it consistent"): bumblebee, rocket, hot rod, stealth jet, mech, pirate, ninja, race car. Claude's
   first batch described the skins in words and called his approved pictures guides; Codex drew the words. Alan: "did
