@@ -15,6 +15,8 @@ MAP.json (the piece map, see sheet_tools.py) needs:
     three-quarter view gives its own: fit them to two far-apart landmarks (nose and wing tips).
   crops {view: [x0, y0, x1, y1]}
   modules {name: {pieces: [map ids], views: [views that show it]}}   (views optional: default every camera)
+    boxes {view: [x0, y0, x1, y1]} (optional): that view's crop given by hand, for a module that is paint on the body
+    (a face: no built piece to find the crop from).
 """
 import json, math, os, subprocess, sys
 BLENDER = "D:/Blender/blender.exe"; HERE = os.path.abspath(__file__)
@@ -40,16 +42,20 @@ except ImportError:                                     # ----------------------
         if v not in AXES: _, _, r, u = cam_of(spec, v); near = float(np.sign(np.cross(r, u)[1]))
     jobs = [dict(name="view-" + v, view=v, box=spec["crops"][v], zoom=2, keep=None) for v in spec["cameras"]]
     for name, mod in spec.get("modules", {}).items():
-        tri = T[np.isin(tmap, mod["pieces"])]
-        if not len(tri): print("module %s: none of its pieces are built" % name); continue
-        ks = [k for k in np.unique(shell[tri[:, 0]]) if V[shell == k][:, 1].mean() * near >= -1e-4]     # the near side's copies
-        P, Pall = V[np.isin(shell, ks)], V[np.unique(tri)]
-        for v in mod.get("views", list(spec["cameras"])):
-            at, k, r, u = cam_of(spec, v); xy = lambda Q: (at[0] + Q @ np.array(r, float) * k, at[1] - Q @ np.array(u, float) * k)
-            x, y = xy(P); xa, ya = xy(Pall)             # both sides when that hardly costs zoom (a head), else the near side (a wing)
-            if max(np.ptp(xa), np.ptp(ya)) <= 1.5 * max(np.ptp(x), np.ptp(y)): x, y = xa, ya
-            pad = max(0.15 * max(np.ptp(x), np.ptp(y)), 6); c = spec["crops"][v]
-            box = [int(max(x.min() - pad, c[0])), int(max(y.min() - pad, c[1])), int(math.ceil(min(x.max() + pad, c[2]))), int(math.ceil(min(y.max() + pad, c[3])))]
+        tri = T[np.isin(tmap, mod["pieces"])]; given = mod.get("boxes", {})
+        if not len(tri) and not given: print("module %s: none of its pieces are built" % name); continue
+        if len(tri):
+            ks = [k for k in np.unique(shell[tri[:, 0]]) if V[shell == k][:, 1].mean() * near >= -1e-4]     # the near side's copies
+            P, Pall = V[np.isin(shell, ks)], V[np.unique(tri)]
+        for v in mod.get("views", list(spec["cameras"]) if len(tri) else list(given)):
+            if v in given: box = list(given[v])
+            elif not len(tri): continue
+            else:
+                at, k, r, u = cam_of(spec, v); xy = lambda Q: (at[0] + Q @ np.array(r, float) * k, at[1] - Q @ np.array(u, float) * k)
+                x, y = xy(P); xa, ya = xy(Pall)             # both sides when that hardly costs zoom (a head), else the near side (a wing)
+                if max(np.ptp(xa), np.ptp(ya)) <= 1.5 * max(np.ptp(x), np.ptp(y)): x, y = xa, ya
+                pad = max(0.15 * max(np.ptp(x), np.ptp(y)), 6); c = spec["crops"][v]
+                box = [int(max(x.min() - pad, c[0])), int(max(y.min() - pad, c[1])), int(math.ceil(min(x.max() + pad, c[2]))), int(math.ceil(min(y.max() + pad, c[3])))]
             if box[2] - box[0] < 4 or box[3] - box[1] < 4: continue
             z = min(max(2, math.ceil(768 / max(box[2] - box[0], box[3] - box[1]))), 10)
             jobs.append(dict(name="close-%s-%s" % (name, v), module=name, view=v, box=box, zoom=z, keep=mod["pieces"]))

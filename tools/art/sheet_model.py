@@ -15,7 +15,8 @@ points in sheet pixels):
   sheet, out (folder), views {side, top, bottom, front, three_quarter: [x0, y0, x1, y1]}, review {view: box}
   (optional tighter crops of the sheet for review.jpg, e.g. just the head),
   body {from, to, stations, sides, round (2 ellipse, 1 diamond, 3+ boxier), mid (0..1, where the widest line sits
-        between bottom and top; round and mid are one number or [[x, value], ...] along the body), smooth (bool), top_line [[x, z], ...], width_line [[x, half width], ...]  (where a
+        between bottom and top; round and mid are one number or [[x, value], ...] along the body), end_point (true: the body's last station is kept as given, a tail ending in a point), round_under (optional: the
+        lower half's own roundness, e.g. a ridged roof over upright walls and a flat floor), smooth (bool), top_line [[x, z], ...], width_line [[x, half width], ...]  (where a
         horn, crest, fin or wing joins, the drawn outline is not the body: over the line's span the body follows these
         points instead), bottom_line [[x, z], ...] (the same for the underside: a leg hanging below it), crown [a, b]  (over this span two ridges, up and out at 45 degrees, reach the DRAWN outline's
         top (side view) and width (top view): a crest of blades on a head, as a V seen from the front),
@@ -30,6 +31,9 @@ points in sheet pixels):
           skill), map (its number on the piece map), or
           kind "sheet", points [[x, y, z], ...] (round the outline), thick (a thin closed slab with exactly that outline:
           a wing skin, a fin's web), color_under (optional: its downward faces' colour), or
+          kind "fin", lead [[x, y, z], ...], trail [[x, y, z], ...] (station by station from the root to the tip: where the
+          leading and the trailing edge are), thick [per station], ridge (share of the chord where it is thickest, default
+          0.4) (a wing or fin with a diamond section and exactly that outline; a crease down each face), or
           kind "fan", hub [x, y, z], edge [[x, y, z], ...] (the outline from the front tip round the back edge to the
           root), bow [per edge point: how far its column bows forward, as the strut there does], bones [edge indexes
           where a strut ends], dip (how far the skin sags between two bones, most at the back edge), fold (true: a sharp crease down the middle of each bay instead of a round sag; crease_shade, crease_width paint it dark; fold_shade lights one plane and shades the other), thick [at the hub,
@@ -37,6 +41,10 @@ points in sheet pixels):
           stretched over its struts: sagging bays, painted tension ripples fanning out to the edge and a fine hide grain);
           a tube may have breaks [point indexes]: a new closed shell starts at each (a horn's rings, each tucked into
           the one before);
+          any part without a colour: paint [views] (paint it from these views only, each face from the one it faces: a
+          fin ["side"], a wing ["top", "bottom"]; without it a triangle part-hidden behind the body took another view's paint);
+          any part: unseen [views] (views whose picture does not draw this piece, so it hides nothing from them: wings
+          the side view leaves out must not cut a strip out of the flank's paint);
           any part: texel (its texel density against the rest, e.g. 1.6 for a wing the player looks at most);
           any plain-colour part: smooth (true: smooth-shaded, one plain colour, no facet lines), scales (true: painted with the body's scales, a leg), lines [[[x, y], [x, y]], ...] with
           line_width and line_gain (lines painted on it as seen from above: a wing's leaf veins)}],
@@ -45,6 +53,8 @@ points in sheet pixels):
   glow [[r, g, b, tolerance]] (sheet colours that glow), tex (texture size), camera {yaw, pitch} (three-quarter view,
   degrees: yaw 0 = from the side, 90 = from the front; pitch above level), front_scale (optional px per length),
   paint (optional list of the views to paint from, default all four: leave out one drawn unlike the others),
+  bias (optional {view: head start}, default {"side": 0.25}: how much longer the side view keeps a spot before the top or
+  bottom view takes it; lower it when the side picture's edge shading smears onto a belly),
   facets (optional {light, dark, line, width, highlight, angle}: plain-colour pieces get painted facet shading and
   dark crease lines; with highlight (0..1) the raised edges get a light line instead and only the inward creases a dark one),
   ao (optional {distance, strength, tint [r, g, b] 0..1, samples}: Blender bakes how hidden each spot is from open sky
@@ -174,11 +184,15 @@ X = np.linspace(max(B["from"], 0.002), B["to"], NS)
 zt0, zb = runs_profile("side", X, 0)                               # the outline as drawn (horns, crest and all)
 wt_hi, wt_lo = runs_profile("top", X, 0); wt0 = np.maximum(abs(wt_hi), abs(wt_lo))
 wb_hi, wb_lo = runs_profile("bottom", X, 0); wb = np.maximum(abs(wb_hi), abs(wb_lo))
-zt = smooth1(line(X, zt0, B.get("top_line"))); zb = smooth1(line(X, zb, B.get("bottom_line")))
-wt = smooth1(line(X, wt0, B.get("width_line"))); wb = smooth1(line(X, wb, B.get("width_line")))
+raw = [line(X, zt0, B.get("top_line")), line(X, zb, B.get("bottom_line")), line(X, wt0, B.get("width_line")), line(X, wb, B.get("width_line"))]
+zt, zb, wt, wb = (smooth1(a) for a in raw)
+if B["from"] <= 0.002:                                             # a nose tip stays a point: smoothing must not blunt it
+    for a, r in zip((zt, zb, wt, wb), raw): a[0] = r[0]; a[1] = (r[0] + r[1] + r[2]) / 3
+if B.get("end_point"):                                             # the same for a tail that ends in a point
+    for a, r in zip((zt, zb, wt, wb), raw): a[-1] = r[-1]; a[-2] = (r[-1] + r[-2] + r[-3]) / 3
 zc, wc = smooth1(zt0, 1), smooth1(wt0, 1); CR = B.get("crown")
 along = lambda v: np.interp(X, *np.array(v, float).T) if isinstance(v, list) else np.full(NS, float(v))   # one number, or [[x, value], ...]
-zm = zb + along(B.get("mid", 0.5)) * (zt - zb); RR = along(B.get("round", 2.0))
+zm = zb + along(B.get("mid", 0.5)) * (zt - zb); RR = along(B.get("round", 2.0)); RU = along(B.get("round_under", B.get("round", 2.0)))
 
 V, Fc, PART = [], [], []
 def sp(c, e): return np.sign(c) * abs(c) ** (2.0 / e)
@@ -187,7 +201,7 @@ if B["from"] <= 0.002: V.append((0.0, 0.0, float(zm[0]))); tip = 0
 for i, x in enumerate(X):
     ring = []
     for j in range(NK):
-        th = math.pi / 2 + 2 * math.pi * j / NK; c, s = math.cos(th), math.sin(th); R = RR[i]
+        th = math.pi / 2 + 2 * math.pi * j / NK; c, s = math.cos(th), math.sin(th); R = RR[i] if s >= 0 else RU[i]
         y = (wt[i] if s >= 0 else wb[i]) * sp(c, R)
         z = zm[i] + sp(s, R) * ((zt[i] - zm[i]) if s >= 0 else (zm[i] - zb[i]))
         f = min(x - CR[0], CR[1] - x) / 0.04 if CR else 0                  # fades in and out over 0.04, no step
@@ -247,6 +261,21 @@ def sheet(name, points, thick, mirror):
         Fc.append(tuple(range(i0, i0 + k))); Fc.append(tuple(range(i0 + 2 * k - 1, i0 + k - 1, -1))); PART.extend([name] * 2)
         for j in range(k): Fc.append((i0 + j, i0 + k + j, i0 + k + (j + 1) % k, i0 + (j + 1) % k)); PART.append(name)
 
+def fin(name, lead, trail, thick, ridge, mirror):
+    """A fin or wing with a diamond section: station by station a leading-edge point, a trailing-edge point and the
+    thickness there, thickest at `ridge` of the chord, so a crease runs down each face like folded paper."""
+    for sgn in ((1, -1) if mirror else (1,)):
+        A = np.array(lead, float) * (1, sgn, 1); Bt = np.array(trail, float) * (1, sgn, 1); n = np.zeros(3)
+        loop = np.concatenate([A, Bt[::-1]])
+        for a, b in zip(loop, np.roll(loop, -1, 0)): n += np.cross(a, b)             # the outline's own normal (Newell)
+        n /= np.linalg.norm(n); rs = []
+        for a, b, t in zip(A, Bt, thick):
+            m = a + (b - a) * ridge; rs.append(list(range(len(V), len(V) + 4)))
+            V.extend(tuple(map(float, q)) for q in (a, m + n * t / 2, b, m - n * t / 2))
+        for a, b in zip(rs, rs[1:]):
+            for j in range(4): Fc.append((a[j], a[(j + 1) % 4], b[(j + 1) % 4], b[j])); PART.append(name)
+        Fc.append(tuple(rs[0][::-1])); Fc.append(tuple(rs[-1])); PART.extend([name] * 2)
+
 FANV = {}                                             # fan vertices: (column, counted in bays, times t; t = share of the way out)
 def fan(name, hub, edge, bow, bones, dip, thick, rows, mirror, fold=False):
     """A wing membrane stretched over its struts: a column runs from the hub to each outline point, bowed forward
@@ -285,6 +314,7 @@ for p in spec.get("parts", []):
         new = sheet_tools.plate(V, Fc, p["outline"], p["tip"], p.get("view", "side"), p.get("offset", 0.0),
                                 p.get("thick", 0.004), p.get("ridge", 0.35), p.get("tilt", 0.0), mirror=p.get("mirror", True))
         PART.extend([p["name"]] * len(new))
+    elif p.get("kind") == "fin": fin(p["name"], p["lead"], p["trail"], p["thick"], p.get("ridge", 0.4), p.get("mirror", True))
     elif p.get("kind") == "sheet": sheet(p["name"], p["points"], p.get("thick", 0.004), p.get("mirror", True))
     elif p.get("kind") == "fan": fan(p["name"], p["hub"], p["edge"], p["bow"], p["bones"], p.get("dip", 0.0), p["thick"], p.get("rows", [0.5, 1.0]), p.get("mirror", True), p.get("fold", False))
     else:
@@ -300,7 +330,7 @@ bmesh.ops.triangulate(bm, faces=bm.faces); bm.to_mesh(me); bm.free()
 for poly in me.polygons:      # pieces with a plain colour are faceted (flat lit facets, like the sheets' gold plates)
     nm = PNAMES[poly.material_index]
     poly.use_smooth = bool(B.get("smooth", False)) if nm == "body" else PSPEC[nm].get("smooth", not PSPEC[nm].get("color"))
-TPART = np.array([p.material_index for p in me.polygons])
+TPART = np.array([p.material_index for p in me.polygons]); SMOOTH = np.array([p.use_smooth for p in me.polygons])
 np.savez(os.path.join(OUT, "mesh.npz"), V=np.array([v.co[:] for v in me.vertices]), T=np.array([p.vertices[:] for p in me.polygons]),
          part=TPART, names=np.array(PNAMES), map=np.array([0] + [PSPEC[n].get("map", 0) for n in PNAMES[1:]]))  # sheet_tools.py views
 for poly in me.polygons: poly.material_index = 0                                  # one material, one texture
@@ -343,7 +373,8 @@ ZBUF = {}
 for v in ("side", "top", "bottom", "front"):
     zb_ = np.full((H_, W_), -1e9)
     pic, dep = to_pic(v, Vn)
-    for t in Tri:
+    for t, part in zip(Tri, TPART):
+        if part and v in PSPEC[PNAMES[part]].get("unseen", ()): continue      # a piece this view does not draw hides nothing in it
         r = raster(pic[t], W_, H_)
         if r is None: continue
         ys_, xs_, L = r; d = L @ dep[t]; np.maximum.at(zb_, (ys_, xs_), d)
@@ -420,13 +451,15 @@ if FAC:
         vex = hard and len(fs) == 2 and (Vn[Tri[fs[1][0]]].mean(0) - Vn[Tri[fs[0][0]]].mean(0)) @ FN[fs[0][0]] < 0    # a raised edge
         for fi, k in fs: CREASE[fi, k] = hard; RIDGE[fi, k] = vex
     FLIGHT = np.array(FAC.get("light", (-0.3, 0.45, 0.84)), float); FLIGHT /= np.linalg.norm(FLIGHT)
-BIAS = {"side": 0.25}; SEE_TOL = 0.012; BAND = 0.08
+BIAS = spec.get("bias", {"side": 0.25}); SEE_TOL = 0.012; BAND = 0.08
 INNER = np.array([[4, 1, 1], [1, 4, 1], [1, 1, 4], [2, 2, 2]]) / 6.0
 col = np.zeros((TEX, TEX, 3)); done = np.zeros((TEX, TEX), bool)
 for fi, t in enumerate(Tri):
     r = raster(np.column_stack([UV[fi][:, 0], 1 - UV[fi][:, 1]]) * TEX, TEX, TEX)   # picture rows run down, UV v runs up
     if r is None: continue
     ys_, xs_, L = r; Pt = Vn[t].copy(); Nt = VN[t].copy(); fn = np.cross(Pt[1] - Pt[0], Pt[2] - Pt[0])
+    if not SMOOTH[fi]: Nt[:] = fn / max(np.linalg.norm(fn), 1e-12)          # a flat facet is judged by its own face: at a fin's
+                                                                            # edge the corners' blended normals point along the edge
     if Pt[:, 1].mean() < 0: Pt[:, 1] *= -1; Nt[:, 1] *= -1; fn[1] *= -1      # the far side uses the mirror
     nm = PNAMES[TPART[fi]]
     if nm != "body" and PSPEC[nm].get("color"):                                # a measured piece: its own colour
@@ -476,6 +509,8 @@ for fi, t in enumerate(Tri):
         drawn.append(v)
         if fn @ DIRS[v] > 0 and (dep >= ZBUF[v][yi, xi] - SEE_TOL).sum() >= 3: seen.append(v)
     seen = seen or [max(drawn or DIRS, key=lambda v: fn @ DIRS[v])]
+    if nm != "body" and PSPEC[nm].get("paint"):          # a flat piece told its views (a fin: the side; a wing: top and bottom):
+        seen = [v for v in PSPEC[nm]["paint"] if fn @ DIRS[v] > 0] or PSPEC[nm]["paint"][:1]   # no part-hidden triangle falls back to a wrong view
     N = L @ Nt; N /= np.maximum(np.linalg.norm(N, axis=1, keepdims=True), 1e-9); P = L @ Pt
     pics = {v: to_pic(v, P)[0] for v in seen}
     S = np.stack([N @ DIRS[v] + BIAS.get(v, 0) for v in seen], 1)
@@ -533,7 +568,7 @@ ob.data.materials.append(mat)
 # ---- renders: the four flat views and the three-quarter view, on the sheet's grey
 sc = bpy.context.scene; sc.render.engine = "BLENDER_EEVEE"; sc.render.film_transparent = False
 sc.view_settings.view_transform = "Standard"
-w = bpy.data.worlds.new("w"); sc.world = w; w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = (*BG ** 2.2, 1)
+w = bpy.data.worlds.new("w"); sc.world = w; w.use_nodes = True; w.node_tree.nodes["Background"].inputs[0].default_value = (*[float((BG ** 2.2).mean())] * 3, 1)   # white fill light as bright as the sheet's grey: a cream belly stays cream
 wn = w.node_tree; wn.nodes["Background"].inputs[1].default_value = spec.get("ambient", 1.0)  # fill light on the model
 cb = wn.nodes.new("ShaderNodeBackground"); cb.inputs[0].default_value = (*BG ** 2.2, 1)   # what the camera sees behind:
 lp = wn.nodes.new("ShaderNodeLightPath"); mx = wn.nodes.new("ShaderNodeMixShader")       # always the sheet's grey

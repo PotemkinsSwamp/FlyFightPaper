@@ -275,6 +275,14 @@ mistake would be easy to make twice.
   and back, hooked forward, then straight back again; wing veins in, out, in; fin caps wide, slim, wide. Each list
   goes in the decision note with what it replaces, and Alan's own typed words outrank a pasted list (he approved the
   tail while the pasted list asked to remove what the tail causes).
+- **Painting a smooth model from its sheet: four traps** (Shark Jet, 2026-11-16, `tools/art/sheet_model.py`).
+  (1) A piece one view does not draw (wings in a side view) must hide nothing in that view (`unseen`), or it cuts a
+  jagged strip out of the paint behind it. (2) A flat fin or wing is told its views (`paint`): left to choose, triangles
+  part-hidden behind the body took another view's picture, and near a swept edge the corners' blended normals picked
+  the top view. (3) A piece standing where another view draws a flat copy of something (the fin's lens on the fold box)
+  takes its paint from a view that is clean there. (4) Two views never give one colour the same tone: let the bottom
+  view take the belly (`bias`), because the side picture's cream goes grey at its edge. Also: when two views disagree on
+  how tall a strip looks, ask what shape under it makes both true (a sloped shoulder) before moving the strip.
 
 ## Studio and the place file
 - **Test players are plain tables** (2026-11-16): `player:GetAttribute` in a server path the unit tests reach errors there

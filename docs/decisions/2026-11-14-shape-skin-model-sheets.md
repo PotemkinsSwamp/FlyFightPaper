@@ -366,6 +366,15 @@
   82 tall, wings 401 across with a straight back edge, back fin 107 tall, tail fin 150 tall. The front view draws the
   body 1.4 times too wide (top and bottom rule); the side view leaves the wings out (high on the shoulder, from the
   front and three-quarter views); the bottom view draws no teeth under the nose (teeth on the two sides only).
+  **Map OK'd ("Ok all go ahead") and built the same day; the preview waits on his OK** (`.planning/skins/shark/build/`,
+  `make_spec.py` holds every number; the last round is `whole-04/`): one mesh, 1,738 triangles, one 1024 picture set, no
+  Tripo, no Codex. Body: a tube lofted through the side and top outlines, a folded-paper head (ridge, upright walls, flat
+  floor) and a roof-shaped back (the side view shows the box 13 px and the rails 11 px tall, which only fits rails lying
+  on a sloped shoulder). Wings, back fin and tail fin: outlines read row by row off the sheet, a crease down each face.
+  Paint: the sheet's own pixels (flank from the side view, belly from the bottom view, wings from the top view on both
+  faces, the fold box from the side view's strip). Outline match 0.95 from above, 0.97 from the side; every piece within
+  20% of its card. Known and told: from dead ahead the face is stretched stripes (needle nose); the tips of the teeth
+  show from below as a thin zigzag along the jaw; the cream changes tone where the side and bottom pictures meet.
 - **Safety swaps (Claude's call, told to Alan before he picked):** Shark A's wing zigzags become soft rounded stripes, Dragon B's
   gold square spirals on the cheeks become plain gold bands. Bent or hooked shapes and paired lightning bolts are the
   kind of picture that got the account banned twice ([lessons](../workshop/lessons.md)).
