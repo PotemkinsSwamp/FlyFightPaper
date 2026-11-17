@@ -451,6 +451,12 @@
   roll back, fire burns from its nozzle and pops from its pipes; the Race Car gets a shine streak every 2 s. The Shark's
   sun-on-water net "just looks bad": instead "some kind of water splash effect like a shark jumping out of water that happens
   periodically" (preview to him first). A Rare-style layer was proven to sit on a 3D skin in an Edit test on the Dragon.
+- **Shark breach, OK'd** (Alan, 2026-11-17, "ok thats good", after three rounds): once every 4 s twin sheets of spray start at the
+  nose and sweep back along the body, thrown outward and back, low. The first small version was "a little small" (now about one and a
+  half times that) and "it should pair with a skin animation to enhance the look": a bright line of water runs down the skin and the
+  skin behind it goes darker like wet paper, then dries. "The shine needs to follow the water ... its lagging behind it": the line
+  now moves at the spray's speed, 0.12 s behind its start. Numbers: the `shark` branch of `.planning/skins/motion/preview.py`.
+  A Blender mock-up; the game version is not built. The Ninja has his OK in its own session (`.planning/skins/ninja/build/tail-10/`).
 
 ## Why
 Concept pictures from one angle left the crane's builder guessing, and guessing cost three passes. A sheet with every
