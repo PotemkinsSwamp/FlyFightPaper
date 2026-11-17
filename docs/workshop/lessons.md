@@ -845,6 +845,9 @@ Back to [HOME](../HOME.md)
 - **Decals stack by `ZIndex`**, and a new Decal can take a few seconds to appear in Edit: wait before the screen grab.
 - **A Decal's glow keeps the picture's own colours** (colour x glow picture x tint x strength), and see-through pixels in
   the picture work. With no glow picture, use the colour picture itself: it then glows by its red.
+- **A layer Decal also sits on a shape skin** (Edit test on the Dragon's one mesh, 2026-11-16): `Face` Top covers every up-facing
+  surface of the whole model's box, a second Decal with `Face` Bottom covers the underside, its glow works, upright sides keep the
+  skin's own paint. So a Legendary can carry Rare-style moving layers. Not yet run as the game's own code in Play.
 - **Pure-logic tests run in Studio Edit without Play:** copy the spec into a fresh ModuleScript beside the others and
   `require` it from `execute_luau`; copy any module that changed since Studio last loaded it (an old copy stays cached).
 - **Rojo's file watcher can hold a `src/` file for a moment:** a script's write fails with "Invalid argument"; retry.
