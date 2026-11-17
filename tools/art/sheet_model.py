@@ -63,7 +63,9 @@ points in sheet pixels):
   within `distance` and that is multiplied into the colour picture: dark crevices where pieces overlap or meet the skin),
   grade (optional {saturation, contrast (about mid grey), black (0..0.1: the darkest tones pulled down to black), gain (below 1: darker)}:
   applied to the whole colour picture last, after the crevice shadows),
-  uv (optional {angle, margin}: the unwrap's angle limit in degrees, default 40, and the gap between islands, default 0.01;
+  uv (optional {angle, margin, upright}: the unwrap's angle limit in degrees, default 40, and the gap between islands, default 0.01;
+  upright true: every island is turned so the model's nose-to-tail line runs the same way in the picture and the packing never turns
+  one (no pieces laid a quarter turn from each other round a middle: the pinwheel look Roblox's picture checker can misread);
   focus [{box [[x0, x1], [y0, y1], [z0, z1]], facing [x, y, z], min (default 0.35), texel}]: the body's faces in the box that face
   that way become one island of their own, seen along that facing, at `texel` times the usual density: a chin's steep front),
   only (optional list of map numbers: build just those pieces on the body, one module at a time, for the close-up
@@ -354,6 +356,17 @@ bpy.context.view_layer.objects.active = ob
 bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT")
 UVS = spec.get("uv", {})                 # fewer, bigger islands (a higher angle) leave more of the picture for the large surfaces
 bpy.ops.uv.smart_project(angle_limit=math.radians(UVS.get("angle", 40)), island_margin=UVS.get("margin", 0.01), area_weight=0.0, correct_aspect=True)
+PACK = dict(margin=UVS.get("margin", 0.01), rotate=not UVS.get("upright"))
+if UVS.get("upright"):                   # every island the same way up: the model's x (else z, else y) runs along the picture's u
+    from bpy_extras import mesh_utils
+    bpy.ops.object.mode_set(mode="OBJECT"); uvl = me.uv_layers.active.data
+    for isl in mesh_utils.mesh_linked_uv_islands(me):
+        li = [l for f in isl for l in me.polygons[f].loop_indices]; P = np.array([me.vertices[me.loops[l].vertex_index].co[:] for l in li]); Q = np.array([uvl[l].uv[:] for l in li])
+        qm = Q.mean(0); A = np.linalg.lstsq(P - P.mean(0), Q - qm, rcond=None)[0].T; top = np.linalg.svd(A, compute_uv=False)[0]
+        g = next((A @ d for d in np.eye(3)[[0, 2, 1]] if np.linalg.norm(A @ d) >= 0.5 * top), A[:, 0]); a = -math.atan2(g[1], g[0])
+        Q = (Q - qm) @ np.array([[math.cos(a), math.sin(a)], [-math.sin(a), math.cos(a)]]) + qm
+        for l, q in zip(li, Q): uvl[l].uv = q
+    bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT"); bpy.ops.uv.select_all(action="SELECT"); bpy.ops.uv.pack_islands(**PACK)
 if any(p.get("texel") for p in spec.get("parts", [])):       # a part's "texel": its share of the picture, times this (a hero surface: 1.6)
     bpy.ops.object.mode_set(mode="OBJECT"); uvl = me.uv_layers.active.data
     for poly, k in zip(me.polygons, TPART):
@@ -361,7 +374,7 @@ if any(p.get("texel") for p in spec.get("parts", [])):       # a part's "texel":
         if f != 1.0:
             for li in poly.loop_indices: uvl[li].uv = uvl[li].uv * f
     bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT"); bpy.ops.uv.select_all(action="SELECT")
-    bpy.ops.uv.pack_islands(margin=UVS.get("margin", 0.01))
+    bpy.ops.uv.pack_islands(**PACK)
 for fo in UVS.get("focus", []):         # a small steep patch of the body (a chin's front) gets its own island, seen along its own facing, at `texel` times the density
     bpy.ops.object.mode_set(mode="OBJECT"); uvl = me.uv_layers.active.data; b0, b1 = np.array(fo["box"], float).T; fd = np.array(fo["facing"], float); fd /= np.linalg.norm(fd)
     pick = [poly for poly in me.polygons if TPART[poly.index] == 0 and (np.array(poly.center) >= b0).all() and (np.array(poly.center) <= b1).all() and np.array(poly.normal) @ fd >= fo.get("min", 0.35)]
@@ -372,7 +385,7 @@ for fo in UVS.get("focus", []):         # a small steep patch of the body (a chi
     for poly in pick:
         for li, vi in zip(poly.loop_indices, poly.vertices): co = np.array(me.vertices[vi].co); uvl[li].uv = (co @ e1 * k, co @ e2 * k)
     bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT"); bpy.ops.uv.select_all(action="SELECT")
-    bpy.ops.uv.pack_islands(margin=UVS.get("margin", 0.01)); print("uv focus:", len(pick), "triangles at", fo.get("texel", 2.0), "times the density")
+    bpy.ops.uv.pack_islands(**PACK); print("uv focus:", len(pick), "triangles at", fo.get("texel", 2.0), "times the density")
 bpy.ops.object.mode_set(mode="OBJECT")
 Vn = np.array([v.co[:] for v in me.vertices]); Tri = np.array([p.vertices[:] for p in me.polygons])
 UV = np.array([[me.uv_layers.active.data[li].uv[:] for li in p.loop_indices] for p in me.polygons])

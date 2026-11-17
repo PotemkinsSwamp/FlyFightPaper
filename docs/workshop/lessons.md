@@ -30,6 +30,11 @@ mistake would be easy to make twice.
 - **Built parts get the same gap fill** (Dragon, 2026-11-15): fill every texel no triangle uses from the nearest used one
   (`upload_prep.py`, with the Dragon's paint scripts under `.planning/skins/dragon/`). For two-value pictures (metal, roughness) count only texels inside a
   triangle, or stray edge texels grow into rays. One FBX with several meshes arrives as a Model of MeshParts that keep their names.
+- **An automatic unwrap can lay a model's faces in a pinwheel** (Hot Rod, 2026-11-16): Blender's packer turned the four wing
+  faces a quarter turn from each other round a middle. `tools/art/sheet_model.py`'s `uv.upright` turns every island the same
+  way up and packs without turning any (the Hot Rod lost 16% of its texels per length; six player's views showed no change).
+  The safety sheet for such a skin: `.planning/skins/safety/` (`uv_dump.py` in Blender, then `sheet.py`: the gap fill and a
+  before/after sheet to look at). A glow picture is always bright shapes on black: look at it hardest.
 - **A model only for looking at:** `Archivable = false` keeps it out of saves, publishes and Play. SurfaceAppearance has a glow now
   (`EmissiveMaskContent`, `EmissiveStrength`, `EmissiveTint`).
 - **A freshly uploaded mesh can look invisible for a few seconds** after a place rebuild. Look again before debugging.
