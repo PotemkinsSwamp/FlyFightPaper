@@ -440,6 +440,13 @@
   gold square spirals on the cheeks become plain gold bands. Bent or hooked shapes and paired lightning bolts are the
   kind of picture that got the account banned twice ([lessons](../workshop/lessons.md)).
 
+- **Safety sheets, and Legendaries move** (Alan, 2026-11-16, on the four safety sheets): Race Car "it's fine"; Hot Rod's re-laid
+  picture (`whole-06`, every piece the same way up) "that's fine". The Stealth keeps its glow: "It needs the glow. The glow is
+  important", and it is to get "the same treatment as the rare skins, where we put something under it so it's like the glow is
+  moving throughout the stealth plane". For all of them: "these legendaries need just a little more ... we try to introduce as
+  many of these like little animations as we can" (flames that look like they move). A flat texture picture means nothing to
+  him: show risks on the plane, not on the sheet. How the movement is made: not decided (plan to him first).
+
 ## Why
 Concept pictures from one angle left the crane's builder guessing, and guessing cost three passes. A sheet with every
 view, measured, says what to build; projecting the sheet's own art keeps its look instead of repainting it by code.
