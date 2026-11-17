@@ -385,6 +385,11 @@
   sheet's own front view as the start, 55,327 tokens, one generation): everything kept, one full grin from cheek to
   cheek under the snout. `front-before-after.jpg` waits on his OK; then that mouth goes on the model (the head's
   underside and the ends of the side grin: on a needle nose only the underside is free to face forward).
+  **He OK'd the picture ("Ok put that mouth on the model") and it is on the model** (`build/mouth.py`, round `whole-08/`,
+  `mouth-views.jpg`): the grin is found in Codex's picture, unbent into a band low on the head's floor and copied into
+  the sheet's bottom view. Fitting the whole grin made its 23 teeth 2.6 px each (a comb), so the floor shows the grin's
+  middle 11 teeth at the side teeth's size and the grin's ends are the side rows on the walls. Waits on his OK. Short of
+  the picture: the grin sits low and smaller (needle nose), and from straight underneath the teeth are long streaks.
 - **Safety swaps (Claude's call, told to Alan before he picked):** Shark A's wing zigzags become soft rounded stripes, Dragon B's
   gold square spirals on the cheeks become plain gold bands. Bent or hooked shapes and paired lightning bolts are the
   kind of picture that got the account banned twice ([lessons](../workshop/lessons.md)).
