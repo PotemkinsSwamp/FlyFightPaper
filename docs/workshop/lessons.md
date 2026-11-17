@@ -283,12 +283,20 @@ mistake would be easy to make twice.
   takes its paint from a view that is clean there. (4) Two views never give one colour the same tone: let the bottom
   view take the belly (`bias`), because the side picture's cream goes grey at its edge. Also: when two views disagree on
   how tall a strip looks, ask what shape under it makes both true (a sloped shoulder) before moving the strip.
-- **One skin cannot show two pictures, unless it is steps** (Shark Jet's face, 2026-11-16). A needle nose shows the
-  front its skin at about 10 degrees, so a grin painted for the side is stripes head-on, and a mouth painted on the
-  underside stays small however it is stretched (three rounds lost). Fine steps give each view faces of its own:
-  risers for the front picture, treads for the side (`sheet_model.py` `terrace`). Head-on it is the front picture; at
-  an angle the steps show, so keep them off the roof the player's camera sees. And when Alan names the route (Codex
-  redraws the view), take that route first: a cheaper one of mine cost two round trips.
+- **A needle nose cannot show a face head-on; do not fake it with geometry** (Shark Jet's smile, 2026-11-16). The nose
+  shows the front its skin at about 10 degrees, so a grin painted for the side is stripes head-on. I cut the head's
+  sides into fine steps (forward faces for the front picture, side faces for the side grin): head-on it matched, but
+  at every angle in between both pictures showed at once as lines, and Alan called it what it was, a visible break.
+  What he accepted in the end: the smooth painted head, and the front picture's smile painted on the underside of
+  the nose, each underside point given the colour the picture has where that point is seen from dead ahead
+  (`.planning/skins/shark/build/front_face.py`). When Alan names the route (Codex redraws the view), take that route
+  first, and when he calls something a defect do not offer it back as a trade-off.
+- **In a picture brief the approved picture is the design, not a guide** (eight Legendary sheets, 2026-11-16). I sent
+  Alan's two approved concept pictures along but described each skin in my own words and added my own shape rules;
+  Codex drew the words (eight wrong sheets, about 470,000 tokens). Cut each item out on its own, say "draw this exact
+  thing, unchanged", let the words only list what is in the picture, and look at the cut-outs before sending. The
+  picture tool's filter refused "stealth", "fighter", "ninja" and weapon words, and a cut-out that still carried the
+  written name: paint the name out.
 
 ## Studio and the place file
 - **Test players are plain tables** (2026-11-16): `player:GetAttribute` in a server path the unit tests reach errors there

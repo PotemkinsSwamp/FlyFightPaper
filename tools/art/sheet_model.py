@@ -15,9 +15,7 @@ points in sheet pixels):
   sheet, out (folder), views {side, top, bottom, front, three_quarter: [x0, y0, x1, y1]}, review {view: box}
   (optional tighter crops of the sheet for review.jpg, e.g. just the head),
   body {from, to, stations, sides, round (2 ellipse, 1 diamond, 3+ boxier), mid (0..1, where the widest line sits
-        between bottom and top; round and mid are one number or [[x, value], ...] along the body), terrace ({to, steps, map, texel}: from the nose tip to `to` the body's walls and floor (below
-        its widest line) are built as that many fine steps, flat-shaded: forward-facing risers for the front view's paint, treads for
-        the other views; the roof stays a smooth cone), end_point (true: the body's last station is kept as given, a tail ending in a point), round_under (optional: the
+        between bottom and top; round and mid are one number or [[x, value], ...] along the body), end_point (true: the body's last station is kept as given, a tail ending in a point), round_under (optional: the
         lower half's own roundness, e.g. a ridged roof over upright walls and a flat floor), smooth (bool), top_line [[x, z], ...], width_line [[x, half width], ...]  (where a
         horn, crest, fin or wing joins, the drawn outline is not the body: over the line's span the body follows these
         points instead), bottom_line [[x, z], ...] (the same for the underside: a leg hanging below it), crown [a, b]  (over this span two ridges, up and out at 45 degrees, reach the DRAWN outline's
@@ -198,39 +196,9 @@ zm = zb + along(B.get("mid", 0.5)) * (zt - zb); RR = along(B.get("round", 2.0));
 
 V, Fc, PART = [], [], []
 def sp(c, e): return np.sign(c) * abs(c) ** (2.0 / e)
-rings = []; TER = B.get("terrace")
-if TER:       # The head as fine steps instead of a smooth cone: each step is a tread (parallel to the body: what the side, top and
-              # bottom views see) and a riser (square to the body: what the front view sees). A needle nose shows the front view
-              # its skin at about 10 degrees, so paint that reads from the side is stripes from dead ahead; on steps each view
-              # gets faces of its own, and the outline stays the cone's to within one step.
-    prof = lambda x: [float(np.interp(x, X, a)) for a in (zt, zb, wt, wb, zm, RR, RU)]
-    def sec(x):
-        t, b_, wT, wB, m, r1, r2 = prof(x); out = []
-        for j in range(NK):
-            th = math.pi / 2 + 2 * math.pi * j / NK; c, s = math.cos(th), math.sin(th); R = r1 if s >= 0 else r2
-            out.append(((wT if s >= 0 else wB) * sp(c, R), m + sp(s, R) * ((t - m) if s >= 0 else (m - b_))))
-        return out
-    V.append((0.0, 0.0, 0.0)); back = [0] * NK; xs_t = np.linspace(0, TER["to"], TER["steps"] + 1)
-    # Only below the widest line (walls and floor): the roof stays a smooth cone, sharing the steps' corners. Its paint is
-    # plain from every side, and it is what the player's own camera looks down on.
-    low = [math.sin(math.pi / 2 + 2 * math.pi * j / NK) < TER.get("up_to", 0.0) - 1e-9 for j in range(NK)]   # up_to: 0 = the widest line; 0.4 takes one facet of roof too (a face's eyes sit there)
-    def face(part, *ids):
-        out = [i for k, i in enumerate(ids) if i not in ids[:k]]
-        if len(out) >= 3: Fc.append(tuple(out)); PART.append(part)
-    for k in range(1, len(xs_t)):
-        S = sec(xs_t[k]); front = list(back)
-        for j in range(NK):
-            if low[j]: front[j] = len(V); V.append((float(xs_t[k - 1]), *S[j]))
-        nb = list(range(len(V), len(V) + NK)); V.extend((float(xs_t[k]), y, z) for y, z in S)
-        for j in range(NK):
-            q = (j + 1) % NK
-            face("head_steps", back[j], back[q], front[q], front[j])                                   # the riser (none on the roof)
-            face("head_steps" if low[j] or low[q] else "body", front[j], front[q], nb[q], nb[j])        # the tread, or the roof's cone
-        back = nb
-    rings.append(back)
-elif B["from"] <= 0.002: V.append((0.0, 0.0, float(zm[0]))); tip = 0
+rings = []
+if B["from"] <= 0.002: V.append((0.0, 0.0, float(zm[0]))); tip = 0
 for i, x in enumerate(X):
-    if TER and x <= TER["to"] + 1e-6: continue
     ring = []
     for j in range(NK):
         th = math.pi / 2 + 2 * math.pi * j / NK; c, s = math.cos(th), math.sin(th); R = RR[i] if s >= 0 else RU[i]
@@ -242,7 +210,7 @@ for i, x in enumerate(X):
             y = math.copysign(abs(y) + f * max(wc[i] - abs(y), 0), y); z += f * max(zc[i] - z, 0)
         ring.append(len(V)); V.append((float(x), float(y), float(z)))
     rings.append(ring)
-if B["from"] <= 0.002 and not TER:
+if B["from"] <= 0.002:
     for j in range(NK): Fc.append((tip, rings[0][(j + 1) % NK], rings[0][j])); PART.append("body")
 for a, b in zip(rings, rings[1:]):
     for j in range(NK): Fc.append((a[j], a[(j + 1) % NK], b[(j + 1) % NK], b[j])); PART.append("body")
@@ -353,7 +321,6 @@ for p in spec.get("parts", []):
         cuts = [0] + list(p.get("breaks", [])) + [len(p["spine"])]                   # each stretch its own closed shell
         for a, b in zip(cuts, cuts[1:]): tube(p["name"], p["spine"][a:b], p["radius"][a:b], p.get("sides", 6), p.get("mirror", True), p.get("roll", 0.0), p.get("phase", 0.0))
 PSPEC = {p["name"]: p for p in spec.get("parts", [])}; PNAMES = ["body"] + list(PSPEC)
-if B.get("terrace"): PSPEC["head_steps"] = {"smooth": False, "map": B["terrace"].get("map", 0), "texel": B["terrace"].get("texel", 1.0)}; PNAMES.append("head_steps")
 
 me = bpy.data.meshes.new("skin"); me.from_pydata(V, [], Fc); me.update()
 for poly, nm in zip(me.polygons, PART): poly.material_index = PNAMES.index(nm)    # survives triangulating: the part
@@ -372,7 +339,7 @@ bpy.context.view_layer.objects.active = ob
 bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT")
 UVS = spec.get("uv", {})                 # fewer, bigger islands (a higher angle) leave more of the picture for the large surfaces
 bpy.ops.uv.smart_project(angle_limit=math.radians(UVS.get("angle", 40)), island_margin=UVS.get("margin", 0.01), area_weight=0.0, correct_aspect=True)
-if any(p.get("texel", 1.0) != 1.0 for p in PSPEC.values()):       # a part's "texel": its share of the picture, times this (a hero surface: 1.6)
+if any(p.get("texel") for p in spec.get("parts", [])):       # a part's "texel": its share of the picture, times this (a hero surface: 1.6)
     bpy.ops.object.mode_set(mode="OBJECT"); uvl = me.uv_layers.active.data
     for poly, k in zip(me.polygons, TPART):
         f = PSPEC[PNAMES[k]].get("texel", 1.0) if k else 1.0
