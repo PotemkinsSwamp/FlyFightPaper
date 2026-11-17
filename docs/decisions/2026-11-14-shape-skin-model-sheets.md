@@ -446,6 +446,11 @@
   moving throughout the stealth plane". For all of them: "these legendaries need just a little more ... we try to introduce as
   many of these like little animations as we can" (flames that look like they move). A flat texture picture means nothing to
   him: show risks on the plane, not on the sheet. How the movement is made: not decided (plan to him first).
+- **Movement previews** (Alan, 2026-11-17, on four 4-second videos made by `.planning/skins/motion/preview.py`): "everything is good
+  except the shark". OK'd as shown: the Stealth's lines breathe and a comet of light runs down them; the Hot Rod's painted flames
+  roll back, fire burns from its nozzle and pops from its pipes; the Race Car gets a shine streak every 2 s. The Shark's
+  sun-on-water net "just looks bad": instead "some kind of water splash effect like a shark jumping out of water that happens
+  periodically" (preview to him first). A Rare-style layer was proven to sit on a 3D skin in an Edit test on the Dragon.
 
 ## Why
 Concept pictures from one angle left the crane's builder guessing, and guessing cost three passes. A sheet with every
