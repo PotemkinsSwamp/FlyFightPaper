@@ -59,8 +59,10 @@ points in sheet pixels):
   bottom view takes it; lower it when the side picture's edge shading smears onto a belly),
   facets (optional {light, dark, line, width, highlight, angle}: plain-colour pieces get painted facet shading and
   dark crease lines; with highlight (0..1) the raised edges get a light line instead and only the inward creases a dark one),
-  ao (optional {distance, strength, tint [r, g, b] 0..1, samples}: Blender bakes how hidden each spot is from open sky
+  ao (optional {distance, strength, tint [r, g, b] 0..1, samples, normalize (a percentile, e.g. 75: surfaces at least that open get no shadow)}: Blender bakes how hidden each spot is from open sky
   within `distance` and that is multiplied into the colour picture: dark crevices where pieces overlap or meet the skin),
+  grade (optional {saturation, contrast (about mid grey), black (0..0.1: the darkest tones pulled down to black), gain (below 1: darker)}:
+  applied to the whole colour picture last, after the crevice shadows),
   uv (optional {angle, margin}: the unwrap's angle limit in degrees, default 40, and the gap between islands, default 0.01;
   focus [{box [[x0, x1], [y0, y1], [z0, z1]], facing [x, y, z], min (default 0.35), texel}]: the body's faces in the box that face
   that way become one island of their own, seen along that facing, at `texel` times the usual density: a chin's steep front),
@@ -575,9 +577,14 @@ if spec.get("ao"):                   # crevice shadow, baked: where pieces overl
     s0.world.light_settings.distance = A.get("distance", 0.03)
     bpy.ops.object.bake(type="AO", margin=8)
     px = np.empty(TEX * TEX * 4, np.float32); aoi.pixels.foreach_get(px); ao = box(px.reshape(TEX, TEX, 4)[::-1, :, 0].astype(float), 1)
+    if A.get("normalize"): ao = np.clip(ao / max(float(np.percentile(ao[done], A["normalize"])), 1e-6), 0, 1)   # open surfaces stay untouched: only what is more hidden than this share of the skin darkens
     ob.data.materials.clear(); print("ao mean", round(float(ao[done].mean()), 3), "darkest 5%", round(float(np.percentile(ao[done], 5)), 3))
     f = 1 - A.get("strength", 0.7) * (1 - np.clip(ao, 0, 1)); tint = np.array(A.get("tint", (0.3, 0.24, 0.18)))
     col = col * (tint + (1 - tint) * f[..., None])
+
+if spec.get("grade"):                # the finished colour picture, graded as a whole: richer, darker, more contrast
+    G = spec["grade"]; lg = (col @ np.array((0.299, 0.587, 0.114)))[..., None]; col = lg + (col - lg) * G.get("saturation", 1.0)
+    col = (col - 0.45) * G.get("contrast", 1.0) + 0.45; bk = G.get("black", 0.0); col = np.clip((col - bk) / (1 - bk), 0, 1) * G.get("gain", 1.0)
 
 def save(arr, name, srgb):
     a = np.atleast_3d(arr); a = np.repeat(a, 3, 2) if a.shape[2] == 1 else a
