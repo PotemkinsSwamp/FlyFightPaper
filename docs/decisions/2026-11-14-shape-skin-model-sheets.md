@@ -402,11 +402,19 @@
   don't really see anything ... or it's covered by something", like the P-40, whose mouth wraps round its air intake:
   "I'm not saying let's build an air intake into it ... something blocks the bottom part from showing the mangled smile
   underneath. We just can't have those visual discrepancies, which were those lines." A piece added in Blender is allowed.
-  Claude's answer, as a rough mock-up (`build/jaw_mock.py`, round `jaw-02/`, `mouth-views.jpg`): a small chin under the
-  nose. Its front leans back 45 degrees and wears the middle of Codex's grin; its sides wear the sheet's side view; its
-  underside is plain belly. Why 45 degrees: paint on the needle's underside is seen at about 9 degrees from ahead, so
-  what reads right from ahead is stretched six times from below; on a 45-degree face it reads the same from ahead and
-  from below. The head itself is untouched. Waits on his OK; then it is built into the one mesh and picture.
+  Claude's answer: a chin under the snout. A first rough mock-up (a separate box laid over the model) went to him
+  unreviewed: "are you even using a visual qa agent that looks horrible." **Built properly since, with an independent
+  reviewer on every round** (`build/make_spec.py`, `build/chin_paint.py`, `build/mouth_views.py`; rounds `chin-01/` to
+  `chin-09/`): the chin is part of the body's own mesh. Under the needle the underside drops in a steep rounded front
+  58 px behind the tip (the chin's lowest point 25.5 px below the tip's level; the belly is 29) and runs back into the
+  belly. The mouth's front third leaves the side walls and wraps round that front as one band laid along the surface,
+  made of the sheet's own side teeth (mirrored at a tooth's tip, so the side mouth behind it is untouched), smaller
+  towards the middle, drawn crisp. Ahead of the chin the snout is skin all round, underside too, as in Codex's front
+  view. Unchanged: the head above the mouth, the top view's outline, the mouth from the fifth tooth back. 2,186
+  triangles, closed, every piece within its card. Three reviewers: the third said the front smile is there, underneath
+  is clean, "close, one short pass away" (grey smudges under the teeth: fixed in `chin-09/`; still there: the sheet's
+  dark lower lip at the mouth's corner reads as a wedge from below, the teeth change size near the corners from low
+  angles, the chin is a small bump under the nose from the side). `chin-09/mouth-views.jpg` waits on his OK.
 - **The other eight Legendaries get model sheets** (Alan, same day: "one image for each showing top bottom and sides
   make sure it keeps it consistent"): bumblebee, rocket, hot rod, stealth jet, mech, pirate, ninja, race car. Claude's
   first batch described the skins in words and called his approved pictures guides; Codex drew the words. Alan: "did

@@ -20,6 +20,8 @@ points in sheet pixels):
         horn, crest, fin or wing joins, the drawn outline is not the body: over the line's span the body follows these
         points instead), bottom_line [[x, z], ...] (the same for the underside: a leg hanging below it), crown [a, b]  (over this span two ridges, up and out at 45 degrees, reach the DRAWN outline's
         top (side view) and width (top view): a crest of blades on a head, as a V seen from the front),
+        extra_stations [x, ...] (more rings at these places; the shape between the usual rings is kept), bottom_exact [[x, z], ...] (over this
+        span the underside follows these points exactly, unsmoothed, and the upper half stays as it was: a chin with a steep front),
         colors {scales, under, under_share, scale}  (optional: see body_paint)},
   parts [{name (unique), color [r, g, b] (optional), mirror (default true), and either
           spine [[x, y, z], ...], radius [r, ...] (one per spine point; or [across, up] pairs), sides, roll (degrees
@@ -59,9 +61,14 @@ points in sheet pixels):
   dark crease lines; with highlight (0..1) the raised edges get a light line instead and only the inward creases a dark one),
   ao (optional {distance, strength, tint [r, g, b] 0..1, samples}: Blender bakes how hidden each spot is from open sky
   within `distance` and that is multiplied into the colour picture: dark crevices where pieces overlap or meet the skin),
-  uv (optional {angle, margin}: the unwrap's angle limit in degrees, default 40, and the gap between islands, default 0.01),
+  uv (optional {angle, margin}: the unwrap's angle limit in degrees, default 40, and the gap between islands, default 0.01;
+  focus [{box [[x0, x1], [y0, y1], [z0, z1]], facing [x, y, z], min (default 0.35), texel}]: the body's faces in the box that face
+  that way become one island of their own, seen along that facing, at `texel` times the usual density: a chin's steep front),
   only (optional list of map numbers: build just those pieces on the body, one module at a time, for the close-up
-  check of the concept-to-blender skill).
+  check of the concept-to-blender skill),
+  paint_script (optional path to a Python file with paint(P, N, colour, ctx) -> colour: called for every batch of the body's
+  texels after the sheet's paint (P: points, far side mirrored to y >= 0; N: normals; ctx: sample, to_pic, spec, X, zt, zb,
+  zm, wt, wb, out). For art that must follow the surface, such as a band wrapped round a corner, where projecting smears).
 """
 import json, math, os, subprocess, sys
 
@@ -193,6 +200,12 @@ if B.get("end_point"):                                             # the same fo
 zc, wc = smooth1(zt0, 1), smooth1(wt0, 1); CR = B.get("crown")
 along = lambda v: np.interp(X, *np.array(v, float).T) if isinstance(v, list) else np.full(NS, float(v))   # one number, or [[x, value], ...]
 zm = zb + along(B.get("mid", 0.5)) * (zt - zb); RR = along(B.get("round", 2.0)); RU = along(B.get("round_under", B.get("round", 2.0)))
+if B.get("extra_stations") or B.get("bottom_exact"):     # more rings where the shape turns sharply (a chin's front); the rest keeps its shape
+    X2 = np.unique(np.concatenate([X, np.array(B.get("extra_stations", []), float)])); X2 = X2[(X2 >= X[0]) & (X2 <= X[-1])]
+    zt, zb, wt, wb, zc, wc, zm, RR = (np.interp(X2, X, a) for a in (zt, zb, wt, wb, zc, wc, zm, RR)); X = X2; NS = len(X)
+    RU = along(B.get("round_under", B.get("round", 2.0)))        # read again at the new rings (a chin's own roundness)
+    if B.get("bottom_exact"):                                     # the underside follows these points exactly; the upper half is untouched
+        p = np.array(B["bottom_exact"], float); k = (X >= p[0, 0]) & (X <= p[-1, 0]); zb[k] = np.interp(X[k], p[:, 0], p[:, 1])
 
 V, Fc, PART = [], [], []
 def sp(c, e): return np.sign(c) * abs(c) ** (2.0 / e)
@@ -347,6 +360,17 @@ if any(p.get("texel") for p in spec.get("parts", [])):       # a part's "texel":
             for li in poly.loop_indices: uvl[li].uv = uvl[li].uv * f
     bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT"); bpy.ops.uv.select_all(action="SELECT")
     bpy.ops.uv.pack_islands(margin=UVS.get("margin", 0.01))
+for fo in UVS.get("focus", []):         # a small steep patch of the body (a chin's front) gets its own island, seen along its own facing, at `texel` times the density
+    bpy.ops.object.mode_set(mode="OBJECT"); uvl = me.uv_layers.active.data; b0, b1 = np.array(fo["box"], float).T; fd = np.array(fo["facing"], float); fd /= np.linalg.norm(fd)
+    pick = [poly for poly in me.polygons if TPART[poly.index] == 0 and (np.array(poly.center) >= b0).all() and (np.array(poly.center) <= b1).all() and np.array(poly.normal) @ fd >= fo.get("min", 0.35)]
+    ids = {poly.index for poly in pick}; a3 = sum(poly.area for poly in me.polygons if poly.index not in ids); au = 0.0
+    for poly in me.polygons:
+        if poly.index not in ids: q = np.array([uvl[li].uv[:] for li in poly.loop_indices]); au += abs(np.cross(q[1] - q[0], q[2] - q[0])) / 2
+    e1 = np.array((0.0, 1.0, 0.0)); e2 = np.cross(fd, e1); k = math.sqrt(au / a3) * fo.get("texel", 2.0)
+    for poly in pick:
+        for li, vi in zip(poly.loop_indices, poly.vertices): co = np.array(me.vertices[vi].co); uvl[li].uv = (co @ e1 * k, co @ e2 * k)
+    bpy.ops.object.mode_set(mode="EDIT"); bpy.ops.mesh.select_all(action="SELECT"); bpy.ops.uv.select_all(action="SELECT")
+    bpy.ops.uv.pack_islands(margin=UVS.get("margin", 0.01)); print("uv focus:", len(pick), "triangles at", fo.get("texel", 2.0), "times the density")
 bpy.ops.object.mode_set(mode="OBJECT")
 Vn = np.array([v.co[:] for v in me.vertices]); Tri = np.array([p.vertices[:] for p in me.polygons])
 UV = np.array([[me.uv_layers.active.data[li].uv[:] for li in p.loop_indices] for p in me.polygons])
@@ -452,6 +476,10 @@ if FAC:
         for fi, k in fs: CREASE[fi, k] = hard; RIDGE[fi, k] = vex
     FLIGHT = np.array(FAC.get("light", (-0.3, 0.45, 0.84)), float); FLIGHT /= np.linalg.norm(FLIGHT)
 BIAS = spec.get("bias", {"side": 0.25}); SEE_TOL = 0.012; BAND = 0.08
+HOOK = None
+if spec.get("paint_script"):             # a skin's own painter for the body's skin: paint(P, N, colour, ctx) -> colour
+    import runpy; HOOK = runpy.run_path(os.path.abspath(spec["paint_script"]))["paint"]
+    CTX = dict(sample=sample, to_pic=to_pic, spec=spec, X=X, zt=zt, zb=zb, zm=zm, wt=wt, wb=wb, out=OUT)
 INNER = np.array([[4, 1, 1], [1, 4, 1], [1, 1, 4], [2, 2, 2]]) / 6.0
 col = np.zeros((TEX, TEX, 3)); done = np.zeros((TEX, TEX), bool)
 for fi, t in enumerate(Tri):
@@ -523,6 +551,7 @@ for fi, t in enumerate(Tri):
     ws = Wt.sum(1, keepdims=True); c = sum(sample(pics[v]) * Wt[:, k:k + 1] for k, v in enumerate(seen)) / np.maximum(ws, 1e-9)
     bare = ws[:, 0] == 0
     if bare.any(): c[bare] = body_paint(P[bare])            # skin the sheet never shows (under a blade): its own scales
+    if HOOK and nm == "body": c = HOOK(P, N, c, CTX)
     col[ys_, xs_] = c; done[ys_, xs_] = True
 grow(col, done, TEX // 64)                                           # fill gaps and pad islands from their neighbours
 col[~done] = col[done].mean(0)

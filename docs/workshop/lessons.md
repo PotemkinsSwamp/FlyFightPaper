@@ -297,6 +297,21 @@ mistake would be easy to make twice.
   thing, unchanged", let the words only list what is in the picture, and look at the cut-outs before sending. The
   picture tool's filter refused "stealth", "fighter", "ninja" and weapon words, and a cut-out that still carried the
   written name: paint the name out.
+- **A picture that must read from ahead needs a steep surface to sit on** (Shark Jet's chin, 2026-11-16). The smile on
+  the needle's underside (above) read from ahead and was a smudge from below ("that's still mangled"): a surface seen
+  at 9 degrees stretches its paint six times when you look from the other side. What worked, in the P-40's way: a chin
+  under the snout with a steep front (about 75 degrees), the mouth's front third laid round it. Four things each cost
+  a round: (1) a band that wraps a corner is painted along the surface (how far round, how far down), never from two
+  projected pictures, which disagree at the corner; (2) the chin's front must be rounded like a boat's bow, because a
+  flat front with square corners makes the teeth jump in size at the corners and looks like a plate from below; (3)
+  teeth sampled from the sheet's soft pixels blur when seen large: draw them crisp (tooth white or mouth dark by
+  brightness) and give that patch more of the picture; (4) a half-faded band is a grey smudge: fade it all or
+  nothing. In `tools/art/sheet_model.py`: `extra_stations`, `bottom_exact`, `uv.focus`, `paint_script`.
+- **Nothing goes to Alan before an independent reviewer has seen it** (same day: "are you even using a visual qa agent
+  that looks horrible"). I showed a rough mock-up, a separate box laid over the model, that only I had looked at. An
+  idea is shown built properly or not at all; the reviewer (an Opus subagent, the pictures and Alan's words only,
+  never my opinion) runs on every preview, and its "no" is fixed first. It found the square chin and the tooth jump
+  that I had passed twice.
 
 ## Studio and the place file
 - **Test players are plain tables** (2026-11-16): `player:GetAttribute` in a server path the unit tests reach errors there
