@@ -397,6 +397,16 @@
   so it lines up."** So: the head's shape is fixed, no steps, the side grin as it was, and Codex's smile painted on the
   underside of the nose where his picture has it (`build/front_face.py`). Round `whole-12/` (`mouth-views.jpg`, 1,738
   triangles) waits on his OK. From straight underneath the smile is stretched along the nose.
+  **"We need to figure something out" (Alan, same day, on `whole-12`):** he sees why the side mouth cannot wrap into a
+  full smile. He wants "some sort of illusionary effect where from the front you see the full smile, but from under you
+  don't really see anything ... or it's covered by something", like the P-40, whose mouth wraps round its air intake:
+  "I'm not saying let's build an air intake into it ... something blocks the bottom part from showing the mangled smile
+  underneath. We just can't have those visual discrepancies, which were those lines." A piece added in Blender is allowed.
+  Claude's answer, as a rough mock-up (`build/jaw_mock.py`, round `jaw-02/`, `mouth-views.jpg`): a small chin under the
+  nose. Its front leans back 45 degrees and wears the middle of Codex's grin; its sides wear the sheet's side view; its
+  underside is plain belly. Why 45 degrees: paint on the needle's underside is seen at about 9 degrees from ahead, so
+  what reads right from ahead is stretched six times from below; on a 45-degree face it reads the same from ahead and
+  from below. The head itself is untouched. Waits on his OK; then it is built into the one mesh and picture.
 - **The other eight Legendaries get model sheets** (Alan, same day: "one image for each showing top bottom and sides
   make sure it keeps it consistent"): bumblebee, rocket, hot rod, stealth jet, mech, pirate, ninja, race car. Claude's
   first batch described the skins in words and called his approved pictures guides; Codex drew the words. Alan: "did
