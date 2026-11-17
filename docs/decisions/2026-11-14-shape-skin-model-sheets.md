@@ -425,7 +425,10 @@
   make the colors less dull, darken the blacks, darken the colors a little bit, and then I think it's good." Done as
   paint only (`make_spec.py`: shadows baked where pieces meet or tuck under each other, then the whole picture graded:
   colour 1.28, contrast 1.16, blacks pulled down, 10% darker). A reviewer passed the first grade ("yes with caveats":
-  shadows too weak, since strengthened and not re-reviewed). `chin-13/before-after.jpg` waits on his OK.
+  shadows too weak, since strengthened and not re-reviewed). **OK'd: "looks good lets wait for the ninja then upload all at the same time" (Alan, same day, on `chin-13`).** The
+  Shark Jet's model is `.planning/skins/shark/build/chin-13/` (2,186 triangles, one 1024 picture set). Not uploaded.
+  The five Legendaries (Shark, Stealth, Race Car, Hot Rod, Ninja) go up together once the Ninja has his OK, each after
+  the safety sheet of its pictures.
 - **The other eight Legendaries get model sheets** (Alan, same day: "one image for each showing top bottom and sides
   make sure it keeps it consistent"): bumblebee, rocket, hot rod, stealth jet, mech, pirate, ninja, race car. Claude's
   first batch described the skins in words and called his approved pictures guides; Codex drew the words. Alan: "did
