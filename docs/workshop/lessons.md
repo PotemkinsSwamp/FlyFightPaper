@@ -649,6 +649,11 @@ mistake would be easy to make twice.
   every change stacks hooks. `say()` without `grow` already attaches it.
 
 ## Working with Alan
+- **A Codex "model is not supported with a ChatGPT account" error means an old Codex program, not his account**
+  (2026-11-18, GPT-6.2 Sol): the Codex plugin runs the `codex` on PATH (`D:
+pm-global`), which was 0.159.2 while his
+  Codex app was newer. Fix: `npm i -g @openai/codex@latest`, then shut the plugin's running helper the plugin's own way
+  (send `broker/shutdown` to its pipe, named in its `app-server-broker.mjs` command line) so the next job starts fresh.
 - **A Play report: ask how he did it before diagnosing, and answer his own suspicion first** (2026-11-16, Dragon). He
   said shots that looked like misses hit him; Claude blamed the "Dev: skin" button ("I was equipping it in the hangar"),
   then asked about a side cause ("has nothing to do with what I said"). He suspected the collision: check that first,
