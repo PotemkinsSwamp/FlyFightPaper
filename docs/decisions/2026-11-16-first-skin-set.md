@@ -123,6 +123,8 @@
 
   - On 2026-11-18 Alan approved Stealth B, the continuous Cloaking Wake. Race Car needs occasional bursts of grinding sparks and large periodic skid marks in place of loose tread scraps.
 
+  - After seeing the skid marks, Alan chose the previous Race Car tire smoke and tread scraps. He wants random spark bursts more often than in the skid mark preview, with breaks you can still see.
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.

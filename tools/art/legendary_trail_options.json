@@ -57,6 +57,7 @@
     ],
     "revisions": {
       "grind": "scrape",
+      "bursts": "scrape",
       "skid": [
         {"model":"soft","look":"soft","rate":79,"life":[0.72,1],"size":[2.35,3.7],"shrink":1.45,"vanish":0.6,"spread":0.56,"drift":0.9,"rise":-2,"spin":24,"colors":[[134,134,136],[171,172,173],[209,209,207]],"pattern":"tracks"}
       ],

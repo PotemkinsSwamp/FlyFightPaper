@@ -46,6 +46,10 @@ def main():
     with tempfile.TemporaryDirectory() as work:
         work = Path(work)
         strip = work / "captions.png"
+        if sys.argv[1:] == ["bursts"]:
+            compare_pair(OUTPUT/"photo_finish-grind.mp4", OUTPUT/"photo_finish-bursts.mp4", "Race Car",
+                         "Continuous sparks", "Intermittent sparks", OUTPUT/"race-car-spark-timing.mp4", strip)
+            return
         if sys.argv[1:] == ["skid"]:
             compare_pair(OUTPUT/"photo_finish-grind.mp4", OUTPUT/"photo_finish-skid.mp4", "Race Car",
                          "Previous", "Skid marks", OUTPUT/"race-car-skids-comparison.mp4", strip)

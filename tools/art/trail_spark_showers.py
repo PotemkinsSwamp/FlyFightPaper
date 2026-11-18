@@ -93,10 +93,10 @@ class SparkPath:
 class GrindingFan:
     steps = 10
 
-    def __init__(self, scene, occasional=False):
+    def __init__(self, scene, burst_interval=None):
         self.scene = scene
         self.rng = random.Random(227)
-        self.occasional = occasional
+        self.burst_interval = burst_interval
         self.next_flare = -2
         self.next = {-1: -2, 1: -2}
         self.sparks = []
@@ -114,9 +114,9 @@ class GrindingFan:
 
     def emit(self, t):
         r = self.rng
-        if self.occasional:
+        if self.burst_interval is not None:
             if t >= self.next_flare:
-                self.next_flare = t + r.uniform(0.82, 1.78)
+                self.next_flare = t + r.uniform(*self.burst_interval)
                 side = r.choice((-1, 1))
                 self.spray(t, side, r.randint(3, 7))
                 if r.random() < 0.32:

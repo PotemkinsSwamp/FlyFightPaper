@@ -198,8 +198,9 @@ cloak = None
 filaments = None
 stream = None
 skids = trail_skids.SkidMarks(sc) if option == "skid" else None
-if option in ("grind", "skid"):
-    filaments = trail_spark_showers.GrindingFan(sc, occasional=option == "skid")
+spark_intervals = {"grind": None, "skid": (0.82, 1.78), "bursts": (0.52, 0.94)}
+if option in spark_intervals:
+    filaments = trail_spark_showers.GrindingFan(sc, burst_interval=spark_intervals[option])
 if option in ("scrape","skip"):
     shower = trail_spark_showers.Shower(sc,trail_pieces.mesh("steel_fleck"),option=="skip")
 if option in ("cloak", "stream"):

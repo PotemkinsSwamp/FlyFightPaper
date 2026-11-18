@@ -205,7 +205,7 @@ The first five videos above are the original review. Alan wanted more texture an
 
 **Alan's picks and current review.** The approved looks are Ninja A, Hot Rod A, Shark Jet B and Stealth B. Shark Jet B is `water_spray-jet.mp4` in `.planning/skins/trails/legendary-review/`. Its rolling water jet carries the hinged bite with warm-rooted enamel teeth and spray.
 
-Race Car is the remaining trail for review. In [the skid mark preview](../../.planning/skins/trails/legendary-review/photo_finish-skid.mp4), broad charcoal scuffs form in the tire smoke, sometimes as a pair with one shorter mark. A few grinding sparks flare on either side with quiet gaps between bursts. The skid marks and sparks have independent timing. [Previous and revised flights side by side](../../.planning/skins/trails/legendary-review/race-car-skids-comparison.mp4).
+Race Car is the remaining trail for review. The [revised flight](../../.planning/skins/trails/legendary-review/photo_finish-bursts.mp4) restores the tire smoke and loose tread scraps from the previous A. Grinding sparks now flare in short bursts on either side. At least one spark is present in 68% of the preview frames, up from 36% in the skid mark version. [Compare the timing against A](../../.planning/skins/trails/legendary-review/race-car-spark-timing.mp4).
 
 In [the continuous Cloaking Wake preview](../../.planning/skins/trails/legendary-review/silver_chaff-stream.mp4), one rippling surface follows Stealth through the turn. It bends the background lines across its width and catches violet light on the folds. The Blender preview takes a clean view of the scenery for each frame. Roblox rendering and performance still need a separate check after visual approval.
 
