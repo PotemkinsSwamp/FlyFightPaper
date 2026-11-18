@@ -113,6 +113,8 @@
 
   - **Five new Legendaries, 2026-11-17.** Alan clarified that a trail is a continuous plume of small objects leaving the exhaust. He chose Ninja stars and smoke like a smoke bomb. He approved building that concept alongside water drops and foam for Shark Jet, tongues of flame for Hot Rod, silver chaff in vapor for Stealth, and checkered racing flags in tire smoke for Race Car.
 
+  - Alan asked for texture and a stronger identity after the first Legendary trail videos. He approved trying shining Ninja stars, folded reflective chaff, tire rubber and sparks, and teeth in the spray. The Hot Rod tubes already backfire. This pass changes only the appearance of the trail. Alan wants to leave behavior triggered by flight or the skin for later.
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.

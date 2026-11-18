@@ -193,6 +193,16 @@ Alan approved the concepts on 2026-11-17. Each draft runs on its matching plane 
 | Stealth | `silver_chaff.mp4` | Silver foil tumbles through faint blue-gray vapor. |
 | Race Car | `photo_finish.mp4` | Little checkered flags turn in white tire smoke. |
 
+The first five videos above are the original review. Alan wanted more texture and character. The revised side-by-side reel is `.planning/skins/trails/legendary-review/legendary-comparison.mp4`. Each label describes a visual choice. The Hot Rod already has its own pipe backfires in the approved skin video. These trail alternatives run on their own, independent of skin animation, boost, corners or player input. The ordinary travel and spacing of every trail still follow the plane.
+
+| Skin | Left | Right |
+|---|---|---|
+| Ninja | Silver reflection crossing a brushed star face | Larger dark stars with polished edges |
+| Hot Rod | Blue core with translucent forked flames | Longer red-and-gold licks echo the wing paint |
+| Stealth | One violet highlight moves through folded foil | Two narrower, cooler streaks pass through larger folds |
+| Race Car | Raised tire tread and gold sparks in one smoke plume | Two lines of tread scraps with copper sparks |
+| Shark Jet | Rows of teeth briefly close in the spray and drift apart | A steady stream of individual teeth along the spray |
+
 ### Drawing and checks
 
 - **How it is drawn (Claude's method, changed after the first videos):** every trail has the same bones. A **ribbon**

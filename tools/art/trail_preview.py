@@ -11,12 +11,22 @@ import sys, os, json, math, random, subprocess, tempfile, shutil, bpy
 import numpy as np
 from mathutils import Vector, Matrix, Quaternion
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import plane_assembly as pa, trail_pieces
+import trail_finishes
 
-ARGS = sys.argv[sys.argv.index("--") + 1:]; TRAIL = ARGS[0]; STILLS = [int(a) for a in ARGS[1:]]
+ARGS = sys.argv[sys.argv.index("--") + 1:]; TRAIL, _, option = ARGS[0].partition(":"); STILLS = [int(a) for a in ARGS[1:]]
 CFG = json.load(open(pa.ROOT / "config/trails.json")); LIFE = CFG["life"]
 SPEC = CFG["trails"].get(TRAIL) or json.load(open(pa.ROOT / "tools/art/trail_drafts.json"))["trails"][TRAIL]   # drafts: not in the game yet
 CARDS = ("soft", "square")                                                    # flat cards that face the camera (particles in the game)
 OUT = pa.ROOT / ".planning/skins/trails"; FPS, SECONDS, SUB, NORMAL, BOOST, CUT = 24, 8.0, 4, 105.0, 150.0, 4.4
+if option:
+    assert option in ("A", "B")
+    with open(pa.ROOT / "tools/art/legendary_trail_options.json") as file:
+        review = json.load(file)[TRAIL]
+    overrides = review["alternate"] if option == "B" else {}
+    SPEC = dict(SPEC, pieces=[p | overrides.get(p.get("layer", p["model"]), {}) for p in review["pieces"]])
+    OUT = OUT / "legendary-review"
+    OUT.mkdir(exist_ok=True)
+    TRAIL += "-" + option
 rng = random.Random(7)
 
 def smooth(x): x = min(max(x, 0.0), 1.0); return x * x * (3 - 2 * x)
@@ -173,17 +183,21 @@ def ribbon_object(r, j):
     if r.get("look") == "foil": b.inputs["Metallic"].default_value, b.inputs["Roughness"].default_value = 0.55, 0.3
     me.materials.append(m); ob = bpy.data.objects.new("ribbon", me); sc.collection.objects.link(ob); return ob, uv
 ribbons = [(r, j) + ribbon_object(r, j) for r in SPEC.get("ribbons", []) for j in range(r.get("strands", 1))]
-looks, pools, lamps = {}, [], []
+pools, lamps = [], []
 for piece in SPEC.get("pieces", []):
     me = trail_pieces.mesh(piece["model"])
-    me.materials.append(looks.setdefault(piece["look"], look(piece["look"]))); pool = []
+    me.materials.append(look(piece["look"])); pool = []
     if "accent" in piece:
         accent = look(piece["look"])
         shader = accent.node_tree.nodes["Principled BSDF"]
         for socket in ("Base Color", "Emission Color"):
-            accent.node_tree.links.remove(shader.inputs[socket].links[0])
+            if shader.inputs[socket].is_linked:
+                accent.node_tree.links.remove(shader.inputs[socket].links[0])
             shader.inputs[socket].default_value = lin(piece["accent"])
         me.materials.append(accent)
+    if "finish" in piece:
+        for index, material in enumerate(me.materials):
+            trail_finishes.finish(material, piece["finish"], accent=index == 1)
     for _ in range(int(piece["rate"] * 1.6 * piece["life"][1]) + 6):
         ob = bpy.data.objects.new(piece["model"], me); sc.collection.objects.link(ob); pool.append(ob)
     pools.append(pool); mine = []
@@ -203,16 +217,30 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
     p, right, nose, up = frame_at(s, v); tail = p + right * TAIL.x + nose * TAIL.y + up * TAIL.z
     hist.append((t, tail, right, up, g))
     for i, piece in enumerate(SPEC.get("pieces", [])):
-        alive[i] = [q for q in alive[i] if t - q["born"] < q["life"]]; owed[i] += piece["rate"] * v / NORMAL / (FPS * SUB)
+        alive[i] = [q for q in alive[i] if t - q["born"] < q["life"]]
+        pattern = piece.get("pattern")
+        if pattern == "bite":
+            # A cluster of ten independent teeth briefly shares a jaw shape every 0.77 seconds.
+            owed[i] += 10 if n % 74 == 0 else 0
+        else:
+            owed[i] += piece["rate"] * v / NORMAL / (FPS * SUB)
         while owed[i] >= 1:
             owed[i] -= 1; a, rad = rng.uniform(0, math.tau), piece["spread"] * math.sqrt(rng.random()); ox, oy = math.cos(a) * rad, math.sin(a) * rad
+            if pattern in ("bite", "rows"):
+                ox = oy = 0
+            if pattern == "tracks":
+                ox = (1 if rng.random() < 0.5 else -1) * 1.23 + ox * 0.36
+                oy = oy * 0.50 - 0.48
             if piece.get("lattice"): ox, oy = round(ox / piece["lattice"]) * piece["lattice"], round(oy / piece["lattice"]) * piece["lattice"]   # on a grid: pieces line up
             axes = rng.choices(((nose, up, right), (right, nose, up), (up, right, nose)), piece.get("axes", (5, 3, 2)))[0]   # a grid piece's long side: along the path, across, up (`axes`: how often each)
             alive[i].append(dict(born=t, life=rng.uniform(*piece["life"]), at=tail + right * ox + up * oy, right=right, nose=nose, grid=Matrix(axes).transposed().to_quaternion() @ Quaternion((1, 0, 0), rng.randrange(4) * math.pi / 2), vel=rnd() * rng.uniform(0, piece["drift"]), g=g, seed=rng.random(),
                                  size=piece["size"][0] + (piece["size"][1] - piece["size"][0]) * rng.random() ** 2, axis=rnd(), dir=(nose + rnd() * 0.45).normalized(),
                                  turn=rng.uniform(0, math.tau), spin=math.radians(piece.get("spin", 0)) * rng.uniform(0.5, 1) * rng.choice((-1, 1)), color=lin(rng.choice(piece["colors"]))))
+            if pattern in ("bite", "rows"):
+                alive[i][-1]["seat"] = int(owed[i]) if pattern == "bite" else n // 2 % 10
     f = n // SUB - int((LIFE + 0.2) * FPS)
     if n % SUB or f < 0 or (STILLS and f not in STILLS): continue
+    for clock in trail_finishes.CLOCKS: clock.default_value = t
     rig.matrix_world = Matrix(((right.x, nose.x, up.x, p.x), (right.y, nose.y, up.y, p.y), (right.z, nose.z, up.z, p.z), (0, 0, 0, 1)))
     if f / FPS < CUT: eye, target, fov = p - nose * 24 + Vector((0, 0, 6)), p + nose * 60, 70      # shot 1: the game's chase camera
     else:                                                                    # shot 2: another player flying alongside, looking across
@@ -256,8 +284,34 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
                 roll = q["turn"] + (q["spin"] * age if piece["model"] == "flame_tongue" else 0)
                 turn = Vector((1, 0, 0)).rotation_difference(q["dir"]) @ Quaternion((1, 0, 0), roll)
             else: turn = Quaternion(q["axis"], q["turn"] + q["spin"] * age)
+            if "seat" in q:
+                upper = 1 if q["seat"] < 5 else -1
+                across = (q["seat"] % 5 - 2) / 2
+                local_up = q["right"].cross(q["nose"]).normalized()
+                if piece["pattern"] == "bite":
+                    gape = 1.35 - 1.03 * smooth((age - 0.11) / 0.14)
+                    release = smooth((age - 0.27) / 0.28)
+                    # Let the teeth form just behind the exhaust long enough to read from the pilot's seat.
+                    delay = age * (0.32 + 0.68 * release)
+                    _, center, _, _, _ = past(t - delay)
+                    at = center + q["vel"] * age * release
+                else:
+                    gape, release = 1.05, smooth((age - 0.14) / 0.48)
+                spread = 0.15 + 0.85 * smooth(age / 0.075)
+                at += (q["right"] * (across * 1.75) + local_up * (upper * gape * (1-0.40*across**2))) * spread
+                at += (q["axis"] + local_up * upper * 0.4) * release * 1.55
+                jaw = Matrix((q["right"], q["nose"], local_up)).transposed().to_quaternion()
+                turn = jaw @ Quaternion((0,1,0), (math.pi if upper < 0 else 0) + upper * across * 0.43)
+                turn = turn @ Quaternion(q["axis"], q["spin"] * age * release)
             ob.matrix_world = Matrix.Translation(at) @ turn.to_matrix().to_4x4() @ Matrix.Diagonal((size, size, size, 1))
             color = q["color"]
+            if piece.get("pulse"):
+                phase = (t * 0.92 - age * 2.1) % 1
+                wave = math.exp(-((phase - 0.46) / 0.12)**2)
+                if piece["pulse"] == "double":
+                    wave = max(wave, 0.88 * math.exp(-((phase - 0.73) / 0.059)**2))
+                bright = (0.79, 0.32, 1.65) if piece["pulse"] == "single" else (0.48, 0.45, 1.72)
+                color = tuple(base * (1-wave) + peak * wave for base, peak in zip(color, bright))
             if piece.get("rainbow"):                                         # the colour runs through the list along the stream, `rainbow` times over
                 runs = float(piece["rainbow"]); cols = piece["colors"] + piece["colors"][:1] * (runs > 1); x = (k * runs % 1 if runs > 1 else min(k, 1)) * (len(cols) - 1)
                 i = min(int(x), len(cols) - 2); c0, c1 = lin(cols[i]), lin(cols[i + 1]); color = tuple(a + (b - a) * (x - i) for a, b in zip(c0, c1))

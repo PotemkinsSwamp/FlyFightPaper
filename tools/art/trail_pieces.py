@@ -160,13 +160,70 @@ def butterfly(bm):                                                          # a 
     wing = ((0.12, 0.02), (0.38, 0.30), (0.30, 0.48), (0.05, 0.36), (-0.08, 0.42), (-0.30, 0.34), (-0.34, 0.14), (-0.12, 0.02))
     for side in (1, -1): bm.faces.new([bm.verts.new((x, side * y, 0.7 * y)) for x, y in wing])
     bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.02); box(bm, (-0.25, -0.025, -0.03), (0.28, 0.025, 0.03))
+
+def folded_chaff(bm):
+    rows = []
+    for x, twist in ((-0.50, -0.04), (-0.16, 0.09), (0.26, -0.05), (0.50, 0.04)):
+        rows.append([bm.verts.new((x, y, z + twist * y * 5))
+                     for y, z in ((-0.16, 0), (-0.04, 0.085), (0.06, 0.012), (0.14, 0.045))])
+    for a, b in zip(rows, rows[1:]):
+        for j in range(3):
+            bm.faces.new((a[j], b[j], b[j+1], a[j+1])).material_index = int(j != 1)
+
+def tread_shred(bm):
+    def surface(u, y, offset=0):
+        return (u - 0.5, y + 0.05 * math.sin(5 * u), 0.26 * math.sin(4.6 * u) + offset)
+    rows = [[bm.verts.new(surface(i / 8, w * (0.10 + 0.085 * math.sin(math.pi * i / 8))))
+             for w in (-1, 1)] for i in range(9)]
+    for a,b in zip(rows,rows[1:]):
+        bm.faces.new((a[0], b[0], b[1], a[1]))
+    bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.034)
+    for i in range(5):
+        u = 0.065 + 0.185 * i
+        for side in (-1, 1):
+            corners = [(u, 0.005), (u+0.057, 0.005), (u+0.14, 0.112), (u+0.077, 0.115)]
+            bm.faces.new([bm.verts.new(surface(x, side*y, 0.041)) for x,y in corners]).material_index = 1
+
+def shark_tooth(bm):
+    # Enamel has a central ridge and a short, darker root.
+    ring = [bm.verts.new((x, 0, z)) for x,z in ((-0.32,0.32),(0.02,0.39),(0.31,0.27),
+                                                   (0.21,0.10),(-0.11,-0.51),(-0.14,-0.13))]
+    for sign in (-1,1):
+        ridge = bm.verts.new((0.015, 0.11 * sign, 0.13))
+        for i in range(len(ring)):
+            bm.faces.new((ring[i], ring[(i+1)%len(ring)], ridge)).material_index = int(i in (0,1))
+
+def forked_flame(bm):
+    # Three curved sheets occupy different planes. The shader fades their edges into hot air.
+    width_layer = bm.verts.layers.float.new("flame_width")
+    length_layer = bm.verts.layers.float.new("flame_length")
+    for tongue, (tip, bend, angle) in enumerate(((-0.76,0.19,0.1),(-0.48,-0.23,2.2),(-0.38,0.27,4.1))):
+        rows = []
+        for i in range(14):
+            u = i / 13
+            width = (0.19 + 0.10 * math.sin(math.pi*u)) * (1-u)**0.55 + 0.003
+            center = bend * math.sin(6*u + tongue*0.35) * u
+            twist = angle + 0.75*u
+            row = []
+            for j in range(5):
+                edge = j/2-1
+                y = center + edge * width * math.cos(twist)
+                z = 0.12*math.sin(4*u+angle)*u + edge * width * math.sin(twist)
+                vertex = bm.verts.new((0.47+(tip-0.47)*u, y, z))
+                vertex[width_layer], vertex[length_layer] = edge, u
+                row.append(vertex)
+            rows.append(row)
+        for a,b in zip(rows,rows[1:]):
+            for j in range(4):
+                bm.faces.new((a[j],b[j],b[j+1],a[j+1])).material_index = int(tongue == 1)
 MODELS = {"jog": (jog, False), "dart": (dart, False), "butterfly": (butterfly, False), "trace": (block(1, 0.02, 0.02), False), "board": (block(1, 0.55, 0.03), False), "chip": (block(1, 0.6, 0.22), False),
           "heart": (heart, False), "note": (note, False), "notes": (notes, False), "petal": (petal, False), "curl": (curl, False), "ball": (ball, True),
           "cube": (block(1, 1, 1), False), "bar": (block(1, 0.045, 0.045), False), "strip": (block(1, 0.36, 0.02), False), "square": (soft, False),
           "star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}
 
 MODELS.update(ninja_star=(ninja_star, False), racing_flag=(racing_flag, False), droplet=(droplet, True),
-              flame_tongue=(flame_tongue, True))
+              flame_tongue=(flame_tongue, True), folded_chaff=(folded_chaff, False),
+              tread_shred=(tread_shred, False), shark_tooth=(shark_tooth, False), forked_flame=(forked_flame, True))
 
 if __name__ == "__main__":
     sc = bpy.context.scene
