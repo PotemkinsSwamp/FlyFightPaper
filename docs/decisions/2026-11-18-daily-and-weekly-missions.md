@@ -16,7 +16,7 @@ optional condition plus a count:
   is not pushed into one choice for long ("to reduce forced choice burnout").
 - **A day of play is 3 matches, about 24 minutes** (Alan: "3 matches is 24 minutes thats a daily play rate").
 
-**Daily: three missions, one easy, one medium, one hard**, never two with the same action.
+**Daily: three missions, one easy, one medium, one hard**, never two with the same action (weekly too).
 
 | Tier | Reward |
 |---|---|
@@ -30,23 +30,59 @@ back the same shape** (Alan: "the mission that takes its place is not the same s
 action from the one swapped out, daily and weekly.
 
 **Weekly: arduous** (Alan: "they should take at least a couple of days no more than 5 days to complete ... it takes you
-playing for the week"). Three missions made by the game plus one fixed card:
+playing for the week"). Three missions made by the game plus one fixed card. They come from the same pool as the
+dailies (Alan: "the weekly missions are the same as the daily missions they share the same pool its just the numbers are
+more difficult and there is no easy weekly mission"). The Blue Ribbon chest comes only from the fixed card (Alan: "you can
+get legendarys from the blue ribbon chest, it needs to be more difficult to get the blue ribbon chest"):
 
 | Card | Size | Reward |
 |---|---|---|
 | Game-made | about 2 days of play | 2,000 Paper |
 | Game-made | about 3 days of play | Sticker chest |
-| Game-made | about 4 to 5 days of play | Blue Ribbon chest |
+| Game-made | about 4 to 5 days of play | Sticker chest + 2,000 Paper |
 | Finish 15 daily missions | any days of the week | Blue Ribbon chest |
 
 The old weekly "3 reward-eligible matches earn a Sticker chest" ([chest decision](2026-11-18-classroom-treasure-chests.md))
 becomes a daily mission. A weekly mission can be swapped for 25% of its reward's Paper value, rising each swap that week
-(2,000 Paper: 500, 1,000, 1,500; Sticker chest: 750, 1,500, 2,250; Blue Ribbon: 1,625, 3,250, 4,875). The "15 daily missions" card
+(2,000 Paper: 500, 1,000, 1,500; Sticker chest: 750, 1,500, 2,250; Sticker chest + 2,000 Paper: 1,250, 2,500, 3,750). The "15 daily missions" card
 can't be swapped. It replaced "all 3 dailies on 5 days" (Alan: "that doesnt give the player much wiggle room ... 15 daily
 missions might be a better way"): 21 dailies come each week, so a player can miss six. It keeps the week calendar: a
 day is ticked when the player finished at least one daily mission that day. Missions are picked when the day or week starts and saved, so changing gear doesn't
 reshuffle them. Daily resets at 00:00 UTC, weekly on Monday 00:00 UTC, like the chest milestones. Only reward-eligible
 matches count.
+
+### The numbers (Alan's OK, 2026-11-18)
+
+What an average player does in one match (Alan: "these are good assessments"; no measuring first):
+
+| Action | Average a match | Where it came from |
+|---|---|---|
+| Folds | 12 | Alan's average player |
+| Assists | 7 | Worked out from veteran bot points (10 folds, 1,338 points) |
+| Damage | 1,800 | Plane health 73-220, most about 130 |
+| Paper earned | 660 | Alan's pace figure for 12 folds |
+| Minutes flown | 7 | 8-minute round less respawns and desk time |
+| Wins | 1 in 3 | Rules: 1 free-for-all in 12, half of team rounds |
+| Top-3 finishes | 1 in 4 | Rules: 3 of 12 places, top 3 of the winning team |
+| Paper targets | 2 | Economy reference match |
+| Folds before being folded (best life) | 3 | Sum from 12 folds and about 10 deaths |
+| Times folded | 10 | Bot matches |
+| Speed boosts | 10 | Guess (no counter yet) |
+| Zone points, Airspace | 350 | Guess (no counter yet) |
+| Folds in the zone, Airspace | 5 | Guess (no counter yet) |
+
+- Daily tiers stand for 1, 2 and 3 matches; weekly cards for 6, 9 and 13. Count = average x matches, rounded to a
+  friendly number; an action is not offered where that comes below 1 (wins and top 3 start at the hard daily).
+- A named weapon or part halves the count (folds, assists, damage and minutes only). A mode halves a daily count; a weekly
+  mode count assumes one match in three is that mode. At most one mode mission a day and one a week, never the hard
+  daily or the 4-5 day card. Zone points and folds in the zone are Airspace missions. About one daily in three has a
+  condition.
+- One-match feats: folds before being folded (easy 3, hard 4), folded at most (easy 8, medium 6, hard 4), and "in one
+  match" (easy 3/4 of an average match, medium a full one, hard 1 1/4). A weekly feat is "N matches where..." at the
+  easy level: 3, 5 and 7 matches (Alan: "7 matches where you folded at least 3 planes before being folded"; a feat done
+  in a single match "cannot be a weekly"). One feat per card.
+- "Paper earned" counts the report card's Paper, boosts included. "Play 3 matches" is one of the hard dailies that can
+  come up, not a mission every day.
 
 How it looks: a Missions sheet from the main menu with Daily and Weekly tabs, each card a goal, progress, reward and a
 Claim button ([explanation picture](../../.planning/missions/weekly-tab-what-the-player-sees.jpg): its weekly cards are
