@@ -13,17 +13,9 @@ local PlaneLooks = require(script.Parent.PlaneLooks)
 local TrailPreview = require(script.Parent.HangarTrailPreview)
 local Opening = {}
 
--- Pixel measurements on the closed 512-square prints. The cut follows the upper edge of the belt
--- and goes around the clasp, rosette or star so each stays attached to the front when the lid pops.
-local pieces = {
-	paper = {offset = Vector2.new(0, 0), corner = {138, 263}, rear = {350, 179}, edge = {
-		{0, 213}, {138, 263}, {264, 253}, {268, 232}, {353, 226}, {365, 231}, {368, 246}, {512, 229}}},
-	sticker = {offset = Vector2.new(512, 0), corner = {116, 261}, rear = {347, 178}, edge = {
-		{0, 217}, {116, 261}, {245, 251}, {248, 238}, {329, 232}, {341, 237}, {344, 245}, {512, 229}}},
-	blue_ribbon = {offset = Vector2.new(0, 512), corner = {143, 238}, rear = {353, 155}, edge = {
-		{0, 187}, {143, 238}, {228, 229}, {237, 202}, {257, 178}, {287, 158}, {320, 153}, {348, 159}, {375, 177}, {398, 200}, {409, 215}, {512, 207}}},
-	golden_star = {offset = Vector2.new(512, 512), corner = {126, 233}, rear = {344, 151}, edge = {
-		{0, 191}, {126, 233}, {276, 221}, {300, 173}, {306, 167}, {312, 171}, {335, 215}, {512, 203}}},
+local iconOffsets = {
+	paper = Vector2.new(0,0), sticker = Vector2.new(512,0),
+	blue_ribbon = Vector2.new(0,512), golden_star = Vector2.new(512,512),
 }
 local TIER = { common = "Common", rare = "Rare", legendary = "Legendary", mythical = "Mythical" }
 local TINT = { common = Color3.fromRGB(222, 229, 217), rare = Color3.fromRGB(187, 219, 251),
@@ -36,8 +28,8 @@ local function atlas(chest)
 	return chest.family == "trail" and Assets.hangarShelf.trailChestAtlas or Assets.hangarShelf.chestAtlas
 end
 function Opening.picture(image, chest)
-	local shape = pieces[chest.base or chest.id]
-	image.Image, image.ImageRectOffset, image.ImageRectSize = atlas(chest), shape.offset, Vector2.new(512, 512)
+	local offset = iconOffsets[chest.base or chest.id]
+	image.Image, image.ImageRectOffset, image.ImageRectSize = atlas(chest), offset, Vector2.new(512, 512)
 	image.ScaleType = Enum.ScaleType.Fit
 	return image
 end
@@ -49,55 +41,20 @@ local function frame(parent, name, z)
 	return f
 end
 
--- The two complimentary gradient masks share exactly the same print, as on the gift box.
-local function cut(parent, texture, shape, above)
-	for i = 2, #shape.edge do
-		local a, b = shape.edge[i-1], shape.edge[i]
-		local width, delta = b[1] - a[1], b[2] - a[2]
-		local strip = Instance.new("ImageLabel")
-		strip.Name, strip.BackgroundTransparency, strip.Image = "Fold", 1, texture
-		strip.ScaleType = Enum.ScaleType.Stretch
-		strip.ImageRectOffset = shape.offset + Vector2.new(a[1], 0)
-		strip.ImageRectSize = Vector2.new(width, 512)
-		strip.Position, strip.Size = UDim2.fromScale(a[1]/512, 0), UDim2.fromScale(width/512, 1)
-		local gradient = Instance.new("UIGradient")
-		local normal = Vector2.new(-delta, width).Unit
-		local length = math.min(width / math.abs(normal.X), 512 / normal.Y)
-		local at = math.clamp(0.5 + ((a[2] + b[2])/2 - 256) * normal.Y / length, 0.001, 0.998)
-		gradient.Rotation = math.deg(math.atan2(normal.Y, normal.X))
-		local first, last = if above then 0 else 1, if above then 1 else 0
-		gradient.Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, first),
-			NumberSequenceKeypoint.new(at, first), NumberSequenceKeypoint.new(at + 0.001, last), NumberSequenceKeypoint.new(1, last)})
-		gradient.Parent, strip.Parent = strip, parent
-	end
-end
-
-local function mouth(parent, shape)
-	-- Draw the back wall of the open box in shadow using folded cardboard from the gift box art.
-	-- Its front lies behind the real printed face, including the clasps that stick up over the rim.
-	local left = shape.corner[1] < 130 and 22 or 35
-	local right = shape.corner[1] < 130 and 465 or 480
-	local frontX, frontY = shape.corner[1], shape.corner[2]
-	local rearX, rearY = shape.rear[1], shape.rear[2]
-	local leftY, rightY = frontY - 39, frontY - 23
-	local function height(x, middleX, middleY)
-		if x < middleX then return leftY + (middleY-leftY)*(x-left)/(middleX-left) end
-		return middleY + (rightY-middleY)*(x-middleX)/(right-middleX)
-	end
-	for x = left, right - 1, 7 do
-		local w = math.min(7, right-x)
-		local y = height(x+w/2, rearX, rearY)
-		local bottom = height(x+w/2, frontX, frontY)
-		local inner = Instance.new("ImageLabel")
-		inner.Name, inner.Image, inner.ScaleType = "Lining", Assets.shop.iconGiftBox, Enum.ScaleType.Stretch
-		inner.BackgroundColor3, inner.BorderSizePixel = Color3.fromRGB(62, 44, 49), 0
-		inner.ImageRectOffset, inner.ImageRectSize = Vector2.new(201+(x-left)%86, 406), Vector2.new(w, 96)
-		inner.Position, inner.Size = UDim2.fromScale(x/512, y/512), UDim2.fromScale((w+0.4)/512, math.max(1,bottom-y+8)/512)
-		local gradient = Instance.new("UIGradient")
-		gradient.Color = ColorSequence.new({ColorSequenceKeypoint.new(0,Color3.fromRGB(185, 156, 121)),
-			ColorSequenceKeypoint.new(0.08,Color3.fromRGB(78, 65, 65)),ColorSequenceKeypoint.new(1,Color3.fromRGB(44, 37, 45))})
-		gradient.Rotation, gradient.Parent, inner.Parent = 90, inner, parent
-	end
+-- A shelf selection gives the one chosen animation time to load before checkout.
+local warming = {}
+function Opening.prepare(chest)
+	local asset = Assets.hangarShelf.chestOpenings[chest.id]
+	if warming[asset] then return end
+	warming[asset] = true
+	task.spawn(function()
+		local ok = pcall(function()
+			ContentProvider:PreloadAsync({asset}, function(_, status)
+				if status ~= Enum.AssetFetchStatus.Success then warming[asset] = nil end
+			end)
+		end)
+		if not ok then warming[asset] = nil end
+	end)
 end
 
 local function makePreview(view, item)
@@ -153,16 +110,21 @@ local function showPrize(request)
 	local stage = frame(sheet,"OpeningStage",1)
 	stage.Size, cover.Visible = UDim2.fromScale(1,1), true
 	local chest, item = request.chest, request.item
-	local shape, texture = pieces[chest.base or chest.id], atlas(chest)
-	local closed = Opening.picture(PaperUI.image(stage,"ClosedChest",texture,0,0,SIZE,SIZE),chest)
-	closed.ZIndex = 6
-	local inside, lid, body = frame(stage,"Inside",2), frame(stage,"Lid",3), frame(stage,"Front",6)
-	for _, group in {inside,lid,body} do group.AnchorPoint=Vector2.new(.5,.5); group.Size=UDim2.fromOffset(SIZE,SIZE); group.Visible=false end
-	cut(lid,texture,shape,true)
-	cut(body,texture,shape,false)
-	mouth(inside,shape)
+	local closed = Opening.picture(PaperUI.image(stage,"ClosedChest",atlas(chest),0,0,SIZE,SIZE),chest)
+	local hinged = frame(stage,"HingedChest",2)
+	hinged.ClipsDescendants, hinged.AnchorPoint = true, Vector2.new(.5,.5)
+	local film = PaperUI.image(hinged,"OpeningFrames",Assets.hangarShelf.chestOpenings[chest.id],0,0,1,1)
+	film.AnchorPoint, film.Size, film.ScaleType = Vector2.zero, UDim2.fromScale(4,4), Enum.ScaleType.Stretch
+	closed.ZIndex, film.ImageTransparency = 3, .995
+	local quiet = Root:GetAttribute("ReducedShake")
+	local glints = {}
+	for i = 1, quiet and 3 or 7 do
+		local glint = PaperUI.image(stage,"Glint"..i,Assets.shop.sparkle,0,0,1,1)
+		glint.ZIndex, glint.Visible = 3, false
+		table.insert(glints,glint)
+	end
 
-	local note = PaperUI.image(stage,"PrizeSheet",Assets.hangarShelf.statsWide,299,90,1322,590)
+	local note = PaperUI.image(stage,"PrizeSheet",Assets.hangarShelf.statsWide,299,10,1322,590)
 	note.ScaleType, note.Visible = Enum.ScaleType.Stretch, false
 	local rarity = centered(PaperUI.loud(PaperUI.words(note,"Rarity",(TIER[item.tier] or item.tier).." "..item.kind,657,111,510,64,51)))
 	rarity.TextColor3 = Color3.fromRGB(49,34,42)
@@ -211,9 +173,17 @@ local function showPrize(request)
 	end
 	PaperUI.button(note,"Wear",Assets.hangar.buttonGreen,"Wear",602,433,290,89,-1,function() close(true) end,52)
 	PaperUI.button(note,"Done",Assets.hangar.buttonRed,"Done",909,433,282,89,1,function() close(false) end,52)
-	local quiet = Root:GetAttribute("ReducedShake")
+	local lastFrame = -1
+	local loadWait = 0
 	render=Run.RenderStepped:Connect(function(dt)
-		clock+=dt
+		-- If the network is still fetching the sheet, hold the closed pose briefly.
+		-- The prize and its buttons remain reachable if an image request fails.
+		if clock + dt >= 1.40 and clock < 1.40 and not film.IsLoaded and loadWait < 1.5 then
+			clock = 1.39
+			loadWait += dt
+		else
+			clock += dt
+		end
 		local rise=ease(clock/.62)
 		local shake=math.clamp((clock-.6)/.76,0,1)
 		local pop=math.clamp((clock-1.40)/.64,0,1)
@@ -224,22 +194,40 @@ local function showPrize(request)
 		local shakeAmount=math.sin(shake*math.pi)^1.5*(quiet and .18 or 1)
 		local x=960+math.sin(shake*10*math.pi)*7*shakeAmount
 		-- A quarter of the chest stays below the physical lower screen edge on every aspect ratio.
-		local y=bottom-155+SIZE*(1-rise)+120*prize
+		local y=bottom-168+SIZE*(1-rise)
 		local tilt=math.sin(shake*9*math.pi)*5.3*shakeAmount
 		local pos=UDim2.fromOffset(x,y)
-		closed.Position,closed.Rotation,closed.Visible=pos,tilt,pop==0
-		inside.Position,body.Position,body.Rotation=pos,pos,tilt
-		inside.Visible,body.Visible,lid.Visible=pop>0,pop>0,pop>0 and pop<1
-		if lid.Visible then
-			local lift=1-(1-pop)^3
-			lid.Position,lid.Rotation=UDim2.fromOffset(x-67*lift,y-265*math.sin(pop*1.85)), -25*lift
-			local scale=1-.21*lift
-			lid.Size=UDim2.fromOffset(SIZE*scale,SIZE*scale)
-			local fade=ease((pop-.56)/.44)
-			for _,part in lid:GetChildren() do part.ImageTransparency=fade end
+		local moving = pop > 0 and film.IsLoaded
+		closed.Position, closed.Rotation, closed.Visible = pos, tilt, not moving
+		-- A hidden ImageLabel never starts rendering its texture on a fresh client.
+		film.ImageTransparency = if moving then 0 else .995
+		local displaySize = SIZE*(1-.10*prize)
+		hinged.Size = UDim2.fromOffset(displaySize*1.25, displaySize*1.25)
+		if moving then
+			-- The baked square starts at (-108,-143) in the original 512px print.
+			-- Both drawings keep the exact same front corner as the hinge turns.
+			hinged.Position = UDim2.fromOffset(x-44*displaySize/512,y-79*displaySize/512)
+			local index = math.min(15, math.floor(pop*16))
+			if index ~= lastFrame then
+				-- Normalized tile coordinates also work when Roblox serves a smaller texture.
+				film.Position = UDim2.fromScale(-(index%4), -math.floor(index/4))
+				lastFrame = index
+			end
+		end
+		local burst = math.clamp((clock-1.47)/.72,0,1)
+		for i, glint in glints do
+			glint.Visible = burst > 0 and burst < 1
+			if glint.Visible then
+				local a = math.rad(-148 + 116*(i-1)/(#glints-1))
+				local distance = (95+155*burst)*(quiet and .60 or 1)
+				local size = (i%2==0 and 45 or 32)*math.sin(burst*math.pi)^.65
+				glint.Size = UDim2.fromOffset(size,size)
+				glint.Position = UDim2.fromOffset(x+math.cos(a)*distance,y-92+math.sin(a)*distance)
+				glint.ImageTransparency = burst*burst
+			end
 		end
 		local w=math.max(1,638*(.12+.88*prize))
-		view.Size,view.Position=UDim2.fromOffset(w,w*.62),UDim2.fromOffset(960-298*prize,y-51+(361-y+51)*prize)
+		view.Size,view.Position=UDim2.fromOffset(w,w*.62),UDim2.fromOffset(960-298*prize,y-65+(281-y+65)*prize)
 		if animate then animate(dt,clock); view.ImageTransparency=if prize>0 then 0 else .995 end
 		if clock>=2.32 and not revealed then
 			revealed,note.Visible=true,true
@@ -250,8 +238,8 @@ local function showPrize(request)
 		end
 		previewMessage.Text=if revealed and not animate then (failed and "Preview unavailable" or "Loading preview") else ""
 		if soundPhase==0 and clock>=.62 then soundPhase=1;Audio.play("rustle") end
-		if soundPhase==1 and pop>0 then soundPhase=2;Audio.play("pop") end
-		if soundPhase==2 and revealed then soundPhase=3;Audio.play("shine") end
+		if soundPhase==1 and pop>0 then soundPhase=2;Audio.play("ding") end
+		if soundPhase==2 and clock>=1.65 then soundPhase=3;Audio.play("purchase") end
 	end)
 end
 

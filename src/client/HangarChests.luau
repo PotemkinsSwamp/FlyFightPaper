@@ -315,6 +315,7 @@ local function progressPage(ctx, sheet)
 end
 
 function Chests.draw(ctx)
+	Opening.prepare(ctx.state.chestPanel.selected)
 	local ui = ctx.ui
 	local dim = ui.instance(ctx.side.Parent, "ChestCover", "TextButton")
 	dim.Text, dim.AutoButtonColor, dim.BorderSizePixel = "", false, 0

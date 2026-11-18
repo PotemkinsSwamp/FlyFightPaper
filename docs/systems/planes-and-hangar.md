@@ -141,7 +141,8 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build or class (tests for classes: `tests/unit/Classes.spec.luau`) |
 | `src/client/HangarChests.luau` | Chest shelf, individual outcome odds, purchase choices and earned rewards. |
 | `src/client/HangarWidgets.luau` | Retains the book, stat sheet, cards, scroll position and button handlers across changes in the binder. Regression: `tests/unit/HangarWidgets.spec.luau`. |
-| `src/client/ChestOpening.luau` | Raises and shakes the chest, opens its lid and lifts out the awarded skin or trail. The result card shows rarity, duplicate Paper and recorded owners when available. Skin and Trail chests use separate artwork. |
+| `src/client/ChestOpening.luau` | Plays the hinged chest opening in the Shop and binder. The clasp stays on the front, the lid stays up behind the prize, and glints accompany the backpack unlock sounds. The card shows the prize, rarity, owner count and duplicate refund. |
+| `tools/art/chest_hinge.py` | Bakes both families' opening sheets from their original prints. Each has 16 rear-hinge poses and a stationary clasp. The client selects frames by their share of the sheet. |
 | `src/client/HangarTrailPreview.luau` | Draws the selected trail in the plane's 3D preview, with the flight meshes, camera-facing smoke and a compact effect behind the fitted tail. |
 | `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the rarity groups and preview, chest, wear and take-off buttons on the Skins and Trails pages |
 | `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): draws the skin's pieces on this screen where `SkinFit` puts them, hides what they cover, draws the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |

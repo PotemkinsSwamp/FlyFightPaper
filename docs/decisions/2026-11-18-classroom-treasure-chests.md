@@ -8,7 +8,7 @@ Players choose a Skin chest or a Trail chest. Both families use Paper, Sticker, 
 
 Players can buy chests with Paper or Robux in the Shop's Chests tab. Direct Robux pricing should be a little cheaper than buying the Paper separately. Weekly match missions and consecutive daily gifts award chests players can open in either family. The starter pack includes a Paper chest. A duplicate returns part of the item's Paper value.
 
-Skin and Trail cards in the Hangar use rarity dividers and coloured paper. Players can preview a locked item in full colour before obtaining it. Opening a chest brings its upper three quarters into view from below. It shakes, the lid pops open, and the prize rises out with its name, rarity and recorded owner count.
+Skin and Trail cards in the Hangar use rarity dividers and coloured paper. Players can preview a locked item in full colour before obtaining it. Opening a chest brings its upper three quarters into view from below. The lid swings on its rear hinges and stays open while the prize is on screen. The star, ribbon and paper latches stay whole on the chest front. The prize rises through a brief sparkle with the backpack unlock sound, then shows its name, rarity and recorded owner count.
 
 ## Why
 
