@@ -10,6 +10,7 @@ local Board=require(script.Parent.MenuBoard)
 local SettingsScreen=require(script.Parent.SettingsScreen)
 local PauseScreen=require(script.Parent.PauseScreen)
 local ShopScreen=require(script.Parent.ShopScreen)
+local MissionsScreen=require(script.Parent.MissionsScreen)
 local WaitScreen=require(script.Parent.WaitScreen)
 local PaperUI=require(script.Parent.PaperUI)
 local Unlock=require(script.Parent.UnlockMoment)
@@ -49,6 +50,7 @@ function Menu.start()
   tutorial=function()Loading.town(function()Tutorial.choose(function()overlay(false)end)end)end, -- the Training board
   prestige=function()action:FireServer("prestige")end,
   shop=function()Menu.show("shop")end,
+  missions=function()Menu.show("missions")end,
  })
  local settingsScreen=SettingsScreen.new(gui.Parent,{
   save=function(settings)action:FireServer("settings",settings);Options.apply(settings)end,
@@ -88,7 +90,12 @@ function Menu.start()
  local shopScreen=ShopScreen.new(gui.Parent,{action=action,buy=function(key)action:FireServer("mockProduct",key)end,claimGift=function()action:FireServer("claimDailyGift")end,
   back=function()home()end})
  local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})
- local paper={home=board,settings=settingsScreen,hangar=hangarScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen}
+ local missionsScreen=MissionsScreen.new(gui.Parent,{
+  claim=function(list,index)action:FireServer("missionClaim",{list=list,index=index})end,
+  swap=function(list,index)action:FireServer("missionSwap",{list=list,index=index})end,
+  swapPrice=function(missions,list,index)return require(Root.Shared.Missions).swapPrice(missions,list,index)end,
+  back=function()home()end})
+ local paper={home=board,settings=settingsScreen,hangar=hangarScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen,missions=missionsScreen}
  Unlock.start({
   seen=function(level)action:FireServer("unlocksSeen",level)end,
   seenLevel=function()return state.profile and state.profile.unlocksSeen or 0 end,

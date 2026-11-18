@@ -10,7 +10,7 @@ local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog)
 local HOLD_SECONDS = 2
 local Board = {}
 
--- actions = { play, hangar, settings, tutorial, prestige, shop (Studio only, may be nil) }
+-- actions = { play, hangar, settings, tutorial, prestige, shop (Studio only, may be nil), missions }
 function Board.new(playerGui, actions)
 	local cover, sheet = PaperUI.screen(playerGui, "MenuBoard", Art.bg)
 	local image, button = PaperUI.image, PaperUI.button
@@ -51,6 +51,9 @@ function Board.new(playerGui, actions)
 	for _, name in { "Hangar", "Settings", "Tutorial" } do PaperUI.phone(buttons[name], { Size = UDim2.fromOffset(500, 130) }) end
 	if actions.shop then
 		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop", 1580, 560, 250, 70, 4, actions.shop, 34))
+	end
+	if actions.missions then
+		table.insert(pieces, button(buttons, "Missions", Art.strip.blue, "Missions", 1300, 560, 250, 70, -3, actions.missions, 34))
 	end
 	-- Prestige (docs/systems/economy-and-shop.md): a button on the stats card at max level, then a confirm sheet that
 	-- says what goes and what stays; holding the button for two seconds confirms, so it can't happen by accident.

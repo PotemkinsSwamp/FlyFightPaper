@@ -341,6 +341,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `src/shared/EconomyRules.luau` | Points to Paper and XP, bonuses, levels, purchases |
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
 | `src/shared/ChestProgress.luau` | Tracks the weekly three-match mission by completion time. Late-match and weekly reset tests are in `tests/unit/ChestProgress.spec.luau`. |
+| `src/shared/Missions.luau` | Generates daily and weekly missions and handles progress, claims, swaps and rollover. Tests are in `tests/unit/Missions.spec.luau`. |
 | `src/shared/LooksRules.luau` | Skin and Trail chest pools, duplicate values, wearing and bot cosmetics ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |
 | `src/server/HangarService.luau` | Buying parts, the practice shop |

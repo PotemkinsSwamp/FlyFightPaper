@@ -1,0 +1,52 @@
+{
+  "average": {
+    "folds": 12,
+    "assists": 7,
+    "damage": 1800,
+    "paper": 660,
+    "minutes": 7,
+    "matches": 1,
+    "wins": 0.36,
+    "top3": 0.25,
+    "targets": 2,
+    "boosts": 10,
+    "zone_points": 350,
+    "zone_folds": 5
+  },
+  "tiers": {
+    "easy": { "matches": 1, "allow_mode": true, "reward": { "paper": 100, "xp": 150 } },
+    "medium": { "matches": 2, "allow_mode": true, "reward": { "paper": 200, "xp": 250 } },
+    "hard": { "matches": 3, "allow_mode": false, "reward": { "paper": 300, "xp": 400 } },
+    "two_day": { "matches": 6, "allow_mode": true, "feat_matches": 3, "reward": { "paper": 2000 }, "paper_value": 2000 },
+    "three_day": { "matches": 9, "allow_mode": true, "feat_matches": 5, "reward": { "sticker": 1 }, "paper_value": 3000 },
+    "five_day": { "matches": 13, "allow_mode": false, "feat_matches": 7, "reward": { "sticker": 1, "paper": 2000 }, "paper_value": 5000 }
+  },
+  "fixed": { "target": 15, "reward": { "blue_ribbon": 1 } },
+  "swaps": { "daily_prices": [0, 150, 300, 450], "weekly_rate": 0.25, "weekly_limit": 3 },
+  "multipliers": { "gear": 0.5, "daily_mode": 0.5, "weekly_mode": 0.3333333333333333 },
+  "condition_chance": 0.3333333333333333,
+  "offer_cutoff": 0.75,
+  "feats": {
+    "daily_count": 1,
+    "best_life": { "easy": 3, "hard": 4 },
+    "max_deaths": { "easy": 8, "medium": 6, "hard": 4 },
+    "one_match": { "easy": 0.75, "medium": 1.0, "hard": 1.25 }
+  },
+  "rounding": {
+    "minimum": 1,
+    "bands": [
+      { "under": 20, "step": 1 },
+      { "under": 200, "step": 5 },
+      { "under": 1000, "step": 50 },
+      { "under": 10000, "step": 100 },
+      { "step": 500 }
+    ]
+  },
+  "time": {
+    "seconds_per_minute": 60,
+    "seconds_per_day": 86400,
+    "days_per_week": 7,
+    "monday_offset": 3,
+    "max_timestamp": 253402300799
+  }
+}
