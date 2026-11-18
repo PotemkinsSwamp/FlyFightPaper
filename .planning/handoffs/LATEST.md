@@ -1,10 +1,10 @@
 # Latest FlyFightPaper handoffs
 
-[Current beta handoff](handoff-2026-11-18-beta-lane-player-hangar-catalog.md)
+[Current beta handoff](handoff-2026-11-18-beta-lane-hangar-trail-preview-and-skin-fixes.md)
 
-★ START HERE: All 23 finished skins and all 18 trails are reachable through the player's Hangar. If Alan reports a missing look, open its card from the same loadout and wallet he used and follow it into flight. The check is complete when the correct textured plane and trail survive launch.
+★ START HERE: The binder now holds a selection through a server refresh and previews all 18 trails on the plane. Alan's next check is Hangar > Customize > Trails. Pick a trail, drag the plane and release, then switch cards quickly.
 
-Private Studio save 791. All 705 tests passed. [Previous beta handoff](handoff-2026-11-18-beta-lane-ninja-and-five-legendary-trails.md).
+Private Studio save 797. All 708 tests passed. [Previous beta handoff](handoff-2026-11-18-beta-lane-player-hangar-catalog.md).
 
 Skins lane (side session) -> handoff-2026-11-15-skins-lane-dragon-whole-body-round-14.md
 ★ START HERE (skins): The whole Dragon is built as `.planning/skins/dragon/body-fable/round-14/` (3,334 triangles; picture `body-fable/sheet-vs-model.jpg`). Alan has seen it: "still a lot of problems"; he will give a new list. Next: build his list as round 15 and show him the sheet beside the model, what is still short first. Holds: upload, Save to File, publish, Studio.
