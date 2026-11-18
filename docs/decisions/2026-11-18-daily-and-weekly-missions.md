@@ -84,6 +84,12 @@ What an average player does in one match (Alan: "these are good assessments"; no
 - "Paper earned" counts the report card's Paper, boosts included. "Play 3 matches" is one of the hard dailies that can
   come up, not a mission every day.
 
+**At the desk** (Alan, same day: "there does need to be a way to check your missions mid-match ... it should be at the
+desk", mobile is cramped): a Missions strip under "Switch to presets" that drops down a compact, semi-transparent list
+of the missions and their progress, with a button switching Daily and Weekly; clicking the strip again collapses it.
+Never mid-flight. **After a match** the report card gets the teacher's tick slip, saying only that a mission was
+completed and to check Missions (Alan: "we don't need to tell them what mission they completed").
+
 How it looks: a Missions sheet from the main menu with Daily and Weekly tabs, each card a goal, progress, reward and a
 Claim button ([explanation picture](../../.planning/missions/weekly-tab-what-the-player-sees.jpg): its weekly cards are
 the first, too-easy draft; the layout stands). Alan sees a picture of the real sheet before it ships.

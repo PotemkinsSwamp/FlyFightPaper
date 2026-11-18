@@ -3,6 +3,7 @@ local Http=game:GetService("HttpService")
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
+local Missions=require(Root.Shared.Missions)
 local Looks=require(Root.Shared.LooksRules)
 local Commerce=require(Root.Generated.Commerce)
 local EconomyConfig=require(Root.Generated.Economy)
@@ -136,6 +137,23 @@ function Service:doubleMatch(player,match)
   if not self.profiles:enqueue(player,lock,nil,locked) then locked(false) end
  else self:message(player,"Shop is closed for now.") end
 end
+local function missionSlot(value)
+ if type(value)~="table" or getmetatable(value)~=nil or not Missions.validSlot(value.list,value.index) then return false end
+ for field in pairs(value) do if field~="list" and field~="index" then return false end end
+ return true
+end
+local function missionRewardText(reward)
+ local units={}
+ if reward.paper then table.insert(units,"+"..reward.paper.." Paper") end
+ if reward.xp then table.insert(units,"+"..reward.xp.." XP") end
+ local chest=reward.sticker and "Sticker chest" or reward.blue_ribbon and "Blue Ribbon chest"
+ if chest then
+  table.insert(units,chest)
+  return "Claimed: "..table.concat(units,", ").."! Open it under Chests."
+ end
+ return "Claimed: "..table.concat(units,", ")
+end
+
 function Service:handle(player,action,value)
  if action=="giftCheck" then self:giftCheck(player,value);return end
  if action=="buyGift" then self:buyGift(player,value);return end
@@ -266,6 +284,26 @@ function Service:handle(player,action,value)
   if valid then candidate.settings=settings;valid,why=Schema.validate(candidate,self.catalog) end
   if not valid then warn("Settings refused for player "..player.UserId..": "..tostring(why));self:message(player,"Settings could not be saved.");return end
   self:enqueue(player,{kind="settings",settings=settings},function(saved) if not saved then self:message(player,"Settings could not be saved.") end end)
+ elseif action=="missionClaim" or action=="missionSwap" then
+  if not missionSlot(value) then return end
+  self:enqueue(player,{kind=action,list=value.list,index=value.index},function(ok,result,details)
+   local message
+   if ok then
+    if result.type=="MissionClaimed" then message=missionRewardText(result.reward)
+    elseif result.type=="MissionSwapped" then message="Mission swapped."
+    else message="Mission action already applied." end
+   elseif result=="not_enough_paper" and details then message="Need "..details.shortfall.." more Paper to swap."
+   elseif result=="not_claimable" then message="Not finished yet."
+   elseif result=="not_swappable" then message="Finished missions can't be swapped."
+   elseif result=="swap_limit" then message="You've used all your swaps for this list."
+   elseif result=="invalid_mission" then message="That mission is unavailable."
+   else message="Mission action could not be completed. Try again shortly." end
+   self:message(player,message)
+  end)
+ elseif action=="devFinishMissions" and value==nil and Run:IsStudio() and self.profiles.mock==true and player:GetAttribute("Dev")==true then
+  self:enqueue(player,{kind="devFinishMissions"},function(ok)
+   self:message(player,ok and "Missions ready to claim." or "Missions could not be finished.")
+  end)
  elseif action=="claimDailyGift" then
   -- The client supplies no date or reward. Queued claims re-check the saved day.
   self:enqueue(player,{kind="dailyGift",day=math.floor(self.unix()/86400)},function(ok,result)

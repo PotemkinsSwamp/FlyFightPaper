@@ -1,0 +1,125 @@
+-- The desk's quick look at missions (Alan 2026-11-18): the Missions strip under "Switch to presets" drops down a compact,
+-- see-through paper list of your missions and progress, with a Daily/Weekly switch; tap the strip again to fold it.
+-- Only at the desk (never mid-flight). View only: Claim and Swap are on the Missions sheet from the main menu.
+local TweenService = game:GetService("TweenService")
+local PaperUI = require(script.Parent.PaperUI)
+local Widgets = require(script.Parent.HangarWidgets)
+local Assets = require(game.ReplicatedStorage.FlyFightPaper.Shared.UIAssets)
+local MissionsScreen = require(script.Parent.MissionsScreen)
+local Dropdown = {}
+
+local PAPER = Color3.fromRGB(240, 226, 208)
+local SEE_THROUGH = 0.22 -- see-through but calm enough under the words (design-theory 3.2: check on a screenshot)
+local BAR = { done = Color3.fromRGB(63, 168, 60), going = Color3.fromRGB(70, 140, 214), track = Color3.fromRGB(236, 222, 202) }
+-- Sheet pixels. A phone draws the desk's left group at about a third, so its words and rows are bigger, the list runs
+-- wider over the runway, and it scrolls if the week's list is taller than the room left under the strip.
+local SIZES = {
+	pc = { w = 540, head = 60, row = 86, fixed = 60, text = 26, tab = { 160, 46, 28 }, bar = 18 },
+	phone = { w = 1000, head = 84, row = 112, fixed = 84, text = 40, tab = { 230, 70, 40 }, bar = 26 },
+}
+
+local function goal(m) return m.action == "minutes" and m.kind == "total" and m.count * 60 or m.count end
+local function ready(missions)
+	if not missions or not missions.daily then return false end
+	for _, list in { missions.daily, missions.weekly or {} } do
+		for _, m in list do if not m.claimed and m.progress >= goal(m) then return true end end
+	end
+	return (missions.dailiesDone or 0) >= 15 and not missions.fixedClaimed
+end
+
+-- parent: the desk's left group (sheet pixels); strip: the Missions button; x, top: the list's top left; bottom: the
+-- lowest it may reach; refresh(): asks the server for the latest progress.
+function Dropdown.new(parent, strip, x, top, bottom, refresh)
+	local ui = Widgets.new()
+	local open, tab, missions = false, "daily", nil
+	local panel = Instance.new("ScrollingFrame")
+	panel.Name, panel.Position, panel.Size, panel.Active = "MissionsDropdown", UDim2.fromOffset(x, top), UDim2.fromOffset(SIZES.pc.w, 0), true
+	panel.BackgroundColor3, panel.BackgroundTransparency, panel.BorderSizePixel = PAPER, SEE_THROUGH, 0
+	panel.ScrollBarImageColor3, panel.ScrollBarThickness, panel.ScrollingDirection = PaperUI.INK, 8, Enum.ScrollingDirection.Y
+	panel.ElasticBehavior, panel.Visible, panel.ZIndex, panel.Parent = Enum.ElasticBehavior.Never, false, 5, parent
+	local edge = Instance.new("UIStroke"); edge.Color, edge.Thickness, edge.Transparency, edge.Parent = PaperUI.INK, 2, 0.15, panel
+	Instance.new("UICorner", panel).CornerRadius = UDim.new(0, 10)
+	-- A red "!" on the strip's corner while a mission is waiting to be claimed (a shape and a word, not colour alone).
+	local flag = Instance.new("Frame")
+	flag.Name, flag.Size, flag.Position, flag.AnchorPoint = "Ready", UDim2.fromOffset(44, 44), UDim2.new(1, -6, 0, 6), Vector2.new(0.5, 0.5)
+	flag.BackgroundColor3, flag.BorderSizePixel, flag.Visible, flag.ZIndex, flag.Parent = Color3.fromRGB(214, 60, 52), 0, false, 4, strip
+	Instance.new("UICorner", flag).CornerRadius = UDim.new(0.5, 0)
+	local flagEdge = Instance.new("UIStroke"); flagEdge.Color, flagEdge.Thickness, flagEdge.Parent = Color3.fromRGB(255, 244, 228), 3, flag
+	local bang = PaperUI.words(flag, "Bang", "!", 0, -2, 44, 44, 36)
+	bang.TextXAlignment, bang.TextColor3 = Enum.TextXAlignment.Center, Color3.fromRGB(255, 255, 255)
+	PaperUI.phone(flag, { Size = UDim2.fromOffset(64, 64) })
+	PaperUI.phone(bang, { Size = UDim2.fromOffset(64, 64), TextSize = 52 })
+
+	local S = SIZES.pc
+	local function content() return S.head + 3 * S.row + (tab == "weekly" and S.fixed or 0) + 10 end
+	local function shown() return math.min(content(), bottom - panel.Position.Y.Offset) end
+	local function row(name, y, text, now, target, words, h)
+		local goalText = ui.words(panel, name .. "Goal", text, 16, y + 2, S.w - 40, h - S.bar - 20, S.text)
+		goalText.TextWrapped, goalText.TextYAlignment = true, Enum.TextYAlignment.Top
+		local track = ui.instance(panel, name .. "Track", "Frame")
+		track.Position, track.Size = UDim2.fromOffset(16, y + h - S.bar - 12), UDim2.fromOffset(math.floor(S.w * 0.6), S.bar)
+		track.BorderSizePixel, track.BackgroundColor3 = 0, BAR.track
+		ui.instance(track, "Round", "UICorner").CornerRadius = UDim.new(0, 6)
+		local trackEdge = ui.instance(track, "Edge", "UIStroke"); trackEdge.Color, trackEdge.Thickness = PaperUI.INK, 1.5
+		local fill = ui.instance(track, "Fill", "Frame")
+		local done = now >= target
+		fill.Size, fill.BorderSizePixel = UDim2.fromScale(math.clamp(now / target, 0, 1), 1), 0
+		fill.BackgroundColor3 = done and BAR.done or BAR.going
+		ui.instance(fill, "Round", "UICorner").CornerRadius = UDim.new(0, 6)
+		ui.words(panel, name .. "Count", done and "Done!" or words, math.floor(S.w * 0.6) + 30, y + h - S.bar - 24, S.w * 0.4 - 46, S.bar + 22, S.text)
+	end
+	local function draw()
+		S = PaperUI.isPhone() and SIZES.phone or SIZES.pc
+		ui.begin()
+		flag.Visible = ready(missions)
+		for i, name in { "daily", "weekly" } do
+			local on = tab == name
+			ui.button(panel, name .. "Tab", on and Assets.hangar.buttonGreen or Assets.unlock.buttonCream, name == "daily" and "Daily" or "Weekly",
+				16 + (i - 1) * (S.tab[1] + 10), 8, S.tab[1], S.tab[2], 0, function()
+					tab = name; draw()
+					if open then panel.Size = UDim2.fromOffset(S.w, shown()) end
+				end, S.tab[3])
+		end
+		if not missions or not missions.daily or #missions.daily == 0 then
+			ui.words(panel, "Waiting", "Missions are loading...", 16, S.head + 10, S.w - 32, S.text + 14, S.text)
+		else
+			local list = tab == "daily" and missions.daily or missions.weekly
+			for i, m in list do
+				local now = m.action == "minutes" and m.kind == "total" and m.progress // 60 or m.progress
+				row("Row" .. i, S.head + (i - 1) * S.row, MissionsScreen.describe(m), m.progress, goal(m),
+					PaperUI.commas(math.min(now, m.count)) .. " / " .. PaperUI.commas(m.count), S.row)
+			end
+			if tab == "weekly" then
+				local done = missions.dailiesDone or 0
+				row("Fixed", S.head + 3 * S.row, "Finish 15 daily missions", done, 15, done .. " / 15", S.fixed)
+			end
+		end
+		panel.CanvasSize = UDim2.fromOffset(0, content())
+		ui.finish()
+	end
+
+	local self = { panel = panel }
+	function self.toggle()
+		open = not open
+		if open then
+			refresh()
+			draw()
+			panel.Size, panel.Visible = UDim2.fromOffset(S.w, 0), true
+			TweenService:Create(panel, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.fromOffset(S.w, shown()) }):Play()
+		else
+			local shut = TweenService:Create(panel, TweenInfo.new(0.14, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Size = UDim2.fromOffset(S.w, 0) })
+			shut:Play()
+			shut.Completed:Connect(function() if not open then panel.Visible = false end end)
+		end
+	end
+	function self.close() if open then self.toggle() end end
+	function self.update(newMissions)
+		missions = newMissions
+		draw()
+		if open then panel.Size = UDim2.fromOffset(S.w, shown()) end
+	end
+	draw()
+	return self
+end
+
+return Dropdown

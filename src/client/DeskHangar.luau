@@ -300,6 +300,18 @@ function DeskHangar.new(playerGui, api)
 	end, 34)
 	PaperUI.phone(switch, { Size = UDim2.fromOffset(340, 140) })
 	PaperUI.phone(switch.Label, { TextSize = 46 })
+	-- Missions at a glance (Alan 2026-11-18): under the switch, a strip that drops down a compact list of your missions
+	-- and their progress (MissionsDropdown); tap it again to fold it. Cream, so it doesn't read as the orange switch.
+	local missionsList
+	local missionsStrip = button(left, "Missions", Assets.unlock.buttonCream, "Missions", 226, 556, 300, 96, 1, function()
+		missionsList.toggle()
+	end, 36)
+	PaperUI.phone(missionsStrip, { Size = UDim2.fromOffset(340, 140) })
+	PaperUI.phone(missionsStrip.Label, { TextSize = 46 })
+	missionsList = require(script.Parent.MissionsDropdown).new(left, missionsStrip, 200, 664, 1060, function()
+		api.round:FireServer("profile")
+	end)
+	PaperUI.phone(missionsList.panel, { Position = UDim2.fromOffset(200, 690) })
 	-- A preset picked in the Hangar shows here too.
 	Players.LocalPlayer:GetAttributeChangedSignal("SelectedClass"):Connect(function()
 		if not flipping and (Players.LocalPlayer:GetAttribute("SelectedClass") ~= nil) ~= onPresets then setBoard(not onPresets) end
@@ -322,6 +334,7 @@ function DeskHangar.new(playerGui, api)
 	end
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
 		if profile and profile.presets then showPresets(profile.presets) end
+		if profile and profile.missions then missionsList.update(profile.missions) end
 	end)
 
 	-- What the next refold flies: the picked class, or the picked build.
@@ -386,7 +399,7 @@ function DeskHangar.new(playerGui, api)
 	-- Called by the HUD every 0.1 s: shown while the plane is in its hangar.
 	function self.update(plane, visible)
 		cover.Visible = visible
-		if not visible then shownPlane = nil; return end
+		if not visible then shownPlane = nil; missionsList.close(); return end
 		local skin = PlaneLooks.devSkin
 		if skin == nil then skin = plane:GetAttribute("Skin") end
 		if skin ~= worn then

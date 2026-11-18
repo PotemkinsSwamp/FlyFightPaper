@@ -17,12 +17,12 @@ function Queue.new(profiles,clock,log)
  local self=setmetatable({profiles=profiles,clock=clock or os.clock,log=log or warn,players={},seen={},sequence=0,token="reward"..(game:GetService("HttpService"):GenerateGUID(false):gsub("%W",""))},Queue)
  queues[self]=true;return self
 end
-function Queue:add(userId,source,input,at,accepted)
+function Queue:add(userId,source,input,at,accepted,beforeSend)
  local seen=self.seen[userId];if not seen then seen={};self.seen[userId]=seen end
  if seen[source] then return end
  local bucket=self.players[userId]
  if not bucket then bucket={items={},order={}};self.players[userId]=bucket end
- local item={source=source,input=assert(Schema.copy(input)),at=at,accepted=accepted,nextTry=0,nextWarning=0}
+ local item={source=source,input=assert(Schema.copyOperation(input)),at=at,accepted=accepted,beforeSend=beforeSend,nextTry=0,nextWarning=0}
  self.sequence+=1;item.input.id=self.token..":"..self.sequence;item.input.rewardSource=source;seen[source]=true
  bucket.items[source]=item;table.insert(bucket.order,source)
  if #bucket.order==Config.pending_per_player then self.log("Many rewards pending for player "..userId) end
@@ -51,6 +51,10 @@ function Queue:step(offlineOnly,deadline)
    local source=bucket.order[i];local item=bucket.items[source]
    if now<item.nextTry or (deadline and os.clock()>=deadline) then break end
    local ok,accepted=pcall(function()
+    if item.beforeSend then
+     local prepared=pcall(item.beforeSend,item.input)
+     if not prepared then item.input.missions=false end
+    end
     local player=self.profiles:playerForUserId(userId)
     if not player or offlineOnly then
      if self.profiles:hasPlayer(userId) then return false end

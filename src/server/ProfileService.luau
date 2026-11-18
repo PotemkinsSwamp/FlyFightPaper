@@ -5,7 +5,8 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
 local Looks=require(Root.Shared.LooksRules)
-local ChestProgress=require(Root.Shared.ChestProgress)
+local Missions=require(Root.Shared.Missions)
+local MissionConfig=require(Root.Generated.Missions)
 local Commerce=require(Root.Shared.CommerceRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local BoostClock=require(Root.Shared.BoostClock)
@@ -62,7 +63,7 @@ end
 function Service.new(options)
  return setmetatable({catalog=options.catalog,mono=options.monotonic or os.clock,unix=options.unix or os.time,
   policyInfo=options.policyInfo or function(player) return game:GetService("PolicyService"):GetPolicyInfoForPlayerAsync(player) end,
-  random=options.random or math.random,mock=Run:IsStudio() and options.mock==true,sessions={}},Service)
+  random=options.random or math.random,missionWarnings={},mock=Run:IsStudio() and options.mock==true,sessions={}},Service)
 end
 function Service:operationID() return Http:GenerateGUID(false):gsub("%-",""):sub(1,24) end
 function Service:attach(account,profile,availability)
@@ -124,9 +125,20 @@ function Service:_advance(s)
  s.profile.Data.boosts=assert(Schema.copy(s.clock:snapshot()))
  return true
 end
-function Service:view(account)
+function Service:view(account,refreshMissions)
  local s=self:_session(account);if not s then return outcome("error","profile_unavailable") end
  local ok,why=self:_advance(s);if not ok then return outcome("error",why) end
+ if refreshMissions then
+  local data=table.clone(s.profile.Data)
+  local refreshed,err,_,changed=self:_refreshMissions(data,self.unix(),tonumber(account) or 0,"mission_refresh")
+  if not refreshed then return outcome("error",err) end
+  if changed then
+   data.version+=1
+   local valid,validation=Schema.validate(data,self.catalog)
+   if not valid then return outcome("error",validation) end
+   s.profile.Data=valid
+  end
+ end
  local data=assert(Schema.copy(s.profile.Data))
  -- Compatibility for desk life checks. This is a session token, not a storage lock.
  data.lease={nonce=s.token,generation=data.generation,expires=0}
@@ -134,7 +146,7 @@ function Service:view(account)
 end
 function Service:prepare(account,input)
  local s=self:_session(account);if not s then return nil end
- local op=Schema.copy(input);if not op then return nil end
+ local op=Schema.copyOperation(input);if not op then return nil end
  s.sequence+=1;op.id=s.token..":"..s.sequence
  return op
 end
@@ -189,7 +201,106 @@ function Service:_recordBuy(p)
  p.buysToday={day=day,count=value}
  return true
 end
-function Service:_effect(p,op,boostState)
+local function payMissionReward(p,reward,operationID)
+ local paid
+ if reward.paper or reward.xp then
+  local rejected
+  paid,rejected=Economy.applyFinalBonuses(Schema.economicView(p),
+   {finalPaper=reward.paper or 0,finalXP=reward.xp or 0},{paper=1,xp=1},operationID)
+  if not paid then return nil,rejected.code end
+ end
+ local stock=table.clone(p.chests.stock)
+ for _,id in {"sticker","blue_ribbon"} do
+  if reward[id] then
+   local total=safeAdd(stock[id],reward[id])
+   if not total then return nil,"overflow" end
+   stock[id]=total
+  end
+ end
+ if paid then Schema.mergeEconomic(p,paid.profile) end
+ p.chests=table.clone(p.chests)
+ p.chests.stock=stock
+ return true
+end
+
+function Service:_refreshMissions(p,now,seed,operationID)
+ local level=assert(Economy.levelForXP(p.xpMilli))
+ local owned={}
+ for id in pairs(self.catalog.byId) do
+  if self.catalog:owns(p.ownership,id,level) then table.insert(owned,id) end
+ end
+ local state,rewards,changed=Missions.refresh(p.missions,now,owned,seed)
+ if not state then
+  if rewards=="stale_period" then return true,nil,owned,false end
+  return nil,rewards
+ end
+ if changed then
+  for _,reward in rewards do
+   local paid,err=payMissionReward(p,reward,operationID)
+   if not paid then return nil,err end
+  end
+  p.missions=state
+ end
+ return true,nil,owned,changed
+end
+
+function Service:_missionAction(p,op,seed)
+ local refreshed,err,owned,changed=self:_refreshMissions(p,self.unix(),seed,op.id)
+ if not refreshed then return nil,err end
+ local function refuse(code,shortfall)
+  -- A rollover can pay an old completed card even if the new card can't be claimed or swapped.
+  if changed then return {type="MissionRefused",code=code,shortfall=shortfall} end
+  return nil,code,shortfall and {shortfall=shortfall}
+ end
+ if op.kind=="missionClaim" then
+  local claimed,reward=Missions.claim(p.missions,op.list,op.index)
+  if not claimed then return refuse(reward) end
+  local paid,why=payMissionReward(p,reward,op.id)
+  if not paid then return refuse(why) end
+  p.missions=claimed
+  return {type="MissionClaimed",reward=reward}
+ elseif op.kind=="missionSwap" then
+  local price,why=Missions.swapPrice(p.missions,op.list,op.index)
+  if price==nil then return refuse(why) end
+  local cost=price*Economy.MILLI
+  if not Schema.integer(cost) then return refuse("invalid_mission_price") end
+  if p.paperMilli<cost then return refuse("not_enough_paper",math.ceil((cost-p.paperMilli)/Economy.MILLI)) end
+  local swapped,reason=Missions.swap(p.missions,op.list,op.index,owned,seed)
+  if not swapped then return refuse(reason) end
+  p.missions=swapped
+  p.paperMilli-=cost
+  return {type="MissionSwapped",price=price}
+ end
+ local finished=table.clone(p.missions)
+ for _,list in {"daily","weekly"} do
+  finished[list]={}
+  for index,mission in p.missions[list] do
+   local copy=table.clone(mission)
+   copy.progress=Missions.goal(copy)
+   finished[list][index]=copy
+  end
+ end
+ finished.dailiesDone=MissionConfig.fixed.target
+ p.missions=finished
+ return {type="DevMissionsFinished"}
+end
+
+function Service:_matchMissions(p,op,seed)
+ local summary=op.missions
+ if type(summary)~="table" or type(summary.eligible)~="boolean" then return nil,"invalid_match_summary" end
+ if not summary.eligible then return nil,"ineligible_match" end
+ local candidate=table.clone(p)
+ local refreshed,err=self:_refreshMissions(candidate,summary.completedAt,seed,op.id)
+ if not refreshed then return nil,err end
+ local progressed,finished=Missions.applyMatch(candidate.missions,summary)
+ if not progressed then return nil,finished end
+ candidate.missions=progressed
+ local valid,validation=Schema.validate(candidate,self.catalog)
+ if not valid then return nil,validation end
+ return valid,finished
+end
+
+function Service:_effect(p,op,boostState,seed)
 	if op.kind=="receipt" then
 		local key=Service.receiptKey(op.receiptId)
 		if p.receiptIds[key]==true then return {type="ReceiptAlreadyGranted"} end
@@ -406,18 +517,10 @@ function Service:_effect(p,op,boostState)
 			end
 			result={type="RefoldCancelled",intentId=op.intentId}
 		end
+	elseif op.kind=="missionClaim" or op.kind=="missionSwap" or op.kind=="devFinishMissions" then
+		return self:_missionAction(p,op,seed)
 	elseif op.kind=="statistics" then
 		if type(op.deltas)~="table" then return nil,"invalid_statistics" end
-		if op.completedAt~=nil then
-			local progress,awards=ChestProgress.complete(p.chests.progress,op.completedAt)
-			if not progress then return nil,awards end
-			p.chests.progress=progress
-			for id,count in pairs(awards) do
-				local total=safeAdd(p.chests.stock[id],count)
-				if not total then return nil,"overflow" end
-				p.chests.stock[id]=total
-			end
-		end
 		for k,n in pairs(op.deltas) do if p.statistics[k]==nil then return nil,"invalid_statistic" end; local value=safeAdd(p.statistics[k],n); if not value then return nil,"overflow" end; p.statistics[k]=value end
 		result={type="StatisticsApplied"}
 	end
@@ -433,12 +536,20 @@ function Service:_effect(p,op,boostState)
 	return assert(Schema.copy(result))
 end
 local allowed={paidChest=true,receipt=true,giftReceived=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
- qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,lookPurchase=true,lookWear=true,openChest=true,
+ qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,missionClaim=true,missionSwap=true,devFinishMissions=true,refoldIntent=true,lookPurchase=true,lookWear=true,openChest=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
+local function appliedOutcome(value,replayed)
+ if value.type=="MissionRefused" then
+  return outcome("error",value.code,value.shortfall and {shortfall=value.shortfall})
+ end
+ local applied=outcome("ok",nil,value)
+ applied.replayed=replayed
+ return applied
+end
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
 function Service:apply(account,input)
  local s=self:_session(account);if not s then return outcome("retry","profile_unavailable") end
- local op=Schema.copy(input)
+ local op=Schema.copyOperation(input)
  if not op or not allowed[op.kind] or not Schema.id(op.id) then return outcome("error","invalid_operation") end
  local token,sequence=op.id:match("^(%w+):(%d+)$");sequence=tonumber(sequence)
  local reward=token and token:match("^reward%w+$") and rewardKinds[op.kind] and type(op.rewardSource)=="string"
@@ -447,7 +558,15 @@ function Service:apply(account,input)
  local cached=s.results[op.id]
  if cached and cached.identity~=identity then return outcome("error","operation_id_conflict") end
  if sequence<=(s.profile.Data.operationIds[token] or 0) then
-  return outcome("ok",nil,cached and cached.value or {type="AlreadyApplied",operationID=op.id})
+  return appliedOutcome(cached and cached.value or {type="AlreadyApplied",operationID=op.id},true)
+ end
+ if op.kind=="missionClaim" or op.kind=="missionSwap" then
+  if not Missions.validSlot(op.list,op.index) then return outcome("error","invalid_mission") end
+  for key in pairs(op) do
+   if key~="kind" and key~="id" and key~="list" and key~="index" then return outcome("error","invalid_operation") end
+  end
+ elseif op.kind=="devFinishMissions" and not self.mock then
+  return outcome("error","studio_only")
  end
  local mockBuy=op.kind=="paidChest" or op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack" or op.kind=="paperJar" or op.kind=="matchDouble"
  if (op.kind=="paidChest" or op.kind=="starterPack") and self.mock and s.chestPaperAllowed~=true then return outcome("error","chest_paper_unavailable") end
@@ -512,8 +631,9 @@ function Service:apply(account,input)
   if not ok then return outcome("error",err or "invalid_boost_intent") end
  end
  local data=assert(Schema.copy(s.profile.Data));data.lease={nonce=s.token,generation=data.generation,expires=0}
- local result,err=self:_effect(data,op,clock:snapshot())
- if not result then return outcome("error",err) end
+ local seed=tonumber(account) or 0
+ local result,err,details=self:_effect(data,op,clock:snapshot(),seed)
+ if not result then return outcome("error",err,details) end
  if mockBuy or (op.kind=="receipt" and result.type~="ReceiptAlreadyGranted") then
   local recorded,code=self:_recordBuy(data);if not recorded then return outcome("error",code) end
   -- Practice buys leave the same purchase history as receipts, in mock profiles only.
@@ -528,7 +648,25 @@ function Service:apply(account,input)
   end
  end
  data.lease=nil;data.version+=1;data.operationIds[token]=sequence
- local valid,validation=Schema.validate(data,self.catalog)
+ local valid,validation
+ if op.kind=="statistics" then
+  result.finishedMissions={}
+  if op.missions~=nil then
+   local ok,candidate,finished=pcall(self._matchMissions,self,data,op,seed)
+   if ok and candidate then
+    valid=candidate
+    result.finishedMissions=finished
+   else
+    local code=if not ok then "mission_error" elseif finished=="refresh_required" then "stale_period" else finished or "mission_error"
+    -- Delayed and ineligible matches are routine. Log each cause once per server.
+    if not self.missionWarnings[code] then
+     self.missionWarnings[code]=true
+     warn("Skipped mission progress: "..tostring(code))
+    end
+   end
+  end
+ end
+ if not valid then valid,validation=Schema.validate(data,self.catalog) end
  if not valid then return outcome("error",validation) end
  -- No yield between active-session check and replacing Data. One saved profile contains
  -- both the balance change and its operation ID, so retries cannot pay it twice.
@@ -536,6 +674,6 @@ function Service:apply(account,input)
  result.operationID=op.id;result.version=data.version
  s.results[op.id]={identity=identity,value=result};table.insert(s.resultOrder,op.id)
  if #s.resultOrder>Config.result_cache_limit then s.results[table.remove(s.resultOrder,1)]=nil end
- return outcome("ok",nil,result)
+ return appliedOutcome(result)
 end
 return Service

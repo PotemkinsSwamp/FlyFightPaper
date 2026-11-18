@@ -152,43 +152,48 @@ local function periodRandom(seed, period)
 end
 
 local function goal(mission)
-	return if mission.action == "minutes" then mission.count * TIME.seconds_per_minute else mission.count
+	return if mission.kind == "total" and mission.action == "minutes" then mission.count * TIME.seconds_per_minute else mission.count
 end
+
+Missions.goal = goal
 
 local function isFinished(mission)
 	return mission.progress >= goal(mission)
 end
 
 local function validMission(mission, tier)
-	if not onlyKeys(mission, MISSION_KEYS) or mission.tier ~= tier or type(mission.claimed) ~= "boolean" then
+	if not onlyKeys(mission, MISSION_KEYS) or mission.tier ~= tier or type(mission.claimed) ~= "boolean"
+		or type(mission.action) ~= "string" or not wholeInRange(mission.count, MAX_INTEGER) or mission.count < 1
+		or (mission.mode ~= nil and not table.find(MODES, mission.mode)) then
 		return false
 	end
-	local condition = "plain"
-	if mission.gear ~= nil then
-		if not gearId(mission.gear) then return false end
-		condition = "gear"
-	elseif mission.mode ~= nil then
-		condition = "mode"
-	elseif mission.feat == "one_match" then
-		condition = "one_match"
+	if mission.gear ~= nil and (not gearId(mission.gear) or mission.mode ~= nil
+		or mission.kind ~= "total" or not GEAR_ACTIONS[mission.action]) then
+		return false
 	end
 
-	for _, shape in POOLS[tier][condition] do
-		if mission.action == shape.action and mission.kind == shape.kind and mission.mode == shape.mode
-			and mission.feat == shape.feat and mission.threshold == shape.threshold and mission.count == shape.count then
-			local progress = mission.progress
-			local validProgress
-			if shape.kind == "feat" then
-				validProgress = wholeInRange(progress, shape.count)
-			elseif shape.action == "damage" or shape.action == "minutes" then
-				validProgress = numberInRange(progress, MAX_INTEGER)
-			else
-				validProgress = wholeInRange(progress, MAX_INTEGER)
-			end
-			return validProgress and (not mission.claimed or isFinished(mission))
+	local progressValid
+	if mission.kind == "total" then
+		if not Config.average[mission.action] or mission.feat ~= nil or mission.threshold ~= nil then return false end
+		-- The goal for minutes is stored in minutes, while progress is stored in seconds.
+		if goal(mission) > MAX_INTEGER then return false end
+		if mission.action == "damage" or mission.action == "minutes" then
+			progressValid = numberInRange(mission.progress, MAX_INTEGER)
+		else
+			progressValid = wholeInRange(mission.progress, MAX_INTEGER)
 		end
+	elseif mission.kind == "feat" then
+		if not numberInRange(mission.threshold, MAX_INTEGER) then return false end
+		if mission.feat == "one_match" then
+			if mission.mode ~= nil or not Config.average[mission.action] then return false end
+		elseif (mission.feat ~= "best_life" and mission.feat ~= "deaths") or mission.action ~= mission.feat then
+			return false
+		end
+		progressValid = wholeInRange(mission.progress, mission.count)
+	else
+		return false
 	end
-	return false
+	return progressValid and (not mission.claimed or isFinished(mission))
 end
 
 local function validList(list, tiers)
@@ -283,6 +288,7 @@ local function chooseMission(tier, list, index, ids, random)
 end
 
 local function refreshList(state, list, reset, ids, owned, random, paid)
+	local changed = reset
 	if reset then
 		for _, mission in state[list] do
 			if not mission.claimed and isFinished(mission) then
@@ -293,13 +299,15 @@ local function refreshList(state, list, reset, ids, owned, random, paid)
 	end
 	for index, tier in TIERS[list] do
 		local mission = state[list][index]
-		if not mission or (mission.gear and not owned[mission.gear]) then
+		if not mission or (mission.gear and not owned[mission.gear] and not isFinished(mission)) then
 			state[list][index] = chooseMission(tier, state[list], index, ids, random)
+			changed = true
 		end
 	end
+	return changed
 end
 
--- Rewards use the same flat chest IDs as ChestProgress and may also contain paper or xp.
+-- Returns the refreshed state, flat rewards and whether any saved field changed.
 function Missions.refresh(state, now, owned, seed)
 	if not Missions.valid(state) then return nil, "invalid_mission_state" end
 	if not wholeInRange(now, TIME.max_timestamp) then return nil, "invalid_time" end
@@ -313,8 +321,8 @@ function Missions.refresh(state, now, owned, seed)
 	local empty = next(state.daily) == nil
 	local newDay, newWeek = empty or day ~= state.day, empty or week ~= state.week
 	local result, paid = copyState(state), {}
-	refreshList(result, "daily", newDay, ids, ownedSet, periodRandom(seed, day), paid)
-	refreshList(result, "weekly", newWeek, ids, ownedSet, periodRandom(seed, week), paid)
+	local changedDaily = refreshList(result, "daily", newDay, ids, ownedSet, periodRandom(seed, day), paid)
+	local changedWeekly = refreshList(result, "weekly", newWeek, ids, ownedSet, periodRandom(seed, week), paid)
 	if newDay then result.dailySwaps = 0 end
 	if newWeek then
 		if not result.fixedClaimed and result.dailiesDone >= Config.fixed.target then
@@ -324,7 +332,7 @@ function Missions.refresh(state, now, owned, seed)
 		result.fixedClaimed, result.calendar = false, EMPTY_CALENDAR
 	end
 	result.day, result.week = day, week
-	return result, paid
+	return result, paid, changedDaily or changedWeekly
 end
 
 local function validGearStats(stats)
@@ -353,12 +361,9 @@ end
 local function earnedProgress(mission, summary)
 	if mission.mode and mission.mode ~= summary.mode then return 0 end
 	if mission.kind == "feat" then
-		local met
-		if mission.feat == "deaths" then
-			met = summary.deaths <= mission.threshold
-		else
-			met = summary[mission.action] >= mission.threshold
-		end
+		local action = mission.action
+		local value = if action == "matches" then 1 elseif action == "minutes" then summary.seconds / TIME.seconds_per_minute else summary[action]
+		local met = if mission.feat == "deaths" then value <= mission.threshold else value >= mission.threshold
 		return if met then 1 else 0
 	end
 	if mission.action == "matches" then return 1 end
@@ -395,8 +400,14 @@ function Missions.applyMatch(state, summary)
 	return result, finished
 end
 
+function Missions.validSlot(list, index)
+	if type(list) ~= "string" then return false end
+	local size = if list == "fixed" then 1 elseif TIERS[list] then #TIERS[list] else 0
+	return wholeInRange(index, size) and index > 0
+end
+
 local function atIndex(state, list, index)
-	if (list == "daily" or list == "weekly") and wholeInRange(index, #TIERS[list]) and index > 0 then
+	if list ~= "fixed" and Missions.validSlot(list, index) then
 		return state[list][index]
 	end
 	return nil

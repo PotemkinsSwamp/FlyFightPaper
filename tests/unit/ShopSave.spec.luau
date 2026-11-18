@@ -4,6 +4,7 @@ local Profile=require(Server.ProfileService)
 local Runtime=require(Server.ProfileRuntime)
 local Hangar=require(Server.HangarService)
 local Schema=require(Root.Shared.ProfileSchema)
+local Missions=require(Root.Shared.Missions)
 local Commerce=require(Root.Shared.CommerceRules)
 local Economy=require(Root.Shared.EconomyRules)
 local EconomyConfig=require(Root.Generated.Economy)
@@ -431,6 +432,35 @@ function Spec.run()
   f.now+=DAY;hangar:handle(f.player,"claimDailyGift")
   f.now+=DAY;hangar:handle(f.player,"claimDailyGift")
   assert(f.player.attributes.MenuMessage=="Gift claimed: 15 minutes of 2x XP.")
+ end)
+ test("Hangar accepts only mission slots and reports the saved result and swap shortfall",function()
+  local f=fixture()
+  assert(f.service:view("user",true).status=="ok")
+  local submissions,refreshes=0,0
+  local profiles={view=function()return f.service:view("user").value end}
+  function profiles:enqueue(_,input,_,callback)
+   submissions+=1
+   local saved=f:apply(input)
+   local ok=saved.status=="ok"
+   callback(ok,ok and saved.value or saved.code,not ok and saved.value or nil)
+   return true
+  end
+  local hangar=Hangar.new({catalog=f.catalog},profiles,nil)
+  function hangar.onAnswer(who) assert(who==f.player);refreshes+=1 end
+  for _,bad in {true,{list="daily",index=1,price=0},{list="yearly",index=1},{list="weekly",index=2.5},{list="fixed",index=2}} do
+   hangar:handle(f.player,"missionSwap",bad)
+  end
+  assert(submissions==0 and refreshes==0)
+  hangar:handle(f.player,"missionClaim",{list="daily",index=2})
+  assert(f.player.attributes.MenuMessage=="Not finished yet.")
+  local mission=f.profile.Data.missions.daily[2];mission.progress=Missions.goal(mission)
+  hangar:handle(f.player,"missionClaim",{list="daily",index=2})
+  assert(f.player.attributes.MenuMessage=="Claimed: +200 Paper, +250 XP")
+  f.profile.Data.paperMilli=0
+  hangar:handle(f.player,"missionSwap",{list="daily",index=1})
+  assert(f.player.attributes.MenuMessage=="Mission swapped.")
+  hangar:handle(f.player,"missionSwap",{list="daily",index=1})
+  assert(f.player.attributes.MenuMessage=="Need 150 more Paper to swap." and submissions==4 and refreshes==4)
  end)
  test("Hangar blocks unavailable starter prompts without asking commerce",function()
   local f=fixture();local calls=0

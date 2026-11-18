@@ -1,5 +1,6 @@
 local Root=game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Schema=require(Root.Shared.ProfileSchema)
+local Missions=require(Root.Shared.Missions)
 local Economy=require(Root.Shared.EconomyRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local Catalog=require(Root.Shared.Catalog)
@@ -21,9 +22,10 @@ function Spec.run()
 		assert(p.schemaVersion==Schema.VERSION and p.prestige==0 and next(p.lessons)==nil)
 		assert(type(p.doubleLocks)=="table" and next(p.doubleLocks)==nil)
 	end)
-	test("schema 14 keeps earned chests, the current daily gift and existing weekly mission progress",function()
+	test("schema 14 keeps earned chests and the current daily gift through schema 16",function()
 		local old=Schema.defaults(catalog)
 		old.schemaVersion=14
+		old.missions=nil
 		old.chests.stock.sticker=3
 		old.dailyGift={next=6,lastDay=20700}
 		old.chests.paidStock=nil
@@ -31,16 +33,29 @@ function Spec.run()
 		local before=Schema.canonical(old)
 		local migrated=assert(Schema.migrate(old,catalog))
 		assert(migrated.chests.stock.sticker==3 and migrated.chests.paidStock.trail_sticker==0)
-		assert(migrated.chests.progress.weekly.counts:sub(-1)=="2" and migrated.chests.progress.daily==nil)
+		assert(migrated.chests.progress==nil and Schema.canonical(migrated.missions)==Schema.canonical(Missions.defaults()))
 		assert(migrated.dailyGift.next==6 and migrated.dailyGift.lastDay==20700)
 		assert(Schema.canonical(old)==before)
+	end)
+	test("schema 15 adds independent mission defaults and removes only retired chest progress",function()
+		local old=fresh();old.schemaVersion=15;old.missions=nil
+		old.chests.progress={weekly={last=3000,counts=string.rep("0",31).."2"}}
+		old.chests.stock.sticker=3;old.chests.paidStock.trail_sticker=2
+		old.paperMilli=123456;old.extensions={keep=true}
+		local before=Schema.canonical(old)
+		local expected=assert(Schema.copy(old));expected.schemaVersion=16
+		expected.missions=Missions.defaults();expected.chests.progress=nil
+		local migrated=assert(Schema.migrate(old,catalog))
+		assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
+		migrated.missions.dailySwaps=1
+		assert(not Schema.validate(migrated,catalog) and fresh().missions.dailySwaps==0)
 	end)
 	test("schema 10 migration adds empty double locks without changing the old save",function()
 		local p=fresh();p.schemaVersion=10;p.doubleLocks=nil;p.paperMilli=123456;p.extensions={keep=true}
 		local before=Schema.canonical(p);local expected=assert(Schema.copy(p))
 		expected.schemaVersion=Schema.VERSION;expected.doubleLocks={}
 		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
-		assert(Schema.VERSION==15 and Schema.canonical(migrated)==Schema.canonical(expected))
+		assert(Schema.VERSION==16 and Schema.canonical(migrated)==Schema.canonical(expected))
 		assert(Schema.canonical(p)==before and not Schema.validate(p,catalog))
 		assert(Schema.canonical(assert(Schema.migrate(migrated,catalog)))==Schema.canonical(migrated))
 	end)

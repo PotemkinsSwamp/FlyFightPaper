@@ -5,19 +5,42 @@ local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
 function Spec.run()
  local result,test=Suite.new()
- test("only human completion rows carry the original time for classroom chest progress",function()
+ test("human mission summaries carry completion time, eligibility and captured Paper boosts",function()
   local rows,paid={},{}
   for i,case in {{"human",true},{"human",false},{"bot",true}} do
-   rows[i]={controllerType=case[1],completion=case[2],userId=i,key=tostring(i),present=true,kills=0,deaths=0,finalPaper=0,finalXP=0}
+   local key=tostring(i)
+   rows[i]={controllerType=case[1],completion=case[2],userId=i,key=key,actorId=key,present=true,kills=0,assists=0,deaths=0,
+    damage=0,contribution=100,activeSeconds=125,targetPoints=0,zoneEvents=0,bestStreak=0,finalPaper=i==1 and 10 or 0,finalXP=0}
   end
-  local runtime=setmetatable({engine={round={id="test",completedAtUnix=1795000000,result={participants=rows}}},settledRows={},finalRewards={}},Runtime)
-  function runtime:reward(id,source,input)
+  local runtime=setmetatable({engine={round={id="test",mode="FFA",completedAtUnix=1795000000,result={participants=rows}}},
+   settledRows={},finalRewards={},earnedTotals={["1"]={boostPaper=25}}},Runtime)
+  function runtime:reward(id,source,input,_,accepted,beforeSend)
+   if input.kind=="finalBonus" then accepted({multipliers={paper=2,xp=1}});return end
    assert(input.kind=="statistics" and not paid[source])
-   paid[source]={id=id,at=input.completedAt}
+   beforeSend(input)
+   paid[source]=input.missions
   end
   runtime:queueSettlement()
   runtime:queueSettlement()
-  assert(paid["test:stats:1"].at==1795000000 and paid["test:stats:2"].at==nil and not paid["test:stats:3"])
+  local first,second=paid["test:stats:1"],paid["test:stats:2"]
+  local rate=require(game.ReplicatedStorage.FlyFightPaper.Generated.Economy).paper_per_point
+  assert(first.completedAt==1795000000 and first.eligible and first.paper==math.floor(100*rate+25+20))
+  assert(second.completedAt==1795000000 and not second.eligible and not paid["test:stats:3"])
+ end)
+ test("sending ProfileView requests refreshed missions and publishes them",function()
+  local player={};local sent
+  local missions={day=4}
+  local profiles={entries={[player]={account="1"}},service={
+   liveBoostView=function()return {status="ok",value={boosts={}}} end,
+   chestPaperAllowed=function()return false end,
+  }}
+  function profiles:view(who,refresh)
+   assert(who==player and refresh)
+   return {paperMilli=1000,xpMilli=1000,missions=missions}
+  end
+  local runtime=setmetatable({profiles=profiles,profileView={FireClient=function(_,who,value)assert(who==player);sent=value end}},Runtime)
+  runtime:sendProfile(player)
+  assert(sent.missions==missions)
  end)
  test("match doubling uses the same floored totals and match id as the report snapshot",function()
   local f=MatchSpec.fixture();f:join("pilot");f:timer()

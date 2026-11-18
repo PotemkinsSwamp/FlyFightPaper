@@ -1,6 +1,7 @@
 local Root=game.ReplicatedStorage.FlyFightPaper
 local Service=require(game.ServerScriptService.FlyFightPaper.ProfileService)
 local Schema=require(Root.Shared.ProfileSchema)
+local Missions=require(Root.Shared.Missions)
 local Economy=require(Root.Shared.EconomyRules)
 local Looks=require(Root.Shared.LooksRules)
 local Commerce=require(Root.Shared.CommerceRules)
@@ -30,6 +31,25 @@ local function fixture(mock)
  assert(service:attach("user",profile,{connected=true,mapLoaded=true}).status=="ok")
  return service,profile,catalog
 end
+local DAY=86400
+local MONDAY=1704067200
+local function missionFixture(mock)
+ local service,profile=fixture(mock)
+ local now=MONDAY
+ service.unix=function()return now end
+ local function apply(input)
+  local op=assert(service:prepare("user",input))
+  return service:apply("user",op),op
+ end
+ local function time(value) now=value end
+ local view=service:view("user",true)
+ assert(view.status=="ok" and #view.value.missions.daily==3)
+ return service,profile,apply,time
+end
+local function matchSummary(at)
+ return {eligible=true,completedAt=at,mode="FFA",folds=1,assists=0,damage=0,paper=0,seconds=0,
+  wins=0,top3=0,targets=0,boosts=0,zone_points=0,zone_folds=0,deaths=10,best_life=0,byGear={}}
+end
 function Spec.run()
  local result,test=Suite.new()
  test("earned chest source spends stock once, including retries and rejoining",function()
@@ -39,13 +59,7 @@ function Spec.run()
   end
   local draw={kind="openChest",chest="trail_sticker",opened=0,source="earned"}
   assert(profile.Data.chests.stock.sticker==0 and apply(draw).code=="no_earned_chest")
-  local settle=assert(service:prepare("user",{kind="statistics",deltas={matches=1},completedAt=1795000000}))
-  assert(service:apply("user",settle).status=="ok" and service:apply("user",settle).status=="ok")
-  assert(apply({kind="statistics",deltas={matches=1}}).status=="ok")
-  assert(profile.Data.chests.stock.sticker==0)
-  assert(apply({kind="statistics",deltas={matches=1},completedAt=1795000000+86400}).status=="ok")
-  assert(apply({kind="statistics",deltas={matches=1},completedAt=1795000000+86401}).status=="ok")
-  assert(profile.Data.chests.stock.sticker==1)
+  profile.Data.chests.stock.sticker=1
   local balance=profile.Data.paperMilli
   local first=assert(service:prepare("user",draw))
   local result=service:apply("user",first)
@@ -60,6 +74,156 @@ function Spec.run()
   local reopened=Fake.new(profile.LastSavedData)
   assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
   assert(reopened.Data.chests.lastSkin==id and reopened.Data.looks.owned[id] and apply(draw).code=="stale_chest")
+ end)
+ test("mission claims pay earned Paper, XP, and each chest tier once",function()
+  local service,profile,apply=missionFixture()
+  local data=profile.Data
+  data.xpMilli=190000
+  data.presets[1].loadout=service.catalog:starterLoadout()
+  local paper,earned,purchased,xp,version=data.paperMilli,data.earnedPaperMilli,data.purchasedPaperMilli,data.xpMilli,data.version
+  local daily=data.missions.daily[2];daily.progress=Missions.goal(daily)
+  local weekly=data.missions.weekly[3];weekly.progress=Missions.goal(weekly)
+  data.missions.dailiesDone=15
+  local claim,op=apply({kind="missionClaim",list="daily",index=2})
+  assert(claim.status=="ok" and claim.value.reward.paper==200 and claim.value.reward.xp==250)
+  data=profile.Data
+  assert(data.missions.daily[2].claimed and data.version==version+1)
+  assert(data.paperMilli==paper+200000 and data.earnedPaperMilli==earned+200000 and data.purchasedPaperMilli==purchased)
+  assert(data.xpMilli==xp+250000 and Economy.levelForXP(data.xpMilli)>Economy.levelForXP(xp))
+  assert(service:apply("user",op).replayed and profile.Data.version==version+1)
+  assert(apply({kind="missionClaim",list="daily",index=2}).code=="not_claimable")
+  assert(apply({kind="missionClaim",list="weekly",index=3}).status=="ok")
+  assert(apply({kind="missionClaim",list="fixed",index=1}).status=="ok")
+  data=profile.Data
+  assert(data.chests.stock.sticker==1 and data.chests.stock.blue_ribbon==1 and data.missions.fixedClaimed)
+  assert(data.paperMilli==paper+2200000 and data.earnedPaperMilli==earned+2200000)
+ end)
+ test("mission swaps use the saved price and deduct Paper with the replacement",function()
+  local service,profile,apply=missionFixture()
+  profile.Data.paperMilli=149500
+  local before=profile.Data.missions.daily[1].action
+  local free=apply({kind="missionSwap",list="daily",index=1})
+  assert(free.status=="ok" and free.value.price==0 and profile.Data.paperMilli==149500)
+  assert(profile.Data.missions.daily[1].action~=before and profile.Data.missions.dailySwaps==1)
+  local snapshot=Schema.canonical(profile.Data)
+  local short=apply({kind="missionSwap",list="daily",index=1})
+  assert(short.code=="not_enough_paper" and short.value.shortfall==1 and Schema.canonical(profile.Data)==snapshot)
+  assert(apply({kind="missionSwap",list="fixed",index=1}).code=="invalid_mission")
+  assert(apply({kind="missionSwap",list="daily",index=1,price=0}).code=="invalid_operation")
+  profile.Data.paperMilli=150500
+  local paid,op=apply({kind="missionSwap",list="daily",index=1})
+  assert(paid.status=="ok" and paid.value.price==150 and profile.Data.paperMilli==500)
+  assert(profile.Data.missions.dailySwaps==2 and service:apply("user",op).replayed and profile.Data.paperMilli==500)
+ end)
+ test("refreshing the player view saves rollover rewards once before returning the profile",function()
+  local service,profile,_,time=missionFixture()
+  local sunday=MONDAY+6*DAY;time(sunday)
+  assert(service:view("user",true).status=="ok")
+  local data=profile.Data
+  local daily,weekly=data.missions.daily[1],data.missions.weekly[2]
+  daily.progress=Missions.goal(daily);weekly.progress=Missions.goal(weekly)
+  data.missions.dailiesDone=15
+  local paper,xp,version=data.paperMilli,data.xpMilli,data.version
+  time(sunday+DAY)
+  assert(service:view("user").value.missions.day==sunday//DAY)
+  local view=service:view("user",true)
+  assert(view.status=="ok" and view.value.missions.day==(sunday+DAY)//DAY and view.value.version==version+1)
+  assert(view.value.paperMilli==paper+100000 and view.value.xpMilli==xp+150000)
+  assert(view.value.chests.stock.sticker==1 and view.value.chests.stock.blue_ribbon==1)
+  assert(profile.Data.version==view.value.version and Schema.canonical(profile.Data.missions)==Schema.canonical(view.value.missions))
+  time(sunday+DAY-1)
+  local stale=service:view("user",true)
+  assert(stale.status=="ok" and stale.value.missions.day==view.value.missions.day and stale.value.version==version+1)
+  time(sunday+DAY)
+  assert(service:view("user",true).value.version==version+1 and profile.Data.chests.stock.sticker==1)
+ end)
+ test("a refused claim still settles completed cards from the previous UTC day",function()
+  local service,profile,apply,time=missionFixture()
+  local mission=profile.Data.missions.daily[1];mission.progress=Missions.goal(mission)
+  local paper,version=profile.Data.paperMilli,profile.Data.version
+  time(MONDAY+DAY)
+  local refused,op=apply({kind="missionClaim",list="daily",index=1})
+  assert(refused.code=="not_claimable" and profile.Data.missions.day==MONDAY//DAY+1)
+  assert(profile.Data.paperMilli==paper+100000 and profile.Data.version==version+1)
+  assert(service:apply("user",op).code=="not_claimable" and profile.Data.version==version+1)
+ end)
+ test("earlier, ineligible and bad mission summaries leave statistics and earned stock intact",function()
+  local service,profile,apply=missionFixture()
+  profile.Data.chests.stock.sticker=3
+  local missions=Schema.canonical(profile.Data.missions)
+  local matches=profile.Data.statistics.matches
+  local ineligible=matchSummary(MONDAY+DAY);ineligible.eligible=false
+  local invalid=matchSummary(MONDAY+DAY);invalid.folds=-1
+  local unserializable=matchSummary(MONDAY+DAY);unserializable.folds=0/0
+  for _,summary in {matchSummary(MONDAY-DAY),ineligible,invalid,unserializable} do
+   local result=apply({kind="statistics",deltas={matches=1},missions=summary})
+   assert(result.status=="ok" and #result.value.finishedMissions==0)
+   assert(Schema.canonical(profile.Data.missions)==missions and profile.Data.chests.stock.sticker==3)
+  end
+  assert(profile.Data.statistics.matches==matches+4)
+  assert(service.missionWarnings.stale_period and service.missionWarnings.ineligible_match and service.missionWarnings.invalid_match_summary)
+ end)
+ test("a failed rollover payout leaves all mission rewards pending and still saves match stats",function()
+  local _,profile,apply,time=missionFixture()
+  local sunday=MONDAY+6*DAY
+  time(sunday)
+  assert(apply({kind="missionSwap",list="daily",index=1}).status=="ok")
+  local data=profile.Data
+  local daily,weekly=data.missions.daily[1],data.missions.weekly[2]
+  daily.progress=Missions.goal(daily);weekly.progress=Missions.goal(weekly)
+  data.chests.stock.sticker=Economy.MAX_SAFE_INTEGER
+  local paper,matches=data.paperMilli,data.statistics.matches
+  local missions=Schema.canonical(data.missions)
+  local settled=apply({kind="statistics",deltas={matches=1},missions=matchSummary(sunday+DAY)})
+  assert(settled.status=="ok" and #settled.value.finishedMissions==0 and profile.Data.statistics.matches==matches+1)
+  assert(profile.Data.paperMilli==paper and Schema.canonical(profile.Data.missions)==missions)
+  assert(profile.Data.chests.stock.sticker==Economy.MAX_SAFE_INTEGER)
+ end)
+ test("match progress uses its completion day and returns newly finished cards once",function()
+  local service,profile,apply,time=missionFixture()
+  local day=MONDAY+DAY
+  time(day);assert(service:view("user",true).status=="ok")
+  profile.Data.missions.daily={
+   {tier="easy",kind="total",action="matches",count=1,progress=0,claimed=false},
+   {tier="medium",kind="total",action="assists",count=14,progress=0,claimed=false},
+   {tier="hard",kind="total",action="folds",count=35,progress=0,claimed=false},
+  }
+  time(day+DAY)
+  local settled,op=apply({kind="statistics",deltas={matches=1},missions=matchSummary(day)})
+  assert(settled.status=="ok" and profile.Data.missions.day==day//DAY)
+  assert(settled.value.finishedMissions[1].action=="matches" and profile.Data.missions.daily[1].progress==1)
+  assert(service:apply("user",op).replayed and profile.Data.missions.dailiesDone>=1)
+ end)
+ test("refresh retains missions for level-unlocked gear and replaces lost gear",function()
+  local service,profile=missionFixture()
+  local catalog,data=service.catalog,profile.Data
+  local free
+  for _,weapon in catalog.weapons do
+   if not data.ownership[weapon.id] and weapon.paper_price==0 and weapon.min_level>1 then free=weapon.id;break end
+  end
+  assert(free,"test catalog needs a free weapon unlocked after level one")
+  data.missions.daily={
+   {tier="easy",kind="total",action="folds",count=6,progress=1,gear=free,claimed=false},
+   {tier="medium",kind="total",action="assists",count=7,progress=1,gear="spitball",claimed=false},
+   {tier="hard",kind="total",action="matches",count=3,progress=1,claimed=false},
+  }
+  assert(not catalog:owns(data.ownership,"spitball",Economy.levelForXP(data.xpMilli)))
+  local view=service:view("user",true)
+  assert(view.status=="ok" and view.value.missions.daily[1].gear==free and view.value.missions.daily[1].progress==1)
+  assert(view.value.missions.daily[2].action~="assists" and view.value.missions.daily[2].progress==0)
+ end)
+ test("Studio mission finishing respects saved claims and is refused for a live-style profile",function()
+  local _,profile,apply=missionFixture(true)
+  profile.Data.missions.daily[1].claimed=true
+  profile.Data.missions.daily[1].progress=Missions.goal(profile.Data.missions.daily[1])
+  assert(apply({kind="devFinishMissions"}).status=="ok")
+  assert(profile.Data.missions.dailiesDone==15 and profile.Data.missions.daily[1].claimed)
+  for _,list in {"daily","weekly"} do
+   for _,mission in profile.Data.missions[list] do assert(mission.progress==Missions.goal(mission)) end
+  end
+  local _,live,liveApply=missionFixture()
+  local before=Schema.canonical(live.Data)
+  assert(liveApply({kind="devFinishMissions"}).code=="studio_only" and Schema.canonical(live.Data)==before)
  end)
  test("paid openings require a positive policy response and enough Paper, and duplicates refund once at face value",function()
   local service,profile=fixture();local player={}

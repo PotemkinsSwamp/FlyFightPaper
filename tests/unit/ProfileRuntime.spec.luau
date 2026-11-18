@@ -59,6 +59,32 @@ local function savingFixture(messages)
 end
 function Spec.run()
  local result,test=Suite.new()
+ test("finished mission notifications go only to the player and skip operation retries",function()
+  local runtime,players=fixture()
+  local player=players[1];player.Parent=game:GetService("Players")
+  local entry=runtime.entries[player]
+  local profile=runtime.service.sessions[entry.account].profile
+  runtime.service.unix=function()return 1704067200 end
+  assert(runtime:view(player,true))
+  profile.Data.missions.daily={
+   {tier="easy",kind="total",action="matches",count=1,progress=0,claimed=false},
+   {tier="medium",kind="total",action="assists",count=14,progress=0,claimed=false},
+   {tier="hard",kind="total",action="folds",count=35,progress=0,claimed=false},
+  }
+  local notifications=0
+  function runtime.onMissionsFinished(who,finished)
+   assert(who==player and finished[1].action=="matches")
+   notifications+=1
+  end
+  local input={kind="statistics",id="rewardmissions:1",rewardSource="test",deltas={matches=1},missions={
+   completedAt=1704067200,eligible=true,mode="FFA",folds=0,assists=0,damage=0,paper=0,seconds=0,
+   wins=0,top3=0,targets=0,boosts=0,zone_points=0,zone_folds=0,deaths=0,best_life=0,byGear={},
+  }}
+  for _=1,2 do
+   assert(runtime:enqueue(player,input) and runtime:process(entry))
+   assert(notifications==1 and profile.Data.statistics.matches==1)
+  end
+ end)
  test("live doubleLock callbacks wait for the actual saved lock without blocking other queued rewards",function()
   local runtime,players=fixture();runtime.mock=false
   local player=players[1];local entry=runtime.entries[player]

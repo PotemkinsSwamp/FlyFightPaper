@@ -387,6 +387,31 @@ function Spec.run()
 		end
 	end)
 
+	test("finished gear cards stay claimable after losing gear and still pay at reset", function()
+		local state = stateAt()
+		state.daily[1] = total("easy", "folds", 6, {gear = OWNED[1]})
+		state.daily[2] = total("medium", "assists", 7, {gear = OWNED[1]})
+		state.daily[1].progress = 7
+		state.daily[2].progress, state.daily[2].claimed = 7, true
+		local refreshed, paid, changed = Missions.refresh(state, JAN_1, {}, 100)
+		assert(equal(refreshed, state) and #paid == 0 and not changed)
+		local claimed, reward = Missions.claim(refreshed, "daily", 1)
+		assert(claimed.daily[1].claimed and equal(reward, {paper = 100, xp = 150}))
+		local _, expired = Missions.refresh(refreshed, JAN_1 + DAY, {}, 100)
+		assert(equal(expired, {{paper = 100, xp = 150}}))
+	end)
+
+	test("saved counts and thresholds remain valid after mission tuning changes", function()
+		local state = stateAt()
+		state.daily[1].count, state.daily[1].progress = 13, 11
+		state.weekly[1] = feat("two_day", "best_life", "best_life", 3.5, 4)
+		assert(Missions.valid(state))
+		local same, paid = Missions.refresh(state, JAN_1, {}, 22)
+		assert(equal(state, same) and #paid == 0)
+		local nextDay = Missions.refresh(state, JAN_1 + DAY, {}, 22)
+		assert(Missions.valid(nextDay) and equal(nextDay.weekly[1], state.weekly[1]))
+	end)
+
 	test("strict validation rejects malformed saves, cards and lists", function()
 		assert(Missions.valid(Missions.defaults()) and Missions.valid(stateAt()))
 		local edits = {
@@ -408,17 +433,25 @@ function Spec.run()
 			function(s) s.daily[1].progress = -1 end,
 			function(s) s.daily[1].progress = 0 / 0 end,
 			function(s) s.daily[1].progress = "12" end,
-			function(s) s.daily[1].count = 13 end,
+			function(s) s.daily[1].count = 0 end,
+			function(s) s.daily[1].count = 13.5 end,
+			function(s) s.daily[1].progress = math.huge end,
+			function(s) s.daily[1].progress = 0.5 end,
+			function(s) s.daily[1].claimed = "true" end,
 			function(s) s.daily[1].claimed = true end,
 			function(s) s.daily[1].threshold = 12 end,
-			function(s) s.daily[1] = total("easy", "wins", 1) end,
-			function(s) s.daily[1] = total("easy", "matches", 1, {mode = "TDM"}) end,
+			function(s) s.daily[1] = total("easy", "unknown", 1) end,
+			function(s) s.daily[1] = total("easy", "deaths", 1) end,
+			function(s) s.daily[1] = total("easy", "matches", 1, {mode = "unknown"}) end,
 			function(s) s.daily[1] = total("easy", "folds", 6, {gear = ""}) end,
 			function(s) s.daily[1] = total("easy", "folds", 6, {gear = OWNED[1], mode = "TDM"}) end,
 			function(s) s.daily[2] = total("medium", "folds", 25) end,
-			function(s) s.daily[2] = feat("medium", "best_life", "best_life", 3, 1) end,
-			function(s) s.daily[3] = total("hard", "damage", 2700, {mode = "TDM"}) end,
-			function(s) s.weekly[3] = total("five_day", "zone_folds", 20, {mode = "CONTROL"}) end,
+			function(s) s.daily[2] = feat("medium", "best_life", "deaths", 3, 1) end,
+			function(s) s.daily[2] = feat("medium", "best_life", "best_life", -1, 1) end,
+			function(s) s.daily[2] = feat("medium", "best_life", nil, 3, 1) end,
+			function(s) s.daily[2] = feat("medium", "deaths", "one_match", 3, 1) end,
+			function(s) s.daily[2] = feat("medium", "assists", "one_match", 3, 1); s.daily[2].mode = "TDM" end,
+			function(s) s.daily[2] = feat("medium", "deaths", "deaths", 3, 1); s.daily[2].progress = 2 end,
 			function(s)
 				s.daily[1] = total("easy", "zone_folds", 3, {mode = "CONTROL"})
 				s.daily[2] = total("medium", "matches", 1, {mode = "FFA"})

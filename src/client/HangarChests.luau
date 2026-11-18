@@ -2,7 +2,6 @@
 local Root = game.ReplicatedStorage.FlyFightPaper
 local Assets = require(Root.Shared.UIAssets)
 local Looks = require(Root.Shared.LooksRules)
-local Progress = require(Root.Shared.ChestProgress)
 local Commerce = require(Root.Generated.Commerce)
 local Rules = require(Root.Shared.CommerceRules)
 local Daily = require(Root.Generated.Economy).daily_gift
@@ -212,7 +211,7 @@ local function chestShelf(ctx, sheet)
 		center(ui.words(card, "Stock", string.format("%d earned", wallet and wallet.stock[chest.base] or 0), 29, 169, 260, 41, 31))
 		i += 1
 	end
-	ui.button(sheet, "ChestProgress", Assets.mainmenu.strip.blue, "How to earn chests", 166, 807, 584, 108, -1, function() go(ctx, "progress") end, 44)
+	ui.button(sheet, "ChestGoals", Assets.mainmenu.strip.blue, "How to earn chests", 166, 807, 584, 108, -1, function() go(ctx, "progress") end, 44)
 
 	center(PaperUI.loud(ui.words(sheet, "ChestTitle", title(selected), 808, 136, 693, 74, 50)))
 	center(ui.words(sheet, "Balance", "Your Paper  " .. PaperUI.commas(balance), 841, 213, 616, 56, 40))
@@ -347,12 +346,11 @@ local function oddsPage(ctx, sheet)
 end
 
 local function progressPage(ctx, sheet)
-	local ui, wallet = ctx.ui, ctx.profile.chests
+	local ui = ctx.ui
 	backButton(ctx, sheet, 160)
 	center(PaperUI.loud(ui.words(sheet, "GoalsTitle", "Earn treasure chests", 448, 132, 829, 76, 53)))
 	center(ui.words(sheet, "GoalsNote", "Claim your free gift each day in the Shop.", 216, 232, 1237, 59, 40))
 	local streak = ctx.profile.dailyGift
-	local mission = Progress.status(wallet and wallet.progress or Progress.defaults(), math.floor(workspace:GetServerTimeNow())).mission
 	for i, base in Daily.chests do
 		local y = 316 + (i - 1) * 85
 		chestPicture(ui, sheet, Looks.chest(base), 196, y, 132, 82, base.."Picture")
@@ -361,8 +359,7 @@ local function progressPage(ctx, sheet)
 	end
 	local day = streak and Rules.dailyGiftDay(streak, math.floor(workspace:GetServerTimeNow()/86400)) or 1
 	center(ui.words(sheet, "Streak", "Day " .. day .. " of 28. Missing a daily claim restarts the streak.", 190, 666, 1289, 62, 37))
-	center(PaperUI.loud(ui.words(sheet, "WeeklyMission", "Weekly match mission", 373, 746, 930, 61, 46)))
-	center(ui.words(sheet, "Mission", string.format("%d / %d qualifying matches for a Sticker chest", mission.count, mission.target), 211, 819, 1245, 67, 38))
+	center(ui.words(sheet, "Mission", "Daily and weekly missions earn chests too. Open Missions from the main menu.", 115, 761, 1440, 70, 38))
 end
 
 function Chests.draw(ctx)

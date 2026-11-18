@@ -41,7 +41,9 @@ function MissionsScreen.describe(m)
 		local feat = m.feat == "best_life" and ("fold " .. k .. " planes before you're folded")
 			or m.feat == "deaths" and ("finish a match folded " .. k .. " times or fewer")
 			or ({ folds = "fold %s planes", assists = "get %s assists", damage = "deal %s damage", paper = "earn %s Paper",
-				boosts = "collect %s speed boosts", targets = "hit %s paper targets" })[m.action]:format(PaperUI.commas(k)) .. " in one match"
+				boosts = "collect %s speed boosts", targets = "hit %s paper targets", minutes = "fly for %s minutes",
+				matches = "play %s matches", wins = "win %s matches", top3 = "place in the top 3 %s times",
+				zone_points = "earn %s zone points", zone_folds = "fold %s planes in the zone" })[m.action]:format(PaperUI.commas(k)) .. " in one match"
 		local text = n == 1 and feat or ("In " .. n .. " matches, " .. feat:gsub(" in one match$", ""))
 		return (text:gsub("^%l", string.upper)) .. gear .. mode
 	end
@@ -75,7 +77,7 @@ function MissionsScreen.new(playerGui, api)
 	local cover, sheet = PaperUI.screen(playerGui, "MissionsScreen", Assets.mainmenu.bg)
 	local ui = Widgets.new()
 	local self = { frame = cover }
-	local tab, missions = "daily", nil
+	local tab, missions, message = "daily", nil, ""
 
 	local function card(paper, name, m, list, index, y, h, fixed)
 		local box = ui.instance(paper, name, "Frame")
@@ -161,11 +163,16 @@ function MissionsScreen.new(playerGui, api)
 				card(paper, "Fixed", nil, "fixed", 1, 262 + 3 * 176, 160, true)
 			end
 		end
+		if message ~= "" then
+			local note = ui.words(paper, "MissionMessage", message, 200, 954, 1270, 46, 30)
+			note.TextXAlignment = Enum.TextXAlignment.Center
+		end
 		ui.finish()
 	end
 
-	function self.update(_, profile)
+	function self.update(player, profile)
 		missions = profile and profile.missions
+		message = player:GetAttribute("MenuMessage") or ""
 		draw()
 	end
 	function self.open(which) tab = which or "daily"; draw() end

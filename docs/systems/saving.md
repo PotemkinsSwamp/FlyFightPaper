@@ -6,7 +6,7 @@ lost if a save fails for a moment; it retries without stopping the match for eve
 
 ## Where it stands (2026-11-18)
 
-Schema 15 keeps earned chest stock by tier and tracks purchased stock by family and tier. When an older profile loads, its earned inventory, current daily gift and weekly mission count carry forward. A missed gift day resets the next claim. The server saves ownership or a duplicate refund with the Paper charge or consumed chest. It records the latest opening number so repeat clicks cannot spend twice. A paid chest receipt grants the unopened chest and receipt ID together before it is acknowledged. [Chest rules](economy-and-shop.md#classroom-treasure-chests).
+Schema 16 adds `missions` and removes the retired chest progress counter. Existing saves start with empty mission lists and retain all earned and purchased chest stock. A missed gift day resets the next claim. The server saves ownership or a duplicate refund with the Paper charge or consumed chest. It records the latest opening number so repeat clicks cannot spend twice. A paid chest receipt grants the unopened chest and receipt ID together before it is acknowledged. [Chest rules](economy-and-shop.md#classroom-treasure-chests).
 
 A separate index counts distinct owners from saved collections across servers. It imports older collections in batches and retries interrupted updates. The reveal shows the recorded count once available. Reopening the same item never adds a second owner. Studio keeps its counts in memory for the Play session.
 
@@ -54,6 +54,18 @@ Receipt IDs have a dedicated profile field: a paid product and its receipt ID ch
 receipt is acknowledged only once that save has reached Roblox ([economy and shop](economy-and-shop.md)). Switched off
 until Alan approves prices.
 
+## Daily and weekly missions
+
+The save keeps the current UTC day and week, both lists, swap counts, finished-daily total, calendar and fixed-card claim. Card validation checks the saved shape and its progress, so tuning new counts and thresholds preserves existing cards. The server picks cards from the player's ID and the gear their catalog and level say they own. Losing gear replaces an unfinished card for free. A finished card remains claimable.
+
+- The profile sent to the client and each Claim or Swap use refreshed missions. A UTC reset pays finished, unclaimed cards and saves the new lists together. An older server clock leaves a newer saved period in place.
+- `statistics` uses the match completion time for mission progress. An earlier-day, ineligible or invalid summary leaves mission progress alone. Match statistics and other rewards still settle. Freshly finished cards go to that player via `MissionsFinished` after the operation is accepted.
+- `missionClaim` pays the saved card's reward and marks it claimed together. Paper counts as earned Paper, XP goes toward levels, and chests enter earned stock.
+- `missionSwap` replaces the card and deducts the Paper together at the server's price. Each operation uses the saved sequence to handle retries.
+- `Dev: finish missions` marks the current cards ready to claim on Studio's practice profile. It also fills the fixed card's daily count.
+
+[Mission rules and rewards](../decisions/2026-11-18-daily-and-weekly-missions.md).
+
 ## Friend gift delivery
 The selected ProfileRuntime store handles checks and messages, so Studio uses its mock store throughout.
 `MessageHandler` accepts validated `kind="gift"` messages beside reward messages and queues
@@ -80,10 +92,10 @@ the reward is already granted even if its moment is never seen.
 |---|---|
 | `src/server/ProfileRuntime.luau` | One save session per player: load, autosave, final save, Studio mock |
 | `src/server/CosmeticOwners.luau` | Counts saved owners per cosmetic and imports older collections. `tests/unit/CosmeticOwners.spec.luau` covers repeats and interrupted updates. |
-| `src/server/ProfileService.luau` | Changes to a save (rewards, boosts, refolds), each applied exactly once |
+| `src/server/ProfileService.luau` | Changes to a save (rewards, missions, boosts, refolds), each applied exactly once |
 | `src/server/RewardQueue.luau` | Retries a failed reward without blocking the round |
 | `src/shared/ProfileSchema.luau` | What a save file may contain |
-| `tests/unit/ProfileService.spec.luau` | Save changes, prestige and duplicate requests |
+| `tests/unit/ProfileService.spec.luau` | Save changes, mission claims and swaps, rollover, prestige and duplicate requests |
 | `tests/unit/ProfileRuntime.spec.luau` | Reward and gift message acknowledgments, session inbox and practice self-delivery |
 | `tests/fixtures/FakeProfiles.luau` | Controllable saves and mailbox reads/sends for unit tests |
 | `src/server/Packages/` | ProfileStore library (third party, unmodified) |

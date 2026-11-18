@@ -1,5 +1,5 @@
 # Since Alan last checked (2026-11-18)
-- **Daily and weekly missions are decided, not built** ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)): made by the game from shapes, 3 dailies (easy, medium, hard), weekly missions of 2 to 5 days of play, paid swaps. The dev "everything unlocked" button now owns every skin and trail (not yet tried in Play).
+- Daily and weekly missions now save progress, handle Claims and Swaps, and pay unclaimed rewards at reset. The server sends mission completions for the report card. Studio checks are pending. [Saving](../docs/systems/saving.md#daily-and-weekly-missions)
 - Private Studio save 820 has the illustrated chest openings. All eight chests hold a sharp open pose. Trail cases use different paper and trim. Light Shop lettering has a black outline. All 719 tests passed. [Studio video and pictures](../docs/playtests/2026-11-18-shop-chest-openings.md#illustrated-chest-openings)
 - Customize keeps the book and stats on screen while you pick gear or looks. All 18 trails run behind the plane. Holographic moves on both faces and skins cover the team stickers. [Studio check and pictures](../docs/playtests/2026-11-18-hangar-preview-and-clicks.md)
 - The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
@@ -7,9 +7,8 @@
 
 # Now: finish the game for the beta
 The five finished Legendary skins and matching trails are installed. The two Mythicals include their trails. The four other Legendary ideas (Bumblebee, Rocket, Mech and Pirate) are concepts. The remaining performance check is Galaxy plus Circuit Trace on all 12 planes.
-Dragon leftovers: crash ball and shop card pictures, jaw leftover. **Next: build the missions** ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)). Queued: Toilet Roll shake, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
+Dragon leftovers: crash ball and shop card pictures, jaw leftover. **Next: check the missions in Play and connect the report card slip** ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)). Queued: Toilet Roll shake, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
-
 Decisions to review
 Chest prices, drop rates, 10% duplicate refunds and the first mission and streak targets are tuning choices. [Numbers](../docs/systems/economy-and-shop.md#classroom-treasure-chests)
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
@@ -48,6 +47,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
+- **Missions.** Check both tabs, try a free and a paid Swap, then press **Dev: finish missions** and Claim Paper, XP and chests.
 - **Shop > Chests.** Open a Skin or Trail chest and try Wear. Check the opening animation, the two chest designs and the rarity papers in the Hangar. Robux buttons are Studio practice only.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 18 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? How does Holographic read from below? Do sparkles and smoke start in clumps?

@@ -172,6 +172,10 @@ function DevTools.start(menu)
 		local id = trailIds[trailTurn]
 		player:SetAttribute("DevTrail", id)
 	end)
+	local missionsButton = switch:Clone()
+	missionsButton.Name, missionsButton.Position, missionsButton.Text, missionsButton.Parent =
+		"Missions", UDim2.new(1, -10, 1, -202), "Dev: finish missions", switchGui
+	missionsButton.Activated:Connect(function() Root:WaitForChild("RoundAction"):FireServer("devFinishMissions") end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()
 		local screen, page = string.match(player:GetAttribute("DevScreen") or "", "^([^:]+):?(.*)$")

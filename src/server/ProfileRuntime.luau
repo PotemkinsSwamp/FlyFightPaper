@@ -81,7 +81,7 @@ function Runtime:messageReward(userId,input,source)
   local capture=self.rewardMultipliers and self.rewardMultipliers[userId]
   if capture then input.multipliers=assert(Schema.copy(capture)) end
  end
- return self.store:MessageAsync("Player_"..userId,{kind="reward",source=source,input=assert(Schema.copy(input))})
+ return self.store:MessageAsync("Player_"..userId,{kind="reward",source=source,input=assert(Schema.copyOperation(input))})
 end
 function Runtime:load(player)
  if self.entries[player] or self.stopping then return end
@@ -159,7 +159,7 @@ function Runtime:load(player)
     if not Schema.validGift(message) then return end
     input={kind="giftReceived",giftId=message.giftId,from=message.from,fromName=message.fromName,key=message.key}
    elseif message.kind=="reward" then
-    input=Schema.copy(message.input)
+    input=Schema.copyOperation(message.input)
     if type(input)~="table" or not rewardKinds[input.kind] or not Schema.id(input.id) or not input.id:match("^reward%w+:%d+$") or type(message.source)~="string" or input.rewardSource~=message.source then return end
    else return end
    while self.entries[player]==e and not e.closing and profile:IsActive() do
@@ -232,13 +232,19 @@ function Runtime:process(e)
    end
   end)
  end
+ if result.status=="ok" and not result.replayed and result.value.finishedMissions and #result.value.finishedMissions>0
+  and self.onMissionsFinished and e.player.Parent==Players then
+  local sent,err=pcall(self.onMissionsFinished,e.player,result.value.finishedMissions)
+  if not sent then warn("Mission notification failed: "..tostring(err)) end
+ end
  local done=e.callbacks[op.id];e.callbacks[op.id]=nil
  if done then
   task.defer(function()
    if op.kind=="doubleLock" and result.status=="ok" and not self.mock then
     if not self:confirmDoubleLock(e,op,result.value.version) then done(false,"double_lock_unsaved");return end
    end
-   done(result.status=="ok",result.value or result.code)
+   local ok=result.status=="ok"
+   done(ok,ok and result.value or result.code,not ok and result.value or nil)
   end)
  end
  if result.status=="error" then warn("Profile operation refused for player "..e.player.UserId..": "..tostring(result.code)) end
@@ -311,9 +317,9 @@ function Runtime:update(e)
  e.player:SetAttribute("GiftInbox",#(e.giftInbox or {})==0 and "[]" or Http:JSONEncode(e.giftInbox))
  e.player:SetAttribute("ProfileStatus",self.mock and "Studio session only" or (e.saveDelayed and "Saving delayed. Progress is held in this server." or (e.lastSavedVersion>=e.snapshot.version and "Saved" or "Waiting to save")))
 end
-function Runtime:view(player)
+function Runtime:view(player,refreshMissions)
  local e=self.entries[player];if not e or not e.loaded or e.leaving or e.closing then return nil end
- local current=self.service:view(e.account)
+ local current=self.service:view(e.account,refreshMissions)
  return current.status=="ok" and current.value or nil
 end
 function Runtime:playerForUserId(id)
@@ -324,7 +330,7 @@ function Runtime:enqueue(player,input,source,callback)
  local e=self.entries[player];if not e or not e.loaded or e.closing then return false end
  if source and e.seen[source] then return true end
  if #e.queue>=Config.queue_limit then return false end
- local copy=Schema.copy(input);if not copy then return false end
+ local copy=Schema.copyOperation(input);if not copy then return false end
  if (copy.kind=="contribution" or copy.kind=="finalBonus") and not copy.multipliers then
   local capture=self.service:producerCapture(e.account)
   if capture.status~="ok" then return false end
@@ -335,7 +341,7 @@ function Runtime:enqueue(player,input,source,callback)
  local op=reward and copy or self.service:prepare(e.account,copy);if not op then return false end
  if source then e.seen[source]=true end
  local previous=e.callbacks[op.id]
- table.insert(e.queue,op);e.callbacks[op.id]=previous and function(ok,value)previous(ok,value);if callback then callback(ok,value)end end or callback
+ table.insert(e.queue,op);e.callbacks[op.id]=previous and function(...)previous(...);if callback then callback(...)end end or callback
  return true
 end
 return Runtime

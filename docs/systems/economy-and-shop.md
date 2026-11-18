@@ -16,7 +16,7 @@ The **Chests** tab in the Shop sells four Skin chests and four Trail chests. Tap
 
 Items in a rarity have equal chances. Each list on screen shows only possible outcomes. Trail chests draw from five Common, six Rare and five Legendary trails. Dragon Embers and Folded Petals come exclusively with their Mythical skins. A duplicate returns 10% of the item's reference Paper value. That pays 280, 560, 3,000 or 6,000 for a skin by rarity, and 90 for a Common trail or 190 for a Rare or Legendary trail.
 
-Three reward-eligible matches in one Monday-to-Sunday UTC week earn one Sticker chest. The daily gift gives a Paper chest on consecutive day 7, Sticker on day 14, Blue Ribbon on day 21 and Golden Star on day 28. A missed UTC day restarts the gift row on day one. Earned chests of a given tier can be saved and spent on either family.
+The old weekly three-match Sticker chest has retired. Three matches can now come up as a daily goal, and weekly cards award Sticker and Blue Ribbon chests. [Daily and weekly mission rules](../decisions/2026-11-18-daily-and-weekly-missions.md). The daily gift gives a Paper chest on consecutive day 7, Sticker on day 14, Blue Ribbon on day 21 and Golden Star on day 28. A missed UTC day restarts the gift row on day one. Earned chests of a given tier can be saved and spent on either family.
 
 Buying with Paper pays for an immediate opening. A Robux purchase delivers an unopened chest of the exact family and tier bought. The direct Robux prices are about 10% below the normal cost of the same Paper at the largest pack's rate. The first-buy Paper bonus can change that comparison. The server checks paid-random-item eligibility for paid openings and purchases, including the starter pack. Earned openings remain available if the check fails or the account is restricted. Real checkout is switched off. [Roblox paid random item guidance](https://create.roblox.com/docs/production/monetization/paid-random-items).
 
@@ -340,7 +340,6 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 |---|---|
 | `src/shared/EconomyRules.luau` | Points to Paper and XP, bonuses, levels, purchases |
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
-| `src/shared/ChestProgress.luau` | Tracks the weekly three-match mission by completion time. Late-match and weekly reset tests are in `tests/unit/ChestProgress.spec.luau`. |
 | `src/shared/Missions.luau` | Generates daily and weekly missions and handles progress, claims, swaps and rollover. Tests are in `tests/unit/Missions.spec.luau`. |
 | `src/shared/LooksRules.luau` | Skin and Trail chest pools, duplicate values, wearing and bot cosmetics ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |

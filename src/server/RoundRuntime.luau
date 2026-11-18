@@ -32,6 +32,8 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
  end
  self.view=Instance.new("RemoteEvent");self.view.Name="RoundView";self.view.Parent=Root
  self.profileView=Instance.new("RemoteEvent");self.profileView.Name="ProfileView";self.profileView.Parent=Root
+ self.missionsFinished=Instance.new("RemoteEvent");self.missionsFinished.Name="MissionsFinished";self.missionsFinished.Parent=Root
+ profiles.onMissionsFinished=function(player,finished) self.missionsFinished:FireClient(player,finished) end
  self.action=Instance.new("RemoteEvent");self.action.Name="RoundAction";self.action.Parent=Root
  self.hangar=require(script.Parent.HangarService).new(flight,profiles,commerce)
  self.hangar.onAnswer=function(player) self:sendProfile(player) end
@@ -159,14 +161,14 @@ function Runtime:gearCount(p,weapon,field,amount)
   local seen={};for _,id in ipairs(l.weapon_mounts) do if id and not seen[id] then seen[id]=true;add(id) end end
  else add(weapon) end
 end
--- One finished match as missions see it (Missions.applyMatch). Paper is the match's own Paper before 2x boosts.
+-- Paper starts at the base amount. The reward queue adds captured boosts before statistics are sent.
 function Runtime:missionSummary(row,r)
- local s=self.missionStats[row.key] or {boosts=0,byGear={}}
+ local s=self.missionStats and self.missionStats[row.key] or {boosts=0,byGear={}}
  local points=Economy.points
  local byGear={}
  for id,g in pairs(s.byGear) do byGear[id]={folds=g.folds,assists=g.assists,damage=math.floor(g.damage),seconds=math.floor(g.seconds)} end
  return {eligible=row.completion==true,completedAt=r.completedAtUnix,mode=r.mode,folds=row.kills,assists=row.assists,
-  damage=math.floor(row.damage),paper=math.floor(row.contribution*Economy.paper_per_point+row.finalPaper),seconds=math.floor(row.activeSeconds),
+  damage=math.floor(row.damage),paper=row.contribution*Economy.paper_per_point+row.finalPaper,seconds=math.floor(row.activeSeconds),
   wins=row.victory and row.completion and 1 or 0,top3=row.completion and not r.result.draw and row.place and row.place<=3 and 1 or 0,
   targets=row.targetPoints//points.target,boosts=s.boosts,
   zone_points=math.min(row.zoneEvents*points.zone_per_5_eligible_seconds,Economy.control_personal_points_max_per_match),
@@ -208,9 +210,9 @@ function Runtime:combatEvent(kind,victim,extra,at)
  end
  self:earnings()
 end
-function Runtime:reward(userId,source,input,at,accepted)
+function Runtime:reward(userId,source,input,at,accepted,beforeSend)
  if not self.rewardQueue then self.rewardQueue=RewardQueue.new(self.profiles) end
- self.rewardQueue:add(userId,source,input,at,accepted)
+ self.rewardQueue:add(userId,source,input,at,accepted,beforeSend)
 end
 function Runtime:scorePopup(row)
  local player=Players:GetPlayerByUserId(row.userId)
@@ -234,7 +236,11 @@ function Runtime:earnings()
     local total=totals[event.actorId] or {paper=0,xp=0,missed=0};totals[event.actorId]=total
     total.paper+=event.points*Economy.paper_per_point*input.multipliers.paper
     -- Paper earned without 2x: the report card's "2x Paper would have given you +X" (true even if a boost ran out mid-match).
-    if input.multipliers.paper==1 then total.missed+=event.points*Economy.paper_per_point end
+    if input.multipliers.paper==1 then
+     total.missed+=event.points*Economy.paper_per_point
+    else
+     total.boostPaper=(total.boostPaper or 0)+event.points*Economy.paper_per_point
+    end
     total.xp+=event.points*Economy.xp_per_point*input.multipliers.xp
    end)
    self:scorePopup(event)
@@ -573,7 +579,18 @@ function Runtime:queueSettlement()
     rewards[row.key]={paper=row.finalPaper*input.multipliers.paper,xp=row.finalXP*input.multipliers.xp,missed=input.multipliers.paper==1 and row.finalPaper or 0}
    end) else rewards[row.key]={paper=0,xp=0,missed=0} end
    if row.qualified then self:reward(row.userId,r.id..":qualification:"..row.key,{kind="qualification",matchId=r.id,activeSeconds=row.activeSeconds,events=row.qualifyingEvents}) end
-   self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",completedAt=row.completion and r.completedAtUnix or nil,deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths},missions=self:missionSummary(row,r)})
+   local ok,summary=pcall(self.missionSummary,self,row,r)
+   if not ok then summary=false end
+   local earned=self.earnedTotals
+   local basePaper=summary and summary.paper
+   self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths},missions=summary},nil,nil,function(input)
+    if not input.missions then return end
+    local contribution=earned and earned[row.actorId]
+    local final=rewards[row.key]
+    local boostPaper=contribution and contribution.boostPaper or 0
+    local finalBoost=final and final.paper-row.finalPaper or 0
+    input.missions.paper=math.floor(basePaper+boostPaper+finalBoost)
+   end)
    self.settledRows[row.key]=true
   end
  end
@@ -582,12 +599,12 @@ function Runtime:queueSettlement()
  if self.rewardQueue then self.rewardQueue:step() end
 end
 function Runtime:sendProfile(player)
- local profile=self.profiles:view(player)
+ local profile=self.profiles:view(player,true)
  if profile then
   local e=self.profiles.entries[player]
   local boost=self.profiles.service:liveBoostView(e.account)
   self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,looks=profile.looks,chests=profile.chests,dailyGift=profile.dailyGift,
-   chestPaperAllowed=self.profiles.service:chestPaperAllowed(e.account,player),
+   missions=profile.missions,chestPaperAllowed=self.profiles.service:chestPaperAllowed(e.account,player),
    presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,unlocksSeen=profile.unlocksSeen,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end
 end

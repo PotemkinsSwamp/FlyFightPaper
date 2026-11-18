@@ -109,6 +109,7 @@ function Menu.start()
   if player:GetAttribute("InMatch") and not state.overlay then overlay(true) end
   state.under=nil
   if screen=="hangar" then hangarScreen.open(page,slot) end
+  if screen=="missions" and state.screen~="missions" then player:SetAttribute("MenuMessage",nil) end
   state.screen=screen;state.fromDesk=fromDesk==true;action:FireServer("profile");render()
   if screen=="shop" and page then shopScreen.jump(page) end -- page: a shop section ("Paper") or card ("PaperJar")
  end
