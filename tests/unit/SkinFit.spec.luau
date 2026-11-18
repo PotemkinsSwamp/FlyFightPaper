@@ -29,6 +29,46 @@ function Spec.run()
 	local heavy = catalog:classLoadout("bomber", 99)
 	heavy.wings, heavy.utility = "wings_1", "boost_twin"
 	local builds = { fighter = catalog:classLoadout("fighter", 99), swept = swept, heavy = heavy }
+	test("Holographic covers both faces of a real wing and taking it off restores its team marks", function()
+		local looks = require(game.StarterPlayer.StarterPlayerScripts.FlyFightPaper.PlaneLooks)
+		local world = Instance.new("WorldModel")
+		local model = Instance.new("Model", world)
+		local appearance = Instance.new("Model", model)
+		appearance.Name = "Appearance"
+		local wing = Root.Assets.AircraftPieces.wings_0["wings-paper-L"]:Clone()
+		wing.Name, wing.Parent = "wings-wings-paper-L", appearance
+		local mark = Root.Assets.AircraftPieces.Stickers["sticker-circle"]:Clone()
+		mark:SetAttribute("TeamSticker", true)
+		mark.Parent = appearance
+		local placeholder = Instance.new("MeshPart")
+		placeholder:SetAttribute("Region", "sticker")
+		placeholder.Transparency, placeholder.Parent = 1, appearance
+		assert(looks.dressPreview(model, "holographic"))
+		assert(mark.Transparency == 1 and placeholder.Transparency == 1)
+		local top, bottom = {}, {}
+		for _, layer in wing:GetChildren() do
+			if layer.Name ~= "SkinLayer" then continue end
+			local faces = if layer.Face == Enum.NormalId.Top then top else bottom
+			assert(layer.Face == Enum.NormalId.Top or layer.Face == Enum.NormalId.Bottom)
+			faces[layer.ZIndex] = layer
+		end
+		for i = 1, 2 do
+			local a, b = top[i], bottom[i]
+			assert(a and b and a.ColorMapContent.Uri == b.ColorMapContent.Uri)
+			assert((b.UVScale - Vector2.new(a.UVScale.X, -a.UVScale.Y)).Magnitude < 1e-5)
+			assert((b.UVOffset - a.UVOffset - Vector2.new(0, a.UVScale.Y)).Magnitude < 1e-5)
+			assert(a.Rotation == b.Rotation and a.EmissiveStrength == b.EmissiveStrength)
+		end
+		-- The replacement can arrive already hidden. Taking off the skin still uses the authored
+		-- paint state, even for a marker the dresser has never seen before.
+		local replacement = mark:Clone()
+		mark:Destroy()
+		mark = replacement
+		mark.Parent = appearance
+		assert(looks.dressPreview(model, ""))
+		assert(mark.Transparency == 0 and placeholder.Transparency == 1 and not wing:FindFirstChild("SkinLayer"))
+		world:Destroy()
+	end)
 	local function plane(loadout)
 		local model = Instance.new("Model")
 		local body = Instance.new("Part")

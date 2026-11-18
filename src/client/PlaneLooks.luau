@@ -1,7 +1,7 @@
 -- Skins drawn on each player's own screen only (skins plan, "Keeping skins cheap"): the server marks a plane with a
 -- Skin attribute; here every paper and trim piece of it swaps, on this screen, to its printed-sheet copy
 -- (assets/models/planes/skin-sheet) wearing the skin's picture plus the piece's own creases. The server's pieces and
--- hitbox never change. Boosters wear it too; pieces with no copy (tape, team stickers, weapons) keep their own look.
+-- hitbox never change. Boosters wear it too. Skins cover the team stickers; tape and weapons keep their own look.
 -- Skins that change the plane's shape (the Origami Crane) are fitted by SkinShapes. A Rare's moving layers are Decals over
 -- the sheet, slid, turned and lit here (SkinMotion has the sums).
 local AssetService = game:GetService("AssetService")
@@ -31,15 +31,25 @@ end
 local function asset(id) return Content.fromUri("rbxassetid://" .. id) end
 
 -- Rares move (skins plan, "Moving Rares"): every piece wearing one carries a Decal a layer, in the layers' order.
--- A Decal only draws on a piece's up-facing sides, stretched over the piece's own box, so each one is set for its piece
--- (SkinMotion.decal); sides and undersides show the still sheet.
+-- Each Decal projects from one face of a piece's box (SkinMotion.decal). Holographic foil also covers the underside.
 local moving = {} -- piece -> { spec, look (its sheet), decals, piece (where its box lies on the sheet) }
 local boxes = {} -- piece name -> SkinMotion.piece(...)
-local function place(decal, layer, piece, a, b, tx, c, d, ty, solid, glow)
-	if not a then decal.Transparency = 1; return end
+local function place(decal, bottom, layer, piece, a, b, tx, c, d, ty, solid, glow)
+	if not a then
+		decal.Transparency = 1
+		if bottom then bottom.Transparency = 1 end
+		return
+	end
 	local sx, sy, ox, oy, rot = SkinMotion.decal(piece, a, b, tx, c, d, ty)
 	decal.UVScale, decal.UVOffset, decal.Rotation, decal.Transparency = Vector2.new(sx, sy), Vector2.new(ox, oy), rot, 1 - solid
 	if layer.glow then decal.EmissiveStrength = glow end
+	if bottom then
+		-- Looking through the same piece from below reverses the box's V axis. Flip it about its centre
+		-- before rotation so the same physical point catches the same colour and reflection on either face.
+		bottom.UVScale, bottom.UVOffset = Vector2.new(sx, -sy), Vector2.new(ox, oy + sy)
+		bottom.Rotation, bottom.Transparency = rot, 1 - solid
+		if layer.glow then bottom.EmissiveStrength = glow end
+	end
 end
 local function layersOn(part, name, skin, look)
 	for _, old in part:GetChildren() do if old.Name == "SkinLayer" then old:Destroy() end end
@@ -55,15 +65,23 @@ local function layersOn(part, name, skin, look)
 	-- Each layer's Decal (pictures, glow picture and colour) is made ahead by tools/art/skin_looks.py: a game script may
 	-- not set a Decal's glow picture. Edit-mode tests have plugin rights and never see that; only real Play does.
 	local ahead = Root.Assets.SkinLooks[skin.id].Layers
-	local decals = {}
+	local decals, undersides = {}, {}
 	for i, layer in spec.layers do
 		local decal = ahead[layer.name]:Clone()
 		decal.Name = "SkinLayer"
-		place(decal, layer, piece, SkinMotion.state(layer, 0))
+		if skin.id == "holographic" then
+			local bottom = decal:Clone()
+			bottom.Face = Enum.NormalId.Bottom
+			bottom.Parent = part
+			undersides[i] = bottom
+		end
+		place(decal, undersides[i], layer, piece, SkinMotion.state(layer, 0))
 		decal.Parent = part
 		decals[i] = decal
 	end
-	moving[part] = { spec = spec, look = look, decals = decals, piece = piece }
+	local preview = part:FindFirstAncestorWhichIsA("ViewportFrame")
+	moving[part] = { spec = spec, look = look, decals = decals, undersides = undersides, piece = piece,
+		preview = preview, screen = preview and preview:FindFirstAncestorWhichIsA("ScreenGui") }
 end
 -- One pass a frame: each layer's place is worked out once, then given to every near piece that wears it. Far pieces keep
 -- their layers standing still (Alan: planes are too fast to read a skin from far away).
@@ -74,14 +92,15 @@ local function move()
 	SkinShapes.step(t, eye, SkinMotion.near)
 	for part, worn in moving do
 		if not part.Parent then moving[part] = nil
-		elseif (part.Position - eye).Magnitude <= SkinMotion.near then
+		elseif (worn.preview and worn.preview.Visible and worn.screen and worn.screen.Enabled)
+			or (not worn.preview and (part.Position - eye).Magnitude <= SkinMotion.near) then
 			local spec = worn.spec
 			if spec.glow and (spec.glow.pulse or spec.glow.flash) then worn.look.EmissiveStrength = SkinMotion.glow(spec.glow, t) end
 			for i, layer in spec.layers do
 				if layer.kind ~= "still" or (layer.glow and (layer.glow.pulse or layer.glow.flash)) then
 					local set = now[layer]
 					if not set then set = table.pack(SkinMotion.state(layer, t)); now[layer] = set end
-					place(worn.decals[i], layer, worn.piece, set[1], set[2], set[3], set[4], set[5], set[6], set[7], set[8])
+					place(worn.decals[i], worn.undersides[i], layer, worn.piece, set[1], set[2], set[3], set[4], set[5], set[6], set[7], set[8])
 				end
 			end
 		end
@@ -99,7 +118,18 @@ local function sheetOf(model)
 	return skin and skin.picture and skin.id or nil, skin
 end
 
+local function isTeamMark(part)
+	return part:GetAttribute("TeamSticker") or part:GetAttribute("Region") == "sticker"
+end
 local function dressPart(model, part)
+	if isTeamMark(part) then
+		-- Death and winner scenes clone Transparency and reset LocalTransparencyModifier. Restore from the
+		-- paint job's authored value, even when this is the first time we see a respawned or cloned marker.
+		local bare = part:GetAttribute("BareStickerTransparency")
+		if bare == nil then bare = if part:GetAttribute("TeamSticker") then 0 else 1 end
+		part.Transparency = if skinOf(model) then 1 else bare
+		return true
+	end
 	local name = part:IsA("MeshPart") and string.match(part.Name, "^[^-]+%-(.+)$")
 	local ids = name and Pieces[name]
 	if not ids then return true end
@@ -144,7 +174,7 @@ function PlaneLooks.dressPreview(model, skinID)
 	local waitForParts = Instance.new("BindableEvent")
 	local waiting, ok = 0, true
 	for _, part in appearance:GetChildren() do
-		if part:IsA("MeshPart") and not part:GetAttribute("SkinHidden") then
+		if part:IsA("MeshPart") and (not part:GetAttribute("SkinHidden") or isTeamMark(part)) then
 			-- PreloadAsync can fetch a MeshPart's texture. A SurfaceAppearance's processed PBR pack streams only
 			-- while drawing. Give the photo's actual hull its matching base colour as well.
 			if shape and shape.pictures and part.Name:match("^Skin%-") then

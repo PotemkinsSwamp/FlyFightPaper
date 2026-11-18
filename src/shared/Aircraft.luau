@@ -122,10 +122,12 @@ function Aircraft.paint(model)
   elseif region=="sticker" then
    local template=stickers and colours.sticker and stickers:FindFirstChild(colours.sticker)
    part.Transparency=template and 1 or 0
+   part:SetAttribute("BareStickerTransparency",part.Transparency)
    if template then
     count+=1
     local sticker=template:Clone();sticker.Name=part.Name:match("^[^-]+").."-team-sticker"..count;sticker.Size=template.Size*part.Size.X/STICKER_SPOT;sticker.Color=WHITE
-    sticker.CFrame=part.CFrame;sticker.Anchored=part.Anchored;sticker.Massless=true;sticker:SetAttribute("TeamSticker",true);sticker.Parent=appearance
+    sticker.CFrame=part.CFrame;sticker.Anchored=part.Anchored;sticker.Massless=true;sticker:SetAttribute("TeamSticker",true)
+    sticker:SetAttribute("BareStickerTransparency",template.Transparency);sticker.Parent=appearance
     if body and not part.Anchored then local weld=Instance.new("WeldConstraint");weld.Part0=body;weld.Part1=sticker;weld.Parent=sticker end
    end
   end

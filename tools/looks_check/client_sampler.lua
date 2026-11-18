@@ -73,6 +73,10 @@ local function skinCheck()
 				hidden += 1
 				if not shape then stray += 1 elseif part.LocalTransparencyModifier < 1 then hiddenShown += 1 end
 			end
+			if item and (part:GetAttribute("TeamSticker") or part:GetAttribute("Region") == "sticker")
+				and part.Transparency < 1 and part.LocalTransparencyModifier < 1 then
+				hiddenShown += 1; firstBad = firstBad or (part.Name .. " team mark shows")
+			end
 			local name = part:IsA("MeshPart") and string.match(part.Name, "^[^-]+%-(.+)$")
 			if name and Pieces[name] then
 				exp += 1
@@ -85,9 +89,14 @@ local function skinCheck()
 						local mesh = idOf(try(function() return part.MeshId end)) or idOf(try(function() return part.MeshContent end))
 						if mesh ~= tostring(Pieces[name].mesh) then wrongMesh += 1 end
 					end
-					local nl = 0
-					for _, c in part:GetChildren() do if c.Name == "SkinLayer" then nl += 1 end end
-					if nl ~= layers then badLayers += 1; firstBad = firstBad or (part.Name .. " layers " .. nl .. "/" .. layers) end
+					local top, bottom = 0, 0
+					for _, c in part:GetChildren() do
+						if c.Name ~= "SkinLayer" then continue end
+						if c.Face == Enum.NormalId.Top then top += 1 elseif c.Face == Enum.NormalId.Bottom then bottom += 1 end
+					end
+					if top ~= layers or bottom ~= (id == "holographic" and layers or 0) then
+						badLayers += 1; firstBad = firstBad or (part.Name .. " layers top/bottom " .. top .. "/" .. bottom)
+					end
 				elseif want then undressed += 1; firstBad = firstBad or (part.Name .. " not dressed (has " .. tostring(has) .. ")")
 				else stale += 1; firstBad = firstBad or (part.Name .. " still wears " .. tostring(has)) end
 			elseif part:IsA("MeshPart") and not isPiece then
@@ -230,7 +239,7 @@ local function pickTrack(s)
 	end
 	if not best then return end
 	local decals = {}
-	for _, c in best:GetChildren() do if c.Name == "SkinLayer" then table.insert(decals, c) end end
+	for _, c in best:GetChildren() do if c.Name == "SkinLayer" and c.Face == Enum.NormalId.Top then table.insert(decals, c) end end
 	table.sort(decals, function(a, b) return a.ZIndex < b.ZIndex end)
 	local t = { part = best, sa = best:FindFirstChildOfClass("SurfaceAppearance"), decals = decals, d = {} }
 	for i, d in decals do t.d[i] = { minT = 2, maxT = -1, moved = false, uv = d.UVOffset, rot = d.Rotation, maxE = 0, minE = 1e9 } end

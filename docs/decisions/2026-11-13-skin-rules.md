@@ -24,6 +24,7 @@
 - **Team games: no team colours on skins.** A team shows through three signs: a faint red or blue outline on the
   plane, the name in team colour, and the square or circle under the name (made easier to see from far away). Aim
   help already never locks onto a teammate.
+- On 2026-11-18 Alan asked to remove the wing square and circle whenever a skin is worn. Existing names, team outlines and targeting are sufficient during flight. He also requested matching foil on Holographic's underside, and a live trail behind the player's plane in the binder. The Trails view starts overhead and the player can rotate it by dragging.
 - **One skin for all your planes:** the game fits it to whatever parts you fly (tied to a body only if fitting
   fails).
 - **Bots wear skins,** so players see them in matches and want them. **All of them, by difficulty** (Alan, same day):
