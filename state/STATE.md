@@ -1,5 +1,5 @@
 # Since Alan last checked (2026-11-18)
-- The normal Hangar now offers classroom treasure chests for Paper or play rewards. Duplicate skins return Paper. [Studio opening, payout and screenshots](../docs/playtests/2026-11-18-classroom-chests.md)
+- Private Studio save 809 adds the Shop chest shelf, animated prizes, starter pack chest and four weekly gift milestones. All 719 Studio checks passed. [Playtest and opening video](../docs/playtests/2026-11-18-shop-chest-openings.md)
 - Customize keeps the book and stats on screen while you pick gear or looks. All 18 trails run behind the plane. Holographic moves on both faces and skins cover the team stickers. [Studio check and pictures](../docs/playtests/2026-11-18-hangar-preview-and-clicks.md)
 - The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
 - **Two scripted Play tests are done** ([numbers and the full list](../docs/playtests/2026-11-16-scripted-looks-check.md)). Frame rate, 12 planes: 60 with no looks, with any one skin, and with any one Rare moving; 56.7-60 with one trail on all 12; 58.5 with a mixed set on every plane; 54.5 in the worst case (12 Galaxy + 12 Circuit Trace: each alone holds 60, only together they go under).
@@ -48,7 +48,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **Chest shelf:** Hangar > Customize > Skins > Treasure chests. Check the price and individual odds, open an earned or Paper chest, and Wear the prize. Under Trails, inspect the closer angled plane and Stealth against the lined page.
+- **Shop > Chests.** Open a Skin or Trail chest and try Wear. Check the opening animation, the two chest designs and the rarity papers in the Hangar. Robux buttons are Studio practice only.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 18 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? How does Holographic read from below? Do sparkles and smoke start in clumps?
 - Try quick card changes and Cancel, then drag the live trail preview. Check the crane's height and wing join, a booster under it, and opening an earned chest. Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.

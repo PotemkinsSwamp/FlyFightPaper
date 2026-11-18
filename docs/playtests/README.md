@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-18 Shop chest openings and weekly gifts](2026-11-18-shop-chest-openings.md)
 - [2026-11-18 Classroom chests, duplicate refunds and the trail preview](2026-11-18-classroom-chests.md)
 - [2026-11-18 Live trails, skin undersides and binder clicks](2026-11-18-hangar-preview-and-clicks.md)
 - [2026-11-18 All 41 cosmetics through the Hangar](2026-11-18-hangar-catalog.md)
