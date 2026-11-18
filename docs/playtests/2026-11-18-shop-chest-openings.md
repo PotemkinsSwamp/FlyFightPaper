@@ -16,3 +16,13 @@ Alan wanted separate Skin and Trail chests on the shop board, a chest that pops 
 - Final Studio run passed 719 tests across 49 suites. Closed Play, restored Studio defaults and saved private Team Create version 809. All 29 changed Luau sources matched the repository, Studio Edit and the rebuilt working file. Test purchases and counts used isolated Studio data. Physical phone input and cross-server ownership totals still need a live check.
 
 [Current prices, pools and earning rules](../systems/economy-and-shop.md#classroom-treasure-chests).
+
+## Hinged lids and unlock audio
+
+Alan saw the lid disappear and the Golden Star leave a notch in the moving piece. He wanted the lid to stay on its hinges and each front clasp to stay whole. The revised opening turns around the back rim, shows the inside of the lid, and holds there until Wear or Done. A short burst of gold glints accompanies the unlock backpack's two chimes.
+
+Opened all eight family and tier combinations from Shop > Chests with Studio practice purchases. Each displayed the final open pose and the full front clasp while the prize card was visible. Verified the two unlock sounds played roughly a quarter-second apart, with nonzero playback levels. Captured the Golden Star from the game window with its own audio. Also checked the held-open lid and the Done button in an 844 by 390 Studio frame. Physical phone input and Alan's sound preference remain for his playtest.
+
+[Opening with game audio](../../.planning/skins/chest-hinge/golden-star-opening.mp4), [all eight open chests](../../.planning/skins/chest-hinge/eight-open-chests.jpg), [phone view](../../.planning/skins/chest-hinge/phone-reward.png).
+
+719 Studio checks passed across 49 suites. Private Team Create save 812 and the rebuilt working file contain the three changed Luau modules. Their sources matched the repository in Studio Edit and the working file.
