@@ -1,4 +1,5 @@
 # Since Alan last checked (2026-11-18)
+- The normal Hangar now offers classroom treasure chests for Paper or play rewards. Duplicate skins return Paper. [Studio opening, payout and screenshots](../docs/playtests/2026-11-18-classroom-chests.md)
 - Customize keeps the book and stats on screen while you pick gear or looks. All 18 trails run behind the plane. Holographic moves on both faces and skins cover the team stickers. [Studio check and pictures](../docs/playtests/2026-11-18-hangar-preview-and-clicks.md)
 - The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
 - **Two scripted Play tests are done** ([numbers and the full list](../docs/playtests/2026-11-16-scripted-looks-check.md)). Frame rate, 12 planes: 60 with no looks, with any one skin, and with any one Rare moving; 56.7-60 with one trail on all 12; 58.5 with a mixed set on every plane; 54.5 in the worst case (12 Galaxy + 12 Circuit Trace: each alone holds 60, only together they go under).
@@ -6,10 +7,11 @@
 
 # Now: finish the game for the beta
 The five finished Legendary skins and matching trails are installed. The two Mythicals include their trails. The four other Legendary ideas (Bumblebee, Rocket, Mech and Pirate) are concepts. The remaining performance check is Galaxy plus Circuit Trace on all 12 planes.
-Dragon leftovers: crash ball and shop card pictures, jaw leftover. Queued: Toilet Roll shake, missions, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
+Dragon leftovers: crash ball and shop card pictures, jaw leftover. Queued: Toilet Roll shake, more missions, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
+Chest prices, drop rates, 10% duplicate refunds and the first mission and streak targets are tuning choices. [Numbers](../docs/systems/economy-and-shop.md#classroom-treasure-chests)
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
   shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
@@ -46,10 +48,10 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **Shark and the Hangar:** Hangar > Customize > Skins > Shark Jet. Buy for 30,000 Paper, then Wear. Under Trails, Water Spray is included. The shop also has a Browse skins & trails button.
+- **Chest shelf:** Hangar > Customize > Skins > Treasure chests. Check the price and individual odds, open an earned or Paper chest, and Wear the prize. Under Trails, inspect the closer angled plane and Stealth against the lined page.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 18 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? How does Holographic read from below? Do sparkles and smoke start in clumps?
-- Try quick card changes and Cancel, then drag the live trail preview. Check the crane's height and wing join, a booster under it, and buying a skin. Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
+- Try quick card changes and Cancel, then drag the live trail preview. Check the crane's height and wing join, a booster under it, and opening an earned chest. Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);
   no gun piece floating off the crane's guns, at the desk and firing; the Toilet Roll shake with my recorder (your go).
 - Publish when you like (report card, new shop window; shop button Studio-only until go-live). Save to File for the new weapon models and tape-roll tower (your go).

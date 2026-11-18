@@ -25,7 +25,7 @@ and a stage.
 - **Bots that use the town** (Alan 2026-11-12): bots never fly through the tubes, rings and holes, never go for
   boosts, and follow one recognisable path. A bot development pass: use fly-throughs, grab boosts, vary routes.
 - **Daily and weekly missions** (Alan 2026-11-12): small goals that reset each day and each week, with a reward
-  for finishing them. What the goals are and what they pay is open.
+  for finishing them. The first weekly mission is in [classroom treasure chests](../systems/economy-and-shop.md#classroom-treasure-chests). Other goals and rewards are open.
 - **Skill bonuses** (Alan 2026-11-12): a few extra points for moments that show skill, e.g. folding someone by
   ramming them and surviving it (no bonus if you go down too). Small, named in the score pop-up.
 - **Treasure chest for buyers** (Alan 2026-11-13): like the class treasure box at school, but earned by buying:
