@@ -1,10 +1,37 @@
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Config = require(Root.Generated.Trails)
 local PlaneTrails = require(game.StarterPlayer.StarterPlayerScripts.FlyFightPaper.PlaneTrails)
+local HangarPreview = require(game.StarterPlayer.StarterPlayerScripts.FlyFightPaper.HangarTrailPreview)
 local Suite = require(script.Parent.Parent.fixtures.Suite)
 local Spec = {}
 function Spec.run()
 	local result, test = Suite.new()
+	test("a stationary hangar plane emits moving rainbow smoke from its own tail and the preview cleans up", function()
+		local world, model, body = Instance.new("WorldModel"), Instance.new("Model"), Instance.new("Part")
+		model.Parent = world
+		body.Size, body.CFrame, body.Anchored, body.Parent = Vector3.new(12, 2, 16), CFrame.new(4, 2, -7), true, model
+		local camera = Instance.new("Camera")
+		camera.CFrame = CFrame.lookAt(Vector3.new(4, 40, 0), Vector3.new(4, 0, 0), Vector3.zAxis)
+		local preview = HangarPreview.new(world, model, "rainbow_marker")
+		assert((preview.tail - Vector3.new(4, 2, 1)).Magnitude < 0.001 and preview.length > 10)
+		preview:step(1 / 30, camera)
+		local nearest = math.huge
+		for _, part in preview.folder:GetChildren() do
+			if part.Name == "ExhaustSmoke" then nearest = math.min(nearest, (part.Position - preview.tail).Magnitude) end
+		end
+		assert(nearest < 0.3, "the smoke pictures must overlap the nozzle from the first frame")
+		local puff = assert(preview.folder:FindFirstChild("Trail-soft"))
+		local start = puff.Position
+		local decal = assert(puff:FindFirstChildWhichIsA("Decal"))
+		local tint = decal.Color3
+		preview:step(1 / 30, camera)
+		assert(puff.Position.Z > start.Z and decal.Color3 ~= tint, "the stream should move back and change colour")
+		assert(body.CFrame == CFrame.new(4, 2, -7), "the plane must stay in place")
+		preview:destroy()
+		assert(not world:FindFirstChild("TrailPreview"))
+		world:Destroy()
+		camera:Destroy()
+	end)
 	test("every trail row is one the game can draw", function()
 		local trails = 0
 		for id, trail in Config.trails do

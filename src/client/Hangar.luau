@@ -13,6 +13,8 @@ local PaperUI = require(script.Parent.PaperUI)
 local BuildShelf = require(script.Parent.BuildShelf)
 local Customize = require(script.Parent.HangarCustomize)
 local PlaneLooks = require(script.Parent.PlaneLooks)
+local HangarTrailPreview = require(script.Parent.HangarTrailPreview)
+local HangarWidgets = require(script.Parent.HangarWidgets)
 local Hangar = {}
 
 -- Studio dev mode: every part counts as owned at the level cap, and "Fly this build" sends the draft straight
@@ -21,6 +23,17 @@ local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 local ContentProvider = game:GetService("ContentProvider")
 -- Not with the level test account (Alan's dev switch, docs/workshop/testing.md): it shows what that player sees.
+local function sameValues(a, b)
+	if a == b then return true end
+	if type(a) ~= "table" or type(b) ~= "table" then return false end
+	for key, value in a do
+		if not sameValues(value, b[key]) then return false end
+	end
+	for key in b do
+		if a[key] == nil then return false end
+	end
+	return true
+end
 local function devMode() return RunService:IsStudio() and game.Players.LocalPlayer:GetAttribute("DevAll") ~= false end
 local everything = {}
 for _, list in { Catalog.weapons, Catalog.utilities } do for _, part in list do everything[part.id] = true end end
@@ -54,7 +67,8 @@ Hangar.STAT_COLOURS = STAT_COLOURS -- the desk's quick menu tints its rows the s
 -- api = { action = RoundAction remote, back(), flown() (after Save & fly), fly(loadout) (Studio only) }
 function Hangar.new(playerGui, api)
 	local cover, sheet = PaperUI.screen(playerGui, "HangarScreen", Shelf.bg)
-	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
+	local ui = HangarWidgets.new()
+	local image, words, button = ui.image, ui.words, ui.button
 	local content = Instance.new("Frame")
 	content.Name, content.BackgroundTransparency, content.Size, content.Parent = "Content", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), sheet
 	content.ZIndex = 2 -- in front of the shelf, so Customize stands on its top board (Alan 2026-10-21)
@@ -75,7 +89,7 @@ function Hangar.new(playerGui, api)
 	local displayed, pending, previewNote -- the last complete plane and the one currently loading
 
 	-- Back: from Customize to the shelf (unsaved changes ask once first), from the shelf out of the Hangar.
-	local back = button(sheet, "Back", Assets.range.stripRed, "Back", 22, 47, 300, 66, -3, function() -- the strip's own shape, clear of the photo
+	local back = PaperUI.button(sheet, "Back", Assets.range.stripRed, "Back", 22, 47, 300, 66, -3, function() -- the strip's own shape, clear of the photo
 		if state.page == "shelf" then api.back(); return end
 		if state.unsaved and not state.dropAsk then state.dropAsk = true; render(); return end
 		state.page, state.trying, state.tryLook, state.dropAsk = "shelf", nil, nil, nil
@@ -168,7 +182,8 @@ function Hangar.new(playerGui, api)
 	local function statSheet(stats, compare, x, y, w, kind, note)
 		local paper = PAPERS[kind or "tall"]
 		local h = w / paper.shape
-		image(content, "StatsSheet", paper.id, x, y, w, h)
+		-- Retained children can be older than a new sheet. Use explicit paper, strip, and ink layers.
+		image(content, "StatsSheet", paper.id, x, y, w, h).ZIndex = 1
 		local ax, ay = x + w * paper.area[1], y + h * paper.area[2]
 		local aw, ah = w * (paper.area[3] - paper.area[1]), h * (paper.area[4] - paper.area[2])
 		local rowTop, rowHeight, labelH, boxSize, gap, cap, wordScale
@@ -183,8 +198,11 @@ function Hangar.new(playerGui, api)
 			ay += rowH * 0.35
 			if note then
 				local line = words(content, "ClassNote", note, ax, ay + rowH * (#STATS + 1), aw, rowH * 0.8, math.floor(rowH * 0.42))
-				line.TextXAlignment = Enum.TextXAlignment.Center
-				PaperUI.fitWords(line, aw) -- one line
+				line.ZIndex, line.TextXAlignment = 3, Enum.TextXAlignment.Center
+				if not line:GetAttribute("Fitted") then
+					line:SetAttribute("Fitted", true)
+					PaperUI.fitWords(line, aw)
+				end
 			end
 			-- Label, five boxes and the number share the row's width: on a narrow paper they all shrink together.
 			labelH, boxSize, gap, wordScale = rowH * 0.82, rowH * 0.62, rowH * 0.2, 1
@@ -199,8 +217,8 @@ function Hangar.new(playerGui, api)
 		local function number(i, name, from, text, change)
 			local top, rowH = rowTop(i), rowHeight(i)
 			local value = words(content, name .. "Value", text, from, top + rowH * 0.1, ax + aw - from, rowH * 0.8, 40)
-			value.RichText, value.TextScaled = true, true
-			local most = Instance.new("UITextSizeConstraint")
+			value.ZIndex, value.RichText, value.TextScaled = 3, true, true
+			local most = value:FindFirstChildOfClass("UITextSizeConstraint") or Instance.new("UITextSizeConstraint")
 			most.MaxTextSize, most.Parent = cap(i), value
 			if change and math.abs(change) >= 0.5 then
 				value.Text = string.format('%s <font color="%s">%+.0f</font>', text, change > 0 and GAIN or LOSS, change)
@@ -209,7 +227,7 @@ function Hangar.new(playerGui, api)
 		local function row(i, name, tint, filled, cells)
 			local top, rowH = rowTop(i), rowHeight(i)
 			local strip = image(content, name .. "Row", Shelf.statLabel, ax, top + (rowH - labelH) / 2, labelW, labelH)
-			strip.ImageColor3 = tint
+			strip.ZIndex, strip.ImageColor3 = 2, tint
 			-- The name sits in the middle of the label's visible paper (the art's opaque part: 2-98% across, 7-88% down),
 			-- its letters with even room above and below and to the sides (Alan 2026-11-08: they filled the box). One size
 			-- for every row: the tallest word (Weight, with its g) keeps 18% of the paper's height above and below.
@@ -219,13 +237,13 @@ function Hangar.new(playerGui, api)
 			local ink = LABEL_INK[name] or LABEL_INK.Health
 			local label = words(content, name .. "Name", name, boxX + boxW / 2 - (ink[1] + ink[2]) / 2 * size,
 				boxY + boxH / 2 - (ink[3] + ink[4]) / 2 * size, 2.2 * size, size, size)
-			label.TextYAlignment = Enum.TextYAlignment.Top
+			label.ZIndex, label.TextYAlignment = 3, Enum.TextYAlignment.Top
 			-- More than five boxes (Weight on a big body) share the five boxes' width.
 			local cell = math.min(boxSize, boxSize * 5 / math.max(cells, 5))
 			local from = ax + labelW + gap
 			for k = 1, cells do
 				local box = image(content, name .. "Box" .. k, k <= filled and Shelf.statBox or Shelf.statBoxEmpty, from + (k - 1) * cell * 1.14, top + (rowH - cell) / 2, cell, cell)
-				box.ImageColor3 = tint
+				box.ZIndex, box.ImageColor3 = 2, tint
 			end
 			return label, from + 5 * boxSize * 1.14 + gap * 0.6
 		end
@@ -238,7 +256,7 @@ function Hangar.new(playerGui, api)
 		if stats then
 			local i = #STATS + 1
 			local label, after = row(i, "Weight", STAT_COLOURS.Weight, stats.used_capacity, math.max(stats.capacity, 1))
-			if stats.used_capacity >= stats.capacity then label.TextColor3 = Color3.fromRGB(170, 30, 30) end
+			label.TextColor3 = stats.used_capacity >= stats.capacity and Color3.fromRGB(170, 30, 30) or PaperUI.INK
 			number(i, "Weight", after, string.format("%d/%d", stats.used_capacity, stats.capacity)) -- its boxes already show the change
 		end
 		return h
@@ -248,18 +266,21 @@ function Hangar.new(playerGui, api)
 	-- or the pencil to type a new one (up to NAME_MAX letters, Roblox-filtered on the server). size = letter size.
 	local function nameTag(parent, x, y, w, h, size)
 		local build = state.builds[state.preset]
-		image(parent, "NameTape", Assets.ingame.tapeLabel, x, y, w, h) -- (the tape keeps its own shape)
-		local nameBox = Instance.new("TextBox")
-		nameBox.Name, nameBox.Text, nameBox.PlaceholderText, nameBox.ClearTextOnFocus = "BuildName", build.name, "Name this build", false
+		image(parent, "NameTape", Assets.ingame.tapeLabel, x, y, w, h).ZIndex = 3 -- (the tape keeps its own shape)
+		local nameBox, newBox = ui.instance(parent, "BuildName", "TextBox")
+		if not nameBox:IsFocused() then nameBox.Text = build.name end
+		nameBox.ZIndex = 4
+		nameBox.PlaceholderText, nameBox.ClearTextOnFocus = "Name this build", false
 		nameBox.Position, nameBox.Size, nameBox.BackgroundTransparency = UDim2.fromOffset(x + 30, y), UDim2.fromOffset(w - 130, h), 1
 		nameBox.FontFace, nameBox.TextSize, nameBox.TextColor3 = PaperUI.font, size, PaperUI.INK
 		nameBox.TextTruncate, nameBox.Parent = Enum.TextTruncate.AtEnd, parent
-		PaperUI.loud(PaperUI.crayon(nameBox)) -- the build's name reads like a title (Alan 2026-11-08)
-		local pencil = Instance.new("ImageButton")
+		if newBox then PaperUI.loud(PaperUI.crayon(nameBox)) end -- the build's name reads like a title (Alan 2026-11-08)
+		local pencil = ui.instance(parent, "Rename", "ImageButton")
 		pencil.Name, pencil.Image, pencil.BackgroundTransparency, pencil.Rotation = "Rename", Assets.settings.pencil, 1, -35
 		-- (On a phone a bigger pencil: 26 tall was a 9-point tap.)
 		pencil.AnchorPoint, pencil.Position, pencil.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(x + w - 55, y + h / 2), UDim2.fromOffset(PaperUI.isPhone() and 130 or 96, PaperUI.isPhone() and 130 or 26)
-		pencil.ScaleType, pencil.Parent = Enum.ScaleType.Fit, parent
+		pencil.ZIndex, pencil.ScaleType, pencil.Parent = 4, Enum.ScaleType.Fit, parent
+		if not newBox then return end
 		pencil.Activated:Connect(function() nameBox:CaptureFocus() end)
 		-- Clicking in selects the whole name, so typing replaces it (Ctrl+A isn't something a kid knows).
 		nameBox.Focused:Connect(function() nameBox.SelectionStart, nameBox.CursorPosition = 1, #nameBox.Text + 1 end)
@@ -267,6 +288,7 @@ function Hangar.new(playerGui, api)
 			if utf8.len(nameBox.Text) and utf8.len(nameBox.Text) > NAME_MAX then nameBox.Text = nameBox.Text:sub(1, utf8.offset(nameBox.Text, NAME_MAX + 1) - 1) end
 		end)
 		nameBox.FocusLost:Connect(function()
+			local build = state.builds[state.preset]
 			local name = nameBox.Text:gsub("^%s+", ""):gsub("%s+$", "")
 			if name == "" or name == build.name then nameBox.Text = build.name; return end
 			api.action:FireServer("renamePreset", { range = state.range, slot = state.preset, name = name })
@@ -280,7 +302,7 @@ function Hangar.new(playerGui, api)
 	-- left page, which is blue already) it fills the box with no paper (Alan 2026-10-21: a stretched photo looked bad).
 	-- diagram (Gear page): a still view from above and behind (nose up) with a numbered tag on every mount.
 	-- under: room kept free at the photo's bottom (its name tape sits there, on the photo).
-	local function preview(draft, box, diagram, bare, under, parent, skin)
+	local function preview(draft, box, diagram, bare, under, parent, skin, trailID)
 		local content = parent or content
 		local px, py, pw, ph = table.unpack(box)
 		local vx, vy, vw, vh = px, py, pw, ph
@@ -292,7 +314,8 @@ function Hangar.new(playerGui, api)
 		-- The same plane in the same spot as the last redraw keeps its photo; a new plane loads behind the old one and
 		-- swaps in when its pictures are ready (Alan 2026-11-14: every click reloaded the whole screen).
 		local spot = content.Name .. table.concat(box, ",")
-		local key = spot .. HttpService:JSONEncode({ draft, skin or "", diagram == true, under or 0 })
+		local trailPage = trailID ~= nil
+		local key = spot .. HttpService:JSONEncode({draft.body, draft.nose, draft.wings, draft.tail, draft.utility or "", draft.weapon_mounts, skin or "", diagram == true, under or 0, trailPage})
 		if pending and pending:GetAttribute("PlaneKey") ~= key then
 			pending:Destroy()
 			pending = nil
@@ -304,17 +327,21 @@ function Hangar.new(playerGui, api)
 		local ready = displayed and displayed:GetAttribute("PlaneKey") == key
 		local view = if ready then displayed else pending
 		if not ready then
-			previewNote = words(content, "PlanePreviewStatus", pending and pending:GetAttribute("PreviewError") and "Preview unavailable" or "Loading preview", vx, vy + vh - 40, vw, 40, 28)
+			previewNote = ui.words(content, "PlanePreviewStatus", pending and pending:GetAttribute("PreviewError") and "Preview unavailable" or "Loading preview", vx, vy + vh - 40, vw, 40, 28)
 			previewNote.TextXAlignment, previewNote.ZIndex = Enum.TextXAlignment.Center, 4
 		end
-		if view then view.Parent = content else
+		if view then
+			view.Parent = content
+			view:SetAttribute("PreviewTrail", trailID)
+		else
 			view = Instance.new("ViewportFrame")
 			pending = view
 			view:SetAttribute("PlaneKey", key)
 			view:SetAttribute("PreviewReady", false)
+			view:SetAttribute("PreviewTrail", trailID)
 			-- Keep the viewport drawing while the last photo covers it. This starts streaming the engine's PBR packs.
 			view.ImageTransparency = 0.995
-			view.Name, view.BackgroundTransparency = "PlanePreview", 1
+			view.ZIndex, view.Name, view.BackgroundTransparency = 2, "PlanePreview", 1
 			view.Position, view.Size = UDim2.fromOffset(vx, vy), UDim2.fromOffset(vw, vh)
 			-- Softer fill and a warm key light so the folds show shading instead of flat colour.
 			view.Ambient, view.LightColor, view.LightDirection = Color3.fromRGB(140, 140, 150), Color3.fromRGB(255, 250, 235), Vector3.new(-0.6, -1, -0.4)
@@ -331,10 +358,20 @@ function Hangar.new(playerGui, api)
 			local center, size = model:GetBoundingBox()
 			-- (A frame taller than wide is limited by its width instead.)
 			local distance = math.max(size.X, size.Z) / 2 * 1.05 / math.sin(math.rad(camera.FieldOfView / 2)) / math.min(1, vw / vh)
+			local effect, currentTrail
+			local target, cameraDistance = center.Position, distance
+			local trailAngle, trailPitch = math.pi, -math.pi/2
 			local function aim()
 				local angle, pitch = state.angle, state.pitch
+				if trailPage then angle, pitch = trailAngle, trailPitch end
 				if diagram then angle, pitch = 0, -1.2 end
-				camera.CFrame = CFrame.new(center.Position) * CFrame.Angles(0, angle, 0) * CFrame.Angles(pitch, 0, 0) * CFrame.new(0, 0, distance)
+				camera.CFrame = CFrame.new(target) * CFrame.Angles(0, angle, 0) * CFrame.Angles(pitch, 0, 0) * CFrame.new(0, 0, cameraDistance)
+				if skin == "holographic" then
+					-- Light the side of the foil being inspected. Keep the usual key for top views.
+					local below = math.max(0, math.sin(pitch))
+					local blend = below * below * (3 - 2 * below)
+					view.LightDirection = Vector3.new(-0.6, 2 * blend - 1, -0.4)
+				end
 			end
 			aim()
 			-- Drag to turn the plane (mouse or a finger): sideways spins it, up and down tips it over to see the top or the
@@ -345,14 +382,40 @@ function Hangar.new(playerGui, api)
 			view.InputEnded:Connect(function(input) if input == finger or input.UserInputType == Enum.UserInputType.MouseButton1 then last, finger = nil, nil end end)
 			view.InputChanged:Connect(function(input)
 				if last and not diagram and (input.UserInputType == Enum.UserInputType.MouseMovement or input == finger) then
-					state.angle += (input.Position.X - last.X) * 0.015
-					state.pitch = math.clamp(state.pitch - (input.Position.Y - last.Y) * 0.015, -1.5, 1.5)
+					local dx, dy = (input.Position.X - last.X) * 0.015, (input.Position.Y - last.Y) * 0.015
+					if trailPage then
+						trailAngle += dx
+						trailPitch = math.clamp(trailPitch - dy, -math.pi/2, math.pi/2)
+					else
+						state.angle += dx
+						state.pitch = math.clamp(state.pitch - dy, -1.5, 1.5)
+					end
 					last = input.Position; aim()
 				end
 			end)
 			-- Turns slowly by itself while nobody is dragging it.
-			local spin = RunService.RenderStepped:Connect(function(dt) if displayed == view and not last and not diagram then state.angle += dt * 0.35; aim() end end)
-			view.Destroying:Connect(function() spin:Disconnect() end)
+			local spin = RunService.RenderStepped:Connect(function(dt)
+				if displayed ~= view or not cover.Visible then return end
+				if trailPage then
+					local selected = view:GetAttribute("PreviewTrail")
+					if selected ~= currentTrail then
+						if effect then effect:destroy(); effect = nil end
+						currentTrail = selected
+						if selected and selected ~= "" then effect = HangarTrailPreview.new(world, model, selected) end
+						-- In plane space the nose points toward -Z. The wake extends aft toward +Z.
+						local nose = center.Position.Z - size.Z/2
+						local aft = effect and effect.tail.Z + effect.length or center.Position.Z + size.Z/2
+						target = Vector3.new(center.Position.X, center.Position.Y, (nose + aft)/2)
+						cameraDistance = math.max((aft-nose)/2, size.X/2 * vh/vw) * 1.12 / math.tan(math.rad(camera.FieldOfView/2)) + size.Y/2
+						aim()
+					end
+					if effect then effect:step(dt, camera) end
+				elseif not last and not diagram then state.angle += dt * 0.35; aim() end
+			end)
+			view.Destroying:Connect(function()
+				spin:Disconnect()
+				if effect then effect:destroy() end
+			end)
 			task.defer(function()
 				local failedAsset
 				local ran, loaded = pcall(function()
@@ -409,8 +472,9 @@ function Hangar.new(playerGui, api)
 				local r = (chosen and 19 or 15) * big
 				local tag = button(content, "Mount" .. i, "", tostring(i), x - r, y - r, r * 2, r * 2, 0, function() state.mount = i; render() end, (chosen and 30 or 24) * big)
 				tag.BackgroundTransparency, tag.BackgroundColor3, tag.ZIndex, tag.Label.ZIndex = 0, MOUNT_COLOURS[body.mount_types[i]], 3, 4
-				Instance.new("UICorner", tag).CornerRadius = UDim.new(0.5, 0)
-				local ring = Instance.new("UIStroke")
+				local corner = tag:FindFirstChildOfClass("UICorner") or Instance.new("UICorner",tag)
+				corner.CornerRadius = UDim.new(0.5, 0)
+				local ring = tag:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
 				ring.Thickness, ring.Color, ring.Parent = chosen and 5 or 3, chosen and Color3.fromRGB(255, 255, 255) or PaperUI.INK, tag
 			end
 		end
@@ -424,16 +488,9 @@ function Hangar.new(playerGui, api)
 	end
 
 	render = function()
-		if displayed then displayed.Parent = nil end
-		if pending then pending.Parent = nil end
-		previewNote = nil
-		for _, child in content:GetChildren() do child:Destroy() end
-		task.defer(function()
-			if displayed and not displayed.Parent then displayed:Destroy(); displayed = nil end
-			if pending and not pending.Parent then pending:Destroy(); pending = nil end
-		end)
+		ui.begin()
 		shelf.frame.Visible, classShelf.frame.Visible = state.page == "shelf" and not state.classes, state.page == "shelf" and state.classes == true
-		if not profile then return end
+		if not profile then ui.finish(); return end
 		local range = state.range and profile.rangePresets ~= nil
 		local classes = state.classes and not range
 		local builds = range and profile.rangePresets or profile.presets
@@ -480,7 +537,7 @@ function Hangar.new(playerGui, api)
 				local note = image(content, "RangeNote", Assets.range.stripPurple, 15, PaperUI.isPhone() and 390 or 170, 300, 67, -4)
 				local text = words(note, "Label", "Range loadouts: practice only", 30, 0, 240, 67, 24)
 				text.TextXAlignment = Enum.TextXAlignment.Center
-				PaperUI.fitWords(text, 240)
+				if not text:GetAttribute("Fitted") then text:SetAttribute("Fitted", true); PaperUI.fitWords(text, 240) end
 			end
 			-- The name tape sits on the photo's paper, between its two bottom corner tapes (Alan 2026-11-09: no paper
 			-- hanging off another); the plane's view stops above it.
@@ -490,8 +547,9 @@ function Hangar.new(playerGui, api)
 			statSheet(Catalog:deriveStats(draft), nil, 1535 - 316, 8, 632, "wide", -- centred over Customize
 				classes and "Presets have fixed parts. You can wear skins and trails on them." or nil)
 			if classes then
-				image(content, "NameTape", Assets.ingame.tapeLabel, table.unpack(TAPE))
-				words(content, "BuildName", builds[state.preset].name, TAPE[1] + 30, TAPE[2], TAPE[3] - 60, TAPE[4], 46).TextXAlignment = Enum.TextXAlignment.Center
+				image(content, "NameTape", Assets.ingame.tapeLabel, table.unpack(TAPE)).ZIndex = 3
+				local buildName = words(content, "BuildName", builds[state.preset].name, TAPE[1] + 30, TAPE[2], TAPE[3] - 60, TAPE[4], 46)
+				buildName.ZIndex, buildName.TextXAlignment = 4, Enum.TextXAlignment.Center
 			else
 				nameTag(content, TAPE[1], TAPE[2], TAPE[3], TAPE[4], 46)
 			end
@@ -500,15 +558,16 @@ function Hangar.new(playerGui, api)
 				render()
 			end, 72)
 			open.ZIndex = 2
+			ui.finish()
 			return
 		end
-		local binder = Instance.new("Frame")
+		local binder = ui.instance(content, "BinderSide", "Frame")
 		binder.Name, binder.BackgroundTransparency, binder.Size, binder.Parent = "BinderSide", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), content
 		binder.Position = UDim2.fromOffset(0, PaperUI.H * (1 - Customize.BINDER_SCALE) / 2) -- the same cork above and below
-		local shrink = Instance.new("UIScale")
+		local shrink = binder:FindFirstChildOfClass("UIScale") or Instance.new("UIScale")
 		shrink.Scale, shrink.Parent = Customize.BINDER_SCALE, binder
 		Customize.draw(binder, {
-			side = content, -- the unshrunk sheet: the stats paper, Save and Fly sit there
+			ui = ui, side = content, -- the unshrunk sheet: the stats paper, Save and Fly sit there
 			state = state, builder = builder, draft = draft, profile = profile, range = range, classes = classes, dev = devMode(), catalog = Catalog,
 			owned = function(part) return devMode() or range or Catalog:owns(profile.ownership, part.id, player:GetAttribute("Level") or 1) end,
 			choose = choose, placeWeapon = placeWeapon, statSheet = statSheet, preview = preview, nameTag = nameTag,
@@ -516,19 +575,19 @@ function Hangar.new(playerGui, api)
 			tryOn = function(pick) local scratch = Builder.new(Catalog, draft, ownership, level); return pick(scratch) and scratch.candidate or nil end,
 			save = save, atDesk = atDesk, api = api, render = render, mountColours = MOUNT_COLOURS,
 		})
+		ui.finish()
 	end
 
 	local self = { frame = cover }
 	-- The Hangar Tour (TutorialLessons) watches what the player does here (page, tab, picked build, spot, draft) and
 	-- can turn back to the binder or close it. ponytail: there is one Hangar screen, so a module field is enough.
 	Hangar.tour = { state = state, render = function() render() end, close = function() api.flown() end }
-	-- Redraw only when something the hangar shows changed: redrawing replaces the buttons, and a click that
-	-- lands on a replaced button is lost (the menu refreshes the profile every 3 seconds).
+	-- Only refresh for displayed data. Dictionary order can change between identical network snapshots.
 	local shown
 	function self.update(player, newProfile)
-		local key = newProfile and game:GetService("HttpService"):JSONEncode({ newProfile.paper, newProfile.ownership, newProfile.looks, newProfile.presets, newProfile.rangePresets,
-			player:GetAttribute("MenuMessage"), atDesk() })
-		if key == shown and #content:GetChildren() > 0 then return end
+		local key = newProfile and {player:GetAttribute("Paper") or newProfile.paper, newProfile.ownership, newProfile.looks, newProfile.presets, newProfile.rangePresets,
+			player:GetAttribute("MenuMessage"), atDesk(), player:GetAttribute("Level"), devMode(), PaperUI.isPhone()}
+		if sameValues(key, shown) and #content:GetChildren() > 0 then return end
 		shown, profile = key, newProfile
 		render()
 	end

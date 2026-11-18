@@ -159,13 +159,61 @@ local function grid(frame, axes)
 	return turn * CFrame.Angles(rng:NextInteger(0, 3) * math.pi / 2, 0, 0)
 end
 
+-- Both the world and the binder render the same part meshes, orientation and movement.
+PlaneTrails.meshShapes = shapes
+function PlaneTrails.newPiece(spec, part, shape, at, frame, now, size)
+	local right, nose = frame.RightVector, frame.LookVector
+	part.Material = MATERIAL[spec.look]
+	part.Color = if spec.finish then WHITE else color(spec.colors[rng:NextInteger(1, #spec.colors)])
+	part.Transparency, part.Reflectance = CLEAR[spec.look] or 0, SHINE[spec.look] or 0
+	local q = { part = part, model = spec.model, spec = spec, unit = shape.unit, born = now, life = rng:NextNumber(spec.life[1], spec.life[2]), at = at,
+		vel = rng:NextUnitVector() * rng:NextNumber(0, spec.drift or 0), shown = 0, right = right, nose = nose, seed = rng:NextNumber(0, 1000),
+		size = size } -- more small ones than big
+	if spec.model == "wavelet" then
+		q.turn = frame.Rotation
+	elseif spec.model == "ninja_star" then
+		q.turn, q.start = frame.Rotation, rng:NextNumber(0, math.pi * 2)
+		q.spin = math.rad(spec.spin) * rng:NextNumber(0.5, 1) * (if rng:NextInteger(0, 1) == 0 then -1 else 1)
+	elseif spec.align == "grid" then q.turn = grid(frame.Rotation, spec.axes)
+	elseif spec.level then -- flies nose-first, right way up, banked a little (a model's nose, Blender +X, is its -X here)
+		local dir = (nose + rng:NextUnitVector() * 0.45).Unit
+		q.turn = CFrame.lookAlong(Vector3.zero, dir) * CFrame.Angles(0, -math.pi / 2, 0) * CFrame.Angles(rng:NextNumber(-0.6, 0.6), 0, 0)
+	elseif spec.align then
+		local dir = (nose + rng:NextUnitVector() * 0.45).Unit
+		if spec.model == "forked_flame" then
+			-- Its +X points into the nozzle, the longer forked edges point aft.
+			q.turn = CFrame.fromAxisAngle(dir, rng:NextNumber(0, 2 * math.pi)) * CFrame.lookAlong(Vector3.zero, dir) * CFrame.Angles(0, math.pi / 2, 0)
+		else
+			q.turn = CFrame.fromAxisAngle(dir, rng:NextNumber(0, 2 * math.pi)) * along(dir, shape.long)
+		end
+	else
+		q.axis, q.start = rng:NextUnitVector(), rng:NextNumber(0, 2 * math.pi)
+		q.spin = math.rad(spec.spin or 0) * rng:NextNumber(0.5, 1) * (rng:NextInteger(0, 1) * 2 - 1)
+		if spec.upright then q.lean = STAND * CFrame.Angles(rng:NextNumber(-0.25, 0.25), 0, 0) end -- stands up, turning like a sign
+	end
+	return q
+end
+
+function PlaneTrails.birthOffset(spec)
+	local a, reach = rng:NextNumber(0, 2 * math.pi), spec.spread * math.sqrt(rng:NextNumber())
+	local across, above = math.cos(a) * reach, math.sin(a) * reach
+	local other = false
+	if spec.pattern == "tracks" then
+		other = rng:NextInteger(0, 1) == 1
+		across = (if other then 1.23 else -1.23) + across * 0.36
+		above = above * 0.50 - 0.48
+	end
+	if spec.lattice then across, above = math.round(across / spec.lattice) * spec.lattice, math.round(above / spec.lattice) * spec.lattice end -- on a grid: pieces line up
+	return across, above, other
+end
+
 local function emit(w, root, tail, dt, eye, focalPixels)
 	local shift = tail - w.last
 	local far = shift.Magnitude
 	if far > 60 then return end -- put somewhere new (a respawn), not flown there
 	local normal = math.max(1, root.Parent:GetAttribute("Speed") or 105)
 	local g = PlaneTrails.growth(far / math.max(dt, 1e-3), normal)
-	local right, up, nose = root.CFrame.RightVector, root.CFrame.UpVector, root.CFrame.LookVector
+	local right, up = root.CFrame.RightVector, root.CFrame.UpVector
 	local resize = math.abs(g - w.g) > 0.04
 	if resize then w.g = g end
 	local now = os.clock()
@@ -198,15 +246,7 @@ local function emit(w, root, tail, dt, eye, focalPixels)
 		end
 		while row.owed >= 1 do
 			row.owed -= 1
-			local a, reach = rng:NextNumber(0, 2 * math.pi), spec.spread * math.sqrt(rng:NextNumber())
-			local across, above = math.cos(a) * reach, math.sin(a) * reach
-			local other = false
-			if spec.pattern == "tracks" then
-				other = rng:NextInteger(0, 1) == 1
-				across = (if other then 1.23 else -1.23) + across * 0.36
-				above = above * 0.50 - 0.48
-			end
-			if spec.lattice then across, above = math.round(across / spec.lattice) * spec.lattice, math.round(above / spec.lattice) * spec.lattice end -- on a grid: pieces line up
+			local across, above, other = PlaneTrails.birthOffset(spec)
 			local at = w.last + shift * rng:NextNumber() + right * across + up * above
 			if row.emitters then
 				local emitters = if other then row.other else row.emitters
@@ -218,38 +258,34 @@ local function emit(w, root, tail, dt, eye, focalPixels)
 				if pixelsPerStud and spec.model == "droplet" and size * pixelsPerStud < 1 then continue end
 				local part, shape = take(spec)
 				if not part then row.owed %= 1; break end
-				part.Material = MATERIAL[spec.look]
-				part.Color = if spec.finish then WHITE else color(spec.colors[rng:NextInteger(1, #spec.colors)])
-				part.Transparency, part.Reflectance = CLEAR[spec.look] or 0, SHINE[spec.look] or 0
-				local q = { part = part, model = spec.model, spec = spec, unit = shape.unit, born = now, life = rng:NextNumber(spec.life[1], spec.life[2]), at = at,
-					vel = rng:NextUnitVector() * rng:NextNumber(0, spec.drift or 0), shown = 0, right = right, nose = nose, seed = rng:NextNumber(0, 1000),
-					size = size } -- more small ones than big
-				if spec.model == "wavelet" then
-					q.turn = root.CFrame.Rotation
-				elseif spec.model == "ninja_star" then
-					q.turn, q.start = root.CFrame.Rotation, rng:NextNumber(0, math.pi * 2)
-					q.spin = math.rad(spec.spin) * rng:NextNumber(0.5, 1) * (if rng:NextInteger(0, 1) == 0 then -1 else 1)
-				elseif spec.align == "grid" then q.turn = grid(root.CFrame.Rotation, spec.axes)
-				elseif spec.level then -- flies nose-first, right way up, banked a little (a model's nose, Blender +X, is its -X here)
-					local dir = (nose + rng:NextUnitVector() * 0.45).Unit
-					q.turn = CFrame.lookAlong(Vector3.zero, dir) * CFrame.Angles(0, -math.pi / 2, 0) * CFrame.Angles(rng:NextNumber(-0.6, 0.6), 0, 0)
-				elseif spec.align then
-					local dir = (nose + rng:NextUnitVector() * 0.45).Unit
-					if spec.model == "forked_flame" then
-						-- Its +X points into the nozzle, the longer forked edges point aft.
-						q.turn = CFrame.fromAxisAngle(dir, rng:NextNumber(0, 2 * math.pi)) * CFrame.lookAlong(Vector3.zero, dir) * CFrame.Angles(0, math.pi / 2, 0)
-					else
-						q.turn = CFrame.fromAxisAngle(dir, rng:NextNumber(0, 2 * math.pi)) * along(dir, shape.long)
-					end
-				else
-					q.axis, q.start = rng:NextUnitVector(), rng:NextNumber(0, 2 * math.pi)
-					q.spin = math.rad(spec.spin or 0) * rng:NextNumber(0.5, 1) * (rng:NextInteger(0, 1) * 2 - 1)
-					if spec.upright then q.lean = STAND * CFrame.Angles(rng:NextNumber(-0.25, 0.25), 0, 0) end -- stands up, turning like a sign
-				end
+				local q = PlaneTrails.newPiece(spec, part, shape, at, root.CFrame, now, size)
 				table.insert(live, q)
 			end
 		end
 	end
+end
+
+-- Plane-local nozzle position used when inspecting or flying a shaped plane.
+function PlaneTrails.exhaust(trail, appearance, skin, body, frame)
+	local shaped = skin and SkinFit.shapes[skin]
+	local offset
+	local matches = trail.tail ~= nil and (skin == trail.preview_skin or (skin == "shark_jet" and trail.preview_skin == "shark"))
+	if matches and body and shaped and (shaped.hitPiece or shaped.even) then
+		local box, hull = shaped.pieces.body, shaped.pieces[shaped.hitPiece or "body"]
+		local span = hull.max[3] - hull.min[3]
+		local mid = Vector3.new(box.min[1]+box.max[1], box.min[2]+box.max[2], box.min[3]+box.max[3]) * 0.5
+		local exhaust = Vector3.new(0, trail.tail[1], trail.tail[2]) * span
+		local scale = body.Size.Z / (box.max[3] - box.min[3])
+		offset = frame:PointToObjectSpace(body.CFrame * ((exhaust - mid) * scale))
+	elseif appearance then
+		local outline = SkinFit.outline(appearance, frame)
+		if outline then
+			local length = outline.zT - outline.zN
+			offset = if matches then Vector3.new(0, outline.wy + length * trail.tail[1], (outline.zT + outline.zN) / 2 + length * trail.tail[2])
+				else Vector3.new(0, outline.wy, outline.zT)
+		end
+	end
+	return offset
 end
 
 local function tailOffset(w, plane, root, now)
@@ -259,31 +295,44 @@ local function tailOffset(w, plane, root, now)
 	if w.measureAt and now < w.measureAt then return w.offset end
 	local appearance = plane:FindFirstChild("Appearance")
 	local skin = plane:GetAttribute("Skin")
-	local shaped = skin and SkinFit.shapes[skin]
 	local body = appearance and appearance:FindFirstChild("Skin-body")
 	local build = appearance and appearance:GetAttribute("Build")
 	w.measureAt = now + 0.35
 	if w.offset and appearance == w.appearance and build == w.build and skin == w.skin and body == w.body and w.measured then return w.offset end
-	local offset
-	local matches = skin == trail.preview_skin or (skin == "shark_jet" and trail.preview_skin == "shark")
-	if matches and body and shaped and shaped.hitPiece then
-		local box, hull = shaped.pieces.body, shaped.pieces[shaped.hitPiece]
-		local span = hull.max[3] - hull.min[3]
-		local mid = Vector3.new(box.min[1]+box.max[1], box.min[2]+box.max[2], box.min[3]+box.max[3]) * 0.5
-		local exhaust = Vector3.new(0, trail.tail[1], trail.tail[2]) * span
-		local scale = body.Size.Z / (box.max[3] - box.min[3])
-		offset = root.CFrame:PointToObjectSpace(body.CFrame * ((exhaust - mid) * scale))
-	elseif appearance then
-		local outline = SkinFit.outline(appearance, root.CFrame)
-		if outline then
-			local length = outline.zT - outline.zN
-			offset = if matches then Vector3.new(0, outline.wy + length * trail.tail[1], (outline.zT + outline.zN) / 2 + length * trail.tail[2])
-				else Vector3.new(0, outline.wy, outline.zT)
-		end
-	end
+	local offset = PlaneTrails.exhaust(trail, appearance, skin, body, root.CFrame)
 	w.body, w.build, w.appearance, w.skin, w.measured = body, build, appearance, skin, offset ~= nil
 	w.offset = offset or Vector3.new(0, 0, root.Size.Z / 2)
 	return w.offset
+end
+
+function PlaneTrails.piecePose(q, now, age, k, eye)
+	local spec = q.spec
+	if spec.flash and not (k < 0.3 or (k > 0.42 and k < 0.7)) then return FAR end
+	local size = math.max(q.size * PlaneTrails.sizeAt(spec, k), 0.02)
+	if math.abs(size - q.shown) > STEP * q.shown then q.shown = size; q.part.Size = q.unit * size end
+	local at = q.at + q.vel * age + Vector3.new(0, 0.5 * (spec.rise or 0) * age * age, 0)
+	if spec.run then at -= q.nose * (spec.run * age) end -- races back along the path, like a light along a wire
+	if spec.jump then at += q.right * (spec.jump * PlaneTrails.snap(q.seed, now)) end
+	local turn
+	if spec.model == "wavelet" then
+		local bank = 0.30 * math.sin(q.born * 7 + age * 4) + 2.1 * math.sin(q.born * 4 - age * 5)
+		turn = q.turn * CFrame.Angles(0, 0, -bank)
+	elseif spec.model == "ninja_star" then
+		local spin = q.start + q.spin * age
+		turn = q.turn * CFrame.Angles(0, 0.28 + 0.98 * math.sin(spin), 0) * STAND * CFrame.Angles(0, spin, 0)
+		local view = eye and eye - at
+		local shine = if view and view.Magnitude > 0.01 then math.abs(turn.UpVector:Dot(view.Unit)) ^ 6 else 0
+		q.part.Reflectance = 0.12 + 0.38 * shine
+	elseif spec.finish == "flame" then
+		turn = q.turn
+		q.part.Color = Color3.new(1, 1 - 0.41 * k, 1 - 0.63 * k)
+	else
+		turn = q.turn or (q.lean and CFrame.Angles(0, q.start + q.spin * age, 0) * q.lean) or CFrame.fromAxisAngle(q.axis, q.start + q.spin * age)
+	end
+	if spec.finish and spec.vanish and k > 1 - spec.vanish then
+		q.part.Transparency = (k - 1 + spec.vanish) / spec.vanish
+	end
+	return CFrame.new(at) * turn
 end
 
 local function step(dt)
@@ -320,7 +369,6 @@ local function step(dt)
 	table.clear(movers); table.clear(frames)
 	for i = #live, 1, -1 do
 		local q = live[i]
-		local spec = q.spec
 		local age = now - q.born
 		local k = age / q.life
 		-- Distant mesh poses can be held briefly. Continue to age them in real time and retire them on the exact frame.
@@ -339,33 +387,8 @@ local function step(dt)
 			frames[n] = FAR
 			table.insert(spare[q.model], q.part)
 			live[i] = live[#live]; live[#live] = nil
-		elseif spec.flash and not (k < 0.3 or (k > 0.42 and k < 0.7)) then frames[n] = FAR -- lightning, a glitch: on, off, on, gone
 		else
-			local size = math.max(q.size * PlaneTrails.sizeAt(spec, k), 0.02)
-			if math.abs(size - q.shown) > STEP * q.shown then q.shown = size; q.part.Size = q.unit * size end
-			local at = q.at + q.vel * age + Vector3.new(0, 0.5 * (spec.rise or 0) * age * age, 0)
-			if spec.run then at -= q.nose * (spec.run * age) end -- races back along the path, like a light along a wire
-			if spec.jump then at += q.right * (spec.jump * PlaneTrails.snap(q.seed, now)) end
-			local turn
-			if spec.model == "wavelet" then
-				local bank = 0.30 * math.sin(q.born * 7 + age * 4) + 2.1 * math.sin(q.born * 4 - age * 5)
-				turn = q.turn * CFrame.Angles(0, 0, -bank)
-			elseif spec.model == "ninja_star" then
-				local spin = q.start + q.spin * age
-				turn = q.turn * CFrame.Angles(0, 0.28 + 0.98 * math.sin(spin), 0) * STAND * CFrame.Angles(0, spin, 0)
-				local view = eye and eye - at
-				local shine = if view and view.Magnitude > 0.01 then math.abs(turn.UpVector:Dot(view.Unit)) ^ 6 else 0
-				q.part.Reflectance = 0.12 + 0.38 * shine
-			elseif spec.finish == "flame" then
-				turn = q.turn
-				q.part.Color = Color3.new(1, 1 - 0.41 * k, 1 - 0.63 * k)
-			else
-				turn = q.turn or (q.lean and CFrame.Angles(0, q.start + q.spin * age, 0) * q.lean) or CFrame.fromAxisAngle(q.axis, q.start + q.spin * age)
-			end
-			if spec.finish and spec.vanish and k > 1 - spec.vanish then
-				q.part.Transparency = (k - 1 + spec.vanish) / spec.vanish
-			end
-			frames[n] = CFrame.new(at) * turn
+			frames[n] = PlaneTrails.piecePose(q, now, age, k, eye)
 		end
 	end
 	if n > 0 then workspace:BulkMoveTo(movers, frames, Enum.BulkMoveMode.FireCFrameChanged) end

@@ -955,3 +955,5 @@ Back to [HOME](../HOME.md)
 
 ## Cosmetic releases (2026-11-18)
 - For a completed skin, check its card, the textured plane in Customize, the Paper purchase, Wear, and the plane after launch. Shark Jet had a working catalog row and could grant Water Spray before its body existed. For a trail, check its saved ID against the renderer and its route from a normal player account. The Studio selector draws effects that players can have no way to acquire.
+
+- To check a reported menu flash, count removal of the book, stats sheet and card under the pointer while selecting. The previous Hangar destroyed all three on every click even when the camera's per-frame probe caught no empty frame. Hold a press across a profile refresh as well as checking quick clicks.

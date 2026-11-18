@@ -33,18 +33,6 @@ local BINDER_X, BINDER_Y, PAGE_W, PAGE_H = 20, 165, 630, 920
 -- so the stats paper beside it can be bigger (Alan 2026-11-09). The stats paper, Save and Fly are on the full sheet.
 Customize.BINDER_SCALE = 0.95
 local PHOTO = { 75, 250, 530, 635 } -- the 3D plane on the left page, above its name tape
--- Six flight photos per sheet, arranged in rows of two. Each comes from its approved trail preview.
-local TRAIL_PHOTOS = {}
-for _, sheet in {
-	{ "rbxassetid://112345268190621", "chalk_dust", "confetti", "music_notes", "mini_planes", "gold_stars", "folded_petals" },
-	{ "rbxassetid://87675233226361", "stardust", "goo_bubbles", "rainbow_marker", "glitch_pixels", "storm_sparks", "circuit_trace" },
-	{ "rbxassetid://127519253431152", "smoke_bomb", "backfire", "photo_finish", "silver_chaff", "water_spray", "dragon_embers" },
-} do
-	for i = 2, #sheet do
-		TRAIL_PHOTOS[sheet[i]] = { image = sheet[1], offset = Vector2.new((i - 2) % 2 * 512 + 2, math.floor((i - 2) / 2) * 320 + 2) }
-	end
-end
-
 -- ctx comes from Hangar: state, builder, draft, profile, range, dev, owned(part), choose(pick, ...),
 -- placeWeapon(id), statSheet(stats, compare, x, y, w, kind, note), preview(draft, box, diagram), nameTag(...), save(fly),
 -- atDesk(), api, mountColours, tryOn(pick) (the build after pick(scratch builder), or nil).
@@ -64,29 +52,26 @@ end
 local LOCKED_TINT = Color3.fromRGB(175, 170, 165) -- a locked card: the same paper, greyed
 
 -- A padlock drawn in ink (a shackle ring over a rounded body), `h` tall, its top left at (x, y).
-local function padlock(parent, x, y, h)
+local function padlock(ui, parent, x, y, h)
 	local w = h * 0.8
-	local shackle = Instance.new("Frame")
+	local shackle = ui.instance(parent, "LockShackle", "Frame")
 	shackle.Name, shackle.BackgroundTransparency = "LockShackle", 1
 	shackle.Position, shackle.Size = UDim2.fromOffset(x + w * 0.2, y), UDim2.fromOffset(w * 0.6, h * 0.6)
-	Instance.new("UICorner", shackle).CornerRadius = UDim.new(0.5, 0)
-	local ring = Instance.new("UIStroke")
+	local corner = shackle:FindFirstChildOfClass("UICorner") or Instance.new("UICorner", shackle)
+	corner.CornerRadius = UDim.new(0.5, 0)
+	local ring = shackle:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
 	ring.Thickness, ring.Color, ring.Parent = math.max(3, h * 0.12), PaperUI.INK, shackle
 	shackle.Parent = parent
-	local body = Instance.new("Frame")
+	local body = ui.instance(parent, "LockBody", "Frame")
 	body.Name, body.BackgroundColor3, body.BorderSizePixel = "LockBody", PaperUI.INK, 0
 	body.Position, body.Size = UDim2.fromOffset(x, y + h * 0.38), UDim2.fromOffset(w, h * 0.62)
-	Instance.new("UICorner", body).CornerRadius = UDim.new(0.2, 0)
+	local corner = body:FindFirstChildOfClass("UICorner") or Instance.new("UICorner", body)
+	corner.CornerRadius = UDim.new(0.2, 0)
 	body.Parent = parent
 end
 
-local robuxButton = PaperUI.robuxButton
-
--- Everything under `root` drawn above the binder (the pop-up).
-local function lift(root, z)
-	for _, item in { root, table.unpack(root:GetDescendants()) } do
-		if item:IsA("GuiObject") then item.ZIndex = z + (item.ZIndex - 1) end
-	end
+local function capFor(label)
+	return label:FindFirstChildOfClass("UITextSizeConstraint") or Instance.new("UITextSizeConstraint", label)
 end
 
 -- Skins and Trails pages. Cards are Gear's wide, short ones, five rows showing; more than ten scroll inside the page
@@ -121,19 +106,23 @@ function Customize.shownSkin(ctx)
 end
 
 local function lookCards(content, ctx)
-	local state, image, words, button = ctx.state, PaperUI.image, PaperUI.words, PaperUI.button
+	local state, image, words, button = ctx.state, ctx.ui.image, ctx.ui.words, ctx.ui.button
 	local slot = state.slot
 	local on = saved(ctx)[slot] or ""
 	local list = lookList(slot)
 	-- The cards' own scrolling window (Roblox's ScrollingFrame), 14 wider all round than the cards for the try-on ring.
 	-- A redraw (every click) keeps its place: CanvasPosition is in screen pixels (as ShopScreen), stored as read.
-	local page = Instance.new("ScrollingFrame")
+	local page = ctx.ui.instance(content, "Looks", "ScrollingFrame")
+	local previousSlot = page:GetAttribute("LookSlot")
+	state.lookScroll = state.lookScroll or {}
+	if previousSlot and previousSlot ~= slot then state.lookScroll[previousSlot] = page.CanvasPosition.Y end
 	page.Name, page.BackgroundTransparency, page.BorderSizePixel = "Looks", 1, 0
 	page.Position, page.Size = UDim2.fromOffset(686, 222), UDim2.fromOffset(580, 652)
 	page.CanvasSize = UDim2.fromOffset(0, math.ceil(#list / 2) * 126 + 22)
 	page.ScrollingDirection, page.ElasticBehavior = Enum.ScrollingDirection.Y, Enum.ElasticBehavior.Never
 	page.ScrollBarThickness, page.ScrollBarImageColor3 = 10, PaperUI.INK
 	page.Parent, content = content, page
+	page.ZIndex = 2
 	local focusY
 	for i, item in list do
 		local x, y = 14 + (i - 1) % 2 * 272, 14 + math.floor((i - 1) / 2) * 126
@@ -141,7 +130,7 @@ local function lookCards(content, ctx)
 		local worn = item.id == on
 		local card = button(content, item.id, worn and Art.cardSelectedWide or Art.cardWide, "", x, y, 262, 120, 0, function()
 			game.Players.LocalPlayer:SetAttribute("MenuMessage", nil)
-			state.tryLook = state.tryLook ~= item and item or nil
+			state.tryLook = item
 			ctx.render()
 		end)
 		if state.tryLook == item then
@@ -159,17 +148,23 @@ local function lookCards(content, ctx)
 		local line = words(card, "Status", status, 24, 72, 204, 34, 30)
 		line.TextScaled = true
 		for _, label in { name, line } do
-			local cap = Instance.new("UITextSizeConstraint")
-			cap.MaxTextSize, cap.Parent = PaperUI.isPhone() and 40 or 30, label
+			local cap = capFor(label)
+			cap.MaxTextSize = PaperUI.isPhone() and 40 or 30
 		end
 	end
-	state.lookScroll = state.lookScroll or {}
-	page.CanvasPosition = Vector2.new(0, state.lookScroll[slot] or 0)
-	page:GetPropertyChangedSignal("CanvasPosition"):Connect(function() state.lookScroll[slot] = page.CanvasPosition.Y end)
+	if slot ~= previousSlot then
+		page:SetAttribute("LookSlot",slot)
+		page.CanvasPosition = Vector2.new(0, state.lookScroll[slot] or 0)
+	end
+	if not previousSlot then
+		page:GetPropertyChangedSignal("CanvasPosition"):Connect(function()
+			state.lookScroll[page:GetAttribute("LookSlot")] = page.CanvasPosition.Y
+		end)
+	end
 	if focusY then
 		state.focusLook = nil
 		task.defer(function()
-			if page.Parent then
+			if page.Parent and page:GetAttribute("LookSlot") == slot then
 				local scale = page.AbsoluteSize.Y / page.Size.Y.Offset
 				page.CanvasPosition = Vector2.new(0, math.max(0, focusY - 210) * scale)
 			end
@@ -179,17 +174,18 @@ end
 
 -- Under the cards: what the look is, then Wear / Buy / Unlock now and Cancel, or Take off. Returns the note line.
 local function lookControls(content, ctx, about)
-	local state, button, kind, item = ctx.state, PaperUI.button, ctx.state.slot, ctx.state.tryLook
+	local state, button, kind, item = ctx.state, ctx.ui.button, ctx.state.slot, ctx.state.tryLook
 	local player = game.Players.LocalPlayer
 	local function wear(id) -- the save keeps one skin and one trail; change just this one
 		ctx.api.action:FireServer("wearLook", { kind = kind, id = id })
 		if PlaneLooks.devSkin ~= nil then PlaneLooks.setDevSkin(nil) end
 		if player:GetAttribute("DevTrail") ~= nil then player:SetAttribute("DevTrail", nil) end
-		state.tryLook = nil
+		-- Keep the selected preview on screen while the server confirms Wear.
+		if id == "" then state.tryLook = nil end
 		ctx.render()
 	end
 	if kind == "trail" then
-		about(item and item.name or "Choose a trail to see its flight photo.")
+		about(item and item.name or "Choose a trail to see it behind your plane.")
 	elseif item then
 		local trail = item.trail and Looks.item(item.trail)
 		about(item.name .. (trail and " comes with " .. trail.name .. "." or " changes the look of every plane you fly."))
@@ -242,7 +238,7 @@ local function lookControls(content, ctx, about)
 end
 
 function Customize.draw(content, ctx)
-	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
+	local image, words, button = ctx.ui.image, ctx.ui.words, ctx.ui.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
 	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 400, 21, 900, 123) -- the tape's own shape
 	PaperUI.loud(words(title, "Label", ctx.classes and "Skins & trails" or ctx.range and "Range Customize" or "Customize", 0, 0, 900, 123, ctx.range and 72 or 88)).TextXAlignment = Enum.TextXAlignment.Center
@@ -253,11 +249,12 @@ function Customize.draw(content, ctx)
 		local picked = tab.slot == state.slot
 		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 225 + (i - 1) * 100, 200, 88, 0,
 			function()
-				if tab.slot ~= state.slot then state.turn = true end
+				if tab.slot == state.slot then return end
+				state.turn = true
 				state.slot, state.trying, state.tryLook = tab.slot, nil, nil
 				ctx.render()
 			end, PaperUI.isPhone() and 50 or 40)
-		t.ImageColor3 = tab.tint
+		t.ImageColor3, t.ZIndex = tab.tint, 0
 		t.Label.Position, t.Label.Size = UDim2.fromOffset(80, 0), UDim2.new(1, -80, 1, 0)
 	end
 	-- The Range's binder is pink (its builds are a separate set).
@@ -270,7 +267,7 @@ function Customize.draw(content, ctx)
 	end
 	-- The right page takes the clicks that land on it: a picture lets them through, so a click on the page beside the
 	-- cards turned the tab tucked under it (Alan 2026-11-13: tabs "click on and off"). Cards drawn after sit on top.
-	local catch = Instance.new("TextButton")
+	local catch = ctx.ui.instance(content, "PageCatch", "TextButton")
 	catch.Name, catch.Text, catch.BackgroundTransparency, catch.AutoButtonColor = "PageCatch", "", 1, false
 	catch.Position, catch.Size, catch.Parent = UDim2.fromOffset(BINDER_X + PAGE_W, BINDER_Y), UDim2.fromOffset(PAGE_W, PAGE_H), content
 
@@ -319,13 +316,13 @@ function Customize.draw(content, ctx)
 		local IN = { x = 24, y = math.floor(cardH * 0.1), w = 204, h = math.floor(cardH * 0.78) }
 		local name = PaperUI.loud(words(card, "Name", part.name, IN.x, IN.y, IN.w, 80, 34))
 		name.TextWrapped, name.TextYAlignment = true, Enum.TextYAlignment.Top
-		if locked then card.ImageColor3 = LOCKED_TINT end
+		card.ImageColor3 = locked and LOCKED_TINT or white
 		local detail = state.trying == part and "Trying it on" or owned and (equipped and "Equipped" or ctx.range and not ctx.catalog:owns(ctx.profile.ownership, part.id, level) and "Range only" or "Owned")
 			or locked and string.format("Level %d", part.min_level) or string.format("%s Paper", PaperUI.commas(part.paper_price))
 		-- The status words, with the padlock in front when locked.
 		local function status(sx, sy, sw, sh, size)
 			if locked and state.trying ~= part then
-				padlock(card, sx, sy + 2, size * 0.9)
+				padlock(ctx.ui, card, sx, sy + 2, size * 0.9)
 				sx, sw = sx + size * 0.9, sw - size * 0.9
 			end
 			local label = words(card, "Status", detail, sx, sy, sw, sh, size)
@@ -334,8 +331,7 @@ function Customize.draw(content, ctx)
 		if state.slot == "weapons" then
 			-- Pips for how hard one shot hits (Alan); damage a second and the rest are in the box under the cards.
 			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(IN.w, 32), false, true -- long names shrink to one line
-			local cap = Instance.new("UITextSizeConstraint")
-			cap.MaxTextSize, cap.Parent = 30, name
+			capFor(name).MaxTextSize = 30
 			-- A slimmer Hit row so the size-and-weight line under it can be bigger (Alan 2026-11-12: card words too small).
 			words(card, "HitLabel", "Hit", IN.x, IN.y + 31, 40, 22, 20)
 			local hit = ctx.catalog.hitRating(part)
@@ -347,24 +343,23 @@ function Customize.draw(content, ctx)
 			if blocked then
 				detail = blocked
 				for _, angle in { 37, -37 } do
-					local stroke = Instance.new("Frame")
-					stroke.Name, stroke.AnchorPoint, stroke.Position = "CrayonX", Vector2.new(.5, .5), UDim2.fromScale(.5, .5)
+					local stroke = ctx.ui.instance(card, "CrayonX" .. angle, "Frame")
+					stroke.AnchorPoint, stroke.Position = Vector2.new(.5, .5), UDim2.fromScale(.5, .5)
 					stroke.Size, stroke.Rotation, stroke.ZIndex = UDim2.fromOffset(290, 12), angle, 5
 					stroke.BackgroundColor3, stroke.BackgroundTransparency, stroke.BorderSizePixel = Color3.fromRGB(215, 35, 45), .15, 0
-					Instance.new("UICorner", stroke).CornerRadius = UDim.new(.5, 0)
+					local corner = stroke:FindFirstChildOfClass("UICorner") or Instance.new("UICorner", stroke)
+					corner.CornerRadius = UDim.new(.5, 0)
 					stroke.Parent = card
 				end
 			end
 			local line = status(IN.x, IN.y + 54, IN.w, IN.h - 54, 34)
 			line.TextWrapped, line.TextScaled = true, true
-			local fit = Instance.new("UITextSizeConstraint")
-			fit.MaxTextSize, fit.Parent = 34, line
-			if blocked then line.TextColor3, line.ZIndex = Color3.fromRGB(190, 20, 30), 6 end
+			capFor(line).MaxTextSize = 34
+			line.TextColor3, line.ZIndex = blocked and Color3.fromRGB(190, 20, 30) or PaperUI.INK, blocked and 6 or 1
 		elseif state.slot == "boost" then
 			-- What each booster does (Alan 2026-10-21: three boosters looked the same).
 			name.Size, name.TextWrapped, name.TextScaled = UDim2.fromOffset(IN.w, 40), false, true
-			local cap = Instance.new("UITextSizeConstraint")
-			cap.MaxTextSize, cap.Parent = 32, name
+			capFor(name).MaxTextSize = 32
 			local boost = words(card, "Boost", string.format("+%d%% speed for %d seconds", math.round((part.speed_factor - 1) * 100), part.boost_seconds), IN.x, IN.y + 44, IN.w, 60, 24)
 			boost.TextWrapped = true
 			local info = status(IN.x, IN.y + 108, IN.w, IN.h - 108, 30)
@@ -390,7 +385,7 @@ function Customize.draw(content, ctx)
 	-- cards show underneath.
 	if state.turn then
 		state.turn = nil
-		local page = image(content, "PageTurn", Binder.binderRight, 0, 0, PAGE_W, PAGE_H)
+		local page = PaperUI.image(content, "PageTurn", Binder.binderRight, 0, 0, PAGE_W, PAGE_H)
 		page.ScaleType, page.ZIndex, page.AnchorPoint, page.ImageColor3 = Enum.ScaleType.Stretch, 8, Vector2.new(0, 0.5), binderTint
 		page.Position = UDim2.fromOffset(BINDER_X + PAGE_W, BINDER_Y + PAGE_H / 2)
 		local fold = TweenService:Create(page, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
@@ -404,6 +399,7 @@ function Customize.draw(content, ctx)
 	if ctx.classes then
 		local tape = image(content, "NameTape", Assets.ingame.tapeLabel, 115, 905, 450, 61)
 		local name = words(tape, "BuildName", state.builds[state.preset].name, 30, 0, 390, 61, 40)
+		tape.ZIndex = 3
 		name.TextXAlignment = Enum.TextXAlignment.Center
 	else
 		ctx.nameTag(content, 115, 905, 450, 61, PaperUI.isPhone() and 50 or 40)
@@ -432,15 +428,9 @@ function Customize.draw(content, ctx)
 			end
 		end
 	end
-	local trail = state.slot == "trail" and (state.tryLook and state.tryLook.id or saved(ctx).trail)
-	local photo = TRAIL_PHOTOS[trail]
-	if photo then
-		ctx.preview(draft, { 75, 250, 530, 312 }, false, true, nil, content, Customize.shownSkin(ctx))
-		local sample = image(content, "TrailPhoto", photo.image, 85, 584, 510, 287)
-		sample.ImageRectOffset, sample.ImageRectSize = photo.offset, Vector2.new(508, 286)
-	else
-		ctx.preview(candidate or draft, PHOTO, diagram, true, nil, content, Customize.shownSkin(ctx))
-	end
+	-- An empty trail ID still opens the fixed, draggable overhead view.
+	local trail = state.slot == "trail" and (state.tryLook and state.tryLook.id or saved(ctx).trail or "") or nil
+	ctx.preview(candidate or draft, PHOTO, diagram, true, nil, content, Customize.shownSkin(ctx), trail)
 	local valid, reason = builder:validate(draft)
 	local stats = ctx.catalog:deriveStats(draft)
 	local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
@@ -452,8 +442,7 @@ function Customize.draw(content, ctx)
 	local function about(text)
 		local info = words(content, "MountInfo", text, 700, 860, 540, 92, 26)
 		info.TextXAlignment, info.TextWrapped, info.TextScaled = Enum.TextXAlignment.Center, true, true
-		local cap = Instance.new("UITextSizeConstraint")
-		cap.MaxTextSize, cap.Parent = PaperUI.isPhone() and 40 or 26, info
+		capFor(info).MaxTextSize = PaperUI.isPhone() and 40 or 26
 	end
 	if state.trying then
 		local part = state.trying
@@ -474,7 +463,7 @@ function Customize.draw(content, ctx)
 			elseif level < part.min_level then
 				-- Above your level: no Paper buy; "Unlock now" for Robux in its place (Alan 2026-11-12).
 				note = string.format("Level %d, or unlock it now. A prestige takes it back.", part.min_level)
-				robuxButton(content, "UnlockNow", 695, 975, 290, 80, "Unlock now", robux, 38, function()
+				ctx.ui.robuxButton(content, "UnlockNow", 695, 975, 290, 80, "Unlock now", robux, 38, function()
 					ctx.api.action:FireServer("buyProduct", "part_" .. part.id)
 				end)
 			else
@@ -500,12 +489,15 @@ function Customize.draw(content, ctx)
 			local part = draft.weapon_mounts[m] and ctx.catalog:get(draft.weapon_mounts[m])
 			-- Key: a coloured dot and the size word for each mount size, top-left of the photo.
 			for k, size in { "light", "medium", "heavy" } do
-				local dot = Instance.new("Frame")
+				local dot = ctx.ui.instance(content, "MountKey" .. size, "Frame")
 				dot.Position, dot.Size, dot.BackgroundColor3 = UDim2.fromOffset(PHOTO[1] + 60 + (k - 1) * 150, PHOTO[2] + 75), UDim2.fromOffset(26, 26), ctx.mountColours[size]
-				Instance.new("UICorner", dot).CornerRadius = UDim.new(0.5, 0)
-				Instance.new("UIStroke", dot).Thickness = 2
+				dot.ZIndex = 3
+				local corner = dot:FindFirstChildOfClass("UICorner") or Instance.new("UICorner",dot)
+				corner.CornerRadius = UDim.new(0.5, 0)
+				local edge = dot:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke",dot)
+				edge.Thickness = 2
 				dot.Parent = content
-				words(content, "Key" .. size, size, PHOTO[1] + 93 + (k - 1) * 150, PHOTO[2] + 67, 110, 40, 34)
+				words(content, "Key" .. size, size, PHOTO[1] + 93 + (k - 1) * 150, PHOTO[2] + 67, 110, 40, 34).ZIndex = 3
 			end
 			about(string.format("Spot %d: %s%s. %s", m, body.mount_types[m], part and (groups[m] == 1 and ", left click" or ", right click") or "",
 				part and part.name .. ": " .. part.description or "Empty: pick a gear card."))
@@ -523,18 +515,18 @@ function Customize.draw(content, ctx)
 	end
 	local message = words(content, "Message", note, 700, gear and 950 or 932, 540, gear and 32 or 46, 26)
 	local problem = builder.message ~= "" or not valid or state.dropAsk ~= nil
+	message.TextScaled = gear
 	message.TextColor3, message.TextWrapped = problem and Color3.fromRGB(170, 30, 30) or Color3.fromRGB(30, 110, 50), true
 	if gear then -- a thinner line under the gear box: long messages shrink instead of running onto the buttons
 		message.TextScaled = true
-		local cap = Instance.new("UITextSizeConstraint")
-		cap.MaxTextSize, cap.Parent = PaperUI.isPhone() and 40 or 26, message
+		capFor(message).MaxTextSize = PaperUI.isPhone() and 40 or 26
 	end
 
 	-- Short of Paper (Alan 2026-11-12: a pop-up, not the small line under the cards): the welcome card's sticky note over
 	-- the whole sheet, the game dimmed, with both ways to get the part. Sizes: Tutorial's note, 1.3x on the sheet.
 	if state.ask then
 		local ask, side = state.ask, ctx.side
-		local dim = Instance.new("TextButton") -- takes the clicks under it
+		local dim = ctx.ui.instance(side, "Ask", "TextButton") -- takes the clicks under it
 		dim.Name, dim.Text, dim.AutoButtonColor, dim.BackgroundColor3, dim.BackgroundTransparency = "Ask", "", false, Color3.fromRGB(20, 14, 8), 0.45
 		dim.Position, dim.Size, dim.Parent = UDim2.fromOffset(-PaperUI.W, -PaperUI.H), UDim2.fromOffset(3 * PaperUI.W, 3 * PaperUI.H), side -- past the sheet: wide screens too
 		local X0, Y0 = PaperUI.W + (PaperUI.W - 1100) / 2, PaperUI.H + (PaperUI.H - 388) / 2 -- (the dim starts a sheet up and left)
@@ -550,12 +542,12 @@ function Customize.draw(content, ctx)
 			close()
 			if ctx.api.shop then ctx.api.shop() end
 		end, 46)
-		robuxButton(card, "UnlockNow", 722 - 175, 312 - 40, 350, 80, "Unlock now", ask.robux, 40, function()
+		ctx.ui.robuxButton(card, "UnlockNow", 722 - 175, 312 - 40, 350, 80, "Unlock now", ask.robux, 40, function()
 			close()
 			ctx.api.action:FireServer("buyProduct", "part_" .. ask.part.id)
 		end)
 		button(card, "Close", Assets.mainmenu.boxRed, "X", 980, 75, 62, 62, 2, close, 38)
-		lift(dim, 40)
+		dim.ZIndex = 40
 	end
 
 	-- Save, and a clearly separate second button: Save & fly at the desk (spends Paper, Alan 2026-10-17), Test in Range

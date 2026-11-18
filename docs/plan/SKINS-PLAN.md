@@ -124,7 +124,7 @@ how the game draws 3D pieces (see "How it is drawn").
 - **Looks only:** no change to speed, hits or the hitbox. Drawn on each player's screen; the server only keeps the
   trail's name (it already does).
 - **Hangar:** the plane stands still, so a short fixed version (about 2 plane lengths) blows gently back off it. Clicking
-  a trail in the Trails tab shows it on your plane at once. Shop and tab cards get a still picture of each trail.
+  a trail in the Trails tab shows it on your plane at once. The player's fitted model and attached plume share one preview in the binder.
 
 **The list (13 now, 1 later).** Cut by Alan: pencil shavings, eraser crumbs, ink splats, crayon scribble.
 

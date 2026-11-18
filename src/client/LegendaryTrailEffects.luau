@@ -36,6 +36,9 @@ local function remember(s, now, frame, growth)
 end
 
 local function past(s, time)
+	if s.previewSpeed then
+		return s.frame * CFrame.new(0, 0, math.max(0, s.now - time) * s.previewSpeed), 1
+	end
 	local h = s.history
 	local lo, hi = 1, #h
 	while lo < hi do
@@ -49,6 +52,16 @@ local function past(s, time)
 end
 
 local function makeBeam(s, name, colors, fade)
+	if s.previewSpeed then
+		-- ViewportFrames don't draw Beams. A slim streak and its bright tip share the flight endpoints.
+		local line = Instance.new("Part")
+		line.Name, line.Anchored, line.CanCollide, line.CanTouch, line.CanQuery = name, true, false, false, false
+		line.Material, line.Color, line.Transparency = Enum.Material.Neon, colors.Keypoints[2].Value, 1
+		line.Parent = s.anchor
+		local tip = line:Clone()
+		tip.Name, tip.Color, tip.Parent = name .. "Tip", colors.Keypoints[#colors.Keypoints].Value, s.anchor
+		return { line = line, tip = tip }
+	end
 	local a, b, beam = Instance.new("Attachment"), Instance.new("Attachment"), Instance.new("Beam")
 	a.Parent, b.Parent = s.anchor, s.anchor
 	beam.Attachment0, beam.Attachment1 = a, b
@@ -56,6 +69,28 @@ local function makeBeam(s, name, colors, fade)
 	beam.FaceCamera, beam.LightEmission, beam.LightInfluence, beam.Segments = true, 1, 0, 4
 	beam.Enabled, beam.Parent = false, s.anchor
 	return { a = a, b = b, beam = beam }
+end
+
+local function hideStroke(q)
+	if q.beam then q.beam.Enabled = false else q.line.Transparency, q.tip.Transparency = 1, 1 end
+end
+
+local function stroke(q, a, b, thin, thick, brightness, clear)
+	if q.beam then
+		q.a.WorldPosition, q.b.WorldPosition = a, b
+		q.beam.Width0, q.beam.Width1 = thin, thick
+		q.beam.Brightness, q.beam.Enabled = brightness, true
+	else
+		local delta = b - a
+		if delta.Magnitude < 0.01 then hideStroke(q); return end
+		local dir = delta.Unit
+		local turn = CFrame.lookAlong(Vector3.zero, dir)
+		q.line.Size = Vector3.new(thick, thick, delta.Magnitude)
+		q.line.CFrame = CFrame.new((a + b) * 0.5) * turn
+		q.tip.Size = Vector3.new(thick * 1.18, thick * 1.18, delta.Magnitude * 0.22)
+		q.tip.CFrame = CFrame.new(b - delta * 0.11) * turn
+		q.line.Transparency, q.tip.Transparency = clear, clear
+	end
 end
 
 local function jaws(s, now)
@@ -125,16 +160,15 @@ local function sparks(s, now)
 		local q = s.sparks[i]
 		local age = now - q.born
 		if age >= q.life then
-			q.beam.Enabled = false
+			hideStroke(q)
 			table.insert(s.spare, q)
 			s.sparks[i] = s.sparks[#s.sparks]
 			s.sparks[#s.sparks] = nil
 		elseif age >= 0 then
 			local tail = math.max(0, age - q.exposure)
-			q.a.WorldPosition, q.b.WorldPosition = sparkPoint(s, q, now, tail), sparkPoint(s, q, now, age)
 			local width = q.width * math.min(1, (q.life - age) * 18)
-			q.beam.Width0, q.beam.Width1 = width * 0.10, width
-			q.beam.Brightness, q.beam.Enabled = 4 * q.heat * (1 - 0.66 * age / q.life), true
+			stroke(q, sparkPoint(s, q, now, tail), sparkPoint(s, q, now, age), width * 0.10, width,
+				4 * q.heat * (1 - 0.66 * age / q.life), 0.12 + 0.4 * age / q.life)
 		end
 	end
 end
@@ -168,6 +202,10 @@ local function createWake(s)
 	end
 	part.Name, part.Material, part.Color = "CloakStream", Enum.Material.Glass, Color3.fromRGB(219, 211, 233)
 	part.Transparency, part.Reflectance, part.CastShadow = 0.73, 0.04, false
+	if s.previewSpeed then
+		-- The page behind a transparent viewport can't be refracted. Pick out the same rippling hull in lilac.
+		part.Material, part.Color, part.Transparency = Enum.Material.SmoothPlastic, Color3.fromRGB(161, 136, 196), 0.52
+	end
 	part.CFrame, part.Parent = OFF, s.anchor
 	s.bones, s.wake = bones, part
 	for i = 1, 3 do s.glints[i] = makeBeam(s, "CloakGlint", GLINT_COLORS, GLINT_FADE) end
@@ -199,25 +237,25 @@ local function cloak(s, now)
 	end
 	for i, g in s.glints do
 		local station = 2 + (i - 1) * 4
-		g.a.WorldPosition, g.b.WorldPosition = s.bones[station].glint, s.bones[station + 1].glint
-		g.beam.Width0, g.beam.Width1 = 0.025, 0.055
-		g.beam.Enabled = now - s.start > s.bones[station].k * 0.8
+		if now - s.start > s.bones[station].k * 0.8 then
+			stroke(g, s.bones[station].glint, s.bones[station + 1].glint, 0.025, 0.055, 1, 0.5)
+		else hideStroke(g) end
 	end
 end
 
-function Effects.new(kind, folder, shapes, assets, now)
+function Effects.new(kind, folder, shapes, assets, now, previewSpeed)
 	local anchor = Instance.new("Part")
 	anchor.Name = "Trail-" .. kind
 	anchor.Anchored, anchor.CanCollide, anchor.CanTouch, anchor.CanQuery, anchor.CastShadow = true, false, false, false, false
 	anchor.Size, anchor.Transparency, anchor.Parent = Vector3.one, 1, folder
 	return {
-		kind = kind, anchor = anchor, shapes = shapes, assets = assets, history = {}, start = now, phase = random:NextNumber(0, 2.36),
+		kind = kind, anchor = anchor, shapes = shapes, assets = assets, history = {}, start = now, phase = random:NextNumber(0, 2.36), previewSpeed = previewSpeed,
 		jaws = {}, spare = {}, sparks = {}, glints = {}, nextBurst = now + random:NextNumber(0, 0.52), nextLoad = now,
 	}
 end
 
 function Effects.step(s, now, frame, growth)
-	remember(s, now, frame, growth)
+	if s.previewSpeed then s.now, s.frame = now, frame else remember(s, now, frame, growth) end
 	if s.kind == "shark_jet" then jaws(s, now)
 	elseif s.kind == "grinding_sparks" then sparks(s, now)
 	elseif s.kind == "cloak" then cloak(s, now) end

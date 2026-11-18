@@ -7,10 +7,10 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-18)
 
-- Customize opens the player's cosmetics binder from any loadout. The five Legendary skins appear first. Select a card to see the plane, buy it with Paper, then choose **Wear**. The same binder is available from the Shop. The Trails tab shows a flight photo with each selection. A bundled trail links directly to its skin. [Player-path checks and screenshots](../playtests/2026-11-18-hangar-catalog.md)
+- Customize opens the player's cosmetics binder from any loadout. The five Legendary skins appear first. Select a card to see the plane, buy it with Paper, then choose **Wear**. The same binder is available from the Shop. The Trails tab shows the selected exhaust flowing from the back of the player's fitted plane. The camera starts overhead, with the nose down the page. It holds its angle until the player drags. A bundled trail links directly to its skin. [Player-path checks and screenshots](../playtests/2026-11-18-hangar-catalog.md)
 - The catalog has eight Common skins, eight animated Rares, five Legendaries and two Mythicals. Eleven trails sell separately and seven come with a skin. Wearing a skin or a trail saves just that choice. All builds use the pair. [Prices and approved trail designs](../plan/SKINS-PLAN.md)
 - The Ninja's scarf follows the plane's movement and its wing blades catch the light. Shark Jet breaches, Hot Rod's flames move and its pipes backfire, Stealth's lines glow, and Race Car gets a traveling reflection. [Ninja flight check](../playtests/2026-11-17-ninja-in-flight.md)
-- Common skins cover the plane and booster with printed sheets. [Common skins in Play](../playtests/2026-11-16-common-skins.md) Rare skins add moving layers to the upper faces within 200 studs. The underside retains the printed sheet. [Rare animations and performance in Play](../playtests/2026-11-16-scripted-looks-check.md)
+- Common skins cover the plane and booster with printed sheets. [Common skins in Play](../playtests/2026-11-16-common-skins.md) Rare skins add moving layers to the upper faces within 200 studs. Holographic animates its rainbow and glint on both faces. Skins cover the team square and circle on the wings. [Rare animations and performance in Play](../playtests/2026-11-16-scripted-looks-check.md)
 
 Shape skins are
 fitted by `SkinShapes.luau` from `config/skin-shapes.json` (the crane: five pieces uploaded 2026-11-13, guns hung under
@@ -138,6 +138,8 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/shared/BuilderModel.luau` | The build you are editing in the hangar |
 | `src/client/Hangar.luau` | Main-menu hangar: the shelf screen, stat sheet, name label, plane photo |
 | `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build or class (tests for classes: `tests/unit/Classes.spec.luau`) |
+| `src/client/HangarWidgets.luau` | Retains the book, stat sheet, cards, scroll position and button handlers across changes in the binder. Regression: `tests/unit/HangarWidgets.spec.luau`. |
+| `src/client/HangarTrailPreview.luau` | Draws the selected trail in the plane's 3D preview, with the flight meshes, camera-facing smoke and a compact effect behind the fitted tail. |
 | `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the Skins and Trails tabs (try on, Wear, Buy, Unlock now, Take off) |
 | `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): draws the skin's pieces on this screen where `SkinFit` puts them, hides what they cover, draws the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/SkinFit.luau` | Shape skins' one fit for screen and server: measures the plane's parts, places the skin's pieces, and says where each real wing turns (about the drawn hinge) and each gun hangs |

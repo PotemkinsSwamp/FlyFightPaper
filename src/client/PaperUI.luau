@@ -267,7 +267,7 @@ function PaperUI.fitWords(label, room)
 end
 
 -- A paper button with a word on it: grows and tilts under the mouse, squishes when pressed.
-function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback, size)
+function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback, size, fixedTarget)
 	local button = Instance.new("ImageButton")
 	button.Name, button.Image, button.BackgroundTransparency = name, id, 1
 	button.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -288,11 +288,16 @@ function PaperUI.button(parent, name, id, label, x, y, w, h, rotation, callback,
 	end
 	local hit = PaperUI.tapArea(button)
 	for _, target in { button, hit } do
-		target.MouseEnter:Connect(function() to(1.05, 1.05, -1.5) end)
-		target.MouseLeave:Connect(function() to(1, 1, 0) end)
-		target.MouseButton1Down:Connect(function() to(0.95, 0.92, -1.5) end)
-		target.MouseButton1Up:Connect(function() to(1.05, 1.05, -1.5) end)
-		target.Activated:Connect(callback)
+		if not fixedTarget then
+			target.MouseEnter:Connect(function() to(1.05, 1.05, -1.5) end)
+			target.MouseLeave:Connect(function() to(1, 1, 0) end)
+			target.MouseButton1Down:Connect(function() to(0.95, 0.92, -1.5) end)
+			target.MouseButton1Up:Connect(function() to(1.05, 1.05, -1.5) end)
+		end
+		target.Activated:Connect(function(...)
+			if fixedTarget and target == button and hit.Visible then return end
+			callback(...)
+		end)
 	end
 	return button
 end
