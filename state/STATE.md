@@ -1,13 +1,13 @@
 # Since Alan last checked (2026-11-18)
+- **Daily and weekly missions are decided, not built** ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)): made by the game from shapes, 3 dailies (easy, medium, hard), weekly missions of 2 to 5 days of play, paid swaps. The dev "everything unlocked" button now owns every skin and trail (not yet tried in Play).
 - Private Studio save 820 has the illustrated chest openings. All eight chests hold a sharp open pose. Trail cases use different paper and trim. Light Shop lettering has a black outline. All 719 tests passed. [Studio video and pictures](../docs/playtests/2026-11-18-shop-chest-openings.md#illustrated-chest-openings)
 - Customize keeps the book and stats on screen while you pick gear or looks. All 18 trails run behind the plane. Holographic moves on both faces and skins cover the team stickers. [Studio check and pictures](../docs/playtests/2026-11-18-hangar-preview-and-clicks.md)
 - The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
 - **Two scripted Play tests are done** ([numbers and the full list](../docs/playtests/2026-11-16-scripted-looks-check.md)). Frame rate, 12 planes: 60 with no looks, with any one skin, and with any one Rare moving; 56.7-60 with one trail on all 12; 58.5 with a mixed set on every plane; 54.5 in the worst case (12 Galaxy + 12 Circuit Trace: each alone holds 60, only together they go under).
-- **All 8 Rares were broken in real Play** (no moving layers): Roblox does not let a game script set a decal's glow picture, and every earlier test ran with extra rights. **Fixed and confirmed in the second Play**: every layer on all 12 planes, each Rare moving, first-load freeze gone.
 
 # Now: finish the game for the beta
 The five finished Legendary skins and matching trails are installed. The two Mythicals include their trails. The four other Legendary ideas (Bumblebee, Rocket, Mech and Pirate) are concepts. The remaining performance check is Galaxy plus Circuit Trace on all 12 planes.
-Dragon leftovers: crash ball and shop card pictures, jaw leftover. Queued: Toilet Roll shake, more missions, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
+Dragon leftovers: crash ball and shop card pictures, jaw leftover. **Next: build the missions** ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)). Queued: Toilet Roll shake, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
 Decisions to review
