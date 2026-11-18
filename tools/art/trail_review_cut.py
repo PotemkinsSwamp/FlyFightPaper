@@ -1,6 +1,7 @@
 """Assemble the five pairs rendered with trail_preview.py -- <trail>:A and :B."""
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 
 from PIL import Image, ImageDraw, ImageFont
@@ -34,18 +35,25 @@ def captions(path, skin, a, b):
     sheet.save(path)
 
 
+def compare_pair(first, second, label, left, right, output, strip):
+    captions(strip, label, left, right)
+    ffmpeg("-i", first, "-i", second, "-loop", 1, "-framerate", 24, "-i", strip,
+           "-filter_complex", "[0:v]scale=960:540[a];[1:v]scale=960:540[b];[a][b]hstack=shortest=1[views];[2:v][views]vstack=shortest=1",
+           "-c:v", "libx264", "-crf", 17, "-pix_fmt", "yuv420p", "-movflags", "+faststart", output)
+
+
 def main():
     with tempfile.TemporaryDirectory() as work:
         work = Path(work)
+        strip = work / "captions.png"
+        if sys.argv[1:] == ["shark"]:
+            compare_pair(OUTPUT/"water_spray-breakers.mp4",OUTPUT/"water_spray-jet.mp4","Shark Jet",
+                         "Breaking wave","Rolling jet",OUTPUT/"shark-wake.mp4",strip)
+            return
         sequence = []
         for trail, skin, a, b in PAIRS:
-            strip = work / "captions.png"
-            captions(strip, skin, a, b)
             output = OUTPUT / f"{trail}-comparison.mp4"
-            ffmpeg("-i", OUTPUT / f"{trail}-A.mp4", "-i", OUTPUT / f"{trail}-B.mp4",
-                   "-loop", 1, "-framerate", 24, "-i", strip,
-                   "-filter_complex", "[0:v]scale=960:540[a];[1:v]scale=960:540[b];[a][b]hstack=shortest=1[views];[2:v][views]vstack=shortest=1",
-                   "-c:v", "libx264", "-crf", 17, "-pix_fmt", "yuv420p", "-movflags", "+faststart", output)
+            compare_pair(OUTPUT / f"{trail}-A.mp4", OUTPUT / f"{trail}-B.mp4", skin, a, b, output, strip)
             sequence.append(f"file '{output.as_posix()}'\n")
         playlist = work / "pairs.txt"
         playlist.write_text("".join(sequence), encoding="utf-8")

@@ -203,6 +203,8 @@ The first five videos above are the original review. Alan wanted more texture an
 | Race Car | Raised tire tread and gold sparks in one smoke plume | Two lines of tread scraps with copper sparks |
 | Shark Jet | Rows of teeth briefly close in the spray and drift apart | A steady stream of individual teeth along the spray |
 
+**Alan's picks and current review.** Ninja A and Hot Rod A are approved looks. Race Car B now has white-hot sparks that fan beyond the tire tracks. See `photo_finish-sparks.mp4` in `.planning/skins/trails/legendary-review/`. The new Shark comparison is `shark-wake.mp4` in that folder. Both options use a hinged jaw, attached curved teeth with warm roots and ridged enamel, and fine spray. One water jet spreads into a breaking crest and the other rolls into a narrower wake. The bite repeats independently of flight input. Stealth needs a new concept after Alan rejected chaff.
+
 ### Drawing and checks
 
 - **How it is drawn (Claude's method, changed after the first videos):** every trail has the same bones. A **ribbon**

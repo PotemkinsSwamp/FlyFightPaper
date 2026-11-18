@@ -10,6 +10,9 @@ import json
 from pathlib import Path
 import bpy, bmesh
 from mathutils import Vector, noise
+from functools import partial
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import trail_surf
 
 ROOT = Path(__file__).resolve().parents[2]
 UPLOADED = ("star", "bolt", "curl", "note", "notes", "petal", "dart", "jog")   # dart: Alan picked Mini Paper Planes; its upload waits for his OK on the safety sheet
@@ -221,7 +224,20 @@ MODELS = {"jog": (jog, False), "dart": (dart, False), "butterfly": (butterfly, F
           "cube": (block(1, 1, 1), False), "bar": (block(1, 0.045, 0.045), False), "strip": (block(1, 0.36, 0.02), False), "square": (soft, False),
           "star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}
 
-MODELS.update(ninja_star=(ninja_star, False), racing_flag=(racing_flag, False), droplet=(droplet, True),
+def hot_spark(bm):
+    rings = []
+    for x, radius, lift in ((-0.7,0.002,-0.085),(-0.26,0.012,-0.034),(0.30,0.024,0.018),
+                            (0.37,0.029,0.023),(0.43,0.008,0.028)):
+        rings.append([bm.verts.new((x,radius*math.cos(i*math.tau/6),lift+radius*math.sin(i*math.tau/6))) for i in range(6)])
+    for idx,(a,b) in enumerate(zip(rings,rings[1:])):
+        for j in range(6):
+            bm.faces.new((a[j],b[j],b[(j+1)%6],a[(j+1)%6])).material_index = int(idx>=2)
+    bm.faces.new(rings[-1]).material_index=1
+    bm.faces.new(rings[0])
+
+MODELS.update(wavelet=(trail_surf.wavelet,True), hot_spark=(hot_spark,True),
+              upper_jaw=(partial(trail_surf.jaw_mesh,upper=True),True), lower_jaw=(partial(trail_surf.jaw_mesh,upper=False),True),
+              ninja_star=(ninja_star, False), racing_flag=(racing_flag, False), droplet=(droplet, True),
               flame_tongue=(flame_tongue, True), folded_chaff=(folded_chaff, False),
               tread_shred=(tread_shred, False), shark_tooth=(shark_tooth, False), forked_flame=(forked_flame, True))
 

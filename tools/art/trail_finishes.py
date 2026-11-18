@@ -73,6 +73,60 @@ def finish(material, kind, accent=False):
         links.new(tone, shader.inputs["Base Color"])
         links.new(tone, shader.inputs["Emission Color"])
         shader.inputs["Emission Strength"].default_value = 1.15 if accent else 0.40
+    elif kind in ("breaker", "jet"):
+        crest = nodes.new("ShaderNodeAttribute")
+        crest.attribute_name = "foam"
+        grain = noise_at((1.5, 2.7, 1.4), 3.4)
+        cells = nodes.new("ShaderNodeTexVoronoi")
+        cells.feature = "DISTANCE_TO_EDGE"
+        distortion=nodes.new("ShaderNodeTexNoise")
+        links.new(coord,distortion.inputs["Vector"])
+        distortion.inputs["Scale"].default_value=4.7
+        distort=nodes.new("ShaderNodeVectorMath")
+        distort.operation="SCALE"
+        distort.inputs["Scale"].default_value=0.36
+        links.new(distortion.outputs["Color"],distort.inputs[0])
+        displaced=nodes.new("ShaderNodeVectorMath")
+        displaced.operation="ADD"
+        links.new(coord,displaced.inputs[0]); links.new(distort.outputs[0],displaced.inputs[1])
+        cells.inputs["Scale"].default_value = 19
+        links.new(displaced.outputs[0], cells.inputs["Vector"])
+        lace = calc("MAXIMUM", 0, calc("SUBTRACT", 1, calc("MULTIPLY", cells.outputs["Distance"], 12)))
+        cap = calc("ADD", calc("MULTIPLY", crest.outputs["Fac"], 0.60), calc("MULTIPLY", grain, 1.22))
+        foam = calc("MINIMUM", 1, calc("MAXIMUM", 0, calc("MULTIPLY", calc("SUBTRACT", cap, 0.90), 2.65)))
+        fringe = calc("MULTIPLY", lace, calc("MULTIPLY", crest.outputs["Fac"], 0.72))
+        white = calc("MAXIMUM", foam, fringe)
+        water = blend(calc("POWER",grain,1.35), face, (0.009, 0.47, 0.48, 1) if kind == "breaker" else (0.018, 0.35, 0.60, 1))
+        paint = blend(white, water, (0.88, 0.98, 0.98, 1))
+        links.new(paint, shader.inputs["Base Color"])
+        links.new(paint, shader.inputs["Emission Color"])
+        axes = nodes.new("ShaderNodeSeparateXYZ")
+        links.new(coord, axes.inputs[0])
+        along = axes.outputs["Y"]
+        ends = calc("MINIMUM", along, calc("SUBTRACT",1,along))
+        edge_fade = calc("MINIMUM",1,calc("MULTIPLY",ends,4.5))
+        opacity = calc("ADD",0.40,calc("MULTIPLY",white,0.29))
+        links.new(calc("MULTIPLY",info.outputs["Alpha"],calc("MULTIPLY",edge_fade,opacity)),shader.inputs["Alpha"])
+        shader.inputs["Emission Strength"].default_value = 0.16
+        shader.inputs["Roughness"].default_value = 0.22
+        bump = nodes.new("ShaderNodeBump")
+        bump.inputs["Distance"].default_value = 0.045
+        bump.inputs["Strength"].default_value = 0.35
+        links.new(calc("ADD",grain,calc("MULTIPLY",lace,0.11)), bump.inputs["Height"])
+        links.new(bump.outputs[0], shader.inputs["Normal"])
+    elif kind == "enamel":
+        grain = noise_at((13, 10, 2), 13)
+        bump = nodes.new("ShaderNodeBump")
+        bump.inputs["Distance"].default_value = 0.006
+        bump.inputs["Strength"].default_value = 0.32
+        links.new(grain, bump.inputs["Height"])
+        links.new(bump.outputs[0], shader.inputs["Normal"])
+        tip=nodes.new("ShaderNodeAttribute"); tip.attribute_name="enamel_tip"
+        ridge=nodes.new("ShaderNodeAttribute"); ridge.attribute_name="enamel_ridge"
+        warm = blend(tip.outputs["Fac"],(0.47,0.33,0.15,1),face)
+        tint = blend(calc("MULTIPLY",grain,calc("MULTIPLY",ridge.outputs["Fac"],0.45)),warm,(0.99,0.93,0.68,1))
+        links.new(tint, shader.inputs["Base Color"])
+        shader.inputs["Roughness"].default_value = 0.23
     elif kind == "rubber":
         texture = noise_at((2, 4, 1), 33)
         bump = nodes.new("ShaderNodeBump")

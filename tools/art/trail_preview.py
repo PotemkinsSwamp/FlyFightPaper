@@ -12,6 +12,7 @@ import numpy as np
 from mathutils import Vector, Matrix, Quaternion
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import plane_assembly as pa, trail_pieces
 import trail_finishes
+import trail_surf
 
 ARGS = sys.argv[sys.argv.index("--") + 1:]; TRAIL, _, option = ARGS[0].partition(":"); STILLS = [int(a) for a in ARGS[1:]]
 CFG = json.load(open(pa.ROOT / "config/trails.json")); LIFE = CFG["life"]
@@ -19,11 +20,14 @@ SPEC = CFG["trails"].get(TRAIL) or json.load(open(pa.ROOT / "tools/art/trail_dra
 CARDS = ("soft", "square")                                                    # flat cards that face the camera (particles in the game)
 OUT = pa.ROOT / ".planning/skins/trails"; FPS, SECONDS, SUB, NORMAL, BOOST, CUT = 24, 8.0, 4, 105.0, 150.0, 4.4
 if option:
-    assert option in ("A", "B")
     with open(pa.ROOT / "tools/art/legendary_trail_options.json") as file:
         review = json.load(file)[TRAIL]
-    overrides = review["alternate"] if option == "B" else {}
-    SPEC = dict(SPEC, pieces=[p | overrides.get(p.get("layer", p["model"]), {}) for p in review["pieces"]])
+    if option in ("A", "B"):
+        overrides = review["alternate"] if option == "B" else {}
+        pieces = [p | overrides.get(p.get("layer", p["model"]), {}) for p in review["pieces"]]
+    else:
+        pieces = review["revisions"][option]
+    SPEC = dict(SPEC, pieces=pieces)
     OUT = OUT / "legendary-review"
     OUT.mkdir(exist_ok=True)
     TRAIL += "-" + option
@@ -184,6 +188,17 @@ def ribbon_object(r, j):
     me.materials.append(m); ob = bpy.data.objects.new("ribbon", me); sc.collection.objects.link(ob); return ob, uv
 ribbons = [(r, j) + ribbon_object(r, j) for r in SPEC.get("ribbons", []) for j in range(r.get("strands", 1))]
 pools, lamps = [], []
+jaws = []
+if option in ("breakers", "jet"):
+    jaw_mats = [flat(rgb) for rgb in ((35,87,101),(174,106,105),(255,249,213),(202,174,130),(53,55,68))]
+    trail_finishes.finish(jaw_mats[2], "enamel")
+    for name in ("upper_jaw","lower_jaw"):
+        mesh = trail_pieces.mesh(name)
+        for mat in jaw_mats:
+            mesh.materials.append(mat)
+        obj = bpy.data.objects.new(name,mesh)
+        sc.collection.objects.link(obj)
+        jaws.append(obj)
 for piece in SPEC.get("pieces", []):
     me = trail_pieces.mesh(piece["model"])
     me.materials.append(look(piece["look"])); pool = []
@@ -231,6 +246,9 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             if pattern == "tracks":
                 ox = (1 if rng.random() < 0.5 else -1) * 1.23 + ox * 0.36
                 oy = oy * 0.50 - 0.48
+            if pattern == "spark_fan":
+                ox = (1 if ox >= 0 else -1) * (1.38 + 0.42 * abs(ox))
+                oy = -0.48 + 0.32 * oy
             if piece.get("lattice"): ox, oy = round(ox / piece["lattice"]) * piece["lattice"], round(oy / piece["lattice"]) * piece["lattice"]   # on a grid: pieces line up
             axes = rng.choices(((nose, up, right), (right, nose, up), (up, right, nose)), piece.get("axes", (5, 3, 2)))[0]   # a grid piece's long side: along the path, across, up (`axes`: how often each)
             alive[i].append(dict(born=t, life=rng.uniform(*piece["life"]), at=tail + right * ox + up * oy, right=right, nose=nose, grid=Matrix(axes).transposed().to_quaternion() @ Quaternion((1, 0, 0), rng.randrange(4) * math.pi / 2), vel=rnd() * rng.uniform(0, piece["drift"]), g=g, seed=rng.random(),
@@ -238,6 +256,11 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
                                  turn=rng.uniform(0, math.tau), spin=math.radians(piece.get("spin", 0)) * rng.uniform(0.5, 1) * rng.choice((-1, 1)), color=lin(rng.choice(piece["colors"]))))
             if pattern in ("bite", "rows"):
                 alive[i][-1]["seat"] = int(owed[i]) if pattern == "bite" else n // 2 % 10
+            if pattern == "spark_fan":
+                spark = alive[i][-1]
+                outward = right * (1 if ox >= 0 else -1)
+                spark["vel"] = outward * rng.uniform(3.5,9.0) + up*rng.uniform(-1,4)
+                spark["dir"] = (-nose + spark["vel"] * 0.073).normalized()
     f = n // SUB - int((LIFE + 0.2) * FPS)
     if n % SUB or f < 0 or (STILLS and f not in STILLS): continue
     for clock in trail_finishes.CLOCKS: clock.default_value = t
@@ -248,6 +271,8 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
         if SPEC.get("preview_skin"):
             eye += side * 9
     aim(eye, target, fov); facing = cam.matrix_world.to_quaternion()
+    for jaw in jaws:
+        trail_surf.pose_jaw(jaw,jaw.name=="upper_jaw",t,past,option)
     for r, j, ob, uv in ribbons:                                             # a strip: one cross-line for each moment of the last second
         co, fade, mids, wide = [], [], [], []; strands = r.get("strands", 1)
         for i in range(N + 1):
@@ -266,6 +291,8 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
         for ob, q in zip(pool, live + [None] * len(pool)):
             if q is None: ob.scale = (0, 0, 0); continue
             age = t - q["born"]; k = age / q["life"]; grow = CFG["grow_in"]
+            if piece["model"]=="wavelet":
+                grow=0.055
             size = q["size"] * q["g"] * smooth(k / grow) * (1 + (piece["shrink"] - 1) * max(0, (k - grow) / (1 - grow)) ** 1.5)
             if piece.get("flash") and not (k < 0.3 or 0.42 < k < 0.7): size = 0   # lightning: on, off, on, gone
             if piece.get("twinkle"): size *= 0.3 + 0.7 * random.Random(int(q["seed"] * 1e6) + int(t * piece["twinkle"])).random()
@@ -273,6 +300,12 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             if piece.get("run"): at = at - q["nose"] * (piece["run"] * age)     # races back along the path, like a light along a wire
             if piece.get("jump"): at = at + q["right"] * (piece["jump"] * random.Random(int(q["seed"] * 1e6) + int(t * 8)).randint(-2, 2) / 2)   # snaps sideways 8 times a second
             if piece["model"] in CARDS: turn = facing @ Quaternion((0, 0, 1), (q["turn"] if piece.get("spin") else 0) + q["spin"] * age)
+            elif piece["model"] == "wavelet":
+                local_up = q["right"].cross(q["nose"]).normalized()
+                turn = Matrix((q["right"],q["nose"],local_up)).transposed().to_quaternion()
+                bank = 0.30*math.sin(q["born"]*7+age*4)
+                if option=="jet": bank += 2.1*math.sin(q["born"]*4-age*5)
+                turn = turn @ Quaternion((0,1,0),bank)
             elif piece["model"] == "ninja_star":
                 # A tumbling coin motion. Vary the initial lean so adjacent stars show different faces.
                 tilt = 0.28 + 0.98 * math.sin(q["turn"] + q["spin"] * age)

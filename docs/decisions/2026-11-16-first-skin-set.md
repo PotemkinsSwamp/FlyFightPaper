@@ -115,6 +115,8 @@
 
   - Alan asked for texture and a stronger identity after the first Legendary trail videos. He approved trying shining Ninja stars, folded reflective chaff, tire rubber and sparks, and teeth in the spray. The Hot Rod tubes already backfire. This pass changes only the appearance of the trail. Alan wants to leave behavior triggered by flight or the skin for later.
 
+  - Alan chose Ninja A (brushed silver) and Hot Rod A (blue-core flame). Race Car B is the base, with more visible sparks. He rejected both Stealth chaff versions and wants a different idea. Shark needs a water jet with breaking seafoam and an occasional recognizable jaw bite. He asked for textured teeth that read from the flight camera.
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.
