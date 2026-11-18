@@ -25,6 +25,9 @@
           "SkinLooks": {
             "$path": "assets/models/planes/skin-looks.rbxmx"
           },
+          "NinjaRig": {
+            "$path": "assets/models/ninja/ninja-rig.rbxm"
+          },
           "EquipmentParts": {
             "$path": "assets/models/equipment/equipment.rbxmx"
           }

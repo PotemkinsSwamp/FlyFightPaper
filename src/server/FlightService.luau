@@ -238,12 +238,23 @@ function Service:colliders(p,model)
  local body=model.Root
  local old=model:FindFirstChild("Colliders");if old then old:Destroy() end
  local colliders=Instance.new("Folder");colliders.Name="Colliders"
- for _,piece in ipairs((HitShapes.place(model.Appearance,body.CFrame,p.skin))) do
+ local pieces,_,pendingHull=HitShapes.place(model.Appearance,body.CFrame,p.skin)
+ for _,piece in ipairs(pieces) do
   piece.CFrame=body.CFrame*piece.CFrame;piece.Transparency=1;piece.Massless=true
   piece.Anchored=false;piece.CanQuery=true;piece.CastShadow=false;piece.Parent=colliders
   local weld=Instance.new("WeldConstraint");weld.Part0=body;weld.Part1=piece;weld.Parent=piece
  end
  colliders.Parent=model
+ if pendingHull then
+  -- A cold first spawn can get the hull's box. Replace it as soon as the private mesh loads.
+  -- Taking the skin off, rebuilding the loadout or leaving destroys this exact collider folder.
+  task.defer(function()
+   while p.model==model and colliders.Parent==model do
+    if HitShapes.precise(pendingHull) then self:colliders(p,model);return end
+    task.wait(0.2)
+   end
+  end)
+ end
  -- A turned wing reaches higher than the flat one: the contact gate must still cover it.
  local frame=body.CFrame
  model:SetAttribute("ContactSize",Aircraft.reach(frame,model.Appearance:GetChildren()):Max(Aircraft.reach(frame,colliders:GetChildren()))*2)

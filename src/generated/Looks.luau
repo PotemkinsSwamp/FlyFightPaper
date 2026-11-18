@@ -118,13 +118,18 @@ return JSONTypes.map({
             ["trail"] = "water_spray",
         }),
         [18] = JSONTypes.map({
+            ["id"] = "ninja",
+            ["name"] = "Ninja",
+            ["tier"] = "legendary",
+        }),
+        [19] = JSONTypes.map({
             ["id"] = "dragon",
             ["name"] = "Dragon",
             ["picture"] = 71720517887759,
             ["tier"] = "mythical",
             ["trail"] = "dragon_embers",
         }),
-        [19] = JSONTypes.map({
+        [20] = JSONTypes.map({
             ["id"] = "origami_crane",
             ["name"] = "Origami Crane",
             ["picture"] = 86508406688555,

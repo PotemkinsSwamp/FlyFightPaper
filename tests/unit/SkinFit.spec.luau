@@ -284,6 +284,37 @@ function Spec.run()
 		end) end
 		model:Destroy()
 	end
+	test("Ninja is centred on its rigid hull and only that hull and equipment can be hit", function()
+		local model, frame = plane(builds.swept)
+		local outline = assert(SkinFit.outline(model.Appearance, frame))
+		local fitted = assert(SkinFit.plane("ninja", model.Appearance, frame))
+		local hull = fitted.placed.hullHit
+		assert(fitted.covers and hull and fitted.placed.bladeL and fitted.placed.bladeR)
+		assert(math.abs(hull[1].Z - (outline.zN + outline.zT) / 2) < 1e-3)
+		assert(hull[2].Z >= outline.zT - outline.zN - 1e-3)
+		assert(fitted.placed.body[2].Z > hull[2].Z, "the scarf should extend beyond the hull")
+		local pieces, parts = HitShapes.place(model.Appearance, frame, "ninja")
+		local hulls, guns = 0, 0
+		for index, piece in pieces do
+			if parts[index] then
+				assert(parts[index].Name:match("^Mount") or parts[index].Name:match("^Booster"))
+				if parts[index].Name:match("^Mount") then guns += 1 end
+			else
+				assert(piece.Name == "Skin-hullHit" and same(piece.CFrame, hull[1]) and near(piece.Size, hull[2]))
+				hulls += 1
+			end
+			piece:Destroy()
+		end
+		assert(hulls == 1 and guns > 0)
+		local pilot = {model = model, skin = "ninja"}
+		Flight.colliders(Flight, pilot, model)
+		local deadline = os.clock() + 15
+		while not model.Colliders["Skin-hullHit"]:IsA("MeshPart") and os.clock() < deadline do task.wait(0.1) end
+		local crash = model.Colliders["Skin-hullHit"]
+		local exact = crash:IsA("MeshPart") and crash.CollisionFidelity == Enum.CollisionFidelity.PreciseConvexDecomposition
+		model:Destroy()
+		assert(exact, "the first Ninja life should get its precise crash hull when the mesh loads")
+	end)
 	return result
 end
 return Spec

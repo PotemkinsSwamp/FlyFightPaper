@@ -6,11 +6,13 @@
 local AssetService = game:GetService("AssetService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local SkinFit = require(Root:WaitForChild("Shared"):WaitForChild("SkinFit"))
+local NinjaMotion = require(script.Parent.NinjaMotion)
 local Shapes = SkinFit.shapes
 local SkinShapes = {}
 local meshes = {} -- mesh id -> MeshPart to copy (false while loading)
 
 SkinShapes.has = SkinFit.has
+SkinShapes.step = NinjaMotion.step
 
 local function meshOf(id)
 	while meshes[id] == false do task.wait() end
@@ -25,8 +27,28 @@ local function meshOf(id)
 	return meshes[id]
 end
 
+-- A Rojo sync can deliver the bone hierarchy before the template's mesh content.
+-- Load the actual asset in that case, keeping the bind frames from the template.
+local function rigPiece(template, id, needsBones)
+	local expected = "rbxassetid://" .. id
+	if not needsBones and template.MeshId == expected then return template:Clone() end
+	local loaded = meshOf(id)
+	if not loaded then return nil end
+	local part = loaded:Clone()
+	if needsBones then
+		for _, child in part:GetChildren() do
+			if child:IsA("Bone") then child:Destroy() end
+		end
+		for _, child in template:GetChildren() do
+			if child:IsA("Bone") then child:Clone().Parent = part end
+		end
+	end
+	return part
+end
+
 -- Take the shape off: the real parts, guns and booster come back, the pieces and moved copies go.
 function SkinShapes.clear(model)
+	NinjaMotion.clear(model)
 	local appearance = model:FindFirstChild("Appearance")
 	if not appearance then return end
 	for _, part in appearance:GetChildren() do
@@ -49,8 +71,12 @@ function SkinShapes.wear(model, id)
 	local fitted = SkinFit.plane(id, appearance, frame) -- the same fit the server's hit and crash shapes use
 	if not fitted then return false end
 	-- Its look is made ahead (tools/art/skin_looks.py writes SkinLooks/<id>/Shape): scripts can't set a look's pictures.
-	local look = Root:WaitForChild("Assets"):FindFirstChild("SkinLooks")
-	look = look and look:FindFirstChild(id) and look[id]:FindFirstChild("Shape")
+	local assets = Root:WaitForChild("Assets")
+	local looks = assets:FindFirstChild("SkinLooks")
+	local look = looks and looks:FindFirstChild(id) and looks[id]:FindFirstChild("Shape")
+	local rig = shape.rig and assets:WaitForChild(shape.rig, 5)
+	if shape.rig and not rig then return false end
+	local pieces = {}
 	local preview = rootPart == nil or (appearance:FindFirstChildWhichIsA("BasePart") and appearance:FindFirstChildWhichIsA("BasePart").Anchored)
 	local function attach(part, cf)
 		part.CFrame = frame * cf
@@ -62,13 +88,38 @@ function SkinShapes.wear(model, id)
 		end
 	end
 	for name, at in fitted.placed do
-		local mesh = meshOf(shape.pieces[name].mesh)
-		if not (mesh and model.Parent and appearance.Parent) then continue end
-		local part = mesh:Clone()
-		part.Name, part.Size = "Skin-" .. name, at[2]
+		if name == shape.hitPiece then continue end
+		local part, template
+		if rig then
+			template = rig:WaitForChild(name, 5)
+			if template and template:IsA("MeshPart") then
+				part = rigPiece(template, shape.pieces[name].mesh, name == "body")
+			end
+			if not (part and model.Parent and appearance.Parent) then
+				if part then part:Destroy() end
+				SkinShapes.clear(model)
+				return false
+			end
+		else
+			local mesh = meshOf(shape.pieces[name].mesh)
+			if not (mesh and model.Parent and appearance.Parent) then continue end
+			part = mesh:Clone()
+		end
+		part.Name = "Skin-" .. name
+		if template and name == "body" then
+			NinjaMotion.fitBones(part, template, at[2])
+		else
+			part.Size = at[2]
+		end
 		part:SetAttribute("SkinPiece", true)
 		if look then look:Clone().Parent = part end
 		attach(part, at[1])
+		pieces[name] = part
+	end
+	if id == "ninja" then
+		local foil = looks and looks:FindFirstChild("holographic")
+		local layers = foil and foil:FindFirstChild("Layers")
+		NinjaMotion.wear(model, rootPart, pieces, shape, layers and layers:FindFirstChild("glint"), preview)
 	end
 	-- Hide what the shape covers; guns hang under the wings and the booster tucks up to the belly (SkinFit.plane): the real
 	-- part hides, a copy (with its look, PlaneLooks dresses late ones) shows at the new spot.

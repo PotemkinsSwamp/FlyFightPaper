@@ -13,29 +13,37 @@ local params=RaycastParams.new();params.FilterType=Enum.RaycastFilterType.Includ
 local overlap=OverlapParams.new();overlap.FilterType=Enum.RaycastFilterType.Include
 local probe=Instance.new("Part");probe.Name="ShotProbe";probe.Anchored=true;probe.CanCollide=false;probe.CanQuery=false;probe.CanTouch=false;probe.Parent=world
 local precise={} -- mesh id -> precise MeshPart, false while loading, nil before asked
+local retryAt={}
 local copies={} -- pilot id -> {model=plane model it mirrors, folder=Model, complete=bool}
 
-local function shape(mesh)
-	if precise[mesh]==nil then
+function Shapes.precise(mesh)
+	if precise[mesh]==nil and os.clock()>=(retryAt[mesh] or 0) then
 		precise[mesh]=false
 		task.spawn(function()
 			local ok,part=pcall(AssetService.CreateMeshPartAsync,AssetService,Content.fromUri(mesh),
 				{CollisionFidelity=Enum.CollisionFidelity.PreciseConvexDecomposition})
-			if ok then precise[mesh]=part else warn("Hit shape failed for "..mesh..": "..tostring(part)) end
+			if ok then precise[mesh]=part;retryAt[mesh]=nil
+			else
+				precise[mesh]=nil;retryAt[mesh]=os.clock()+30
+				warn("Hit shape failed for "..mesh..": "..tostring(part))
+			end
 		end)
 	end
 	return precise[mesh] or nil
 end
 -- Start building every shape at server start so the first fights already use them.
 function Shapes.preload(folders)
+	for _,spec in SkinFit.shapes do
+		if spec.hitPiece then Shapes.precise("rbxassetid://"..spec.pieces[spec.hitPiece].mesh) end
+	end
 	for _,folder in ipairs(folders) do for _,part in ipairs(folder:GetDescendants()) do
-		if part:IsA("MeshPart") and part.MeshId~="" then shape(part.MeshId) end
+		if part:IsA("MeshPart") and part.MeshId~="" then Shapes.precise(part.MeshId) end
 	end end
 end
 
 -- An exact-shape stand-in for one of a plane's parts (its plain box until the precise shape has loaded).
 function Shapes.solid(part)
-	local source=shape(part.MeshId)
+	local source=Shapes.precise(part.MeshId)
 	local piece=source and source:Clone() or Instance.new("Part")
 	piece.Size=part.Size;piece.CanCollide=false;piece.CanTouch=false
 	return piece,source~=nil
@@ -50,6 +58,7 @@ end
 function Shapes.place(appearance,frame,skin)
 	local fitted=SkinFit.plane(skin,appearance,frame)
 	local pieces,parts={},{}
+	local pendingHull
 	for _,part in ipairs(appearance:GetChildren()) do
 		local slot=string.match(part.Name,"^(%a+)")
 		if part:IsA("MeshPart") and not (fitted and fitted.covers and (slot=="body" or slot=="nose" or slot=="wings" or slot=="tail")) then
@@ -62,12 +71,22 @@ function Shapes.place(appearance,frame,skin)
 	-- A skin that is the hitbox (the Dragon): its own precise shape, sized and placed as drawn, stands in for the parts
 	-- it covers (parts[i] is false for it).
 	for name,at in fitted and fitted.covers and fitted.placed or {} do
-		local source=shape("rbxassetid://"..SkinFit.shapes[skin].pieces[name].mesh)
+		local spec=SkinFit.shapes[skin]
+		if spec.hitPiece and name~=spec.hitPiece then continue end
+		local mesh="rbxassetid://"..spec.pieces[name].mesh
+		-- A rig can ship its precomputed hull. Use it on first spawn as well as subsequent respawns.
+		local assets=spec.rig and Shared.Parent:FindFirstChild("Assets")
+		local rig=assets and assets:FindFirstChild(spec.rig)
+		local source=rig and rig:FindFirstChild(name)
+		if not (source and source:IsA("MeshPart") and source.MeshId==mesh and source.CollisionFidelity==Enum.CollisionFidelity.PreciseConvexDecomposition) then
+			source=Shapes.precise(mesh)
+			if not source and spec.hitPiece then pendingHull=mesh end
+		end
 		local piece=source and source:Clone() or Instance.new("Part")
 		piece.Name,piece.Size,piece.CFrame,piece.CanCollide,piece.CanTouch="Skin-"..name,at[2],at[1],false,false
 		table.insert(pieces,piece);table.insert(parts,false)
 	end
-	return pieces,parts
+	return pieces,parts,pendingHull
 end
 
 -- The copy sits at the origin in the plane's own frame; rebuilt when the plane's parts or skin change or shapes finish loading.

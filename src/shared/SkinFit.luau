@@ -89,7 +89,12 @@ end
 local function evenFit(shape, o)
 	local E, W = shape.even, shape.even.wing
 	local lo0, hi0 = Vector3.one * math.huge, -Vector3.one * math.huge
-	for _, piece in shape.pieces do lo0, hi0 = lo0:Min(v3(piece.min)), hi0:Max(v3(piece.max)) end
+	for name, piece in shape.pieces do
+		-- Size and centre the Ninja by the hull. Its two loose scarf tips extend behind the tail.
+		if shape.hitPiece == nil or name == shape.hitPiece then
+			lo0, hi0 = lo0:Min(v3(piece.min)), hi0:Max(v3(piece.max))
+		end
+	end
 	-- Never shorter or narrower than the plane it replaces (Alan 2026-11-16: on the fastest, narrow-winged frame it looked
 	-- "a little too small"), else as big a target. ponytail: a build missing from plane-areas.json (a new part) gets only
 	-- that floor; re-run tools/plane_areas.lua after adding parts.

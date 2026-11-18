@@ -25,6 +25,7 @@
     { "id": "circuit_board", "name": "Circuit Board", "tier": "rare", "picture": 71382649943696 },
     { "id": "comic_book", "name": "Comic Book", "tier": "rare", "picture": 103647805313090 },
     { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "trail": "water_spray" },
+    { "id": "ninja", "name": "Ninja", "tier": "legendary" },
     { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers", "picture": 71720517887759 },
     { "id": "origami_crane", "name": "Origami Crane", "tier": "mythical", "picture": 86508406688555 }
   ],

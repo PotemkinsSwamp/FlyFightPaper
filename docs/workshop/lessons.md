@@ -323,6 +323,7 @@ mistake would be easy to make twice.
   that I had passed twice.
 
 ## Studio and the place file
+- Rojo live sync brought the Ninja's bone names and part sizes into Edit with empty mesh IDs. A full Rojo build preserved those IDs. For a live-synced rig, load the configured mesh, copy its bind bones from the template, and check the equipped plane and its collision mesh in Play.
 - **Test players are plain tables** (2026-11-16): `player:GetAttribute` in a server path the unit tests reach errors there
   (FlightService.spec failed twice). Guard Studio-only player reads with `typeof(player)=="Instance"`.
 - **Fresh code in Edit without a restart** (2026-11-16): Edit keeps old `require` results; clone the module under a

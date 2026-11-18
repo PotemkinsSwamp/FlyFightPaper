@@ -70,6 +70,7 @@ local function move()
 	local t, camera, now = os.clock(), workspace.CurrentCamera, {}
 	if not camera then return end
 	local eye = camera.CFrame.Position
+	SkinShapes.step(t, eye, SkinMotion.near)
 	for part, worn in moving do
 		if not part.Parent then moving[part] = nil
 		elseif (part.Position - eye).Magnitude <= SkinMotion.near then

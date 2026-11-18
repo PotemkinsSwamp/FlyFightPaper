@@ -7,7 +7,7 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-14)
 
-- Ninja art update (2026-11-17). The Blender rig follows plane motion and the two wing blades catch a passing reflection. The local preview is under `.planning/skins/motion/ninja/`. Its Roblox fit and Play check are pending.
+- The Legendary Ninja is available in Customize and in flight. Its two scarf tails follow speed and turns, a reflection crosses the metal on each wing, and shots hit the rigid plane and blades. The loose scarf is cosmetic. [Studio flight check](../playtests/2026-11-17-ninja-in-flight.md)
 **Skins (Studio only):** a plane with a `Skin` attribute (bots get one by difficulty from `FlightService`) is
 drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); the "Dev: skin" button tries the test
 skins on your plane. Boosters and the hangar photo wear it too. Players wear their saved skin (bought with Paper and
@@ -128,6 +128,7 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 |---|---|
 | `src/shared/Catalog.luau` | Parts and weapons, stats, which builds are legal |
 | `src/shared/Aircraft.luau` | Puts the plane meshes together, mounts, team colours |
+| `src/client/NinjaMotion.luau` | Bends the Ninja's scarf tails in response to flight and moves the reflections across its wing blades. |
 | `src/client/PlaneLooks.luau` | Draws skins on this screen only: swaps each paper and trim piece for its printed-sheet copy (`config/skin-pieces.json`) wearing the skin picture plus its creases ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/client/PlaneTrails.luau` | Draws trails on this screen only: each row of `config/trails.json` out of the tail of a flying plane wearing it. Soft smoke, sparkle dust and flat squares are Roblox particles (Roblox's own pictures); stars, notes, bubbles, cubes and the rest are small pooled parts moved every frame (plain shapes made there, or the uploaded models). The "Dev: trail" button puts one trail on every plane ([skins plan](../plan/SKINS-PLAN.md), "Trails: how it works") |
 | `src/shared/SkinMotion.luau` | Where a Rare skin's moving layers sit at a moment: each layer's map from the printed sheet to its picture (slide, spin, crossing, flash, snap, slam; the same sums as `tools/art/skin_motion.py`) and the Decal settings that draw it on one plane piece (`config/skin-motion.json`, `config/skin-pictures.json`; test `tests/unit/SkinMotion.spec.luau` holds the preview tool's own numbers) |
