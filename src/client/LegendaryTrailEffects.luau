@@ -203,8 +203,9 @@ local function createWake(s)
 	part.Name, part.Material, part.Color = "CloakStream", Enum.Material.Glass, Color3.fromRGB(219, 211, 233)
 	part.Transparency, part.Reflectance, part.CastShadow = 0.73, 0.04, false
 	if s.previewSpeed then
-		-- The page behind a transparent viewport can't be refracted. Pick out the same rippling hull in lilac.
-		part.Material, part.Color, part.Transparency = Enum.Material.SmoothPlastic, Color3.fromRGB(161, 136, 196), 0.52
+		-- The preview bends its paper print under this faint surface. Keep the creases, without
+		-- painting a solid ribbon over the warped ruling.
+		part.Material, part.Color, part.Transparency = Enum.Material.SmoothPlastic, Color3.fromRGB(216, 224, 238), 0.84
 	end
 	part.CFrame, part.Parent = OFF, s.anchor
 	s.bones, s.wake = bones, part
@@ -232,6 +233,7 @@ local function cloak(s, now)
 		local turn = f.Rotation * CFrame.Angles(0, 0, 0.20 * math.sin(phase))
 		local target = CFrame.new(center) * turn * row.bind.Rotation
 		row.bone.Transform = row.inverse * frame:ToObjectSpace(target)
+		if s.previewSpeed then row.center, row.radius = center, width end
 		-- The textureless glass bends the room. Tiny broken reflections pick out three separate creases.
 		row.glint = center + turn:VectorToWorldSpace(Vector3.new(width * 0.77 * math.cos(phase), height * math.sin(phase), 0))
 	end

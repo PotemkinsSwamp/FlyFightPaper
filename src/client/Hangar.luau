@@ -306,7 +306,16 @@ function Hangar.new(playerGui, api)
 		local content = parent or content
 		local px, py, pw, ph = table.unpack(box)
 		local vx, vy, vw, vh = px, py, pw, ph
-		if not bare then
+		local trailPage = trailID ~= nil
+		local trailPaper
+		if trailPage then
+			-- Keep the ruled sheet at its printed shape. Its lines give the cloaking wake something to bend.
+			vw = math.min(pw, ph * 720 / 800)
+			vh = vw * 800 / 720
+			vx, vy = px + (pw - vw)/2, py + (ph - vh)/2
+			trailPaper = image(content, "TrailPaper", Shelf.statsPaper, vx, vy, vw, vh)
+			trailPaper.ScaleType, trailPaper.ImageColor3 = Enum.ScaleType.Stretch, Color3.fromRGB(249, 249, 250)
+		elseif not bare then
 			local paper = image(content, "PreviewPaper", Art.preview, px, py, pw, ph, 0)
 			paper.ScaleType, paper.ImageColor3 = Enum.ScaleType.Stretch, state.range and Color3.fromRGB(235, 165, 195) or SKY_BLUE
 			vx, vy, vw, vh = px + pw * 0.07, py + ph * 0.13, pw * 0.86, ph * 0.74 - (under or 0)
@@ -314,7 +323,6 @@ function Hangar.new(playerGui, api)
 		-- The same plane in the same spot as the last redraw keeps its photo; a new plane loads behind the old one and
 		-- swaps in when its pictures are ready (Alan 2026-11-14: every click reloaded the whole screen).
 		local spot = content.Name .. table.concat(box, ",")
-		local trailPage = trailID ~= nil
 		local key = spot .. HttpService:JSONEncode({draft.body, draft.nose, draft.wings, draft.tail, draft.utility or "", draft.weapon_mounts, skin or "", diagram == true, under or 0, trailPage})
 		if pending and pending:GetAttribute("PlaneKey") ~= key then
 			pending:Destroy()
@@ -352,7 +360,7 @@ function Hangar.new(playerGui, api)
 			model.Parent = world
 			local built = Aircraft.build(model, draft, Catalog, true)
 			local camera = Instance.new("Camera")
-			camera.Parent, view.CurrentCamera, camera.FieldOfView = view, camera, 45
+			camera.Parent, view.CurrentCamera, camera.FieldOfView = view, camera, if trailPage then 20 else 45
 			-- Every build fills the same frame (Alan): the camera backs off until the plane's longer side (wingspan or
 			-- nose to tail) nearly fills the frame's height; the wider frame takes the corners when it turns.
 			local center, size = model:GetBoundingBox()
@@ -360,12 +368,24 @@ function Hangar.new(playerGui, api)
 			local distance = math.max(size.X, size.Z) / 2 * 1.05 / math.sin(math.rad(camera.FieldOfView / 2)) / math.min(1, vw / vh)
 			local effect, currentTrail
 			local target, cameraDistance = center.Position, distance
-			local trailAngle, trailPitch = math.pi, -math.pi/2
+			local trailAngle, trailPitch = math.rad(7), -math.rad(28)
+			local trailBounds
 			local function aim()
 				local angle, pitch = state.angle, state.pitch
 				if trailPage then angle, pitch = trailAngle, trailPitch end
 				if diagram then angle, pitch = 0, -1.2 end
-				camera.CFrame = CFrame.new(target) * CFrame.Angles(0, angle, 0) * CFrame.Angles(pitch, 0, 0) * CFrame.new(0, 0, cameraDistance)
+				local orbit = CFrame.new(target) * CFrame.Angles(0, angle, 0) * CFrame.Angles(pitch, 0, 0)
+				if trailBounds then
+					-- Fit the plane and the narrow plume separately. Treating both as one full-width box
+					-- wastes most of the sheet on empty foreground either side of the wake.
+					local slope = math.tan(math.rad(camera.FieldOfView / 2))
+					cameraDistance = 0
+					for _, point in trailBounds do
+						local q = orbit:PointToObjectSpace(point)
+						cameraDistance = math.max(cameraDistance, q.Z + math.max(math.abs(q.X) / (vw/vh * 0.78), math.abs(q.Y) / 0.90) / slope)
+					end
+				end
+				camera.CFrame = orbit * CFrame.new(0, 0, cameraDistance)
 				if skin == "holographic" then
 					-- Light the side of the foil being inspected. Keep the usual key for top views.
 					local below = math.max(0, math.sin(pitch))
@@ -398,15 +418,36 @@ function Hangar.new(playerGui, api)
 				if displayed ~= view or not cover.Visible then return end
 				if trailPage then
 					local selected = view:GetAttribute("PreviewTrail")
-					if selected ~= currentTrail then
+					local paper = view.Parent:FindFirstChild("TrailPaper")
+					if not paper then return end
+					if selected ~= currentTrail or (effect and effect.glass and effect.glass.Parent ~= paper) then
 						if effect then effect:destroy(); effect = nil end
 						currentTrail = selected
-						if selected and selected ~= "" then effect = HangarTrailPreview.new(world, model, selected) end
+						if selected and selected ~= "" then effect = HangarTrailPreview.new(world, model, selected, paper) end
 						-- In plane space the nose points toward -Z. The wake extends aft toward +Z.
 						local nose = center.Position.Z - size.Z/2
 						local aft = effect and effect.tail.Z + effect.length or center.Position.Z + size.Z/2
-						target = Vector3.new(center.Position.X, center.Position.Y, (nose + aft)/2)
-						cameraDistance = math.max((aft-nose)/2, size.X/2 * vh/vw) * 1.12 / math.tan(math.rad(camera.FieldOfView/2)) + size.Y/2
+						target = Vector3.new(center.Position.X, center.Position.Y, nose + (aft - nose) * 0.55)
+						trailBounds = {}
+						local function boxCorners(frame, half)
+							for x = -1, 1, 2 do
+								for y = -1, 1, 2 do
+									for z = -1, 1, 2 do
+										table.insert(trailBounds, frame * Vector3.new(x * half.X, y * half.Y, z * half.Z))
+									end
+								end
+							end
+						end
+						for _, part in model.Appearance:GetChildren() do
+							if part:IsA("BasePart") and part.Transparency < 1 and part.LocalTransparencyModifier < 1 then
+								boxCorners(part.CFrame, part.Size / 2)
+							end
+						end
+						if effect then
+							-- Sparks and smoke spread in the middle and fade away at the end.
+							boxCorners(effect.frame * CFrame.new(0, 0, effect.length * 0.55), Vector3.new(2.8, 2.4, 0))
+							table.insert(trailBounds, effect.frame * Vector3.new(0, -1.6, effect.length))
+						end
 						aim()
 					end
 					if effect then effect:step(dt, camera) end
@@ -585,7 +626,7 @@ function Hangar.new(playerGui, api)
 	-- Only refresh for displayed data. Dictionary order can change between identical network snapshots.
 	local shown
 	function self.update(player, newProfile)
-		local key = newProfile and {player:GetAttribute("Paper") or newProfile.paper, newProfile.ownership, newProfile.looks, newProfile.presets, newProfile.rangePresets,
+		local key = newProfile and {player:GetAttribute("Paper") or newProfile.paper, newProfile.ownership, newProfile.looks, newProfile.presets, newProfile.rangePresets, newProfile.chests, newProfile.chestPaperAllowed,
 			player:GetAttribute("MenuMessage"), atDesk(), player:GetAttribute("Level"), devMode(), PaperUI.isPhone()}
 		if sameValues(key, shown) and #content:GetChildren() > 0 then return end
 		shown, profile = key, newProfile
@@ -597,6 +638,7 @@ function Hangar.new(playerGui, api)
 	-- page "customize" (the desk's Customize button) opens straight on the binder; slot: on that tab, on your own
 	-- loadout even if you fly a preset (the unlock card's Put it on / See it).
 	function self.open(page, slot)
+		state.chestPanel = nil
 		local range = inRange()
 		local selected = range and (player:GetAttribute("RangeSlot") or 1) or player:GetAttribute("SelectedPreset") or 1
 		local unsaved = range == state.range and state.unsaved

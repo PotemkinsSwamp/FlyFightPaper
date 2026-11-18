@@ -29,7 +29,7 @@ local function nozzle(plane, trail, baseFrame)
 	return box:PointToWorldSpace(Vector3.new(0, 0, size.Z / 2))
 end
 
-function Preview.new(world, plane, id)
+function Preview.new(world, plane, id, paper)
 	local trail = Config.trails[id]
 	if not trail then return nil end
 	local _, size = plane:GetBoundingBox()
@@ -39,7 +39,7 @@ function Preview.new(world, plane, id)
 	local folder = Instance.new("Folder")
 	folder.Name, folder.Parent = "TrailPreview", world
 	folder:SetAttribute("Trail", id)
-	local length = math.min(Config.hangar_length, math.max(12, size.Z * 1.45))
+	local length = math.min(Config.hangar_length, math.max(10, size.Z * 1.06))
 	local self = setmetatable({
 		tail = tail, length = length, speed = length / Config.life, id = id,
 		frame = CFrame.new(tail) * baseFrame.Rotation,
@@ -60,7 +60,58 @@ function Preview.new(world, plane, id)
 	if trail.effect then
 		self.effect = Legendary.new(trail.effect, folder, Trails.meshShapes, Root.Assets, 0, self.speed)
 	end
+	if trail.effect == "cloak" and paper then
+		local glass = Instance.new("Frame")
+		glass.Name, glass.BackgroundTransparency, glass.Size = "CloakRefraction", 1, UDim2.fromScale(1, 1)
+		glass.Parent = paper
+		self.glass, self.patches = glass, {}
+	end
 	return self
+end
+
+-- A ViewportFrame cannot refract GUI behind it. At each bend of the same 3D wake, sample a
+-- slightly offset patch of the actual notebook print. The ruled lines visibly bend as it moves.
+local function refractPaper(self, camera, now)
+	local bones = self.effect.bones
+	local paper = self.glass.Parent
+	if not bones or not paper then return end
+	local cameraFrame = camera.CFrame
+	local focal = 400 / math.tan(math.rad(camera.FieldOfView / 2)) -- the print is 720 by 800
+	local function project(point)
+		local p = cameraFrame:PointToObjectSpace(point)
+		local scale = focal / math.max(0.1, -p.Z)
+		return Vector2.new(360 + p.X * scale, 400 - p.Y * scale), scale
+	end
+	local a = project(bones[1].center)
+	for i = 2, #bones do
+		local row = bones[i]
+		local b, scale = project(row.center)
+		local patch = self.patches[i]
+		if not patch then
+			patch = Instance.new("ImageLabel")
+			patch.Name, patch.BackgroundTransparency, patch.Image = "Bend", 1, paper.Image
+			patch.ImageColor3, patch.ImageTransparency = paper.ImageColor3, 0.08
+			patch.AnchorPoint, patch.Parent = Vector2.new(0.5, 0.5), self.glass
+			local round = Instance.new("UICorner")
+			round.CornerRadius, round.Parent = UDim.new(0.46, 0), patch
+			self.patches[i] = patch
+		end
+		local span = b - a
+		local unit = if span.Magnitude > 0.01 then span.Unit else Vector2.yAxis
+		local diameter = math.max(2, (row.radius + bones[i - 1].radius) * scale * 1.12)
+		local w = math.ceil(math.abs(span.X) + math.abs(unit.Y) * diameter + 2)
+		local h = math.ceil(math.abs(span.Y) + math.abs(unit.X) * diameter + 2)
+		local middle = (a + b) / 2
+		local phase = row.k * 22 - now * 3.9
+		local shift = Vector2.new(math.sin(phase), math.cos(phase * 0.84)) * math.min(diameter * 0.25, 12)
+		local sample = middle + shift - Vector2.new(w, h) / 2
+		patch.Visible = sample.X >= 0 and sample.Y >= 0 and sample.X + w <= 720 and sample.Y + h <= 800
+		if patch.Visible then
+			patch.Position, patch.Size = UDim2.fromScale(middle.X / 720, middle.Y / 800), UDim2.fromScale(w / 720, h / 800)
+			patch.ImageRectOffset, patch.ImageRectSize = Vector2.new(math.round(sample.X), math.round(sample.Y)), Vector2.new(w, h)
+		end
+		a = b
+	end
 end
 
 local function tintAt(keys, k)
@@ -207,9 +258,11 @@ function Preview:step(dt, camera)
 	end
 	if self.sourceRow then smokeAtNozzle(self, now, camera) end
 	if self.effect then Legendary.step(self.effect, now, self.frame, 1) end
+	if self.glass then refractPaper(self, camera, now) end
 end
 
 function Preview:destroy()
+	if self.glass then self.glass:Destroy() end
 	self.folder:Destroy()
 	table.clear(self.rows)
 	self.effect = nil
