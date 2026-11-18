@@ -41,6 +41,11 @@
       {"model":"soft","look":"soft","rate":71,"life":[0.69,0.96],"size":[2.2,3.4],"shrink":1.28,"vanish":0.7,"spread":0.77,"drift":0.65,"spin":14,"colors":[[84,102,129],[95,108,145]]},
       {"model":"folded_chaff","look":"steel","rate":71,"life":[0.61,1],"size":[1.12,2.38],"shrink":0.55,"vanish":0.2,"spread":1.52,"drift":1.5,"spin":270,"colors":[[155,175,195],[120,130,157]],"finish":"folded","accent":[204,223,243],"pulse":"single"}
     ],
+    "revisions": {
+      "cloak": [
+        {"model":"air_pocket","look":"paper","rate":40,"life":[0.66,1.0],"size":[1.55,3.95],"shrink":0.47,"vanish":0.35,"spread":1.08,"drift":0.92,"spin":170,"colors":[[255,255,255]]}
+      ]
+    },
     "alternate": {"folded_chaff":{"pulse":"double","size":[1.47,2.65],"rate":49,"spin":180},"soft":{"colors":[[53,64,90],[86,89,116]],"size":[2.3,3.5]}}
   },
   "photo_finish": {
@@ -50,6 +55,14 @@
       {"model":"bar","look":"incandescent","rate":90,"life":[0.25,0.62],"size":[0.7,1.85],"shrink":0.16,"vanish":0.22,"spread":1.67,"drift":3.8,"spin":0,"colors":[[255,194,61],[255,131,24],[255,227,134]],"align":true,"rise":-7}
     ],
     "revisions": {
+      "scrape": [
+        {"model":"soft","look":"soft","rate":79,"life":[0.72,1],"size":[2.35,3.7],"shrink":1.45,"vanish":0.6,"spread":0.56,"drift":0.9,"rise":-2,"spin":24,"colors":[[134,134,136],[171,172,173],[209,209,207]],"pattern":"tracks"},
+        {"model":"tread_shred","look":"paper","rate":37,"life":[0.65,1.0],"size":[0.95,2.1],"shrink":0.52,"vanish":0.22,"spread":1.65,"drift":1.3,"spin":260,"colors":[[29,28,31],[48,44,44]],"finish":"rubber","accent":[108,102,94],"pattern":"tracks"}
+      ],
+      "skip": [
+        {"model":"soft","look":"soft","rate":79,"life":[0.72,1],"size":[2.35,3.7],"shrink":1.45,"vanish":0.6,"spread":0.56,"drift":0.9,"rise":-2,"spin":24,"colors":[[134,134,136],[171,172,173],[209,209,207]],"pattern":"tracks"},
+        {"model":"tread_shred","look":"paper","rate":37,"life":[0.65,1.0],"size":[0.95,2.1],"shrink":0.52,"vanish":0.22,"spread":1.65,"drift":1.3,"spin":260,"colors":[[29,28,31],[48,44,44]],"finish":"rubber","accent":[108,102,94],"pattern":"tracks"}
+      ],
       "sparks": [
         {"model":"soft","look":"soft","rate":79,"life":[0.72,1],"size":[2.35,3.7],"shrink":1.45,"vanish":0.6,"spread":0.56,"drift":0.9,"rise":-2,"spin":24,"colors":[[134,134,136],[171,172,173],[209,209,207]],"pattern":"tracks"},
         {"model":"tread_shred","look":"paper","rate":37,"life":[0.65,1.0],"size":[0.95,2.1],"shrink":0.52,"vanish":0.22,"spread":1.65,"drift":1.3,"spin":260,"colors":[[29,28,31],[48,44,44]],"finish":"rubber","accent":[108,102,94],"pattern":"tracks"},

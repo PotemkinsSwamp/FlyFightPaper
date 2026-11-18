@@ -117,6 +117,8 @@
 
   - Alan chose Ninja A (brushed silver) and Hot Rod A (blue-core flame). Race Car B is the base, with more visible sparks. He rejected both Stealth chaff versions and wants a different idea. Shark needs a water jet with breaking seafoam and an occasional recognizable jaw bite. He asked for textured teeth that read from the flight camera.
 
+  - Alan approved Shark Jet B, the rolling water jet with the hinged bite. Race Car keeps its twin tire tracks. The sparks need a metallic glow, more jump and less regular spacing. For Stealth he chose Cloaking Wake, with pockets of air that bend the view behind them.
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.

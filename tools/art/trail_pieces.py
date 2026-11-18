@@ -13,6 +13,8 @@ from mathutils import Vector, noise
 from functools import partial
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import trail_surf
+import trail_cloak
+import trail_spark_showers
 
 ROOT = Path(__file__).resolve().parents[2]
 UPLOADED = ("star", "bolt", "curl", "note", "notes", "petal", "dart", "jog")   # dart: Alan picked Mini Paper Planes; its upload waits for his OK on the safety sheet
@@ -235,7 +237,8 @@ def hot_spark(bm):
     bm.faces.new(rings[-1]).material_index=1
     bm.faces.new(rings[0])
 
-MODELS.update(wavelet=(trail_surf.wavelet,True), hot_spark=(hot_spark,True),
+MODELS.update(air_pocket=(trail_cloak.air_pocket,True), steel_fleck=(trail_spark_showers.fleck,False),
+              wavelet=(trail_surf.wavelet,True), hot_spark=(hot_spark,True),
               upper_jaw=(partial(trail_surf.jaw_mesh,upper=True),True), lower_jaw=(partial(trail_surf.jaw_mesh,upper=False),True),
               ninja_star=(ninja_star, False), racing_flag=(racing_flag, False), droplet=(droplet, True),
               flame_tongue=(flame_tongue, True), folded_chaff=(folded_chaff, False),

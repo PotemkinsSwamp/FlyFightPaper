@@ -50,6 +50,10 @@ def main():
             compare_pair(OUTPUT/"water_spray-breakers.mp4",OUTPUT/"water_spray-jet.mp4","Shark Jet",
                          "Breaking wave","Rolling jet",OUTPUT/"shark-wake.mp4",strip)
             return
+        if sys.argv[1:] == ["sparks"]:
+            compare_pair(OUTPUT/"photo_finish-scrape.mp4", OUTPUT/"photo_finish-skip.mp4", "Race Car",
+                         "Steel shower", "Skipping sparks", OUTPUT/"racing-sparks.mp4", strip)
+            return
         sequence = []
         for trail, skin, a, b in PAIRS:
             output = OUTPUT / f"{trail}-comparison.mp4"

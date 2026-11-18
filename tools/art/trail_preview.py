@@ -13,6 +13,8 @@ from mathutils import Vector, Matrix, Quaternion
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))); import plane_assembly as pa, trail_pieces
 import trail_finishes
 import trail_surf
+import trail_cloak
+import trail_spark_showers
 
 ARGS = sys.argv[sys.argv.index("--") + 1:]; TRAIL, _, option = ARGS[0].partition(":"); STILLS = [int(a) for a in ARGS[1:]]
 CFG = json.load(open(pa.ROOT / "config/trails.json")); LIFE = CFG["life"]
@@ -188,6 +190,13 @@ def ribbon_object(r, j):
     me.materials.append(m); ob = bpy.data.objects.new("ribbon", me); sc.collection.objects.link(ob); return ob, uv
 ribbons = [(r, j) + ribbon_object(r, j) for r in SPEC.get("ribbons", []) for j in range(r.get("strands", 1))]
 pools, lamps = [], []
+shower = None
+cloak = None
+if option in ("scrape","skip"):
+    shower = trail_spark_showers.Shower(sc,trail_pieces.mesh("steel_fleck"),option=="skip")
+if option == "cloak":
+    cloak = trail_cloak.Cloak(sc)
+    trail_cloak.paper_floor(fm)
 jaws = []
 if option in ("breakers", "jet"):
     jaw_mats = [flat(rgb) for rgb in ((35,87,101),(174,106,105),(255,249,213),(202,174,130),(53,55,68))]
@@ -202,6 +211,10 @@ if option in ("breakers", "jet"):
 for piece in SPEC.get("pieces", []):
     me = trail_pieces.mesh(piece["model"])
     me.materials.append(look(piece["look"])); pool = []
+    collection = sc.collection
+    if piece["model"] == "air_pocket":
+        cloak.finish(me.materials[0])
+        collection = cloak.collection
     if "accent" in piece:
         accent = look(piece["look"])
         shader = accent.node_tree.nodes["Principled BSDF"]
@@ -214,7 +227,7 @@ for piece in SPEC.get("pieces", []):
         for index, material in enumerate(me.materials):
             trail_finishes.finish(material, piece["finish"], accent=index == 1)
     for _ in range(int(piece["rate"] * 1.6 * piece["life"][1]) + 6):
-        ob = bpy.data.objects.new(piece["model"], me); sc.collection.objects.link(ob); pool.append(ob)
+        ob = bpy.data.objects.new(piece["model"], me); collection.objects.link(ob); pool.append(ob)
     pools.append(pool); mine = []
     for _ in range(8 if piece.get("light") else 0):                          # lightning lights the cloud round it
         lamp = bpy.data.objects.new("flash", bpy.data.lights.new("flash", "POINT")); lamp.data.color = lin(piece["colors"][0])[:3]; lamp.data.use_shadow = False; lamp.data.shadow_soft_size = 1.5
@@ -231,6 +244,7 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
     t = n / (FPS * SUB) - LIFE - 0.2; v = speed(t); s += v / (FPS * SUB); g = growth(v)
     p, right, nose, up = frame_at(s, v); tail = p + right * TAIL.x + nose * TAIL.y + up * TAIL.z
     hist.append((t, tail, right, up, g))
+    if shower: shower.emit(t,tail,right,nose,up,v)
     for i, piece in enumerate(SPEC.get("pieces", [])):
         alive[i] = [q for q in alive[i] if t - q["born"] < q["life"]]
         pattern = piece.get("pattern")
@@ -271,6 +285,7 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
         if SPEC.get("preview_skin"):
             eye += side * 9
     aim(eye, target, fov); facing = cam.matrix_world.to_quaternion()
+    if shower: shower.pose(t,facing)
     for jaw in jaws:
         trail_surf.pose_jaw(jaw,jaw.name=="upper_jaw",t,past,option)
     for r, j, ob, uv in ribbons:                                             # a strip: one cross-line for each moment of the last second
@@ -300,6 +315,11 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             if piece.get("run"): at = at - q["nose"] * (piece["run"] * age)     # races back along the path, like a light along a wire
             if piece.get("jump"): at = at + q["right"] * (piece["jump"] * random.Random(int(q["seed"] * 1e6) + int(t * 8)).randint(-2, 2) / 2)   # snaps sideways 8 times a second
             if piece["model"] in CARDS: turn = facing @ Quaternion((0, 0, 1), (q["turn"] if piece.get("spin") else 0) + q["spin"] * age)
+            elif piece["model"] == "air_pocket":
+                local_up=q["right"].cross(q["nose"]).normalized()
+                basis=Matrix((q["right"],q["nose"],local_up)).transposed().to_quaternion()
+                roll=0.78*math.sin(q["turn"]+age*q["spin"])
+                turn=basis @ Quaternion((0,1,0),roll) @ Quaternion((1,0,0),0.39+0.70*q["seed"])
             elif piece["model"] == "wavelet":
                 local_up = q["right"].cross(q["nose"]).normalized()
                 turn = Matrix((q["right"],q["nose"],local_up)).transposed().to_quaternion()
@@ -351,6 +371,7 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             gone = piece.get("vanish", 0); ob.color = tuple(color[:3]) + ((1 - smooth((k - (1 - gone)) / gone)) if gone else 1.0,)
             if mine and size > 0 and lit < len(mine): mine[lit].location = at; mine[lit].data.energy = piece["light"]; lit += 1
         for lamp in mine[lit:]: lamp.data.energy = 0
+    if cloak: cloak.capture(sc,os.path.join(work,"clean.png"))
     sc.render.filepath = os.path.join(work, "f%04d.png" % f) if not STILLS else str(OUT / ("%s-f%03d.png" % (TRAIL, f))); bpy.ops.render.render(write_still=True)
 if not STILLS:
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(work, "f%04d.png"), "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", str(OUT / (TRAIL + ".mp4"))], check=True)

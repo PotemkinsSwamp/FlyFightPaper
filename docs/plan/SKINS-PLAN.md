@@ -203,7 +203,11 @@ The first five videos above are the original review. Alan wanted more texture an
 | Race Car | Raised tire tread and gold sparks in one smoke plume | Two lines of tread scraps with copper sparks |
 | Shark Jet | Rows of teeth briefly close in the spray and drift apart | A steady stream of individual teeth along the spray |
 
-**Alan's picks and current review.** Ninja A and Hot Rod A are approved looks. Race Car B now has white-hot sparks that fan beyond the tire tracks. See `photo_finish-sparks.mp4` in `.planning/skins/trails/legendary-review/`. The new Shark comparison is `shark-wake.mp4` in that folder. Both options use a hinged jaw, attached curved teeth with warm roots and ridged enamel, and fine spray. One water jet spreads into a breaking crest and the other rolls into a narrower wake. The bite repeats independently of flight input. Stealth needs a new concept after Alan rejected chaff.
+**Alan's picks and current review.** The approved looks are Ninja A, Hot Rod A and Shark Jet B. Shark Jet B is `water_spray-jet.mp4` in `.planning/skins/trails/legendary-review/`. Its rolling water jet carries the hinged bite with warm-rooted enamel teeth and spray.
+
+Race Car B keeps the twin tracks and tread scraps. The previous sparks looked like lines. The new `racing-sparks.mp4` compares irregular showers of hot steel with a version that leaves longer gaps and splits more often. The short arcs, hot cores and fading amber glow belong to the trail.
+
+Stealth's chosen concept is Cloaking Wake. In the `silver_chaff-cloak.mp4` Blender preview the renderer captures the scenery at every frame. Each swept-wing pocket samples the scenery with an offset that depends on the surface angle and distance to the camera. The ruled floor makes the distortion visible. Roblox rendering and performance still need to be checked after visual approval.
 
 ### Drawing and checks
 
