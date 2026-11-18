@@ -121,6 +121,7 @@ return JSONTypes.map({
             ["id"] = "ninja",
             ["name"] = "Ninja",
             ["tier"] = "legendary",
+            ["trail"] = "smoke_bomb",
         }),
         [19] = JSONTypes.map({
             ["id"] = "dragon",
@@ -188,6 +189,42 @@ return JSONTypes.map({
             ["name"] = "Dragon Embers",
             ["sold"] = false,
             ["tier"] = "trail",
+        }),
+        [6] = JSONTypes.map({
+            ["id"] = "smoke_bomb",
+            ["name"] = "Smoke Bomb",
+            ["sold"] = false,
+            ["tier"] = "trail",
+        }),
+        [7] = JSONTypes.map({
+            ["id"] = "backfire",
+            ["name"] = "Backfire",
+            ["sold"] = false,
+            ["tier"] = "trail",
+            ["upcoming_skin"] = JSONTypes.map({
+                ["id"] = "hot_rod",
+                ["name"] = "Hot Rod",
+            }),
+        }),
+        [8] = JSONTypes.map({
+            ["id"] = "silver_chaff",
+            ["name"] = "Cloaking Wake",
+            ["sold"] = false,
+            ["tier"] = "trail",
+            ["upcoming_skin"] = JSONTypes.map({
+                ["id"] = "stealth",
+                ["name"] = "Stealth",
+            }),
+        }),
+        [9] = JSONTypes.map({
+            ["id"] = "photo_finish",
+            ["name"] = "Photo Finish",
+            ["sold"] = false,
+            ["tier"] = "trail",
+            ["upcoming_skin"] = JSONTypes.map({
+                ["id"] = "race_car",
+                ["name"] = "Race Car",
+            }),
         }),
     }),
 })

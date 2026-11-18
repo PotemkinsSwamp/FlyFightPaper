@@ -133,6 +133,7 @@ local function lookCards(content, ctx)
 		local name = PaperUI.loud(words(card, "Name", item.name, 24, 12, 204, 32, 30))
 		name.TextScaled = true
 		local status = state.tryLook == item and "Trying it on" or worn and "Wearing" or ownsLook(ctx, item.id) and "Owned"
+			or item.upcomingSkin and "Upcoming: " .. item.upcomingSkin.name
 			or not item.sold and "Comes with " .. (bundledWith(item.id) or "its skin")
 			or string.format("%s Paper", PaperUI.commas(item.paper))
 		words(card, "Tier", TIER[item.tier], 24, 46, 204, 24, 24)
@@ -161,7 +162,7 @@ local function lookControls(content, ctx, about)
 		ctx.render()
 	end
 	if kind == "trail" then
-		about("Trails fly behind your plane. They're coming soon: you can already pick one.")
+		about("Wear a trail to leave it behind every plane you fly.")
 	elseif item then
 		about(string.format("%s: a %s skin. It changes how your plane looks, never how it flies or where it can be hit.", item.name, string.lower(TIER[item.tier])))
 	else
@@ -177,6 +178,8 @@ local function lookControls(content, ctx, about)
 	if ownsLook(ctx, item.id) then
 		button(content, "WearLook", Art.buttonGreen, "Wear", 735, 980, 240, 70, -1, function() wear(item.id) end, 46)
 		return item.name .. ": yours. Wear puts it on every plane you fly."
+	elseif item.upcomingSkin then
+		return string.format("%s comes with %s when that skin arrives.", item.name, item.upcomingSkin.name)
 	elseif not item.sold then -- (Studio's try-on is the "Dev: skin" button: Alan 2026-11-13, a card says Buy)
 		return string.format("%s comes with the %s skin.", item.name, bundledWith(item.id) or "matching")
 	end

@@ -25,7 +25,7 @@
     { "id": "circuit_board", "name": "Circuit Board", "tier": "rare", "picture": 71382649943696 },
     { "id": "comic_book", "name": "Comic Book", "tier": "rare", "picture": 103647805313090 },
     { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "trail": "water_spray" },
-    { "id": "ninja", "name": "Ninja", "tier": "legendary" },
+    { "id": "ninja", "name": "Ninja", "tier": "legendary", "trail": "smoke_bomb" },
     { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers", "picture": 71720517887759 },
     { "id": "origami_crane", "name": "Origami Crane", "tier": "mythical", "picture": 86508406688555 }
   ],
@@ -34,7 +34,11 @@
     { "id": "rainbow_marker", "name": "Rainbow Marker", "tier": "trail", "sold": true },
     { "id": "gold_stars", "name": "Gold Stars", "tier": "trail", "sold": true },
     { "id": "water_spray", "name": "Water Spray", "tier": "trail", "sold": false },
-    { "id": "dragon_embers", "name": "Dragon Embers", "tier": "trail", "sold": false }
+    { "id": "dragon_embers", "name": "Dragon Embers", "tier": "trail", "sold": false },
+    { "id": "smoke_bomb", "name": "Smoke Bomb", "tier": "trail", "sold": false },
+    { "id": "backfire", "name": "Backfire", "tier": "trail", "sold": false, "upcoming_skin": { "id": "hot_rod", "name": "Hot Rod" } },
+    { "id": "silver_chaff", "name": "Cloaking Wake", "tier": "trail", "sold": false, "upcoming_skin": { "id": "stealth", "name": "Stealth" } },
+    { "id": "photo_finish", "name": "Photo Finish", "tier": "trail", "sold": false, "upcoming_skin": { "id": "race_car", "name": "Race Car" } }
   ],
   "bot_tiers": { "rookie": "common", "regular": "rare", "experienced": "legendary", "ace": "mythical" },
   "bot_looks": { "both": 35, "skin": 35, "trail": 15, "neither": 15 }

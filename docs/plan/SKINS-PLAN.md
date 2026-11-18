@@ -203,11 +203,11 @@ The first five videos above are the original review. Alan wanted more texture an
 | Race Car | Raised tire tread and gold sparks in one smoke plume | Two lines of tread scraps with copper sparks |
 | Shark Jet | Rows of teeth briefly close in the spray and drift apart | A steady stream of individual teeth along the spray |
 
-**Alan's picks and current review.** The approved looks are Ninja A, Hot Rod A, Shark Jet B and Stealth B. Shark Jet B is `water_spray-jet.mp4` in `.planning/skins/trails/legendary-review/`. Its rolling water jet carries the hinged bite with warm-rooted enamel teeth and spray.
+**Approved and uploaded on 2026-11-18.** Ninja A, Hot Rod A, Shark Jet B, Stealth B and Race Car's final intermittent sparks are in the trail catalog. Shark Jet B is `water_spray-jet.mp4` in `.planning/skins/trails/legendary-review/`. Its rolling water jet carries the hinged bite with warm-rooted enamel teeth and spray.
 
-Race Car is the remaining trail for review. The [revised flight](../../.planning/skins/trails/legendary-review/photo_finish-bursts.mp4) restores the tire smoke and loose tread scraps from the previous A. Grinding sparks now flare in short bursts on either side. At least one spark is present in 68% of the preview frames, up from 36% in the skid mark version. [Compare the timing against A](../../.planning/skins/trails/legendary-review/race-car-spark-timing.mp4).
+The [approved Race Car flight](../../.planning/skins/trails/legendary-review/photo_finish-bursts.mp4) restores the tire smoke and loose tread scraps from the previous A. Grinding sparks flare in short bursts on either side. At least one spark is present in 68% of the preview frames, up from 36% in the skid mark version. [Compare the timing against A](../../.planning/skins/trails/legendary-review/race-car-spark-timing.mp4).
 
-In [the continuous Cloaking Wake preview](../../.planning/skins/trails/legendary-review/silver_chaff-stream.mp4), one rippling surface follows Stealth through the turn. It bends the background lines across its width and catches violet light on the folds. The Blender preview takes a clean view of the scenery for each frame. Roblox rendering and performance still need a separate check after visual approval.
+In [the continuous Cloaking Wake preview](../../.planning/skins/trails/legendary-review/silver_chaff-stream.mp4), one rippling surface follows Stealth through the turn. Blender takes a clean view of the scenery for each frame. Roblox bends the scenery with a skinned glass mesh and draws violet highlights along its folds. Mobile shows the tinted wake and highlights. [Roblox glass rendering](https://create.roblox.com/docs/parts/materials).
 
 ### Drawing and checks
 

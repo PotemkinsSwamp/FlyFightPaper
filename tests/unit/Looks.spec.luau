@@ -5,6 +5,7 @@ local Economy = require(Root.Shared.EconomyRules)
 local Commerce = require(Root.Shared.CommerceRules)
 local EconomyConfig = require(Root.Generated.Economy)
 local CommerceConfig = require(Root.Generated.Commerce)
+local Trails = require(Root.Generated.Trails)
 local JSON = require(Root.Generated.JSONTypes)
 local Catalog = require(Root.Shared.Catalog)
 local Profile = require(game.ServerScriptService.FlyFightPaper.ProfileService)
@@ -42,7 +43,7 @@ function Spec.run()
 	test("looks config and item identities are cached frozen and match the approved prices", function()
 		local cfg = Looks.config()
 		assert(cfg == Looks.config() and table.isfrozen(cfg) and table.isfrozen(cfg.skins[1]) and table.isfrozen(cfg.tiers.common))
-		assert(#cfg.skins == 20 and #cfg.trails == 5)
+		assert(#cfg.skins == 20 and #cfg.trails == 9)
 		for tier, prices in pairs({ common = {2800,149}, rare = {5600,299}, legendary = {30000,599}, mythical = {60000,999}, trail = {900,49} }) do
 			assert(cfg.tiers[tier].paper == prices[1] and cfg.tiers[tier].robux == prices[2])
 		end
@@ -75,7 +76,7 @@ function Spec.run()
 		end
 	end)
 	test("Legendary and Mythical buys own their matching trails without automatically wearing them", function()
-		for skin, trail in pairs({ shark_jet = "water_spray", dragon = "dragon_embers" }) do
+		for skin, trail in pairs({ shark_jet = "water_spray", ninja = "smoke_bomb", dragon = "dragon_embers" }) do
 			local bought = assert(Looks.buyWithPaper(fresh(60000000), skin, "bundle"))
 			assert(Looks.owns(bought.profile, skin) and Looks.owns(bought.profile, trail))
 			assert(bought.profile.looks.skin == "" and bought.profile.looks.trail == "")
@@ -83,12 +84,28 @@ function Spec.run()
 	end)
 	test("matching trails are never sold or granted alone and unknown looks are rejected", function()
 		for _, method in ipairs({ Looks.buyWithPaper, Looks.grant }) do
-			for _, id in ipairs({ "water_spray", "dragon_embers" }) do
+			for _, id in ipairs({ "water_spray", "dragon_embers", "smoke_bomb", "backfire", "silver_chaff", "photo_finish" }) do
 				local p = fresh(60000000); local before = Schema.canonical(p)
 				local value, err = method(p, id, "not-sold"); rejected(value, err, "not_sold")
 				assert(Schema.canonical(p) == before)
 			end
 			local value, err = method(fresh(), "missing", "unknown"); rejected(value, err, "unknown_look")
+		end
+	end)
+	test("every Legendary trail has a flight effect and owners can wear it on its own", function()
+		for skin, trail in pairs({ ninja = "smoke_bomb", shark_jet = "water_spray", hot_rod = "backfire", stealth = "silver_chaff", race_car = "photo_finish" }) do
+			local effect = assert(Trails.trails[trail])
+			assert(#effect.pieces > 0 or effect.effect == "cloak")
+			local item = assert(Looks.item(trail))
+			if item.upcomingSkin then
+				assert(item.upcomingSkin.id == skin and not Looks.item(skin))
+			else
+				assert(Looks.item(skin).trail == trail)
+			end
+			local p = fresh()
+			p.looks.owned[trail] = true
+			local worn = assert(Looks.wear(p, "", trail, "trail-only"))
+			assert(worn.profile.looks.trail == trail and worn.profile.looks.skin == "" and Schema.validate(worn.profile, catalog))
 		end
 	end)
 	test("an owned look costs nothing even when the balance is empty", function()
@@ -160,6 +177,15 @@ function Spec.run()
 		assert(Schema.canonical(migrated) == Schema.canonical(expected) and Schema.validate(migrated, catalog))
 		assert(Schema.canonical(p) == before)
 	end)
+	test("an existing Ninja owner receives Smoke Bomb once and keeps their worn trail", function()
+		local p = fresh(12345)
+		p.looks = { owned = { ninja = true, confetti = true }, skin = "ninja", trail = "confetti" }
+		local migrated = assert(Schema.migrate(Schema.freeze(p), catalog))
+		assert(migrated.looks.owned.smoke_bomb and migrated.looks.skin == "ninja" and migrated.looks.trail == "confetti")
+		assert(migrated.paperMilli == 12345 and not p.looks.owned.smoke_bomb)
+		assert(Schema.canonical(migrated) == Schema.canonical(assert(Schema.migrate(migrated, catalog))))
+		assert(not assert(Schema.migrate(fresh(), catalog)).looks.owned.smoke_bomb)
+	end)
 	test("migration drops retired look ids and worn retired choices while retaining known ownership", function()
 		for _, version in ipairs({ 12, Schema.VERSION }) do
 			local p = fresh(); p.schemaVersion = version
@@ -195,9 +221,7 @@ function Spec.run()
 						return last and n or 1
 					end)
 					assert(skin == nil or Looks.item(skin).tier == tier)
-					if skin and trail then
-						if skin == "shark_jet" then assert(trail == "water_spray") elseif skin == "dragon" then assert(trail == "dragon_embers") end
-					end
+					if skin and trail and Looks.item(skin).trail then assert(trail == Looks.item(skin).trail) end
 					assert(trail == nil or (Looks.item(trail).kind == "trail" and (Looks.item(trail).sold or Looks.item(skin).trail == trail)))
 					local result = skin and (trail and "both" or "skin") or (trail and "trail" or "neither")
 					seen[result] += 1

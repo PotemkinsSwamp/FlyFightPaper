@@ -156,14 +156,16 @@ function DevTools.start(menu)
 	-- Above that (Alan 2026-11-16, trails test): every plane on this screen wears each drawn trail in turn, unsaved.
 	local trailButton = switch:Clone()
 	trailButton.Name, trailButton.Position, trailButton.Text, trailButton.TextSize, trailButton.Parent = "Trail", UDim2.new(1, -10, 1, -154), "Dev: trail: each its own", 14, switchGui
-	local trailTurn = 0
+	local trailTurn, trailIds = 0, {}
+	for id in require(Root.Generated.Trails).trails do table.insert(trailIds, id) end
+	table.sort(trailIds)
+	local Looks = require(Root.Shared.LooksRules)
 	trailButton.Activated:Connect(function()
-		local list = {}
-		for id, trail in require(Root.Generated.Trails).trails do table.insert(list, id) end
-		table.sort(list)
-		trailTurn = (trailTurn + 1) % (#list + 1)
-		player:SetAttribute("DevTrail", list[trailTurn]) -- PlaneTrails reads it
-		trailButton.Text = "Dev: trail: " .. (list[trailTurn] and string.gsub(list[trailTurn], "_", " ") or "each its own")
+		trailTurn = (trailTurn + 1) % (#trailIds + 1)
+		local id = trailIds[trailTurn]
+		player:SetAttribute("DevTrail", id)
+		local item = Looks.item(id)
+		trailButton.Text = "Dev: trail: " .. (item and item.name or id and string.gsub(id, "_", " ") or "each its own")
 	end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()

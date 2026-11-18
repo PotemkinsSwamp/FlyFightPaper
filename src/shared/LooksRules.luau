@@ -66,7 +66,7 @@ function LooksRules.config()
 			local prices = raw.tiers[entry.tier]
 			local item = { id = entry.id, name = entry.name, kind = kind, tier = entry.tier,
 				paper = prices.paper, robux = prices.robux, trail = entry.trail, sold = kind == "skin" or entry.sold,
-				picture = entry.picture } -- uploaded printed-sheet picture (skins); none yet = drawn plain
+				picture = entry.picture, upcomingSkin = entry.upcoming_skin }
 			assert(entry.picture == nil or integer(entry.picture), "invalid look picture")
 			byID[item.id] = item
 			if kind == "skin" then

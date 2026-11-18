@@ -324,6 +324,7 @@ mistake would be easy to make twice.
 
 ## Studio and the place file
 - Rojo live sync brought the Ninja's bone names and part sizes into Edit with empty mesh IDs. A full Rojo build preserved those IDs. For a live-synced rig, load the configured mesh, copy its bind bones from the template, and check the equipped plane and its collision mesh in Play.
+- In the Legendary trail FBX, Roblox put the glass wake's 13 independent bones under a separate root part. The uploaded mesh still retained its weights. Read the bone names and rest frames from the mesh, confirm each bone influences vertices, and attach those binds to the mesh template. `tools/art/fetch_trail_assets.py` does this for the wake.
 - **Test players are plain tables** (2026-11-16): `player:GetAttribute` in a server path the unit tests reach errors there
   (FlightService.spec failed twice). Guard Studio-only player reads with `typeof(player)=="Instance"`.
 - **Fresh code in Edit without a restart** (2026-11-16): Edit keeps old `require` results; clone the module under a

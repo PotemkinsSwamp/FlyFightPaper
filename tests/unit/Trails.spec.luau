@@ -9,7 +9,7 @@ function Spec.run()
 		local trails = 0
 		for id, trail in Config.trails do
 			trails += 1
-			assert(#trail.pieces > 0 and trail.ribbons == nil, id .. ": pieces only (the game draws no ribbons)")
+			assert(trail.ribbons == nil and (#trail.pieces > 0 or trail.effect == "cloak"), id .. ": missing pieces or cloaking wake")
 			for i, spec in trail.pieces do
 				local name = id .. " piece " .. i
 				-- a particle (one of Roblox's own pictures) with a particle look, or a part (plain shape or uploaded model) with a material
@@ -25,7 +25,23 @@ function Spec.run()
 				assert(spec.axes == nil or (spec.align == "grid" and #spec.axes == 3 and spec.axes[1] + spec.axes[2] + spec.axes[3] > 0), name .. ": axes")
 			end
 		end
-		assert(trails >= 13)
+		assert(trails >= 18)
+	end)
+	test("Legendary effects have their source shapes, finishes and exhaust positions", function()
+		local used = {}
+		for _, model in { "ninja_star", "forked_flame", "wavelet", "upper_jaw", "lower_jaw", "droplet", "tread_shred", "cloak_stream" } do
+			local mesh = Config.meshes[model]
+			assert(type(mesh) == "number" and mesh > 0 and not used[mesh], model)
+			used[mesh] = true
+			if model ~= "cloak_stream" then assert(Config.meshTextures[model] > 0, model) end
+		end
+		assert(Config.trails.water_spray.effect == "shark_jet" and Config.trails.photo_finish.effect == "grinding_sparks")
+		assert(Config.trails.silver_chaff.effect == "cloak" and #Config.trails.silver_chaff.pieces == 0)
+		assert(PlaneTrails.materials.steel == Enum.Material.Metal and PlaneTrails.materials.incandescent == Enum.Material.Neon)
+		for _, id in { "smoke_bomb", "backfire", "water_spray", "silver_chaff", "photo_finish" } do
+			local tail = Config.trails[id].tail
+			assert(#tail == 2 and tail[1] >= 0 and tail[1] < 0.2 and tail[2] > 0.3 and tail[2] <= 0.5, id)
+		end
 	end)
 	test("a jumping piece keeps one of five sideways places for an eighth of a second", function()
 		local seen = {}

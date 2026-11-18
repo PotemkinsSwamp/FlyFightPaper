@@ -274,6 +274,12 @@ function Schema.migrate(record, catalog)
 	if p.schemaVersion==Schema.VERSION and type(p.looks)=="table" then
 		if type(p.looks.owned)=="table" then
 			for id in pairs(p.looks.owned) do if not Looks.item(id) then p.looks.owned[id]=nil end end
+			-- A matching trail can arrive after its skin. Keep both worn selections.
+			for _, skin in ipairs(Looks.config().skins) do
+				if skin.trail and p.looks.owned[skin.id] == true and p.looks.owned[skin.trail] == nil then
+					p.looks.owned[skin.trail] = true
+				end
+			end
 		end
 		for _, kind in ipairs({"skin","trail"}) do
 			local id=p.looks[kind]

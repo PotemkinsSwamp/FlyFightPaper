@@ -7,17 +7,166 @@ return JSONTypes.map({
     ["grow_in"] = 0.1,
     ["hangar_length"] = 34,
     ["life"] = 1.0,
+    ["meshTextures"] = JSONTypes.map({
+        ["droplet"] = 104895931101760,
+        ["forked_flame"] = 104895931101760,
+        ["lower_jaw"] = 104895931101760,
+        ["ninja_star"] = 104895931101760,
+        ["tread_shred"] = 104895931101760,
+        ["upper_jaw"] = 104895931101760,
+        ["wavelet"] = 104895931101760,
+    }),
     ["meshes"] = JSONTypes.map({
         ["bolt"] = 131261317836837,
+        ["cloak_stream"] = 77271175144758,
         ["curl"] = 90703643323031,
         ["dart"] = 116108899096484,
+        ["droplet"] = 136509100151262,
+        ["forked_flame"] = 82977544359397,
         ["jog"] = 108115628503616,
+        ["lower_jaw"] = 77444650372713,
+        ["ninja_star"] = 84299908701464,
         ["note"] = 106824352514649,
         ["notes"] = 131035425135427,
         ["petal"] = 107559088334731,
         ["star"] = 135137558897203,
+        ["tread_shred"] = 115353875697897,
+        ["upper_jaw"] = 112105821345704,
+        ["wavelet"] = 95955649961618,
     }),
     ["trails"] = JSONTypes.map({
+        ["backfire"] = JSONTypes.map({
+            ["pieces"] = JSONTypes.array({
+                [1] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 255,
+                            [2] = 184,
+                            [3] = 41,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 255,
+                            [2] = 115,
+                            [3] = 16,
+                        }),
+                        [3] = JSONTypes.array({
+                            [1] = 239,
+                            [2] = 48,
+                            [3] = 7,
+                        }),
+                        [4] = JSONTypes.array({
+                            [1] = 126,
+                            [2] = 24,
+                            [3] = 14,
+                        }),
+                    }),
+                    ["drift"] = 0.7,
+                    ["layer"] = "mist",
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.64,
+                        [2] = 0.93,
+                    }),
+                    ["look"] = "fire",
+                    ["model"] = "soft",
+                    ["rainbow"] = 1,
+                    ["rate"] = 105,
+                    ["shrink"] = 0.7,
+                    ["size"] = JSONTypes.array({
+                        [1] = 1.8,
+                        [2] = 2.7,
+                    }),
+                    ["spin"] = 30,
+                    ["spread"] = 0.67,
+                    ["vanish"] = 0.7,
+                }),
+                [2] = JSONTypes.map({
+                    ["accent"] = JSONTypes.array({
+                        [1] = 255,
+                        [2] = 226,
+                        [3] = 83,
+                    }),
+                    ["align"] = true,
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 255,
+                            [2] = 134,
+                            [3] = 22,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 249,
+                            [2] = 61,
+                            [3] = 6,
+                        }),
+                        [3] = JSONTypes.array({
+                            [1] = 205,
+                            [2] = 30,
+                            [3] = 8,
+                        }),
+                    }),
+                    ["drift"] = 1.5,
+                    ["finish"] = "flame",
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.52,
+                        [2] = 0.98,
+                    }),
+                    ["look"] = "incandescent",
+                    ["model"] = "forked_flame",
+                    ["rainbow"] = 1,
+                    ["rate"] = 66,
+                    ["rise"] = 3,
+                    ["shrink"] = 0.44,
+                    ["size"] = JSONTypes.array({
+                        [1] = 2.8,
+                        [2] = 5.0,
+                    }),
+                    ["spin"] = 145,
+                    ["spread"] = 0.78,
+                    ["vanish"] = 0.28,
+                }),
+                [3] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 220,
+                            [2] = 249,
+                            [3] = 255,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 57,
+                            [2] = 180,
+                            [3] = 254,
+                        }),
+                        [3] = JSONTypes.array({
+                            [1] = 77,
+                            [2] = 66,
+                            [3] = 255,
+                        }),
+                    }),
+                    ["drift"] = 0.7,
+                    ["layer"] = "core",
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.24,
+                        [2] = 0.38,
+                    }),
+                    ["look"] = "fire",
+                    ["model"] = "soft",
+                    ["rainbow"] = 1,
+                    ["rate"] = 160,
+                    ["shrink"] = 0.28,
+                    ["size"] = JSONTypes.array({
+                        [1] = 1.55,
+                        [2] = 2.1,
+                    }),
+                    ["spin"] = 30,
+                    ["spread"] = 0.31,
+                    ["vanish"] = 0.55,
+                }),
+            }),
+            ["preview_skin"] = "hot_rod",
+            ["tail"] = JSONTypes.array({
+                [1] = 0.09248555,
+                [2] = 0.5,
+            }),
+        }),
         ["chalk_dust"] = JSONTypes.map({
             ["pieces"] = JSONTypes.array({
                 [1] = JSONTypes.map({
@@ -1458,6 +1607,180 @@ return JSONTypes.map({
                 }),
             }),
         }),
+        ["photo_finish"] = JSONTypes.map({
+            ["effect"] = "grinding_sparks",
+            ["pieces"] = JSONTypes.array({
+                [1] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 134,
+                            [2] = 134,
+                            [3] = 136,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 171,
+                            [2] = 172,
+                            [3] = 173,
+                        }),
+                        [3] = JSONTypes.array({
+                            [1] = 209,
+                            [2] = 209,
+                            [3] = 207,
+                        }),
+                    }),
+                    ["drift"] = 0.9,
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.72,
+                        [2] = 1,
+                    }),
+                    ["look"] = "soft",
+                    ["model"] = "soft",
+                    ["pattern"] = "tracks",
+                    ["rate"] = 79,
+                    ["rise"] = -2,
+                    ["shrink"] = 1.45,
+                    ["size"] = JSONTypes.array({
+                        [1] = 2.35,
+                        [2] = 3.7,
+                    }),
+                    ["spin"] = 24,
+                    ["spread"] = 0.56,
+                    ["vanish"] = 0.6,
+                }),
+                [2] = JSONTypes.map({
+                    ["accent"] = JSONTypes.array({
+                        [1] = 108,
+                        [2] = 102,
+                        [3] = 94,
+                    }),
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 29,
+                            [2] = 28,
+                            [3] = 31,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 48,
+                            [2] = 44,
+                            [3] = 44,
+                        }),
+                    }),
+                    ["drift"] = 1.3,
+                    ["finish"] = "rubber",
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.65,
+                        [2] = 1.0,
+                    }),
+                    ["look"] = "paper",
+                    ["model"] = "tread_shred",
+                    ["pattern"] = "tracks",
+                    ["rate"] = 37,
+                    ["shrink"] = 0.52,
+                    ["size"] = JSONTypes.array({
+                        [1] = 0.95,
+                        [2] = 2.1,
+                    }),
+                    ["spin"] = 260,
+                    ["spread"] = 1.65,
+                    ["vanish"] = 0.22,
+                }),
+            }),
+            ["preview_skin"] = "race_car",
+            ["tail"] = JSONTypes.array({
+                [1] = 0.09331284,
+                [2] = 0.34460694,
+            }),
+        }),
+        ["silver_chaff"] = JSONTypes.map({
+            ["effect"] = "cloak",
+            ["pieces"] = JSONTypes.array({}),
+            ["preview_skin"] = "stealth",
+            ["tail"] = JSONTypes.array({
+                [1] = 0.09140587,
+                [2] = 0.42264152,
+            }),
+        }),
+        ["smoke_bomb"] = JSONTypes.map({
+            ["pieces"] = JSONTypes.array({
+                [1] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 49,
+                            [2] = 47,
+                            [3] = 55,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 66,
+                            [2] = 59,
+                            [3] = 68,
+                        }),
+                        [3] = JSONTypes.array({
+                            [1] = 85,
+                            [2] = 80,
+                            [3] = 88,
+                        }),
+                    }),
+                    ["drift"] = 1.0,
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.8,
+                        [2] = 1,
+                    }),
+                    ["look"] = "soft",
+                    ["model"] = "soft",
+                    ["rate"] = 86,
+                    ["rise"] = -2,
+                    ["shrink"] = 1.55,
+                    ["size"] = JSONTypes.array({
+                        [1] = 2.6,
+                        [2] = 4.1,
+                    }),
+                    ["spin"] = 28,
+                    ["spread"] = 0.64,
+                    ["vanish"] = 0.5,
+                }),
+                [2] = JSONTypes.map({
+                    ["accent"] = JSONTypes.array({
+                        [1] = 223,
+                        [2] = 232,
+                        [3] = 245,
+                    }),
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 61,
+                            [2] = 69,
+                            [3] = 86,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 70,
+                            [2] = 80,
+                            [3] = 100,
+                        }),
+                    }),
+                    ["drift"] = 1.6,
+                    ["finish"] = "brushed",
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.64,
+                        [2] = 0.96,
+                    }),
+                    ["look"] = "steel",
+                    ["model"] = "ninja_star",
+                    ["rate"] = 47,
+                    ["shrink"] = 0.5,
+                    ["size"] = JSONTypes.array({
+                        [1] = 1.28,
+                        [2] = 2.35,
+                    }),
+                    ["spin"] = 350,
+                    ["spread"] = 1.62,
+                    ["vanish"] = 0.16,
+                }),
+            }),
+            ["preview_skin"] = "ninja",
+            ["tail"] = JSONTypes.array({
+                [1] = 0.11747784,
+                [2] = 0.5,
+            }),
+        }),
         ["stardust"] = JSONTypes.map({
             ["pieces"] = JSONTypes.array({
                 [1] = JSONTypes.map({
@@ -1639,6 +1962,110 @@ return JSONTypes.map({
                     }),
                     ["spread"] = 1.8,
                 }),
+            }),
+        }),
+        ["water_spray"] = JSONTypes.map({
+            ["effect"] = "shark_jet",
+            ["pieces"] = JSONTypes.array({
+                [1] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 13,
+                            [2] = 78,
+                            [3] = 118,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 12,
+                            [2] = 109,
+                            [3] = 139,
+                        }),
+                    }),
+                    ["drift"] = 0.5,
+                    ["finish"] = "jet",
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.7,
+                        [2] = 1,
+                    }),
+                    ["look"] = "paper",
+                    ["model"] = "wavelet",
+                    ["rate"] = 76,
+                    ["rise"] = -1.6,
+                    ["shrink"] = 0.52,
+                    ["size"] = JSONTypes.array({
+                        [1] = 2.0,
+                        [2] = 3.15,
+                    }),
+                    ["spin"] = 0,
+                    ["spread"] = 0.17,
+                    ["vanish"] = 0.55,
+                }),
+                [2] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 165,
+                            [2] = 220,
+                            [3] = 219,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 239,
+                            [2] = 248,
+                            [3] = 241,
+                        }),
+                    }),
+                    ["drift"] = 1.35,
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.72,
+                        [2] = 1,
+                    }),
+                    ["look"] = "soft",
+                    ["model"] = "soft",
+                    ["rate"] = 68,
+                    ["rise"] = -3,
+                    ["shrink"] = 1.3,
+                    ["size"] = JSONTypes.array({
+                        [1] = 0.6,
+                        [2] = 1.51,
+                    }),
+                    ["spin"] = 21,
+                    ["spread"] = 0.83,
+                    ["vanish"] = 0.55,
+                }),
+                [3] = JSONTypes.map({
+                    ["align"] = true,
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 174,
+                            [2] = 229,
+                            [3] = 224,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 237,
+                            [2] = 250,
+                            [3] = 243,
+                        }),
+                    }),
+                    ["drift"] = 2.7,
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.6,
+                        [2] = 1,
+                    }),
+                    ["look"] = "glass",
+                    ["model"] = "droplet",
+                    ["rate"] = 48,
+                    ["rise"] = -9,
+                    ["shrink"] = 0.38,
+                    ["size"] = JSONTypes.array({
+                        [1] = 0.12,
+                        [2] = 0.51,
+                    }),
+                    ["spin"] = 0,
+                    ["spread"] = 0.9,
+                }),
+            }),
+            ["preview_skin"] = "shark",
+            ["tail"] = JSONTypes.array({
+                [1] = 0.05350554,
+                [2] = 0.43173432,
             }),
         }),
     }),
