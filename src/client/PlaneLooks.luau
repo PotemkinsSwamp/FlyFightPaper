@@ -9,6 +9,7 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Looks = require(Root.Shared.LooksRules)
+local SkinFit = require(Root.Shared.SkinFit)
 local Pieces = require(Root:WaitForChild("Generated"):WaitForChild("SkinPieces")).pieces
 local SkinShapes = require(script.Parent.SkinShapes)
 local SkinMotion = require(Root.Shared.SkinMotion)
@@ -101,9 +102,9 @@ end
 local function dressPart(model, part)
 	local name = part:IsA("MeshPart") and string.match(part.Name, "^[^-]+%-(.+)$")
 	local ids = name and Pieces[name]
-	if not ids then return end
+	if not ids then return true end
 	local want, skin = sheetOf(model)
-	if part:GetAttribute("Skin") == want then return end
+	if part:GetAttribute("Skin") == want then return true end
 	local mesh, face
 	if want then
 		mesh = once(meshes, name, function()
@@ -118,7 +119,7 @@ local function dressPart(model, part)
 		face = mesh and mesh:FindFirstChildOfClass("SurfaceAppearance")
 	end
 	-- The plane may have been rebuilt or re-skinned while the copy loaded.
-	if not (mesh and face and part.Parent and (sheetOf(model)) == want) then return end
+	if not (mesh and face and part.Parent and (sheetOf(model)) == want) then return false end
 	local size = part.Size
 	part:ApplyMesh(mesh)
 	part.Size = size
@@ -128,6 +129,39 @@ local function dressPart(model, part)
 	look.Parent = part
 	part:SetAttribute("Skin", want)
 	layersOn(part, name, want and skin or nil, look)
+	return true
+end
+
+-- A Hangar photo is built once, with all of its plane parts already present. Finish fitting it before the caller
+-- preloads the visible meshes and their cloned looks. Flying planes use the streaming path below.
+function PlaneLooks.dressPreview(model, skinID)
+	local appearance = model:FindFirstChild("Appearance")
+	if not appearance or not model.Parent then return false end
+	model:SetAttribute("Skin", skinID)
+	local shape = SkinFit.shapes[skinID]
+	if shape and not SkinShapes.wear(model, skinID) then return false end
+	if not appearance.Parent then return false end
+	local waitForParts = Instance.new("BindableEvent")
+	local waiting, ok = 0, true
+	for _, part in appearance:GetChildren() do
+		if part:IsA("MeshPart") and not part:GetAttribute("SkinHidden") then
+			-- PreloadAsync can fetch a MeshPart's texture. A SurfaceAppearance's processed PBR pack streams only
+			-- while drawing. Give the photo's actual hull its matching base colour as well.
+			if shape and shape.pictures and part.Name:match("^Skin%-") then
+				part.TextureID = "rbxassetid://" .. shape.pictures.color
+			end
+			waiting += 1
+			task.spawn(function()
+				local ran, dressed = pcall(dressPart, model, part)
+				if not ran or not dressed then ok = false end
+				waiting -= 1
+				if waiting == 0 then waitForParts:Fire() end
+			end)
+		end
+	end
+	if waiting > 0 then waitForParts.Event:Wait() end
+	waitForParts:Destroy()
+	return ok and appearance.Parent == model and model.Parent ~= nil
 end
 
 -- Shape skins (Legendary, Mythical: SkinShapes) go on once a burst of new parts has arrived, one fit at a time.

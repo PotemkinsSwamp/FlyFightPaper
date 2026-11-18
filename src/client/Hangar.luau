@@ -72,13 +72,13 @@ function Hangar.new(playerGui, api)
 		return plane ~= nil and plane:GetAttribute("Pinned") ~= nil
 	end
 	local profile, render
-	local kept = {} -- plane photos from the last redraw, by what they show (preview)
+	local displayed, pending, previewNote -- the last complete plane and the one currently loading
 
 	-- Back: from Customize to the shelf (unsaved changes ask once first), from the shelf out of the Hangar.
 	local back = button(sheet, "Back", Assets.range.stripRed, "Back", 22, 47, 300, 66, -3, function() -- the strip's own shape, clear of the photo
 		if state.page == "shelf" then api.back(); return end
 		if state.unsaved and not state.dropAsk then state.dropAsk = true; render(); return end
-		state.page, state.trying, state.dropAsk = "shelf", nil, nil
+		state.page, state.trying, state.tryLook, state.dropAsk = "shelf", nil, nil, nil
 		state.builder:reset(state.builds[state.preset].loadout, state.preset)
 		render()
 	end, 54)
@@ -293,13 +293,27 @@ function Hangar.new(playerGui, api)
 		-- swaps in when its pictures are ready (Alan 2026-11-14: every click reloaded the whole screen).
 		local spot = content.Name .. table.concat(box, ",")
 		local key = spot .. HttpService:JSONEncode({ draft, skin or "", diagram == true, under or 0 })
-		local view = kept[key]
-		kept[key] = nil
-		if view then
-			view.Parent = content
-		else
+		if pending and pending:GetAttribute("PlaneKey") ~= key then
+			pending:Destroy()
+			pending = nil
+		end
+		if displayed then
+			displayed.Position, displayed.Size = UDim2.fromOffset(vx, vy), UDim2.fromOffset(vw, vh)
+			displayed.Parent = content
+		end
+		local ready = displayed and displayed:GetAttribute("PlaneKey") == key
+		local view = if ready then displayed else pending
+		if not ready then
+			previewNote = words(content, "PlanePreviewStatus", pending and pending:GetAttribute("PreviewError") and "Preview unavailable" or "Loading preview", vx, vy + vh - 40, vw, 40, 28)
+			previewNote.TextXAlignment, previewNote.ZIndex = Enum.TextXAlignment.Center, 4
+		end
+		if view then view.Parent = content else
 			view = Instance.new("ViewportFrame")
+			pending = view
 			view:SetAttribute("PlaneKey", key)
+			view:SetAttribute("PreviewReady", false)
+			-- Keep the viewport drawing while the last photo covers it. This starts streaming the engine's PBR packs.
+			view.ImageTransparency = 0.995
 			view.Name, view.BackgroundTransparency = "PlanePreview", 1
 			view.Position, view.Size = UDim2.fromOffset(vx, vy), UDim2.fromOffset(vw, vh)
 			-- Softer fill and a warm key light so the folds show shading instead of flat colour.
@@ -309,8 +323,7 @@ function Hangar.new(playerGui, api)
 			world.Parent = view
 			local model = Instance.new("Model")
 			model.Parent = world
-			Aircraft.build(model, draft, Catalog, true)
-			if skin then model:SetAttribute("Skin", skin); PlaneLooks.dress(model) end -- the skin you wear or are trying on
+			local built = Aircraft.build(model, draft, Catalog, true)
 			local camera = Instance.new("Camera")
 			camera.Parent, view.CurrentCamera, camera.FieldOfView = view, camera, 45
 			-- Every build fills the same frame (Alan): the camera backs off until the plane's longer side (wingspan or
@@ -338,21 +351,48 @@ function Hangar.new(playerGui, api)
 				end
 			end)
 			-- Turns slowly by itself while nobody is dragging it.
-			local spin = RunService.RenderStepped:Connect(function(dt) if not last and not diagram then state.angle += dt * 0.35; aim() end end)
+			local spin = RunService.RenderStepped:Connect(function(dt) if displayed == view and not last and not diagram then state.angle += dt * 0.35; aim() end end)
 			view.Destroying:Connect(function() spin:Disconnect() end)
-			for oldKey, old in kept do
-				if string.sub(oldKey, 1, #spot) == spot then
-					kept[oldKey] = nil
-					old:SetAttribute("PlaneKey", nil) -- (the next redraw just clears it)
-					old.Parent, view.Visible = content, false
-					task.spawn(function()
-						ContentProvider:PreloadAsync({ model })
-						old:Destroy()
-						view.Visible = true
+			task.defer(function()
+				local failedAsset
+				local ran, loaded = pcall(function()
+					if pending ~= view or not built then return false end
+					if skin and not PlaneLooks.dressPreview(model, skin) then return false end
+					if pending ~= view or not model.Parent then return false end
+					local assets = {}
+					for _, part in model.Appearance:GetChildren() do
+						if part:IsA("BasePart") and not part:GetAttribute("SkinHidden") then
+							table.insert(assets, part)
+							for _, child in part:GetDescendants() do
+								if child:IsA("SurfaceAppearance") or child:IsA("Decal") then table.insert(assets, child) end
+							end
+						end
+					end
+					local fetched = #assets > 0
+					ContentProvider:PreloadAsync(assets, function(asset, status)
+						if status ~= Enum.AssetFetchStatus.Success then
+							fetched, failedAsset = false, tostring(asset) .. " (" .. status.Name .. ")"
+						end
 					end)
-					break
+					return fetched
+				end)
+				if ran and loaded then RunService.RenderStepped:Wait() end
+				if pending ~= view or not view.Parent then return end
+				if not (ran and loaded) then
+					view:SetAttribute("PreviewError", true)
+					previewNote.Text = "Preview unavailable"
+					warn("Hangar could not load plane preview", skin or draft.body, failedAsset or (not ran and loaded) or "model unavailable")
+					return
 				end
-			end
+				local old = displayed
+				displayed, pending = view, nil
+				aim()
+				view.ImageTransparency = 0
+				view:SetAttribute("PreviewReady", true)
+				if old then old:Destroy() end
+				previewNote:Destroy()
+				previewNote = nil
+			end)
 		end
 		if diagram then
 			local camera = view.CurrentCamera
@@ -384,15 +424,14 @@ function Hangar.new(playerGui, api)
 	end
 
 	render = function()
-		-- Plane photos are lifted out before the clear-out; preview() reuses them, the rest go once this redraw is done.
-		local last = {}
-		for _, d in content:GetDescendants() do
-			local key = d:GetAttribute("PlaneKey")
-			if key then last[key] = d; d.Parent = nil end
-		end
+		if displayed then displayed.Parent = nil end
+		if pending then pending.Parent = nil end
+		previewNote = nil
 		for _, child in content:GetChildren() do child:Destroy() end
-		kept = last
-		task.defer(function() for _, v in last do if not v.Parent then v:Destroy() end end end)
+		task.defer(function()
+			if displayed and not displayed.Parent then displayed:Destroy(); displayed = nil end
+			if pending and not pending.Parent then pending:Destroy(); pending = nil end
+		end)
 		shelf.frame.Visible, classShelf.frame.Visible = state.page == "shelf" and not state.classes, state.page == "shelf" and state.classes == true
 		if not profile then return end
 		local range = state.range and profile.rangePresets ~= nil
@@ -449,15 +488,15 @@ function Hangar.new(playerGui, api)
 			preview(draft, PHOTO, nil, nil, PHOTO[2] + PHOTO[4] * 0.87 - TAPE[2] + 6, nil, skin)
 			-- Presets: what they are, written on the stats paper under the rows (it floated on the cork).
 			statSheet(Catalog:deriveStats(draft), nil, 1535 - 316, 8, 632, "wide", -- centred over Customize
-				classes and "Presets can't be changed. Level up to unlock parts for your own loadouts." or nil)
+				classes and "Presets have fixed parts. You can wear skins and trails on them." or nil)
 			if classes then
 				image(content, "NameTape", Assets.ingame.tapeLabel, table.unpack(TAPE))
 				words(content, "BuildName", builds[state.preset].name, TAPE[1] + 30, TAPE[2], TAPE[3] - 60, TAPE[4], 46).TextXAlignment = Enum.TextXAlignment.Center
-				return
+			else
+				nameTag(content, TAPE[1], TAPE[2], TAPE[3], TAPE[4], 46)
 			end
-			nameTag(content, TAPE[1], TAPE[2], TAPE[3], TAPE[4], 46)
-			local open = button(content, "Customize", Shelf.buttonOrange, "Customize", 1235, 564, 600, PaperUI.isPhone() and 130 or 120, -1, function()
-				state.page, state.slot, state.trying = "customize", "body", nil
+			local open = button(content, "Customize", Shelf.buttonOrange, classes and "Skins & trails" or "Customize", 1235, 564, 600, PaperUI.isPhone() and 130 or 120, -1, function()
+				state.page, state.slot, state.trying, state.tryLook = "customize", classes and "skin" or "body", nil, nil
 				render()
 			end, 72)
 			open.ZIndex = 2
@@ -470,7 +509,7 @@ function Hangar.new(playerGui, api)
 		shrink.Scale, shrink.Parent = Customize.BINDER_SCALE, binder
 		Customize.draw(binder, {
 			side = content, -- the unshrunk sheet: the stats paper, Save and Fly sit there
-			state = state, builder = builder, draft = draft, profile = profile, range = range, dev = devMode(), catalog = Catalog,
+			state = state, builder = builder, draft = draft, profile = profile, range = range, classes = classes, dev = devMode(), catalog = Catalog,
 			owned = function(part) return devMode() or range or Catalog:owns(profile.ownership, part.id, player:GetAttribute("Level") or 1) end,
 			choose = choose, placeWeapon = placeWeapon, statSheet = statSheet, preview = preview, nameTag = nameTag,
 			-- A card being tried on: the same change on a scratch copy of the build, so the real one is untouched.
@@ -506,15 +545,16 @@ function Hangar.new(playerGui, api)
 		state.range = range
 		-- A preset opens on the Presets board, even from the desk's Customize (nothing on it can be changed); the Hangar Tour
 		-- always uses your own loadouts.
-		local classes = not slot and not range and not unsaved and not Root:GetAttribute("TutorialOpen") and player:GetAttribute("SelectedClass") ~= nil
-		if classes then page = nil end
+		local looks = slot == "skin" or slot == "trail"
+		local classes = (not slot or looks) and not range and not unsaved and not Root:GetAttribute("TutorialOpen") and player:GetAttribute("SelectedClass") ~= nil
+		if classes and not looks then page = nil end
 		if classes ~= (state.classes == true) then state.builder = nil end
 		state.classes = classes
 		if classes then
 			for i, class in Catalog:classes() do if class.id == player:GetAttribute("SelectedClass") then selected = i end end
 		end
-		state.page, state.dropAsk, state.trying = (unsaved or page == "customize") and "customize" or "shelf", nil, nil
-		if page == "customize" and not unsaved then state.slot = slot or "body" end
+		state.page, state.dropAsk, state.trying, state.tryLook = (unsaved or page == "customize") and "customize" or "shelf", nil, nil, nil
+		if page == "customize" and (slot or not unsaved) then state.slot = slot or "body" end
 		if not unsaved then
 			state.preset = selected
 			if state.builder and state.builds and state.builds[selected] then state.builder:reset(state.builds[selected].loadout, selected) end

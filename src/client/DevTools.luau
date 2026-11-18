@@ -139,9 +139,14 @@ function DevTools.start(menu)
 	-- own plane, unsaved; the server wears it too, so a shape skin's hits and crashes follow it (HangarService "devSkin").
 	local skinButton = switch:Clone()
 	skinButton.Name, skinButton.Position, skinButton.Text, skinButton.Parent = "Skin", UDim2.new(1, -10, 1, -106), "Dev: skin: yours", switchGui
+	local Looks = require(Root.Shared.LooksRules)
+	player:GetAttributeChangedSignal("DevSkin"):Connect(function()
+		local id = player:GetAttribute("DevSkin")
+		local item = Looks.item(id)
+		skinButton.Text = "Dev: skin: " .. (item and item.name or id == "" and "plain" or "yours")
+	end)
 	local skinTurn = 0
 	skinButton.Activated:Connect(function()
-		local Looks = require(Root.Shared.LooksRules)
 		local list = {}
 		local SkinShapes = require(script.Parent.SkinShapes)
 		for _, skin in Looks.config().skins do
@@ -151,7 +156,6 @@ function DevTools.start(menu)
 		skinTurn = skinTurn % #list + 1
 		require(script.Parent.PlaneLooks).setDevSkin(list[skinTurn])
 		Root:WaitForChild("RoundAction"):FireServer("devSkin", list[skinTurn])
-		skinButton.Text = "Dev: skin: " .. (list[skinTurn] == "" and "plain" or Looks.item(list[skinTurn]).name)
 	end)
 	-- Above that (Alan 2026-11-16, trails test): every plane on this screen wears each drawn trail in turn, unsaved.
 	local trailButton = switch:Clone()
@@ -159,13 +163,14 @@ function DevTools.start(menu)
 	local trailTurn, trailIds = 0, {}
 	for id in require(Root.Generated.Trails).trails do table.insert(trailIds, id) end
 	table.sort(trailIds)
-	local Looks = require(Root.Shared.LooksRules)
+	player:GetAttributeChangedSignal("DevTrail"):Connect(function()
+		local item = Looks.item(player:GetAttribute("DevTrail"))
+		trailButton.Text = "Dev: trail: " .. (item and item.name or "each its own")
+	end)
 	trailButton.Activated:Connect(function()
 		trailTurn = (trailTurn + 1) % (#trailIds + 1)
 		local id = trailIds[trailTurn]
 		player:SetAttribute("DevTrail", id)
-		local item = Looks.item(id)
-		trailButton.Text = "Dev: trail: " .. (item and item.name or id and string.gsub(id, "_", " ") or "each its own")
 	end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()

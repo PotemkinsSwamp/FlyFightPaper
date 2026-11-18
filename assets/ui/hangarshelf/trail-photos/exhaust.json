@@ -1,0 +1,24 @@
+{
+  "path": "operations/360a08d3-63c6-4b80-93f9-be3cbf7f874f",
+  "operationId": "360a08d3-63c6-4b80-93f9-be3cbf7f874f",
+  "done": true,
+  "response": {
+    "path": "assets/127519253431152",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-18T06:28:17.400Z",
+    "assetId": "127519253431152",
+    "displayName": "FFP Hangar exhaust trail photos",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

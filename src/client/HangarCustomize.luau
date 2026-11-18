@@ -9,6 +9,7 @@ local CombatRules = require(Root.Shared.CombatRules)
 local Assets = require(Root.Shared.UIAssets)
 local Art, Binder = Assets.hangar, Assets.hangarShelf
 local Looks = require(Root.Shared.LooksRules)
+local Commerce = require(Root.Generated.Commerce)
 local PaperUI = require(script.Parent.PaperUI)
 local PlaneLooks = require(script.Parent.PlaneLooks)
 local Customize = {}
@@ -32,6 +33,17 @@ local BINDER_X, BINDER_Y, PAGE_W, PAGE_H = 20, 165, 630, 920
 -- so the stats paper beside it can be bigger (Alan 2026-11-09). The stats paper, Save and Fly are on the full sheet.
 Customize.BINDER_SCALE = 0.95
 local PHOTO = { 75, 250, 530, 635 } -- the 3D plane on the left page, above its name tape
+-- Six flight photos per sheet, arranged in rows of two. Each comes from its approved trail preview.
+local TRAIL_PHOTOS = {}
+for _, sheet in {
+	{ "rbxassetid://112345268190621", "chalk_dust", "confetti", "music_notes", "mini_planes", "gold_stars", "folded_petals" },
+	{ "rbxassetid://87675233226361", "stardust", "goo_bubbles", "rainbow_marker", "glitch_pixels", "storm_sparks", "circuit_trace" },
+	{ "rbxassetid://127519253431152", "smoke_bomb", "backfire", "photo_finish", "silver_chaff", "water_spray", "dragon_embers" },
+} do
+	for i = 2, #sheet do
+		TRAIL_PHOTOS[sheet[i]] = { image = sheet[1], offset = Vector2.new((i - 2) % 2 * 512 + 2, math.floor((i - 2) / 2) * 320 + 2) }
+	end
+end
 
 -- ctx comes from Hangar: state, builder, draft, profile, range, dev, owned(part), choose(pick, ...),
 -- placeWeapon(id), statSheet(stats, compare, x, y, w, kind, note), preview(draft, box, diagram), nameTag(...), save(fly),
@@ -78,36 +90,41 @@ local function lift(root, z)
 end
 
 -- Skins and Trails pages. Cards are Gear's wide, short ones, five rows showing; more than ten scroll inside the page
--- (13 skins from 2026-11-16). Clicking a card tries it on the plane photo, then Wear (owned), Buy (Paper) or Unlock now
--- (Robux, when you're short of Paper).
+-- so each finished look stays reachable. Shape skins come first.
 local TIER = { common = "Common", rare = "Rare", legendary = "Legendary", mythical = "Mythical", trail = "Trail" }
 local function lookList(slot)
 	local list = {}
-	for _, entry in slot == "skin" and Looks.config().skins or Looks.config().trails do table.insert(list, Looks.item(entry.id)) end
+	if slot == "skin" then
+		for _, tier in { "legendary", "mythical", "common", "rare" } do
+			for _, entry in Looks.config().skins do
+				if entry.tier == tier then table.insert(list, Looks.item(entry.id)) end
+			end
+		end
+	else
+		for _, entry in Looks.config().trails do table.insert(list, Looks.item(entry.id)) end
+	end
 	return list
 end
 local function saved(ctx) return ctx.profile and ctx.profile.looks or { owned = {}, skin = "", trail = "" } end
-local function wearing(ctx, kind) -- Studio's dev try-on wins on your own screen
-	if kind == "skin" and PlaneLooks.devSkin ~= nil then return PlaneLooks.devSkin end
-	return saved(ctx)[kind] or ""
-end
 local function ownsLook(ctx, id) return saved(ctx).owned[id] == true end
 local function bundledWith(id) -- a matching trail comes with its skin
-	for _, entry in Looks.config().skins do if entry.trail == id then return entry.name end end
+	for _, entry in Looks.config().skins do if entry.trail == id then return Looks.item(entry.id) end end
 	return nil
 end
 -- The skin the plane photo wears: the card being tried on, else the one you wear.
 function Customize.shownSkin(ctx)
 	local trying = ctx.state.tryLook
 	if trying and trying.kind == "skin" then return trying.id end
-	local id = wearing(ctx, "skin")
+	local id = saved(ctx).skin
+	if ctx.state.slot ~= "skin" and ctx.state.slot ~= "trail" and PlaneLooks.devSkin ~= nil then id = PlaneLooks.devSkin end
 	return id ~= "" and id or nil
 end
 
 local function lookCards(content, ctx)
 	local state, image, words, button = ctx.state, PaperUI.image, PaperUI.words, PaperUI.button
-	local on = wearing(ctx, state.slot)
-	local list = lookList(state.slot)
+	local slot = state.slot
+	local on = saved(ctx)[slot] or ""
+	local list = lookList(slot)
 	-- The cards' own scrolling window (Roblox's ScrollingFrame), 14 wider all round than the cards for the try-on ring.
 	-- A redraw (every click) keeps its place: CanvasPosition is in screen pixels (as ShopScreen), stored as read.
 	local page = Instance.new("ScrollingFrame")
@@ -117,12 +134,14 @@ local function lookCards(content, ctx)
 	page.ScrollingDirection, page.ElasticBehavior = Enum.ScrollingDirection.Y, Enum.ElasticBehavior.Never
 	page.ScrollBarThickness, page.ScrollBarImageColor3 = 10, PaperUI.INK
 	page.Parent, content = content, page
+	local focusY
 	for i, item in list do
 		local x, y = 14 + (i - 1) % 2 * 272, 14 + math.floor((i - 1) / 2) * 126
+		if state.focusLook == item.id then focusY = y end
 		local worn = item.id == on
 		local card = button(content, item.id, worn and Art.cardSelectedWide or Art.cardWide, "", x, y, 262, 120, 0, function()
 			game.Players.LocalPlayer:SetAttribute("MenuMessage", nil)
-			state.tryLook = state.tryLook ~= item and not worn and item or nil
+			state.tryLook = state.tryLook ~= item and item or nil
 			ctx.render()
 		end)
 		if state.tryLook == item then
@@ -132,9 +151,9 @@ local function lookCards(content, ctx)
 		-- Inside the card picture's paper (9-87% across, 10-88% down), as the other cards.
 		local name = PaperUI.loud(words(card, "Name", item.name, 24, 12, 204, 32, 30))
 		name.TextScaled = true
-		local status = state.tryLook == item and "Trying it on" or worn and "Wearing" or ownsLook(ctx, item.id) and "Owned"
-			or item.upcomingSkin and "Upcoming: " .. item.upcomingSkin.name
-			or not item.sold and "Comes with " .. (bundledWith(item.id) or "its skin")
+		local matching = not item.sold and bundledWith(item.id)
+		local status = worn and "Wearing" or state.tryLook == item and (slot == "trail" and "Preview" or "Trying it on") or ownsLook(ctx, item.id) and "Owned"
+			or matching and "Comes with " .. matching.name
 			or string.format("%s Paper", PaperUI.commas(item.paper))
 		words(card, "Tier", TIER[item.tier], 24, 46, 204, 24, 24)
 		local line = words(card, "Status", status, 24, 72, 204, 34, 30)
@@ -145,8 +164,17 @@ local function lookCards(content, ctx)
 		end
 	end
 	state.lookScroll = state.lookScroll or {}
-	page.CanvasPosition = Vector2.new(0, state.lookScroll[state.slot] or 0)
-	page:GetPropertyChangedSignal("CanvasPosition"):Connect(function() state.lookScroll[state.slot] = page.CanvasPosition.Y end)
+	page.CanvasPosition = Vector2.new(0, state.lookScroll[slot] or 0)
+	page:GetPropertyChangedSignal("CanvasPosition"):Connect(function() state.lookScroll[slot] = page.CanvasPosition.Y end)
+	if focusY then
+		state.focusLook = nil
+		task.defer(function()
+			if page.Parent then
+				local scale = page.AbsoluteSize.Y / page.Size.Y.Offset
+				page.CanvasPosition = Vector2.new(0, math.max(0, focusY - 210) * scale)
+			end
+		end)
+	end
 end
 
 -- Under the cards: what the look is, then Wear / Buy / Unlock now and Cancel, or Take off. Returns the note line.
@@ -154,41 +182,58 @@ local function lookControls(content, ctx, about)
 	local state, button, kind, item = ctx.state, PaperUI.button, ctx.state.slot, ctx.state.tryLook
 	local player = game.Players.LocalPlayer
 	local function wear(id) -- the save keeps one skin and one trail; change just this one
-		local looks = saved(ctx)
-		ctx.api.action:FireServer("wearLook", { skin = kind == "skin" and id or looks.skin or "", trail = kind == "trail" and id or looks.trail or "" })
-		if ctx.profile and ctx.profile.looks then ctx.profile.looks[kind] = id end -- shown now; the next refresh confirms it
-		if kind == "skin" and PlaneLooks.devSkin ~= nil then PlaneLooks.setDevSkin(nil) end
+		ctx.api.action:FireServer("wearLook", { kind = kind, id = id })
+		if PlaneLooks.devSkin ~= nil then PlaneLooks.setDevSkin(nil) end
+		if player:GetAttribute("DevTrail") ~= nil then player:SetAttribute("DevTrail", nil) end
 		state.tryLook = nil
 		ctx.render()
 	end
 	if kind == "trail" then
-		about("Wear a trail to leave it behind every plane you fly.")
+		about(item and item.name or "Choose a trail to see its flight photo.")
 	elseif item then
-		about(string.format("%s: a %s skin. It changes how your plane looks, never how it flies or where it can be hit.", item.name, string.lower(TIER[item.tier])))
+		local trail = item.trail and Looks.item(item.trail)
+		about(item.name .. (trail and " comes with " .. trail.name .. "." or " changes the look of every plane you fly."))
 	else
-		about("Skins change how your plane looks, never how it flies or where it can be hit. Click one to try it on.")
+		about("Choose a skin to see it on your plane.")
 	end
 	if not item then
-		if wearing(ctx, kind) ~= "" then
+		if saved(ctx)[kind] ~= "" then
 			button(content, "TakeOff", Art.buttonRed, "Take off", 840, 980, 260, 70, -1, function() wear("") end, 46)
 		end
 		return nil
 	end
 	button(content, "CancelTry", Art.buttonRed, "Cancel", 995, 980, 240, 70, -1, function() state.tryLook = nil; ctx.render() end, 40)
-	if ownsLook(ctx, item.id) then
+	if item.id == saved(ctx)[kind] and PlaneLooks.devSkin == nil and player:GetAttribute("DevTrail") == nil then
+		button(content, "TakeOff", Art.buttonRed, "Take off", 735, 980, 240, 70, -1, function() wear("") end, 42)
+		return item.name .. " is equipped."
+	elseif ownsLook(ctx, item.id) then
 		button(content, "WearLook", Art.buttonGreen, "Wear", 735, 980, 240, 70, -1, function() wear(item.id) end, 46)
 		return item.name .. ": yours. Wear puts it on every plane you fly."
-	elseif item.upcomingSkin then
-		return string.format("%s comes with %s when that skin arrives.", item.name, item.upcomingSkin.name)
-	elseif not item.sold then -- (Studio's try-on is the "Dev: skin" button: Alan 2026-11-13, a card says Buy)
-		return string.format("%s comes with the %s skin.", item.name, bundledWith(item.id) or "matching")
+	elseif not item.sold then
+		local skin = bundledWith(item.id)
+		if skin then
+			button(content, "SeeSkin", Art.buttonGreen, "See skin", 735, 980, 240, 70, -1, function()
+				player:SetAttribute("MenuMessage", nil)
+				state.slot, state.tryLook, state.focusLook, state.turn = "skin", skin, skin.id, true
+				ctx.render()
+			end, 42)
+			return "Included with " .. skin.name .. "."
+		end
+		return nil
 	end
 	local paper = player:GetAttribute("Paper") or 0
-	if paper < item.paper then -- short of Paper: the Robux way in Buy's place (as a part above your level)
-		PaperUI.robuxButton(content, "UnlockNow", 695, 975, 290, 80, "Unlock now", item.robux, 38, function()
-			ctx.api.action:FireServer("buyProduct", "look_" .. item.id)
-		end)
-		return string.format("%s: %s Paper. You need %s more, or unlock it now.", item.name, PaperUI.commas(item.paper), PaperUI.commas(item.paper - paper))
+	if paper < item.paper then
+		if Commerce.mode == "live" and Commerce.live_sales_authorized then
+			for _, offer in Commerce.products do
+				if offer.look_id == item.id and offer.enabled then
+					button(content, "UnlockNow", Art.buttonGreen, "Buy with Robux", 695, 975, 290, 80, -1, function()
+						ctx.api.action:FireServer("buyProduct", offer.key)
+					end, 32)
+					break
+				end
+			end
+		end
+		return string.format("Earn %s more Paper in matches to buy %s.", PaperUI.commas(item.paper - paper), item.name)
 	end
 	button(content, "BuyLook", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
 		ctx.api.action:FireServer("buyLook", item.id)
@@ -200,10 +245,11 @@ function Customize.draw(content, ctx)
 	local image, words, button = PaperUI.image, PaperUI.words, PaperUI.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
 	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 400, 21, 900, 123) -- the tape's own shape
-	PaperUI.loud(words(title, "Label", ctx.range and "Range Customize" or "Customize", 0, 0, 900, 123, ctx.range and 72 or 88)).TextXAlignment = Enum.TextXAlignment.Center
+	PaperUI.loud(words(title, "Label", ctx.classes and "Skins & trails" or ctx.range and "Range Customize" or "Customize", 0, 0, 900, 123, ctx.range and 72 or 88)).TextXAlignment = Enum.TextXAlignment.Center
 
 	-- Index tabs first so they tuck under the right page; the picked one sticks out further.
 	for i, tab in Customize.TABS do
+		if ctx.classes and tab.slot ~= "skin" and tab.slot ~= "trail" then continue end
 		local picked = tab.slot == state.slot
 		local t = button(content, "Tab" .. tab.slot, Binder.indexTab, tab.label, BINDER_X + 2 * PAGE_W - 80 + (picked and 30 or 0), 225 + (i - 1) * 100, 200, 88, 0,
 			function()
@@ -355,7 +401,13 @@ function Customize.draw(content, ctx)
 
 	-- Left page: the build's name, then the plane (the Gear page: a still diagram with a numbered tag on every mount).
 	local diagram = state.slot == "weapons" and not state.trying
-	ctx.nameTag(content, 115, 905, 450, 61, PaperUI.isPhone() and 50 or 40) -- the tape's own shape
+	if ctx.classes then
+		local tape = image(content, "NameTape", Assets.ingame.tapeLabel, 115, 905, 450, 61)
+		local name = words(tape, "BuildName", state.builds[state.preset].name, 30, 0, 390, 61, 40)
+		name.TextXAlignment = Enum.TextXAlignment.Center
+	else
+		ctx.nameTag(content, 115, 905, 450, 61, PaperUI.isPhone() and 50 or 40)
+	end
 	-- The plane as it would be with the card you're trying on: the same move Select makes, on a scratch copy; a part
 	-- you don't own yet is just swapped in.
 	local candidate = nil
@@ -380,7 +432,15 @@ function Customize.draw(content, ctx)
 			end
 		end
 	end
-	ctx.preview(candidate or draft, PHOTO, diagram, true, nil, content, Customize.shownSkin(ctx))
+	local trail = state.slot == "trail" and (state.tryLook and state.tryLook.id or saved(ctx).trail)
+	local photo = TRAIL_PHOTOS[trail]
+	if photo then
+		ctx.preview(draft, { 75, 250, 530, 312 }, false, true, nil, content, Customize.shownSkin(ctx))
+		local sample = image(content, "TrailPhoto", photo.image, 85, 584, 510, 287)
+		sample.ImageRectOffset, sample.ImageRectSize = photo.offset, Vector2.new(508, 286)
+	else
+		ctx.preview(candidate or draft, PHOTO, diagram, true, nil, content, Customize.shownSkin(ctx))
+	end
 	local valid, reason = builder:validate(draft)
 	local stats = ctx.catalog:deriveStats(draft)
 	local note = builder.message ~= "" and builder.message or (not valid and tostring(reason))
@@ -500,6 +560,7 @@ function Customize.draw(content, ctx)
 
 	-- Save, and a clearly separate second button: Save & fly at the desk (spends Paper, Alan 2026-10-17), Test in Range
 	-- in the Range (saves and drops you back in flying it, Alan 2026-10-20).
+	if ctx.classes then return end -- wearing a look saves immediately, even on a fixed preset
 	local second = ctx.range and "Test in Range" or ctx.atDesk() and "Save & fly - 120 Paper"
 	if second then
 		button(ctx.side, "SavePreset", Art.buttonGreen, "Save", MID - 300, 810, 280, 74, -1, function() ctx.save(false) end, 48)

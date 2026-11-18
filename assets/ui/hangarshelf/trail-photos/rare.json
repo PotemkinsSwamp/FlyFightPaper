@@ -1,0 +1,24 @@
+{
+  "path": "operations/cd1eba55-bf63-41aa-b3ec-119a50b992c4",
+  "operationId": "cd1eba55-bf63-41aa-b3ec-119a50b992c4",
+  "done": true,
+  "response": {
+    "path": "assets/87675233226361",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-18T06:28:13.909Z",
+    "assetId": "87675233226361",
+    "displayName": "FFP Hangar rare trail photos",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

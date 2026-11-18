@@ -925,6 +925,13 @@ function ShopScreen.new(playerGui, api)
 			sections.Featured = y * K
 			local starter = me:GetAttribute("StarterPackEnds")
 			y = (starter == nil or starter > now()) and featured(y) or nextPart(y, owned)
+		end
+		if not giftFor then
+			local browse = press(content, "BrowseLooks", Art.buyGreen, 337, y + 4, 957, y + 99, api.looks)
+			say(browse, "BrowseLabel", "Browse skins & trails", 32, 8, 588, 84, 47, { loud = true })
+			y += 115
+		end
+		if PREVIEW then
 			y = freeGift(y)
 			y = todaysParts(y, owned)
 		end
