@@ -111,6 +111,8 @@
     trace got a short branch and a third pad before upload so it could not be read as a bare zigzag; Claude checked its
     safety sheet and sent it to him after the upload. All 13 trails are now in the game.
 
+  - **Five new Legendaries, 2026-11-17.** Alan clarified that a trail is a continuous plume of small objects leaving the exhaust. He chose Ninja stars and smoke like a smoke bomb. He approved building that concept alongside water drops and foam for Shark Jet, tongues of flame for Hot Rod, silver chaff in vapor for Stealth, and checkered racing flags in tire smoke for Race Car.
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.

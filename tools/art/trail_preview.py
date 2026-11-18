@@ -43,6 +43,14 @@ def look(kind):
     if kind == "foil":
         b.inputs["Metallic"].default_value, b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 0.4, 0.32, 0.1; bumpy(7, 0.7)
     elif kind == "glow": b.inputs["Emission Strength"].default_value = 9
+    elif kind == "steel":
+        b.inputs["Metallic"].default_value = 0.70
+        b.inputs["Roughness"].default_value = 0.29
+        b.inputs["Emission Strength"].default_value = 0.12
+    elif kind == "incandescent":
+        nt.links.remove(b.inputs["Base Color"].links[0])
+        b.inputs["Base Color"].default_value = (0, 0, 0, 1)
+        b.inputs["Emission Strength"].default_value = 1.0
     elif kind in ("soft", "fire"):                                           # a round patch, lumpy at its rim, fading to nothing
         b.inputs["Roughness"].default_value, b.inputs["Emission Strength"].default_value = 1.0, 0.35
         if kind == "fire":                                                   # fire is its own light: its exact colour, not shaded by the sun
@@ -95,6 +103,41 @@ P = np.concatenate(pts); MID = to_bl((P.min(0) + P.max(0)) / 2); LENGTH = P[:, 2
 for ob in rig.children: ob.location = -MID                                    # the rig's origin is the plane's middle
 TAIL = Vector((0, -LENGTH / 2, 0))
 
+def matching_plane(skin):
+    rounds = {"ninja": "tail-10", "hot_rod": "whole-06", "race_car": "whole-09",
+              "shark": "chin-13", "stealth": "whole-06"}
+    folder = pa.ROOT / ".planning/skins" / skin / "build" / rounds[skin]
+    with bpy.data.libraries.load(str(folder / "model.blend")) as (src, dst):
+        assert "skin" in src.objects, folder
+        dst.objects = ["skin"]
+    plane = dst.objects[0]
+    sc.collection.objects.link(plane)
+    for starter_piece in list(rig.children):
+        bpy.data.objects.remove(starter_piece, do_unlink=True)
+    plane.parent = rig
+    plane.rotation_euler = (0, 0, -math.pi / 2)
+    plane.scale = (LENGTH,) * 3
+    plane.location = (0, LENGTH / 2, 0)
+    # Use the same approved atlas as the skin build. Preserve the model's UVs.
+    material = bpy.data.materials.new(skin)
+    material.use_nodes = True
+    shader = material.node_tree.nodes["Principled BSDF"]
+    texture = material.node_tree.nodes.new("ShaderNodeTexImage")
+    texture.image = bpy.data.images.load(str(pa.ROOT / ".planning/skins/safety/sheets" / (skin + "-color.png")))
+    material.node_tree.links.new(texture.outputs["Color"], shader.inputs["Base Color"])
+    shader.inputs["Roughness"].default_value = 0.62
+    plane.data.materials.clear()
+    plane.data.materials.append(material)
+    # Locate the aft face of the fuselage or Hot Rod nozzle, clear of scarves and fins.
+    with np.load(folder / "mesh.npz") as parts:
+        index = list(parts["names"]).index("nozzle" if skin == "hot_rod" else "body")
+        vertices = parts["V"][np.unique(parts["T"][parts["part"] == index])]
+    aft = vertices[vertices[:, 0] > vertices[:, 0].max() - 0.012]
+    return Vector((0, (0.5 - aft[:, 0].max()) * LENGTH, np.median(aft[:, 2]) * LENGTH))
+
+if SPEC.get("preview_skin"):
+    TAIL = matching_plane(SPEC["preview_skin"])
+
 def flat(color, rough=0.9):
     m = bpy.data.materials.new("flat"); m.use_nodes = True; b = m.node_tree.nodes["Principled BSDF"]; b.inputs["Base Color"].default_value = lin(color); b.inputs["Roughness"].default_value = rough; return m
 bpy.ops.mesh.primitive_plane_add(size=6000, location=(0, 1500, 0)); floor = bpy.context.object; fm = flat((150, 160, 150)); floor.data.materials.append(fm)
@@ -134,6 +177,13 @@ looks, pools, lamps = {}, [], []
 for piece in SPEC.get("pieces", []):
     me = trail_pieces.mesh(piece["model"])
     me.materials.append(looks.setdefault(piece["look"], look(piece["look"]))); pool = []
+    if "accent" in piece:
+        accent = look(piece["look"])
+        shader = accent.node_tree.nodes["Principled BSDF"]
+        for socket in ("Base Color", "Emission Color"):
+            accent.node_tree.links.remove(shader.inputs[socket].links[0])
+            shader.inputs[socket].default_value = lin(piece["accent"])
+        me.materials.append(accent)
     for _ in range(int(piece["rate"] * 1.6 * piece["life"][1]) + 6):
         ob = bpy.data.objects.new(piece["model"], me); sc.collection.objects.link(ob); pool.append(ob)
     pools.append(pool); mine = []
@@ -167,6 +217,8 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
     if f / FPS < CUT: eye, target, fov = p - nose * 24 + Vector((0, 0, 6)), p + nose * 60, 70      # shot 1: the game's chase camera
     else:                                                                    # shot 2: another player flying alongside, looking across
         side = nose.cross(Vector((0, 0, 1))).normalized(); eye, target, fov = p + side * 40 + nose * 4 + Vector((0, 0, 7)), p - nose * 24, 50
+        if SPEC.get("preview_skin"):
+            eye += side * 9
     aim(eye, target, fov); facing = cam.matrix_world.to_quaternion()
     for r, j, ob, uv in ribbons:                                             # a strip: one cross-line for each moment of the last second
         co, fade, mids, wide = [], [], [], []; strands = r.get("strands", 1)
@@ -193,10 +245,16 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             if piece.get("run"): at = at - q["nose"] * (piece["run"] * age)     # races back along the path, like a light along a wire
             if piece.get("jump"): at = at + q["right"] * (piece["jump"] * random.Random(int(q["seed"] * 1e6) + int(t * 8)).randint(-2, 2) / 2)   # snaps sideways 8 times a second
             if piece["model"] in CARDS: turn = facing @ Quaternion((0, 0, 1), (q["turn"] if piece.get("spin") else 0) + q["spin"] * age)
+            elif piece["model"] == "ninja_star":
+                # A tumbling coin motion. Vary the initial lean so adjacent stars show different faces.
+                tilt = 0.28 + 0.98 * math.sin(q["turn"] + q["spin"] * age)
+                turn = q["nose"].to_track_quat("Z", "Y") @ Quaternion((0, 1, 0), tilt) @ Quaternion((0, 0, 1), q["turn"] + q["spin"] * age)
             elif piece.get("align") == "grid": turn = q["grid"]                 # square to the plane as it was when the piece left
             elif piece.get("upright"): turn = Quaternion((0, 0, 1), q["turn"] + q["spin"] * age) @ Quaternion((1, 0, 0), math.pi / 2 + (q["seed"] - 0.5) * 0.5)   # stands up, turning like a sign
             elif piece.get("level"): turn = q["dir"].to_track_quat("X", "Z") @ Quaternion((1, 0, 0), (q["seed"] - 0.5) * 1.2)   # flies nose-first, right way up, banked a little
-            elif piece.get("align"): turn = Vector((1, 0, 0)).rotation_difference(q["dir"]) @ Quaternion((1, 0, 0), q["turn"])
+            elif piece.get("align"):
+                roll = q["turn"] + (q["spin"] * age if piece["model"] == "flame_tongue" else 0)
+                turn = Vector((1, 0, 0)).rotation_difference(q["dir"]) @ Quaternion((1, 0, 0), roll)
             else: turn = Quaternion(q["axis"], q["turn"] + q["spin"] * age)
             ob.matrix_world = Matrix.Translation(at) @ turn.to_matrix().to_4x4() @ Matrix.Diagonal((size, size, size, 1))
             color = q["color"]

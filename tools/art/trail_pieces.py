@@ -6,6 +6,7 @@ safety sheet:
 Name pieces after `--` to write only those (new ones waiting for upload). Only UPLOADED pieces are ever uploaded: the game
 makes the plain shapes itself, and draws smoke, sparkle dust and flat squares with Roblox's own particle pictures."""
 import math, random, sys
+import json
 from pathlib import Path
 import bpy, bmesh
 from mathutils import Vector, noise
@@ -92,6 +93,11 @@ def block(x, y, z):                                                         # pl
         for v in bmesh.ops.create_cube(bm, size=1.0)["verts"]: v.co = (v.co.x * x, v.co.y * y, v.co.z * z)
     return build
 def ball(bm): bmesh.ops.create_icosphere(bm, subdivisions=3, radius=0.5)
+def droplet(bm):
+    for vertex in bmesh.ops.create_icosphere(bm, subdivisions=2, radius=0.5)["verts"]:
+        x, y, z = vertex.co
+        width = 0.61 + 0.52 * x
+        vertex.co = (x, y * width, z * width + 0.14 * max(0, -x))
 def jog(bm):                                                                # a circuit-board trace: straight, a 45-degree step sideways, straight, a pad at each end
     box(bm, (-0.5, -0.115, -0.015), (-0.12, -0.085, 0.015)); box(bm, (-0.12, -0.115, -0.015), (0.12, -0.085, 0.015), 0.2 / 0.24); box(bm, (0.12, 0.085, -0.015), (0.5, 0.115, 0.015))
     box(bm, (-0.33, -0.085, -0.015), (-0.30, 0.07, 0.015))                    # a short branch to a third pad: reads as a circuit, never as a bare zigzag
@@ -100,6 +106,56 @@ def dart(bm):                                                               # a 
     nose, back = bm.verts.new((0.5, 0, 0)), bm.verts.new((-0.5, 0, 0)); bm.faces.new((nose, bm.verts.new((-0.5, 0, -0.17)), back))   # the keel you hold
     for side in (1, -1): bm.faces.new((nose, bm.verts.new((-0.5, side * 0.05, 0.0)), bm.verts.new((-0.5, side * 0.37, 0.04))))       # a wing each side
     bmesh.ops.solidify(bm, geom=bm.faces[:], thickness=0.02)
+def ninja_star(bm):
+    """Four-point cartoon emblem with a punched centre and a contrasting silver border."""
+    def ring(radii, z):
+        return [bm.verts.new((r * math.cos(i * math.tau / 8),
+                              r * math.sin(i * math.tau / 8), z)) for i, r in enumerate(radii)]
+    outlines = []
+    for sign in (1, -1):
+        hole = ring([0.076] * 8, sign * 0.037)
+        inset = ring([0.39, 0.15] * 4, sign * 0.037)
+        rim = ring([0.50, 0.19] * 4, sign * 0.021)
+        for i in range(8):
+            j = (i + 1) % 8
+            bm.faces.new((hole[i], hole[j], inset[j], inset[i]))
+            bm.faces.new((inset[i], inset[j], rim[j], rim[i])).material_index = 1
+        outlines.append((hole, rim))
+    for top, bottom in zip(*outlines):
+        for i in range(8):
+            j = (i + 1) % 8
+            bm.faces.new((top[i], top[j], bottom[j], bottom[i])).material_index = 1
+
+def racing_flag(bm):
+    """One curled sheet. Each face is a whole check, readable on either side."""
+    rows = []
+    for j in range(4):
+        row = []
+        for i in range(5):
+            u, v = i / 4, j / 3
+            row.append(bm.verts.new((-0.40 + u * 0.91, -0.12 + v * 0.56 + 0.06 * u,
+                                     u * 0.14 * math.sin(u * math.tau + v * 0.65))))
+        rows.append(row)
+    for j in range(3):
+        for i in range(4):
+            bm.faces.new((rows[j][i], rows[j][i + 1], rows[j + 1][i + 1],
+                          rows[j + 1][i])).material_index = (i + j) % 2
+    box(bm, (-0.45, -0.52, -0.026), (-0.40, 0.46, 0.026))
+
+def flame_tongue(bm):
+    """A curved lick of fire, with the narrow end pointing away from the nozzle."""
+    rings = []
+    for x, radius, curl in ((-0.50, 0.012, 0.14), (-0.27, 0.10, 0.04),
+                            (-0.05, 0.17, -0.04), (0.21, 0.20, 0), (0.48, 0.06, 0.01)):
+        rings.append([bm.verts.new((x, radius * math.cos(i * math.tau / 7),
+                                    curl + radius * math.sin(i * math.tau / 7))) for i in range(7)])
+    for left, right in zip(rings, rings[1:]):
+        for i in range(7):
+            j = (i + 1) % 7
+            bm.faces.new((left[i], left[j], right[j], right[i]))
+    bm.faces.new(rings[0])
+    bm.faces.new(rings[-1])
+
 def butterfly(bm):                                                          # a folded paper butterfly, wings up in a V, head along +x
     wing = ((0.12, 0.02), (0.38, 0.30), (0.30, 0.48), (0.05, 0.36), (-0.08, 0.42), (-0.30, 0.34), (-0.34, 0.14), (-0.12, 0.02))
     for side in (1, -1): bm.faces.new([bm.verts.new((x, side * y, 0.7 * y)) for x, y in wing])
@@ -108,6 +164,9 @@ MODELS = {"jog": (jog, False), "dart": (dart, False), "butterfly": (butterfly, F
           "heart": (heart, False), "note": (note, False), "notes": (notes, False), "petal": (petal, False), "curl": (curl, False), "ball": (ball, True),
           "cube": (block(1, 1, 1), False), "bar": (block(1, 0.045, 0.045), False), "strip": (block(1, 0.36, 0.02), False), "square": (soft, False),
           "star": (star, False), "flake": (flake, False), "puff": (puff, True), "bolt": (bolt, False), "shard": (shard, False), "spark": (spark, False), "soft": (soft, False)}
+
+MODELS.update(ninja_star=(ninja_star, False), racing_flag=(racing_flag, False), droplet=(droplet, True),
+              flame_tongue=(flame_tongue, True))
 
 if __name__ == "__main__":
     sc = bpy.context.scene
@@ -120,9 +179,29 @@ if __name__ == "__main__":
         ob = bpy.data.objects.new("t", cu); ob.location = (x, y, 0); sc.collection.objects.link(ob)
         ink = bpy.data.materials.get("ink") or bpy.data.materials.new("ink"); ink.diffuse_color = (0.05, 0.05, 0.08, 1); cu.materials.append(ink)
     names = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else list(UPLOADED)
-    assert all(n in UPLOADED for n in names), "only UPLOADED pieces"
+    legendary = names == ["legendary"]
+    if legendary:
+        drafts = json.loads((ROOT / "tools/art/trail_drafts.json").read_text(encoding="utf-8"))
+        names = ["ninja_star", "droplet", "flame_tongue", "racing_flag"]
+        styles = {p["model"]: p for trail in drafts["trails"].values() if "preview_skin" in trail
+                  for p in trail["pieces"] if p["model"] in names}
+    else:
+        assert all(n in UPLOADED for n in names), "unknown trail piece"
     for row, name in enumerate(names):
-        me = mesh(name); me.materials.append(grey)
+        me = mesh(name)
+        if legendary:
+            # One mesh and one material. Preserve the checks and star border as corner colours.
+            style = styles[name]
+            paint = me.color_attributes.new(name="Color", type="BYTE_COLOR", domain="CORNER")
+            for face in me.polygons:
+                rgb = style["accent"] if face.material_index else style["colors"][0]
+                # Water and flame take their changing colour from the trail at runtime.
+                if "accent" not in style:
+                    rgb = (255, 255, 255)
+                for loop in face.loop_indices:
+                    paint.data[loop].color_srgb = (*[c / 255 for c in rgb], 1)
+                face.material_index = 0
+        me.materials.append(grey)
         one = bpy.data.objects.new(name, me); sc.collection.objects.link(one)           # the upload: this one model, nothing else
         for o in bpy.data.objects: o.select_set(o is one)
         bpy.ops.export_scene.fbx(filepath=str(out / (name + ".fbx")), use_selection=True, object_types={"MESH"}, mesh_smooth_type="FACE")
@@ -130,10 +209,13 @@ if __name__ == "__main__":
         for col, (word, turn) in enumerate(views[1:], 1):
             ob = bpy.data.objects.new(name, me); ob.location = (1.5 * col, -1.6 * row, 0); ob.rotation_euler = turn; sc.collection.objects.link(ob)
             label(word, 1.5 * col, -1.6 * row - 0.78)
-    label("Trail pieces to upload (plain shapes, no pictures on them)", 3.0, 0.85, 0.16)
+    label("Legendary trail pieces" if legendary else "Trail pieces to upload (plain shapes, no pictures on them)", 3.0, 0.85, 0.16)
     cam = bpy.data.objects.new("cam", bpy.data.cameras.new("cam")); cam.data.type, cam.data.ortho_scale, cam.location = "ORTHO", 8.2, (3.0, 0.85 - 0.8 * len(names), 10); cam.data.sensor_fit = "HORIZONTAL"
     sc.collection.objects.link(cam); sc.camera = cam
     sc.render.engine = "BLENDER_WORKBENCH"; sh = sc.display.shading; sh.light, sh.color_type, sh.show_object_outline, sh.show_cavity, sh.show_shadows = "STUDIO", "MATERIAL", True, True, False
     sc.world = bpy.data.worlds.new("w"); sc.world.color = (1, 1, 1); sc.render.film_transparent = False; sc.view_settings.view_transform = "Standard"
-    sc.render.resolution_x, sc.render.resolution_y = 1640, int(200 * (1.6 * len(names) + 0.6)); sc.render.filepath = str(ROOT / ".planning/skins/trails/safety-sheet.png")
+    if legendary:
+        sh.color_type = "VERTEX"
+    sheet = "legendary-pieces.png" if legendary else "safety-sheet.png"
+    sc.render.resolution_x, sc.render.resolution_y = 1640, int(200 * (1.6 * len(names) + 0.6)); sc.render.filepath = str(ROOT / ".planning/skins/trails" / sheet)
     bpy.ops.render.render(write_still=True); print("DONE", ", ".join(names))

@@ -180,6 +180,21 @@ and "made by" are out of date.
   (foil stars, flakes, sparkle dust), Storm Sparks (thick soft smoke lit from inside by lightning), Holo Rainbow (thick
   soft rainbow smoke, the colours running through three times along the stream, foil flakes and sparkles). A trail must
   read as one thick body: a turning ribbon, wound cords, cotton balls and sparse crystals were all turned down.
+
+### Five new Legendary trails
+
+Alan approved the concepts on 2026-11-17. Each draft runs on its matching plane model, with one continuous plume leaving the exhaust. The videos use the same eight-second flight as the earlier trail previews. Both the chase and side views show cruise and boost. The combined reel is `legendary-trails.mp4` and the four new model shapes are on `legendary-pieces.png` in the same folder. Stealth reuses the existing strip. The new looks are awaiting Alan's video review before Roblox upload.
+
+| Skin | Blender preview in `.planning/skins/trails/` | What leaves the exhaust |
+|---|---|---|
+| Ninja | `smoke_bomb.mp4` | Four-point steel stars with silver rims spin through charcoal smoke. |
+| Shark Jet | `water_spray.mp4` | Teal drops and pale foam fall away from the spray. |
+| Hot Rod | `backfire.mp4` | Curved flame tongues cool from yellow to orange and red. |
+| Stealth | `silver_chaff.mp4` | Silver foil tumbles through faint blue-gray vapor. |
+| Race Car | `photo_finish.mp4` | Little checkered flags turn in white tire smoke. |
+
+### Drawing and checks
+
 - **How it is drawn (Claude's method, changed after the first videos):** every trail has the same bones. A **ribbon**
   (Roblox calls it a Trail) is a strip laid along the path just flown; it can be laid turning, like a streamer.
   **Pieces** are small 3D models (a folded foil star, a foil flake, a cotton puff, a lightning fork) dropped behind,

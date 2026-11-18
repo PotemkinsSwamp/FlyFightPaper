@@ -6,7 +6,7 @@
 - **Tests: 672 passed, 0 failed** in Play after the fixes. Your screen sleeps after 60 idle seconds and Studio stops drawing: I keep it awake with a one-pixel mouse nudge during a Play that must draw (your word, 2026-11-16) and stop it after.
 
 # Now: finish the game for the beta
-**The Legendary skins.** Alan approved the Ninja preview and its addition to the game. Shark Jet, Stealth, Hot Rod and Race Car have approved Blender movement previews and still need their effect textures checked before upload. Alan wants to discuss matching trail concepts for these five before deciding how to make them. The other four skins, the 13-trail shop list, Hangar trail previews and the Galaxy plus Circuit Trace frame rate are still on the list.
+**The Legendary skins.** Alan approved the Ninja preview and its addition to the game. Shark Jet, Stealth, Hot Rod and Race Car have approved Blender movement previews and still need their effect textures checked before upload. Alan approved the five exhaust plume concepts. Their [motion previews](../docs/plan/SKINS-PLAN.md#five-new-legendary-trails) are ready for his look before Roblox upload. The other four skins, the 13-trail shop list, Hangar trail previews and the Galaxy plus Circuit Trace frame rate are still on the list.
 Dragon leftovers: crash ball and shop card pictures, jaw leftover. Queued: Toilet Roll shake, missions, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
