@@ -25,7 +25,7 @@ Flight feel, combat, visuals and frame rate are checked by playing in Studio:
   through a fly-through hole, window side, chalkboard wall, chase cam in a dogfight, hangar. The latest set is in the
   git-ignored `captures/` folder. Compare against the reference picture and the previous set.
 - F9 shows the performance overlay; see [Performance](../systems/performance.md).
-- **The Studio account** owns everything at level 34 with 100,000 Paper (nothing is saved in Studio). To see what a
+- **The Studio account** owns everything (every part, skin and trail, Alan 2026-11-18) at level 34 with 100,000 Paper (nothing is saved in Studio). To see what a
   new player sees (buy buttons, locked parts), press the dev switch at the bottom right in Play (Studio only, Alan
   2026-11-12): it flips between everything unlocked and a level account (workspace `DevAccountLevel`, default 12;
   `DevAccountPaper`, default 3,000), which comes back as you left it. Setting `DevAccountLevel` in Edit starts Play on

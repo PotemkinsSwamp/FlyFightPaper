@@ -9,6 +9,7 @@ local ProfileStore=require(script.Parent.Packages.ProfileStore)
 local Profile=require(script.Parent.ProfileService)
 local CosmeticOwners=require(script.Parent.CosmeticOwners)
 local Schema=require(Root.Shared.ProfileSchema)
+local Looks=require(Root.Shared.LooksRules)
 local Economy=require(Root.Shared.EconomyRules)
 local Commerce=require(Root.Shared.CommerceRules)
 local Gameplay=require(Root.Generated.Gameplay)
@@ -245,18 +246,21 @@ function Runtime:process(e)
  return true
 end
 -- Studio test accounts (self.mock is only true in Studio; live saves never get these).
--- everything (Alan, 2026-10-08): every part owned at max level with plenty of Paper, so every build can be saved and
+-- everything (Alan, 2026-10-08; skins and trails 2026-11-18): every part, skin and trail owned at max level with plenty of Paper, so every build can be saved and
 -- tested. Its unlocks count as opened (Alan 2026-11-12: the unsaved test account opened a 34-item backpack every Play;
 -- test the backpack with the DevUnlock / DevLevelUp attributes, UnlockMoment.luau).
 -- A level account (Alan 2026-11-12, to see the buy buttons): workspace DevAccountLevel (default 12) and DevAccountPaper
 -- (default 3,000): that level, only its free gear, that Paper.
 -- Alan's Studio-only dev button (DevTools) switches between them in Play; the level account comes back as he left it.
-local KEPT={"xpMilli","paperMilli","unlocksSeen","ownership","presets"}
+local KEPT={"xpMilli","paperMilli","unlocksSeen","ownership","presets","looks"}
 function Runtime:devAccount(e,everything)
  local data=e.profile.Data
  if everything then
   if e.player:GetAttribute("DevAll")==false then e.devLevel={};for _,key in KEPT do e.devLevel[key]=data[key] end end
   data.ownership=table.clone(data.ownership);data.presets=assert(Schema.copy(data.presets))
+  -- every skin and trail too (Alan 2026-11-18), keeping what is worn
+  local owned={};for _,list in ipairs({Looks.config().skins,Looks.config().trails}) do for _,look in ipairs(list) do owned[look.id]=true end end
+  data.looks={owned=owned,skin=data.looks.skin,trail=data.looks.trail}
   for _,list in ipairs({self.catalog.weapons,self.catalog.utilities}) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
   for _,list in pairs(self.catalog.structuresBySlot) do for _,part in ipairs(list) do data.ownership[part.id]=true end end
   data.xpMilli=math.max(data.xpMilli,60000000);data.paperMilli=math.max(data.paperMilli,100000000)
@@ -268,7 +272,7 @@ function Runtime:devAccount(e,everything)
   local want,lo,hi=math.clamp(math.floor(tonumber(workspace:GetAttribute("DevAccountLevel")) or 12),1,50),0,1e12
   while lo<hi do local mid=(lo+hi)//2; if (Economy.levelForXP(mid) or 1)>=want then hi=mid else lo=mid+1 end end
   data.xpMilli=lo;data.paperMilli=math.floor(tonumber(workspace:GetAttribute("DevAccountPaper")) or 3000)*1000
-  data.unlocksSeen=math.max(1,Economy.levelForXP(lo) or 1);data.ownership=fresh.ownership;data.presets=fresh.presets
+  data.unlocksSeen=math.max(1,Economy.levelForXP(lo) or 1);data.ownership=fresh.ownership;data.presets=fresh.presets;data.looks=fresh.looks
  end
  if not everything then e.devLevel=nil end
  e.player:SetAttribute("DevAll",everything)
