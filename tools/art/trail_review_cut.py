@@ -46,6 +46,21 @@ def main():
     with tempfile.TemporaryDirectory() as work:
         work = Path(work)
         strip = work / "captions.png"
+        if sys.argv[1:] == ["continuity"]:
+            pairs = (
+                ("Race Car", "Steel grains", "Grinding sparks", "photo_finish-scrape", "photo_finish-grind"),
+                ("Stealth", "Air pockets", "Continuous wake", "silver_chaff-cloak", "silver_chaff-stream"),
+            )
+            segments = []
+            for skin, old, new, first, second in pairs:
+                segment = work / (first + ".mp4")
+                compare_pair(OUTPUT/(first+".mp4"), OUTPUT/(second+".mp4"), skin, old, new, segment, strip)
+                segments.append(f"file '{segment.as_posix()}'\n")
+            playlist = work / "shots.txt"
+            playlist.write_text("".join(segments), encoding="utf-8")
+            ffmpeg("-f", "concat", "-safe", 0, "-i", playlist, "-c", "copy", "-movflags", "+faststart",
+                   OUTPUT / "sparks-and-cloak-comparison.mp4")
+            return
         if sys.argv[1:] == ["shark"]:
             compare_pair(OUTPUT/"water_spray-breakers.mp4",OUTPUT/"water_spray-jet.mp4","Shark Jet",
                          "Breaking wave","Rolling jet",OUTPUT/"shark-wake.mp4",strip)

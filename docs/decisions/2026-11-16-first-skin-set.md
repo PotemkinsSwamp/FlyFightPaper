@@ -119,6 +119,8 @@
 
   - Alan approved Shark Jet B, the rolling water jet with the hinged bite. Race Car keeps its twin tire tracks. The sparks need a metallic glow, more jump and less regular spacing. For Stealth he chose Cloaking Wake, with pockets of air that bend the view behind them.
 
+  - Alan said the Race Car sparks looked like confetti and asked for streaks that string together like grinding metal, with some randomness. He liked the look of Stealth's distortion and wants one continuous stream that bends the background.
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.

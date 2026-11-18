@@ -34,7 +34,7 @@ class Cloak:
         self.screens=[]
         self.image=None
 
-    def finish(self,material):
+    def finish(self,material,stream=False):
         nodes,links=material.node_tree.nodes,material.node_tree.links
         coord=nodes.new("ShaderNodeTexCoord")
         camera=nodes.new("ShaderNodeCameraData")
@@ -55,6 +55,19 @@ class Cloak:
         # Close pockets bend a few dozen pixels. Distant pockets displace only a few.
         depth=math_node("MAXIMUM",camera.outputs["View Z Depth"],3.4)
         strength=math_node("MINIMUM",0.085,math_node("DIVIDE",0.54,depth))
+        envelope = None
+        if stream:
+            fade = nodes.new("ShaderNodeAttribute")
+            fade.attribute_name = "wake_strength"
+            geometry = nodes.new("ShaderNodeNewGeometry")
+            angle = nodes.new("ShaderNodeVectorMath")
+            angle.operation = "DOT_PRODUCT"
+            links.new(geometry.outputs["Incoming"], angle.inputs[0])
+            links.new(geometry.outputs["Normal"], angle.inputs[1])
+            soft_edge = math_node("MINIMUM", 1, math_node("MULTIPLY", 4,
+                                  math_node("ABSOLUTE", angle.outputs["Value"], 0)))
+            envelope = math_node("MULTIPLY", fade.outputs["Fac"], soft_edge)
+            strength = math_node("MULTIPLY", strength, math_node("MULTIPLY", 1.6, envelope))
         offset=nodes.new("ShaderNodeVectorMath");offset.operation="MULTIPLY"
         links.new(normal.outputs[0],offset.inputs[0]);offset.inputs[1].default_value=(0.67,1,0)
         scale=nodes.new("ShaderNodeVectorMath");scale.operation="SCALE"
@@ -76,20 +89,73 @@ class Cloak:
         tint=nodes.new("ShaderNodeMixRGB")
         links.new(factor,tint.inputs[0]);links.new(film.outputs[0],tint.inputs[1]);tint.inputs[2].default_value=(0.65,0.16,1.65,1)
         emit=nodes.new("ShaderNodeEmission");links.new(tint.outputs[0],emit.inputs[0])
-        mix=nodes.new("ShaderNodeMixShader");links.new(info.outputs["Alpha"],mix.inputs[0])
+        mix=nodes.new("ShaderNodeMixShader");links.new(envelope if stream else info.outputs["Alpha"],mix.inputs[0])
         links.new(nodes.new("ShaderNodeBsdfTransparent").outputs[0],mix.inputs[1]);links.new(emit.outputs[0],mix.inputs[2])
         links.new(mix.outputs[0],nodes["Material Output"].inputs["Surface"])
 
-    def capture(self,scene,path):
+    def capture(self,scene,path,foreground=()):
         self.collection.hide_render=True
         scene.render.filepath=str(path)
-        bpy.ops.render.render(write_still=True)
-        self.collection.hide_render=False
+        visibility = [(obj, obj.hide_render) for obj in foreground]
+        try:
+            for obj, _ in visibility:
+                obj.hide_render = True
+            bpy.ops.render.render(write_still=True)
+        finally:
+            for obj, hidden in visibility:
+                obj.hide_render = hidden
+            self.collection.hide_render=False
         if self.image is None:
             self.image=bpy.data.images.load(str(path))
             for texture in self.screens: texture.image=self.image
         else:
             self.image.reload()
+
+
+class Stream:
+    """One continuous surface, swept down the jet's flight path."""
+    rings = 78
+    sides = 28
+
+    def __init__(self, cloak, material):
+        self.mesh = bpy.data.meshes.new("Cloaking wake")
+        faces = []
+        for i in range(self.rings - 1):
+            for j in range(self.sides):
+                k = (j + 1) % self.sides
+                base = i * self.sides
+                faces.append((base+j, base+k, base+k+self.sides, base+j+self.sides))
+        self.mesh.from_pydata([(0,0,0)] * (self.rings * self.sides), [], faces)
+        for face in self.mesh.polygons:
+            face.use_smooth = True
+        for name in ("cloak_perimeter", "wake_strength"):
+            self.mesh.attributes.new(name, "FLOAT", "POINT")
+        cloak.finish(material, stream=True)
+        self.mesh.materials.append(material)
+        cloak.collection.objects.link(bpy.data.objects.new("Refracting slipstream", self.mesh))
+
+    def pose(self, t, past):
+        coords, glints, strength = [], [], []
+        for i in range(self.rings):
+            k = i / (self.rings - 1)
+            _, tail, right, up, growth = past(t - k * 0.80)
+            phase = k * 22 - t * 3.9
+            width = (0.48 + 2.25 * (1 - math.exp(-16*k))) * (1 - k**2.4) * growth
+            height = width * (0.41 + 0.12 * math.sin(phase))
+            center = tail + right * width * 0.17 * math.sin(phase * 0.74) + up * height * 0.31 * math.cos(phase)
+            for j in range(self.sides):
+                angle = math.tau * j / self.sides
+                fold = 1 + 0.21 * math.cos(3*angle + phase) + 0.14 * math.sin(2*angle - phase*0.65)
+                point = center + right * (math.cos(angle) * width * fold)
+                point += up * height * (math.sin(angle)*fold + 0.35*math.cos(2*angle + phase))
+                coords.extend(point)
+                glints.append(0.15 * max(0, math.cos(2*angle + phase))**7)
+                strength.append(min(1, (1-k)*3.1) * min(1, 0.45 + k*22))
+        self.mesh.vertices.foreach_set("co", coords)
+        self.mesh.attributes["cloak_perimeter"].data.foreach_set("value", glints)
+        self.mesh.attributes["wake_strength"].data.foreach_set("value", strength)
+        self.mesh.update()
+
 def paper_floor(material):
     """Lines on the flight course give the lens a continuous reference during the chase shot."""
     nodes,links=material.node_tree.nodes,material.node_tree.links

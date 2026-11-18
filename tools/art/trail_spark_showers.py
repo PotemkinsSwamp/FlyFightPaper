@@ -78,6 +78,106 @@ def halo_geometry():
 
 
 @dataclass
+class SparkPath:
+    born: float
+    side: int
+    kick: float
+    lift: float
+    gravity: float
+    life: float
+    exposure: float
+    width: float
+    heat: float
+
+
+class GrindingFan:
+    steps = 10
+
+    def __init__(self, scene):
+        self.scene = scene
+        self.rng = random.Random(227)
+        self.next = {-1: -2, 1: -2}
+        self.sparks = []
+        self.pool = []
+        self.material = bpy.data.materials.new("Grinding spark from ember to white heat")
+        self.material.use_nodes = True
+        nodes, links = self.material.node_tree.nodes, self.material.node_tree.links
+        heat = nodes.new("ShaderNodeVertexColor")
+        heat.layer_name = "heat"
+        bulb = nodes.new("ShaderNodeEmission")
+        bulb.inputs["Strength"].default_value = 5
+        links.new(heat.outputs["Color"], bulb.inputs["Color"])
+        links.new(bulb.outputs[0], nodes["Material Output"].inputs["Surface"])
+        bloom(scene)
+
+    def emit(self, t):
+        r = self.rng
+        for side, due in self.next.items():
+            if t < due:
+                continue
+            self.next[side] = t + r.uniform(0.024, 0.085)
+            kick = r.uniform(9, 25)
+            lift = r.uniform(2, 13)
+            for _ in range(r.choices((2, 4, 9), weights=(4, 4, 2))[0]):
+                life = r.triangular(0.14, 0.58, 0.27)
+                self.sparks.append(SparkPath(t + r.uniform(0, 0.02), side,
+                    kick * r.uniform(0.57, 1.46), lift + r.uniform(-4, 6),
+                    r.uniform(48, 95), life, r.triangular(0.030, 0.14, 0.069),
+                    r.uniform(0.014, 0.039), r.uniform(0.63, 1)))
+
+    def new_strip(self):
+        mesh = bpy.data.meshes.new("Spark exposure")
+        mesh.from_pydata([(0, 0, 0)] * (2 * self.steps), [],
+            [(i, i + 1, i + 3, i + 2) for i in range(0, 2 * self.steps - 2, 2)])
+        mesh.color_attributes.new(name="heat", type="FLOAT_COLOR", domain="POINT")
+        mesh.materials.append(self.material)
+        obj = bpy.data.objects.new("Metal spark", mesh)
+        self.scene.collection.objects.link(obj)
+        return obj
+
+    def pose(self, t, eye, past):
+        self.sparks = [s for s in self.sparks if t < s.born + s.life]
+        visible = [s for s in self.sparks if t > s.born]
+        while len(self.pool) < len(visible):
+            self.pool.append(self.new_strip())
+        for i, obj in enumerate(self.pool):
+            obj.hide_render = i >= len(visible)
+            if obj.hide_render:
+                continue
+            s = visible[i]
+            age = t - s.born
+            exposure = min(age, s.exposure)
+            points, widths, colors = [], [], []
+            for j in range(self.steps):
+                u = j / (self.steps - 1)
+                a = age - exposure * (1 - u)
+                # Interpolate between flight samples, even for a spark younger than one substep.
+                # The hot steel carries some of the plane's forward momentum.
+                flight_time = t - 0.56*a
+                stamp, tail, right, up, _ = past(flight_time)
+                stamp2, tail2, _, _, _ = past(stamp + 0.015)
+                if stamp2 > stamp:
+                    tail = tail.lerp(tail2, min(1, max(0, (flight_time - stamp) / (stamp2 - stamp))))
+                travel = -math.expm1(-1.65 * a) / 1.65
+                points.append(tail + right * (s.side * (1.44 + travel * s.kick))
+                              + up * (-0.48 + travel * s.lift) - Vector((0, 0, s.gravity * a * a / 2)))
+                widths.append(s.width * (0.10 + 0.90 * u**0.65) * min(1, (s.life-age)*18)
+                              * (0.10 if j == self.steps-1 else 1))
+                heat = s.heat * (1 - 0.66 * age / s.life)
+                colors.extend((heat * (0.13 + 0.87*u), heat**2 * (0.035 + 0.76*u**2),
+                               heat**3 * (0.001 + 0.23*u**5), 1) * 2)
+            coords = []
+            for j, point in enumerate(points):
+                tangent = points[min(j+1, self.steps-1)] - points[max(0, j-1)]
+                edge = (eye-point).cross(tangent).normalized() * widths[j]
+                coords.extend(point-edge)
+                coords.extend(point+edge)
+            obj.data.vertices.foreach_set("co", coords)
+            obj.data.color_attributes["heat"].data.foreach_set("color", colors)
+            obj.data.update()
+
+
+@dataclass
 class Grain:
     born: float
     life: float

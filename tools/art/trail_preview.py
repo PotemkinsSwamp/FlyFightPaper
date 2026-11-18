@@ -29,6 +29,8 @@ if option:
         pieces = [p | overrides.get(p.get("layer", p["model"]), {}) for p in review["pieces"]]
     else:
         pieces = review["revisions"][option]
+        if isinstance(pieces, str):
+            pieces = review["revisions"][pieces]  # Two spark treatments can use the same tire tracks.
     SPEC = dict(SPEC, pieces=pieces)
     OUT = OUT / "legendary-review"
     OUT.mkdir(exist_ok=True)
@@ -192,11 +194,17 @@ ribbons = [(r, j) + ribbon_object(r, j) for r in SPEC.get("ribbons", []) for j i
 pools, lamps = [], []
 shower = None
 cloak = None
+filaments = None
+stream = None
+if option == "grind":
+    filaments = trail_spark_showers.GrindingFan(sc)
 if option in ("scrape","skip"):
     shower = trail_spark_showers.Shower(sc,trail_pieces.mesh("steel_fleck"),option=="skip")
-if option == "cloak":
+if option in ("cloak", "stream"):
     cloak = trail_cloak.Cloak(sc)
     trail_cloak.paper_floor(fm)
+    if option == "stream":
+        stream = trail_cloak.Stream(cloak, look("paper"))
 jaws = []
 if option in ("breakers", "jet"):
     jaw_mats = [flat(rgb) for rgb in ((35,87,101),(174,106,105),(255,249,213),(202,174,130),(53,55,68))]
@@ -244,6 +252,7 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
     t = n / (FPS * SUB) - LIFE - 0.2; v = speed(t); s += v / (FPS * SUB); g = growth(v)
     p, right, nose, up = frame_at(s, v); tail = p + right * TAIL.x + nose * TAIL.y + up * TAIL.z
     hist.append((t, tail, right, up, g))
+    if filaments: filaments.emit(t)
     if shower: shower.emit(t,tail,right,nose,up,v)
     for i, piece in enumerate(SPEC.get("pieces", [])):
         alive[i] = [q for q in alive[i] if t - q["born"] < q["life"]]
@@ -285,6 +294,8 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
         if SPEC.get("preview_skin"):
             eye += side * 9
     aim(eye, target, fov); facing = cam.matrix_world.to_quaternion()
+    if filaments: filaments.pose(t, eye, past)
+    if stream: stream.pose(t, past)
     if shower: shower.pose(t,facing)
     for jaw in jaws:
         trail_surf.pose_jaw(jaw,jaw.name=="upper_jaw",t,past,option)
@@ -371,7 +382,7 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             gone = piece.get("vanish", 0); ob.color = tuple(color[:3]) + ((1 - smooth((k - (1 - gone)) / gone)) if gone else 1.0,)
             if mine and size > 0 and lit < len(mine): mine[lit].location = at; mine[lit].data.energy = piece["light"]; lit += 1
         for lamp in mine[lit:]: lamp.data.energy = 0
-    if cloak: cloak.capture(sc,os.path.join(work,"clean.png"))
+    if cloak: cloak.capture(sc,os.path.join(work,"clean.png"),rig.children if stream else ())
     sc.render.filepath = os.path.join(work, "f%04d.png" % f) if not STILLS else str(OUT / ("%s-f%03d.png" % (TRAIL, f))); bpy.ops.render.render(write_still=True)
 if not STILLS:
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", os.path.join(work, "f%04d.png"), "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "18", str(OUT / (TRAIL + ".mp4"))], check=True)

@@ -205,9 +205,9 @@ The first five videos above are the original review. Alan wanted more texture an
 
 **Alan's picks and current review.** The approved looks are Ninja A, Hot Rod A and Shark Jet B. Shark Jet B is `water_spray-jet.mp4` in `.planning/skins/trails/legendary-review/`. Its rolling water jet carries the hinged bite with warm-rooted enamel teeth and spray.
 
-Race Car B keeps the twin tracks and tread scraps. The previous sparks looked like lines. The new `racing-sparks.mp4` compares irregular showers of hot steel with a version that leaves longer gaps and splits more often. The short arcs, hot cores and fading amber glow belong to the trail.
+Race Car B keeps the twin tracks and tread scraps. In [the grinding spark preview](../../.planning/skins/trails/legendary-review/photo_finish-grind.mp4), sparks fan out from two narrow points. Each hot tip traces an amber arc. Sparks from the same burst share a direction but vary in speed, length and cooling time. The motion reference was [metal grinding photographed at close range](https://industrial-maid.com/pages/machine-shop).
 
-Stealth's chosen concept is Cloaking Wake. In the `silver_chaff-cloak.mp4` Blender preview the renderer captures the scenery at every frame. Each swept-wing pocket samples the scenery with an offset that depends on the surface angle and distance to the camera. The ruled floor makes the distortion visible. Roblox rendering and performance still need to be checked after visual approval.
+In [the continuous Cloaking Wake preview](../../.planning/skins/trails/legendary-review/silver_chaff-stream.mp4), one rippling surface follows Stealth through the turn. It bends the background lines across its width and catches violet light on the folds. The Blender preview takes a clean view of the scenery for each frame. Roblox rendering and performance still need a separate check after visual approval.
 
 ### Drawing and checks
 
