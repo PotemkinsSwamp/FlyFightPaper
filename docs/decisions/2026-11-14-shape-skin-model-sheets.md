@@ -463,7 +463,7 @@
 - **Rebuilt movement approved** (Alan, 2026-11-17, "they looked good"): Stealth, Hot Rod, Race Car and Shark Jet.
   These are the videos made from the five actual layer pictures, with the approved preview above and the rebuilt
   version below (`.planning/skins/motion/<skin>/real/`). Alan wants the Ninja's animation pass next and suggested
-  making its scarf tails flow in flight.
+  making its scarf tails flow in flight. He then asked for the scarf to react to flight and for a shine to travel across the metal pieces on the wings.
 
 ## Why
 Concept pictures from one angle left the crane's builder guessing, and guessing cost three passes. A sheet with every

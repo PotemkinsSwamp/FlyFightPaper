@@ -6,6 +6,8 @@ The hangar opens on the build you fly; saving makes a build the one you fly next
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-14)
+
+- Ninja art update (2026-11-17). The Blender rig follows plane motion and the two wing blades catch a passing reflection. The local preview is under `.planning/skins/motion/ninja/`. Its Roblox fit and Play check are pending.
 **Skins (Studio only):** a plane with a `Skin` attribute (bots get one by difficulty from `FlightService`) is
 drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); the "Dev: skin" button tries the test
 skins on your plane. Boosters and the hangar photo wear it too. Players wear their saved skin (bought with Paper and
