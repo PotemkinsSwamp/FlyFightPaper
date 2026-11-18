@@ -460,6 +460,10 @@
 - **Ninja safety: "its safe i looked at it"** (Alan, 2026-11-17, before the reviewer reported). The reviewer agreed: colour picture
   low risk (one curled red sash piece alone on black beside the wing; no pinwheel, no group of hooks), bump picture safe. My own
   first read ("risky": red bent pieces on black) was too strong. Sheet: `.planning/skins/safety/sheets/ninja-sheet.jpg`.
+- **Rebuilt movement approved** (Alan, 2026-11-17, "they looked good"): Stealth, Hot Rod, Race Car and Shark Jet.
+  These are the videos made from the five actual layer pictures, with the approved preview above and the rebuilt
+  version below (`.planning/skins/motion/<skin>/real/`). Alan wants the Ninja's animation pass next and suggested
+  making its scarf tails flow in flight.
 
 ## Why
 Concept pictures from one angle left the crane's builder guessing, and guessing cost three passes. A sheet with every
