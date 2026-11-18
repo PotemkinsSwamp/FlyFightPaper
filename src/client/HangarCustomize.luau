@@ -9,7 +9,6 @@ local CombatRules = require(Root.Shared.CombatRules)
 local Assets = require(Root.Shared.UIAssets)
 local Art, Binder = Assets.hangar, Assets.hangarShelf
 local Looks = require(Root.Shared.LooksRules)
-local Commerce = require(Root.Generated.Commerce)
 local PaperUI = require(script.Parent.PaperUI)
 local PlaneLooks = require(script.Parent.PlaneLooks)
 local Chests = require(script.Parent.HangarChests)
@@ -75,21 +74,28 @@ local function capFor(label)
 	return label:FindFirstChildOfClass("UITextSizeConstraint") or Instance.new("UITextSizeConstraint", label)
 end
 
--- Skins and Trails pages. Cards are Gear's wide, short ones, five rows showing; more than ten scroll inside the page
--- so each finished look stays reachable. Shape skins come first.
-local TIER = { common = "Common", rare = "Rare", legendary = "Legendary", mythical = "Mythical", trail = "Trail" }
-local function lookList(slot)
-	local list = {}
-	if slot == "skin" then
-		for _, tier in { "legendary", "mythical", "common", "rare" } do
-			for _, entry in Looks.config().skins do
-				if entry.tier == tier then table.insert(list, Looks.item(entry.id)) end
-			end
+-- The divider and the cards share a tint. The printed heading also identifies the tier in grayscale.
+local TIERS = {
+	{ id = "common", label = "Common", tint = Color3.fromRGB(236, 235, 213) },
+	{ id = "rare", label = "Rare", tint = Color3.fromRGB(155, 218, 250) },
+	{ id = "legendary", label = "Legendary", tint = Color3.fromRGB(255, 195, 105) },
+	{ id = "mythical", label = "Mythical", tint = Color3.fromRGB(219, 169, 246) },
+}
+local function collectionLayout(slot)
+	local catalog = slot == "skin" and Looks.config().skins or Looks.config().trails
+	local cards, dividers, top = {}, {}, 10
+	for _, tier in TIERS do
+		local count = 0
+		for _, entry in catalog do
+			local item = Looks.item(entry.id)
+			if item.tier ~= tier.id then continue end
+			if count == 0 then table.insert(dividers, { tier = tier, y = top }); top += 66 end
+			table.insert(cards, { item = item, tint = tier.tint, x = 14 + count % 2 * 272, y = top + math.floor(count / 2) * 126 })
+			count += 1
 		end
-	else
-		for _, entry in Looks.config().trails do table.insert(list, Looks.item(entry.id)) end
+		if count > 0 then top += math.ceil(count / 2) * 126 + 10 end
 	end
-	return list
+	return cards, dividers, top
 end
 local function saved(ctx) return ctx.profile and ctx.profile.looks or { owned = {}, skin = "", trail = "" } end
 local function ownsLook(ctx, id) return saved(ctx).owned[id] == true end
@@ -110,12 +116,10 @@ local function lookCards(content, ctx)
 	local state, image, words, button = ctx.state, ctx.ui.image, ctx.ui.words, ctx.ui.button
 	local slot = state.slot
 	local on = saved(ctx)[slot] or ""
-	local list = lookList(slot)
-	if slot == "skin" then
-		button(content, "TreasureChests", Binder.buttonOrange, "Treasure chests", 727, 212, 467, 88, -1, function()
-			Chests.show(ctx)
-		end, 44).ZIndex = 2
-	end
+	local list, dividers, height = collectionLayout(slot)
+	button(content, "TreasureChests", Binder.buttonOrange, slot == "trail" and "Trail chests" or "Skin chests", 727, 212, 467, 88, -1, function()
+		Chests.show(ctx, nil, slot)
+	end, 44).ZIndex = 2
 	-- The cards' own scrolling window (Roblox's ScrollingFrame), 14 wider all round than the cards for the try-on ring.
 	-- A redraw (every click) keeps its place: CanvasPosition is in screen pixels (as ShopScreen), stored as read.
 	local page = ctx.ui.instance(content, "Looks", "ScrollingFrame")
@@ -123,16 +127,22 @@ local function lookCards(content, ctx)
 	state.lookScroll = state.lookScroll or {}
 	if previousSlot and previousSlot ~= slot then state.lookScroll[previousSlot] = page.CanvasPosition.Y end
 	page.Name, page.BackgroundTransparency, page.BorderSizePixel = "Looks", 1, 0
-	local top = slot == "skin" and 311 or 222
+	local top = 311
 	page.Position, page.Size = UDim2.fromOffset(686, top), UDim2.fromOffset(580, 874 - top)
-	page.CanvasSize = UDim2.fromOffset(0, math.ceil(#list / 2) * 126 + 22)
+	page.CanvasSize = UDim2.fromOffset(0, height + 8)
 	page.ScrollingDirection, page.ElasticBehavior = Enum.ScrollingDirection.Y, Enum.ElasticBehavior.Never
 	page.ScrollBarThickness, page.ScrollBarImageColor3 = 10, PaperUI.INK
 	page.Parent, content = content, page
 	page.ZIndex = 2
 	local focusY
-	for i, item in list do
-		local x, y = 14 + (i - 1) % 2 * 272, 14 + math.floor((i - 1) / 2) * 126
+	for _, row in dividers do
+		local strip = image(page, "Divider_" .. row.tier.id, Assets.ingame.tapeLabel, 12, row.y, 542, 57)
+		strip.ScaleType, strip.ImageColor3 = Enum.ScaleType.Stretch, row.tier.tint
+		local heading = PaperUI.loud(words(strip, "Heading", row.tier.label, 38, 7, 464, 41, 38))
+		heading.TextXAlignment = Enum.TextXAlignment.Center
+	end
+	for _, row in list do
+		local item, x, y = row.item, row.x, row.y
 		if state.focusLook == item.id then focusY = y end
 		local worn = item.id == on
 		local card = button(content, item.id, worn and Art.cardSelectedWide or Art.cardWide, "", x, y, 262, 120, 0, function()
@@ -145,15 +155,13 @@ local function lookCards(content, ctx)
 			ring.ScaleType, ring.SliceCenter, ring.SliceScale, ring.ZIndex = Enum.ScaleType.Slice, Rect.new(48, 48, 432, 432), 0.5, 3
 		end
 		-- Inside the card picture's paper (9-87% across, 10-88% down), as the other cards.
-		local name = PaperUI.loud(words(card, "Name", item.name, 24, 12, 204, 32, 30))
+		local name = PaperUI.loud(words(card, "Name", item.name, 24, 17, 204, 42, 35))
 		name.TextScaled = true
-		local locked = slot == "skin" and not ownsLook(ctx, item.id)
-		card.ImageColor3 = locked and LOCKED_TINT or Color3.new(1, 1, 1)
+		local locked = not ownsLook(ctx, item.id)
+		card.ImageColor3 = locked and row.tint:Lerp(LOCKED_TINT, 0.64) or row.tint
 		local matching = slot == "trail" and not item.sold and bundledWith(item.id)
 		local status = worn and "Wearing" or state.tryLook == item and (slot == "trail" and "Preview" or "Trying it on") or ownsLook(ctx, item.id) and "Owned"
-			or locked and "In chests" or matching and "Comes with " .. matching.name
-			or string.format("%s Paper", PaperUI.commas(item.paper))
-		words(card, "Tier", TIER[item.tier], 24, 46, 204, 24, 24)
+			or matching and "Comes with " .. matching.name or "In chests"
 		if locked then padlock(ctx.ui, card, 26, 74, 27) end
 		local line = words(card, "Status", status, locked and 53 or 24, 72, locked and 175 or 204, 34, 30)
 		line.TextScaled = true
@@ -209,7 +217,7 @@ local function lookControls(content, ctx, about)
 		return nil
 	end
 	local prize = state.chestReward and state.chestReward.skin == item
-	button(content, "CancelTry", Art.buttonRed, prize and "See skins" or "Cancel", 995, 980, 240, 70, -1, function()
+	button(content, "CancelTry", Art.buttonRed, prize and (kind == "skin" and "See skins" or "See trails") or "Cancel", 995, 980, 240, 70, -1, function()
 		state.tryLook, state.chestReward = nil, nil
 		ctx.render()
 	end, 40)
@@ -219,48 +227,27 @@ local function lookControls(content, ctx, about)
 	elseif ownsLook(ctx, item.id) then
 		button(content, "WearLook", Art.buttonGreen, "Wear", 735, 980, 240, 70, -1, function() wear(item.id) end, 46)
 		return item.name .. ": yours. Wear puts it on every plane you fly."
-	elseif kind == "skin" then
-		button(content, "FindChest", Art.buttonGreen, "Find in chests", 735, 980, 240, 70, -1, function()
-			Chests.show(ctx, item.tier)
-		end, 31)
-		return nil
-	elseif not item.sold then
-		local skin = bundledWith(item.id)
-		if skin then
-			button(content, "SeeSkin", Art.buttonGreen, "See skin", 735, 980, 240, 70, -1, function()
-				player:SetAttribute("MenuMessage", nil)
-				state.slot, state.tryLook, state.focusLook, state.turn = "skin", skin, skin.id, true
-				ctx.render()
-			end, 42)
-			return "Included with " .. skin.name .. "."
-		end
-		return nil
 	end
-	local paper = player:GetAttribute("Paper") or 0
-	if paper < item.paper then
-		if Commerce.mode == "live" and Commerce.live_sales_authorized then
-			for _, offer in Commerce.products do
-				if offer.look_id == item.id and offer.enabled then
-					button(content, "UnlockNow", Art.buttonGreen, "Buy with Robux", 695, 975, 290, 80, -1, function()
-						ctx.api.action:FireServer("buyProduct", offer.key)
-					end, 32)
-					break
-				end
-			end
-		end
-		return string.format("Earn %s more Paper in matches to buy %s.", PaperUI.commas(item.paper - paper), item.name)
+	local skin = kind == "trail" and bundledWith(item.id)
+	if skin then
+		button(content, "SeeSkin", Art.buttonGreen, "See skin", 735, 980, 240, 70, -1, function()
+			player:SetAttribute("MenuMessage", nil)
+			state.slot, state.tryLook, state.focusLook, state.turn = "skin", skin, skin.id, true
+			ctx.render()
+		end, 42)
+		return "Included with " .. skin.name .. "."
 	end
-	button(content, "BuyLook", Art.buttonGreen, "Buy", 735, 980, 240, 70, -1, function()
-		ctx.api.action:FireServer("buyLook", item.id)
-	end, 46)
-	return string.format("%s: %s Paper.", item.name, PaperUI.commas(item.paper))
+	button(content, "FindChest", Art.buttonGreen, "Find in chests", 735, 980, 240, 70, -1, function()
+		Chests.show(ctx, item.tier, kind)
+	end, 31)
+	return nil
 end
 
 function Customize.draw(content, ctx)
 	local image, words, button = ctx.ui.image, ctx.ui.words, ctx.ui.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
 	Chests.receive(ctx)
-	local prize = state.chestReward and state.slot == "skin" and state.tryLook == state.chestReward.skin
+	local prize = state.chestReward and state.tryLook == state.chestReward.skin
 	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 400, 21, 900, 123) -- the tape's own shape
 	PaperUI.loud(words(title, "Label", ctx.classes and "Skins & trails" or ctx.range and "Range Customize" or "Customize", 0, 0, 900, 123, ctx.range and 72 or 88)).TextXAlignment = Enum.TextXAlignment.Center
 
@@ -577,7 +564,7 @@ function Customize.draw(content, ctx)
 
 	-- Save, and a clearly separate second button: Save & fly at the desk (spends Paper, Alan 2026-10-17), Test in Range
 	-- in the Range (saves and drops you back in flying it, Alan 2026-10-20).
-	if state.chestPanel and state.slot == "skin" then Chests.draw(ctx) end
+	if state.chestPanel and looks then Chests.draw(ctx) end
 	if ctx.classes then return end -- wearing a look saves immediately, even on a fixed preset
 	local second = ctx.range and "Test in Range" or ctx.atDesk() and "Save & fly - 120 Paper"
 	if second then

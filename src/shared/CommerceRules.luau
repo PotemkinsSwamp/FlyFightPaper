@@ -7,6 +7,12 @@ local Rules = {}
 local MAX = 9007199254740991
 Rules.MATCH_DOUBLE_STEPS = table.freeze({10,15,25,35,49,69,99,149,199,249,299})
 local expected = {}
+local chestKeys = {}
+for _, chest in Looks.config().chests do
+    local key="chest_"..chest.id
+    expected[key]={kind="developer_product", benefit="chest_stock"}
+    chestKeys[key]=chest.id
+end
 for _, resource in ipairs({"xp", "paper"}) do
     for _, minutes in ipairs({15, 30, 60, 180, 300}) do
         expected[resource .. "_boost_" .. minutes .. "m"] = {kind="developer_product", benefit=resource .. "_seconds", amount=minutes*60}
@@ -41,6 +47,16 @@ end
 function Rules.isMatchDoubleKey(key)
     local offer=type(key)=="string" and expected[key]
     return offer and offer.benefit=="match_double" or false
+end
+-- The saved next slot ranges from 1 to 28. The six ordinary gifts repeat each week.
+function Rules.dailyGiftDay(gift, today)
+	if today == gift.lastDay then return (gift.next - 2) % 28 + 1 end
+	if gift.lastDay >= 0 and today > gift.lastDay + 1 then return 1 end
+	return gift.next
+end
+function Rules.dailyGiftReward(day)
+	if day % 7 == 0 then return {chest=EconomyConfig.daily_gift.chests[day/7]} end
+	return EconomyConfig.daily_gift.rewards[(day-1)%7+1]
 end
 function Rules.starterPackEnds(profile,now)
     local pack=profile.starterPack
@@ -110,10 +126,10 @@ function Rules.catalog(config)
         local idNull, priceNull = p.roblox_product_id==JSON.Null, p.approved_robux_price==JSON.Null
         if (not idNull and not Rules.positiveInteger(p.roblox_product_id))
             or (not priceNull and not Rules.positiveInteger(p.approved_robux_price))
-            or (idNull~=priceNull and not (look and idNull and not priceNull and p.enabled==false))
+            or (idNull~=priceNull and not ((look or chestKeys[p.key]) and idNull and not priceNull and p.enabled==false))
             or (p.enabled and idNull) then return nil,"invalid_mapping" end
         local offer=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,catalogID=p.catalog_id,
-            lookID=p.look_id,
+            lookID=p.look_id,chestID=chestKeys[p.key],
             enabled=p.enabled,productID=not idNull and p.roblox_product_id or nil,
             approvedPrice=not priceNull and p.approved_robux_price or nil})
         if offer.productID then
@@ -140,6 +156,7 @@ function Rules.operation(offer,source,version)
     if Rules.giftBase(offer.key) then return table.freeze({kind="giftSent"}) end
     if offer.benefit=="part_unlock" then return table.freeze({kind="partUnlock",catalogID=offer.catalogID}) end
     if offer.benefit=="look_unlock" then return table.freeze({kind="lookUnlock",lookID=offer.lookID}) end
+    if offer.benefit=="chest_stock" then return table.freeze({kind="paidChest",chest=offer.chestID}) end
     if offer.benefit=="starter_pack" then return table.freeze({kind="starterPack"}) end
     if offer.benefit=="paper_jar" then return table.freeze({kind="paperJar"}) end
     if offer.benefit=="match_double" then

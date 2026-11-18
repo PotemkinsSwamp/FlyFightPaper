@@ -1,6 +1,6 @@
 # Shop money plan: the funnel
 
-**Status:** approved 2026-11-12 (Alan: "great ideas, I like them"); the offer chain stays for later. Nothing built yet. Builds on his
+**Status:** approved 2026-11-12 (Alan: "great ideas, I like them"); the offer chain stays for later. See the [shop system](../systems/economy-and-shop.md) for the implemented offers. Builds on his
 [personal shop picks](../decisions/2026-11-12-personal-shop-picks.md) and the
 [shop prices plan](SHOP-PRICES-PLAN.md) (packs, part prices and boosts stay as approved unless a line here changes them).
 
@@ -9,17 +9,12 @@ Walk a player from **free** to **a first small buy** to **buying for a goal** to
 to come back and buy again. Each step below is one tool on that path; Alan ticks the ones he wants.
 
 ## 1. Free: get them into the shop
-- [ ] **Free daily gift (J), a 7-day row of gifts.** Day 1: 100 Paper. Day 2: 150. Day 3: **15 minutes of 2x XP**.
-  Day 4: 250. Day 5: 300. Day 6: **15 minutes of 2x Paper**. Day 7: 1,000 Paper. Then it starts again. A missed day
-  doesn't reset the row (you just carry on). *The trick:* days 3 and 6 are free tastes of the boosts, so a player
-  feels 2x once before being asked to pay for it. (A whole week is about 1,800 Paper: a bit under 3 average matches.)
+- [x] **Free daily gift.** A seven-card row shows the current week in the 28-day streak. Days 3 and 6 give a taste of the timed boosts, and each full week awards a chest. [Daily gifts and chest milestones](../systems/economy-and-shop.md#classroom-treasure-chests).
 - [ ] **Your next part on the Featured card (F)** and **Today's parts (H)**: three parts from your next levels,
   changing every day at the same time for everyone, each with its Paper price and "Unlock now".
 
 ## 2. The first buy (the hard one)
-- [ ] **Starter pack (A) at 99 R$** (Swept Wings, 1,500 Paper, 1 hour 2x XP; worth 227 R$ bought apart, so "56% off"
-  is true). Only for players who haven't bought anything; a real 3-day timer, one buy only. 99 R$ is the bottom of
-  Roblox's 99-299 range: the cheapest first step. (149 R$ would still be 34% off, if Alan wants more per sale.)
+- [x] **Starter pack at 99 R$.** The first-purchase offer lasts three days and includes a Paper Skin chest. [Full bundle and purchase rules](../systems/economy-and-shop.md#products).
 - [ ] **First buy of each Paper pack: double Paper (B).** A "First buy: double!" sticker on each pack until you've
   bought it once (1,500 becomes 3,000, 15,000 becomes 30,000). Every pack gets one first buy, so this pulls players up
   the ladder: having bought the small one, the next pack still has its double waiting.

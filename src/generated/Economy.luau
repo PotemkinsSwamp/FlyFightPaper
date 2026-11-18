@@ -11,6 +11,12 @@ return JSONTypes.map({
     ["currency_rounding"] = "sum exact internal milli-units, floor credited integer, retain residual",
     ["daily_gift"] = JSONTypes.map({
         ["boost_covered_paper"] = 250,
+        ["chests"] = JSONTypes.array({
+            [1] = "paper",
+            [2] = "sticker",
+            [3] = "blue_ribbon",
+            [4] = "golden_star",
+        }),
         ["rewards"] = JSONTypes.array({
             [1] = JSONTypes.map({
                 ["paper"] = 100,
@@ -31,7 +37,7 @@ return JSONTypes.map({
                 ["paper_seconds"] = 900,
             }),
             [7] = JSONTypes.map({
-                ["paper"] = 1000,
+                ["chest"] = true,
             }),
         }),
     }),
@@ -91,6 +97,7 @@ return JSONTypes.map({
     }),
     ["schema_version"] = 1,
     ["starter_pack"] = JSONTypes.map({
+        ["chest"] = "paper",
         ["offer_seconds"] = 259200,
         ["paper"] = 1500,
         ["part"] = "wings_1",

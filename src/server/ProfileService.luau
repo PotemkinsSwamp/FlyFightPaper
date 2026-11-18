@@ -37,6 +37,9 @@ local function validReceiptGrant(grant)
   if not Schema.integer(grant.wholePaper) or grant.wholePaper<1 then return false end
   if grant.packKey~=nil and Commerce.paperPackAmount(grant.packKey)~=grant.wholePaper then return false end
   fields={kind=true,wholePaper=true,packKey=true}
+ elseif grant.kind=="paidChest" then
+  if type(grant.chest)~="string" or not Looks.chest(grant.chest) then return false end
+  fields={kind=true,chest=true}
  elseif grant.kind=="starterPack" or grant.kind=="paperJar" or grant.kind=="giftSent" then
   fields={kind=true}
  elseif grant.kind=="matchDouble" then
@@ -172,7 +175,7 @@ local function safeAdd(a,b) if not Schema.integer(b) or a>Economy.MAX_SAFE_INTEG
 local function giftReward(p,day)
  if not Schema.integer(day) then return nil,"invalid_daily_gift_day" end
  if day<=p.dailyGift.lastDay then return nil,"daily_gift_claimed" end
- local reward=EconomyConfig.daily_gift.rewards[p.dailyGift.next]
+ local reward=Commerce.dailyGiftReward(Commerce.dailyGiftDay(p.dailyGift,day))
  if (reward.xp_seconds and p.boosts.permanentXP) or (reward.paper_seconds and p.boosts.permanentPaper) then
   return {paper=EconomyConfig.daily_gift.boost_covered_paper}
  end
@@ -225,7 +228,9 @@ function Service:_effect(p,op,boostState)
 		if p.chests.opened~=op.opened then return nil,"stale_chest" end
 		local price=op.source=="paper" and chest.cost*Economy.MILLI or 0
 		if p.paperMilli<price then return nil,"insufficient_paper" end
-		if op.source=="earned" and p.chests.stock[chest.id]<1 then return nil,"no_earned_chest" end
+		local stock = if op.source=="earned" then p.chests.stock elseif op.source=="paidStock" then p.chests.paidStock else nil
+		local stockKey = if op.source=="earned" then chest.base else chest.id
+		if stock and stock[stockKey]<1 then return nil,op.source=="earned" and "no_earned_chest" or "no_paid_chest" end
 		local opened=safeAdd(p.chests.opened,1)
 		if not opened then return nil,"overflow" end
 		local id=Looks.drawChest(chest,self.random)
@@ -240,7 +245,7 @@ function Service:_effect(p,op,boostState)
 		local balance=safeAdd(p.paperMilli-price,refund*Economy.MILLI)
 		if not balance then return nil,"overflow" end
 		p.paperMilli=balance
-		if op.source=="earned" then p.chests.stock[chest.id]-=1 end
+		if stock then stock[stockKey]-=1 end
 		p.chests.opened,p.chests.lastSkin,p.chests.lastChest,p.chests.lastRefund=opened,id,chest.id,refund
 		result={type="ChestOpened",skin=id,chest=chest.id,opened=opened,refund=refund,source=op.source}
 	elseif op.kind=="lookWear" then
@@ -293,15 +298,30 @@ function Service:_effect(p,op,boostState)
 			if not paid then return nil,rejected.code end
 			Schema.mergeEconomic(p,paid.profile)
 		end
-		p.dailyGift.lastDay=op.day;p.dailyGift.next=p.dailyGift.next%7+1
-		result={type="DailyGiftClaimed",paper=reward.paper,seconds=reward.xp_seconds or reward.paper_seconds,
+		if reward.chest then
+			local total=safeAdd(p.chests.stock[reward.chest],1)
+			if not total then return nil,"overflow" end
+			p.chests.stock[reward.chest]=total
+		end
+		p.dailyGift.next=Commerce.dailyGiftDay(p.dailyGift,op.day)%28+1
+		p.dailyGift.lastDay=op.day
+		result={type="DailyGiftClaimed",chest=reward.chest,paper=reward.paper,seconds=reward.xp_seconds or reward.paper_seconds,
 			resource=reward.xp_seconds and "xp" or reward.paper_seconds and "paper" or nil}
+	elseif op.kind=="paidChest" then
+		local chest=Looks.chest(op.chest)
+		if not chest then return nil,"unknown_chest" end
+		local total=safeAdd(p.chests.paidStock[chest.id],1)
+		if not total then return nil,"overflow" end
+		p.chests.paidStock[chest.id]=total
+		result={type="ChestDelivered",chest=chest.id}
 	elseif op.kind=="starterPack" then
 		local pack=EconomyConfig.starter_pack
 		if not self.catalog:get(pack.part) then return nil,"unknown_part" end
 		local paid,rejected=Economy.addPurchasedPaper(v,pack.paper,op.id)
 		if not paid then return nil,rejected.code end
 		Schema.mergeEconomic(p,paid.profile);p.ownership[pack.part]=true;p.starterPack.bought=true
+		local delivered,err=self:_effect(p,{kind="paidChest",chest=pack.chest})
+		if not delivered then return nil,err end
 		result={type="StarterPackGranted"}
 	elseif op.kind=="paperJar" then
 		local paper=math.floor(p.paperJarMilli/Economy.MILLI)
@@ -412,7 +432,7 @@ function Service:_effect(p,op,boostState)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={receipt=true,giftReceived=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
+local allowed={paidChest=true,receipt=true,giftReceived=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,lookPurchase=true,lookWear=true,openChest=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
@@ -429,7 +449,8 @@ function Service:apply(account,input)
  if sequence<=(s.profile.Data.operationIds[token] or 0) then
   return outcome("ok",nil,cached and cached.value or {type="AlreadyApplied",operationID=op.id})
  end
- local mockBuy=op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack" or op.kind=="paperJar" or op.kind=="matchDouble"
+ local mockBuy=op.kind=="paidChest" or op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack" or op.kind=="paperJar" or op.kind=="matchDouble"
+ if (op.kind=="paidChest" or op.kind=="starterPack") and self.mock and s.chestPaperAllowed~=true then return outcome("error","chest_paper_unavailable") end
  if mockBuy and not self.mock then return outcome("error","studio_only") end
  if mockBuy and count(s.profile.Data.receiptIds)>=ServerConfig.schema.max_receipts then return outcome("error","receipt_cap") end
  if op.kind=="starterPack" and Commerce.starterPackEnds(s.profile.Data,self.unix())==0 then return outcome("error","starter_pack_ended") end
@@ -453,9 +474,9 @@ function Service:apply(account,input)
   if s.profile.Data.boosts[op.resource=="xp" and "permanentXP" or "permanentPaper"] then intent=nil
   else intent={kind="boostIntent",resource=op.resource,action="permanent"} end
  elseif op.kind=="openChest" then
-  if type(op.chest)~="string" or not Schema.integer(op.opened) or (op.source~="earned" and op.source~="paper") then return outcome("error","invalid_operation") end
+  if type(op.chest)~="string" or not Schema.integer(op.opened) or (op.source~="earned" and op.source~="paper" and op.source~="paidStock") then return outcome("error","invalid_operation") end
   for key in pairs(op) do if key~="kind" and key~="id" and key~="opened" and key~="chest" and key~="source" then return outcome("error","invalid_operation") end end
-  if op.source=="paper" and s.chestPaperAllowed~=true then return outcome("error","chest_paper_unavailable") end
+  if op.source~="earned" and s.chestPaperAllowed~=true then return outcome("error","chest_paper_unavailable") end
  elseif op.kind=="lookPurchase" or op.kind=="lookWear" then
   local fields
   if op.kind=="lookPurchase" then

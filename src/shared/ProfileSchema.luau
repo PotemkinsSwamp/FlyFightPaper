@@ -8,7 +8,7 @@ local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
 local TouchLayout = require(script.Parent.TouchLayout)
 local KeyBinds = require(script.Parent.KeyBinds)
-local Schema = { VERSION = 14, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
+local Schema = { VERSION = 15, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
@@ -87,8 +87,13 @@ function Schema.validDoubleLock(key, lock)
 		and integer(lock.paper) and lock.paper>=1 and integer(lock.xp)
 end
 local moneyFields = { "paperMilli", "earnedPaperMilli", "purchasedPaperMilli", "xpMilli" }
+local function emptyPaidStock()
+	local stock = {}
+	for _, chest in Looks.config().chests do stock[chest.id]=0 end
+	return stock
+end
 local function emptyChests()
-	return { stock = {paper=0, sticker=0, blue_ribbon=0, golden_star=0}, progress = ChestProgress.defaults(),
+	return { paidStock = emptyPaidStock(), stock = {paper=0, sticker=0, blue_ribbon=0, golden_star=0}, progress = ChestProgress.defaults(),
 		opened = 0, lastSkin = "", lastChest = "", lastRefund = 0 }
 end
 function Schema.economicView(p)
@@ -134,9 +139,12 @@ function Schema.validate(record, catalog)
 		assert(type(p.looks.owned)=="table", "invalid_look_ownership")
 		for id, owned in pairs(p.looks.owned) do assert(Looks.item(id) and owned==true, "invalid_look_ownership") end
 		local chests = p.chests
-		exact(chests, {stock=1, progress=1, opened=1, lastSkin=1, lastChest=1, lastRefund=1})
+		exact(chests, {paidStock=1, stock=1, progress=1, opened=1, lastSkin=1, lastChest=1, lastRefund=1})
 		exact(chests.stock, {paper=1, sticker=1, blue_ribbon=1, golden_star=1})
 		for _, count in pairs(chests.stock) do assert(integer(count), "invalid_chest_stock") end
+		local paidKeys = emptyPaidStock()
+		for id in paidKeys do assert(integer(chests.paidStock[id]), "invalid_paid_chest_stock") end
+		for id in chests.paidStock do assert(paidKeys[id]~=nil, "unknown_paid_chest") end
 		assert(ChestProgress.valid(chests.progress), "invalid_chest_progress")
 		assert(integer(chests.opened) and integer(chests.lastRefund), "invalid_chest_result")
 		if chests.opened == 0 then
@@ -175,7 +183,7 @@ function Schema.validate(record, catalog)
 		for _, k in ipairs({"paperSeconds","xpSeconds"}) do assert(type(p.boosts[k])=="number" and p.boosts[k]>=0, "invalid_seconds") end
 		assert(type(p.boosts.permanentPaper)=="boolean" and type(p.boosts.permanentXP)=="boolean", "invalid_flags")
 		exact(p.dailyGift, {next=1,lastDay=1})
-		assert(integer(p.dailyGift.next) and p.dailyGift.next>=1 and p.dailyGift.next<=7, "invalid_daily_gift_next")
+		assert(integer(p.dailyGift.next) and p.dailyGift.next>=1 and p.dailyGift.next<=28, "invalid_daily_gift_next")
 		assert(p.dailyGift.lastDay==-1 or integer(p.dailyGift.lastDay), "invalid_daily_gift_day")
 		exact(p.starterPack, {offeredAt=1,bought=1})
 		assert(integer(p.starterPack.offeredAt) and type(p.starterPack.bought)=="boolean", "invalid_starter_pack")
@@ -289,6 +297,13 @@ function Schema.migrate(record, catalog)
 	if p.schemaVersion==13 then
 		p.chests=emptyChests()
 		p.schemaVersion=14
+	end
+	if p.schemaVersion==14 then
+		if type(p.chests)~="table" or type(p.chests.progress)~="table" or type(p.chests.progress.weekly)~="table" then return nil,"invalid_chest_progress" end
+		p.chests.paidStock=emptyPaidStock()
+		local weekly=p.chests.progress.weekly
+		p.chests.progress={weekly={last=weekly.last,counts=weekly.counts}}
+		p.schemaVersion=15
 	end
 	-- Catalog entries can retire without another schema change. Keep the account and known looks readable.
 	if p.schemaVersion==Schema.VERSION and type(p.looks)=="table" then

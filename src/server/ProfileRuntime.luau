@@ -7,6 +7,7 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 require(script.Parent.RewardQueue) -- Register offline flushing before ProfileStore's close hook.
 local ProfileStore=require(script.Parent.Packages.ProfileStore)
 local Profile=require(script.Parent.ProfileService)
+local CosmeticOwners=require(script.Parent.CosmeticOwners)
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
 local Commerce=require(Root.Shared.CommerceRules)
@@ -24,6 +25,8 @@ function Runtime.new(catalog)
  local mock=Run:IsStudio()
  local self=setmetatable({catalog=catalog,entries={},mock=mock,stopping=false,store=mock and store.Mock or store},Runtime)
  self.service=Profile.new({catalog=catalog,mock=mock})
+ self.cosmeticOwners=CosmeticOwners.new(Config.data_store,mock)
+ if not mock then self.cosmeticOwners:startBackfill(Config.data_store) end
  ProfileStore.OnError:Connect(function(_,storeName,key)
   if storeName~=Config.data_store then return end
   for player,e in pairs(self.entries) do
@@ -122,12 +125,14 @@ function Runtime:load(player)
    attached=self.service:view(e.account)
   end
   e.loaded=true;e.snapshot=attached.value;e.lastSavedVersion=profile.LastSavedData and profile.LastSavedData.version or -1
+  if self.cosmeticOwners then self.cosmeticOwners:observe(e,attached.value) end
   profile.OnSave:Connect(function()
    self:flush(e)
    local session=self.service.sessions[e.account]
    if session then self.service:_advance(session) end
   end)
   profile.OnAfterSave:Connect(function(data)
+   if self.cosmeticOwners and not self.mock then self.cosmeticOwners:observe(e,data) end
    e.lastSavedVersion=data.version;e.saveDelayed=false
    if e.closing and not profile:IsActive() and not ProfileStore.IsClosing then
     local version=not self.mock and profile.KeyInfo.Version or nil
@@ -215,6 +220,17 @@ function Runtime:process(e)
  if result.status=="ok" and result.value.type=="GiftReceived" then
   e.giftInbox=e.giftInbox or {};table.insert(e.giftInbox,{from=result.value.from,key=result.value.key})
  end
+ -- Start indexing the saved prize while the chest opens. Group rapid openings into one save.
+ if result.status=="ok" and result.value.type=="ChestOpened" and not self.mock and not e.chestSavePending then
+  e.chestSavePending=true
+  task.delay(math.max(0,(e.nextChestSave or 0)-os.clock()),function()
+   e.chestSavePending=false
+   if not e.closing and e.profile:IsActive() then
+    e.nextChestSave=os.clock()+10
+    e.profile:Save()
+   end
+  end)
+ end
  local done=e.callbacks[op.id];e.callbacks[op.id]=nil
  if done then
   task.defer(function()
@@ -270,6 +286,7 @@ end
 function Runtime:update(e)
  local view=self.service:view(e.account);if view.status~="ok" then return end
  e.snapshot=view.value
+ if self.mock and self.cosmeticOwners then self.cosmeticOwners:observe(e,e.snapshot) end
  e.player:SetAttribute("Paper",math.floor(e.snapshot.paperMilli/Economy.MILLI))
  e.player:SetAttribute("XP",math.floor(e.snapshot.xpMilli/Economy.MILLI))
  e.player:SetAttribute("Level",Economy.levelForXP(e.snapshot.xpMilli))
@@ -277,7 +294,9 @@ function Runtime:update(e)
  e.player:SetAttribute("Graduated",e.snapshot.qualification.count>=Gameplay.bots.rookie_qualifying_matches)
  local now=self.service.unix();local day=math.floor(now/86400)
  local ready=day>e.snapshot.dailyGift.lastDay
- e.player:SetAttribute("DailyGiftNext",e.snapshot.dailyGift.next)
+ local giftDay=Commerce.dailyGiftDay(e.snapshot.dailyGift,day)
+ e.player:SetAttribute("DailyGiftNext",(giftDay-1)%7+1)
+ e.player:SetAttribute("DailyGiftStreakDay",giftDay)
  e.player:SetAttribute("DailyGiftReady",ready)
  e.player:SetAttribute("DailyGiftSecondsLeft",ready and 0 or 86400-now%86400)
  e.player:SetAttribute("StarterPackEnds",Commerce.starterPackEnds(e.snapshot,now))

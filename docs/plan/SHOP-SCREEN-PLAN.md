@@ -12,8 +12,7 @@ proportions and all", plus movement. Concept: `.planning/shop-concept/shop2-a.pn
   too. Never mid-flight. The window pops open with a springy grow; the menu behind darkens.
 - **The window:** exactly the concept's layout and proportions (measured from the picture): yellow torn-paper title
   bar with "Shop", "Gift a friend" and the red X; chalkboard body in a wooden frame that scrolls; chalk headings
-  FEATURED, FREE GIFT, PASSES, PAPER, BOOSTS; four big tabs on the right (Featured, Passes, Boosts, Paper) that
-  scroll to their section and light up yellow for the section you're in.
+  FEATURED, FREE GIFT, PASSES, PAPER, BOOSTS and TREASURE CHESTS. Five tabs on the right scroll to their section and highlight the current one. Skin and Trail chest details open inside the Shop. [Chest catalog](../systems/economy-and-shop.md#classroom-treasure-chests).
 - **Cards** as in the concept: the starter pack's wide Featured card, the Free gift card, the two Forever passes, the
   three Paper packs ("Good Value", "Most Value"), and the boost rows (2x Paper green, 2x XP blue, 5 times each,
   "Good Value" on 3 hours, "Most Value" on 5 hours). Every card: picture, what you get, Robux price on a green button.
@@ -41,8 +40,7 @@ proportions and all", plus movement. Concept: `.planning/shop-concept/shop2-a.pn
 4. **Code:** `src/client/ShopScreen.luau` rebuilt to the measured layout, cards filled from `config/commerce.json`;
    buying goes through the existing purchase code (switched off until go-live). Tests for anything new.
 5. **Check in Studio** at PC and phone size against the concept, screenshots for you.
-- Built after their own notes for your OK: the starter pack (contents, price, timer), the daily gift (amount), gift
-  a friend (how it works). Until then their cards show only in Studio with example numbers, and gift buttons stay off.
+- The starter pack, daily gift and friend gifts use their server-side rules. Real Robux checkout needs approved Roblox product mappings. [Shop system](../systems/economy-and-shop.md).
 
 ## Cost
 Codex pictures on Alan's ChatGPT plan; uploads free; Opus builds and checks (about one session). Nothing paid.

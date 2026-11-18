@@ -14,6 +14,9 @@ local WaitScreen=require(script.Parent.WaitScreen)
 local PaperUI=require(script.Parent.PaperUI)
 local Unlock=require(script.Parent.UnlockMoment)
 local GiftMoment=require(script.Parent.GiftMoment)
+local ChestOpening=require(script.Parent.ChestOpening)
+local Looks=require(Root.Shared.LooksRules)
+local PlaneLooks=require(script.Parent.PlaneLooks)
 local Menu={}
 function Menu.start()
  local player=Players.LocalPlayer
@@ -45,8 +48,7 @@ function Menu.start()
   settings=function()state.screen="settings";render()end,
   tutorial=function()Loading.town(function()Tutorial.choose(function()overlay(false)end)end)end, -- the Training board
   prestige=function()action:FireServer("prestige")end,
-  -- The mock shop is Studio-only; the server also refuses it on real profiles.
-  shop=game:GetService("RunService"):IsStudio() and function()state.screen="shop";render()end or nil,
+  shop=function()Menu.show("shop")end,
  })
  local settingsScreen=SettingsScreen.new(gui.Parent,{
   save=function(settings)action:FireServer("settings",settings);Options.apply(settings)end,
@@ -84,7 +86,7 @@ function Menu.start()
   leave=function()if not Tutorial.quit() then action:FireServer("withdraw",true) end;overlay(false);home()end,
  })
  local shopScreen=ShopScreen.new(gui.Parent,{action=action,buy=function(key)action:FireServer("mockProduct",key)end,claimGift=function()action:FireServer("claimDailyGift")end,
-  looks=function()Menu.show("hangar",state.fromDesk,"customize","skin")end,back=function()home()end})
+  back=function()home()end})
  local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})
  local paper={home=board,settings=settingsScreen,hangar=hangarScreen,pause=pauseScreen,shop=shopScreen,queued=waitScreen}
  Unlock.start({
@@ -140,7 +142,19 @@ render=function()
   state.snapshot=snap
  end)
  Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile)
+  local previous=state.profile and state.profile.chests
   state.profile=profile;Options.apply(profile.settings)
+  local wallet=profile.chests
+  if previous and wallet and wallet.opened>previous.opened then
+   local item,chest=Looks.item(wallet.lastSkin),Looks.chest(wallet.lastChest)
+   if item and chest then
+    ChestOpening.show(wallet.opened,chest,item,wallet.lastRefund,function(prize)
+     if PlaneLooks.devSkin ~= nil then PlaneLooks.setDevSkin(nil) end
+     if player:GetAttribute("DevTrail") ~= nil then player:SetAttribute("DevTrail", nil) end
+     action:FireServer("wearLook",{kind=prize.kind,id=prize.id})
+    end)
+   end
+  end
   render() -- screens skip the redraw themselves when nothing they show changed
  end)
  player:GetAttributeChangedSignal("InMatch"):Connect(function()if player:GetAttribute("InMatch") then Tutorial.arriving=false end;state.screen="home";state.overlay=false;Root:SetAttribute("OverlayOpen",false);render()end)

@@ -6,6 +6,7 @@ local config, items, skinsByTier, soldTrails
 local skinTiers = { common = true, rare = true, legendary = true, mythical = true }
 local tierOrder = { "common", "rare", "legendary", "mythical" }
 local chests = {}
+local trailPools = {}
 
 local function integer(n)
 	return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0
@@ -63,10 +64,10 @@ function LooksRules.config()
 			assert(type(entry) == "table" and type(entry.id) == "string" and #entry.id > 0 and #entry.id <= 160, "invalid look id")
 			assert(not byID[entry.id], "duplicate look id: " .. entry.id)
 			assert(type(entry.name) == "string" and #entry.name > 0, "missing look name")
-			assert(raw.tiers[entry.tier] and (kind == "skin" and skinTiers[entry.tier] or kind == "trail" and entry.tier == "trail"), "unknown look tier")
+			assert(skinTiers[entry.tier], "unknown look tier")
 			assert(kind == "skin" or type(entry.sold) == "boolean", "missing trail sold flag")
 			assert(entry.price_tier == nil or (kind == "trail" and entry.sold and entry.price_tier == "rare_trail"), "invalid trail price tier")
-			local prices = raw.tiers[entry.price_tier or entry.tier]
+			local prices = raw.tiers[entry.price_tier or (kind == "trail" and "trail") or entry.tier]
 			local item = { id = entry.id, name = entry.name, kind = kind, tier = entry.tier,
 				paper = prices.paper, robux = prices.robux, trail = entry.trail, sold = entry.sold == true,
 				matchingTrail = entry.matching_trail or entry.trail,
@@ -75,7 +76,11 @@ function LooksRules.config()
 			byID[item.id] = item
 			if kind == "skin" then
 				byTier[item.tier] = byTier[item.tier] or {}; table.insert(byTier[item.tier], item.id)
-			elseif item.sold then table.insert(trails, item.id) end
+			elseif item.sold then
+				trailPools[item.tier] = trailPools[item.tier] or {}
+				table.insert(trailPools[item.tier], item.id)
+				table.insert(trails, item.id)
+			end
 		end
 	end
 	add(raw.skins, "skin"); add(raw.trails, "trail")
@@ -84,7 +89,7 @@ function LooksRules.config()
 			local trail = byID[item.matchingTrail]
 			assert(item.kind == "skin" and trail and trail.kind == "trail", "unknown matching trail")
 			assert((item.tier == "mythical") == (item.trail ~= nil) and trail.sold == (item.trail == nil), "only Mythical trails are bundled")
-			-- Legendary trails are also sold individually. Bots only use those with the matching skin.
+			-- Legendary trails drop separately. Bots only use those with the matching skin.
 			local index = table.find(trails, item.matchingTrail)
 			if index then table.remove(trails, index) end
 		end
@@ -93,13 +98,17 @@ function LooksRules.config()
 	for _, chest in ipairs(raw.chests) do
 		assert(type(chest.id) == "string" and type(chest.name) == "string" and not chests[chest.id]
 			and integer(chest.cost) and chest.cost > 0 and chest.cost <= math.floor(Economy.MAX_SAFE_INTEGER / Economy.MILLI), "invalid chest")
+		assert(chest.family == "skin" or chest.family == "trail", "invalid chest family")
+		assert(chest.id == (chest.family == "trail" and "trail_" or "") .. chest.base and integer(chest.robux) and chest.robux>0, "invalid chest mapping")
 		local total = 0
 		for _, tier in ipairs(tierOrder) do
 			local weight = chest.weights[tier]
-			assert(integer(weight), "invalid chest tier weight")
-			total += weight
+			assert(type(weight) == "number" and weight >= 0 and weight <= 100, "invalid chest tier weight")
+			local units = math.round(weight * 100)
+			assert(math.abs(weight * 100 - units) < 1e-8 and (units == 0 or (chest.family == "skin" and byTier or trailPools)[tier]), "missing prize tier")
+			total += units
 		end
-		assert(total == 100, "chest weights must total 100")
+		assert(total == 10000, "chest weights must total 100")
 		chests[chest.id] = chest
 	end
 	for skill, tier in pairs(raw.bot_tiers) do
@@ -123,26 +132,37 @@ function LooksRules.chest(id)
 	LooksRules.config()
 	return chests[id]
 end
--- A duplicate pays Paper, so every skin stays in its tier's draw.
+-- Duplicate prizes pay Paper, so owned cosmetics stay in the draw.
 function LooksRules.chestOdds(id)
 	local chest = assert(LooksRules.chest(id))
 	local counts = {}
 	for _, tier in ipairs(tierOrder) do
-		counts[tier] = chest.weights[tier] > 0 and #skinsByTier[tier] or 0
+		counts[tier] = chest.weights[tier] > 0 and #(chest.family == "skin" and skinsByTier or trailPools)[tier] or 0
 	end
 	return chest.weights, counts
 end
-function LooksRules.duplicateRefund(skinID)
-	local skin = assert(LooksRules.item(skinID))
-	assert(skin.kind == "skin", "only skins can be chest rewards")
-	return math.floor(skin.paper * config.duplicate_refund_percent / 100)
+function LooksRules.chestItems(id)
+	local chest = assert(LooksRules.chest(id))
+	local list = {}
+	local pools = chest.family == "skin" and skinsByTier or trailPools
+	for _, tier in tierOrder do
+		if chest.weights[tier] > 0 then
+			for _, itemID in pools[tier] do table.insert(list, items[itemID]) end
+		end
+	end
+	return list
+end
+function LooksRules.duplicateRefund(id)
+	local item = assert(LooksRules.item(id))
+	return math.floor(item.paper * config.duplicate_refund_percent / 100)
 end
 function LooksRules.drawChest(chest, random)
-	local roll = random(100)
+	local roll = random(10000)
+	local pools = chest.family == "skin" and skinsByTier or trailPools
 	for _, tier in ipairs(tierOrder) do
-		roll -= chest.weights[tier]
+		roll -= math.round(chest.weights[tier] * 100)
 		if roll <= 0 then
-			local pool = skinsByTier[tier]
+			local pool = pools[tier]
 			return pool[random(#pool)]
 		end
 	end
@@ -179,24 +199,25 @@ local function cloneProfile(profile)
 	if not ok then return failure("invalid_profile", tostring(updated)) end
 	return updated
 end
-local function unlock(profile, id, operationID, charge)
+function LooksRules.buyWithPaper(_, id, operationID)
 	local ok, err = validateOperationID(operationID); if not ok then return nil, err end
 	local item = LooksRules.item(id)
 	if not item then return failure("unknown_look", "look id is not in the server catalog") end
-	if charge and item.kind == "skin" then return failure("chest_only", "skins are earned from treasure chests") end
+	if item.kind == "trail" and not item.sold then return failure("not_sold", "this trail comes with its Mythical skin") end
+	return failure("chest_only", "individual cosmetics come from chests")
+end
+function LooksRules.grant(profile, id, operationID)
+	local ok, err = validateOperationID(operationID); if not ok then return nil, err end
+	local item = LooksRules.item(id)
+	if not item then return failure("unknown_look", "look id is not in the server catalog") end
 	if item.kind == "trail" and not item.sold then return failure("not_sold", "this trail comes with its Mythical skin") end
 	local updated, rejected = cloneProfile(profile); if not updated then return nil, rejected end
 	local alreadyOwned = updated.looks.owned[id] == true
-	local price = charge and not alreadyOwned and item.paper * Economy.MILLI or 0
-	if updated.paperMilli < price then return failure("insufficient_paper", "profile Paper is below look price") end
-	updated.paperMilli -= price
 	updated.looks.owned[id] = true
 	if item.trail then updated.looks.owned[item.trail] = true end
-	return freeze({ profile = updated, operation = { type = charge and "LookPurchase" or "LookGranted",
-		operationID = operationID, lookID = id, priceMilli = price, chargedMilli = price, alreadyOwned = alreadyOwned } })
+	return freeze({ profile = updated, operation = { type = "LookGranted", operationID = operationID,
+		lookID = id, priceMilli = 0, chargedMilli = 0, alreadyOwned = alreadyOwned } })
 end
-function LooksRules.buyWithPaper(profile, id, operationID) return unlock(profile, id, operationID, true) end
-function LooksRules.grant(profile, id, operationID) return unlock(profile, id, operationID, false) end
 function LooksRules.wear(profile, skinID, trailID, operationID)
 	local ok, err = validateOperationID(operationID); if not ok then return nil, err end
 	local updated, rejected = cloneProfile(profile); if not updated then return nil, rejected end

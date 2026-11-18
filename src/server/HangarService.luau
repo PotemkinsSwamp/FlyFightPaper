@@ -204,7 +204,7 @@ function Service:handle(player,action,value)
   end)
  elseif action=="openChest" then
   if type(value)~="table" or type(value.chest)~="string" or not Looks.chest(value.chest) or not Schema.integer(value.opened) then return end
-  if value.source~="earned" and value.source~="paper" then return end
+  if value.source~="earned" and value.source~="paper" and value.source~="paidStock" then return end
   for key in pairs(value) do if key~="chest" and key~="opened" and key~="source" then return end end
   self:enqueue(player,{kind="openChest",chest=value.chest,opened=value.opened,source=value.source},function(ok,result)
    if ok and result and result.type=="ChestOpened" then
@@ -212,24 +212,18 @@ function Service:handle(player,action,value)
    elseif result=="stale_chest" then
     if self.onAnswer then self.onAnswer(player) end
    else
-    local reasons={no_earned_chest="You have no earned chest of this kind.",insufficient_paper="You need more Paper.",
+    local reasons={no_paid_chest="You have no purchased chest of this kind.",no_earned_chest="You have no earned chest of this kind.",insufficient_paper="You need more Paper.",
      chest_paper_unavailable="You can earn this chest by playing matches."}
     self:message(player,reasons[result] or "The chest could not open. Try again.")
    end
   end)
  elseif action=="buyLook" then
   if type(value)~="string" or #value>160 then return end
-  local legal,reason=Looks.buyWithPaper(Schema.economicView(profile),value,"preview")
-  if legal and legal.operation.alreadyOwned then self:message(player,"You already own it.");return end
-  if not legal then
-   self:message(player,reason.code=="insufficient_paper" and "You need more Paper." or reason.code=="chest_only" and "Find skins in treasure chests." or reason.code=="not_sold" and "That trail comes with its skin." or "That can't be bought.")
-   return
-  end
   local item=Looks.item(value)
-  self:enqueue(player,{kind="lookPurchase",lookID=value},function(ok)
-   local tab=item.kind=="trail" and "Trails" or "Skins"
-   self:message(player,ok and item.name.." is yours! Wear it from the "..tab.." tab." or "The buy was not completed. Nothing changed.")
-  end)
+  if Looks.owns(profile,value) then self:message(player,"You already own it.")
+  elseif not item then self:message(player,"That can't be bought.")
+  elseif item.kind=="trail" and not item.sold then self:message(player,"That trail comes with its skin.")
+  else self:message(player,"Find that look in treasure chests.") end
  elseif action=="wearLook" then
   if type(value)~="table" or getmetatable(value)~=nil then return end
   local skinID,trailID,operation
@@ -277,6 +271,7 @@ function Service:handle(player,action,value)
   self:enqueue(player,{kind="dailyGift",day=math.floor(self.unix()/86400)},function(ok,result)
    if not ok then
     self:message(player,result=="daily_gift_claimed" and "Already claimed today. Come back tomorrow." or "Gift could not be claimed. Try again shortly.")
+   elseif result.chest then self:message(player,Looks.chest(result.chest).name.." earned! Open it under Chests.")
    elseif result.paper then self:message(player,"Gift claimed: +"..result.paper.." Paper.")
    else self:message(player,"Gift claimed: "..string.format("%d",result.seconds/60).." minutes of 2x "..(result.resource=="xp" and "XP" or "Paper")..".") end
   end)
@@ -303,7 +298,9 @@ function Service:handle(player,action,value)
   for _,item in ipairs(Commerce.products) do if item.key==value then product=item;break end end
   if not product then return end
   local input
-  if product.benefit=="paper_balance" then input={kind="purchasedPaper",wholePaper=product.amount,packKey=product.key}
+  if product.benefit=="chest_stock" then
+   input={kind="paidChest",chest=product.key:sub(7)}
+  elseif product.benefit=="paper_balance" then input={kind="purchasedPaper",wholePaper=product.amount,packKey=product.key}
   elseif product.benefit=="starter_pack" then
    if CommerceRules.starterPackEnds(profile,self.unix())==0 then self:message(player,"The starter pack has ended.");return end
    input={kind="starterPack"}

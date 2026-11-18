@@ -6,7 +6,11 @@ lost if a save fails for a moment; it retries without stopping the match for eve
 
 ## Where it stands (2026-11-18)
 
-Chest inventory, play progress, opening sequence and the last reward are saved with ownership. Spending Paper or consuming an earned chest and delivering its result share one profile change. The previous schema stored owned cosmetics and equipped skin and trail. Existing explicit trail grants remain owned, and Mythical skin owners receive their matching trail. Wearing a look changes only that slot. If skin and trail choices arrive together, each uses the latest saved value of the other slot. [Ownership checks in Studio](../playtests/2026-11-18-legendary-trails.md).
+Schema 15 keeps earned chest stock by tier and tracks purchased stock by family and tier. When an older profile loads, its earned inventory, current daily gift and weekly mission count carry forward. A missed gift day resets the next claim. The server saves ownership or a duplicate refund with the Paper charge or consumed chest. It records the latest opening number so repeat clicks cannot spend twice. A paid chest receipt grants the unopened chest and receipt ID together before it is acknowledged. [Chest rules](economy-and-shop.md#classroom-treasure-chests).
+
+A separate index counts distinct owners from saved collections across servers. It imports older collections in batches and retries interrupted updates. The reveal shows the recorded count once available. Reopening the same item never adds a second owner. Studio keeps its counts in memory for the Play session.
+
+Skin and trail use separate equipment slots. Existing owned trails carry forward, and Mythical skin owners receive their matching trail. [Ownership checks in Studio](../playtests/2026-11-18-legendary-trails.md).
 
 Schema 12 adds `giftIds`, an ordered list of the newest 200 received gift IDs, defaulting to empty for new and
 older saves. IDs are nonempty UTF-8 strings bounded by `max_id_bytes`; duplicate IDs, malformed lists and more than
@@ -75,6 +79,7 @@ the reward is already granted even if its moment is never seen.
 | File | What it does |
 |---|---|
 | `src/server/ProfileRuntime.luau` | One save session per player: load, autosave, final save, Studio mock |
+| `src/server/CosmeticOwners.luau` | Counts saved owners per cosmetic and imports older collections. `tests/unit/CosmeticOwners.spec.luau` covers repeats and interrupted updates. |
 | `src/server/ProfileService.luau` | Changes to a save (rewards, boosts, refolds), each applied exactly once |
 | `src/server/RewardQueue.luau` | Retries a failed reward without blocking the round |
 | `src/shared/ProfileSchema.luau` | What a save file may contain |

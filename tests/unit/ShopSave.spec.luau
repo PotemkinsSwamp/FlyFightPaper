@@ -19,10 +19,11 @@ local function fixture(options)
  local data=Schema.defaults(f.catalog)
  if options.setup then options.setup(data) end
  f.profile=Fake.new(data)
- f.service=Profile.new({catalog=f.catalog,mock=options.mock==true,unix=function()return f.now end,monotonic=function()return f.mono end})
+ f.service=Profile.new({catalog=f.catalog,mock=options.mock==true,policyInfo=function()return {ArePaidRandomItemsRestricted=false} end,unix=function()return f.now end,monotonic=function()return f.mono end})
  local attached=f.service:attach("user",f.profile,{connected=true,mapLoaded=true})
  assert(attached.status=="ok",attached.code)
  f.player={UserId=123,attributes={}}
+ assert(f.service:chestPaperAllowed("user",f.player))
  function f.player:SetAttribute(key,value)self.attributes[key]=value end
  f.entry={player=f.player,account="user",loaded=true,lastSavedVersion=0}
  f.runtime=setmetatable({service=f.service,mock=options.mock==true,entries={[f.player]=f.entry}},Runtime)
@@ -62,7 +63,7 @@ function Spec.run()
  test("shop schema fields reject missing unknown malformed and out-of-range values",function()
   local f=fixture()
   local changes={
-   function(p)p.dailyGift=nil end,function(p)p.dailyGift.next=0 end,function(p)p.dailyGift.next=8 end,
+   function(p)p.dailyGift=nil end,function(p)p.dailyGift.next=0 end,function(p)p.dailyGift.next=29 end,
    function(p)p.dailyGift.next=1.5 end,function(p)p.dailyGift.lastDay=-2 end,function(p)p.dailyGift.lastDay=1.5 end,
    function(p)p.dailyGift.extra=true end,function(p)p.dailyGift.next="1" end,
    function(p)p.starterPack=nil end,function(p)p.starterPack.offeredAt=-1 end,function(p)p.starterPack.offeredAt=1.5 end,
@@ -225,28 +226,35 @@ function Spec.run()
   assert(again.status=="error" and again.code=="daily_gift_claimed" and Schema.canonical(f.profile.Data)==after)
   assert(f.profile.Data.dailyGift.next==2 and f.profile.Data.dailyGift.lastDay==20000)
   assert(f.profile.Data.paperMilli==100000 and f.profile.Data.earnedPaperMilli==100000 and f.profile.Data.purchasedPaperMilli==0)
-  assert(f.player.attributes.DailyGiftNext==2 and not f.player.attributes.DailyGiftReady)
+  assert(f.player.attributes.DailyGiftNext==1 and not f.player.attributes.DailyGiftReady)
   assert(f.player.attributes.DailyGiftSecondsLeft==DAY-100 and f.player.attributes.BuysToday==0)
  end)
- test("the next UTC day is claimable at midnight and missed days never reset the row",function()
+ test("the next UTC day is claimable at midnight and a missed day restarts the month",function()
   local f=fixture();assert(f:claim().status=="ok")
   f.now=20001*DAY;f.runtime:update(f.entry)
   assert(f.player.attributes.DailyGiftReady and f.player.attributes.DailyGiftSecondsLeft==0 and f.player.attributes.DailyGiftNext==2)
   assert(f:claim().value.paper==150 and f.profile.Data.dailyGift.next==3)
   f.now+=20*DAY
-  assert(f:claim().value.resource=="xp" and f.profile.Data.dailyGift.next==4)
-  assert(f.profile.Data.boosts.xpSeconds==900)
+  assert(f:claim().value.paper==100 and f.profile.Data.dailyGift.next==2)
+  assert(f.profile.Data.boosts.xpSeconds==0)
  end)
- test("all seven daily rewards wrap to day one without creating purchase history",function()
+ test("four consecutive weeks award each choice of chest once and the following day restarts",function()
   local f=fixture()
-  for n=1,7 do
-   local claimed=f:claim();assert(claimed.status=="ok",claimed.code)
-   assert(f.profile.Data.dailyGift.next==n%7+1);f.now+=DAY
+  local milestones={[7]="paper",[14]="sticker",[21]="blue_ribbon",[28]="golden_star"}
+  for day=1,28 do
+   local claimed=f:claim()
+   assert(claimed.status=="ok" and claimed.value.chest==milestones[day],claimed.code)
+   assert(f:claim().code=="daily_gift_claimed" and f.profile.Data.dailyGift.next==day%28+1)
+   if milestones[day] then
+    assert(f.profile.Data.chests.stock[milestones[day]]==1)
+    f:rejoin()
+   end
+   f.now+=DAY
   end
-  assert(f.profile.Data.paperMilli==1800000 and f.profile.Data.earnedPaperMilli==1800000)
-  assert(f.profile.Data.boosts.xpSeconds==900 and f.profile.Data.boosts.paperSeconds==900)
+  assert(f.profile.Data.paperMilli==3200000 and f.profile.Data.earnedPaperMilli==3200000)
+  assert(f.profile.Data.boosts.xpSeconds==3600 and f.profile.Data.boosts.paperSeconds==3600)
   assert(next(f.profile.Data.receiptIds)==nil and f.player.attributes.BuysToday==0)
-  f:rejoin();assert(f:claim().value.paper==100 and f.profile.Data.dailyGift.next==2)
+  assert(f:claim().value.paper==100 and f.profile.Data.dailyGift.next==2)
  end)
  test("daily Paper is earned Paper at a fixed amount despite active or permanent boosts",function()
   for _,permanent in ipairs({false,true}) do
@@ -302,7 +310,8 @@ function Spec.run()
   assert(first.status=="ok" and first.value.type=="StarterPackGranted",first.code)
   assert(f.profile.Data.ownership.wings_1 and f.profile.Data.paperMilli==1500000 and f.profile.Data.purchasedPaperMilli==1500000)
   assert(f.profile.Data.earnedPaperMilli==0 and f.profile.Data.xpMilli==0 and f.profile.Data.boosts.xpSeconds==3600)
-  assert(f.profile.Data.starterPack.bought and f.player.attributes.StarterPackEnds==0 and f.player.attributes.BuysToday==1)
+  assert(f.profile.Data.starterPack.bought and f.profile.Data.chests.paidStock.paper==1 and f.profile.Data.chests.stock.paper==0)
+  assert(f.player.attributes.StarterPackEnds==0 and f.player.attributes.BuysToday==1)
   assert(next(f.profile.Data.firstBuys)==nil,"bundle Paper is not a first-buy pack")
   local after=Schema.canonical(f.profile.Data)
   assert(f.service:apply("user",op).status=="ok" and Schema.canonical(f.profile.Data)==after)

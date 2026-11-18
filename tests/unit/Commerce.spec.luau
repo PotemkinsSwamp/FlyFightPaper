@@ -19,7 +19,7 @@ function Spec.run()
     test("all immutable configured offers and generated null sentinel",function()
         local c=assert(Rules.catalog(Config)); assert(#c.offers==#Config.products and #c.offers>15)
         assert(c.mode=="mock" and not c.authorized)
-        for _,p in ipairs(Config.products) do assert(not p.enabled and p.roblox_product_id==JSON.Null and (p.benefit=="look_unlock" or p.approved_robux_price==JSON.Null)) end
+        for _,p in ipairs(Config.products) do assert(not p.enabled and p.roblox_product_id==JSON.Null and (p.benefit=="look_unlock" or p.benefit=="chest_stock" or p.approved_robux_price==JSON.Null)) end
         for _,r in ipairs({"xp","paper"}) do
             for _,m in ipairs({15,30,60,180,300}) do assert(c.byKey[r.."_boost_"..m.."m"].amount==m*60) end
         end
@@ -77,14 +77,14 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==45+count+lookProducts())
+        assert(#c.offers==53+count+lookProducts())
         local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" and offer.benefit~="look_unlock" then fixed+=1 end end
-        assert(fixed==45)
+        assert(fixed==53)
     end)
     test("zero or additional part offers are accepted without a Catalog dependency",function()
         local raw=copy(Config)
         for i=#raw.products,1,-1 do if raw.products[i].benefit=="part_unlock" then table.remove(raw.products,i) end end
-        assert(#assert(Rules.catalog(raw)).offers==45+lookProducts())
+        assert(#assert(Rules.catalog(raw)).offers==53+lookProducts())
         table.insert(raw.products,{key="part_future_part",kind="developer_product",benefit="part_unlock",catalog_id="future_part",
             roblox_product_id=JSON.Null,approved_robux_price=JSON.Null,enabled=false})
         local offer=assert(Rules.catalog(raw)).byKey.part_future_part

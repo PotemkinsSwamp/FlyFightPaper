@@ -1,6 +1,6 @@
 # Skins and trails plan
 
-**Status, 2026-11-18.** The player catalog includes eight Common, eight Rare, five Legendary and two Mythical skins, plus 18 trails. Sixteen trails sell for Paper. Two come with their Mythical skins. Players get skins from [classroom chests](../systems/economy-and-shop.md#classroom-treasure-chests). The remaining design ideas below are future content. [Current hangar and flight behavior](../systems/planes-and-hangar.md) and [Alan's skin rules](../decisions/2026-11-13-skin-rules.md).
+**Status, 2026-11-18.** The player catalog includes eight Common, eight Rare, five Legendary and two Mythical skins, plus 18 trails. Sixteen trails drop from Trail chests. Two come with their Mythical skins. Players draw skins from Skin chests. [Chest prizes and odds](../systems/economy-and-shop.md#classroom-treasure-chests). The remaining design ideas below are future content. [Current hangar and flight behavior](../systems/planes-and-hangar.md) and [Alan's skin rules](../decisions/2026-11-13-skin-rules.md).
 
 ## The order (Alan, 2026-11-13)
 1. A list of ideas for skins and trails, sorted into tiers.
@@ -143,7 +143,7 @@ how the game draws 3D pieces (see "How it is drawn").
 | Circuit Trace | Circuit Board | A green line stepping back in right angles, a light running along it | code-drawn |
 | Dragon Embers | Dragon (comes with it) | Orange and gold embers that flicker and rise, a thin smoke wisp | code-drawn |
 | Folded Petals | Origami Crane (comes with it) | Blue and silver folded paper petals, turning as they fall | generated cut-out |
-| Water Spray | Shark Jet (comes with it) | waits for the Shark Jet | later |
+| Water Spray | Shark Jet | A water jet carries seafoam and an occasional bite | See the approved Legendary trails below |
 
 Lava and Comic Book have no matching trail. Names are Claude's picks.
 **The other ten (2026-11-16; Alan's words in the decision note):** *In the game, complete* (`config/trails.json`, drawn
@@ -159,10 +159,7 @@ is uploaded) and **Mini Paper Planes** (his pick to replace **Paper Hearts, whic
 draft row stays in `tools/art/trail_drafts.json`; little paper planes flying nose-first; its model is uploaded). All 13
 were drawn and later checked in Play. The table above was written before the 3D change: its "what you see"
 and "made by" are out of date.
-- **How they are sold:** the five plain ones as today (49 Robux or 900 Paper). The six that match a Rare are sold **on
-  their own** (Alan) and can be worn with any skin. **Price not set:** Alan: they "would probably be more expensive" than
-  a plain trail; decided later. Until then the list carries a stand-in of 99 Robux or 1,900 Paper (live sales are off).
-  Dragon Embers and Folded Petals come with their skin; anyone who already owns the crane gets its petals.
+- Trail chests hold the plain trails and the trails that match Rare and Legendary skins. A player can wear any owned trail with any skin. [Current chest system](../systems/economy-and-shop.md#classroom-treasure-chests).
 - **Bots (Alan, 2026-11-16; replaces "bots all wear skins"):** "Not every bot needs skins. Not every bot needs trails."
   "They also need a roll for having both." So each bot makes one roll with four results: skin and trail 35%, skin only
   35%, trail only 15%, neither 15% (Alan OK'd the numbers 2026-11-16; `bot_looks` in `config/looks.json`, one line to change). A bot

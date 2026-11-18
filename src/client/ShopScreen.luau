@@ -2,8 +2,7 @@
 -- (.planning/shop-concept/shop2-a.png and shop2-b.png). Every position below is in that picture's pixels (1672 wide,
 -- `K` turns them into sheet units), so the window keeps the concept's proportions. Every picture is one named piece in
 -- UIAssets.shop: swapping a picture is one line there (tools/art/shop_pieces.py says how to make the new one).
--- Studio only for now (live sales are off; the server refuses mock buys outside Studio). The starter pack and the free
--- gift are previews with example numbers until Alan OKs their own notes. Gift a friend: the note further down.
+-- The calendar and classroom chests use the player's saved profile. Legacy storefront previews run in Studio.
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 local Root = game.ReplicatedStorage:WaitForChild("FlyFightPaper")
@@ -14,6 +13,11 @@ local Art = Assets.shop
 local PaperUI = require(script.Parent.PaperUI)
 local Unlock = require(script.Parent.UnlockMoment)
 local Customize = require(script.Parent.HangarCustomize) -- (a part's Unlock now price)
+local Chests = require(script.Parent.HangarChests)
+local ChestOpening = require(script.Parent.ChestOpening)
+local Widgets = require(script.Parent.HangarWidgets)
+local Looks = require(Root.Shared.LooksRules)
+local CommerceRules = require(Root.Shared.CommerceRules)
 local ShopScreen = {}
 
 local K = PaperUI.W / 1672 -- concept pixels -> sheet units
@@ -21,7 +25,7 @@ local TEXT = 1.3 -- Kalam draws smaller letters than the concept's lettering at 
 local INK, WHITE, CHALK = PaperUI.INK, Color3.new(1, 1, 1), Color3.fromRGB(240, 240, 232)
 -- Chalk words: white with a dark board-green outline (Alan 2026-11-12: the cream crayon edge blurred them on the board).
 local CHALKY = { color = CHALK, outline = Color3.fromRGB(12, 28, 18), thick = 3 }
-local PREVIEW = RunService:IsStudio() -- the not-yet-approved cards (starter pack, free gift)
+local PREVIEW = RunService:IsStudio()
 local ROBUX_ICON = "rbxasset://textures/ui/common/robux@3x.png" -- Roblox's own Robux symbol, shipped with the client
 -- The Robux prices Alan approved (docs/plan/SHOP-PRICES-PLAN.md). Display only: real prices must come from Roblox's
 -- product info once live sales are approved (docs/systems/economy-and-shop.md).
@@ -56,7 +60,7 @@ local function still(parent, item, x, y, w, h, pose, fill)
 end
 -- The starter pack preview (example contents, Alan's OK pending: docs/decisions/2026-11-11-shop-direction.md).
 local STARTER = { price = 99, worth = 227, seconds = (2 * 24 + 14) * 3600 + 5 * 60,
-	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockStar", label = "1 hour\n2x XP" } } } -- Alan 2026-11-12: 2x XP, not 2x Paper
+	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockStar", label = "1 hour\n2x XP" }, { chest = "paper", label = "Paper Skin\nChest" } } } -- Alan 2026-11-12: 2x XP, not 2x Paper
 
 local commas = PaperUI.commas
 local function now() return math.floor(workspace:GetServerTimeNow()) end -- the server's clock: every timer and day ends at once for everyone
@@ -198,25 +202,29 @@ function ShopScreen.new(playerGui, api)
 	end)
 	fit(pic(friend, "Icon", Art.giftWhite, 20, 12, 90, 77))
 	local friendWords = say(friend, "Words", "Gift a friend", 100, 0, 325, 87, 38, { loud = true, color = WHITE, outline = INK })
+	friend.Visible = PREVIEW
 	press(board, "Close", Art.close, 1300, 48, 1405, 153, function() api.back() end)
 
 	-- ===== Tabs beside the window: jump to a section; the one you're in lights up =====
-	local TABS = { { "Featured", "tabStar", 175, 345 }, { "Passes", "tabTicket", 365, 520 }, { "Boosts", "tabClock", 540, 695 }, { "Paper", "tabPaper", 720, 880 } }
+	local TABS = { { "Featured", "tabStar" }, { "Chests", "iconGiftBox" }, { "Passes", "tabTicket" }, { "Boosts", "tabClock" }, { "Paper", "tabPaper" } }
+	if not PREVIEW then TABS = {TABS[1], TABS[2]} end
 	local sections = {} -- tab name -> top of its section in the scroll (sheet units), filled by each redraw
 	-- CanvasPosition is in screen pixels, not sheet units: the sheet's UIScale shrinks a small window's sheet (2026-11-12:
 	-- the Paper tab scrolled past its heading and top row).
 	local function perUnit() return scroll.AbsoluteSize.Y > 0 and scroll.AbsoluteSize.Y / scroll.Size.Y.Offset or 1 end -- (1: not drawn yet)
 	local tabs = {}
-	for _, tab in TABS do
-		local name, icon, y0, y1 = tab[1], tab[2], tab[3], tab[4]
+	for i, tab in TABS do
+		local name, icon = tab[1], tab[2]
+		local y0 = 164 + (i - 1) * 153
+		local y1 = y0 + 141
 		local paper = press(board, "Tab" .. name, Art.tabCream, 1450, y0, 1650, y1, function()
 			local top = sections[name]
 			if top then
 				TweenService:Create(scroll, TweenInfo.new(0.35, Enum.EasingStyle.Quad), { CanvasPosition = Vector2.new(0, top * perUnit()) }):Play()
 			end
 		end)
-		fit(pic(paper, "Icon", Art[icon], 40, 15, 160, 105))
-		say(paper, "Words", name, 0, 98, 200, y1 - y0 - 8, 36, { loud = true })
+		fit(pic(paper, "Icon", Art[icon], 51, 9, 149, 79))
+		say(paper, "Words", name, 0, 77, 200, y1 - y0 - 9, 33, { loud = true })
 		fit(pic(board, "Pin" .. name, Art.pin, 1535, y0 - 12, 1560, y0 + 13))
 		tabs[name] = paper
 	end
@@ -490,6 +498,55 @@ function ShopScreen.new(playerGui, api)
 	end)
 
 	-- ===== Sections (each draws from its top y in scroll pixels and returns the next top) =====
+	local shown, lastProfile
+	local chestState, chestUi = {}, Widgets.new()
+	local chestCtx = {ui = chestUi, side = board, api = api, state = chestState}
+	chestCtx.render = function()
+		chestCtx.profile = lastProfile
+		chestUi.begin()
+		if lastProfile then
+			Chests.receive(chestCtx)
+			if chestState.chestPanel then Chests.draw(chestCtx) end
+		end
+		chestUi.finish()
+	end
+	local function selectChest(chest, page)
+		if lastProfile then Chests.show(chestCtx, nil, chest.family, chest.id, page, page == "starter" and STARTER.price or nil) end
+	end
+	local function chestSection(y)
+		heading(y, "TREASURE CHESTS")
+		y += 60
+		for _, family in {"skin", "trail"} do
+			local headingText = family == "skin" and "Skin chests" or "Trail chests"
+			say(content, family .. "Heading", headingText, 56, y, 595, y + 53, 40,
+				{left = true, color = CHALK, outline = Color3.fromRGB(12,28,18)})
+			y += 61
+			local n = 0
+			for _, chest in Looks.config().chests do
+				if chest.family ~= family then continue end
+				local x = 50 + n * 298
+				local card = press(content, "Chest_" .. chest.id, Art.itemSquare, x, y, x + 281, y + 272,
+					function() selectChest(chest) end)
+				local picture = fit(pic(card, "ChestPicture", Assets.hangarShelf.chestAtlas, 65, 12, 218, 139))
+				ChestOpening.picture(picture, chest)
+				local name = Chests.baseName(chest)
+				say(card, "Name", name, 20, 134, 262, 180, 37, {loud = true})
+				local canPay = lastProfile and lastProfile.chestPaperAllowed == true
+				local wallet = lastProfile and lastProfile.chests
+				local owned = wallet and wallet.stock[chest.base] or 0
+				local paid = wallet and wallet.paidStock and wallet.paidStock[chest.id] or 0
+				local detail = (owned > 0 or not canPay) and (owned .. " earned") or (commas(chest.cost) .. " Paper")
+				say(card, "Cost", detail, 19, 180, 262, 215, 31)
+				local other = canPay and paid > 0 and (paid .. " purchased")
+					or Chests.purchaseLabel(lastProfile, "chest_" .. chest.id, chest.robux) or "View prizes"
+				say(card, "Robux", other, 19, 215, 262, 251, 31)
+				n += 1
+			end
+			y += 298
+		end
+		return y + 16
+	end
+
 	local function featured(y)
 		heading(y, "FEATURED")
 		local cx, cy = 135 - 118, y + 55 -- the card's corner in the scroll
@@ -522,7 +579,7 @@ function ShopScreen.new(playerGui, api)
 		local ends = game.Players.LocalPlayer:GetAttribute("StarterPackEnds") or now() + STARTER.seconds
 		move(timer, "timer", 0, { ends = ends })
 		for i, item in STARTER.items do
-			local x0 = 310 + (i - 1) * 185
+			local x0 = 254 + (i - 1) * 174
 			-- Floating free on a soft shadow, the words on a small dark plate (Alan 2026-11-12: no cream square, no circle).
 			local slot = Instance.new("Frame")
 			slot.Name, slot.BackgroundTransparency = "Item" .. i, 1
@@ -536,6 +593,10 @@ function ShopScreen.new(playerGui, api)
 				-- Still, at its kind's best angle (or the item's own pose), bobbing like the other pictures (Alan 2026-11-12:
 				-- turning in circles looked bad). Framed on its own pieces, whatever its shape.
 				move(still(slot, { kind = item.kind, part = part }, 10 * K, 8 * K, 156 * K, 112 * K, item.pose, 0.9), "bob", i)
+			elseif item.chest then
+				local icon = fit(pic(slot, "Icon", Assets.hangarShelf.chestAtlas, 15, 4, 160, 124))
+				ChestOpening.picture(icon, Looks.chest(item.chest))
+				move(icon, "bob", i)
 			else
 				move(fit(pic(slot, "Icon", Art[item.icon], 18, 8, 158, 116)), "bob", i)
 			end
@@ -550,17 +611,19 @@ function ShopScreen.new(playerGui, api)
 		end
 		move(fit(pic(card, "Sparkle", Art.sparkle, 860, 30, 925, 85, 12)), "twinkle", 0)
 		move(fit(pic(card, "Sparkle2", Art.sparkle, 1185, 100, 1215, 130, -10)), "twinkle", 1.7)
-		local worth = say(card, "Worth", tostring(STARTER.worth), 985, 115, 1130, 170, 50)
+		local worth = say(card, "Worth", tostring(STARTER.worth + Looks.chest("paper").robux), 985, 115, 1130, 170, 50)
 		local cross = Instance.new("Frame")
 		cross.Name, cross.BackgroundColor3, cross.BorderSizePixel, cross.AnchorPoint = "Cross", Color3.fromRGB(220, 30, 30), 0, Vector2.new(0.5, 0.5)
 		cross.Position, cross.Size, cross.Rotation, cross.Parent = UDim2.fromScale(0.5, 0.55), UDim2.new(0.75, 0, 0, 6 * K), -6, worth
 		ticks(card, 1160, 130, 1205, 180, 30, 2.2)
-		buy(card, "Buy", 977, 185, 1217, 295, STARTER.price, 74, function() api.buy("starter_pack") end)
+		worth.Visible = lastProfile.mock == true
+		buy(card, "Buy", 977, 185, 1217, 295, STARTER.price, 74, function() selectChest(Looks.chest("paper"), "starter") end, not lastProfile.mock and "View" or nil)
 		return y + 380
 	end
 
 	-- "100 Paper" / "15 min 2x XP"
-	local function giftWords(reward)
+	local function giftWords(reward, base)
+		if reward.chest then return (Looks.chest(base).name:gsub(" Treasure Chest$", " chest")) end
 		if reward.paper then return commas(reward.paper) .. " Paper" end
 		local seconds = reward.xp_seconds or reward.paper_seconds
 		return math.floor(seconds / 60) .. " min 2x " .. (reward.xp_seconds and "XP" or "Paper")
@@ -572,13 +635,18 @@ function ShopScreen.new(playerGui, api)
 	end
 
 	-- The free daily gift (docs/plan/SHOP-MONEY-PLAN.md): today's gift and Claim on the card, the week's 7 gifts in a
-	-- row under it (claimed ones ticked). A missed day doesn't reset the row; the server keeps the count.
+	-- row under it (claimed ones ticked). A missed UTC day restarts the four-week calendar.
 	local function freeGift(y)
 		heading(y, "FREE GIFT")
 		local player = game.Players.LocalPlayer
 		local rewards = DAILY and DAILY.rewards
-		local day = player:GetAttribute("DailyGiftNext") or 1
-		local ready = player:GetAttribute("DailyGiftReady") ~= false
+		local today = now() // 86400
+		local gift = lastProfile and lastProfile.dailyGift
+		local day = gift and CommerceRules.dailyGiftDay(gift, today) or player:GetAttribute("DailyGiftNext") or 1
+		local ready = gift and gift.lastDay ~= today or (not gift and player:GetAttribute("DailyGiftReady") ~= false)
+		local week = math.ceil(day / 7)
+		local base = DAILY.chests[week]
+		local weekday = (day - 1) % 7 + 1
 		local cx, cy = 175 - 118, y + 48
 		local card = Instance.new("Frame")
 		card.Name, card.BackgroundTransparency, card.Position, card.Size = "FreeGift", 1, UDim2.fromOffset(cx * K, cy * K), UDim2.fromOffset(1160 * K, 120 * K)
@@ -588,7 +656,7 @@ function ShopScreen.new(playerGui, api)
 		ticks(card, 60, 15, 110, 80, -90, 0.5)
 		move(fit(pic(card, "Box", Art.iconGiftBox, 125, -8, 285, 122)), "bob", 0.8)
 		say(card, "Line1", "Free daily gift", 300, 8, 700, 55, 42, { loud = true })
-		say(card, "Line2", rewards and ((ready and "Today: " or "Next: ") .. giftWords(rewards[day])) or "Today: 150 Paper", 300, 55, 700, 102, 42, { loud = true })
+		say(card, "Line2", rewards and ((ready and "Today: " or "Claimed: ") .. giftWords(rewards[weekday],base)) or "Today: 150 Paper", 300, 55, 700, 102, 42, { loud = true })
 		ticks(card, 690, 25, 740, 90, 90, 1.4)
 		if ready then
 			local claim = press(card, "Claim", Art.claimGreen, 820, 15, 1115, 107, function()
@@ -607,11 +675,13 @@ function ShopScreen.new(playerGui, api)
 		for d, reward in rewards do
 			local x0 = 57 + (d - 1) * 166
 			local square = pic(content, "Day" .. d, Art.itemSquare, x0, top, x0 + 156, top + 168)
-			say(square, "Day", "Day " .. d, 0, 6, 156, 42, 28, { loud = true })
+			say(square, "Day", "Day " .. ((week-1)*7+d), 0, 6, 156, 42, 28, { loud = true })
 			backing(square, 32, 40, 124, 120)
-			move(fit(pic(square, "Icon", giftIcon(reward, d), 30, 44, 126, 116)), "bob", d * 0.5)
-			say(square, "Gift", giftWords(reward), 6, 118, 150, 160, 24, { loud = true })
-			if d < day then -- claimed this week: faded, with a green crayon tick
+			local icon = fit(pic(square, "Icon", giftIcon(reward, d), 30, 44, 126, 116))
+			if reward.chest then ChestOpening.picture(icon, Looks.chest(base)) end
+			move(icon, "bob", d * 0.5)
+			say(square, "Gift", giftWords(reward,base), 6, 118, 150, 160, 24, { loud = true })
+			if d < weekday or (d == weekday and not ready) then -- claimed this week: faded, with a green crayon tick
 				square.ImageTransparency = 0.35
 				for _, stroke in { { 0.36, 0.62, 0.25, 45 }, { 0.6, 0.5, 0.55, -55 } } do
 					local line = Instance.new("Frame")
@@ -621,7 +691,7 @@ function ShopScreen.new(playerGui, api)
 					Instance.new("UICorner", line).CornerRadius = UDim.new(0.5, 0)
 					line.Parent = square
 				end
-			elseif d == day and ready then
+			elseif d == weekday and ready then
 				move(square, "pulse")
 			end
 		end
@@ -887,7 +957,11 @@ function ShopScreen.new(playerGui, api)
 	end)
 	-- The window pops open with a springy grow.
 	cover:GetPropertyChangedSignal("Visible"):Connect(function()
-		if not cover.Visible then return end
+		if not cover.Visible then
+			chestState.chestPanel = nil
+			chestCtx.render()
+			return
+		end
 		pop.Scale = 0.88
 		TweenService:Create(pop, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
 	end)
@@ -902,9 +976,9 @@ function ShopScreen.new(playerGui, api)
 			if top then scroll.CanvasPosition = Vector2.new(0, top * perUnit()) end
 		end)
 	end
-	local shown, lastProfile
 	function self.update(player, profile)
 		lastProfile = profile
+		chestCtx.render()
 		showNote()
 		-- Redraw only on a change, so a click never lands on a button that was just replaced.
 		local boosts = profile and profile.boosts or {}
@@ -912,8 +986,13 @@ function ShopScreen.new(playerGui, api)
 		local owned = profile and profile.ownership or {}
 		local count = 0
 		for _ in owned do count += 1 end
+		local stock = profile and profile.chests and profile.chests.stock or {}
+		local paidStock = profile and profile.chests and profile.chests.paidStock or {}
+		local purchased = {}
+		for _, chest in Looks.config().chests do table.insert(purchased, paidStock[chest.id] or 0) end
 		local key = game:GetService("HttpService"):JSONEncode({ boosts.permanentXP, boosts.permanentPaper, count,
-			me:GetAttribute("Paper"), me:GetAttribute("Level"), me:GetAttribute("FoldGoal"), now() // 86400,
+			me:GetAttribute("Paper"), me:GetAttribute("Level"), me:GetAttribute("FoldGoal"), now() // 86400, profile and profile.chestPaperAllowed == true,
+			stock.paper or 0, stock.sticker or 0, stock.blue_ribbon or 0, stock.golden_star or 0, purchased, profile and profile.dailyGift and profile.dailyGift.lastDay,
 			math.floor((boosts.xpSeconds or 0) / 60), math.floor((boosts.paperSeconds or 0) / 60),
 			me:GetAttribute("DailyGiftNext"), me:GetAttribute("DailyGiftReady"), me:GetAttribute("StarterPackEnds"), me:GetAttribute("FirstBuysUsed"), me:GetAttribute("PaperJar"), giftFor and giftFor.id })
 		if key == shown then return end
@@ -921,27 +1000,25 @@ function ShopScreen.new(playerGui, api)
 		for _, child in content:GetChildren() do child:Destroy() end
 		table.clear(moving); table.clear(rainbow)
 		local y = 2
+		sections.Featured = y * K
+		local starter = me:GetAttribute("StarterPackEnds")
+		if (starter == nil or starter > now()) and Chests.purchaseLabel(profile, "starter_pack", STARTER.price) then
+			y = featured(y)
+		elseif PREVIEW then
+			y = nextPart(y, owned)
+		end
+		y = freeGift(y)
+		if PREVIEW then y = todaysParts(y, owned) end
+		sections.Chests = y * K
+		y = chestSection(y)
 		if PREVIEW then
-			sections.Featured = y * K
-			local starter = me:GetAttribute("StarterPackEnds")
-			y = (starter == nil or starter > now()) and featured(y) or nextPart(y, owned)
+			sections.Passes = y * K
+			y = passes(y, boosts)
+			sections.Paper = y * K
+			y = paperPacks(y)
+			sections.Boosts = y * K
+			y = boostRows(y, boosts)
 		end
-		if not giftFor then
-			local browse = press(content, "BrowseLooks", Art.buyGreen, 337, y + 4, 957, y + 99, api.looks)
-			say(browse, "BrowseLabel", "Browse skins & trails", 32, 8, 588, 84, 47, { loud = true })
-			y += 115
-		end
-		if PREVIEW then
-			y = freeGift(y)
-			y = todaysParts(y, owned)
-		end
-		sections.Passes = y * K
-		if not PREVIEW then sections.Featured = y * K end
-		y = passes(y, boosts)
-		sections.Paper = y * K
-		y = paperPacks(y)
-		sections.Boosts = y * K
-		y = boostRows(y, boosts)
 		content.Size = UDim2.fromOffset((1408 - 118) * K, (y + 20) * K)
 		scroll.CanvasSize = UDim2.fromOffset(0, (y + 20) * K)
 		scrolled()

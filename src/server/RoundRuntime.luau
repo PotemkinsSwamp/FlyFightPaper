@@ -546,7 +546,7 @@ function Runtime:sendProfile(player)
  if profile then
   local e=self.profiles.entries[player]
   local boost=self.profiles.service:liveBoostView(e.account)
-  self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,looks=profile.looks,chests=profile.chests,
+  self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,looks=profile.looks,chests=profile.chests,dailyGift=profile.dailyGift,
    chestPaperAllowed=self.profiles.service:chestPaperAllowed(e.account,player),
    presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,unlocksSeen=profile.unlocksSeen,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end

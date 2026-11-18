@@ -626,7 +626,7 @@ function Hangar.new(playerGui, api)
 	-- Only refresh for displayed data. Dictionary order can change between identical network snapshots.
 	local shown
 	function self.update(player, newProfile)
-		local key = newProfile and {player:GetAttribute("Paper") or newProfile.paper, newProfile.ownership, newProfile.looks, newProfile.presets, newProfile.rangePresets, newProfile.chests, newProfile.chestPaperAllowed,
+		local key = newProfile and {player:GetAttribute("Paper") or newProfile.paper, newProfile.ownership, newProfile.looks, newProfile.presets, newProfile.rangePresets, newProfile.chests, newProfile.chestPaperAllowed, newProfile.dailyGift,
 			player:GetAttribute("MenuMessage"), atDesk(), player:GetAttribute("Level"), devMode(), PaperUI.isPhone()}
 		if sameValues(key, shown) and #content:GetChildren() > 0 then return end
 		shown, profile = key, newProfile

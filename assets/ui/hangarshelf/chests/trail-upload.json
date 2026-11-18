@@ -1,0 +1,24 @@
+{
+  "path": "operations/cc19472e-3d96-4110-95d1-3ef6897a30ba",
+  "operationId": "cc19472e-3d96-4110-95d1-3ef6897a30ba",
+  "done": true,
+  "response": {
+    "path": "assets/110602232193985",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-18T08:59:31.140Z",
+    "assetId": "110602232193985",
+    "displayName": "Classroom Prize Chests with Contrail Stickers",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

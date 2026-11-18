@@ -23,33 +23,29 @@ function Spec.run()
 		function player:SetAttribute(key,value) self.attributes[key]=value end
 		return Hangar.new({catalog=catalog,pilots={},wear=Flight.wear},profiles),player,profiles,catalog,profile
 	end
-	test("buying a look previews without changing the profile and queues only its server purchase fields",function()
-		local service,player,profiles,_,profile=fixture();local item=Looks.item("water_spray")
-		profile.paperMilli=item.paper*1000;local before=Schema.canonical(profile)
-		service:handle(player,"buyLook",item.id)
-		assert(#profiles.calls==1 and Schema.canonical(profiles.calls[1])==Schema.canonical({kind="lookPurchase",lookID=item.id}))
-		assert(player.attributes.MenuMessage==item.name.." is yours! Wear it from the Trails tab.")
-		assert(Schema.canonical(profile)==before,"purchase preview changed saved progress")
-	end)
-	test("look buy refusals explain ownership, low Paper, bundled trails and unknown looks without queuing",function()
-		for _,case in ipairs({{"hazard_stripes",false,"Find skins in treasure chests."},{"water_spray",false,"You need more Paper."},{"confetti",true,"You already own it."},
-			{"dragon_embers",false,"That trail comes with its skin."},{"missing",false,"That can't be bought."}}) do
+	test("retired look purchase buttons explain how to obtain an item and never charge",function()
+		for _,case in {{"hazard_stripes",false,"Find that look in treasure chests."},{"water_spray",false,"Find that look in treasure chests."},
+			{"confetti",true,"You already own it."},{"dragon_embers",false,"That trail comes with its skin."},{"missing",false,"That can't be bought."}} do
 			local service,player,profiles,_,profile=fixture()
 			if case[2] then profile.looks.owned[case[1]]=true end
 			local before=Schema.canonical(profile)
 			service:handle(player,"buyLook",case[1])
-			assert(#profiles.calls==0 and player.attributes.MenuMessage==case[3],player.attributes.MenuMessage)
+			assert(#profiles.calls==0 and player.attributes.MenuMessage==case[3])
 			assert(Schema.canonical(profile)==before)
 		end
 	end)
-	test("a failed queued look buy gives the requested failure message and a busy queue refuses the request",function()
-		local service,player,profiles,_,profile=fixture();profile.paperMilli=Looks.item("confetti").paper*1000
-		local before=Schema.canonical(profile);profiles.ok=false
-		service:handle(player,"buyLook","confetti")
-		assert(#profiles.calls==1 and player.attributes.MenuMessage=="The buy was not completed. Nothing changed.")
-		profiles.busy=true;service:handle(player,"buyLook","confetti")
-		assert(#profiles.calls==1 and player.attributes.MenuMessage=="Saving is busy. Try again shortly.")
-		assert(Schema.canonical(profile)==before)
+	test("chest buttons send only the chosen chest and source with the displayed opening number",function()
+		local service,player,profiles=fixture()
+		for _,source in {"earned","paper","paidStock"} do
+			service:handle(player,"openChest",{chest="trail_sticker",source=source,opened=4})
+			local op=profiles.calls[#profiles.calls]
+			assert(op.source==source and op.opened==4 and op.chest=="trail_sticker" and op.kind=="openChest")
+		end
+		for _,bad in {{chest="trail_sticker",opened=4},{chest="trail_sticker",opened=4,source="free"},
+			{chest="trail_sticker",opened=4,source="earned",lookID="water_spray"}} do
+			service:handle(player,"openChest",bad)
+		end
+		assert(#profiles.calls==3)
 	end)
 	test("wearing owned looks waits for the save before changing the current pilot and model",function()
 		local service,player,profiles,_,profile=fixture();profile.looks.owned={shark_jet=true,water_spray=true}

@@ -44,21 +44,24 @@ function Spec.run()
 		for _, chest in Looks.config().chests do
 			local odds, counts = Looks.chestOdds(chest.id, {})
 			local outcomes = {common=0, rare=0, legendary=0, mythical=0}
-			for ticket = 1, 100 do
+			for ticket = 1, 10000 do
 				local first = true
 				local id = Looks.drawChest(chest, function(n)
-					if first then first = false; assert(n == 100); return ticket end
+					if first then first = false; assert(n == 10000); return ticket end
 					return n
 				end)
 				outcomes[Looks.item(id).tier] += 1
 			end
 			for tier, count in outcomes do
-				assert(count == chest.weights[tier] and count == odds[tier])
+				assert(count == math.round(chest.weights[tier] * 100) and count == math.round(odds[tier] * 100))
 				assert((count > 0) == (counts[tier] > 0))
 			end
 		end
 		local paper = Looks.chestOdds("paper", {})
-		assert(paper.mythical == 0 and paper.legendary == 0)
+		assert(paper.mythical == .01 and paper.legendary == .24)
+		local pool = Looks.chestItems("trail_paper")
+		assert(#pool == 16)
+		for _, item in pool do assert(item.kind == "trail" and item.tier ~= "mythical") end
 	end)
 	test("each skin can occupy its tier slot and copies have the advertised Paper value", function()
 		local chest = Looks.chest("golden_star")
@@ -90,20 +93,13 @@ function Spec.run()
 		assert(Looks.item("missing") == nil and Looks.item(nil) == nil and not Looks.owns(nil, "dragon"))
 		assert(not pcall(function() cfg.tiers.common.paper = 1 end))
 	end)
-	test("Paper buys charge exact milliunits with no level requirement and detach every returned table", function()
-		for _, example in ipairs({ {"confetti",900}, {"rainbow_marker",1900}, {"water_spray",1900} }) do
-			local p = fresh(example[2] * 1000 + 123); p.earnedPaperMilli = 99; p.purchasedPaperMilli = 77
-			local before = Schema.canonical(p)
-			local bought = assert(Looks.buyWithPaper(Schema.freeze(p), example[1], "paper-buy"))
-			assert(bought.profile.paperMilli == 123 and bought.profile.looks.owned[example[1]] == true)
-			assert(bought.operation.chargedMilli == example[2] * 1000 and bought.operation.priceMilli == example[2] * 1000 and not bought.operation.alreadyOwned)
-			assert(bought.operation.operationID == "paper-buy" and bought.operation.lookID == example[1])
-			assert(bought.profile.earnedPaperMilli == 99 and bought.profile.purchasedPaperMilli == 77 and bought.profile.xpMilli == p.xpMilli)
-			assert(Looks.owns(bought.profile, example[1]) and Schema.canonical(p) == before and Schema.validate(bought.profile, catalog))
-			assert(bought.profile ~= p and bought.profile.looks ~= p.looks and bought.profile.presets ~= p.presets)
-			assert(table.isfrozen(bought) and table.isfrozen(bought.operation) and table.isfrozen(bought.profile.looks.owned))
-			assert(not pcall(function() bought.profile.looks.owned[example[1]] = nil end))
-		end
+	test("cosmetic grants preserve the balance and return detached immutable ownership", function()
+		local p = fresh(900123)
+		local before = Schema.canonical(p)
+		local result = assert(Looks.grant(Schema.freeze(p), "confetti", "earned-trail"))
+		assert(result.profile.paperMilli == 900123 and result.profile.looks.owned.confetti)
+		assert(Schema.canonical(p) == before and result.profile.looks ~= p.looks)
+		assert(table.isfrozen(result.profile.looks.owned) and table.isfrozen(result.operation))
 	end)
 	test("Only Mythical rewards grant their matching trail and nothing is automatically worn", function()
 		for skin, trail in pairs({ shark_jet = "water_spray", ninja = "smoke_bomb", hot_rod = "backfire", stealth = "silver_chaff",
@@ -125,7 +121,7 @@ function Spec.run()
 			local value, err = method(fresh(), "missing", "unknown"); rejected(value, err, "unknown_look")
 		end
 	end)
-	test("every flight trail can be bought or unlocked from a skin and worn using its saved ID", function()
+	test("every flight trail can be drawn or unlocked from a skin and worn using its saved ID", function()
 		local bundles = {}
 		for _, skin in Looks.config().skins do
 			if skin.trail then bundles[skin.trail] = skin.id end
@@ -134,23 +130,20 @@ function Spec.run()
 			assert(#effect.pieces > 0 or effect.effect == "cloak", id)
 			local item = assert(Looks.item(id), id)
 			local purchase = if item.sold then id else assert(bundles[id], id)
-			local unlock = if item.sold then Looks.buyWithPaper else Looks.grant
-			local p = assert(unlock(fresh(60000000), purchase, "buy")).profile
+			local p = assert(Looks.grant(fresh(60000000), purchase, "buy")).profile
 			local worn = assert(Looks.wear(p, "", id, "trail-only")).profile
 			assert(worn.looks.trail == id and worn.looks.skin == "" and Schema.validate(worn, catalog), id)
 		end
 		for _, item in Looks.config().trails do assert(Trails.trails[item.id], item.id) end
 	end)
-	test("an owned look costs nothing even when the balance is empty", function()
-		local p = assert(Looks.grant(fresh(), "water_spray", "grant-first")).profile
-		local bought = assert(Looks.buyWithPaper(p, "water_spray", "owned-buy"))
-		assert(bought.operation.alreadyOwned and bought.operation.chargedMilli == 0 and bought.operation.priceMilli == 0)
-		assert(Schema.canonical(bought.profile) == Schema.canonical(p))
-	end)
-	test("one milliunit below the price fails without changing the input", function()
-		local p = fresh(900000 - 1); local before = Schema.canonical(p)
-		local value, err = Looks.buyWithPaper(p, "confetti", "poor"); rejected(value, err, "insufficient_paper")
-		assert(Schema.canonical(p) == before and not Looks.owns(p, "confetti"))
+	test("direct trail buys stay closed at every balance", function()
+		for _, balance in {0, 899999, 900000, 60000000} do
+			local p = fresh(balance)
+			local before = Schema.canonical(p)
+			local value, err = Looks.buyWithPaper(p, "confetti", "direct")
+			rejected(value, err, "chest_only")
+			assert(Schema.canonical(p) == before)
+		end
 	end)
 	test("receipt grants do not charge money and repeat grants report already owned", function()
 		local p = fresh(123)
@@ -171,10 +164,8 @@ function Spec.run()
 			function(p) p.paperMilli = math.huge end, function(p) p.looks = nil end,
 			function(p) p.looks.owned.dragon = false end, function(p) p.loop = p end,
 			function(p) p.extra = function() end end, function(p) setmetatable(p.looks, {}) end }) do
-			for _, method in ipairs({ Looks.buyWithPaper, Looks.grant }) do
-				local p = fresh(60000000); damage(p)
-				local value, err = method(p, "water_spray", "bad-profile"); rejected(value, err, "invalid_profile")
-			end
+			local p = fresh(60000000); damage(p)
+			local value, err = Looks.grant(p, "water_spray", "bad-profile"); rejected(value, err, "invalid_profile")
 		end
 	end)
 	test("wear requires owned items of the correct kind and saves both selections atomically", function()

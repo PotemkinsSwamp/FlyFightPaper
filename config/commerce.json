@@ -607,7 +607,15 @@
       "roblox_product_id": null,
       "approved_robux_price": 99,
       "enabled": false
-    }
+    },
+    {"key": "chest_paper", "kind": "developer_product", "benefit": "chest_stock", "roblox_product_id": null, "approved_robux_price": 45, "enabled": false},
+    {"key": "chest_sticker", "kind": "developer_product", "benefit": "chest_stock", "roblox_product_id": null, "approved_robux_price": 135, "enabled": false},
+    {"key": "chest_blue_ribbon", "kind": "developer_product", "benefit": "chest_stock", "roblox_product_id": null, "approved_robux_price": 295, "enabled": false},
+    {"key": "chest_golden_star", "kind": "developer_product", "benefit": "chest_stock", "roblox_product_id": null, "approved_robux_price": 539, "enabled": false},
+    {"key": "chest_trail_paper", "kind": "developer_product", "benefit": "chest_stock", "roblox_product_id": null, "approved_robux_price": 45, "enabled": false},
+    {"key": "chest_trail_sticker", "kind": "developer_product", "benefit": "chest_stock", "roblox_product_id": null, "approved_robux_price": 135, "enabled": false},
+    {"key": "chest_trail_blue_ribbon", "kind": "developer_product", "benefit": "chest_stock", "roblox_product_id": null, "approved_robux_price": 295, "enabled": false},
+    {"key": "chest_trail_golden_star", "kind": "developer_product", "benefit": "chest_stock", "roblox_product_id": null, "approved_robux_price": 539, "enabled": false}
   ],
   "paper_pack_amounts_status": "approved by Alan 2026-11-11 and 2026-11-12 (docs/plan/SHOP-PRICES-PLAN.md, docs/plan/SHOP-MONEY-PLAN.md); live activation requires owner authorization",
   "mock_ui_label": "DEVELOPMENT ONLY \u00e2\u20ac\u201d no real purchase",

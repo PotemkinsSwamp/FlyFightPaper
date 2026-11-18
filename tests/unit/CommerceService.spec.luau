@@ -56,10 +56,10 @@ local function fixture(options)
   table.insert(self.calls,{kind="pass",player=player,id=id})
   if self.promptError then error("fake prompt failure") end
  end
- f.service=Profile.new({catalog=f.catalog,monotonic=function()return f.time end,unix=function()return f.unix end})
+ f.service=Profile.new({catalog=f.catalog,policyInfo=function()return {ArePaidRandomItemsRestricted=options.restricted==true} end,monotonic=function()return f.time end,unix=function()return f.unix end})
  assert(f.service:attach("user",f.profile,{connected=true,mapLoaded=false}).status=="ok")
  local entry={profile=f.profile,account="user"}
- f.profiles={catalog=f.catalog,entries={[f.player]=entry},store=Fake.store()}
+ f.profiles={catalog=f.catalog,service=f.service,entries={[f.player]=entry},store=Fake.store()}
  function f.profiles:view(player)
   if f.unloaded or player~=f.player or self.entries[player]~=entry then return nil end
   local view=f.service:view("user")
@@ -378,6 +378,8 @@ function Spec.run()
      if grant.kind=="purchasedPaper" then paper+=grant.wholePaper*1000
      elseif grant.resource=="xp" then xpSeconds+=grant.seconds
      else paperSeconds+=grant.seconds end
+    elseif offer.benefit=="chest_stock" then
+     assert(f.profile.LastSavedData.chests.paidStock[offer.chestID]>=1)
     elseif offer.benefit=="look_unlock" then
      assert(f.profile.LastSavedData.looks.owned[offer.lookID])
      looks+=1
@@ -387,7 +389,7 @@ function Spec.run()
     end
    end
   end
-  assert(parts>0 and looks==16 and n==43+parts+looks and n==#f.commerce.catalog.offers-2)
+  assert(parts>0 and looks==16 and n==51+parts+looks and n==#f.commerce.catalog.offers-2)
   assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
   assert(f.profile.LastSavedData.xpMilli==xp)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)
@@ -495,7 +497,7 @@ function Spec.run()
  end)
  test("prompts call the matching Roblox checkout with the right ids and grant nothing",function()
   local f=fixture()
-  for _,key in ipairs({"paper_pack_15000","xp_boost_60m","permanent_2x_paper","part_eraser"}) do
+  for _,key in ipairs({"paper_pack_15000","xp_boost_60m","permanent_2x_paper","part_eraser","chest_golden_star","chest_trail_paper"}) do
    local offer=f:offer(key);local ok,why=f.commerce:prompt(f.player,key)
    assert(ok and why=="prompted")
    local call=f.marketplace.calls[#f.marketplace.calls]
@@ -531,6 +533,18 @@ function Spec.run()
   local oldSignature=Hangar.new({catalog=f.catalog},f.profiles)
   oldSignature:handle(f.player,"buyProduct","paper_pack_1500")
   assert(#f.marketplace.calls==1)
+ end)
+ test("restricted accounts cannot prompt paid chests or starter packs and completed receipts still deliver paid stock",function()
+  local f=fixture({restricted=true})
+  for _,key in {"starter_pack","chest_paper","chest_trail_paper"} do
+   local ok,why=f.commerce:prompt(f.player,key)
+   assert(not ok and why=="chest_paper_unavailable")
+  end
+  assert(#f.marketplace.calls==0)
+  local info=f:receipt("chest_trail_paper")
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profile.LastSavedData.chests.paidStock.trail_paper==1)
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profile.LastSavedData.chests.opened==0)
+  assert(f.profile.LastSavedData.chests.paidStock.trail_paper==1)
  end)
  test("starter prompts end exactly at three days and after an earlier buy or pass",function()
   for _,reason in ipairs({"expired","receipt","pass","bought"}) do

@@ -7,8 +7,8 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-18)
 
-- Customize and Shop open the same cosmetics binder. Locked skins have a dimmed card and padlock. Click one to preview the complete plane. Treasure chests leads to the [skin reward system](economy-and-shop.md#classroom-treasure-chests). Owned skins have a Wear button.
-- The catalog has eight Common skins, eight Rares, five Legendaries and two Mythicals. Sixteen trails are separate purchases. Folded Petals and Dragon Embers come with their Mythical skins. Skin and trail are independent equipment slots shared across builds.
+- Customize groups skins and trails under Common, Rare, Legendary and Mythical dividers. Each tier has its own paper colour. Locked cards are dimmed. Select one for a full-colour preview, or select an owned item to wear it.
+- The binder holds eight Common, eight Rare, five Legendary and two Mythical skins. Sixteen trails drop from Trail chests. Folded Petals and Dragon Embers come with the Mythical skins. Each player can wear one skin and one trail across builds. Both the binder and the Shop open a chest on their own screen. [Chest prizes and purchase choices](economy-and-shop.md#classroom-treasure-chests).
 - On the Trails page the plane starts facing up, slightly turned and seen from behind and above. Its exhaust streams down a ruled sheet, whose lines bend under the cloaking wake. Dragging the plane holds the chosen view.
 - The Ninja's scarf follows the plane's movement and its wing blades catch the light. Shark Jet breaches, Hot Rod's flames move and its pipes backfire, Stealth's lines glow, and Race Car gets a traveling reflection. [Ninja flight check](../playtests/2026-11-17-ninja-in-flight.md)
 - Common skins cover the plane and booster with printed sheets. [Common skins in Play](../playtests/2026-11-16-common-skins.md) Rare skins add moving layers to the upper faces within 200 studs. Holographic animates its rainbow and glint on both faces. Skins cover the team square and circle on the wings. [Rare animations and performance in Play](../playtests/2026-11-16-scripted-looks-check.md)
@@ -139,10 +139,11 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/shared/BuilderModel.luau` | The build you are editing in the hangar |
 | `src/client/Hangar.luau` | Main-menu hangar: the shelf screen, stat sheet, name label, plane photo |
 | `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build or class (tests for classes: `tests/unit/Classes.spec.luau`) |
-| `src/client/HangarChests.luau` | Chest shelf, individual outcomes, play rewards and the opening reveal. Chest art uses the four cells of `assets/ui/hangarshelf/chests/classroom-chests.png`. |
+| `src/client/HangarChests.luau` | Chest shelf, individual outcome odds, purchase choices and earned rewards. |
 | `src/client/HangarWidgets.luau` | Retains the book, stat sheet, cards, scroll position and button handlers across changes in the binder. Regression: `tests/unit/HangarWidgets.spec.luau`. |
+| `src/client/ChestOpening.luau` | Raises and shakes the chest, opens its lid and lifts out the awarded skin or trail. The result card shows rarity, duplicate Paper and recorded owners when available. Skin and Trail chests use separate artwork. |
 | `src/client/HangarTrailPreview.luau` | Draws the selected trail in the plane's 3D preview, with the flight meshes, camera-facing smoke and a compact effect behind the fitted tail. |
-| `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the Skins and Trails tabs (try on, Wear, Buy, Unlock now, Take off) |
+| `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the rarity groups and preview, chest, wear and take-off buttons on the Skins and Trails pages |
 | `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): draws the skin's pieces on this screen where `SkinFit` puts them, hides what they cover, draws the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/SkinFit.luau` | Shape skins' one fit for screen and server: measures the plane's parts, places the skin's pieces, and says where each real wing turns (about the drawn hinge) and each gun hangs |
 | `tests/unit/SkinFit.spec.luau` | Under the Dragon, on four builds: one size, as big a target as the plane, centred, its shape replacing the body, nose, wings and tail as hit shapes, guns under its wing, booster on its belly. Under the crane, on two builds: wing shapes turn by its angle about the drawn hinge at the same size, gun shapes move by the screen's offsets, crash shapes refit on a skin change; no shape skin moves nothing |

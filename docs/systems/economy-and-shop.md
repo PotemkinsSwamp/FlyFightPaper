@@ -5,20 +5,24 @@ You earn **Paper** (money) and **XP** (levels) from points in every match. Paper
 
 ## Classroom treasure chests
 
-Open Hangar > Customize > Skins > Treasure chests. Each opening draws one skin. The shelf shows each possible skin and its chance before spending. A duplicate pays 10% of the original skin's Paper value. This gives 280 Paper for Common, 560 for Rare, 3,000 for Legendary and 6,000 for Mythical. These prices, percentages and play milestones are first-pass tuning.
+The **Chests** tab in the Shop sells four Skin chests and four Trail chests. Pick a chest to see its possible prizes, each item's chance and its duplicate refund. You can also reach these choices through Customize in the Hangar. Each opening draws one prize. A Mythical skin also grants its matching trail.
 
-| Chest | Paper | Common | Rare | Legendary | Mythical |
-|---|---:|---:|---:|---:|---:|
-| Paper | 1,000 | 80% | 20% | 0% | 0% |
-| Sticker | 3,000 | 52% | 40% | 8% | 0% |
-| Blue Ribbon | 6,500 | 18% | 54% | 26% | 2% |
-| Golden Star | 12,000 | 0% | 33% | 57% | 10% |
+| Chest | Paper | Practice Robux | Common | Rare | Legendary skin / trail | Mythical skin |
+|---|---:|---:|---:|---:|---:|---:|
+| Paper | 1,000 | 45 | 79.75% | 20% | 0.24% / 0.25% | 0.01% |
+| Sticker | 3,000 | 135 | 51.9% | 40% | 8% / 8.1% | 0.1% |
+| Blue Ribbon | 6,500 | 295 | 18% | 54% | 26% / 28% | 2% |
+| Golden Star | 12,000 | 539 | | 33% | 57% / 67% | 10% |
 
-A match that pays the ordinary completion reward counts toward the weekly mission and all three streaks. Three such matches in a Monday-to-Sunday UTC week earn a Sticker chest. Every two consecutive active days earn a Paper chest, every two consecutive active weeks earn Blue Ribbon, and every two consecutive active calendar months earn Golden Star. Multiple matches in one day advance the mission but count as one active day. Players can save earned chests and open them for free.
+Items in a rarity have equal chances. Each list on screen shows only possible outcomes. Trail chests draw from five Common, six Rare and five Legendary trails. Dragon Embers and Folded Petals come exclusively with their Mythical skins. A duplicate returns 10% of the item's reference Paper value. That pays 280, 560, 3,000 or 6,000 for a skin by rarity, and 90 for a Common trail or 190 for a Rare or Legendary trail.
 
-Paper can be purchased, so the server checks individual eligibility before allowing a Paper opening. When eligibility is unavailable or restricted, earned chests still work. [Roblox guidance for paid random items](https://create.roblox.com/docs/production/monetization/paid-random-items).
+Three reward-eligible matches in one Monday-to-Sunday UTC week earn one Sticker chest. The daily gift gives a Paper chest on consecutive day 7, Sticker on day 14, Blue Ribbon on day 21 and Golden Star on day 28. A missed UTC day restarts the gift row on day one. Earned chests of a given tier can be saved and spent on either family.
 
-## Where it stands (2026-11-13)
+Buying with Paper pays for an immediate opening. A Robux purchase delivers an unopened chest of the exact family and tier bought. The direct Robux prices are about 10% below the normal cost of the same Paper at the largest pack's rate. The first-buy Paper bonus can change that comparison. The server checks paid-random-item eligibility for paid openings and purchases, including the starter pack. Earned openings remain available if the check fails or the account is restricted. Real checkout is switched off. [Roblox paid random item guidance](https://create.roblox.com/docs/production/monetization/paid-random-items).
+
+## Where it stands (2026-11-18)
+The Shop and Hangar share the chest prize list and the opening animation. The Shop keeps the player in its own window.
+
 **Gift a friend** is built to the [approved gift rules](../decisions/2026-11-13-gift-a-friend.md) (Studio only until
 go-live): the shop's friend note with search, the server check, "A gift for Sam", the practice gift, and the plane that
 brings it over the main menu. Checked in Studio Play 2026-11-13 by gifting to yourself (`DevGiftSelf`): tests 599/0, the
@@ -33,10 +37,10 @@ in about 36; for the first 6 hours ~13 unlocked things are always waiting to be 
 [decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)). Paper packs and Robux part prices were re-scaled to
 match (Alan 2026-11-11, [shop prices plan](../plan/SHOP-PRICES-PLAN.md): each part's Robux price comes from its Paper
 price; current packs are listed below). The server save rules for the daily gift, starter bundle, Paper jar, first-buy doubles and daily buy count are built with unit
-tests (2026-11-12), awaiting Claude's Studio run and client wiring. Other personal shop offers remain in the
+tests and run through the Shop window. Other personal shop offers remain in the
 [picks](../decisions/2026-11-12-personal-shop-picks.md).
 Earning, levels, part purchases and prestige work (prestige checked in Studio Play). The shop is a Roblox-style shop window in our paper look
-(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the 45 fixed offers and part unlocks
+(2026-11-12, [shop screen plan](../plan/SHOP-SCREEN-PLAN.md)), Studio only and practice buys only until go-live. The real Roblox purchase code is built for the fixed products, chest products and part unlocks
 and is switched off: with `mode` "mock" it never talks to Roblox's shop.
 - **Receipts:** a paid boost or Paper pack is added together with its receipt ID in one save change, then the game
   waits for that save to reach Roblox before telling Roblox "granted". A failed save means "not yet": Roblox resends
@@ -55,7 +59,7 @@ and is switched off: with `mode` "mock" it never talks to Roblox's shop.
   Prestige takes bought parts back like any other. Still to do with prices: the hangar's "Unlock now" button and its
   "prestige takes this back" warning.
 - **Not built yet:** VIP pass (benefits not chosen), private
-  servers (Roblox setting, Alan) and their match settings, cosmetics, special planes, drawing pass (paid outside check).
+  servers (Roblox setting, Alan) and their match settings, special planes, drawing pass (paid outside check).
 
 ## Economy details
 All values here are initial tuning. They are not optimal prices, observed willingness to pay, or a forecast.
@@ -97,11 +101,7 @@ Ordinary UI shows whole units. Event identities prevent duplicate rewards on ret
 multipliers are captured independently at earning time. Final bonus events use eligibility at finalization,
 not retroactive multiplication of the full ledger.
 
-The free daily gift is a seven-step row: 100 Paper, 150 Paper, 15 minutes of 2x XP, 250 Paper, 300 Paper,
-15 minutes of 2x Paper, then 1,000 Paper. One claim per UTC calendar day, with the date supplied by the server.
-Missed days keep the next step; step seven wraps to step one. Gift Paper counts as earned Paper but is never
-boosted. Timed gifts extend the same online boost balance as a purchase. If a permanent pass already covers
-that resource, its gift becomes 250 earned Paper instead. A claim changes the reward and saved row together.
+The free daily gift allows one claim per UTC day. Each week starts with 100 Paper, 150 Paper, 15 minutes of 2x XP, 250 Paper, 300 Paper and 15 minutes of 2x Paper. The seventh gift is that week's chest. Day 29 starts a new cycle. Gift Paper counts as earned Paper and pays its stated amount. Timed gifts extend the online boost balance. A player with a permanent pass for that resource gets 250 earned Paper instead. The server saves the gift and its claimed day together. [Chest milestones](#classroom-treasure-chests).
 
 ## Levels and purchases
 XP to advance level L: 200+40*(L-1), initial cap50. Maintain cumulative earned XP even at cap for statistics;
@@ -185,7 +185,7 @@ shop. Later buys of that pack give its normal amount. The pack key travels with 
 decides and records its first buy together with the purchased Paper. Receipt replays give nothing extra. This
 bonus does not apply to the starter bundle, daily gifts or other purchased Paper.
 
-The starter bundle gives Swept Wings (`wings_1`), 1,500 purchased Paper and 3,600 seconds of 2x XP together in one
+The starter bundle gives Swept Wings (`wings_1`), 1,500 purchased Paper, 3,600 seconds of 2x XP and a Paper Skin chest together in one
 save operation. Owning the wings already is fine. An in-flight receipt after a permanent XP upgrade adds dormant
 XP time, just like a paid timed boost. The offer starts on the first server load that sees no saved start time and
 lasts 259,200 real seconds, including time away. It never restarts. It is offered only before any purchase, with
@@ -320,7 +320,7 @@ conversion and profitability require first-party evidence and actual receipts/co
 Use `economy.json` and the economy details above. Contribution pays exactly the same for AI/humans.
 Level L needs 200 + floor(22*(L-1)^1.5) XP to reach L+1 (a curve; was 200+40*(L-1)); cap 50. Paper prices and minimum levels both apply. No
 buying levels. Starting ownership contains baseline structures and pellets; starting wallet/XP is zero.
-The daily gift row above is not a streak: missed days never reset it. No random loot, paid ammunition, premium revives, or unrequested currency.
+The daily gift follows the [consecutive-day chest schedule](#classroom-treasure-chests). Paid ammunition and premium revives are outside the shop design.
 
 Two independent remaining-seconds boost balances. Consume trusted loaded online intervals, not calendar
 elapsed time; pause offline/loading/transfer/unavailable recovery. Menu/desk/intermission counts under the
@@ -340,11 +340,11 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 |---|---|
 | `src/shared/EconomyRules.luau` | Points to Paper and XP, bonuses, levels, purchases |
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
-| `src/shared/ChestProgress.luau` | Records eligible match finishes and awards earned chests for the weekly mission and UTC play streaks. Calendar and replay tests are in `tests/unit/ChestProgress.spec.luau`. |
-| `src/shared/LooksRules.luau` | Chest odds, duplicate values, independent trail purchases, wearing and bot cosmetics ([skins plan](../plan/SKINS-PLAN.md)) |
+| `src/shared/ChestProgress.luau` | Tracks the weekly three-match mission by completion time. Late-match and weekly reset tests are in `tests/unit/ChestProgress.spec.luau`. |
+| `src/shared/LooksRules.luau` | Skin and Trail chest pools, duplicate values, wearing and bot cosmetics ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |
 | `src/server/HangarService.luau` | Buying parts, the practice shop |
-| `src/client/ShopScreen.luau` | The shop window (Studio only until go-live): built to the approved concept's measurements, pictures named in `UIAssets.shop`, animations; the starter pack's saved timer, the free gift card with its 7-day row (Claim, ticks, time to the next), Paper packs biggest first with "First buy 2x!", pictures growing with the amount ([money plan](../plan/SHOP-MONEY-PLAN.md); checked in Play 2026-11-12; the tab buttons scroll too far, see STATE); the Gift a friend note: friends from Roblox (in this server first), the server's check, "A gift for Sam" with the price; from the title bar the shop stays "For Sam" until a card's gift button (Paper packs and boosts only) |
+| `src/client/ShopScreen.luau` | Shop cards and tabs, chest families, daily gift row, starter pack, Paper packs, boost and gift buttons. |
 | `src/server/CommerceService.luau` | Real Roblox purchases: receipts, pass checks, buy prompts (off) |
 | `src/client/GiftMoment.luau` | [A friend's gift arriving](#the-gift-arriving) over the main menu: the board's plane leaves its pin and flies over, the box falls in, Open it!, each Thanks! brings the next gift out, the plane is pinned again (Alan's story 2026-11-13); Studio `DevGiftMoment` / `DevGiftTime` |
 | `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts; late starter bundles |
@@ -354,7 +354,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `tests/unit/GiftCheck.spec.luau` | Friend checks, waiting count, check lifetime, gift refusals and Studio practice sends |
 
 ## Tuning numbers
-`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts, starter bundle and jar); `config/commerce.json` (45 fixed offers plus part unlocks; `mode` is "mock", live sales off); prices in `config/catalog.json`.
+`config/economy.json` (points, Paper and XP per point, bonuses, levels, refold price, daily gifts, starter bundle and jar); `config/commerce.json` (product mappings and proposed chest prices, currently in mock mode); part prices in `config/catalog.json`. See `config/looks.json` for chest prices, prize weights and duplicates.
 
 ## Related
 - [Points system decision](../decisions/2026-10-14-points-system.md)

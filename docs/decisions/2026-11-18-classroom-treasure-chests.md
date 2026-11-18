@@ -4,13 +4,15 @@
 
 ## Decision
 
-The skin collection uses classroom treasure chests. In order they are Paper, Sticker, Blue Ribbon and Golden Star. Paper cannot draw Mythical skins. Higher chests give better chances at higher rarities. Golden Star has Rare, Legendary and Mythical skins, with Legendary the most likely.
+Players choose a Skin chest or a Trail chest. Both families use Paper, Sticker, Blue Ribbon and Golden Star tiers. Every Skin chest can award Legendary and Mythical skins, even the Paper chest. Golden Star starts at Rare. The two Mythical trails belong exclusively to the Dragon and Origami Crane skins. The display lists only possible prizes with their chances.
 
-Players can spend Paper on a chest or earn one through weekly missions and daily, weekly and monthly play streaks. Duplicate skins pay back a fraction of the skin's Paper value. Unowned skin cards stay darkened and can be selected for a full-colour preview. Only Origami Crane and Dragon grant their matching trails, Folded Petals and Dragon Embers respectively.
+Players can buy chests with Paper or Robux in the Shop's Chests tab. Direct Robux pricing should be a little cheaper than buying the Paper separately. Weekly match missions and consecutive daily gifts award chests players can open in either family. The starter pack includes a Paper chest. A duplicate returns part of the item's Paper value.
+
+Skin and Trail cards in the Hangar use rarity dividers and coloured paper. Players can preview a locked item in full colour before obtaining it. Opening a chest brings its upper three quarters into view from below. It shakes, the lid pops open, and the prize rises out with its name, rarity and recorded owner count.
 
 ## Why
 
-The teacher's classroom treasure chest fits the game. Alan wanted the collection to reward returning and playing. Paper from a duplicate is useful for the next chest or for ordinary plane equipment.
+The classroom treasure chest is a reward Alan remembers from elementary school. Paper, stickers, blue ribbons and gold stars carry that theme through all four tiers. The two families give players a choice about what they collect. Duplicate Paper goes toward their next chest or plane part.
 
 ## Affects
 
