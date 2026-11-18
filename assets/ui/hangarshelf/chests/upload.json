@@ -1,0 +1,24 @@
+{
+  "path": "operations/c99a31e8-d455-43bd-bcab-5fe1944bdd22",
+  "operationId": "c99a31e8-d455-43bd-bcab-5fe1944bdd22",
+  "done": true,
+  "response": {
+    "path": "assets/103691943840633",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-18T08:03:58.160Z",
+    "assetId": "103691943840633",
+    "displayName": "FlyFightPaper Classroom Prize Chests",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

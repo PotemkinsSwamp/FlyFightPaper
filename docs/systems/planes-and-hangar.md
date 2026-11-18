@@ -7,8 +7,9 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-18)
 
-- Customize opens the player's cosmetics binder from any loadout. The five Legendary skins appear first. Select a card to see the plane, buy it with Paper, then choose **Wear**. The same binder is available from the Shop. The Trails tab shows the selected exhaust flowing from the back of the player's fitted plane. The camera starts overhead, with the nose down the page. It holds its angle until the player drags. A bundled trail links directly to its skin. [Player-path checks and screenshots](../playtests/2026-11-18-hangar-catalog.md)
-- The catalog has eight Common skins, eight animated Rares, five Legendaries and two Mythicals. Eleven trails sell separately and seven come with a skin. Wearing a skin or a trail saves just that choice. All builds use the pair. [Prices and approved trail designs](../plan/SKINS-PLAN.md)
+- Customize and Shop open the same cosmetics binder. Locked skins have a dimmed card and padlock. Click one to preview the complete plane. Treasure chests leads to the [skin reward system](economy-and-shop.md#classroom-treasure-chests). Owned skins have a Wear button.
+- The catalog has eight Common skins, eight Rares, five Legendaries and two Mythicals. Sixteen trails are separate purchases. Folded Petals and Dragon Embers come with their Mythical skins. Skin and trail are independent equipment slots shared across builds.
+- On the Trails page the plane starts facing up, slightly turned and seen from behind and above. Its exhaust streams down a ruled sheet, whose lines bend under the cloaking wake. Dragging the plane holds the chosen view.
 - The Ninja's scarf follows the plane's movement and its wing blades catch the light. Shark Jet breaches, Hot Rod's flames move and its pipes backfire, Stealth's lines glow, and Race Car gets a traveling reflection. [Ninja flight check](../playtests/2026-11-17-ninja-in-flight.md)
 - Common skins cover the plane and booster with printed sheets. [Common skins in Play](../playtests/2026-11-16-common-skins.md) Rare skins add moving layers to the upper faces within 200 studs. Holographic animates its rainbow and glint on both faces. Skins cover the team square and circle on the wings. [Rare animations and performance in Play](../playtests/2026-11-16-scripted-looks-check.md)
 
@@ -34,7 +35,7 @@ Dragon reach past its wings.
 The shelf's big photo and its cubbies wear your skin too, and so do the desk menu's big photo and its pinboard of
 loadouts and presets (2026-11-14: under the crane the big photo showed the real plane under it, the pinboard no skin);
 a crash crumples into a ball of the skin's printed pieces.
-A skin you don't own shows Buy (or Unlock now); Studio's try-on is only the "Dev: skin" button (it lists the crane and the Dragon); the server wears the
+Every skin card can be previewed before owning it. The Studio-only Dev: skin button can also try one in flight. The server wears the
 tried skin too, unsaved (`HangarService` "devSkin"), so a shape skin's hits and crashes follow it (2026-11-16: before that
 the server kept hitting the plain plane under a tried-on Dragon).
 The hangar keeps each plane photo between clicks and swaps a new plane in only once it has loaded; after a buy the
@@ -138,6 +139,7 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/shared/BuilderModel.luau` | The build you are editing in the hangar |
 | `src/client/Hangar.luau` | Main-menu hangar: the shelf screen, stat sheet, name label, plane photo |
 | `src/client/BuildShelf.luau` | The cubby shelf: one still 3D plane per saved build or class (tests for classes: `tests/unit/Classes.spec.luau`) |
+| `src/client/HangarChests.luau` | Chest shelf, individual outcomes, play rewards and the opening reveal. Chest art uses the four cells of `assets/ui/hangarshelf/chests/classroom-chests.png`. |
 | `src/client/HangarWidgets.luau` | Retains the book, stat sheet, cards, scroll position and button handlers across changes in the binder. Regression: `tests/unit/HangarWidgets.spec.luau`. |
 | `src/client/HangarTrailPreview.luau` | Draws the selected trail in the plane's 3D preview, with the flight meshes, camera-facing smoke and a compact effect behind the fitted tail. |
 | `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the Skins and Trails tabs (try on, Wear, Buy, Unlock now, Take off) |

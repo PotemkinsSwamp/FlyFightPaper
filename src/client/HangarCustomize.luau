@@ -12,6 +12,7 @@ local Looks = require(Root.Shared.LooksRules)
 local Commerce = require(Root.Generated.Commerce)
 local PaperUI = require(script.Parent.PaperUI)
 local PlaneLooks = require(script.Parent.PlaneLooks)
+local Chests = require(script.Parent.HangarChests)
 local Customize = {}
 
 -- slot = the build part it edits; Gear is the weapons (Alan 2026-10-20). Tints follow the concept's tabs.
@@ -110,6 +111,11 @@ local function lookCards(content, ctx)
 	local slot = state.slot
 	local on = saved(ctx)[slot] or ""
 	local list = lookList(slot)
+	if slot == "skin" then
+		button(content, "TreasureChests", Binder.buttonOrange, "Treasure chests", 727, 212, 467, 88, -1, function()
+			Chests.show(ctx)
+		end, 44).ZIndex = 2
+	end
 	-- The cards' own scrolling window (Roblox's ScrollingFrame), 14 wider all round than the cards for the try-on ring.
 	-- A redraw (every click) keeps its place: CanvasPosition is in screen pixels (as ShopScreen), stored as read.
 	local page = ctx.ui.instance(content, "Looks", "ScrollingFrame")
@@ -117,7 +123,8 @@ local function lookCards(content, ctx)
 	state.lookScroll = state.lookScroll or {}
 	if previousSlot and previousSlot ~= slot then state.lookScroll[previousSlot] = page.CanvasPosition.Y end
 	page.Name, page.BackgroundTransparency, page.BorderSizePixel = "Looks", 1, 0
-	page.Position, page.Size = UDim2.fromOffset(686, 222), UDim2.fromOffset(580, 652)
+	local top = slot == "skin" and 311 or 222
+	page.Position, page.Size = UDim2.fromOffset(686, top), UDim2.fromOffset(580, 874 - top)
 	page.CanvasSize = UDim2.fromOffset(0, math.ceil(#list / 2) * 126 + 22)
 	page.ScrollingDirection, page.ElasticBehavior = Enum.ScrollingDirection.Y, Enum.ElasticBehavior.Never
 	page.ScrollBarThickness, page.ScrollBarImageColor3 = 10, PaperUI.INK
@@ -130,7 +137,7 @@ local function lookCards(content, ctx)
 		local worn = item.id == on
 		local card = button(content, item.id, worn and Art.cardSelectedWide or Art.cardWide, "", x, y, 262, 120, 0, function()
 			game.Players.LocalPlayer:SetAttribute("MenuMessage", nil)
-			state.tryLook = item
+			state.tryLook, state.chestReward = item, nil
 			ctx.render()
 		end)
 		if state.tryLook == item then
@@ -140,12 +147,15 @@ local function lookCards(content, ctx)
 		-- Inside the card picture's paper (9-87% across, 10-88% down), as the other cards.
 		local name = PaperUI.loud(words(card, "Name", item.name, 24, 12, 204, 32, 30))
 		name.TextScaled = true
-		local matching = not item.sold and bundledWith(item.id)
+		local locked = slot == "skin" and not ownsLook(ctx, item.id)
+		card.ImageColor3 = locked and LOCKED_TINT or Color3.new(1, 1, 1)
+		local matching = slot == "trail" and not item.sold and bundledWith(item.id)
 		local status = worn and "Wearing" or state.tryLook == item and (slot == "trail" and "Preview" or "Trying it on") or ownsLook(ctx, item.id) and "Owned"
-			or matching and "Comes with " .. matching.name
+			or locked and "In chests" or matching and "Comes with " .. matching.name
 			or string.format("%s Paper", PaperUI.commas(item.paper))
 		words(card, "Tier", TIER[item.tier], 24, 46, 204, 24, 24)
-		local line = words(card, "Status", status, 24, 72, 204, 34, 30)
+		if locked then padlock(ctx.ui, card, 26, 74, 27) end
+		local line = words(card, "Status", status, locked and 53 or 24, 72, locked and 175 or 204, 34, 30)
 		line.TextScaled = true
 		for _, label in { name, line } do
 			local cap = capFor(label)
@@ -198,13 +208,22 @@ local function lookControls(content, ctx, about)
 		end
 		return nil
 	end
-	button(content, "CancelTry", Art.buttonRed, "Cancel", 995, 980, 240, 70, -1, function() state.tryLook = nil; ctx.render() end, 40)
+	local prize = state.chestReward and state.chestReward.skin == item
+	button(content, "CancelTry", Art.buttonRed, prize and "See skins" or "Cancel", 995, 980, 240, 70, -1, function()
+		state.tryLook, state.chestReward = nil, nil
+		ctx.render()
+	end, 40)
 	if item.id == saved(ctx)[kind] and PlaneLooks.devSkin == nil and player:GetAttribute("DevTrail") == nil then
 		button(content, "TakeOff", Art.buttonRed, "Take off", 735, 980, 240, 70, -1, function() wear("") end, 42)
 		return item.name .. " is equipped."
 	elseif ownsLook(ctx, item.id) then
 		button(content, "WearLook", Art.buttonGreen, "Wear", 735, 980, 240, 70, -1, function() wear(item.id) end, 46)
 		return item.name .. ": yours. Wear puts it on every plane you fly."
+	elseif kind == "skin" then
+		button(content, "FindChest", Art.buttonGreen, "Find in chests", 735, 980, 240, 70, -1, function()
+			Chests.show(ctx, item.tier)
+		end, 31)
+		return nil
 	elseif not item.sold then
 		local skin = bundledWith(item.id)
 		if skin then
@@ -240,6 +259,8 @@ end
 function Customize.draw(content, ctx)
 	local image, words, button = ctx.ui.image, ctx.ui.words, ctx.ui.button
 	local state, builder, draft = ctx.state, ctx.builder, ctx.draft
+	Chests.receive(ctx)
+	local prize = state.chestReward and state.slot == "skin" and state.tryLook == state.chestReward.skin
 	local title = image(content, "TitleTape", Assets.ingame.tapeLabel, 400, 21, 900, 123) -- the tape's own shape
 	PaperUI.loud(words(title, "Label", ctx.classes and "Skins & trails" or ctx.range and "Range Customize" or "Customize", 0, 0, 900, 123, ctx.range and 72 or 88)).TextXAlignment = Enum.TextXAlignment.Center
 
@@ -251,7 +272,7 @@ function Customize.draw(content, ctx)
 			function()
 				if tab.slot == state.slot then return end
 				state.turn = true
-				state.slot, state.trying, state.tryLook = tab.slot, nil, nil
+				state.slot, state.trying, state.tryLook, state.chestReward = tab.slot, nil, nil, nil
 				ctx.render()
 			end, PaperUI.isPhone() and 50 or 40)
 		t.ImageColor3, t.ZIndex = tab.tint, 0
@@ -276,7 +297,11 @@ function Customize.draw(content, ctx)
 	local looks = state.slot == "skin" or state.slot == "trail"
 	local definitions = looks and {} or ctx.catalog.structuresBySlot[state.slot] or (state.slot == "weapons" and ctx.catalog.weapons) or ctx.catalog.utilities
 	local gear = state.slot == "weapons"
-	if looks then lookCards(content, ctx) end
+	if prize then
+		Chests.reward(content, ctx)
+	elseif looks then
+		lookCards(content, ctx)
+	end
 	local cardH, top = gear and 120 or 205, gear and 236 or 245 -- gear cards start where the others do, inside the page
 	local player = game.Players.LocalPlayer
 	local level = player:GetAttribute("Level") or 1
@@ -428,7 +453,7 @@ function Customize.draw(content, ctx)
 			end
 		end
 	end
-	-- An empty trail ID still opens the fixed, draggable overhead view.
+	-- An empty trail ID still opens the held, draggable chase view.
 	local trail = state.slot == "trail" and (state.tryLook and state.tryLook.id or saved(ctx).trail or "") or nil
 	ctx.preview(candidate or draft, PHOTO, diagram, true, nil, content, Customize.shownSkin(ctx), trail)
 	local valid, reason = builder:validate(draft)
@@ -552,6 +577,7 @@ function Customize.draw(content, ctx)
 
 	-- Save, and a clearly separate second button: Save & fly at the desk (spends Paper, Alan 2026-10-17), Test in Range
 	-- in the Range (saves and drops you back in flying it, Alan 2026-10-20).
+	if state.chestPanel and state.slot == "skin" then Chests.draw(ctx) end
 	if ctx.classes then return end -- wearing a look saves immediately, even on a fixed preset
 	local second = ctx.range and "Test in Range" or ctx.atDesk() and "Save & fly - 120 Paper"
 	if second then

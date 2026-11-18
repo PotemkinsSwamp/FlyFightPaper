@@ -46,6 +46,7 @@ return {
 	-- Hangar cubby shelf and Customize binder (assets/ui/hangarshelf/; concepts hangar-shelf-screen, hangar-customize-b).
 	-- Uploaded 2026-10-21; white pieces (shelfTab, indexTab, statLabel, statBox, statBoxEmpty) are tinted in the game.
 	hangarShelf = {
+		chestAtlas = "rbxassetid://103691943840633", -- four 512-square classroom prize chest illustrations
 		bg = { "rbxassetid://133397690165754", "rbxassetid://105639322311566", "rbxassetid://115182631090136", "rbxassetid://116475380443993" },
 		cubbyBack = "rbxassetid://103396781406593", cubbyFront = "rbxassetid://91837232661923",
 		endLeft = "rbxassetid://77250322353606", endRight = "rbxassetid://70512922987121",
