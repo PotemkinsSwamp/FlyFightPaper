@@ -93,9 +93,11 @@ class SparkPath:
 class GrindingFan:
     steps = 10
 
-    def __init__(self, scene):
+    def __init__(self, scene, occasional=False):
         self.scene = scene
         self.rng = random.Random(227)
+        self.occasional = occasional
+        self.next_flare = -2
         self.next = {-1: -2, 1: -2}
         self.sparks = []
         self.pool = []
@@ -112,18 +114,32 @@ class GrindingFan:
 
     def emit(self, t):
         r = self.rng
+        if self.occasional:
+            if t >= self.next_flare:
+                self.next_flare = t + r.uniform(0.82, 1.78)
+                side = r.choice((-1, 1))
+                self.spray(t, side, r.randint(3, 7))
+                if r.random() < 0.32:
+                    self.spray(t + r.uniform(0.04, 0.09), side, r.randint(2, 4))
+            return
         for side, due in self.next.items():
             if t < due:
                 continue
             self.next[side] = t + r.uniform(0.024, 0.085)
-            kick = r.uniform(9, 25)
-            lift = r.uniform(2, 13)
-            for _ in range(r.choices((2, 4, 9), weights=(4, 4, 2))[0]):
-                life = r.triangular(0.14, 0.58, 0.27)
-                self.sparks.append(SparkPath(t + r.uniform(0, 0.02), side,
-                    kick * r.uniform(0.57, 1.46), lift + r.uniform(-4, 6),
-                    r.uniform(48, 95), life, r.triangular(0.030, 0.14, 0.069),
-                    r.uniform(0.014, 0.039), r.uniform(0.63, 1)))
+            self.spray(t, side)
+
+    def spray(self, t, side, count=None):
+        r = self.rng
+        kick = r.uniform(9, 25)
+        lift = r.uniform(2, 13)
+        if count is None:
+            count = r.choices((2, 4, 9), weights=(4, 4, 2))[0]
+        for _ in range(count):
+            life = r.triangular(0.14, 0.58, 0.27)
+            self.sparks.append(SparkPath(t + r.uniform(0, 0.02), side,
+                kick * r.uniform(0.57, 1.46), lift + r.uniform(-4, 6),
+                r.uniform(48, 95), life, r.triangular(0.030, 0.14, 0.069),
+                r.uniform(0.014, 0.039), r.uniform(0.63, 1)))
 
     def new_strip(self):
         mesh = bpy.data.meshes.new("Spark exposure")

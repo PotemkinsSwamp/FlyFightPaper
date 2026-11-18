@@ -203,9 +203,9 @@ The first five videos above are the original review. Alan wanted more texture an
 | Race Car | Raised tire tread and gold sparks in one smoke plume | Two lines of tread scraps with copper sparks |
 | Shark Jet | Rows of teeth briefly close in the spray and drift apart | A steady stream of individual teeth along the spray |
 
-**Alan's picks and current review.** The approved looks are Ninja A, Hot Rod A and Shark Jet B. Shark Jet B is `water_spray-jet.mp4` in `.planning/skins/trails/legendary-review/`. Its rolling water jet carries the hinged bite with warm-rooted enamel teeth and spray.
+**Alan's picks and current review.** The approved looks are Ninja A, Hot Rod A, Shark Jet B and Stealth B. Shark Jet B is `water_spray-jet.mp4` in `.planning/skins/trails/legendary-review/`. Its rolling water jet carries the hinged bite with warm-rooted enamel teeth and spray.
 
-Race Car B keeps the twin tracks and tread scraps. In [the grinding spark preview](../../.planning/skins/trails/legendary-review/photo_finish-grind.mp4), sparks fan out from two narrow points. Each hot tip traces an amber arc. Sparks from the same burst share a direction but vary in speed, length and cooling time. The motion reference was [metal grinding photographed at close range](https://industrial-maid.com/pages/machine-shop).
+Race Car is the remaining trail for review. In [the skid mark preview](../../.planning/skins/trails/legendary-review/photo_finish-skid.mp4), broad charcoal scuffs form in the tire smoke, sometimes as a pair with one shorter mark. A few grinding sparks flare on either side with quiet gaps between bursts. The skid marks and sparks have independent timing. [Previous and revised flights side by side](../../.planning/skins/trails/legendary-review/race-car-skids-comparison.mp4).
 
 In [the continuous Cloaking Wake preview](../../.planning/skins/trails/legendary-review/silver_chaff-stream.mp4), one rippling surface follows Stealth through the turn. It bends the background lines across its width and catches violet light on the folds. The Blender preview takes a clean view of the scenery for each frame. Roblox rendering and performance still need a separate check after visual approval.
 

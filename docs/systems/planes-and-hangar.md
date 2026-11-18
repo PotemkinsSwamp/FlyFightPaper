@@ -7,7 +7,7 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-14)
 
-- Alan approved the Ninja, Hot Rod and Shark trail looks. Race Car's new metal sparks and Stealth's Cloaking Wake are in Blender for review. [Trail previews](../plan/SKINS-PLAN.md#five-new-legendary-trails)
+- Alan approved the Ninja, Hot Rod, Shark and Stealth trail looks. Race Car's skid marks and occasional sparks are in Blender for review. [Trail previews](../plan/SKINS-PLAN.md#five-new-legendary-trails)
 - The Legendary Ninja is available in Customize and in flight. Its two scarf tails follow speed and turns, a reflection crosses the metal on each wing, and shots hit the rigid plane and blades. The loose scarf is cosmetic. [Studio flight check](../playtests/2026-11-17-ninja-in-flight.md)
 **Skins (Studio only):** a plane with a `Skin` attribute (bots get one by difficulty from `FlightService`) is
 drawn on each screen with its printed-sheet piece copies (`PlaneLooks.luau`); the "Dev: skin" button tries the test

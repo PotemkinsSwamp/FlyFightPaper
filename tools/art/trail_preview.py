@@ -15,6 +15,7 @@ import trail_finishes
 import trail_surf
 import trail_cloak
 import trail_spark_showers
+import trail_skids
 
 ARGS = sys.argv[sys.argv.index("--") + 1:]; TRAIL, _, option = ARGS[0].partition(":"); STILLS = [int(a) for a in ARGS[1:]]
 CFG = json.load(open(pa.ROOT / "config/trails.json")); LIFE = CFG["life"]
@@ -196,8 +197,9 @@ shower = None
 cloak = None
 filaments = None
 stream = None
-if option == "grind":
-    filaments = trail_spark_showers.GrindingFan(sc)
+skids = trail_skids.SkidMarks(sc) if option == "skid" else None
+if option in ("grind", "skid"):
+    filaments = trail_spark_showers.GrindingFan(sc, occasional=option == "skid")
 if option in ("scrape","skip"):
     shower = trail_spark_showers.Shower(sc,trail_pieces.mesh("steel_fleck"),option=="skip")
 if option in ("cloak", "stream"):
@@ -252,6 +254,7 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
     t = n / (FPS * SUB) - LIFE - 0.2; v = speed(t); s += v / (FPS * SUB); g = growth(v)
     p, right, nose, up = frame_at(s, v); tail = p + right * TAIL.x + nose * TAIL.y + up * TAIL.z
     hist.append((t, tail, right, up, g))
+    if skids: skids.emit(t)
     if filaments: filaments.emit(t)
     if shower: shower.emit(t,tail,right,nose,up,v)
     for i, piece in enumerate(SPEC.get("pieces", [])):
@@ -295,6 +298,7 @@ for n in range(int((SECONDS + LIFE + 0.2) * FPS * SUB)):
             eye += side * 9
     aim(eye, target, fov); facing = cam.matrix_world.to_quaternion()
     if filaments: filaments.pose(t, eye, past)
+    if skids: skids.pose(t, past)
     if stream: stream.pose(t, past)
     if shower: shower.pose(t,facing)
     for jaw in jaws:

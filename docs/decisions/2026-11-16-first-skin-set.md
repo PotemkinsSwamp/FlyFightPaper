@@ -121,6 +121,8 @@
 
   - Alan said the Race Car sparks looked like confetti and asked for streaks that string together like grinding metal, with some randomness. He liked the look of Stealth's distortion and wants one continuous stream that bends the background.
 
+  - On 2026-11-18 Alan approved Stealth B, the continuous Cloaking Wake. Race Car needs occasional bursts of grinding sparks and large periodic skid marks in place of loose tread scraps.
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.
