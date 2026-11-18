@@ -7,7 +7,7 @@ Paper** also refolds it. Switching builds with unsaved changes asks first.
 
 ## Where it stands (2026-11-18)
 
-- Customize opens the player's cosmetics binder from any loadout. The five Legendary skins appear first. Select a card to see the plane, buy it with Paper, then choose **Wear**. The same binder is available from the Shop. The Trails tab shows a flight photo with each selection. A bundled trail links directly to its skin.
+- Customize opens the player's cosmetics binder from any loadout. The five Legendary skins appear first. Select a card to see the plane, buy it with Paper, then choose **Wear**. The same binder is available from the Shop. The Trails tab shows a flight photo with each selection. A bundled trail links directly to its skin. [Player-path checks and screenshots](../playtests/2026-11-18-hangar-catalog.md)
 - The catalog has eight Common skins, eight animated Rares, five Legendaries and two Mythicals. Eleven trails sell separately and seven come with a skin. Wearing a skin or a trail saves just that choice. All builds use the pair. [Prices and approved trail designs](../plan/SKINS-PLAN.md)
 - The Ninja's scarf follows the plane's movement and its wing blades catch the light. Shark Jet breaches, Hot Rod's flames move and its pipes backfire, Stealth's lines glow, and Race Car gets a traveling reflection. [Ninja flight check](../playtests/2026-11-17-ninja-in-flight.md)
 - Common skins cover the plane and booster with printed sheets. [Common skins in Play](../playtests/2026-11-16-common-skins.md) Rare skins add moving layers to the upper faces within 200 studs. The underside retains the printed sheet. [Rare animations and performance in Play](../playtests/2026-11-16-scripted-looks-check.md)

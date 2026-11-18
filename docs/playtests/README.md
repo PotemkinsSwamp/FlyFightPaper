@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-18 All 41 cosmetics through the Hangar](2026-11-18-hangar-catalog.md)
 - [2026-11-18 Five Legendary trails in a Studio match](2026-11-18-legendary-trails.md)
 - [2026-11-17 Ninja scarf and wing reflections in a Studio match](2026-11-17-ninja-in-flight.md)
 - [2026-11-16: the Dragon as a plane skin: wings forward, it is the hitbox at the plane's size, never smaller; shots drawn true. "Looks good now"](2026-11-16-dragon-skin.md)

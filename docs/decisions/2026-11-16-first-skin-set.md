@@ -127,6 +127,8 @@
 
   - Alan approved the revised Race Car spark timing on 2026-11-18 and asked to upload all five Legendary trails.
 
+- On 2026-11-18 Alan asked for every finished skin and trail to be accessible through the normal player menus. A working Studio test selector is insufficient. [Hangar checks](../playtests/2026-11-18-hangar-catalog.md)
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.

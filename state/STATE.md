@@ -1,11 +1,10 @@
 # Since Alan last checked (2026-11-18)
-- All five approved Legendary trails appeared in a 12-plane Studio match. All 676 tests passed. [Flight check](../docs/playtests/2026-11-18-legendary-trails.md)
-- Ninja is in the Studio game. Its scarf and wing reflections moved in a match. All 673 tests passed. [Ninja flight check](../docs/playtests/2026-11-17-ninja-in-flight.md)
+- The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. All 705 tests passed. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
 - **Two scripted Play tests are done** ([numbers and the full list](../docs/playtests/2026-11-16-scripted-looks-check.md)). Frame rate, 12 planes: 60 with no looks, with any one skin, and with any one Rare moving; 56.7-60 with one trail on all 12; 58.5 with a mixed set on every plane; 54.5 in the worst case (12 Galaxy + 12 Circuit Trace: each alone holds 60, only together they go under).
 - **All 8 Rares were broken in real Play** (no moving layers): Roblox does not let a game script set a decal's glow picture, and every earlier test ran with extra rights. **Fixed and confirmed in the second Play**: every layer on all 12 planes, each Rare moving, first-load freeze gone.
 
 # Now: finish the game for the beta
-**The Legendary skins.** Alan approved the Ninja preview and its addition to the game. Shark Jet, Stealth, Hot Rod and Race Car have approved Blender movement previews and still need their effect textures checked before upload. All five approved [Legendary trails](../docs/plan/SKINS-PLAN.md#five-new-legendary-trails) are uploaded and selectable in Studio. Ninja and Shark Jet grant their trails to owners. The other three trails await their matching skin releases. The other four skins, the 13-trail shop list, Hangar trail previews and the Galaxy plus Circuit Trace frame rate are still on the list.
+The five finished Legendary skins and matching trails are installed. The two Mythicals include their trails. The four other Legendary ideas (Bumblebee, Rocket, Mech and Pirate) are concepts. The remaining performance check is Galaxy plus Circuit Trace on all 12 planes.
 Dragon leftovers: crash ball and shop card pictures, jaw leftover. Queued: Toilet Roll shake, missions, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 
@@ -15,10 +14,9 @@ Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as 
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
   (A = six colours, one line in `skin_sheets.py`); a flame patch shows small at the back of the body.
 Trails (my calls): names; 99 Robux / 1,900 Paper stand-in for a Rare match (price parked); the saved id `rainbow_marker` stays behind the name Holo Rainbow (my reading of your "Go", 2026-11-16); stars, flakes and bolts are real small parts, smoke and sparkle dust are Roblox particles with Roblox's own pictures (sparkle dust as 3D parts was too many: about 170 a second a plane);
-  a foil flake is a plain thin chip; the Hangar and the Trails tab still show no trail; the shop list is still the old five (Holo Rainbow and Storm Sparks fly only through the Dev: trail button until the 13-trail list goes in).
+  a foil flake is a thin chip. The Hangar uses stills of the approved flight previews. Holo Rainbow keeps the saved Rainbow Marker ID.
 Rares (my calls): Galaxy is one small solar system a wing (a big orbit was cut by the body); far planes keep their layers standing still; no underside layers yet; 39 pictures, not the 28 I first said.
-Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); crane
-  has no trail yet; its wings fit ~5% bigger than Blender's (part boxes, not vertices).
+Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); the crane grants Folded Petals; its wings fit ~5% bigger than Blender's (part boxes, not vertices).
   Crane: about a quarter shorter (belly to the real body's bottom, roof 0.5 of a step up, was 0.9); width as before.
 Gift arrival: Open it! is a tap; on Thanks the gift comes at you and fades; the pop is the Popper's, higher and soft.
 Shop: chalk headings white with a dark outline; card parts sit still and bob. Stickers by real value: 40,000 "Most
@@ -47,7 +45,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **The shop list** (after the Shark; price parked, your word): I read your "Go" as yes to keeping Rainbow Marker's saved id behind Holo Rainbow, so testers who own it keep it. Say if that is wrong.
+- **Shark and the Hangar:** Hangar > Customize > Skins > Shark Jet. Buy for 30,000 Paper, then Wear. Under Trails, Water Spray is included. The shop also has a Browse skins & trails button.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 18 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem? Do sparkles and smoke start in clumps?
 - Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?). Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.

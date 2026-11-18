@@ -1,0 +1,17 @@
+# All finished cosmetics through the Hangar, 2026-11-18
+
+## What Alan saw
+Shark Jet could be selected in the old catalog but selecting it still drew a plain plane. Four approved plane bodies were missing. Nine finished trails had no player card and Rainbow Marker's saved ID did not resolve to its flight effect.
+
+## What changed
+The catalog has 23 skins and 18 trails. Shark Jet, Hot Rod, Stealth and Race Car use the approved hulls and moving textures. Customize and the Shop open the same binder. Fixed presets can wear cosmetics. Trail cards show photos from the approved flight previews and link to the matching skin if it owns the trail.
+
+## Studio check
+- In a fresh Studio mock account with 400,000 test Paper, entered through Main Menu > Hangar > Customize. Clicked every skin and trail card using the scrollable lists. Bought the 34 items sold separately, received the seven bundled trails, and pressed Wear for all 41. After each choice the server's normal profile refresh returned the selected ID and the card said Wearing. The balance ended at 46,900 Paper.
+- Selected Shark Jet and Water Spray together, backed out to the main menu, pressed Play, and launched from the desk into a 12-plane match. Both IDs followed the player into flight. The client drew the shark hull, the water line moved, and the server used the same mesh for collision. [Hangar](../../.planning/skins/trails/legendary-review/hangar/shark-try-on.png) and [Shark in flight](../../.planning/skins/trails/legendary-review/hangar/shark-airborne.png).
+- Checked all 18 flight photos loaded when selecting their trail. [Water Spray card](../../.planning/skins/trails/legendary-review/hangar/water_spray.png).
+- The first pass caught cold previews showing only the guns or a grey hull. After the loading change, reopened Studio Play, entered via Shop > Browse skins & trails, and selected all 23 skins again. Each complete preview became visible. [Hot Rod](../../.planning/skins/trails/legendary-review/hangar/ready-hot_rod.png), [Race Car](../../.planning/skins/trails/legendary-review/hangar/ready-race_car.png), [Stealth](../../.planning/skins/trails/legendary-review/hangar/ready-stealth.png).
+- With the ordinary 3,000 Paper test wallet, selected the locked Water Spray and clicked See skin. The Shark card explained that another 27,000 Paper was needed. Opened Presets and checked that its Skins & trails button opened both tabs while the fixed parts stayed locked.
+- Entered Customize from the desk during a match. Bought, equipped and launched the other four Legendary pairs through the ordinary buttons. On each flight the client reported FLYING with the intended skin, trail and hull. Hot Rod had its five fire emitters, Stealth its five light layers, Race Car its shine layer and Ninja its 11 bones. [Hot Rod](../../.planning/skins/trails/legendary-review/hangar/airborne-hot_rod.png), [Stealth](../../.planning/skins/trails/legendary-review/hangar/airborne-stealth.png), [Race Car](../../.planning/skins/trails/legendary-review/hangar/airborne-race_car.png), [Ninja](../../.planning/skins/trails/legendary-review/hangar/airborne-ninja.png).
+- Saved private Team Create version 791 and rebuilt the local working file. Compared its 21 changed scripts and tests to source and checked that it contained all 23 skin appearance folders. Restored the default 3,000 Paper test wallet and stopped Play.
+- All 705 tests passed in 46 suites on the Studio server. The desktop viewport was 2046 by 801. Studio uses mock profiles. No real currency was spent.
