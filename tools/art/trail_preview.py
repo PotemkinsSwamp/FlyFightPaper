@@ -19,7 +19,11 @@ import trail_skids
 
 ARGS = sys.argv[sys.argv.index("--") + 1:]; TRAIL, _, option = ARGS[0].partition(":"); STILLS = [int(a) for a in ARGS[1:]]
 CFG = json.load(open(pa.ROOT / "config/trails.json")); LIFE = CFG["life"]
-SPEC = CFG["trails"].get(TRAIL) or json.load(open(pa.ROOT / "tools/art/trail_drafts.json"))["trails"][TRAIL]   # drafts: not in the game yet
+with open(pa.ROOT / "tools/art/trail_drafts.json") as file:
+    draft = json.load(file)["trails"].get(TRAIL, {})
+SPEC = dict(CFG["trails"].get(TRAIL, draft))
+if "preview_skin" in draft:
+    SPEC["preview_skin"] = draft["preview_skin"]
 CARDS = ("soft", "square")                                                    # flat cards that face the camera (particles in the game)
 OUT = pa.ROOT / ".planning/skins/trails"; FPS, SECONDS, SUB, NORMAL, BOOST, CUT = 24, 8.0, 4, 105.0, 150.0, 4.4
 if option:
@@ -36,6 +40,9 @@ if option:
     OUT = OUT / "legendary-review"
     OUT.mkdir(exist_ok=True)
     TRAIL += "-" + option
+elif SPEC.get("preview_skin"):
+    with open(pa.ROOT / "tools/art/legendary_trail_options.json") as file:
+        option = json.load(file)[TRAIL]["approved"]
 rng = random.Random(7)
 
 def smooth(x): x = min(max(x, 0.0), 1.0); return x * x * (3 - 2 * x)

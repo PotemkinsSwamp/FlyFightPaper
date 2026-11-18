@@ -1,0 +1,24 @@
+{
+  "path": "operations/be85f13d-7e24-4e36-9174-10d1cf928a7b",
+  "operationId": "be85f13d-7e24-4e36-9174-10d1cf928a7b",
+  "done": true,
+  "response": {
+    "path": "assets/88428433827643",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-18T05:39:18.676Z",
+    "assetId": "88428433827643",
+    "displayName": "FFP Legendary trail pieces and wake",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Model",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

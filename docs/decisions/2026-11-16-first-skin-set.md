@@ -125,6 +125,8 @@
 
   - After seeing the skid marks, Alan chose the previous Race Car tire smoke and tread scraps. He wants random spark bursts more often than in the skid mark preview, with breaks you can still see.
 
+  - Alan approved the revised Race Car spark timing on 2026-11-18 and asked to upload all five Legendary trails.
+
 ## Why
 Alan wants a full, finished-feeling shop for the beta: a small set of cool skins done well beats a long list of plain ones,
 and moving Rares make the price step from Common worth it.

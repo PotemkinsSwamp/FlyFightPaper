@@ -28,6 +28,9 @@
           "NinjaRig": {
             "$path": "assets/models/ninja/ninja-rig.rbxm"
           },
+          "CloakStream": {
+            "$path": "assets/models/trails/cloak-stream.rbxm"
+          },
           "EquipmentParts": {
             "$path": "assets/models/equipment/equipment.rbxmx"
           },
