@@ -300,18 +300,22 @@ function DeskHangar.new(playerGui, api)
 	end, 34)
 	PaperUI.phone(switch, { Size = UDim2.fromOffset(340, 140) })
 	PaperUI.phone(switch.Label, { TextSize = 46 })
-	-- Missions at a glance (Alan 2026-11-18): under the switch, a strip that drops down a compact list of your missions
-	-- and their progress (MissionsDropdown); tap it again to fold it. Cream, so it doesn't read as the orange switch.
+	-- Missions at a glance (Alan 2026-11-18): right under the switch, a strip that drops down a list of your missions and
+	-- their progress (MissionsDropdown); tap it again to fold it. Cream, so it doesn't read as the orange switch. The list
+	-- starts at the strips' left edge, clear of the cork (Alan: it touched the loadouts' cork).
 	local missionsList
-	local missionsStrip = button(left, "Missions", Assets.unlock.buttonCream, "Missions", 226, 556, 300, 96, 1, function()
+	-- Measured on the art's visible edges (Fit pictures leave clear margins): a sliver of about 10 between the switch and
+	-- the strip, about 6 between the strip and the list (Alan 2026-11-18: close, just a sliver).
+	local missionsStrip = button(left, "Missions", Assets.unlock.buttonCream, "Missions", 226, 490, 300, 96, 1, function()
 		missionsList.toggle()
 	end, 36)
-	PaperUI.phone(missionsStrip, { Size = UDim2.fromOffset(340, 140) })
+	-- (Position is the strip's centre: on a phone it sits under the bigger phone switch.)
+	PaperUI.phone(missionsStrip, { Size = UDim2.fromOffset(340, 140), Position = UDim2.fromOffset(376, 548) })
 	PaperUI.phone(missionsStrip.Label, { TextSize = 46 })
-	missionsList = require(script.Parent.MissionsDropdown).new(left, missionsStrip, 200, 664, 1060, function()
+	missionsList = require(script.Parent.MissionsDropdown).new(left, missionsStrip, 232, 581, 1060, function()
 		api.round:FireServer("profile")
 	end)
-	PaperUI.phone(missionsList.panel, { Position = UDim2.fromOffset(200, 690) })
+	PaperUI.phone(missionsList.panel, { Position = UDim2.fromOffset(232, 596) })
 	-- A preset picked in the Hangar shows here too.
 	Players.LocalPlayer:GetAttributeChangedSignal("SelectedClass"):Connect(function()
 		if not flipping and (Players.LocalPlayer:GetAttribute("SelectedClass") ~= nil) ~= onPresets then setBoard(not onPresets) end

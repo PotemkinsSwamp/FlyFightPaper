@@ -176,6 +176,16 @@ function DevTools.start(menu)
 	missionsButton.Name, missionsButton.Position, missionsButton.Text, missionsButton.Parent =
 		"Missions", UDim2.new(1, -10, 1, -202), "Dev: finish missions", switchGui
 	missionsButton.Activated:Connect(function() Root:WaitForChild("RoundAction"):FireServer("devFinishMissions") end)
+	-- The next match you finish also finishes one daily mission, so the report card shows its tick slip through the real
+	-- match-end path (Alan 2026-11-18). One press, one mission; the button says when one is waiting.
+	local nextButton = switch:Clone()
+	nextButton.Name, nextButton.Position, nextButton.Parent = "MissionNextMatch", UDim2.new(1, -10, 1, -250), switchGui
+	local function nextText()
+		nextButton.Text = player:GetAttribute("DevMissionNextMatch") and "Dev: mission next match (set)" or "Dev: mission next match"
+	end
+	nextText()
+	player:GetAttributeChangedSignal("DevMissionNextMatch"):Connect(nextText)
+	nextButton.Activated:Connect(function() Root:WaitForChild("RoundAction"):FireServer("devMissionNextMatch") end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()
 		local screen, page = string.match(player:GetAttribute("DevScreen") or "", "^([^:]+):?(.*)$")

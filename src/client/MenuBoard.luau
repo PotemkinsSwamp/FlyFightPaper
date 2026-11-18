@@ -20,15 +20,21 @@ function Board.new(playerGui, actions)
 		image(sheet, "Photo", Art.photo, 1270, 610, 560, 420, 2),
 		image(sheet, "Title", Art.title, 450, 105, 1010, 340, -1),
 	}
-	local card = image(sheet, "StatsCard", Art.card, 1480, 110, 370, 470, 3)
+	-- The stats card drawn at 80% (Alan 2026-11-18: its words fit comfortably), its top kept under the alphabet strip,
+	-- so Shop and Missions stack under it above the photo (measured on the real art: 15, 15 and 25 sheet pixels apart).
+	local CARD_SCALE = 0.8
+	local card = image(sheet, "StatsCard", Art.card, 1465, 63, 370, 470, 3)
+	local cardScale = Instance.new("UIScale")
+	cardScale.Scale, cardScale.Parent = CARD_SCALE, card
 	local stats = PaperUI.words(card, "Stats", "", 70, 70, 290, 380, 44)
 	stats.TextYAlignment, stats.LineHeight = Enum.TextYAlignment.Top, 1.15
 	table.insert(pieces, card)
 	local levelBar = require(script.Parent.LevelBar).new(card, 56, 282, 280, 27)
-	-- Phones: the level words were 8-10 points (then 12-13 on a small phone: 40 is 14 points there, ScreenCheck).
-	PaperUI.phone(card.Level, { TextSize = 40, Size = UDim2.fromOffset(160, 34) })
-	PaperUI.phone(card.XPCount, { TextSize = 40 })
-	PaperUI.phone(card.NextUnlock, { TextSize = 40 })
+	-- Phones: the level words were 8-10 points (then 12-13 on a small phone: 40 is 14 points there, ScreenCheck); these
+	-- sizes are before the card's 80%, so they still come out at 40.
+	PaperUI.phone(card.Level, { TextSize = 50, Size = UDim2.fromOffset(200, 43) })
+	PaperUI.phone(card.XPCount, { TextSize = 50 })
+	PaperUI.phone(card.NextUnlock, { TextSize = 50 })
 
 	local buttons = Instance.new("Frame")
 	buttons.Name, buttons.BackgroundTransparency, buttons.Size = "Buttons", 1, UDim2.fromOffset(PaperUI.W, PaperUI.H)
@@ -50,16 +56,17 @@ function Board.new(playerGui, actions)
 	-- A small phone draws the sheet at a third: 130 tall is a 46-point tap there (ScreenCheck asks 44).
 	for _, name in { "Hangar", "Settings", "Tutorial" } do PaperUI.phone(buttons[name], { Size = UDim2.fromOffset(500, 130) }) end
 	if actions.shop then
-		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop", 1580, 560, 250, 70, 4, actions.shop, 34))
+		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop", 1530, 488, 250, 70, 4, actions.shop, 34))
 	end
 	if actions.missions then
-		table.insert(pieces, button(buttons, "Missions", Art.strip.blue, "Missions", 1300, 560, 250, 70, -3, actions.missions, 34))
+		table.insert(pieces, button(buttons, "Missions", Art.strip.blue, "Missions", 1530, 562, 250, 70, 3, actions.missions, 34))
 	end
 	-- Prestige (docs/systems/economy-and-shop.md): a button on the stats card at max level, then a confirm sheet that
 	-- says what goes and what stays; holding the button for two seconds confirms, so it can't happen by accident.
 	local prestigeButton = button(card, "Prestige", Art.strip.red, "Prestige", 60, 400, 250, 56, -2, function() end, 32)
-	PaperUI.phone(prestigeButton, { Size = UDim2.fromOffset(300, 128) }) -- a finger-sized strip on a phone (44+ points on a small one)
-	PaperUI.phone(prestigeButton.Label, { TextSize = 42 })
+	-- a finger-sized strip on a phone (44+ points on a small one; sizes before the card's 80%)
+	PaperUI.phone(prestigeButton, { Size = UDim2.fromOffset(375, 160) })
+	PaperUI.phone(prestigeButton.Label, { TextSize = 52 })
 	local confirm = Instance.new("Frame")
 	confirm.Name, confirm.BackgroundColor3, confirm.BackgroundTransparency = "PrestigeConfirm", Color3.fromRGB(20, 14, 8), 0.45
 	confirm.Size, confirm.Visible, confirm.ZIndex, confirm.Parent = UDim2.fromOffset(PaperUI.W, PaperUI.H), false, 5, sheet

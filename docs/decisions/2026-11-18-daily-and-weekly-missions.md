@@ -94,6 +94,18 @@ How it looks: a Missions sheet from the main menu with Daily and Weekly tabs, ea
 Claim button ([explanation picture](../../.planning/missions/weekly-tab-what-the-player-sees.jpg): its weekly cards are
 the first, too-easy draft; the layout stands). Alan sees a picture of the real sheet before it ships.
 
+**Look, after Alan's first Play look (2026-11-18):** no new pictures ("we don't want to introduce more assets because
+that's more things to load"). Each mission card is the desk buttons' construction paper, its colour the difficulty
+(Alan: "use colors to signify what difficulty it is"): green easy, yellow medium, red hard (weekly the same three for
+2, 3 and 4-5 days), blue the 15-dailies card; never index cards ("you'd be ruining the integrity of the index card").
+Progress is the level bar's hand-drawn bar; the notebook paper is turned so its lines run level and everything is
+centred on it. Those four strips are kept full size in the menu sheets so the cards stay sharp ("a larger piece of
+paper that we can scale down for all the buttons"). Main menu: the paper plane stays where it is (its fly-in lands
+there); the stats card is drawn at 80% and Missions stacks under Shop below it, measured on the real art. Desk: the
+strip sits a sliver under "Switch to presets" and the list a sliver under the strip, on tracing paper a little more
+solid. The tick slip is taped across the report card's top-left corner with the Training board's crayon tick; Studio's
+**Dev: mission next match** makes the next match finish a mission so the slip can be seen.
+
 ## Why
 
 Alan wants players coming back every day and playing through the week, with goals that fit what each player owns and

@@ -288,12 +288,26 @@ end
 function Service:_matchMissions(p,op,seed)
  local summary=op.missions
  if type(summary)~="table" or type(summary.eligible)~="boolean" then return nil,"invalid_match_summary" end
- if not summary.eligible then return nil,"ineligible_match" end
+ local dev=op.devMission==true and self.mock -- Studio's "Dev: mission next match"
+ if not summary.eligible and not dev then return nil,"ineligible_match" end
  local candidate=table.clone(p)
  local refreshed,err=self:_refreshMissions(candidate,summary.completedAt,seed,op.id)
  if not refreshed then return nil,err end
  local progressed,finished=Missions.applyMatch(candidate.missions,summary)
  if not progressed then return nil,finished end
+ if dev then
+  -- ponytail: finishes the first open mission (daily, else weekly) without the week calendar or the 15-dailies count;
+  -- it only has to make the report card's tick slip show, so with every mission already done it reports the first daily.
+  local open
+  for _,list in {"daily","weekly"} do
+   for _,mission in progressed[list] do
+    if not open and mission.progress<Missions.goal(mission) then open=mission end
+   end
+  end
+  if open then open.progress=Missions.goal(open) end
+  open=open or progressed.daily[1]
+  if open and #finished==0 then table.insert(finished,table.clone(open)) end
+ end
  candidate.missions=progressed
  local valid,validation=Schema.validate(candidate,self.catalog)
  if not valid then return nil,validation end

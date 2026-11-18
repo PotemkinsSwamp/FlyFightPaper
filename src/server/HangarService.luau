@@ -304,6 +304,10 @@ function Service:handle(player,action,value)
   self:enqueue(player,{kind="devFinishMissions"},function(ok)
    self:message(player,ok and "Missions ready to claim." or "Missions could not be finished.")
   end)
+ elseif action=="devMissionNextMatch" and value==nil and Run:IsStudio() and self.profiles.mock==true and player:GetAttribute("Dev")==true then
+  -- RoundRuntime reads and clears this at the player's next match end: that match finishes one daily mission.
+  player:SetAttribute("DevMissionNextMatch",true)
+  self:message(player,"Your next match will finish a mission.")
  elseif action=="claimDailyGift" then
   -- The client supplies no date or reward. Queued claims re-check the saved day.
   self:enqueue(player,{kind="dailyGift",day=math.floor(self.unix()/86400)},function(ok,result)

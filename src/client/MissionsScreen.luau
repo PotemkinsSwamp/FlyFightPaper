@@ -1,5 +1,6 @@
 -- The Missions sheet (docs/decisions/2026-11-18-daily-and-weekly-missions.md): the chest sheet's notebook paper over the
--- main menu board, Daily and Weekly tabs, one paper card per mission (goal, progress, reward, Claim and Swap).
+-- main menu board, Daily and Weekly tabs, one construction-paper card per mission (goal, progress, reward), its colour
+-- the difficulty (Alan 2026-11-18), with Claim and Swap beside it on the notebook paper.
 -- The missions themselves are made and checked on the server (src/shared/Missions.luau); this only draws them.
 local Root = game.ReplicatedStorage:WaitForChild("FlyFightPaper")
 local Assets = require(Root.Shared.UIAssets)
@@ -10,9 +11,16 @@ local Widgets = require(script.Parent.HangarWidgets)
 local Opening = require(script.Parent.ChestOpening)
 local MissionsScreen = {}
 
-local CARD = Color3.fromRGB(248, 238, 222)
-local DONE = Color3.fromRGB(226, 244, 214)
-local BAR = { done = Color3.fromRGB(63, 168, 60), going = Color3.fromRGB(70, 140, 214) }
+-- The desk buttons' construction paper, easier to harder: green, yellow, red; blue for the Blue Ribbon card (Alan
+-- 2026-11-18: no new pictures). The reward words tell the tiers apart too.
+local STRIP = { easy = "stripGreen", medium = "stripYellow", hard = "stripRed", two_day = "stripGreen", three_day = "stripYellow",
+	five_day = "stripRed", fixed = "stripBlue" }
+-- Sheet pixels. Cards and buttons are centred between the paper's red
+-- margin line (x 297) and its right edge (x 1779). The paper picture's ruled lines run 1.3 degrees downhill (it was
+-- widened along them), so it is turned back level and everything else sits on a straight layer over it.
+local CARD = { x = 357, y = 262, w = 1069, h = 164, gap = { daily = 24, weekly = 12 } }
+local BUTTONS = 1450
+local LEVEL = -1.3
 local MODES = { FFA = "Free-for-all", TDM = "Team", CONTROL = "Airspace Control" }
 local DAYS = { "M", "T", "W", "T", "F", "S", "S" }
 local REWARDS = {
@@ -59,9 +67,18 @@ function MissionsScreen.describe(m)
 	return base .. gear .. mode
 end
 
-local function finished(m)
-	return m.progress >= (m.action == "minutes" and m.kind == "total" and m.count * 60 or m.count)
+-- Progress: the level bar's hand-drawn frame and green crayon fill (LevelBar), the frame at its own thin shape
+-- (799 x 79). Returns the bar's height.
+function MissionsScreen.bar(ui, parent, name, x, y, w, fraction)
+	local h = math.floor(w * 79 / 799 + 0.5)
+	ui.image(parent, name .. "Bar", Assets.results.xpFrame, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
+	local fill = ui.image(parent, name .. "Fill", Assets.results.xpFill, x + w * 0.02, y + h * 0.17, w * 0.96 * math.clamp(fraction, 0, 1), h * 0.66)
+	fill.ScaleType, fill.Visible = Enum.ScaleType.Stretch, fraction > 0
+	return h
 end
+
+local function goalOf(m) return m.action == "minutes" and m.kind == "total" and m.count * 60 or m.count end
+local function finished(m) return m.progress >= goalOf(m) end
 local function progressWords(m)
 	local now = m.action == "minutes" and m.kind == "total" and m.progress // 60 or m.progress
 	return PaperUI.commas(math.min(now, m.count)) .. " / " .. PaperUI.commas(m.count) .. (m.kind == "feat" and m.count > 1 and " matches" or "")
@@ -79,92 +96,77 @@ function MissionsScreen.new(playerGui, api)
 	local self = { frame = cover }
 	local tab, missions, message = "daily", nil, ""
 
-	local function card(paper, name, m, list, index, y, h, fixed)
-		local box = ui.instance(paper, name, "Frame")
-		box.Position, box.Size, box.BorderSizePixel = UDim2.fromOffset(200, y), UDim2.fromOffset(1270, h), 0
+	local function card(layer, name, m, list, index, y, fixed)
+		local x, h = CARD.x, CARD.h
 		local done = fixed and missions.dailiesDone >= 15 or not fixed and finished(m)
 		local claimed = fixed and missions.fixedClaimed or not fixed and m.claimed
-		box.BackgroundColor3 = done and DONE or CARD
-		local stroke = ui.instance(box, "Edge", "UIStroke"); stroke.Color, stroke.Thickness = PaperUI.INK, 3
-		ui.instance(box, "Round", "UICorner").CornerRadius = UDim.new(0, 10)
-		PaperUI.loud(ui.words(box, "Goal", fixed and "Finish 15 daily missions" or MissionsScreen.describe(m), 30, 10, 900, 60, 40))
-		local barY = h - 54
+		local tier = fixed and "fixed" or m.tier
+		ui.image(layer, name, Assets.deskMenu[STRIP[tier]], x, y, CARD.w, h).ScaleType = Enum.ScaleType.Stretch
+		local goal = PaperUI.loud(ui.words(layer, name .. "Goal", fixed and "Finish 15 daily missions" or MissionsScreen.describe(m), x + 36, y + 16, CARD.w - 72, 84, 36))
+		goal.TextWrapped, goal.TextYAlignment, goal.LineHeight = true, Enum.TextYAlignment.Top, 1
+		local rowY = y + 108
 		if fixed then
-			-- The week: a day is ticked when at least one daily mission was finished on it.
+			-- The week: a day gets the Hangar's green crayon square and the Training board's tick when a daily mission was
+			-- finished on it.
 			for i, letter in DAYS do
 				local on = missions.calendar:sub(i, i) == "1"
-				local day = ui.instance(box, "Day" .. i, "Frame")
-				day.Position, day.Size, day.BorderSizePixel = UDim2.fromOffset(30 + (i - 1) * 50, barY - 8), UDim2.fromOffset(42, 42), 0
-				day.BackgroundColor3 = on and BAR.done or CARD
-				local edge = ui.instance(day, "Edge", "UIStroke"); edge.Color, edge.Thickness = PaperUI.INK, 2
-				local mark = ui.words(day, "Letter", on and "✓" or letter, 0, 0, 42, 42, 30)
+				local dayX = x + 36 + (i - 1) * 46
+				ui.image(layer, name .. "Day" .. i, on and Assets.hangar.bar.green or Assets.hangar.bar.empty, dayX, rowY - 4, 40, 36)
+				local mark = ui.words(layer, name .. "Letter" .. i, letter, dayX, rowY - 4, 40, 36, 26)
 				mark.TextXAlignment = Enum.TextXAlignment.Center
+				ui.image(layer, name .. "Tick" .. i, Assets.trainingboard.tick, dayX + 4, rowY - 14, 40, 36).Visible = on
 			end
-			ui.words(box, "Progress", math.min(missions.dailiesDone, 15) .. " / 15", 390, barY - 10, 200, 46, 34)
+			ui.words(layer, name .. "Progress", math.min(missions.dailiesDone, 15) .. " / 15", x + 372, rowY - 6, 160, 44, 32)
 		else
-			local track = ui.instance(box, "Track", "Frame")
-			track.Position, track.Size, track.BorderSizePixel = UDim2.fromOffset(30, barY), UDim2.fromOffset(420, 30), 0
-			track.BackgroundColor3 = Color3.fromRGB(236, 222, 202)
-			local edge = ui.instance(track, "Edge", "UIStroke"); edge.Color, edge.Thickness = PaperUI.INK, 2
-			ui.instance(track, "Round", "UICorner").CornerRadius = UDim.new(0, 8)
-			local fill = ui.instance(track, "Fill", "Frame")
-			local target = m.action == "minutes" and m.kind == "total" and m.count * 60 or m.count
-			fill.Size, fill.BorderSizePixel = UDim2.fromScale(math.clamp(m.progress / target, 0, 1), 1), 0
-			fill.BackgroundColor3 = done and BAR.done or BAR.going
-			ui.instance(fill, "Round", "UICorner").CornerRadius = UDim.new(0, 8)
-			ui.words(box, "Progress", progressWords(m), 465, barY - 8, 230, 46, 34)
+			MissionsScreen.bar(ui, layer, name, x + 36, rowY + 2, 300, m.progress / goalOf(m))
+			ui.words(layer, name .. "Progress", done and "Done!" or progressWords(m), x + 350, rowY - 6, 180, 44, 32)
 		end
-		local tier = fixed and "fixed" or m.tier
-		ui.words(box, "RewardLabel", "Reward", 720, barY - 40, 300, 32, 26)
+		local rewardX = x + 545
 		local chest = CHEST[tier]
-		local rewardX = 720
 		if chest then
-			local picture = ui.image(box, "Chest", Assets.hangarShelf.chestAtlas, 712, barY - 8, 56, 50)
-			Opening.picture(picture, Looks.chest(chest))
-			rewardX = 776
+			Opening.picture(ui.image(layer, name .. "Chest", Assets.hangarShelf.chestAtlas, rewardX, rowY - 10, 56, 50), Looks.chest(chest))
+			rewardX += 62
 		end
-		PaperUI.loud(ui.words(box, "Reward", REWARDS[tier], rewardX, barY - 6, 1000 - rewardX, 46, 34))
-		-- Claim sits in the same place on every card; Swap under it, only while the mission is still open.
-		local claimH = math.min(86, h - 74)
+		PaperUI.loud(ui.words(layer, name .. "Reward", REWARDS[tier], rewardX, rowY - 6, x + CARD.w - 30 - rewardX, 44, 32))
+		-- Claim beside every card in the same place; Swap under it, only while the mission is still open.
 		if claimed then
-			ui.button(box, "Claim", Assets.unlock.buttonCream, "Claimed", 980, 14, 270, claimH, 0, function() end, 36)
+			ui.button(layer, name .. "Claim", Assets.unlock.buttonCream, "Claimed", BUTTONS, y + 10, 270, 84, 0, function() end, 36)
 		elseif done then
-			ui.button(box, "Claim", Assets.hangar.buttonGreen, "Claim!", 980, 14, 270, claimH, -1, function() api.claim(list, index) end, 42)
+			ui.button(layer, name .. "Claim", Assets.hangar.buttonGreen, "Claim!", BUTTONS, y + 10, 270, 84, -1, function() api.claim(list, index) end, 42)
 		else
-			ui.button(box, "Claim", Assets.unlock.buttonCream, "Not yet", 980, 14, 270, claimH, 0, function() end, 36)
+			ui.button(layer, name .. "Claim", Assets.unlock.buttonCream, "Not yet", BUTTONS, y + 10, 270, 84, 0, function() end, 36)
 		end
 		local price = not fixed and not done and api.swapPrice(missions, list, index)
 		if price then
-			ui.button(box, "Swap", Assets.mainmenu.strip.blue, price == 0 and "Free swap" or ("Swap: " .. PaperUI.commas(price) .. " Paper"),
-				990, h - 56, 250, 48, 0, function() api.swap(list, index) end, 26)
+			ui.button(layer, name .. "Swap", Assets.mainmenu.strip.blue, price == 0 and "Free swap" or ("Swap: " .. PaperUI.commas(price) .. " Paper"),
+				BUTTONS + 10, y + 104, 250, 52, 0, function() api.swap(list, index) end, 26)
 		end
 	end
 
 	local function draw()
 		ui.begin()
-		local paper = ui.image(sheet, "MissionsSheet", Assets.hangarShelf.statsWide, 102, 13, 1716, 1054)
+		local paper = ui.image(sheet, "MissionsSheet", Assets.hangarShelf.statsWide, 102, 13, 1716, 1054, LEVEL)
 		paper.ScaleType = Enum.ScaleType.Stretch
-		PaperUI.loud(ui.words(paper, "Title", "Missions", 200, 108, 420, 86, 66))
+		local layer = ui.instance(sheet, "MissionsLayer", "Frame")
+		layer.BackgroundTransparency, layer.Size, layer.ZIndex = 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), 2
+		PaperUI.loud(ui.words(layer, "Title", "Missions", CARD.x, 84, 380, 86, 66))
 		for i, name in { "daily", "weekly" } do
 			local on = tab == name
-			ui.button(paper, name .. "Tab", on and Assets.hangar.buttonGreen or Assets.unlock.buttonCream, name == "daily" and "Daily" or "Weekly",
-				560 + (i - 1) * 240, 116, 220, 80, on and -1 or 1, function() tab = name; draw() end, 40)
+			ui.button(layer, name .. "Tab", on and Assets.hangar.buttonGreen or Assets.unlock.buttonCream, name == "daily" and "Daily" or "Weekly",
+				CARD.x + (i - 1) * 240, 168, 220, 76, on and -1 or 1, function() tab = name; draw() end, 40)
 		end
-		ui.button(paper, "Close", Assets.mainmenu.boxRed, "X", 1531, 131, 87, 87, 1, function() api.back() end, 50)
+		ui.button(layer, "Close", Assets.mainmenu.boxRed, "X", 1633, 144, 87, 87, 1, function() api.back() end, 50)
 		if missions then
 			local now = workspace:GetServerTimeNow()
 			local reset = tab == "daily" and (missions.day + 1) * 86400 or ((missions.week + 1) * 7 - 3) * 86400
-			local timer = ui.words(paper, "Timer", "New missions in " .. left(math.max(0, math.floor(reset - now))), 900, 208, 570, 44, 30)
+			local timer = ui.words(layer, "Timer", "New missions in " .. left(math.max(0, math.floor(reset - now))), 990, 184, 620, 44, 30)
 			timer.TextXAlignment = Enum.TextXAlignment.Right
-			if tab == "daily" then
-				for i, m in missions.daily do card(paper, "Daily" .. i, m, "daily", i, 262 + (i - 1) * 230, 200) end
-			else
-				for i, m in missions.weekly do card(paper, "Weekly" .. i, m, "weekly", i, 262 + (i - 1) * 176, 160) end
-				card(paper, "Fixed", nil, "fixed", 1, 262 + 3 * 176, 160, true)
-			end
+			local step = CARD.h + CARD.gap[tab]
+			for i, m in missions[tab] do card(layer, (tab == "daily" and "Daily" or "Weekly") .. i, m, tab, i, CARD.y + (i - 1) * step) end
+			if tab == "weekly" then card(layer, "Fixed", nil, "fixed", 1, CARD.y + #missions.weekly * step, true) end
 		end
 		if message ~= "" then
-			local note = ui.words(paper, "MissionMessage", message, 200, 954, 1270, 46, 30)
+			local note = ui.words(layer, "MissionMessage", message, CARD.x, 958, BUTTONS + 270 - CARD.x, 40, 30)
 			note.TextXAlignment = Enum.TextXAlignment.Center
 		end
 		ui.finish()

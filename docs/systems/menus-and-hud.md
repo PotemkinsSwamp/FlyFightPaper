@@ -154,8 +154,8 @@ The full look brief is in [Art direction](../vision/ART_DIRECTION.md) ("Menu and
 | `src/shared/TouchWords.luau` | Phone wording: "Click" becomes "Tap", "hold left click" "hold FIRE", key hints like [Space] go; TouchControls rewrites every text on screen with it on a touch screen (tests: `tests/unit/TouchWords.spec.luau`, which also checks every lesson's text) |
 | `src/shared/AimHelp.luau` | Phone aim help numbers: how far a shot bends to the ring, how much the stick slows over an enemy (tests: `tests/unit/AimHelp.spec.luau`) |
 | `src/client/MenuBoard.luau` | Bulletin-board main menu |
-| `src/client/MissionsDropdown.luau` | The desk's Missions strip under "Switch to presets": a compact, see-through drop-down of your missions and progress with a Daily/Weekly switch, a red "!" while one waits to be claimed; tap again to fold (view only); not yet seen in Play |
-| `src/client/MissionsScreen.luau` | The Missions sheet from the main menu: Daily and Weekly tabs, a card per mission with goal, progress, reward, Claim and Swap ([missions decision](../decisions/2026-11-18-daily-and-weekly-missions.md)); not yet seen in Play |
+| `src/client/MissionsDropdown.luau` | The desk's Missions strip under "Switch to presets": a drop-down on see-through tracing paper of your missions and progress with a Daily/Weekly switch, a red "!" while one waits to be claimed; tap again to fold (view only) |
+| `src/client/MissionsScreen.luau` | The Missions sheet from the main menu: Daily and Weekly tabs, a construction-paper card per mission coloured by difficulty, with goal, progress and reward, Claim and Swap beside it ([missions decision](../decisions/2026-11-18-daily-and-weekly-missions.md)) |
 | `src/client/Hangar.luau`, `src/client/DeskHangar.luau` | Main-menu and in-game hangar |
 | `src/client/SettingsScreen.luau`, `src/client/Options.luau` | Settings screen and applying settings |
 | `src/client/PauseScreen.luau` | In-match clipboard menu |

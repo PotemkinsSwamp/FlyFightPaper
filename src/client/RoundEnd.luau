@@ -237,6 +237,26 @@ function RoundEnd.start()
 		return math.max(0, 1 + 2.70158 * x ^ 3 + 1.70158 * x ^ 2)
 	end
 
+	-- The teacher's tick slip (docs/decisions/2026-11-18-daily-and-weekly-missions.md): when this match finished a
+	-- mission, a torn notebook slip is taped across your card's top-left corner and the Training board's crayon tick
+	-- draws itself on it.
+	-- Its words only say a mission is done (Alan: "we don't need to tell them what mission they completed"). Page pixels:
+	-- it rides on your own page, so it scales and turns with it.
+	local slip = image(card, "MissionSlip", UIArt.hud.slip, -130, -24, 640, 67, -4)
+	slip.Visible, slip.ZIndex = false, 3
+	local slipWords = style(words(slip, "Words", "Mission done! Check your Missions.", 118, 8, 500, 52, 32), PEN, RED_PEN)
+	slipWords.ZIndex = 4
+	local slipTape = image(slip, "Tape", UIArt.ingame.tapeLabel, 586, 12, 96, 30, 78)
+	slipTape.ZIndex = 4
+	local tick = image(slip, "Tick", UIArt.trainingboard.tick, 34, -30, 92, 84, 0)
+	tick.ZIndex = 5
+	local drawn = Instance.new("UIGradient") -- the tick's pen stroke: shown left to right, so it looks drawn
+	drawn.Transparency, drawn.Rotation, drawn.Parent = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(0.45, 0), NumberSequenceKeypoint.new(0.55, 1), NumberSequenceKeypoint.new(1, 1),
+	}), 0, tick
+	local slipScale = Instance.new("UIScale")
+	slipScale.Parent = slip
+
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
 	-- Below the match strip, which shows the vote lap's clock (Alan 2026-10-23: the cards covered it).
@@ -428,6 +448,7 @@ function RoundEnd.start()
 			offerBuy.Price.Word3.Text = tostring(price)
 			offer.Parent = pages[state.minePage].page
 		end
+		slip.Parent, slip.Visible = pages[state.minePage].page, state.missionDone == true and state.mine ~= nil
 		showJar(teamRound and "teams" or "solo")
 	end
 	-- Your level bar fills from where you were before this round to where you are now.
@@ -471,6 +492,12 @@ function RoundEnd.start()
 			amountPop.Scale = popIn(t - at, 0.45)
 			jarPulse.Scale = popIn(t - 0.4, 0.4) * (1 + 0.05 * math.sin(t * 4))
 		end
+		if slip.Visible then
+			-- once the card is up (or when the news comes, if later): the slip pops in, then the tick draws itself
+			local t = since - math.max(1.2, (state.slipAt or 0) - state.cardAt)
+			slipScale.Scale = popIn(t, 0.4)
+			drawn.Offset = Vector2.new(-0.55 + math.clamp((t - 0.45) / 0.5, 0, 1) * 1.1, 0)
+		end
 		for k, it in pages do it.xpBar.show(shown and k == state.minePage) end
 		if not shown then return end
 		local xpBar = pages[state.minePage].xpBar
@@ -496,7 +523,9 @@ function RoundEnd.start()
 		local inMatch = player:GetAttribute("InMatch")
 		if snap.phase ~= state.phase then
 			state.phase = snap.phase
-			if snap.phase == "ACTIVE" then state.jarStart = player:GetAttribute("PaperJar") or 0 end -- (the jar line's start)
+			if snap.phase == "ACTIVE" then -- (the jar line's start; this match hasn't finished a mission yet)
+				state.jarStart, state.missionDone, slip.Visible = player:GetAttribute("PaperJar") or 0, false, false
+			end
 			Root:SetAttribute("StandingsOpen", nil) -- each round starts with it closed
 			Cutscene.stop()
 			if state.stopSound then state.stopSound(); state.stopSound = nil end
@@ -544,6 +573,14 @@ function RoundEnd.start()
 		end
 	end
 	Root:WaitForChild("RoundView").OnClientEvent:Connect(update)
+	-- The server's news that this match's statistics finished at least one mission (RoundRuntime).
+	task.spawn(function()
+		Root:WaitForChild("MissionsFinished").OnClientEvent:Connect(function(finished)
+			if type(finished) ~= "table" or #finished == 0 then return end
+			state.missionDone, state.slipAt = true, os.clock()
+			if state.snap and state.snap.phase == "RESULTS" then update(state.snap) end
+		end)
+	end)
 	player:GetAttributeChangedSignal("Vote"):Connect(function() if state.snap then update(state.snap) end end)
 	player:GetAttributeChangedSignal("MatchDoubled"):Connect(function() if state.snap then update(state.snap) end end)
 	player:GetAttributeChangedSignal("PaperJar"):Connect(function() if state.snap and state.snap.phase == "RESULTS" then update(state.snap) end end)

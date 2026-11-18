@@ -583,7 +583,11 @@ function Runtime:queueSettlement()
    if not ok then summary=false end
    local earned=self.earnedTotals
    local basePaper=summary and summary.paper
-   self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths},missions=summary},nil,nil,function(input)
+   -- Studio's "Dev: mission next match" (HangarService): this match finishes one more daily mission (ProfileService).
+   local devPlayer=Run:IsStudio() and Players:GetPlayerByUserId(row.userId)
+   local devMission=devPlayer and devPlayer:GetAttribute("DevMissionNextMatch")==true or nil
+   if devMission then devPlayer:SetAttribute("DevMissionNextMatch",nil) end
+   self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths},missions=summary,devMission=devMission},nil,nil,function(input)
     if not input.missions then return end
     local contribution=earned and earned[row.actorId]
     local final=rewards[row.key]
