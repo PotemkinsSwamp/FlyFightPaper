@@ -72,7 +72,7 @@ What an average player does in one match (Alan: "these are good assessments"; no
 | Folds in the zone, Airspace | 5 | Guess (no counter yet) |
 
 - Daily tiers stand for 1, 2 and 3 matches; weekly cards for 6, 9 and 13. Count = average x matches, rounded to a
-  friendly number; an action is not offered where that comes below 1 (wins and top 3 start at the hard daily).
+  friendly number; an action is not offered where that comes under 3/4 of one (wins and top 3 start at the hard daily).
 - A named weapon or part halves the count (folds, assists, damage and minutes only). A mode halves a daily count; a weekly
   mode count assumes one match in three is that mode. At most one mode mission a day and one a week, never the hard
   daily or the 4-5 day card. Zone points and folds in the zone are Airspace missions. About one daily in three has a

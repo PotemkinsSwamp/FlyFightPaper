@@ -109,7 +109,11 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
  end)
  Players.PlayerRemoving:Connect(function(player) self.joined[player]=nil end)
  flight.onRemoved=function(p) if self.engine.phase=="ACTIVE" then self.engine:withdraw(p.id) end end
- combat.onDamage=function(attacker,victim,amount,at) self:combatEvent("weaponDamage",victim,{attacker=attacker.identity,amount=amount},at) end
+ combat.onDamage=function(attacker,victim,amount,at,weapon)
+  self:combatEvent("weaponDamage",victim,{attacker=attacker.identity,amount=amount},at)
+  self:gearCount(attacker,weapon,"damage",amount)
+ end
+ flight.onPickup=function(p) local s=self:missionStat(p);if s then s.boosts+=1 end end
  combat.onDeath=function(victim,cause,killer,assists,history,damage,total,finisher,far)
   self:combatDeath(victim,cause,killer,assists,history,damage,total,finisher,far)
  end
@@ -131,6 +135,42 @@ function Runtime:combatDeath(victim,cause,killer,assists,history,damage,total,fi
   end
  end
  self:combatEvent("lifeEnded",victim,{killer=killer and identity(killer),assists=identities,far=far or nil,reason=cause=="fresh" and "fresh_plane" or cause})
+ local function lastWeapon(id) for i=#history,1,-1 do if history[i].attacker==id then return history[i].weapon end end end
+ if killer then self:gearCount(self.flight.byId[killer],lastWeapon(killer),"folds",1) end
+ for _,id in ipairs(assists) do self:gearCount(self.flight.byId[id],lastWeapon(id),"assists",1) end
+end
+-- Mission counters the match engine doesn't keep: speed boosts and what each piece of gear did
+-- (folds, assists and damage by the weapon that did it and the parts flown; seconds flown with each piece).
+function Runtime:missionStat(p)
+ if not (p and p.player and p.identity and self.engine.phase=="ACTIVE" and self.missionStats) then return nil end
+ local s=self.missionStats[p.id];if not s then s={boosts=0,byGear={}};self.missionStats[p.id]=s end
+ return s
+end
+function Runtime:gearCount(p,weapon,field,amount)
+ local s=self:missionStat(p);if not s then return end
+ local function add(id)
+  if not id then return end
+  local g=s.byGear[id];if not g then g={folds=0,assists=0,damage=0,seconds=0};s.byGear[id]=g end
+  g[field]+=amount
+ end
+ local l=p.loadout
+ add(l.body);add(l.nose);add(l.wings);add(l.tail);add(l.utility)
+ if field=="seconds" then
+  local seen={};for _,id in ipairs(l.weapon_mounts) do if id and not seen[id] then seen[id]=true;add(id) end end
+ else add(weapon) end
+end
+-- One finished match as missions see it (Missions.applyMatch). Paper is the match's own Paper before 2x boosts.
+function Runtime:missionSummary(row,r)
+ local s=self.missionStats[row.key] or {boosts=0,byGear={}}
+ local points=Economy.points
+ local byGear={}
+ for id,g in pairs(s.byGear) do byGear[id]={folds=g.folds,assists=g.assists,damage=math.floor(g.damage),seconds=math.floor(g.seconds)} end
+ return {eligible=row.completion==true,completedAt=r.completedAtUnix,mode=r.mode,folds=row.kills,assists=row.assists,
+  damage=math.floor(row.damage),paper=math.floor(row.contribution*Economy.paper_per_point+row.finalPaper),seconds=math.floor(row.activeSeconds),
+  wins=row.victory and row.completion and 1 or 0,top3=row.completion and not r.result.draw and row.place and row.place<=3 and 1 or 0,
+  targets=row.targetPoints//points.target,boosts=s.boosts,
+  zone_points=math.min(row.zoneEvents*points.zone_per_5_eligible_seconds,Economy.control_personal_points_max_per_match),
+  zone_folds=row.zoneFolds or 0,deaths=row.deaths,best_life=row.bestStreak,byGear=byGear}
 end
 function Runtime:bind(p)
  -- A practice flight is never in the match: it can't hold the zone, score, earn or qualify (2026-10-17 audit).
@@ -211,7 +251,7 @@ function Runtime:begin(mode)
  end
  assert(self.engine:startRound(mode or "FFA"))
  if self.onBegin then self.onBegin() end
- self.sequence=0;self.earningCursor=0;self.finished=false;self.settled=false;self.earnedTotals={};self.finalRewards={};self.settledRows={}
+ self.sequence=0;self.earningCursor=0;self.finished=false;self.settled=false;self.earnedTotals={};self.finalRewards={};self.settledRows={};self.missionStats={}
  self.startShots=self.combat.totalFired;self.startHits=self.combat.totalHits
  -- Rounds never stop (Alan 2026-10-17): planes already in the room carry on into this round.
  self.flight.records={};self.flight.active=true;self.bots.enabled=true;self.combat.enabled=true
@@ -533,7 +573,7 @@ function Runtime:queueSettlement()
     rewards[row.key]={paper=row.finalPaper*input.multipliers.paper,xp=row.finalXP*input.multipliers.xp,missed=input.multipliers.paper==1 and row.finalPaper or 0}
    end) else rewards[row.key]={paper=0,xp=0,missed=0} end
    if row.qualified then self:reward(row.userId,r.id..":qualification:"..row.key,{kind="qualification",matchId=r.id,activeSeconds=row.activeSeconds,events=row.qualifyingEvents}) end
-   self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",completedAt=row.completion and r.completedAtUnix or nil,deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths}})
+   self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",completedAt=row.completion and r.completedAtUnix or nil,deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths},missions=self:missionSummary(row,r)})
    self.settledRows[row.key]=true
   end
  end
@@ -583,6 +623,7 @@ function Runtime:step(dt)
     if p.identity then
      self.engine:observe(p.id,{state=p.model:GetAttribute("State"),protected=self.flight:protected(p,workspace:GetServerTimeNow()),eligible=true,overlay=p.overlay==true,position=p.body.Position})
      if p.player and p.model:GetAttribute("State")=="FLYING" then
+      self:gearCount(p,nil,"seconds",ServerConfig.round.step_seconds)
       local direction=p.body.CFrame.LookVector
       if not p.activityDirection or direction:Dot(p.activityDirection)<.995 then self.engine:controlActivity(p.id);p.activityDirection=direction end
      end

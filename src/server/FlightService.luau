@@ -562,6 +562,7 @@ function Service:regionsFor(p,now)
     marker:SetAttribute("ReadyAt",now+Pickups.respawn_seconds);p.pickupBonus,p.pickupUntil=Rules.stackPickup(p.pickupBonus or 0,p.pickupUntil or 0,now,Pickups)
     p.model:SetAttribute("PickupUntil",p.pickupUntil);p.model:SetAttribute("Message",Lines.pick("speedPickup"))
     p.model:SetAttribute("Boost",math.min(p.model:GetAttribute("BoostMax") or 0,(p.model:GetAttribute("Boost") or 0)+Pickups.boost_seconds))
+    if self.onPickup then self.onPickup(p) end -- counted for missions
    end
   end
  end

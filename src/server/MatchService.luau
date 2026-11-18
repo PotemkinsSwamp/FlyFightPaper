@@ -131,7 +131,7 @@ function Match:join(options)
             displayName = options.displayName or "Pilot",
             priorQualifyingMatches = prior, kills = 0, assists = 0, deaths = 0, streak = 0, bestStreak = 0,
             damage = 0, contribution = 0, propPoints = 0, targetPoints = 0,
-            objectiveSeconds = 0, objectiveEvents = 0, zoneEvents = 0,
+            objectiveSeconds = 0, objectiveEvents = 0, zoneEvents = 0, zoneFolds = 0,
             activeSeconds = 0, qualifyingEvents = 0, qualified = false, forfeited = false,
             eligibleIntervals = {}, activityIntervals = {},
             teamId = r.mode ~= "FFA" and self:_team() or nil }
@@ -368,6 +368,8 @@ function Match:consumeCombat(event)
         end
         if killer and killer ~= victim then
             killer.kills += 1
+            -- Missions' "folds in the zone": the folder or the victim was inside it (Airspace only).
+            if zone and (victimInZone or Rules.inZone(killer.sample and killer.sample.position, zone)) then killer.zoneFolds += 1 end
             earn(killer, foldPoints(killer, points.fold, false), "fold", event.eventId, event.killer)
             local killerBounds = r.lifeBounds[binding(event.killer)]
             if killer.present and killer.lifeId == event.killer.lifeId and killerBounds and killerBounds.endedAt == nil then

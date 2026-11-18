@@ -350,7 +350,7 @@ function Service:hit(attacker,target,amount,now,position,weaponId,far,soak)
  table.insert(history,{attacker=attacker.id,at=now,damage=actual,identity=attacker.identity,weapon=weaponId,far=far or nil})
  local record=self.flight.records[attacker.id];record.damage+=actual
  if not soak then record.hits+=1;self.totalHits+=1;target.lastHitAt=now;target.lastHitBy=attacker end
- if self.onDamage then self.onDamage(attacker,target,actual,os.clock()) end
+ if self.onDamage then self.onDamage(attacker,target,actual,os.clock(),weaponId) end
  self.flight:damage(target,actual,"weapon",nil,{kind="weapon",weapon=weaponId})
  if not soak and weaponId and self.flight.catalog:get(weaponId).sticks and target.model:GetAttribute("State")=="FLYING" then self.flight:spit(target,now,attacker.id) end
  self:emit({kind=soak and "soak" or "hit",owner=attacker.id,target=target.id,damage=actual,position=position or target.body.Position})
