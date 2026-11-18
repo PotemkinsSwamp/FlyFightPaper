@@ -119,7 +119,7 @@ end
 
 local function go(ctx, page)
 	local panel = ctx.state.chestPanel
-	if panel.expected ~= nil then return end
+	if panel.expected ~= nil and page ~= nil then return end
 	if page == nil then panel.boughtAt = nil end
 	panel.page = page
 	ctx.render()
@@ -179,8 +179,8 @@ local function payment(ui, parent, id, currency, text, x, y, w, h, enabled, call
 	amount.AutomaticSize, amount.LayoutOrder = Enum.AutomaticSize.X, 2
 end
 
-local function backButton(ctx, sheet)
-	ctx.ui.button(sheet, "ChestBack", Assets.range.stripRed, "Back", 160, 131, 262, 77, -1, function()
+local function backButton(ctx, sheet, x)
+	ctx.ui.button(sheet, "ChestBack", Assets.range.stripRed, "Back", x, 131, 262, 77, -1, function()
 		go(ctx, nil)
 	end, 44)
 end
@@ -263,11 +263,11 @@ local function oddsPage(ctx, sheet)
 	local starter = panel.page == "starter"
 	local balance = ctx.profile.paper or 0
 	local odds, counts = Looks.chestOdds(selected.id)
-	backButton(ctx, sheet)
+	backButton(ctx, sheet, 1356)
 	chestPicture(ui, sheet, selected, 436, 104, 211, 180)
 	local heading = costsPaper and "Confirm Paper purchase" or robux and "Confirm Robux purchase" or "Prizes & odds"
-	ui.words(sheet, "PageHeading", heading, 657, 128, 825, 49, 36)
-	PaperUI.loud(ui.words(sheet, "OddsTitle", title(selected), 651, 175, 822, 76, 57))
+	ui.words(sheet, "PageHeading", heading, 657, 128, 674, 49, 36)
+	PaperUI.loud(ui.words(sheet, "OddsTitle", title(selected), 651, 175, 680, 76, 57))
 	local sentence = costsPaper and ("Open for " .. paperValue(selected.cost) .. ". Your balance is " .. paperValue(balance) .. ".")
 		or starter and "The Starter Pack includes this chest. Open it to get one skin."
 		or ("Get one " .. familyName(selected):lower() .. " per opening. If you already own it, you get Paper.")
@@ -347,7 +347,7 @@ end
 
 local function progressPage(ctx, sheet)
 	local ui, wallet = ctx.ui, ctx.profile.chests
-	backButton(ctx, sheet)
+	backButton(ctx, sheet, 160)
 	center(PaperUI.loud(ui.words(sheet, "GoalsTitle", "Earn treasure chests", 448, 132, 829, 76, 53)))
 	center(ui.words(sheet, "GoalsNote", "Claim your free gift each day in the Shop.", 216, 232, 1237, 59, 40))
 	local streak = ctx.profile.dailyGift
@@ -378,6 +378,7 @@ function Chests.draw(ctx)
 		progressPage(ctx, sheet)
 	elseif page == "buy" or page == "robux" or page == "starter" or page == "odds" then
 		oddsPage(ctx, sheet)
+		return
 	else
 		chestShelf(ctx, sheet)
 	end
