@@ -183,7 +183,7 @@ and "made by" are out of date.
 
 ### Five new Legendary trails
 
-Alan approved the concepts on 2026-11-17. Each draft runs on its matching plane model, with one continuous plume leaving the exhaust. The videos use the same eight-second flight as the earlier trail previews. Both the chase and side views show cruise and boost. The combined reel is `legendary-trails.mp4` and the four new model shapes are on `legendary-pieces.png` in the same folder. Stealth reuses the existing strip. The new looks are awaiting Alan's video review before Roblox upload.
+Alan approved the concepts on 2026-11-17. Each draft runs on its matching plane model, with one continuous plume leaving the exhaust. The videos use the same eight-second flight as the earlier trail previews. Both the chase and side views show cruise and boost. The combined reel is `legendary-trails.mp4` and the four new model shapes are on `legendary-pieces.png` in the same folder. Stealth reuses the existing strip. The first-round videos are retained for comparison. The latest picks and revisions are listed below.
 
 | Skin | Blender preview in `.planning/skins/trails/` | What leaves the exhaust |
 |---|---|---|

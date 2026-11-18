@@ -890,6 +890,7 @@ Back to [HOME](../HOME.md)
   (`Instance.new("LocalScript")`, set `Source`, parent it to `PlayerScripts`), and it runs with a game script's rights.
 
 ## Trails (2026-11-16, the first three as 3D videos)
+- On Shark Jet, two rows of floating teeth were hard to read as a bite. Keep the teeth attached to upper and lower jaws with one hinge, and keep the closing motion inside the first part of the wake visible to the pilot.
 - **Four rounds of videos for three trails; start the next ten where these ended.** Alan turned down, in order: flat
   pictures seen from above ("bad ... We need to make them 3D"), a turning ribbon ("a 2D banner that's rotating"), cotton
   balls ("purple bubbles"), wound cords ("a bunch of streamers attached to a plane") and thin scattered pieces ("more
