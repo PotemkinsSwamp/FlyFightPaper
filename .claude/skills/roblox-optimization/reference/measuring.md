@@ -12,6 +12,7 @@ Mac use Cmd/Opt.
 | Debug Stats overlays | Shift+Ctrl+F1..F5 (Stats, Render, Network, Physics, Summary); Shift+F5 summary in a client | Draw calls and triangles ("Draw (scene)"), network, physics |
 | Developer Console | F9, or `/console` in chat | Log, Memory, Luau Heap (snapshots + compare), Script Profiler, MicroProfiler (server recording), Server Jobs, Server Stats |
 | Script Profiler | Dev Console or Studio | Per-function CPU, 1 kHz / 10 kHz, Client or Server, JSON export; `<native>` marks native code |
+| Wireframe view | Studio View tab > Wireframe Rendering | Which models burn triangles on tiny details |
 | Scene Analysis | Studio: Window > Performance | Treemap of memory, instances, triangles, draw calls (full release 2026-07-10) |
 | Stats service | scripts | `FrameTime`, `RenderCPUFrameTime`, `RenderGPUFrameTime`, `HeartbeatTime`, `PhysicsStepTime`, `SceneDrawcallCount`, `SceneTriangleCount`, `ShadowsDrawcallCount`, `UI2DDrawcallCount`, `InstanceCount`, `MovingPrimitivesCount`, `ContactsCount`, `DataReceiveKbps`, `DataSendKbps`, `GetTotalMemoryUsageMb()`, `GetMemoryUsageMbForTag()` |
 | Creator Hub Performance | Creations > game > Monitoring > Performance | Live FPS, crash rate, out-of-memory exits, memory by device, server CPU/memory by age; needs 100+ daily players |

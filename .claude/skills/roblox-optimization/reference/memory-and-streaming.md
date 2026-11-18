@@ -71,6 +71,9 @@ Per-model `ModelStreamingMode`:
 - **Custom loading screen in ReplicatedFirst**, call `ReplicatedFirst:RemoveDefaultLoadingScreen()` once it shows;
   `game.Loaded` means initial replication is done, not that pictures have downloaded. Medium.
 - **Defer what isn't needed in the first minute** (shop panels, rarely used data); spread start-up work over frames.
+  `StarterGui` is copied to every player at join like ReplicatedStorage: keep the first screen and HUD there, and
+  build or clone big secondary panels (shop, inventory, settings) when first opened. UI images are not texture-
+  streamed, so every UI picture loaded counts in full. High (replication), medium (gain).
 - **Fewer, reused asset ids load faster** than many unique ones (each id is a download). Free-model scripts can
   spawn thousands of instances at join: read them. High.
 
@@ -87,3 +90,6 @@ Per-model `ModelStreamingMode`:
 | "Use StreamingMesh for far models" | SLIM replaces it (2025-12). |
 | "Persistent fixes streaming bugs" | Overuse cancels streaming; code for it. |
 | "PreloadAsync everything for a smooth start" | Slower; preload the first view only. |
+| "Set ModelStreamingMode to Opportunistic" (AI answer, 2026-11) | No such mode: Opportunistic is a `StreamOutBehavior` value. |
+| "StreamingTargetRadius 128-256 for phones" (AI answer) | Docs recommend 1024; a small radius empties the horizon: a detail cost. |
+| "Phones work out collision shapes for big meshes while loading" (AI answer) | Shapes are computed in Studio/at upload and saved in the place; Box/Hull still saves memory. |

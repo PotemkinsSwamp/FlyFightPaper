@@ -49,6 +49,11 @@ Tags: **keeps** = look unchanged, **adds** = more detail for the same cost, **ma
   shape made of many Parts or a Union (fewer triangles, one draw call). Unions do get LOD and instancing since
   2017-18 ("unions are always bad" is outdated) but carry hidden triangles and can't occlude. SpecialMesh: no
   RenderFidelity, slow to move; replace with MeshPart. Medium-high. **keeps**
+- **Clean wasted triangles before upload.** AI-generated meshes (Meshy and similar) spend many triangles on flat
+  areas. In Blender, Decimate > Planar (or Limited Dissolve) removes triangles from flat surfaces without changing
+  the shape; check by laying the result over the original. Medium (standard 3D practice). **keeps**
+  Heavier Decimate > Collapse (e.g. 0.2-0.3, "no visible loss on a phone" per an AI answer, unmeasured) does change
+  the shape: [costs-detail.md](costs-detail.md).
 - **Bake static part clusters into one mesh per material** (export, rebuild in Blender, re-import): same look,
   fewer instances and draw calls. Medium. **keeps**
 
@@ -131,7 +136,9 @@ Tags: **keeps** = look unchanged, **adds** = more detail for the same cost, **ma
   walls; testers reported a real CPU cost (2026 beta). Load sounds when needed. Medium. **keeps**
 - **Post effects** (Bloom, DepthOfField, SunRays, Atmosphere): no official per-effect numbers; Roblox scales them by
   quality level. Measure GPU time on and off. Low-medium.
-- **UI:** sprite sheets (`ImageRectOffset`/`ImageRectSize`) instead of many small images; keep siblings that use
+- **UI:** sprite sheets (`ImageRectOffset`/`ImageRectSize`) instead of many small images; big plain panels
+  can use 9-slice (`ScaleType = Slice`) on a small image where the art has plain middles and edges (hand-drawn
+  paper with uneven edges may stretch visibly: screenshot it); keep siblings that use
   the same image next to each other in draw order (batching). CanvasGroups cost texture memory each; don't use many
   small ones. `ClipsDescendants` supports rotated items since 2026 (no need for CanvasGroup just to clip). UI images
   aren't texture-streamed. *Stats `UI2DDrawcallCount`.* Medium.
