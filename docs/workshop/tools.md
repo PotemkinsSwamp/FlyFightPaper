@@ -66,6 +66,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `trail_spark_showers.py` | Draws the Race Car's grinding sparks as tapered paths with hot tips. Also renders the earlier split-grain comparison. |
 | `trail_atlas.py` | Makes the shared color and opacity texture for the Legendary trail pieces. |
 | `export_legendary_trails.py` | Exports the approved trail pieces and Stealth's weighted glass wake together from Blender, with UVs for the shared texture. |
+| `export_legendary_hulls.py` | Exports the four approved Legendary hulls from their Blender builds with their texture coordinates and measurements for fitting to a player's plane. |
 | `fetch_trail_assets.py` | Reads the uploaded model in Studio Edit, records its inner mesh IDs and sizes, and saves the glass wake with its 13 bones for Rojo. |
 | `trail_skids.py` | Draws periodic rubbed-rubber marks along the Race Car's flight path for the `photo_finish:skid` Blender preview. |
 | `trail_cloak.py` | Refracts a clean view of the scenery through Stealth's continuous slipstream or the earlier swept-wing pockets. The ruled floor makes the bend visible at flight speed. |

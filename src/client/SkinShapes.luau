@@ -7,12 +7,16 @@ local AssetService = game:GetService("AssetService")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local SkinFit = require(Root:WaitForChild("Shared"):WaitForChild("SkinFit"))
 local NinjaMotion = require(script.Parent.NinjaMotion)
+local LegendarySkinMotion = require(script.Parent.LegendarySkinMotion)
 local Shapes = SkinFit.shapes
 local SkinShapes = {}
 local meshes = {} -- mesh id -> MeshPart to copy (false while loading)
 
 SkinShapes.has = SkinFit.has
-SkinShapes.step = NinjaMotion.step
+function SkinShapes.step(t, eye, near)
+	NinjaMotion.step(t, eye, near)
+	LegendarySkinMotion.step(t, eye, near)
+end
 
 local function meshOf(id)
 	while meshes[id] == false do task.wait() end
@@ -49,6 +53,7 @@ end
 -- Take the shape off: the real parts, guns and booster come back, the pieces and moved copies go.
 function SkinShapes.clear(model)
 	NinjaMotion.clear(model)
+	LegendarySkinMotion.clear(model)
 	local appearance = model:FindFirstChild("Appearance")
 	if not appearance then return end
 	for _, part in appearance:GetChildren() do
@@ -74,6 +79,8 @@ function SkinShapes.wear(model, id)
 	local assets = Root:WaitForChild("Assets")
 	local looks = assets:FindFirstChild("SkinLooks")
 	local look = looks and looks:FindFirstChild(id) and looks[id]:FindFirstChild("Shape")
+	local layers = shape.layers and looks and looks:FindFirstChild(id) and looks[id]:FindFirstChild("Layers")
+	if shape.layers and not (look and layers) then return false end
 	local rig = shape.rig and assets:WaitForChild(shape.rig, 5)
 	if shape.rig and not rig then return false end
 	local pieces = {}
@@ -102,7 +109,10 @@ function SkinShapes.wear(model, id)
 			end
 		else
 			local mesh = meshOf(shape.pieces[name].mesh)
-			if not (mesh and model.Parent and appearance.Parent) then continue end
+			if not (mesh and model.Parent and appearance.Parent) then
+				SkinShapes.clear(model)
+				return false
+			end
 			part = mesh:Clone()
 		end
 		part.Name = "Skin-" .. name
@@ -120,6 +130,8 @@ function SkinShapes.wear(model, id)
 		local foil = looks and looks:FindFirstChild("holographic")
 		local layers = foil and foil:FindFirstChild("Layers")
 		NinjaMotion.wear(model, rootPart, pieces, shape, layers and layers:FindFirstChild("glint"), preview)
+	elseif layers then
+		LegendarySkinMotion.wear(model, id, pieces.body, shape, layers, preview)
 	end
 	-- Hide what the shape covers; guns hang under the wings and the booster tucks up to the belly (SkinFit.plane): the real
 	-- part hides, a copy (with its look, PlaneLooks dresses late ones) shows at the new spot.

@@ -64,6 +64,15 @@ for sid, shape in sorted(shapes.items()):
                  f'<float name="EmissiveStrength">{strength}</float>'
                  f'<Color3 name="EmissiveTint"><R>{tint[0]}</R><G>{tint[1]}</G><B>{tint[2]}</B></Color3>')
     folders.setdefault(sid, []).append(item("SurfaceAppearance", "Shape", maps) + "</Item>")
+    if shape.get("layers"):
+        decals = []
+        for name, image in shape["layers"].items():
+            uri = f"<uri>rbxassetid://{image}</uri>"
+            maps = (f'<Content name="ColorMapContent">{uri}</Content>'
+                    f'<Content name="EmissiveMaskContent">{uri}</Content>'
+                    '<token name="Face">1</token>')
+            decals.append(item("Decal", name, maps) + "</Item>")
+        folders[sid].append(item("Folder", "Layers") + "".join(decals) + "</Item>")
 for sid, items in folders.items():
     out.append(item("Folder", sid) + "\n".join(items) + "</Item>")
     count += len(items)

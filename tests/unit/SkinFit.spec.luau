@@ -284,6 +284,32 @@ function Spec.run()
 		end) end
 		model:Destroy()
 	end
+	for _, skin in require(Root.Generated.Looks).skins do
+		test(skin.name .. ": the hangar card has installed plane art", function()
+			local folder = assert(Root.Assets.SkinLooks:FindFirstChild(skin.id), skin.id)
+			if skin.tier == "legendary" or skin.tier == "mythical" then
+				assert(SkinFit.has(skin.id) and folder:FindFirstChild("Shape"), skin.id)
+			else
+				assert(skin.picture and folder:FindFirstChildWhichIsA("SurfaceAppearance"), skin.id)
+			end
+		end)
+	end
+	for _, id in {"shark_jet", "hot_rod", "race_car", "stealth"} do
+		test(id .. ": first flight uses the visible hull at the fitted size", function()
+			local model, frame = plane(builds.heavy)
+			local fit = assert(SkinFit.plane(id, model.Appearance, frame))
+			local body = assert(fit.placed.body)
+			Flight.colliders(Flight, {model = model, skin = id}, model)
+			local deadline = os.clock() + 15
+			while not model.Colliders["Skin-body"]:IsA("MeshPart") and os.clock() < deadline do task.wait(0.1) end
+			local hull = model.Colliders["Skin-body"]
+			local matches = hull:IsA("MeshPart") and hull.MeshId == "rbxassetid://" .. SkinFit.shapes[id].pieces.body.mesh
+				and hull.CollisionFidelity == Enum.CollisionFidelity.PreciseConvexDecomposition
+				and near(hull.Size, body[2]) and same(frame:ToObjectSpace(hull.CFrame), body[1])
+			model:Destroy()
+			assert(matches, id)
+		end)
+	end
 	test("Ninja is centred on its rigid hull and only that hull and equipment can be hit", function()
 		local model, frame = plane(builds.swept)
 		local outline = assert(SkinFit.outline(model.Appearance, frame))

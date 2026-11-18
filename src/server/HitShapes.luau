@@ -34,7 +34,11 @@ end
 -- Start building every shape at server start so the first fights already use them.
 function Shapes.preload(folders)
 	for _,spec in SkinFit.shapes do
-		if spec.hitPiece then Shapes.precise("rbxassetid://"..spec.pieces[spec.hitPiece].mesh) end
+		if spec.even then
+			for name,piece in spec.pieces do
+				if not spec.hitPiece or name==spec.hitPiece then Shapes.precise("rbxassetid://"..piece.mesh) end
+			end
+		end
 	end
 	for _,folder in ipairs(folders) do for _,part in ipairs(folder:GetDescendants()) do
 		if part:IsA("MeshPart") and part.MeshId~="" then Shapes.precise(part.MeshId) end
@@ -80,7 +84,7 @@ function Shapes.place(appearance,frame,skin)
 		local source=rig and rig:FindFirstChild(name)
 		if not (source and source:IsA("MeshPart") and source.MeshId==mesh and source.CollisionFidelity==Enum.CollisionFidelity.PreciseConvexDecomposition) then
 			source=Shapes.precise(mesh)
-			if not source and spec.hitPiece then pendingHull=mesh end
+			if not source then pendingHull=mesh end
 		end
 		local piece=source and source:Clone() or Instance.new("Part")
 		piece.Name,piece.Size,piece.CFrame,piece.CanCollide,piece.CanTouch="Skin-"..name,at[2],at[1],false,false
