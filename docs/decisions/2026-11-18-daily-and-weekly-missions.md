@@ -25,7 +25,9 @@ optional condition plus a count:
 | Hard | 300 Paper + 400 XP |
 
 "Play 3 matches" is a daily mission. A game-mode mission appears at most once a day and never as the hard one (the mode
-is voted). One free swap a day; after it a daily swap costs 150 Paper, then 300, then 450 that day.
+is voted). One free swap a day; after it a daily swap costs 150 Paper, then 300, then 450 that day. **A swap never gives
+back the same shape** (Alan: "the mission that takes its place is not the same shape"): the new mission has a different
+action from the one swapped out, daily and weekly.
 
 **Weekly: arduous** (Alan: "they should take at least a couple of days no more than 5 days to complete ... it takes you
 playing for the week"). Three missions made by the game plus one fixed card:
@@ -35,12 +37,14 @@ playing for the week"). Three missions made by the game plus one fixed card:
 | Game-made | about 2 days of play | 2,000 Paper |
 | Game-made | about 3 days of play | Sticker chest |
 | Game-made | about 4 to 5 days of play | Blue Ribbon chest |
-| Finish all 3 dailies on 5 days | 5 days | Blue Ribbon chest |
+| Finish 15 daily missions | any days of the week | Blue Ribbon chest |
 
 The old weekly "3 reward-eligible matches earn a Sticker chest" ([chest decision](2026-11-18-classroom-treasure-chests.md))
 becomes a daily mission. A weekly mission can be swapped for 25% of its reward's Paper value, rising each swap that week
-(2,000 Paper: 500, 1,000, 1,500; Sticker chest: 750, 1,500, 2,250; Blue Ribbon: 1,625, 3,250, 4,875). The "all dailies on
-5 days" card can't be swapped. Missions are picked when the day or week starts and saved, so changing gear doesn't
+(2,000 Paper: 500, 1,000, 1,500; Sticker chest: 750, 1,500, 2,250; Blue Ribbon: 1,625, 3,250, 4,875). The "15 daily missions" card
+can't be swapped. It replaced "all 3 dailies on 5 days" (Alan: "that doesnt give the player much wiggle room ... 15 daily
+missions might be a better way"): 21 dailies come each week, so a player can miss six. It keeps the week calendar: a
+day is ticked when the player finished at least one daily mission that day. Missions are picked when the day or week starts and saved, so changing gear doesn't
 reshuffle them. Daily resets at 00:00 UTC, weekly on Monday 00:00 UTC, like the chest milestones. Only reward-eligible
 matches count.
 
