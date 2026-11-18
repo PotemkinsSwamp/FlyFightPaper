@@ -47,16 +47,11 @@ return {
 	-- Uploaded 2026-10-21; white pieces (shelfTab, indexTab, statLabel, statBox, statBoxEmpty) are tinted in the game.
 	hangarShelf = {
 		chestAtlas = "rbxassetid://103691943840633", -- four 512-square classroom prize chest illustrations
-		trailChestAtlas = "rbxassetid://110602232193985", -- the same four cases with a crayon contrail sticker
 		chestOpenings = {
 			paper = "rbxassetid://124157028836905",
 			sticker = "rbxassetid://123190968252899",
 			blue_ribbon = "rbxassetid://77391298573982",
 			golden_star = "rbxassetid://134735320533557",
-			trail_paper = "rbxassetid://133671707533666",
-			trail_sticker = "rbxassetid://133681829601016",
-			trail_blue_ribbon = "rbxassetid://130572734060512",
-			trail_golden_star = "rbxassetid://113477391629960",
 		},
 		bg = { "rbxassetid://133397690165754", "rbxassetid://105639322311566", "rbxassetid://115182631090136", "rbxassetid://116475380443993" },
 		cubbyBack = "rbxassetid://103396781406593", cubbyFront = "rbxassetid://91837232661923",

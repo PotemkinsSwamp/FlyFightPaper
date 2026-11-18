@@ -4,7 +4,7 @@
 
 ## Decision
 
-Players choose a Skin chest or a Trail chest. Both families use Paper, Sticker, Blue Ribbon and Golden Star tiers. Every Skin chest can award Legendary and Mythical skins, even the Paper chest. Golden Star starts at Rare. The two Mythical trails belong exclusively to the Dragon and Origami Crane skins. The display lists only possible prizes with their chances.
+Players choose a Skin chest or a Trail chest. Both families use Paper, Sticker, Blue Ribbon and Golden Star tiers. Trail cases use different paper colors and keep the same tier decorations. The Shop's Chests tab uses the Golden Star case. Every Skin chest can award Legendary and Mythical skins, even the Paper chest. Golden Star starts at Rare. The two Mythical trails belong exclusively to the Dragon and Origami Crane skins. The display lists only possible prizes with their chances.
 
 Players can buy chests with Paper or Robux in the Shop's Chests tab. Direct Robux pricing should be a little cheaper than buying the Paper separately. Weekly match missions and consecutive daily gifts award chests players can open in either family. The starter pack includes a Paper chest. A duplicate returns part of the item's Paper value.
 

@@ -24,12 +24,17 @@ local SIZE = 760
 local lastSequence, queue, active = 0, {}, false
 local cover, sheet
 
-local function atlas(chest)
-	return chest.family == "trail" and Assets.hangarShelf.trailChestAtlas or Assets.hangarShelf.chestAtlas
-end
+-- Use the same print and hinge for both families. Trail cases have their own paper dyes.
+local trailColors = {
+	paper = Color3.fromRGB(169, 235, 228),
+	sticker = Color3.fromRGB(222, 151, 251),
+	blue_ribbon = Color3.fromRGB(154, 214, 255),
+	golden_star = Color3.fromRGB(255, 184, 193),
+}
 function Opening.picture(image, chest)
-	local offset = iconOffsets[chest.base or chest.id]
-	image.Image, image.ImageRectOffset, image.ImageRectSize = atlas(chest), offset, Vector2.new(512, 512)
+	local base = chest.base or chest.id
+	image.Image, image.ImageRectOffset, image.ImageRectSize = Assets.hangarShelf.chestAtlas, iconOffsets[base], Vector2.new(512, 512)
+	image.ImageColor3 = if chest.family == "trail" then trailColors[base] else Color3.new(1,1,1)
 	image.ScaleType = Enum.ScaleType.Fit
 	return image
 end
@@ -44,7 +49,7 @@ end
 -- A shelf selection gives the one chosen animation time to load before checkout.
 local warming = {}
 function Opening.prepare(chest)
-	local asset = Assets.hangarShelf.chestOpenings[chest.id]
+	local asset = Assets.hangarShelf.chestOpenings[chest.base or chest.id]
 	if warming[asset] then return end
 	warming[asset] = true
 	task.spawn(function()
@@ -110,10 +115,11 @@ local function showPrize(request)
 	local stage = frame(sheet,"OpeningStage",1)
 	stage.Size, cover.Visible = UDim2.fromScale(1,1), true
 	local chest, item = request.chest, request.item
-	local closed = Opening.picture(PaperUI.image(stage,"ClosedChest",atlas(chest),0,0,SIZE,SIZE),chest)
+	local closed = Opening.picture(PaperUI.image(stage,"ClosedChest",Assets.hangarShelf.chestAtlas,0,0,SIZE,SIZE),chest)
 	local hinged = frame(stage,"HingedChest",2)
 	hinged.ClipsDescendants, hinged.AnchorPoint = true, Vector2.new(.5,.5)
-	local film = PaperUI.image(hinged,"OpeningFrames",Assets.hangarShelf.chestOpenings[chest.id],0,0,1,1)
+	local film = PaperUI.image(hinged,"OpeningFrames",Assets.hangarShelf.chestOpenings[chest.base or chest.id],0,0,1,1)
+	film.ImageColor3 = closed.ImageColor3
 	film.AnchorPoint, film.Size, film.ScaleType = Vector2.zero, UDim2.fromScale(4,4), Enum.ScaleType.Stretch
 	closed.ZIndex, film.ImageTransparency = 3, .995
 	local quiet = Root:GetAttribute("ReducedShake")

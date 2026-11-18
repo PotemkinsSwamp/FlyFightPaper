@@ -206,7 +206,7 @@ function ShopScreen.new(playerGui, api)
 	press(board, "Close", Art.close, 1300, 48, 1405, 153, function() api.back() end)
 
 	-- ===== Tabs beside the window: jump to a section; the one you're in lights up =====
-	local TABS = { { "Featured", "tabStar" }, { "Chests", "iconGiftBox" }, { "Passes", "tabTicket" }, { "Boosts", "tabClock" }, { "Paper", "tabPaper" } }
+	local TABS = { { "Featured", "tabStar" }, { "Chests" }, { "Passes", "tabTicket" }, { "Boosts", "tabClock" }, { "Paper", "tabPaper" } }
 	if not PREVIEW then TABS = {TABS[1], TABS[2]} end
 	local sections = {} -- tab name -> top of its section in the scroll (sheet units), filled by each redraw
 	-- CanvasPosition is in screen pixels, not sheet units: the sheet's UIScale shrinks a small window's sheet (2026-11-12:
@@ -223,7 +223,11 @@ function ShopScreen.new(playerGui, api)
 				TweenService:Create(scroll, TweenInfo.new(0.35, Enum.EasingStyle.Quad), { CanvasPosition = Vector2.new(0, top * perUnit()) }):Play()
 			end
 		end)
-		fit(pic(paper, "Icon", Art[icon], 51, 9, 149, 79))
+		if name == "Chests" then
+			ChestOpening.picture(pic(paper, "Icon", Assets.hangarShelf.chestAtlas, 49, 6, 151, 81), Looks.chest("golden_star"))
+		else
+			fit(pic(paper, "Icon", Art[icon], 51, 9, 149, 79))
+		end
 		say(paper, "Words", name, 0, 77, 200, y1 - y0 - 9, 33, { loud = true })
 		fit(pic(board, "Pin" .. name, Art.pin, 1535, y0 - 12, 1560, y0 + 13))
 		tabs[name] = paper
@@ -284,7 +288,7 @@ function ShopScreen.new(playerGui, api)
 		return icon
 	end
 	-- The green buy button: Robux symbol + price, or a word (OWNED) instead.
-	local function buy(parent, name, x0, y0, x1, y1, price, size, callback, word)
+	local function buy(parent, name, x0, y0, x1, y1, price, size, callback, word, showSymbol)
 		local button = press(parent, name, Art.buyGreen, x0, y0, x1, y1, callback)
 		local row = Instance.new("Frame")
 		row.Name, row.BackgroundTransparency, row.Size = "Price", 1, UDim2.fromScale(1, 1)
@@ -292,7 +296,7 @@ function ShopScreen.new(playerGui, api)
 		list.FillDirection, list.HorizontalAlignment, list.VerticalAlignment = Enum.FillDirection.Horizontal, Enum.HorizontalAlignment.Center, Enum.VerticalAlignment.Center
 		list.Padding, list.SortOrder, list.Parent = UDim.new(0, 8 * K), Enum.SortOrder.LayoutOrder, row
 		row.Parent = button
-		if not word then robux(row, (y1 - y0) * 0.7) end
+		if not word or showSymbol then robux(row, (y1 - y0) * 0.7) end
 		local label = say(row, "Amount", word or commas(price), 0, 0, 10, y1 - y0, size, { loud = true, grow = true })
 		label.AutomaticSize, label.LayoutOrder = Enum.AutomaticSize.X, 2
 		return button
@@ -524,25 +528,35 @@ function ShopScreen.new(playerGui, api)
 			local n = 0
 			for _, chest in Looks.config().chests do
 				if chest.family ~= family then continue end
-				local x = 50 + n * 298
-				local card = press(content, "Chest_" .. chest.id, Art.itemSquare, x, y, x + 281, y + 272,
-					function() selectChest(chest) end)
-				local picture = fit(pic(card, "ChestPicture", Assets.hangarShelf.chestAtlas, 65, 12, 218, 139))
-				ChestOpening.picture(picture, chest)
-				local name = Chests.baseName(chest)
-				say(card, "Name", name, 20, 134, 262, 180, 37, {loud = true})
+				local x, top = 51 + (n % 2) * 597, y + math.floor(n / 2) * 292
+				local card = pic(content, "Chest_" .. chest.id, Art.itemSquare, x, top, x + 574, top + 271)
+				local details = press(card, "Details", "", 22, 12, 552, 136, function() selectChest(chest) end)
+				ChestOpening.picture(pic(details, "ChestPicture", Assets.hangarShelf.chestAtlas, 16, 3, 178, 119), chest)
+				say(details, "Name", Chests.baseName(chest), 183, 8, 510, 71, 47, {loud = true})
 				local canPay = lastProfile and lastProfile.chestPaperAllowed == true
 				local wallet = lastProfile and lastProfile.chests
 				local owned = wallet and wallet.stock[chest.base] or 0
 				local paid = wallet and wallet.paidStock and wallet.paidStock[chest.id] or 0
-				local detail = (owned > 0 or not canPay) and (owned .. " earned") or (commas(chest.cost) .. " Paper")
-				say(card, "Cost", detail, 19, 180, 262, 215, 31)
-				local other = canPay and paid > 0 and (paid .. " purchased")
-					or Chests.purchaseLabel(lastProfile, "chest_" .. chest.id, chest.robux) or "View prizes"
-				say(card, "Robux", other, 19, 215, 262, 251, 31)
+				local stock = {}
+				if owned > 0 then table.insert(stock, owned .. " earned") end
+				if canPay and paid > 0 then table.insert(stock, paid .. " purchased") end
+				say(details, "Stock", #stock > 0 and table.concat(stock, " / ") or "View chest", 174, 73, 517, 115, 30)
+				if canPay then
+					local robuxLabel = Chests.purchaseLabel(lastProfile, "chest_" .. chest.id, chest.robux)
+					local right = robuxLabel and 316 or 523
+					local paper = press(card, "BuyPaper", Art.labelDark, 44, 165, right, 250, function() selectChest(chest, "buy") end)
+					say(paper, "Cost", commas(chest.cost) .. " Paper", 10, 5, right - 54, 80, 35, {color = WHITE})
+					if robuxLabel then
+						buy(card, "BuyRobux", 335, 165, 529, 250, chest.robux, 38,
+							function() selectChest(chest, "robux") end, not lastProfile.mock and "View" or nil, true)
+					end
+				else
+					local earn = press(card, "HowToEarn", Art.labelDark, 73, 165, 501, 250, function() selectChest(chest, "progress") end)
+					say(earn, "Words", "How to earn", 15, 5, 413, 80, 36, {color = WHITE})
+				end
 				n += 1
 			end
-			y += 298
+			y += math.ceil(n / 2) * 292 + 12
 		end
 		return y + 16
 	end

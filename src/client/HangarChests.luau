@@ -12,6 +12,10 @@ local PaperUI = require(script.Parent.PaperUI)
 local Chests = {}
 local TIERS = { "common", "rare", "legendary", "mythical" }
 local TIER_NAMES = { common = "Common", rare = "Rare", legendary = "Legendary", mythical = "Mythical" }
+local TIER_PAPER = {
+	common = Color3.fromRGB(236, 235, 213), rare = Color3.fromRGB(155, 218, 250),
+	legendary = Color3.fromRGB(255, 195, 105), mythical = Color3.fromRGB(219, 169, 246),
+}
 local catalog = Rules.catalog(Commerce)
 
 function Chests.purchaseLabel(profile, key, previewPrice)
@@ -150,6 +154,31 @@ local function action(ui, parent, id, text, x, y, w, h, enabled, callback, size)
 	return btn
 end
 
+-- Use the Shop's own two payment signs everywhere a chest can be bought.
+local function payment(ui, parent, id, currency, text, x, y, w, h, enabled, callback, size)
+	local robux = currency == "robux"
+	local art = robux and Assets.shop.buyGreen or Assets.shop.labelDark
+	local btn = ui.button(parent, id, art, robux and "" or text, x, y, w, h, 0, function()
+		if enabled then callback() end
+	end, size)
+	btn.ImageColor3 = enabled and Color3.new(1, 1, 1) or Color3.fromRGB(171, 172, 169)
+	if not robux then
+		btn.Label.TextColor3 = Color3.new(1, 1, 1)
+		return
+	end
+	btn.ScaleType = Enum.ScaleType.Stretch
+	local row = ui.instance(btn, "Price", "Frame")
+	row.Size, row.BackgroundTransparency = UDim2.fromScale(1, 1), 1
+	local layout = ui.instance(row, "Layout", "UIListLayout")
+	layout.FillDirection, layout.SortOrder = Enum.FillDirection.Horizontal, Enum.SortOrder.LayoutOrder
+	layout.HorizontalAlignment, layout.VerticalAlignment = Enum.HorizontalAlignment.Center, Enum.VerticalAlignment.Center
+	layout.Padding = UDim.new(0, 10)
+	local icon = ui.image(row, "Robux", "rbxasset://textures/ui/common/robux@3x.png", 0, 0, size, size)
+	icon.LayoutOrder, icon.ImageColor3 = 1, PaperUI.INK
+	local amount = PaperUI.loud(ui.words(row, "Amount", text, 0, 0, 0, h, size))
+	amount.AutomaticSize, amount.LayoutOrder = Enum.AutomaticSize.X, 2
+end
+
 local function backButton(ctx, sheet)
 	ctx.ui.button(sheet, "ChestBack", Assets.range.stripRed, "Back", 160, 131, 262, 77, -1, function()
 		go(ctx, nil)
@@ -206,11 +235,12 @@ local function chestShelf(ctx, sheet)
 	end
 	local notice = nil
 	if canPay then
-		action(ui, sheet, "BuyChest", paperValue(selected.cost), 828, 725, 338, 92, balance >= selected.cost and not busy,
+		payment(ui, sheet, "BuyChest", "paper", paperValue(selected.cost), 828, 725, 338, 92, balance >= selected.cost and not busy,
 			function() go(ctx, "buy") end, 37)
 		local price = Chests.purchaseLabel(ctx.profile, "chest_" .. selected.id, selected.robux)
 		if price then
-			action(ui, sheet, "BuyRobux", price, 1152, 725, 326, 92, not busy,
+			local amount = price == "Buy with Robux" and "Robux" or tostring(selected.robux)
+			payment(ui, sheet, "BuyRobux", "robux", amount, 1182, 738, 264, 66, not busy,
 				function() go(ctx, "robux") end, 37)
 		end
 		if balance < selected.cost then notice = "Need " .. paperValue(selected.cost - balance) .. " more for the Paper option." end
@@ -234,41 +264,62 @@ local function oddsPage(ctx, sheet)
 	local balance = ctx.profile.paper or 0
 	local odds, counts = Looks.chestOdds(selected.id)
 	backButton(ctx, sheet)
-	center(PaperUI.loud(ui.words(sheet, "OddsTitle", starter and "Starter pack chest" or title(selected), 452, 132, 825, 75, 49)))
-	local sentence = costsPaper and ("Spend " .. paperValue(selected.cost) .. " for one draw. You have " .. paperValue(balance) .. ".")
-		or starter and "The starter pack includes one Paper Skin Chest."
-		or robux and ("One " .. familyName(selected):lower() .. " draw. Duplicate prizes return Paper.")
-		or "Duplicate prizes return 10% of their Paper value."
-	center(ui.words(sheet, "Terms", sentence, 186, 220, 1265, 62, 36))
-	ui.words(sheet, "SkinHeading", familyName(selected), 210, 309, 440, 57, 39)
-	ui.words(sheet, "ChanceHeading", "Chance", 692, 309, 202, 57, 39)
-	ui.words(sheet, "RefundHeading", "If already owned", 1013, 309, 469, 57, 39)
-	local list = ui.instance(sheet, "PossibleSkins", "ScrollingFrame")
-	list.Position, list.Size = UDim2.fromOffset(185, 375), UDim2.fromOffset(1297, 376)
-	list.BackgroundTransparency, list.BorderSizePixel = 1, 0
-	list.ScrollBarImageColor3, list.ScrollBarThickness = PaperUI.INK, 11
-	list.ScrollingDirection, list.ElasticBehavior = Enum.ScrollingDirection.Y, Enum.ElasticBehavior.Never
-	local rows = 0
-	for _, skin in Looks.chestItems(selected.id) do
-		local y = rows * 59
-		local name = skin.name .. (ctx.profile.looks.owned[skin.id] and " (owned)" or "")
-		ui.words(list, skin.id, name, 24, y, 465, 57, 37)
-		local perSkin = odds[skin.tier] / counts[skin.tier]
-		ui.words(list, skin.id .. "Odds", percentage(perSkin), 506, y, 247, 57, 37)
-		ui.words(list, skin.id .. "Refund", paperValue(Looks.duplicateRefund(skin.id)), 829, y, 422, 57, 37)
-		rows += 1
+	chestPicture(ui, sheet, selected, 436, 104, 211, 180)
+	local heading = costsPaper and "Confirm Paper purchase" or robux and "Confirm Robux purchase" or "Prizes & odds"
+	ui.words(sheet, "PageHeading", heading, 657, 128, 825, 49, 36)
+	PaperUI.loud(ui.words(sheet, "OddsTitle", title(selected), 651, 175, 822, 76, 57))
+	local sentence = costsPaper and ("Open for " .. paperValue(selected.cost) .. ". Your balance is " .. paperValue(balance) .. ".")
+		or starter and "The Starter Pack includes this chest. Open it to get one skin."
+		or ("Get one " .. familyName(selected):lower() .. " per opening. If you already own it, you get Paper.")
+	center(ui.words(sheet, "Terms", sentence, 171, 265, 1335, 55, 36))
+
+	-- Header and scroll body share the same four column centres, including on a phone.
+	local listX, listWidth = 183, 1326
+	local function columns(parent, prefix, x, y, name, chance, refund, collection, header)
+		local size = header and 37 or 36
+		local item = ui.words(parent, prefix .. "Name", name, x + 45, y, 439, 52, size)
+		local oddsText = center(ui.words(parent, prefix .. "Odds", chance, x + 500, y, 202, 52, size))
+		local paper = center(ui.words(parent, prefix .. "Refund", refund, x + 725, y, 259, 52, size))
+		local status = center(ui.words(parent, prefix .. "Collection", collection, x + 1000, y, 278, 52, size))
+		if header then
+			for _, label in {item, oddsText, paper, status} do PaperUI.loud(label) end
+		end
 	end
-	list.CanvasSize = UDim2.fromOffset(0, rows * 59)
+	columns(sheet, "Heading", listX, 332, familyName(selected), "Chance", "If duplicate", "Collection", true)
+	local list = ui.instance(sheet, "PossibleSkins", "ScrollingFrame")
+	local listHeight = (costsPaper or robux) and 371 or 471
+	list.Position, list.Size = UDim2.fromOffset(listX, 394), UDim2.fromOffset(listWidth, listHeight)
+	list.BackgroundTransparency, list.BorderSizePixel = 1, 0
+	list.ScrollBarImageColor3, list.ScrollBarThickness = PaperUI.INK, 13
+	list.ScrollingDirection, list.ElasticBehavior = Enum.ScrollingDirection.Y, Enum.ElasticBehavior.Never
+	local lastTier, y = nil, 0
+	for _, item in Looks.chestItems(selected.id) do
+		local tier = item.tier
+		if tier ~= lastTier then
+			if lastTier then y += 15 end
+			local divider = ui.image(list, "Divider_" .. tier, Assets.ingame.tapeLabel, 6, y, listWidth - 37, 63)
+			divider.ScaleType, divider.ImageColor3 = Enum.ScaleType.Stretch, TIER_PAPER[tier]
+			PaperUI.loud(ui.words(divider, "Tier", TIER_NAMES[tier], 52, 4, 366, 54, 38))
+			center(PaperUI.loud(ui.words(divider, "TierOdds", percentage(odds[tier]) .. " total", 468, 4, 256, 54, 36)))
+			y += 69
+			lastTier = tier
+		end
+		local chance = percentage(odds[tier] / counts[tier])
+		local status = ctx.profile.looks.owned[item.id] and "Owned" or "Unowned"
+		columns(list, item.id, 0, y, item.name, chance, paperValue(Looks.duplicateRefund(item.id)), status, false)
+		y += 55
+	end
+	list.CanvasSize = UDim2.fromOffset(0, y + 7)
 	if list:GetAttribute("Chest") ~= selected.id then
 		list:SetAttribute("Chest", selected.id)
 		list.CanvasPosition = Vector2.zero
 	end
-	center(ui.words(sheet, "Rounding", "Individual chances are rounded to four decimal places.", 208, 760, 1220, 56, 31))
+	center(ui.words(sheet, "Rounding", "Item chances are rounded to four decimal places.", 208, 402 + listHeight, 1277, 48, 30))
 	if costsPaper then
 		local busy = panel.expected ~= nil
 		local allowed = ctx.profile.chests ~= nil and balance >= selected.cost and (not busy or panel.retry)
 		local label = busy and (panel.retry and "Retry this opening" or "Opening") or "Spend " .. paperValue(selected.cost)
-		action(ui, sheet, "ConfirmPaper", label, 198, 827, 620, 104, allowed, function() open(ctx, "paper") end, 43)
+		payment(ui, sheet, "ConfirmPaper", "paper", label, 201, 835, 615, 96, allowed, function() open(ctx, "paper") end, 43)
 		local status = panel.retry and (game.Players.LocalPlayer:GetAttribute("MenuMessage") or "Still waiting. You can retry.")
 			or balance < selected.cost and "Need " .. paperValue(selected.cost - balance) .. " more."
 		if status then
@@ -279,9 +330,8 @@ local function oddsPage(ctx, sheet)
 		local practice = ctx.profile.mock == true
 		local key = starter and "starter_pack" or "chest_" .. selected.id
 		local price = starter and panel.previewPrice or selected.robux
-		local label = practice and "Practice purchase" or "Buy with Robux"
-		if practice and price then label ..= " (" .. price .. ")" end
-		action(ui, sheet, "ConfirmRobux", label, 198, 824, 632, 106, panel.boughtAt == nil and Chests.purchaseLabel(ctx.profile, key, price) ~= nil, function()
+		local label = practice and ("Practice buy " .. tostring(price)) or "Buy with Robux"
+		payment(ui, sheet, "ConfirmRobux", "robux", label, 266, 829, 478, 103, panel.boughtAt == nil and Chests.purchaseLabel(ctx.profile, key, price) ~= nil, function()
 			if panel.boughtAt ~= nil then return end
 			panel.boughtAt = ctx.profile.chests.paidStock and ctx.profile.chests.paidStock[selected.id] or 0
 			game.Players.LocalPlayer:SetAttribute("MenuMessage", nil)

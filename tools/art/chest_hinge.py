@@ -140,15 +140,14 @@ def main():
     grain=np.array(paper.crop((181,274,258,298)))[:,:,:3].astype(float).mean(axis=2)
     grain-=np.median(grain)
     lining=np.array([215.,183.,143.])+np.clip(grain,-18,15)[:,:,None]*.65
-    for family,source in [('skin',paper),('trail',Image.open(ROOT/'trail-chests.png').convert('RGBA'))]:
-        for i,(tier,case) in enumerate(CASES.items()):
-            x,y=i%2*512,i//2*512
-            im=np.array(source.crop((x,y,x+512,y+512)))
-            sheet=Image.new('RGBA',(CELL*4,CELL*4))
-            for j,angle in enumerate(ANGLES):
-                frame=Image.fromarray(bake(im,lining,case,angle))
-                sheet.paste(frame,(j%4*CELL,j//4*CELL))
-            sheet.save(ROOT/f'{family}-{tier}-hinge.png')
+    for i,(tier,case) in enumerate(CASES.items()):
+        x,y=i%2*512,i//2*512
+        im=np.array(paper.crop((x,y,x+512,y+512)))
+        sheet=Image.new('RGBA',(CELL*4,CELL*4))
+        for j,angle in enumerate(ANGLES):
+            frame=Image.fromarray(bake(im,lining,case,angle))
+            sheet.paste(frame,(j%4*CELL,j//4*CELL))
+        sheet.save(ROOT/f'skin-{tier}-hinge.png')
 
 
 if __name__=='__main__':

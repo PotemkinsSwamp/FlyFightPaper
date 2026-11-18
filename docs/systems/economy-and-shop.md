@@ -5,7 +5,7 @@ You earn **Paper** (money) and **XP** (levels) from points in every match. Paper
 
 ## Classroom treasure chests
 
-The **Chests** tab in the Shop sells four Skin chests and four Trail chests. Pick a chest to see its possible prizes, each item's chance and its duplicate refund. You can also reach these choices through Customize in the Hangar. Each opening draws one prize. A Mythical skin also grants its matching trail.
+The **Chests** tab in the Shop sells four Skin chests and four Trail chests. Tap a chest to inspect its possible prizes. Rarity dividers show the total chance of each tier. Each prize has its own chance, duplicate refund and collection status. The brown Paper price and green Robux button open separate confirmation pages. You can also reach these choices through Customize in the Hangar. Each opening draws one prize. A Mythical skin also grants its matching trail.
 
 | Chest | Paper | Practice Robux | Common | Rare | Legendary skin / trail | Mythical skin |
 |---|---:|---:|---:|---:|---:|---:|
