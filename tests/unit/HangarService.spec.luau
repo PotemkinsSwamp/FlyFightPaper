@@ -24,16 +24,16 @@ function Spec.run()
 		return Hangar.new({catalog=catalog,pilots={},wear=Flight.wear},profiles),player,profiles,catalog,profile
 	end
 	test("buying a look previews without changing the profile and queues only its server purchase fields",function()
-		local service,player,profiles,_,profile=fixture();local item=Looks.item("shark_jet")
+		local service,player,profiles,_,profile=fixture();local item=Looks.item("water_spray")
 		profile.paperMilli=item.paper*1000;local before=Schema.canonical(profile)
 		service:handle(player,"buyLook",item.id)
 		assert(#profiles.calls==1 and Schema.canonical(profiles.calls[1])==Schema.canonical({kind="lookPurchase",lookID=item.id}))
-		assert(player.attributes.MenuMessage==item.name.." is yours! Wear it from the Skins tab.")
+		assert(player.attributes.MenuMessage==item.name.." is yours! Wear it from the Trails tab.")
 		assert(Schema.canonical(profile)==before,"purchase preview changed saved progress")
 	end)
 	test("look buy refusals explain ownership, low Paper, bundled trails and unknown looks without queuing",function()
-		for _,case in ipairs({{"hazard_stripes",false,"You need more Paper."},{"hazard_stripes",true,"You already own it."},
-			{"water_spray",false,"That trail comes with its skin."},{"missing",false,"That can't be bought."}}) do
+		for _,case in ipairs({{"hazard_stripes",false,"Find skins in treasure chests."},{"water_spray",false,"You need more Paper."},{"confetti",true,"You already own it."},
+			{"dragon_embers",false,"That trail comes with its skin."},{"missing",false,"That can't be bought."}}) do
 			local service,player,profiles,_,profile=fixture()
 			if case[2] then profile.looks.owned[case[1]]=true end
 			local before=Schema.canonical(profile)

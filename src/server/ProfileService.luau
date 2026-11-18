@@ -5,6 +5,7 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
 local Looks=require(Root.Shared.LooksRules)
+local ChestProgress=require(Root.Shared.ChestProgress)
 local Commerce=require(Root.Shared.CommerceRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local BoostClock=require(Root.Shared.BoostClock)
@@ -57,7 +58,8 @@ local function validReceiptGrant(grant)
 end
 function Service.new(options)
  return setmetatable({catalog=options.catalog,mono=options.monotonic or os.clock,unix=options.unix or os.time,
-  mock=Run:IsStudio() and options.mock==true,sessions={}},Service)
+  policyInfo=options.policyInfo or function(player) return game:GetService("PolicyService"):GetPolicyInfoForPlayerAsync(player) end,
+  random=options.random or math.random,mock=Run:IsStudio() and options.mock==true,sessions={}},Service)
 end
 function Service:operationID() return Http:GenerateGUID(false):gsub("%-",""):sub(1,24) end
 function Service:attach(account,profile,availability)
@@ -92,6 +94,26 @@ function Service:_session(account)
  local s=self.sessions[account]
  if s and s.profile:IsActive() then return s end
  return nil
+end
+-- Resolve outside the transaction. Missing information keeps Paper purchases closed.
+function Service:chestPaperAllowed(account,player)
+ local s=self:_session(account)
+ if not s then return false end
+ if s.chestPaperAllowed~=nil then return s.chestPaperAllowed end
+ if not s.checkingPolicy and self.mono()>=(s.retryPolicyAt or 0) then
+  s.checkingPolicy=true
+  task.spawn(function()
+   local ok,policy=pcall(self.policyInfo,player)
+   if self:_session(account)~=s then return end
+   s.checkingPolicy=false
+   if ok and type(policy)=="table" and type(policy.ArePaidRandomItemsRestricted)=="boolean" then
+    s.chestPaperAllowed=not policy.ArePaidRandomItemsRestricted
+   else
+    s.retryPolicyAt=self.mono()+60
+   end
+  end)
+ end
+ return s.chestPaperAllowed==true
 end
 function Service:_advance(s)
  local ok,why=s.clock:advance(self.mono(),s.connected and s.mapLoaded)
@@ -197,6 +219,30 @@ function Service:_effect(p,op,boostState)
 		else p.ownership[op.catalogID]=true;result={type="PartUnlocked",catalogID=op.catalogID} end
 	elseif op.kind=="lookUnlock" then applied,err=Looks.grant(v,op.lookID,op.id)
 	elseif op.kind=="lookPurchase" then applied,err=Looks.buyWithPaper(v,op.lookID,op.id)
+	elseif op.kind=="openChest" then
+		local chest=Looks.chest(op.chest)
+		if not chest then return nil,"unknown_chest" end
+		if p.chests.opened~=op.opened then return nil,"stale_chest" end
+		local price=op.source=="paper" and chest.cost*Economy.MILLI or 0
+		if p.paperMilli<price then return nil,"insufficient_paper" end
+		if op.source=="earned" and p.chests.stock[chest.id]<1 then return nil,"no_earned_chest" end
+		local opened=safeAdd(p.chests.opened,1)
+		if not opened then return nil,"overflow" end
+		local id=Looks.drawChest(chest,self.random)
+		local refund=0
+		if p.looks.owned[id] then
+			refund=Looks.duplicateRefund(id)
+		else
+			local granted,rejected=Looks.grant(v,id,op.id)
+			if not granted then return nil,rejected.code end
+			Schema.mergeEconomic(p,granted.profile)
+		end
+		local balance=safeAdd(p.paperMilli-price,refund*Economy.MILLI)
+		if not balance then return nil,"overflow" end
+		p.paperMilli=balance
+		if op.source=="earned" then p.chests.stock[chest.id]-=1 end
+		p.chests.opened,p.chests.lastSkin,p.chests.lastChest,p.chests.lastRefund=opened,id,chest.id,refund
+		result={type="ChestOpened",skin=id,chest=chest.id,opened=opened,refund=refund,source=op.source}
 	elseif op.kind=="lookWear" then
 		local skinID,trailID=op.skinID,op.trailID
 		if op.slot=="skin" then skinID,trailID=op.lookID,v.looks.trail
@@ -342,6 +388,16 @@ function Service:_effect(p,op,boostState)
 		end
 	elseif op.kind=="statistics" then
 		if type(op.deltas)~="table" then return nil,"invalid_statistics" end
+		if op.completedAt~=nil then
+			local progress,awards=ChestProgress.complete(p.chests.progress,op.completedAt)
+			if not progress then return nil,awards end
+			p.chests.progress=progress
+			for id,count in pairs(awards) do
+				local total=safeAdd(p.chests.stock[id],count)
+				if not total then return nil,"overflow" end
+				p.chests.stock[id]=total
+			end
+		end
 		for k,n in pairs(op.deltas) do if p.statistics[k]==nil then return nil,"invalid_statistic" end; local value=safeAdd(p.statistics[k],n); if not value then return nil,"overflow" end; p.statistics[k]=value end
 		result={type="StatisticsApplied"}
 	end
@@ -357,7 +413,7 @@ function Service:_effect(p,op,boostState)
 	return assert(Schema.copy(result))
 end
 local allowed={receipt=true,giftReceived=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
- qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,lookPurchase=true,lookWear=true,
+ qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,refoldIntent=true,lookPurchase=true,lookWear=true,openChest=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local rewardKinds={contribution=true,finalBonus=true,qualification=true,statistics=true}
 function Service:apply(account,input)
@@ -396,6 +452,10 @@ function Service:apply(account,input)
   if op.resource~="xp" and op.resource~="paper" then return outcome("error","invalid_resource") end
   if s.profile.Data.boosts[op.resource=="xp" and "permanentXP" or "permanentPaper"] then intent=nil
   else intent={kind="boostIntent",resource=op.resource,action="permanent"} end
+ elseif op.kind=="openChest" then
+  if type(op.chest)~="string" or not Schema.integer(op.opened) or (op.source~="earned" and op.source~="paper") then return outcome("error","invalid_operation") end
+  for key in pairs(op) do if key~="kind" and key~="id" and key~="opened" and key~="chest" and key~="source" then return outcome("error","invalid_operation") end end
+  if op.source=="paper" and s.chestPaperAllowed~=true then return outcome("error","chest_paper_unavailable") end
  elseif op.kind=="lookPurchase" or op.kind=="lookWear" then
   local fields
   if op.kind=="lookPurchase" then

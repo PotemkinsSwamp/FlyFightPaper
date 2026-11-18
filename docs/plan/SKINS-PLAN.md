@@ -1,6 +1,6 @@
 # Skins and trails plan
 
-**Status, 2026-11-18.** The player catalog includes eight Common, eight Rare, five Legendary and two Mythical skins, plus 18 trails. Eleven trails sell for Paper and seven are included with skins. The remaining design ideas below are future content. [Current hangar and flight behavior](../systems/planes-and-hangar.md) and [Alan's skin rules](../decisions/2026-11-13-skin-rules.md).
+**Status, 2026-11-18.** The player catalog includes eight Common, eight Rare, five Legendary and two Mythical skins, plus 18 trails. Sixteen trails sell for Paper. Two come with their Mythical skins. Players get skins from [classroom chests](../systems/economy-and-shop.md#classroom-treasure-chests). The remaining design ideas below are future content. [Current hangar and flight behavior](../systems/planes-and-hangar.md) and [Alan's skin rules](../decisions/2026-11-13-skin-rules.md).
 
 ## The order (Alan, 2026-11-13)
 1. A list of ideas for skins and trails, sorted into tiers.
@@ -374,7 +374,9 @@ Looks tab, shop) before the rest is made. Redrawn concepts: `chrome-2.png`, `cra
 - What a Mythical does to weapons.
 - Prices and earn rules per tier: drafted below, waiting on Alan's OK.
 
-## Prices, earning and bots (Alan, 2026-11-13; his rulings in the [skin rules](../decisions/2026-11-13-skin-rules.md))
+## Earlier price proposal and bot rules (Alan, 2026-11-13; his rulings in the [skin rules](../decisions/2026-11-13-skin-rules.md))
+The [current chest system](../systems/economy-and-shop.md#classroom-treasure-chests) replaced the direct skin prices, Legendary bundles and proposed box sales below in November 2026. The figures that follow record the earlier design.
+
 Robux prices OK'd for the first build ("they need to be adjusted" later). Common and Rare Paper prices use the same
 rate as early part unlocks (about 18.75 Paper per Robux, the big pack's rate); an average player earns about 660 Paper
 a match (about 8.5 minutes). Legendary and Mythical can be bought with Paper but cost far more, so Robux is the

@@ -32,9 +32,84 @@ local function fixture(mock)
 end
 function Spec.run()
  local result,test=Suite.new()
- test("look purchases charge the tier price, include matching trails and preserve unrelated progress",function()
-  for _,id in ipairs({"hazard_stripes","lava","shark_jet","dragon","confetti"}) do
-   local service,profile=fixture();local item=assert(Looks.item(id));local price=Looks.config().tiers[item.tier].paper*Economy.MILLI
+ test("earned chest source spends stock once, including retries and rejoining",function()
+  local service,profile=fixture()
+  local function apply(input)
+   return service:apply("user",assert(service:prepare("user",input)))
+  end
+  local draw={kind="openChest",chest="paper",opened=0,source="earned"}
+  assert(profile.Data.chests.stock.paper==0 and apply(draw).code=="no_earned_chest")
+  local settle=assert(service:prepare("user",{kind="statistics",deltas={matches=1},completedAt=1795000000}))
+  assert(service:apply("user",settle).status=="ok" and service:apply("user",settle).status=="ok")
+  assert(apply({kind="statistics",deltas={matches=1}}).status=="ok")
+  assert(profile.Data.chests.stock.paper==0)
+  assert(apply({kind="statistics",deltas={matches=1},completedAt=1795000000+86400}).status=="ok")
+  assert(profile.Data.chests.stock.paper==1)
+  local balance=profile.Data.paperMilli
+  local first=assert(service:prepare("user",draw))
+  local result=service:apply("user",first)
+  assert(result.status=="ok" and result.value.type=="ChestOpened",result.code)
+  local id=result.value.skin
+  assert(profile.Data.chests.stock.paper==0 and profile.Data.chests.opened==1 and profile.Data.chests.lastSkin==id)
+  assert(profile.Data.chests.lastChest=="paper" and profile.Data.looks.owned[id] and profile.Data.paperMilli==balance)
+  assert(profile.Data.looks.skin=="" and profile.Data.looks.trail=="" and profile.Data.chests.lastRefund==0)
+  assert(service:apply("user",first).value.skin==id and apply(draw).code=="stale_chest")
+  assert(profile:EndSession());service:detach("user")
+  local reopened=Fake.new(profile.LastSavedData)
+  assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
+  assert(reopened.Data.chests.lastSkin==id and reopened.Data.looks.owned[id] and apply(draw).code=="stale_chest")
+ end)
+ test("paid openings require a positive policy response and enough Paper, and duplicates refund once at face value",function()
+  local service,profile=fixture();local player={}
+  service.policyInfo=function(who) assert(who==player);return {ArePaidRandomItemsRestricted=false} end
+  local function apply(op)
+   return service:apply("user",assert(service:prepare("user",op)))
+  end
+  local draw={kind="openChest",chest="golden_star",opened=0,source="paper"}
+  assert(apply(draw).code=="chest_paper_unavailable")
+  assert(service:chestPaperAllowed("user",player))
+  profile.Data.chests.stock.golden_star=1
+  assert(apply(draw).code=="insufficient_paper" and profile.Data.chests.stock.golden_star==1)
+  local price=Looks.chest(draw.chest).cost*Economy.MILLI
+  profile.Data.paperMilli=2*price
+  service.random=function(n)return n end
+  local grant=apply(draw)
+  assert(grant.status=="ok" and grant.value.skin=="origami_crane",grant.code)
+  assert(profile.Data.chests.stock.golden_star==1 and profile.Data.looks.owned.folded_petals and profile.Data.paperMilli==price)
+  draw.opened=1
+  local duplicate=apply(draw)
+  assert(duplicate.status=="ok" and duplicate.value.refund==6000,duplicate.code)
+  assert(profile.Data.chests.lastRefund==6000 and profile.Data.paperMilli==6000*Economy.MILLI)
+  assert(profile.Data.chests.stock.golden_star==1 and apply(draw).code=="stale_chest")
+ end)
+ test("restricted, missing, or failed policy blocks only the paid opening; client cannot choose a result or permission",function()
+  for _,policy in {function() return {ArePaidRandomItemsRestricted=true} end,function() return {} end,function() error("unavailable") end} do
+   local service,profile=fixture()
+   service.policyInfo=policy
+   assert(not service:chestPaperAllowed("user",{}))
+   profile.Data.chests.stock.paper=1
+   local function apply(op)
+    return service:apply("user",assert(service:prepare("user",op)))
+   end
+   local before=Schema.canonical(profile.Data)
+   for _,example in {
+    {{kind="openChest",chest="paper",opened=0,source="paper"},"chest_paper_unavailable"},
+    {{kind="openChest",chest="unknown",opened=0,source="earned"},"unknown_chest"},
+    {{kind="openChest",chest="paper",opened=0,source="earned",lookID="dragon"},"invalid_operation"},
+    {{kind="openChest",chest="paper",opened=0,source="paper",allowed=true},"invalid_operation"},
+    {{kind="openChest",chest="paper",opened=-1,source="earned"},"invalid_operation"},
+    {{kind="openChest",chest="paper",opened=0},"invalid_operation"},
+   } do
+    assert(apply(example[1]).code==example[2])
+    assert(Schema.canonical(profile.Data)==before)
+   end
+   assert(apply({kind="openChest",chest="paper",opened=0,source="earned"}).status=="ok")
+   assert(profile.Data.chests.stock.paper==0 and profile.Data.looks.owned[profile.Data.chests.lastSkin])
+  end
+ end)
+ test("standalone trail purchases charge the listed price and preserve unrelated progress",function()
+  for _,id in ipairs({"water_spray","rainbow_marker","confetti"}) do
+   local service,profile=fixture();local item=assert(Looks.item(id));local price=item.paper*Economy.MILLI
    profile.Data.paperMilli=price+123;profile.Data.xpMilli=0
    local before=assert(Schema.copy(profile.Data));local op=assert(service:prepare("user",{kind="lookPurchase",lookID=id}))
    local bought=service:apply("user",op)
@@ -46,29 +121,29 @@ function Spec.run()
   end
  end)
  test("look purchases refuse insufficient Paper, unknown looks and bundled trails without changing the save",function()
-  local service,profile=fixture();profile.Data.paperMilli=Looks.item("hazard_stripes").paper*Economy.MILLI-1
+  local service,profile=fixture();profile.Data.paperMilli=Looks.item("water_spray").paper*Economy.MILLI-1
   local before=Schema.canonical(profile.Data)
-  for id,code in pairs({hazard_stripes="insufficient_paper",missing="unknown_look",water_spray="not_sold"}) do
+  for id,code in pairs({hazard_stripes="chest_only",missing="unknown_look",dragon_embers="not_sold",water_spray="insufficient_paper"}) do
    local refused=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID=id})))
    assert(refused.status=="error" and refused.code==code,refused.code)
    assert(Schema.canonical(profile.Data)==before,"refused buy changed the balance, ownership or operation watermark")
   end
  end)
- test("look purchase retries and later buys never charge an owned skin twice, including after rejoining",function()
-  local service,profile=fixture();local price=Looks.item("shark_jet").paper*Economy.MILLI;profile.Data.paperMilli=price+123
-  local op=assert(service:prepare("user",{kind="lookPurchase",lookID="shark_jet"}))
+ test("look purchase retries and later buys never charge an owned trail twice, including after rejoining",function()
+  local service,profile=fixture();local price=Looks.item("water_spray").paper*Economy.MILLI;profile.Data.paperMilli=price+123
+  local op=assert(service:prepare("user",{kind="lookPurchase",lookID="water_spray"}))
   assert(service:apply("user",op).status=="ok")
   local after=Schema.canonical(profile.Data)
   assert(service:apply("user",op).status=="ok" and Schema.canonical(profile.Data)==after)
-  local again=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID="shark_jet"})))
+  local again=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID="water_spray"})))
   assert(again.status=="ok" and again.value.alreadyOwned and again.value.chargedMilli==0 and profile.Data.paperMilli==123,again.code)
   op.lookID="dragon"
   assert(service:apply("user",op).code=="operation_id_conflict")
   assert(profile:EndSession());service:detach("user")
   local reopened=Fake.new(profile.LastSavedData)
   assert(service:attach("user",reopened,{connected=true,mapLoaded=true}).status=="ok")
-  assert(reopened.Data.looks.owned.shark_jet and reopened.Data.looks.owned.water_spray)
-  again=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID="shark_jet"})))
+  assert(not reopened.Data.looks.owned.shark_jet and reopened.Data.looks.owned.water_spray)
+  again=service:apply("user",assert(service:prepare("user",{kind="lookPurchase",lookID="water_spray"})))
   assert(again.status=="ok" and again.value.alreadyOwned and again.value.chargedMilli==0 and reopened.Data.paperMilli==123,again.code)
  end)
  test("wearing owned looks saves both choices, survives rejoining and removes them without removing ownership",function()

@@ -40,6 +40,35 @@ function Spec.run()
 		assert(service:attach("user", profile, { connected = true, mapLoaded = true }).status == "ok")
 		return service, profile
 	end
+	test("chest tier roll boundaries and the printed odds agree for a fresh collection", function()
+		for _, chest in Looks.config().chests do
+			local odds, counts = Looks.chestOdds(chest.id, {})
+			local outcomes = {common=0, rare=0, legendary=0, mythical=0}
+			for ticket = 1, 100 do
+				local first = true
+				local id = Looks.drawChest(chest, function(n)
+					if first then first = false; assert(n == 100); return ticket end
+					return n
+				end)
+				outcomes[Looks.item(id).tier] += 1
+			end
+			for tier, count in outcomes do
+				assert(count == chest.weights[tier] and count == odds[tier])
+				assert((count > 0) == (counts[tier] > 0))
+			end
+		end
+		local paper = Looks.chestOdds("paper", {})
+		assert(paper.mythical == 0 and paper.legendary == 0)
+	end)
+	test("each skin can occupy its tier slot and copies have the advertised Paper value", function()
+		local chest = Looks.chest("golden_star")
+		local odds, counts = Looks.chestOdds(chest.id)
+		assert(odds.rare == 33 and counts.rare == 8 and odds.legendary == 57 and counts.mythical == 2)
+		for index, id in {"dragon", "origami_crane"} do
+			assert(Looks.drawChest(chest, function(n) return n == 2 and index or n end) == id)
+		end
+		assert(Looks.duplicateRefund("galaxy") == 560 and Looks.duplicateRefund("origami_crane") == 6000)
+	end)
 	test("looks config and item identities are cached frozen and match the approved prices", function()
 		local cfg = Looks.config()
 		assert(cfg == Looks.config() and table.isfrozen(cfg) and table.isfrozen(cfg.skins[1]) and table.isfrozen(cfg.tiers.common))
@@ -49,7 +78,7 @@ function Spec.run()
 		end
 		for _, entry in ipairs(cfg.skins) do
 			local item = assert(Looks.item(entry.id))
-			assert(item.id == entry.id and item.name == entry.name and item.kind == "skin" and item.tier == entry.tier and item.sold)
+			assert(item.id == entry.id and item.name == entry.name and item.kind == "skin" and item.tier == entry.tier and not item.sold)
 			assert(item.paper == cfg.tiers[item.tier].paper and item.robux == cfg.tiers[item.tier].robux and item.trail == entry.trail)
 			assert(table.isfrozen(item))
 		end
@@ -62,7 +91,7 @@ function Spec.run()
 		assert(not pcall(function() cfg.tiers.common.paper = 1 end))
 	end)
 	test("Paper buys charge exact milliunits with no level requirement and detach every returned table", function()
-		for _, example in ipairs({ {"hazard_stripes",2800}, {"lava",5600}, {"shark_jet",30000}, {"ninja",30000}, {"dragon",60000}, {"confetti",900} }) do
+		for _, example in ipairs({ {"confetti",900}, {"rainbow_marker",1900}, {"water_spray",1900} }) do
 			local p = fresh(example[2] * 1000 + 123); p.earnedPaperMilli = 99; p.purchasedPaperMilli = 77
 			local before = Schema.canonical(p)
 			local bought = assert(Looks.buyWithPaper(Schema.freeze(p), example[1], "paper-buy"))
@@ -76,17 +105,19 @@ function Spec.run()
 			assert(not pcall(function() bought.profile.looks.owned[example[1]] = nil end))
 		end
 	end)
-	test("Legendary and Mythical buys own their matching trails without automatically wearing them", function()
+	test("Only Mythical rewards grant their matching trail and nothing is automatically worn", function()
 		for skin, trail in pairs({ shark_jet = "water_spray", ninja = "smoke_bomb", hot_rod = "backfire", stealth = "silver_chaff",
 			race_car = "photo_finish", dragon = "dragon_embers", origami_crane = "folded_petals" }) do
-			local bought = assert(Looks.buyWithPaper(fresh(60000000), skin, "bundle"))
-			assert(Looks.owns(bought.profile, skin) and Looks.owns(bought.profile, trail))
+			local bought = assert(Looks.grant(fresh(60000000), skin, "bundle"))
+			local value, err = Looks.buyWithPaper(fresh(60000000), skin, "direct-skin-buy")
+			rejected(value, err, "chest_only")
+			assert(Looks.owns(bought.profile, skin) and Looks.owns(bought.profile, trail) == (Looks.item(skin).tier == "mythical"))
 			assert(bought.profile.looks.skin == "" and bought.profile.looks.trail == "")
 		end
 	end)
-	test("matching trails are never sold or granted alone and unknown looks are rejected", function()
+	test("Mythical trails are never sold or granted alone and unknown looks are rejected", function()
 		for _, method in ipairs({ Looks.buyWithPaper, Looks.grant }) do
-			for _, id in ipairs({ "water_spray", "dragon_embers", "folded_petals", "smoke_bomb", "backfire", "silver_chaff", "photo_finish" }) do
+			for _, id in ipairs({ "dragon_embers", "folded_petals" }) do
 				local p = fresh(60000000); local before = Schema.canonical(p)
 				local value, err = method(p, id, "not-sold"); rejected(value, err, "not_sold")
 				assert(Schema.canonical(p) == before)
@@ -103,28 +134,29 @@ function Spec.run()
 			assert(#effect.pieces > 0 or effect.effect == "cloak", id)
 			local item = assert(Looks.item(id), id)
 			local purchase = if item.sold then id else assert(bundles[id], id)
-			local p = assert(Looks.buyWithPaper(fresh(60000000), purchase, "buy")).profile
+			local unlock = if item.sold then Looks.buyWithPaper else Looks.grant
+			local p = assert(unlock(fresh(60000000), purchase, "buy")).profile
 			local worn = assert(Looks.wear(p, "", id, "trail-only")).profile
 			assert(worn.looks.trail == id and worn.looks.skin == "" and Schema.validate(worn, catalog), id)
 		end
 		for _, item in Looks.config().trails do assert(Trails.trails[item.id], item.id) end
 	end)
 	test("an owned look costs nothing even when the balance is empty", function()
-		local p = assert(Looks.grant(fresh(), "dragon", "grant-first")).profile
-		local bought = assert(Looks.buyWithPaper(p, "dragon", "owned-buy"))
+		local p = assert(Looks.grant(fresh(), "water_spray", "grant-first")).profile
+		local bought = assert(Looks.buyWithPaper(p, "water_spray", "owned-buy"))
 		assert(bought.operation.alreadyOwned and bought.operation.chargedMilli == 0 and bought.operation.priceMilli == 0)
 		assert(Schema.canonical(bought.profile) == Schema.canonical(p))
 	end)
 	test("one milliunit below the price fails without changing the input", function()
-		local p = fresh(2800000 - 1); local before = Schema.canonical(p)
-		local value, err = Looks.buyWithPaper(p, "hazard_stripes", "poor"); rejected(value, err, "insufficient_paper")
-		assert(Schema.canonical(p) == before and not Looks.owns(p, "hazard_stripes"))
+		local p = fresh(900000 - 1); local before = Schema.canonical(p)
+		local value, err = Looks.buyWithPaper(p, "confetti", "poor"); rejected(value, err, "insufficient_paper")
+		assert(Schema.canonical(p) == before and not Looks.owns(p, "confetti"))
 	end)
 	test("receipt grants do not charge money and repeat grants report already owned", function()
 		local p = fresh(123)
 		local granted = assert(Looks.grant(p, "shark_jet", "grant"))
 		assert(granted.profile.paperMilli == 123 and granted.operation.chargedMilli == 0 and not granted.operation.alreadyOwned)
-		assert(Looks.owns(granted.profile, "water_spray") and not Looks.owns(p, "shark_jet"))
+		assert(not Looks.owns(granted.profile, "water_spray") and not Looks.owns(p, "shark_jet"))
 		local again = assert(Looks.grant(granted.profile, "shark_jet", "grant-again"))
 		assert(again.operation.alreadyOwned and Schema.canonical(again.profile) == Schema.canonical(granted.profile))
 		assert(Looks.owns(assert(Looks.grant(p, "confetti", "plain-trail")).profile, "confetti"))
@@ -141,12 +173,13 @@ function Spec.run()
 			function(p) p.extra = function() end end, function(p) setmetatable(p.looks, {}) end }) do
 			for _, method in ipairs({ Looks.buyWithPaper, Looks.grant }) do
 				local p = fresh(60000000); damage(p)
-				local value, err = method(p, "dragon", "bad-profile"); rejected(value, err, "invalid_profile")
+				local value, err = method(p, "water_spray", "bad-profile"); rejected(value, err, "invalid_profile")
 			end
 		end
 	end)
 	test("wear requires owned items of the correct kind and saves both selections atomically", function()
 		local p = assert(Looks.grant(fresh(), "shark_jet", "wear-grant")).profile
+		p = assert(Looks.grant(p, "water_spray", "own-trail")).profile
 		local value, err = Looks.wear(p, "dragon", "water_spray", "not-owned"); rejected(value, err, "not_owned")
 		value, err = Looks.wear(p, "shark_jet", "confetti", "trail-not-owned"); rejected(value, err, "not_owned")
 		value, err = Looks.wear(p, "water_spray", "", "wrong-skin"); rejected(value, err, "wrong_kind")
@@ -160,7 +193,7 @@ function Spec.run()
 	end)
 	test("fresh profiles have empty valid looks and schema validation rejects invalid ownership or selections", function()
 		local p = fresh()
-		assert(Schema.VERSION == 13 and p.schemaVersion == 13 and next(p.looks.owned) == nil and p.looks.skin == "" and p.looks.trail == "")
+		assert(p.schemaVersion == Schema.VERSION and next(p.looks.owned) == nil and p.looks.skin == "" and p.looks.trail == "")
 		assert(Schema.validate(p, catalog))
 		for _, damage in ipairs({ function(q) q.looks = nil end, function(q) q.looks.extra = true end,
 			function(q) q.looks.owned.missing = true end, function(q) q.looks.owned.dragon = false end,
@@ -178,11 +211,11 @@ function Spec.run()
 		assert(Schema.canonical(migrated) == Schema.canonical(expected) and Schema.validate(migrated, catalog))
 		assert(Schema.canonical(p) == before)
 	end)
-	test("existing bundle owners receive new trails once and keep their equipped Holo Rainbow", function()
+	test("migration restores only Mythical bundles and preserves explicitly owned Legendary trails", function()
 		local p = fresh(12345)
-		p.looks = { owned = { ninja = true, origami_crane = true, rainbow_marker = true }, skin = "ninja", trail = "rainbow_marker" }
+		p.looks = { owned = { ninja = true, origami_crane = true, water_spray = true, rainbow_marker = true }, skin = "ninja", trail = "rainbow_marker" }
 		local migrated = assert(Schema.migrate(Schema.freeze(p), catalog))
-		assert(migrated.looks.owned.smoke_bomb and migrated.looks.owned.folded_petals and migrated.looks.skin == "ninja")
+		assert(not migrated.looks.owned.smoke_bomb and migrated.looks.owned.water_spray and migrated.looks.owned.folded_petals and migrated.looks.skin == "ninja")
 		assert(migrated.looks.trail == "rainbow_marker" and Looks.item(migrated.looks.trail).name == "Holo Rainbow")
 		assert(migrated.paperMilli == 12345 and not p.looks.owned.smoke_bomb)
 		assert(Schema.canonical(migrated) == Schema.canonical(assert(Schema.migrate(migrated, catalog))))
@@ -223,7 +256,7 @@ function Spec.run()
 						return last and n or 1
 					end)
 					assert(skin == nil or Looks.item(skin).tier == tier)
-					if skin and trail and Looks.item(skin).trail then assert(trail == Looks.item(skin).trail) end
+					if skin and trail and Looks.item(skin).matchingTrail then assert(trail == Looks.item(skin).matchingTrail) end
 					assert(trail == nil or (Looks.item(trail).kind == "trail" and (Looks.item(trail).sold or Looks.item(skin).trail == trail)))
 					local result = skin and (trail and "both" or "skin") or (trail and "trail" or "neither")
 					seen[result] += 1
@@ -254,41 +287,41 @@ function Spec.run()
 			end
 		end
 		for id in pairs(prices) do assert(commerce.byKey["look_" .. id]) end
-		assert(count == 34 and not commerce.byKey.look_water_spray and not commerce.byKey.look_dragon_embers)
-		local owned = assert(Looks.grant(fresh(), "shark_jet", "preview-grant")).profile
+		assert(count == 16 and not commerce.byKey.look_shark_jet and not commerce.byKey.look_dragon_embers)
+		local owned = assert(Looks.grant(fresh(), "water_spray", "preview-grant")).profile
 		local dto = Commerce.preview(commerce, owned.boosts, owned)
 		for _, offer in ipairs(dto.offers) do
 			if offer.benefit == "look_unlock" then
-				assert(not offer.available and offer.owned == (offer.lookID == "shark_jet") and not offer.ownedPermanent)
+				assert(not offer.available and offer.owned == (offer.lookID == "water_spray") and not offer.ownedPermanent)
 				if offer.owned then assert(offer.reason == "owned") end
 			end
 		end
 	end)
 	test("look offer validation rejects malformed identities fields prices and unmapped enabled sales", function()
-		for _, change in ipairs({ function(p) p.look_id = "missing" end, function(p) p.look_id = "water_spray"; p.key = "look_water_spray" end,
+		for _, change in ipairs({ function(p) p.look_id = "missing" end, function(p) p.look_id = "folded_petals"; p.key = "look_folded_petals" end,
 			function(p) p.key = "look_wrong" end, function(p) p.kind = "pass" end, function(p) p.look_id = nil end,
 			function(p) p.amount = 1 end, function(p) p.catalog_id = "dragon" end, function(p) p.extra = true end,
 			function(p) p.approved_robux_price = -1 end, function(p) p.approved_robux_price = 1.5 end,
 			function(p) p.enabled = true end }) do
 			local raw = configCopy(CommerceConfig)
-			for _, product in ipairs(raw.products) do if product.key == "look_dragon" then change(product); break end end
+			for _, product in ipairs(raw.products) do if product.key == "look_confetti" then change(product); break end end
 			assert(Commerce.catalog(raw) == nil)
 		end
 	end)
 	test("server receipts grant matching trails once preserve unrelated data and prestige keeps them", function()
 		local service, profile = fixture(); local paper = profile.Data.paperMilli
-		local op = assert(service:prepare("user", { kind = "receipt", receiptId = "looks/shark", grant = { kind = "lookUnlock", lookID = "shark_jet" } }))
+		local op = assert(service:prepare("user", { kind = "receipt", receiptId = "looks/dragon", grant = { kind = "lookUnlock", lookID = "dragon" } }))
 		local granted = service:apply("user", op)
 		assert(granted.status == "ok" and granted.value.type == "LookGranted" and not granted.value.alreadyOwned, granted.code)
-		assert(Looks.owns(profile.Data, "shark_jet") and Looks.owns(profile.Data, "water_spray") and profile.Data.paperMilli == paper)
-		assert(profile.Data.extensions.keep == string.rep("x", 600) and profile.Data.receiptIds[Profile.receiptKey("looks/shark")])
+		assert(Looks.owns(profile.Data, "dragon") and Looks.owns(profile.Data, "dragon_embers") and profile.Data.paperMilli == paper)
+		assert(profile.Data.extensions.keep == string.rep("x", 600) and profile.Data.receiptIds[Profile.receiptKey("looks/dragon")])
 		local after = Schema.canonical(profile.Data)
 		assert(service:apply("user", op).status == "ok" and Schema.canonical(profile.Data) == after)
-		local duplicate = service:apply("user", assert(service:prepare("user", { kind="receipt",receiptId="looks/shark",grant={kind="lookUnlock",lookID="shark_jet"} })))
+		local duplicate = service:apply("user", assert(service:prepare("user", { kind="receipt",receiptId="looks/dragon",grant={kind="lookUnlock",lookID="dragon"} })))
 		assert(duplicate.status == "ok" and duplicate.value.type == "ReceiptAlreadyGranted" and profile.Data.paperMilli == paper)
-		local already = service:apply("user", assert(service:prepare("user", { kind="receipt",receiptId="looks/shark-again",grant={kind="lookUnlock",lookID="shark_jet"} })))
+		local already = service:apply("user", assert(service:prepare("user", { kind="receipt",receiptId="looks/dragon-again",grant={kind="lookUnlock",lookID="dragon"} })))
 		assert(already.status == "ok" and already.value.alreadyOwned)
-		profile.Data.looks = assert(Schema.copy(assert(Looks.wear(Schema.economicView(profile.Data), "shark_jet", "water_spray", "server-wear")).profile.looks))
+		profile.Data.looks = assert(Schema.copy(assert(Looks.wear(Schema.economicView(profile.Data), "dragon", "dragon_embers", "server-wear")).profile.looks))
 		profile.Data.xpMilli = xpAtCap(); local worn = Schema.canonical(profile.Data.looks)
 		local prestige = service:apply("user", assert(service:prepare("user", { kind="prestige" })))
 		assert(prestige.status == "ok" and Schema.canonical(profile.Data.looks) == worn and profile.Data.extensions.keep == string.rep("x", 600), prestige.code)
@@ -296,7 +329,7 @@ function Spec.run()
 	end)
 	test("invalid cosmetic receipt grants leave ownership balances and receipt records unchanged", function()
 		for _, example in ipairs({ { {kind="lookUnlock",lookID="missing"}, "unknown_look" },
-			{ {kind="lookUnlock",lookID="water_spray"}, "not_sold" }, { {kind="lookUnlock"}, "invalid_receipt_grant" },
+			{ {kind="lookUnlock",lookID="dragon_embers"}, "not_sold" }, { {kind="lookUnlock"}, "invalid_receipt_grant" },
 			{ {kind="lookUnlock",lookID="dragon",wholePaper=1}, "invalid_receipt_grant" } }) do
 			local service, profile = fixture(); local before = Schema.canonical(profile.Data)
 			local applied = service:apply("user", assert(service:prepare("user", {kind="receipt",receiptId="bad-look",grant=example[1]})))

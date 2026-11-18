@@ -3,6 +3,21 @@
 ## What the player sees
 You earn **Paper** (money) and **XP** (levels) from points in every match. Paper buys plane parts and weapons; levels unlock them. The shop sells Paper packs and 2x XP / 2x Paper boosts, but real sales are switched off until Alan approves products and prices.
 
+## Classroom treasure chests
+
+Open Hangar > Customize > Skins > Treasure chests. Each opening draws one skin. The shelf shows each possible skin and its chance before spending. A duplicate pays 10% of the original skin's Paper value. This gives 280 Paper for Common, 560 for Rare, 3,000 for Legendary and 6,000 for Mythical. These prices, percentages and play milestones are first-pass tuning.
+
+| Chest | Paper | Common | Rare | Legendary | Mythical |
+|---|---:|---:|---:|---:|---:|
+| Paper | 1,000 | 80% | 20% | 0% | 0% |
+| Sticker | 3,000 | 52% | 40% | 8% | 0% |
+| Blue Ribbon | 6,500 | 18% | 54% | 26% | 2% |
+| Golden Star | 12,000 | 0% | 33% | 57% | 10% |
+
+A match that pays the ordinary completion reward counts toward the weekly mission and all three streaks. Three such matches in a Monday-to-Sunday UTC week earn a Sticker chest. Every two consecutive active days earn a Paper chest, every two consecutive active weeks earn Blue Ribbon, and every two consecutive active calendar months earn Golden Star. Multiple matches in one day advance the mission but count as one active day. Players can save earned chests and open them for free.
+
+Paper can be purchased, so the server checks individual eligibility before allowing a Paper opening. When eligibility is unavailable or restricted, earned chests still work. [Roblox guidance for paid random items](https://create.roblox.com/docs/production/monetization/paid-random-items).
+
 ## Where it stands (2026-11-13)
 **Gift a friend** is built to the [approved gift rules](../decisions/2026-11-13-gift-a-friend.md) (Studio only until
 go-live): the shop's friend note with search, the server check, "A gift for Sam", the practice gift, and the plane that
@@ -325,7 +340,8 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 |---|---|
 | `src/shared/EconomyRules.luau` | Points to Paper and XP, bonuses, levels, purchases |
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
-| `src/shared/LooksRules.luau` | Skins and trails: prices, buying with Paper or Robux, wearing, what bots wear ([skins plan](../plan/SKINS-PLAN.md)) |
+| `src/shared/ChestProgress.luau` | Records eligible match finishes and awards earned chests for the weekly mission and UTC play streaks. Calendar and replay tests are in `tests/unit/ChestProgress.spec.luau`. |
+| `src/shared/LooksRules.luau` | Chest odds, duplicate values, independent trail purchases, wearing and bot cosmetics ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |
 | `src/server/HangarService.luau` | Buying parts, the practice shop |
 | `src/client/ShopScreen.luau` | The shop window (Studio only until go-live): built to the approved concept's measurements, pictures named in `UIAssets.shop`, animations; the starter pack's saved timer, the free gift card with its 7-day row (Claim, ticks, time to the next), Paper packs biggest first with "First buy 2x!", pictures growing with the amount ([money plan](../plan/SHOP-MONEY-PLAN.md); checked in Play 2026-11-12; the tab buttons scroll too far, see STATE); the Gift a friend note: friends from Roblox (in this server first), the server's check, "A gift for Sam" with the price; from the title bar the shop stays "For Sam" until a card's gift button (Paper packs and boosts only) |

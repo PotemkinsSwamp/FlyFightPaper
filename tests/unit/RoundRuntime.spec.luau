@@ -5,6 +5,20 @@ local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
 function Spec.run()
  local result,test=Suite.new()
+ test("only human completion rows carry the original time for classroom chest progress",function()
+  local rows,paid={},{}
+  for i,case in {{"human",true},{"human",false},{"bot",true}} do
+   rows[i]={controllerType=case[1],completion=case[2],userId=i,key=tostring(i),present=true,kills=0,deaths=0,finalPaper=0,finalXP=0}
+  end
+  local runtime=setmetatable({engine={round={id="test",completedAtUnix=1795000000,result={participants=rows}}},settledRows={},finalRewards={}},Runtime)
+  function runtime:reward(id,source,input)
+   assert(input.kind=="statistics" and not paid[source])
+   paid[source]={id=id,at=input.completedAt}
+  end
+  runtime:queueSettlement()
+  runtime:queueSettlement()
+  assert(paid["test:stats:1"].at==1795000000 and paid["test:stats:2"].at==nil and not paid["test:stats:3"])
+ end)
  test("match doubling uses the same floored totals and match id as the report snapshot",function()
   local f=MatchSpec.fixture();f:join("pilot");f:timer()
   local row=MatchSpec.row(f,"pilot");local player={UserId=1};local offered,snapshot

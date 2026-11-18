@@ -562,6 +562,7 @@ function Match:_end(at, reason)
     local r, e = self.round, self.context.economy
     if r.ended then return end
     r.ended, r.endedAt, self.phase = true, at, "RESULTS" -- Close scoring BEFORE snapshot or external sink.
+    r.completedAtUnix = os.time() -- Chest milestones use the UTC date of completion, including offline deliveries.
     self.phaseEndsAt = self:_clock() + self.context.config.rounds.results_seconds
     local winners, winningTeam, draw = {}, nil, false
     if r.mode == "FFA" then

@@ -4,6 +4,8 @@
 **Status:** in force; the idea list is still being talked through on the
 [skins plan](../plan/SKINS-PLAN.md). Nothing is made yet.
 
+The original acquisition prices, Legendary bundle rule and overhead trail view were replaced by the [classroom chest decision](2026-11-18-classroom-treasure-chests.md) and [current Hangar](../systems/planes-and-hangar.md).
+
 ## Decision
 - **A skin never changes the hitbox** (except the Dragon and the Shark Jet, which are the hitbox at the plane's own target size: Alan 2026-11-15 and 2026-11-16, [shape-skin decision](2026-11-14-shape-skin-model-sheets.md)). Your hitbox is always the parts you fly, inside the skin. A skin is only a
   look with no hitbox of its own, so wearing one is never an advantage or a disadvantage. It may be bigger or smaller

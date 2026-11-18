@@ -1,5 +1,5 @@
 {
-  "_comment": "Skins and trails stay owned through prestige. Prices are whole Paper or Robux; live Roblox sales stay disabled in commerce.json.",
+  "_comment": "Skins and trails stay owned through prestige. Only Mythical skins grant their trail. Skins come from earned or Paper treasure chests. Standalone trails cost Paper; live sales stay disabled.",
   "tiers": {
     "common": { "paper": 2800, "robux": 149 },
     "rare": { "paper": 5600, "robux": 299 },
@@ -25,11 +25,11 @@
     { "id": "thunderstorm", "name": "Thunderstorm", "tier": "rare", "picture": 91669790223044 },
     { "id": "circuit_board", "name": "Circuit Board", "tier": "rare", "picture": 71382649943696 },
     { "id": "comic_book", "name": "Comic Book", "tier": "rare", "picture": 103647805313090 },
-    { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "trail": "water_spray" },
-    { "id": "ninja", "name": "Ninja", "tier": "legendary", "trail": "smoke_bomb" },
-    { "id": "hot_rod", "name": "Hot Rod", "tier": "legendary", "trail": "backfire" },
-    { "id": "stealth", "name": "Stealth", "tier": "legendary", "trail": "silver_chaff" },
-    { "id": "race_car", "name": "Race Car", "tier": "legendary", "trail": "photo_finish" },
+    { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "matching_trail": "water_spray" },
+    { "id": "ninja", "name": "Ninja", "tier": "legendary", "matching_trail": "smoke_bomb" },
+    { "id": "hot_rod", "name": "Hot Rod", "tier": "legendary", "matching_trail": "backfire" },
+    { "id": "stealth", "name": "Stealth", "tier": "legendary", "matching_trail": "silver_chaff" },
+    { "id": "race_car", "name": "Race Car", "tier": "legendary", "matching_trail": "photo_finish" },
     { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers", "picture": 71720517887759 },
     { "id": "origami_crane", "name": "Origami Crane", "tier": "mythical", "trail": "folded_petals", "picture": 86508406688555 }
   ],
@@ -45,13 +45,20 @@
     { "id": "glitch_pixels", "name": "Glitch Pixels", "tier": "trail", "price_tier": "rare_trail", "sold": true },
     { "id": "storm_sparks", "name": "Storm Sparks", "tier": "trail", "price_tier": "rare_trail", "sold": true },
     { "id": "circuit_trace", "name": "Circuit Trace", "tier": "trail", "price_tier": "rare_trail", "sold": true },
-    { "id": "water_spray", "name": "Water Spray", "tier": "trail", "sold": false },
-    { "id": "smoke_bomb", "name": "Smoke Bomb", "tier": "trail", "sold": false },
-    { "id": "backfire", "name": "Backfire", "tier": "trail", "sold": false },
-    { "id": "silver_chaff", "name": "Cloaking Wake", "tier": "trail", "sold": false },
-    { "id": "photo_finish", "name": "Photo Finish", "tier": "trail", "sold": false },
+    { "id": "water_spray", "name": "Water Spray", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "smoke_bomb", "name": "Smoke Bomb", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "backfire", "name": "Backfire", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "silver_chaff", "name": "Cloaking Wake", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "photo_finish", "name": "Photo Finish", "tier": "trail", "price_tier": "rare_trail", "sold": true },
     { "id": "dragon_embers", "name": "Dragon Embers", "tier": "trail", "sold": false },
     { "id": "folded_petals", "name": "Folded Petals", "tier": "trail", "sold": false }
+  ],
+  "duplicate_refund_percent": 10,
+  "chests": [
+    {"id": "paper", "name": "Paper Treasure Chest", "cost": 1000, "weights": {"common": 80, "rare": 20, "legendary": 0, "mythical": 0}},
+    {"id": "sticker", "name": "Sticker Treasure Chest", "cost": 3000, "weights": {"common": 52, "rare": 40, "legendary": 8, "mythical": 0}},
+    {"id": "blue_ribbon", "name": "Blue Ribbon Treasure Chest", "cost": 6500, "weights": {"common": 18, "rare": 54, "legendary": 26, "mythical": 2}},
+    {"id": "golden_star", "name": "Golden Star Treasure Chest", "cost": 12000, "weights": {"common": 0, "rare": 33, "legendary": 57, "mythical": 10}}
   ],
   "bot_tiers": { "rookie": "common", "regular": "rare", "experienced": "legendary", "ace": "mythical" },
   "bot_looks": { "both": 35, "skin": 35, "trail": 15, "neither": 15 }

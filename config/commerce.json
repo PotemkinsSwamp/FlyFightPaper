@@ -465,213 +465,6 @@
     {"key":"gift_paper_pack_7500","kind":"developer_product","benefit":"gift","roblox_product_id":null,"approved_robux_price":null,"enabled":false},
     {"key":"gift_paper_pack_40000","kind":"developer_product","benefit":"gift","roblox_product_id":null,"approved_robux_price":null,"enabled":false},
     {
-      "key": "look_hazard_stripes",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "hazard_stripes",
-      "roblox_product_id": null,
-      "approved_robux_price": 149,
-      "enabled": false
-    },
-    {
-      "key": "look_carbon_fiber",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "carbon_fiber",
-      "roblox_product_id": null,
-      "approved_robux_price": 149,
-      "enabled": false
-    },
-    {
-      "key": "look_racing_stripe",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "racing_stripe",
-      "roblox_product_id": null,
-      "approved_robux_price": 149,
-      "enabled": false
-    },
-    {
-      "key": "look_eight_bit",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "eight_bit",
-      "roblox_product_id": null,
-      "approved_robux_price": 149,
-      "enabled": false
-    },
-    {
-      "key": "look_neon_grid",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "neon_grid",
-      "roblox_product_id": null,
-      "approved_robux_price": 149,
-      "enabled": false
-    },
-    {
-      "key": "look_flame_decals",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "flame_decals",
-      "roblox_product_id": null,
-      "approved_robux_price": 149,
-      "enabled": false
-    },
-    {
-      "key": "look_tie_dye",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "tie_dye",
-      "roblox_product_id": null,
-      "approved_robux_price": 149,
-      "enabled": false
-    },
-    {
-      "key": "look_jungle_camo",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "jungle_camo",
-      "roblox_product_id": null,
-      "approved_robux_price": 149,
-      "enabled": false
-    },
-    {
-      "key": "look_lava",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "lava",
-      "roblox_product_id": null,
-      "approved_robux_price": 299,
-      "enabled": false
-    },
-    {
-      "key": "look_galaxy",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "galaxy",
-      "roblox_product_id": null,
-      "approved_robux_price": 299,
-      "enabled": false
-    },
-    {
-      "key": "look_slime",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "slime",
-      "roblox_product_id": null,
-      "approved_robux_price": 299,
-      "enabled": false
-    },
-    {
-      "key": "look_holographic",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "holographic",
-      "roblox_product_id": null,
-      "approved_robux_price": 299,
-      "enabled": false
-    },
-    {
-      "key": "look_glitch",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "glitch",
-      "roblox_product_id": null,
-      "approved_robux_price": 299,
-      "enabled": false
-    },
-    {
-      "key": "look_thunderstorm",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "thunderstorm",
-      "roblox_product_id": null,
-      "approved_robux_price": 299,
-      "enabled": false
-    },
-    {
-      "key": "look_circuit_board",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "circuit_board",
-      "roblox_product_id": null,
-      "approved_robux_price": 299,
-      "enabled": false
-    },
-    {
-      "key": "look_comic_book",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "comic_book",
-      "roblox_product_id": null,
-      "approved_robux_price": 299,
-      "enabled": false
-    },
-    {
-      "key": "look_shark_jet",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "shark_jet",
-      "roblox_product_id": null,
-      "approved_robux_price": 599,
-      "enabled": false
-    },
-    {
-      "key": "look_ninja",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "ninja",
-      "roblox_product_id": null,
-      "approved_robux_price": 599,
-      "enabled": false
-    },
-    {
-      "key": "look_hot_rod",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "hot_rod",
-      "roblox_product_id": null,
-      "approved_robux_price": 599,
-      "enabled": false
-    },
-    {
-      "key": "look_stealth",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "stealth",
-      "roblox_product_id": null,
-      "approved_robux_price": 599,
-      "enabled": false
-    },
-    {
-      "key": "look_race_car",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "race_car",
-      "roblox_product_id": null,
-      "approved_robux_price": 599,
-      "enabled": false
-    },
-    {
-      "key": "look_dragon",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "dragon",
-      "roblox_product_id": null,
-      "approved_robux_price": 999,
-      "enabled": false
-    },
-    {
-      "key": "look_origami_crane",
-      "kind": "developer_product",
-      "benefit": "look_unlock",
-      "look_id": "origami_crane",
-      "roblox_product_id": null,
-      "approved_robux_price": 999,
-      "enabled": false
-    },
-    {
       "key": "look_chalk_dust",
       "kind": "developer_product",
       "benefit": "look_unlock",
@@ -766,6 +559,51 @@
       "kind": "developer_product",
       "benefit": "look_unlock",
       "look_id": "circuit_trace",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_water_spray",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "water_spray",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_smoke_bomb",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "smoke_bomb",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_backfire",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "backfire",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_silver_chaff",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "silver_chaff",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_photo_finish",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "photo_finish",
       "roblox_product_id": null,
       "approved_robux_price": 99,
       "enabled": false

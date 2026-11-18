@@ -202,12 +202,27 @@ function Service:handle(player,action,value)
   self:enqueue(player,{kind="equipmentPurchase",catalogID=value},function(ok)
    self:message(player,ok and "Part unlocked. You can use it on every legal mount." or "Part purchase was not completed.")
   end)
+ elseif action=="openChest" then
+  if type(value)~="table" or type(value.chest)~="string" or not Looks.chest(value.chest) or not Schema.integer(value.opened) then return end
+  if value.source~="earned" and value.source~="paper" then return end
+  for key in pairs(value) do if key~="chest" and key~="opened" and key~="source" then return end end
+  self:enqueue(player,{kind="openChest",chest=value.chest,opened=value.opened,source=value.source},function(ok,result)
+   if ok and result and result.type=="ChestOpened" then
+    self:message(player,result.refund>0 and ("Duplicate! You received "..result.refund.." Paper.") or Looks.item(result.skin).name.." is yours!")
+   elseif result=="stale_chest" then
+    if self.onAnswer then self.onAnswer(player) end
+   else
+    local reasons={no_earned_chest="You have no earned chest of this kind.",insufficient_paper="You need more Paper.",
+     chest_paper_unavailable="You can earn this chest by playing matches."}
+    self:message(player,reasons[result] or "The chest could not open. Try again.")
+   end
+  end)
  elseif action=="buyLook" then
   if type(value)~="string" or #value>160 then return end
   local legal,reason=Looks.buyWithPaper(Schema.economicView(profile),value,"preview")
   if legal and legal.operation.alreadyOwned then self:message(player,"You already own it.");return end
   if not legal then
-   self:message(player,reason.code=="insufficient_paper" and "You need more Paper." or reason.code=="not_sold" and "That trail comes with its skin." or "That can't be bought.")
+   self:message(player,reason.code=="insufficient_paper" and "You need more Paper." or reason.code=="chest_only" and "Find skins in treasure chests." or reason.code=="not_sold" and "That trail comes with its skin." or "That can't be bought.")
    return
   end
   local item=Looks.item(value)

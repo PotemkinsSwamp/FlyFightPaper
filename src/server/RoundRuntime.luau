@@ -533,7 +533,7 @@ function Runtime:queueSettlement()
     rewards[row.key]={paper=row.finalPaper*input.multipliers.paper,xp=row.finalXP*input.multipliers.xp,missed=input.multipliers.paper==1 and row.finalPaper or 0}
    end) else rewards[row.key]={paper=0,xp=0,missed=0} end
    if row.qualified then self:reward(row.userId,r.id..":qualification:"..row.key,{kind="qualification",matchId=r.id,activeSeconds=row.activeSeconds,events=row.qualifyingEvents}) end
-   self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths}})
+   self:reward(row.userId,r.id..":stats:"..row.key,{kind="statistics",completedAt=row.completion and r.completedAtUnix or nil,deltas={matches=row.present and 1 or 0,wins=row.victory and row.present and 1 or 0,eliminations=row.kills,deaths=row.deaths}})
    self.settledRows[row.key]=true
   end
  end
@@ -546,7 +546,8 @@ function Runtime:sendProfile(player)
  if profile then
   local e=self.profiles.entries[player]
   local boost=self.profiles.service:liveBoostView(e.account)
-  self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,looks=profile.looks,
+  self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,looks=profile.looks,chests=profile.chests,
+   chestPaperAllowed=self.profiles.service:chestPaperAllowed(e.account,player),
    presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,unlocksSeen=profile.unlocksSeen,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end
 end
