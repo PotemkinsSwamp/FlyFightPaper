@@ -9,7 +9,7 @@ Claude's own smaller calls waiting for Alan's review live in [STATE](../../state
 - 2026-11-16, updated 2026-11-18: [The first skin set and Alan's approved looks for all five Legendary trails](2026-11-16-first-skin-set.md)
 - 2026-11-14: [Shape skins: model sheets first, Shark Jet A and Dragon B, a barrel body (not a belly)](2026-11-14-shape-skin-model-sheets.md)
 - 2026-11-13: [Speed work waits until the game's content is done (end of beta)](2026-11-13-optimize-after-content-is-done.md)
-- 2026-11-13: [Skins: same hitbox, one design per skin, four tiers, team outline](2026-11-13-skin-rules.md)
+- 2026-11-13: [Skins: same hitbox, one design per skin, four tiers, team outline and hidden wing stickers](2026-11-13-skin-rules.md)
 - 2026-11-13: [A gift's arrival: the board's plane brings it, you open it, music turns right down](2026-11-13-gift-arrival-story-and-sounds.md)
 - 2026-11-13: [Gift a friend: Paper packs and timed 2x boosts, to friends who have played](2026-11-13-gift-a-friend.md)
 - 2026-11-12: [Big bodies get 3 mounts; Cardboard carries 10, Toilet Roll 8](2026-11-12-big-bodies-three-mounts.md)

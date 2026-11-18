@@ -1,5 +1,6 @@
 # Since Alan last checked (2026-11-18)
-- The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. All 705 tests passed. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
+- Customize keeps the book and stats on screen while you pick gear or looks. All 18 trails run behind the plane. Holographic moves on both faces and skins cover the team stickers. [Studio check and pictures](../docs/playtests/2026-11-18-hangar-preview-and-clicks.md)
+- The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
 - **Two scripted Play tests are done** ([numbers and the full list](../docs/playtests/2026-11-16-scripted-looks-check.md)). Frame rate, 12 planes: 60 with no looks, with any one skin, and with any one Rare moving; 56.7-60 with one trail on all 12; 58.5 with a mixed set on every plane; 54.5 in the worst case (12 Galaxy + 12 Circuit Trace: each alone holds 60, only together they go under).
 - **All 8 Rares were broken in real Play** (no moving layers): Roblox does not let a game script set a decal's glow picture, and every earlier test ran with extra rights. **Fixed and confirmed in the second Play**: every layer on all 12 planes, each Rare moving, first-load freeze gone.
 
@@ -14,8 +15,8 @@ Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as 
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
   (A = six colours, one line in `skin_sheets.py`); a flame patch shows small at the back of the body.
 Trails (my calls): names; 99 Robux / 1,900 Paper stand-in for a Rare match (price parked); the saved id `rainbow_marker` stays behind the name Holo Rainbow (my reading of your "Go", 2026-11-16); stars, flakes and bolts are real small parts, smoke and sparkle dust are Roblox particles with Roblox's own pictures (sparkle dust as 3D parts was too many: about 170 a second a plane);
-  a foil flake is a thin chip. The Hangar uses stills of the approved flight previews. Holo Rainbow keeps the saved Rainbow Marker ID.
-Rares (my calls): Galaxy is one small solar system a wing (a big orbit was cut by the body); far planes keep their layers standing still; no underside layers yet; 39 pictures, not the 28 I first said.
+  a foil flake is a thin chip. Holo Rainbow keeps the saved Rainbow Marker ID.
+Rares (my calls): Galaxy is one small solar system a wing (a big orbit was cut by the body); far planes keep their layers standing still; Holographic has moving underside layers; 39 pictures, not the 28 I first said.
 Skins: bots in Common/Rare skins get a random plain trail; looks are made ahead (`tools/art/skin_looks.py`); the crane grants Folded Petals; its wings fit ~5% bigger than Blender's (part boxes, not vertices).
   Crane: about a quarter shorter (belly to the real body's bottom, roof 0.5 of a step up, was 0.9); width as before.
 Gift arrival: Open it! is a tap; on Thanks the gift comes at you and fades; the pop is the Popper's, higher and soft.
@@ -47,8 +48,8 @@ Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st
 Waiting on Alan
 - **Shark and the Hangar:** Hangar > Customize > Skins > Shark Jet. Buy for 30,000 Paper, then Wear. Under Trails, Water Spray is included. The shop also has a Browse skins & trails button.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 18 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
-- **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? Is the still underside a problem? Do sparkles and smoke start in clumps?
-- Replay the hangar: skins, tabs, Cancel (no reload flash?), the crane's height and wing join, a booster under it, Buy on a skin (changes at once?). Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
+- **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? How does Holographic read from below? Do sparkles and smoke start in clumps?
+- Try quick card changes and Cancel, then drag the live trail preview. Check the crane's height and wing join, a booster under it, and buying a skin. Also look at: the bigger starter pack wings, the big bodies in the Hangar (dev switch), the jar filling after a match.
 - After the skin views (Alan 2026-11-15, backlog): the desk's big photo and pinboard under the crane (crane only);
   no gun piece floating off the crane's guns, at the desk and firing; the Toilet Roll shake with my recorder (your go).
 - Publish when you like (report card, new shop window; shop button Studio-only until go-live). Save to File for the new weapon models and tape-roll tower (your go).
