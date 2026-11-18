@@ -21,7 +21,7 @@ Three reward-eligible matches in one Monday-to-Sunday UTC week earn one Sticker 
 Buying with Paper pays for an immediate opening. A Robux purchase delivers an unopened chest of the exact family and tier bought. The direct Robux prices are about 10% below the normal cost of the same Paper at the largest pack's rate. The first-buy Paper bonus can change that comparison. The server checks paid-random-item eligibility for paid openings and purchases, including the starter pack. Earned openings remain available if the check fails or the account is restricted. Real checkout is switched off. [Roblox paid random item guidance](https://create.roblox.com/docs/production/monetization/paid-random-items).
 
 ## Where it stands (2026-11-18)
-The Shop and Hangar share the chest prize list and the opening animation. The Shop keeps the player in its own window.
+The Shop and Hangar share the chest prize list and the opening animation. The Shop keeps the player in its own window. Light lettering, including the white Paper price on a disabled purchase, has a black outline.
 
 **Gift a friend** is built to the [approved gift rules](../decisions/2026-11-13-gift-a-friend.md) (Studio only until
 go-live): the shop's friend note with search, the server check, "A gift for Sam", the practice gift, and the plane that

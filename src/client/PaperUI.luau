@@ -133,19 +133,27 @@ function PaperUI.crayon(label)
 		local loud, t = label:GetAttribute("Loud") == true, label.TextTransparency
 		local heavy = loud and size * (size >= 40 and 0.03 or 0.018) or 0
 		local edge = loud and heavy + math.max(2, size * 0.07) or math.max(1, size * 0.035)
+		local blackOutline = label:GetAttribute("BlackOutline") == true
+		local edgeColor = blackOutline and SHADOW or CREAM
+		if blackOutline then
+			edge = heavy + math.max(1.5, size * 0.065)
+			shadow.Visible = false
+		end
 		local dim = (loud and 0.72 or 0.85) + (loud and 0.28 or 0.15) * t
 		local drop = loud and 1 or 0.6
 		ink.TextColor3, ink.TextTransparency = label.TextColor3, t
 		inkEdge.Enabled, inkEdge.Color, inkEdge.Thickness, inkEdge.Transparency = loud, label.TextColor3, heavy, t
-		outline.TextColor3, outline.TextTransparency = CREAM, t
-		outlineEdge.Color, outlineEdge.Thickness, outlineEdge.Transparency = CREAM, edge, t
+		outline.TextColor3, outline.TextTransparency = edgeColor, t
+		outlineEdge.Color, outlineEdge.Thickness, outlineEdge.Transparency = edgeColor, edge, t
 		shadow.TextColor3, shadow.TextTransparency = SHADOW, dim
 		shadowEdge.Color, shadowEdge.Thickness, shadowEdge.Transparency = SHADOW, edge, dim
 		shadow.Position = UDim2.fromOffset((size * 0.04 + 1) * drop, (size * 0.06 + 1) * drop)
 	end
 	refresh()
 	watching = label.Changed:Connect(function(key) if WATCH[key] then refresh() end end)
-	label:GetAttributeChangedSignal("Loud"):Connect(function() if watching then refresh() end end)
+	label.AttributeChanged:Connect(function(key)
+		if watching and (key == "Loud" or key == "BlackOutline") then refresh() end
+	end)
 	if label:IsA("TextBox") then
 		label.Focused:Connect(function() typing = true; if watching then refresh() end end)
 		label.FocusLost:Connect(function() typing = false; if watching then refresh() end end)
@@ -176,6 +184,12 @@ end
 -- Words that grab attention (buttons, titles, names) get the full style C.
 function PaperUI.loud(label)
 	label:SetAttribute("Loud", true)
+	return label
+end
+
+-- Light letters over mixed paper or artwork need a black edge around the actual crayon fill.
+function PaperUI.blackOutline(label)
+	label:SetAttribute("BlackOutline", true)
 	return label
 end
 

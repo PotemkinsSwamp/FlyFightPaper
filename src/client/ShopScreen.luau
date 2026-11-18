@@ -23,8 +23,7 @@ local ShopScreen = {}
 local K = PaperUI.W / 1672 -- concept pixels -> sheet units
 local TEXT = 1.3 -- Kalam draws smaller letters than the concept's lettering at the same size
 local INK, WHITE, CHALK = PaperUI.INK, Color3.new(1, 1, 1), Color3.fromRGB(240, 240, 232)
--- Chalk words: white with a dark board-green outline (Alan 2026-11-12: the cream crayon edge blurred them on the board).
-local CHALKY = { color = CHALK, outline = Color3.fromRGB(12, 28, 18), thick = 3 }
+local CHALKY = { color = CHALK }
 local PREVIEW = RunService:IsStudio()
 local ROBUX_ICON = "rbxasset://textures/ui/common/robux@3x.png" -- Roblox's own Robux symbol, shipped with the client
 -- The Robux prices Alan approved (docs/plan/SHOP-PRICES-PLAN.md). Display only: real prices must come from Roblox's
@@ -138,19 +137,16 @@ function ShopScreen.new(playerGui, api)
 	-- cream circle, so this is the tint, not the colour on screen. Made before the picture.
 	local BACKING = Color3.fromRGB(96, 170, 153)
 	local function backing(parent, x0, y0, x1, y1) local circle = fit(pic(parent, "Backing", Art.circlePale, x0, y0, x1, y1)); circle.ImageColor3 = BACKING; return circle end
-	-- Words in a box (concept px), centred unless told; size in concept px. outline: a plain ink (or given) stroke instead
-	-- of the cream crayon edge, for words on bright paper like the concept's titles.
+	-- Body copy uses ink on paper. White, chalk and yellow lettering use a black edge.
 	local function say(parent, name, text, x0, y0, x1, y1, size, opts)
 		opts = opts or {}
 		local label = PaperUI.words(parent, name, text, x0 * K, y0 * K, (x1 - x0) * K, (y1 - y0) * K, math.round(size * K * TEXT))
 		label.TextXAlignment = opts.left and Enum.TextXAlignment.Left or Enum.TextXAlignment.Center
-		label.TextColor3 = opts.color or INK
-		if opts.loud then PaperUI.loud(label) end
-		if opts.outline then
-			local stroke = Instance.new("UIStroke")
-			stroke.Color, stroke.Thickness, stroke.LineJoinMode = opts.outline, (opts.thick or 3) * K, Enum.LineJoinMode.Round
-			stroke.Parent = label
+		if opts.color then
+			label.TextColor3 = opts.color
+			PaperUI.blackOutline(label)
 		end
+		if opts.loud then PaperUI.loud(label) end
 		if opts.rot then label.Rotation = opts.rot end
 		if not opts.grow then PaperUI.fitWords(label, (x1 - x0) * K * 0.96) end -- too long: smaller, never past its box
 		return label
@@ -201,7 +197,7 @@ function ShopScreen.new(playerGui, api)
 		if giftFor then endGifting() else openPicker(nil) end
 	end)
 	fit(pic(friend, "Icon", Art.giftWhite, 20, 12, 90, 77))
-	local friendWords = say(friend, "Words", "Gift a friend", 100, 0, 325, 87, 38, { loud = true, color = WHITE, outline = INK })
+	local friendWords = say(friend, "Words", "Gift a friend", 100, 0, 325, 87, 38, { loud = true, color = WHITE })
 	friend.Visible = PREVIEW
 	press(board, "Close", Art.close, 1300, 48, 1405, 153, function() api.back() end)
 
@@ -523,7 +519,7 @@ function ShopScreen.new(playerGui, api)
 		for _, family in {"skin", "trail"} do
 			local headingText = family == "skin" and "Skin chests" or "Trail chests"
 			say(content, family .. "Heading", headingText, 56, y, 595, y + 53, 40,
-				{left = true, color = CHALK, outline = Color3.fromRGB(12,28,18)})
+				{left = true, color = CHALK})
 			y += 61
 			local n = 0
 			for _, chest in Looks.config().chests do
@@ -585,8 +581,8 @@ function ShopScreen.new(playerGui, api)
 		local burst = pic(card, "New", Art.burstNew, 15, -10, 200, 115, -10)
 		say(burst, "Words", "New!", 0, 0, 185, 125, 46, { loud = true })
 		move(burst, "wobble")
-		say(card, "Name", "STARTER PACK", 225, 8, 825, 82, 74, { color = Color3.fromRGB(255, 222, 40), outline = INK, thick = 5 })
-		say(card, "Limited", "Limited time!", 380, 70, 645, 110, 36, { color = WHITE, outline = INK })
+		say(card, "Name", "STARTER PACK", 225, 8, 825, 82, 74, { color = Color3.fromRGB(255, 222, 40) })
+		say(card, "Limited", "Limited time!", 380, 70, 645, 110, 36, { color = WHITE })
 		pic(card, "TimerPaper", Art.labelDark, 945, 18, 1220, 75)
 		local timer = say(card, "Timer", "", 945, 18, 1220, 75, 40, { color = WHITE })
 		-- The real timer: from the first time the player came in, saved (StarterPackEnds); Studio before the save rules: a preview.
@@ -753,8 +749,8 @@ function ShopScreen.new(playerGui, api)
 		pic(card, "PaperR", Art.cardFeatured[2], 618, 0, 1237, 325)
 		PaperUI.shadow(card, 170 * K, 252 * K, 220 * K) -- (a coloured card: a soft shadow, like the fold card, Alan 2026-11-12)
 		partView(card, pick, 50, 40, 240, 240, 0)
-		say(card, "Tag", "YOUR NEXT PART", 340, 18, 920, 64, 36, { color = WHITE, outline = INK })
-		say(card, "Name", part.name, 340, 62, 920, 142, 70, { color = Color3.fromRGB(255, 222, 40), outline = INK, thick = 5 })
+		say(card, "Tag", "YOUR NEXT PART", 340, 18, 920, 64, 36, { color = WHITE })
+		say(card, "Name", part.name, 340, 62, 920, 142, 70, { color = Color3.fromRGB(255, 222, 40) })
 		local gap = part.paper_price - paper
 		say(card, "Line", level < part.min_level and "Unlocks at level " .. part.min_level .. ", or unlock it now"
 			or gap > 0 and commas(gap) .. " more Paper, or unlock it now" or "You have the Paper: buy it now!", 330, 160, 930, 215, 38, { loud = true })
@@ -811,7 +807,7 @@ function ShopScreen.new(playerGui, api)
 			ticks(card, 5, 22, 45, 62, -45, i * 0.7)
 			pic(card, "TwoPill", Art.labelDark, 105, 110, 170, 150)
 			say(card, "Two", "x2", 105, 110, 170, 150, 30, { color = WHITE })
-			say(card, "Name", title, 175, 6, 600, 54, 44, { left = true, color = WHITE, outline = INK, thick = 4 })
+			say(card, "Name", title, 175, 6, 600, 54, 44, { left = true, color = WHITE })
 			local one, two = words:match("^(.-)\n(.*)$")
 			say(card, "Desc1", one, 185, 56, 500, 84, 28, { left = true }); say(card, "Desc2", two, 185, 82, 500, 110, 28, { left = true })
 			if boosts[owned] then
@@ -912,7 +908,7 @@ function ShopScreen.new(playerGui, api)
 						local badge = BADGE[product.key]
 						local card = pic(content, product.key, paper, x0, y, x0 + 237, y + 250)
 						move(pic(card, "Rays", Art.rays, 25, 50, 212, 165), "spin", i * 0.9)
-						say(card, "Name", title, 0, badge and 27 or 15, 237, badge and 72 or 60, 40, { color = WHITE, outline = INK, thick = 4 })
+						say(card, "Name", title, 0, badge and 27 or 15, 237, badge and 72 or 60, 40, { color = WHITE })
 						move(fit(pic(card, "Icon", icon, 40, 65, 197, 153)), "bob", i * 0.6)
 						pic(card, "TimePaper", Art.labelDark, 35, 153, 205, 187)
 						say(card, "Time", duration(product.amount), 35, 153, 205, 187, 30, { color = WHITE })

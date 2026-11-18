@@ -164,6 +164,7 @@ local function payment(ui, parent, id, currency, text, x, y, w, h, enabled, call
 	btn.ImageColor3 = enabled and Color3.new(1, 1, 1) or Color3.fromRGB(171, 172, 169)
 	if not robux then
 		btn.Label.TextColor3 = Color3.new(1, 1, 1)
+		PaperUI.blackOutline(btn.Label)
 		return
 	end
 	btn.ScaleType = Enum.ScaleType.Stretch
