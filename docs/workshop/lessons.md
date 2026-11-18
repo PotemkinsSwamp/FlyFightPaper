@@ -5,7 +5,7 @@ Claude's private memory on 2026-10-15 so everyone working on the game can see th
 mistake would be easy to make twice.
 
 ## Uploads and Roblox moderation
-- A 2048px opening sheet returned a successful load in Studio but its 512px pixel offsets showed empty final frames. Use a clipping frame with a four-by-four image sized in scale units. Keep the warming image on screen at near-transparent opacity until it loads. A hidden copy reported `IsLoaded=false` while a visible copy of the same asset loaded.
+- A large sheet can load successfully in Studio while each animation frame has too few pixels for a close-up. Inspect the held prize pose at player size. Give that pose its own image. Warm the image before the lid opens because a fully hidden copy may report `IsLoaded=false`.
 
 - **Look at every texture before uploading.** Alan's account was banned twice on 2026-10-12 ("Discriminatory
   Content") because a bell-tower texture sheet had small bent leg braces laid flat as red hooks on black, which

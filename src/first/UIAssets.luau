@@ -1,5 +1,11 @@
 -- Uploaded menu art (Roblox image ids). Sources: assets/ui/<screen>/; concept: assets/references/ui-concepts/.
 -- An empty id draws nothing, so a missing piece shows as a gap rather than an error.
+-- Each pose is registered to the same body. Coordinates are fractions of its own image.
+local function chestPose(id, left, right, top, hinge, foot)
+	return {image = if id then "rbxassetid://" .. id else nil,
+		left = left, right = right, top = top, hinge = hinge, foot = foot}
+end
+
 return {
 	mainmenu = {
 		bg = { "rbxassetid://86213401449162", "rbxassetid://139161444944451", "rbxassetid://70484091614246", "rbxassetid://92701816112270" }, -- background split into 2x2 tiles (top-left, top-right, bottom-left, bottom-right)
@@ -47,11 +53,47 @@ return {
 	-- Uploaded 2026-10-21; white pieces (shelfTab, indexTab, statLabel, statBox, statBoxEmpty) are tinted in the game.
 	hangarShelf = {
 		chestAtlas = "rbxassetid://103691943840633", -- four 512-square classroom prize chest illustrations
-		chestOpenings = {
-			paper = "rbxassetid://124157028836905",
-			sticker = "rbxassetid://123190968252899",
-			blue_ribbon = "rbxassetid://77391298573982",
-			golden_star = "rbxassetid://134735320533557",
+		chestPrints = {
+			paper = {
+				closed = chestPose(nil, 0.06609, 0.945524, 0.179476, 0.437078, 0.900549),
+				half = chestPose("132591200894328", 0.098633, 0.912109, 0.206055, 0.525391, 0.954102),
+				open = chestPose("100893534667742", 0.098633, 0.912109, 0.06543, 0.525391, 0.954102),
+			},
+			trail_paper = {
+				closed = chestPose("133041928005783", 0.098633, 0.912109, 0.286133, 0.525391, 0.952148),
+				half = chestPose("104120222836440", 0.098633, 0.912109, 0.214844, 0.525391, 0.952148),
+				open = chestPose("107010965642953", 0.098633, 0.912109, 0.056641, 0.525391, 0.952148),
+			},
+			sticker = {
+				closed = chestPose(nil, 0.035473, 0.921242, 0.183699, 0.431799, 0.901605),
+				half = chestPose("99628763494461", 0.070312, 0.889648, 0.198242, 0.520508, 0.955078),
+				open = chestPose("100292044839725", 0.070312, 0.889648, 0.103516, 0.520508, 0.955078),
+			},
+			trail_sticker = {
+				closed = chestPose("72168286821374", 0.072266, 0.887695, 0.291992, 0.520508, 0.952148),
+				half = chestPose("128686172689937", 0.072266, 0.887695, 0.208008, 0.520508, 0.952148),
+				open = chestPose("135780838866928", 0.072266, 0.887695, 0.104492, 0.520508, 0.952148),
+			},
+			blue_ribbon = {
+				closed = chestPose(nil, 0.0625, 0.951172, 0.107422, 0.361328, 0.882812),
+				half = chestPose("90060837824648", 0.12207, 0.90332, 0.132812, 0.418945, 0.948242),
+				open = chestPose("126456745575561", 0.12207, 0.90332, 0.040039, 0.418945, 0.948242),
+			},
+			trail_blue_ribbon = {
+				closed = chestPose("125775721419723", 0.12207, 0.90332, 0.303711, 0.418945, 0.949219),
+				half = chestPose("118644264740583", 0.12207, 0.90332, 0.130859, 0.418945, 0.949219),
+				open = chestPose("104583096106963", 0.12207, 0.90332, 0.039062, 0.418945, 0.949219),
+			},
+			golden_star = {
+				closed = chestPose(nil, 0.03125, 0.933594, 0.105469, 0.361328, 0.884766),
+				half = chestPose("88739964375231", 0.099609, 0.921875, 0.123047, 0.431641, 0.958008),
+				open = chestPose("110249064733737", 0.099609, 0.921875, 0.030273, 0.431641, 0.958008),
+			},
+			trail_golden_star = {
+				closed = chestPose("73901848753717", 0.099609, 0.921875, 0.264648, 0.431641, 0.959961),
+				half = chestPose("75291758128619", 0.099609, 0.921875, 0.12207, 0.431641, 0.959961),
+				open = chestPose("88329781539917", 0.099609, 0.921875, 0.02832, 0.431641, 0.959961),
+			},
 		},
 		bg = { "rbxassetid://133397690165754", "rbxassetid://105639322311566", "rbxassetid://115182631090136", "rbxassetid://116475380443993" },
 		cubbyBack = "rbxassetid://103396781406593", cubbyFront = "rbxassetid://91837232661923",

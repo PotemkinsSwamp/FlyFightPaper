@@ -11,12 +11,9 @@ local PaperUI = require(script.Parent.PaperUI)
 local Audio = require(script.Parent.Audio)
 local PlaneLooks = require(script.Parent.PlaneLooks)
 local TrailPreview = require(script.Parent.HangarTrailPreview)
-local Opening = {}
+local Artwork = require(script.Parent.ChestArtwork)
+local Opening = { picture = Artwork.picture, prepare = Artwork.prepare }
 
-local iconOffsets = {
-	paper = Vector2.new(0,0), sticker = Vector2.new(512,0),
-	blue_ribbon = Vector2.new(0,512), golden_star = Vector2.new(512,512),
-}
 local TIER = { common = "Common", rare = "Rare", legendary = "Legendary", mythical = "Mythical" }
 local TINT = { common = Color3.fromRGB(222, 229, 217), rare = Color3.fromRGB(187, 219, 251),
 	legendary = Color3.fromRGB(255, 218, 134), mythical = Color3.fromRGB(227, 193, 248) }
@@ -24,42 +21,11 @@ local SIZE = 760
 local lastSequence, queue, active = 0, {}, false
 local cover, sheet
 
--- Use the same print and hinge for both families. Trail cases have their own paper dyes.
-local trailColors = {
-	paper = Color3.fromRGB(169, 235, 228),
-	sticker = Color3.fromRGB(222, 151, 251),
-	blue_ribbon = Color3.fromRGB(154, 214, 255),
-	golden_star = Color3.fromRGB(255, 184, 193),
-}
-function Opening.picture(image, chest)
-	local base = chest.base or chest.id
-	image.Image, image.ImageRectOffset, image.ImageRectSize = Assets.hangarShelf.chestAtlas, iconOffsets[base], Vector2.new(512, 512)
-	image.ImageColor3 = if chest.family == "trail" then trailColors[base] else Color3.new(1,1,1)
-	image.ScaleType = Enum.ScaleType.Fit
-	return image
-end
-
 local function frame(parent, name, z)
 	local f = Instance.new("Frame")
 	f.Name, f.BackgroundTransparency, f.BorderSizePixel, f.ZIndex = name, 1, 0, z
 	f.Parent = parent
 	return f
-end
-
--- A shelf selection gives the one chosen animation time to load before checkout.
-local warming = {}
-function Opening.prepare(chest)
-	local asset = Assets.hangarShelf.chestOpenings[chest.base or chest.id]
-	if warming[asset] then return end
-	warming[asset] = true
-	task.spawn(function()
-		local ok = pcall(function()
-			ContentProvider:PreloadAsync({asset}, function(_, status)
-				if status ~= Enum.AssetFetchStatus.Success then warming[asset] = nil end
-			end)
-		end)
-		if not ok then warming[asset] = nil end
-	end)
 end
 
 local function makePreview(view, item)
@@ -115,13 +81,7 @@ local function showPrize(request)
 	local stage = frame(sheet,"OpeningStage",1)
 	stage.Size, cover.Visible = UDim2.fromScale(1,1), true
 	local chest, item = request.chest, request.item
-	local closed = Opening.picture(PaperUI.image(stage,"ClosedChest",Assets.hangarShelf.chestAtlas,0,0,SIZE,SIZE),chest)
-	local hinged = frame(stage,"HingedChest",2)
-	hinged.ClipsDescendants, hinged.AnchorPoint = true, Vector2.new(.5,.5)
-	local film = PaperUI.image(hinged,"OpeningFrames",Assets.hangarShelf.chestOpenings[chest.base or chest.id],0,0,1,1)
-	film.ImageColor3 = closed.ImageColor3
-	film.AnchorPoint, film.Size, film.ScaleType = Vector2.zero, UDim2.fromScale(4,4), Enum.ScaleType.Stretch
-	closed.ZIndex, film.ImageTransparency = 3, .995
+	local art = Artwork.rig(stage, chest)
 	local quiet = Root:GetAttribute("ReducedShake")
 	local glints = {}
 	for i = 1, quiet and 3 or 7 do
@@ -132,6 +92,11 @@ local function showPrize(request)
 
 	local note = PaperUI.image(stage,"PrizeSheet",Assets.hangarShelf.statsWide,299,10,1322,590)
 	note.ScaleType, note.Visible = Enum.ScaleType.Stretch, false
+	local cardScale = .86
+	local cardCenterY = 258
+	note.Position = UDim2.fromOffset(960, cardCenterY)
+	local noteScale = Instance.new("UIScale")
+	noteScale.Scale, noteScale.Parent = cardScale, note
 	local rarity = centered(PaperUI.loud(PaperUI.words(note,"Rarity",(TIER[item.tier] or item.tier).." "..item.kind,657,111,510,64,51)))
 	rarity.TextColor3 = Color3.fromRGB(49,34,42)
 	local tab = PaperUI.image(note,"RarityPaper",Assets.hangarShelf.shelfTab,676,103,469,82,-2)
@@ -179,12 +144,11 @@ local function showPrize(request)
 	end
 	PaperUI.button(note,"Wear",Assets.hangar.buttonGreen,"Wear",602,433,290,89,-1,function() close(true) end,52)
 	PaperUI.button(note,"Done",Assets.hangar.buttonRed,"Done",909,433,282,89,1,function() close(false) end,52)
-	local lastFrame = -1
 	local loadWait = 0
 	render=Run.RenderStepped:Connect(function(dt)
 		-- If the network is still fetching the sheet, hold the closed pose briefly.
 		-- The prize and its buttons remain reachable if an image request fails.
-		if clock + dt >= 1.40 and clock < 1.40 and not film.IsLoaded and loadWait < 1.5 then
+		if clock + dt >= 1.40 and clock < 1.40 and not art.open.IsLoaded and loadWait < 1.5 then
 			clock = 1.39
 			loadWait += dt
 		else
@@ -192,34 +156,22 @@ local function showPrize(request)
 		end
 		local rise=ease(clock/.62)
 		local shake=math.clamp((clock-.6)/.76,0,1)
-		local pop=math.clamp((clock-1.40)/.64,0,1)
+		local pop=math.clamp((clock-1.40)/.46,0,1)
 		local prize=ease((clock-1.53)/.76)
 		local unit=sheet.AbsoluteSize.Y/1080
 		if unit<=0 then return end
 		local bottom=(cover.AbsolutePosition.Y+cover.AbsoluteSize.Y-sheet.AbsolutePosition.Y)/unit
 		local shakeAmount=math.sin(shake*math.pi)^1.5*(quiet and .18 or 1)
 		local x=960+math.sin(shake*10*math.pi)*7*shakeAmount
-		-- A quarter of the chest stays below the physical lower screen edge on every aspect ratio.
-		local y=bottom-168+SIZE*(1-rise)
-		local tilt=math.sin(shake*9*math.pi)*5.3*shakeAmount
-		local pos=UDim2.fromOffset(x,y)
-		local moving = pop > 0 and film.IsLoaded
-		closed.Position, closed.Rotation, closed.Visible = pos, tilt, not moving
-		-- A hidden ImageLabel never starts rendering its texture on a fresh client.
-		film.ImageTransparency = if moving then 0 else .995
-		local displaySize = SIZE*(1-.10*prize)
-		hinged.Size = UDim2.fromOffset(displaySize*1.25, displaySize*1.25)
-		if moving then
-			-- The baked square starts at (-108,-143) in the original 512px print.
-			-- Both drawings keep the exact same front corner as the hinge turns.
-			hinged.Position = UDim2.fromOffset(x-44*displaySize/512,y-79*displaySize/512)
-			local index = math.min(15, math.floor(pop*16))
-			if index ~= lastFrame then
-				-- Normalized tile coordinates also work when Roblox serves a smaller texture.
-				film.Position = UDim2.fromScale(-(index%4), -math.floor(index/4))
-				lastFrame = index
-			end
-		end
+		local startWidth = 640
+		local prizeBottom = cardCenterY + 295*cardScale
+		local heldWidth = math.clamp((bottom-prizeBottom-20)/(art.foot-art.top), 1, startWidth)
+		local width = startWidth + (heldWidth-startWidth)*prize
+		local startRail = bottom + 95 - art.closedFoot*startWidth
+		local heldRail = bottom - 10 - art.foot*heldWidth
+		local y = startRail + (heldRail-startRail)*prize + SIZE*(1-rise)
+		local tilt = math.sin(shake*9*math.pi)*5.3*shakeAmount
+		art.draw(x, y, width, tilt, ease(pop))
 		local burst = math.clamp((clock-1.47)/.72,0,1)
 		for i, glint in glints do
 			glint.Visible = burst > 0 and burst < 1
@@ -228,12 +180,12 @@ local function showPrize(request)
 				local distance = (95+155*burst)*(quiet and .60 or 1)
 				local size = (i%2==0 and 45 or 32)*math.sin(burst*math.pi)^.65
 				glint.Size = UDim2.fromOffset(size,size)
-				glint.Position = UDim2.fromOffset(x+math.cos(a)*distance,y-92+math.sin(a)*distance)
+				glint.Position = UDim2.fromOffset(x+math.cos(a)*distance,y+math.sin(a)*distance)
 				glint.ImageTransparency = burst*burst
 			end
 		end
-		local w=math.max(1,638*(.12+.88*prize))
-		view.Size,view.Position=UDim2.fromOffset(w,w*.62),UDim2.fromOffset(960-298*prize,y-65+(281-y+65)*prize)
+		local w=math.max(1,638*cardScale*(.12+.88*prize))
+		view.Size,view.Position=UDim2.fromOffset(w,w*.62),UDim2.fromOffset(960-298*cardScale*prize,y+(cardCenterY-24*cardScale-y)*prize)
 		if animate then animate(dt,clock); view.ImageTransparency=if prize>0 then 0 else .995 end
 		if clock>=2.32 and not revealed then
 			revealed,note.Visible=true,true

@@ -4,11 +4,11 @@
 
 ## Decision
 
-Players choose a Skin chest or a Trail chest. Both families use Paper, Sticker, Blue Ribbon and Golden Star tiers. Trail cases use different paper colors and keep the same tier decorations. The Shop's Chests tab uses the Golden Star case. Every Skin chest can award Legendary and Mythical skins, even the Paper chest. Golden Star starts at Rare. The two Mythical trails belong exclusively to the Dragon and Origami Crane skins. The display lists only possible prizes with their chances.
+Players choose a Skin chest or a Trail chest. Both families use Paper, Sticker, Blue Ribbon and Golden Star tiers. Trail cases change individual papers and trims. Alan wants the Golden Star to stay gold and the Blue Ribbon to stay blue. The Trail Paper case uses graph paper and the Trail Sticker case uses purple cardstock. The Shop's Chests tab uses the Golden Star case. Every Skin chest can award Legendary and Mythical skins, even the Paper chest. Golden Star starts at Rare. The two Mythical trails belong exclusively to the Dragon and Origami Crane skins. The display lists only possible prizes with their chances.
 
 Players can buy chests with Paper or Robux in the Shop's Chests tab. Direct Robux pricing should be a little cheaper than buying the Paper separately. Weekly match missions and consecutive daily gifts award chests players can open in either family. The starter pack includes a Paper chest. A duplicate returns part of the item's Paper value.
 
-Skin and Trail cards in the Hangar use rarity dividers and coloured paper. Players can preview a locked item in full colour before obtaining it. Opening a chest brings its upper three quarters into view from below. The lid swings on its rear hinges and stays open while the prize is on screen. The star, ribbon and paper latches stay whole on the chest front. The prize rises through a brief sparkle with the backpack unlock sound, then shows its name, rarity and recorded owner count.
+Skin and Trail cards in the Hangar use rarity dividers and coloured paper. Players can preview a locked item in full colour before obtaining it. Opening a chest brings its upper three quarters into view from below. The lid swings on its rear hinges and stays open while the prize is on screen. The star, ribbon and paper latches stay whole on the chest front. The held open pose has its own finished illustration. The prize rises through a brief sparkle with the backpack unlock sound, then shows its name, rarity and recorded owner count.
 
 ## Why
 
