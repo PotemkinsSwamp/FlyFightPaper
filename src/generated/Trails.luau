@@ -1261,120 +1261,6 @@ return JSONTypes.map({
                 }),
             }),
         }),
-        ["holo_rainbow"] = JSONTypes.map({
-            ["pieces"] = JSONTypes.array({
-                [1] = JSONTypes.map({
-                    ["colors"] = JSONTypes.array({
-                        [1] = JSONTypes.array({
-                            [1] = 255,
-                            [2] = 74,
-                            [3] = 200,
-                        }),
-                        [2] = JSONTypes.array({
-                            [1] = 255,
-                            [2] = 154,
-                            [3] = 74,
-                        }),
-                        [3] = JSONTypes.array({
-                            [1] = 255,
-                            [2] = 224,
-                            [3] = 74,
-                        }),
-                        [4] = JSONTypes.array({
-                            [1] = 76,
-                            [2] = 240,
-                            [3] = 160,
-                        }),
-                        [5] = JSONTypes.array({
-                            [1] = 50,
-                            [2] = 200,
-                            [3] = 255,
-                        }),
-                        [6] = JSONTypes.array({
-                            [1] = 122,
-                            [2] = 92,
-                            [3] = 255,
-                        }),
-                    }),
-                    ["drift"] = 0.6,
-                    ["life"] = JSONTypes.array({
-                        [1] = 0.9,
-                        [2] = 1.0,
-                    }),
-                    ["look"] = "soft",
-                    ["model"] = "soft",
-                    ["rainbow"] = 3,
-                    ["rate"] = 90,
-                    ["shrink"] = 1.6,
-                    ["size"] = JSONTypes.array({
-                        [1] = 3.2,
-                        [2] = 5.2,
-                    }),
-                    ["spin"] = 20,
-                    ["spread"] = 1.2,
-                    ["vanish"] = 0.45,
-                }),
-                [2] = JSONTypes.map({
-                    ["colors"] = JSONTypes.array({
-                        [1] = JSONTypes.array({
-                            [1] = 255,
-                            [2] = 255,
-                            [3] = 255,
-                        }),
-                        [2] = JSONTypes.array({
-                            [1] = 225,
-                            [2] = 235,
-                            [3] = 255,
-                        }),
-                    }),
-                    ["drift"] = 2.5,
-                    ["life"] = JSONTypes.array({
-                        [1] = 0.5,
-                        [2] = 0.9,
-                    }),
-                    ["look"] = "foil",
-                    ["model"] = "flake",
-                    ["rate"] = 60,
-                    ["shrink"] = 0.2,
-                    ["size"] = JSONTypes.array({
-                        [1] = 0.2,
-                        [2] = 0.5,
-                    }),
-                    ["spin"] = 720,
-                    ["spread"] = 1.6,
-                }),
-                [3] = JSONTypes.map({
-                    ["colors"] = JSONTypes.array({
-                        [1] = JSONTypes.array({
-                            [1] = 255,
-                            [2] = 255,
-                            [3] = 255,
-                        }),
-                        [2] = JSONTypes.array({
-                            [1] = 220,
-                            [2] = 240,
-                            [3] = 255,
-                        }),
-                    }),
-                    ["drift"] = 1.4,
-                    ["life"] = JSONTypes.array({
-                        [1] = 0.4,
-                        [2] = 1.0,
-                    }),
-                    ["look"] = "glow",
-                    ["model"] = "spark",
-                    ["rate"] = 150,
-                    ["shrink"] = 0.4,
-                    ["size"] = JSONTypes.array({
-                        [1] = 0.25,
-                        [2] = 0.7,
-                    }),
-                    ["spin"] = 60,
-                    ["spread"] = 1.8,
-                    ["twinkle"] = 14,
-                }),
-            }),
-        }),
         ["mini_planes"] = JSONTypes.map({
             ["pieces"] = JSONTypes.array({
                 [1] = JSONTypes.map({
@@ -1689,6 +1575,120 @@ return JSONTypes.map({
             ["tail"] = JSONTypes.array({
                 [1] = 0.09331284,
                 [2] = 0.34460694,
+            }),
+        }),
+        ["rainbow_marker"] = JSONTypes.map({
+            ["pieces"] = JSONTypes.array({
+                [1] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 255,
+                            [2] = 74,
+                            [3] = 200,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 255,
+                            [2] = 154,
+                            [3] = 74,
+                        }),
+                        [3] = JSONTypes.array({
+                            [1] = 255,
+                            [2] = 224,
+                            [3] = 74,
+                        }),
+                        [4] = JSONTypes.array({
+                            [1] = 76,
+                            [2] = 240,
+                            [3] = 160,
+                        }),
+                        [5] = JSONTypes.array({
+                            [1] = 50,
+                            [2] = 200,
+                            [3] = 255,
+                        }),
+                        [6] = JSONTypes.array({
+                            [1] = 122,
+                            [2] = 92,
+                            [3] = 255,
+                        }),
+                    }),
+                    ["drift"] = 0.6,
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.9,
+                        [2] = 1.0,
+                    }),
+                    ["look"] = "soft",
+                    ["model"] = "soft",
+                    ["rainbow"] = 3,
+                    ["rate"] = 90,
+                    ["shrink"] = 1.6,
+                    ["size"] = JSONTypes.array({
+                        [1] = 3.2,
+                        [2] = 5.2,
+                    }),
+                    ["spin"] = 20,
+                    ["spread"] = 1.2,
+                    ["vanish"] = 0.45,
+                }),
+                [2] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 255,
+                            [2] = 255,
+                            [3] = 255,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 225,
+                            [2] = 235,
+                            [3] = 255,
+                        }),
+                    }),
+                    ["drift"] = 2.5,
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.5,
+                        [2] = 0.9,
+                    }),
+                    ["look"] = "foil",
+                    ["model"] = "flake",
+                    ["rate"] = 60,
+                    ["shrink"] = 0.2,
+                    ["size"] = JSONTypes.array({
+                        [1] = 0.2,
+                        [2] = 0.5,
+                    }),
+                    ["spin"] = 720,
+                    ["spread"] = 1.6,
+                }),
+                [3] = JSONTypes.map({
+                    ["colors"] = JSONTypes.array({
+                        [1] = JSONTypes.array({
+                            [1] = 255,
+                            [2] = 255,
+                            [3] = 255,
+                        }),
+                        [2] = JSONTypes.array({
+                            [1] = 220,
+                            [2] = 240,
+                            [3] = 255,
+                        }),
+                    }),
+                    ["drift"] = 1.4,
+                    ["life"] = JSONTypes.array({
+                        [1] = 0.4,
+                        [2] = 1.0,
+                    }),
+                    ["look"] = "glow",
+                    ["model"] = "spark",
+                    ["rate"] = 150,
+                    ["shrink"] = 0.4,
+                    ["size"] = JSONTypes.array({
+                        [1] = 0.25,
+                        [2] = 0.7,
+                    }),
+                    ["spin"] = 60,
+                    ["spread"] = 1.8,
+                    ["twinkle"] = 14,
+                }),
             }),
         }),
         ["silver_chaff"] = JSONTypes.map({

@@ -124,17 +124,36 @@ return JSONTypes.map({
             ["trail"] = "smoke_bomb",
         }),
         [19] = JSONTypes.map({
+            ["id"] = "hot_rod",
+            ["name"] = "Hot Rod",
+            ["tier"] = "legendary",
+            ["trail"] = "backfire",
+        }),
+        [20] = JSONTypes.map({
+            ["id"] = "stealth",
+            ["name"] = "Stealth",
+            ["tier"] = "legendary",
+            ["trail"] = "silver_chaff",
+        }),
+        [21] = JSONTypes.map({
+            ["id"] = "race_car",
+            ["name"] = "Race Car",
+            ["tier"] = "legendary",
+            ["trail"] = "photo_finish",
+        }),
+        [22] = JSONTypes.map({
             ["id"] = "dragon",
             ["name"] = "Dragon",
             ["picture"] = 71720517887759,
             ["tier"] = "mythical",
             ["trail"] = "dragon_embers",
         }),
-        [20] = JSONTypes.map({
+        [23] = JSONTypes.map({
             ["id"] = "origami_crane",
             ["name"] = "Origami Crane",
             ["picture"] = 86508406688555,
             ["tier"] = "mythical",
+            ["trail"] = "folded_petals",
         }),
     }),
     ["tiers"] = JSONTypes.map({
@@ -154,6 +173,10 @@ return JSONTypes.map({
             ["paper"] = 5600,
             ["robux"] = 299,
         }),
+        ["rare_trail"] = JSONTypes.map({
+            ["paper"] = 1900,
+            ["robux"] = 99,
+        }),
         ["trail"] = JSONTypes.map({
             ["paper"] = 900,
             ["robux"] = 49,
@@ -161,70 +184,118 @@ return JSONTypes.map({
     }),
     ["trails"] = JSONTypes.array({
         [1] = JSONTypes.map({
+            ["id"] = "chalk_dust",
+            ["name"] = "Chalk Dust",
+            ["sold"] = true,
+            ["tier"] = "trail",
+        }),
+        [2] = JSONTypes.map({
             ["id"] = "confetti",
             ["name"] = "Confetti",
             ["sold"] = true,
             ["tier"] = "trail",
         }),
-        [2] = JSONTypes.map({
-            ["id"] = "rainbow_marker",
-            ["name"] = "Rainbow Marker",
+        [3] = JSONTypes.map({
+            ["id"] = "music_notes",
+            ["name"] = "Music Notes",
             ["sold"] = true,
             ["tier"] = "trail",
         }),
-        [3] = JSONTypes.map({
+        [4] = JSONTypes.map({
+            ["id"] = "mini_planes",
+            ["name"] = "Mini Paper Planes",
+            ["sold"] = true,
+            ["tier"] = "trail",
+        }),
+        [5] = JSONTypes.map({
             ["id"] = "gold_stars",
             ["name"] = "Gold Stars",
             ["sold"] = true,
             ["tier"] = "trail",
         }),
-        [4] = JSONTypes.map({
+        [6] = JSONTypes.map({
+            ["id"] = "stardust",
+            ["name"] = "Stardust",
+            ["price_tier"] = "rare_trail",
+            ["sold"] = true,
+            ["tier"] = "trail",
+        }),
+        [7] = JSONTypes.map({
+            ["id"] = "goo_bubbles",
+            ["name"] = "Goo Bubbles",
+            ["price_tier"] = "rare_trail",
+            ["sold"] = true,
+            ["tier"] = "trail",
+        }),
+        [8] = JSONTypes.map({
+            ["id"] = "rainbow_marker",
+            ["name"] = "Holo Rainbow",
+            ["price_tier"] = "rare_trail",
+            ["sold"] = true,
+            ["tier"] = "trail",
+        }),
+        [9] = JSONTypes.map({
+            ["id"] = "glitch_pixels",
+            ["name"] = "Glitch Pixels",
+            ["price_tier"] = "rare_trail",
+            ["sold"] = true,
+            ["tier"] = "trail",
+        }),
+        [10] = JSONTypes.map({
+            ["id"] = "storm_sparks",
+            ["name"] = "Storm Sparks",
+            ["price_tier"] = "rare_trail",
+            ["sold"] = true,
+            ["tier"] = "trail",
+        }),
+        [11] = JSONTypes.map({
+            ["id"] = "circuit_trace",
+            ["name"] = "Circuit Trace",
+            ["price_tier"] = "rare_trail",
+            ["sold"] = true,
+            ["tier"] = "trail",
+        }),
+        [12] = JSONTypes.map({
             ["id"] = "water_spray",
             ["name"] = "Water Spray",
             ["sold"] = false,
             ["tier"] = "trail",
         }),
-        [5] = JSONTypes.map({
-            ["id"] = "dragon_embers",
-            ["name"] = "Dragon Embers",
-            ["sold"] = false,
-            ["tier"] = "trail",
-        }),
-        [6] = JSONTypes.map({
+        [13] = JSONTypes.map({
             ["id"] = "smoke_bomb",
             ["name"] = "Smoke Bomb",
             ["sold"] = false,
             ["tier"] = "trail",
         }),
-        [7] = JSONTypes.map({
+        [14] = JSONTypes.map({
             ["id"] = "backfire",
             ["name"] = "Backfire",
             ["sold"] = false,
             ["tier"] = "trail",
-            ["upcoming_skin"] = JSONTypes.map({
-                ["id"] = "hot_rod",
-                ["name"] = "Hot Rod",
-            }),
         }),
-        [8] = JSONTypes.map({
+        [15] = JSONTypes.map({
             ["id"] = "silver_chaff",
             ["name"] = "Cloaking Wake",
             ["sold"] = false,
             ["tier"] = "trail",
-            ["upcoming_skin"] = JSONTypes.map({
-                ["id"] = "stealth",
-                ["name"] = "Stealth",
-            }),
         }),
-        [9] = JSONTypes.map({
+        [16] = JSONTypes.map({
             ["id"] = "photo_finish",
             ["name"] = "Photo Finish",
             ["sold"] = false,
             ["tier"] = "trail",
-            ["upcoming_skin"] = JSONTypes.map({
-                ["id"] = "race_car",
-                ["name"] = "Race Car",
-            }),
+        }),
+        [17] = JSONTypes.map({
+            ["id"] = "dragon_embers",
+            ["name"] = "Dragon Embers",
+            ["sold"] = false,
+            ["tier"] = "trail",
+        }),
+        [18] = JSONTypes.map({
+            ["id"] = "folded_petals",
+            ["name"] = "Folded Petals",
+            ["sold"] = false,
+            ["tier"] = "trail",
         }),
     }),
 })

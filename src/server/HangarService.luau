@@ -212,17 +212,32 @@ function Service:handle(player,action,value)
   end
   local item=Looks.item(value)
   self:enqueue(player,{kind="lookPurchase",lookID=value},function(ok)
-   self:message(player,ok and item.name.." is yours! Wear it from the Skins tab." or "The buy was not completed. Nothing changed.")
+   local tab=item.kind=="trail" and "Trails" or "Skins"
+   self:message(player,ok and item.name.." is yours! Wear it from the "..tab.." tab." or "The buy was not completed. Nothing changed.")
   end)
  elseif action=="wearLook" then
-  if type(value)~="table" or getmetatable(value)~=nil or type(value.skin)~="string" or #value.skin>160 or type(value.trail)~="string" or #value.trail>160 then return end
-  for field in pairs(value) do if field~="skin" and field~="trail" then return end end
-  local skinID,trailID=value.skin,value.trail
+  if type(value)~="table" or getmetatable(value)~=nil then return end
+  local skinID,trailID,operation
+  if value.kind~=nil then
+   if (value.kind~="skin" and value.kind~="trail") or type(value.id)~="string" or #value.id>160 then return end
+   for field in pairs(value) do if field~="kind" and field~="id" then return end end
+   skinID=value.kind=="skin" and value.id or profile.looks.skin
+   trailID=value.kind=="trail" and value.id or profile.looks.trail
+   operation={kind="lookWear",slot=value.kind,lookID=value.id}
+  else
+   if type(value.skin)~="string" or #value.skin>160 or type(value.trail)~="string" or #value.trail>160 then return end
+   for field in pairs(value) do if field~="skin" and field~="trail" then return end end
+   skinID,trailID=value.skin,value.trail
+   operation={kind="lookWear",skinID=skinID,trailID=trailID}
+  end
   if not Looks.wear(Schema.economicView(profile),skinID,trailID,"preview") then self:message(player,"You don't own that yet.");return end
-  self:enqueue(player,{kind="lookWear",skinID=skinID,trailID=trailID},function(ok)
-   if not ok then return end
+  self:enqueue(player,operation,function(ok,result)
+   if not ok then self:message(player,"Could not save that look. Try again.");return end
+   if result and result.type=="LooksWorn" then skinID,trailID=result.skinID,result.trailID end
+   if Run:IsStudio() then player:SetAttribute("DevSkin",nil) end
    local p=self.flight.pilots[player]
    if p then self.flight:wear(p,skinID~="" and skinID or nil,trailID~="" and trailID or nil) end
+   if self.onAnswer then self.onAnswer(player) end
   end)
  elseif action=="prestige" then
   -- From the menus only (docs/systems/economy-and-shop.md "Prestige"); the save rules re-check everything.

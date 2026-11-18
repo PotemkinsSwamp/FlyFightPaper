@@ -6,7 +6,7 @@ lost if a save fails for a moment; it retries without stopping the match for eve
 
 ## Where it stands (2026-11-18)
 
-Schema 13 stores the player's owned cosmetics and equipped skin and trail. On load, a player who already owns a skin receives its newly bundled trail. Both equipped choices are preserved. [Ownership checks in Studio](../playtests/2026-11-18-legendary-trails.md).
+Schema 13 stores the player's owned cosmetics and equipped skin and trail. On load, a player who already owns a skin receives its newly bundled trail. Wearing a look changes only that slot. If skin and trail choices arrive together, each uses the latest saved value of the other slot. [Ownership checks in Studio](../playtests/2026-11-18-legendary-trails.md).
 
 Schema 12 adds `giftIds`, an ordered list of the newest 200 received gift IDs, defaulting to empty for new and
 older saves. IDs are nonempty UTF-8 strings bounded by `max_id_bytes`; duplicate IDs, malformed lists and more than

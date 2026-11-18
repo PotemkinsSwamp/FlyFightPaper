@@ -43,8 +43,8 @@ function Spec.run()
 	test("looks config and item identities are cached frozen and match the approved prices", function()
 		local cfg = Looks.config()
 		assert(cfg == Looks.config() and table.isfrozen(cfg) and table.isfrozen(cfg.skins[1]) and table.isfrozen(cfg.tiers.common))
-		assert(#cfg.skins == 20 and #cfg.trails == 9)
-		for tier, prices in pairs({ common = {2800,149}, rare = {5600,299}, legendary = {30000,599}, mythical = {60000,999}, trail = {900,49} }) do
+		assert(#cfg.skins == 23 and #cfg.trails == 18)
+		for tier, prices in pairs({ common = {2800,149}, rare = {5600,299}, legendary = {30000,599}, mythical = {60000,999}, trail = {900,49}, rare_trail = {1900,99} }) do
 			assert(cfg.tiers[tier].paper == prices[1] and cfg.tiers[tier].robux == prices[2])
 		end
 		for _, entry in ipairs(cfg.skins) do
@@ -55,7 +55,8 @@ function Spec.run()
 		end
 		for _, entry in ipairs(cfg.trails) do
 			local item = assert(Looks.item(entry.id))
-			assert(item.kind == "trail" and item.sold == entry.sold and item.paper == 900 and item.robux == 49)
+			local prices = cfg.tiers[entry.price_tier or "trail"]
+			assert(item.kind == "trail" and item.sold == entry.sold and item.paper == prices.paper and item.robux == prices.robux)
 		end
 		assert(Looks.item("missing") == nil and Looks.item(nil) == nil and not Looks.owns(nil, "dragon"))
 		assert(not pcall(function() cfg.tiers.common.paper = 1 end))
@@ -76,7 +77,8 @@ function Spec.run()
 		end
 	end)
 	test("Legendary and Mythical buys own their matching trails without automatically wearing them", function()
-		for skin, trail in pairs({ shark_jet = "water_spray", ninja = "smoke_bomb", dragon = "dragon_embers" }) do
+		for skin, trail in pairs({ shark_jet = "water_spray", ninja = "smoke_bomb", hot_rod = "backfire", stealth = "silver_chaff",
+			race_car = "photo_finish", dragon = "dragon_embers", origami_crane = "folded_petals" }) do
 			local bought = assert(Looks.buyWithPaper(fresh(60000000), skin, "bundle"))
 			assert(Looks.owns(bought.profile, skin) and Looks.owns(bought.profile, trail))
 			assert(bought.profile.looks.skin == "" and bought.profile.looks.trail == "")
@@ -84,7 +86,7 @@ function Spec.run()
 	end)
 	test("matching trails are never sold or granted alone and unknown looks are rejected", function()
 		for _, method in ipairs({ Looks.buyWithPaper, Looks.grant }) do
-			for _, id in ipairs({ "water_spray", "dragon_embers", "smoke_bomb", "backfire", "silver_chaff", "photo_finish" }) do
+			for _, id in ipairs({ "water_spray", "dragon_embers", "folded_petals", "smoke_bomb", "backfire", "silver_chaff", "photo_finish" }) do
 				local p = fresh(60000000); local before = Schema.canonical(p)
 				local value, err = method(p, id, "not-sold"); rejected(value, err, "not_sold")
 				assert(Schema.canonical(p) == before)
@@ -92,21 +94,20 @@ function Spec.run()
 			local value, err = method(fresh(), "missing", "unknown"); rejected(value, err, "unknown_look")
 		end
 	end)
-	test("every Legendary trail has a flight effect and owners can wear it on its own", function()
-		for skin, trail in pairs({ ninja = "smoke_bomb", shark_jet = "water_spray", hot_rod = "backfire", stealth = "silver_chaff", race_car = "photo_finish" }) do
-			local effect = assert(Trails.trails[trail])
-			assert(#effect.pieces > 0 or effect.effect == "cloak")
-			local item = assert(Looks.item(trail))
-			if item.upcomingSkin then
-				assert(item.upcomingSkin.id == skin and not Looks.item(skin))
-			else
-				assert(Looks.item(skin).trail == trail)
-			end
-			local p = fresh()
-			p.looks.owned[trail] = true
-			local worn = assert(Looks.wear(p, "", trail, "trail-only"))
-			assert(worn.profile.looks.trail == trail and worn.profile.looks.skin == "" and Schema.validate(worn.profile, catalog))
+	test("every flight trail can be bought or unlocked from a skin and worn using its saved ID", function()
+		local bundles = {}
+		for _, skin in Looks.config().skins do
+			if skin.trail then bundles[skin.trail] = skin.id end
 		end
+		for id, effect in Trails.trails do
+			assert(#effect.pieces > 0 or effect.effect == "cloak", id)
+			local item = assert(Looks.item(id), id)
+			local purchase = if item.sold then id else assert(bundles[id], id)
+			local p = assert(Looks.buyWithPaper(fresh(60000000), purchase, "buy")).profile
+			local worn = assert(Looks.wear(p, "", id, "trail-only")).profile
+			assert(worn.looks.trail == id and worn.looks.skin == "" and Schema.validate(worn, catalog), id)
+		end
+		for _, item in Looks.config().trails do assert(Trails.trails[item.id], item.id) end
 	end)
 	test("an owned look costs nothing even when the balance is empty", function()
 		local p = assert(Looks.grant(fresh(), "dragon", "grant-first")).profile
@@ -177,11 +178,12 @@ function Spec.run()
 		assert(Schema.canonical(migrated) == Schema.canonical(expected) and Schema.validate(migrated, catalog))
 		assert(Schema.canonical(p) == before)
 	end)
-	test("an existing Ninja owner receives Smoke Bomb once and keeps their worn trail", function()
+	test("existing bundle owners receive new trails once and keep their equipped Holo Rainbow", function()
 		local p = fresh(12345)
-		p.looks = { owned = { ninja = true, confetti = true }, skin = "ninja", trail = "confetti" }
+		p.looks = { owned = { ninja = true, origami_crane = true, rainbow_marker = true }, skin = "ninja", trail = "rainbow_marker" }
 		local migrated = assert(Schema.migrate(Schema.freeze(p), catalog))
-		assert(migrated.looks.owned.smoke_bomb and migrated.looks.skin == "ninja" and migrated.looks.trail == "confetti")
+		assert(migrated.looks.owned.smoke_bomb and migrated.looks.owned.folded_petals and migrated.looks.skin == "ninja")
+		assert(migrated.looks.trail == "rainbow_marker" and Looks.item(migrated.looks.trail).name == "Holo Rainbow")
 		assert(migrated.paperMilli == 12345 and not p.looks.owned.smoke_bomb)
 		assert(Schema.canonical(migrated) == Schema.canonical(assert(Schema.migrate(migrated, catalog))))
 		assert(not assert(Schema.migrate(fresh(), catalog)).looks.owned.smoke_bomb)
@@ -233,8 +235,13 @@ function Spec.run()
 	end)
 	test("all look products are disabled priced and produce frozen lookUnlock grants", function()
 		local commerce = assert(Commerce.catalog(CommerceConfig)); local count = 0
-		local prices = { hazard_stripes=149,carbon_fiber=149,racing_stripe=149,eight_bit=149,neon_grid=149,flame_decals=149,tie_dye=149,jungle_camo=149,lava=299,galaxy=299,slime=299,holographic=299,glitch=299,thunderstorm=299,circuit_board=299,comic_book=299,
-			shark_jet=599,ninja=599,dragon=999,origami_crane=999,confetti=49,rainbow_marker=49,gold_stars=49 }
+		local prices = {}
+		for _, list in { Looks.config().skins, Looks.config().trails } do
+			for _, entry in list do
+				local item = Looks.item(entry.id)
+				if item.sold then prices[item.id] = item.robux end
+			end
+		end
 		for _, product in ipairs(CommerceConfig.products) do
 			if product.benefit == "look_unlock" then
 				count += 1
@@ -247,7 +254,7 @@ function Spec.run()
 			end
 		end
 		for id in pairs(prices) do assert(commerce.byKey["look_" .. id]) end
-		assert(count == 23 and not commerce.byKey.look_water_spray and not commerce.byKey.look_dragon_embers)
+		assert(count == 34 and not commerce.byKey.look_water_spray and not commerce.byKey.look_dragon_embers)
 		local owned = assert(Looks.grant(fresh(), "shark_jet", "preview-grant")).profile
 		local dto = Commerce.preview(commerce, owned.boosts, owned)
 		for _, offer in ipairs(dto.offers) do

@@ -92,6 +92,18 @@ function Spec.run()
   expected.version+=1;expected.operationIds[service.sessions.user.token]=1
   assert(Schema.canonical(profile.Data)==Schema.canonical(expected),"taking looks off changed ownership or other progress")
  end)
+ test("quick consecutive changes to separate cosmetic slots preserve both saved selections",function()
+  local service,profile=fixture()
+  profile.Data.looks.owned={shark_jet=true,water_spray=true}
+  local skin=assert(service:prepare("user",{kind="lookWear",slot="skin",lookID="shark_jet"}))
+  local trail=assert(service:prepare("user",{kind="lookWear",slot="trail",lookID="water_spray"}))
+  assert(service:apply("user",skin).status=="ok")
+  local result=service:apply("user",trail)
+  assert(result.status=="ok" and result.value.skinID=="shark_jet" and result.value.trailID=="water_spray")
+  assert(profile.Data.looks.skin=="shark_jet" and profile.Data.looks.trail=="water_spray")
+  local clear=assert(service:prepare("user",{kind="lookWear",slot="skin",lookID=""}))
+  assert(service:apply("user",clear).status=="ok" and profile.Data.looks.skin=="" and profile.Data.looks.trail=="water_spray")
+ end)
  test("unowned or mismatched looks refuse the whole wear operation without advancing the saved operation",function()
   local service,profile=fixture();profile.Data.looks={owned={shark_jet=true,water_spray=true},skin="shark_jet",trail="water_spray"}
   local before=Schema.canonical(profile.Data)
@@ -107,6 +119,7 @@ function Spec.run()
    {kind="lookPurchase",lookID=1},{kind="lookPurchase",lookID=string.rep("x",161)},
    {kind="lookPurchase",lookID="confetti",extra=true},{kind="lookPurchase",lookID="confetti",price=0},
    {kind="lookWear"},{kind="lookWear",skinID=""},{kind="lookWear",trailID=""},
+   {kind="lookWear",slot="wrong",lookID=""},{kind="lookWear",slot="skin",lookID="",trailID=""},
    {kind="lookWear",skinID=false,trailID=""},{kind="lookWear",skinID="",trailID=1},
    {kind="lookWear",skinID=string.rep("x",161),trailID=""},{kind="lookWear",skinID="",trailID=string.rep("x",161)},
    {kind="lookWear",skinID="",trailID="",extra=true},{kind="lookWear",skinID="",trailID="",lookID="confetti"}}) do

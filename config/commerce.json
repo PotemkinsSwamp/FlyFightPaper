@@ -627,6 +627,33 @@
       "enabled": false
     },
     {
+      "key": "look_hot_rod",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "hot_rod",
+      "roblox_product_id": null,
+      "approved_robux_price": 599,
+      "enabled": false
+    },
+    {
+      "key": "look_stealth",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "stealth",
+      "roblox_product_id": null,
+      "approved_robux_price": 599,
+      "enabled": false
+    },
+    {
+      "key": "look_race_car",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "race_car",
+      "roblox_product_id": null,
+      "approved_robux_price": 599,
+      "enabled": false
+    },
+    {
       "key": "look_dragon",
       "kind": "developer_product",
       "benefit": "look_unlock",
@@ -645,6 +672,15 @@
       "enabled": false
     },
     {
+      "key": "look_chalk_dust",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "chalk_dust",
+      "roblox_product_id": null,
+      "approved_robux_price": 49,
+      "enabled": false
+    },
+    {
       "key": "look_confetti",
       "kind": "developer_product",
       "benefit": "look_unlock",
@@ -654,10 +690,19 @@
       "enabled": false
     },
     {
-      "key": "look_rainbow_marker",
+      "key": "look_music_notes",
       "kind": "developer_product",
       "benefit": "look_unlock",
-      "look_id": "rainbow_marker",
+      "look_id": "music_notes",
+      "roblox_product_id": null,
+      "approved_robux_price": 49,
+      "enabled": false
+    },
+    {
+      "key": "look_mini_planes",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "mini_planes",
       "roblox_product_id": null,
       "approved_robux_price": 49,
       "enabled": false
@@ -669,6 +714,60 @@
       "look_id": "gold_stars",
       "roblox_product_id": null,
       "approved_robux_price": 49,
+      "enabled": false
+    },
+    {
+      "key": "look_stardust",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "stardust",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_goo_bubbles",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "goo_bubbles",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_rainbow_marker",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "rainbow_marker",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_glitch_pixels",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "glitch_pixels",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_storm_sparks",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "storm_sparks",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
+      "enabled": false
+    },
+    {
+      "key": "look_circuit_trace",
+      "kind": "developer_product",
+      "benefit": "look_unlock",
+      "look_id": "circuit_trace",
+      "roblox_product_id": null,
+      "approved_robux_price": 99,
       "enabled": false
     }
   ],

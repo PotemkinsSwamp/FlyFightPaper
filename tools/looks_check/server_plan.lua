@@ -10,10 +10,10 @@ local planes = workspace:WaitForChild("Planes")
 local status = game.ServerStorage.MatchStatus
 local function phase() local ok, s = pcall(function() return status:Invoke() end) return ok and tostring(s.phase) or "?" end
 
-local TRAILS = { "chalk_dust", "circuit_trace", "confetti", "dragon_embers", "folded_petals", "glitch_pixels", "gold_stars", "goo_bubbles", "holo_rainbow", "mini_planes", "music_notes", "stardust", "storm_sparks" }
+local TRAILS = { "chalk_dust", "circuit_trace", "confetti", "dragon_embers", "folded_petals", "glitch_pixels", "gold_stars", "goo_bubbles", "rainbow_marker", "mini_planes", "music_notes", "stardust", "storm_sparks" }
 local SKINS = { "hazard_stripes", "carbon_fiber", "racing_stripe", "eight_bit", "neon_grid", "flame_decals", "tie_dye", "jungle_camo", "lava", "galaxy", "slime", "holographic", "glitch", "thunderstorm", "circuit_board", "comic_book", "shark_jet", "dragon", "origami_crane" }
 local MIX = { { "galaxy", "circuit_trace" }, { "dragon", "dragon_embers" }, { "origami_crane", "folded_petals" }, { "comic_book", "confetti" }, { "lava", "gold_stars" }, { "slime", "goo_bubbles" },
-	{ "holographic", "holo_rainbow" }, { "glitch", "glitch_pixels" }, { "thunderstorm", "storm_sparks" }, { "circuit_board", "circuit_trace" }, { "tie_dye", "music_notes" }, { "neon_grid", "stardust" } }
+	{ "holographic", "rainbow_marker" }, { "glitch", "glitch_pixels" }, { "thunderstorm", "storm_sparks" }, { "circuit_board", "circuit_trace" }, { "tie_dye", "music_notes" }, { "neon_grid", "stardust" } }
 
 local plan = {}
 local function add(name, kind, settle, dur, view, pick) table.insert(plan, { name = name, kind = kind, settle = settle, dur = dur, view = view or "", pick = pick }) end

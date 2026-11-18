@@ -55,12 +55,14 @@ function Spec.run()
 		local service,player,profiles,_,profile=fixture();profile.looks.owned={shark_jet=true,water_spray=true}
 		local model=Instance.new("Folder");model:SetAttribute("Skin","hazard_stripes");model:SetAttribute("Trail","confetti")
 		local p={model=model,skin="hazard_stripes",trail="confetti"};service.flight.pilots[player]=p
-		profiles.defer=true;player.attributes.MenuMessage="Keep this message."
+		profiles.defer=true;player.attributes.MenuMessage="Keep this message.";player.attributes.DevSkin="dragon"
 		local before=Schema.canonical(profile);local value={skin="shark_jet",trail="water_spray"}
 		service:handle(player,"wearLook",value)
 		assert(#profiles.calls==1 and Schema.canonical(profiles.calls[1])==Schema.canonical({kind="lookWear",skinID="shark_jet",trailID="water_spray"}))
 		assert(p.skin=="hazard_stripes" and p.trail=="confetti" and model:GetAttribute("Skin")=="hazard_stripes" and model:GetAttribute("Trail")=="confetti")
+		assert(player.attributes.DevSkin=="dragon")
 		value.skin="dragon";value.trail="dragon_embers";profiles.pending(true)
+		if game:GetService("RunService"):IsStudio() then assert(player.attributes.DevSkin==nil) end
 		local ok=p.skin=="shark_jet" and p.trail=="water_spray" and model:GetAttribute("Skin")==p.skin and model:GetAttribute("Trail")==p.trail
 		model:Destroy()
 		assert(ok and player.attributes.MenuMessage=="Keep this message.")
@@ -73,6 +75,16 @@ function Spec.run()
 		service:handle(player,"wearLook",{skin="",trail=""})
 		local ok=#profiles.calls==1 and p.skin==nil and p.trail==nil and model:GetAttribute("Skin")==nil and model:GetAttribute("Trail")==nil
 		model:Destroy();assert(ok and player.attributes.MenuMessage==nil)
+	end)
+	test("wearing a single trail uses the complete saved result on the plane",function()
+		local service,player,profiles,_,profile=fixture()
+		profile.looks.owned={shark_jet=true,water_spray=true}
+		profiles.defer=true
+		local p={};service.flight.pilots[player]=p
+		service:handle(player,"wearLook",{kind="trail",id="water_spray"})
+		assert(Schema.canonical(profiles.calls[1])==Schema.canonical({kind="lookWear",slot="trail",lookID="water_spray"}))
+		profiles.pending(true,{type="LooksWorn",skinID="shark_jet",trailID="water_spray"})
+		assert(p.skin=="shark_jet" and p.trail=="water_spray")
 	end)
 	test("an unowned skin or trail refuses the entire wear request",function()
 		for _,value in ipairs({{skin="dragon",trail="water_spray"},{skin="shark_jet",trail="confetti"},{skin="water_spray",trail=""}}) do

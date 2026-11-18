@@ -49,7 +49,7 @@ function LooksRules.config()
 	local raw = detached(DefaultLooks)
 	assert(type(raw.tiers) == "table" and type(raw.bot_tiers) == "table", "missing looks tiers")
 	for tier, prices in pairs(raw.tiers) do
-		assert(skinTiers[tier] or tier == "trail", "unknown look tier: " .. tostring(tier))
+		assert(skinTiers[tier] or tier == "trail" or tier == "rare_trail", "unknown look tier: " .. tostring(tier))
 		assert(type(prices) == "table" and integer(prices.paper) and integer(prices.robux), "invalid look prices")
 		assert(prices.paper <= math.floor(Economy.MAX_SAFE_INTEGER / Economy.MILLI), "look price exceeds safe milliunits")
 	end
@@ -63,10 +63,11 @@ function LooksRules.config()
 			assert(type(entry.name) == "string" and #entry.name > 0, "missing look name")
 			assert(raw.tiers[entry.tier] and (kind == "skin" and skinTiers[entry.tier] or kind == "trail" and entry.tier == "trail"), "unknown look tier")
 			assert(kind == "skin" or type(entry.sold) == "boolean", "missing trail sold flag")
-			local prices = raw.tiers[entry.tier]
+			assert(entry.price_tier == nil or (kind == "trail" and entry.sold and entry.price_tier == "rare_trail"), "invalid trail price tier")
+			local prices = raw.tiers[entry.price_tier or entry.tier]
 			local item = { id = entry.id, name = entry.name, kind = kind, tier = entry.tier,
 				paper = prices.paper, robux = prices.robux, trail = entry.trail, sold = kind == "skin" or entry.sold,
-				picture = entry.picture, upcomingSkin = entry.upcoming_skin }
+				picture = entry.picture }
 			assert(entry.picture == nil or integer(entry.picture), "invalid look picture")
 			byID[item.id] = item
 			if kind == "skin" then

@@ -952,3 +952,6 @@ Back to [HOME](../HOME.md)
   shape skin follow its own record, and a respawn puts the plane's own looks back until they are set again.
 - **One error printed hundreds of times fills the log the Studio link can read** (about 300 lines): quieter warnings
   behind it are lost. Fix the loud one, then read the log again.
+
+## Cosmetic releases (2026-11-18)
+- For a completed skin, check its card, the textured plane in Customize, the Paper purchase, Wear, and the plane after launch. Shark Jet had a working catalog row and could grant Water Spray before its body existed. For a trail, check its saved ID against the renderer and its route from a normal player account. The Studio selector draws effects that players can have no way to acquire.

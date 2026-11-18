@@ -197,7 +197,11 @@ function Service:_effect(p,op,boostState)
 		else p.ownership[op.catalogID]=true;result={type="PartUnlocked",catalogID=op.catalogID} end
 	elseif op.kind=="lookUnlock" then applied,err=Looks.grant(v,op.lookID,op.id)
 	elseif op.kind=="lookPurchase" then applied,err=Looks.buyWithPaper(v,op.lookID,op.id)
-	elseif op.kind=="lookWear" then applied,err=Looks.wear(v,op.skinID,op.trailID,op.id)
+	elseif op.kind=="lookWear" then
+		local skinID,trailID=op.skinID,op.trailID
+		if op.slot=="skin" then skinID,trailID=op.lookID,v.looks.trail
+		elseif op.slot=="trail" then skinID,trailID=v.looks.skin,op.lookID end
+		applied,err=Looks.wear(v,skinID,trailID,op.id)
 	elseif op.kind=="prestige" then
 		-- Keep unrelated save fields outside the economy rules' smaller copy bounds.
 		local prestigeView=assert(Schema.copy(v))
@@ -397,6 +401,9 @@ function Service:apply(account,input)
   if op.kind=="lookPurchase" then
    if type(op.lookID)~="string" or #op.lookID==0 or #op.lookID>160 then return outcome("error","invalid_operation") end
    fields={kind=true,id=true,lookID=true}
+  elseif op.slot~=nil then
+   if (op.slot~="skin" and op.slot~="trail") or type(op.lookID)~="string" or #op.lookID>160 then return outcome("error","invalid_operation") end
+   fields={kind=true,id=true,slot=true,lookID=true}
   else
    if type(op.skinID)~="string" or #op.skinID>160 or type(op.trailID)~="string" or #op.trailID>160 then return outcome("error","invalid_operation") end
    fields={kind=true,id=true,skinID=true,trailID=true}

@@ -5,7 +5,8 @@
     "rare": { "paper": 5600, "robux": 299 },
     "legendary": { "paper": 30000, "robux": 599 },
     "mythical": { "paper": 60000, "robux": 999 },
-    "trail": { "paper": 900, "robux": 49 }
+    "trail": { "paper": 900, "robux": 49 },
+    "rare_trail": { "paper": 1900, "robux": 99 }
   },
   "skins": [
     { "id": "hazard_stripes", "name": "Hazard Stripes", "tier": "common", "picture": 124257520246805 },
@@ -26,19 +27,31 @@
     { "id": "comic_book", "name": "Comic Book", "tier": "rare", "picture": 103647805313090 },
     { "id": "shark_jet", "name": "Shark Jet", "tier": "legendary", "trail": "water_spray" },
     { "id": "ninja", "name": "Ninja", "tier": "legendary", "trail": "smoke_bomb" },
+    { "id": "hot_rod", "name": "Hot Rod", "tier": "legendary", "trail": "backfire" },
+    { "id": "stealth", "name": "Stealth", "tier": "legendary", "trail": "silver_chaff" },
+    { "id": "race_car", "name": "Race Car", "tier": "legendary", "trail": "photo_finish" },
     { "id": "dragon", "name": "Dragon", "tier": "mythical", "trail": "dragon_embers", "picture": 71720517887759 },
-    { "id": "origami_crane", "name": "Origami Crane", "tier": "mythical", "picture": 86508406688555 }
+    { "id": "origami_crane", "name": "Origami Crane", "tier": "mythical", "trail": "folded_petals", "picture": 86508406688555 }
   ],
   "trails": [
+    { "id": "chalk_dust", "name": "Chalk Dust", "tier": "trail", "sold": true },
     { "id": "confetti", "name": "Confetti", "tier": "trail", "sold": true },
-    { "id": "rainbow_marker", "name": "Rainbow Marker", "tier": "trail", "sold": true },
+    { "id": "music_notes", "name": "Music Notes", "tier": "trail", "sold": true },
+    { "id": "mini_planes", "name": "Mini Paper Planes", "tier": "trail", "sold": true },
     { "id": "gold_stars", "name": "Gold Stars", "tier": "trail", "sold": true },
+    { "id": "stardust", "name": "Stardust", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "goo_bubbles", "name": "Goo Bubbles", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "rainbow_marker", "name": "Holo Rainbow", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "glitch_pixels", "name": "Glitch Pixels", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "storm_sparks", "name": "Storm Sparks", "tier": "trail", "price_tier": "rare_trail", "sold": true },
+    { "id": "circuit_trace", "name": "Circuit Trace", "tier": "trail", "price_tier": "rare_trail", "sold": true },
     { "id": "water_spray", "name": "Water Spray", "tier": "trail", "sold": false },
-    { "id": "dragon_embers", "name": "Dragon Embers", "tier": "trail", "sold": false },
     { "id": "smoke_bomb", "name": "Smoke Bomb", "tier": "trail", "sold": false },
-    { "id": "backfire", "name": "Backfire", "tier": "trail", "sold": false, "upcoming_skin": { "id": "hot_rod", "name": "Hot Rod" } },
-    { "id": "silver_chaff", "name": "Cloaking Wake", "tier": "trail", "sold": false, "upcoming_skin": { "id": "stealth", "name": "Stealth" } },
-    { "id": "photo_finish", "name": "Photo Finish", "tier": "trail", "sold": false, "upcoming_skin": { "id": "race_car", "name": "Race Car" } }
+    { "id": "backfire", "name": "Backfire", "tier": "trail", "sold": false },
+    { "id": "silver_chaff", "name": "Cloaking Wake", "tier": "trail", "sold": false },
+    { "id": "photo_finish", "name": "Photo Finish", "tier": "trail", "sold": false },
+    { "id": "dragon_embers", "name": "Dragon Embers", "tier": "trail", "sold": false },
+    { "id": "folded_petals", "name": "Folded Petals", "tier": "trail", "sold": false }
   ],
   "bot_tiers": { "rookie": "common", "regular": "rare", "experienced": "legendary", "ace": "mythical" },
   "bot_looks": { "both": 35, "skin": 35, "trail": 15, "neither": 15 }

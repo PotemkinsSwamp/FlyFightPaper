@@ -1,15 +1,6 @@
 # Skins and trails plan
 
-**Status:** building the first batch (2026-11-13). Printed-sheet Commons and Rares work in Studio (Alan OK'd, test
-pictures; [playtest](../playtests/2026-11-13-printed-sheet-skins.md)); buying with Paper, wearing and the Skins and
-Trails tabs built; boosters wear printed skins. The Origami Crane (first Mythical) is in the game as five fitted pieces
-(`SkinShapes.luau`), with playtest bugs to fix and its printed sheet next; the wing-hitbox tilt is built
-([playtest](../playtests/2026-11-13-crane-and-skins-tabs.md)). The Dragon (second Mythical) is built as a shape skin that
-keeps its proportions and is the hitbox (Alan: "looks good now", 2026-11-16). **Done 2026-11-16 ([first skin set](../decisions/2026-11-16-first-skin-set.md)):** the Dragon's boosters wear its scales; the 8 Commons are drawn in code and in the game's list. **Next:**
-the 8 animated Rares (how-it-works note OK'd by Alan 2026-11-16, "Moving Rares" below; preview videos being made). Later: Shark Jet, trails. His rules: [skin rules](../decisions/2026-11-13-skin-rules.md) (hitbox is always your parts, one design per skin fitted by
-the game, Common/Rare/Legendary/Mythical, team outline, bots wear them), on top of the
-[shop plan decision](../decisions/2026-10-18-shop-plan.md) (Paper or Robux, kept through prestige). Serves
-[the beta has to feel finished](../decisions/2026-11-06-beta-feels-finished.md).
+**Status, 2026-11-18.** The player catalog includes eight Common, eight Rare, five Legendary and two Mythical skins, plus 18 trails. Eleven trails sell for Paper and seven are included with skins. The remaining design ideas below are future content. [Current hangar and flight behavior](../systems/planes-and-hangar.md) and [Alan's skin rules](../decisions/2026-11-13-skin-rules.md).
 
 ## The order (Alan, 2026-11-13)
 1. A list of ideas for skins and trails, sorted into tiers.
@@ -156,7 +147,7 @@ how the game draws 3D pieces (see "How it is drawn").
 
 Lava and Comic Book have no matching trail. Names are Claude's picks.
 **The other ten (2026-11-16; Alan's words in the decision note):** *In the game, complete* (`config/trails.json`, drawn
-by `PlaneTrails.luau`, reached through the Dev: trail button until the shop list goes in): Chalk Dust (pastel puffs,
+by `PlaneTrails.luau`, available in the Trails tab): Chalk Dust (pastel puffs,
 chalk specks), Stardust (purple and blue cloud, small foil stars, sparkle dust), Goo Bubbles (green mist, see-through
 bubbles and drips), Glitch Pixels (cubes and bars that blink and jump sideways), Confetti (paper strips and curls),
 Music Notes (gold and black notes standing up), Folded Petals (blue and silver teardrop petals, falling), Dragon Embers
@@ -166,7 +157,7 @@ go: the first was "mainly cloud", the second "doesn't give a technology feel, th
 now bent traces, LEDs flashing in four colours, gold pads, chips and a slight green board cloud; its bent-trace model
 is uploaded) and **Mini Paper Planes** (his pick to replace **Paper Hearts, which is saved for a holiday set**: its
 draft row stays in `tools/art/trail_drafts.json`; little paper planes flying nose-first; its model is uploaded). All 13
-are drawn; none has been seen in Play. The table above was written before the 3D change: its "what you see"
+were drawn and later checked in Play. The table above was written before the 3D change: its "what you see"
 and "made by" are out of date.
 - **How they are sold:** the five plain ones as today (49 Robux or 900 Paper). The six that match a Rare are sold **on
   their own** (Alan) and can be worn with any skin. **Price not set:** Alan: they "would probably be more expensive" than
