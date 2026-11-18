@@ -26,3 +26,13 @@ Opened all eight family and tier combinations from Shop > Chests with Studio pra
 [Opening with game audio](../../.planning/skins/chest-hinge/golden-star-opening.mp4), [all eight open chests](../../.planning/skins/chest-hinge/eight-open-chests.jpg), [phone view](../../.planning/skins/chest-hinge/phone-reward.png).
 
 719 Studio checks passed across 49 suites. Private Team Create save 812 and the rebuilt working file contain the three changed Luau modules. Their sources matched the repository in Studio Edit and the working file.
+
+## Shop cards and prize odds
+
+Alan wanted the Trail cases distinguished by color, both purchase controls to match the Shop, the Golden Star chest on the side tab and the prize list to read more like a collection. In private Studio save 813 both families share the original prints and hinged animation poses. The Trail paper dyes are mint, berry, blue-teal and amber. [Skin shelf](../../.planning/skins/chest-shop-style/skins.png) and [Trail shelf](../../.planning/skins/chest-shop-style/trails.png).
+
+- Opened the Sticker Trail details in the Shop. Its prize sheet grouped the 16 outcomes by rarity, with the total chance on each colored divider. Each row showed its individual chance, duplicate Paper and ownership. The Paper Skin list still displayed Ninja at 0.048% and each Mythical at 0.005%. [Sticker prize sheet](../../.planning/skins/chest-shop-style/odds.png) and [the bottom of the Paper Skin list](../../.planning/skins/chest-shop-style/skin-long-odds.png).
+- The brown Paper plate opened an explicit confirmation. Spending 3,000 test Paper on Sticker Trail awarded Gold Stars, used the same berry color through the hinged opening, and left the wallet at zero. A Golden Star Paper confirmation then showed the shortfall. Pressing it left the wallet and screen in place. [Sticker open](../../.planning/skins/chest-shop-style/sticker-open.png).
+- The green button opened a separate Studio practice confirmation with Roblox's Robux icon. The Golden Star Trail list omitted Common. Confirming awarded Photo Finish with the Paper wallet still at zero. [Practice confirmation](../../.planning/skins/chest-shop-style/practice.png).
+- Checked the 2046 by 801 Studio viewport and a constrained 844 by 390 phone layout. Used the phone-size buttons to reach the Sticker practice confirmation. All its nonempty visible text labels fit. [Phone shelf](../../.planning/skins/chest-shop-style/phone-shop.png) and [phone confirmation](../../.planning/skins/chest-shop-style/phone-odds.png).
+- All 719 Studio tests passed in 49 suites. Stopped Play and compared all four changed game modules with Studio Edit and the rebuilt working file. Studio purchases were simulated.
