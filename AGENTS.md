@@ -18,6 +18,7 @@ Read when relevant: `docs/HOME.md` is the map of every doc. Rule details for a s
 `config/*.json` (tuning numbers), `assets/references/classroom-city-approved-v1.png` (art target).
 
 ## Keeping the docs
+- When Codex completes a major FlyFightPaper task, use the installed `handoff` skill to write a new dated record for Claude and update `.planning/handoffs/LATEST.md`. Commit and push the record. Continue the same chat with normal automatic compaction and skip the kickoff message. Context length alone does not trigger a handoff.
 - **Each fact lives in one page**; other pages link to it. Never copy text between pages.
 - When a system changes, update its page in `docs/systems/` ("Where it stands", rules, code). When Alan decides
   something, add a note to `docs/decisions/` and list it in its README. After a playtest, add a note to

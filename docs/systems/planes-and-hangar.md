@@ -5,7 +5,7 @@ A plane is four parts (nose, wings, body, tail) plus weapons on mounts. Slim bod
 The hangar opens on the build you fly; saving makes a build the one you fly next, and at your desk **Save & fly – 120
 Paper** also refolds it. Switching builds with unsaved changes asks first.
 
-## Where it stands (2026-11-14)
+## Where it stands (2026-11-18)
 
 - All five Legendary trails are in Studio. Ninja grants Smoke Bomb and Shark Jet grants Water Spray. Backfire, Cloaking Wake and Photo Finish are available through the Studio trail selector while their skins await installation. [Trail previews](../plan/SKINS-PLAN.md#five-new-legendary-trails)
 - The Legendary Ninja is available in Customize and in flight. Its two scarf tails follow speed and turns, a reflection crosses the metal on each wing, and shots hit the rigid plane and blades. The loose scarf is cosmetic. [Studio flight check](../playtests/2026-11-17-ninja-in-flight.md)
