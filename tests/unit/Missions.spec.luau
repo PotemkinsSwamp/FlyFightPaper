@@ -187,8 +187,9 @@ function Spec.run()
 		assert(finished[1].tier == "easy" and finished[4].tier == "two_day" and Missions.valid(nextState))
 		finished[1].progress = 0
 		assert(nextState.daily[1].progress == 16)
-		local again, repeated = Missions.applyMatch(nextState, summary({folds = 100}))
-		assert(#repeated == 0 and again.daily[1].progress == 16 and again.dailiesDone == 3)
+		-- (50, not 100: 100 more folds would honestly finish the 110-fold weekly, at 16 now)
+		local again, repeated = Missions.applyMatch(nextState, summary({folds = 50}))
+		assert(#repeated == 0 and again.daily[1].progress == 16 and again.dailiesDone == 3 and again.weekly[2].progress == 66)
 	end)
 
 	test("plain minutes, gear folds and mode-restricted matches count independently", function()
