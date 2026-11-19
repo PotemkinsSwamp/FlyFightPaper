@@ -73,4 +73,29 @@ holds).
   wrist move (C); "like a dart ... then keeps the arm pointing" gave a slow thrust and a held point (A). "Feet
   planted" did not stop A's step. Every clip came back 2.97 s for "3 seconds", 30 keys a second.
 
+## Preview video without Play (2026-11-19)
+`python tools/emote_preview.py STUDIO_ID OUT.mp4` (with `tools/emote_preview.lua`): a plain blocky test kid, scaled
+to the room's 140 studs, stands on 1st's desk in the real classroom in Studio's Edit and is posed frame by frame
+from the clip's keyframes; the plane and the camera follow the emote's recipe; every frame is Studio's own viewport
+capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no upload, nothing left in the place.
+- The clip comes straight from its uploaded id (`KeyframeSequenceProvider:GetKeyframeSequenceAsync`), so nothing
+  big has to be sent into Studio.
+- Clean-up done inside the preview so far: the hips are kept over the spot (no step off the desk).
+- **Camera Flick's recipe as previewed** (version B): the plane rides in the right hand, nose at the camera, tipped
+  up and askew so its shape shows; it leaves the hand at 0.87 s, flies 0.42 s straight to the lens (fast off the hand, slower as it
+  fills the picture) and turns flat as it arrives, so its wings fill the picture; at 1.29 s the camera is knocked back
+  and shaken, then tips 68 degrees forward and drops with a bounce (0.65 s); the plane slides down the lens from 1.74 s. Camera: 225 studs out, a
+  little below chest height, 50 degree lens.
+- What it can't show: how Roblox fits the clip to a real avatar (extra bones), real avatars' shapes, the room's
+  Play lighting. Those are still Play's job.
+- Gotchas: the first captures come before the room's pictures load (take four warm-up captures); spatial queries
+  miss decorations with CanQuery off, so blockers between lens and kid are found by walking the room's parts (here
+  the landing ring and two runway lights on 1st's desk), hidden for the render and put back; hide per piece, never a
+  whole folder (one try hid the whole toy town); Studio left the camera Scriptable afterwards until set to Fixed again.
+- An independent look at the first cut (a reviewer agent on a contact sheet) found: the plane rose away on its arc
+  and then popped onto the lens (fixed: straight path, eased so the approach shows), a long still hold on the floor
+  (cut to 2.2 s) and too much camera roll (24 to 10 degrees). Left for Alan's eye: the body turns side-on in the
+  wind-up, and the blocky test body's arm looks huge when it points at the lens.
+- Video: `.planning/emotes/camera-flick-preview.mp4`.
+
 Back to [HOME](../HOME.md).
