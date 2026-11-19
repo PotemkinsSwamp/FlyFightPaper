@@ -23,6 +23,9 @@ About 15 seconds, the same every match:
   the stage is what makes some emotes special, each in its own way; if every paid one did it, it would turn into a
   gimmick. The free one doesn't, and new emotes don't have to. When one does cover the camera, the cover coming off
   can be the cut back to your desk (Book Kicker).
+- **Never depend on the body's shape** (Alan 2026-11-19): avatars have short arms, long arms or none, so nothing
+  lands on an arm, and no prop has to line up with a body part. A prop may ride on one hand or the head (it follows
+  any body); things that fly keep their own path around the kid.
 - Liveliness comes from a toy or prop that moves by itself while the kid watches and reacts, not from camera work.
 - Each emote is a recipe (body move, prop path, camera shots, the cover, song) run by one player script, so the shop
   preview and the scene play the same thing.
@@ -44,6 +47,10 @@ Names are placeholders.
 | A+ | Holds up their report card and slaps it on the lens, where it becomes the real report card |
 | Chalk Bomb | Claps two board erasers; a chalk cloud swallows the screen and drifts off |
 | Stomp | Jumps off the books at the camera; the shoe sole fills the screen |
+| Magician (Alan) | Whistles; paper planes fly in and circle them; the kid floats up into the air in the middle with hands out to the sides, like a stage magician |
+| Domino Books | Nudges one book and a line of them topples around the desk like dominoes, ending arms up |
+| Paper Storm | Throws a whole stack of homework in the air and spins under it as it rains down |
+| Ruler Drumroll | Drums with two rulers, spins one and catches it behind their back |
 
 Dropped: Confetti Blast (a dance, then confetti over the lens). Alan: not interesting enough; it needs something fun
 and edgy like Camera Flick and Book Kicker.
@@ -68,6 +75,8 @@ and edgy like Camera Flick and Book Kicker.
 - How the body animations get made: Studio's text-to-animation tool first (never tried), filming a person with
   Roblox's Animation Capture as the fallback, free motion libraries after that. Every new one needs a free upload
   (Alan's go). Sitting or one-clear-action emotes are the safest; Autograph and Stomp need the most real motion.
+- Ideas that lean on the body's shape and need a safe version: Ruler Drumroll (hands reaching the desk), Next One
+  (two hands meeting on the plane), the claps (hands meeting), Autograph (a hand reaching the lens).
 - Music: licensed only. Prices, and which emotes ship in the beta.
 - Proposed build order: the scene first with today's dances standing in; then Camera Flick and Next One to prove the
   method; then the rest and the shop shelf.
