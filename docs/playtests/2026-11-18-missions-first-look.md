@@ -46,3 +46,8 @@ in Play: the main-menu Missions sheet, the desk drop-down, and the report card's
   [falling](../../.planning/missions/play-star-falling.jpg), [landed](../../.planning/missions/play-star-landed.jpg).
   First placed too high (off the top of a 16:9 screen); now lower and a little smaller. It slightly covers the top of
   "101" in the card's printed title, like a sticker.
+
+## Fifth look: live progress (same night)
+Alan played a match in Studio with the live build: "It's updating in real time. Seems to work ... I don't really see any
+issues. So that means missions are done." My own check before it: [desk list mid-match](../../.planning/missions/live-desk-1.jpg),
+[a mission finished mid-match](../../.planning/missions/live-desk-2.jpg), [the star after Dev: finish missions](../../.planning/missions/live-star-dev-finish.jpg).

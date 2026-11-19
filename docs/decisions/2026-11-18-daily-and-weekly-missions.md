@@ -128,7 +128,7 @@ match's running counts (folds, damage, speed boosts, targets, Paper) to the save
 whenever it changes; the desk list and the Missions sheet show it moving. "In one match" missions show the running
 count. Saving stays once at match end (Roblox's save limits). Wins, top 3 and "folded N times or fewer" still tick at
 the end. Any mission finished during the match, including by Studio's Dev: finish missions, gets the report card's
-gold star at the end. No mid-flight popup (Alan: "Yes, do it as you described, no mid-flight popup").
+gold star at the end. No mid-flight popup (Alan: "Yes, do it as you described, no mid-flight popup"). **Missions are done (Alan, same night, after playing it live):** "It's updating in real time. Seems to work ... missions are done." A match that doesn't count for the player still drops its live progress at the end; he saw no issue, so it stays as built.
 
 ## Why
 
