@@ -80,7 +80,13 @@ from the clip's keyframes; the plane and the camera follow the emote's recipe; e
 capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no upload, nothing left in the place.
 - The clip comes straight from its uploaded id (`KeyframeSequenceProvider:GetKeyframeSequenceAsync`), so nothing
   big has to be sent into Studio.
-- Clean-up done inside the preview so far: the hips are kept over the spot (no step off the desk).
+- Clean-up done inside the preview so far: the hips are kept over the spot (no step off the desk); the kid faces
+  the camera (below). Both still have to be baked into the clip itself before the real build.
+- **Facing the camera (Alan, 2026-11-19: "make the kid face the camera for the throw").** Measured first: version
+  B's hips swing 60 degrees away at 0.4 s, are square at 0.7 s, 20 degrees past at the release and 40 past at 1.1 s;
+  chest and head go with them, the feet stay planted. Fix: feet and hips stay as made (the wind-up survives), the
+  chest keeps 0.35 of its turn (untwisted at the waist) and the head's left-right turn is taken out, so the eyes
+  stay on the lens (`FACING` in the preview tool). A reviewer found no frame turned away and no broken waist or neck.
 - **Camera Flick's recipe as previewed** (version B): the plane rides in the right hand, nose at the camera, tipped
   up and askew so its shape shows; it leaves the hand at 0.87 s, flies 0.42 s straight to the lens (fast off the hand, slower as it
   fills the picture) and turns flat as it arrives, so its wings fill the picture; at 1.29 s the camera is knocked back
@@ -91,11 +97,12 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
 - Gotchas: the first captures come before the room's pictures load (take four warm-up captures); spatial queries
   miss decorations with CanQuery off, so blockers between lens and kid are found by walking the room's parts (here
   the landing ring and two runway lights on 1st's desk), hidden for the render and put back; hide per piece, never a
-  whole folder (one try hid the whole toy town); Studio left the camera Scriptable afterwards until set to Fixed again.
+  whole folder (one try hid the whole toy town); Studio's camera stays Scriptable unless Fixed is set last, after a short wait.
 - An independent look at the first cut (a reviewer agent on a contact sheet) found: the plane rose away on its arc
   and then popped onto the lens (fixed: straight path, eased so the approach shows), a long still hold on the floor
   (cut to 2.2 s) and too much camera roll (24 to 10 degrees). Left for Alan's eye: the body turns side-on in the
-  wind-up, and the blocky test body's arm looks huge when it points at the lens.
-- Video: `.planning/emotes/camera-flick-preview.mp4`.
+  wind-up (fixed, above), and the blocky test body's arm looks huge when it points at the lens.
+- Alan on the first cut: "this is what I imagined", apart from the facing.
+- Videos: `.planning/emotes/camera-flick-preview.mp4` (first cut), `camera-flick-preview-facing.mp4` (facing the camera).
 
 Back to [HOME](../HOME.md).

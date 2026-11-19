@@ -8,6 +8,9 @@ local CLIP = "rbxassetid://115470516293954"
 local RELEASE, FLIGHT = 0.87, 0.42 -- the plane leaves the hand; how long it flies to the lens
 local HEIGHT = 140 -- every avatar stands this tall in the room (config avatar_display.standing_height_studs)
 local FOV = 50
+-- Facing the camera: the generator's throw swings the hips 60 degrees away in the wind-up and the chest and head go
+-- with them. The feet and hips stay as made; the chest keeps this share of its turn and the eyes stay on the lens.
+local FACING = { UpperTorso = 0.35, Head = 0 }
 
 local Players = game:GetService("Players")
 local Root = game.ReplicatedStorage.FlyFightPaper
@@ -58,7 +61,13 @@ local function placed(keyframe)
 					hips0 = hips0 or at
 					at = Vector3.new(hips0.X, at.Y, hips0.Z) -- clean-up: no stepping off the desk
 				end
-				done[child.Name] = done[joint.parent] * joint.c0 * carried * (CFrame.new(at) * child.CFrame.Rotation) * joint.c1:Inverse()
+				local cf = done[joint.parent] * joint.c0 * carried * (CFrame.new(at) * child.CFrame.Rotation) * joint.c1:Inverse()
+				local keep = FACING[child.Name]
+				if keep then -- clean-up: turned back towards the lens about its own joint (the waist, the neck)
+					local hinge, facing = (done[joint.parent] * joint.c0).Position, cf.LookVector
+					cf = CFrame.new(hinge) * CFrame.Angles(0, (keep - 1) * math.atan2(-facing.X, -facing.Z), 0) * CFrame.new(-hinge) * cf
+				end
+				done[child.Name] = cf
 				walk(child, CFrame.identity)
 			else
 				walk(child, carried * child.CFrame.Rotation)
@@ -188,9 +197,10 @@ function E.clean()
 	kid:Destroy()
 	plane:Destroy()
 	for part, was in hidden do part.Transparency = was end
-	camera.CameraType = Enum.CameraType.Fixed
 	camera.CFrame, camera.FieldOfView = home.cf, home.fov
 	_G.EMOTE = nil
+	task.wait(0.2) -- set last and after a wait: set first, Studio's camera stayed Scriptable
+	camera.CameraType = Enum.CameraType.Fixed
 end
 local names = {}
 for name in E.hid or {} do table.insert(names, name) end
