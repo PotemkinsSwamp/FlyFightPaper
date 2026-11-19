@@ -6,8 +6,8 @@
 - The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
 
 # Now: finish the game for the beta
-The five finished Legendary skins and matching trails are installed. The two Mythicals include their trails. The four other Legendary ideas (Bumblebee, Rocket, Mech and Pirate) are concepts. The remaining performance check is Galaxy plus Circuit Trace on all 12 planes.
-Dragon leftovers: crash ball and shop card pictures, jaw leftover. Missions polish is in ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)); `tools/ui_sheets.py --add` puts a new menu piece into free space on a loaded sheet. Queued: Toilet Roll shake, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
+The five finished Legendary skins and matching trails are installed. The two Mythicals include their trails. The four other Legendary ideas (Bumblebee, Rocket, Mech and Pirate) are concepts. Speed: the 54.5 fps worst case (12 Galaxy + 12 Circuit Trace) was measured while Alan's PC ran at full CPU and memory, so it isn't a real worry (Alan 2026-11-19).
+Dragon leftovers: crash ball and shop card pictures, jaw leftover. Missions polish is in ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)); `tools/ui_sheets.py --add` puts a new menu piece into free space on a loaded sheet. **Next (Alan 2026-11-19): guns under big skins** (they float 0.2-0.8 studs below the skin's wing; plain planes touch), **then emotes and redoing the winners' circle.** Queued: Toilet Roll shake, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 Decisions to review
 Chest prices, drop rates, 10% duplicate refunds and the first mission and streak targets are tuning choices. [Numbers](../docs/systems/economy-and-shop.md#classroom-treasure-chests)
