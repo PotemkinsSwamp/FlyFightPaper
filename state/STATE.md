@@ -11,8 +11,7 @@ Dragon leftovers: crash ball and shop card pictures, jaw leftover. **Next: missi
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 Decisions to review
 Chest prices, drop rates, 10% duplicate refunds and the first mission and streak targets are tuning choices. [Numbers](../docs/systems/economy-and-shop.md#classroom-treasure-chests)
-Missions (my calls): no "Reward" caption over each reward (no room beside two-line goals); on phones the stats card's
-  four lines are 20% smaller (the level lines keep their size); the Missions sheet has no phone layout yet.
+Missions (my calls): no "Reward" caption (no room); phone stats lines 20% smaller; the sheet has no phone layout yet.
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
   shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
