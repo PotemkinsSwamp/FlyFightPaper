@@ -100,7 +100,7 @@ return JSONTypes.map({
         }),
         ["hot_rod"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 31.56,
+                ["area"] = 30.36,
                 ["body_x"] = 0.8736,
                 ["half_span"] = 3.51792,
                 ["keel"] = JSONTypes.array({
@@ -199,6 +199,7 @@ return JSONTypes.map({
                 }),
                 ["wing_y"] = 0.2913295,
             }),
+            ["hitPiece"] = "hullHit",
             ["layers"] = JSONTypes.map({
                 ["flames"] = 82143425213420,
             }),
@@ -214,6 +215,19 @@ return JSONTypes.map({
                         [3] = 4.2,
                     }),
                     ["mesh"] = 94302916748697,
+                    ["min"] = JSONTypes.array({
+                        [1] = -3.51792,
+                        [2] = -0.22659,
+                        [3] = -4.2,
+                    }),
+                }),
+                ["hullHit"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 3.51792,
+                        [2] = 1.857523,
+                        [3] = 4.2,
+                    }),
+                    ["mesh"] = 125470819671799,
                     ["min"] = JSONTypes.array({
                         [1] = -3.51792,
                         [2] = -0.22659,
@@ -251,7 +265,7 @@ return JSONTypes.map({
         }),
         ["ninja"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 29.32,
+                ["area"] = 30.52,
                 ["body_x"] = 0.7667342752218247,
                 ["half_span"] = 3.5269777536392213,
                 ["keel"] = JSONTypes.array({
@@ -441,15 +455,15 @@ return JSONTypes.map({
                 }),
                 ["hullHit"] = JSONTypes.map({
                     ["max"] = JSONTypes.array({
-                        [1] = 3.526978015899658,
-                        [2] = 2.3534739017486572,
-                        [3] = 4.199999809265137,
+                        [1] = 3.534146,
+                        [2] = 1.740792,
+                        [3] = 4.417995,
                     }),
-                    ["mesh"] = 118807322408976,
+                    ["mesh"] = 118367780794595,
                     ["min"] = JSONTypes.array({
-                        [1] = -3.526978015899658,
-                        [2] = -0.17038500308990479,
-                        [3] = -4.199999809265137,
+                        [1] = -3.534146,
+                        [2] = -0.170732,
+                        [3] = -4.2,
                     }),
                 }),
             }),
@@ -566,7 +580,7 @@ return JSONTypes.map({
         }),
         ["race_car"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 31.2,
+                ["area"] = 28.08,
                 ["body_x"] = 0.8705324,
                 ["half_span"] = 3.3635887,
                 ["keel"] = JSONTypes.array({
@@ -609,6 +623,7 @@ return JSONTypes.map({
                 }),
                 ["wing_y"] = 0.6628163,
             }),
+            ["hitPiece"] = "hullHit",
             ["layers"] = JSONTypes.map({
                 ["shine"] = 106013935142453,
             }),
@@ -630,11 +645,24 @@ return JSONTypes.map({
                         [3] = -4.2,
                     }),
                 }),
+                ["hullHit"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 3.363589,
+                        [2] = 1.763986,
+                        [3] = 4.02729,
+                    }),
+                    ["mesh"] = 107946335612259,
+                    ["min"] = JSONTypes.array({
+                        [1] = -3.363589,
+                        [2] = 0.000262,
+                        [3] = -4.2,
+                    }),
+                }),
             }),
         }),
         ["shark_jet"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 30.12,
+                ["area"] = 27.68,
                 ["body_x"] = 0.5460848,
                 ["half_span"] = 3.1056882,
                 ["keel"] = JSONTypes.array({
@@ -801,6 +829,7 @@ return JSONTypes.map({
                 }),
                 ["wing_y"] = 0.5889299,
             }),
+            ["hitPiece"] = "hullHit",
             ["layers"] = JSONTypes.map({
                 ["water"] = 124843673805618,
             }),
@@ -822,11 +851,24 @@ return JSONTypes.map({
                         [3] = -4.2,
                     }),
                 }),
+                ["hullHit"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 3.105688,
+                        [2] = 1.735793,
+                        [3] = 4.169003,
+                    }),
+                    ["mesh"] = 84985234774630,
+                    ["min"] = JSONTypes.array({
+                        [1] = -3.105688,
+                        [2] = -0.522495,
+                        [3] = -4.2,
+                    }),
+                }),
             }),
         }),
         ["stealth"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 27.32,
+                ["area"] = 26.68,
                 ["body_x"] = 0.8756948,
                 ["half_span"] = 3.5270271,
                 ["keel"] = JSONTypes.array({
@@ -869,6 +911,7 @@ return JSONTypes.map({
                 }),
                 ["wing_y"] = 0.269434,
             }),
+            ["hitPiece"] = "hullHit",
             ["layers"] = JSONTypes.map({
                 ["comet"] = 116179868922479,
                 ["lines"] = 127527868036846,
@@ -885,6 +928,19 @@ return JSONTypes.map({
                         [3] = 4.184151,
                     }),
                     ["mesh"] = 89471953391857,
+                    ["min"] = JSONTypes.array({
+                        [1] = -3.527027,
+                        [2] = -0.188817,
+                        [3] = -4.2,
+                    }),
+                }),
+                ["hullHit"] = JSONTypes.map({
+                    ["max"] = JSONTypes.array({
+                        [1] = 3.527027,
+                        [2] = 1.662561,
+                        [3] = 3.878341,
+                    }),
+                    ["mesh"] = 106679108340532,
                     ["min"] = JSONTypes.array({
                         [1] = -3.527027,
                         [2] = -0.188817,

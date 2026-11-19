@@ -31,7 +31,15 @@ the side and behind, added, equals the plane's: `config/plane-areas.json`, measu
 five Legendaries (Alan 2026-11-18 dropped the 2026-11-16 "never shorter or narrower than the plane": on Broad or Swept
 wings it made a skin up to 2.2 times the plane's target and up to 34% of the chase view against the plane's 8%), centred on the plane, wings at its wing height (`even` in the config;
 `Aircraft.build` stamps the build on the plane). On the server its own precise shape replaces the body, nose, wings and
-tail as the hit and crash shape (`HitShapes.place`); guns hang under its wing outside its body, the booster under its
+tail as the hit and crash shape (`HitShapes.place`). **The five Legendaries hit and crash with a hidden trimmed copy**
+(`hullHit`, Alan 2026-11-18): the drawn skin less its extras (the Race Car's spoiler, the Shark's top fin, the Ninja's scarf),
+every tall fin cut flat where a normal tail fin ends (0.10 of the length above the skin's body top: about half of each),
+made by `tools/art/skin_hit_hulls.py` (one FBX, one upload, `.planning/skins/hit-trim-preview.jpg`); the size match uses
+the copy, so the drawn skins grew 1-5% (the Ninja shrank 2%: its copy now keeps its fin's lower half). Measured on the
+chase view after: the Toilet Roll Gunship with Broad Wings 7.7% plain, Race Car 16.3%, Ninja 13.8%, Stealth 12.5%, Hot
+Rod 10.3%, Shark 7.0%, Dragon 6.1% (equal targets; the rest is shape: these skins are longer than a wide plane, so their
+back sits closer to the camera); Cardboard Gunship with Cardstock Wings 6.8% plain, 4.8-9.7% skinned. The Dragon has nothing
+that tall and keeps its one shape; guns hang under its wing outside its body, the booster under its
 belly. Its boosters wear its printed sheet (its own body scales at the body's scale size, `picture` in `config/looks.json`; Alan saw it in Studio 2026-11-16: "its good"). Not checked in Play yet; the monorail train still tests the corners of each crash shape's box, which for the
 Dragon reach past its wings.
 The shelf's big photo and its cubbies wear your skin too, and so do the desk menu's big photo and its pinboard of
@@ -148,6 +156,7 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/client/HangarTrailPreview.luau` | Draws the selected trail in the plane's 3D preview, with the flight meshes, camera-facing smoke and a compact effect behind the fitted tail. |
 | `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the rarity groups and preview, chest, wear and take-off buttons on the Skins and Trails pages |
 | `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): draws the skin's pieces on this screen where `SkinFit` puts them, hides what they cover, draws the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |
+| `tools/art/skin_hit_hulls.py` | Blender: the five Legendaries' hidden hit copies (extras off, tall fins cut where a normal tail fin ends) as one FBX plus each copy's box; then `tools/plane_areas.lua` with BODY = the skin id measures its target size |
 | `src/shared/SkinFit.luau` | Shape skins' one fit for screen and server: measures the plane's parts, places the skin's pieces, and says where each real wing turns (about the drawn hinge) and each gun hangs |
 | `tests/unit/SkinFit.spec.luau` | Under the Dragon, on four builds: one size, as big a target as the plane, centred, its shape replacing the body, nose, wings and tail as hit shapes, guns under its wing, booster on its belly. Under the crane, on two builds: wing shapes turn by its angle about the drawn hinge at the same size, gun shapes move by the screen's offsets, crash shapes refit on a skin change; no shape skin moves nothing |
 | `src/server/HangarService.luau` | Saving builds and buying parts |

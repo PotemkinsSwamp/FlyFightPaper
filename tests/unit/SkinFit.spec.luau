@@ -333,15 +333,19 @@ function Spec.run()
 		end)
 	end
 	for _, id in {"shark_jet", "hot_rod", "race_car", "stealth"} do
-		test(id .. ": first flight uses the visible hull at the fitted size", function()
+		-- The hidden hit copy: the drawn skin less its spoiler or top fin, tall fins cut where a normal tail fin ends
+		-- (Alan 2026-11-18, tools/art/skin_hit_hulls.py): lower than the drawn skin, and the only hit and crash shape.
+		test(id .. ": first flight crashes with its trimmed hit copy at the fitted size", function()
 			local model, frame = plane(builds.heavy)
 			local fit = assert(SkinFit.plane(id, model.Appearance, frame))
-			local body = assert(fit.placed.body)
+			local body = assert(fit.placed.hullHit)
+			assert(body[1].Y + body[2].Y / 2 < fit.placed.body[1].Y + fit.placed.body[2].Y / 2, "the hit copy is as tall as the drawn skin")
 			Flight.colliders(Flight, {model = model, skin = id}, model)
+			assert(not model.Colliders:FindFirstChild("Skin-body"), "the drawn skin is a crash shape")
 			local deadline = os.clock() + 15
-			while not model.Colliders["Skin-body"]:IsA("MeshPart") and os.clock() < deadline do task.wait(0.1) end
-			local hull = model.Colliders["Skin-body"]
-			local matches = hull:IsA("MeshPart") and hull.MeshId == "rbxassetid://" .. SkinFit.shapes[id].pieces.body.mesh
+			while not model.Colliders["Skin-hullHit"]:IsA("MeshPart") and os.clock() < deadline do task.wait(0.1) end
+			local hull = model.Colliders["Skin-hullHit"]
+			local matches = hull:IsA("MeshPart") and hull.MeshId == "rbxassetid://" .. SkinFit.shapes[id].pieces.hullHit.mesh
 				and hull.CollisionFidelity == Enum.CollisionFidelity.PreciseConvexDecomposition
 				and near(hull.Size, body[2]) and same(frame:ToObjectSpace(hull.CFrame), body[1])
 			model:Destroy()

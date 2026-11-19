@@ -271,8 +271,8 @@ function PlaneTrails.exhaust(trail, appearance, skin, body, frame)
 	local offset
 	local matches = trail.tail ~= nil and (skin == trail.preview_skin or (skin == "shark_jet" and trail.preview_skin == "shark"))
 	if matches and body and shaped and (shaped.hitPiece or shaped.even) then
-		local box, hull = shaped.pieces.body, shaped.pieces[shaped.hitPiece or "body"]
-		local span = hull.max[3] - hull.min[3]
+		local box = shaped.pieces.body
+		local span = 8.4 -- every whole skin was built 8.4 studs nose to tail (the Ninja's scarf trails past that)
 		local mid = Vector3.new(box.min[1]+box.max[1], box.min[2]+box.max[2], box.min[3]+box.max[3]) * 0.5
 		local exhaust = Vector3.new(0, trail.tail[1], trail.tail[2]) * span
 		local scale = body.Size.Z / (box.max[3] - box.min[3])

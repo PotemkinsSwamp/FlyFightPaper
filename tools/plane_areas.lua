@@ -3,9 +3,9 @@
 -- from the side and from behind, added (square studs), measured on the same precise shapes the server hits
 -- (HitShapes) with a 0.2-stud grid of rays. Body and wings are measured together; a nose or tail other than nose_0 /
 -- tail_0 adds its difference (they sit ahead of and behind the wings, so they hardly overlap them).
--- Run in Studio's Edit (MCP execute_luau or the command bar), once per body, setting BODY; BODY = "dragon" measures the
--- Dragon's mesh at its uploaded size. Paste the JSON it returns into config/plane-areas.json, then
--- python tools/generate_config.py.
+-- Run in Studio's Edit (MCP execute_luau or the command bar), once per body, setting BODY; BODY = a whole-shape skin's id
+-- ("dragon", "hot_rod", ...) measures its hit piece (or its one piece) at its uploaded size: that skin's even.area in
+-- config/skin-shapes.json. Paste a body's JSON into config/plane-areas.json, then python tools/generate_config.py.
 local BODY = "body_standard"
 local AssetService = game:GetService("AssetService")
 local HttpService = game:GetService("HttpService")
@@ -72,10 +72,12 @@ local function build(body, nose, wings, tail)
 	model:Destroy()
 	return size(pieces)
 end
-if BODY == "dragon" then
-	local shape = require(Root.Generated.SkinShapes).shapes.dragon.pieces.whole
-	local lo, hi = Vector3.new(table.unpack(shape.min)), Vector3.new(table.unpack(shape.max))
-	return HttpService:JSONEncode({ dragon = size({ { "rbxassetid://" .. shape.mesh, hi - lo, CFrame.identity } }) })
+local skin = require(Root.Generated.SkinShapes).shapes[BODY]
+if skin then
+	local name = skin.hitPiece or next(skin.pieces)
+	local piece = skin.pieces[name]
+	local lo, hi = Vector3.new(table.unpack(piece.min)), Vector3.new(table.unpack(piece.max))
+	return HttpService:JSONEncode({ [BODY] = size({ { "rbxassetid://" .. piece.mesh, hi - lo, CFrame.identity } }) })
 end
 local out = { wings = {}, nose = {}, tail = {} }
 for i = 0, 5 do

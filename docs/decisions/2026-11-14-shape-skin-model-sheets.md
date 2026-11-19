@@ -349,6 +349,10 @@
   **Next, his rule for what counts (same day):** body, wings, nose and tail count; extras (the Hot Rod's spoiler, the
   Shark's top fin, fins far taller than a normal plane's) are trimmed on the hidden hit copy only (to about a normal tail
   fin's height), are never hit and pass through walls; the drawn skin keeps them in full. Marked pictures per skin first.
+  **His OK on the marked picture (`.planning/skins/hit-trim-preview.jpg`, "Green looks right, go for the 5 uploads")**, cut
+  where a normal tail fin ends above the body (about half of each tall fin). Built the same day as one FBX (one upload,
+  approved; mesh ids in `config/skin-shapes.json`): every Legendary is exactly its plane's target on every build; the
+  drawn skins grew 1-5%, the Ninja shrank 2%. The Dragon needed no trim.
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:
