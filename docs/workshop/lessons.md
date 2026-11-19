@@ -652,6 +652,16 @@ mistake would be easy to make twice.
 - **`PaperUI.fitWords` once per label** (2026-11-13): it hooks the label's Text changes itself; calling it again on
   every change stacks hooks. `say()` without `grow` already attaches it.
 
+- **Placing a menu piece: measure it on the real art first** (2026-11-18, Missions strip under the plane): compose the
+  screen from `assets/ui/*/ready/` pictures at the code's boxes (Fit inside the box, turned about its centre like
+  `PaperUI.image`), then measure the gaps between the pictures' visible pixels, not the boxes. Never move a piece Alan
+  approved to make room (the pinned plane's fly-in lands where it is).
+- **Overlapping UI pieces need ZIndex set** (2026-11-18): Roblox draws siblings with equal ZIndex in no fixed order, so
+  a card picture drew over its own words and squares in Play though it was made first. Paper 0, words 1, marks above.
+- **Roblox shrinks and squashes pictures without smoothing** (2026-11-18): torn paper edges go jagged when a picture
+  is drawn much smaller or squashed (an 866-wide tab drawn 220 wide; a 1000 x 236 strip drawn 1069 x 164). Draw
+  pieces near the size they are stored at; a bigger master picture makes it worse.
+
 ## Working with Alan
 - **A Codex "model is not supported with a ChatGPT account" error means an old Codex program, not his account**
   (2026-11-18, GPT-6.2 Sol): the Codex plugin runs the `codex` on PATH (`D:
