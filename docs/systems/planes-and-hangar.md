@@ -64,8 +64,8 @@ row so size and weight read bigger. The note dims the whole screen (past the she
 
 **Guns touch the plane (Alan 2026-11-11: they floated).** Every gun hangs by its highest point (`Aircraft` `topOf`):
 on the body pair from the wing root (`ROOT_UNDER`, per wing set), on the wing spots from the wing (`Mount1`/`Mount2`,
-`tools/art/plane_pieces.py`), and a crowded gun shrinks toward its top. The pellet tube keeps plane A's spot through the
-root. Checked on exact shapes in Studio: all 1,500 body x wings x weapon x spot placements touch, none pokes through.
+`tools/art/plane_pieces.py`), and a crowded gun shrinks toward its top. The pellet gun hangs upside down, by its paper cradle's flat
+bottom (`FLIP` in `plane_pieces.py`; Alan 2026-11-19: it hung by its straw). Checked on exact shapes in Studio: all 1,500 body x wings x weapon x spot placements touch, none pokes through.
 Not yet seen by Alan.
 
 **Presets (step 2 of the [classes plan](../plan/CLASSES-PLAN.md)):** six fixed planes, each open from its level (`classes`

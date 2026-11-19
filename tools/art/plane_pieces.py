@@ -29,6 +29,9 @@ TUBE_TOP = .41     # a hanging weapon's top sits where plane A's pellet tube top
 WING_TOP = .63     # a weapon mounted on top (the paperclip rails) sits on the wing's upper face
 BODY_EDGE = 1.32   # body half-width + a little: weapons on the body-side slot (x 1.76) are pushed out past it
 MATERIALS = {"SmoothPlastic": 272, "Metal": 1088}
+# Weapons turned upside down (rolled about their barrel) so they hang by their flat clip side: the pellet gun's paper
+# cradle was modelled sitting on a desk, straw on top; under the wing it hangs by the cradle's flat bottom (Alan 2026-11-19).
+FLIP = {"pellet"}
 
 parts = json.loads((PLANES / "classic/parts.json").read_text(encoding="utf-8"))
 stickers = json.loads((PLANES / "stickers/stickers.json").read_text(encoding="utf-8"))
@@ -69,7 +72,8 @@ def attributes(**values):
     return base64.b64encode(blob).decode()
 
 
-def mesh_part(name, size, position, color, region=None, mesh=None, attrs=None, material="SmoothPlastic", paint="", transparency=0):
+def mesh_part(name, size, position, color, region=None, mesh=None, attrs=None, material="SmoothPlastic", paint="", transparency=0,
+              flip=False):
     r, g, b = color
     x, y, z = position
     sx, sy, sz = size
@@ -101,11 +105,11 @@ def mesh_part(name, size, position, color, region=None, mesh=None, attrs=None, m
           <X>{x}</X>
           <Y>{y}</Y>
           <Z>{z}</Z>
-          <R00>-1</R00>
+          <R00>{1 if flip else -1}</R00>
           <R01>0</R01>
           <R02>0</R02>
           <R10>0</R10>
-          <R11>1</R11>
+          <R11>{-1 if flip else 1}</R11>
           <R12>0</R12>
           <R20>0</R20>
           <R21>0</R21>
@@ -160,6 +164,14 @@ def weapon(folder):
     d = ROOT / "assets/models/toys" / f"weapon-{folder}"
     man = json.loads((d / "pieces.json").read_text(encoding="utf-8"))
     up = json.loads((d / "upload.json").read_text(encoding="utf-8"))
+    flip = folder in FLIP
+    if flip:
+        roll = lambda v: [-v[0], -v[1], v[2]]
+        man["mount"] = dict(side="top" if man["mount"]["side"] == "bottom" else "bottom", point=roll(man["mount"]["point"]))
+        for row in man["pieces"]:
+            row["centre"] = roll(row["centre"])
+            for key in ("pivot", "axis"):
+                if key in row: row[key] = roll(row[key])
     mount = man["mount"]["point"]
     top = man["mount"]["side"] == "top"
     lift = (TUBE_TOP if top else WING_TOP) - mount[1]
@@ -174,7 +186,7 @@ def weapon(folder):
             if key in row: attrs[key.title()] = ",".join(str(v) for v in (at(row[key]) if key == "pivot" else row[key]))
         xml += mesh_part(row["piece"], row["size"], at(row["centre"]), row.get("color", [255, 255, 255]), attrs=attrs,
                          mesh=up["meshes"][row["piece"]]["mesh"], material=row.get("material", "SmoothPlastic"),
-                         paint=paint if row["textured"] else "", transparency=CLEAR if row["piece"] == "clear" else 0)
+                         paint=paint if row["textured"] else "", transparency=CLEAR if row["piece"] == "clear" else 0, flip=flip)
     # Shots leave from the front of what the weapon fires (or spins), in the left slot's frame.
     shot = next((r for r in man["pieces"] if r["role"] in ("fire", "drop", "spin")), None)
     muzzle = at([shot["centre"][0], shot["centre"][1], -man["size"][2] / 2] if shot else [0, 0, -man["size"][2] / 2])

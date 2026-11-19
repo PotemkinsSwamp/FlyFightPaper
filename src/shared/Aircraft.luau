@@ -5,7 +5,7 @@ local Aircraft={}
 -- `fit` (Aircraft.wingFit) moves every slot with the wings onto a wider body.
 -- Every gun hangs by its highest point: under the wing on slots 3-6 (the wing's Mount1/Mount2), under the wing root on
 -- the body pair (Alan 2026-11-11: guns floated up to half a stud below; checked on exact shapes, every body x wings x
--- weapon). Pellet tubes pass through the wing root on purpose (plane A's design), so they keep plane A's spot.
+-- weapon). The pellet gun too, by its paper cradle's flat bottom (Alan 2026-11-19: it hung upside down by its straw).
 -- Weapons still waiting for their own model borrow another's (Alan 2026-11-07: test with models we have).
 Aircraft.STAND_IN={}
 function Aircraft.look(weaponId) return weaponId and Aircraft.STAND_IN[weaponId] or weaponId end
@@ -60,7 +60,7 @@ function Aircraft.mountOffset(slot,factor,fit,weaponId)
  if type(fit)~="table" then fit=Aircraft.wingFit(nil,nil,fit) end
  local wing=pair>0 and fit.mounts and fit.mounts[pair]
  local look=Aircraft.look(weaponId)
- local bodyY=fit.under and look and look~="pellet" and fit.under-topOf(look) or .08
+ local bodyY=fit.under and look and fit.under-topOf(look) or .08
  local at=pair==0 and Vector3.new(side*1.76,bodyY,-1.3134)
   or wing and Vector3.new(side*wing.X,wing.Y,wing.Z) or Vector3.new(side*(3.7+(pair-1)*1.5),.38,-.6)
  return Aircraft.fitPoint(fit,at)*factor
