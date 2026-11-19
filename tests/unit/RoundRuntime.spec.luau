@@ -42,6 +42,22 @@ function Spec.run()
   runtime:sendProfile(player)
   assert(sent.missions==missions)
  end)
+ test("mid-match, missions show the match's running counts on a copy; nothing else does",function()
+  local Missions=require(game.ReplicatedStorage.FlyFightPaper.Shared.Missions)
+  local saved=assert(Missions.refresh(Missions.defaults(),os.time(),{},1))
+  local function mission(tier,action,count) return {tier=tier,kind="total",action=action,count=count,progress=0,claimed=false} end
+  saved.daily={mission("easy","folds",12),mission("medium","damage",3600),mission("hard","boosts",30)}
+  local row={controllerType="human",userId=7,present=true,key="1",actorId="1",kills=2,assists=0,deaths=1,damage=450.5,
+   contribution=10,activeSeconds=60,targetPoints=0,zoneEvents=0,zoneFolds=0,bestStreak=2}
+  local runtime=setmetatable({engine={phase="ACTIVE",round={mode="FFA",participants={["1"]=row}}},
+   missionStats={["1"]={boosts=3,byGear={}}},earnedTotals={}},Runtime)
+  local live=runtime:liveMissions({UserId=7},saved)
+  assert(live.daily[1].progress==2 and live.daily[2].progress==450 and live.daily[3].progress==3)
+  assert(saved.daily[1].progress==0)
+  assert(runtime:liveMissions({UserId=8},saved)==saved)
+  runtime.engine.phase="RESULTS"
+  assert(runtime:liveMissions({UserId=7},saved)==saved)
+ end)
  test("match doubling uses the same floored totals and match id as the report snapshot",function()
   local f=MatchSpec.fixture();f:join("pilot");f:timer()
   local row=MatchSpec.row(f,"pilot");local player={UserId=1};local offered,snapshot

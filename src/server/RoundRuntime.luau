@@ -180,8 +180,8 @@ end
 -- ponytail: rides the profile view the client already asks for every 3 s and when the desk list opens; push on change
 -- if a screen ever shows missions mid-flight.
 function Runtime:liveMissions(player,missions)
- local r=self.engine.round
- if self.engine.phase~="ACTIVE" or not r or not missions then return missions end
+ local r=self.engine and self.engine.phase=="ACTIVE" and self.engine.round
+ if not r or not missions then return missions end
  for _,row in pairs(r.participants) do
   if row.controllerType=="human" and row.userId==player.UserId and row.present then
    local ok,summary=pcall(self.missionSummary,self,row,r)
