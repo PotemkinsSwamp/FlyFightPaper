@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 import numpy as np
-from shapely import LineString, MultiPoint, Polygon, intersects_xy, union_all
+from shapely import LineString, MultiPoint, union_all
 
 ROOT = Path(__file__).resolve().parents[3]
 BUILD = ROOT / ".planning/skins/ninja/build/tail-10"
@@ -17,14 +17,6 @@ t = mesh["T"]
 label = mesh["names"][mesh["part"]]
 solid = v[t[~np.isin(label,["ribbon_lower","ribbon_upper"])]]
 lo,hi = solid.min(axis=(0,1)), solid.max(axis=(0,1))
-area = 0
-for axes in ((0,2),(2,1),(0,1)):
-    triangles = [Polygon(p[:,axes]) for p in solid]
-    silhouette = union_all([tri for tri in triangles if tri.area>1e-12])
-    # Same sampling lattice as tools/plane_areas.lua, before Roblox convex decomposition.
-    samples = [np.arange(lo[i]+.1,hi[i],.2) for i in axes]
-    u,w = np.meshgrid(*samples)
-    area += np.count_nonzero(intersects_xy(silhouette,u,w))*.04
 
 wing = v[np.unique(t[label=="wing"])]
 right = wing[wing[:,0]>0]
@@ -57,7 +49,7 @@ keel = [[round(y,6),round(z,6)] for z,y in LineString(underside).simplify(.0001)
 assert all(q[1]>p[1] for p,q in zip(keel,keel[1:]))
 hull = v[np.unique(t[label=="body"])]
 even = {
-    "area": round(area,2), "wing_y":right[:,1].mean(), "half_span":float(hi[0]),
+    "wing_y":right[:,1].mean(), "half_span":float(hi[0]),
     "body_x":float(hull[:,0].max()),
     "wing":{"root_x":root[0,0],"front_z":root[:,2].min(),"back_z":root[:,2].max(),
             "tip_x":tip[0,0],"tip_z":tip[:,2].mean(),"under_y":right[:,1].min()},
@@ -65,4 +57,4 @@ even = {
 }
 payload = {"hitPiece":"hullHit","even":even,"pieces":geometry["pieces"]}
 (OUT/"fit.json").write_text(json.dumps(payload,indent=2)+"\n")
-print("Ninja rigid silhouette:", round(area,2), "square studs;",len(keel),"keel corners")
+print("Ninja:",len(keel),"keel corners")

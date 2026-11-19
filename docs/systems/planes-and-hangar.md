@@ -37,8 +37,7 @@ in the table falls back to the 2026-11-18 size. Measured: plain planes cover 0.8
 (Toilet Roll Gunship, nose and tail 3); skins land within 1% of that on the four check builds, and within 5% on 207 of
 216 mixed builds (worst 11%, the Swift Fold with nose and tail 3). Skins can be thinner or thicker targets than the plane
 and up to 1.3 times as wide (Alan: "it's just cosmetic"; the plane's weight, health, lift and speed don't change; the
-contact gate grows with the hit shapes). `config/plane-areas.json`, `tools/plane_areas.lua` and `even.area` are unused,
-to delete after Alan's Play look. Centred on the plane, wings at its wing height (`even` in the config; `Aircraft.build`
+contact gate grows with the hit shapes). Alan's Play look 2026-11-19: "sizes look right". Centred on the plane, wings at its wing height (`even` in the config; `Aircraft.build`
 stamps the build on the plane). On the server its own precise shape replaces the body, nose, wings and tail as the hit
 and crash shape (`HitShapes.place`). **The five Legendaries hit and crash with a hidden trimmed copy** (`hullHit`, Alan
 2026-11-18): the drawn skin less its extras (the Race Car's spoiler, the Shark's top fin, the Ninja's scarf), every tall

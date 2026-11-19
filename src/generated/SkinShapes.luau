@@ -5,8 +5,7 @@ return JSONTypes.map({
     ["shapes"] = JSONTypes.map({
         ["dragon"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["_comment"] = "Keeps its proportions and IS the plane's hit and crash shape (Alan 2026-11-15): one size, exactly as big a target as the plane it is on (Alan 2026-11-18 dropped 'never shorter or narrower'; config/plane-areas.json; area = its own outline from above, side and behind, added, on its precise shape at this size), centred on the plane, wings at the plane's wing height. Numbers in the uploaded mesh's own frame (studs, nose to -z), from .planning/skins/dragon/roblox/game/whole.npz.",
-                ["area"] = 25.2,
+                ["_comment"] = "Keeps its proportions and IS the plane's hit and crash shape (Alan 2026-11-15): one size, covering as much of the chase view as the plane it is on (Alan 2026-11-19; config/skin-sizes.json), centred on the plane, wings at the plane's wing height. Numbers in the uploaded mesh's own frame (studs, nose to -z), from .planning/skins/dragon/roblox/game/whole.npz.",
                 ["body_x"] = 0.38419,
                 ["half_span"] = 3.42782,
                 ["keel"] = JSONTypes.array({
@@ -100,7 +99,6 @@ return JSONTypes.map({
         }),
         ["hot_rod"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 30.36,
                 ["body_x"] = 0.8736,
                 ["half_span"] = 3.51792,
                 ["keel"] = JSONTypes.array({
@@ -265,7 +263,6 @@ return JSONTypes.map({
         }),
         ["ninja"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 30.52,
                 ["body_x"] = 0.7667342752218247,
                 ["half_span"] = 3.5269777536392213,
                 ["keel"] = JSONTypes.array({
@@ -580,7 +577,6 @@ return JSONTypes.map({
         }),
         ["race_car"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 28.08,
                 ["body_x"] = 0.8705324,
                 ["half_span"] = 3.3635887,
                 ["keel"] = JSONTypes.array({
@@ -662,7 +658,6 @@ return JSONTypes.map({
         }),
         ["shark_jet"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 27.68,
                 ["body_x"] = 0.5460848,
                 ["half_span"] = 3.1056882,
                 ["keel"] = JSONTypes.array({
@@ -868,7 +863,6 @@ return JSONTypes.map({
         }),
         ["stealth"] = JSONTypes.map({
             ["even"] = JSONTypes.map({
-                ["area"] = 26.68,
                 ["body_x"] = 0.8756948,
                 ["half_span"] = 3.5270271,
                 ["keel"] = JSONTypes.array({

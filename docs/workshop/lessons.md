@@ -690,7 +690,7 @@ pm-global`), which was 0.159.2 while his
   with evidence (the server's hit shape against the drawn one), then raise other causes in one sentence each.
 - **Quote sizes from the shapes the game uses** (2026-11-16): plane outlines from default collision boxes told Alan the
   Dragon would be 1.3-1.45x the plane; on the exact hit shapes it was 0.96-1.48x. Measure on PreciseConvexDecomposition
-  copies (`tools/plane_areas.lua`) before giving a number.
+  copies (as `tools/skin_sizes.lua` does) before giving a number.
 - **No little cardboard tabs as buttons** (Alan, told twice; 2026-11-13 on the Skins tab's Cancel): buttons are paper
   and tape (`Art.buttonGreen`, `Art.buttonRed` and the main menu's taped strips), never `Art.tab`.
 - **A row under a card stays inside the card's edges** (Alan 2026-11-12, report card jar row, four looks): line pieces

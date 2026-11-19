@@ -127,8 +127,7 @@
         "strength": 0.8
       },
       "even": {
-        "_comment": "Keeps its proportions and IS the plane's hit and crash shape (Alan 2026-11-15): one size, exactly as big a target as the plane it is on (Alan 2026-11-18 dropped 'never shorter or narrower'; config/plane-areas.json; area = its own outline from above, side and behind, added, on its precise shape at this size), centred on the plane, wings at the plane's wing height. Numbers in the uploaded mesh's own frame (studs, nose to -z), from .planning/skins/dragon/roblox/game/whole.npz.",
-        "area": 25.2,
+        "_comment": "Keeps its proportions and IS the plane's hit and crash shape (Alan 2026-11-15): one size, covering as much of the chase view as the plane it is on (Alan 2026-11-19; config/skin-sizes.json), centred on the plane, wings at the plane's wing height. Numbers in the uploaded mesh's own frame (studs, nose to -z), from .planning/skins/dragon/roblox/game/whole.npz.",
         "wing_y": -0.336,
         "half_span": 3.42782,
         "body_x": 0.38419,
@@ -208,7 +207,6 @@
     "ninja": {
       "hitPiece": "hullHit",
       "even": {
-        "area": 30.52,
         "wing_y": -0.008993575908243656,
         "half_span": 3.5269777536392213,
         "body_x": 0.7667342752218247,
@@ -414,7 +412,6 @@
     "shark_jet": {
       "hitPiece": "hullHit",
       "even": {
-        "area": 27.68,
         "wing_y": 0.5889299,
         "half_span": 3.1056882,
         "body_x": 0.5460848,
@@ -620,7 +617,6 @@
     "stealth": {
       "hitPiece": "hullHit",
       "even": {
-        "area": 26.68,
         "wing_y": 0.269434,
         "half_span": 3.5270271,
         "body_x": 0.8756948,
@@ -703,7 +699,6 @@
     "race_car": {
       "hitPiece": "hullHit",
       "even": {
-        "area": 28.08,
         "wing_y": 0.6628163,
         "half_span": 3.3635887,
         "body_x": 0.8705324,
@@ -785,7 +780,6 @@
     "hot_rod": {
       "hitPiece": "hullHit",
       "even": {
-        "area": 30.36,
         "wing_y": 0.2913295,
         "half_span": 3.51792,
         "body_x": 0.8736,

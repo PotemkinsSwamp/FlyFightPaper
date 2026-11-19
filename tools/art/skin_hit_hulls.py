@@ -5,8 +5,8 @@ One FBX, one mesh per skin (named by skin id), in Roblox's axes and already turn
 roblox_fbx.py does (Open Cloud turns every FBX 180 degrees). Picture of what is cut: .planning/skins/hit-trim-preview.jpg.
     D:/Blender/blender.exe -b --factory-startup --python tools/art/skin_hit_hulls.py -- OUT.fbx
 Writes OUT.fbx and OUT.json (each mesh's box in the skin's own frame, studs, nose to -z: config/skin-shapes.json's
-pieces.hullHit min/max). Then upload with tools/upload_texture.py --model, read the MeshIds with LoadAsset, measure each
-hull's area with tools/plane_areas.lua (BODY = the skin id) and write both into config/skin-shapes.json.
+pieces.hullHit min/max). Then upload with tools/upload_texture.py --model, read the MeshIds with LoadAsset, write both
+into config/skin-shapes.json, and measure the skin's screen sizes with tools/skin_sizes.lua.
 """
 import json, os, sys
 import bpy, bmesh
