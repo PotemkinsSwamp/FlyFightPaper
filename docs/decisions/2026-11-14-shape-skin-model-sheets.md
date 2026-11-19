@@ -365,8 +365,13 @@
   2.4-5% of the chase view against the plane's 6.8-7.7%; under equal target 3.5-16%. **Ruling: size each whole skin by
   the screen**: for each skin and each body + wings mix, the one even size at which it covers the same share of the chase
   view as the plane without a skin, measured once and stored as a table the game reads (shape kept, never stretched,
-  camera unchanged). **A project rule (AGENTS.md):** every new whole-shape skin gets its row measured before it ships. To
-  build next session.
+  camera unchanged). **A project rule (AGENTS.md):** every new whole-shape skin gets its row measured before it ships.
+  **Built 2026-11-19** (`config/skin-sizes.json`): body + wings alone missed by up to 45% once another nose or tail went
+  on (the skin is centred halfway from nose to tail tip, so a long nose pushes it away from the camera; some parts also
+  make the plain plane bigger on screen), so the table also holds what each nose and tail multiplies the size by. The
+  size is stored against the wingspan (noses and tails don't change it; against "length or wingspan" a nose alone moved
+  skins up to 19%). Result: every skin within 1% of the plain plane on the four check builds; on 36 builds with mixed
+  noses and tails 207 of 216 within 5%, worst 11% (the small Swift Fold with nose and tail 3).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

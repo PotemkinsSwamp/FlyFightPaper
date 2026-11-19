@@ -1,9 +1,9 @@
-# Since Alan last checked (2026-11-18)
+# Since Alan last checked (2026-11-19)
+- **Big skins are now sized by the screen** (not in Play yet): each of the six covers the same share of the chase view as the same plane without a skin, from a measured table (`config/skin-sizes.json`, `tools/skin_sizes.lua`). Within 1% on the four check builds; across 36 builds with other noses and tails, 207 of 216 within 5%, worst 11%. Skins now come out bigger than before on most builds (up to 1.3x the wingspan). Tests not run yet (your go).
 - **Missions are done** (Alan, after playing live progress: "seems to work ... missions are done") (seen in Studio Play: speed boosts and damage move on the desk list; Dev: finish missions mid-match gives the gold star; [pictures](../.planning/missions/live-desk-2.jpg)). **Fixed a big bug found on the way:** Studio sometimes gives a 0-second frame, which deleted every plane taking off; bots then vanished and your plane could stick on the runway. 748/748 tests.
 - Private Studio save 820 has the illustrated chest openings. All eight chests hold a sharp open pose. Trail cases use different paper and trim. Light Shop lettering has a black outline. All 719 tests passed. [Studio video and pictures](../docs/playtests/2026-11-18-shop-chest-openings.md#illustrated-chest-openings)
 - Customize keeps the book and stats on screen while you pick gear or looks. All 18 trails run behind the plane. Holographic moves on both faces and skins cover the team stickers. [Studio check and pictures](../docs/playtests/2026-11-18-hangar-preview-and-clicks.md)
 - The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
-- **Two scripted Play tests are done** ([numbers and the full list](../docs/playtests/2026-11-16-scripted-looks-check.md)). Frame rate, 12 planes: 60 with no looks, with any one skin, and with any one Rare moving; 56.7-60 with one trail on all 12; 58.5 with a mixed set on every plane; 54.5 in the worst case (12 Galaxy + 12 Circuit Trace: each alone holds 60, only together they go under).
 
 # Now: finish the game for the beta
 The five finished Legendary skins and matching trails are installed. The two Mythicals include their trails. The four other Legendary ideas (Bumblebee, Rocket, Mech and Pirate) are concepts. The remaining performance check is Galaxy plus Circuit Trace on all 12 planes.
@@ -12,6 +12,7 @@ Not checked: phone sizes of the report card row and the gift note and arrival; a
 Decisions to review
 Chest prices, drop rates, 10% duplicate refunds and the first mission and streak targets are tuning choices. [Numbers](../docs/systems/economy-and-shop.md#classroom-treasure-chests)
 Missions (my calls): "Play N matches" ticks at match end; weekly "In N matches" cards count matches only (no running number); a live-finished mission shows the red "!" at the desk though Claim waits for the end; no "Reward" caption; phone stats lines 20% smaller; no phone layout yet; a goal over 58 letters drops to 42 on two lines; the star slightly covers "101" on the report card; 9 menu pictures added since the last pack still load as plain pictures (switching them to 3D needs a Play check).
+Big skins (my calls): the size table also corrects for each nose and tail (body + wings alone missed by up to 45%), and is stored against the wingspan.
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
   shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
@@ -42,13 +43,11 @@ Rams: centres within 2.5 studs in the last 0.1 s, strength by relative speed; st
   survives; rams earn no kill; teammates and practice flights never ram.
 Paperclip distance damage: 12 at 150 studs, 24 at 500, 36 at 1000, 60 at 2400. Tab list shows all 12. PC keys: letters (not K or R), Shift, Ctrl, Alt, Space; Got it may share Boost/Brake's key. Auto-fire fires on the
   yellow dot too, and on Range targets (a phone's accuracy card reads high).
-Loading: Skip once menus + town parts are in; a stuck file costs 8 s; 3 minutes at most.
-Screen fit: phone under 540 points, tablet under 900; FIRE 76-120 points; small PC window gets tablet sizes.
-Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degrees; held Skip (1.5 s) skips a lesson.
-Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
+Loading: Skip once menus + town parts are in; a stuck file costs 8 s; 3 minutes at most. Screen fit: phone under 540 points, tablet under 900; FIRE 76-120 points; small PC window gets tablet sizes.
+Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degrees; held Skip (1.5 s) skips a lesson. Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **Big skins: next, size by the screen** (Alan 2026-11-19: "now the planes are just too small"): each skin and body + wings mix gets the one even size that covers the same share of the chase view as the plane without a skin (measured table; a project rule for every new skin). Today it is "length or wingspan, never bigger" (2.4-5% vs the plane's 6.8-7.7%). Legendaries hit and crash with a hidden trimmed copy (one upload, approved); Shark fin passes through walls; F8 shows/hides every dev button (corner and hangar panel). **Not run yet: the tests and your Play look.**
+- **Big skins, your Play look** (after the tests, your go): fly a Race Car, Ninja and Dragon next to the same build without a skin, on your usual build and on a Swift Fold. Same size on screen? Then try a long nose (Nose 3) on the Gunship. Legendaries hit and crash with a hidden trimmed copy; Shark fin passes through walls; F8 shows/hides every dev button. After your OK I delete the old size rule's leftovers (`plane-areas.json`, `plane_areas.lua`).
 - **Shop > Chests.** Open a Skin or Trail chest and try Wear. Check the opening animation, the two chest designs and the rarity papers in the Hangar. Robux buttons are Studio practice only.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 18 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? How does Holographic read from below? Do sparkles and smoke start in clumps?

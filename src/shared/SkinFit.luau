@@ -5,12 +5,24 @@
 -- starter build's numbers come from config/skin-shapes.json.
 local Generated = script.Parent.Parent:WaitForChild("Generated")
 local Shapes = require(Generated:WaitForChild("SkinShapes")).shapes
+local Sizes = require(Generated:WaitForChild("SkinSizes")).skins
 local SkinFit = { shapes = Shapes }
 
 local function v3(t) return Vector3.new(t[1], t[2], t[3]) end
 local function clamp(x, lo, hi) return math.min(math.max(x, lo), hi) end
 
 function SkinFit.has(id) return type(id) == "string" and Shapes[id] ~= nil end
+
+-- How many times "as wide as the plane" skin `id` is drawn on plane `build` (Aircraft's "body|nose|wings|tail") so it
+-- covers as much of the chase view as the plain plane (Alan 2026-11-19; config/skin-sizes.json, measured by
+-- tools/skin_sizes.lua): the body + wings size times the nose's and the tail's. By the wingspan because a nose or tail
+-- changes the plane's length far more than its share of the screen. nil: not measured.
+function SkinFit.screenSize(id, build)
+	local body, nose, wings, tail = string.match(build or "", "^([^|]+)|([^|]+)|([^|]+)|([^|]+)$")
+	local row = Sizes[id] and Sizes[id][body]
+	local size = row and row.wings[wings]
+	return size and size * (row.nose[nose] or 1) * (row.tail[tail] or 1)
+end
 
 -- A part's box in the plane's frame, from its eight corners.
 local function box(part, frame)
@@ -46,6 +58,7 @@ function SkinFit.outline(appearance, frame)
 		end
 	end
 	if o.zN == math.huge or o.zT == -math.huge or o.bz0 == math.huge or #wingY == 0 then return nil end
+	o.build = appearance:GetAttribute("Build")
 	table.sort(wingY)
 	o.wy = wingY[math.ceil(#wingY / 2)]
 	-- ponytail: the wing's root chord from the boxes that reach the root (a swept wing's box is longer than its root);
@@ -80,7 +93,7 @@ end
 -- height. HitShapes uses its pieces instead of the body, nose, wings and tail. Its wings are flat (rise 0). Sizing by equal
 -- target (outlines from above, side and behind, added) is gone (Alan 2026-11-18): flat skins over tall bodies grew far
 -- wider and longer than the plane (up to 34% of the chase view against the plane's 8%).
-local function evenFit(shape, o)
+local function evenFit(shape, o, id)
 	local E, W = shape.even, shape.even.wing
 	local lo0, hi0 = Vector3.one * math.huge, -Vector3.one * math.huge
 	for name, piece in shape.pieces do
@@ -89,10 +102,12 @@ local function evenFit(shape, o)
 			lo0, hi0 = lo0:Min(v3(piece.min)), hi0:Max(v3(piece.max))
 		end
 	end
-	-- As long or as wide as the plane, whichever comes first, never bigger, never stretched (Alan 2026-11-18: "just make
-	-- them the same size in wingspan and in length"; a flat skin over a tall body is a slightly thinner target, but the
-	-- plane's weight, health, lift and speed don't change). Lengths from the hit piece (the Ninja's scarf trails past it).
-	local k = math.min((o.zT - o.zN) / (hi0.Z - lo0.Z), o.xo / E.half_span)
+	-- As much of the chase view as the plain plane (Alan 2026-11-19: "as long or as wide as the plane, whichever comes
+	-- first" of 2026-11-18 was too small), as a measured multiple of its wingspan; never stretched. A thinner or thicker
+	-- target than the plane is fine ("it's just cosmetic"). A mix not measured keeps the length-or-wingspan size; lengths
+	-- from the hit piece (the Ninja's scarf trails past it).
+	local size = SkinFit.screenSize(id, o.build)
+	local k = size and o.xo / E.half_span * size or math.min((o.zT - o.zN) / (hi0.Z - lo0.Z), o.xo / E.half_span)
 	local midZ = (lo0.Z + hi0.Z) / 2
 	local function at(p) return Vector3.new(p.X * k, o.wy + (p.Y - E.wing_y) * k, (o.zN + o.zT) / 2 + (p.Z - midZ) * k) end
 	local out = {}
@@ -118,8 +133,8 @@ end
 
 -- Where each piece goes (crane_skin.py crane()): CFrame and Size in the plane's frame, plus what the guns need and the
 -- right wing's hinge (the left one mirrors it in x).
-function SkinFit.fit(shape, o)
-	if shape.even then return evenFit(shape, o) end
+function SkinFit.fit(shape, o, id)
+	if shape.even then return evenFit(shape, o, id) end
 	local K, ref = shape.const, shape.ref
 	local rise = math.rad(K.RISE)
 	local s = (o.zT - o.zN) / 16
@@ -191,7 +206,7 @@ function SkinFit.plane(id, appearance, frame)
 	local shape = type(id) == "string" and Shapes[id]
 	local o = shape and appearance and SkinFit.outline(appearance, frame)
 	if not o then return nil end
-	local placed, under, rise, hinge, belly = SkinFit.fit(shape, o)
+	local placed, under, rise, hinge, belly = SkinFit.fit(shape, o, id)
 	local result, guns, boosters = { placed = placed, wings = {}, guns = {}, boosters = {}, offsets = {}, hinge = hinge,
 		covers = shape.even ~= nil }, {}, {} -- covers: the skin's pieces are the hit and crash shapes of the body, nose, wings and tail
 	for _, part in appearance:GetChildren() do

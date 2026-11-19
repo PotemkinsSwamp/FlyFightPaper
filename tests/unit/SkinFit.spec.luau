@@ -245,9 +245,27 @@ function Spec.run()
 		for _, piece in pieces do piece:Destroy() end
 		model:Destroy()
 	end
-	-- The Dragon keeps its proportions and IS the hitbox (Alan 2026-11-15): one size, as big a target as the plane
-	-- (config/plane-areas.json), centred on it, wings at the plane's wing height; on the server it replaces the body, nose,
-	-- wings and tail as the hit and crash shape. Four builds: the three above and the widest wings on the Heavy Mk2.
+	-- The Dragon keeps its proportions and IS the hitbox (Alan 2026-11-15): one size, as much of the chase view as the plain
+	-- plane (Alan 2026-11-19, config/skin-sizes.json), centred on it, wings at the plane's wing height; on the server it
+	-- replaces the body, nose, wings and tail as the hit and crash shape. Four builds: the three above and the widest wings
+	-- on the Heavy Mk2.
+	test("every whole-shape skin has its screen size for every body, wings, nose and tail (AGENTS.md)", function()
+		local sizes = require(Root.Generated.SkinSizes).skins
+		local slots = catalog.structuresBySlot
+		for id, skin in SkinFit.shapes do
+			if not skin.even then continue end
+			for _, body in slots.body do
+				local row = sizes[id] and sizes[id][body.id]
+				assert(row, id .. " has no sizes on " .. body.id)
+				for slot, parts in { wings = slots.wings, nose = slots.nose, tail = slots.tail } do
+					for _, part in parts do
+						local v = row[slot][part.id] or (part.id == slot .. "_0" and 1) -- nose_0 and tail_0: the base
+						assert(v and v > 0.5 and v < 2, id .. " " .. body.id .. " " .. part.id .. ": " .. tostring(v))
+					end
+				end
+			end
+		end
+	end)
 	local DRAGON = "dragon"
 	local shape = SkinFit.shapes[DRAGON]
 	local E, box = shape.even, shape.pieces.whole
@@ -261,11 +279,12 @@ function Spec.run()
 		local drawn = fitted.placed.whole
 		local lo, hi = Vector3.new(table.unpack(box.min)), Vector3.new(table.unpack(box.max))
 		local k = drawn[2].Z / (hi - lo).Z
-		test(name .. ": the Dragon keeps its proportions, is as long or as wide as the plane (never bigger), centred, wings at the wings' height", function()
+		test(name .. ": the Dragon keeps its proportions, is its measured screen size, centred, wings at the wings' height", function()
 			assert(near(drawn[2], (hi - lo) * k, 1e-4), "stretched: " .. tostring(drawn[2]))
-			-- The plane's length or wingspan, whichever comes first (Alan 2026-11-18).
-			local long, wideK = (o.zT - o.zN) / (hi - lo).Z, o.xo / E.half_span
-			assert(math.abs(k - math.min(long, wideK)) < 1e-4, "k " .. k .. " vs length " .. long .. ", span " .. wideK)
+			-- As wide as the plane times its measured screen size for this body, nose, wings and tail.
+			local size = assert(SkinFit.screenSize(DRAGON, model.Appearance:GetAttribute("Build")), "no screen size")
+			local want = o.xo / E.half_span * size
+			assert(math.abs(k - want) < 1e-4, "k " .. k .. " vs " .. want)
 			assert(math.abs(drawn[1].Position.Z - (o.zN + o.zT) / 2) < 1e-3, "not centred on the plane")
 			local wingY = drawn[1].Position.Y + (E.wing_y - (lo.Y + hi.Y) / 2) * k
 			assert(math.abs(wingY - o.wy) < 1e-3, "wings at " .. wingY .. ", the plane's at " .. o.wy)

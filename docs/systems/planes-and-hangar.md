@@ -26,19 +26,24 @@ the server turns the real wings' hit and crash shapes up to the skin's wing angl
 the screen draws them, by the same fit (`SkinFit.luau`; built 2026-11-14, checked in Play: wings 32 degrees, same size,
 guns and boosters exactly on the drawn ones; boosters within 0.04 of touching the belly, mesh against mesh, on all 18
 body and booster builds; not yet flown past walls). **The Dragon keeps its proportions and is the hitbox** (Alan 2026-11-15): one mesh and one 1024 picture set (colour,
-bumps, shine, metal, the eye's glow), drawn at one size: as long or as wide as the plane, whichever comes first, never bigger and never stretched, for the
-Dragon and all five Legendaries (Alan 2026-11-18, his pick of "keep the shape"; it replaced equal target size, outlines from
-above, side and behind added, which made flat skins over the tall Cardboard and Toilet Roll bodies up to 34% of the chase
-view against the plane's 8%; `config/plane-areas.json`, `tools/plane_areas.lua` and `even.area` are now unused), centred on the plane, wings at its wing height (`even` in the config;
-`Aircraft.build` stamps the build on the plane). On the server its own precise shape replaces the body, nose, wings and
-tail as the hit and crash shape (`HitShapes.place`). **The five Legendaries hit and crash with a hidden trimmed copy**
-(`hullHit`, Alan 2026-11-18): the drawn skin less its extras (the Race Car's spoiler, the Shark's top fin, the Ninja's scarf),
-every tall fin cut flat where a normal tail fin ends (0.10 of the length above the skin's body top: about half of each),
-made by `tools/art/skin_hit_hulls.py` (one FBX, one upload, `.planning/skins/hit-trim-preview.jpg`); the copy's length
-sets the size. Measured on the chase view (Edit-mode rays, 1280x720): plain Cardboard Gunship with Cardstock Wings 6.8%,
-skinned 2.5-5%; Toilet Roll Gunship with Broad Wings 7.7%, skinned 2.4-5%: every skin exactly the plane's length there and
-18-21 studs wide against the wings' 23-31 (a flat skin over a tall body is a thinner target, 53-69% of the plain plane's;
-Alan: the plane's weight, health, lift and speed don't change). The Dragon has nothing that tall and keeps its one shape; guns hang under its wing outside its body, the booster under its
+bumps, shine, metal, the eye's glow), drawn at one size, never stretched, for the
+Dragon and all five Legendaries: **as much of the chase view as the same plane without a skin** (Alan 2026-11-19, after
+"as long or as wide as the plane, never bigger" of 2026-11-18 drew skins at 2.4-5% of the screen against the plane's
+6.8-7.7%). `config/skin-sizes.json` holds, per skin and body, how many times "as wide as the plane" it is drawn with each
+wing (nose_0, tail_0) and what each other nose and tail multiplies that by (a long nose pushes the centred skin away from
+the camera); `tools/skin_sizes.lua` measures it in Studio's Edit (rays through the 1280x720 chase camera on the precise
+shapes, within 1% of the drawn triangles; about 2 minutes for all six bodies) and `SkinFit.screenSize` reads it. A mix not
+in the table falls back to the 2026-11-18 size. Measured: plain planes cover 0.8% (Swift Fold, Swept Wings) to 8.6%
+(Toilet Roll Gunship, nose and tail 3); skins land within 1% of that on the four check builds, and within 5% on 207 of
+216 mixed builds (worst 11%, the Swift Fold with nose and tail 3). Skins can be thinner or thicker targets than the plane
+and up to 1.3 times as wide (Alan: "it's just cosmetic"; the plane's weight, health, lift and speed don't change; the
+contact gate grows with the hit shapes). `config/plane-areas.json`, `tools/plane_areas.lua` and `even.area` are unused,
+to delete after Alan's Play look. Centred on the plane, wings at its wing height (`even` in the config; `Aircraft.build`
+stamps the build on the plane). On the server its own precise shape replaces the body, nose, wings and tail as the hit
+and crash shape (`HitShapes.place`). **The five Legendaries hit and crash with a hidden trimmed copy** (`hullHit`, Alan
+2026-11-18): the drawn skin less its extras (the Race Car's spoiler, the Shark's top fin, the Ninja's scarf), every tall
+fin cut flat where a normal tail fin ends (0.10 of the length above the skin's body top: about half of each), made by
+`tools/art/skin_hit_hulls.py` (one FBX, one upload, `.planning/skins/hit-trim-preview.jpg`). The Dragon has nothing that tall and keeps its one shape; guns hang under its wing outside its body, the booster under its
 belly. Its boosters wear its printed sheet (its own body scales at the body's scale size, `picture` in `config/looks.json`; Alan saw it in Studio 2026-11-16: "its good"). Not checked in Play yet; the monorail train still tests the corners of each crash shape's box, which for the
 Dragon reach past its wings.
 The shelf's big photo and its cubbies wear your skin too, and so do the desk menu's big photo and its pinboard of
@@ -155,13 +160,14 @@ the rest are dropped (`Catalog:fitMounts`). Pending refolds still recover normal
 | `src/client/HangarTrailPreview.luau` | Draws the selected trail in the plane's 3D preview, with the flight meshes, camera-facing smoke and a compact effect behind the fitted tail. |
 | `src/client/HangarCustomize.luau` | The Customize binder: category tabs, part and gear cards, buying, Save; the rarity groups and preview, chest, wear and take-off buttons on the Skins and Trails pages |
 | `src/client/SkinShapes.luau` | Shape skins (Legendary, Mythical): draws the skin's pieces on this screen where `SkinFit` puts them, hides what they cover, draws the guns under the wings ([skins plan](../plan/SKINS-PLAN.md)) |
-| `tools/art/skin_hit_hulls.py` | Blender: the five Legendaries' hidden hit copies (extras off, tall fins cut where a normal tail fin ends) as one FBX plus each copy's box; then `tools/plane_areas.lua` with BODY = the skin id measures its target size |
+| `tools/art/skin_hit_hulls.py` | Blender: the five Legendaries' hidden hit copies (extras off, tall fins cut where a normal tail fin ends) as one FBX plus each copy's box; then `tools/skin_sizes.lua` measures the skin's screen sizes |
 | `src/shared/SkinFit.luau` | Shape skins' one fit for screen and server: measures the plane's parts, places the skin's pieces, and says where each real wing turns (about the drawn hinge) and each gun hangs |
-| `tests/unit/SkinFit.spec.luau` | Under the Dragon, on four builds: one size, as big a target as the plane, centred, its shape replacing the body, nose, wings and tail as hit shapes, guns under its wing, booster on its belly. Under the crane, on two builds: wing shapes turn by its angle about the drawn hinge at the same size, gun shapes move by the screen's offsets, crash shapes refit on a skin change; no shape skin moves nothing |
+| `tools/skin_sizes.lua` | Studio Edit, once per body: each whole-shape skin's screen size for `config/skin-sizes.json` (with each wing, then each nose and tail); run it for every new whole-shape skin before it ships (`SKINS = { id }`) |
+| `tests/unit/SkinFit.spec.luau` | Every whole-shape skin has its screen size for every body, wings, nose and tail. Under the Dragon, on four builds: one size, its measured screen size, centred, its shape replacing the body, nose, wings and tail as hit shapes, guns under its wing, booster on its belly. Under the crane, on two builds: wing shapes turn by its angle about the drawn hinge at the same size, gun shapes move by the screen's offsets, crash shapes refit on a skin change; no shape skin moves nothing |
 | `src/server/HangarService.luau` | Saving builds and buying parts |
 
 ## Tuning numbers
-`config/catalog.json` (24 structures, 6 weapons, 3 boosters, starter build).
+`config/catalog.json` (24 structures, 6 weapons, 3 boosters, starter build). `config/skin-sizes.json` (whole-shape skins' screen sizes, measured, not hand-tuned).
 
 ## Related
 - [Plane colours by mode](../decisions/2026-10-13-plane-colours.md)
