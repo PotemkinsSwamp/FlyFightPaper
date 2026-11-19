@@ -42,7 +42,7 @@ Names are placeholders.
 | Skeet Shoot (Alan) | The runner-ups throw their paper planes and 1st shoots them out of the air, like skeet shooting, with rubber bands off a finger or a slingshot: something a child would do |
 | Bubblegum | Blows a bubble that grows until it fills the screen, pops and leaves pink gum on the lens |
 | Spitball | Loads a straw, grins and fires; a wet splat hits the lens and slides down |
-| Autograph | Walks up, signs the lens in marker, adds a moustache, wipes it off with a sleeve |
+| Autograph | The camera comes in close on them (Alan: an arm can't reach the screen, the screen comes to them); they sign it in marker, add a moustache, wipe it off with a sleeve |
 | Fold It Up | Grabs the picture itself, folds the whole screen into a paper plane and throws it away |
 | A+ | Holds up their report card and slaps it on the lens, where it becomes the real report card |
 | Chalk Bomb | Claps two board erasers; a chalk cloud swallows the screen and drifts off |
@@ -75,8 +75,14 @@ and edgy like Camera Flick and Book Kicker.
 - How the body animations get made: Studio's text-to-animation tool first (never tried), filming a person with
   Roblox's Animation Capture as the fallback, free motion libraries after that. Every new one needs a free upload
   (Alan's go). Sitting or one-clear-action emotes are the safest; Autograph and Stomp need the most real motion.
-- Ideas that lean on the body's shape and need a safe version: Ruler Drumroll (hands reaching the desk), Next One
-  (two hands meeting on the plane), the claps (hands meeting), Autograph (a hand reaching the lens).
+- Props that ride on a hand are fine on any body (Alan 2026-11-19). Ideas where two things must meet need a safe
+  version: Ruler Drumroll (hands reaching the desk), Next One (two hands on the plane), the claps (hands meeting).
+- **How any avatar plays any emote:** every Roblox avatar already has the same standard skeleton (R15), and an
+  animation is stored as joint turns by name, so it plays at once on any of them; today's scene already copies each
+  winner's avatar and plays animations on the copy (`WinnersCutscene` `copyWinner`). Only proportions differ, so sizes
+  and camera distances come from the avatar's own height, and each emote gets checked on a set of extreme bodies
+  (tiny, tall, short arms, no visible arms) before it ships. Old-style R6 avatars (6 parts) can't play these: they
+  get a simple fallback.
 - Music: licensed only. Prices, and which emotes ship in the beta.
 - Proposed build order: the scene first with today's dances standing in; then Camera Flick and Next One to prove the
   method; then the rest and the shop shelf.
