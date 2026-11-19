@@ -225,6 +225,7 @@ function Aircraft.build(model,loadout,catalog,preview)
     local at=child.Position
     local y=at.Y+(topOf(Aircraft.look(id))-at.Y)*(1-shrink)
     put(child,"Mount"..slot.."-"..child.Name,Aircraft.mountOffset(slot,factor,fit,id)+Vector3.new(side*at.X*shrink,y,at.Z*shrink)*factor*fit.scale,child.CFrame.Rotation,scale)
+    appearance["Mount"..slot.."-"..child.Name]:SetAttribute("Look",Aircraft.look(id)) -- SkinFit: which weapon's clip
    end end
   elseif equipment and equipment:FindFirstChild("launcher_"..Aircraft.look(id)) then
    local template=equipment["launcher_"..Aircraft.look(id)]

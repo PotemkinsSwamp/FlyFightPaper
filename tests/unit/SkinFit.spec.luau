@@ -304,8 +304,18 @@ function Spec.run()
 			for _, part in model.Appearance:GetChildren() do if part:IsA("MeshPart") and string.match(part.Name, "^Mount") then want += 1 end end
 			assert(skins == 1 and guns == want, skins .. " Dragon shapes, " .. guns .. " gun shapes of " .. want)
 		end)
-		test(name .. ": guns hang just under the Dragon's wing, outside its body", function()
-			local hinge, count = fitted.hinge, 0
+		test(name .. ": guns hang touching the Dragon's underside, under drawn skin, apart (config/skin-undersides.json)", function()
+			local grid = require(Root.Generated.SkinUndersides).skins[DRAGON]
+			-- the lowest drawn underside over a point of the plane's frame, in the plane's frame (nil: nothing above)
+			local midZ, zMid = (lo.Z + hi.Z) / 2, (o.zN + o.zT) / 2
+			local function underside(p)
+				local x, z = math.abs(p.X) / k, midZ + (p.Z - zMid) / k
+				local column = grid.columns[math.floor((x - grid.x0) / grid.step) + 1]
+				local cell = column and string.split(column, ",")[math.floor((z - grid.z0) / grid.step) + 1]
+				local y = cell and tonumber(cell)
+				return y and o.wy + (y / 100 - E.wing_y) * k
+			end
+			local tops, count = {}, 0
 			for slot, offset in fitted.offsets do
 				count += 1
 				local parts = {}
@@ -316,9 +326,12 @@ function Spec.run()
 					lo2, hi2 = lo2:Min(p - part.Size / 2), hi2:Max(p + part.Size / 2)
 				end
 				local to = Vector3.new((lo2.X + hi2.X) / 2, hi2.Y, (lo2.Z + hi2.Z) / 2) + offset
-				local under = hinge.Y + (E.wing.under_y - E.wing_y) * k
-				assert(to.Y < under and to.Y > under - 0.1 * k, "slot " .. slot .. " top at " .. to.Y .. ", the wing's underside at " .. under)
-				assert(math.abs(to.X) > E.body_x * k and math.abs(to.X) < E.wing.tip_x * k, "slot " .. slot .. " not under the wing")
+				local under = assert(underside(to), "slot " .. slot .. ": no skin above its top")
+				assert(to.Y < under + 0.05 * k and to.Y > under - 0.1 * k, "slot " .. slot .. " top at " .. to.Y .. ", the underside at " .. under)
+				for _, other in tops do
+					assert((other - to).Magnitude > 0.2 * k, "slot " .. slot .. " sits on another gun")
+				end
+				table.insert(tops, to)
 			end
 			local want = 0
 			for _, id in loadout.weapon_mounts do if id then want += 1 end end
