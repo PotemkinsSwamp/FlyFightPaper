@@ -122,6 +122,14 @@ child (flat, straight scissor snips, not crumpled or torn), still one white piec
 on a card: the goal, bar, counts, rewards and calendar are as big as the card allows, rewards lined up on the card's
 right with the chest after the words ([notes](../playtests/2026-11-18-missions-first-look.md#fourth-look-cut-paper-and-a-fuller-card-same-day)).
 
+**Live progress (Alan, 2026-11-18, after his fifth look):** progress shown only after a match is "a real problem": a
+player chasing 6,000 damage or 20 speed boosts must see it while playing. Missions update live: the server adds the
+match's running counts (folds, damage, speed boosts, targets, Paper) to the saved progress and sends it to the player
+whenever it changes; the desk list and the Missions sheet show it moving. "In one match" missions show the running
+count. Saving stays once at match end (Roblox's save limits). Wins, top 3 and "folded N times or fewer" still tick at
+the end. Any mission finished during the match, including by Studio's Dev: finish missions, gets the report card's
+gold star at the end. No mid-flight popup (Alan: "Yes, do it as you described, no mid-flight popup").
+
 ## Why
 
 Alan wants players coming back every day and playing through the week, with goals that fit what each player owns and
