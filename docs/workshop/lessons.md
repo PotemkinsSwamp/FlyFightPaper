@@ -88,6 +88,12 @@ mistake would be easy to make twice.
   above, side and behind added) let flat skins grow far wider than the Cardboard and Toilet Roll Gunships, whose deep
   fuselage is most of their target (Ninja 1.8x, Race Car 2.1x the plane's share of the chase view). Before proposing any
   size rule, measure plain vs skinned chase-view share on those two bodies and on Swift Fold with Swept Wings.
+- **Hanging one model under another: trace the touching patch, don't box it** (2026-11-19, guns under big skins): a
+  weapon's top is a cup, two hooks or a ring, and its bounding box touched the skin by corners the top never reaches
+  (0.15-stud floats). Store the real outline as strips; touch by the crown (the top 1.5%), since rims sit lower; read a
+  height grid by the highest of the four nearest cells (the nearest cell or a blend floated guns on slopes and walls);
+  check hiding with a whole cell to spare; refuse spots with a wall or gap under the patch. Sweep every body x wings x
+  weapon x slot with rays on the exact triangles (fine enough for thin clips: 40 rows missed the crayon's band).
 - **Tripo's API** (2026-11-15): `tsk_` keys (`TRIPO_API` in `.env`) work only on `https://api.tripo3d.ai/v2/openapi`
   (balance: `GET /user/balance`); the v3 address `openapi.tripo3d.com` says "Invalid API key". Plain Python requests
   are blocked (Cloudflare 403, code 1010) until they send a `User-Agent`. API credits are bought separately from the

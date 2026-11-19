@@ -7,7 +7,7 @@ local Generated = script.Parent.Parent:WaitForChild("Generated")
 local Shapes = require(Generated:WaitForChild("SkinShapes")).shapes
 local Sizes = require(Generated:WaitForChild("SkinSizes")).skins
 local Hanging = require(Generated:WaitForChild("SkinUndersides"))
-local Undersides, Clips = Hanging.skins, Hanging.clips
+local Undersides, Clips, Crowns = Hanging.skins, Hanging.clips, Hanging.crowns
 local SkinFit = { shapes = Shapes }
 
 local function v3(t) return Vector3.new(t[1], t[2], t[3]) end
@@ -157,37 +157,100 @@ local function evenFit(shape, o, id)
 		return Vector3.new(x < 0 and -p.X or p.X, p.Y - 0.02 * k, p.Z)
 	end
 	-- Hang a gun under the drawn skin (Alan 2026-11-19: guns floated under the skins and their clips showed from above):
-	-- the nearest spot to `want` (under()'s) where its clip (the parts reaching its top, clipLo..clipHi) is fully under
-	-- the skin seen from above, clear of the guns already hung on that side (`taken`), on its own side of the middle and
-	-- at most 70% of the way out (under the skin's body if nothing on the wing covers it); its top touching the lowest
-	-- underside over the clip, tilted to the underside's slope (at most 15 degrees). Returns the gun top's spot and its
-	-- turn (nil: no grid, or no part of the clip under the skin anywhere).
+	-- the nearest spot to `want` (under()'s) where its clip (the strips of its top that must hide, `clip`: {u0, u1, v0,
+	-- v1} shares of its box lo..hi, left-slot model; a right-side gun is it mirrored) is fully under the skin seen from
+	-- above, clear of the guns already hung on that side (`taken`), on its own side of the middle and at most 70% of the
+	-- way out (under the skin's body if nothing on the wing covers it); its crown (the strips that touch) touching the
+	-- lowest underside over it, tilted to the underside's slope (at most 15 degrees). Returns the gun top's spot and its
+	-- turn (nil: no grid, or no part of the crown under the skin anywhere).
 	local grid = gridOf(id)
 	local zMid = (o.zN + o.zT) / 2
 	local xHi = W.root_x + 0.7 * span
-	local function hang(want, lo, hi, clipLo, clipHi, taken)
+	local function hang(want, lo, hi, clip, crown, taken)
 		if not grid then return nil end
-		local side, step = want.X < 0 and -1 or 1, grid.step
+		local side, step, cols = want.X < 0 and -1 or 1, grid.step, grid.cols
 		local hx, hz = (hi.X - lo.X) / 2 / k, (hi.Z - lo.Z) / 2 / k
-		local ox = ((clipLo.X + clipHi.X) / 2 - (lo.X + hi.X) / 2) / k * side
-		local oz = ((clipLo.Z + clipHi.Z) / 2 - (lo.Z + hi.Z) / 2) / k
-		local cx, cz = (clipHi.X - clipLo.X) / 2 / k, (clipHi.Z - clipLo.Z) / 2 / k
-		-- The clip's cells at gun centre (x, z), centres within `grow` of it; `all`: nil if one has nothing above.
-		local function cells(x, z, all, grow)
+		-- Each strip's middle off the gun's middle and half size, skin units, as if on the right (u = 0 is the outer side).
+		local function offsets(list)
+			local out = {}
+			for i, s in list do
+				out[i] = { (0.5 - (s[1] + s[2]) / 2) * 2 * hx, ((s[3] + s[4]) / 2 - 0.5) * 2 * hz, (s[2] - s[1]) * hx, (s[4] - s[3]) * hz }
+			end
+			return out
+		end
+		local strips, touch = offsets(clip), offsets(crown or clip)
+		local ox0, ox1, oz0, oz1 = math.huge, -math.huge, math.huge, -math.huge
+		for _, s in strips do
+			ox0, ox1, oz0, oz1 = math.min(ox0, s[1] - s[3]), math.max(ox1, s[1] + s[3]), math.min(oz0, s[2] - s[4]), math.max(oz1, s[2] + s[4])
+		end
+		local ox, oz, cx = (ox0 + ox1) / 2, (oz0 + oz1) / 2, (ox1 - ox0) / 2 -- the whole clip's box
+		local function span1(c, half, grow, o0) -- the cells whose centres are within `grow` of c +- half
+			return math.ceil((c - half - grow - o0) / step + 0.5), math.floor((c + half + grow - o0) / step + 0.5)
+		end
+		-- With the gun's centre at (x, z), is the skin over every cell whose centre is within `grow` of the clip? A full cell
+		-- (`step`) means the skin reaches past the clip on every side: nothing shows, whatever the edge does between cell
+		-- centres (half a cell left 2-4% slivers at the wing's edge). Returns the highest step between neighbouring cells
+		-- there (a flat gun top can't touch across a wall or a gap: under heavy bodies' skins wing guns met the Dragon's
+		-- body side and gaps between the Race Car's pieces), nil if not hidden or the step is higher than `limit`.
+		local function hidden(x, z, grow, limit)
+			local worst = 0
+			for _, s in strips do
+				local i0, i1 = span1(x + s[1], s[3], grow, grid.x0)
+				local j0, j1 = span1(z + s[2], s[4], grow, grid.z0)
+				local before
+				for i = i0, i1 do
+					local column = cols[i]
+					if not column then return nil end
+					for j = j0, j1 do
+						local y = column[j]
+						if not y then return nil end
+						local rise = math.max(j > j0 and math.abs(y - column[j - 1]) or 0, i > i0 and math.abs(y - before[j]) or 0)
+						if rise > worst then
+							worst = rise
+							if worst > limit then return nil end
+						end
+					end
+					before = column
+				end
+			end
+			return worst
+		end
+		local steep = MAX_TILT * step + 0.02 -- the steepest tilt, plus the heights' rounding
+		-- The skin's underside at (px, pz): the highest of the four nearest cell centres, so a gun tucks a hair into the skin
+		-- rather than float (the nearest cell sat up to half a cell off the clip, on a slope 0.07 studs lower; a blend of the
+		-- four sank guns beside the body's side wall); nil off the skin.
+		local function height(px, pz)
+			local ti, tj = (px - grid.x0) / step + 0.5, (pz - grid.z0) / step + 0.5
+			local i, j = math.floor(ti), math.floor(tj)
+			local fx, fz, top = ti - i, tj - j, nil
+			for di = 0, 1 do
+				for dj = 0, 1 do
+					local y = cols[i + di] and cols[i + di][j + dj]
+					if y and (di == 1 and fx or 1 - fx) * (dj == 1 and fz or 1 - fz) > 0 then top = math.max(top or y, y) end
+				end
+			end
+			return top
+		end
+		-- The underside over the crown's own points (every half cell across each strip, edges included), gun centre at
+		-- (x, z), as offsets from it with the height.
+		local function points(x, z)
 			local list = {}
-			for i = math.ceil((x + ox - cx - grow - grid.x0) / step + 0.5), math.floor((x + ox + cx + grow - grid.x0) / step + 0.5) do
-				local column = grid.cols[i]
-				for j = math.ceil((z + oz - cz - grow - grid.z0) / step + 0.5), math.floor((z + oz + cz + grow - grid.z0) / step + 0.5) do
-					local y = column and column[j]
-					if y then table.insert(list, Vector3.new(grid.x0 + (i - 0.5) * step - x, y, grid.z0 + (j - 0.5) * step - z))
-					elseif all then return nil end
+			for _, s in touch do
+				local nx, nz = math.ceil(4 * s[3] / step), math.ceil(4 * s[4] / step)
+				for a = 0, nx do
+					for c = 0, nz do
+						local px, pz = s[1] + s[3] * (2 * a / math.max(nx, 1) - 1), s[2] + s[4] * (2 * c / math.max(nz, 1) - 1)
+						local y = height(x + px, z + pz)
+						if y then table.insert(list, Vector3.new(px, y, pz)) end
+					end
 				end
 			end
 			return #list > 0 and list or nil
 		end
 		local wx, wz = math.abs(want.X) / k, midZ + (want.Z - zMid) / k
 		local xLo = hx + 0.02
-		local x, z, list
+		local x, z, list, best, near
+		local bestRise = math.huge
 		for _, d in NEAR do
 			local tx, tz = wx + d.X, wz + d.Y
 			if tx < xLo or tx > xHi then continue end
@@ -195,8 +258,19 @@ local function evenFit(shape, o, id)
 			for _, t in taken do
 				if math.abs(tx - t[1]) < hx + t[3] + 0.05 and math.abs(tz - t[2]) < hz + t[4] + 0.05 then clear = false; break end
 			end
-			if clear and cells(tx, tz, true, step / 2) then x, z = tx, tz; break end
+			if not clear then continue end
+			-- The nearest smooth spot, else the smoothest hidden one, else one hidden to within half a cell (better than
+			-- sticking out).
+			local rise = hidden(tx, tz, step, bestRise)
+			if rise and rise < bestRise then
+				best, bestRise = Vector2.new(tx, tz), rise
+				if rise <= steep then break end
+			elseif not best and not near and hidden(tx, tz, step / 2, math.huge) then
+				near = Vector2.new(tx, tz)
+			end
 		end
+		near = best or near
+		if near then x, z = near.X, near.Y end
 		if not x then
 			-- Nowhere hides the whole clip (longer than the wing there): where it hangs across the span, centred on the wing
 			-- front to back (Alan 2026-11-19: a long gun may stick out, never half off one edge with room on the other).
@@ -219,14 +293,20 @@ local function evenFit(shape, o, id)
 			end
 			if count > 0 then z = sum / count - oz end
 		end
-		-- It touches by the clip itself (a round top only reaches its box's top along its middle): the cells inside it, or
-		-- the nearest one to its middle.
-		list = cells(x, z, false, 0) or cells(x, z, false, step / 2) or cells(x, z, false, step)
+		-- It touches by its crown, never by a corner of its box or a rim the top doesn't reach.
+		list = points(x, z)
 		if not list then return nil end
 		table.insert(taken, { x, z, hx, hz })
-		-- The underside's slope over the clip (least squares), then the lowest point under that slope.
-		local n, sx, sz, sy, sxx, szz, sxz, sxy, szy = #list, 0, 0, 0, 0, 0, 0, 0, 0
+		-- The underside's slope over the crown (least squares, leaving out points higher than the steepest tilt reaches from
+		-- the lowest: a gap between the skin's pieces, like the Race Car's beside its body, reads far higher and tipped guns
+		-- to the limit so they touched nowhere), then the lowest point under that slope.
+		local low, x0, x1, z0, z1 = math.huge, math.huge, -math.huge, math.huge, -math.huge
+		for _, q in list do low, x0, x1, z0, z1 = math.min(low, q.Y), math.min(x0, q.X), math.max(x1, q.X), math.min(z0, q.Z), math.max(z1, q.Z) end
+		local cut = low + MAX_TILT * (x1 - x0 + z1 - z0) + 0.02
+		local n, sx, sz, sy, sxx, szz, sxz, sxy, szy = 0, 0, 0, 0, 0, 0, 0, 0, 0
 		for _, c in list do
+			if c.Y > cut then continue end
+			n += 1
 			sx += c.X; sz += c.Z; sy += c.Y; sxx += c.X * c.X; szz += c.Z * c.Z; sxz += c.X * c.Z; sxy += c.X * c.Y; szy += c.Z * c.Y
 		end
 		local mx, mz, my = sx / n, sz / n, sy / n
@@ -362,15 +442,11 @@ function SkinFit.plane(id, appearance, frame)
 		local top = Vector3.new((lo.X + hi.X) / 2, hi.Y, (lo.Z + hi.Z) / 2)
 		local to = under(top.X, top.Z, (hi.Z - lo.Z) / 2)
 		local turn = CFrame.Angles(0, 0, to.X < 0 and -rise or rise)
-		local clip = Clips[parts[1]:GetAttribute("Look") or ""]
-		if hang and clip then
-			-- The clip (the patch of its top that touches: the cup's base and strap, the cradle's floor, the crayon's band),
-			-- from the weapon's measured shares of its box; a right-side gun is the left one mirrored.
-			local u0, u1 = clip[1], clip[2]
-			if (lo.X + hi.X) / 2 > 0 then u0, u1 = 1 - clip[2], 1 - clip[1] end
-			local clipLo = Vector3.new(lo.X + u0 * (hi.X - lo.X), hi.Y, lo.Z + clip[3] * (hi.Z - lo.Z))
-			local clipHi = Vector3.new(lo.X + u1 * (hi.X - lo.X), hi.Y, lo.Z + clip[4] * (hi.Z - lo.Z))
-			local spot, tilt = hang(to, lo, hi, clipLo, clipHi, taken[to.X < 0 and 1 or 2])
+		-- The clip: the strips of its top that must hide (the cup's rim, the cradle's floor, the crayon's band, the eraser's
+		-- lugs); the crown: the highest of them, that touch.
+		local look = parts[1]:GetAttribute("Look") or ""
+		if hang and Clips[look] then
+			local spot, tilt = hang(to, lo, hi, Clips[look], Crowns[look], taken[to.X < 0 and 1 or 2])
 			if spot then to, turn = spot, tilt end
 		end
 		local move = CFrame.new(to) * turn * CFrame.new(-top)

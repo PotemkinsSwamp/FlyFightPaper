@@ -52,9 +52,37 @@ for id, shape in shapes do
 	for _, q in pieces do q.em:Destroy() end
 	out[id] = { step = STEP, x0 = x0, z0 = z0, columns = rows }
 end
--- Each weapon's clip: the patch of its top within 5% of its height of its highest point, as shares of its launcher's
--- box (u across x, v from the front), widened by half a sample.
-local clips = {}
+-- Each weapon's clip: the patch of its top within 5% of its height of its highest point (the part that must hide), and
+-- its crown, the patch within 1.5% (what touches the skin: a cup's rim or a hook's ends sit lower than its top, and guns
+-- touching by them floated 0.12 studs), as strips {u0, u1, v0, v1} in shares of its launcher's box (u across x, v from
+-- the front), traced on a 16 x 40 raster (each pixel is on when any of its 3 x 3 samples is): a round cup or two lugs is
+-- not its bounding box (2026-11-19: guns touched by a box corner the top never reaches and floated 0.15 studs).
+local PX, PZ = 16, 40
+local function r(x) return math.floor(x * 1000 + 0.5) / 1000 end
+local function trace(on) -- each row's runs of pixels; a run continues down the rows below with the same ends
+	local strips, open = {}, {}
+	for j = 0, PZ do
+		local runs, i = {}, 0
+		while j < PZ and i < PX do
+			if on[j][i] then
+				local s = i
+				while on[j][i + 1] do i += 1 end
+				runs[s .. ":" .. i] = { s, i }
+			end
+			i += 1
+		end
+		for key, st in open do
+			if not runs[key] then table.insert(strips, { r(st[1]), r(st[2]), r(st[3]), r(st[4]) }); open[key] = nil end
+		end
+		for key, run in runs do
+			open[key] = open[key] or { run[1] / PX, (run[2] + 1) / PX, j / PZ, nil }
+			open[key][4] = (j + 1) / PZ
+		end
+	end
+	table.sort(strips, function(a, b) return a[3] < b[3] or a[3] == b[3] and a[1] < b[1] end)
+	return strips
+end
+local clips, crowns = {}, {}
 for _, L in Root.Assets.AircraftPieces:GetChildren() do
 	local look = string.match(L.Name, "^launcher_(.+)$")
 	if not look then continue end
@@ -70,16 +98,19 @@ for _, L in Root.Assets.AircraftPieces:GetChildren() do
 			lo, hi = lo:Min(q), hi:Max(q)
 		end
 	end
-	local H, NX, NZ = hi.Y - lo.Y, 48, 120
-	local u0, u1, v0, v1 = 1, 0, 1, 0
-	for i = 0, NX - 1 do
-		for j = 0, NZ - 1 do
-			local u, v = (i + 0.5) / NX, (j + 0.5) / NZ
+	local H = hi.Y - lo.Y
+	local on, crown = {}, {} -- [j][i]: pixel (i, j) of the raster, front row first
+	for j = 0, PZ - 1 do on[j], crown[j] = {}, {} end
+	for i = 0, PX * 3 - 1 do
+		for j = 0, PZ * 3 - 1 do
+			local u, v = (i + 0.5) / (PX * 3), (j + 0.5) / (PZ * 3)
 			local from = Vector3.new(lo.X + u * (hi.X - lo.X), hi.Y + 5, lo.Z + v * (hi.Z - lo.Z))
 			for _, q in parts do
 				local tri, point = q.em:RaycastLocal(q.cf:PointToObjectSpace(from) * q.k + q.c, q.cf:VectorToObjectSpace(Vector3.new(0, -(H + 10), 0)) * q.k)
-				if tri and q.cf:PointToWorldSpace((point - q.c) / q.k).Y >= hi.Y - 0.05 * H then
-					u0, u1, v0, v1 = math.min(u0, u), math.max(u1, u), math.min(v0, v), math.max(v1, v)
+				local y = tri and q.cf:PointToWorldSpace((point - q.c) / q.k).Y
+				if y and y >= hi.Y - 0.05 * H then
+					on[j // 3][i // 3] = true
+					if y >= hi.Y - 0.015 * H then crown[j // 3][i // 3] = true end
 					break
 				end
 			end
@@ -87,7 +118,6 @@ for _, L in Root.Assets.AircraftPieces:GetChildren() do
 		task.wait()
 	end
 	for _, q in parts do q.em:Destroy() end
-	local function r(x) return math.floor(x * 1000 + 0.5) / 1000 end
-	clips[look] = { r(math.max(0, u0 - 0.5 / NX)), r(math.min(1, u1 + 0.5 / NX)), r(math.max(0, v0 - 0.5 / NZ)), r(math.min(1, v1 + 0.5 / NZ)) }
+	clips[look], crowns[look] = trace(on), trace(crown)
 end
-return HttpService:JSONEncode({ skins = out, clips = clips })
+return HttpService:JSONEncode({ skins = out, clips = clips, crowns = crowns })

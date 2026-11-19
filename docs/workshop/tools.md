@@ -7,7 +7,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | Script | What it does / when |
 |---|---|
 | `tools/generate_config.py` | Turns `config/*.json` into Luau in `src/generated/`. Run after every config edit |
-| `tools/skin_undersides.lua` | Run in Studio's Edit: each whole-shape skin's underside grid and each weapon's clip, for `config/skin-undersides.json` ([planes and hangar](../systems/planes-and-hangar.md)). Its JSON is ~30 KB: keep it in `_G` and pull it to a file with `FULL=1 python tools/studio_cli.py execute_luau ... > file` |
+| `tools/skin_undersides.lua` | Run in Studio's Edit: each whole-shape skin's underside grid and each weapon's clip and crown, for `config/skin-undersides.json` ([planes and hangar](../systems/planes-and-hangar.md)). Its JSON is ~30 KB: keep it in `_G` and pull it to a file with `FULL=1 python tools/studio_cli.py execute_luau ... > file` |
 | `tools/skin_sizes.lua` | Run in Studio's Edit, once per body: the size at which each whole-shape skin covers as much of the chase view as the plain plane, with each wing, nose and tail, for `config/skin-sizes.json` ([planes and hangar](../systems/planes-and-hangar.md)). Every new whole-shape skin gets its rows before it ships |
 | `tools/save_place.py` | Rebuilds the working place with the art, keeping saved art and exact collision. Ctrl+S in Studio first |
 | `tools/push_github.py` | Copies new `main` commits to GitHub (no Blender files or review pictures); runs by itself after every commit (`.githooks/post-commit`) |
