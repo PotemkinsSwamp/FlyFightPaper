@@ -709,5 +709,14 @@
   "h": 125,
   "piece": "assets/ui/mainmenu/ready/strip-green.png",
   "group": "fly"
+ },
+ "84680888117475": {
+  "file": "sheet-3d-7",
+  "x": 8,
+  "y": 802,
+  "w": 1004,
+  "h": 154,
+  "piece": "assets/ui/mainmenu/ready/card-white.png",
+  "group": "3d"
  }
 }

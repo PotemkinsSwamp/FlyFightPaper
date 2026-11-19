@@ -12,6 +12,8 @@ return {
 		title = "rbxassetid://103734128810118",
 		strip = { yellow = "rbxassetid://81270758839816", blue = "rbxassetid://127387145271610", green = "rbxassetid://102293582971435", red = "rbxassetid://84891639571797" },
 		card = "rbxassetid://89622531819348",
+		-- One white construction-paper card cut neatly with scissors, tinted per difficulty (MissionsScreen; Alan 2026-11-18).
+		cardWhite = "rbxassetid://84680888117475",
 		drawing1 = "rbxassetid://87353912097125",
 		drawing2 = "rbxassetid://84778693355255",
 		photo = "rbxassetid://83093020395376",

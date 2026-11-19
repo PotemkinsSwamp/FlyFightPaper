@@ -9,7 +9,7 @@ local MenuArt = {}
 
 -- (tools/ui_sheets.py has the same list)
 local MENU_GUIS = { LoadingClassroom = true, KeepDrawn = true, MenuBoard = true, SettingsScreen = true, HangarScreen = true,
-	ShopScreen = true, WaitScreen = true, TrainingBoard = true, RoundEnd = true }
+	ShopScreen = true, WaitScreen = true, TrainingBoard = true, RoundEnd = true, MissionsScreen = true }
 local FOV = 20
 local watched = setmetatable({}, { __mode = "k" }) -- labels whose colour/fade the card follows (copies need their own)
 

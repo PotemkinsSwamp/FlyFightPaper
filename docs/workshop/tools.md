@@ -88,6 +88,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `blocks.py` | Blender-built town buildings (replan v3): one function per building, hero-piece output for `town_toys.py hero` |
 | `materials.py` | Separates toy-town materials from baked colour sheets |
 | `closeups.py` | Close-up render sheet to catch defects before upload |
+| `cut_paper.py` | Not Blender: one white construction-paper card cut neatly with scissors (straight snips, snipped corners, paper grain, black shadow), for tinting in the game (the Missions cards) |
 | `square_from_strip.py` | Not Blender: cuts a little torn square from a menu strip's plain middle (the notes' red X box) |
 | `unlock_pieces.py` | Not Blender: the unlock backpack's upload pictures from `assets/ui/unlock/source` (12 unzip frames that gape like a real zipper, the sheet's corner tapes cut out, a cream button) and the numbers `UnlockMoment.luau` needs |
 | `widen_paper.py` | Not Blender: makes a ruled paper wider by repeating plain bands on both sides of its tape, lines kept continuous (the Hangar stats paper) |

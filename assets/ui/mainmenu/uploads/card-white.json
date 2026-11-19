@@ -1,0 +1,24 @@
+{
+  "path": "operations/9a82c117-e9ab-4ce0-a91d-d7826ed97503",
+  "operationId": "9a82c117-e9ab-4ce0-a91d-d7826ed97503",
+  "done": true,
+  "response": {
+    "path": "assets/84680888117475",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-19T01:10:05.579Z",
+    "assetId": "84680888117475",
+    "displayName": "FlyFightPaper mainmenu card-white",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

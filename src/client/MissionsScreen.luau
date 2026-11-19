@@ -11,10 +11,12 @@ local Widgets = require(script.Parent.HangarWidgets)
 local Opening = require(script.Parent.ChestOpening)
 local MissionsScreen = {}
 
--- The desk buttons' construction paper, easier to harder: green, yellow, red; blue for the Blue Ribbon card (Alan
--- 2026-11-18: no new pictures). The reward words tell the tiers apart too.
-local STRIP = { easy = "stripGreen", medium = "stripYellow", hard = "stripRed", two_day = "stripGreen", three_day = "stripYellow",
-	five_day = "stripRed", fixed = "stripBlue" }
+-- One white construction-paper card cut neatly with scissors (Alan 2026-11-18: neat, not crumpled or torn), tinted by
+-- difficulty, easier to harder: green, yellow, red; blue for the Blue Ribbon card. The tints give the desk buttons'
+-- paper colours on this white. The reward words tell the tiers apart too.
+local GREEN, YELLOW, RED = Color3.fromRGB(73, 218, 65), Color3.fromRGB(255, 215, 13), Color3.fromRGB(255, 66, 79)
+local TINT = { easy = GREEN, medium = YELLOW, hard = RED, two_day = GREEN, three_day = YELLOW, five_day = RED,
+	fixed = Color3.fromRGB(46, 129, 252) }
 -- Sheet pixels. Cards and buttons are centred between the paper's red
 -- margin line (x 297) and its right edge (x 1779). The paper picture's ruled lines run 1.3 degrees downhill (it was
 -- widened along them), so it is turned back level and everything else sits on a straight layer over it.
@@ -104,8 +106,8 @@ function MissionsScreen.new(playerGui, api)
 		local claimed = fixed and missions.fixedClaimed or not fixed and m.claimed
 		local tier = fixed and "fixed" or m.tier
 		-- The card under everything on it (Alan's Play 2026-11-18: same-ZIndex pieces drew under it, the week vanished).
-		local paper = ui.image(layer, name, Assets.deskMenu[STRIP[tier]], x, y, CARD.w, h)
-		paper.ScaleType, paper.ZIndex = Enum.ScaleType.Stretch, 0
+		local paper = ui.image(layer, name, Assets.mainmenu.cardWhite, x, y, CARD.w, h)
+		paper.ScaleType, paper.ZIndex, paper.ImageColor3 = Enum.ScaleType.Stretch, 0, TINT[tier]
 		local goal = PaperUI.loud(ui.words(layer, name .. "Goal", fixed and "Finish 15 daily missions" or MissionsScreen.describe(m), x + 36, y + 16, CARD.w - 72, 84, 36))
 		goal.TextWrapped, goal.TextYAlignment, goal.LineHeight = true, Enum.TextYAlignment.Top, 1
 		local rowY = y + 108
@@ -155,10 +157,11 @@ function MissionsScreen.new(playerGui, api)
 		local layer = ui.instance(sheet, "MissionsLayer", "Frame")
 		layer.BackgroundTransparency, layer.Size, layer.ZIndex = 1, UDim2.fromOffset(PaperUI.W, PaperUI.H), 2
 		PaperUI.loud(ui.words(layer, "Title", "Missions", CARD.x, 84, 380, 86, 66))
+		-- Tabs drawn nearer their pictures' own size and shape (Alan 2026-11-18: small and squashed, their edges were rough).
 		for i, name in { "daily", "weekly" } do
 			local on = tab == name
 			ui.button(layer, name .. "Tab", on and Assets.hangar.buttonGreen or Assets.unlock.buttonCream, name == "daily" and "Daily" or "Weekly",
-				CARD.x + (i - 1) * 240, 168, 220, 76, on and -1 or 1, function() tab = name; draw() end, 40)
+				CARD.x + (i - 1) * 320, 168, 300, 84, on and -1 or 1, function() tab = name; draw() end, 44)
 		end
 		ui.button(layer, "Close", Assets.mainmenu.boxRed, "X", 1633, 144, 87, 87, 1, function() api.back() end, 50)
 		if missions then

@@ -237,17 +237,15 @@ function RoundEnd.start()
 		return math.max(0, 1 + 2.70158 * x ^ 3 + 1.70158 * x ^ 2)
 	end
 
-	-- The teacher's tick slip (docs/decisions/2026-11-18-daily-and-weekly-missions.md): when this match finished a
-	-- mission, a torn notebook slip is taped across your card's top-left corner and the Training board's crayon tick
-	-- draws itself on it.
+	-- The mission news (docs/decisions/2026-11-18-daily-and-weekly-missions.md): when this match finished a mission, the
+	-- report card's gold star slams down on your card's top edge, a torn notebook slip pops out from under it across the
+	-- card's top-left corner (the star pins it), the Training board's crayon tick draws itself, and the star pulses.
 	-- Its words only say a mission is done (Alan: "we don't need to tell them what mission they completed"). Page pixels:
 	-- it rides on your own page, so it scales and turns with it.
 	local slip = image(card, "MissionSlip", UIArt.hud.slip, -130, -24, 640, 67, -4)
 	slip.Visible, slip.ZIndex = false, 3
 	local slipWords = style(words(slip, "Words", "Mission done! Check your Missions.", 118, 8, 500, 52, 32), PEN, RED_PEN)
 	slipWords.ZIndex = 4
-	local slipTape = image(slip, "Tape", UIArt.ingame.tapeLabel, 586, 12, 96, 30, 78)
-	slipTape.ZIndex = 4
 	local tick = image(slip, "Tick", UIArt.trainingboard.tick, 34, -30, 92, 84, 0)
 	tick.ZIndex = 5
 	local drawn = Instance.new("UIGradient") -- the tick's pen stroke: shown left to right, so it looks drawn
@@ -256,6 +254,11 @@ function RoundEnd.start()
 	}), 0, tick
 	local slipScale = Instance.new("UIScale")
 	slipScale.Parent = slip
+	-- Centred on the slip's right end (slip pixels 612, 26, turned with it): where its tape was.
+	local missionStar = image(card, "MissionStar", UIArt.results.goldStar, 421, -74, 120, 112, -12)
+	missionStar.Visible, missionStar.ZIndex = false, 6
+	local starScale = Instance.new("UIScale")
+	starScale.Parent = missionStar
 
 	-- Vote card (top): one strip per mode with its live count; yours is ticked.
 	local vote = Instance.new("Frame")
@@ -449,6 +452,7 @@ function RoundEnd.start()
 			offer.Parent = pages[state.minePage].page
 		end
 		slip.Parent, slip.Visible = pages[state.minePage].page, state.missionDone == true and state.mine ~= nil
+		missionStar.Parent = slip.Parent
 		showJar(teamRound and "teams" or "solo")
 	end
 	-- Your level bar fills from where you were before this round to where you are now.
@@ -492,11 +496,18 @@ function RoundEnd.start()
 			amountPop.Scale = popIn(t - at, 0.45)
 			jarPulse.Scale = popIn(t - 0.4, 0.4) * (1 + 0.05 * math.sin(t * 4))
 		end
+		missionStar.Visible = slip.Visible
 		if slip.Visible then
-			-- once the card is up (or when the news comes, if later): the slip pops in, then the tick draws itself
+			-- once the card is up (or when the news comes, if later): the star falls from big and see-through onto its spot
+			-- in 0.2 s and squashes as it lands; the slip pops out from under it, the tick draws itself, the star pulses
 			local t = since - math.max(1.2, (state.slipAt or 0) - state.cardAt)
-			slipScale.Scale = popIn(t, 0.4)
-			drawn.Offset = Vector2.new(-0.55 + math.clamp((t - 0.45) / 0.5, 0, 1) * 1.1, 0)
+			local fall = math.clamp(t / 0.2, 0, 1)
+			missionStar.ImageTransparency, missionStar.Rotation = 1 - fall, -12 - 50 * (1 - fall)
+			starScale.Scale = t < 0.2 and 2.6 - 1.6 * fall * fall
+				or t < 0.45 and 1 - 0.12 * math.sin((t - 0.2) / 0.25 * math.pi)
+				or 1 + 0.06 * math.sin((t - 0.45) * 4)
+			slipScale.Scale = popIn(t - 0.3, 0.4)
+			drawn.Offset = Vector2.new(-0.55 + math.clamp((t - 0.75) / 0.5, 0, 1) * 1.1, 0)
 		end
 		for k, it in pages do it.xpBar.show(shown and k == state.minePage) end
 		if not shown then return end

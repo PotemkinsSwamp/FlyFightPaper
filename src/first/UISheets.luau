@@ -37,17 +37,18 @@ return {
 	["rbxassetid://78583732906300"] = { "rbxassetid://104890713401559", 424, 712, 576, 129 }, -- assets/ui/results/ready/strip-green.png
 	["rbxassetid://83467354769758"] = { "rbxassetid://104890713401559", 424, 546, 565, 150 }, -- assets/ui/hangar/ready/button-green.png
 	["rbxassetid://96038284662893"] = { "rbxassetid://104890713401559", 8, 8, 356, 524 }, -- assets/ui/trainingboard/ready/paper-range.png
-	["rbxassetid://118872852149517"] = { "rbxassetid://97179386120898", 8, 229, 629, 205 }, -- assets/ui/hangar/ready/card-selected.png
-	["rbxassetid://129866047095335"] = { "rbxassetid://97179386120898", 8, 450, 645, 129 }, -- assets/ui/results/ready/strip-blue.png
-	["rbxassetid://136096845362532"] = { "rbxassetid://97179386120898", 794, 112, 82, 81 }, -- assets/ui/settings/ready/sticker-white.png
-	["rbxassetid://137797402914609"] = { "rbxassetid://97179386120898", 8, 740, 584, 46 }, -- assets/ui/results/ready/row-highlight.png
-	["rbxassetid://72275865664553"] = { "rbxassetid://97179386120898", 685, 8, 83, 81 }, -- assets/ui/settings/ready/sticker-green.png
-	["rbxassetid://82556466719896"] = { "rbxassetid://97179386120898", 8, 595, 645, 129 }, -- assets/ui/results/ready/strip-pink.png
-	["rbxassetid://84312204714104"] = { "rbxassetid://97179386120898", 8, 8, 661, 205 }, -- assets/ui/hangar/ready/card.png
-	["rbxassetid://91100704633557"] = { "rbxassetid://97179386120898", 685, 112, 93, 85 }, -- assets/ui/trainingboard/ready/tick.png
-	["rbxassetid://94679570912477"] = { "rbxassetid://97179386120898", 848, 8, 167, 88 }, -- assets/ui/settings/ready/tag.png
-	["rbxassetid://94736097855757"] = { "rbxassetid://97179386120898", 653, 229, 179, 180 }, -- assets/ui/settings/ready/crosshair-card.png
-	["rbxassetid://95167817947211"] = { "rbxassetid://97179386120898", 892, 112, 81, 81 }, -- assets/ui/settings/ready/sticker-red.png
+	["rbxassetid://118872852149517"] = { "rbxassetid://136956893329600", 8, 229, 629, 205 }, -- assets/ui/hangar/ready/card-selected.png
+	["rbxassetid://129866047095335"] = { "rbxassetid://136956893329600", 8, 450, 645, 129 }, -- assets/ui/results/ready/strip-blue.png
+	["rbxassetid://136096845362532"] = { "rbxassetid://136956893329600", 794, 112, 82, 81 }, -- assets/ui/settings/ready/sticker-white.png
+	["rbxassetid://137797402914609"] = { "rbxassetid://136956893329600", 8, 740, 584, 46 }, -- assets/ui/results/ready/row-highlight.png
+	["rbxassetid://72275865664553"] = { "rbxassetid://136956893329600", 685, 8, 83, 81 }, -- assets/ui/settings/ready/sticker-green.png
+	["rbxassetid://82556466719896"] = { "rbxassetid://136956893329600", 8, 595, 645, 129 }, -- assets/ui/results/ready/strip-pink.png
+	["rbxassetid://84312204714104"] = { "rbxassetid://136956893329600", 8, 8, 661, 205 }, -- assets/ui/hangar/ready/card.png
+	["rbxassetid://84680888117475"] = { "rbxassetid://136956893329600", 8, 802, 1004, 154 }, -- assets/ui/mainmenu/ready/card-white.png
+	["rbxassetid://91100704633557"] = { "rbxassetid://136956893329600", 685, 112, 93, 85 }, -- assets/ui/trainingboard/ready/tick.png
+	["rbxassetid://94679570912477"] = { "rbxassetid://136956893329600", 848, 8, 167, 88 }, -- assets/ui/settings/ready/tag.png
+	["rbxassetid://94736097855757"] = { "rbxassetid://136956893329600", 653, 229, 179, 180 }, -- assets/ui/settings/ready/crosshair-card.png
+	["rbxassetid://95167817947211"] = { "rbxassetid://136956893329600", 892, 112, 81, 81 }, -- assets/ui/settings/ready/sticker-red.png
 	["rbxassetid://109589083209118"] = { "rbxassetid://128206045009307", 8, 8, 720, 800 }, -- assets/ui/hangarshelf/ready/stats-paper.png
 	["rbxassetid://110123970547575"] = { "rbxassetid://128206045009307", 8, 824, 984, 124 }, -- assets/ui/hud/ready/strip-notebook.png
 	["rbxassetid://76239099114989"] = { "rbxassetid://135840170451721", 8, 800, 600, 198 }, -- assets/ui/hud/ready/note-incoming.png
@@ -80,5 +81,5 @@ return {
 	["rbxassetid://93844659261583"] = { "rbxassetid://79005802828338", 743, 927, 61, 54 }, -- assets/ui/hud/ready/arrow-double.png
 	["rbxassetid://99725754287779"] = { "rbxassetid://79005802828338", 8, 929, 512, 54 }, -- assets/ui/hud/ready/slip-notebook.png
 	["rbxassetid://102293582971435"] = { "rbxassetid://134855365477864", 8, 8, 499, 125 }, -- assets/ui/mainmenu/ready/strip-green.png
-	["3d"] = { ["rbxassetid://103734128810118"] = { 1024, 351 }, ["rbxassetid://104890713401559"] = { 1024, 1024 }, ["rbxassetid://108228043848772"] = { 1024, 1024 }, ["rbxassetid://118142501071635"] = { 1024, 1024 }, ["rbxassetid://127148292972405"] = { 1024, 255 }, ["rbxassetid://127869005862718"] = { 1024, 414 }, ["rbxassetid://129482481882685"] = { 1024, 1024 }, ["rbxassetid://134403680944212"] = { 1024, 1024 }, ["rbxassetid://138941260143964"] = { 279, 242 }, ["rbxassetid://139346247873259"] = { 613, 80 }, ["rbxassetid://73596260770133"] = { 1024, 1024 }, ["rbxassetid://76765257093865"] = { 875, 474 }, ["rbxassetid://87963878165241"] = { 799, 79 }, ["rbxassetid://97179386120898"] = { 1024, 1024 } },
+	["3d"] = { ["rbxassetid://103734128810118"] = { 1024, 351 }, ["rbxassetid://104890713401559"] = { 1024, 1024 }, ["rbxassetid://108228043848772"] = { 1024, 1024 }, ["rbxassetid://118142501071635"] = { 1024, 1024 }, ["rbxassetid://127148292972405"] = { 1024, 255 }, ["rbxassetid://127869005862718"] = { 1024, 414 }, ["rbxassetid://129482481882685"] = { 1024, 1024 }, ["rbxassetid://134403680944212"] = { 1024, 1024 }, ["rbxassetid://138941260143964"] = { 279, 242 }, ["rbxassetid://139346247873259"] = { 613, 80 }, ["rbxassetid://73596260770133"] = { 1024, 1024 }, ["rbxassetid://76765257093865"] = { 875, 474 }, ["rbxassetid://87963878165241"] = { 799, 79 }, ["rbxassetid://136956893329600"] = { 1024, 1024 } },
 }
