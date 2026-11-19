@@ -19,8 +19,10 @@ About 15 seconds, the same every match:
 ## Emotes: two slots
 - **Winner emote** plays when you come 1st. **Runner-up emote** plays when you come 2nd or 3rd and never touches the
   camera. Dances (later) work in either slot. Everyone starts with one free emote in each slot; the rest are sold.
-- **The cover is the curtain** (from Alan's Book Kicker): a winner emote ends by covering the camera, and when the
-  cover comes off you are back at your desk.
+- **Touching the camera is an extra, not a rule** (Alan 2026-11-19): covering it, knocking it over or playing with
+  the stage is what makes some emotes special, each in its own way; if every paid one did it, it would turn into a
+  gimmick. The free one doesn't, and new emotes don't have to. When one does cover the camera, the cover coming off
+  can be the cut back to your desk (Book Kicker).
 - Liveliness comes from a toy or prop that moves by itself while the kid watches and reacts, not from camera work.
 - Each emote is a recipe (body move, prop path, camera shots, the cover, song) run by one player script, so the shop
   preview and the scene play the same thing.
@@ -60,7 +62,9 @@ and edgy like Camera Flick and Book Kicker.
 | Sneaky Toss | Lobs a paper ball toward 1st, then looks away whistling |
 
 ## Open
-- Skeet Shoot uses all three winners: what the runner-ups' own emotes do meanwhile, and what covers the camera at its end.
+- Skeet Shoot uses all three winners: the runner-ups' own emotes pause while they throw, then carry on (Alan
+  2026-11-19). It doesn't touch the camera; how it ends is open (idea: 1st blows across the finger, the planes
+  spiral down).
 - How the body animations get made: Studio's text-to-animation tool first (never tried), filming a person with
   Roblox's Animation Capture as the fallback, free motion libraries after that. Every new one needs a free upload
   (Alan's go). Sitting or one-clear-action emotes are the safest; Autograph and Stomp need the most real motion.
