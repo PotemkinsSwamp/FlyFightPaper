@@ -29,6 +29,7 @@ otherwise.
 - [Phone aim options](plan/PHONE-AIM-OPTIONS.md): staying on a tail on a phone (research, waiting on Alan)
 - [Load plan](plan/LOAD-PLAN.md): fast joins on a phone, same look (ideas and talk first)
 - [Unlock moment plan](plan/UNLOCK-PLAN.md): the backpack that opens when you level up (ideas and talk first)
+- [Winners' circle and emotes plan](plan/WINNERS-CIRCLE-PLAN.md): the round-end scene redo and the emotes to sell by place (talking it through)
 - [Report card plan](plan/REPORT-CARD-PLAN.md): the round's results on a school report card (built 2026-11-11)
 - [Gift a friend plan](plan/GIFT-PLAN.md): buy a Paper pack or boost for a Roblox friend (approved 2026-11-13, being built)
 - [Shop prices plan](plan/SHOP-PRICES-PLAN.md): Paper packs and Robux part prices after the price rise (approved 2026-11-11)

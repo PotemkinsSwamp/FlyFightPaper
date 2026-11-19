@@ -1,7 +1,7 @@
 # Winners' circle redo: a dramatic scene, and emotes sold by place
 
 **Decided:** 2026-11-19 (Alan)  
-**Status:** direction set; the how-it-works plan waits for Alan's OK, nothing built
+**Status:** direction set; the scene and the full emote list are in the [plan](../plan/WINNERS-CIRCLE-PLAN.md), still being talked through; nothing built
 
 ## Decision
 - **Reference:** two clips Alan likes from another Roblox game (its winner's moment and its shop). What he wants from
