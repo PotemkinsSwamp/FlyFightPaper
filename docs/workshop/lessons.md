@@ -56,7 +56,13 @@ mistake would be easy to make twice.
   (The tool used to crash on the self-cut chest atlas after wiping its folder; fixed: it skips pictures with no
   `uploads/` record and deletes nothing until everything fits, and keeps the upload record of any unchanged file.) To show one packed piece at full size
   without a repack, drop its line from `src/first/UISheets.luau` (the original upload loads instead), but that loads the full original:
-  more to download (Alan 2026-11-18: load time first; undone the same day).
+  more to download (Alan 2026-11-18: load time first; undone the same day).
+- **`ui_sheets.py --upload` rewrites the whole "3d" list from today's `UIAssets`** (2026-11-18): after `--add`, it also
+  switched 9 pictures added since the last pack (report card included) to the 3D drawing, a change nobody had checked
+  in Play. Compare the `["3d"]` line in `git diff src/first/UISheets.luau` and keep only the intended change.
+- **`TextScaled` with a `UITextSizeConstraint` caps in screen pixels, not sheet units** (2026-11-18): under the sheet's
+  scaling a capped 52 drew as 70 sheet units on an 801-tall window and 52 on 1080p. Pick a fixed `TextSize` (sheet
+  units) instead; the Missions goal picks 52 or 42 by length.
 - **Changing an uploaded menu piece** (2026-10-19): `tools/ui_pieces.py` reuses an existing `uploads/<piece>.json` and
   never re-uploads; delete that record (git keeps it) before the upload run, then put the new id in UIAssets.
 

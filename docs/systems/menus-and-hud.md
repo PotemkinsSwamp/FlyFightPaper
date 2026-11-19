@@ -3,7 +3,14 @@
 ## What the player sees
 Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-folder hangar, lined-paper results, crayon lettering. In flight the HUD shows the aim circle and nose dot, health, Lift and boost, weapon readiness and heat, lock-on warnings, enemy markers with edge arrows, the kill feed and the round strip.
 
-## Where it stands (2026-11-11)
+## Where it stands (2026-11-18)
+**Missions (seen in Studio Play 2026-11-18; Alan: "the mission stuff is good"):** the main menu's Missions sheet has
+Daily and Weekly tabs and one card per mission, neat scissor-cut construction paper (one white piece,
+`tools/art/cut_paper.py`, tinted green/yellow/red by difficulty, blue for Blue Ribbon), goal across the top, bar and
+count bottom left, reward bottom right with its chest after the words. After a match that finished a mission, the
+report card's gold star slams down and pins the "Mission done!" note. Next: live progress during a match
+([decision](../decisions/2026-11-18-daily-and-weekly-missions.md)).
+
 **Unlock moment (built 2026-11-11, Alan OK'd it in Studio Play; not published yet):** leveling up in a match flies a small taped index card in
 at the top left, under the Menu button and tilted (`ScreenFit.topLeft`); it unfolds (the part below the fold shaded as it
 swings down, a faint crease after) with confetti that shoots up and tumbles down, sits 4 s, then folds and flies back
