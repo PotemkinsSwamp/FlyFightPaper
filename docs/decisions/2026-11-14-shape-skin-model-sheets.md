@@ -341,6 +341,14 @@
   plane's 14 (the Dragon puts more of its size in its side view). Now it is also never shorter or narrower than the
   plane: as wide as the plane on narrow-wing builds, a bigger target there (about half again on the narrowest).
   Flown again with the shot-drawing fix: "Okay, it looks good now" ([playtest](../playtests/2026-11-16-dragon-skin.md)).
+  **Dropped (Alan, 2026-11-18)** for the Dragon and all five Legendaries. Measured on the chase view (1280x720): on the
+  Toilet Roll Gunship with Broad Wings the floor made the Race Car 39 studs long against the plane's 24, its back end 5
+  studs from the camera, 34% of the screen against the plane's 8%, and 1.4 times the plane's target (2.4 from behind); on
+  Swift Fold with Swept Wings skins were up to 2.2 times the plane's target. Alan: "the point is to negate advantage and
+  disadvantage"; every whole-shape skin is now exactly as big a target as its plane, scaled evenly (never stretched).
+  **Next, his rule for what counts (same day):** body, wings, nose and tail count; extras (the Hot Rod's spoiler, the
+  Shark's top fin, fins far taller than a normal plane's) are trimmed on the hidden hit copy only (to about a normal tail
+  fin's height), are never hit and pass through walls; the drawn skin keeps them in full. Marked pictures per skin first.
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

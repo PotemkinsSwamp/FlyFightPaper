@@ -27,8 +27,9 @@ the screen draws them, by the same fit (`SkinFit.luau`; built 2026-11-14, checke
 guns and boosters exactly on the drawn ones; boosters within 0.04 of touching the belly, mesh against mesh, on all 18
 body and booster builds; not yet flown past walls). **The Dragon keeps its proportions and is the hitbox** (Alan 2026-11-15): one mesh and one 1024 picture set (colour,
 bumps, shine, metal, the eye's glow), drawn at one size: as big a target as the plane it is on (its outline from above,
-the side and behind, added, equals the plane's: `config/plane-areas.json`, measured by `tools/plane_areas.lua`), but never shorter or narrower
-than the plane (Alan 2026-11-16; 1 to 1.48 times the plane's length), centred on the plane, wings at its wing height (`even` in the config;
+the side and behind, added, equals the plane's: `config/plane-areas.json`, measured by `tools/plane_areas.lua`), exactly, for the Dragon and all
+five Legendaries (Alan 2026-11-18 dropped the 2026-11-16 "never shorter or narrower than the plane": on Broad or Swept
+wings it made a skin up to 2.2 times the plane's target and up to 34% of the chase view against the plane's 8%), centred on the plane, wings at its wing height (`even` in the config;
 `Aircraft.build` stamps the build on the plane). On the server its own precise shape replaces the body, nose, wings and
 tail as the hit and crash shape (`HitShapes.place`); guns hang under its wing outside its body, the booster under its
 belly. Its boosters wear its printed sheet (its own body scales at the body's scale size, `picture` in `config/looks.json`; Alan saw it in Studio 2026-11-16: "its good"). Not checked in Play yet; the monorail train still tests the corners of each crash shape's box, which for the

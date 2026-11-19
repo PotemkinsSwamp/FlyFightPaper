@@ -262,14 +262,12 @@ function Spec.run()
 		local drawn = fitted.placed.whole
 		local lo, hi = Vector3.new(table.unpack(box.min)), Vector3.new(table.unpack(box.max))
 		local k = drawn[2].Z / (hi - lo).Z
-		test(name .. ": the Dragon keeps its proportions, is as big a target as the plane but never smaller, centred, wings at the wings' height", function()
+		test(name .. ": the Dragon keeps its proportions, is exactly as big a target as the plane, centred, wings at the wings' height", function()
 			assert(near(drawn[2], (hi - lo) * k, 1e-4), "stretched: " .. tostring(drawn[2]))
 			local a = Areas[loadout.body]
 			local area = a.wings[loadout.wings] + (a.nose[loadout.nose] or 0) + (a.tail[loadout.tail] or 0)
-			-- As big a target as the plane, unless that would be shorter or narrower than the plane (then exactly as long or wide).
-			local long, wideK = (o.zT - o.zN) / (hi - lo).Z, o.xo / E.half_span
-			assert(k >= long - 1e-4 and k >= wideK - 1e-4, "smaller than the plane")
-			assert(math.abs(E.area * k * k - area) < 1e-3 * area or math.abs(k - math.max(long, wideK)) < 1e-4, "target " .. E.area * k * k .. " vs the plane's " .. area)
+			-- Exactly as big a target as the plane, even where that is shorter or narrower than it (Alan 2026-11-18).
+			assert(math.abs(E.area * k * k - area) < 1e-3 * area, "target " .. E.area * k * k .. " vs the plane's " .. area)
 			assert(math.abs(drawn[1].Position.Z - (o.zN + o.zT) / 2) < 1e-3, "not centred on the plane")
 			local wingY = drawn[1].Position.Y + (E.wing_y - (lo.Y + hi.Y) / 2) * k
 			assert(math.abs(wingY - o.wy) < 1e-3, "wings at " .. wingY .. ", the plane's at " .. o.wy)
@@ -357,7 +355,6 @@ function Spec.run()
 		local hull = fitted.placed.hullHit
 		assert(fitted.covers and hull and fitted.placed.bladeL and fitted.placed.bladeR)
 		assert(math.abs(hull[1].Z - (outline.zN + outline.zT) / 2) < 1e-3)
-		assert(hull[2].Z >= outline.zT - outline.zN - 1e-3)
 		assert(fitted.placed.body[2].Z > hull[2].Z, "the scarf should extend beyond the hull")
 		local pieces, parts = HitShapes.place(model.Appearance, frame, "ninja")
 		local hulls, guns = 0, 0
