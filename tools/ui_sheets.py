@@ -3,6 +3,8 @@ then the small ones packed into a few 1024 sheets.
 
     python tools/ui_sheets.py            # build assets/ui/sheets/ready/ + layout.json + contact.png + compare.png (look first)
     python tools/ui_sheets.py --upload   # upload them (Alan's go), then write src/first/UISheets.luau
+    python tools/ui_sheets.py --add mainmenu/card-white   # a new piece into free space on today's sheets: only that
+                                         # sheet changes (one upload), nothing else moves; then --upload
 
 Shrinking: sizes.json holds each piece's largest drawn size on a 1080-tall screen (measured 2026-10-25 in Studio Play
 from every label's AbsoluteSize, menus opened with the DevScreen attribute). A piece keeps ROOM x that: 1.0, sharp on
@@ -28,7 +30,7 @@ SIZE, PAD, ROOM = 1024, 8, 1.0
 MENUS = ("mainmenu", "results", "tutorial", "trainingboard", "hangar", "settings", "ingame", "hud", "deskMenu", "hangarShelf")
 FIRST = {"mainmenu/title", "mainmenu/plane", "results/xp-card", "results/xp-bar-fill", "results/xp-bar-frame"}  # loading screen
 MENU_GUIS = {"LoadingClassroom", "KeepDrawn", "MenuBoard", "SettingsScreen", "HangarScreen", "ShopScreen", "WaitScreen",
-             "TrainingBoard", "RoundEnd"}  # (first/MenuArt has the same list)
+             "TrainingBoard", "RoundEnd", "MissionsScreen"}  # (first/MenuArt has the same list)
 FLY_BLOCKS = {"ingame", "hud", "deskMenu", "tutorial"}
 ALONE = {"ingame/tape-label", "hangarshelf/outline", "tutorial/frame-box", "tutorial/tag", "tutorial/dash"}  # 9-slice, Beam
 
@@ -45,6 +47,8 @@ def pieces():
         if not name or name.group(1) not in MENUS:
             continue
         for asset in re.findall(r"rbxassetid://(\d+)", block):
+            if asset not in files:  # ponytail: no uploads/ record = a picture cut by its own code (chestAtlas): left alone
+                continue
             blocks.setdefault(asset, set()).add(name.group(1))
             png = files[asset]
             key = f"{png.parent.parent.name}/{png.stem}"
@@ -67,12 +71,57 @@ def shrunk(png, key, sizes):
     return piece, False
 
 
+def paste(sheet, piece, rx, ry):
+    """The piece at (rx, ry) + PAD, its edge pixels repeated PAD px outwards: stretched over the padded box, then exact."""
+    w, h = piece.size
+    x, y = rx + PAD, ry + PAD
+    sheet.paste(piece.resize((w + 2 * PAD, h + 2 * PAD), Image.NEAREST), (rx, ry))
+    sheet.paste(piece.crop((0, 0, w, 1)).resize((w, PAD)), (x, ry))
+    sheet.paste(piece.crop((0, h - 1, w, h)).resize((w, PAD)), (x, y + h))
+    sheet.paste(piece.crop((0, 0, 1, h)).resize((PAD, h)), (rx, y))
+    sheet.paste(piece.crop((w - 1, 0, w, h)).resize((PAD, h)), (x + w, y))
+    sheet.paste(piece, (x, y))
+    assert sheet.crop((x, y, x + w, y + h)).tobytes() == piece.tobytes()  # pixel for pixel
+    return x, y
+
+
+def add(keys):
+    """Each named piece (folder/name, e.g. mainmenu/card-white) into the first free space on a sheet of its group that
+    is already built: nothing else moves, so only that sheet is a new upload (Alan 2026-11-18: no added load)."""
+    import numpy as np
+    sizes = json.loads((OUT / "sizes.json").read_text())
+    layout = json.loads((OUT / "layout.json").read_text())
+    for asset, (png, key, g) in pieces().items():
+        if key not in keys or asset in layout:
+            continue
+        piece, _ = shrunk(png, key, sizes)
+        w, h = piece.width + 2 * PAD, piece.height + 2 * PAD
+        for name in sorted({p["file"] for p in layout.values() if p["file"].startswith(f"sheet-{g}-")}):
+            used = np.zeros((SIZE + 1, SIZE + 1), int)  # summed-area table of the padded boxes already on the sheet
+            for p in layout.values():
+                if p["file"] == name:
+                    used[p["y"] - PAD + 1:p["y"] + p["h"] + PAD + 1, p["x"] - PAD + 1:p["x"] + p["w"] + PAD + 1] = 1
+            used = used.cumsum(0).cumsum(1)
+            free = np.argwhere(used[h:, w:] - used[:-h, w:] - used[h:, :-w] + used[:-h, :-w] == 0)
+            if len(free):
+                ry, rx = map(int, free[0])
+                sheet = Image.open(OUT / "ready" / f"{name}.png").convert("RGBA")
+                x, y = paste(sheet, piece, rx, ry)
+                sheet.save(OUT / "ready" / f"{name}.png", optimize=True)
+                (OUT / "uploads" / f"{name}.json").unlink(missing_ok=True)  # a new upload; the old one stays in git history
+                layout[asset] = {"file": name, "x": x, "y": y, "w": piece.width, "h": piece.height, "piece": png.relative_to(ROOT).as_posix(), "group": g}
+                print(f"{key} -> {name} at {x},{y}")
+                break
+        else:
+            raise SystemExit(f"{key}: no free space on a {g} sheet; a full build packs everything again")
+    (OUT / "layout.json").write_text(json.dumps(layout, indent=1), encoding="utf-8")
+
+
 def build():
     sizes = json.loads((OUT / "sizes.json").read_text())
     (OUT / "ready").mkdir(parents=True, exist_ok=True)
-    for old in [*(OUT / "ready").glob("*.png"), *(OUT / "uploads").glob("*.json")]:
-        old.unlink()  # a new build is new files: its old upload records stay in git history
-    images, layout, packed, group = {}, {}, {}, {}
+    before = {f.stem: Image.open(f).convert("RGBA").tobytes() for f in (OUT / "ready").glob("*.png")}
+    images, layout, packed, group, singles = {}, {}, {}, {}, {}
     packers = {g: rectpack.newPacker(rotation=False, pack_algo=rectpack.MaxRectsBssf, sort_algo=rectpack.SORT_AREA) for g in ("3d", "fly")}
     for asset, (png, key, g) in pieces().items():
         piece, smaller = shrunk(png, key, sizes)
@@ -80,9 +129,9 @@ def build():
         if key not in FIRST and max(piece.size) + 2 * PAD <= SIZE:
             packed[asset] = png
             packers[g].add_rect(piece.width + 2 * PAD, piece.height + 2 * PAD, asset)
-        elif smaller:  # a file of its own, just smaller
+        elif smaller:  # a file of its own, just smaller (saved below, once everything fitted)
             name = key.replace("/", "-")
-            piece.save(OUT / "ready" / f"{name}.png", optimize=True)
+            singles[name] = piece
             layout[asset] = {"file": name, "x": 0, "y": 0, "w": piece.width, "h": piece.height, "piece": png.relative_to(ROOT).as_posix(), "group": g}
     bins = []
     for g, packer in packers.items():
@@ -91,25 +140,26 @@ def build():
         packer.pack()
         bins += [(f"sheet-{g}-{n}", b) for n, b in enumerate(packer, 1)]
     assert sum(len(b) for _, b in bins) == len(packed), "a piece didn't fit"
+    for old in (OUT / "ready").glob("*.png"):
+        old.unlink()  # only now: a crash above leaves the last build untouched
+    for name, piece in singles.items():
+        piece.save(OUT / "ready" / f"{name}.png", optimize=True)
     thumbs = []
     for name, sheet_bin in bins:
         sheet = Image.new("RGBA", (SIZE, SIZE), (0, 0, 0, 0))
         for r in sheet_bin:
             piece = images[r.rid]
             w, h = piece.size
-            x, y = r.x + PAD, r.y + PAD
-            # Edge pixels repeated outwards: stretch the piece over the padded box, then the exact piece on top.
-            sheet.paste(piece.resize((w + 2 * PAD, h + 2 * PAD), Image.NEAREST), (r.x, r.y))
-            sheet.paste(piece.crop((0, 0, w, 1)).resize((w, PAD)), (x, r.y))
-            sheet.paste(piece.crop((0, h - 1, w, h)).resize((w, PAD)), (x, y + h))
-            sheet.paste(piece.crop((0, 0, 1, h)).resize((PAD, h)), (r.x, y))
-            sheet.paste(piece.crop((w - 1, 0, w, h)).resize((PAD, h)), (x + w, y))
-            sheet.paste(piece, (x, y))
-            assert sheet.crop((x, y, x + w, y + h)).tobytes() == piece.tobytes()  # pixel for pixel
+            x, y = paste(sheet, piece, r.x, r.y)
             layout[r.rid] = {"file": name, "x": x, "y": y, "w": w, "h": h, "piece": packed[r.rid].relative_to(ROOT).as_posix(), "group": group[r.rid]}
         sheet.save(OUT / "ready" / f"{name}.png", optimize=True)
         thumbs.append(sheet)
     (OUT / "layout.json").write_text(json.dumps(layout, indent=1), encoding="utf-8")
+    # A file whose pixels changed (or is gone) is a new upload; an unchanged one keeps its record and id.
+    for record in (OUT / "uploads").glob("*.json"):
+        new = OUT / "ready" / f"{record.stem}.png"
+        if not new.exists() or Image.open(new).convert("RGBA").tobytes() != before.get(record.stem):
+            record.unlink()  # its old upload stays in git history
     # Contact sheet on grey (see-through shows): look at every sheet before any upload (lessons: moderation).
     cols = 4
     contact = Image.new("RGB", (cols * 520, -(-len(thumbs) // cols) * 520), (128, 128, 128))
@@ -170,4 +220,4 @@ def upload():
 
 
 if __name__ == "__main__":
-    upload() if "--upload" in sys.argv else build()
+    upload() if "--upload" in sys.argv else add(sys.argv[2:]) if "--add" in sys.argv else build()

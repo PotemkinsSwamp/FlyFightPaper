@@ -50,8 +50,11 @@ mistake would be easy to make twice.
   the picture's edges, then letter real numbers at the ruler's measured angle, tops toward the ticks. Compare
   before/after at 2x. Menu pictures of the town: Studio captures, then Codex draws from them (`codex exec` in a
   scratch folder, ~4 min for three pictures, free on Alan's plan); tell it "no text, letters or numbers anywhere".
-- **`tools/ui_sheets.py` is out of date and wipes its folder first** (2026-11-18): a plain build crashed on a piece
-  it has no file for (`KeyError: 103691943840633`) after deleting `assets/ui/sheets/ready/` and `uploads/`; `git checkout -- assets/ui/sheets` put them back. Fix the tool before any repack. To show one packed piece at full size
+- **A full menu-sheet build repacks every sheet of a group** (2026-11-18): adding one piece to a full build moved all
+  seven menu sheets (seven re-uploads) and, with 8 pieces added since the last pack, made nine. To add a piece, use
+  `tools/ui_sheets.py --add folder/name`: it goes into free space on a sheet already loaded and only that sheet changes.
+  (The tool used to crash on the self-cut chest atlas after wiping its folder; fixed: it skips pictures with no
+  `uploads/` record and deletes nothing until everything fits, and keeps the upload record of any unchanged file.) To show one packed piece at full size
   without a repack, drop its line from `src/first/UISheets.luau` (the original upload loads instead), but that loads the full original:
   more to download (Alan 2026-11-18: load time first; undone the same day).
 - **Changing an uploaded menu piece** (2026-10-19): `tools/ui_pieces.py` reuses an existing `uploads/<piece>.json` and
