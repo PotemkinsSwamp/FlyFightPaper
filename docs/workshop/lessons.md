@@ -84,6 +84,10 @@ mistake would be easy to make twice.
   text says "Failure" even for good pictures; check `IsLoaded` on a picture label instead.
 
 ## Making 3D models
+- **Size a skin by what players see, then check it on the tall bodies** (2026-11-18): equal target size (outlines from
+  above, side and behind added) let flat skins grow far wider than the Cardboard and Toilet Roll Gunships, whose deep
+  fuselage is most of their target (Ninja 1.8x, Race Car 2.1x the plane's share of the chase view). Before proposing any
+  size rule, measure plain vs skinned chase-view share on those two bodies and on Swift Fold with Swept Wings.
 - **Tripo's API** (2026-11-15): `tsk_` keys (`TRIPO_API` in `.env`) work only on `https://api.tripo3d.ai/v2/openapi`
   (balance: `GET /user/balance`); the v3 address `openapi.tripo3d.com` says "Invalid API key". Plain Python requests
   are blocked (Cloudflare 403, code 1010) until they send a `User-Agent`. API credits are bought separately from the
@@ -338,6 +342,9 @@ mistake would be easy to make twice.
   that I had passed twice.
 
 ## Studio and the place file
+- **Edit-mode MCP `require` returns the module it loaded first**, even after Rojo synced new source. To test a fresh copy,
+  clone the ModuleScript into the same folder under a new name, require that, destroy it (rewrite its own
+  `WaitForChild` names if it requires a module that also changed).
 - Rojo live sync brought the Ninja's bone names and part sizes into Edit with empty mesh IDs. A full Rojo build preserved those IDs. For a live-synced rig, load the configured mesh, copy its bind bones from the template, and check the equipped plane and its collision mesh in Play.
 - In the Legendary trail FBX, Roblox put the glass wake's 13 independent bones under a separate root part. The uploaded mesh still retained its weights. Read the bone names and rest frames from the mesh, confirm each bone influences vertices, and attach those binds to the mesh template. `tools/art/fetch_trail_assets.py` does this for the wake.
 - **Test players are plain tables** (2026-11-16): `player:GetAttribute` in a server path the unit tests reach errors there
