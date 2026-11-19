@@ -54,5 +54,23 @@ holds).
 - Looking: pose strips of the dummy (eight moments in a row, a red ball on the right hand, Studio's own viewport
   capture) show an intact, human-looking body, but a strip can miss the key beat between its samples; the numbers
   found the throw the first strip skipped. Whether it reads as a flick needs it seen moving.
+- 2026-11-19, versions B and C made (Alan's go for the two uploads; he doesn't mind them, they aren't public).
+  The dummy and the clip folder were deleted from the place again.
+
+| Version | Uploaded id | File | Throw (forward speed, reach, when) | Stays on the spot (hips / a foot) | End pose holds |
+|---|---|---|---|---|---|
+| A, dart | `rbxassetid://87115043025421` | `camera-flick-a.rbxm` | 15 studs/s, 2.3 studs, late (pointing held 1.6-2.3 s) | 0.60 / 0.93: steps | yes (0.11), hands on hips |
+| B, big throw | `rbxassetid://115470516293954` | `camera-flick-b.rbxm` | **18 studs/s, 2.4 studs, at 0.83-0.90 s** (the shot card's time) | **0.25 / 0.33** | no (1.19: the fists keep pumping) |
+| C, cool | `rbxassetid://139618321795363` | `camera-flick-c.rbxm` | 4.5 studs/s, 0.95 studs: a small wrist flick, not a throw | 0.12 / 0.43 | yes (0.03), arms crossed |
+
+  By the numbers **B leads**: a fast forward throw at the right moment, on the spot; clean-up has to give it a held
+  end pose. A is second (trim its start, lock its step). C is too small to read as a throw; its ending is solid.
+  Not yet seen moving by anyone.
+- Getting a clip out of Studio: `SerializationService:SerializeInstancesAsync` + `EncodingService:Base64Encode`
+  returns about 100-120 thousand characters a clip, and a Studio-link result is cut at 100,000: fetch it in slices of
+  60,000 characters and join them (B and C came back cut when fetched whole).
+- Wording lessons so far: "throws ... forward, fast" gave a real throw at once (B); "flick the wrist" gave only a
+  wrist move (C); "like a dart ... then keeps the arm pointing" gave a slow thrust and a held point (A). "Feet
+  planted" did not stop A's step. Every clip came back 2.97 s for "3 seconds", 30 keys a second.
 
 Back to [HOME](../HOME.md).
