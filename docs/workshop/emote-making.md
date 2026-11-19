@@ -36,5 +36,23 @@ in the wind-up, and comes between 0.5 and 1.5 s; the last 0.5 s moves less than 
 holds).
 
 - 2026-11-19: first call to the generator failed because Studio was in Play (Alan playing); it needs Edit.
+- 2026-11-19, version A made (wording A, 3 s asked). What the generator does: it adds a grey test dummy
+  (`Workspace.Rig`), leaves the clip in `ServerStorage.RBX_ASSISTANT_ANIMGEN` (a KeyframeSequence: 90 keys, 30 a
+  second, looped, Action priority) **and publishes it to the Roblox account by itself** (`rbxassetid://87115043025421`):
+  every try is an upload, so every try needs Alan's go. Saved as `assets/animations/emotes/camera-flick-a.rbxm`; the
+  dummy, the clip folder and the picture strip were deleted from the place afterwards.
+- The clips carry more bones than a plain R15 avatar has (Spine, Chest, two clavicles, two toes, under UpperTorso):
+  how Roblox fits them to a real avatar is only proven in Play. Playing a clip in Edit by script did not work (the
+  track's length stayed 0), so `tools/emote_check.lua` works each part's place out from the keyframes and the rig's
+  joints, passing the extra bones' turns down to the next real part.
+- Version A's numbers: 2.97 s; hips wander 0.60 studs and a foot 0.93 (a small step: over the 0.3 limit, to be locked
+  in clean-up); the arm goes out straight ahead (2.3 studs in front of the hips, top forward speed 15 studs a
+  second) and holds pointing; it ends hands on hips, still within 0.11 studs. The hand's fastest moment (22 studs a
+  second at 1.2 s) is the arm dropping in the wind-up, not the throw: **"fastest hand moment" alone picks the wrong
+  beat; look for the fastest forward moment.** The timing is later than the shot card (the point is held from about
+  1.6 to 2.3 s); a speed-over-time profile is needed to place the Release mark.
+- Looking: pose strips of the dummy (eight moments in a row, a red ball on the right hand, Studio's own viewport
+  capture) show an intact, human-looking body, but a strip can miss the key beat between its samples; the numbers
+  found the throw the first strip skipped. Whether it reads as a flick needs it seen moving.
 
 Back to [HOME](../HOME.md).
