@@ -1,4 +1,5 @@
--- Studio-only checks. F8: photo mode (cycle 8 fixed viewpoints), F6: back to the live camera.
+-- Studio-only checks. F8: show or hide the dev buttons (hidden at start, Alan 2026-11-18: they covered the phone test).
+-- Shift+F8: photo mode (cycle 8 fixed viewpoints), F6: back to the live camera.
 -- F9: performance overlay. F7: test autopilot that flies a loop of the room with no mouse.
 local Players = game:GetService("Players")
 local Input = game:GetService("UserInputService")
@@ -110,7 +111,7 @@ function DevTools.start(menu)
 	local player = Players.LocalPlayer
 	player:GetAttributeChangedSignal("DevView"):Connect(function() DevTools.setView(player:GetAttribute("DevView") or 0) end)
 
-	-- Alan's dev switch (2026-11-12): bottom right, always on screen, Studio only (the server checks too): his level
+	-- Alan's dev switch (2026-11-12): bottom right, shown with F8, Studio only (the server checks too): his level
 	-- account (workspace DevAccountLevel, default 12) <-> everything unlocked, to look at any part in the Hangar.
 	local switchGui = Instance.new("ScreenGui")
 	switchGui.Name, switchGui.ResetOnSpawn, switchGui.IgnoreGuiInset, switchGui.DisplayOrder = "DevSwitch", false, true, 90
@@ -120,8 +121,9 @@ function DevTools.start(menu)
 	switch.BackgroundColor3, switch.TextColor3, switch.Font, switch.TextSize = Color3.fromRGB(45, 32, 26), Color3.new(1, 1, 1), Enum.Font.GothamBold, 15
 	switch.AutoButtonColor, switch.Parent = true, switchGui
 	Instance.new("UICorner", switch).CornerRadius = UDim.new(0, 10)
+	local shown = false
 	local function label()
-		switchGui.Enabled = player:GetAttribute("Dev") == true and player:GetAttribute("DevAll") ~= nil
+		switchGui.Enabled = shown and player:GetAttribute("Dev") == true and player:GetAttribute("DevAll") ~= nil
 		switch.Text = player:GetAttribute("DevAll") == false and "Dev: level " .. (player:GetAttribute("Level") or "?") .. " account" or "Dev: everything unlocked"
 	end
 	for _, key in { "Dev", "DevAll", "Level" } do player:GetAttributeChangedSignal(key):Connect(label) end
@@ -232,7 +234,8 @@ function DevTools.start(menu)
 	end)
 	Input.InputBegan:Connect(function(input, processed)
 		if processed then return end
-		if input.KeyCode == Enum.KeyCode.F8 then DevTools.setView(view % #DevTools.views + 1)
+		if input.KeyCode == Enum.KeyCode.F8 and Input:IsKeyDown(Enum.KeyCode.LeftShift) then DevTools.setView(view % #DevTools.views + 1)
+		elseif input.KeyCode == Enum.KeyCode.F8 then shown = not shown; label()
 		elseif input.KeyCode == Enum.KeyCode.F6 then DevTools.setView(0)
 		elseif input.KeyCode == Enum.KeyCode.F9 then gui.Enabled = not gui.Enabled; logged = os.clock()
 		elseif input.KeyCode == Enum.KeyCode.F7 then DevTools.autopilot(FlightState.aimOverride == nil and "loop" or nil)

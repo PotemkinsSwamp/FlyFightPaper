@@ -21,7 +21,7 @@ Run in Play, not Edit (Edit can reuse stale cached modules and report false fail
 ## Playing it (by eye)
 Flight feel, combat, visuals and frame rate are checked by playing in Studio:
 - Every change to feel or visuals is checked in real Play at 1280x720 or larger, with screenshots.
-- **8 fixed viewpoints** (F8 photo mode in `src/client/DevTools.luau`): spawn desk, city overview, low avenue,
+- **8 fixed viewpoints** (Shift+F8 photo mode in `src/client/DevTools.luau`; F8 alone shows or hides the dev buttons): spawn desk, city overview, low avenue,
   through a fly-through hole, window side, chalkboard wall, chase cam in a dogfight, hangar. The latest set is in the
   git-ignored `captures/` folder. Compare against the reference picture and the previous set.
 - F9 shows the performance overlay; see [Performance](../systems/performance.md).
