@@ -6,6 +6,9 @@ You point the mouse where you want to go and the plane flies itself there, banki
 ## Where it stands (2026-10-18)
 Works and approved in play. A scrape knocks the nose and aim away from the surface and wobbles the plane (2026-10-18,
 waits on Alan's feel check; rule in [damage and deaths](damage-and-deaths.md)). Boost now pushes along the nose even with no Lift. Open: Toilet Roll body jitter (Alan 2026-11-14: in a match the whole plane shakes back and forth; only that body; not reproduced yet). Ruled out in Studio Play 2026-11-14 (scripted flights, chasing bots and side-to-side steps): the turning motor overshooting (the two big bodies are ~6x harder to turn and hit its 1e6 torque cap, but the nose followed its target with no back-and-forth), health dipping (the camera shakes on every drop; none), crash shapes bigger than the drawn plane (exact, same as the look), the drive pushing off-centre. Next: a read-only recorder while Alan flies it.
+Fixed 2026-11-18: a 0-second frame (Studio) made every takeoff's speed infinite, so all planes taking off were deleted
+and the flight loop then errored every frame; FlightService and BotService now skip such frames
+([lesson](../workshop/lessons.md#scripted-play-tests-2026-11-16-the-skins-and-trails-check)).
 Touch (2026-10-23): steering stick and Fire/2/Boost buttons built, not yet tried in the phone simulator or on a phone.
 **Brake and phone speed matching (2026-10-29, Alan's pick from [phone aim options](../plan/PHONE-AIM-OPTIONS.md)):
 built for testing, not yet felt by Alan.** PC: hold Space, "BRAKE" under the view. Phones: a BRAKE button (above Boost), and close

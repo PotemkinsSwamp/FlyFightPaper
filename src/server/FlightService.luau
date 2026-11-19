@@ -586,6 +586,9 @@ function Service:regionsFor(p,now)
  end
 end
 function Service:step(dt)
+ -- Studio sometimes gives a frame of 0 s: the takeoff's speed (distance / dt) became infinite and every plane taking
+ -- off was deleted, leaving a pilot that broke this loop every frame (2026-11-18).
+ if dt<=0 then return end
  local now=workspace:GetServerTimeNow()
  if not self.active then return end
  local train=Gameplay.world.monorail.enabled and MonorailRules.cars(now)   -- the toy monorail: solid, it kills

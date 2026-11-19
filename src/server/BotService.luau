@@ -771,7 +771,7 @@ function Service:leadWith(p,b,now,weapon)
  return predicted
 end
 function Service:step(dt)
- if self.enabled==false then return end
+ if self.enabled==false or dt<=0 then return end -- a 0 s frame (Studio) makes speeds infinite: see FlightService:step
  if self.flight.mixedBots and self.mixedOn~=self.flight.mixedBots then self.mixedOn=self.flight.mixedBots;self.mixedCount=0;self:fill() end
  local now=workspace:GetServerTimeNow()
  for id,b in pairs(self.brains) do

@@ -8,12 +8,16 @@ Every screen is made of classroom crafts: a bulletin-board main menu, a kraft-fo
 Daily and Weekly tabs and one card per mission, neat scissor-cut construction paper (one white piece,
 `tools/art/cut_paper.py`, tinted green/yellow/red by difficulty, blue for Blue Ribbon), goal across the top, bar and
 count bottom left, reward bottom right with its chest after the words. After a match that finished a mission, the
-report card's gold star slams down and pins the "Mission done!" note. **Live progress (built 2026-11-18, not yet seen
-in Play):** while a match runs, the profile view the client already asks for every 3 s (and when the desk list opens)
-carries the saved missions plus the match's running counts (`RoundRuntime:liveMissions`, `Missions.applyMatch` live);
-a one-match goal reads "5 / 9" for this match; matches played, wins, top 3 and "folded N or fewer" wait for the end;
-nothing is saved until the match's statistics at the end. **Dev: finish missions** pressed mid-match also sets "mission
-next match", so the star shows at the end ([decision](../decisions/2026-11-18-daily-and-weekly-missions.md)).
+report card's gold star slams down and pins the "Mission done!" note. **Live progress (built 2026-11-18):** while a match runs, the
+profile view the client already asks for every 3 s (and when the desk list opens) carries the saved missions plus the
+match's running counts (`RoundRuntime:liveMissions`, `Missions.applyMatch` live); a one-match goal reads "5 / 9" for
+this match; matches played, wins, top 3 and "folded N or fewer" wait for the end; nothing is saved until the match's
+statistics at the end. **Dev: finish missions** pressed mid-match also sets "mission next match", so the star shows at
+the end ([decision](../decisions/2026-11-18-daily-and-weekly-missions.md)). Seen in Studio Play the same day: speed
+boosts 4/10 then 10/10 "Done!" and damage 12 then 40 on the desk list mid-match, and the star after Dev: finish
+missions mid-match ([pictures](../../.planning/missions/live-desk-2.jpg)). Not seen in Play: the end-of-match save
+matching the live numbers (my scripted plane never qualified a match; a unit test checks it). A match that doesn't
+count for the player (under 2 minutes active, or hits on fewer than 3 planes) drops its live progress at the end.
 
 **Unlock moment (built 2026-11-11, Alan OK'd it in Studio Play; not published yet):** leveling up in a match flies a small taped index card in
 at the top left, under the Menu button and tilted (`ScreenFit.topLeft`); it unfolds (the part below the fold shaded as it

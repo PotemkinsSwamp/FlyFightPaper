@@ -56,7 +56,7 @@ mistake would be easy to make twice.
   (The tool used to crash on the self-cut chest atlas after wiping its folder; fixed: it skips pictures with no
   `uploads/` record and deletes nothing until everything fits, and keeps the upload record of any unchanged file.) To show one packed piece at full size
   without a repack, drop its line from `src/first/UISheets.luau` (the original upload loads instead), but that loads the full original:
-  more to download (Alan 2026-11-18: load time first; undone the same day).
+  more to download (Alan 2026-11-18: load time first; undone the same day).
 - **`ui_sheets.py --upload` rewrites the whole "3d" list from today's `UIAssets`** (2026-11-18): after `--add`, it also
   switched 9 pictures added since the last pack (report card included) to the 3D drawing, a change nobody had checked
   in Play. Compare the `["3d"]` line in `git diff src/first/UISheets.luau` and keep only the intended change.
@@ -982,6 +982,14 @@ Back to [HOME](../HOME.md)
   shape skin follow its own record, and a respawn puts the plane's own looks back until they are set again.
 - **One error printed hundreds of times fills the log the Studio link can read** (about 300 lines): quieter warnings
   behind it are lost. Fix the loud one, then read the log again.
+- **Studio hands out frames of 0 seconds** (2026-11-18: four in 19 s with Studio behind other windows). Anything divided
+  by `dt` turns infinite: every plane taking off got an infinite speed, Roblox deleted it, and the pilot left behind
+  broke FlightService's loop every frame (bots vanished, the player's plane stuck on the runway). Every step loop
+  skips `dt<=0`.
+- **Getting a scripted plane through a speed pickup:** moving the plane trips the anti-teleport check ("came
+  unfolded") or a crash; move the invisible pickup box onto the plane for a quarter second instead (server, on
+  `Stepped`), then put it back. A bot-flown human plane rarely qualifies a match (2 minutes active and hits on 3
+  planes), so end-of-match saving can't be checked that way.
 
 ## Cosmetic releases (2026-11-18)
 - For a completed skin, check its card, the textured plane in Customize, the current acquisition path, Wear, and the plane after launch. Shark Jet had a working catalog row and could grant Water Spray before its body existed. For a trail, check its saved ID against the renderer and its route from a normal player account. The Studio selector draws effects that players can have no way to acquire.
