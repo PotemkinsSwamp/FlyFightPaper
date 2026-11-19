@@ -1,6 +1,5 @@
 -- Menu sheets (tools/ui_sheets.py writes this file): piece id -> {file id, x, y, w, h}. first/LoadingFirst draws
--- each changed piece from its new file (a sheet, or a smaller copy), so the menus are fewer, smaller files. The four
--- desk strips are left out by hand (2026-11-18): the Missions cards draw them big, so they load full size.
+-- each changed piece from its new file (a sheet, or a smaller copy), so the menus are fewer, smaller files.
 return {
 	["rbxassetid://118655728797714"] = { "rbxassetid://138941260143964", 0, 0, 279, 242 }, -- assets/ui/mainmenu/ready/plane.png
 	["rbxassetid://86284438244594"] = { "rbxassetid://139346247873259", 0, 0, 613, 80 }, -- assets/ui/results/ready/xp-bar-fill.png
@@ -66,12 +65,16 @@ return {
 	["rbxassetid://88470216324199"] = { "rbxassetid://122825868995717", 386, 967, 34, 31 }, -- assets/ui/hangar/ready/bar-empty.png
 	["rbxassetid://92620076840621"] = { "rbxassetid://122825868995717", 536, 8, 224, 64 }, -- assets/ui/hangarshelf/ready/stat-label.png
 	["rbxassetid://96658237976750"] = { "rbxassetid://122825868995717", 436, 967, 28, 28 }, -- assets/ui/hud/ready/pin-blue.png
+	["rbxassetid://101822327681119"] = { "rbxassetid://79005802828338", 8, 8, 661, 156 }, -- assets/ui/deskmenu/ready/strip-blue.png
+	["rbxassetid://107829360251744"] = { "rbxassetid://79005802828338", 8, 646, 521, 123 }, -- assets/ui/deskmenu/ready/strip-yellow.png
 	["rbxassetid://114300284068045"] = { "rbxassetid://79005802828338", 563, 490, 135, 135 }, -- assets/ui/hud/ready/ring.png
 	["rbxassetid://120331771075457"] = { "rbxassetid://79005802828338", 536, 927, 94, 88 }, -- assets/ui/results/ready/gold-star.png
 	["rbxassetid://127387145271610"] = { "rbxassetid://79005802828338", 8, 785, 499, 128 }, -- assets/ui/mainmenu/ready/strip-blue.png
 	["rbxassetid://128216360516580"] = { "rbxassetid://79005802828338", 545, 646, 178, 111 }, -- assets/ui/tutorial/ready/arrow-big.png
 	["rbxassetid://132448330647455"] = { "rbxassetid://79005802828338", 685, 8, 295, 244 }, -- assets/ui/deskmenu/ready/photo.png
 	["rbxassetid://133288006521198"] = { "rbxassetid://79005802828338", 646, 927, 81, 81 }, -- assets/ui/hud/ready/bracket.png
+	["rbxassetid://71812846184948"] = { "rbxassetid://79005802828338", 8, 180, 589, 139 }, -- assets/ui/deskmenu/ready/strip-green.png
+	["rbxassetid://76762960710746"] = { "rbxassetid://79005802828338", 8, 335, 589, 139 }, -- assets/ui/deskmenu/ready/strip-red.png
 	["rbxassetid://81270758839816"] = { "rbxassetid://79005802828338", 8, 490, 539, 140 }, -- assets/ui/mainmenu/ready/strip-yellow.png
 	["rbxassetid://84891639571797"] = { "rbxassetid://79005802828338", 523, 785, 489, 126 }, -- assets/ui/mainmenu/ready/strip-red.png
 	["rbxassetid://93844659261583"] = { "rbxassetid://79005802828338", 743, 927, 61, 54 }, -- assets/ui/hud/ready/arrow-double.png

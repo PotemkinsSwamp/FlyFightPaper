@@ -106,6 +106,17 @@ strip sits a sliver under "Switch to presets" and the list a sliver under the st
 solid. The tick slip is taped across the report card's top-left corner with the Training board's crayon tick; Studio's
 **Dev: mission next match** makes the next match finish a mission so the slip can be seen.
 
+**After the third look (2026-11-18):** load comes first ("we can't just keep contributing to adding more"; the aim is
+loading under 30 seconds). Roblox shrinks and squashes pictures without smoothing, so the cards' squashed desk paper
+and the small Daily/Weekly tabs have rough edges, and one big master paper would be worse. Alan's pick: the desk strips
+stay packed small, and **one** plain white card-shaped piece of the same desk paper is added, tinted green, yellow, red
+or blue in the game, in free space on a sheet already loaded; the tabs are drawn bigger, near their packed size, with no
+new picture. The tick slip becomes the report card's **gold star slamming down** on the card's edge, then the note
+"Mission done! Check your Missions." with the tick drawing itself, the star pulsing (Alan: "if the gold star actually
+slams down, and then you see the message, then it's something that catches your eye"; a cut yellow sticky note would
+just read as yellow paper). The Paper jar stays as it is: it shows when the match added Paper ("if someone's just AFK
+... it doesn't matter because they're not playing").
+
 ## Why
 
 Alan wants players coming back every day and playing through the week, with goals that fit what each player owns and

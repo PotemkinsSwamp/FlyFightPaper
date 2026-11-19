@@ -52,7 +52,8 @@ mistake would be easy to make twice.
   scratch folder, ~4 min for three pictures, free on Alan's plan); tell it "no text, letters or numbers anywhere".
 - **`tools/ui_sheets.py` is out of date and wipes its folder first** (2026-11-18): a plain build crashed on a piece
   it has no file for (`KeyError: 103691943840633`) after deleting `assets/ui/sheets/ready/` and `uploads/`; `git checkout -- assets/ui/sheets` put them back. Fix the tool before any repack. To show one packed piece at full size
-  without a repack, drop its line from `src/first/UISheets.luau` (the original upload loads instead).
+  without a repack, drop its line from `src/first/UISheets.luau` (the original upload loads instead), but that loads the full original:
+  more to download (Alan 2026-11-18: load time first; undone the same day).
 - **Changing an uploaded menu piece** (2026-10-19): `tools/ui_pieces.py` reuses an existing `uploads/<piece>.json` and
   never re-uploads; delete that record (git keeps it) before the upload run, then put the new id in UIAssets.
 
