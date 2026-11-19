@@ -90,6 +90,10 @@ specific old fact. Never copy them back, and never recreate that evidence system
   no overlaps; when it doesn't fit, make the paper bigger. Check it on a screenshot, not in code.
 - **Design and colour theory (Alan, 2026-11-12):** before building or showing any screen, menu, card, HUD piece or
   picture, load the `design-theory` skill (`.claude/skills/design-theory/`) and run its screenshot checklist.
+- **Every new whole-shape skin gets its screen sizes (Alan, 2026-11-19):** a Legendary or Mythical that replaces the
+  plane's shape is sized so it covers the same share of the chase view as the plane without a skin, measured for every
+  body + wings mix; adding a skin means measuring its row before it ships (tool and table on the
+  [planes and hangar](docs/systems/planes-and-hangar.md) page).
 - **Measure the concept first (Alan, 2026-11-13):** before building or briefing any 3D model that has a concept
   picture, load the `concept-to-blender` skill (`.claude/skills/concept-to-blender/`): measured sheet to Alan first,
   then build to the numbers and check the model laid over the picture.

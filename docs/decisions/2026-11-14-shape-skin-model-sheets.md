@@ -360,6 +360,13 @@
   thread tight gaps) and took "keep the shape" over stretching the wings: one even size, as long or as wide as the plane,
   whichever comes first, never bigger. A thinner target from behind is accepted: "the actual mass ... will not be changing
   ... It's just a skin, it's just cosmetic." 
+  **Then too small (Alan, 2026-11-19, flying a Race Car against the same plane without a skin: "now the planes are just
+  too small ... there's got to be a middle ground").** Measured: under "length or wingspan, never bigger" skins cover
+  2.4-5% of the chase view against the plane's 6.8-7.7%; under equal target 3.5-16%. **Ruling: size each whole skin by
+  the screen**: for each skin and each body + wings mix, the one even size at which it covers the same share of the chase
+  view as the plane without a skin, measured once and stored as a table the game reads (shape kept, never stretched,
+  camera unchanged). **A project rule (AGENTS.md):** every new whole-shape skin gets its row measured before it ships. To
+  build next session.
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:
