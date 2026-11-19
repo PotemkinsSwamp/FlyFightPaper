@@ -17,6 +17,7 @@ local RangeStage=require(script.Parent.RangeStage)
 local LoadLog=require(script.Parent.LoadLog)
 local Loadouts=require(Root.Shared.WeaponLoadouts)
 local Schema=require(Root.Shared.ProfileSchema)
+local Missions=require(Root.Shared.Missions)
 local WALL_GRACE_SECONDS=2 -- ponytail: a fixed grace; move to config/gameplay.json if it needs tuning
 local Runtime={};Runtime.__index=Runtime
 function Runtime.new(flight,combat,bots,profiles,commerce)
@@ -168,11 +169,30 @@ function Runtime:missionSummary(row,r)
  local byGear={}
  for id,g in pairs(s.byGear) do byGear[id]={folds=g.folds,assists=g.assists,damage=math.floor(g.damage),seconds=math.floor(g.seconds)} end
  return {eligible=row.completion==true,completedAt=r.completedAtUnix,mode=r.mode,folds=row.kills,assists=row.assists,
-  damage=math.floor(row.damage),paper=row.contribution*Economy.paper_per_point+row.finalPaper,seconds=math.floor(row.activeSeconds),
+  damage=math.floor(row.damage),paper=row.contribution*Economy.paper_per_point+(row.finalPaper or 0),seconds=math.floor(row.activeSeconds),
   wins=row.victory and row.completion and 1 or 0,top3=row.completion and not r.result.draw and row.place and row.place<=3 and 1 or 0,
   targets=row.targetPoints//points.target,boosts=s.boosts,
   zone_points=math.min(row.zoneEvents*points.zone_per_5_eligible_seconds,Economy.control_personal_points_max_per_match),
   zone_folds=row.zoneFolds or 0,deaths=row.deaths,best_life=row.bestStreak,byGear=byGear}
+end
+-- Live missions (Alan 2026-11-18): while a match is played, the profile view shows the saved missions plus this match's
+-- running counts (Missions.applyMatch live). Never saved: the match's own statistics save it once at the end.
+-- ponytail: rides the profile view the client already asks for every 3 s and when the desk list opens; push on change
+-- if a screen ever shows missions mid-flight.
+function Runtime:liveMissions(player,missions)
+ local r=self.engine.round
+ if self.engine.phase~="ACTIVE" or not r or not missions then return missions end
+ for _,row in pairs(r.participants) do
+  if row.controllerType=="human" and row.userId==player.UserId and row.present then
+   local ok,summary=pcall(self.missionSummary,self,row,r)
+   if not ok then return missions end
+   local earned=self.earnedTotals[row.actorId]
+   summary.eligible,summary.completedAt=true,os.time()
+   summary.paper=math.floor(summary.paper+(earned and earned.boostPaper or 0)) -- the end adds the final bonus, as the jar does
+   return Missions.applyMatch(missions,summary,true) or missions
+  end
+ end
+ return missions
 end
 function Runtime:bind(p)
  -- A practice flight is never in the match: it can't hold the zone, score, earn or qualify (2026-10-17 audit).
@@ -608,7 +628,7 @@ function Runtime:sendProfile(player)
   local e=self.profiles.entries[player]
   local boost=self.profiles.service:liveBoostView(e.account)
   self.profileView:FireClient(player,{paper=math.floor(profile.paperMilli/1000),xp=math.floor(profile.xpMilli/1000),ownership=profile.ownership,looks=profile.looks,chests=profile.chests,dailyGift=profile.dailyGift,
-   missions=profile.missions,chestPaperAllowed=self.profiles.service:chestPaperAllowed(e.account,player),
+   missions=self:liveMissions(player,profile.missions),chestPaperAllowed=self.profiles.service:chestPaperAllowed(e.account,player),
    presets=profile.presets,rangePresets=profile.rangePresets,settings=profile.settings,lessons=profile.lessons,unlocksSeen=profile.unlocksSeen,qualification=profile.qualification,statistics=profile.statistics,boosts=boost.status=="ok" and boost.value.boosts or profile.boosts,mock=self.profiles.mock})
  end
 end

@@ -232,6 +232,24 @@ function Spec.run()
 		assert(#finished == 1 and finished[1].tier == "five_day" and nextState.dailiesDone == 3)
 	end)
 
+	test("the live view adds running counts, leaves end-only ones for the end, and agrees with the saved result", function()
+		local state = stateAt()
+		state.daily = {total("easy", "boosts", 10), feat("medium", "folds", "one_match", 12, 1), feat("hard", "deaths", "deaths", 4, 1)}
+		state.weekly = {total("two_day", "matches", 6), total("three_day", "wins", 3), total("five_day", "damage", 23400)}
+		local running = summary({boosts = 4, folds = 5, damage = 900, deaths = 0, wins = 1, top3 = 1})
+		local live, finished = Missions.applyMatch(state, running, true)
+		assert(#finished == 0 and live.daily[1].progress == 4 and live.weekly[3].progress == 900)
+		assert(live.daily[2].progress == 0 and live.daily[2].match == 5) -- read as "5 / 12" this match
+		assert(live.daily[3].progress == 0 and live.daily[3].match == nil) -- "folded 4 or fewer" ticks at the end
+		assert(live.weekly[1].progress == 0 and live.weekly[2].progress == 0 and state.daily[2].match == nil)
+		local saved = Missions.applyMatch(state, running)
+		assert(saved.daily[1].progress == live.daily[1].progress and saved.weekly[3].progress == live.weekly[3].progress)
+		assert(saved.daily[3].progress == 1 and saved.weekly[1].progress == 1 and saved.weekly[2].progress == 1)
+		assert(saved.daily[2].match == nil and Missions.valid(saved))
+		live, finished = Missions.applyMatch(state, summary({boosts = 10, folds = 12}), true)
+		assert(#finished == 2 and live.daily[1].progress == 10 and live.daily[2].progress == 1 and live.dailiesDone == 2)
+	end)
+
 	test("ineligible matches leave state alone and eligible matches require the refreshed day", function()
 		local state = stateAt()
 		local unchanged, finished = Missions.applyMatch(state, summary({eligible = false, folds = 1000, completedAt = JAN_1 + DAY}))

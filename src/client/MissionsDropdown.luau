@@ -83,9 +83,8 @@ function Dropdown.new(parent, strip, x, top, bottom, refresh)
 			-- The rows share the paper inside its torn bottom edge.
 			local h = math.floor((tall() * 0.94 - S.head) / (#list + (tab == "weekly" and 1 or 0)))
 			for i, m in list do
-				local now = m.action == "minutes" and m.kind == "total" and m.progress // 60 or m.progress
-				row("Row" .. i, S.head + (i - 1) * h, h, MissionsScreen.describe(m), m.progress / goal(m),
-					PaperUI.commas(math.min(now, m.count)) .. " / " .. PaperUI.commas(m.count))
+				local now, target, fraction = MissionsScreen.counts(m)
+				row("Row" .. i, S.head + (i - 1) * h, h, MissionsScreen.describe(m), fraction, PaperUI.commas(now) .. " / " .. PaperUI.commas(target))
 			end
 			if tab == "weekly" then
 				local done = missions.dailiesDone or 0

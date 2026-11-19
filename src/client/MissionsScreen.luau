@@ -84,9 +84,18 @@ end
 
 local function goalOf(m) return m.action == "minutes" and m.kind == "total" and m.count * 60 or m.count end
 local function finished(m) return m.progress >= goalOf(m) end
+-- Where a mission stands as the player reads it: done so far, the number to reach, and the bar's fill. Minutes read in
+-- minutes; while a match is played a one-match goal shows that match's running count, "5 / 9" (Alan 2026-11-18).
+function MissionsScreen.counts(m)
+	if m.kind == "feat" and m.count == 1 and m.match and m.progress < 1 then
+		return math.floor(m.match), m.threshold, m.match / m.threshold
+	end
+	local minutes = m.action == "minutes" and m.kind == "total"
+	return math.min(minutes and m.progress // 60 or m.progress, m.count), m.count, m.progress / (minutes and m.count * 60 or m.count)
+end
 local function progressWords(m)
-	local now = m.action == "minutes" and m.kind == "total" and m.progress // 60 or m.progress
-	return PaperUI.commas(math.min(now, m.count)) .. " / " .. PaperUI.commas(m.count) .. (m.kind == "feat" and m.count > 1 and " matches" or "")
+	local now, target = MissionsScreen.counts(m)
+	return PaperUI.commas(now) .. " / " .. PaperUI.commas(target) .. (m.kind == "feat" and m.count > 1 and " matches" or "")
 end
 local function left(seconds)
 	local d, h, mins = seconds // 86400, seconds % 86400 // 3600, seconds % 3600 // 60
@@ -132,7 +141,7 @@ function MissionsScreen.new(playerGui, api)
 			end
 			ui.words(layer, name .. "Progress", math.min(missions.dailiesDone, 15) .. " / 15", x + 36 + 7 * 56 + 10, row - 24, 180, 48, 40)
 		else
-			MissionsScreen.bar(ui, layer, name, x + 36, row - 20, 400, m.progress / goalOf(m))
+			MissionsScreen.bar(ui, layer, name, x + 36, row - 20, 400, select(3, MissionsScreen.counts(m)))
 			ui.words(layer, name .. "Progress", done and "Done!" or progressWords(m), x + 452, row - 24, 200, 48, 40)
 		end
 		local right = x + CARD.w - 34

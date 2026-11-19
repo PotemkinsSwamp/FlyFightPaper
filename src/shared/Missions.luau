@@ -358,11 +358,19 @@ local function validSummary(summary)
 	return true
 end
 
-local function earnedProgress(mission, summary)
+-- Counted only when the match ends, never in the live view: playing the match, winning, the top 3, and
+-- "folded N times or fewer" (Alan 2026-11-18).
+local END_ONLY = {matches = true, wins = true, top3 = true, deaths = true}
+
+local function featValue(action, summary)
+	return if action == "matches" then 1 elseif action == "minutes" then summary.seconds / TIME.seconds_per_minute else summary[action]
+end
+
+local function earnedProgress(mission, summary, live)
+	if live and END_ONLY[mission.action] then return 0 end
 	if mission.mode and mission.mode ~= summary.mode then return 0 end
 	if mission.kind == "feat" then
-		local action = mission.action
-		local value = if action == "matches" then 1 elseif action == "minutes" then summary.seconds / TIME.seconds_per_minute else summary[action]
+		local value = featValue(mission.action, summary)
 		local met = if mission.feat == "deaths" then value <= mission.threshold else value >= mission.threshold
 		return if met then 1 else 0
 	end
@@ -373,7 +381,9 @@ local function earnedProgress(mission, summary)
 	return if stats then stats[field] else 0
 end
 
-function Missions.applyMatch(state, summary)
+-- live: the view sent while a match is played (never saved): the match's running counts on top of the saved progress,
+-- END_ONLY actions left for the end, and each open feat given `match`, the running number it's chasing ("5 / 9").
+function Missions.applyMatch(state, summary, live)
 	if not Missions.valid(state) then return nil, "invalid_mission_state" end
 	if not validSummary(summary) then return nil, "invalid_match_summary" end
 	local result, finished = copyState(state), {}
@@ -385,7 +395,10 @@ function Missions.applyMatch(state, summary)
 	for _, list in {"daily", "weekly"} do
 		for _, mission in result[list] do
 			if not isFinished(mission) then
-				mission.progress = math.min(MAX_INTEGER, mission.progress + earnedProgress(mission, summary))
+				if live and mission.kind == "feat" and not END_ONLY[mission.action] then
+					mission.match = featValue(mission.action, summary)
+				end
+				mission.progress = math.min(MAX_INTEGER, mission.progress + earnedProgress(mission, summary, live))
 				if isFinished(mission) then
 					table.insert(finished, table.clone(mission))
 					if list == "daily" then

@@ -301,6 +301,9 @@ function Service:handle(player,action,value)
    self:message(player,message)
   end)
  elseif action=="devFinishMissions" and value==nil and Run:IsStudio() and self.profiles.mock==true and player:GetAttribute("Dev")==true then
+  -- Pressed mid-match: missions finished during the match get the report card's gold star at its end (Alan 2026-11-18),
+  -- through "Dev: mission next match"'s path.
+  if player:GetAttribute("InMatch") then player:SetAttribute("DevMissionNextMatch",true) end
   self:enqueue(player,{kind="devFinishMissions"},function(ok)
    self:message(player,ok and "Missions ready to claim." or "Missions could not be finished.")
   end)
