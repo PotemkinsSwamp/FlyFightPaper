@@ -251,7 +251,6 @@ function Spec.run()
 	local DRAGON = "dragon"
 	local shape = SkinFit.shapes[DRAGON]
 	local E, box = shape.even, shape.pieces.whole
-	local Areas = require(Root.Generated.PlaneAreas).bodies
 	local wide = catalog:classLoadout("bomber", 99)
 	wide.body, wide.wings, wide.utility = "body_heavy_mk2", "wings_2", "boost_band"
 	builds.wide = wide
@@ -262,12 +261,11 @@ function Spec.run()
 		local drawn = fitted.placed.whole
 		local lo, hi = Vector3.new(table.unpack(box.min)), Vector3.new(table.unpack(box.max))
 		local k = drawn[2].Z / (hi - lo).Z
-		test(name .. ": the Dragon keeps its proportions, is exactly as big a target as the plane, centred, wings at the wings' height", function()
+		test(name .. ": the Dragon keeps its proportions, is as long or as wide as the plane (never bigger), centred, wings at the wings' height", function()
 			assert(near(drawn[2], (hi - lo) * k, 1e-4), "stretched: " .. tostring(drawn[2]))
-			local a = Areas[loadout.body]
-			local area = a.wings[loadout.wings] + (a.nose[loadout.nose] or 0) + (a.tail[loadout.tail] or 0)
-			-- Exactly as big a target as the plane, even where that is shorter or narrower than it (Alan 2026-11-18).
-			assert(math.abs(E.area * k * k - area) < 1e-3 * area, "target " .. E.area * k * k .. " vs the plane's " .. area)
+			-- The plane's length or wingspan, whichever comes first (Alan 2026-11-18).
+			local long, wideK = (o.zT - o.zN) / (hi - lo).Z, o.xo / E.half_span
+			assert(math.abs(k - math.min(long, wideK)) < 1e-4, "k " .. k .. " vs length " .. long .. ", span " .. wideK)
 			assert(math.abs(drawn[1].Position.Z - (o.zN + o.zT) / 2) < 1e-3, "not centred on the plane")
 			local wingY = drawn[1].Position.Y + (E.wing_y - (lo.Y + hi.Y) / 2) * k
 			assert(math.abs(wingY - o.wy) < 1e-3, "wings at " .. wingY .. ", the plane's at " .. o.wy)

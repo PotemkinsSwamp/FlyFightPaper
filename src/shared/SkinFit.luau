@@ -5,7 +5,6 @@
 -- starter build's numbers come from config/skin-shapes.json.
 local Generated = script.Parent.Parent:WaitForChild("Generated")
 local Shapes = require(Generated:WaitForChild("SkinShapes")).shapes
-local Areas = require(Generated:WaitForChild("PlaneAreas")).bodies
 local SkinFit = { shapes = Shapes }
 
 local function v3(t) return Vector3.new(t[1], t[2], t[3]) end
@@ -47,10 +46,6 @@ function SkinFit.outline(appearance, frame)
 		end
 	end
 	if o.zN == math.huge or o.zT == -math.huge or o.bz0 == math.huge or #wingY == 0 then return nil end
-	-- How big a target the plane is (config/plane-areas.json, by the build Aircraft.build stamps on it); nil if unknown.
-	local body, nose, wings, tail = string.match(appearance:GetAttribute("Build") or "", "^([^|]+)|([^|]+)|([^|]+)|([^|]+)$")
-	local area = body and Areas[body]
-	o.area = area and area.wings[wings] and area.wings[wings] + (area.nose[nose] or 0) + (area.tail[tail] or 0)
 	table.sort(wingY)
 	o.wy = wingY[math.ceil(#wingY / 2)]
 	-- ponytail: the wing's root chord from the boxes that reach the root (a swept wing's box is longer than its root);
@@ -81,12 +76,10 @@ local function bellyOf(keel)
 end
 
 -- Shapes that keep their proportions and are the plane's hit and crash shape (the Dragon, the Legendaries; Alan 2026-11-15:
--- "we can't stretch it and make it look odd"; "scale up the skin until it's the same ... surface area that would have been
--- the plane that it's covering, so that it's still the same hitbox"): ONE size for the whole model, exactly as big a target
--- as the plane (its outline from above, the side and behind, added, equals the plane's), centred on the plane, wings at the
--- plane's wing height. HitShapes uses its pieces instead of the body, nose, wings and tail. Its wings are flat (rise 0).
--- The old floor "never shorter or narrower than the plane" (2026-11-16) is gone (Alan 2026-11-18): on wide or narrow
--- wings it made a skin up to 2.2 times the plane's target and filled a third of the screen.
+-- "we can't stretch it and make it look odd"): ONE size for the whole model, centred on the plane, wings at the plane's wing
+-- height. HitShapes uses its pieces instead of the body, nose, wings and tail. Its wings are flat (rise 0). Sizing by equal
+-- target (outlines from above, side and behind, added) is gone (Alan 2026-11-18): flat skins over tall bodies grew far
+-- wider and longer than the plane (up to 34% of the chase view against the plane's 8%).
 local function evenFit(shape, o)
 	local E, W = shape.even, shape.even.wing
 	local lo0, hi0 = Vector3.one * math.huge, -Vector3.one * math.huge
@@ -96,9 +89,10 @@ local function evenFit(shape, o)
 			lo0, hi0 = lo0:Min(v3(piece.min)), hi0:Max(v3(piece.max))
 		end
 	end
-	-- ponytail: a build missing from plane-areas.json (a new part) is matched by length instead; re-run
-	-- tools/plane_areas.lua after adding parts.
-	local k = o.area and math.sqrt(o.area / E.area) or (o.zT - o.zN) / (hi0.Z - lo0.Z)
+	-- As long or as wide as the plane, whichever comes first, never bigger, never stretched (Alan 2026-11-18: "just make
+	-- them the same size in wingspan and in length"; a flat skin over a tall body is a slightly thinner target, but the
+	-- plane's weight, health, lift and speed don't change). Lengths from the hit piece (the Ninja's scarf trails past it).
+	local k = math.min((o.zT - o.zN) / (hi0.Z - lo0.Z), o.xo / E.half_span)
 	local midZ = (lo0.Z + hi0.Z) / 2
 	local function at(p) return Vector3.new(p.X * k, o.wy + (p.Y - E.wing_y) * k, (o.zN + o.zT) / 2 + (p.Z - midZ) * k) end
 	local out = {}

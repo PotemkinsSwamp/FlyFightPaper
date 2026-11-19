@@ -26,20 +26,19 @@ the server turns the real wings' hit and crash shapes up to the skin's wing angl
 the screen draws them, by the same fit (`SkinFit.luau`; built 2026-11-14, checked in Play: wings 32 degrees, same size,
 guns and boosters exactly on the drawn ones; boosters within 0.04 of touching the belly, mesh against mesh, on all 18
 body and booster builds; not yet flown past walls). **The Dragon keeps its proportions and is the hitbox** (Alan 2026-11-15): one mesh and one 1024 picture set (colour,
-bumps, shine, metal, the eye's glow), drawn at one size: as big a target as the plane it is on (its outline from above,
-the side and behind, added, equals the plane's: `config/plane-areas.json`, measured by `tools/plane_areas.lua`), exactly, for the Dragon and all
-five Legendaries (Alan 2026-11-18 dropped the 2026-11-16 "never shorter or narrower than the plane": on Broad or Swept
-wings it made a skin up to 2.2 times the plane's target and up to 34% of the chase view against the plane's 8%), centred on the plane, wings at its wing height (`even` in the config;
+bumps, shine, metal, the eye's glow), drawn at one size: as long or as wide as the plane, whichever comes first, never bigger and never stretched, for the
+Dragon and all five Legendaries (Alan 2026-11-18, his pick of "keep the shape"; it replaced equal target size, outlines from
+above, side and behind added, which made flat skins over the tall Cardboard and Toilet Roll bodies up to 34% of the chase
+view against the plane's 8%; `config/plane-areas.json`, `tools/plane_areas.lua` and `even.area` are now unused), centred on the plane, wings at its wing height (`even` in the config;
 `Aircraft.build` stamps the build on the plane). On the server its own precise shape replaces the body, nose, wings and
 tail as the hit and crash shape (`HitShapes.place`). **The five Legendaries hit and crash with a hidden trimmed copy**
 (`hullHit`, Alan 2026-11-18): the drawn skin less its extras (the Race Car's spoiler, the Shark's top fin, the Ninja's scarf),
 every tall fin cut flat where a normal tail fin ends (0.10 of the length above the skin's body top: about half of each),
-made by `tools/art/skin_hit_hulls.py` (one FBX, one upload, `.planning/skins/hit-trim-preview.jpg`); the size match uses
-the copy, so the drawn skins grew 1-5% (the Ninja shrank 2%: its copy now keeps its fin's lower half). Measured on the
-chase view after: the Toilet Roll Gunship with Broad Wings 7.7% plain, Race Car 16.3%, Ninja 13.8%, Stealth 12.5%, Hot
-Rod 10.3%, Shark 7.0%, Dragon 6.1% (equal targets; the rest is shape: these skins are longer than a wide plane, so their
-back sits closer to the camera); Cardboard Gunship with Cardstock Wings 6.8% plain, 4.8-9.7% skinned. The Dragon has nothing
-that tall and keeps its one shape; guns hang under its wing outside its body, the booster under its
+made by `tools/art/skin_hit_hulls.py` (one FBX, one upload, `.planning/skins/hit-trim-preview.jpg`); the copy's length
+sets the size. Measured on the chase view (Edit-mode rays, 1280x720): plain Cardboard Gunship with Cardstock Wings 6.8%,
+skinned 2.5-5%; Toilet Roll Gunship with Broad Wings 7.7%, skinned 2.4-5%: every skin exactly the plane's length there and
+18-21 studs wide against the wings' 23-31 (a flat skin over a tall body is a thinner target, 53-69% of the plain plane's;
+Alan: the plane's weight, health, lift and speed don't change). The Dragon has nothing that tall and keeps its one shape; guns hang under its wing outside its body, the booster under its
 belly. Its boosters wear its printed sheet (its own body scales at the body's scale size, `picture` in `config/looks.json`; Alan saw it in Studio 2026-11-16: "its good"). Not checked in Play yet; the monorail train still tests the corners of each crash shape's box, which for the
 Dragon reach past its wings.
 The shelf's big photo and its cubbies wear your skin too, and so do the desk menu's big photo and its pinboard of

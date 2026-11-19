@@ -353,6 +353,13 @@
   where a normal tail fin ends above the body (about half of each tall fin). Built the same day as one FBX (one upload,
   approved; mesh ids in `config/skin-shapes.json`): every Legendary is exactly its plane's target on every build; the
   drawn skins grew 1-5%, the Ninja shrank 2%. The Dragon needed no trim.
+  **Then size by length and wingspan, not target (Alan, same evening, after flying the Ninja on a Cardboard build: "the
+  wingspan is way longer ... the wingspan should be the same").** Equal target made flat skins much wider and longer than
+  tall-bodied planes (the Cardboard and Toilet Roll bodies' deep fuselage is most of their target). He ruled out the plane's
+  own parts as a hidden hitbox under the skin ("if it can hit or crash where no skin shows, that's a problem"; players
+  thread tight gaps) and took "keep the shape" over stretching the wings: one even size, as long or as wide as the plane,
+  whichever comes first, never bigger. A thinner target from behind is accepted: "the actual mass ... will not be changing
+  ... It's just a skin, it's just cosmetic." 
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:
