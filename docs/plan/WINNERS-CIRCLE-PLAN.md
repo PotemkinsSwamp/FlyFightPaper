@@ -68,13 +68,44 @@ and edgy like Camera Flick and Book Kicker.
 | Test Flight | Tosses a tiny plane that loops and comes back to their hand |
 | Sneaky Toss | Lobs a paper ball toward 1st, then looks away whistling |
 
+## The first five (Alan's pick, 2026-11-19)
+Toy Pilot, Camera Flick, Good Game, Next One, Nap. **Camera Flick proves the process first**: Alan looks at a couple
+of versions, and if it's good the other four get made the same way. The process gets written down while it happens
+([emote making](../workshop/emote-making.md)); if it works it becomes a skill so the results can be repeated.
+Rest of the beta set (after these): Book Kicker, Bubblegum, Magician, So Close. Later: Skeet Shoot, A+, Fold It Up
+and the others.
+
+## How an emote gets made (proposed; waits for Alan's OK)
+Where the body motion comes from, cheapest first (research 2026-11-19):
+1. **Roblox's Prompt to Animation** (Studio beta, announced November 2026): a written description becomes an R15
+   animation, through our Studio link. Free in the beta, four tries a minute. Roblox says it is best at everyday
+   human movement; name the end pose, join actions with "then" and "while", keep each action 1-10 s.
+2. **Roblox's Animation Capture**: a video of one person (under 15 s, steady camera, good light) becomes an R15
+   animation. Free. For moves the generator can't do; Alan or anyone films it.
+3. **Free motion from outside** (Rokoko's video capture and text-to-motion, Mixamo's library): arrives as FBX and
+   goes through our own fitting tool (`tools/meshy_to_r15.py`, one bone-name list per source). Export limits and
+   licences get checked on the day.
+4. **Roblox's own emotes**: free to play, can't be changed. Stand-ins, and maybe all Good Game needs.
+Never typed-in keyframes for a body move (October's arm-only test looked lifeless).
+
+The steps, each with a check before the next:
+1. **Shot card** in words: the beats and their times, the prop's path, what the camera does.
+2. **Body motion**: three versions from source 1, each a different wording.
+3. **Numbers check** on every version, before anyone looks: length; feet stay on the spot; the key moment is sharp
+   (a flick is a spike in hand speed); the end pose holds; no drift on a big avatar.
+4. **Clean-up**: trim, lock the hips over the desk, ease in from standing, hold the end pose, mark the key moment
+   inside the animation (a named marker, so the prop and camera fire on it whatever the loading does).
+5. **Prop and camera** by script, fired by the marker.
+6. **Body sweep**: the same emote on a set of extreme avatars (tiny, tall, short arms, no visible arms, non-human).
+7. **Alan's look**: a Studio-only Dev button in Play steps through the versions in the real scene.
+8. **Upload** the one he picks (free, his go), put its id in the config, log the recipe.
+
 ## Open
 - Skeet Shoot uses all three winners: the runner-ups' own emotes pause while they throw, then carry on (Alan
   2026-11-19). It doesn't touch the camera; how it ends is open (idea: 1st blows across the finger, the planes
   spiral down).
-- How the body animations get made: Studio's text-to-animation tool first (never tried), filming a person with
-  Roblox's Animation Capture as the fallback, free motion libraries after that. Every new one needs a free upload
-  (Alan's go). Sitting or one-clear-action emotes are the safest; Autograph and Stomp need the most real motion.
+- Sitting or one-clear-action emotes are the safest; Autograph and Stomp need the most real motion.
+- Whether Camera Flick is proven in today's scene first (smaller) or after the scene redo.
 - Props that ride on a hand are fine on any body (Alan 2026-11-19). Ideas where two things must meet need a safe
   version: Ruler Drumroll (hands reaching the desk), Next One (two hands on the plane), the claps (hands meeting).
 - **How any avatar plays any emote:** every Roblox avatar already has the same standard skeleton (R15), and an
