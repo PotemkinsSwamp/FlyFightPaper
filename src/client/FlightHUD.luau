@@ -695,7 +695,7 @@ function HUD.start(getPlane, action)
 			local roundEnd=gui.Parent:FindFirstChild("RoundEnd")
 			foldOffer.step(plane:GetAttribute("State"),Root:GetAttribute("OverlayOpen")==true or Root:GetAttribute("PhotoMode")==true or (roundEnd~=nil and roundEnd.Cover.Visible))
 		end
-		picker.Visible=inHangar and Players.LocalPlayer:GetAttribute("Dev")==true -- Studio, or the owner's account live (server-set)
+		picker.Visible=inHangar and Players.LocalPlayer:GetAttribute("Dev")==true and Players.LocalPlayer:GetAttribute("DevShown")==true -- Studio, or the owner's account live (server-set); F8 shows it (DevTools)
 		gui.Enabled=shown and not inHangar and not Root:GetAttribute("WinnersMoment") -- (the report card's row sits where the weapon slip is)
 		matchInfo.Enabled=shown
 		-- The match strip is centred unless that runs into the Menu button: then just right of its real edge (phones).

@@ -40,6 +40,14 @@ DevTools.routes = {
 }
 
 function DevTools.start(menu)
+	-- F8: show or hide every dev button, the corner switch and the hangar's dev panel (FlightHUD) together; hidden at start
+	-- (Alan 2026-11-18: they covered the phone test). Wherever the server marks the player Dev (Studio, or the owner live).
+	local player = Players.LocalPlayer
+	Input.InputBegan:Connect(function(input, processed)
+		if not processed and input.KeyCode == Enum.KeyCode.F8 and not Input:IsKeyDown(Enum.KeyCode.LeftShift) and player:GetAttribute("Dev") then
+			player:SetAttribute("DevShown", not player:GetAttribute("DevShown"))
+		end
+	end)
 	if not RunService:IsStudio() then return end
 	local camera = workspace.CurrentCamera
 	local view = 0
@@ -108,7 +116,6 @@ function DevTools.start(menu)
 	end
 
 	-- Studio MCP commands run in a separate Lua VM, so they drive these tools through player attributes.
-	local player = Players.LocalPlayer
 	player:GetAttributeChangedSignal("DevView"):Connect(function() DevTools.setView(player:GetAttribute("DevView") or 0) end)
 
 	-- Alan's dev switch (2026-11-12): bottom right, shown with F8, Studio only (the server checks too): his level
@@ -121,12 +128,11 @@ function DevTools.start(menu)
 	switch.BackgroundColor3, switch.TextColor3, switch.Font, switch.TextSize = Color3.fromRGB(45, 32, 26), Color3.new(1, 1, 1), Enum.Font.GothamBold, 15
 	switch.AutoButtonColor, switch.Parent = true, switchGui
 	Instance.new("UICorner", switch).CornerRadius = UDim.new(0, 10)
-	local shown = false
 	local function label()
-		switchGui.Enabled = shown and player:GetAttribute("Dev") == true and player:GetAttribute("DevAll") ~= nil
+		switchGui.Enabled = player:GetAttribute("DevShown") == true and player:GetAttribute("Dev") == true and player:GetAttribute("DevAll") ~= nil
 		switch.Text = player:GetAttribute("DevAll") == false and "Dev: level " .. (player:GetAttribute("Level") or "?") .. " account" or "Dev: everything unlocked"
 	end
-	for _, key in { "Dev", "DevAll", "Level" } do player:GetAttributeChangedSignal(key):Connect(label) end
+	for _, key in { "Dev", "DevAll", "Level", "DevShown" } do player:GetAttributeChangedSignal(key):Connect(label) end
 	label()
 	switch.Activated:Connect(function() Root:WaitForChild("RoundAction"):FireServer("devAll") end)
 	-- Above it (Alan 2026-11-13, to see and hear a gift arrive): two pretend gifts from pretend friends, on the main menu.
@@ -235,7 +241,6 @@ function DevTools.start(menu)
 	Input.InputBegan:Connect(function(input, processed)
 		if processed then return end
 		if input.KeyCode == Enum.KeyCode.F8 and Input:IsKeyDown(Enum.KeyCode.LeftShift) then DevTools.setView(view % #DevTools.views + 1)
-		elseif input.KeyCode == Enum.KeyCode.F8 then shown = not shown; label()
 		elseif input.KeyCode == Enum.KeyCode.F6 then DevTools.setView(0)
 		elseif input.KeyCode == Enum.KeyCode.F9 then gui.Enabled = not gui.Enabled; logged = os.clock()
 		elseif input.KeyCode == Enum.KeyCode.F7 then DevTools.autopilot(FlightState.aimOverride == nil and "loop" or nil)
