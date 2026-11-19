@@ -1,5 +1,5 @@
 # Since Alan last checked (2026-11-18)
-- Missions in Play: all 746 tests pass. Missions sits under Shop beside a smaller stats card; the sheet has construction-paper cards by difficulty; the desk list is tracing paper a sliver under its strip; the report card's tick slip works with **Dev: mission next match**. Still rough: the cards' paper edges and the slip's look (your picks below). [Your notes](../docs/playtests/2026-11-18-missions-first-look.md)
+- Missions look finished in Play: neat scissor-cut construction-paper cards (one white piece tinted per difficulty, packed on a sheet already loaded: no added load), everything on a card bigger with rewards on the right, bigger tabs, and the gold star slamming down on the report card. [Pictures and notes](../docs/playtests/2026-11-18-missions-first-look.md#fourth-look-cut-paper-and-a-fuller-card-same-day)
 - Private Studio save 820 has the illustrated chest openings. All eight chests hold a sharp open pose. Trail cases use different paper and trim. Light Shop lettering has a black outline. All 719 tests passed. [Studio video and pictures](../docs/playtests/2026-11-18-shop-chest-openings.md#illustrated-chest-openings)
 - Customize keeps the book and stats on screen while you pick gear or looks. All 18 trails run behind the plane. Holographic moves on both faces and skins cover the team stickers. [Studio check and pictures](../docs/playtests/2026-11-18-hangar-preview-and-clicks.md)
 - The normal Hangar now shows 23 skins and 18 trails. Shark Jet has its finished body. All 41 cards were selected and worn in Studio with a test wallet. [Hangar check](../docs/playtests/2026-11-18-hangar-catalog.md)
@@ -7,11 +7,11 @@
 
 # Now: finish the game for the beta
 The five finished Legendary skins and matching trails are installed. The two Mythicals include their trails. The four other Legendary ideas (Bumblebee, Rocket, Mech and Pirate) are concepts. The remaining performance check is Galaxy plus Circuit Trace on all 12 planes.
-Dragon leftovers: crash ball and shop card pictures, jaw leftover. **Next: missions polish** ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)): fix the menu packer (`tools/ui_sheets.py` crashes), one white card paper tinted per difficulty, bigger Daily/Weekly tabs, the gold-star tick slip. Queued: Toilet Roll shake, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
+Dragon leftovers: crash ball and shop card pictures, jaw leftover. Missions polish is in ([decision](../docs/decisions/2026-11-18-daily-and-weekly-missions.md)); `tools/ui_sheets.py --add` puts a new menu piece into free space on a loaded sheet. Queued: Toilet Roll shake, playtime calendar, bots that use the town ([ideas](../docs/plan/IDEAS.md)).
 Not checked: phone sizes of the report card row and the gift note and arrival; a real gift through the shop; the unlock backpack's music dip.
 Decisions to review
 Chest prices, drop rates, 10% duplicate refunds and the first mission and streak targets are tuning choices. [Numbers](../docs/systems/economy-and-shop.md#classroom-treasure-chests)
-Missions (my calls): no "Reward" caption (no room); phone stats lines 20% smaller; the sheet has no phone layout yet.
+Missions (my calls): no "Reward" caption; phone stats lines 20% smaller; no phone layout yet; a goal over 58 letters drops to 42 on two lines; the star slightly covers "101" on the report card; 9 menu pictures added since the last pack still load as plain pictures (switching them to 3D needs a Play check).
 Dragon (my calls): centred on the plane lengthwise; guns hang under its wing as a triangle outline, clear of its body;
   shots from a moved gun join their real path within 15 studs; the one 1024 set gives each part the share Studio showed it.
 Commons (my calls): booster scales the body's size; Racing Stripe's fin all cream; 8-Bit option B taken on "that looks good"
@@ -48,7 +48,7 @@ Touch: aim help cone 6 (fades from 3), to 800 studs, slowdown 0.65 within 8 degr
 Winners' moment: cheers 3.2 s, song at 1st's landing (8.1 s), fades by 26 s; 1st a winner's move, 2nd/3rd dances.
 
 Waiting on Alan
-- **Missions.** Look at the 15-dailies card (fixed) and the desk list (bigger words, no scroll bar). Try a free and a paid Swap and Claim after **Dev: finish missions**. The cards look rough until the paper fix.
+- **Missions.** Open both tabs: cut-paper cards, bigger words and bar, rewards on the right, bigger tabs. Then **Dev: mission next match** and play a match: the gold star slams down on the report card. Try Swap and Claim after **Dev: finish missions**.
 - **Shop > Chests.** Open a Skin or Trail chest and try Wear. Check the opening animation, the two chest designs and the rarity papers in the Hangar. Robux buttons are Studio practice only.
 - **Trails, your Play look:** start a match, press **Dev: trail** (bottom right, above Dev: skin): each press puts the next of the 18 trails on every plane, then each its own. Against your videos: is each one thick body? 3D pieces 3D? Rainbow showing most colours from your seat? Storm cloud lit by its lightning? Notes the right way up, little planes nose-first? Dragon's embers glowing, not glittering? Circuit's LEDs flashing? Anything in your aim? Does it hold 60 with all 12 planes wearing one (Circuit Trace, Gold Stars and Glitch Pixels are the heaviest)?
 - **The Rares in Play (your eyes; a script says they move, not that they look right):** Dev: skin through the eight, on your plane and in the hangar. Does each move like its video? How does Holographic read from below? Do sparkles and smoke start in clumps?

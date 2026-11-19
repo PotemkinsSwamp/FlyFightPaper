@@ -254,8 +254,9 @@ function RoundEnd.start()
 	}), 0, tick
 	local slipScale = Instance.new("UIScale")
 	slipScale.Parent = slip
-	-- Centred on the slip's right end (slip pixels 612, 26, turned with it): where its tape was.
-	local missionStar = image(card, "MissionStar", UIArt.results.goldStar, 421, -74, 120, 112, -12)
+	-- Over the slip's right end and the card's top edge, where its tape was; low enough to stay on a 16:9 screen (the card
+	-- sits 39 page pixels from the top) and left of the "Your place" box (Play check 2026-11-18).
+	local missionStar = image(card, "MissionStar", UIArt.results.goldStar, 401, -32, 108, 101, -12)
 	missionStar.Visible, missionStar.ZIndex = false, 6
 	local starScale = Instance.new("UIScale")
 	starScale.Parent = missionStar

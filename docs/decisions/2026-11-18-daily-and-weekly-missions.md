@@ -117,6 +117,11 @@ slams down, and then you see the message, then it's something that catches your 
 just read as yellow paper). The Paper jar stays as it is: it shows when the match added Paper ("if someone's just AFK
 ... it doesn't matter because they're not playing").
 
+**After the fourth look (2026-11-18):** the Missions sheet looks neat: cards are construction paper cut out cleanly by a
+child (flat, straight scissor snips, not crumpled or torn), still one white piece tinted per difficulty. No empty space
+on a card: the goal, bar, counts, rewards and calendar are as big as the card allows, rewards lined up on the card's
+right with the chest after the words ([notes](../playtests/2026-11-18-missions-first-look.md#fourth-look-cut-paper-and-a-fuller-card-same-day)).
+
 ## Why
 
 Alan wants players coming back every day and playing through the week, with goals that fit what each player owns and
