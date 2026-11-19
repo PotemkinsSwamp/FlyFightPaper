@@ -14,8 +14,8 @@ local PAPER = 870 / 1024
 -- Sheet pixels. A phone draws the desk's left group at about a third, so its words are bigger, the paper runs wider over
 -- the runway, and it scrolls (paper and all) when it is taller than the room under the strip.
 local SIZES = {
-	pc = { w = 560, head = 64, text = 26, tab = { 160, 46, 28 } },
-	phone = { w = 1000, head = 92, text = 40, tab = { 230, 70, 40 } },
+	pc = { w = 560, head = 86, text = 30, tab = { 200, 58, 34 } },
+	phone = { w = 1000, head = 122, text = 44, tab = { 280, 84, 48 } },
 }
 
 local function goal(m) return m.action == "minutes" and m.kind == "total" and m.count * 60 or m.count end
@@ -35,7 +35,7 @@ function Dropdown.new(parent, strip, x, top, bottom, refresh)
 	local panel = Instance.new("ScrollingFrame")
 	panel.Name, panel.Position, panel.Size, panel.Active = "MissionsDropdown", UDim2.fromOffset(x, top), UDim2.fromOffset(SIZES.pc.w, 0), true
 	panel.BackgroundTransparency, panel.BorderSizePixel = 1, 0
-	panel.ScrollBarImageColor3, panel.ScrollBarThickness, panel.ScrollingDirection = PaperUI.INK, 8, Enum.ScrollingDirection.Y
+	panel.ScrollBarThickness, panel.ScrollingDirection = 0, Enum.ScrollingDirection.Y -- no scroll bar (Alan 2026-11-18); a phone still drags it
 	panel.ElasticBehavior, panel.Visible, panel.ZIndex, panel.Parent = Enum.ElasticBehavior.Never, false, 5, parent
 	-- A red "!" on the strip's corner while a mission is waiting to be claimed (a shape and a word, not colour alone).
 	local flag = Instance.new("Frame")
@@ -51,13 +51,14 @@ function Dropdown.new(parent, strip, x, top, bottom, refresh)
 	local S = SIZES.pc
 	local function tall() return math.floor(S.w * PAPER) end
 	local function shown() return math.min(tall(), bottom - panel.Position.Y.Offset) end
-	-- One mission: its goal (up to two lines) over the level bar and its count.
+	-- One mission: its goal (up to two lines) sitting right on the level bar, with its count beside the bar; the room
+	-- left over goes between missions, not inside them (Alan 2026-11-18).
 	local function row(name, y, h, text, fraction, words)
-		local barW = math.floor(S.w * 0.52)
+		local barW = math.floor(S.w * 0.6)
 		local barH = math.floor(barW * 79 / 799 + 0.5)
-		local barY = y + h - barH - 8
-		local goalText = ui.words(panel, name .. "Goal", text, 24, y, S.w - 48, barY - y - 4, S.text)
-		goalText.TextWrapped, goalText.TextYAlignment, goalText.LineHeight = true, Enum.TextYAlignment.Top, 1
+		local barY = y + h - barH - 10
+		local goalText = ui.words(panel, name .. "Goal", text, 24, y, S.w - 48, barY - y - 2, S.text)
+		goalText.TextWrapped, goalText.TextYAlignment, goalText.LineHeight = true, Enum.TextYAlignment.Bottom, 1
 		MissionsScreen.bar(ui, panel, name, 24, barY, barW, fraction)
 		ui.words(panel, name .. "Count", fraction >= 1 and "Done!" or words, 24 + barW + 14, barY - 10, S.w - barW - 62, barH + 20, S.text)
 	end

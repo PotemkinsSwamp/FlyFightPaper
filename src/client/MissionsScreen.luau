@@ -71,9 +71,11 @@ end
 -- (799 x 79). Returns the bar's height.
 function MissionsScreen.bar(ui, parent, name, x, y, w, fraction)
 	local h = math.floor(w * 79 / 799 + 0.5)
-	ui.image(parent, name .. "Bar", Assets.results.xpFrame, x, y, w, h).ScaleType = Enum.ScaleType.Stretch
+	-- (ZIndex set, not left to the order they were made: Roblox draws equal siblings in no fixed order)
+	local frame = ui.image(parent, name .. "Bar", Assets.results.xpFrame, x, y, w, h)
+	frame.ScaleType, frame.ZIndex = Enum.ScaleType.Stretch, 1
 	local fill = ui.image(parent, name .. "Fill", Assets.results.xpFill, x + w * 0.02, y + h * 0.17, w * 0.96 * math.clamp(fraction, 0, 1), h * 0.66)
-	fill.ScaleType, fill.Visible = Enum.ScaleType.Stretch, fraction > 0
+	fill.ScaleType, fill.Visible, fill.ZIndex = Enum.ScaleType.Stretch, fraction > 0, 2
 	return h
 end
 
@@ -101,7 +103,9 @@ function MissionsScreen.new(playerGui, api)
 		local done = fixed and missions.dailiesDone >= 15 or not fixed and finished(m)
 		local claimed = fixed and missions.fixedClaimed or not fixed and m.claimed
 		local tier = fixed and "fixed" or m.tier
-		ui.image(layer, name, Assets.deskMenu[STRIP[tier]], x, y, CARD.w, h).ScaleType = Enum.ScaleType.Stretch
+		-- The card under everything on it (Alan's Play 2026-11-18: same-ZIndex pieces drew under it, the week vanished).
+		local paper = ui.image(layer, name, Assets.deskMenu[STRIP[tier]], x, y, CARD.w, h)
+		paper.ScaleType, paper.ZIndex = Enum.ScaleType.Stretch, 0
 		local goal = PaperUI.loud(ui.words(layer, name .. "Goal", fixed and "Finish 15 daily missions" or MissionsScreen.describe(m), x + 36, y + 16, CARD.w - 72, 84, 36))
 		goal.TextWrapped, goal.TextYAlignment, goal.LineHeight = true, Enum.TextYAlignment.Top, 1
 		local rowY = y + 108
@@ -111,10 +115,11 @@ function MissionsScreen.new(playerGui, api)
 			for i, letter in DAYS do
 				local on = missions.calendar:sub(i, i) == "1"
 				local dayX = x + 36 + (i - 1) * 46
-				ui.image(layer, name .. "Day" .. i, on and Assets.hangar.bar.green or Assets.hangar.bar.empty, dayX, rowY - 4, 40, 36)
+				ui.image(layer, name .. "Day" .. i, on and Assets.hangar.bar.green or Assets.hangar.bar.empty, dayX, rowY - 4, 40, 36).ZIndex = 1
 				local mark = ui.words(layer, name .. "Letter" .. i, letter, dayX, rowY - 4, 40, 36, 26)
-				mark.TextXAlignment = Enum.TextXAlignment.Center
-				ui.image(layer, name .. "Tick" .. i, Assets.trainingboard.tick, dayX + 4, rowY - 14, 40, 36).Visible = on
+				mark.TextXAlignment, mark.ZIndex = Enum.TextXAlignment.Center, 2
+				local tick = ui.image(layer, name .. "Tick" .. i, Assets.trainingboard.tick, dayX + 4, rowY - 14, 40, 36)
+				tick.Visible, tick.ZIndex = on, 3
 			end
 			ui.words(layer, name .. "Progress", math.min(missions.dailiesDone, 15) .. " / 15", x + 372, rowY - 6, 160, 44, 32)
 		else
