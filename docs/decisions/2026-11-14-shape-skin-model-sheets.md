@@ -372,6 +372,7 @@
   size is stored against the wingspan (noses and tails don't change it; against "length or wingspan" a nose alone moved
   skins up to 19%). Result: every skin within 1% of the plain plane on the four check builds; on 36 builds with mixed
   noses and tails 207 of 216 within 5%, worst 11% (the small Swift Fold with nose and tail 3).
+- **Guns under big skins (Alan, 2026-11-19):** guns touch the skin and tilt to its slope (Race Car's too). **Only the clip must hide from straight above**, not the whole gun ("of course, you're not gonna be able to hide the pencil launcher"). A small gun such as the spitball has no reason not to fit fully under the wing. A long gun may stick out, **as long as it is centred on the wing front to back where it hangs**, never half off one edge while the other half has room. The pellet gun hangs by its cradle's flat bottom on every plane (it hung by its straw).
 - **Tail fan: kept as built, though it differs from the final view** (Alan, same answer). The accepted tail was also
   measured from the b8 sheet (five wide gold blades); the final LEFT view draws a bent bar along the top, a bar along
   the bottom and three thin ribs with knobs (`parts/tail/built/tail-final-vs-built.jpg`). Offered a redo; Alan:

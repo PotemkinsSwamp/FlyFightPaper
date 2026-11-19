@@ -187,20 +187,7 @@ local function evenFit(shape, o, id)
 		end
 		local wx, wz = math.abs(want.X) / k, midZ + (want.Z - zMid) / k
 		local xLo = hx + 0.02
-		-- How much of the clip is under the skin at (x, z), as a share of its cells.
-		local function hidden(x, z)
-			local n, under = 0, 0
-			for i = math.ceil((x + ox - cx - step / 2 - grid.x0) / step + 0.5), math.floor((x + ox + cx + step / 2 - grid.x0) / step + 0.5) do
-				local column = grid.cols[i]
-				for j = math.ceil((z + oz - cz - step / 2 - grid.z0) / step + 0.5), math.floor((z + oz + cz + step / 2 - grid.z0) / step + 0.5) do
-					n += 1
-					if column and column[j] then under += 1 end
-				end
-			end
-			return n > 0 and under / n or 0
-		end
 		local x, z, list
-		local best, bx, bz = -1, clamp(wx, xLo, xHi), wz
 		for _, d in NEAR do
 			local tx, tz = wx + d.X, wz + d.Y
 			if tx < xLo or tx > xHi then continue end
@@ -208,13 +195,30 @@ local function evenFit(shape, o, id)
 			for _, t in taken do
 				if math.abs(tx - t[1]) < hx + t[3] + 0.05 and math.abs(tz - t[2]) < hz + t[4] + 0.05 then clear = false; break end
 			end
-			if not clear then continue end
-			if cells(tx, tz, true, step / 2) then x, z = tx, tz; break end
-			-- ponytail: scans every spot only for a gun no spot hides whole (a long clip, Rubber Band Repeater rails)
-			local share = hidden(tx, tz)
-			if share > best + 0.02 then best, bx, bz = share, tx, tz end
+			if clear and cells(tx, tz, true, step / 2) then x, z = tx, tz; break end
 		end
-		if not x then x, z = bx, bz end -- nowhere fully under: where most of the clip is
+		if not x then
+			-- Nowhere hides the whole clip (longer than the wing there): where it hangs across the span, centred on the wing
+			-- front to back (Alan 2026-11-19: a long gun may stick out, never half off one edge with room on the other).
+			-- The wing's middle front to back, averaged over the columns under the clip (a swept wing slants across it).
+			x, z = clamp(wx, xLo, xHi), wz
+			local sum, count = 0, 0
+			for i = math.ceil((x + ox - cx - grid.x0) / step + 0.5), math.floor((x + ox + cx - grid.x0) / step + 0.5) do
+				local column = grid.cols[i]
+				local j = math.floor((wz + oz - grid.z0) / step) + 1
+				if not column then continue end
+				for reach = 0, #column do -- the nearest cell under the skin
+					if column[j - reach] then j -= reach; break elseif column[j + reach] then j += reach; break end
+				end
+				if column[j] then
+					local first, last = j, j
+					while column[first - 1] do first -= 1 end
+					while column[last + 1] do last += 1 end
+					sum, count = sum + grid.z0 + (first - 1 + last) / 2 * step, count + 1
+				end
+			end
+			if count > 0 then z = sum / count - oz end
+		end
 		-- It touches by the clip itself (a round top only reaches its box's top along its middle): the cells inside it, or
 		-- the nearest one to its middle.
 		list = cells(x, z, false, 0) or cells(x, z, false, step / 2) or cells(x, z, false, step)
