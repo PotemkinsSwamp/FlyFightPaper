@@ -356,7 +356,7 @@
 - **Shark Jet: a whole shape that is the hitbox, built without Tripo** (Alan, 2026-11-16, on a how-we-make-it plan
   with the sheet shown first). The skins plan said a Legendary is your plane plus add-on pieces; the approved sheet is
   a whole shark. Asked which: "Whole shape". Asked whether the Shark is the hitbox like the Dragon: "Yes" (same sizing
-  rule: as big a target as the plane, never shorter or narrower; its tall back fin is hit and crashes too). The other
+  rule: as big a target as the plane, never shorter or narrower; its tall back fin is hit and crashes too). **Changed 2026-11-18 (Alan): the top fin has no hitbox** ("If the top fin has a hitbox, then that's a disadvantage to the person wearing that skin"); not built yet, and whether it still crashes into walls is open. The other
   Legendaries are decided one by one. Method (Claude's; his "you choose the method; keep it cheap"): a measured piece
   map first; then Blender, one part at a time (body with face, one wing mirrored, back fin with the fold strips, tail),
   each shown alone in close-up beside the same crop of the sheet; painted from the sheet's own pixels, a Codex repaint
