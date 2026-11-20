@@ -206,5 +206,12 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   underside is 0.6 of the way to the plane's lowest point (what hangs under the wings may touch the fingers). It is
   held by its back half, 0.3 of its length ahead of the hand, so it reaches out past the fingers. Not handled: the
   plane's tip against the chest or chin.
+- **Alan in Play on a real avatar (2026-11-20, picture in chat): the plane floats under the hand.** On a thin-armed
+  avatar the plane sat well clear of the raised hand: my offsets were shares of the plane's length, tuned by eye on
+  the thick blocky test kid. His rule: the hand's own turn need not be right, but the plane must sit snugly in the
+  hand on every body, with no per-body tuning. Proposed, waiting for his OK: hold it the way Roblox holds a tool,
+  by each avatar's own right-hand grip point (`RightGripAttachment`), one fixed grip for every body.
+- He also asked why the winners and books look low-resolution: they are drawn in overlay layers (ViewportFrames),
+  which Roblox draws without edge smoothing and at reduced quality. To look into.
 
 Back to [HOME](../HOME.md).
