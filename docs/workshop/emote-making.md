@@ -436,6 +436,28 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
     - In the scene: clap (three), a 0.7 s blend into the wave at 0.65 speed (about 4.5 s), stand 2 s; the stance
       holds the hips and legs throughout. Both clips are in the place's `Assets` (unsaved) and as files beside
       the Camera Flick ones. Not yet run in Play.
+  - **Alan in Play: "The stance is good. The clap is good. It's just now the wave is messed up."** The wave: "they're
+    putting their hand in front of them ... not to the side, parallel with their head ... a low V L shape, hand in
+    line with their head, elbow pointing downwards, and just a slow wave ... 1, 2, 3. About maybe like 0.8 seconds
+    between each wave. But maybe do like 5 waves ... kind of lazy and kind of like their hand flows a little bit."
+    His go for up to three wave tries (6 s asked each); **none is right, the old wave is still in the game**:
+    - A ("Lazy side wave: ... raises the right hand up beside the right side of the head with the elbow bent and
+      pointing down ..."): the generator failed, no reason, no upload.
+    - B (`rbxassetid://98868591718671`, "Bored greeting wave: ... upper arm low and the forearm pointing straight
+      up, making an L shape, so the open right hand is next to the right ear ... rocks slowly side to side five
+      times"): arms hang to 1.5 s; at 1.9 to 2.8 s the elbow is out high (0.6 studs up) with the hand at chin
+      height 0.75 in front; **from 3.1 to 4.3 s the elbow is down at the side (the low V)** with the forearm up
+      but leaning 27 degrees forward and 30 to 38 inward, so the hand is at shoulder height, 0.46 in front; it
+      sways only 0.08 studs each way, about twice, 0.6 s a sway; the head tilts 28 degrees; the arm drops at 5 s.
+      The nearest of all, still not his pose.
+    - C (`rbxassetid://98917973290984`, "Right hand raised next to the head: ... elbow tucked low and pointing at
+      the floor, never in front of the chest ..."): the hand goes in front of the chest (up to 1.2 studs forward)
+      for two seconds, then the elbow goes up to head height with the hand at the ear, held, no waving.
+    - Worked out from the rig: with the elbow pointing down the hand can reach about chin to mouth height beside
+      the head (1.0 to 1.25 studs up, head centre 1.56), not higher: "in line with the head" is its lower half.
+    - Idea not yet tried (the fourth call was refused: three were allowed): a short plain caption, the way such
+      generators are trained ("a person raises their right hand next to their head and waves slowly ..."),
+      instead of a list of body parts.
   - Looking at a web video frame by frame without downloading it: in Chrome, a script seeks the page's own video
     and draws each moment into a grid laid over the page (cropped to the character, time stamped), and one
     screenshot shows 30 moments.
