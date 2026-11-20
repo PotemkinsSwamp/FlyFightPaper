@@ -24,16 +24,15 @@ end
 -- (Good Game's arms are not a cut: a first one, posed by numbers, Alan found stiff and too fast; the scene plays
 -- Roblox's own clap and wave, in WinnersCutscene.)
 local CUTS = {}
--- Good Game's stance (Alan's go 2026-11-20): only the hips and legs, from the first 1.6 s of a generated "stance
--- only" clip: all the weight on the left leg, the right knee bent 66 degrees with the foot on its toes, the hips
--- tilted 6 degrees. It plays over Roblox's clap and wave, which keep the chest, head and arms. (The clip's second
--- half hangs the head 35 degrees and steps the foot back: not used.)
+-- A cut may hold only some parts (here: what a stance needs): played one priority above another clip, it takes
+-- just those parts and the other clip keeps the rest. (Good Game's first stance, a bent knee on its toes from
+-- rbxassetid://98222857059913, Alan rejected: "the rested leg"; its cut is gone, the next one goes here.)
 local STANCE = { "LowerTorso", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }
-CUTS.GoodGameStance = { length = 1.6, clips = { stance = "rbxassetid://98222857059913" }, pose = function(t, c)
-	local all, out = c.stance(t), {}
-	for _, part in STANCE do out[part] = all[part] end
+local function only(parts, all)
+	local out = {}
+	for _, part in parts do out[part] = all[part] end
 	return out
-end }
+end
 
 local Players = game:GetService("Players")
 if _G.EMOTE and _G.EMOTE.clean then _G.EMOTE.clean() end

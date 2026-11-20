@@ -396,6 +396,28 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
     plays it looped from the dark on at priority Action2, one above the clap and wave (Action), which keep the
     chest, head and arms; the upper body leans with the tilted hips. **Layering by priority needs no weights**: a
     clip that holds only some parts, played one priority higher, takes just those parts. Not yet run in Play.
+  - **Alan in Play on all of it (2026-11-20), his shot card in his own words:**
+    - Stance: "it's still like the rested leg ... instead ... they're kind of just shifting their body weight on
+      one side ... leaned a little bit back into like maybe the right, and they're putting all their body weight
+      on one leg, kind of slouched." The bent-knee cut and its file are deleted.
+    - Clap: "still too fast. Even that animation from Fortnite was still too fast ... It's the clapping that's
+      supposed to show dramatism ... It should be like 1, 2, 3 ... a second between each clap ... the arms and
+      hands should move accordingly ... They should never be waiting. It's one smooth rhythm." **Built:** Applaud
+      at a steady half speed (a clap a second, no speed changes inside the clap), three claps, then the arms drop
+      (0.7 s blend) and the kid stands 2.5 s. `clapSpeed` is gone.
+    - Wave: "too enthusiastic. They're moving their whole arm above their head ... they put their hands back down
+      after the clap, drop it to their sides ... Their shoulders drop with them ... weight kind of shift, and then
+      they raise one of their hands, probably their right ... not all the way up, just forming a slight L shape
+      ... hand in line with the head, and then wave it back and forth, kind of slow, like they're uninterested."
+      Roblox's wave is out of the round; this needs a body move of its own.
+  - Roblox clips looked at for this, by numbers (none fits as it is): **Hello** (10714359093, 1.77 s) waves the
+    left hand over the head top with the chest leaning 15 degrees: as enthusiastic as the built-in wave.
+    **Bored** (10713992055, 12.6 s) stands for its first 8 s close to the stance he describes (hips 0.1 studs to
+    the right and tilted 6 to 7 degrees, chest leaning back 9 to 11, head tipped back 26 and turned 12, arms
+    hanging), but a Roblox clip holds every part, so it cannot sit under the clap. **Tilt** (10714338461): hips
+    half a stud over, a hand on the hip. **Correction:** the ids named "... Face" (Hello Face, Sad Face, Shrug
+    Face) are the whole emote, body included, not a face half: `InsertService:LoadAsset(<catalogue emote id>)`
+    returns the emote's Animation with that id.
   - Looking at a web video frame by frame without downloading it: in Chrome, a script seeks the page's own video
     and draws each moment into a grid laid over the page (cropped to the character, time stamped), and one
     screenshot shows 30 moments.
@@ -404,8 +426,7 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
   - Steps now end on the clip's own time (five claps = 2.5 clip seconds), not on a clock.
 - Roblox-made mood clips that exist, for posture if the retiming alone does not carry the feeling (ids checked in
   Edit, not yet looked at): `Emote_Bored` 10713992055 (a candidate for the standing rest), `Emote_Agree`
-  10713954623 (a nod), `Emote_Beckon` 10713984554. Ids ending in "Face" (Sad, Shrug, Tilt, Salute) are the face
-  half of an emote, not the body.
+  10713954623 (a nod), `Emote_Beckon` 10713984554 (what they hold: below).
 
 ## Nap and Next One: what is left (2026-11-20)
 - **Nap**: a cut from Nap B retimed to a sleepy tempo (slow sink about 2.5 s, held asleep with breathing, a quick

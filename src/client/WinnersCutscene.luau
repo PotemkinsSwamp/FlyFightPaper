@@ -425,23 +425,17 @@ local function runnerUpClip()
 end
 
 -- Good Game, the free one (Alan's OK on the remake 2026-11-20; he found arms typed in by numbers stiff and too
--- fast): Roblox's own hand-made moves with the whole body in them, in turn, round and round, retimed to show a
--- runner-up's feelings (Alan 2026-11-20: a slow clap and a slow, unenthusiastic wave; the face can't show it, so the
--- movement must). Its Applaud emote for five claps, then its built-in wave (1.75 s) slowed and only partly raised
--- (at part weight the standing idle shows through: a half-hearted arm), then the standing idle alone.
+-- fast): Roblox's own hand-made moves with the whole body in them, round and round, retimed to show a runner-up's
+-- feelings (Alan 2026-11-20: the face can't show it, so the movement must). A dramatic slow clap, in his words
+-- "1, 2, 3", a second between claps, "never waiting ... one smooth rhythm": Roblox's Applaud emote (a clap every
+-- half second) at half speed for three claps; then the arms drop to the sides and the kid stands. (Tried and
+-- rejected by him: holding the hands apart and striking fast; resting them together with a quick swing, 0.65 s a
+-- clap, from Fortnite's Slow Clap, "still too fast"; Roblox's own wave, slowed and half raised, "too enthusiastic":
+-- the wave he described needs a body move of its own.)
 -- Each step: { clip, the clip's seconds played before the next step starts, speed, weight } or { false, seconds }.
 -- What goodGame returns stands in for an AnimationTrack: Play only.
-local GOOD_GAME = { { "rbxassetid://10713966026", 2.5, 1, 1 }, { "rbxassetid://507770239", 1.25, 0.6, 0.65 }, { false, 2.5 } }
-local GOOD_GAME_BLEND = 0.5
--- The slow clap, timed from Alan's reference (Fortnite's Slow Clap, two videos, 2026-11-20; a first try that hung
--- the hands APART for a second and then struck he called wrong): the hands rest TOGETHER for over half of each
--- clap, come apart and back in one quick easy swing, a clap every 0.65 s. So the clip's speed goes by where in a
--- clap it is (0 and 1: hands together; the middle: apart): slow near together, quick through the swing.
-local CLAP_REST, CLAP_SWING = 0.25, 1.4
-local function clapSpeed(phase)
-	local out = math.clamp((math.min(phase, 1 - phase) - 0.06) / 0.1, 0, 1)
-	return CLAP_REST + (CLAP_SWING - CLAP_REST) * out * out * (3 - 2 * out)
-end
+local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 0.5, 1 }, { false, 2.5 } }
+local GOOD_GAME_BLEND = 0.7
 -- The hands meet at every clap (Alan 2026-11-20: they did not connect). Roblox's clap is one set of joint turns, so
 -- on each body the hands stop a different distance apart (0.4 to 1.2 studs on six avatars measured). Like the plane
 -- on the grip point: Roblox's IKControl bends the left arm so the left hand lands against the right hand, fully at
@@ -471,9 +465,7 @@ local function clapHands(model, humanoid, applaud)
 			local along = apart.Unit
 			meet.WorldPosition = right.Position + along * (thick(right, along) + thick(left, along)) * CLAP_PRESS
 		end
-		reach.Weight = applaud.WeightCurrent * math.max(0, math.cos(applaud.TimePosition / CLAP_EVERY * 2 * math.pi))
-		if applaud.IsPlaying then applaud:AdjustSpeed(clapSpeed(applaud.TimePosition % CLAP_EVERY / CLAP_EVERY)) end
-	end)
+		reach.Weight = applaud.WeightCurrent * math.max(0, math.cos(applaud.TimePosition / CLAP_EVERY * 2 * math.pi))	end)
 end
 local function goodGame(animator, model)
 	local tracks = {}
