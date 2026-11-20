@@ -425,13 +425,23 @@ local function runnerUpClip()
 end
 
 -- Good Game, the free one (Alan's OK on the remake 2026-11-20; he found arms typed in by numbers stiff and too
--- fast): Roblox's own hand-made moves with the whole body in them, in turn, round and round. Its Applaud emote (a
--- clap every half second), then its built-in wave (1.75 s; it fades out over its last half second), then the
--- standing idle alone. Each step: { clip, seconds until the next step starts, at speed 1 }. Played at three quarters
--- of Roblox's speed (Alan, of the two he tried: "the slow is better"). What it returns stands in for an
--- AnimationTrack: Play only.
-local GOOD_GAME = { { "rbxassetid://10713966026", 3 }, { "rbxassetid://507770239", 1.25 }, { false, 3 } }
-local GOOD_GAME_BLEND, GOOD_GAME_SPEED = 0.5, 0.75
+-- fast): Roblox's own hand-made moves with the whole body in them, in turn, round and round, retimed to show a
+-- runner-up's feelings (Alan 2026-11-20: a slow clap and a slow, unenthusiastic wave; the face can't show it, so the
+-- movement must). Its Applaud emote for three claps, then its built-in wave (1.75 s) slowed and only partly raised
+-- (at part weight the standing idle shows through: a half-hearted arm), then the standing idle alone.
+-- Each step: { clip, the clip's seconds played before the next step starts, speed, weight } or { false, seconds }.
+-- What goodGame returns stands in for an AnimationTrack: Play only.
+local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 1, 1 }, { "rbxassetid://507770239", 1.25, 0.6, 0.65 }, { false, 2.5 } }
+local GOOD_GAME_BLEND = 0.5
+-- The slow clap: the clip's speed by where in a clap it is (0 and 1: hands together; about 0.53: widest apart). The
+-- hands come apart a little slower than Roblox's, hang apart for most of a second, then strike at Roblox's own
+-- speed: about a clap every second and a half, where Roblox's is two a second.
+local CLAP_APART, CLAP_HANG, CLAP_STRIKE = 0.7, 0.08, 1
+local function clapSpeed(phase)
+	local from = phase - 0.53
+	local out = math.clamp((math.abs(from) - 0.05) / 0.15, 0, 1)
+	return CLAP_HANG + ((from < 0 and CLAP_APART or CLAP_STRIKE) - CLAP_HANG) * out * out * (3 - 2 * out)
+end
 -- The hands meet at every clap (Alan 2026-11-20: they did not connect). Roblox's clap is one set of joint turns, so
 -- on each body the hands stop a different distance apart (0.4 to 1.2 studs on six avatars measured). Like the plane
 -- on the grip point: Roblox's IKControl bends the left arm so the left hand lands against the right hand, fully at
@@ -461,11 +471,12 @@ local function clapHands(model, humanoid, applaud)
 			local along = apart.Unit
 			meet.WorldPosition = right.Position + along * (thick(right, along) + thick(left, along)) * CLAP_PRESS
 		end
-		reach.Weight =applaud.WeightCurrent * math.max(0, math.cos(applaud.TimePosition / CLAP_EVERY * 2 * math.pi))
+		reach.Weight = applaud.WeightCurrent * math.max(0, math.cos(applaud.TimePosition / CLAP_EVERY * 2 * math.pi))
+		if applaud.IsPlaying then applaud:AdjustSpeed(clapSpeed(applaud.TimePosition % CLAP_EVERY / CLAP_EVERY)) end
 	end)
 end
 local function goodGame(animator, model)
-	local tracks, speed = {}, GOOD_GAME_SPEED
+	local tracks = {}
 	for i, step in GOOD_GAME do
 		if step[1] then
 			local animation = Instance.new("Animation"); animation.AnimationId = step[1]
@@ -478,9 +489,15 @@ local function goodGame(animator, model)
 			while model:IsDescendantOf(game) do -- the scene destroys the winners when it ends
 				for i, step in GOOD_GAME do
 					local track = tracks[i]
-					if track then track:Play(GOOD_GAME_BLEND, 1, speed) end
-					task.wait(step[2] / (track and speed or 1))
-					if track then track:Stop(GOOD_GAME_BLEND) end
+					if track then
+						track:Play(GOOD_GAME_BLEND, step[4], step[3])
+						track.TimePosition = 0
+						local began = os.clock() -- a clip that never loads never gets there: move on after 8 s
+						repeat task.wait() until track.TimePosition >= step[2] or os.clock() - began > 8 or not model:IsDescendantOf(game)
+						track:Stop(GOOD_GAME_BLEND)
+					else
+						task.wait(step[2])
+					end
 				end
 			end
 		end)

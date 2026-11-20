@@ -13,6 +13,8 @@ their raw body moves and are not built
 - **Nap wakes up for 1st**: when 1st's light clicks on, the napper startles awake for a moment and dozes off again.
 - **Good Game is remade from Roblox's own clap and wave** (Alan, to the plan in words: "yes, build it"): clap, wave,
   stand and breathe, round and round; the nod is dropped (Roblox has none, and a typed-in one is what he rejected).
+- **Emotes show feelings through movement** (Alan: "we need to portray emotions through their movements because we
+  cannot control their face"). Good Game is a runner-up's grudging one: a slow clap and a slow, unenthusiastic wave.
 - His go for the nine generator tries (each uploads a private animation to his account) and for Edit-mode screen
   grabs.
 - Earlier the same day: the winners' shot scales to the screen (as close as the screen allows, across and up and

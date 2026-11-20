@@ -342,8 +342,8 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
   0.5 s, chest 5 degrees, head 8, knees up to 9. Wave: the **left** arm, the chest leaning 14 degrees, the hips
   shifting a quarter of a stud, back in its first pose for the last 0.2 s.
 - **Applaud claps at the same rate as the rejected cut** (two a second), so the Dev button had two choices for his
-  eye, Roblox's speed and three quarters. Alan in Play: **"the slow is better"**. Three quarters is now the only
-  speed (`GOOD_GAME_SPEED`, a clap every 0.67 s).
+  eye, Roblox's speed and three quarters. Alan in Play: **"the slow is better"** (replaced the same day by the
+  slow clap below).
 - **"The hands dont connect when they clap"** (Alan, same look). Measured on six real avatars from his Play: at the
   closest moment the hands' middles stay 0.4 to 1.2 studs apart (at normal avatar size), different on every body;
   on a narrow body the hand boxes pass through each other instead. One set of joint turns cannot fit every body.
@@ -358,7 +358,21 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
 - Checking that a Roblox animation exists and what is in it, without Play: `MarketplaceService:GetProductInfo(id)`
   (type 24 is an animation; a catalogue emote's own id is type 61 and holds no keyframes) and
   `KeyframeSequenceProvider:GetKeyframeSequenceAsync`.
-- Seen by Alan in Play at both speeds (his words above); the hand fix is not yet seen.
+- Alan in Play on the hand fix: **"yea that works"**.
+- **Feelings through movement** (Alan, same look: "the clap should be more like a slow clap and the wave should be
+  kind of slow and unenthusiastic. we need to portray emotions through their movements because we cannot control
+  their face"). A runner-up's Good Game is grudging, not cheerful. Built, not yet seen:
+  - **Slow clap by retiming, not slow motion.** Slowing the whole clip makes the strike float. Instead the clip's
+    speed changes inside each clap (`clapSpeed`, set every frame from the clip's time): hands come apart at 0.7 of
+    Roblox's speed, hang apart at 0.08 for about 1.2 s, strike at Roblox's own speed. One clap takes 1.58 s (worked
+    out by stepping the numbers); three claps a round.
+  - **Half-hearted wave by weight.** The wave plays at 0.6 speed and 0.65 weight: an Action clip under full weight
+    lets the standing idle show through, so the arm only comes part of the way up and the lean is smaller.
+  - Steps now end on the clip's own time (three claps = 1.5 clip seconds), not on a clock.
+- Roblox-made mood clips that exist, for posture if the retiming alone does not carry the feeling (ids checked in
+  Edit, not yet looked at): `Emote_Bored` 10713992055 (a candidate for the standing rest), `Emote_Agree`
+  10713954623 (a nod), `Emote_Beckon` 10713984554. Ids ending in "Face" (Sad, Shrug, Tilt, Salute) are the face
+  half of an emote, not the body.
 
 ## Nap and Next One: what is left (2026-11-20)
 - **Nap**: a cut from Nap B retimed to a sleepy tempo (slow sink about 2.5 s, held asleep with breathing, a quick
