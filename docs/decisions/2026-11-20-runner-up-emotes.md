@@ -1,8 +1,8 @@
 # The first three runner-up emotes: Good Game, Nap, Next One
 
 **Decided:** 2026-11-20 (Alan)
-**Status:** Good Game is built into the winners' moment for Studio (Dev panel "2nd/3rd"), not yet run in Play; Nap
-and Next One have their raw body moves and are not built
+**Status:** the first Good Game (Dev panel "2nd/3rd") was not accepted by Alan in Play ("stiff ... too fast ...
+unnatural"); Nap and Next One have their raw body moves and are not built
 
 ## Decision
 - The three runner-up emotes as described on the [emote making](../workshop/emote-making.md) page ("Runner-up

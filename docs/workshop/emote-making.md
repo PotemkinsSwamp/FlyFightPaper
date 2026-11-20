@@ -321,6 +321,14 @@ idle keeps the body alive underneath and the loop cannot jump.
 - Seen as a contact sheet and video from Edit on the blocky test kid (`.planning/emotes/good-game-cut-sheet.jpg`,
   `good-game-cut.mp4`).
 - Not done: turning a little towards 1st for the claps (it faces the camera), and the sound.
+- **Alan in Play (2026-11-20): "it looks stiff and the movements are too fast making it look unnatural."** Not
+  accepted. What that rules out: arms posed by numbers at this tempo (a clap every half second, three waves a
+  second) over the standing idle. The plan's own rule held: a typed-in move looks lifeless. Two reviewer passes on
+  stills (about 230,000 tokens) found pose faults and missed both things he saw in one look: **stills cannot
+  judge tempo or stiffness; for a body move, his Play look comes before any reviewer.**
+- Open for the next try (his OK on a plan in words first): motion from a real source with the whole body in it
+  (a generated clip used as made and slowed, Roblox's own wave or applaud, or a video capture of someone else),
+  and a calmer tempo.
 
 ## Nap and Next One: what is left (2026-11-20)
 - **Nap**: a cut from Nap B retimed to a sleepy tempo (slow sink about 2.5 s, held asleep with breathing, a quick
