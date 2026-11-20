@@ -3,8 +3,8 @@
 -- hangar) to one steady shot of the three winner desks by the chalkboard. Local copies of the top 3 already stand on
 -- their desks as dark shapes, each drawn in their own layer over the room. A spotlight clicks on over 3rd, then 2nd, then 1st, each with its name plate (place,
 -- name, points), and each starts their emote in their own light; confetti falls from 1st's light. The camera pushes
--- in on 1st for theirs, pulls back to all three, then the lights come up as it glides back and the results card
--- shows for its last CARD seconds.
+-- stays on all three (no zoom in: Alan 2026-11-19), then the lights come up as it glides back and the results card
+-- shows for its last CARD seconds. Each winner stands on a stack of books, 1st's the tallest.
 -- It all happens on this screen only: the server's seated avatars are just hidden here.
 local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
@@ -27,21 +27,17 @@ local EMOTES = {
 		"rbxassetid://10714068222", "rbxassetid://10714352626", "rbxassetid://10714366910", "rbxassetid://10713988674" }, -- Floss, Rock On, Samba, Cha Cha, Dolphin, Happy, Side to Side, Block Partier
 }
 -- Seconds. The banner alone, the lights fading out, the glide over in the dark. After arriving: 3rd's spotlight at
--- LIGHT_AT, then 2nd's and 1st's TURN apart; the push in on 1st starts at PUSH_AT and takes PUSH; the pull back to
--- all three starts at BACK_AT and takes BACK.
+-- LIGHT_AT, then 2nd's and 1st's TURN apart.
 local BANNER, DIM, GLIDE = 0.5, 1.5, 2.0
 local LIGHT_AT, TURN = 0.6, 1.0
-local PUSH_AT, PUSH, BACK_AT, BACK = 3.2, 1.2, 7.0, 2.0
 local CARD = 10 -- the results card's seconds at the end of the winners' moment (Alan 2026-10-18: about 10)
 local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room instead of skimming through it
--- The shots, square on to the desk row and level: the lens, a slow push in on the group (share of the distance), and
--- the frame: a close-up CLOSE tall with its top CLOSE_TOP over the desk top (just over the head); the group wide
--- enough that SIDE_ROOM fits beside the outside winners (body, arms and the whole plate: Alan 2026-10-18, half bodies
--- and plates were cut off), from GROUP_EYE over the desk top looking GROUP_TILT degrees down at them (Alan 2026-10-18:
--- looking a little down, just above the town's pillars in front, which fade out anyway). Sizes in winner heights.
-local SHOT_FOV, PUSH_IN, CLOSE_TOP, CLOSE, SIDE_ROOM = 50, 0.04, 1.3, 1.9, 1.2
+-- The shot, square on to the desk row: the lens, a slow push in over the whole hold (share of the distance), and the
+-- frame: wide enough that SIDE_ROOM fits beside the outside winners (body, arms and the whole plate: Alan 2026-10-18),
+-- from GROUP_EYE over the desk top looking GROUP_TILT degrees down at them. One steady shot of all three: the zoom
+-- in on 1st is gone (Alan 2026-11-19: they kept coming out of frame). Sizes in winner heights.
+local SHOT_FOV, PUSH_IN, SIDE_ROOM = 50, 0.04, 1.2
 local GROUP_TILT, GROUP_EYE = 8, 1.6
-local EYE_LOW = 0.15 -- a close-up camera never goes lower than this far over the desk top (winner heights)
 -- How far forward on their desk 1st and the others stand (shares of the desk depth): 1st a little in front.
 local FIRST_FORWARD, SIDE_FORWARD = 0.32, 0.22
 -- The two outside winner desks slide in to this many studs from the middle one, on this screen only, for the
@@ -343,8 +339,33 @@ local function emoteFor(place)
 	return id
 end
 
--- A local copy of a winner's avatar in its own layer's `world`, back at its normal small size, standing at `spot`
--- (the desk top) and facing `facing`: it stands still in the dark until its spotlight comes on.
+-- The book podiums (Alan 2026-11-19): each winner stands on a stack of single books (Assets.WinnerBooks: eight
+-- free Creator Store books, each its own model lying flat, 10 studs on its longer side, its thickness in "Thick"),
+-- 1st's the tallest. Which books, bottom to top, under 1st, 2nd and 3rd; and a book's longer side in winner heights:
+-- wider than a winner's stance, so they stand on it comfortably.
+local STACKS = { { 1, 4, 8, 2 }, { 7, 5, 2 }, { 3, 6 } }
+local BOOK_WIDE = 0.56
+-- Builds `place`'s stack on `spot` in a winner's layer, where everything is `shrink` times smaller (the layer's
+-- camera makes up for it); returns the stack's height in the room's studs.
+local function stackBooks(world, place, spot, shrink)
+	local books, rise = Root.Assets:FindFirstChild("WinnerBooks"), 0
+	local grow = BOOK_WIDE * Avatars.standing_height_studs / 10
+	for i, id in STACKS[place] do
+		local book = books and books:FindFirstChild("Book" .. id)
+		if book then
+			book = book:Clone()
+			book:ScaleTo(book:GetScale() * grow / shrink)
+			local askew = ((place * 7 + i * 5) % 5 - 2) * 5 -- each a little turned, the same every time
+			book:PivotTo(CFrame.new(spot + Vector3.yAxis * rise / shrink) * CFrame.Angles(0, math.rad(askew), 0))
+			book.Parent = world
+			rise += book:GetAttribute("Thick") * grow
+		end
+	end
+	return rise
+end
+
+-- A local copy of a winner's avatar in its own layer's `world`, back at its normal small size, standing on its
+-- book stack at `spot` (the desk top) and facing `facing`: it stands still in the dark until its spotlight comes on.
 local function copyWinner(source, place, facing, actorId, spot, world)
 	source.Archivable = true
 	local model = source:Clone()
@@ -365,7 +386,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	for _, joint in model:GetDescendants() do
 		if joint:IsA("Motor6D") or joint:IsA("AnimationConstraint") then joint.Transform = CFrame.identity end
 	end
-	local onDesk = spot + Vector3.new(0, feet / scale, 0)
+	local onDesk = spot + Vector3.new(0, (stackBooks(world, place, spot, scale) + feet) / scale, 0)
 	local desk = CFrame.lookAt(onDesk, onDesk + facing)
 	model:PivotTo(desk)
 	model.Parent = world
@@ -533,38 +554,18 @@ function Cutscene.play(winners, onStage)
 	local middle = (spots[2] + spots[3]) / 2
 	local across = 0
 	for _, spot in spots do across = math.max(across, math.abs((spot - middle):Dot(right))) end
-	local top = deskTop + 1.3 * height
+	local top = deskTop + 1.8 * height -- over the head of a winner on the tallest stack
 	local center = (chairs + flat(middle)) / 2 + back * 20 + Vector3.new(0, (deskTop + top) / 2, 0)
 	local size = Vector3.new(2 * (across + SIDE_ROOM * height), top - deskTop, (flat(middle) - chairs).Magnitude + 120)
 	local box = CFrame.fromMatrix(center, right, Vector3.yAxis)
 	local points = { center }
 	for i = 0, 7 do points[#points + 1] = box * (size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5)) end
-	state.shots = {}
-	local function shotOf(places, tall, headRoom)  -- headRoom nil: the group shot
-		local mid, wide = Vector3.zero, 0
-		for _, place in places do mid += spots[place] / #places end
-		for _, place in places do wide = math.max(wide, math.abs((spots[place] - mid):Dot(right))) end
-		local half = math.max(tall * height / 2, (wide + SIDE_ROOM * height) / aspect)
-		local distance = half / tanHalf
-		local eyeY, tilt
-		if headRoom then
-			-- Level if that keeps the camera at least EYE_LOW over the desk top, else there and tilted down until the
-			-- top of the frame is back just over their heads.
-			local top = deskTop + headRoom * height
-			eyeY = math.max(top - half, deskTop + EYE_LOW * height)
-			tilt = math.atan((top - eyeY) / distance) - math.rad(SHOT_FOV / 2)
-		else
-			tilt = -math.rad(GROUP_TILT)
-			eyeY = deskTop + GROUP_EYE * height
-		end
-		local eye = Vector3.new(mid.X, eyeY, mid.Z) + back * distance
-		local view = CFrame.lookAt(eye, eye - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
-		local rect, near = onScreen(view, tanHalf, box, size)
-		table.insert(state.shots, { view = view, rect = rect or { -1, -1, 1, 1 }, near = near, points = points, aspect = aspect, tanHalf = tanHalf, clear = NEAR_CLEAR })
-		return view, distance
-	end
-	local first = shotOf({ 1 }, CLOSE, CLOSE_TOP)
-	local group, groupDistance = shotOf({ 1, 2, 3 }, 0)
+	local groupDistance = (across + SIDE_ROOM * height) / aspect / tanHalf
+	local tilt = -math.rad(GROUP_TILT)
+	local eye = Vector3.new(middle.X, deskTop + GROUP_EYE * height, (spots[1].Z + spots[2].Z + spots[3].Z) / 3) + back * groupDistance
+	local group = CFrame.lookAt(eye, eye - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
+	local rect, near = onScreen(group, tanHalf, box, size)
+	state.shots = { { view = group, rect = rect or { -1, -1, 1, 1 }, near = near, points = points, aspect = aspect, tanHalf = tanHalf, clear = NEAR_CLEAR } }
 	state.overhead = { view = group, depth = groupDistance, y = deskTop + 1.5 * height }
 	local drift = group + group.LookVector * groupDistance * PUSH_IN
 	state.plateGui, state.plates = makePlates(winners)
@@ -587,7 +588,7 @@ function Cutscene.play(winners, onStage)
 
 	local depart = BANNER + DIM
 	local arrive = depart + GLIDE
-	local leave = math.max(arrive + BACK_AT + BACK + 1, Rounds.results_seconds - CARD)
+	local leave = math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD)
 	local function clearShot()
 		state.added = workspace.DescendantAdded:Connect(function(item) hideForShot(state, item) end)
 		task.spawn(function() -- a few hundred parts a frame, so nothing stutters; done well before the camera lands
@@ -599,15 +600,8 @@ function Cutscene.play(winners, onStage)
 			hideStrings(state)
 		end)
 	end
-	-- The camera while it holds, `t` seconds after arriving: all three while the lights come on, in on 1st for
-	-- their emote, back out to all three, then a slow push in.
-	local function holdAt(t)
-		if t < PUSH_AT then return group end
-		if t < PUSH_AT + PUSH then return group:Lerp(first, ease((t - PUSH_AT) / PUSH)) end
-		if t < BACK_AT then return first end
-		if t < BACK_AT + BACK then return first:Lerp(group, ease((t - BACK_AT) / BACK)) end
-		return group:Lerp(drift, ease((t - BACK_AT - BACK) / (leave - arrive - BACK_AT - BACK)))
-	end
+	-- The camera while it holds, `t` seconds after arriving: on all three, pushing in slowly.
+	local function holdAt(t) return group:Lerp(drift, ease(t / (leave - arrive))) end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
 		-- The camera as the game would show it this frame (your plane or hangar view); if nothing moved it, where it was.

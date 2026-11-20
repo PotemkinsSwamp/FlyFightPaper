@@ -36,6 +36,9 @@
           },
           "SpeedBolt": {
             "$path": "assets/models/toys/speed-bolt/speed-bolt.rbxmx"
+          },
+          "WinnerBooks": {
+            "$path": "assets/models/toys/winner-books/winner-books.rbxm"
           }
         }
       }
