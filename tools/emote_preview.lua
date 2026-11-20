@@ -269,13 +269,36 @@ do
 	local _, slip = (GRIP_FROM:Inverse() * GRIP):ToAxisAngle()
 	E.slip = math.deg(slip) -- how far the grip shifts in the hand: small, or the arm is not doing the turning
 end
-local function held(hand, turn) return CFrame.new(hand) * turn * CFrame.new(0, length * 0.06, -length * 0.15) end
+-- The plane on the hand, turned `turn`, for the pose `at`: held by its back half, so it reaches out past the fingers
+-- and away from the forearm, and resting on the hand, never in it (Alan 2026-11-20: it sank into the hand): lifted
+-- until its underside clears every bit of the hand and wrist that lies under it. `belly`: from the plane's middle
+-- down to its underside (BELLY of the way to its lowest point: what hangs under the wings may touch the fingers; with
+-- all of it the plane floated over the hand).
+local BELLY, belly = 0.6, nil
+do
+	local box, size = plane:GetBoundingBox()
+	belly = BELLY * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y)
+end
+local function held(at, turn)
+	local under = CFrame.new((rootAt * at.RightHand).Position) * turn * CFrame.new(0, 0, -length * 0.3)
+	local top = 0
+	for _, name in { "RightHand", "RightLowerArm" } do
+		local part = kid:FindFirstChild(name)
+		for i = 0, name == "RightHand" and 19 or 7 do -- the hand's corners and three more rings along it; the forearm's wrist end
+			local corner = rootAt * at[name] * (part.Size * Vector3.new(i % 2 - 0.5, (i // 4) / 4 - 0.5, (i // 2) % 2 - 0.5))
+			local seen = under:PointToObjectSpace(corner)
+			if math.abs(seen.X) < span / 2 and math.abs(seen.Z) < length / 2 then top = math.max(top, seen.Y) end
+		end
+	end
+	return under * CFrame.new(0, top + belly, 0)
+end
 local function smooth(v) v = math.clamp(v, 0, 1); return v * v * (3 - 2 * v) end
 local function inHand(t)
-	local grip = rootAt * pose(t).RightHand
+	local at = pose(t)
+	local grip = rootAt * at.RightHand
 	local level = (CFrame.lookAt(grip.Position, eye) * HOLD).Rotation
 	local gripNow = GRIP_FROM:Lerp(GRIP, smooth((t - TURN_FROM) / (TURN_TO - TURN_FROM)))
-	return held(grip.Position, (grip.Rotation * gripNow):Lerp(level, smooth((t - ADMIRED) / (READY - ADMIRED))))
+	return held(at, (grip.Rotation * gripNow):Lerp(level, smooth((t - ADMIRED) / (READY - ADMIRED))))
 end
 
 function E.frame(t)
@@ -317,8 +340,7 @@ function E.try(t, replaced, planeTurn, out, side, up)
 		local part = kid:FindFirstChild(name)
 		if part then part.CFrame = rootAt * cf end
 	end
-	local hand = rootAt * at.RightHand
-	plane:PivotTo(held(hand.Position, rootAt.Rotation * planeTurn))
+	plane:PivotTo(held(at, rootAt.Rotation * planeTurn))
 	local from = spot + back * out + back:Cross(Vector3.yAxis) * side + Vector3.yAxis * up
 	camera.CameraType, camera.FieldOfView = Enum.CameraType.Scriptable, FOV
 	camera.CFrame = CFrame.lookAt(from, spot + Vector3.yAxis * 95)

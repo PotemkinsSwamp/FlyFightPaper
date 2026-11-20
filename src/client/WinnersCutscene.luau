@@ -315,7 +315,10 @@ local function holdPlane(model, actorId, height)
 	height = height or model:GetScale() * 5 -- an R15 avatar is about 5 studs tall at scale 1
 	plane:ScaleTo(plane:GetScale() * height * PLANE_LENGTH / plane:GetExtentsSize().Z)
 	plane.Name = "HeldPlane"
-	return { plane = plane, hand = hand, length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X, last = hand.Position, heading = model:GetPivot().LookVector }
+	local box, size = plane:GetBoundingBox()
+	return { plane = plane, hand = hand, arm = model:FindFirstChild("RightLowerArm"), length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X,
+		belly = 0.6 * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), -- from its middle down to its underside (see flickPlane)
+		last = hand.Position, heading = model:GetPivot().LookVector }
 end
 local function flyPlane(w)
 	local prop = w.prop
@@ -378,7 +381,21 @@ local function flickPlane(w, t, view, steady, height)
 		local level = (CFrame.lookAt(hand, steady.Position) * flick.hold).Rotation
 		local grip = (flick.gripFrom or flick.grip):Lerp(flick.grip, ease((t - flick.turnFrom) / math.max(flick.turnTo - flick.turnFrom, 0.01)))
 		local turn = (prop.hand.CFrame.Rotation * grip):Lerp(level, ease((t - flick.admired) / math.max(flick.ready - flick.admired, 0.01)))
-		prop.held = CFrame.new(hand) * turn * CFrame.new(0, prop.length * 0.06, -prop.length * 0.15) -- the hand under its body
+		-- Held by its back half, so it reaches out past the fingers and away from the forearm, and resting on the
+		-- hand, never in it (Alan 2026-11-20: it sank into the hand, on every avatar): lifted until its underside
+		-- clears every bit of this avatar's own hand and wrist that lies under it (the hand's corners and three more
+		-- rings along it; the forearm's wrist end). Its underside is 0.6 of the way to its lowest point: what hangs
+		-- under the wings may touch the fingers; with all of it the plane floated over the hand.
+		local under = CFrame.new(hand) * turn * CFrame.new(0, 0, -prop.length * 0.3)
+		local top = 0
+		for _, part in { prop.hand, prop.arm } do
+			for i = 0, part == prop.hand and 19 or 7 do
+				local corner = part.CFrame * (part.Size * Vector3.new(i % 2 - 0.5, (i // 4) / 4 - 0.5, (i // 2) % 2 - 0.5))
+				local seen = under:PointToObjectSpace(w.spot + (corner - w.spot) * w.scale)
+				if math.abs(seen.X) < prop.span / 2 and math.abs(seen.Z) < prop.length / 2 then top = math.max(top, seen.Y) end
+			end
+		end
+		prop.held = under * CFrame.new(0, top + prop.belly, 0)
 		prop.plane:PivotTo(prop.held)
 	elseif t < flick.release + FLICK_FLIGHT then
 		local s = 1 - (1 - (t - flick.release) / FLICK_FLIGHT) ^ 2

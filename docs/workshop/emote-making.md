@@ -196,5 +196,15 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   (a single fixed grip pointed it up at the chin at the start).
 - Lesson: **when words fail, show choices of the real model, numbered.** One sheet of stills settled what three
   rounds of description had not.
+- **Alan on the picked arm, in Play (2026-11-20): "now he's holding it correctly and throwing it correctly"**, but
+  the plane sinks into the hand and arm, on other avatars too.
+- **The plane rests on the hand, on any avatar.** It was placed from the hand's middle, so it sat inside the hand.
+  Now it is lifted along its own up direction until its underside clears every corner of that avatar's own hand
+  and wrist that lies under it (`flickPlane` in `WinnersCutscene`, `held` in the preview tool), so thick or thin
+  hands both get a plane that touches and never enters. Two things had to give or it floated: only the hand and
+  the wrist end of the forearm count (with the whole forearm the plane hovered away from the fist), and the
+  underside is 0.6 of the way to the plane's lowest point (what hangs under the wings may touch the fingers). It is
+  held by its back half, 0.3 of its length ahead of the hand, so it reaches out past the fingers. Not handled: the
+  plane's tip against the chest or chin.
 
 Back to [HOME](../HOME.md).
