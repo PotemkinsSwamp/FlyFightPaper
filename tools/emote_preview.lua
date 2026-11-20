@@ -3,9 +3,15 @@
 -- the camera moved by the emote's recipe; tools/emote_preview.py calls _G.EMOTE.frame(t) and captures each frame.
 -- Run in Studio's Edit. It is a preview: the body is worked out from the keyframes (extra bones passed down to the
 -- next real part) on a plain blocky body, so how Roblox fits the clip to a real avatar is still only proven in Play.
--- The recipe below is Camera Flick (version B): clip, release and flight times, the plane's path, the camera's fall.
-local CLIP = "rbxassetid://115470516293954"
-local RELEASE, FLIGHT = 0.87, 0.42 -- the plane leaves the hand; how long it flies to the lens
+-- The recipe below is Camera Flick: the clips, release and flight times, the plane's path, the camera's fall.
+local CLIP = "rbxassetid://115470516293954" -- the throw (version B)
+-- Before the throw (Alan 2026-11-19: it came too soon): the kid looks down and admires the plane, then looks up at
+-- the camera (admire version A). In the admire clip's own seconds: the look down, until SLOW_TO, plays SLOW times
+-- slower; the clip is used up to ADMIRE_END; the throw then blends in over BLEND seconds.
+local ADMIRE = "rbxassetid://95093448348238"
+local SLOW_TO, SLOW, ADMIRE_END, BLEND = 1.3, 1.5, 2.3, 0.25
+local JOIN = SLOW_TO * SLOW + ADMIRE_END - SLOW_TO -- when the throw starts
+local RELEASE, FLIGHT = JOIN + 0.87, 0.42 -- the plane leaves the hand; how long it flies to the lens
 local HEIGHT = 140 -- every avatar stands this tall in the room (config avatar_display.standing_height_studs)
 local FOV = 50
 -- Facing the camera: the generator's throw swings the hips 60 degrees away in the wind-up and the chest and head go
@@ -45,11 +51,8 @@ for _, d in kid:GetDescendants() do
 end
 
 -- Each part's CFrame in the root's frame for one keyframe (tools/emote_check.lua's walk), the hips kept over the spot.
-local clip = game:GetService("KeyframeSequenceProvider"):GetKeyframeSequenceAsync(CLIP)
-local keys = clip:GetKeyframes()
-table.sort(keys, function(a, b) return a.Time < b.Time end)
 local hips0
-local function placed(keyframe)
+local function placed(keyframe, fix)
 	local done = { HumanoidRootPart = CFrame.identity }
 	local function walk(pose, carried)
 		for _, child in pose:GetChildren() do
@@ -62,7 +65,7 @@ local function placed(keyframe)
 					at = Vector3.new(hips0.X, at.Y, hips0.Z) -- clean-up: no stepping off the desk
 				end
 				local cf = done[joint.parent] * joint.c0 * carried * (CFrame.new(at) * child.CFrame.Rotation) * joint.c1:Inverse()
-				local keep = FACING[child.Name]
+				local keep = fix and FACING[child.Name]
 				if keep then -- clean-up: turned back towards the lens about its own joint (the waist, the neck)
 					local hinge, facing = (done[joint.parent] * joint.c0).Position, cf.LookVector
 					cf = CFrame.new(hinge) * CFrame.Angles(0, (keep - 1) * math.atan2(-facing.X, -facing.Z), 0) * CFrame.new(-hinge) * cf
@@ -77,20 +80,65 @@ local function placed(keyframe)
 	for _, top in keyframe:GetChildren() do if top:IsA("Pose") then walk(top, CFrame.identity) end end
 	return done
 end
-local track = {}
-for i, key in keys do track[i] = { t = key.Time, at = placed(key) } end
-local function pose(t)
-	local i = 1
-	while i < #track - 1 and track[i + 1].t <= t do i += 1 end
-	local a, b = track[i], track[math.min(i + 1, #track)]
-	local s = b.t > a.t and math.clamp((t - a.t) / (b.t - a.t), 0, 1) or 0
+-- A pose as each joint's own turn (what an animation stores), so two clips blend without pulling the body apart.
+local order = {} -- the parts, parents first
+do
+	local seen, added = { HumanoidRootPart = true }, true
+	while added do
+		added = false
+		for name, joint in joints do
+			if not seen[name] and seen[joint.parent] then seen[name], added = true, true; table.insert(order, name) end
+		end
+	end
+end
+local function turns(at)
 	local out = {}
-	for name, cf in a.at do out[name] = cf:Lerp(b.at[name] or cf, s) end
+	for _, name in order do
+		local joint = joints[name]
+		if at[name] and at[joint.parent] then out[name] = (at[joint.parent] * joint.c0):Inverse() * at[name] * joint.c1 end
+	end
 	return out
 end
+local function build(turn)
+	local at = { HumanoidRootPart = CFrame.identity }
+	for _, name in order do
+		local joint = joints[name]
+		if turn[name] and at[joint.parent] then at[name] = at[joint.parent] * joint.c0 * turn[name] * joint.c1:Inverse() end
+	end
+	return at
+end
+local function load(id, fix)
+	local keys = game:GetService("KeyframeSequenceProvider"):GetKeyframeSequenceAsync(id):GetKeyframes()
+	table.sort(keys, function(a, b) return a.Time < b.Time end)
+	local list = {}
+	for i, key in keys do list[i] = { t = key.Time, turn = turns(placed(key, fix)) } end
+	return list
+end
+local function sample(list, t)
+	local i = 1
+	while i < #list - 1 and list[i + 1].t <= t do i += 1 end
+	local a, b = list[i], list[math.min(i + 1, #list)]
+	local s = b.t > a.t and math.clamp((t - a.t) / (b.t - a.t), 0, 1) or 0
+	local out = {}
+	for name, cf in a.turn do out[name] = cf:Lerp(b.turn[name] or cf, s) end
+	return out
+end
+local admire, throw = load(ADMIRE, false), load(CLIP, true) -- the admire keeps its own look at the plane
+local LENGTH = JOIN + throw[#throw].t
+local function turnsAt(t)
+	local a = sample(admire, math.min(t < SLOW_TO * SLOW and t / SLOW or t - SLOW_TO * (SLOW - 1), ADMIRE_END))
+	if t <= JOIN then return a end
+	local b = sample(throw, t - JOIN)
+	local s = math.clamp((t - JOIN) / BLEND, 0, 1)
+	s = s * s * (3 - 2 * s)
+	local out = {}
+	for name, cf in b do out[name] = (a[name] or cf):Lerp(cf, s) end
+	return out
+end
+local function pose(t) return build(turnsAt(t)) end
 -- Feet on the desk: the root's height from the lowest foot over the whole clip's first pose.
 local low = math.huge
-for name, cf in track[1].at do
+for name, cf in pose(0) do
 	local part = kid:FindFirstChild(name)
 	if part then low = math.min(low, cf.Position.Y - part.Size.Y / 2) end
 end
@@ -174,7 +222,8 @@ function E.frame(t)
 	local hand = (rootAt * at.RightHand).Position
 	if t < RELEASE then -- in the hand, nose at the camera, tipped up while it is drawn back
 		local nose = (CFrame.lookAt(hand, eye) * CFrame.Angles(math.rad(30), math.rad(-35), 0)).LookVector -- up and askew, so its shape shows
-		plane:PivotTo(CFrame.lookAt(hand + nose * length * 0.2, hand + nose * (length * 0.2 + 1)))
+		local turned = math.rad(14) * math.sin(math.clamp(t, 0, JOIN) / JOIN * math.pi * 3) -- turned over a little while it is admired
+		plane:PivotTo(CFrame.lookAt(hand + nose * length * 0.2, hand + nose * (length * 0.2 + 1)) * CFrame.Angles(0, 0, turned))
 	elseif t < HIT then -- flying at the lens, turning flat as it arrives
 		local s = 1 - (1 - (t - RELEASE) / FLIGHT) ^ 2 -- fast off the hand, slower as it fills the picture, so the approach is seen
 		local from = (rootAt * pose(RELEASE).RightHand).Position
@@ -199,25 +248,25 @@ end
 function E.bake(parent, name)
 	local out = Instance.new("KeyframeSequence")
 	out.Name, out.Loop, out.Priority = name, false, Enum.AnimationPriority.Action
-	for _, key in track do
+	out:SetAttribute("Release", RELEASE) -- the scene throws the plane at this moment
+	for n = 0, math.floor(LENGTH * 30 + 0.5) do
 		local frame = Instance.new("Keyframe")
-		frame.Time = key.t
+		frame.Time = n / 30
+		local turn = turnsAt(n / 30)
 		local poses = { HumanoidRootPart = Instance.new("Pose") }
 		poses.HumanoidRootPart.Name, poses.HumanoidRootPart.Parent = "HumanoidRootPart", frame
 		local function add(part)
 			if poses[part] then return poses[part] end
-			local joint = joints[part]
-			local turn = (key.at[joint.parent] * joint.c0):Inverse() * key.at[part] * joint.c1
 			local made = Instance.new("Pose")
-			made.Name, made.CFrame, made.Parent = part, turn.Rotation + turn.Position / scale, add(joint.parent)
+			made.Name, made.CFrame, made.Parent = part, turn[part].Rotation + turn[part].Position / scale, add(joints[part].parent)
 			poses[part] = made
 			return made
 		end
-		for part in key.at do if joints[part] then add(part) end end
+		for part in turn do add(part) end
 		frame.Parent = out
 	end
 	out.Parent = parent
-	return string.format("baked %s: %d keys, %.2f s", name, #track, track[#track].t)
+	return string.format("baked %s: %.2f s, release at %.2f s", name, LENGTH, RELEASE)
 end
 function E.clean()
 	kid:Destroy()
@@ -230,4 +279,4 @@ function E.clean()
 end
 local names = {}
 for name in E.hid or {} do table.insert(names, name) end
-return string.format("ready: %d keys, %.2f s, kid scale %.1f, plane %.0f long %.0f wide; hid %s", #track, track[#track].t, scale, length, span, table.concat(names, ", "))
+return string.format("ready: %.2f s, release at %.2f s, kid scale %.1f, plane %.0f long %.0f wide; hid %s", LENGTH, RELEASE, scale, length, span, table.concat(names, ", "))

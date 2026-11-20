@@ -121,5 +121,23 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
 - Alan ran it in Play (2026-11-19): **the throw comes too soon.** Something has to happen first: the kid looks down
   and smugly admires the plane, then looks at the camera and throws. Next: an "admire" body move in front of the
   approved throw (the throw itself stays as it is), three generator wordings, on his go for the uploads.
+- **The admire move (2026-11-19, Alan's go for three uploads).** Wordings, 3 s each, and what came back (head pitch
+  from the keyframes; the right hand against the chest):
+
+| Version | Uploaded id | Wording | Looks down | Hand | Feet |
+|---|---|---|---|---|---|
+| **A (picked)** | `rbxassetid://95093448348238` | "Standing still, the character holds a paper airplane in the right hand in front of the chest and looks down at it, admiring it with a slow proud nod, then lifts the head and looks straight ahead with the chest out, still holding the hand up." | **45 degrees, towards the hand, until 1.3 s; level by 1.8 s** | at the chest, then raised beside the shoulder and held | 0.35 |
+| B | `rbxassetid://93644793034896` | "A smug kid holds up a small toy in the right hand at chest height, looks down at it and turns it slowly from side to side to admire it, then looks up straight ahead with a confident tilt of the head." | 8 degrees: not a look | at the chest, still | 0.16 |
+| C | `rbxassetid://97937045114234` | "Standing with the left hand on the hip, the character raises the right hand to chest height holding a small object, tilts the head down to look at it smugly for a moment, nods once, then raises the head to look straight forward." | 5 degrees | up for half a second, then back at the side | 0.74 |
+
+  Wording lesson: "holds ... in front of the chest and looks down at it" gave a real look; "a smug kid", "smugly"
+  and "turns it slowly" gave almost nothing. Describe where the head and hand go, not the mood.
+- **Joining two clips** (`tools/emote_preview.lua`): each pose is kept as every joint's own turn, so the blend
+  cannot pull the body apart. The admire's look down plays 1.5 times slower (1.95 s), its look up and raised hand
+  follow (to 2.95 s), then the throw blends in over 0.25 s from its own start (its first pose has the hand out at
+  chest height, close to the admire's last). The plane leaves the hand at 3.82 s; the clip is 5.9 s. The bake writes
+  that moment on the clip ("Release") and the scene reads it, so the plane and camera follow whatever the clip is.
+  The plane turns over a little in the hand while it is admired. Numbers of the joined clip: head 45 degrees down
+  until 2.0 s, level at 2.3 s; hips wander 0.06, a foot 0.44. Not yet seen moving by anyone.
 
 Back to [HOME](../HOME.md).
