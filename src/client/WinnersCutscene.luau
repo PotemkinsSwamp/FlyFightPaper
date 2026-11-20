@@ -35,7 +35,7 @@ local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room 
 -- frame: wide enough that SIDE_ROOM fits beside the outside winners (body, arms and the whole plate: Alan 2026-10-18),
 -- from GROUP_EYE over the desk top looking GROUP_TILT degrees down at them. One steady shot of all three: the zoom
 -- in on 1st is gone (Alan 2026-11-19: they kept coming out of frame). Sizes in winner heights.
-local SHOT_FOV, PUSH_IN, SIDE_ROOM = 50, 0.04, 1.2
+local SHOT_FOV, PUSH_IN, SIDE_ROOM = 50, 0.04, 1.7 -- 1.2 left 2nd and 3rd right on the border of the view (Alan 2026-11-20)
 local GROUP_TILT, GROUP_EYE = 8, 1.6
 -- How far forward of the middle of their desk 1st and the others stand (shares of the desk depth): 1st a touch in
 -- front. (At 0.32 and 0.22 the books stood on the desk's front edge and the light hung over it: Alan 2026-11-20.)
