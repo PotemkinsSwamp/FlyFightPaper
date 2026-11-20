@@ -26,9 +26,10 @@ local CUTS = {}
 -- the body alive underneath. (Version C's generated claps read as crossed arms and its wave as an arm held out
 -- sideways: reviewer 2026-11-20.) Three small claps in front of the chest: the upper arms a little forward and
 -- turned in, the elbows bent, the turn-in opening and closing the hands; then the left arm drops and the right
--- upper arm goes out level, its forearm standing up and rocking WAVES times in a second; the arm comes down; a nod;
--- the hands come back up.
-local CLAP_FORWARD, CLAP_BEND, CLAP_OPEN, CLAP_SHUT, WAVES, NOD = 18, 80, 36, 57, 2.5, 26
+-- hand comes up beside the face, elbow kept in front of the body, and the upper arm turns out and in WAVES times in
+-- a second (an arm held out level with the forearm upright went out sideways on its way up and crowded the head:
+-- reviewer); the arm comes down; a nod; the hands come back up.
+local CLAP_FORWARD, CLAP_BEND, CLAP_OPEN, CLAP_SHUT, WAVES, NOD = 10, 70, 28, 62, 3, 26
 local function arm(side, upper, lower) -- side: 1 the right arm, -1 the left (mirrored)
 	local x, y, z = upper:ToEulerAnglesXYZ()
 	return CFrame.Angles(x, y * side, z * side), lower
@@ -41,7 +42,7 @@ local function arms(right, left, head)
 end
 local REST = { CFrame.Angles(0, 0, math.rad(5)), CFrame.Angles(math.rad(10), 0, 0) }
 local function clap(turnIn) return { CFrame.Angles(math.rad(CLAP_FORWARD), 0, 0) * CFrame.Angles(0, math.rad(turnIn), 0), CFrame.Angles(math.rad(CLAP_BEND), 0, 0) } end
-local function wave(s) return { CFrame.Angles(0, 0, math.rad(100)) * CFrame.Angles(0, math.rad(90), 0), CFrame.Angles(math.rad(-100 + 26 * math.sin(s * WAVES * 2 * math.pi)), 0, 0) } end
+local function wave(s) return { CFrame.Angles(math.rad(55), 0, 0) * CFrame.Angles(0, math.rad(-18 + 23 * math.sin(s * WAVES * 2 * math.pi)), 0), CFrame.Angles(math.rad(125), 0, 0) } end
 CUTS.GoodGame = { length = 4.5, clips = {}, pose = function(t)
 	local open = clap(CLAP_OPEN)
 	if t < 1.5 then -- shut at 0.25, 0.75 and 1.25 s

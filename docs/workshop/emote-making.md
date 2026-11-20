@@ -298,14 +298,19 @@ numbers. A reviewer failed it: the claps read as crossed arms or a self-hug, the
 loop's two ends, and hands cut into the torso on the way down. Second cut, now in: **only the arms and the head
 are posed, all by numbers; the clip leaves every other part alone** (poses with weight 0), so Roblox's standing
 idle keeps the body alive underneath and the loop cannot jump.
-- Claps (0 to 1.5 s, shut at 0.25, 0.75 and 1.25): upper arms 18 degrees forward and turned in 36 (open) to 57
-  (shut), elbows bent 80, so the hands meet in front of the chest without crossing. Wave (1.95 to 2.95): the left
-  arm hangs, the right upper arm out level, its forearm upright, rocking 2.5 times. Arm down, a 26-degree nod
-  (3.4 to 4.0), hands back up.
+- Claps (0 to 1.5 s, shut at 0.25, 0.75 and 1.25): upper arms 10 degrees forward and turned in 28 (open) to 62
+  (shut), elbows bent 70, so the hands meet in front of the lower chest without crossing. Wave (1.95 to 2.95): the
+  left arm hangs; the right hand comes up beside the face with the elbow kept in front of the body (upper arm 55
+  forward, elbow bent 125) and the upper arm turns out and in three times. Arm down, a 26-degree nod (3.4 to
+  4.0), hands back up.
+- A second reviewer pass (on the cut before this one) passed it with fixes: the wave arm, then held out level
+  with the forearm upright, stuck out sideways on its way up and crowded the head; the claps sat at chin height.
+  Both are changed as above and not reviewed again. Left as they are: the arms hang still during the nod, and
+  the chin dips into the collar on the blocky test body.
 - Arm by numbers, in joint turns: `Angles(forward, 0, 0) * Angles(0, turnedIn, 0)` for the upper arm and
-  `Angles(bend, 0, 0)` for the forearm; for the wave `Angles(0, 0, out) * Angles(0, 90 degrees, 0)` (out from the
-  side, then turned about its own length so the elbow bends upwards) with a negative bend. The left arm is the
-  mirror: the Y and Z angles change sign.
+  `Angles(bend, 0, 0)` for the forearm (positive bends the forearm forward and up; a negative turn-in turns the
+  arm out). The left arm is the mirror: the Y and Z angles change sign. Work the hand's place out by numbers
+  first (a few lines over the rig's joints) and pick the angles from that, before rendering anything.
 - The plan says never to type in a body move (October's arm-only test looked lifeless). This is arms over a live
   idle, not a whole body; whether it looks alive is for Alan's eye in Play.
 - Baked and saved in one go: `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua
