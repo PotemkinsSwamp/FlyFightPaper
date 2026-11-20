@@ -1010,3 +1010,11 @@ Back to [HOME](../HOME.md)
 - To check a reported menu flash, count removal of the book, stats sheet and card under the pointer while selecting. The previous Hangar destroyed all three on every click even when the camera's per-frame probe caught no empty frame. Hold a press across a profile refresh as well as checking quick clicks.
 
 - Check preview orientation against the paper and the actual nose and exhaust on a screenshot. A camera looking downward verified the previous angle but missed that the plane pointed to the bottom of the page.
+
+## Lighting one thing in a dark room (winners' spotlights, 2026-11-19)
+- **Real lamps don't work at this game's size.** A Roblox light reaches 60 studs; a winner stands 140 tall and the group shot is hundreds of studs away. From there the lamps were not drawn at all, came on seconds late as the camera closed in, and burnt out white close up. Turning the room's 300 other lamps off changed nothing.
+- **A dark overlay on the whole room (one Highlight on the Arena) looks muddy and cost a quarter of the frame rate.**
+- **What works: darken the room with its own Lighting and draw the lit thing in its own layer.** A full-screen ViewportFrame whose camera copies the scene's camera each frame; avatars (layered clothing too) and their animations show in it, lit by the layer's own Ambient and LightColor. Dark-then-lit is the layer's ImageColor3 (dark Ambient alone left pale ghosts). A layer shows through everything, so fade it out before the camera turns away.
+- **Put the avatar back to scale 1 inside the layer** and bring the layer's camera in by the same factor about the avatar's feet: the picture is the same and Roblox no longer doubles the hip movement of a scaled-up avatar (no per-frame hip fix needed).
+- **Haze turns far dark walls into bright sky**, and `Options.applyQuality` puts the Atmosphere's density back every few seconds (the menu re-reads the profile). Take the Atmosphere out of Lighting while dark; put it back after.
+- **A scripted cut from one marker to another can swallow code in between** (the scene's helper functions went missing and it still compiled: a missing local function is only a nil at run time). After a scripted cut, list the file's functions and compare.
