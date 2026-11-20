@@ -179,5 +179,22 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   the move on video. Roblox's video-to-animation tool (Studio beta "Live Animation Creator": Avatar tab > Clip
   Editor > the three-dot button > Import > Live Animation Creator; one person, one steady shot under 15 s, .mp4 or
   .mov; [docs](https://create.roblox.com/docs/animation/capture)) can turn that video straight into the body move.
+- **No video or photos of Alan, for an AI or for Roblox (his word, 2026-11-20).** So the video-to-animation tool is
+  out with him as the subject. What worked instead: **numbered stills to point at.** `_G.EMOTE.try` in
+  `tools/emote_preview.lua` poses the test kid with chosen joint turns and plane; six stills of the starting pose
+  (hand low, middle, high; the plane's top or bottom towards the kid's eyes;
+  `.planning/emotes/flick-start-pose-choices.jpg`) got an answer in one message: number 2's hand height, but
+  starting on the bottom, "his elbow tucked inwards into his side ... then he turns his elbow outwards, then
+  forward, and now he's looking at the top of the plane. Then he looks at the camera, winds back, and throws it."
+  No roll back.
+- **Built to that** (the emote's seconds): elbow tucked, hand and plane in front of the chest, head 14 degrees
+  down, bottom view to 1.2; elbow out then forward while the forearm rolls right over, to 2.8; top view held to
+  4.0; head up to the camera by 4.6; wind back 0.6 s; push; release at 5.30 s; the clip is 5.8 s. The right arm and
+  the head are now posed by numbers in the tool (the generated admire clip only gives the rest of the body, almost
+  standing still): a directed move with stops is what Alan asked for, and the generator could not be steered to
+  it. The plane lies level at both ends of the turn; for that its grip shifts 51 degrees in the fingers on the way
+  (a single fixed grip pointed it up at the chin at the start).
+- Lesson: **when words fail, show choices of the real model, numbered.** One sheet of stills settled what three
+  rounds of description had not.
 
 Back to [HOME](../HOME.md).

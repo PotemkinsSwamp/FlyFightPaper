@@ -333,7 +333,8 @@ end
 -- their plane at the camera; it fills the picture, the camera is knocked back, tips over forward, and the plane
 -- slides down the lens; the scene moves on from there. First they look down and admire the plane, then up at the
 -- camera (Alan 2026-11-19: the throw came too soon). The clip carries its own times, in seconds after 1st's light,
--- and grip: until "Admired" the plane is fixed to the hand ("Grip": along the forearm), so the hand turns it over; by
+-- and grip: until "Admired" the plane goes with the hand, so the arm turns it over (its grip in the fingers shifts a
+-- little from "GripFrom" to "Grip" between "TurnFrom" and "TurnTo", so it lies level at both ends of the turn); by
 -- "Ready" it is held like a paper plane, its nose towards the camera ("Hold": a little up and askew, so its shape
 -- shows); at "Release" it leaves the hand and
 -- flies FLICK_FLIGHT to the lens; the camera's fall takes FLICK_FALL; the scene leaves FLICK_AFTER after the release.
@@ -346,6 +347,7 @@ local function flickClip()
 	if not clip then return nil end
 	return game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip), { release = clip:GetAttribute("Release") or 0.87,
 		admired = clip:GetAttribute("Admired") or 0, ready = clip:GetAttribute("Ready") or 0.1, grip = clip:GetAttribute("Grip") or CFrame.identity,
+		gripFrom = clip:GetAttribute("GripFrom"), turnFrom = clip:GetAttribute("TurnFrom") or 0, turnTo = clip:GetAttribute("TurnTo") or 0.1,
 		hold = clip:GetAttribute("Hold") or CFrame.identity }
 end
 local function bounce(v)
@@ -374,7 +376,8 @@ local function flickPlane(w, t, view, steady, height)
 	if t < flick.release or not prop.held then
 		local hand = w.spot + (prop.hand.Position - w.spot) * w.scale -- the winner's layer is `scale` times smaller
 		local level = (CFrame.lookAt(hand, steady.Position) * flick.hold).Rotation
-		local turn = (prop.hand.CFrame.Rotation * flick.grip):Lerp(level, ease((t - flick.admired) / math.max(flick.ready - flick.admired, 0.01)))
+		local grip = (flick.gripFrom or flick.grip):Lerp(flick.grip, ease((t - flick.turnFrom) / math.max(flick.turnTo - flick.turnFrom, 0.01)))
+		local turn = (prop.hand.CFrame.Rotation * grip):Lerp(level, ease((t - flick.admired) / math.max(flick.ready - flick.admired, 0.01)))
 		prop.held = CFrame.new(hand) * turn * CFrame.new(0, prop.length * 0.06, -prop.length * 0.15) -- the hand under its body
 		prop.plane:PivotTo(prop.held)
 	elseif t < flick.release + FLICK_FLIGHT then

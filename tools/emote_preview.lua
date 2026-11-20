@@ -12,29 +12,30 @@
 -- on the way: a reviewer still read an overarm throw.) Only its chest, arms and head are used: the legs and hips
 -- stay as the admire left them (the clip crouches wide and steps; the winner stands on a stack of books).
 local CLIP = "rbxassetid://87115043025421"
-local PULL_AT, PUSH_AT, PULL_TIME, PUSH_TIME, LET_GO = 2.0, 2.5, 0.55, 0.16, 0.6
+local PULL_AT, PUSH_AT, PULL_TIME, PUSH_TIME, LET_GO = 2.0, 2.5, 0.6, 0.16, 0.6
 local LEGS = { "LowerTorso", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }
--- Before the throw (Alan 2026-11-19: it came too soon): the kid looks down and admires the plane, then looks up at
--- the camera (admire version A). Smug means slow and unrushed (Alan 2026-11-20: a quick back-and-forth read as
--- hurried). His order, in the emote's seconds (TURNS): they start looking at the plane's bottom; the forearm slowly
--- rolls it over to its top while the arm comes in closer; it stops there a second; rolls back to the bottom; then
--- the head comes up to the camera and the arm winds back and throws. The admire clip gives the body: its look down
--- (to LOOKED in its own seconds), then almost standing still (to SLOW_TO) for as long as the turning takes, then its
--- look up and raised hand at its own speed (to ADMIRE_END).
+-- Before the throw (Alan 2026-11-19: it came too soon): the kid admires the plane, then looks at the camera. Smug
+-- means slow and unrushed (Alan 2026-11-20). The right arm and the head are posed to his order, picked from numbered
+-- stills (2026-11-20): they start with the elbow tucked into the side, the hand and plane up in front of the chest,
+-- looking only slightly down at the plane's BOTTOM; from TURN_FROM to TURN_TO the elbow goes out and then forward
+-- while the forearm rolls right over, so they now look at its TOP; that is held; at LOOK_UP the head comes up to the
+-- camera; at JOIN the arm winds back and throws. The rest of the body is the admire clip (version A) almost standing
+-- still (its own seconds LOOKED to SLOW_TO), then its look up (to ADMIRE_END).
 local ADMIRE = "rbxassetid://95093448348238"
-local LOOKED, SLOW_TO, ADMIRE_END = 0.9, 1.3, 2.3
--- { second, how far over: 0 the bottom towards the face, 1 the top }, eased from one to the next.
-local TURNS = { { 0, 0 }, { 1.0, 0 }, { 2.5, 1 }, { 3.5, 1 }, { 4.7, 0 }, { 5.0, 0 } }
-local ADMIRED = TURNS[#TURNS][1]
-local JOIN = ADMIRED + ADMIRE_END - SLOW_TO -- when the throw starts
+local LOOKED, SLOW_TO, ADMIRE_END = 0.9, 1.3, 1.9
+local TURN_FROM, TURN_TO, LOOK_UP = 1.2, 2.8, 4.0
+local JOIN = LOOK_UP + ADMIRE_END - SLOW_TO -- when the arm winds back
 local RELEASE, FLIGHT = JOIN + PULL_TIME + PUSH_TIME * LET_GO, 0.42 -- the plane leaves the hand; how long it flies to the lens
--- The plane in the hand (Alan 2026-11-19: it turned by itself in a still hand). While it is admired, until ADMIRED,
--- it is fixed to the hand, along the forearm, and the forearm rolls it over (ROLL degrees from top to bottom) while
--- the elbow bends DRAW degrees more to bring it closer and the head tips TILT with it. Then, by READY, it comes to
--- how a paper plane is held to throw: the hand under it, its nose towards the camera, a little up, askew and banked
--- (HOLD: straight at the lens it is a dot).
-local READY = ADMIRED + 0.65
-local ROLL, DRAW, TILT = 180, 16, 6
+-- The arm, in degrees, at the start and after the turn: the elbow out from the side (OUT_MID more on the way: out
+-- first, then forward), the upper arm forward, turned in across the body, the elbow's bend; the forearm's roll
+-- (ROLL at the start, none after). The head: HEAD_DOWN and a little towards the hand, tipping TILT with the turn.
+local OUT, OUT_MID, FORWARD, INWARD, BEND = { 0, 14 }, 12, { 6, 22 }, { 55, 42 }, { 118, 100 }
+local ROLL, HEAD_DOWN, TILT = 180, 14, 5
+-- The plane in the hand (Alan 2026-11-19: it turned by itself in a still hand): it goes with the hand until JOIN, so
+-- the arm turns it over (it lies level, nose to the kid's left and away, at both ends of the turn: the grip shifts a
+-- little in the fingers on the way, GRIP_FROM to GRIP). Then, by READY, it comes to how a paper plane is held to throw: the hand under it, its nose
+-- towards the camera, a little up, askew and banked (HOLD: straight at the lens it is a dot).
+local ADMIRED, READY = JOIN, JOIN + 0.5
 local HOLD = CFrame.Angles(math.rad(12), math.rad(-15), 0) * CFrame.Angles(0, 0, math.rad(-22))
 local HEIGHT = 140 -- every avatar stands this tall in the room (config avatar_display.standing_height_studs)
 local FOV = 50
@@ -162,23 +163,16 @@ local function mix(a, b, s)
 	return out
 end
 local function eased(v) v = math.clamp(v, 0, 1); return v * v * (3 - 2 * v) end
--- How far the plane is turned over at `t`: 0 the bottom towards the face, 1 the top (TURNS; the top again as the
--- arm goes up to throw).
-local function over(t)
-	if t >= ADMIRED then return eased((t - ADMIRED) / (READY - ADMIRED)) end
-	for i = #TURNS - 1, 1, -1 do
-		local a, b = TURNS[i], TURNS[i + 1]
-		if t >= a[1] then return a[2] + (b[2] - a[2]) * eased((t - a[1]) / (b[1] - a[1])) end
-	end
-	return TURNS[1][2]
-end
 local function turnsAt(t)
-	local clipTime = if t < LOOKED then t elseif t < ADMIRED then LOOKED + (t - LOOKED) / (ADMIRED - LOOKED) * (SLOW_TO - LOOKED) else SLOW_TO + t - ADMIRED
+	local clipTime = if t < LOOK_UP then LOOKED + t / LOOK_UP * (SLOW_TO - LOOKED) else SLOW_TO + t - LOOK_UP
 	local a = sample(admire, math.min(clipTime, ADMIRE_END))
-	local turned = over(t)
-	local near = t < ADMIRED and turned or 0 -- closer, and the head with it, only while it is looked at
-	a.RightLowerArm = a.RightLowerArm * CFrame.Angles(math.rad(DRAW) * near, 0, 0) * CFrame.Angles(0, math.rad(ROLL) * (1 - turned), 0)
-	a.Head = a.Head * CFrame.Angles(0, 0, math.rad(TILT) * near)
+	local u = eased((t - TURN_FROM) / (TURN_TO - TURN_FROM)) -- 0 the bottom towards the eyes, 1 the top
+	local function at(pair, share) return math.rad(pair[1] + (pair[2] - pair[1]) * (share or u)) end
+	a.RightUpperArm = CFrame.Angles(0, 0, at(OUT) + math.rad(OUT_MID) * math.sin(u * math.pi)) * CFrame.Angles(at(FORWARD, u * u), 0, 0) * CFrame.Angles(0, at(INWARD), 0)
+	a.RightLowerArm = CFrame.Angles(at(BEND), 0, 0) * CFrame.Angles(0, math.rad(ROLL) * (1 - u), 0)
+	a.RightHand = CFrame.identity
+	local look = CFrame.Angles(math.rad(-HEAD_DOWN), math.rad(-8), 0) * CFrame.Angles(0, 0, math.rad(TILT) * u)
+	a.Head = look:Lerp(a.Head, eased((t - LOOK_UP) / (JOIN - LOOK_UP)))
 	if t <= JOIN then return a end
 	local s = (t - JOIN) / PULL_TIME
 	if s < 1 then return mix(a, sample(throw, PULL_AT), s * s * (3 - 2 * s)) end -- pulled back
@@ -265,18 +259,23 @@ end
 
 -- How the plane sits against the hand while it is admired: along the forearm, its top tipped back towards the face
 -- (worked out from the pose at the start of the look down, then fixed to the hand).
-local GRIP
+local GRIP_FROM, GRIP
 do
-	local at = build(sample(admire, LOOKED)) -- as the clip made it: this is the plane's top towards the face
-	local nose = (at.RightHand.Position - at.RightLowerArm.Position).Unit
-	GRIP = at.RightHand.Rotation:Inverse() * CFrame.lookAt(Vector3.zero, nose, Vector3.new(0, 1, 0.6))
+	-- its nose to the kid's left and away; before the turn its bottom up and back towards their eyes, after it its
+	-- top (stills number 5 and 2)
+	local nose, eyes = Vector3.new(-0.6, 0.15, -0.8).Unit, Vector3.new(0, 0.75, 0.65)
+	GRIP_FROM = build(turnsAt(0)).RightHand.Rotation:Inverse() * CFrame.lookAt(Vector3.zero, nose, -eyes)
+	GRIP = build(turnsAt(TURN_TO)).RightHand.Rotation:Inverse() * CFrame.lookAt(Vector3.zero, nose, eyes)
+	local _, slip = (GRIP_FROM:Inverse() * GRIP):ToAxisAngle()
+	E.slip = math.deg(slip) -- how far the grip shifts in the hand: small, or the arm is not doing the turning
 end
 local function held(hand, turn) return CFrame.new(hand) * turn * CFrame.new(0, length * 0.06, -length * 0.15) end
 local function smooth(v) v = math.clamp(v, 0, 1); return v * v * (3 - 2 * v) end
 local function inHand(t)
 	local grip = rootAt * pose(t).RightHand
 	local level = (CFrame.lookAt(grip.Position, eye) * HOLD).Rotation
-	return held(grip.Position, (grip.Rotation * GRIP):Lerp(level, smooth((t - ADMIRED) / (READY - ADMIRED))))
+	local gripNow = GRIP_FROM:Lerp(GRIP, smooth((t - TURN_FROM) / (TURN_TO - TURN_FROM)))
+	return held(grip.Position, (grip.Rotation * gripNow):Lerp(level, smooth((t - ADMIRED) / (READY - ADMIRED))))
 end
 
 function E.frame(t)
@@ -306,6 +305,26 @@ function E.frame(t)
 	task.wait(0.05)
 	return "ok"
 end
+-- Trying a pose by hand, for picture choices (Alan picks a numbered still when words can't carry a pose): the pose at
+-- `t` with some joints' turns replaced (part name -> its turn from the rest pose) and the plane on the hand turned
+-- `planeTurn` (in the kid's own frame: forward is -Z, right +X), seen from `out` studs in front, `side` to the kid's
+-- left and `up` over the desk.
+function E.try(t, replaced, planeTurn, out, side, up)
+	local turn = turnsAt(t)
+	for name, cf in replaced do turn[name] = cf end
+	local at = build(turn)
+	for name, cf in at do
+		local part = kid:FindFirstChild(name)
+		if part then part.CFrame = rootAt * cf end
+	end
+	local hand = rootAt * at.RightHand
+	plane:PivotTo(held(hand.Position, rootAt.Rotation * planeTurn))
+	local from = spot + back * out + back:Cross(Vector3.yAxis) * side + Vector3.yAxis * up
+	camera.CameraType, camera.FieldOfView = Enum.CameraType.Scriptable, FOV
+	camera.CFrame = CFrame.lookAt(from, spot + Vector3.yAxis * 95)
+	task.wait(0.05)
+	return "ok"
+end
 -- The cleaned-up clip as a plain R15 animation named `name` under `parent`: the extra bones folded into the real
 -- parts, the hips locked and the facing fixed, exactly as the preview poses the kid, so a real avatar plays what the
 -- preview showed. One-shot. This is what the game registers in Studio (WinnersCutscene) and what gets uploaded.
@@ -317,6 +336,9 @@ function E.bake(parent, name)
 	out:SetAttribute("Admired", ADMIRED)
 	out:SetAttribute("Ready", READY)
 	out:SetAttribute("Grip", GRIP)
+	out:SetAttribute("GripFrom", GRIP_FROM)
+	out:SetAttribute("TurnFrom", TURN_FROM)
+	out:SetAttribute("TurnTo", TURN_TO)
 	out:SetAttribute("Hold", HOLD)
 	for n = 0, math.floor(LENGTH * 30 + 0.5) do
 		local frame = Instance.new("Keyframe")
@@ -348,4 +370,4 @@ function E.clean()
 end
 local names = {}
 for name in E.hid or {} do table.insert(names, name) end
-return string.format("ready: %.2f s, release at %.2f s, kid scale %.1f, plane %.0f long %.0f wide; hid %s", LENGTH, RELEASE, scale, length, span, table.concat(names, ", "))
+return string.format("ready: %.2f s, release at %.2f s, grip shifts %.0f degrees, kid scale %.1f, plane %.0f long %.0f wide; hid %s", LENGTH, RELEASE, E.slip, scale, length, span, table.concat(names, ", "))
