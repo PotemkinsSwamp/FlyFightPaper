@@ -59,7 +59,7 @@ local KEEP_TOYS = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hang
 -- The room's own lighting is never touched. While the dark comes down and the camera glides, the curtain hangs
 -- CURTAIN_LENS studs from the lens, in front of everything; while the camera holds on the winners it hangs
 -- CURTAIN_BEHIND studs away, just behind them.
-local CURTAIN_CLEAR, CURTAIN_LENS, CURTAIN_BEHIND = 0.08, 1, 40
+local CURTAIN_CLEAR, CURTAIN_LENS, CURTAIN_BEHIND = 0.15, 1, 40 -- at 0.08 the room was pitch black (Play 2026-11-20); 0.15 not yet seen
 -- The winners in the dark. Each winner, their books and their plane are real models at their NORMAL small size,
 -- standing in the room right in front of the camera: every point of the big winner far away is moved towards the
 -- camera by the avatar's scale, which gives exactly the same picture at full sharpness (drawn in layers,
