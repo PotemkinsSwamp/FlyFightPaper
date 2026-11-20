@@ -159,7 +159,19 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
 - Lesson: a clip's legs and upper body can be taken apart. Joint turns make it one line each way; the chest's own
   direction has to be carried over as a direction (not as its turn against the clip's hips, which turn too).
 - Looked at as contact sheets from the no-Play preview (three cuts; a reviewer on the second); not seen moving by
-  Alan yet. Still weak in the stills: the pull-back goes out to the side more than back, and on the blocky test
+  Alan then. Still weak in the stills: the pull-back goes out to the side more than back, and on the blocky test
   body the fist hides part of the plane. Video: `.planning/emotes/camera-flick-admire-push.mp4`.
+- **Alan on the turning-over, in Play (2026-11-20): "that does not give off smug. It gives off rushed, hurried."**
+  A 45-degree back-and-forth in 1.5 s read as flailing. Smug is slow, with stops. His order: they start looking at
+  the plane's bottom; the forearm slowly rolls it over to its top while the arm comes in closer; it stops there a
+  second and they look; it rolls back; the head comes up to the camera; the arm winds back and throws.
+- **Built to that order** (`TURNS` in `tools/emote_preview.lua`, the emote's seconds): bottom held to 1.0; rolled
+  over to the top by 2.5 (a full half turn of the forearm, the elbow bending 16 degrees more to bring it in, the
+  head tipping 6 with it); held to 3.5; rolled back by 4.7; held to 5.0; head up and plane raised to 5.7; wind back
+  0.55 s; push; release at 6.65 s; the clip is 7.2 s. The admire clip gives the look down in its first 0.9 s, then
+  is slowed almost to standing while the arm does the turning, then plays its look up at its own speed. A
+  150-degree roll left the plane edge-on to the camera at the bottom view; the full 180 shows it.
+- Lesson: **a mood is a tempo.** "Smug" was not in the pose, it was in the speed and the stops: one slow move, a
+  full stop, one slow move back. Three quick swings of the same size read as the opposite mood.
 
 Back to [HOME](../HOME.md).

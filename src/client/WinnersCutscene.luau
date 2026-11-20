@@ -375,7 +375,7 @@ local function flickPlane(w, t, view, steady, height)
 		local hand = w.spot + (prop.hand.Position - w.spot) * w.scale -- the winner's layer is `scale` times smaller
 		local level = (CFrame.lookAt(hand, steady.Position) * flick.hold).Rotation
 		local turn = (prop.hand.CFrame.Rotation * flick.grip):Lerp(level, ease((t - flick.admired) / math.max(flick.ready - flick.admired, 0.01)))
-		prop.held = CFrame.new(hand) * turn * CFrame.new(0, prop.length * 0.09, -prop.length * 0.15) -- the hand under its body
+		prop.held = CFrame.new(hand) * turn * CFrame.new(0, prop.length * 0.06, -prop.length * 0.15) -- the hand under its body
 		prop.plane:PivotTo(prop.held)
 	elseif t < flick.release + FLICK_FLIGHT then
 		local s = 1 - (1 - (t - flick.release) / FLICK_FLIGHT) ^ 2
