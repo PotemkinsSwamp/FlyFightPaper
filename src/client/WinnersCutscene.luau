@@ -652,7 +652,9 @@ function Cutscene.play(winners, onStage)
 	local box = CFrame.fromMatrix(center, right, Vector3.yAxis)
 	local points = { center }
 	for i = 0, 7 do points[#points + 1] = box * (size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5)) end
-	local groupDistance = (across + SIDE_ROOM * height) / aspect / tanHalf
+	-- Fitted to the screen's width, but never closer than on a 16:9 screen: on a wider screen (phones) the camera
+	-- came closer and cut the picture's top and bottom (Alan 2026-11-20). There the extra width is spare room at the sides.
+	local groupDistance = (across + SIDE_ROOM * height) / math.min(aspect, 16 / 9) / tanHalf
 	local tilt = -math.rad(GROUP_TILT)
 	local eye = Vector3.new(middle.X, deskTop + GROUP_EYE * height, (spots[1].Z + spots[2].Z + spots[3].Z) / 3) + back * groupDistance
 	local group = CFrame.lookAt(eye, eye - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
