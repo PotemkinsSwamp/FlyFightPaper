@@ -305,6 +305,13 @@ function HUD.start(getPlane, action)
 		local flick=eraserBots:Clone();flick.Name="EndFlick";flick.Text="end: flick";flick.Position=UDim2.fromOffset(440,-80)
 		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
 		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
+		-- How close the winners' camera comes (WinnersCutscene), stepped per tap, for Alan to pick the phone's distance.
+		local zoom=eraserBots:Clone();zoom.Name="WinnerZoom";zoom.Text="zoom: 1.0";zoom.Position=UDim2.fromOffset(550,-80)
+		zoom.BackgroundColor3=Color3.fromRGB(150,40,40);zoom.Parent=picker
+		zoom.Activated:Connect(function()
+			local z=(Root:GetAttribute("DevWinnerZoom") or 1)+0.1;if z>1.45 then z=1 end
+			Root:SetAttribute("DevWinnerZoom",z);zoom.Text=string.format("zoom: %.1f",z)
+		end)
 	end
 	-- Every match tip again, seen or not (Alan 2026-10-29: his account had seen them all).
 	local tipsAgain=eraserBots:Clone();tipsAgain.Name="TipsAgain";tipsAgain.Text="tips again";tipsAgain.Position=UDim2.fromOffset(770,-80)

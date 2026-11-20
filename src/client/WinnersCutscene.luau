@@ -655,7 +655,9 @@ function Cutscene.play(winners, onStage)
 	-- Fitted to the screen's width, but never closer than on a 16:9 screen: on a wider screen (phones) the camera
 	-- came about a tenth closer and the outside desks ran into the notch strips (seen in the phone simulator 2026-11-20:
 	-- ViewportSize there is the notch-free middle, 749 x 381 of a picture drawn 873 x 401). The extra width is spare room.
-	local groupDistance = (across + SIDE_ROOM * height) / math.min(aspect, 16 / 9) / tanHalf
+	-- DevWinnerZoom: the Dev panel's "zoom" button, for Alan to pick the phone's distance; goes when he has picked.
+	local zoom = RunService:IsStudio() and Root:GetAttribute("DevWinnerZoom") or 1
+	local groupDistance = (across + SIDE_ROOM * height) / math.min(aspect, 16 / 9) / tanHalf / zoom
 	local tilt = -math.rad(GROUP_TILT)
 	local eye = Vector3.new(middle.X, deskTop + GROUP_EYE * height, (spots[1].Z + spots[2].Z + spots[3].Z) / 3) + back * groupDistance
 	local group = CFrame.lookAt(eye, eye - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
