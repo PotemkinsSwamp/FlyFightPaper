@@ -471,7 +471,13 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
     between over the elbow and in towards the head, 0.5 to 0.7 studs up (between shoulder and chin); the wrist
     bends 29 to 63 degrees as it goes (the "flow" is B's own); the head tilts 28 degrees; no key moves the head
     more than 3 degrees. Scene: played at 0.75 (0.8 s a wave), about 7.5 s; a round is now about 13 s, longer
-    than the 8 to 9 s the runner-ups have beside Camera Flick. Not yet run in Play.
+    than the 8 to 9 s the runner-ups have beside Camera Flick. **Alan in Play: "The wave is fine."** Good
+    Game is approved as it stands (he left the length alone).
+  - If the place is closed without a save, the two clips are gone from `Assets`: bake them again (each loads its
+    generated clip by id): set `_G.EMOTE_CLIPS = { "cut:GoodGameStance" }` in Edit, then `python
+    tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=GoodGameStance:GoodGameStanceClip:assets/animations/emotes/good-game-stance.rbxm"`
+    and the same with `GoodGameWave` / `good-game-wave.rbxm`; then delete any `EmoteClipKid` left in the
+    workspace and check the camera is back to Fixed.
   - Looking at a web video frame by frame without downloading it: in Chrome, a script seeks the page's own video
     and draws each moment into a grid laid over the page (cropped to the character, time stamped), and one
     screenshot shows 30 moments.

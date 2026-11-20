@@ -2,8 +2,9 @@
 
 **Decided:** 2026-11-20 (Alan)
 **Status:** the first Good Game (Dev panel "2nd/3rd") was not accepted by Alan in Play ("stiff ... too fast ...
-unnatural"); its remake from Roblox's own clap and wave is built and waits for his Play look; Nap and Next One have
-their raw body moves and are not built
+unnatural"); its remake is approved by Alan in Play ("the slow clap is good now", "the stance is good", "the
+wave is fine"), Studio only until its clips are uploaded; Nap is next; Nap and Next One have their raw body moves
+and are not built
 
 ## Decision
 - The three runner-up emotes as described on the [emote making](../workshop/emote-making.md) page ("Runner-up
@@ -15,6 +16,9 @@ their raw body moves and are not built
   stand and breathe, round and round; the nod is dropped (Roblox has none, and a typed-in one is what he rejected).
 - **Emotes show feelings through movement** (Alan: "we need to portray emotions through their movements because we
   cannot control their face"). Good Game is a runner-up's grudging one: a slow clap and a slow, unenthusiastic wave.
+- **Good Game as approved:** three slow claps a second apart in one smooth rhythm ("1, 2, 3 ... never waiting"),
+  the hands meeting; the arms drop; the right arm up into a low V, elbow down, hand beside the head ("if the hand
+  comes down to the chin, that's fine"), five lazy waves 0.8 s apart; the weight on one leg throughout. No nod.
 - His go for the nine generator tries (each uploads a private animation to his account) and for Edit-mode screen
   grabs.
 - Earlier the same day: the winners' shot scales to the screen (as close as the screen allows, across and up and

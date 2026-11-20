@@ -17,6 +17,7 @@
 | On the steady clap: **"The slow clap is good now."** No wave was in that build (it waited on his go); go given for a stance try and a wave try | Both made and cut in: arms drop, right forearm up into an L, two slow small tips, arm down; weight on the right leg. Waits for his look. |
 | **"The stance is good. The clap is good. It's just now the wave is messed up"**: the hand is in front of them; he wants it to the side in line with the head, a low V/L, elbow pointing down, five slow lazy waves about 0.8 s apart, the hand flowing a little | Stance and clap approved. Three more generator tries on his go (one failed, two not right: [numbers](../workshop/emote-making.md)); the wave is unchanged and open. |
 | His ruling: a low V with the elbow down is what matters; hand height can vary with arm length, chin is fine | Wave rebuilt from try B with no new upload: elbow down at the side, hand beside the head between shoulder and chin, five lazy sways 0.8 s apart. Waits for his look. |
+| On that wave: **"The wave is fine. I think I'm ready to move on to the nap."** | Good Game approved as it stands: slow clap, stance, wave. Its length (about 11 s of moves against 8 to 9 s on screen beside Camera Flick) he left alone. Next: Nap. |
 
 ## Notes
 - My first explanation of the phone fault was wrong (I said the top and bottom were cut before looking); he told me
