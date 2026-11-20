@@ -341,9 +341,10 @@ end
 
 -- The book podiums (Alan 2026-11-19): each winner stands on a stack of single books (Assets.WinnerBooks: eight
 -- free Creator Store books, each its own model lying flat, 10 studs on its longer side, its thickness in "Thick"),
--- 1st's the tallest. Which books, bottom to top, under 1st, 2nd and 3rd; and a book's longer side in winner heights:
+-- in clear steps (Alan 2026-11-19: on four, three and two books 1st's did not look taller than 2nd's): about 0.78,
+-- 0.41 and 0.2 of a winner's height. Which books, bottom to top, under 1st, 2nd and 3rd; and a book's longer side in winner heights:
 -- wider than a winner's stance, so they stand on it comfortably.
-local STACKS = { { 1, 4, 8, 2 }, { 7, 5, 2 }, { 3, 6 } }
+local STACKS = { { 1, 7, 4, 2, 3, 8 }, { 5, 8, 6, 4 }, { 8, 5 } }
 local BOOK_WIDE = 0.56
 -- Builds `place`'s stack on `spot` in a winner's layer, where everything is `shrink` times smaller (the layer's
 -- camera makes up for it); returns the stack's height in the room's studs.
@@ -554,7 +555,7 @@ function Cutscene.play(winners, onStage)
 	local middle = (spots[2] + spots[3]) / 2
 	local across = 0
 	for _, spot in spots do across = math.max(across, math.abs((spot - middle):Dot(right))) end
-	local top = deskTop + 1.8 * height -- over the head of a winner on the tallest stack
+	local top = deskTop + 2.1 * height -- over the head of a winner on the tallest stack
 	local center = (chairs + flat(middle)) / 2 + back * 20 + Vector3.new(0, (deskTop + top) / 2, 0)
 	local size = Vector3.new(2 * (across + SIDE_ROOM * height), top - deskTop, (flat(middle) - chairs).Magnitude + 120)
 	local box = CFrame.fromMatrix(center, right, Vector3.yAxis)
