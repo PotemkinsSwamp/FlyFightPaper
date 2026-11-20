@@ -488,7 +488,7 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
   Edit, not yet looked at): `Emote_Bored` 10713992055 (a candidate for the standing rest), `Emote_Agree`
   10713954623 (a nod), `Emote_Beckon` 10713984554 (what they hold: below).
 
-## Nap: built; Alan's first look, then head down and seated (2026-11-20)
+## Nap: approved by Alan in Play, one arm glitch open (2026-11-20)
 The feeling: bored and done ("I didn't win, wake me when it's over"), the kid asleep at the back of the class.
 **Alan's own version** (his "yes, build it"): "sitting crisscross applesauce, elbow on the knee, holding their head
 up ... the bubble ... the Z's ... they jolt up, and then they look around like side to side. 1, 2, 3. Then they look
@@ -498,7 +498,9 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
 - **Alan's first look in Play:** "It looks all right, except the models are not always sitting on the books. They're
   kind of floating ... their head needs to be more down ... fully, like, limp down, resting on the hand ... it makes
   them look awake, if you can see their faces"; the elbow need not be on the knee, only on that leg; the hand may
-  hold the head anywhere. Both changed the same day, **not yet seen by him**:
+  hold the head anywhere. Both changed the same day; **his second look: "Yeah, I think that's good. I think we move
+  on"**, with one fault: one kid's arm was "moving back and forth ... glitching out" in that look: cause not found yet, open (suspects, unproven: the IKControl arm on that body, or the arm
+  swinging as the chest turns in the look-around while the hand stays put):
   - **Head down:** it hangs 70 degrees down (84 in a nod), rolled 15 onto the hand, which holds it by the right side
     of the brow; the chest slumps 15 to 17 degrees forward (the tool picks the lean nearest 25 that keeps the elbow
     on the thigh: it lands 0.67 studs over the thigh's line, 0.88 of the way to the knee). The camera looks down on

@@ -3,8 +3,8 @@
 **Decided:** 2026-11-20 (Alan)
 **Status:** the first Good Game (Dev panel "2nd/3rd") was not accepted by Alan in Play ("stiff ... too fast ...
 unnatural"); its remake is approved by Alan in Play ("the slow clap is good now", "the stance is good", "the
-wave is fine"), Studio only until its clips are uploaded; Nap is built to his own version and waits for his Play look; Next One has its raw body
-move and is not built
+wave is fine"), Studio only until its clips are uploaded; Nap is approved by Alan in Play ("I think that's good. I think we move on"; one kid's arm glitch
+is open), Studio only until its two clips are uploaded; Next One has its raw body move and is not built
 
 ## Decision
 - The three runner-up emotes as described on the [emote making](../workshop/emote-making.md) page ("Runner-up

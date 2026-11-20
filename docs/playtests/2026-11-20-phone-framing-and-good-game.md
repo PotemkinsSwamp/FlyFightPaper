@@ -24,7 +24,11 @@ Alan in Play, Dev "2nd/3rd: Nap": **"It looks all right, except the models are n
 They're kind of floating."** And the head: "more down ... fully, like, limp down, resting on the hand ... it makes
 them look awake, if you can see their faces." The elbow only has to be on that leg; the hand can hold the head
 anywhere. Done after: the kid is moved each frame to rest on the books; the head hangs 70 degrees, held by the brow.
-Waits for his second look. Details on the [emote making](../workshop/emote-making.md) page.
+Details on the [emote making](../workshop/emote-making.md) page.
+
+Second look: **"Yeah, I think that's good. I think we move on."** Nap is approved. But "one of the models had a weird
+error happening where their arm was, like, moving back and forth. Like, it was, like, glitching out": which kid,
+which arm and when are not known yet; open.
 
 ## Notes
 - My first explanation of the phone fault was wrong (I said the top and bottom were cut before looking); he told me
