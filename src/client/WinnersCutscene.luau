@@ -1,7 +1,7 @@
 -- The winners' moment (Alan 2026-11-19, docs/decisions/2026-11-19-winners-circle-redo.md): "Pencils down!", the
 -- room's lights fade to near-dark, and in the dark the camera glides from wherever you are (your plane or the
 -- hangar) to one steady shot of the three winner desks by the chalkboard. Local copies of the top 3 already stand on
--- their desks as dark shapes, each drawn in their own layer over the room. A spotlight clicks on over 3rd, then 2nd,
+-- their desks as dark shapes. A spotlight clicks on over 3rd, then 2nd,
 -- then 1st, each with its name plate (place, name, points), and each starts their emote in their own light. The
 -- camera stays on all three (no zoom in, no confetti: Alan 2026-11-19), then the lights come up as it glides back and
 -- the results card shows. Each winner stands on a stack of books, 1st's the tallest.
@@ -48,7 +48,7 @@ local DESK_KIT = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hanga
 	["runway-light"] = true, ["runway-light-tip"] = true, ["landing-ring"] = true }
 local NEAR_CLEAR = 120 -- anything right in front of the lens fades; the rest blocking a winner fades too
 -- Film-style focus (Alan 2026-10-18): the winners sharp, what's in front of them soft, the wall behind a little soft.
-local BLUR_RADIUS, BLUR_NEAR, BLUR_FAR = 200, 0.8, 0.2
+local BLUR_FAR = 0.2
 -- Only what would block a winner in their shot fades out on this screen; the rest of the town and the ceiling
 -- decorations stay in view. Never faded: the room shell, the chalkboard, desks, chairs and the desks' hangars and
 -- runways. Always faded: planes, other name tags, the desk landing rings and the monorail's pillars and track.
@@ -59,17 +59,21 @@ local KEEP_TOYS = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hang
 -- the haze clears, so the room can only just be made out (Alan 2026-11-19 on 46, 49, 64: "a little darker").
 local DARK = { Brightness = 0, Ambient = Color3.fromRGB(24, 26, 34), OutdoorAmbient = Color3.fromRGB(24, 26, 34),
 	EnvironmentDiffuseScale = 0, EnvironmentSpecularScale = 0 }
--- A winner's spotlight. Real lamps can't do it: Roblox's lights reach 60 studs (a winner stands 140 tall) and are
--- drawn badly or not at all from the group shot's distance (seen in Play 2026-11-19: dark from afar, burnt out
--- close up). So the room never lights the winners: each is drawn in their own layer over the dark room (a
--- ViewportFrame whose camera follows the scene's), lit by the layer's own light, and their light coming on is the
--- layer's tint going from UNLIT (a black shape with no detail: Alan 2026-11-19) to full colour over CLICK seconds. In the layer the winner is their
--- normal small size, with the layer's camera brought in to match: animations then move the hips the right distance
--- (on a scaled-up avatar Roblox scales that movement twice, measured 2026-10-17). In the room the spotlight is a see-through shaft just behind the winner
--- and a glowing pool on the desk top: the shaft's top over the desk and its width at the desk in winner heights, and
--- how see-through shaft and pool are.
-local UNLIT, LIT, LAMP_COLOR = Color3.new(), Color3.fromRGB(120, 118, 125), Color3.fromRGB(255, 244, 214)
+-- The winners in the dark. A Roblox light reaches 60 studs and a winner on a desk stands 140 tall, hundreds of studs
+-- from the camera: real lamps can't light them there (seen in Play 2026-11-19). Drawing them in layers over the room
+-- (ViewportFrames) could, but a layer's picture is capped at 1024 pixels and came out pixelated (Alan 2026-11-20).
+-- So each winner, their books and their plane are real models at their NORMAL small size, standing in the room right
+-- in front of the camera: every point of the big winner far away is moved towards the camera by the avatar's scale,
+-- which gives exactly the same picture, and at that size a real spotlight reaches them. They are placed again every
+-- frame as the camera moves. (At normal size animations also move the hips the right distance: on a scaled-up
+-- avatar Roblox scales that movement twice, measured 2026-10-17.) Unlit they are black shapes in the dark room; a
+-- winner's light coming on is a real SpotLight over them going to LAMP_BRIGHT in CLICK seconds, from LAMP_UP studs
+-- over their middle and LAMP_FRONT towards the camera, LAMP_ANGLE wide. On the big desk the same spotlight is a
+-- see-through shaft just behind where the winner seems to stand and a glowing pool on the desk top: the shaft's top
+-- over the desk and its width at the desk in winner heights, and how see-through shaft and pool are.
+local LAMP_COLOR = Color3.fromRGB(255, 244, 214)
 local CLICK = 0.12
+local LAMP_BRIGHT, LAMP_UP, LAMP_FRONT, LAMP_ANGLE = 5, 7.5, 2.5, 42
 local IDLE = { [Enum.HumanoidRigType.R15] = "rbxassetid://507766666", [Enum.HumanoidRigType.R6] = "rbxassetid://180435571" } -- Roblox's standing idles
 local SHAFT_TOP, SHAFT_WIDE, SHAFT_CLEAR, POOL_CLEAR = 3, 0.95, 0.82, 0.8
 local Cutscene = {}
@@ -93,22 +97,7 @@ local function setDark(state, amount)
 	for lamp, was in state.lamps do lamp.Brightness = was * (1 - amount) end
 end
 
--- A full-screen layer over the room with its own little world, camera and light, dark until its tint comes up.
-local function makeLayer(gui, back, right, order)
-	local layer = Instance.new("ViewportFrame")
-	layer.Name, layer.Size, layer.BackgroundTransparency, layer.ZIndex = "Winner", UDim2.fromScale(1, 1), 1, order
-	layer.Ambient, layer.LightColor, layer.ImageColor3 = LIT, LAMP_COLOR, UNLIT
-	layer.LightDirection = (-Vector3.yAxis - back * 0.5 + right * 0.2).Unit -- from above, a little from the camera's side
-	local world = Instance.new("WorldModel")
-	world.Parent = layer
-	local lens = Instance.new("Camera")
-	lens.Parent = layer
-	layer.CurrentCamera = lens
-	layer.Parent = gui
-	return layer, world, lens
-end
-
-local function makeSpotlight(gui, spot, back, right, height, order)
+local function makeSpotlight(spot, back, height)
 	local part = Instance.new("Part")
 	part.Name, part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.Transparency = "WinnerLights", true, false, false, false, 1
 	part.Size, part.CFrame = Vector3.one, CFrame.new(spot)
@@ -130,15 +119,14 @@ local function makeSpotlight(gui, spot, back, right, height, order)
 	pool.CFrame = CFrame.new(spot + Vector3.yAxis * 0.3) * CFrame.Angles(0, 0, math.rad(90)) -- lying flat on the desk top
 	pool.Parent = part
 	part.Parent = workspace
-	local layer, world, lens = makeLayer(gui, back, right, order)
-	return { part = part, shaft = shaft, pool = pool, layer = layer, world = world, lens = lens }
+	return { part = part, shaft = shaft, pool = pool }
 end
--- `glow`: the winner's own light, 0 off to 1 on; `room`: how much of the shaft and pool shows (they go as the
--- room's lights come back).
-local function shine(light, glow, room)
-	light.shaft.Enabled = glow * room > 0.5
-	light.pool.Transparency = 1 - (1 - POOL_CLEAR) * glow * room
-	light.layer.ImageColor3 = UNLIT:Lerp(Color3.new(1, 1, 1), glow)
+-- `glow`: the winner's own light, 0 off to 1 on; `room`: how much of it shows (it goes as the room's lights come
+-- back).
+local function shine(w, glow, room)
+	w.light.shaft.Enabled = glow * room > 0.5
+	w.light.pool.Transparency = 1 - (1 - POOL_CLEAR) * glow * room
+	w.lamp.Brightness = LAMP_BRIGHT * glow * room
 end
 
 local function ease(t) t = math.clamp(t, 0, 1); return t * t * (3 - 2 * t) end
@@ -299,7 +287,7 @@ end
 -- full-body animation from Meshy text-to-motion (tools/meshy_to_r15.py) moves the body; a copy of their own plane
 -- sits in the right hand, nose turning the way the hand moves. Studio tests set a temporary id on DevWinnerEmote.
 local PLANE_LENGTH, PLANE_TURN = 0.3, 0.15 -- plane length as a share of the winner's height; how fast the nose turns
-local function holdPlane(model, actorId, height)
+local function holdPlane(model, actorId, height, shrink)
 	local planes = workspace:FindFirstChild("Planes")
 	local source = planes and planes:FindFirstChild(tostring(actorId))
 	local hand = model:FindFirstChild("RightHand")
@@ -312,13 +300,16 @@ local function holdPlane(model, actorId, height)
 			item.Anchored, item.CanCollide, item.CanQuery, item.CanTouch, item.LocalTransparencyModifier = true, false, false, false, 0
 		end
 	end
+	-- `height`: the winner's height its sizes are worked out for; `shrink`: how many times smaller the model itself is
+	-- (Camera Flick works in the big winner's studs and places the small plane: see flickPlane).
 	height = height or model:GetScale() * 5 -- an R15 avatar is about 5 studs tall at scale 1
-	plane:ScaleTo(plane:GetScale() * height * PLANE_LENGTH / plane:GetExtentsSize().Z)
-	plane.Name = "HeldPlane"
+	shrink = shrink or 1
+	plane:ScaleTo(plane:GetScale() * height * PLANE_LENGTH / shrink / plane:GetExtentsSize().Z)
+	plane.Name = "WinnerPlane"
 	local box, size = plane:GetBoundingBox()
-	return { plane = plane, hand = hand, grip = hand:FindFirstChild("RightGripAttachment"), length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X,
+	return { plane = plane, hand = hand, grip = hand:FindFirstChild("RightGripAttachment"), length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X * shrink,
 		-- from its middle down to its underside (see flickPlane)
-		belly = math.min(0.6 * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), 0.05 * height * PLANE_LENGTH),
+		belly = math.min(0.6 * shrink * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), 0.05 * height * PLANE_LENGTH),
 		last = hand.Position, heading = model:GetPivot().LookVector }
 end
 local function flyPlane(w)
@@ -369,19 +360,22 @@ local function knocked(steady, u, height)
 	return CFrame.new(steady.Position - steady.LookVector * jolt + steady:VectorToWorldSpace(shake) - Vector3.yAxis * 0.34 * height * fall)
 		* steady.Rotation * CFrame.Angles(math.rad(-68) * fall, 0, 0) * CFrame.Angles(0, 0, math.rad(10) * fall)
 end
--- The plane `t` seconds after 1st's light, in its own full-size layer over everything: in the hand, then straight to
--- the lens (fast off the hand, slower as it fills the picture) turning flat as it arrives, then stuck on the lens and
--- sliding down it. `view`: the camera this frame; `steady`: without the knock.
+-- The plane `t` seconds after 1st's light: in the hand, then straight to the lens (fast off the hand, slower as it
+-- fills the picture) turning flat as it arrives, then stuck on the lens and sliding down it. `view`: the camera this
+-- frame; `steady`: without the knock. Worked out in the big winner's studs; the small plane is then put where it
+-- looks the same (`put`).
 local function flickPlane(w, t, view, steady, height)
 	local prop, flick = w.prop, w.flick
-	local pressed = prop.span * 0.4 -- how far in front of the lens it ends, so its wings fill the picture
+	-- how far in front of the lens it ends, so its wings fill the picture (no nearer: the small plane would be cut off)
+	local pressed = prop.span * 0.55
+	local function put(at) prop.plane:PivotTo(at.Rotation + (view.Position + (at.Position - view.Position) / w.scale)) end
 	if t < flick.release or not prop.held then
 		-- Fixed to the hand's grip point, its middle a little ahead of the fingers, and lifted off the grip point until
 		-- its underside clears this avatar's own hand: in the hand, never through it. (Its underside is 0.6 of the
 		-- way to its lowest point and at most 0.05 of its length: what hangs under the wings may touch the fingers;
 		-- with all of it the plane floated over the hand.)
 		local grip = prop.hand.CFrame * (prop.grip and prop.grip.CFrame or CFrame.identity)
-		local function room(point) return w.spot + (point - w.spot) * w.scale end -- the winner's layer is `scale` times smaller
+		local function room(point) return w.spot + (point - w.shift - w.spot) * w.scale end -- where that point of the small winner seems to be
 		local under = CFrame.new(room(grip.Position)) * (grip.Rotation * flick.grip) * CFrame.new(0, 0, -prop.length * 0.05)
 		local top = 0
 		for i = 0, 7 do
@@ -389,16 +383,16 @@ local function flickPlane(w, t, view, steady, height)
 			top = math.max(top, under:PointToObjectSpace(room(corner)).Y)
 		end
 		prop.held = under * CFrame.new(0, top + prop.belly, 0)
-		prop.plane:PivotTo(prop.held)
+		put(prop.held)
 	elseif t < flick.release + FLICK_FLIGHT then
 		local s = 1 - (1 - (t - flick.release) / FLICK_FLIGHT) ^ 2
 		local from, to = prop.held.Position, (steady * CFrame.new(0, 0, -pressed)).Position
 		local at = from:Lerp(to, s)
 		local flying = CFrame.lookAt(at, at + (to - from).Unit) * CFrame.Angles(0, 0, math.rad(40) * s)
-		prop.plane:PivotTo(flying:Lerp(CFrame.new(at) * (steady.Rotation * FLICK_FLAT), math.clamp((s - 0.8) / 0.2, 0, 1)))
+		put(flying:Lerp(CFrame.new(at) * (steady.Rotation * FLICK_FLAT), math.clamp((s - 0.8) / 0.2, 0, 1)))
 	else
 		local slide = math.max(t - flick.release - FLICK_FLIGHT - 0.45, 0)
-		prop.plane:PivotTo(view * CFrame.new(0, -slide * slide * 3.7 * height, -pressed) * FLICK_FLAT)
+		put(view * CFrame.new(0, -slide * slide * 3.7 * height, -pressed) * FLICK_FLAT)
 	end
 end
 
@@ -418,8 +412,8 @@ end
 -- wider than a winner's stance, so they stand on it comfortably.
 local STACKS = { { 1, 7, 4, 2, 3, 8 }, { 5, 8, 6, 4 }, { 8, 5 } }
 local BOOK_WIDE = 0.56
--- Builds `place`'s stack on `spot` in a winner's layer, where everything is `shrink` times smaller (the layer's
--- camera makes up for it); returns the stack's height in the room's studs.
+-- Builds `place`'s stack on `spot` in a small winner's `world`, where everything is `shrink` times smaller; returns
+-- the stack's height in the big winner's studs.
 local function stackBooks(world, place, spot, shrink)
 	local books, rise = Root.Assets:FindFirstChild("WinnerBooks"), 0
 	local grow = BOOK_WIDE * Avatars.standing_height_studs / 10
@@ -437,8 +431,9 @@ local function stackBooks(world, place, spot, shrink)
 	return rise
 end
 
--- A local copy of a winner's avatar in its own layer's `world`, back at its normal small size, standing on its
--- book stack at `spot` (the desk top) and facing `facing`: it stands still in the dark until its spotlight comes on.
+-- A local copy of a winner's avatar in `world` (a model of its own), back at its normal small size, standing on its
+-- book stack at `spot` (the desk top) and facing `facing`, with its lamp over it (off): it stands still in the dark
+-- until its spotlight comes on.
 local function copyWinner(source, place, facing, actorId, spot, world)
 	source.Archivable = true
 	local model = source:Clone()
@@ -462,19 +457,31 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local onDesk = spot + Vector3.new(0, (stackBooks(world, place, spot, scale) + feet) / scale, 0)
 	local desk = CFrame.lookAt(onDesk, onDesk + facing)
 	model:PivotTo(desk)
+	rootPart.Anchored = true
+	humanoid.EvaluateStateMachine, humanoid.DisplayDistanceType = false, Enum.HumanoidDisplayDistanceType.None
+	for _, item in model:GetDescendants() do
+		if item:IsA("BasePart") then item.CanCollide, item.CanQuery, item.CanTouch = false, false, false end
+	end
 	model.Parent = world
+	local post = Instance.new("Part")
+	post.Name, post.Anchored, post.CanCollide, post.CanQuery, post.CanTouch, post.Transparency, post.Size = "Lamp", true, false, false, false, 1, Vector3.one * 0.2
+	post.CFrame = CFrame.lookAt(onDesk + Vector3.yAxis * LAMP_UP + facing * LAMP_FRONT, onDesk)
+	local lamp = Instance.new("SpotLight")
+	lamp.Face, lamp.Range, lamp.Angle, lamp.Color, lamp.Brightness, lamp.Shadows = Enum.NormalId.Front, 24, LAMP_ANGLE, LAMP_COLOR, 0, true
+	lamp.Parent = post
+	post.Parent = world
 	local flick, flickInfo
 	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then flick, flickInfo = flickClip() end
 	local planeEmote = flick or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
 	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
-		and holdPlane(model, actorId, flick and Avatars.standing_height_studs) or nil
+		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
 	flick = prop and flick
 	local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or emoteFor(place)
 	local emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, flick = flick and flickInfo or nil, place = place, scale = scale, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, flick = flick and flickInfo or nil, lamp = lamp, place = place, scale = scale, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -531,9 +538,8 @@ function Cutscene.play(winners, onStage)
 	for _, item in workspace:GetDescendants() do if item:IsA("Light") then state.lamps[item] = item.Brightness end end
 	state.air = Lighting:FindFirstChildOfClass("Atmosphere")
 	state.airWas = state.air and state.air.Density
-	state.stageGui = Instance.new("ScreenGui") -- the winners' layers, under their name plates
-	state.stageGui.Name, state.stageGui.IgnoreGuiInset, state.stageGui.ResetOnSpawn, state.stageGui.DisplayOrder = "WinnerStage", true, false, 8
-	state.stageGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+	state.stage = Instance.new("Folder") -- the small winners, their books and plane ("Winner...": never hidden for the shot)
+	state.stage.Name, state.stage.Parent = "WinnerStage", workspace
 	Root:SetAttribute("Cutscene", true)
 	onStage("banner")
 
@@ -577,14 +583,35 @@ function Cutscene.play(winners, onStage)
 			if entry and not state.winners[place] then
 				for _, source in room:GetChildren() do
 					if source:IsA("Model") and source:GetAttribute("PilotId") == entry.actorId then
-						local light = makeSpotlight(state.stageGui, spots[place], back, right, height, 4 - place)
-						local copy = copyWinner(source, place, back, entry.actorId, spots[place], light.world)
-						if copy then copy.light = light; state.winners[place] = copy else light.part:Destroy(); light.layer:Destroy() end
-						if copy and copy.flick then -- the plane's own layer, over the winners and their plates
-							local layer, world, lens = makeLayer(state.plateGui, back, right, 10)
-							copy.prop.plane.Parent, copy.propLayer, copy.propLens = world, layer, lens
-							state.flickAt = LIGHT_AT + 2 * TURN + copy.flick.release -- the release, in seconds after arriving
-						end
+						-- The small winner's own model, moved as one: an anchor at the desk spot, the avatar, books and lamp.
+						local world = Instance.new("Model")
+						local anchor = Instance.new("Part")
+						anchor.Name, anchor.Anchored, anchor.CanCollide, anchor.CanQuery, anchor.CanTouch, anchor.Transparency = "Anchor", true, false, false, false, 1
+						anchor.Size, anchor.CFrame, anchor.Parent = Vector3.one * 0.2, CFrame.new(spots[place]), world
+						world.Name, world.PrimaryPart = "Winner" .. place .. "Stage", anchor
+						local copy = copyWinner(source, place, back, entry.actorId, spots[place], world)
+						if copy then
+							copy.world, copy.light = world, makeSpotlight(spots[place], back, height)
+							if copy.flick then
+								copy.prop.plane.Parent = state.stage
+								state.flickAt = LIGHT_AT + 2 * TURN + copy.flick.release -- the release, in seconds after arriving
+								-- A small light at the lens for the plane's flight: it leaves 1st's spotlight on the way.
+								local lens = Instance.new("Part")
+								lens.Name, lens.Anchored, lens.CanCollide, lens.CanQuery, lens.CanTouch, lens.Transparency, lens.Size = "LensLight", true, false, false, false, 1, Vector3.one * 0.2
+								local glow = Instance.new("PointLight")
+								glow.Range, glow.Color, glow.Brightness, glow.Shadows, glow.Parent = 9, LAMP_COLOR, 0, false, lens
+								lens.Parent = state.stage
+								state.lens, state.lensGlow = lens, glow
+							end
+							copy.fading = {} -- everything of theirs that fades in and out
+							for _, item in { world, copy.prop and copy.flick and copy.prop.plane or nil } do
+								for _, piece in item:GetDescendants() do
+									if piece:IsA("BasePart") and piece.Transparency < 1 or piece:IsA("Decal") or piece:IsA("Texture") then table.insert(copy.fading, piece) end
+								end
+							end
+							world.Parent = state.stage
+							state.winners[place] = copy
+						else world:Destroy() end
 						break
 					end
 				end
@@ -672,20 +699,26 @@ function Cutscene.play(winners, onStage)
 		local up = t < leave and 1 or 1 - ease((t - leave) / GLIDE)
 		setDark(state, t < depart and ease((t - BANNER) / DIM) or up)
 		if t >= depart and t < arrive then standWinners() end
-		-- The winners' layers follow the camera; they fade in at the end of the glide over and out on the way home
-		-- (a layer shows through everything in the room, so it must be gone before the camera turns away).
+		-- The small winners are put in front of the camera where they look like big ones on their desks; they fade in at
+		-- the end of the glide over and out on the way home (they stand in front of everything in the room, so they
+		-- must be gone before the camera turns away).
 		local seen = t < arrive and ease((t - depart - GLIDE * 0.6) / (GLIDE * 0.4)) or 1 - ease((t - leave) / (GLIDE * 0.4))
 		for place, w in state.winners do
 			local since = t - arrive - LIGHT_AT - (3 - place) * TURN
 			if since >= 0 and not w.lit then w.lit = true; w.emote:Play(0.3) end
-			shine(w.light, math.clamp(since / CLICK, 0, 1), up)
-			-- the layer's camera: the scene's, brought in towards the small winner by their scale
-			w.light.lens.CFrame = shot.Rotation + (w.spot + (shot.Position - w.spot) / w.scale)
-			w.light.lens.FieldOfView, w.light.layer.ImageTransparency = fov, 1 - seen
+			shine(w, math.clamp(since / CLICK, 0, 1), up)
+			-- every point of the big winner, moved towards the camera by their scale: for the small winner standing at
+			-- the desk spot that is one slide
+			w.shift = (shot.Position - w.spot) * (1 - 1 / w.scale)
+			w.world:PivotTo(CFrame.new(w.spot + w.shift))
+			if w.seen ~= seen then
+				w.seen = seen
+				for _, piece in w.fading do piece.LocalTransparencyModifier = 1 - seen end
+			end
 			if w.flick then
-				w.propLens.CFrame, w.propLens.FieldOfView = shot, fov
-				w.propLayer.ImageColor3, w.propLayer.ImageTransparency = w.light.layer.ImageColor3, 1 - seen
 				flickPlane(w, since, shot, steady, height)
+				state.lens.CFrame = shot
+				state.lensGlow.Brightness = 2 * up * math.clamp((since - w.flick.release) / FLICK_FLIGHT, 0, 1)
 			elseif w.prop and w.emote.IsPlaying then flyPlane(w) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
@@ -707,13 +740,12 @@ function Cutscene.play(winners, onStage)
 				plate.frame.Position = UDim2.fromOffset(at.X, math.min(at.Y + 6, screen.Y - PLATE_H * screen.Y / 1080 - 8))
 			end
 		end
-		-- Focus on the winners, soft in front and a little behind. Roblox's focus stops at 500 studs, so a farther
-		-- shot widens the sharp band instead.
+		-- Focus on the winners (the small ones, near the camera); the room behind them a little soft.
 		local strength = t < arrive and ease((t - depart) / GLIDE) or t < leave and 1 or 1 - ease((t - leave) / GLIDE)
-		local depth = math.max(0, (spots[1] - shot.Position):Dot(shot.LookVector))
-		state.blur.FocusDistance = math.min(depth, 480)
-		state.blur.InFocusRadius = math.min(500, depth - state.blur.FocusDistance + BLUR_RADIUS)
-		state.blur.NearIntensity, state.blur.FarIntensity = BLUR_NEAR * strength, BLUR_FAR * strength
+		local first = state.winners[1] or state.winners[2] or state.winners[3]
+		local depth = math.max(0, (spots[1] - shot.Position):Dot(shot.LookVector)) / (first and first.scale or 28)
+		state.blur.FocusDistance, state.blur.InFocusRadius = depth, math.max(8, depth * 0.5)
+		state.blur.NearIntensity, state.blur.FarIntensity = 0, BLUR_FAR * strength
 		state.written = shot
 	end)
 end
@@ -724,7 +756,7 @@ function Cutscene.stop()
 	active = nil
 	RunService:UnbindFromRenderStep("WinnersCutscene")
 	for _, w in state.winners do w.light.part:Destroy() end
-	if state.stageGui then state.stageGui:Destroy() end
+	if state.stage then state.stage:Destroy() end
 	setDark(state, 0)
 	for model in state.hidden do if model.Parent then setHidden(model, false) end end
 	if state.added then state.added:Disconnect() end
