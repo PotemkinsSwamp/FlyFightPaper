@@ -1046,3 +1046,8 @@ Back to [HOME](../HOME.md)
   Alan saw the floating in Play). Move the kid each frame until the lowest point of hips and legs is on the seat
   (`sit` in `WinnersCutscene`). **A sleeping kid hides the face:** a face that shows reads as awake, since we cannot
   close the eyes; hang the head 70 degrees and check it against where the camera is.
+- **IKControl is not safe for a hand that must stay on a moving body (2026-11-20, Nap).** Measured in Play: it left
+  the hand 0.09 to 0.75 studs off its target depending on the avatar and, with a far target, flipped one body's arm
+  right over several times a second. Bend the arm yourself after the animation (`bendArm` and `rig` in
+  `WinnersCutscene`): exact on every body measured. Test bodies made in Edit miss far less than real avatars do
+  (0.04 to 0.12 against 0.5 to 0.7 studs): measure joint work in Play, on the avatars the game really shows.

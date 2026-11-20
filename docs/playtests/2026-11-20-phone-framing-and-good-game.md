@@ -27,8 +27,9 @@ anywhere. Done after: the kid is moved each frame to rest on the books; the head
 Details on the [emote making](../workshop/emote-making.md) page.
 
 Second look: **"Yeah, I think that's good. I think we move on."** Nap is approved. But "one of the models had a weird
-error happening where their arm was, like, moving back and forth. Like, it was, like, glitching out": which kid,
-which arm and when are not known yet; open.
+error happening where their arm was, like, moving back and forth. Like, it was, like, glitching out": found
+in a Play run of mine on his go (numbers only): Roblox's IKControl flipped 3rd's right arm up to 178 degrees a frame
+while the kid was awake. Replaced by our own arm bend; his look at the fix is open.
 
 ## Notes
 - My first explanation of the phone fault was wrong (I said the top and bottom were cut before looking); he told me

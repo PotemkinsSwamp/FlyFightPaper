@@ -488,7 +488,7 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
   Edit, not yet looked at): `Emote_Bored` 10713992055 (a candidate for the standing rest), `Emote_Agree`
   10713954623 (a nod), `Emote_Beckon` 10713984554 (what they hold: below).
 
-## Nap: approved by Alan in Play, one arm glitch open (2026-11-20)
+## Nap: approved by Alan in Play; the arm glitch found and fixed, his look at the fix open (2026-11-20)
 The feeling: bored and done ("I didn't win, wake me when it's over"), the kid asleep at the back of the class.
 **Alan's own version** (his "yes, build it"): "sitting crisscross applesauce, elbow on the knee, holding their head
 up ... the bubble ... the Z's ... they jolt up, and then they look around like side to side. 1, 2, 3. Then they look
@@ -499,8 +499,7 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
   kind of floating ... their head needs to be more down ... fully, like, limp down, resting on the hand ... it makes
   them look awake, if you can see their faces"; the elbow need not be on the knee, only on that leg; the hand may
   hold the head anywhere. Both changed the same day; **his second look: "Yeah, I think that's good. I think we move
-  on"**, with one fault: one kid's arm was "moving back and forth ... glitching out" in that look: cause not found yet, open (suspects, unproven: the IKControl arm on that body, or the arm
-  swinging as the chest turns in the look-around while the hand stays put):
+  on"**, with one fault: one kid's arm was "moving back and forth ... glitching out" in that look (found and fixed, below):
   - **Head down:** it hangs 70 degrees down (84 in a nod), rolled 15 onto the hand, which holds it by the right side
     of the brow; the chest slumps 15 to 17 degrees forward (the tool picks the lean nearest 25 that keeps the elbow
     on the thigh: it lands 0.67 studs over the thigh's line, 0.88 of the way to the knee). The camera looks down on
@@ -510,6 +509,25 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
     hips the same distance: in the dry run a tall slim body floated 0.34 studs, the standard one was 0.23 and a
     short one 0.38 into the book. With the shins and feet on the book the thighs are about 0.25 studs over it.
   - The bubble now leaves the mouth towards the camera and the kid's left, so it shows under the lowered face.
+- **The arm glitch, measured in a Play run of mine** (his go; muted, numbers only: the right arm's turn against the
+  chest every frame, both runner-ups, four winners' moments in one Play):
+  - It was Roblox's IKControl while the kid was **awake**: on one body (3rd place, 6.2 studs tall) the right upper
+    and lower arm flipped up to 178 degrees in a frame, five or six times a second, through the look-around. The
+    other body only jumped once (35 degrees) in the sink.
+  - Asleep, the clip alone left the hand 0.5 to 0.7 studs off the brow on real avatars (far more than the 0.04 to
+    0.12 on my Edit test bodies), and IKControl closed that on one (to 0.09) and not on another (0.75).
+  - **Fix: no IKControl.** `bendArm` in `WinnersCutscene` bends the arm itself, after the animation and from its
+    pose, on `RunService.PreSimulation` (shoulder so the elbow is where a two-bone arm needs it, on the knee's side;
+    elbow so the hand's middle is on the point), with a weight: 1 asleep, let go over 0.15 s at the jolt (awake the
+    clip alone leaves the hand in the air), back over the last 0.4 s as the head lands. The same math run from
+    outside in that Play on four bodies: hand 0.00 studs off the brow every sleeping second, at most 0.6 degrees a
+    frame asleep, 18 to 21 at the jolt, no flipping. The version now in the file ran in Edit only (0.12 off becomes
+    0.001); **Alan has not seen it.** The pose is read from the joints' own `Transform` (`rig`): a part's CFrame is
+    a frame old when PreSimulation runs, which gave two small back-and-forth frames in the nod's catch.
+  - In the same Play, `sit` held: lowest point 0.000 over the book top on both kids; thighs 0.00 and 0.18 over it.
+  - How to run such a check without clicking: in the Client, `Root.RoundAction:FireServer("join")`, set
+    `DevRunnerUp` on `ReplicatedStorage.FlyFightPaper`, `FireServer("endMatch")` (again after each moment for
+    another, with other winners); the winners are `workspace.WinnerStage.Winner<place>Stage.Cast.Winner<place>`.
 - **Two clips**, both cuts in `tools/emote_clips.lua`, in the open place's `Assets` (unsaved) and as files:
   `NapSleepClip` (`CUTS.NapSleep`, `assets/animations/emotes/nap-sleep.rbxm`, an 8 s loop: a breath every 4 s, one
   small nod at 5 s) and `NapWakeClip` (`CUTS.NapWake`, `nap-wake.rbxm`, 5.1 s, once: jolt 0.2 s, sitting stiff,
@@ -546,6 +564,16 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
   assistant puts the camera type back when a command ends).
 
 ## Next One: what is left (2026-11-20)
+- **Plan approved by Alan in words (2026-11-20, "yes, build it"), nothing built.** The feeling: already over it and
+  planning the rematch ("fine, you got this one, the next one is mine"); not sulking, not watching 1st, busy. Head
+  down on the work the whole time; brisk, exact hands with short pauses to check each fold (the opposite of Nap's
+  limp slowness and Good Game's grudging slowness); the payoff: the finished plane held up at eye level and turned
+  over. Seen: already sitting cross-legged in the dark with a white sheet on the right hand; three folds in about
+  5 s (about 1.3 s each: in half, the nose, the wings), the paper really folding as hinged pieces; then the plane
+  (about a forearm long) held up and slowly turned. Made: the body from Next One A, no generator call; **the paper
+  does the acting**: the left hand is put on the moving flap with `bendArm` (not IKControl), so its path is the
+  fold's arc and not typed-in numbers; seated with `sit`. Risk told to him: from the camera the folds are small and
+  may read as fiddling. An option he did not answer (so not in): sighting along the plane towards 1st at the end.
 - **Next One**: Next One A's sitting posture, the head looking down about 25 degrees, the left hand's three folds
   posed by numbers, a sheet that becomes a half-folded sheet and then a plain white plane on the right hand's grip
   point (swapped at marks on the clip), then a raise-and-look as the ending.

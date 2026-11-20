@@ -528,6 +528,56 @@ local function sit(model, seat)
 	if low < math.huge then model:PivotTo(model:GetPivot() + Vector3.yAxis * (seat.Position.Y - low)) end
 end
 
+-- A hand put on a point, on every body (measured in Play 2026-11-20: one set of joint turns left the hand 0.5 to 0.7
+-- studs off the head on some avatars; Roblox's IKControl closed that on some, stayed 0.75 off on one, and while the
+-- kid was awake flipped one body's arm right over, up to 178 degrees a frame: the glitch Alan saw). So the arm is
+-- bent here, after the animation has posed it and from that pose: the shoulder turns so the elbow is where a
+-- two-bone arm must have it, on the side of `pole`, and the elbow turns so the hand's middle is on `target`;
+-- `weight` 0 to 1 is how much of that is done. Measured in Play on four bodies: 0.00 studs off, nothing jumping.
+-- `rig` gives every joint of a body and `at(part)`: where a part is by this frame's animation (its own CFrame is
+-- still last frame's when this runs). Call from RunService.PreSimulation.
+local function rig(model)
+	local joints = {}
+	for _, item in model:GetDescendants() do
+		if item:IsA("Motor6D") and item.Part0 and item.Part1 then
+			joints[item.Part1] = { joint = item, c0 = item.C0, c1 = item.C1, parent = item.Part0 }
+		elseif item:IsA("AnimationConstraint") and item.Attachment0 and item.Attachment1 then
+			joints[item.Attachment1.Parent] = { joint = item, c0 = item.Attachment0.CFrame, c1 = item.Attachment1.CFrame, parent = item.Attachment0.Parent }
+		end
+	end
+	local function at(part)
+		local j = joints[part]
+		return j and at(j.parent) * j.c0 * j.joint.Transform * j.c1:Inverse() or part.CFrame
+	end
+	return joints, at
+end
+local function arc(from, to) -- the shortest turn that takes one direction to another
+	local axis = from:Cross(to)
+	if axis.Magnitude < 1e-6 then return CFrame.identity end
+	return CFrame.fromAxisAngle(axis.Unit, math.atan2(axis.Magnitude, from:Dot(to)))
+end
+local function bendArm(joints, at, upper, lower, hand, target, pole, weight)
+	local u, l = joints[upper], joints[lower]
+	if not (u and l) or weight <= 0 then return end
+	local turnU, turnL = u.joint.Transform, l.joint.Transform
+	local shoulder = at(u.parent) * u.c0
+	local bend = shoulder * turnU * u.c1:Inverse() * l.c0
+	local s, elbow0, hand0 = shoulder.Position, bend.Position, at(hand).Position
+	local l1, l2 = (elbow0 - s).Magnitude, (hand0 - elbow0).Magnitude
+	local d = math.clamp((target - s).Magnitude, math.abs(l1 - l2) * 1.01, (l1 + l2) * 0.98)
+	local along = (target - s).Unit
+	local a = (l1 * l1 - l2 * l2 + d * d) / (2 * d)
+	local out = pole - s
+	out -= along * out:Dot(along)
+	if out.Magnitude < 1e-4 then return end
+	local elbow = s + along * a + out.Unit * math.sqrt(math.max(l1 * l1 - a * a, 0))
+	local function some(turn) local axis, angle = turn:ToAxisAngle(); return CFrame.fromAxisAngle(axis, angle * weight) end
+	local first = some(arc(elbow0 - s, elbow - s))
+	local second = some(arc(s + first * (hand0 - s) - elbow, s + along * d - elbow))
+	u.joint.Transform = shoulder.Rotation:Inverse() * first * (shoulder * turnU).Rotation + turnU.Position
+	l.joint.Transform = (first * bend.Rotation):Inverse() * second * first * (bend * turnL).Rotation + turnL.Position
+end
+
 -- Nap (Alan's own version 2026-11-20; the napper is bored and done, asleep at the back of the class): sitting
 -- cross-legged, the right elbow on the thigh and the head hanging limp, face to the lap, held by the brow on the
 -- hand (his second look: "their head needs to be more down ... it makes them look awake, if you can see their
@@ -535,8 +585,9 @@ end
 -- (Assets.NapSleepClip, a loop: a breath every 4 s, a small nod). When 1st's light clicks on they jolt awake, sit
 -- stiff, look right, left, right and forward, and sink back onto the hand in a dip, a catch and a sink
 -- (Assets.NapWakeClip, once, one priority higher; it starts and ends in the loop's first pose). Both are cut by
--- tools/emote_clips.lua. Like the clap's hands: IKControl bends the right arm so the hand is on the brow on every
--- body, the elbow towards the knee; while they are awake the hand stays in the air where the brow left it.
+-- tools/emote_clips.lua. The right arm is bent so the hand is on the brow on every body, the elbow towards the knee
+-- (bendArm); from the jolt on that is let go (NAP_OFF seconds) and the clip alone leaves the hand in the air about
+-- where the brow was; it comes back over the last NAP_ON seconds, as the head lands.
 -- Two props, plain parts made here (sizes in head heights), in the kid's own frame so they keep their place on the
 -- stage: three paper Z's, each three thin white strips, leave the head on the kid's right one every Z_EVERY seconds,
 -- rise, drift, sway, grow and fade over Z_LIFE; a snore bubble at the mouth, out to the kid's left and towards the
@@ -545,7 +596,7 @@ end
 -- flying off); a new one starts when they are asleep again. No Z's leave while they are awake.
 local Z_EVERY, Z_LIFE, Z_RISE, Z_DRIFT, Z_SMALL, Z_BIG = 4 / 3, 4, 1.5, 0.6, 0.3, 0.9
 local BUBBLE_SMALL, BUBBLE_BIG, BUBBLE_GROW, BUBBLE_BREATH, BUBBLE_CLEAR, POP, POP_BITS = 0.06, 0.25, 6, 0.03, 0.45, 0.1, 0.3
-local NAP_BREATH = 4 -- seconds a breath in the sleeping clip
+local NAP_BREATH, NAP_OFF, NAP_ON = 4, 0.15, 0.4 -- seconds a breath in the sleeping clip; the hand let go and taken back
 local function paper(parent, color, shape)
 	local part = Instance.new("Part")
 	part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
@@ -572,11 +623,15 @@ local function nap(animator, model, place, cast, top)
 	seat.Size, seat.CFrame, seat.Parent = Vector3.one * 0.05, CFrame.new(top), cast
 	-- the hand against the right side of the brow (the same point the clips were cut for)
 	local browAt = Vector3.new(0.22 * head.Size.X, -0.05 * head.Size.Y, -0.5 * head.Size.Z - 0.3 * hand.Size.Y)
-	local brow, knee = Instance.new("Attachment"), Instance.new("Attachment")
-	brow.Parent, knee.Position, knee.Parent = root, Vector3.new(0, shin.Size.Y / 2, 0), shin
-	local reach = Instance.new("IKControl")
-	reach.Type, reach.ChainRoot, reach.EndEffector, reach.Target, reach.Pole = Enum.IKControlType.Position, upper, hand, brow, knee
-	reach.SmoothTime, reach.Parent = 0, animator.Parent
+	local joints, at = rig(model)
+	local lower = model:FindFirstChild("RightLowerArm")
+	local bent
+	bent = RunService.PreSimulation:Connect(function()
+		if not model:IsDescendantOf(game) then bent:Disconnect(); return end
+		local weight = 1
+		if wake.IsPlaying then weight = math.max(1 - wake.TimePosition / NAP_OFF, 1 - (wake.Length - wake.TimePosition) / NAP_ON, 0) end
+		if lower then bendArm(joints, at, upper, lower, hand, at(head) * browAt, at(shin) * Vector3.new(0, shin.Size.Y / 2, 0), weight) end
+	end)
 
 	local size, white = head.Size.Y, Color3.new(1, 1, 1)
 	local thin = 0.03 * size
@@ -593,7 +648,6 @@ local function nap(animator, model, place, cast, top)
 		if not model:IsDescendantOf(game) then beat:Disconnect(); return end
 		sit(model, seat)
 		local now, awake, stage = os.clock(), wake.IsPlaying, root.CFrame
-		if not awake then brow.WorldPosition = head.CFrame * browAt end
 		-- the Z's
 		if not awake and now >= nextZ then
 			for _, z in zs do
