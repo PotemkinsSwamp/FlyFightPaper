@@ -538,8 +538,8 @@ function Cutscene.play(winners, onStage)
 	for _, item in workspace:GetDescendants() do if item:IsA("Light") then state.lamps[item] = item.Brightness end end
 	state.air = Lighting:FindFirstChildOfClass("Atmosphere")
 	state.airWas = state.air and state.air.Density
-	state.stage = Instance.new("Folder") -- the small winners, their books and plane ("Winner...": never hidden for the shot)
-	state.stage.Name, state.stage.Parent = "WinnerStage", workspace
+	state.set = Instance.new("Folder") -- the small winners, their books and plane ("Winner...": never hidden for the shot)
+	state.set.Name, state.set.Parent = "WinnerStage", workspace
 	Root:SetAttribute("Cutscene", true)
 	onStage("banner")
 
@@ -589,18 +589,19 @@ function Cutscene.play(winners, onStage)
 						anchor.Name, anchor.Anchored, anchor.CanCollide, anchor.CanQuery, anchor.CanTouch, anchor.Transparency = "Anchor", true, false, false, false, 1
 						anchor.Size, anchor.CFrame, anchor.Parent = Vector3.one * 0.2, CFrame.new(spots[place]), world
 						world.Name, world.PrimaryPart = "Winner" .. place .. "Stage", anchor
+						world.Parent = state.set -- in the room before the avatar goes in: animations only load on an avatar that is in the game
 						local copy = copyWinner(source, place, back, entry.actorId, spots[place], world)
 						if copy then
 							copy.world, copy.light = world, makeSpotlight(spots[place], back, height)
 							if copy.flick then
-								copy.prop.plane.Parent = state.stage
+								copy.prop.plane.Parent = state.set
 								state.flickAt = LIGHT_AT + 2 * TURN + copy.flick.release -- the release, in seconds after arriving
 								-- A small light at the lens for the plane's flight: it leaves 1st's spotlight on the way.
 								local lens = Instance.new("Part")
 								lens.Name, lens.Anchored, lens.CanCollide, lens.CanQuery, lens.CanTouch, lens.Transparency, lens.Size = "LensLight", true, false, false, false, 1, Vector3.one * 0.2
 								local glow = Instance.new("PointLight")
 								glow.Range, glow.Color, glow.Brightness, glow.Shadows, glow.Parent = 9, LAMP_COLOR, 0, false, lens
-								lens.Parent = state.stage
+								lens.Parent = state.set
 								state.lens, state.lensGlow = lens, glow
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
@@ -609,7 +610,6 @@ function Cutscene.play(winners, onStage)
 									if piece:IsA("BasePart") and piece.Transparency < 1 or piece:IsA("Decal") or piece:IsA("Texture") then table.insert(copy.fading, piece) end
 								end
 							end
-							world.Parent = state.stage
 							state.winners[place] = copy
 						else world:Destroy() end
 						break
@@ -756,7 +756,7 @@ function Cutscene.stop()
 	active = nil
 	RunService:UnbindFromRenderStep("WinnersCutscene")
 	for _, w in state.winners do w.light.part:Destroy() end
-	if state.stage then state.stage:Destroy() end
+	if state.set then state.set:Destroy() end
 	setDark(state, 0)
 	for model in state.hidden do if model.Parent then setHidden(model, false) end end
 	if state.added then state.added:Disconnect() end
