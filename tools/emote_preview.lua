@@ -31,11 +31,14 @@ local RELEASE, FLIGHT = JOIN + PULL_TIME + PUSH_TIME * LET_GO, 0.42 -- the plane
 -- (ROLL at the start, none after). The head: HEAD_DOWN and a little towards the hand, tipping TILT with the turn.
 local OUT, OUT_MID, FORWARD, INWARD, BEND = { 0, 14 }, 12, { 6, 22 }, { 55, 42 }, { 118, 100 }
 local ROLL, HEAD_DOWN, TILT = 180, 14, 5
--- The plane in the hand (Alan 2026-11-19: it turned by itself in a still hand): it goes with the hand until JOIN, so
--- the arm turns it over (it lies level, nose to the kid's left and away, at both ends of the turn: the grip shifts a
--- little in the fingers on the way, GRIP_FROM to GRIP). Then, by READY, it comes to how a paper plane is held to throw: the hand under it, its nose
--- towards the camera, a little up, askew and banked (HOLD: straight at the lens it is a dot).
-local ADMIRED, READY = JOIN, JOIN + 0.5
+-- The plane in the hand (Alan 2026-11-20: it must sit snugly in the hand on every body, with nothing tuned per body;
+-- the hand's own turn need not look right). It is held the way Roblox holds a tool: fixed, with one grip for every
+-- avatar, to the hand's own grip point (RightGripAttachment, which every avatar has where a tool sits in its hand).
+-- So the plane only ever moves with the hand, and the animation turns the wrist to show it: its bottom towards the
+-- kid's eyes, rolled over to its top (nose to the kid's left and away at both ends), and from JOIN to READY round to
+-- how a paper plane is held to throw: its nose towards the camera, a little up, askew and banked (HOLD: straight at
+-- the lens it is a dot).
+local READY = JOIN + 0.5
 local HOLD = CFrame.Angles(math.rad(12), math.rad(-15), 0) * CFrame.Angles(0, 0, math.rad(-22))
 local HEIGHT = 140 -- every avatar stands this tall in the room (config avatar_display.standing_height_studs)
 local FOV = 50
@@ -54,13 +57,15 @@ local desk = workspace.Arena.DeskNorth3
 local back = Vector3.zAxis -- from the chalkboard row out into the room: the winner faces this way
 local spot = Vector3.new(desk.Position.X, desk.Position.Y + desk.Size.Y / 2, desk.Position.Z) + back * desk.Size.Z * 0.15
 
--- The test kid: Roblox's plain blocky body in a red shirt and blue trousers.
+-- The test kid: Roblox's plain blocky body in a red shirt and blue trousers (the body the clip is baked on), or, to
+-- look at another body, the avatar of the user id in _G.EMOTE_BODY.
 local look = Instance.new("HumanoidDescription")
 local skin, shirt, legs = Color3.fromRGB(234, 184, 146), Color3.fromRGB(196, 40, 28), Color3.fromRGB(13, 105, 172)
 look.HeadColor, look.LeftArmColor, look.RightArmColor, look.TorsoColor, look.LeftLegColor, look.RightLegColor = skin, skin, skin, shirt, legs, legs
+if _G.EMOTE_BODY then look = Players:GetHumanoidDescriptionFromUserId(_G.EMOTE_BODY) end
 local kid = Players:CreateHumanoidModelFromDescription(look, Enum.HumanoidRigType.R15)
 kid.Name = "EmotePreviewKid"
-kid:ScaleTo(HEIGHT / kid:GetExtentsSize().Y)
+kid:ScaleTo(HEIGHT / (kid.Head.Position.Y + kid.Head.Size.Y / 2 - math.min(kid.LeftFoot.Position.Y - kid.LeftFoot.Size.Y / 2, kid.RightFoot.Position.Y - kid.RightFoot.Size.Y / 2))) -- head to feet: hats and wings don't count
 local scale = kid:GetScale()
 local joints = {} -- part name -> where it hangs on its parent
 for _, j in kid:GetDescendants() do
@@ -163,7 +168,7 @@ local function mix(a, b, s)
 	return out
 end
 local function eased(v) v = math.clamp(v, 0, 1); return v * v * (3 - 2 * v) end
-local function turnsAt(t)
+local function bodyAt(t)
 	local clipTime = if t < LOOK_UP then LOOKED + t / LOOK_UP * (SLOW_TO - LOOKED) else SLOW_TO + t - LOOK_UP
 	local a = sample(admire, math.min(clipTime, ADMIRE_END))
 	local u = eased((t - TURN_FROM) / (TURN_TO - TURN_FROM)) -- 0 the bottom towards the eyes, 1 the top
@@ -180,6 +185,29 @@ local function turnsAt(t)
 	if s < 1 then return mix(sample(throw, PULL_AT), sample(throw, PUSH_AT), 1 - (1 - s) ^ 2) end -- pushed at the camera
 	return sample(throw, PUSH_AT + t - JOIN - PULL_TIME - PUSH_TIME) -- held pointing
 end
+-- Where the plane points at `t`, in the kid's own frame (forward is -Z, right +X): SEEN is its top towards their
+-- eyes; before the turn it is rolled right over about its own nose (`spin`: which way round).
+local SEEN = CFrame.lookAt(Vector3.zero, Vector3.new(-0.6, 0.15, -0.8).Unit, Vector3.new(0, 0.75, 0.65))
+local THROWN = CFrame.lookAt(Vector3.zero, Vector3.new(0, 0.12, -1)) * HOLD
+local function planeAt(t, spin)
+	local u = eased((t - TURN_FROM) / (TURN_TO - TURN_FROM))
+	return (SEEN * CFrame.Angles(0, 0, spin * math.pi * (1 - u))):Lerp(THROWN, eased((t - JOIN) / (READY - JOIN)))
+end
+-- The plane against the hand part (after the turn the wrist is straight), and against its grip point: GRIP is the
+-- one grip the game uses on every avatar.
+local gripPoint = kid.RightHand:FindFirstChild("RightGripAttachment")
+local IN_HAND = build(bodyAt(TURN_TO)).RightHand.Rotation:Inverse() * SEEN
+local GRIP = (gripPoint and gripPoint.CFrame.Rotation or CFrame.identity):Inverse() * IN_HAND
+-- The body at `t` with the wrist turned so the plane, fixed in the hand, points where it should.
+local function aimed(turn, planeTurn)
+	local at = build(turn)
+	turn.RightHand = ((at.RightLowerArm * joints.RightHand.c0):Inverse() * (planeTurn * IN_HAND:Inverse()) * joints.RightHand.c1).Rotation
+	return turn
+end
+local function wrist(t, spin) return math.deg(select(2, aimed(bodyAt(t), planeAt(t, spin)).RightHand:ToAxisAngle())) end
+-- The roll goes the way the forearm rolls: the way that asks less of the wrist half-way through.
+local SPIN = wrist((TURN_FROM + TURN_TO) / 2, 1) < wrist((TURN_FROM + TURN_TO) / 2, -1) and 1 or -1
+local function turnsAt(t) return aimed(bodyAt(t), planeAt(t, SPIN)) end
 local function pose(t) return build(turnsAt(t)) end
 -- Feet on the desk: the root's height from the lowest foot over the whole clip's first pose.
 local low = math.huge
@@ -259,46 +287,30 @@ end
 
 -- How the plane sits against the hand while it is admired: along the forearm, its top tipped back towards the face
 -- (worked out from the pose at the start of the look down, then fixed to the hand).
-local GRIP_FROM, GRIP
-do
-	-- its nose to the kid's left and away; before the turn its bottom up and back towards their eyes, after it its
-	-- top (stills number 5 and 2)
-	local nose, eyes = Vector3.new(-0.6, 0.15, -0.8).Unit, Vector3.new(0, 0.75, 0.65)
-	GRIP_FROM = build(turnsAt(0)).RightHand.Rotation:Inverse() * CFrame.lookAt(Vector3.zero, nose, -eyes)
-	GRIP = build(turnsAt(TURN_TO)).RightHand.Rotation:Inverse() * CFrame.lookAt(Vector3.zero, nose, eyes)
-	local _, slip = (GRIP_FROM:Inverse() * GRIP):ToAxisAngle()
-	E.slip = math.deg(slip) -- how far the grip shifts in the hand: small, or the arm is not doing the turning
-end
--- The plane on the hand, turned `turn`, for the pose `at`: held by its back half, so it reaches out past the fingers
--- and away from the forearm, and resting on the hand, never in it (Alan 2026-11-20: it sank into the hand): lifted
--- until its underside clears every bit of the hand and wrist that lies under it. `belly`: from the plane's middle
--- down to its underside (BELLY of the way to its lowest point: what hangs under the wings may touch the fingers; with
--- all of it the plane floated over the hand).
-local BELLY, belly = 0.6, nil
+-- The plane for the pose `at`: fixed to the hand's grip point, turned by GRIP, its middle a little ahead of the
+-- fingers, and lifted off the grip point until its underside clears the hand (the plane is always on the same side
+-- of the hand, so the lift depends only on the hand's own shape): in the hand, never through it. `belly`: from the
+-- plane's middle down to its underside, BELLY of the way to its lowest point and at most THIN of its length (what
+-- hangs under the wings may touch the fingers; with all of it the plane floated over the hand).
+local BELLY, THIN, belly = 0.6, 0.05, nil
 do
 	local box, size = plane:GetBoundingBox()
-	belly = BELLY * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y)
+	belly = math.min(BELLY * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), THIN * length)
 end
-local function held(at, turn)
-	local under = CFrame.new((rootAt * at.RightHand).Position) * turn * CFrame.new(0, 0, -length * 0.3)
+local function held(at)
+	local hand = kid.RightHand
+	local grip = rootAt * at.RightHand * (gripPoint and gripPoint.CFrame or CFrame.identity)
+	local under = CFrame.new(grip.Position) * (grip.Rotation * GRIP) * CFrame.new(0, 0, -length * 0.05)
 	local top = 0
-	for _, name in { "RightHand", "RightLowerArm" } do
-		local part = kid:FindFirstChild(name)
-		for i = 0, name == "RightHand" and 19 or 7 do -- the hand's corners and three more rings along it; the forearm's wrist end
-			local corner = rootAt * at[name] * (part.Size * Vector3.new(i % 2 - 0.5, (i // 4) / 4 - 0.5, (i // 2) % 2 - 0.5))
-			local seen = under:PointToObjectSpace(corner)
-			if math.abs(seen.X) < span / 2 and math.abs(seen.Z) < length / 2 then top = math.max(top, seen.Y) end
-		end
+	for i = 0, 7 do
+		local corner = rootAt * at.RightHand * (hand.Size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5))
+		top = math.max(top, under:PointToObjectSpace(corner).Y)
 	end
 	return under * CFrame.new(0, top + belly, 0)
 end
-local function smooth(v) v = math.clamp(v, 0, 1); return v * v * (3 - 2 * v) end
-local function inHand(t)
-	local at = pose(t)
-	local grip = rootAt * at.RightHand
-	local level = (CFrame.lookAt(grip.Position, eye) * HOLD).Rotation
-	local gripNow = GRIP_FROM:Lerp(GRIP, smooth((t - TURN_FROM) / (TURN_TO - TURN_FROM)))
-	return held(at, (grip.Rotation * gripNow):Lerp(level, smooth((t - ADMIRED) / (READY - ADMIRED))))
+E.wrist = 0
+for n = 0, math.floor(LENGTH * 10) do
+	E.wrist = math.max(E.wrist, math.deg(select(2, turnsAt(n / 10).RightHand:ToAxisAngle())))
 end
 
 function E.frame(t)
@@ -309,10 +321,10 @@ function E.frame(t)
 	end
 	local view = cameraAt(t)
 	if t < RELEASE then -- in the hand
-		plane:PivotTo(inHand(t))
+		plane:PivotTo(held(at))
 	elseif t < HIT then -- flying at the lens, turning flat as it arrives
 		local s = 1 - (1 - (t - RELEASE) / FLIGHT) ^ 2 -- fast off the hand, slower as it fills the picture, so the approach is seen
-		local from = inHand(RELEASE).Position
+		local from = held(pose(RELEASE)).Position
 		local to = (cam0 * CFrame.new(0, 0, -pressed)).Position
 		local p = from:Lerp(to, s)
 		local flying = CFrame.lookAt(p, p + (to - from).Unit) * CFrame.Angles(0, 0, math.rad(40) * s)
@@ -329,18 +341,18 @@ function E.frame(t)
 	return "ok"
 end
 -- Trying a pose by hand, for picture choices (Alan picks a numbered still when words can't carry a pose): the pose at
--- `t` with some joints' turns replaced (part name -> its turn from the rest pose) and the plane on the hand turned
--- `planeTurn` (in the kid's own frame: forward is -Z, right +X), seen from `out` studs in front, `side` to the kid's
+-- `t` with some joints' turns replaced (part name -> its turn from the rest pose) and the wrist turned so the plane
+-- points `planeTurn` (in the kid's own frame: forward is -Z, right +X), seen from `out` studs in front, `side` to the kid's
 -- left and `up` over the desk.
 function E.try(t, replaced, planeTurn, out, side, up)
-	local turn = turnsAt(t)
+	local turn = bodyAt(t)
 	for name, cf in replaced do turn[name] = cf end
-	local at = build(turn)
+	local at = build(aimed(turn, planeTurn or planeAt(t, SPIN)))
 	for name, cf in at do
 		local part = kid:FindFirstChild(name)
 		if part then part.CFrame = rootAt * cf end
 	end
-	plane:PivotTo(held(at, rootAt.Rotation * planeTurn))
+	plane:PivotTo(held(at))
 	local from = spot + back * out + back:Cross(Vector3.yAxis) * side + Vector3.yAxis * up
 	camera.CameraType, camera.FieldOfView = Enum.CameraType.Scriptable, FOV
 	camera.CFrame = CFrame.lookAt(from, spot + Vector3.yAxis * 95)
@@ -355,13 +367,7 @@ function E.bake(parent, name)
 	out.Name, out.Loop, out.Priority = name, false, Enum.AnimationPriority.Action
 	-- for the scene: when the plane leaves the hand, and how it sits in the hand until then
 	out:SetAttribute("Release", RELEASE)
-	out:SetAttribute("Admired", ADMIRED)
-	out:SetAttribute("Ready", READY)
 	out:SetAttribute("Grip", GRIP)
-	out:SetAttribute("GripFrom", GRIP_FROM)
-	out:SetAttribute("TurnFrom", TURN_FROM)
-	out:SetAttribute("TurnTo", TURN_TO)
-	out:SetAttribute("Hold", HOLD)
 	for n = 0, math.floor(LENGTH * 30 + 0.5) do
 		local frame = Instance.new("Keyframe")
 		frame.Time = n / 30
@@ -392,4 +398,4 @@ function E.clean()
 end
 local names = {}
 for name in E.hid or {} do table.insert(names, name) end
-return string.format("ready: %.2f s, release at %.2f s, grip shifts %.0f degrees, kid scale %.1f, plane %.0f long %.0f wide; hid %s", LENGTH, RELEASE, E.slip, scale, length, span, table.concat(names, ", "))
+return string.format("ready: %.2f s, release at %.2f s, wrist turns up to %.0f degrees, kid scale %.1f, plane %.0f long %.0f wide; hid %s", LENGTH, RELEASE, E.wrist, scale, length, span, table.concat(names, ", "))

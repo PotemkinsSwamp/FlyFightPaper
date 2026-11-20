@@ -316,8 +316,9 @@ local function holdPlane(model, actorId, height)
 	plane:ScaleTo(plane:GetScale() * height * PLANE_LENGTH / plane:GetExtentsSize().Z)
 	plane.Name = "HeldPlane"
 	local box, size = plane:GetBoundingBox()
-	return { plane = plane, hand = hand, arm = model:FindFirstChild("RightLowerArm"), length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X,
-		belly = 0.6 * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), -- from its middle down to its underside (see flickPlane)
+	return { plane = plane, hand = hand, grip = hand:FindFirstChild("RightGripAttachment"), length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X,
+		-- from its middle down to its underside (see flickPlane)
+		belly = math.min(0.6 * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), 0.05 * height * PLANE_LENGTH),
 		last = hand.Position, heading = model:GetPivot().LookVector }
 end
 local function flyPlane(w)
@@ -335,12 +336,12 @@ end
 -- Camera Flick, a 1st-place emote (Alan 2026-11-19; recipe and numbers: docs/workshop/emote-making.md): 1st throws
 -- their plane at the camera; it fills the picture, the camera is knocked back, tips over forward, and the plane
 -- slides down the lens; the scene moves on from there. First they look down and admire the plane, then up at the
--- camera (Alan 2026-11-19: the throw came too soon). The clip carries its own times, in seconds after 1st's light,
--- and grip: until "Admired" the plane goes with the hand, so the arm turns it over (its grip in the fingers shifts a
--- little from "GripFrom" to "Grip" between "TurnFrom" and "TurnTo", so it lies level at both ends of the turn); by
--- "Ready" it is held like a paper plane, its nose towards the camera ("Hold": a little up and askew, so its shape
--- shows); at "Release" it leaves the hand and
--- flies FLICK_FLIGHT to the lens; the camera's fall takes FLICK_FALL; the scene leaves FLICK_AFTER after the release.
+-- camera (Alan 2026-11-19: the throw came too soon). The plane is held the way Roblox holds a tool (Alan
+-- 2026-11-20: snugly in the hand on every body, nothing tuned per body): fixed to the hand's own grip point
+-- (RightGripAttachment, which every avatar has where a tool sits in its hand) with the clip's one "Grip", so it only
+-- ever moves with the hand, and the clip turns the wrist to show its bottom, its top, then to aim it at the camera.
+-- At the clip's "Release" (seconds after 1st's light) it leaves the hand and flies FLICK_FLIGHT to the lens; the
+-- camera's fall takes FLICK_FALL; the scene leaves FLICK_AFTER after the release.
 -- Not uploaded yet (Alan's go), so it only plays in Studio: the cleaned-up clip (Assets.CameraFlickClip, made by
 -- tools/emote_preview.lua) is registered for the session, when the Dev panel's "end: flick" button asked for it.
 local FLICK_FLIGHT, FLICK_FALL, FLICK_AFTER = 0.42, 0.65, 1.73
@@ -348,10 +349,8 @@ local FLICK_FLAT = CFrame.Angles(0, 0, math.rad(15)) * CFrame.Angles(math.rad(90
 local function flickClip()
 	local clip = RunService:IsStudio() and Root:GetAttribute("DevCameraFlick") and Root.Assets:FindFirstChild("CameraFlickClip")
 	if not clip then return nil end
-	return game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip), { release = clip:GetAttribute("Release") or 0.87,
-		admired = clip:GetAttribute("Admired") or 0, ready = clip:GetAttribute("Ready") or 0.1, grip = clip:GetAttribute("Grip") or CFrame.identity,
-		gripFrom = clip:GetAttribute("GripFrom"), turnFrom = clip:GetAttribute("TurnFrom") or 0, turnTo = clip:GetAttribute("TurnTo") or 0.1,
-		hold = clip:GetAttribute("Hold") or CFrame.identity }
+	return game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip),
+		{ release = clip:GetAttribute("Release") or 0.87, grip = clip:GetAttribute("Grip") or CFrame.identity }
 end
 local function bounce(v)
 	if v < 1 / 2.75 then return 7.5625 * v * v
@@ -377,23 +376,17 @@ local function flickPlane(w, t, view, steady, height)
 	local prop, flick = w.prop, w.flick
 	local pressed = prop.span * 0.4 -- how far in front of the lens it ends, so its wings fill the picture
 	if t < flick.release or not prop.held then
-		local hand = w.spot + (prop.hand.Position - w.spot) * w.scale -- the winner's layer is `scale` times smaller
-		local level = (CFrame.lookAt(hand, steady.Position) * flick.hold).Rotation
-		local grip = (flick.gripFrom or flick.grip):Lerp(flick.grip, ease((t - flick.turnFrom) / math.max(flick.turnTo - flick.turnFrom, 0.01)))
-		local turn = (prop.hand.CFrame.Rotation * grip):Lerp(level, ease((t - flick.admired) / math.max(flick.ready - flick.admired, 0.01)))
-		-- Held by its back half, so it reaches out past the fingers and away from the forearm, and resting on the
-		-- hand, never in it (Alan 2026-11-20: it sank into the hand, on every avatar): lifted until its underside
-		-- clears every bit of this avatar's own hand and wrist that lies under it (the hand's corners and three more
-		-- rings along it; the forearm's wrist end). Its underside is 0.6 of the way to its lowest point: what hangs
-		-- under the wings may touch the fingers; with all of it the plane floated over the hand.
-		local under = CFrame.new(hand) * turn * CFrame.new(0, 0, -prop.length * 0.3)
+		-- Fixed to the hand's grip point, its middle a little ahead of the fingers, and lifted off the grip point until
+		-- its underside clears this avatar's own hand: in the hand, never through it. (Its underside is 0.6 of the
+		-- way to its lowest point and at most 0.05 of its length: what hangs under the wings may touch the fingers;
+		-- with all of it the plane floated over the hand.)
+		local grip = prop.hand.CFrame * (prop.grip and prop.grip.CFrame or CFrame.identity)
+		local function room(point) return w.spot + (point - w.spot) * w.scale end -- the winner's layer is `scale` times smaller
+		local under = CFrame.new(room(grip.Position)) * (grip.Rotation * flick.grip) * CFrame.new(0, 0, -prop.length * 0.05)
 		local top = 0
-		for _, part in { prop.hand, prop.arm } do
-			for i = 0, part == prop.hand and 19 or 7 do
-				local corner = part.CFrame * (part.Size * Vector3.new(i % 2 - 0.5, (i // 4) / 4 - 0.5, (i // 2) % 2 - 0.5))
-				local seen = under:PointToObjectSpace(w.spot + (corner - w.spot) * w.scale)
-				if math.abs(seen.X) < prop.span / 2 and math.abs(seen.Z) < prop.length / 2 then top = math.max(top, seen.Y) end
-			end
+		for i = 0, 7 do
+			local corner = prop.hand.CFrame * (prop.hand.Size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5))
+			top = math.max(top, under:PointToObjectSpace(room(corner)).Y)
 		end
 		prop.held = under * CFrame.new(0, top + prop.belly, 0)
 		prop.plane:PivotTo(prop.held)

@@ -213,5 +213,20 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   by each avatar's own right-hand grip point (`RightGripAttachment`), one fixed grip for every body.
 - He also asked why the winners and books look low-resolution: they are drawn in overlay layers (ViewportFrames),
   which Roblox draws without edge smoothing and at reduced quality. To look into.
+- **Built (Alan's OK, 2026-11-20): the plane is held like a Roblox tool.** It is fixed to the hand's own grip point
+  (`RightGripAttachment`) with one grip for every avatar (written on the clip, "Grip"), its middle 0.05 of its
+  length ahead of the fingers, lifted until its underside touches that avatar's hand box. All the by-eye offsets
+  and the blending of where it points are gone from the game: the plane only ever moves with the hand, and the bake
+  turns the wrist so it shows its bottom, rolls to its top, then aims at the camera (the wrist turns up to 119
+  degrees for that; Alan: the hand's own turn need not look right).
+- Why the grip point and not the hand part: on a mesh-handed avatar the hand part's own axes were turned every
+  which way (its grip point read -53, -117, 122 degrees against the part), yet the plane came out facing the same
+  way as on the blocky body, because Roblox makes the grip point's direction the standard thing, not the part's.
+- Checked by numbers on three bodies (the blocky test kid, a mesh-handed avatar with big accessories, a classic
+  avatar): the plane's middle stays 0.4 to 0.5 of a hand's length from the hand's middle at every moment, its
+  underside touching the hand; bottom to the eyes at the start (-0.97 to -0.99), top after the turn (0.63 to 0.78).
+  **Not seen:** the screen was asleep, Studio drew blank frames, and the keep-awake mouse nudge was refused, so
+  there is no picture of this cut. `_G.EMOTE_BODY = <user id>` before running the preview tool stands that user's
+  avatar on the desk instead of the blocky kid (sized head to feet: hats and wings made the first try tiny).
 
 Back to [HOME](../HOME.md).
