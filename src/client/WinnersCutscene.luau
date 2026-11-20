@@ -510,6 +510,10 @@ local function makePlates(rows)
 	return gui, plates
 end
 
+local wholeScreen = Instance.new("ScreenGui") -- empty: only measures the whole screen, a phone's notch strips included
+wholeScreen.Name, wholeScreen.ScreenInsets, wholeScreen.IgnoreGuiInset, wholeScreen.ResetOnSpawn = "WinnersWholeScreen", Enum.ScreenInsets.None, true, false
+wholeScreen.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+
 local function popIn(a) a = math.clamp(a, 0, 1) - 1; return 1 + 2.7 * a ^ 3 + 1.7 * a ^ 2 end -- overshoots a little
 
 -- winners: { { actorId, displayName, contribution }, ... } in place order. onStage("banner" | "group" | "card") as it
@@ -526,7 +530,11 @@ function Cutscene.play(winners, onStage)
 	local back = row:Cross(Vector3.yAxis)
 	if back:Dot(flat(-desks[1].Position)) < 0 then back = -back end
 	local right = Vector3.yAxis:Cross(back) -- screen right when looking at the desks from the room side
-	local aspect = camera.ViewportSize.X / math.max(camera.ViewportSize.Y, 1)
+	-- The whole screen's shape. On a phone ViewportSize is only the notch-free middle (749 x 381 of a picture drawn
+	-- 873 x 401 in the simulator), which left the camera too far back; fitted to the whole screen is the distance Alan
+	-- picked there ("zoom 1.2", 2026-11-20), and on a PC the two are the same.
+	local whole = wholeScreen.AbsoluteSize.Y > 1 and wholeScreen.AbsoluteSize or camera.ViewportSize
+	local aspect = whole.X / math.max(whole.Y, 1)
 	local state = { start = os.clock(), winners = {}, hidden = {}, cleared = {}, stage = "banner", cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
 	active = state
 	state.blur = Instance.new("DepthOfFieldEffect") -- Roblox's own camera blur, on this screen only
@@ -652,12 +660,7 @@ function Cutscene.play(winners, onStage)
 	local box = CFrame.fromMatrix(center, right, Vector3.yAxis)
 	local points = { center }
 	for i = 0, 7 do points[#points + 1] = box * (size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5)) end
-	-- Fitted to the screen's width, but never closer than on a 16:9 screen: on a wider screen (phones) the camera
-	-- came about a tenth closer and the outside desks ran into the notch strips (seen in the phone simulator 2026-11-20:
-	-- ViewportSize there is the notch-free middle, 749 x 381 of a picture drawn 873 x 401). The extra width is spare room.
-	-- DevWinnerZoom: the Dev panel's "zoom" button, for Alan to pick the phone's distance; goes when he has picked.
-	local zoom = RunService:IsStudio() and Root:GetAttribute("DevWinnerZoom") or 1
-	local groupDistance = (across + SIDE_ROOM * height) / math.min(aspect, 16 / 9) / tanHalf / zoom
+	local groupDistance = (across + SIDE_ROOM * height) / aspect / tanHalf -- the row and its side room fill the whole screen's width
 	local tilt = -math.rad(GROUP_TILT)
 	local eye = Vector3.new(middle.X, deskTop + GROUP_EYE * height, (spots[1].Z + spots[2].Z + spots[3].Z) / 3) + back * groupDistance
 	local group = CFrame.lookAt(eye, eye - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
