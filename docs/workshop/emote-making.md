@@ -358,7 +358,7 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
 - Checking that a Roblox animation exists and what is in it, without Play: `MarketplaceService:GetProductInfo(id)`
   (type 24 is an animation; a catalogue emote's own id is type 61 and holds no keyframes) and
   `KeyframeSequenceProvider:GetKeyframeSequenceAsync`.
-- **Not yet run in Play by anyone.**
+- Seen by Alan in Play at both speeds (his words above); the hand fix is not yet seen.
 
 ## Nap and Next One: what is left (2026-11-20)
 - **Nap**: a cut from Nap B retimed to a sleepy tempo (slow sink about 2.5 s, held asleep with breathing, a quick
