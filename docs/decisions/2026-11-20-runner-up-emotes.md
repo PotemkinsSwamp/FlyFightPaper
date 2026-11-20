@@ -4,7 +4,7 @@
 **Status:** the first Good Game (Dev panel "2nd/3rd") was not accepted by Alan in Play ("stiff ... too fast ...
 unnatural"); its remake is approved by Alan in Play ("the slow clap is good now", "the stance is good", "the
 wave is fine"), Studio only until its clips are uploaded; Nap is approved by Alan in Play ("I think that's good. I think we move on"; one kid's arm glitch
-found and fixed, his look at the fix open), Studio only until its two clips are uploaded; Next One has its raw body move and is not built
+found and fixed: "arms look fine now"), Studio only until its two clips are uploaded; Next One has its raw body move and is not built
 
 ## Decision
 - The three runner-up emotes as described on the [emote making](../workshop/emote-making.md) page ("Runner-up
@@ -30,7 +30,7 @@ found and fixed, his look at the fix open), Studio only until its two clips are 
   see their faces"); the elbow anywhere on that leg, the hand anywhere on the head.
 - **Next One, plan in words: "yes, build it"** (the feeling: already over it and planning the rematch; head down on
   the work, brisk exact folds, the plane held up and turned over; the paper folds as hinged pieces and the hand
-  rides the flap). Not built yet. With it his go for one Play run of mine to measure Nap's arm glitch.
+  rides the flap). No sighting along the plane towards 1st at the end ("leave the sighting out"). Not built yet. With it his go for one Play run of mine to measure Nap's arm glitch.
 - His go for the nine generator tries (each uploads a private animation to his account) and for Edit-mode screen
   grabs.
 - Earlier the same day: the winners' shot scales to the screen (as close as the screen allows, across and up and

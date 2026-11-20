@@ -488,7 +488,7 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
   Edit, not yet looked at): `Emote_Bored` 10713992055 (a candidate for the standing rest), `Emote_Agree`
   10713954623 (a nod), `Emote_Beckon` 10713984554 (what they hold: below).
 
-## Nap: approved by Alan in Play; the arm glitch found and fixed, his look at the fix open (2026-11-20)
+## Nap: approved by Alan in Play, the arm fix too (2026-11-20)
 The feeling: bored and done ("I didn't win, wake me when it's over"), the kid asleep at the back of the class.
 **Alan's own version** (his "yes, build it"): "sitting crisscross applesauce, elbow on the knee, holding their head
 up ... the bubble ... the Z's ... they jolt up, and then they look around like side to side. 1, 2, 3. Then they look
@@ -521,8 +521,8 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
     elbow so the hand's middle is on the point), with a weight: 1 asleep, let go over 0.15 s at the jolt (awake the
     clip alone leaves the hand in the air), back over the last 0.4 s as the head lands. The same math run from
     outside in that Play on four bodies: hand 0.00 studs off the brow every sleeping second, at most 0.6 degrees a
-    frame asleep, 18 to 21 at the jolt, no flipping. The version now in the file ran in Edit only (0.12 off becomes
-    0.001); **Alan has not seen it.** The pose is read from the joints' own `Transform` (`rig`): a part's CFrame is
+    frame asleep, 18 to 21 at the jolt, no flipping. The version in the file ran in Edit (0.12 off becomes
+    0.001) and then in his Play: **"arms look fine now".** The pose is read from the joints' own `Transform` (`rig`): a part's CFrame is
     a frame old when PreSimulation runs, which gave two small back-and-forth frames in the nod's catch.
   - In the same Play, `sit` held: lowest point 0.000 over the book top on both kids; thighs 0.00 and 0.18 over it.
   - How to run such a check without clicking: in the Client, `Root.RoundAction:FireServer("join")`, set
@@ -573,7 +573,7 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
   (about a forearm long) held up and slowly turned. Made: the body from Next One A, no generator call; **the paper
   does the acting**: the left hand is put on the moving flap with `bendArm` (not IKControl), so its path is the
   fold's arc and not typed-in numbers; seated with `sit`. Risk told to him: from the camera the folds are small and
-  may read as fiddling. An option he did not answer (so not in): sighting along the plane towards 1st at the end.
+  may read as fiddling. Sighting along the plane towards 1st at the end: "leave the sighting out".
 - **Next One**: Next One A's sitting posture, the head looking down about 25 degrees, the left hand's three folds
   posed by numbers, a sheet that becomes a half-folded sheet and then a plain white plane on the right hand's grip
   point (swapped at marks on the clip), then a raise-and-look as the ending.
