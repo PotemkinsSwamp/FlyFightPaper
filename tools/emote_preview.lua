@@ -193,6 +193,32 @@ function E.frame(t)
 	task.wait(0.05)
 	return "ok"
 end
+-- The cleaned-up clip as a plain R15 animation named `name` under `parent`: the extra bones folded into the real
+-- parts, the hips locked and the facing fixed, exactly as the preview poses the kid, so a real avatar plays what the
+-- preview showed. One-shot. This is what the game registers in Studio (WinnersCutscene) and what gets uploaded.
+function E.bake(parent, name)
+	local out = Instance.new("KeyframeSequence")
+	out.Name, out.Loop, out.Priority = name, false, Enum.AnimationPriority.Action
+	for _, key in track do
+		local frame = Instance.new("Keyframe")
+		frame.Time = key.t
+		local poses = { HumanoidRootPart = Instance.new("Pose") }
+		poses.HumanoidRootPart.Name, poses.HumanoidRootPart.Parent = "HumanoidRootPart", frame
+		local function add(part)
+			if poses[part] then return poses[part] end
+			local joint = joints[part]
+			local turn = (key.at[joint.parent] * joint.c0):Inverse() * key.at[part] * joint.c1
+			local made = Instance.new("Pose")
+			made.Name, made.CFrame, made.Parent = part, turn.Rotation + turn.Position / scale, add(joint.parent)
+			poses[part] = made
+			return made
+		end
+		for part in key.at do if joints[part] then add(part) end end
+		frame.Parent = out
+	end
+	out.Parent = parent
+	return string.format("baked %s: %d keys, %.2f s", name, #track, track[#track].t)
+end
 function E.clean()
 	kid:Destroy()
 	plane:Destroy()

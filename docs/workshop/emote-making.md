@@ -105,4 +105,19 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
 - Alan on the first cut: "this is what I imagined", apart from the facing.
 - Videos: `.planning/emotes/camera-flick-preview.mp4` (first cut), `camera-flick-preview-facing.mp4` (facing the camera).
 
+## Camera Flick in the real scene (2026-11-19)
+- **The clean clip.** `_G.EMOTE.bake(parent, name)` in `tools/emote_preview.lua` writes the clip exactly as the
+  preview poses the kid: a plain R15 animation (the generator's extra bones folded into the real parts, so nothing
+  depends on how Roblox fits them), hips locked, facing fixed, one-shot. Saved as
+  `assets/animations/emotes/camera-flick.rbxm`; this is the file to upload.
+- **No upload needed to look at it in Studio.** `KeyframeSequenceProvider:RegisterKeyframeSequence` gives a clip in
+  the place a temporary id that plays in Studio only. The clip sits in `Assets.CameraFlickClip`
+  (`default.project.json`); `WinnersCutscene` registers it when the Dev panel's "end: flick" button asked for it.
+  After the upload: the id goes in the config and the clip leaves the place.
+- **In the scene** (`WinnersCutscene`, "Camera Flick"): the preview's recipe with sizes in winner heights, from the
+  group shot (about twice as far as the preview's camera, same 0.42 s flight). The plane is 1st's own, full size, in
+  a layer of its own over the winners and their name plates (in 1st's small-scale layer it would end 0.6 studs from
+  the lens and be cut off on devices that cut at 0.5). The scene leaves 2.6 s after 1st's light.
+- Not run in Play yet (2026-11-19): the code compiles and the clip registers in Edit; how it looks is unseen.
+
 Back to [HOME](../HOME.md).

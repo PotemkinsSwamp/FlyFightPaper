@@ -1,6 +1,6 @@
 # Winners' circle and emotes plan
 
-**Status, 2026-11-19.** Alan OK'd the staging (timeline, near-dark, lights 3rd-2nd-1st a second apart) and it is built, not yet seen in Play: [where it stands](../systems/modes-and-scoring.md). Camera Flick is approved to build in. The book stacks must be new models, not the town's (Alan). His direction is in the
+**Status, 2026-11-19.** Alan OK'd the staging (timeline, near-dark, lights 3rd-2nd-1st a second apart) and it is built, not yet seen in Play: [where it stands](../systems/modes-and-scoring.md). Camera Flick is built in as 1st's emote for Studio (Dev panel "end: flick"), not yet run in Play; the falling confetti is out (Alan). The book stacks must be new models, not the town's (Alan). His direction is in the
 [decision](../decisions/2026-11-19-winners-circle-redo.md). Today's scene is on the
 [modes and scoring](../systems/modes-and-scoring.md) page.
 

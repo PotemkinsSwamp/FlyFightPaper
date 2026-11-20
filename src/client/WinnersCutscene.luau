@@ -1,10 +1,10 @@
 -- The winners' moment (Alan 2026-11-19, docs/decisions/2026-11-19-winners-circle-redo.md): "Pencils down!", the
 -- room's lights fade to near-dark, and in the dark the camera glides from wherever you are (your plane or the
 -- hangar) to one steady shot of the three winner desks by the chalkboard. Local copies of the top 3 already stand on
--- their desks as dark shapes, each drawn in their own layer over the room. A spotlight clicks on over 3rd, then 2nd, then 1st, each with its name plate (place,
--- name, points), and each starts their emote in their own light; confetti falls from 1st's light. The camera pushes
--- stays on all three (no zoom in: Alan 2026-11-19), then the lights come up as it glides back and the results card
--- shows for its last CARD seconds. Each winner stands on a stack of books, 1st's the tallest.
+-- their desks as dark shapes, each drawn in their own layer over the room. A spotlight clicks on over 3rd, then 2nd,
+-- then 1st, each with its name plate (place, name, points), and each starts their emote in their own light. The
+-- camera stays on all three (no zoom in, no confetti: Alan 2026-11-19), then the lights come up as it glides back and
+-- the results card shows. Each winner stands on a stack of books, 1st's the tallest.
 -- It all happens on this screen only: the server's seated avatars are just hidden here.
 local RunService = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
@@ -49,13 +49,6 @@ local DESK_KIT = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hanga
 local NEAR_CLEAR = 120 -- anything right in front of the lens fades; the rest blocking a winner fades too
 -- Film-style focus (Alan 2026-10-18): the winners sharp, what's in front of them soft, the wall behind a little soft.
 local BLUR_RADIUS, BLUR_NEAR, BLUR_FAR = 200, 0.8, 0.2
--- Confetti: Roblox's own square particle, in five crayon colours, falling over the three from when 1st lands.
-local CONFETTI = "rbxasset://textures/particles/SquareParticle.png"
--- It starts above the top edge of every shot, so it falls in from the ceiling's direction and is never seen
--- appearing (Alan 2026-10-29: it began a foot over their heads); CONFETTI_FALL: its falling speed, heights a second.
-local CONFETTI_OVER, CONFETTI_FALL = 0.3, 0.6
-local CONFETTI_COLORS = { Color3.fromRGB(230, 60, 60), Color3.fromRGB(60, 110, 230), Color3.fromRGB(250, 205, 40),
-	Color3.fromRGB(70, 190, 90), Color3.fromRGB(240, 120, 200) }
 -- Only what would block a winner in their shot fades out on this screen; the rest of the town and the ceiling
 -- decorations stay in view. Never faded: the room shell, the chalkboard, desks, chairs and the desks' hangars and
 -- runways. Always faded: planes, other name tags, the desk landing rings and the monorail's pillars and track.
@@ -100,6 +93,21 @@ local function setDark(state, amount)
 	for lamp, was in state.lamps do lamp.Brightness = was * (1 - amount) end
 end
 
+-- A full-screen layer over the room with its own little world, camera and light, dark until its tint comes up.
+local function makeLayer(gui, back, right, order)
+	local layer = Instance.new("ViewportFrame")
+	layer.Name, layer.Size, layer.BackgroundTransparency, layer.ZIndex = "Winner", UDim2.fromScale(1, 1), 1, order
+	layer.Ambient, layer.LightColor, layer.ImageColor3 = LIT, LAMP_COLOR, UNLIT
+	layer.LightDirection = (-Vector3.yAxis - back * 0.5 + right * 0.2).Unit -- from above, a little from the camera's side
+	local world = Instance.new("WorldModel")
+	world.Parent = layer
+	local lens = Instance.new("Camera")
+	lens.Parent = layer
+	layer.CurrentCamera = lens
+	layer.Parent = gui
+	return layer, world, lens
+end
+
 local function makeSpotlight(gui, spot, back, right, height, order)
 	local part = Instance.new("Part")
 	part.Name, part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.Transparency = "WinnerLights", true, false, false, false, 1
@@ -122,16 +130,7 @@ local function makeSpotlight(gui, spot, back, right, height, order)
 	pool.CFrame = CFrame.new(spot + Vector3.yAxis * 0.3) * CFrame.Angles(0, 0, math.rad(90)) -- lying flat on the desk top
 	pool.Parent = part
 	part.Parent = workspace
-	local layer = Instance.new("ViewportFrame")
-	layer.Name, layer.Size, layer.BackgroundTransparency, layer.ZIndex = "Winner", UDim2.fromScale(1, 1), 1, order
-	layer.Ambient, layer.LightColor, layer.ImageColor3 = LIT, LAMP_COLOR, UNLIT
-	layer.LightDirection = (-Vector3.yAxis - back * 0.5 + right * 0.2).Unit -- from above, a little from the camera's side
-	local world = Instance.new("WorldModel")
-	world.Parent = layer
-	local lens = Instance.new("Camera")
-	lens.Parent = layer
-	layer.CurrentCamera = lens
-	layer.Parent = gui
+	local layer, world, lens = makeLayer(gui, back, right, order)
 	return { part = part, shaft = shaft, pool = pool, layer = layer, world = world, lens = lens }
 end
 -- `glow`: the winner's own light, 0 off to 1 on; `room`: how much of the shaft and pool shows (they go as the
@@ -300,7 +299,7 @@ end
 -- full-body animation from Meshy text-to-motion (tools/meshy_to_r15.py) moves the body; a copy of their own plane
 -- sits in the right hand, nose turning the way the hand moves. Studio tests set a temporary id on DevWinnerEmote.
 local PLANE_LENGTH, PLANE_TURN = 0.3, 0.15 -- plane length as a share of the winner's height; how fast the nose turns
-local function holdPlane(model, actorId)
+local function holdPlane(model, actorId, height)
 	local planes = workspace:FindFirstChild("Planes")
 	local source = planes and planes:FindFirstChild(tostring(actorId))
 	local hand = model:FindFirstChild("RightHand")
@@ -313,10 +312,10 @@ local function holdPlane(model, actorId)
 			item.Anchored, item.CanCollide, item.CanQuery, item.CanTouch, item.LocalTransparencyModifier = true, false, false, false, 0
 		end
 	end
-	local height = model:GetScale() * 5 -- an R15 avatar is about 5 studs tall at scale 1
+	height = height or model:GetScale() * 5 -- an R15 avatar is about 5 studs tall at scale 1
 	plane:ScaleTo(plane:GetScale() * height * PLANE_LENGTH / plane:GetExtentsSize().Z)
 	plane.Name = "HeldPlane"
-	return { plane = plane, hand = hand, length = height * PLANE_LENGTH, last = hand.Position, heading = model:GetPivot().LookVector }
+	return { plane = plane, hand = hand, length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X, last = hand.Position, heading = model:GetPivot().LookVector }
 end
 local function flyPlane(w)
 	local prop = w.prop
@@ -328,6 +327,58 @@ local function flyPlane(w)
 	local grip = at + prop.heading * prop.length * 0.3 -- held by the tail
 	local up = math.abs(prop.heading.Y) > 0.97 and w.desk.LookVector or Vector3.yAxis
 	prop.plane:PivotTo(CFrame.lookAt(grip, grip + prop.heading, up))
+end
+
+-- Camera Flick, a 1st-place emote (Alan 2026-11-19; recipe and numbers: docs/workshop/emote-making.md): 1st throws
+-- their plane at the camera; it fills the picture, the camera is knocked back, tips over forward, and the plane
+-- slides down the lens; the scene moves on from there. Seconds from 1st's light: the plane leaves the hand at
+-- FLICK_RELEASE and flies FLICK_FLIGHT to the lens; the camera's fall takes FLICK_FALL; the scene leaves at FLICK_END.
+-- Not uploaded yet (Alan's go), so it only plays in Studio: the cleaned-up clip (Assets.CameraFlickClip, made by
+-- tools/emote_preview.lua) is registered for the session, when the Dev panel's "end: flick" button asked for it.
+local FLICK_RELEASE, FLICK_FLIGHT, FLICK_FALL, FLICK_END = 0.87, 0.42, 0.65, 2.6
+local FLICK_FLAT = CFrame.Angles(0, 0, math.rad(15)) * CFrame.Angles(math.rad(90), 0, 0) -- on the lens: top to it, nose up, a little askew
+local function flickClip()
+	local clip = RunService:IsStudio() and Root:GetAttribute("DevCameraFlick") and Root.Assets:FindFirstChild("CameraFlickClip")
+	return clip and game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip) or nil
+end
+local function bounce(v)
+	if v < 1 / 2.75 then return 7.5625 * v * v
+	elseif v < 2 / 2.75 then v -= 1.5 / 2.75; return 7.5625 * v * v + 0.75
+	elseif v < 2.5 / 2.75 then v -= 2.25 / 2.75; return 7.5625 * v * v + 0.9375 end
+	v -= 2.625 / 2.75
+	return 7.5625 * v * v + 0.984375
+end
+-- The camera `u` seconds after the plane hits it: knocked back and shaken, then it tips over forward and lands with
+-- a bounce. `steady`: where it would be otherwise; sizes in winner heights.
+local function knocked(steady, u, height)
+	if u <= 0 then return steady end
+	local jolt = 0.11 * height * math.exp(-u * 9) * math.sin(math.min(u / 0.05, 1) * math.pi / 2)
+	local shake = Vector3.new(math.sin(u * 95), math.cos(u * 80), 0) * 0.016 * height * math.exp(-u * 10)
+	local fall = bounce(math.clamp((u - 0.1) / FLICK_FALL, 0, 1))
+	return CFrame.new(steady.Position - steady.LookVector * jolt + steady:VectorToWorldSpace(shake) - Vector3.yAxis * 0.34 * height * fall)
+		* steady.Rotation * CFrame.Angles(math.rad(-68) * fall, 0, 0) * CFrame.Angles(0, 0, math.rad(10) * fall)
+end
+-- The plane `t` seconds after 1st's light, in its own full-size layer over everything: in the hand with its nose at
+-- the camera, then straight to the lens (fast off the hand, slower as it fills the picture) turning flat as it
+-- arrives, then stuck on the lens and sliding down it. `view`: the camera this frame; `steady`: without the knock.
+local function flickPlane(w, t, view, steady, height)
+	local prop = w.prop
+	local pressed = prop.span * 0.4 -- how far in front of the lens it ends, so its wings fill the picture
+	if t < FLICK_RELEASE then
+		local hand = w.spot + (prop.hand.Position - w.spot) * w.scale -- the winner's layer is `scale` times smaller
+		prop.from = hand
+		local nose = (CFrame.lookAt(hand, steady.Position) * CFrame.Angles(math.rad(30), math.rad(-35), 0)).LookVector -- up and askew, so its shape shows
+		prop.plane:PivotTo(CFrame.lookAt(hand + nose * prop.length * 0.2, hand + nose * (prop.length * 0.2 + 1)))
+	elseif t < FLICK_RELEASE + FLICK_FLIGHT then
+		local s = 1 - (1 - (t - FLICK_RELEASE) / FLICK_FLIGHT) ^ 2
+		local to = (steady * CFrame.new(0, 0, -pressed)).Position
+		local at = prop.from:Lerp(to, s)
+		local flying = CFrame.lookAt(at, at + (to - prop.from).Unit) * CFrame.Angles(0, 0, math.rad(40) * s)
+		prop.plane:PivotTo(flying:Lerp(CFrame.new(at) * (steady.Rotation * FLICK_FLAT), math.clamp((s - 0.8) / 0.2, 0, 1)))
+	else
+		local slide = math.max(t - FLICK_RELEASE - FLICK_FLIGHT - 0.45, 0)
+		prop.plane:PivotTo(view * CFrame.new(0, -slide * slide * 3.7 * height, -pressed) * FLICK_FLAT)
+	end
 end
 
 -- 1st's emote comes from the first list; 2nd and 3rd each get a different one from the second.
@@ -391,14 +442,17 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local desk = CFrame.lookAt(onDesk, onDesk + facing)
 	model:PivotTo(desk)
 	model.Parent = world
-	local planeEmote = Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
-	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15 and holdPlane(model, actorId) or nil
+	local flick = place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 and flickClip() or nil
+	local planeEmote = flick or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
+	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
+		and holdPlane(model, actorId, flick and Avatars.standing_height_studs) or nil
+	flick = prop and flick
 	local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or emoteFor(place)
-	local emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = true, Enum.AnimationPriority.Action
+	local emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, place = place, scale = scale, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, flick = flick ~= nil, place = place, scale = scale, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -428,31 +482,6 @@ local function makePlates(rows)
 	end
 	gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
 	return gui, plates
-end
-
--- Confetti over the three: an invisible box at `at`, `size` big, that rains it down while it is on; each piece lives
--- long enough to fall `fall` studs (to the floor under the shots).
-local function makeConfetti(at, size, height, fall)
-	local cloud = Instance.new("Part")
-	cloud.Name, cloud.Anchored, cloud.CanCollide, cloud.CanQuery, cloud.CanTouch, cloud.Transparency = "WinnerConfetti", true, false, false, false, 1
-	cloud.CFrame, cloud.Size = at, size
-	local flutter = {} -- the pieces flip as they fall
-	for i = 0, 4 do flutter[i + 1] = NumberSequenceKeypoint.new(i / 4, i % 2 == 0 and -0.7 or 0.7) end
-	for _, color in CONFETTI_COLORS do
-		local emitter = Instance.new("ParticleEmitter")
-		emitter.Texture, emitter.Color, emitter.LightInfluence, emitter.Enabled = CONFETTI, ColorSequence.new(color), 0, false
-		emitter.EmissionDirection, emitter.Shape = Enum.NormalId.Bottom, Enum.ParticleEmitterShape.Box
-		emitter.Size, emitter.Squash = NumberSequence.new(height * 0.022), NumberSequence.new(flutter)
-		-- Falls at about CONFETTI_FALL winner heights a second (gravity over drag), however high it starts.
-		local seconds = fall / (CONFETTI_FALL * height)
-		emitter.Lifetime, emitter.Rate = NumberRange.new(seconds + 1, seconds + 3), 14
-		emitter.Speed, emitter.SpreadAngle = NumberRange.new(height * 0.05, height * 0.2), Vector2.new(30, 30)
-		emitter.Acceleration, emitter.Drag = Vector3.new(0, -CONFETTI_FALL * height, 0), 1
-		emitter.Rotation, emitter.RotSpeed = NumberRange.new(0, 360), NumberRange.new(-220, 220)
-		emitter.Parent = cloud
-	end
-	cloud.Parent = workspace
-	return cloud
 end
 
 local function popIn(a) a = math.clamp(a, 0, 1) - 1; return 1 + 2.7 * a ^ 3 + 1.7 * a ^ 2 end -- overshoots a little
@@ -529,6 +558,11 @@ function Cutscene.play(winners, onStage)
 						local light = makeSpotlight(state.stageGui, spots[place], back, right, height, 4 - place)
 						local copy = copyWinner(source, place, back, entry.actorId, spots[place], light.world)
 						if copy then copy.light = light; state.winners[place] = copy else light.part:Destroy(); light.layer:Destroy() end
+						if copy and copy.flick then -- the plane's own layer, over the winners and their plates
+							local layer, world, lens = makeLayer(state.plateGui, back, right, 10)
+							copy.prop.plane.Parent, copy.propLayer, copy.propLens = world, layer, lens
+							state.flickEnd = LIGHT_AT + 2 * TURN + FLICK_END
+						end
 						break
 					end
 				end
@@ -570,26 +604,10 @@ function Cutscene.play(winners, onStage)
 	state.overhead = { view = group, depth = groupDistance, y = deskTop + 1.5 * height }
 	local drift = group + group.LookVector * groupDistance * PUSH_IN
 	state.plateGui, state.plates = makePlates(winners)
-	-- The lowest height where the whole confetti box is above every shot's top edge, plus a margin.
-	local spread = Vector3.new(2 * across + height, 1, height * 0.8)
-	local function seen(y)
-		for _, shot in state.shots do
-			for i = 0, 3 do
-				local corner = CFrame.fromMatrix(Vector3.new(middle.X, y, middle.Z), right, Vector3.yAxis) * (spread * Vector3.new(i % 2 - 0.5, -0.5, i // 2 - 0.5))
-				local q = shot.view:PointToObjectSpace(corner)
-				if q.Z < 0 and q.Y / -q.Z < tanHalf then return true end
-			end
-		end
-		return false
-	end
-	local confettiY = deskTop + 1.5 * height
-	while seen(confettiY) and confettiY < deskTop + 40 * height do confettiY += height / 4 end
-	confettiY += CONFETTI_OVER * height
-	state.confetti = makeConfetti(CFrame.new(middle.X, confettiY, middle.Z), spread, height, confettiY - deskTop + height)
-
 	local depart = BANNER + DIM
 	local arrive = depart + GLIDE
-	local leave = math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD)
+	-- When the camera leaves the winners: so the results card gets its CARD seconds, or as Camera Flick ends.
+	local function leaving() return state.flickEnd and arrive + state.flickEnd or math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD) end
 	local function clearShot()
 		state.added = workspace.DescendantAdded:Connect(function(item) hideForShot(state, item) end)
 		task.spawn(function() -- a few hundred parts a frame, so nothing stutters; done well before the camera lands
@@ -601,15 +619,20 @@ function Cutscene.play(winners, onStage)
 			hideStrings(state)
 		end)
 	end
-	-- The camera while it holds, `t` seconds after arriving: on all three, pushing in slowly.
-	local function holdAt(t) return group:Lerp(drift, ease(t / (leave - arrive))) end
+	-- The camera while it holds, `t` seconds after arriving: on all three, pushing in slowly (and where it would be
+	-- without Camera Flick's knock).
+	local function holdAt(t, leave)
+		local steady = group:Lerp(drift, ease(t / (leave - arrive)))
+		return state.flickEnd and knocked(steady, t - state.flickEnd + FLICK_END - FLICK_RELEASE - FLICK_FLIGHT, height) or steady, steady
+	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
 		-- The camera as the game would show it this frame (your plane or hangar view); if nothing moved it, where it was.
 		local live = camera.CFrame ~= state.written and camera.CFrame or state.home
 		local liveFov = camera.CFrame ~= state.written and camera.FieldOfView or state.fov
 		state.home, state.fov = live, liveFov
-		local hold = holdAt(t - arrive)
+		local leave = leaving()
+		local hold, steady = holdAt(t - arrive, leave)
 		local shot, fov
 		if t < depart then shot, fov = live, liveFov
 		elseif t < arrive then
@@ -637,16 +660,18 @@ function Cutscene.play(winners, onStage)
 			-- the layer's camera: the scene's, brought in towards the small winner by their scale
 			w.light.lens.CFrame = shot.Rotation + (w.spot + (shot.Position - w.spot) / w.scale)
 			w.light.lens.FieldOfView, w.light.layer.ImageTransparency = fov, 1 - seen
-			if w.prop and w.emote.IsPlaying then flyPlane(w) end
+			if w.flick then
+				w.propLens.CFrame, w.propLens.FieldOfView = shot, fov
+				w.propLayer.ImageColor3, w.propLayer.ImageTransparency = w.light.layer.ImageColor3, 1 - seen
+				flickPlane(w, since, shot, steady, height)
+			elseif w.prop and w.emote.IsPlaying then flyPlane(w) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end
 		if t >= leave + GLIDE then Cutscene.stop(); return end
 		camera.CameraType = Enum.CameraType.Scriptable
 		camera.CFrame, camera.FieldOfView = shot, fov
-		-- Confetti from 1st's light until the camera leaves; each plate pops in with its winner's light, its top on
-		-- its desk's front edge.
-		local landed = state.winners[1] and state.winners[1].lit
+		-- Each plate pops in with its winner's light, its top on its desk's front edge.
 		local screen = camera.ViewportSize
 		for place, w in state.winners do
 			local plate = state.plates[place]
@@ -659,10 +684,6 @@ function Cutscene.play(winners, onStage)
 				plate.scale.Scale = screen.Y / 1080 * popIn(shown / 0.35)
 				plate.frame.Position = UDim2.fromOffset(at.X, math.min(at.Y + 6, screen.Y - PLATE_H * screen.Y / 1080 - 8))
 			end
-		end
-		for _, emitter in state.confetti:GetChildren() do
-			if landed and t < leave and not emitter.Enabled then emitter:Emit(30) end
-			emitter.Enabled = landed and t < leave
 		end
 		-- Focus on the winners, soft in front and a little behind. Roblox's focus stops at 500 studs, so a farther
 		-- shot widens the sharp band instead.
@@ -691,7 +712,6 @@ function Cutscene.stop()
 	end
 	state.blur:Destroy()
 	state.plateGui:Destroy()
-	state.confetti:Destroy()
 	for item, was in state.moved do if item.Parent then item:PivotTo(was) end end
 	workspace.CurrentCamera.CameraType, workspace.CurrentCamera.FieldOfView = state.cameraType, state.fov
 	Root:SetAttribute("Cutscene", false)

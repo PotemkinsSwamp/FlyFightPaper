@@ -39,6 +39,9 @@
           },
           "WinnerBooks": {
             "$path": "assets/models/toys/winner-books/winner-books.rbxm"
+          },
+          "CameraFlickClip": {
+            "$path": "assets/animations/emotes/camera-flick.rbxm"
           }
         }
       }

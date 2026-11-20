@@ -298,7 +298,13 @@ function HUD.start(getPlane, action)
 	for index, song in ipairs({ "parade", "carnival", "show" }) do
 		local endMatch=eraserBots:Clone();endMatch.Name="EndMatch"..index;endMatch.Text="end: "..song;endMatch.Position=UDim2.fromOffset(330+index*110,-40)
 		endMatch.BackgroundColor3=Color3.fromRGB(150,40,40);endMatch.Parent=picker
-		endMatch.Activated:Connect(function()Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
+		endMatch.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",nil);Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
+	end
+	-- The same with Camera Flick as 1st's emote: Studio only until its clip is uploaded (WinnersCutscene).
+	if game:GetService("RunService"):IsStudio() then
+		local flick=eraserBots:Clone();flick.Name="EndFlick";flick.Text="end: flick";flick.Position=UDim2.fromOffset(440,-80)
+		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
+		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
 	end
 	-- Every match tip again, seen or not (Alan 2026-10-29: his account had seen them all).
 	local tipsAgain=eraserBots:Clone();tipsAgain.Name="TipsAgain";tipsAgain.Text="tips again";tipsAgain.Position=UDim2.fromOffset(770,-80)
