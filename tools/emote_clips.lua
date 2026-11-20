@@ -21,9 +21,19 @@ end
 -- The runner-up emotes (Alan's OK 2026-11-20): each a loop of `length` seconds; `pose(t, c)` gives the turn of
 -- every joint the cut moves at `t` (a joint it leaves out is left to what plays underneath), where c.<key>(seconds)
 -- is the named generated clip's pose at its own seconds. Ids: the generator's uploads.
--- (Good Game is not a cut: its first one, arms posed by numbers, Alan found stiff and too fast; it now plays
+-- (Good Game's arms are not a cut: a first one, posed by numbers, Alan found stiff and too fast; the scene plays
 -- Roblox's own clap and wave, in WinnersCutscene.)
 local CUTS = {}
+-- Good Game's stance (Alan's go 2026-11-20): only the hips and legs, from the first 1.6 s of a generated "stance
+-- only" clip: all the weight on the left leg, the right knee bent 66 degrees with the foot on its toes, the hips
+-- tilted 6 degrees. It plays over Roblox's clap and wave, which keep the chest, head and arms. (The clip's second
+-- half hangs the head 35 degrees and steps the foot back: not used.)
+local STANCE = { "LowerTorso", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }
+CUTS.GoodGameStance = { length = 1.6, clips = { stance = "rbxassetid://98222857059913" }, pose = function(t, c)
+	local all, out = c.stance(t), {}
+	for _, part in STANCE do out[part] = all[part] end
+	return out
+end }
 
 local Players = game:GetService("Players")
 if _G.EMOTE and _G.EMOTE.clean then _G.EMOTE.clean() end

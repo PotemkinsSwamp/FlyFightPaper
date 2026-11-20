@@ -384,6 +384,18 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
     mirror each other); hips never more than 0.11 studs off centre; the head tilted 19 degrees only for the first
     half second. The same finding as before: postures, not handwork, and a list of body details in one long
     wording mostly gets lost. Dummy and clip folder deleted from the place.
+  - **Generator try for the stance alone** (Alan's go, 2026-11-20; `rbxassetid://98222857059913`, 3.97 s): "stance
+    only, no steps: ... weight on the left leg, the left hip pushed out, the right knee slightly bent, shoulders
+    slumped forward, head tilted ... staying in this same slouched pose". Half right. 0 to 1.7 s: the left foot
+    under the body, the right knee bent 66 degrees with the foot 0.27 studs up (on its toes), the hips tilted 5 to
+    6 degrees, held dead still (nothing moves more than 0.02 studs: no breathing). From 2 s the foot steps back
+    and the head hangs 35 degrees forward for the rest. No slumped shoulders and no side tilt of the head anywhere.
+    **A held pose it can do; "the whole time" it does not keep.**
+  - **The stance cut** (`CUTS.GoodGameStance`, baked to `assets/animations/emotes/good-game-stance.rbxm` and into
+    the place's `Assets.GoodGameStanceClip`, unsaved): only the hips and the legs from the first 1.6 s. The scene
+    plays it looped from the dark on at priority Action2, one above the clap and wave (Action), which keep the
+    chest, head and arms; the upper body leans with the tilted hips. **Layering by priority needs no weights**: a
+    clip that holds only some parts, played one priority higher, takes just those parts. Not yet run in Play.
   - Looking at a web video frame by frame without downloading it: in Chrome, a script seeks the page's own video
     and draws each moment into a grid laid over the page (cropped to the character, time stamped), and one
     screenshot shows 30 moments.

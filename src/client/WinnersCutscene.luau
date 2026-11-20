@@ -484,6 +484,16 @@ local function goodGame(animator, model)
 		end
 	end
 	clapHands(model, animator.Parent, tracks[1])
+	-- The stance (Assets.GoodGameStanceClip, cut in tools/emote_clips.lua): weight on one leg, the other knee bent, the
+	-- hips tilted, from the dark on. It holds only the hips and legs, one priority above the clap and wave, which
+	-- keep the chest, head and arms. Registered for the Studio session, like the other clips of ours not yet uploaded.
+	local stance = Root.Assets:FindFirstChild("GoodGameStanceClip")
+	if stance then
+		local animation = Instance.new("Animation")
+		animation.AnimationId = game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(stance)
+		local hold = animator:LoadAnimation(animation); hold.Looped, hold.Priority = true, Enum.AnimationPriority.Action2
+		hold:Play(0)
+	end
 	return { IsPlaying = false, Play = function()
 		task.spawn(function()
 			while model:IsDescendantOf(game) do -- the scene destroys the winners when it ends
