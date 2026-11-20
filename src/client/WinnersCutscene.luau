@@ -68,46 +68,60 @@ local CURTAIN_CLEAR, CURTAIN_LENS, CURTAIN_BEHIND = 0.15, 1, 40 -- at 0.08 the r
 -- movement twice, measured 2026-10-17.) They stand in front of the curtain in the room's ordinary light: no lamp
 -- lights them (real spotlights on them came on late and pulsed: Alan in Play 2026-11-20). Unlit, a winner is a black
 -- shape: a solid black Highlight over them, their books and plane, taken off in CLICK seconds when their spotlight
--- comes on. The spotlight itself is for show and stands in the small winner's world too: a see-through shaft just
--- behind them and a glowing pool under their books: the shaft's top over the desk and its width at the desk in
--- winner heights, and how see-through shaft and pool are.
+-- comes on. The spotlight itself is for show and stands in the small winner's world too: a real cone of light
+-- around them (Alan 2026-11-20: the flat strip behind them looked bad) and a glowing pool under their books, the
+-- cone's own floor. The cone is CONE_LAYERS very faint cones, one inside the other from full width down to nothing,
+-- so it is brightest in the middle and fades to its edge (one cone alone looked like a glass tube; four showed
+-- stripes; Alan picked 24 at 0.99 from a Studio preview). Its width at the desk and how far up its tip is are in
+-- winner heights (wide enough for held-out arms on the tallest book stack; the tip is far off the top of the
+-- picture); then how see-through each layer and the pool are.
 local LAMP_COLOR = Color3.fromRGB(255, 244, 214)
 local CLICK = 0.12
 local IDLE = { [Enum.HumanoidRigType.R15] = "rbxassetid://507766666", [Enum.HumanoidRigType.R6] = "rbxassetid://180435571" } -- Roblox's standing idles
-local SHAFT_TOP, SHAFT_WIDE, SHAFT_CLEAR, POOL_CLEAR = 3, 0.95, 0.82, 0.8
+local CONE_WIDE, CONE_TALL, CONE_LAYERS, CONE_CLEAR, POOL_CLEAR = 1.52, 8, 24, 0.99, 0.8
 local Cutscene = {}
 local active
 
--- A spotlight for show in `world` (a small winner's own model): `height` is that winner's real height in studs.
-local function makeSpotlight(spot, back, height, world)
-	local part = Instance.new("Part")
-	part.Name, part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.Transparency = "WinnerLights", true, false, false, false, 1
-	part.Size, part.CFrame = Vector3.one, CFrame.new(spot)
-	local function at(offset)
-		local point = Instance.new("Attachment")
-		point.Position, point.Parent = offset, part
-		return point
+-- The cone's shape is Roblox's own classic cone (asset 1033714: 2 wide, 0.75 tall, tip up; measured 2026-11-20),
+-- loaded once when the game starts.
+local coneSource
+task.spawn(function()
+	local ok, cone = pcall(function() return game:GetService("AssetService"):CreateMeshPartAsync(Content.fromUri("rbxassetid://1033714")) end)
+	if not ok then warn("WinnersCutscene: the spotlight cone did not load:", cone); return end
+	cone.Name, cone.Anchored, cone.CanCollide, cone.CanQuery, cone.CanTouch, cone.CastShadow = "Cone", true, false, false, false, false
+	cone.Material, cone.Color, cone.Transparency = Enum.Material.Neon, LAMP_COLOR, 1
+	coneSource = cone
+end)
+
+-- A spotlight for show in `world` (a small winner's own model), off: `height` is that winner's real height in studs.
+local function makeSpotlight(spot, height, world)
+	local wide, tall = CONE_WIDE * height, CONE_TALL * height
+	local cones = {}
+	for i = 1, coneSource and CONE_LAYERS or 0 do
+		local across = wide * (1 - (i - 1) / CONE_LAYERS)
+		local cone = coneSource:Clone()
+		cone.Size, cone.CFrame = Vector3.new(across, tall, across), CFrame.new(spot + Vector3.yAxis * tall / 2)
+		cone.Parent = world
+		cones[i] = cone
 	end
-	local shaft = Instance.new("Beam")
-	shaft.Attachment0, shaft.Attachment1 = at((Vector3.yAxis * SHAFT_TOP - back * 0.2) * height), at(-back * 0.2 * height)
-	shaft.Width0, shaft.Width1, shaft.FaceCamera, shaft.Segments = SHAFT_WIDE * height * 0.2, SHAFT_WIDE * height, true, 1
-	shaft.Color, shaft.Transparency = ColorSequence.new(LAMP_COLOR), NumberSequence.new(SHAFT_CLEAR)
-	shaft.LightEmission, shaft.LightInfluence, shaft.Enabled = 1, 0, false
-	shaft.Parent = part
 	local pool = Instance.new("Part")
 	pool.Name, pool.Shape, pool.Material, pool.Color = "Pool", Enum.PartType.Cylinder, Enum.Material.Neon, LAMP_COLOR
 	pool.Anchored, pool.CanCollide, pool.CanQuery, pool.CanTouch, pool.CastShadow, pool.Transparency = true, false, false, false, false, 1
-	pool.Size = Vector3.new(0.004 * height, SHAFT_WIDE * height, SHAFT_WIDE * height)
+	pool.Size = Vector3.new(0.004 * height, wide, wide)
 	pool.CFrame = CFrame.new(spot + Vector3.yAxis * 0.002 * height) * CFrame.Angles(0, 0, math.rad(90)) -- lying flat on the desk top
-	pool.Parent = part
-	part.Parent = world
-	return { part = part, shaft = shaft, pool = pool }
+	pool.Parent = world
+	return { cones = cones, pool = pool }
 end
 -- `glow`: the winner's own light, 0 off to 1 on; `room`: how much of it shows (it goes as the room's lights come
--- back); `seen`: how much of the winner shows. Their black cover comes off as the light comes on.
+-- back); `seen`: how much of the winner shows (the light goes with them). Their black cover comes off as the light
+-- comes on.
 local function shine(w, glow, room, seen)
-	w.light.shaft.Enabled = glow * room > 0.5
-	w.light.pool.Transparency = 1 - (1 - POOL_CLEAR) * glow * room
+	local level = glow * math.min(room, seen)
+	if w.light.level ~= level then
+		w.light.level = level
+		w.light.pool.Transparency = 1 - (1 - POOL_CLEAR) * level
+		for _, cone in w.light.cones do cone.Transparency = 1 - (1 - CONE_CLEAR) * level end
+	end
 	w.cover.Enabled, w.cover.FillTransparency = glow < 1, 1 - seen * (1 - glow)
 end
 
@@ -576,7 +590,7 @@ function Cutscene.play(winners, onStage)
 						world.Parent = state.set -- in the room before the avatar goes in: animations only load on an avatar that is in the game
 						local copy = copyWinner(source, place, back, entry.actorId, spots[place], cast)
 						if copy then
-							copy.world, copy.light = world, makeSpotlight(spots[place], back, height / copy.scale, world)
+							copy.world, copy.light = world, makeSpotlight(spots[place], height / copy.scale, world)
 							copy.cover = Instance.new("Highlight")
 							copy.cover.Name, copy.cover.FillColor, copy.cover.FillTransparency, copy.cover.OutlineTransparency = "Unlit", Color3.new(), 1, 1
 							copy.cover.DepthMode, copy.cover.Parent = Enum.HighlightDepthMode.Occluded, cast
