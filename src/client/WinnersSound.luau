@@ -1,8 +1,8 @@
--- The winners' moment's sound (Alan 2026-10-23): everything builds to 1st's landing. The crowd cheers and claps a
--- little as 3rd and 2nd hop up, then 1st lands, the kids yell "Yeah!", the cheering peaks and the winners' track
+-- The winners' moment's sound (Alan 2026-10-23): everything builds to 1st's spotlight. The room is quiet in the dark; the
+-- crowd cheers and claps a little as 3rd's and 2nd's lights come on, then 1st's, the kids yell "Yeah!", the cheering peaks and the winners' track
 -- kicks in under the dancing; it steps down for the results card and is gone before the vote lap. Times are seconds
--- from "Pencils down!" and match WinnersCutscene's own (banner 1.2, glide 2.0, hops TURN 1.8 apart, each landing
--- 1.3 s after its stand: 3rd 4.5, 2nd 6.3, 1st 8.1; card 17-27).
+-- from "Pencils down!" and match WinnersCutscene's own (banner 0.5, lights out 1.5, glide 2.0, then the spotlights:
+-- 3rd 4.6, 2nd 5.6, 1st 6.6; card 17-27).
 -- Uses Roblox's newer audio objects (AudioPlayer wired to the speakers): they also play in Studio's Edit mode, so
 -- the same mix can be heard there (`WinnersSound.play(id)` from the command bar).
 local RunService = game:GetService("RunService")
@@ -22,15 +22,15 @@ function WinnersSound.pick()
 	return lastSong
 end
 local CHEER, CLAP, YEAH = 9120973900, 9113138035, 1841221347 -- PSE crowd cheers and whistles, PSE small-room applause, APM kids "Yeah!"
-local FIRST_LANDS = 8.1
+local FIRST_LIGHT = 6.6
 
 -- Each cue: a sound, then its volume at points in time (straight lines between them). It starts at the first point
 -- and stops at the last.
 local function cues(track)
-	local L = FIRST_LANDS
+	local L = FIRST_LIGHT
 	return {
-		{ CHEER, { 3.2, 0 }, { 6, 0.2 }, { L, 0.3 }, { L + 0.3, 0.6 }, { L + 2, 0.4 }, { 13, 0 } },
-		{ CLAP, { 4.5, 0.12 }, { 6.3, 0.2 }, { L, 0.25 }, { L + 0.3, 0.45 }, { L + 2, 0.3 }, { 13, 0 } },
+		{ CHEER, { 4.6, 0 }, { 5.6, 0.2 }, { L, 0.3 }, { L + 0.3, 0.6 }, { L + 2, 0.4 }, { 13, 0 } },
+		{ CLAP, { 4.6, 0.12 }, { 5.6, 0.2 }, { L, 0.25 }, { L + 0.3, 0.45 }, { L + 2, 0.3 }, { 13, 0 } },
 		{ YEAH, { L, 0.5 }, { L + 3, 0.5 } },
 		{ track, { L, 0.5 }, { 17, 0.5 }, { 18, 0.35 }, { 23.5, 0.35 }, { 26, 0 } },
 	}

@@ -31,6 +31,8 @@ numbers (2026-10-15: 6 v 6, no bot chased a teammate, results, vote and next rou
 spot in a real match, the vote screen. Zone spots sized by building density, and the Studio "next spot" button
 ([decision](../decisions/2026-10-16-zones-follow-density.md)).
 
+**Winners' moment restaged (built 2026-11-19, not yet seen in Play;** [plan](../plan/WINNERS-CIRCLE-PLAN.md)**).** "Pencils down!" (0.5 s), the room's lights fade to near-dark (1.5 s), the camera glides to the desks in the dark (2 s) and holds on all three, who already stand there as dark shapes; spotlights come on over 3rd, 2nd and 1st a second apart (4.6, 5.6, 6.6 s), each with its name plate and emote, confetti and the song from 1st's; the camera pushes in on 1st (7.2 s), pulls back (11 to 13 s), and at 17 s the lights come up as it glides home under the results card. The stand-up-and-hop and the three close-ups are gone. The dark is the room's own lighting turned down on this screen; a spotlight is a bank of eight small lamps in front of the winner plus a see-through shaft, because Roblox's lights reach 60 studs and a winner is 140 tall. Still to come: the new book stacks, the spotlight's switch sound, Camera Flick in 1st's slot. The hop animation's config entry and tool stay until Alan has seen the new scene.
+
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
 

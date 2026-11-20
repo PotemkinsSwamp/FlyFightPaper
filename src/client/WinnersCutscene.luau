@@ -1,11 +1,13 @@
--- The winners' moment (Alan 2026-10-18, docs/decisions/2026-10-18-winners-shot-redesign.md), like the big games'
--- winner screens: the camera glides from wherever you are (your plane or the hangar) to the three winner desks by
--- the chalkboard. Local copies of the top 3 take the place of the students sitting there. In close-up, 3rd, then 2nd,
--- then 1st stand up, hop onto their desk and start one of Roblox's own emotes, a name plate popping in under each
--- (place, name, points); confetti falls from 1st's landing; the camera zooms out to one steady shot of all three
--- emoting, then glides back as the results card comes up for its last CARD seconds (Alan 2026-10-18).
+-- The winners' moment (Alan 2026-11-19, docs/decisions/2026-11-19-winners-circle-redo.md): "Pencils down!", the
+-- room's lights fade to near-dark, and in the dark the camera glides from wherever you are (your plane or the
+-- hangar) to one steady shot of the three winner desks by the chalkboard. Local copies of the top 3 already stand on
+-- their desks as dark shapes. A spotlight clicks on over 3rd, then 2nd, then 1st, each with its name plate (place,
+-- name, points), and each starts their emote in their own light; confetti falls from 1st's light. The camera pushes
+-- in on 1st for theirs, pulls back to all three, then the lights come up as it glides back and the results card
+-- shows for its last CARD seconds.
 -- It all happens on this screen only: the server's seated avatars are just hidden here.
 local RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
 local Players = game:GetService("Players")
 local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local Gameplay = require(Root.Generated.Gameplay)
@@ -24,12 +26,13 @@ local EMOTES = {
 	{ "rbxassetid://10714340543", "rbxassetid://10714403700", "rbxassetid://10714386947", "rbxassetid://6862001787",
 		"rbxassetid://10714068222", "rbxassetid://10714352626", "rbxassetid://10714366910", "rbxassetid://10713988674" }, -- Floss, Rock On, Samba, Cha Cha, Dolphin, Happy, Side to Side, Block Partier
 }
-local SEATED = { [Enum.HumanoidRigType.R15] = "rbxassetid://2506281703", [Enum.HumanoidRigType.R6] = "rbxassetid://178130996" }
-local BANNER, GLIDE, STAND, JUMP = 1.2, 2.0, 0.6, 0.7 -- seconds
-local TURN, PAN = 1.8, 0.6 -- 3rd moves first, then 2nd, then 1st, TURN apart; the camera pans to the next in PAN
-local ZOOM_AT, ZOOM = 2 * TURN + 2.0, 1.6 -- seconds after arriving that the zoom out to all three starts, and its length
+-- Seconds. The banner alone, the lights fading out, the glide over in the dark. After arriving: 3rd's spotlight at
+-- LIGHT_AT, then 2nd's and 1st's TURN apart; the push in on 1st starts at PUSH_AT and takes PUSH; the pull back to
+-- all three starts at BACK_AT and takes BACK.
+local BANNER, DIM, GLIDE = 0.5, 1.5, 2.0
+local LIGHT_AT, TURN = 0.6, 1.0
+local PUSH_AT, PUSH, BACK_AT, BACK = 3.2, 1.2, 7.0, 2.0
 local CARD = 10 -- the results card's seconds at the end of the winners' moment (Alan 2026-10-18: about 10)
-local HOP_SETTLE = 0.35 -- the hop animation lands, squashes and settles this long before the emote starts
 local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room instead of skimming through it
 -- The shots, square on to the desk row and level: the lens, a slow push in on the group (share of the distance), and
 -- the frame: a close-up CLOSE tall with its top CLOSE_TOP over the desk top (just over the head); the group wide
@@ -63,8 +66,64 @@ local CONFETTI_COLORS = { Color3.fromRGB(230, 60, 60), Color3.fromRGB(60, 110, 2
 local KEEP_ARENA = { "^Wall", "^Floor", "^Window", "^Chalkboard", "^Desk", "^Chair", "^NeutralDesk" }
 local KEEP_TOYS = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hangar"] = true, ["desk-runway-droop"] = true,
 	["runway-light"] = true, ["runway-light-tip"] = true }
+-- The dark, on this screen only: the room's own lighting goes to these values, every lamp in the room keeps
+-- LAMPS_LEFT of its brightness and the haze clears, so shapes can still just be made out (Alan: near-dark, not black).
+local DARK = { Brightness = 0, Ambient = Color3.fromRGB(16, 17, 24), OutdoorAmbient = Color3.fromRGB(16, 17, 24),
+	EnvironmentDiffuseScale = 0, EnvironmentSpecularScale = 0 }
+local LAMPS_LEFT = 0.04
+-- A winner's spotlight. Roblox's lights reach 60 studs at most and a winner stands 140 tall, so the light is a small
+-- bank of lamps close in front of them, head to feet (the lowest pool on the desk top), and the beam down from the
+-- ceiling is a see-through shaft just behind them. Places in winner heights: the lamps' heights, how far to each
+-- side and how far in front; the shaft's top over the desk, its width at the desk and how see-through it is.
+local LAMP_ROWS, LAMP_SIDE, LAMP_OUT = { 0.1, 0.37, 0.63, 0.9 }, 0.16, 0.25
+local LAMP_BRIGHT, LAMP_COLOR = 1.6, Color3.fromRGB(255, 244, 214)
+local SHAFT_TOP, SHAFT_WIDE, SHAFT_CLEAR = 3, 0.95, 0.82
 local Cutscene = {}
 local active
+
+local function setDark(state, amount)
+	if state.dark == amount then return end
+	state.dark = amount
+	for name, was in state.lit do
+		local dark = DARK[name]
+		Lighting[name] = if typeof(was) == "number" then was + (dark - was) * amount else was:Lerp(dark, amount)
+	end
+	for lamp, was in state.lamps do lamp.Brightness = was * (1 - amount * (1 - LAMPS_LEFT)) end
+	if state.air then state.air.Density = state.airWas * (1 - amount) end
+end
+
+local function makeSpotlight(spot, back, right, height)
+	local part = Instance.new("Part")
+	part.Name, part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.Transparency = "WinnerLights", true, false, false, false, 1
+	part.Size, part.CFrame = Vector3.one, CFrame.new(spot)
+	local function at(offset)
+		local point = Instance.new("Attachment")
+		point.Position, point.Parent = offset, part
+		return point
+	end
+	local lamps = {}
+	for _, row in LAMP_ROWS do
+		for side = -1, 1, 2 do
+			local lamp = Instance.new("PointLight")
+			lamp.Range, lamp.Brightness, lamp.Color, lamp.Shadows, lamp.Enabled = 60, LAMP_BRIGHT, LAMP_COLOR, false, false
+			lamp.Parent = at((back * LAMP_OUT + right * side * LAMP_SIDE + Vector3.yAxis * row) * height)
+			table.insert(lamps, lamp)
+		end
+	end
+	local shaft = Instance.new("Beam")
+	shaft.Attachment0, shaft.Attachment1 = at((Vector3.yAxis * SHAFT_TOP - back * 0.2) * height), at(-back * 0.2 * height)
+	shaft.Width0, shaft.Width1, shaft.FaceCamera, shaft.Segments = SHAFT_WIDE * height * 0.2, SHAFT_WIDE * height, true, 1
+	shaft.Color, shaft.Transparency = ColorSequence.new(LAMP_COLOR), NumberSequence.new(SHAFT_CLEAR)
+	shaft.LightEmission, shaft.LightInfluence, shaft.Enabled = 1, 0, false
+	shaft.Parent = part
+	part.Parent = workspace
+	return { part = part, lamps = lamps, shaft = shaft }
+end
+-- `glow`: 0 off, 1 full on.
+local function shine(light, glow)
+	light.shaft.Enabled = glow > 0.5
+	for _, lamp in light.lamps do lamp.Enabled, lamp.Brightness = glow > 0, LAMP_BRIGHT * glow end
+end
 
 local function ease(t) t = math.clamp(t, 0, 1); return t * t * (3 - 2 * t) end
 local function flat(v) return Vector3.new(v.X, 0, v.Z) end
@@ -220,23 +279,6 @@ local function setHidden(model, hidden)
 	end
 end
 
--- The chair nearest a point, and a frame at it that faces away from its desk (seats are the same in both rows).
-local function chairAt(room, position)
-	local best, distance = nil, 200
-	for _, chair in room:GetChildren() do
-		if chair.Name:match("^Chair") and chair:IsA("BasePart") and flat(chair.Position - position).Magnitude < distance then
-			best, distance = chair, flat(chair.Position - position).Magnitude
-		end
-	end
-	return best
-end
-local function seatFrame(room, chair)
-	local desk = room:FindFirstChild("Desk" .. chair.Name:sub(6))
-	return CFrame.lookAt(chair.Position, chair.Position + flat(chair.Position - desk.Position))
-end
-
-local function play(track) track:Play(0); track.TimePosition = math.min(0.2, track.Length * 0.5); track:AdjustSpeed(0) end
-
 -- 1st's emote: playing with their plane (Alan 2026-10-18, docs/decisions/2026-10-18-emotes-and-bot-looks.md). A
 -- full-body animation from Meshy text-to-motion (tools/meshy_to_r15.py) moves the body; a copy of their own plane
 -- sits in the right hand, nose turning the way the hand moves. Studio tests set a temporary id on DevWinnerEmote.
@@ -280,11 +322,9 @@ local function emoteFor(place)
 	return id
 end
 
--- A local copy of a winner's seated avatar, moved to sit in the chair at `desk`; standing on the desk top at `spot`,
--- it faces `facing`.
-local function copyWinner(room, source, desk, place, facing, actorId, spot)
-	local fromChair, toChair = chairAt(room, source:GetPivot().Position), room:FindFirstChild("Chair" .. desk.Name:sub(5))
-	if not fromChair or not toChair then return nil end
+-- A local copy of a winner's avatar, standing on the desk top at `spot` and facing `facing`: it stands still in the
+-- dark until its spotlight comes on.
+local function copyWinner(source, place, facing, actorId, spot)
 	source.Archivable = true
 	local model = source:Clone()
 	for _, item in model:GetDescendants() do
@@ -295,59 +335,22 @@ local function copyWinner(room, source, desk, place, facing, actorId, spot)
 	local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
 	if not animator or not rootPart then model:Destroy(); return nil end
 	model.Name = "Winner" .. place
-	model:PivotTo(seatFrame(room, toChair) * seatFrame(room, fromChair):ToObjectSpace(source:GetPivot()))
-	model.Parent = workspace
-	local function load(id)
-		local animation = Instance.new("Animation"); animation.AnimationId = id
-		return animator:LoadAnimation(animation)
-	end
-	local seated = load(SEATED[humanoid.RigType] or SEATED[Enum.HumanoidRigType.R15])
-	seated.Priority = Enum.AnimationPriority.Action
-	play(seated)
-	task.spawn(function() -- the pose needs the animation loaded to hold still on the right frame
-		local deadline = os.clock() + 5
-		repeat RunService.Heartbeat:Wait() until seated.Length > 0 or os.clock() > deadline
-		if seated.IsPlaying and seated.Speed == 0 then play(seated) end
-	end)
-	local planeEmote = Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
-	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15 and holdPlane(model, actorId) or nil
-	local emote = load(prop and planeEmote or emoteFor(place)); emote.Looped, emote.Priority = true, Enum.AnimationPriority.Action
-	-- The stand-up-and-hop animation, once uploaded (Studio tests can set a temporary id on DevWinnerHop).
-	local hopId = Root:GetAttribute("DevWinnerHop") or Rounds.winner_hop_animation
-	local hop = hopId ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15 and load(hopId) or nil
-	if hop then hop.Priority = Enum.AnimationPriority.Action2 end
 	-- Feet sit this far below the root: hip height plus half the root for R15, the legs for R6.
 	local leg = model:FindFirstChild("Left Leg")
 	local feet = humanoid.RigType == Enum.HumanoidRigType.R15 and humanoid.HipHeight + rootPart.Size.Y / 2 or rootPart.Size.Y / 2 + (leg and leg.Size.Y or 2)
-	local onChair = toChair.Position + Vector3.new(0, toChair.Size.Y / 2 + feet, 0)
 	local onDesk = spot + Vector3.new(0, feet, 0)
+	local desk = CFrame.lookAt(onDesk, onDesk + facing)
+	model:PivotTo(desk)
+	model.Parent = workspace
+	local planeEmote = Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
+	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15 and holdPlane(model, actorId) or nil
+	local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or emoteFor(place)
+	local emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = true, Enum.AnimationPriority.Action
 	local hips
 	for _, joint in model:GetDescendants() do
 		if joint.Name == "Root" and (joint:IsA("AnimationConstraint") or joint:IsA("Motor6D")) then hips = joint end
 	end
-	return { model = model, seated = seated, emote = emote, hop = hop, prop = prop, from = model:GetPivot(), place = place, hips = hips, scale = model:GetScale(), feet = feet,
-		chair = CFrame.lookAt(onChair, onChair + facing), desk = CFrame.lookAt(onDesk, onDesk + facing), stood = false, landed = false }
-end
-
--- Where each winner is at `t` seconds after the camera arrived: standing up on the chair, then hopping onto the desk.
-local function moveWinner(w, t)
-	t -= (3 - w.place) * TURN
-	if t < 0 then return end
-	if not w.stood then
-		w.stood = true
-		w.seated:Stop(w.hop and 0.15 or STAND)
-		if w.hop then w.hop:Play(0.15) end
-	end
-	if t < STAND then
-		w.model:PivotTo(w.from:Lerp(w.chair, ease(t / STAND)))
-	elseif t < STAND + JUMP then
-		local a = (t - STAND) / JUMP
-		w.model:PivotTo(w.chair:Lerp(w.desk, a) + Vector3.new(0, math.sin(a * math.pi) * 70, 0))
-	elseif not w.landed then
-		w.landed = true; w.model:PivotTo(w.desk)
-	end
-	if w.landed and not w.emote.IsPlaying and t >= STAND + JUMP + (w.hop and HOP_SETTLE or 0) then w.emote:Play(0.3) end
-	if w.prop and w.emote.IsPlaying then flyPlane(w) end
+	return { model = model, emote = emote, prop = prop, place = place, hips = hips, scale = model:GetScale(), desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -421,10 +424,14 @@ function Cutscene.play(winners, onStage)
 	if back:Dot(flat(-desks[1].Position)) < 0 then back = -back end
 	local right = Vector3.yAxis:Cross(back) -- screen right when looking at the desks from the room side
 	local aspect = camera.ViewportSize.X / math.max(camera.ViewportSize.Y, 1)
-	local state = { start = os.clock(), winners = {}, hidden = {}, cleared = {}, stage = "banner", cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
+	local state = { start = os.clock(), winners = {}, hidden = {}, lit = {}, lamps = {}, cleared = {}, stage = "banner", cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
 	active = state
 	state.blur = Instance.new("DepthOfFieldEffect") -- Roblox's own camera blur, on this screen only
 	state.blur.Name, state.blur.NearIntensity, state.blur.FarIntensity, state.blur.Parent = "WinnersFocus", 0, 0, camera
+	for name in DARK do state.lit[name] = Lighting[name] end
+	for _, item in workspace:GetDescendants() do if item:IsA("Light") then state.lamps[item] = item.Brightness end end
+	state.air = Lighting:FindFirstChildOfClass("Atmosphere")
+	state.airWas = state.air and state.air.Density
 	Root:SetAttribute("Cutscene", true)
 	onStage("banner")
 
@@ -460,18 +467,21 @@ function Cutscene.play(winners, onStage)
 		spots[place] = Vector3.new(desk.Position.X, deskTop, desk.Position.Z) + back * desk.Size.Z * (place == 1 and FIRST_FORWARD or SIDE_FORWARD)
 	end
 
-	-- Students at the winner desks step out of sight on this screen; copies of the winners take their seats.
-	local function seatWinners()
+	-- Once it is dark, the students at the winner desks step out of sight on this screen and copies of the winners
+	-- stand on the desks, each under its own spotlight (off).
+	local function standWinners()
 		for place, desk in desks do
 			local entry = winners[place]
 			if entry and not state.winners[place] then
 				for _, source in room:GetChildren() do
 					if source:IsA("Model") and source:GetAttribute("PilotId") == entry.actorId then
-						state.winners[place] = copyWinner(room, source, desk, place, back, entry.actorId, spots[place])
+						state.winners[place] = copyWinner(source, place, back, entry.actorId, spots[place])
 						break
 					end
 				end
-				local chair = state.winners[place] and room:FindFirstChild("Chair" .. desk.Name:sub(5))
+				local w = state.winners[place]
+				if w then w.light = makeSpotlight(spots[place], back, right, height) end
+				local chair = w and room:FindFirstChild("Chair" .. desk.Name:sub(5))
 				for _, model in room:GetChildren() do
 					if chair and model:GetAttribute("SeatedAvatar") and flat(model:GetPivot().Position - chair.Position).Magnitude < 120 then
 						state.hidden[model] = true; setHidden(model, true)
@@ -480,7 +490,6 @@ function Cutscene.play(winners, onStage)
 			end
 		end
 	end
-	seatWinners()
 
 	-- A shot of some winners: down from `headRoom` over the desk top, `tall` winner heights tall or wider so SIDE_ROOM
 	-- fits beside the outside ones, looking level at them. Each shot also gets the box around all three winners
@@ -524,7 +533,7 @@ function Cutscene.play(winners, onStage)
 		table.insert(state.shots, { view = view, rect = rect or { -1, -1, 1, 1 }, near = near, points = points, aspect = aspect, tanHalf = tanHalf, clear = NEAR_CLEAR })
 		return view, distance
 	end
-	local third, second, first = shotOf({ 3 }, CLOSE, CLOSE_TOP), shotOf({ 2 }, CLOSE, CLOSE_TOP), shotOf({ 1 }, CLOSE, CLOSE_TOP)
+	local first = shotOf({ 1 }, CLOSE, CLOSE_TOP)
 	local group, groupDistance = shotOf({ 1, 2, 3 }, 0)
 	state.overhead = { view = group, depth = groupDistance, y = deskTop + 1.5 * height }
 	local drift = group + group.LookVector * groupDistance * PUSH_IN
@@ -547,18 +556,19 @@ function Cutscene.play(winners, onStage)
 	state.confetti = makeConfetti(CFrame.new(middle.X, confettiY, middle.Z), spread, height, confettiY - deskTop + height)
 
 	-- Roblox scales an animation's hip movement twice on a scaled-up avatar (27 x 27 instead of 27, measured
-	-- 2026-10-17), which throws the body far off its root. Once standing, take the extra scale back out each step.
+	-- 2026-10-17), which throws the body far off its root. Take the extra scale back out each step.
 	state.fixHips = RunService.PreSimulation:Connect(function()
 		for _, w in state.winners do
-			if w.stood and w.hips then w.hips.Transform = w.hips.Transform.Rotation + w.hips.Transform.Position / w.scale end
+			if w.hips then w.hips.Transform = w.hips.Transform.Rotation + w.hips.Transform.Position / w.scale end
 		end
 	end)
 
-	local arrive = BANNER + GLIDE
-	local leave = math.max(arrive + ZOOM_AT + ZOOM + 1, Rounds.results_seconds - CARD)
+	local depart = BANNER + DIM
+	local arrive = depart + GLIDE
+	local leave = math.max(arrive + BACK_AT + BACK + 1, Rounds.results_seconds - CARD)
 	local function clearShot()
 		state.added = workspace.DescendantAdded:Connect(function(item) hideForShot(state, item) end)
-		task.spawn(function() -- a few hundred parts a frame, so the glide doesn't stutter; done well before it lands
+		task.spawn(function() -- a few hundred parts a frame, so nothing stutters; done well before the camera lands
 			for i, item in workspace:GetDescendants() do
 				if active ~= state then return end
 				hideForShot(state, item)
@@ -567,16 +577,14 @@ function Cutscene.play(winners, onStage)
 			hideStrings(state)
 		end)
 	end
-	-- The camera while it holds, `t` seconds after arriving: on 3rd, pan to 2nd, pan to 1st, zoom out to all three,
-	-- then push in slowly.
+	-- The camera while it holds, `t` seconds after arriving: all three while the lights come on, in on 1st for
+	-- their emote, back out to all three, then a slow push in.
 	local function holdAt(t)
-		if t < TURN - PAN then return third end
-		if t < TURN then return third:Lerp(second, ease((t - TURN + PAN) / PAN)) end
-		if t < 2 * TURN - PAN then return second end
-		if t < 2 * TURN then return second:Lerp(first, ease((t - 2 * TURN + PAN) / PAN)) end
-		if t < ZOOM_AT then return first end
-		if t < ZOOM_AT + ZOOM then return first:Lerp(group, ease((t - ZOOM_AT) / ZOOM)) end
-		return group:Lerp(drift, ease((t - ZOOM_AT - ZOOM) / (leave - arrive - ZOOM_AT - ZOOM)))
+		if t < PUSH_AT then return group end
+		if t < PUSH_AT + PUSH then return group:Lerp(first, ease((t - PUSH_AT) / PUSH)) end
+		if t < BACK_AT then return first end
+		if t < BACK_AT + BACK then return first:Lerp(group, ease((t - BACK_AT) / BACK)) end
+		return group:Lerp(drift, ease((t - BACK_AT - BACK) / (leave - arrive - BACK_AT - BACK)))
 	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
@@ -586,32 +594,40 @@ function Cutscene.play(winners, onStage)
 		state.home, state.fov = live, liveFov
 		local hold = holdAt(t - arrive)
 		local shot, fov
-		if t < BANNER then shot, fov = live, liveFov
+		if t < depart then shot, fov = live, liveFov
 		elseif t < arrive then
-			if not state.added then clearShot() end
-			local a = ease((t - BANNER) / GLIDE)
-			fadeShot(state, ease((t - BANNER) / (GLIDE * 0.6)))
-			shot, fov = live:Lerp(third, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), liveFov + (SHOT_FOV - liveFov) * a
+			local a = ease((t - depart) / GLIDE)
+			fadeShot(state, ease((t - depart) / (GLIDE * 0.6)))
+			shot, fov = live:Lerp(group, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), liveFov + (SHOT_FOV - liveFov) * a
 		elseif t < leave then shot, fov = hold, SHOT_FOV
 		else
 			local a = ease((t - leave) / GLIDE)
 			fadeShot(state, 1 - a)
 			shot, fov = hold:Lerp(live, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), SHOT_FOV + (liveFov - SHOT_FOV) * a
 		end
-		if t < arrive then seatWinners() end
-		for _, w in state.winners do moveWinner(w, t - arrive) end
+		if t >= BANNER and not state.added then clearShot() end
+		-- The lights: out over DIM, back up as the camera leaves; each spotlight on at its turn, off with the dark.
+		local up = t < leave and 1 or 1 - ease((t - leave) / GLIDE)
+		setDark(state, t < depart and ease((t - BANNER) / DIM) or up)
+		if t >= depart and t < arrive then standWinners() end
+		for place, w in state.winners do
+			local on = t >= arrive + LIGHT_AT + (3 - place) * TURN
+			if on and not w.lit then w.lit = true; w.emote:Play(0.3) end
+			shine(w.light, on and up or 0)
+			if w.prop and w.emote.IsPlaying then flyPlane(w) end
+		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end
 		if t >= leave + GLIDE then Cutscene.stop(); return end
 		camera.CameraType = Enum.CameraType.Scriptable
 		camera.CFrame, camera.FieldOfView = shot, fov
-		-- Confetti from 1st's landing until the camera leaves; the plates pop in once all three are in frame (Alan
-		-- 2026-10-18), 3rd to 1st, each with its top on its desk's front edge.
-		local landed = state.winners[1] and state.winners[1].landed
+		-- Confetti from 1st's light until the camera leaves; each plate pops in with its winner's light, its top on
+		-- its desk's front edge.
+		local landed = state.winners[1] and state.winners[1].lit
 		local screen = camera.ViewportSize
 		for place, w in state.winners do
 			local plate = state.plates[place]
-			local shown = t - arrive - ZOOM_AT - ZOOM - (3 - place) * 0.15
+			local shown = t - arrive - LIGHT_AT - (3 - place) * TURN
 			plate.frame.Visible = shown > 0 and t < leave
 			if plate.frame.Visible then
 				local desk = desks[place]
@@ -627,7 +643,7 @@ function Cutscene.play(winners, onStage)
 		end
 		-- Focus on the winners, soft in front and a little behind. Roblox's focus stops at 500 studs, so a farther
 		-- shot widens the sharp band instead.
-		local strength = t < arrive and ease((t - BANNER) / GLIDE) or t < leave and 1 or 1 - ease((t - leave) / GLIDE)
+		local strength = t < arrive and ease((t - depart) / GLIDE) or t < leave and 1 or 1 - ease((t - leave) / GLIDE)
 		local depth = math.max(0, (spots[1] - shot.Position):Dot(shot.LookVector))
 		state.blur.FocusDistance = math.min(depth, 480)
 		state.blur.InFocusRadius = math.min(500, depth - state.blur.FocusDistance + BLUR_RADIUS)
@@ -642,7 +658,8 @@ function Cutscene.stop()
 	active = nil
 	RunService:UnbindFromRenderStep("WinnersCutscene")
 	if state.fixHips then state.fixHips:Disconnect() end
-	for _, w in state.winners do w.model:Destroy() end
+	for _, w in state.winners do w.model:Destroy(); w.light.part:Destroy() end
+	setDark(state, 0)
 	for model in state.hidden do if model.Parent then setHidden(model, false) end end
 	if state.added then state.added:Disconnect() end
 	fadeShot(state, 0)
