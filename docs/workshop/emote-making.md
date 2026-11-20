@@ -229,4 +229,38 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   there is no picture of this cut. `_G.EMOTE_BODY = <user id>` before running the preview tool stands that user's
   avatar on the desk instead of the blocky kid (sized head to feet: hats and wings made the first try tiny).
 
+## Runner-up emotes: shot cards (step 1, 2026-11-20; proposed, waiting for Alan's OK)
+Alan passed Camera Flick's animation and the framing (2026-11-20) and asked for the runner-up emotes next: Good
+Game (free), Nap, Next One. What all three share:
+- They play for 2nd and 3rd from the moment their light clicks on until the camera leaves: 8 to 9 seconds beside
+  Camera Flick, up to 13 beside a dance. So each is a short opening and then a quiet loop that can run on.
+- Small and calm, so the eye stays on 1st; nothing touches the camera.
+- **Already in their starting pose in the dark** (proposed): the light finds a kid who is already sitting, instead of
+  a standing black shape dropping into a sit at the click.
+- Sitting is cross-legged on top of the stack, so it looks the same on 2nd's four books and 3rd's two.
+- Today 2nd and 3rd each get a random Roblox dance (`EMOTES` in `WinnersCutscene`); these replace it.
+
+| Emote | Opening | Loop | Prop | New for the code |
+|---|---|---|---|---|
+| **Good Game** (free) | Standing. Three small claps at chest height towards 1st's side | A one-handed wave at the camera, hand back down, a nod; then the claps again (about 5 s round) | none | a clip per place instead of a random dance |
+| **Nap** | Sitting cross-legged, hands in the lap, chin sunk on the chest | Slow breathing; every 5 s the head nods lower, jerks up, sinks again | Three paper Z's (each three thin white strips, no picture) rise from the head, sway, grow and fade | sitting; the Z's |
+| **Next One** | Sitting cross-legged, a sheet of paper lying on the right hand | The left hand folds it in three moves (about 5 s); the sheet becomes a half-folded sheet, then a plain white plane; then the kid holds it up and turns it, looking at it, until the scene ends | The sheet and the plane ride on the right hand's grip point, like Camera Flick's plane; they swap at marks in the clip | sitting; a prop that changes at marks |
+
+Body-move wordings for the generator (three each, 4 s asked, to be written on the day from the wording lessons
+above: say where the head and hands go, not the mood). Numbers each must pass: Good Game, hips within 0.3 studs and
+both hands above the waist during the claps; Nap and Next One, the hips at least a third of a leg lower than
+standing and within 0.2 studs of still, the head at least 25 degrees down for Nap, and the last pose within 0.1
+studs of the first where it loops.
+
+Risks, said before building:
+- **Sitting height on different bodies.** A clip lowers the hips by a set distance; a long-legged or short-legged
+  avatar could hover over the books or sink into them. Fix if seen: lower the kid until their lowest point touches
+  the top book (the same idea as the plane resting on the hand). The body sweep decides.
+- **Hands that should meet** (the claps, the folding hand) will not meet exactly on every body. The claps are small
+  and the folding hand only works near the sheet, so a miss reads as a mime, not a mistake.
+- Sounds (clap, snore, paper) wait for the sound pass.
+
+Order: Good Game first (standing, no prop: only the body move is new), then Nap (adds sitting and the Z's), then
+Next One (adds the changing prop).
+
 Back to [HOME](../HOME.md).
