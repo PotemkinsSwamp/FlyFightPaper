@@ -2,11 +2,11 @@
 -- (docs/workshop/emote-making.md): one plain R15 test kid per entry stands in a row on 1st's desk in the real
 -- classroom and is posed from keyframes (the same walk as tools/emote_check.lua and tools/emote_preview.lua: extra
 -- bones passed down to the next real part, hips kept over the spot). Run in Studio's Edit:
---   _G.EMOTE_CLIPS = { "NapB", "cut:Nap", ... }  -- clips in ServerStorage.RBX_ASSISTANT_ANIMGEN, asset
+--   _G.EMOTE_CLIPS = { "NapB", "cut:NapSleep", ... }  -- clips in ServerStorage.RBX_ASSISTANT_ANIMGEN, asset
 --                                                -- ids, or "cut:<name>" for one of the CUTS below
 --   _G.EMOTE_VIEW = { out = 330, side = 0, up = 80, at = 60 }  -- optional: the camera, in studs from the desk's middle
 -- then this file; tools/emote_preview.py --lua=emote_clips.lua renders it (it calls _G.EMOTE.frame(t)).
--- _G.EMOTE.bake("Nap", parent, "NapClip") writes a cut as a plain looping R15 animation: what the game
+-- _G.EMOTE.bake("NapSleep", parent, "NapSleepClip") writes a cut as a plain looping R15 animation: what the game
 -- registers in Studio (WinnersCutscene) and what gets uploaded.
 local CLIPS = assert(_G.EMOTE_CLIPS, "set _G.EMOTE_CLIPS first")
 local VIEW = _G.EMOTE_VIEW or {}
@@ -158,6 +158,126 @@ local function turnsOf(keyframe, hips0)
 	for _, top in keyframe:GetChildren() do if top:IsA("Pose") then walk(top, CFrame.identity) end end
 	return turn
 end
+
+-- Nap (Alan's own version, 2026-11-20: "sitting crisscross applesauce, elbow on the knee, holding their head up ...
+-- they jolt up, and then they look around like side to side. 1, 2, 3. Then they look forward, and then they kind of
+-- just fall back to sleep"; the napper is bored and done). Two clips the scene plays one over the other:
+-- NapSleep, the loop, and NapWake, once, when 1st's light clicks on; NapWake starts and ends in NapSleep's first pose.
+-- The body is generated clip Nap B sitting still (N.rest of its own seconds) and, awake, sitting up straight after
+-- its own start (N.up). By numbers, the same on every frame: the chest leans forward and to the right until the
+-- right elbow can rest on the right thigh by the knee with the hand under the jaw (worked out below for this
+-- body), the head is held NAP_DOWN degrees down and NAP_ROLL over onto the hand, and both arms are bent to reach:
+-- the right hand to the jaw, the left to where it lay on the left knee. (In the game Roblox's IKControl does the
+-- right arm again on each avatar's own body: WinnersCutscene.)
+local N = { clip = "rbxassetid://103826141789730", rest = 3.0, up = 3.9 }
+local NAP_DOWN, NAP_ROLL = 12, 16
+-- Asleep: a breath every BREATH_EVERY seconds (the chest leans BREATH degrees back and forth; Nap B has no
+-- breathing of its own), and once a loop, at NOD_AT, a small nod: the chest NOD_LEAN and the head NOD_HEAD degrees
+-- lower over NOD_DOWN seconds, caught in NOD_UP.
+local BREATH_EVERY, BREATH, NOD_AT, NOD_DOWN, NOD_UP, NOD_LEAN, NOD_HEAD = 4, 2.5, 5, 0.8, 0.25, 5, 14
+-- The shortest turn that takes one direction to another.
+local function arc(from, to)
+	local axis = from:Cross(to)
+	if axis.Magnitude < 1e-5 then return CFrame.identity end
+	return CFrame.fromAxisAngle(axis.Unit, math.atan2(axis.Magnitude, from:Dot(to)))
+end
+-- Bends one arm of a pose so the middle of its hand is at `target`, the elbow towards `pole` (root frame). Never
+-- quite straight (0.95 of its length at most: a straight arm looks stiff), so a far target is not quite reached.
+local function reach(turn, side, target, pole)
+	local upper, lower, hand = side .. "UpperArm", side .. "LowerArm", side .. "Hand"
+	local at = build(turn)
+	local shoulder = at.UpperTorso * joints[upper].c0
+	local s, elbow0 = shoulder.Position, (at[upper] * joints[lower].c0).Position
+	local l1, l2 = (elbow0 - s).Magnitude, (at[hand].Position - elbow0).Magnitude
+	local d = math.clamp((target - s).Magnitude, math.abs(l1 - l2) * 1.01, (l1 + l2) * 0.95)
+	local along = (target - s).Unit
+	local a = (l1 * l1 - l2 * l2 + d * d) / (2 * d)
+	local out = pole - s
+	out -= along * out:Dot(along)
+	local elbow = s + along * a + out.Unit * math.sqrt(math.max(l1 * l1 - a * a, 0))
+	turn[upper] = shoulder.Rotation:Inverse() * (arc(elbow0 - s, elbow - s) * (shoulder * turn[upper]).Rotation)
+	at = build(turn)
+	local bend = at[upper] * joints[lower].c0
+	turn[lower] = bend.Rotation:Inverse() * (arc(at[hand].Position - bend.Position, s + along * d - bend.Position) * (bend * turn[lower]).Rotation)
+end
+-- Nap B's sitting pose with the chest leaning `lean` degrees forward and `side` to the right and the head held
+-- `down` and rolled NAP_ROLL to the right whatever the chest does; and where the hand goes: just under the right
+-- half of the jaw.
+local function propped(base, lean, side, down)
+	local turn = table.clone(base)
+	turn.UpperTorso = base.UpperTorso * CFrame.Angles(-math.rad(lean), 0, -math.rad(side))
+	local neck = build(turn).UpperTorso * joints.Head.c0
+	turn.Head = neck.Rotation:Inverse() * CFrame.fromOrientation(-math.rad(down), 0, -math.rad(NAP_ROLL)) * joints.Head.c1.Rotation
+	local head = first.Head.Size
+	return turn, neck * turn.Head * joints.Head.c1:Inverse() * Vector3.new(0.33 * head.X, -0.5 * head.Y - 0.25 * first.RightHand.Size.Y, -0.09 * head.Z)
+end
+local nap -- this body's numbers, worked out once
+local function napping(c)
+	if nap then return nap end
+	local base = c.nap(N.rest)
+	local at = build(base)
+	local shoulder, elbow = joints.RightUpperArm.c0, (at.RightUpperArm * joints.RightLowerArm.c0).Position
+	local l1, l2 = (elbow - (at.UpperTorso * shoulder).Position).Magnitude, (at.RightHand.Position - elbow).Magnitude
+	local knee, hip = (at.RightUpperLeg * joints.RightLowerLeg.c0).Position, (at.LowerTorso * joints.RightUpperLeg.c0).Position
+	-- the elbow's place: over the thigh a little behind the knee, the two limbs just pressed into each other
+	local rest = knee + (hip - knee) * 0.15 + Vector3.yAxis * 0.8 * (first.RightUpperLeg.Size.X + first.RightUpperArm.Size.X) / 2
+	nap = { base = base, rest = rest, leftHand = at.LeftHand.Position, leftElbow = (at.LeftUpperArm * joints.LeftLowerArm.c0).Position }
+	local least
+	for lean = 0, 45 do
+		for side = -5, 20 do
+			local turn, jaw = propped(base, lean, side, NAP_DOWN)
+			local from = (build(turn).UpperTorso * shoulder).Position
+			local off = ((from - rest).Magnitude - l1) ^ 2 + ((jaw - rest).Magnitude - l2) ^ 2 + (lean * lean + side * side) * 1e-6 * scale * scale
+			if not least or off < least then least, nap.lean, nap.side = off, lean, side end
+		end
+	end
+	return nap
+end
+-- Asleep on the hand, `breath` -1 to 1 and `nod` 0 to 1 into a nod; and where the hand is.
+local function asleep(c, breath, nod)
+	local n = napping(c)
+	local turn, jaw = propped(n.base, n.lean + BREATH * breath + NOD_LEAN * nod, n.side, NAP_DOWN + NOD_HEAD * nod)
+	reach(turn, "Right", jaw, n.rest)
+	reach(turn, "Left", n.leftHand, n.leftElbow)
+	return turn, jaw
+end
+CUTS.NapSleep = { length = 2 * BREATH_EVERY, clips = { nap = N.clip }, pose = function(t, c)
+	local into = t - NOD_AT
+	local nod = into < 0 and 0 or into < NOD_DOWN and (into / NOD_DOWN) ^ 2 or 1 - eased((into - NOD_DOWN) / NOD_UP)
+	return (asleep(c, math.sin(t / BREATH_EVERY * 2 * math.pi), nod))
+end }
+-- Waking: the jolt (JOLT seconds, JOLT_PAST past upright and back), sitting stiff, then the look-around. The looks
+-- are Roblox's own, from its standing idle (the one under every emote in the scene): the turns of its head and
+-- chest away from facing forward, laid over the sitting-up pose. LOOKS: { from, to in this clip's seconds, from, to
+-- in the idle's seconds }: to the right (its 0.15-0.55 s), across to the left with its dip of the head (its
+-- 1.8-2.45 s, a little faster), back to the right (the same, backwards), forward. Then the sink, SINK seconds:
+-- 0.6 of the way down, caught back up to 0.3, then all the way. The right hand stays where the jaw left it the
+-- whole time, and the head comes back down onto it.
+local JOLT, JOLT_PAST, LOOK_FROM, LOOK_END, SINK, DIP, CATCH = 0.2, 0.08, 0.15, 2.6, 2.5, 0.9, 0.3
+local LOOKS = { { 0.45, 0.8, 0.15, 0.55 }, { 0.8, 0.95, 0.55, 0.7 }, { 0.95, 1.45, 1.8, 2.45 }, { 1.45, 1.6, 2.45, 2.6 },
+	{ 1.6, 2.1, 2.45, 1.8 }, { 2.1, 2.25, 1.8, 1.65 }, { 2.25, LOOK_END, 0.55, 0.15 } }
+CUTS.NapWake = { length = LOOK_END + SINK, clips = { nap = N.clip, idle = "rbxassetid://507766666" }, pose = function(t, c)
+	local sleeping, jaw = asleep(c, 0, 0)
+	local awake -- 0 asleep, 1 sitting up
+	if t < JOLT then awake = (1 + JOLT_PAST) * (1 - (1 - t / JOLT) ^ 2) -- fast off the hand, slowing (all at once it popped: 47 degrees in a frame)
+	elseif t < LOOK_END then awake = 1 + JOLT_PAST * (1 - eased((t - JOLT) / JOLT))
+	else
+		local u = t - LOOK_END
+		awake = u < DIP and 1 - 0.6 * eased(u / DIP) or u < DIP + CATCH and 0.4 + 0.3 * eased((u - DIP) / CATCH)
+			or 0.7 * (1 - eased((u - DIP - CATCH) / (SINK - DIP - CATCH)))
+	end
+	local turn = mix(sleeping, c.nap(N.up), awake)
+	for _, look in LOOKS do
+		if t >= look[1] and t < look[2] then
+			local from, now = c.idle(LOOK_FROM), c.idle(look[3] + (look[4] - look[3]) * (t - look[1]) / (look[2] - look[1]))
+			for _, part in { "Head", "UpperTorso" } do turn[part] *= from[part]:ToObjectSpace(now[part]).Rotation end
+		end
+	end
+	for _, part in ARM do turn[part] = sleeping[part] end
+	reach(turn, "Right", jaw, napping(c).rest)
+	return turn
+end }
+
 local folder = game.ServerStorage:FindFirstChild("RBX_ASSISTANT_ANIMGEN")
 -- A clip as a function of its own seconds (held at its ends), and its length.
 local function clip(name)
@@ -165,7 +285,10 @@ local function clip(name)
 	local keys = source:GetKeyframes()
 	table.sort(keys, function(a, b) return a.Time < b.Time end)
 	local hips0, list = {}, {}
-	for k, key in keys do list[k] = { t = key.Time, turn = turnsOf(key, hips0) } end
+	for _, key in keys do -- Roblox's own clips have keys in between whose poses count for nothing (Weight 0): skipped
+		local head = key:FindFirstChild("Head", true)
+		if head and head.Weight > 0 then table.insert(list, { t = key.Time, turn = turnsOf(key, hips0) }) end
+	end
 	return function(t)
 		local i = 1
 		while i < #list - 1 and list[i + 1].t <= t do i += 1 end

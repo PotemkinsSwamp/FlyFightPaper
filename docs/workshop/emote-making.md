@@ -488,10 +488,49 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
   Edit, not yet looked at): `Emote_Bored` 10713992055 (a candidate for the standing rest), `Emote_Agree`
   10713954623 (a nod), `Emote_Beckon` 10713984554 (what they hold: below).
 
-## Nap and Next One: what is left (2026-11-20)
-- **Nap**: a cut from Nap B retimed to a sleepy tempo (slow sink about 2.5 s, held asleep with breathing, a quick
-  jerk up, a look around, sinking again), the jerk also fired by 1st's light; three paper Z's from the head; the
-  kid posed in the clip's first frame while still dark; the sitting-height check on other bodies.
+## Nap: built, not yet seen in Play (2026-11-20)
+The feeling: bored and done ("I didn't win, wake me when it's over"), the kid asleep at the back of the class.
+**Alan's own version** (his "yes, build it"): "sitting crisscross applesauce, elbow on the knee, holding their head
+up ... the bubble ... the Z's ... they jolt up, and then they look around like side to side. 1, 2, 3. Then they look
+forward, and then they kind of just fall back to sleep" (onto the hand; his other ending, the arm and then the head
+falling, is not built: it needs a second sleeping pose and more time than the 8 to 9 s beside Camera Flick). Before
+that he asked for legs dangling off the books instead of crossed, then dropped it for this version.
+- **Two clips**, both cuts in `tools/emote_clips.lua`, in the open place's `Assets` (unsaved) and as files:
+  `NapSleepClip` (`CUTS.NapSleep`, `assets/animations/emotes/nap-sleep.rbxm`, an 8 s loop: a breath every 4 s, one
+  small nod at 5 s) and `NapWakeClip` (`CUTS.NapWake`, `nap-wake.rbxm`, 5.1 s, once: jolt 0.2 s, sitting stiff,
+  looks right, left, right and forward from 0.45 to 2.6 s, then 2.5 s of sinking back: a dip, a catch, the sink).
+  The scene (`nap` in `WinnersCutscene`) plays the loop from the dark and the wake clip over it when 1st's light
+  clicks on. So a nod comes 5 s after dozing off and then every 8 s (two breaths), not every 5.
+- **Where each part comes from.** The body: Nap B sitting still (its 3.0 s) and sitting up (its 3.9 s; at 3.5 to
+  3.8 s it startles by itself: leans back, looks up, lifts its hands). The looks: Roblox's own, cut from its
+  standing idle (`rbxassetid://507766666`: head to 47 degrees right at 0.15 to 0.55 s, across to 68 left with a dip
+  of the head at 1.8 to 2.45 s), as the head's and chest's turns away from facing forward. By numbers: the lean that
+  puts the elbow on the knee (worked out by the tool for the test body: 6 degrees forward, 18 to the right; a small
+  lean is enough because an R15 body is short), the head held 12 degrees down and rolled 16 onto the hand, both
+  arms bent to reach (right hand under the jaw, left on the left knee), the breath (2.5 degrees of the chest; Nap B
+  has none), the nod and the timing.
+- **Checked by numbers in Edit** (baked clips, standard body): hand to jaw 0.00 studs asleep; the hand does not move
+  at all through the wake clip (the head leaves it by 0.6 studs and comes back); elbow 0.76 over the thigh's knee
+  end; loop ends meet exactly; biggest turn in one key 25 degrees (the left forearm in the jolt's first frame).
+  Two faults the numbers found first: the looks barely turned (Roblox's idle has keys in between whose poses have
+  Weight 0; the tool now skips them), and the jolt did 47 degrees in its first frame (it now eases out over the
+  0.2 s and goes 8% past upright).
+- **A dry run of the real scene code in Edit** (the `nap` function lifted out of the script, a test body stepped
+  with `Animator:StepAnimations`): no errors; the bubble pops at the jolt, five bits fly, no Z's while awake, a new
+  small bubble once asleep again. On a tall slim body the clip alone leaves the hand 0.16 studs off the jaw; the
+  IKControl meant to close that does nothing in Edit, so it is unproven until Play.
+- **Not known until Alan's Play look:** how any of it looks (nobody has seen it), the IKControl arm on real bodies,
+  whether the crossed shins sink visibly into the top book (on the test body the legs' boxes go up to 0.4 studs
+  under the feet's level; the thighs rest about level), the props' sizes and colours under the spotlight.
+- **The props** are plain parts made by the scene, sizes in head heights: Z's 0.3 growing to 0.9, one every 1.33 s,
+  4 s each, from the head on the kid's right; bubble 0.06 to 0.25 across-half (radius) over 6 s at the mouth on the
+  kid's left, pale blue, 0.45 see-through, one white glint; the pop 0.1 s, bits 0.3 s.
+- If the place is closed without a save: `_G.EMOTE_CLIPS = { "cut:NapSleep" }` in Edit, then the two
+  `--bake=NapSleep:NapSleepClip:assets/animations/emotes/nap-sleep.rbxm` and `NapWake` / `nap-wake.rbxm` runs (as
+  for Good Game above); then set the camera back to Fixed from a delayed line (`task.delay(1, ...)`: Studio's
+  assistant puts the camera type back when a command ends).
+
+## Next One: what is left (2026-11-20)
 - **Next One**: Next One A's sitting posture, the head looking down about 25 degrees, the left hand's three folds
   posed by numbers, a sheet that becomes a half-folded sheet and then a plain white plane on the right hand's grip
   point (swapped at marks on the clip), then a raise-and-look as the ending.

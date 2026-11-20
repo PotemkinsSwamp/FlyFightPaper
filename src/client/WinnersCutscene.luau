@@ -511,6 +511,129 @@ local function goodGame(animator, model)
 	end }
 end
 
+-- Nap (Alan's own version 2026-11-20; the napper is bored and done, asleep at the back of the class): sitting
+-- cross-legged, the right elbow on the knee and the head propped on the hand, asleep from the dark on
+-- (Assets.NapSleepClip, a loop: a breath every 4 s, a small nod). When 1st's light clicks on they jolt awake, sit
+-- stiff, look right, left, right and forward, and sink back onto the hand in a dip, a catch and a sink
+-- (Assets.NapWakeClip, once, one priority higher; it starts and ends in the loop's first pose). Both are cut by
+-- tools/emote_clips.lua. Like the clap's hands: IKControl bends the right arm so the hand is under the jaw on every
+-- body, the elbow towards the knee; while they are awake the hand stays in the air where the jaw left it.
+-- Two props, plain parts made here (sizes in head heights), in the kid's own frame so they keep their place on the
+-- stage: three paper Z's, each three thin white strips, leave the head on the kid's right one every Z_EVERY seconds,
+-- rise, drift, sway, grow and fade over Z_LIFE; a snore bubble at the mouth on the kid's left grows over
+-- BUBBLE_GROW seconds, swelling and shrinking with the breath, and pops at the jolt (POP seconds, five small strips
+-- flying off); a new one starts when they are asleep again. No Z's leave while they are awake.
+local Z_EVERY, Z_LIFE, Z_RISE, Z_DRIFT, Z_SMALL, Z_BIG = 4 / 3, 4, 1.5, 0.6, 0.3, 0.9
+local BUBBLE_SMALL, BUBBLE_BIG, BUBBLE_GROW, BUBBLE_BREATH, BUBBLE_CLEAR, POP, POP_BITS = 0.06, 0.25, 6, 0.03, 0.45, 0.1, 0.3
+local NAP_BREATH = 4 -- seconds a breath in the sleeping clip
+local function paper(parent, color, shape)
+	local part = Instance.new("Part")
+	part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
+	part.Material, part.Color, part.Size = Enum.Material.SmoothPlastic, color, Vector3.one * 0.01
+	if shape then part.Shape = shape end
+	part.Parent = parent
+	return part
+end
+local function nap(animator, model, place, cast)
+	local head, hand, root = model:FindFirstChild("Head"), model:FindFirstChild("RightHand"), model:FindFirstChild("HumanoidRootPart")
+	local upper, shin = model:FindFirstChild("RightUpperArm"), model:FindFirstChild("RightLowerLeg")
+	local function track(name, looped, priority)
+		local id = ourClip(name)
+		if not id then return nil end
+		local animation = Instance.new("Animation"); animation.AnimationId = id
+		local made = animator:LoadAnimation(animation); made.Looped, made.Priority = looped, priority
+		return made
+	end
+	local sleep, wake = track("NapSleepClip", true, Enum.AnimationPriority.Action), track("NapWakeClip", false, Enum.AnimationPriority.Action2)
+	if not (sleep and wake and head and hand and root and upper and shin) then return { IsPlaying = false, Play = function() end } end
+	sleep:Play(0)
+	-- the hand under the right half of the jaw (the same point the clips were cut for)
+	local jawAt = Vector3.new(0.33 * head.Size.X, -0.5 * head.Size.Y - 0.25 * hand.Size.Y, -0.09 * head.Size.Z)
+	local jaw, knee = Instance.new("Attachment"), Instance.new("Attachment")
+	jaw.Parent, knee.Position, knee.Parent = root, Vector3.new(0, shin.Size.Y / 2, 0), shin
+	local reach = Instance.new("IKControl")
+	reach.Type, reach.ChainRoot, reach.EndEffector, reach.Target, reach.Pole = Enum.IKControlType.Position, upper, hand, jaw, knee
+	reach.SmoothTime, reach.Parent = 0, animator.Parent
+
+	local size, white = head.Size.Y, Color3.new(1, 1, 1)
+	local thin = 0.03 * size
+	local zs = {}
+	for i = 1, 3 do zs[i] = { paper(cast, white), paper(cast, white), paper(cast, white) } end -- top, slash, bottom
+	local ball, glint, bits = paper(cast, Color3.fromRGB(190, 225, 255), Enum.PartType.Ball), paper(cast, white), {}
+	for i = 1, 5 do bits[i] = paper(cast, white) end
+	local nextZ = os.clock()
+	local began = os.clock() - 0.75 * BUBBLE_GROW -- when this bubble started: the first is already big in the dark
+	local popped, burst -- when the bubble popped; where and how big it was (the kid's frame)
+	wake.Stopped:Connect(function() sleep.TimePosition = 0; began = os.clock() end)
+	local beat
+	beat = RunService.RenderStepped:Connect(function()
+		if not model:IsDescendantOf(game) then beat:Disconnect(); return end
+		local now, awake, stage = os.clock(), wake.IsPlaying, root.CFrame
+		if not awake then jaw.WorldPosition = head.CFrame * jawAt end
+		-- the Z's
+		if not awake and now >= nextZ then
+			for _, z in zs do
+				if not z.born then
+					z.born, z.from, nextZ = now, stage:PointToObjectSpace(head.Position) + Vector3.new(0.3, 0.45, 0) * size, now + Z_EVERY
+					break
+				end
+			end
+		end
+		for i, z in zs do
+			local age = z.born and now - z.born
+			if age and age < Z_LIFE then
+				local u = age / Z_LIFE
+				local tall = size * (Z_SMALL + (Z_BIG - Z_SMALL) * u ^ 0.7)
+				local wide, bar = tall * 0.8, tall * 0.16
+				local at = stage * CFrame.new(z.from + Vector3.new(Z_DRIFT * u + 0.1 * math.sin(age * 2.2 + i), Z_RISE * u, 0) * size)
+					* CFrame.Angles(0, math.rad(20) * math.sin(age * 1.3 + i), math.rad(10) * math.sin(age * 1.7 + i))
+				local clear = math.max(1 - age / 0.3, (u - 0.65) / 0.35, 0)
+				z[1].Size, z[1].CFrame = Vector3.new(wide, bar, thin), at * CFrame.new(0, (tall - bar) / 2, 0)
+				z[3].Size, z[3].CFrame = Vector3.new(wide, bar, thin), at * CFrame.new(0, (bar - tall) / 2, 0)
+				-- the slash: from the top bar's end on the viewer's right (the kid's left) down to the bottom bar's other end
+				z[2].Size, z[2].CFrame = Vector3.new(math.sqrt((wide - bar) ^ 2 + (tall - bar) ^ 2), bar, thin), at * CFrame.Angles(0, 0, -math.atan2(tall - bar, wide - bar))
+				for _, strip in ipairs(z) do strip.Transparency = clear end
+			else
+				z.born = nil
+				for _, strip in ipairs(z) do strip.Transparency = 1 end
+			end
+		end
+		-- the bubble
+		local since = popped and now - popped
+		if not awake then
+			local grown = math.min((now - began) / BUBBLE_GROW, 1)
+			local r = size * (BUBBLE_SMALL + (BUBBLE_BIG - BUBBLE_SMALL) * grown + BUBBLE_BREATH * math.sin(sleep.TimePosition / NAP_BREATH * 2 * math.pi))
+			local mouth = head.CFrame * (Vector3.new(-0.12, -0.2, -0.5) * head.Size)
+			local middle = mouth + (head.CFrame.LookVector - stage.RightVector * 0.35 - stage.UpVector * 0.25).Unit * r
+			ball.Size, ball.CFrame, ball.Transparency = Vector3.one * 2 * r, CFrame.new(middle), BUBBLE_CLEAR
+			burst = { at = stage:PointToObjectSpace(middle), r = r }
+		elseif burst and since and since < POP then -- it puffs up and is gone
+			local k = since / POP
+			ball.Size, ball.CFrame, ball.Transparency = Vector3.one * 2 * burst.r * (1 + 0.35 * k), stage * CFrame.new(burst.at), BUBBLE_CLEAR + (1 - BUBBLE_CLEAR) * k
+		else
+			ball.Transparency = 1
+		end
+		local r = ball.Size.X / 2
+		glint.Size, glint.Transparency = Vector3.new(0.4, 0.12, 0.02) * r, ball.Transparency < 1 and (ball.Transparency - BUBBLE_CLEAR) / (1 - BUBBLE_CLEAR) or 1
+		glint.CFrame = stage.Rotation * CFrame.Angles(0, 0, math.rad(35)) + ball.Position + (stage.LookVector * 0.8 + stage.UpVector * 0.45 + stage.RightVector * 0.35) * r
+		for i, bit in bits do
+			if awake and burst and since and since < POP_BITS then
+				local k, angle = since / POP_BITS, math.rad(i * 72 + 15)
+				bit.Size, bit.Transparency = Vector3.new(0.45 * burst.r, 0.05 * size, thin), k
+				bit.CFrame = stage * CFrame.new(burst.at + Vector3.new(math.cos(angle), math.sin(angle), 0) * burst.r * (1.1 + 1.4 * k)) * CFrame.Angles(0, 0, angle)
+			else
+				bit.Transparency = 1
+			end
+		end
+	end)
+	-- What nap returns stands in for an AnimationTrack (Play only): their own light changes nothing, 1st's wakes them.
+	return { IsPlaying = false, Play = function()
+		task.delay((place - 1) * TURN, function()
+			if model:IsDescendantOf(game) then wake:Play(0.05); popped = os.clock() end
+		end)
+	end }
+end
+
 -- The book podiums (Alan 2026-11-19): each winner stands on a stack of single books (Assets.WinnerBooks: eight
 -- free Creator Store books, each its own model lying flat, 10 studs on its longer side, its thickness in "Thick"),
 -- in clear steps (Alan 2026-11-19: on four, three and two books 1st's did not look taller than 2nd's): about 0.78,
@@ -577,8 +700,11 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	flick = prop and flick
 	local runnerUp = place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15
 	local emote
-	if runnerUp and RunService:IsStudio() and Root:GetAttribute("DevRunnerUp") == "GoodGame" then
+	local ours = runnerUp and RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
+	if ours == "GoodGame" then
 		emote = goodGame(animator, model)
+	elseif ours == "Nap" then
+		emote = nap(animator, model, place, world)
 	else
 		local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
 		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action

@@ -306,7 +306,7 @@ function HUD.start(getPlane, action)
 		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
 		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
 		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
-		local ups={"dances","GoodGame"}
+		local ups={"dances","GoodGame","Nap"}
 		local runnerUp=eraserBots:Clone();runnerUp.Name="RunnerUp";runnerUp.Text="2nd/3rd: dances";runnerUp.Position=UDim2.fromOffset(550,-80)
 		runnerUp.BackgroundColor3=Color3.fromRGB(150,40,40);runnerUp.Parent=picker
 		runnerUp.Activated:Connect(function()
