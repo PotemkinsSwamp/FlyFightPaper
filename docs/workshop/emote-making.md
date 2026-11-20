@@ -173,5 +173,11 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   150-degree roll left the plane edge-on to the camera at the bottom view; the full 180 shows it.
 - Lesson: **a mood is a tempo.** "Smug" was not in the pose, it was in the speed and the stops: one slow move, a
   full stop, one slow move back. Three quick swings of the same size read as the opposite mood.
+- **Alan on the slow cut, in Play (2026-11-20): the arm is wrong, and words are not getting it across.** The hand
+  starts too low (belly height) and the head looks too far down; the elbow should be at the side with the hand and
+  plane up in front, the head only slightly down; the forearm starts twisted the wrong way round. Next: he shows
+  the move on video. Roblox's video-to-animation tool (Studio beta "Live Animation Creator": Avatar tab > Clip
+  Editor > the three-dot button > Import > Live Animation Creator; one person, one steady shot under 15 s, .mp4 or
+  .mov; [docs](https://create.roblox.com/docs/animation/capture)) can turn that video straight into the body move.
 
 Back to [HOME](../HOME.md).
