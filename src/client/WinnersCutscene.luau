@@ -67,25 +67,34 @@ local KEEP_ARENA = { "^Wall", "^Floor", "^Window", "^Chalkboard", "^Desk", "^Cha
 local KEEP_TOYS = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hangar"] = true, ["desk-runway-droop"] = true,
 	["runway-light"] = true, ["runway-light-tip"] = true }
 -- The dark, on this screen only: the room's own lighting goes to these values, every lamp in the room goes out and
--- the haze clears, so shapes can still just be made out (Alan: near-dark, not black; seen in Play 2026-11-19).
-local DARK = { Brightness = 0, Ambient = Color3.fromRGB(46, 49, 64), OutdoorAmbient = Color3.fromRGB(46, 49, 64),
+-- the haze clears, so the room can only just be made out (Alan 2026-11-19 on 46, 49, 64: "a little darker").
+local DARK = { Brightness = 0, Ambient = Color3.fromRGB(24, 26, 34), OutdoorAmbient = Color3.fromRGB(24, 26, 34),
 	EnvironmentDiffuseScale = 0, EnvironmentSpecularScale = 0 }
 -- A winner's spotlight. Real lamps can't do it: Roblox's lights reach 60 studs (a winner stands 140 tall) and are
 -- drawn badly or not at all from the group shot's distance (seen in Play 2026-11-19: dark from afar, burnt out
 -- close up). So the room never lights the winners: each is drawn in their own layer over the dark room (a
 -- ViewportFrame whose camera follows the scene's), lit by the layer's own light, and their light coming on is the
--- layer's tint going from UNLIT (a dark shape) to full colour over CLICK seconds. In the layer the winner is their
+-- layer's tint going from UNLIT (a black shape with no detail: Alan 2026-11-19) to full colour over CLICK seconds. In the layer the winner is their
 -- normal small size, with the layer's camera brought in to match: animations then move the hips the right distance
 -- (on a scaled-up avatar Roblox scales that movement twice, measured 2026-10-17). In the room the spotlight is a see-through shaft just behind the winner
 -- and a glowing pool on the desk top: the shaft's top over the desk and its width at the desk in winner heights, and
 -- how see-through shaft and pool are.
-local UNLIT, LIT, LAMP_COLOR = Color3.fromRGB(34, 36, 48), Color3.fromRGB(120, 118, 125), Color3.fromRGB(255, 244, 214)
+local UNLIT, LIT, LAMP_COLOR = Color3.new(), Color3.fromRGB(120, 118, 125), Color3.fromRGB(255, 244, 214)
 local CLICK = 0.12
+local IDLE = { [Enum.HumanoidRigType.R15] = "rbxassetid://507766666", [Enum.HumanoidRigType.R6] = "rbxassetid://180435571" } -- Roblox's standing idles
 local SHAFT_TOP, SHAFT_WIDE, SHAFT_CLEAR, POOL_CLEAR = 3, 0.95, 0.82, 0.8
 local Cutscene = {}
 local active
 
 local function setDark(state, amount)
+	if state.air then
+		-- Haze turns far dark walls into bright sky, and other code keeps putting it back (the options code sets its
+		-- density every few seconds: seen in Play 2026-11-19), so it is cleared again every frame and set aside
+		-- altogether while it is fully dark.
+		state.air.Density = state.airWas * (1 - amount)
+		local home = if amount < 1 then Lighting else nil
+		if state.air.Parent ~= home then state.air.Parent = home end
+	end
 	if state.dark == amount then return end
 	state.dark = amount
 	for name, was in state.lit do
@@ -93,12 +102,6 @@ local function setDark(state, amount)
 		Lighting[name] = if typeof(was) == "number" then was + (dark - was) * amount else was:Lerp(dark, amount)
 	end
 	for lamp, was in state.lamps do lamp.Brightness = was * (1 - amount) end
-	if state.air then
-		-- Haze turns far dark walls into bright sky. Once dark, the haze is set aside altogether: left in Lighting,
-		-- the options code puts its density back every few seconds (seen in Play 2026-11-19).
-		state.air.Density = state.airWas * (1 - amount)
-		state.air.Parent = if amount < 1 then Lighting else nil
-	end
 end
 
 local function makeSpotlight(gui, spot, back, right, height, order)
@@ -358,6 +361,10 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local feet = humanoid.RigType == Enum.HumanoidRigType.R15 and humanoid.HipHeight + rootPart.Size.Y / 2 or rootPart.Size.Y / 2 + (leg and leg.Size.Y or 2)
 	local scale = model:GetScale()
 	model:ScaleTo(1)
+	-- The copy comes with its student's sitting pose: stood up straight, with Roblox's own standing idle under the emote.
+	for _, joint in model:GetDescendants() do
+		if joint:IsA("Motor6D") or joint:IsA("AnimationConstraint") then joint.Transform = CFrame.identity end
+	end
 	local onDesk = spot + Vector3.new(0, feet / scale, 0)
 	local desk = CFrame.lookAt(onDesk, onDesk + facing)
 	model:PivotTo(desk)
@@ -366,6 +373,9 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15 and holdPlane(model, actorId) or nil
 	local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or emoteFor(place)
 	local emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = true, Enum.AnimationPriority.Action
+	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
+	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
+	idle:Play(0)
 	return { model = model, emote = emote, prop = prop, place = place, scale = scale, spot = spot, desk = desk, lit = false }
 end
 
