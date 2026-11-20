@@ -293,6 +293,7 @@ each wording differently, or rename the clip before the next try.
 - The raw clips are not kept as files: the tool loads them by their ids above.
 
 ## Good Game: the cut (step 4, 2026-11-20)
+(Rejected and deleted the same day; kept here for what it taught. The remake is the next section.)
 `CUTS.GoodGame` in `tools/emote_clips.lua`, a 4.5 s loop. First cut: version C's claps with a wave posed by
 numbers. A reviewer failed it: the claps read as crossed arms or a self-hug, the hips sat differently at the
 loop's two ends, and hands cut into the torso on the way down. Second cut, now in: **only the arms and the head
@@ -313,11 +314,11 @@ idle keeps the body alive underneath and the loop cannot jump.
   first (a few lines over the rig's joints) and pick the angles from that, before rendering anything.
 - The plan says never to type in a body move (October's arm-only test looked lifeless). This is arms over a live
   idle, not a whole body; whether it looks alive is for Alan's eye in Play.
-- Baked and saved in one go: `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua
-  "--bake=GoodGame:GoodGameClip:assets/animations/emotes/good-game.rbxm"` puts the clip in the place's `Assets`
-  and writes the file (fetched in slices by the tool, so nothing big passes through the chat).
+- Baking a cut and saving it in one go (for any cut): `python tools/emote_preview.py STUDIO_ID x
+  --lua=emote_clips.lua "--bake=<Cut>:<Cut>Clip:<file.rbxm>"` puts the clip in the place's `Assets` and writes the
+  file (fetched in slices by the tool, so nothing big passes through the chat).
 - In the scene: Dev panel "2nd/3rd: dances" steps to "2nd/3rd: GoodGame" (`DevRunnerUp`); `WinnersCutscene`
-  registers `Assets.GoodGameClip` for 2nd and 3rd (Studio only until the upload). **Not yet run in Play.**
+  registered the baked clip for 2nd and 3rd.
 - Seen as a contact sheet and video from Edit on the blocky test kid (`.planning/emotes/good-game-cut-sheet.jpg`,
   `good-game-cut.mp4`).
 - Not done: turning a little towards 1st for the claps (it faces the camera), and the sound.
@@ -329,6 +330,23 @@ idle keeps the body alive underneath and the loop cannot jump.
 - Open for the next try (his OK on a plan in words first): motion from a real source with the whole body in it
   (a generated clip used as made and slowed, Roblox's own wave or applaud, or a video capture of someone else),
   and a calmer tempo.
+
+## Good Game remade from Roblox's own moves (2026-11-20; Alan: "yes, build it")
+The plan he passed in words: Roblox's own hand-made clap and wave, played in turn by the scene. No upload, no
+generator try, no clip of ours; the typed-in cut, its file and its code are deleted (git has them).
+- **The round** (`GOOD_GAME` in `src/client/WinnersCutscene.luau`): Roblox's Applaud emote for 3 s
+  (`rbxassetid://10713966026`), a half-second cross-fade into its built-in wave (`rbxassetid://507770239`, 1.75 s,
+  fading out over its last half second), then the standing idle alone for about 2.5 s; about 7 s a round.
+- **The nod is dropped**: Roblox has none, and a typed-in one is what he rejected.
+- What the two clips hold (read from their keyframes in Edit): both move the whole body. Applaud: a clap every
+  0.5 s, chest 5 degrees, head 8, knees up to 9. Wave: the **left** arm, the chest leaning 14 degrees, the hips
+  shifting a quarter of a stud, back in its first pose for the last 0.2 s.
+- **Applaud claps at the same rate as the rejected cut** (two a second), so the Dev button has two choices for his
+  eye: "GoodGame" at Roblox's speed and "GoodGameSlow" at three quarters (a clap every 0.67 s).
+- Checking that a Roblox animation exists and what is in it, without Play: `MarketplaceService:GetProductInfo(id)`
+  (type 24 is an animation; a catalogue emote's own id is type 61 and holds no keyframes) and
+  `KeyframeSequenceProvider:GetKeyframeSequenceAsync`.
+- **Not yet run in Play by anyone.**
 
 ## Nap and Next One: what is left (2026-11-20)
 - **Nap**: a cut from Nap B retimed to a sleepy tempo (slow sink about 2.5 s, held asleep with breathing, a quick

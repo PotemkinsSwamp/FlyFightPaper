@@ -415,13 +415,42 @@ local function emoteFor(place)
 	return id
 end
 
--- The runner-up emotes (Alan's OK 2026-11-20: Good Game, Nap, Next One), for 2nd and 3rd: small, calm loops cut
--- from generated body moves (tools/emote_clips.lua). Not uploaded yet (Alan's go), so they only play in Studio: the
--- Dev panel's "2nd/3rd" button names one (DevRunnerUp) and its clip (Assets.<name>Clip) is registered for the session.
+-- The runner-up emotes (Alan's OK 2026-11-20: Good Game, Nap, Next One), for 2nd and 3rd: small, calm loops. Studio
+-- only until Alan passes them: the Dev panel's "2nd/3rd" button names one (DevRunnerUp). Nap and Next One are cut
+-- from generated body moves (tools/emote_clips.lua): the clip (Assets.<name>Clip) is registered for the session.
 local function runnerUpClip()
 	local name = RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
 	local clip = name and Root.Assets:FindFirstChild(name .. "Clip")
 	return clip and game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip)
+end
+
+-- Good Game, the free one (Alan's OK on the remake 2026-11-20; he found arms typed in by numbers stiff and too
+-- fast): Roblox's own hand-made moves with the whole body in them, in turn, round and round. Its Applaud emote (a
+-- clap every half second), then its built-in wave (1.75 s; it fades out over its last half second), then the
+-- standing idle alone. Each step: { clip, seconds until the next step starts, at speed 1 }. The speeds are the Dev
+-- button's two choices, for Alan to pick from. What it returns stands in for an AnimationTrack: Play only.
+local GOOD_GAME = { { "rbxassetid://10713966026", 3 }, { "rbxassetid://507770239", 1.25 }, { false, 3 } }
+local GOOD_GAME_BLEND, GOOD_GAME_SPEEDS = 0.5, { GoodGame = 1, GoodGameSlow = 0.75 }
+local function goodGame(animator, model, speed)
+	local tracks = {}
+	for i, step in GOOD_GAME do
+		if step[1] then
+			local animation = Instance.new("Animation"); animation.AnimationId = step[1]
+			tracks[i] = animator:LoadAnimation(animation); tracks[i].Looped, tracks[i].Priority = true, Enum.AnimationPriority.Action
+		end
+	end
+	return { IsPlaying = false, Play = function()
+		task.spawn(function()
+			while model:IsDescendantOf(game) do -- the scene destroys the winners when it ends
+				for i, step in GOOD_GAME do
+					local track = tracks[i]
+					if track then track:Play(GOOD_GAME_BLEND, 1, speed) end
+					task.wait(step[2] / (track and speed or 1))
+					if track then track:Stop(GOOD_GAME_BLEND) end
+				end
+			end
+		end)
+	end }
 end
 
 -- The book podiums (Alan 2026-11-19): each winner stands on a stack of single books (Assets.WinnerBooks: eight
@@ -488,9 +517,15 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
 	flick = prop and flick
-	local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote
-		or place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15 and runnerUpClip() or emoteFor(place)
-	local emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action
+	local runnerUp = place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15
+	local speed = runnerUp and RunService:IsStudio() and GOOD_GAME_SPEEDS[Root:GetAttribute("DevRunnerUp")]
+	local emote
+	if speed then
+		emote = goodGame(animator, model, speed)
+	else
+		local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
+		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action
+	end
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)

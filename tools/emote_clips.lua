@@ -2,11 +2,11 @@
 -- (docs/workshop/emote-making.md): one plain R15 test kid per entry stands in a row on 1st's desk in the real
 -- classroom and is posed from keyframes (the same walk as tools/emote_check.lua and tools/emote_preview.lua: extra
 -- bones passed down to the next real part, hips kept over the spot). Run in Studio's Edit:
---   _G.EMOTE_CLIPS = { "GoodGameA", "cut:GoodGame", ... }  -- clips in ServerStorage.RBX_ASSISTANT_ANIMGEN, asset
---                                                          -- ids, or "cut:<name>" for one of the CUTS below
+--   _G.EMOTE_CLIPS = { "NapB", "cut:Nap", ... }  -- clips in ServerStorage.RBX_ASSISTANT_ANIMGEN, asset
+--                                                -- ids, or "cut:<name>" for one of the CUTS below
 --   _G.EMOTE_VIEW = { out = 330, side = 0, up = 80, at = 60 }  -- optional: the camera, in studs from the desk's middle
 -- then this file; tools/emote_preview.py --lua=emote_clips.lua renders it (it calls _G.EMOTE.frame(t)).
--- _G.EMOTE.bake("GoodGame", parent, "GoodGameClip") writes a cut as a plain looping R15 animation: what the game
+-- _G.EMOTE.bake("Nap", parent, "NapClip") writes a cut as a plain looping R15 animation: what the game
 -- registers in Studio (WinnersCutscene) and what gets uploaded.
 local CLIPS = assert(_G.EMOTE_CLIPS, "set _G.EMOTE_CLIPS first")
 local VIEW = _G.EMOTE_VIEW or {}
@@ -21,40 +21,9 @@ end
 -- The runner-up emotes (Alan's OK 2026-11-20): each a loop of `length` seconds; `pose(t, c)` gives the turn of
 -- every joint the cut moves at `t` (a joint it leaves out is left to what plays underneath), where c.<key>(seconds)
 -- is the named generated clip's pose at its own seconds. Ids: the generator's uploads.
+-- (Good Game is not a cut: its first one, arms posed by numbers, Alan found stiff and too fast; it now plays
+-- Roblox's own clap and wave, in WinnersCutscene.)
 local CUTS = {}
--- Good Game: only the arms and the head are posed, by numbers (degrees), so Roblox's standing idle keeps the rest of
--- the body alive underneath. (Version C's generated claps read as crossed arms and its wave as an arm held out
--- sideways: reviewer 2026-11-20.) Three small claps in front of the chest: the upper arms a little forward and
--- turned in, the elbows bent, the turn-in opening and closing the hands; then the left arm drops and the right
--- hand comes up beside the face, elbow kept in front of the body, and the upper arm turns out and in WAVES times in
--- a second (an arm held out level with the forearm upright went out sideways on its way up and crowded the head:
--- reviewer); the arm comes down; a nod; the hands come back up.
-local CLAP_FORWARD, CLAP_BEND, CLAP_OPEN, CLAP_SHUT, WAVES, NOD = 10, 70, 28, 62, 3, 26
-local function arm(side, upper, lower) -- side: 1 the right arm, -1 the left (mirrored)
-	local x, y, z = upper:ToEulerAnglesXYZ()
-	return CFrame.Angles(x, y * side, z * side), lower
-end
-local function arms(right, left, head)
-	local out = { Head = head or CFrame.identity, RightHand = CFrame.identity, LeftHand = CFrame.identity }
-	out.RightUpperArm, out.RightLowerArm = arm(1, right[1], right[2])
-	out.LeftUpperArm, out.LeftLowerArm = arm(-1, left[1], left[2])
-	return out
-end
-local REST = { CFrame.Angles(0, 0, math.rad(5)), CFrame.Angles(math.rad(10), 0, 0) }
-local function clap(turnIn) return { CFrame.Angles(math.rad(CLAP_FORWARD), 0, 0) * CFrame.Angles(0, math.rad(turnIn), 0), CFrame.Angles(math.rad(CLAP_BEND), 0, 0) } end
-local function wave(s) return { CFrame.Angles(math.rad(55), 0, 0) * CFrame.Angles(0, math.rad(-18 + 23 * math.sin(s * WAVES * 2 * math.pi)), 0), CFrame.Angles(math.rad(125), 0, 0) } end
-CUTS.GoodGame = { length = 4.5, clips = {}, pose = function(t)
-	local open = clap(CLAP_OPEN)
-	if t < 1.5 then -- shut at 0.25, 0.75 and 1.25 s
-		local c = clap(CLAP_OPEN + (CLAP_SHUT - CLAP_OPEN) * (0.5 - 0.5 * math.cos(t / 0.5 * 2 * math.pi)))
-		return arms(c, c)
-	end
-	if t < 1.95 then return mix(arms(open, open), arms(wave(0), REST), eased((t - 1.5) / 0.45)) end
-	if t < 2.95 then return arms(wave(t - 1.95), REST) end
-	if t < 3.4 then return mix(arms(wave(1), REST), arms(REST, REST), eased((t - 2.95) / 0.45)) end
-	if t < 4.0 then return arms(REST, REST, CFrame.Angles(-math.rad(NOD) * math.sin((t - 3.4) / 0.6 * math.pi), 0, 0)) end
-	return mix(arms(REST, REST), arms(open, open), eased((t - 4.0) / 0.5))
-end }
 
 local Players = game:GetService("Players")
 if _G.EMOTE and _G.EMOTE.clean then _G.EMOTE.clean() end
