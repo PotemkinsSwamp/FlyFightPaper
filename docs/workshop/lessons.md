@@ -1033,3 +1033,11 @@ Back to [HOME](../HOME.md)
 - **A cloned plane brings the HUD's outline Highlight with it,** and a Highlight on a part of a model beats the black cover on the whole model: strip Highlights from clones.
 - **Judge only the first winners' moment after joining, and brighten dark recordings before calling them clean.** A second moment in one Play was in sync when the first was not; a half-second lit flash only showed once the frames were brightened (ffmpeg `eq=gamma=3.5`). Record with `-offset_x 0 -offset_y 0 -video_size 2560x1080` after bringing Studio to the front: the whole desktop is two screens and Chrome was on top.
 - **A scripted cut from one marker to another can swallow code in between** (the scene's helper functions went missing and it still compiled: a missing local function is only a nil at run time). After a scripted cut, list the file's functions and compare.
+- **A named move needs a reference before it is built (2026-11-20).** I guessed what a "slow clap" is, twice, and Alan
+  rejected both; his reference and then his own count ("1, 2, 3", a second apart, never waiting) settled it. Ask for or
+  find the reference and read its timing off stills first ([emote making](emote-making.md)).
+- **Hands that must meet: pull one onto the other with Roblox's IKControl** at the moment they meet, by the clip's own
+  time; one set of joint turns leaves a different gap on every avatar. **A stance under another clip: a clip of ours
+  that holds only hips and legs, one priority higher.** Both on the [emote making](emote-making.md) page.
+- **A counted allowance counts failed calls too (2026-11-20).** Alan allowed three generator tries; one failed without
+  an upload and the fourth call was refused. Ask for the number of calls, and say a failure uses one.
