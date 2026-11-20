@@ -118,6 +118,8 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   group shot (about twice as far as the preview's camera, same 0.42 s flight). The plane is 1st's own, full size, in
   a layer of its own over the winners and their name plates (in 1st's small-scale layer it would end 0.6 studs from
   the lens and be cut off on devices that cut at 0.5). The scene leaves 2.6 s after 1st's light.
-- Not run in Play yet (2026-11-19): the code compiles and the clip registers in Edit; how it looks is unseen.
+- Alan ran it in Play (2026-11-19): **the throw comes too soon.** Something has to happen first: the kid looks down
+  and smugly admires the plane, then looks at the camera and throws. Next: an "admire" body move in front of the
+  approved throw (the throw itself stays as it is), three generator wordings, on his go for the uploads.
 
 Back to [HOME](../HOME.md).
