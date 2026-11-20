@@ -4,14 +4,30 @@
 -- Run in Studio's Edit. It is a preview: the body is worked out from the keyframes (extra bones passed down to the
 -- next real part) on a plain blocky body, so how Roblox fits the clip to a real avatar is still only proven in Play.
 -- The recipe below is Camera Flick: the clips, release and flight times, the plane's path, the camera's fall.
-local CLIP = "rbxassetid://115470516293954" -- the throw (version B)
+-- The throw (Alan 2026-11-19: version B's big overarm throw read as a baseball; a paper plane is pushed forward):
+-- two poses from version A (dart), in that clip's own seconds: the hand pulled back beside the shoulder (PULL_AT) and
+-- the arm stretched out at the camera (PUSH_AT). The body goes from the held-up plane to the first in PULL_TIME
+-- seconds and on to the second in PUSH_TIME, fast then slowing; the plane leaves the hand LET_GO of the way through
+-- the push; then the clip's own held point carries on. (Played as made, the clip cocks the arm up behind the head
+-- on the way: a reviewer still read an overarm throw.) Only its chest, arms and head are used: the legs and hips
+-- stay as the admire left them (the clip crouches wide and steps; the winner stands on a stack of books).
+local CLIP = "rbxassetid://87115043025421"
+local PULL_AT, PUSH_AT, PULL_TIME, PUSH_TIME, LET_GO = 2.0, 2.5, 0.35, 0.16, 0.6
+local LEGS = { "LowerTorso", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }
 -- Before the throw (Alan 2026-11-19: it came too soon): the kid looks down and admires the plane, then looks up at
 -- the camera (admire version A). In the admire clip's own seconds: the look down, until SLOW_TO, plays SLOW times
--- slower; the clip is used up to ADMIRE_END; the throw then blends in over BLEND seconds.
+-- slower; the clip is used up to ADMIRE_END, then the throw.
 local ADMIRE = "rbxassetid://95093448348238"
-local SLOW_TO, SLOW, ADMIRE_END, BLEND = 1.3, 1.5, 2.3, 0.25
+local SLOW_TO, SLOW, ADMIRE_END = 1.3, 1.5, 2.3
 local JOIN = SLOW_TO * SLOW + ADMIRE_END - SLOW_TO -- when the throw starts
-local RELEASE, FLIGHT = JOIN + 0.87, 0.42 -- the plane leaves the hand; how long it flies to the lens
+local RELEASE, FLIGHT = JOIN + PULL_TIME + PUSH_TIME * LET_GO, 0.42 -- the plane leaves the hand; how long it flies to the lens
+-- The plane in the hand (Alan 2026-11-19: it turned by itself in a still hand). While it is admired, until ADMIRED,
+-- it is fixed to the hand, along the forearm, and the forearm rolls (ROLL degrees) and the wrist tips (TIP) to turn it
+-- over. Then, by READY, it comes to how a paper plane is held to throw: the hand under it, its nose towards the
+-- camera, a little up, askew and banked (HOLD: straight at the lens it is a dot).
+local ADMIRED, READY = SLOW_TO * SLOW, SLOW_TO * SLOW + 0.65
+local ROLL, TIP = 45, 14
+local HOLD = CFrame.Angles(math.rad(12), math.rad(-15), 0) * CFrame.Angles(0, 0, math.rad(-22))
 local HEIGHT = 140 -- every avatar stands this tall in the room (config avatar_display.standing_height_studs)
 local FOV = 50
 -- Facing the camera: the generator's throw swings the hips 60 degrees away in the wind-up and the chest and head go
@@ -107,11 +123,17 @@ local function build(turn)
 	end
 	return at
 end
-local function load(id, fix)
+-- `stand`: a pose whose legs and hips the clip keeps, taking only the chest's direction, the arms and the head.
+local function load(id, fix, stand)
 	local keys = game:GetService("KeyframeSequenceProvider"):GetKeyframeSequenceAsync(id):GetKeyframes()
 	table.sort(keys, function(a, b) return a.Time < b.Time end)
 	local list = {}
-	for i, key in keys do list[i] = { t = key.Time, turn = turns(placed(key, fix)) } end
+	for i, key in keys do
+		local at = placed(key, fix)
+		for _, name in stand and LEGS or {} do at[name] = stand[name] end
+		list[i] = { t = key.Time, turn = turns(at) }
+		if stand then list[i].turn.UpperTorso = list[i].turn.UpperTorso.Rotation end
+	end
 	return list
 end
 local function sample(list, t)
@@ -123,17 +145,28 @@ local function sample(list, t)
 	for name, cf in a.turn do out[name] = cf:Lerp(b.turn[name] or cf, s) end
 	return out
 end
-local admire, throw = load(ADMIRE, false), load(CLIP, true) -- the admire keeps its own look at the plane
-local LENGTH = JOIN + throw[#throw].t
-local function turnsAt(t)
-	local a = sample(admire, math.min(t < SLOW_TO * SLOW and t / SLOW or t - SLOW_TO * (SLOW - 1), ADMIRE_END))
-	if t <= JOIN then return a end
-	local b = sample(throw, t - JOIN)
-	local s = math.clamp((t - JOIN) / BLEND, 0, 1)
-	s = s * s * (3 - 2 * s)
+local admire = load(ADMIRE, false) -- keeps its own look at the plane
+local throw = load(CLIP, true, build(sample(admire, ADMIRE_END)))
+local LENGTH = JOIN + PULL_TIME + PUSH_TIME + throw[#throw].t - PUSH_AT
+local function mix(a, b, s)
 	local out = {}
 	for name, cf in b do out[name] = (a[name] or cf):Lerp(cf, s) end
 	return out
+end
+local function turnsAt(t)
+	local a = sample(admire, math.min(t < SLOW_TO * SLOW and t / SLOW or t - SLOW_TO * (SLOW - 1), ADMIRE_END))
+	if t < ADMIRED then -- turning the plane over: out one way a little, well over the other way, and back
+		local u = math.clamp((t - 0.25) / (ADMIRED - 0.45), 0, 1)
+		local swell = math.sin(u * math.pi)
+		a.RightLowerArm = a.RightLowerArm * CFrame.Angles(0, math.rad(ROLL) * swell * math.sin(u * math.pi * 3), 0)
+		a.RightHand = a.RightHand * CFrame.Angles(math.rad(TIP) * swell * math.sin(u * math.pi * 2), 0, 0)
+	end
+	if t <= JOIN then return a end
+	local s = (t - JOIN) / PULL_TIME
+	if s < 1 then return mix(a, sample(throw, PULL_AT), s * s * (3 - 2 * s)) end -- pulled back
+	s = (t - JOIN - PULL_TIME) / PUSH_TIME
+	if s < 1 then return mix(sample(throw, PULL_AT), sample(throw, PUSH_AT), 1 - (1 - s) ^ 2) end -- pushed at the camera
+	return sample(throw, PUSH_AT + t - JOIN - PULL_TIME - PUSH_TIME) -- held pointing
 end
 local function pose(t) return build(turnsAt(t)) end
 -- Feet on the desk: the root's height from the lowest foot over the whole clip's first pose.
@@ -212,6 +245,22 @@ local function cameraAt(t)
 		* cam0.Rotation * CFrame.Angles(math.rad(-68) * fall, 0, 0) * CFrame.Angles(0, 0, math.rad(10) * fall)
 end
 
+-- How the plane sits against the hand while it is admired: along the forearm, its top tipped back towards the face
+-- (worked out from the pose at the start of the look down, then fixed to the hand).
+local GRIP
+do
+	local at = build(turnsAt(0))
+	local nose = (at.RightHand.Position - at.RightLowerArm.Position).Unit
+	GRIP = at.RightHand.Rotation:Inverse() * CFrame.lookAt(Vector3.zero, nose, Vector3.new(0, 1, 0.6))
+end
+local function held(hand, turn) return CFrame.new(hand) * turn * CFrame.new(0, length * 0.09, -length * 0.15) end
+local function smooth(v) v = math.clamp(v, 0, 1); return v * v * (3 - 2 * v) end
+local function inHand(t)
+	local grip = rootAt * pose(t).RightHand
+	local level = (CFrame.lookAt(grip.Position, eye) * HOLD).Rotation
+	return held(grip.Position, (grip.Rotation * GRIP):Lerp(level, smooth((t - ADMIRED) / (READY - ADMIRED))))
+end
+
 function E.frame(t)
 	local at = pose(t)
 	for name, cf in at do
@@ -219,14 +268,11 @@ function E.frame(t)
 		if part then part.CFrame = rootAt * cf end
 	end
 	local view = cameraAt(t)
-	local hand = (rootAt * at.RightHand).Position
-	if t < RELEASE then -- in the hand, nose at the camera, tipped up while it is drawn back
-		local nose = (CFrame.lookAt(hand, eye) * CFrame.Angles(math.rad(30), math.rad(-35), 0)).LookVector -- up and askew, so its shape shows
-		local turned = math.rad(14) * math.sin(math.clamp(t, 0, JOIN) / JOIN * math.pi * 3) -- turned over a little while it is admired
-		plane:PivotTo(CFrame.lookAt(hand + nose * length * 0.2, hand + nose * (length * 0.2 + 1)) * CFrame.Angles(0, 0, turned))
+	if t < RELEASE then -- in the hand
+		plane:PivotTo(inHand(t))
 	elseif t < HIT then -- flying at the lens, turning flat as it arrives
 		local s = 1 - (1 - (t - RELEASE) / FLIGHT) ^ 2 -- fast off the hand, slower as it fills the picture, so the approach is seen
-		local from = (rootAt * pose(RELEASE).RightHand).Position
+		local from = inHand(RELEASE).Position
 		local to = (cam0 * CFrame.new(0, 0, -pressed)).Position
 		local p = from:Lerp(to, s)
 		local flying = CFrame.lookAt(p, p + (to - from).Unit) * CFrame.Angles(0, 0, math.rad(40) * s)
@@ -248,7 +294,12 @@ end
 function E.bake(parent, name)
 	local out = Instance.new("KeyframeSequence")
 	out.Name, out.Loop, out.Priority = name, false, Enum.AnimationPriority.Action
-	out:SetAttribute("Release", RELEASE) -- the scene throws the plane at this moment
+	-- for the scene: when the plane leaves the hand, and how it sits in the hand until then
+	out:SetAttribute("Release", RELEASE)
+	out:SetAttribute("Admired", ADMIRED)
+	out:SetAttribute("Ready", READY)
+	out:SetAttribute("Grip", GRIP)
+	out:SetAttribute("Hold", HOLD)
 	for n = 0, math.floor(LENGTH * 30 + 0.5) do
 		local frame = Instance.new("Keyframe")
 		frame.Time = n / 30

@@ -332,9 +332,11 @@ end
 -- Camera Flick, a 1st-place emote (Alan 2026-11-19; recipe and numbers: docs/workshop/emote-making.md): 1st throws
 -- their plane at the camera; it fills the picture, the camera is knocked back, tips over forward, and the plane
 -- slides down the lens; the scene moves on from there. First they look down and admire the plane, then up at the
--- camera (Alan 2026-11-19: the throw came too soon). The plane leaves the hand at the clip's own "Release" seconds
--- after 1st's light and flies FLICK_FLIGHT to the lens; the camera's fall takes FLICK_FALL; the scene leaves
--- FLICK_AFTER seconds after the release.
+-- camera (Alan 2026-11-19: the throw came too soon). The clip carries its own times, in seconds after 1st's light,
+-- and grip: until "Admired" the plane is fixed to the hand ("Grip": along the forearm), so the hand turns it over; by
+-- "Ready" it is held like a paper plane, its nose towards the camera ("Hold": a little up and askew, so its shape
+-- shows); at "Release" it leaves the hand and
+-- flies FLICK_FLIGHT to the lens; the camera's fall takes FLICK_FALL; the scene leaves FLICK_AFTER after the release.
 -- Not uploaded yet (Alan's go), so it only plays in Studio: the cleaned-up clip (Assets.CameraFlickClip, made by
 -- tools/emote_preview.lua) is registered for the session, when the Dev panel's "end: flick" button asked for it.
 local FLICK_FLIGHT, FLICK_FALL, FLICK_AFTER = 0.42, 0.65, 1.73
@@ -342,7 +344,9 @@ local FLICK_FLAT = CFrame.Angles(0, 0, math.rad(15)) * CFrame.Angles(math.rad(90
 local function flickClip()
 	local clip = RunService:IsStudio() and Root:GetAttribute("DevCameraFlick") and Root.Assets:FindFirstChild("CameraFlickClip")
 	if not clip then return nil end
-	return game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip), clip:GetAttribute("Release") or 0.87
+	return game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip), { release = clip:GetAttribute("Release") or 0.87,
+		admired = clip:GetAttribute("Admired") or 0, ready = clip:GetAttribute("Ready") or 0.1, grip = clip:GetAttribute("Grip") or CFrame.identity,
+		hold = clip:GetAttribute("Hold") or CFrame.identity }
 end
 local function bounce(v)
 	if v < 1 / 2.75 then return 7.5625 * v * v
@@ -361,27 +365,26 @@ local function knocked(steady, u, height)
 	return CFrame.new(steady.Position - steady.LookVector * jolt + steady:VectorToWorldSpace(shake) - Vector3.yAxis * 0.34 * height * fall)
 		* steady.Rotation * CFrame.Angles(math.rad(-68) * fall, 0, 0) * CFrame.Angles(0, 0, math.rad(10) * fall)
 end
--- The plane `t` seconds after 1st's light, in its own full-size layer over everything: in the hand with its nose at
--- the camera, then straight to the lens (fast off the hand, slower as it fills the picture) turning flat as it
--- arrives, then stuck on the lens and sliding down it. `view`: the camera this frame; `steady`: without the knock.
+-- The plane `t` seconds after 1st's light, in its own full-size layer over everything: in the hand, then straight to
+-- the lens (fast off the hand, slower as it fills the picture) turning flat as it arrives, then stuck on the lens and
+-- sliding down it. `view`: the camera this frame; `steady`: without the knock.
 local function flickPlane(w, t, view, steady, height)
-	local prop = w.prop
+	local prop, flick = w.prop, w.flick
 	local pressed = prop.span * 0.4 -- how far in front of the lens it ends, so its wings fill the picture
-	if t < w.release then
+	if t < flick.release or not prop.held then
 		local hand = w.spot + (prop.hand.Position - w.spot) * w.scale -- the winner's layer is `scale` times smaller
-		prop.from = hand
-		local nose = (CFrame.lookAt(hand, steady.Position) * CFrame.Angles(math.rad(30), math.rad(-35), 0)).LookVector -- up and askew, so its shape shows
-		local admired = math.max(w.release - 0.87, 0.1) -- until the wind-up: turned over a little while it is admired
-		local turned = math.rad(14) * math.sin(math.clamp(t, 0, admired) / admired * math.pi * 3)
-		prop.plane:PivotTo(CFrame.lookAt(hand + nose * prop.length * 0.2, hand + nose * (prop.length * 0.2 + 1)) * CFrame.Angles(0, 0, turned))
-	elseif t < w.release + FLICK_FLIGHT then
-		local s = 1 - (1 - (t - w.release) / FLICK_FLIGHT) ^ 2
-		local to = (steady * CFrame.new(0, 0, -pressed)).Position
-		local at = prop.from:Lerp(to, s)
-		local flying = CFrame.lookAt(at, at + (to - prop.from).Unit) * CFrame.Angles(0, 0, math.rad(40) * s)
+		local level = (CFrame.lookAt(hand, steady.Position) * flick.hold).Rotation
+		local turn = (prop.hand.CFrame.Rotation * flick.grip):Lerp(level, ease((t - flick.admired) / math.max(flick.ready - flick.admired, 0.01)))
+		prop.held = CFrame.new(hand) * turn * CFrame.new(0, prop.length * 0.09, -prop.length * 0.15) -- the hand under its body
+		prop.plane:PivotTo(prop.held)
+	elseif t < flick.release + FLICK_FLIGHT then
+		local s = 1 - (1 - (t - flick.release) / FLICK_FLIGHT) ^ 2
+		local from, to = prop.held.Position, (steady * CFrame.new(0, 0, -pressed)).Position
+		local at = from:Lerp(to, s)
+		local flying = CFrame.lookAt(at, at + (to - from).Unit) * CFrame.Angles(0, 0, math.rad(40) * s)
 		prop.plane:PivotTo(flying:Lerp(CFrame.new(at) * (steady.Rotation * FLICK_FLAT), math.clamp((s - 0.8) / 0.2, 0, 1)))
 	else
-		local slide = math.max(t - w.release - FLICK_FLIGHT - 0.45, 0)
+		local slide = math.max(t - flick.release - FLICK_FLIGHT - 0.45, 0)
 		prop.plane:PivotTo(view * CFrame.new(0, -slide * slide * 3.7 * height, -pressed) * FLICK_FLAT)
 	end
 end
@@ -447,8 +450,8 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local desk = CFrame.lookAt(onDesk, onDesk + facing)
 	model:PivotTo(desk)
 	model.Parent = world
-	local flick, release
-	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then flick, release = flickClip() end
+	local flick, flickInfo
+	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then flick, flickInfo = flickClip() end
 	local planeEmote = flick or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
 	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs) or nil
@@ -458,7 +461,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, flick = flick ~= nil, release = release, place = place, scale = scale, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, flick = flick and flickInfo or nil, place = place, scale = scale, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -567,7 +570,7 @@ function Cutscene.play(winners, onStage)
 						if copy and copy.flick then -- the plane's own layer, over the winners and their plates
 							local layer, world, lens = makeLayer(state.plateGui, back, right, 10)
 							copy.prop.plane.Parent, copy.propLayer, copy.propLens = world, layer, lens
-							state.flickAt = LIGHT_AT + 2 * TURN + copy.release -- the release, in seconds after arriving
+							state.flickAt = LIGHT_AT + 2 * TURN + copy.flick.release -- the release, in seconds after arriving
 						end
 						break
 					end

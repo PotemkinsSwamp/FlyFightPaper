@@ -139,5 +139,27 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   that moment on the clip ("Release") and the scene reads it, so the plane and camera follow whatever the clip is.
   The plane turns over a little in the hand while it is admired. Numbers of the joined clip: head 45 degrees down
   until 2.0 s, level at 2.3 s; hips wander 0.06, a foot 0.44. Not yet seen moving by anyone.
+- **Alan on the admire cut, in Play (2026-11-19):** looking down is fine, but (1) the hand stayed still while the
+  plane turned by itself in it: the plane has to be fixed in the hand and the hand and arm turn it over; (2) the
+  throw was a baseball throw, not how a paper plane is held and thrown.
+- **The plane fixed in the hand.** While it is admired the plane is fixed to the hand part, along the forearm (its
+  grip is worked out once from the pose at the start and written on the clip, "Grip"), and the bake adds a forearm
+  roll (45 degrees: a little one way, well over the other, back) and a wrist tip (14) on top of the generated move,
+  so the arm turns the plane over. As the head comes up, the plane comes round to how a paper plane is held
+  ("Hold": the hand under it, nose towards the camera, a little up, askew and banked: pointed straight at the lens
+  it is a dot; 30 degrees askew read as pointing sideways).
+- **The throw: two poses from version A (dart), upper body only.** Version B's overarm throw is out. A's last second
+  has a level push (the hand stays at shoulder height and goes 1.7 studs forward), but the clip crouches wide and
+  steps for it, and on the way it cocks the arm up behind the head: played as made, a reviewer still read an overarm
+  throw. So the bake takes two of its poses, the hand pulled back beside the shoulder (2.0 s) and the arm stretched
+  at the camera (2.5 s), and goes from the held-up plane to the first in 0.35 s and on to the second in 0.16 s
+  (fast, then slowing), then lets the clip's own held point carry on. Only the chest's direction, arms and head are
+  taken; hips and legs stay as the admire left them, so the feet never move on the books. Timeline now: look down
+  to 1.95 s, head up and plane held up to 2.95 s, pull back, push, release at 3.40 s; the clip is 3.9 s.
+- Lesson: a clip's legs and upper body can be taken apart. Joint turns make it one line each way; the chest's own
+  direction has to be carried over as a direction (not as its turn against the clip's hips, which turn too).
+- Looked at as contact sheets from the no-Play preview (three cuts; a reviewer on the second); not seen moving by
+  Alan yet. Still weak in the stills: the pull-back goes out to the side more than back, and on the blocky test
+  body the fist hides part of the plane. Video: `.planning/emotes/camera-flick-admire-push.mp4`.
 
 Back to [HOME](../HOME.md).
