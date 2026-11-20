@@ -1041,3 +1041,8 @@ Back to [HOME](../HOME.md)
   that holds only hips and legs, one priority higher.** Both on the [emote making](emote-making.md) page.
 - **A counted allowance counts failed calls too (2026-11-20).** Alan allowed three generator tries; one failed without
   an upload and the fourth call was refused. Ask for the number of calls, and say a failure uses one.
+- **A sitting clip does not sit every body (2026-11-20).** An animation lowers the hips by the same distance on every
+  avatar, so long legs float over the seat and short ones sink in (0.34 studs up to 0.38 down on three test bodies;
+  Alan saw the floating in Play). Move the kid each frame until the lowest point of hips and legs is on the seat
+  (`sit` in `WinnersCutscene`). **A sleeping kid hides the face:** a face that shows reads as awake, since we cannot
+  close the eyes; hang the head 70 degrees and check it against where the camera is.

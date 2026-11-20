@@ -19,6 +19,13 @@
 | His ruling: a low V with the elbow down is what matters; hand height can vary with arm length, chin is fine | Wave rebuilt from try B with no new upload: elbow down at the side, hand beside the head between shoulder and chin, five lazy sways 0.8 s apart. Waits for his look. |
 | On that wave: **"The wave is fine. I think I'm ready to move on to the nap."** | Good Game approved as it stands: slow clap, stance, wave. Its length (about 11 s of moves against 8 to 9 s on screen beside Camera Flick) he left alone. Next: Nap. |
 
+## Nap, first look (same day)
+Alan in Play, Dev "2nd/3rd: Nap": **"It looks all right, except the models are not always sitting on the books.
+They're kind of floating."** And the head: "more down ... fully, like, limp down, resting on the hand ... it makes
+them look awake, if you can see their faces." The elbow only has to be on that leg; the hand can hold the head
+anywhere. Done after: the kid is moved each frame to rest on the books; the head hangs 70 degrees, held by the brow.
+Waits for his second look. Details on the [emote making](../workshop/emote-making.md) page.
+
 ## Notes
 - My first explanation of the phone fault was wrong (I said the top and bottom were cut before looking); he told me
   to take a picture and look. The fix that held came from looking on three screens.

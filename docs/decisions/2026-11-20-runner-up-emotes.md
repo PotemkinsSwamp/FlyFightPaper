@@ -25,6 +25,9 @@ move and is not built
   forward", and fall back asleep onto the hand with "the touch and go of falling back asleep". This replaces "hands in
   the lap, chin sunk on the chest". (He first asked for legs dangling off the books, then chose this.) His other
   ending, the arm and then the head falling, was left out on my advice: too long beside Camera Flick.
+- **Nap after his first look:** sitting emotes always rest on the books ("we need a way to connect the base of the
+  model to the top of the book"); the sleeping head hangs limp, face hidden ("it makes them look awake, if you can
+  see their faces"); the elbow anywhere on that leg, the hand anywhere on the head.
 - His go for the nine generator tries (each uploads a private animation to his account) and for Edit-mode screen
   grabs.
 - Earlier the same day: the winners' shot scales to the screen (as close as the screen allows, across and up and

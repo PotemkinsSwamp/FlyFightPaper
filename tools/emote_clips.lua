@@ -161,16 +161,18 @@ end
 
 -- Nap (Alan's own version, 2026-11-20: "sitting crisscross applesauce, elbow on the knee, holding their head up ...
 -- they jolt up, and then they look around like side to side. 1, 2, 3. Then they look forward, and then they kind of
--- just fall back to sleep"; the napper is bored and done). Two clips the scene plays one over the other:
+-- just fall back to sleep"; the napper is bored and done; after his first look in Play: "their head needs to be more
+-- down ... fully, like, limp down, resting on the hand ... it makes them look awake, if you can see their faces", the
+-- elbow anywhere on that leg, the hand anywhere on the head). Two clips the scene plays one over the other:
 -- NapSleep, the loop, and NapWake, once, when 1st's light clicks on; NapWake starts and ends in NapSleep's first pose.
 -- The body is generated clip Nap B sitting still (N.rest of its own seconds) and, awake, sitting up straight after
--- its own start (N.up). By numbers, the same on every frame: the chest leans forward and to the right until the
--- right elbow can rest on the right thigh by the knee with the hand under the jaw (worked out below for this
--- body), the head is held NAP_DOWN degrees down and NAP_ROLL over onto the hand, and both arms are bent to reach:
--- the right hand to the jaw, the left to where it lay on the left knee. (In the game Roblox's IKControl does the
--- right arm again on each avatar's own body: WinnersCutscene.)
+-- its own start (N.up). By numbers, the same on every frame: the head hangs NAP_DOWN degrees down (the face to the
+-- lap) and NAP_ROLL over onto the right hand, which holds it by the brow; the chest slumps forward and to the
+-- right, as near NAP_LEAN degrees forward as lets the right elbow rest on the right thigh (worked out below for
+-- this body); and both arms are bent to reach: the right hand to the brow, the left to where it lay on the left
+-- knee. (In the game Roblox's IKControl does the right arm again on each avatar's own body: WinnersCutscene.)
 local N = { clip = "rbxassetid://103826141789730", rest = 3.0, up = 3.9 }
-local NAP_DOWN, NAP_ROLL = 12, 16
+local NAP_DOWN, NAP_ROLL, NAP_LEAN = 70, 15, 25
 -- Asleep: a breath every BREATH_EVERY seconds (the chest leans BREATH degrees back and forth; Nap B has no
 -- breathing of its own), and once a loop, at NOD_AT, a small nod: the chest NOD_LEAN and the head NOD_HEAD degrees
 -- lower over NOD_DOWN seconds, caught in NOD_UP.
@@ -201,33 +203,33 @@ local function reach(turn, side, target, pole)
 	turn[lower] = bend.Rotation:Inverse() * (arc(at[hand].Position - bend.Position, s + along * d - bend.Position) * (bend * turn[lower]).Rotation)
 end
 -- Nap B's sitting pose with the chest leaning `lean` degrees forward and `side` to the right and the head held
--- `down` and rolled NAP_ROLL to the right whatever the chest does; and where the hand goes: just under the right
--- half of the jaw.
+-- `down` and rolled NAP_ROLL to the right whatever the chest does; and where the hand goes: against the right
+-- side of the brow.
 local function propped(base, lean, side, down)
 	local turn = table.clone(base)
 	turn.UpperTorso = base.UpperTorso * CFrame.Angles(-math.rad(lean), 0, -math.rad(side))
 	local neck = build(turn).UpperTorso * joints.Head.c0
 	turn.Head = neck.Rotation:Inverse() * CFrame.fromOrientation(-math.rad(down), 0, -math.rad(NAP_ROLL)) * joints.Head.c1.Rotation
 	local head = first.Head.Size
-	return turn, neck * turn.Head * joints.Head.c1:Inverse() * Vector3.new(0.33 * head.X, -0.5 * head.Y - 0.25 * first.RightHand.Size.Y, -0.09 * head.Z)
+	return turn, neck * turn.Head * joints.Head.c1:Inverse() * Vector3.new(0.22 * head.X, -0.05 * head.Y, -0.5 * head.Z - 0.3 * first.RightHand.Size.Y)
 end
 local nap -- this body's numbers, worked out once
 local function napping(c)
 	if nap then return nap end
 	local base = c.nap(N.rest)
 	local at = build(base)
-	local shoulder, elbow = joints.RightUpperArm.c0, (at.RightUpperArm * joints.RightLowerArm.c0).Position
-	local l1, l2 = (elbow - (at.UpperTorso * shoulder).Position).Magnitude, (at.RightHand.Position - elbow).Magnitude
-	local knee, hip = (at.RightUpperLeg * joints.RightLowerLeg.c0).Position, (at.LowerTorso * joints.RightUpperLeg.c0).Position
-	-- the elbow's place: over the thigh a little behind the knee, the two limbs just pressed into each other
-	local rest = knee + (hip - knee) * 0.15 + Vector3.yAxis * 0.8 * (first.RightUpperLeg.Size.X + first.RightUpperArm.Size.X) / 2
-	nap = { base = base, rest = rest, leftHand = at.LeftHand.Position, leftElbow = (at.LeftUpperArm * joints.LeftLowerArm.c0).Position }
+	-- the elbow's place: anywhere along the top of the right thigh, the two limbs just pressed into each other
+	local up = Vector3.yAxis * 0.8 * (first.RightUpperLeg.Size.X + first.RightUpperArm.Size.X) / 2
+	local hip, knee = (at.LowerTorso * joints.RightUpperLeg.c0).Position + up, (at.RightUpperLeg * joints.RightLowerLeg.c0).Position + up
+	nap = { base = base, rest = hip:Lerp(knee, 0.6), leftHand = at.LeftHand.Position, leftElbow = (at.LeftUpperArm * joints.LeftLowerArm.c0).Position }
 	local least
-	for lean = 0, 45 do
-		for side = -5, 20 do
-			local turn, jaw = propped(base, lean, side, NAP_DOWN)
-			local from = (build(turn).UpperTorso * shoulder).Position
-			local off = ((from - rest).Magnitude - l1) ^ 2 + ((jaw - rest).Magnitude - l2) ^ 2 + (lean * lean + side * side) * 1e-6 * scale * scale
+	for lean = 0, 50 do
+		for side = -5, 25 do
+			local turn, brow = propped(base, lean, side, NAP_DOWN)
+			reach(turn, "Right", brow, nap.rest)
+			local elbow = (build(turn).RightUpperArm * joints.RightLowerArm.c0).Position
+			local on = hip:Lerp(knee, math.clamp((elbow - hip):Dot(knee - hip) / (knee - hip):Dot(knee - hip), 0, 1))
+			local off = (elbow - on).Magnitude ^ 2 + ((lean - NAP_LEAN) ^ 2 + side * side) * 1e-5 * scale * scale
 			if not least or off < least then least, nap.lean, nap.side = off, lean, side end
 		end
 	end

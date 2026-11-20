@@ -511,16 +511,36 @@ local function goodGame(animator, model)
 	end }
 end
 
+-- Sitting emotes: the kid rests on the top book whatever their body (Alan in Play 2026-11-20: "the models are not
+-- always sitting on the books. They're kind of floating": a clip drops every body's hips the same distance). Each
+-- frame the kid is moved up or down so the lowest point of their hips and legs, taken as rounded limbs, is at
+-- `seat` (an unseen part at the top of their stack, which moves with the stage).
+local SEAT = { "LowerTorso", "LeftUpperLeg", "RightUpperLeg", "LeftLowerLeg", "RightLowerLeg", "LeftFoot", "RightFoot" }
+local function sit(model, seat)
+	local low = math.huge
+	for _, name in SEAT do
+		local part = model:FindFirstChild(name)
+		if part then
+			local at, half = part.CFrame, part.Size / 2
+			low = math.min(low, at.Position.Y - math.sqrt((at.XVector.Y * half.X) ^ 2 + (at.YVector.Y * half.Y) ^ 2 + (at.ZVector.Y * half.Z) ^ 2))
+		end
+	end
+	if low < math.huge then model:PivotTo(model:GetPivot() + Vector3.yAxis * (seat.Position.Y - low)) end
+end
+
 -- Nap (Alan's own version 2026-11-20; the napper is bored and done, asleep at the back of the class): sitting
--- cross-legged, the right elbow on the knee and the head propped on the hand, asleep from the dark on
+-- cross-legged, the right elbow on the thigh and the head hanging limp, face to the lap, held by the brow on the
+-- hand (his second look: "their head needs to be more down ... it makes them look awake, if you can see their
+-- faces"), asleep from the dark on
 -- (Assets.NapSleepClip, a loop: a breath every 4 s, a small nod). When 1st's light clicks on they jolt awake, sit
 -- stiff, look right, left, right and forward, and sink back onto the hand in a dip, a catch and a sink
 -- (Assets.NapWakeClip, once, one priority higher; it starts and ends in the loop's first pose). Both are cut by
--- tools/emote_clips.lua. Like the clap's hands: IKControl bends the right arm so the hand is under the jaw on every
--- body, the elbow towards the knee; while they are awake the hand stays in the air where the jaw left it.
+-- tools/emote_clips.lua. Like the clap's hands: IKControl bends the right arm so the hand is on the brow on every
+-- body, the elbow towards the knee; while they are awake the hand stays in the air where the brow left it.
 -- Two props, plain parts made here (sizes in head heights), in the kid's own frame so they keep their place on the
 -- stage: three paper Z's, each three thin white strips, leave the head on the kid's right one every Z_EVERY seconds,
--- rise, drift, sway, grow and fade over Z_LIFE; a snore bubble at the mouth on the kid's left grows over
+-- rise, drift, sway, grow and fade over Z_LIFE; a snore bubble at the mouth, out to the kid's left and towards the
+-- camera so it shows under the lowered face, grows over
 -- BUBBLE_GROW seconds, swelling and shrinking with the breath, and pops at the jolt (POP seconds, five small strips
 -- flying off); a new one starts when they are asleep again. No Z's leave while they are awake.
 local Z_EVERY, Z_LIFE, Z_RISE, Z_DRIFT, Z_SMALL, Z_BIG = 4 / 3, 4, 1.5, 0.6, 0.3, 0.9
@@ -534,7 +554,7 @@ local function paper(parent, color, shape)
 	part.Parent = parent
 	return part
 end
-local function nap(animator, model, place, cast)
+local function nap(animator, model, place, cast, top)
 	local head, hand, root = model:FindFirstChild("Head"), model:FindFirstChild("RightHand"), model:FindFirstChild("HumanoidRootPart")
 	local upper, shin = model:FindFirstChild("RightUpperArm"), model:FindFirstChild("RightLowerLeg")
 	local function track(name, looped, priority)
@@ -547,12 +567,15 @@ local function nap(animator, model, place, cast)
 	local sleep, wake = track("NapSleepClip", true, Enum.AnimationPriority.Action), track("NapWakeClip", false, Enum.AnimationPriority.Action2)
 	if not (sleep and wake and head and hand and root and upper and shin) then return { IsPlaying = false, Play = function() end } end
 	sleep:Play(0)
-	-- the hand under the right half of the jaw (the same point the clips were cut for)
-	local jawAt = Vector3.new(0.33 * head.Size.X, -0.5 * head.Size.Y - 0.25 * hand.Size.Y, -0.09 * head.Size.Z)
-	local jaw, knee = Instance.new("Attachment"), Instance.new("Attachment")
-	jaw.Parent, knee.Position, knee.Parent = root, Vector3.new(0, shin.Size.Y / 2, 0), shin
+	local seat = Instance.new("Part")
+	seat.Name, seat.Anchored, seat.CanCollide, seat.CanQuery, seat.CanTouch, seat.Transparency = "Seat", true, false, false, false, 1
+	seat.Size, seat.CFrame, seat.Parent = Vector3.one * 0.05, CFrame.new(top), cast
+	-- the hand against the right side of the brow (the same point the clips were cut for)
+	local browAt = Vector3.new(0.22 * head.Size.X, -0.05 * head.Size.Y, -0.5 * head.Size.Z - 0.3 * hand.Size.Y)
+	local brow, knee = Instance.new("Attachment"), Instance.new("Attachment")
+	brow.Parent, knee.Position, knee.Parent = root, Vector3.new(0, shin.Size.Y / 2, 0), shin
 	local reach = Instance.new("IKControl")
-	reach.Type, reach.ChainRoot, reach.EndEffector, reach.Target, reach.Pole = Enum.IKControlType.Position, upper, hand, jaw, knee
+	reach.Type, reach.ChainRoot, reach.EndEffector, reach.Target, reach.Pole = Enum.IKControlType.Position, upper, hand, brow, knee
 	reach.SmoothTime, reach.Parent = 0, animator.Parent
 
 	local size, white = head.Size.Y, Color3.new(1, 1, 1)
@@ -568,8 +591,9 @@ local function nap(animator, model, place, cast)
 	local beat
 	beat = RunService.RenderStepped:Connect(function()
 		if not model:IsDescendantOf(game) then beat:Disconnect(); return end
+		sit(model, seat)
 		local now, awake, stage = os.clock(), wake.IsPlaying, root.CFrame
-		if not awake then jaw.WorldPosition = head.CFrame * jawAt end
+		if not awake then brow.WorldPosition = head.CFrame * browAt end
 		-- the Z's
 		if not awake and now >= nextZ then
 			for _, z in zs do
@@ -603,8 +627,8 @@ local function nap(animator, model, place, cast)
 		if not awake then
 			local grown = math.min((now - began) / BUBBLE_GROW, 1)
 			local r = size * (BUBBLE_SMALL + (BUBBLE_BIG - BUBBLE_SMALL) * grown + BUBBLE_BREATH * math.sin(sleep.TimePosition / NAP_BREATH * 2 * math.pi))
-			local mouth = head.CFrame * (Vector3.new(-0.12, -0.2, -0.5) * head.Size)
-			local middle = mouth + (head.CFrame.LookVector - stage.RightVector * 0.35 - stage.UpVector * 0.25).Unit * r
+			local mouth = head.CFrame * (Vector3.new(-0.2, -0.2, -0.5) * head.Size)
+			local middle = mouth + (head.CFrame.LookVector * 0.4 + stage.LookVector * 0.6 - stage.RightVector * 0.6).Unit * r
 			ball.Size, ball.CFrame, ball.Transparency = Vector3.one * 2 * r, CFrame.new(middle), BUBBLE_CLEAR
 			burst = { at = stage:PointToObjectSpace(middle), r = r }
 		elseif burst and since and since < POP then -- it puffs up and is gone
@@ -704,7 +728,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	if ours == "GoodGame" then
 		emote = goodGame(animator, model)
 	elseif ours == "Nap" then
-		emote = nap(animator, model, place, world)
+		emote = nap(animator, model, place, world, onDesk - Vector3.yAxis * feet / scale)
 	else
 		local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
 		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action

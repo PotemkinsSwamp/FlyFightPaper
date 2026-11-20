@@ -488,13 +488,26 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
   Edit, not yet looked at): `Emote_Bored` 10713992055 (a candidate for the standing rest), `Emote_Agree`
   10713954623 (a nod), `Emote_Beckon` 10713984554 (what they hold: below).
 
-## Nap: built, not yet seen in Play (2026-11-20)
+## Nap: built; Alan's first look, then head down and seated (2026-11-20)
 The feeling: bored and done ("I didn't win, wake me when it's over"), the kid asleep at the back of the class.
 **Alan's own version** (his "yes, build it"): "sitting crisscross applesauce, elbow on the knee, holding their head
 up ... the bubble ... the Z's ... they jolt up, and then they look around like side to side. 1, 2, 3. Then they look
 forward, and then they kind of just fall back to sleep" (onto the hand; his other ending, the arm and then the head
 falling, is not built: it needs a second sleeping pose and more time than the 8 to 9 s beside Camera Flick). Before
 that he asked for legs dangling off the books instead of crossed, then dropped it for this version.
+- **Alan's first look in Play:** "It looks all right, except the models are not always sitting on the books. They're
+  kind of floating ... their head needs to be more down ... fully, like, limp down, resting on the hand ... it makes
+  them look awake, if you can see their faces"; the elbow need not be on the knee, only on that leg; the hand may
+  hold the head anywhere. Both changed the same day, **not yet seen by him**:
+  - **Head down:** it hangs 70 degrees down (84 in a nod), rolled 15 onto the hand, which holds it by the right side
+    of the brow; the chest slumps 15 to 17 degrees forward (the tool picks the lean nearest 25 that keeps the elbow
+    on the thigh: it lands 0.67 studs over the thigh's line, 0.88 of the way to the knee). The camera looks down on
+    the kids from 1.6 heights up, so it sees the top of the head. Numbers below this point are from the first pose.
+  - **Seated on the books** (`sit` in `WinnersCutscene`, every frame): the kid is moved up or down until the lowest
+    point of their hips and legs, taken as rounded limbs, is on the top of their stack. A clip drops every body's
+    hips the same distance: in the dry run a tall slim body floated 0.34 studs, the standard one was 0.23 and a
+    short one 0.38 into the book. With the shins and feet on the book the thighs are about 0.25 studs over it.
+  - The bubble now leaves the mouth towards the camera and the kid's left, so it shows under the lowered face.
 - **Two clips**, both cuts in `tools/emote_clips.lua`, in the open place's `Assets` (unsaved) and as files:
   `NapSleepClip` (`CUTS.NapSleep`, `assets/animations/emotes/nap-sleep.rbxm`, an 8 s loop: a breath every 4 s, one
   small nod at 5 s) and `NapWakeClip` (`CUTS.NapWake`, `nap-wake.rbxm`, 5.1 s, once: jolt 0.2 s, sitting stiff,
