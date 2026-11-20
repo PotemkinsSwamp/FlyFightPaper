@@ -38,17 +38,53 @@ end
 CUTS.GoodGameStance = { length = 0.5, clips = { stance = "rbxassetid://106864956338262" }, pose = function(t, c)
 	return only(STANCE, c.stance(t))
 end }
--- Good Game's wave (Alan's words: arms dropped to the sides, then the right hand raised "not all the way up, just
--- forming a slight L shape ... wave it back and forth, kind of slow, like they're uninterested"), the whole body
--- from a generated clip: arms hanging (its 0.67 to 1.2 s), the right forearm up into an L with the hand in front of
--- the shoulder (to 1.87), two small side-to-side tips with the head tilting (to 2.93), then its own arm drop (3.57
--- to 3.97). Cut out between: at 3.07 s the clip throws the arm up over the head.
-local WAVE_FROM, WAVE_TO, WAVE_DROP, WAVE_JOIN = 0.67, 2.93, 3.57, 0.3
-CUTS.GoodGameWave = { length = WAVE_TO - WAVE_FROM + WAVE_JOIN + 3.97 - WAVE_DROP, clips = { wave = "rbxassetid://72977568176735" }, pose = function(t, c)
-	local waved = WAVE_TO - WAVE_FROM
-	if t <= waved then return c.wave(WAVE_FROM + t) end
-	if t <= waved + WAVE_JOIN then return mix(c.wave(WAVE_TO), c.wave(WAVE_DROP), eased((t - waved) / WAVE_JOIN)) end
-	return c.wave(WAVE_DROP + t - waved - WAVE_JOIN)
+-- Good Game's wave (Alan 2026-11-20: a first cut had the hand in front of the body; he wants "a low V L shape ...
+-- elbow pointing downwards", the hand to the side, chin height is fine, "5 waves", "0.8 seconds between each",
+-- "lazy ... their hand flows a little bit"). The whole body from generated clip B, in its own seconds (W): arms
+-- hanging (hang to rise) and the arm coming up (to up), a short join over a second it holds with the elbow out high, the
+-- elbow settling down at the side (settle to wave), then its one small sway (wave to waved, 0.6 s: 0.8 s at the
+-- scene's 0.75 speed) five times, a join, and its own arm drop (drop to done). Two things are changed by numbers:
+-- the upper arm is turned out WAVE_TWIST degrees about its own length while it is up (the clip's forearm leans
+-- forward and in: the hand sat half a stud in front; turned, it stands over the elbow beside the head), and the
+-- sway of the arm's three joints away from where the sway starts is made WAVE_BIG times bigger (the clip's is 0.16
+-- studs at the hand: too small to see from the winners' camera).
+local W = { hang = 0.9, rise = 1.5, up = 2.0, settle = 2.85, wave = 3.3, waved = 3.9, drop = 4.9, done = 5.6 }
+local WAVES, WAVE_TWIST, WAVE_BIG, JOIN_UP, JOIN_DROP, JOIN_LOOP, JOIN_END = 5, -30, 2.5, 0.2, 0.25, 0.1, 0.3
+local ARM = { "RightUpperArm", "RightLowerArm", "RightHand" }
+local WAVE_RAISE, WAVE_SETTLE, WAVE_SWAY = W.up - W.hang, W.wave - W.settle, W.waved - W.wave
+CUTS.GoodGameWave = { length = WAVE_RAISE + JOIN_UP + WAVE_SETTLE + WAVES * WAVE_SWAY + JOIN_DROP + W.done - W.drop,
+	clips = { wave = "rbxassetid://98868591718671" }, pose = function(t, c)
+	local settled = WAVE_RAISE + JOIN_UP + WAVE_SETTLE
+	local waved = settled + WAVES * WAVE_SWAY
+	local p, turned
+	if t < WAVE_RAISE then
+		p = c.wave(W.hang + t)
+	elseif t < WAVE_RAISE + JOIN_UP then
+		p = mix(c.wave(W.up), c.wave(W.settle), eased((t - WAVE_RAISE) / JOIN_UP))
+	elseif t < settled then
+		p = c.wave(W.settle + t - WAVE_RAISE - JOIN_UP)
+	elseif t < waved then
+		local into = (t - settled) % WAVE_SWAY
+		local from = c.wave(W.wave)
+		p = c.wave(W.wave + into)
+		for _, part in ARM do -- the sway, bigger
+			local axis, angle = from[part]:ToObjectSpace(p[part]):ToAxisAngle()
+			p[part] = from[part] * CFrame.fromAxisAngle(axis, angle * WAVE_BIG)
+		end
+		if into > WAVE_SWAY - JOIN_LOOP then p = mix(p, from, eased((into - WAVE_SWAY + JOIN_LOOP) / JOIN_LOOP)) end
+	elseif t < waved + JOIN_DROP then
+		p = mix(c.wave(W.wave), c.wave(W.drop), eased((t - waved) / JOIN_DROP))
+	else
+		p = c.wave(W.drop + t - waved - JOIN_DROP)
+	end
+	-- turned out: in from the moment the arm starts up until it has settled, out again over the drop
+	local rise = W.rise - W.hang
+	turned = t < settled and eased((t - rise) / (settled - rise)) or 1 - eased((t - waved) / (JOIN_DROP + 0.3))
+	p.RightUpperArm = p.RightUpperArm * CFrame.Angles(0, math.rad(WAVE_TWIST) * turned, 0)
+	-- the clip ends with its head tilted the other way: back to the first pose, so the loop closes without a jerk
+	local last = waved + JOIN_DROP + W.done - W.drop - JOIN_END
+	if t > last then p = mix(p, c.wave(W.hang), eased((t - last) / JOIN_END)) end
+	return p
 end }
 
 local Players = game:GetService("Players")

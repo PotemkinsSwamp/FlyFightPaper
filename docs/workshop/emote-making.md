@@ -458,6 +458,20 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
     - Idea not yet tried (the fourth call was refused: three were allowed): a short plain caption, the way such
       generators are trained ("a person raises their right hand next to their head and waves slowly ..."),
       instead of a list of body parts.
+  - **Alan's ruling on the pose:** "As long as the elbow has a lower V ... it doesn't matter if the hand comes up
+    directly in line with the head ... If the hand comes down to the chin, that's fine too." (Arms differ in
+    length between avatars.) That makes try B usable. **The wave cut, second version, no new upload**
+    (`CUTS.GoodGameWave`, 5.7 s, the whole body from B): arms hanging 0.6 s, B's own raise, a 0.2 s join over the
+    second it holds with the elbow out high, the elbow settling at the side, B's one sway (0.6 s) five times, a
+    join, B's own arm drop, the last 0.3 s eased back to the first pose. Two changes by numbers, both a constant
+    applied to the generated motion, not typed-in poses: the upper arm turned out 30 degrees about its own length
+    while it is up (the hand, half a stud in front, now stands over the elbow), and the sway of the arm's three
+    joints made 2.5 times bigger (0.16 studs at the hand was too small to see). Checked on the baked clip: the
+    elbow stays at 1.5 studs out and 0.2 below the hip line of the shoulder while the hand sways 0.34 studs
+    between over the elbow and in towards the head, 0.5 to 0.7 studs up (between shoulder and chin); the wrist
+    bends 29 to 63 degrees as it goes (the "flow" is B's own); the head tilts 28 degrees; no key moves the head
+    more than 3 degrees. Scene: played at 0.75 (0.8 s a wave), about 7.5 s; a round is now about 13 s, longer
+    than the 8 to 9 s the runner-ups have beside Camera Flick. Not yet run in Play.
   - Looking at a web video frame by frame without downloading it: in Chrome, a script seeks the page's own video
     and draws each moment into a grid laid over the page (cropped to the character, time stamped), and one
     screenshot shows 30 moments.

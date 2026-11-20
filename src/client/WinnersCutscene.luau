@@ -432,13 +432,13 @@ end
 -- show it, so the movement must). A dramatic slow clap, in his words "1, 2, 3", a second between claps, "never
 -- waiting ... one smooth rhythm" (his "the slow clap is good now"): Roblox's Applaud emote (a clap every half
 -- second) at half speed for three claps. Then the wave he described: the arms drop to the sides, the right forearm
--- comes up into an L and tips side to side, slow and uninterested (Assets.GoodGameWaveClip, cut from a generated
--- clip), at 0.65 speed. Then the kid stands. (Tried and rejected by him: holding the hands apart and striking fast;
+-- comes up into a low V, elbow down, hand beside the head, and sways five times, lazy, 0.8 s a wave
+-- (Assets.GoodGameWaveClip, cut from a generated clip whose sway is 0.6 s: played at 0.75). Then the kid stands. (Tried and rejected by him: holding the hands apart and striking fast;
 -- resting them together with a quick swing, 0.65 s a clap, from Fortnite's Slow Clap, "still too fast"; Roblox's
 -- own wave, slowed and half raised, "too enthusiastic".)
 -- Each step: { clip (Roblox's id or the name of one of ours), the clip's seconds played before the next step
 -- starts, speed, weight } or { false, seconds }. What goodGame returns stands in for an AnimationTrack: Play only.
-local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 0.5, 1 }, { "GoodGameWaveClip", 2.9, 0.65, 1 }, { false, 2 } }
+local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 0.5, 1 }, { "GoodGameWaveClip", 5.6, 0.75, 1 }, { false, 2 } }
 local GOOD_GAME_BLEND = 0.7
 -- The hands meet at every clap (Alan 2026-11-20: they did not connect). Roblox's clap is one set of joint turns, so
 -- on each body the hands stop a different distance apart (0.4 to 1.2 studs on six avatars measured). Like the plane
@@ -499,8 +499,8 @@ local function goodGame(animator, model)
 					if track then
 						track:Play(GOOD_GAME_BLEND, step[4], step[3])
 						track.TimePosition = 0
-						local began = os.clock() -- a clip that never loads never gets there: move on after 8 s
-						repeat task.wait() until track.TimePosition >= step[2] or os.clock() - began > 8 or not model:IsDescendantOf(game)
+						local began = os.clock() -- a clip that never loads never gets there: move on after 12 s
+						repeat task.wait() until track.TimePosition >= step[2] or os.clock() - began > 12 or not model:IsDescendantOf(game)
 						track:Stop(GOOD_GAME_BLEND)
 					else
 						task.wait(step[2])
