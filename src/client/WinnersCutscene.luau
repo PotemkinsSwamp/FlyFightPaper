@@ -35,7 +35,13 @@ local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room 
 -- frame: wide enough that SIDE_ROOM fits beside the outside winners (body, arms and the whole plate: Alan 2026-10-18),
 -- from GROUP_EYE over the desk top looking GROUP_TILT degrees down at them. One steady shot of all three: the zoom
 -- in on 1st is gone (Alan 2026-11-19: they kept coming out of frame). Sizes in winner heights.
-local SHOT_FOV, PUSH_IN, SIDE_ROOM = 50, 0.04, 1.7 -- 1.2 left 2nd and 3rd right on the border of the view (Alan 2026-11-20)
+-- The camera comes as close as the screen allows, both ways (Alan 2026-11-20: scale to the screen; the phone was too
+-- zoomed out). Across: SIDE_ROOM beside the outside winners to the edge of the whole screen (at 1.1 on a phone their
+-- arms and lights ran under its camera island and into its round corners; the outside name plates slide in to stay
+-- whole). Up and down: the picture at the winners is never less than FRAME_TALL winner heights tall; at it the name
+-- plates' bottoms reach the bottom of the screen. That is Alan's approved PC view (a pane 2.55 times wider than
+-- tall, where 1.7 of side room came to the same distance), and it holds on any wider screen.
+local SHOT_FOV, PUSH_IN, SIDE_ROOM, FRAME_TALL = 50, 0.04, 1.25, 3.45
 local GROUP_TILT, GROUP_EYE = 8, 1.6
 -- How far forward of the middle of their desk 1st and the others stand (shares of the desk depth): 1st a touch in
 -- front. (At 0.32 and 0.22 the books stood on the desk's front edge and the light hung over it: Alan 2026-11-20.)
@@ -660,7 +666,8 @@ function Cutscene.play(winners, onStage)
 	local box = CFrame.fromMatrix(center, right, Vector3.yAxis)
 	local points = { center }
 	for i = 0, 7 do points[#points + 1] = box * (size * Vector3.new(i % 2 - 0.5, (i // 2) % 2 - 0.5, i // 4 - 0.5)) end
-	local groupDistance = (across + SIDE_ROOM * height) / aspect / tanHalf -- the row and its side room fill the whole screen's width
+	-- Fitted to the screen both ways: the row and its side room across, FRAME_TALL up and down; the tighter one wins.
+	local groupDistance = math.max((across + SIDE_ROOM * height) / aspect, FRAME_TALL * height / 2) / tanHalf
 	local tilt = -math.rad(GROUP_TILT)
 	local eye = Vector3.new(middle.X, deskTop + GROUP_EYE * height, (spots[1].Z + spots[2].Z + spots[3].Z) / 3) + back * groupDistance
 	local group = CFrame.lookAt(eye, eye - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
@@ -757,7 +764,8 @@ function Cutscene.play(winners, onStage)
 				local edge = spots[place] + back * ((desk.Position - spots[place]):Dot(back) + desk.Size.Z / 2)
 				local at = camera:WorldToViewportPoint(edge)
 				plate.scale.Scale = screen.Y / 1080 * popIn(shown / 0.35)
-				plate.frame.Position = UDim2.fromOffset(at.X, math.min(at.Y + 6, screen.Y - PLATE_H * screen.Y / 1080 - 8))
+				local half = PLATE_W / 2 * screen.Y / 1080 + 6 -- a whole plate stays on the screen (clear of a phone's notch strips)
+				plate.frame.Position = UDim2.fromOffset(math.clamp(at.X, half, screen.X - half), math.min(at.Y + 6, screen.Y - PLATE_H * screen.Y / 1080 - 8))
 			end
 		end
 		-- Focus on the winners (the small ones, near the camera); the room behind them a little soft.

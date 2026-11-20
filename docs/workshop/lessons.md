@@ -575,6 +575,16 @@ mistake would be easy to make twice.
   at (x - 62, y) in GUI space, so tap a button at its AbsolutePosition centre + (62, 0).
 - **`TouchTapInWorld` counts the top bar (2026-10-24):** its position is 58 points lower than GUI/InputObject space,
   so turn it into a ray with `ViewportPointToRay`, not `ScreenPointToRay` (the Range's strips missed by 28 studs).
+- **Fitting a camera shot to the screen (2026-11-20, the winners' shot):** on a phone `Camera.ViewportSize` is only
+  the notch-free middle (749 x 381 on an iPhone 17 Pro) while the 3D picture is drawn on the whole screen (873 x 401);
+  an empty ScreenGui with `ScreenInsets = None` reads the whole size. `WorldToViewportPoint` counts from the
+  notch-free middle's corner (negative x is in the strip), and a default ScreenGui cannot draw in the strips, so
+  clamp anything pinned to a 3D point. Fit a shot both ways (width and height), never by width alone.
+- **Alan's "laptop" view is not what most players see (2026-11-20):** the simulator's "Current device" is Studio's
+  own pane, 2.55 times wider than tall here; a framing judged there is far looser on a 16:9 screen. Check HD 1080
+  in the simulator's computer list too. Switching device works in the middle of a Play; a code change needs a new
+  Play. Desktop control: ask for `robloxstudiobeta.exe` by name (the "Roblox Studio" entry alone shows no window),
+  and the first screenshot minimises Alan's other windows and Studio itself (restore Studio with `ShowWindow`).
 - **PreloadAsync doesn't fetch pictures given as id text** (2026-10-25): every `rbxassetid://` string reported
   Failure in 0.1 s in Studio and stalled 15 s on a client, so the loading screen and menus showed only words on a
   phone. Hand it the things that draw them (an `ImageLabel` with `.Image` set, a MeshPart, a SurfaceAppearance).
