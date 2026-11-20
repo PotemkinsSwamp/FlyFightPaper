@@ -10,6 +10,7 @@
 | "is there a way we can just ... use like a scaling thing ... instead of like one distance" | That rule, above; one room number for every screen. |
 | On the result (iPhone 17 Pro, HD 1080, his own view): "ok its good" | Framing approved. |
 | Good Game (claps, wave, nod; arms and head posed by numbers over Roblox's standing idle): **"it looks stiff and the movements are too fast making it look unnatural"** | Not accepted. Next: a new way to make it, described to him in words first. |
+| Good Game remade from Roblox's own clap and wave, at Roblox's speed and at three quarters: **"the slow is better but the hands dont connect when they clap, maybe use the same grip technique"** | Three quarters is the speed. The left hand is now pulled onto the right at each clap ([how](../workshop/emote-making.md)); waits for his next look. |
 
 ## Notes
 - My first explanation of the phone fault was wrong (I said the top and bottom were cut before looking); he told me

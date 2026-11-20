@@ -341,8 +341,20 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
 - What the two clips hold (read from their keyframes in Edit): both move the whole body. Applaud: a clap every
   0.5 s, chest 5 degrees, head 8, knees up to 9. Wave: the **left** arm, the chest leaning 14 degrees, the hips
   shifting a quarter of a stud, back in its first pose for the last 0.2 s.
-- **Applaud claps at the same rate as the rejected cut** (two a second), so the Dev button has two choices for his
-  eye: "GoodGame" at Roblox's speed and "GoodGameSlow" at three quarters (a clap every 0.67 s).
+- **Applaud claps at the same rate as the rejected cut** (two a second), so the Dev button had two choices for his
+  eye, Roblox's speed and three quarters. Alan in Play: **"the slow is better"**. Three quarters is now the only
+  speed (`GOOD_GAME_SPEED`, a clap every 0.67 s).
+- **"The hands dont connect when they clap"** (Alan, same look). Measured on six real avatars from his Play: at the
+  closest moment the hands' middles stay 0.4 to 1.2 studs apart (at normal avatar size), different on every body;
+  on a narrow body the hand boxes pass through each other instead. One set of joint turns cannot fit every body.
+  The fix (`clapHands`): Roblox's `IKControl` (it bends an arm so a hand reaches a point; it works on the new
+  AnimationConstraint avatars too, says its page) pulls the **left** hand to a point that rides on the right hand,
+  fully at each clap and not at all while the hands are open (weight = the clap's rhythm read from the clip's
+  time). The point is on the line between the two hands, as far out as the two hand boxes are thick along that line
+  times `CLAP_PRESS` (0.8). **A hand's own axes are no guide in this pose**: the right hand's "inner side" pointed
+  70 degrees away from the left hand, found by working it out before anyone looked. Only the left arm reaches
+  (0.1 to 0.6 studs more than Roblox's move); both hands meeting in the middle is the next step if that looks
+  lopsided. Not yet run in Play by anyone.
 - Checking that a Roblox animation exists and what is in it, without Play: `MarketplaceService:GetProductInfo(id)`
   (type 24 is an animation; a catalogue emote's own id is type 61 and holds no keyframes) and
   `KeyframeSequenceProvider:GetKeyframeSequenceAsync`.
