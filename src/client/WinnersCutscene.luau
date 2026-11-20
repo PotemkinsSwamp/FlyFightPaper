@@ -416,25 +416,29 @@ local function emoteFor(place)
 end
 
 -- The runner-up emotes (Alan's OK 2026-11-20: Good Game, Nap, Next One), for 2nd and 3rd: small, calm loops. Studio
--- only until Alan passes them: the Dev panel's "2nd/3rd" button names one (DevRunnerUp). Nap and Next One are cut
--- from generated body moves (tools/emote_clips.lua): the clip (Assets.<name>Clip) is registered for the session.
+-- only until Alan passes them: the Dev panel's "2nd/3rd" button names one (DevRunnerUp). Clips of ours cut from
+-- generated body moves (tools/emote_clips.lua) sit in Assets, not uploaded yet (Alan's go): registered for the session.
+local function ourClip(name)
+	local clip = Root.Assets:FindFirstChild(name)
+	return clip and game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip)
+end
 local function runnerUpClip()
 	local name = RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
-	local clip = name and Root.Assets:FindFirstChild(name .. "Clip")
-	return clip and game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip)
+	return name and ourClip(name .. "Clip")
 end
 
 -- Good Game, the free one (Alan's OK on the remake 2026-11-20; he found arms typed in by numbers stiff and too
--- fast): Roblox's own hand-made moves with the whole body in them, round and round, retimed to show a runner-up's
--- feelings (Alan 2026-11-20: the face can't show it, so the movement must). A dramatic slow clap, in his words
--- "1, 2, 3", a second between claps, "never waiting ... one smooth rhythm": Roblox's Applaud emote (a clap every
--- half second) at half speed for three claps; then the arms drop to the sides and the kid stands. (Tried and
--- rejected by him: holding the hands apart and striking fast; resting them together with a quick swing, 0.65 s a
--- clap, from Fortnite's Slow Clap, "still too fast"; Roblox's own wave, slowed and half raised, "too enthusiastic":
--- the wave he described needs a body move of its own.)
--- Each step: { clip, the clip's seconds played before the next step starts, speed, weight } or { false, seconds }.
--- What goodGame returns stands in for an AnimationTrack: Play only.
-local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 0.5, 1 }, { false, 2.5 } }
+-- fast): real body moves, round and round, timed to show a runner-up's feelings (Alan 2026-11-20: the face can't
+-- show it, so the movement must). A dramatic slow clap, in his words "1, 2, 3", a second between claps, "never
+-- waiting ... one smooth rhythm" (his "the slow clap is good now"): Roblox's Applaud emote (a clap every half
+-- second) at half speed for three claps. Then the wave he described: the arms drop to the sides, the right forearm
+-- comes up into an L and tips side to side, slow and uninterested (Assets.GoodGameWaveClip, cut from a generated
+-- clip), at 0.65 speed. Then the kid stands. (Tried and rejected by him: holding the hands apart and striking fast;
+-- resting them together with a quick swing, 0.65 s a clap, from Fortnite's Slow Clap, "still too fast"; Roblox's
+-- own wave, slowed and half raised, "too enthusiastic".)
+-- Each step: { clip (Roblox's id or the name of one of ours), the clip's seconds played before the next step
+-- starts, speed, weight } or { false, seconds }. What goodGame returns stands in for an AnimationTrack: Play only.
+local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 0.5, 1 }, { "GoodGameWaveClip", 2.9, 0.65, 1 }, { false, 2 } }
 local GOOD_GAME_BLEND = 0.7
 -- The hands meet at every clap (Alan 2026-11-20: they did not connect). Roblox's clap is one set of joint turns, so
 -- on each body the hands stop a different distance apart (0.4 to 1.2 studs on six avatars measured). Like the plane
@@ -465,24 +469,25 @@ local function clapHands(model, humanoid, applaud)
 			local along = apart.Unit
 			meet.WorldPosition = right.Position + along * (thick(right, along) + thick(left, along)) * CLAP_PRESS
 		end
-		reach.Weight = applaud.WeightCurrent * math.max(0, math.cos(applaud.TimePosition / CLAP_EVERY * 2 * math.pi))	end)
+		reach.Weight = applaud.WeightCurrent * math.max(0, math.cos(applaud.TimePosition / CLAP_EVERY * 2 * math.pi))
+	end)
 end
 local function goodGame(animator, model)
 	local tracks = {}
 	for i, step in GOOD_GAME do
-		if step[1] then
-			local animation = Instance.new("Animation"); animation.AnimationId = step[1]
+		local id = step[1] and (step[1]:find("^rbxassetid") and step[1] or ourClip(step[1]))
+		if id then
+			local animation = Instance.new("Animation"); animation.AnimationId = id
 			tracks[i] = animator:LoadAnimation(animation); tracks[i].Looped, tracks[i].Priority = true, Enum.AnimationPriority.Action
 		end
 	end
 	clapHands(model, animator.Parent, tracks[1])
-	-- The stance (Assets.GoodGameStanceClip, cut in tools/emote_clips.lua): weight on one leg, the other knee bent, the
-	-- hips tilted, from the dark on. It holds only the hips and legs, one priority above the clap and wave, which
-	-- keep the chest, head and arms. Registered for the Studio session, like the other clips of ours not yet uploaded.
-	local stance = Root.Assets:FindFirstChild("GoodGameStanceClip")
+	-- The stance (Assets.GoodGameStanceClip): the weight on the right leg, the left foot out to the side, the hips
+	-- tilted, from the dark on. It holds only the hips and legs, one priority above the clap and wave, which keep the
+	-- chest, head and arms.
+	local stance = ourClip("GoodGameStanceClip")
 	if stance then
-		local animation = Instance.new("Animation")
-		animation.AnimationId = game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(stance)
+		local animation = Instance.new("Animation"); animation.AnimationId = stance
 		local hold = animator:LoadAnimation(animation); hold.Looped, hold.Priority = true, Enum.AnimationPriority.Action2
 		hold:Play(0)
 	end

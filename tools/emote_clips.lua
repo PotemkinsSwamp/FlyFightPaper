@@ -25,14 +25,31 @@ end
 -- Roblox's own clap and wave, in WinnersCutscene.)
 local CUTS = {}
 -- A cut may hold only some parts (here: what a stance needs): played one priority above another clip, it takes
--- just those parts and the other clip keeps the rest. (Good Game's first stance, a bent knee on its toes from
--- rbxassetid://98222857059913, Alan rejected: "the rested leg"; its cut is gone, the next one goes here.)
+-- just those parts and the other clip keeps the rest.
 local STANCE = { "LowerTorso", "LeftUpperLeg", "LeftLowerLeg", "LeftFoot", "RightUpperLeg", "RightLowerLeg", "RightFoot" }
 local function only(parts, all)
 	local out = {}
 	for _, part in parts do out[part] = all[part] end
 	return out
 end
+-- Good Game's stance (Alan's go 2026-11-20; a first one, a bent knee on its toes, he called "the rested leg"): the
+-- hips and legs from the first half second of a generated "leaning stance" clip: the right foot under the body, the
+-- left out to the side, both flat, the hips tilted 5 degrees. (After 0.6 s that clip shuffles its feet: not used.)
+CUTS.GoodGameStance = { length = 0.5, clips = { stance = "rbxassetid://106864956338262" }, pose = function(t, c)
+	return only(STANCE, c.stance(t))
+end }
+-- Good Game's wave (Alan's words: arms dropped to the sides, then the right hand raised "not all the way up, just
+-- forming a slight L shape ... wave it back and forth, kind of slow, like they're uninterested"), the whole body
+-- from a generated clip: arms hanging (its 0.67 to 1.2 s), the right forearm up into an L with the hand in front of
+-- the shoulder (to 1.87), two small side-to-side tips with the head tilting (to 2.93), then its own arm drop (3.57
+-- to 3.97). Cut out between: at 3.07 s the clip throws the arm up over the head.
+local WAVE_FROM, WAVE_TO, WAVE_DROP, WAVE_JOIN = 0.67, 2.93, 3.57, 0.3
+CUTS.GoodGameWave = { length = WAVE_TO - WAVE_FROM + WAVE_JOIN + 3.97 - WAVE_DROP, clips = { wave = "rbxassetid://72977568176735" }, pose = function(t, c)
+	local waved = WAVE_TO - WAVE_FROM
+	if t <= waved then return c.wave(WAVE_FROM + t) end
+	if t <= waved + WAVE_JOIN then return mix(c.wave(WAVE_TO), c.wave(WAVE_DROP), eased((t - waved) / WAVE_JOIN)) end
+	return c.wave(WAVE_DROP + t - waved - WAVE_JOIN)
+end }
 
 local Players = game:GetService("Players")
 if _G.EMOTE and _G.EMOTE.clean then _G.EMOTE.clean() end

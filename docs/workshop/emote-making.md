@@ -418,6 +418,24 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
     half a stud over, a hand on the hip. **Correction:** the ids named "... Face" (Hello Face, Sad Face, Shrug
     Face) are the whole emote, body included, not a face half: `InsertService:LoadAsset(<catalogue emote id>)`
     returns the emote's Animation with that id.
+  - **Alan in Play on the steady clap: "The slow clap is good now."** (He also said he had not really looked at the
+    bent-knee stance before judging it.) His go for a stance try and a wave try:
+    - **Stance** (`rbxassetid://106864956338262`, 2 s asked): "leaning stance held still ... weight shifted onto
+      the right leg, the hips pushed out to the right, the upper body leaning slightly back, shoulders slumped,
+      both feet flat". Came back subtle: for the first 0.6 s the right foot under the body (0.39 studs out), the
+      left out at 0.85, both flat, hips tilted 5 to 6 degrees, knees bent 15 to 21, chest 4 degrees **forward**
+      (no lean back, no slump); then it shuffles its feet. Cut `CUTS.GoodGameStance`: hips and legs, first 0.5 s.
+    - **Wave** (`rbxassetid://72977568176735`, 4 s): "uninterested small wave: ... raises the right forearm so
+      the elbow is bent in an L ... tilts the right hand and forearm side to side twice ... drops". Came back with
+      the hand work this time: arms hang to 1.2 s; the forearm comes up (elbow 130 degrees) to 1.87 s with the hand
+      in front of the shoulder (about a stud under the chin, not beside the head); two small side-to-side tips to
+      2.93 s with the head tilting 15 degrees and the chest leaning back 7; **then it throws the arm over the head
+      (3.07 to 3.33 s)**; then drops it. Cut `CUTS.GoodGameWave`: 0.67 to 2.93 s, a 0.3 s blend over the thrown
+      arm, then the clip's own drop (3.57 to 3.97): 2.96 s, the whole body. **Short, plain wordings of one action
+      in order ("starts ... then ... then ...") gave hand work the long lists did not.**
+    - In the scene: clap (three), a 0.7 s blend into the wave at 0.65 speed (about 4.5 s), stand 2 s; the stance
+      holds the hips and legs throughout. Both clips are in the place's `Assets` (unsaved) and as files beside
+      the Camera Flick ones. Not yet run in Play.
   - Looking at a web video frame by frame without downloading it: in Chrome, a script seeks the page's own video
     and draws each moment into a grid laid over the page (cropped to the character, time stamped), and one
     screenshot shows 30 moments.
