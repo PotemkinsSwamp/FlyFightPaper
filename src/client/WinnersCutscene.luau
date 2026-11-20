@@ -37,8 +37,9 @@ local ARC = 250 -- studs the camera rises mid-glide, so it sweeps over the room 
 -- in on 1st is gone (Alan 2026-11-19: they kept coming out of frame). Sizes in winner heights.
 local SHOT_FOV, PUSH_IN, SIDE_ROOM = 50, 0.04, 1.2
 local GROUP_TILT, GROUP_EYE = 8, 1.6
--- How far forward on their desk 1st and the others stand (shares of the desk depth): 1st a little in front.
-local FIRST_FORWARD, SIDE_FORWARD = 0.32, 0.22
+-- How far forward of the middle of their desk 1st and the others stand (shares of the desk depth): 1st a touch in
+-- front. (At 0.32 and 0.22 the books stood on the desk's front edge and the light hung over it: Alan 2026-11-20.)
+local FIRST_FORWARD, SIDE_FORWARD = 0.06, 0
 -- The two outside winner desks slide in to this many studs from the middle one, on this screen only, for the
 -- winners' moment (Alan 2026-10-18: desks closer together, not too close; the map itself stays as it is). What sits
 -- on a desk goes with it: the desk, its chair and student, and these toys.
@@ -73,17 +74,17 @@ local CURTAIN_CLEAR, CURTAIN_LENS, CURTAIN_BEHIND = 0.15, 1, 60 -- at 0.08 the r
 -- cones, one inside the other from full width down to nothing, so it is brightest in the middle and fades to its
 -- edge (one cone alone looked like a glass tube; four showed stripes; Alan picked 24 at 0.99 from a Studio preview).
 -- Its width at the desk and how far up its tip is are in winner heights (wide enough for held-out arms on the
--- tallest book stack; the tip is far off the top of the picture); then how see-through each layer is. The pool is
--- POOL_RINGS faint circles the same way, drawn on an unseen copy of the desk top, which cuts them off at the desk's
--- edges (Alan: the light must not hang out over the desk's edge). So the light never lies over the winner (Alan:
--- its haze made them milky and a white avatar glowed), the whole spotlight stands LIGHT_BACK times further from the
--- camera than the winner and that much bigger: it lands on the same spot of the picture, behind them.
+-- tallest book stack; the tip is far off the top of the picture; up to CONE_BIG times wider for an avatar that
+-- stands taller than the rest, so they are in their light too: Alan); then how see-through each layer and the pool
+-- are. The pool is a glowing disc no wider than the desk is deep where they stand, so no light hangs out over the
+-- desk's edge (Alan). So the light never lies over the winner (Alan: its haze made them milky and a white avatar
+-- glowed), the whole spotlight stands LIGHT_BACK times further from the camera than the winner and that much bigger:
+-- it lands on the same spot of the picture, behind them.
 local LAMP_COLOR = Color3.fromRGB(255, 244, 214)
 local CLICK = 0.12
 local IDLE = { [Enum.HumanoidRigType.R15] = "rbxassetid://507766666", [Enum.HumanoidRigType.R6] = "rbxassetid://180435571" } -- Roblox's standing idles
-local CONE_WIDE, CONE_TALL, CONE_LAYERS, CONE_CLEAR = 1.52, 8, 24, 0.99
-local POOL_RINGS, POOL_CLEAR, LIGHT_BACK = 10, 0.9, 1.8
-local POOL_SIDE = 1 -- which way a picture on a part's top runs along the part's depth (1 or -1); to be proven in Play
+local CONE_WIDE, CONE_TALL, CONE_LAYERS, CONE_CLEAR, CONE_BIG = 1.52, 8, 24, 0.99, 1.4
+local POOL_CLEAR, LIGHT_BACK = 0.8, 1.8
 local Cutscene = {}
 local active
 
@@ -98,11 +99,10 @@ task.spawn(function()
 	coneSource = cone
 end)
 
--- A spotlight for show in `world` (the model of one winner's light), off. `height`: that winner's height in this
--- model's studs; `desk`: their desk; `k`: how many of this model's studs one stud of the real room is.
-local function makeSpotlight(spot, height, world, desk, k)
-	local wide, tall = CONE_WIDE * height, CONE_TALL * height
-	local cones, rings = {}, {}
+-- A spotlight for show in `world` (the model of one winner's light), off: the cone `wide` at the desk and `tall`,
+-- the pool `pool` across, in that model's studs.
+local function makeSpotlight(spot, world, wide, tall, pool)
+	local cones = {}
 	for i = 1, coneSource and CONE_LAYERS or 0 do
 		local across = wide * (1 - (i - 1) / CONE_LAYERS)
 		local cone = coneSource:Clone()
@@ -110,28 +110,13 @@ local function makeSpotlight(spot, height, world, desk, k)
 		cone.Parent = world
 		cones[i] = cone
 	end
-	local top = Instance.new("Part")
-	top.Name, top.Anchored, top.CanCollide, top.CanQuery, top.CanTouch, top.CastShadow, top.Transparency = "Pool", true, false, false, false, false, 1
-	top.Size = Vector3.new(desk.Size.X * k, 0.004 * height, desk.Size.Z * k)
-	local onDesk = desk.CFrame:PointToObjectSpace(spot) -- where the winner stands, from the desk's middle (real studs)
-	top.CFrame = CFrame.new(spot) * desk.CFrame.Rotation * CFrame.new(-onDesk.X * k, 0.002 * height, -onDesk.Z * k)
-	local sheet = Instance.new("SurfaceGui")
-	sheet.Face, sheet.LightInfluence, sheet.SizingMode = Enum.NormalId.Top, 0, Enum.SurfaceGuiSizingMode.FixedSize
-	sheet.CanvasSize = Vector2.new(desk.Size.X, desk.Size.Z) * 3 -- three dots a real stud
-	local middle = Vector2.new(desk.Size.X / 2 + onDesk.X, desk.Size.Z / 2 + onDesk.Z * POOL_SIDE) * 3
-	for i = 1, POOL_RINGS do
-		local across = wide / k * 3 * (1 - (i - 1) / POOL_RINGS)
-		local ring = Instance.new("Frame")
-		ring.AnchorPoint, ring.Position, ring.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(middle.X, middle.Y), UDim2.fromOffset(across, across)
-		ring.BorderSizePixel, ring.BackgroundColor3, ring.BackgroundTransparency = 0, LAMP_COLOR, 1
-		local round = Instance.new("UICorner")
-		round.CornerRadius, round.Parent = UDim.new(0.5, 0), ring
-		ring.Parent = sheet
-		rings[i] = ring
-	end
-	sheet.Parent = top
-	top.Parent = world
-	return { cones = cones, rings = rings }
+	local disc = Instance.new("Part")
+	disc.Name, disc.Shape, disc.Material, disc.Color = "Pool", Enum.PartType.Cylinder, Enum.Material.Neon, LAMP_COLOR
+	disc.Anchored, disc.CanCollide, disc.CanQuery, disc.CanTouch, disc.CastShadow, disc.Transparency = true, false, false, false, false, 1
+	disc.Size = Vector3.new(0.003 * wide, pool, pool)
+	disc.CFrame = CFrame.new(spot + Vector3.yAxis * 0.0015 * wide) * CFrame.Angles(0, 0, math.rad(90)) -- lying flat on the desk top
+	disc.Parent = world
+	return { cones = cones, pool = disc }
 end
 -- `glow`: the winner's own light, 0 off to 1 on; `room`: how much of it shows (it goes as the room's lights come
 -- back); `seen`: how much of the winner shows (the light goes with them). Their black cover comes off as the light
@@ -140,7 +125,7 @@ local function shine(w, glow, room, seen)
 	local level = glow * math.min(room, seen)
 	if w.light.level ~= level then
 		w.light.level = level
-		for _, ring in w.light.rings do ring.BackgroundTransparency = 1 - (1 - POOL_CLEAR) * level end
+		w.light.pool.Transparency = 1 - (1 - POOL_CLEAR) * level
 		for _, cone in w.light.cones do cone.Transparency = 1 - (1 - CONE_CLEAR) * level end
 	end
 	w.cover.Enabled, w.cover.FillTransparency = glow < 1, 1 - seen * (1 - glow)
@@ -475,6 +460,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local onDesk = spot + Vector3.new(0, (stackBooks(world, place, spot, scale) + feet) / scale, 0)
 	local desk = CFrame.lookAt(onDesk, onDesk + facing)
 	model:PivotTo(desk)
+	local big = math.clamp(model:GetExtentsSize().Y * scale / Avatars.standing_height_studs, 1, CONE_BIG) -- taller than the rest, hair and hats too
 	rootPart.Anchored = true
 	humanoid.EvaluateStateMachine, humanoid.DisplayDistanceType = false, Enum.HumanoidDisplayDistanceType.None
 	for _, item in model:GetDescendants() do
@@ -492,7 +478,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, flick = flick and flickInfo or nil, place = place, scale = scale, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -617,7 +603,10 @@ function Cutscene.play(winners, onStage)
 							local base = anchor:Clone()
 							base.Parent = glow
 							glow.Name, glow.PrimaryPart, glow.Parent = "Winner" .. place .. "Light", base, state.set
-							copy.world, copy.glow, copy.light = world, glow, makeSpotlight(spots[place], height * k, glow, desk, k)
+							local wide = CONE_WIDE * height * copy.big
+							-- from where they stand to the nearer long edge of their desk
+							local onDesk = desk.Size.Z / 2 - math.abs((spots[place] - desk.Position):Dot(back))
+							copy.world, copy.glow, copy.light = world, glow, makeSpotlight(spots[place], glow, wide * k, CONE_TALL * height * k, math.min(wide, 1.9 * onDesk) * k)
 							copy.cover = Instance.new("Highlight")
 							copy.cover.Name, copy.cover.FillColor, copy.cover.FillTransparency, copy.cover.OutlineTransparency = "Unlit", Color3.new(), 1, 1
 							copy.cover.DepthMode, copy.cover.Parent = Enum.HighlightDepthMode.Occluded, cast
@@ -721,12 +710,12 @@ function Cutscene.play(winners, onStage)
 		local tall = 3 * away * math.tan(math.rad(fov / 2)) -- half as big again as the view
 		state.curtain.Size, state.curtain.CFrame = Vector3.new(tall * aspect, tall, 0.05), shot * CFrame.new(0, 0, -away)
 		state.shade.BackgroundTransparency = 1 - (1 - CURTAIN_CLEAR) * (t < depart and ease((t - BANNER) / DIM) or up)
-		if t >= depart and t < arrive then standWinners() end
-		-- The small winners are put in front of the camera where they look like big ones on their desks; they appear
-		-- late in the glide over and fade out on the way home (they stand in front of everything in the room, so they
-		-- must be gone before the camera turns away). They appear all at once, as solid black shapes: faded in, their
-		-- black cover did not hold on half see-through parts and they showed lit for a moment (Alan in Play 2026-11-20).
-		local seen = t < arrive and (t - depart >= GLIDE * 0.6 and 1 or 0) or 1 - ease((t - leave) / (GLIDE * 0.4))
+		if t >= BANNER + DIM * 0.8 and t < arrive then standWinners() end
+		-- The small winners are put in front of the camera where they look like big ones on their desks. They are there,
+		-- as solid black shapes, from just before the camera sets off (Alan 2026-11-20: he saw them pop in during the
+		-- glide; and faded in, their black cover did not hold and they showed lit for a moment), and fade out on the
+		-- way home (they stand in front of everything in the room, so they must be gone before the camera turns away).
+		local seen = t < leave and 1 or 1 - ease((t - leave) / (GLIDE * 0.4))
 		for place, w in state.winners do
 			local since = t - arrive - LIGHT_AT - (3 - place) * TURN
 			if since >= 0 and not w.lit then w.lit = true; w.emote:Play(0.3) end
