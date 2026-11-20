@@ -530,7 +530,7 @@ function Cutscene.play(winners, onStage)
 	if back:Dot(flat(-desks[1].Position)) < 0 then back = -back end
 	local right = Vector3.yAxis:Cross(back) -- screen right when looking at the desks from the room side
 	local aspect = camera.ViewportSize.X / math.max(camera.ViewportSize.Y, 1)
-	local state = { start = os.clock(), winners = {}, hidden = {}, lit = {}, lamps = {}, cleared = {}, stage = "banner", cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
+	local state = { start = os.clock(), winners = {}, hidden = {}, lit = {}, lamps = {}, cleared = {}, stage = "banner", cameraType = camera.CameraType, focus = camera.Focus, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
 	active = state
 	state.blur = Instance.new("DepthOfFieldEffect") -- Roblox's own camera blur, on this screen only
 	state.blur.Name, state.blur.NearIntensity, state.blur.FarIntensity, state.blur.Parent = "WinnersFocus", 0, 0, camera
@@ -726,6 +726,10 @@ function Cutscene.play(winners, onStage)
 		if t >= leave + GLIDE then Cutscene.stop(); return end
 		camera.CameraType = Enum.CameraType.Scriptable
 		camera.CFrame, camera.FieldOfView = shot, fov
+		-- Roblox works out lights first around Camera.Focus, and a scripted camera has to move that point itself: left
+		-- where the game last put it, the winners' lamps took effect seconds late and all together (Play 2026-11-20).
+		-- It goes to the winners' shot as the camera sets off, so the lighting there is ready before the first click.
+		if t >= depart then camera.Focus = CFrame.new(group.Position) end
 		-- Each plate pops in with its winner's light, its top on its desk's front edge.
 		local screen = camera.ViewportSize
 		for place, w in state.winners do
@@ -767,7 +771,7 @@ function Cutscene.stop()
 	state.blur:Destroy()
 	state.plateGui:Destroy()
 	for item, was in state.moved do if item.Parent then item:PivotTo(was) end end
-	workspace.CurrentCamera.CameraType, workspace.CurrentCamera.FieldOfView = state.cameraType, state.fov
+	workspace.CurrentCamera.CameraType, workspace.CurrentCamera.FieldOfView, workspace.CurrentCamera.Focus = state.cameraType, state.fov, state.focus
 	Root:SetAttribute("Cutscene", false)
 end
 
