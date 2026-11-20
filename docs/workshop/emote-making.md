@@ -229,13 +229,13 @@ capture, joined by ffmpeg. 70 frames take about a minute and a half. No Play, no
   there is no picture of this cut. `_G.EMOTE_BODY = <user id>` before running the preview tool stands that user's
   avatar on the desk instead of the blocky kid (sized head to feet: hats and wings made the first try tiny).
 
-## Runner-up emotes: shot cards (step 1, 2026-11-20; proposed, waiting for Alan's OK)
+## Runner-up emotes: shot cards (step 1, 2026-11-20; Alan: "yes to all")
 Alan passed Camera Flick's animation and the framing (2026-11-20) and asked for the runner-up emotes next: Good
 Game (free), Nap, Next One. What all three share:
 - They play for 2nd and 3rd from the moment their light clicks on until the camera leaves: 8 to 9 seconds beside
   Camera Flick, up to 13 beside a dance. So each is a short opening and then a quiet loop that can run on.
 - Small and calm, so the eye stays on 1st; nothing touches the camera.
-- **Already in their starting pose in the dark** (proposed): the light finds a kid who is already sitting, instead of
+- **Already in their starting pose in the dark** (Alan's OK): the light finds a kid who is already sitting, instead of
   a standing black shape dropping into a sit at the click.
 - Sitting is cross-legged on top of the stack, so it looks the same on 2nd's four books and 3rd's two.
 - Today 2nd and 3rd each get a random Roblox dance (`EMOTES` in `WinnersCutscene`); these replace it.
@@ -262,5 +262,67 @@ Risks, said before building:
 
 Order: Good Game first (standing, no prop: only the body move is new), then Nap (adds sitting and the Z's), then
 Next One (adds the changing prop).
+
+## Runner-up emotes: the nine raw body moves (steps 2 and 3, 2026-11-20)
+Alan's go for nine uploads. One try failed with no reason given and was sent again reworded. Two tries whose
+wording begins with the same 20 letters get the same clip name in `ServerStorage.RBX_ASSISTANT_ANIMGEN`: start
+each wording differently, or rename the clip before the next try.
+
+| Clip | Uploaded id | What came back (numbers, then stills) |
+|---|---|---|
+| Good Game A | `rbxassetid://137019856768402` | hands held 0.7 apart for half a second (no clap); arm out sideways; loops cleanly (0.23) |
+| Good Game B | `rbxassetid://104564586758486` | two real claps but the arms fly 4 studs apart: too big |
+| Good Game C | `rbxassetid://80526406281018` | three small claps at 0.2, 0.75 and 1.25 s by the numbers, but the forearms cross: a reviewer read crossed arms |
+| Nap A | `rbxassetid://70405992022713` | sits cross-legged, head only 26 degrees down, elbows wide: reads awake |
+| **Nap B (to use)** | `rbxassetid://103826141789730` | sits upright, the head and chest drop hard at 1.5-2.0 s (75 degrees), come back up: nodding off in class |
+| Nap C | `rbxassetid://105590529956729` | slumped right over the whole time (head 55-87 degrees): a ball, the face never shows |
+| **Next One A (to use, first 3.5 s)** | `rbxassetid://98981684256935` | sits cross-legged with both hands in front; the hands do not move; kneels up at 4 s |
+| Next One B | `rbxassetid://127250147720216` | never sits; hands held still at the chest, then the right hand raised and looked at (usable for the ending) |
+| Next One C | `rbxassetid://114191402119300` | sits with legs forward, kneels up at 2.5 s |
+
+- All six sitting tries really sit on the floor (hips 0.9 of a leg lower) and stay on the spot.
+- **The generator gives postures, not handwork.** "Folds a sheet of paper with three careful movements" came back as
+  two still hands, "waves" as an arm held out, and its small claps as crossed forearms. Sitting and a nodding head
+  it does well. So: take the posture from a clip and pose the hands' work by numbers.
+- Wording that worked: "sits on the ground with legs crossed"; "head bowed down low ... nods down further, snaps
+  upright for a moment, then droops down again".
+- Looking at raw clips: `tools/emote_clips.lua` stands one test kid per clip side by side on 1st's desk
+  (`python tools/emote_preview.py STUDIO_ID OUT.mp4 SECONDS FPS --keep --lua=emote_clips.lua` after setting
+  `_G.EMOTE_CLIPS`); the frames go into one contact sheet with ffmpeg's `tile` (stamp each with its time). Stills
+  at 2 or 3 a second miss a clap: print the distance between the hands every 0.1 s as well.
+- The raw clips are not kept as files: the tool loads them by their ids above.
+
+## Good Game: the cut (step 4, 2026-11-20)
+`CUTS.GoodGame` in `tools/emote_clips.lua`, a 4.5 s loop. First cut: version C's claps with a wave posed by
+numbers. A reviewer failed it: the claps read as crossed arms or a self-hug, the hips sat differently at the
+loop's two ends, and hands cut into the torso on the way down. Second cut, now in: **only the arms and the head
+are posed, all by numbers; the clip leaves every other part alone** (poses with weight 0), so Roblox's standing
+idle keeps the body alive underneath and the loop cannot jump.
+- Claps (0 to 1.5 s, shut at 0.25, 0.75 and 1.25): upper arms 18 degrees forward and turned in 36 (open) to 57
+  (shut), elbows bent 80, so the hands meet in front of the chest without crossing. Wave (1.95 to 2.95): the left
+  arm hangs, the right upper arm out level, its forearm upright, rocking 2.5 times. Arm down, a 26-degree nod
+  (3.4 to 4.0), hands back up.
+- Arm by numbers, in joint turns: `Angles(forward, 0, 0) * Angles(0, turnedIn, 0)` for the upper arm and
+  `Angles(bend, 0, 0)` for the forearm; for the wave `Angles(0, 0, out) * Angles(0, 90 degrees, 0)` (out from the
+  side, then turned about its own length so the elbow bends upwards) with a negative bend. The left arm is the
+  mirror: the Y and Z angles change sign.
+- The plan says never to type in a body move (October's arm-only test looked lifeless). This is arms over a live
+  idle, not a whole body; whether it looks alive is for Alan's eye in Play.
+- Baked and saved in one go: `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua
+  "--bake=GoodGame:GoodGameClip:assets/animations/emotes/good-game.rbxm"` puts the clip in the place's `Assets`
+  and writes the file (fetched in slices by the tool, so nothing big passes through the chat).
+- In the scene: Dev panel "2nd/3rd: dances" steps to "2nd/3rd: GoodGame" (`DevRunnerUp`); `WinnersCutscene`
+  registers `Assets.GoodGameClip` for 2nd and 3rd (Studio only until the upload). **Not yet run in Play.**
+- Seen as a contact sheet and video from Edit on the blocky test kid (`.planning/emotes/good-game-cut-sheet.jpg`,
+  `good-game-cut.mp4`).
+- Not done: turning a little towards 1st for the claps (it faces the camera), and the sound.
+
+## Nap and Next One: what is left (2026-11-20)
+- **Nap**: a cut from Nap B retimed to a sleepy tempo (slow sink about 2.5 s, held asleep with breathing, a quick
+  jerk up, a look around, sinking again), the jerk also fired by 1st's light; three paper Z's from the head; the
+  kid posed in the clip's first frame while still dark; the sitting-height check on other bodies.
+- **Next One**: Next One A's sitting posture, the head looking down about 25 degrees, the left hand's three folds
+  posed by numbers, a sheet that becomes a half-folded sheet and then a plain white plane on the right hand's grip
+  point (swapped at marks on the clip), then a raise-and-look as the ending.
 
 Back to [HOME](../HOME.md).

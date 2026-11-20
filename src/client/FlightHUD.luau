@@ -305,6 +305,14 @@ function HUD.start(getPlane, action)
 		local flick=eraserBots:Clone();flick.Name="EndFlick";flick.Text="end: flick";flick.Position=UDim2.fromOffset(440,-80)
 		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
 		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
+		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
+		local ups={"dances","GoodGame"}
+		local runnerUp=eraserBots:Clone();runnerUp.Name="RunnerUp";runnerUp.Text="2nd/3rd: dances";runnerUp.Position=UDim2.fromOffset(550,-80)
+		runnerUp.BackgroundColor3=Color3.fromRGB(150,40,40);runnerUp.Parent=picker
+		runnerUp.Activated:Connect(function()
+			local pick=ups[(table.find(ups,Root:GetAttribute("DevRunnerUp") or "dances") or 1)%#ups+1]
+			Root:SetAttribute("DevRunnerUp",pick~="dances" and pick or nil);runnerUp.Text="2nd/3rd: "..pick
+		end)
 	end
 	-- Every match tip again, seen or not (Alan 2026-10-29: his account had seen them all).
 	local tipsAgain=eraserBots:Clone();tipsAgain.Name="TipsAgain";tipsAgain.Text="tips again";tipsAgain.Position=UDim2.fromOffset(770,-80)

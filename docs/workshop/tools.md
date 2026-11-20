@@ -45,6 +45,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 | `tools/r15_keyframes.luau` | Builds KeyframeSequences from `*.r15.json` and registers temporary test ids in Play (attributes `DevEmote_NAME`; set `DevWinnerEmote` to see one in the cutscene) |
 | `tools/emote_preview.py` | Renders a winner emote's preview video from Studio's Edit, no Play and no upload: runs `tools/emote_preview.lua` (a test kid on 1st's desk, the emote's recipe for plane and camera), captures every frame, joins them with ffmpeg; [emote making](emote-making.md) |
 | `tools/emote_check.lua` | Run in Studio's Edit: numbers for an emote's body move before anyone looks (length, hips and feet wander, the hand's fastest and furthest-forward moments, whether the end pose holds); [emote making](emote-making.md) |
+| `tools/emote_clips.lua` | Run in Studio's Edit: generated body-move clips and the runner-up emotes cut from them (`CUTS`), one test kid each side by side on 1st's desk; `tools/emote_preview.py --lua=emote_clips.lua` renders it and `--bake=` writes a cut as a looping clip into the place and an `.rbxm`; [emote making](emote-making.md) |
 | `tools/winner_hop_animation.luau` | Builds the winners' stand-up-and-hop keyframes in Studio (R15); exported to `assets/animations/winner-hop.rbxm` for upload |
 | `tools/meshy.py` | Paid Meshy jobs (pictures, models, `motion` = text-to-motion body clips, 10 credits); every job logged in `assets/MESHY_LOG.md`. Stop at 300 credits left |
 

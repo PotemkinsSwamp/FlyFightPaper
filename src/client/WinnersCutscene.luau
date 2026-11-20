@@ -415,6 +415,15 @@ local function emoteFor(place)
 	return id
 end
 
+-- The runner-up emotes (Alan's OK 2026-11-20: Good Game, Nap, Next One), for 2nd and 3rd: small, calm loops cut
+-- from generated body moves (tools/emote_clips.lua). Not uploaded yet (Alan's go), so they only play in Studio: the
+-- Dev panel's "2nd/3rd" button names one (DevRunnerUp) and its clip (Assets.<name>Clip) is registered for the session.
+local function runnerUpClip()
+	local name = RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
+	local clip = name and Root.Assets:FindFirstChild(name .. "Clip")
+	return clip and game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip)
+end
+
 -- The book podiums (Alan 2026-11-19): each winner stands on a stack of single books (Assets.WinnerBooks: eight
 -- free Creator Store books, each its own model lying flat, 10 studs on its longer side, its thickness in "Thick"),
 -- in clear steps (Alan 2026-11-19: on four, three and two books 1st's did not look taller than 2nd's): about 0.78,
@@ -479,7 +488,8 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
 	flick = prop and flick
-	local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or emoteFor(place)
+	local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote
+		or place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15 and runnerUpClip() or emoteFor(place)
 	local emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle

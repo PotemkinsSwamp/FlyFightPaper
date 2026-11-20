@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-20: [The first three runner-up emotes: Good Game, Nap, Next One](2026-11-20-runner-up-emotes.md)
 - 2026-11-20: [The winners' dark is a curtain, their spotlight a cone for show](2026-11-20-winners-curtain-and-cone.md)
 - 2026-11-20: [Camera Flick's move, the plane in the hand, and winners as real models](2026-11-20-camera-flick-and-real-winners.md)
 - 2026-11-19: [Winners' circle redo: a dramatic scene, and emotes sold by place](2026-11-19-winners-circle-redo.md)

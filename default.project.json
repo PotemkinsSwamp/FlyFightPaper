@@ -42,6 +42,9 @@
           },
           "CameraFlickClip": {
             "$path": "assets/animations/emotes/camera-flick.rbxm"
+          },
+          "GoodGameClip": {
+            "$path": "assets/animations/emotes/good-game.rbxm"
           }
         }
       }

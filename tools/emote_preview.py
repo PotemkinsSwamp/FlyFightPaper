@@ -1,6 +1,6 @@
 """Renders a winner emote's preview video from Studio's Edit, no Play and no upload (docs/workshop/emote-making.md):
 
-  python tools/emote_preview.py STUDIO_ID OUT.mp4 [SECONDS=2.7] [FPS=24] [--keep]
+  python tools/emote_preview.py STUDIO_ID OUT.mp4 [SECONDS=2.7] [FPS=24] [--keep] [--lua=emote_clips.lua] [--bake=CUT:ClipName:FILE]
 
 Runs tools/emote_preview.lua in Studio (it stands a test kid on 1st's desk and holds the emote's recipe), then for
 every frame poses the scene (_G.EMOTE.frame(t)) and saves Studio's own viewport capture, joins the frames with
@@ -49,16 +49,31 @@ def tool(name, **args):
     return call("tools/call", {"name": name, "arguments": {"studio_id": studio, **args}}).get("content", [])
 
 
+def text(code): return "".join(c.get("text", "") for c in tool("execute_luau", code=code, datamodel_type="Edit")).strip()
+
+
 def luau(code):
-    text = " ".join(c.get("text", "") for c in tool("execute_luau", code=code, datamodel_type="Edit"))
-    if "ok" not in text and "ready" not in text: raise SystemExit(text[:600])
-    return text
+    reply = text(code)
+    if "ok" not in reply and "ready" not in reply: raise SystemExit(reply[:600])
+    return reply
 
 
 call("initialize", {"protocolVersion": "2025-11-25", "capabilities": {}, "clientInfo": {"name": "c", "version": "1"}}, 20)
 send({"jsonrpc": "2.0", "method": "notifications/initialized"})
 here = os.path.dirname(os.path.abspath(__file__))
-print(luau(open(os.path.join(here, "emote_preview.lua"), encoding="utf-8").read()))
+script = next((a[6:] for a in sys.argv if a.startswith("--lua=")), "emote_preview.lua")  # another scene with the same _G.EMOTE.frame / clean
+print(luau(open(os.path.join(here, script), encoding="utf-8").read()))
+bake = next((a[7:] for a in sys.argv if a.startswith("--bake=")), None)  # CUT:ClipName:FILE (emote_clips.lua): no video
+if bake:  # the cut goes into the place's Assets as ClipName and from there into FILE (.rbxm), fetched in slices
+    cut, name, path = bake.split(":", 2)
+    clip = f'game.ReplicatedStorage.FlyFightPaper.Assets["{name}"]'
+    print(luau(f'return _G.EMOTE.bake("{cut}", game.ReplicatedStorage.FlyFightPaper.Assets, "{name}")'))
+    size = int(text(f'_G.EMOTE_B64 = buffer.tostring(game:GetService("EncodingService"):Base64Encode(game:GetService("SerializationService"):SerializeInstancesAsync({{ {clip} }}))) return #_G.EMOTE_B64'))
+    data = "".join(text(f"return _G.EMOTE_B64:sub({i + 1}, {i + 60000})") for i in range(0, size, 60000))
+    open(path, "wb").write(base64.b64decode(data))
+    luau("_G.EMOTE_B64 = nil _G.EMOTE.clean() return 'ok'")
+    proxy.kill()
+    raise SystemExit(f"{name} -> {path}, {len(data) * 3 // 4} bytes")
 frames = tempfile.mkdtemp(prefix="emote_frames_")
 total = int(seconds * fps) + 1
 for _ in range(4):  # let the room's pictures load and the first pose draw before frame 0 is taken
