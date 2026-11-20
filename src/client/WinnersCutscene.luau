@@ -73,7 +73,7 @@ local DARK = { Brightness = 0, Ambient = Color3.fromRGB(24, 26, 34), OutdoorAmbi
 -- over the desk and its width at the desk in winner heights, and how see-through shaft and pool are.
 local LAMP_COLOR = Color3.fromRGB(255, 244, 214)
 local CLICK = 0.12
-local LAMP_BRIGHT, LAMP_UP, LAMP_FRONT, LAMP_ANGLE = 5, 7.5, 2.5, 42
+local LAMP_BRIGHT, LAMP_UP, LAMP_FRONT, LAMP_ANGLE = 15, 7.5, 2.5, 42 -- brightness 5 was too dim (Alan in Play 2026-11-20)
 local IDLE = { [Enum.HumanoidRigType.R15] = "rbxassetid://507766666", [Enum.HumanoidRigType.R6] = "rbxassetid://180435571" } -- Roblox's standing idles
 local SHAFT_TOP, SHAFT_WIDE, SHAFT_CLEAR, POOL_CLEAR = 3, 0.95, 0.82, 0.8
 local Cutscene = {}
@@ -467,7 +467,9 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	post.Name, post.Anchored, post.CanCollide, post.CanQuery, post.CanTouch, post.Transparency, post.Size = "Lamp", true, false, false, false, 1, Vector3.one * 0.2
 	post.CFrame = CFrame.lookAt(onDesk + Vector3.yAxis * LAMP_UP + facing * LAMP_FRONT, onDesk)
 	local lamp = Instance.new("SpotLight")
-	lamp.Face, lamp.Range, lamp.Angle, lamp.Color, lamp.Brightness, lamp.Shadows = Enum.NormalId.Front, 24, LAMP_ANGLE, LAMP_COLOR, 0, true
+	-- No shadows (to be proven in Play): a shadow-casting light needs its shadow picture drawn before it shows, and
+	-- this one moves with the camera every frame; with shadows the winners lit up late and pulsed (Alan 2026-11-20).
+	lamp.Face, lamp.Range, lamp.Angle, lamp.Color, lamp.Brightness, lamp.Shadows = Enum.NormalId.Front, 24, LAMP_ANGLE, LAMP_COLOR, 0, false
 	lamp.Parent = post
 	post.Parent = world
 	local flick, flickInfo
