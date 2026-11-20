@@ -304,7 +304,8 @@ function HUD.start(getPlane, action)
 	if game:GetService("RunService"):IsStudio() then
 		local flick=eraserBots:Clone();flick.Name="EndFlick";flick.Text="end: flick";flick.Position=UDim2.fromOffset(440,-80)
 		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
-		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)	end
+		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
+	end
 	-- Every match tip again, seen or not (Alan 2026-10-29: his account had seen them all).
 	local tipsAgain=eraserBots:Clone();tipsAgain.Name="TipsAgain";tipsAgain.Text="tips again";tipsAgain.Position=UDim2.fromOffset(770,-80)
 	tipsAgain.BackgroundColor3=Color3.fromRGB(150,110,30);tipsAgain.Parent=picker
