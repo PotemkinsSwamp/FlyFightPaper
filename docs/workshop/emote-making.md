@@ -376,6 +376,14 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
     through the swing: 0.65 s a clap, together for 0.38 s of it; five claps a round. Roblox's clip gives the
     rhythm only: its arc is small and even and its stance upright. The wide one-arm swing and the slouch need
     another body move (a generator try with the hands joined by `clapHands`: his go).
+  - **Generator try for the whole slow clap** (Alan's go for one, 2026-11-20; `rbxassetid://89941391724814`, 4 s
+    asked, 3.97 s back). Wording: weight on the left leg, right hip out, shoulders slumped, head tilted; left hand
+    still at the chest palm up, right hand swinging out wide and clapping down onto it six times. **Not usable.**
+    By the numbers: three two-handed near-claps in 4 s (hands 0.9, 1.3 and 1.0 studs apart at 0.47, 1.93 and
+    3.53 s), with both arms dropped to the sides for about a second between them; no one-arm swing (both hands
+    mirror each other); hips never more than 0.11 studs off centre; the head tilted 19 degrees only for the first
+    half second. The same finding as before: postures, not handwork, and a list of body details in one long
+    wording mostly gets lost. Dummy and clip folder deleted from the place.
   - Looking at a web video frame by frame without downloading it: in Chrome, a script seeks the page's own video
     and draws each moment into a grid laid over the page (cropped to the character, time stamped), and one
     screenshot shows 30 moments.
