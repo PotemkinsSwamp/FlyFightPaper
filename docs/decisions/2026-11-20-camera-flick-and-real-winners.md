@@ -1,8 +1,8 @@
 # Camera Flick's move, the plane in the hand, and winners as real models
 
 **Decided:** 2026-11-19 and 2026-11-20 (Alan)  
-**Status:** built behind the Studio Dev button "end: flick"; the winners' own lamps light up late (not fixed); the
-animation is not uploaded
+**Status:** built behind the Studio Dev button "end: flick"; the real spotlights were dropped the same day
+([curtain and cone](2026-11-20-winners-curtain-and-cone.md)); the animation is not uploaded
 
 ## Decision
 - **Camera Flick is approved** from its preview ("this is what I imagined"), facing the camera for the throw.
