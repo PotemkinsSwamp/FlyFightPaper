@@ -363,12 +363,25 @@ generator try, no clip of ours; the typed-in cut, its file and its code are dele
   kind of slow and unenthusiastic. we need to portray emotions through their movements because we cannot control
   their face"). A runner-up's Good Game is grudging, not cheerful. Built, not yet seen:
   - **Slow clap by retiming, not slow motion.** Slowing the whole clip makes the strike float. Instead the clip's
-    speed changes inside each clap (`clapSpeed`, set every frame from the clip's time): hands come apart at 0.7 of
-    Roblox's speed, hang apart at 0.08 for about 1.2 s, strike at Roblox's own speed. One clap takes 1.58 s (worked
-    out by stepping the numbers); three claps a round.
+    speed changes inside each clap (`clapSpeed`, set every frame from the clip's time).
+  - **First timing, wrong** (hands hung apart for 1.2 s, then struck; 1.58 s a clap). Alan: "they pick their hands
+    up and wait then clap at full speed then wait again, thats not how a slow clap looks", and gave a reference:
+    Fortnite's Slow Clap (youtu.be/YuWIvsHrZAU side view, youtu.be/2o21CtktcDY front view). **I guessed what a
+    slow clap is instead of asking for or finding a reference first.**
+  - **What the reference does** (stills every 0.1 s, read off both videos): a clap every 0.63 to 0.65 s, not
+    slower; the hands rest **together** for over half of it and come apart and back in one quick, loose swing of
+    about a quarter second. The feeling is in the body: weight on one hip, a slouch, one arm swinging out wide with
+    an open palm while the other hand stays at the chest. It claps without stopping.
+  - **Second timing, from those numbers**: the clip runs at 0.25 of Roblox's speed near hands-together and 1.4
+    through the swing: 0.65 s a clap, together for 0.38 s of it; five claps a round. Roblox's clip gives the
+    rhythm only: its arc is small and even and its stance upright. The wide one-arm swing and the slouch need
+    another body move (a generator try with the hands joined by `clapHands`: his go).
+  - Looking at a web video frame by frame without downloading it: in Chrome, a script seeks the page's own video
+    and draws each moment into a grid laid over the page (cropped to the character, time stamped), and one
+    screenshot shows 30 moments.
   - **Half-hearted wave by weight.** The wave plays at 0.6 speed and 0.65 weight: an Action clip under full weight
     lets the standing idle show through, so the arm only comes part of the way up and the lean is smaller.
-  - Steps now end on the clip's own time (three claps = 1.5 clip seconds), not on a clock.
+  - Steps now end on the clip's own time (five claps = 2.5 clip seconds), not on a clock.
 - Roblox-made mood clips that exist, for posture if the retiming alone does not carry the feeling (ids checked in
   Edit, not yet looked at): `Emote_Bored` 10713992055 (a candidate for the standing rest), `Emote_Agree`
   10713954623 (a nod), `Emote_Beckon` 10713984554. Ids ending in "Face" (Sad, Shrug, Tilt, Salute) are the face
