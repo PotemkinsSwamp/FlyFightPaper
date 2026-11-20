@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-20: [Camera Flick's move, the plane in the hand, and winners as real models](2026-11-20-camera-flick-and-real-winners.md)
 - 2026-11-19: [Winners' circle redo: a dramatic scene, and emotes sold by place](2026-11-19-winners-circle-redo.md)
 - 2026-11-18: [Daily and weekly missions](2026-11-18-daily-and-weekly-missions.md)
 - 2026-11-18: [Chest artwork, prizes, Shop and daily rewards](2026-11-18-classroom-treasure-chests.md)

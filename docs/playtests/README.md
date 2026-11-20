@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-20 Camera Flick and the winners' staging](2026-11-20-camera-flick-and-winners-staging.md)
 - [2026-11-18 Big skins: size on screen and the hitbox](2026-11-18-big-skin-size.md)
 - [2026-11-18 Missions first look](2026-11-18-missions-first-look.md)
 - [2026-11-18 Shop chest openings and weekly gifts](2026-11-18-shop-chest-openings.md)
