@@ -58,8 +58,8 @@ local KEEP_TOYS = { ["school-desk"] = true, ["school-chair"] = true, ["desk-hang
 -- that fills the view, so the room behind it can only just be made out (CURTAIN_CLEAR: how much of the room shows).
 -- The room's own lighting is never touched. While the dark comes down and the camera glides, the curtain hangs
 -- CURTAIN_LENS studs from the lens, in front of everything; while the camera holds on the winners it hangs
--- CURTAIN_BEHIND studs away, just behind them.
-local CURTAIN_CLEAR, CURTAIN_LENS, CURTAIN_BEHIND = 0.15, 1, 40 -- at 0.08 the room was pitch black (Play 2026-11-20); 0.15 not yet seen
+-- CURTAIN_BEHIND studs away, behind them and their spotlights.
+local CURTAIN_CLEAR, CURTAIN_LENS, CURTAIN_BEHIND = 0.15, 1, 60 -- at 0.08 the room was pitch black (Play 2026-11-20)
 -- The winners in the dark. Each winner, their books and their plane are real models at their NORMAL small size,
 -- standing in the room right in front of the camera: every point of the big winner far away is moved towards the
 -- camera by the avatar's scale, which gives exactly the same picture at full sharpness (drawn in layers,
@@ -68,17 +68,22 @@ local CURTAIN_CLEAR, CURTAIN_LENS, CURTAIN_BEHIND = 0.15, 1, 40 -- at 0.08 the r
 -- movement twice, measured 2026-10-17.) They stand in front of the curtain in the room's ordinary light: no lamp
 -- lights them (real spotlights on them came on late and pulsed: Alan in Play 2026-11-20). Unlit, a winner is a black
 -- shape: a solid black Highlight over them, their books and plane, taken off in CLICK seconds when their spotlight
--- comes on. The spotlight itself is for show and stands in the small winner's world too: a real cone of light
--- around them (Alan 2026-11-20: the flat strip behind them looked bad) and a glowing pool under their books, the
--- cone's own floor. The cone is CONE_LAYERS very faint cones, one inside the other from full width down to nothing,
--- so it is brightest in the middle and fades to its edge (one cone alone looked like a glass tube; four showed
--- stripes; Alan picked 24 at 0.99 from a Studio preview). Its width at the desk and how far up its tip is are in
--- winner heights (wide enough for held-out arms on the tallest book stack; the tip is far off the top of the
--- picture); then how see-through each layer and the pool are.
+-- comes on. The spotlight itself is for show: a real cone of light around them (Alan 2026-11-20: the flat strip
+-- behind them looked bad) and a pool of light on the desk top under their books. The cone is CONE_LAYERS very faint
+-- cones, one inside the other from full width down to nothing, so it is brightest in the middle and fades to its
+-- edge (one cone alone looked like a glass tube; four showed stripes; Alan picked 24 at 0.99 from a Studio preview).
+-- Its width at the desk and how far up its tip is are in winner heights (wide enough for held-out arms on the
+-- tallest book stack; the tip is far off the top of the picture); then how see-through each layer is. The pool is
+-- POOL_RINGS faint circles the same way, drawn on an unseen copy of the desk top, which cuts them off at the desk's
+-- edges (Alan: the light must not hang out over the desk's edge). So the light never lies over the winner (Alan:
+-- its haze made them milky and a white avatar glowed), the whole spotlight stands LIGHT_BACK times further from the
+-- camera than the winner and that much bigger: it lands on the same spot of the picture, behind them.
 local LAMP_COLOR = Color3.fromRGB(255, 244, 214)
 local CLICK = 0.12
 local IDLE = { [Enum.HumanoidRigType.R15] = "rbxassetid://507766666", [Enum.HumanoidRigType.R6] = "rbxassetid://180435571" } -- Roblox's standing idles
-local CONE_WIDE, CONE_TALL, CONE_LAYERS, CONE_CLEAR, POOL_CLEAR = 1.52, 8, 24, 0.99, 0.8
+local CONE_WIDE, CONE_TALL, CONE_LAYERS, CONE_CLEAR = 1.52, 8, 24, 0.99
+local POOL_RINGS, POOL_CLEAR, LIGHT_BACK = 10, 0.9, 1.8
+local POOL_SIDE = 1 -- which way a picture on a part's top runs along the part's depth (1 or -1); to be proven in Play
 local Cutscene = {}
 local active
 
@@ -93,10 +98,11 @@ task.spawn(function()
 	coneSource = cone
 end)
 
--- A spotlight for show in `world` (a small winner's own model), off: `height` is that winner's real height in studs.
-local function makeSpotlight(spot, height, world)
+-- A spotlight for show in `world` (the model of one winner's light), off. `height`: that winner's height in this
+-- model's studs; `desk`: their desk; `k`: how many of this model's studs one stud of the real room is.
+local function makeSpotlight(spot, height, world, desk, k)
 	local wide, tall = CONE_WIDE * height, CONE_TALL * height
-	local cones = {}
+	local cones, rings = {}, {}
 	for i = 1, coneSource and CONE_LAYERS or 0 do
 		local across = wide * (1 - (i - 1) / CONE_LAYERS)
 		local cone = coneSource:Clone()
@@ -104,13 +110,28 @@ local function makeSpotlight(spot, height, world)
 		cone.Parent = world
 		cones[i] = cone
 	end
-	local pool = Instance.new("Part")
-	pool.Name, pool.Shape, pool.Material, pool.Color = "Pool", Enum.PartType.Cylinder, Enum.Material.Neon, LAMP_COLOR
-	pool.Anchored, pool.CanCollide, pool.CanQuery, pool.CanTouch, pool.CastShadow, pool.Transparency = true, false, false, false, false, 1
-	pool.Size = Vector3.new(0.004 * height, wide, wide)
-	pool.CFrame = CFrame.new(spot + Vector3.yAxis * 0.002 * height) * CFrame.Angles(0, 0, math.rad(90)) -- lying flat on the desk top
-	pool.Parent = world
-	return { cones = cones, pool = pool }
+	local top = Instance.new("Part")
+	top.Name, top.Anchored, top.CanCollide, top.CanQuery, top.CanTouch, top.CastShadow, top.Transparency = "Pool", true, false, false, false, false, 1
+	top.Size = Vector3.new(desk.Size.X * k, 0.004 * height, desk.Size.Z * k)
+	local onDesk = desk.CFrame:PointToObjectSpace(spot) -- where the winner stands, from the desk's middle (real studs)
+	top.CFrame = CFrame.new(spot) * desk.CFrame.Rotation * CFrame.new(-onDesk.X * k, 0.002 * height, -onDesk.Z * k)
+	local sheet = Instance.new("SurfaceGui")
+	sheet.Face, sheet.LightInfluence, sheet.SizingMode = Enum.NormalId.Top, 0, Enum.SurfaceGuiSizingMode.FixedSize
+	sheet.CanvasSize = Vector2.new(desk.Size.X, desk.Size.Z) * 3 -- three dots a real stud
+	local middle = Vector2.new(desk.Size.X / 2 + onDesk.X, desk.Size.Z / 2 + onDesk.Z * POOL_SIDE) * 3
+	for i = 1, POOL_RINGS do
+		local across = wide / k * 3 * (1 - (i - 1) / POOL_RINGS)
+		local ring = Instance.new("Frame")
+		ring.AnchorPoint, ring.Position, ring.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(middle.X, middle.Y), UDim2.fromOffset(across, across)
+		ring.BorderSizePixel, ring.BackgroundColor3, ring.BackgroundTransparency = 0, LAMP_COLOR, 1
+		local round = Instance.new("UICorner")
+		round.CornerRadius, round.Parent = UDim.new(0.5, 0), ring
+		ring.Parent = sheet
+		rings[i] = ring
+	end
+	sheet.Parent = top
+	top.Parent = world
+	return { cones = cones, rings = rings }
 end
 -- `glow`: the winner's own light, 0 off to 1 on; `room`: how much of it shows (it goes as the room's lights come
 -- back); `seen`: how much of the winner shows (the light goes with them). Their black cover comes off as the light
@@ -119,7 +140,7 @@ local function shine(w, glow, room, seen)
 	local level = glow * math.min(room, seen)
 	if w.light.level ~= level then
 		w.light.level = level
-		w.light.pool.Transparency = 1 - (1 - POOL_CLEAR) * level
+		for _, ring in w.light.rings do ring.BackgroundTransparency = 1 - (1 - POOL_CLEAR) * level end
 		for _, cone in w.light.cones do cone.Transparency = 1 - (1 - CONE_CLEAR) * level end
 	end
 	w.cover.Enabled, w.cover.FillTransparency = glow < 1, 1 - seen * (1 - glow)
@@ -258,7 +279,7 @@ local function hideForShot(state, item)
 				for _, part in piece:GetDescendants() do if part:IsA("BasePart") then fadePart(state, part) end end
 			end
 		end
-	elseif item:IsA("BillboardGui") or (rule == "always" and (item:IsA("SurfaceGui") or item:IsA("Beam") or item:IsA("Trail") or item:IsA("ParticleEmitter"))) then
+	elseif item:IsA("BillboardGui") or (rule == "always" and (item:IsA("SurfaceGui") or item:IsA("Beam") or item:IsA("Trail") or item:IsA("ParticleEmitter") or item:IsA("Highlight"))) then
 		if item.Enabled then state.cleared[item] = true; item.Enabled = false end
 	end
 end
@@ -291,7 +312,9 @@ local function holdPlane(model, actorId, height, shrink)
 	source.Archivable = true
 	local plane = source:Clone()
 	for _, item in plane:GetDescendants() do
-		if item:IsA("LuaSourceContainer") or item:IsA("BillboardGui") or item:IsA("JointInstance") or item:IsA("WeldConstraint") then item:Destroy()
+		-- Highlight: the HUD's coloured outline round other planes came along with the copy and showed through the dark
+		-- (Alan in Play 2026-11-20).
+		if item:IsA("LuaSourceContainer") or item:IsA("BillboardGui") or item:IsA("JointInstance") or item:IsA("WeldConstraint") or item:IsA("Highlight") then item:Destroy()
 		elseif item:IsA("BasePart") then
 			item.Anchored, item.CanCollide, item.CanQuery, item.CanTouch, item.LocalTransparencyModifier = true, false, false, false, 0
 		end
@@ -578,8 +601,8 @@ function Cutscene.play(winners, onStage)
 			if entry and not state.winners[place] then
 				for _, source in room:GetChildren() do
 					if source:IsA("Model") and source:GetAttribute("PilotId") == entry.actorId then
-						-- The small winner's own model, moved as one: an anchor at the desk spot, the spotlight for show, and
-						-- `cast` (the avatar, books and plane: what the black cover covers).
+						-- The small winner's own model, moved as one: an anchor at the desk spot and `cast` (the avatar,
+						-- books and plane: what the black cover covers). Their spotlight is a model of its own, further away.
 						local world = Instance.new("Model")
 						local anchor = Instance.new("Part")
 						anchor.Name, anchor.Anchored, anchor.CanCollide, anchor.CanQuery, anchor.CanTouch, anchor.Transparency = "Anchor", true, false, false, false, 1
@@ -590,7 +613,11 @@ function Cutscene.play(winners, onStage)
 						world.Parent = state.set -- in the room before the avatar goes in: animations only load on an avatar that is in the game
 						local copy = copyWinner(source, place, back, entry.actorId, spots[place], cast)
 						if copy then
-							copy.world, copy.light = world, makeSpotlight(spots[place], height / copy.scale, world)
+							local glow, k = Instance.new("Model"), LIGHT_BACK / copy.scale
+							local base = anchor:Clone()
+							base.Parent = glow
+							glow.Name, glow.PrimaryPart, glow.Parent = "Winner" .. place .. "Light", base, state.set
+							copy.world, copy.glow, copy.light = world, glow, makeSpotlight(spots[place], height * k, glow, desk, k)
 							copy.cover = Instance.new("Highlight")
 							copy.cover.Name, copy.cover.FillColor, copy.cover.FillTransparency, copy.cover.OutlineTransparency = "Unlit", Color3.new(), 1, 1
 							copy.cover.DepthMode, copy.cover.Parent = Enum.HighlightDepthMode.Occluded, cast
@@ -708,6 +735,7 @@ function Cutscene.play(winners, onStage)
 			-- the desk spot that is one slide
 			w.shift = (shot.Position - w.spot) * (1 - 1 / w.scale)
 			w.world:PivotTo(CFrame.new(w.spot + w.shift))
+			w.glow:PivotTo(CFrame.new(w.spot + (shot.Position - w.spot) * (1 - LIGHT_BACK / w.scale)))
 			if w.seen ~= seen then
 				w.seen = seen
 				for _, piece in w.fading do piece.LocalTransparencyModifier = 1 - seen end
