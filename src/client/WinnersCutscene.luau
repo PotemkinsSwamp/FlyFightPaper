@@ -681,10 +681,11 @@ function Cutscene.play(winners, onStage)
 		state.curtain.Size, state.curtain.CFrame = Vector3.new(tall * aspect, tall, 0.05), shot * CFrame.new(0, 0, -away)
 		state.shade.BackgroundTransparency = 1 - (1 - CURTAIN_CLEAR) * (t < depart and ease((t - BANNER) / DIM) or up)
 		if t >= depart and t < arrive then standWinners() end
-		-- The small winners are put in front of the camera where they look like big ones on their desks; they fade in at
-		-- the end of the glide over and out on the way home (they stand in front of everything in the room, so they
-		-- must be gone before the camera turns away).
-		local seen = t < arrive and ease((t - depart - GLIDE * 0.6) / (GLIDE * 0.4)) or 1 - ease((t - leave) / (GLIDE * 0.4))
+		-- The small winners are put in front of the camera where they look like big ones on their desks; they appear
+		-- late in the glide over and fade out on the way home (they stand in front of everything in the room, so they
+		-- must be gone before the camera turns away). They appear all at once, as solid black shapes: faded in, their
+		-- black cover did not hold on half see-through parts and they showed lit for a moment (Alan in Play 2026-11-20).
+		local seen = t < arrive and (t - depart >= GLIDE * 0.6 and 1 or 0) or 1 - ease((t - leave) / (GLIDE * 0.4))
 		for place, w in state.winners do
 			local since = t - arrive - LIGHT_AT - (3 - place) * TURN
 			if since >= 0 and not w.lit then w.lit = true; w.emote:Play(0.3) end
