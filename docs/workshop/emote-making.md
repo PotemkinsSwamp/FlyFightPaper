@@ -644,7 +644,7 @@ the same bytes as what he saw in Play). `python tools/upload_texture.py FILE.rbx
   drafts are deleted from the open place, so Studio now plays the uploads. A changed cut needs a new upload (his
   go) and its new id in the config.
 - **Checked in Edit, numbers only:** all six load from Roblox with their files' key counts and lengths; Next One's
-  dry run on the uploaded clip gives the same numbers as on the draft. **Not yet seen in Play from the uploads.**
+  dry run on the uploaded clip gives the same numbers as on the draft. **Alan in Play from the uploads, 2026-11-21: "they play the same".**
 - **Still Studio only**, behind the Dev buttons: who gets which emote (one free, the rest sold) is not decided or
   built.
 
