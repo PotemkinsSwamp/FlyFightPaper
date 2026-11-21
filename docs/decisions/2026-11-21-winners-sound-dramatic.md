@@ -16,6 +16,9 @@
 - **One universal background, no song per emote for now**: "we can add the songs to emotes as something later if we
   decide to". The [winners' circle plan](../plan/WINNERS-CIRCLE-PLAN.md) lists a song in every emote's recipe; until
   he decides otherwise an emote brings sound effects only. Nothing is built ahead for a song of its own.
+- **The background is mock-serious** (a slow drum and low strings, paper planes treated like a grand ceremony; my
+  pick, his "I think I agree"), and **"maybe the background music just carries over"** into the results card: no
+  winners' song comes in there. The track itself is his pick by ear, not made yet.
 
 ## Why
 The approved emotes are attitude and rivalry in the dark under spotlights (a slow clap, a nap, the next plane, a
