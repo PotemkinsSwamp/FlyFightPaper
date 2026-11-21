@@ -1,7 +1,7 @@
 # The winners' moment sounds dramatic, with one background for every emote
 
 **Decided:** 2026-11-21 (Alan)
-**Status:** decided in words; nothing built or picked yet. What the background sounds like is still open.
+**Status:** the music is built (the crowd is out, the four songs are in), not yet heard by Alan in the scene; the spotlights' and emotes' own sounds are not picked or built.
 
 ## Decision
 - **The celebratory sounds go** (the crowd's cheering and clapping, the kids' "Yeah!", the winners' songs under the
@@ -16,9 +16,12 @@
 - **One universal background, no song per emote for now**: "we can add the songs to emotes as something later if we
   decide to". The [winners' circle plan](../plan/WINNERS-CIRCLE-PLAN.md) lists a song in every emote's recipe; until
   he decides otherwise an emote brings sound effects only. Nothing is built ahead for a song of its own.
-- **The background is mock-serious** (a slow drum and low strings, paper planes treated like a grand ceremony; my
-  pick, his "I think I agree"), and **"maybe the background music just carries over"** into the results card: no
-  winners' song comes in there. The track itself is his pick by ear, not made yet.
+- **The music is upbeat techno or pop** ("high upbeat, shattering and clattering"), after three misses of mine: drum
+  marches ("no dramatic melody, purely rhythm"), classical ("too slow pace") and trailer cuts. His picks by ear, all
+  four used, a random one each round: Depth Charge 30, Anthemic Step Music, How Hyped How Hot (a) (30) and
+  Relentless (b) 30 (ids in `src/client/WinnersSound.luau`).
+- **The music only arrives once all three spotlights are on**: "it needs to be almost silent for dramatic effect".
+  It carries on through the results card ("maybe the background music just carries over").
 
 ## Why
 The approved emotes are attitude and rivalry in the dark under spotlights (a slow clap, a nap, the next plane, a

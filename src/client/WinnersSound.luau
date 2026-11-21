@@ -1,16 +1,16 @@
--- The winners' moment's sound (Alan 2026-10-23): everything builds to 1st's spotlight. The room is quiet in the dark; the
--- crowd cheers and claps a little as 3rd's and 2nd's lights come on, then 1st's, the kids yell "Yeah!", the cheering peaks and the winners' track
--- kicks in under the dancing; it steps down for the results card and is gone before the vote lap. Times are seconds
--- from "Pencils down!" and match WinnersCutscene's own (banner 0.5, lights out 1.5, glide 2.0, then the spotlights:
--- 3rd 4.6, 2nd 5.6, 1st 6.6; card 17-27).
+-- The winners' moment's sound (Alan 2026-11-21, docs/decisions/2026-11-21-winners-sound-dramatic.md): dramatic, not a
+-- party. The room is nearly silent in the dark and while the three spotlights come on; the music only arrives once
+-- all three are on, plays under the emotes, steps down for the results card and is gone before the vote lap. Times
+-- are seconds from "Pencils down!" and match WinnersCutscene's own (banner 0.5, lights out 1.5, glide 2.0, then the
+-- spotlights: 3rd 4.6, 2nd 5.6, 1st 6.6; card 17-27).
 -- Uses Roblox's newer audio objects (AudioPlayer wired to the speakers): they also play in Studio's Edit mode, so
 -- the same mix can be heard there (`WinnersSound.play(id)` from the command bar).
 local RunService = game:GetService("RunService")
 local SoundService = game:GetService("SoundService")
 
 local WinnersSound = {}
--- The winners' songs (all APM, licensed for Roblox games). Alan 2026-10-23: use all three, a random one each round.
-WinnersSound.TRACKS = { parade = 1838686578, carnival = 9041955420, show = 1835278359 } -- Parade March (30s), Nawlins Carnival Kids (a) (30), On With The Show 30C
+-- The winners' songs (all APM, licensed for Roblox games). Alan's picks by ear 2026-11-21: all four, a random one each round.
+WinnersSound.TRACKS = { depth = 1836652816, step = 1836098839, hyped = 1838051027, relent = 9043799922 } -- Depth Charge 30, Anthemic Step Music, How Hyped How Hot (a) (30), Relentless (b) 30
 local lastSong
 -- A random song, never the same one twice in a row.
 function WinnersSound.pick()
@@ -21,18 +21,14 @@ function WinnersSound.pick()
 	lastSong = songs[math.random(#songs)]
 	return lastSong
 end
-local CHEER, CLAP, YEAH = 9120973900, 9113138035, 1841221347 -- PSE crowd cheers and whistles, PSE small-room applause, APM kids "Yeah!"
 local FIRST_LIGHT = 6.6
+local MUSIC_AFTER = 0.5 -- the last spotlight's click lands in the quiet, then the music
 
 -- Each cue: a sound, then its volume at points in time (straight lines between them). It starts at the first point
 -- and stops at the last.
 local function cues(track)
-	local L = FIRST_LIGHT
 	return {
-		{ CHEER, { 4.6, 0 }, { 5.6, 0.2 }, { L, 0.3 }, { L + 0.3, 0.6 }, { L + 2, 0.4 }, { 13, 0 } },
-		{ CLAP, { 4.6, 0.12 }, { 5.6, 0.2 }, { L, 0.25 }, { L + 0.3, 0.45 }, { L + 2, 0.3 }, { 13, 0 } },
-		{ YEAH, { L, 0.5 }, { L + 3, 0.5 } },
-		{ track, { L, 0.5 }, { 17, 0.5 }, { 18, 0.35 }, { 23.5, 0.35 }, { 26, 0 } },
+		{ track, { FIRST_LIGHT + MUSIC_AFTER, 0.5 }, { 17, 0.5 }, { 18, 0.35 }, { 23.5, 0.35 }, { 26, 0 } },
 	}
 end
 

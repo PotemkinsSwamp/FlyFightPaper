@@ -295,8 +295,8 @@ function HUD.start(getPlane, action)
 	-- Dev panel: in Studio, and on the owner's own account in live servers (Alan 2026-10-29; the server checks).
 	-- Test buttons (Alan 2026-10-17, 2026-10-23): end this round now to see the round end, with each finalist winners'
 	-- song (WinnersSound.TRACKS) to compare them in the real moment.
-	for index, song in ipairs({ "parade", "carnival", "show" }) do
-		local endMatch=eraserBots:Clone();endMatch.Name="EndMatch"..index;endMatch.Text="end: "..song;endMatch.Position=UDim2.fromOffset(330+index*110,-40)
+	for index, song in ipairs({ "depth", "step", "hyped", "relent" }) do -- the fourth sits over the third (the row is full)
+		local endMatch=eraserBots:Clone();endMatch.Name="EndMatch"..index;endMatch.Text="end: "..song;endMatch.Position=UDim2.fromOffset(330+math.min(index,3)*110,index>3 and -80 or -40)
 		endMatch.BackgroundColor3=Color3.fromRGB(150,40,40);endMatch.Parent=picker
 		endMatch.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",nil);Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
 	end
