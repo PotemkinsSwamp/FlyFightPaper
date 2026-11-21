@@ -44,3 +44,6 @@ to the left; in the ending the plane points sideways, not up.
 | "when they put their arm up ... they're not extending their arm up enough. It doesn't look like a victory like thing. It looks like they're just holding the paper airplane. Their arm is not extended high enough." | Cause found in the cut, not in Play: the arm-bending step never let an arm past 0.95 of its length, which leaves the elbow bent 36 degrees, and my wide V held the ending 40 degrees out to the side. Fourth version: a raised arm is really straight; the ending closes to the video's high arm (about 18 degrees off straight up) after a short pull-in and a push straight up, so the plane ends nose up. Measured only (hand 1.0 studs over the head's middle on the test body, was 0.7); **not seen in Play by anyone**. |
 
 Back to [HOME](../HOME.md).
+
+## Fourth look: on his own avatar the plane cannot be seen (same day)
+Alan, as 1st on his own avatar (a stout little dog in a superhero costume): "you couldn't see the paper airplane because the model was too wide ... you could barely see any of the emote because the arm is so small ... I'm worried about character models and how this can work". He gave no verdict on the raised arm or the ending on a normal body. Cause and what changed: [a held plane is always seen](../decisions/2026-11-21-plane-always-seen.md).

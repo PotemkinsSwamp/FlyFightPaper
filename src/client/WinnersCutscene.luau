@@ -320,13 +320,49 @@ local function holdPlane(model, actorId, height, shrink)
 	plane:ScaleTo(plane:GetScale() * height * PLANE_LENGTH / shrink / plane:GetExtentsSize().Z)
 	plane.Name = "WinnerPlane"
 	local box, size = plane:GetBoundingBox()
+	-- What the plane must never sit over (see flyPlane): the body but the arm that holds it, and what is worn on the
+	-- head. Layered clothing is left out: it hugs the body, and its part's size is the unfitted garment's.
+	local blockers, head = {}, model:FindFirstChild("Head")
+	for _, part in model:GetChildren() do
+		if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" and part.Name ~= "RightHand" and not part.Name:match("^Right.*Arm$") then
+			table.insert(blockers, part)
+		elseif part:IsA("Accessory") and head then
+			local handle = part:FindFirstChild("Handle")
+			local at = handle and handle:FindFirstChildWhichIsA("Attachment")
+			if at and head:FindFirstChild(at.Name) and not handle:FindFirstChildWhichIsA("WrapLayer") then table.insert(blockers, handle) end
+		end
+	end
 	return { plane = plane, hand = hand, grip = hand:FindFirstChild("RightGripAttachment"), length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X * shrink,
+		blockers = blockers, push = Vector3.zero,
 		-- from its middle down to its underside (see flickPlane)
 		belly = math.min(0.6 * shrink * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), 0.05 * height * PLANE_LENGTH),
 		-- until the hand moves: side on to the room, nose out to the winner's right and a little up (pointing at the camera it was a sliver)
 		heading = (model:GetPivot().RightVector * 0.8 + model:GetPivot().LookVector * 0.5 + Vector3.yAxis * 0.2).Unit }
 end
-local function flyPlane(w)
+-- The plane is always seen, and in the hand when the hand can get it clear of the body (Alan 2026-11-21: on his own
+-- avatar, a stout little dog whose arm is a third of a plain kid's, the plane stayed inside the head and costume).
+-- Seen from the camera, each body part and head accessory is an oval, PLANE_CLEAR of the plane's length bigger all
+-- round; a plane whose middle is over one is slid out to its edge, so on a short-armed body it glides just beyond
+-- the hand. Where the hand already holds it clear, nothing moves.
+local PLANE_CLEAR, PLANE_SLIDE = 0.3, 0.2 -- PLANE_SLIDE: the share of the way to its new place it goes each frame
+local function clearOfBody(prop, grip, shot)
+	local view, right, upward, look = shot.Position, shot.RightVector, shot.UpVector, shot.LookVector
+	local deep, margin, push = (grip - view):Dot(look), prop.length * PLANE_CLEAR, Vector3.zero
+	for _ = 1, 3 do -- out of one oval can be into its neighbour
+		for _, part in prop.blockers do
+			local c, half = part.CFrame, part.Size / 2
+			local near = (c.Position - view):Dot(look) / deep -- the plane's middle as seen at the part's own distance
+			local d = view + (grip + push - view) * near - c.Position
+			local dx, dy = d:Dot(right), d:Dot(upward)
+			local function reach(axis) return math.abs(c.RightVector:Dot(axis)) * half.X + math.abs(c.UpVector:Dot(axis)) * half.Y + math.abs(c.LookVector:Dot(axis)) * half.Z + margin end
+			local inside = (dx / reach(right)) ^ 2 + (dy / reach(upward)) ^ 2
+			if inside < 1e-4 then dy, inside = reach(upward) * 0.01, 1e-4 end -- dead centre: upwards
+			if inside < 1 then push += (right * dx + upward * dy) * (1 / math.sqrt(inside) - 1) / near end
+		end
+	end
+	return push
+end
+local function flyPlane(w, shot)
 	local prop = w.prop
 	local at = prop.hand.Position
 	local here = at - w.shift -- without the slide that keeps the small winner in front of the camera: only the hand's own movement turns the nose
@@ -334,6 +370,8 @@ local function flyPlane(w)
 	prop.last = here
 	if moved.Magnitude > prop.length * 0.002 then prop.heading = prop.heading:Lerp(moved.Unit, PLANE_TURN).Unit end
 	local grip = at + prop.heading * prop.length * 0.3 -- held by the tail
+	prop.push = prop.push:Lerp(clearOfBody(prop, grip, shot), PLANE_SLIDE)
+	grip += prop.push
 	local up = math.abs(prop.heading.Y) > 0.97 and w.desk.LookVector or Vector3.yAxis
 	prop.plane:PivotTo(CFrame.lookAt(grip, grip + prop.heading, up))
 end
@@ -1257,7 +1295,7 @@ function Cutscene.play(winners, onStage)
 			if w.flick then
 				flickPlane(w, since, shot, steady, height)
 				flickSounds(w, since)
-			elseif w.prop then flyPlane(w) end
+			elseif w.prop then flyPlane(w, shot) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end

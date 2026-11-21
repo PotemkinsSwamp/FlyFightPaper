@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-21: [A held plane is always seen, on every body](2026-11-21-plane-always-seen.md)
 - 2026-11-21: [Toy Pilot: the plan, and three tries at its body move](2026-11-21-toy-pilot-plan.md)
 - 2026-11-21: [The winners' moment sounds dramatic, with one background for every emote](2026-11-21-winners-sound-dramatic.md)
 - 2026-11-20: [The first three runner-up emotes: Good Game, Nap, Next One](2026-11-20-runner-up-emotes.md)
