@@ -323,7 +323,8 @@ local function holdPlane(model, actorId, height, shrink)
 	return { plane = plane, hand = hand, grip = hand:FindFirstChild("RightGripAttachment"), length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X * shrink,
 		-- from its middle down to its underside (see flickPlane)
 		belly = math.min(0.6 * shrink * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), 0.05 * height * PLANE_LENGTH),
-		heading = model:GetPivot().LookVector }
+		-- until the hand moves: side on to the room, nose out to the winner's right and a little up (pointing at the camera it was a sliver)
+		heading = (model:GetPivot().RightVector * 0.8 + model:GetPivot().LookVector * 0.5 + Vector3.yAxis * 0.2).Unit }
 end
 local function flyPlane(w)
 	local prop = w.prop
@@ -981,11 +982,14 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	else
 		local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
 		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action
+		-- A plane emote's first pose is held from the dark on (Alan 2026-11-21: starting at the light, the arm snapped up
+		-- from the side in a fifth of a second, "extremely rushed"); the light only sets it going.
+		if prop and not flick then emote:Play(0, 1, 0) end
 	end
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, held = prop and not flick, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -1236,7 +1240,10 @@ function Cutscene.play(winners, onStage)
 		local seen = t < leave and 1 or 1 - ease((t - leave) / (GLIDE * 0.4))
 		for place, w in state.winners do
 			local since = t - arrive - LIGHT_AT - (3 - place) * TURN
-			if since >= 0 and not w.lit then w.lit = true; w.emote:Play(0.3) end
+			if since >= 0 and not w.lit then
+				w.lit = true
+				if w.held then w.emote:AdjustSpeed(1) else w.emote:Play(0.3) end
+			end
 			shine(w, math.clamp(since / CLICK, 0, 1), up, seen)
 			-- every point of the big winner, moved towards the camera by their scale: for the small winner standing at
 			-- the desk spot that is one slide

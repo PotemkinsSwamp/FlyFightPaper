@@ -357,27 +357,31 @@ end }
 -- Toy Pilot, the free 1st-place emote: the kid is lost in playing with their plane, then proud. Posed by numbers
 -- from a reference video Alan made with Gemini from our prompt and called "perfect" (2026-11-21; a first cut from
 -- generated clips he rejected: the hand ended up in the face). One clip, played once, in the video's own seconds:
--- 0 to 2 the plane held out in front at arm's length and looked at; 2 to 7 flown by hand: up, out wide and low to the
--- kid's right with the whole trunk leaning after it, back up over the top and across to the left, back again; from
--- 7.5 pushed straight up and held, left fist on the hip, a small sway.
--- TOY: the video traced every TOY_STEP seconds (docs/workshop/emote-making.md): { right, up, lean, shift, left }:
--- the right hand from the right shoulder in arm lengths (to the kid's right, up; what is missing of one arm length
--- is forwards: the arm stays long), the trunk's lean in degrees (to the kid's right), the hips' shift in body
--- heights (to the kid's right), the left arm's angle out from hanging in degrees. A smooth line runs through the rows.
--- The stance, the feet and the fist on the hip are a generated clip's standing pose (P.fly at P.held: feet apart,
--- left hand on the hip): both ankles stay exactly there on every frame, the legs bent to reach them.
--- Never in the face (a blocky avatar cannot reach over its own head, and Alan's first look): the arm never points
--- further across than TOY_CLEAR arm lengths past straight up along the trunk; what the video goes further (it
--- folds the arm over the head) the trunk leans after it instead, TOY_FOLLOW of the angle and TOY_FOLLOW_MOST degrees
--- at most, with the arm stretching up beside the head as it does (none of its length forwards). A raised arm is
--- beside the head too: from TOY_HIGH arm lengths up, over TOY_HIGH_BY, what is missing stops going forwards (in
--- the video a raised arm that looks short is bent, not pointing at the camera). The trunk's lean is shared TOY_HIPS to the hips, the rest to the
--- waist; the chest turns TOY_TWIST degrees towards the plane at a full arm's length to the side; the head goes
--- TOY_LOOK of the way from straight ahead to looking at the hand; the left arm takes TOY_HIP_IN seconds from
--- TOY_HIP_AT to settle on the hip; held, the trunk sways TOY_SWAY degrees every TOY_SWAY_EVERY seconds.
--- The plane is the scene's own (WinnersCutscene: in the hand, its nose turning the way the hand moves).
+-- 0 to 2 the plane held up beside the head and looked at; 2 to 7 flown by hand: up, out wide and low to the kid's
+-- right with the whole trunk leaning after it, back up, the trunk leaning left under it, back again; from 7.5
+-- pushed up and held, left fist on the hip, a small sway.
+-- TOY: the video traced every TOY_STEP seconds by tools/emote_trace.py: { right, up, lean, shift, left }: the right
+-- hand from the right shoulder in arm lengths (to the kid's right, up), the trunk's lean in degrees (to the kid's
+-- right), the hips' shift in body heights (to the kid's right), the left arm's angle out from hanging in degrees.
+-- A smooth line runs through the rows. The stance and the planted feet are a generated clip's standing pose
+-- (P.fly at P.held: feet apart): both ankles stay exactly there on every frame, the legs bent to reach them.
+-- Made for Roblox bodies, not the video's (Alan's two looks in Play and a recording laid beside the video,
+-- 2026-11-21: short arms and a big head put the hand and the plane in the face and on top of the head wherever
+-- the video's long arm is merely near the head). In the trunk's own frame (`side` out from it, `along` up it):
+-- the hand is never further in than TOY_OUT_LOW arm lengths out to the side, and a raised one (from TOY_HIGH arm
+-- lengths up, over TOY_HIGH_BY) TOY_OUT_HIGH: a wide V, at its full length. Where the video takes the plane across
+-- over the head (a folded arm no blocky avatar has) the trunk leans after it instead: TOY_FOLLOW degrees for
+-- every arm length the video's hand is past TOY_CLEAR, TOY_FOLLOW_MOST at most. What is missing of one arm length
+-- goes TOY_FORWARD of the way forwards and the rest into the elbow (all forwards pointed the arm at the camera,
+-- over the face). The trunk's lean is shared TOY_HIPS to the hips, the rest to the waist; the chest turns
+-- TOY_TWIST degrees towards the plane at a full arm's length to the side; the head goes TOY_LOOK of the way from
+-- straight ahead to looking at the hand; from TOY_HIP_AT, over TOY_HIP_IN, the left fist goes to the side of the
+-- hips, the elbow straight out; held (from TOY_HELD), the trunk sways TOY_SWAY degrees every TOY_SWAY_EVERY seconds.
+-- The plane is the scene's own (WinnersCutscene: in the hand, its nose turning the way the hand moves); the scene
+-- holds this clip's first pose in the dark, so nothing snaps into place at the light.
 local P = { fly = "rbxassetid://93519745518213", held = 5.5 }
-local TOY_STEP, TOY_LENGTH, TOY_CLEAR, TOY_FOLLOW, TOY_FOLLOW_MOST, TOY_HIGH, TOY_HIGH_BY = 0.2, 13, 0.2, 0.4, 12, 0.3, 0.5
+local TOY_STEP, TOY_LENGTH, TOY_OUT_LOW, TOY_OUT_HIGH, TOY_HIGH, TOY_HIGH_BY = 0.2, 13, 0.45, 0.64, 0.3, 0.4
+local TOY_CLEAR, TOY_FOLLOW, TOY_FOLLOW_MOST, TOY_FORWARD = 0.1, 20, 12, 0.6
 local TOY_HIPS, TOY_TWIST, TOY_LOOK, TOY_HIP_AT, TOY_HIP_IN, TOY_HELD, TOY_SWAY, TOY_SWAY_EVERY = 0.3, 15, 0.5, 6.8, 0.6, 8, 1.5, 3
 local TOY = {
 	{ 0.38, 0.13, 0, -0.000, 18 }, { 0.38, 0.13, 0, -0.000, 18 }, { 0.34, 0.09, -0, 0.000, 17 }, { 0.39, 0.13, -0, 0.000, 17 }, { 0.42, 0.14, -1, -0.000, 17 }, { 0.45, 0.14, -1, -0.000, 17 },
@@ -419,32 +423,31 @@ CUTS.ToyPilot = { length = TOY_LENGTH, once = true, clips = { fly = P.fly }, pos
 	local body = standing(c)
 	local right, up, lean, shift, left = table.unpack(traced(t))
 	lean += TOY_SWAY * math.sin(math.max(t - TOY_HELD, 0) / TOY_SWAY_EVERY * 2 * math.pi)
-	-- the hand along the trunk and out from it; never across the head
+	-- the hand out from the trunk and up along it; kept wide of the head
 	local a = math.rad(lean)
 	local side, along = right * math.cos(a) - up * math.sin(a), right * math.sin(a) + up * math.cos(a)
-	if along > 0 and side < TOY_CLEAR then
-		local past = math.deg(math.atan2(TOY_CLEAR - side, along))
-		local far = math.sqrt(right * right + up * up)
-		far += (1 - far) * math.clamp(past / 15, 0, 1) -- and flat beside the head, not in front of it
-		lean -= math.min(past * TOY_FOLLOW, TOY_FOLLOW_MOST)
-		a = math.rad(lean)
-		side, along = TOY_CLEAR, math.sqrt(math.max(far * far - TOY_CLEAR * TOY_CLEAR, 0))
-		right, up = side * math.cos(a) + along * math.sin(a), along * math.cos(a) - side * math.sin(a)
-	end
+	lean -= math.min(math.max(TOY_CLEAR - side, 0) * TOY_FOLLOW, TOY_FOLLOW_MOST)
+	a = math.rad(lean)
+	local raised = eased((along - TOY_HIGH) / TOY_HIGH_BY)
+	side = math.max(side, TOY_OUT_LOW + (TOY_OUT_HIGH - TOY_OUT_LOW) * raised)
+	along += (math.sqrt(math.max(1 - side * side, 0)) - along) * raised
+	right, up = side * math.cos(a) + along * math.sin(a), along * math.cos(a) - side * math.sin(a)
 	local flat = math.sqrt(right * right + up * up)
-	local long = math.min(flat + (1 - flat) * eased((up - TOY_HIGH) / TOY_HIGH_BY), 1)
-	right, up, flat = right * long / flat, up * long / flat, long
+	if flat > 1 then right, up, flat = right / flat, up / flat, 1 end
 	local turn = table.clone(body.base)
 	turn.LowerTorso = CFrame.new(shift * HEIGHT, 0, 0) * turn.LowerTorso * CFrame.Angles(0, 0, -a * TOY_HIPS)
 	turn.UpperTorso *= CFrame.Angles(0, -math.rad(TOY_TWIST) * right, -a * (1 - TOY_HIPS))
 	local at = build(turn)
 	local shoulder = (at.UpperTorso * joints.RightUpperArm.c0).Position
-	reach(turn, "Right", shoulder + Vector3.new(right, up, -math.sqrt(1 - flat * flat)) * body.arm, shoulder + Vector3.new(0.5, -0.5, 0.3) * body.arm)
+	reach(turn, "Right", shoulder + Vector3.new(right, up, -TOY_FORWARD * math.sqrt(1 - flat * flat)) * body.arm, shoulder + Vector3.new(0.5, -0.5, 0.3) * body.arm)
+	-- the left arm: out to the side, then the fist against the side of the hips with the elbow straight out
 	local out = math.rad(left)
 	shoulder = (at.UpperTorso * joints.LeftUpperArm.c0).Position
-	reach(turn, "Left", shoulder + Vector3.new(-math.sin(out), -math.cos(out), -0.15) * body.arm, shoulder + Vector3.new(-0.3, -0.2, 0.6) * body.arm)
+	local hips, hand = first.LowerTorso.Size, first.LeftHand.Size
+	local floating = shoulder + Vector3.new(-math.sin(out), -math.cos(out), -0.15) * body.arm
 	local onHip = eased((t - TOY_HIP_AT) / TOY_HIP_IN)
-	for _, part in { "LeftUpperArm", "LeftLowerArm", "LeftHand" } do turn[part] = turn[part]:Lerp(body.base[part], onHip) end
+	reach(turn, "Left", floating:Lerp(at.LowerTorso * Vector3.new(-hips.X / 2 - hand.X * 0.3, hips.Y * 0.4, -hips.Z * 0.2), onHip),
+		shoulder + Vector3.new(-0.3, -0.2, 0.6):Lerp(Vector3.new(-1, -0.45, 0.15), onHip) * body.arm)
 	at = build(turn)
 	local neck = at.UpperTorso * joints.Head.c0
 	local to = (at.RightHand.Position - at.Head.Position).Unit
