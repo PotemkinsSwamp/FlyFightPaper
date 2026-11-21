@@ -674,7 +674,12 @@ questions, so my picks stand until he says otherwise: the feeling, the quiet sta
 - **The cut, ruled by Alan ("go with option 1"):** C's admiring stretched to 4 s, B's swoop over, B's
   swoop played backwards as the way back (in place of the dive), B's raise and hold. Built: below.
 
-## Toy Pilot: the cut (2026-11-21; built, measured, not yet seen by anyone)
+## Toy Pilot: the cut (2026-11-21; built and measured; **rejected by Alan in Play**)
+**Alan: "it doesn't work at all for the models ... bringing their hand into like their face ... very awkward"**
+([playtest](../playtests/2026-11-21-toy-pilot-first-cut.md)). Both chosen parts hold the hand at the head; the next cut
+starts from a reference video he makes (arm out wide, the plane never near the face). Lesson: a hand within a
+head's width of the face on the test body is in the face on real avatars; judge that on real bodies, not by numbers.
+
 `CUTS.ToyPilot` in `tools/emote_clips.lua`, baked to `assets/animations/emotes/toy-pilot.rbxm` and into the open
 place's `Assets` as the draft `ToyPilotClip` (unsaved: after a close without a save, bake it again as for Next One,
 `--bake=ToyPilot:ToyPilotClip:assets/animations/emotes/toy-pilot.rbxm`). One clip, 13 s, played once; the camera
