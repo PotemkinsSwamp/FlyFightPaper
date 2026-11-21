@@ -39,14 +39,10 @@ local definitions={
  -- The Aiming lesson's slow motion going on and off: the eraser's whoosh, low and slow, then high and quick.
  slowDown={9125648149,.45,.45,1.6},speedUp={9125648149,1.4,.45,.8},
  -- Camera Flick (WinnersCutscene; Alan 2026-11-21: "a smack on the camera lens and then ... a camera hitting the
- -- ground"): the throw is the shots' own zip-by. The smack and the fall have three candidates each for his ear
- -- (Studio's "flick sfx" button steps through them; the ones not picked go). All Pro Sound Effects: smacks "Hand Slap
- -- Claps 3", "Fly Swatter 7" (slapped to wood), "Cell Phone Impacts On Nightstand Smacking Down"; falls "Briefcase
- -- Falls 1", "Plastic Impacts 5" (a big plastic figure falling), "Plastic Cooler 6" (hits and drops).
+ -- ground"): the throw is the shots' own zip-by; the smack is Pro Sound Effects "Hand Slap Claps 3" and the fall
+ -- "Briefcase Falls 1" (his pick of three each, by ear in Play: "SFX 1 was good").
  -- Loud on purpose: they must stand over the winners' music (Alan 2026-11-21).
- flickThrow={9120989898,1.2,1,.5},
- flickSmack1={9114771792,1,2,1},flickSmack2={9114509095,1,2,1.3},flickSmack3={9125429161,1,2,1.1},
- flickFall1={9113589156,1,1.6,2.3},flickFall2={9117556077,1,1.6,2.2},flickFall3={9117451558,1,1.6,2},
+ flickThrow={9120989898,1.2,1,.5},flickSmack={9114771792,1,2,1},flickFall={9113589156,1,1.6,2.3},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
 -- the rest sit straight in SoundService, heard the same anywhere. (Until 2026-10-18 those sat in an attachment

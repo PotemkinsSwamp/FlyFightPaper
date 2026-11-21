@@ -387,7 +387,7 @@ local function flickSounds(w, t)
 	for index, cue in FLICK_SOUNDS do
 		if (w.heard or 0) < index and t >= w.flick.release + cue[2] then
 			w.heard = index
-			Audio.play(cue[1] .. (index > 1 and (Root:GetAttribute("DevFlickSfx") or 1) or "")) -- (the dev panel's pick of three)
+			Audio.play(cue[1])
 		end
 	end
 end
