@@ -76,8 +76,10 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
    Root:SetAttribute("DevMode",value=="NEXTSPOT" and "CONTROL" or value)
    if not spotOnly and (self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN") then self.engine:_close(self.engine:_clock(),"dev_mode") end
   elseif action=="endMatch" and player:GetAttribute("Dev")==true then
-   -- Dev test button: end the running round now; the next mode is left as it was.
-   if self.engine.phase=="ACTIVE" or self.engine.phase=="COUNTDOWN" then self.engine:_close(self.engine:_clock(),"dev_end") end
+   -- Dev test button: end the running round now; the next mode is left as it was. Between rounds (Alan 2026-11-21: no
+   -- waiting for the next one to start) `step` skips what is left of the break and ends the next round as it starts.
+   if self.engine.phase=="ACTIVE" then self.engine:_close(self.engine:_clock(),"dev_end")
+   elseif self.engine.round and self.engine.phase~="ENDING" and next(self.joined) then self.devEnd=true end
   elseif action=="practice" then self:practice(player,value)
   elseif action=="lesson" then self:lesson(player,value)
   elseif action=="range" and type(value)=="string" then self:rangeAction(player,value)
@@ -670,6 +672,11 @@ function Runtime:step(dt)
      end
     end
    end
+  end
+  if self.devEnd then -- a dev "end:" button pressed between rounds: one phase of the break a step, then the new round ends
+   local phase=self.engine.phase
+   if phase=="RESULTS" or phase=="VOTE" or phase=="COUNTDOWN" then self.engine.phaseEndsAt=self.engine.now
+   elseif phase=="ACTIVE" then self.devEnd=nil;self.engine:_close(self.engine:_clock(),"dev_end") end
   end
   self.engine:tick();self:earnings()
   if self.engine.phase=="ENDING" then self:finish() end
