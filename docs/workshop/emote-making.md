@@ -672,45 +672,59 @@ questions, so my picks stand until he says otherwise: the feeling, the quiet sta
 - **No try has a dive.** "Dives the hand down in front and pulls it back up" came back as nothing (A) or a bowed
   head with the hand at the side (B). The generator again gives postures and big arm arcs, not a path for the hand.
 - **The cut, ruled by Alan ("go with option 1"):** C's admiring stretched to 4 s, B's swoop over, B's
-  swoop played backwards as the way back (in place of the dive), B's raise and hold. Built: below.
+  swoop played backwards as the way back (in place of the dive), B's raise and hold. Built and rejected: below.
 
-## Toy Pilot: the cut (2026-11-21; built and measured; **rejected by Alan in Play**)
-**Alan: "it doesn't work at all for the models ... bringing their hand into like their face ... very awkward"**
-([playtest](../playtests/2026-11-21-toy-pilot-first-cut.md)). Both chosen parts hold the hand at the head; the next cut
-starts from a reference video he makes (arm out wide, the plane never near the face). Lesson: a hand within a
-head's width of the face on the test body is in the face on real avatars; judge that on real bodies, not by numbers.
+## Toy Pilot: the cut from a reference video (2026-11-21; built and measured, not yet seen)
+**The first cut, from the generated clips B and C, Alan rejected in Play**: "it doesn't work at all for the models
+... bringing their hand into like their face ... very awkward" ([playtest](../playtests/2026-11-21-toy-pilot-first-cut.md)).
+Both chosen parts held the hand at the head (C's admiring under a bowed head; B's swoop, which measured every
+0.05 s never crosses to the left but comes down in front of the face). Lessons: measure a hand path at 20 samples a
+second before describing it; a hand within a head's width of the face on the test body is in the face on real
+avatars; and do not build a body move blind.
 
-`CUTS.ToyPilot` in `tools/emote_clips.lua`, baked to `assets/animations/emotes/toy-pilot.rbxm` and into the open
-place's `Assets` as the draft `ToyPilotClip` (unsaved: after a close without a save, bake it again as for Next One,
-`--bake=ToyPilot:ToyPilotClip:assets/animations/emotes/toy-pilot.rbxm`). One clip, 13 s, played once; the camera
-leaves 10.4 s after 1st's light.
+**Reference videos come from Gemini (Alan, 2026-11-21: "from this point on").** Claude writes the prompt, Alan runs
+it and attaches the MP4. The prompt that gave a usable video first time: one continuous 10 s shot, fixed camera
+straight on, the whole figure with space overhead, plain light grey room, a simple grey mannequin, feet on one
+spot, one hard rule for the hands, then what happens second by second. His verdict on the result: "this should
+actually be perfect".
 
-| Seconds after 1st's light | What the kid does | From |
-|---|---|---|
-| 0 to 4 | Looks down (head bowed 45 degrees) at the right hand held at chest height in front; from 3.5 the head comes up and the hand goes out | C's 0 to 2 s at half speed |
-| 4 to 4.5 | Wind-up: the hand drops low at the right | a join |
-| 4.5 to 6 | The swoop: the hand climbs out wide on the right, over the top (a fifth of the body's height above the head), down in front of the face; the chest turns 30 degrees with it, the knees bend | B's 0.3 to 1.1 s |
-| 6 to 7.5 | The same swoop backwards | B's 1.1 to 0.3 s |
-| 7.5 to 8.5 | The arm thrusts up (half the body's height in half a second: the clip's own speed), the legs straighten | B's 4 to 5 s |
-| 8.5 on | Held: the hand a little above the head, forward and to the right; left hand on the hip; the chest sways 2 degrees every 3 s | B's 5.5 s |
+**From video to cut** (`CUTS.ToyPilot` in `tools/emote_clips.lua`; baked to `assets/animations/emotes/toy-pilot.rbxm`
+and into the open place's `Assets` as the draft `ToyPilotClip`, unsaved: bake again after a close without a save,
+`--bake=ToyPilot:ToyPilotClip:assets/animations/emotes/toy-pilot.rbxm`):
+1. `python tools/emote_trace.py VIDEO.mp4 --check=DIR` finds, in every frame, the head, the hips, the right hand
+   and the left arm's end, and prints a row of numbers every 0.2 s: the right hand from its shoulder in arm
+   lengths, the trunk's lean, the hips' shift, the left arm's angle. Look at the six check pictures first.
+2. The cut poses the test kid from those rows with a smooth line through them, in the video's own seconds: both
+   arms bent to their targets (`reach`), the trunk leaned, the head turned half-way to the hand. What is missing of
+   one arm's length goes forwards (the arm stays long), except for a raised arm, which stays beside the head.
+3. The stance, the planted feet and the fist on the hip are generated clip B's standing pose (its 5.5 s).
+4. **Never across the head.** The video folds the arm over the head on the way to the left; a blocky avatar cannot
+   (its arm would go through its head). So the arm never points further across than a fifth of an arm's length
+   past straight up along the trunk, and the trunk leans after the plane instead (12 degrees more at most).
 
-- **The swoop is not what the first measuring said.** Measured every 0.05 s, B's hand never crosses to the left: it
-  goes up on the right, over the top and down in front of the face (its furthest across, at 1.1 s), then drops back
-  to the right. So the swoop's second half is a dive of sorts. The cut turns round at 1.1 s, the widest point (my
-  pick; the first numbers said 1.3 s). Lesson: measure a hand path at 20 samples a second before describing it.
-- **The there-and-back is slow at each end** (the clip's seconds follow a sine squared: at most 0.84 of the clip's
-  own speed), so the turn-round in front of the face has no jerk.
-- **The feet are planted** (handoff note: B's hips wandered 0.47, C's foot 0.88): both ankles stay where they are in
-  the held ending, the feet flat as there, the legs bent to reach (`reach` now does legs too). Measured over all 391
-  frames on the 5-stud body: feet move at most 0.06 studs and turn 0 degrees; hips 0.05 sideways, 0.16 down in the
-  swoop (left knee to 114 degrees) and straight in the ending; the fastest joint 17 degrees in a frame (the upper
-  arm in the thrust).
+| Seconds after 1st's light | What the kid does |
+|---|---|
+| 0 to 2 | Holds the plane out in front at arm's length, shoulder height, and looks at it |
+| 2 to 3 | Lifts it up and out to the right; the left arm starts to float out |
+| 3 to 4.5 | Swoops it out wide and low to the right, the trunk leaning 25 degrees after it, the left arm level |
+| 4.5 to 5.5 | Back up over the top |
+| 5.5 to 6.8 | Across to the left: the arm straight up beside the head, the trunk leaning 21 degrees left |
+| 6.8 to 7.5 | Back to straight up; the left fist goes to the hip |
+| 7.5 on | Held up high, a little to the right, looking up at it; a sway of 1.5 degrees every 3 s (13 s in all; the camera leaves at 10.4) |
+
+- **Measured over all 391 frames on the 5-stud test body:** the arm is at its full length the whole time; the hand
+  is never nearer the head's middle than 1.56 studs (the head is 1.12 wide; the first cut: 0.87) and the forearm
+  never nearer than 1.26; seen from the front, neither is ever in front of the head; with a head half as big again
+  the forearm is beside and partly over it for 1.5 s of the crossing (a raised arm next to a big head: expect it
+  on big-headed avatars). Feet move at most 0.06 studs and turn 0 degrees; knees 151 to 175 degrees; the fastest
+  joint 7 degrees in a frame, the fastest hand 6.3 studs a second (first cut: 17 and 9).
+- **Timing is the video's, one to one.** The flying starts 2 s after 1st's light, not 4: with sounds, the
+  runner-ups would get 2 quiet seconds, not 4. The start can be stretched if Alan wants (his call, with the sounds).
 - **In the scene:** the Dev panel's "end: pilot" button (Studio only; `DevFirstEmote`, which "end: flick" now sets
   too) ends the match with it as 1st's emote, from the draft. The plane is `holdPlane` and `flyPlane`, not run since
   the winners became small models in front of the camera, so two things were fixed by reading the code, not by
-  looking: the plane is in the hand from the dark on and fades with the kid (it was added later and would have hung
-  in the picture as the camera left), and only the hand's own movement turns its nose (the slide that keeps the
-  small winner in front of the camera was counted as movement too).
+  looking: the plane is in the hand from the dark on and fades with the kid, and only the hand's own movement turns
+  its nose. Alan has not yet said how the plane behaved in his first look.
 - **Not in yet:** its two whooshes (`firstSoundAt`, as Camera Flick), the upload and its id in the config.
 - **To look at it:** restart Play; Dev: hangar, F8, "end: pilot".
 
