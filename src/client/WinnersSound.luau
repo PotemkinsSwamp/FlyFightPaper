@@ -21,20 +21,18 @@ function WinnersSound.pick()
 	lastSong = songs[math.random(#songs)]
 	return lastSong
 end
--- The spotlights' switch (all Pro Sound Effects, licensed): four to pick from by ear. Studio's "click" button (hangar
--- dev row) steps through them; the ones Alan does not pick, and the stepping, go once he has chosen.
-WinnersSound.CLICKS = { 9119727134, 9120098454, 9125665485, 9120089728 } -- Switch Impact On Flip Up Large Metal 2, Toggle Switch Metal Industrial Equipment 66, Metal Clunk Moviola Device Framing Plate Lever, Toggle Switches Moviola Editing Machine 17
+local CLICK = 9125665485 -- the spotlights' switch: PSE "Metal Clunk Moviola Device Framing Plate Lever" (Alan's pick of four, 2026-11-21: "the closest")
 local FIRST_LIGHT = 6.6
 local MUSIC_AFTER = 0.5 -- the last spotlight's click lands in the quiet, then the music
 
 -- Each cue: a sound, then its volume at points in time (straight lines between them). It starts at the first point
 -- and stops at the last.
-local function cues(track, click)
+local function cues(track)
 	local list = { { track, { FIRST_LIGHT + MUSIC_AFTER, 0.5 }, { 17, 0.5 }, { 18, 0.35 }, { 23.5, 0.35 }, { 26, 0 } } }
 	-- A switch for each spotlight, a second apart, 1st's the loudest.
 	for place, volume in { 0.9, 0.75, 0.6 } do
 		local at = FIRST_LIGHT - (place - 1)
-		table.insert(list, { click, { at, volume }, { at + 1.5, volume } })
+		table.insert(list, { CLICK, { at, volume }, { at + 1.5, volume } })
 	end
 	return list
 end
@@ -56,7 +54,7 @@ function WinnersSound.play(track)
 	local speakers = Instance.new("AudioDeviceOutput")
 	speakers.Parent = folder
 	local live = {}
-	for _, keys in cues(track, WinnersSound.CLICKS[Root:GetAttribute("DevSpotClick") or 1]) do
+	for _, keys in cues(track) do
 		local player = Instance.new("AudioPlayer")
 		player.Asset = "rbxassetid://" .. keys[1]
 		player.Volume = 0

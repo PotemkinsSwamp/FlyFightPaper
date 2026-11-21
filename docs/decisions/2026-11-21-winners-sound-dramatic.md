@@ -22,6 +22,7 @@
   Relentless (b) 30 (ids in `src/client/WinnersSound.luau`).
 - **The music only arrives once all three spotlights are on**: "it needs to be almost silent for dramatic effect".
   It carries on through the results card ("maybe the background music just carries over").
+- **The spotlights' switch** is a metal lever clunk (Pro Sound Effects), his pick of four: "3 is the closest".
 
 ## Why
 The approved emotes are attitude and rivalry in the dark under spotlights (a slow clap, a nap, the next plane, a
