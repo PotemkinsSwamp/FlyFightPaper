@@ -13,6 +13,7 @@ local Gameplay = require(Root.Generated.Gameplay)
 local Rounds, Avatars = Gameplay.rounds, Gameplay.avatar_display
 local UIArt = require(Root.Shared.UIAssets).mainmenu
 local PaperUI = require(script.Parent.PaperUI)
+local Audio = require(script.Parent.Audio)
 
 local PLACES = { "1st", "2nd", "3rd" }
 local COLORS = { Color3.fromRGB(255, 205, 40), Color3.fromRGB(220, 225, 235), Color3.fromRGB(230, 140, 70) }
@@ -378,6 +379,17 @@ local function knocked(steady, u, height)
 	local fall = bounce(math.clamp((u - 0.1) / FLICK_FALL, 0, 1))
 	return CFrame.new(steady.Position - steady.LookVector * jolt + steady:VectorToWorldSpace(shake) - Vector3.yAxis * 0.34 * height * fall)
 		* steady.Rotation * CFrame.Angles(math.rad(-68) * fall, 0, 0) * CFrame.Angles(0, 0, math.rad(10) * fall)
+end
+-- Camera Flick's sounds, each once, `t` seconds after 1st's light: the throw at the release, the smack as the plane
+-- reaches the lens, the camera hitting the ground at its fall's first bounce (see `knocked` and `bounce`).
+local FLICK_SOUNDS = { { "flickThrow", 0 }, { "flickSmack", FLICK_FLIGHT }, { "flickFall", FLICK_FLIGHT + 0.1 + FLICK_FALL / 2.75 } }
+local function flickSounds(w, t)
+	for index, cue in FLICK_SOUNDS do
+		if (w.heard or 0) < index and t >= w.flick.release + cue[2] then
+			w.heard = index
+			Audio.play(cue[1] .. (index > 1 and (Root:GetAttribute("DevFlickSfx") or 1) or "")) -- (the dev panel's pick of three)
+		end
+	end
 end
 -- The plane `t` seconds after 1st's light: in the hand, then straight to the lens (fast off the hand, slower as it
 -- fills the picture) turning flat as it arrives, then stuck on the lens and sliding down it. `view`: the camera this
@@ -1202,6 +1214,7 @@ function Cutscene.play(winners, onStage)
 			end
 			if w.flick then
 				flickPlane(w, since, shot, steady, height)
+				flickSounds(w, since)
 			elseif w.prop and w.emote.IsPlaying then flyPlane(w) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"

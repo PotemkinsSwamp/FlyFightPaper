@@ -305,6 +305,13 @@ function HUD.start(getPlane, action)
 		local flick=eraserBots:Clone();flick.Name="EndFlick";flick.Text="end: flick";flick.Position=UDim2.fromOffset(440,-80)
 		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
 		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
+		-- Which of the three smack and fall sounds Camera Flick plays (Audio's flickSmack/flickFall): each tap steps on. Goes once Alan has picked.
+		local flickSfx=eraserBots:Clone();flickSfx.Name="FlickSfx";flickSfx.Text="flick sfx: 1";flickSfx.Position=UDim2.fromOffset(330,-80)
+		flickSfx.BackgroundColor3=Color3.fromRGB(150,40,40);flickSfx.Parent=picker
+		flickSfx.Activated:Connect(function()
+			local pick=(Root:GetAttribute("DevFlickSfx") or 1)%3+1
+			Root:SetAttribute("DevFlickSfx",pick);flickSfx.Text="flick sfx: "..pick
+		end)
 		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
 		local ups={"dances","GoodGame","Nap","NextOne"}
 		local runnerUp=eraserBots:Clone();runnerUp.Name="RunnerUp";runnerUp.Text="2nd/3rd: dances";runnerUp.Position=UDim2.fromOffset(550,-80)

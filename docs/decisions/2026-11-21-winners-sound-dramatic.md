@@ -23,6 +23,9 @@
 - **The music only arrives once all three spotlights are on**: "it needs to be almost silent for dramatic effect".
   It carries on through the results card ("maybe the background music just carries over").
 - **The spotlights' switch** is a metal lever clunk (Pro Sound Effects), his pick of four: "3 is the closest".
+- **Every emote has sound effects** ("that's important, that the emotes have sound effects"), 1st's first. Camera
+  Flick: "a smack on the camera lens and then the sound of like a camera hitting the ground"; a sound for the throw
+  if one can be made.
 
 ## Why
 The approved emotes are attitude and rivalry in the dark under spotlights (a slow clap, a nap, the next plane, a
