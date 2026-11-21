@@ -563,19 +563,53 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
   for Good Game above); then set the camera back to Fixed from a delayed line (`task.delay(1, ...)`: Studio's
   assistant puts the camera type back when a command ends).
 
-## Next One: what is left (2026-11-20)
-- **Plan approved by Alan in words (2026-11-20, "yes, build it"), nothing built.** The feeling: already over it and
-  planning the rematch ("fine, you got this one, the next one is mine"); not sulking, not watching 1st, busy. Head
-  down on the work the whole time; brisk, exact hands with short pauses to check each fold (the opposite of Nap's
-  limp slowness and Good Game's grudging slowness); the payoff: the finished plane held up at eye level and turned
-  over. Seen: already sitting cross-legged in the dark with a white sheet on the right hand; three folds in about
-  5 s (about 1.3 s each: in half, the nose, the wings), the paper really folding as hinged pieces; then the plane
-  (about a forearm long) held up and slowly turned. Made: the body from Next One A, no generator call; **the paper
-  does the acting**: the left hand is put on the moving flap with `bendArm` (not IKControl), so its path is the
-  fold's arc and not typed-in numbers; seated with `sit`. Risk told to him: from the camera the folds are small and
-  may read as fiddling. Sighting along the plane towards 1st at the end: "leave the sighting out".
-- **Next One**: Next One A's sitting posture, the head looking down about 25 degrees, the left hand's three folds
-  posed by numbers, a sheet that becomes a half-folded sheet and then a plain white plane on the right hand's grip
-  point (swapped at marks on the clip), then a raise-and-look as the ending.
+## Next One: built, not yet seen by anyone (2026-11-20)
+The feeling (Alan's "yes, build it" to the plan in words): already over it and planning the rematch ("fine, you got
+this one, the next one is mine"); not sulking, not watching 1st, busy. Sighting along the plane at the end: "leave
+the sighting out".
+- **What it does.** In the dark the kid already sits cross-legged, hunched a little, head 29 degrees down, a white
+  sheet lying on the right hand in front of the belly and the left hand on its near edge. At their light: three
+  folds (in half, away from them, done at 0.75 s; the nose, the far front corner, at 2.15 s; the wings, the upper
+  layer back towards them, at 3.6 s), each one the hand over the top in an arc, a run along the new crease towards
+  the nose, and a still moment. At 4.3 s the left hand lets go and sinks to the lap, the kid sits up and the right
+  hand lifts the plane to eye level in 0.9 s (the keel drops and the wings tip up 10 degrees on the way), then
+  rocks it 35 degrees either way about its length, once every 3 s, the head on it, until the scene ends.
+- **The paper really folds** (`nextOne` in `WinnersCutscene`): ten thin white pieces (four strips, six triangles:
+  each half of the sheet cut along its own folds) swung about the fold lines, the same pieces from flat sheet to
+  finished plane. The folded-over nose corners stop being drawn once flat (white on white). The paper is fixed to
+  the right hand like a tool: on its thumb side, nose along the fingers.
+- **The left hand** is put on the paper by `bendArm` every frame: on the edge of the flap it folds, so its path is
+  the fold's arc (plus a lift at the top, 0.6 of the hand's half-thickness: the arc alone is under half a stud),
+  then along the crease. It lets go over 0.6 s.
+- **The body** is one clip, `CUTS.NextOne` in `tools/emote_clips.lua` (`Assets.NextOneClip` in the open place,
+  unsaved, and `assets/animations/emotes/next-one.rbxm`; 8.4 s, played once, held on its first pose in the dark,
+  going round its last 3 s after the raise; `Raise`, `Raised` and `Turn` are attributes on it). Next One A gives the
+  sitting legs and hips (one still pose, its 1.0 s). By numbers: the hunch (10 degrees), the right hand's place at
+  work and its level thumb side, the head (half way from straight ahead to looking at the right hand), and the
+  raise: one move between two solved poses, quick off the lap and slower as it arrives. **The raise is typed in,
+  the kind of arm move Alan found stiff in the first clap**; if he does, Next One B's own raise is the fallback (it
+  stops at chest height).
+- **Avatars' arms are short, which set the size.** Shoulder joints are about half a body height apart and an arm
+  reaches about a quarter of a height, so the two hands only meet close in front of the chest. A sheet as long as
+  the forearm and hand (1.4 studs) could not be folded: its far edge was up to 1.6 arm's reaches away. So the sheet
+  is 0.9 of the forearm part long (1.0 stud on the standard body, 18% of its height; Camera Flick's plane is 30%),
+  held across the body with its nose to the kid's left, the folds going away from and towards them.
+- **Checked by numbers in Edit, no pictures** (the real scene code lifted out of the script and stepped on three
+  test bodies): standard and tall slim, the left hand 0.00 studs off its point on the paper the whole time, never
+  further than 0.91 of the arm's reach, the paper never inside the body; **short and wide (the worst case), the
+  arm runs out twice, at the far edge, by 0.17 studs** (it stops nearly straight just short of the paper), and a
+  flap's tip touches the head's box by 0.04. The clip: biggest turn in one key 4.0 degrees, the loop's ends meet
+  exactly. Both scripts compile; Studio has them (Rojo).
+- **Not known until a Play look:** how any of it reads (nobody has seen it, not even a still); whether the folds
+  read as folds or as fiddling from the camera (told to Alan with the plan); the hands on real avatars (Edit test
+  bodies understate, see Nap); whether the left hand hides the paper while it presses (a blocky hand is as big as
+  the half sheet).
+- **Dry-run traps in Edit.** The first run after a bake poses nobody (the new clip is not loaded yet: run it
+  twice). A part does not move when a joint's turn is written (new avatars' joints are AnimationConstraints):
+  read a part's place from `rig`'s `at`, not from the part. `emote_preview.py --run=FILE.lua` runs a Luau file
+  after the scene script and prints its answer, with no pictures taken.
+- If the place is closed without a save: `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua
+  "--bake=NextOne:NextOneClip:assets/animations/emotes/next-one.rbxm"` (with any `_G.EMOTE_CLIPS` set).
+- **To look at it:** Dev: hangar, F8, "2nd/3rd" stepped to NextOne, then "end: flick".
 
 Back to [HOME](../HOME.md).

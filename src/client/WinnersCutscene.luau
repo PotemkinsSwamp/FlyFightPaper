@@ -597,13 +597,19 @@ end
 local Z_EVERY, Z_LIFE, Z_RISE, Z_DRIFT, Z_SMALL, Z_BIG = 4 / 3, 4, 1.5, 0.6, 0.3, 0.9
 local BUBBLE_SMALL, BUBBLE_BIG, BUBBLE_GROW, BUBBLE_BREATH, BUBBLE_CLEAR, POP, POP_BITS = 0.06, 0.25, 6, 0.03, 0.45, 0.1, 0.3
 local NAP_BREATH, NAP_OFF, NAP_ON = 4, 0.15, 0.4 -- seconds a breath in the sleeping clip; the hand let go and taken back
-local function paper(parent, color, shape)
-	local part = Instance.new("Part")
+local function paper(parent, color, shape) -- `shape`: a Part's shape, or "WedgePart" for a triangle
+	local part = Instance.new(shape == "WedgePart" and "WedgePart" or "Part")
 	part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
 	part.Material, part.Color, part.Size = Enum.Material.SmoothPlastic, color, Vector3.one * 0.01
-	if shape then part.Shape = shape end
+	if shape and shape ~= "WedgePart" then part.Shape = shape end
 	part.Parent = parent
 	return part
+end
+local function seatOn(cast, top) -- the unseen part at the top of a kid's stack that `sit` rests them on
+	local seat = Instance.new("Part")
+	seat.Name, seat.Anchored, seat.CanCollide, seat.CanQuery, seat.CanTouch, seat.Transparency = "Seat", true, false, false, false, 1
+	seat.Size, seat.CFrame, seat.Parent = Vector3.one * 0.05, CFrame.new(top), cast
+	return seat
 end
 local function nap(animator, model, place, cast, top)
 	local head, hand, root = model:FindFirstChild("Head"), model:FindFirstChild("RightHand"), model:FindFirstChild("HumanoidRootPart")
@@ -618,9 +624,7 @@ local function nap(animator, model, place, cast, top)
 	local sleep, wake = track("NapSleepClip", true, Enum.AnimationPriority.Action), track("NapWakeClip", false, Enum.AnimationPriority.Action2)
 	if not (sleep and wake and head and hand and root and upper and shin) then return { IsPlaying = false, Play = function() end } end
 	sleep:Play(0)
-	local seat = Instance.new("Part")
-	seat.Name, seat.Anchored, seat.CanCollide, seat.CanQuery, seat.CanTouch, seat.Transparency = "Seat", true, false, false, false, 1
-	seat.Size, seat.CFrame, seat.Parent = Vector3.one * 0.05, CFrame.new(top), cast
+	local seat = seatOn(cast, top)
 	-- the hand against the right side of the brow (the same point the clips were cut for)
 	local browAt = Vector3.new(0.22 * head.Size.X, -0.05 * head.Size.Y, -0.5 * head.Size.Z - 0.3 * hand.Size.Y)
 	local joints, at = rig(model)
@@ -712,6 +716,148 @@ local function nap(animator, model, place, cast, top)
 	end }
 end
 
+-- Next One (plan approved by Alan in words 2026-11-20: "fine, you got this one, the next one is mine"; already over
+-- it and planning the rematch, busy, head down on the work): sitting cross-legged with a white sheet on the right
+-- hand from the dark on; at their light the left hand folds it three times, briskly, with a pause after each fold
+-- (FOLDS: in half, the nose, the wings), and the paper really folds: ten thin white pieces, the two halves of a
+-- sheet each cut along its folds, swung about the fold lines (`hinges`). Then the right hand raises the finished
+-- plane to eye level and rocks it slowly, the kid looking at it, until the scene ends (no sighting along it: his
+-- "leave the sighting out"). The body is Assets.NextOneClip (tools/emote_clips.lua; it carries the moments of the
+-- raise as attributes), held on its first pose until the light and going round its last seconds after the raise.
+-- The paper does the acting (the generator cannot do hand work, and he found arms typed in by numbers stiff): it is
+-- fixed to the right hand the way a tool is (its nose along the fingers, lying on the hand's thumb side), and the
+-- left hand is put on it with bendArm: on the edge of the flap being folded, so its path is the fold's own arc,
+-- then along the new crease, then still for a moment, then to the next flap. The clip holds the right hand in front
+-- of the belly, fingers to the kid's left: the sheet lies across the body, its nose to their left, and each fold
+-- goes away from or towards them. Sizes come from this avatar's own arm (his OK: a plane about a forearm long;
+-- an avatar's two arms together only reach about a quarter of its height, so a bigger sheet cannot be folded).
+-- The sheet's length in forearm parts; its width and thickness in lengths (letter paper); the keel's depth in
+-- widths; where along it, from the nose, the right hand is.
+local SHEET_LONG, SHEET_WIDE, SHEET_THIN, KEEL, HELD_AT = 0.9, 0.77, 0.012, 0.125, 0.7
+-- Seconds after the kid's light: the left hand starts each fold, has it over, has run along the crease.
+local FOLDS = { { fold = 0.15, folded = 0.75, creased = 1.1 }, { fold = 1.65, folded = 2.15, creased = 2.45 }, { fold = 3.0, folded = 3.6, creased = 3.95 } }
+-- The left hand's middle rides PRESS of its own half-thickness over the paper, and ARC more at the top of a fold
+-- (the fold's arc alone is too small to see from the camera); it lets go over LET_GO seconds as the plane goes up;
+-- the wings end WINGS_UP degrees above level.
+local PRESS, ARC, LET_GO, WINGS_UP = 0.9, 0.6, 0.6, 10
+local function nextOne(animator, model, cast, top)
+	local hand, left, root = model:FindFirstChild("RightHand"), model:FindFirstChild("LeftHand"), model:FindFirstChild("HumanoidRootPart")
+	local forearm, upper, lower = model:FindFirstChild("RightLowerArm"), model:FindFirstChild("LeftUpperArm"), model:FindFirstChild("LeftLowerArm")
+	local clip, id = Root.Assets:FindFirstChild("NextOneClip"), ourClip("NextOneClip")
+	if not (id and hand and left and root and forearm and upper and lower) then return { IsPlaying = false, Play = function() end } end
+	local animation = Instance.new("Animation"); animation.AnimationId = id
+	local track = animator:LoadAnimation(animation); track.Looped, track.Priority = false, Enum.AnimationPriority.Action
+	track:Play(0, 1, 0) -- its first pose, held: already at work in the dark
+	local raise, raised, round = clip:GetAttribute("Raise") or 4.3, clip:GetAttribute("Raised") or 0.9, clip:GetAttribute("Turn") or 3
+	local seat = seatOn(cast, top)
+	local long = forearm.Size.Y * SHEET_LONG
+	local wide, thin = long * SHEET_WIDE, long * SHEET_THIN
+	local half, keel = wide / 2, wide * KEEL
+	-- The paper's own frame: x to the plane's right, y up out of the sheet, the nose towards -z; its middle is the
+	-- point of the wings' fold line that is on the right hand. `pt`: a point of the flat sheet, `u` to the right of
+	-- its middle line and `v` back from its front edge.
+	local function pt(u, v, y) return Vector3.new(u - keel, y or 0, v - HELD_AT * long) end
+	-- The fold lines, each a point and a direction: a piece swung about one goes up and over.
+	local back = Vector3.zAxis
+	local hinges = { { at = pt(0, 0, thin / 2), axis = -back }, -- in half: the left half over onto the right
+		{ at = pt(0, 0, 1.5 * thin), axis = Vector3.new(1, 0, 1).Unit }, -- the nose: the front outer corner, both layers
+		{ at = pt(keel, 0, 1.5 * thin), axis = back }, -- the wings: the upper layer back over to the left
+		{ at = pt(keel, 0, -thin / 2), axis = back }, -- as it is picked up: the keel down,
+		{ at = pt(keel, 0, -thin / 2), axis = back }, { at = pt(keel, 0, 1.5 * thin), axis = -back } } -- the right and left wings tipped up
+	local function swung(i, angle) return CFrame.new(hinges[i].at) * CFrame.fromAxisAngle(hinges[i].axis, angle) * CFrame.new(-hinges[i].at) end
+	-- The pieces: each where it lies in the flat sheet, and the fold lines it swings about, in order.
+	local pieces, white = {}, Color3.new(1, 1, 1)
+	local function strip(side, folds, u0, v0, u1, v1) -- a rectangle
+		local part = paper(cast, white)
+		part.Size = Vector3.new(u1 - u0, thin, v1 - v0)
+		table.insert(pieces, { part = part, at = CFrame.new(pt(side * (u0 + u1) / 2, (v0 + v1) / 2)), folds = folds })
+	end
+	local function corner(side, folds, ru, rv, au, av, bu, bv) -- a triangle: its right angle, then its other two corners
+		local r, a, b = pt(side * ru, rv), pt(side * au, av), pt(side * bu, bv)
+		local part = paper(cast, white, "WedgePart")
+		part.Size = Vector3.new(thin, (a - r).Magnitude, (b - r).Magnitude)
+		local y, z = (a - r).Unit, (r - b).Unit
+		table.insert(pieces, { part = part, at = CFrame.fromMatrix((a + b) / 2, y:Cross(z), y, z), folds = folds })
+	end
+	for side, folds in { [1] = { nose = { 2 }, keel = { 4 }, wing = { 5 } }, [-1] = { nose = { 1, 2 }, keel = { 1, 4 }, wing = { 1, 3, 6 } } } do
+		corner(side, folds.nose, half, 0, 0, 0, half, half)
+		pieces[#pieces].tucked = true -- once folded it lies flat on the rest, white on white: not drawn from then on
+		corner(side, folds.keel, 0, keel, 0, 0, keel, keel)
+		strip(side, folds.keel, 0, keel, keel, long)
+		corner(side, folds.wing, keel, half, keel, keel, half, half)
+		strip(side, folds.wing, keel, half, half, long)
+	end
+	-- How far each fold line is turned `t` seconds in, and how far the plane is taken into the fingers (0 to 1).
+	local function folded(t)
+		local turned = {}
+		for i, f in FOLDS do turned[i] = math.pi * ease((t - f.fold) / (f.folded - f.fold)) end
+		local taken = ease((t - raise) / (raised / 2))
+		turned[4], turned[5], turned[6] = taken * math.pi / 2, taken * math.rad(WINGS_UP), taken * math.rad(WINGS_UP)
+		return turned, taken
+	end
+	-- The paper's frame on the right hand at `grip`: on its thumb side, the nose along the fingers; taken into the
+	-- fingers, the keel goes half into the hand.
+	local function paperAt(grip, taken)
+		local up = grip.LookVector
+		local from = grip.Position + up * (hand.Size.Z / 2 + thin / 2 + taken * (keel - thin) / 2)
+		return CFrame.lookAt(from, from - grip.UpVector, up)
+	end
+	-- Where the left hand's middle is `t` seconds in, in the paper's frame: on the edge of the flap it folds, then
+	-- along the crease towards the nose.
+	local grabs = { pt(-0.8 * half, 0.5 * long), pt(0.8 * half, 0.2 * half, thin), pt(0.85 * half, 0.6 * long, thin) }
+	local creases = { { pt(0.1 * half, 0.7 * long), pt(0.1 * half, 0.25 * long) }, { pt(0.75 * half, 0.75 * half), pt(0.2 * half, 0.2 * half) },
+		{ pt(keel, 0.75 * long), pt(keel, 0.35 * long) } }
+	local clear = (left.Size.X + left.Size.Y + left.Size.Z) / 6 -- about half the hand's thickness, whichever way it is turned
+	local function pinch(i, angle) return swung(i, angle) * grabs[i] + Vector3.yAxis * clear * (PRESS + ARC * math.sin(angle)) end
+	local function press(i, s) return creases[i][1]:Lerp(creases[i][2], ease(s)) + Vector3.yAxis * (2.5 * thin + clear * PRESS) end
+	local function leftAt(t)
+		for i, f in FOLDS do
+			if t < f.fold then return pinch(i, 0) end
+			if t < f.folded then return pinch(i, math.pi * ease((t - f.fold) / (f.folded - f.fold))) end
+			if t < f.creased then -- onto the crease, then along it
+				local s = (t - f.folded) / (f.creased - f.folded)
+				return s < 0.4 and pinch(i, math.pi):Lerp(press(i, 0), ease(s / 0.4)) or press(i, (s - 0.4) / 0.6)
+			end
+			local after = FOLDS[i + 1]
+			if not after then break end
+			if t < after.fold then -- a look at the fold, then to the next flap
+				local s = (t - f.creased) / (after.fold - f.creased)
+				return s < 0.45 and press(i, 1) or press(i, 1):Lerp(pinch(i + 1, 0), ease((s - 0.45) / 0.55))
+			end
+		end
+		return press(#FOLDS, 1)
+	end
+	local joints, at = rig(model)
+	local started = false
+	local bent
+	bent = RunService.PreSimulation:Connect(function()
+		if not model:IsDescendantOf(game) then bent:Disconnect(); return end
+		local t = track.TimePosition
+		local _, taken = folded(t)
+		local sheet = paperAt(at(hand), taken)
+		-- the elbow stays on the side the clip has it
+		bendArm(joints, at, upper, lower, left, sheet * leftAt(t), (at(upper) * joints[lower].c0).Position, 1 - ease((t - raise) / LET_GO))
+	end)
+	local beat
+	beat = RunService.RenderStepped:Connect(function()
+		if not model:IsDescendantOf(game) then beat:Disconnect(); return end
+		sit(model, seat)
+		local t = track.TimePosition
+		if started and not track.IsPlaying then track:Play(0, 1, 1); t = raise + raised; track.TimePosition = t end -- a long hitch ran it out
+		if t >= raise + raised + round then t -= round; track.TimePosition = t end -- round the rocking again
+		local turned, taken = folded(t)
+		local sheet = paperAt(hand.CFrame, taken)
+		for _, piece in pieces do
+			local lies = piece.at
+			for _, i in piece.folds do lies = swung(i, turned[i]) * lies end
+			piece.part.CFrame = sheet * lies
+			piece.part.Transparency = piece.tucked and t >= FOLDS[2].folded and 1 or 0
+		end
+	end)
+	-- What nextOne returns stands in for an AnimationTrack (Play only): their own light starts the folding.
+	return { IsPlaying = false, Play = function() started = true; track:AdjustSpeed(1) end }
+end
+
 -- The book podiums (Alan 2026-11-19): each winner stands on a stack of single books (Assets.WinnerBooks: eight
 -- free Creator Store books, each its own model lying flat, 10 studs on its longer side, its thickness in "Thick"),
 -- in clear steps (Alan 2026-11-19: on four, three and two books 1st's did not look taller than 2nd's): about 0.78,
@@ -783,6 +929,8 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 		emote = goodGame(animator, model)
 	elseif ours == "Nap" then
 		emote = nap(animator, model, place, world, onDesk - Vector3.yAxis * feet / scale)
+	elseif ours == "NextOne" then
+		emote = nextOne(animator, model, world, onDesk - Vector3.yAxis * feet / scale)
 	else
 		local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
 		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action

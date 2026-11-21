@@ -1,6 +1,6 @@
 """Renders a winner emote's preview video from Studio's Edit, no Play and no upload (docs/workshop/emote-making.md):
 
-  python tools/emote_preview.py STUDIO_ID OUT.mp4 [SECONDS=2.7] [FPS=24] [--keep] [--lua=emote_clips.lua] [--bake=CUT:ClipName:FILE]
+  python tools/emote_preview.py STUDIO_ID OUT.mp4 [SECONDS=2.7] [FPS=24] [--keep] [--lua=emote_clips.lua] [--bake=CUT:ClipName:FILE] [--run=FILE.lua]
 
 Runs tools/emote_preview.lua in Studio (it stands a test kid on 1st's desk and holds the emote's recipe), then for
 every frame poses the scene (_G.EMOTE.frame(t)) and saves Studio's own viewport capture, joins the frames with
@@ -74,6 +74,12 @@ if bake:  # the cut goes into the place's Assets as ClipName and from there into
     luau("_G.EMOTE_B64 = nil _G.EMOTE.clean() return 'ok'")
     proxy.kill()
     raise SystemExit(f"{name} -> {path}, {len(data) * 3 // 4} bytes")
+run = next((a[6:] for a in sys.argv if a.startswith("--run=")), None)  # numbers only: a Luau file run after the scene, its answer printed; no pictures
+if run:
+    print(text(open(run, encoding="utf-8").read()))
+    if "--keep" not in sys.argv: luau("_G.EMOTE.clean() return 'ok'")
+    proxy.kill()
+    raise SystemExit(0)
 frames = tempfile.mkdtemp(prefix="emote_frames_")
 total = int(seconds * fps) + 1
 for _ in range(4):  # let the room's pictures load and the first pose draw before frame 0 is taken

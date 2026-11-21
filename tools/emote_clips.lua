@@ -280,6 +280,78 @@ CUTS.NapWake = { length = LOOK_END + SINK, clips = { nap = N.clip, idle = "rbxas
 	return turn
 end }
 
+-- Next One (plan approved by Alan in words 2026-11-20: the kid is already over it and planning the rematch; head
+-- down on the work, three brisk folds, then the finished plane held up at eye level and slowly turned; no sighting
+-- along it). One clip, played once; the scene (WinnersCutscene) holds its first pose in the dark, folds the paper
+-- and puts the left hand on it, and from NEXT_RAISE + NEXT_RAISED on goes round the last NEXT_TURN seconds (the
+-- clip runs NEXT_TAIL longer, so there is always a next key). The body is generated clip Next One A sitting still
+-- (X.rest of its own seconds: its hands never move). By numbers: at work the chest hunches NEXT_LEAN degrees
+-- forward, the left hand stays where the clip has it (on the lap: where it goes back to when it lets go) and the
+-- right hand is at NEXT_WORK from the root (body heights: in front of the belly, in the left hand's reach), its
+-- elbow towards NEXT_WORK_ELBOW from the shoulder, its thumb side up and level (the sheet lies on it) and its
+-- fingers towards NEXT_FINGERS (to the kid's left); held up, the chest is back where the clip has it, the right hand is NEXT_HOLD from the
+-- head's middle with the elbow out towards NEXT_ELBOW from the shoulder (body heights), the wrist straight (the
+-- plane's nose points along the forearm) and the forearm turned so the plane's top faces up and towards the face,
+-- then rocked NEXT_ROLL degrees either way about its own length, once every NEXT_TURN seconds (the raise ends at
+-- one end of the rock, so nothing jumps). The head goes NEXT_FOLLOW of the way from straight ahead to looking at
+-- the right hand, the whole time.
+local X = { clip = "rbxassetid://98981684256935", rest = 1.0 }
+local NEXT_RAISE, NEXT_RAISED, NEXT_TURN, NEXT_TAIL = 4.3, 0.9, 3, 0.2
+local NEXT_LEAN, NEXT_FOLLOW, NEXT_ROLL = 10, 0.5, 35
+local NEXT_WORK, NEXT_WORK_ELBOW, NEXT_FINGERS = Vector3.new(0.02, -0.32, -0.19), Vector3.new(0.1, -0.3, -0.1), Vector3.new(-1, 0, -0.2).Unit
+local NEXT_HOLD, NEXT_ELBOW = Vector3.new(0.14, -0.02, -0.22), Vector3.new(0.3, -0.12, 0)
+local function elbowOf(at, side) return (at[side .. "UpperArm"] * joints[side .. "LowerArm"].c0).Position end
+-- Turns one part of a pose about its own joint by `by`, a turn in the root's frame.
+local function spin(turn, part, by)
+	local hinge = (build(turn)[joints[part].parent] * joints[part].c0).Rotation
+	turn[part] = hinge:Inverse() * by * hinge * turn[part]
+end
+-- The right forearm turned about its own length until the hand's thumb side faces `want` as nearly as it can, and
+-- `more` degrees on.
+local function thumbTo(turn, want, more)
+	local at = build(turn)
+	local axis = (at.RightHand.Position - elbowOf(at, "Right")).Unit
+	local now = at.RightHand.LookVector
+	local a, b = now - axis * now:Dot(axis), want - axis * want:Dot(axis)
+	spin(turn, "RightLowerArm", CFrame.fromAxisAngle(axis, math.atan2(a:Cross(b):Dot(axis), a:Dot(b)) + math.rad(more or 0)))
+end
+local nextOne -- this body's numbers, worked out once
+local function folding(c)
+	if nextOne then return nextOne end
+	local base = c.sit(X.rest)
+	local at = build(base)
+	local work = table.clone(base)
+	work.UpperTorso = base.UpperTorso * CFrame.Angles(-math.rad(NEXT_LEAN), 0, 0)
+	reach(work, "Right", NEXT_WORK * HEIGHT, (build(work).UpperTorso * joints.RightUpperArm.c0).Position + NEXT_WORK_ELBOW * HEIGHT)
+	reach(work, "Left", at.LeftHand.Position, elbowOf(at, "Left"))
+	thumbTo(work, Vector3.yAxis)
+	-- the wrist bent until the hand is exactly so: its look (the thumb side) up, its own up away from the fingers
+	local wrist = (build(work).RightLowerArm * joints.RightHand.c0).Rotation
+	work.RightHand = wrist:Inverse() * CFrame.fromMatrix(Vector3.zero, NEXT_FINGERS:Cross(Vector3.yAxis), -NEXT_FINGERS, -Vector3.yAxis) * joints.RightHand.c1.Rotation
+	nextOne = { base = base, work = work }
+	return nextOne
+end
+local function heldUp(c, roll)
+	local turn = table.clone(folding(c).base)
+	local at = build(turn)
+	turn.RightHand = CFrame.new(turn.RightHand.Position)
+	local hand = at.Head.Position + NEXT_HOLD * HEIGHT
+	reach(turn, "Right", hand, (at.UpperTorso * joints.RightUpperArm.c0).Position + NEXT_ELBOW * HEIGHT)
+	thumbTo(turn, Vector3.yAxis + (at.Head.Position - hand).Unit * 0.6, roll)
+	return turn
+end
+CUTS.NextOne = { length = NEXT_RAISE + NEXT_RAISED + NEXT_TURN + NEXT_TAIL, once = true, clips = { sit = X.clip },
+	marks = { Raise = NEXT_RAISE, Raised = NEXT_RAISED, Turn = NEXT_TURN }, pose = function(t, c)
+	local up = eased(math.clamp((t - NEXT_RAISE) / NEXT_RAISED, 0, 1) ^ 0.7) -- quick off the lap, slower as it arrives
+	local rocked = math.max(t - NEXT_RAISE - NEXT_RAISED, 0) / NEXT_TURN
+	local turn = up > 0 and mix(folding(c).work, heldUp(c, -NEXT_ROLL * math.cos(rocked * 2 * math.pi)), up) or table.clone(folding(c).work)
+	local at = build(turn)
+	local neck = at.UpperTorso * joints.Head.c0
+	local to = (at.RightHand.Position - at.Head.Position).Unit
+	turn.Head = neck.Rotation:Inverse() * CFrame.lookAt(Vector3.zero, (-Vector3.zAxis):Lerp(to, NEXT_FOLLOW)).Rotation * joints.Head.c1.Rotation
+	return turn
+end }
+
 local folder = game.ServerStorage:FindFirstChild("RBX_ASSISTANT_ANIMGEN")
 -- A clip as a function of its own seconds (held at its ends), and its length.
 local function clip(name)
@@ -302,7 +374,7 @@ end
 local function cut(name)
 	local recipe, c = assert(CUTS[name], "no cut " .. name), {}
 	for key, id in recipe.clips do c[key] = clip(id) end
-	return function(t) return recipe.pose(t % recipe.length, c) end, recipe.length
+	return function(t) return recipe.pose(t % recipe.length, c) end, recipe.length, recipe
 end
 -- Standing straight (no clip): the feet's height under the root, so a sitting clip sits on the desk, not in the air.
 local low = math.huge
@@ -355,18 +427,19 @@ function E.frame(t)
 	task.wait(0.05)
 	return "ok"
 end
--- A cut as a plain R15 animation named `name` under `parent`, looping, 30 keys a second, its last key the same as
--- its first. `marks`: attributes for the scene to read (seconds of the moments its props follow).
+-- A cut as a plain R15 animation named `name` under `parent`, 30 keys a second: looping, its last key the same as
+-- its first, or for a cut marked `once` played through to its own last pose. `marks` (or the cut's own): attributes
+-- for the scene to read (seconds of the moments its props follow).
 function E.bake(cutName, parent, name, marks)
-	local pose, length = cut(cutName)
+	local pose, length, recipe = cut(cutName)
 	local out = Instance.new("KeyframeSequence")
-	out.Name, out.Loop, out.Priority = name, true, Enum.AnimationPriority.Action
-	for key, value in marks or {} do out:SetAttribute(key, value) end
+	out.Name, out.Loop, out.Priority = name, not recipe.once, Enum.AnimationPriority.Action
+	for key, value in marks or recipe.marks or {} do out:SetAttribute(key, value) end
 	local last = math.floor(length * 30 + 0.5)
 	for n = 0, last do
 		local frame = Instance.new("Keyframe")
 		frame.Time = n / 30
-		local turn = pose(n == last and 0 or n / 30)
+		local turn = pose(n == last and (recipe.once and length - 1e-3 or 0) or n / 30)
 		local poses = { HumanoidRootPart = Instance.new("Pose") }
 		poses.HumanoidRootPart.Name, poses.HumanoidRootPart.Parent = "HumanoidRootPart", frame
 		local function add(part)
@@ -386,6 +459,7 @@ function E.bake(cutName, parent, name, marks)
 	out.Parent = parent
 	return string.format("ok baked %s: %.2f s", name, length)
 end
+E.clip, E.cut, E.build, E.joints, E.first, E.scale = clip, cut, build, joints, first, scale -- for number checks (emote_preview.py --run)
 function E.clean()
 	for _, kid in kids do kid.model:Destroy() end
 	for part, was in hidden do part.Transparency = was end

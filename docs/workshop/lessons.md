@@ -1051,3 +1051,6 @@ Back to [HOME](../HOME.md)
   right over several times a second. Bend the arm yourself after the animation (`bendArm` and `rig` in
   `WinnersCutscene`): exact on every body measured. Test bodies made in Edit miss far less than real avatars do
   (0.04 to 0.12 against 0.5 to 0.7 studs): measure joint work in Play, on the avatars the game really shows.
+- **An avatar's two hands only meet close to the chest (2026-11-20, Next One).** The shoulder joints are about half
+  a body height apart and an arm reaches about a quarter. Anything one hand holds for the other to work on must be
+  small (about 1 stud) and held in front of the belly; work out both arms' reach as a number before sizing a prop.
