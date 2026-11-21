@@ -22,6 +22,9 @@ function WinnersSound.pick()
 	return lastSong
 end
 local CLICK = 9125665485 -- the spotlights' switch: PSE "Metal Clunk Moviola Device Framing Plate Lever" (Alan's pick of four, 2026-11-21: "the closest")
+-- Alan 2026-11-21: "add room echo and lower the pitch". Played slower, so lower and heavier; and the ring of a dark
+-- hall after it: the seconds it rings and how loud the ring is beside the switch itself (dB).
+local CLICK_SPEED, HALL_DECAY, HALL_WET = 0.75, 2.2, -4
 local FIRST_LIGHT = 6.6
 local MUSIC_AFTER = 0.5 -- the last spotlight's click lands in the quiet, then the music
 
@@ -53,14 +56,21 @@ function WinnersSound.play(track)
 	folder.Name = "WinnersSound"
 	local speakers = Instance.new("AudioDeviceOutput")
 	speakers.Parent = folder
+	local hall = Instance.new("AudioReverb") -- the switches go through it; the music does not
+	hall.DecayTime, hall.WetLevel = HALL_DECAY, HALL_WET
+	hall.Parent = folder
+	local out = Instance.new("Wire")
+	out.SourceInstance, out.TargetInstance = hall, speakers
+	out.Parent = hall
 	local live = {}
 	for _, keys in cues(track) do
 		local player = Instance.new("AudioPlayer")
 		player.Asset = "rbxassetid://" .. keys[1]
 		player.Volume = 0
+		if keys[1] == CLICK then player.PlaybackSpeed = CLICK_SPEED end
 		player.Parent = folder
 		local wire = Instance.new("Wire")
-		wire.SourceInstance, wire.TargetInstance = player, speakers
+		wire.SourceInstance, wire.TargetInstance = player, keys[1] == CLICK and hall or speakers
 		wire.Parent = player
 		table.insert(live, { player = player, keys = keys })
 	end
