@@ -674,7 +674,11 @@ questions, so my picks stand until he says otherwise: the feeling, the quiet sta
 - **The cut, ruled by Alan ("go with option 1"):** C's admiring stretched to 4 s, B's swoop over, B's
   swoop played backwards as the way back (in place of the dive), B's raise and hold. Built and rejected: below.
 
-## Toy Pilot: the cut from a reference video (2026-11-21; third version built, Alan has not seen it)
+## Toy Pilot: the cut from a reference video (2026-11-21; third version: Alan "better, still off")
+**Alan on the third version: better, still off: the raised arm is cramped and the ending pose is not right** (the
+lean to the left and the timing he did not fault). Next: find why the raised arm comes out bent and short on real
+avatars, then the ending (arm high, plane nose up).
+
 **The first cut, from the generated clips B and C, Alan rejected in Play**: "it doesn't work at all for the models
 ... bringing their hand into like their face ... very awkward" ([playtest](../playtests/2026-11-21-toy-pilot-first-cut.md)).
 **The second, traced from his Gemini video, too**: "it still looks very much off ... it kind of struggles with every

@@ -35,6 +35,11 @@ real avatars, with their bigger heads, the hand lands in the face. Numbers on on
 
 Still weaker than the video after the fixes, on the one avatar recorded (a small girl with big hair buns): the raised
 arm looks bent and short, so the plane stays close to the hair; it touches the hair for about a second in the lean
-to the left; in the ending the plane points sideways, not up. Alan has not seen the third version.
+to the left; in the ending the plane points sideways, not up.
+
+## Third look, the same day
+| Alan | What changed |
+|---|---|
+| Of the third version in Play: "better, still off" (picked from four answers); what is still off: the **raised arm is cramped** (bent and short, the plane close to the head instead of high and far) and the **ending pose** (arm not high enough, plane pointing sideways). Not picked: the lean to the left, the timing. | Nothing yet: the next session starts here. The calm start, the lean to the left and the timing stand. |
 
 Back to [HOME](../HOME.md).
