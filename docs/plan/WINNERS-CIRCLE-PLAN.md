@@ -38,7 +38,7 @@ Names are placeholders.
 |---|---|
 | Toy Pilot (free) | Flies their plane around like a toy, then holds it up |
 | Camera Flick (Alan) | Flicks the plane at the camera; it fills the screen and the camera tips over |
-| Book Kicker (Alan) | Kicks a book; it flies at the camera, opens, slaps flat on the lens and slides down to your desk |
+| Book Kicker (Alan) | Jumps off their book stack and kicks it: most books fly off to the side, one flies at the camera, opens, slaps flat on the lens and slides down to your desk (his wording of 2026-11-21) |
 | Skeet Shoot (Alan) | The runner-ups throw their paper planes and 1st shoots them out of the air, like skeet shooting, with rubber bands off a finger or a slingshot: something a child would do |
 | Bubblegum | Blows a bubble that grows until it fills the screen, pops and leaves pink gum on the lens |
 | Spitball | Loads a straw, grins and fires; a wet splat hits the lens and slides down |
