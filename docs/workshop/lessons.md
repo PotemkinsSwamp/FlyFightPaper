@@ -1054,3 +1054,7 @@ Back to [HOME](../HOME.md)
 - **An avatar's two hands only meet close to the chest (2026-11-20, Next One).** The shoulder joints are about half
   a body height apart and an arm reaches about a quarter. Anything one hand holds for the other to work on must be
   small (about 1 stud) and held in front of the belly; work out both arms' reach as a number before sizing a prop.
+- **A hand move that changes nothing reads as fiddling (2026-11-20, Next One).** The first build moved the hand
+  eight times for three folds (an arc, a run along the crease, a trip to the next flap); Alan: "they run their
+  hands over it more than the paper changes". One move of the hand per change the viewer can see, a still
+  moment between: approved.
