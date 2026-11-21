@@ -45,5 +45,8 @@ to the left; in the ending the plane points sideways, not up.
 
 Back to [HOME](../HOME.md).
 
-## Fourth look: on his own avatar the plane cannot be seen (same day)
-Alan, as 1st on his own avatar (a stout little dog in a superhero costume): "you couldn't see the paper airplane because the model was too wide ... you could barely see any of the emote because the arm is so small ... I'm worried about character models and how this can work". He gave no verdict on the raised arm or the ending on a normal body. Cause and what changed: [a held plane is always seen](../decisions/2026-11-21-plane-always-seen.md).
+## Fourth and fifth looks: his own avatar hides the plane; he takes the loss (same day)
+- **Fourth version, as 1st on his own avatar** (a stout little dog in a superhero costume): "you couldn't see the paper airplane because the model was too wide ... you could barely see any of the emote because the arm is so small ... I'm worried about character models and how this can work".
+- **With the plane slid clear of the body** (built on his go): "No, I don't think so ... It has to be touching the hand ... we're just gonna have to take the L". Taken out again.
+- No verdict yet on the raised arm or the ending on a normally shaped body.
+- Measurements and what he decided: [a held plane stays in the hand](../decisions/2026-11-21-plane-stays-in-the-hand.md).
