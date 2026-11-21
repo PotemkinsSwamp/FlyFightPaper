@@ -753,3 +753,10 @@ and into the open place's `Assets` as the draft `ToyPilotClip`, unsaved: bake ag
 - **To look at it:** restart Play; Dev: hangar, F8, "end: pilot".
 
 Back to [HOME](../HOME.md).
+
+## Book Kicker: shot card and Gemini prompt (2026-11-21; proposed, waits for Alan)
+The next emote after Toy Pilot (Alan: "lets continue with the next emote"); a 1st-place emote that covers the camera ([plan](../plan/WINNERS-CIRCLE-PLAN.md)). Nothing built.
+- **The feeling (my pick):** the cheeky kid who is done with schoolwork: lazy and unbothered, then one sudden hard kick.
+- **My pick, his to overrule: a drop kick from the hands**, not a book lying at the feet: 1st stands on a book stack no bigger than a book, so there is no floor to kick from and no room for a run-up; in the hands the book follows any body, and after the kick it flies its own path.
+- **Shot card** (seconds after 1st's light): 0 to 2 stands still, the closed book in both hands at the waist, looking down at it (quiet: the runner-ups' sounds); 2 to 3.5 looks up at the camera, head tilted; 3.5 to 5 two small bounces, weight onto the left foot; 5 to 5.5 the book held out low in front, the right leg drawn back; 5.5 to 6 lets go and kicks it at the camera; then the book fills the picture, opens, slaps flat on the lens and slides down, and what it uncovers is your desk. After the kick the body is hidden: the follow-through and a hands-on-hips pose are for the shop preview.
+- **The Gemini prompt** given to Alan follows the shape that worked for Toy Pilot, with one change for the tracing: the mannequin wears one white shoe on the kicking foot (`tools/emote_trace.py` follows a white thing; it reads the right hand today and needs the foot added) and the book is dark.
