@@ -718,8 +718,12 @@ end
 
 -- Next One (plan approved by Alan in words 2026-11-20: "fine, you got this one, the next one is mine"; already over
 -- it and planning the rematch, busy, head down on the work): sitting cross-legged with a white sheet on the right
--- hand from the dark on; at their light the left hand folds it three times, briskly, with a pause after each fold
--- (FOLDS: in half, the nose, the wings), and the paper really folds: ten thin white pieces, the two halves of a
+-- hand from the dark on; at their light the left hand runs over it four times, a still moment after each (RUNS),
+-- and every run changes the paper once (Alan's first look in Play 2026-11-20: "they run their hands over it more
+-- than the paper changes ... run their hand over it, it's flat, then ... again, then there's a fold, ... again,
+-- there's another fold, ... again, and then it's done, and they pick it up"; a first build also ran the hand along
+-- each new crease): the first smooths the flat sheet, the others fold it in half, fold the nose, fold the wings.
+-- The paper really folds: ten thin white pieces, the two halves of a
 -- sheet each cut along its folds, swung about the fold lines (`hinges`). Then the right hand raises the finished
 -- plane to eye level and rocks it slowly, the kid looking at it, until the scene ends (no sighting along it: his
 -- "leave the sighting out"). The body is Assets.NextOneClip (tools/emote_clips.lua; it carries the moments of the
@@ -727,15 +731,16 @@ end
 -- The paper does the acting (the generator cannot do hand work, and he found arms typed in by numbers stiff): it is
 -- fixed to the right hand the way a tool is (its nose along the fingers, lying on the hand's thumb side), and the
 -- left hand is put on it with bendArm: on the edge of the flap being folded, so its path is the fold's own arc,
--- then along the new crease, then still for a moment, then to the next flap. The clip holds the right hand in front
+-- then still, with a short hop to the next flap's edge just before its run. The clip holds the right hand in front
 -- of the belly, fingers to the kid's left: the sheet lies across the body, its nose to their left, and each fold
 -- goes away from or towards them. Sizes come from this avatar's own arm (his OK: a plane about a forearm long;
 -- an avatar's two arms together only reach about a quarter of its height, so a bigger sheet cannot be folded).
 -- The sheet's length in forearm parts; its width and thickness in lengths (letter paper); the keel's depth in
 -- widths; where along it, from the nose, the right hand is.
 local SHEET_LONG, SHEET_WIDE, SHEET_THIN, KEEL, HELD_AT = 0.9, 0.77, 0.012, 0.125, 0.7
--- Seconds after the kid's light: the left hand starts each fold, has it over, has run along the crease.
-local FOLDS = { { fold = 0.15, folded = 0.75, creased = 1.1 }, { fold = 1.65, folded = 2.15, creased = 2.45 }, { fold = 3.0, folded = 3.6, creased = 3.95 } }
+-- Seconds after the kid's light: when each of the left hand's four runs starts and ends (the first over the flat
+-- sheet, then the three folds), and how long before a run the hand hops to where it starts.
+local RUNS, HOP = { { 0.15, 0.7 }, { 1.2, 1.75 }, { 2.25, 2.8 }, { 3.3, 3.85 } }, 0.25
 -- The left hand's middle rides PRESS of its own half-thickness over the paper, and ARC more at the top of a fold
 -- (the fold's arc alone is too small to see from the camera); it lets go over LET_GO seconds as the plane goes up;
 -- the wings end WINGS_UP degrees above level.
@@ -790,7 +795,7 @@ local function nextOne(animator, model, cast, top)
 	-- How far each fold line is turned `t` seconds in, and how far the plane is taken into the fingers (0 to 1).
 	local function folded(t)
 		local turned = {}
-		for i, f in FOLDS do turned[i] = math.pi * ease((t - f.fold) / (f.folded - f.fold)) end
+		for i = 1, 3 do turned[i] = math.pi * ease((t - RUNS[i + 1][1]) / (RUNS[i + 1][2] - RUNS[i + 1][1])) end
 		local taken = ease((t - raise) / (raised / 2))
 		turned[4], turned[5], turned[6] = taken * math.pi / 2, taken * math.rad(WINGS_UP), taken * math.rad(WINGS_UP)
 		return turned, taken
@@ -802,30 +807,21 @@ local function nextOne(animator, model, cast, top)
 		local from = grip.Position + up * (hand.Size.Z / 2 + thin / 2 + taken * (keel - thin) / 2)
 		return CFrame.lookAt(from, from - grip.UpVector, up)
 	end
-	-- Where the left hand's middle is `t` seconds in, in the paper's frame: on the edge of the flap it folds, then
-	-- along the crease towards the nose.
-	local grabs = { pt(-0.8 * half, 0.5 * long), pt(0.8 * half, 0.2 * half, thin), pt(0.85 * half, 0.6 * long, thin) }
-	local creases = { { pt(0.1 * half, 0.7 * long), pt(0.1 * half, 0.25 * long) }, { pt(0.75 * half, 0.75 * half), pt(0.2 * half, 0.2 * half) },
-		{ pt(keel, 0.75 * long), pt(keel, 0.35 * long) } }
+	-- Where the left hand's middle is `t` seconds in, in the paper's frame. `grabs`: the point of each flap's edge it
+	-- folds by, picked so one run ends near where the next starts. The first run crosses the flat sheet from its far
+	-- side to the near edge, where the first fold starts.
+	local grabs = { pt(-0.8 * half, 0.3 * long), pt(0.8 * half, 0.2 * half, thin), pt(0.85 * half, 0.45 * long, thin) }
 	local clear = (left.Size.X + left.Size.Y + left.Size.Z) / 6 -- about half the hand's thickness, whichever way it is turned
 	local function pinch(i, angle) return swung(i, angle) * grabs[i] + Vector3.yAxis * clear * (PRESS + ARC * math.sin(angle)) end
-	local function press(i, s) return creases[i][1]:Lerp(creases[i][2], ease(s)) + Vector3.yAxis * (2.5 * thin + clear * PRESS) end
+	local far = pt(0.7 * half, 0.3 * long) + Vector3.yAxis * clear * PRESS
 	local function leftAt(t)
-		for i, f in FOLDS do
-			if t < f.fold then return pinch(i, 0) end
-			if t < f.folded then return pinch(i, math.pi * ease((t - f.fold) / (f.folded - f.fold))) end
-			if t < f.creased then -- onto the crease, then along it
-				local s = (t - f.folded) / (f.creased - f.folded)
-				return s < 0.4 and pinch(i, math.pi):Lerp(press(i, 0), ease(s / 0.4)) or press(i, (s - 0.4) / 0.6)
-			end
-			local after = FOLDS[i + 1]
-			if not after then break end
-			if t < after.fold then -- a look at the fold, then to the next flap
-				local s = (t - f.creased) / (after.fold - f.creased)
-				return s < 0.45 and press(i, 1) or press(i, 1):Lerp(pinch(i + 1, 0), ease((s - 0.45) / 0.55))
-			end
+		if t < RUNS[1][2] then return far:Lerp(pinch(1, 0), ease((t - RUNS[1][1]) / (RUNS[1][2] - RUNS[1][1]))) end
+		for i = 1, 3 do
+			local run = RUNS[i + 1]
+			if t < run[1] then return i == 1 and pinch(1, 0) or pinch(i - 1, math.pi):Lerp(pinch(i, 0), ease((t - run[1] + HOP) / HOP)) end
+			if t < run[2] then return pinch(i, math.pi * ease((t - run[1]) / (run[2] - run[1]))) end
 		end
-		return press(#FOLDS, 1)
+		return pinch(3, math.pi)
 	end
 	local joints, at = rig(model)
 	local started = false
@@ -851,7 +847,7 @@ local function nextOne(animator, model, cast, top)
 			local lies = piece.at
 			for _, i in piece.folds do lies = swung(i, turned[i]) * lies end
 			piece.part.CFrame = sheet * lies
-			piece.part.Transparency = piece.tucked and t >= FOLDS[2].folded and 1 or 0
+			piece.part.Transparency = piece.tucked and t >= RUNS[3][2] and 1 or 0
 		end
 	end)
 	-- What nextOne returns stands in for an AnimationTrack (Play only): their own light starts the folding.

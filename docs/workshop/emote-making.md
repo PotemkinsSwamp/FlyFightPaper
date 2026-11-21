@@ -563,7 +563,15 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
   for Good Game above); then set the camera back to Fixed from a delayed line (`task.delay(1, ...)`: Studio's
   assistant puts the camera type back when a command ends).
 
-## Next One: built, not yet seen by anyone (2026-11-20)
+## Next One: Alan's first look, then four runs of the hand (2026-11-20)
+- **Alan's first look in Play:** "It's fine. It just looks like they're fiddling with this flat piece of paper until it opens up. Because they run their hands over it more than the paper changes ... run their hand over it, it's flat, then they run their hand over again, then there's a fold, then it runs their hand over it again, there's another fold, and then they run their hand over again, and then it's done, and they pick it up". The first build moved the hand eight times for three changes (an arc,
+  a run along the crease and a trip to the next flap for every fold). **Changed the same day, not yet seen by him:**
+  four runs, a still moment after each, one change each: at 0.15 to 0.7 s the hand crosses the flat sheet from
+  its far side to the near edge (nothing changes); 1.2 to 1.75 s the fold in half; 2.25 to 2.8 s the nose; 3.3 to
+  3.85 s the wings; at 4.3 s the plane is picked up. The crease runs are gone; before the nose and the wings the
+  hand hops a quarter of a stud to the flap's edge in the last 0.25 s of the still moment. Dry run on the three
+  test bodies: hand 0.00 off on two, reach at most 0.88; short and wide 0.105 studs short once.
+- What follows describes the first build where it differs (the fold times and the crease runs).
 The feeling (Alan's "yes, build it" to the plan in words): already over it and planning the rematch ("fine, you got
 this one, the next one is mine"); not sulking, not watching 1st, busy. Sighting along the plane at the end: "leave
 the sighting out".
@@ -600,8 +608,7 @@ the sighting out".
   arm runs out twice, at the far edge, by 0.17 studs** (it stops nearly straight just short of the paper), and a
   flap's tip touches the head's box by 0.04. The clip: biggest turn in one key 4.0 degrees, the loop's ends meet
   exactly. Both scripts compile; Studio has them (Rojo).
-- **Not known until a Play look:** how any of it reads (nobody has seen it, not even a still); whether the folds
-  read as folds or as fiddling from the camera (told to Alan with the plan); the hands on real avatars (Edit test
+- **Not known until his next look:** whether four runs read as folding (the first build read as fiddling); the hands on real avatars (Edit test
   bodies understate, see Nap); whether the left hand hides the paper while it presses (a blocky hand is as big as
   the half sheet).
 - **Dry-run traps in Edit.** The first run after a bake poses nobody (the new clip is not loaded yet: run it

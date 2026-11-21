@@ -31,6 +31,8 @@ error happening where their arm was, like, moving back and forth. Like, it was, 
 in a Play run of mine on his go (numbers only): Roblox's IKControl flipped 3rd's right arm up to 178 degrees a frame
 while the kid was awake. Replaced by our own arm bend.
 
+Next One, first look (the same evening): "It's fine. It just looks like they're fiddling with this flat piece of paper until it opens up. Because they run their hands over it more than the paper changes ... run their hand over it, it's flat, then they run their hand over again, then there's a fold, then it runs their hand over it again, there's another fold, and then they run their hand over again, and then it's done, and they pick it up". Rebuilt to that: four runs, one change each; waiting for his next look.
+
 Third look, at that fix: **"arms look fine now"**. Nap is approved with nothing open. On Next One's one open
 choice (sighting along the plane towards 1st at the end): "leave the sighting out".
 

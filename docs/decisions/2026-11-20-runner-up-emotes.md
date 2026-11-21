@@ -4,7 +4,7 @@
 **Status:** the first Good Game (Dev panel "2nd/3rd") was not accepted by Alan in Play ("stiff ... too fast ...
 unnatural"); its remake is approved by Alan in Play ("the slow clap is good now", "the stance is good", "the
 wave is fine"), Studio only until its clips are uploaded; Nap is approved by Alan in Play ("I think that's good. I think we move on"; one kid's arm glitch
-found and fixed: "arms look fine now"), Studio only until its two clips are uploaded; Next One is built to the approved plan and waits for his first look in Play
+found and fixed: "arms look fine now"), Studio only until its two clips are uploaded; Next One is built; after his first look in Play ("It's fine", but fiddling) it is rebuilt to his four runs of the hand and waits for his next look
 
 ## Decision
 - The three runner-up emotes as described on the [emote making](../workshop/emote-making.md) page ("Runner-up
@@ -31,6 +31,8 @@ found and fixed: "arms look fine now"), Studio only until its two clips are uplo
 - **Next One, plan in words: "yes, build it"** (the feeling: already over it and planning the rematch; head down on
   the work, brisk exact folds, the plane held up and turned over; the paper folds as hinged pieces and the hand
   rides the flap). No sighting along the plane towards 1st at the end ("leave the sighting out"). Built the same day; for him to reverse: the sheet is 1 stud long, not a forearm and hand (an avatar's arms cannot reach across a bigger one), and it is held across the body with its nose to the kid's left. With it his go for one Play run of mine to measure Nap's arm glitch.
+- **Next One after his first look:** every run of the hand over the paper changes it once: a run and it is flat, a
+  run and a fold, a run and another fold, a run and it is done, then they pick it up. No hand moves in between.
 - His go for the nine generator tries (each uploads a private animation to his account) and for Edit-mode screen
   grabs.
 - Earlier the same day: the winners' shot scales to the screen (as close as the screen allows, across and up and
