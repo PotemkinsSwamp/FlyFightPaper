@@ -675,7 +675,7 @@ questions, so my picks stand until he says otherwise: the feeling, the quiet sta
   swoop played backwards as the way back (in place of the dive), B's raise and hold. Built and rejected: below.
 
 ## Toy Pilot: the cut from a reference video (2026-11-21; fourth version approved: Alan "it looks fine")
-**Approved by Alan in Play, the fourth version as built** ("it looks fine, lets move on"), after his own avatar hid the plane and he [took that loss](../decisions/2026-11-21-plane-stays-in-the-hand.md). **Its sounds, waiting for his pick by ear:** a whoosh at 3.0 s (the swoop down and out) and at 4.5 s (back up), my timings; three candidates behind the Dev "end: pilot" button, which plays the next on each tap ([sound and effects](../systems/sound-and-effects.md)). The runner-ups' sounds stop before the first whoosh, as with Camera Flick.
+**Approved by Alan in Play, the fourth version as built** ("it looks fine, lets move on"), after his own avatar hid the plane and he [took that loss](../decisions/2026-11-21-plane-stays-in-the-hand.md). **Its sound, his pick by ear:** one quiet whoosh ("a subtle sound ... if it's loud, that's going to be stupid"), played at 3.0 s (the swoop down and out) and 4.5 s (back up), "timing is fine"; nothing else ("this is practically it"). Which sound and how loud: [sound and effects](../systems/sound-and-effects.md). The runner-ups' sounds stop before the first whoosh, as with Camera Flick. The start stays at 2 quiet seconds.
 
 **Alan on the third version: better, still off: the raised arm is cramped and the ending pose is not right**: "not
 extending their arm up enough. It doesn't look like a victory ... just holding the paper airplane" (the lean to the

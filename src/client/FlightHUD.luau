@@ -306,10 +306,7 @@ function HUD.start(getPlane, action)
 		for index, first in ipairs({ { "ToyPilot", "pilot" }, { "CameraFlick", "flick" } }) do
 			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(220+index*110,-80)
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
-			local whoosh=0 -- Toy Pilot's three whoosh candidates (Audio): each tap plays the next and says which, until Alan picks
-			button.Activated:Connect(function()
-				if first[1]=="ToyPilot" then whoosh=whoosh%3+1;Root:SetAttribute("DevPilotWhoosh",whoosh);button.Text="end: pilot "..whoosh end
-				Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
+			button.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
 		end
 		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
 		local ups={"dances","GoodGame","Nap","NextOne"}

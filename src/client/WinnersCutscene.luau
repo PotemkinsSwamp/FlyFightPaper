@@ -338,14 +338,14 @@ local function flyPlane(w)
 	prop.plane:PivotTo(CFrame.lookAt(grip, grip + prop.heading, up))
 end
 -- Toy Pilot's sounds: a whoosh as the plane swoops down and out, and one as it comes back up (seconds after 1st's
--- light, which are the clip's own). Which whoosh: DevPilotWhoosh, stepped by the Dev "end: pilot" button, until
--- Alan picks one of the three (Audio).
+-- light, which are the clip's own). A quiet whoosh, in time with the plane's moves, and nothing else (Alan
+-- 2026-11-21: "this is practically it").
 local PILOT_SOUNDS = { 3.0, 4.5 }
 local function pilotSounds(w, t)
 	for index, at in PILOT_SOUNDS do
 		if (w.heard or 0) < index and t >= at then
 			w.heard = index
-			Audio.play("pilotWhoosh" .. (Root:GetAttribute("DevPilotWhoosh") or 1))
+			Audio.play("pilotWhoosh")
 		end
 	end
 end
