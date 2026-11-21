@@ -465,6 +465,14 @@ local GOOD_GAME_BLEND = 0.7
 -- elsewhere in this pose), as far from the right hand's middle as the two hand boxes are thick along that line,
 -- times CLAP_PRESS (under 1: the boxes are a little bigger than the hands).
 local CLAP_EVERY, CLAP_PRESS = 0.5, 0.8
+-- 1st's emote owns the sound once its own effects begin (Alan 2026-11-21: the runner-ups' sounds "have to stop before
+-- that ... naturally", and "shouldn't have existed" after): a runner-up's sound plays only if it will be over by
+-- then, and never after. `firstSoundAt`: that moment on os.clock() in this scene; nil while 1st's emote has no sounds.
+local firstSoundAt
+local function runnerSound(name)
+	if firstSoundAt and os.clock() + Audio.seconds(name) > firstSoundAt then return nil end
+	return Audio.play(name)
+end
 local function thick(hand, along) -- half a hand box's thickness along a direction
 	local size, at = hand.Size, hand.CFrame
 	return (math.abs(along:Dot(at.XVector)) * size.X + math.abs(along:Dot(at.YVector)) * size.Y + math.abs(along:Dot(at.ZVector)) * size.Z) / 2
@@ -484,7 +492,7 @@ local function clapHands(model, humanoid, applaud)
 		local clap = math.floor(applaud.TimePosition / CLAP_EVERY) -- the sound, as the hands meet
 		if clap ~= clapped then
 			clapped = clap
-			if clap > 0 and applaud.WeightCurrent > 0.5 then Audio.play("ggClap") end
+			if clap > 0 and applaud.WeightCurrent > 0.5 then runnerSound("ggClap") end
 		end
 		local apart = left.Position - right.Position
 		if apart.Magnitude > 1e-3 then
@@ -680,7 +688,7 @@ local function nap(animator, model, place, cast, top)
 			breath = nil
 		elseif lit and breath ~= math.floor(sleep.TimePosition / NAP_BREATH) then
 			breath = math.floor(sleep.TimePosition / NAP_BREATH)
-			snore = Audio.play("napSnore" .. (Root:GetAttribute("DevRunnerSfx") or 1)) -- (the dev panel's pick of three)
+			snore = runnerSound("napSnore")
 		end
 		-- the Z's
 		if not awake and now >= nextZ then
@@ -745,7 +753,7 @@ local function nap(animator, model, place, cast, top)
 			if not model:IsDescendantOf(game) then return end
 			wake:Play(0.05); popped = os.clock()
 			if snore then snore:Stop() end
-			Audio.play("napPop")
+			runnerSound("napPop")
 		end)
 	end }
 end
@@ -878,7 +886,7 @@ local function nextOne(animator, model, cast, top)
 		if started and not track.IsPlaying then track:Play(0, 1, 1); t = raise + raised; track.TimePosition = t end -- a long hitch ran it out
 		if started and creased < 3 and t >= RUNS[creased + 2][1] then -- a fold begins
 			creased += 1
-			Audio.play("fold" .. (Root:GetAttribute("DevRunnerSfx") or 1)) -- (the dev panel's pick of three)
+			runnerSound("fold")
 		end
 		if t >= raise + raised + round then t -= round; track.TimePosition = t end -- round the rocking again
 		local turned, taken = folded(t)
@@ -1016,6 +1024,7 @@ local function popIn(a) a = math.clamp(a, 0, 1) - 1; return 1 + 2.7 * a ^ 3 + 1.
 -- moves on: the banner while the camera sets off, nothing over the winners' shot, the results card as it glides back.
 function Cutscene.play(winners, onStage)
 	Cutscene.stop()
+	firstSoundAt = nil
 	local room = workspace:FindFirstChild("Arena")
 	local desks = {}
 	for i, name in Rounds.winner_desks do desks[i] = room and room:FindFirstChild(name) end
@@ -1117,6 +1126,7 @@ function Cutscene.play(winners, onStage)
 							if copy.flick then
 								copy.prop.plane.Parent = cast
 								state.flickAt = LIGHT_AT + 2 * TURN + copy.flick.release -- the release, in seconds after arriving
+								firstSoundAt = state.start + BANNER + DIM + GLIDE + state.flickAt -- the throw's sound (flickSounds)
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do

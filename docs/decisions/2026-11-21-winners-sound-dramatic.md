@@ -26,6 +26,8 @@
 - **Every emote has sound effects** ("that's important, that the emotes have sound effects"), 1st's first. Camera
   Flick: "a smack on the camera lens and then the sound of like a camera hitting the ground"; a sound for the throw
   if one can be made.
+- **1st's emote owns the sound.** The runner-ups' sounds are heard only while 1st's effects are not: "they have to
+  stop before that. And they have to stop naturally"; after the camera fell the snoring "shouldn't have existed".
 
 ## Why
 The approved emotes are attitude and rivalry in the dark under spotlights (a slow clap, a nap, the next plane, a

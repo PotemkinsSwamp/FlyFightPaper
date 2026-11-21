@@ -305,13 +305,6 @@ function HUD.start(getPlane, action)
 		local flick=eraserBots:Clone();flick.Name="EndFlick";flick.Text="end: flick";flick.Position=UDim2.fromOffset(440,-80)
 		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
 		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
-		-- Which of the three snores and paper folds the runner-ups' emotes play (Audio's napSnore/fold): each tap steps on. Goes once Alan has picked.
-		local runnerSfx=eraserBots:Clone();runnerSfx.Name="RunnerSfx";runnerSfx.Text="2-3 sfx: 1";runnerSfx.Position=UDim2.fromOffset(330,-80)
-		runnerSfx.BackgroundColor3=Color3.fromRGB(150,40,40);runnerSfx.Parent=picker
-		runnerSfx.Activated:Connect(function()
-			local pick=(Root:GetAttribute("DevRunnerSfx") or 1)%3+1
-			Root:SetAttribute("DevRunnerSfx",pick);runnerSfx.Text="2-3 sfx: "..pick
-		end)
 		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
 		local ups={"dances","GoodGame","Nap","NextOne"}
 		local runnerUp=eraserBots:Clone();runnerUp.Name="RunnerUp";runnerUp.Text="2nd/3rd: dances";runnerUp.Position=UDim2.fromOffset(550,-80)

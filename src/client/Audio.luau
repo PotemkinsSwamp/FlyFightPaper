@@ -44,13 +44,10 @@ local definitions={
  -- Loud on purpose: they must stand over the winners' music (Alan 2026-11-21).
  flickThrow={9120989898,1.2,1,.5},flickSmack={9114771792,1,2,1},flickFall={9113589156,1,1.6,2.3},
  -- The runner-up emotes (WinnersCutscene), as loud. Good Game's clap: Pro Sound Effects "Hand Slap Claps 10". Nap:
- -- the bubble's pop is the Popper's balloon pop, high; the snore and Next One's fold have three candidates each for
- -- Alan's ear (Studio's "2-3 sfx" button steps through them; the ones not picked go): snores Pro Sound Effects
- -- "Comic Snoring Female Vocals Snorting" 5, 6 and 9; folds, each cut to half a second, the death's "Paper Packet
- -- Unfolding Crumpled Sheets 4", the gift's "Heavy Paper Bag Slow Rustle 2" and "File Folder Movement 7".
- ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},
- napSnore1={9113861808,1,1.4,2.4},napSnore2={9113861981,1,1.4,2.2},napSnore3={9113862110,1,1.4,3.1},
- fold1={9125723704,1.3,1.4,.5},fold2={9125724963,1.4,1.4,.5},fold3={9114409757,1.2,1.4,.5},
+ -- the bubble's pop is the Popper's balloon pop, high; the snore is Pro Sound Effects "Comic Snoring Female Vocals
+ -- Snorting 6". Next One's fold: half a second of the gift's "Heavy Paper Bag Slow Rustle 2". (The snore and the fold
+ -- are Alan's picks of three each, by ear in Play 2026-11-21.)
+ ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
 -- the rest sit straight in SoundService, heard the same anywhere. (Until 2026-10-18 those sat in an attachment
@@ -59,6 +56,7 @@ local pool,available,busy,spots={},{},{},{}
 local function id(definition)
  return type(definition[1])=="number" and "rbxassetid://"..definition[1] or "rbxasset://sounds/"..definition[1]
 end
+function Audio.seconds(name) local definition=definitions[name];return definition and (definition[4] or .22) or 0 end -- how long `name` plays
 function Audio.play(name,position,reach)
  local definition=definitions[name];if not definition then return end
  if definition.after then task.delay(definition.after[2],Audio.play,definition.after[1],position,reach) end
