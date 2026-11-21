@@ -298,13 +298,16 @@ function HUD.start(getPlane, action)
 	for index, song in ipairs({ "depth", "step", "hyped", "relent" }) do -- the fourth sits over the third (the row is full)
 		local endMatch=eraserBots:Clone();endMatch.Name="EndMatch"..index;endMatch.Text="end: "..song;endMatch.Position=UDim2.fromOffset(330+math.min(index,3)*110,index>3 and -80 or -40)
 		endMatch.BackgroundColor3=Color3.fromRGB(150,40,40);endMatch.Parent=picker
-		endMatch.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",nil);Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
+		endMatch.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",nil);Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
 	end
-	-- The same with Camera Flick as 1st's emote: Studio only until its clip is uploaded (WinnersCutscene).
+	-- The same with one of our own 1st-place emotes (WinnersCutscene), Studio only: Camera Flick, and Toy Pilot from
+	-- its draft clip.
 	if game:GetService("RunService"):IsStudio() then
-		local flick=eraserBots:Clone();flick.Name="EndFlick";flick.Text="end: flick";flick.Position=UDim2.fromOffset(440,-80)
-		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
-		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
+		for index, first in ipairs({ { "ToyPilot", "pilot" }, { "CameraFlick", "flick" } }) do
+			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(220+index*110,-80)
+			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
+			button.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
+		end
 		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
 		local ups={"dances","GoodGame","Nap","NextOne"}
 		local runnerUp=eraserBots:Clone();runnerUp.Name="RunnerUp";runnerUp.Text="2nd/3rd: dances";runnerUp.Position=UDim2.fromOffset(550,-80)

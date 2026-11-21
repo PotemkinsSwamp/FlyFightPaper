@@ -295,6 +295,8 @@ end
 -- 1st's emote: playing with their plane (Alan 2026-10-18, docs/decisions/2026-10-18-emotes-and-bot-looks.md). A
 -- full-body animation from Meshy text-to-motion (tools/meshy_to_r15.py) moves the body; a copy of their own plane
 -- sits in the right hand, nose turning the way the hand moves. Studio tests set a temporary id on DevWinnerEmote.
+-- Toy Pilot (ours, docs/workshop/emote-making.md) is played this way when the Dev panel's "end: pilot" button asked
+-- for it: Studio only, from its draft clip, until it is uploaded.
 local PLANE_LENGTH, PLANE_TURN = 0.3, 0.15 -- plane length as a share of the winner's height; how fast the nose turns
 local function holdPlane(model, actorId, height, shrink)
 	local planes = workspace:FindFirstChild("Planes")
@@ -321,14 +323,14 @@ local function holdPlane(model, actorId, height, shrink)
 	return { plane = plane, hand = hand, grip = hand:FindFirstChild("RightGripAttachment"), length = height * PLANE_LENGTH, span = plane:GetExtentsSize().X * shrink,
 		-- from its middle down to its underside (see flickPlane)
 		belly = math.min(0.6 * shrink * (size.Y / 2 - plane:GetPivot():ToObjectSpace(box).Position.Y), 0.05 * height * PLANE_LENGTH),
-		last = hand.Position, heading = model:GetPivot().LookVector }
+		heading = model:GetPivot().LookVector }
 end
 local function flyPlane(w)
 	local prop = w.prop
-	if not prop.plane.Parent then prop.plane.Parent = w.model end
 	local at = prop.hand.Position
-	local moved = at - prop.last
-	prop.last = at
+	local here = at - w.shift -- without the slide that keeps the small winner in front of the camera: only the hand's own movement turns the nose
+	local moved = here - (prop.last or here)
+	prop.last = here
 	if moved.Magnitude > prop.length * 0.002 then prop.heading = prop.heading:Lerp(moved.Unit, PLANE_TURN).Unit end
 	local grip = at + prop.heading * prop.length * 0.3 -- held by the tail
 	local up = math.abs(prop.heading.Y) > 0.97 and w.desk.LookVector or Vector3.yAxis
@@ -358,7 +360,7 @@ local function ourClip(name)
 	return Rounds.emote_clips[name], nil
 end
 local function flickClip()
-	if not (RunService:IsStudio() and Root:GetAttribute("DevCameraFlick")) then return nil end
+	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "CameraFlick") then return nil end
 	local id, draft = ourClip("CameraFlick")
 	return id, { release = draft and draft:GetAttribute("Release") or Rounds.camera_flick_release,
 		grip = draft and draft:GetAttribute("Grip") or CFrame.new(table.unpack(Rounds.camera_flick_grip)) }
@@ -962,7 +964,8 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	model.Parent = world
 	local flick, flickInfo
 	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then flick, flickInfo = flickClip() end
-	local planeEmote = flick or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
+	local pilot = RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "ToyPilot" and (ourClip("ToyPilot"))
+	local planeEmote = flick or pilot or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
 	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
 	flick = prop and flick
@@ -1123,8 +1126,8 @@ function Cutscene.play(winners, onStage)
 							copy.cover = Instance.new("Highlight")
 							copy.cover.Name, copy.cover.FillColor, copy.cover.FillTransparency, copy.cover.OutlineTransparency = "Unlit", Color3.new(), 1, 1
 							copy.cover.DepthMode, copy.cover.Parent = Enum.HighlightDepthMode.Occluded, cast
+							if copy.prop then copy.prop.plane.Parent = cast end -- in the hand from the dark on, under the same cover
 							if copy.flick then
-								copy.prop.plane.Parent = cast
 								state.flickAt = LIGHT_AT + 2 * TURN + copy.flick.release -- the release, in seconds after arriving
 								firstSoundAt = state.start + BANNER + DIM + GLIDE + state.flickAt -- the throw's sound (flickSounds)
 							end
@@ -1247,7 +1250,7 @@ function Cutscene.play(winners, onStage)
 			if w.flick then
 				flickPlane(w, since, shot, steady, height)
 				flickSounds(w, since)
-			elseif w.prop and w.emote.IsPlaying then flyPlane(w) end
+			elseif w.prop then flyPlane(w) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end

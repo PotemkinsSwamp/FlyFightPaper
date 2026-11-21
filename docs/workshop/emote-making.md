@@ -671,7 +671,42 @@ questions, so my picks stand until he says otherwise: the feeling, the quiet sta
 
 - **No try has a dive.** "Dives the hand down in front and pulls it back up" came back as nothing (A) or a bowed
   head with the hand at the side (B). The generator again gives postures and big arm arcs, not a path for the hand.
-- **The cut, ruled by Alan ("go with option 1"; not built):** C's admiring stretched to 4 s, B's swoop over, B's
-  swoop played backwards as the way back (in place of the dive), B's raise and hold.
+- **The cut, ruled by Alan ("go with option 1"):** C's admiring stretched to 4 s, B's swoop over, B's
+  swoop played backwards as the way back (in place of the dive), B's raise and hold. Built: below.
+
+## Toy Pilot: the cut (2026-11-21; built, measured, not yet seen by anyone)
+`CUTS.ToyPilot` in `tools/emote_clips.lua`, baked to `assets/animations/emotes/toy-pilot.rbxm` and into the open
+place's `Assets` as the draft `ToyPilotClip` (unsaved: after a close without a save, bake it again as for Next One,
+`--bake=ToyPilot:ToyPilotClip:assets/animations/emotes/toy-pilot.rbxm`). One clip, 13 s, played once; the camera
+leaves 10.4 s after 1st's light.
+
+| Seconds after 1st's light | What the kid does | From |
+|---|---|---|
+| 0 to 4 | Looks down (head bowed 45 degrees) at the right hand held at chest height in front; from 3.5 the head comes up and the hand goes out | C's 0 to 2 s at half speed |
+| 4 to 4.5 | Wind-up: the hand drops low at the right | a join |
+| 4.5 to 6 | The swoop: the hand climbs out wide on the right, over the top (a fifth of the body's height above the head), down in front of the face; the chest turns 30 degrees with it, the knees bend | B's 0.3 to 1.1 s |
+| 6 to 7.5 | The same swoop backwards | B's 1.1 to 0.3 s |
+| 7.5 to 8.5 | The arm thrusts up (half the body's height in half a second: the clip's own speed), the legs straighten | B's 4 to 5 s |
+| 8.5 on | Held: the hand a little above the head, forward and to the right; left hand on the hip; the chest sways 2 degrees every 3 s | B's 5.5 s |
+
+- **The swoop is not what the first measuring said.** Measured every 0.05 s, B's hand never crosses to the left: it
+  goes up on the right, over the top and down in front of the face (its furthest across, at 1.1 s), then drops back
+  to the right. So the swoop's second half is a dive of sorts. The cut turns round at 1.1 s, the widest point (my
+  pick; the first numbers said 1.3 s). Lesson: measure a hand path at 20 samples a second before describing it.
+- **The there-and-back is slow at each end** (the clip's seconds follow a sine squared: at most 0.84 of the clip's
+  own speed), so the turn-round in front of the face has no jerk.
+- **The feet are planted** (handoff note: B's hips wandered 0.47, C's foot 0.88): both ankles stay where they are in
+  the held ending, the feet flat as there, the legs bent to reach (`reach` now does legs too). Measured over all 391
+  frames on the 5-stud body: feet move at most 0.06 studs and turn 0 degrees; hips 0.05 sideways, 0.16 down in the
+  swoop (left knee to 114 degrees) and straight in the ending; the fastest joint 17 degrees in a frame (the upper
+  arm in the thrust).
+- **In the scene:** the Dev panel's "end: pilot" button (Studio only; `DevFirstEmote`, which "end: flick" now sets
+  too) ends the match with it as 1st's emote, from the draft. The plane is `holdPlane` and `flyPlane`, not run since
+  the winners became small models in front of the camera, so two things were fixed by reading the code, not by
+  looking: the plane is in the hand from the dark on and fades with the kid (it was added later and would have hung
+  in the picture as the camera left), and only the hand's own movement turns its nose (the slide that keeps the
+  small winner in front of the camera was counted as movement too).
+- **Not in yet:** its two whooshes (`firstSoundAt`, as Camera Flick), the upload and its id in the config.
+- **To look at it:** restart Play; Dev: hangar, F8, "end: pilot".
 
 Back to [HOME](../HOME.md).

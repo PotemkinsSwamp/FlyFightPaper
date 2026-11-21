@@ -185,13 +185,15 @@ local function arc(from, to)
 end
 -- Bends one arm of a pose so the middle of its hand is at `target`, the elbow towards `pole` (root frame). Never
 -- quite straight (0.95 of its length at most: a straight arm looks stiff), so a far target is not quite reached.
-local function reach(turn, side, target, pole)
-	local upper, lower, hand = side .. "UpperArm", side .. "LowerArm", side .. "Hand"
+-- `leg`: the leg of that side instead, its ankle joint to `target`, the knee towards `pole` (it may stand straight).
+local function reach(turn, side, target, pole, leg)
+	local upper, lower, hand = side .. (leg and "UpperLeg" or "UpperArm"), side .. (leg and "LowerLeg" or "LowerArm"), side .. (leg and "Foot" or "Hand")
+	local function tip(at) return leg and (at[lower] * joints[hand].c0).Position or at[hand].Position end
 	local at = build(turn)
-	local shoulder = at.UpperTorso * joints[upper].c0
+	local shoulder = at[joints[upper].parent] * joints[upper].c0
 	local s, elbow0 = shoulder.Position, (at[upper] * joints[lower].c0).Position
-	local l1, l2 = (elbow0 - s).Magnitude, (at[hand].Position - elbow0).Magnitude
-	local d = math.clamp((target - s).Magnitude, math.abs(l1 - l2) * 1.01, (l1 + l2) * 0.95)
+	local l1, l2 = (elbow0 - s).Magnitude, (tip(at) - elbow0).Magnitude
+	local d = math.clamp((target - s).Magnitude, math.abs(l1 - l2) * 1.01, (l1 + l2) * (leg and 0.999 or 0.95))
 	local along = (target - s).Unit
 	local a = (l1 * l1 - l2 * l2 + d * d) / (2 * d)
 	local out = pole - s
@@ -200,7 +202,7 @@ local function reach(turn, side, target, pole)
 	turn[upper] = shoulder.Rotation:Inverse() * (arc(elbow0 - s, elbow - s) * (shoulder * turn[upper]).Rotation)
 	at = build(turn)
 	local bend = at[upper] * joints[lower].c0
-	turn[lower] = bend.Rotation:Inverse() * (arc(at[hand].Position - bend.Position, s + along * d - bend.Position) * (bend * turn[lower]).Rotation)
+	turn[lower] = bend.Rotation:Inverse() * (arc(tip(at) - bend.Position, s + along * d - bend.Position) * (bend * turn[lower]).Rotation)
 end
 -- Nap B's sitting pose with the chest leaning `lean` degrees forward and `side` to the right and the head held
 -- `down` and rolled NAP_ROLL to the right whatever the chest does; and where the hand goes: against the right
@@ -349,6 +351,55 @@ CUTS.NextOne = { length = NEXT_RAISE + NEXT_RAISED + NEXT_TURN + NEXT_TAIL, once
 	local neck = at.UpperTorso * joints.Head.c0
 	local to = (at.RightHand.Position - at.Head.Position).Unit
 	turn.Head = neck.Rotation:Inverse() * CFrame.lookAt(Vector3.zero, (-Vector3.zAxis):Lerp(to, NEXT_FOLLOW)).Rotation * joints.Head.c1.Rotation
+	return turn
+end }
+
+-- Toy Pilot, the free 1st-place emote (plan in words and Alan's ruling 2026-11-21, "go with option 1": the swoop
+-- goes there and back; no generated try gave a dive). The kid is lost in playing with their plane, then proud. One
+-- clip, played once, from two generated clips in their own seconds (P): the admiring (the hand held up in front of
+-- the bowed head: `admire` to P.looked, at half speed, TOY_ADMIRE seconds: the runner-ups' sounds live here); a
+-- wind-up, TOY_WIND, the hand dropping low at the right; the swoop and the same swoop backwards (`fly` from P.out
+-- to P.over and back, TOY_SWOOP seconds for both, slow at each end so it turns round without a jerk: the hand
+-- climbs out wide on the right, goes over the top a head above the head and comes down in front of the face, as
+-- far across as that clip ever takes it; it never reaches the left side, and after P.over it only drops back to
+-- the right); then `fly`'s own ending, the arm straight up (from P.raise, joined over TOY_JOIN) and held from
+-- P.held on, the chest swaying TOY_SWAY degrees side to side every TOY_SWAY_EVERY seconds. By numbers, on every
+-- frame: both feet stay exactly where they stand in the held ending (the generated clips shuffle and bounce: a
+-- foot up to 0.9 studs on a 5-stud body), the legs bent to reach them; the hips stay over their spot as in every clip.
+-- The plane is the scene's own (WinnersCutscene: in the hand, its nose turning the way the hand moves).
+local P = { admire = "rbxassetid://100781595643396", looked = 2.0, fly = "rbxassetid://93519745518213", out = 0.3, over = 1.1, raise = 4.0, held = 5.5 }
+local TOY_ADMIRE, TOY_WIND, TOY_SWOOP, TOY_JOIN, TOY_LENGTH, TOY_SWAY, TOY_SWAY_EVERY = 4, 0.5, 3, 0.5, 13, 2, 3
+local toyFeet -- this body's numbers, worked out once
+local function planted(c)
+	if toyFeet then return toyFeet end
+	local at = build(c.fly(P.held))
+	toyFeet = {}
+	for _, side in { "Left", "Right" } do
+		toyFeet[side] = { ankle = (at[side .. "LowerLeg"] * joints[side .. "Foot"].c0).Position, foot = at[side .. "Foot"].Rotation,
+			knee = (at[side .. "UpperLeg"] * joints[side .. "LowerLeg"].c0).Position - Vector3.zAxis * 0.2 * HEIGHT } -- knees bend forwards
+	end
+	return toyFeet
+end
+CUTS.ToyPilot = { length = TOY_LENGTH, once = true, clips = { admire = P.admire, fly = P.fly }, pose = function(t, c)
+	local flown = TOY_ADMIRE + TOY_WIND + TOY_SWOOP
+	local turn
+	if t < TOY_ADMIRE then
+		turn = c.admire(t / TOY_ADMIRE * P.looked)
+	elseif t < TOY_ADMIRE + TOY_WIND then
+		turn = mix(c.admire(P.looked), c.fly(P.out), eased((t - TOY_ADMIRE) / TOY_WIND))
+	elseif t < flown then
+		turn = c.fly(P.out + (P.over - P.out) * math.sin(math.pi * (t - TOY_ADMIRE - TOY_WIND) / TOY_SWOOP) ^ 2)
+	else
+		local u = t - flown
+		turn = mix(c.fly(P.out), c.fly(math.min(P.raise + u, P.held)), eased(u / TOY_JOIN))
+		local sway = math.sin(math.max(u - (P.held - P.raise), 0) / TOY_SWAY_EVERY * 2 * math.pi)
+		turn.UpperTorso *= CFrame.Angles(0, 0, math.rad(TOY_SWAY) * sway)
+	end
+	for side, stand in planted(c) do
+		reach(turn, side, stand.ankle, stand.knee, true)
+		local ankle = build(turn)[side .. "LowerLeg"] * joints[side .. "Foot"].c0
+		turn[side .. "Foot"] = ankle.Rotation:Inverse() * stand.foot * joints[side .. "Foot"].c1.Rotation
+	end
 	return turn
 end }
 
