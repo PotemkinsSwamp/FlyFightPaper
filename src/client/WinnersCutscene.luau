@@ -343,15 +343,24 @@ end
 -- ever moves with the hand, and the clip turns the wrist to show its bottom, its top, then to aim it at the camera.
 -- At the clip's "Release" (seconds after 1st's light) it leaves the hand and flies FLICK_FLIGHT to the lens; the
 -- camera's fall takes FLICK_FALL; the scene leaves FLICK_AFTER after the release.
--- Not uploaded yet (Alan's go), so it only plays in Studio: the cleaned-up clip (Assets.CameraFlickClip, made by
--- tools/emote_preview.lua) is registered for the session, when the Dev panel's "end: flick" button asked for it.
+-- Its clip is uploaded (Alan's go 2026-11-21); it still plays in Studio only, when the Dev panel's "end: flick"
+-- button asked for it, until who gets which emote is decided.
 local FLICK_FLIGHT, FLICK_FALL, FLICK_AFTER = 0.42, 0.65, 1.73
 local FLICK_FLAT = CFrame.Angles(0, 0, math.rad(15)) * CFrame.Angles(math.rad(90), 0, 0) -- on the lens: top to it, nose up, a little askew
+-- Our own emote clips (docs/workshop/emote-making.md) are uploaded animations, their ids in the config
+-- (rounds.emote_clips). One still being worked on sits in Assets as "<name>Clip" (tools/emote_clips.lua and
+-- tools/emote_preview.lua bake it there) and is played instead, registered for the Studio session: `ourClip` gives
+-- the id to play and that draft, which carries its own moments as attributes (an uploaded clip's are in the config).
+local function ourClip(name)
+	local draft = RunService:IsStudio() and Root.Assets:FindFirstChild(name .. "Clip") or nil
+	if draft then return game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(draft), draft end
+	return Rounds.emote_clips[name], nil
+end
 local function flickClip()
-	local clip = RunService:IsStudio() and Root:GetAttribute("DevCameraFlick") and Root.Assets:FindFirstChild("CameraFlickClip")
-	if not clip then return nil end
-	return game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip),
-		{ release = clip:GetAttribute("Release") or 0.87, grip = clip:GetAttribute("Grip") or CFrame.identity }
+	if not (RunService:IsStudio() and Root:GetAttribute("DevCameraFlick")) then return nil end
+	local id, draft = ourClip("CameraFlick")
+	return id, { release = draft and draft:GetAttribute("Release") or Rounds.camera_flick_release,
+		grip = draft and draft:GetAttribute("Grip") or CFrame.new(table.unpack(Rounds.camera_flick_grip)) }
 end
 local function bounce(v)
 	if v < 1 / 2.75 then return 7.5625 * v * v
@@ -416,15 +425,11 @@ local function emoteFor(place)
 end
 
 -- The runner-up emotes (Alan's OK 2026-11-20: Good Game, Nap, Next One), for 2nd and 3rd: small, calm loops. Studio
--- only until Alan passes them: the Dev panel's "2nd/3rd" button names one (DevRunnerUp). Clips of ours cut from
--- generated body moves (tools/emote_clips.lua) sit in Assets, not uploaded yet (Alan's go): registered for the session.
-local function ourClip(name)
-	local clip = Root.Assets:FindFirstChild(name)
-	return clip and game:GetService("KeyframeSequenceProvider"):RegisterKeyframeSequence(clip)
-end
+-- only until who gets which is decided (all three approved by him in Play, their clips uploaded 2026-11-21): the Dev
+-- panel's "2nd/3rd" button names one (DevRunnerUp).
 local function runnerUpClip()
 	local name = RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
-	return name and ourClip(name .. "Clip")
+	return name and (ourClip(name))
 end
 
 -- Good Game, the free one (Alan's OK on the remake 2026-11-20; he found arms typed in by numbers stiff and too
@@ -433,12 +438,12 @@ end
 -- waiting ... one smooth rhythm" (his "the slow clap is good now"): Roblox's Applaud emote (a clap every half
 -- second) at half speed for three claps. Then the wave he described: the arms drop to the sides, the right forearm
 -- comes up into a low V, elbow down, hand beside the head, and sways five times, lazy, 0.8 s a wave
--- (Assets.GoodGameWaveClip, cut from a generated clip whose sway is 0.6 s: played at 0.75). Then the kid stands. (Tried and rejected by him: holding the hands apart and striking fast;
+-- (the GoodGameWave clip, cut from a generated clip whose sway is 0.6 s: played at 0.75). Then the kid stands. (Tried and rejected by him: holding the hands apart and striking fast;
 -- resting them together with a quick swing, 0.65 s a clap, from Fortnite's Slow Clap, "still too fast"; Roblox's
 -- own wave, slowed and half raised, "too enthusiastic".)
 -- Each step: { clip (Roblox's id or the name of one of ours), the clip's seconds played before the next step
 -- starts, speed, weight } or { false, seconds }. What goodGame returns stands in for an AnimationTrack: Play only.
-local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 0.5, 1 }, { "GoodGameWaveClip", 5.6, 0.75, 1 }, { false, 2 } }
+local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 0.5, 1 }, { "GoodGameWave", 5.6, 0.75, 1 }, { false, 2 } }
 local GOOD_GAME_BLEND = 0.7
 -- The hands meet at every clap (Alan 2026-11-20: they did not connect). Roblox's clap is one set of joint turns, so
 -- on each body the hands stop a different distance apart (0.4 to 1.2 studs on six avatars measured). Like the plane
@@ -475,17 +480,17 @@ end
 local function goodGame(animator, model)
 	local tracks = {}
 	for i, step in GOOD_GAME do
-		local id = step[1] and (step[1]:find("^rbxassetid") and step[1] or ourClip(step[1]))
+		local id = step[1] and (step[1]:find("^rbxassetid") and step[1] or (ourClip(step[1])))
 		if id then
 			local animation = Instance.new("Animation"); animation.AnimationId = id
 			tracks[i] = animator:LoadAnimation(animation); tracks[i].Looped, tracks[i].Priority = true, Enum.AnimationPriority.Action
 		end
 	end
 	clapHands(model, animator.Parent, tracks[1])
-	-- The stance (Assets.GoodGameStanceClip): the weight on the right leg, the left foot out to the side, the hips
+	-- The stance (the GoodGameStance clip): the weight on the right leg, the left foot out to the side, the hips
 	-- tilted, from the dark on. It holds only the hips and legs, one priority above the clap and wave, which keep the
 	-- chest, head and arms.
-	local stance = ourClip("GoodGameStanceClip")
+	local stance = ourClip("GoodGameStance")
 	if stance then
 		local animation = Instance.new("Animation"); animation.AnimationId = stance
 		local hold = animator:LoadAnimation(animation); hold.Looped, hold.Priority = true, Enum.AnimationPriority.Action2
@@ -582,9 +587,9 @@ end
 -- cross-legged, the right elbow on the thigh and the head hanging limp, face to the lap, held by the brow on the
 -- hand (his second look: "their head needs to be more down ... it makes them look awake, if you can see their
 -- faces"), asleep from the dark on
--- (Assets.NapSleepClip, a loop: a breath every 4 s, a small nod). When 1st's light clicks on they jolt awake, sit
+-- (the NapSleep clip, a loop: a breath every 4 s, a small nod). When 1st's light clicks on they jolt awake, sit
 -- stiff, look right, left, right and forward, and sink back onto the hand in a dip, a catch and a sink
--- (Assets.NapWakeClip, once, one priority higher; it starts and ends in the loop's first pose). Both are cut by
+-- (the NapWake clip, once, one priority higher; it starts and ends in the loop's first pose). Both are cut by
 -- tools/emote_clips.lua. The right arm is bent so the hand is on the brow on every body, the elbow towards the knee
 -- (bendArm); from the jolt on that is let go (NAP_OFF seconds) and the clip alone leaves the hand in the air about
 -- where the brow was; it comes back over the last NAP_ON seconds, as the head lands.
@@ -615,13 +620,13 @@ local function nap(animator, model, place, cast, top)
 	local head, hand, root = model:FindFirstChild("Head"), model:FindFirstChild("RightHand"), model:FindFirstChild("HumanoidRootPart")
 	local upper, shin = model:FindFirstChild("RightUpperArm"), model:FindFirstChild("RightLowerLeg")
 	local function track(name, looped, priority)
-		local id = ourClip(name)
+		local id = (ourClip(name))
 		if not id then return nil end
 		local animation = Instance.new("Animation"); animation.AnimationId = id
 		local made = animator:LoadAnimation(animation); made.Looped, made.Priority = looped, priority
 		return made
 	end
-	local sleep, wake = track("NapSleepClip", true, Enum.AnimationPriority.Action), track("NapWakeClip", false, Enum.AnimationPriority.Action2)
+	local sleep, wake = track("NapSleep", true, Enum.AnimationPriority.Action), track("NapWake", false, Enum.AnimationPriority.Action2)
 	if not (sleep and wake and head and hand and root and upper and shin) then return { IsPlaying = false, Play = function() end } end
 	sleep:Play(0)
 	local seat = seatOn(cast, top)
@@ -726,8 +731,8 @@ end
 -- The paper really folds: ten thin white pieces, the two halves of a
 -- sheet each cut along its folds, swung about the fold lines (`hinges`). Then the right hand raises the finished
 -- plane to eye level and rocks it slowly, the kid looking at it, until the scene ends (no sighting along it: his
--- "leave the sighting out"). The body is Assets.NextOneClip (tools/emote_clips.lua; it carries the moments of the
--- raise as attributes), held on its first pose until the light and going round its last seconds after the raise.
+-- "leave the sighting out"). The body is the NextOne clip (tools/emote_clips.lua; the config has the moments of the
+-- raise), held on its first pose until the light and going round its last seconds after the raise.
 -- The paper does the acting (the generator cannot do hand work, and he found arms typed in by numbers stiff): it is
 -- fixed to the right hand the way a tool is (its nose along the fingers, lying on the hand's thumb side), and the
 -- left hand is put on it with bendArm: on the edge of the flap being folded, so its path is the fold's own arc,
@@ -748,12 +753,13 @@ local PRESS, ARC, LET_GO, WINGS_UP = 0.9, 0.6, 0.6, 10
 local function nextOne(animator, model, cast, top)
 	local hand, left, root = model:FindFirstChild("RightHand"), model:FindFirstChild("LeftHand"), model:FindFirstChild("HumanoidRootPart")
 	local forearm, upper, lower = model:FindFirstChild("RightLowerArm"), model:FindFirstChild("LeftUpperArm"), model:FindFirstChild("LeftLowerArm")
-	local clip, id = Root.Assets:FindFirstChild("NextOneClip"), ourClip("NextOneClip")
+	local id, draft = ourClip("NextOne")
 	if not (id and hand and left and root and forearm and upper and lower) then return { IsPlaying = false, Play = function() end } end
 	local animation = Instance.new("Animation"); animation.AnimationId = id
 	local track = animator:LoadAnimation(animation); track.Looped, track.Priority = false, Enum.AnimationPriority.Action
 	track:Play(0, 1, 0) -- its first pose, held: already at work in the dark
-	local raise, raised, round = clip:GetAttribute("Raise") or 4.3, clip:GetAttribute("Raised") or 0.9, clip:GetAttribute("Turn") or 3
+	local marks = Rounds.next_one
+	local raise, raised, round = draft and draft:GetAttribute("Raise") or marks.raise, draft and draft:GetAttribute("Raised") or marks.raised, draft and draft:GetAttribute("Turn") or marks.turn
 	local seat = seatOn(cast, top)
 	local long = forearm.Size.Y * SHEET_LONG
 	local wide, thin = long * SHEET_WIDE, long * SHEET_THIN

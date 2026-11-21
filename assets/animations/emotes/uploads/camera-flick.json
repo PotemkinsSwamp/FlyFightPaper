@@ -1,0 +1,24 @@
+{
+  "path": "operations/6d405482-a6e6-426d-963e-c6b25492cbe0",
+  "operationId": "6d405482-a6e6-426d-963e-c6b25492cbe0",
+  "done": true,
+  "response": {
+    "path": "assets/92727749892782",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-21T05:30:42.840Z",
+    "assetId": "92727749892782",
+    "displayName": "FFP emote Camera Flick",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

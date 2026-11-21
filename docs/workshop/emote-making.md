@@ -621,4 +621,31 @@ the sighting out".
   "--bake=NextOne:NextOneClip:assets/animations/emotes/next-one.rbxm"` (with any `_G.EMOTE_CLIPS` set).
 - **To look at it:** Dev: hangar, F8, "2nd/3rd" stepped to NextOne, then "end: flick".
 
+## The six clips uploaded (2026-11-21, Alan: "go to upload")
+All three runner-up emotes and Camera Flick are approved, so their clips went up as private animations on Alan's
+account, each from its file in `assets/animations/emotes/` (first written out again from the open place and compared:
+the same bytes as what he saw in Play). `python tools/upload_texture.py FILE.rbxm --animation --creator 52064999
+--name "..." --output assets/animations/emotes/uploads/NAME.json`; all six passed moderation at once.
+
+| Clip | File | Id |
+|---|---|---|
+| Camera Flick | `camera-flick.rbxm` | `rbxassetid://92727749892782` |
+| Good Game's stance | `good-game-stance.rbxm` | `rbxassetid://105243837282624` |
+| Good Game's wave | `good-game-wave.rbxm` | `rbxassetid://85227875188355` |
+| Nap asleep | `nap-sleep.rbxm` | `rbxassetid://87423606831743` |
+| Nap waking | `nap-wake.rbxm` | `rbxassetid://130303608450334` |
+| Next One | `next-one.rbxm` | `rbxassetid://77528904973973` |
+
+- **The ids are in the config** (`rounds.emote_clips` in `config/gameplay.json`), and so are the moments an uploaded
+  clip can no longer carry as attributes: `camera_flick_release`, `camera_flick_grip`, `next_one` (raise, raised,
+  turn). `ourClip` in `WinnersCutscene` plays the id.
+- **A draft wins in Studio.** A clip named `<Name>Clip` in the place's `Assets` (what `--bake` writes) is played
+  instead of the uploaded one, with its own attributes: that is how a cut is worked on without an upload. The six
+  drafts are deleted from the open place, so Studio now plays the uploads. A changed cut needs a new upload (his
+  go) and its new id in the config.
+- **Checked in Edit, numbers only:** all six load from Roblox with their files' key counts and lengths; Next One's
+  dry run on the uploaded clip gives the same numbers as on the draft. **Not yet seen in Play from the uploads.**
+- **Still Studio only**, behind the Dev buttons: who gets which emote (one free, the rest sold) is not decided or
+  built.
+
 Back to [HOME](../HOME.md).

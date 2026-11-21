@@ -1,0 +1,24 @@
+{
+  "path": "operations/542779a4-b7ec-4060-957d-2c7af0c0d7cb",
+  "operationId": "542779a4-b7ec-4060-957d-2c7af0c0d7cb",
+  "done": true,
+  "response": {
+    "path": "assets/105243837282624",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-21T05:30:45.551Z",
+    "assetId": "105243837282624",
+    "displayName": "FFP emote Good Game stance",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

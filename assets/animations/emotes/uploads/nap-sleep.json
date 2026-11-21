@@ -1,0 +1,24 @@
+{
+  "path": "operations/69332cf4-d2b8-42b0-ac79-2e6913f76428",
+  "operationId": "69332cf4-d2b8-42b0-ac79-2e6913f76428",
+  "done": true,
+  "response": {
+    "path": "assets/87423606831743",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-21T05:30:51.872Z",
+    "assetId": "87423606831743",
+    "displayName": "FFP emote Nap sleep",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

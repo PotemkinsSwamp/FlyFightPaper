@@ -1,0 +1,24 @@
+{
+  "path": "operations/5a9de98e-7812-4de6-b009-97b4e89fcd0b",
+  "operationId": "5a9de98e-7812-4de6-b009-97b4e89fcd0b",
+  "done": true,
+  "response": {
+    "path": "assets/130303608450334",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-21T05:30:54.848Z",
+    "assetId": "130303608450334",
+    "displayName": "FFP emote Nap wake",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

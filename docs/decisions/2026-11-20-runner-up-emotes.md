@@ -33,6 +33,9 @@ found and fixed: "arms look fine now"), Studio only until its two clips are uplo
   rides the flap). No sighting along the plane towards 1st at the end ("leave the sighting out"). Built the same day; for him to reverse: the sheet is 1 stud long, not a forearm and hand (an avatar's arms cannot reach across a bigger one), and it is held across the body with its nose to the kid's left. With it his go for one Play run of mine to measure Nap's arm glitch.
 - **Next One after his first look:** every run of the hand over the paper changes it once: a run and it is flat, a
   run and a fold, a run and another fold, a run and it is done, then they pick it up. No hand moves in between.
+- **Uploads (2026-11-21): "go to upload"** for the six clips (Camera Flick, Good Game's two, Nap's two, Next One),
+  after "it looks good move on" for Next One. The emotes stay behind the Dev buttons: who gets which is a new
+  mechanic and needs its own plan and his OK.
 - His go for the nine generator tries (each uploads a private animation to his account) and for Edit-mode screen
   grabs.
 - Earlier the same day: the winners' shot scales to the screen (as close as the screen allows, across and up and
