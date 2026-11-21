@@ -478,9 +478,14 @@ local function clapHands(model, humanoid, applaud)
 	reach.Type, reach.ChainRoot, reach.EndEffector, reach.Target = Enum.IKControlType.Position, upper, left, meet
 	reach.SmoothTime, reach.Weight = 0, 0
 	reach.Parent = humanoid
-	local beat
+	local beat, clapped
 	beat = RunService.RenderStepped:Connect(function()
 		if not model:IsDescendantOf(game) then beat:Disconnect(); return end
+		local clap = math.floor(applaud.TimePosition / CLAP_EVERY) -- the sound, as the hands meet
+		if clap ~= clapped then
+			clapped = clap
+			if clap > 0 and applaud.WeightCurrent > 0.5 then Audio.play("ggClap") end
+		end
 		local apart = left.Position - right.Position
 		if apart.Magnitude > 1e-3 then
 			local along = apart.Unit
@@ -663,12 +668,20 @@ local function nap(animator, model, place, cast, top)
 	local nextZ = os.clock()
 	local began = os.clock() - 0.75 * BUBBLE_GROW -- when this bubble started: the first is already big in the dark
 	local popped, burst -- when the bubble popped; where and how big it was (the kid's frame)
+	local lit, breath, snore -- in their light; the breath last snored on; that snore's sound (cut off by the pop)
 	wake.Stopped:Connect(function() sleep.TimePosition = 0; began = os.clock() end)
 	local beat
 	beat = RunService.RenderStepped:Connect(function()
 		if not model:IsDescendantOf(game) then beat:Disconnect(); return end
 		sit(model, seat)
 		local now, awake, stage = os.clock(), wake.IsPlaying, root.CFrame
+		-- a snore on every breath asleep, once their light is on; the first as it comes on and as they doze off again
+		if awake then
+			breath = nil
+		elseif lit and breath ~= math.floor(sleep.TimePosition / NAP_BREATH) then
+			breath = math.floor(sleep.TimePosition / NAP_BREATH)
+			snore = Audio.play("napSnore" .. (Root:GetAttribute("DevRunnerSfx") or 1)) -- (the dev panel's pick of three)
+		end
 		-- the Z's
 		if not awake and now >= nextZ then
 			for _, z in zs do
@@ -727,8 +740,12 @@ local function nap(animator, model, place, cast, top)
 	end)
 	-- What nap returns stands in for an AnimationTrack (Play only): their own light changes nothing, 1st's wakes them.
 	return { IsPlaying = false, Play = function()
+		lit = true
 		task.delay((place - 1) * TURN, function()
-			if model:IsDescendantOf(game) then wake:Play(0.05); popped = os.clock() end
+			if not model:IsDescendantOf(game) then return end
+			wake:Play(0.05); popped = os.clock()
+			if snore then snore:Stop() end
+			Audio.play("napPop")
 		end)
 	end }
 end
@@ -843,6 +860,7 @@ local function nextOne(animator, model, cast, top)
 	end
 	local joints, at = rig(model)
 	local started = false
+	local creased = 0 -- how many of the three folds have sounded
 	local bent
 	bent = RunService.PreSimulation:Connect(function()
 		if not model:IsDescendantOf(game) then bent:Disconnect(); return end
@@ -858,6 +876,10 @@ local function nextOne(animator, model, cast, top)
 		sit(model, seat)
 		local t = track.TimePosition
 		if started and not track.IsPlaying then track:Play(0, 1, 1); t = raise + raised; track.TimePosition = t end -- a long hitch ran it out
+		if started and creased < 3 and t >= RUNS[creased + 2][1] then -- a fold begins
+			creased += 1
+			Audio.play("fold" .. (Root:GetAttribute("DevRunnerSfx") or 1)) -- (the dev panel's pick of three)
+		end
 		if t >= raise + raised + round then t -= round; track.TimePosition = t end -- round the rocking again
 		local turned, taken = folded(t)
 		local sheet = paperAt(hand.CFrame, taken)
