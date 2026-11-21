@@ -56,3 +56,6 @@ The fourth version, with the plane back in the hand: approved as it is. Next, on
 
 ## The whoosh: his pick by ear (same day)
 "whoosh 2, timing is fine" (Airy Pass By Windy Whoosh 4, at 3.0 s and 4.5 s after the light). And: "This is going to be a subtle sound. Because if it's loud, that's going to be stupid ... timed with them actually whooshing it down ... It's got to be timed with that perfectly ... this emote isn't going to have much like sound effects. This is practically it, and that's it." Changed: the other two candidates and the stepping button deleted; the whoosh turned down from 1.4 to 0.6 (my number, not yet heard by him); no third sound.
+
+## The quiet whoosh and the upload (same day)
+"fine, go to upload": the whoosh at 0.6 is subtle enough. The clip went up; from the upload he has not seen it yet ([emote making](../workshop/emote-making.md)).

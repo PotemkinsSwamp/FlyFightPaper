@@ -635,6 +635,7 @@ the same bytes as what he saw in Play). `python tools/upload_texture.py FILE.rbx
 | Nap asleep | `nap-sleep.rbxm` | `rbxassetid://87423606831743` |
 | Nap waking | `nap-wake.rbxm` | `rbxassetid://130303608450334` |
 | Next One | `next-one.rbxm` | `rbxassetid://77528904973973` |
+| Toy Pilot (same day, later; Alan: "fine, go to upload") | `toy-pilot.rbxm` | `rbxassetid://135069682151169` |
 
 - **The ids are in the config** (`rounds.emote_clips` in `config/gameplay.json`), and so are the moments an uploaded
   clip can no longer carry as attributes: `camera_flick_release`, `camera_flick_grip`, `next_one` (raise, raised,
@@ -676,6 +677,7 @@ questions, so my picks stand until he says otherwise: the feeling, the quiet sta
 
 ## Toy Pilot: the cut from a reference video (2026-11-21; fourth version approved: Alan "it looks fine")
 **Approved by Alan in Play, the fourth version as built** ("it looks fine, lets move on"), after his own avatar hid the plane and he [took that loss](../decisions/2026-11-21-plane-stays-in-the-hand.md). **Its sound, his pick by ear:** one quiet whoosh ("a subtle sound ... if it's loud, that's going to be stupid"), played at 3.0 s (the swoop down and out) and 4.5 s (back up), "timing is fine"; nothing else ("this is practically it"). Which sound and how loud: [sound and effects](../systems/sound-and-effects.md). The runner-ups' sounds stop before the first whoosh, as with Camera Flick. The start stays at 2 quiet seconds.
+**Uploaded** (his go; the file first compared with the draft he approved in Play: the same 139,949 bytes; passed moderation at once): the id is in `rounds.emote_clips` and the draft is deleted from the open place, so "end: pilot" now plays the upload. Checked in Edit, numbers only: it loads from Roblox with 391 keys and 13 s. Not yet seen by Alan from the upload. `rounds.winner_plane_emote` stays empty: like the other six, Toy Pilot plays in Studio only until who gets which emote is decided.
 
 **Alan on the third version: better, still off: the raised arm is cramped and the ending pose is not right**: "not
 extending their arm up enough. It doesn't look like a victory ... just holding the paper airplane" (the lean to the
