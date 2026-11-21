@@ -186,14 +186,15 @@ end
 -- Bends one arm of a pose so the middle of its hand is at `target`, the elbow towards `pole` (root frame). Never
 -- quite straight (0.95 of its length at most: a straight arm looks stiff), so a far target is not quite reached.
 -- `leg`: the leg of that side instead, its ankle joint to `target`, the knee towards `pole` (it may stand straight).
-local function reach(turn, side, target, pole, leg)
+-- `most`: another share of its length it may stretch to (0.95 leaves the elbow bent 36 degrees: no victory arm).
+local function reach(turn, side, target, pole, leg, most)
 	local upper, lower, hand = side .. (leg and "UpperLeg" or "UpperArm"), side .. (leg and "LowerLeg" or "LowerArm"), side .. (leg and "Foot" or "Hand")
 	local function tip(at) return leg and (at[lower] * joints[hand].c0).Position or at[hand].Position end
 	local at = build(turn)
 	local shoulder = at[joints[upper].parent] * joints[upper].c0
 	local s, elbow0 = shoulder.Position, (at[upper] * joints[lower].c0).Position
 	local l1, l2 = (elbow0 - s).Magnitude, (tip(at) - elbow0).Magnitude
-	local d = math.clamp((target - s).Magnitude, math.abs(l1 - l2) * 1.01, (l1 + l2) * (leg and 0.999 or 0.95))
+	local d = math.clamp((target - s).Magnitude, math.abs(l1 - l2) * 1.01, (l1 + l2) * (most or leg and 0.999 or 0.95))
 	local along = (target - s).Unit
 	local a = (l1 * l1 - l2 * l2 + d * d) / (2 * d)
 	local out = pole - s
@@ -369,7 +370,11 @@ end }
 -- 2026-11-21: short arms and a big head put the hand and the plane in the face and on top of the head wherever
 -- the video's long arm is merely near the head). In the trunk's own frame (`side` out from it, `along` up it):
 -- the hand is never further in than TOY_OUT_LOW arm lengths out to the side, and a raised one (from TOY_HIGH arm
--- lengths up, over TOY_HIGH_BY) TOY_OUT_HIGH: a wide V, at its full length. Where the video takes the plane across
+-- lengths up, over TOY_HIGH_BY) TOY_OUT_HIGH: a wide V, and really straight (TOY_STRAIGHT of its length; Alan
+-- 2026-11-21: bent, "it looks like they're just holding the paper airplane"). The ending is the victory (his "not
+-- extending their arm up enough"): from TOY_END, over TOY_END_IN, the V closes to TOY_OUT_END, the video's own
+-- high arm, and on the way the arm is pulled in to TOY_PULL of its length and punched out again, so the hand's
+-- last move is straight up along the arm and the plane ends nose up. Where the video takes the plane across
 -- over the head (a folded arm no blocky avatar has) the trunk leans after it instead: TOY_FOLLOW degrees for
 -- every arm length the video's hand is past TOY_CLEAR, TOY_FOLLOW_MOST at most. What is missing of one arm length
 -- goes TOY_FORWARD of the way forwards and the rest into the elbow (all forwards pointed the arm at the camera,
@@ -382,6 +387,7 @@ end }
 local P = { fly = "rbxassetid://93519745518213", held = 5.5 }
 local TOY_STEP, TOY_LENGTH, TOY_OUT_LOW, TOY_OUT_HIGH, TOY_HIGH, TOY_HIGH_BY = 0.2, 13, 0.45, 0.64, 0.3, 0.4
 local TOY_CLEAR, TOY_FOLLOW, TOY_FOLLOW_MOST, TOY_FORWARD = 0.1, 20, 12, 0.6
+local TOY_STRAIGHT, TOY_END, TOY_END_IN, TOY_OUT_END, TOY_PULL = 0.995, 6.8, 0.7, 0.25, 0.75
 local TOY_HIPS, TOY_TWIST, TOY_LOOK, TOY_HIP_AT, TOY_HIP_IN, TOY_HELD, TOY_SWAY, TOY_SWAY_EVERY = 0.3, 15, 0.5, 6.8, 0.6, 8, 1.5, 3
 local TOY = {
 	{ 0.38, 0.13, 0, -0.000, 18 }, { 0.38, 0.13, 0, -0.000, 18 }, { 0.34, 0.09, -0, 0.000, 17 }, { 0.39, 0.13, -0, 0.000, 17 }, { 0.42, 0.14, -1, -0.000, 17 }, { 0.45, 0.14, -1, -0.000, 17 },
@@ -429,7 +435,8 @@ CUTS.ToyPilot = { length = TOY_LENGTH, once = true, clips = { fly = P.fly }, pos
 	lean -= math.min(math.max(TOY_CLEAR - side, 0) * TOY_FOLLOW, TOY_FOLLOW_MOST)
 	a = math.rad(lean)
 	local raised = eased((along - TOY_HIGH) / TOY_HIGH_BY)
-	side = math.max(side, TOY_OUT_LOW + (TOY_OUT_HIGH - TOY_OUT_LOW) * raised)
+	local ending = eased((t - TOY_END) / TOY_END_IN)
+	side = math.max(side, TOY_OUT_LOW + (TOY_OUT_HIGH + (TOY_OUT_END - TOY_OUT_HIGH) * ending - TOY_OUT_LOW) * raised)
 	along += (math.sqrt(math.max(1 - side * side, 0)) - along) * raised
 	right, up = side * math.cos(a) + along * math.sin(a), along * math.cos(a) - side * math.sin(a)
 	local flat = math.sqrt(right * right + up * up)
@@ -439,7 +446,8 @@ CUTS.ToyPilot = { length = TOY_LENGTH, once = true, clips = { fly = P.fly }, pos
 	turn.UpperTorso *= CFrame.Angles(0, -math.rad(TOY_TWIST) * right, -a * (1 - TOY_HIPS))
 	local at = build(turn)
 	local shoulder = (at.UpperTorso * joints.RightUpperArm.c0).Position
-	reach(turn, "Right", shoulder + Vector3.new(right, up, -TOY_FORWARD * math.sqrt(1 - flat * flat)) * body.arm, shoulder + Vector3.new(0.5, -0.5, 0.3) * body.arm)
+	reach(turn, "Right", shoulder + Vector3.new(right, up, -TOY_FORWARD * math.sqrt(1 - flat * flat)) * body.arm, shoulder + Vector3.new(0.5, -0.5, 0.3) * body.arm,
+		false, (0.95 + (TOY_STRAIGHT - 0.95) * raised) * (1 - (1 - TOY_PULL) * math.sin(math.pi * ending) ^ 2))
 	-- the left arm: out to the side, then the fist against the side of the hips with the elbow straight out
 	local out = math.rad(left)
 	shoulder = (at.UpperTorso * joints.LeftUpperArm.c0).Position

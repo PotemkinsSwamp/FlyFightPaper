@@ -40,6 +40,7 @@ to the left; in the ending the plane points sideways, not up.
 ## Third look, the same day
 | Alan | What changed |
 |---|---|
-| Of the third version in Play: "better, still off" (picked from four answers); what is still off: the **raised arm is cramped** (bent and short, the plane close to the head instead of high and far) and the **ending pose** (arm not high enough, plane pointing sideways). Not picked: the lean to the left, the timing. | Nothing yet: the next session starts here. The calm start, the lean to the left and the timing stand. |
+| Of the third version in Play: "better, still off" (picked from four answers); what is still off: the **raised arm is cramped** (bent and short, the plane close to the head instead of high and far) and the **ending pose** (arm not high enough, plane pointing sideways). Not picked: the lean to the left, the timing. | The calm start, the lean to the left and the timing stand. |
+| "when they put their arm up ... they're not extending their arm up enough. It doesn't look like a victory like thing. It looks like they're just holding the paper airplane. Their arm is not extended high enough." | Cause found in the cut, not in Play: the arm-bending step never let an arm past 0.95 of its length, which leaves the elbow bent 36 degrees, and my wide V held the ending 40 degrees out to the side. Fourth version: a raised arm is really straight; the ending closes to the video's high arm (about 18 degrees off straight up) after a short pull-in and a push straight up, so the plane ends nose up. Measured only (hand 1.0 studs over the head's middle on the test body, was 0.7); **not seen in Play by anyone**. |
 
 Back to [HOME](../HOME.md).

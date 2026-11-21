@@ -675,9 +675,12 @@ questions, so my picks stand until he says otherwise: the feeling, the quiet sta
   swoop played backwards as the way back (in place of the dive), B's raise and hold. Built and rejected: below.
 
 ## Toy Pilot: the cut from a reference video (2026-11-21; third version: Alan "better, still off")
-**Alan on the third version: better, still off: the raised arm is cramped and the ending pose is not right** (the
-lean to the left and the timing he did not fault). Next: find why the raised arm comes out bent and short on real
-avatars, then the ending (arm high, plane nose up).
+**Alan on the third version: better, still off: the raised arm is cramped and the ending pose is not right**: "not
+extending their arm up enough. It doesn't look like a victory ... just holding the paper airplane" (the lean to the
+left and the timing he did not fault). **Fourth version (built and measured, seen by nobody):** `reach` held every
+arm to 0.95 of its length, an elbow bent 36 degrees: a raised arm now goes to 0.995; the ending closes from the wide
+V to the video's high arm, pulled in and punched straight up so the plane ends nose up. The table and the third
+version's numbers below are from before this change. Next: one Play recording beside the video (his go), then his look.
 
 **The first cut, from the generated clips B and C, Alan rejected in Play**: "it doesn't work at all for the models
 ... bringing their hand into like their face ... very awkward" ([playtest](../playtests/2026-11-21-toy-pilot-first-cut.md)).
