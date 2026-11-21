@@ -50,3 +50,6 @@ Back to [HOME](../HOME.md).
 - **With the plane slid clear of the body** (built on his go): "No, I don't think so ... It has to be touching the hand ... we're just gonna have to take the L". Taken out again.
 - No verdict yet on the raised arm or the ending on a normally shaped body.
 - Measurements and what he decided: [a held plane stays in the hand](../decisions/2026-11-21-plane-stays-in-the-hand.md).
+
+## Sixth look: "it looks fine, lets move on" (same day)
+The fourth version, with the plane back in the hand: approved as it is. Next, on his word: its sounds.

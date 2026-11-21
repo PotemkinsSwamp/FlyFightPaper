@@ -337,6 +337,18 @@ local function flyPlane(w)
 	local up = math.abs(prop.heading.Y) > 0.97 and w.desk.LookVector or Vector3.yAxis
 	prop.plane:PivotTo(CFrame.lookAt(grip, grip + prop.heading, up))
 end
+-- Toy Pilot's sounds: a whoosh as the plane swoops down and out, and one as it comes back up (seconds after 1st's
+-- light, which are the clip's own). Which whoosh: DevPilotWhoosh, stepped by the Dev "end: pilot" button, until
+-- Alan picks one of the three (Audio).
+local PILOT_SOUNDS = { 3.0, 4.5 }
+local function pilotSounds(w, t)
+	for index, at in PILOT_SOUNDS do
+		if (w.heard or 0) < index and t >= at then
+			w.heard = index
+			Audio.play("pilotWhoosh" .. (Root:GetAttribute("DevPilotWhoosh") or 1))
+		end
+	end
+end
 
 -- Camera Flick, a 1st-place emote (Alan 2026-11-19; recipe and numbers: docs/workshop/emote-making.md): 1st throws
 -- their plane at the camera; it fills the picture, the camera is knocked back, tips over forward, and the plane
@@ -989,7 +1001,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, held = prop and not flick, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, held = prop and not flick, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -1134,6 +1146,8 @@ function Cutscene.play(winners, onStage)
 							if copy.flick then
 								state.flickAt = LIGHT_AT + 2 * TURN + copy.flick.release -- the release, in seconds after arriving
 								firstSoundAt = state.start + BANNER + DIM + GLIDE + state.flickAt -- the throw's sound (flickSounds)
+							elseif copy.pilot then
+								firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + PILOT_SOUNDS[1] -- the first whoosh (pilotSounds)
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do
@@ -1257,7 +1271,10 @@ function Cutscene.play(winners, onStage)
 			if w.flick then
 				flickPlane(w, since, shot, steady, height)
 				flickSounds(w, since)
-			elseif w.prop then flyPlane(w) end
+			elseif w.prop then
+				flyPlane(w)
+				if w.pilot then pilotSounds(w, since) end
+			end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end

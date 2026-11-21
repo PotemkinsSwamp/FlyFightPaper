@@ -47,6 +47,10 @@ local definitions={
  -- the bubble's pop is the Popper's balloon pop, high; the snore is Pro Sound Effects "Comic Snoring Female Vocals
  -- Snorting 6". Next One's fold: half a second of the gift's "Heavy Paper Bag Slow Rustle 2". (The snore and the fold
  -- are Alan's picks of three each, by ear in Play 2026-11-21.)
+ -- Toy Pilot's whoosh (WinnersCutscene), as loud: three Pro Sound Effects candidates until Alan picks one by ear in
+ -- Play (the Dev "end: pilot" button steps through them): "Synth Air Whoosh Cheesy Karate Style Swishes 1", "Airy
+ -- Pass By Windy Whoosh Howling And Whistling 4", "Air Fingers Short Swooshing Bursts Sucking 1".
+ pilotWhoosh1={9126047023,1,1.4,1.3},pilotWhoosh2={9125356690,1,1.4,2.3},pilotWhoosh3={9113069659,1,1.4,2.1},
  ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
