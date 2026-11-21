@@ -31,7 +31,8 @@ local MUSIC_AFTER = 0.5 -- the last spotlight's click lands in the quiet, then t
 -- Each cue: a sound, then its volume at points in time (straight lines between them). It starts at the first point
 -- and stops at the last.
 local function cues(track)
-	local list = { { track, { FIRST_LIGHT + MUSIC_AFTER, 0.5 }, { 17, 0.5 }, { 18, 0.35 }, { 23.5, 0.35 }, { 26, 0 } } }
+	-- The music sits in the background, under the emotes' sounds (Alan 2026-11-21: at 0.5 it drowned them).
+	local list = { { track, { FIRST_LIGHT + MUSIC_AFTER, 0.2 }, { 17, 0.2 }, { 18, 0.14 }, { 23.5, 0.14 }, { 26, 0 } } }
 	-- A switch for each spotlight, a second apart, 1st's the loudest.
 	for place, volume in { 0.9, 0.75, 0.6 } do
 		local at = FIRST_LIGHT - (place - 1)
