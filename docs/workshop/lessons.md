@@ -1059,6 +1059,11 @@ Back to [HOME](../HOME.md)
   hands over it more than the paper changes". One move of the hand per change the viewer can see, a still
   moment between: approved.
 
+## Body moves from a reference video (Toy Pilot, 2026-11-21)
+- Three rejected looks before one honest comparison. What it taught is on the
+  [emote-making page](emote-making.md): get a Gemini reference video first, trace it, and record the scene in Play
+  beside the reference before Alan looks; numbers on the blocky test kid do not show a real avatar.
+
 ## Sound for a scene (winners' moment, 2026-11-21)
 - **I cannot hear, and the library's search does not know mood or pace.** Three guesses at "dramatic" music missed
   (drum marches: "no dramatic melody"; classical: "too slow pace"; trailer cuts) before Alan named the genre
