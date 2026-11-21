@@ -305,6 +305,13 @@ function HUD.start(getPlane, action)
 		local flick=eraserBots:Clone();flick.Name="EndFlick";flick.Text="end: flick";flick.Position=UDim2.fromOffset(440,-80)
 		flick.BackgroundColor3=Color3.fromRGB(150,40,40);flick.Parent=picker
 		flick.Activated:Connect(function()Root:SetAttribute("DevCameraFlick",true);Root.RoundAction:FireServer("endMatch")end)
+		-- Which spotlight switch sound the winners' moment plays (WinnersSound.CLICKS): each tap steps on. Goes once Alan has picked.
+		local spotClick=eraserBots:Clone();spotClick.Name="SpotClick";spotClick.Text="click: 1";spotClick.Position=UDim2.fromOffset(330,-80)
+		spotClick.BackgroundColor3=Color3.fromRGB(150,40,40);spotClick.Parent=picker
+		spotClick.Activated:Connect(function()
+			local pick=(Root:GetAttribute("DevSpotClick") or 1)%4+1
+			Root:SetAttribute("DevSpotClick",pick);spotClick.Text="click: "..pick
+		end)
 		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
 		local ups={"dances","GoodGame","Nap","NextOne"}
 		local runnerUp=eraserBots:Clone();runnerUp.Name="RunnerUp";runnerUp.Text="2nd/3rd: dances";runnerUp.Position=UDim2.fromOffset(550,-80)
