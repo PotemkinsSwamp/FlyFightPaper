@@ -648,4 +648,30 @@ the same bytes as what he saw in Play). `python tools/upload_texture.py FILE.rbx
 - **Still Studio only**, behind the Dev buttons: who gets which emote (one free, the rest sold) is not decided or
   built.
 
+## Toy Pilot: shot card and the three raw body moves (2026-11-21)
+The free 1st-place emote. Alan's "go for the three tries" to the plan in words (he did not answer its three
+questions, so my picks stand until he says otherwise: the feeling, the quiet start, the held ending).
+- **The feeling:** the happy winner, lost in playing with their plane, then proud. Smooth swooping moves, head and
+  body following the plane, a chest-out finish. (Camera Flick is the cocky one.)
+- **Shot card** (seconds after 1st's light; the camera leaves at about 10): 0 to 4 looks down at the plane in the
+  right hand, turns it over, lifts it to eye level (no sound: the runner-ups' sounds live here, see
+  [sound and effects](../systems/sound-and-effects.md)); 4 to 6 one big swoop across overhead, leaning into it; 6 to
+  7.5 a dive in front and a pull-up, knees bending; then thrust up high and held, other fist on the hip, a small sway.
+  Sounds: a soft whoosh on the swoop and on the dive. The plane is the scene's own `holdPlane` and `flyPlane` (the
+  nose follows the hand): no new prop code.
+- **The three tries** (each an upload to Alan's account; all came back first time; the dummy and the clips folder
+  were deleted from the place after; numbers from the clips' keyframes, hand heights against the head on the
+  generator's 5-stud dummy, nobody has seen them move):
+
+| Try | Uploaded id | Asked | What came back |
+|---|---|---|---|
+| A, whole card in one | `rbxassetid://112258133635270` | 10 s | The hand hangs at the side for 4 s (no admiring), one raise to head height at 5.5 s, then the kid walks off (hips 1.9 studs, a foot 2.1) and ends moving. **Not usable.** |
+| **B, the flying (to use)** | `rbxassetid://93519745518213` | 6 s | **A real swoop:** the right hand goes over the head from the right side to the left between 0.3 and 1.3 s (0.7 studs above the head). Hand at the side with the head bowed 1.5 to 3.5 s. **The ending:** the arm goes straight up from 4 s and holds (0.07 studs of movement in the last second). Left hand by the hip throughout. Hips wander 0.47, a foot 0.50: to be locked. |
+| **C, playful (its start to use)** | `rbxassetid://100781595643396` | 8 s | **The admiring:** 0 to 2 s the hand holds something in front of the face, the head bowed 40 to 46 degrees. Arm overhead 4 to 5.5 s, then lowered, looking 90 degrees to the side; ends moving. Hips 0.33, a foot 0.88 (it bounces). |
+
+- **No try has a dive.** "Dives the hand down in front and pulls it back up" came back as nothing (A) or a bowed
+  head with the hand at the side (B). The generator again gives postures and big arm arcs, not a path for the hand.
+- **The cut I would make** (not built; Alan's ruling asked for): C's admiring stretched to 4 s, B's swoop over, B's
+  swoop played backwards as the way back (in place of the dive), B's raise and hold.
+
 Back to [HOME](../HOME.md).

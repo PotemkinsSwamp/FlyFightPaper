@@ -1058,3 +1058,20 @@ Back to [HOME](../HOME.md)
   eight times for three folds (an arc, a run along the crease, a trip to the next flap); Alan: "they run their
   hands over it more than the paper changes". One move of the hand per change the viewer can see, a still
   moment between: approved.
+
+## Sound for a scene (winners' moment, 2026-11-21)
+- **I cannot hear, and the library's search does not know mood or pace.** Three guesses at "dramatic" music missed
+  (drum marches: "no dramatic melody"; classical: "too slow pace"; trailer cuts) before Alan named the genre
+  ("techno or pop, high upbeat") and picked four of six by ear in one go. Ask for the genre and the pace, or a
+  reference, before the first search; then bring candidates and let his ears decide.
+- **Search by the library's own words.** Pro Sound Effects files are named for what was recorded ("Switch Impact On
+  Flip Up Large Metal", "Briefcase Falls"), not for what they will be used as: "stage spotlight clunk" found oil
+  drums, "light switch" and "breaker switch" found the switches. A scene word that fails gets one retry as the
+  object's name; "paper fold" and "hand clap" found nothing at all, so those came from sounds already in the game.
+- **Picking in the moment works every time:** candidates behind one Dev button that steps through them, he says a
+  number, the rest and the button are deleted the same hour (click, Camera Flick's set, snore, fold).
+- **Effects go over the music, not under it.** At equal loudness he "could hardly tell" the effects were there:
+  music at 0.2, effects at 1.4 to 2.
+- **Sounds tied to a picture are fired by the picture** (the scene, at the moment itself), not by a clock beside
+  it; only the scene-wide parts (music, spotlight switches) run on the scene's clock.
+- **A changed script does not reach a running Play**: say "restart Play" with every sound change.
