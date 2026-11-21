@@ -7,7 +7,9 @@ range. A paper whoosh rises only when you go faster than your plane's normal spe
 landing, lock-on pings, an end-of-round whistle and a music track (with its own slider) fill out the rest. Effects:
 tracers, impact puffs, paper-shred deaths, fan wind swirls, damage smoke.
 
-## Where it stands (2026-10-22)
+## Where it stands (2026-11-21)
+**The winners' moment has its new sound, heard by Alan in Play ("all fine", [playtest](../playtests/2026-11-21-winners-sound.md)):** quiet in the dark, an echoing switch for each spotlight, then one of four upbeat songs in the background with the emotes' own sounds over it; the party crowd is gone. Details in the Code table's `WinnersSound` row.
+Older, from 2026-10-22:
 The match playlist now moves on to the next song (it went silent after the first one), and the classroom children are
 twice as loud so they still show under the music (Alan's note 2026-10-22; not yet heard by him).
 The children are heard only while you're out flying in a match: not at the desk, in menus, the Range or lessons

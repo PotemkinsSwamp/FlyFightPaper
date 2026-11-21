@@ -1,7 +1,7 @@
 # The winners' moment sounds dramatic, with one background for every emote
 
 **Decided:** 2026-11-21 (Alan)
-**Status:** the music is built (the crowd is out, the four songs are in), not yet heard by Alan in the scene; the spotlights' and emotes' own sounds are not picked or built.
+**Status:** built and heard by Alan in Play: the four songs, the spotlight switch, Camera Flick's and the runner-ups' sounds and the rule between them; his verdict on all of it: "all fine" ([playtest](../playtests/2026-11-21-winners-sound.md)).
 
 ## Decision
 - **The celebratory sounds go** (the crowd's cheering and clapping, the kids' "Yeah!", the winners' songs under the

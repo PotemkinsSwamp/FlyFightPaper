@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-21 The winners' moment gets its sound, and the emote uploads are checked](2026-11-21-winners-sound.md)
 - [2026-11-20 Phone framing of the winners' shot, and the first Good Game](2026-11-20-phone-framing-and-good-game.md)
 - [2026-11-20 The winners' lighting: lamps out, curtain and cone in](2026-11-20-winners-curtain-and-cone.md)
 - [2026-11-20 Camera Flick and the winners' staging](2026-11-20-camera-flick-and-winners-staging.md)

@@ -671,7 +671,7 @@ questions, so my picks stand until he says otherwise: the feeling, the quiet sta
 
 - **No try has a dive.** "Dives the hand down in front and pulls it back up" came back as nothing (A) or a bowed
   head with the hand at the side (B). The generator again gives postures and big arm arcs, not a path for the hand.
-- **The cut I would make** (not built; Alan's ruling asked for): C's admiring stretched to 4 s, B's swoop over, B's
+- **The cut, ruled by Alan ("go with option 1"; not built):** C's admiring stretched to 4 s, B's swoop over, B's
   swoop played backwards as the way back (in place of the dive), B's raise and hold.
 
 Back to [HOME](../HOME.md).

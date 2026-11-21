@@ -1,8 +1,7 @@
 # Toy Pilot: the plan, and three tries at its body move
 
 **Decided:** 2026-11-21 (Alan)
-**Status:** the three raw body moves are made (each an upload to his account); the cut is not built and waits for
-his ruling on what replaces the dive.
+**Status:** the three raw body moves are made (each an upload to his account); the cut is ruled on and not built.
 
 ## Decision
 - **"Go on Toy Pilot"**, then, to the plan in words: **"go for the three tries"**. The plan (the feeling, the shot
@@ -10,6 +9,8 @@ his ruling on what replaces the dive.
 - He did not answer the plan's three questions, so my picks stand until he says otherwise: happy and absorbed, then
   proud; four quiet seconds first, so the runner-ups' sounds are heard before 1st's begin; it ends holding the
   plane up until the camera leaves.
+- **No try gave a dive; "go with option 1"**: the swoop across is played backwards as the way back. So: admire (4 s),
+  swoop across, swoop back, thrust up and hold. (The other options: a fourth try, or a dive posed by numbers.)
 - When it is approved and uploaded, its id in `rounds.winner_plane_emote` makes it 1st's emote for everyone who owns
   no other: that is what "free" means, and it needs his go like any upload.
 
