@@ -575,12 +575,17 @@ local function kickBooks(w, t, view, steady, height)
 	if hop > 0 then -- out sideways first, then down: the feet pass the stack's back corner above it
 		local out = (1 - (1 - hop) ^ 3) * height / w.scale
 		w.model:PivotTo((w.desk + w.shift) * CFrame.new(-kick.side * out, (4 * marks.HopUp * height * hop * (1 - hop) - kick.rise * hop * hop) / w.scale, kick.back * out))
+		if hop >= 1 and not kick.landed then -- the feet reach the floor: a soft thump
+			kick.landed = true
+			Audio.play("kickLand")
+		end
 	end
 	local flown = t - marks.Kick
 	if flown < 0 then return end
 	local function small(at) return at.Rotation + (view.Position + (at.Position - view.Position) / w.scale) end
 	if not kick.from then -- the kick: where each book was, as the big winner's; the top one makes way for the one that opens
 		kick.from = {}
+		Audio.play("kickThud") -- the foot on the books; the book on the lens follows in the same sound
 		for i, book in kick.stack do
 			local at = book:GetPivot()
 			kick.from[i] = at.Rotation + (w.spot + (at.Position - w.shift - w.spot) * w.scale)
@@ -1341,6 +1346,7 @@ function Cutscene.play(winners, onStage)
 								firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + PILOT_SOUNDS[1] -- the first whoosh (pilotSounds)
 							elseif copy.kick then
 								state.kickAt = LIGHT_AT + 2 * TURN + copy.kick.marks.Kick -- the kick, in seconds after arriving
+								firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + copy.kick.marks.HopTo -- the landing's thump (kickBooks)
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do

@@ -39,7 +39,7 @@ Every script in `tools/`, what it does and when you'd run it. Commands for Alan 
 |---|---|
 | `tools/ui_pieces.py` | Cuts one menu screen's art into pieces and (with `--upload`) uploads them; `--keep-size` skips trimming (9-slice pieces) |
 | `tools/ui_sheets.py` | Shrinks menu pieces to their drawn size (`assets/ui/sheets/sizes.json`) and packs the small ones into a few 1024 sheets, menu-only pieces ("3d", drawn by `first/MenuArt`) apart from pieces any flying screen shows (`assets/ui/sheets/usage.json`, read in Studio Play) (contact + compare pictures to look at first); `--add folder/name` puts a new piece into free space on a sheet already built (only that sheet changes); `--upload` uploads changed files and writes `src/first/UISheets.luau` |
-| `tools/upload_texture.py` | Uploads a picture, FBX or animation (`--animation`, an .rbxm) to Roblox (used by the other upload tools) |
+| `tools/upload_texture.py` | Uploads a picture, FBX, animation (`--animation`, an .rbxm) or sound (`--audio`, an .ogg) to Roblox (used by the other upload tools) |
 | `tools/find_bot_looks.luau` | Run in Studio Edit through the Studio link: finds dressed-up outfits real players saved, for bot looks (writes ids to the ServerStorage attribute `BotLookOutfits`, ~5 a minute) for `avatar_display.bot_look_outfits` |
 | `tools/meshy_to_r15.py` | Blender script: turns a Meshy text-to-motion clip (SMPL skeleton) into R15 joint poses, `NAME.r15.json` next to it (limbs follow the clip's bones in world space; hips stay over one spot) |
 | `tools/r15_keyframes.luau` | Builds KeyframeSequences from `*.r15.json` and registers temporary test ids in Play (attributes `DevEmote_NAME`; set `DevWinnerEmote` to see one in the cutscene) |

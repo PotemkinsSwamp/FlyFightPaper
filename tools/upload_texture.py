@@ -1,4 +1,4 @@
-"""Upload a free PNG (or, with --model, an FBX; with --animation, an .rbxm KeyframeSequence) through Roblox's official Assets API. Never prints credentials."""
+"""Upload a free PNG (or, with --model, an FBX; with --animation, an .rbxm KeyframeSequence; with --audio, an .ogg sound) through Roblox's official Assets API. Never prints credentials."""
 from pathlib import Path
 import argparse
 import json
@@ -17,6 +17,7 @@ def main():
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--model", action="store_true", help="upload an FBX as a Model")
     parser.add_argument("--animation", action="store_true", help="upload an .rbxm KeyframeSequence as an Animation")
+    parser.add_argument("--audio", action="store_true", help="upload an .ogg sound as Audio")
     args = parser.parse_args()
     if args.output.exists():
         raise SystemExit("Output already exists; inspect the previous upload instead of duplicating it.")
@@ -27,9 +28,9 @@ def main():
             settings[key.strip()] = value.strip().strip('\"').strip("'")
     session = requests.Session()
     session.headers["x-api-key"] = settings["ROBLOX_API"]
-    kind, content = ("Animation", "model/x-rbxm") if args.animation else ("Model", "model/fbx") if args.model else ("Image", "image/jpeg" if args.png.suffix.lower() in (".jpg", ".jpeg") else "image/png")
+    kind, content = ("Audio", "audio/ogg") if args.audio else ("Animation", "model/x-rbxm") if args.animation else ("Model", "model/fbx") if args.model else ("Image", "image/jpeg" if args.png.suffix.lower() in (".jpg", ".jpeg") else "image/png")
     request = {"assetType": kind, "displayName": args.name,
-               "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+               "description": "FlyFightPaper sound effect." if args.audio else "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
                "creationContext": {"creator": {"userId": args.creator}, "expectedPrice": 0}}
     with args.png.open("rb") as image:
         response = session.post(BASE + "assets", data={"request": json.dumps(request)},

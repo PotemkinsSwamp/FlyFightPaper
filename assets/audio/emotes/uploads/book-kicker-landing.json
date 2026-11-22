@@ -1,0 +1,24 @@
+{
+  "path": "operations/8f92f4dc-ba9c-495a-a9d9-11c23c509b15",
+  "operationId": "8f92f4dc-ba9c-495a-a9d9-11c23c509b15",
+  "done": true,
+  "response": {
+    "path": "assets/111776144912962",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-22T03:38:13.711Z",
+    "assetId": "111776144912962",
+    "displayName": "FFP sound Book Kicker landing",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

@@ -51,6 +51,11 @@ local definitions={
  -- Alan's pick of three by ear in Play (2026-11-21). Quiet on purpose, unlike the others here: "a subtle sound ...
  -- if it's loud, that's going to be stupid"; it is the emote's only sound.
  pilotWhoosh={9125356690,1,.6,2.3},
+ -- Book Kicker (WinnersCutscene): our own two sounds, cut from a Gemini video's sound and uploaded 2026-11-21
+ -- (assets/audio/emotes; Alan by ear: "B is right"). kickLand: the feet landing beside the stack, soft. kickThud:
+ -- the foot on the books ("the most important sound ... I should hear a thud") and, .33 s later in the same sound,
+ -- the open book hitting the lens; as loud as Camera Flick's smack so it stands over the winners' music.
+ kickLand={111776144912962,1,.6,.3},kickThud={122025266957849,1,1.6,.7},
  ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);

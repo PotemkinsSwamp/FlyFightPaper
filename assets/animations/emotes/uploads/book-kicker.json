@@ -1,0 +1,24 @@
+{
+  "path": "operations/5e03e44e-9727-472c-8c0c-daa2fc824870",
+  "operationId": "5e03e44e-9727-472c-8c0c-daa2fc824870",
+  "done": true,
+  "response": {
+    "path": "assets/73358935726911",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-22T03:38:31.124Z",
+    "assetId": "73358935726911",
+    "displayName": "FFP emote Book Kicker",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

@@ -742,6 +742,12 @@ return JSONTypes.map({
     ["rounds"] = JSONTypes.map({
         ["_comment"] = "Airspace Control moves every 90 seconds among these fixed cylinders, with a 15-second warning and no consecutive repeats. The Ceiling zone is wide and flat. Zone positions and sizes are a first pass, tuned in playtest (Alan 2026-10-14: tried 3x wider, then halved that: 300 radius; the ceiling zone moved over the east ceiling obstacles and stretched down well under the rings and cardboard rolls, 340-620 up).",
         ["allow_join_in_progress"] = true,
+        ["book_kicker"] = JSONTypes.map({
+            ["HopFrom"] = 3.35,
+            ["HopTo"] = 3.85,
+            ["HopUp"] = 0.1,
+            ["Kick"] = 5.62,
+        }),
         ["camera_flick_grip"] = JSONTypes.array({
             [1] = 0,
             [2] = 0,
@@ -826,6 +832,7 @@ return JSONTypes.map({
         ["control_zones_comment"] = "Zone size follows how crowded the spot is (Alan 2026-10-16: denser = larger and shorter, so pilots chase between buildings): radius 340-420 and half height 100-65, scaled by the share of the zone's floor under new-town buildings (9% -> 28%). Ceiling spot unchanged.",
         ["duration_seconds"] = 480,
         ["emote_clips"] = JSONTypes.map({
+            ["BookKicker"] = "rbxassetid://73358935726911",
             ["CameraFlick"] = "rbxassetid://92727749892782",
             ["GoodGameStance"] = "rbxassetid://105243837282624",
             ["GoodGameWave"] = "rbxassetid://85227875188355",
@@ -834,7 +841,7 @@ return JSONTypes.map({
             ["NextOne"] = "rbxassetid://77528904973973",
             ["ToyPilot"] = "rbxassetid://135069682151169",
         }),
-        ["emote_clips_comment"] = "Our own emote animations for the winners' moment (docs/workshop/emote-making.md), uploaded 2026-11-21 with Alan's go from assets/animations/emotes/*.rbxm (Roblox's answers in its uploads folder). An uploaded clip carries no notes, so the moments its scene follows are here too: camera_flick_release (seconds after 1st's light when the plane leaves the hand), camera_flick_grip (the plane on the hand's grip point, a CFrame's 12 numbers), next_one (when the raise starts, how long it takes, how long one rock of the plane is). They play in Studio only, behind the Dev buttons, until who gets which emote is decided.",
+        ["emote_clips_comment"] = "Our own emote animations for the winners' moment (docs/workshop/emote-making.md), uploaded 2026-11-21 with Alan's go from assets/animations/emotes/*.rbxm (Roblox's answers in its uploads folder). An uploaded clip carries no notes, so the moments its scene follows are here too: camera_flick_release (seconds after 1st's light when the plane leaves the hand), camera_flick_grip (the plane on the hand's grip point, a CFrame's 12 numbers), next_one (when the raise starts, how long it takes, how long one rock of the plane is), book_kicker (seconds after 1st's light when the jump off the stack starts and ends, how high it rises in winner heights, when the foot meets the books). They play in Studio only, behind the Dev buttons, until who gets which emote is decided.",
         ["launch_countdown_seconds"] = 3,
         ["next_one"] = JSONTypes.map({
             ["raise"] = 4.3,

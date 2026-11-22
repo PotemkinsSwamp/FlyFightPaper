@@ -5,6 +5,11 @@ Claude's private memory on 2026-10-15 so everyone working on the game can see th
 mistake would be easy to make twice.
 
 ## Uploads and Roblox moderation
+- **Our own sounds upload free through the same Assets API** (2026-11-21, Book Kicker): `assetType` "Audio", the file
+  as `audio/ogg` (`tools/upload_texture.py --audio`); .mp3, .wav and .flac are also taken, up to 7 minutes and 20 MB,
+  48 kHz at most. Roblox's pages disagree on the monthly limit (10 or 100 a month unverified, 100 or 2,000
+  verified). Unlike animations, a sound comes back "Reviewing", not approved at once: read its state again
+  (`GET assets/v1/assets/<id>`) before judging a silent Play.
 - A large sheet can load successfully in Studio while each animation frame has too few pixels for a close-up. Inspect the held prize pose at player size. Give that pose its own image. Warm the image before the lid opens because a fully hidden copy may report `IsLoaded=false`.
 
 - **Look at every texture before uploading.** Alan's account was banned twice on 2026-10-12 ("Discriminatory
