@@ -1141,26 +1141,40 @@ end
 
 -- Bubblegum, a 1st-place emote (Alan 2026-11-22: sassy from start to finish; docs/workshop/emote-making.md): the
 -- kid stands on their stack, weight on one leg, and blows a small bubble that snaps, then a big one that grows until
--- it reaches the lens, pops on it and leaves gum over the whole picture; the gum sags, slides off, and what it
+-- it reaches the lens, pops on it and leaves one sheet of gum over the whole picture; the sheet is pulled off, and what it
 -- uncovers is the way back to your desk. The body is the Bubblegum clip (tools/emote_clips.lua); its marks say when:
 -- Small to Snap the first bubble, Blow the second one's start, Pop. The camera does not move in (Alan 2026-11-20:
 -- "No zoom in on 1st"; a first card of mine had it creep in to meet a kid-sized bubble): the bubble does the
 -- travelling. Plain parts made here, no pictures.
 -- The bubbles hang on the mouth, sizes (radius) in a standard kid's heights: the first grows to `fist`; the second
 -- to `head` in `headBy` seconds, steadily to `kid` until `swell` seconds before the pop, then swells until its skin
--- is `lens` of the way from the mouth to the camera (more than the whole picture: the room is seen through pink) and
--- hangs still for the last `still` seconds. Thick gum pink while small, paler and clearer the bigger it gets.
--- On the lens, `near` studs from it: rows of flattened pink lumps, each bigger than its share of the picture so no
--- room shows between them, there `snap` seconds after the pop (the camera jolts), creeping down while they stick
--- (`stuck`), then each lets go a little after its neighbour and slides off, the top ones trailing a thin string.
--- The scene leaves `after` seconds after the pop. From the swell on the name plates and the "Menu" tag are put away
--- (Book Kicker's rule: nothing sharp on top of what covers the lens).
+-- is `lens` of the way from the mouth to the camera (more than the whole picture) and hangs still for the last
+-- `still` seconds. Nearly solid (`skin`, Alan 2026-11-22: only the kid's shape behind it, never the face: a face
+-- seen through it is seen not blowing); thick gum pink while small, paler the bigger it gets.
+-- On the lens, `near` studs from it (Alan 2026-11-22: one layer, ripped off as sticky gum is; the first build's rows
+-- of lumps read as a pile of gum): one flat sheet, `side` half pictures to each side and as far below, its top edge
+-- `top` over the middle, there `snap` seconds after the pop (the camera jolts), with soft pale streaks for a shine
+-- (`shine`: x, y from its middle, length, width). It sticks for `stuck` seconds, creeping down a little, then is
+-- pulled off downward as one piece (`pull`: half pictures a second, squared). Its top edge stays stuck at `anchor`:
+-- `strands` uneven strands run up from the sheet, fat at the sheet and thin at the top, thinner the further they are
+-- stretched; each lets go between `hold` seconds into the pull, one after another, and springs back into the sheet
+-- in `recoil` seconds. The scene leaves `after` seconds after the pop. From the swell on the name plates and the
+-- "Menu" tag are put away (Book Kicker's rule: nothing sharp on top of what covers the lens).
 -- Studio only, from its draft clip, behind the Dev panel's "end: gum" button, until it is uploaded and who gets which
 -- emote is decided. No sounds yet.
-local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3,
-	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, cols = 5, rows = 4,
-	pink = Color3.fromRGB(255, 120, 175), pale = Color3.fromRGB(255, 176, 208),
-	shades = { Color3.fromRGB(255, 120, 175), Color3.fromRGB(244, 102, 160), Color3.fromRGB(255, 140, 190) } }
+local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3, skin = 0.1,
+	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, side = 1.15, top = 1.25, anchor = 1.15, pull = 2.3,
+	strands = 6, hold = { 0.3, 0.75 }, recoil = 0.12, shine = { { -0.5, 0.45, 0.9, 0.11 }, { -0.2, 0.18, 0.3, 0.07 } },
+	pink = Color3.fromRGB(255, 120, 175), pale = Color3.fromRGB(255, 176, 208) }
+-- A triangle on the lens, of two wedges back to back: its point at (x, peak), its base from `left` to `right` at
+-- `foot`, `deep` studs in front of the camera `view`.
+function GUM.spike(parts, view, deep, x, peak, foot, left, right)
+	for n, to in { left, right } do
+		local side = n == 1 and 1 or -1
+		parts[n].Size = Vector3.new(0.002, peak - foot, math.max((x - to) * side, 0.001))
+		parts[n].CFrame = view * CFrame.fromMatrix(Vector3.new((x + to) / 2, (peak + foot) / 2, -deep), Vector3.new(0, 0, -side), Vector3.yAxis, Vector3.new(side, 0, 0))
+	end
+end
 local function gumClip()
 	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Bubblegum") then return nil end
 	local id, draft = ourClip("Bubblegum")
@@ -1168,27 +1182,33 @@ local function gumClip()
 	if not id or not marks or not marks.Pop then return nil end
 	return id, marks
 end
--- What it needs: the bubble with its glint and the first one's five scraps, and the lumps and strings for the lens,
--- all unseen until their moment. A lump's place is in half pictures from the lens's middle (y to 1.5: more above
--- the picture than below, so creeping down uncovers nothing).
+-- What it needs: the bubble with its glint and the first one's five scraps, and for the lens the sheet, its shine
+-- and its strands, all unseen until their moment. A strand: its share of the sheet's top edge (`left` to `right`,
+-- uneven), where along it it is stuck (`x`) and when in the pull it lets go (`lets`).
 local function gumProps(model, cast, marks)
 	local head, root = model:FindFirstChild("Head"), model:FindFirstChild("HumanoidRootPart")
 	if not head or not root then return nil end
 	local function unseen(part) part.Transparency = 1; return part end
-	local gum = { marks = marks, head = head, root = root, bits = {}, lumps = {}, strings = {},
+	local gum = { marks = marks, head = head, root = root, bits = {}, shine = {}, strands = {}, sheet = unseen(paper(cast, GUM.pink)),
 		ball = unseen(paper(cast, GUM.pink, Enum.PartType.Ball)), glint = unseen(paper(cast, Color3.new(1, 1, 1))) }
 	for i = 1, 5 do gum.bits[i] = unseen(paper(cast, GUM.pink)) end
+	for i = 1, #GUM.shine do
+		gum.shine[i] = unseen(paper(cast, GUM.pale))
+		local mesh = Instance.new("SpecialMesh") -- rounded ends
+		mesh.MeshType, mesh.Parent = Enum.MeshType.Sphere, gum.shine[i]
+	end
 	local random = Random.new(7)
-	for row = 1, GUM.rows do
-		for col = 1, GUM.cols do
-			local part = unseen(paper(cast, GUM.shades[(row + col) % 3 + 1]))
-			local mesh = Instance.new("SpecialMesh")
-			mesh.MeshType, mesh.Parent = Enum.MeshType.Sphere, part
-			local lump = { part = part, x = ((col - 0.5) / GUM.cols * 2 - 1) * 1.15 + random:NextNumber(-0.07, 0.07),
-				y = -1.1 + (row - 0.5) / GUM.rows * 2.6 + random:NextNumber(-0.07, 0.07), wait = random:NextNumber(0, 0.25), depth = #gum.lumps * 0.004 }
-			table.insert(gum.lumps, lump)
-			if row == GUM.rows then table.insert(gum.strings, { part = unseen(paper(cast, GUM.shades[col % 3 + 1])), lump = lump }) end
-		end
+	local shares, whole, order = {}, 0, {}
+	for i = 1, GUM.strands do shares[i] = random:NextNumber(0.6, 1.4); whole += shares[i]; order[i] = i end
+	random:Shuffle(order)
+	local left = -GUM.side
+	for i, share in shares do
+		local right = left + share / whole * 2 * GUM.side
+		local strand = { left = left, right = right, x = left + (right - left) * random:NextNumber(0.3, 0.7), flare = {}, thread = {},
+			lets = GUM.hold[1] + (GUM.hold[2] - GUM.hold[1]) * (order[i] - 1) / (GUM.strands - 1) }
+		for n = 1, 2 do strand.flare[n], strand.thread[n] = unseen(paper(cast, GUM.pink, "WedgePart")), unseen(paper(cast, GUM.pink, "WedgePart")) end
+		table.insert(gum.strands, strand)
+		left = right
 	end
 	return gum
 end
@@ -1203,14 +1223,14 @@ local function gumBubble(w, t, view, height)
 	local popped = t - marks.Pop
 	local r, clear = 0, 1
 	if t >= marks.Small and t < marks.Snap then
-		r, clear = size * GUM.fist * ((t - marks.Small) / (marks.Snap - marks.Small)) ^ 0.7, 0.3
+		r, clear = size * GUM.fist * ((t - marks.Small) / (marks.Snap - marks.Small)) ^ 0.7, GUM.skin
 	elseif t >= marks.Blow and popped < 0 then
 		local steady, swell, still = marks.Blow + GUM.headBy, marks.Pop - GUM.swell, marks.Pop - GUM.still
 		if t < steady then r = size * GUM.head * (1 - (1 - (t - marks.Blow) / GUM.headBy) ^ 2)
 		elseif t < swell then r = size * (GUM.head + (GUM.kid - GUM.head) * (t - steady) / (swell - steady))
 		else r = size * GUM.kid + (GUM.lens * toLens.Magnitude - size * GUM.kid) * ease((t - swell) / (still - swell)) end
 		r *= 1 + 0.02 * math.sin(t * 14) * math.clamp((still - t) / 0.3, 0, 1) -- it wobbles as it grows; still at the end
-		clear = 0.3 + 0.3 * math.clamp(r / (size * GUM.kid), 0, 1)
+		clear = GUM.skin
 	end
 	if r > 0 then
 		local grown = math.clamp(r / (size * GUM.kid), 0, 1)
@@ -1225,7 +1245,7 @@ local function gumBubble(w, t, view, height)
 		local since, burst = t - marks.Snap, gum.burst
 		if burst and since >= 0 and since < POP then
 			local k = since / POP
-			ball.Size, ball.CFrame, ball.Transparency = Vector3.one * 2 * burst.r * (1 + 0.35 * k), stage * CFrame.new(burst.at), 0.3 + 0.7 * k
+			ball.Size, ball.CFrame, ball.Transparency = Vector3.one * 2 * burst.r * (1 + 0.35 * k), stage * CFrame.new(burst.at), GUM.skin + (1 - GUM.skin) * k
 		else
 			ball.Transparency = 1
 		end
@@ -1241,28 +1261,35 @@ local function gumBubble(w, t, view, height)
 		end
 	end
 	if popped < 0 then return end
-	-- on the lens
+	-- on the lens: places in half pictures from its middle
 	local screen = workspace.CurrentCamera.ViewportSize
 	local tall = GUM.near * math.tan(math.rad(SHOT_FOV / 2))
 	local wide = tall * screen.X / math.max(screen.Y, 1)
 	local landed = 0.6 + 0.4 * math.min(popped / GUM.snap, 1) ^ 0.5
-	local sag = 0.05 * math.min(popped / (GUM.snap + GUM.stuck), 1)
-	local falling = popped - GUM.snap - GUM.stuck
-	local across, down = 2 * 0.95 * 2.3 / GUM.cols * wide, 2 * 0.95 * 2.6 / GUM.rows * tall
-	for _, lump in gum.lumps do
-		local fall = math.max(falling - lump.wait, 0)
-		lump.now = lump.y - sag - 7 * fall * fall
-		lump.part.Transparency = lump.now < -2.6 and 1 or 0
-		lump.part.Size = Vector3.new(across, down, 0.1 * tall) * landed
-		lump.part.CFrame = view * CFrame.new(lump.x * wide, lump.now * tall, -GUM.near - lump.depth)
+	local pulled = math.max(popped - GUM.snap - GUM.stuck, 0)
+	local top = GUM.top - 0.05 * math.min(popped / (GUM.snap + GUM.stuck), 1) - GUM.pull * pulled * pulled -- the sheet's top edge
+	local seen, high = top > -1, GUM.top + GUM.side
+	gum.sheet.Transparency = seen and 0 or 1
+	gum.sheet.Size = Vector3.new(2 * GUM.side * wide, high * tall, 0.004) * landed
+	gum.sheet.CFrame = view * CFrame.new(0, (top - high / 2) * tall, -GUM.near)
+	for i, streak in gum.shine do
+		local x, y, long, thick = table.unpack(GUM.shine[i])
+		streak.Transparency = seen and 0.5 or 1
+		streak.Size = Vector3.new(long, thick, 0.002) * tall * landed
+		streak.CFrame = view * CFrame.new(x * wide * landed, (top - high / 2 + y * landed) * tall, -GUM.near + 0.006) * CFrame.Angles(0, 0, math.rad(30))
 	end
-	for _, strand in gum.strings do -- from over the picture's top down to its lump, thinner the longer it gets
-		local long = 1.15 - strand.lump.now
-		local seen = falling > strand.lump.wait and long < 2.2
-		strand.part.Transparency = seen and 0 or 1
-		if seen then
-			strand.part.Size = Vector3.new(0.07 * wide * (1 - 0.35 * long), long * tall, 0.02 * tall)
-			strand.part.CFrame = view * CFrame.new(strand.lump.x * wide, (1.15 - long / 2) * tall, -GUM.near - 0.1)
+	-- the strands, tucked behind the sheet's edge: a fat flare at the sheet and a thread up to where it is stuck
+	local foot, thin = top - 0.03, 1 / (1 + 2.5 * math.max(GUM.anchor - top, 0))
+	for _, strand in gum.strands do
+		local back = math.clamp((pulled - strand.lets) / GUM.recoil, 0, 1) -- let go: how far it has sprung back
+		local peak = GUM.anchor + (foot - GUM.anchor) * back
+		local shown = seen and peak - foot > 0.01
+		for n = 1, 2 do strand.flare[n].Transparency, strand.thread[n].Transparency = shown and 0 or 1, shown and 0 or 1 end
+		if shown then
+			local fat, half = 0.45 + 0.55 * thin, 0.16 * (strand.right - strand.left) * thin
+			GUM.spike(strand.flare, view, GUM.near + 0.004, strand.x * wide, (foot + 0.4 * (peak - foot)) * tall, foot * tall,
+				(strand.x - (strand.x - strand.left) * fat) * wide, (strand.x + (strand.right - strand.x) * fat) * wide)
+			GUM.spike(strand.thread, view, GUM.near + 0.004, strand.x * wide, peak * tall, foot * tall, (strand.x - half) * wide, (strand.x + half) * wide)
 		end
 	end
 end
