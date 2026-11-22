@@ -1343,6 +1343,121 @@ local function gumBubble(w, t, view, height, fov)
 	end
 end
 
+-- Magician, a 1st-place emote (Alan 2026-11-22, docs/decisions/2026-11-22-magician.md): the kid goes into Roblox's
+-- Godlike emote and floats up off the books, paper planes come down from above and circle them, and coming back
+-- down the kid bows while the planes scatter, one passing close by the lens. Both body clips are Roblox's own, played
+-- by id (nothing bought): Godlike (`clip`, at `speed`: its 7.1 s fill the scene) and, from `bowAt` seconds after
+-- 1st's light, Curtsy over it (`bow`, blended in over `bowFade`: by its keys a forward bow of about 40 degrees with
+-- the right arm swept across, deepest from 1 to 1.6 s). Sizes in a standard kid's heights.
+-- The scene lifts the kid `lift` more than the emote's own sixth of a height, up over `up` and down over `down`.
+-- `planes` white paper planes `long` (Next One's finished shape and its SHEET numbers: a keel and two wings). The
+-- first comes at `first`, the others `every` apart: each from `drop` over the ring, down in `fall` seconds, spiralling
+-- in from `wide` rings out. The ring: `ring` around the kid's chest (it follows the body), a turn every `turn`
+-- seconds, each plane rising and sinking `bob` and banked `bank` degrees into the turn, the whole ring tipped `tilt`
+-- degrees towards the camera (the camera is at about chest height: a level ring of level planes is six thin lines).
+-- At `out` they scatter: each straight out from the kid and `climb` of that upward (over 2nd's and 3rd's heads),
+-- faster and faster (`fly`), gone after `gone`; one behind the kid goes up instead, `over` less outward (straight
+-- back it would shrink into the dark and through the curtain); the one nearest the camera goes instead to `pass`
+-- (right, up and ahead of the lens), reaching it `passIn` later, and on past it. Nothing hits the lens.
+-- Studio only, behind the Dev panel's "end: magic" button, until who gets which emote is decided. No sounds yet.
+local MAGIC = { clip = "rbxassetid://10714347256", speed = 0.7, bow = "rbxassetid://10714061912", bowAt = 8.5, bowFade = 0.5,
+	lift = 0.34, up = { 0.9, 4.2 }, down = { 8.3, 10 }, planes = 6, long = 0.36, first = 3.3, every = 0.3, fall = 1.4, drop = 2.6,
+	wide = 1.5, ring = 1, turn = 2.4, bob = 0.07, bank = 40, tilt = 12, out = 9, gone = 1.3, fly = 6, climb = 0.35, over = 0.7,
+	pass = Vector3.new(0.3, -0.05, -0.4), passIn = 0.75 }
+local function magicClip()
+	return RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Magician" and MAGIC.clip or nil
+end
+-- Plane `i`'s place in the ring's own frame (x to the kid's right, z away from the camera), `t` seconds after 1st's
+-- light and before the scatter.
+function MAGIC.path(i, t)
+	local s = math.clamp((t - MAGIC.first - (i - 1) * MAGIC.every) / MAGIC.fall, 0, 1)
+	local angle = 2 * math.pi * (t / MAGIC.turn + i / MAGIC.planes)
+	local r = MAGIC.ring * (MAGIC.wide + (1 - MAGIC.wide) * ease(s))
+	return Vector3.new(r * math.cos(angle), MAGIC.drop * (1 - s) ^ 2 + MAGIC.bob * math.sin(3.1 * t + 2 * i), r * math.sin(angle))
+end
+-- The bow's track and the planes, unseen: each plane's pieces with where they lie in it (nose to -z), at the small
+-- winner's size (`scale` times smaller).
+local function magicProps(model, cast, animator, scale)
+	local animation = Instance.new("Animation"); animation.AnimationId = MAGIC.bow
+	local bow = animator:LoadAnimation(animation); bow.Looped, bow.Priority = false, Enum.AnimationPriority.Action2
+	local magic = { bow = bow, chest = model:FindFirstChild("UpperTorso") or model:FindFirstChild("HumanoidRootPart"), planes = {}, shown = {} }
+	local long = MAGIC.long * Avatars.standing_height_studs / scale
+	local half, thin = long * SHEET_WIDE / 2, long * SHEET_THIN
+	local keel = 2 * half * KEEL
+	local wing, white = half - keel, Color3.new(1, 1, 1)
+	local function pt(x, y, back) return Vector3.new(x, y, back - long / 2) end -- `back` from the nose
+	for i = 1, MAGIC.planes do
+		local pieces = {}
+		local function block(size, at) -- a rectangle
+			local part = paper(cast, white)
+			part.Size, part.Transparency = size, 1
+			table.insert(pieces, { part = part, at = at })
+		end
+		local function corner(tip, r, a, b) -- a triangle (Next One's): its right angle, then its other two corners
+			local part = paper(cast, white, "WedgePart")
+			part.Size, part.Transparency = Vector3.new(thin, (a - r).Magnitude, (b - r).Magnitude), 1
+			local y, z = (a - r).Unit, (r - b).Unit
+			table.insert(pieces, { part = part, at = tip * CFrame.fromMatrix((a + b) / 2, y:Cross(z), y, z) })
+		end
+		corner(CFrame.identity, pt(0, -keel, keel), pt(0, 0, keel), pt(0, -keel, 0)) -- the keel: its lower edge runs to the nose
+		block(Vector3.new(thin, keel, long - keel), CFrame.new(pt(0, -keel / 2, (keel + long) / 2)))
+		for _, side in { 1, -1 } do
+			local tip = CFrame.Angles(0, 0, side * math.rad(WINGS_UP))
+			corner(tip, pt(0, 0, half), pt(0, 0, keel), pt(side * wing, 0, half))
+			block(Vector3.new(wing, thin, long - half), tip * CFrame.new(pt(side * wing / 2, 0, (half + long) / 2)))
+		end
+		magic.planes[i] = pieces
+	end
+	return magic
+end
+-- The kid's extra lift, the bow and the planes `t` seconds after 1st's light. `view`: the camera this frame. Worked
+-- out in the big winner's studs; each small plane is then put where it looks the same.
+local function magicPlanes(w, t, view, height)
+	local magic = w.magic
+	local lift = MAGIC.lift * height * (ease((t - MAGIC.up[1]) / (MAGIC.up[2] - MAGIC.up[1])) - ease((t - MAGIC.down[1]) / (MAGIC.down[2] - MAGIC.down[1])))
+	w.model:PivotTo((w.desk + w.shift) * CFrame.new(0, lift / w.scale, 0))
+	if t >= MAGIC.bowAt and not magic.bowed then magic.bowed = true; magic.bow:Play(MAGIC.bowFade) end
+	local flown = t - MAGIC.out
+	if flown < 0 or not magic.from then -- the ring around the chest, where the big winner's is; it stays where it was at the scatter
+		magic.from = w.desk.Rotation * CFrame.Angles(-math.rad(MAGIC.tilt), 0, 0) + (view.Position + (magic.chest.Position - view.Position) * w.scale)
+	end
+	if flown >= 0 and not magic.close then -- the plane nearest the camera
+		local nearest
+		for i = 1, MAGIC.planes do
+			local z = MAGIC.path(i, MAGIC.out).Z
+			if not nearest or z < nearest then nearest, magic.close = z, i end
+		end
+	end
+	local function where(i, at) -- plane i, `at` seconds after the light, in the big winner's studs
+		local u = at - MAGIC.out
+		if u <= 0 then return magic.from * (MAGIC.path(i, at) * height) end
+		local p = MAGIC.path(i, MAGIC.out)
+		if i == magic.close then
+			local start = magic.from * (p * height)
+			return start:Lerp(view * (MAGIC.pass * height), (u / MAGIC.passIn) ^ 1.3)
+		end
+		local speed = (p - MAGIC.path(i, MAGIC.out - 0.02)) / 0.02
+		local far = math.max(p.Z, 0) / MAGIC.ring -- behind the kid: up and over, not off into the dark
+		local way = Vector3.new(p.X, 0, p.Z).Unit * (1 - MAGIC.over * far) + Vector3.yAxis * (MAGIC.climb + far)
+		-- the ring's own speed dies away in a third of a second: kept, it carried a second plane at the camera
+		return magic.from * ((p + speed * (1 - math.exp(-3 * u)) / 3 + way * MAGIC.fly * u * u) * height)
+	end
+	for i, pieces in magic.planes do
+		local shown = t >= MAGIC.first + (i - 1) * MAGIC.every and flown < (i == magic.close and 1.3 * MAGIC.passIn or MAGIC.gone)
+		if shown then
+			local at, ahead = where(i, t), where(i, t + 0.02)
+			local level = 1 - math.clamp(flown / 0.3, 0, 1) -- out of the turn: wings level
+			local lies = CFrame.lookAt(at, ahead) * CFrame.Angles(0, 0, -math.rad(MAGIC.bank) * level)
+			lies = lies.Rotation + (view.Position + (at - view.Position) / w.scale)
+			for _, piece in pieces do piece.part.CFrame = lies * piece.at end
+		end
+		if shown ~= magic.shown[i] then
+			magic.shown[i] = shown
+			for _, piece in pieces do piece.part.Transparency = shown and 0 or 1 end
+		end
+	end
+end
+
 -- The book podiums (Alan 2026-11-19): each winner stands on a stack of single books (Assets.WinnerBooks: eight
 -- free Creator Store books, each its own model lying flat, 10 studs on its longer side, its thickness in "Thick"),
 -- in clear steps (Alan 2026-11-19: on four, three and two books 1st's did not look taller than 2nd's): about 0.78,
@@ -1412,9 +1527,11 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local gumId, gumMarks
 	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then gumId, gumMarks = gumClip() end
 	local gum = gumId and gumProps(model, world, gumMarks) or nil -- Bubblegum: no plane either
+	local magicId = place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 and magicClip() or nil
+	local magic = magicId and magicProps(model, world, animator, scale) or nil -- Magician: nor here
 	local pilot = RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "ToyPilot" and (ourClip("ToyPilot"))
 	local planeEmote = flick or pilot or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
-	local prop = place == 1 and not kick and not gum and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
+	local prop = place == 1 and not kick and not gum and not magic and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
 	flick = prop and flick
 	local runnerUp = place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15
@@ -1427,16 +1544,16 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	elseif ours == "NextOne" then
 		emote = nextOne(animator, model, world, onDesk - Vector3.yAxis * feet / scale)
 	else
-		local animation = Instance.new("Animation"); animation.AnimationId = kick and kickId or gum and gumId or prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
-		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not (flick or kick or gum), Enum.AnimationPriority.Action
+		local animation = Instance.new("Animation"); animation.AnimationId = kick and kickId or gum and gumId or magicId or prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
+		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not (flick or kick or gum or magic), Enum.AnimationPriority.Action
 		-- A plane emote's first pose is held from the dark on (Alan 2026-11-21: starting at the light, the arm snapped up
 		-- from the side in a fifth of a second, "extremely rushed"); the light only sets it going.
-		if prop and not flick or kick or gum then emote:Play(0, 1, 0) end -- Book Kicker and Bubblegum too: they start in their stance on the stack
+		if prop and not flick or kick or gum or magic then emote:Play(0, 1, 0) end -- Book Kicker, Bubblegum and Magician too: they start in their stance on the stack
 	end
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil or gum ~= nil, kick = kick, gum = gum, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil or gum ~= nil or magic ~= nil, kick = kick, gum = gum, magic = magic, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -1699,7 +1816,7 @@ function Cutscene.play(winners, onStage)
 			local since = t - arrive - LIGHT_AT - (3 - place) * TURN
 			if since >= 0 and not w.lit then
 				w.lit = true
-				if w.held then w.emote:AdjustSpeed(1) else w.emote:Play(0.3) end
+				if w.held then w.emote:AdjustSpeed(w.magic and MAGIC.speed or 1) else w.emote:Play(0.3) end
 			end
 			shine(w, math.clamp(since / CLICK, 0, 1), up, seen)
 			-- every point of the big winner, moved towards the camera by their scale: for the small winner standing at
@@ -1718,7 +1835,8 @@ function Cutscene.play(winners, onStage)
 				flyPlane(w)
 				if w.pilot then pilotSounds(w, since) end
 			elseif w.kick then kickBooks(w, since, shot, steady, height)
-			elseif w.gum then gumBubble(w, since, shot, height, fov) end
+			elseif w.gum then gumBubble(w, since, shot, height, fov)
+			elseif w.magic then magicPlanes(w, since, shot, height) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end

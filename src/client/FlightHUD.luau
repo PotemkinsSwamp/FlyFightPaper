@@ -301,9 +301,9 @@ function HUD.start(getPlane, action)
 		endMatch.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",nil);Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
 	end
 	-- The same with one of our own 1st-place emotes (WinnersCutscene), Studio only: Toy Pilot, Camera Flick, Book
-	-- Kicker, and Bubblegum from its draft clip.
+	-- Kicker, Bubblegum and Magician.
 	if game:GetService("RunService"):IsStudio() then
-		for index, first in ipairs({ { "ToyPilot", "pilot" }, { "CameraFlick", "flick" }, { "BookKicker", "kicker" }, { "Bubblegum", "gum" } }) do
+		for index, first in ipairs({ { "ToyPilot", "pilot" }, { "CameraFlick", "flick" }, { "BookKicker", "kicker" }, { "Bubblegum", "gum" }, { "Magician", "magic" } }) do
 			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(index<3 and 220+index*110 or 550+index*110,-80) -- the third and fourth go past "tips again": the third's own slot is the 2nd/3rd button's
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
 			button.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
