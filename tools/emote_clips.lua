@@ -419,6 +419,8 @@ local function standing(c)
 	local at = build(base)
 	local elbow = elbowOf(at, "Right")
 	toy = { base = base, arm = ((at.UpperTorso * joints.RightUpperArm.c0).Position - elbow).Magnitude + (at.RightHand.Position - elbow).Magnitude, feet = {} }
+	local knee = (at.LeftUpperLeg * joints.LeftLowerLeg.c0).Position
+	toy.leg = ((at.LowerTorso * joints.LeftUpperLeg.c0).Position - knee).Magnitude + ((at.LeftLowerLeg * joints.LeftFoot.c0).Position - knee).Magnitude
 	for _, side in { "Left", "Right" } do
 		toy.feet[side] = { ankle = (at[side .. "LowerLeg"] * joints[side .. "Foot"].c0).Position, foot = at[side .. "Foot"].Rotation,
 			knee = (at[side .. "UpperLeg"] * joints[side .. "LowerLeg"].c0).Position - Vector3.zAxis * 0.2 * HEIGHT } -- knees bend forwards
@@ -577,6 +579,83 @@ CUTS.BookKicker = { length = KICK_LENGTH, once = true, clips = { fly = P.fly },
 		local ankle = build(turn)[name .. "LowerLeg"] * joints[name .. "Foot"].c0
 		local flatFoot = ankle.Rotation:Inverse() * stand.foot * joints[name .. "Foot"].c1.Rotation
 		turn[name .. "Foot"] = name == "Right" and flatFoot:Lerp(body.base.RightFoot.Rotation, keyed(KICK_TOES, t)) or flatFoot
+	end
+	return turn
+end }
+
+-- Bubblegum, a 1st-place emote (Alan 2026-11-22: "kind of sassy ... weight on one leg, arms hanging loose, head
+-- tilted, looking at the camera. That's kind of sassy to me, and I want to keep that going"; a first card where the
+-- cool broke he did not follow). The body only: the bubbles, the camera and the gum on the lens are the scene's
+-- (WinnersCutscene), fired by this clip's marks. Timed from the second Gemini video
+-- (.planning/emotes/bubblegum-gemini-api-2.mp4: 15 s, after he found a 10 s one "a little sped up"), posed by numbers.
+-- Seconds after 1st's light (GUM): the sassy stance, weight on the kid's right leg, while a small bubble grows
+-- (small) and snaps (snap: the chin flicks up); a big breath in (breath to full: the chest lifts, the legs
+-- straighten, the head tips back), let out slowly into the big bubble (blow) as the head comes back down; a lazy
+-- shift of the weight to the other leg (shift to shifted); the same stance leaning back and to that side from the
+-- waist as the bubble grows (GUM_LEAN: most of it in the first second, as in the video, then creeping on); at the pop
+-- only the head snaps back, the trunk gives a little after it, and they come back upright (back).
+-- The stance, by numbers on Toy Pilot's standing pose (feet 0.22 heights apart, legs straight): the hips GUM_SHIFT
+-- heights over the weight leg and rolled GUM_HIP degrees, that hip up; the chest GUM_CHEST degrees the other way, the
+-- head GUM_HEAD back again (an S); the hips as high as leaves the weight leg GUM_STRAIGHT of its length, so the other
+-- knee bends; both feet stay exactly where they stand. The arms hang (hands under the shoulders, never nearer the
+-- hips' side than GUM_CLEAR heights: a hip pushed out moves that arm out with it; GUM_ARM of their length with the elbow
+-- joint outwards: this body's own straight hang, its shoulder joint being at the arm's inner edge) and trail the shoulders by GUM_TRAIL seconds, GUM_SWING of the way, as loose arms do. A slow sway and breath all through, so a held pose is not a statue.
+local GUM = { small = 0.5, snap = 2.0, breath = 2.5, full = 3.4, blow = 3.9, shift = 5.5, shifted = 6.5, pop = 10.0, back = 12.3 }
+local GUM_LENGTH = 13
+local GUM_SHIFT, GUM_HIP, GUM_CHEST, GUM_HEAD, GUM_STRAIGHT, GUM_CLEAR, GUM_ARM, GUM_TRAIL, GUM_SWING = 0.05, 8, 5, 8, 0.985, 0.012, 0.96, 0.18, 0.5
+-- 1: the weight on the kid's right leg; -1: on the left.
+local GUM_WEIGHT = { { GUM.shift, 1 }, { GUM.shifted, -1 } }
+-- The breath (1: full) and how far the head is tipped back by it.
+local GUM_BREATH = { { GUM.breath, 0 }, { GUM.full, 1 }, { 3.7, 1 }, { 4.8, 0.25 }, { GUM.pop, 0 } }
+local GUM_BREATH_HEAD = { { GUM.breath, 0 }, { 3.3, 1 }, { 3.7, 1 }, { 4.6, 0 } }
+-- The lean (1: GUM_BACK degrees back and GUM_SIDE to the kid's left, the hips GUM_FORWARD heights forwards under it,
+-- the head GUM_CHIN degrees further back), a smooth line through the rows.
+local GUM_LEAN = { { GUM.shifted, 0 }, { 6.8, 0.1 }, { 7.2, 0.5 }, { 7.6, 0.8 }, { 8.5, 0.92 }, { GUM.pop, 1 }, { GUM.pop + 0.85, 1.2 }, { GUM.back, 0 }, { GUM_LENGTH, 0 } }
+local GUM_BACK, GUM_SIDE, GUM_FORWARD, GUM_CHIN = 22, 9, 0.045, 10
+-- The head's flicks back, in degrees: at the small bubble's snap and at the pop.
+local GUM_FLICK = { { GUM.snap, 0 }, { GUM.snap + 0.06, 5 }, { GUM.snap + 0.4, 0 }, { GUM.pop, 0 }, { GUM.pop + 0.08, 22 }, { GUM.pop + 0.5, 13 }, { GUM.back, 0 } }
+-- The hips and chest at `t`, the hips as high as the straighter leg allows.
+local function gumTrunk(t, body)
+	local turn = table.clone(body.base)
+	for _, side in { "Left", "Right" } do -- the arms from the body's own straight hang (the stance's are Toy Pilot's: one up, one fist on the hip)
+		for _, part in { "UpperArm", "LowerArm", "Hand" } do turn[side .. part] = CFrame.identity end
+	end
+	local weight, lean, breath = keyed(GUM_WEIGHT, t), keyed(GUM_LEAN, t, true), keyed(GUM_BREATH, t)
+	local back, hip = math.rad(GUM_BACK * lean), math.rad(GUM_HIP * weight)
+	turn.LowerTorso = CFrame.new(V(GUM_SHIFT * weight + 0.004 * math.sin(t / 4.3 * 2 * math.pi + 1), 0, -GUM_FORWARD * lean) * HEIGHT) * turn.LowerTorso * CFrame.Angles(back * 0.3, 0, hip)
+	turn.UpperTorso *= CFrame.Angles(back * 0.7 + math.rad(6 * breath + 0.7 * math.sin(t / 3.1 * 2 * math.pi)), 0,
+		math.rad(-GUM_CHEST * weight + GUM_SIDE * lean + 0.8 * math.sin(t / 3.4 * 2 * math.pi)) - hip)
+	local at, sink = build(turn), -math.huge
+	local long = body.leg * (GUM_STRAIGHT + (0.999 - GUM_STRAIGHT) * breath)
+	for name, stand in body.feet do
+		local top = (at.LowerTorso * joints[name .. "UpperLeg"].c0).Position
+		local flat = V(top.X - stand.ankle.X, 0, top.Z - stand.ankle.Z).Magnitude
+		sink = math.max(sink, top.Y - stand.ankle.Y - math.sqrt(math.max(long * long - flat * flat, 0)))
+	end
+	turn.LowerTorso = CFrame.new(0, -sink, 0) * turn.LowerTorso
+	return turn
+end
+CUTS.Bubblegum = { length = GUM_LENGTH, once = true, clips = { fly = P.fly },
+	marks = { Small = GUM.small, Snap = GUM.snap, Blow = GUM.blow, Pop = GUM.pop }, pose = function(t, c)
+	local body = standing(c)
+	local turn = gumTrunk(t, body)
+	local at, before = build(turn), build(gumTrunk(t - GUM_TRAIL, body))
+	local hips, hand = first.LowerTorso.Size, first.LeftHand.Size
+	for _, side in { "Left", "Right" } do
+		local sign = side == "Left" and -1 or 1
+		local shoulder = (at.UpperTorso * joints[side .. "UpperArm"].c0).Position
+		local trail = ((before.UpperTorso * joints[side .. "UpperArm"].c0).Position - shoulder) * GUM_SWING
+		local out = math.max(sign * shoulder.X + hand.X / 2, sign * (at.LowerTorso * V(sign * hips.X / 2, 0, 0)).X + hand.X / 2 + GUM_CLEAR * HEIGHT)
+		reach(turn, side, V(sign * out, shoulder.Y - body.arm, shoulder.Z - 0.03 * body.arm) + trail, shoulder + V(sign, -0.2, 0.3) * body.arm, false, GUM_ARM)
+	end
+	-- the head: level whatever the chest does, the chin a little up, tilted away from the lower shoulder
+	local up = math.rad(4 + 18 * keyed(GUM_BREATH_HEAD, t) + GUM_CHIN * keyed(GUM_LEAN, t, true) + keyed(GUM_FLICK, t))
+	local neck = build(turn).UpperTorso * joints.Head.c0
+	turn.Head = neck.Rotation:Inverse() * (CFrame.lookAt(Vector3.zero, V(0, math.sin(up), -math.cos(up))) * CFrame.Angles(0, 0, math.rad(GUM_HEAD * keyed(GUM_WEIGHT, t - 0.15)))) * joints.Head.c1.Rotation
+	for name, stand in body.feet do
+		reach(turn, name, stand.ankle, stand.knee, true)
+		local ankle = build(turn)[name .. "LowerLeg"] * joints[name .. "Foot"].c0
+		turn[name .. "Foot"] = ankle.Rotation:Inverse() * stand.foot * joints[name .. "Foot"].c1.Rotation
 	end
 	return turn
 end }

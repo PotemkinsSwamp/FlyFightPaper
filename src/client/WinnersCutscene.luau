@@ -1139,6 +1139,134 @@ local function nextOne(animator, model, cast, top)
 	return { IsPlaying = false, Play = function() started = true; track:AdjustSpeed(1) end }
 end
 
+-- Bubblegum, a 1st-place emote (Alan 2026-11-22: sassy from start to finish; docs/workshop/emote-making.md): the
+-- kid stands on their stack, weight on one leg, and blows a small bubble that snaps, then a big one that grows until
+-- it reaches the lens, pops on it and leaves gum over the whole picture; the gum sags, slides off, and what it
+-- uncovers is the way back to your desk. The body is the Bubblegum clip (tools/emote_clips.lua); its marks say when:
+-- Small to Snap the first bubble, Blow the second one's start, Pop. The camera does not move in (Alan 2026-11-20:
+-- "No zoom in on 1st"; a first card of mine had it creep in to meet a kid-sized bubble): the bubble does the
+-- travelling. Plain parts made here, no pictures.
+-- The bubbles hang on the mouth, sizes (radius) in a standard kid's heights: the first grows to `fist`; the second
+-- to `head` in `headBy` seconds, steadily to `kid` until `swell` seconds before the pop, then swells until its skin
+-- is `lens` of the way from the mouth to the camera (more than the whole picture: the room is seen through pink) and
+-- hangs still for the last `still` seconds. Thick gum pink while small, paler and clearer the bigger it gets.
+-- On the lens, `near` studs from it: rows of flattened pink lumps, each bigger than its share of the picture so no
+-- room shows between them, there `snap` seconds after the pop (the camera jolts), creeping down while they stick
+-- (`stuck`), then each lets go a little after its neighbour and slides off, the top ones trailing a thin string.
+-- The scene leaves `after` seconds after the pop. From the swell on the name plates and the "Menu" tag are put away
+-- (Book Kicker's rule: nothing sharp on top of what covers the lens).
+-- Studio only, from its draft clip, behind the Dev panel's "end: gum" button, until it is uploaded and who gets which
+-- emote is decided. No sounds yet.
+local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3,
+	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, cols = 5, rows = 4,
+	pink = Color3.fromRGB(255, 120, 175), pale = Color3.fromRGB(255, 176, 208),
+	shades = { Color3.fromRGB(255, 120, 175), Color3.fromRGB(244, 102, 160), Color3.fromRGB(255, 140, 190) } }
+local function gumClip()
+	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Bubblegum") then return nil end
+	local id, draft = ourClip("Bubblegum")
+	local marks = draft and draft:GetAttributes() or Rounds.bubblegum
+	if not id or not marks or not marks.Pop then return nil end
+	return id, marks
+end
+-- What it needs: the bubble with its glint and the first one's five scraps, and the lumps and strings for the lens,
+-- all unseen until their moment. A lump's place is in half pictures from the lens's middle (y to 1.5: more above
+-- the picture than below, so creeping down uncovers nothing).
+local function gumProps(model, cast, marks)
+	local head, root = model:FindFirstChild("Head"), model:FindFirstChild("HumanoidRootPart")
+	if not head or not root then return nil end
+	local function unseen(part) part.Transparency = 1; return part end
+	local gum = { marks = marks, head = head, root = root, bits = {}, lumps = {}, strings = {},
+		ball = unseen(paper(cast, GUM.pink, Enum.PartType.Ball)), glint = unseen(paper(cast, Color3.new(1, 1, 1))) }
+	for i = 1, 5 do gum.bits[i] = unseen(paper(cast, GUM.pink)) end
+	local random = Random.new(7)
+	for row = 1, GUM.rows do
+		for col = 1, GUM.cols do
+			local part = unseen(paper(cast, GUM.shades[(row + col) % 3 + 1]))
+			local mesh = Instance.new("SpecialMesh")
+			mesh.MeshType, mesh.Parent = Enum.MeshType.Sphere, part
+			local lump = { part = part, x = ((col - 0.5) / GUM.cols * 2 - 1) * 1.15 + random:NextNumber(-0.07, 0.07),
+				y = -1.1 + (row - 0.5) / GUM.rows * 2.6 + random:NextNumber(-0.07, 0.07), wait = random:NextNumber(0, 0.25), depth = #gum.lumps * 0.004 }
+			table.insert(gum.lumps, lump)
+			if row == GUM.rows then table.insert(gum.strings, { part = unseen(paper(cast, GUM.shades[col % 3 + 1])), lump = lump }) end
+		end
+	end
+	return gum
+end
+-- The bubbles and the gum `t` seconds after 1st's light. `view`: the camera this frame (with the pop's jolt): what
+-- is on the lens moves with it. The small winner stands where they look big, so the bubble is made on them as they are.
+local function gumBubble(w, t, view, height)
+	local gum = w.gum
+	local marks, head, stage, ball = gum.marks, gum.head, gum.root.CFrame, gum.ball
+	local size = height / w.scale -- a standard kid's height here
+	local mouth = head.CFrame * (Vector3.new(0, -0.22, -0.5) * head.Size)
+	local toLens = view.Position - mouth
+	local popped = t - marks.Pop
+	local r, clear = 0, 1
+	if t >= marks.Small and t < marks.Snap then
+		r, clear = size * GUM.fist * ((t - marks.Small) / (marks.Snap - marks.Small)) ^ 0.7, 0.3
+	elseif t >= marks.Blow and popped < 0 then
+		local steady, swell, still = marks.Blow + GUM.headBy, marks.Pop - GUM.swell, marks.Pop - GUM.still
+		if t < steady then r = size * GUM.head * (1 - (1 - (t - marks.Blow) / GUM.headBy) ^ 2)
+		elseif t < swell then r = size * (GUM.head + (GUM.kid - GUM.head) * (t - steady) / (swell - steady))
+		else r = size * GUM.kid + (GUM.lens * toLens.Magnitude - size * GUM.kid) * ease((t - swell) / (still - swell)) end
+		r *= 1 + 0.02 * math.sin(t * 14) * math.clamp((still - t) / 0.3, 0, 1) -- it wobbles as it grows; still at the end
+		clear = 0.3 + 0.3 * math.clamp(r / (size * GUM.kid), 0, 1)
+	end
+	if r > 0 then
+		local grown = math.clamp(r / (size * GUM.kid), 0, 1)
+		-- out of the mouth, and the bigger it is the straighter at the lens
+		local middle = mouth + (head.CFrame.LookVector * 0.4 + stage.LookVector * 0.6).Unit:Lerp(toLens.Unit, grown).Unit * r
+		ball.Size, ball.CFrame, ball.Transparency, ball.Color = Vector3.one * 2 * r, CFrame.new(middle), clear, GUM.pink:Lerp(GUM.pale, grown)
+		gum.glint.Size, gum.glint.Transparency = Vector3.new(0.4, 0.12, 0.02) * math.min(r, size * GUM.kid), 0.2 + 0.8 * math.clamp((r / size - GUM.kid) / 0.3, 0, 1)
+		gum.glint.CFrame = stage.Rotation * CFrame.Angles(0, 0, math.rad(35)) + middle + (toLens.Unit * 0.8 + stage.UpVector * 0.45 + stage.RightVector * 0.35) * r
+		gum.burst = t < marks.Snap and { at = stage:PointToObjectSpace(middle), r = r } or nil
+	else
+		-- the first bubble's snap: it puffs up and is gone, five scraps fly off (Nap's pop)
+		local since, burst = t - marks.Snap, gum.burst
+		if burst and since >= 0 and since < POP then
+			local k = since / POP
+			ball.Size, ball.CFrame, ball.Transparency = Vector3.one * 2 * burst.r * (1 + 0.35 * k), stage * CFrame.new(burst.at), 0.3 + 0.7 * k
+		else
+			ball.Transparency = 1
+		end
+		gum.glint.Transparency = 1
+		for i, bit in gum.bits do
+			if burst and since >= 0 and since < POP_BITS then
+				local k, angle = since / POP_BITS, math.rad(i * 72 + 15)
+				bit.Size, bit.Transparency = Vector3.new(0.45 * burst.r, 0.012 * size, 0.004 * size), k
+				bit.CFrame = stage * CFrame.new(burst.at + Vector3.new(math.cos(angle), math.sin(angle), 0) * burst.r * (1.1 + 1.4 * k)) * CFrame.Angles(0, 0, angle)
+			else
+				bit.Transparency = 1
+			end
+		end
+	end
+	if popped < 0 then return end
+	-- on the lens
+	local screen = workspace.CurrentCamera.ViewportSize
+	local tall = GUM.near * math.tan(math.rad(SHOT_FOV / 2))
+	local wide = tall * screen.X / math.max(screen.Y, 1)
+	local landed = 0.6 + 0.4 * math.min(popped / GUM.snap, 1) ^ 0.5
+	local sag = 0.05 * math.min(popped / (GUM.snap + GUM.stuck), 1)
+	local falling = popped - GUM.snap - GUM.stuck
+	local across, down = 2 * 0.95 * 2.3 / GUM.cols * wide, 2 * 0.95 * 2.6 / GUM.rows * tall
+	for _, lump in gum.lumps do
+		local fall = math.max(falling - lump.wait, 0)
+		lump.now = lump.y - sag - 7 * fall * fall
+		lump.part.Transparency = lump.now < -2.6 and 1 or 0
+		lump.part.Size = Vector3.new(across, down, 0.1 * tall) * landed
+		lump.part.CFrame = view * CFrame.new(lump.x * wide, lump.now * tall, -GUM.near - lump.depth)
+	end
+	for _, strand in gum.strings do -- from over the picture's top down to its lump, thinner the longer it gets
+		local long = 1.15 - strand.lump.now
+		local seen = falling > strand.lump.wait and long < 2.2
+		strand.part.Transparency = seen and 0 or 1
+		if seen then
+			strand.part.Size = Vector3.new(0.07 * wide * (1 - 0.35 * long), long * tall, 0.02 * tall)
+			strand.part.CFrame = view * CFrame.new(strand.lump.x * wide, (1.15 - long / 2) * tall, -GUM.near - 0.1)
+		end
+	end
+end
+
 -- The book podiums (Alan 2026-11-19): each winner stands on a stack of single books (Assets.WinnerBooks: eight
 -- free Creator Store books, each its own model lying flat, 10 studs on its longer side, its thickness in "Thick"),
 -- in clear steps (Alan 2026-11-19: on four, three and two books 1st's did not look taller than 2nd's): about 0.78,
@@ -1205,9 +1333,12 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local kickId, kickMarks
 	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then kickId, kickMarks = kickClip() end
 	local kick = kickId and kickProps(stack, world, rise, kickMarks, legs) or nil -- Book Kicker: no plane in the hand
+	local gumId, gumMarks
+	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then gumId, gumMarks = gumClip() end
+	local gum = gumId and gumProps(model, world, gumMarks) or nil -- Bubblegum: no plane either
 	local pilot = RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "ToyPilot" and (ourClip("ToyPilot"))
 	local planeEmote = flick or pilot or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
-	local prop = place == 1 and not kick and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
+	local prop = place == 1 and not kick and not gum and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
 	flick = prop and flick
 	local runnerUp = place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15
@@ -1220,16 +1351,16 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	elseif ours == "NextOne" then
 		emote = nextOne(animator, model, world, onDesk - Vector3.yAxis * feet / scale)
 	else
-		local animation = Instance.new("Animation"); animation.AnimationId = kick and kickId or prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
-		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not (flick or kick), Enum.AnimationPriority.Action
+		local animation = Instance.new("Animation"); animation.AnimationId = kick and kickId or gum and gumId or prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
+		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not (flick or kick or gum), Enum.AnimationPriority.Action
 		-- A plane emote's first pose is held from the dark on (Alan 2026-11-21: starting at the light, the arm snapped up
 		-- from the side in a fifth of a second, "extremely rushed"); the light only sets it going.
-		if prop and not flick or kick then emote:Play(0, 1, 0) end -- Book Kicker too: it starts standing on the stack
+		if prop and not flick or kick or gum then emote:Play(0, 1, 0) end -- Book Kicker and Bubblegum too: they start in their stance on the stack
 	end
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil, kick = kick, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil or gum ~= nil, kick = kick, gum = gum, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -1381,6 +1512,8 @@ function Cutscene.play(winners, onStage)
 							elseif copy.kick then
 								state.kickAt = LIGHT_AT + 2 * TURN + copy.kick.marks.Kick -- the kick, in seconds after arriving
 								firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + copy.kick.marks.HopTo -- the landing's thump (kickBooks)
+							elseif copy.gum then
+								state.gumAt = LIGHT_AT + 2 * TURN + copy.gum.marks.Pop -- the pop, in seconds after arriving
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do
@@ -1433,7 +1566,7 @@ function Cutscene.play(winners, onStage)
 	local depart = BANNER + DIM
 	local arrive = depart + GLIDE
 	-- When the camera leaves the winners: so the results card gets its CARD seconds, or as Camera Flick ends.
-	local function leaving() return state.flickAt and arrive + state.flickAt + FLICK_AFTER or state.kickAt and arrive + state.kickAt + KICK_AFTER or math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD) end
+	local function leaving() return state.flickAt and arrive + state.flickAt + FLICK_AFTER or state.kickAt and arrive + state.kickAt + KICK_AFTER or state.gumAt and arrive + state.gumAt + GUM.after or math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD) end
 	local function clearShot()
 		state.added = workspace.DescendantAdded:Connect(function(item) hideForShot(state, item) end)
 		task.spawn(function() -- a few hundred parts a frame, so nothing stutters; done well before the camera lands
@@ -1449,7 +1582,7 @@ function Cutscene.play(winners, onStage)
 	-- without Camera Flick's knock).
 	local function holdAt(t, leave)
 		local steady = group:Lerp(drift, ease(t / (leave - arrive)))
-		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height) or steady, steady
+		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height) or state.gumAt and jolted(steady, t - state.gumAt, height) or steady, steady
 	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
@@ -1507,7 +1640,8 @@ function Cutscene.play(winners, onStage)
 			elseif w.prop then
 				flyPlane(w)
 				if w.pilot then pilotSounds(w, since) end
-			elseif w.kick then kickBooks(w, since, shot, steady, height) end
+			elseif w.kick then kickBooks(w, since, shot, steady, height)
+			elseif w.gum then gumBubble(w, since, shot, height) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end
@@ -1521,7 +1655,9 @@ function Cutscene.play(winners, onStage)
 			local shown = t - arrive - LIGHT_AT - (3 - place) * TURN
 			-- Book Kicker: gone once the open book is most of the way to the lens (Alan 2026-11-21: "The nameplates
 			-- can't stay on top of the book when the book covers it")
+			-- Bubblegum: gone once the bubble swells over the picture
 			plate.frame.Visible = shown > 0 and t < leave and not (state.kickAt and t - arrive > state.kickAt + KICK_FLIGHT * 0.6)
+				and not (state.gumAt and t - arrive > state.gumAt - GUM.swell)
 			if plate.frame.Visible then
 				local desk = desks[place]
 				local edge = spots[place] + back * ((desk.Position - spots[place]):Dot(back) + desk.Size.Z / 2)
@@ -1545,6 +1681,7 @@ function Cutscene.play(winners, onStage)
 		-- and the HUD's "Menu" tag is put away with the name plates until the book has slid off (Alan 2026-11-21;
 		-- MenuController reads LensCovered): sharp on a blurred book, it stood out
 		local covered = state.kickAt ~= nil and flown > KICK_FLIGHT * 0.6 and flown < KICK_FLIGHT + KICK_STUCK + 0.45
+			or state.gumAt ~= nil and t - arrive > state.gumAt - GUM.swell and t - arrive < state.gumAt + GUM.snap + GUM.stuck + 1 -- Bubblegum: from the swell until the gum has slid off
 		if covered ~= state.covered then state.covered = covered; Root:SetAttribute("LensCovered", covered or nil) end
 		state.written = shot
 	end)
