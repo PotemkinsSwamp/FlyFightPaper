@@ -828,3 +828,42 @@ The next emote after Toy Pilot; a 1st-place emote that covers the camera ([plan]
     - **My first check lied:** a stopped track kept its weight in Edit, so the clap's bend stayed on through the wave and the hand seemed to go inwards. Test each move with the other track left out.
   - **Alan in Play on the fix, 2026-11-21: "ok its good".** Good Game is approved again ([his words](../playtests/2026-11-21-book-kicker-sound-and-good-game.md)). Roblox has approved both of Book Kicker's sounds (read 23:47).
   - **Studio without Rojo:** the Assistant's HTTP allowlist now refuses `127.0.0.1`, so the http.server recipe is dead; `tools/studio_push.py` copies a script through Studio's MCP instead.
+
+## Bubblegum: shot card and Gemini prompt (2026-11-22; card OK'd by Alan: "yes thats good")
+A 1st-place emote that covers the camera ([plan](../plan/WINNERS-CIRCLE-PLAN.md)). Nothing built.
+- **The feeling (Alan): sassy, from start to finish.** My first card had the kid's cool break (stiff with effort as the bubble grows, arms out, on the toes, flailing at the pop); he did not understand "holds dead still" and wanted the opening stance kept going: "weight on one leg, arms hanging loose, head tilted, looking at the camera. That's kind of sassy to me, and I want to keep that going".
+- **Shot card** (seconds after 1st's light; the kid stays on the stack; my timings):
+
+  | Time | The kid | The bubble | The camera |
+  |---|---|---|---|
+  | 0 to 1.5 | Weight on one leg, hip out, arms hanging loose, head tilted, looking at the camera | A fist-sized one grows at the mouth and snaps (it says "gum": chewing cannot be shown) | Steady, close on 1st |
+  | 1.5 to 2.2 | Big breath in: chest up, shoulders up, head tips back | None | Steady |
+  | 2.2 to 3.5 | Head back down, the same sassy stance | Starts growing; head-sized by about 3.2 s | Steady |
+  | 3.5 to 4.0 | Shifts the weight to the other leg, the hip out the other side (my addition) | Growing | Steady |
+  | 4.0 to 6.0 | Same stance, leaning back slowly from the waist; arms loose | Kid-sized, pale, see-through, wobbling; fills the picture from 5.5 | Creeps in slowly, stops at 5.5 |
+  | 6.0 | Only the head snaps back a little; the body holds | **Pop**: the skin snaps onto the lens, thick pink gum with a few thin strings | Jolts, as with the book |
+  | 6.0 to 6.9 | Hidden | The gum holds, strings sagging | Covered |
+  | 6.9 to 7.9 | Hidden | The gum sags and slides off | What it uncovers is your desk (Book Kicker's cut) |
+
+- **Not answered by him, my defaults:** the small first bubble stays; the camera creeps in to a kid-sized bubble (the other way: a still camera and a bubble grown all the way to the lens, swallowing 2nd and 3rd).
+- **Reused:** Nap's bubble at the mouth; Book Kicker's lens cover, jolt, hidden name plates and Menu tag, and the slide to the desk. **New:** the gum on the lens (first try: plain pink shapes near the lens, no upload). No hand touches the body or a prop.
+- **The Gemini prompt** (given to Alan; no bubble in the video, so the body stays visible for `tools/emote_trace.py`; the stack at its real size, six books up to the shoulders):
+
+  > One continuous 10-second shot, no cuts. Fixed camera, straight on, at chest height, not moving or zooming. Plain light grey room, soft even light, no text, no music.
+  >
+  > A simple smooth grey mannequin with no face stands on top of a solid, steady stack of six large dark hardback books. The stack is as tall as the mannequin's shoulders and a little wider than its feet. The whole stack and the whole figure are in the picture, with empty space above the head. The mannequin faces the camera for the whole shot and its feet never leave their spot.
+  >
+  > Attitude: a sassy, bored, unimpressed kid who is showing off without trying. Every move is slow and loose, never stiff, never excited.
+  >
+  > Hard rule for the hands: both arms hang loose at the sides for the whole shot. The hands never rise above the waist and never touch the body, the hips or the face.
+  >
+  > The mannequin is miming blowing a bubblegum bubble. No bubble or gum is shown.
+  >
+  > 0 to 1.5 s: stands with its weight on the leg on the left of the picture, that hip pushed out to the side, head tilted, looking at the camera. At about 1.2 s the head gives one tiny nod.
+  > 1.5 to 2.2 s: a big breath in: the chest lifts, the shoulders rise, the head tips back.
+  > 2.2 to 3.5 s: the head comes back down to look at the camera, the shoulders drop, and the body settles into the same sassy stance as at the start.
+  > 3.5 to 4.0 s: lazily shifts its weight to the other leg, so the other hip pushes out to the right of the picture.
+  > 4.0 to 6.0 s: keeps that stance and slowly leans back from the waist, further and further, as if something big were growing in front of its face. The arms stay loose.
+  > At 6.0 s: the head snaps back a little, once, sharply. The rest of the body does not flinch.
+  > 6.0 to 7.0 s: the head comes level again and the body comes back upright into the sassy stance.
+  > 7.0 to 10 s: holds that stance, still.
