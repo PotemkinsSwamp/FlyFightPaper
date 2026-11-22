@@ -742,6 +742,7 @@ pm-global`), which was 0.159.2 while his
   played on our big avatars; Hero Landing and Break Dance dip below the desk.
 - **Play started right after a save can miss it (2026-11-06):** a run reported 454 tests when the new test made 455. Check the
   test count went up, or read the script's Source in Edit, before trusting a run started just after an edit.
+- **Rojo is not on the shell's path** (2026-11-21): start it as `"C:/Users/gutie/AppData/Local/Rojo/bin/rojo.exe" serve serve.project.json` (plain `rojo` exits 127 in Git Bash). After a restart the Studio plugin stays disconnected until Alan clicks Connect; until then check a script's `Source` in Edit before trusting that Studio has new code, and compile-check a file by sending its text to `loadstring` in Edit.
 - **Rojo can die with a Studio reconnect** (2026-10-18): when the Studio tools come back under a new id, check that
   `rojo serve` still answers on port 34872 before trusting a test; Alan reconnects the plugin.
 - **Check a collision change by outcome before Alan plays it** (2026-10-18): the first train fix made wing touches

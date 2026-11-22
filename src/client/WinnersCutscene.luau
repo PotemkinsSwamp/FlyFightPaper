@@ -442,6 +442,118 @@ local function flickPlane(w, t, view, steady, height)
 	end
 end
 
+-- Book Kicker, a 1st-place emote (Alan 2026-11-21; docs/workshop/emote-making.md): 1st jumps down off their book
+-- stack, landing a little to its side, still facing the camera, and kicks it at the camera. The clip keeps the kid
+-- at one height and moves them sideways; here they are dropped by their own stack's height between the clip's
+-- HopFrom and HopTo (rising HopUp winner heights first), and at its Kick the books burst towards the camera. The
+-- top one opens on the way, slaps flat on the lens KICK_FLIGHT later (the camera jolts), covers the picture for
+-- KICK_STUCK and slides down it while the scene leaves (KICK_AFTER after the kick): what it uncovers is the way
+-- back to your desk. The others pass beside the lens. Studio only, from its draft clip, behind the Dev panel's
+-- "end: kicker" button, until it is uploaded and who gets which emote is decided.
+local KICK_FLIGHT, KICK_STUCK, KICK_AFTER = 0.45, 0.45, 0.95
+local KICK_PAGES, KICK_COVER = Color3.fromRGB(244, 236, 214), Color3.fromRGB(40, 60, 120)
+local KICK_FLAT = CFrame.Angles(math.rad(90), 0, 0) -- on the lens: the pages to it, the spine upright in the middle
+local function kickClip()
+	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "BookKicker") then return nil end
+	local id, draft = ourClip("BookKicker")
+	local marks = draft and draft:GetAttributes() or Rounds.book_kicker
+	if not id or not marks or not marks.Kick then return nil end
+	return id, marks
+end
+-- What the kick needs: the stack's books, and the book that opens: two halves hinged on a spine, covers in the top
+-- book's colour and cream pages, as big as that book, unseen until it takes the top book's place at the kick.
+-- Each piece's place is from the spine's middle, the pages up; `rise`: the stack's height in the big winner's studs.
+local function kickProps(stack, cast, rise, marks)
+	local top = stack[#stack]
+	if not top then return nil end
+	local box, size = top:GetBoundingBox()
+	local colour, most = KICK_COVER, 0
+	for _, part in top:GetDescendants() do -- its biggest coloured face
+		if part:IsA("BasePart") then
+			local _, saturation = part.Color:ToHSV()
+			local face = part.Size.X * part.Size.Z
+			if saturation > 0.15 and face > most then most, colour = face, part.Color end
+		end
+	end
+	local model, halves = Instance.new("Model"), {}
+	model.Name = "KickedBook"
+	for half = 1, 2 do
+		local side = half == 1 and -1 or 1 -- the lower half under the spine's level, the upper one over it
+		halves[half] = {}
+		for _, piece in { { size.X, size.Y * 0.08, size.Z, side * size.Y * 0.46, colour }, { size.X * 0.94, size.Y * 0.4, size.Z * 0.94, side * size.Y * 0.21, KICK_PAGES } } do
+			local part = Instance.new("Part")
+			part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
+			part.Size, part.Color, part.Material, part.Transparency = Vector3.new(piece[1], piece[2], piece[3]), piece[5], Enum.Material.SmoothPlastic, 1
+			part.Parent = model
+			table.insert(halves[half], { part = part, at = CFrame.new(size.X / 2, piece[4], 0) })
+		end
+	end
+	model.Parent = cast
+	return { marks = marks, rise = rise, stack = stack, top = top, halves = halves, wide = size.X, deep = size.Z, lies = top:GetPivot():ToObjectSpace(box) }
+end
+-- The camera `u` seconds after the book hits it: knocked back and shaken (Camera Flick's knock without the fall).
+local function jolted(steady, u, height)
+	if u <= 0 then return steady end
+	local jolt = 0.11 * height * math.exp(-u * 9) * math.sin(math.min(u / 0.05, 1) * math.pi / 2)
+	local shake = Vector3.new(math.sin(u * 95), math.cos(u * 80), 0) * 0.016 * height * math.exp(-u * 10)
+	return steady + (steady:VectorToWorldSpace(shake) - steady.LookVector * jolt)
+end
+-- The kid's drop and the books `t` seconds after 1st's light. `view`: the camera this frame; `steady`: without the
+-- jolt. Worked out in the big winner's studs; each small book is then put where it looks the same (`put`).
+local function kickBooks(w, t, view, steady, height)
+	local kick = w.kick
+	local marks = kick.marks
+	local hop = math.clamp((t - marks.HopFrom) / (marks.HopTo - marks.HopFrom), 0, 1)
+	if hop > 0 then
+		w.model:PivotTo(w.desk + w.shift + Vector3.yAxis * (4 * marks.HopUp * height * hop * (1 - hop) - kick.rise * hop * hop) / w.scale)
+	end
+	local flown = t - marks.Kick
+	if flown < 0 then return end
+	local function small(at) return at.Rotation + (view.Position + (at.Position - view.Position) / w.scale) end
+	if not kick.from then -- the kick: where each book was, as the big winner's; the top one makes way for the one that opens
+		kick.from = {}
+		for i, book in kick.stack do
+			local at = book:GetPivot()
+			kick.from[i] = at.Rotation + (w.spot + (at.Position - w.shift - w.spot) * w.scale)
+		end
+		for _, part in kick.top:GetDescendants() do if part:IsA("BasePart") then part.Transparency = 1 end end
+		for _, pieces in kick.halves do for _, piece in pieces do piece.part.Transparency = 0 end end
+		-- how far in front of the lens the open book ends, so its pages fill the picture
+		local screen = workspace.CurrentCamera.ViewportSize
+		local tanHalf = math.tan(math.rad(SHOT_FOV / 2))
+		kick.pressed = 0.9 * math.min(kick.wide / (tanHalf * screen.X / math.max(screen.Y, 1)), kick.deep / (2 * tanHalf)) * w.scale
+	end
+	for i = 1, #kick.stack - 1 do -- past the lens on both sides, tumbling; gone once behind it
+		local book, from = kick.stack[i], kick.from[i]
+		local s = flown / (KICK_FLIGHT * (1.1 + 0.12 * i))
+		if s < 1.15 then
+			local side = i % 2 == 0 and 1 or -1
+			local aim = steady * Vector3.new(side * (0.9 + 0.25 * (i % 3)) * height, (0.15 * i - 0.2) * height, 0)
+			local at = from.Position:Lerp(aim, s) + Vector3.yAxis * 0.1 * height * math.sin(math.min(s, 1) * math.pi)
+			book:PivotTo(small(CFrame.new(at) * CFrame.fromAxisAngle(Vector3.new(side, 0.3 * i, 0.6).Unit, flown * (7 + i)) * from.Rotation))
+		elseif not kick.gone or kick.gone < i then
+			kick.gone = i
+			for _, part in book:GetDescendants() do if part:IsA("BasePart") then part.Transparency = 1 end end
+		end
+	end
+	local spine, opened -- the book's middle shut, its spine open
+	if flown < KICK_FLIGHT then
+		local s = 1 - (1 - flown / KICK_FLIGHT) ^ 2
+		local from = kick.from[#kick.stack] * (kick.lies.Rotation + kick.lies.Position * w.scale) -- its middle, not its pivot
+		local at = from.Position:Lerp((steady * CFrame.new(0, 0, -kick.pressed)).Position, s)
+		local tumbling = CFrame.new(at) * CFrame.fromAxisAngle(Vector3.new(1, 0.2, 0.3).Unit, (1 - s) * 9) * from.Rotation
+		spine, opened = tumbling:Lerp(CFrame.new(at) * (steady.Rotation * KICK_FLAT), math.clamp((s - 0.6) / 0.4, 0, 1)), math.clamp((s - 0.3) / 0.6, 0, 1)
+	else
+		local slide = math.max(flown - KICK_FLIGHT - KICK_STUCK, 0)
+		spine, opened = view * CFrame.new(0, -slide * slide * 3.7 * height, -kick.pressed) * KICK_FLAT, 1
+	end
+	spine = small(spine) * CFrame.new(-kick.wide / 2 * (1 - opened), 0, 0)
+	for half, pieces in kick.halves do
+		local hinge = half == 2 and CFrame.Angles(0, 0, math.pi * opened) or CFrame.identity
+		for _, piece in pieces do piece.part.CFrame = spine * hinge * piece.at end
+	end
+end
+
 -- 1st's emote comes from the first list; 2nd and 3rd each get a different one from the second.
 local picked = {}
 local function emoteFor(place)
@@ -925,9 +1037,9 @@ end
 local STACKS = { { 1, 7, 4, 2, 3, 8 }, { 5, 8, 6, 4 }, { 8, 5 } }
 local BOOK_WIDE = 0.56
 -- Builds `place`'s stack on `spot` in a small winner's `world`, where everything is `shrink` times smaller; returns
--- the stack's height in the big winner's studs.
+-- the stack's height in the big winner's studs, and its books, bottom to top.
 local function stackBooks(world, place, spot, shrink)
-	local books, rise = Root.Assets:FindFirstChild("WinnerBooks"), 0
+	local books, rise, stack = Root.Assets:FindFirstChild("WinnerBooks"), 0, {}
 	local grow = BOOK_WIDE * Avatars.standing_height_studs / 10
 	for i, id in STACKS[place] do
 		local book = books and books:FindFirstChild("Book" .. id)
@@ -938,9 +1050,10 @@ local function stackBooks(world, place, spot, shrink)
 			book:PivotTo(CFrame.new(spot + Vector3.yAxis * rise / shrink) * CFrame.Angles(0, math.rad(askew), 0))
 			book.Parent = world
 			rise += book:GetAttribute("Thick") * grow
+			table.insert(stack, book)
 		end
 	end
-	return rise
+	return rise, stack
 end
 
 -- A local copy of a winner's avatar in `world` (a model of its own), back at its normal small size, standing on its
@@ -965,7 +1078,8 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	for _, joint in model:GetDescendants() do
 		if joint:IsA("Motor6D") or joint:IsA("AnimationConstraint") then joint.Transform = CFrame.identity end
 	end
-	local onDesk = spot + Vector3.new(0, (stackBooks(world, place, spot, scale) + feet) / scale, 0)
+	local rise, stack = stackBooks(world, place, spot, scale)
+	local onDesk = spot + Vector3.new(0, (rise + feet) / scale, 0)
 	local desk = CFrame.lookAt(onDesk, onDesk + facing)
 	model:PivotTo(desk)
 	local big = math.clamp(model:GetExtentsSize().Y * scale / Avatars.standing_height_studs, 1, CONE_BIG) -- taller than the rest, hair and hats too
@@ -977,9 +1091,12 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	model.Parent = world
 	local flick, flickInfo
 	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then flick, flickInfo = flickClip() end
+	local kickId, kickMarks
+	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then kickId, kickMarks = kickClip() end
+	local kick = kickId and kickProps(stack, world, rise, kickMarks) or nil -- Book Kicker: no plane in the hand
 	local pilot = RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "ToyPilot" and (ourClip("ToyPilot"))
 	local planeEmote = flick or pilot or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
-	local prop = place == 1 and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
+	local prop = place == 1 and not kick and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
 	flick = prop and flick
 	local runnerUp = place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15
@@ -992,16 +1109,16 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	elseif ours == "NextOne" then
 		emote = nextOne(animator, model, world, onDesk - Vector3.yAxis * feet / scale)
 	else
-		local animation = Instance.new("Animation"); animation.AnimationId = prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
-		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not flick, Enum.AnimationPriority.Action
+		local animation = Instance.new("Animation"); animation.AnimationId = kick and kickId or prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
+		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not (flick or kick), Enum.AnimationPriority.Action
 		-- A plane emote's first pose is held from the dark on (Alan 2026-11-21: starting at the light, the arm snapped up
 		-- from the side in a fifth of a second, "extremely rushed"); the light only sets it going.
-		if prop and not flick then emote:Play(0, 1, 0) end
+		if prop and not flick or kick then emote:Play(0, 1, 0) end -- Book Kicker too: it starts standing on the stack
 	end
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, held = prop and not flick, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil, kick = kick, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -1148,6 +1265,8 @@ function Cutscene.play(winners, onStage)
 								firstSoundAt = state.start + BANNER + DIM + GLIDE + state.flickAt -- the throw's sound (flickSounds)
 							elseif copy.pilot then
 								firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + PILOT_SOUNDS[1] -- the first whoosh (pilotSounds)
+							elseif copy.kick then
+								state.kickAt = LIGHT_AT + 2 * TURN + copy.kick.marks.Kick -- the kick, in seconds after arriving
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do
@@ -1200,7 +1319,7 @@ function Cutscene.play(winners, onStage)
 	local depart = BANNER + DIM
 	local arrive = depart + GLIDE
 	-- When the camera leaves the winners: so the results card gets its CARD seconds, or as Camera Flick ends.
-	local function leaving() return state.flickAt and arrive + state.flickAt + FLICK_AFTER or math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD) end
+	local function leaving() return state.flickAt and arrive + state.flickAt + FLICK_AFTER or state.kickAt and arrive + state.kickAt + KICK_AFTER or math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD) end
 	local function clearShot()
 		state.added = workspace.DescendantAdded:Connect(function(item) hideForShot(state, item) end)
 		task.spawn(function() -- a few hundred parts a frame, so nothing stutters; done well before the camera lands
@@ -1216,7 +1335,7 @@ function Cutscene.play(winners, onStage)
 	-- without Camera Flick's knock).
 	local function holdAt(t, leave)
 		local steady = group:Lerp(drift, ease(t / (leave - arrive)))
-		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or steady, steady
+		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height) or steady, steady
 	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
@@ -1274,7 +1393,7 @@ function Cutscene.play(winners, onStage)
 			elseif w.prop then
 				flyPlane(w)
 				if w.pilot then pilotSounds(w, since) end
-			end
+			elseif w.kick then kickBooks(w, since, shot, steady, height) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end

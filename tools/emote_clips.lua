@@ -468,6 +468,118 @@ CUTS.ToyPilot = { length = TOY_LENGTH, once = true, clips = { fly = P.fly }, pos
 	return turn
 end }
 
+-- Book Kicker, a 1st-place emote (Alan 2026-11-21: "jump a little bit to the side of the books, still looking at the
+-- camera, and kick them so that they fly towards the camera"; the feeling: the cheeky kid who is done with
+-- schoolwork, unbothered, then one sudden hard kick). Timed from his Gemini video
+-- (.planning/emotes/book-kicker-gemini-api-1.mp4), posed by numbers: its stack is shin high, 1st's is 0.77 of a
+-- winner's height and 0.56 wide, and its dismount was a step down behind the stack ("you will have to make a better
+-- dismount"). Seconds after 1st's light (KICK): fists on the hips, head bowed at the books; looks up, head tilted;
+-- crouches (crouch); jumps (off to land) KICK_SIDE winner heights to the side and KICK_BACK back, knees tucked,
+-- lands deep and stands up (up); glances at the tower; draws the right leg back (wind to swing) and kicks forwards
+-- and in at the tower (hit); holds the leg high (through to lower); foot down (planted); fists on the hips, chest
+-- out (proud). The kid faces the camera throughout. The clip keeps the kid at one height: the scene
+-- (WinnersCutscene) drops them by their own stack's height between HopFrom and HopTo, rising HopUp winner heights
+-- first, and sends the books off at Kick (the marks). The stance is Toy Pilot's (P.fly at P.held); the left foot
+-- stays where it lands.
+local KICK = { crouch = 3.0, off = 3.35, land = 3.85, up = 4.6, wind = 5.0, swing = 5.5, hit = 5.62, through = 5.9, lower = 6.6, planted = 7.1, proud = 7.8 }
+local KICK_LENGTH, KICK_SIDE, KICK_BACK, KICK_HOP = 10, -0.65, 0.3, 0.1
+-- A value at `t` from { seconds, value } rows (numbers or Vector3s), held at the ends: eased from row to row (it
+-- stops at every row), or with `through` a smooth line through them (Catmull-Rom: it keeps moving).
+local function keyed(keys, t, through)
+	local i = 1
+	while i < #keys - 1 and keys[i + 1][1] <= t do i += 1 end
+	local function row(k) return keys[math.clamp(k, 1, #keys)][2] end
+	local b, c = keys[i], keys[i + 1]
+	local s = math.clamp((t - b[1]) / (c[1] - b[1]), 0, 1)
+	if not through then return b[2] + (c[2] - b[2]) * eased(s) end
+	local a, d = row(i - 1), row(i + 2)
+	return b[2] + 0.5 * s * (c[2] - a + s * (2 * a - 5 * b[2] + 4 * c[2] - d + s * (3 * (b[2] - c[2]) + d - a)))
+end
+local V = Vector3.new
+-- In winner heights: how far the hips sink, and shift over the standing foot; in degrees: the trunk's lean
+-- forwards, its roll to the kid's left, the hips' turn to the kid's left.
+local KICK_SINK = { { KICK.crouch, 0 }, { KICK.off - 0.05, 0.1 }, { KICK.off + 0.08, 0 }, { KICK.land, 0 }, { KICK.land + 0.18, 0.17 }, { KICK.up, 0 }, { KICK.wind, 0 }, { KICK.swing, 0.03 }, { KICK.through, 0.02 }, { KICK.planted, 0 } }
+local KICK_WEIGHT = { { KICK.up, 0 }, { KICK.swing, -0.05 }, { KICK.lower, -0.05 }, { KICK.planted, 0 } }
+local KICK_PITCH = { { KICK.crouch, 0 }, { KICK.off - 0.05, 18 }, { KICK.off + 0.2, 4 }, { KICK.land, 8 }, { KICK.land + 0.18, 26 }, { KICK.up, 0 }, { KICK.wind, 0 }, { KICK.swing, 12 }, { KICK.through, -15 }, { KICK.lower, -12 }, { KICK.planted, 0 }, { KICK.proud, -4 } }
+local KICK_ROLL = { { KICK.wind, 0 }, { KICK.swing, 5 }, { KICK.through, 8 }, { KICK.lower, 6 }, { KICK.planted, 0 } }
+local KICK_YAW = { { KICK.wind, 0 }, { KICK.swing, -10 }, { KICK.through, 14 }, { KICK.lower, 10 }, { KICK.planted, 0 } }
+-- Where the head looks (root frame: forwards is -Z) and its tilt in degrees.
+local KICK_LOOK = { { 2.0, V(0, -0.75, -1) }, { 2.9, V(0, 0, -1) }, { KICK.crouch, V(0, 0, -1) }, { KICK.off, V(-0.5, -0.6, -1) }, { KICK.land + 0.14, V(-0.1, -0.5, -1) }, { KICK.up, V(0, 0, -1) }, { KICK.up + 0.15, V(0.9, -0.5, -1) }, { KICK.wind - 0.1, V(0.9, -0.5, -1) }, { KICK.wind + 0.25, V(0, -0.05, -1) }, { KICK.planted, V(0, 0, -1) }, { KICK.proud, V(0, 0.14, -1) } }
+local KICK_TILT = { { 2.2, 0 }, { 2.9, 12 }, { KICK.crouch, 12 }, { KICK.off, 0 } }
+-- Both ankles off the ground in the air; the kicking ankle from where it stands: back and up, low through the
+-- middle, into the tower, high in front (to the kid's right, up, back).
+local KICK_TUCK = { { KICK.off, 0 }, { (KICK.off + KICK.land) / 2, 0.13 }, { KICK.land, 0 } }
+local KICK_FOOT = { { KICK.wind, V(0, 0, 0) }, { KICK.swing, V(0.02, 0.16, 0.3) }, { KICK.swing + 0.07, V(0.1, 0.06, 0.05) }, { KICK.hit + 0.02, V(0.24, 0.2, -0.2) }, { KICK.through, V(0.28, 0.42, -0.45) }, { KICK.lower, V(0.26, 0.36, -0.42) }, { KICK.planted, V(0, 0, 0) } }
+local KICK_TOES = { { KICK.wind, 0 }, { KICK.swing, 1 }, { KICK.lower, 1 }, { KICK.planted, 0 } } -- 0: the foot flat; 1: in line with the shin
+-- The arms: which pose when (eased from one to the next). A hand's place from its shoulder in arm lengths
+-- { out to its own side, up, back }; the elbows point back and a little down (KICK_ELBOW: no arm here ever points
+-- along that line, where an elbow flips); "hips": the fist against the side of the hips, the elbow out.
+local KICK_ARMS = { { 2.9, "hips" }, { KICK.off - 0.05, "back" }, { KICK.off + 0.25, "up" }, { KICK.land + 0.1, "land" }, { KICK.up, "loose" }, { KICK.wind, "loose" }, { KICK.swing, "wind" }, { KICK.through, "kick" }, { KICK.lower, "kick" }, { KICK.planted, "loose" }, { KICK.proud, "hips" } }
+local KICK_ELBOW = V(0, -0.3, 1)
+local KICK_ARM = {
+	back = { Left = V(0.25, -0.75, 0.5), Right = V(0.25, -0.75, 0.5) },
+	up = { Left = V(0.75, 0.4, -0.15), Right = V(0.35, 0.55, -0.3) }, -- the right arm stays on its own side of the tower
+	land = { Left = V(0.5, -0.35, -0.7), Right = V(0, -0.4, -0.7) },
+	loose = { Left = V(0.2, -0.95, -0.05), Right = V(0.15, -0.95, -0.1) },
+	wind = { Left = V(0.6, -0.3, -0.6), Right = V(0.3, -0.5, 0.6) },
+	kick = { Left = V(0.85, -0.05, 0.3), Right = V(0.8, 0.1, 0.25) },
+}
+CUTS.BookKicker = { length = KICK_LENGTH, once = true, clips = { fly = P.fly },
+	marks = { HopFrom = KICK.off, HopTo = KICK.land, HopUp = KICK_HOP, Kick = KICK.hit }, pose = function(t, c)
+	local body = standing(c)
+	local turn = table.clone(body.base)
+	-- The stance's right arm is raised straight up (it is Toy Pilot's ending): bent down from there, the upper arm
+	-- spun round its own length. It starts as the left arm's mirror image instead.
+	for _, part in { "UpperArm", "LowerArm", "Hand" } do
+		local x, y, z, r00, r01, r02, r10, r11, r12, r20, r21, r22 = body.base["Left" .. part]:GetComponents()
+		turn["Right" .. part] = CFrame.new(-x, y, z, r00, -r01, -r02, -r10, r11, r12, -r20, r21, r22)
+	end
+	local hop = math.clamp((t - KICK.off) / (KICK.land - KICK.off), 0, 1)
+	local moved = V(KICK_SIDE, 0, KICK_BACK) * hop * HEIGHT
+	local pitch, roll = math.rad(keyed(KICK_PITCH, t)), math.rad(keyed(KICK_ROLL, t))
+	turn.LowerTorso = CFrame.new(moved + V(keyed(KICK_WEIGHT, t), -keyed(KICK_SINK, t), 0) * HEIGHT) * turn.LowerTorso
+		* CFrame.Angles(-pitch * 0.3, math.rad(keyed(KICK_YAW, t)), roll * 0.5)
+	turn.UpperTorso *= CFrame.Angles(-pitch * 0.7, 0, roll * 0.5)
+	-- the arms
+	local i = 1
+	while i < #KICK_ARMS - 1 and KICK_ARMS[i + 1][1] <= t do i += 1 end
+	local from, to = KICK_ARMS[i], KICK_ARMS[i + 1]
+	local s = eased((t - from[1]) / (to[1] - from[1]))
+	local at = build(turn)
+	local hips, fist = first.LowerTorso.Size, first.LeftHand.Size
+	for _, side in { "Left", "Right" } do
+		local sign = side == "Left" and -1 or 1
+		local shoulder = (at.UpperTorso * joints[side .. "UpperArm"].c0).Position
+		local function arm(name)
+			if name == "hips" then
+				return at.LowerTorso * V(sign * (hips.X / 2 + fist.X * 0.3), hips.Y * 0.4, -hips.Z * 0.2), shoulder + V(sign, -0.45, 0.15) * body.arm
+			end
+			local p = KICK_ARM[name][side]
+			return shoulder + V(sign * p.X, p.Y, p.Z) * body.arm, shoulder + KICK_ELBOW * body.arm
+		end
+		local hand0, elbow0 = arm(from[2])
+		local hand1, elbow1 = arm(to[2])
+		-- round the shoulder from one to the other (straight across, the hand passed through the shoulder and the arm flipped)
+		local v0, v1 = hand0 - shoulder, hand1 - shoulder
+		local axis, angle = arc(v0.Unit, v1.Unit):ToAxisAngle()
+		reach(turn, side, shoulder + CFrame.fromAxisAngle(axis, angle * s) * v0.Unit * (v0.Magnitude + (v1.Magnitude - v0.Magnitude) * s), elbow0:Lerp(elbow1, s))
+	end
+	-- the head
+	at = build(turn)
+	local neck = at.UpperTorso * joints.Head.c0
+	turn.Head = neck.Rotation:Inverse() * (CFrame.lookAt(Vector3.zero, keyed(KICK_LOOK, t)).Rotation * CFrame.Angles(0, 0, math.rad(keyed(KICK_TILT, t)))) * joints.Head.c1.Rotation
+	-- the legs: the left foot stands where it is, the right one too until it kicks
+	local tuck = V(0, keyed(KICK_TUCK, t), 0) * HEIGHT
+	for name, stand in body.feet do
+		local kicking = name == "Right" and keyed(KICK_FOOT, t, true) * HEIGHT or Vector3.zero
+		reach(turn, name, stand.ankle + moved + tuck + kicking, stand.knee + moved + tuck + kicking * 0.5, true)
+		local ankle = build(turn)[name .. "LowerLeg"] * joints[name .. "Foot"].c0
+		local flatFoot = ankle.Rotation:Inverse() * stand.foot * joints[name .. "Foot"].c1.Rotation
+		turn[name .. "Foot"] = name == "Right" and flatFoot:Lerp(body.base.RightFoot.Rotation, keyed(KICK_TOES, t)) or flatFoot
+	end
+	return turn
+end }
+
 local folder = game.ServerStorage:FindFirstChild("RBX_ASSISTANT_ANIMGEN")
 -- A clip as a function of its own seconds (held at its ends), and its length.
 local function clip(name)
