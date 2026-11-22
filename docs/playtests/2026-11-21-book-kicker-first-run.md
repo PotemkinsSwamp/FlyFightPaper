@@ -3,7 +3,7 @@
 **When:** 2026-11-21, Alan on Claude's muted Play recording of the first build (`.planning/emotes/book-kicker-first-run-cut.mp4`; the winner in it was a bot's avatar, a short girl). How the build works: [emote making](../workshop/emote-making.md).
 
 ## What he said, and what changes
-Nothing below is built yet; it is the next session's work.
+The landing, the name plates and the pages were built the same day (second build: [emote making](../workshop/emote-making.md)); nobody has seen them move yet. Sound waits for the look.
 
 | Alan | What changes |
 |---|---|

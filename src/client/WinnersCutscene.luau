@@ -453,6 +453,54 @@ end
 local KICK_FLIGHT, KICK_STUCK, KICK_AFTER = 0.45, 0.45, 0.95
 local KICK_PAGES, KICK_COVER = Color3.fromRGB(244, 236, 214), Color3.fromRGB(40, 60, 120)
 local KICK_FLAT = CFrame.Angles(math.rad(90), 0, 0) -- on the lens: the pages to it, the spine upright in the middle
+-- Where they land, in winner heights from the stack's middle: to their own left and back (Alan 2026-11-21 on the
+-- first run, where they landed 0.65 out: "landing outside the spotlight ... landing closer to the book ... you can't
+-- see the tip of her foot because it's behind the box. Right now, it looks like she's kicking the air"). From the
+-- clip, measured on the test kid (tools/emote_clips.lua): at the kick the foot's tip is 0.43 to the right of their
+-- middle and 0.25 in front of it, and their trunk is 0.11 deep; the stack's side is 0.26 out, its back 0.28 behind.
+-- So the tip ends 0.12 behind the stack's side (0.14 = 0.26 - 0.12) and reaches its back as the books go, and the
+-- trunk stays behind the stack's back; never further out than 0.45, the edge of the bright part of the beam (a
+-- standard kid's foot then goes 0.24 behind the stack). `legs`: their hip height against a standard kid's
+-- (KICK_HIPS winner heights): short legs reach less far, so they land closer.
+local KICK_HIPS = 0.423
+local function kickLanding(legs)
+	return math.min(0.45, 0.14 + 0.43 * legs), 0.3 + 0.17 * legs
+end
+-- A page's writing (Alan 2026-11-21: "fake scribbles to make it look like it's filled with stuff, but nothing
+-- actually legible"): rows of joined-up wiggles in ink, in words of uneven length, a row ending early now and then
+-- as a paragraph does; the same every time. Path2D strokes (as UnlockMoment's ink) on the page's `face`, off until
+-- the kick: a wiggle's points go up and down in turn with a tall stroke now and then.
+local KICK_INK, KICK_CANVAS = Color3.fromRGB(40, 30, 24), 600
+local function scribbled(page, face, seed)
+	local gui = Instance.new("SurfaceGui")
+	gui.Face, gui.SizingMode, gui.Enabled = face, Enum.SurfaceGuiSizingMode.FixedSize, false
+	gui.CanvasSize = Vector2.new(KICK_CANVAS, math.round(KICK_CANVAS * page.Size.Z / page.Size.X))
+	local sheet = Instance.new("Frame")
+	sheet.BackgroundTransparency, sheet.Size, sheet.Parent = 1, UDim2.fromScale(1, 1), gui
+	local random = Random.new(seed)
+	local wide, tall = gui.CanvasSize.X, gui.CanvasSize.Y
+	for y = 70, tall - 50, 42 do
+		local x = 50
+		local last = random:NextNumber() < 0.25 and wide * random:NextNumber(0.3, 0.7) or wide - 50
+		while x < last - 40 do
+			local points, to, up = {}, math.min(x + random:NextNumber(40, 120), last), true
+			while x < to do
+				local stroke = random:NextNumber(4, 9) * (up and random:NextNumber() < 0.15 and 2.2 or 1)
+				table.insert(points, Path2DControlPoint.new(UDim2.fromOffset(x, y + (up and -stroke or stroke)), UDim2.fromOffset(-3, 0), UDim2.fromOffset(3, 0)))
+				x += random:NextNumber(6, 11)
+				up = not up
+			end
+			if #points > 1 then
+				local path = Instance.new("Path2D")
+				path.Color3, path.Thickness, path.Parent = KICK_INK, 3, sheet
+				path:SetControlPoints(points)
+			end
+			x += random:NextNumber(14, 24)
+		end
+	end
+	gui.Parent = page
+	return gui
+end
 local function kickClip()
 	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "BookKicker") then return nil end
 	local id, draft = ourClip("BookKicker")
@@ -462,8 +510,9 @@ local function kickClip()
 end
 -- What the kick needs: the stack's books, and the book that opens: two halves hinged on a spine, covers in the top
 -- book's colour and cream pages, as big as that book, unseen until it takes the top book's place at the kick.
--- Each piece's place is from the spine's middle, the pages up; `rise`: the stack's height in the big winner's studs.
-local function kickProps(stack, cast, rise, marks)
+-- Each piece's place is from the spine's middle, the pages up; `rise`: the stack's height in the big winner's studs;
+-- `legs`: see kickLanding.
+local function kickProps(stack, cast, rise, marks, legs)
 	local top = stack[#stack]
 	if not top then return nil end
 	local box, size = top:GetBoundingBox()
@@ -475,21 +524,24 @@ local function kickProps(stack, cast, rise, marks)
 			if saturation > 0.15 and face > most then most, colour = face, part.Color end
 		end
 	end
-	local model, halves = Instance.new("Model"), {}
+	local model, halves, pages = Instance.new("Model"), {}, {}
 	model.Name = "KickedBook"
 	for half = 1, 2 do
 		local side = half == 1 and -1 or 1 -- the lower half under the spine's level, the upper one over it
 		halves[half] = {}
-		for _, piece in { { size.X, size.Y * 0.08, size.Z, side * size.Y * 0.46, colour }, { size.X * 0.94, size.Y * 0.4, size.Z * 0.94, side * size.Y * 0.21, KICK_PAGES } } do
+		for index, piece in { { size.X, size.Y * 0.08, size.Z, side * size.Y * 0.46, colour }, { size.X * 0.94, size.Y * 0.4, size.Z * 0.94, side * size.Y * 0.21, KICK_PAGES } } do
 			local part = Instance.new("Part")
 			part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = true, false, false, false, false
 			part.Size, part.Color, part.Material, part.Transparency = Vector3.new(piece[1], piece[2], piece[3]), piece[5], Enum.Material.SmoothPlastic, 1
 			part.Parent = model
 			table.insert(halves[half], { part = part, at = CFrame.new(size.X / 2, piece[4], 0) })
+			-- the pages' open side: the lower half's top, the upper half's underside
+			if index == 2 then pages[half] = scribbled(part, half == 1 and Enum.NormalId.Top or Enum.NormalId.Bottom, half) end
 		end
 	end
 	model.Parent = cast
-	return { marks = marks, rise = rise, stack = stack, top = top, halves = halves, wide = size.X, deep = size.Z, lies = top:GetPivot():ToObjectSpace(box) }
+	local side, back = kickLanding(math.clamp(legs, 0.3, 1.5))
+	return { marks = marks, rise = rise, side = side, back = back, stack = stack, top = top, halves = halves, pages = pages, wide = size.X, deep = size.Z, lies = top:GetPivot():ToObjectSpace(box) }
 end
 -- The camera `u` seconds after the book hits it: knocked back and shaken (Camera Flick's knock without the fall).
 local function jolted(steady, u, height)
@@ -504,8 +556,9 @@ local function kickBooks(w, t, view, steady, height)
 	local kick = w.kick
 	local marks = kick.marks
 	local hop = math.clamp((t - marks.HopFrom) / (marks.HopTo - marks.HopFrom), 0, 1)
-	if hop > 0 then
-		w.model:PivotTo(w.desk + w.shift + Vector3.yAxis * (4 * marks.HopUp * height * hop * (1 - hop) - kick.rise * hop * hop) / w.scale)
+	if hop > 0 then -- out sideways first, then down: the feet pass the stack's back corner above it
+		local out = (1 - (1 - hop) ^ 3) * height / w.scale
+		w.model:PivotTo((w.desk + w.shift) * CFrame.new(-kick.side * out, (4 * marks.HopUp * height * hop * (1 - hop) - kick.rise * hop * hop) / w.scale, kick.back * out))
 	end
 	local flown = t - marks.Kick
 	if flown < 0 then return end
@@ -518,6 +571,7 @@ local function kickBooks(w, t, view, steady, height)
 		end
 		for _, part in kick.top:GetDescendants() do if part:IsA("BasePart") then part.Transparency = 1 end end
 		for _, pieces in kick.halves do for _, piece in pieces do piece.part.Transparency = 0 end end
+		for _, page in kick.pages do page.Enabled = true end
 		-- how far in front of the lens the open book ends, so its pages fill the picture
 		local screen = workspace.CurrentCamera.ViewportSize
 		local tanHalf = math.tan(math.rad(SHOT_FOV / 2))
@@ -1072,6 +1126,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	-- Feet sit this far below the root: hip height plus half the root for R15, the legs for R6.
 	local leg = model:FindFirstChild("Left Leg")
 	local feet = humanoid.RigType == Enum.HumanoidRigType.R15 and humanoid.HipHeight + rootPart.Size.Y / 2 or rootPart.Size.Y / 2 + (leg and leg.Size.Y or 2)
+	local legs = humanoid.HipHeight / (KICK_HIPS * Avatars.standing_height_studs) -- against a standard kid's (Book Kicker)
 	local scale = model:GetScale()
 	model:ScaleTo(1)
 	-- The copy comes with its student's sitting pose: stood up straight, with Roblox's own standing idle under the emote.
@@ -1093,7 +1148,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then flick, flickInfo = flickClip() end
 	local kickId, kickMarks
 	if place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 then kickId, kickMarks = kickClip() end
-	local kick = kickId and kickProps(stack, world, rise, kickMarks) or nil -- Book Kicker: no plane in the hand
+	local kick = kickId and kickProps(stack, world, rise, kickMarks, legs) or nil -- Book Kicker: no plane in the hand
 	local pilot = RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "ToyPilot" and (ourClip("ToyPilot"))
 	local planeEmote = flick or pilot or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
 	local prop = place == 1 and not kick and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
@@ -1405,7 +1460,9 @@ function Cutscene.play(winners, onStage)
 		for place, w in state.winners do
 			local plate = state.plates[place]
 			local shown = t - arrive - LIGHT_AT - (3 - place) * TURN
-			plate.frame.Visible = shown > 0 and t < leave
+			-- Book Kicker: gone once the open book is most of the way to the lens (Alan 2026-11-21: "The nameplates
+			-- can't stay on top of the book when the book covers it")
+			plate.frame.Visible = shown > 0 and t < leave and not (state.kickAt and t - arrive > state.kickAt + KICK_FLIGHT * 0.6)
 			if plate.frame.Visible then
 				local desk = desks[place]
 				local edge = spots[place] + back * ((desk.Position - spots[place]):Dot(back) + desk.Size.Z / 2)

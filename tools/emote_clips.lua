@@ -474,15 +474,18 @@ end }
 -- (.planning/emotes/book-kicker-gemini-api-1.mp4), posed by numbers: its stack is shin high, 1st's is 0.77 of a
 -- winner's height and 0.56 wide, and its dismount was a step down behind the stack ("you will have to make a better
 -- dismount"). Seconds after 1st's light (KICK): fists on the hips, head bowed at the books; looks up, head tilted;
--- crouches (crouch); jumps (off to land) KICK_SIDE winner heights to the side and KICK_BACK back, knees tucked,
--- lands deep and stands up (up); glances at the tower; draws the right leg back (wind to swing) and kicks forwards
--- and in at the tower (hit); holds the leg high (through to lower); foot down (planted); fists on the hips, chest
--- out (proud). The kid faces the camera throughout. The clip keeps the kid at one height: the scene
--- (WinnersCutscene) drops them by their own stack's height between HopFrom and HopTo, rising HopUp winner heights
--- first, and sends the books off at Kick (the marks). The stance is Toy Pilot's (P.fly at P.held); the left foot
--- stays where it lands.
+-- crouches (crouch); jumps (off to land), knees tucked, lands deep and stands up (up); glances at the tower; draws
+-- the right leg back (wind to swing) and kicks forwards and in at the tower (hit); holds the leg high (through to
+-- lower); foot down (planted); fists on the hips, chest out (proud). The kid faces the camera throughout. The clip
+-- keeps the kid on one spot: the scene (WinnersCutscene) moves them between HopFrom and HopTo, to their left and
+-- back by their own legs' reach (its kickLanding, from this clip's numbers: at the kick the foot's tip is 0.43
+-- winner heights to the right of the kid's middle and 0.25 in front of it) and down by their own stack's height,
+-- rising HopUp winner heights first, and sends the books off at Kick (the marks). (A first build moved them in the
+-- clip, 0.65 to the side: Roblox scales a clip's moves by the body, the stack does not shrink, and Alan saw a short
+-- kid "kicking the air" outside the spotlight.) The stance is Toy Pilot's (P.fly at P.held); the left foot stays
+-- where it lands.
 local KICK = { crouch = 3.0, off = 3.35, land = 3.85, up = 4.6, wind = 5.0, swing = 5.5, hit = 5.62, through = 5.9, lower = 6.6, planted = 7.1, proud = 7.8 }
-local KICK_LENGTH, KICK_SIDE, KICK_BACK, KICK_HOP = 10, -0.65, 0.3, 0.1
+local KICK_LENGTH, KICK_HOP = 10, 0.1
 -- A value at `t` from { seconds, value } rows (numbers or Vector3s), held at the ends: eased from row to row (it
 -- stops at every row), or with `through` a smooth line through them (Catmull-Rom: it keeps moving).
 local function keyed(keys, t, through)
@@ -519,7 +522,7 @@ local KICK_ELBOW = V(0, -0.3, 1)
 local KICK_ARM = {
 	back = { Left = V(0.25, -0.75, 0.5), Right = V(0.25, -0.75, 0.5) },
 	up = { Left = V(0.75, 0.4, -0.15), Right = V(0.35, 0.55, -0.3) }, -- the right arm stays on its own side of the tower
-	land = { Left = V(0.5, -0.35, -0.7), Right = V(0, -0.4, -0.7) },
+	land = { Left = V(0.5, -0.35, -0.7), Right = V(0.25, -0.7, 0.4) }, -- the right arm back: forwards it went into the tower
 	loose = { Left = V(0.2, -0.95, -0.05), Right = V(0.15, -0.95, -0.1) },
 	wind = { Left = V(0.6, -0.3, -0.6), Right = V(0.3, -0.5, 0.6) },
 	kick = { Left = V(0.85, -0.05, 0.3), Right = V(0.8, 0.1, 0.25) },
@@ -534,10 +537,8 @@ CUTS.BookKicker = { length = KICK_LENGTH, once = true, clips = { fly = P.fly },
 		local x, y, z, r00, r01, r02, r10, r11, r12, r20, r21, r22 = body.base["Left" .. part]:GetComponents()
 		turn["Right" .. part] = CFrame.new(-x, y, z, r00, -r01, -r02, -r10, r11, r12, -r20, r21, r22)
 	end
-	local hop = math.clamp((t - KICK.off) / (KICK.land - KICK.off), 0, 1)
-	local moved = V(KICK_SIDE, 0, KICK_BACK) * hop * HEIGHT
 	local pitch, roll = math.rad(keyed(KICK_PITCH, t)), math.rad(keyed(KICK_ROLL, t))
-	turn.LowerTorso = CFrame.new(moved + V(keyed(KICK_WEIGHT, t), -keyed(KICK_SINK, t), 0) * HEIGHT) * turn.LowerTorso
+	turn.LowerTorso = CFrame.new(V(keyed(KICK_WEIGHT, t), -keyed(KICK_SINK, t), 0) * HEIGHT) * turn.LowerTorso
 		* CFrame.Angles(-pitch * 0.3, math.rad(keyed(KICK_YAW, t)), roll * 0.5)
 	turn.UpperTorso *= CFrame.Angles(-pitch * 0.7, 0, roll * 0.5)
 	-- the arms
@@ -572,7 +573,7 @@ CUTS.BookKicker = { length = KICK_LENGTH, once = true, clips = { fly = P.fly },
 	local tuck = V(0, keyed(KICK_TUCK, t), 0) * HEIGHT
 	for name, stand in body.feet do
 		local kicking = name == "Right" and keyed(KICK_FOOT, t, true) * HEIGHT or Vector3.zero
-		reach(turn, name, stand.ankle + moved + tuck + kicking, stand.knee + moved + tuck + kicking * 0.5, true)
+		reach(turn, name, stand.ankle + tuck + kicking, stand.knee + tuck + kicking * 0.5, true)
 		local ankle = build(turn)[name .. "LowerLeg"] * joints[name .. "Foot"].c0
 		local flatFoot = ankle.Rotation:Inverse() * stand.foot * joints[name .. "Foot"].c1.Rotation
 		turn[name .. "Foot"] = name == "Right" and flatFoot:Lerp(body.base.RightFoot.Rotation, keyed(KICK_TOES, t)) or flatFoot

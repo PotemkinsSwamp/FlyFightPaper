@@ -447,7 +447,7 @@ mistake would be easy to make twice.
   layer-6 button is hidden (the Tutorial's Close). Raise the word with the button, or set `ZIndexBehavior` Sibling.
 - **A few files into Studio without Rojo (2026-10-28):** `python -m http.server 8765 --bind 127.0.0.1` in `src/`, then
   in Studio's Edit VM `script.Source = HttpService:GetAsync("http://127.0.0.1:8765/client/X.luau")` (works from the MCP;
-  compare byte counts, check by requiring a clone). Stop the server after.
+  compare byte counts, check by requiring a clone). Stop the server after. **Dead since 2026-11-21:** the Assistant's HTTP allowlist refuses `127.0.0.1`; use `python tools/studio_push.py` (the text goes through the MCP in base64 pieces).
 - **Rojo serve can switch settings in the place, and publishing ships them (2026-10-28).** `serve.project.json` set
   `StreamingEnabled` false, so streaming was off in published builds for days (phones got ~2,800 town files at join;
   the loading screen stayed blurry 35 s). Serve now sets it true; `LoadLog.recent()` flags "STREAMING OFF" joins.
