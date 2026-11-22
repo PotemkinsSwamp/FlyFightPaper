@@ -8,8 +8,9 @@
 | "the dismount looks good, where they land looks good ... then the kick looks good" | Nothing. The jump, the landing spot and the kick are approved: leave them. |
 | "the book lands perfectly in line. It should be kind of tilted ... not so vertical and symmetrical ... for it to land perfect like that would be insane" | The open book ends on the lens turned and off the middle, one side nearer than the other (built the same day; not yet seen in Play). |
 | "kind of blurry ... you shouldn't be able to see in full detail the scribbles ... if you placed a book up close to a camera lens, it would be hard to read what was in it because it would be out of focus" | The book goes out of focus as it nears the lens: the scene's own camera blur takes in what is near the lens (built the same day; not yet seen in Play). |
+| On three blur strengths drawn on the third run's frame (`.planning/emotes/book-kicker-blur-options.jpg`): "it should get blurrier as it gets closer to the camera so starts with now then ends in C when its on the camera" | The blur grows with the book's nearness, from sharp to the heaviest strength on the lens (built; in the fourth recording). |
+| "yes hide the menu" | The HUD's yellow "Menu" tag is hidden while the book is on the lens (built; in the fourth recording). |
 
 ## Not said
 - Whether the kid is lit enough at the beam's edge (he called where they land good).
-- Whether the yellow "Menu" tag should be hidden while the book is on the lens.
 - Sound, the upload and who gets which emote: after the lens moment is right.

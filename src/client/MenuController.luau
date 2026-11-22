@@ -119,7 +119,7 @@ render=function()
   local snap=state.snapshot
   local queued=player:GetAttribute("JoinQueued")==true
   local open=(not inMatch and not Tutorial.arriving) or state.overlay or queued -- (arriving: the lesson opens instead)
-  openButton.Visible=inMatch and not open
+  openButton.Visible=inMatch and not open and not Root:GetAttribute("LensCovered") -- (LensCovered: Book Kicker's book is on the lens, WinnersCutscene)
   -- Which paper screen shows: waiting for a desk, round results, the in-match clipboard, or the chosen screen.
   local key=queued and "queued" or state.screen=="home" and (inMatch and "pause") or state.screen
   local current=open and paper[key]
@@ -173,6 +173,7 @@ render=function()
  player:GetAttributeChangedSignal("MenuMessage"):Connect(render)
  player:GetAttributeChangedSignal("Routing"):Connect(render)
  player:GetAttributeChangedSignal("GiftInbox"):Connect(render)
+ Root:GetAttributeChangedSignal("LensCovered"):Connect(render)
  render();action:FireServer("profile")
  task.spawn(function()while gui.Parent do task.wait(3);action:FireServer("profile") end end)
 end

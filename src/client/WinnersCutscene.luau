@@ -457,11 +457,14 @@ local KICK_PAGES, KICK_COVER = Color3.fromRGB(244, 236, 214), Color3.fromRGB(40,
 -- degrees nearer than the other, its spine KICK_OFF of the book's width and height off the middle; and close enough
 -- (KICK_FILL of the distance at which the pages just fill the picture) that turned like that it still covers it.
 -- And out of focus, as a book held against a lens is ("it would be hard to read what was in it"): the whole
--- picture is blurred (a BlurEffect, KICK_BLUR of the screen's height; name plates and other screen pieces stay
--- sharp) from the second half of the book's flight, when it is most of the picture, until it has slid off again:
--- the room it uncovers comes back into focus. (The focus effect's near blur was tried first and left the pages
--- sharp in Play, 2026-11-21.)
-local KICK_ROLL, KICK_LEAN, KICK_OFF, KICK_FILL, KICK_BLUR = -11, 5, Vector2.new(0.09, 0.05), 0.68, 0.015
+-- picture is blurred (a BlurEffect; name plates and other screen pieces stay sharp), more the nearer the book is
+-- (Alan 2026-11-21: "it should get blurrier as it gets closer to the camera", from sharp to the heaviest of three
+-- strengths he was shown, "C", once it is on the lens: KICK_BLUR of the screen's height), as a real lens does: by
+-- how much nearer than the winners it is, counted in 1 / distance, so most of it comes in the last part of the
+-- flight (the book ends KICK_NEAR of the winners' distance from the lens). It clears as the book slides off: the
+-- room it uncovers comes back into focus. (The focus effect's near blur was tried first and left the pages sharp
+-- in Play, 2026-11-21.)
+local KICK_ROLL, KICK_LEAN, KICK_OFF, KICK_FILL, KICK_BLUR, KICK_NEAR = -11, 5, Vector2.new(0.09, 0.05), 0.68, 0.025, 0.1
 local KICK_FLAT = CFrame.Angles(0, 0, math.rad(KICK_ROLL)) * CFrame.Angles(0, math.rad(KICK_LEAN), 0) * CFrame.Angles(math.rad(90), 0, 0)
 -- Where they land, in winner heights from the stack's middle: to their own left and back (Alan 2026-11-21 on the
 -- first run, where they landed 0.65 out: "landing outside the spotlight ... landing closer to the book ... you can't
@@ -1496,8 +1499,13 @@ function Cutscene.play(winners, onStage)
 		state.blur.NearIntensity, state.blur.FarIntensity = 0, BLUR_FAR * strength
 		-- Book Kicker: the open book on the lens is out of focus (see KICK_BLUR)
 		local flown = state.kickAt and t - arrive - state.kickAt or 0
-		local soft = math.clamp(flown / KICK_FLIGHT * 2 - 1, 0, 1) * (1 - math.clamp((flown - KICK_FLIGHT - KICK_STUCK) / 0.45, 0, 1))
+		local come = 1 - (1 - math.clamp(flown / KICK_FLIGHT, 0, 1)) ^ 2 -- how far along its flight the book is (kickBooks)
+		local soft = (1 / (1 - (1 - KICK_NEAR) * come) - 1) / (1 / KICK_NEAR - 1) * (1 - math.clamp((flown - KICK_FLIGHT - KICK_STUCK) / 0.45, 0, 1))
 		state.smear.Size, state.smear.Enabled = KICK_BLUR * screen.Y * soft, soft > 0
+		-- and the HUD's "Menu" tag is put away with the name plates until the book has slid off (Alan 2026-11-21;
+		-- MenuController reads LensCovered): sharp on a blurred book, it stood out
+		local covered = state.kickAt ~= nil and flown > KICK_FLIGHT * 0.6 and flown < KICK_FLIGHT + KICK_STUCK + 0.45
+		if covered ~= state.covered then state.covered = covered; Root:SetAttribute("LensCovered", covered or nil) end
 		state.written = shot
 	end)
 end
@@ -1516,6 +1524,7 @@ function Cutscene.stop()
 	end
 	state.blur:Destroy()
 	state.smear:Destroy()
+	Root:SetAttribute("LensCovered", nil)
 	state.plateGui:Destroy()
 	for item, was in state.moved do if item.Parent then item:PivotTo(was) end end
 	workspace.CurrentCamera.CameraType, workspace.CurrentCamera.FieldOfView = state.cameraType, state.fov
