@@ -6,8 +6,9 @@
 | Alan | What changes |
 |---|---|
 | Asked whether it reads as one line past the camera and whether the biggest plane is too plain a white shape: "Wouldn't it be cooler if they flew over the camera becoming large on screen and shaking the camera slightly like if an actual plane flew over it would cause a lot of vibration" | The line no longer passes below and right of the lens: it flies over the camera, each plane large on the screen as it goes over, and the camera shakes a little as each passes. A plan in words for his OK first; nothing built. |
+| On the plan for it (the line climbs a little and passes just over the lens, a little right of the middle so the kid is not covered; each plane's underside about as wide as the picture for a moment; a small fast shake of a quarter second as each goes over, about 1% of the picture's height, no knock back, no tipping; the scene's length unchanged): "Ok" | The fly-over is to be built to that plan. Not built. |
 
 ## Not said
 - Whether it read as one line; whether the plain white of the big plane bothers him.
-- How strong the shake is, whether the planes go dead centre over the lens (they would cover the kid for a moment) or a little to one side.
+- Dead centre over the lens: offered, not taken (the plan's "a little right of the middle" stands).
 - The float, the circling and the curtsy: nothing against them.

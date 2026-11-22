@@ -6,7 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
-- 2026-11-22: [Magician: Roblox's Godlike emote for the float, planes from above, a bow, the planes scatter](2026-11-22-magician.md)
+- 2026-11-22: [Magician: Roblox's Godlike emote for the float, planes from above, a curtsy, the planes leave in a line over the camera and shake it](2026-11-22-magician.md)
 - 2026-11-22: [Bubblegum: sassy all through, a bubble that hides the face, one sheet of gum pulled off the lens](2026-11-22-bubblegum.md)
 - 2026-11-21: [A held plane stays in the hand; odd bodies are an accepted loss](2026-11-21-plane-stays-in-the-hand.md)
 - 2026-11-21: [Toy Pilot: the plan, and three tries at its body move](2026-11-21-toy-pilot-plan.md)
