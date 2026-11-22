@@ -805,4 +805,20 @@ The next emote after Toy Pilot; a 1st-place emote that covers the camera ([plan]
     - **Clap:** `IKControl` still pulls: at each clap's peak the hands are 1.02 to 1.08 apart on the wide body (asked 0.97 to 1.02) and 0.62 to 0.78 on the slim one (asked 0.52 to 0.60): they touch for an instant, then are 2 to 3 studs apart. Seen: only the left arm travels, right across the wide body to a right hand that stays out at the side; on the slim one a fist at the chin and an open hand out in front.
     - **Wave:** the hand's middle is inside the chest's box on both: wide body 0.70 to 1.20 out from the middle (the chest is 0.99 to each side), slim body 0.11 to 0.59 (0.46), only 0.1 to 0.4 in front of the middle. The same clip stepped in Edit on plain bodies gives 1.13 to 1.46 out and 0.5 in front (the approved look: elbow out, hand over it). Seen: the hand on the cheek (wide), the forearm flat on the chest with the hand at the neck (slim).
     - **Two explanations left:** these bots' bodies (bundle bodies with their own shoulder places; the cut was judged on plain ones), or Roblox's `Workspace.Retargeting` (it is on `Default`; Roblox's pages say nothing about what that does; in Edit all three settings give the same numbers, which proves nothing about Play). One Play with it `Disabled`, the same bodies measured, tells them apart.
+  - **Settled in a second muted Play (Alan's go): it is the bodies, not Roblox's setting.** With `Workspace.Retargeting` `Disabled` before Play, the wave alone on a standing copy of each of the 12 seated bots gives the same hand places to 0.02 studs as the first run's scene gave for the same two bodies; switched to `Enabled` in the running Play, the same again. So the setting does nothing here (it is back on `Default`). The hand's middle, studs out from the body's middle at the sway's two ends, beside each body's shoulder joint and its head's half width:
+
+    | Bot | Shoulder out | Head half | Hand out | Reads |
+    |---|---|---|---|---|
+    | pilotunix (plain blocky) | 1.00 | 0.60 | 1.12 to 1.49 | as approved: beside the head |
+    | xxNOAHxx | 1.03 | 0.57 | 1.14 to 1.63 | as approved |
+    | void_rat | 0.83 | 0.55 | 0.88 to 1.35 | as approved |
+    | sophiepeachy2017 | 0.75 | 0.57 | 0.82 to 1.15 | as approved |
+    | itsfinn (wide, the first run's 2nd) | 0.97 | 0.57 | 0.70 to 1.20 | on the cheek |
+    | xxELLAxx | 0.91 | 0.60 | 0.67 to 1.18 | on the cheek, hardly in front of the chest |
+    | sleepyfrog | 0.76 | 0.56 | 0.49 to 1.01 | in front of the face |
+    | sogoonixbo | 0.47 | 0.52 | 0.16 to 0.70 | in front of the face and chest |
+    | jxke (slim, the first run's 3rd), itsella, realmax17 | 0.43 | 0.56 to 0.60 | 0.17 to 0.59 | flat on the chest and neck |
+    | Pibbler (arms 0.5 studs long) | 0.37 | 0.71 | 0.52 to 0.74 | an odd body: an accepted loss |
+
+    Seven of twelve bots, all ordinary bodies, put the hand on the face or chest: a clip turns joints by fixed angles, and these bodies' arms (a forearm longer than the upper arm, shoulders close in) carry the hand somewhere else. The wave was judged on plain bodies; which bots place 2nd and 3rd changes from match to match. The clap has the same root (only the left arm reaches, to wherever the right hand is, and they touch for an instant). A fix is a plan for Alan's OK, not built.
   - **Studio without Rojo:** the Assistant's HTTP allowlist now refuses `127.0.0.1`, so the http.server recipe is dead; `tools/studio_push.py` copies a script through Studio's MCP instead.

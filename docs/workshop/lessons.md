@@ -4,6 +4,13 @@ Hard-won rules from building this game. Each one cost real time (or, once, Alan'
 Claude's private memory on 2026-10-15 so everyone working on the game can see them. Add a lesson when the same
 mistake would be easy to make twice.
 
+## Emotes on real bodies
+- **A clip that looks right on a plain body can put the hand on the face on most real ones** (2026-11-21, Good Game's
+  wave: fine on 4 of the 12 bots, on the face or chest on 7). A clip turns joints by fixed angles; bundle bodies have
+  other shoulder places and arm lengths. Before showing a hand pose, measure where the hand ends on every seated
+  bot's body (a standing copy, the clip held at a few moments, the hand in the chest's own frame) and look at the
+  worst one, not the test kid. `Workspace.Retargeting` (Default, Disabled, Enabled) changed nothing in Play.
+
 ## Uploads and Roblox moderation
 - **Our own sounds upload free through the same Assets API** (2026-11-21, Book Kicker): `assetType` "Audio", the file
   as `audio/ogg` (`tools/upload_texture.py --audio`); .mp3, .wav and .flac are also taken, up to 7 minutes and 20 MB,
