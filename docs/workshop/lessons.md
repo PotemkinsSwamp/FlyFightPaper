@@ -5,6 +5,18 @@ Claude's private memory on 2026-10-15 so everyone working on the game can see th
 mistake would be easy to make twice.
 
 ## Emotes on real bodies
+- **Read the scene's real camera and Alan's rulings on it before a shot card's camera column** (2026-11-22, Bubblegum:
+  my card said "steady, close on 1st" and had the camera creep in; the scene shows all three and his ruling of
+  2026-11-20 is "No zoom in on 1st"). The header of `src/client/WinnersCutscene.luau` says both.
+- **A reference video shows the whole act, prop included, and uses its seconds** (2026-11-22: a 10 s video with all
+  the movement in its first 6 s and no bubble, to keep the body easy to trace, he called "a little sped up" and could
+  not judge). Ask for 15 s when the card runs past about 8, and spread the beats over it.
+- **`reach` on a hanging arm:** this body's shoulder joint sits at the arm's inner edge, so its own straight hang has
+  the elbow joint outwards at 0.96 of the joint-to-joint length. Start the arm from `CFrame.identity` with the pole out
+  to the side; a pole behind put the forearm 0.06 heights inside the chest (2026-11-22). Check a new arm pose against
+  the same measure on the rest pose (`build({})`) before believing an overlap number.
+- **`tools/emote_trace.py` only reads Toy Pilot's kind of video** (it looks for the white plane). For Bubblegum a
+  scratch script measured head, hips and pink pixels per frame; write one per video rather than bending the tool.
 - **A new Dev button can land under an old one** (2026-11-21: "end: kicker" sat under "2nd/3rd" for a day; my
   recordings set the attribute by script, so nobody pressed it). After adding one, list every button's
   `fromOffset` in `src/client/FlightHUD.luau` and check no two share a slot, before telling Alan to press it.
