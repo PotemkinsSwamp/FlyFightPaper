@@ -660,14 +660,22 @@ end
 -- starts, speed, weight } or { false, seconds }. What goodGame returns stands in for an AnimationTrack: Play only.
 local GOOD_GAME = { { "rbxassetid://10713966026", 1.5, 0.5, 1 }, { "GoodGameWave", 5.6, 0.75, 1 }, { false, 2 } }
 local GOOD_GAME_BLEND = 0.7
--- The hands meet at every clap (Alan 2026-11-20: they did not connect). Roblox's clap is one set of joint turns, so
--- on each body the hands stop a different distance apart (0.4 to 1.2 studs on six avatars measured). Like the plane
--- on the grip point: Roblox's IKControl bends the left arm so the left hand lands against the right hand, fully at
--- the moment of each clap (every CLAP_EVERY seconds of the clip, from its start) and not at all while the hands are
--- apart. Where it lands: on the line between the two hands (the clap's own direction; a hand's own axes point
--- elsewhere in this pose), as far from the right hand's middle as the two hand boxes are thick along that line,
--- times CLAP_PRESS (under 1: the boxes are a little bigger than the hands).
-local CLAP_EVERY, CLAP_PRESS = 0.5, 0.8
+-- The hands by each body's own shape (Alan 2026-11-21, on two bots: "the hands dont connect and the waving is to
+-- close to the body almost inside"). A clip turns joints by fixed angles, so each body's shoulders and arm lengths
+-- carry the hands somewhere else: measured on the 12 bots, the wave's hand was beside the head on 4 and on the face
+-- or chest on 7 (docs/workshop/emote-making.md). So after the clips have posed the arms they are bent again
+-- (goodGameArms, with bendArm), from that pose and keeping each elbow on its own side:
+-- * The clap: both hands go to the middle between where the clip has them, each stopping where the two hand boxes
+--   touch along the line between them, times CLAP_PRESS (under 1: the boxes are a little bigger than the hands);
+--   fully at each clap (every CLAP_EVERY seconds of the clip, from its start) and for CLAP_HOLD of its seconds around
+--   it (0.2 s on screen at half speed: the contact is seen), not at all while the hands are open.
+-- * The wave: once the wave has the arm, the raised hand is moved out sideways, by one distance for the whole wave
+--   (the most it has needed so far), so that its middle is never nearer the body's middle than the chest's side,
+--   nor than the head's side plus WAVE_PAST of the hand's width: exactly where the clip has it on a plain body, which
+--   is left as it was. The sway, the low elbow and the wrist stay the clip's own; a hanging hand is left alone
+--   (`raised`).
+local CLAP_EVERY, CLAP_PRESS, CLAP_HOLD, WAVE_PAST = 0.5, 0.8, 0.1, 0.28
+local goodGameArms -- below, after the arm bending it uses
 -- 1st's emote owns the sound once its own effects begin (Alan 2026-11-21: the runner-ups' sounds "have to stop before
 -- that ... naturally", and "shouldn't have existed" after): a runner-up's sound plays only if it will be over by
 -- then, and never after. `firstSoundAt`: that moment on os.clock() in this scene; nil while 1st's emote has no sounds.
@@ -675,35 +683,6 @@ local firstSoundAt
 local function runnerSound(name)
 	if firstSoundAt and os.clock() + Audio.seconds(name) > firstSoundAt then return nil end
 	return Audio.play(name)
-end
-local function thick(hand, along) -- half a hand box's thickness along a direction
-	local size, at = hand.Size, hand.CFrame
-	return (math.abs(along:Dot(at.XVector)) * size.X + math.abs(along:Dot(at.YVector)) * size.Y + math.abs(along:Dot(at.ZVector)) * size.Z) / 2
-end
-local function clapHands(model, humanoid, applaud)
-	local right, left, upper = model:FindFirstChild("RightHand"), model:FindFirstChild("LeftHand"), model:FindFirstChild("LeftUpperArm")
-	if not (right and left and upper) then return end
-	local meet = Instance.new("Attachment") -- rides on the right hand
-	meet.Parent = right
-	local reach = Instance.new("IKControl")
-	reach.Type, reach.ChainRoot, reach.EndEffector, reach.Target = Enum.IKControlType.Position, upper, left, meet
-	reach.SmoothTime, reach.Weight = 0, 0
-	reach.Parent = humanoid
-	local beat, clapped
-	beat = RunService.RenderStepped:Connect(function()
-		if not model:IsDescendantOf(game) then beat:Disconnect(); return end
-		local clap = math.floor(applaud.TimePosition / CLAP_EVERY) -- the sound, as the hands meet
-		if clap ~= clapped then
-			clapped = clap
-			if clap > 0 and applaud.WeightCurrent > 0.5 then runnerSound("ggClap") end
-		end
-		local apart = left.Position - right.Position
-		if apart.Magnitude > 1e-3 then
-			local along = apart.Unit
-			meet.WorldPosition = right.Position + along * (thick(right, along) + thick(left, along)) * CLAP_PRESS
-		end
-		reach.Weight = applaud.WeightCurrent * math.max(0, math.cos(applaud.TimePosition / CLAP_EVERY * 2 * math.pi))
-	end)
 end
 local function goodGame(animator, model)
 	local tracks = {}
@@ -714,7 +693,7 @@ local function goodGame(animator, model)
 			tracks[i] = animator:LoadAnimation(animation); tracks[i].Looped, tracks[i].Priority = true, Enum.AnimationPriority.Action
 		end
 	end
-	clapHands(model, animator.Parent, tracks[1])
+	goodGameArms(model, tracks[1], tracks[2])
 	-- The stance (the GoodGameStance clip): the weight on the right leg, the left foot out to the side, the hips
 	-- tilted, from the dark on. It holds only the hips and legs, one priority above the clap and wave, which keep the
 	-- chest, head and arms.
@@ -809,6 +788,61 @@ local function bendArm(joints, at, upper, lower, hand, target, pole, weight)
 	local second = some(arc(s + first * (hand0 - s) - elbow, s + along * d - elbow))
 	u.joint.Transform = shoulder.Rotation:Inverse() * first * (shoulder * turnU).Rotation + turnU.Position
 	l.joint.Transform = (first * bend.Rotation):Inverse() * second * first * (bend * turnL).Rotation + turnL.Position
+end
+
+local function thick(size, at, along) -- half a hand box's thickness along a direction
+	return (math.abs(along:Dot(at.XVector)) * size.X + math.abs(along:Dot(at.YVector)) * size.Y + math.abs(along:Dot(at.ZVector)) * size.Z) / 2
+end
+-- Good Game's arms on this body (see CLAP_EVERY): `applaud` and `wave` are its two tracks (`wave` may be missing).
+function goodGameArms(model, applaud, wave)
+	local part = {}
+	for _, name in { "UpperTorso", "Head", "RightUpperArm", "RightLowerArm", "RightHand", "LeftUpperArm", "LeftLowerArm", "LeftHand" } do
+		part[name] = model:FindFirstChild(name)
+		if not part[name] then return end
+	end
+	local chest, head = part.UpperTorso, part.Head
+	local rUpper, rLower, rHand, lUpper, lLower, lHand = part.RightUpperArm, part.RightLowerArm, part.RightHand, part.LeftUpperArm, part.LeftLowerArm, part.LeftHand
+	local joints, at = rig(model)
+	for _, arm in { rUpper, rLower, rHand, lUpper, lLower, lHand } do if not joints[arm] then return end end
+	local shoulder = joints[rUpper].c0.Position.Y -- in the chest's own frame
+	local reach = (joints[rLower].c0.Position - joints[rUpper].c1.Position).Magnitude + (joints[rHand].c0.Position - joints[rLower].c1.Position).Magnitude
+	local clapped
+	local out = 0 -- how far the waving hand is moved out, this wave
+	local beat
+	beat = RunService.PreSimulation:Connect(function()
+		if not model:IsDescendantOf(game) then beat:Disconnect(); return end
+		local clap = math.floor(applaud.TimePosition / CLAP_EVERY) -- the sound, as the hands meet
+		if clap ~= clapped then
+			clapped = clap
+			if clap > 0 and applaud.WeightCurrent > 0.5 then runnerSound("ggClap") end
+		end
+		local press = applaud.WeightCurrent * math.min(1, math.max(0, math.cos(applaud.TimePosition / CLAP_EVERY * 2 * math.pi)) / math.cos(CLAP_HOLD / CLAP_EVERY * math.pi))
+		if press > 0 then
+			local right, left = at(rHand), at(lHand)
+			local apart = left.Position - right.Position
+			if apart.Magnitude > 1e-3 then
+				local along, middle = apart.Unit, (left.Position + right.Position) / 2
+				local rElbow, lElbow = (at(rUpper) * joints[rLower].c0).Position, (at(lUpper) * joints[lLower].c0).Position
+				bendArm(joints, at, rUpper, rLower, rHand, middle - along * thick(rHand.Size, right, along) * CLAP_PRESS, rElbow, press)
+				bendArm(joints, at, lUpper, lLower, lHand, middle + along * thick(lHand.Size, left, along) * CLAP_PRESS, lElbow, press)
+			end
+		end
+		local waving = wave and wave.WeightCurrent or 0
+		if waving <= 0 then out = 0; return end
+		local frame, hand = at(chest), at(rHand)
+		local where = frame:PointToObjectSpace(hand.Position)
+		local raised = math.clamp((where.Y - shoulder + 0.6 * reach) / (0.5 * reach), 0, 1)
+		raised = raised * raised * (3 - 2 * raised)
+		if raised <= 0 then return end
+		if waving > 0.99 then -- the wave alone has the arm: the clap's pose must not count
+			local clear = math.max(frame:PointToObjectSpace(at(head).Position).X + head.Size.X / 2 + WAVE_PAST * rHand.Size.X, chest.Size.X / 2)
+			out = math.max(out, clear - where.X)
+		end
+		if out > 0 then
+			local move = frame.XVector * out * raised
+			bendArm(joints, at, rUpper, rLower, rHand, hand.Position + move, (at(rUpper) * joints[rLower].c0).Position + move, waving)
+		end
+	end)
 end
 
 -- Nap (Alan's own version 2026-11-20; the napper is bored and done, asleep at the back of the class): sitting
