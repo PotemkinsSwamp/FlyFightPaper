@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-21 Book Kicker's sound is right and in the game; Good Game's hands now fit every body](2026-11-21-book-kicker-sound-and-good-game.md)
 - [2026-11-21 Book Kicker's second run: the jump, the landing and the kick are good; the book must land tilted and out of focus](2026-11-21-book-kicker-second-run.md)
 - [2026-11-21 Book Kicker's first run: land closer and in the light, the foot behind the stack, no name plates over the book, scribbled pages, sound after the look](2026-11-21-book-kicker-first-run.md)
 - [2026-11-21 Toy Pilot: the fourth version approved ("it looks fine"); before it two cuts rejected (hand in the face; rushed and off), the third built from a Play recording beside his Gemini video](2026-11-21-toy-pilot-first-cut.md)

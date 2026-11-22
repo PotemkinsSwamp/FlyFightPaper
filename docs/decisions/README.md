@@ -9,6 +9,7 @@ Claude's own smaller calls waiting for Alan's review live in [STATE](../../state
 - 2026-11-21: [A held plane stays in the hand; odd bodies are an accepted loss](2026-11-21-plane-stays-in-the-hand.md)
 - 2026-11-21: [Toy Pilot: the plan, and three tries at its body move](2026-11-21-toy-pilot-plan.md)
 - 2026-11-21: [The winners' moment sounds dramatic, with one background for every emote](2026-11-21-winners-sound-dramatic.md)
+- 2026-11-21: [An emote's hands are placed by each body's own shape](2026-11-21-emote-hands-by-body.md)
 - 2026-11-20: [The first three runner-up emotes: Good Game, Nap, Next One](2026-11-20-runner-up-emotes.md)
 - 2026-11-20: [The winners' dark is a curtain, their spotlight a cone for show](2026-11-20-winners-curtain-and-cone.md)
 - 2026-11-20: [Camera Flick's move, the plane in the hand, and winners as real models](2026-11-20-camera-flick-and-real-winners.md)

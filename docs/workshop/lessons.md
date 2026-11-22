@@ -5,6 +5,9 @@ Claude's private memory on 2026-10-15 so everyone working on the game can see th
 mistake would be easy to make twice.
 
 ## Emotes on real bodies
+- **A new Dev button can land under an old one** (2026-11-21: "end: kicker" sat under "2nd/3rd" for a day; my
+  recordings set the attribute by script, so nobody pressed it). After adding one, list every button's
+  `fromOffset` in `src/client/FlightHUD.luau` and check no two share a slot, before telling Alan to press it.
 - **A clip that looks right on a plain body can put the hand on the face on most real ones** (2026-11-21, Good Game's
   wave: fine on 4 of the 12 bots, on the face or chest on 7). A clip turns joints by fixed angles; bundle bodies have
   other shoulder places and arm lengths. Before showing a hand pose, measure where the hand ends on every seated
