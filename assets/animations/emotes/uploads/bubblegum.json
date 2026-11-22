@@ -1,0 +1,24 @@
+{
+  "path": "operations/d533bba8-8160-4ce5-84be-06e77613b58e",
+  "operationId": "d533bba8-8160-4ce5-84be-06e77613b58e",
+  "done": true,
+  "response": {
+    "path": "assets/139624198192671",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-22T08:03:22.667Z",
+    "assetId": "139624198192671",
+    "displayName": "FFP emote Bubblegum",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

@@ -748,6 +748,12 @@ return JSONTypes.map({
             ["HopUp"] = 0.1,
             ["Kick"] = 5.62,
         }),
+        ["bubblegum"] = JSONTypes.map({
+            ["Blow"] = 3.9,
+            ["Pop"] = 10,
+            ["Small"] = 0.5,
+            ["Snap"] = 2,
+        }),
         ["camera_flick_grip"] = JSONTypes.array({
             [1] = 0,
             [2] = 0,
@@ -833,6 +839,7 @@ return JSONTypes.map({
         ["duration_seconds"] = 480,
         ["emote_clips"] = JSONTypes.map({
             ["BookKicker"] = "rbxassetid://73358935726911",
+            ["Bubblegum"] = "rbxassetid://139624198192671",
             ["CameraFlick"] = "rbxassetid://92727749892782",
             ["GoodGameStance"] = "rbxassetid://105243837282624",
             ["GoodGameWave"] = "rbxassetid://85227875188355",

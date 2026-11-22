@@ -1170,9 +1170,10 @@ end
 -- The scene leaves `after` seconds after the pop. From the swell on the name plates and the "Menu" tag are put away
 -- (Book Kicker's rule: nothing sharp on top of what covers the lens).
 -- Studio only, from its draft clip, behind the Dev panel's "end: gum" button, until it is uploaded and who gets which
--- emote is decided. No sounds yet.
+-- emote is decided. Its sounds (Audio: gumSnap at the mark Snap, gumPop at Pop, gumPeel `peel` seconds into the tear,
+-- when the edge first shows).
 local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3, skin = 0.1,
-	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, side = 1.15, top = 1.25, sag = 0.05, pull = 2.6, lead = 0.3, gone = 1.25,
+	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, side = 1.15, top = 1.25, sag = 0.05, pull = 2.6, lead = 0.3, gone = 1.25, peel = 0.38,
 	recoil = 0.15, thread = 0.06, dab = 0.11, cuts = 6, pins = { { -0.98, 1.15, 0.9, 0.8 }, { -0.6, 0.45, 0.8, 0.9 }, { -0.3, 1.15, 0.3, 0.7 },
 		{ 0.05, 0.8, 1.5, 0.85 }, { 0.42, 1.15, 0.6, 0.75 }, { 0.62, 0.1, 0.7, 0.9 }, { 0.97, 1.15, 1.7, 0.8 } },
 	shine = { { -0.5, 0.45, 0.9, 0.11 }, { -0.2, 0.18, 0.3, 0.07 } }, pink = Color3.fromRGB(255, 120, 175), pale = Color3.fromRGB(255, 176, 208) }
@@ -1233,6 +1234,8 @@ local function gumBubble(w, t, view, height, fov)
 	local mouth = head.CFrame * (Vector3.new(0, -0.22, -0.5) * head.Size)
 	local toLens = view.Position - mouth
 	local popped = t - marks.Pop
+	if t >= marks.Snap and not gum.snapped then gum.snapped = true; Audio.play("gumSnap") end
+	if popped >= 0 and not gum.burstLoud then gum.burstLoud = true; Audio.play("gumPop") end
 	local r, clear = 0, 1
 	if t >= marks.Small and t < marks.Snap then
 		r, clear = size * GUM.fist * ((t - marks.Small) / (marks.Snap - marks.Small)) ^ 0.7, GUM.skin
@@ -1279,6 +1282,7 @@ local function gumBubble(w, t, view, height, fov)
 	local wide = tall * screen.X / math.max(screen.Y, 1)
 	local landed = 0.6 + 0.4 * math.min(popped / GUM.snap, 1) ^ 0.5
 	local pulled = math.max(popped - GUM.snap - GUM.stuck, 0) -- seconds into the tear
+	if pulled >= GUM.peel and not gum.peeled then gum.peeled = true; Audio.play("gumPeel") end
 	local whole, torn = pulled == 0, pulled > 0 and pulled < GUM.gone
 	local rest = GUM.top - GUM.sag * math.min(popped / (GUM.snap + GUM.stuck), 1)
 	local function loose(x) -- the gum's top edge where nothing holds it: the left comes away first
@@ -1586,6 +1590,7 @@ function Cutscene.play(winners, onStage)
 								firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + copy.kick.marks.HopTo -- the landing's thump (kickBooks)
 							elseif copy.gum then
 								state.gumAt = LIGHT_AT + 2 * TURN + copy.gum.marks.Pop -- the pop, in seconds after arriving
+							firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + copy.gum.marks.Snap -- the small bubble's snap (gumBubble)
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do

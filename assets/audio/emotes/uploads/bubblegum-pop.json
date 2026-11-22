@@ -1,0 +1,24 @@
+{
+  "path": "operations/bcf22aa0-b158-43a7-8bb4-a249fa9ebb92",
+  "operationId": "bcf22aa0-b158-43a7-8bb4-a249fa9ebb92",
+  "done": true,
+  "response": {
+    "path": "assets/119339678129678",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-22T08:03:29.231Z",
+    "assetId": "119339678129678",
+    "displayName": "FFP sound Bubblegum pop",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

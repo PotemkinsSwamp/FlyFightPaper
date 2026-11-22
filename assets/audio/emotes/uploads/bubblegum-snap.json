@@ -1,0 +1,24 @@
+{
+  "path": "operations/493bba8e-1040-4c54-a272-f9d56edc8d58",
+  "operationId": "493bba8e-1040-4c54-a272-f9d56edc8d58",
+  "done": true,
+  "response": {
+    "path": "assets/127183227295482",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-22T08:03:26.183Z",
+    "assetId": "127183227295482",
+    "displayName": "FFP sound Bubblegum snap",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

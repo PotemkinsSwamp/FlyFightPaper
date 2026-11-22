@@ -56,6 +56,11 @@ local definitions={
  -- the foot on the books ("the most important sound ... I should hear a thud") and, .33 s later in the same sound,
  -- the open book hitting the lens; as loud as Camera Flick's smack so it stands over the winners' music.
  kickLand={111776144912962,1,.6,.3},kickThud={122025266957849,1,1.6,.7},
+ -- Bubblegum (WinnersCutscene): our own three sounds, cut from a Gemini video's sound and uploaded 2026-11-22
+ -- (assets/audio/emotes; Alan by ear on a recording: "That works"). gumSnap: the small bubble. gumPop: the big
+ -- one bursting, with its tail as the gum lands on the lens; as loud as Book Kicker's thud. gumPeel: the gum torn
+ -- off the lens. The loudness of each is Claude's number, not yet heard in the game.
+ gumSnap={127183227295482,1,1,.35},gumPop={119339678129678,1,1.6,1.1},gumPeel={112289979766763,1,1.2,1.3},
  ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
