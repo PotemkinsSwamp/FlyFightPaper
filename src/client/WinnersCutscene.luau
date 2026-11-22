@@ -1150,7 +1150,7 @@ end
 -- to `head` in `headBy` seconds, steadily to `kid` until `swell` seconds before the pop, then swells until its skin
 -- is `lens` of the way from the mouth to the camera (more than the whole picture) and hangs still for the last
 -- `still` seconds. Nearly solid (`skin`, Alan 2026-11-22: only the kid's shape behind it, never the face: a face
--- seen through it is seen not blowing; at 0.1 the lit face still showed its eyes and mouth); thick gum pink while
+-- seen through it is seen not blowing; he saw 0.1 and said it looked fine); thick gum pink while
 -- small, paler the bigger it gets.
 -- On the lens, `near` studs from it (Alan 2026-11-22: one layer, ripped off as sticky gum is; the first build's rows
 -- of lumps read as a pile of gum): one flat sheet, `side` half pictures to each side and as far below, its top edge
@@ -1166,7 +1166,7 @@ end
 -- "Menu" tag are put away (Book Kicker's rule: nothing sharp on top of what covers the lens).
 -- Studio only, from its draft clip, behind the Dev panel's "end: gum" button, until it is uploaded and who gets which
 -- emote is decided. No sounds yet.
-local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3, skin = 0.05,
+local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3, skin = 0.1,
 	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, side = 1.15, top = 1.25, anchor = 1.15, pull = 2.3,
 	strands = 6, hold = { 0.3, 0.75 }, recoil = 0.12, thread = 0.05, flare = { { 1, 0.1 }, { 0.5, 0.3 }, { 0.22, 0.65 } },
 	shine = { { -0.5, 0.45, 0.9, 0.11 }, { -0.2, 0.18, 0.3, 0.07 } }, pink = Color3.fromRGB(255, 120, 175), pale = Color3.fromRGB(255, 176, 208) }
