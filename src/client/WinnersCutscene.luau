@@ -467,35 +467,38 @@ local function kickLanding(legs)
 	return math.min(0.45, 0.14 + 0.43 * legs), 0.3 + 0.17 * legs
 end
 -- A page's writing (Alan 2026-11-21: "fake scribbles to make it look like it's filled with stuff, but nothing
--- actually legible"): rows of joined-up wiggles in ink, in words of uneven length, a row ending early now and then
--- as a paragraph does; the same every time. Path2D strokes (as UnlockMoment's ink) on the page's `face`, off until
--- the kick: a wiggle's points go up and down in turn with a tall stroke now and then.
+-- actually legible"): rows of joined-up handwriting that says nothing, in ink: words of uneven length, their strokes
+-- up from the line and back with a tall or a hanging one now and then, a row left empty here and there as between
+-- paragraphs; the same every time. Path2D strokes (as UnlockMoment's ink) on the page's `face`, off until the kick.
+-- On a top or bottom face the canvas's x runs along the part's z, here the spine (seen in Play 2026-11-21, where a
+-- first try's rows ran up the page, and were three times too big): so the rows run down the canvas, side by side
+-- along it. Margins and rows are the same from both ends, so it does not matter which way up a page's canvas is.
 local KICK_INK, KICK_CANVAS = Color3.fromRGB(40, 30, 24), 600
 local function scribbled(page, face, seed)
 	local gui = Instance.new("SurfaceGui")
 	gui.Face, gui.SizingMode, gui.Enabled = face, Enum.SurfaceGuiSizingMode.FixedSize, false
-	gui.CanvasSize = Vector2.new(KICK_CANVAS, math.round(KICK_CANVAS * page.Size.Z / page.Size.X))
+	gui.CanvasSize = Vector2.new(math.round(KICK_CANVAS * page.Size.Z / page.Size.X), KICK_CANVAS)
 	local sheet = Instance.new("Frame")
 	sheet.BackgroundTransparency, sheet.Size, sheet.Parent = 1, UDim2.fromScale(1, 1), gui
 	local random = Random.new(seed)
-	local wide, tall = gui.CanvasSize.X, gui.CanvasSize.Y
-	for y = 70, tall - 50, 42 do
-		local x = 50
-		local last = random:NextNumber() < 0.25 and wide * random:NextNumber(0.3, 0.7) or wide - 50
-		while x < last - 40 do
-			local points, to, up = {}, math.min(x + random:NextNumber(40, 120), last), true
-			while x < to do
-				local stroke = random:NextNumber(4, 9) * (up and random:NextNumber() < 0.15 and 2.2 or 1)
-				table.insert(points, Path2DControlPoint.new(UDim2.fromOffset(x, y + (up and -stroke or stroke)), UDim2.fromOffset(-3, 0), UDim2.fromOffset(3, 0)))
-				x += random:NextNumber(6, 11)
+	for row = 44, gui.CanvasSize.X - 44, 24 do
+		if random:NextNumber() < 0.12 then continue end
+		local at = 40
+		while at < KICK_CANVAS - 60 do
+			local points, to, up = {}, math.min(at + random:NextNumber(22, 75), KICK_CANVAS - 40), false
+			while at < to do
+				local step = random:NextNumber(4, 6.5)
+				local off = if up then -(random:NextNumber() < 0.14 and random:NextNumber(13, 15) or random:NextNumber(5, 8)) else random:NextNumber() < 0.08 and 5 or 0
+				table.insert(points, Path2DControlPoint.new(UDim2.fromOffset(row + 4 + off, at), UDim2.fromOffset(0, -step / 2), UDim2.fromOffset(0, step / 2)))
+				at += step
 				up = not up
 			end
 			if #points > 1 then
 				local path = Instance.new("Path2D")
-				path.Color3, path.Thickness, path.Parent = KICK_INK, 3, sheet
+				path.Color3, path.Thickness, path.Parent = KICK_INK, 2, sheet
 				path:SetControlPoints(points)
 			end
-			x += random:NextNumber(14, 24)
+			at += random:NextNumber(9, 14)
 		end
 	end
 	gui.Parent = page
