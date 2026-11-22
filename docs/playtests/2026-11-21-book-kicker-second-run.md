@@ -10,6 +10,7 @@
 | "kind of blurry ... you shouldn't be able to see in full detail the scribbles ... if you placed a book up close to a camera lens, it would be hard to read what was in it because it would be out of focus" | The book goes out of focus as it nears the lens: the scene's own camera blur takes in what is near the lens (built the same day; not yet seen in Play). |
 | On three blur strengths drawn on the third run's frame (`.planning/emotes/book-kicker-blur-options.jpg`): "it should get blurrier as it gets closer to the camera so starts with now then ends in C when its on the camera" | The blur grows with the book's nearness, from sharp to the heaviest strength on the lens (built; in the fourth recording). |
 | "yes hide the menu" | The HUD's yellow "Menu" tag is hidden while the book is on the lens (built; in the fourth recording). |
+| On the fourth recording (blur growing to C, Menu tag hidden): "yes do the sound next, tell me the price"; then, told about 25 to 35 cents a try and about $1 at most: "go for up to three tries" | Sound is next: up to three Gemini calls that add sound to the finished recording. He named nothing still off in the look. |
 
 ## Not said
 - Whether the kid is lit enough at the beam's edge (he called where they land good).
