@@ -1141,7 +1141,7 @@ end
 
 -- Bubblegum, a 1st-place emote (Alan 2026-11-22: sassy from start to finish; docs/workshop/emote-making.md): the
 -- kid stands on their stack, weight on one leg, and blows a small bubble that snaps, then a big one that grows until
--- it reaches the lens, pops on it and leaves one sheet of gum over the whole picture; the sheet is pulled off, and what it
+-- it reaches the lens, pops on it and leaves one sheet of gum over the whole picture; the sheet is torn off, and what it
 -- uncovers is the way back to your desk. The body is the Bubblegum clip (tools/emote_clips.lua); its marks say when:
 -- Small to Snap the first bubble, Blow the second one's start, Pop. The camera does not move in (Alan 2026-11-20:
 -- "No zoom in on 1st"; a first card of mine had it creep in to meet a kid-sized bubble): the bubble does the
@@ -1155,29 +1155,33 @@ end
 -- On the lens, `near` studs from it (Alan 2026-11-22: one layer, ripped off as sticky gum is; the first build's rows
 -- of lumps read as a pile of gum): one flat sheet, `side` half pictures to each side and as far below, its top edge
 -- `top` over the middle, there `snap` seconds after the pop (the camera jolts), with soft pale streaks for a shine
--- (`shine`: x, y from its middle, length, width). It sticks for `stuck` seconds, creeping down a little, then is
--- pulled off downward as one piece (`pull`: half pictures a second, squared). Its top edge stays stuck at `anchor`:
--- `strands` uneven strands run up from the sheet, fat at the sheet and thin at the top, thinner the further they are
--- stretched: a `thread` (its width) with triangles on its foot, each lower and wider than the one before (`flare`:
--- share of the strand's piece of the edge, share of its length), so its sides curve in as pulled gum's do (one tall
--- triangle read as a row of tents). Each lets go between `hold` seconds into the pull, one after another, and
--- springs back into the sheet in `recoil` seconds. The sheet is sized to the camera's angle that frame (it widens on
--- the way home: sized to the shot's, the sheet's sides came into the picture). The scene leaves `after` seconds after the pop. From the swell on the name plates and the
--- "Menu" tag are put away (Book Kicker's rule: nothing sharp on top of what covers the lens).
+-- (`shine`: x, y from its middle, length, width). It sticks for `stuck` seconds, creeping down `sag`.
+-- Then it is torn off downward (Alan on the second run: pulled down whole with strands on a straight top edge, "it
+-- just comes out as a flat sheet"; it must stretch, "very asymmetric, very broken up", as gum scraped off something).
+-- Its edge comes down faster and faster (`pull`: half pictures a second, squared), the left first and the right up
+-- to `lead` seconds later. The gum stays stuck at `pins` (each: x, height, how far below it the edge is when it lets
+-- go, and how much of the way up to it the gum is dragged): the edge is drawn up into a curved tent at each, with a
+-- strand from the tent's point to the pin (a hair of a thread and on it a spike, `thread` wide at its foot, thinner
+-- the longer), and at a pin inside the picture a dab left on the glass (`dab` across, drawn down to a point: a drop;
+-- a plain disc on a plain thread drew a lollipop); between pins the edge sags to where nothing holds it. A pin that lets go springs back into the
+-- sheet in `recoil` seconds. The edge is drawn in straight pieces, `cuts` between neighbouring pins. All of it is
+-- gone `gone` seconds into the tear. Sized to the camera's angle that frame (it widens on the way home: sized to the
+-- shot's, the sheet's sides came into the picture).
+-- The scene leaves `after` seconds after the pop. From the swell on the name plates and the "Menu" tag are put away
+-- (Book Kicker's rule: nothing sharp on top of what covers the lens).
 -- Studio only, from its draft clip, behind the Dev panel's "end: gum" button, until it is uploaded and who gets which
 -- emote is decided. No sounds yet.
 local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3, skin = 0.1,
-	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, side = 1.15, top = 1.25, anchor = 1.15, pull = 2.3,
-	strands = 6, hold = { 0.3, 0.75 }, recoil = 0.12, thread = 0.05, flare = { { 1, 0.1 }, { 0.5, 0.3 }, { 0.22, 0.65 } },
+	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, side = 1.15, top = 1.25, sag = 0.05, pull = 2.6, lead = 0.3, gone = 1.25,
+	recoil = 0.15, thread = 0.06, dab = 0.11, cuts = 6, pins = { { -0.98, 1.15, 0.9, 0.8 }, { -0.6, 0.45, 0.8, 0.9 }, { -0.3, 1.15, 0.3, 0.7 },
+		{ 0.05, 0.8, 1.5, 0.85 }, { 0.42, 1.15, 0.6, 0.75 }, { 0.62, 0.1, 0.7, 0.9 }, { 0.97, 1.15, 1.7, 0.8 } },
 	shine = { { -0.5, 0.45, 0.9, 0.11 }, { -0.2, 0.18, 0.3, 0.07 } }, pink = Color3.fromRGB(255, 120, 175), pale = Color3.fromRGB(255, 176, 208) }
--- A triangle on the lens, of two wedges back to back: its point at (x, peak), its base from `left` to `right` at
--- `foot`, `deep` studs in front of the camera `view`.
-function GUM.spike(parts, view, deep, x, peak, foot, left, right)
-	for n, to in { left, right } do
-		local side = n == 1 and 1 or -1
-		parts[n].Size = Vector3.new(0.002, peak - foot, math.max((x - to) * side, 0.001))
-		parts[n].CFrame = view * CFrame.fromMatrix(Vector3.new((x + to) / 2, (peak + foot) / 2, -deep), Vector3.new(0, 0, -side), Vector3.yAxis, Vector3.new(side, 0, 0))
-	end
+-- A right-angled triangle on the lens, `deep` studs in front of the camera `view`: its right angle at (x, foot), its
+-- point straight above or below it at `peak`, its third corner at (to, foot).
+function GUM.wedge(part, view, deep, x, peak, foot, to)
+	local side, up = to < x and 1 or -1, peak < foot and -1 or 1
+	part.Size = Vector3.new(0.002, math.max((peak - foot) * up, 0.001), math.max((x - to) * side, 0.001))
+	part.CFrame = view * CFrame.fromMatrix(Vector3.new((x + to) / 2, (peak + foot) / 2, -deep), Vector3.new(0, 0, -up * side), Vector3.new(0, up, 0), Vector3.new(side, 0, 0))
 end
 local function gumClip()
 	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Bubblegum") then return nil end
@@ -1186,14 +1190,15 @@ local function gumClip()
 	if not id or not marks or not marks.Pop then return nil end
 	return id, marks
 end
--- What it needs: the bubble with its glint and the first one's five scraps, and for the lens the sheet, its shine
--- and its strands, all unseen until their moment. A strand: its share of the sheet's top edge (`left` to `right`,
--- uneven), where along it it is stuck (`x`) and when in the pull it lets go (`lets`).
+-- What it needs: the bubble with its glint and the first one's five scraps, and for the lens the sheet and its
+-- shine, and for the tear the pins (each with its strand, its dab, and `lets`: the second of the tear it lets go)
+-- and the pieces of the torn edge (each from one post, a pin or a side of the sheet, `u0` to `u1` of the way to the
+-- next: a block up to its lower end and a triangle on it). All unseen until their moment.
 local function gumProps(model, cast, marks)
 	local head, root = model:FindFirstChild("Head"), model:FindFirstChild("HumanoidRootPart")
 	if not head or not root then return nil end
 	local function unseen(part) part.Transparency = 1; return part end
-	local gum = { marks = marks, head = head, root = root, bits = {}, shine = {}, strands = {}, sheet = unseen(paper(cast, GUM.pink)),
+	local gum = { marks = marks, head = head, root = root, bits = {}, shine = {}, pins = {}, edge = {}, sheet = unseen(paper(cast, GUM.pink)),
 		ball = unseen(paper(cast, GUM.pink, Enum.PartType.Ball)), glint = unseen(paper(cast, Color3.new(1, 1, 1))) }
 	for i = 1, 5 do gum.bits[i] = unseen(paper(cast, GUM.pink)) end
 	for i = 1, #GUM.shine do
@@ -1201,18 +1206,21 @@ local function gumProps(model, cast, marks)
 		local mesh = Instance.new("SpecialMesh") -- rounded ends
 		mesh.MeshType, mesh.Parent = Enum.MeshType.Sphere, gum.shine[i]
 	end
-	local random = Random.new(7)
-	local shares, whole, order = {}, 0, {}
-	for i = 1, GUM.strands do shares[i] = random:NextNumber(0.6, 1.4); whole += shares[i]; order[i] = i end
-	random:Shuffle(order)
-	local left = -GUM.side
-	for i, share in shares do
-		local right = left + share / whole * 2 * GUM.side
-		local strand = { left = left, right = right, x = left + (right - left) * random:NextNumber(0.3, 0.7), flare = {}, thread = unseen(paper(cast, GUM.pink)),
-			lets = GUM.hold[1] + (GUM.hold[2] - GUM.hold[1]) * (order[i] - 1) / (GUM.strands - 1) }
-		for k = 1, #GUM.flare do strand.flare[k] = { unseen(paper(cast, GUM.pink, "WedgePart")), unseen(paper(cast, GUM.pink, "WedgePart")) } end
-		table.insert(gum.strands, strand)
-		left = right
+	local posts = { { x = -GUM.side, lift = 0 } }
+	for _, pin in GUM.pins do
+		local x, anchor, reach, hold = table.unpack(pin)
+		local function wedges() return { unseen(paper(cast, GUM.pink, "WedgePart")), unseen(paper(cast, GUM.pink, "WedgePart")) } end
+		table.insert(gum.pins, { x = x, anchor = anchor, hold = hold, lift = 0, thread = unseen(paper(cast, GUM.pink)), spike = wedges(),
+			blob = anchor < 1 and unseen(paper(cast, GUM.pink, Enum.PartType.Cylinder)) or nil, neck = anchor < 1 and wedges() or nil,
+			lets = math.sqrt((GUM.top - GUM.sag - anchor + reach) / GUM.pull) + GUM.lead * (x + GUM.side) / (2 * GUM.side) })
+		table.insert(posts, gum.pins[#gum.pins])
+	end
+	table.insert(posts, { x = GUM.side, lift = 0 })
+	for i = 1, #posts - 1 do
+		for cut = 1, GUM.cuts do
+			table.insert(gum.edge, { from = posts[i], to = posts[i + 1], u0 = (cut - 1) / GUM.cuts, u1 = cut / GUM.cuts,
+				block = unseen(paper(cast, GUM.pink)), wedge = unseen(paper(cast, GUM.pink, "WedgePart")) })
+		end
 	end
 	return gum
 end
@@ -1270,34 +1278,63 @@ local function gumBubble(w, t, view, height, fov)
 	local tall = GUM.near * math.tan(math.rad(fov / 2))
 	local wide = tall * screen.X / math.max(screen.Y, 1)
 	local landed = 0.6 + 0.4 * math.min(popped / GUM.snap, 1) ^ 0.5
-	local pulled = math.max(popped - GUM.snap - GUM.stuck, 0)
-	local top = GUM.top - 0.05 * math.min(popped / (GUM.snap + GUM.stuck), 1) - GUM.pull * pulled * pulled -- the sheet's top edge
-	local seen, high = top > -1, GUM.top + GUM.side
-	gum.sheet.Transparency = seen and 0 or 1
+	local pulled = math.max(popped - GUM.snap - GUM.stuck, 0) -- seconds into the tear
+	local whole, torn = pulled == 0, pulled > 0 and pulled < GUM.gone
+	local rest = GUM.top - GUM.sag * math.min(popped / (GUM.snap + GUM.stuck), 1)
+	local function loose(x) -- the gum's top edge where nothing holds it: the left comes away first
+		local late = math.max(pulled - GUM.lead * (x + GUM.side) / (2 * GUM.side), 0)
+		return rest - GUM.pull * late * late
+	end
+	local high, bottom = GUM.top + GUM.side, -GUM.side - 0.1
+	gum.sheet.Transparency = whole and 0 or 1
 	gum.sheet.Size = Vector3.new(2 * GUM.side * wide, high * tall, 0.004) * landed
-	gum.sheet.CFrame = view * CFrame.new(0, (top - high / 2) * tall, -GUM.near)
+	gum.sheet.CFrame = view * CFrame.new(0, (rest - high / 2) * tall, -GUM.near)
 	for i, streak in gum.shine do
 		local x, y, long, thick = table.unpack(GUM.shine[i])
-		streak.Transparency = seen and 0.5 or 1
+		streak.Transparency = (whole or torn) and 0.5 or 1
 		streak.Size = Vector3.new(long, thick, 0.002) * tall * landed
-		streak.CFrame = view * CFrame.new(x * wide * landed, (top - high / 2 + y * landed) * tall, -GUM.near + 0.006) * CFrame.Angles(0, 0, math.rad(30))
+		streak.CFrame = view * CFrame.new(x * wide * landed, (loose(x) - high / 2 + y * landed) * tall, -GUM.near + 0.006) * CFrame.Angles(0, 0, math.rad(30))
 	end
-	-- the strands, tucked behind the sheet's edge
-	local foot, thin = top - 0.03, 1 / (1 + 2.5 * math.max(GUM.anchor - top, 0))
-	for _, strand in gum.strands do
-		local back = math.clamp((pulled - strand.lets) / GUM.recoil, 0, 1) -- let go: how far it has sprung back
-		local peak = GUM.anchor + (foot - GUM.anchor) * back
-		local shown = seen and peak - foot > 0.01
-		strand.thread.Transparency = shown and 0 or 1
-		for _, pair in strand.flare do pair[1].Transparency, pair[2].Transparency = strand.thread.Transparency, strand.thread.Transparency end
-		if shown then
-			strand.thread.Size = Vector3.new(math.max(GUM.thread * thin, 0.006) * wide, (peak - foot) * tall, 0.002)
-			strand.thread.CFrame = view * CFrame.new(strand.x * wide, (peak + foot) / 2 * tall, -GUM.near - 0.004)
-			for k, pair in strand.flare do
-				local share = GUM.flare[k][1] * (k == 1 and 1 or 0.4 + 0.6 * thin) -- at the edge they stay joined
-				GUM.spike(pair, view, GUM.near + 0.004, strand.x * wide, (foot + GUM.flare[k][2] * (peak - foot)) * tall, foot * tall,
-					(strand.x - (strand.x - strand.left) * share) * wide, (strand.x + (strand.right - strand.x) * share) * wide)
-			end
+	for _, pin in gum.pins do
+		local back = math.clamp((pulled - pin.lets) / GUM.recoil, 0, 1) -- let go: how far it has sprung back
+		local floor = loose(pin.x)
+		pin.lift = math.max(pin.anchor - floor, 0) * pin.hold * (1 - back)
+		local peak = floor + pin.lift
+		local tip = pin.anchor + (peak - pin.anchor) * back
+		local shown = torn and tip - peak > 0.01
+		pin.thread.Transparency = shown and 0 or 1
+		pin.spike[1].Transparency, pin.spike[2].Transparency = pin.thread.Transparency, pin.thread.Transparency
+		if shown then -- from a little inside the tent's point: fat at the sheet, thin at the pin
+			local foot, half = peak - 0.04, GUM.thread / (1 + 3 * (tip - peak)) / 2
+			pin.thread.Size = Vector3.new(0.006 * wide, (tip - foot) * tall, 0.002)
+			pin.thread.CFrame = view * CFrame.new(pin.x * wide, (tip + foot) / 2 * tall, -GUM.near)
+			for n, to in { pin.x - half, pin.x + half } do GUM.wedge(pin.spike[n], view, GUM.near, pin.x * wide, tip * tall, foot * tall, to * wide) end
+		end
+		if pin.blob then -- it goes with its strand
+			local across = GUM.dab * tall * (1 - back)
+			pin.blob.Transparency = torn and back < 1 and 0 or 1
+			pin.neck[1].Transparency, pin.neck[2].Transparency = pin.blob.Transparency, pin.blob.Transparency
+			pin.blob.Size = Vector3.new(0.002, across, across)
+			pin.blob.CFrame = view * CFrame.new(pin.x * wide, tip * tall, -GUM.near) * CFrame.Angles(0, math.rad(90), 0)
+			for n, to in { -across / 2, across / 2 } do GUM.wedge(pin.neck[n], view, GUM.near, pin.x * wide, tip * tall - 1.3 * across, tip * tall, pin.x * wide + to) end
+		end
+	end
+	for _, cut in gum.edge do
+		local function at(u)
+			local x = cut.from.x + (cut.to.x - cut.from.x) * u
+			return x, loose(x) + cut.from.lift * (1 - u) ^ 3 + cut.to.lift * u ^ 3
+		end
+		local x0, h0 = at(cut.u0)
+		local x1, h1 = at(cut.u1)
+		local low, top = math.min(h0, h1), math.max(h0, h1)
+		cut.block.Transparency, cut.wedge.Transparency = torn and low > bottom and 0 or 1, torn and top > bottom and 0 or 1
+		if torn and low > bottom then -- a hair wider than its piece: no crack between neighbours
+			cut.block.Size = Vector3.new((x1 - x0 + 0.004) * wide, (low - bottom) * tall, 0.004)
+			cut.block.CFrame = view * CFrame.new((x0 + x1) / 2 * wide, (low + bottom) / 2 * tall, -GUM.near)
+		end
+		if torn and top > bottom then
+			local under, far = h0 > h1 and x0 - 0.002 or x1 + 0.002, h0 > h1 and x1 or x0 -- its point over the higher end
+			GUM.wedge(cut.wedge, view, GUM.near, under * wide, top * tall, (low - 0.01) * tall, far * wide)
 		end
 	end
 end
@@ -1716,7 +1753,7 @@ function Cutscene.play(winners, onStage)
 		-- and the HUD's "Menu" tag is put away with the name plates until the book has slid off (Alan 2026-11-21;
 		-- MenuController reads LensCovered): sharp on a blurred book, it stood out
 		local covered = state.kickAt ~= nil and flown > KICK_FLIGHT * 0.6 and flown < KICK_FLIGHT + KICK_STUCK + 0.45
-			or state.gumAt ~= nil and t - arrive > state.gumAt - GUM.swell and t - arrive < state.gumAt + GUM.snap + GUM.stuck + 1 -- Bubblegum: from the swell until the gum has slid off
+			or state.gumAt ~= nil and t - arrive > state.gumAt - GUM.swell and t - arrive < state.gumAt + GUM.snap + GUM.stuck + GUM.gone -- Bubblegum: from the swell until the gum is torn off
 		if covered ~= state.covered then state.covered = covered; Root:SetAttribute("LensCovered", covered or nil) end
 		state.written = shot
 	end)
