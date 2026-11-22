@@ -17,6 +17,12 @@ mistake would be easy to make twice.
   the same measure on the rest pose (`build({})`) before believing an overlap number.
 - **`tools/emote_trace.py` only reads Toy Pilot's kind of video** (it looks for the white plane). For Bubblegum a
   scratch script measured head, hips and pink pixels per frame; write one per video rather than bending the tool.
+- **A reviewer who sees only stills judges a fast effect by its outline** (2026-11-22, Bubblegum's 0.7 s tear: read
+  blind as "a tent or curtain edge"; Alan on the video: "I think it looks good"). Tell him the verdict first, send
+  the video and a slow clip, and build none of the reviewer's changes before he has looked.
+- **Draw a lens effect's outline from its own numbers before a Play run** (same day): twelve moments drawn with PIL
+  from the scene's constants showed a round dab on a thread reading as a lollipop and corners in the curves, for
+  nothing; the recording then needed no second try for those.
 - **A new Dev button can land under an old one** (2026-11-21: "end: kicker" sat under "2nd/3rd" for a day; my
   recordings set the attribute by script, so nobody pressed it). After adding one, list every button's
   `fromOffset` in `src/client/FlightHUD.luau` and check no two share a slot, before telling Alan to press it.
