@@ -1344,43 +1344,59 @@ local function gumBubble(w, t, view, height, fov)
 end
 
 -- Magician, a 1st-place emote (Alan 2026-11-22, docs/decisions/2026-11-22-magician.md): the kid goes into Roblox's
--- Godlike emote and floats up off the books, paper planes come down from above and circle them, and coming back
--- down the kid bows while the planes scatter, one passing close by the lens. Both body clips are Roblox's own, played
--- by id (nothing bought): Godlike (`clip`, at `speed`: its 7.1 s fill the scene) and, from `bowAt` seconds after
--- 1st's light, Curtsy over it (`bow`, blended in over `bowFade`: by its keys a forward bow of about 40 degrees with
--- the right arm swept across, deepest from 1 to 1.6 s). Sizes in a standard kid's heights.
+-- Godlike emote and floats up off the books, paper planes come down from above and circle them, and as the kid
+-- comes back down the planes leave in a line past the camera (Alan on the first recording: "cooler if they followed
+-- in a line and flew past the camera"; that build scattered them outwards, one past the lens). Both body clips are
+-- Roblox's own, played by id (nothing bought): Godlike (`clip`, at `speed`: its 7.1 s fill the scene) and, from
+-- `bowAt` seconds after 1st's light, Curtsy over it (`bow`, blended in over `bowFade`). It is a curtsy, legs crossed
+-- and hands out, not the bow its keys had read like; Alan, having seen it: "Keep the curtsy". Sizes in a standard
+-- kid's heights.
 -- The scene lifts the kid `lift` more than the emote's own sixth of a height, up over `up` and down over `down`.
 -- `planes` white paper planes `long` (Next One's finished shape and its SHEET numbers: a keel and two wings). The
 -- first comes at `first`, the others `every` apart: each from `drop` over the ring, down in `fall` seconds, spiralling
 -- in from `wide` rings out. The ring: `ring` around the kid's chest (it follows the body), a turn every `turn`
 -- seconds, each plane rising and sinking `bob` and banked `bank` degrees into the turn, the whole ring tipped `tilt`
 -- degrees towards the camera (the camera is at about chest height: a level ring of level planes is six thin lines).
--- At `out` they scatter: each straight out from the kid and `climb` of that upward (over 2nd's and 3rd's heads),
--- faster and faster (`fly`), gone after `gone`; one behind the kid goes up instead, `over` less outward (straight
--- back it would shrink into the dark and through the curtain); the one nearest the camera goes instead to `pass`
--- (right, up and ahead of the lens), reaching it `passIn` later, and on past it. Nothing hits the lens.
+-- From `out` the ring unwinds: it turns up to `spin` times as fast (reached over `ramp` seconds) and each plane
+-- leaves it at the spot where the ring's own way points at the camera (`peel` of a turn: the kid's left, screen
+-- right), so they go one behind the other, a sixth of a turn apart. `out` is a moment a plane is at that spot. A plane
+-- that has left flies one curve, the same for all, in `passIn` seconds: on along the ring's way for `reach`, then
+-- round to straight at the camera for its last `straight`, to `pass` (right of, below and ahead of the lens: from
+-- above its top is seen; level with the lens it would be a line), and on past the camera. Never across the lens.
 -- Studio only, behind the Dev panel's "end: magic" button, until who gets which emote is decided. No sounds yet.
 local MAGIC = { clip = "rbxassetid://10714347256", speed = 0.7, bow = "rbxassetid://10714061912", bowAt = 8.5, bowFade = 0.5,
 	lift = 0.34, up = { 0.9, 4.2 }, down = { 8.3, 10 }, planes = 6, long = 0.36, first = 3.3, every = 0.3, fall = 1.4, drop = 2.6,
-	wide = 1.5, ring = 1, turn = 2.4, bob = 0.07, bank = 40, tilt = 12, out = 9, gone = 1.3, fly = 6, climb = 0.35, over = 0.7,
-	pass = Vector3.new(0.3, -0.05, -0.4), passIn = 0.75 }
+	wide = 1.5, ring = 1, turn = 2.4, bob = 0.07, bank = 40, tilt = 12, out = 8, spin = 2, ramp = 0.3, peel = 0.5,
+	reach = 1.4, straight = 1, pass = Vector3.new(0.25, -0.2, -0.35), passIn = 0.8 }
 local function magicClip()
 	return RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Magician" and MAGIC.clip or nil
 end
--- Plane `i`'s place in the ring's own frame (x to the kid's right, z away from the camera), `t` seconds after 1st's
--- light and before the scatter.
+-- The ring's own clock `t` seconds after 1st's light: from `out` it runs faster.
+function MAGIC.clock(t)
+	local u = math.max(t - MAGIC.out, 0)
+	return t + (MAGIC.spin - 1) * (u < MAGIC.ramp and u * u / (2 * MAGIC.ramp) or u - MAGIC.ramp / 2)
+end
+-- Plane `i`'s place on the ring, in the ring's own frame (x to the kid's right, z away from the camera), `t` seconds
+-- after 1st's light.
 function MAGIC.path(i, t)
 	local s = math.clamp((t - MAGIC.first - (i - 1) * MAGIC.every) / MAGIC.fall, 0, 1)
-	local angle = 2 * math.pi * (t / MAGIC.turn + i / MAGIC.planes)
+	local angle = 2 * math.pi * (MAGIC.clock(t) / MAGIC.turn + i / MAGIC.planes)
 	local r = MAGIC.ring * (MAGIC.wide + (1 - MAGIC.wide) * ease(s))
 	return Vector3.new(r * math.cos(angle), MAGIC.drop * (1 - s) ^ 2 + MAGIC.bob * math.sin(3.1 * t + 2 * i), r * math.sin(angle))
 end
--- The bow's track and the planes, unseen: each plane's pieces with where they lie in it (nose to -z), at the small
--- winner's size (`scale` times smaller).
+-- When plane `i` leaves the ring: the first time from `out` on that it is at `peel`.
+function MAGIC.leaves(i)
+	local due = (MAGIC.peel - MAGIC.out / MAGIC.turn - i / MAGIC.planes + 1e-6) % 1 * MAGIC.turn -- seconds of the ring's clock
+	local gain = MAGIC.spin - 1
+	if due < MAGIC.ramp * (MAGIC.spin + 1) / 2 then return MAGIC.out + (math.sqrt(1 + 2 * gain * due / MAGIC.ramp) - 1) * MAGIC.ramp / gain end
+	return MAGIC.out + (due + gain * MAGIC.ramp / 2) / MAGIC.spin
+end
+-- The curtsy's track and the planes, unseen: each plane's pieces with where they lie in it (nose to -z), at the small
+-- winner's size (`scale` times smaller), and when each leaves the ring.
 local function magicProps(model, cast, animator, scale)
 	local animation = Instance.new("Animation"); animation.AnimationId = MAGIC.bow
 	local bow = animator:LoadAnimation(animation); bow.Looped, bow.Priority = false, Enum.AnimationPriority.Action2
-	local magic = { bow = bow, chest = model:FindFirstChild("UpperTorso") or model:FindFirstChild("HumanoidRootPart"), planes = {}, shown = {} }
+	local magic = { bow = bow, chest = model:FindFirstChild("UpperTorso") or model:FindFirstChild("HumanoidRootPart"), planes = {}, shown = {}, leaves = {} }
 	local long = MAGIC.long * Avatars.standing_height_studs / scale
 	local half, thin = long * SHEET_WIDE / 2, long * SHEET_THIN
 	local keel = 2 * half * KEEL
@@ -1406,47 +1422,37 @@ local function magicProps(model, cast, animator, scale)
 			corner(tip, pt(0, 0, half), pt(0, 0, keel), pt(side * wing, 0, half))
 			block(Vector3.new(wing, thin, long - half), tip * CFrame.new(pt(side * wing / 2, 0, (half + long) / 2)))
 		end
-		magic.planes[i] = pieces
+		magic.planes[i], magic.leaves[i] = pieces, MAGIC.leaves(i)
 	end
 	return magic
 end
--- The kid's extra lift, the bow and the planes `t` seconds after 1st's light. `view`: the camera this frame. Worked
+-- The kid's extra lift, the curtsy and the planes `t` seconds after 1st's light. `view`: the camera this frame. Worked
 -- out in the big winner's studs; each small plane is then put where it looks the same.
 local function magicPlanes(w, t, view, height)
 	local magic = w.magic
 	local lift = MAGIC.lift * height * (ease((t - MAGIC.up[1]) / (MAGIC.up[2] - MAGIC.up[1])) - ease((t - MAGIC.down[1]) / (MAGIC.down[2] - MAGIC.down[1])))
 	w.model:PivotTo((w.desk + w.shift) * CFrame.new(0, lift / w.scale, 0))
 	if t >= MAGIC.bowAt and not magic.bowed then magic.bowed = true; magic.bow:Play(MAGIC.bowFade) end
-	local flown = t - MAGIC.out
-	if flown < 0 or not magic.from then -- the ring around the chest, where the big winner's is; it stays where it was at the scatter
-		magic.from = w.desk.Rotation * CFrame.Angles(-math.rad(MAGIC.tilt), 0, 0) + (view.Position + (magic.chest.Position - view.Position) * w.scale)
-	end
-	if flown >= 0 and not magic.close then -- the plane nearest the camera
-		local nearest
-		for i = 1, MAGIC.planes do
-			local z = MAGIC.path(i, MAGIC.out).Z
-			if not nearest or z < nearest then nearest, magic.close = z, i end
-		end
-	end
+	-- the ring around the chest, where the big winner's is
+	local ring = w.desk.Rotation * CFrame.Angles(-math.rad(MAGIC.tilt), 0, 0) + (view.Position + (magic.chest.Position - view.Position) * w.scale)
+	local to = view * (MAGIC.pass * height)
+	local last = view * ((MAGIC.pass - Vector3.zAxis * MAGIC.straight) * height) -- from here straight at the camera
 	local function where(i, at) -- plane i, `at` seconds after the light, in the big winner's studs
-		local u = at - MAGIC.out
-		if u <= 0 then return magic.from * (MAGIC.path(i, at) * height) end
-		local p = MAGIC.path(i, MAGIC.out)
-		if i == magic.close then
-			local start = magic.from * (p * height)
-			return start:Lerp(view * (MAGIC.pass * height), (u / MAGIC.passIn) ^ 1.3)
-		end
-		local speed = (p - MAGIC.path(i, MAGIC.out - 0.02)) / 0.02
-		local far = math.max(p.Z, 0) / MAGIC.ring -- behind the kid: up and over, not off into the dark
-		local way = Vector3.new(p.X, 0, p.Z).Unit * (1 - MAGIC.over * far) + Vector3.yAxis * (MAGIC.climb + far)
-		-- the ring's own speed dies away in a third of a second: kept, it carried a second plane at the camera
-		return magic.from * ((p + speed * (1 - math.exp(-3 * u)) / 3 + way * MAGIC.fly * u * u) * height)
+		local left = magic.leaves[i]
+		if at <= left then return ring * (MAGIC.path(i, at) * height) end
+		local from = ring * (MAGIC.path(i, left) * height)
+		local on = from + ring.LookVector * MAGIC.reach * height
+		local e = (at - left) / MAGIC.passIn
+		if e >= 1 then return to + (to - last) * 3 * (e - 1) end
+		local f = 1 - e
+		return from * f ^ 3 + on * (3 * f * f * e) + last * (3 * f * e * e) + to * e ^ 3
 	end
 	for i, pieces in magic.planes do
-		local shown = t >= MAGIC.first + (i - 1) * MAGIC.every and flown < (i == magic.close and 1.3 * MAGIC.passIn or MAGIC.gone)
+		local gone = t - magic.leaves[i] -- seconds since it left the ring
+		local shown = t >= MAGIC.first + (i - 1) * MAGIC.every and gone < 1.3 * MAGIC.passIn -- by then it is behind the camera
 		if shown then
 			local at, ahead = where(i, t), where(i, t + 0.02)
-			local level = 1 - math.clamp(flown / 0.3, 0, 1) -- out of the turn: wings level
+			local level = 1 - math.clamp(gone / 0.3, 0, 1) -- out of the turn: wings level
 			local lies = CFrame.lookAt(at, ahead) * CFrame.Angles(0, 0, -math.rad(MAGIC.bank) * level)
 			lies = lies.Rotation + (view.Position + (at - view.Position) / w.scale)
 			for _, piece in pieces do piece.part.CFrame = lies * piece.at end
