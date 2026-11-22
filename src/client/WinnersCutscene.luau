@@ -1150,22 +1150,26 @@ end
 -- to `head` in `headBy` seconds, steadily to `kid` until `swell` seconds before the pop, then swells until its skin
 -- is `lens` of the way from the mouth to the camera (more than the whole picture) and hangs still for the last
 -- `still` seconds. Nearly solid (`skin`, Alan 2026-11-22: only the kid's shape behind it, never the face: a face
--- seen through it is seen not blowing); thick gum pink while small, paler the bigger it gets.
+-- seen through it is seen not blowing; at 0.1 the lit face still showed its eyes and mouth); thick gum pink while
+-- small, paler the bigger it gets.
 -- On the lens, `near` studs from it (Alan 2026-11-22: one layer, ripped off as sticky gum is; the first build's rows
 -- of lumps read as a pile of gum): one flat sheet, `side` half pictures to each side and as far below, its top edge
 -- `top` over the middle, there `snap` seconds after the pop (the camera jolts), with soft pale streaks for a shine
 -- (`shine`: x, y from its middle, length, width). It sticks for `stuck` seconds, creeping down a little, then is
 -- pulled off downward as one piece (`pull`: half pictures a second, squared). Its top edge stays stuck at `anchor`:
 -- `strands` uneven strands run up from the sheet, fat at the sheet and thin at the top, thinner the further they are
--- stretched; each lets go between `hold` seconds into the pull, one after another, and springs back into the sheet
--- in `recoil` seconds. The scene leaves `after` seconds after the pop. From the swell on the name plates and the
+-- stretched: a `thread` (its width) with triangles on its foot, each lower and wider than the one before (`flare`:
+-- share of the strand's piece of the edge, share of its length), so its sides curve in as pulled gum's do (one tall
+-- triangle read as a row of tents). Each lets go between `hold` seconds into the pull, one after another, and
+-- springs back into the sheet in `recoil` seconds. The sheet is sized to the camera's angle that frame (it widens on
+-- the way home: sized to the shot's, the sheet's sides came into the picture). The scene leaves `after` seconds after the pop. From the swell on the name plates and the
 -- "Menu" tag are put away (Book Kicker's rule: nothing sharp on top of what covers the lens).
 -- Studio only, from its draft clip, behind the Dev panel's "end: gum" button, until it is uploaded and who gets which
 -- emote is decided. No sounds yet.
-local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3, skin = 0.1,
+local GUM = { fist = 0.07, head = 0.12, kid = 0.5, lens = 0.45, headBy = 1.6, swell = 1.0, still = 0.3, skin = 0.05,
 	near = 0.75, snap = 0.08, stuck = 0.9, after = 1.0, side = 1.15, top = 1.25, anchor = 1.15, pull = 2.3,
-	strands = 6, hold = { 0.3, 0.75 }, recoil = 0.12, shine = { { -0.5, 0.45, 0.9, 0.11 }, { -0.2, 0.18, 0.3, 0.07 } },
-	pink = Color3.fromRGB(255, 120, 175), pale = Color3.fromRGB(255, 176, 208) }
+	strands = 6, hold = { 0.3, 0.75 }, recoil = 0.12, thread = 0.05, flare = { { 1, 0.1 }, { 0.5, 0.3 }, { 0.22, 0.65 } },
+	shine = { { -0.5, 0.45, 0.9, 0.11 }, { -0.2, 0.18, 0.3, 0.07 } }, pink = Color3.fromRGB(255, 120, 175), pale = Color3.fromRGB(255, 176, 208) }
 -- A triangle on the lens, of two wedges back to back: its point at (x, peak), its base from `left` to `right` at
 -- `foot`, `deep` studs in front of the camera `view`.
 function GUM.spike(parts, view, deep, x, peak, foot, left, right)
@@ -1204,17 +1208,17 @@ local function gumProps(model, cast, marks)
 	local left = -GUM.side
 	for i, share in shares do
 		local right = left + share / whole * 2 * GUM.side
-		local strand = { left = left, right = right, x = left + (right - left) * random:NextNumber(0.3, 0.7), flare = {}, thread = {},
+		local strand = { left = left, right = right, x = left + (right - left) * random:NextNumber(0.3, 0.7), flare = {}, thread = unseen(paper(cast, GUM.pink)),
 			lets = GUM.hold[1] + (GUM.hold[2] - GUM.hold[1]) * (order[i] - 1) / (GUM.strands - 1) }
-		for n = 1, 2 do strand.flare[n], strand.thread[n] = unseen(paper(cast, GUM.pink, "WedgePart")), unseen(paper(cast, GUM.pink, "WedgePart")) end
+		for k = 1, #GUM.flare do strand.flare[k] = { unseen(paper(cast, GUM.pink, "WedgePart")), unseen(paper(cast, GUM.pink, "WedgePart")) } end
 		table.insert(gum.strands, strand)
 		left = right
 	end
 	return gum
 end
--- The bubbles and the gum `t` seconds after 1st's light. `view`: the camera this frame (with the pop's jolt): what
+-- The bubbles and the gum `t` seconds after 1st's light. `view`, `fov`: the camera this frame (with the pop's jolt): what
 -- is on the lens moves with it. The small winner stands where they look big, so the bubble is made on them as they are.
-local function gumBubble(w, t, view, height)
+local function gumBubble(w, t, view, height, fov)
 	local gum = w.gum
 	local marks, head, stage, ball = gum.marks, gum.head, gum.root.CFrame, gum.ball
 	local size = height / w.scale -- a standard kid's height here
@@ -1263,7 +1267,7 @@ local function gumBubble(w, t, view, height)
 	if popped < 0 then return end
 	-- on the lens: places in half pictures from its middle
 	local screen = workspace.CurrentCamera.ViewportSize
-	local tall = GUM.near * math.tan(math.rad(SHOT_FOV / 2))
+	local tall = GUM.near * math.tan(math.rad(fov / 2))
 	local wide = tall * screen.X / math.max(screen.Y, 1)
 	local landed = 0.6 + 0.4 * math.min(popped / GUM.snap, 1) ^ 0.5
 	local pulled = math.max(popped - GUM.snap - GUM.stuck, 0)
@@ -1278,18 +1282,22 @@ local function gumBubble(w, t, view, height)
 		streak.Size = Vector3.new(long, thick, 0.002) * tall * landed
 		streak.CFrame = view * CFrame.new(x * wide * landed, (top - high / 2 + y * landed) * tall, -GUM.near + 0.006) * CFrame.Angles(0, 0, math.rad(30))
 	end
-	-- the strands, tucked behind the sheet's edge: a fat flare at the sheet and a thread up to where it is stuck
+	-- the strands, tucked behind the sheet's edge
 	local foot, thin = top - 0.03, 1 / (1 + 2.5 * math.max(GUM.anchor - top, 0))
 	for _, strand in gum.strands do
 		local back = math.clamp((pulled - strand.lets) / GUM.recoil, 0, 1) -- let go: how far it has sprung back
 		local peak = GUM.anchor + (foot - GUM.anchor) * back
 		local shown = seen and peak - foot > 0.01
-		for n = 1, 2 do strand.flare[n].Transparency, strand.thread[n].Transparency = shown and 0 or 1, shown and 0 or 1 end
+		strand.thread.Transparency = shown and 0 or 1
+		for _, pair in strand.flare do pair[1].Transparency, pair[2].Transparency = strand.thread.Transparency, strand.thread.Transparency end
 		if shown then
-			local fat, half = 0.45 + 0.55 * thin, 0.16 * (strand.right - strand.left) * thin
-			GUM.spike(strand.flare, view, GUM.near + 0.004, strand.x * wide, (foot + 0.4 * (peak - foot)) * tall, foot * tall,
-				(strand.x - (strand.x - strand.left) * fat) * wide, (strand.x + (strand.right - strand.x) * fat) * wide)
-			GUM.spike(strand.thread, view, GUM.near + 0.004, strand.x * wide, peak * tall, foot * tall, (strand.x - half) * wide, (strand.x + half) * wide)
+			strand.thread.Size = Vector3.new(math.max(GUM.thread * thin, 0.006) * wide, (peak - foot) * tall, 0.002)
+			strand.thread.CFrame = view * CFrame.new(strand.x * wide, (peak + foot) / 2 * tall, -GUM.near - 0.004)
+			for k, pair in strand.flare do
+				local share = GUM.flare[k][1] * (k == 1 and 1 or 0.4 + 0.6 * thin) -- at the edge they stay joined
+				GUM.spike(pair, view, GUM.near + 0.004, strand.x * wide, (foot + GUM.flare[k][2] * (peak - foot)) * tall, foot * tall,
+					(strand.x - (strand.x - strand.left) * share) * wide, (strand.x + (strand.right - strand.x) * share) * wide)
+			end
 		end
 	end
 end
@@ -1668,7 +1676,7 @@ function Cutscene.play(winners, onStage)
 				flyPlane(w)
 				if w.pilot then pilotSounds(w, since) end
 			elseif w.kick then kickBooks(w, since, shot, steady, height)
-			elseif w.gum then gumBubble(w, since, shot, height) end
+			elseif w.gum then gumBubble(w, since, shot, height, fov) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end
