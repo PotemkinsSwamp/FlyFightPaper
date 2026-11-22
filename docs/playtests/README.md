@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-21 Book Kicker's first run: land closer and in the light, the foot behind the stack, no name plates over the book, scribbled pages, sound after the look](2026-11-21-book-kicker-first-run.md)
 - [2026-11-21 Toy Pilot: the fourth version approved ("it looks fine"); before it two cuts rejected (hand in the face; rushed and off), the third built from a Play recording beside his Gemini video](2026-11-21-toy-pilot-first-cut.md)
 - [2026-11-21 The winners' moment gets its sound, and the emote uploads are checked](2026-11-21-winners-sound.md)
 - [2026-11-20 Phone framing of the winners' shot, and the first Good Game](2026-11-20-phone-framing-and-good-game.md)
