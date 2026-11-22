@@ -452,7 +452,14 @@ end
 -- "end: kicker" button, until it is uploaded and who gets which emote is decided.
 local KICK_FLIGHT, KICK_STUCK, KICK_AFTER = 0.45, 0.45, 0.95
 local KICK_PAGES, KICK_COVER = Color3.fromRGB(244, 236, 214), Color3.fromRGB(40, 60, 120)
-local KICK_FLAT = CFrame.Angles(math.rad(90), 0, 0) -- on the lens: the pages to it, the spine upright in the middle
+-- On the lens: the pages to it, but not square on (Alan 2026-11-21: "for it to land perfect like that would be
+-- insane ... tilted, not so vertical and symmetrical"): turned KICK_ROLL degrees in the picture, one side KICK_LEAN
+-- degrees nearer than the other, its spine KICK_OFF of the book's width and height off the middle; and close enough
+-- (KICK_FILL of the distance at which the pages just fill the picture) that turned like that it still covers it.
+-- And out of focus, as a book held against a lens is ("it would be hard to read what was in it"): the scene's own
+-- camera blur (WinnersFocus) takes in what is near the lens while the book flies in, until it has slid away.
+local KICK_ROLL, KICK_LEAN, KICK_OFF, KICK_FILL = -11, 5, Vector2.new(0.09, 0.05), 0.68
+local KICK_FLAT = CFrame.Angles(0, 0, math.rad(KICK_ROLL)) * CFrame.Angles(0, math.rad(KICK_LEAN), 0) * CFrame.Angles(math.rad(90), 0, 0)
 -- Where they land, in winner heights from the stack's middle: to their own left and back (Alan 2026-11-21 on the
 -- first run, where they landed 0.65 out: "landing outside the spotlight ... landing closer to the book ... you can't
 -- see the tip of her foot because it's behind the box. Right now, it looks like she's kicking the air"). From the
@@ -575,10 +582,11 @@ local function kickBooks(w, t, view, steady, height)
 		for _, part in kick.top:GetDescendants() do if part:IsA("BasePart") then part.Transparency = 1 end end
 		for _, pieces in kick.halves do for _, piece in pieces do piece.part.Transparency = 0 end end
 		for _, page in kick.pages do page.Enabled = true end
-		-- how far in front of the lens the open book ends, so its pages fill the picture
+		-- where the open book ends, from the lens: near enough that its pages cover the picture
 		local screen = workspace.CurrentCamera.ViewportSize
 		local tanHalf = math.tan(math.rad(SHOT_FOV / 2))
-		kick.pressed = 0.9 * math.min(kick.wide / (tanHalf * screen.X / math.max(screen.Y, 1)), kick.deep / (2 * tanHalf)) * w.scale
+		local pressed = KICK_FILL * math.min(kick.wide / (tanHalf * screen.X / math.max(screen.Y, 1)), kick.deep / (2 * tanHalf))
+		kick.lands = Vector3.new(KICK_OFF.X * kick.wide, KICK_OFF.Y * kick.deep, -pressed) * w.scale
 	end
 	for i = 1, #kick.stack - 1 do -- past the lens on both sides, tumbling; gone once behind it
 		local book, from = kick.stack[i], kick.from[i]
@@ -597,12 +605,12 @@ local function kickBooks(w, t, view, steady, height)
 	if flown < KICK_FLIGHT then
 		local s = 1 - (1 - flown / KICK_FLIGHT) ^ 2
 		local from = kick.from[#kick.stack] * (kick.lies.Rotation + kick.lies.Position * w.scale) -- its middle, not its pivot
-		local at = from.Position:Lerp((steady * CFrame.new(0, 0, -kick.pressed)).Position, s)
+		local at = from.Position:Lerp(steady * kick.lands, s)
 		local tumbling = CFrame.new(at) * CFrame.fromAxisAngle(Vector3.new(1, 0.2, 0.3).Unit, (1 - s) * 9) * from.Rotation
 		spine, opened = tumbling:Lerp(CFrame.new(at) * (steady.Rotation * KICK_FLAT), math.clamp((s - 0.6) / 0.4, 0, 1)), math.clamp((s - 0.3) / 0.6, 0, 1)
 	else
 		local slide = math.max(flown - KICK_FLIGHT - KICK_STUCK, 0)
-		spine, opened = view * CFrame.new(0, -slide * slide * 3.7 * height, -kick.pressed) * KICK_FLAT, 1
+		spine, opened = view * CFrame.new(kick.lands - Vector3.yAxis * slide * slide * 3.7 * height) * KICK_FLAT, 1
 	end
 	spine = small(spine) * CFrame.new(-kick.wide / 2 * (1 - opened), 0, 0)
 	for half, pieces in kick.halves do
@@ -1479,8 +1487,11 @@ function Cutscene.play(winners, onStage)
 		local strength = t < arrive and ease((t - depart) / GLIDE) or t < leave and 1 or 1 - ease((t - leave) / GLIDE)
 		local first = state.winners[1] or state.winners[2] or state.winners[3]
 		local depth = math.max(0, (spots[1] - shot.Position):Dot(shot.LookVector)) / (first and first.scale or 28)
-		state.blur.FocusDistance, state.blur.InFocusRadius = depth, math.max(8, depth * 0.5)
-		state.blur.NearIntensity, state.blur.FarIntensity = 0, BLUR_FAR * strength
+		-- Book Kicker: what is near the lens goes out of focus as the open book flies in, until it has slid away;
+		-- the sharp range draws in around the winners, so the book lies outside it on every screen.
+		local near = state.kickAt and math.clamp((t - arrive - state.kickAt) / KICK_FLIGHT, 0, 1) * (1 - math.clamp((t - leave - 0.5) / 0.3, 0, 1)) or 0
+		state.blur.FocusDistance, state.blur.InFocusRadius = depth, math.max(8, depth * 0.5) + (math.max(3, depth * 0.25) - math.max(8, depth * 0.5)) * near
+		state.blur.NearIntensity, state.blur.FarIntensity = near, BLUR_FAR * strength
 		state.written = shot
 	end)
 end
