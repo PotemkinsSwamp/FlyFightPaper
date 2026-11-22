@@ -456,9 +456,12 @@ local KICK_PAGES, KICK_COVER = Color3.fromRGB(244, 236, 214), Color3.fromRGB(40,
 -- insane ... tilted, not so vertical and symmetrical"): turned KICK_ROLL degrees in the picture, one side KICK_LEAN
 -- degrees nearer than the other, its spine KICK_OFF of the book's width and height off the middle; and close enough
 -- (KICK_FILL of the distance at which the pages just fill the picture) that turned like that it still covers it.
--- And out of focus, as a book held against a lens is ("it would be hard to read what was in it"): the scene's own
--- camera blur (WinnersFocus) takes in what is near the lens while the book flies in, until it has slid away.
-local KICK_ROLL, KICK_LEAN, KICK_OFF, KICK_FILL = -11, 5, Vector2.new(0.09, 0.05), 0.68
+-- And out of focus, as a book held against a lens is ("it would be hard to read what was in it"): the whole
+-- picture is blurred (a BlurEffect, KICK_BLUR of the screen's height; name plates and other screen pieces stay
+-- sharp) from the second half of the book's flight, when it is most of the picture, until it has slid off again:
+-- the room it uncovers comes back into focus. (The focus effect's near blur was tried first and left the pages
+-- sharp in Play, 2026-11-21.)
+local KICK_ROLL, KICK_LEAN, KICK_OFF, KICK_FILL, KICK_BLUR = -11, 5, Vector2.new(0.09, 0.05), 0.68, 0.015
 local KICK_FLAT = CFrame.Angles(0, 0, math.rad(KICK_ROLL)) * CFrame.Angles(0, math.rad(KICK_LEAN), 0) * CFrame.Angles(math.rad(90), 0, 0)
 -- Where they land, in winner heights from the stack's middle: to their own left and back (Alan 2026-11-21 on the
 -- first run, where they landed 0.65 out: "landing outside the spotlight ... landing closer to the book ... you can't
@@ -1245,6 +1248,8 @@ function Cutscene.play(winners, onStage)
 	local state = { start = os.clock(), winners = {}, hidden = {}, cleared = {}, stage = "banner", cameraType = camera.CameraType, fov = camera.FieldOfView, written = nil, home = camera.CFrame }
 	active = state
 	state.blur = Instance.new("DepthOfFieldEffect") -- Roblox's own camera blur, on this screen only
+	state.smear = Instance.new("BlurEffect") -- Book Kicker's book on the lens
+	state.smear.Name, state.smear.Size, state.smear.Enabled, state.smear.Parent = "WinnersLens", 0, false, camera
 	state.blur.Name, state.blur.NearIntensity, state.blur.FarIntensity, state.blur.Parent = "WinnersFocus", 0, 0, camera
 	state.set = Instance.new("Folder") -- the small winners, their books and plane ("Winner...": never hidden for the shot)
 	state.set.Name, state.set.Parent = "WinnerStage", workspace
@@ -1487,11 +1492,12 @@ function Cutscene.play(winners, onStage)
 		local strength = t < arrive and ease((t - depart) / GLIDE) or t < leave and 1 or 1 - ease((t - leave) / GLIDE)
 		local first = state.winners[1] or state.winners[2] or state.winners[3]
 		local depth = math.max(0, (spots[1] - shot.Position):Dot(shot.LookVector)) / (first and first.scale or 28)
-		-- Book Kicker: what is near the lens goes out of focus as the open book flies in, until it has slid away;
-		-- the sharp range draws in around the winners, so the book lies outside it on every screen.
-		local near = state.kickAt and math.clamp((t - arrive - state.kickAt) / KICK_FLIGHT, 0, 1) * (1 - math.clamp((t - leave - 0.5) / 0.3, 0, 1)) or 0
-		state.blur.FocusDistance, state.blur.InFocusRadius = depth, math.max(8, depth * 0.5) + (math.max(3, depth * 0.25) - math.max(8, depth * 0.5)) * near
-		state.blur.NearIntensity, state.blur.FarIntensity = near, BLUR_FAR * strength
+		state.blur.FocusDistance, state.blur.InFocusRadius = depth, math.max(8, depth * 0.5)
+		state.blur.NearIntensity, state.blur.FarIntensity = 0, BLUR_FAR * strength
+		-- Book Kicker: the open book on the lens is out of focus (see KICK_BLUR)
+		local flown = state.kickAt and t - arrive - state.kickAt or 0
+		local soft = math.clamp(flown / KICK_FLIGHT * 2 - 1, 0, 1) * (1 - math.clamp((flown - KICK_FLIGHT - KICK_STUCK) / 0.45, 0, 1))
+		state.smear.Size, state.smear.Enabled = KICK_BLUR * screen.Y * soft, soft > 0
 		state.written = shot
 	end)
 end
@@ -1509,6 +1515,7 @@ function Cutscene.stop()
 		if was == true then item.Enabled = true elseif was == "visible" then item.Visible = true end
 	end
 	state.blur:Destroy()
+	state.smear:Destroy()
 	state.plateGui:Destroy()
 	for item, was in state.moved do if item.Parent then item:PivotTo(was) end end
 	workspace.CurrentCamera.CameraType, workspace.CurrentCamera.FieldOfView = state.cameraType, state.fov

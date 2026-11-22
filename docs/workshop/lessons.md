@@ -449,6 +449,7 @@ mistake would be easy to make twice.
   in Studio's Edit VM `script.Source = HttpService:GetAsync("http://127.0.0.1:8765/client/X.luau")` (works from the MCP;
   compare byte counts, check by requiring a clone). Stop the server after. **Dead since 2026-11-21:** the Assistant's HTTP allowlist refuses `127.0.0.1`; use `python tools/studio_push.py` (the text goes through the MCP in base64 pieces).
 - **A SurfaceGui on a part's top or bottom face has its x along the part's z** (seen in Play 2026-11-21: Book Kicker's page rows ran up the page). Draw for that, or make the drawing the same from both ends; and draw a new pattern offline at its screen size first (`.planning/emotes/book-kicker-pages-preview.png` was made that way, with PIL): the first one was three times too coarse.
+- **`DepthOfFieldEffect`'s near blur did not blur a book 1.8 studs from the lens** (Play, 2026-11-21: `NearIntensity` 1, the book far outside the sharp range, its pages a SurfaceGui: perfectly sharp). For something pressed on the lens, blur the whole picture with a `BlurEffect` instead.
 - **Rojo serve can switch settings in the place, and publishing ships them (2026-10-28).** `serve.project.json` set
   `StreamingEnabled` false, so streaming was off in published builds for days (phones got ~2,800 town files at join;
   the loading screen stayed blurry 35 s). Serve now sets it true; `LoadLog.recent()` flags "STREAMING OFF" joins.
