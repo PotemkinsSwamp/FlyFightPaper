@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-22 Magician's second recording: the line should fly over the camera, large on screen, and shake it a little](2026-11-22-magician-second-run.md)
 - [2026-11-22 Magician's first recording: the planes should leave in a line past the camera; "otherwise good stuff"; "Keep the curtsy"](2026-11-22-magician-first-run.md)
 - [2026-11-22 Bubblegum's third run: the new tear "looks good, it needs sfx"](2026-11-22-bubblegum-third-run.md)
 - [2026-11-22 Bubblegum's second run: it looks fine except the pull, which comes off as a flat sheet; it must stretch, uneven and broken up, like gum scraped off](2026-11-22-bubblegum-second-run.md)
