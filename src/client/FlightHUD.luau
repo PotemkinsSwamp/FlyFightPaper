@@ -304,7 +304,7 @@ function HUD.start(getPlane, action)
 	-- Book Kicker from its draft clip.
 	if game:GetService("RunService"):IsStudio() then
 		for index, first in ipairs({ { "ToyPilot", "pilot" }, { "CameraFlick", "flick" }, { "BookKicker", "kicker" } }) do
-			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(220+index*110,-80)
+			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(index<3 and 220+index*110 or 880,-80) -- the third goes past "tips again": its own slot is the 2nd/3rd button's
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
 			button.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
 		end
