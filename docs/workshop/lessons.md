@@ -1029,6 +1029,12 @@ Back to [HOME](../HOME.md)
   seconds did (user32 `mouse_event`, there and back). Alan, 2026-11-16: "you are going to have to keep it awake while you
   need the screen drawing": start the nudge before every Play that must draw, and stop it after.
   Count `RenderStepped` frames before every measurement, not only at the start.
+- **A minimised Studio records only the flat layer** (2026-11-22, Magician's first recording): `RenderStepped` ran at
+  60 a second, the view read 2046 x 801 and the script found the kid's head on the screen, yet the video held the name
+  plates and the report card on an empty dark picture (colour 23, 27, 30), from its first frame on. The frame count
+  does not catch it. Before a recording, ask Windows whether Studio's window is minimised (user32 `IsIconic` on the
+  process's main window: a question, not a screen grab), and look at the first second of the video before reading
+  anything else from the run. Bringing the window up is desktop control: Alan's go, or he clicks it.
 - **The `loop` autopilot keeps its place in the route through a respawn**, so a new plane steers from its desk at a far
   corner and flies into the town two seconds after takeoff, every life. Clear `DevAutopilot` on TAKEOFF and set it again
   once flying (the looks check's client half does).
