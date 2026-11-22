@@ -5,6 +5,7 @@ Claude's private memory on 2026-10-15 so everyone working on the game can see th
 mistake would be easy to make twice.
 
 ## Emotes on real bodies
+- **A clip's joint numbers do not say what the pose looks like** (2026-11-22, Magician): Roblox's "Curtsy" read from its keys as a forward bow of about 40 degrees with the right arm swept across; on a body it is a curtsy, legs crossed and hands out, nothing tipping forward. The turns were real and cancel out along the body. Before telling Alan what one of Roblox's emotes is, pose it on a rig in Edit and look (a picture is his go), or say plainly that only its length and its hips' height are known.
 - **Read the scene's real camera and Alan's rulings on it before a shot card's camera column** (2026-11-22, Bubblegum:
   my card said "steady, close on 1st" and had the camera creep in; the scene shows all three and his ruling of
   2026-11-20 is "No zoom in on 1st"). The header of `src/client/WinnersCutscene.luau` says both.
