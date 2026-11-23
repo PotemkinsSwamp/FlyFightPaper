@@ -84,7 +84,7 @@ arms keep their real length and the camera does not move. The other way, for Ala
 the glass all along; we see white paper with the crayon showing through faintly, mirrored. He turns it round to
 show us the front.
 
-## Shot card (second, waits for Alan's OK)
+## Shot card (second; Alan's OK with the video, 2026-11-22)
 **The feeling: smug. "That's all you are to me": a picture to scrunch up.** Slow, sure head moves; quick, neat
 hands; the toss without looking.
 
