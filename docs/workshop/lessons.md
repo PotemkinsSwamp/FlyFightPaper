@@ -1024,6 +1024,19 @@ Back to [HOME](../HOME.md)
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.
 
 ## Scripted Play tests (2026-11-16, the skins and trails check)
+- **The Studio link's video capture stops by itself at 30 seconds** (2026-11-22, the pipeline's recordings): one
+  capture for each end of a match, started just before `endMatch`; several takes fit in one Play (wait about 6 s after
+  a scene for the next match's planes).
+- **Read a Play's errors from `LogService:GetLogHistory()` in the Client**, keeping errors and warnings and dropping
+  the "ContentId ... failed" lines: the whole console is a hundred lines of those.
+- **Find 1st's light in a recording by brightness:** the mean brightness of a small box on 1st (`signalstats` on
+  `crop=120:260:968:300` of a 2032 x 800 capture) jumps from about 17 to over 90 within two frames, after the dark.
+- **Several sessions in one folder: the commit check only looks at files git knows** (`tools/check_docs.py`,
+  2026-11-22). Before that, one session's unfinished new file stopped every other session's commit. A session commits
+  with its paths named after `--`; a plain `git commit` once swept three other sessions' staged pages into its own.
+- **A script with a backslash in it goes through the Write tool, never a bash heredoc** (twice on 2026-11-22: `\\n`
+  inside a quoted heredoc reached Python as a real line break and left `tools/check_docs.py` unable to run for a
+  minute, which stops every session's commit).
 - **A sleeping screen stops Studio drawing.** Alan's PC turns the screen off after 60 idle seconds: the view reads 1 x 1,
   `RenderStepped` gives 0 frames, and trails and skins freeze while the server plays on. Asking Windows to keep the
   screen on (`SetThreadExecutionState`) did not hold from a background PowerShell; a one-pixel mouse nudge every 20

@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-22 The pipeline's first recordings: So Close "its good"; A+ "needs a lot of work"; Skeet Shoot and Fold It Up noted in their sessions](2026-11-22-pipeline-first-recordings.md)
 - [2026-11-22 Magician: the fly-over "it's good"; the first sound try was made from the old recording, the magic tone and the whoosh too loud, the whoosh only as a plane goes over the camera](2026-11-22-magician-sound-first-try.md)
 - [2026-11-22 Magician's second recording: the line should fly over the camera, large on screen, and shake it a little](2026-11-22-magician-second-run.md)
 - [2026-11-22 Magician's first recording: the planes should leave in a line past the camera; "otherwise good stuff"; "Keep the curtsy"](2026-11-22-magician-first-run.md)
