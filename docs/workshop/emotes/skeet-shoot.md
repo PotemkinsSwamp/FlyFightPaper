@@ -225,7 +225,10 @@ down): `.planning/emotes/skeet-shoot-first-run-sound.mp4` (the dances take, from
   only crosses the elbows, so their arms are still straight. It doesn't actually like do the natural position of
   crossing your arms, where one arm folds under the other." Fixed in the clip (the crossed arms above, baked again
   into `Assets` and `skeet-shoot.rbxm`); not yet recorded. On 12 bots' outfits the tucked-under forearm presses at most
-  0.031 heights into the chest at 10.5 s; everything else as before. The planes' size is not raised: he did not ask.
+  0.031 heights into the chest at 10.5 s; everything else as before.
+- **Alan on the planes' size: fine as they are.** "They looked good to me. The size of the planes looked good ...
+  Everything looked fine except the arms." So nothing else changes; the crossed arms wait for his look in the next
+  recording.
 
 ## Files
 | File | What |
