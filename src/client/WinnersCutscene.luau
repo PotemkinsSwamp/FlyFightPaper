@@ -1345,8 +1345,10 @@ end
 
 -- Magician, a 1st-place emote (Alan 2026-11-22, docs/decisions/2026-11-22-magician.md): the kid goes into Roblox's
 -- Godlike emote and floats up off the books, paper planes come down from above and circle them, and as the kid
--- comes back down the planes leave in a line past the camera (Alan on the first recording: "cooler if they followed
--- in a line and flew past the camera"; that build scattered them outwards, one past the lens). Both body clips are
+-- comes back down the planes leave in a line over the camera, which trembles as each goes over (Alan on the first
+-- recording: "cooler if they followed in a line and flew past the camera"; on the second, which passed them below
+-- and right of the lens: "flew over the camera becoming large on screen and shaking the camera slightly like if an
+-- actual plane flew over"). Both body clips are
 -- Roblox's own, played by id (nothing bought): Godlike (`clip`, at `speed`: its 7.1 s fill the scene) and, from
 -- `bowAt` seconds after 1st's light, Curtsy over it (`bow`, blended in over `bowFade`). It is a curtsy, legs crossed
 -- and hands out, not the bow its keys had read like; Alan, having seen it: "Keep the curtsy". Sizes in a standard
@@ -1361,15 +1363,30 @@ end
 -- leaves it at the spot where the ring's own way points at the camera (`peel` of a turn: the kid's left, screen
 -- right), so they go one behind the other, a sixth of a turn apart. `out` is a moment a plane is at that spot. A plane
 -- that has left flies one curve, the same for all, in `passIn` seconds: on along the ring's way for `reach`, then
--- round to straight at the camera for its last `straight`, to `pass` (right of, below and ahead of the lens: from
--- above its top is seen; level with the lens it would be a line), and on past the camera. Never across the lens.
--- Studio only, behind the Dev panel's "end: magic" button, until who gets which emote is decided. No sounds yet.
+-- round onto a straight last stretch that starts `back` from its end and climbs a little, to `pass`: over the lens
+-- (x right of it, y above it, in the camera's own frame), and on behind the camera. `pass` is as low as the whole
+-- plane, fold included, stays above the lens's own line (lower, the fold sweeps down the picture as a white blade);
+-- `back` comes in from the right far enough that no plane covers the kid. At its biggest a plane is about six
+-- tenths of the picture wide, a sixth of its area, in its upper right. As each goes over, the camera trembles
+-- (`shake`: Book Kicker's shake without its knock back; the planes keep their place in the picture, so none comes
+-- nearer the lens for it). Studio only, behind the Dev panel's "end: magic" button, until who gets which emote is
+-- decided. No sounds yet.
 local MAGIC = { clip = "rbxassetid://10714347256", speed = 0.7, bow = "rbxassetid://10714061912", bowAt = 8.5, bowFade = 0.5,
 	lift = 0.34, up = { 0.9, 4.2 }, down = { 8.3, 10 }, planes = 6, long = 0.36, first = 3.3, every = 0.3, fall = 1.4, drop = 2.6,
 	wide = 1.5, ring = 1, turn = 2.4, bob = 0.07, bank = 40, tilt = 12, out = 8, spin = 2, ramp = 0.3, peel = 0.5,
-	reach = 1.4, straight = 1, pass = Vector3.new(0.25, -0.2, -0.35), passIn = 0.8 }
+	reach = 1.4, back = Vector3.new(0.315, 0.049, -0.7), pass = Vector3.new(0.02, 0.038, 0), passIn = 0.8, shake = 0.016 }
 local function magicClip()
 	return RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Magician" and MAGIC.clip or nil
+end
+-- The camera `t` seconds after 1st's light: a small fast shake, fading in a quarter second, from the moment each
+-- plane is over the lens.
+function MAGIC.trembling(steady, t, height)
+	local shake = Vector3.zero
+	for i = 1, MAGIC.planes do
+		local u = t - MAGIC.leaves(i) - MAGIC.passIn
+		if u > 0 then shake += Vector3.new(math.sin(u * 95), math.sin(u * 80 + 1), 0) * (MAGIC.shake * height * math.exp(-u * 10) * math.min(u / 0.03, 1)) end
+	end
+	return steady + steady:VectorToWorldSpace(shake)
 end
 -- The ring's own clock `t` seconds after 1st's light: from `out` it runs faster.
 function MAGIC.clock(t)
@@ -1436,7 +1453,7 @@ local function magicPlanes(w, t, view, height)
 	-- the ring around the chest, where the big winner's is
 	local ring = w.desk.Rotation * CFrame.Angles(-math.rad(MAGIC.tilt), 0, 0) + (view.Position + (magic.chest.Position - view.Position) * w.scale)
 	local to = view * (MAGIC.pass * height)
-	local last = view * ((MAGIC.pass - Vector3.zAxis * MAGIC.straight) * height) -- from here straight at the camera
+	local last = view * ((MAGIC.pass + MAGIC.back) * height) -- from here straight on, over the camera
 	local function where(i, at) -- plane i, `at` seconds after the light, in the big winner's studs
 		local left = magic.leaves[i]
 		if at <= left then return ring * (MAGIC.path(i, at) * height) end
@@ -1714,6 +1731,8 @@ function Cutscene.play(winners, onStage)
 							elseif copy.gum then
 								state.gumAt = LIGHT_AT + 2 * TURN + copy.gum.marks.Pop -- the pop, in seconds after arriving
 							firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + copy.gum.marks.Snap -- the small bubble's snap (gumBubble)
+							elseif copy.magic then
+								state.magicAt = LIGHT_AT + 2 * TURN -- 1st's light, in seconds after arriving (the planes' clock)
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do
@@ -1782,7 +1801,7 @@ function Cutscene.play(winners, onStage)
 	-- without Camera Flick's knock).
 	local function holdAt(t, leave)
 		local steady = group:Lerp(drift, ease(t / (leave - arrive)))
-		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height) or state.gumAt and jolted(steady, t - state.gumAt, height) or steady, steady
+		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height) or state.gumAt and jolted(steady, t - state.gumAt, height) or state.magicAt and MAGIC.trembling(steady, t - state.magicAt, height) or steady, steady
 	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
