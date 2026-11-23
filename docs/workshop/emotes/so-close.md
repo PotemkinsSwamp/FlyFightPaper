@@ -140,7 +140,7 @@ The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the pic
 - **One sound, the video's own sigh** (Alan: "the sigh that we can put into the sounds"):
   `assets/audio/emotes/so-close-sigh.ogg`, 0.86 s, cut from 2.64 to 3.50 s of `so-close-gemini-api-1.mp4` (the sigh
   rises from 2.66 s, is loudest at 2.80, tails off by 3.35; measured by loudness, not heard by me). Lightly
-  de-hissed, a 0.03 s fade in and 0.2 s out, raised 8.5 dB so its loudest point is 28 dB under full (first cut: 29.3 dB, 6 dB under full; Alan: "way too loud";
+  de-hissed, a 0.03 s fade in and 0.2 s out, raised 7.3 dB so its loudest point is 28 dB under full (first cut: 29.3 dB, 6 dB under full; Alan: "way too loud";
   the video's hiss is about 10 dB under the sigh). Not uploaded.
 - **When it plays:** clip second 2.5 (the mark Sag: the exhale as the body sags), once per kid. That is 1.5 s after
   1st's light for 2nd and 2.0 s for 3rd. The module already asks for it as `soCloseSigh` through `runnerSound`;
@@ -158,7 +158,7 @@ The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the pic
 - **From the pairing with A+:** A+'s landed card covers 3rd for the last 2.6 s, and A+'s first sound (2.2 s after
   1st's light) cuts both sighs in the game (each would still be playing).
 - **Alan on the sound recording (2026-11-22): "the sigh is way too loud it should be subtle".** The file is now
-  20.8 dB quieter than my first cut (its loudest point 28 dB under full; the recording he heard peaked 4 dB under
+  22 dB quieter than my first cut (its loudest point 28 dB under full; the recording he heard peaked 4 dB under
   full): the quiet is in the file itself, so it plays at volume 1 in `Audio`. Heard against the raw recording, both
   sighs at their times (1.5 and 2.0 s after 1st's light): `.planning/emotes/so-close-sigh-quieter.mp4`. Waits for
   his listen.
