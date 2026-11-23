@@ -1515,6 +1515,18 @@ end
 
 -- A local copy of a winner's avatar in `world` (a model of its own), back at its normal small size, standing on its
 -- book stack at `spot` (the desk top) and facing `facing`: it stands still in the dark until its spotlight comes on.
+-- Emotes made by the pipeline (docs/workshop/emote-pipeline.md, "The emote module") each live in a module of their
+-- own under `emotes`, so several can be built at once and no two builders write this file. Studio only until who
+-- gets which is decided: DevFirstEmote (1st) or DevRunnerUp (2nd and 3rd) names the module. `kit` is what this
+-- file lends them. (Both hang on `Cutscene`, like GUM's and MAGIC's functions, to keep this file's locals down.)
+Cutscene.kit = { paper = paper, ease = ease, flat = flat, sit = sit, seatOn = seatOn, holdPlane = holdPlane, jolted = jolted,
+	ourClip = ourClip, runnerSound = runnerSound, Audio = Audio, Rounds = Rounds, Avatars = Avatars }
+function Cutscene.pipelineEmote(place)
+	local name = RunService:IsStudio() and Root:GetAttribute(place == 1 and "DevFirstEmote" or "DevRunnerUp")
+	local folder = script.Parent:FindFirstChild("emotes")
+	local module = name and folder and folder:FindFirstChild(name)
+	return module and require(module) or nil
+end
 local function copyWinner(source, place, facing, actorId, spot, world)
 	source.Archivable = true
 	local model = source:Clone()
@@ -1557,15 +1569,21 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local gum = gumId and gumProps(model, world, gumMarks) or nil -- Bubblegum: no plane either
 	local magicId = place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 and magicClip() or nil
 	local magic = magicId and magicProps(model, world, animator, scale) or nil -- Magician: nor here
+	local made = humanoid.RigType == Enum.HumanoidRigType.R15 and Cutscene.pipelineEmote(place) or nil -- a pipeline emote: its own module
 	local pilot = RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "ToyPilot" and (ourClip("ToyPilot"))
 	local planeEmote = flick or pilot or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
-	local prop = place == 1 and not kick and not gum and not magic and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
+	local prop = place == 1 and not kick and not gum and not magic and not made and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
 	flick = prop and flick
 	local runnerUp = place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15
-	local emote
+	local emote, extra
 	local ours = runnerUp and RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
-	if ours == "GoodGame" then
+	if made then
+		extra = { made = made, st = made.start(Cutscene.kit, { model = model, humanoid = humanoid, animator = animator, cast = world,
+			stack = stack, rise = rise, legs = legs, scale = scale, place = place, actorId = actorId, desk = desk,
+			top = onDesk - Vector3.yAxis * feet / scale }) }
+		emote = extra.st.track
+	elseif ours == "GoodGame" then
 		emote = goodGame(animator, model)
 	elseif ours == "Nap" then
 		emote = nap(animator, model, place, world, onDesk - Vector3.yAxis * feet / scale)
@@ -1581,7 +1599,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil or gum ~= nil or magic ~= nil, kick = kick, gum = gum, magic = magic, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil or gum ~= nil or magic ~= nil or (extra ~= nil and extra.st.held == true), extra = extra, kick = kick, gum = gum, magic = magic, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -1739,6 +1757,9 @@ function Cutscene.play(winners, onStage)
 							elseif copy.magic then
 								state.magicAt = LIGHT_AT + 2 * TURN -- 1st's light, in seconds after arriving (the planes' clock)
 								firstSoundAt = state.start + BANNER + DIM + GLIDE + state.magicAt + MAGIC.sounds[1][1] -- the bass (magicPlanes)
+							elseif copy.extra and place == 1 then
+								state.extra, state.extraAt = copy.extra, LIGHT_AT + 2 * TURN -- a pipeline emote on 1st: their light, in seconds after arriving
+								if copy.extra.made.firstSound then firstSoundAt = state.start + BANNER + DIM + GLIDE + state.extraAt + copy.extra.made.firstSound end
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do
@@ -1791,7 +1812,7 @@ function Cutscene.play(winners, onStage)
 	local depart = BANNER + DIM
 	local arrive = depart + GLIDE
 	-- When the camera leaves the winners: so the results card gets its CARD seconds, or as Camera Flick ends.
-	local function leaving() return state.flickAt and arrive + state.flickAt + FLICK_AFTER or state.kickAt and arrive + state.kickAt + KICK_AFTER or state.gumAt and arrive + state.gumAt + GUM.after or math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD) end
+	local function leaving() return state.flickAt and arrive + state.flickAt + FLICK_AFTER or state.kickAt and arrive + state.kickAt + KICK_AFTER or state.gumAt and arrive + state.gumAt + GUM.after or state.extra and state.extra.made.leave and arrive + state.extraAt + state.extra.made.leave or math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD) end
 	local function clearShot()
 		state.added = workspace.DescendantAdded:Connect(function(item) hideForShot(state, item) end)
 		task.spawn(function() -- a few hundred parts a frame, so nothing stutters; done well before the camera lands
@@ -1807,7 +1828,7 @@ function Cutscene.play(winners, onStage)
 	-- without Camera Flick's knock).
 	local function holdAt(t, leave)
 		local steady = group:Lerp(drift, ease(t / (leave - arrive)))
-		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height) or state.gumAt and jolted(steady, t - state.gumAt, height) or state.magicAt and MAGIC.trembling(steady, t - state.magicAt, height) or steady, steady
+		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height) or state.gumAt and jolted(steady, t - state.gumAt, height) or state.magicAt and MAGIC.trembling(steady, t - state.magicAt, height) or state.extra and state.extra.made.camera and state.extra.made.camera(state.extra.st, steady, t - state.extraAt, height) or steady, steady
 	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
@@ -1867,7 +1888,8 @@ function Cutscene.play(winners, onStage)
 				if w.pilot then pilotSounds(w, since) end
 			elseif w.kick then kickBooks(w, since, shot, steady, height)
 			elseif w.gum then gumBubble(w, since, shot, height, fov)
-			elseif w.magic then magicPlanes(w, since, shot, height) end
+			elseif w.magic then magicPlanes(w, since, shot, height)
+			elseif w.extra and w.extra.made.step then w.extra.made.step(w.extra.st, since, shot, steady, state.winners, fov) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end
@@ -1876,6 +1898,8 @@ function Cutscene.play(winners, onStage)
 		camera.CFrame, camera.FieldOfView = shot, fov
 		-- Each plate pops in with its winner's light, its top on its desk's front edge.
 		local screen = camera.ViewportSize
+		-- a pipeline emote on 1st says when it has the lens (name plates and the Menu tag put away, as for the book and the gum)
+		local over = state.extra and state.extra.made.covered and state.extra.made.covered(state.extra.st, t - arrive - state.extraAt) or false
 		for place, w in state.winners do
 			local plate = state.plates[place]
 			local shown = t - arrive - LIGHT_AT - (3 - place) * TURN
@@ -1883,7 +1907,7 @@ function Cutscene.play(winners, onStage)
 			-- can't stay on top of the book when the book covers it")
 			-- Bubblegum: gone once the bubble swells over the picture
 			plate.frame.Visible = shown > 0 and t < leave and not (state.kickAt and t - arrive > state.kickAt + KICK_FLIGHT * 0.6)
-				and not (state.gumAt and t - arrive > state.gumAt - GUM.swell)
+				and not (state.gumAt and t - arrive > state.gumAt - GUM.swell) and not over
 			if plate.frame.Visible then
 				local desk = desks[place]
 				local edge = spots[place] + back * ((desk.Position - spots[place]):Dot(back) + desk.Size.Z / 2)
@@ -1908,6 +1932,7 @@ function Cutscene.play(winners, onStage)
 		-- MenuController reads LensCovered): sharp on a blurred book, it stood out
 		local covered = state.kickAt ~= nil and flown > KICK_FLIGHT * 0.6 and flown < KICK_FLIGHT + KICK_STUCK + 0.45
 			or state.gumAt ~= nil and t - arrive > state.gumAt - GUM.swell and t - arrive < state.gumAt + GUM.snap + GUM.stuck + GUM.gone -- Bubblegum: from the swell until the gum is torn off
+			or over
 		if covered ~= state.covered then state.covered = covered; Root:SetAttribute("LensCovered", covered or nil) end
 		state.written = shot
 	end)
@@ -1918,6 +1943,7 @@ function Cutscene.stop()
 	local state = active
 	active = nil
 	RunService:UnbindFromRenderStep("WinnersCutscene")
+	for _, w in state.winners do if w.extra and w.extra.made.stop then w.extra.made.stop(w.extra.st) end end -- a pipeline emote's own clean-up
 	if state.set then state.set:Destroy() end
 	for model in state.hidden do if model.Parent then setHidden(model, false) end end
 	if state.added then state.added:Disconnect() end

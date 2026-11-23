@@ -55,7 +55,7 @@ It never edits `src/client/WinnersCutscene.luau`, `src/client/Audio.luau`, `tool
 `state/STATE.md`, the [emote log](emote-making.md) or another emote's files. What it needs there, it asks the
 primary session for in a message.
 
-Commits: its own paths only (`git add` them by name, never `-A`), then push. A new code file and its line on the
+Commits: its own paths only (`git add` them by name, never `-A`); the commit pushes to GitHub by itself. A new code file and its line on the
 emote's page go in the same commit. If the commit check stops on another session's half-written file, wait a
 minute and try again; never skip the check.
 
@@ -65,9 +65,39 @@ there carries its emote's name and is removed in the same call. Never Play, neve
 picture without Alan's go. Play and recordings are the primary session's.
 
 ## The emote module
-Not ready: the primary session is adding the hook that lets `WinnersCutscene` run an emote from its own module.
-A side session reaching step 4 reads this section again; if it still says "not ready", it messages the primary
-session and waits.
+Ready (added 2026-11-22; read by eye only: not yet compiled in Studio or run in Play, the primary session does
+both). `src/client/WinnersCutscene.luau` runs a pipeline emote from `src/client/emotes/<Name>.luau`. In Studio the
+attribute `DevFirstEmote` (1st) or `DevRunnerUp` (2nd and 3rd) on `ReplicatedStorage.FlyFightPaper`, set to
+`<Name>`, picks it. The module returns a table:
+
+| Field | What it is |
+|---|---|
+| `start(kit, who)` | Needed. Called once in the dark, when the winner's copy is put on its books. Loads the body, makes the props (unseen until their moment) and returns the emote's own table `st`. `st.track` is needed: the body's AnimationTrack, or anything with `Play` and `AdjustSpeed`. The scene calls `st.track:Play(0.3)` at this winner's light. With `st.held = true` the module has already started it frozen on its first pose (`track:Play(0, 1, 0)`) and the scene calls `AdjustSpeed(1)` at the light instead. |
+| `step(st, since, shot, steady, winners, fov)` | Every frame. `since`: seconds after this winner's light (below zero before it). `shot`: the camera this frame. `steady`: the camera without any shake. `winners`: the scene's three winners by place (each has `model`, `emote`, `extra`, `place`, `scale`, `spot`, `desk`, `lit`), for an emote that uses the others. |
+| `camera(st, steady, t, height)` | 1st only. Returns the camera for this frame, to shake or move it; `t`: seconds after 1st's light. |
+| `leave` | 1st only. Seconds after 1st's light at which the camera leaves for the report card, when the scene's own time is wrong for it. The report card must keep its 10 seconds: ask Alan before using it. |
+| `covered(st, t)` | 1st only. True while the emote has the lens: the name plates and the Menu tag are put away. |
+| `firstSound` | 1st only. Seconds after 1st's light of its first sound; the runner-ups' sounds stop before it. |
+| `stop(st)` | Clean-up for anything not under `who.cast`. |
+
+`who`: `model` (the winner's copy, already scaled small and standing on the books), `humanoid`, `animator`, `cast`
+(parent for every prop: it is removed with the scene), `stack` and `rise` (the books and their height), `legs` (leg
+length against a standard kid's), `scale`, `place`, `actorId`, `desk` (where they stand, as a CFrame), `top` (the
+top of the books under them).
+
+`kit`, lent by the scene: `paper(parent, color, shape)`, `ease`, `flat`, `sit` and `seatOn` (Nap's and Next One's
+seat on the books), `holdPlane` (a paper plane in the hand), `jolted` (Book Kicker's camera jolt), `ourClip(name)`
+(the id of an uploaded clip, or of the draft `<Name>Clip` in the place's `Assets`), `runnerSound`, `Audio`,
+`Rounds`, `Avatars`. For the meaning and arguments of each, read its function in `WinnersCutscene.luau`.
+
+Sounds: until the uploads (step 6) there is no id to play, so the module keeps its sound times in a table of its
+own and step 6 wires them to `Audio`.
+
+A body cut goes in `tools/emote_cuts/<name>.lua`: a piece of Luau that adds `CUTS.<Name> = { ... }` as the cuts in
+`tools/emote_clips.lua` do. `tools/emote_preview.py` puts every cut file into `emote_clips.lua` before it runs
+(where that file says `EMOTE_CUTS_HERE`), each inside its own `do ... end`, so the file sees every helper there.
+
+What the module cannot do with this, it asks the primary session for.
 
 ## Alan's holds
 His explicit go, each time: any Studio Play (tests included), place saves, publish (he does it), desktop control

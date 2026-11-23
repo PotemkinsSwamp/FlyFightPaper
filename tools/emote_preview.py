@@ -6,7 +6,7 @@ Runs tools/emote_preview.lua in Studio (it stands a test kid on 1st's desk and h
 every frame poses the scene (_G.EMOTE.frame(t)) and saves Studio's own viewport capture, joins the frames with
 ffmpeg and removes the kid and plane again (--keep leaves them and the frames for another look).
 """
-import base64, json, os, subprocess, sys, tempfile, threading, time
+import base64, glob, json, os, subprocess, sys, tempfile, threading, time
 
 studio, out = sys.argv[1], sys.argv[2]
 rest = [a for a in sys.argv[3:] if not a.startswith("--")]
@@ -62,7 +62,9 @@ call("initialize", {"protocolVersion": "2025-11-25", "capabilities": {}, "client
 send({"jsonrpc": "2.0", "method": "notifications/initialized"})
 here = os.path.dirname(os.path.abspath(__file__))
 script = next((a[6:] for a in sys.argv if a.startswith("--lua=")), "emote_preview.lua")  # another scene with the same _G.EMOTE.frame / clean
-print(luau(open(os.path.join(here, script), encoding="utf-8").read()))
+cuts = "\n".join("do -- " + os.path.basename(f) + "\n" + open(f, encoding="utf-8").read() + "\nend"  # the pipeline's cut files (emote_clips.lua)
+                 for f in sorted(glob.glob(os.path.join(here, "emote_cuts", "*.lua"))))
+print(luau(open(os.path.join(here, script), encoding="utf-8").read().replace("-- EMOTE_CUTS_HERE", cuts)))
 bake = next((a[7:] for a in sys.argv if a.startswith("--bake=")), None)  # CUT:ClipName:FILE (emote_clips.lua): no video
 if bake:  # the cut goes into the place's Assets as ClipName and from there into FILE (.rbxm), fetched in slices
     cut, name, path = bake.split(":", 2)

@@ -678,6 +678,10 @@ local function clip(name)
 		return mix(a.turn, b.turn, b.t > a.t and math.clamp((t - a.t) / (b.t - a.t), 0, 1) or 0)
 	end, list[#list].t
 end
+-- The pipeline's emotes keep their cuts in files of their own, tools/emote_cuts/<name>.lua (one writer per file:
+-- docs/workshop/emote-pipeline.md). tools/emote_preview.py puts each of them in place of the next line, inside its
+-- own `do ... end`, so a cut file sees CUTS and every helper above and its locals stay its own.
+-- EMOTE_CUTS_HERE
 -- A cut as a function of seconds (it loops), and its length.
 local function cut(name)
 	local recipe, c = assert(CUTS[name], "no cut " .. name), {}
