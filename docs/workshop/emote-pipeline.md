@@ -8,10 +8,10 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 ## Emotes in the pipeline
 | Emote | Page | Step it is on |
 |---|---|---|
-| So Close | [so-close](emotes/so-close.md) | 1, card not written |
-| Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 1, card not written |
-| A+ | [a-plus](emotes/a-plus.md) | 1, card not written |
-| Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 1, card not written |
+| So Close | [so-close](emotes/so-close.md) | 2, card written 2026-11-22, waits for Alan's OK |
+| Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 2, card written 2026-11-22, waits for Alan's OK |
+| A+ | [a-plus](emotes/a-plus.md) | 2, card written 2026-11-22, waits for Alan's OK |
+| Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 2, card written 2026-11-22, waits for Alan's OK |
 
 The primary session keeps this table; a side session reports its step in its own page.
 
@@ -55,7 +55,7 @@ It never edits `src/client/WinnersCutscene.luau`, `src/client/Audio.luau`, `tool
 `state/STATE.md`, the [emote log](emote-making.md) or another emote's files. What it needs there, it asks the
 primary session for in a message.
 
-Commits: its own paths only (`git add` them by name, never `-A`); the commit pushes to GitHub by itself. A new code file and its line on the
+Commits: its own paths only: `git add` them by name (never `-A`), then `git commit -m "..." -- <those paths>`, so a file another session added at the same moment stays out of it; the commit pushes to GitHub by itself. A new code file and its line on the
 emote's page go in the same commit. If the commit check stops on another session's half-written file, wait a
 minute and try again; never skip the check.
 
@@ -65,8 +65,7 @@ there carries its emote's name and is removed in the same call. Never Play, neve
 picture without Alan's go. Play and recordings are the primary session's.
 
 ## The emote module
-Ready (added 2026-11-22; read by eye only: not yet compiled in Studio or run in Play, the primary session does
-both). `src/client/WinnersCutscene.luau` runs a pipeline emote from `src/client/emotes/<Name>.luau`. In Studio the
+Ready (added 2026-11-22; it compiles in Studio's Edit; not yet run in Play, which the primary session does). `src/client/WinnersCutscene.luau` runs a pipeline emote from `src/client/emotes/<Name>.luau`. In Studio the
 attribute `DevFirstEmote` (1st) or `DevRunnerUp` (2nd and 3rd) on `ReplicatedStorage.FlyFightPaper`, set to
 `<Name>`, picks it. The module returns a table:
 
