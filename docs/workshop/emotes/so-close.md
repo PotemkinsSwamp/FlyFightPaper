@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Sits on the books shaking their head, sad not to be 1st (Alan).
 
 ## Where it stands
-Step 3: the card is OK'd (2026-11-22); the Gemini prompt is written and waits for Alan's go (about $0.28). Nothing made.
+Step 3: the reference video is made (2026-11-22) and waits for Alan's look and listen.
 
 ## Shot card
 **Alan's OK (2026-11-22):** "yes, cross-legged, sigh, keep the glance" (all three of my defaults below).
@@ -53,7 +53,7 @@ light: 3rd is lit about 12.4 s, 2nd about 11.4 s. Times below are seconds after 
 
 ## Reference video (step 3)
 One Gemini call, `tools/gemini_video.py`, 360p, 12 s (the longest a runner-up is lit, rounded down), sound on.
-Price by Bubblegum's two calls (about 1,930 video tokens a second at $12 a million): about **$0.28**. Waits for Alan's go.
+Price by Bubblegum's two calls (about 1,930 video tokens a second at $12 a million): about **$0.28**. Alan: "go".
 The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the picture's left, as from 3rd's desk;
 2nd's is the mirror):
 
@@ -74,6 +74,15 @@ The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the pic
 > 10.2 to 12 s: stays slumped and still.
 >
 > Sound: only the one soft sigh at 2.1 s; silence the rest of the time. No music.
+
+- **The video** (`.planning/emotes/so-close-gemini-api-1.mp4`, 12 s, 640x360, with sound; $0.28: 464 text tokens
+  in, 23,172 video tokens out). What my stills show (two a second; not judged in motion): a wooden-jointed mannequin
+  sits cross-legged on a short stack of three books (asked for six; our stack is our own), upright, hands on the
+  knees; 1.5 to 2.5 s the head turns and tips towards the picture's left; by 3 s it has sagged: chest forward, head
+  hanging, forearms on the thighs, hands loose over the knees, as carded; the shakes at about 4.5, 5.5, 6.5 and 9.5 s
+  read in stills as the head tipping side to side more than turning; slumped and still to the end; the crossed legs
+  and hips never move. **Sound** (measured by loudness, not heard by me): a faint hiss all through (about -55 dB) and
+  one soft sound 2.7 to 3.2 s (about 8 dB over the hiss), on the sag: the sigh, very quiet.
 
 ## Files
 None yet.
