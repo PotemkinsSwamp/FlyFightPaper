@@ -204,6 +204,20 @@ sizes differ a lot; how the crossed arms read on real bodies.
 - **To listen:** `.planning/emotes/skeet-shoot-sound-A.mp4`, the reference video with its own sound swapped for this
   file at 3.7 and 5.7 s (our shot times; the video runs 1 s ahead of 1st's light).
 
+## First run in Play (2026-11-22; the primary session's two muted takes, Alan's go)
+No script error in either. Raw takes (2032 x 800, 30 s each): `.planning/emotes/skeet-shoot-first-run-dances-raw.mp4`
+(2nd and 3rd on today's dances; 1st's light at 12.48 s) and `.planning/emotes/skeet-shoot-first-run-soclose-raw.mp4`
+(2nd and 3rd on So Close, sitting; 1st's light at 14.96 s). With the shot sound at 2.7 and 4.7 s after the light (3 dB
+down): `.planning/emotes/skeet-shoot-first-run-sound.mp4` (the dances take, from 3.48 s before the light).
+- **Seen in stills** (the primary session's, three a second, not judged in motion): 1st brings a thin green straw to
+  the mouth and holds it there; small coloured planes appear between the winners from about 1.5 to 5 s after the
+  light, at different heights, and are gone after; the runner-ups keep their places (the sitting ones stay sitting).
+- **The planes are very small on the screen:** about 10 to 15 px across in a 636 px wide still, roughly 2% of the
+  screen's width, and the straw is a thin line. At this size a throw, a flight and a hit could not be told apart.
+  Sizes are not changed before Alan has seen it.
+- **2nd above the books in the dances take** is the dance's own jumps, not the pause: my stills (two a second) show
+  2nd in the air at 11.0 and 12.0 s, before 1st's light and four seconds before 2nd's throw begins.
+
 ## Files
 | File | What |
 |---|---|
