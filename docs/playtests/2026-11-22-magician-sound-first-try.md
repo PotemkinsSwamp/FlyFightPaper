@@ -20,3 +20,10 @@
 | "Sounds better." "The sound of them flying over is good." | The whoosh over the camera is approved as it is in try 2. |
 | "I don't really like the magical sound. There doesn't really need to be a magical sound when they're lifting ... I don't like the sparkle. It sounds too much like fantasy magic ... I'm thinking more of like a bass, like a subwoofer, like a sci-fi kind of sound." | The shimmer goes. No lift-off sound is needed; if there is one, it is a low bass, sci-fi swell, not a sparkle. Shown both ways for his pick. |
 | "I liked the sound that originally was happening when they were flying, when the paper airplanes were flying around them. Should have been a little bit more subtle, but I liked it. So I say we should put that in there as well." | The faint paper flutter from the first try comes back while the planes circle, a little quieter than it was. |
+
+## On the third listen (A without a lift sound, B with a low bass swell)
+| Alan | What changes |
+|---|---|
+| "We're definitely good with the low bass, but the low bass needs to carry on through while they're still in the air, and then taper off as they're landing." | B is the pick. The bass no longer ends after the lift-off: it comes in as the kid leaves the books, holds for the whole float and fades as they sink and land. |
+
+Not said: whether the flutter is quiet enough now (asked, not answered).
