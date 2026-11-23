@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: recorded once by the primary session (below); waiting on Alan's look and his pick of the drawing (A, B or C).
+Step 6: recorded once by the primary session (below); Alan picked drawing 2a; next its upload (his go), then a second recording with the sounds.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -301,3 +301,7 @@ runner-ups' sounds stop before it.
   crown is yellow on a yellow cone and does not stand out (all three); 2b too busy to read at that size; in 2a the
   sitting 2nd and 3rd read as cut off; 2c reads best (big crown, tall stack, the tags) but its books look like
   cushions; the tags' letters look typed; 2c shows white paper corners. Waits for Alan's pick.
+- **Alan's pick: 2a, as it is** ("2A looks the most like the classroom"; whether it reads at poster size "doesn't
+  really matter"). The file: `.planning/emotes/fold-it-up-drawing-2a.png` (1200 by 900). Next, step 6 (the primary
+  session, Alan's go): upload it as an image, put its id in `DRAWING` in `src/client/emotes/FoldItUp.luau`, record
+  again with the sounds under it.
