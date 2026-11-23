@@ -17,6 +17,7 @@ local REACH_FROM = 3.05 -- the copy hand leaves the wrist (the reach is under wa
 local GROW = 12 -- the hand's size on the screen at the pinch, against its own
 local NEAREST = 0.3 -- the copy hand never comes nearer the lens than this many studs (the camera's near plane is 0.1)
 local POSTER_TALL, POSTER_WIDE = 0.5, 0.5 * 4 / 3 -- winner heights (Alan: "poster size, about half")
+local IN_FRONT = 0.04 -- the poster this many winner heights in front of the hands holding it
 local MILKY = 0.35 -- the sheet's see-through at the pinch; solid paper by Back
 local OVER = 1.15 -- the sheet at the lens: this much bigger than the picture, so no edge shows
 local BALL = 0.11 -- the ball's size, winner heights
@@ -143,8 +144,9 @@ local function posterAt(st, t)
 	local right, left, chest = model:FindFirstChild("RightHand"), model:FindFirstChild("LeftHand"), model:FindFirstChild("UpperTorso")
 	if not right or not left or not chest then return nil end
 	local both = st.kit.ease(math.clamp((t - st.marks.Back) / (TAKE - st.marks.Back), 0, 1)) -- from the right hand alone to both
-	local middle = right.Position:Lerp((right.Position + left.Position) / 2, both)
 	local facing = st.who.desk.LookVector
+	-- just in front of the hands, so they hold it from behind (in the first run the hands showed on its face)
+	local middle = right.Position:Lerp((right.Position + left.Position) / 2, both) + facing * IN_FRONT * st.kid * both
 	local turned = st.kit.ease(math.clamp((t - (st.marks.Show - FLIP)) / FLIP, 0, 1))
 	local look = CFrame.fromAxisAngle(Vector3.yAxis, math.pi * (1 - turned)) * facing -- the drawing's side
 	return CFrame.lookAt(middle, middle + look, Vector3.yAxis)
