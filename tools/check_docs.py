@@ -40,7 +40,8 @@ def code_map():
             problems.append(f"{rel} is not on any docs page (add it to its system page's Code table)")
     tools_page = (ROOT / "docs" / "workshop" / "tools.md").read_text(encoding="utf-8")
     for f in sorted((ROOT / "tools").rglob("*")):
-        if f.suffix in {".py", ".lua", ".sh", ".ps1"} and "__pycache__" not in f.parts and f.name not in tools_page:
+        # a tool is named on the tools page, or by its whole path on another page (a pipeline emote's cut file on its own page)
+        if f.suffix in {".py", ".lua", ".sh", ".ps1"} and "__pycache__" not in f.parts and f.name not in tools_page and f.relative_to(ROOT).as_posix() not in docs:
             problems.append(f"{f.relative_to(ROOT).as_posix()} is not in docs/workshop/tools.md")
     return problems
 
