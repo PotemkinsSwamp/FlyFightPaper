@@ -69,11 +69,14 @@ local function lookAlike(part)
 	local page = realPage()
 	if page then
 		local copy = page:Clone()
+		-- (a word's crayon look is three child copies of it, which draw its letters: they are emptied with it)
 		for _, item in copy:GetDescendants() do
 			if item:IsA("UIScale") then item:Destroy()
-			elseif item:IsA("TextLabel") and item.Text ~= "" and not PRINTED[item.Name] and not item.Name:match("^Head") then
+			elseif item:IsA("TextLabel") and not item.Parent:IsA("TextLabel") and item.Text ~= "" and not PRINTED[item.Name] and not item.Name:match("^Head") then
 				local real = page:FindFirstChild(item.Name, true)
 				if real then scribble(item, real) end
+				item.Text = ""
+				for _, inner in item:GetDescendants() do if inner:IsA("TextLabel") then inner.Text = "" end end
 			end
 		end
 		copy.AnchorPoint, copy.Position, copy.Size, copy.Rotation, copy.Visible = Vector2.zero, UDim2.new(), UDim2.fromScale(1, 1), 0, true
@@ -105,25 +108,39 @@ function APlus.start(kit, who)
 	return st
 end
 
--- Where the real card sits on the screen: its middle and height in pixels, its turn in degrees.
+-- Where the real card sits on the screen: its middle and height in pixels, its turn in degrees. Worked out from the
+-- page's own place on its sheet (1920 by 1080 page pixels) and the sheet's place on the screen: the sheet is shown
+-- through the whole winners' moment, the hidden card is not, and a hidden card's own AbsolutePosition and
+-- AbsoluteSize were stale (the first recording, 2026-11-22: the copy landed 8% too big and 50 px too high).
 local function rectangle(screen)
 	local page = realPage()
-	if page and page.AbsoluteSize.Y > 0 then
-		return page.AbsolutePosition + page.AbsoluteSize / 2, page.AbsoluteSize.Y, page.AbsoluteRotation
+	local results = page and page.Parent
+	local sheet = results and results.Parent
+	if sheet and sheet:IsA("GuiObject") and sheet.AbsoluteSize.X > 0 then
+		local scale = sheet.AbsoluteSize.X / sheet.Size.X.Offset
+		local fit = page:FindFirstChild("Fit")
+		local size = Vector2.new(page.Size.X.Offset, page.Size.Y.Offset) * (fit and fit.Scale or 1)
+		local at = Vector2.new(results.Position.X.Offset + page.Position.X.Offset, results.Position.Y.Offset + page.Position.Y.Offset)
+			+ (Vector2.new(0.5, 0.5) - page.AnchorPoint) * size
+		return sheet.AbsolutePosition + at * scale, size.Y * scale, page.Rotation
 	end
 	return Vector2.new(screen.X / 2 + 600 / 1080 * screen.Y, 490 / 1080 * screen.Y), 900 / 1080 * screen.Y, 0 -- no results card (a test in Edit): its spot on a sheet fitted to the height
 end
 -- The card on the lens, in the camera's own frame: square to it, its front to the camera, its height filling the
 -- real card's at this frame's field of view.
-local function onLens(st, fov)
+-- Roblox's own camera turns the pixels into directions (ViewportPointToRay: the results card's screen ignores the
+-- top bar's inset, so its pixels are the viewport's), taken into the camera's frame at a depth of 1.
+local function onLens(st)
 	local camera = workspace.CurrentCamera
-	local screen = camera.ViewportSize
-	local middle, tall, turn = rectangle(screen)
-	local tanHalf = math.tan(math.rad(fov / 2))
-	local depth = st.height / (2 * tanHalf * tall / screen.Y)
-	local x = (middle.X / screen.X * 2 - 1) * tanHalf * screen.X / screen.Y * depth
-	local y = -(middle.Y / screen.Y * 2 - 1) * tanHalf * depth
-	return CFrame.new(x, y, -depth) * CFrame.Angles(0, math.pi, 0) * CFrame.Angles(0, 0, math.rad(turn))
+	local middle, tall, turn = rectangle(camera.ViewportSize)
+	local function along(pixel)
+		local direction = camera.CFrame:VectorToObjectSpace(camera:ViewportPointToRay(pixel.X, pixel.Y, 0).Direction)
+		return direction / -direction.Z
+	end
+	local up = Vector2.new(math.sin(math.rad(turn)), -math.cos(math.rad(turn))) * tall / 2 -- to the card's top edge on screen
+	local centre = along(middle)
+	local depth = st.height / (along(middle + up) - along(middle - up)).Magnitude
+	return CFrame.new(centre * depth) * CFrame.Angles(0, math.pi, 0) * CFrame.Angles(0, 0, math.rad(turn))
 end
 
 -- In the hand: `t` seconds after 1st's light.
@@ -158,7 +175,7 @@ local function inHand(st, t)
 	return at
 end
 
-function APlus.step(st, since, shot, _steady, _winners, fov)
+function APlus.step(st, since, shot)
 	local card = st.card
 	if since < 0 or st.swapped then return end
 	st.face.Enabled = true
@@ -173,7 +190,7 @@ function APlus.step(st, since, shot, _steady, _winners, fov)
 		return
 	end
 	st.from = st.from or shot:ToObjectSpace(card.CFrame) -- where it left the hand, from the lens
-	local to = onLens(st, fov)
+	local to = onLens(st)
 	if flown < FLIGHT then
 		local s = flown / FLIGHT
 		card.CFrame = shot * (st.from.Rotation:Lerp(to.Rotation, st.kit.ease(math.min(s * 1.4, 1))) + st.from.Position:Lerp(to.Position, s))

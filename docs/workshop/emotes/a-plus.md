@@ -171,6 +171,24 @@ first one".** Gemini spent on A+: about $0.61.
   shows on screen (the copy is drawn on a 3D sheet, the real card on the screen); whether the gloat reads as smug;
   arms overhead on hats and hair.
 
+## First recording (step 6, the primary session's, 2026-11-22)
+- **Muted Play recording** (`.planning/emotes/aplus-soclose-first-run-raw.mp4`, 2032 x 800, 1st's light at 13.93 s;
+  with my sounds laid in: `aplus-soclose-first-run-sound.mp4`): no script error. Seen in its stills: the back at the
+  chest, the snap, both turns, the card beside the head, the flight, the landing on the right, the scribbles, name
+  plates and Menu tag away, the real card after.
+- **The fault:** on the lens the copy was about 8% bigger than the real card and about 50 px higher (its top off the
+  screen), so at the swap the card shrank and dropped. Also seen in my crops: the scribbled names were still readable
+  under their zig-zags (a word's crayon look is three child copies of it, which kept their letters).
+- **Fixed in the module, checked by numbers in Edit, not yet seen:** the real card's spot is now worked out from the
+  page's place on its sheet and the sheet's place on the screen (the hidden card's own Absolute values are not
+  trusted), and Roblox's camera turns those pixels into directions (`ViewportPointToRay`) instead of my own sums with
+  the field of view. On a stand-in of the results screen's frames in Edit the sum gives Roblox's own layout to the
+  tenth of a pixel, for the one-player spot and a team spot; the dry run lands the card exactly on the expected spot
+  (1216 to 1720 across, 30 to 697 down on the 2046 x 801 window). The child copies of a scribbled word are emptied
+  with it.
+- **For Alan to judge, not bugs:** the landed card covers 3rd for the last 2.6 s; the card's back hides the kid's
+  chest and chin for the first 2 s; with A+ on 1st, So Close's sigh is cut by A+'s first sound at 2.2 s.
+
 ## Sound (step 5)
 - **From the video Alan picked** (`a-plus-gemini-api-1.mp4`; its sounds were in what he OK'd), measured every 10 ms,
   not heard by me: the paper flap from 2.29 to 2.57 s, its crack at 2.38 to 2.40; a faint swish on the throw at 7.46
