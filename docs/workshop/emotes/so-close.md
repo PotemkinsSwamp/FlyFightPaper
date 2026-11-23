@@ -160,8 +160,9 @@ The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the pic
 - **Alan on the sound recording (2026-11-22): "the sigh is way too loud it should be subtle".** The file is now
   22 dB quieter than my first cut (its loudest point 28 dB under full; the recording he heard peaked 4 dB under
   full): the quiet is in the file itself, so it plays at volume 1 in `Audio`. Heard against the raw recording, both
-  sighs at their times (1.5 and 2.0 s after 1st's light): `.planning/emotes/so-close-sigh-quieter.mp4`. Waits for
-  his listen.
+  sighs at their times (1.5 and 2.0 s after 1st's light): `.planning/emotes/so-close-sigh-quieter.mp4`.
+- **Alan on the quieter sigh (2026-11-22): "its good".** His only note on the recording was the sigh's loudness.
+  Next (the primary session's step 6): the uploads (two clips, the sigh) and `soCloseSigh` into `Audio`, on his go.
 
 ## Files
 | File | What |
