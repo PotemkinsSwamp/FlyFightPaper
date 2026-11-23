@@ -6,7 +6,9 @@ A 1st-place emote that uses all three winners. Made by the [emote pipeline](../e
 **The idea:** The runner-ups throw their paper planes and 1st shoots them out of the air, like skeet shooting, with rubber bands off a finger or a slingshot: something a child would do (Alan). The runner-ups' own emotes pause while they throw, then carry on. It does not touch the camera; how it ends is open.
 
 ## Where it stands
-Step 4: building. The card is OK'd and the reference video is approved as good enough (2026-11-22); the ending is now arms crossed over the chest.
+**Ready to record** (2026-11-22): steps 1 to 5 done. Card and reference video OK'd by Alan; the bodies, props and
+sound built and checked in Edit only (numbers, no pictures; never run in Play; nobody has seen it move). The primary
+session records it (Dev button "end: skeet", `DevFirstEmote` = "SkeetShoot"; the clips are unsaved drafts in `Assets`).
 
 ## Alan on the first card (2026-11-22)
 - Fingers don't work: "what if they don't have fingers? What if they just have like a R15? ... This is why it'd be
@@ -125,5 +127,87 @@ with sound. What my stills show (two a second, eight a second round each hit); v
   just cross their arms across their chest." So: the ending is arms crossed over the chest (in place of the cool
   pose); the nods are added by hand.
 
+## The build (step 4, 2026-11-22; numbers in Edit only)
+**Where the kids stand** (from the place file): 1st on DeskNorth3, 2nd on DeskNorth2 (x -675: the picture's left), 3rd
+on DeskNorth4 (x +225: the picture's right); the desks are 330 studs wide and slide in 50 apart, so a runner-up stands
+2.7 winner heights from 1st. 3rd (on 1st's own left) throws first, towards the picture's left; 2nd second, the other
+way. The module finds the sides itself each time.
+
+**The bodies** (`tools/emote_cuts/skeet-shoot.lua`, every number in its comments), baked into the open place's `Assets`
+as unsaved drafts (what `ourClip` plays in Studio) and saved as `.rbxm`:
+- `SkeetShoot` (1st, 11 s, once): Toy Pilot's standing pose, both ankles fixed, the hips a little over the left leg,
+  a slow sway. The right hand: behind the back by 0.5 s (Grab), out at the side, at the mouth by 1.1 (Mouth); while
+  at the mouth it sits 0.55 of the straw (0.165 heights) out along the aim. The head turns to 3rd and nods (1.1 to
+  1.65), follows the straw along the first plane (2.0 to 3.0), nods towards 2nd without turning (3.3 to 3.65); the
+  straw swings out at the second plane with the head still on the camera (4.25 to 4.6). Puffs at 2.7 (Shot1) and 4.7
+  (Shot2): the chest pitches forward 7 degrees for a tenth of a second, the head stays level, so it pokes. Off the
+  mouth 5.5 to 6.0 (Off), held out in front 6.0 to 7.6 (the twirl is the module's: Twirl 6.0 to Twirled 7.4), behind
+  the back 8.15 to 8.45 (Tucked 8.25: the straw goes), arms crossed by 9.3, chin up 6 degrees. **Crossed arms only
+  just cross:** a kid's arms are too short to reach the other elbow, so the hands meet just past the middle, the right
+  forearm in front of and over the left.
+- `SkeetThrowRight` / `SkeetThrowLeft` (the runner-ups, 1.3 s): chest, head and left arm only. The left hand goes
+  behind the back (Grab 0.4: the plane appears in it), comes up cocked by the shoulder, throws up and across towards
+  1st (Release 0.7), follows through; the chest winds 10 degrees away and turns 15 into it; the head follows the
+  throw. The left arm, so Next One's paper (right hand) and Nap's propping hand (right) stay where they are.
+- To bake again after a close without a save: `_G.EMOTE_CLIPS = { "cut:SkeetShoot" }` in Edit, then
+  `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=SkeetShoot:SkeetShootClip:assets/animations/emotes/skeet-shoot.rbxm"`,
+  and the same with `SkeetThrowRight:SkeetThrowRightClip:assets/animations/emotes/skeet-throw-right.rbxm` and
+  `SkeetThrowLeft:SkeetThrowLeftClip:assets/animations/emotes/skeet-throw-left.rbxm`.
+
+**The module** (`src/client/emotes/SkeetShoot.luau`):
+- **The pause** (Alan's OK): at 1.5 s (3rd) and 3.5 s (2nd) after 1st's light, every track playing on that kid is set
+  to speed 0 (its speed kept), the throw plays over it at Action2 (faded in 0.2 s), and 1.05 s into the throw it fades
+  out in 0.3 s and the speeds are put back.
+- **Their planes** (Alan's OK): `holdPlane` copies each runner-up's own plane into their Cast, hidden; it shows in the
+  hand from Grab (pointing at where it will go, held by the tail), and from Release flies to its hit point in a rising
+  arc whose top is the hit, 0.65 s later (the hit 0.15 s after the puff: 2.85 and 4.85). The hit points, from 1st's
+  head in winner heights (1st's frame): 0.4 to 1st's right, 0.3 up, 0.55 towards the camera (the first plane), and the
+  same to 1st's left (the second); taken once, at the release. A hit plane tips 70 degrees nose down in a quarter
+  second, spins 2 turns a second about the upright, carries on 0.3 heights a second along its way and falls 5 heights
+  a second squared; hidden 1.3 s after the hit. Each small winner stands in its own world, so the flight is worked out
+  in the big room and drawn in the thrower's world.
+- **The straw:** a green cylinder (60, 190, 80), 0.3 winner heights long, 0.022 wide, on 1st's right hand from Grab to
+  Tucked. Out of the fist it stands up from the hand; at the mouth it points where the module aims, the hand 0.55 of
+  the way from its near end (on a plain kid that end is at the mouth). The aim: ahead and a little down; at the first
+  plane from its thrower's Grab, at the second only once it flies (no look); at the hit point from 0.25 s before each
+  puff; it swings there smoothly (30 a second). The twirl: 3 turns about the forearm, slowing to a stop, 6.0 to 7.4.
+- **The spitballs:** white balls 0.035 heights wide, from the straw's tip at the puff to the hit point in 0.15 s, then
+  stuck on the plane until it is hidden.
+- `firstSound` = 1.5 (the runner-ups' sounds stop before the first throw).
+
+**Measured** (Studio's Edit, no pictures; **an Edit check is not Play**):
+- **The test kid** (`emote_preview.py --run`): both feet never move; a hand or forearm goes at most 0.010 heights into
+  the body's boxes (the left hand hanging at the hip, as in its rest pose).
+- **12 bots' outfits** (the clips played with `Animator:StepAnimations`, 17 moments for 1st, 6 for the throw): every one
+  plays; the feet move at most 0.001 of the body's height; a hand or forearm goes at most 0.034 heights into the body
+  (the right hand in a big head at Shot1; forearms against the chest with the arms crossed). **My first build failed
+  here:** it laid the straw from the mouth through the hand, and on big heads the hand landed inside the head, so the
+  straw pointed backwards (up to 165 degrees off). Hence the straw aimed by the module, and the hand further out.
+- **The module stepped with stand-ins** (three kids at the scene's distances, 2.7 heights apart, scale 27, the scene's
+  camera, the clips playing, a stub plane; 1st a plain kid, then two bots with big heads): no error; each plane is in
+  the hand 0.43 s after its thrower freezes; the straw is 0 to 1 degree off the hit point at both puffs and passes
+  through the hand; the spitball meets the plane on screen at the hit; both planes leave the bottom of the picture 1.1
+  to 1.2 s after the hit; the straw is gone at 8.27 s.
+
+**Not known until it is seen in Play:** whether the throw over a frozen Nap (sitting, head on the hand) and Next One
+looks right, and whether Good Game's frozen clap picks up cleanly; whether a 0.65 s flight and a small spitball read
+from the camera; whether the planes, drawn in their throwers' worlds, pass in front of 1st when the three avatars'
+sizes differ a lot; how the crossed arms read on real bodies.
+
+## Sound (step 5, 2026-11-22)
+- **One file for both shots,** cut from the reference video's first shot (the second is mixed with claps):
+  `assets/audio/emotes/skeet-shoot-shot.ogg`, 3.765 to 4.05 s of `skeet-shoot-gemini-api-2.mp4` (0.285 s: a soft rise
+  into one sharp "pft-tick", its peak 0.085 s in; raised 4 dB to a peak of -2 dB; 5 ms fade in, 40 ms out). It starts
+  0.025 s before the sound.
+- **When:** at Shot1 (2.7 s after 1st's light) and Shot2 (4.7 s), as `skeetShot` (`SkeetShoot.sounds`). Not in `Audio`
+  yet (step 6: the upload, then the name wired), so it plays nothing until then.
+- **To listen:** `.planning/emotes/skeet-shoot-sound-A.mp4`, the reference video with its own sound swapped for this
+  file at 3.7 and 5.7 s (our shot times; the video runs 1 s ahead of 1st's light).
+
 ## Files
-None yet.
+| File | What |
+|---|---|
+| `src/client/emotes/SkeetShoot.luau` | The module: the pause, the planes, the straw, the spitballs, the sounds |
+| `tools/emote_cuts/skeet-shoot.lua` | The body cuts: SkeetShoot, SkeetThrowRight, SkeetThrowLeft |
+| `assets/animations/emotes/skeet-shoot.rbxm`, `skeet-throw-right.rbxm`, `skeet-throw-left.rbxm` | The three baked clips |
+| `assets/audio/emotes/skeet-shoot-shot.ogg` | The shot's sound |
