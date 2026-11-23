@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 1: the second card (peel, show, crumple) waits for Alan's OK. Nothing is made.
+Step 3: the reference video. Alan's "Go for the Gemini video" (2026-11-22). Nothing is built.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -132,6 +132,16 @@ his go); the sheet at the lens and in the hand; a paper ball; the timings above 
 
 **Sounds (few and quiet; the music plays under them):** a crinkle at the pinch, a short peel, a flap as he turns it,
 a scrunch, a soft toss.
+
+## Reference video (step 3)
+- **First call (2026-11-22, Alan's go; 15 s, 360p, about $0.35 asked):** prompt `.planning/emotes/fold-it-up-prompt-1.txt`
+  (the second card at 1.3 times its pace, the act running 0.5 to 14 s, the sounds at their moments, no music).
+  **Refused by Google's safety filter** after making it: "The video was filtered out because it violated Google's
+  Generative AI Prohibited Use policy". No video came back; whether it was charged is not shown (the tool stops
+  before the price on an error). The filter does not say what it objected to.
+- **Retry ready, not sent (waits for Alan's go):** `.planning/emotes/fold-it-up-prompt-2.txt`, three words changed:
+  no "kid" or "child" (the figure is "a winner who is not impressed", the drawing "a simple crayon doodle"), and the
+  sheet is "tracing paper ... just in front of the camera" in place of cling film "right against the camera".
 
 ## Files
 None yet.
