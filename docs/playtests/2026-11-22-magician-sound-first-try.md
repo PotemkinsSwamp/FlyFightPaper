@@ -30,3 +30,6 @@ Not said: whether the flutter is quiet enough now (asked, not answered).
 
 ## On the fourth listen (the bass carried through the float)
 Alan: "go upload". The sound is approved on the recording; the three sounds are uploaded and wired in ([how](../workshop/emote-making.md)). Not yet heard in the game against the music.
+
+## After the sounds went into the game
+Asked to restart Play, press "end: magic" and say louder, quieter or right for the bass, the flutter and the whoosh: **"alright its good"**. Magician is done, look and sound, at the loudness built (whoosh 0.8, bass 0.35, flutter 0.1). How he listened is not said. In the same message: "next we will talk about how to get the rest built faster we cant be doing 2 every 8 hours we need to figure out how to speed this up."

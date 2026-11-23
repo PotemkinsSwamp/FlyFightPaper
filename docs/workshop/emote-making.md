@@ -999,3 +999,4 @@ A 1st-place emote, Alan's own idea ([plan](../plan/WINNERS-CIRCLE-PLAN.md)).
     - **When they play** (`MAGIC.sounds`, played from `magicPlanes`; seconds after 1st's light): `magicBass` at 0.9, `magicFlutter` at 3.9, `magicWhoosh` at 8.25, the moments of the fourth listen. The runner-ups' sounds stop before the bass (`firstSoundAt`).
     - **How loud** (`src/client/Audio.luau`; my numbers, in the proportions he heard, quiet on purpose under the winners' music): whoosh 0.8, bass 0.35, flutter 0.1. To be set by his ears in Play.
     - **Edit check:** both scripts compile; the scene's code stepped over 11 s with no error and played each sound once at its moment.
+  - **Alan, asked for his notes from his own Play: "alright its good".** Magician is done, look and sound. And: "we cant be doing 2 every 8 hours we need to figure out how to speed this up": the next talk is how to build the rest faster, before So Close is started.
