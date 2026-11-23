@@ -38,6 +38,15 @@ The primary session keeps this table; a side session reports its step in its own
    go), lays each one's sounds under its recording and checks that the track plays. Alan watches each with its
    sound. On his OK: the uploads (free, his go), the sounds wired in, his own look in Play.
 
+## The Dev buttons (Alan 2026-11-22)
+In Studio no winners' Dev button shows today's random dances any more ("we're going away with that"). A button for a
+1st-place emote ("end: ...") puts two different runner-up emotes on 2nd and 3rd, the next pair at each press, so he
+sees them all. A button for a runner-up emote ("2nd/3rd: ...", one each: Good Game, Nap, Next One, So Close) puts it
+on both and a random one of our 1st-place emotes on 1st. The song buttons do both. Code: `src/client/FlightHUD.luau`
+(`winnersDev`); `DevRunnerUp` as "A,B" is 2nd's and 3rd's (`Cutscene.runnerUpName` in
+`src/client/WinnersCutscene.luau`). Compiles in Edit; not yet pressed in Play. A new emote is added to
+`winnersDev.firsts` or `winnersDev.ups` and gets its button there.
+
 ## Who does what
 - **A side session, one per emote:** steps 1 to 5, stopping at "ready to record" with its marks and sound times
   written on its page. Alan gives his OKs in that session.

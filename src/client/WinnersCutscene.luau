@@ -642,8 +642,15 @@ end
 -- The runner-up emotes (Alan's OK 2026-11-20: Good Game, Nap, Next One), for 2nd and 3rd: small, calm loops. Studio
 -- only until who gets which is decided (all three approved by him in Play, their clips uploaded 2026-11-21): the Dev
 -- panel's "2nd/3rd" button names one (DevRunnerUp).
-local function runnerUpClip()
-	local name = RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
+-- DevRunnerUp is one name for both, or "A,B": 2nd's and 3rd's (the Dev buttons show two at once: Alan 2026-11-22).
+function Cutscene.runnerUpName(place)
+	local names = RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
+	if not names or place == 1 then return nil end
+	local second, third = names:match("^([^,]+),([^,]+)$")
+	return second and (place == 2 and second or third) or names
+end
+local function runnerUpClip(place)
+	local name = Cutscene.runnerUpName(place)
 	return name and (ourClip(name))
 end
 
@@ -1522,7 +1529,7 @@ end
 Cutscene.kit = { paper = paper, ease = ease, flat = flat, sit = sit, seatOn = seatOn, holdPlane = holdPlane, jolted = jolted,
 	ourClip = ourClip, runnerSound = runnerSound, Audio = Audio, Rounds = Rounds, Avatars = Avatars }
 function Cutscene.pipelineEmote(place)
-	local name = RunService:IsStudio() and Root:GetAttribute(place == 1 and "DevFirstEmote" or "DevRunnerUp")
+	local name = place == 1 and (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote")) or Cutscene.runnerUpName(place)
 	local folder = script.Parent:FindFirstChild("emotes")
 	local module = name and folder and folder:FindFirstChild(name)
 	return module and require(module) or nil
@@ -1577,7 +1584,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	flick = prop and flick
 	local runnerUp = place > 1 and humanoid.RigType == Enum.HumanoidRigType.R15
 	local emote, extra
-	local ours = runnerUp and RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
+	local ours = runnerUp and Cutscene.runnerUpName(place)
 	if made then
 		extra = { made = made, st = made.start(Cutscene.kit, { model = model, humanoid = humanoid, animator = animator, cast = world,
 			stack = stack, rise = rise, legs = legs, scale = scale, place = place, actorId = actorId, desk = desk,
@@ -1590,7 +1597,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	elseif ours == "NextOne" then
 		emote = nextOne(animator, model, world, onDesk - Vector3.yAxis * feet / scale)
 	else
-		local animation = Instance.new("Animation"); animation.AnimationId = kick and kickId or gum and gumId or magicId or prop and planeEmote or runnerUp and runnerUpClip() or emoteFor(place)
+		local animation = Instance.new("Animation"); animation.AnimationId = kick and kickId or gum and gumId or magicId or prop and planeEmote or runnerUp and runnerUpClip(place) or emoteFor(place)
 		emote = animator:LoadAnimation(animation); emote.Looped, emote.Priority = not (flick or kick or gum or magic), Enum.AnimationPriority.Action
 		-- A plane emote's first pose is held from the dark on (Alan 2026-11-21: starting at the light, the arm snapped up
 		-- from the side in a fifth of a second, "extremely rushed"); the light only sets it going.

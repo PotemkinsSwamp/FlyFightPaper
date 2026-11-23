@@ -295,34 +295,48 @@ function HUD.start(getPlane, action)
 	-- Dev panel: in Studio, and on the owner's own account in live servers (Alan 2026-10-29; the server checks).
 	-- Test buttons (Alan 2026-10-17, 2026-10-23): end this round now to see the round end, with each finalist winners'
 	-- song (WinnersSound.TRACKS) to compare them in the real moment.
+	-- In Studio every one of these buttons shows our own emotes, never today's random dances (Alan 2026-11-22): a
+	-- button for a 1st-place emote puts two different runner-up emotes on 2nd and 3rd, the next pair at each press, so
+	-- he sees them all; a button for a runner-up emote puts it on both and a random one of ours on 1st; a song button
+	-- does both. DevRunnerUp "A,B" is 2nd's and 3rd's (WinnersCutscene).
+	local winnersDev={studio=game:GetService("RunService"):IsStudio(),turn=0,
+		firsts={"ToyPilot","CameraFlick","BookKicker","Bubblegum","Magician","APlus","SkeetShoot","FoldItUp"},
+		ups={"GoodGame","Nap","NextOne","SoClose"}}
+	function winnersDev.finish(first,up)
+		if winnersDev.studio then
+			winnersDev.turn+=1
+			local ups=winnersDev.ups
+			Root:SetAttribute("DevFirstEmote",first or winnersDev.firsts[math.random(#winnersDev.firsts)])
+			Root:SetAttribute("DevRunnerUp",up or ups[(winnersDev.turn-1)%#ups+1]..","..ups[winnersDev.turn%#ups+1])
+		else Root:SetAttribute("DevFirstEmote",nil) end
+		Root.RoundAction:FireServer("endMatch")
+	end
 	for index, song in ipairs({ "depth", "step", "hyped", "relent" }) do -- the fourth sits over the third (the row is full)
 		local endMatch=eraserBots:Clone();endMatch.Name="EndMatch"..index;endMatch.Text="end: "..song;endMatch.Position=UDim2.fromOffset(330+math.min(index,3)*110,index>3 and -80 or -40)
 		endMatch.BackgroundColor3=Color3.fromRGB(150,40,40);endMatch.Parent=picker
-		endMatch.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",nil);Root:SetAttribute("DevWinnersSong",song);Root.RoundAction:FireServer("endMatch")end)
+		endMatch.Activated:Connect(function()Root:SetAttribute("DevWinnersSong",song);winnersDev.finish()end)
 	end
 	-- The same with one of our own 1st-place emotes (WinnersCutscene), Studio only: Toy Pilot, Camera Flick, Book
 	-- Kicker, Bubblegum and Magician.
-	if game:GetService("RunService"):IsStudio() then
+	if winnersDev.studio then
 		for index, first in ipairs({ { "ToyPilot", "pilot" }, { "CameraFlick", "flick" }, { "BookKicker", "kicker" }, { "Bubblegum", "gum" }, { "Magician", "magic" } }) do
-			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(index<3 and 220+index*110 or 550+index*110,-80) -- the third and fourth go past "tips again": the third's own slot is the 2nd/3rd button's
+			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(index<3 and 220+index*110 or 550+index*110,-80) -- the third and fourth go past "tips again"
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
-			button.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
+			button.Activated:Connect(function()winnersDev.finish(first[1])end)
 		end
 		-- The pipeline's 1st-place emotes (docs/workshop/emote-pipeline.md), each in its own module under `emotes`: a row
 		-- of their own above the others. A button for one whose module is not there yet plays today's emote.
 		for index, first in ipairs({ { "APlus", "a+" }, { "SkeetShoot", "skeet" }, { "FoldItUp", "fold" } }) do
 			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(330+index*110,-120)
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
-			button.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
+			button.Activated:Connect(function()winnersDev.finish(first[1])end)
 		end
-		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
-		local ups={"dances","GoodGame","Nap","NextOne","SoClose"}
-		local runnerUp=eraserBots:Clone();runnerUp.Name="RunnerUp";runnerUp.Text="2nd/3rd: dances";runnerUp.Position=UDim2.fromOffset(550,-80)
-		runnerUp.BackgroundColor3=Color3.fromRGB(150,40,40);runnerUp.Parent=picker
-		runnerUp.Activated:Connect(function()
-			local pick=ups[(table.find(ups,Root:GetAttribute("DevRunnerUp") or "dances") or 1)%#ups+1]
-			Root:SetAttribute("DevRunnerUp",pick~="dances" and pick or nil);runnerUp.Text="2nd/3rd: "..pick
-		end)
+		-- One button for each runner-up emote, a row above: both 2nd and 3rd play it, 1st a random one of ours.
+		for index, up in ipairs({ { "GoodGame", "good game" }, { "Nap", "nap" }, { "NextOne", "next one" }, { "SoClose", "so close" } }) do
+			local button=eraserBots:Clone();button.Name="EndUp"..up[1];button.Text="2nd/3rd: "..up[2];button.Position=UDim2.fromOffset(220+index*110,-160)
+			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
+			button.Activated:Connect(function()winnersDev.finish(nil,up[1])end)
+		end
 	end
 	-- Every match tip again, seen or not (Alan 2026-10-29: his account had seen them all).
 	local tipsAgain=eraserBots:Clone();tipsAgain.Name="TipsAgain";tipsAgain.Text="tips again";tipsAgain.Position=UDim2.fromOffset(770,-80)
