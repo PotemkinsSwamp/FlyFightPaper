@@ -293,3 +293,11 @@ runner-ups' sounds stop before it.
 - **"We need the codex image to actually lay it on the thing to see what it looks like. And we need the sounds on
   them."** The drawing reaches the poster only through an upload (his go), then a recording by the primary session
   with the sounds laid under it.
+- **The second drawings** (Codex with the scene frame; `fold-it-up-drawing-2a/2b/2c.png`, side by side
+  `fold-it-up-drawings-2abc.png`; each laid on the blank poster of the first run's frame at 17.2 s, tinted to the
+  poster's measured paper tone, `fold-it-up-drawings-2-on-poster.png`): crayon on a dark scribbled room, yellow
+  spotlight cones, desks, the 2nd/1st/3rd tags; 2a with the blackboard, 2b also the wall posters, 2c only the
+  winners. **A blind reviewer (one Opus agent):** no moderation risk in any; on the poster in the game's light the
+  crown is yellow on a yellow cone and does not stand out (all three); 2b too busy to read at that size; in 2a the
+  sitting 2nd and 3rd read as cut off; 2c reads best (big crown, tall stack, the tags) but its books look like
+  cushions; the tags' letters look typed; 2c shows white paper corners. Waits for Alan's pick.
