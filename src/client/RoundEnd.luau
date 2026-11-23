@@ -125,6 +125,8 @@ function RoundEnd.start()
 		PaperUI.phone(page.NextUnlock, { TextSize = 36 })
 		return it
 	end
+	-- The A+ emote (src/client/emotes/APlus.luau) finds "Results" and these two pages by name and copies the shown one
+	-- onto its flying card: a rename here breaks it.
 	local pages = { makePage("Page1"), makePage("Page2") }
 	-- Double this match (docs/decisions/2026-11-12-double-this-match.md, Alan 2026-11-12): one big green button taped
 	-- under your own card: pay once to get this match's Paper and XP again. Only at 75+ Paper, while the card is up (the

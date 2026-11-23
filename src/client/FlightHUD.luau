@@ -308,8 +308,15 @@ function HUD.start(getPlane, action)
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
 			button.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
 		end
+		-- The pipeline's 1st-place emotes (docs/workshop/emote-pipeline.md), each in its own module under `emotes`: a row
+		-- of their own above the others. A button for one whose module is not there yet plays today's emote.
+		for index, first in ipairs({ { "APlus", "a+" }, { "SkeetShoot", "skeet" }, { "FoldItUp", "fold" } }) do
+			local button=eraserBots:Clone();button.Name="End"..first[1];button.Text="end: "..first[2];button.Position=UDim2.fromOffset(330+index*110,-120)
+			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
+			button.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",first[1]);Root.RoundAction:FireServer("endMatch")end)
+		end
 		-- What 2nd and 3rd play in the winners' moment (WinnersCutscene): each tap steps on; "dances" is today's random dance.
-		local ups={"dances","GoodGame","Nap","NextOne"}
+		local ups={"dances","GoodGame","Nap","NextOne","SoClose"}
 		local runnerUp=eraserBots:Clone();runnerUp.Name="RunnerUp";runnerUp.Text="2nd/3rd: dances";runnerUp.Position=UDim2.fromOffset(550,-80)
 		runnerUp.BackgroundColor3=Color3.fromRGB(150,40,40);runnerUp.Parent=picker
 		runnerUp.Activated:Connect(function()
