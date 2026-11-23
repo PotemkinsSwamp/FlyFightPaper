@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 3: the reference video. Alan's "Go for the Gemini video" (2026-11-22). Nothing is built.
+Step 3: the reference video is made and waits for Alan's look and listen. Nothing is built.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -139,9 +139,29 @@ a scrunch, a soft toss.
   **Refused by Google's safety filter** after making it: "The video was filtered out because it violated Google's
   Generative AI Prohibited Use policy". No video came back; whether it was charged is not shown (the tool stops
   before the price on an error). The filter does not say what it objected to.
-- **Retry ready, not sent (waits for Alan's go):** `.planning/emotes/fold-it-up-prompt-2.txt`, three words changed:
-  no "kid" or "child" (the figure is "a winner who is not impressed", the drawing "a simple crayon doodle"), and the
-  sheet is "tracing paper ... just in front of the camera" in place of cling film "right against the camera".
+- **Alan on the wording:** "you can just say a person"; "I think it should be fine to say a drawing done by a child".
+- **Second call (Alan's go; 15 s, 360p, $0.35: 786 text tokens in, 28,965 video tokens out):**
+  `.planning/emotes/fold-it-up-gemini-api-2.mp4`, prompt `fold-it-up-prompt-2.txt` (no "kid"; the drawing "done by
+  a child"; the sheet "tracing paper just in front of the camera"). Gemini so far: $0.35, plus the refused call if it
+  was charged.
+- **What my stills show** (two a second, eight a second over the pinch and the toss; not judged in motion):
+  - Three grey mannequins in a dim room, each under a spotlight, the camera still; the middle one a little smaller;
+    the stacks all about knee-high (the real 1st stack reaches the shoulders: asked again, again not given).
+  - Head tilts at 0.5 to 1 s and 2 to 2.5 s; hands rubbed in front of the belly 3.5 to 4.5 s; the arm out at the
+    camera, palm forward, 4.5 to 5.0 s.
+  - **The pinch reads:** at 5.1 s paper rushes in from the picture's edges (a square hole round the figure for one
+    frame); 5.25 to 5.5 s the whole picture is a white sheet, the scene faint through it, creased in an X to one point
+    in the middle (on the figure's chest, a little under the hand); 5.6 to 6.0 s the sheet shrinks onto the figure,
+    still pinched to that point, and crumples into a white star at the chest at 6.1 s.
+  - **Not as asked:** the back of the poster and the turn are skipped: at 6.5 s it is already held out with the
+    drawing to the front. The poster is about a third of the figure's height and wider than its shoulders.
+  - **The drawing:** sun, clouds, grass; two stick kids on book stacks, the middle one with a yellow crown and a
+    smile on a white block marked "2" (should be books and "1"). Held 6.5 to 9.5 s.
+  - Crumpled 9.5 to 10.8 s; tossed at about 10.9 s **overhand, up past its head** (not backhand over the shoulder),
+    the ball flying up and back to the picture's right; hands dusted 12 to 13.5 s; arms folded, chin up, to the end.
+  - **Sound** (by loudness, not heard by me): the sheet 5.5 to 6.4 s; a short sound at 6.8 s; the scrunch 9.5 to
+    10.4 s; a sharp hit at 11.2 s (the toss); short ticks at 12.1 and 12.6 s; a louder burst at 13.8 to 14.1 s (the
+    dusting or the arms folding). Otherwise a quiet room tone. Waits for Alan's look.
 
 ## Files
 None yet.

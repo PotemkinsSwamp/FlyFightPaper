@@ -95,6 +95,27 @@ over the throw):
   7.4 to 7.5 on the throw; the smack at 8.0 s, about 18 dB over the flap, 0.1 s after the card lands in the picture.
   Nothing else, no music.
 
+**Alan on the first video:** "there's a lot missing there. You should have extended the time. It probably tried to
+smush all the time in ... extend the time and try to get it to do the things that it missed."
+
+**Second prompt** (same file, rewritten): 15 s; every beat about 1.4 times longer (the slap's release at 10.6, the
+card on the lens at 11.1); the blank back to the camera while reading, said outright; the card in the kid's own right
+hand (the picture's left) until the throw; the turn to the picture's left, hold, to the right, hold, back; the stack in
+metres (1.3 m of books under a 1.6 m figure).
+
+**The second video** (Alan: "go make the video"; about $0.35: 750 text tokens in, 28,965 video tokens out; Gemini so
+far for A+ about $0.61): `.planning/emotes/a-plus-gemini-api-2.mp4`, 15 s, 640x360, 24 frames a second, with sound.
+What my stills show (two a second, close crops at six moments):
+- **Fixed:** the slow pace, nothing crammed; the card in the kid's right hand (the picture's left) beside the head
+  from 7.5 s, the other hand on the hip; the wind-up at 10.0, the release at 10.5, the card tumbling across to the
+  picture's right and stuck flat there from about 11.4, square, to the end; palms together at 11.5; arms folded,
+  still, 12 to 15.
+- **Still missed:** the reading shows the printed front again; the turn goes only to the picture's left (side-on, arms
+  out, 4.5 to 5.5 s) and back, never to the right; the stack is still about knee-high; the card on the lens looks a
+  little smaller than a third of the picture.
+- **Sound** (by loudness, not heard by me): the flap at 3.2 to 3.4 s, on the snap overhead; a swish on the throw at
+  10.8; the smack at 11.3, with a short tail to 11.4. Nothing else, no music.
+
 Waits for Alan's look and listen.
 
 ## Files

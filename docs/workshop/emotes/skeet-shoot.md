@@ -82,31 +82,26 @@ on each hit. No whoosh: nothing passes the camera. Nothing for the planes landin
 3. **Numbers:** every time above is mine; the straw's size and colour too.
 
 ## The Gemini prompt (step 3)
-11 s, 360p, 16:9. The left figure stands in for a standing runner-up (Good Game's slow clap), the right one for a
-napping one (Nap), so the video shows the hard case Alan named. Video second 0 = 1st's light.
+Alan asked: "Is 11 seconds enough time?" and "there shouldn't be no sound, because we use the sound that is
+generated in the video ... Be very meticulous about writing the prompt." 11 s is about the emote's own length (the
+scene gives 10.4 s after 1st's light); the video was made 12 s, 1 s of everyone in their own emote first, then the
+card's times plus 1 s, so nothing is crammed in early (Bubblegum's first video was). The prompt names each sound and
+its moment. The left figure stands in for Good Game's slow clap, the right one for Nap.
 
-> One continuous 11-second shot, no cuts. Fixed camera, straight on, at the chest height of the middle figure, not moving or zooming. Plain light grey room, soft even light, no text, no music.
->
-> Three simple smooth grey mannequins with no faces, in a row facing the camera, each on its own solid, steady stack of large dark hardback books. The middle one stands a little in front of the others. All three figures and their whole stacks are in the picture, with empty space above their heads. Their feet never leave their spots.
->
-> The left figure stands and does a slow, lazy clap, about one clap a second. The right figure sits cross-legged on top of its stack, hands in its lap, chin sunk on its chest, asleep, breathing slowly.
->
-> The middle figure is a cocky, bored sharpshooter: every move slow and loose, only the shots sharp. It uses a long bright green drinking straw as a blowgun to shoot small white spitballs.
->
-> 0 to 1 s: the middle figure reaches behind its back with its right hand, pulls out the green straw and lazily brings one end to its mouth, holding the straw in its right hand.
-> 1 to 1.5 s: it turns its head to the left figure and gives one small nod.
-> 1.5 to 2.6 s: the left figure stops clapping and freezes; its right arm reaches behind its back, comes out holding a white paper airplane, and throws it quickly up and across in front of the middle figure. The plane rises in an arc to just above the heads. The middle figure aims the straw at the plane and follows it slowly with its head.
-> At 2.7 s: the middle figure's head pokes forward sharply with a puff: a small white spitball shoots out of the straw, hits the plane and sticks. The plane jerks, tips its nose down and spirals down, falling out of the bottom of the picture. Sound: a soft puff, then a small wet tick on the hit.
-> 2.7 to 3.3 s: the left figure drops its arm and goes back to its slow clap.
-> 2.8 to 3.6 s: the middle figure turns its head back to the camera and, without looking, gives a small nod towards the right figure.
-> 3.6 to 4.6 s: the right figure wakes with a jerk of the head and, still sitting cross-legged, pulls a white paper airplane from behind its back with its left hand and throws it up and across in front of the middle figure, the other way.
-> At 4.7 s: keeping its head facing the camera, the middle figure swings the far end of the straw out towards the plane and puffs: the spitball hits and sticks, and the plane tips its nose down and spirals down out of the bottom of the picture. Sound: a soft puff, then a small wet tick.
-> 4.7 to 5.5 s: the right figure's head sinks back onto its chest, asleep again.
-> 5.5 to 6.0 s: the middle figure lowers the straw from its mouth.
-> 6.0 to 7.6 s: the straw spins round and round in the middle figure's right hand, like a cowboy twirling a pistol, then stops.
-> 7.6 to 8.6 s: it grips the straw and tucks it behind its back; the hand comes back empty.
-> 8.6 to 11 s: it stands in a cool, relaxed pose, weight on one leg, looking at the camera, still.
-> No other sounds.
+The full prompt: `.planning/emotes/skeet-shoot-prompt-1.txt` (untracked).
+
+**Refused by Google's safety filter (2026-11-22):** "The video was filtered out because it violated Google's
+Generative AI Prohibited Use policy. Try rephrasing the prompt." Nothing made. My guess: "blowgun", "shoots",
+"sharpshooter" and child-sized figures together. Alan: "why'd you use the word gun? We don't have a gun. It's only a straw. Just say like a you know, soda cup
+straw shooting a spitball. So try the reworded prompt." The reworded prompt, `skeet-shoot-prompt-2.txt`: grown-up
+shop mannequins, "a bright green soda cup straw ... blows spitballs through it, a silly playground trick", "a cocky,
+bored champion showing off", the straw "twirled like a baton"; the same moves, times and sounds.
+
+**My mistake, $0.28 lost (2026-11-22):** the call went out before `skeet-shoot-prompt-2.txt` existed (the command
+that made it had been stopped), and `tools/gemini_video.py` sends a path that is not a file as the prompt text
+itself: Gemini got 17 tokens, the file's name, and made 12 s from that
+(`.planning/emotes/skeet-shoot-gemini-api-1-wrong-prompt.mp4`, not a reference). The file now exists (945 words,
+no gun words); the real call waits for Alan's go.
 
 ## Files
 None yet.

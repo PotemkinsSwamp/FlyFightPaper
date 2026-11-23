@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Sits on the books shaking their head, sad not to be 1st (Alan).
 
 ## Where it stands
-Step 3: the reference video is made (2026-11-22) and waits for Alan's look and listen.
+Step 4: built and checked by numbers in Edit (2026-11-22); step 5, the sigh cut into its file, is next.
 
 ## Shot card
 **Alan's OK (2026-11-22):** "yes, cross-legged, sigh, keep the glance" (all three of my defaults below).
@@ -84,5 +84,61 @@ The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the pic
   and hips never move. **Sound** (measured by loudness, not heard by me): a faint hiss all through (about -55 dB) and
   one soft sound 2.7 to 3.2 s (about 8 dB over the hiss), on the sag: the sigh, very quiet.
 
+- **Alan on the video (2026-11-22):** "It didn't do the looking up. Unless you can add the looking up at the first
+  player part and then going back to doing the shaking the head. If you can do that, then it's good. It also has the
+  sigh that we can put into the sounds." So the movement is approved with the look at 1st added in the build (it is
+  in the cut), and the video's sigh is the sound.
+
+## Build (step 4)
+- **The body: a cut, not Roblox's emotes.** The card's plan was Roblox's Disagree for the shakes; Studio's tools could
+  not read its keyframes this session, and Alan approved the video's slow low shake, so the shakes are by numbers
+  (as Nap's breath and nod are). The seat and the resting hands are Nap B's sitting still, as Nap's.
+- **Two clips, one per side of the look** (`CUTS.SoCloseLeft` and `CUTS.SoCloseRight` in `tools/emote_cuts/so-close.lua`;
+  every number is in its comment): Left looks to the kid's own left (1st on the picture's right). 12 s, played once,
+  held on its last pose. Marks (clip seconds): Glance 1.0, Sigh 2.1, Sag 2.5. Baked into the open place's `Assets`
+  as `SoCloseLeftClip` and `SoCloseRightClip` (unsaved drafts: what `ourClip` plays in Studio) and saved as
+  `assets/animations/emotes/so-close-left.rbxm` and `so-close-right.rbxm`. To bake again after a close without a
+  save: `_G.EMOTE_CLIPS = { "cut:SoCloseLeft" }` in Edit, then
+  `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=SoCloseLeft:SoCloseLeftClip:assets/animations/emotes/so-close-left.rbxm"` (and Right).
+- **What the clip does** (clip seconds): sits upright, hands on the knees, a breath every 4 s all through; 1.0 to 1.6
+  the head turns 45 degrees to the side (49 to 53 measured with the chest's 8), held; 2.1 to 2.5 a small lift (chest
+  4 back, head 6 up); 2.5 to 3.3 the sag: chest 20 forward, head 30 further down (65 down in all, measured), the
+  head back to the front, the hands from the knees to resting on top of them; shakes at 3.3 (0.9 s), 4.2 (1.0 s),
+  5.2 (1.1 s), each about 20 to 25 degrees each way measured, the head rolling a quarter of that; one smaller (about
+  10) at 9.0 to 10.2; still to 12.
+- **Measured on the test kid** (Edit, no pictures, every 1/30 s): the feet and hips never move (0.0000); the biggest
+  turn of any joint in one key 9 to 11 degrees (a forearm in the sag; Nap's jolt has 25); the hands in the hanging
+  pose go 0.050 of the kid's height into the leg boxes (Nap B's own hands-on-knees pose, which Nap is built on, goes
+  0.064: the boxes are bigger than the limbs), and 0.085 for a moment as they pass over the thighs in the sag.
+- **Two faults the numbers found first:** with the elbow aimed at the thigh the arm flipped over in one frame (56 to
+  66 degrees) during the sag, because that aim lay almost on the line from shoulder to hand: the elbow is now aimed
+  a third of the chest's width out to the side. A search for the lean that rests the elbows on the thighs chose
+  almost none, losing the slump: the lean is the card's 20.
+
+- **The module** (`src/client/emotes/SoClose.luau`; `DevRunnerUp` = "SoClose" picks it). At its start it loads the
+  Left clip and holds its first pose from the dark (both clips start the same); at its first frame it looks where 1st
+  stands on the picture and swaps to the Right clip if 1st is on the left. The scene's own start at this kid's light
+  is not used: every frame the module sets the clip's time from **1st's** light, so clip second 1.0 (the look) is
+  1st's light for both runner-ups. 2nd: clip = 1 + seconds after 1st's light (it starts at its own light). 3rd: the
+  same until the look lands, then held 0.5 s longer on 1st, then 0.92 speed, so 2nd and 3rd look together and are
+  out of step after (3rd's sag starts 0.5 s after 2nd's; its late shake comes 0.9 s after 2nd's). Every frame the
+  kid is rested on the top book with Nap's seat (`sit`, `seatOn`).
+- **Dry run of the module in Edit** (a copy of the module, two test kids as 2nd and 3rd on either side of a stand-in
+  1st, the scene's timing stepped every 1/30 s with `Animator:StepAnimations`; all removed after): no error; 2nd
+  took the Left clip and 3rd the Right; half a second after 1st's light both faces point at 1st (0.73 and 0.70 of
+  the way, 49 and 48 degrees turned); 2nd's sag at 1.5 s after 1st's light, 3rd's at 2.0; both rest exactly on
+  their seat (0.000) from the second frame on (the first frame, in the dark, 0.23 studs into the book); the sigh
+  asked for once by each.
+- **On 14 of the bots' outfits in Edit** (the Left clip at seven moments): it plays on every one, the head 68 degrees
+  down at 9.5 s on all; a hand or forearm goes into the body's boxes at most 0.011 of the body's height more than
+  that body's own hands-on-knees start (worst 0.085, on `4560704730`, whose arms already sit 0.080 deep at the
+  start; Bubblegum measured the same body as the worst). **An Edit check is not Play.**
+- **Not known until it is seen in Play:** how the slump and the slow shakes read at the scene's distance; whether a
+  45-degree look reads as looking at 1st; long hair and hats with the head hanging 65 degrees.
+
 ## Files
-None yet.
+| File | What |
+|---|---|
+| `src/client/emotes/SoClose.luau` | The emote's module: picks the clip, times it to 1st's light, the seat, the sigh |
+| `tools/emote_cuts/so-close.lua` | The body cut: `CUTS.SoCloseLeft`, `CUTS.SoCloseRight` |
+| `assets/animations/emotes/so-close-left.rbxm`, `so-close-right.rbxm` | The two baked clips |
