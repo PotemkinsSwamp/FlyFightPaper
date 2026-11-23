@@ -6,8 +6,9 @@ A 1st-place emote that covers the camera. Made by the [emote pipeline](../emote-
 **The idea:** Holds up their report card and slaps it on the lens, where it becomes the real report card.
 
 ## Where it stands
-Step 3: the card is OK'd with Alan's picks (2026-11-22); the reference video is made and waits for his look and
-listen. Nothing built.
+**Ready to record** (2026-11-22). Built from Alan's pick of the two reference videos, checked by numbers in Edit only:
+nobody has seen it move, never run in Play. Its sounds are cut and timed, not uploaded. Next: step 6, the primary
+session's muted recording and Alan's look and listen.
 
 ## Shot card
 **OK'd by Alan, 2026-11-22**, with his picks: "I like the idea. I think it should show only the front. I think it
@@ -116,7 +117,73 @@ What my stills show (two a second, close crops at six moments):
 - **Sound** (by loudness, not heard by me): the flap at 3.2 to 3.4 s, on the snap overhead; a swish on the throw at
   10.8; the smack at 11.3, with a short tail to 11.4. Nothing else, no music.
 
-Waits for Alan's look and listen.
+**Alan on the second video:** "the first one was better. This one is I don't know about this one." Both videos were
+made at 360p (640x360), the lowest size; he asked that references never be made bigger. My offer: build from the
+first video, its moves spread over the game's 10.4 s, with its misses fixed in the build. **Alan: "yes build from the
+first one".** Gemini spent on A+: about $0.61.
+
+## Build (step 4)
+- **The body: a cut by numbers, not Roblox's emotes** (none of the game's holds something up or throws).
+  `CUTS.APlus` in `tools/emote_cuts/a-plus.lua` (every number in its comment), on Toy Pilot's standing pose, both feet
+  planted; 11 s, played once, held on its last pose. Seconds after 1st's light: reading at the chest, head down, a nod
+  at 1.5; 2.0 to 2.4 the snap, the hands up in front of the face and on over the head; the waist turns 35 degrees to
+  the kid's left (3.0 to 3.4) and to their right (4.2 to 4.5), back by 5.0; the arms come down round the outside, the
+  right hand out beside the head, the left fist on the hip, a nod at 6.0; the wind-up 6.5 to 7.2 (chest twisted 28
+  degrees away), the whip to 7.55 with the release at 7.4; palms meet at 7.9, one brush to 8.4; arms folded, weight
+  on the right leg, chin up, from 9.1. The video's misses fixed here: the card stays in the right hand, it is shown to
+  both sides, the reading shows its back.
+- **The clip:** baked into the open place's `Assets` as `APlusClip` (unsaved draft: what `ourClip` plays in Studio),
+  saved as `assets/animations/emotes/a-plus.rbxm`. Marks: Snap 2.0, Release 7.4. To bake again after a close without
+  a save: `_G.EMOTE_CLIPS = { "cut:APlus" }` in Edit, then
+  `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=APlus:APlusClip:assets/animations/emotes/a-plus.rbxm"`.
+- **The module** (`src/client/emotes/APlus.luau`; Studio's Dev attribute `DevFirstEmote` = "APlus"):
+  - **The card:** a part 0.35 winner heights tall, the real card's shape (680 by 900), plain paper colour on the back.
+    Its face is the real card's page (`PlayerGui.RoundEnd`, `Results.Page1`, or `Page2` when that one has the visible
+    gold star), copied once when the winners' moment starts. Its pictures and printed words stay; every filled-in
+    word (names, numbers, grades, the term, the place, the note, the pocket money, the level) is hidden under a faint
+    zig-zag of ink, as long as the word was and in its colour. Unseen in the dark until 1st's light.
+  - **In the hand:** its bottom edge on the right hand every frame, facing the kid while reading (top leaning 25
+    degrees away), turned to face the camera over the snap (2.0 to 2.35), then turning with the chest; centred
+    between the two hands until 5.0, over the right hand from 5.6. Where its plane cuts the head it moves out
+    sideways or up by the overlap, so it never goes through a head of any size.
+  - **The slap:** at Release it leaves the hand and flies 0.4 s to the lens in the camera's own frame (a straight
+    path, so it grows slowly, then fast), turning square on the way. It lands at 7.8 on the real card's rectangle,
+    worked out every frame from the real page's place, size and turn on this screen, at the depth where the card's
+    own size fills it. On the lens it is lit by nothing, as the screen card is. The camera jolts (Book Kicker's
+    `jolted`, from 7.8). Name plates and the Menu tag go from the landing until the swap (`covered`).
+  - **The swap:** the scene's own leave time is kept (10.4 s after 1st's light), so the report card keeps its 10 s.
+    The frame after the real page shows, the copy goes: the two are drawn together for one frame, never neither.
+- **Measured on the test kid in Edit** (`emote_preview.py --run`, no pictures): the feet move at most 0.008 heights;
+  the fastest part is the hand in the whip, 0.156 heights in a thirtieth of a second (7.43 s); a hand or forearm at
+  most 0.023 heights into the body's boxes (at the brush).
+- **The module run in Edit with stand-ins** (its text, a plain kid, a made-up camera 40 studs off; no Play, no
+  camera): no error; the card on the hand until 7.4; at 7.79 it covers about a third of the screen, at 7.8 exactly
+  the real card's spot (with no results card in Edit, the spot of a 1920 by 1080 sheet fitted to the 2046 by 801
+  window: 1216 to 1720 across, 30 to 697 down, 2.5 studs from the lens); `covered` from the landing; the flap asked
+  for once.
+- **On 14 of the bots' outfits in Edit** (the draft played with `Animator:StepAnimations`, the module's card in the
+  hand, to the release): it plays on every one. The card goes at most 0.024 of the body's height into the head's box
+  (box corners against a round head). A hand or forearm goes into the body at most 0.059 more than the body's own
+  start, on two bodies with big heads, when the waist turns to the right with the arms up (the left forearm against
+  the side of the turned head's box); elsewhere at most 0.04. Reading, the card's top is 0.06 to 0.15 heights over
+  the chin on most bodies: the lower face is behind the card for the first 2 s. **An Edit check is not Play.**
+- **Not known until it is seen in Play:** how the copy reads in the hand at the scene's distance; whether the swap
+  shows on screen (the copy is drawn on a 3D sheet, the real card on the screen); whether the gloat reads as smug;
+  arms overhead on hats and hair.
+
+## Sound (step 5)
+- **From the video Alan picked** (`a-plus-gemini-api-1.mp4`; its sounds were in what he OK'd), measured every 10 ms,
+  not heard by me: the paper flap from 2.29 to 2.57 s, its crack at 2.38 to 2.40; a faint swish on the throw at 7.46
+  to 7.52 (not used: the card says no whoosh); the smack at 7.99 to 8.25, its peak at 8.00, just under full loudness.
+- **Cut into two files, not uploaded:** `assets/audio/emotes/a-plus-flap.ogg` (0.335 s, raised 13 dB to a peak of
+  -6.4 dB; its crack 0.115 s in) and `assets/audio/emotes/a-plus-slap.ogg` (0.335 s, as it was, peak -0.9 dB; the
+  smack 0.035 s in).
+- **When they play** (seconds after 1st's light; `APlus.sounds` in the module, names for `Audio` at step 6):
+  `aPlusFlap` at 2.2 (Snap + 0.2: its crack at 2.32, as the card reaches the top of the snap); `aPlusSlap` at 7.8,
+  the landing. `firstSound` 2.2: the runner-ups' sounds stop before the flap. Volumes are step 6's.
 
 ## Files
-None yet.
+- `src/client/emotes/APlus.luau`: the card, its flight, the swap, the camera jolt, the sound times.
+- `tools/emote_cuts/a-plus.lua`: the body cut, `CUTS.APlus`.
+- `assets/animations/emotes/a-plus.rbxm`: the baked clip.
+- `assets/audio/emotes/a-plus-flap.ogg`, `assets/audio/emotes/a-plus-slap.ogg`: the two sounds.
