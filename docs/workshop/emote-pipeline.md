@@ -10,8 +10,8 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 |---|---|---|
 | So Close | [so-close](emotes/so-close.md) | 6, recorded muted 2026-11-22 (no error); waits for Alan's look and listen |
 | Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 2, card written 2026-11-22, waits for Alan's OK |
-| A+ | [a-plus](emotes/a-plus.md) | 6, recorded muted 2026-11-22 (no error); the card jumps in size at the swap to the real one (being fixed); waits for Alan's look and listen |
-| Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 2, card written 2026-11-22, waits for Alan's OK |
+| A+ | [a-plus](emotes/a-plus.md) | 6, recorded muted twice 2026-11-22 (no error); the card lands at the wrong size (first take a little big; second take, a team match, about 1.6 times too big): being fixed; waits for Alan's look and listen on the first take |
+| Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, recorded muted 2026-11-22 (no error); waits for Alan's look and listen, and his pick of the drawing |
 
 The primary session keeps this table; a side session reports its step in its own page.
 
