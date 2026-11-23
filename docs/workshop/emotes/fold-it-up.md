@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: recorded once by the primary session (below); Alan picked drawing 2a; next its upload (his go), then a second recording with the sounds.
+Step 6: the second recording (drawing 2a on the poster, the sounds under it) waits for Alan's look.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -305,3 +305,16 @@ runner-ups' sounds stop before it.
   really matter"). The file: `.planning/emotes/fold-it-up-drawing-2a.png` (1200 by 900). Next, step 6 (the primary
   session, Alan's go): upload it as an image, put its id in `DRAWING` in `src/client/emotes/FoldItUp.luau`, record
   again with the sounds under it.
+
+## Second run in Play (step 6, the primary session, 2026-11-23)
+- **Uploads:** Alan's go "do all the uploads" (2026-11-22). Drawing 2a resized to 1024 by 768 first (Roblox shrinks
+  anything over 1024; the mirrored back uses the picture's own pixel size): `assets/ui/emotes/fold-it-up-drawing.png`,
+  `rbxassetid://114077761748868`, approved by Roblox. `DRAWING` and `DRAWING_SIZE` (1024 by 768) set in
+  `src/client/emotes/FoldItUp.luau` by the primary session (commit 096303771).
+- **The muted recording:** Fold It Up on 1st, So Close on 2nd and 3rd, free-for-all, 56 frames a second, no game
+  error. Raw `.planning/emotes/fold-it-up-soclose-second-run-raw.mp4`; with sound
+  `fold-it-up-soclose-second-run-sound.mp4` (1st's light at 7.07 s; the five files laid at `FoldItUp.sounds`' times,
+  So Close's sighs at 1.5 and 2.0 s; the whole track 2.3 dB down, overlapping sounds summed past full scale).
+- **Seen in its stills** (the primary session's; not judged in motion): the poster's back plain cream (the faint
+  mirrored drawing does not show), the front shows the drawing clearly; it shrinks as it is crumpled; the ball is
+  tossed up to the picture's left (the kid's right); the arms end folded. Waits for Alan's look.
