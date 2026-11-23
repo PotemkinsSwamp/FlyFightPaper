@@ -39,8 +39,9 @@ local ARM = {
 	over = { Right = { V(0.2, 0.2, 0.1), V(1, 0.4, 0.4) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- and back over it
 	side = { Right = { V(0.3, -0.18, -0.06), V(1, -0.3, 0.3) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- down round the outside, not through the chest
 	palms = { Right = { V(0.03, -0.25, -0.2), V(1, -1, 0.3) }, Left = { V(-0.03, -0.25, -0.2), V(-1, -1, 0.3) } },
-	fold = { Right = { V(-0.1, -0.13, -0.12), V(1, -0.3, -0.6) }, Left = { V(0.1, -0.1, -0.1), V(-1, -0.3, -0.6) } }, -- A+'s
 }
+local FOLD_UPPER = { over = V(-0.1, -0.75, -0.65), under = V(-0.08, -0.8, -0.55) } -- Skeet Shoot's crossed arms, the upper arms more down: a real fold (elbows near 90 degrees)
+local FOLD_FORE = { over = V(-1, 0.3, 0.1), under = V(-1, 0.2, 0.15) } -- the hands up towards the other arm, as folded arms tuck
 -- the right palm along the left, heights up: rubbing (four strokes) and dusting (two)
 local RUB = { { FU.rub + 0.2, 0 } }
 for k = 1, 4 do table.insert(RUB, { FU.rub + 0.2 + k * 0.18 - 0.09, 0.035 }); table.insert(RUB, { FU.rub + 0.2 + k * 0.18, 0 }) end
@@ -75,6 +76,18 @@ function FU.pose(t, c)
 		local sign = side == "Left" and -1 or 1
 		local shoulder = (at.UpperTorso * joints[side .. "UpperArm"].c0).Position
 		local function arm(name)
+			if name == "fold" then
+				-- folded arms (Alan 2026-11-22 on the first run: "they're just crossing their elbows and their arms are
+				-- remaining straight ... not actually folding their arms under each other"): Skeet Shoot's way, the elbow
+				-- placed (the upper arm down and forward, FOLD_UPPER) and the forearm folded straight across from it
+				-- (FOLD_FORE); the right arm over and in front, the left tucked under it
+				local over = sign > 0
+				local elbowAt = (at[side .. "UpperArm"] * joints[side .. "LowerArm"].c0).Position
+				local upper, lower = (elbowAt - shoulder).Magnitude, (at[side .. "Hand"].Position - elbowAt).Magnitude
+				local u, f = FOLD_UPPER[over and "over" or "under"], FOLD_FORE[over and "over" or "under"]
+				local elbow = shoulder + chest * V(sign * u.X, u.Y, u.Z).Unit * upper
+				return elbow + chest * V(sign * f.X, f.Y, f.Z).Unit * lower, elbow
+			end
 			local p = ARM[name][side]
 			local hand = mid + chest * p[1] * HEIGHT
 			if side == "Right" and (name == "rub" or name == "palms") then hand += chest * V(0, keyed(name == "rub" and RUB or DUST, t), 0) * HEIGHT end
@@ -85,7 +98,7 @@ function FU.pose(t, c)
 		local hand1, elbow1 = arm(to[2])
 		local v0, v1 = hand0 - shoulder, hand1 - shoulder
 		local axis, angle = arc(v0.Unit, v1.Unit):ToAxisAngle()
-		local straight = side == "Right" and to[2] == "reach" and 0.99 or 0.97 -- the reach nearly straight: only the hand shows
+		local straight = side == "Right" and to[2] == "reach" and 0.99 or to[2] == "fold" and 1 or 0.97 -- the reach nearly straight: only the hand shows; folded exactly as placed
 		reach(turn, side, shoulder + CFrame.fromAxisAngle(axis, angle * s) * v0.Unit * (v0.Magnitude + (v1.Magnitude - v0.Magnitude) * s), elbow0:Lerp(elbow1, s), false, straight)
 	end
 	-- the head: square to the camera, rolled and bowed by ROLL and DOWN, the chest's twist undone (it does not look round)

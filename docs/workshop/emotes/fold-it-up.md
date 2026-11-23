@@ -275,3 +275,21 @@ runner-ups' sounds stop before it.
 - **Not readable in stills:** whether the pinch reads as grabbing the picture; whether an edge of the sheet shows at
   the pinch (in one still its bottom edge sits just inside the picture's bottom). Nothing changed until Alan has seen
   it.
+
+## Alan on the first run (2026-11-22)
+- **The drawings:** "the codex drawings are all absolutely the same. You should have given him a reference photo of
+  what ... the winner circle looks like, so then they can draw what it looks like if a child was to recreate it." My
+  miss: the brief described the scene in words. Second brief `.planning/emotes/fold-it-up-drawing-brief-2.txt` with a
+  frame of the first run as the reference (`fold-it-up-scene-ref.png`, 13.6 s of the raw recording: all three lit,
+  the stacks, spotlights, name tags, blackboard): three versions `fold-it-up-drawing-2a/2b/2c.png` (more or less of
+  the classroom).
+- **The folded arms:** "they're just crossing their elbows and their arms are remaining straight. They're not
+  actually folding their arms under each other" (the same note as on Skeet Shoot). Fixed in the cut by Skeet Shoot's
+  way: each elbow placed (the upper arm down and forward) and the forearm folded across from it, the hands raised
+  towards the other arm, the right arm over and in front, the left under. On 8 of the bots' outfits in Edit the
+  elbows are now bent 75 to 94 degrees (measured at the joints), the forearms within 20 degrees of level, the right
+  forearm 0.01 to 0.03 heights nearer the camera; a forearm goes at most 0.061 heights into a big belly's box while
+  the arms move into the fold (9.75 s). Baked again (`FoldItUpClip`, `fold-it-up.rbxm`).
+- **"We need the codex image to actually lay it on the thing to see what it looks like. And we need the sounds on
+  them."** The drawing reaches the poster only through an upload (his go), then a recording by the primary session
+  with the sounds laid under it.
