@@ -148,6 +148,18 @@ The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the pic
   quiet"). Because it is a runner-up's sound it is skipped when it would still be playing as 1st's first sound
   starts: with Bubblegum on 1st (its snap 2.0 s after 1st's light) neither sigh plays.
 
+## First run in Play (step 6, 2026-11-22; the primary session's muted recording)
+- **Ran with no script error**, on 2nd and 3rd at once, with A+ on 1st. Raw: `.planning/emotes/aplus-soclose-first-run-raw.mp4`
+  (2032 x 800, 30 s; 3rd's light about 11.9 s, 2nd's 12.9, 1st's 13.93). With the sigh laid at 1.5 and 2.0 s after
+  1st's light, 14 dB down: `.planning/emotes/aplus-soclose-first-run-sound.mp4`.
+- **Seen in the primary session's stills** (two a second, not judged in motion): both kids sit cross-legged on their
+  books from the dark on, neither floats; both are slumped well forward from about 2 s after 1st's light, heads
+  hanging, and stay so. 2nd was a wide black body with a yellow pet on the shoulder; 3rd a white checked one with a
+  cap, whose head ends up almost in the lap. Not readable in stills: the look at 1st and the head shakes.
+- **From the pairing with A+:** A+'s landed card covers 3rd for the last 2.6 s, and A+'s first sound (2.2 s after
+  1st's light) cuts both sighs in the game (each would still be playing).
+- Waits for Alan's notes on the recording.
+
 ## Files
 | File | What |
 |---|---|
