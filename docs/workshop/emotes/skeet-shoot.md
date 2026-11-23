@@ -103,5 +103,24 @@ itself: Gemini got 17 tokens, the file's name, and made 12 s from that
 (`.planning/emotes/skeet-shoot-gemini-api-1-wrong-prompt.mp4`, not a reference). The file now exists (945 words,
 no gun words); the real call waits for Alan's go.
 
+**The video (Alan: "yes send it"; about $0.28: 1,245 text tokens in, 23,172 video tokens out; Gemini for Skeet
+Shoot so far about $0.56):** `.planning/emotes/skeet-shoot-gemini-api-2.mp4`, 12.03 s, 640x360, 24 frames a second,
+with sound. What my stills show (two a second, eight a second round each hit); video seconds, 1st's light at 1 s:
+- **Works:** the middle figure pulls a green straw from behind its back (0.5 to 1.5 s, a little early) to its mouth;
+  the left figure freezes its clap, reaches behind its back, brings out a plane and throws it across (2.5 to 3.6 s),
+  then claps on; the right figure sits cross-legged asleep, its head comes up, it throws from sitting with its legs
+  still crossed (5.0 to 5.6 s) and sinks back asleep by 6.5 s; the straw twirls in the hand (7.0 to 8.0 s, about one
+  and a half turns seen in stills); the hand goes behind the back and comes back empty (8.5 to 9.0 s); a cool pose to
+  the end, hand on hip and one leg crossed over the other.
+- **Misses:** the straw is a bendy straw drooping down and forward from the mouth, never aimed up at a plane; each
+  plane flies past the middle figure's face with a small white dot stuck on it, then glides down and away (plane 1
+  onto the right figure's stack, plane 2 past the left figure) instead of tipping and spiralling; no head poke; the
+  second shot is not a clear no-look swing; the claps are fast (four a second by the sound), not slow.
+- **The sound** (measured by loudness and pitch, not heard by me): clap sounds every 0.25 s whenever the left figure
+  claps, although the prompt asked for silent claps; a quiet hiss under the first throw (3.2 to 3.75 s); **shot 1**,
+  a sharp bright hit at 3.83 to 3.87 s, alone, no clap near it; **shot 2**, a brighter hiss with a hit from 5.80 to
+  6.05 s, mixed with claps at 5.88 and 6.10 s.
+- Waits for Alan's look and listen.
+
 ## Files
 None yet.
