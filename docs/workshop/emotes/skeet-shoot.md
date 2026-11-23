@@ -142,9 +142,13 @@ as unsaved drafts (what `ourClip` plays in Studio) and saved as `.rbxm`:
   straw swings out at the second plane with the head still on the camera (4.25 to 4.6). Puffs at 2.7 (Shot1) and 4.7
   (Shot2): the chest pitches forward 7 degrees for a tenth of a second, the head stays level, so it pokes. Off the
   mouth 5.5 to 6.0 (Off), held out in front 6.0 to 7.6 (the twirl is the module's: Twirl 6.0 to Twirled 7.4), behind
-  the back 8.15 to 8.45 (Tucked 8.25: the straw goes), arms crossed by 9.3, chin up 6 degrees. **Crossed arms only
-  just cross:** a kid's arms are too short to reach the other elbow, so the hands meet just past the middle, the right
-  forearm in front of and over the left.
+  the back 8.15 to 8.45 (Tucked 8.25: the straw goes), arms crossed by 9.3, chin up 6 degrees. **Crossed arms** (second
+  build, after Alan's note below): the elbow is placed, the upper arm down and forward from the shoulder, and the
+  forearm folds straight across from it; the left forearm tucked under against the chest, the right one over it and
+  in front. On the test kid the elbows bend 82 (left) and 75 (right) degrees, each hand 0.015 to 0.034 heights past
+  the middle, the left forearm 0.116 heights in front of the chest's middle and the right 0.178. (The first build
+  aimed the hands at the other side: a kid's arm is about as long as from its shoulder to the chest's middle, so it
+  got there nearly straight, bent 33 degrees.)
 - `SkeetThrowRight` / `SkeetThrowLeft` (the runner-ups, 1.3 s): chest, head and left arm only. The left hand goes
   behind the back (Grab 0.4: the plane appears in it), comes up cocked by the shoulder, throws up and across towards
   1st (Release 0.7), follows through; the chest winds 10 degrees away and turns 15 into it; the head follows the
@@ -217,6 +221,11 @@ down): `.planning/emotes/skeet-shoot-first-run-sound.mp4` (the dances take, from
   Sizes are not changed before Alan has seen it.
 - **2nd above the books in the dances take** is the dance's own jumps, not the pause: my stills (two a second) show
   2nd in the air at 11.0 and 12.0 s, before 1st's light and four seconds before 2nd's throw begins.
+- **Alan on it (2026-11-22): "I think the skeet shoot is good"**, except the end: "when it's crossing the arms, it
+  only crosses the elbows, so their arms are still straight. It doesn't actually like do the natural position of
+  crossing your arms, where one arm folds under the other." Fixed in the clip (the crossed arms above, baked again
+  into `Assets` and `skeet-shoot.rbxm`); not yet recorded. On 12 bots' outfits the tucked-under forearm presses at most
+  0.031 heights into the chest at 10.5 s; everything else as before. The planes' size is not raised: he did not ask.
 
 ## Files
 | File | What |

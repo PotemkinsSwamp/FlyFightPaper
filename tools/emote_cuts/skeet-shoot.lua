@@ -42,7 +42,11 @@ local SK_POKE, SK_SHIFT, SK_HIP = 7, 0.025, 5
 -- (lift and low: out at the side on the way round, so the hand never cuts through the chest or hips)
 local R_ARMS = { { 0.1, "hang" }, { 0.5, "back" }, { 0.78, "lift" }, { 1.1, "mouth" }, { 5.5, "mouth" }, { 6.0, "front" }, { 7.6, "front" }, { 7.88, "low" }, { 8.15, "back" }, { 8.45, "back" }, { 8.8, "low" }, { 9.3, "cross" } }
 local L_ARMS = { { 8.4, "hang" }, { 8.85, "fore" }, { 9.3, "cross" } }
-local ELBOW = { hang = V(1, -0.2, 0.3), back = V(1, -0.3, 0.6), lift = V(1, -0.6, 0.4), low = V(1, -0.3, 0.4), fore = V(1, -0.8, 0.3), mouth = V(1, -0.8, 0.1), front = V(0.6, -1, 0.3), cross = V(1, -0.6, -0.2) }
+local ELBOW = { hang = V(1, -0.2, 0.3), back = V(1, -0.3, 0.6), lift = V(1, -0.6, 0.4), low = V(1, -0.3, 0.4), fore = V(1, -0.8, 0.3), mouth = V(1, -0.8, 0.1), front = V(0.6, -1, 0.3), cross = V(0.6, -1, -0.6) }
+-- Crossed: the upper arm's way from the shoulder and the forearm's from the elbow (x out to its own side), for the arm
+-- over and the arm under.
+local CROSS_UPPER = { over = V(-0.2, -0.5, -0.85), under = V(-0.15, -0.65, -0.7) }
+local CROSS_FORE = { over = V(-1, 0.05, -0.1), under = V(-1, -0.02, 0.05) }
 
 local function looked(turn, dir, nod, tilt)
 	local neck = build(turn).UpperTorso * joints.Head.c0
@@ -84,8 +88,16 @@ local function skArm(name, side, at, body, mouth, aim)
 	elseif name == "fore" then return shoulder + V(s * 0.25, -0.65, -0.6) * body.arm, pole
 	elseif name == "mouth" then return mouth + aim * SK.grip * SK.straw * HEIGHT, pole
 	elseif name == "front" then return shoulder + V(s * 0.1, -0.35, -0.85).Unit * 0.85 * body.arm, pole
-	end -- crossed: each hand just past the middle (a kid's arms are short), the right forearm over and in front of the left
-	return at.UpperTorso * V(-s * 0.22 * chest.X, (s > 0 and -0.05 or -0.25) * chest.Y, -0.5 * chest.Z - (s > 0 and 1.6 or 0.6) * hand.X), pole
+	end -- crossed (Alan 2026-11-22: "one arm folds under the other", not straight arms meeting at the elbows; aimed at
+	-- the other side, a kid's arm only got there straight): the elbow is placed, the upper arm down and forward
+	-- (CROSS_UPPER), and the forearm folds straight across from it (CROSS_FORE); the right arm over and in front, the
+	-- left tucked under
+	local over = s > 0
+	local elbowAt = (at[side .. "UpperArm"] * joints[side .. "LowerArm"].c0).Position
+	local upper, lower = (elbowAt - shoulder).Magnitude, (at[side .. "Hand"].Position - elbowAt).Magnitude
+	local u, f = CROSS_UPPER[over and "over" or "under"], CROSS_FORE[over and "over" or "under"]
+	local elbow = shoulder + V(s * u.X, u.Y, u.Z).Unit * upper
+	return elbow + V(s * f.X, f.Y, f.Z).Unit * lower, elbow
 end
 -- Round the shoulder from the pose before to the next (straight across, a hand can pass through the body).
 local function between(list, t)
@@ -102,8 +114,7 @@ local function moveArm(turn, side, list, t, body, mouth, aim)
 	local hand1, elbow1 = skArm(b, side, at, body, mouth, aim)
 	local v0, v1 = hand0 - shoulder, hand1 - shoulder
 	local axis, angle = arc(v0.Unit, v1.Unit):ToAxisAngle()
-	-- crossed, the arm nearly straight: a kid's short arms only just reach past the middle
-	reach(turn, side, shoulder + CFrame.fromAxisAngle(axis, angle * s) * v0.Unit * (v0.Magnitude + (v1.Magnitude - v0.Magnitude) * s), elbow0:Lerp(elbow1, s), false, b == "cross" and 0.96 + 0.035 * s or 0.96)
+	reach(turn, side, shoulder + CFrame.fromAxisAngle(axis, angle * s) * v0.Unit * (v0.Magnitude + (v1.Magnitude - v0.Magnitude) * s), elbow0:Lerp(elbow1, s), false, 0.96)
 end
 local function plantFeet(turn, body)
 	for name, stand in body.feet do
