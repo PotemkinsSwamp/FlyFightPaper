@@ -230,6 +230,17 @@ down): `.planning/emotes/skeet-shoot-first-run-sound.mp4` (the dances take, from
   Everything looked fine except the arms." So nothing else changes; the crossed arms wait for his look in the next
   recording.
 
+## Second run in Play (2026-11-23; the primary session's muted recording, the new crossed arms)
+SkeetShoot on 1st, Good Game on 2nd, So Close on 3rd, a team match; about 37 frames a second at the start; no game
+error. Raw: `.planning/emotes/skeet-shoot-second-run-raw.mp4`; with sound: `.planning/emotes/skeet-shoot-second-run-sound.mp4`
+(1st's light at 7.01 s; `skeet-shoot-shot.ogg` at 2.7 and 4.7 s after it; Good Game's claps are a Roblox library
+sound, not in the track; So Close's sigh is cut by this emote's first sound at 1.5 s, as the game's rule does).
+- **Seen in stills** (the primary session's): both planes fly and are hit; the straw shows green; the arms end crossed
+  in front of the chest with bent elbows.
+- **Fault:** 1st was a pale avatar with arms the same colour as its top, so the crossed arms are hard to read in this
+  take.
+- Waits for Alan's look.
+
 ## Files
 | File | What |
 |---|---|
