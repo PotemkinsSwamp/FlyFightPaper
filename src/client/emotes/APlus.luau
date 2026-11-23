@@ -6,14 +6,17 @@
 -- similar to the actual report card ... the text on it should be kind of blurry and hard to read"): a copy of the
 -- real card's page as it is when the winners' moment starts, its printed words and pictures kept, every filled-in
 -- word (names, numbers, grades, the note, the place, the pocket money, the level) hidden under a faint ink scribble
--- of its length. Its back is plain paper. It stands on the right hand (its bottom edge on the hand) until Release,
--- flies FLIGHT seconds at the lens and lands square on the real card's rectangle; worked out every frame from where
+-- of its length. Its back is plain paper. It is held in both hands, one on each side edge (the arms are bent onto it
+-- on every body), then stands on the right hand (its bottom edge on the hand) until Release, flies FLIGHT seconds at
+-- the lens and lands square on the real card's rectangle; worked out every frame from where
 -- the real card sits on this screen, at the depth where the card's own size fills it, so it fits any screen.
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
 local APlus = {}
 local TALL = 0.35 -- the card's height, in winner heights (about a tenth of the picture)
-local GRIP_LEFT = 0.06 -- held in both hands: the card's middle to the kid's left of the right hand, winner heights
+local GRIP = { read = 0.45, high = 0.12 } -- held in both hands: how far up its side edges the hands are (share of its height), reading and held up
+local bend -- (below)
 local READ_TILT = 25 -- reading: the top leans this many degrees away from the kid
 local FLIGHT = 0.4 -- release to the lens
 local MARKS = { Snap = 2.0, Release = 7.4 } -- the clip's own (its draft's attributes win)
@@ -105,60 +108,113 @@ function APlus.start(kit, who)
 	card.Size, card.Color, card.Material = Vector3.new(st.height * 680 / 900, st.height, st.height * 0.01), PAPER, Enum.Material.SmoothPlastic
 	card.Parent = who.cast
 	st.card, st.face = card, lookAlike(card)
+	-- Both hands on the card on this body: the arms are bent again after the clip has posed them (the scene's own
+	-- bendArm, as Nap's hand and Good Game's clap).
+	local model = who.model
+	st.kid, st.chest, st.head = kit.Avatars.standing_height_studs / who.scale, model:FindFirstChild("UpperTorso"), model:FindFirstChild("Head")
+	st.arms = {}
+	for side, sign in { Right = 1, Left = -1 } do
+		local upper, lower, hand = model:FindFirstChild(side .. "UpperArm"), model:FindFirstChild(side .. "LowerArm"), model:FindFirstChild(side .. "Hand")
+		if upper and lower and hand then st.arms[side] = { upper = upper, lower = lower, hand = hand, sign = sign } end
+	end
+	if kit.rig and kit.bendArm and st.chest and st.head then
+		local joints, at = kit.rig(model)
+		st.bend = function() bend(st, joints, at) end
+		st.bent = RunService.PreSimulation:Connect(st.bend)
+	end
 	return st
 end
+function APlus.stop(st)
+	if st.bent then st.bent:Disconnect() end
+end
 
--- Where the real card sits on the screen: its middle and height in pixels, its turn in degrees. Worked out from the
--- page's own place on its sheet (1920 by 1080 page pixels) and the sheet's place on the screen: the sheet is shown
--- through the whole winners' moment, the hidden card is not, and a hidden card's own AbsolutePosition and
--- AbsoluteSize were stale (the first recording, 2026-11-22: the copy landed 8% too big and 50 px too high).
-local function rectangle(screen)
+-- Where the real card sits on the screen: its middle and height in pixels from the screen's top left corner, its
+-- turn in degrees, and the screen's size. Worked out from the page's own place on its sheet (1920 by 1080 page
+-- pixels) and the sheet's place on its full-screen layer: the sheet is shown through the whole winners' moment, the
+-- hidden card is not, and a hidden card's own AbsolutePosition and AbsoluteSize were stale (the first recording,
+-- 2026-11-22). Measured from the layer's own corner: Roblox counts AbsolutePosition from under its top bar (58 px
+-- down), so the sheet's own number put the copy that much too high (both recordings).
+local function rectangle()
 	local page = realPage()
 	local results = page and page.Parent
 	local sheet = results and results.Parent
-	if sheet and sheet:IsA("GuiObject") and sheet.AbsoluteSize.X > 0 then
+	local layer = sheet and sheet:FindFirstAncestorWhichIsA("LayerCollector")
+	if layer and sheet:IsA("GuiObject") and sheet.AbsoluteSize.X > 0 then
 		local scale = sheet.AbsoluteSize.X / sheet.Size.X.Offset
 		local fit = page:FindFirstChild("Fit")
 		local size = Vector2.new(page.Size.X.Offset, page.Size.Y.Offset) * (fit and fit.Scale or 1)
 		local at = Vector2.new(results.Position.X.Offset + page.Position.X.Offset, results.Position.Y.Offset + page.Position.Y.Offset)
 			+ (Vector2.new(0.5, 0.5) - page.AnchorPoint) * size
-		return sheet.AbsolutePosition + at * scale, size.Y * scale, page.Rotation
+		return sheet.AbsolutePosition - layer.AbsolutePosition + at * scale, size.Y * scale, page.Rotation, layer.AbsoluteSize
 	end
-	return Vector2.new(screen.X / 2 + 600 / 1080 * screen.Y, 490 / 1080 * screen.Y), 900 / 1080 * screen.Y, 0 -- no results card (a test in Edit): its spot on a sheet fitted to the height
+	local screen = workspace.CurrentCamera.ViewportSize -- no results card (a test in Edit): its spot on a sheet fitted to the height
+	return Vector2.new(screen.X / 2 + 600 / 1080 * screen.Y, 490 / 1080 * screen.Y), 900 / 1080 * screen.Y, 0, screen
 end
 -- The card on the lens, in the camera's own frame: square to it, its front to the camera, its height filling the
--- real card's at this frame's field of view.
--- Roblox's own camera turns the pixels into directions (ViewportPointToRay: the results card's screen ignores the
--- top bar's inset, so its pixels are the viewport's), taken into the camera's frame at a depth of 1.
-local function onLens(st)
-	local camera = workspace.CurrentCamera
-	local middle, tall, turn = rectangle(camera.ViewportSize)
-	local function along(pixel)
-		local direction = camera.CFrame:VectorToObjectSpace(camera:ViewportPointToRay(pixel.X, pixel.Y, 0).Direction)
-		return direction / -direction.Z
+-- real card's. `fov`: this frame's field of view, from the scene: the scene writes the camera after this step, so
+-- the camera itself still holds the flying camera's wider lens here (the second recording, 2026-11-22: the copy
+-- landed 1.5 times too big, 70 degrees against the scene's 50).
+local function onLens(st, fov)
+	local middle, tall, turn, screen = rectangle()
+	local tanHalf = math.tan(math.rad(fov / 2))
+	local function along(pixel) -- the direction through a pixel, at a depth of 1
+		return Vector3.new((pixel.X / screen.X * 2 - 1) * tanHalf * screen.X / screen.Y, -(pixel.Y / screen.Y * 2 - 1) * tanHalf, -1)
 	end
 	local up = Vector2.new(math.sin(math.rad(turn)), -math.cos(math.rad(turn))) * tall / 2 -- to the card's top edge on screen
-	local centre = along(middle)
 	local depth = st.height / (along(middle + up) - along(middle - up)).Magnitude
-	return CFrame.new(centre * depth) * CFrame.Angles(0, math.pi, 0) * CFrame.Angles(0, 0, math.rad(turn))
+	return CFrame.new(along(middle) * depth) * CFrame.Angles(0, math.pi, 0) * CFrame.Angles(0, 0, math.rad(turn))
 end
 
--- In the hand: `t` seconds after 1st's light.
-local function inHand(st, t)
-	local model = st.who.model
-	local hand, chest = model:FindFirstChild("RightHand"), model:FindFirstChild("UpperTorso")
-	if not hand or not chest then return nil end
-	local kid = st.kit.Avatars.standing_height_studs / st.who.scale
+-- How much the card is in both hands `t` seconds after 1st's light: 1 until the right hand takes it alone.
+local function both(st, t)
+	return 1 - st.kit.ease(math.clamp((t - 5.0) / 0.6, 0, 1))
+end
+-- The card in both hands (Alan on the first recording: "not holding it symmetrically with both hands placed on
+-- either side"). Its place comes from the body alone, so it is the same on every body: read at the belly, its top
+-- leaning READ_TILT away; up in front of the face over the snap; then over the head, its bottom edge clear of it.
+-- `chest`, `head`: where those two parts are. Returns the card, the point half way between the two hands' grips
+-- (GRIP of its height up its side edges) and the card's up direction.
+local function held(st, chest, head, t)
+	local kid, h, torso, skull = st.kid, st.height, st.chest.Size, st.head.Size
+	local snap = st.kit.ease(math.clamp((t - st.marks.Snap) / 0.4, 0, 1)) -- 0: reading, 1: held up
 	local flip = 1 - st.kit.ease(math.clamp((t - st.marks.Snap) / 0.35, 0, 1)) -- 1: the front to the kid (reading)
 	local tilt = math.rad(READ_TILT) * flip
-	local up = chest.CFrame.UpVector * math.cos(tilt) + chest.CFrame.LookVector * math.sin(tilt)
-	local look = CFrame.fromAxisAngle(up, math.pi * flip) * (chest.CFrame.LookVector * math.cos(tilt) - chest.CFrame.UpVector * math.sin(tilt))
-	local two = 1 - st.kit.ease(math.clamp((t - 5.0) / 0.6, 0, 1)) -- both hands until the right one takes it beside the face
-	local middle = hand.Position + up * (hand.Size.Y / 2 + st.height / 2) - chest.CFrame.RightVector * GRIP_LEFT * kid * two
-	local at = CFrame.lookAt(middle, middle + look, up)
-	-- Never through the head (bodies' heads and reaches differ): where the card's plane cuts the head, the card moves
-	-- out sideways or up, whichever is less, by the overlap; it still sits on the hand up to half its width.
-	local head = model:FindFirstChild("Head")
+	local up = chest.UpVector * math.cos(tilt) + chest.LookVector * math.sin(tilt)
+	local look = CFrame.fromAxisAngle(up, math.pi * flip) * (chest.LookVector * math.cos(tilt) - chest.UpVector * math.sin(tilt))
+	local top = chest:PointToObjectSpace(head.Position).Y + skull.Y / 2 -- the top of the head, above the chest's middle
+	local read = chest * Vector3.new(0, -0.26 * torso.Y, -torso.Z / 2 - 0.1 * kid)
+	local lift = chest * Vector3.new(0, top - 0.3 * skull.Y, -skull.Z / 2 - 0.2 * kid)
+	local high = chest * Vector3.new(0, top + 0.01 * kid + GRIP.high * h, -0.03 * kid)
+	local grip = read:Lerp(lift, snap):Lerp(lift:Lerp(high, snap), snap) -- one smooth curve through the three
+	local middle = grip + up * (0.5 - (GRIP.read + (GRIP.high - GRIP.read) * snap)) * h
+	return CFrame.lookAt(middle, middle + look, up), grip, up
+end
+-- Each hand onto its side edge of the card, level with the other (from RunService.PreSimulation: the clip has posed
+-- the body for this frame; `at`: where a part is by that pose). The hand's middle sits a little outside the edge.
+function bend(st, joints, at)
+	if not st.who.model:IsDescendantOf(game) then
+		if st.bent then st.bent:Disconnect() end
+		return
+	end
+	local t = math.max(st.since or 0, 0)
+	local two = both(st, t)
+	if two <= 0 then return end
+	local chest = at(st.chest)
+	local _, grip = held(st, chest, at(st.head), t)
+	for _, arm in st.arms do
+		local target = grip + chest.RightVector * arm.sign * (st.height * 340 / 900 + arm.hand.Size.X * 0.2)
+		st.kit.bendArm(joints, at, arm.upper, arm.lower, arm.hand, target, (at(arm.upper) * joints[arm.lower].c0).Position, two)
+	end
+end
+-- In the right hand alone (the throw, which Alan called fine): its bottom edge stands on the hand, turning with the
+-- chest. Never through the head (bodies' heads and reaches differ): where the card's plane cuts the head, the card
+-- moves out sideways or up, whichever is less, by the overlap; it still sits on the hand up to half its width.
+local function onHand(st)
+	local hand, chest, head = st.arms.Right and st.arms.Right.hand, st.chest, st.head
+	if not hand or not chest then return nil end
+	local up = chest.CFrame.UpVector
+	local middle = hand.Position + up * (hand.Size.Y / 2 + st.height / 2)
+	local at = CFrame.lookAt(middle, middle + chest.CFrame.LookVector, up)
 	if head then
 		local c = at:PointToObjectSpace(head.Position)
 		local r = math.max(head.Size.X, head.Size.Y) * 0.55 -- a little past its box
@@ -174,9 +230,18 @@ local function inHand(st, t)
 	end
 	return at
 end
+-- In the hand `t` seconds after 1st's light: in both, in the right one, or on the way from the one to the other.
+local function inHand(st, t)
+	local two = both(st, t)
+	local one = two < 1 and onHand(st) or nil
+	if two <= 0 or not (st.chest and st.head) then return one end
+	local card = held(st, st.chest.CFrame, st.head.CFrame, t)
+	return one and one:Lerp(card, two) or card
+end
 
-function APlus.step(st, since, shot)
+function APlus.step(st, since, shot, _steady, _winners, fov)
 	local card = st.card
+	st.since = since -- for `bend`
 	if since < 0 or st.swapped then return end
 	st.face.Enabled = true
 	if not st.flapped and since >= st.marks.Snap + FLAP then
@@ -190,7 +255,7 @@ function APlus.step(st, since, shot)
 		return
 	end
 	st.from = st.from or shot:ToObjectSpace(card.CFrame) -- where it left the hand, from the lens
-	local to = onLens(st)
+	local to = onLens(st, fov or workspace.CurrentCamera.FieldOfView)
 	if flown < FLIGHT then
 		local s = flown / FLIGHT
 		card.CFrame = shot * (st.from.Rotation:Lerp(to.Rotation, st.kit.ease(math.min(s * 1.4, 1))) + st.from.Position:Lerp(to.Position, s))

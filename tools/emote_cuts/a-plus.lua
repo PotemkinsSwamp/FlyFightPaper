@@ -2,7 +2,8 @@
 -- built from his pick of the two Gemini videos, the first: .planning/emotes/a-plus-gemini-api-1.mp4). A 1st-place
 -- emote: a smug show-off, "read it and weep", slow and showy, chest out, chin up, then one sharp slap. The body only:
 -- the report card in the hand, its flight to the lens and the take-over by the real card are the module's
--- (src/client/emotes/APlus.luau), which puts the card's bottom edge on the right hand every frame.
+-- (src/client/emotes/APlus.luau), which also bends both arms again on each avatar's own body so the hands are on the
+-- card's two side edges: the arm poses here for reading and holding up are where that starts from.
 -- Posed by numbers on Toy Pilot's standing pose (P.fly at P.held; both feet stay exactly where they stand). Seconds
 -- after 1st's light (AP below), the card's own times, spread as the video's are (its misses fixed: the card stays in the
 -- right hand, it is shown to both sides, the reading shows the back):
@@ -16,7 +17,7 @@
 -- * wind to release: the right arm back past the shoulder, the chest twisted away (TWIST), then whipped forward through
 --   release (the card leaves the hand: the mark Release) to the follow-through, palm at the camera;
 -- * brush to fold: the palms meet at the belly, the right one brushes once up the left;
--- * fold on: arms folded, the weight on the right leg (SHIFT heights, the hips rolled HIP degrees), chin up, still.
+-- * fold on: arms folded (CROSS below), the weight on the right leg (SHIFT heights, the hips rolled HIP degrees), chin up, still.
 -- ARMS: which pose when (eased from one to the next, round the shoulder: straight across a hand passed through it).
 -- ARM: each pose's hands from the middle of the shoulders and its elbows' pull, in winner heights { to the kid's right,
 -- up, back }; "hips" is Book Kicker's fist on the side of the hips.
@@ -27,17 +28,26 @@ local CHEST_OUT, CHIN, READ_LOOK, LOOK_MORE, HIPS_TURN, TWIST, SHIFT, HIP = 6, 8
 local TURNS = { { AP.up, 0 }, { 3.0, 35 }, { 3.4, 35 }, { 4.2, -35 }, { 4.5, -35 }, { AP.lower, 0 }, { AP.wind, 0 }, { 7.2, -TWIST }, { AP.through, 15 }, { AP.brush, 0 } }
 local ARMS = { { 0, "read" }, { AP.snap, "read" }, { 2.2, "lift" }, { AP.up, "high" }, { AP.lower, "high" }, { 5.3, "spread" }, { 5.6, "face" }, { AP.wind, "face" }, { 7.2, "wind" },
 	{ AP.whip, "wind" }, { AP.through, "slap" }, { 7.75, "slap" }, { 8.1, "palms" }, { AP.brushed, "palms" }, { AP.folded, "fold" } }
+local EDGE = 0.155 -- both hands on the card: each one this far from the body's middle, on a side edge (the card is 0.264 wide)
 local ARM = {
-	read = { Right = { V(0.06, -0.34, -0.22), V(0.6, -1, 0.3) }, Left = { V(-0.06, -0.34, -0.22), V(-0.6, -1, 0.3) } },
-	lift = { Right = { V(0.12, 0.22, -0.42), V(1, -0.2, -0.2) }, Left = { V(-0.12, 0.22, -0.42), V(-1, -0.2, -0.2) } }, -- the snap goes up in front of the face
-	high = { Right = { V(0.12, 0.4, -0.06), V(1, 0.5, 0.5) }, Left = { V(-0.12, 0.4, -0.06), V(-1, 0.5, 0.5) } },
+	read = { Right = { V(EDGE, -0.2, -0.2), V(0.6, -1, 0.3) }, Left = { V(-EDGE, -0.2, -0.2), V(-0.6, -1, 0.3) } },
+	lift = { Right = { V(EDGE, 0.12, -0.3), V(1, -0.2, -0.2) }, Left = { V(-EDGE, 0.12, -0.3), V(-1, -0.2, -0.2) } }, -- the snap goes up in front of the face
+	high = { Right = { V(EDGE, 0.335, -0.03), V(1, 0.5, 0.5) }, Left = { V(-EDGE, 0.335, -0.03), V(-1, 0.5, 0.5) } },
 	spread = { Right = { V(0.32, 0.25, -0.06), V(1, -0.6, 0.2) }, Left = { V(-0.38, 0.1, -0.05), V(-1, -0.6, 0.2) } }, -- down round the outside
 	face = { Right = { V(0.28, 0, -0.06), V(1, -0.6, 0.2) }, Left = { "hips" } },
 	wind = { Right = { V(0.3, 0.1, 0.25), V(0.5, -0.4, 1) }, Left = { V(-0.2, -0.15, -0.2), V(-1, -0.5, 0.2) } },
 	slap = { Right = { V(0.15, 0.12, -0.32), V(0.5, -1, 0) }, Left = { V(-0.2, -0.2, -0.05), V(-1, -0.5, 0.3) } },
 	palms = { Right = { V(0.03, -0.25, -0.15), V(1, -1, 0.3) }, Left = { V(-0.03, -0.25, -0.15), V(-1, -1, 0.3) } },
-	fold = { Right = { V(-0.1, -0.13, -0.12), V(1, -0.3, -0.6) }, Left = { V(0.1, -0.1, -0.1), V(-1, -0.3, -0.6) } },
 }
+-- Folded arms (Alan on the first recording: "the arm cross is unnatural": each hand was pulled to a point across the
+-- chest, which no avatar's arms reach bent (the shoulders are too far apart for them), so it left two nearly
+-- straight arms in an X low at the waist, the hands sticking out past the sides). Two references: the fold in the
+-- video he picked (9 to 11 s): forearms across the chest, one over the other, hands tucked; and how Roblox's own
+-- move generator folds an avatar's arms: the end pose of our clip Camera Flick C (docs/workshop/emote-making.md:
+-- "then cross the arms ... ending with arms crossed"), which is what a fold looks like on these bodies: the
+-- forearms crossed high and tight on the chest, the elbows out. The arms' joint turns are taken from that pose
+-- (CROSS of its seconds), which every body plays the same.
+local CROSS = { clip = "rbxassetid://139618321795363", at = 2.9 }
 local BRUSH = { { 8.1, 0 }, { 8.25, 0.04 }, { AP.brushed, 0 } } -- the right palm up the left one, heights
 local NODS = { { 1.2, 0 }, { AP.nod, 8 }, { 1.85, 0 }, { 5.7, 0 }, { AP.nod2, 8 }, { 6.35, 0 } } -- head down, degrees
 local LOOK_DOWN = { { 0, READ_LOOK }, { AP.read, READ_LOOK }, { AP.up, -CHIN }, { AP.wind, -CHIN }, { 7.2, 0 }, { AP.brush, 10 }, { AP.brushed, 10 }, { AP.folded, -CHIN } }
@@ -74,6 +84,14 @@ function AP.pose(t, c)
 			return hand, shoulder + chest * p[2] * body.arm
 		end
 		local hand0, elbow0 = arm(from[2])
+		if to[2] == "fold" then
+			reach(turn, side, hand0, elbow0, false, 0.97) -- the pose it comes from, then joint by joint into the fold
+			local crossed = c.cross(CROSS.at)
+			for _, part in { "UpperArm", "LowerArm", "Hand" } do
+				turn[side .. part] = turn[side .. part]:Lerp(crossed[side .. part].Rotation, s)
+			end
+			continue
+		end
 		local hand1, elbow1 = arm(to[2])
 		local v0, v1 = hand0 - shoulder, hand1 - shoulder
 		local axis, angle = arc(v0.Unit, v1.Unit):ToAxisAngle()
@@ -91,5 +109,5 @@ function AP.pose(t, c)
 	end
 	return turn
 end
-CUTS.APlus = { length = AP.length, once = true, marks = AP.marks, clips = { fly = P.fly }, pose = AP.pose }
+CUTS.APlus = { length = AP.length, once = true, marks = AP.marks, clips = { fly = P.fly, cross = CROSS.clip }, pose = AP.pose }
 _G.A_PLUS = AP -- for the number checks (emote_preview.py --run)

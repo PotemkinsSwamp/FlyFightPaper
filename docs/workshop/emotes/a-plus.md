@@ -6,9 +6,10 @@ A 1st-place emote that covers the camera. Made by the [emote pipeline](../emote-
 **The idea:** Holds up their report card and slaps it on the lens, where it becomes the real report card.
 
 ## Where it stands
-**Back to step 4: fixing Alan's notes** (2026-11-22). Built, recorded once by the primary session; Alan: "it was ok
-but needs a lot of work" (the two-handed hold, the switch to one hand, the folded arms). Handed over to a new session
-on Fable: see "Hand-over" below. Its sounds are cut and timed, not uploaded.
+**Step 4: two of Alan's three notes fixed and checked by numbers in Edit, the third waits for his pick** (2026-11-22,
+the new session). Done: the two-handed hold, the folded arms, and the wrong landing of both recordings. Open: the
+switch to the right hand: two plans in words are with Alan (see "Second pass"); nothing of it is built. Not recorded
+since. Its sounds are cut and timed, not uploaded.
 
 ## Shot card
 **OK'd by Alan, 2026-11-22**, with his picks: "I like the idea. I think it should show only the front. I think it
@@ -142,10 +143,10 @@ first one".** Gemini spent on A+: about $0.61.
     gold star), copied once when the winners' moment starts. Its pictures and printed words stay; every filled-in
     word (names, numbers, grades, the term, the place, the note, the pocket money, the level) is hidden under a faint
     zig-zag of ink, as long as the word was and in its colour. Unseen in the dark until 1st's light.
-  - **In the hand:** its bottom edge on the right hand every frame, facing the kid while reading (top leaning 25
-    degrees away), turned to face the camera over the snap (2.0 to 2.35), then turning with the chest; centred
-    between the two hands until 5.0, over the right hand from 5.6. Where its plane cuts the head it moves out
-    sideways or up by the overlap, so it never goes through a head of any size.
+  - **In the hand:** in both hands until 5.0 (how: "Second pass"), facing the kid while reading (top leaning 25
+    degrees away), turned to face the camera over the snap (2.0 to 2.35), then turning with the chest; standing on
+    the right hand (its bottom edge on the hand) from 5.6. In the one hand, where its plane cuts the head it moves
+    out sideways or up by the overlap, so it never goes through a head of any size.
   - **The slap:** at Release it leaves the hand and flies 0.4 s to the lens in the camera's own frame (a straight
     path, so it grows slowly, then fast), turning square on the way. It lands at 7.8 on the real card's rectangle,
     worked out every frame from the real page's place, size and turn on this screen, at the depth where the card's
@@ -225,6 +226,64 @@ causes:
 How to work it: re-bake after every cut change (the command under "Build"), check by numbers in Edit (`emote_preview.py
 --run` and a dry run of the module, as above), then ask the primary session for a new recording. The pipeline's rules
 still hold: [emote pipeline](../emote-pipeline.md).
+
+## Second pass (2026-11-22, the new session)
+**Looked at first:** the first recording's own frames of 1st (a slim avatar), two a second. Seen: reading, the card
+hides chest and face and the hands hang under it; held up, the hands are together at the forehead and the card floats
+over the head, off to the kid's left; from 5.0 it slides through the air to over the right hand; the "fold" is two
+nearly straight arms in an X at the waist, the hands sticking out past both sides.
+
+**Why (measured in Edit on the plain body and five of the bots' saved outfits):** a clip stores joint turns, and the
+same turns put the hands in different places on every body: held up, a card's width apart on the test kid, 0.01
+heights apart on two slim bodies. The lesson was already written for Nap and Good Game
+([lessons](../lessons.md)): a hand that must be on something is bent there on each body after the clip.
+
+1. **Both hands on the card's side edges, on every body.** In both hands the card's place now comes from the body
+   alone (`held` in the module): at the belly reading (clear of chest and hips), up in front of the face over the
+   snap, then over the head with its bottom edge 0.01 heights clear of the head part. Each frame both arms are bent
+   again onto its two side edges, level, with the scene's own `bendArm` and `rig` (`bend`, from
+   `RunService.PreSimulation`; `APlus.stop` ends it). **Needs from the primary session: `rig` and `bendArm` lent in
+   `Cutscene.kit`** (one line; without them the module runs and the hands stay where the clip puts them). Numbers,
+   six bodies, with the scene's own two functions' text: left and right the same to the thousandth; each hand's
+   middle 0.02 to 0.04 heights outside its edge (a fifth of the hand's own width), on the card's plane within 0.003;
+   0.45 of the card's height up its edges reading, 0.12 held up (0.05 and 0.10 on two bodies whose arms are short:
+   both hands lower by the same). Over the snap the card turns round between the hands (0.35 s), as before.
+2. **Folded arms.** No avatar can fold its arms the way a person does: the shoulders are too far apart for the arms
+   (the hands meet only at the middle of the chest on all six bodies). The old pose reached for points across the
+   chest, which straightened the arms into the X. References: the fold in Alan's video (9 to 11 s: forearms across
+   the chest, one over the other, hands tucked) and the end pose of our own clip Camera Flick C, made by Roblox's
+   move generator from "cross the arms ... ending with arms crossed" ([emote log](../emote-making.md)): how a fold
+   is posed on these bodies. The arms' joint turns now come from that pose (`CROSS` in the cut), from the palms'
+   brush on (8.4 to 9.1). Seen only as my own offline box drawings of the dumped numbers, on the plain body and two
+   outfits: forearms crossed tight and high on the chest, elbows out, hands near the opposite shoulders; no hand
+   outside the body's outline. Not seen in Roblox by anyone.
+3. **The landing (both recordings).** Two causes, both fitted to the second recording's numbers (predicted 0.405 to
+   0.705 across and its bottom at 0.75 down; measured 0.40 to 0.70 and 0.74): the scene writes its camera after the
+   module's step, so the camera still held the flying camera's lens (70 degrees against the scene's 50: 1.5 times
+   too big); and Roblox counts a screen piece's position from under its top bar (58 px;
+   [GuiBase2d.AbsolutePosition](https://create.roblox.com/docs/reference/engine/classes/GuiBase2d)), which put it
+   that much too high in both recordings. Now: the scene's own `fov` for this frame, and positions measured from
+   the full-screen layer's own corner. Checked in Edit against a stand-in of the results screen with Roblox's own
+   camera (`WorldToViewportPoint`), solo, team with Page1 starred, team with Page2 starred: middle, width, height
+   and turn the same to 0.01 px (2046 x 801 window, 786 steps of the whole emote, no error). **An earlier Edit
+   check of this was empty:** its stand-in was never read, so it tested the no-card fallback, which sits on the
+   solo spot. Edit has no top bar, so the 58 px is proven only by the recordings' numbers and Roblox's page.
+4. **The switch to the right hand: two plans in words, for Alan's pick.** Both keep the throw from 7.25 on and both
+   end with the card standing on the right hand as in the recording. In both, the card comes down from over the
+   head to the chest in both hands first, and the right hand moves under the middle of its bottom edge while the
+   left still holds it, so the card never slides through a hand.
+   - **A, both hands until the throw (my pick):** the card is shown at the chest in both hands, chin up, a slow nod
+     (5.0 to 6.3); then the right hand takes it from under and draws it back past the shoulder in one sweep while
+     the left lets go (6.3 to 7.2). Fewest moves; drops the card's beat "beside the face in one hand, fist on the
+     hip" and makes the pull-back start at the chest.
+   - **B, a clear let-go, then beside the face:** down to the chest (5.0 to 5.4), the right hand takes it from under
+     (to 5.65), the left lets go to a fist on the hip as the right lifts it out beside the head (to 6.05), a short
+     hold and nod, then the pull-back exactly as recorded. Keeps the shot card as OK'd; four moves in a second and
+     a half.
+
+**Checks:** `tools/emote_preview.py --run` with throwaway scripts (the module's text, the scene's `rig` and
+`bendArm`, bodies made unparented and dropped in the same call; no Play, the camera only read, no picture). The
+clip is baked again (`APlusClip` draft and `a-plus.rbxm`) with the new hold and fold and the old switch.
 
 ## Sound (step 5)
 - **From the video Alan picked** (`a-plus-gemini-api-1.mp4`; its sounds were in what he OK'd), measured every 10 ms,
