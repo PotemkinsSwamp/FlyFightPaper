@@ -13,3 +13,10 @@
 - The faint paper flutter while the planes circle: not mentioned (it was about 30 dB under the rest). By his rule for the whoosh (heard from the camera), it goes.
 - Whether one whoosh per plane or one for the whole line: his words are "as it's flying over the camera"; built as one per plane unless he says otherwise.
 - How he saw the fly-over build before calling it good.
+
+## On the second try (same day; `.planning/emotes/magician-sound-try2.mp4`, from a new recording of the fly-over; the first file sent was silent, Claude's broken mix: "there's no sound at all")
+| Alan | What changes |
+|---|---|
+| "Sounds better." "The sound of them flying over is good." | The whoosh over the camera is approved as it is in try 2. |
+| "I don't really like the magical sound. There doesn't really need to be a magical sound when they're lifting ... I don't like the sparkle. It sounds too much like fantasy magic ... I'm thinking more of like a bass, like a subwoofer, like a sci-fi kind of sound." | The shimmer goes. No lift-off sound is needed; if there is one, it is a low bass, sci-fi swell, not a sparkle. Shown both ways for his pick. |
+| "I liked the sound that originally was happening when they were flying, when the paper airplanes were flying around them. Should have been a little bit more subtle, but I liked it. So I say we should put that in there as well." | The faint paper flutter from the first try comes back while the planes circle, a little quieter than it was. |
