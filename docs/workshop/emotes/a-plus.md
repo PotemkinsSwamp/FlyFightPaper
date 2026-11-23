@@ -6,8 +6,8 @@ A 1st-place emote that covers the camera. Made by the [emote pipeline](../emote-
 **The idea:** Holds up their report card and slaps it on the lens, where it becomes the real report card.
 
 ## Where it stands
-Step 3: the card is OK'd with Alan's picks (2026-11-22); the Gemini prompt is written, the call waits for his go
-(about $0.26). Nothing made.
+Step 3: the card is OK'd with Alan's picks (2026-11-22); the reference video is made and waits for his look and
+listen. Nothing built.
 
 ## Shot card
 **OK'd by Alan, 2026-11-22**, with his picks: "I like the idea. I think it should show only the front. I think it
@@ -78,7 +78,24 @@ the real card, so nothing jumps at the swap; the real card is not changed.
 **The prompt** (`.planning/emotes/a-plus-gemini-prompt.txt`, untracked): an 11 s shot at 360p, the mannequin on a
 shoulder-high stack of six books, the card's times as in the table, the card stuck on the lens's right third from
 7.8 s, the two sounds asked for at their moments (the slap the loudest), no music. Price: about $0.26 (11 s x 1,931
-video tokens a second at $12 a million, the words almost free). Waits for Alan's go.
+video tokens a second at $12 a million, the words almost free).
+
+**The video** (Alan: "go make the video"; about $0.26: 611 text tokens in, 21,241 video tokens out):
+`.planning/emotes/a-plus-gemini-api-1.mp4`, 11 s, 640x360, with sound. What my stills show (two a second, ten a second
+over the throw):
+- **As asked:** reading it at the chest 0 to 1.5 s; snaps it up overhead with both arms at 2.0 to 2.5; the throw at
+  7.3 to 7.7 (the arm swings in from the side, the card goes flat and flies at the camera); at 7.9 it is stuck flat and
+  square on the right third, and stays; palms rubbed together 8.1 to 8.4; arms folded, weight on one leg, still to the
+  end.
+- **Not as asked:** the card is held in the kid's left hand (the picture's right) from 3.5 s, with the other fist up at
+  4 to 4.5 and on the hip from 5; the turn shows only one side (side-on at 3.0 s), not both; the reading shows the
+  card's printed front, not its back; the stack is about knee-high, not shoulder-high (asked for by size, missed again,
+  as with Bubblegum).
+- **Sound** (by loudness, not heard by me): a quiet paper flap at 2.3 to 2.4 s, on the snap overhead; a faint swish at
+  7.4 to 7.5 on the throw; the smack at 8.0 s, about 18 dB over the flap, 0.1 s after the card lands in the picture.
+  Nothing else, no music.
+
+Waits for Alan's look and listen.
 
 ## Files
 None yet.
