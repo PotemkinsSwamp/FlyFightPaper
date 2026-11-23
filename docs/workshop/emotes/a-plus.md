@@ -212,6 +212,15 @@ causes:
    folded arms, or a video) before re-posing.
 4. **Unchanged and fine per Alan:** the throw. The flight, the landing and the swap were not commented on.
 5. **Still open for Alan:** the three "for Alan to judge" points above, and the sounds (cut, not yet heard by him).
+6. **First step, a bug from the second recording** (the primary session's, after the hand-over; raw
+   `.planning/emotes/aplus-second-run-raw.mp4`, 2032 x 800, 1st's light at 11.97 s, landing about 19.8 s, the real cards
+   from about 22.3 s; no script error). It was a team match, so two pages stood side by side. The copy landed about
+   1.6 times too big, in the middle over 1st: about 0.40 to 0.70 across, its top off the screen, its bottom at 0.74
+   down. The real Page1 was at 0.44 to 0.63 across and 0.07 to 0.74 down, Page2 at 0.65 to 0.84. Its bottom and
+   left edge are nearly right, its size is not. Not yet explained: the Edit stand-in of a team spot (Fit 0.8) matched
+   Roblox's own layout, so compare `rectangle()` with RoundEnd's real frames in the team layout (`makePage`, `LAYOUT`,
+   `layOut`, every UIScale between the sheet and the page). 1.6 is more than the missing 0.8 alone would give. Fix it,
+   check both layouts by numbers, and the next recording must pass in whichever mode the match is.
 
 How to work it: re-bake after every cut change (the command under "Build"), check by numbers in Edit (`emote_preview.py
 --run` and a dry run of the module, as above), then ask the primary session for a new recording. The pipeline's rules
