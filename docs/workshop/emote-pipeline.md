@@ -9,9 +9,9 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 | Emote | Page | Step it is on |
 |---|---|---|
 | So Close | [so-close](emotes/so-close.md) | 6, approved by Alan on the recording (2026-11-22: the sigh was "way too loud", then with the quieter file "its good"); uploaded and wired in on his go (2026-11-22); waits for his own Play |
-| Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 6, recorded muted 2026-11-22, two takes (runner-ups dancing, and on So Close; no error); the thrown planes are very small on the screen; waits for Alan's look and listen |
+| Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 6, recorded muted 2026-11-22, two takes (runner-ups dancing, and on So Close; no error); Alan finds the planes' size fine; third take with the new crossed arms recorded 2026-11-22 (`.planning/emotes/skeet-shoot-second-run-sound.mp4`, no error; 1st was a pale avatar, the arms hard to read); waits for Alan's look and listen |
 | A+ | [a-plus](emotes/a-plus.md) | 4 again (2026-11-22): Alan's notes on the first recording (the two-handed hold lopsided, the switch to one hand and the folded arms unnatural, the throw fine) and the card's landing size in both report card layouts; Alan restarted it in a new session of his own, which starts from the page's "Hand-over" |
-| Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, recorded muted 2026-11-22 (no error); waits for Alan's look and listen, and his pick of the drawing |
+| Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, drawing 2a picked and uploaded (his go), on the poster; recorded again 2026-11-22 with the arms that fold (`.planning/emotes/fold-it-up-soclose-second-run-sound.mp4`, no error); waits for Alan's look and listen |
 
 The primary session keeps this table; a side session reports its step in its own page.
 
