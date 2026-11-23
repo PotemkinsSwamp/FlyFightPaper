@@ -6,9 +6,9 @@ A 1st-place emote that covers the camera. Made by the [emote pipeline](../emote-
 **The idea:** Holds up their report card and slaps it on the lens, where it becomes the real report card.
 
 ## Where it stands
-**Ready to record** (2026-11-22). Built from Alan's pick of the two reference videos, checked by numbers in Edit only:
-nobody has seen it move, never run in Play. Its sounds are cut and timed, not uploaded. Next: step 6, the primary
-session's muted recording and Alan's look and listen.
+**Back to step 4: fixing Alan's notes** (2026-11-22). Built, recorded once by the primary session; Alan: "it was ok
+but needs a lot of work" (the two-handed hold, the switch to one hand, the folded arms). Handed over to a new session
+on Fable: see "Hand-over" below. Its sounds are cut and timed, not uploaded.
 
 ## Shot card
 **OK'd by Alan, 2026-11-22**, with his picks: "I like the idea. I think it should show only the front. I think it
@@ -188,6 +188,34 @@ first one".** Gemini spent on A+: about $0.61.
   with it.
 - **For Alan to judge, not bugs:** the landed card covers 3rd for the last 2.6 s; the card's back hides the kid's
   chest and chin for the first 2 s; with A+ on 1st, So Close's sigh is cut by A+'s first sound at 2.2 s.
+- **Alan on the first recording** (2026-11-22; he watched the recording from before the landing fix): "it was ok but
+  needs a lot of work". His notes: "when they hold up the report card ... they are not holding it symmetrically with
+  both hands placed on either side, its being held heavy on their left then they transfer it to their right hand and
+  it looks completley unnatural, the throw is fine but the arm cross is unnatural as well." He did not comment on the
+  three points above, the sounds or the landing.
+
+## Hand-over (2026-11-22)
+Alan is moving this emote to a new session on Fable to fix what went wrong. Where it stands: built, recorded once,
+the landing fixed afterwards (commit 45b87665, not yet recorded). What to fix, from his notes, with my reading of the
+causes:
+1. **Hold it with both hands, symmetric, one on each side edge.** Cause: the module puts the card's bottom edge on the
+   right hand and its middle only `GRIP_LEFT` (0.06 heights) to the kid's left of it, while the cut's two-handed poses
+   put the hands 0.12 (reading) to 0.24 (overhead) heights apart around the body's middle: the card hangs off the right
+   hand, with the left hand somewhere under it. A fix: in the cut, both hands at the card's two side edges (a card
+   width apart, 0.265 heights), level, centred on the body; in the module, the card's middle at the midpoint of the two
+   hands and its sideways direction along the line between them.
+2. **The hand-over to the right hand (5.0 to 5.6 s) looks unnatural.** Not yet designed: a new plan in words for
+   Alan's OK before building (for example keep both hands until the wind-up, or let go with one hand in a clear move).
+   The card's beside-the-head beat and the one-handed throw both hang on it.
+3. **The folded arms (from 8.6 s) look unnatural.** Cause: each hand is pulled by `reach` to a point on the other
+   side of the chest; nothing shapes the forearms into a stacked fold. Look at a reference first (a Roblox emote with
+   folded arms, or a video) before re-posing.
+4. **Unchanged and fine per Alan:** the throw. The flight, the landing and the swap were not commented on.
+5. **Still open for Alan:** the three "for Alan to judge" points above, and the sounds (cut, not yet heard by him).
+
+How to work it: re-bake after every cut change (the command under "Build"), check by numbers in Edit (`emote_preview.py
+--run` and a dry run of the module, as above), then ask the primary session for a new recording. The pipeline's rules
+still hold: [emote pipeline](../emote-pipeline.md).
 
 ## Sound (step 5)
 - **From the video Alan picked** (`a-plus-gemini-api-1.mp4`; its sounds were in what he OK'd), measured every 10 ms,
