@@ -9,7 +9,7 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 | Emote | Page | Step it is on |
 |---|---|---|
 | So Close | [so-close](emotes/so-close.md) | 6, recorded muted 2026-11-22 (no error); waits for Alan's look and listen |
-| Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 2, card written 2026-11-22, waits for Alan's OK |
+| Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 6, recorded muted 2026-11-22, two takes (runner-ups dancing, and on So Close; no error); the thrown planes are very small on the screen; waits for Alan's look and listen |
 | A+ | [a-plus](emotes/a-plus.md) | 4 again (2026-11-22): Alan's notes on the first recording (the two-handed hold lopsided, the switch to one hand and the folded arms unnatural, the throw fine) and the card's landing size in both report card layouts; Alan restarted it in a new session of his own, which starts from the page's "Hand-over" |
 | Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, recorded muted 2026-11-22 (no error); waits for Alan's look and listen, and his pick of the drawing |
 
