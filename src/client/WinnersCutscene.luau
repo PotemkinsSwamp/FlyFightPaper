@@ -1527,7 +1527,8 @@ end
 -- gets which is decided: DevFirstEmote (1st) or DevRunnerUp (2nd and 3rd) names the module. `kit` is what this
 -- file lends them. (Both hang on `Cutscene`, like GUM's and MAGIC's functions, to keep this file's locals down.)
 Cutscene.kit = { paper = paper, ease = ease, flat = flat, sit = sit, seatOn = seatOn, holdPlane = holdPlane, jolted = jolted,
-	ourClip = ourClip, runnerSound = runnerSound, Audio = Audio, Rounds = Rounds, Avatars = Avatars }
+	ourClip = ourClip, runnerSound = runnerSound, Audio = Audio, Rounds = Rounds, Avatars = Avatars,
+	rig = rig, bendArm = bendArm } -- (the scene's own arm bend, as Nap's: A+ puts both hands on its card on every body)
 function Cutscene.pipelineEmote(place)
 	local name = place == 1 and (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote")) or Cutscene.runnerUpName(place)
 	local folder = script.Parent:FindFirstChild("emotes")
