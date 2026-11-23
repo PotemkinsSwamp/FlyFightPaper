@@ -6,9 +6,11 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Sits on the books shaking their head, sad not to be 1st (Alan).
 
 ## Where it stands
-Step 2: the shot card is written (2026-11-22) and waits for Alan's OK. Nothing made.
+Step 3: the card is OK'd (2026-11-22); the Gemini prompt is written and waits for Alan's go (about $0.28). Nothing made.
 
 ## Shot card
+**Alan's OK (2026-11-22):** "yes, cross-legged, sigh, keep the glance" (all three of my defaults below).
+
 **The feeling, in one line:** "So close. I almost had it." Let down and deflated; not angry, not sulking, not crying.
 
 **How the body carries it** (faces cannot): the tempo is slow and heavy, every move a little late and nothing snaps;
@@ -48,6 +50,30 @@ light: 3rd is lit about 12.4 s, 2nd about 11.4 s. Times below are seconds after 
      My default: cross-legged.
   2. Sound: one very quiet sigh at the sag **or** none at all. My default: the sigh.
   3. The glance at 1st is my addition: keep it or drop it. My default: keep (it says *why* they are sad).
+
+## Reference video (step 3)
+One Gemini call, `tools/gemini_video.py`, 360p, 12 s (the longest a runner-up is lit, rounded down), sound on.
+Price by Bubblegum's two calls (about 1,930 video tokens a second at $12 a million): about **$0.28**. Waits for Alan's go.
+The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the picture's left, as from 3rd's desk;
+2nd's is the mirror):
+
+> One continuous 12-second shot, no cuts. Fixed camera, straight on, level with the seated figure's chest, not moving or zooming. Plain light grey room, soft even light, no text, no music.
+>
+> A simple smooth grey mannequin with no face sits cross-legged on top of a solid, steady stack of six large dark hardback books. The whole stack and the whole figure are in the picture, with empty space above the head. The mannequin faces the camera for the whole shot; its hips and crossed legs never leave their spot on the top book.
+>
+> Attitude: a kid who just lost a contest by a tiny margin and came second. Let down and deflated: not angry, not sulking, not crying. Every move is slow and heavy, a little late; nothing snaps.
+>
+> Hard rule for the hands: at the start both hands rest on the knees; after the sigh both forearms rest on the thighs with the hands hanging loose over the knees. The hands never touch the face or the head.
+>
+> 0 to 1 s: sits fairly upright, hands on the knees, head up, looking at the camera. One small breath.
+> 1 to 2.1 s: the head turns slowly to the left of the picture, as if looking at the winner sitting just beside it, and rests there.
+> 2.1 to 3.3 s: one big sigh: the shoulders rise a little, then everything sags. The chest curls forward, the shoulders drop, the head falls forward and comes back to face the front, the forearms slide onto the thighs, the hands hang loose over the knees. A soft, quiet sigh is heard.
+> 3.3 to 6.3 s: three slow head shakes, "no", the head still hanging low; small turns, the last one the slowest.
+> 6.3 to 9 s: stays slumped and still; one slow breath.
+> 9 to 10.2 s: one more short, smaller head shake, two turns.
+> 10.2 to 12 s: stays slumped and still.
+>
+> Sound: only the one soft sigh at 2.1 s; silence the rest of the time. No music.
 
 ## Files
 None yet.
