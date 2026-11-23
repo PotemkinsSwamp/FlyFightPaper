@@ -1030,6 +1030,7 @@ Back to [HOME](../HOME.md)
   seconds did (user32 `mouse_event`, there and back). Alan, 2026-11-16: "you are going to have to keep it awake while you
   need the screen drawing": start the nudge before every Play that must draw, and stop it after.
   Count `RenderStepped` frames before every measurement, not only at the start.
+- **A video with sound: check the finished file plays, not only its loudness** (2026-11-22, Magician's second sound try): a mix built in one ffmpeg filter chain (trim, fade, delay, mix) came out with a sound track starting at 1.9e14 s; `volumedetect` still read a healthy peak and Alan heard nothing. Build the track as a WAV first (pieces placed by sample), join it to the picture, then read the sound stream's `start_time` and `duration` with ffprobe and decode the file once.
 - **A minimised Studio records only the flat layer** (2026-11-22, Magician's first recording): `RenderStepped` ran at
   60 a second, the view read 2046 x 801 and the script found the kid's head on the screen, yet the video held the name
   plates and the report card on an empty dark picture (colour 23, 27, 30), from its first frame on. The frame count
