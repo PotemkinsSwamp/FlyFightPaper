@@ -1599,7 +1599,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local standing = Instance.new("Animation"); standing.AnimationId = IDLE[humanoid.RigType] or IDLE[Enum.HumanoidRigType.R15]
 	local idle = animator:LoadAnimation(standing); idle.Looped, idle.Priority = true, Enum.AnimationPriority.Idle
 	idle:Play(0)
-	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil or gum ~= nil or magic ~= nil or (extra ~= nil and extra.st.held == true), extra = extra, kick = kick, gum = gum, magic = magic, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
+	return { model = model, emote = emote, prop = prop, held = prop and not flick or kick ~= nil or gum ~= nil or magic ~= nil or (extra ~= nil and extra.st.held == true), extra = extra, actorId = actorId, animator = animator, kick = kick, gum = gum, magic = magic, pilot = prop and not flick and pilot and true, flick = flick and flickInfo or nil, place = place, scale = scale, big = big, spot = spot, desk = desk, lit = false }
 end
 
 -- The name plates under the winners (place, name, points) on the main menu's paper strips, one ScreenGui on this screen.
@@ -1888,8 +1888,12 @@ function Cutscene.play(winners, onStage)
 				if w.pilot then pilotSounds(w, since) end
 			elseif w.kick then kickBooks(w, since, shot, steady, height)
 			elseif w.gum then gumBubble(w, since, shot, height, fov)
-			elseif w.magic then magicPlanes(w, since, shot, height)
-			elseif w.extra and w.extra.made.step then w.extra.made.step(w.extra.st, since, shot, steady, state.winners, fov) end
+			elseif w.magic then magicPlanes(w, since, shot, height) end
+			w.since = since
+		end
+		-- Pipeline emotes run once all three stand where they belong this frame: one may use the others (Skeet Shoot).
+		for _, w in state.winners do
+			if w.extra and w.extra.made.step then w.extra.made.step(w.extra.st, w.since, shot, steady, state.winners, fov) end
 		end
 		local stage = t < arrive and "banner" or t < leave and "group" or "card"
 		if stage ~= state.stage then state.stage = stage; onStage(stage) end
