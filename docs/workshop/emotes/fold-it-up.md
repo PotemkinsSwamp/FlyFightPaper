@@ -6,7 +6,18 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 **The idea:** Grabs the picture itself, folds the whole screen into a paper plane and throws it away.
 
 ## Where it stands
-Step 1: the shot card is written and waits for Alan's OK. Nothing is made.
+Step 1: the first card is turned down; the emote is being rethought without a screenshot. Nothing is made.
+
+## Alan on the first card (2026-11-22)
+- **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
+  head, look directly at the camera, tilt their head like they're observing, then take their hands together and rub
+  them together close to their body." My mistake: the card asked the face for a grin.
+- **The screenshot:** he doubts it works every time in the live game and is reliably thrown away after; "I don't
+  know if this is the direction we want to go."
+- **Folding the view itself:** "there's just no way to make that happen", and nothing sensible is left behind it
+  (only black). His only working version: the kid grabs the screen, rips it off, the camera switches to one behind,
+  and the kid folds what looks like a picture of the screen; which brings the screenshot back.
+- **His verdict: "this one has to be rethought."**
 
 ## How the picture can be folded (read 2026-11-22; nothing built or tried)
 Read from Roblox's API reference (the docs' own source files, pages dated 2026-11-20) and the Roblox staff answers in
