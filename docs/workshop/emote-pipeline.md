@@ -8,7 +8,7 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 ## Emotes in the pipeline
 | Emote | Page | Step it is on |
 |---|---|---|
-| So Close | [so-close](emotes/so-close.md) | 2, card written 2026-11-22, waits for Alan's OK |
+| So Close | [so-close](emotes/so-close.md) | 6, ready to record (2026-11-22); the recording waits for Alan's go |
 | Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 2, card written 2026-11-22, waits for Alan's OK |
 | A+ | [a-plus](emotes/a-plus.md) | 2, card written 2026-11-22, waits for Alan's OK |
 | Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 2, card written 2026-11-22, waits for Alan's OK |
