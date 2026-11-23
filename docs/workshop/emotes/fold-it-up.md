@@ -105,11 +105,20 @@ Seconds after 1st's light. The scene leaves at its usual 10.4 s, so the report c
 | 8.8 to 10.4 | Dusts off the hands, arms folded, chin up | Gone | The kid | None |
 | 10.4 | The scene leaves as usual | | The curtain lifts, the camera glides home, the report card comes up with its 10 s | Music |
 
-**For Alan to pick (my default first):**
-- **The reach:** (1) pinch through forced perspective, as in the table; (2) the beckoning finger.
-- **The sheet's size in his hands** (the kid is about a third of the screen's height): (1) poster size, about half
-  the kid's height, about a sixth of the screen tall, held up with both arms; (2) real paper size, a third smaller,
-  where the crown may be too small to read.
+**Alan on the second card (2026-11-22):** the drawing at **poster size**, about half the kid's height. The reach is
+not settled: "I just don't know what the forced perspective pinch would look like." He thought of the kid beckoning
+the camera forward, and dropped it himself: the zoom would have to work on every body and "it also ruins the
+picture". He asked to see it: a picture from me or a Gemini video.
+
+**The pinch, frame by frame (as told to Alan in words):**
+1. 3.0 s: all three as always; 1st raises one hand towards you. On the screen the hand is a small spot near the
+   middle.
+2. 3.6 s: his fingers close. A milky see-through sheet is suddenly over the whole view (the scene still seen through
+   it, a little white), pinched into a small point at his fingertips, with creases running from there to the
+   corners, as cling film does when you pinch it.
+3. 3.6 to 4.4 s: the sheet comes away from you towards his hand, getting smaller and whiter, always centred on his
+   hand: half the screen, then a quarter, until it is a poster in his fist. Round it the room is back.
+4. 4.4 s: he holds the poster, its white back to you, the crayon showing through; he turns it round.
 
 **The body:** none of the 12 Roblox emotes the game already uses rubs hands, pinches, crumples or throws (same
 finding as [A+](a-plus.md)). A body cut from the Gemini video, as Book Kicker and Bubblegum.
