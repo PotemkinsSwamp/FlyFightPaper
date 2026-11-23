@@ -6,10 +6,9 @@ A 1st-place emote that covers the camera. Made by the [emote pipeline](../emote-
 **The idea:** Holds up their report card and slaps it on the lens, where it becomes the real report card.
 
 ## Where it stands
-**Step 4 done again: Alan's three notes fixed, checked by numbers in Edit; asked for a new recording** (2026-11-22,
-the new session). The two-handed hold, the switch (his pick: both hands until the throw), the folded arms, and the
-wrong landing of both recordings: see "Second pass". Nothing of it has been seen moving in Roblox yet. It needs one
-line from the primary session (`rig` and `bendArm` in `Cutscene.kit`). Its sounds are cut and timed, not uploaded.
+**Step 6: recorded a third time, muted, with Alan's three notes fixed; waits for his look and listen** (2026-11-23;
+see "Third recording"). The two-handed hold, the switch (his pick: both hands until the throw), the folded arms and
+the landing are in "Second pass". A team match is not recorded yet. Its sounds are cut and timed, not uploaded.
 
 ## Shot card
 **OK'd by Alan, 2026-11-22**, with his picks: "I like the idea. I think it should show only the front. I think it
@@ -285,6 +284,27 @@ heights apart on two slim bodies. The lesson was already written for Nap and Goo
 **Checks:** `tools/emote_preview.py --run` with throwaway scripts (the module's text, the scene's `rig` and
 `bendArm`, bodies made unparented and dropped in the same call; no Play, the camera only read, no picture). The
 clip is baked again (`APlusClip` draft and `a-plus.rbxm`).
+
+## Third recording (step 6, the primary session's, 2026-11-23)
+- **Muted Play recording** (`.planning/emotes/aplus-third-run-raw.mp4`, 2032 x 800, 58 frames a second, 1st's light at
+  7.08 s; with the sounds laid in: `aplus-third-run-sound.mp4`, the flap 2.2 s and the slap 7.8 s after the light, the
+  track turned down a little because a file peaked at full): A+ on 1st, Next One on 2nd, So Close on 3rd, a
+  free-for-all; no game error. The primary session lent `rig` and `bendArm` in `Cutscene.kit` first (commit
+  23297af6e). 1st was the same slim avatar as in the first recording.
+- **Seen in my stills of 1st** (18 moments, and six close up at the end): reading, the card at the belly with a hand
+  on each side edge, the face clear above it; held up, both hands at its two bottom corners, the same through both
+  turns; down in front of the face to the chest, both hands on its sides, shown there; from 6.3 the right hand
+  carries it out past the shoulder and back, the card standing on it, the left hand out in front; the throw; the
+  palms; from 9.1 the forearms crossed high on the chest, each hand at the other shoulder, no hand outside the body.
+  At 10.3 s the real card is up where the copy was, the same size; the primary session saw no jump at the swap.
+- **One thing seen, not explained:** from about 10.3 s (the camera's leaving, the real card already up) the kid's
+  head is a plain grey block for a few frames and dark by 10.6, before the body goes. At 10.2 it is still a face.
+  The module makes and changes nothing of the head, and bends the arms only until 6.75 s; it looks like the scene's
+  own fade on the way home, on this avatar's head. Not chased; the primary session also saw one book of the stack
+  white in that frame.
+- **Not yet:** a team match (the landing there is proven only by Edit's numbers), the bots' other bodies in Play,
+  Alan's look. Still his to judge from before: the landed card covers 3rd for the last 2.6 s; So Close's sigh is cut
+  by A+'s first sound; the sounds.
 
 ## Sound (step 5)
 - **From the video Alan picked** (`a-plus-gemini-api-1.mp4`; its sounds were in what he OK'd), measured every 10 ms,
