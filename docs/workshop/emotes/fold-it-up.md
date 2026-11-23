@@ -8,7 +8,8 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 3 done: Alan's OK on the second video. Next: the drawing (Codex) and the growing arm (plan to Alan). Nothing is built.
+**Ready to record** (steps 4 and 5 done by numbers in Edit; nobody has seen it move). Waiting on Alan: his pick of the
+drawing (A, B or C), and step 6 (the primary session's recording, then the uploads).
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -170,5 +171,95 @@ a scrunch, a soft toss.
   and arm grow like it's reaching towards the camera, and then pull it and then shrink backwards ... How can we do
   that in a way that it works for every single model in a live game?"
 
+- **Alan on the growing arm (2026-11-22): "yes go ahead with the growing arm ... it's coming straight at the camera,
+  so you should really only see the hand ... it should all happen kind of like fast, so you don't think about it too
+  much."** The toss: backhand over the shoulder (his words of the second card; the video's was overhand), my default,
+  not asked again.
+
+## The drawing
+Codex (the picture tool on Alan's ChatGPT plan), brief `.planning/emotes/fold-it-up-drawing-brief.txt`: three close
+versions, 1200 by 900, `.planning/emotes/fold-it-up-drawing-a.png`, `-b`, `-c` (side by side:
+`fold-it-up-drawings-abc.png`). One layout: three stick figures on book stacks 2, 1, 3, a yellow crown on 1st, arms up
+in a V; the others' arms straight out; only the sun's corner and the book colours differ. **A blind reviewer (one Opus
+agent, given the pictures, the brief and Alan's words):** reads at 120 px (crown and numbers clear); crayon, careful,
+"a little too perfect up close"; no moderation risk (the outer figures' arms cross their bodies in a plain "+", the
+normal stick figure); B's brick red and yellow-green lean muddy; best A ("A's colours with B's sun corner" the best
+mix); the books end 15 px from the bottom edge. **Waits for Alan's pick**; not uploaded.
+
+## The build (step 4; 2026-11-22; numbers in Edit only, never run in Play, nobody has seen it)
+- **The body** (`tools/emote_cuts/fold-it-up.lua`, `CUTS.FoldItUp`; A+'s way: Toy Pilot's standing pose, the arms
+  from a table of poses, the head keyed, both feet held): 11 s, played once. Seconds after 1st's light: head tilted
+  to the kid's right 0.2 to 1.0, slowly to the left by 2.0 (14 degrees); hands together in front of the belly 2.0,
+  rubbing four strokes, head down 15; the right arm straight at the camera 3.0 to 3.3, the chest leaning in 8;
+  yanked back to the chest by 3.8; both hands to the poster's sides by 4.1; held out at the chest to 6.6, one head
+  tilt at 5.6; the hands working round each other (three turns) 6.9 to 7.6; the right hand low 7.8, up past the
+  shoulder at 8.15 and back over it 8.35, down round the outside 8.55; palms at the belly 8.7, two brushes; arms
+  folded by 10.0, chin up, the weight on the right leg. Marks: Pinch 3.3, Back 3.8, Show 4.5, Crumple 6.6, Ball 7.6,
+  Release 8.15.
+- **The clip:** baked into the open place's `Assets` as `FoldItUpClip` (an unsaved draft: what `ourClip` plays in
+  Studio), saved as `assets/animations/emotes/fold-it-up.rbxm`. To bake again after a close without a save:
+  `_G.EMOTE_CLIPS = { "cut:FoldItUp" }` in Edit, then `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua
+  "--bake=FoldItUp:FoldItUpClip:assets/animations/emotes/fold-it-up.rbxm"`.
+- **The module** (`src/client/emotes/FoldItUp.luau`; the Dev button "end: fold" sets `DevFirstEmote` = "FoldItUp"):
+  - **The hand at the lens:** from 3.05 the real right hand is hidden and a copy of it slides along the line from the
+    lens to the real hand, faster and faster, nearest at Pinch, back on the hand at Back. On the screen it stays on
+    the wrist and grows to 12 times its size (`GROW`); never nearer the lens than 0.3 studs. No arm part changes,
+    so sleeves and 3D clothes are never touched.
+  - **The sheet:** from Pinch, four triangles (two wedges each) from the corners of a sheet 1.15 times the picture,
+    half way between the lens and the hand, to the hand behind it: a tent, every other side a little greyer so the
+    creases read; 0.35 see-through, with a white Highlight so it stays paper-white in the dark. As the hand goes back
+    its corners close in on the poster's corners and the tent flattens; solid by Back.
+  - **The poster:** a part half a winner's height tall, 4 to 3; the drawing on its front (`DRAWING`, empty until the
+    upload: plain paper till then), on its back the same drawing mirrored and faint (through the paper). Its front
+    faces the kid until it turns round over 0.35 s ending at Show; from the right hand alone at Back to both hands'
+    middle by 4.1. Crumpling (Crumple to Ball) it shrinks to a twentieth while it wobbles.
+  - **The ball:** three paper lumps (0.11 winner heights) grow in the hands as the poster goes, ride the right hand,
+    and at Release fly up and back over the right shoulder (start speed 0.4 right, 2.2 up, 1.6 back, winner heights
+    a second; falling 4 a second a second), gone 1.1 s later in the dark behind.
+  - `covered` (name plates and the Menu tag put away): Pinch to 0.3 s after. The scene's own leave time is kept
+    (10.4 s after 1st's light): the report card keeps its 10 s.
+- **Measured on the test kid** (`emote_preview.py --run`, no pictures): the feet move at most 0.008 heights; a hand
+  or forearm at most 0.032 heights into the trunk's or head's boxes; at the pinch the arm points 10 degrees off
+  straight ahead and the hand is 0.37 heights in front of the chest; holding, the hands are 0.52 apart (the poster
+  0.67 wide) and its top 0.15 heights under the middle of the head.
+- **The module run in Edit with stand-ins** (its text, the test kid posed by the clip, a made-up camera 3.7 kid
+  heights off, as the scene's; no Play, Edit's camera untouched): no error; the copy hand 4% of the screen's height
+  at 3.2 s, **24% at the pinch**, 7% at 3.45, always exactly on the wrist on screen; at the pinch the sheet spans 1.7
+  to 1.8 times the picture's width and 1.2 its height; at 3.45 it has closed in to 0.6 of the width; the poster
+  turned to the kid until 4.3 and to the camera from 4.6; the ball 0.5 heights up and 0.5 behind the kid 0.45 s
+  after Release, 1.5 behind 1.05 s after; `covered` at 3.35, not at 3.7.
+- **On 14 of the bots' outfits in Edit** (the draft played with `Animator:StepAnimations`, every quarter second):
+  it plays on every one (the first body of each batch read as not moving: Studio still loading the clip, gone when
+  run again). The feet move at most 0.014 of the body's height; the right hand is 0.24 to 0.33 heights in front of the
+  chest at the pinch; a hand or forearm goes at most 0.043 into the body's boxes (arms folded at 10.0 s, A+'s fold,
+  and the toss on `4560704730`), after moving the rubbing and the dusting forward (they were 0.049 and 0.057 on big
+  bellies). Holding, the poster's top is from 0.10 under to 0.10 over the chin: on most bodies the chin is behind
+  it. **An Edit check is not Play.**
+- **Not known until it is seen in Play:** whether the growing hand reads as forced perspective or as a hand that
+  pops; how the sheet looks in the dark room (the Highlight's white); the poster's crayon at the scene's distance;
+  whether the smug head moves read on real avatars; gloves or wrist accessories stay at the wrist while the copy hand
+  travels.
+
+## Sound (step 5)
+Cut from the video Alan OK'd (`fold-it-up-gemini-api-2.mp4`; its sounds were in what he OK'd), measured every 10 ms;
+each file starts 0.025 s before its first sound, raised 5 dB, fades of 0.01 s in and 0.04 s out; not heard by me,
+not uploaded. **Left out:** the figure's own "hmmm" at 13.8 to 14.5 s of the video (Alan), and two faint hums at 8.2
+and 8.9 s. Times in seconds after 1st's light (`FoldItUp.sounds`; Audio names for step 6):
+
+| File | From the video | Length | Plays at | Audio name |
+|---|---|---|---|---|
+| `assets/audio/emotes/fold-it-up-peel.ogg` | 5.495 s (the sheet: crinkle and peel, 5.52 to 6.67) | 1.26 s | 3.275 (Pinch) | `foldPeel` |
+| `assets/audio/emotes/fold-it-up-flap.ogg` | 6.755 s (the poster turned, 6.78) | 0.23 s | 4.125 (the turn starts) | `foldFlap` |
+| `assets/audio/emotes/fold-it-up-scrunch.ogg` | 9.485 s (crumpling, 9.51 to 10.58) | 1.17 s | 6.575 (Crumple) | `foldScrunch` |
+| `assets/audio/emotes/fold-it-up-toss.ogg` | 11.215 s (the toss, 11.24; the loudest, peak -0.8 dB after the raise) | 0.24 s | 8.125 (Release) | `foldToss` |
+| `assets/audio/emotes/fold-it-up-dust.ogg` | 12.095 s (one tap of the hands, 12.12) | 0.23 s | 8.925 and 9.225 (the two brushes) | `foldDust` |
+
+The peel runs 0.76 s past Back, over the take and the turn. The first sound is at 3.275 (`firstSound`): the
+runner-ups' sounds stop before it.
+
 ## Files
-None yet.
+- `tools/emote_cuts/fold-it-up.lua`: the body cut.
+- `src/client/emotes/FoldItUp.luau`: the hand, the sheet, the poster, the ball, the sound times.
+- `assets/animations/emotes/fold-it-up.rbxm`: the baked clip (the draft `FoldItUpClip`).
+- `assets/audio/emotes/fold-it-up-peel.ogg`, `-flap.ogg`, `-scrunch.ogg`, `-toss.ogg`, `-dust.ogg`: the sounds.
+- Working files, untracked: `.planning/emotes/fold-it-up-*` (prompts, the two videos, the drawing brief and pictures).
