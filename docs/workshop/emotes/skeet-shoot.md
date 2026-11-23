@@ -6,7 +6,7 @@ A 1st-place emote that uses all three winners. Made by the [emote pipeline](../e
 **The idea:** The runner-ups throw their paper planes and 1st shoots them out of the air, like skeet shooting, with rubber bands off a finger or a slingshot: something a child would do (Alan). The runner-ups' own emotes pause while they throw, then carry on. It does not touch the camera; how it ends is open.
 
 ## Where it stands
-Step 2: the card's second version (2026-11-22, after Alan's notes on the first) waits for his OK. Nothing made.
+Step 3: the card is OK'd (2026-11-22, second version with his changes below). The Gemini video waits for his go on the price.
 
 ## Alan on the first card (2026-11-22)
 - Fingers don't work: "what if they don't have fingers? What if they just have like a R15? ... This is why it'd be
@@ -18,7 +18,14 @@ Step 2: the card's second version (2026-11-22, after Alan's notes on the first) 
 - He asked how the runner-ups' emotes are paused, and whether a napping kid stands up to throw.
 - He sees it is advanced: three characters animated, and it overrides the runner-ups' emotes.
 
-## Shot card (second version)
+## Alan's OK on the second card (2026-11-22)
+- The ending: no shrug; the 3 s are "the twirling, then taking it. So it twirls in their hand, like spins. Then they
+  stop. It stops. They take it. They tuck it behind their back, and then they get into a cool pose."
+- "The planes will fall out of the bottom of the picture."
+- "I'm okay with the two new mechanics."
+- On Nap throwing from sitting: "it'd have to be done carefully. We can try it, though."
+
+## Shot card (second version, OK'd with the changes above)
 **The feeling:** a cocky sharpshooter. 1st is cool and lazy, it's too easy: two shots, two hits, a twirl. The
 runner-ups are keen helpers: quick, eager throws. 1st's moves are slow and loose, the aim is dead still, only the
 puff of the shot is sharp; the second shot is taken without looking. The runner-ups move fast and snappy, then drop
@@ -40,12 +47,12 @@ scene's usual 10.4 s). 2nd and 3rd stand (or sit) on either side of 1st.
 | 2.8 to 3.6 | Looks back at the camera, cool; a small nod to 2nd's side **without looking** | Own emote | Sees the nod | Plane 1 lands | none |
 | 3.6 to 4.6 | Still looking at the camera | Own emote | Own emote **freezes**; the same throw, the other way | 2nd's plane rises across | none |
 | 4.7 | **Shot 2, no look:** head stays on the camera, the hand swings the straw out at the plane; puff | Own emote | Arm drops; own emote carries on | Spitball, stick, spiral down | puff; small wet tick |
-| 6.0 to 7.0 | **The twirl:** the straw comes off the mouth and spins once round the hand, like a cowboy's pistol | Own emote | Own emote | Plane 2 landed | none |
-| 7.0 to 7.6 | Tucks it behind the back | Own emote | Own emote | | none |
-| 7.6 to 10.4 | Back to the camera, cool stance (a little "what?" shrug at about 8 s: keep or drop, his call) | Own emote | Own emote | | none |
+| 5.5 to 6.0 | Lowers the straw from the mouth | Own emote | Own emote | Plane 2 gone | none |
+| 6.0 to 7.6 | **The twirl:** the straw spins round and round in the hand like a cowboy's pistol, then stops | Own emote | Own emote | | none |
+| 7.6 to 8.6 | Takes it in the hand and tucks it behind the back; the hand comes back empty | Own emote | Own emote | | none |
+| 8.6 to 10.4 | A cool pose, weight on one leg, looking at the camera | Own emote | Own emote | | none |
 
-**Where the planes end up (my default, not yet answered):** on the desk top in front of 1st's book stack, lying
-askew, until the scene leaves. The other way: they fall out of the bottom of the picture.
+**Where the planes end up (Alan):** they spiral down out of the bottom of the picture.
 
 **How the runner-ups pause (his question):** an emote is a recording of joint turns played over time. The scene sets
 that recording's speed to zero, which freezes the kid in the pose of that moment. Over it plays a short throw
@@ -73,6 +80,33 @@ on each hit. No whoosh: nothing passes the camera. Nothing for the planes landin
 2. **The scene hands their planes to this emote:** today only 1st gets a copy of their own plane; 2nd and 3rd would
    get one too, appearing in the hand behind the back.
 3. **Numbers:** every time above is mine; the straw's size and colour too.
+
+## The Gemini prompt (step 3)
+11 s, 360p, 16:9. The left figure stands in for a standing runner-up (Good Game's slow clap), the right one for a
+napping one (Nap), so the video shows the hard case Alan named. Video second 0 = 1st's light.
+
+> One continuous 11-second shot, no cuts. Fixed camera, straight on, at the chest height of the middle figure, not moving or zooming. Plain light grey room, soft even light, no text, no music.
+>
+> Three simple smooth grey mannequins with no faces, in a row facing the camera, each on its own solid, steady stack of large dark hardback books. The middle one stands a little in front of the others. All three figures and their whole stacks are in the picture, with empty space above their heads. Their feet never leave their spots.
+>
+> The left figure stands and does a slow, lazy clap, about one clap a second. The right figure sits cross-legged on top of its stack, hands in its lap, chin sunk on its chest, asleep, breathing slowly.
+>
+> The middle figure is a cocky, bored sharpshooter: every move slow and loose, only the shots sharp. It uses a long bright green drinking straw as a blowgun to shoot small white spitballs.
+>
+> 0 to 1 s: the middle figure reaches behind its back with its right hand, pulls out the green straw and lazily brings one end to its mouth, holding the straw in its right hand.
+> 1 to 1.5 s: it turns its head to the left figure and gives one small nod.
+> 1.5 to 2.6 s: the left figure stops clapping and freezes; its right arm reaches behind its back, comes out holding a white paper airplane, and throws it quickly up and across in front of the middle figure. The plane rises in an arc to just above the heads. The middle figure aims the straw at the plane and follows it slowly with its head.
+> At 2.7 s: the middle figure's head pokes forward sharply with a puff: a small white spitball shoots out of the straw, hits the plane and sticks. The plane jerks, tips its nose down and spirals down, falling out of the bottom of the picture. Sound: a soft puff, then a small wet tick on the hit.
+> 2.7 to 3.3 s: the left figure drops its arm and goes back to its slow clap.
+> 2.8 to 3.6 s: the middle figure turns its head back to the camera and, without looking, gives a small nod towards the right figure.
+> 3.6 to 4.6 s: the right figure wakes with a jerk of the head and, still sitting cross-legged, pulls a white paper airplane from behind its back with its left hand and throws it up and across in front of the middle figure, the other way.
+> At 4.7 s: keeping its head facing the camera, the middle figure swings the far end of the straw out towards the plane and puffs: the spitball hits and sticks, and the plane tips its nose down and spirals down out of the bottom of the picture. Sound: a soft puff, then a small wet tick.
+> 4.7 to 5.5 s: the right figure's head sinks back onto its chest, asleep again.
+> 5.5 to 6.0 s: the middle figure lowers the straw from its mouth.
+> 6.0 to 7.6 s: the straw spins round and round in the middle figure's right hand, like a cowboy twirling a pistol, then stops.
+> 7.6 to 8.6 s: it grips the straw and tucks it behind its back; the hand comes back empty.
+> 8.6 to 11 s: it stands in a cool, relaxed pose, weight on one leg, looking at the camera, still.
+> No other sounds.
 
 ## Files
 None yet.
