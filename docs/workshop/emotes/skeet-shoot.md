@@ -6,7 +6,7 @@ A 1st-place emote that uses all three winners. Made by the [emote pipeline](../e
 **The idea:** The runner-ups throw their paper planes and 1st shoots them out of the air, like skeet shooting, with rubber bands off a finger or a slingshot: something a child would do (Alan). The runner-ups' own emotes pause while they throw, then carry on. It does not touch the camera; how it ends is open.
 
 ## Where it stands
-Step 3: the card is OK'd (2026-11-22, second version with his changes below). The Gemini video waits for his go on the price.
+Step 4: building. The card is OK'd and the reference video is approved as good enough (2026-11-22); the ending is now arms crossed over the chest.
 
 ## Alan on the first card (2026-11-22)
 - Fingers don't work: "what if they don't have fingers? What if they just have like a R15? ... This is why it'd be
@@ -120,7 +120,10 @@ with sound. What my stills show (two a second, eight a second round each hit); v
   claps, although the prompt asked for silent claps; a quiet hiss under the first throw (3.2 to 3.75 s); **shot 1**,
   a sharp bright hit at 3.83 to 3.87 s, alone, no clap near it; **shot 2**, a brighter hiss with a hit from 5.80 to
   6.05 s, mixed with claps at 5.88 and 6.10 s.
-- Waits for Alan's look and listen.
+- **Alan on the video (2026-11-22): good enough to build from.** "This is good enough ... I don't like the cool pose
+  at the end. There's also no nod, but we can do that ourselves. I would say instead of the pose that they hit, they
+  just cross their arms across their chest." So: the ending is arms crossed over the chest (in place of the cool
+  pose); the nods are added by hand.
 
 ## Files
 None yet.
