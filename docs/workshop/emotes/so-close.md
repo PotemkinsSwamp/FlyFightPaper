@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Sits on the books shaking their head, sad not to be 1st (Alan).
 
 ## Where it stands
-Step 4: built and checked by numbers in Edit (2026-11-22); step 5, the sigh cut into its file, is next.
+**Ready to record** (2026-11-22): steps 1 to 5 done. Built and checked by numbers in Edit only; nobody has seen it move or heard the sigh in the game.
 
 ## Shot card
 **Alan's OK (2026-11-22):** "yes, cross-legged, sigh, keep the glance" (all three of my defaults below).
@@ -136,9 +136,22 @@ The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the pic
 - **Not known until it is seen in Play:** how the slump and the slow shakes read at the scene's distance; whether a
   45-degree look reads as looking at 1st; long hair and hats with the head hanging 65 degrees.
 
+## Sound (step 5)
+- **One sound, the video's own sigh** (Alan: "the sigh that we can put into the sounds"):
+  `assets/audio/emotes/so-close-sigh.ogg`, 0.86 s, cut from 2.64 to 3.50 s of `so-close-gemini-api-1.mp4` (the sigh
+  rises from 2.66 s, is loudest at 2.80, tails off by 3.35; measured by loudness, not heard by me). Lightly
+  de-hissed, a 0.03 s fade in and 0.2 s out, raised 29.3 dB so its loudest point is 6 dB under full: the game's
+  volume number makes it quiet (the video's hiss came up with it, about 10 dB under the sigh). Not uploaded.
+- **When it plays:** clip second 2.5 (the mark Sag: the exhale as the body sags), once per kid. That is 1.5 s after
+  1st's light for 2nd and 2.0 s for 3rd. The module already asks for it as `soCloseSigh` through `runnerSound`;
+  it plays once step 6 adds `soCloseSigh` to `src/client/Audio.luau` (my suggestion: a low volume, Alan: "very
+  quiet"). Because it is a runner-up's sound it is skipped when it would still be playing as 1st's first sound
+  starts: with Bubblegum on 1st (its snap 2.0 s after 1st's light) neither sigh plays.
+
 ## Files
 | File | What |
 |---|---|
+| `assets/audio/emotes/so-close-sigh.ogg` | The sigh |
 | `src/client/emotes/SoClose.luau` | The emote's module: picks the clip, times it to 1st's light, the seat, the sigh |
 | `tools/emote_cuts/so-close.lua` | The body cut: `CUTS.SoCloseLeft`, `CUTS.SoCloseRight` |
 | `assets/animations/emotes/so-close-left.rbxm`, `so-close-right.rbxm` | The two baked clips |
