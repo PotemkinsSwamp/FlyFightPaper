@@ -12,29 +12,31 @@
 --   up over it, chest out (CHEST_OUT), chin up (CHIN);
 -- * up to lower: from the waist (HIPS_TURN of it in the hips) a turn to the kid's left and a hold, across to the right and
 --   a hold, back (TURNS: { seconds, degrees, positive to the kid's left }), the head LOOK_MORE further the same way;
--- * lower to wind: the arms come down round the outside (spread), the right hand out beside the head (the card stands
---   over it), the left fist on the hip, a nod at nod2;
--- * wind to release: the right arm back past the shoulder, the chest twisted away (TWIST), then whipped forward through
+-- * lower to wind (Alan's pick of two plans, 2026-11-22: both hands until the throw; the switch to one hand beside
+--   the face of the first recording "looks completely unnatural"): both hands bring the card down in front of the
+--   face to the chest (shown), where it is shown, chin up, a nod at nod2;
+-- * wind to release: the right hand draws the card back, out past the shoulder (draw) and behind it, the left
+--   letting go and staying out in front, the chest twisted away (TWIST); then whipped forward through
 --   release (the card leaves the hand: the mark Release) to the follow-through, palm at the camera;
 -- * brush to fold: the palms meet at the belly, the right one brushes once up the left;
 -- * fold on: arms folded (CROSS below), the weight on the right leg (SHIFT heights, the hips rolled HIP degrees), chin up, still.
 -- ARMS: which pose when (eased from one to the next, round the shoulder: straight across a hand passed through it).
 -- ARM: each pose's hands from the middle of the shoulders and its elbows' pull, in winner heights { to the kid's right,
--- up, back }; "hips" is Book Kicker's fist on the side of the hips.
-local AP = { read = 2.0, nod = 1.5, snap = 2.0, up = 2.4, lower = 5.0, nod2 = 6.0, wind = 6.5, whip = 7.25, release = 7.4,
+-- up, back }.
+local AP = { read = 2.0, nod = 1.5, snap = 2.0, up = 2.4, lower = 5.0, shown = 5.5, nod2 = 5.9, wind = 6.3, draw = 6.75, whip = 7.25, release = 7.4,
 	through = 7.55, brush = 7.9, brushed = 8.4, fold = 8.6, folded = 9.1, length = 11 }
 AP.marks = { Snap = AP.snap, Release = AP.release }
 local CHEST_OUT, CHIN, READ_LOOK, LOOK_MORE, HIPS_TURN, TWIST, SHIFT, HIP = 6, 8, 35, 5, 0.4, 28, 0.03, 5
 local TURNS = { { AP.up, 0 }, { 3.0, 35 }, { 3.4, 35 }, { 4.2, -35 }, { 4.5, -35 }, { AP.lower, 0 }, { AP.wind, 0 }, { 7.2, -TWIST }, { AP.through, 15 }, { AP.brush, 0 } }
-local ARMS = { { 0, "read" }, { AP.snap, "read" }, { 2.2, "lift" }, { AP.up, "high" }, { AP.lower, "high" }, { 5.3, "spread" }, { 5.6, "face" }, { AP.wind, "face" }, { 7.2, "wind" },
+local ARMS = { { 0, "read" }, { AP.snap, "read" }, { 2.2, "lift" }, { AP.up, "high" }, { AP.lower, "high" }, { AP.shown, "show" }, { AP.wind, "show" }, { AP.draw, "draw" }, { 7.2, "wind" },
 	{ AP.whip, "wind" }, { AP.through, "slap" }, { 7.75, "slap" }, { 8.1, "palms" }, { AP.brushed, "palms" }, { AP.folded, "fold" } }
 local EDGE = 0.155 -- both hands on the card: each one this far from the body's middle, on a side edge (the card is 0.264 wide)
 local ARM = {
 	read = { Right = { V(EDGE, -0.2, -0.2), V(0.6, -1, 0.3) }, Left = { V(-EDGE, -0.2, -0.2), V(-0.6, -1, 0.3) } },
 	lift = { Right = { V(EDGE, 0.12, -0.3), V(1, -0.2, -0.2) }, Left = { V(-EDGE, 0.12, -0.3), V(-1, -0.2, -0.2) } }, -- the snap goes up in front of the face
 	high = { Right = { V(EDGE, 0.335, -0.03), V(1, 0.5, 0.5) }, Left = { V(-EDGE, 0.335, -0.03), V(-1, 0.5, 0.5) } },
-	spread = { Right = { V(0.32, 0.25, -0.06), V(1, -0.6, 0.2) }, Left = { V(-0.38, 0.1, -0.05), V(-1, -0.6, 0.2) } }, -- down round the outside
-	face = { Right = { V(0.28, 0, -0.06), V(1, -0.6, 0.2) }, Left = { "hips" } },
+	show = { Right = { V(EDGE, -0.2, -0.18), V(0.6, -1, 0.3) }, Left = { V(-EDGE, -0.2, -0.18), V(-0.6, -1, 0.3) } },
+	draw = { Right = { V(0.28, 0, -0.06), V(1, -0.6, 0.2) }, Left = { V(-0.2, -0.15, -0.2), V(-1, -0.5, 0.2) } }, -- out past the shoulder on the way back
 	wind = { Right = { V(0.3, 0.1, 0.25), V(0.5, -0.4, 1) }, Left = { V(-0.2, -0.15, -0.2), V(-1, -0.5, 0.2) } },
 	slap = { Right = { V(0.15, 0.12, -0.32), V(0.5, -1, 0) }, Left = { V(-0.2, -0.2, -0.05), V(-1, -0.5, 0.3) } },
 	palms = { Right = { V(0.03, -0.25, -0.15), V(1, -1, 0.3) }, Left = { V(-0.03, -0.25, -0.15), V(-1, -1, 0.3) } },
@@ -49,7 +51,7 @@ local ARM = {
 -- (CROSS of its seconds), which every body plays the same.
 local CROSS = { clip = "rbxassetid://139618321795363", at = 2.9 }
 local BRUSH = { { 8.1, 0 }, { 8.25, 0.04 }, { AP.brushed, 0 } } -- the right palm up the left one, heights
-local NODS = { { 1.2, 0 }, { AP.nod, 8 }, { 1.85, 0 }, { 5.7, 0 }, { AP.nod2, 8 }, { 6.35, 0 } } -- head down, degrees
+local NODS = { { 1.2, 0 }, { AP.nod, 8 }, { 1.85, 0 }, { 5.6, 0 }, { AP.nod2, 8 }, { 6.2, 0 } } -- head down, degrees
 local LOOK_DOWN = { { 0, READ_LOOK }, { AP.read, READ_LOOK }, { AP.up, -CHIN }, { AP.wind, -CHIN }, { 7.2, 0 }, { AP.brush, 10 }, { AP.brushed, 10 }, { AP.folded, -CHIN } }
 local PROUD = { { 0, 0 }, { AP.snap, 0 }, { AP.up, 1 }, { AP.lower, 1 }, { AP.wind, 0.5 }, { 7.2, 0 }, { AP.brushed, 0 }, { AP.folded, 1 } } -- chest out
 local WEIGHT = { { AP.fold, 0 }, { AP.folded, 1 } }
@@ -68,17 +70,12 @@ function AP.pose(t, c)
 	local from, to = ARMS[i], ARMS[i + 1]
 	local s = eased((t - from[1]) / (to[1] - from[1]))
 	local at = build(turn)
-	local hips, fist = first.LowerTorso.Size, first.LeftHand.Size
 	local mid = ((at.UpperTorso * joints.RightUpperArm.c0).Position + (at.UpperTorso * joints.LeftUpperArm.c0).Position) / 2
 	local chest = at.UpperTorso.Rotation
 	for _, side in { "Left", "Right" } do
-		local sign = side == "Left" and -1 or 1
 		local shoulder = (at.UpperTorso * joints[side .. "UpperArm"].c0).Position
 		local function arm(name)
 			local p = ARM[name][side]
-			if p[1] == "hips" then
-				return at.LowerTorso * V(sign * (hips.X / 2 + fist.X * 0.3), hips.Y * 0.4, -hips.Z * 0.2), shoulder + V(sign, -0.45, 0.15) * body.arm
-			end
 			local hand = mid + chest * p[1] * HEIGHT
 			if name == "palms" and side == "Right" then hand += chest * V(0, keyed(BRUSH, t), 0) * HEIGHT end
 			return hand, shoulder + chest * p[2] * body.arm

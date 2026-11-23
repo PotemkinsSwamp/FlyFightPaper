@@ -1,5 +1,5 @@
 -- A+, a 1st-place emote (docs/workshop/emotes/a-plus.md; card OK'd by Alan 2026-11-22). A smug show-off: the kid
--- reads their report card, holds it up over the head, shows it to both sides, holds it beside the face, then slaps it
+-- reads their report card, holds it up over the head, shows it to both sides, shows it at the chest, then slaps it
 -- at the camera: it lands flat on the lens exactly where the real report card comes up, and the kid gloats beside it
 -- until the camera leaves, when the real card takes its place in the same frame (Alan: "it should line up perfectly").
 -- The body is the clip APlus (tools/emote_cuts/a-plus.lua). The card is a look-alike of the real one (Alan: "very
@@ -15,7 +15,10 @@ local RunService = game:GetService("RunService")
 
 local APlus = {}
 local TALL = 0.35 -- the card's height, in winner heights (about a tenth of the picture)
-local GRIP = { read = 0.45, high = 0.12 } -- held in both hands: how far up its side edges the hands are (share of its height), reading and held up
+local GRIP = { read = 0.45, high = 0.12, show = 0.3 } -- held in both hands: how far up its side edges the hands are (share of its height): reading, held up, shown at the chest
+-- The clip's own seconds after 1st's light: the card comes down to the chest (down to shown); the right hand draws it
+-- back for the throw (take), and it stands on that hand (taken); the left hand has let go LET_GO after take.
+local SHOW, LET_GO = { down = 5.0, shown = 5.5, take = 6.3, taken = 6.75 }, 0.25
 local bend -- (below)
 local READ_TILT = 25 -- reading: the top leans this many degrees away from the kid
 local FLIGHT = 0.4 -- release to the lens
@@ -165,18 +168,22 @@ local function onLens(st, fov)
 	return CFrame.new(along(middle) * depth) * CFrame.Angles(0, math.pi, 0) * CFrame.Angles(0, 0, math.rad(turn))
 end
 
--- How much the card is in both hands `t` seconds after 1st's light: 1 until the right hand takes it alone.
+-- How much the card is in both hands `t` seconds after 1st's light: 1 until the right hand draws it back for the throw
+-- (SHOW.take), 0 once it stands on that hand (SHOW.taken).
 local function both(st, t)
-	return 1 - st.kit.ease(math.clamp((t - 5.0) / 0.6, 0, 1))
+	return 1 - st.kit.ease(math.clamp((t - SHOW.take) / (SHOW.taken - SHOW.take), 0, 1))
 end
 -- The card in both hands (Alan on the first recording: "not holding it symmetrically with both hands placed on
 -- either side"). Its place comes from the body alone, so it is the same on every body: read at the belly, its top
--- leaning READ_TILT away; up in front of the face over the snap; then over the head, its bottom edge clear of it.
--- `chest`, `head`: where those two parts are. Returns the card, the point half way between the two hands' grips
--- (GRIP of its height up its side edges) and the card's up direction.
+-- leaning READ_TILT away; up in front of the face over the snap; over the head, its bottom edge clear of it; then
+-- (SHOW.down to SHOW.shown) down in front of the face again to the chest, its top edge under the chin, where it is
+-- shown until the throw (Alan's pick, 2026-11-22: both hands until the throw). `chest`, `head`: where those two
+-- parts are. Returns the card and the point half way between the two hands' grips (GRIP of its height up its side
+-- edges).
 local function held(st, chest, head, t)
 	local kid, h, torso, skull = st.kid, st.height, st.chest.Size, st.head.Size
 	local snap = st.kit.ease(math.clamp((t - st.marks.Snap) / 0.4, 0, 1)) -- 0: reading, 1: held up
+	local down = st.kit.ease(math.clamp((t - SHOW.down) / (SHOW.shown - SHOW.down), 0, 1)) -- 1: shown at the chest
 	local flip = 1 - st.kit.ease(math.clamp((t - st.marks.Snap) / 0.35, 0, 1)) -- 1: the front to the kid (reading)
 	local tilt = math.rad(READ_TILT) * flip
 	local up = chest.UpVector * math.cos(tilt) + chest.LookVector * math.sin(tilt)
@@ -185,12 +192,20 @@ local function held(st, chest, head, t)
 	local read = chest * Vector3.new(0, -0.26 * torso.Y, -torso.Z / 2 - 0.1 * kid)
 	local lift = chest * Vector3.new(0, top - 0.3 * skull.Y, -skull.Z / 2 - 0.2 * kid)
 	local high = chest * Vector3.new(0, top + 0.01 * kid + GRIP.high * h, -0.03 * kid)
-	local grip = read:Lerp(lift, snap):Lerp(lift:Lerp(high, snap), snap) -- one smooth curve through the three
-	local middle = grip + up * (0.5 - (GRIP.read + (GRIP.high - GRIP.read) * snap)) * h
-	return CFrame.lookAt(middle, middle + look, up), grip, up
+	local show = chest * Vector3.new(0, top - skull.Y - 0.01 * kid - (1 - GRIP.show) * h, -torso.Z / 2 - 0.08 * kid)
+	local grip, share -- one smooth curve through three points each way
+	if down > 0 then
+		grip, share = high:Lerp(lift, down):Lerp(lift:Lerp(show, down), down), GRIP.high + (GRIP.show - GRIP.high) * down
+	else
+		grip, share = read:Lerp(lift, snap):Lerp(lift:Lerp(high, snap), snap), GRIP.read + (GRIP.high - GRIP.read) * snap
+	end
+	local middle = grip + up * (0.5 - share) * h
+	return CFrame.lookAt(middle, middle + look, up), grip
 end
 -- Each hand onto its side edge of the card, level with the other (from RunService.PreSimulation: the clip has posed
 -- the body for this frame; `at`: where a part is by that pose). The hand's middle sits a little outside the edge.
+-- From SHOW.take the right arm is let back to the clip, which draws it back for the throw, and the left hand follows
+-- the card's edge for LET_GO seconds as it lets go.
 function bend(st, joints, at)
 	if not st.who.model:IsDescendantOf(game) then
 		if st.bent then st.bent:Disconnect() end
@@ -201,20 +216,33 @@ function bend(st, joints, at)
 	if two <= 0 then return end
 	local chest = at(st.chest)
 	local _, grip = held(st, chest, at(st.head), t)
-	for _, arm in st.arms do
+	for side, arm in st.arms do
 		local target = grip + chest.RightVector * arm.sign * (st.height * 340 / 900 + arm.hand.Size.X * 0.2)
-		st.kit.bendArm(joints, at, arm.upper, arm.lower, arm.hand, target, (at(arm.upper) * joints[arm.lower].c0).Position, two)
+		local weight = two
+		if side == "Left" and t > SHOW.take and st.gripAt then
+			target = st.card.CFrame * Vector3.new(-st.gripAt.X, st.gripAt.Y, 0)
+			weight = 1 - st.kit.ease(math.clamp((t - SHOW.take) / LET_GO, 0, 1))
+		end
+		st.kit.bendArm(joints, at, arm.upper, arm.lower, arm.hand, target, (at(arm.upper) * joints[arm.lower].c0).Position, weight)
 	end
 end
--- In the right hand alone (the throw, which Alan called fine): its bottom edge stands on the hand, turning with the
--- chest. Never through the head (bodies' heads and reaches differ): where the card's plane cuts the head, the card
--- moves out sideways or up, whichever is less, by the overlap; it still sits on the hand up to half its width.
-local function onHand(st)
+-- In the hand `t` seconds after 1st's light. In both hands: `held`. From SHOW.take it goes with the right hand,
+-- which holds its side edge at first and has it standing on the hand (its bottom edge on the hand, as in the throw
+-- Alan called fine) by SHOW.taken: the hand's place on the card glides from the one to the other while the arm
+-- sweeps back, so the card is on the hand all the way. Never through the head (bodies' heads and reaches differ):
+-- where the card's plane cuts the head, the card moves out sideways or up, whichever is less, by the overlap.
+local function inHand(st, t)
 	local hand, chest, head = st.arms.Right and st.arms.Right.hand, st.chest, st.head
 	if not hand or not chest then return nil end
-	local up = chest.CFrame.UpVector
-	local middle = hand.Position + up * (hand.Size.Y / 2 + st.height / 2)
-	local at = CFrame.lookAt(middle, middle + chest.CFrame.LookVector, up)
+	local two = both(st, t)
+	if two >= 1 and head then
+		local card = held(st, chest.CFrame, head.CFrame, t)
+		st.gripAt = card:PointToObjectSpace(hand.Position) -- the right hand on the card, for the take
+		return card
+	end
+	local stand = Vector3.new(0, -(st.height / 2 + hand.Size.Y / 2), 0)
+	local turn = CFrame.lookAt(Vector3.zero, chest.CFrame.LookVector, chest.CFrame.UpVector)
+	local at = turn + (hand.Position - turn * stand:Lerp(st.gripAt or stand, two))
 	if head then
 		local c = at:PointToObjectSpace(head.Position)
 		local r = math.max(head.Size.X, head.Size.Y) * 0.55 -- a little past its box
@@ -229,14 +257,6 @@ local function onHand(st)
 		end
 	end
 	return at
-end
--- In the hand `t` seconds after 1st's light: in both, in the right one, or on the way from the one to the other.
-local function inHand(st, t)
-	local two = both(st, t)
-	local one = two < 1 and onHand(st) or nil
-	if two <= 0 or not (st.chest and st.head) then return one end
-	local card = held(st, st.chest.CFrame, st.head.CFrame, t)
-	return one and one:Lerp(card, two) or card
 end
 
 function APlus.step(st, since, shot, _steady, _winners, fov)

@@ -6,10 +6,10 @@ A 1st-place emote that covers the camera. Made by the [emote pipeline](../emote-
 **The idea:** Holds up their report card and slaps it on the lens, where it becomes the real report card.
 
 ## Where it stands
-**Step 4: two of Alan's three notes fixed and checked by numbers in Edit, the third waits for his pick** (2026-11-22,
-the new session). Done: the two-handed hold, the folded arms, and the wrong landing of both recordings. Open: the
-switch to the right hand: two plans in words are with Alan (see "Second pass"); nothing of it is built. Not recorded
-since. Its sounds are cut and timed, not uploaded.
+**Step 4 done again: Alan's three notes fixed, checked by numbers in Edit; asked for a new recording** (2026-11-22,
+the new session). The two-handed hold, the switch (his pick: both hands until the throw), the folded arms, and the
+wrong landing of both recordings: see "Second pass". Nothing of it has been seen moving in Roblox yet. It needs one
+line from the primary session (`rig` and `bendArm` in `Cutscene.kit`). Its sounds are cut and timed, not uploaded.
 
 ## Shot card
 **OK'd by Alan, 2026-11-22**, with his picks: "I like the idea. I think it should show only the front. I think it
@@ -34,8 +34,8 @@ screen's height, on the right side (about 64% to 99% across), square.
 | 0 to 2.0 | Holds the card at the waist with both hands, head down, reading it; one slow nod at 1.5 | Its plain paper back to us | All three winners, steady | Quiet (2nd's and 3rd's sounds end before the flap) |
 | 2.0 to 2.4 | Snaps it up over the head, both arms straight, chest out | High over the head, a tenth of the picture tall, its front to us | Same | **Paper flap**, short |
 | 2.4 to 5.0 | Holds it up; turns slowly from the waist to show it to one runner-up, then the other, then back to us; feet stay put | Same | Same | None |
-| 5.0 to 6.5 | Brings it down; the right hand alone holds it beside the face, left fist on the hip, looking straight at the camera | A tenth tall, beside the face, front to us | Same | None |
-| 6.5 to 7.4 | Wind-up: right arm back past the shoulder, card flat, body twists away | Behind the shoulder | Same | None |
+| 5.0 to 6.3 | Brings it down to the chest in both hands and shows it, chin up, looking straight at the camera, one slow nod (Alan's pick 2026-11-22; before: the right hand alone held it beside the face, left fist on the hip) | A tenth tall, at the chest under the chin, front to us | Same | None |
+| 6.3 to 7.4 | Wind-up: the right hand draws it back past the shoulder, the left lets go, body twists away | Out past the shoulder, then behind it | Same | None |
 | 7.4 | The slap: the arm whips forward, flat palm at the camera; the card leaves the hand | Leaves the hand | Same | None (no whoosh) |
 | 7.4 to 7.8 | Follow-through, palm out | Flies at the lens front first, turning square as it comes; grows slowly, then fast: a tenth, about 15% halfway, 83% at the end | Same | None |
 | 7.8 | Palm still out | **Slaps flat on the lens exactly where the real card sits**, square, no skid | The camera jolts (Book Kicker's); the three name plates go | **The slap**: a flat paper smack, the loudest |
@@ -128,9 +128,9 @@ first one".** Gemini spent on A+: about $0.61.
   `CUTS.APlus` in `tools/emote_cuts/a-plus.lua` (every number in its comment), on Toy Pilot's standing pose, both feet
   planted; 11 s, played once, held on its last pose. Seconds after 1st's light: reading at the chest, head down, a nod
   at 1.5; 2.0 to 2.4 the snap, the hands up in front of the face and on over the head; the waist turns 35 degrees to
-  the kid's left (3.0 to 3.4) and to their right (4.2 to 4.5), back by 5.0; the arms come down round the outside, the
-  right hand out beside the head, the left fist on the hip, a nod at 6.0; the wind-up 6.5 to 7.2 (chest twisted 28
-  degrees away), the whip to 7.55 with the release at 7.4; palms meet at 7.9, one brush to 8.4; arms folded, weight
+  the kid's left (3.0 to 3.4) and to their right (4.2 to 4.5), back by 5.0; 5.0 to 6.3 the card down to the chest in both hands and shown
+  there, a nod at 5.9; the wind-up 6.3 to 7.2 (chest twisted 28 degrees away; "Second pass" has the switch and the
+  fold as rebuilt), the whip to 7.55 with the release at 7.4; palms meet at 7.9, one brush to 8.4; arms folded, weight
   on the right leg, chin up, from 9.1. The video's misses fixed here: the card stays in the right hand, it is shown to
   both sides, the reading shows its back.
 - **The clip:** baked into the open place's `Assets` as `APlusClip` (unsaved draft: what `ourClip` plays in Studio),
@@ -143,9 +143,9 @@ first one".** Gemini spent on A+: about $0.61.
     gold star), copied once when the winners' moment starts. Its pictures and printed words stay; every filled-in
     word (names, numbers, grades, the term, the place, the note, the pocket money, the level) is hidden under a faint
     zig-zag of ink, as long as the word was and in its colour. Unseen in the dark until 1st's light.
-  - **In the hand:** in both hands until 5.0 (how: "Second pass"), facing the kid while reading (top leaning 25
+  - **In the hand:** in both hands until 6.3 (how: "Second pass"), facing the kid while reading (top leaning 25
     degrees away), turned to face the camera over the snap (2.0 to 2.35), then turning with the chest; standing on
-    the right hand (its bottom edge on the hand) from 5.6. In the one hand, where its plane cuts the head it moves
+    the right hand (its bottom edge on the hand) from 6.75. In the one hand, where its plane cuts the head it moves
     out sideways or up by the overlap, so it never goes through a head of any size.
   - **The slap:** at Release it leaves the hand and flies 0.4 s to the lens in the camera's own frame (a straight
     path, so it grows slowly, then fast), turning square on the way. It lands at 7.8 on the real card's rectangle,
@@ -268,22 +268,23 @@ heights apart on two slim bodies. The lesson was already written for Nap and Goo
    and turn the same to 0.01 px (2046 x 801 window, 786 steps of the whole emote, no error). **An earlier Edit
    check of this was empty:** its stand-in was never read, so it tested the no-card fallback, which sits on the
    solo spot. Edit has no top bar, so the 58 px is proven only by the recordings' numbers and Roblox's page.
-4. **The switch to the right hand: two plans in words, for Alan's pick.** Both keep the throw from 7.25 on and both
-   end with the card standing on the right hand as in the recording. In both, the card comes down from over the
-   head to the chest in both hands first, and the right hand moves under the middle of its bottom edge while the
-   left still holds it, so the card never slides through a hand.
-   - **A, both hands until the throw (my pick):** the card is shown at the chest in both hands, chin up, a slow nod
-     (5.0 to 6.3); then the right hand takes it from under and draws it back past the shoulder in one sweep while
-     the left lets go (6.3 to 7.2). Fewest moves; drops the card's beat "beside the face in one hand, fist on the
-     hip" and makes the pull-back start at the chest.
-   - **B, a clear let-go, then beside the face:** down to the chest (5.0 to 5.4), the right hand takes it from under
-     (to 5.65), the left lets go to a fist on the hip as the right lifts it out beside the head (to 6.05), a short
-     hold and nod, then the pull-back exactly as recorded. Keeps the shot card as OK'd; four moves in a second and
-     a half.
+4. **The switch to the right hand: Alan picked "both hands until the throw"** (2026-11-22, of two plans in words;
+   the other kept the card beside the face in one hand with a fist on the hip, four moves in a second and a half).
+   Built: 5.0 to 5.5 both hands bring the card down in front of the face to the chest, its top edge under the chin;
+   it is shown there, chin up, a nod at 5.9; from 6.3 the right hand draws it back, out past the shoulder (6.75) and
+   behind it (7.2), the left letting go over the first quarter second and staying out in front; from 7.25 the throw
+   as recorded. **Not as I told him:** I said the right hand would first move under the middle of the card's bottom
+   edge while the left still held it. No avatar's arm reaches there (under a card at the chest, on the body's
+   middle line). Instead the right hand keeps its side edge at 6.3 and its place on the card glides to under the
+   bottom edge's middle while the arm sweeps back (6.3 to 6.75), so the hand is on the card all the way and the card
+   stands on it for the throw as before. Numbers on three bodies: both hands on the edges and level from 4.9 to 6.3
+   (0.12 of the card's height up at the top, 0.30 at the chest); from 6.3 to 6.75 the right hand never off the
+   card's plane (0.000) while it glides; the left on its edge at 6.4 (within 0.016), 0.11 to 0.14 off by 6.5, clear
+   after.
 
 **Checks:** `tools/emote_preview.py --run` with throwaway scripts (the module's text, the scene's `rig` and
 `bendArm`, bodies made unparented and dropped in the same call; no Play, the camera only read, no picture). The
-clip is baked again (`APlusClip` draft and `a-plus.rbxm`) with the new hold and fold and the old switch.
+clip is baked again (`APlusClip` draft and `a-plus.rbxm`).
 
 ## Sound (step 5)
 - **From the video Alan picked** (`a-plus-gemini-api-1.mp4`; its sounds were in what he OK'd), measured every 10 ms,
