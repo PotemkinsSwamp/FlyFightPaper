@@ -10,7 +10,7 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 |---|---|---|
 | So Close | [so-close](emotes/so-close.md) | 6, ready to record (2026-11-22); the recording waits for Alan's go |
 | Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 2, card written 2026-11-22, waits for Alan's OK |
-| A+ | [a-plus](emotes/a-plus.md) | 5, built (2026-11-22); its sound files are next |
+| A+ | [a-plus](emotes/a-plus.md) | 6, ready to record (2026-11-22); the recording waits for Alan's go |
 | Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 2, card written 2026-11-22, waits for Alan's OK |
 
 The primary session keeps this table; a side session reports its step in its own page.
