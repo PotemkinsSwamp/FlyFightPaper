@@ -75,6 +75,7 @@ otherwise.
 ## Workshop: how the work gets done
 - [Studio and Rojo](workshop/studio-and-rojo.md): opening, playing and rebuilding the game.
 - [Tools](workshop/tools.md): every script in `tools/`.
+- [Emote pipeline](workshop/emote-pipeline.md): the six steps every emote goes through, and the side sessions' rules
 - [Emote making](workshop/emote-making.md): the log of how winners' circle emotes get made (to become a skill)
 - [Testing](workshop/testing.md): rule tests and checking by eye.
 - [Lessons learned](workshop/lessons.md): hard-won rules (uploads, models, Studio).

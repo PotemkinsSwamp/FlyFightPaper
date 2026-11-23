@@ -76,6 +76,8 @@ Rest of the beta set (after these): Book Kicker, Bubblegum, Magician, So Close. 
 and the others.
 
 ## How an emote gets made (proposed; waits for Alan's OK)
+**From 2026-11-22 the steps are the [emote pipeline](../workshop/emote-pipeline.md)** (Alan); what follows is the first plan, kept for its motion sources.
+
 Where the body motion comes from, cheapest first (research 2026-11-19):
 1. **Roblox's Prompt to Animation** (Studio beta, announced November 2026): a written description becomes an R15
    animation, through our Studio link. Free in the beta, four tries a minute. Roblox says it is best at everyday
