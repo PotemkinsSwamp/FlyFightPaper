@@ -1,0 +1,24 @@
+{
+  "path": "operations/d373d09b-7169-412c-82e6-ea979c08de0b",
+  "operationId": "d373d09b-7169-412c-82e6-ea979c08de0b",
+  "done": true,
+  "response": {
+    "path": "assets/117109807734655",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-23T02:22:46.721Z",
+    "assetId": "117109807734655",
+    "displayName": "FFP sound Magician bass",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

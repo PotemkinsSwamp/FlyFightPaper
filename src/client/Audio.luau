@@ -61,6 +61,14 @@ local definitions={
  -- one bursting, with its tail as the gum lands on the lens; as loud as Book Kicker's thud. gumPeel: the gum torn
  -- off the lens. The loudness of each is Claude's number, not yet heard in the game.
  gumSnap={127183227295482,1,1,.35},gumPop={119339678129678,1,1.6,1.1},gumPeel={112289979766763,1,1.2,1.3},
+ -- Magician (WinnersCutscene): our own three sounds, uploaded 2026-11-22 (assets/audio/emotes; Alan by ear on a
+ -- recording). magicBass: a low swell made in Python (48 to 62 Hz), in as the kid leaves the books, held while they
+ -- float, tapering as they land ("a bass, like a subwoofer, like a sci-fi kind of sound"; a sparkle was "too much
+ -- like fantasy magic"). magicFlutter: faint paper flutter while the planes circle, cut from a Gemini video's sound.
+ -- magicWhoosh: the line of planes going over the camera, from a second Gemini video ("only ... as it's flying over
+ -- the camera"). Quiet on purpose: the winners' music plays under them. The loudness of each is Claude's number in
+ -- the proportions he heard, not yet heard in the game.
+ magicBass={117109807734655,1,.35,9.1},magicFlutter={133522767321699,1,.1,3.8},magicWhoosh={121243614242776,1,.8,2.15},
  ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);

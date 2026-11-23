@@ -27,3 +27,6 @@
 | "We're definitely good with the low bass, but the low bass needs to carry on through while they're still in the air, and then taper off as they're landing." | B is the pick. The bass no longer ends after the lift-off: it comes in as the kid leaves the books, holds for the whole float and fades as they sink and land. |
 
 Not said: whether the flutter is quiet enough now (asked, not answered).
+
+## On the fourth listen (the bass carried through the float)
+Alan: "go upload". The sound is approved on the recording; the three sounds are uploaded and wired in ([how](../workshop/emote-making.md)). Not yet heard in the game against the music.

@@ -1369,12 +1369,14 @@ end
 -- `back` comes in from the right far enough that no plane covers the kid. At its biggest a plane is about six
 -- tenths of the picture wide, a sixth of its area, in its upper right. As each goes over, the camera trembles
 -- (`shake`: Book Kicker's shake without its knock back; the planes keep their place in the picture, so none comes
--- nearer the lens for it). Studio only, behind the Dev panel's "end: magic" button, until who gets which emote is
--- decided. No sounds yet.
+-- nearer the lens for it). Its sounds (`sounds`: seconds after 1st's light and the name in Audio): the bass as the
+-- kid leaves the books, the flutter as the planes circle, the whoosh as the line reaches the camera. Studio only,
+-- behind the Dev panel's "end: magic" button, until who gets which emote is decided.
 local MAGIC = { clip = "rbxassetid://10714347256", speed = 0.7, bow = "rbxassetid://10714061912", bowAt = 8.5, bowFade = 0.5,
 	lift = 0.34, up = { 0.9, 4.2 }, down = { 8.3, 10 }, planes = 6, long = 0.36, first = 3.3, every = 0.3, fall = 1.4, drop = 2.6,
 	wide = 1.5, ring = 1, turn = 2.4, bob = 0.07, bank = 40, tilt = 12, out = 8, spin = 2, ramp = 0.3, peel = 0.5,
-	reach = 1.4, back = Vector3.new(0.315, 0.049, -0.7), pass = Vector3.new(0.02, 0.038, 0), passIn = 0.8, shake = 0.016 }
+	reach = 1.4, back = Vector3.new(0.315, 0.049, -0.7), pass = Vector3.new(0.02, 0.038, 0), passIn = 0.8, shake = 0.016,
+	sounds = { { 0.9, "magicBass" }, { 3.9, "magicFlutter" }, { 8.25, "magicWhoosh" } } }
 local function magicClip()
 	return RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Magician" and MAGIC.clip or nil
 end
@@ -1413,7 +1415,7 @@ end
 local function magicProps(model, cast, animator, scale)
 	local animation = Instance.new("Animation"); animation.AnimationId = MAGIC.bow
 	local bow = animator:LoadAnimation(animation); bow.Looped, bow.Priority = false, Enum.AnimationPriority.Action2
-	local magic = { bow = bow, chest = model:FindFirstChild("UpperTorso") or model:FindFirstChild("HumanoidRootPart"), planes = {}, shown = {}, leaves = {} }
+	local magic = { bow = bow, chest = model:FindFirstChild("UpperTorso") or model:FindFirstChild("HumanoidRootPart"), planes = {}, shown = {}, leaves = {}, heard = {} }
 	local long = MAGIC.long * Avatars.standing_height_studs / scale
 	local half, thin = long * SHEET_WIDE / 2, long * SHEET_THIN
 	local keel = 2 * half * KEEL
@@ -1450,6 +1452,9 @@ local function magicPlanes(w, t, view, height)
 	local lift = MAGIC.lift * height * (ease((t - MAGIC.up[1]) / (MAGIC.up[2] - MAGIC.up[1])) - ease((t - MAGIC.down[1]) / (MAGIC.down[2] - MAGIC.down[1])))
 	w.model:PivotTo((w.desk + w.shift) * CFrame.new(0, lift / w.scale, 0))
 	if t >= MAGIC.bowAt and not magic.bowed then magic.bowed = true; magic.bow:Play(MAGIC.bowFade) end
+	for i, sound in MAGIC.sounds do
+		if t >= sound[1] and not magic.heard[i] then magic.heard[i] = true; Audio.play(sound[2]) end
+	end
 	-- the ring around the chest, where the big winner's is
 	local ring = w.desk.Rotation * CFrame.Angles(-math.rad(MAGIC.tilt), 0, 0) + (view.Position + (magic.chest.Position - view.Position) * w.scale)
 	local to = view * (MAGIC.pass * height)
@@ -1733,6 +1738,7 @@ function Cutscene.play(winners, onStage)
 							firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + copy.gum.marks.Snap -- the small bubble's snap (gumBubble)
 							elseif copy.magic then
 								state.magicAt = LIGHT_AT + 2 * TURN -- 1st's light, in seconds after arriving (the planes' clock)
+								firstSoundAt = state.start + BANNER + DIM + GLIDE + state.magicAt + MAGIC.sounds[1][1] -- the bass (magicPlanes)
 							end
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do
