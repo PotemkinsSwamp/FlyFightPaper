@@ -8,9 +8,9 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 ## Emotes in the pipeline
 | Emote | Page | Step it is on |
 |---|---|---|
-| So Close | [so-close](emotes/so-close.md) | 6, ready to record (2026-11-22); the recording waits for Alan's go |
+| So Close | [so-close](emotes/so-close.md) | 6, recorded muted 2026-11-22 (no error); waits for Alan's look and listen |
 | Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 2, card written 2026-11-22, waits for Alan's OK |
-| A+ | [a-plus](emotes/a-plus.md) | 6, ready to record (2026-11-22); the recording waits for Alan's go |
+| A+ | [a-plus](emotes/a-plus.md) | 6, recorded muted 2026-11-22 (no error); the card jumps in size at the swap to the real one (being fixed); waits for Alan's look and listen |
 | Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 2, card written 2026-11-22, waits for Alan's OK |
 
 The primary session keeps this table; a side session reports its step in its own page.
@@ -65,7 +65,7 @@ there carries its emote's name and is removed in the same call. Never Play, neve
 picture without Alan's go. Play and recordings are the primary session's.
 
 ## The emote module
-Ready (added 2026-11-22; it compiles in Studio's Edit; not yet run in Play, which the primary session does). `src/client/WinnersCutscene.luau` runs a pipeline emote from `src/client/emotes/<Name>.luau`. In Studio the
+Ready (added 2026-11-22; ran in Play the same day with A+ on 1st and So Close on 2nd and 3rd, no error). `src/client/WinnersCutscene.luau` runs a pipeline emote from `src/client/emotes/<Name>.luau`. In Studio the
 attribute `DevFirstEmote` (1st) or `DevRunnerUp` (2nd and 3rd) on `ReplicatedStorage.FlyFightPaper`, set to
 `<Name>`, picks it. The module returns a table:
 
@@ -102,3 +102,8 @@ What the module cannot do with this, it asks the primary session for.
 His explicit go, each time: any Studio Play (tests included), place saves, publish (he does it), desktop control
 or screen grabs (Edit pictures too), bot matches, every upload, every generator call (the price first), any new
 mechanic or number.
+
+**A go he gives in a side session counts here too** (Alan 2026-11-22: "the go came from the other sessions you
+dont need to ask for a go seperatly"): when a side session reports ready to record, the primary session records
+without asking him again. First recording, A+ with So Close: `.planning/emotes/aplus-soclose-first-run-raw.mp4`;
+it was also the first run of the scene's hook in Play, which worked.

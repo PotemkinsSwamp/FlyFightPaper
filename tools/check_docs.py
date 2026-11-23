@@ -1,6 +1,7 @@
 """Checks the docs: every relative link points at a real file (and heading), and every page under docs/
 can be reached from docs/HOME.md. Run after editing docs:  python tools/check_docs.py"""
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -29,19 +30,22 @@ def code_map():
     """Code files named in the docs must exist, and every code file and tool must be named in the docs."""
     docs = "\n".join(md.read_text(encoding="utf-8") for md in (ROOT / "docs").rglob("*.md"))
     problems = []
+    # Only files git knows (committed or added) must be named: a file another session is still writing, not yet
+    # added, does not stop everyone else's commit (several sessions share this folder: docs/workshop/emote-pipeline.md).
+    known = set(subprocess.run(["git", "ls-files", "src", "tools"], cwd=ROOT, capture_output=True, text=True).stdout.split())
     for path in sorted(set(re.findall(r"\b(?:src|tools)/[\w/.-]+\.(?:luau|py|lua|sh|ps1)\b", docs))):
         if not (ROOT / path).exists():
             problems.append(f"docs name {path}, which no longer exists")
     for f in sorted((ROOT / "src").rglob("*.luau")):
         rel = f.relative_to(ROOT).as_posix()
-        if "/Packages/" in rel or rel.startswith("src/generated/"):  # third party / generated from config
+        if "/Packages/" in rel or rel.startswith("src/generated/") or rel not in known:  # third party / generated from config / not yet added
             continue
         if rel not in docs:
             problems.append(f"{rel} is not on any docs page (add it to its system page's Code table)")
     tools_page = (ROOT / "docs" / "workshop" / "tools.md").read_text(encoding="utf-8")
     for f in sorted((ROOT / "tools").rglob("*")):
         # a tool is named on the tools page, or by its whole path on another page (a pipeline emote's cut file on its own page)
-        if f.suffix in {".py", ".lua", ".sh", ".ps1"} and "__pycache__" not in f.parts and f.name not in tools_page and f.relative_to(ROOT).as_posix() not in docs:
+        if f.suffix in {".py", ".lua", ".sh", ".ps1"} and "__pycache__" not in f.parts and f.relative_to(ROOT).as_posix() in known and f.name not in tools_page and f.relative_to(ROOT).as_posix() not in docs:
             problems.append(f"{f.relative_to(ROOT).as_posix()} is not in docs/workshop/tools.md")
     return problems
 
