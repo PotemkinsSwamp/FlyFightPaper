@@ -8,8 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-**Ready to record** (steps 4 and 5 done by numbers in Edit; nobody has seen it move). Waiting on Alan: his pick of the
-drawing (A, B or C), and step 6 (the primary session's recording, then the uploads).
+Step 6: recorded once by the primary session (below); waiting on Alan's look and his pick of the drawing (A, B or C).
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -263,3 +262,16 @@ runner-ups' sounds stop before it.
 - `assets/animations/emotes/fold-it-up.rbxm`: the baked clip (the draft `FoldItUpClip`).
 - `assets/audio/emotes/fold-it-up-peel.ogg`, `-flap.ogg`, `-scrunch.ogg`, `-toss.ogg`, `-dust.ogg`: the sounds.
 - Working files, untracked: `.planning/emotes/fold-it-up-*` (prompts, the two videos, the drawing brief and pictures).
+
+## First run in Play (step 6, the primary session's muted recording, 2026-11-22)
+- **Files:** `.planning/emotes/fold-it-up-first-run-raw.mp4` (2032 by 800, 30 s; 1st's light at 11.45 s) and
+  `fold-it-up-first-run-sound.mp4` (the sounds laid at their times, 3 dB down because one file peaks near full
+  scale, and the music's sighs; starts 3.45 s before the light). So Close on 2nd and 3rd. No script error.
+- **Seen in its stills** (ten a second round the pinch, 2.5 a second after; not judged in motion): at about 3.3 s a
+  milky creased sheet with the big hand in its middle fills nearly the whole picture, the winners seen through it;
+  within about half a second it shrinks to the poster in front of the kid; the poster (plain paper, no drawing yet)
+  is held in front of the chest and face, turned and shown; crumpled to a ball by about 7.6 s; the ball up over the
+  head at about 8.5 s; the hands dusted; arms folded to the end; then the report card, name plates back.
+- **Not readable in stills:** whether the pinch reads as grabbing the picture; whether an edge of the sheet shows at
+  the pinch (in one still its bottom edge sits just inside the picture's bottom). Nothing changed until Alan has seen
+  it.
