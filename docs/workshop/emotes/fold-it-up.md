@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 3: the reference video is made and waits for Alan's look and listen. Nothing is built.
+Step 3 done: Alan's OK on the second video. Next: the drawing (Codex) and the growing arm (plan to Alan). Nothing is built.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -162,6 +162,13 @@ a scrunch, a soft toss.
   - **Sound** (by loudness, not heard by me): the sheet 5.5 to 6.4 s; a short sound at 6.8 s; the scrunch 9.5 to
     10.4 s; a sharp hit at 11.2 s (the toss); short ticks at 12.1 and 12.6 s; a louder burst at 13.8 to 14.1 s (the
     dusting or the arms folding). Otherwise a quiet room tone. Waits for Alan's look.
+
+- **Alan on the second video: "I think this is good enough to work off of."** The sounds are fine except the
+  figure's own voice (a "hmmm"): no sound from the person. The drawing is not Gemini's: it is made by Codex
+  (ChatGPT's picture tool), brief `.planning/emotes/fold-it-up-drawing-brief.txt`, three close versions to
+  `fold-it-up-drawing-a/b/c.png`. The reach: "the only way to get forced perspective is to literally make the hand
+  and arm grow like it's reaching towards the camera, and then pull it and then shrink backwards ... How can we do
+  that in a way that it works for every single model in a live game?"
 
 ## Files
 None yet.
