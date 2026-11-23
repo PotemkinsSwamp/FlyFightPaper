@@ -1,0 +1,24 @@
+{
+  "path": "operations/85bb6841-b150-492b-b849-0571e7c5bc9c",
+  "operationId": "85bb6841-b150-492b-b849-0571e7c5bc9c",
+  "done": true,
+  "response": {
+    "path": "assets/107568160357142",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-23T04:52:54.722Z",
+    "assetId": "107568160357142",
+    "displayName": "FFP emote So Close right",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

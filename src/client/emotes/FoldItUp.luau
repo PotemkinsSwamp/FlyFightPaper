@@ -25,8 +25,8 @@ local TOSS = Vector3.new(0.4, 2.2, 1.6) -- the ball's start speed, winner height
 local FALL, GONE = 4, 1.1 -- winner heights a second each second; seconds after Release it is gone (into the dark)
 local PAPER = Color3.fromRGB(246, 244, 238)
 local CREASE = Color3.fromRGB(214, 212, 205)
-local DRAWING = "" -- the crayon drawing (.planning/emotes/fold-it-up-drawing-a.png until uploaded, step 6): plain paper till then
-local DRAWING_SIZE = Vector2.new(1200, 900)
+local DRAWING = "rbxassetid://114077761748868" -- the crayon drawing Alan picked (2a), uploaded 2026-11-22 at 1024 x 768 (assets/ui/emotes/fold-it-up-drawing.png)
+local DRAWING_SIZE = Vector2.new(1024, 768)
 -- The sounds, cut from Alan's reference video (.planning/emotes/fold-it-up-gemini-api-2.mp4) into
 -- assets/audio/emotes/fold-it-up-*.ogg, each starting 0.025 s before its first sound and raised 5 dB; the figure's own
 -- "hmmm" (13.8 to 14.5 s of the video) left out (Alan). Seconds after 1st's light; until step 6 has uploaded them,

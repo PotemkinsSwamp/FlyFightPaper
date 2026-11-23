@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Sits on the books shaking their head, sad not to be 1st (Alan).
 
 ## Where it stands
-**Ready to record** (2026-11-22): steps 1 to 5 done. Built and checked by numbers in Edit only; nobody has seen it move or heard the sigh in the game.
+**Uploaded and wired in** (2026-11-22, Alan: "do all the uploads"); approved by Alan on the recording. Not yet seen from the uploads or heard in his own Play: "2nd/3rd: so close" (restart Play first).
 
 ## Shot card
 **Alan's OK (2026-11-22):** "yes, cross-legged, sigh, keep the glance" (all three of my defaults below).
@@ -163,6 +163,13 @@ The prompt (`.planning/emotes/so-close-prompt-1.txt`; the glance goes to the pic
   sighs at their times (1.5 and 2.0 s after 1st's light): `.planning/emotes/so-close-sigh-quieter.mp4`.
 - **Alan on the quieter sigh (2026-11-22): "its good".** His only note on the recording was the sigh's loudness.
   Next (the primary session's step 6): the uploads (two clips, the sigh) and `soCloseSigh` into `Audio`, on his go.
+- **Into the game (2026-11-22; Alan: "do all the uploads"): three free uploads, wired in.** The clips
+  `rbxassetid://123733723519393` (left) and `rbxassetid://107568160357142` (right), both approved at once, in
+  `rounds.emote_clips` as `SoCloseLeft` and `SoCloseRight`. Checked in Edit: each upload loads with its draft's 361
+  keys, 5,776 poses, 12 s and the same pose sum; the two drafts are deleted from the open place, so Studio plays the
+  uploads. The sigh `rbxassetid://77036908941159` ("Reviewing", loads in Studio, 0.86 s) is `soCloseSigh` in
+  `src/client/Audio.luau` at volume 1. Roblox's answers: `assets/animations/emotes/uploads/so-close-*.json`,
+  `assets/audio/emotes/uploads/so-close-sigh.json`.
 
 ## Files
 | File | What |

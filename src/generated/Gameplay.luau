@@ -846,6 +846,8 @@ return JSONTypes.map({
             ["NapSleep"] = "rbxassetid://87423606831743",
             ["NapWake"] = "rbxassetid://130303608450334",
             ["NextOne"] = "rbxassetid://77528904973973",
+            ["SoCloseLeft"] = "rbxassetid://123733723519393",
+            ["SoCloseRight"] = "rbxassetid://107568160357142",
             ["ToyPilot"] = "rbxassetid://135069682151169",
         }),
         ["emote_clips_comment"] = "Our own emote animations for the winners' moment (docs/workshop/emote-making.md), uploaded 2026-11-21 with Alan's go from assets/animations/emotes/*.rbxm (Roblox's answers in its uploads folder). An uploaded clip carries no notes, so the moments its scene follows are here too: camera_flick_release (seconds after 1st's light when the plane leaves the hand), camera_flick_grip (the plane on the hand's grip point, a CFrame's 12 numbers), next_one (when the raise starts, how long it takes, how long one rock of the plane is), book_kicker (seconds after 1st's light when the jump off the stack starts and ends, how high it rises in winner heights, when the foot meets the books). They play in Studio only, behind the Dev buttons, until who gets which emote is decided.",

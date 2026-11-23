@@ -69,6 +69,9 @@ local definitions={
  -- the camera"). Quiet on purpose: the winners' music plays under them. The loudness of each is Claude's number in
  -- the proportions he heard, not yet heard in the game.
  magicBass={117109807734655,1,.35,9.1},magicFlutter={133522767321699,1,.1,3.8},magicWhoosh={121243614242776,1,.8,2.15},
+ -- So Close (src/client/emotes/SoClose.luau): the runner-up kid's sigh, cut from a Gemini video's sound and uploaded
+ -- 2026-11-22 (assets/audio/emotes). Volume 1: the file itself is quiet (Alan on the recording: "its good").
+ soCloseSigh={77036908941159,1,1,.86},
  ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
