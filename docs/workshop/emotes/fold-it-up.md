@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the eighth run's faults at the grab (cover not solid, a jump to the corner) are fixed in the module; ready to record again, waiting on Alan's notes on the eighth run.
+Step 6: Alan's OK on the ninth recording ("that looks good, upload it"); the uploads of the clip and the five sounds, and their wiring, are with the primary session.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -524,3 +524,19 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   - **It pulls back as a move:** covered 0.06 s more (`COVERED`), then 0.4 s (`GRIP_IN`) in which it gets smaller by
     the same share each moment while it goes to the corner: 2 screens tall at 3.5 s, 1 at 3.6, a half at 3.7, at the
     corner at 3.76 (the picture 0.59, 0.45, 0.35, 0.31 of the screen at those moments).
+
+## Ninth run in Play and Alan's OK (2026-11-24)
+- **The ninth muted recording** (the primary session; the build of "Eighth run ... and its fixes": the hand itself
+  covers, then pulls back to the corner): `.planning/emotes/fold-it-up-ninth-run-a-sound.mp4` (1st Alan's dog avatar)
+  and `-b-sound.mp4` (1st the blocky bot), no game error. The primary session's stills: the hand comes so near that
+  the camera cuts through it (slivers and ribbons of it across the picture, never a fully covered screen); the
+  pull-back to the corner reads on the bot.
+- **Alan, in this session, after it: "that looks good, upload it."** Taken as his OK on the latest recording as it
+  plays (he judges at speed; the slivers at the grab were seen in stills) and his go for the uploads. Nothing in
+  the module is changed after his OK. The code he approved: `src/client/emotes/FoldItUp.luau` at commit d4a8c844a,
+  the cut and `assets/animations/emotes/fold-it-up.rbxm` at d0f8e85af.
+- **Uploads (the primary session's, with his go above):** the body clip `assets/animations/emotes/fold-it-up.rbxm`
+  (marks Pinch 3.3, Back 3.8, Show 4.5, Crumple 6.6, Ball 7.6, Release 8.15) and the five sounds
+  `assets/audio/emotes/fold-it-up-peel/flap/scrunch/toss/dust.ogg` (Audio names `foldPeel`, `foldFlap`,
+  `foldScrunch`, `foldToss`, `foldDust`; times in `FoldItUp.sounds`: 3.275, 4.475, 6.575, 8.125, 8.925 and 9.225).
+  The drawing is already up (`rbxassetid://114077761748868`).
