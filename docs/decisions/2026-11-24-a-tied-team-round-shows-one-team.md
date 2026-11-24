@@ -6,6 +6,7 @@
 ## Decision
 - **The three on the stand are always teammates** ("all three are teammates so they should be shown together, never a mix match").
 - **In a tied team round** the stand shows the best three of the team that has the best pilot (Claude's suggestion, his "yes"). "Best" is the results order: points, then folds, assists, fewest crashes, then a draw of lots.
+- **The stand matches the report card** (Alan the same day: "The winner circle matches the report card"): the three on the stand are the top three rows of that team's card, in the same order, also when pilots are level on points. The card (`src/client/RoundEnd.luau`) keeps the order the results came in for that.
 - Nothing else about a tie changes: no winning team, no places paid, the note still says "A tie! Well flown, everyone."
 
 ## Why

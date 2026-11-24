@@ -387,10 +387,15 @@ function RoundEnd.start()
 	end
 	local function fillResults(snap)
 		local result = snap.result or {}
-		local list = table.clone(result.participants or {})
+		-- The card's order is the winners' moment's order (Alan 2026-11-24: "The winner circle matches the report
+		-- card"): by place, and pilots without a place (a tie, the losing team) in the order the results came in, which
+		-- is the server's own (points, folds, assists, fewest crashes, then lots) and what MatchRules.winners goes by.
+		-- (It was by points alone, and equal points came out in any order: not the stand's.)
+		local list, came = table.clone(result.participants or {}), {}
+		for i, p in list do came[p] = i end
 		table.sort(list, function(a, b)
 			if (a.place or 99) ~= (b.place or 99) then return (a.place or 99) < (b.place or 99) end
-			return (a.contribution or 0) > (b.contribution or 0)
+			return came[a] < came[b]
 		end)
 		local me = player.DisplayName
 		state.mine = nil
