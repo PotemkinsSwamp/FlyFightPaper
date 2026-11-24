@@ -1,7 +1,7 @@
 # A human winner does the free emote; the others are bought with Paper, later
 
 **Decided:** 2026-11-24 (Alan, asked what a human who places gets)
-**Status:** The free emotes are built in (read through by eye only: Studio was in his Play, so no compile check yet; not seen in Play). Buying and pricing are not started.
+**Status:** The free emotes are built in (compiles; 15,000 made-up podiums checked in Studio's Edit: a person always gets the free one, two runner-ups never the same unless both are people; not seen in Play). Buying and pricing are not started.
 
 ## Decision
 - **Everyone starts with the free one in each slot, and only that** ("they get the free one. Everyone starts with the free one. That's the only one everyone gets ... that is like the default. Like you can't change them. Like that's just what you have").
