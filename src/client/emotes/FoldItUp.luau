@@ -18,16 +18,13 @@
 -- smooth transition ... that camera went out, we're switching to this camera").
 local FoldItUp = {}
 local MARKS = { Pinch = 3.3, Back = 3.8, Show = 4.5, Crumple = 6.6, Ball = 7.6, Release = 8.15 } -- the clip's own (its draft's attributes win)
-local TAKE = 4.1 -- both hands on the poster
-local REACH_FROM = 3.05 -- the copy hand leaves the wrist (the reach is under way), reaches the lens at Pinch, back at Back
-local GROW = 12 -- the hand's size on the screen at the pinch, against its own
-local NEAREST = 0.3 -- the copy hand never comes nearer the lens than this many studs (the camera's near plane is 0.1)
+local REACH_FROM = 3.05 -- the copy hand leaves the kid's own hand (the reach is under way) and is at the corner at Pinch
 local SHOT_FOV, WIDE = 50, 120 -- the scene's lens, and Roblox's widest: the picture a quarter of its size (0.27)
 local SHRINK, FADE, DARK, OPEN = 0.6, 0.25, 0.35, 0.4 -- seconds: the picture shrinking; the black closing; all black; the black lifting on the new camera
 local ROLL = 9 -- degrees the shrinking picture tilts
-local HAND_AT = 2 -- studs from the lens where the hand holds the picture (in front of the black, MASK)
+local HAND_AT = 2 -- studs from the lens where the hand holds the picture's corner (in front of the black, MASK)
 local HOLD_TALL = { 0.4, 0.26 } -- the holding hand's size, of the screen's height: at the pinch and when the picture is smallest
-local GRIP_IN, GRIP_X, GRIP_OVER = 0.15, 0.3, 0.25 -- seconds to take hold; where on the bottom edge (of the half width, to the right); the share of the hand over the picture
+local GRIP_OVER = 0.25 -- the share of the hand out past the corner it holds
 local LAMP = 1 -- a small light at the lens while the hand is there (it is out of every spotlight)
 local SIDE, FAR = 20, 1.15 -- the second camera: degrees round 1st, to the kid's left (the toss goes off to the far side), and how much further from 1st than the front one (at 30 degrees and the same distance the near runner-up sat low in the corner, its books at the picture's bottom edge: the fifth run)
 local BACK_AT, BACK_FOR = 9.4, 0.9 -- the camera swings back to the front, the kid turning with it: the scene's glide home starts from the front (from the side it went through furniture: the third run)
@@ -183,8 +180,7 @@ local function posterAt(st, t, facing)
 	local model = st.who.model
 	local right, left = model:FindFirstChild("RightHand"), model:FindFirstChild("LeftHand")
 	if not right or not left then return nil end
-	local both = st.kit.ease(math.clamp((t - st.marks.Back) / (TAKE - st.marks.Back), 0, 1)) -- from the right hand alone to both
-	local middle = right.Position:Lerp((right.Position + left.Position) / 2, both) + facing * IN_FRONT * st.kid * both
+	local middle = (right.Position + left.Position) / 2 + facing * IN_FRONT * st.kid
 	return CFrame.lookAt(middle, middle + facing, Vector3.yAxis)
 end
 
@@ -209,25 +205,20 @@ function FoldItUp.step(st, since, shot, steady, winners, fov)
 		st.realHand.LocalTransparencyModifier = out and 1 or 0
 		st.light.Enabled = out
 		if out then
+			-- from the kid's own hand out to the picture's top left corner as we see it (Alan's mark on the fifth run:
+			-- "the hand should be in the corner, grabbing it"; the kid's arm reaches the same way), growing as it comes;
+			-- there it holds the corner, fingertips over it, and stays big while the picture shrinks
 			local near = math.min(st.kit.ease((since - REACH_FROM) / (marks.Pinch - REACH_FROM)) ^ 1.5, 1) -- speeding up
-			local wrist = st.realHand.Position
-			local far = (wrist - shot.Position).Magnitude
-			local share = math.max(1 / GROW, NEAREST / far) -- of the way from the lens: never nearer than NEAREST
-			local size = st.handSize * (1 + (GROW * share - 1) * near) -- its own size: the rest of GROW
-			local at = st.realHand.CFrame.Rotation + shot.Position + (wrist - shot.Position) * (1 + (share - 1) * near)
-			if since < marks.Pinch then
-				st.reached = { at = steady:ToObjectSpace(at), size = size } -- as it is at the pinch, from the lens
-			elseif st.reached then
-				local held = math.clamp((since - marks.Pinch) / SHRINK, 0, 1)
-				local tall = (HOLD_TALL[1] + (HOLD_TALL[2] - HOLD_TALL[1]) * held) * 2 * HAND_AT * math.tan(math.rad((fov or SHOT_FOV) / 2))
-				local hy = HAND_AT * math.tan(math.rad(SHOT_FOV / 2)) -- the old picture's bottom edge, HAND_AT from the lens
-				-- fingertips up over the picture's edge (a hand's own down is its fingertips), the back of the hand to us:
-				-- she holds it from behind, the fingers come over the edge (in the fifth run they pointed down, away from it)
-				local grip = CFrame.fromMatrix(Vector3.new(GRIP_X * hy * aspect, -hy - tall * (0.5 - GRIP_OVER), -HAND_AT), Vector3.zAxis, -Vector3.yAxis, Vector3.xAxis)
-				local g = st.kit.ease(math.clamp((since - marks.Pinch) / GRIP_IN, 0, 1))
-				local big = math.max(st.handSize.X, st.handSize.Y, st.handSize.Z)
-				at, size = steady * st.reached.at:Lerp(grip, g), st.reached.size:Lerp(st.handSize * tall / big, g)
-			end
+			local held = math.clamp((since - marks.Pinch) / SHRINK, 0, 1)
+			local tall = (HOLD_TALL[1] + (HOLD_TALL[2] - HOLD_TALL[1]) * held) * 2 * HAND_AT * math.tan(math.rad((fov or SHOT_FOV) / 2))
+			local hy = HAND_AT * math.tan(math.rad(SHOT_FOV / 2)) -- the old picture's half height, HAND_AT from the lens
+			local d = Vector3.new(-1, 1, 0).Unit -- up and to the left: the way the fingertips point, out over the corner
+			local middle = Vector3.new(-hy * aspect, hy, -HAND_AT) - d * tall * (0.5 - GRIP_OVER)
+			-- palm to us (a right hand's palm is its own left side), its own down (the fingertips) along d
+			local grip = CFrame.fromMatrix(middle, -Vector3.zAxis, -d, Vector3.new(-d.Y, d.X, 0))
+			local big = math.max(st.handSize.X, st.handSize.Y, st.handSize.Z)
+			local at = steady * steady:ToObjectSpace(st.realHand.CFrame):Lerp(grip, near)
+			local size = st.handSize:Lerp(st.handSize * tall / big, near)
 			st.hand.Size, st.hand.CFrame, st.hand.Transparency = size, at, 0
 			st.lamp.CFrame = shot
 		else

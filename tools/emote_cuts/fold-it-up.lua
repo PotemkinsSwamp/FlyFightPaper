@@ -20,17 +20,17 @@
 -- * fold on: arms folded, chin up (CHIN), the weight on the right leg (SHIFT, HIP).
 -- ARM: each pose's hands from the middle of the shoulders and its elbows' pull, in winner heights { to the kid's right,
 -- up, back } (forwards, at the camera, is negative); "hang" is the arms down at the sides.
-local FU = { tilt = 1.0, rub = 2.0, rubbed = 3.0, reach = 3.0, pinch = 3.3, back = 3.8, take = 4.1, show = 4.5, nod = 5.6,
+local FU = { tilt = 1.0, rub = 2.0, rubbed = 3.0, reach = 3.0, pinch = 3.3, back = 3.8, held = 4.15, take = 4.45, show = 4.5, nod = 5.6,
 	crumple = 6.6, ball = 7.6, wind = 7.8, release = 8.15, through = 8.35, dust = 8.7, dusted = 9.4, fold = 9.6, folded = 10.0, length = 11 }
 FU.marks = { Pinch = FU.pinch, Back = FU.back, Show = FU.show, Crumple = FU.crumple, Ball = FU.ball, Release = FU.release }
 local TILT, LEAN, CHIN, NOD, SHIFT, HIP = 14, 8, 8, 8, 0.03, 5
-local ARMS = { { 0, "hang" }, { 1.9, "hang" }, { FU.rub, "rub" }, { FU.rubbed, "rub" }, { FU.pinch, "reach" }, { FU.back, "chest" }, { FU.take, "hold" },
+local ARMS = { { 0, "hang" }, { 1.9, "hang" }, { FU.rub, "rub" }, { FU.rubbed, "rub" }, { FU.pinch, "reach" }, { FU.held, "reach" }, { FU.take, "hold" },
 	{ FU.crumple, "hold" }, { FU.crumple + 0.3, "scrunch" }, { FU.ball, "scrunch" }, { FU.wind, "low" }, { FU.release, "toss" }, { FU.through, "over" }, { 8.55, "side" },
 	{ FU.dust, "palms" }, { FU.dusted, "palms" }, { FU.folded, "fold" } }
 local ARM = {
 	hang = { Right = { V(0.2, -0.42, -0.02), V(1, -0.1, 0.4) }, Left = { V(-0.2, -0.42, -0.02), V(-1, -0.1, 0.4) } },
 	rub = { Right = { V(0.02, -0.28, -0.21), V(1, -1, 0.3) }, Left = { V(-0.02, -0.28, -0.21), V(-1, -1, 0.3) } },
-	reach = { Right = { V(0.13, 0.06, -0.46), V(1, -0.6, 0) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- straight at the lens
+	reach = { Right = { V(0.36, 0.16, -0.26), V(0.6, -1, 0.2) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- up and out to the kid's right and at the lens: at the picture's top left corner as we see it, where the big hand grips it (Alan's mark on the fifth run); held until the black (FU.held)
 	chest = { Right = { V(0.08, -0.18, -0.18), V(1, -0.8, 0.2) }, Left = { V(-0.2, -0.38, -0.06), V(-1, -0.2, 0.4) } },
 	hold = { Right = { V(0.26, -0.25, -0.26), V(1, -0.6, 0.3) }, Left = { V(-0.26, -0.25, -0.26), V(-1, -0.6, 0.3) } }, -- the poster's sides
 	scrunch = { Right = { V(0.05, -0.18, -0.22), V(1, -0.8, 0.2) }, Left = { V(-0.05, -0.18, -0.22), V(-1, -0.8, 0.2) } },
@@ -55,7 +55,7 @@ local SCRUNCH_R, SCRUNCH_TURNS = 0.03, 3
 local ROLL = { { 0, 0 }, { 0.2, 0 }, { FU.tilt, TILT }, { 1.3, TILT }, { FU.rub, -TILT }, { 2.3, -TILT }, { 2.7, 0 }, { FU.nod - 0.3, 0 }, { FU.nod, 6 }, { FU.nod + 0.5, 0 } } -- head roll, degrees, to the kid's right
 local DOWN = { { 0, 0 }, { FU.rub + 0.1, 0 }, { FU.rub + 0.4, 15 }, { FU.rubbed, 15 }, { FU.pinch, -4 }, { FU.back, 0 }, { FU.show, 5 }, { FU.nod, NOD + 5 }, { FU.nod + 0.5, 5 },
 	{ FU.crumple, 25 }, { FU.ball, 25 }, { FU.wind, 0 }, { FU.dust, 0 }, { FU.dust + 0.2, 20 }, { FU.dusted, 20 }, { FU.folded, -CHIN } } -- head down, degrees
-local LEANS = { { 0, 0 }, { FU.rubbed, 0 }, { FU.pinch, 1 }, { FU.back, -0.4 }, { FU.take, 0 } } -- the chest towards the camera, of LEAN
+local LEANS = { { 0, 0 }, { FU.rubbed, 0 }, { FU.pinch, 1 }, { FU.held, 1 }, { FU.take, 0 } } -- the chest towards the camera, of LEAN
 local TWISTS = { { 0, 0 }, { FU.dust, 0 } } -- the chest's turn, degrees to the kid's left: none (the toss is the forearm alone)
 local WEIGHT = { { FU.fold, 0 }, { FU.folded, 1 } }
 function FU.pose(t, c)

@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the fifth run (two other bodies) showed the hand's fingers pointing away and 3rd low in the corner; both fixed in the module, ready to record again.
+Step 6: Alan's mark on the fifth run is built (the big hand grips the picture's top left corner, the kid's arm reaches there and holds); ready to record on a body other than itsella.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -443,3 +443,19 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
     degrees and stands 1.15 times as far from 1st (`SIDE`, `FAR`): with stand-ins the near runner-up is at 0.96 of
     the front's depth, the far one 1.33, 1st 1.14 (so 1st is about an eighth smaller in the side view), the
     runner-ups 0.57 of the half picture each side. The swing back before leaving closes the distance too.
+
+## Alan on the fifth run: the hand in the corner (2026-11-24, given in the primary session with a marked still)
+- **His words:** "where the hands land on the screen, the character is not in the position ... The hand should be in
+  the corner, grabbing it, but the hand is for some reason at the bottom." On `.planning/emotes/fold-it-up-alan-hand-corner.png`
+  he crossed out the big hand under the picture's bottom middle and circled the picture's top left corner.
+- **Built (numbers in Edit only; not recorded):**
+  - **The big hand** leaves the kid's own hand at 3.05 and flies, growing, to the picture's top left corner as we see
+    it, there at the pinch (with stand-ins: 7% of the screen tall near the middle at 3.2 s, 19% half way at 3.29, 39%
+    at the corner at 3.35). It holds the corner: palm to us, fingertips pointing up and left out over the corner, a
+    quarter of the hand past it (`GRIP_OVER`), and follows the corner in as the picture shrinks (26% of the screen
+    tall when the picture is 0.27). The line-to-the-wrist growth of the earlier builds is gone.
+  - **The kid's arm** (the cut, baked again) reaches up and out to the kid's right and at the lens, towards that
+    corner as we see it, and **stays reaching until the black** (4.15), so the kid in the shrinking picture is still
+    in the grabbing pose; the hands go to the poster in the dark (by 4.45). The chest keeps leaning in until then.
+    On 4 of the bots' outfits in Edit the reaching hand is 0.06 to 0.13 heights over the shoulder, 0.09 to 0.13 out
+    and 0.14 to 0.24 in front; nothing goes into the head or chest.
