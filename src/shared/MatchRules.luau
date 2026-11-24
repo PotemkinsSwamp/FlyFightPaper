@@ -90,7 +90,9 @@ function Rules.podium(records, seed)
     return ordered
 end
 -- The winners' moment (Alan 2026-10-17): the top 3 of the round, or of the winning team in a team round, 1st first.
--- A tied team round gives no places (no podium), so its top 3 come in results order (Alan 2026-10-18: no hops after a tie).
+-- A tied team round gives no places (no podium), so its top 3 come in results order (Alan 2026-10-18: no hops after a
+-- tie), and all from one team, the best pilot's (Alan 2026-11-24, after a 0 to 0 round put both teams on the stand:
+-- "all three are teammates so they should be shown together, never a mix match").
 function Rules.winners(result)
     local rows = {}
     for i, p in ipairs(result and result.participants or {}) do
@@ -98,8 +100,11 @@ function Rules.winners(result)
         if place and (not result.winningTeam or result.draw or p.teamId == result.winningTeam) then table.insert(rows, { place = place, row = p }) end
     end
     table.sort(rows, function(a, b) return a.place < b.place or a.place == b.place and a.row.actorId < b.row.actorId end)
+    local team = result and result.draw and rows[1] and rows[1].row.teamId
     local top = {}
-    for i = 1, math.min(3, #rows) do top[i] = rows[i].row end
+    for _, entry in ipairs(rows) do
+        if #top < 3 and (not team or entry.row.teamId == team) then table.insert(top, entry.row) end
+    end
     return top
 end
 -- The report card's grade for a pilot's place among `count` pilots (Alan OK'd 2026-11-11): 1st A+, top quarter A,
