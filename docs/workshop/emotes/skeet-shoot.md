@@ -239,7 +239,9 @@ sound, not in the track; So Close's sigh is cut by this emote's first sound at 1
   in front of the chest with bent elbows.
 - **Fault:** 1st was a pale avatar with arms the same colour as its top, so the crossed arms are hard to read in this
   take.
-- Waits for Alan's look.
+- **Alan (2026-11-24): "its good upload it".** Approved, look and sound. The uploads and the wiring are the primary
+  session's (step 6): the clips SkeetShoot, SkeetThrowRight, SkeetThrowLeft (drafts in `Assets`, files in
+  `assets/animations/emotes/`) and the sound `assets/audio/emotes/skeet-shoot-shot.ogg` as `skeetShot`.
 
 ## Files
 | File | What |
