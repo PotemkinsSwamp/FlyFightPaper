@@ -1029,6 +1029,8 @@ Back to [HOME](../HOME.md)
   a scene for the next match's planes). **A different winner each take** (2026-11-24): with no points scored, a fresh Play's first match always
   places the same bot 1st; `endMatch` sent again during the vote that follows ends the next match as it starts, with
   another order (start the capture just before it).
+- **A fault that lasts a frame or two in stills is a question, not a verdict** (2026-11-24, Fold It Up's ninth run): stills at 12 a second showed the hand cut by the lens for about a third of a second and I called the moment broken; Alan watched the video and approved it ("that looks good, upload it"). Report such a fault as "seen in stills for N frames; judge it in motion", and keep "broken" for what the video itself shows.
+- **The recording helpers are kept** (2026-11-24; twice lost with the temp folder): `tools/keep_screen_awake.ps1` and `tools/emote_lay_sound.py` ([tools](tools.md)).
 - **Read a Play's errors from `LogService:GetLogHistory()` in the Client**, keeping errors and warnings and dropping
   the "ContentId ... failed" lines: the whole console is a hundred lines of those.
 - **Find 1st's light in a recording by brightness:** the mean brightness of a small box on 1st (`signalstats` on
