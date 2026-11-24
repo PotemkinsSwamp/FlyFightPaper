@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the third build is recorded once (the shrink into black works; the side camera cut off 3rd and flew through furniture on the way home: both fixed in the module, not yet recorded again). Waiting on Alan's look at the third run.
+Step 6: the fourth recording (the screen taken, all three in the side view, a clean way home) waits for Alan's look.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -379,3 +379,15 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   - **(3):** from 9.4 to 10.3 s the camera swings back round to the front and the kid turns back with it
     (`BACK_AT`, `BACK_FOR`), so the scene's glide home starts from the front spot, the path the other emotes use.
   - **(2) and (4)** are the scene's (how dark the curtain is; the fade): not touched, Alan's call.
+
+## Fourth run in Play (the primary session's muted recording, 2026-11-24, with the two fixes)
+- **Files:** `.planning/emotes/fold-it-up-fourth-run-raw.mp4`, with sound `fold-it-up-fourth-run-sound.mp4` (1st's
+  light at 7.11 s; the third run's sound times). Fold It Up on 1st, So Close on 2nd and 3rd, 54 frames a second, no
+  game error.
+- **Seen in its stills:** from the side all three are in view (2nd left, 1st middle, 3rd right, in full); the camera
+  is back at the front before leaving and the glide home is clean.
+- **Left:** in the side view the three name plates sit a little off their kids (2nd's and 1st's left of and below
+  their stacks, 3rd's over the bottom of 3rd's books): the scene hangs them on the desks' front edges, front meaning
+  the first camera. Not touched; offered to Alan: keep them away for the whole side view (`covered` until 10.3).
+- **Not this emote's:** the grey face at leaving is the scene's fade (the head goes grey a few frames before the
+  body; A+ too); the dim room is as in the front view (not a fault). Waits for Alan's look.
