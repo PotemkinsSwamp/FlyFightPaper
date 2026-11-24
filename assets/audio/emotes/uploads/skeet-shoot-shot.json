@@ -1,0 +1,24 @@
+{
+  "path": "operations/ac2300d5-1cbe-43a2-a34d-9296681cc4fa",
+  "operationId": "ac2300d5-1cbe-43a2-a34d-9296681cc4fa",
+  "done": true,
+  "response": {
+    "path": "assets/138787804311745",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-24T21:24:50.775Z",
+    "assetId": "138787804311745",
+    "displayName": "FFP sound Skeet Shoot shot",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

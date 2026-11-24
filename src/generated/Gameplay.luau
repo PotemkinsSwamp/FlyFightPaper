@@ -838,6 +838,7 @@ return JSONTypes.map({
         ["control_zones_comment"] = "Zone size follows how crowded the spot is (Alan 2026-10-16: denser = larger and shorter, so pilots chase between buildings): radius 340-420 and half height 100-65, scaled by the share of the zone's floor under new-town buildings (9% -> 28%). Ceiling spot unchanged.",
         ["duration_seconds"] = 480,
         ["emote_clips"] = JSONTypes.map({
+            ["APlus"] = "rbxassetid://127645622092530",
             ["BookKicker"] = "rbxassetid://73358935726911",
             ["Bubblegum"] = "rbxassetid://139624198192671",
             ["CameraFlick"] = "rbxassetid://92727749892782",
@@ -846,6 +847,9 @@ return JSONTypes.map({
             ["NapSleep"] = "rbxassetid://87423606831743",
             ["NapWake"] = "rbxassetid://130303608450334",
             ["NextOne"] = "rbxassetid://77528904973973",
+            ["SkeetShoot"] = "rbxassetid://131152777526587",
+            ["SkeetThrowLeft"] = "rbxassetid://80133722036922",
+            ["SkeetThrowRight"] = "rbxassetid://87476042703213",
             ["SoCloseLeft"] = "rbxassetid://123733723519393",
             ["SoCloseRight"] = "rbxassetid://107568160357142",
             ["ToyPilot"] = "rbxassetid://135069682151169",

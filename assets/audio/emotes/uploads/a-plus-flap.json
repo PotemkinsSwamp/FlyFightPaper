@@ -1,0 +1,24 @@
+{
+  "path": "operations/4396c794-adee-4eef-bdaa-fc27c5f2f718",
+  "operationId": "4396c794-adee-4eef-bdaa-fc27c5f2f718",
+  "done": true,
+  "response": {
+    "path": "assets/99441125733451",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-24T21:24:44.400Z",
+    "assetId": "99441125733451",
+    "displayName": "FFP sound A Plus flap",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

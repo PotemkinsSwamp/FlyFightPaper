@@ -9,8 +9,8 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 | Emote | Page | Step it is on |
 |---|---|---|
 | So Close | [so-close](emotes/so-close.md) | 6, approved by Alan on the recording (2026-11-22: the sigh was "way too loud", then with the quieter file "its good"); uploaded and wired in on his go (2026-11-22); waits for his own Play |
-| Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 6, recorded muted 2026-11-22, two takes (runner-ups dancing, and on So Close; no error); Alan finds the planes' size fine; third take with the new crossed arms recorded 2026-11-22 (`.planning/emotes/skeet-shoot-second-run-sound.mp4`, no error; 1st was a pale avatar, the arms hard to read); waits for Alan's look and listen |
-| A+ | [a-plus](emotes/a-plus.md) | 6 again: second pass built in Alan's own session (both hands on the card until the throw, arms folded from Camera Flick's pose, the landing fixed for both report card layouts); recorded muted 2026-11-23 in a free-for-all (`.planning/emotes/aplus-third-run-sound.mp4`, no error; the card lands at the real card's place and size); a team match not yet recorded; waits for Alan's look and listen |
+| Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 6, approved by Alan on the second recording (2026-11-24: "its good upload it"); three clips and the shot sound uploaded and wired in on his go ("go both"); the drafts are out of the open place; waits for his own Play ("end:" button for Skeet Shoot) |
+| A+ | [a-plus](emotes/a-plus.md) | 6, approved by Alan on the third recording (2026-11-24: "its good upload it"); the clip and two sounds uploaded and wired in on his go ("go both"); the draft is out of the open place; a team match not yet recorded; waits for his own Play |
 | Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, drawing 2a picked and uploaded (his go), on the poster; recorded again 2026-11-22 with the arms that fold (`.planning/emotes/fold-it-up-soclose-second-run-sound.mp4`, no error); waits for Alan's look and listen |
 
 The primary session keeps this table; a side session reports its step in its own page.

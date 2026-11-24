@@ -1,0 +1,24 @@
+{
+  "path": "operations/1188e8e1-e095-46ac-907a-90437a3383b3",
+  "operationId": "1188e8e1-e095-46ac-907a-90437a3383b3",
+  "done": true,
+  "response": {
+    "path": "assets/83907119716558",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-24T21:24:47.579Z",
+    "assetId": "83907119716558",
+    "displayName": "FFP sound A Plus slap",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "path": "operations/fa31e1a6-b329-4f6e-ac8a-dc88c4181f8e",
+  "operationId": "fa31e1a6-b329-4f6e-ac8a-dc88c4181f8e",
+  "done": true,
+  "response": {
+    "path": "assets/127645622092530",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-24T21:24:31.624Z",
+    "assetId": "127645622092530",
+    "displayName": "FFP emote A Plus",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

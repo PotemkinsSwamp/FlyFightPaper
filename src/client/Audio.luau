@@ -72,6 +72,11 @@ local definitions={
  -- So Close (src/client/emotes/SoClose.luau): the runner-up kid's sigh, cut from a Gemini video's sound and uploaded
  -- 2026-11-22 (assets/audio/emotes). Volume 1: the file itself is quiet (Alan on the recording: "its good").
  soCloseSigh={77036908941159,1,1,.86},
+ -- A+ and Skeet Shoot (src/client/emotes): our own sounds, cut from Gemini videos' sound and uploaded 2026-11-24
+ -- (assets/audio/emotes; Alan on the recordings: "its good upload it"). aPlusFlap: the card snapped up overhead.
+ -- aPlusSlap: the card flat on the lens, the loudest (as loud as Book Kicker's thud). skeetShot: the straw's puff
+ -- and the hit. The loudness of each is Claude's number, not yet heard in the game.
+ aPlusFlap={99441125733451,1,1,.34},aPlusSlap={83907119716558,1,1.6,.34},skeetShot={138787804311745,1,1,.29},
  ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);
