@@ -391,9 +391,13 @@ function HUD.start(getPlane, action)
 		capture.Visible = control
 		round.Words.UIPadding.PaddingRight = UDim.new(first and 0.14 or 0.07, 0)
 	end)
-	-- In the hangar: the crayon hangar menu (service, builds, LAUNCH). The dev picker rides on its sheet.
+	-- In the hangar: the crayon hangar menu (service, builds, LAUNCH).
 	local desk = require(script.Parent.DeskHangar).new(gui.Parent, { flight = action, round = game.ReplicatedStorage.FlyFightPaper.RoundAction, feed = feed })
-	picker.AnchorPoint, picker.Position, picker.Parent = Vector2.new(0.5, 0), UDim2.new(0.5, 0, 0.6, 0), desk.sheet
+	-- The dev picker shows with that sheet, on a layer of its own over everything (Alan 2026-11-24: over the report
+	-- cards too), beside DevTools' switches (90).
+	local devLayer = Instance.new("ScreenGui")
+	devLayer.Name, devLayer.ResetOnSpawn, devLayer.IgnoreGuiInset, devLayer.DisplayOrder, devLayer.Parent = "DevPicker", false, true, 90, gui.Parent
+	picker.AnchorPoint, picker.Position, picker.Parent = Vector2.new(0.5, 0), UDim2.new(0.5, 0, 0.6, 0), devLayer
 	-- The match strip and the kill feed stay up at the desk too (Alan 2026-10-22: the quick menu leaves them in
 	-- view), so they live on their own layer that hides only with the rest of the game's HUD.
 	local matchInfo = Instance.new("ScreenGui")
@@ -733,7 +737,7 @@ function HUD.start(getPlane, action)
 			local roundEnd=gui.Parent:FindFirstChild("RoundEnd")
 			foldOffer.step(plane:GetAttribute("State"),Root:GetAttribute("OverlayOpen")==true or Root:GetAttribute("PhotoMode")==true or (roundEnd~=nil and roundEnd.Cover.Visible))
 		end
-		picker.Visible=inHangar and Players.LocalPlayer:GetAttribute("Dev")==true and Players.LocalPlayer:GetAttribute("DevShown")==true -- Studio, or the owner's account live (server-set); F8 shows it (DevTools)
+		picker.Visible=inHangar and desk.sheet.Visible and Players.LocalPlayer:GetAttribute("Dev")==true and Players.LocalPlayer:GetAttribute("DevShown")==true -- Studio, or the owner's account live (server-set); F8 shows it (DevTools)
 		gui.Enabled=shown and not inHangar and not Root:GetAttribute("WinnersMoment") -- (the report card's row sits where the weapon slip is)
 		matchInfo.Enabled=shown
 		-- The match strip is centred unless that runs into the Menu button: then just right of its real edge (phones).
