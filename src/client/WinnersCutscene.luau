@@ -1852,7 +1852,8 @@ function Cutscene.play(winners, onStage)
 			local a = ease((t - depart) / GLIDE)
 			fadeShot(state, ease((t - depart) / (GLIDE * 0.6)))
 			shot, fov = live:Lerp(group, a) + Vector3.new(0, math.sin(a * math.pi) * ARC, 0), liveFov + (SHOT_FOV - liveFov) * a
-		elseif t < leave then shot, fov = hold, SHOT_FOV
+		elseif t < leave then -- (a pipeline emote on 1st may set the lens angle itself, on `camera`'s clock: Fold It Up)
+			shot, fov = hold, state.extra and state.extra.made.fov and state.extra.made.fov(state.extra.st, t - arrive - state.extraAt) or SHOT_FOV
 		else
 			local a = ease((t - leave) / GLIDE)
 			fadeShot(state, 1 - a)
