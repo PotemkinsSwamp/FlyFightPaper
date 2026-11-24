@@ -32,15 +32,16 @@ local FLAP = 0.2
 APlus.sounds = { { "aPlusFlap", MARKS.Snap + FLAP }, { "aPlusSlap", MARKS.Release + FLIGHT } }
 APlus.firstSound = MARKS.Snap + FLAP
 
--- The real card's page: the visible one with the gold star (the winners' card in a team round), else Page1.
-local function realPage()
+-- The real card's page. A team round has a card a team (RoundEnd: Page1 Red, "team:1"; Page2 Blue, "team:2"): the
+-- kid's own team's (`team`, their teamId). It was the one with the gold star, and a tied round has no star: 1st held
+-- up the other team's card (Alan in Play, 2026-11-24). Any other round: Page1.
+local function realPage(team)
 	local player = Players.LocalPlayer
 	local gui = player and player:FindFirstChild("PlayerGui")
 	local results = gui and gui:FindFirstChild("RoundEnd") and gui.RoundEnd:FindFirstChild("Results", true)
 	if not results then return nil end
 	local one, two = results:FindFirstChild("Page1"), results:FindFirstChild("Page2")
-	local starred = two and two.Visible and two:FindFirstChild("Star") and two.Star.Visible and not (one and one:FindFirstChild("Star") and one.Star.Visible)
-	return starred and two or one
+	return two and two.Visible and team == "team:2" and two or one
 end
 local function shown(item)
 	while item and item:IsA("GuiObject") do
@@ -57,10 +58,10 @@ end
 -- real card is: it is shown here as RoundEnd keeps it meanwhile, where it will start from.
 local POPS_IN = { PaperOffer = true, MissionSlip = true, MissionStar = true }
 local LEVEL_BAR = { "Level", "XPCount", "NextUnlock", "XPFrame", "XPFill" }
-local function front(part)
+local function front(part, team)
 	local gui = Instance.new("SurfaceGui")
 	gui.Face, gui.SizingMode, gui.CanvasSize, gui.Enabled, gui.LightInfluence = Enum.NormalId.Front, Enum.SurfaceGuiSizingMode.FixedSize, Vector2.new(680, 900), false, 1
-	local page = realPage()
+	local page = realPage(team)
 	if page then
 		local copy = page:Clone()
 		for _, item in copy:GetChildren() do
@@ -148,7 +149,7 @@ function APlus.start(kit, who)
 	card.Name, card.Anchored, card.CanCollide, card.CanQuery, card.CanTouch, card.CastShadow = "APlusCard", true, false, false, false, false
 	card.Size, card.Color, card.Material = Vector3.new(st.height * 680 / 900, st.height, st.height * 0.01), PAPER, Enum.Material.SmoothPlastic
 	card.Parent = who.cast
-	st.card, st.face, st.back = card, front(card), back(card)
+	st.card, st.face, st.back = card, front(card, who.teamId), back(card)
 	-- Both hands on the card on this body: the arms are bent again after the clip has posed them (the scene's own
 	-- bendArm, as Nap's hand and Good Game's clap).
 	local model = who.model
@@ -175,8 +176,8 @@ end
 -- hidden card is not, and a hidden card's own AbsolutePosition and AbsoluteSize were stale (the first recording,
 -- 2026-11-22). Measured from the layer's own corner: Roblox counts AbsolutePosition from under its top bar (58 px
 -- down), so the sheet's own number put the copy that much too high (both recordings).
-local function rectangle()
-	local page = realPage()
+local function rectangle(team)
+	local page = realPage(team)
 	local results = page and page.Parent
 	local sheet = results and results.Parent
 	local layer = sheet and sheet:FindFirstAncestorWhichIsA("LayerCollector")
@@ -196,7 +197,7 @@ end
 -- the camera itself still holds the flying camera's wider lens here (the second recording, 2026-11-22: the copy
 -- landed 1.5 times too big, 70 degrees against the scene's 50).
 local function onLens(st, fov)
-	local middle, tall, turn, screen = rectangle()
+	local middle, tall, turn, screen = rectangle(st.who.teamId)
 	local tanHalf = math.tan(math.rad(fov / 2))
 	local function along(pixel) -- the direction through a pixel, at a depth of 1
 		return Vector3.new((pixel.X / screen.X * 2 - 1) * tanHalf * screen.X / screen.Y, -(pixel.Y / screen.Y * 2 - 1) * tanHalf, -1)
@@ -326,7 +327,7 @@ function APlus.step(st, since, shot, _steady, _winners, fov)
 		if flown < 0.3 then st.kit.Audio.play("aPlusSlap") end
 	end
 	-- the real card is up: it takes over (the copy stays one frame under it, so nothing blinks)
-	local page = realPage()
+	local page = realPage(st.who.teamId)
 	if page and shown(page) then
 		if st.seenReal then
 			st.swapped = true

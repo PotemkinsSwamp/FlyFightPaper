@@ -11,6 +11,7 @@
 | 4 | Every winners' scene: "you can see the silhouettes through the building when the camera is zooming through them ... It's supposed to be dark, so why am I seeing the black silhouettes through the buildings?" | The winners do not show through the buildings while the camera flies in. | Built the same day, compiles; not run in Play, not yet seen by him |
 
 ## What was built
+His look at these: [his second look](2026-11-24-alans-second-look-at-the-emote-fixes.md) (A+ good; the rub too fast; the buildings parked).
 - 1 and 2: [A+, the real card and its back](../workshop/emotes/a-plus.md#the-real-card-and-an-a-on-its-back-2026-11-24-the-primary-session-from-alans-own-play). Claude read "when they turn it around" as the turn the emote already has; a team match has still not been seen.
 - 3: [Fold It Up, the hands at the chest](../workshop/emotes/fold-it-up.md#the-hands-rub-at-the-chest-elbows-bent-2026-11-24-the-primary-session-from-alans-own-play). The dusting near the end had the same pose and got the same fix.
 - 4: [the winners' moment](../systems/modes-and-scoring.md): a winner with a building in the way is not drawn until the way is clear; they appear all at once.

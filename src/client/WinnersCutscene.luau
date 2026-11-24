@@ -373,7 +373,7 @@ local function ourClip(name)
 	return Rounds.emote_clips[name], nil
 end
 local function flickClip()
-	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "CameraFlick") then return nil end
+	if Cutscene.emoteName(1) ~= "CameraFlick" then return nil end
 	local id, draft = ourClip("CameraFlick")
 	return id, { release = draft and draft:GetAttribute("Release") or Rounds.camera_flick_release,
 		grip = draft and draft:GetAttribute("Grip") or CFrame.new(table.unpack(Rounds.camera_flick_grip)) }
@@ -518,7 +518,7 @@ local function scribbled(page, face, seed)
 	return gui
 end
 local function kickClip()
-	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "BookKicker") then return nil end
+	if Cutscene.emoteName(1) ~= "BookKicker" then return nil end
 	local id, draft = ourClip("BookKicker")
 	local marks = draft and draft:GetAttributes() or Rounds.book_kicker
 	if not id or not marks or not marks.Kick then return nil end
@@ -639,6 +639,38 @@ local function emoteFor(place)
 	return id
 end
 
+-- Who does which of our emotes (docs/decisions/2026-11-24-bots-do-a-random-one-of-our-emotes.md; Alan's OK on the
+-- plan, 2026-11-24). A bot that places does a random one of ours: 1st any of FIRSTS, 2nd and 3rd each a different
+-- one of RUNNER_UPS. The dice are the match's id, so every player in the server sees the same ones (a dice roll on
+-- each screen would show each player something else). A human who places keeps Roblox's dances until Alan decides
+-- what a human gets. In Studio the Dev panel's buttons name them for everyone instead: DevFirstEmote for 1st;
+-- DevRunnerUp, one name for both or "A,B", 2nd's and 3rd's (the "end: real" button clears both).
+Cutscene.FIRSTS = { "ToyPilot", "CameraFlick", "BookKicker", "Bubblegum", "Magician", "APlus", "SkeetShoot", "FoldItUp" }
+Cutscene.RUNNER_UPS = { "GoodGame", "Nap", "NextOne", "SoClose" }
+Cutscene.chosen = {}
+-- `human(actorId)`: whether that winner is a person (a test passes its own).
+function Cutscene.choose(winners, seed, human)
+	human = human or function(actorId) return game:GetService("Players"):GetPlayerByUserId(tonumber(actorId) or 0) ~= nil end
+	local n = 7
+	for i = 1, #tostring(seed or "") do n = (n * 31 + tostring(seed):byte(i)) % 2147483647 end
+	local dice, firsts, ups = Random.new(n), Cutscene.FIRSTS, Cutscene.RUNNER_UPS
+	local a = dice:NextInteger(1, #ups)
+	local names = { firsts[dice:NextInteger(1, #firsts)], ups[a], ups[(a + dice:NextInteger(1, #ups - 1) - 1) % #ups + 1] }
+	Cutscene.chosen = {}
+	for place, entry in winners do
+		if place <= 3 and not human(entry.actorId) then Cutscene.chosen[place] = names[place] end
+	end
+	return Cutscene.chosen
+end
+function Cutscene.emoteName(place)
+	local dev = RunService:IsStudio() and Root:GetAttribute(place == 1 and "DevFirstEmote" or "DevRunnerUp")
+	if dev and place > 1 then
+		local second, third = dev:match("^([^,]+),([^,]+)$")
+		dev = second and (place == 2 and second or third) or dev
+	end
+	return dev or Cutscene.chosen[place]
+end
+
 -- Whether a town building stands between `eye` and `point`. The winners are small models right at the lens, so
 -- nothing in the room can cover them: on the way in their black shapes showed through the buildings between (Alan
 -- 2026-11-24: "It's supposed to be dark, so why am I seeing the black silhouettes through the buildings?"). Each
@@ -684,10 +716,7 @@ end
 -- panel's "2nd/3rd" button names one (DevRunnerUp).
 -- DevRunnerUp is one name for both, or "A,B": 2nd's and 3rd's (the Dev buttons show two at once: Alan 2026-11-22).
 function Cutscene.runnerUpName(place)
-	local names = RunService:IsStudio() and Root:GetAttribute("DevRunnerUp")
-	if not names or place == 1 then return nil end
-	local second, third = names:match("^([^,]+),([^,]+)$")
-	return second and (place == 2 and second or third) or names
+	return place > 1 and Cutscene.emoteName(place) or nil
 end
 local function runnerUpClip(place)
 	local name = Cutscene.runnerUpName(place)
@@ -1232,7 +1261,7 @@ function GUM.wedge(part, view, deep, x, peak, foot, to)
 	part.CFrame = view * CFrame.fromMatrix(Vector3.new((x + to) / 2, (peak + foot) / 2, -deep), Vector3.new(0, 0, -up * side), Vector3.new(0, up, 0), Vector3.new(side, 0, 0))
 end
 local function gumClip()
-	if not (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Bubblegum") then return nil end
+	if Cutscene.emoteName(1) ~= "Bubblegum" then return nil end
 	local id, draft = ourClip("Bubblegum")
 	local marks = draft and draft:GetAttributes() or Rounds.bubblegum
 	if not id or not marks or not marks.Pop then return nil end
@@ -1425,7 +1454,7 @@ local MAGIC = { clip = "rbxassetid://10714347256", speed = 0.7, bow = "rbxasseti
 	reach = 1.4, back = Vector3.new(0.315, 0.049, -0.7), pass = Vector3.new(0.02, 0.038, 0), passIn = 0.8, shake = 0.016,
 	sounds = { { 0.9, "magicBass" }, { 3.9, "magicFlutter" }, { 8.25, "magicWhoosh" } } }
 local function magicClip()
-	return RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "Magician" and MAGIC.clip or nil
+	return Cutscene.emoteName(1) == "Magician" and MAGIC.clip or nil
 end
 -- The camera `t` seconds after 1st's light: a small fast shake, fading in a quarter second, from the moment each
 -- plane is over the lens.
@@ -1570,12 +1599,12 @@ Cutscene.kit = { paper = paper, ease = ease, flat = flat, sit = sit, seatOn = se
 	ourClip = ourClip, runnerSound = runnerSound, Audio = Audio, Rounds = Rounds, Avatars = Avatars,
 	rig = rig, bendArm = bendArm } -- (the scene's own arm bend, as Nap's: A+ puts both hands on its card on every body)
 function Cutscene.pipelineEmote(place)
-	local name = place == 1 and (RunService:IsStudio() and Root:GetAttribute("DevFirstEmote")) or Cutscene.runnerUpName(place)
+	local name = Cutscene.emoteName(place)
 	local folder = script.Parent:FindFirstChild("emotes")
 	local module = name and folder and folder:FindFirstChild(name)
 	return module and require(module) or nil
 end
-local function copyWinner(source, place, facing, actorId, spot, world)
+local function copyWinner(source, place, facing, actorId, spot, world, teamId)
 	source.Archivable = true
 	local model = source:Clone()
 	for _, item in model:GetDescendants() do
@@ -1618,7 +1647,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	local magicId = place == 1 and humanoid.RigType == Enum.HumanoidRigType.R15 and magicClip() or nil
 	local magic = magicId and magicProps(model, world, animator, scale) or nil -- Magician: nor here
 	local made = humanoid.RigType == Enum.HumanoidRigType.R15 and Cutscene.pipelineEmote(place) or nil -- a pipeline emote: its own module
-	local pilot = RunService:IsStudio() and Root:GetAttribute("DevFirstEmote") == "ToyPilot" and (ourClip("ToyPilot"))
+	local pilot = Cutscene.emoteName(1) == "ToyPilot" and (ourClip("ToyPilot"))
 	local planeEmote = flick or pilot or Root:GetAttribute("DevWinnerEmote") or Rounds.winner_plane_emote
 	local prop = place == 1 and not kick and not gum and not magic and not made and planeEmote ~= "" and humanoid.RigType == Enum.HumanoidRigType.R15
 		and holdPlane(model, actorId, flick and Avatars.standing_height_studs, flick and scale) or nil
@@ -1629,7 +1658,7 @@ local function copyWinner(source, place, facing, actorId, spot, world)
 	if made then
 		extra = { made = made, st = made.start(Cutscene.kit, { model = model, humanoid = humanoid, animator = animator, cast = world,
 			stack = stack, rise = rise, legs = legs, scale = scale, place = place, actorId = actorId, desk = desk,
-			top = onDesk - Vector3.yAxis * feet / scale }) }
+			top = onDesk - Vector3.yAxis * feet / scale, teamId = teamId }) } -- (teamId: A+ holds up its own team card)
 		emote = extra.st.track
 	elseif ours == "GoodGame" then
 		emote = goodGame(animator, model)
@@ -1687,8 +1716,9 @@ local function popIn(a) a = math.clamp(a, 0, 1) - 1; return 1 + 2.7 * a ^ 3 + 1.
 
 -- winners: { { actorId, displayName, contribution }, ... } in place order. onStage("banner" | "group" | "card") as it
 -- moves on: the banner while the camera sets off, nothing over the winners' shot, the results card as it glides back.
-function Cutscene.play(winners, onStage)
+function Cutscene.play(winners, onStage, seed)
 	Cutscene.stop()
+	Cutscene.choose(winners, seed)
 	firstSoundAt = nil
 	local room = workspace:FindFirstChild("Arena")
 	local desks = {}
@@ -1777,7 +1807,7 @@ function Cutscene.play(winners, onStage)
 						local cast = Instance.new("Model")
 						cast.Name, cast.Parent = "Cast", world
 						world.Parent = state.set -- in the room before the avatar goes in: animations only load on an avatar that is in the game
-						local copy = copyWinner(source, place, back, entry.actorId, spots[place], cast)
+						local copy = copyWinner(source, place, back, entry.actorId, spots[place], cast, entry.teamId)
 						if copy then
 							local glow, k = Instance.new("Model"), LIGHT_BACK / copy.scale
 							local base = anchor:Clone()

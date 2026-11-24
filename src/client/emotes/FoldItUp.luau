@@ -19,16 +19,25 @@
 local RunService = game:GetService("RunService")
 
 local FoldItUp = {}
--- The hands rubbed, and later dusted, at the chest with the elbows bent, on every body (Alan 2026-11-24, on a body
--- with long arms: "they're not bending their elbows; they're keeping them straight", the hands down at the waist,
--- "very inappropriate"; "they bend their elbows to bring their hands up to their chest"). A clip turns joints by fixed
--- angles, so each body's arm lengths carried the hands somewhere else: after the clip has posed the arms they are
--- bent again (the scene's bendArm, as A+'s card and Good Game's clap) to a place worked out from the chest alone.
--- Each: the clip's own seconds { the hands come together, the first stroke, the hands part }, a stroke's seconds, how
--- many strokes, and how far the palms slide along each other (winner heights).
-local RUBS = { { 1.9, 2.2, 3.0, 0.18, 4, 0.035 }, { 8.6, 8.8, 9.4, 0.3, 2, 0.05 } }
-local RUB_BLEND = 0.2 -- seconds the arms take to get there, and to go back to the clip
-local RUB_UP, RUB_OUT = 0.15, 0.09 -- where the hands meet: up the chest from its middle (of its height), and in front of it (winner heights)
+-- The hands together, twice, with the elbows bent on every body (Alan 2026-11-24, on a body with long arms: "they're
+-- not bending their elbows; they're keeping them straight", the hands down at the waist, "very inappropriate"; "they
+-- bend their elbows to bring their hands up to their chest"). A clip turns joints by fixed angles, so each body's arm
+-- lengths carried the hands somewhere else: after the clip has posed the arms they are bent again (the scene's
+-- bendArm, as A+'s card and Good Game's clap) to a place worked out from the chest alone. Two different moves (Alan
+-- the same day, on the first try, which gave both one quick rub: "way too fast ... confident is slow and measured",
+-- and "the rubbing of hands motion before they grab the screen is like they're scheming ... after, when they throw it
+-- away, it's supposed to be like they're brushing off their hands ... less close to the body and more of just like a
+-- lax, like slow"):
+-- * SCHEME, before the reach: the hands come up early (the clip's arms only hang until then) and rub close to the
+--   chest, palm sliding along palm, two slow strokes;
+-- * BRUSH, after the toss: lower and further out, the elbows loose at the sides, the right hand wiped down across
+--   the left and back up; each pass is one of the two dust sounds.
+-- Each: `at`, seconds after 1st's light { the arms start up, the hands are there, the strokes end, the arms are the
+-- clip's again }; a stroke's seconds; how far a hand travels (winner heights); where the hands meet: up the chest
+-- from its middle (of its height) and out in front of it (winner heights); the elbows: out past the chest's side and
+-- down (winner heights).
+local SCHEME = { at = { 1.1, 1.5, 2.9, 3.2 }, stroke = 0.7, far = 0.045, up = 0.15, out = 0.09, elbow = { 0.2, 0.6 } }
+local BRUSH = { at = { 8.55, 8.85, 9.65, 9.9 }, stroke = 0.8, far = 0.07, up = -0.15, out = 0.13, elbow = { 0.08, 0.6 } }
 local MARKS = { Pinch = 3.3, Back = 3.8, Show = 4.5, Crumple = 6.6, Ball = 7.6, Release = 8.15 } -- the clip's own (its draft's attributes win)
 local REACH_FROM = 3.05 -- the copy hand leaves the kid's own hand (the reach is under way) and covers the picture at Pinch
 local SHOT_FOV, WIDE = 50, 120 -- the scene's lens, and Roblox's widest: the picture a quarter of its size (0.27)
@@ -62,7 +71,8 @@ FoldItUp.sounds = {
 	{ "foldFlap", MARKS.Pinch + SHRINK + FADE + DARK - LEAD }, -- the black lifts: the sheet in the hands (6.78 s)
 	{ "foldScrunch", MARKS.Crumple - LEAD }, -- crumpled (9.51 to 10.58 s)
 	{ "foldToss", MARKS.Release - LEAD }, -- the toss (11.24 s)
-	{ "foldDust", 8.95 - LEAD }, { "foldDust", 9.25 - LEAD }, -- the hands dusted, one tap each (12.12 s)
+	-- the hands brushed off, one tap as the right hand passes the left each way (12.12 s)
+	{ "foldDust", BRUSH.at[2] + BRUSH.stroke / 4 - LEAD }, { "foldDust", BRUSH.at[2] + BRUSH.stroke * 3 / 4 - LEAD },
 }
 FoldItUp.firstSound = MARKS.Pinch - LEAD
 
@@ -95,22 +105,32 @@ local function face(part, side)
 end
 
 -- From RunService.PreSimulation (the clip has posed the body for this frame; `at`: where a part is by that pose):
--- both hands to the chest, palm on palm, the elbows down and out to their own sides, sliding opposite ways.
+-- both hands to their meeting point, each half a hand's thickness to its own side.
 local function rubArms(st, joints, at)
 	if not st.who.model:IsDescendantOf(game) then st.bent:Disconnect(); return end
-	local t = st.since or -1
-	for _, rub in RUBS do
-		local weight = st.kit.ease((t - rub[1]) / RUB_BLEND) * (1 - st.kit.ease((t - rub[3]) / RUB_BLEND))
+	local t, ease = st.since or -1, st.kit.ease
+	for _, move in { SCHEME, BRUSH } do
+		local a = move.at
+		local weight = ease((t - a[1]) / (a[2] - a[1])) * (1 - ease((t - a[3]) / (a[4] - a[3])))
 		if weight > 0 then
 			local chest, torso, kid = at(st.chest), st.chest.Size, st.kid
-			local middle = chest * Vector3.new(0, RUB_UP * torso.Y, -torso.Z / 2 - RUB_OUT * kid)
-			local stroke = math.clamp((t - rub[2]) / rub[4], 0, rub[5]) % 1
-			local slide = chest.UpVector * (1 - math.abs(2 * stroke - 1)) * rub[6] * kid / 2
-			for _, arm in st.arms do
+			local middle = chest * Vector3.new(0, move.up * torso.Y, -torso.Z / 2 - move.out * kid)
+			local turn = math.clamp((t - a[2]) / move.stroke, 0, (a[3] - a[2]) / move.stroke) * 2 * math.pi
+			-- the scheme: each palm up the other and back, opposite ways; the brush: the right hand from up and back,
+			-- down and forward across the left and up again, the left giving a little the other way
+			local right, left
+			if move == SCHEME then
+				right = chest.UpVector * (1 - math.cos(turn)) / 2 * move.far * kid
+				left = -right
+			else
+				right = (chest.UpVector * 0.8 - chest.LookVector * 0.6) * math.cos(turn) * move.far * kid
+				left = -right * 0.3
+			end
+			for side, arm in st.arms do
 				local size = arm.hand.Size
-				local aside = chest.RightVector * arm.sign * math.min(size.X, size.Y, size.Z) / 2 -- half a hand's thickness to its own side
-				local elbow = chest * Vector3.new(arm.sign * (torso.X / 2 + 0.2 * kid), -0.6 * kid, 0.1 * kid)
-				st.kit.bendArm(joints, at, arm.upper, arm.lower, arm.hand, middle + aside + slide * arm.sign, elbow, weight)
+				local aside = chest.RightVector * arm.sign * math.min(size.X, size.Y, size.Z) / 2
+				local elbow = chest * Vector3.new(arm.sign * (torso.X / 2 + move.elbow[1] * kid), -move.elbow[2] * kid, 0.12 * kid)
+				st.kit.bendArm(joints, at, arm.upper, arm.lower, arm.hand, middle + aside + (side == "Right" and right or left), elbow, weight)
 			end
 		end
 	end

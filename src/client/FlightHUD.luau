@@ -331,6 +331,11 @@ function HUD.start(getPlane, action)
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
 			button.Activated:Connect(function()winnersDev.finish(first[1])end)
 		end
+		-- The ending as a live server shows it (Alan's OK on the bots' plan, 2026-11-24): no names from this panel, so
+		-- each bot does the random one of ours the scene picks and a person who places keeps the dances.
+		local real=eraserBots:Clone();real.Name="EndReal";real.Text="end: real";real.Position=UDim2.fromOffset(330,-120)
+		real.BackgroundColor3=Color3.fromRGB(150,40,40);real.Parent=picker
+		real.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",nil);Root:SetAttribute("DevRunnerUp",nil);Root.RoundAction:FireServer("endMatch")end)
 		-- One button for each runner-up emote, a row above: both 2nd and 3rd play it, 1st a random one of ours.
 		for index, up in ipairs({ { "GoodGame", "good game" }, { "Nap", "nap" }, { "NextOne", "next one" }, { "SoClose", "so close" } }) do
 			local button=eraserBots:Clone();button.Name="EndUp"..up[1];button.Text="2nd/3rd: "..up[2];button.Position=UDim2.fromOffset(220+index*110,-160)

@@ -1,0 +1,16 @@
+# Alan's second look: the three fixes in his own Play
+
+**When:** 2026-11-24, Alan in his own Play in Studio, a team match ended with a Dev button. Before it: [his problems with the winners' emotes](2026-11-24-alans-problems-with-the-winners-emotes.md).
+
+## What he said, and what changes
+| # | Alan | What changes | Where it stands |
+|---|---|---|---|
+| 1 | A+: "A plus looks good." Then, in a team match: "my character held up the report card, but the report card they were holding up was for the other team." | The card is always the kid's own team's card, and lands where that card sits. It was "the card with the gold star", and a tied match has no star, so it fell back to the Red card. | Built, compiles; not run in Play |
+| 2 | The podium: "for when there's teams, the top 3 players are ... on that team. So the team that won"; "my character was up on the stand in 3rd place, yet when the report card showed, I was like 5th place on the opposite team as the person who was 1st place. So I don't know if this has happened because there was actually no points scored". | Nothing built. Cause, from the code: with a winning team the top 3 are already that team's best three. His match was a tie (no points, both teams on 0): a tie has no winning team, so the three come from everybody in results order, and with no points that order is a draw of lots. **What a tie should show is his to decide.** | Waiting on Alan |
+| 3 | Fold It Up, the rub before the grab: "way too fast ... It didn't look smug, it looked rushed ... Confident is slow and measured." | Two slow strokes of 0.7 s (they were four of 0.18 s). The hands come up 0.8 s earlier, while the head is still tilting, so there is time: nothing after it moves. | Built, compiles; not run in Play |
+| 4 | Fold It Up, after the toss: "remove the rubbing of their hands, because you put the same rubbing of hands together motion ... After, when they throw it away, it's supposed to be like they're brushing off their hands ... less close to the body and more of just like a lax, like slow, like brushing their hands off." Hands cannot open ("which you probably can't"). | A different move: lower and further from the body, elbows loose at the sides, the right hand wiped down across the left and back up, once each way over 0.8 s. The two dust sounds moved to the two passes. | Built, compiles; not run in Play |
+| 5 | The winners through the buildings: "The silhouette problem is better now. It'll have to do for a beta." | Nothing. | Parked by Alan |
+| 6 | The bots' random emotes: "yes, okay on the bots, the random emotes plan". | Built to [the plan](../decisions/2026-11-24-bots-do-a-random-one-of-our-emotes.md). A new Dev button, "end: real", ends a match the way a live server shows it. | Built, compiles; not run in Play |
+
+## Not said
+- So Close's sigh being cut under A+ or Skeet Shoot (left as it is); what a human winner gets (a human keeps the dances for now); whether the smiley reads as smug; the Dev buttons' top layer.

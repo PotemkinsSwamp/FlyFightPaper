@@ -343,6 +343,7 @@ This replaces "The card the kid holds" above: the scribbled look-alike is gone.
 - **The back** (seen while the kid reads, the first 2 s): a red-pen "A+" inside the real card's own red ring, over a
   smug smiley, one eye winking and one brow up. All pen strokes drawn by code (Path2D), no new picture, no upload.
   Letters could not be used: a letter is drawn at 100 points at most, a third of the size needed.
+- **The kid's own team's card** (Alan's second look: in a tied team match 1st "held up the report card ... for the other team"): the card was chosen by the gold star, and a tie has none. It is now chosen by the kid's own team (`who.teamId`, handed over by the scene), star or no star.
 - **Unchanged:** the body, the times, the flight, the landing, the swap, the sounds.
 - **My reading of "when they turn it around":** the turn the emote already has (2 s in), so the real card is what is
   seen from then on. If he meant the A+ side shown until the throw, the two faces swap and the card turns in flight.

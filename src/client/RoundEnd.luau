@@ -556,7 +556,7 @@ function RoundEnd.start()
 					if stage == "card" and state.stage ~= "card" then state.cardAt = os.clock() end
 					state.stage = stage
 					if state.snap then update(state.snap) end
-				end)
+				end, snap.matchId) -- (the match's id: the dice for the bots' emotes, the same on every screen)
 			end
 		end
 		state.live = inMatch and snap.phase == "ACTIVE" and snap.pilots ~= nil and Root:GetAttribute("StandingsOpen") == true

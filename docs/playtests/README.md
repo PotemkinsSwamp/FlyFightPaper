@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-24 Alan's second look: A+ "looks good" but held the other team's card in a tie; the rub "way too fast"; the dust-off must be its own move; the buildings "will have to do for a beta"; the bots' plan OK'd](2026-11-24-alans-second-look-at-the-emote-fixes.md)
 - [2026-11-24 Alan's problems from his own Play: A+'s card should be the real report card with a smug A+ back; Fold It Up rubs its hands with straight arms; the winners show through the buildings](2026-11-24-alans-problems-with-the-winners-emotes.md)
 - [2026-11-24 The four pipeline emotes approved on their recordings and uploaded; his own Play and his problems come next session](2026-11-24-four-pipeline-emotes-approved-on-recordings.md)
 - [2026-11-22 The pipeline's first recordings: So Close "its good"; A+ "needs a lot of work"; Skeet Shoot and Fold It Up noted in their sessions](2026-11-22-pipeline-first-recordings.md)

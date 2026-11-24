@@ -577,10 +577,10 @@ His words: [his problems with the winners' emotes](../../playtests/2026-11-24-al
   clip only stores joint turns: on a body with long arms the same turns leave the arms nearly straight and the hands
   at the waist.
 - **Fix, in the game and not in the clip (no new upload):** after the clip has posed the arms, both are bent again
-  each frame (the scene's `bendArm`, as A+'s card and Good Game's clap) to a point worked out from the chest alone: a
-  little above its middle, 0.09 of a kid's height in front of it, palm on palm, elbows down and out. The four rub
-  strokes and the two dusting strokes are kept, the palms now sliding opposite ways. It covers both moments the hands
-  are together: the rub (1.9 to 3.2 s) and the dusting (8.6 to 9.6 s); it blends in and out over 0.2 s.
-- **Unchanged:** every other pose, the times, the hand at the lens, the sounds.
-- **Checked:** compiles in Studio. **Not run in Play**: the height and the reach are my numbers (`RUB_UP`, `RUB_OUT`
+  each frame (the scene's `bendArm`, as A+'s card and Good Game's clap) to a point worked out from the chest alone,
+  palm on palm, elbows down. It covers both moments the hands are together (the first try: one quick rub for both,
+  replaced the same day; next point).
+- **Two different moves** ([Alan's second look](../../playtests/2026-11-24-alans-second-look-at-the-emote-fixes.md): the first try gave both one quick rub, "way too fast", and the second must be "brushing off their hands"). `SCHEME`, before the reach: the hands come up at 1.1 s (the clip's arms only hang until 1.9), close to the chest, two slow strokes of 0.7 s, palm along palm, until 2.9 s. `BRUSH`, after the toss (8.55 to 9.9 s): lower (under the chest's middle) and further out, elbows loose at the sides, the right hand wiped down across the left and back up, 0.8 s in all; the two dust sounds moved to the two passes (9.05 and 9.45 s).
+- **Unchanged:** every other pose, the clip, the hand at the lens, the other sounds.
+- **Checked:** compiles in Studio. **Not run in Play**: every height, reach and time is my number (`SCHEME`, `BRUSH`
   in `src/client/emotes/FoldItUp.luau`). Alan looks in his own Play ("end: fold"), on a long-armed body if he can.
