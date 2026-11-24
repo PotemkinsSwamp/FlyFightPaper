@@ -6,10 +6,9 @@ A 1st-place emote that covers the camera. Made by the [emote pipeline](../emote-
 **The idea:** Holds up their report card and slaps it on the lens, where it becomes the real report card.
 
 ## Where it stands
-**Step 6: Alan's OK on the third recording, 2026-11-24: "its good upload it".** His go for the uploads (the clip and
-the two sounds) is passed to the primary session, which does the uploads and the wiring; then his own look in Play
-(see "Third recording"). The two-handed hold, the switch (his pick: both hands until the throw), the folded arms and
-the landing are in "Second pass". A team match is not recorded yet. Its sounds are cut and timed, not uploaded.
+**Uploaded and wired in, 2026-11-24; next is Alan's own look in Play** (see "Uploads"). Alan's OK on the third
+recording: "its good upload it". It plays only behind Studio's Dev button "end: a+": who gets which emote is his
+open decision. A team match has not been recorded yet.
 
 ## Shot card
 **OK'd by Alan, 2026-11-22**, with his picks: "I like the idea. I think it should show only the front. I think it
@@ -133,8 +132,8 @@ first one".** Gemini spent on A+: about $0.61.
   fold as rebuilt), the whip to 7.55 with the release at 7.4; palms meet at 7.9, one brush to 8.4; arms folded, weight
   on the right leg, chin up, from 9.1. The video's misses fixed here: the card stays in the right hand, it is shown to
   both sides, the reading shows its back.
-- **The clip:** baked into the open place's `Assets` as `APlusClip` (unsaved draft: what `ourClip` plays in Studio),
-  saved as `assets/animations/emotes/a-plus.rbxm`. Marks: Snap 2.0, Release 7.4. To bake again after a close without
+- **The clip:** now the upload (see "Uploads"); while it was built, a draft baked into the open place's `Assets` as
+  `APlusClip`, saved as `assets/animations/emotes/a-plus.rbxm`. Marks: Snap 2.0, Release 7.4. To bake again after a close without
   a save: `_G.EMOTE_CLIPS = { "cut:APlus" }` in Edit, then
   `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=APlus:APlusClip:assets/animations/emotes/a-plus.rbxm"`.
 - **The module** (`src/client/emotes/APlus.luau`; Studio's Dev attribute `DevFirstEmote` = "APlus"):
@@ -306,6 +305,20 @@ clip is baked again (`APlusClip` draft and `a-plus.rbxm`).
 - **Not yet:** a team match (the landing there is proven only by Edit's numbers), the bots' other bodies in Play,
   Alan's look. Still his to judge from before: the landed card covers 3rd for the last 2.6 s; So Close's sigh is cut
   by A+'s first sound; the sounds.
+
+## Uploads (step 6, the primary session's, 2026-11-24)
+Alan's go, in the primary session: "go both" (commit 0216ca0be).
+- **The clip:** `rbxassetid://127645622092530`, approved at once; in `rounds.emote_clips` as `APlus`. Checked in
+  Edit: the upload loads with the draft's 331 keys, 5,296 poses, 11 s and the same pose sum. The draft `APlusClip` is
+  deleted from the open place, so Studio plays the upload, and the marks come from the module's `MARKS` (Snap 2.0,
+  Release 7.4: the draft's own).
+- **The sounds:** `aPlusFlap` `rbxassetid://99441125733451` at volume 1; `aPlusSlap` `rbxassetid://83907119716558`
+  at volume 1.6 (the level of Book Kicker's thud). Both "Reviewing" at Roblox and loading in Studio (0.34 s each).
+  The volumes are the primary session's numbers, not heard in the game.
+- **Roblox's answers:** `assets/animations/emotes/uploads/a-plus.json`, `assets/audio/emotes/uploads/a-plus-flap.json`
+  and `a-plus-slap.json`.
+- **Not done:** A+ pickable outside the Dev button (Alan's decision on who gets which emote); a team match in Play;
+  the open points under "Third recording".
 
 ## Sound (step 5)
 - **From the video Alan picked** (`a-plus-gemini-api-1.mp4`; its sounds were in what he OK'd), measured every 10 ms,
