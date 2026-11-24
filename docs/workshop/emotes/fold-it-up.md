@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: Alan's OK on the ninth recording ("that looks good, upload it"); the uploads of the clip and the five sounds, and their wiring, are with the primary session.
+Done but for Alan's own look: approved by him on the ninth recording, the clip and five sounds uploaded and wired in (2026-11-24). Next: his own Play with the Dev button "end: fold". This emote's side session is closed.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -553,3 +553,19 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   `FoldItUp.step` plays each entry of `FoldItUp.sounds` once at its time through `kit.Audio.play` (Skeet Shoot's
   way). Silent until the primary session has uploaded the five files and added their names to `Audio` (volume 1
   each to start: my numbers, not heard in the game).
+
+## Into the game (the primary session, 2026-11-24; Alan's go there: "go and upload"; commit 8a8a56f90)
+- **The clip:** `rbxassetid://134497600135912` (approved at once), in `rounds.emote_clips` as FoldItUp; its marks in
+  `rounds.fold_it_up` (Pinch 3.3, Back 3.8, Show 4.5, Crumple 6.6, Ball 7.6, Release 8.15). Checked in Edit: the
+  upload loads with the draft's 331 keys, 5,296 poses, 11 s and the same pose sum. The draft `FoldItUpClip` is
+  deleted from the open place, so Studio plays the upload.
+- **The sounds,** in `src/client/Audio.luau` at volume 1 each, all "Reviewing" and loading in Studio: `foldPeel`
+  `rbxassetid://89389178316383` (1.26 s), `foldFlap` `rbxassetid://120117285560264` (0.23 s), `foldScrunch`
+  `rbxassetid://77731942021002` (1.17 s), `foldToss` `rbxassetid://96887272012291` (0.24 s), `foldDust`
+  `rbxassetid://89242235637504` (0.23 s). Roblox's answers: `assets/animations/emotes/uploads/fold-it-up.json`,
+  `assets/audio/emotes/uploads/fold-it-up-*.json`.
+- **Not yet seen or heard from the uploads in Play by anyone.** Next: Alan's own Play, the Dev button "end: fold".
+  Things to listen and look for: the five sounds at their moments (the toss is the loudest file); the grab (the
+  hand is cut by the lens for a few frames: he approved it at speed).
+- **This side session ends here** (archived at Alan's ask); anything further on Fold It Up goes through the primary
+  session, starting from this page.
