@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-24 Alan's problems from his own Play: A+'s card should be the real report card with a smug A+ back; Fold It Up rubs its hands with straight arms; the winners show through the buildings](2026-11-24-alans-problems-with-the-winners-emotes.md)
 - [2026-11-24 The four pipeline emotes approved on their recordings and uploaded; his own Play and his problems come next session](2026-11-24-four-pipeline-emotes-approved-on-recordings.md)
 - [2026-11-22 The pipeline's first recordings: So Close "its good"; A+ "needs a lot of work"; Skeet Shoot and Fold It Up noted in their sessions](2026-11-22-pipeline-first-recordings.md)
 - [2026-11-22 Magician: the fly-over "it's good"; the first sound try was made from the old recording, the magic tone and the whoosh too loud, the whoosh only as a plane goes over the camera](2026-11-22-magician-sound-first-try.md)
