@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: Alan's note on the seventh run is built (forced perspective back: the hand fills the camera, then holds the picture's corner); ready to record.
+Step 6: the eighth run's faults at the grab (cover not solid, a jump to the corner) are fixed in the module; ready to record again, waiting on Alan's notes on the eighth run.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -505,3 +505,22 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
     61% at 3.2, wider than the picture from 3.27. Behind it the picture starts to shrink; over 0.25 s (`GRIP_IN`) the
     hand goes to the picture's top left corner and the colour clears (the picture is 0.52 of the screen when it is
     there, at 3.55); it holds the corner as before, 34% of the screen tall falling to 26%.
+
+## Eighth run in Play (the primary session's muted recording, 2026-11-24, forced perspective) and its fixes
+- **Files:** take A, 1st Pibbler: `.planning/emotes/fold-it-up-eighth-run-a-raw.mp4`, `-a-sound.mp4` (light at 7.39 s);
+  take B, 1st itsfinn: `-b-raw.mp4`, `-b-sound.mp4` (light at 7.68 s). So Close on 2nd and 3rd, no game error; the
+  same sound times.
+- **Works (its stills, ten a second round the pinch):** the hand grows from the kid and takes the whole picture for
+  about two frames, then is on the top left corner and holds it through the shrink; the rest as before.
+- **Faults:** (1) the cover is not solid: on itsfinn the hand's yellow with the hand's own outline as a hard edge in
+  it, and the scene shows through the colour flat as a milky wash for one to two frames; (2) on the dog a close-up of
+  brown fur with a hard-edged black shape at its left and flat tan bars down both sides, then a tan wash with a
+  see-through lump; (3) from covering to the corner is a jump: covered one frame, small at the corner the next.
+- **Fixed (numbers in Edit only; not recorded):**
+  - **The colour flat is gone.** The hand itself covers: as it comes it turns its broadest side square to the lens
+    (its thin way at the lens, its long way across), and at the pinch it is 0.3 studs off and twice the picture
+    across both ways (`COVER` 2), in the picture's middle, so only the middle of the hand is on the screen: no outline,
+    nothing see-through, whatever the body. With stand-ins the picture is covered from 3.27 to about 3.45.
+  - **It pulls back as a move:** covered 0.06 s more (`COVERED`), then 0.4 s (`GRIP_IN`) in which it gets smaller by
+    the same share each moment while it goes to the corner: 2 screens tall at 3.5 s, 1 at 3.6, a half at 3.7, at the
+    corner at 3.76 (the picture 0.59, 0.45, 0.35, 0.31 of the screen at those moments).
