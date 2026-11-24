@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the third build (the screen is taken: the picture shrinks into black, a second camera) waits for the scene's lens hook and a recording by the primary session.
+Step 6: the third build (the screen is taken) is ready to record: the scene's lens hook is in (commit b4050d81a); waits for the primary session's Play recording (Alan's go).
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -349,7 +349,7 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
     flip any more, the back is never shown.
   - Show, crumple, toss, dust, fold: as before, in the turned kid's frame. `covered` from the pinch until the black
     has lifted (4.25). The flap sound moved to the black lifting (4.075). The scene's leave time is kept.
-- **Needs the scene's lens hook** (asked of the primary session: `made.fov(st, t)` in place of `SHOT_FOV` during the
+- **The scene's lens hook** is in (the primary session, commit b4050d81a: `made.fov(st, t)` in place of `SHOT_FOV` during the
   hold). Without it the bars close in but the picture does not shrink.
 - **Run in Edit with stand-ins** (the module's text, the test kid, made-up cameras): no error; the black starts 0.04
   outside the old picture's edge at every moment and reaches far past the widest view; the second camera is 35
