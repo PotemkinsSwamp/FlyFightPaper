@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-24: [Bots do a random one of our emotes; the random dances are retired](2026-11-24-bots-do-a-random-one-of-our-emotes.md)
 - 2026-11-22: [Emotes are made by a six-step pipeline, several at once in side sessions](2026-11-22-emote-pipeline-in-parallel.md)
 - 2026-11-22: [Magician: Roblox's Godlike emote for the float, planes from above, a curtsy, the planes leave in a line over the camera and shake it](2026-11-22-magician.md)
 - 2026-11-22: [Bubblegum: sassy all through, a bubble that hides the face, one sheet of gum pulled off the lens](2026-11-22-bubblegum.md)
