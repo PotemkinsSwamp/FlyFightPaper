@@ -318,3 +318,16 @@ runner-ups' sounds stop before it.
 - **Seen in its stills** (the primary session's; not judged in motion): the poster's back plain cream (the faint
   mirrored drawing does not show), the front shows the drawing clearly; it shrinks as it is crumpled; the ball is
   tossed up to the picture's left (the kid's right); the arms end folded. Waits for Alan's look.
+
+## Alan on the second run (2026-11-23): take the screen for real
+"Wouldn't it be cooler if it looked like it was actually taking the screen? So the screen goes like dark as she's
+pulling the frame. So the frame is like essentially like zooming out ... and then switch to a camera at like somewhere
+else. So the perspective will have to change ... Then she'll turn to that camera, crumple it up, and throw it away. So
+it gives more of the impression that she's taking the frame."
+- **A new mechanic (a second camera, the picture shrinking into black): plan to Alan in words first, nothing built.**
+- **How it can be done without a screenshot (my plan):** the lens widens (50 to 120 degrees, Roblox's most) while
+  black bars at the lens cover everything outside the old picture: the live picture, still moving, shrinks to about a
+  quarter of the screen with black round it (a wider lens shows the old picture exactly, only smaller). Then black,
+  then the scene's camera is somewhere else (the module's `camera` hook; the winners' stand-ins follow any camera).
+  The kid is turned on the stack by the module. **Needs from the primary session:** a hook to set the lens angle (the
+  scene writes `FieldOfView` itself each frame), and a look at what stands in the way from the new angle.
