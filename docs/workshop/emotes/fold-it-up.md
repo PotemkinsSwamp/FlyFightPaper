@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the third build (the screen is taken) is ready to record: the scene's lens hook is in (commit b4050d81a); waits for the primary session's Play recording (Alan's go).
+Step 6: the third build is recorded once (the shrink into black works; the side camera cut off 3rd and flew through furniture on the way home: both fixed in the module, not yet recorded again). Waiting on Alan's look at the third run.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -358,3 +358,24 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
 - **Not known until Play:** whether anything in the room stands between the side camera and the winners (the scene
   clears the shot for the front view only); how the spotlights and the dark curtain look from the side; whether the
   shrinking picture reads as "she took the screen"; the stand-in winners during the wide lens.
+
+## Third run in Play (the primary session's muted recording, 2026-11-24) and its two fixes
+- **Files:** `.planning/emotes/fold-it-up-third-run-raw.mp4`, with sound `fold-it-up-third-run-sound.mp4` (1st's light
+  at 7.07 s; peel 3.275, flap 4.075, scrunch 6.575, toss 8.125, dust 8.925 and 9.225; the track 2.2 dB down). Fold It
+  Up on 1st, So Close on 2nd and 3rd, 56 frames a second, no game error.
+- **Works (its stills and mine):** the live picture with its cream edge shrinks and rolls away into black with the
+  big hand in it; a beat of black; the side view opens; the drawing reads on the poster; toss; arms fold.
+- **Faults from the side camera:** (1) 3rd out of the picture (only hat and shoulder in the bottom right corner,
+  its name plate on top); (2) the dim classroom (the blackboard) fills the right half: the dark is as see-through
+  as in the front view, but the side view has more room in it; (3) on the way home the camera glides from the side
+  spot through furniture (a grey block, a desk top beside the report card); (4) 1st's face a grey block for a few
+  frames at leaving (A+ has it too: the scene's fade); (5) lopsided: 1st left of centre, the right half empty.
+- **Fixed in the module (numbers in Edit only; not recorded):**
+  - **(1) and (5):** the side camera was aimed at 1st; with the row about 0.8 of the camera's distance wide, the
+    near runner-up fell 51 degrees off the aim, past the picture's edge (50). It is now turned so 2nd and 3rd are
+    as far from the picture's middle as each other (their real spots, from `winners`), and swings 30 degrees
+    (`SIDE`), not 35. With stand-ins: the runner-ups at 0.65 of the half picture each side (the front view: 0.67),
+    1st 0.17 left of the middle; the near runner-up 0.73 of the front's distance away, the far one 1.24.
+  - **(3):** from 9.4 to 10.3 s the camera swings back round to the front and the kid turns back with it
+    (`BACK_AT`, `BACK_FOR`), so the scene's glide home starts from the front spot, the path the other emotes use.
+  - **(2) and (4)** are the scene's (how dark the curtain is; the fade): not touched, Alan's call.

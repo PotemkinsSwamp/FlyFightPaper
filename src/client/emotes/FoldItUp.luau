@@ -22,7 +22,8 @@ local SHOT_FOV, WIDE = 50, 120 -- the scene's lens, and Roblox's widest: the pic
 local SHRINK, CUT, OPEN = 0.6, 0.2, 0.15 -- seconds: the picture shrinking; all black; the black lifting on the new camera
 local ROLL = 9 -- degrees the shrinking picture tilts
 local RIM = 0.02 -- the paper-white rim round the shrinking picture, of its height
-local SIDE = 35 -- degrees the second camera is round 1st, to the kid's left (the toss goes off to the far side)
+local SIDE = 30 -- degrees the second camera is round 1st, to the kid's left (the toss goes off to the far side)
+local BACK_AT, BACK_FOR = 9.4, 0.9 -- the camera swings back to the front, the kid turning with it: the scene's glide home starts from the front (from the side it went through furniture: the third run)
 local TURN_BY = 0.5 -- seconds after the black lifts in which the kid turns to the second camera (done at Show)
 local MASK = 0.25 -- studs in front of the lens where the black sits (nearer than the copy hand ever comes)
 local POSTER_TALL, POSTER_WIDE = 0.5, 0.5 * 4 / 3 -- winner heights (Alan: "poster size, about half")
@@ -136,15 +137,27 @@ function FoldItUp.fov(st, t)
 	return 2 * math.deg(math.atan(math.tan(math.rad(SHOT_FOV / 2)) / shrunk(st, t)))
 end
 
--- How far the kid has turned to the second camera, 0 to 1.
-local function turned(st, t) return st.kit.ease(math.clamp((t - st.openAt) / TURN_BY, 0, 1)) end
+-- How far round the camera is (1: the second camera's place; back to 0 before the scene leaves), and how far the kid
+-- has turned to it.
+local function round(st, t) return t < st.cutAt and 0 or 1 - st.kit.ease(math.clamp((t - BACK_AT) / BACK_FOR, 0, 1)) end
+local function turned(st, t) return st.kit.ease(math.clamp((t - st.openAt) / TURN_BY, 0, 1)) * round(st, t) end
 
 -- The camera: the scene's own, rolling as the picture shrinks; from the black on, swung SIDE degrees round 1st.
 function FoldItUp.camera(st, steady, t)
 	if t < st.marks.Pinch then return steady end
 	if t < st.cutAt then return steady * CFrame.Angles(0, 0, math.rad(ROLL) * (1 - shrunk(st, t)) / (1 - shrunk(st, st.cutAt))) end
 	local spot = st.spot or st.who.desk.Position
-	return CFrame.new(spot) * CFrame.Angles(0, math.rad(SIDE), 0) * CFrame.new(-spot) * steady
+	local view = CFrame.new(spot) * CFrame.Angles(0, math.rad(SIDE) * round(st, t), 0) * CFrame.new(-spot) * steady
+	-- turned so 2nd and 3rd are as far from the picture's middle as each other (aimed at 1st, the near runner-up
+	-- was out of the picture: the third run)
+	if st.others then
+		local function flatTo(point) local v = point - view.Position; return Vector3.new(v.X, 0, v.Z).Unit end
+		local a, b, look = flatTo(st.others[1]), flatTo(st.others[2]), Vector3.new(view.LookVector.X, 0, view.LookVector.Z).Unit
+		local mid = (a + b).Unit
+		local by = math.atan2(look:Cross(mid).Y, look:Dot(mid))
+		view = CFrame.new(view.Position) * CFrame.Angles(0, by, 0) * view.Rotation
+	end
+	return view
 end
 
 -- A flat colour's part put `depth` studs in front of `view`, its middle at (x, y) there, w by h.
@@ -168,6 +181,7 @@ function FoldItUp.step(st, since, shot, steady, winners, fov)
 	local marks, kid, who = st.marks, st.kid, st.who
 	local me = winners and winners[1]
 	if me and me.spot then st.spot = me.spot end -- where 1st really stands: what the second camera swings round
+	if winners and winners[2] and winners[3] and winners[2].spot and winners[3].spot then st.others = { winners[2].spot, winners[3].spot } end
 	-- the kid turns to the second camera (the scene has just put them at their spot, facing the room)
 	local turn = turned(st, since)
 	local stand = who.desk * CFrame.Angles(0, math.rad(SIDE) * turn, 0)
