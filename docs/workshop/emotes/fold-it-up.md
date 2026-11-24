@@ -549,3 +549,7 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   reading: at 0.3 studs the camera's near plane cuts through the huge hand. **Not changed: Alan saw these videos and
   this list before his "that looks good, upload it".** If he later wants a real cover: keep the hand beyond the near
   plane and scale it up, or a solid flat of the hand's colour.
+- **The sounds are played by the module** (added after his OK at the primary session's ask; nothing seen changes):
+  `FoldItUp.step` plays each entry of `FoldItUp.sounds` once at its time through `kit.Audio.play` (Skeet Shoot's
+  way). Silent until the primary session has uploaded the five files and added their names to `Audio` (volume 1
+  each to start: my numbers, not heard in the game).

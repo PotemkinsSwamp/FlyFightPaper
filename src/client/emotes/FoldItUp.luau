@@ -43,7 +43,7 @@ local DRAWING = "rbxassetid://114077761748868" -- the crayon drawing Alan picked
 local DRAWING_SIZE = Vector2.new(1024, 768)
 -- The sounds, cut from Alan's reference video (.planning/emotes/fold-it-up-gemini-api-2.mp4) into
 -- assets/audio/emotes/fold-it-up-*.ogg, each starting 0.025 s before its first sound and raised 5 dB; the figure's own
--- "hmmm" (13.8 to 14.5 s of the video) left out (Alan). Seconds after 1st's light.
+-- "hmmm" (13.8 to 14.5 s of the video) left out (Alan). Seconds after 1st's light; played from `step`.
 local LEAD = 0.025
 FoldItUp.sounds = {
 	{ "foldPeel", MARKS.Pinch - LEAD }, -- the picture pulled away: crinkle and peel (the video's 5.52 to 6.67 s)
@@ -85,7 +85,7 @@ end
 function FoldItUp.start(kit, who)
 	local id, draft = kit.ourClip("FoldItUp")
 	local marks = draft and draft:GetAttributes() or kit.Rounds.fold_it_up or MARKS
-	local st = { kit = kit, who = who, marks = {} }
+	local st = { kit = kit, who = who, marks = {}, heard = {} }
 	for name, at in MARKS do st.marks[name] = marks[name] or at end
 	st.cutAt = st.marks.Pinch + SHRINK -- the picture is at its smallest: the black starts closing
 	st.darkAt = st.cutAt + FADE -- all black: the second camera from here
@@ -188,6 +188,13 @@ end
 
 function FoldItUp.step(st, since, shot, steady, winners, fov)
 	if since < 0 then return end
+	-- the sounds, each once at its time (not if the frame is long past it); nothing seen changes
+	for i, s in FoldItUp.sounds do
+		if not st.heard[i] and since >= s[2] then
+			st.heard[i] = true
+			if since < s[2] + 0.3 then st.kit.Audio.play(s[1]) end
+		end
+	end
 	local marks, kid, who = st.marks, st.kid, st.who
 	local me = winners and winners[1]
 	if me and me.spot then st.spot = me.spot end -- where 1st really stands: what the second camera swings round
