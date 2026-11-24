@@ -6,8 +6,9 @@ A 1st-place emote that covers the camera. Made by the [emote pipeline](../emote-
 **The idea:** Holds up their report card and slaps it on the lens, where it becomes the real report card.
 
 ## Where it stands
-**Step 6: recorded a third time, muted, with Alan's three notes fixed; waits for his look and listen** (2026-11-23;
-see "Third recording"). The two-handed hold, the switch (his pick: both hands until the throw), the folded arms and
+**Step 6: Alan's OK on the third recording, 2026-11-24: "its good upload it".** His go for the uploads (the clip and
+the two sounds) is passed to the primary session, which does the uploads and the wiring; then his own look in Play
+(see "Third recording"). The two-handed hold, the switch (his pick: both hands until the throw), the folded arms and
 the landing are in "Second pass". A team match is not recorded yet. Its sounds are cut and timed, not uploaded.
 
 ## Shot card
