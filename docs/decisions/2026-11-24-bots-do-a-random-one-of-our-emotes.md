@@ -1,7 +1,7 @@
 # Bots do a random one of our emotes; the random dances are retired
 
 **Decided:** 2026-11-24 (Alan, with all four pipeline emotes uploaded and behind their Dev buttons)
-**Status:** Built 2026-11-24 on Alan's OK of the plan ("yes, okay on the bots, the random emotes plan"); compiles, not run in Play. A human who places still gets the random dances until Alan says what a human gets.
+**Status:** Built 2026-11-24 on Alan's OK of the plan ("yes, okay on the bots, the random emotes plan"); compiles, not run in Play. A human who places does [the free emote](2026-11-24-a-human-winner-does-the-free-emote.md) (decided later the same day).
 
 ## Decision
 - **The random dancing emotes are retired** ("Since we're retiring the random dancing emotes").

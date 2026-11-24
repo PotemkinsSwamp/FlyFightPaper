@@ -642,11 +642,15 @@ end
 -- Who does which of our emotes (docs/decisions/2026-11-24-bots-do-a-random-one-of-our-emotes.md; Alan's OK on the
 -- plan, 2026-11-24). A bot that places does a random one of ours: 1st any of FIRSTS, 2nd and 3rd each a different
 -- one of RUNNER_UPS. The dice are the match's id, so every player in the server sees the same ones (a dice roll on
--- each screen would show each player something else). A human who places keeps Roblox's dances until Alan decides
--- what a human gets. In Studio the Dev panel's buttons name them for everyone instead: DevFirstEmote for 1st;
--- DevRunnerUp, one name for both or "A,B", 2nd's and 3rd's (the "end: real" button clears both).
+-- each screen would show each player something else). A person who places does the free one of their slot (FREE;
+-- Alan 2026-11-24: "they get the free one. Everyone starts with the free one ... They have to buy the others, with
+-- paper", which comes later). A bot runner-up beside a person never does the same one as them. Roblox's dances
+-- (EMOTES) are only what is left for a body our emotes cannot play on (not R15). In Studio the Dev panel's buttons
+-- name them for everyone instead: DevFirstEmote for 1st; DevRunnerUp, one name for both or "A,B", 2nd's and 3rd's
+-- (the "end: real" button clears both).
 Cutscene.FIRSTS = { "ToyPilot", "CameraFlick", "BookKicker", "Bubblegum", "Magician", "APlus", "SkeetShoot", "FoldItUp" }
 Cutscene.RUNNER_UPS = { "GoodGame", "Nap", "NextOne", "SoClose" }
+Cutscene.FREE = { "ToyPilot", "GoodGame", "GoodGame" } -- by place
 Cutscene.chosen = {}
 -- `human(actorId)`: whether that winner is a person (a test passes its own).
 function Cutscene.choose(winners, seed, human)
@@ -658,7 +662,13 @@ function Cutscene.choose(winners, seed, human)
 	local names = { firsts[dice:NextInteger(1, #firsts)], ups[a], ups[(a + dice:NextInteger(1, #ups - 1) - 1) % #ups + 1] }
 	Cutscene.chosen = {}
 	for place, entry in winners do
-		if place <= 3 and not human(entry.actorId) then Cutscene.chosen[place] = names[place] end
+		if place <= 3 then Cutscene.chosen[place] = human(entry.actorId) and Cutscene.FREE[place] or names[place] end
+	end
+	for place = 2, 3 do -- (two bots never roll the same one: this is a bot beside a person)
+		local me, other = winners[place], winners[5 - place]
+		if me and other and not human(me.actorId) and Cutscene.chosen[place] == Cutscene.chosen[5 - place] then
+			Cutscene.chosen[place] = ups[table.find(ups, Cutscene.chosen[place]) % #ups + 1]
+		end
 	end
 	return Cutscene.chosen
 end

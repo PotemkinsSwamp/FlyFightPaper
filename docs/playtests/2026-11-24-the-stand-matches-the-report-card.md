@@ -9,5 +9,8 @@
 | 2 | A tie: "It needs to go off the player who has the most points ... his team is the one who shows up on the winner's circle. Only if there's a tie." | Already [the rule](../decisions/2026-11-24-a-tied-team-round-shows-one-team.md), built just before this look. | Built; not seen in Play |
 | 3 | What he saw: "I got more points than everybody else. I was top of the winner's circle. But the 2 runner-ups were not the runner-ups who were on the report card. Even though they were runner-ups that had points. They were just random models." | Claude cannot tell from here which code that match ran. If his Play started before the tie rule reached Studio, the two runner-ups were the next best of everybody (the other team's, with points): the old rule. If it ran the new code, only equal points could differ, and that is fixed by 1. To settle it: restart Play and look again. | Waiting on Alan's look |
 
+## Decided in the same talk
+- What a human winner gets: [the free emote](../decisions/2026-11-24-a-human-winner-does-the-free-emote.md); the others are bought with Paper later, priced once all emotes exist.
+
 ## Not said
 - Whether the name plates under the runner-ups carried the card's names or others (which would point at the models rather than the order).

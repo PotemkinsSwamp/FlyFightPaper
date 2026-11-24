@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-24: [A human winner does the free emote; the others are bought with Paper, later](2026-11-24-a-human-winner-does-the-free-emote.md)
 - 2026-11-24: [A tied team round shows one team on the stand, never a mix](2026-11-24-a-tied-team-round-shows-one-team.md)
 
 - 2026-11-24: [Bots do a random one of our emotes; the random dances are retired](2026-11-24-bots-do-a-random-one-of-our-emotes.md)

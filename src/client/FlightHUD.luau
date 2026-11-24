@@ -332,7 +332,7 @@ function HUD.start(getPlane, action)
 			button.Activated:Connect(function()winnersDev.finish(first[1])end)
 		end
 		-- The ending as a live server shows it (Alan's OK on the bots' plan, 2026-11-24): no names from this panel, so
-		-- each bot does the random one of ours the scene picks and a person who places keeps the dances.
+		-- each bot does the random one of ours the scene picks and a person who places does the free one.
 		local real=eraserBots:Clone();real.Name="EndReal";real.Text="end: real";real.Position=UDim2.fromOffset(330,-120)
 		real.BackgroundColor3=Color3.fromRGB(150,40,40);real.Parent=picker
 		real.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",nil);Root:SetAttribute("DevRunnerUp",nil);Root.RoundAction:FireServer("endMatch")end)
