@@ -18,12 +18,14 @@
 -- smooth transition ... that camera went out, we're switching to this camera").
 local FoldItUp = {}
 local MARKS = { Pinch = 3.3, Back = 3.8, Show = 4.5, Crumple = 6.6, Ball = 7.6, Release = 8.15 } -- the clip's own (its draft's attributes win)
-local REACH_FROM = 3.05 -- the copy hand leaves the kid's own hand (the reach is under way) and is at the corner at Pinch
+local REACH_FROM = 3.05 -- the copy hand leaves the kid's own hand (the reach is under way) and covers the picture at Pinch
 local SHOT_FOV, WIDE = 50, 120 -- the scene's lens, and Roblox's widest: the picture a quarter of its size (0.27)
 local SHRINK, FADE, DARK, OPEN = 0.6, 0.25, 0.35, 0.4 -- seconds: the picture shrinking; the black closing; all black; the black lifting on the new camera
 local ROLL = 9 -- degrees the shrinking picture tilts
 local HAND_AT = 2 -- studs from the lens where the hand holds the picture's corner (in front of the black, MASK)
 local HOLD_TALL = { 0.4, 0.26 } -- the holding hand's size, of the screen's height: at the pinch and when the picture is smallest
+local NEAREST, COVER = 0.3, 1.8 -- the reaching hand at the pinch: studs from the lens, and how many pictures wide its end is (it covers the picture)
+local GRIP_IN = 0.25 -- seconds from covering the picture to holding its corner
 local GRIP_OVER = 0.15 -- the share of the hand out past the corner it holds
 local LAMP = 1 -- a small light at the lens while the hand is there (it is out of every spotlight)
 local SIDE, FAR = 20, 1.15 -- the second camera: degrees round 1st, to the kid's left (the toss goes off to the far side), and how much further from 1st than the front one (at 30 degrees and the same distance the near runner-up sat low in the corner, its books at the picture's bottom edge: the fifth run)
@@ -110,6 +112,7 @@ function FoldItUp.start(kit, who)
 		copy.LocalTransparencyModifier, copy.Transparency = 0, 1
 		copy.Parent = cast
 		st.hand, st.realHand, st.handSize = copy, hand, hand.Size
+		st.cover = flat(cast, hand.Color, "FoldItUpCover")
 	end
 	-- at the lens: four black bars round the old picture, one black over everything, and a small light for the hand
 	st.bars = {}
@@ -205,24 +208,51 @@ function FoldItUp.step(st, since, shot, steady, winners, fov)
 		st.realHand.LocalTransparencyModifier = out and 1 or 0
 		st.light.Enabled = out
 		if out then
-			-- from the kid's own hand out to the picture's top left corner as we see it (Alan's mark on the fifth run:
-			-- "the hand should be in the corner, grabbing it"; the kid's arm reaches the same way), growing as it comes;
-			-- there it holds the corner, fingertips over it, and stays big while the picture shrinks
+			-- forced perspective (Alan on the seventh run: "the hand takes up the whole camera", no arm seen): the copy
+			-- slides along the line from the kid's own hand to the lens, so on the screen it stays on that hand and only
+			-- grows, until at the pinch it covers the whole picture (COVER; a flat of the hand's own colour behind it
+			-- closes the gaps, whatever the hand's shape). Behind it the picture starts to shrink; the hand then goes to
+			-- the picture's top left corner (GRIP_IN; his mark on the fifth run) and holds it, big, fingertips over the
+			-- corner, as the picture is pulled away
 			local near = math.min(st.kit.ease((since - REACH_FROM) / (marks.Pinch - REACH_FROM)) ^ 1.5, 1) -- speeding up
-			local held = math.clamp((since - marks.Pinch) / SHRINK, 0, 1)
-			local tall = (HOLD_TALL[1] + (HOLD_TALL[2] - HOLD_TALL[1]) * held) * 2 * HAND_AT * math.tan(math.rad((fov or SHOT_FOV) / 2))
-			local hy = HAND_AT * math.tan(math.rad(SHOT_FOV / 2)) -- the old picture's half height, HAND_AT from the lens
-			local d = Vector3.new(-1, 1, 0).Unit -- up and to the left: the way the fingertips point, out over the corner
-			local middle = Vector3.new(-hy * aspect, hy, -HAND_AT) - d * tall * (0.5 - GRIP_OVER)
-			-- palm to us (a right hand's palm is its own left side), its own down (the fingertips) along d
-			local grip = CFrame.fromMatrix(middle, -Vector3.zAxis, -d, Vector3.new(-d.Y, d.X, 0))
-			local big = math.max(st.handSize.X, st.handSize.Y, st.handSize.Z)
-			local at = steady * steady:ToObjectSpace(st.realHand.CFrame):Lerp(grip, near)
-			local size = st.handSize:Lerp(st.handSize * tall / big, near)
+			local tanNow = math.tan(math.rad((fov or SHOT_FOV) / 2))
+			local at, size
+			if since < marks.Pinch then
+				local own = steady:ToObjectSpace(st.realHand.CFrame)
+				local far = math.max(-own.Position.Z, NEAREST)
+				local depth = far * (NEAREST / far) ^ near -- nearer by the same share each moment: it rushes in, it does not pop
+				local across = math.max(math.min(st.handSize.X, st.handSize.Z), 1e-3) -- the hand's end: what a reach at the lens shows
+				local full = COVER * 2 * NEAREST * tanNow * aspect / across -- the size at which it covers the picture
+				size = st.handSize * full ^ near
+				local reach = own.Rotation + own.Position * (depth / far)
+				st.reached = { at = reach, size = size }
+				at = steady * reach
+			else
+				local held = math.clamp((since - marks.Pinch) / SHRINK, 0, 1)
+				local tall = (HOLD_TALL[1] + (HOLD_TALL[2] - HOLD_TALL[1]) * held) * 2 * HAND_AT * tanNow
+				local hy = HAND_AT * math.tan(math.rad(SHOT_FOV / 2)) -- the old picture's half height, HAND_AT from the lens
+				local d = Vector3.new(-1, 1, 0).Unit -- up and to the left: the way the fingertips point, out over the corner
+				local middle = Vector3.new(-hy * aspect, hy, -HAND_AT) - d * tall * (0.5 - GRIP_OVER)
+				-- palm to us (a right hand's palm is its own left side), its own down (the fingertips) along d
+				local grip = CFrame.fromMatrix(middle, -Vector3.zAxis, -d, Vector3.new(-d.Y, d.X, 0))
+				local big = math.max(st.handSize.X, st.handSize.Y, st.handSize.Z)
+				local g = st.kit.ease(math.clamp((since - marks.Pinch) / GRIP_IN, 0, 1))
+				local from = st.reached or { at = grip, size = st.handSize * tall / big }
+				at, size = steady * from.at:Lerp(grip, g), from.size:Lerp(st.handSize * tall / big, g)
+			end
+			-- the flat of the hand's colour: in as the hand fills the picture, out as it goes to the corner
+			local filled = since < marks.Pinch and math.clamp((near - 0.8) / 0.2, 0, 1) or 1 - st.kit.ease(math.clamp((since - marks.Pinch) / GRIP_IN, 0, 1))
+			if filled > 0 then
+				local hy = NEAREST * 1.5 * tanNow * 1.3
+				put(st.cover, shot, NEAREST * 1.5, 0, 0, 2 * hy * aspect, 2 * hy, 1 - filled)
+			else
+				st.cover.gui.Enabled = false
+			end
 			st.hand.Size, st.hand.CFrame, st.hand.Transparency = size, at, 0
 			st.lamp.CFrame = shot
 		else
 			st.hand.Transparency = 1
+			st.cover.gui.Enabled = false
 		end
 	end
 	-- the black bars round the old picture: it sits where the scene's own lens saw it, in the unrolled camera's frame

@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the seventh recording (the hand at the corner, the kid reaching to it, the slow switch, the backward toss; two bodies) waits for Alan's look.
+Step 6: Alan's note on the seventh run is built (forced perspective back: the hand fills the camera, then holds the picture's corner); ready to record.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -485,3 +485,23 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   inside the body's shape) and the hand is its furry lump: an odd body. The Menu tag and the plates are gone before
   the hand reaches the corner; less of the hand runs off the screen; the hand stays on the top left corner through
   the whole shrink in both. Nothing new broken. Waits for Alan's look.
+
+## Alan on the seventh run: forced perspective back (2026-11-24)
+- **His words:** "Is there no way to stretch the model's arm? Or we had force perspective before, and we don't have
+  that now. We need the force perspective where the hand, where you don't see the arm, the hand like takes up the
+  whole camera, and then we just have it switch to the side, and as it's pulling it down, you see the hand on the
+  side."
+- **My reading (told to him):** the hand comes straight at the lens and covers the whole picture; then the hand goes
+  to the picture's side (the top left corner he marked) and is seen there while the picture is pulled away. Not a cut
+  to the side camera at that moment. Stretching the arm itself stays unbuilt: possible on the stand-in (its parts
+  resized each frame), but sleeves and 3D clothes would have to follow; the sliding copy hand gives the same look
+  with nothing stretched.
+- **Built (numbers in Edit only; not recorded):**
+  - **The body:** the reach is straight at the lens again (only the hand shows), held until the black.
+  - **The hand:** from 3.05 the copy slides along the line from the kid's own hand to the lens (on the screen it
+    stays on that hand), nearer by the same share each moment, until at the pinch its end is 1.8 pictures wide 0.3
+    studs from the lens (`COVER`, `NEAREST`); a flat of the hand's own colour comes in behind it over the last fifth
+    of the reach, so the picture is covered whatever the hand's shape. With stand-ins: 7% of the screen tall at 3.1 s,
+    61% at 3.2, wider than the picture from 3.27. Behind it the picture starts to shrink; over 0.25 s (`GRIP_IN`) the
+    hand goes to the picture's top left corner and the colour clears (the picture is 0.52 of the screen when it is
+    there, at 3.55); it holds the corner as before, 34% of the screen tall falling to 26%.
