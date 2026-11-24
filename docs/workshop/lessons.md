@@ -1026,7 +1026,9 @@ Back to [HOME](../HOME.md)
 ## Scripted Play tests (2026-11-16, the skins and trails check)
 - **The Studio link's video capture stops by itself at 30 seconds** (2026-11-22, the pipeline's recordings): one
   capture for each end of a match, started just before `endMatch`; several takes fit in one Play (wait about 6 s after
-  a scene for the next match's planes).
+  a scene for the next match's planes). **A different winner each take** (2026-11-24): with no points scored, a fresh Play's first match always
+  places the same bot 1st; `endMatch` sent again during the vote that follows ends the next match as it starts, with
+  another order (start the capture just before it).
 - **Read a Play's errors from `LogService:GetLogHistory()` in the Client**, keeping errors and warnings and dropping
   the "ContentId ... failed" lines: the whole console is a hundred lines of those.
 - **Find 1st's light in a recording by brightness:** the mean brightness of a small box on 1st (`signalstats` on
