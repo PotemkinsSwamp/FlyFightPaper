@@ -30,7 +30,7 @@ local ARMS = { { 0, "hang" }, { 1.9, "hang" }, { FU.rub, "rub" }, { FU.rubbed, "
 local ARM = {
 	hang = { Right = { V(0.2, -0.42, -0.02), V(1, -0.1, 0.4) }, Left = { V(-0.2, -0.42, -0.02), V(-1, -0.1, 0.4) } },
 	rub = { Right = { V(0.02, -0.28, -0.21), V(1, -1, 0.3) }, Left = { V(-0.02, -0.28, -0.21), V(-1, -1, 0.3) } },
-	reach = { Right = { V(0.36, 0.16, -0.26), V(0.6, -1, 0.2) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- up and out to the kid's right and at the lens: at the picture's top left corner as we see it, where the big hand grips it (Alan's mark on the fifth run); held until the black (FU.held)
+	reach = { Right = { V(0.48, 0.2, -0.12), V(0.6, -1, 0.2) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- up and out to the kid's right and at the lens: at the picture's top left corner as we see it, where the big hand grips it (Alan's mark on the fifth run); held until the black (FU.held)
 	chest = { Right = { V(0.08, -0.18, -0.18), V(1, -0.8, 0.2) }, Left = { V(-0.2, -0.38, -0.06), V(-1, -0.2, 0.4) } },
 	hold = { Right = { V(0.26, -0.25, -0.26), V(1, -0.6, 0.3) }, Left = { V(-0.26, -0.25, -0.26), V(-1, -0.6, 0.3) } }, -- the poster's sides
 	scrunch = { Right = { V(0.05, -0.18, -0.22), V(1, -0.8, 0.2) }, Left = { V(-0.05, -0.18, -0.22), V(-1, -0.8, 0.2) } },

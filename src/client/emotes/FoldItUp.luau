@@ -24,7 +24,7 @@ local SHRINK, FADE, DARK, OPEN = 0.6, 0.25, 0.35, 0.4 -- seconds: the picture sh
 local ROLL = 9 -- degrees the shrinking picture tilts
 local HAND_AT = 2 -- studs from the lens where the hand holds the picture's corner (in front of the black, MASK)
 local HOLD_TALL = { 0.4, 0.26 } -- the holding hand's size, of the screen's height: at the pinch and when the picture is smallest
-local GRIP_OVER = 0.25 -- the share of the hand out past the corner it holds
+local GRIP_OVER = 0.15 -- the share of the hand out past the corner it holds
 local LAMP = 1 -- a small light at the lens while the hand is there (it is out of every spotlight)
 local SIDE, FAR = 20, 1.15 -- the second camera: degrees round 1st, to the kid's left (the toss goes off to the far side), and how much further from 1st than the front one (at 30 degrees and the same distance the near runner-up sat low in the corner, its books at the picture's bottom edge: the fifth run)
 local BACK_AT, BACK_FOR = 9.4, 0.9 -- the camera swings back to the front, the kid turning with it: the scene's glide home starts from the front (from the side it went through furniture: the third run)
@@ -291,7 +291,7 @@ end
 -- The name plates and the Menu tag are on the screen, not in the picture: they go from the pinch (they would not
 -- shrink with it) until the black has lifted on the second camera.
 function FoldItUp.covered(st, t)
-	return t >= st.marks.Pinch and t < st.openAt + OPEN
+	return t >= REACH_FROM and t < st.openAt + OPEN
 end
 
 function FoldItUp.stop(st)

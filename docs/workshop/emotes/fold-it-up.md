@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: Alan's mark on the fifth run is built (the big hand grips the picture's top left corner, the kid's arm reaches there and holds); ready to record on a body other than itsella.
+Step 6: the sixth run's faults (the kid's arm did not read as reaching; the Menu tag over the hand) are fixed in the cut and module; ready to record again, waiting on Alan's notes on the sixth run.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -459,3 +459,19 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
     in the grabbing pose; the hands go to the poster in the dark (by 4.45). The chest keeps leaning in until then.
     On 4 of the bots' outfits in Edit the reaching hand is 0.06 to 0.13 heights over the shoulder, 0.09 to 0.13 out
     and 0.14 to 0.24 in front; nothing goes into the head or chest.
+
+## Sixth run in Play (the primary session's muted recording, 2026-11-24, the corner build) and its fixes
+- **Files:** take A, 1st Pibbler: `.planning/emotes/fold-it-up-sixth-run-a-raw.mp4`, `-a-sound.mp4` (light at 7.41 s);
+  take B, 1st itsfinn: `-b-raw.mp4`, `-b-sound.mp4` (light at 7.29 s). So Close on 2nd and 3rd, no game error; the
+  fifth run's sound times.
+- **Works (its stills):** a small hand leaves the kid towards our upper left, grows, is at the picture's top left
+  corner at the pinch and stays on it all through the shrink (pale and clear on itsfinn, fingers over the corner);
+  from the side all three sit clear of the edges, 3rd whole, each name plate under its own stack.
+- **Faults:** (1) the kid's own arm does not read as reaching to the corner (on itsfinn the arms look down or at the
+  chest; on the dog no arm shows); (2) at the pinch the big hand runs off the screen's top left and the yellow Menu
+  tag sits on top of it for a few frames; (3) on the dog the hand is a furry lump (its own hand part: an odd body).
+- **Fixed (numbers in Edit only; not recorded):** (1) the reach was mostly forwards, so from the front it hardly
+  showed: the hand now goes up and well out to the kid's right (on 4 outfits 0.14 to 0.23 heights out from the
+  shoulder, 0.10 to 0.15 up, 0.08 to 0.13 in front; it was 0.09 to 0.13 out), the arm as straight as it gets; baked
+  again. (2) `covered` starts when the hand sets off (3.05), so the Menu tag and the plates are away before it
+  arrives; a little less of the hand is past the corner (`GRIP_OVER` 0.15, was 0.25). (3) not touched.
