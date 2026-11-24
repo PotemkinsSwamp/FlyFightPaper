@@ -34,10 +34,14 @@ local ARM = {
 	chest = { Right = { V(0.08, -0.18, -0.18), V(1, -0.8, 0.2) }, Left = { V(-0.2, -0.38, -0.06), V(-1, -0.2, 0.4) } },
 	hold = { Right = { V(0.26, -0.25, -0.26), V(1, -0.6, 0.3) }, Left = { V(-0.26, -0.25, -0.26), V(-1, -0.6, 0.3) } }, -- the poster's sides
 	scrunch = { Right = { V(0.05, -0.18, -0.22), V(1, -0.8, 0.2) }, Left = { V(-0.05, -0.18, -0.22), V(-1, -0.8, 0.2) } },
-	low = { Right = { V(0.1, -0.28, -0.2), V(1, -0.8, 0.3) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } },
-	toss = { Right = { V(0.2, 0.22, -0.02), V(1, 0.2, 0.3) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- up past the shoulder
-	over = { Right = { V(0.2, 0.2, 0.1), V(1, 0.4, 0.4) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- and back over it
-	side = { Right = { V(0.3, -0.18, -0.06), V(1, -0.3, 0.3) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- down round the outside, not through the chest
+	-- the toss (Alan 2026-11-24, on the fourth run: "all that needs to happen is there needs to be a bend in her elbow,
+	-- and her arm is still forward, and she throws it backwards ... palm facing you, and then throw the object past
+	-- you, behind you"; mine swung the arm out to the side and back like a reversed baseball throw): the elbow stays
+	-- in front, pointing forward and down; only the forearm folds up, the hand passing beside the head
+	low = { Right = { V(0.16, -0.26, -0.22), V(0.3, -1, -0.4) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } },
+	toss = { Right = { V(0.2, 0.1, -0.1), V(0.2, -0.5, -1) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- the hand up beside the head, the elbow in front
+	over = { Right = { V(0.2, 0.14, 0.02), V(0.2, -0.2, -1) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- flicked back past the shoulder
+	side = { Right = { V(0.18, -0.2, -0.2), V(0.3, -1, -0.4) }, Left = { V(-0.2, -0.4, -0.04), V(-1, -0.1, 0.4) } }, -- the forearm comes down again, in front
 	palms = { Right = { V(0.03, -0.25, -0.2), V(1, -1, 0.3) }, Left = { V(-0.03, -0.25, -0.2), V(-1, -1, 0.3) } },
 }
 local FOLD_UPPER = { over = V(-0.1, -0.75, -0.65), under = V(-0.08, -0.8, -0.55) } -- Skeet Shoot's crossed arms, the upper arms more down: a real fold (elbows near 90 degrees)
@@ -52,7 +56,7 @@ local ROLL = { { 0, 0 }, { 0.2, 0 }, { FU.tilt, TILT }, { 1.3, TILT }, { FU.rub,
 local DOWN = { { 0, 0 }, { FU.rub + 0.1, 0 }, { FU.rub + 0.4, 15 }, { FU.rubbed, 15 }, { FU.pinch, -4 }, { FU.back, 0 }, { FU.show, 5 }, { FU.nod, NOD + 5 }, { FU.nod + 0.5, 5 },
 	{ FU.crumple, 25 }, { FU.ball, 25 }, { FU.wind, 0 }, { FU.dust, 0 }, { FU.dust + 0.2, 20 }, { FU.dusted, 20 }, { FU.folded, -CHIN } } -- head down, degrees
 local LEANS = { { 0, 0 }, { FU.rubbed, 0 }, { FU.pinch, 1 }, { FU.back, -0.4 }, { FU.take, 0 } } -- the chest towards the camera, of LEAN
-local TWISTS = { { 0, 0 }, { FU.wind, 0 }, { FU.release, -12 }, { FU.through, -15 }, { FU.dust, 0 } } -- the chest's turn, degrees to the kid's left
+local TWISTS = { { 0, 0 }, { FU.dust, 0 } } -- the chest's turn, degrees to the kid's left: none (the toss is the forearm alone)
 local WEIGHT = { { FU.fold, 0 }, { FU.folded, 1 } }
 function FU.pose(t, c)
 	local body = standing(c)

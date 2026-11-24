@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the fourth recording (the screen taken, all three in the side view, a clean way home) waits for Alan's look.
+Step 6: the fourth build (Alan's notes on the fourth run: the hand holds the picture, no rim, a slower switch, a plain backward toss) is ready to record, on a different body.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -391,3 +391,32 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   the first camera. Not touched; offered to Alan: keep them away for the whole side view (`covered` until 10.3).
 - **Not this emote's:** the grey face at leaving is the scene's fade (the head goes grey a few frames before the
   body; A+ too); the dim room is as in the front view (not a fault). Waits for Alan's look.
+
+## Alan on the fourth run (2026-11-24) and the fourth build
+- **His notes:** the hand must stay big while she takes the screen ("her hand should still be large on it because
+  she's grabbing it"), better: "we can see the hand holding the picture ... her giant hand in the frame, but also
+  wrapped around the frame", only just over it; "there shouldn't be a white border. It calls to the eye too much";
+  the switch of cameras is too fast ("a smooth transition ... that camera went out, we're switching to this camera");
+  the toss is wrong ("like throwing a baseball but in reverse ... You literally just bend your elbow, palm facing
+  you, and then throw the object past you, behind you"); and the recordings always show the same bot's body ("we
+  tune it to that model too much"): test other models.
+- **Built (numbers in Edit only; not recorded):**
+  - **The hand holds the picture:** from the pinch the copy hand, as it looked at the pinch, takes the picture's
+    bottom edge (0.3 of the half width right of the middle, a quarter of the hand over the picture) in 0.15 s and
+    stays there while the picture shrinks, tilting with it: 0.4 of the screen's height falling to 0.26 as the picture
+    falls to 0.27 (`HOLD_TALL`), 2 studs from the lens, in front of the black (now 3 studs off), with a small light
+    at the lens (`LAMP`: it is out of every spotlight). It is the avatar's own hand part, so it is whatever that body
+    has (most Roblox hands have no fingers). Gone with the black.
+  - **No rim:** the black meets the picture's edge.
+  - **The switch:** the black closes over the small picture and the hand in 0.25 s (3.9 to 4.15), stays 0.35 s, lifts
+    over 0.4 s on the second camera (4.5 to 4.9); the kid turns to it 4.6 to 5.2. It was 0.2 s of black and 0.15 s
+    to lift. The drawing is shown square from 5.2 to 6.6 (1.4 s; it was about 2). The flap sound moves to 4.475.
+  - **The toss** (the cut, baked again): the elbow stays in front of the shoulder and only folds; the hand goes from
+    low in front up beside the head and flicks back past the shoulder; the chest no longer twists. The ball leaves
+    backwards and up (0.1 right, 1.8 up, 2.0 back). On 12 of the bots' outfits in Edit: the elbow 0.04 to 0.13
+    heights in front of the shoulder and at most 0.03 out to the side all through, bent from about 30 to about 140
+    degrees; the hand passes 0.02 to 0.12 heights outside the head's box, except one big-headed body where it is
+    0.03 inside the box's corner.
+  - **With stand-ins:** no error; the hand 35% of the screen tall at 3.5 s, 31% at 3.7, 26% at 3.9, at the picture's
+    bottom edge; all black 4.15 to 4.5; `covered` to 4.9.
+- **Other bodies:** asked of the primary session: the next recordings with a different winner each time.
