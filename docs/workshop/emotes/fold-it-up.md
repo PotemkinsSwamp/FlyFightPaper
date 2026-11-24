@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the fourth build (Alan's notes on the fourth run: the hand holds the picture, no rim, a slower switch, a plain backward toss) is ready to record, on a different body.
+Step 6: the fifth run (two other bodies) showed the hand's fingers pointing away and 3rd low in the corner; both fixed in the module, ready to record again.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -420,3 +420,26 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   - **With stand-ins:** no error; the hand 35% of the screen tall at 3.5 s, 31% at 3.7, 26% at 3.9, at the picture's
     bottom edge; all black 4.15 to 4.5; `covered` to 4.9.
 - **Other bodies:** asked of the primary session: the next recordings with a different winner each time.
+
+## Fifth run in Play (the primary session's muted recording, 2026-11-24, two other bodies) and its two fixes
+- **Files:** take A, 1st is Pibbler (Alan's dog avatar, bulky): `.planning/emotes/fold-it-up-fifth-run-a-raw.mp4`,
+  `-a-sound.mp4` (1st's light at 7.25 s). Take B, 1st is itsfinn (blocky, wings, shoulder pets): `-b-raw.mp4`,
+  `-b-sound.mp4` (light at 7.37 s). So Close on 2nd and 3rd, no game error. Sounds at 3.275, 4.475, 6.575, 8.125,
+  8.925 and 9.225. How other winners were got: with no points the first match of a Play always puts the same bot
+  1st; ending the following matches gives other orders (`docs/workshop/lessons.md`, "Scripted Play tests").
+- **Works (its stills and mine):** the big hand at the shrinking picture's bottom edge, big, no rim, on both; the
+  lens light lights the hand and nothing else; black, then the side view opens slower; the drawing reads on both
+  (on the dog across the chest under the snout); the toss on itsfinn: the arm folds, the ball leaves up and back.
+- **Faults:** the dog's hand is a brown furry lump (its own hand part: an odd body, an accepted loss); the hand hung
+  under the picture with its fingers pointing down, away from it (take B's hand has fingers: clear to see); from the
+  side 3rd sat in the bottom right corner, its books at or past the bottom edge in take A and its name plate over
+  them; 2nd's and 1st's plates left of and below their stacks. Take B's room is brighter all through (the player
+  was in the hangar menu when the match ended): the scene's.
+- **Fixed in the module (numbers in Edit only; not recorded):**
+  - **The hand's fingers point up over the picture's edge**, the back of the hand to us (she holds it from behind;
+    a hand part's own down is its fingertips), in place of the hand as it looked at the pinch.
+  - **The near runner-up is no longer low in the corner:** what puts a winner low is how near they are along the
+    camera's line (at 30 degrees the near one was at 0.73 of the front view's depth). The side camera now swings 20
+    degrees and stands 1.15 times as far from 1st (`SIDE`, `FAR`): with stand-ins the near runner-up is at 0.96 of
+    the front's depth, the far one 1.33, 1st 1.14 (so 1st is about an eighth smaller in the side view), the
+    runner-ups 0.57 of the half picture each side. The swing back before leaving closes the distance too.

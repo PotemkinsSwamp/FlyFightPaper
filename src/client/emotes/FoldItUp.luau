@@ -29,7 +29,7 @@ local HAND_AT = 2 -- studs from the lens where the hand holds the picture (in fr
 local HOLD_TALL = { 0.4, 0.26 } -- the holding hand's size, of the screen's height: at the pinch and when the picture is smallest
 local GRIP_IN, GRIP_X, GRIP_OVER = 0.15, 0.3, 0.25 -- seconds to take hold; where on the bottom edge (of the half width, to the right); the share of the hand over the picture
 local LAMP = 1 -- a small light at the lens while the hand is there (it is out of every spotlight)
-local SIDE = 30 -- degrees the second camera is round 1st, to the kid's left (the toss goes off to the far side)
+local SIDE, FAR = 20, 1.15 -- the second camera: degrees round 1st, to the kid's left (the toss goes off to the far side), and how much further from 1st than the front one (at 30 degrees and the same distance the near runner-up sat low in the corner, its books at the picture's bottom edge: the fifth run)
 local BACK_AT, BACK_FOR = 9.4, 0.9 -- the camera swings back to the front, the kid turning with it: the scene's glide home starts from the front (from the side it went through furniture: the third run)
 local TURN_BY, TURN_AFTER = 0.6, 0.1 -- the kid turns to the second camera: seconds it takes, and after the black starts lifting
 local MASK = 3 -- studs in front of the lens where the black bars sit (behind the holding hand, far in front of the winners)
@@ -157,7 +157,9 @@ function FoldItUp.camera(st, steady, t)
 	if t < st.marks.Pinch then return steady end
 	if t < st.darkAt then return steady * CFrame.Angles(0, 0, math.rad(ROLL) * (1 - shrunk(st, t)) / (1 - shrunk(st, st.cutAt))) end
 	local spot = st.spot or st.who.desk.Position
-	local view = CFrame.new(spot) * CFrame.Angles(0, math.rad(SIDE) * round(st, t), 0) * CFrame.new(-spot) * steady
+	local r = round(st, t)
+	local view = CFrame.new(spot) * CFrame.Angles(0, math.rad(SIDE) * r, 0) * CFrame.new(-spot) * steady
+	view += (view.Position - spot) * Vector3.new(1, 0, 1) * (FAR - 1) * r
 	-- turned so 2nd and 3rd are as far from the picture's middle as each other (aimed at 1st, the near runner-up
 	-- was out of the picture: the third run)
 	if st.others then
@@ -200,8 +202,8 @@ function FoldItUp.step(st, since, shot, steady, winners, fov)
 	local screen = workspace.CurrentCamera.ViewportSize
 	local aspect = screen.X / math.max(screen.Y, 1)
 	-- the hand at the lens: out along the line to the wrist as it reaches (on the screen it stays on the wrist and
-	-- grows); from the pinch it holds the picture's bottom edge, in the unrolled camera's frame like the picture, as
-	-- it looked at the pinch, and stays big while the picture shrinks; gone with the black
+	-- grows); from the pinch it holds the picture's bottom edge, in the unrolled camera's frame like the picture, and
+	-- stays big while the picture shrinks; gone with the black
 	if st.hand then
 		local out = since >= REACH_FROM and since < st.darkAt
 		st.realHand.LocalTransparencyModifier = out and 1 or 0
@@ -219,7 +221,9 @@ function FoldItUp.step(st, since, shot, steady, winners, fov)
 				local held = math.clamp((since - marks.Pinch) / SHRINK, 0, 1)
 				local tall = (HOLD_TALL[1] + (HOLD_TALL[2] - HOLD_TALL[1]) * held) * 2 * HAND_AT * math.tan(math.rad((fov or SHOT_FOV) / 2))
 				local hy = HAND_AT * math.tan(math.rad(SHOT_FOV / 2)) -- the old picture's bottom edge, HAND_AT from the lens
-				local grip = CFrame.new(GRIP_X * hy * aspect, -hy - tall * (0.5 - GRIP_OVER), -HAND_AT) * st.reached.at.Rotation
+				-- fingertips up over the picture's edge (a hand's own down is its fingertips), the back of the hand to us:
+				-- she holds it from behind, the fingers come over the edge (in the fifth run they pointed down, away from it)
+				local grip = CFrame.fromMatrix(Vector3.new(GRIP_X * hy * aspect, -hy - tall * (0.5 - GRIP_OVER), -HAND_AT), Vector3.zAxis, -Vector3.yAxis, Vector3.xAxis)
 				local g = st.kit.ease(math.clamp((since - marks.Pinch) / GRIP_IN, 0, 1))
 				local big = math.max(st.handSize.X, st.handSize.Y, st.handSize.Z)
 				at, size = steady * st.reached.at:Lerp(grip, g), st.reached.size:Lerp(st.handSize * tall / big, g)
