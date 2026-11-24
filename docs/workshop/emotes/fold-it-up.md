@@ -540,3 +540,12 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   `assets/audio/emotes/fold-it-up-peel/flap/scrunch/toss/dust.ogg` (Audio names `foldPeel`, `foldFlap`,
   `foldScrunch`, `foldToss`, `foldDust`; times in `FoldItUp.sounds`: 3.275, 4.475, 6.575, 8.125, 8.925 and 9.225).
   The drawing is already up (`rbxassetid://114077761748868`).
+- **The ninth run's stills in full** (the primary session's report, which reached this session after Alan's OK; 12 a
+  second from 3.1 to 4.1 s after the light; lights at 7.42 s in take A, 7.35 s in take B). Take B: the hand big over
+  1st at 3.1; then a frame of the whole scene with no hand; three frames of the picture shrinking with thin yellow
+  slivers of the hand at the bottom and left edges; then the hand whole and big at the top left, pulling back to the
+  corner over three frames (reads as a move). Take A: brown ribbons and shards across the picture for four frames,
+  then a big lump at the top left pulling back to the corner. No frame in either take has the screen covered. Its
+  reading: at 0.3 studs the camera's near plane cuts through the huge hand. **Not changed: Alan saw these videos and
+  this list before his "that looks good, upload it".** If he later wants a real cover: keep the hand beyond the near
+  plane and scale it up, or a solid flat of the hand's colour.
