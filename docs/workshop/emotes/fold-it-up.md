@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the second recording (drawing 2a on the poster, the sounds under it) waits for Alan's look.
+Step 6: the third build (the screen is taken: the picture shrinks into black, a second camera) waits for the scene's lens hook and a recording by the primary session.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -331,3 +331,30 @@ it gives more of the impression that she's taking the frame."
   then the scene's camera is somewhere else (the module's `camera` hook; the winners' stand-ins follow any camera).
   The kid is turned on the stack by the module. **Needs from the primary session:** a hook to set the lens angle (the
   scene writes `FieldOfView` itself each frame), and a look at what stands in the way from the new angle.
+
+## Third build: the screen is taken (2026-11-24; Alan's "yes" to the plan in words; numbers in Edit only, never run in Play)
+My defaults, which his "yes" did not change: the second camera 35 degrees round 1st at the same distance (all three
+stay in view); the picture shrinks to a quarter, then a cut to black.
+- **The module** (`src/client/emotes/FoldItUp.luau`, rewritten; the body clip is unchanged):
+  - **The hand at the lens:** as before (3.05 to 3.8, 12 times at the pinch).
+  - **The picture shrinks (3.3 to 3.9):** `FoldItUp.fov` widens the lens from 50 to 120 degrees, fast at first, so the
+    live picture is 0.78 of the screen at 3.4 s, 0.45 at 3.6, 0.27 at 3.9. Four black bars 0.25 studs from the lens
+    cover everything outside the old picture, with a paper-white rim (0.02 of its height) between; the camera rolls
+    up to 9 degrees (`camera`), the bars stay with the picture. Unlit (filled SurfaceGuis, the curtain's way). The
+    milky tent of the second build is gone.
+  - **Black (3.9 to 4.1):** one black sheet over the lens; under it the lens goes back to 50 and the camera swings
+    35 degrees round 1st's real spot to the kid's left (the toss goes off to the far side). The black lifts in 0.15 s.
+  - **The turn (4.1 to 4.6):** the module turns the kid on the stack 35 degrees to face that camera (`PivotTo`, as
+    Book Kicker moves its kid). The poster is in both hands from the black on, its drawing the way the kid faces: no
+    flip any more, the back is never shown.
+  - Show, crumple, toss, dust, fold: as before, in the turned kid's frame. `covered` from the pinch until the black
+    has lifted (4.25). The flap sound moved to the black lifting (4.075). The scene's leave time is kept.
+- **Needs the scene's lens hook** (asked of the primary session: `made.fov(st, t)` in place of `SHOT_FOV` during the
+  hold). Without it the bars close in but the picture does not shrink.
+- **Run in Edit with stand-ins** (the module's text, the test kid, made-up cameras): no error; the black starts 0.04
+  outside the old picture's edge at every moment and reaches far past the widest view; the second camera is 35
+  degrees round at 3.70 heights (the front's distance), to the kid's left; the kid faces it by 4.6; the drawing is 7
+  degrees off square to the lens and 16% of the screen tall while shown; the ball leaves over the far shoulder.
+- **Not known until Play:** whether anything in the room stands between the side camera and the winners (the scene
+  clears the shot for the front view only); how the spotlights and the dark curtain look from the side; whether the
+  shrinking picture reads as "she took the screen"; the stand-in winners during the wide lens.
