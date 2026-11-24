@@ -1,0 +1,24 @@
+{
+  "path": "operations/e94f6be2-6038-44f8-be8a-822d7687822a",
+  "operationId": "e94f6be2-6038-44f8-be8a-822d7687822a",
+  "done": true,
+  "response": {
+    "path": "assets/89242235637504",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-24T22:17:30.150Z",
+    "assetId": "89242235637504",
+    "displayName": "FFP sound Fold It Up dust",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

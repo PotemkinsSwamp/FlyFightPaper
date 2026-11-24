@@ -1,0 +1,24 @@
+{
+  "path": "operations/9495fdcc-15cb-43f4-a83e-4f0bdff2ee1a",
+  "operationId": "9495fdcc-15cb-43f4-a83e-4f0bdff2ee1a",
+  "done": true,
+  "response": {
+    "path": "assets/77731942021002",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-24T22:17:24Z",
+    "assetId": "77731942021002",
+    "displayName": "FFP sound Fold It Up scrunch",
+    "description": "FlyFightPaper sound effect.",
+    "assetType": "Audio",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

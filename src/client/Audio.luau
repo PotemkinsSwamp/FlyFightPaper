@@ -77,6 +77,11 @@ local definitions={
  -- aPlusSlap: the card flat on the lens, the loudest (as loud as Book Kicker's thud). skeetShot: the straw's puff
  -- and the hit. The loudness of each is Claude's number, not yet heard in the game.
  aPlusFlap={99441125733451,1,1,.34},aPlusSlap={83907119716558,1,1.6,.34},skeetShot={138787804311745,1,1,.29},
+ -- Fold It Up (src/client/emotes/FoldItUp.luau): five sounds cut from Alan's reference video, uploaded 2026-11-24
+ -- (assets/audio/emotes; Alan on the recording: "that looks good, upload it"). Volume 1 each: Claude's number, not
+ -- yet heard in the game (the toss's file is the loudest).
+ foldPeel={89389178316383,1,1,1.26},foldFlap={120117285560264,1,1,.23},foldScrunch={77731942021002,1,1,1.17},
+ foldToss={96887272012291,1,1,.24},foldDust={89242235637504,1,1,.23},
  ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);

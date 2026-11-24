@@ -1,0 +1,24 @@
+{
+  "path": "operations/ac7fde4b-895b-4231-a3e5-04a83e1f84e1",
+  "operationId": "ac7fde4b-895b-4231-a3e5-04a83e1f84e1",
+  "done": true,
+  "response": {
+    "path": "assets/134497600135912",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-24T22:17:14.011Z",
+    "assetId": "134497600135912",
+    "displayName": "FFP emote Fold It Up",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}
