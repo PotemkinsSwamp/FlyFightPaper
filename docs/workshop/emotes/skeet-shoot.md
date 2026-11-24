@@ -6,7 +6,7 @@ A 1st-place emote that uses all three winners. Made by the [emote pipeline](../e
 **The idea:** The runner-ups throw their paper planes and 1st shoots them out of the air, like skeet shooting, with rubber bands off a finger or a slingshot: something a child would do (Alan). The runner-ups' own emotes pause while they throw, then carry on. It does not touch the camera; how it ends is open.
 
 ## Where it stands
-**Ready to record** (2026-11-22): steps 1 to 5 done. Card and reference video OK'd by Alan; the bodies, props and
+**In the game, waiting for Alan's own Play** (2026-11-24): approved, uploaded and wired in (below). Steps 1 to 5 done 2026-11-22. Card and reference video OK'd by Alan; the bodies, props and
 sound built and checked in Edit only (numbers, no pictures; never run in Play; nobody has seen it move). The primary
 session records it (Dev button "end: skeet", `DevFirstEmote` = "SkeetShoot"; the clips are unsaved drafts in `Assets`).
 
@@ -242,6 +242,17 @@ sound, not in the track; So Close's sigh is cut by this emote's first sound at 1
 - **Alan (2026-11-24): "its good upload it".** Approved, look and sound. The uploads and the wiring are the primary
   session's (step 6): the clips SkeetShoot, SkeetThrowRight, SkeetThrowLeft (drafts in `Assets`, files in
   `assets/animations/emotes/`) and the sound `assets/audio/emotes/skeet-shoot-shot.ogg` as `skeetShot`.
+
+## Into the game (2026-11-24; Alan's go to the primary session: "go both"; its commit 0216ca0be)
+- **The clips** (in `rounds.emote_clips`, all approved at once): SkeetShoot `rbxassetid://131152777526587`,
+  SkeetThrowLeft `rbxassetid://80133722036922`, SkeetThrowRight `rbxassetid://87476042703213`. Checked in Edit: each
+  upload loads with its draft's keys, poses, length and pose sum (331 keys, 5,296 poses, 11 s; the throws 40 keys,
+  280 poses, 1.3 s). The drafts are deleted from the open place, so Studio plays the uploads and the marks come from
+  `MARKS` in the module (equal to the drafts' attributes).
+- **The sound:** `skeetShot` `rbxassetid://138787804311745`, volume 1 (the primary session's number, not heard in the
+  game); "Reviewing", loads in Studio (0.29 s).
+- Roblox's answers: `assets/animations/emotes/uploads/skeet-*.json`, `assets/audio/emotes/uploads/skeet-shoot-shot.json`.
+- **Next:** Alan's own Play (Dev button "end: skeet").
 
 ## Files
 | File | What |
