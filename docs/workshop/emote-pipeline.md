@@ -11,7 +11,7 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 | So Close | [so-close](emotes/so-close.md) | 6, approved by Alan on the recording (2026-11-22: the sigh was "way too loud", then with the quieter file "its good"); uploaded and wired in on his go (2026-11-22); waits for his own Play |
 | Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 6, approved by Alan on the second recording (2026-11-24: "its good upload it"); three clips and the shot sound uploaded and wired in on his go ("go both"); the drafts are out of the open place; waits for his own Play ("end:" button for Skeet Shoot) |
 | A+ | [a-plus](emotes/a-plus.md) | 6, approved by Alan on the third recording (2026-11-24: "its good upload it"); the clip and two sounds uploaded and wired in on his go ("go both"); the draft is out of the open place; a team match not yet recorded; waits for his own Play |
-| Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, drawing 2a picked and uploaded (his go), on the poster; recorded again 2026-11-22 with the arms that fold (`.planning/emotes/fold-it-up-soclose-second-run-sound.mp4`, no error); waits for Alan's look and listen |
+| Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, third build ("take the screen", Alan's OK 2026-11-24: the live picture shrinks into black, then a camera 35 degrees round); recorded muted 2026-11-24 (`.planning/emotes/fold-it-up-third-run-sound.mp4`, no error): the shrink works; from the side 3rd is cut off at the picture's edge, the room shows behind the winners, and the camera passes through furniture on its way home; waits for Alan's look |
 
 The primary session keeps this table; a side session reports its step in its own page.
 
