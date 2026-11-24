@@ -8,7 +8,7 @@ A 1st-place emote that takes the whole picture. Made by the [emote pipeline](../
 winners (stick figures, a crown on 1st), crumples it up and throws it over the shoulder. The name may change.
 
 ## Where it stands
-Step 6: the sixth run's faults (the kid's arm did not read as reaching; the Menu tag over the hand) are fixed in the cut and module; ready to record again, waiting on Alan's notes on the sixth run.
+Step 6: the seventh recording (the hand at the corner, the kid reaching to it, the slow switch, the backward toss; two bodies) waits for Alan's look.
 
 ## Alan on the first card (2026-11-22)
 - **No faces:** "how are they going to look at them with a sly grin?" The feeling must be in the body: "tilt their
@@ -475,3 +475,13 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   shoulder, 0.10 to 0.15 up, 0.08 to 0.13 in front; it was 0.09 to 0.13 out), the arm as straight as it gets; baked
   again. (2) `covered` starts when the hand sets off (3.05), so the Menu tag and the plates are away before it
   arrives; a little less of the hand is past the corner (`GRIP_OVER` 0.15, was 0.25). (3) not touched.
+
+## Seventh run in Play (the primary session's muted recording, 2026-11-24, with the sixth run's fixes)
+- **Files:** take A, 1st Pibbler: `.planning/emotes/fold-it-up-seventh-run-a-raw.mp4`, `-a-sound.mp4` (light at 7.38 s);
+  take B, 1st itsfinn: `-b-raw.mp4`, `-b-sound.mp4` (light at 7.33 s). So Close on 2nd and 3rd, no game error; the
+  same sound times.
+- **Seen in its stills:** on itsfinn the kid's right arm goes up and out to our upper left, near straight, while the
+  big hand is at the corner (part of the arm behind the wings on that shoulder); on the dog no arm shows (it is
+  inside the body's shape) and the hand is its furry lump: an odd body. The Menu tag and the plates are gone before
+  the hand reaches the corner; less of the hand runs off the screen; the hand stays on the top left corner through
+  the whole shrink in both. Nothing new broken. Waits for Alan's look.
