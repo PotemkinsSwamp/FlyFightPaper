@@ -6,9 +6,9 @@ A 1st-place emote that uses all three winners. Made by the [emote pipeline](../e
 **The idea:** The runner-ups throw their paper planes and 1st shoots them out of the air, like skeet shooting, with rubber bands off a finger or a slingshot: something a child would do (Alan). The runner-ups' own emotes pause while they throw, then carry on. It does not touch the camera; how it ends is open.
 
 ## Where it stands
-**In the game, waiting for Alan's own Play** (2026-11-24): approved, uploaded and wired in (below). Steps 1 to 5 done 2026-11-22. Card and reference video OK'd by Alan; the bodies, props and
-sound built and checked in Edit only (numbers, no pictures; never run in Play; nobody has seen it move). The primary
-session records it (Dev button "end: skeet", `DevFirstEmote` = "SkeetShoot"; the clips are unsaved drafts in `Assets`).
+**In the game, waiting for Alan's own Play** (2026-11-24): approved, uploaded and wired in (below). Steps 1 to 5 done 2026-11-22; recorded twice by the
+primary session and approved by Alan ("its good upload it"). In Studio it plays from the Dev button "end: skeet"
+(`DevFirstEmote` = "SkeetShoot").
 
 ## Alan on the first card (2026-11-22)
 - Fingers don't work: "what if they don't have fingers? What if they just have like a R15? ... This is why it'd be
