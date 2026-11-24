@@ -569,3 +569,18 @@ stay in view); the picture shrinks to a quarter, then a cut to black.
   hand is cut by the lens for a few frames: he approved it at speed).
 - **This side session ends here** (archived at Alan's ask); anything further on Fold It Up goes through the primary
   session, starting from this page.
+
+## The hands rub at the chest, elbows bent (2026-11-24, the primary session; from Alan's own Play)
+His words: [his problems with the winners' emotes](../../playtests/2026-11-24-alans-problems-with-the-winners-emotes.md)
+("they're not bending their elbows ... they bend their elbows to bring their hands up to their chest").
+- **Cause:** the clip puts the rubbing hands 0.28 of a kid's height under the shoulders, in front of the belly, and a
+  clip only stores joint turns: on a body with long arms the same turns leave the arms nearly straight and the hands
+  at the waist.
+- **Fix, in the game and not in the clip (no new upload):** after the clip has posed the arms, both are bent again
+  each frame (the scene's `bendArm`, as A+'s card and Good Game's clap) to a point worked out from the chest alone: a
+  little above its middle, 0.09 of a kid's height in front of it, palm on palm, elbows down and out. The four rub
+  strokes and the two dusting strokes are kept, the palms now sliding opposite ways. It covers both moments the hands
+  are together: the rub (1.9 to 3.2 s) and the dusting (8.6 to 9.6 s); it blends in and out over 0.2 s.
+- **Unchanged:** every other pose, the times, the hand at the lens, the sounds.
+- **Checked:** compiles in Studio. **Not run in Play**: the height and the reach are my numbers (`RUB_UP`, `RUB_OUT`
+  in `src/client/emotes/FoldItUp.luau`). Alan looks in his own Play ("end: fold"), on a long-armed body if he can.

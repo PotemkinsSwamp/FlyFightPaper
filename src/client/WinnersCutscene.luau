@@ -639,6 +639,46 @@ local function emoteFor(place)
 	return id
 end
 
+-- Whether a town building stands between `eye` and `point`. The winners are small models right at the lens, so
+-- nothing in the room can cover them: on the way in their black shapes showed through the buildings between (Alan
+-- 2026-11-24: "It's supposed to be dark, so why am I seeing the black silhouettes through the buildings?"). Each
+-- building's own box first, then its pieces' boxes (a box is a little bigger than its piece: a winner hides a little
+-- early, never late). A building the shot has faded out does not count.
+function Cutscene.behindBuilding(state, eye, point)
+	if not state.blockers then
+		state.blockers = {}
+		local toys = workspace:FindFirstChild("Arena") and workspace.Arena:FindFirstChild("CityToys")
+		local byName = {}
+		for _, entry in toys and toys:GetChildren() or {} do
+			local name = entry.Name:match("^(.-)/")
+			local b = name and byName[name]
+			if name and not b then
+				b = { parts = {}, low = Vector3.one * math.huge, high = Vector3.one * -math.huge }
+				byName[name] = b
+				table.insert(state.blockers, b)
+			end
+			for _, part in name and { entry, table.unpack(entry:GetDescendants()) } or {} do
+				if part:IsA("BasePart") and part.Transparency < 1 then
+					table.insert(b.parts, part)
+					local c, s = part.CFrame, part.Size / 2
+					local x, y, z = c.XVector, c.YVector, c.ZVector
+					local half = Vector3.new(math.abs(x.X) * s.X + math.abs(y.X) * s.Y + math.abs(z.X) * s.Z,
+						math.abs(x.Y) * s.X + math.abs(y.Y) * s.Y + math.abs(z.Y) * s.Z, math.abs(x.Z) * s.X + math.abs(y.Z) * s.Y + math.abs(z.Z) * s.Z)
+					b.low, b.high = b.low:Min(c.Position - half), b.high:Max(c.Position + half)
+				end
+			end
+		end
+	end
+	for _, b in state.blockers do
+		if lineHits(eye, point, CFrame.new((b.low + b.high) / 2), b.high - b.low) then
+			for _, part in b.parts do
+				if part.LocalTransparencyModifier < 0.5 and lineHits(eye, point, part.CFrame, part.Size) then return true end
+			end
+		end
+	end
+	return false
+end
+
 -- The runner-up emotes (Alan's OK 2026-11-20: Good Game, Nap, Next One), for 2nd and 3rd: small, calm loops. Studio
 -- only until who gets which is decided (all three approved by him in Play, their clips uploaded 2026-11-21): the Dev
 -- panel's "2nd/3rd" button names one (DevRunnerUp).
@@ -1879,6 +1919,11 @@ function Cutscene.play(winners, onStage)
 				w.lit = true
 				if w.held then w.emote:AdjustSpeed(w.magic and MAGIC.speed or 1) else w.emote:Play(0.3) end
 			end
+			-- on the way in, a winner with a building between them and the lens is not drawn (their feet or their head:
+			-- no part of them shows through it)
+			local seen = seen
+			if t < arrive and (Cutscene.behindBuilding(state, shot.Position, w.spot + Vector3.yAxis * 0.2 * height)
+				or Cutscene.behindBuilding(state, shot.Position, w.spot + Vector3.yAxis * 1.6 * height)) then seen = 0 end
 			shine(w, math.clamp(since / CLICK, 0, 1), up, seen)
 			-- every point of the big winner, moved towards the camera by their scale: for the small winner standing at
 			-- the desk spot that is one slide

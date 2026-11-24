@@ -16,7 +16,19 @@
 -- much"). Then that camera goes out: the black closes over it (FADE), stays (DARK) while the lens goes back to its own
 -- angle and the camera swings SIDE degrees round 1st (`camera`), and lifts slowly on the new view (OPEN) (Alan: "a
 -- smooth transition ... that camera went out, we're switching to this camera").
+local RunService = game:GetService("RunService")
+
 local FoldItUp = {}
+-- The hands rubbed, and later dusted, at the chest with the elbows bent, on every body (Alan 2026-11-24, on a body
+-- with long arms: "they're not bending their elbows; they're keeping them straight", the hands down at the waist,
+-- "very inappropriate"; "they bend their elbows to bring their hands up to their chest"). A clip turns joints by fixed
+-- angles, so each body's arm lengths carried the hands somewhere else: after the clip has posed the arms they are
+-- bent again (the scene's bendArm, as A+'s card and Good Game's clap) to a place worked out from the chest alone.
+-- Each: the clip's own seconds { the hands come together, the first stroke, the hands part }, a stroke's seconds, how
+-- many strokes, and how far the palms slide along each other (winner heights).
+local RUBS = { { 1.9, 2.2, 3.0, 0.18, 4, 0.035 }, { 8.6, 8.8, 9.4, 0.3, 2, 0.05 } }
+local RUB_BLEND = 0.2 -- seconds the arms take to get there, and to go back to the clip
+local RUB_UP, RUB_OUT = 0.15, 0.09 -- where the hands meet: up the chest from its middle (of its height), and in front of it (winner heights)
 local MARKS = { Pinch = 3.3, Back = 3.8, Show = 4.5, Crumple = 6.6, Ball = 7.6, Release = 8.15 } -- the clip's own (its draft's attributes win)
 local REACH_FROM = 3.05 -- the copy hand leaves the kid's own hand (the reach is under way) and covers the picture at Pinch
 local SHOT_FOV, WIDE = 50, 120 -- the scene's lens, and Roblox's widest: the picture a quarter of its size (0.27)
@@ -82,6 +94,28 @@ local function face(part, side)
 	return gui
 end
 
+-- From RunService.PreSimulation (the clip has posed the body for this frame; `at`: where a part is by that pose):
+-- both hands to the chest, palm on palm, the elbows down and out to their own sides, sliding opposite ways.
+local function rubArms(st, joints, at)
+	if not st.who.model:IsDescendantOf(game) then st.bent:Disconnect(); return end
+	local t = st.since or -1
+	for _, rub in RUBS do
+		local weight = st.kit.ease((t - rub[1]) / RUB_BLEND) * (1 - st.kit.ease((t - rub[3]) / RUB_BLEND))
+		if weight > 0 then
+			local chest, torso, kid = at(st.chest), st.chest.Size, st.kid
+			local middle = chest * Vector3.new(0, RUB_UP * torso.Y, -torso.Z / 2 - RUB_OUT * kid)
+			local stroke = math.clamp((t - rub[2]) / rub[4], 0, rub[5]) % 1
+			local slide = chest.UpVector * (1 - math.abs(2 * stroke - 1)) * rub[6] * kid / 2
+			for _, arm in st.arms do
+				local size = arm.hand.Size
+				local aside = chest.RightVector * arm.sign * math.min(size.X, size.Y, size.Z) / 2 -- half a hand's thickness to its own side
+				local elbow = chest * Vector3.new(arm.sign * (torso.X / 2 + 0.2 * kid), -0.6 * kid, 0.1 * kid)
+				st.kit.bendArm(joints, at, arm.upper, arm.lower, arm.hand, middle + aside + slide * arm.sign, elbow, weight)
+			end
+		end
+	end
+end
+
 function FoldItUp.start(kit, who)
 	local id, draft = kit.ourClip("FoldItUp")
 	local marks = draft and draft:GetAttributes() or kit.Rounds.fold_it_up or MARKS
@@ -101,6 +135,16 @@ function FoldItUp.start(kit, who)
 	end
 	st.kid = kit.Avatars.standing_height_studs / who.scale -- a winner's height, in the small winner's studs
 	local cast = who.cast
+	-- the arms, for the rub and the dusting (rubArms)
+	st.chest, st.arms = who.model:FindFirstChild("UpperTorso"), {}
+	for side, sign in { Right = 1, Left = -1 } do
+		local upper, lower, hand = who.model:FindFirstChild(side .. "UpperArm"), who.model:FindFirstChild(side .. "LowerArm"), who.model:FindFirstChild(side .. "Hand")
+		if upper and lower and hand then st.arms[side] = { upper = upper, lower = lower, hand = hand, sign = sign } end
+	end
+	if kit.rig and kit.bendArm and st.chest then
+		local joints, at = kit.rig(who.model)
+		st.bent = RunService.PreSimulation:Connect(function() rubArms(st, joints, at) end)
+	end
 	-- the copy of the right hand that comes at the lens
 	local hand = who.model:FindFirstChild("RightHand")
 	if hand then
@@ -187,6 +231,7 @@ local function posterAt(st, t, facing)
 end
 
 function FoldItUp.step(st, since, shot, steady, winners, fov)
+	st.since = since -- for `rubArms`
 	if since < 0 then return end
 	-- the sounds, each once at its time (not if the frame is long past it); nothing seen changes
 	for i, s in FoldItUp.sounds do
@@ -338,6 +383,7 @@ function FoldItUp.covered(st, t)
 end
 
 function FoldItUp.stop(st)
+	if st.bent then st.bent:Disconnect() end
 	if st.realHand and st.realHand.Parent then st.realHand.LocalTransparencyModifier = 0 end
 end
 

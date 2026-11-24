@@ -331,8 +331,28 @@ Alan's go, in the primary session: "go both" (commit 0216ca0be).
   `aPlusFlap` at 2.2 (Snap + 0.2: its crack at 2.32, as the card reaches the top of the snap); `aPlusSlap` at 7.8,
   the landing. `firstSound` 2.2: the runner-ups' sounds stop before the flap. Volumes are step 6's.
 
+## The real card, and an A+ on its back (2026-11-24, the primary session; from Alan's own Play)
+His words: [his problems with the winners' emotes](../../playtests/2026-11-24-alans-problems-with-the-winners-emotes.md).
+This replaces "The card the kid holds" above: the scribbled look-alike is gone.
+- **The front is the match's real report card:** a copy of the real page with every word left as it is. The page is
+  filled in when the winners' moment starts, about 1.7 s before the copy is made. Left off the copy: the Double
+  button, the mission slip and its star (they pop in on the real card). In a team round it is the winners' card
+  (1st's own team's), and it lands where that card sits, as before (`realPage`, `rectangle`: unchanged).
+- **Your level bar** is hidden while the real card is, so it was missing on a copy. `src/client/RoundEnd.luau` now
+  keeps the hidden bar where it will start from, and the copy shows it: nothing appears at the swap.
+- **The back** (seen while the kid reads, the first 2 s): a red-pen "A+" inside the real card's own red ring, over a
+  smug smiley, one eye winking and one brow up. All pen strokes drawn by code (Path2D), no new picture, no upload.
+  Letters could not be used: a letter is drawn at 100 points at most, a third of the size needed.
+- **Unchanged:** the body, the times, the flight, the landing, the swap, the sounds.
+- **My reading of "when they turn it around":** the turn the emote already has (2 s in), so the real card is what is
+  seen from then on. If he meant the A+ side shown until the throw, the two faces swap and the card turns in flight.
+- **Checked:** the back in Edit on a sheet of the card's shape (the strokes fit the paper, even room all round);
+  all four changed scripts compile in Studio. **Not run in Play; a team match still not seen.** Alan looks in his own
+  Play ("end: a+"; for teams "mode: team DM" first).
+
 ## Files
-- `src/client/emotes/APlus.luau`: the card, its flight, the swap, the camera jolt, the sound times.
+- `src/client/emotes/APlus.luau`: the card (its real front, its red-pen back), its flight, the swap, the camera jolt, the sound times.
+- `src/client/RoundEnd.luau`: the real report card; keeps the hidden level bar ready for the copy.
 - `tools/emote_cuts/a-plus.lua`: the body cut, `CUTS.APlus`.
 - `assets/animations/emotes/a-plus.rbxm`: the baked clip.
 - `assets/audio/emotes/a-plus-flap.ogg`, `assets/audio/emotes/a-plus-slap.ogg`: the two sounds.

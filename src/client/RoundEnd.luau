@@ -463,7 +463,8 @@ function RoundEnd.start()
 		-- seconds since the card came up; Studio's workspace DevCardTime holds it still (frame-by-frame videos)
 		local since = RunService:IsStudio() and workspace:GetAttribute("DevCardTime") or os.clock() - state.cardAt
 		local mine = state.mine
-		local shown = cover.Visible and card.Visible and mine ~= nil and state.profileXP ~= nil and not state.live
+		local ready = state.phase == "RESULTS" and cover.Visible and mine ~= nil and state.profileXP ~= nil and not state.live
+		local shown = ready and card.Visible
 		if offer.Visible and worth.Visible then
 			local left = math.max(0, math.ceil(offerEnds - os.clock()))
 			if left ~= offerLeft then
@@ -513,12 +514,14 @@ function RoundEnd.start()
 			drawn.Offset = Vector2.new(-0.55 + math.clamp((t - 0.75) / 0.5, 0, 1) * 1.1, 0)
 		end
 		for k, it in pages do it.xpBar.show(shown and k == state.minePage) end
-		if not shown then return end
+		-- While the winners' moment hides the card the bar is kept, unseen, where it will start: the A+ emote's card
+		-- is a copy of this page, made before it comes up (src/client/emotes/APlus.luau).
+		if not ready then return end
 		local xpBar = pages[state.minePage].xpBar
 		-- ponytail: "before" assumes the profile already holds this round's XP (it is paid as it is earned).
 		local after = math.max(state.profileXP, mine.xp or 0)
 		local before = math.max(0, after - (mine.xp or 0))
-		local t = math.clamp((since - 0.5) / 1.5, 0, 1)
+		local t = shown and math.clamp((since - 0.5) / 1.5, 0, 1) or 0
 		xpBar.set(before + (after - before) * (1 - (1 - t) ^ 2))
 	end)
 	Root:WaitForChild("ProfileView").OnClientEvent:Connect(function(profile) state.profileXP = profile.xp end)

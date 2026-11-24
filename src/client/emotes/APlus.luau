@@ -1,12 +1,11 @@
--- A+, a 1st-place emote (docs/workshop/emotes/a-plus.md; card OK'd by Alan 2026-11-22). A smug show-off: the kid
--- reads their report card, holds it up over the head, shows it to both sides, shows it at the chest, then slaps it
--- at the camera: it lands flat on the lens exactly where the real report card comes up, and the kid gloats beside it
--- until the camera leaves, when the real card takes its place in the same frame (Alan: "it should line up perfectly").
--- The body is the clip APlus (tools/emote_cuts/a-plus.lua). The card is a look-alike of the real one (Alan: "very
--- similar to the actual report card ... the text on it should be kind of blurry and hard to read"): a copy of the
--- real card's page as it is when the winners' moment starts, its printed words and pictures kept, every filled-in
--- word (names, numbers, grades, the note, the place, the pocket money, the level) hidden under a faint ink scribble
--- of its length. Its back is plain paper. It is held in both hands, one on each side edge (the arms are bent onto it
+-- A+, a 1st-place emote (docs/workshop/emotes/a-plus.md; card OK'd by Alan 2026-11-22, made the real card
+-- 2026-11-24). A smug show-off: the kid reads their report card, holds it up over the head, shows it to both sides,
+-- shows it at the chest, then slaps it at the camera: it lands flat on the lens exactly where the real report card
+-- comes up, and the kid gloats beside it until the camera leaves, when the real card takes its place in the same
+-- frame (Alan: "it should line up perfectly"). The body is the clip APlus (tools/emote_cuts/a-plus.lua). The card is
+-- the match's real report card (`front`): a copy of the real page, in a team round the winners' (1st's own team's),
+-- so it is the same card before and after the swap. Its back, seen while the kid reads, is a red-pen "A+" and a
+-- smug winking smiley (`back`). It is held in both hands, one on each side edge (the arms are bent onto it
 -- on every body), then stands on the right hand (its bottom edge on the hand) until Release, flies FLIGHT seconds at
 -- the lens and lands square on the real card's rectangle; worked out every frame from where
 -- the real card sits on this screen, at the depth where the card's own size fills it, so it fits any screen.
@@ -24,7 +23,8 @@ local READ_TILT = 25 -- reading: the top leans this many degrees away from the k
 local FLIGHT = 0.4 -- release to the lens
 local MARKS = { Snap = 2.0, Release = 7.4 } -- the clip's own (its draft's attributes win)
 local PAPER = Color3.fromRGB(240, 228, 206) -- the card picture's paper, for its back and edge
-local PRINTED = { School = true, Title = true, NoteLabel = true, PocketLabel = true, BoxLabel = true }
+local RED_PEN = Color3.fromRGB(200, 38, 38) -- the real card's (RoundEnd)
+local RING = require(game.ReplicatedStorage:WaitForChild("FlyFightPaper").Shared.UIAssets).results.redRing
 -- The sounds, cut from Alan's reference video (assets/audio/emotes/a-plus-flap.ogg and a-plus-slap.ogg, each starting
 -- 0.025 to 0.035 s before its hit): the flap FLAP after Snap, so its crack falls as the card reaches the top; the slap
 -- on the landing. Seconds after 1st's light; until step 6 has uploaded them, Audio does not know the names and plays nothing.
@@ -50,44 +50,82 @@ local function shown(item)
 	return item ~= nil and (not item:IsA("ScreenGui") or item.Enabled)
 end
 
--- A faint ink scribble over a filled-in word, as long as its words were (`real`: the same label on the real card,
--- which has been laid out): a zig-zag along the middle of its box.
-local function scribble(label, real)
-	local box = real.Size.X.Offset
-	local h = real.Size.Y.Offset
-	local w = math.min(real.TextBounds.X > 0 and real.TextBounds.X or #real.Text * h * 0.45, box)
-	if w < 2 or h < 2 then return end
-	local x0 = label.TextXAlignment == Enum.TextXAlignment.Center and (box - w) / 2 or label.TextXAlignment == Enum.TextXAlignment.Right and box - w or 0
-	local points, step, up = {}, math.max(h * 0.18, 3), false
-	for x = x0, x0 + w, step do
-		table.insert(points, Path2DControlPoint.new(UDim2.fromOffset(x, h * (up and 0.32 or 0.62))))
-		up = not up
-	end
-	local path = Instance.new("Path2D")
-	path.Color3, path.Thickness, path.Parent = label.TextColor3, math.max(h * 0.07, 1.5), label
-	path:SetControlPoints(points)
-	label.TextTransparency = 1
-end
--- The look-alike's face: the real page copied, filled-in words scribbled over.
-local function lookAlike(part)
+-- The card's front: the real page as it stands, copied whole (Alan 2026-11-24: "can't the one they're throwing up be
+-- the actual ending report card?"; the look-alike with its words scribbled over was seen "for too long and too close
+-- up"). The page is filled in when the winners' moment starts (RoundEnd), long before this. Left off: what pops in on
+-- the real card once it is up (the Double button, the mission slip and its star). Your level bar is hidden while the
+-- real card is: it is shown here as RoundEnd keeps it meanwhile, where it will start from.
+local POPS_IN = { PaperOffer = true, MissionSlip = true, MissionStar = true }
+local LEVEL_BAR = { "Level", "XPCount", "NextUnlock", "XPFrame", "XPFill" }
+local function front(part)
 	local gui = Instance.new("SurfaceGui")
 	gui.Face, gui.SizingMode, gui.CanvasSize, gui.Enabled, gui.LightInfluence = Enum.NormalId.Front, Enum.SurfaceGuiSizingMode.FixedSize, Vector2.new(680, 900), false, 1
 	local page = realPage()
 	if page then
 		local copy = page:Clone()
-		-- (a word's crayon look is three child copies of it, which draw its letters: they are emptied with it)
-		for _, item in copy:GetDescendants() do
-			if item:IsA("UIScale") then item:Destroy()
-			elseif item:IsA("TextLabel") and not item.Parent:IsA("TextLabel") and item.Text ~= "" and not PRINTED[item.Name] and not item.Name:match("^Head") then
-				local real = page:FindFirstChild(item.Name, true)
-				if real then scribble(item, real) end
-				item.Text = ""
-				for _, inner in item:GetDescendants() do if inner:IsA("TextLabel") then inner.Text = "" end end
+		for _, item in copy:GetChildren() do
+			if item:IsA("UIScale") or POPS_IN[item.Name] then item:Destroy() end
+		end
+		local pocket = copy:FindFirstChild("PocketLabel")
+		if pocket and pocket.Visible then -- your own card: the one with your level bar
+			for _, name in LEVEL_BAR do
+				local piece = copy:FindFirstChild(name)
+				if piece then piece.Visible = true end
 			end
+			local star = copy:FindFirstChild("PrestigeStar")
+			local rank = star and star:FindFirstChild("Rank")
+			if rank then star.Visible = (tonumber(rank.Text) or 0) > 0 end
 		end
 		copy.AnchorPoint, copy.Position, copy.Size, copy.Rotation, copy.Visible = Vector2.zero, UDim2.new(), UDim2.fromScale(1, 1), 0, true
 		copy.Parent = gui
 	end
+	gui.Parent = part
+	return gui
+end
+
+-- The card's back, seen while the kid reads it: the teacher's red pen, a big ringed "A+" (the ring the real card
+-- draws round an A+) over a smug smiley, one eye winking, one brow up (Alan 2026-11-24: "A+ and like a smiley face,
+-- but kind of like a winking smiley face, so it's like smug"). All pen strokes, no picture and no letters (a letter is
+-- drawn at 100 points at most, a third of the size needed, and a UIScale does not grow it on a part: Edit preview,
+-- 2026-11-24): `pen` draws one stroke through points given in the sheet's own pixels (680 by 900).
+local function back(part)
+	local gui = Instance.new("SurfaceGui")
+	gui.Face, gui.SizingMode, gui.CanvasSize, gui.Enabled, gui.LightInfluence = Enum.NormalId.Back, Enum.SurfaceGuiSizingMode.FixedSize, Vector2.new(680, 900), false, 1
+	local sheet = Instance.new("Frame")
+	sheet.Size, sheet.BackgroundColor3, sheet.BorderSizePixel, sheet.Parent = UDim2.fromScale(1, 1), PAPER, 0, gui
+	local ring = Instance.new("ImageLabel")
+	ring.Image, ring.BackgroundTransparency, ring.ScaleType, ring.Rotation = RING, 1, Enum.ScaleType.Stretch, -6
+	ring.AnchorPoint, ring.Position, ring.Size = Vector2.new(0.5, 0.5), UDim2.fromOffset(340, 270), UDim2.fromOffset(600, 400)
+	ring.Parent = sheet
+	local V = Vector2.new
+	local function pen(points, closed, thick)
+		local path = Instance.new("Path2D")
+		path.Color3, path.Thickness, path.Closed, path.Parent = RED_PEN, thick or 14, closed or false, sheet
+		local list = {}
+		for i, p in points do
+			-- rounded: each point's tangents run along the line between its neighbours
+			local a, b = points[i - 1] or (closed and points[#points]) or p, points[i + 1] or (closed and points[1]) or p
+			local along = (b - a) / 6
+			list[i] = Path2DControlPoint.new(UDim2.fromOffset(p.X, p.Y), UDim2.fromOffset(-along.X, -along.Y), UDim2.fromOffset(along.X, along.Y))
+		end
+		path:SetControlPoints(list)
+	end
+	pen({ V(196, 372), V(238, 250), V(282, 158), V(300, 168), V(330, 262), V(352, 360) }, false, 18) -- A: up one leg and down the other
+	pen({ V(226, 296), V(280, 286), V(338, 282) }, false, 18) -- its bar
+	pen({ V(388, 272), V(440, 264), V(492, 262) }, false, 18) -- +
+	pen({ V(444, 206), V(440, 266), V(440, 326) }, false, 18)
+	local mid, r = V(340, 670), 160
+	local face = {}
+	for i = 1, 12 do -- the face: a round, a little uneven, as drawn by hand
+		local turn = (i - 1) / 12 * 2 * math.pi
+		face[i] = mid + V(math.cos(turn), math.sin(turn)) * r * (1 + 0.04 * math.sin(i * 2.3))
+	end
+	pen(face, true)
+	pen({ mid + V(-62, -50), mid + V(-58, -18) }) -- the open eye: a short stroke
+	pen({ mid + V(-100, -78), mid + V(-68, -100), mid + V(-32, -92) }) -- its brow, up
+	pen({ mid + V(28, -28), mid + V(58, -46), mid + V(88, -28) }) -- the wink: an arch
+	pen({ mid + V(-78, 58), mid + V(-20, 72), mid + V(42, 58), mid + V(92, 10) }) -- the smirk: up to the winking side
+	pen({ mid + V(78, -6), mid + V(106, 12) }) -- and the tuck at its corner
 	gui.Parent = part
 	return gui
 end
@@ -110,7 +148,7 @@ function APlus.start(kit, who)
 	card.Name, card.Anchored, card.CanCollide, card.CanQuery, card.CanTouch, card.CastShadow = "APlusCard", true, false, false, false, false
 	card.Size, card.Color, card.Material = Vector3.new(st.height * 680 / 900, st.height, st.height * 0.01), PAPER, Enum.Material.SmoothPlastic
 	card.Parent = who.cast
-	st.card, st.face = card, lookAlike(card)
+	st.card, st.face, st.back = card, front(card), back(card)
 	-- Both hands on the card on this body: the arms are bent again after the clip has posed them (the scene's own
 	-- bendArm, as Nap's hand and Good Game's clap).
 	local model = who.model
@@ -263,7 +301,7 @@ function APlus.step(st, since, shot, _steady, _winners, fov)
 	local card = st.card
 	st.since = since -- for `bend`
 	if since < 0 or st.swapped then return end
-	st.face.Enabled = true
+	st.face.Enabled, st.back.Enabled = true, true
 	if not st.flapped and since >= st.marks.Snap + FLAP then
 		st.flapped = true
 		if since < st.marks.Snap + FLAP + 0.3 then st.kit.Audio.play("aPlusFlap") end
@@ -292,7 +330,7 @@ function APlus.step(st, since, shot, _steady, _winners, fov)
 	if page and shown(page) then
 		if st.seenReal then
 			st.swapped = true
-			card.Transparency, st.face.Enabled = 1, false
+			card.Transparency, st.face.Enabled, st.back.Enabled = 1, false, false
 		end
 		st.seenReal = true
 	end
