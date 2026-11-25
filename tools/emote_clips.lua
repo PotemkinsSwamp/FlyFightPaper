@@ -216,10 +216,31 @@ local function propped(base, lean, side, down)
 	local head = first.Head.Size
 	return turn, neck * turn.Head * joints.Head.c1:Inverse() * Vector3.new(0.22 * head.X, -0.05 * head.Y, -0.5 * head.Z - 0.3 * first.RightHand.Size.Y)
 end
+-- Crisscross legs (Alan 2026-11-25: "the character's bottom is supposed to be touching the book, not their shoes";
+-- Nap B tucks the feet under the body, so the bottom or the shoes floated): by numbers, on every frame, each ankle
+-- on the seat (the bottom of the hips) in front of the body, across under the other knee, the knee out to its own
+-- side and down. CROSS: { forward of the hips, across the middle, the knee's way out, down, forward } in body
+-- heights; the left ankle a little nearer than the right, so the shins cross.
+local CROSS = { forward = 0.2, across = 0.07, out = 0.5, down = 0.1, ahead = 0.15, stagger = 0.04 }
+local function crossed(turn)
+	local hips = build(turn).LowerTorso
+	local seat = hips.Position.Y - first.LowerTorso.Size.Y / 2
+	local front, side = (hips.LookVector * Vector3.new(1, 0, 1)).Unit, (hips.RightVector * Vector3.new(1, 0, 1)).Unit
+	for i, name in { "Left", "Right" } do
+		local s = name == "Left" and -1 or 1
+		local ankle = first[name .. "Foot"].Size.Y * 0.5
+		local reachOut = (CROSS.forward + (i == 1 and 0 or CROSS.stagger)) * HEIGHT
+		local target = Vector3.new(hips.Position.X, seat + ankle, hips.Position.Z) + front * reachOut - side * s * CROSS.across * HEIGHT
+		local hip = (hips * joints[name .. "UpperLeg"].c0).Position
+		local pole = hip + side * s * CROSS.out * HEIGHT - Vector3.yAxis * CROSS.down * HEIGHT + front * CROSS.ahead * HEIGHT
+		reach(turn, name, target, pole, true)
+	end
+	return turn
+end
 local nap -- this body's numbers, worked out once
 local function napping(c)
 	if nap then return nap end
-	local base = c.nap(N.rest)
+	local base = crossed(c.nap(N.rest))
 	local at = build(base)
 	-- the elbow's place: anywhere along the top of the right thigh, the two limbs just pressed into each other
 	local up = Vector3.yAxis * 0.8 * (first.RightUpperLeg.Size.X + first.RightUpperArm.Size.X) / 2
@@ -279,6 +300,7 @@ CUTS.NapWake = { length = LOOK_END + SINK, clips = { nap = N.clip, idle = "rbxas
 		end
 	end
 	for _, part in ARM do turn[part] = sleeping[part] end
+	crossed(turn)
 	reach(turn, "Right", jaw, napping(c).rest)
 	return turn
 end }

@@ -828,11 +828,10 @@ end
 -- always sitting on the books. They're kind of floating": a clip drops every body's hips the same distance). Each
 -- frame the kid is moved up or down so the lowest point of their hips and legs, taken as rounded limbs, is at
 -- `seat` (an unseen part at the top of their stack, which moves with the stage).
--- Legs and feet only (Alan 2026-11-25, Nap on the emote shop's TV: still floating on his own avatar, a costume body):
--- the hips piece of a costume reaches lower, behind the legs where it cannot be seen (his: 1.66 deep, its bottom
--- 0.4 to 0.6 studs under his legs), and resting on that left the legs in the air. On a plain body the hips sit 0.5
--- over the feet anyway.
-local SEAT = { "LeftUpperLeg", "RightUpperLeg", "LeftLowerLeg", "RightLowerLeg", "LeftFoot", "RightFoot" }
+-- The bottom counts (Alan 2026-11-25: "the character's bottom is supposed to be touching the book, not their
+-- shoes"; resting on the legs alone sank his costume's bottom into the books). Whether the legs reach the books too
+-- is the pose's job: Nap's clips were re-cut with the legs crossed in front at the bottom's height.
+local SEAT = { "LowerTorso", "LeftUpperLeg", "RightUpperLeg", "LeftLowerLeg", "RightLowerLeg", "LeftFoot", "RightFoot" }
 local function sit(model, seat)
 	local low = math.huge
 	for _, name in SEAT do
