@@ -1,0 +1,24 @@
+{
+  "path": "operations/294ef182-fd78-47c3-a839-8a9ef8cd7465",
+  "operationId": "294ef182-fd78-47c3-a839-8a9ef8cd7465",
+  "done": true,
+  "response": {
+    "path": "assets/88088186441683",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-25T06:20:21.210Z",
+    "assetId": "88088186441683",
+    "displayName": "FlyFightPaper emoteshop room-4",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Image",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Reviewing"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}
