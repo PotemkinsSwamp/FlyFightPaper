@@ -5,6 +5,16 @@ Claude's private memory on 2026-10-15 so everyone working on the game can see th
 mistake would be easy to make twice.
 
 ## Emotes on real bodies
+- **Look at a sitting pose from the side on Alan's own avatar before changing how it sits** (2026-11-25, Nap: two
+  guessed fixes failed in his Play). Measure where the body really is: rays cast up at the avatar (`workspace:Raycast`
+  with an Include list, a 0.1-stud grid) found his costume's bottom 0.45 studs under his shoes; the part's box alone
+  could not say. A clip that tucks the feet under the body floats one end on every body: fix the pose, not the rule.
+- **In Edit, a changed joint `Transform` does not move an avatar with AnimationConstraints** (its parts stay put), so
+  a bend done in code cannot be judged from an Edit picture; read places from `rig`'s `at` and draw them with
+  anchored parts (as `tools/emote_clips.lua` does), or check in Play.
+- **A posed avatar's `GetBoundingBox` can be the standing one** (2026-11-25, the Emotes page's card stills in a
+  ViewportFrame): frame on the parts' places from the joints (`kit.rig`'s `at`), hats and hair with the part they
+  are fixed to.
 - **A clip's joint numbers do not say what the pose looks like** (2026-11-22, Magician): Roblox's "Curtsy" read from its keys as a forward bow of about 40 degrees with the right arm swept across; on a body it is a curtsy, legs crossed and hands out, nothing tipping forward. The turns were real and cancel out along the body. Before telling Alan what one of Roblox's emotes is, pose it on a rig in Edit and look (a picture is his go), or say plainly that only its length and its hips' height are known.
 - **Read the scene's real camera and Alan's rulings on it before a shot card's camera column** (2026-11-22, Bubblegum:
   my card said "steady, close on 1st" and had the camera creep in; the scene shows all three and his ruling of

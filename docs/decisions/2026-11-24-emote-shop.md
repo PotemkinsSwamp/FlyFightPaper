@@ -35,6 +35,12 @@
 - **What plays inside the TV must look as good as the page** (same message): "the character doing the emote ... needs
   to look good too. So there needs to be a nice background, lighting, textures as well."
 - The other game's videos are not needed ("We don't have to worry about the other game").
+- **The TV's sound is "sound 3"** (2026-11-25, by ear of three): a knob click, static on switching on. **A sound plays
+  once however fast you click** ("The sound should only play one time, no matter how fast you click it").
+- **Cards: every kid faces you, besides Sore Loser, and fills the same share of the picture** (2026-11-25: "if
+  they're like leaning over or they're crouched, it should be the same size").
+- **A sitting kid sits on their bottom** ("the character's bottom is supposed to be touching the book, not their
+  shoes", 2026-11-25), and his "yes" the same night to a new sitting pose for Nap, then the same fix for the others.
 
 ## Claude's advice he asked for
 Robux straight should be a little cheaper than buying the Paper for it, never dearer (a dearer button reads as a

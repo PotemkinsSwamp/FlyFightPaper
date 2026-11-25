@@ -101,7 +101,14 @@ per dollar from [pricing research](../research/PRICING-RESEARCH-2026-10-18.md).
   (see "The page's picture"), and the layout follows it: cards three across on each board, the name and the buttons
   on the cart's front, the glass 600 x 450.
 - **A card's still is your own character held at one moment of the emote's body clip, without props** (no plane,
-  bubble or book): `TV.POSE` in `src/client/WinnersCutscene.luau`, sixteen guessed moments to tune by eye.
+  bubble or book): `TV.POSE` in `src/client/WinnersCutscene.luau`. Framed on the body as the clip poses it (read
+  from the joints, not the model's box, which kept the standing kid), facing the camera, filling the picture's height
+  (Alan 2026-11-25: every card the same size, every kid facing you but Sore Loser). Nap's is its wake-up clip at 60%,
+  So Close's its start: curled over they showed only the top of the head.
+- **The TV's sounds** (2026-11-25, his pick by ear of three): a knob's click on and off with a short soft burst of
+  static on (`tvOn`, `tvOff` in `src/client/Audio.luau`). A second tap within half a second does nothing (his mouse
+  double clicks). Every sound the TV starts stops with it (`Audio.hush`), and the TV runs an emote the same 2 seconds
+  past its end that the winners' moment does while its camera glides home.
 - **On the TV** a Leader emote plays as 1st alone; a Runner-up emote as 2nd alone, with a 1st that is not there;
   Skeet Shoot's two throwers stand unseen so only their planes fly in. For a Leader emote the picture is 3.1 kid
   heights tall and reaches 2.75 over the desk top, about the winners' moment's own headroom (Alan 2026-11-25: at 2.7
@@ -109,7 +116,7 @@ per dollar from [pricing research](../research/PRICING-RESEARCH-2026-10-18.md).
   corner: a green board, a wooden desk top, cream walls.
 - **Known before any look:** anything an emote places by the whole screen's shape (A+'s card flying to where the
   report card is, Fold It Up's picture) is cut by the TV's 4:3 edge; the emote's sounds play at their normal
-  loudness, not quieter; the TV has no switch-on sound yet.
+  loudness, not quieter.
 - Code: the page `src/client/EmoteShop.luau`; the TV `Cutscene.tv` in `src/client/WinnersCutscene.luau`; who does
   which emote `Cutscene.choose`; rules and saving on [economy and shop](../systems/economy-and-shop.md).
 
@@ -167,7 +174,9 @@ must look as good (background, lighting, textures). The four upload tiles are cu
    wood material does not show at this size), the light is flat, no light pool. Next: fix those two, show him the
    picture, then write it into `TV.room` and look in Play.
 3. His look at the framing and the new door.
-4. The TV's switch-on sound: three licensed candidates on a Dev button, his pick by ear. The emote's sounds quieter.
-5. The card stills (props, the sixteen moments).
+4. ~~The TV's switch-on sound~~: his pick, in. Still open: the emote's sounds quieter in the page.
+5. The card stills: framing and facing done (2026-11-25, not seen in Play); props open.
+6. Sitting on the books on every body: Nap re-cut (drafts, his look, then upload); then So Close, Test Flight,
+   Next One and Doodler on his avatar.
 
 Back to [HOME](../HOME.md)
