@@ -10,7 +10,6 @@ local PRESETS = {
 	"paper_pilot_skywright_v1", "paper_pilot_cloudtail_v1",
 	"paper_pilot_inkwing_v1", "paper_pilot_foldcrest_v1",
 }
-local BotNames = require(script.Parent.BotNames)
 
 local function integer(value, low, high)
 	return type(value) == "number" and value == value and value % 1 == 0 and value >= low and value <= high
@@ -64,7 +63,8 @@ local function validate(input)
 	if not integer(input.seed, 0, 4294967295) then return nil, "invalid_seed" end
 	if not integer(input.botIdentitySerial, 1, 2147483647) then return nil, "invalid_bot_identity_serial" end
 	if not validMode(input.mode) then return nil, "invalid_mode" end
-	if type(input.config) ~= "table" or type(input.config.bots) ~= "table" or type(input.config.world) ~= "table" then
+	if type(input.config) ~= "table" or type(input.config.bots) ~= "table" or type(input.config.world) ~= "table"
+		or type(input.config.avatar_display) ~= "table" or type(input.config.avatar_display.bot_cast) ~= "table" then
 		return nil, "gameplay_config_required"
 	end
 	local maximum = input.config.world.maximum_actors
@@ -148,18 +148,17 @@ local function queuedOrder(input)
 	return queue
 end
 
+-- The bots are a fixed cast (Alan 2026-11-24, config avatar_display.bot_cast): a bot takes a cast name nobody in the
+-- match has, never a new one. A server's first bots take the names in the list's order; a later fill-in starts from
+-- its own place in the list and takes the first free name. Twelve names for twelve desks: one is always free.
 local function newIdentity(input, names, serial)
 	-- Names compare without case, as Roblox's do: "PixelPanda" and "pixelpanda" never meet in one match.
+	local cast = input.config.avatar_display.bot_cast
 	local taken = {}
 	for name in pairs(names) do taken[string.lower(name)] = true end
-	for attempt = 1, 64 do
-		local draws = 0
-		local function pick(n)
-			draws += 1
-			return hash(input.seed, "identity:" .. tostring(serial) .. ":" .. attempt .. ":" .. draws) % n + 1
-		end
-		local displayName = BotNames.make(pick)
-		if BotNames.valid(displayName) and not taken[string.lower(displayName)] then
+	for step = 0, #cast - 1 do
+		local displayName = cast[(serial - 1 + step) % #cast + 1].name
+		if not taken[string.lower(displayName)] then
 			names[displayName] = true
 			local presetIndex = (hash(input.seed, "preset:" .. tostring(serial)) % #PRESETS) + 1
 			return displayName, PRESETS[presetIndex]

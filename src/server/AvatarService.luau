@@ -27,8 +27,22 @@ end
 -- avatar_display.bot_look_outfits) are dressed-up outfits found once by tools/find_bot_looks.luau: Roblox allows only
 -- 300 avatar lookups a minute, too few to search while the game runs. Same name, same outfit, unless another bot on
 -- the server wears it; the old catalog outfit if Roblox's lookups fail.
+-- The bots are a fixed cast (Alan 2026-11-24, config avatar_display.bot_cast): a cast name always wears its own
+-- outfit, whoever else is in the server. Only Studio's "Mix N" test bots still take one from the big list.
 local looks={} -- outfit id -> its look, fetched once per server
 function Service:look(p)
+ for _,member in ipairs(Config.bot_cast) do
+  if member.name==p.name then
+   self.wearing[p.id]=member.outfit
+   for try=1,3 do -- a lookup that fails once must not put the bot in another look
+    if looks[member.outfit] then break end
+    if try>1 then task.wait(1) end
+    local ok,description=pcall(Players.GetHumanoidDescriptionFromOutfitIdAsync,Players,member.outfit)
+    if ok then looks[member.outfit]=description end
+   end
+   return looks[member.outfit] and looks[member.outfit]:Clone() or Service.outfit(p.name)
+  end
+ end
  local ids,fetches=Config.bot_look_outfits,0
  local function worn(id) for other,wearing in self.wearing do if wearing==id and other~=p.id then return true end end end
  local start=0

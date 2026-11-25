@@ -237,6 +237,32 @@ function Spec.run()
 		end
 	end)
 
+	test("BR16 bots are a fixed cast: the same names every server, and a fill-in carries a cast name", function()
+		local cast, inCast = config.avatar_display.bot_cast, {}
+		assert(#cast == Rules.MAX_ACTORS, "one cast name per desk")
+		for _, member in ipairs(cast) do
+			assert(not inCast[member.name] and type(member.outfit) == "number")
+			inCast[member.name] = member.outfit
+		end
+		for _, seed in ipairs({ 17029, 5 }) do
+			local full = result(input("rookie", "FFA", {}, {}, seed))
+			for index, row in ipairs(full.botAdds) do assert(row.displayName == cast[index].name) end
+		end
+		-- A player came and left: eleven cast bots are still in, and the new bot takes the one name left.
+		local actors = {}
+		for index = 1, 11 do
+			local row = bot(tostring(index), "rookie")
+			row.displayName = cast[index + (index >= 4 and 1 or 0)].name -- cast[4] is the one that left
+			table.insert(actors, row)
+		end
+		local refill = result(input("rookie", "FFA", actors, {}, 17029, nil, 13))
+		assert(#refill.botAdds == 1 and refill.botAdds[1].displayName == cast[4].name)
+		-- A player who has a cast name: the bots take the other names.
+		local named = result(input("rookie", "FFA", { human("h1", nil, string.upper(cast[1].name)) }, {}, 17029))
+		for _, row in ipairs(named.botAdds) do assert(inCast[row.displayName] and row.displayName ~= cast[1].name) end
+		assert(#named.botAdds == 11)
+	end)
+
 	test("BR13 payer, age, rank, score, and purchase fields do not affect profile choice", function()
 		local plain = input("regular", "FFA", { human("h1") }, {}, 202)
 		local decorated = input("regular", "FFA", { human("h1") }, {}, 202)

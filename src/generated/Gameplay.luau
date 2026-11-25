@@ -20,6 +20,57 @@ return JSONTypes.map({
         ["body_space_depth_studs"] = 120,
         ["body_space_top_y"] = 220,
         ["body_space_width_studs"] = 124,
+        ["bot_cast"] = JSONTypes.array({
+            [1] = JSONTypes.map({
+                ["name"] = "xxNOAHxx",
+                ["outfit"] = 4981324765,
+            }),
+            [2] = JSONTypes.map({
+                ["name"] = "jxke",
+                ["outfit"] = 11231630604,
+            }),
+            [3] = JSONTypes.map({
+                ["name"] = "sogoonixbo",
+                ["outfit"] = 10250531493,
+            }),
+            [4] = JSONTypes.map({
+                ["name"] = "itsella",
+                ["outfit"] = 10045777161,
+            }),
+            [5] = JSONTypes.map({
+                ["name"] = "sleepyfrog",
+                ["outfit"] = 9856299341,
+            }),
+            [6] = JSONTypes.map({
+                ["name"] = "void_rat",
+                ["outfit"] = 9860092068,
+            }),
+            [7] = JSONTypes.map({
+                ["name"] = "realmax17",
+                ["outfit"] = 10493998081,
+            }),
+            [8] = JSONTypes.map({
+                ["name"] = "sophiepeachy2017",
+                ["outfit"] = 10718777789,
+            }),
+            [9] = JSONTypes.map({
+                ["name"] = "xxELLAxx",
+                ["outfit"] = 3285769426,
+            }),
+            [10] = JSONTypes.map({
+                ["name"] = "itsfinn",
+                ["outfit"] = 9668841977,
+            }),
+            [11] = JSONTypes.map({
+                ["name"] = "pilotunix",
+                ["outfit"] = 11393708263,
+            }),
+            [12] = JSONTypes.map({
+                ["name"] = "mxya_2018",
+                ["outfit"] = 11175533551,
+            }),
+        }),
+        ["bot_cast_comment"] = "The bots are a fixed cast (Alan 2026-11-24): each name always wears its own outfit, and no other names are made. Twelve, one per desk.",
         ["bot_look_outfits"] = JSONTypes.array({
             [1] = 5244940176,
             [2] = 5840039622,

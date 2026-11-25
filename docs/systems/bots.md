@@ -45,7 +45,14 @@ Bot looks (2026-10-18): each bot wears an outfit a real Roblox player saved, fro
 (`avatar_display.bot_look_outfits`, 157 of them, found once by `tools/find_bot_looks.luau`: layered clothing or 4+ accessories and
 at least one creator-made item). Searching live is out: Roblox allows 300 avatar lookups a minute. Random accounts were
 10x slower to search than saved outfits (most are quitters in Roblox's free starter looks, which made bots look
-alike). Same name, same outfit; no two bots on a server share one; old catalog outfit if lookups fail.
+alike). Old catalog outfit if lookups fail.
+
+The bots are a fixed cast (2026-11-24, [decision](../decisions/2026-11-24-bots-are-a-fixed-cast.md)): twelve names, one
+per desk, each saved beside its own outfit (`avatar_display.bot_cast` in `config/gameplay.json`). A server's first bots
+take the names in the list's order; a bot that fills in later takes a cast name nobody in the match has
+(`newIdentity` in `BotRosterRules`), so no other name is ever made. A cast name always wears its own outfit
+(`Service:look`, three tries at Roblox's lookup). Skill, plane build and plane skin are still dealt per match, not tied
+to the name. Only Studio's "Mix N" test bots still take an outfit from the list of 157.
 
 ## Rules
 *Moved word for word from the old rulebook (GAME_SPEC.md, version 1.0). Starting tuning, not tested balance.*
@@ -98,8 +105,7 @@ invulnerable debug bots or target-board practice.
 | `src/shared/AirRoutes.luau` | Flight routes through the room and pathfinding (also the tutorial guide line) |
 | `src/shared/BotBuilds.luau` | Bot planes per skill tier |
 | `src/shared/BotTactics.luau` | Each build's trick, where a bot brakes or holds off, when it steals a damaged plane |
-| `src/shared/BotNames.luau` | Made-up pilot names in present-day styles (2026-10-18: lowercase handles, stretched names, x-swaps, nonsense words, ALL-CAPS jokes) |
-| `src/shared/BotRosterRules.luau` | How many bots and which skill |
+| `src/shared/BotRosterRules.luau` | How many bots, which skill, and which cast name each takes |
 | `src/server/AvatarService.luau` | Seated avatars at desks (none for lesson planes: Pals and practice targets, Alan 2026-10-22), bot looks (`Service.look`) |
 | `src/server/Matchmaking.luau, src/server/MatchmakingAdapter.luau` | Rookie or regular servers, transfers |
 

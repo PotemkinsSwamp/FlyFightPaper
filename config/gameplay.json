@@ -45,7 +45,22 @@
       9785429007, 11911583777, 9860092068, 10161415493, 8116398347, 4981324765, 11175533551, 3966085435,
       10115999727, 5867673051, 6330663277, 5613289902, 3965843801, 6009580030, 4872896261, 5648679834,
       7103885976, 11393708263, 7237576168, 10297244667, 11997656869, 3962157078, 10335265698, 11231630604,
-      10224211420, 7237409580, 7336113210, 9206365571, 4144213899]
+      10224211420, 7237409580, 7336113210, 9206365571, 4144213899],
+    "bot_cast_comment": "The bots are a fixed cast (Alan 2026-11-24): each name always wears its own outfit, and no other names are made. Twelve, one per desk.",
+    "bot_cast": [
+      {"name": "xxNOAHxx", "outfit": 4981324765},
+      {"name": "jxke", "outfit": 11231630604},
+      {"name": "sogoonixbo", "outfit": 10250531493},
+      {"name": "itsella", "outfit": 10045777161},
+      {"name": "sleepyfrog", "outfit": 9856299341},
+      {"name": "void_rat", "outfit": 9860092068},
+      {"name": "realmax17", "outfit": 10493998081},
+      {"name": "sophiepeachy2017", "outfit": 10718777789},
+      {"name": "xxELLAxx", "outfit": 3285769426},
+      {"name": "itsfinn", "outfit": 9668841977},
+      {"name": "pilotunix", "outfit": 11393708263},
+      {"name": "mxya_2018", "outfit": 11175533551}
+    ]
   },
   "world": {
     "seed": 17029,
