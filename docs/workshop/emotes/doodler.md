@@ -6,9 +6,11 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Scribbles in a notebook, then holds up a drawing of themselves in 1st. Stick figures: a child drew it (Alan).
 
 ## Where it stands
-**Ready for Alan's third look** (2026-11-24, after his second look in Play: the drawing was hidden in the legs; see "Alan in Play"):
-`DevRunnerUp` = "Doodler" (Dev buttons "2nd/3rd: doodler" and "fold + doodler"); the draft `DoodlerClip` (the seat only) is in the open place's `Assets` (unsaved); the
-older drafts `DoodlerLeftClip` and `DoodlerRightClip` are deleted from it. Its marks are in seconds after 1st's light,
+**Done: approved by Alan, uploaded and wired in** (2026-11-24). On his third look in his own Play: "okay all 4 are
+good make sure they are uploaded". The seat clip is `rbxassetid://135416115654567` (approved by Roblox at once), in
+`rounds.emote_clips` as `Doodler`, with the same keys, poses and pose sum as the draft he saw; Doodler is in
+`RUNNER_UPS` (the primary session, commit 54a00a0c3). Not yet seen by him from the upload. Dev buttons
+"2nd/3rd: doodler" and "fold + doodler". Its marks are in seconds after 1st's light,
 not clip seconds (the clip is held still): with a 1st that leaves the runner-ups seen to the end, **the look at 1st
 0 to 1.35** (3rd 0 to 1.85), **the turn 2.3 to 4.15** (3rd 2.8 to 4.65), the drawing held up to the end. Shorter
 under 1st-place emotes that take the lens (table under "Build"). No sound. What could not be judged without Play is
