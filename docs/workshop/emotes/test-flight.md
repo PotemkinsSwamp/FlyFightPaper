@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Tosses a tiny plane that loops and comes back to their hand.
 
 ## Where it stands
-**Step 3: the prompt is written** (below); waiting for Alan's go on the price (about $0.28). Nothing else is made.
+**Step 3: the reference video is made** (Alan's go, $0.28); waiting for his OK on the movement.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "For test flight, I think they should be sitting." The other pick not named, so my default: the last flight circles behind the head.
@@ -45,7 +45,7 @@ no effort: the hand is simply there. A small nod after each catch.
 
 ## Reference video (step 3)
 One Gemini call, `tools/gemini_video.py`, 360p, 12 s (the longest a runner-up is lit, rounded down). Price by the
-earlier 12 s calls (about 1,930 video tokens a second at $12 a million): about **$0.28**. Waiting for Alan's go.
+earlier 12 s calls (about 1,930 video tokens a second at $12 a million): about **$0.28**. Alan: "go".
 
 Video seconds are seconds after 1st's light plus 1 (as So Close's: the clip's second 1.0 is 1st's light). The
 glance goes to the picture's left, as from 3rd's desk (1st beside it on that side), so the plane flies out to the
@@ -76,3 +76,12 @@ The prompt (`.planning/emotes/test-flight-prompt-1.txt`):
 > 10.6 to 12 s: holds the plane up at shoulder height between finger and thumb, showing it off, and stays still.
 >
 > Sound: silence the whole time. No music, no whoosh, no sound effects.
+
+- **The video** (`.planning/emotes/test-flight-gemini-api-1.mp4`, 12 s, 640x360; $0.28: 708 text tokens in, 23,172
+  video tokens out). What my stills show (two a second, not judged in motion): a grey mannequin sits cross-legged on
+  six books, the plane in the hand on the picture's right; flicks at about 2.0, 5.2 and 8.4 s; each of the first two
+  flights goes out to the right and a little above the head, loops and comes back to the open hand (caught about
+  4.0 and 7.5 s); the head follows the plane; a small white trail line drawn behind the plane (not wanted in the
+  game). **Not as asked:** no glance to the left at 1 to 2 s (the head stays on the plane); the third flight's circle
+  passes in front of the neck and chest, not behind the head (caught about 10.8 s); the plane is held up from about
+  11 s. Sound: not used (the card has none).
