@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Tosses a tiny plane that loops and comes back to their hand.
 
 ## Where it stands
-**Step 4 again, fixed: waiting for Alan's look in his own Play** (2026-11-24). His first look found the plane far too small and flapping its wings; both fixed (below, "Alan's first look in Play"). The clips are baked again into the open place's `Assets` and saved; the button is "2nd/3rd: test flight". The whoosh is silent in the game until its upload.
+**Approved by Alan in his own Play** (2026-11-24: "Test Flight is good."), after the two fixes from his first look. Waiting for the uploads (the two clips and the whoosh), the primary session's, on his go. He has not heard the whoosh in the game yet: it is silent until its upload.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "For test flight, I think they should be sitting." The other pick not named, so my default: the last flight circles behind the head.
@@ -156,6 +156,7 @@ The prompt (`.planning/emotes/test-flight-prompt-1.txt`):
   forth up to about 4,000 degrees a second, 31 times in each loop flight and 40 times in the circle. Now the top is
   carried along with the nose (above): no roll of its own, 0 in every flight.
 - Kept: sitting, the glance at 1st, three flights, the whoosh.
+- **His second look, after the fixes (2026-11-24): "Test Flight is good."** Approved in his own Play; the whoosh not yet heard (silent until its upload).
 
 ## Sound (step 5)
 - **One sound, the video's own plane whoosh** (Alan: "you can use the little whooshing sound of the plane"; the voice
