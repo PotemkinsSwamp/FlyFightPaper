@@ -6,7 +6,11 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Scribbles in a notebook, then holds up a drawing of themselves in 1st. Stick figures: a child drew it (Alan).
 
 ## Where it stands
-**Step 4: building** (Alan's OK on the video, 2026-11-24, with two changes: see below).
+**Ready to record** (2026-11-24): `DevRunnerUp` = "Doodler" (or "Doodler,X"), the drafts `DoodlerLeftClip` and
+`DoodlerRightClip` are in the open place's `Assets` (unsaved). Marks, clip seconds (clip = 2 + seconds after 1st's
+light; 3rd runs late after the look, see "Build"): **the look at 1st 2.0** (lands 2.5), **the notebook's turn 6.9 to
+7.8** (lifted from 6.0, shown at the chest by 8.15). The drawing is about a tenth of the picture's height. No sound
+(Alan's silent default). See "Checks in Edit" for what could not be judged without Play.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Doodler looks good." No pick named, so my defaults: the kid alone in the drawing, silent.
@@ -104,20 +108,57 @@ desk; 2nd's is the mirror. The prompt (`.planning/emotes/doodler-prompt-1.txt`):
     along its strokes: 0.15 to 0.65 the books, 1.05 to 1.55 the kid's head, body and legs (before 1st's light);
     3.75 to 4.25 the arms, 4.65 to 5.15 the "1", and 5.4 to 5.95 the star in one sweep (the big last stroke). Still
     between bursts, the point lifted off the paper. So every move of the hand adds something to the page.
-  - **The notebook on the lap**, its near edge just before the belly, resting on the top of the crossed legs, its far
+  - **The notebook on the lap**, its near edge just before the belly and the hunched chest's lowest front, resting on the top of the crossed legs, its far
     edge tipped 25 degrees up, the drawing's top away from the kid (they read it). Left hand on its left edge.
   - **The show (Alan's turn):** 6.0 to 6.6 lifted before the chest, facing the kid, top up (the camera sees the blue
     cover: the drawing still hidden); 6.6 to 6.85 the left hand goes to the middle of the spiral and the right hand,
     still holding the pencil, lets go to the chest; **6.9 to 7.8 turned half round about its upright middle line**
-    (the drawing comes round to us right way up); 7.8 to 8.15 both hands back on its side edges and it comes in close
+    (the drawing comes round to us right way up; held by the spiral because the middle of the bottom edge was about a
+    tenth of the kid's height out of the hand's reach); 7.8 to 8.15 both hands back on its side edges and it comes in close
     to the chest, its top edge under the chin. Tilts: 14 degrees one way by 9.9, the other by 11.0, straight by 11.9.
   - **The pencil:** one, in the right hand only. While drawing, its point is on the page and it runs up through the
     hand; from 6.0 it is fixed in the hand as it was then.
   - **The drawing:** in code (Path2D, as A+'s card back), crayon strokes 36 of the page's 900 pixels thick on cream
     paper: a red, a blue and a green book stacked, a black stick kid on top with both arms up, a red "1" and a gold
-    star over it. Nothing uploaded.
+    star over it. Nothing uploaded. The star's gold is a deep orange-gold (210, 115, 10): the brighter gold was 1.96 to 1
+    against the paper; this one is 3.24 to 1 (design-theory rule 1.2 asks 3 to 1). The others: black 14.9, blue 5.9,
+    red 4.8, green 3.6.
   - **Sizes** (the kid's heights): page 0.26 wide, 0.33 tall (A+'s card size, held the same way on every body); the
     pencil 0.1 long.
+
+## Checks in Edit (step 4)
+- **How they were run:** a copy of the module with the scene's own `sit`, `seatOn`, `rig`, `bendArm` and `paper`
+  (copied from `WinnersCutscene.luau`), a test kid as 2nd and as 3rd beside a stand-in 1st, the scene's timing stepped
+  every 1/30 s with `Animator:StepAnimations`, the arm bend called after each pose, every part put where the pose
+  says (the joints switched off for the check only: in Edit, placing one limb dragged the whole body). Everything
+  made was removed in the same call. No pictures of Studio. **An Edit check is not Play.**
+- **The plain test kid, as 2nd and as 3rd:** no error; both hands on their marks to 0.000 of the kid's height from
+  the lap to the end, the turn included; the pencil touches the hand all through and its point is on the paper while
+  drawing (0.003 of the kid's height off; 0.015 lifted between strokes); all 12 strokes drawn by 5.95; the notebook
+  in no part of the body.
+- **Two faults the numbers found first:** placed by the shins, the notebook sat inside the belly and the thighs (it
+  is now set in front of the belly and the hunched chest); and the left hand could not reach the bottom edge's middle
+  for the turn (it holds the spiral now).
+- **On the 12 bots' outfits** (`bot_cast`, sampled every 0.1 s): it plays on every one; no body part inside the
+  notebook (two small bodies had the hunched chest dipping into it on the lap until the lap spot was moved). The
+  left hand on its marks to within 0.06 of the kid's height (worst `3285769426`, as it holds the spiral in the turn);
+  the right hand up to 0.08 short of its mark while drawing the "1" at the far top of the page on short-armed bodies
+  (the pencil still touches the hand on all 12). Clothing goes through the notebook on seven: bags, a cape, a fanny
+  pack and long hair at the lap, and a fringe or a camera over its top edge at the chest: the accepted loss on odd
+  outfits (Alan, 2026-11-21).
+- **The drawing's size in the picture:** the page is 0.33 of the kid's height and the picture at the winners at
+  least 3.45 kid heights tall (`FRAME_TALL`), so the page is at most about a tenth of the picture's height: about 69
+  pixels tall at 720p and 103 at 1080p; the stick kid in it about 23 and 35 pixels, the crayon lines about 3 and 4
+  pixels. Rendered at those sizes from the same strokes (`.planning/emotes/doodler-drawing-sizes.png`, my own render,
+  not Studio): the kid on the books, the "1" and the star read at both. **Plainly: a stick figure can be read at this
+  size**, but only just at 720p; if it does not read in Play, the options are a bigger notebook (0.4 of the kid's
+  height: about a fifth bigger) or fewer, thicker lines (drop the books' outlines to three filled blocks).
+- **Not known until it is seen in Play:** whether the drawing reads under the spotlight at the real distance; how
+  the turn reads (about 0.9 s, held by the spiral); whether the look at 1st reads with the head 45 degrees round;
+  the pencil's small bursts at that size; long hair and hats over the notebook.
+
+## Sound (step 5)
+None: Alan took the silent default on the card. Skipped.
 
 ## Files
 | File | What |

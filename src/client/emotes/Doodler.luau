@@ -31,7 +31,7 @@ local WOOD, POINT, RUBBER = Color3.fromRGB(245, 196, 40), Color3.fromRGB(60, 52,
 -- The drawing, in the page's own pixels (680 by 900, its top left corner first), stroke by stroke in the order drawn:
 -- { colour, closed, points }. Thick crayon (STROKE pixels: about a twenty-fifth of the page) so it reads from far off.
 local STROKE = 36
-local BLACK, RED, BLUE, GREEN, GOLD = Color3.fromRGB(35, 35, 45), Color3.fromRGB(210, 50, 40), Color3.fromRGB(40, 90, 200), Color3.fromRGB(40, 150, 60), Color3.fromRGB(245, 165, 20)
+local BLACK, RED, BLUE, GREEN, GOLD = Color3.fromRGB(35, 35, 45), Color3.fromRGB(210, 50, 40), Color3.fromRGB(40, 90, 200), Color3.fromRGB(40, 150, 60), Color3.fromRGB(210, 115, 10)
 local V = Vector2.new
 local function ring(mid, r, n, wobble, inner)
 	local out = {}
@@ -135,11 +135,18 @@ local function page(st, get, t)
 	local hips = get(st.parts.LowerTorso)
 	local tilt = math.rad(LAP_TILT)
 	local lapTop = F * math.cos(tilt) + U * math.sin(tilt)
-	local near = hips.Position + F * (st.parts.LowerTorso.Size.Z / 2 + 0.02 * kid) + U * (legsTop - hips.Position:Dot(U) + THIN * kid)
+	-- in front of the belly and of the hunched chest's lowest front (on two small bots' bodies the chest dipped into it)
+	local front = -math.huge
+	for _, name in { "LowerTorso", "UpperTorso" } do
+		local part, at = st.parts[name], get(st.parts[name])
+		local half = part.Size / 2
+		front = math.max(front, at.Position:Dot(F) + math.sqrt((at.XVector:Dot(F) * half.X) ^ 2 + (at.YVector:Dot(F) * half.Y) ^ 2 + (at.ZVector:Dot(F) * half.Z) ^ 2))
+	end
+	local near = hips.Position + F * (front - hips.Position:Dot(F) + 0.02 * kid) + U * (legsTop - hips.Position:Dot(U) + THIN * kid)
 	local lap = near + lapTop * TALL * kid / 2
 	local lapRot = CFrame.lookAt(Vector3.zero, U * math.cos(tilt) - F * math.sin(tilt), lapTop)
 	local chin = head.Position - U * st.parts.Head.Size.Y * 0.5
-	local out = F * (torso.Z / 2 + WIDE * kid / 2 + 0.03 * kid)
+	local out = F * (torso.Z / 2 + WIDE * kid / 2 + 0.06 * kid) -- room to turn clear of hair and necklaces
 	local read = chest.Position + U * ((chin - chest.Position):Dot(U) - 0.01 * kid - TALL * kid / 2) + out
 	local shown = read - out + F * (torso.Z / 2 + 0.05 * kid)
 	local readRot = CFrame.lookAt(Vector3.zero, -F, U)
