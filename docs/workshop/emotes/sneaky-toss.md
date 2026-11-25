@@ -7,7 +7,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 misses ... it just like goes off to the side behind them").
 
 ## Where it stands
-**Step 4: built** (2026-11-24): the two body clips, the ball and the module, checked by numbers in Edit (below). The last dry run of the ball's path after a change waits for Studio to leave Play.
+**Ready to record** (2026-11-24): steps 3 to 5 done; the two body clips (drafts `SneakyTossLeftClip` and `SneakyTossRightClip` in the open place's `Assets`), the ball and the module, checked by numbers in Edit (below). No sound (Alan picked none). Next: the primary session's recording (step 6), with `DevRunnerUp` = "SneakyToss".
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Sneaky Toss looks good", with one change: **no whistling**, neither the sound nor the look ("doing a whistling sound's going to be difficult. We also can't make them look like they're whistling ... do it more visually with their body language to make them look like they're trying to pretend to be innocent. Like maybe they're kind of being shifty, looking back and forth ... hands behind their back, like rocking back and forth, looking away from first place, kind of like tilting their head back and forth"). The card below has it. One throw (my default).
@@ -142,18 +142,45 @@ The prompt: `.planning/emotes/sneaky-toss-prompt-1.txt` (untracked); the moves i
   of the throwing hand from Out (the bounce rises 0.13 heights over it), and from Release its own path: a thrown
   ball's arc that passes, 0.5 s after the hand, a point behind 1st's head: behind the back of 1st's whole box as the
   camera sees it (taken at the release, so whatever 1st's emote is doing, hats and wings too) by 0.15 heights plus the
-  ball's radius; then on, falling 3 heights a second squared (a light paper ball), out of the far side of the picture.
-  It is worked out in the big room and drawn in the world of the winner it is nearest across the picture, so it hides
-  behind that one correctly. It is gone when it leaves the side of the picture, drops through the desk top, or after
-  2 s. Because its depth only grows, it never comes towards the lens.
-- **Dry run of the module in Edit** (the module itself, three stand-in kids at the scene's places, 1st 0.06 of a desk
-  forward and on a taller stack, the scene's camera and lens, the clips playing; all removed in the same call), first
-  path (falling 5 heights a second squared): no error; the ball in the hand is 26 px across on a 1080-line screen
-  against the thrower's head's 54 px; while the ball is over 1st on the screen it is at least 0.10 winner heights
-  behind 1st's back; its distance from the camera grows all the way (never towards the lens). **Fault:** it dropped
-  through the desk top beside the far runner-up and vanished in mid-picture; hence the lighter fall and the exit at
-  the picture's side. The run with that change (and with three different avatar scales) waits for Studio to be back
-  in Edit.
+  ball's radius; then on, falling 3 heights a second squared (a light paper ball), past the far runner-up. The throw
+  reaches that point 0.35 s after the hand (a quick throw). It is worked out in the big room and drawn in the world
+  of the winner it is nearest across the picture, so it hides behind that one correctly. It is gone when it drops to
+  the desk tops (at about the far desk's outer edge, behind the far runner-up), leaves the side of the picture, or
+  after 2 s. Its distance from the camera only grows, so it never comes towards the lens.
+- **Dry run of the module in Edit** (the module itself, loaded from its file: it compiles; three stand-in kids at the
+  scene's places, 1st 0.06 of a desk forward and on a taller stack, the runner-ups 2.7 winner heights to either side,
+  the scene's camera and lens on a 1920x1080 screen, the clips playing; once with all three avatars the same scale and
+  once with three different ones; all removed in the same call). The same on both sides and both scale mixes:
+  - no error; 2nd took the Left clip and 3rd the Right;
+  - **the ball in the hand: 27 px across against the thrower's head's 55 px** (half the head, as carded);
+  - **the path** (seconds after the release): it leaves the hand off to the side of the picture, 0.22 winner heights
+    nearer the camera than the back of 1st's box; it is behind that back by 0.03 at 0.26 s, still well off 1st on the
+    screen; **while it is over 1st on the screen it is at least 0.07 winner heights behind the back of 1st's whole box**
+    (0.16 at the moment it passes behind 1st's head); 0.44 behind at 0.56 s, 1.05 at 0.96 s; behind the far runner-up
+    by at least 0.34 while it passes them; its distance from the camera grows the whole way (at least 1.2 heights a
+    second); it reaches the desk tops 1.01 s after the release at 813 px from the middle of a 960 px half-screen, and is
+    gone there (it would leave the picture's side at 1.15 s);
+  - the screen heights: it flies about 80 px above the picture's middle, level with 1st's head top, passes behind it,
+    and drops to 137 px below the middle by the end.
+  Three faults the dry runs found first: the ball dropped through the desk top in mid-picture beside the far runner-up
+  (a heavier fall); the off-picture test read Studio's Edit window (2046 x 801), not a game screen; slower throws reached
+  the desk tops sooner on the screen. Hence the quicker throw and the lighter fall.
+- **On the bots' twelve bodies** (the fixed cast's outfits in `config/gameplay.json`, the Left clip at 13 moments, Edit,
+  made and removed in each call): it plays on every one; the feet move at most 0.029 of the body's height (the rock's
+  turn about toe and heel); on four bodies a sole corner goes up to 0.024 of the height into the book at the deepest
+  rock (the rock's toe and heel are worked out on the test kid's feet; on the others they sit a little off: 0.14 studs
+  on a 6-stud kid); a hand or forearm goes at most 0.026 of the height deeper into the body's boxes than at that
+  body's own start (a forearm coming out from behind the back at 2.45 s); at the release the throwing hand is level
+  with the middle of the head on every body (0.00 to 0.05 heights over it); the head turns to the same side at 1st's
+  light and away after on all twelve. **An Edit check is not Play.**
+- **Not known until it is seen in Play:** whether the overarm throw reads as a real throw at the scene's distance (the
+  wind-up folds the forearm fast: 73 degrees in one frame), whether a 27 px white ball is easy to follow in its 1 s
+  flight, whether the rocking (the hips up 0.025 of the height, a 4-degree lean) reads from straight on, whether the
+  quick head snaps read as shifty, how the ball's vanishing at the desk tops beside the far runner-up looks, and long
+  hair or hats on the head tilts. If both runner-ups play it, 3rd throws 0.6 s after 2nd: two balls cross behind 1st.
+
+## Sound (step 5)
+None: Alan picked no rustle after hearing the videos, and the card has no other sound. Nothing for `runnerSound`.
 
 ## Files
 | File | What |

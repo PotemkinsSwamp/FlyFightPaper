@@ -18,9 +18,9 @@ local LENGTH, LIGHT, DELAY_3RD = 12, 1, 0.6
 local MARKS = { Out = 2.0, Toss = 2.62, Catch = 2.9, Release = 3.44 } -- the clip's own (its draft's attributes win)
 local TOSS_UP = 0.13 -- the bounce: the ball's rise over the hand (winner heights)
 local BALL, BALL_MIN, BALL_MAX = 0.5, 0.06, 0.11 -- the ball's size: of the thrower's head, kept between these (winner heights)
-local TO_BEHIND, MARGIN, BELOW_TOP = 0.5, 0.15, 0.2 -- seconds from the hand to behind 1st; how far behind 1st's box, below its top (winner heights)
-local FALL, GONE = 3, 2.0 -- heights a second squared down (a light paper ball: it carries out of the side of the picture
--- before it drops to the desks); seconds until hidden at the latest
+local TO_BEHIND, MARGIN, BELOW_TOP = 0.35, 0.15, 0.2 -- seconds from the hand to behind 1st; how far behind 1st's box, below its top (winner heights)
+local FALL, GONE = 3, 2.0 -- heights a second squared down (a light paper ball: it carries past the far runner-up and drops
+-- to the desk tops at about the far desk's outer edge); seconds until hidden at the latest
 local WHITE = Color3.fromRGB(244, 242, 234)
 SneakyToss.marks = MARKS
 
