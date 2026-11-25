@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-25: [Bots use the town and feel smarter](2026-11-25-bots-use-the-town.md)
 - 2026-11-25: [Airspace zones reach the floor; only the ceiling spot floats](2026-11-25-airspace-zones-reach-the-floor.md)
 - 2026-11-25: [Every avatar's 3D body clothing comes off, so the emotes can be seen](2026-11-25-3d-clothing-comes-off.md)
 - 2026-11-24: [The emote shop: one menu to buy and equip, your character on a box TV](2026-11-24-emote-shop.md)

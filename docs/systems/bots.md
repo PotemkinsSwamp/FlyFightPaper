@@ -114,6 +114,7 @@ invulnerable debug bots or target-board practice.
 `config/gameplay.json` `bots` (mixes, personalities, quirks, eraser skill, objective share; tricks: `tricks_comment`); `config/server.json` `routing`.
 
 ## Related
+- [Bots use the town](../decisions/2026-11-25-bots-use-the-town.md) and its [plan](../plan/BOTS-IN-TOWN-PLAN.md) (2026-11-25, being built)
 - [What bots do first](../decisions/2026-10-07-bot-scope.md)
 - [Balanced bot builds](../decisions/2026-10-07-balanced-bot-builds.md)
 - [Human-like quirks](../decisions/2026-10-07-human-like-bot-quirks.md)

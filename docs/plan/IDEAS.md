@@ -26,6 +26,7 @@ and a stage.
   every part should look more appealing. Revisit all part models later.
 - **Bots that use the town** (Alan 2026-11-12): bots never fly through the tubes, rings and holes, never go for
   boosts, and follow one recognisable path. A bot development pass: use fly-throughs, grab boosts, vary routes.
+  Picked 2026-11-25 (boosts not included): [bots in the town plan](BOTS-IN-TOWN-PLAN.md).
 - **Daily and weekly missions** (Alan 2026-11-12): small goals that reset each day and each week, with a reward
   for finishing them. Decided 2026-11-18, not built: [missions decision](../decisions/2026-11-18-daily-and-weekly-missions.md).
 - **Skill bonuses** (Alan 2026-11-12): a few extra points for moments that show skill, e.g. folding someone by

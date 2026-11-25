@@ -24,8 +24,11 @@ def lua(dm, code, timeout=60):
 SAMPLER = r"""
 local H=game:GetService("HttpService")
 workspace:SetAttribute("ClaudeModes","{}")
+workspace:SetAttribute("ClaudeTown","{}")
 task.spawn(function()
- local modes={}
+ -- modes: seconds in each intent. town: seconds flying over the town mat low (under 100 studs, among the buildings),
+ -- mid (100-270, beside the towers) and high (above them), and scrapes (separate touches of a wall, 0.25 s apart).
+ local modes,town,watched={},{},{}
  while workspace:GetAttribute("ClaudeSampling") do
   for _,m in ipairs(workspace:GetDescendants()) do
    if m:IsA("Model") and m:GetAttribute("BotStyle") then
@@ -33,9 +36,25 @@ task.spawn(function()
     if m:GetAttribute("State")~="FLYING" then x="down" end
     modes[m.Name]=modes[m.Name] or {}
     modes[m.Name][x]=(modes[m.Name][x] or 0)+1
+    local t=town[m.Name] or {low=0,mid=0,high=0,scrapes=0}
+    town[m.Name]=t
+    if not watched[m] then
+     watched[m]=m:GetAttribute("DeflectUntil") or 0
+     m:GetAttributeChangedSignal("DeflectUntil"):Connect(function()
+      local v=m:GetAttribute("DeflectUntil") or 0
+      if v-watched[m]>.6 then t.scrapes+=1 end
+      watched[m]=v
+     end)
+    end
+    local at=m:GetPivot().Position
+    if x~="down" and math.abs(at.X)<1014 and math.abs(at.Z)<714 then
+     local band=at.Y<100 and "low" or at.Y<270 and "mid" or "high"
+     t[band]+=1
+    end
    end
   end
   workspace:SetAttribute("ClaudeModes",H:JSONEncode(modes))
+  workspace:SetAttribute("ClaudeTown",H:JSONEncode(town))
   task.wait(1)
  end
 end)
@@ -44,18 +63,26 @@ return "sampling"
 REPORT = r"""
 local H=game:GetService("HttpService")
 local modes=H:JSONDecode(workspace:GetAttribute("ClaudeModes") or "{}")
+local town=H:JSONDecode(workspace:GetAttribute("ClaudeTown") or "{}")
 local s,_,_,info=game.ServerStorage.MatchStatus:Invoke()
-local rows={}
+local rows,sum={},{deaths=0,crashes=0,scrapes=0,low=0,mid=0,high=0}
 for id,r in pairs(info.records) do
  local m=workspace:FindFirstChild(id,true)
  local ms={} for k,v in pairs(modes[id] or {}) do table.insert(ms,k..v) end table.sort(ms)
- table.insert(rows,("%s | %s | %s | shots %d hits %d (%.0f%%) kills %d assists %d deaths %d (w%d c%d) points %d | %s"):format(
+ local t=town[id] or {low=0,mid=0,high=0,scrapes=0}
+ if r.kind=="bot" or modes[id] then
+  sum.deaths+=r.deaths;sum.crashes+=r.collisionDeaths;sum.scrapes+=t.scrapes;sum.low+=t.low;sum.mid+=t.mid;sum.high+=t.high
+ end
+ table.insert(rows,("%s | %s | %s | shots %d hits %d (%.0f%%) kills %d assists %d deaths %d (w%d c%d) points %d | town low %d mid %d high %d scrapes %d | %s"):format(
   r.name,tostring(r.tier),m and tostring(m:GetAttribute("Loadout")) or "-",r.shots,r.hits,r.shots>0 and 100*r.hits/r.shots or 0,
-  r.kills,r.assists or 0,r.deaths,r.weaponDeaths,r.collisionDeaths,r.points or 0,table.concat(ms," ")))
+  r.kills,r.assists or 0,r.deaths,r.weaponDeaths,r.collisionDeaths,r.points or 0,t.low,t.mid,t.high,t.scrapes,table.concat(ms," ")))
 end
 table.sort(rows)
-return ("phase %s elapsed %d fired %d hits %d live %s peak %s refused %s botMs %.2f\n"):format(tostring(s.phase),info.elapsed or -1,
- info.fired,info.hits,tostring(info.liveShots),tostring(info.peakShots),tostring(info.refusedShots),info.botMs or -1)..table.concat(rows,"\n")
+local over=math.max(1,sum.low+sum.mid+sum.high)
+return ("phase %s mode %s elapsed %d fired %d hits %d live %s peak %s refused %s botMs %.2f\n"):format(tostring(s.phase),tostring(s.mode),info.elapsed or -1,
+ info.fired,info.hits,tostring(info.liveShots),tostring(info.peakShots),tostring(info.refusedShots),info.botMs or -1)
+ ..("BOTS: deaths %d, crashes %d, scrapes %d; over the town: low %d%% mid %d%% high %d%%\n"):format(sum.deaths,sum.crashes,sum.scrapes,
+ 100*sum.low/over,100*sum.mid/over,100*sum.high/over)..table.concat(rows,"\n")
 """
 NOISE = ("Asset type does not match", "is not approved for the requester", "changed camera type")
 
