@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Tosses a tiny plane that loops and comes back to their hand.
 
 ## Where it stands
-**Step 3: the reference video is made** (Alan's go, $0.28); waiting for his OK on the movement.
+**Ready to record** (steps 3 to 5 done, 2026-11-24). Clips `TestFlightLeft` and `TestFlightRight`; the module compiles and runs in Edit; one sound, the video's whoosh. Before the recording the primary session bakes the two clips and adds the Dev button (below, "For the primary session").
 
 ## Shot card
 **Alan's OK (2026-11-24):** "For test flight, I think they should be sitting." The other pick not named, so my default: the last flight circles behind the head.
@@ -85,3 +85,76 @@ The prompt (`.planning/emotes/test-flight-prompt-1.txt`):
   game). **Not as asked:** no glance to the left at 1 to 2 s (the head stays on the plane); the third flight's circle
   passes in front of the neck and chest, not behind the head (caught about 10.8 s); the plane is held up from about
   11 s. Sound: not used (the card has none).
+
+- **Alan on the video (2026-11-24):** "you're not going to be able to use that voice line. They don't use voice lines.
+  But you can use the little whooshing sound of the plane. I think it's good. I think this is good enough to work
+  with. Yeah, you're going to have to add the glance, though." So the movement is approved with the glance at 1st
+  added in the build; the third circle goes behind the head as on the card; **the sound is the video's plane whoosh**
+  (his call, in place of the card's "no sound"); the voice in the video is not used.
+
+## Build (step 4)
+- **The body: a cut, not a Roblox emote.** No Roblox emote throws and catches sitting; the seat and the resting hand
+  are Nap B sitting still (as Nap's and So Close's), the throwing arm and the head by numbers.
+- **Two clips, mirror images** (`CUTS.TestFlightLeft` and `CUTS.TestFlightRight` in `tools/emote_cuts/test-flight.lua`;
+  every number is in its comment): Left throws with the left hand out to the kid's own left (used when 1st is on the
+  picture's left, so 3rd in the usual line-up), Right the other way (2nd). 12 s, played once, held on its last pose.
+- **Marks** (clip seconds; clip second 1.0 is 1st's light): Glance 1.0 (the head turns 50 degrees to 1st, back by
+  2.0), flick 1 from 1.7, **Release1 2.2, Catch1 4.3**, flick 2 from 5.05, **Release2 5.3, Catch2 7.4**, flick 3 from
+  7.85, **Release3 8.1, Catch3 10.5**, held up by **Show 11.0**. A small nod 0.05 to 0.55 s after each catch. In
+  seconds after 1st's light: 2nd's are these minus 1; 3rd holds the glance 0.3 s longer, so its are these minus 0.7
+  from the first flick on (the camera leaves about 10.4 s after 1st's light: 2nd's plane is held up from 10.0 s, 3rd's
+  is just caught then).
+- **What the clip does:** the plane held at the chest and looked over (a small rock of the hand); the glance; each flick
+  cocks the hand in and tosses it out and up over 0.5 s (the forearm turns at most 15 degrees in one frame); between
+  flick and catch the hand waits open beside the body, a third of a height out; the head follows the plane the whole
+  way (85% of the way, at most 75 degrees to the side; behind the head it swings across); the chest turns a fifth of
+  the head's turn; at the end the hand rises to shoulder height. Measured on the test kid: the hand lands exactly on
+  its marks (0.000 off at the waits and the show).
+- **The plane** (`src/client/emotes/TestFlight.luau`): the kid's own plane (Toy Pilot's `holdPlane`) scaled to 0.1 of
+  the kid's height, about one and a half hands. Held: fixed to the throwing hand's grip point, nose along the forearm.
+  Flying: the clip's path in the kid's own frame and height (the same numbers in both files), from where the hand let
+  go; for its last 0.7 s it steers to where this body's grip point really is; nose along the path, banked into the
+  turns (upside down over the top of each loop). Flights 1 and 2: out and up to the side away from 1st, one
+  loop-the-loop seen face-on from the camera, a wide turn behind and back into the hand. Flight 3: up, then one full
+  circle round the head, low behind it and high over the forehead (never in front of the face), back down into the
+  hand. Centred on that body's own head.
+- **Dry run in Edit** (the module itself, on real rigs posed by the baked clips through `Animator:StepAnimations`, the
+  scene's timing every 1/30 s, a stand-in card for the plane; everything removed in the same call), on the plain kid
+  and the twelve bots of the fixed cast, each with 1st on either side (26 runs): no error; the right clip every time;
+  **the gap between the plane and the grip point while held: 0.0000** (from each catch on); the plane's last flying
+  place before a catch is 0.02 to 0.03 heights from the hand (its glide speed: it lands in the hand on the next frame);
+  **the path's furthest point 0.69 heights from the hips**, at most 0.06 to 0.29 heights above the head top, at most
+  0.23 heights towards the camera, at most 0.24 heights past the kid's middle towards 1st (the far side of the circle
+  round the head, inside the kid's own width); on the circle the plane is hidden behind the head for 6 to 8 frames;
+  three whooshes asked for.
+- **Size in the picture** (worked out from the So Close recording, 2032 x 800, not seen): a sitting runner-up there is
+  about 300 pixels tall, so the plane is about 40 pixels long and its loops reach about 290 pixels out from the kid's
+  middle. A first path reached 0.87 heights (about 360 pixels, almost the picture's edge for 2nd and 3rd): pulled in.
+- **Not known until it is seen in Play:** whether a 40-pixel plane reads at the scene's distance; whether the loops stay
+  inside the picture on a narrow screen (a phone); how the lazy flick and the nods read; the plane's look in the hand
+  (held at its middle); long hair or hats round the circle behind the head.
+
+## Sound (step 5)
+- **One sound, the video's own plane whoosh** (Alan: "you can use the little whooshing sound of the plane"; the voice
+  is not used): `assets/audio/emotes/test-flight-whoosh.ogg`, 1.8 s, cut from 5.35 to 7.15 s of
+  `test-flight-gemini-api-1.mp4` (the second flight: a swell as it leaves the hand and one over the loop; the voice is
+  at 1.3 to 3.5 s, not in it). Lightly de-hissed, 0.05 s fade in, 0.3 s out, its loudest point 26 dB under full
+  (So Close's sigh, which Alan called right, is 28). Measured by loudness, not heard by me. Laid on the video at the
+  three releases: `.planning/emotes/test-flight-whoosh-on-video.mp4`.
+- **When it plays:** at each release (clip seconds 2.2, 5.3, 8.1), once each, as `testFlightWhoosh` through
+  `runnerSound` (skipped when it would still be playing as 1st's first sound starts). It plays once step 6 adds
+  `testFlightWhoosh` to `src/client/Audio.luau` at volume 1.
+
+## For the primary session
+- Bake the two clips into the open place's `Assets` (Studio's Edit; `_G.EMOTE_CLIPS = { "cut:TestFlightLeft" }` first):
+  `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=TestFlightLeft:TestFlightLeftClip:assets/animations/emotes/test-flight-left.rbxm"`
+  and the same for `TestFlightRight`.
+- A Dev button: "TestFlight" in `winnersDev.ups` ("2nd/3rd: test flight"); `DevRunnerUp` = "TestFlight" picks it.
+- Step 6: `testFlightWhoosh` in `Audio` (the file above).
+
+## Files
+| File | What |
+|---|---|
+| `src/client/emotes/TestFlight.luau` | The emote's module: picks the clip, times it to 1st's light, the seat, the plane in the hand and its three flights, the whooshes |
+| `tools/emote_cuts/test-flight.lua` | The body cut: `CUTS.TestFlightLeft`, `CUTS.TestFlightRight` |
+| `assets/audio/emotes/test-flight-whoosh.ogg` | The whoosh |
