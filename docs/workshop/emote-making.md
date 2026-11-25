@@ -632,8 +632,8 @@ the same bytes as what he saw in Play). `python tools/upload_texture.py FILE.rbx
 | Camera Flick | `camera-flick.rbxm` | `rbxassetid://92727749892782` |
 | Good Game's stance | `good-game-stance.rbxm` | `rbxassetid://105243837282624` |
 | Good Game's wave | `good-game-wave.rbxm` | `rbxassetid://85227875188355` |
-| Nap asleep | `nap-sleep.rbxm` | `rbxassetid://87423606831743` |
-| Nap waking | `nap-wake.rbxm` | `rbxassetid://130303608450334` |
+| Nap asleep | `nap-sleep.rbxm` | `rbxassetid://135011464088837` (re-cut as a sit, 2026-11-25; first `87423606831743`) |
+| Nap waking | `nap-wake.rbxm` | `rbxassetid://111507207258068` (re-cut as a sit, 2026-11-25; first `130303608450334`) |
 | Next One | `next-one.rbxm` | `rbxassetid://77528904973973` |
 | Toy Pilot (same day, later; Alan: "fine, go to upload") | `toy-pilot.rbxm` | `rbxassetid://135069682151169` |
 | Book Kicker (same day, later; Alan: "go 1") | `book-kicker.rbxm` | `rbxassetid://73358935726911` |

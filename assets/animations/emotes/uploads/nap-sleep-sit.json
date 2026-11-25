@@ -1,0 +1,24 @@
+{
+  "path": "operations/35e5963f-922d-40e2-b7b5-5c23426a563d",
+  "operationId": "35e5963f-922d-40e2-b7b5-5c23426a563d",
+  "done": true,
+  "response": {
+    "path": "assets/135011464088837",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-25T07:54:15.806Z",
+    "assetId": "135011464088837",
+    "displayName": "Nap asleep (sit)",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

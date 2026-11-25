@@ -1,0 +1,24 @@
+{
+  "path": "operations/0b0dda75-0b0c-4b94-80c0-99c207b1be80",
+  "operationId": "0b0dda75-0b0c-4b94-80c0-99c207b1be80",
+  "done": true,
+  "response": {
+    "path": "assets/111507207258068",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-25T07:54:18.806Z",
+    "assetId": "111507207258068",
+    "displayName": "Nap waking (sit)",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}
