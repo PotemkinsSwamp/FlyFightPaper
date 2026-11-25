@@ -28,7 +28,8 @@ local function pop(heap)
  return first
 end
 
-function AirMapRules.search(nodes,edges,start,goal)
+-- If legCost makes legs cheaper than their length, the heuristic can overestimate and search can return a slightly longer route than the cheapest, which is fine for this game.
+function AirMapRules.search(nodes,edges,start,goal,legCost)
  if start==goal then return {start} end
  local source,target=nodes[start],nodes[goal]
  if not source or not target then return nil end
@@ -56,6 +57,10 @@ function AirMapRules.search(nodes,edges,start,goal)
   for neighbor,cost in pairs(neighbors) do
    local node=nodes[neighbor]
    if not node then continue end
+   if legCost then
+    cost=legCost(current,neighbor,cost)
+    if cost==nil then continue end
+   end
    local nextCost=entry.cost+cost
    local known=distance[neighbor]
    if not known or nextCost<known then

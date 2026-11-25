@@ -423,7 +423,15 @@ function Service:decide(p,b,now)
    if attacker and attacker.body and b.random:NextNumber()<b.profile.read_attacker then
     side=forward:Cross(Vector3.yAxis):Dot(attacker.body.Position-position)>=0 and 1 or -1
    end
-   b.evadeUntil=self:startMove(b,now,"evade",{self:pickMove(b,b.profile.evade_moves,position)},side)
+   -- Diving into the town (plan step 3): once per attacker (again after 20 s), town_dive_chance to fly somewhere low
+   -- among the buildings where the attacker can't see it, instead of a dodge.
+   local spot
+   if attacker and attacker.body and not (b.diveRoll and b.diveRoll.by==attacker and now-b.diveRoll.at<20) then
+    b.diveRoll={by=attacker,at=now}
+    if b.random:NextNumber()<b.profile.town_dive_chance then spot=self.routes:hideSpot(position,forward,attacker.body.Position) end
+   end
+   if spot then b.hide={spot=spot,untilAt=now+8};b.evadeUntil=now
+   else b.evadeUntil=self:startMove(b,now,"evade",{self:pickMove(b,b.profile.evade_moves,position)},side) end
    -- The rest starts once the move is flown, so long moves don't chain into one endless dodge.
    b.nextEvade=b.evadeUntil+b.profile.evade_cooldown_seconds*b.style.evade_cooldown_factor
   end
@@ -440,7 +448,7 @@ function Service:decide(p,b,now)
  if b.duct and position.Y<Config.world.height_studs and (now>b.duct.untilAt or b.recoverUntil and now<b.recoverUntil) then b.duct=nil end
  if b.duct then
   -- In the ducts there is no room to dodge or turn for a fan: finish the run.
-  b.mode="duct";b.target=nil;b.goal=b.duct.points[b.duct.i]
+  b.mode=b.duct.hole and "hole" or "duct";b.target=nil;b.goal=b.duct.points[b.duct.i]
  elseif b.move and b.move.eraserBreak and now<(b.evadeUntil or 0) then
   -- Dodging an eraser comes before everything, even heading for a fan or a repair.
   b.mode="evade";b.goal=position+forward*200
@@ -462,6 +470,8 @@ function Service:decide(p,b,now)
   local ring=Landing.approach(p.home,Config.service);local rel=ring:PointToObjectSpace(position)
   local lined=rel.Z< -80 and math.abs(rel.X)<30 and math.abs(rel.Y)<40
   b.mode="repair";b.goal=lined and (ring*CFrame.new(0,-5,60)).Position or (ring*CFrame.new(0,10,-260)).Position;b.target=nil
+ elseif b.hide and now<b.hide.untilAt and (position-b.hide.spot).Magnitude>60 then
+  b.mode="hide";b.target=nil;b.goal=b.hide.spot
  elseif b.evadeUntil and now<b.evadeUntil then
   b.mode="evade";b.goal=position+forward*200
  elseif b.celebrateUntil and now<b.celebrateUntil then
@@ -511,6 +521,17 @@ function Service:decide(p,b,now)
     b.extendUntil=self:startMove(b,now,"extend",{"extend",self:pickMove(b,b.profile.reverse_moves,position)},side)
    end
    self:trickStep(p,b,now,delta)
+   -- The target takes a hole (plan step 3): one roll per hole and target (again after 10 s), hole_follow_chance to
+   -- follow it through (a hole run, flown like a duct run); otherwise it goes round or over (routes skip that hole).
+   local hole=self.routes:holeAt(b.target.body.Position,45)
+   if hole and not (b.holeRoll and b.holeRoll.hole==hole and b.holeRoll.who==b.target and now-b.holeRoll.at<10) then
+    b.holeRoll={hole=hole,who=b.target,at=now,follow=b.random:NextNumber()<b.profile.hole_follow_chance}
+    if b.holeRoll.follow then
+     local near=(hole[1]-position).Magnitude<(hole[3]-position).Magnitude
+     b.duct={points=near and {hole[1],hole[2],hole[3]} or {hole[3],hole[2],hole[1]},i=1,untilAt=now+8,hole=true}
+     b.mode="hole";b.target=nil;b.goal=b.duct.points[1];b.move=nil
+    end
+   end
   elseif b.target and self:followDuct(p,b,now) then
    b.mode="duct";b.goal=b.duct.points[1]
   elseif not zone and b.target and b.lastKnown and now-(b.lastSeen or 0)<5 then
@@ -520,7 +541,10 @@ function Service:decide(p,b,now)
    -- Hold the zone: circle inside it, each bot at its own height so they don't stack up.
    local c,r=zone.center,zone.radius*b.profile.objective_orbit
    b.target=nil;b.mode="objective"
-   b.goal=Vector3.new(c[1]+math.cos(now*.2+b.seed)*r,c[2]+math.sin(b.seed*3.1)*zone.half_height*.5,c[3]+math.sin(now*.2+b.seed)*r)
+   -- Each bot at its own height through the zone's whole height (plan step 3), above the town's lamps and trees.
+   local low=Config.world.town_routes.floor_studs+20
+   local y=math.clamp(c[2]+math.sin(b.seed*3.1)*zone.half_height*.85,math.min(low,c[2]),c[2]+zone.half_height-20)
+   b.goal=Vector3.new(c[1]+math.cos(now*.2+b.seed)*r,y,c[3]+math.sin(now*.2+b.seed)*r)
   else
    b.target=nil;b.mode="patrol"
    if not b.patrol or (position-b.patrol).Magnitude<90 then
@@ -542,24 +566,25 @@ function Service:decide(p,b,now)
  end
  -- Stuck among the buildings (plan step 2): a wall scrape, or no nearer a still goal for 2 seconds, sends the bot up to
  -- open air, then it plans a new way. Goals that move (a chased plane, a zone circle) don't count as no progress.
- if b.mode~="duct" and not p.pal then
+ if b.mode~="duct" and b.mode~="hole" and not p.pal then
   local deflect=model:GetAttribute("DeflectUntil") or 0
   local away=(b.goal-position).Magnitude
   if not b.progress or (b.goal-b.progress.goal).Magnitude>60 or away<b.progress.best-15 then b.progress={goal=b.goal,best=away,at=now} end
   local scraped=deflect>(b.deflectSeen or 0)+.6
   if scraped then b.deflectSeen=deflect end
-  if b.mode~="unstuck" and (scraped or now-b.progress.at>2 and (b.mode=="patrol" or b.mode=="search" or b.mode=="fan")) then
+  if b.mode~="unstuck" and (scraped or now-b.progress.at>2 and (b.mode=="patrol" or b.mode=="search" or b.mode=="fan" or b.mode=="hide")) then
    b.recoverUntil=now+1.5;b.recoverGoal=Vector3.new(position.X,math.min(position.Y+160,self.flight.boundsSize.Y-90),position.Z)+forward*60
    b.mode="unstuck";b.goal=b.recoverGoal;b.progress=nil;b.routeAt=-math.huge
   end
  end
  -- Studio spectator camera (F10) shows each bot's intent.
  if Run:IsStudio() then p.model:SetAttribute("BotIntent",b.mode..(b.target and " -> "..b.target.name or "")) end
- if b.mode=="duct" then b.route={}
+ if b.mode=="duct" or b.mode=="hole" then b.route={}
  elseif now-b.routeAt>1 then
   b.routeAt=now
-  b.direct=self.routes:clear(position,b.goal,18)
-  if b.direct then b.route={b.goal} else b.route=self.routes:path(position,b.goal,p.body.CFrame.LookVector) end
+  local skip=(b.mode=="chase" or b.mode=="search") and b.holeRoll and not b.holeRoll.follow and now-b.holeRoll.at<10 and b.holeRoll.hole or nil
+  b.direct=self.routes:clear(position,b.goal,18) and not (skip and self.routes:passes(position,b.goal,skip,40))
+  if b.direct then b.route={b.goal} else b.route=self.routes:path(position,b.goal,p.body.CFrame.LookVector,skip and self.routes:without(skip)) end
  end
 end
 function Service:steer(p,b,dt,now)
@@ -571,11 +596,11 @@ function Service:steer(p,b,dt,now)
  local arrival=math.clamp(p.stats.speed/math.rad(turn)*1.25,45,100)
  while #b.route>1 and (position-b.route[1]).Magnitude<arrival and self.routes:clear(position,b.route[2],18) do table.remove(b.route,1) end
  local goal=b.route[1] or b.goal
- local duct=b.mode=="duct" and b.duct
+ local duct=(b.mode=="duct" or b.mode=="hole") and b.duct
  if duct then
   -- Next point once close, or once past it along the way in (a room's middle: turn for the next duct).
   local target,before=duct.points[duct.i],duct.points[duct.i-1]
-  if (position-target).Magnitude<(duct.i<=2 and 120 or 70) or before and (position-target):Dot(target-before)>0 then duct.i+=1 end
+  if (position-target).Magnitude<(duct.hole and 40 or duct.i<=2 and 120 or 70) or before and (position-target):Dot(target-before)>0 then duct.i+=1 end
   if duct.i>#duct.points then b.duct=nil end
   goal=duct.points[math.min(duct.i,#duct.points)]
  end
@@ -604,11 +629,15 @@ function Service:steer(p,b,dt,now)
   goal=position+(CFrame.lookAt(Vector3.zero,b.celebrateForward)*CFrame.fromOrientation(.25,math.sin((b.celebrateUntil-now)*math.pi*3)*.7,0)).LookVector*100
  end
  if b.move and b.move.mode~=b.mode then b.move=nil end
+ -- Pushed up near the floor: over the town only just above its lamps and trees, so bots can fly down its streets.
+ local town=Config.world.town_routes
+ local floor=math.abs(position.X)<town.half_size[1] and math.abs(position.Z)<town.half_size[2] and town.floor_studs or 75
  local flown=b.move and self:moveDirection(p,b,now,turn)
  if flown then goal=position+flown*300
  elseif (b.mode=="patrol" or b.mode=="search") and not p.pal then
-  -- People don't fly ruler lines: drift side to side and up and down while cruising.
+  -- People don't fly ruler lines: drift side to side and up and down while cruising (never down under the floor).
   goal+=(p.body.CFrame.RightVector*math.sin(now*.6+b.seed)*.45+Vector3.yAxis*math.sin(now*.37+b.seed*1.7)*.15)*(goal-position).Magnitude
+  goal=Vector3.new(goal.X,math.max(goal.Y,floor+20),goal.Z)
  end
  local delta=goal-position
  local direction=delta.Magnitude>.1 and delta.Unit or p.body.CFrame.LookVector
@@ -618,10 +647,7 @@ function Service:steer(p,b,dt,now)
   local inside=Vector3.new(-localPos.X,0,-localPos.Z)
   if inside.Magnitude>.1 then direction=(direction+inside.Unit*2).Unit end
  end
- -- Pushed up near the floor: over the town only just above its lamps and trees, so bots can fly down its streets.
- local town=Config.world.town_routes
- local floor=math.abs(position.X)<town.half_size[1] and math.abs(position.Z)<town.half_size[2] and town.floor_studs or 75
- if position.Y<floor then direction=(direction+Vector3.yAxis*1.8).Unit end
+ if position.Y<floor and not (duct and duct.hole) then direction=(direction+Vector3.yAxis*1.8).Unit end
  if position.Y>half.Y*2-80 and not duct then direction=(direction-Vector3.yAxis*1.8).Unit end
  -- Planes are hard to see coming head-on at 200+ studs/s closing, so look 1.5 s ahead: if another plane's
  -- closest approach would touch, swerve away from that point now, harder the sooner it comes.

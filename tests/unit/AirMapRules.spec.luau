@@ -45,6 +45,52 @@ function Spec.run()
   assert(path and #path==2 and path[1]==1 and path[2]==2)
   assert(AirMapRules.search(nodes,edges,2,1)==nil)
  end)
+ test("forbidding the short leg makes search take the longer route",function()
+  local nodes={Vector3.zero,Vector3.xAxis,Vector3.xAxis*2}
+  local edges={{[2]=1,[3]=2},{[3]=3}}
+  local path=AirMapRules.search(nodes,edges,1,3,function(from,to,cost)
+   if from==1 and to==3 then return nil end
+   return cost
+  end)
+  -- The direct leg costs 2. With it blocked, 1 -> 2 -> 3 costs 1+3=4.
+  assert(path and #path==3 and path[1]==1 and path[2]==2 and path[3]==3)
+ end)
+ test("forbidding every leg into the goal makes it unreachable",function()
+  local nodes={Vector3.zero,Vector3.xAxis,Vector3.xAxis*2}
+  local edges={{[2]=1,[3]=2},{[3]=1}}
+  local path=AirMapRules.search(nodes,edges,1,3,function(_,to,cost)
+   if to==3 then return nil end
+   return cost
+  end)
+  -- Both 1 -> 3 and 2 -> 3 are blocked, so only nodes 1 and 2 are reachable.
+  assert(path==nil)
+ end)
+ test("doubling one leg flips the choice between equal-cost routes",function()
+  local nodes={Vector3.zero,Vector3.xAxis,Vector3.xAxis*2,Vector3.xAxis*3}
+  local edges={{[2]=1,[3]=3},{[4]=5},{[4]=3}}
+  local path=AirMapRules.search(nodes,edges,1,4)
+  -- Both routes cost 6. Node 2 has priority 1+2=3 versus 3+1=4 for node 3, so 1 -> 2 -> 4 wins the tie.
+  assert(path and #path==3 and path[1]==1 and path[2]==2 and path[3]==4)
+  path=AirMapRules.search(nodes,edges,1,4,function(from,to,cost)
+   if from==2 and to==4 then return cost*2 end
+   return cost
+  end)
+  -- The route through 2 now costs 1+10=11, so 1 -> 3 -> 4 wins at 3+3=6.
+  assert(path and #path==3 and path[1]==1 and path[2]==3 and path[3]==4)
+ end)
+ test("legCost receives the stored cost of each leg",function()
+  local nodes={Vector3.zero,Vector3.xAxis,Vector3.xAxis*2}
+  local edges={{[2]=2},{[3]=7}}
+  local calls=0
+  local path=AirMapRules.search(nodes,edges,1,3,function(from,to,cost)
+   assert(cost==edges[from][to])
+   calls+=1
+   return cost
+  end)
+  -- The only route is 1 -> 2 -> 3. The legs cost 2 and 7, giving a total of 9.
+  assert(path and #path==3 and path[1]==1 and path[2]==2 and path[3]==3)
+  assert(calls==2)
+ end)
  test("a 40 by 40 grid gives the cheapest path between opposite corners",function()
   local size=40
   local nodes,edges={},{}

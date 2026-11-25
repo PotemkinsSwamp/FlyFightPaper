@@ -46,7 +46,29 @@ So today: about 2 crashes and 1 scrape a match, and bots spend almost no time lo
 seconds a bot a match). The after numbers must keep crashes about this low while "low" goes up. No script errors of
 ours (one Roblox chat script message).
 
+## After step 1 (2026-11-25)
+The town map: low points at 60 and 95 studs, 70 apart (street lamps top out at 37.5 studs and trees at 42 inside the
+town; numbers in `config/gameplay.json` `world.town_routes`), and points before, inside and after 20 holes found by the
+rays (under the gateway, the south station, the pencil-case bridge and the stilt tower; through the block arch, the
+bell tower's arches and belfry, the tape roll, the porthole, the ring binder, the ceiling rings and the cardboard
+tubes). 913 points; the server builds them in about 5 s while the game loads. Search with a heap (Codex,
+`src/shared/AirMapRules.luau`, tested). Floor push over the town 45 studs. Same three matches as before:
+
+| Match | Bot deaths | Crashes | Wall scrapes | Low (under 100) | Mid (100-270) | High | botMs (end) | botMs each second |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 105 | 6 | 5 | 4% | 50% | 45% | 0.38 | 0.64 avg, 7 peak |
+| 2 | 102 | 10 | 2 | 4% | 49% | 46% | 0.32 | 0.78 avg, 55 peak |
+| 3 | 96 | 9 | 3 | 5% | 48% | 46% | 0.41 | 0.85 avg, 17 peak |
+
+Low time came (15-30 s a bot a match, from about none), but crashes tripled (8 a match against 2), so step 1's "crashes
+about as rare" is not met; step 2 is the crash fix. Bots spend only 8% of their flying time cruising (patrol, where
+routes go low); chasing (28%) and dodging (18%) stay where the fight is, so more low time needs step 3. Shorter
+matches the same day: regulars (255 s) 1 crash, 7% low; rookies (252 s) 5 crashes, 5% low. The frame spikes came from
+checking every point of the map for one in reach; capped at 12 checks a plan with step 2.
+
 ## Where it stands
-Plan approved; "before" matches done (above); nothing built. Next: step 1.
+Steps 1 and 2 built (step 2: a scrape or no nearer a still goal for 2 s sends a bot up 160 studs to open air to plan
+again; on a route it looks ahead only to the next point; a wall inside its look-ahead below 270 studs makes it brake
+like a player). Step 2's matches running. Next: steps 3 and 4, then Alan's look.
 
 Back to [HOME](../HOME.md)

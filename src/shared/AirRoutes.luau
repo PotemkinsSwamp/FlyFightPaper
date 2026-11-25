@@ -62,6 +62,7 @@ function Routes:buildTown()
 	for _,hole in ipairs(holes) do
 		local first=#nodes+1
 		for _,p in ipairs(hole) do table.insert(nodes,p) end
+		hole.inside=first+1
 		table.insert(legs,{first,first+1});table.insert(legs,{first+1,first+2})
 	end
 	local function join(i,j)
@@ -186,12 +187,43 @@ function Routes:escape(from,forward)
 	for k=1,math.min(#scored,REACH_CHECKS) do if self:clear(from,scored[k][1],18) then return {scored[k][1]} end end
 	return {}
 end
-function Routes:path(from,to,forward)
+-- Somewhere low in the town that `threat` can't see, 150-450 studs from `from` and not behind it (a bot diving into
+-- the town to shake off its attacker, plan step 3); among the REACH_CHECKS nearest. Nil before the town map is built.
+function Routes:hideSpot(from,forward,threat)
+	local spots={}
+	for i=(self.coarse or #self.nodes)+1,#self.nodes do
+		local p=self.nodes[i]
+		local delta=p-from;local d=delta.Magnitude
+		if p.Y<100 and d>150 and d<450 and forward:Dot(delta.Unit)>-.2 then table.insert(spots,{p,d}) end
+	end
+	table.sort(spots,function(a,b) return a[2]<b[2] end)
+	for k=1,math.min(#spots,REACH_CHECKS) do
+		local p=spots[k][1]
+		if workspace:Raycast(threat,p-threat,self.flight.cast) then return p end
+	end
+	return nil
+end
+-- The hole ({before, inside, after}) whose middle is within `radius` of `position`.
+function Routes:holeAt(position,radius)
+	for _,hole in ipairs(self.holes or {}) do if (hole[2]-position).Magnitude<radius then return hole end end
+	return nil
+end
+-- Whether the straight line a -> b passes within `radius` of a hole's middle.
+function Routes:passes(a,b,hole,radius)
+	local d=b-a
+	local t=d:Dot(d)>0 and math.clamp((hole[2]-a):Dot(d)/d:Dot(d),0,1) or 0
+	return (a+d*t-hole[2]).Magnitude<radius
+end
+-- Route leg costs that skip one hole (for AirMapRules.search).
+function Routes:without(hole)
+	return function(_,to,cost) if to==hole.inside then return nil end return cost end
+end
+function Routes:path(from,to,forward,legCost)
 	local delta=to-from
 	forward=forward or (delta.Magnitude>.01 and delta.Unit or Vector3.zAxis)
 	local start,goal=self:nearest(from),self:nearest(to)
 	if not start or not goal then return self:escape(from,forward) end
-	local indices=Rules.search(self.nodes,self.edges,start,goal)
+	local indices=Rules.search(self.nodes,self.edges,start,goal,legCost)
 	if not indices then return self:escape(from,forward) end
 	local result={}
 	for _,i in ipairs(indices) do table.insert(result,self.nodes[i]) end
