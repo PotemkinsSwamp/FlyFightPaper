@@ -41,6 +41,9 @@
   they're like leaning over or they're crouched, it should be the same size").
 - **A sitting kid sits on their bottom** ("the character's bottom is supposed to be touching the book, not their
   shoes", 2026-11-25), and his "yes" the same night to a new sitting pose for Nap, then the same fix for the others.
+- **Emotes are done for now** (2026-11-25, after close-ups of the five sitting emotes on his avatar: "those are fine
+  lets move on from emotes now"). Parked, not dropped: a better picture inside the TV (the line above) and quieter
+  emote sounds in the page.
 
 ## Claude's advice he asked for
 Robux straight should be a little cheaper than buying the Paper for it, never dearer (a dearer button reads as a
