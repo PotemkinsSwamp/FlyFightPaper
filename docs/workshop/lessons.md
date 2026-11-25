@@ -1052,6 +1052,9 @@ Back to [HOME](../HOME.md)
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.
 
 ## Scripted Play tests (2026-11-16, the skins and trails check)
+- **Change the bot match tool's Luau, then prove it with a one-minute match first** (2026-11-25): a real line break
+  slipped into a Luau string in `tools/run_bot_matches.py` (a `\\n` written through a Python script) and three
+  matches, 25 minutes, came back with no report. `python tools/run_bot_matches.py 1 60` shows the report in 2 minutes.
 - **The Studio link's video capture stops by itself at 30 seconds** (2026-11-22, the pipeline's recordings): one
   capture for each end of a match, started just before `endMatch`; several takes fit in one Play (wait about 6 s after
   a scene for the next match's planes). **A different winner each take** (2026-11-24): with no points scored, a fresh Play's first match always

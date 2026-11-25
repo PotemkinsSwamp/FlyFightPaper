@@ -29,7 +29,12 @@ task.spawn(function()
  -- modes: seconds in each intent. town: seconds flying over the town mat low (under 100 studs, among the buildings),
  -- mid (100-270, beside the towers) and high (above them), and scrapes (separate touches of a wall, 0.25 s apart).
  local modes,town,watched={},{},{}
+ local ms={sum=0,n=0,peak=0}
  while workspace:GetAttribute("ClaudeSampling") do
+  local _,_,_,info=game.ServerStorage.MatchStatus:Invoke()
+  local work=info.botMs or 0
+  ms.sum+=work;ms.n+=1;ms.peak=math.max(ms.peak,work)
+  workspace:SetAttribute("ClaudeBotMs",("%.2f avg, %.2f peak"):format(ms.sum/ms.n,ms.peak))
   for _,m in ipairs(workspace:GetDescendants()) do
    if m:IsA("Model") and m:GetAttribute("BotStyle") then
     local x=(m:GetAttribute("BotIntent") or "none"):match("^%a+") or "none"
@@ -74,13 +79,14 @@ for id,r in pairs(info.records) do
   sum.deaths+=r.deaths;sum.crashes+=r.collisionDeaths;sum.scrapes+=t.scrapes;sum.low+=t.low;sum.mid+=t.mid;sum.high+=t.high
  end
  table.insert(rows,("%s | %s | %s | shots %d hits %d (%.0f%%) kills %d assists %d deaths %d (w%d c%d) points %d | town low %d mid %d high %d scrapes %d | %s"):format(
-  r.name,tostring(r.tier),m and tostring(m:GetAttribute("Loadout")) or "-",r.shots,r.hits,r.shots>0 and 100*r.hits/r.shots or 0,
+  r.name,m and tostring(m:GetAttribute("BotStyle") or r.tier) or tostring(r.tier),m and tostring(m:GetAttribute("Loadout")) or "-",r.shots,r.hits,r.shots>0 and 100*r.hits/r.shots or 0,
   r.kills,r.assists or 0,r.deaths,r.weaponDeaths,r.collisionDeaths,r.points or 0,t.low,t.mid,t.high,t.scrapes,table.concat(ms," ")))
 end
 table.sort(rows)
 local over=math.max(1,sum.low+sum.mid+sum.high)
 return ("phase %s mode %s elapsed %d fired %d hits %d live %s peak %s refused %s botMs %.2f\n"):format(tostring(s.phase),tostring(s.mode),info.elapsed or -1,
  info.fired,info.hits,tostring(info.liveShots),tostring(info.peakShots),tostring(info.refusedShots),info.botMs or -1)
+ ..("botMs each second: %s\n"):format(tostring(workspace:GetAttribute("ClaudeBotMs")))
  ..("BOTS: deaths %d, crashes %d, scrapes %d; over the town: low %d%% mid %d%% high %d%%\n"):format(sum.deaths,sum.crashes,sum.scrapes,
  100*sum.low/over,100*sum.mid/over,100*sum.high/over)..table.concat(rows,"\n")
 """
