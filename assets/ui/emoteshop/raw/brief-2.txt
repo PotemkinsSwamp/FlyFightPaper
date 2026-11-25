@@ -1,0 +1,52 @@
+Picture job. Use your image generation tool. Do not edit any code, do not run tests, do not use Roblox Studio or any
+MCP server, do not commit. Only write the files named at the end.
+
+Attached pictures, in order:
+1. layout-guide-2.png - a flat diagram of the picture to paint. PAINT OVER THIS: every shape stays where it is and the
+   size it is.
+2. background.png - STYLE reference only (our game's main menu: a cork board in a sunny classroom). Match its look:
+   warm semi-realistic painted illustration, real materials, soft warm afternoon window light, gentle shadows. Not
+   flat vector, not cartoon outlines, not a photo. Do not copy its content.
+3-5. three photos of a real school TV cart (late 1990s / early 2000s). SUBJECT reference for the TV and the cart.
+
+Paint ONE landscape picture, 3:2 (1536 x 1024): an American elementary school classroom around the year 1999, into
+which the TV cart has just been rolled. It must read as a ROOM, with a floor and things standing in it, not as a flat
+wall. One-point perspective, seen by someone standing in the middle of the room: the back wall is flat to the viewer
+(everything on it stays an undistorted rectangle), the floor runs back to the wall as in the guide.
+
+- Back wall: cream painted cinder block. One round school wall clock where the guide's white circle is. The band of
+  wall above the two boards is otherwise empty (words go there later).
+- Left on the wall: a green chalkboard with a warm wooden frame and a wooden chalk tray (chalk sticks, one felt
+  eraser). The slate is clean, only faint wiped chalk dust; nothing written on it, EXCEPT in the guide's small
+  outlined box bottom right: a small white chalk doodle of a paper aeroplane with a dotted loop behind it.
+- Right on the wall: a classroom bulletin board covered in plain mid-blue paper with a yellow scalloped paper border.
+  Empty, EXCEPT in the guide's small pale box bottom right: one child's crayon drawing on white paper (a sun and a
+  paper aeroplane), held by a pin. Paper cards will be pinned over the rest of both boards later, so they stay plain.
+- Under the chalkboard: a low wooden bookshelf with children's books, standing on the floor against the wall. Nothing
+  on top of it taller than a small plant.
+- Under the bulletin board: one pupil's desk and a blue plastic school chair standing on the floor, a backpack
+  leaning on a desk leg.
+- Floor: warm speckled school linoleum tiles in perspective, a dark rubber baseboard where it meets the wall, a soft
+  shadow under the cart.
+- In the middle, standing on the floor in front of the wall: a big BLACK boxy CRT school television, late 1990s,
+  like the photos: matte black plastic (plain black plastic, clean; NOT metal, NOT bronze, NOT brown, NOT rusty, NOT
+  antique), a thick bezel, a deep bulky cabinet whose top is seen a little from above (the guide's grey sloped strip),
+  a row of small buttons and a small speaker grille under the glass, one small red power light bottom right. No brand
+  name, no logo, no text. It stands on a black steel AV cart like the one in the last photo: a top shelf with a small
+  raised lip, under it an open slot with a grey VCR, under that a PLAIN FLAT matte black steel cabinet front (no
+  handles, no vents, no stickers, nothing on it: words and buttons go there later), and four swivel caster wheels on
+  the floor. A power cable runs from the back of the TV down behind the cart. The television is the main thing in the
+  picture; a soft shadow of TV and cart falls on the wall behind.
+- THE TV GLASS: perfectly flat pure magenta (RGB 255, 0, 255), exactly the guide's pink shape: a rectangle with small
+  rounded corners, edges perfectly horizontal and vertical, dead centre of the picture. After painting, paste the
+  guide's exact pink shape back over the glass so its outline is pixel-exact (pixels x 528..1007, y 332..691 at
+  1536 x 1024). No reflection, no shading and nothing drawn on the magenta: it is cut out as a hole. No magenta
+  anywhere else.
+- The left and right 3% of the picture are plain wall and floor only, and the top 8% plain wall only.
+- Colours: wall, floor and boards calm and a little muted, so bright paper pinned on the boards stands out; the black
+  TV clearly darker than everything round it. No people, no writing, no letters, no numbers except the clock face.
+
+Make TWO versions (different brushwork and light, same layout) and save them as
+  assets/ui/emoteshop/raw/classroom-room-a.png
+  assets/ui/emoteshop/raw/classroom-room-b.png
+at the tool's full size (1536 x 1024), uncropped. Then stop and say which files you wrote and their pixel sizes.
