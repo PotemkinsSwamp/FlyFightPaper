@@ -80,3 +80,20 @@ The prompt: `.planning/emotes/sneaky-toss-prompt-1.txt` (untracked); the moves i
     not a quick flick; the rocking on the heels and the two quick shifty glances do not show in stills.
   - **The sound** (measured by loudness, not heard by me): a faint hiss all through (about -58 dB) and one soft thud at
     4.4 s (about 22 dB over the hiss), when the ball would reach the floor; no rustle at the throw (3.4 s).
+
+- **Alan on the first video (2026-11-24):** "good enough for a rough reference, but you're going to have to fix the
+  parts where it's wrong ... It needs to be like an actual throw. There's no rocking on the heels or quick shifty
+  glancing ... I give you permission to try one more time to get a good reference and fix those problems."
+- **The second video** (`sneaky-toss-prompt-2.txt`: an overarm throw "like throwing a baseball", the ball past the
+  winner's head and out of the picture, the rocking and the glances spelled out; $0.28: 790 text tokens in, 23,172
+  video tokens out; Gemini for Sneaky Toss so far $0.56): `.planning/emotes/sneaky-toss-gemini-api-2.mp4`, 12.03 s.
+  My stills (two a second, eight over the throw, six over the innocence):
+  - **Fixed:** a real overarm throw: 2.0 s the ball comes out, one toss in the palm (2.6 to 2.9), the hand goes up
+    beside the head with the elbow high (3.1 to 3.3), the arm whips forward and releases above the shoulder (3.4); the
+    ball flies high to the left, level with the winner's head at 3.75, and out of the picture's left by 4.0 (never on
+    the floor, never towards the camera; in front of or behind the head cannot be told in stills).
+  - **Still missing, and a new fault:** after the throw the figure turns its whole back to the camera (4 to 6.5 s and
+    9.5 to 12 s) and side-on between, its feet turning with it, and from about 7 s it has a face. The rocking does not
+    show in stills (six a second); the glances are whole-body turns, not quick head snaps.
+  - **The sound** (measured, not heard): hiss about -57.5 dB; small sounds at 3.0 and 4.0 s, the loudest at 4.6 s
+    (about 27 dB over the hiss), more small ones 5.8 and 8.1 to 8.8 s (the feet turning, my guess).
