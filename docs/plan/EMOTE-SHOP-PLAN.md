@@ -114,7 +114,10 @@ per dollar from [pricing research](../research/PRICING-RESEARCH-2026-10-18.md).
 
 ## The page's picture (2026-11-25)
 Alan's words: "don't reuse the menu background ... a classroom like the reference images I gave you, it looks like the
-TV was rolled in the classroom"; "the chalkboards and the TV need detail". **Not yet seen by him.**
+TV was rolled in the classroom"; "the chalkboards and the TV need detail". **Approved by him from the assembled
+picture, 2026-11-25** ("this looks great to me"; the cart stays as drawn), with one more ask: what plays inside the TV
+must look as good (background, lighting, textures). The four upload tiles are cut (`assets/ui/emoteshop/ready/room-1..4.png`,
+960 x 640 each, see-through glass); the upload waits for his go.
 - **One painting, by Codex** (his ChatGPT plan, two jobs of about 76,000 tokens each), painted over a flat layout guide
   so every shape lands where the page needs it; the glass comes back as flat pink and is cut out as the hole. Files:
   `assets/ui/emoteshop/raw/` (`layout-guide-2.png`, `brief-2.txt`, `classroom-room-a.png` the pick, `-b` a spare;
@@ -149,8 +152,10 @@ TV was rolled in the classroom"; "the chalkboards and the TV need detail". **Not
 
 ## Build order
 1. ~~A free test of the TV picture~~, ~~saving~~, ~~the page~~, ~~his first look~~: done.
-2. **The page's picture: drawn and assembled, waiting for Alan's OK** (see "The page's picture" below). Then the
-   upload on his go, then the wire-in.
+2. **The page's picture: approved; the upload waits for his go**, then the wire-in (new layout numbers, the picture's
+   four tiles, edges stretched for wider and taller screens).
+2b. **The TV's own picture** (his ask, 2026-11-25): today's set is seven flat slabs (`TV.room`). A better set shown to
+   him first, built in Edit and photographed into the page's glass; not started (he was in Play).
 3. His look at the framing and the new door.
 4. The TV's switch-on sound: three licensed candidates on a Dev button, his pick by ear. The emote's sounds quieter.
 5. The card stills (props, the sixteen moments).

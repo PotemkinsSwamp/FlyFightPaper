@@ -29,6 +29,11 @@
 - **The page gets a new classroom background, the TV rolled into it** ("dont resue the menu background ... a
   background that looks like a classroom like the reference images i gave you"), drawn by Codex ("go for codex"),
   2026-11-25.
+- **The classroom picture is approved as drawn** (2026-11-25, from the assembled picture: "this looks great to me";
+  the cart: "it looks good. If eventually we have to change it because we'll add more emotes, we can change it then").
+  Nine card spots a board, the black TV on its cabinet cart: [the picture](../plan/EMOTE-SHOP-PLAN.md#the-pages-picture-2026-11-25).
+- **What plays inside the TV must look as good as the page** (same message): "the character doing the emote ... needs
+  to look good too. So there needs to be a nice background, lighting, textures as well."
 - The other game's videos are not needed ("We don't have to worry about the other game").
 
 ## Claude's advice he asked for
