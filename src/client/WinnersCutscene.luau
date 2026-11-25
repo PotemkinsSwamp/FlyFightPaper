@@ -828,10 +828,13 @@ end
 -- always sitting on the books. They're kind of floating": a clip drops every body's hips the same distance). Each
 -- frame the kid is moved up or down so the lowest point of their hips and legs, taken as rounded limbs, is at
 -- `seat` (an unseen part at the top of their stack, which moves with the stage).
--- The bottom counts (Alan 2026-11-25: "the character's bottom is supposed to be touching the book, not their
--- shoes"; resting on the legs alone sank his costume's bottom into the books). Whether the legs reach the books too
--- is the pose's job: Nap's clips were re-cut with the legs crossed in front at the bottom's height.
-local SEAT = { "LowerTorso", "LeftUpperLeg", "RightUpperLeg", "LeftLowerLeg", "RightLowerLeg", "LeftFoot", "RightFoot" }
+-- The bottom touches the book (Alan 2026-11-25: "the character's bottom is supposed to be touching the book, not
+-- their shoes"), and that is the pose's job: Nap's clips are cut with the legs crossed in front at the bottom's
+-- height, so the thighs under the bottom carry the kid. The hips themselves are not measured: their part's box (and
+-- collision shape) can reach far under what is drawn (measured in Play 2026-11-25 on his avatar: 0.45 studs, the kid
+-- floated that much over the books). ponytail: a body whose drawn bottom hangs under its thighs sinks into the top
+-- book by that much; a per-body measure of the drawn mesh if one ever shows.
+local SEAT = { "LeftUpperLeg", "RightUpperLeg", "LeftLowerLeg", "RightLowerLeg", "LeftFoot", "RightFoot" }
 local function sit(model, seat)
 	local low = math.huge
 	for _, name in SEAT do

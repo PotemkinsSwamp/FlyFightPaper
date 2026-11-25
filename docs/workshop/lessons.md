@@ -9,6 +9,9 @@ mistake would be easy to make twice.
   guessed fixes failed in his Play). Measure where the body really is: rays cast up at the avatar (`workspace:Raycast`
   with an Include list, a 0.1-stud grid) found his costume's bottom 0.45 studs under his shoes; the part's box alone
   could not say. A clip that tucks the feet under the body floats one end on every body: fix the pose, not the rule.
+  **But rays hit the collision shape, not what is drawn** (same day, in Play): his hips' shape is a cone reaching
+  0.45 studs under the drawn bottom, so resting on it floated him. Judge a sit on a zoomed screenshot; `sit` now
+  rests on the legs only.
 - **In Edit, a changed joint `Transform` does not move an avatar with AnimationConstraints** (its parts stay put), so
   a bend done in code cannot be judged from an Edit picture; read places from `rig`'s `at` and draw them with
   anchored parts (as `tools/emote_clips.lua` does), or check in Play.
