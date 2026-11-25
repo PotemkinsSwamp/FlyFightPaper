@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Scribbles in a notebook, then holds up a drawing of themselves in 1st. Stick figures: a child drew it (Alan).
 
 ## Where it stands
-**Step 3: the reference video is made** (Alan's go, 2026-11-24); it waits for his OK on the movement.
+**Step 4: building** (Alan's OK on the video, 2026-11-24, with two changes: see below).
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Doodler looks good." No pick named, so my defaults: the kid alone in the drawing, silent.
@@ -72,3 +72,55 @@ desk; 2nd's is the mirror. The prompt (`.planning/emotes/doodler-prompt-1.txt`):
   from about 6 s the head tips well over to one side and stays tipped to the end; about 7 to 8 s the notebook tilts
   to the picture's left (the stills show only that one side of the tilt) and comes back straight; still to 12 s. The
   pencil stays in the right hand against the notebook's edge all through. Sound: not used (Alan's silent default).
+
+- **Alan on the video (2026-11-24):** "This is good. The only thing is ... whenever they turn the notebook around,
+  they turn it on the wrong side. So the actual flipping of the notebook would have to be slightly different. Also,
+  they should only be holding one pencil. But other than that, I think it's good ... go ahead and build it." So: one
+  pencil, in the right hand only (the video's left hand held one too, in the stills); and the turn is built as a
+  person shows a page: lifted up facing the kid first (top edge up), then turned round to us about its upright
+  middle line, so the drawing faces us right way up and the cover faces the kid. My own three changes from the video
+  (said to Alan before his OK): the turn takes about a second, not a snatch; the tilt goes once each way; the head
+  tip is kept.
+
+## Build (step 4)
+- **Roblox's own emotes, checked first:** none of them writes or draws while seated (none I know of in Roblox's
+  catalogue, and the Creator Store search does not list emotes), so the body is a cut, as So Close's.
+- **The body: two clips, one per side of the look** (`CUTS.DoodlerLeft` and `CUTS.DoodlerRight` in
+  `tools/emote_cuts/doodler.lua`; every number is in its comment). 13 s, played once, held on the last pose. They move
+  only the chest and the head; the seat and the arms underneath are Nap B sitting still (Nap's and So Close's seat).
+  Marks (clip seconds): **Look 2.0** (1st's light: the head comes up and turns 45 degrees to 1st by 2.5, held to 3.2,
+  back down by 3.65) and **Up 6.0** (sits up tall by 6.6). The head tips 18 degrees, away from 1st, 8.0 to 8.7 and
+  stays tipped. Hunched while drawing: the chest 22 degrees forward, the head 32 more.
+- **Baked** into the open place's `Assets` as `DoodlerLeftClip` and `DoodlerRightClip` (unsaved drafts: what
+  `ourClip` plays in Studio) and saved as `.planning/emotes/doodler-left.rbxm` and `doodler-right.rbxm` (untracked:
+  this session writes nothing in `assets/animations`). To bake again after a close without a save:
+  `_G.EMOTE_CLIPS = { "cut:DoodlerLeft" }` in Edit, then
+  `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=DoodlerLeft:DoodlerLeftClip:.planning/emotes/doodler-left.rbxm"` (and Right).
+- **The module** (`src/client/emotes/Doodler.luau`; `DevRunnerUp` = "Doodler" picks it). Times as So Close: clip
+  second = 2 + seconds after 1st's light, so the look lands on 1st's light for 2nd and 3rd alike; 3rd holds the look
+  0.5 s longer and then runs at 0.92, so the two are out of step after. Rested on the top book every frame (`sit`,
+  `seatOn`). Clip seconds of the rest, all in the module:
+  - **Drawing, stroke by stroke:** five bursts, each drawing one part of the picture as the pencil's point runs
+    along its strokes: 0.15 to 0.65 the books, 1.05 to 1.55 the kid's head, body and legs (before 1st's light);
+    3.75 to 4.25 the arms, 4.65 to 5.15 the "1", and 5.4 to 5.95 the star in one sweep (the big last stroke). Still
+    between bursts, the point lifted off the paper. So every move of the hand adds something to the page.
+  - **The notebook on the lap**, its near edge just before the belly, resting on the top of the crossed legs, its far
+    edge tipped 25 degrees up, the drawing's top away from the kid (they read it). Left hand on its left edge.
+  - **The show (Alan's turn):** 6.0 to 6.6 lifted before the chest, facing the kid, top up (the camera sees the blue
+    cover: the drawing still hidden); 6.6 to 6.85 the left hand goes to the middle of the spiral and the right hand,
+    still holding the pencil, lets go to the chest; **6.9 to 7.8 turned half round about its upright middle line**
+    (the drawing comes round to us right way up); 7.8 to 8.15 both hands back on its side edges and it comes in close
+    to the chest, its top edge under the chin. Tilts: 14 degrees one way by 9.9, the other by 11.0, straight by 11.9.
+  - **The pencil:** one, in the right hand only. While drawing, its point is on the page and it runs up through the
+    hand; from 6.0 it is fixed in the hand as it was then.
+  - **The drawing:** in code (Path2D, as A+'s card back), crayon strokes 36 of the page's 900 pixels thick on cream
+    paper: a red, a blue and a green book stacked, a black stick kid on top with both arms up, a red "1" and a gold
+    star over it. Nothing uploaded.
+  - **Sizes** (the kid's heights): page 0.26 wide, 0.33 tall (A+'s card size, held the same way on every body); the
+    pencil 0.1 long.
+
+## Files
+| File | What |
+|---|---|
+| `src/client/emotes/Doodler.luau` | The emote's module: picks the clip, times it to 1st's light, the seat, the notebook, the pencil, the drawing, the arms |
+| `tools/emote_cuts/doodler.lua` | The body cut: `CUTS.DoodlerLeft`, `CUTS.DoodlerRight` |
