@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Tosses a tiny plane that loops and comes back to their hand.
 
 ## Where it stands
-**Step 2 done: Alan's OK on the card** (2026-11-24). Next: step 3, the reference video (his go on the price first). Nothing is made.
+**Step 3: the prompt is written** (below); waiting for Alan's go on the price (about $0.28). Nothing else is made.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "For test flight, I think they should be sitting." The other pick not named, so my default: the last flight circles behind the head.
@@ -42,3 +42,37 @@ no effort: the hand is simply there. A small nod after each catch.
 - **For Alan to pick:**
   1. Sitting cross-legged **or** standing. My default: sitting.
   2. Three flights, the last a circle behind the head **or** the same loop every time. My default: the circle last, so the ending differs.
+
+## Reference video (step 3)
+One Gemini call, `tools/gemini_video.py`, 360p, 12 s (the longest a runner-up is lit, rounded down). Price by the
+earlier 12 s calls (about 1,930 video tokens a second at $12 a million): about **$0.28**. Waiting for Alan's go.
+
+Video seconds are seconds after 1st's light plus 1 (as So Close's: the clip's second 1.0 is 1st's light). The
+glance goes to the picture's left, as from 3rd's desk (1st beside it on that side), so the plane flies out to the
+picture's right; 2nd's is the mirror. **My timing change to the card** (to see the held-up plane before the camera
+leaves, 10.4 s after 1st's light): each flight takes 3.2 s, not 3.8 and 3.4, so the third flick comes 7.4 s after
+1st's light (card: 8.2) and the plane is held up from 9.6 s.
+
+The prompt (`.planning/emotes/test-flight-prompt-1.txt`):
+
+> One continuous 12-second shot, no cuts. Fixed camera, straight on, level with the seated figure's chest, not moving or zooming. Plain light grey room, soft even light, no text, no music.
+>
+> A simple smooth grey mannequin with no face sits cross-legged on top of a solid, steady stack of six large dark hardback books. The whole stack and the whole figure are in the picture, with plenty of empty space above the head and to the right of the figure. The mannequin faces the camera; its hips and crossed legs never leave their spot on the top book. It holds a tiny white folded paper plane, only about one and a half hand lengths long.
+>
+> Attitude: a kid who came second in a contest and acts like it does not care: "Whatever. I've still got the best plane." Relaxed, loose and unhurried, quietly showing off. The throws are lazy flicks of the wrist, never a wind-up. The catches take no effort: the hand is simply there.
+>
+> Hard rules: only the left hand (on the right side of the picture) throws and catches; the right hand rests on the right knee the whole time. The plane always stays beside and above the figure, within one body height of it, mostly on the right side of the picture. It never flies towards the camera and never goes more than a little past the left side of the head. The head follows the plane the whole way, every flight.
+>
+> 0 to 1 s: holds the tiny plane up at chest height between finger and thumb of the left hand, turning it a little, looking it over.
+> 1 to 2 s: a short glance to the left of the picture, as if at the winner sitting just beside, then back to the plane.
+> 2 to 2.4 s: a lazy flick of the wrist; the plane leaves the hand, out and up to the right of the picture.
+> 2.4 to 4.4 s: the plane flies out to the right, beside and a little above the figure, makes one small loop-the-loop and glides back. The head follows it; the left hand stays up, open, waiting.
+> 4.4 to 5.2 s: the plane glides into the open left hand and the fingers close on it. One small nod. A still moment.
+> 5.2 to 5.6 s: the same lazy flick again.
+> 5.6 to 7.6 s: a second flight the same way: out to the right, one loop, glides back; the head follows.
+> 7.6 to 8.4 s: caught in the left hand again, a small nod, still.
+> 8.4 to 8.8 s: a third lazy flick, up and out to the right.
+> 8.8 to 10.6 s: the plane makes one slow, wide circle around the back of the head: up and out to the right, behind the head to just past its left side, then back behind the head and down into the waiting left hand. The head turns to follow it.
+> 10.6 to 12 s: holds the plane up at shoulder height between finger and thumb, showing it off, and stays still.
+>
+> Sound: silence the whole time. No music, no whoosh, no sound effects.
