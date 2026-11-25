@@ -15,18 +15,18 @@
 -- through them (keyed's Catmull-Rom); the first place is the hand at the toss, the last the waiting hand.
 local TF = { length = 12 }
 TF.HOLD, TF.COCK, TF.TOSS, TF.WAIT, TF.SHOW = V(0.18, -0.22, 0.18), V(0.30, -0.34, 0.13), V(0.42, -0.20, 0.08), V(0.36, -0.30, 0.10), V(0.30, -0.02, 0.12)
-local LOOP = { { 0, TF.TOSS }, { 0.25, V(0.48, -0.10, 0.06) }, { 0.5, V(0.56, 0.00, 0.02) }, { 0.7, V(0.68, 0.12, 0.00) },
-	{ 0.9, V(0.58, 0.25, -0.02) }, { 1.1, V(0.46, 0.13, -0.03) }, { 1.3, V(0.56, 0.01, -0.05) }, { 1.55, V(0.66, -0.06, -0.10) },
-	{ 1.8, V(0.54, -0.20, -0.04) }, { 2.1, TF.WAIT } }
+local LOOP = { { 0, TF.TOSS }, { 0.22, V(0.44, -0.03, 0.04) }, { 0.45, V(0.45, 0.13, 0.00) }, { 0.675, V(0.64, 0.32, -0.02) },
+	{ 0.9, V(0.45, 0.51, -0.02) }, { 1.125, V(0.26, 0.32, -0.02) }, { 1.35, V(0.45, 0.13, -0.03) }, { 1.6, V(0.63, 0.02, -0.12) },
+	{ 1.85, V(0.54, -0.16, -0.06) }, { 2.1, TF.WAIT } }
 -- The ring round the head: RING_R across, centred RING_UP over the root and RING_BACK behind; tilted RING_TILT, low
 -- behind the head and high over the front of it (it passes over the forehead, never in front of the face).
-local RING_R, RING_UP, RING_BACK, RING_TILT = 0.24, 0.08, 0.03, 0.07
-local RING = { { 0, TF.TOSS }, { 0.35, V(0.34, 0.00, 0.02) } }
+local RING_R, RING_UP, RING_BACK, RING_TILT = 0.38, 0.16, 0.03, 0.08
+local RING = { { 0, TF.TOSS }, { 0.35, V(0.48, 0.06, 0.00) } }
 for k = 0, 8 do
 	local a = k / 8 * 2 * math.pi
 	table.insert(RING, { 0.55 + k * 0.18, V(RING_R * math.cos(a), RING_UP - RING_TILT * math.sin(a), -RING_BACK - RING_R * math.sin(a)) })
 end
-table.insert(RING, { 2.2, V(0.38, -0.12, 0.02) })
+table.insert(RING, { 2.2, V(0.46, -0.10, 0.02) })
 table.insert(RING, { 2.4, TF.WAIT })
 TF.FLIGHTS = { { 2.2, 4.3, LOOP }, { 5.3, 7.4, LOOP }, { 8.1, 10.5, RING } }
 TF.marks = { Glance = 1.0, Release1 = 2.2, Catch1 = 4.3, Release2 = 5.3, Catch2 = 7.4, Release3 = 8.1, Catch3 = 10.5, Show = 11.0 }
@@ -39,7 +39,7 @@ TF.ELBOW = V(0.25, -0.25, -0.05) -- where the elbow points, from the shoulder
 -- The head: FOLLOW of the way to looking at the plane (no more than LOOK_TURN to the side, LOOK_DOWN down, LOOK_UP up;
 -- a plane behind the head is looked at as if LOOK_NEAR in front: the head swings across as it passes); the glance at
 -- 1st (GLANCE degrees, from 1st's light); a NOD after each catch; the chest turns CHEST of the head's turn.
-local FOLLOW, LOOK_TURN, LOOK_DOWN, LOOK_UP, LOOK_NEAR, GLANCE, NOD, CHEST = 0.85, 75, 35, 40, 0.12, 50, 12, 0.2
+local FOLLOW, LOOK_TURN, LOOK_DOWN, LOOK_UP, LOOK_NEAR, GLANCE, NOD, CHEST = 0.85, 75, 35, 40, 0.4, 50, 12, 0.2
 local GLANCE_KEYS = { { 1.0, 0 }, { 1.4, 1 }, { 1.6, 1 }, { 2.0, 0 } }
 
 -- A place { out, up, fwd } in the root's frame (forwards -Z, the kid's right +X); `s` 1 throws to the kid's left.

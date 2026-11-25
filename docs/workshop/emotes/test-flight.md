@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Tosses a tiny plane that loops and comes back to their hand.
 
 ## Where it stands
-**Ready to record** (steps 3 to 5 done, 2026-11-24). Clips `TestFlightLeft` and `TestFlightRight`; the module compiles and runs in Edit; one sound, the video's whoosh. Before the recording the primary session bakes the two clips and adds the Dev button (below, "For the primary session").
+**Step 4 again, fixed: waiting for Alan's look in his own Play** (2026-11-24). His first look found the plane far too small and flapping its wings; both fixed (below, "Alan's first look in Play"). The clips are baked again into the open place's `Assets` and saved; the button is "2nd/3rd: test flight". The whoosh is silent in the game until its upload.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "For test flight, I think they should be sitting." The other pick not named, so my default: the last flight circles behind the head.
@@ -31,7 +31,7 @@ no effort: the hand is simply there. A small nod after each catch.
 
 - **The plane's path** stays in the kid's own light, beside and above them, within about one body height; it goes out on the side away from 1st, never in front of 1st and never towards the lens.
 - **The catch lands in the hand on every body:** for the last part of each flight the plane steers to where that body's hand really is. While held it is fixed to the hand's grip point ([decision](../../decisions/2026-11-21-plane-stays-in-the-hand.md)).
-- **How big:** the plane is about one and a half hands long. Measured in the picture at step 4.
+- **How big:** ~~about one and a half hands long~~: withdrawn after Alan's look in Play; the size of every emote's plane.
 - **Every hand move changes something we see:** flick, the plane leaves; catch, it is back.
 - **No sound** (a whoosh belongs only to something passing the camera, Alan 2026-11-22).
 - **Both sides:** the plane flies outwards, so 2nd and 3rd are mirror images.
@@ -110,29 +110,52 @@ The prompt (`.planning/emotes/test-flight-prompt-1.txt`):
   way (85% of the way, at most 75 degrees to the side; behind the head it swings across); the chest turns a fifth of
   the head's turn; at the end the hand rises to shoulder height. Measured on the test kid: the hand lands exactly on
   its marks (0.000 off at the waits and the show).
-- **The plane** (`src/client/emotes/TestFlight.luau`): the kid's own plane (Toy Pilot's `holdPlane`) scaled to 0.1 of
-  the kid's height, about one and a half hands. Held: fixed to the throwing hand's grip point, nose along the forearm.
-  Flying: the clip's path in the kid's own frame and height (the same numbers in both files), from where the hand let
-  go; for its last 0.7 s it steers to where this body's grip point really is; nose along the path, banked into the
-  turns (upside down over the top of each loop). Flights 1 and 2: out and up to the side away from 1st, one
-  loop-the-loop seen face-on from the camera, a wide turn behind and back into the hand. Flight 3: up, then one full
-  circle round the head, low behind it and high over the forehead (never in front of the face), back down into the
-  hand. Centred on that body's own head.
+- **The plane** (`src/client/emotes/TestFlight.luau`): the kid's own plane at the size every emote's plane is
+  (`holdPlane`'s own, as Toy Pilot's and Skeet Shoot's: 0.28 to 0.36 of the kid's height on the bodies measured). Held:
+  fixed to the throwing hand, its tail at the grip point and its nose along the forearm (held by the tail, as Toy
+  Pilot's). Flying: the clip's path in the kid's own frame and height (the same numbers in both files), from where the
+  hand let go; for its last 0.7 s it steers to where this body's hand really holds it. One rigid plane: the nose follows
+  the path and its top is carried along with the nose, turned only as much as the nose turns, so it has no roll of its
+  own: it goes over on its back through a loop and stays level round a flat turn; in the hand its top is drawn back up
+  slowly (6% a frame). Flights 1 and 2: out and up to the side away from 1st, one loop-the-loop seen face-on from the
+  camera (0.19 heights across, its top half a height above the hips), a wide turn behind and back into the hand.
+  Flight 3: up, then one full circle round the head (0.38 heights across, low behind it and high over the forehead,
+  never in front of the face), back down into the hand. Centred on that body's own head.
 - **Dry run in Edit** (the module itself, on real rigs posed by the baked clips through `Animator:StepAnimations`, the
-  scene's timing every 1/30 s, a stand-in card for the plane; everything removed in the same call), on the plain kid
-  and the twelve bots of the fixed cast, each with 1st on either side (26 runs): no error; the right clip every time;
-  **the gap between the plane and the grip point while held: 0.0000** (from each catch on); the plane's last flying
-  place before a catch is 0.02 to 0.03 heights from the hand (its glide speed: it lands in the hand on the next frame);
-  **the path's furthest point 0.69 heights from the hips**, at most 0.06 to 0.29 heights above the head top, at most
-  0.23 heights towards the camera, at most 0.24 heights past the kid's middle towards 1st (the far side of the circle
-  round the head, inside the kid's own width); on the circle the plane is hidden behind the head for 6 to 8 frames;
-  three whooshes asked for.
+  scene's timing every 1/30 s, a stand-in card the plane's size; everything removed in the same call), on the plain kid
+  and the twelve bots of the fixed cast, each with 1st on either side (26 runs), after the fixes: no error; the right
+  clip every time; **the gap between the plane's tail and the grip point while held: 0.0000** (from each catch on); the
+  last flying place before a catch is 0.025 to 0.028 heights from the hand (its glide speed); **the plane's roll in
+  flight: 0 degrees a second in all three flights, on both sides, no reversal**; in the hand it settles level after a
+  catch at 109 degrees a second at most, one way only; **never inside the head or the chest**: the closest any part of
+  it comes is 0.006 heights to the head and 0.009 to the chest, at a toss or a catch, when it is in the hand beside the
+  body (in flight it stays further off); **the path's furthest point 0.72 heights from the hips**, 0.32 to 0.56 heights
+  above the head top at its highest, at most 0.28 heights towards the camera, at most 0.37 heights past the kid's
+  middle towards 1st (the far side of the circle round the head; 1st sits about one and a half heights away); hidden
+  behind the head for 4 or 5 frames on the circle; three whooshes asked for.
+- **The body clip after the fixes** (the test kid, every 1/30 s): the biggest turn of any joint in one frame 10 to 19
+  degrees, the forearm in the first flick (Nap's jolt has 25); the head now swings across more slowly as the plane
+  passes behind it (it had 16 degrees in a frame); the hand exactly on its marks.
 - **Size in the picture** (worked out from the So Close recording, 2032 x 800, not seen): a sitting runner-up there is
-  about 300 pixels tall, so the plane is about 40 pixels long and its loops reach about 290 pixels out from the kid's
-  middle. A first path reached 0.87 heights (about 360 pixels, almost the picture's edge for 2nd and 3rd): pulled in.
-- **Not known until it is seen in Play:** whether a 40-pixel plane reads at the scene's distance; whether the loops stay
-  inside the picture on a narrow screen (a phone); how the lazy flick and the nods read; the plane's look in the hand
-  (held at its middle); long hair or hats round the circle behind the head.
+  about 300 pixels tall (about 420 standing), so the plane is now about 120 pixels long and its loops reach about 270
+  pixels out from the kid's middle and about 200 above the head.
+- **Not known until it is seen in Play:** whether the loops stay inside the picture on a narrow screen (a phone); how
+  the lazy flick and the nods read; the plane's look in the hand; long hair or hats round the circle behind the head.
+
+## Alan's first look in Play (2026-11-24)
+- **His words:** "Test flight is poor because the paper airplane is extremely small. We've kind of kept a momentum of
+  what the paper airplanes look like size-wise everywhere else, yet for some reason they're way smaller. Plus, also, on
+  one of them, I saw the paper airplane flap its wings like it was a butterfly. So for some reason, you treated it like
+  a butterfly or something, or a bird. They're supposed to just, like, throw it, like, toss, like, pick it up and throw
+  it, and then it fly around, and then them catch it." ([his notes](../../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md))
+- **The size:** it was a tenth of the kid's height (the card's "one and a half hands", my number, now withdrawn); it is
+  now `holdPlane`'s own size, the same as every other emote's plane, about three times bigger. The loops and the circle
+  round the head were made bigger to suit it, and the circle wider so the plane clears the head.
+- **The flapping, found by numbers:** in every flight, on both sides, not just one: the plane's top was aimed by the
+  path's bend each frame, and the bend jumps at every point the path is drawn through, so the wings rolled back and
+  forth up to about 4,000 degrees a second, 31 times in each loop flight and 40 times in the circle. Now the top is
+  carried along with the nose (above): no roll of its own, 0 in every flight.
+- Kept: sitting, the glance at 1st, three flights, the whoosh.
 
 ## Sound (step 5)
 - **One sound, the video's own plane whoosh** (Alan: "you can use the little whooshing sound of the plane"; the voice
@@ -146,11 +169,9 @@ The prompt (`.planning/emotes/test-flight-prompt-1.txt`):
   `testFlightWhoosh` to `src/client/Audio.luau` at volume 1.
 
 ## For the primary session
-- Bake the two clips into the open place's `Assets` (Studio's Edit; `_G.EMOTE_CLIPS = { "cut:TestFlightLeft" }` first):
-  `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=TestFlightLeft:TestFlightLeftClip:assets/animations/emotes/test-flight-left.rbxm"`
-  and the same for `TestFlightRight`.
-- A Dev button: "TestFlight" in `winnersDev.ups` ("2nd/3rd: test flight"); `DevRunnerUp` = "TestFlight" picks it.
-- Step 6: `testFlightWhoosh` in `Audio` (the file above).
+- The two clips are baked into the open place's `Assets` as `TestFlightLeftClip` and `TestFlightRightClip` (replaced
+  after the fixes) and saved as the files below; the Dev button "2nd/3rd: test flight" is in.
+- Step 6: `testFlightWhoosh` in `Audio` (the file above), on Alan's go.
 
 ## Files
 | File | What |
@@ -158,3 +179,4 @@ The prompt (`.planning/emotes/test-flight-prompt-1.txt`):
 | `src/client/emotes/TestFlight.luau` | The emote's module: picks the clip, times it to 1st's light, the seat, the plane in the hand and its three flights, the whooshes |
 | `tools/emote_cuts/test-flight.lua` | The body cut: `CUTS.TestFlightLeft`, `CUTS.TestFlightRight` |
 | `assets/audio/emotes/test-flight-whoosh.ogg` | The whoosh |
+| `assets/animations/emotes/test-flight-left.rbxm`, `test-flight-right.rbxm` | The two baked clips |
