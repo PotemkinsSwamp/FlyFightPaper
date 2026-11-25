@@ -342,6 +342,11 @@ function HUD.start(getPlane, action)
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
 			button.Activated:Connect(function()winnersDev.finish(nil,up[1])end)
 		end
+		-- Doodler under the 1st-place emote that cuts the runner-ups' time the most (Alan 2026-11-24: it must shorten
+		-- itself then), to see its short version; a row above.
+		local short=eraserBots:Clone();short.Name="EndFoldDoodler";short.Text="fold + doodler";short.Position=UDim2.fromOffset(330,-200)
+		short.BackgroundColor3=Color3.fromRGB(150,40,40);short.Parent=picker
+		short.Activated:Connect(function()winnersDev.finish("FoldItUp","Doodler")end)
 	end
 	-- Every match tip again, seen or not (Alan 2026-10-29: his account had seen them all).
 	local tipsAgain=eraserBots:Clone();tipsAgain.Name="TipsAgain";tipsAgain.Text="tips again";tipsAgain.Position=UDim2.fromOffset(770,-80)
