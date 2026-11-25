@@ -93,6 +93,7 @@ local IDLE = { [Enum.HumanoidRigType.R15] = "rbxassetid://507766666", [Enum.Huma
 local CONE_WIDE, CONE_TALL, CONE_LAYERS, CONE_CLEAR, CONE_BIG = 1.52, 8, 24, 0.99, 1.4
 local POOL_CLEAR, LIGHT_BACK = 0.8, 1.8
 local Cutscene = {}
+Cutscene.tv = {} -- the emote shop's TV: one winner alone, seen through a hole in the menu (at the end of this file)
 local active
 
 -- The cone's shape is Roblox's own classic cone (asset 1033714: 2 wide, 0.75 tall, tip up; measured 2026-11-20),
@@ -300,7 +301,8 @@ end
 local PLANE_LENGTH, PLANE_TURN = 0.3, 0.15 -- plane length as a share of the winner's height; how fast the nose turns
 local function holdPlane(model, actorId, height, shrink)
 	local planes = workspace:FindFirstChild("Planes")
-	local source = planes and planes:FindFirstChild(tostring(actorId))
+	-- (the emote shop's TV brings its own: at the menu the player has no plane in the room)
+	local source = Cutscene.tv.state and Cutscene.tv.state.plane or planes and planes:FindFirstChild(tostring(actorId))
 	local hand = model:FindFirstChild("RightHand")
 	if not source or not hand then return nil end
 	source.Archivable = true
@@ -642,9 +644,9 @@ end
 -- Who does which of our emotes (docs/decisions/2026-11-24-bots-do-a-random-one-of-our-emotes.md; Alan's OK on the
 -- plan, 2026-11-24). A bot that places does a random one of ours: 1st any of FIRSTS, 2nd and 3rd each a different
 -- one of RUNNER_UPS. The dice are the match's id, so every player in the server sees the same ones (a dice roll on
--- each screen would show each player something else). A person who places does the free one of their slot (FREE;
--- Alan 2026-11-24: "they get the free one. Everyone starts with the free one ... They have to buy the others, with
--- paper", which comes later). A bot runner-up beside a person never does the same one as them. Roblox's dances
+-- each screen would show each player something else). A person who places does the one they have on for that slot
+-- (the Emotes page, EmoteShop: their EmoteLeader / EmoteRunnerUp attribute), which is the free one (FREE) until they
+-- buy another (Alan 2026-11-24: "Everyone starts with the free one ... They have to buy the others"). A bot runner-up beside a person never does the same one as them. Roblox's dances
 -- (EMOTES) are only what is left for a body our emotes cannot play on (not R15). In Studio the Dev panel's buttons
 -- name them for everyone instead: DevFirstEmote for 1st; DevRunnerUp, one name for both or "A,B", 2nd's and 3rd's
 -- (the "end: real" button clears both).
@@ -662,7 +664,15 @@ function Cutscene.choose(winners, seed, human)
 	local names = { firsts[dice:NextInteger(1, #firsts)], ups[a], ups[(a + dice:NextInteger(1, #ups - 1) - 1) % #ups + 1] }
 	Cutscene.chosen = {}
 	for place, entry in winners do
-		if place <= 3 then Cutscene.chosen[place] = human(entry.actorId) and Cutscene.FREE[place] or names[place] end
+		if place <= 3 and human(entry.actorId) then
+			-- a person does the one they have on (the Emotes page; their Player attribute, the same on every screen),
+			-- or the free one
+			local person = Players:GetPlayerByUserId(tonumber(entry.actorId) or 0)
+			local pick = person and person:GetAttribute(place == 1 and "EmoteLeader" or "EmoteRunnerUp")
+			Cutscene.chosen[place] = pick and table.find(place == 1 and firsts or ups, pick) and pick or Cutscene.FREE[place]
+		elseif place <= 3 then
+			Cutscene.chosen[place] = names[place]
+		end
 	end
 	for place = 2, 3 do -- (two bots never roll the same one: this is a bot beside a person)
 		local me, other = winners[place], winners[5 - place]
@@ -673,6 +683,7 @@ function Cutscene.choose(winners, seed, human)
 	return Cutscene.chosen
 end
 function Cutscene.emoteName(place)
+	if Cutscene.tv.state then return Cutscene.tv.state.names[place] end -- the emote shop's TV names its own (below)
 	local dev = RunService:IsStudio() and Root:GetAttribute(place == 1 and "DevFirstEmote" or "DevRunnerUp")
 	if dev and place > 1 then
 		local second, third = dev:match("^([^,]+),([^,]+)$")
@@ -1614,6 +1625,8 @@ Cutscene.kit = { paper = paper, ease = ease, flat = flat, sit = sit, seatOn = se
 -- touches the lens. Known once all three stand: ask in `step`, not in `start`.
 function Cutscene.kit.seenFor()
 	local state, light = active, LIGHT_AT + 2 * TURN
+	-- (on the emote shop's TV a runner-up is seen as long as under a 1st that never touches the lens)
+	if not state and Cutscene.tv.state then return math.max(light + 3, Rounds.results_seconds - CARD - (BANNER + DIM + GLIDE)) - light end
 	if not state then return math.huge end
 	if state.flickAt then return state.flickAt + FLICK_FLIGHT - light end
 	if state.kickAt then return state.kickAt + KICK_FLIGHT * 0.6 - light end
@@ -1740,8 +1753,66 @@ local function popIn(a) a = math.clamp(a, 0, 1) - 1; return 1 + 2.7 * a ^ 3 + 1.
 
 -- winners: { { actorId, displayName, contribution }, ... } in place order. onStage("banner" | "group" | "card") as it
 -- moves on: the banner while the camera sets off, nothing over the winners' shot, the results card as it glides back.
+-- Four pieces of the scene that the emote shop's TV (Cutscene.tv, below) runs too, so both always play an emote the
+-- same way. `state`: the scene's (or the TV's) table; its `flickAt`, `kickAt`, `gumAt`, `magicAt` and `extraAt` are
+-- seconds after the camera arrives.
+-- What 1st's emote puts on that clock once its copy stands, and when its first sound comes (`arrived`: the arrival on
+-- os.clock()).
+local function clockIn(state, copy, place, arrived)
+	local first = LIGHT_AT + 2 * TURN -- 1st's light
+	if copy.flick then
+		state.flickAt = first + copy.flick.release -- the release
+		firstSoundAt = arrived + state.flickAt -- the throw's sound (flickSounds)
+	elseif copy.pilot then
+		firstSoundAt = arrived + first + PILOT_SOUNDS[1] -- the first whoosh (pilotSounds)
+	elseif copy.kick then
+		state.kickAt = first + copy.kick.marks.Kick -- the kick
+		firstSoundAt = arrived + first + copy.kick.marks.HopTo -- the landing's thump (kickBooks)
+	elseif copy.gum then
+		state.gumAt = first + copy.gum.marks.Pop -- the pop
+		firstSoundAt = arrived + first + copy.gum.marks.Snap -- the small bubble's snap (gumBubble)
+	elseif copy.magic then
+		state.magicAt = first -- the planes' clock
+		firstSoundAt = arrived + state.magicAt + MAGIC.sounds[1][1] -- the bass (magicPlanes)
+	elseif copy.extra and place == 1 then
+		state.extra, state.extraAt = copy.extra, first -- a pipeline emote on 1st
+		if copy.extra.made.firstSound then firstSoundAt = arrived + state.extraAt + copy.extra.made.firstSound end
+	end
+end
+-- When the camera leaves the winners, in seconds after it arrived: so the results card gets its CARD seconds, or as
+-- an emote that takes the lens ends.
+local function leaveAt(state)
+	return state.flickAt and state.flickAt + FLICK_AFTER or state.kickAt and state.kickAt + KICK_AFTER or state.gumAt and state.gumAt + GUM.after
+		or state.extra and state.extra.made.leave and state.extraAt + state.extra.made.leave
+		or math.max(LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD - (BANNER + DIM + GLIDE))
+end
+-- The steady camera as 1st's emote knocks, jolts or moves it, `t` seconds after arriving.
+local function shaken(state, steady, t, height)
+	return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height)
+		or state.gumAt and jolted(steady, t - state.gumAt, height) or state.magicAt and MAGIC.trembling(steady, t - state.magicAt, height)
+		or state.extra and state.extra.made.camera and state.extra.made.camera(state.extra.st, steady, t - state.extraAt, height) or steady
+end
+-- One winner's built-in emote this frame (a pipeline emote's `step` runs after all three stand).
+local function stepEmote(w, since, shot, steady, height, fov)
+	if w.flick then
+		flickPlane(w, since, shot, steady, height)
+		flickSounds(w, since)
+	elseif w.prop then
+		flyPlane(w)
+		if w.pilot then pilotSounds(w, since) end
+	elseif w.kick then kickBooks(w, since, shot, steady, height)
+	elseif w.gum then gumBubble(w, since, shot, height, fov)
+	elseif w.magic then magicPlanes(w, since, shot, height) end
+end
+-- Book Kicker: how out of focus the open book on the lens is (0 to 1), `flown` seconds after the kick (see KICK_BLUR).
+local function kickSoft(flown)
+	local come = 1 - (1 - math.clamp(flown / KICK_FLIGHT, 0, 1)) ^ 2 -- how far along its flight the book is (kickBooks)
+	return (1 / (1 - (1 - KICK_NEAR) * come) - 1) / (1 / KICK_NEAR - 1) * (1 - math.clamp((flown - KICK_FLIGHT - KICK_STUCK) / 0.45, 0, 1))
+end
+
 function Cutscene.play(winners, onStage, seed)
 	Cutscene.stop()
+	Cutscene.tv.stop() -- the emote shop's TV gives the camera back
 	Cutscene.choose(winners, seed)
 	firstSoundAt = nil
 	local room = workspace:FindFirstChild("Arena")
@@ -1845,24 +1916,7 @@ function Cutscene.play(winners, onStage, seed)
 							copy.cover.Name, copy.cover.FillColor, copy.cover.FillTransparency, copy.cover.OutlineTransparency = "Unlit", Color3.new(), 1, 1
 							copy.cover.DepthMode, copy.cover.Parent = Enum.HighlightDepthMode.Occluded, cast
 							if copy.prop then copy.prop.plane.Parent = cast end -- in the hand from the dark on, under the same cover
-							if copy.flick then
-								state.flickAt = LIGHT_AT + 2 * TURN + copy.flick.release -- the release, in seconds after arriving
-								firstSoundAt = state.start + BANNER + DIM + GLIDE + state.flickAt -- the throw's sound (flickSounds)
-							elseif copy.pilot then
-								firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + PILOT_SOUNDS[1] -- the first whoosh (pilotSounds)
-							elseif copy.kick then
-								state.kickAt = LIGHT_AT + 2 * TURN + copy.kick.marks.Kick -- the kick, in seconds after arriving
-								firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + copy.kick.marks.HopTo -- the landing's thump (kickBooks)
-							elseif copy.gum then
-								state.gumAt = LIGHT_AT + 2 * TURN + copy.gum.marks.Pop -- the pop, in seconds after arriving
-							firstSoundAt = state.start + BANNER + DIM + GLIDE + LIGHT_AT + 2 * TURN + copy.gum.marks.Snap -- the small bubble's snap (gumBubble)
-							elseif copy.magic then
-								state.magicAt = LIGHT_AT + 2 * TURN -- 1st's light, in seconds after arriving (the planes' clock)
-								firstSoundAt = state.start + BANNER + DIM + GLIDE + state.magicAt + MAGIC.sounds[1][1] -- the bass (magicPlanes)
-							elseif copy.extra and place == 1 then
-								state.extra, state.extraAt = copy.extra, LIGHT_AT + 2 * TURN -- a pipeline emote on 1st: their light, in seconds after arriving
-								if copy.extra.made.firstSound then firstSoundAt = state.start + BANNER + DIM + GLIDE + state.extraAt + copy.extra.made.firstSound end
-							end
+							clockIn(state, copy, place, state.start + BANNER + DIM + GLIDE)
 							copy.fading = {} -- everything of theirs that fades in and out
 							for _, piece in cast:GetDescendants() do
 								if piece:IsA("BasePart") and piece.Transparency < 1 or piece:IsA("Decal") or piece:IsA("Texture") then table.insert(copy.fading, piece) end
@@ -1914,7 +1968,7 @@ function Cutscene.play(winners, onStage, seed)
 	local depart = BANNER + DIM
 	local arrive = depart + GLIDE
 	-- When the camera leaves the winners: so the results card gets its CARD seconds, or as Camera Flick ends.
-	local function leaving() return state.flickAt and arrive + state.flickAt + FLICK_AFTER or state.kickAt and arrive + state.kickAt + KICK_AFTER or state.gumAt and arrive + state.gumAt + GUM.after or state.extra and state.extra.made.leave and arrive + state.extraAt + state.extra.made.leave or math.max(arrive + LIGHT_AT + 2 * TURN + 3, Rounds.results_seconds - CARD) end
+	local function leaving() return arrive + leaveAt(state) end
 	local function clearShot()
 		state.added = workspace.DescendantAdded:Connect(function(item) hideForShot(state, item) end)
 		task.spawn(function() -- a few hundred parts a frame, so nothing stutters; done well before the camera lands
@@ -1930,7 +1984,7 @@ function Cutscene.play(winners, onStage, seed)
 	-- without Camera Flick's knock).
 	local function holdAt(t, leave)
 		local steady = group:Lerp(drift, ease(t / (leave - arrive)))
-		return state.flickAt and knocked(steady, t - state.flickAt - FLICK_FLIGHT, height) or state.kickAt and jolted(steady, t - state.kickAt - KICK_FLIGHT, height) or state.gumAt and jolted(steady, t - state.gumAt, height) or state.magicAt and MAGIC.trembling(steady, t - state.magicAt, height) or state.extra and state.extra.made.camera and state.extra.made.camera(state.extra.st, steady, t - state.extraAt, height) or steady, steady
+		return shaken(state, steady, t, height), steady
 	end
 	RunService:BindToRenderStep("WinnersCutscene", Enum.RenderPriority.Camera.Value + 3, function()
 		local t = os.clock() - state.start
@@ -1988,15 +2042,7 @@ function Cutscene.play(winners, onStage, seed)
 				w.seen = seen
 				for _, piece in w.fading do piece.LocalTransparencyModifier = 1 - seen end
 			end
-			if w.flick then
-				flickPlane(w, since, shot, steady, height)
-				flickSounds(w, since)
-			elseif w.prop then
-				flyPlane(w)
-				if w.pilot then pilotSounds(w, since) end
-			elseif w.kick then kickBooks(w, since, shot, steady, height)
-			elseif w.gum then gumBubble(w, since, shot, height, fov)
-			elseif w.magic then magicPlanes(w, since, shot, height) end
+			stepEmote(w, since, shot, steady, height, fov)
 			w.since = since
 		end
 		-- Pipeline emotes run once all three stand where they belong this frame: one may use the others (Skeet Shoot).
@@ -2037,8 +2083,7 @@ function Cutscene.play(winners, onStage, seed)
 		state.blur.NearIntensity, state.blur.FarIntensity = 0, BLUR_FAR * strength
 		-- Book Kicker: the open book on the lens is out of focus (see KICK_BLUR)
 		local flown = state.kickAt and t - arrive - state.kickAt or 0
-		local come = 1 - (1 - math.clamp(flown / KICK_FLIGHT, 0, 1)) ^ 2 -- how far along its flight the book is (kickBooks)
-		local soft = (1 / (1 - (1 - KICK_NEAR) * come) - 1) / (1 / KICK_NEAR - 1) * (1 - math.clamp((flown - KICK_FLIGHT - KICK_STUCK) / 0.45, 0, 1))
+		local soft = kickSoft(flown)
 		state.smear.Size, state.smear.Enabled = KICK_BLUR * screen.Y * soft, soft > 0
 		-- and the HUD's "Menu" tag is put away with the name plates until the book has slid off (Alan 2026-11-21;
 		-- MenuController reads LensCovered): sharp on a blurred book, it stood out
@@ -2070,6 +2115,232 @@ function Cutscene.stop()
 	for item, was in state.moved do if item.Parent then item:PivotTo(was) end end
 	workspace.CurrentCamera.CameraType, workspace.CurrentCamera.FieldOfView = state.cameraType, state.fov
 	Root:SetAttribute("Cutscene", false)
+end
+
+-- ===== The emote shop's TV (docs/plan/EMOTE-SHOP-PLAN.md; Alan 2026-11-24: "you need to be able to see your
+-- character doing the emote") =====
+-- The TV's glass is a hole in the Emotes page and the real picture shows through it: a menu's own 3D window (a
+-- ViewportFrame) draws no SurfaceGui (A+'s card, Doodler's drawing, Fold It Up's picture, Book Kicker's pages) and no
+-- blur. One copy of the player stands alone in a small classroom set, small and right at the camera as in the winners'
+-- moment, and the same emote code runs on the same clock. The hole sits in the middle of the screen and the real
+-- camera's lens is widened so the hole shows exactly the middle SHOT_FOV degrees: the picture in the TV is the middle
+-- of the winners' moment's own picture, so everything an emote sends at the lens lands on the glass.
+-- A Leader emote is played as 1st. A Runner-up emote is played as 2nd, with a 1st that is not there (`stub`: only
+-- where they would stand and their clock, which the runner-up emotes look at). Skeet Shoot needs its two throwers:
+-- they stand where 2nd and 3rd would, unseen, so only their planes fly in.
+local TV = Cutscene.tv
+TV.TALL = 2.7 -- the picture's height where the kid stands, in kid heights (the winners' moment: FRAME_TALL)
+TV.MID = { 0.9, 0.75, 0.7 } -- the picture's middle over the desk top, in kid heights, by place (1st's books are the tallest)
+TV.ON = 0.5 -- seconds the kid stands still in the picture before their light (the TV flicks on over them)
+TV.SHRINK = 12 -- the set is this many times smaller than it looks: less than any avatar's own scale, so it is always behind them
+TV.WALL = Color3.fromRGB(47, 82, 66) -- chalkboard green
+TV.TRIM, TV.DESK, TV.SIDE = Color3.fromRGB(150, 105, 60), Color3.fromRGB(196, 150, 96), Color3.fromRGB(226, 214, 190)
+
+-- The player's own avatar at the room's size, as AvatarService makes the one at a desk (no desk at the main menu):
+-- fetched once, copied for each emote. `TV.source` once it is there.
+function TV.avatar()
+	if TV.source or TV.loading then return TV.source end
+	TV.loading = true
+	task.spawn(function()
+		local ok, model = pcall(function() return Players:CreateHumanoidModelFromUserIdAsync(Players.LocalPlayer.UserId) end)
+		if not ok then -- (a Studio test player has no avatar of its own: a plain one)
+			ok, model = pcall(function() return Players:CreateHumanoidModelFromDescriptionAsync(Instance.new("HumanoidDescription"), Enum.HumanoidRigType.R15) end)
+		end
+		TV.loading = false
+		local humanoid = ok and model:FindFirstChildOfClass("Humanoid")
+		local root = ok and model:FindFirstChild("HumanoidRootPart")
+		if not humanoid or not root then warn("WinnersCutscene: the emote shop's TV has no avatar to show:", model); return end
+		if not humanoid:FindFirstChildOfClass("Animator") then Instance.new("Animator").Parent = humanoid end
+		local top, bottom = -math.huge, math.huge
+		for _, item in model:GetDescendants() do
+			if item:IsA("LuaSourceContainer") then item:Destroy()
+			elseif item:IsA("AnimationConstraint") then item.IsKinematic = true
+			elseif item:IsA("BasePart") then
+				item.CanCollide, item.CanQuery, item.CanTouch, item.Massless, item.CastShadow = false, false, false, true, false
+				if item.Parent == model and item ~= root then
+					top, bottom = math.max(top, item.Position.Y + item.Size.Y / 2), math.min(bottom, item.Position.Y - item.Size.Y / 2)
+				end
+			end
+		end
+		model:ScaleTo(model:GetScale() * Avatars.standing_height_studs / math.max(1, top - bottom))
+		root.Anchored = true
+		TV.source = model
+	end)
+	return nil
+end
+
+-- A card's still on the Emotes page: the body clip of each emote and how far into it the picture is taken (a share
+-- of its length). Props are not in it.
+TV.POSE = { ToyPilot = { "ToyPilot", 0.5 }, CameraFlick = { "CameraFlick", 0.35 }, BookKicker = { "BookKicker", 0.3 }, Bubblegum = { "Bubblegum", 0.4 },
+	Magician = { false, 0.3 }, APlus = { "APlus", 0.4 }, SkeetShoot = { "SkeetShoot", 0.4 }, FoldItUp = { "FoldItUp", 0.2 },
+	GoodGame = { "GoodGameWave", 0.5 }, Nap = { "NapSleep", 0.5 }, NextOne = { "NextOne", 0.8 }, SoClose = { "SoCloseLeft", 0.5 },
+	SneakyToss = { "SneakyTossLeft", 0.4 }, SoreLoser = { "SoreLoserLeft", 0.5 }, TestFlight = { "TestFlightLeft", 0.5 }, Doodler = { "Doodler", 0.5 } }
+function TV.pose(name)
+	local still = TV.POSE[name]
+	if not still then return nil end
+	return still[1] and (ourClip(still[1])) or MAGIC.clip, still[2]
+end
+
+-- Open air for the camera and its small set: over the winners' desks, the first height with nothing within reach.
+function TV.clearSpot(height)
+	local room = workspace:FindFirstChild("Arena")
+	local desk = room and room:FindFirstChild(Rounds.winner_desks[1])
+	local base = desk and desk.Position or Vector3.new(0, 200, 0)
+	local best
+	for _, up in { 4, 5, 6, 3, 7, 8 } do
+		local at = base + Vector3.yAxis * up * height
+		best = best or at
+		if #workspace:GetPartBoundsInRadius(at, 0.6 * height) == 0 then return at end
+	end
+	return best
+end
+
+-- The set: a plain classroom corner, in the big winner's studs around `spot` (the desk top under the kid), built
+-- TV.SHRINK times smaller and moved every frame like a winner. It closes the camera in on every side, so nothing of
+-- the real room shows whichever way an emote turns the camera.
+function TV.room(parent, spot, back, height)
+	local right = Vector3.yAxis:Cross(back)
+	local model = Instance.new("Model")
+	local function slab(name, color, at, size) -- `at`: right, up, towards the camera, in kid heights from `spot`; `size` the same way
+		local part = Instance.new("Part")
+		part.Name, part.Anchored, part.CanCollide, part.CanQuery, part.CanTouch, part.CastShadow = name, true, false, false, false, false
+		part.Material, part.Color, part.TopSurface, part.BottomSurface = Enum.Material.SmoothPlastic, color, Enum.SurfaceType.Smooth, Enum.SurfaceType.Smooth
+		part.Size = size * height / TV.SHRINK
+		part.CFrame = CFrame.fromMatrix(spot + (right * at.X + Vector3.yAxis * at.Y + back * at.Z) * height / TV.SHRINK, right, Vector3.yAxis)
+		part.Parent = model
+		return part
+	end
+	local anchor = slab("Anchor", TV.DESK, Vector3.zero, Vector3.one * 0.01)
+	anchor.Transparency = 1
+	model.Name, model.PrimaryPart = "Set", anchor
+	slab("Desk", TV.DESK, Vector3.new(0, -0.1, 2), Vector3.new(14, 0.2, 9)).Material = Enum.Material.Wood -- its top is the desk top
+	slab("Board", TV.WALL, Vector3.new(0, 3, -2.5), Vector3.new(14, 6, 0.2))
+	slab("Tray", TV.TRIM, Vector3.new(0, 0.12, -2.35), Vector3.new(14, 0.24, 0.3)).Material = Enum.Material.Wood -- the chalk tray along its foot
+	slab("Left", TV.SIDE, Vector3.new(-7, 3, 2), Vector3.new(0.2, 6, 9))
+	slab("Right", TV.SIDE, Vector3.new(7, 3, 2), Vector3.new(0.2, 6, 9))
+	slab("Behind", TV.SIDE, Vector3.new(0, 3, 6.5), Vector3.new(14, 6, 0.2))
+	slab("Ceiling", TV.SIDE, Vector3.new(0, 6, 2), Vector3.new(14, 0.2, 9))
+	model.Parent = parent
+	return { model = model, spot = spot }
+end
+
+-- Plays `name` once. `glass`: the hole (a GuiObject in the middle of the screen); `layer`: the page's own ScreenGui,
+-- which covers the whole screen; `plane`: the player's plane as a model, for the emotes that hold one; `done()`: called
+-- when it is over (not when stopped). False when it cannot play now (the avatar is still on its way, or the real
+-- winners' moment has the camera).
+function TV.play(name, glass, layer, plane, done)
+	TV.stop()
+	if active or not TV.source then TV.avatar(); return false end
+	local place = table.find(Cutscene.FIRSTS, name) and 1 or 2
+	local height, camera = Avatars.standing_height_studs, workspace.CurrentCamera
+	local s = { name = name, place = place, names = { [place] = name }, plane = plane, glass = glass, layer = layer, done = done,
+		winners = {}, cameraType = camera.CameraType, fov = camera.FieldOfView, home = camera.CFrame }
+	TV.state = s -- from here on the scene's own helpers ask the TV which emote and which plane
+	firstSoundAt = nil
+	local at, back = TV.clearSpot(height), Vector3.zAxis
+	local right, tilt = Vector3.yAxis:Cross(back), -math.rad(GROUP_TILT)
+	s.view = CFrame.lookAt(at, at - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
+	local spot = at + s.view.LookVector * (TV.TALL * height / 2 / math.tan(math.rad(SHOT_FOV / 2))) - Vector3.yAxis * TV.MID[place] * height
+	s.set = Instance.new("Folder")
+	s.set.Name, s.set.Parent = "EmoteShopTV", workspace
+	s.smear = Instance.new("BlurEffect") -- Book Kicker's book on the glass
+	s.smear.Name, s.smear.Size, s.smear.Enabled, s.smear.Parent = "EmoteShopLens", 0, false, camera
+	s.room = TV.room(s.set, spot, back, height)
+	local function stand(p, where, unseen)
+		local world, anchor, cast = Instance.new("Model"), Instance.new("Part"), Instance.new("Model")
+		anchor.Name, anchor.Anchored, anchor.CanCollide, anchor.CanQuery, anchor.CanTouch, anchor.Transparency = "Anchor", true, false, false, false, 1
+		anchor.Size, anchor.CFrame, anchor.Parent = Vector3.one * 0.2, CFrame.new(where), world
+		world.Name, world.PrimaryPart = "Winner" .. p .. "Stage", anchor
+		cast.Name, cast.Parent = "Cast", world
+		world.Parent = s.set -- in the room before the avatar goes in: animations only load on an avatar that is in the game
+		local copy = copyWinner(TV.source, p, back, tostring(Players.LocalPlayer.UserId), where, cast, nil)
+		if not copy then world:Destroy(); return nil end
+		if copy.prop then copy.prop.plane.Parent = cast end
+		copy.world, copy.fading, copy.since = world, {}, -math.huge
+		for _, piece in cast:GetDescendants() do
+			if piece:IsA("BasePart") then
+				piece.CastShadow = false -- the set is far behind them: a shadow would fall in the wrong place
+				if unseen then piece.LocalTransparencyModifier = 1 end
+			elseif unseen and (piece:IsA("Decal") or piece:IsA("Texture")) then piece.LocalTransparencyModifier = 1 end
+		end
+		s.winners[p] = copy
+		return copy
+	end
+	-- The scene's clock, so every emote's own numbers hold: 3rd's light LIGHT_AT after "arriving", 2nd's and 1st's TURN
+	-- apart. Arrival is set so the kid shown gets their light TV.ON from now.
+	s.arrived = os.clock() + TV.ON - LIGHT_AT - (3 - place) * TURN
+	local me = stand(place, spot)
+	if not me then TV.stop(); return false end
+	local desk = workspace:FindFirstChild("Arena") and workspace.Arena:FindFirstChild(Rounds.winner_desks[1])
+	local apart = (desk and desk.Size.X or 2 * height) + DESK_GAP -- from one winner to the next, as the desks stand in the winners' moment
+	if place == 1 then
+		clockIn(s, me, 1, s.arrived)
+		if name == "SkeetShoot" then
+			stand(2, spot - right * apart, true) -- (no emote named for them: a silent dance, unseen)
+			stand(3, spot + right * apart, true)
+		end
+	else
+		firstSoundAt = nil
+		s.stub = { place = 1, spot = spot + right * apart, scale = me.scale, world = me.world, fading = {}, since = -math.huge }
+	end
+	s.list = { s.winners[1] or s.stub, s.winners[2], s.winners[3] }
+	RunService:BindToRenderStep("EmoteShopTV", Enum.RenderPriority.Camera.Value + 4, TV.frame)
+	return true
+end
+
+function TV.frame()
+	local s = TV.state
+	if not s then return end
+	local height, camera = Avatars.standing_height_studs, workspace.CurrentCamera
+	local t = os.clock() - s.arrived
+	local steady = s.view
+	local shot = shaken(s, steady, t, height)
+	local fov = s.extra and s.extra.made.fov and s.extra.made.fov(s.extra.st, t - s.extraAt) or SHOT_FOV
+	for place, w in s.winners do
+		local since = t - LIGHT_AT - (3 - place) * TURN
+		if since >= 0 and not w.lit then
+			w.lit = true
+			if w.held then w.emote:AdjustSpeed(w.magic and MAGIC.speed or 1) else w.emote:Play(0.3) end
+		end
+		w.shift = (shot.Position - w.spot) * (1 - 1 / w.scale)
+		w.world:PivotTo(CFrame.new(w.spot + w.shift))
+		stepEmote(w, since, shot, steady, height, fov)
+		w.since = since
+	end
+	if s.stub then
+		s.stub.since, s.stub.shift = t - LIGHT_AT - 2 * TURN, (shot.Position - s.stub.spot) * (1 - 1 / s.stub.scale)
+	end
+	for _, w in s.winners do
+		if w.extra and w.extra.made.step then w.extra.made.step(w.extra.st, w.since, shot, steady, s.list, fov) end
+	end
+	s.room.model:PivotTo(CFrame.new(s.room.spot + (shot.Position - s.room.spot) * (1 - 1 / TV.SHRINK)))
+	-- The lens: the hole is `share` of the screen's height and shows the middle `fov` degrees.
+	local share = math.clamp(s.glass.AbsoluteSize.Y / math.max(s.layer.AbsoluteSize.Y, 1), 0.3, 1)
+	camera.CameraType = Enum.CameraType.Scriptable
+	camera.CFrame, camera.FieldOfView = shot, math.deg(2 * math.atan(math.tan(math.rad(fov / 2)) / share))
+	local soft = s.kickAt and kickSoft(t - s.kickAt) or 0
+	s.smear.Size, s.smear.Enabled = KICK_BLUR * camera.ViewportSize.Y * share * soft, soft > 0
+	if t >= leaveAt(s) then
+		local done = s.done
+		TV.stop()
+		if done then done() end
+	end
+end
+
+function TV.stop()
+	local s = TV.state
+	if not s then return end
+	RunService:UnbindFromRenderStep("EmoteShopTV")
+	for _, w in s.winners do
+		if w.extra and w.extra.made.stop then pcall(w.extra.made.stop, w.extra.st) end
+	end
+	TV.state = nil
+	firstSoundAt = nil
+	s.set:Destroy()
+	s.smear:Destroy()
+	local camera = workspace.CurrentCamera
+	camera.CameraType, camera.FieldOfView = s.cameraType, s.fov
+	if s.cameraType == Enum.CameraType.Scriptable then camera.CFrame = s.home end
 end
 
 return Cutscene

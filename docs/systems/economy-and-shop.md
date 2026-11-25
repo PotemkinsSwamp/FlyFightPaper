@@ -351,6 +351,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
 | `src/shared/Missions.luau` | Generates daily and weekly missions and handles progress, claims, swaps and rollover. Tests are in `tests/unit/Missions.spec.luau`. |
 | `src/shared/LooksRules.luau` | Skin and Trail chest pools, duplicate values, wearing and bot cosmetics ([skins plan](../plan/SKINS-PLAN.md)) |
+| `src/client/EmoteShop.luau` | The Emotes page: the box TV your character plays an emote on, the Leader and Runner-up cards, Paper and Robux buttons, Use ([plan and what is built](../plan/EMOTE-SHOP-PLAN.md)) |
 | `src/shared/EmoteRules.luau` | Winners' emote catalog, tier prices, ownership and wear rules |
 | `src/generated/Emotes.luau` | Game copy of `config/emotes.json`, produced by `tools/generate_config.py` |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |

@@ -1,7 +1,9 @@
 # Emote shop plan
 
 **Status:** how it works approved by Alan 2026-11-24 ("As far as everything you wrote, yeah, that looks good";
-[decision](../decisions/2026-11-24-emote-shop.md)). Prices wait for his ranking of the emotes. Nothing built yet.
+[decision](../decisions/2026-11-24-emote-shop.md)). **First build written the same day on his "go ahead and build the
+menu without my list" (see "As built"): every changed script compiles in Studio's Edit; nothing has run in Play and
+nobody has seen it.** Prices are placeholders until he ranks the emotes.
 
 One menu where you buy the emotes and put them on. The emotes themselves:
 [modes and scoring](../systems/modes-and-scoring.md).
@@ -59,6 +61,28 @@ A step between Cool and Best, if he wants one: 12,000 Paper / 399 R$.
   the real game picture. Costs: the Emotes menu is a full page of its own (nothing see-through around the TV), the
   camera's lens is narrowed while it is open so the kid is not stretched off to the side, and it never opens
   mid-flight (the Shop's rule already). Not proven until it runs in Play.
+
+## As built (2026-11-24, not yet run in Play)
+- **The TV is in the middle of the page, not on the right** (Claude's change, forced by the method above): the hole
+  shows the middle of the game's picture, so it has to sit in the middle of the screen. Leader emotes hang on a
+  chalkboard on its left, Runner-up emotes on one on its right, eight cards each, all on screen at once: nothing
+  scrolls yet. The name and the buttons are under the TV.
+- **The door is an "Emotes" button on the Shop's title bar**, not a sixth tab (the five tabs fill the window's
+  height). No door in the Customize binder yet: its index tabs are full too.
+- **The wall, the two boards, the TV and its cart are flat colours.** The page's picture is not drawn yet.
+- **A card's still is your own character held at one moment of the emote's body clip, without props** (no plane,
+  bubble or book): `TV.POSE` in `src/client/WinnersCutscene.luau`, sixteen guessed moments to tune by eye.
+- **On the TV** a Leader emote plays as 1st alone; a Runner-up emote as 2nd alone, with a 1st that is not there;
+  Skeet Shoot's two throwers stand unseen so only their planes fly in. The camera stands a little closer than in the
+  winners' moment (the picture is 2.7 kid heights tall there, 3.45 in the scene). The set is a plain classroom
+  corner: a green board, a wooden desk top, cream walls.
+- **Known before any look:** anything an emote places by the whole screen's shape (A+'s card flying to where the
+  report card is, Fold It Up's picture) is cut by the TV's 4:3 edge; the emote's sounds play at their normal
+  loudness, not quieter; the TV has no switch-on sound yet.
+- **Placeholder tiers** (`config/emotes.json`, his to re-sort): Best = Book Kicker, Bubblegum, Magician, Fold It Up;
+  Cool = Camera Flick, A+, Skeet Shoot, Sneaky Toss, Test Flight, Doodler; Good = Nap, Next One, So Close, Sore Loser.
+- Code: the page `src/client/EmoteShop.luau`; the TV `Cutscene.tv` in `src/client/WinnersCutscene.luau`; who does
+  which emote `Cutscene.choose`; rules and saving on [economy and shop](../systems/economy-and-shop.md).
 
 ## Build order
 1. ~~A free test of the TV picture~~ done in Edit (above). Next: a Dev button on the main menu that opens a bare
