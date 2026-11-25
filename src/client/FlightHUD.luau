@@ -337,7 +337,7 @@ function HUD.start(getPlane, action)
 		real.BackgroundColor3=Color3.fromRGB(150,40,40);real.Parent=picker
 		real.Activated:Connect(function()Root:SetAttribute("DevFirstEmote",nil);Root:SetAttribute("DevRunnerUp",nil);Root.RoundAction:FireServer("endMatch")end)
 		-- One button for each runner-up emote, a row above: both 2nd and 3rd play it, 1st a random one of ours.
-		for index, up in ipairs({ { "GoodGame", "good game" }, { "Nap", "nap" }, { "NextOne", "next one" }, { "SoClose", "so close" }, { "SoreLoser", "sore loser" }, { "TestFlight", "test flight" } }) do
+		for index, up in ipairs({ { "GoodGame", "good game" }, { "Nap", "nap" }, { "NextOne", "next one" }, { "SoClose", "so close" }, { "SoreLoser", "sore loser" }, { "TestFlight", "test flight" }, { "SneakyToss", "sneaky toss" } }) do
 			local button=eraserBots:Clone();button.Name="EndUp"..up[1];button.Text="2nd/3rd: "..up[2];button.Position=UDim2.fromOffset(220+index*110,-160)
 			button.BackgroundColor3=Color3.fromRGB(150,40,40);button.Parent=picker
 			button.Activated:Connect(function()winnersDev.finish(nil,up[1])end)
