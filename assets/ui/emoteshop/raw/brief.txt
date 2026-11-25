@@ -1,0 +1,38 @@
+Picture job. Use your image generation tool. Do not edit any code, do not run tests, do not use Roblox Studio or any
+MCP server, do not commit. Only write the files named at the end.
+
+Attached pictures, in order:
+1. layout-guide.png - a flat diagram of the picture to paint. PAINT OVER THIS: every shape stays where it is and the
+   size it is.
+2. background.png - STYLE reference only (our game's main menu: a cork board in a sunny classroom). Match its look:
+   warm semi-realistic painted illustration, real materials (wood grain, paint, slate), soft warm afternoon window
+   light with gentle slanted shadows. Not flat vector, not cartoon outlines, not a photo. Do not copy its content.
+3-5. three photos of a real school TV cart (late 1990s / early 2000s). SUBJECT reference for the TV and the cart only.
+
+Paint ONE landscape picture, 3:2 (1536 x 1024), the front wall of an American elementary school classroom around the
+year 1999, seen dead straight on, like a flat front elevation, no perspective, no tilt:
+
+- A long green chalkboard covers most of the wall, with a warm wooden frame and a wooden chalk tray along its bottom
+  (a few chalk sticks and one felt eraser on the tray, well left and well right of the cart). The slate is CLEAN and
+  nearly empty: only faint wiped chalk dust and soft smudges. Nothing written or drawn on it. Paper cards will be
+  pinned over its left third and right third later, so those areas stay plain green.
+- Above the chalkboard a band of cream painted cinder-block wall with one round school wall clock, where the guide's
+  white circle is. Nothing else on that band (words go there later). Below the chalk tray the same wall continues.
+- In the middle, in front of the chalkboard: a big black boxy CRT school television (like photos 3 and 4: black
+  plastic, thick bezel, a row of small buttons and a little speaker grille under the glass, one small red power
+  light bottom right, no brand name, no logos, no text) standing on a black steel AV cart (like photos 3-5: flat top
+  shelf with a small raised lip, square tube legs, a lower shelf with a grey VCR on it, a power cable hanging down
+  one leg). The television is the main thing; the cart is quiet and dark. A soft shadow of the TV and cart falls on
+  the chalkboard behind them.
+- THE TV GLASS: fill it with perfectly flat pure magenta (RGB 255, 0, 255), exactly the guide's pink shape: a
+  rectangle with small rounded corners, edges perfectly horizontal and vertical, dead centre of the picture. No
+  reflection, no shading, no gradient and nothing drawn on the magenta: it will be cut out as a hole. No magenta
+  anywhere else in the picture.
+- The left and right 4% of the picture and the top 6% are plain wall only (the picture is extended there later).
+- Colours: the wall and board calm and a little muted, so bright paper pinned on them stands out. No people, no
+  writing, no letters, no numbers except the clock face.
+
+Make TWO versions (different brushwork and light, same layout) and save them as
+  assets/ui/emoteshop/raw/classroom-tv-a.png
+  assets/ui/emoteshop/raw/classroom-tv-b.png
+at the tool's full size, uncropped, unresized. Then stop and say which files you wrote and their pixel sizes.
