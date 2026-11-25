@@ -5,6 +5,7 @@ local Root=game.ReplicatedStorage.FlyFightPaper
 local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
 local Looks=require(Root.Shared.LooksRules)
+local Emotes=require(Root.Shared.EmoteRules)
 local Missions=require(Root.Shared.Missions)
 local MissionConfig=require(Root.Generated.Missions)
 local Commerce=require(Root.Shared.CommerceRules)
@@ -56,6 +57,9 @@ local function validReceiptGrant(grant)
  elseif grant.kind=="lookUnlock" then
   if type(grant.lookID)~="string" or #grant.lookID==0 then return false end
   fields={kind=true,lookID=true}
+ elseif grant.kind=="emoteUnlock" then
+  if not Emotes.price(grant.emoteID) then return false end
+  fields={kind=true,emoteID=true}
  else return false end
  for key in pairs(grant) do if not fields[key] then return false end end
  return true
@@ -347,6 +351,23 @@ function Service:_effect(p,op,boostState,seed)
 		else p.ownership[op.catalogID]=true;result={type="PartUnlocked",catalogID=op.catalogID} end
 	elseif op.kind=="lookUnlock" then applied,err=Looks.grant(v,op.lookID,op.id)
 	elseif op.kind=="lookPurchase" then applied,err=Looks.buyWithPaper(v,op.lookID,op.id)
+	elseif op.kind=="emotePurchase" then
+		local ok,reason,price=Emotes.buy(p.emotes,op.emoteID,math.floor(p.paperMilli/Economy.MILLI))
+		if not ok then return nil,reason end
+		local chargedMilli=price*Economy.MILLI
+		p.paperMilli-=chargedMilli
+		p.emotes.owned[op.emoteID]=true
+		result={type="EmotePurchased",emoteID=op.emoteID,chargedMilli=chargedMilli}
+	elseif op.kind=="emoteWear" then
+		local ok,reason,slot=Emotes.wear(p.emotes,op.emoteID)
+		if not ok then return nil,reason end
+		p.emotes[slot]=op.emoteID
+		result={type="EmoteWorn",emoteID=op.emoteID}
+	elseif op.kind=="emoteUnlock" then
+		if not Emotes.price(op.emoteID) then return nil,"invalid_emote_grant" end
+		local alreadyOwned=Emotes.owns(p.emotes,op.emoteID)
+		p.emotes.owned[op.emoteID]=true
+		result={type="EmoteGranted",emoteID=op.emoteID,alreadyOwned=alreadyOwned}
 	elseif op.kind=="openChest" then
 		local chest=Looks.chest(op.chest)
 		if not chest then return nil,"unknown_chest" end
@@ -551,6 +572,7 @@ function Service:_effect(p,op,boostState,seed)
 end
 local allowed={paidChest=true,receipt=true,giftReceived=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,missionClaim=true,missionSwap=true,devFinishMissions=true,refoldIntent=true,lookPurchase=true,lookWear=true,openChest=true,
+ emotePurchase=true,emoteWear=true,emoteUnlock=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
 local function appliedOutcome(value,replayed)
  if value.type=="MissionRefused" then
@@ -582,7 +604,7 @@ function Service:apply(account,input)
  elseif op.kind=="devFinishMissions" and not self.mock then
   return outcome("error","studio_only")
  end
- local mockBuy=op.kind=="paidChest" or op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack" or op.kind=="paperJar" or op.kind=="matchDouble"
+ local mockBuy=op.kind=="paidChest" or op.kind=="purchasedPaper" or op.kind=="boostIntent" or op.kind=="starterPack" or op.kind=="paperJar" or op.kind=="matchDouble" or op.kind=="emoteUnlock"
  if (op.kind=="paidChest" or op.kind=="starterPack") and self.mock and s.chestPaperAllowed~=true then return outcome("error","chest_paper_unavailable") end
  if mockBuy and not self.mock then return outcome("error","studio_only") end
  if mockBuy and count(s.profile.Data.receiptIds)>=ServerConfig.schema.max_receipts then return outcome("error","receipt_cap") end
@@ -623,6 +645,12 @@ function Service:apply(account,input)
    fields={kind=true,id=true,skinID=true,trailID=true}
   end
   for field in pairs(op) do if not fields[field] then return outcome("error","invalid_operation") end end
+ elseif op.kind=="emotePurchase" or op.kind=="emoteWear" or op.kind=="emoteUnlock" then
+  if type(op.emoteID)~="string" or #op.emoteID>128 then return outcome("error","invalid_operation") end
+  for field in pairs(op) do
+   if field~="kind" and field~="id" and field~="emoteID" then return outcome("error","invalid_operation") end
+  end
+  if op.kind=="emoteUnlock" and Emotes.owns(s.profile.Data.emotes,op.emoteID) then return outcome("error","owned") end
  end
  local advanced,why=self:_advance(s);if not advanced then return outcome("retry",why) end
  -- Composite rewards use the same clock preview as a paid timed boost. Nothing is

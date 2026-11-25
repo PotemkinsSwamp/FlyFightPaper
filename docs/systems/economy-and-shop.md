@@ -130,6 +130,15 @@ Alan's idea is in the [shop plan](../decisions/2026-10-18-shop-plan.md); the det
   goes (how many parts) and what stays (your Paper); you hold the button for 2 seconds to confirm. Part purchases with Robux will say "prestige takes this back".
 - Can't prestige while a refold is still being paid out.
 
+## Emotes
+
+Everyone starts with Toy Pilot for first place and Good Game for second or third. Each player keeps their paid
+emotes and one pick of each kind through prestige. `buyEmote` takes an emote ID and saves the Paper charge and
+ownership together, with no level requirement. `wearEmote` takes an owned emote ID and updates its kind's pick.
+`EmotesOwned` lists the paid IDs in sorted, comma-separated order. `EmoteLeader` and `EmoteRunnerUp` publish the two
+picks as Player attributes, with the free emote as the fallback for each. Paid `emote_<id>` products are disabled
+and unmapped. Studio's `mockProduct` can grant a paid emote without spending Paper. Prices are in `config/emotes.json`.
+
 ## Reference economy check
 The reference match uses six folds, four assists at an assumed 40% damage share (40 points each), no zone
 points, and two paper targets (100 points), with full completion, 50% average winning frequency, ten expected
@@ -342,14 +351,17 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
 | `src/shared/Missions.luau` | Generates daily and weekly missions and handles progress, claims, swaps and rollover. Tests are in `tests/unit/Missions.spec.luau`. |
 | `src/shared/LooksRules.luau` | Skin and Trail chest pools, duplicate values, wearing and bot cosmetics ([skins plan](../plan/SKINS-PLAN.md)) |
+| `src/shared/EmoteRules.luau` | Winners' emote catalog, tier prices, ownership and wear rules |
+| `src/generated/Emotes.luau` | Game copy of `config/emotes.json`, produced by `tools/generate_config.py` |
 | `src/shared/BoostClock.luau` | 2x boost timers (count only while online) |
-| `src/server/HangarService.luau` | Buying parts, the practice shop |
+| `src/server/HangarService.luau` | Buying parts, buying and wearing emotes, the practice shop |
 | `src/client/ShopScreen.luau` | Shop cards and tabs, chest families, daily gift row, starter pack, Paper packs, boost and gift buttons. |
 | `src/server/CommerceService.luau` | Real Roblox purchases: receipts, pass checks, buy prompts (off) |
 | `src/client/GiftMoment.luau` | [A friend's gift arriving](#the-gift-arriving) over the main menu: the board's plane leaves its pin and flies over, the box falls in, Open it!, each Thanks! brings the next gift out, the plane is pinned again (Alan's story 2026-11-13); Studio `DevGiftMoment` / `DevGiftTime` |
 | `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts; late starter bundles |
-| `tests/unit/ShopSave.spec.luau` | Gift rows, starter timing and bundles, first-buy doubles, buy counts, schema migration and Player attributes |
-| `tests/unit/MockShop.spec.luau` | Practice-only guards, typed grants and refusal of individual part products |
+| `tests/unit/Emotes.spec.luau` | Emote IDs, kinds, tier prices, defaults and pure rules |
+| `tests/unit/ShopSave.spec.luau` | Gift rows, starter timing and bundles, first-buy doubles, buy counts, emote purchases, schema migration and Player attributes |
+| `tests/unit/MockShop.spec.luau` | Practice-only guards, typed grants including emotes, and refusal of individual part products |
 | `tests/unit/GiftSave.spec.luau` | Gift catalog, sender receipts, receiver grants, duplicates and schema migration |
 | `tests/unit/GiftCheck.spec.luau` | Friend checks, waiting count, check lifetime, gift refusals and Studio practice sends |
 

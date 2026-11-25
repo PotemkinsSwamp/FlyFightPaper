@@ -4,6 +4,7 @@ local Flight=require(game.ServerScriptService.FlyFightPaper.FlightService) -- it
 local Catalog=require(Root.Shared.Catalog)
 local Schema=require(Root.Shared.ProfileSchema)
 local Looks=require(Root.Shared.LooksRules)
+local Emotes=require(Root.Shared.EmoteRules)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
 function Spec.run()
@@ -46,6 +47,42 @@ function Spec.run()
 			service:handle(player,"openChest",bad)
 		end
 		assert(#profiles.calls==3)
+	end)
+	test("emote buy and wear buttons refuse invalid picks or insufficient Paper before queueing",function()
+		local service,player,profiles,_,profile=fixture()
+		profile.paperMilli=0
+		local before=Schema.canonical(profile)
+		for _,case in {
+			{"buyEmote","CameraFlick","You need more Paper."},{"buyEmote","ToyPilot","You already own it."},
+			{"buyEmote","missing","That can't be bought."},{"wearEmote","Nap","You don't own that yet."},
+			{"wearEmote","missing","You don't own that yet."},
+		} do
+			service:handle(player,case[1],case[2])
+			assert(#profiles.calls==0 and player.attributes.MenuMessage==case[3])
+		end
+		assert(Schema.canonical(profile)==before)
+	end)
+	test("emote buttons queue only the emote id and reply after the save",function()
+		local service,player,profiles,_,profile=fixture()
+		local emote=Emotes.get("CameraFlick")
+		profile.paperMilli=assert(Emotes.price(emote.id)).paper*1000
+		profiles.defer=true
+		local answers=0
+		service.onAnswer=function() answers+=1 end
+		service:handle(player,"buyEmote",emote.id)
+		assert(#profiles.calls==1 and Schema.canonical(profiles.calls[1])==Schema.canonical({kind="emotePurchase",emoteID=emote.id}))
+		assert(answers==0 and not profile.emotes.owned[emote.id])
+		profiles.pending(false,"paper")
+		assert(answers==1 and player.attributes.MenuMessage=="You need more Paper.")
+		service:handle(player,"buyEmote",emote.id)
+		profiles.pending(true)
+		assert(answers==2 and player.attributes.MenuMessage=="Camera Flick is yours!")
+		profile.emotes.owned[emote.id]=true
+		service:handle(player,"wearEmote",emote.id)
+		assert(#profiles.calls==3 and Schema.canonical(profiles.calls[3])==Schema.canonical({kind="emoteWear",emoteID=emote.id}))
+		assert(answers==2 and profile.emotes.leader=="ToyPilot")
+		profiles.pending(true)
+		assert(answers==3 and player.attributes.MenuMessage=="Camera Flick is yours!")
 	end)
 	test("wearing owned looks waits for the save before changing the current pilot and model",function()
 		local service,player,profiles,_,profile=fixture();profile.looks.owned={shark_jet=true,water_spray=true}

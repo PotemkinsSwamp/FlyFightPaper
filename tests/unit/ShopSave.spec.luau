@@ -7,6 +7,7 @@ local Schema=require(Root.Shared.ProfileSchema)
 local Missions=require(Root.Shared.Missions)
 local Commerce=require(Root.Shared.CommerceRules)
 local Economy=require(Root.Shared.EconomyRules)
+local Emotes=require(Root.Shared.EmoteRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local Catalog=require(Root.Shared.Catalog)
 local Fake=require(script.Parent.Parent.fixtures.FakeProfiles)
@@ -50,6 +51,43 @@ local function fixture(options)
 end
 function Spec.run()
  local result,test=Suite.new()
+ test("Paper buys refuse without changing the save and charge exactly once when replayed",function()
+  local cost=assert(Emotes.price("Nap")).paper*Economy.MILLI
+  local f=fixture({setup=function(data)data.paperMilli=cost-1 end})
+  local input={kind="emotePurchase",emoteID="Nap"}
+  local before=Schema.canonical(f.profile.Data)
+  local refused=f:apply(input)
+  assert(refused.status=="error" and refused.code=="paper" and Schema.canonical(f.profile.Data)==before)
+  f.profile.Data.paperMilli=cost+123
+  local bought,op=f:apply(input)
+  assert(bought.status=="ok" and bought.value.type=="EmotePurchased" and bought.value.chargedMilli==cost)
+  assert(f.profile.Data.paperMilli==123 and f.profile.Data.emotes.owned.Nap and f.profile.Data.emotes.runnerUp=="GoodGame")
+  local after=Schema.canonical(f.profile.Data)
+  local replay=f.service:apply("user",op)
+  assert(replay.status=="ok" and replay.replayed and Schema.canonical(f.profile.Data)==after)
+  refused=f:apply(input)
+  assert(refused.status=="error" and refused.code=="owned" and Schema.canonical(f.profile.Data)==after)
+ end)
+ test("worn emotes replicate separately and the paid list stays sorted across rejoin",function()
+  local f=fixture({setup=function(data)
+   data.paperMilli=(assert(Emotes.price("Nap")).paper+assert(Emotes.price("APlus")).paper)*Economy.MILLI
+  end})
+  local attrs=f.player.attributes
+  assert(attrs.EmotesOwned=="" and attrs.EmoteLeader=="ToyPilot" and attrs.EmoteRunnerUp=="GoodGame")
+  for _,id in ipairs({"Nap","APlus"}) do assert(f:apply({kind="emotePurchase",emoteID=id}).status=="ok") end
+  assert(attrs.EmotesOwned=="APlus,Nap" and attrs.EmoteLeader=="ToyPilot" and attrs.EmoteRunnerUp=="GoodGame")
+  local before=Schema.canonical(f.profile.Data)
+  for id,reason in {Doodler="not_owned",missing="unknown"} do
+   local refused=f:apply({kind="emoteWear",emoteID=id})
+   assert(refused.status=="error" and refused.code==reason and Schema.canonical(f.profile.Data)==before)
+  end
+  local worn=f:apply({kind="emoteWear",emoteID="APlus"})
+  assert(worn.status=="ok" and worn.value.type=="EmoteWorn" and attrs.EmoteLeader=="APlus" and attrs.EmoteRunnerUp=="GoodGame")
+  assert(f:apply({kind="emoteWear",emoteID="Nap"}).status=="ok")
+  assert(attrs.EmoteLeader=="APlus" and attrs.EmoteRunnerUp=="Nap")
+  f:rejoin()
+  assert(attrs.EmotesOwned=="APlus,Nap" and attrs.EmoteLeader=="APlus" and attrs.EmoteRunnerUp=="Nap")
+ end)
  test("schema 8 migration adds shop defaults and preserves the entire old save without mutating it",function()
   local f=fixture();local old=assert(Schema.copy(f.profile.Data))
   old.schemaVersion=8;old.dailyGift=nil;old.starterPack=nil;old.firstBuys=nil;old.buysToday=nil;old.paperJarMilli=nil

@@ -119,6 +119,8 @@ function Service:_processReceipt(info)
      player:SetAttribute("MenuMessage",gift and "Sent! "..gift.friendName.." gets it next time they play."
       or "Your gift couldn't be sent, so it's yours instead.")
     elseif gift then player:SetAttribute("MenuMessage","Sent! "..gift.friendName.." gets it next time they play.") end
+   elseif code.type=="EmoteGranted" and code.alreadyOwned then
+    player:SetAttribute("MenuMessage","You already own this emote. The purchase was recorded.")
    end
    return Decisions.PurchaseGranted
   end
@@ -192,6 +194,7 @@ function Service:prompt(player,key)
  if offer.benefit=="look_unlock" then return false,"retired" end -- honor already-paid receipts, never prompt anew
  if offer.benefit=="paper_jar" and view.paperJarMilli<EconomyConfig.paper_jar.min_break_paper*1000 then return false,"jar_low" end
  if offer.benefit=="part_unlock" and view.ownership[offer.catalogID]==true then return false,"owned" end
+ if offer.benefit=="emote_unlock" and Rules.owned(offer,view.boosts,view) then return false,"owned" end
  if Rules.owned(offer,view.boosts) then return false,offer.kind=="pass" and "owned" or "permanent_owned" end
  local ok=pcall(function()
   if offer.kind=="pass" then self.marketplace:PromptGamePassPurchase(player,offer.productID)

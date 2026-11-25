@@ -4,6 +4,7 @@ local JSON=require(Root.Generated.JSONTypes)
 local Config=require(Root.Generated.Commerce)
 local Catalog=require(Root.Shared.Catalog)
 local Economy=require(Root.Shared.EconomyRules)
+local Emotes=require(Root.Shared.EmoteRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
@@ -13,6 +14,7 @@ local function copy(v)
 end
 -- Counted from the config, so adding a skin or trail never needs a number changed here.
 local function lookProducts() local n=0;for _,p in ipairs(Config.products) do if p.benefit=="look_unlock" then n+=1 end end;return n end
+local function emoteProducts() local n=0;for _,emote in Emotes.list() do if Emotes.price(emote.id) then n+=1 end end;return n end
 local function boosts() return {xpSeconds=1800,paperSeconds=900,permanentXP=false,permanentPaper=false} end
 function Spec.run()
     local result,test=Suite.new()
@@ -77,14 +79,14 @@ function Spec.run()
                 assert(offer.amount==nil and table.isfrozen(offer))
             else assert(offer==nil) end
         end
-        assert(#c.offers==53+count+lookProducts())
+        assert(#c.offers==53+count+lookProducts()+emoteProducts())
         local fixed=0;for _,offer in ipairs(c.offers) do if offer.benefit~="part_unlock" and offer.benefit~="look_unlock" then fixed+=1 end end
-        assert(fixed==53)
+        assert(fixed==53+emoteProducts())
     end)
     test("zero or additional part offers are accepted without a Catalog dependency",function()
         local raw=copy(Config)
         for i=#raw.products,1,-1 do if raw.products[i].benefit=="part_unlock" then table.remove(raw.products,i) end end
-        assert(#assert(Rules.catalog(raw)).offers==53+lookProducts())
+        assert(#assert(Rules.catalog(raw)).offers==53+lookProducts()+emoteProducts())
         table.insert(raw.products,{key="part_future_part",kind="developer_product",benefit="part_unlock",catalog_id="future_part",
             roblox_product_id=JSON.Null,approved_robux_price=JSON.Null,enabled=false})
         local offer=assert(Rules.catalog(raw)).byKey.part_future_part
@@ -177,6 +179,21 @@ function Spec.run()
         local raw=copy(Config); local c=assert(Rules.catalog(raw)); raw.products[1].amount=1
         assert(c.offers[1].amount==900 and table.isfrozen(c) and table.isfrozen(c.offers[1]))
         assert(not pcall(function() c.offers[1].amount=1 end))
+    end)
+    test("only paid emotes have product keys, and every mapping is disabled and unmapped",function()
+        local c=assert(Rules.catalog(Config))
+        local profile={emotes={owned={Nap=true}}}
+        for _,emote in Emotes.list() do
+            local key="emote_"..emote.id
+            local offer=c.byKey[key]
+            if Emotes.price(emote.id) then
+                assert(offer and offer.emoteID==emote.id and offer.benefit=="emote_unlock" and offer.kind=="developer_product")
+                assert(not offer.enabled and offer.productID==nil and offer.approvedPrice==nil)
+                local grant=Rules.operation(offer)
+                assert(grant.kind=="emoteUnlock" and grant.emoteID==emote.id)
+                assert(Rules.owned(offer,boosts(),profile)==(emote.id=="Nap"))
+            else assert(offer==nil) end
+        end
     end)
     test("typed semantic operations contain no XP for purchased Paper and no client CAS or amount path",function()
         local c=assert(Rules.catalog(Config))

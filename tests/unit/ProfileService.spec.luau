@@ -465,6 +465,7 @@ function Spec.run()
  test("prestige resets seen unlocks to the new level and preserves all unrelated saved progress",function()
   local service,profile,catalog=fixture()
   profile.Data.unlocksSeen=EconomyConfig.level_cap
+  profile.Data.emotes={owned={APlus=true,Nap=true},leader="APlus",runnerUp="Nap"}
   assert(service:view("user").value.prestige==0)
   local before=assert(Schema.copy(profile.Data));local op=assert(service:prepare("user",{kind="prestige"}))
   local applied=service:apply("user",op)
@@ -479,6 +480,7 @@ function Spec.run()
   local view=service:view("user").value
   assert(view.prestige==1 and table.isfrozen(view) and profile.writes==0)
   assert(view.unlocksSeen==Economy.levelForXP(view.xpMilli) and view.unlocksSeen<before.unlocksSeen)
+  assert(Schema.canonical(view.emotes)==Schema.canonical(before.emotes),"prestige changed the emotes")
   assert(view.rangeSlot==4 and Schema.canonical(view.rangePresets)==Schema.canonical(before.rangePresets),"prestige changed the Range builds")
  end)
  test("retrying a prestige operation applies it once even after earning back the level cap",function()

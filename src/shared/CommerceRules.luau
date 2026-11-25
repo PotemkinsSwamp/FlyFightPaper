@@ -3,6 +3,7 @@ local Root = game:GetService("ReplicatedStorage"):WaitForChild("FlyFightPaper")
 local JSON = require(Root.Generated.JSONTypes)
 local EconomyConfig = require(Root.Generated.Economy)
 local Looks = require(script.Parent.LooksRules)
+local Emotes = require(script.Parent.EmoteRules)
 local Rules = {}
 local MAX = 9007199254740991
 Rules.MATCH_DOUBLE_STEPS = table.freeze({10,15,25,35,49,69,99,149,199,249,299})
@@ -12,6 +13,11 @@ for _, chest in Looks.config().chests do
     local key="chest_"..chest.id
     expected[key]={kind="developer_product", benefit="chest_stock"}
     chestKeys[key]=chest.id
+end
+for _, emote in Emotes.list() do
+    if Emotes.price(emote.id) then
+        expected["emote_"..emote.id]={kind="developer_product",benefit="emote_unlock",emoteID=emote.id}
+    end
 end
 for _, resource in ipairs({"xp", "paper"}) do
     for _, minutes in ipairs({15, 30, 60, 180, 300}) do
@@ -101,12 +107,14 @@ function Rules.catalog(config)
     local fields={key=true,kind=true,benefit=true,amount=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     local partFields={key=true,kind=true,benefit=true,catalog_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     local lookFields={key=true,kind=true,benefit=true,look_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
+    local emoteFields={key=true,kind=true,benefit=true,emote_id=true,roblox_product_id=true,approved_robux_price=true,enabled=true}
     for i=1,n do
         local p=config.products[i]
         if type(p)~="table" then return nil,"malformed_offer" end
         local part=p.benefit=="part_unlock"
         local look=p.benefit=="look_unlock"
-        local allowedFields=part and partFields or look and lookFields or fields
+        local emote=p.benefit=="emote_unlock"
+        local allowedFields=part and partFields or look and lookFields or emote and emoteFields or fields
         for k in pairs(p) do if not allowedFields[k] then return nil,"unknown_offer_field" end end
         if part then
             if p.kind~="developer_product" or type(p.catalog_id)~="string" or #p.catalog_id==0
@@ -117,7 +125,7 @@ function Rules.catalog(config)
                 or p.key~="look_"..p.look_id or type(p.enabled)~="boolean" then return nil,"invalid_look_offer" end
         else
             local e=expected[p.key]
-            if not e or p.kind~=e.kind or p.benefit~=e.benefit or p.amount~=e.amount or type(p.enabled)~="boolean" then
+            if not e or p.kind~=e.kind or p.benefit~=e.benefit or p.amount~=e.amount or p.emote_id~=e.emoteID or type(p.enabled)~="boolean" then
                 return nil,"immutable_offer_mismatch"
             end
         end
@@ -129,7 +137,7 @@ function Rules.catalog(config)
             or (idNull~=priceNull and not ((look or chestKeys[p.key]) and idNull and not priceNull and p.enabled==false))
             or (p.enabled and idNull) then return nil,"invalid_mapping" end
         local offer=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,catalogID=p.catalog_id,
-            lookID=p.look_id,chestID=chestKeys[p.key],
+            lookID=p.look_id,emoteID=p.emote_id,chestID=chestKeys[p.key],
             enabled=p.enabled,productID=not idNull and p.roblox_product_id or nil,
             approvedPrice=not priceNull and p.approved_robux_price or nil})
         if offer.productID then
@@ -148,6 +156,7 @@ function Rules.resource(offer)
 end
 function Rules.owned(offer,boosts,profile)
     if offer.benefit=="look_unlock" then return Looks.owns(profile,offer.lookID) end
+    if offer.benefit=="emote_unlock" then return Emotes.owns(type(profile)=="table" and profile.emotes,offer.emoteID) end
     if offer.benefit=="part_unlock" then return type(profile)=="table" and type(profile.ownership)=="table" and profile.ownership[offer.catalogID]==true or false end
     local resource=Rules.resource(offer)
     return resource and boosts[resource=="xp" and "permanentXP" or "permanentPaper"]==true or false
@@ -156,6 +165,7 @@ function Rules.operation(offer,source,version)
     if Rules.giftBase(offer.key) then return table.freeze({kind="giftSent"}) end
     if offer.benefit=="part_unlock" then return table.freeze({kind="partUnlock",catalogID=offer.catalogID}) end
     if offer.benefit=="look_unlock" then return table.freeze({kind="lookUnlock",lookID=offer.lookID}) end
+    if offer.benefit=="emote_unlock" then return table.freeze({kind="emoteUnlock",emoteID=offer.emoteID}) end
     if offer.benefit=="chest_stock" then return table.freeze({kind="paidChest",chest=offer.chestID}) end
     if offer.benefit=="starter_pack" then return table.freeze({kind="starterPack"}) end
     if offer.benefit=="paper_jar" then return table.freeze({kind="paperJar"}) end
@@ -175,11 +185,12 @@ function Rules.preview(catalog,boosts,profile)
     local offers={}
     for i,p in ipairs(catalog.offers) do
         local owned=Rules.owned(p,boosts,profile)
-        local unlock=p.benefit=="part_unlock" or p.benefit=="look_unlock"
+        local retired=p.benefit=="part_unlock" or p.benefit=="look_unlock"
+        local unlock=retired or p.benefit=="emote_unlock"
         offers[i]=table.freeze({key=p.key,kind=p.kind,benefit=p.benefit,amount=p.amount,catalogID=p.catalogID,
-            lookID=p.lookID,owned=owned,
+            lookID=p.lookID,emoteID=p.emoteID,owned=owned,
             label=catalog.mode=="mock" and "DEVELOPMENT ONLY - no real purchase" or "Live checkout unavailable",
-            available=catalog.mode=="mock" and not unlock and not owned,ownedPermanent=owned and not unlock,
+            available=catalog.mode=="mock" and not retired and not owned,ownedPermanent=owned and not unlock,
             reason=owned and (unlock and "owned" or "permanent_owned") or (catalog.mode~="mock" and "live_request_unavailable" or nil),
             onlineTime=p.benefit=="xp_seconds" or p.benefit=="paper_seconds"})
     end

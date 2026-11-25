@@ -6,6 +6,11 @@ lost if a save fails for a moment; it retries without stopping the match for eve
 
 ## Where it stands (2026-11-18)
 
+Schema 17 adds `emotes`. Its `owned` map holds paid emote IDs with value `true`. `leader` and `runnerUp` hold
+the equipped IDs. New and older saves start with `{ owned = {}, leader = "ToyPilot", runnerUp = "GoodGame" }`.
+An invalid equipped pick falls back to its free emote when the save loads.
+[Emote rules and Player attributes](economy-and-shop.md#emotes).
+
 Schema 16 adds `missions` and removes the retired chest progress counter. Existing saves start with empty mission lists and retain all earned and purchased chest stock. A missed gift day resets the next claim. The server saves ownership or a duplicate refund with the Paper charge or consumed chest. It records the latest opening number so repeat clicks cannot spend twice. A paid chest receipt grants the unopened chest and receipt ID together before it is acknowledged. [Chest rules](economy-and-shop.md#classroom-treasure-chests).
 
 A separate index counts distinct owners from saved collections across servers. It imports older collections in batches and retries interrupted updates. The reveal shows the recorded count once available. Reopening the same item never adds a second owner. Studio keeps its counts in memory for the Play session.

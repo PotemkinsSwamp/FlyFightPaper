@@ -354,7 +354,7 @@ function Spec.run()
   assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted and f.profile.Data.boosts.xpSeconds==900)
  end)
  test("all developer products use their catalog benefits including part ownership",function()
-  local f=fixture();local paper,xp,xpSeconds,paperSeconds,n,parts,looks=0,0,0,0,0,0,0
+  local f=fixture();local paper,xp,xpSeconds,paperSeconds,n,parts,looks,emotes=0,0,0,0,0,0,0,0
   for _,offer in ipairs(f.commerce.catalog.offers) do
    if offer.kind=="developer_product" then
     n+=1
@@ -383,17 +383,37 @@ function Spec.run()
     elseif offer.benefit=="look_unlock" then
      assert(f.profile.LastSavedData.looks.owned[offer.lookID])
      looks+=1
+    elseif offer.benefit=="emote_unlock" then
+     assert(f.profile.LastSavedData.emotes.owned[offer.emoteID])
+     emotes+=1
     else
      assert(offer.benefit=="part_unlock" and f.profile.LastSavedData.ownership[offer.catalogID])
      parts+=1
     end
    end
   end
-  assert(parts>0 and looks==16 and n==51+parts+looks and n==#f.commerce.catalog.offers-2)
+  assert(parts>0 and looks==16 and emotes==14 and n==51+parts+looks+emotes and n==#f.commerce.catalog.offers-2)
   assert(f.profile.LastSavedData.paperMilli==paper and f.profile.LastSavedData.purchasedPaperMilli==paper)
   assert(f.profile.LastSavedData.xpMilli==xp)
   assert(f.profile.LastSavedData.boosts.xpSeconds==xpSeconds and f.profile.LastSavedData.boosts.paperSeconds==paperSeconds)
   for i=2,#f.saveTimes do assert(f.saveTimes[i]-f.saveTimes[i-1]>=2,"receipts must share the save cooldown") end
+ end)
+ test("a racing emote receipt is recorded and reported once even if the player already owns the emote",function()
+  local f=fixture();f.profile.Data.emotes.owned.Nap=true
+  local ok,why=f.commerce:prompt(f.player,"emote_Nap")
+  assert(not ok and why=="owned" and #f.marketplace.calls==0)
+  local info=f:receipt("emote_Nap","racing/emote")
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  local applied=f.outcomes[#f.outcomes].value
+  local saved=f.profile.LastSavedData
+  assert(applied.type=="EmoteGranted" and applied.emoteID=="Nap" and applied.alreadyOwned==true)
+  assert(saved.receiptIds[Profile.receiptKey(info.PurchaseId)] and saved.emotes.owned.Nap)
+  assert(saved.paperMilli==0 and saved.emotes.runnerUp=="GoodGame" and saved.buysToday.count==1)
+  assert(f.player.attributes.MenuMessage=="You already own this emote. The purchase was recorded.")
+  f.player.attributes.MenuMessage=nil
+  assert(f.commerce:processReceipt(info)==Decisions.PurchaseGranted)
+  assert(f.outcomes[#f.outcomes].value.type=="ReceiptAlreadyGranted")
+  assert(f.profile.LastSavedData.buysToday.count==1 and f.player.attributes.MenuMessage==nil)
  end)
  test("overlapping deliveries of the same unsaved receipt both acknowledge one durable grant",function()
   local f=fixture();local info=f:receipt("paper_pack_1500","overlapping/receipt");local second

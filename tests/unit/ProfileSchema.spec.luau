@@ -22,7 +22,7 @@ function Spec.run()
 		assert(p.schemaVersion==Schema.VERSION and p.prestige==0 and next(p.lessons)==nil)
 		assert(type(p.doubleLocks)=="table" and next(p.doubleLocks)==nil)
 	end)
-	test("schema 14 keeps earned chests and the current daily gift through schema 16",function()
+	test("schema 14 keeps earned chests and the current daily gift through later migrations",function()
 		local old=Schema.defaults(catalog)
 		old.schemaVersion=14
 		old.missions=nil
@@ -43,19 +43,46 @@ function Spec.run()
 		old.chests.stock.sticker=3;old.chests.paidStock.trail_sticker=2
 		old.paperMilli=123456;old.extensions={keep=true}
 		local before=Schema.canonical(old)
-		local expected=assert(Schema.copy(old));expected.schemaVersion=16
+		local expected=assert(Schema.copy(old));expected.schemaVersion=Schema.VERSION
 		expected.missions=Missions.defaults();expected.chests.progress=nil
 		local migrated=assert(Schema.migrate(old,catalog))
 		assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
 		migrated.missions.dailySwaps=1
 		assert(not Schema.validate(migrated,catalog) and fresh().missions.dailySwaps==0)
 	end)
+	test("schema 16 adds two free emote picks and preserves every old field",function()
+		local old=fresh();old.schemaVersion=16;old.emotes=nil
+		old.paperMilli=123456;old.looks.owned.confetti=true;old.looks.trail="confetti"
+		old.dailyGift={next=6,lastDay=20700};old.receiptIds.earlier=true
+		local before=Schema.canonical(old)
+		local expected=assert(Schema.copy(old));expected.schemaVersion=17
+		expected.emotes={owned={},leader="ToyPilot",runnerUp="GoodGame"}
+		local migrated=assert(Schema.migrate(Schema.freeze(old),catalog))
+		assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
+		migrated.emotes.owned.Nap=true
+		assert(next(fresh().emotes.owned)==nil)
+	end)
+	test("emote saves require a paid ownership set and valid picks for both slots",function()
+		for _,change in ipairs({
+			function(p) p.emotes=nil end,
+			function(p) p.emotes.owned.ToyPilot=true end,
+			function(p) p.emotes.owned.missing=true end,
+			function(p) p.emotes.owned.Nap=false end,
+			function(p) p.emotes.runnerUp="Nap" end,
+			function(p) p.emotes.owned.Nap=true; p.emotes.leader="Nap" end,
+		}) do
+			local p=fresh();change(p);assert(not Schema.validate(p,catalog))
+		end
+		local p=fresh();p.emotes.owned.Nap=true;p.emotes.leader="Nap";p.emotes.runnerUp="missing"
+		local migrated=assert(Schema.migrate(p,catalog))
+		assert(migrated.emotes.owned.Nap and migrated.emotes.leader=="ToyPilot" and migrated.emotes.runnerUp=="GoodGame")
+	end)
 	test("schema 10 migration adds empty double locks without changing the old save",function()
 		local p=fresh();p.schemaVersion=10;p.doubleLocks=nil;p.paperMilli=123456;p.extensions={keep=true}
 		local before=Schema.canonical(p);local expected=assert(Schema.copy(p))
 		expected.schemaVersion=Schema.VERSION;expected.doubleLocks={}
 		local migrated=assert(Schema.migrate(Schema.freeze(p),catalog))
-		assert(Schema.VERSION==16 and Schema.canonical(migrated)==Schema.canonical(expected))
+		assert(Schema.canonical(migrated)==Schema.canonical(expected))
 		assert(Schema.canonical(p)==before and not Schema.validate(p,catalog))
 		assert(Schema.canonical(assert(Schema.migrate(migrated,catalog)))==Schema.canonical(migrated))
 	end)

@@ -5,6 +5,7 @@ local Schema=require(Root.Shared.ProfileSchema)
 local Economy=require(Root.Shared.EconomyRules)
 local Missions=require(Root.Shared.Missions)
 local Looks=require(Root.Shared.LooksRules)
+local Emotes=require(Root.Shared.EmoteRules)
 local Commerce=require(Root.Generated.Commerce)
 local EconomyConfig=require(Root.Generated.Economy)
 local CommerceRules=require(Root.Shared.CommerceRules)
@@ -266,6 +267,22 @@ function Service:handle(player,action,value)
    if p then self.flight:wear(p,skinID~="" and skinID or nil,trailID~="" and trailID or nil) end
    if self.onAnswer then self.onAnswer(player) end
   end)
+ elseif action=="buyEmote" then
+  if type(value)~="string" or #value>128 then return end
+  local reasons={unknown="That can't be bought.",free="You already own it.",owned="You already own it.",paper="You need more Paper."}
+  local legal,reason=Emotes.buy(profile.emotes,value,math.floor(profile.paperMilli/Economy.MILLI))
+  if not legal then self:message(player,reasons[reason]);return end
+  self:enqueue(player,{kind="emotePurchase",emoteID=value},function(ok,result)
+   self:message(player,ok and (Emotes.get(value).name.." is yours!") or reasons[result] or "Emote purchase was not completed.")
+  end)
+ elseif action=="wearEmote" then
+  if type(value)~="string" or #value>128 then return end
+  if not Emotes.wear(profile.emotes,value) then self:message(player,"You don't own that yet.");return end
+  self:enqueue(player,{kind="emoteWear",emoteID=value},function(ok,result)
+   if not ok then
+    self:message(player,(result=="unknown" or result=="not_owned") and "You don't own that yet." or "Could not save that emote. Try again.")
+   elseif self.onAnswer then self.onAnswer(player) end
+  end)
  elseif action=="prestige" then
   -- From the menus only (docs/systems/economy-and-shop.md "Prestige"); the save rules re-check everything.
   if player:GetAttribute("InMatch") then self:message(player,"Prestige from the main menu.");return end
@@ -356,6 +373,9 @@ function Service:handle(player,action,value)
    self:message(player,"Part checkout is unavailable in the practice shop.");return
   elseif product.benefit=="look_unlock" then
    self:message(player,"Skin and trail checkout is unavailable in the practice shop.");return
+  elseif product.benefit=="emote_unlock" then
+   if Emotes.owns(profile.emotes,product.emote_id) then self:message(player,"You already own it.");return end
+   input={kind="emoteUnlock",emoteID=product.emote_id}
   else
    local resource=product.benefit:find("xp") and "xp" or "paper"
    local permanent=product.benefit:find("permanent")~=nil
@@ -365,7 +385,11 @@ function Service:handle(player,action,value)
    input={kind="boostIntent",resource=resource,action=permanent and "permanent" or "duration"}
    if not permanent then input.seconds=product.amount end
   end
-  self:enqueue(player,input,function(ok,result)self:message(player,ok and "Development simulation complete. No real purchase." or result=="jar_low" and "Your Paper jar breaks at 3,000 Paper. Play a match to fill it." or "Development simulation failed.")end)
+  self:enqueue(player,input,function(ok,result)
+   self:message(player,ok and "Development simulation complete. No real purchase."
+    or result=="jar_low" and "Your Paper jar breaks at 3,000 Paper. Play a match to fill it."
+    or result=="owned" and "You already own it." or "Development simulation failed.")
+  end)
  end
 end
 return Service

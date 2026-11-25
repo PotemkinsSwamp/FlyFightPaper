@@ -1,0 +1,25 @@
+{
+  "tiers": {
+    "good": {"paper": 2800, "robux": 135},
+    "cool": {"paper": 5600, "robux": 269},
+    "best": {"paper": 30000, "robux": 599}
+  },
+  "emotes": [
+    {"id":"ToyPilot","kind":"leader","name":"Toy Pilot","tier":"free"},
+    {"id":"CameraFlick","kind":"leader","name":"Camera Flick","tier":"cool"},
+    {"id":"BookKicker","kind":"leader","name":"Book Kicker","tier":"best"},
+    {"id":"Bubblegum","kind":"leader","name":"Bubblegum","tier":"best"},
+    {"id":"Magician","kind":"leader","name":"Magician","tier":"best"},
+    {"id":"APlus","kind":"leader","name":"A+","tier":"cool"},
+    {"id":"SkeetShoot","kind":"leader","name":"Skeet Shoot","tier":"cool"},
+    {"id":"FoldItUp","kind":"leader","name":"Fold It Up","tier":"best"},
+    {"id":"GoodGame","kind":"runner_up","name":"Good Game","tier":"free"},
+    {"id":"Nap","kind":"runner_up","name":"Nap","tier":"good"},
+    {"id":"NextOne","kind":"runner_up","name":"Next One","tier":"good"},
+    {"id":"SoClose","kind":"runner_up","name":"So Close","tier":"good"},
+    {"id":"SneakyToss","kind":"runner_up","name":"Sneaky Toss","tier":"cool"},
+    {"id":"SoreLoser","kind":"runner_up","name":"Sore Loser","tier":"good"},
+    {"id":"TestFlight","kind":"runner_up","name":"Test Flight","tier":"cool"},
+    {"id":"Doodler","kind":"runner_up","name":"Doodler","tier":"cool"}
+  ]
+}
