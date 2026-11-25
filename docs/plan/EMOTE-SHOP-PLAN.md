@@ -112,15 +112,45 @@ per dollar from [pricing research](../research/PRICING-RESEARCH-2026-10-18.md).
 - Code: the page `src/client/EmoteShop.luau`; the TV `Cutscene.tv` in `src/client/WinnersCutscene.luau`; who does
   which emote `Cutscene.choose`; rules and saving on [economy and shop](../systems/economy-and-shop.md).
 
+## The page's picture (2026-11-25)
+Alan's words: "don't reuse the menu background ... a classroom like the reference images I gave you, it looks like the
+TV was rolled in the classroom"; "the chalkboards and the TV need detail". **Not yet seen by him.**
+- **One painting, by Codex** (his ChatGPT plan, two jobs of about 76,000 tokens each), painted over a flat layout guide
+  so every shape lands where the page needs it; the glass comes back as flat pink and is cut out as the hole. Files:
+  `assets/ui/emoteshop/raw/` (`layout-guide-2.png`, `brief-2.txt`, `classroom-room-a.png` the pick, `-b` a spare;
+  `classroom-tv-*.png` is the first try). Assembled pictures and the scripts that make them:
+  `.planning/emote-shop/` (`room-a-*.png`, `compose2.py`).
+- **First try, turned down by the reviewer and by me:** one chalkboard filling the wall, the cart cut off at its top
+  shelf. It read as chalkboard wallpaper, not a room; the TV came out bronze; no floor, no wheels.
+- **Second try, the one to show:** a room in one-point perspective (the wall flat to the viewer, the floor running back
+  to it). A green chalkboard left (Leader emotes) and a blue bulletin board right (Runner-up emotes), a bookshelf and a
+  pupil's desk under them, a wall clock, a black box TV whose top is seen from a little above, on a black cart with a
+  VCR slot, a plain cabinet front and caster wheels on the floor.
+- **Layout numbers that change with it** (sheet pixels; not in the code until his OK): glass 600 x 450 (was 640 x 480),
+  still dead centre; cards 166 x 127 in three columns, eight cards and one painted doodle a board (was 196 boxes, two
+  columns, four rows: that needs boards down to the floor); a pin on each card (`hud.pinRed` / `pinBlue`, loaded);
+  the name, the line and the two buttons on the cart's cabinet front; "Your Paper" on a tape label. Codex drew the
+  boards 40 pixels short on their outer sides; they are moved out by stretching plain slate and blue paper, nothing
+  redrawn. The painting covers 100 sheet pixels above and below the page for taller screens; wider screens (phones)
+  still need the sides extended.
+- **Found on the way, in the page as built:** the two buy buttons run 22 pixels off the bottom of a 16:9 screen, and a
+  card's still and price poke past its paper (a 316 x 241 picture fitted in a 196 square). Both go away with the new
+  layout.
+- **Still short, by the second independent review (its "no"):** the cart reads as a TV cabinet, not the open rolling
+  cart of photos 1 and 2 (photo 4's cart has a cabinet), and it is as heavy as the TV; the casters touch the bottom
+  edge of a 16:9 screen; card words are small (name 22, price 20; were 27 and 24); a lot of plain wall; the switched-off
+  TV is a dark mass the eye reaches last. Two of these are choices for Alan: a smaller TV on a tall open cart, and
+  bigger cards with less room showing. Contrast measured on the picture: every word 5.4:1 or better; cards on the
+  chalkboard 4.0:1, on the blue board 2.8:1 (the 3:1 rule is just missed there).
+- **The chalkboards are part of the new painting, not the Shop's loaded chalkboard** (the Shop's is one wide board in
+  four tiles, the wrong shape; drawn in, they add no download). His to reverse.
+- **Load cost when it goes up:** one picture in four tiles (as the main menu's background is), with a see-through
+  middle; nothing else new: cards, pins, tape, strips and the X are already loaded.
+
 ## Build order
 1. ~~A free test of the TV picture~~, ~~saving~~, ~~the page~~, ~~his first look~~: done.
-2. **The page's pictures: Alan's go for Codex, 2026-11-25.** "Don't reuse the menu background, we need a new
-   background ... a background that looks like a classroom like the reference images I gave you, it looks like the TV
-   was rolled in the classroom." So: a new classroom background (wall, floor, the room of his four photos, in our
-   hand-made paper and crayon look) with the box TV on its cart standing in it; the glass is cut out of the finished
-   picture, exactly in the middle of the page. Codex draws on his ChatGPT plan (no extra cost). He sees it assembled
-   in the page first; the upload is on his go. Not started. Open with him: whether the two chalkboards are part of
-   the new picture or the Shop's loaded chalkboard.
+2. **The page's picture: drawn and assembled, waiting for Alan's OK** (see "The page's picture" below). Then the
+   upload on his go, then the wire-in.
 3. His look at the framing and the new door.
 4. The TV's switch-on sound: three licensed candidates on a Dev button, his pick by ear. The emote's sounds quieter.
 5. The card stills (props, the sixteen moments).
