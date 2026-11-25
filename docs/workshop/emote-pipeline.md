@@ -12,6 +12,10 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 | Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 6, approved by Alan on the second recording (2026-11-24: "its good upload it"); three clips and the shot sound uploaded and wired in on his go ("go both"); the drafts are out of the open place; waits for his own Play ("end:" button for Skeet Shoot) |
 | A+ | [a-plus](emotes/a-plus.md) | 6, approved by Alan on the third recording (2026-11-24: "its good upload it"); the clip and two sounds uploaded and wired in on his go ("go both"); the draft is out of the open place; a team match not yet recorded. From his own Play (2026-11-24): the card is now the real report card (the kid's own team's) with a red-pen A+ and smiley on its back; "the emotes were fine now. They're good." |
 | Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, approved by Alan on the ninth recording (2026-11-24: "that looks good, upload it"); the body clip and five sounds uploaded and wired in on his go ("go and upload"), the drawing uploaded before; the draft is out of the open place. From his own Play (2026-11-24): the hands rubbed with straight arms at the waist; now bent to the chest in the game, a slow scheming rub before the grab and a loose brush-off after the toss; "the emotes were fine now. They're good." |
+| Sore Loser | [sore-loser](emotes/sore-loser.md) | 1, the card is written (2026-11-24); waits for Alan's OK |
+| Doodler | [doodler](emotes/doodler.md) | 1, the card is written (2026-11-24); waits for Alan's OK |
+| Sneaky Toss | [sneaky-toss](emotes/sneaky-toss.md) | 1, the card is written (2026-11-24); waits for Alan's OK |
+| Test Flight | [test-flight](emotes/test-flight.md) | 1, the card is written (2026-11-24); waits for Alan's OK |
 
 The primary session keeps this table; a side session reports its step in its own page.
 

@@ -61,12 +61,13 @@ and edgy like Camera Flick and Book Kicker.
 | Good Game (free) | A small clap and a wave |
 | Next One (Alan) | Sits on the books folding a new paper plane |
 | So Close (Alan) | Sits on the books shaking their head, sad not to be 1st |
-| Slow Clap | A slow, sarcastic clap |
 | Sore Loser | Arms crossed, back turned to 1st, sneaking looks over the shoulder |
 | Doodler | Scribbles in a notebook, then holds up a drawing of themselves in 1st. **Stick figures** (Alan): a child drew it |
 | Nap | Asleep on the books with little Z's |
 | Test Flight | Tosses a tiny plane that loops and comes back to their hand |
-| Sneaky Toss | Lobs a paper ball toward 1st, then looks away whistling |
+| Sneaky Toss | Lobs a paper ball toward 1st, then looks away whistling. The ball misses and goes off to the side behind them (Alan 2026-11-24) |
+
+Dropped: Slow Clap (a slow, sarcastic clap): Good Game already is one ([the second four](../decisions/2026-11-24-four-more-runner-up-emotes.md)).
 
 ## The first five (Alan's pick, 2026-11-19)
 Toy Pilot, Camera Flick, Good Game, Next One, Nap. **Camera Flick proves the process first**: Alan looks at a couple
