@@ -6,9 +6,11 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Tosses a tiny plane that loops and comes back to their hand.
 
 ## Where it stands
-**Step 1: the card is written and waits for Alan's OK** (2026-11-24). Nothing is made.
+**Step 2 done: Alan's OK on the card** (2026-11-24). Next: step 3, the reference video (his go on the price first). Nothing is made.
 
 ## Shot card
+**Alan's OK (2026-11-24):** "For test flight, I think they should be sitting." The other pick not named, so my default: the last flight circles behind the head.
+
 **The feeling, in one line:** "Whatever. I've still got the best plane." Relaxed and playful, quietly showing off.
 
 **How the body carries it** (faces cannot): loose and unhurried. The throw is a lazy flick from the wrist, not a

@@ -6,9 +6,11 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Scribbles in a notebook, then holds up a drawing of themselves in 1st. Stick figures: a child drew it (Alan).
 
 ## Where it stands
-**Step 1: the card is written and waits for Alan's OK** (2026-11-24). Nothing is made.
+**Step 2 done: Alan's OK on the card** (2026-11-24). Next: step 3, the reference video (his go on the price first). Nothing is made.
 
 ## Shot card
+**Alan's OK (2026-11-24):** "Doodler looks good." No pick named, so my defaults: the kid alone in the drawing, silent.
+
 **The feeling, in one line:** "In my head, I won." Lost in a daydream, then proud of the drawing and a little cheeky.
 
 **How the body carries it** (faces cannot): hunched over the notebook, head down, shut off from the room. The pencil

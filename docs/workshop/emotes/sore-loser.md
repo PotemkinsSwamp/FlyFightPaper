@@ -6,9 +6,11 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Arms crossed, back turned to 1st, sneaking looks over the shoulder.
 
 ## Where it stands
-**Step 1: the card is written and waits for Alan's OK** (2026-11-24). Nothing is made.
+**Step 2 done: Alan's OK on the card** (2026-11-24). Next: step 3, the reference video (his go on the price first). Nothing is made.
 
 ## Shot card
+**Alan's OK (2026-11-24):** "Sore loser looks good." No pick named, so my defaults: standing, silent.
+
 **The feeling, in one line:** "It's not fair. I should have won." Jealous and sulking, pretending not to care.
 
 **How the body carries it** (faces cannot): stiff and held. The kid stands turned away from 1st, side-on to the

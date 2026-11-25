@@ -65,7 +65,7 @@ and edgy like Camera Flick and Book Kicker.
 | Doodler | Scribbles in a notebook, then holds up a drawing of themselves in 1st. **Stick figures** (Alan): a child drew it |
 | Nap | Asleep on the books with little Z's |
 | Test Flight | Tosses a tiny plane that loops and comes back to their hand |
-| Sneaky Toss | Lobs a paper ball toward 1st, then looks away whistling. The ball misses and goes off to the side behind them (Alan 2026-11-24) |
+| Sneaky Toss | Lobs a paper ball toward 1st, then acts innocent with the whole body: hands behind the back, rocking, looking away, shifty looks (no whistling, Alan 2026-11-24). The ball misses and goes off to the side behind them (Alan 2026-11-24) |
 
 Dropped: Slow Clap (a slow, sarcastic clap): Good Game already is one ([the second four](../decisions/2026-11-24-four-more-runner-up-emotes.md)).
 
