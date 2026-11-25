@@ -97,8 +97,9 @@ per dollar from [pricing research](../research/PRICING-RESEARCH-2026-10-18.md).
 - **The door is an "Emotes" strip on the main menu, under Shop and Missions** (Alan 2026-11-25: "the emotes
   shouldn't be in the shop"); those two were made smaller to fit it. The page's X goes back to the main menu. No door
   in the Customize binder: its index tabs are full.
-- **The wall, the two boards, the TV and its cart are flat colours**, which Alan found boring: "It needs work",
-  drawn 2D pictures preferred. Next: the pictures (see "Build order").
+- **The wall, the two boards, the TV and its cart were flat colours** until 2026-11-25; they are now one painting
+  (see "The page's picture"), and the layout follows it: cards three across on each board, the name and the buttons
+  on the cart's front, the glass 600 x 450.
 - **A card's still is your own character held at one moment of the emote's body clip, without props** (no plane,
   bubble or book): `TV.POSE` in `src/client/WinnersCutscene.luau`, sixteen guessed moments to tune by eye.
 - **On the TV** a Leader emote plays as 1st alone; a Runner-up emote as 2nd alone, with a 1st that is not there;
@@ -152,10 +153,19 @@ must look as good (background, lighting, textures). The four upload tiles are cu
 
 ## Build order
 1. ~~A free test of the TV picture~~, ~~saving~~, ~~the page~~, ~~his first look~~: done.
-2. **The page's picture: approved; the upload waits for his go**, then the wire-in (new layout numbers, the picture's
-   four tiles, edges stretched for wider and taller screens).
-2b. **The TV's own picture** (his ask, 2026-11-25): today's set is seven flat slabs (`TV.room`). A better set shown to
-   him first, built in Edit and photographed into the page's glass; not started (he was in Play).
+2. ~~The page's picture~~: approved, uploaded on his go (four tiles, free, in Roblox's review) and wired into
+   `src/client/EmoteShop.luau` with the new layout, 2026-11-25. Compiles in Edit; **not yet seen in Play by anyone**.
+   Wider and taller screens get the painting's outermost pixels stretched (no extra pictures); not looked at on a phone.
+2b. **The TV's own picture** (his ask and his go on the plan, 2026-11-25: "nice background, lighting, textures").
+   Today's set is seven flat slabs (`TV.room` in `src/client/WinnersCutscene.luau`). Plan he OK'd: the kid on the
+   teacher's desk in front of a real chalkboard, chalk stars and a burst behind, a few of the room's own 3D things at
+   the sides, a soft light pool, darker corners and a shadow under the feet, no real lamps. A first trial was built
+   from temporary parts in Edit and photographed into the page (`.planning/emote-shop/room-a-tv-on-trial-set.png`,
+   not shown to him): the room's own chalkboard (`Arena` pieces named `Chalkboard...`, 1.75 times bigger), `Globe`,
+   `PencilCupS2` and `ChalkEraser` from `ClassroomDecor`, the Shop's `rays` and `sparkle` as yellow chalk on a
+   SurfaceGui, a dark disc under the feet. It reads as a place; still short: the desk top is one flat orange (the
+   wood material does not show at this size), the light is flat, no light pool. Next: fix those two, show him the
+   picture, then write it into `TV.room` and look in Play.
 3. His look at the framing and the new door.
 4. The TV's switch-on sound: three licensed candidates on a Dev button, his pick by ear. The emote's sounds quieter.
 5. The card stills (props, the sixteen moments).
