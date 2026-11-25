@@ -66,9 +66,43 @@ routes go low); chasing (28%) and dodging (18%) stay where the fight is, so more
 matches the same day: regulars (255 s) 1 crash, 7% low; rookies (252 s) 5 crashes, 5% low. The frame spikes came from
 checking every point of the map for one in reach; capped at 12 checks a plan with step 2.
 
+## After step 2 (2026-11-25)
+A scrape, or no nearer a still goal for 2 s, sends a bot up 160 studs to open air to plan again; on a route it looks
+ahead only to the next point; a wall inside its look-ahead below 270 studs makes it brake like a player. The route
+checks per plan are capped at 12 (the frame spikes). The match tool now logs where each crashing bot was a second
+before.
+
+| Match | Bot deaths | Crashes | Wall scrapes | Low | Mid | High | botMs (end) | botMs each second |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 106 | 5 | 0 | 6% | 48% | 44% | 0.46 | 0.64 avg, 5 peak |
+| 2 | 85 | 3 | 1 | 6% | 46% | 46% | 0.41 | 0.62 avg, 8 peak |
+| 3 | 102 | 3 | 0 | 5% | 51% | 43% | 0.30 | 0.62 avg, 4 peak |
+
+Six of the eleven crashes were bots going to a fan for Lift (out of Lift, gliding down past the things hanging from
+the ceiling; likely as before, no "before" crash spots to compare); two low ones were monorail pillars and a bot at 33
+studs that the cruising wobble had aimed under the floor (fixed in step 3).
+
+## After step 3 (2026-11-25)
+A bot shot at rolls `town_dive_chance` once per attacker to fly somewhere low its attacker can't see (instead of a
+dodge); a bot whose target passes within 45 studs of a hole's middle rolls `hole_follow_chance` once per hole to
+follow it through (a hole run, flown like a duct run), otherwise its routes and straight lines skip that hole; Airspace
+bots spread through 85% of the zone's height above the town's floor. Alan's words for the dive (most times, often,
+sometimes, never) are read as 75%, 50%, 20%, 0.
+
+| Match | Bot deaths | Crashes | Wall scrapes | Low | Mid | High | botMs (end) | botMs each second |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 91 | 8 | 2 | 8% | 52% | 39% | 0.41 | 0.68 avg, 10 peak |
+| 2 | 88 | 2 | 0 | 8% | 54% | 37% | 0.30 | 0.65 avg, 6 peak |
+| 3 | 92 | 7 | 2 | 10% | 57% | 32% | 0.33 | 0.61 avg, 4 peak |
+
+Bots hid 1,556 bot-seconds and flew 100 through holes over the three matches; dodging fell by half; deaths about 10%
+fewer. Crashes rose again, both causes mine: bots dove steeply at the low routes and pulled up too late (one at 22
+studs), and the stuck rule fired on bots circling near their goal (633 s "unstuck", from 159), climbing them out of the
+town. Fixed with step 4: the lower a bot, the shallower its dive (straight down 200 studs over the floor, about 12
+degrees at it); circling within 150 studs of the goal is not stuck; a hide spot counts as reached within 100 studs.
+
 ## Where it stands
-Steps 1 and 2 built (step 2: a scrape or no nearer a still goal for 2 s sends a bot up 160 studs to open air to plan
-again; on a route it looks ahead only to the next point; a wall inside its look-ahead below 270 studs makes it brake
-like a player). Step 2's matches running. Next: steps 3 and 4, then Alan's look.
+Steps 1-4 built (step 4: each bot adds its own fixed 0-30% cost to each route leg and likes low ways or high ones by
+up to 35%, and cruises low or high by that liking). Step 4's matches running. Next: Alan's look in Play.
 
 Back to [HOME](../HOME.md)

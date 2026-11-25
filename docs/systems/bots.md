@@ -4,6 +4,11 @@
 Computer pilots fill empty seats so a match always has up to 12 planes. They fly with the same controls and limits as you, can't see behind them, and come in skill levels (rookie, regular, veteran) with separate personalities and quirks. They never wear an "AI" label. New players face rookies until they graduate.
 
 ## Where it stands (2026-11-08)
+**In the town (2026-11-25, [plan, steps and numbers](../plan/BOTS-IN-TOWN-PLAN.md)):** bots fly routes low over the
+town (60 and 95 studs) and through 20 holes the server finds at start; shot at, a bot may dive somewhere low its
+attacker can't see, and it may follow its target through a hole, both by skill (`hole_follow_chance`,
+`town_dive_chance`); a scrape or getting nowhere for 2 s climbs it to open air to plan again; each bot has its own
+route habits. Not yet seen by Alan in Play.
 Bots fly at their plane's full top speed, like a player ([decision](../decisions/2026-11-07-bots-fly-full-speed.md)); skill
 changes how hard they turn and pitch (`turn_factor`) and how they brake.
 **Planes** ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)): rookies fly the level-1 presets (Fighter,
