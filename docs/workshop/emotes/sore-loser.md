@@ -6,12 +6,13 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Arms crossed, back turned to 1st, sneaking looks over the shoulder.
 
 ## Where it stands
-**Approved by Alan in his own Play** (2026-11-24, the reworked version: "Sore Loser is good."). Waiting for the upload
-of its two clips (`SoreLoserLeftClip`, `SoreLoserRightClip`, drafts in the open place's `Assets`, saved as
-`assets/animations/emotes/sore-loser-left.rbxm` and `-right.rbxm`): the primary session's job, on his go. The module
-is `src/client/emotes/SoreLoser.luau` (`DevRunnerUp` = "SoreLoser", the "2nd/3rd: sore loser" Dev button). Marks
-(clip seconds; clip 1.0 is 1st's light): Look 1.0, Turn 1.68, Stamp 2.74, Peek 3.5, Snap 5.3, Kick 7.12, Peek2 7.4,
-Snap2 9.6.
+**Done: uploaded and wired in** (2026-11-24, Alan: "okay all 4 are good make sure they are uploaded"). Approved by him
+in his own Play on the drafts ("Sore Loser is good."); not yet seen by him from the uploads. The clips
+`rbxassetid://131626858206835` (left) and `rbxassetid://101260729377264` (right), both approved by Roblox at once, are
+in `rounds.emote_clips` as `SoreLoserLeft` and `SoreLoserRight` (the same keys, poses and pose sum as the drafts), and
+Sore Loser is in `RUNNER_UPS`. The module is `src/client/emotes/SoreLoser.luau` (`DevRunnerUp` = "SoreLoser", the
+"2nd/3rd: sore loser" Dev button). Marks (clip seconds; clip 1.0 is 1st's light): Look 1.0, Turn 1.68, Stamp 2.74,
+Peek 3.5, Snap 5.3, Kick 7.12, Peek2 7.4, Snap2 9.6.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Sore loser looks good." No pick named, so my defaults: standing, silent.
