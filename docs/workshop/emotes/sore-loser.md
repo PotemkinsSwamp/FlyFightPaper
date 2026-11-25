@@ -6,12 +6,12 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Arms crossed, back turned to 1st, sneaking looks over the shoulder.
 
 ## Where it stands
-**Reworked after Alan's own Play, ready for his look again** (2026-11-24). His note: not enough body language; the
-kid has to turn away and cross the arms on screen, then look back (see "Rework" below). The new clips are baked into
-the open place's `Assets` (`SoreLoserLeftClip`, `SoreLoserRightClip`, unsaved drafts) and saved as
-`assets/animations/emotes/sore-loser-left.rbxm` and `-right.rbxm`; the module is unchanged in what it does
-(`DevRunnerUp` = "SoreLoser", the "2nd/3rd: sore loser" Dev button). Marks (clip seconds; clip 1.0 is 1st's light):
-Look 1.0, Turn 1.68, Stamp 2.74, Peek 3.5, Snap 5.3, Kick 7.12, Peek2 7.4, Snap2 9.6. Checked by numbers in Edit only.
+**Approved by Alan in his own Play** (2026-11-24, the reworked version: "Sore Loser is good."). Waiting for the upload
+of its two clips (`SoreLoserLeftClip`, `SoreLoserRightClip`, drafts in the open place's `Assets`, saved as
+`assets/animations/emotes/sore-loser-left.rbxm` and `-right.rbxm`): the primary session's job, on his go. The module
+is `src/client/emotes/SoreLoser.luau` (`DevRunnerUp` = "SoreLoser", the "2nd/3rd: sore loser" Dev button). Marks
+(clip seconds; clip 1.0 is 1st's light): Look 1.0, Turn 1.68, Stamp 2.74, Peek 3.5, Snap 5.3, Kick 7.12, Peek2 7.4,
+Snap2 9.6.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Sore loser looks good." No pick named, so my defaults: standing, silent.
@@ -170,6 +170,8 @@ the picture's right and peeks towards its left, as 3rd does (1st on 3rd's left);
   heights into the chest's box, the most mid-fold (1.75 to 2.05 s); the elbows bent 63 to 77 crossed.
 - **Not known until it is seen in Play:** whether the hop reads as a petulant turn or a skip; whether the stamp is
   big enough at the scene's distance; hats and hair on the turned head.
+
+- **Alan on the rework in his own Play (2026-11-24): "Sore Loser is good."** Approved; nothing else to build.
 
 ## Sound (step 5)
 None: Alan took the silent default on the card.
