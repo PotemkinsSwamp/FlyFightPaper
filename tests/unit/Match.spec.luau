@@ -9,7 +9,7 @@ local Spec = {}
 local RESULTS, VOTE, COUNTDOWN = gameplay.rounds.results_seconds, gameplay.rounds.vote_seconds, gameplay.rounds.launch_countdown_seconds
 local BREAK = RESULTS + VOTE + COUNTDOWN
 local zoneCenter = Vector3.new(table.unpack(gameplay.rounds.control_zones[1].center))
-local outsideZone = Vector3.new(0, 0, 0)
+local outsideZone = Vector3.new(1300, 0, 1000) -- a room corner outside every zone (the town zones reach the floor since 2026-11-25)
 local function near(a, b) assert(math.abs(a-b) < 1e-6, tostring(a) .. " != " .. tostring(b)) end
 Spec.near = near
 function Spec.fixture(mode, startedAt)
