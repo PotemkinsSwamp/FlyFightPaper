@@ -37,8 +37,9 @@ task.spawn(function()
   for id,r in pairs(info.records) do
    local c=r.collisionDeaths or 0
    if seen[id] and c>seen[id] and last[id] then
-    local hit=r.lastImpact and r.lastImpact.part:match("[^%.]+$") or "?"
-    table.insert(crashes,last[id].." hit "..hit..(r.lastImpact and (" at "..r.lastImpact.position):gsub("%.%d+","") or ""))
+    local fresh=r.lastImpact and workspace:GetServerTimeNow()-r.lastImpact.at<2.5
+    local hit=fresh and r.lastImpact.part:match("[^%.]+$"):match("^[^/]+") or "RAM"
+    table.insert(crashes,last[id].." hit "..hit..(fresh and (" at "..r.lastImpact.position):gsub("%.%d+","") or ""))
    end
    seen[id]=c
   end
@@ -63,7 +64,7 @@ task.spawn(function()
      end)
     end
     local at=m:GetPivot().Position
-    if x~="down" then last[m.Name]=("%s %s %.0f,%.0f,%.0f lift %.0f"):format(m.Name,x,at.X,at.Y,at.Z,m:GetAttribute("Lift") or -1) end
+    if x~="down" then last[m.Name]=("%s [%s, %s] %s %.0f,%.0f,%.0f lift %.0f"):format(m.Name,tostring(m:GetAttribute("BotStyle")),tostring(m:GetAttribute("Loadout")),x,at.X,at.Y,at.Z,m:GetAttribute("Lift") or -1) end
     if x~="down" and math.abs(at.X)<1014 and math.abs(at.Z)<714 then
      local band=at.Y<100 and "low" or at.Y<270 and "mid" or "high"
      t[band]+=1
