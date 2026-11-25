@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Tosses a tiny plane that loops and comes back to their hand.
 
 ## Where it stands
-**Approved by Alan in his own Play** (2026-11-24: "Test Flight is good."), after the two fixes from his first look. Waiting for the uploads (the two clips and the whoosh), the primary session's, on his go. He has not heard the whoosh in the game yet: it is silent until its upload.
+**Done** (2026-11-24): approved by Alan in his own Play ("Test Flight is good."), uploaded and wired in on his go ("okay all 4 are good make sure they are uploaded"); one of the runner-up emotes (`RUNNER_UPS`). He has not heard the whoosh in the game yet.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "For test flight, I think they should be sitting." The other pick not named, so my default: the last flight circles behind the head.
@@ -169,10 +169,12 @@ The prompt (`.planning/emotes/test-flight-prompt-1.txt`):
   `runnerSound` (skipped when it would still be playing as 1st's first sound starts). It plays once step 6 adds
   `testFlightWhoosh` to `src/client/Audio.luau` at volume 1.
 
-## For the primary session
-- The two clips are baked into the open place's `Assets` as `TestFlightLeftClip` and `TestFlightRightClip` (replaced
-  after the fixes) and saved as the files below; the Dev button "2nd/3rd: test flight" is in.
-- Step 6: `testFlightWhoosh` in `Audio` (the file above), on Alan's go.
+## Uploads (step 6, the primary session's)
+- **Into the game (2026-11-24; Alan: "okay all 4 are good make sure they are uploaded"):** the clips
+  `rbxassetid://84818962951908` (left) and `rbxassetid://129273049114026` (right), both approved by Roblox at once, in
+  `rounds.emote_clips` as `TestFlightLeft` and `TestFlightRight` (the same keys, poses and pose sum as the drafts he
+  saw); the whoosh `rbxassetid://96265768354635` (in Roblox's review) is `testFlightWhoosh` in `src/client/Audio.luau`
+  at volume 1, 1.8 s. Test Flight is in `RUNNER_UPS`.
 
 ## Files
 | File | What |
