@@ -198,7 +198,7 @@ function EmoteShop.new(playerGui, api)
 	-- A card's still: the player's own avatar held at one moment of the emote's body clip.
 	local function pose(card)
 		local source = Cutscene.tv.source
-		local id, share = Cutscene.tv.pose(card.emote.id)
+		local id, share, turn = Cutscene.tv.pose(card.emote.id)
 		if not source or card.posed then return end
 		card.posed = true
 		local world = Instance.new("WorldModel")
@@ -217,7 +217,7 @@ function EmoteShop.new(playerGui, api)
 		local function look()
 			local box, size = model:GetBoundingBox()
 			local far = math.max(size.Y, size.X * 58 / (CARD_W - 50)) / 2 * 1.12 / math.tan(math.rad(15))
-			local front = model:GetPivot().LookVector
+			local front = CFrame.Angles(0, math.rad(turn or 0), 0) * model:GetPivot().LookVector
 			camera.CFrame = CFrame.lookAt(box.Position + front * far + Vector3.yAxis * size.Y * 0.08, box.Position)
 		end
 		look()
