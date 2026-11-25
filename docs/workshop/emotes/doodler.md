@@ -7,7 +7,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 
 ## Where it stands
 **Ready to record again** (2026-11-24, second build after Alan's first look in Play; see "Alan in Play"):
-`DevRunnerUp` = "Doodler"; the draft `DoodlerClip` (the seat only) is in the open place's `Assets` (unsaved); the
+`DevRunnerUp` = "Doodler" (Dev buttons "2nd/3rd: doodler" and "fold + doodler"); the draft `DoodlerClip` (the seat only) is in the open place's `Assets` (unsaved); the
 older drafts `DoodlerLeftClip` and `DoodlerRightClip` are deleted from it. Its marks are in seconds after 1st's light,
 not clip seconds (the clip is held still): with a 1st that leaves the runner-ups seen to the end, **the look at 1st
 0 to 1.35** (3rd 0 to 1.85), **the turn 2.3 to 4.15** (3rd 2.8 to 4.65), the drawing held up to the end. Shorter
@@ -107,9 +107,9 @@ desk; 2nd's is the mirror. The prompt (`.planning/emotes/doodler-prompt-1.txt`):
   held). The chest and the head are turned by the module every frame (as the arms are bent there), so the timing can
   follow 1st's emote with no pose jumping. (The first build had two 13 s clips, one per side of the look; a clip has
   one fixed timeline, so it could not shorten itself.) Baked into the open place's `Assets` as `DoodlerClip` and
-  saved as `.planning/emotes/doodler.rbxm` (the two tracked files `assets/animations/emotes/doodler-left.rbxm` and
-  `-right.rbxm` are the first build's and no longer used). To bake again: `_G.EMOTE_CLIPS = { "cut:Doodler" }` in
-  Edit, then `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=Doodler:DoodlerClip:.planning/emotes/doodler.rbxm"`.
+  kept as `assets/animations/emotes/doodler.rbxm` (the first build's two clip files are removed). To bake again:
+  `_G.EMOTE_CLIPS = { "cut:Doodler" }` in Edit, then
+  `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=Doodler:DoodlerClip:assets/animations/emotes/doodler.rbxm"`.
 - **The module** (`src/client/emotes/Doodler.luau`; `DevRunnerUp` = "Doodler" picks it). Every time below is seconds
   after 1st's light. Its plan is worked out once per kid at its first frame, from `kit.seenFor()` and its place:
   - **Before 1st's light:** hunched over the notebook on the lap (chest 22 degrees forward, head 32 more), two
@@ -185,4 +185,4 @@ None: Alan took the silent default on the card. Skipped.
 |---|---|
 | `src/client/emotes/Doodler.luau` | The emote's module: its timing under each 1st, the seat, the chest and head, the notebook, the pencil, the drawing, the arms |
 | `tools/emote_cuts/doodler.lua` | The body cut: `CUTS.Doodler`, the seat only |
-| `assets/animations/emotes/doodler-left.rbxm`, `doodler-right.rbxm` | The first build's two clips, no longer used (the new one: `.planning/emotes/doodler.rbxm`) |
+| `assets/animations/emotes/doodler.rbxm` | The baked seat clip (`DoodlerClip`) |
