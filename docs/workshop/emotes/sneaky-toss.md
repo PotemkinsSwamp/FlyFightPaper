@@ -7,7 +7,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 misses ... it just like goes off to the side behind them").
 
 ## Where it stands
-**Step 3: the prompt is written** (below), waiting for Alan's go on the price (about $0.28). Nothing is made.
+**Step 4: built** (2026-11-24): the two body clips, the ball and the module, checked by numbers in Edit (below). The last dry run of the ball's path after a change waits for Studio to leave Play.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Sneaky Toss looks good", with one change: **no whistling**, neither the sound nor the look ("doing a whistling sound's going to be difficult. We also can't make them look like they're whistling ... do it more visually with their body language to make them look like they're trying to pretend to be innocent. Like maybe they're kind of being shifty, looking back and forth ... hands behind their back, like rocking back and forth, looking away from first place, kind of like tilting their head back and forth"). The card below has it. One throw (my default).
@@ -97,3 +97,66 @@ The prompt: `.planning/emotes/sneaky-toss-prompt-1.txt` (untracked); the moves i
     show in stills (six a second); the glances are whole-body turns, not quick head snaps.
   - **The sound** (measured, not heard): hiss about -57.5 dB; small sounds at 3.0 and 4.0 s, the loudest at 4.6 s
     (about 27 dB over the hiss), more small ones 5.8 and 8.1 to 8.8 s (the feet turning, my guess).
+
+- **Alan on the second video (2026-11-24):** "it's definitely a lot better. There is like a weird shift, but it's good
+  enough to work with. So go ahead and build it." So: the throw from the second video; the rocking, the shifty glances
+  and the peek built by hand, the feet planted facing the front. **Sound: none** (he picked no rustle; the video has
+  none at the throw).
+
+## Build (step 4, 2026-11-24; numbers in Edit only)
+- **The body: a cut, not Roblox's emotes.** No Roblox emote holds the hands behind the back, throws overarm and rocks on
+  the heels, and the throw has to be timed to 1st's light and mirrored, so the body is posed by numbers on Toy Pilot's
+  standing pose (feet apart).
+- **Two clips, one per side** (`CUTS.SneakyTossLeft` and `CUTS.SneakyTossRight` in `tools/emote_cuts/sneaky-toss.lua`; every
+  number is in its comments): Left throws towards the kid's own left (1st on the picture's right) with the left hand,
+  Right the mirror. 12 s, played once, held on the last pose. In the video's seconds: clip second 1 is 1st's light.
+  Baked into the open place's `Assets` as `SneakyTossLeftClip` and `SneakyTossRightClip` (unsaved drafts: what `ourClip`
+  plays in Studio); copies in `.planning/emotes/sneaky-toss-left.rbxm` and `-right.rbxm` (untracked). To bake again
+  after a close without a save: a copy of `tools/emote_clips.lua` with `_G.EMOTE_CLIPS = { "cut:SneakyTossLeft" }` as its
+  first line, then `python tools/emote_preview.py STUDIO_ID x --lua=THAT_COPY "--bake=SneakyTossLeft:SneakyTossLeftClip:.planning/emotes/sneaky-toss-left.rbxm"` (and Right).
+- **The marks** (clip seconds; 1st's light is 1.0; for 3rd add 0.6): Look 1.0 (the sly look starts), Out 2.0 (the hand
+  comes out with the ball), Toss 2.62 and Catch 2.9 (the one bounce), Cock 3.32 (hand up by the head, elbow high),
+  **Release 3.44 (the throw)**, Away 3.85 (face up and away), Back 4.05 (hand behind the back again), **Glance 7.1 (the
+  first shifty look)**, Glance2 7.85, Peek 8.5 to Peeked 9.7 (the snigger 8.95 to 9.42).
+- **What the clip does:** both hands clasped behind the back from the dark; 1.0 to 1.6 the head turns about 50 degrees
+  to 1st, a little down, the chest 5 forward (hunched); the throwing hand round the side to in front of the belly
+  (2.0 to 2.45), flicks up for the bounce and gives on the catch; the wind-up (the chest turns 14 away, leans 4 back,
+  the hand beside the head with the elbow high), the whip out towards 1st and up (the chest turns 14 into it, 7
+  forward), the follow-through down and across, and straight back behind the back; the head follows the ball for a
+  moment, then turns up and away (about 30 degrees to the other side, 19 up). From 4.2 the innocence: up onto the toes
+  (25 degrees, the heels up) and back onto the heels (15, the toes up) every 1.1 s, the hips riding up 0.025 of the
+  kid's height on the toes, the body leaning 4 degrees with it; the head tilting 11 degrees each way every 2.6 s; both
+  faded down for the glances and the peek. Glances: the head snaps level to 1st in 0.12 s, holds 0.25, snaps back.
+- **Measured on the test kid** (Edit, no pictures, every 1/30 s): the feet stay put (the middle of the feet moves at most
+  0.021 of the kid's height, from the rock's turn about toe and heel); the soles never go into the book by more than
+  0.004 heights; no hand or forearm in the body's boxes (the hands behind the back stay 0.007 heights clear); the
+  biggest turn of one joint in one frame is the throwing forearm folding up into the wind-up (73 degrees at 3.2 s:
+  the elbow goes from 38 to 125 degrees bent in a third of a second; a real fold, not a flip); the head's snaps are
+  36 degrees a frame. **First fault the numbers found:** with the elbow high the forearm spun 85 degrees in a frame;
+  the forearm now starts each frame bent, not straight.
+- **The module** (`src/client/emotes/SneakyToss.luau`; `DevRunnerUp` = "SneakyToss" picks it): So Close's way: the Left
+  clip held on its first pose from the dark, swapped for Right at the first frame if 1st stands on the picture's left;
+  every frame the clip's time is set from 1st's light (2nd: 1 + seconds after 1st's light; 3rd 0.6 s behind, so two
+  kids playing it are out of step).
+- **The ball:** a white ball (`kit.paper`), half the thrower's head (kept between 0.06 and 0.11 winner heights), on top
+  of the throwing hand from Out (the bounce rises 0.13 heights over it), and from Release its own path: a thrown
+  ball's arc that passes, 0.5 s after the hand, a point behind 1st's head: behind the back of 1st's whole box as the
+  camera sees it (taken at the release, so whatever 1st's emote is doing, hats and wings too) by 0.15 heights plus the
+  ball's radius; then on, falling 3 heights a second squared (a light paper ball), out of the far side of the picture.
+  It is worked out in the big room and drawn in the world of the winner it is nearest across the picture, so it hides
+  behind that one correctly. It is gone when it leaves the side of the picture, drops through the desk top, or after
+  2 s. Because its depth only grows, it never comes towards the lens.
+- **Dry run of the module in Edit** (the module itself, three stand-in kids at the scene's places, 1st 0.06 of a desk
+  forward and on a taller stack, the scene's camera and lens, the clips playing; all removed in the same call), first
+  path (falling 5 heights a second squared): no error; the ball in the hand is 26 px across on a 1080-line screen
+  against the thrower's head's 54 px; while the ball is over 1st on the screen it is at least 0.10 winner heights
+  behind 1st's back; its distance from the camera grows all the way (never towards the lens). **Fault:** it dropped
+  through the desk top beside the far runner-up and vanished in mid-picture; hence the lighter fall and the exit at
+  the picture's side. The run with that change (and with three different avatar scales) waits for Studio to be back
+  in Edit.
+
+## Files
+| File | What |
+|---|---|
+| `src/client/emotes/SneakyToss.luau` | The emote's module: picks the clip, times it to 1st's light, the ball and its flight |
+| `tools/emote_cuts/sneaky-toss.lua` | The body cut: `CUTS.SneakyTossLeft`, `CUTS.SneakyTossRight` |
