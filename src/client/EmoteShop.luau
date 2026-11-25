@@ -5,7 +5,9 @@
 -- The TV's glass is a real hole in this page: the emote plays in the game's own picture behind it
 -- (WinnersCutscene's `tv`), so the hole has to sit exactly in the middle of the screen. That is why this page lays
 -- itself out round the screen's middle instead of using PaperUI.screen's background plate.
--- The wall, boards and TV are flat paper colours until the page's picture is drawn (Alan's OK and upload first).
+-- The classroom, the two boards, the TV and its cart are one painting (Alan's OK 2026-11-25; assets/ui/emoteshop,
+-- docs/plan/EMOTE-SHOP-PLAN.md "The page's picture"): four tiles with the glass see-through, 100 sheet pixels taller
+-- than the page above and below; past that, and past its sides, its outermost pixels are stretched.
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
@@ -23,18 +25,18 @@ local EmoteShop = {}
 
 local W, H = PaperUI.W, PaperUI.H
 local INK, WHITE = PaperUI.INK, Color3.new(1, 1, 1)
--- Sheet pixels. The glass (4:3) is centred on the sheet; the sheet is centred on the screen.
-local GLASS_W, GLASS_H = 640, 480
-local BEZEL = 46 -- the TV's plastic round the glass
-local CARD, GAP = 196, 10 -- a card's side and the gap between cards
-local WALL = Color3.fromRGB(232, 222, 200) -- the classroom wall (cream paper)
-local BOARD = Color3.fromRGB(18, 62, 40) -- the two chalkboards (the shop's chalkboard green)
-local TRIM = Color3.fromRGB(176, 128, 78) -- their wooden edge
-local PLASTIC = Color3.fromRGB(34, 34, 38) -- the TV and its cart
-local GLASS_OFF = Color3.fromRGB(16, 20, 22)
+-- Sheet pixels. The glass (4:3) is centred on the sheet; the sheet is centred on the screen. Every number below is
+-- where the painting has that thing.
+local GLASS_W, GLASS_H = 600, 450
+local OVER = 100 -- the painting's extra rows above and below the page
+local CARD_W, CARD_H, GAP, PITCH = 166, 127, 8, 134 -- a card (its paper's own shape), the gap, row to row
+local GRID = 3 * CARD_W + 2 * GAP
+local CHALK = Color3.fromRGB(240, 240, 232)
+local GLASS_OFF = Color3.fromRGB(24, 31, 28)
+local LAMP_OFF = Color3.fromRGB(70, 22, 22)
 local KINDS = {
-	{ kind = "leader", title = "Leader emotes", line = "Plays when you finish 1st.", x = 40, attribute = "EmoteLeader" },
-	{ kind = "runner_up", title = "Runner-up emotes", line = "Plays when you finish 2nd or 3rd.", x = W - 40 - 520, attribute = "EmoteRunnerUp" },
+	{ kind = "leader", title = "Leader emotes", line = "Plays when you finish 1st.", x = 57, pin = "pinRed" }, -- the chalkboard
+	{ kind = "runner_up", title = "Runner-up emotes", line = "Plays when you finish 2nd or 3rd.", x = 1350, pin = "pinBlue" }, -- the bulletin board
 }
 
 local function frame(parent, name, color, x, y, w, h)
@@ -55,11 +57,11 @@ function EmoteShop.new(playerGui, api)
 	local safe = playerGui:FindFirstChild("SafeArea") -- (PaperUI's probe of the notch-free area)
 	local cover = Instance.new("Frame")
 	cover.Name, cover.Size, cover.BackgroundTransparency, cover.Visible, cover.Parent = "Cover", UDim2.fromScale(1, 1), 1, false, layer
-	-- The wall: four pieces round the glass, so the glass itself stays a hole.
+	-- Four unseen pieces round the glass: nothing behind the page can be clicked.
 	local walls = {}
 	for i = 1, 4 do
-		walls[i] = frame(cover, "Wall" .. i, WALL, 0, 0, 0, 0)
-		walls[i].Active = true -- nothing behind the page can be clicked
+		walls[i] = frame(cover, "Wall" .. i, WHITE, 0, 0, 0, 0)
+		walls[i].BackgroundTransparency, walls[i].Active = 1, true
 	end
 	local sheet = Instance.new("Frame")
 	sheet.Name, sheet.AnchorPoint, sheet.Position = "Sheet", Vector2.new(0.5, 0.5), UDim2.fromScale(0.5, 0.5)
@@ -68,7 +70,26 @@ function EmoteShop.new(playerGui, api)
 	scale.Parent = sheet
 	local gx, gy = (W - GLASS_W) / 2, (H - GLASS_H) / 2
 	local glass = frame(sheet, "Glass", GLASS_OFF, gx, gy, GLASS_W, GLASS_H)
-	glass.BackgroundTransparency, glass.ClipsDescendants, glass.ZIndex = 1, true, 4
+	glass.BackgroundTransparency, glass.ClipsDescendants, glass.ZIndex = 1, true, -2 -- under the painting, which is under everything else
+	-- The painting: tiles 1 2 over 3 4, then its edges pulled out over whatever more of the screen there is.
+	local function tile(name, i, x, y, w, h, rect)
+		local piece = Instance.new("ImageLabel")
+		piece.Name, piece.Image, piece.BackgroundTransparency, piece.ZIndex = name, Assets.emoteshop.room[i], 1, -1
+		piece.Position, piece.Size = UDim2.fromOffset(x, y), UDim2.fromOffset(w, h)
+		if rect then piece.ImageRectOffset, piece.ImageRectSize = Vector2.new(rect[1], rect[2]), Vector2.new(rect[3], rect[4]) end
+		piece.Parent = sheet
+	end
+	local FAR, top = 1400, -OVER
+	for i = 1, 4 do
+		local col, row = (i - 1) % 2, (i - 1) // 2
+		local x, y = col * 960, top + row * 640
+		tile("Room" .. i, i, x, y, 961, 641) -- (a pixel over its neighbour: no hairline between tiles at odd screen sizes)
+		local sideX, sideRect = col == 0 and -FAR or W, col == 0 and 0 or 956
+		local endY, endRect = row == 0 and top - FAR or top + 1280, row == 0 and 0 or 636
+		tile("RoomSide" .. i, i, sideX, y, FAR, 640, { sideRect, 0, 4, 640 })
+		tile("RoomEnd" .. i, i, x, endY, 960, FAR, { 0, endRect, 960, 4 })
+		tile("RoomCorner" .. i, i, sideX, endY, FAR, FAR, { sideRect, endRect, 4, 4 })
+	end
 	local function fit()
 		local full = layer.AbsoluteSize
 		if full.X < 2 then return end
@@ -92,39 +113,11 @@ function EmoteShop.new(playerGui, api)
 
 	local state = { pick = nil, owned = {}, worn = {}, profile = nil, playing = false, shown = false, token = 0 }
 
-	-- ===== The TV on its cart (flat pieces for now) =====
-	-- The cart: only its top shelf and the tops of two legs show (Alan: "The cart needs to be very subtle").
-	local body = { x = gx - BEZEL, y = gy - BEZEL + 6, w = GLASS_W + 2 * BEZEL, h = GLASS_H + BEZEL + 74 }
-	frame(sheet, "CartLegL", PLASTIC, body.x + 40, body.y + body.h, 22, 60)
-	frame(sheet, "CartLegR", PLASTIC, body.x + body.w - 62, body.y + body.h, 22, 60)
-	round(frame(sheet, "CartShelf", PLASTIC, body.x - 34, body.y + body.h - 4, body.w + 68, 26), 6)
-	-- The TV's plastic: four pieces round the glass (a filled box would cover the hole).
-	round(frame(sheet, "TVTop", PLASTIC, body.x, body.y, body.w, gy - body.y + 12), 26)
-	frame(sheet, "TVLeft", PLASTIC, body.x, gy - 10, gx - body.x, GLASS_H + 20)
-	frame(sheet, "TVRight", PLASTIC, gx + GLASS_W, gy - 10, body.x + body.w - gx - GLASS_W, GLASS_H + 20)
-	round(frame(sheet, "TVBottom", PLASTIC, body.x, gy + GLASS_H - 12, body.w, body.y + body.h - gy - GLASS_H + 12), 26)
-	frame(sheet, "TVBottomFlat", PLASTIC, body.x, gy + GLASS_H - 12, body.w, 40) -- (square where it meets the sides)
-	frame(sheet, "TVTopFlat", PLASTIC, body.x, gy - 28, body.w, 30)
-	-- its front: a speaker grille, two knobs and the little red light
-	for i = 0, 6 do frame(sheet, "Grille" .. i, Color3.fromRGB(70, 70, 76), body.x + 60 + i * 16, gy + GLASS_H + 28, 6, 30) end
-	for i = 0, 1 do round(frame(sheet, "Knob" .. i, Color3.fromRGB(96, 96, 104), body.x + body.w - 150 + i * 48, gy + GLASS_H + 26, 34, 34), 17) end
-	local lamp = round(frame(sheet, "Lamp", Color3.fromRGB(90, 30, 30), body.x + body.w - 46, gy + GLASS_H + 36, 14, 14), 7)
-	-- the glass's rounded corners: the plastic comes a little over the picture
-	local rim = frame(sheet, "Rim", PLASTIC, gx, gy, GLASS_W, GLASS_H)
-	rim.BackgroundTransparency, rim.ZIndex = 1, 6
-	round(rim, 26)
-	local rimStroke = Instance.new("UIStroke")
-	rimStroke.Color, rimStroke.Thickness, rimStroke.Parent = PLASTIC, 14, rim
-	scale:GetPropertyChangedSignal("Scale"):Connect(function() rimStroke.Thickness = 14 * scale.Scale end)
-	rimStroke.Thickness = 14 * scale.Scale
+	-- The TV's power light: painted lit; this covers it while the TV is off.
+	local lamp = round(frame(sheet, "Lamp", LAMP_OFF, 1259, 787, 14, 14), 7)
 
 	-- The glass while the TV is off, and the pieces that switch it on and off.
 	local off = frame(glass, "Off", GLASS_OFF, 0, 0, GLASS_W, GLASS_H)
-	local shine = frame(off, "Shine", WHITE, 0, 0, GLASS_W, GLASS_H) -- a faint reflection across the dark glass
-	local sweep = Instance.new("UIGradient")
-	sweep.Rotation = 35
-	sweep.Transparency = NumberSequence.new({ NumberSequenceKeypoint.new(0, 0.9), NumberSequenceKeypoint.new(0.45, 1), NumberSequenceKeypoint.new(1, 0.96) })
-	sweep.Parent = shine
 	local glow = frame(glass, "Glow", Color3.fromRGB(235, 245, 255), 0, 0, GLASS_W, GLASS_H) -- the white of a tube warming up
 	glow.AnchorPoint, glow.Position, glow.Visible, glow.ZIndex = Vector2.new(0.5, 0.5), UDim2.fromOffset(GLASS_W / 2, GLASS_H / 2), false, 5
 	local wait = centred(PaperUI.words(off, "Wait", "", 0, GLASS_H / 2 - 30, GLASS_W, 60, 34))
@@ -134,26 +127,27 @@ function EmoteShop.new(playerGui, api)
 	local title = PaperUI.image(sheet, "TitleTape", Assets.ingame.tapeLabel, 700, 18, 520, 108)
 	PaperUI.loud(centred(PaperUI.words(title, "Label", "Emotes", 0, 0, 520, 108, 76))).Size = UDim2.fromScale(1, 1)
 	PaperUI.button(sheet, "Close", Assets.shop.close, "", W - 150, 22, 104, 104, 0, function() api.back() end, 10)
-	local wallet = centred(PaperUI.words(sheet, "Paper", "", 40, 40, 520, 60, 40))
-	PaperUI.loud(wallet)
+	local walletTape = PaperUI.image(sheet, "PaperTape", Assets.ingame.tapeLabel, 60, 34, 440, 74, -1.5)
+	local wallet = PaperUI.loud(centred(PaperUI.words(walletTape, "Label", "", 0, 0, 440, 74, 38)))
+	wallet.Size = UDim2.fromScale(1, 1)
 
-	-- ===== Under the TV: the emote's name, a line, its buttons =====
-	local under = body.y + body.h + 62
-	local nameWords = PaperUI.loud(centred(PaperUI.words(sheet, "Name", "Pick an emote", body.x - 40, under, body.w + 80, 56, 52)))
-	local lineWords = centred(PaperUI.words(sheet, "Line", "Tap a card to watch it on the TV.", body.x - 40, under + 54, body.w + 80, 36, 28))
+	-- ===== On the cart's front: the emote's name, a line, its buttons =====
+	local BUTTON_W, BUTTON_H, by = 260, 66, 954
+	local nameWords = PaperUI.blackOutline(PaperUI.loud(centred(PaperUI.words(sheet, "Name", "Pick an emote", W / 2 - 290, 884, 580, 46, 42))))
+	local lineWords = PaperUI.blackOutline(centred(PaperUI.words(sheet, "Line", "Tap a card to watch it on the TV.", W / 2 - 290, 926, 580, 26, 22)))
+	nameWords.TextColor3, lineWords.TextColor3 = WHITE, CHALK
 	local strip = Assets.mainmenu.strip
-	local by = under + 96
-	local buyPaper = PaperUI.button(sheet, "BuyPaper", strip.yellow, "", W / 2 - 330, by, 320, 84, -1, function()
+	local buyPaper = PaperUI.button(sheet, "BuyPaper", strip.yellow, "", W / 2 - BUTTON_W - 8, by, BUTTON_W, BUTTON_H, -1, function()
 		if state.pick then api.action:FireServer("buyEmote", state.pick) end
-	end, 40)
+	end, 38)
 	buyPaper.Label.TextColor3 = INK
 	local buyRobux -- (made per pick: PaperUI.robuxButton takes its price when made)
-	local use = PaperUI.button(sheet, "Use", strip.blue, "Use", W / 2 - 160, by, 320, 84, -1, function()
+	local use = PaperUI.button(sheet, "Use", strip.blue, "Use", W / 2 - BUTTON_W / 2, by, BUTTON_W, BUTTON_H, -1, function()
 		if state.pick then api.action:FireServer("wearEmote", state.pick) end
-	end, 44)
-	local using = PaperUI.image(sheet, "Using", Assets.ingame.tapeLabel, W / 2 - 170, by + 4, 340, 76)
-	local usingCheck = PaperUI.image(using, "Check", Assets.settings.check, 62, 16, 44, 44)
-	PaperUI.loud(centred(PaperUI.words(using, "Label", "Using", 60, 0, 280, 76, 44)))
+	end, 42)
+	local using = PaperUI.image(sheet, "Using", Assets.ingame.tapeLabel, W / 2 - 160, by, 320, BUTTON_H)
+	local usingCheck = PaperUI.image(using, "Check", Assets.settings.check, 70, 15, 36, 36)
+	PaperUI.loud(centred(PaperUI.words(using, "Label", "Using", 60, 0, 240, BUTTON_H, 40)))
 	for _, piece in { buyPaper, use, using } do piece.Visible = false end
 	usingCheck.ZIndex = 2
 
@@ -161,29 +155,24 @@ function EmoteShop.new(playerGui, api)
 	local cards = {} -- id -> { button, price, view, emote }
 	local select
 	for _, column in KINDS do
-		local board = round(frame(sheet, "Board" .. column.kind, BOARD, column.x - 14, 140, 548, H - 150), 18)
-		local edge = Instance.new("UIStroke")
-		edge.Color, edge.Thickness, edge.Parent = TRIM, 8, board
-		scale:GetPropertyChangedSignal("Scale"):Connect(function() edge.Thickness = 8 * scale.Scale end)
-		edge.Thickness = 8 * scale.Scale
-		local head = PaperUI.loud(centred(PaperUI.words(sheet, "Head" .. column.kind, column.title, column.x, 150, 520, 52, 46)))
+		local head = PaperUI.loud(centred(PaperUI.words(sheet, "Head" .. column.kind, column.title, column.x, 160, GRID, 48, 44)))
 		head.TextColor3 = WHITE
 		PaperUI.blackOutline(head)
-		local sub = centred(PaperUI.words(sheet, "Sub" .. column.kind, column.line, column.x, 200, 520, 34, 27))
-		sub.TextColor3 = Color3.fromRGB(240, 240, 232)
+		local sub = centred(PaperUI.words(sheet, "Sub" .. column.kind, column.line, column.x, 203, GRID, 30, 24))
+		sub.TextColor3 = CHALK
 		PaperUI.blackOutline(sub)
-		local left = column.x + (520 - 2 * CARD - GAP) / 2
-		for i, emote in Emotes.list(column.kind) do
-			local x, y = left + ((i - 1) % 2) * (CARD + GAP), 246 + ((i - 1) // 2) * (CARD + GAP)
-			local button = PaperUI.button(sheet, "Card" .. emote.id, Assets.hangar.cardSquare, "", x, y, CARD, CARD, 0, function() select(emote.id, true) end, 10)
+		for i, emote in Emotes.list(column.kind) do -- three across; the ninth spot on each board is a painted doodle
+			local x, y = column.x + ((i - 1) % 3) * (CARD_W + GAP), 236 + ((i - 1) // 3) * PITCH
+			local button = PaperUI.button(sheet, "Card" .. emote.id, Assets.hangar.cardSquare, "", x, y, CARD_W, CARD_H, 0, function() select(emote.id, true) end, 10)
 			local view = Instance.new("ViewportFrame")
-			view.Name, view.BackgroundTransparency, view.Position, view.Size = "Pose", 1, UDim2.fromOffset(28, 14), UDim2.fromOffset(CARD - 56, 104)
+			view.Name, view.BackgroundTransparency, view.Position, view.Size = "Pose", 1, UDim2.fromOffset(25, 13), UDim2.fromOffset(CARD_W - 50, 58)
 			view.Ambient, view.LightColor, view.LightDirection = Color3.fromRGB(170, 170, 175), Color3.fromRGB(255, 250, 235), Vector3.new(-0.5, -1, -0.6)
 			view.Parent = button
-			local name = centred(PaperUI.words(button, "Name", emote.name, 12, 116, CARD - 24, 34, 27))
+			local name = centred(PaperUI.words(button, "Name", emote.name, 8, 71, CARD_W - 16, 28, 22))
 			PaperUI.loud(name)
-			PaperUI.fitWords(name, CARD - 36)
-			local price = centred(PaperUI.words(button, "Price", "", 12, 148, CARD - 24, 30, 24))
+			PaperUI.fitWords(name, CARD_W - 28)
+			local price = centred(PaperUI.words(button, "Price", "", 8, 94, CARD_W - 16, 22, 20))
+			PaperUI.image(button, "Pin", Assets.hud[column.pin], CARD_W / 2 - 8, -9, 16, 16)
 			cards[emote.id] = { button = button, view = view, price = price, emote = emote, kind = column }
 		end
 	end
@@ -209,7 +198,7 @@ function EmoteShop.new(playerGui, api)
 		camera.FieldOfView, camera.Parent, card.view.CurrentCamera = 30, card.view, camera
 		local function look()
 			local box, size = model:GetBoundingBox()
-			local far = math.max(size.Y, size.X * 104 / (CARD - 56)) / 2 * 1.12 / math.tan(math.rad(15))
+			local far = math.max(size.Y, size.X * 58 / (CARD_W - 50)) / 2 * 1.12 / math.tan(math.rad(15))
 			local front = model:GetPivot().LookVector
 			camera.CFrame = CFrame.lookAt(box.Position + front * far + Vector3.yAxis * size.Y * 0.08, box.Position)
 		end
@@ -263,14 +252,14 @@ function EmoteShop.new(playerGui, api)
 		tween(glow, 0.14, { Size = UDim2.fromOffset(8, 6) })
 		task.wait(0.14)
 		tween(glow, 0.25, { BackgroundTransparency = 1 })
-		lamp.BackgroundColor3 = Color3.fromRGB(90, 30, 30)
+		lamp.BackgroundTransparency = 0
 	end
 	local function stop()
 		state.token += 1
 		state.playing = false
 		Cutscene.tv.stop()
 		off.Visible, glow.Visible = true, false
-		lamp.BackgroundColor3 = Color3.fromRGB(90, 30, 30)
+		lamp.BackgroundTransparency = 0
 	end
 	local function play(id)
 		stop()
@@ -290,7 +279,7 @@ function EmoteShop.new(playerGui, api)
 			return
 		end
 		state.playing = true
-		lamp.BackgroundColor3 = Color3.fromRGB(255, 70, 60)
+		lamp.BackgroundTransparency = 1
 		-- the tube warms up: a bright line across the middle opens into a white picture, which clears to the kid
 		task.spawn(function()
 			glow.Size, glow.BackgroundTransparency, glow.Visible = UDim2.fromOffset(0, 6), 0, true
@@ -323,9 +312,9 @@ function EmoteShop.new(playerGui, api)
 			buyPaper.Visible = true
 			buyPaper.Label.Text = PaperUI.commas(price.paper) .. " Paper"
 			if RunService:IsStudio() then -- practice buys only until live sales are approved (docs/systems/economy-and-shop.md)
-				buyRobux = PaperUI.robuxButton(sheet, "BuyRobux", W / 2 + 10, by, 320, 84, "", price.robux, 40, function() api.buy("emote_" .. id) end)
+				buyRobux = PaperUI.robuxButton(sheet, "BuyRobux", W / 2 + 8, by, BUTTON_W, BUTTON_H, "", price.robux, 38, function() api.buy("emote_" .. id) end)
 			else
-				buyPaper.Position = UDim2.fromOffset(W / 2, by + 42) -- alone: in the middle
+				buyPaper.Position = UDim2.fromOffset(W / 2, by + BUTTON_H / 2) -- alone: in the middle
 			end
 		end
 	end

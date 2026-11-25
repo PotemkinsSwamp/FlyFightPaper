@@ -224,4 +224,9 @@ return {
 		tabPaper = "rbxassetid://137070263152385", tabStar = "rbxassetid://132455149895242", tabTicket = "rbxassetid://73862554497521",
 		tabYellow = "rbxassetid://124853096598673", ticks = "rbxassetid://110888203612570",
 	},
+	emoteshop = {
+		-- The Emotes page's classroom (Alan's OK 2026-11-25): 1920 x 1280 in 2x2 tiles of 960 x 640, the page's 1080 rows
+		-- in the middle; the TV's glass is see-through.
+		room = { "rbxassetid://90973429640497", "rbxassetid://71827894121466", "rbxassetid://125478539564992", "rbxassetid://88088186441683" },
+	},
 }
