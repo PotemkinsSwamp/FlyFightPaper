@@ -140,10 +140,10 @@ The prompt: `.planning/emotes/sneaky-toss-prompt-1.txt` (untracked); the moves i
   kids playing it are out of step).
 - **The ball:** a white ball (`kit.paper`), half the thrower's head (kept between 0.06 and 0.11 winner heights), on top
   of the throwing hand from Out (the bounce rises 0.13 heights over it), and from Release its own path: a thrown
-  ball's arc that passes, 0.5 s after the hand, a point behind 1st's head: behind the back of 1st's whole box as the
+  ball's arc that passes, 0.35 s after the hand, a point behind 1st's head: behind the back of 1st's whole box as the
   camera sees it (taken at the release, so whatever 1st's emote is doing, hats and wings too) by 0.15 heights plus the
   ball's radius; then on, falling 3 heights a second squared (a light paper ball), past the far runner-up. The throw
-  reaches that point 0.35 s after the hand (a quick throw). It is worked out in the big room and drawn in the world
+  is quick. It is worked out in the big room and drawn in the world
   of the winner it is nearest across the picture, so it hides behind that one correctly. It is gone when it drops to
   the desk tops (at about the far desk's outer edge, behind the far runner-up), leaves the side of the picture, or
   after 2 s. Its distance from the camera only grows, so it never comes towards the lens.
