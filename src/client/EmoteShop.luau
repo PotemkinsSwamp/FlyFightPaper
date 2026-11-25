@@ -239,6 +239,9 @@ function EmoteShop.new(playerGui, api)
 		if not ok then model:Destroy(); return nil end
 		local skin = Customize.shownSkin({ state = {}, profile = profile })
 		if skin then model:SetAttribute("Skin", skin); pcall(PlaneLooks.dress, model) end
+		-- Its front is where a flying plane's is (that one's Root). Left to Roblox, a model with no main part takes a
+		-- piece's own turn, half a circle round: every emote flew it tail first (Alan 2026-11-25, Test Flight).
+		model.WorldPivot = CFrame.identity
 		return model
 	end
 

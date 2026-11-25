@@ -54,14 +54,23 @@ end
 -- Where the ball flies (big room): from `from` through a point behind 1st's head TO_BEHIND later, then on, falling.
 local function aim(st, from, top, steady)
 	local tall = st.tall
-	local box, size = top.model:GetBoundingBox()
 	local look, far, highest = steady.LookVector, -math.huge, -math.huge
-	for _, x in { -1, 1 } do for _, y in { -1, 1 } do for _, z in { -1, 1 } do
-		local corner = big(top, box * (size / 2 * Vector3.new(x, y, z)))
-		far, highest = math.max(far, (corner - steady.Position):Dot(look)), math.max(highest, corner.Y)
-	end end end
-	local head = top.model:FindFirstChild("Head")
-	local over = head and big(top, head.Position) or big(top, box.Position)
+	local over
+	if top.model then
+		local box, size = top.model:GetBoundingBox()
+		for _, x in { -1, 1 } do for _, y in { -1, 1 } do for _, z in { -1, 1 } do
+			local corner = big(top, box * (size / 2 * Vector3.new(x, y, z)))
+			far, highest = math.max(far, (corner - steady.Position):Dot(look)), math.max(highest, corner.Y)
+		end end end
+		local head = top.model:FindFirstChild("Head")
+		over = head and big(top, head.Position) or big(top, box.Position)
+	else
+		-- The emote shop's TV: 1st is not there (only where they would stand). The ball flies where the head of a kid
+		-- standing there would be, and on out of the picture (Alan 2026-11-25: with no 1st to aim at, this stopped
+		-- with an error every frame and the ball hung in the air where the hand let go).
+		over = top.spot + Vector3.yAxis * 1.2 * tall
+		far, highest = (over - steady.Position):Dot(look) + 0.3 * tall, over.Y + BELOW_TOP * tall
+	end
 	over = Vector3.new(over.X, math.min(over.Y, highest - BELOW_TOP * tall), over.Z)
 	local away = flat(look).Unit
 	local deeper = far + (MARGIN * tall + st.size / 2) - (over - steady.Position):Dot(look)
