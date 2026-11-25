@@ -35,6 +35,7 @@ local GRID = 3 * CARD_W + 2 * GAP
 local CHALK = Color3.fromRGB(240, 240, 232)
 local GLASS_OFF = Color3.fromRGB(24, 31, 28)
 local LAMP_OFF = Color3.fromRGB(70, 22, 22)
+local TAP_GAP = 0.5 -- seconds after a card is tapped in which another tap is ignored
 local KINDS = {
 	{ kind = "leader", title = "Leader emotes", line = "Plays when you finish 1st.", x = 57, pin = "pinRed" }, -- the chalkboard
 	{ kind = "runner_up", title = "Runner-up emotes", line = "Plays when you finish 2nd or 3rd.", x = 1350, pin = "pinBlue" }, -- the bulletin board
@@ -112,7 +113,7 @@ function EmoteShop.new(playerGui, api)
 	if safe then safe:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit) end
 	fit()
 
-	local state = { pick = nil, owned = {}, worn = {}, profile = nil, playing = false, shown = false, token = 0, tvSound = 1 }
+	local state = { pick = nil, owned = {}, worn = {}, profile = nil, playing = false, shown = false, token = 0, tapped = -math.huge }
 
 	-- The TV's power light: painted lit; this covers it while the TV is off.
 	local lamp = round(frame(sheet, "Lamp", LAMP_OFF, 1259, 787, 14, 14), 7)
@@ -151,15 +152,6 @@ function EmoteShop.new(playerGui, api)
 	PaperUI.loud(centred(PaperUI.words(using, "Label", "Using", 60, 0, 240, BUTTON_H, 40)))
 	for _, piece in { buyPaper, use, using } do piece.Visible = false end
 	usingCheck.ZIndex = 2
-	-- ponytail: Studio only, until Alan picks the TV's sound by ear (Audio: tvOn1..3); then this button goes.
-	if RunService:IsStudio() then
-		local dev
-		dev = PaperUI.button(sheet, "DevTvSound", strip.blue, "TV sound 1", 60, by, 300, BUTTON_H, 0, function()
-			state.tvSound = state.tvSound % 3 + 1
-			dev.Label.Text = "TV sound " .. state.tvSound
-			Audio.play("tvOn" .. state.tvSound)
-		end, 34)
-	end
 
 	-- ===== The two boards and their cards =====
 	local cards = {} -- id -> { button, price, view, emote }
@@ -263,7 +255,7 @@ function EmoteShop.new(playerGui, api)
 	end
 	local function switchOff(token)
 		-- the click, then the picture folds to a bright line, the line to a dot, the dot goes out
-		Audio.play("tvOff" .. state.tvSound)
+		Audio.play("tvOff")
 		glow.Size, glow.BackgroundTransparency, glow.Visible = UDim2.fromOffset(GLASS_W, GLASS_H), 1, true
 		tween(glow, 0.08, { BackgroundTransparency = 0 })
 		task.wait(0.08)
@@ -302,7 +294,7 @@ function EmoteShop.new(playerGui, api)
 		end
 		state.playing = true
 		lamp.BackgroundTransparency = 1
-		Audio.play("tvOn" .. state.tvSound)
+		Audio.play("tvOn")
 		-- the tube warms up: a bright line across the middle opens into a white picture, which clears to the kid
 		task.spawn(function()
 			glow.Size, glow.BackgroundTransparency, glow.Visible = UDim2.fromOffset(0, 6), 0, true
@@ -342,6 +334,12 @@ function EmoteShop.new(playerGui, api)
 		end
 	end
 	select = function(id, watch)
+		-- A second tap this soon is a double click (Alan 2026-11-25: his mouse sends two, and the TV went on twice with
+		-- two clicks heard): it does nothing.
+		if watch then
+			if os.clock() - state.tapped < TAP_GAP then return end
+			state.tapped = os.clock()
+		end
 		state.pick = id
 		for other, card in cards do
 			card.button.Image = other == id and Assets.hangar.cardSelectedSquare or Assets.hangar.cardSquare
