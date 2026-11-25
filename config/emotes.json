@@ -1,25 +1,27 @@
 {
   "tiers": {
-    "good": {"paper": 2800, "robux": 135},
-    "cool": {"paper": 5600, "robux": 269},
-    "best": {"paper": 30000, "robux": 599}
+    "leader_top": {"paper": 8000, "robux": 399},
+    "leader_mid": {"paper": 5600, "robux": 299},
+    "leader_low": {"paper": 4000, "robux": 199},
+    "runner_top": {"paper": 2800, "robux": 149},
+    "runner_low": {"paper": 1800, "robux": 89}
   },
   "emotes": [
     {"id":"ToyPilot","kind":"leader","name":"Toy Pilot","tier":"free"},
-    {"id":"CameraFlick","kind":"leader","name":"Camera Flick","tier":"cool"},
-    {"id":"BookKicker","kind":"leader","name":"Book Kicker","tier":"best"},
-    {"id":"Bubblegum","kind":"leader","name":"Bubblegum","tier":"best"},
-    {"id":"Magician","kind":"leader","name":"Magician","tier":"best"},
-    {"id":"APlus","kind":"leader","name":"A+","tier":"cool"},
-    {"id":"SkeetShoot","kind":"leader","name":"Skeet Shoot","tier":"cool"},
-    {"id":"FoldItUp","kind":"leader","name":"Fold It Up","tier":"best"},
+    {"id":"CameraFlick","kind":"leader","name":"Camera Flick","tier":"leader_top"},
+    {"id":"BookKicker","kind":"leader","name":"Book Kicker","tier":"leader_mid"},
+    {"id":"Bubblegum","kind":"leader","name":"Bubblegum","tier":"leader_mid"},
+    {"id":"Magician","kind":"leader","name":"Magician","tier":"leader_top"},
+    {"id":"APlus","kind":"leader","name":"A+","tier":"leader_low"},
+    {"id":"SkeetShoot","kind":"leader","name":"Skeet Shoot","tier":"leader_mid"},
+    {"id":"FoldItUp","kind":"leader","name":"Fold It Up","tier":"leader_top"},
     {"id":"GoodGame","kind":"runner_up","name":"Good Game","tier":"free"},
-    {"id":"Nap","kind":"runner_up","name":"Nap","tier":"good"},
-    {"id":"NextOne","kind":"runner_up","name":"Next One","tier":"good"},
-    {"id":"SoClose","kind":"runner_up","name":"So Close","tier":"good"},
-    {"id":"SneakyToss","kind":"runner_up","name":"Sneaky Toss","tier":"cool"},
-    {"id":"SoreLoser","kind":"runner_up","name":"Sore Loser","tier":"good"},
-    {"id":"TestFlight","kind":"runner_up","name":"Test Flight","tier":"cool"},
-    {"id":"Doodler","kind":"runner_up","name":"Doodler","tier":"cool"}
+    {"id":"Nap","kind":"runner_up","name":"Nap","tier":"runner_top"},
+    {"id":"NextOne","kind":"runner_up","name":"Next One","tier":"runner_low"},
+    {"id":"SoClose","kind":"runner_up","name":"So Close","tier":"runner_low"},
+    {"id":"SneakyToss","kind":"runner_up","name":"Sneaky Toss","tier":"runner_low"},
+    {"id":"SoreLoser","kind":"runner_up","name":"Sore Loser","tier":"runner_low"},
+    {"id":"TestFlight","kind":"runner_up","name":"Test Flight","tier":"runner_top"},
+    {"id":"Doodler","kind":"runner_up","name":"Doodler","tier":"runner_top"}
   ]
 }

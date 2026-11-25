@@ -199,11 +199,6 @@ function ShopScreen.new(playerGui, api)
 	fit(pic(friend, "Icon", Art.giftWhite, 20, 12, 90, 77))
 	local friendWords = say(friend, "Words", "Gift a friend", 100, 0, 325, 87, 38, { loud = true, color = WHITE })
 	friend.Visible = PREVIEW
-	-- The door to the Emotes page (EmoteShop; docs/plan/EMOTE-SHOP-PLAN.md): a page of its own, so a button on the title
-	-- bar, not a sixth tab (the five tabs fill the window's height and each scrolls to a section).
-	if api.emotes then
-		PaperUI.button(board, "Emotes", Assets.mainmenu.strip.blue, "Emotes", 540 * K, 62 * K, 330 * K, 80 * K, -1, function() api.emotes() end, math.round(40 * K * TEXT))
-	end
 	press(board, "Close", Art.close, 1300, 48, 1405, 153, function() api.back() end)
 
 	-- ===== Tabs beside the window: jump to a section; the one you're in lights up =====

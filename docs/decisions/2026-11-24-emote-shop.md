@@ -1,7 +1,7 @@
 # The emote shop: one menu to buy and equip, your character on a box TV
 
 **Decided:** 2026-11-24 (Alan, talking the shop through)
-**Status:** How it works approved; prices wait for his ranking of the emotes; nothing built. The whole note:
+**Status:** How it works approved; first build seen by him 2026-11-25 ([his look](../playtests/2026-11-25-emotes-page-first-look.md): the ranking given, "30,000 papers is too much", the door moved to the main menu, the page needs drawn pictures). The whole note:
 [emote shop plan](../plan/EMOTE-SHOP-PLAN.md).
 
 ## Decision

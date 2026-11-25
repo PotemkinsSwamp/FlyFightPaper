@@ -2129,8 +2129,11 @@ end
 -- where they would stand and their clock, which the runner-up emotes look at). Skeet Shoot needs its two throwers:
 -- they stand where 2nd and 3rd would, unseen, so only their planes fly in.
 local TV = Cutscene.tv
-TV.TALL = 2.7 -- the picture's height where the kid stands, in kid heights (the winners' moment: FRAME_TALL)
-TV.MID = { 0.9, 0.75, 0.7 } -- the picture's middle over the desk top, in kid heights, by place (1st's books are the tallest)
+-- The picture's height where the kid stands and its middle over the desk top, in kid heights, by place. 1st's is the
+-- winners' moment's own room over the head (its picture reaches 2.8 heights over the desk top, FRAME_TALL 3.45 tall):
+-- Alan 2026-11-25, at 2.7 tall the Magician floated out of the top of the TV. The runner-ups stay on their books.
+TV.TALL = { 3.1, 2.7, 2.7 }
+TV.MID = { 1.2, 0.75, 0.7 }
 TV.ON = 0.5 -- seconds the kid stands still in the picture before their light (the TV flicks on over them)
 TV.SHRINK = 12 -- the set is this many times smaller than it looks: less than any avatar's own scale, so it is always behind them
 TV.WALL = Color3.fromRGB(47, 82, 66) -- chalkboard green
@@ -2244,7 +2247,7 @@ function TV.play(name, glass, layer, plane, done)
 	local at, back = TV.clearSpot(height), Vector3.zAxis
 	local right, tilt = Vector3.yAxis:Cross(back), -math.rad(GROUP_TILT)
 	s.view = CFrame.lookAt(at, at - back * math.cos(tilt) + Vector3.yAxis * math.sin(tilt))
-	local spot = at + s.view.LookVector * (TV.TALL * height / 2 / math.tan(math.rad(SHOT_FOV / 2))) - Vector3.yAxis * TV.MID[place] * height
+	local spot = at + s.view.LookVector * (TV.TALL[place] * height / 2 / math.tan(math.rad(SHOT_FOV / 2))) - Vector3.yAxis * TV.MID[place] * height
 	s.set = Instance.new("Folder")
 	s.set.Name, s.set.Parent = "EmoteShopTV", workspace
 	s.smear = Instance.new("BlurEffect") -- Book Kicker's book on the glass

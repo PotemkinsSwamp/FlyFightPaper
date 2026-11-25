@@ -52,6 +52,7 @@ function Menu.start()
   prestige=function()action:FireServer("prestige")end,
   shop=function()Menu.show("shop")end,
   missions=function()Menu.show("missions")end,
+  emotes=function()Menu.show("emotes")end, -- the Emotes page (docs/plan/EMOTE-SHOP-PLAN.md)
  })
  local settingsScreen=SettingsScreen.new(gui.Parent,{
   save=function(settings)action:FireServer("settings",settings);Options.apply(settings)end,
@@ -89,10 +90,9 @@ function Menu.start()
   leave=function()if not Tutorial.quit() then action:FireServer("withdraw",true) end;overlay(false);home()end,
  })
  local shopScreen=ShopScreen.new(gui.Parent,{action=action,buy=function(key)action:FireServer("mockProduct",key)end,claimGift=function()action:FireServer("claimDailyGift")end,
-  emotes=function()state.screen="emotes";render()end, -- the Emotes page (docs/plan/EMOTE-SHOP-PLAN.md)
   back=function()home()end})
- -- Buying and putting on the winners' emotes; Back goes to the Shop it was opened from.
- local emoteScreen=EmoteShop.new(gui.Parent,{action=action,buy=function(key)action:FireServer("mockProduct",key)end,back=function()state.screen="shop";render()end})
+ -- Buying and putting on the winners' emotes (opened from the main menu, under Missions).
+ local emoteScreen=EmoteShop.new(gui.Parent,{action=action,buy=function(key)action:FireServer("mockProduct",key)end,back=function()home()end})
  local waitScreen=WaitScreen.new(gui.Parent,{cancel=function()action:FireServer("withdraw",true)end})
  local missionsScreen=MissionsScreen.new(gui.Parent,{
   claim=function(list,index)action:FireServer("missionClaim",{list=list,index=index})end,

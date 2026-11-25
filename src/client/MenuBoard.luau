@@ -10,7 +10,7 @@ local Catalog = require(Root.Shared.Catalog).new(require(Root.Generated.Catalog)
 local HOLD_SECONDS = 2
 local Board = {}
 
--- actions = { play, hangar, settings, tutorial, prestige, shop (Studio only, may be nil), missions }
+-- actions = { play, hangar, settings, tutorial, prestige, shop (Studio only, may be nil), missions, emotes }
 function Board.new(playerGui, actions)
 	local cover, sheet = PaperUI.screen(playerGui, "MenuBoard", Art.bg)
 	local image, button = PaperUI.image, PaperUI.button
@@ -55,11 +55,16 @@ function Board.new(playerGui, actions)
 	table.insert(pieces, button(buttons, "Tutorial", Art.strip.red, "Training", 715, 870, 490, 120, 0.5, actions.tutorial))
 	-- A small phone draws the sheet at a third: 130 tall is a 46-point tap there (ScreenCheck asks 44).
 	for _, name in { "Hangar", "Settings", "Tutorial" } do PaperUI.phone(buttons[name], { Size = UDim2.fromOffset(500, 130) }) end
+	-- Shop, Missions, Emotes: three small strips between the stats card and the photo (Alan 2026-11-25: Shop and
+	-- Missions smaller, Emotes under them; they were 250 x 70, 74 apart).
 	if actions.shop then
-		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop", 1530, 488, 250, 70, 4, actions.shop, 34))
+		table.insert(pieces, button(buttons, "Shop", Art.strip.yellow, "Shop", 1555, 477, 200, 54, 4, actions.shop, 28))
 	end
 	if actions.missions then
-		table.insert(pieces, button(buttons, "Missions", Art.strip.blue, "Missions", 1530, 562, 250, 70, 3, actions.missions, 34))
+		table.insert(pieces, button(buttons, "Missions", Art.strip.blue, "Missions", 1555, 533, 200, 54, 3, actions.missions, 28))
+	end
+	if actions.emotes then
+		table.insert(pieces, button(buttons, "Emotes", Art.strip.green, "Emotes", 1555, 589, 200, 54, 4, actions.emotes, 28))
 	end
 	-- Prestige (docs/systems/economy-and-shop.md): a button on the stats card at max level, then a confirm sheet that
 	-- says what goes and what stays; holding the button for two seconds confirms, so it can't happen by accident.

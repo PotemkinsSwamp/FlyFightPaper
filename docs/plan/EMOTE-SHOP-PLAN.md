@@ -2,8 +2,10 @@
 
 **Status:** how it works approved by Alan 2026-11-24 ("As far as everything you wrote, yeah, that looks good";
 [decision](../decisions/2026-11-24-emote-shop.md)). **First build written the same day on his "go ahead and build the
-menu without my list" (see "As built"): every changed script compiles in Studio's Edit; nothing has run in Play and
-nobody has seen it.** Prices are placeholders until he ranks the emotes.
+menu without my list" (see "As built"). He looked at it in Play on 2026-11-25
+([his notes](../playtests/2026-11-25-emotes-page-first-look.md)): it runs; the ranking is in, the door moved to the
+main menu and the TV's framing is changed, none of that seen yet; the page's pictures are the big open piece, and
+the price numbers wait for his OK.**
 
 One menu where you buy the emotes and put them on. The emotes themselves:
 [modes and scoring](../systems/modes-and-scoring.md).
@@ -34,18 +36,23 @@ One menu where you buy the emotes and put them on. The emotes themselves:
 - The Robux button is practice-only in Studio until go-live, like the rest of the shop; live, each paid emote needs
   its own Roblox product (14).
 
-## Prices (not set)
-Alan: comparable to a skin's value, the best ones really expensive so the Robux button tempts, and a straight Robux
-buy a little cheaper than buying the Paper for it. He ranks the 14; the tiers offered to him, from the skins' own
-values (`config/looks.json`):
+## Prices
+Alan's ranking and limits ([his look](../playtests/2026-11-25-emotes-page-first-look.md)): the emotes that do
+something to the camera are the coolest; 30,000 Paper is too much; the coolest is worth about $5 of Paper, "maybe
+between 5 and 10", going down from there; the cheapest Leader emote costs more than the cheapest Runner-up emote; a
+straight Robux buy is a little cheaper than buying the Paper for it. **The numbers are Claude's, in the game's config
+(`config/emotes.json`), waiting for his OK:**
 
-| Tier | Paper | Robux | Same as |
-|---|---:|---:|---|
-| Good | 2,800 | 149 (135 with the chests' 10% off) | Common skin |
-| Cool | 5,600 | 299 (269 with 10% off) | Rare skin |
-| Best | 30,000 | 599 | Legendary skin |
+| Group | Emotes | Paper | Robux | Matches to earn (about 660 Paper each) |
+|---|---|---:|---:|---:|
+| Leader, coolest | Camera Flick, Magician, Fold It Up | 8,000 | 399 (about $5) | 12 |
+| Leader, middle | Bubblegum, Book Kicker, Skeet Shoot | 5,600 | 299 | 8 |
+| Leader, plain | A+ | 4,000 | 199 | 6 |
+| Runner-up, coolest | Nap, Doodler, Test Flight | 2,800 | 149 | 4 |
+| Runner-up, the rest | Sneaky Toss, Sore Loser, So Close, Next One | 1,800 | 89 | 3 |
 
-A step between Cool and Best, if he wants one: 12,000 Paper / 399 R$.
+All 14: 53,200 Paper, about 81 matches. Each Robux price is at or just under what its Paper costs in the biggest
+pack (18.75 Paper a Robux). Free: Toy Pilot, Good Game.
 
 ## Claude's calls, his to reverse
 - The TV is off when the menu opens and switches off after each emote (no frozen last pose).
@@ -62,35 +69,37 @@ A step between Cool and Best, if he wants one: 12,000 Paper / 399 R$.
   camera's lens is narrowed while it is open so the kid is not stretched off to the side, and it never opens
   mid-flight (the Shop's rule already). Not proven until it runs in Play.
 
-## As built (2026-11-24, not yet run in Play)
+## As built (2026-11-24; changed after his look, 2026-11-25)
 - **The TV is in the middle of the page, not on the right** (Claude's change, forced by the method above): the hole
   shows the middle of the game's picture, so it has to sit in the middle of the screen. Leader emotes hang on a
   chalkboard on its left, Runner-up emotes on one on its right, eight cards each, all on screen at once: nothing
   scrolls yet. The name and the buttons are under the TV.
-- **The door is an "Emotes" button on the Shop's title bar**, not a sixth tab (the five tabs fill the window's
-  height). No door in the Customize binder yet: its index tabs are full too.
-- **The wall, the two boards, the TV and its cart are flat colours.** The page's picture is not drawn yet.
+- **The door is an "Emotes" strip on the main menu, under Shop and Missions** (Alan 2026-11-25: "the emotes
+  shouldn't be in the shop"); those two were made smaller to fit it. The page's X goes back to the main menu. No door
+  in the Customize binder: its index tabs are full.
+- **The wall, the two boards, the TV and its cart are flat colours**, which Alan found boring: "It needs work",
+  drawn 2D pictures preferred. Next: the pictures (see "Build order").
 - **A card's still is your own character held at one moment of the emote's body clip, without props** (no plane,
   bubble or book): `TV.POSE` in `src/client/WinnersCutscene.luau`, sixteen guessed moments to tune by eye.
 - **On the TV** a Leader emote plays as 1st alone; a Runner-up emote as 2nd alone, with a 1st that is not there;
-  Skeet Shoot's two throwers stand unseen so only their planes fly in. The camera stands a little closer than in the
-  winners' moment (the picture is 2.7 kid heights tall there, 3.45 in the scene). The set is a plain classroom
+  Skeet Shoot's two throwers stand unseen so only their planes fly in. For a Leader emote the picture is 3.1 kid
+  heights tall and reaches 2.75 over the desk top, about the winners' moment's own headroom (Alan 2026-11-25: at 2.7
+  the Magician floated out of the top); a Runner-up emote keeps 2.7. The set is a plain classroom
   corner: a green board, a wooden desk top, cream walls.
 - **Known before any look:** anything an emote places by the whole screen's shape (A+'s card flying to where the
   report card is, Fold It Up's picture) is cut by the TV's 4:3 edge; the emote's sounds play at their normal
   loudness, not quieter; the TV has no switch-on sound yet.
-- **Placeholder tiers** (`config/emotes.json`, his to re-sort): Best = Book Kicker, Bubblegum, Magician, Fold It Up;
-  Cool = Camera Flick, A+, Skeet Shoot, Sneaky Toss, Test Flight, Doodler; Good = Nap, Next One, So Close, Sore Loser.
 - Code: the page `src/client/EmoteShop.luau`; the TV `Cutscene.tv` in `src/client/WinnersCutscene.luau`; who does
   which emote `Cutscene.choose`; rules and saving on [economy and shop](../systems/economy-and-shop.md).
 
 ## Build order
-1. ~~A free test of the TV picture~~ done in Edit (above). Next: a Dev button on the main menu that opens a bare
-   page with the hole and plays Good Game, then Book Kicker, on your own kid: Alan's look in Play.
-2. The TV picture: Codex draws it, Alan sees it assembled in the menu, one upload on his go.
-3. Saving what you own and your two picks (Codex, unit tests).
-4. The menu, then the winners' scene using the picks.
-5. The TV's switch-on sound: three licensed candidates on a Dev button, his pick by ear.
-6. His look in Play.
+1. ~~A free test of the TV picture~~, ~~saving~~, ~~the page~~, ~~his first look~~: done.
+2. **The page's pictures** (his notes 4 and 5). Claude's proposal, not yet put to him: the wall is the main menu's
+   own background, already loaded, cut round the glass; the two boards are the Shop's chalkboard in its wooden frame,
+   already loaded; **one new picture, the box TV on its cart** (Codex draws it from his four photos, on his ChatGPT
+   plan), with the glass cut out. He sees it assembled in the page first; one upload on his go.
+3. His OK on the price numbers; his look at the framing and the new door.
+4. The TV's switch-on sound: three licensed candidates on a Dev button, his pick by ear. The emote's sounds quieter.
+5. The card stills (props, the sixteen moments).
 
 Back to [HOME](../HOME.md)

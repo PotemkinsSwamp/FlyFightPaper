@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-25 The Emotes page, first look: the ranking (camera emotes are the coolest), 30,000 Paper is too much, the page is boring and needs drawn pictures, Magician floats out of the TV, the door goes on the main menu under Missions](2026-11-25-emotes-page-first-look.md)
 - [2026-11-24 Alan's first look at the four new runner-up emotes: Sneaky Toss "is good"; Sore Loser needs body language and a real turn away; Test Flight's plane is far too small and flapped; Doodler's drawing needs an arrow and "me", more showing time, and a short version under a lens emote](2026-11-24-the-four-new-runner-up-emotes-first-look.md)
 - [2026-11-24 Alan's third look: "The winner circle matches the report card"; in a tie he was 1st but the runner-ups were not the card's](2026-11-24-the-stand-matches-the-report-card.md)
 - [2026-11-24 Alan's second look: A+ "looks good" but held the other team's card in a tie; the rub "way too fast"; the dust-off must be its own move; the buildings "will have to do for a beta"; the bots' plan OK'd](2026-11-24-alans-second-look-at-the-emote-fixes.md)
