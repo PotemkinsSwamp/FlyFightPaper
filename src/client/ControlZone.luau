@@ -12,6 +12,7 @@ local PER_LOOP = 180 -- confetti bits in each of the two loops (sized to read fr
 local TURNS_PER_SECOND = 0.02 -- the loops drift slowly round the zone
 local DASHES = 220 -- crayon strokes in a circle (about one per 9 studs round a 300-stud radius)
 local FLOATING_ABOVE = 300 -- a zone whose bottom is higher than this draws its circle in the air
+local LOW_LOOP = 20 -- the bottom loop of a zone that reaches the floor drifts this high, so its bits never dip into it
 local WHITE = Color3.fromRGB(250, 248, 240)
 local PALETTES = {
 	none = { Color3.fromRGB(255, 205, 40), WHITE },
@@ -109,7 +110,7 @@ function ControlZone.start()
 		for i, bit in bits do
 			local a = bit.angle + turn
 			local r = zone.radius + math.sin(now * 0.7 + bit.phase) * 8
-			local y = c[2] + (bit.top and zone.half_height or -zone.half_height) + math.sin(now * 1.3 + bit.phase) * 10
+			local y = (bit.top and c[2] + zone.half_height or math.max(c[2] - zone.half_height, LOW_LOOP)) + math.sin(now * 1.3 + bit.phase) * 10
 			frames[i] = CFrame.new(c[1] + math.cos(a) * r, y, c[3] + math.sin(a) * r)
 				* CFrame.Angles(bit.spin.X * now, bit.spin.Y * now, bit.spin.Z * now)
 		end

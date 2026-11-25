@@ -1,7 +1,8 @@
 # Airspace zones follow how crowded the town is
 
 **Decided:** 2026-10-16 (Alan)  
-**Status:** in force
+**Status:** in force for the width; the heights are replaced by
+[zones reach the floor](2026-11-25-airspace-zones-reach-the-floor.md) (2026-11-25)
 
 ## Decision
 Each Airspace zone spot's size follows its building density: where buildings stand close the zone is wider and
