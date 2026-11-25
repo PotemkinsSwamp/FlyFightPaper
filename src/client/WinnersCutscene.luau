@@ -2185,16 +2185,15 @@ function TV.avatar()
 end
 
 -- A card's still on the Emotes page: the body clip of each emote and how far into it the picture is taken (a share
--- of its length), and for a kid curled forward how far round to the side the camera goes (degrees: Alan 2026-11-25,
--- Nap and So Close from the front showed only the top of the head). Props are not in it.
+-- of its length). Props are not in it.
 TV.POSE = { ToyPilot = { "ToyPilot", 0.5 }, CameraFlick = { "CameraFlick", 0.35 }, BookKicker = { "BookKicker", 0.3 }, Bubblegum = { "Bubblegum", 0.4 },
 	Magician = { false, 0.3 }, APlus = { "APlus", 0.4 }, SkeetShoot = { "SkeetShoot", 0.4 }, FoldItUp = { "FoldItUp", 0.2 },
-	GoodGame = { "GoodGameWave", 0.5 }, Nap = { "NapSleep", 0.5, 55 }, NextOne = { "NextOne", 0.8 }, SoClose = { "SoCloseLeft", 0.5, 55 },
+	GoodGame = { "GoodGameWave", 0.5 }, Nap = { "NapSleep", 0.5 }, NextOne = { "NextOne", 0.8 }, SoClose = { "SoCloseLeft", 0.5 },
 	SneakyToss = { "SneakyTossLeft", 0.4 }, SoreLoser = { "SoreLoserLeft", 0.5 }, TestFlight = { "TestFlightLeft", 0.5 }, Doodler = { "Doodler", 0.5 } }
 function TV.pose(name)
 	local still = TV.POSE[name]
 	if not still then return nil end
-	return still[1] and (ourClip(still[1])) or MAGIC.clip, still[2], still[3] or 0
+	return still[1] and (ourClip(still[1])) or MAGIC.clip, still[2]
 end
 
 -- Open air for the camera and its small set: over the winners' desks, the first height with nothing within reach.
