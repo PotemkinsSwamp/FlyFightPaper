@@ -528,7 +528,8 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
   - How to run such a check without clicking: in the Client, `Root.RoundAction:FireServer("join")`, set
     `DevRunnerUp` on `ReplicatedStorage.FlyFightPaper`, `FireServer("endMatch")` (again after each moment for
     another, with other winners); the winners are `workspace.WinnerStage.Winner<place>Stage.Cast.Winner<place>`.
-- **Two clips**, both cuts in `tools/emote_clips.lua`, in the open place's `Assets` (unsaved) and as files:
+- **Two clips**, both cuts in `tools/emote_clips.lua`, uploaded (ids in the table of uploads; re-cut as a sit with
+  the legs crossed in front, 2026-11-25) and as files:
   `NapSleepClip` (`CUTS.NapSleep`, `assets/animations/emotes/nap-sleep.rbxm`, an 8 s loop: a breath every 4 s, one
   small nod at 5 s) and `NapWakeClip` (`CUTS.NapWake`, `nap-wake.rbxm`, 5.1 s, once: jolt 0.2 s, sitting stiff,
   looks right, left, right and forward from 0.45 to 2.6 s, then 2.5 s of sinking back: a dip, a catch, the sink).
@@ -558,7 +559,7 @@ that he asked for legs dangling off the books instead of crossed, then dropped i
 - **The props** are plain parts made by the scene, sizes in head heights: Z's 0.3 growing to 0.9, one every 1.33 s,
   4 s each, from the head on the kid's right; bubble 0.06 to 0.25 across-half (radius) over 6 s at the mouth on the
   kid's left, pale blue, 0.45 see-through, one white glint; the pop 0.1 s, bits 0.3 s.
-- If the place is closed without a save: `_G.EMOTE_CLIPS = { "cut:NapSleep" }` in Edit, then the two
+- To bake a new cut (a draft in `Assets`, which Studio plays over the upload until it is deleted): `_G.EMOTE_CLIPS = { "cut:NapSleep" }` in Edit, then the two
   `--bake=NapSleep:NapSleepClip:assets/animations/emotes/nap-sleep.rbxm` and `NapWake` / `nap-wake.rbxm` runs (as
   for Good Game above); then set the camera back to Fixed from a delayed line (`task.delay(1, ...)`: Studio's
   assistant puts the camera type back when a command ends).

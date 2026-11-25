@@ -176,7 +176,9 @@ must look as good (background, lighting, textures). The four upload tiles are cu
 3. His look at the framing and the new door.
 4. ~~The TV's switch-on sound~~: his pick, in. Still open: the emote's sounds quieter in the page.
 5. The card stills: framing and facing done (2026-11-25, not seen in Play); props open.
-6. Sitting on the books on every body: Nap re-cut (drafts, his look, then upload); then So Close, Test Flight,
-   Next One and Doodler on his avatar.
+6. ~~Sitting on the books on every body~~: done 2026-11-25 (`sit` rests on the legs; Nap re-cut and uploaded; Nap,
+   So Close, Test Flight, Next One and Doodler seen sitting in Play on his avatar). Alan the same day: "those are fine
+   lets move on from emotes now"; 2 (the TV's picture) and the quieter sounds in 4 are parked
+   ([decision](../decisions/2026-11-24-emote-shop.md)).
 
 Back to [HOME](../HOME.md)
