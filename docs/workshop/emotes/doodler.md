@@ -6,11 +6,13 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Scribbles in a notebook, then holds up a drawing of themselves in 1st. Stick figures: a child drew it (Alan).
 
 ## Where it stands
-**Ready to record** (2026-11-24): `DevRunnerUp` = "Doodler" (or "Doodler,X"), the drafts `DoodlerLeftClip` and
-`DoodlerRightClip` are in the open place's `Assets` (unsaved). Marks, clip seconds (clip = 2 + seconds after 1st's
-light; 3rd runs late after the look, see "Build"): **the look at 1st 2.0** (lands 2.5), **the notebook's turn 6.9 to
-7.8** (lifted from 6.0, shown at the chest by 8.15). The drawing is about a tenth of the picture's height. No sound
-(Alan's silent default). See "Checks in Edit" for what could not be judged without Play.
+**Ready to record again** (2026-11-24, second build after Alan's first look in Play; see "Alan in Play"):
+`DevRunnerUp` = "Doodler"; the draft `DoodlerClip` (the seat only) is in the open place's `Assets` (unsaved); the
+older drafts `DoodlerLeftClip` and `DoodlerRightClip` are deleted from it. Its marks are in seconds after 1st's light,
+not clip seconds (the clip is held still): with a 1st that leaves the runner-ups seen to the end, **the look at 1st
+0 to 1.35** (3rd 0 to 1.85), **the turn 2.3 to 4.15** (3rd 2.8 to 4.65), the drawing held up to the end. Shorter
+under 1st-place emotes that take the lens (table under "Build"). No sound. What could not be judged without Play is
+under "Checks in Edit".
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Doodler looks good." No pick named, so my defaults: the kid alone in the drawing, silent.
@@ -86,82 +88,101 @@ desk; 2nd's is the mirror. The prompt (`.planning/emotes/doodler-prompt-1.txt`):
   (said to Alan before his OK): the turn takes about a second, not a snatch; the tilt goes once each way; the head
   tip is kept.
 
-## Build (step 4)
-- **Roblox's own emotes, checked first:** none of them writes or draws while seated (none I know of in Roblox's
-  catalogue, and the Creator Store search does not list emotes), so the body is a cut, as So Close's.
-- **The body: two clips, one per side of the look** (`CUTS.DoodlerLeft` and `CUTS.DoodlerRight` in
-  `tools/emote_cuts/doodler.lua`; every number is in its comment). 13 s, played once, held on the last pose. They move
-  only the chest and the head; the seat and the arms underneath are Nap B sitting still (Nap's and So Close's seat).
-  Marks (clip seconds): **Look 2.0** (1st's light: the head comes up and turns 45 degrees to 1st by 2.5, held to 3.2,
-  back down by 3.65) and **Up 6.0** (sits up tall by 6.6). The head tips 18 degrees, away from 1st, 8.0 to 8.7 and
-  stays tipped. Hunched while drawing: the chest 22 degrees forward, the head 32 more.
-- **Baked** into the open place's `Assets` as `DoodlerLeftClip` and `DoodlerRightClip` (unsaved drafts: what
-  `ourClip` plays in Studio) and saved as `.planning/emotes/doodler-left.rbxm` and `doodler-right.rbxm` (untracked:
-  this session writes nothing in `assets/animations`). To bake again after a close without a save:
-  `_G.EMOTE_CLIPS = { "cut:DoodlerLeft" }` in Edit, then
-  `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=DoodlerLeft:DoodlerLeftClip:.planning/emotes/doodler-left.rbxm"` (and Right).
-- **The module** (`src/client/emotes/Doodler.luau`; `DevRunnerUp` = "Doodler" picks it). Times as So Close: clip
-  second = 2 + seconds after 1st's light, so the look lands on 1st's light for 2nd and 3rd alike; 3rd holds the look
-  0.5 s longer and then runs at 0.92, so the two are out of step after. Rested on the top book every frame (`sit`,
-  `seatOn`). Clip seconds of the rest, all in the module:
-  - **Drawing, stroke by stroke:** five bursts, each drawing one part of the picture as the pencil's point runs
-    along its strokes: 0.15 to 0.65 the books, 1.05 to 1.55 the kid's head, body and legs (before 1st's light);
-    3.75 to 4.25 the arms, 4.65 to 5.15 the "1", and 5.4 to 5.95 the star in one sweep (the big last stroke). Still
-    between bursts, the point lifted off the paper. So every move of the hand adds something to the page.
-  - **The notebook on the lap**, its near edge just before the belly and the hunched chest's lowest front, resting on the top of the crossed legs, its far
-    edge tipped 25 degrees up, the drawing's top away from the kid (they read it). Left hand on its left edge.
-  - **The show (Alan's turn):** 6.0 to 6.6 lifted before the chest, facing the kid, top up (the camera sees the blue
-    cover: the drawing still hidden); 6.6 to 6.85 the left hand goes to the middle of the spiral and the right hand,
-    still holding the pencil, lets go to the chest; **6.9 to 7.8 turned half round about its upright middle line**
-    (the drawing comes round to us right way up; held by the spiral because the middle of the bottom edge was about a
-    tenth of the kid's height out of the hand's reach); 7.8 to 8.15 both hands back on its side edges and it comes in close
-    to the chest, its top edge under the chin. Tilts: 14 degrees one way by 9.9, the other by 11.0, straight by 11.9.
-  - **The pencil:** one, in the right hand only. While drawing, its point is on the page and it runs up through the
-    hand; from 6.0 it is fixed in the hand as it was then.
-  - **The drawing:** in code (Path2D, as A+'s card back), crayon strokes 36 of the page's 900 pixels thick on cream
-    paper: a red, a blue and a green book stacked, a black stick kid on top with both arms up, a red "1" and a gold
-    star over it. Nothing uploaded. The star's gold is a deep orange-gold (210, 115, 10): the brighter gold was 1.96 to 1
-    against the paper; this one is 3.24 to 1 (design-theory rule 1.2 asks 3 to 1). The others: black 14.9, blue 5.9,
-    red 4.8, green 3.6.
-  - **Sizes** (the kid's heights): page 0.26 wide, 0.33 tall (A+'s card size, held the same way on every body); the
-    pencil 0.1 long.
+## Alan in Play (2026-11-24, first look)
+- **His words** (notes on [the playtest page](../../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md)):
+  "I couldn't see it there because the first place one was one that hit the camera. For this one, I think the picture
+  they turn around, it should show it like they're in first place, and there should be an arrow drawn to it that says
+  me. So it's like they're saying, like, I should be first place. Versus right now the image is kind of just like, I
+  don't even know what it is because it keeps happening too fast. There's not enough time where it turns it around to
+  where you can see the image. They spend too much time drawing ... if the first place is one that shortens it, then
+  the doodler needs to be shortened as well. Only if the first place one is the one that shortens it."
+- **What changed:** the drawing (the kid in 1st place, an arrow from "me"); less drawing and more showing (the
+  drawing up from 4.15 s after 1st's light instead of 6.15); a shorter version only when 1st's emote takes the lens
+  early (`kit.seenFor()`, added to the scene by the primary session the same day). Kept: one pencil in the right hand,
+  the notebook turned so the drawing is the right way up, silent, sitting.
 
-## Checks in Edit (step 4)
-- **How they were run:** a copy of the module with the scene's own `sit`, `seatOn`, `rig`, `bendArm` and `paper`
-  (copied from `WinnersCutscene.luau`), a test kid as 2nd and as 3rd beside a stand-in 1st, the scene's timing stepped
-  every 1/30 s with `Animator:StepAnimations`, the arm bend called after each pose, every part put where the pose
-  says (the joints switched off for the check only: in Edit, placing one limb dragged the whole body). Everything
-  made was removed in the same call. No pictures of Studio. **An Edit check is not Play.**
-- **The plain test kid, as 2nd and as 3rd:** no error; both hands on their marks to 0.000 of the kid's height from
-  the lap to the end, the turn included; the pencil touches the hand all through and its point is on the paper while
-  drawing (0.003 of the kid's height off; 0.015 lifted between strokes); all 12 strokes drawn by 5.95; the notebook
-  in no part of the body.
-- **Two faults the numbers found first:** placed by the shins, the notebook sat inside the belly and the thighs (it
-  is now set in front of the belly and the hunched chest); and the left hand could not reach the bottom edge's middle
-  for the turn (it holds the spiral now).
-- **On the 12 bots' outfits** (`bot_cast`, sampled every 0.1 s): it plays on every one; no body part inside the
-  notebook (two small bodies had the hunched chest dipping into it on the lap until the lap spot was moved). The
-  left hand on its marks to within 0.06 of the kid's height (worst `3285769426`, as it holds the spiral in the turn);
-  the right hand up to 0.08 short of its mark while drawing the "1" at the far top of the page on short-armed bodies
-  (the pencil still touches the hand on all 12). Clothing goes through the notebook on seven: bags, a cape, a fanny
-  pack and long hair at the lap, and a fringe or a camera over its top edge at the chest: the accepted loss on odd
-  outfits (Alan, 2026-11-21).
-- **The drawing's size in the picture:** the page is 0.33 of the kid's height and the picture at the winners at
-  least 3.45 kid heights tall (`FRAME_TALL`), so the page is at most about a tenth of the picture's height: about 69
-  pixels tall at 720p and 103 at 1080p; the stick kid in it about 23 and 35 pixels, the crayon lines about 3 and 4
-  pixels. Rendered at those sizes from the same strokes (`.planning/emotes/doodler-drawing-sizes.png`, my own render,
-  not Studio): the kid on the books, the "1" and the star read at both. **Plainly: a stick figure can be read at this
-  size**, but only just at 720p; if it does not read in Play, the options are a bigger notebook (0.4 of the kid's
-  height: about a fifth bigger) or fewer, thicker lines (drop the books' outlines to three filled blocks).
-- **Not known until it is seen in Play:** whether the drawing reads under the spotlight at the real distance; how
-  the turn reads (about 0.9 s, held by the spiral); whether the look at 1st reads with the head 45 degrees round;
-  the pencil's small bursts at that size; long hair and hats over the notebook.
+## Build (step 4)
+- **Roblox's own emotes, checked first:** none of them writes or draws while seated, so the body is ours.
+- **The body clip is only the seat** (`CUTS.Doodler` in `tools/emote_cuts/doodler.lua`: Nap B sitting still, 1 s,
+  held). The chest and the head are turned by the module every frame (as the arms are bent there), so the timing can
+  follow 1st's emote with no pose jumping. (The first build had two 13 s clips, one per side of the look; a clip has
+  one fixed timeline, so it could not shorten itself.) Baked into the open place's `Assets` as `DoodlerClip` and
+  saved as `.planning/emotes/doodler.rbxm` (the two tracked files `assets/animations/emotes/doodler-left.rbxm` and
+  `-right.rbxm` are the first build's and no longer used). To bake again: `_G.EMOTE_CLIPS = { "cut:Doodler" }` in
+  Edit, then `python tools/emote_preview.py STUDIO_ID x --lua=emote_clips.lua "--bake=Doodler:DoodlerClip:.planning/emotes/doodler.rbxm"`.
+- **The module** (`src/client/emotes/Doodler.luau`; `DevRunnerUp` = "Doodler" picks it). Every time below is seconds
+  after 1st's light. Its plan is worked out once per kid at its first frame, from `kit.seenFor()` and its place:
+  - **Before 1st's light:** hunched over the notebook on the lap (chest 22 degrees forward, head 32 more), two
+    bursts: the books (-1.9 to -1.15), then the kid and the "1" (-0.95 to -0.1). 2nd is lit at -1, 3rd at -2.
+  - **The look at 1st:** up over 0.5 s, held 0.5 (3rd 1.0, so the two are out of step after), back down over 0.35;
+    the head 45 degrees round, the chest 8. Pencil still.
+  - **One burst** (0.95 s): the arrow and "me".
+  - **The turn** (1.85 s): lifted up facing the kid, top up (0.5; the camera sees the blue cover); the left hand to
+    the middle of the spiral and the right hand, still holding the pencil, lets go to the chest (0.2); turned half
+    round about its upright middle line (0.8: the drawing comes round to us right way up); in close to the chest
+    (0.3). Then the head tips 18 degrees away from 1st and the notebook tilts 14 degrees one way and the other.
+  - **Shortened** (Alan: "only if the first place one is the one that shortens it"): the drawing must be held up still
+    at least 1.6 s before `seenFor()` runs out. If not, in this order: the burst after the look goes (its strokes are
+    finished while the notebook faces the kid, so nothing is seen appearing), the turn goes 1.3 times quicker, and
+    the look at 1st goes.
+- **Under each 1st** (from the plan, checked in Edit; "up" is the drawing turned to us, within 20 degrees, every
+  stroke on):
+
+| 1st's emote | Seen until | 2nd: turn / drawing up from / held | 3rd: turn / up from / held | Lost |
+|---|---|---|---|---|
+| Toy Pilot, Magician, Skeet Shoot | 10.4 | 2.3 / 3.7 / 6.75 s | 2.8 / 4.2 / 6.25 s | nothing |
+| Bubblegum | 9.0 | 2.3 / 3.7 / 5.35 s | 2.8 / 4.2 / 4.85 s | nothing |
+| A+ | 7.8 | 2.3 / 3.7 / 4.15 s | 2.8 / 4.2 / 3.65 s | nothing |
+| Book Kicker | about 5.9 | 2.3 / 3.7 / 2.25 s | 2.45 / 3.85 / 2.1 s | 3rd: the burst after the look is 0.6 s, not 0.95 (drawn quicker) |
+| Camera Flick | about 5.7 | 2.25 / 3.65 / 2.1 s | 2.25 / 3.65 / 2.1 s | 3rd: the burst after the look is 0.35 s (drawn quicker); 2nd: nothing to speak of |
+| Fold It Up | 3.05 | 0.03 / 1.1 / 2.0 s | 0.03 / 1.1 / 2.0 s | the look at 1st and the arrow being drawn (it is on the page when shown); the turn 1.3 times quicker |
+
+  Under Fold It Up the kid scribbles from their own light to 1st's (2nd 1 s, 3rd 2 s), then sits up straight away and
+  turns the notebook; the drawing is up from 1.1 s and held to 3.05.
+- **The drawing** (Alan: "it should show it like they're in first place, and there should be an arrow drawn to it
+  that says me"): in code (Path2D, as A+'s card back), crayon strokes 36 of the page's 900 pixels thick on cream
+  paper: a red, a blue and a green book stacked, a black stick kid on top with both arms up, a big gold "1" over the
+  head, and a red arrow from a red "me" to the kid. Against the paper: black 14.9 to 1, blue 5.9, red 4.8 (words need
+  4.5), green 3.6, gold 3.2 (pictures need 3; design-theory rule 1.2). Nothing uploaded.
+- **Sizes** (the kid's heights): the page 0.4 tall and 0.3 wide, bigger than the first build's 0.33 so "me" can be
+  read; the pencil 0.1 long. Held for the turn its height under the chin plus 0.05, 0.02 clear of the chest.
+- **The pencil:** one, in the right hand only. While drawing its point is on the page and it runs up through the
+  hand; from the turn on it is fixed in the hand as it was then.
 
 ## Sound (step 5)
 None: Alan took the silent default on the card. Skipped.
 
+## Checks in Edit (step 4)
+- **How they were run:** a copy of the module with the scene's own `sit`, `seatOn`, `rig`, `bendArm` and `paper`
+  (copied from `WinnersCutscene.luau`) and `seenFor` set to each 1st's value, a test kid as 2nd and as 3rd beside a
+  stand-in 1st, stepped every 1/20 s with `Animator:StepAnimations`, the chest, head and arm turns called after each
+  pose, every part put where the pose says (the joints switched off for the check only: in Edit, placing one limb
+  dragged the whole body). Everything made was removed in the same call. No pictures of Studio. **An Edit check is
+  not Play.**
+- **The plain test kid, under all six 1st-place timings, as 2nd and 3rd:** no error; the drawing turned to us with
+  every stroke on for the seconds in the table; no part of the body inside the notebook; the pencil touches the hand
+  all through; the left hand on its marks to within 0.015 of the kid's height; the right hand up to 0.047 short while
+  drawing the page's far corners (the "1", the arrow's tail), its pencil still in it.
+- **Faults the numbers found first:** the chest and head turns piled up frame on frame when the held clip did not
+  write its pose again (the hands ended a third of the kid's height off): they are now turned from the clip's own
+  pose every frame. The bigger notebook was 0.03 to 0.04 out of the hands' reach as it came up and turned: it is now
+  held lower and closer, and gripped above the middle of its side edges once lifted.
+- **On the 12 bots' outfits** (`bot_cast`, the full timing, every 0.1 s): no body part inside the notebook on any; the
+  left hand within 0.035 of its marks; the right hand up to 0.082 short at the "1" (`3285769426`), its pencil still in
+  it on all 12. Clothing through the notebook on seven: bags, a cape, a fanny pack and pigtails at the lap, hair, a
+  scarf, a camera and a necklace at the chest: the accepted loss on odd outfits (Alan, 2026-11-21).
+- **The drawing's size in the picture:** the page is 0.4 of the kid's height and the picture at the winners at least
+  3.45 kid heights tall, so it is at most about an eighth of the picture's height: about 83 pixels tall at 720p and
+  125 at 1080p. In it: "me" about 20 and 30 pixels tall, the stick kid 30 and 45, the "1" 17 and 25, the crayon lines
+  3.3 and 5. Rendered at those sizes from the module's own strokes (`.planning/emotes/doodler-drawing-sizes.png`, my
+  own render, not Studio): "me", the arrow, the kid on the books and the "1" read at both.
+- **Not known until it is seen in Play:** whether the drawing reads under the spotlight at the real distance; how
+  the quick turn reads under Fold It Up; whether the look at 1st reads with the head 45 degrees round; long hair and
+  hats over the notebook.
+
 ## Files
 | File | What |
 |---|---|
-| `src/client/emotes/Doodler.luau` | The emote's module: picks the clip, times it to 1st's light, the seat, the notebook, the pencil, the drawing, the arms |
-| `tools/emote_cuts/doodler.lua` | The body cut: `CUTS.DoodlerLeft`, `CUTS.DoodlerRight` |
+| `src/client/emotes/Doodler.luau` | The emote's module: its timing under each 1st, the seat, the chest and head, the notebook, the pencil, the drawing, the arms |
+| `tools/emote_cuts/doodler.lua` | The body cut: `CUTS.Doodler`, the seat only |
+| `assets/animations/emotes/doodler-left.rbxm`, `doodler-right.rbxm` | The first build's two clips, no longer used (the new one: `.planning/emotes/doodler.rbxm`) |
