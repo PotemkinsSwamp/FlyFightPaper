@@ -22,7 +22,7 @@ function Spec.run()
 		assert(Emotes.get("missing") == nil and #Emotes.list("missing") == 0)
 	end)
 	test("paid prices come from the listed tier", function()
-		local tiers = { leader_top = { 8000, 399 }, leader_mid = { 5600, 299 }, leader_low = { 4000, 199 }, runner_top = { 2800, 149 }, runner_low = { 1800, 89 } }
+		local tiers = { leader_top = { 12000, 599 }, leader_mid = { 9000, 449 }, leader_low = { 6000, 299 }, runner_top = { 5000, 249 }, runner_low = { 3000, 149 } }
 		for tier, expected in tiers do
 			local price = Emotes.config().tiers[tier]
 			assert(price.paper == expected[1] and price.robux == expected[2])

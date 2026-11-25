@@ -37,22 +37,22 @@ One menu where you buy the emotes and put them on. The emotes themselves:
   its own Roblox product (14).
 
 ## Prices
-Alan's ranking and limits ([his look](../playtests/2026-11-25-emotes-page-first-look.md)): the emotes that do
-something to the camera are the coolest; 30,000 Paper is too much; the coolest is worth about $5 of Paper, "maybe
-between 5 and 10", going down from there; the cheapest Leader emote costs more than the cheapest Runner-up emote; a
-straight Robux buy is a little cheaper than buying the Paper for it. **The numbers are Claude's, in the game's config
-(`config/emotes.json`), waiting for his OK:**
+**Approved by Alan 2026-11-25** ("this looks good to me"), after his ranking and limits
+([his look](../playtests/2026-11-25-emotes-page-first-look.md)) and a look at other games (below). The emotes that do
+something to the camera are the coolest; the cheapest Leader emote costs more than the cheapest Runner-up emote; a
+Paper price is its Robux price x 20, a little dearer than the biggest pack's 18.75 Paper a Robux, so the Robux button
+is the slightly better deal. In `config/emotes.json`:
 
-| Group | Emotes | Paper | Robux | Matches to earn (about 660 Paper each) |
+| Group | Emotes | Robux | Paper | Matches to earn (about 660 Paper each) |
 |---|---|---:|---:|---:|
-| Leader, coolest | Camera Flick, Magician, Fold It Up | 8,000 | 399 (about $5) | 12 |
-| Leader, middle | Bubblegum, Book Kicker, Skeet Shoot | 5,600 | 299 | 8 |
-| Leader, plain | A+ | 4,000 | 199 | 6 |
-| Runner-up, coolest | Nap, Doodler, Test Flight | 2,800 | 149 | 4 |
-| Runner-up, the rest | Sneaky Toss, Sore Loser, So Close, Next One | 1,800 | 89 | 3 |
+| Leader, coolest | Camera Flick, Magician, Fold It Up | 599 (about $7.50) | 12,000 | 18 |
+| Leader, middle | Bubblegum, Book Kicker, Skeet Shoot | 449 | 9,000 | 14 |
+| Leader, plain | A+ | 299 | 6,000 | 9 |
+| Runner-up, coolest | Nap, Doodler, Test Flight | 249 | 5,000 | 8 |
+| Runner-up, the rest | Sneaky Toss, Sore Loser, So Close, Next One | 149 | 3,000 | 5 |
 
-All 14: 53,200 Paper, about 81 matches. Each Robux price is at or just under what its Paper costs in the biggest
-pack (18.75 Paper a Robux). Free: Toy Pilot, Good Game.
+All 14: 96,000 Paper, about 145 matches. Free: Toy Pilot, Good Game. Turned down by him: 30,000 Paper for the best
+("way too much"), then 8,000 / 5,600 / 4,000 / 2,800 / 1,800 ("the prices seem low").
 
 ### What other games charge for an emote (looked up 2026-11-25; Alan: "the prices seem low")
 Fan wikis and guide sites, mixed dates, none official; nothing here is measured in our game.
@@ -65,10 +65,8 @@ Fan wikis and guide sites, mixed dates, none official; nothing here is measured 
 | Rivals skins, for scale | 299 / 449 / 599 R$ by rarity | 299-599 |
 | Fortnite (not Roblox) | 200 / 500 / 800 V-Bucks, about $1.80 / $4.50 / $7.20 | (about 150 / 360 / 580 at 400 R$ = $4.99) |
 
-Ours at 89 to 399 R$ sit at the low end: the cheap ones at catalog-emote prices, the best under Rivals' best and
-far under a limited one elsewhere. **Offered to him, not in the config:** Paper = Robux x 20 (a little dearer than
-the biggest pack's 18.75, so the Robux button is the slightly better deal): Leader 599 / 449 / 299 R$ = 12,000 /
-9,000 / 6,000 Paper; Runner-up 249 / 149 R$ = 5,000 / 3,000 Paper. All 14: 96,000 Paper, about 145 matches.
+The first numbers offered (89 to 399 R$) sat at the low end: the cheap ones at catalog-emote prices, the best under
+Rivals' best and far under a limited one elsewhere. The approved ladder above uses Rivals' own skin steps.
 Sources: [Rivals emotes](https://bloxodes.com/wiki/rivals/emotes), [Rivals shop](https://www.u7buy.com/blog/rivals-shop-guide-2/),
 [TSB emotes](https://www.gamezebo.com/walkthroughs/how-to-get-emotes-in-the-strongest-battlegrounds/),
 [TSB limited emotes](https://roonby.com/2026/07/04/all-limited-time-emotes-in-the-strongest-battlegrounds-2026-and-what-they-do/),
@@ -116,11 +114,14 @@ per dollar from [pricing research](../research/PRICING-RESEARCH-2026-10-18.md).
 
 ## Build order
 1. ~~A free test of the TV picture~~, ~~saving~~, ~~the page~~, ~~his first look~~: done.
-2. **The page's pictures** (his notes 4 and 5). Claude's proposal, not yet put to him: the wall is the main menu's
-   own background, already loaded, cut round the glass; the two boards are the Shop's chalkboard in its wooden frame,
-   already loaded; **one new picture, the box TV on its cart** (Codex draws it from his four photos, on his ChatGPT
-   plan), with the glass cut out. He sees it assembled in the page first; one upload on his go.
-3. His OK on the price numbers; his look at the framing and the new door.
+2. **The page's pictures: Alan's go for Codex, 2026-11-25.** "Don't reuse the menu background, we need a new
+   background ... a background that looks like a classroom like the reference images I gave you, it looks like the TV
+   was rolled in the classroom." So: a new classroom background (wall, floor, the room of his four photos, in our
+   hand-made paper and crayon look) with the box TV on its cart standing in it; the glass is cut out of the finished
+   picture, exactly in the middle of the page. Codex draws on his ChatGPT plan (no extra cost). He sees it assembled
+   in the page first; the upload is on his go. Not started. Open with him: whether the two chalkboards are part of
+   the new picture or the Shop's loaded chalkboard.
+3. His look at the framing and the new door.
 4. The TV's switch-on sound: three licensed candidates on a Dev button, his pick by ear. The emote's sounds quieter.
 5. The card stills (props, the sixteen moments).
 

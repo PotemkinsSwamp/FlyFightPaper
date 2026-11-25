@@ -1,10 +1,10 @@
 {
   "tiers": {
-    "leader_top": {"paper": 8000, "robux": 399},
-    "leader_mid": {"paper": 5600, "robux": 299},
-    "leader_low": {"paper": 4000, "robux": 199},
-    "runner_top": {"paper": 2800, "robux": 149},
-    "runner_low": {"paper": 1800, "robux": 89}
+    "leader_top": {"paper": 12000, "robux": 599},
+    "leader_mid": {"paper": 9000, "robux": 449},
+    "leader_low": {"paper": 6000, "robux": 299},
+    "runner_top": {"paper": 5000, "robux": 249},
+    "runner_low": {"paper": 3000, "robux": 149}
   },
   "emotes": [
     {"id":"ToyPilot","kind":"leader","name":"Toy Pilot","tier":"free"},

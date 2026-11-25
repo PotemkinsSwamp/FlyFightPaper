@@ -101,24 +101,24 @@ return JSONTypes.map({
     }),
     ["tiers"] = JSONTypes.map({
         ["leader_low"] = JSONTypes.map({
-            ["paper"] = 4000,
-            ["robux"] = 199,
-        }),
-        ["leader_mid"] = JSONTypes.map({
-            ["paper"] = 5600,
+            ["paper"] = 6000,
             ["robux"] = 299,
         }),
+        ["leader_mid"] = JSONTypes.map({
+            ["paper"] = 9000,
+            ["robux"] = 449,
+        }),
         ["leader_top"] = JSONTypes.map({
-            ["paper"] = 8000,
-            ["robux"] = 399,
+            ["paper"] = 12000,
+            ["robux"] = 599,
         }),
         ["runner_low"] = JSONTypes.map({
-            ["paper"] = 1800,
-            ["robux"] = 89,
+            ["paper"] = 3000,
+            ["robux"] = 149,
         }),
         ["runner_top"] = JSONTypes.map({
-            ["paper"] = 2800,
-            ["robux"] = 149,
+            ["paper"] = 5000,
+            ["robux"] = 249,
         }),
     }),
 })

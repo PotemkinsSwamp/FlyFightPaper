@@ -22,6 +22,13 @@
 - **Prices like skins, the best ones dear** ("Our prices need to be comparable to the value of a skin"; "some of our
   best ones should be like really expensive, so like it encourages people to pay Robux for them"). He will say which
   emotes are the cooler ones ("I'll go through and I'll say which ones ... and we'll price them that way").
+- **Prices, 2026-11-25** ("this looks good to me"): Leader 599 / 449 / 299 R$ and Runner-up 249 / 149 R$, each
+  Paper price its Robux price x 20; the camera emotes are the coolest. Table and what other games charge:
+  [plan](../plan/EMOTE-SHOP-PLAN.md#prices).
+- **The door is on the main menu, under Shop and Missions** ("the emotes shouldn't be in the shop"), 2026-11-25.
+- **The page gets a new classroom background, the TV rolled into it** ("dont resue the menu background ... a
+  background that looks like a classroom like the reference images i gave you"), drawn by Codex ("go for codex"),
+  2026-11-25.
 - The other game's videos are not needed ("We don't have to worry about the other game").
 
 ## Claude's advice he asked for
