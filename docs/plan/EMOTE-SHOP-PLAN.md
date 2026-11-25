@@ -50,8 +50,19 @@ A step between Cool and Best, if he wants one: 12,000 Paper / 399 R$.
 - The black school TV of his photos 1, 2 and 4, not the wood one.
 - The card poses are the player's own character, live, not uploaded pictures.
 
+## How the TV picture is made (Claude's method, 2026-11-24)
+- **Not a menu 3D window** (Roblox's ViewportFrame, what the Hangar shows the plane in). Tested in Studio's Edit:
+  paper drawn in code (a SurfaceGui) stays blank in one, and Roblox's docs say it has no blur either. That would
+  blank A+'s report card, Doodler's drawing, Fold It Up's picture and Book Kicker's pages.
+- **Instead the TV's glass is a hole in the menu** and the real scene plays behind it, small and right at the
+  camera, the way the winners already stand in the winners' moment. Everything an emote has draws, because it is
+  the real game picture. Costs: the Emotes menu is a full page of its own (nothing see-through around the TV), the
+  camera's lens is narrowed while it is open so the kid is not stretched off to the side, and it never opens
+  mid-flight (the Shop's rule already). Not proven until it runs in Play.
+
 ## Build order
-1. A free test of the TV picture with one plain emote and one that hits the glass, before anything else.
+1. ~~A free test of the TV picture~~ done in Edit (above). Next: a Dev button on the main menu that opens a bare
+   page with the hole and plays Good Game, then Book Kicker, on your own kid: Alan's look in Play.
 2. The TV picture: Codex draws it, Alan sees it assembled in the menu, one upload on his go.
 3. Saving what you own and your two picks (Codex, unit tests).
 4. The menu, then the winners' scene using the picks.
