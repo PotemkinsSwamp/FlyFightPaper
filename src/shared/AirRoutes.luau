@@ -154,32 +154,28 @@ function Routes:clear(a,b,radius)
 	end
 	return true
 end
--- The nearest point a plane can fly straight to and back from: the eight closest are checked first; only if none is in
--- reach, every coarse point (the town map has too many points to check them all).
+-- Checks a plan may spend finding a point in reach (ponytail: a cap, not a smarter search; each check is a shape cast,
+-- and checking every point of the town map stalled a frame for up to 55 ms).
+local REACH_CHECKS=12
+-- The nearest point a plane can fly straight to and back from, among the REACH_CHECKS closest.
 function Routes:nearest(position)
 	local close={}
 	for i,p in ipairs(self.nodes) do
 		local d=(p-position).Magnitude
-		if #close<8 or d<close[#close][2] then
+		if #close<REACH_CHECKS or d<close[#close][2] then
 			local k=#close+1
 			while k>1 and close[k-1][2]>d do k-=1 end
 			table.insert(close,k,{i,d})
-			if #close>8 then table.remove(close) end
+			if #close>REACH_CHECKS then table.remove(close) end
 		end
 	end
 	for _,entry in ipairs(close) do
 		local p=self.nodes[entry[1]]
 		if self:clear(position,p,18) and self:clear(p,position,18) then return entry[1] end
 	end
-	local best,index=math.huge,nil
-	for i=1,self.coarse or #self.nodes do
-		local p=self.nodes[i]
-		local distance=(p-position).Magnitude
-		if distance<best and self:clear(position,p,18) and self:clear(p,position,18) then best,index=distance,i end
-	end
-	return index
+	return nil
 end
--- Open air ahead: the best-placed point (ahead, about 250 studs off) that is in reach.
+-- Open air ahead: the best-placed point (ahead, about 250 studs off) in reach, among the REACH_CHECKS best placed.
 function Routes:escape(from,forward)
 	local scored={}
 	for _,node in ipairs(self.nodes) do
@@ -187,7 +183,7 @@ function Routes:escape(from,forward)
 		if delta.Magnitude>75 then table.insert(scored,{node,forward:Dot(delta.Unit)*2-math.abs(delta.Magnitude-250)/1000}) end
 	end
 	table.sort(scored,function(a,b) return a[2]>b[2] end)
-	for _,entry in ipairs(scored) do if self:clear(from,entry[1],18) then return {entry[1]} end end
+	for k=1,math.min(#scored,REACH_CHECKS) do if self:clear(from,scored[k][1],18) then return {scored[k][1]} end end
 	return {}
 end
 function Routes:path(from,to,forward)

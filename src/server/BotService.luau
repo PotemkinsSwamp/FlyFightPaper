@@ -540,6 +540,19 @@ function Service:decide(p,b,now)
   -- ahead on their own (palEraser). Its hits can't fold you.
   b.target=nil;b.mode="patrol";b.goal=wander(self,b,position,now)
  end
+ -- Stuck among the buildings (plan step 2): a wall scrape, or no nearer a still goal for 2 seconds, sends the bot up to
+ -- open air, then it plans a new way. Goals that move (a chased plane, a zone circle) don't count as no progress.
+ if b.mode~="duct" and not p.pal then
+  local deflect=model:GetAttribute("DeflectUntil") or 0
+  local away=(b.goal-position).Magnitude
+  if not b.progress or (b.goal-b.progress.goal).Magnitude>60 or away<b.progress.best-15 then b.progress={goal=b.goal,best=away,at=now} end
+  local scraped=deflect>(b.deflectSeen or 0)+.6
+  if scraped then b.deflectSeen=deflect end
+  if b.mode~="unstuck" and (scraped or now-b.progress.at>2 and (b.mode=="patrol" or b.mode=="search" or b.mode=="fan")) then
+   b.recoverUntil=now+1.5;b.recoverGoal=Vector3.new(position.X,math.min(position.Y+160,self.flight.boundsSize.Y-90),position.Z)+forward*60
+   b.mode="unstuck";b.goal=b.recoverGoal;b.progress=nil;b.routeAt=-math.huge
+  end
+ end
  -- Studio spectator camera (F10) shows each bot's intent.
  if Run:IsStudio() then p.model:SetAttribute("BotIntent",b.mode..(b.target and " -> "..b.target.name or "")) end
  if b.mode=="duct" then b.route={}
@@ -631,6 +644,9 @@ function Service:steer(p,b,dt,now)
   b.avoidAt=now+.1
   local forward=p.body.CFrame.LookVector
   local reach=duct and 70 or math.max(150,p.stats.speed*2.1)
+  -- On a route through the town (plan step 2), only as far as the next point: the route's legs are known clear, and the
+  -- long look-ahead swerves off a street that is clear along the route.
+  if not duct and not b.direct and b.route[1] then reach=math.clamp((b.route[1]-position).Magnitude,60,reach) end
   local speed=math.max(p.stats.speed,p.body.AssemblyLinearVelocity.Magnitude)
   local radius=math.max(12,p.body.Size.Magnitude*.5)+3
   local function clearance(candidate)
@@ -670,6 +686,8 @@ function Service:steer(p,b,dt,now)
  local braking=gap~=nil and not p.pal and gap.Magnitude>1 and gap.Magnitude<(b.brakeAt or 0)
   and (p.body.AssemblyLinearVelocity-b.target.body.AssemblyLinearVelocity):Dot(gap.Unit)>0
   and (p.model:GetAttribute("Lift") or 0)>p.stats.lift*.25
+ -- A wall inside the look-ahead among the buildings (plan step 2): it eases off the same way.
+ braking=braking or b.avoid~=nil and position.Y<270 and not p.pal and (p.model:GetAttribute("Lift") or 0)>p.stats.lift*.25
  p.brakeHeld=braking
  if p.model:GetAttribute("Braking")~=braking then p.model:SetAttribute("Braking",braking) end -- shown for measuring
  local ease=Config.flight.speed_ease_per_s*dt

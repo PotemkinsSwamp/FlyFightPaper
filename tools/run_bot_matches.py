@@ -30,8 +30,16 @@ task.spawn(function()
  -- mid (100-270, beside the towers) and high (above them), and scrapes (separate touches of a wall, 0.25 s apart).
  local modes,town,watched={},{},{}
  local ms={sum=0,n=0,peak=0}
+ -- crashes: where each crashing bot was a second before (what it was doing, x,y,z).
+ local last,seen,crashes={},{},{}
  while workspace:GetAttribute("ClaudeSampling") do
   local _,_,_,info=game.ServerStorage.MatchStatus:Invoke()
+  for id,r in pairs(info.records) do
+   local c=r.collisionDeaths or 0
+   if seen[id] and c>seen[id] and last[id] then table.insert(crashes,last[id]) end
+   seen[id]=c
+  end
+  workspace:SetAttribute("ClaudeCrashes",table.concat(crashes,"; "))
   local work=info.botMs or 0
   ms.sum+=work;ms.n+=1;ms.peak=math.max(ms.peak,work)
   workspace:SetAttribute("ClaudeBotMs",("%.2f avg, %.2f peak"):format(ms.sum/ms.n,ms.peak))
@@ -52,6 +60,7 @@ task.spawn(function()
      end)
     end
     local at=m:GetPivot().Position
+    if x~="down" then last[m.Name]=("%s %s %.0f,%.0f,%.0f"):format(m.Name,x,at.X,at.Y,at.Z) end
     if x~="down" and math.abs(at.X)<1014 and math.abs(at.Z)<714 then
      local band=at.Y<100 and "low" or at.Y<270 and "mid" or "high"
      t[band]+=1
@@ -87,6 +96,7 @@ local over=math.max(1,sum.low+sum.mid+sum.high)
 return ("phase %s mode %s elapsed %d fired %d hits %d live %s peak %s refused %s botMs %.2f\n"):format(tostring(s.phase),tostring(s.mode),info.elapsed or -1,
  info.fired,info.hits,tostring(info.liveShots),tostring(info.peakShots),tostring(info.refusedShots),info.botMs or -1)
  ..("botMs each second: %s\n"):format(tostring(workspace:GetAttribute("ClaudeBotMs")))
+ ..("CRASHES (a second before): %s\n"):format(tostring(workspace:GetAttribute("ClaudeCrashes")))
  ..("BOTS: deaths %d, crashes %d, scrapes %d; over the town: low %d%% mid %d%% high %d%%\n"):format(sum.deaths,sum.crashes,sum.scrapes,
  100*sum.low/over,100*sum.mid/over,100*sum.high/over)..table.concat(rows,"\n")
 """
