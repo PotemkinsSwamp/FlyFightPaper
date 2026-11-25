@@ -259,6 +259,14 @@ function Service:reset(p)
   goal=Vector3.new(p.home.Position.X*.5,210,p.home.Position.Z*.4),heading=p.body.CFrame.LookVector,bank=0,profile=profile}
  local b=self.brains[p.id]
  b.lag=random:NextNumber(profile.hand_delay_seconds[1],profile.hand_delay_seconds[2]);b.tier=tier
+ -- Varied ways (plan step 4): each bot its own small extra cost on every route leg (up to 30%, fixed for the bot) and a
+ -- liking for low ways or high ones (lowBias: low legs cost up to 35% less, or more), so they don't all fly one path.
+ b.lowBias,b.legSeed=random:NextNumber(-.35,.35),random:NextNumber(0,1000)
+ b.legCost=function(from,to,cost)
+  local a,c=self.routes.nodes[from],self.routes.nodes[to]
+  local own=math.clamp(math.noise(from*.37+.11,to*.53+.07,b.legSeed)+.5,0,1)*.3
+  return cost*(1+own)*((a.Y<100 and c.Y<100) and 1-b.lowBias or 1)
+ end
  b.trick=Tactics.trick(p.loadout.weapon_mounts)
  -- Personality is independent of skill. Quirks make bots feel like people: veterans get more and bolder ones,
  -- some rookies get one too.
@@ -470,7 +478,7 @@ function Service:decide(p,b,now)
   local ring=Landing.approach(p.home,Config.service);local rel=ring:PointToObjectSpace(position)
   local lined=rel.Z< -80 and math.abs(rel.X)<30 and math.abs(rel.Y)<40
   b.mode="repair";b.goal=lined and (ring*CFrame.new(0,-5,60)).Position or (ring*CFrame.new(0,10,-260)).Position;b.target=nil
- elseif b.hide and now<b.hide.untilAt and (position-b.hide.spot).Magnitude>60 then
+ elseif b.hide and now<b.hide.untilAt and (position-b.hide.spot).Magnitude>100 then
   b.mode="hide";b.target=nil;b.goal=b.hide.spot
  elseif b.evadeUntil and now<b.evadeUntil then
   b.mode="evade";b.goal=position+forward*200
@@ -550,7 +558,8 @@ function Service:decide(p,b,now)
    if not b.patrol or (position-b.patrol).Magnitude<90 then
     -- Sometimes circle for a look around before heading to the next spot.
     if b.patrol and b.random:NextNumber()<.35 then self:startMove(b,now,"patrol",{"orbit"},b.random:NextNumber()<.5 and -1 or 1) end
-    b.patrol=self.routes.nodes[b.random:NextInteger(1,#self.routes.nodes)]
+    -- Low over the town or up high, by the bot's liking (plan step 4).
+    b.patrol=self.routes:pick(b.random,b.random:NextNumber()<.5+b.lowBias)
    end
    b.goal=b.patrol
    -- Studio eraser practice: the hunter always knows where you are.
@@ -572,7 +581,8 @@ function Service:decide(p,b,now)
   if not b.progress or (b.goal-b.progress.goal).Magnitude>60 or away<b.progress.best-15 then b.progress={goal=b.goal,best=away,at=now} end
   local scraped=deflect>(b.deflectSeen or 0)+.6
   if scraped then b.deflectSeen=deflect end
-  if b.mode~="unstuck" and (scraped or now-b.progress.at>2 and (b.mode=="patrol" or b.mode=="search" or b.mode=="fan" or b.mode=="hide")) then
+  -- (Circling within 150 studs of the goal is arriving, not stuck.)
+  if b.mode~="unstuck" and (scraped or now-b.progress.at>2 and away>150 and (b.mode=="patrol" or b.mode=="search" or b.mode=="fan" or b.mode=="hide")) then
    b.recoverUntil=now+1.5;b.recoverGoal=Vector3.new(position.X,math.min(position.Y+160,self.flight.boundsSize.Y-90),position.Z)+forward*60
    b.mode="unstuck";b.goal=b.recoverGoal;b.progress=nil;b.routeAt=-math.huge
   end
@@ -584,7 +594,9 @@ function Service:decide(p,b,now)
   b.routeAt=now
   local skip=(b.mode=="chase" or b.mode=="search") and b.holeRoll and not b.holeRoll.follow and now-b.holeRoll.at<10 and b.holeRoll.hole or nil
   b.direct=self.routes:clear(position,b.goal,18) and not (skip and self.routes:passes(position,b.goal,skip,40))
-  if b.direct then b.route={b.goal} else b.route=self.routes:path(position,b.goal,p.body.CFrame.LookVector,skip and self.routes:without(skip)) end
+  local cost=b.legCost
+  if skip then local open=self.routes:without(skip);cost=function(from,to,c) c=open(from,to,c);return c and b.legCost(from,to,c) end end
+  if b.direct then b.route={b.goal} else b.route=self.routes:path(position,b.goal,p.body.CFrame.LookVector,cost) end
  end
 end
 function Service:steer(p,b,dt,now)
@@ -648,6 +660,14 @@ function Service:steer(p,b,dt,now)
   if inside.Magnitude>.1 then direction=(direction+inside.Unit*2).Unit end
  end
  if position.Y<floor and not (duct and duct.hole) then direction=(direction+Vector3.yAxis*1.8).Unit end
+ -- The lower, the shallower a dive (step 3's crashes: bots diving at the low routes pulled up too late): from straight
+ -- down 200 studs over the floor to about 12 degrees at it, so a bot coming down flattens out above the lamps.
+ if direction.Y<0 and not (duct and duct.hole) then
+  local most=math.clamp((position.Y-floor)/200,.2,1)
+  local flat=Vector3.new(direction.X,0,direction.Z)
+  if flat.Magnitude<.01 then flat=p.body.CFrame.LookVector*Vector3.new(1,0,1) end
+  if -direction.Y>most and flat.Magnitude>.01 then direction=flat.Unit*math.sqrt(1-most*most)-Vector3.yAxis*most end
+ end
  if position.Y>half.Y*2-80 and not duct then direction=(direction-Vector3.yAxis*1.8).Unit end
  -- Planes are hard to see coming head-on at 200+ studs/s closing, so look 1.5 s ahead: if another plane's
  -- closest approach would touch, swerve away from that point now, harder the sooner it comes.

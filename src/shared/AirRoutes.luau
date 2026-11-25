@@ -218,6 +218,16 @@ end
 function Routes:without(hole)
 	return function(_,to,cost) if to==hole.inside then return nil end return cost end
 end
+-- A random point to cruise to: low over the town (under 100 studs) when `low`, else one of the coarse grid's.
+function Routes:pick(random,low)
+	local first,last=1,self.coarse or #self.nodes
+	if low and #self.nodes>last then first,last=last+1,#self.nodes end
+	for _=1,20 do
+		local p=self.nodes[random:NextInteger(first,last)]
+		if not low or p.Y<100 then return p end
+	end
+	return self.nodes[random:NextInteger(1,#self.nodes)]
+end
 function Routes:path(from,to,forward,legCost)
 	local delta=to-from
 	forward=forward or (delta.Magnitude>.01 and delta.Unit or Vector3.zAxis)
