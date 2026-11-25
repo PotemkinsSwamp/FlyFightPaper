@@ -7,7 +7,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 misses ... it just like goes off to the side behind them").
 
 ## Where it stands
-**Step 2 done: Alan's OK on the card** (2026-11-24). Next: step 3, the reference video (his go on the price first). Nothing is made.
+**Step 3: the prompt is written** (below), waiting for Alan's go on the price (about $0.28). Nothing is made.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Sneaky Toss looks good", with one change: **no whistling**, neither the sound nor the look ("doing a whistling sound's going to be difficult. We also can't make them look like they're whistling ... do it more visually with their body language to make them look like they're trying to pretend to be innocent. Like maybe they're kind of being shifty, looking back and forth ... hands behind their back, like rocking back and forth, looking away from first place, kind of like tilting their head back and forth"). The card below has it. One throw (my default).
@@ -45,3 +45,24 @@ forth, towards 1st and away again.
 - **For Alan to pick:**
   1. Settled by Alan: no whistle, as a sound or as a look.
   2. One throw **or** a second ball from the pocket near the end. My default: one.
+
+## Reference video (step 3)
+One Gemini call, `tools/gemini_video.py`, 360p, 12 s (the longest a runner-up is lit, rounded down), sound on. Price
+as for So Close (about 1,930 video tokens a second at $12 a million): about **$0.28**. Video seconds are the card's
+plus 1 (one still second first, as in the dark). The throw goes to the picture's left, as from 3rd's desk (2nd's is
+the mirror). A still stand-in for 1st stands on a taller stack at the left, so the ball has someone to pass behind.
+No whistling anywhere in it, as a sound or a look (Alan); the innocence is the rocking, the looking away, the head
+tilts and the shifty glances. Shop mannequins and "a harmless prank", after Skeet Shoot's first prompt was refused.
+The prompt: `.planning/emotes/sneaky-toss-prompt-1.txt` (untracked); the moves in it, video seconds:
+
+| Video s | The kid | Sound |
+|---|---|---|
+| 0 to 1 | Still, hands behind the back | None |
+| 1 to 2 | Slow sly look left at the winner, shoulders hunched a little | None |
+| 2 to 3.2 | One hand out with a crumpled white paper ball half the head's size; one bounce in the palm | None |
+| 3.2 to 3.6 | Quick underhand flick; the ball arcs high behind the winner's back and out of the picture's left; never towards the camera, never in front of the winner | One faint paper rustle at 3.2 |
+| 3.6 to 4.6 | Hand back behind the back; face up and away to the right | None |
+| 4.6 to 7 | Rocks slowly on the heels, looking away, head tilting side to side | None |
+| 7 to 8.5 | Two quick shifty glances at the winner and away | None |
+| 8.5 to 9.5 | One longer peek; shoulders shake once (a held-back snigger) | None |
+| 9.5 to 12 | Innocent again: rocking, looking away, head tilting | None |
