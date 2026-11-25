@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Scribbles in a notebook, then holds up a drawing of themselves in 1st. Stick figures: a child drew it (Alan).
 
 ## Where it stands
-**Step 3: the reference video's prompt is written** (below); it waits for Alan's go on the price (about $0.28). Nothing is made.
+**Step 3: the reference video is made** (Alan's go, 2026-11-24); it waits for his OK on the movement.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Doodler looks good." No pick named, so my defaults: the kid alone in the drawing, silent.
@@ -62,3 +62,13 @@ desk; 2nd's is the mirror. The prompt (`.planning/emotes/doodler-prompt-1.txt`):
 > 9.5 to 12 s: it holds the notebook up at its chest, still, head tipped.
 >
 > Sound: none. Silence the whole time. No music.
+
+- **The video** (`.planning/emotes/doodler-gemini-api-1.mp4`, 12 s, 640x360; $0.28: 580 text tokens in, 23,172 video
+  tokens out). What my stills show (two a second; not judged in motion): a grey mannequin sits cross-legged on four
+  dark books, the notebook flat on its lap in the left hand, the pencil in the right; head down, scribbling, 0 to
+  1.5 s; about 1.5 to 2.2 s the head comes up and turns to the picture's left, then goes back down; scribbling again
+  2.5 to 4.5 s; at about 4.5 to 5 s it turns the notebook up to the chest, page to the camera, fast (in one still
+  step); the page: a stick figure on a stepped stack of books, arms up, a "1" and a star over it, as asked, alone;
+  from about 6 s the head tips well over to one side and stays tipped to the end; about 7 to 8 s the notebook tilts
+  to the picture's left (the stills show only that one side of the tilt) and comes back straight; still to 12 s. The
+  pencil stays in the right hand against the notebook's edge all through. Sound: not used (Alan's silent default).
