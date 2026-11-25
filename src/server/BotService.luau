@@ -841,6 +841,7 @@ end
 function Service:step(dt)
  if self.enabled==false or dt<=0 then return end -- a 0 s frame (Studio) makes speeds infinite: see FlightService:step
  if self.flight.mixedBots and self.mixedOn~=self.flight.mixedBots then self.mixedOn=self.flight.mixedBots;self.mixedCount=0;self:fill() end
+ if self.flight.refillBots then self.flight.refillBots=nil;self:fill() end -- the "ace bots" Dev button
  local now=workspace:GetServerTimeNow()
  for id,b in pairs(self.brains) do
   local p=self.flight.byId[id]

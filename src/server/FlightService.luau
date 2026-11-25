@@ -99,6 +99,11 @@ function Service.new()
    -- Dev test: replace every bot with an even mix of all builds, skills, personalities and quirks.
    self.eraserDuel=false;self.mixedBots=(self.mixedBots or 0)+1
    for _,bot in pairs(self.pilots) do if bot.kind=="bot" then self:remove(bot,"vacancy") end end
+  elseif action=="aceBots" and player:GetAttribute("Dev")==true and Run:IsStudio() then
+   -- Dev test (bots in the town): every bot a veteran or an ace, as in the measuring matches (DevBotTier ace_mix).
+   self.eraserDuel=false;self.mixedBots=nil;workspace:SetAttribute("DevBotTier","ace_mix")
+   for _,bot in pairs(self.pilots) do if bot.kind=="bot" then self:remove(bot,"vacancy") end end
+   self.refillBots=true
   elseif (action=="eraserBots" or action=="clipBots" or action=="spitBots") and player:GetAttribute("Dev")==true then
    -- Dev practice: enemy bots hunt you (one with only an eraser, three with paperclips to see the glint, or four with
    -- spitballs to feel them stick); the other bots leave (until Play stops).

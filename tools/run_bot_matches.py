@@ -36,7 +36,10 @@ task.spawn(function()
   local _,_,_,info=game.ServerStorage.MatchStatus:Invoke()
   for id,r in pairs(info.records) do
    local c=r.collisionDeaths or 0
-   if seen[id] and c>seen[id] and last[id] then table.insert(crashes,last[id]) end
+   if seen[id] and c>seen[id] and last[id] then
+    local hit=r.lastImpact and r.lastImpact.part:match("[^%.]+$") or "?"
+    table.insert(crashes,last[id].." hit "..hit..(r.lastImpact and (" at "..r.lastImpact.position):gsub("%.%d+","") or ""))
+   end
    seen[id]=c
   end
   workspace:SetAttribute("ClaudeCrashes",table.concat(crashes,"; "))
@@ -60,7 +63,7 @@ task.spawn(function()
      end)
     end
     local at=m:GetPivot().Position
-    if x~="down" then last[m.Name]=("%s %s %.0f,%.0f,%.0f"):format(m.Name,x,at.X,at.Y,at.Z) end
+    if x~="down" then last[m.Name]=("%s %s %.0f,%.0f,%.0f lift %.0f"):format(m.Name,x,at.X,at.Y,at.Z,m:GetAttribute("Lift") or -1) end
     if x~="down" and math.abs(at.X)<1014 and math.abs(at.Z)<714 then
      local band=at.Y<100 and "low" or at.Y<270 and "mid" or "high"
      t[band]+=1

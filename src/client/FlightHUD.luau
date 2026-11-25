@@ -280,6 +280,10 @@ function HUD.start(getPlane, action)
 	-- Every bot build, skill, personality and quirk at once (F10 shows which is which).
 	local mixedBots=eraserBots:Clone();mixedBots.Name="MixedBots";mixedBots.Text="mixed bots";mixedBots.Position=UDim2.fromOffset(770,-40)
 	mixedBots.BackgroundColor3=Color3.fromRGB(45,95,70);mixedBots.Parent=picker;mixedBots.Activated:Connect(function()action("mixedBots")end)
+	-- Bots in the town (2026-11-25): every bot a veteran or an ace (one in four), the ones that dive into the streets and
+	-- follow you through holes most often (Studio only).
+	local aceBots=eraserBots:Clone();aceBots.Name="AceBots";aceBots.Text="ace bots";aceBots.Position=UDim2.fromOffset(660,-40)
+	aceBots.BackgroundColor3=Color3.fromRGB(45,95,70);aceBots.Parent=picker;aceBots.Activated:Connect(function()action("aceBots")end)
 	-- Three bots with only paperclips hunt you, to see the glint.
 	local clipBots=eraserBots:Clone();clipBots.Name="ClipBots";clipBots.Text="clip hunters";clipBots.Position=UDim2.fromOffset(110,-80)
 	clipBots.BackgroundColor3=Color3.fromRGB(45,70,120);clipBots.Parent=picker;clipBots.Activated:Connect(function()action("clipBots")end)
