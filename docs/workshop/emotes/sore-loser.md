@@ -6,10 +6,12 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Arms crossed, back turned to 1st, sneaking looks over the shoulder.
 
 ## Where it stands
-**Ready to record** (2026-11-24): steps 3 and 4 done, step 5 skipped (silent, Alan's pick). The body is two cut clips,
-`SoreLoserLeft` and `SoreLoserRight`, not yet baked into the place (the primary session bakes them: see Build); the
-module is `src/client/emotes/SoreLoser.luau` (`DevRunnerUp` = "SoreLoser"). Marks (clip seconds; clip 1.0 is 1st's
-light): Huff 1.3, Peek 3.0, Snap 5.6, Peek2 7.2, Snap2 10.5. Checked by numbers in Edit only; not yet seen in Play.
+**Reworked after Alan's own Play, ready for his look again** (2026-11-24). His note: not enough body language; the
+kid has to turn away and cross the arms on screen, then look back (see "Rework" below). The new clips are baked into
+the open place's `Assets` (`SoreLoserLeftClip`, `SoreLoserRightClip`, unsaved drafts) and saved as
+`assets/animations/emotes/sore-loser-left.rbxm` and `-right.rbxm`; the module is unchanged in what it does
+(`DevRunnerUp` = "SoreLoser", the "2nd/3rd: sore loser" Dev button). Marks (clip seconds; clip 1.0 is 1st's light):
+Look 1.0, Turn 1.68, Stamp 2.74, Peek 3.5, Snap 5.3, Kick 7.12, Peek2 7.4, Snap2 9.6. Checked by numbers in Edit only.
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Sore loser looks good." No pick named, so my defaults: standing, silent.
@@ -87,7 +89,7 @@ the picture's right and peeks towards its left, as 3rd does (1st on 3rd's left);
   (`CUTS.SoreLoserLeft` and `CUTS.SoreLoserRight` in `tools/emote_cuts/sore-loser.lua`; every number is in its
   comment): Left is for 1st on the kid's own left (1st on the picture's right): the body turned to the kid's right,
   the peeks over the left shoulder. 12 s, played once, held on its last pose.
-- **What the clip does** (clip seconds; 1.0 is 1st's light): stands on Toy Pilot's stance (Bubblegum's), the whole
+- **What the first clip did** (replaced: see Rework; clip seconds, 1.0 is 1st's light): stood on Toy Pilot's stance (Bubblegum's), the whole
   body turned 70 degrees away from 1st, arms crossed, chin up 8 degrees, a 1-degree breath every 4 s; 1.3 to 2.7 the
   huff (chest 5 back over 0.5 s, then 2 past where it was and settling); **3.0 to 4.3 the first peek creeps round**
   (head 55, chest 15: the face comes round to the camera; the chin dips 6, sneaking), held to 5.6, **5.6 to 5.85
@@ -134,6 +136,41 @@ the picture's right and peeks towards its left, as 3rd does (1st on 3rd's left);
   shows the crossed arms; whether the peek reads as looking at 1st (the face comes round to the camera, as in the
   video, not all the way to 1st); hats and hair with the head turned 70 degrees; whether the slower timing is right.
 
+## Rework (step 4 again, after Alan's own Play)
+- **Alan in his own Play (2026-11-24;
+  [notes](../../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md)):** "there's not enough body
+  language to really display what's happening. Like there's not movement in the body. There's no movement. Like
+  they're not stamping their foot ... the reference video was better at showing it. There's not enough body language
+  in the models to really show anything. We also kind of need them to, like, at the start, turn away from the first
+  place. They need to physically turn and cross their arms and then look back. And that would help with the
+  problem."
+- **My mistake:** the card's "almost nothing moves, so the peeks are the joke" made a statue at the scene's distance,
+  and I slowed the video down without keeping its body moves: its whole upper body opens round to the camera on a
+  look back (mine turned the head), its huff is big, its foot kicks up behind and stamps (mine lifted the toes).
+- **The new clip** (`tools/emote_cuts/sore-loser.lua`, every number in its comment; clip seconds, 1.0 = 1st's
+  light): faces us, arms hanging, until 1st's light; 1.0 to 1.3 looks at 1st (35 degrees); **1.5 to 2.45 a hop-turn
+  away** (a dip, a hop of 0.05 heights turning 70 degrees, landing with a dip), **the arms folding into the cross on
+  the way** (the tucked one first, Skeet Shoot's fold), chin up; **2.45 to 3.0 a stamp** of the foot away from 1st
+  (lifted 0.10 heights, slammed down, the body jolting); 2.85 to 3.7 a big huff (the chest 12 degrees back, then
+  slumping); **3.5 to 4.4 the first look back**, the chest turning 30 degrees round and the head with it until the
+  face is to us (the video's), the chin dipping; held to 5.3; snapped back by 5.55 with a jerk of the chin and a
+  shrug; 5.8 to 6.5 the weight onto the away leg; 6.6 to 7.15 the other foot kicks up behind (0.12 up, 0.08 back,
+  toes down) and stamps down; 7.4 to 8.4 the second look back, held to 9.6, snapped back; a smaller huff; the weight
+  onto the other leg to the end. So after 1st's light 2nd has turned, crossed the arms and stamped by 1.75 s and
+  starts looking back at 2.5 s (3rd 0.6 s later); under the shortest lens emote (Fold It Up, about 3.05 s) that is
+  seen. The hop, stamp and huff were made bigger once before anyone saw them (0.03, 0.07, 8 at first).
+- **On the test kid** (every 1/30 s): the hips 1 degree from facing us, then 69 to 71 away; the head 35 towards 1st
+  at 1.4 s, 70 away at 2.3, 0 (to us) at 4.6 and 9.0; the feet never go under the book (0.0002 heights) and slide at
+  most 0.002 to 0.006 heights a frame on the ground; the stamping foot lifts 0.10 heights, the kicking one 0.07 at
+  its lowest point; a forearm goes 0.065 heights into the chest's box for a moment while folding (1.9 s), the
+  forearms 0.046 into each other; the biggest turn of a joint in one key is the shin in the stamp's slam (48
+  degrees: meant to be sudden).
+- **On the twelve bots' outfits** (as before): it plays on every one; the head 35 towards 1st at 1.4 s, 70 away at
+  2.3, to us at 4.6, on all; the feet at most 0.009 heights lower than standing still; a forearm 0.016 to 0.065
+  heights into the chest's box, the most mid-fold (1.75 to 2.05 s); the elbows bent 63 to 77 crossed.
+- **Not known until it is seen in Play:** whether the hop reads as a petulant turn or a skip; whether the stamp is
+  big enough at the scene's distance; hats and hair on the turned head.
+
 ## Sound (step 5)
 None: Alan took the silent default on the card.
 
@@ -142,3 +179,4 @@ None: Alan took the silent default on the card.
 |---|---|
 | `src/client/emotes/SoreLoser.luau` | The emote's module: picks the clip, times it to 1st's light |
 | `tools/emote_cuts/sore-loser.lua` | The body cut: `CUTS.SoreLoserLeft`, `CUTS.SoreLoserRight` |
+| `assets/animations/emotes/sore-loser-left.rbxm`, `sore-loser-right.rbxm` | The two baked clips |

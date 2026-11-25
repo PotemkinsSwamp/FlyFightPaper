@@ -1,6 +1,7 @@
 -- Sore Loser, a runner-up emote (docs/workshop/emotes/sore-loser.md; card and reference video OK'd by Alan
--- 2026-11-24): standing on the books turned away from 1st, arms crossed, chin up; the head creeps round to peek at
--- 1st and snaps back as if caught. Silent. The body is one of two clips (tools/emote_cuts/sore-loser.lua), the same
+-- 2026-11-24; reworked after his own Play the same day): standing on the books facing us until 1st's light, the kid
+-- looks at 1st, hop-turns away crossing the arms, stamps and huffs, then looks back over the shoulder and snaps away
+-- as if caught; a kick of the foot and a second look later. Silent. The body is one of two clips (tools/emote_cuts/sore-loser.lua), the same
 -- but for the side: SoreLoserLeft for 1st on the kid's own left (1st on the picture's right), SoreLoserRight the
 -- mirror. Its time is set here every frame from 1st's light (clip second 1.0 is 1st's light), so the peeks follow
 -- the winner's moment whatever this kid's place; 3rd runs LATE_3RD seconds behind 2nd, so if both play it they do
