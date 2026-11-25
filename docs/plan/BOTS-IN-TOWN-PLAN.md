@@ -32,9 +32,21 @@ through. Server time per frame for the bots (`botMs`) must stay about where it i
 veteran chasing him through the streets.
 
 ## Before (2026-11-25)
-Three bots-only matches (ace mix: one Ace per three veterans), before any change: see "Where it stands".
+Three bots-only free-for-all matches (`python tools/run_bot_matches.py 3`: eleven bots, ace mix = one Ace per three
+veterans, 466 s each), before any change. Time over the town is the share of seconds a flying bot spent over the
+town mat.
+
+| Match | Bot deaths | Crashes | Wall scrapes | Low (under 100) | Mid (100-270) | High | botMs |
+|---|---|---|---|---|---|---|---|
+| 1 | 101 | 0 | 1 | 0% | 41% | 57% | 0.48 |
+| 2 | 105 | 4 | 2 | 0% | 41% | 57% | 0.39 |
+| 3 | 100 | 3 | 1 | 0% | 43% | 55% | 0.38 |
+
+So today: about 2 crashes and 1 scrape a match, and bots spend almost no time low among the buildings (a few
+seconds a bot a match). The after numbers must keep crashes about this low while "low" goes up. No script errors of
+ours (one Roblox chat script message).
 
 ## Where it stands
-Plan approved; nothing built.
+Plan approved; "before" matches done (above); nothing built. Next: step 1.
 
 Back to [HOME](../HOME.md)
