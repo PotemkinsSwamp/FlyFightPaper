@@ -66,3 +66,17 @@ The prompt: `.planning/emotes/sneaky-toss-prompt-1.txt` (untracked); the moves i
 | 7 to 8.5 | Two quick shifty glances at the winner and away | None |
 | 8.5 to 9.5 | One longer peek; shoulders shake once (a held-back snigger) | None |
 | 9.5 to 12 | Innocent again: rocking, looking away, head tilting | None |
+
+- **The video** (Alan: "go"; $0.28: 695 text tokens in, 23,172 video tokens out): `.planning/emotes/sneaky-toss-gemini-api-1.mp4`,
+  12.03 s, 640x360, with sound. What my stills show (two a second, eight a second over the throw; not judged in
+  motion), video seconds:
+  - **Works:** hands behind the back at the start; at 1.5 s the head turns towards the winner; 2.0 s one hand comes out
+    with a white paper ball; 2.25 to 3.25 s it tosses the ball up a little in the open palm and catches it (about two
+    bounces, not one); 3.4 s a lob from the palm, forearm out, up and towards the winner; 3.75 s the hand is back
+    behind the back; 4 to 7 s the face is turned up and away from the winner; 8.5 to 11.5 s the head tilts from side
+    to side, looking down and away. The winner stays still.
+  - **Misses:** the ball drops down **in front of** the winner's chest to the floor, not behind them (the game's path is
+    our own, by numbers, so this does not carry over); the winner's stack is not taller; the throw is a palm-up lob,
+    not a quick flick; the rocking on the heels and the two quick shifty glances do not show in stills.
+  - **The sound** (measured by loudness, not heard by me): a faint hiss all through (about -58 dB) and one soft thud at
+    4.4 s (about 22 dB over the hiss), when the ball would reach the floor; no rustle at the throw (3.4 s).
