@@ -1,0 +1,24 @@
+{
+  "path": "operations/0dd0743e-2e76-4952-b1a5-98ce6d95a0ec",
+  "operationId": "0dd0743e-2e76-4952-b1a5-98ce6d95a0ec",
+  "done": true,
+  "response": {
+    "path": "assets/123839232219379",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-25T03:02:32.102Z",
+    "assetId": "123839232219379",
+    "displayName": "FFP emote Sneaky Toss right",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

@@ -902,6 +902,8 @@ return JSONTypes.map({
             ["SkeetShoot"] = "rbxassetid://131152777526587",
             ["SkeetThrowLeft"] = "rbxassetid://80133722036922",
             ["SkeetThrowRight"] = "rbxassetid://87476042703213",
+            ["SneakyTossLeft"] = "rbxassetid://131284560455911",
+            ["SneakyTossRight"] = "rbxassetid://123839232219379",
             ["SoCloseLeft"] = "rbxassetid://123733723519393",
             ["SoCloseRight"] = "rbxassetid://107568160357142",
             ["ToyPilot"] = "rbxassetid://135069682151169",
