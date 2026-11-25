@@ -2188,7 +2188,9 @@ end
 -- of its length). Props are not in it.
 TV.POSE = { ToyPilot = { "ToyPilot", 0.5 }, CameraFlick = { "CameraFlick", 0.35 }, BookKicker = { "BookKicker", 0.3 }, Bubblegum = { "Bubblegum", 0.4 },
 	Magician = { false, 0.3 }, APlus = { "APlus", 0.4 }, SkeetShoot = { "SkeetShoot", 0.4 }, FoldItUp = { "FoldItUp", 0.2 },
-	GoodGame = { "GoodGameWave", 0.5 }, Nap = { "NapSleep", 0.5 }, NextOne = { "NextOne", 0.8 }, SoClose = { "SoCloseLeft", 0.5 },
+	-- (Nap and So Close at a moment they sit up facing you: Alan 2026-11-25, curled over they showed only the top of
+	-- the head; picked from pictures in Edit)
+	GoodGame = { "GoodGameWave", 0.5 }, Nap = { "NapWake", 0.6 }, NextOne = { "NextOne", 0.8 }, SoClose = { "SoCloseLeft", 0.1 },
 	SneakyToss = { "SneakyTossLeft", 0.4 }, SoreLoser = { "SoreLoserLeft", 0.5 }, TestFlight = { "TestFlightLeft", 0.5 }, Doodler = { "Doodler", 0.5 } }
 function TV.pose(name)
 	local still = TV.POSE[name]

@@ -206,11 +206,40 @@ function EmoteShop.new(playerGui, api)
 		local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
 		local camera = Instance.new("Camera")
 		camera.FieldOfView, camera.Parent, card.view.CurrentCamera = 30, card.view, camera
+		-- Framed on the body as the clip poses it, read from the joints (Alan 2026-11-25: the model's own box kept the
+		-- standing kid, so a crouched one came out small or half out of the picture; every kid must fill the picture
+		-- the same). Facing the camera, the kid's own front to it. A hat or hair goes with the part it is fixed to.
+		local _, at = Cutscene.kit.rig(model)
+		local fixedTo = {}
+		for _, item in model:GetDescendants() do
+			if (item:IsA("JointInstance") or item:IsA("WeldConstraint") or item:IsA("RigidConstraint")) and item.Parent and item.Parent:IsA("BasePart") then
+				local a, b = item:IsA("RigidConstraint") and item.Attachment0 and item.Attachment0.Parent or item.Part0, item:IsA("RigidConstraint") and item.Attachment1 and item.Attachment1.Parent or item.Part1
+				if a and b and a:IsDescendantOf(model) and b:IsDescendantOf(model) then
+					local handle, body = a.Name == "Handle" and a or b, a.Name == "Handle" and b or a
+					if handle.Name == "Handle" then fixedTo[handle] = body end
+				end
+			end
+		end
 		local function look()
-			local box, size = model:GetBoundingBox()
-			local far = math.max(size.Y, size.X * 58 / (CARD_W - 50)) / 2 * 1.12 / math.tan(math.rad(15))
 			local front = model:GetPivot().LookVector
-			camera.CFrame = CFrame.lookAt(box.Position + front * far + Vector3.yAxis * size.Y * 0.08, box.Position)
+			local view = CFrame.lookAt(Vector3.zero, -front)
+			local low, high = Vector3.one * math.huge, -Vector3.one * math.huge
+			for _, part in model:GetDescendants() do
+				if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" and part.Transparency < 1 then
+					local body = fixedTo[part]
+					local cf = body and at(body) * body.CFrame:ToObjectSpace(part.CFrame) or at(part)
+					for i = 0, 7 do
+						local corner = cf * (part.Size / 2 * Vector3.new(i % 2 * 2 - 1, i // 2 % 2 * 2 - 1, i // 4 * 2 - 1))
+						local p = view:PointToObjectSpace(corner)
+						low, high = low:Min(p), high:Max(p)
+					end
+				end
+			end
+			if low.X == math.huge then return end
+			local mid, half = view * ((low + high) / 2), (high - low) / 2
+			local aspect = (CARD_W - 50) / 58
+			local far = math.max(half.Y, half.X / aspect) * 1.2 / math.tan(math.rad(15)) + half.Z
+			camera.CFrame = CFrame.lookAt(mid + front * far, mid)
 		end
 		look()
 		if not (animator and id and humanoid.RigType == Enum.HumanoidRigType.R15) then return end
@@ -226,8 +255,10 @@ function EmoteShop.new(playerGui, api)
 			repeat task.wait() until track.Length > 0 or os.clock() - began > 8 or not card.view.Parent
 			if track.Length <= 0 then return end
 			track.TimePosition = track.Length * share
-			task.wait(0.1)
-			look()
+			for _ = 1, 5 do -- (once the clip has posed the joints; again in case it took a few frames)
+				task.wait(0.1)
+				look()
+			end
 		end)
 	end
 
