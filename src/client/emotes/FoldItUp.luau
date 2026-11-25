@@ -75,6 +75,7 @@ FoldItUp.sounds = {
 	{ "foldDust", BRUSH.at[2] + BRUSH.stroke / 4 - LEAD }, { "foldDust", BRUSH.at[2] + BRUSH.stroke * 3 / 4 - LEAD },
 }
 FoldItUp.firstSound = MARKS.Pinch - LEAD
+FoldItUp.hides = REACH_FROM -- the hand comes at the lens: the runner-ups are seen until then (kit.seenFor)
 
 local function unseen(part) part.Transparency = 1; return part end
 

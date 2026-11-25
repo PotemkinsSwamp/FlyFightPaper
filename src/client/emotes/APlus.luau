@@ -31,6 +31,7 @@ local RING = require(game.ReplicatedStorage:WaitForChild("FlyFightPaper").Shared
 local FLAP = 0.2
 APlus.sounds = { { "aPlusFlap", MARKS.Snap + FLAP }, { "aPlusSlap", MARKS.Release + FLIGHT } }
 APlus.firstSound = MARKS.Snap + FLAP
+APlus.hides = MARKS.Release + FLIGHT -- the card reaches the lens: the runner-ups are seen until then (kit.seenFor)
 
 -- The real card's page. A team round has a card a team (RoundEnd: Page1 Red, "team:1"; Page2 Blue, "team:2"): the
 -- kid's own team's (`team`, their teamId). It was the one with the gold star, and a tied round has no star: 1st held

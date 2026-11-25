@@ -12,10 +12,10 @@ of the finished emotes, is in the [emote log](emote-making.md); the ideas are on
 | Skeet Shoot | [skeet-shoot](emotes/skeet-shoot.md) | 6, approved by Alan on the second recording (2026-11-24: "its good upload it"); three clips and the shot sound uploaded and wired in on his go ("go both"); the drafts are out of the open place; waits for his own Play ("end:" button for Skeet Shoot) |
 | A+ | [a-plus](emotes/a-plus.md) | 6, approved by Alan on the third recording (2026-11-24: "its good upload it"); the clip and two sounds uploaded and wired in on his go ("go both"); the draft is out of the open place; a team match not yet recorded. From his own Play (2026-11-24): the card is now the real report card (the kid's own team's) with a red-pen A+ and smiley on its back; "the emotes were fine now. They're good." |
 | Fold It Up | [fold-it-up](emotes/fold-it-up.md) | 6, approved by Alan on the ninth recording (2026-11-24: "that looks good, upload it"); the body clip and five sounds uploaded and wired in on his go ("go and upload"), the drawing uploaded before; the draft is out of the open place. From his own Play (2026-11-24): the hands rubbed with straight arms at the waist; now bent to the chest in the game, a slow scheming rub before the grab and a loose brush-off after the toss; "the emotes were fine now. They're good." |
-| Sore Loser | [sore-loser](emotes/sore-loser.md) | 5 done, ready to record (2026-11-24): Alan OK'd the video ("good to work with", "a little fast", so built slower); silent; checked in Edit on the twelve cast outfits. Its two clips are baked into the open place (unsaved drafts; `assets/animations/emotes/sore-loser-*.rbxm`) and it has its Dev button "2nd/3rd: sore loser" (Alan asked for the button at once); waits for his own Play |
-| Doodler | [doodler](emotes/doodler.md) | 5 done, ready (2026-11-24): Alan OK'd the video with two notes (one pencil, in the right hand only; the notebook turned round so the drawing faces us the right way up); silent. Its two clips are baked into the open place (unsaved drafts; `assets/animations/emotes/doodler-*.rbxm`), Dev button "2nd/3rd: doodler"; open: whether the drawing reads (about a tenth of the picture's height); waits for his own Play |
-| Sneaky Toss | [sneaky-toss](emotes/sneaky-toss.md) | 5 done, ready (2026-11-24): two reference videos on Alan's go ($0.56; the second for a real overarm throw); no sound (his pick). Its two clips are baked into the open place (unsaved drafts; `assets/animations/emotes/sneaky-toss-*.rbxm`), Dev button "2nd/3rd: sneaky toss"; waits for his own Play |
-| Test Flight | [test-flight](emotes/test-flight.md) | 5 done, ready (2026-11-24): Alan OK'd the video with two notes (add the glance at 1st; the plane's whoosh is the sound). Its two clips are baked into the open place (unsaved drafts; `assets/animations/emotes/test-flight-*.rbxm`), Dev button "2nd/3rd: test flight"; the whoosh is silent until its upload (his go); waits for his own Play |
+| Sore Loser | [sore-loser](emotes/sore-loser.md) | back at step 4 after Alan's first look in Play (2026-11-24): not enough body language; the kid must physically turn away and cross the arms on screen; a foot stamp ([his notes](../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md)) |
+| Doodler | [doodler](emotes/doodler.md) | back at step 4 after Alan's first look in Play (2026-11-24): the drawing gets an arrow and "me"; less drawing, more showing; a short version when 1st's emote takes the lens (`kit.seenFor`) ([his notes](../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md)) |
+| Sneaky Toss | [sneaky-toss](emotes/sneaky-toss.md) | **approved by Alan in his own Play** (2026-11-24: "sneaky toss is good"); behind "2nd/3rd: sneaky toss"; next its two clips uploaded on his go ([his notes](../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md)) |
+| Test Flight | [test-flight](emotes/test-flight.md) | back at step 4 after Alan's first look in Play (2026-11-24): the plane far too small against the other emotes' planes, and it flapped like a butterfly ([his notes](../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md)) |
 
 The primary session keeps this table; a side session reports its step in its own page.
 
@@ -91,6 +91,7 @@ attribute `DevFirstEmote` (1st) or `DevRunnerUp` (2nd and 3rd) on `ReplicatedSto
 | `leave` | 1st only. Seconds after 1st's light at which the camera leaves for the report card, when the scene's own time is wrong for it. The report card must keep its 10 seconds: ask Alan before using it. |
 | `covered(st, t)` | 1st only. True while the emote has the lens: the name plates and the Menu tag are put away. |
 | `firstSound` | 1st only. Seconds after 1st's light of its first sound; the runner-ups' sounds stop before it. |
+| `hides` | 1st only. Seconds after 1st's light at which the emote takes the lens, so the runner-ups are no longer seen. A runner-up emote reads it through `kit.seenFor()`. |
 | `stop(st)` | Clean-up for anything not under `who.cast`. |
 
 `who`: `model` (the winner's copy, already scaled small and standing on the books), `humanoid`, `animator`, `cast`
@@ -100,7 +101,7 @@ top of the books under them).
 
 `kit`, lent by the scene: `paper(parent, color, shape)`, `ease`, `flat`, `sit` and `seatOn` (Nap's and Next One's
 seat on the books), `holdPlane` (a paper plane in the hand), `jolted` (Book Kicker's camera jolt), `ourClip(name)`
-(the id of an uploaded clip, or of the draft `<Name>Clip` in the place's `Assets`), `runnerSound`, `Audio`,
+(the id of an uploaded clip, or of the draft `<Name>Clip` in the place's `Assets`), `runnerSound`, `seenFor()` (seconds after 1st's light for which the runner-ups can be seen: until 1st's emote takes the lens or the camera leaves; 10.4 with a 1st that never touches the lens, 3.05 under Fold It Up; ask in `step`, not `start`; Alan 2026-11-24, for Doodler), `Audio`,
 `Rounds`, `Avatars`. For the meaning and arguments of each, read its function in `WinnersCutscene.luau`.
 
 Sounds: until the uploads (step 6) there is no id to play, so the module keeps its sound times in a table of its

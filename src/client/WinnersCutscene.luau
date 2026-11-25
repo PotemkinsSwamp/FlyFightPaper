@@ -1608,6 +1608,20 @@ end
 Cutscene.kit = { paper = paper, ease = ease, flat = flat, sit = sit, seatOn = seatOn, holdPlane = holdPlane, jolted = jolted,
 	ourClip = ourClip, runnerSound = runnerSound, Audio = Audio, Rounds = Rounds, Avatars = Avatars,
 	rig = rig, bendArm = bendArm } -- (the scene's own arm bend, as Nap's: A+ puts both hands on its card on every body)
+-- How long the runner-ups can be seen, in seconds after 1st's light: until 1st's emote takes the lens (a pipeline
+-- emote's `hides`) or the camera leaves, whichever comes first (Alan 2026-11-24: a runner-up emote with a late
+-- moment, Doodler's drawing, shortens itself when 1st's emote cuts the scene short). 10.4 for a 1st that never
+-- touches the lens. Known once all three stand: ask in `step`, not in `start`.
+function Cutscene.kit.seenFor()
+	local state, light = active, LIGHT_AT + 2 * TURN
+	if not state then return math.huge end
+	if state.flickAt then return state.flickAt + FLICK_FLIGHT - light end
+	if state.kickAt then return state.kickAt + KICK_FLIGHT * 0.6 - light end
+	if state.gumAt then return state.gumAt - GUM.swell - light end
+	local made = state.extra and state.extra.made
+	if made and (made.hides or made.leave) then return made.hides or made.leave end
+	return math.max(light + 3, Rounds.results_seconds - CARD - (BANNER + DIM + GLIDE)) - light
+end
 function Cutscene.pipelineEmote(place)
 	local name = Cutscene.emoteName(place)
 	local folder = script.Parent:FindFirstChild("emotes")
