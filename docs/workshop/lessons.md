@@ -201,6 +201,21 @@ mistake would be easy to make twice.
   on zero at a hundredth of a stud. Place each one by the CFrame and Size `Aircraft.build` gives it in Studio Edit
   (read `Appearance`, then destroy the test model); no flip is needed (a nose narrows towards -z). Scripts:
   `.planning/skins/tests/` (`pieces.json` holds two builds).
+- **A painting that must line up with a page's code: paint over a flat guide** (2026-11-25, the Emotes page). Draw the
+  page's shapes from the code's own numbers with PIL (the hole in flat pink), hand that to Codex as the first picture
+  ("paint over this, every shape stays where it is") and ask it to paste the guide's exact pink shape back at the end:
+  the glass came back pixel-exact twice. A written margin rule that disagrees with the guide wins over the guide (my
+  "outer 3% plain" made both boards 40 pixels short): let the guide be the only source of positions. Small misses are
+  fixed in pixels (stretch a plain stretch of slate), never by a redraw.
+- **A wall is not a room** (same job): the first painting was one chalkboard filling the screen with the cart cut off
+  at its shelf; the independent reviewer called it wallpaper. What made it a room: a floor running back to the wall, the
+  whole cart on its wheels, things standing on the floor, the TV's top seen from a little above. The price was smaller
+  cards (three across) and a slightly smaller glass.
+- **Your own avatar in a pose without a Play run** (same job): in Edit, `StudioService:GetUserId()`,
+  `Players:CreateHumanoidModelFromDescriptionAsync`, load the clip on its Animator, set `TimePosition`, then
+  `Animator:StepAnimations(0)`; stand the copies in front of a flat pink part and `screen_capture` with a camera spot.
+  Looking along +Z, world +X is on the picture's left. A SurfaceGui's pictures need a second before the capture; the
+  first `screen_capture` after moving the camera can time out or return the last view, so check which batch it shows.
 - **Codex picture job with a reference picture** (2026-11-13): `codex exec -s workspace-write - -i ref.png < prompt.txt`,
   with `-i` last (it takes several files). About 45,000-80,000 Codex tokens for 2-5 pictures.
 - **Matching views of one model: paint over renders, once** (2026-11-15, Dragon six views): render the Blender model

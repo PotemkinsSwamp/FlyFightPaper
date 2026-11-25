@@ -161,7 +161,15 @@ function EmoteShop.new(playerGui, api)
 		local sub = centred(PaperUI.words(sheet, "Sub" .. column.kind, column.line, column.x, 203, GRID, 30, 24))
 		sub.TextColor3 = CHALK
 		PaperUI.blackOutline(sub)
-		for i, emote in Emotes.list(column.kind) do -- three across; the ninth spot on each board is a painted doodle
+		-- Cheapest first, the free one leading (Alan 2026-11-25); same price: the config's order.
+		local list, place = table.clone(Emotes.list(column.kind)), {}
+		for i, emote in list do place[emote] = i end
+		local function paper(emote) local price = Emotes.price(emote.id); return price and price.paper or 0 end
+		table.sort(list, function(a, b)
+			if paper(a) ~= paper(b) then return paper(a) < paper(b) end
+			return place[a] < place[b]
+		end)
+		for i, emote in list do -- three across; the ninth spot on each board is a painted doodle
 			local x, y = column.x + ((i - 1) % 3) * (CARD_W + GAP), 236 + ((i - 1) // 3) * PITCH
 			local button = PaperUI.button(sheet, "Card" .. emote.id, Assets.hangar.cardSquare, "", x, y, CARD_W, CARD_H, 0, function() select(emote.id, true) end, 10)
 			local view = Instance.new("ViewportFrame")
