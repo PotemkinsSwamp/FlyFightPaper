@@ -1141,3 +1141,18 @@ Back to [HOME](../HOME.md)
 - **Sounds tied to a picture are fired by the picture** (the scene, at the moment itself), not by a clock beside
   it; only the scene-wide parts (music, spotlight switches) run on the scene's clock.
 - **A changed script does not reach a running Play**: say "restart Play" with every sound change.
+
+## Fixes Alan checks in his own Play (the winners' emotes, 2026-11-24)
+- **A report straight after a fix may be about the old code.** A match keeps the code it started with. Before
+  explaining what he saw, ask whether Play was restarted after the fix reached Studio; say "restart Play" with every
+  fix, not only sound changes.
+- **No compile check while Studio is in his Play** (the Edit side is not there, and a call into a running Play can
+  reset the scene's camera). This PC has no other Luau checker: read the diff by eye, say so plainly, and run the
+  check the next time Studio is in Edit.
+- **Big letters on a part are drawn as pen strokes** (Path2D): a TextLabel on a SurfaceGui is drawn at 100 points at
+  most and a UIScale did not grow it (A+'s card back, Edit preview). A font also takes a moment to load: the first
+  screenshot can show no letters at all.
+- **Two orders of one list drift apart.** The stand and the report card each sorted the results themselves and
+  differed on equal points. One order (the server's) and everything else keeps it.
+- **A clip's hands land somewhere else on every body**: any pose where the hands must be at a place (together, on a
+  prop, at the chest) is finished in the game with `bendArm` from the body's own chest, not in the clip.
