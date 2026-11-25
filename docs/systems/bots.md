@@ -107,6 +107,7 @@ invulnerable debug bots or target-board practice.
 | `src/shared/BotTactics.luau` | Each build's trick, where a bot brakes or holds off, when it steals a damaged plane |
 | `src/shared/BotRosterRules.luau` | How many bots, which skill, and which cast name each takes |
 | `src/server/AvatarService.luau` | Seated avatars at desks (none for lesson planes: Pals and practice targets, Alan 2026-10-22), bot looks (`Service.look`) |
+| `src/shared/AvatarLook.luau` | Takes the body's 3D clothing (jackets, sweaters, shirts, pants, shorts, skirts) off every avatar our game builds, players and bots, so emotes can be seen; hair, shoes, hats and the body stay ([decision](../decisions/2026-11-25-3d-clothing-comes-off.md)). Test: `tests/unit/AvatarLook.spec.luau` |
 | `src/server/Matchmaking.luau, src/server/MatchmakingAdapter.luau` | Rookie or regular servers, transfers |
 
 ## Tuning numbers

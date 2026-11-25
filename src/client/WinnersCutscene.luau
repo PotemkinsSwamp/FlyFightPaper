@@ -2142,7 +2142,11 @@ function TV.avatar()
 	if TV.source or TV.loading then return TV.source end
 	TV.loading = true
 	task.spawn(function()
-		local ok, model = pcall(function() return Players:CreateHumanoidModelFromUserIdAsync(Players.LocalPlayer.UserId) end)
+		local ok, model = pcall(function() -- (slimmed like the kid at the desk: AvatarLook)
+			local look = Players:GetHumanoidDescriptionFromUserIdAsync(Players.LocalPlayer.UserId)
+			return Players:CreateHumanoidModelFromDescriptionAsync(require(Root.Shared.AvatarLook).trim(look), Enum.HumanoidRigType.R15)
+		end)
+		if not ok then ok, model = pcall(function() return Players:CreateHumanoidModelFromUserIdAsync(Players.LocalPlayer.UserId) end) end -- as worn
 		if not ok then -- (a Studio test player has no avatar of its own: a plain one)
 			ok, model = pcall(function() return Players:CreateHumanoidModelFromDescriptionAsync(Instance.new("HumanoidDescription"), Enum.HumanoidRigType.R15) end)
 		end

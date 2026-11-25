@@ -1,6 +1,7 @@
 local Players=game:GetService("Players")
 local Run=game:GetService("RunService")
 local Config=require(game.ReplicatedStorage.FlyFightPaper.Generated.Gameplay).avatar_display
+local AvatarLook=require(game.ReplicatedStorage.FlyFightPaper.Shared.AvatarLook)
 local Service={};Service.__index=Service
 function Service.new(flight)
  return setmetatable({flight=flight,models={},requests={},wearing={}},Service)
@@ -74,8 +75,9 @@ function Service:assign(p)
  local token={};self.requests[p.id]=token
  task.spawn(function()
   local ok,model=pcall(function()
-   if p.player then return Players:CreateHumanoidModelFromUserIdAsync(p.player.UserId) end
-   return Players:CreateHumanoidModelFromDescriptionAsync(self:look(p),Enum.HumanoidRigType.R15)
+   -- Everyone's 3D body clothing comes off first (AvatarLook; Alan 2026-11-25: a big jacket hides the emotes).
+   local look=p.player and Players:GetHumanoidDescriptionFromUserIdAsync(p.player.UserId) or self:look(p)
+   return Players:CreateHumanoidModelFromDescriptionAsync(AvatarLook.trim(look),Enum.HumanoidRigType.R15)
   end)
   if self.requests[p.id]~=token or self.flight.byId[p.id]~=p or p.foeOf then if self.requests[p.id]==token then self.requests[p.id]=nil end;if ok then model:Destroy() end;return end
   if not ok then
