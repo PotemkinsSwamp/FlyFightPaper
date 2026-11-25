@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-24: [The emote shop: one menu to buy and equip, your character on a box TV](2026-11-24-emote-shop.md)
 - 2026-11-24: [Four more runner-up emotes, to match the eight for 1st place](2026-11-24-four-more-runner-up-emotes.md)
 - 2026-11-24: [Bots are a fixed cast: each name has one character model, and no new names](2026-11-24-bots-are-a-fixed-cast.md)
 - 2026-11-24: [A human winner does the free emote; the others are bought with Paper, later](2026-11-24-a-human-winner-does-the-free-emote.md)
