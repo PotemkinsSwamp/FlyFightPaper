@@ -6,7 +6,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 **The idea:** Scribbles in a notebook, then holds up a drawing of themselves in 1st. Stick figures: a child drew it (Alan).
 
 ## Where it stands
-**Ready to record again** (2026-11-24, second build after Alan's first look in Play; see "Alan in Play"):
+**Ready for Alan's third look** (2026-11-24, after his second look in Play: the drawing was hidden in the legs; see "Alan in Play"):
 `DevRunnerUp` = "Doodler" (Dev buttons "2nd/3rd: doodler" and "fold + doodler"); the draft `DoodlerClip` (the seat only) is in the open place's `Assets` (unsaved); the
 older drafts `DoodlerLeftClip` and `DoodlerRightClip` are deleted from it. Its marks are in seconds after 1st's light,
 not clip seconds (the clip is held still): with a 1st that leaves the runner-ups seen to the end, **the look at 1st
@@ -101,6 +101,33 @@ desk; 2nd's is the mirror. The prompt (`.planning/emotes/doodler-prompt-1.txt`):
   early (`kit.seenFor()`, added to the scene by the primary session the same day). Kept: one pencil in the right hand,
   the notebook turned so the drawing is the right way up, silent, sitting.
 
+## Alan in Play (2026-11-24, second look)
+- **His words:** "The Doodler is a little off. Only because for some models, because of the way they're holding it,
+  the way they flip it around and hold it, because they're sitting crisscross, the drawing when they turn it around is
+  in their legs, so they need to slightly pick it up and pull it forward so that it's not clipping inside of their
+  legs, and so you can't see the drawing ... It kind of ruins the whole point ... if you can't see the drawing because
+  it's just clipping inside of their legs. And it's because they put it on the ground to then flip it and show you,
+  when they could be lifting it up and showing you." Nothing else raised (the drawing, the timing and the short
+  version were not named either way).
+- **Measured before the fix** (all twelve `bot_cast` bodies, normal and Fold It Up timings): it was every body, not
+  some. The 0.4-tall notebook held its height under the chin is taller than the gap between chin and crossed legs, so
+  its lowest corner sat 0.13 to 0.21 of the kid's height down inside the legs when shown (worst `10250531493` 0.21,
+  `11231630604` and `9668841977` 0.21, best `11393708263` 0.13), and 0.10 to 0.18 during the turn.
+- **The fix:** held up for the turn and shown, its lowest corner (at the biggest tilt) is now at least 0.03 of the
+  kid's height over the top of that body's own crossed legs (thighs, shins and feet, measured every frame), lifted
+  higher than under the chin when it must be; so on most bodies its top edge now comes up over the chin and the
+  lower face. Lifted that high it turned at face height, so the turn's room is measured from the face as well as the
+  chest (plus 0.04 for hair), and it moves out only as far as the turn needs (its near edge comes in by half its width
+  times the sine of the turn). Turned that far out it cannot be held by its middle (0.36 of the kid's height from the
+  shoulder against an arm of about 0.25), so it is turned as a kid turns a sign round: the left hand keeps its edge
+  and pulls it in past the chest, the right hand takes that edge as it comes round to the right, and the left hand
+  catches the other edge as it arrives on the left. Each hand only ever holds an edge on its own side.
+- **Measured after** (the same twelve bodies, both timings): the lowest corner 0.030 over the legs when shown (0.034
+  under Fold It Up) and 0.061 during the turn, on every body; the hands on their edges through the turn to within
+  0.015 of the kid's height; no body part or head inside the notebook. Hats with brims (two visors, a straw hat, a
+  beret) touch it as it turns; bags, a cape and pigtails at the lap while drawing: the accepted loss on odd outfits.
+  The timings per 1st are unchanged (table under "Build").
+
 ## Build (step 4)
 - **Roblox's own emotes, checked first:** none of them writes or draws while seated, so the body is ours.
 - **The body clip is only the seat** (`CUTS.Doodler` in `tools/emote_cuts/doodler.lua`: Nap B sitting still, 1 s,
@@ -117,10 +144,12 @@ desk; 2nd's is the mirror. The prompt (`.planning/emotes/doodler-prompt-1.txt`):
   - **The look at 1st:** up over 0.5 s, held 0.5 (3rd 1.0, so the two are out of step after), back down over 0.35;
     the head 45 degrees round, the chest 8. Pencil still.
   - **One burst** (0.95 s): the arrow and "me".
-  - **The turn** (1.85 s): lifted up facing the kid, top up (0.5; the camera sees the blue cover); the left hand to
-    the middle of the spiral and the right hand, still holding the pencil, lets go to the chest (0.2); turned half
-    round about its upright middle line (0.8: the drawing comes round to us right way up); in close to the chest
-    (0.3). Then the head tips 18 degrees away from 1st and the notebook tilts 14 degrees one way and the other.
+  - **The turn** (1.85 s): lifted up facing the kid, top up, its lowest corner clear of the crossed legs (0.5; the
+    camera sees the blue cover); the right hand, still holding the pencil, lets go to the chest (0.2); turned half
+    round about its upright middle line, edge over edge as a sign is turned round, moving out from the face only as
+    far as the turn needs (0.8: the drawing comes round to us right way up); in close (0.3), 0.05 of the kid's height
+    before the face or chest. Then the head tips 18 degrees away from 1st and the notebook tilts 14 degrees one way
+    and the other.
   - **Shortened** (Alan: "only if the first place one is the one that shortens it"): the drawing must be held up still
     at least 1.6 s before `seenFor()` runs out. If not, in this order: the burst after the look goes (its strokes are
     finished while the notebook faces the kid, so nothing is seen appearing), the turn goes 1.3 times quicker, and
@@ -145,7 +174,8 @@ desk; 2nd's is the mirror. The prompt (`.planning/emotes/doodler-prompt-1.txt`):
   head, and a red arrow from a red "me" to the kid. Against the paper: black 14.9 to 1, blue 5.9, red 4.8 (words need
   4.5), green 3.6, gold 3.2 (pictures need 3; design-theory rule 1.2). Nothing uploaded.
 - **Sizes** (the kid's heights): the page 0.4 tall and 0.3 wide, bigger than the first build's 0.33 so "me" can be
-  read; the pencil 0.1 long. Held for the turn its height under the chin plus 0.05, 0.02 clear of the chest.
+  read; the pencil 0.1 long. Held up for the turn and shown: its top edge 0.05 under the chin, or higher where that
+  body's legs need it (lowest corner 0.03 over them).
 - **The pencil:** one, in the right hand only. While drawing its point is on the page and it runs up through the
   hand; from the turn on it is fixed in the hand as it was then.
 
@@ -176,9 +206,12 @@ None: Alan took the silent default on the card. Skipped.
   125 at 1080p. In it: "me" about 20 and 30 pixels tall, the stick kid 30 and 45, the "1" 17 and 25, the crayon lines
   3.3 and 5. Rendered at those sizes from the module's own strokes (`.planning/emotes/doodler-drawing-sizes.png`, my
   own render, not Studio): "me", the arrow, the kid on the books and the "1" read at both.
+- **Third pass (after Alan's second look):** the notebook against each body's legs, measured on all twelve bodies;
+  numbers under "Alan in Play (2026-11-24, second look)".
 - **Not known until it is seen in Play:** whether the drawing reads under the spotlight at the real distance; how
-  the quick turn reads under Fold It Up; whether the look at 1st reads with the head 45 degrees round; long hair and
-  hats over the notebook.
+  the quick turn reads under Fold It Up; whether the look at 1st reads with the head 45 degrees round; whether the
+  notebook over the lower face looks right (it has to come up that far to clear the legs); the sign-style turn at
+  speed; hats with brims over the notebook.
 
 ## Files
 | File | What |

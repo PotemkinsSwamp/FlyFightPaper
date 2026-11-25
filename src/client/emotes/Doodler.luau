@@ -2,7 +2,7 @@
 -- remade after his first look in Play the same day). "In my head, I won": sitting cross-legged on the books, hunched
 -- over a notebook on the lap, the kid draws in short bursts; when 1st's light clicks on they look up at 1st, as
 -- someone drawing checks their model; head down, one more burst (the arrow and "me"); then they sit up tall, lift the
--- notebook up facing themselves, turn it round to us (held by the middle of its spiral, about its upright middle
+-- notebook up facing themselves, turn it round to us (edge over edge, as a sign is turned round, about its upright middle
 -- line, so the drawing faces us right way up: Alan, "they turn it on the wrong side") and hold it at the chest, head
 -- tipped, tilting it once each way to show it off.
 -- The drawing (Alan: "it should show it like they're in first place, and there should be an arrow drawn to it that
@@ -43,6 +43,11 @@ local TILTS = { { 0.85, 0 }, { 1.85, 14 }, { 2.95, -14 }, { 3.85, 0 } }
 local TALL, THIN, PENCIL, LEAD_THICK, LAP_TILT, LIFT = 0.4, 0.01, 0.1, 0.012, 25, 0.12
 local WIDE = TALL * 680 / 900
 local TURN_ROOM, READ_LOW = 0.02, 0.05 -- the turn: its room before the chest, its top edge under the chin (kid heights)
+-- Held up for the turn and shown: its lowest corner (at the biggest tilt) at least LEG_CLEAR over the top of this
+-- body's own crossed legs, lifted higher than READ_LOW if it must (Alan in Play: "the drawing when they turn it around
+-- is in their legs"; measured on all twelve bots' bodies, 0.13 to 0.21 of the kid's height into them), and shown
+-- SHOW_OUT before the chest or the face and hair (kid heights).
+local LEG_CLEAR, SHOW_OUT, HAIR = 0.03, 0.05, 0.04
 local PAPER, COVER, SPIRAL = Color3.fromRGB(252, 250, 242), Color3.fromRGB(70, 110, 200), Color3.fromRGB(90, 90, 96)
 local WOOD, POINT, RUBBER = Color3.fromRGB(245, 196, 40), Color3.fromRGB(60, 52, 48), Color3.fromRGB(240, 140, 150)
 -- The drawing, in the page's own pixels (680 by 900, its top left corner first), stroke by stroke in the order drawn:
@@ -163,7 +168,7 @@ end
 -- drawing's top away from the kid (they read it). From the turn: lifted before the chest, facing the kid, top up, far
 -- enough out to turn; turned half round about its upright middle line; in, close to the chest, below the chin. Then
 -- the tilts, about its own middle.
-local LAP = { "LeftUpperLeg", "RightUpperLeg", "LeftLowerLeg", "RightLowerLeg" } -- what the notebook rests on
+local LAP = { "LeftUpperLeg", "RightUpperLeg", "LeftLowerLeg", "RightLowerLeg", "LeftFoot", "RightFoot" } -- the crossed legs
 local function page(st, get, first)
 	local p = st.plan
 	local root, chest, head = get(st.parts.HumanoidRootPart), get(st.parts.UpperTorso), get(st.parts.Head)
@@ -171,9 +176,11 @@ local function page(st, get, first)
 	local kid, torso = st.kid, st.parts.UpperTorso.Size
 	local legsTop = -math.huge
 	for _, name in LAP do
-		local part, at = st.parts[name], get(st.parts[name])
-		local half = part.Size / 2
-		legsTop = math.max(legsTop, at.Position:Dot(U) + math.sqrt((at.XVector:Dot(U) * half.X) ^ 2 + (at.YVector:Dot(U) * half.Y) ^ 2 + (at.ZVector:Dot(U) * half.Z) ^ 2))
+		local part = st.parts[name] or st.feet[name]
+		if part then
+			local at, half = get(part), part.Size / 2
+			legsTop = math.max(legsTop, at.Position:Dot(U) + math.sqrt((at.XVector:Dot(U) * half.X) ^ 2 + (at.YVector:Dot(U) * half.Y) ^ 2 + (at.ZVector:Dot(U) * half.Z) ^ 2))
+		end
 	end
 	-- in front of the belly and of the hunched chest's lowest front (on two small bots' bodies the chest dipped into it)
 	local front = -math.huge
@@ -191,12 +198,22 @@ local function page(st, get, first)
 	local chin = head.Position - U * st.parts.Head.Size.Y * 0.5
 	-- room to turn clear of the chest; low and close enough for the hands (the 0.4-tall notebook, held its height
 	-- under the chin, was 0.04 of the kid's height out of the hands' reach as it turned)
-	local out = F * (torso.Z / 2 + WIDE * kid / 2 + TURN_ROOM * kid)
-	local read = chest.Position + U * ((chin - chest.Position):Dot(U) - READ_LOW * kid - TALL * kid / 2) + out
-	local shown = read - out + F * (torso.Z / 2 + 0.05 * kid)
+	-- in front of the chest and of the face (lifted clear of the legs its top half turns at face height: it went
+	-- through the head on two bots' bodies and through hair on most), HAIR more for what hangs off the head
+	local skull = st.parts.Head.Size / 2
+	local face = (head.Position - chest.Position):Dot(F) + math.sqrt((head.XVector:Dot(F) * skull.X) ^ 2 + (head.YVector:Dot(F) * skull.Y) ^ 2 + (head.ZVector:Dot(F) * skull.Z) ^ 2)
+	local front = math.max(torso.Z / 2, face + HAIR * kid)
+	-- out only as far as the turn needs: its near edge comes WIDE / 2 times the sine of the turn towards the kid
+	-- (held that far out all through, its side edges were up to 0.06 of the kid's height out of the hands' reach)
+	local spin = ease((first - p.spin) / (p.spun - p.spin))
+	local out = F * (front + TURN_ROOM * kid + WIDE * kid / 2 * math.sin(math.pi * spin))
+	local most = math.rad(math.max(math.abs(TILTS[2][2]), math.abs(TILTS[3][2])))
+	local drop = TALL * kid / 2 * math.cos(most) + WIDE * kid / 2 * math.sin(most) -- the middle down to its lowest corner
+	local height = math.max((chin - chest.Position):Dot(U) - READ_LOW * kid - TALL * kid / 2, legsTop + LEG_CLEAR * kid + drop - chest.Position:Dot(U))
+	local read = chest.Position + U * height + out
+	local shown = read - out + F * (front + SHOW_OUT * kid)
 	local readRot = CFrame.lookAt(Vector3.zero, -F, U)
 	local _, up = body(p, first)
-	local spin = ease((first - p.spin) / (p.spun - p.spin))
 	local closer = ease((first - p.spun) / (p.shown - p.spun))
 	local rot = CFrame.fromAxisAngle(U, math.pi * spin) * lapRot:Lerp(readRot, up)
 	rot = CFrame.fromAxisAngle(rot.LookVector, math.rad(keyed(TILTS, first - p.shown))) * rot
@@ -214,22 +231,35 @@ local function hands(st, cf, first, sizes)
 	local side = cf.RightVector -- the page's sideways line, pointed to the kid's right
 	if side:Dot(st.right) < 0 then side = -side end
 	local function edge(sign, height) return cf.Position + side * sign * (w / 2 + sizes.X * 0.2) + cf.UpVector * height * h end
-	local spiral = cf.Position + cf.UpVector * (h / 2 + sizes.Y * 0.3)
-	-- the left hand: on its side edge; to the spiral's middle for the turn and back (the
-	-- bottom edge's middle was a tenth of the kid's height out of reach)
-	local take = ease((first - p.read) / (p.take - p.read)) * (1 - ease((first - p.spun) / (p.shown - p.spun)))
 	-- up its side edges: nearer the kid on the lap, above the middle once lifted (nearer the shoulders: at the middle
 	-- the hands were 0.03 of the kid's height short as it came up)
 	local grip = -0.1 + 0.25 * ease((first - p.turn) / (p.read - p.turn))
-	local left = edge(-1, grip):Lerp(spiral, take)
+	-- The turn, as a kid turns a sign round (lifted clear of the legs it turns too far out to be held by its middle:
+	-- 0.36 of the kid's height from the shoulder, against an arm of about 0.25): the left hand keeps the edge it has
+	-- and pulls it in past the chest (A); the right hand, let go at the start, takes that edge as it comes round to
+	-- the right; the left hand waits where the other edge (B) will end and catches it as it arrives. Each hand only
+	-- ever holds an edge on its own side. Up to the turn the page's own +X edge is the kid's left (it faces them).
+	local edgeX = w / 2 + sizes.X * 0.2
+	local A, B = cf * Vector3.new(edgeX, grip * h, 0), cf * Vector3.new(-edgeX, grip * h, 0)
+	local turned = math.clamp((first - p.spin) / (p.spun - p.spin), 0, 1)
+	local left = edge(-1, grip)
+	if first >= p.spin and first < p.spun then
+		local still = CFrame.fromAxisAngle(cf.UpVector, math.pi * (1 - ease(turned))) -- the rest of the turn
+		local ends = cf.Position + still * (B - cf.Position) -- where B will be at its end
+		if turned < 0.5 then left = A
+		else left = A:Lerp(ends, ease((turned - 0.5) / 0.15)):Lerp(B, ease((turned - 0.65) / 0.35)) end
+	end
 	-- the right hand: drawing until the turn (the pencil's point on the page, the hand up the pencil); then on its
-	-- side edge; let go at the chest for the turn
+	-- side edge; let go at the chest at the start of the turn, then on edge A as it comes round
 	local pixel, drawing = pencilPoint(p, first)
 	local tip = onPage(st, cf, pixel, drawing and 0 or LIFT * PENCIL * kid)
 	local slope = (cf.LookVector * 0.75 - cf.UpVector * 0.45 + st.right * 0.35).Unit -- from the point up to the hand
 	local writing = tip + slope * 0.65 * PENCIL * kid
 	local rest = st.chestAt + st.right * 0.12 * kid - st.up * 0.05 * kid + st.forward * 0.12 * kid
-	local right = writing:Lerp(edge(1, grip), ease((first - p.turn) / (p.read - p.turn))):Lerp(rest, take)
+	local right = writing:Lerp(edge(1, grip), ease((first - p.turn) / (p.read - p.turn)))
+	if first >= p.read and first < p.spun then
+		right = right:Lerp(rest, ease((first - p.read) / (p.take - p.read))):Lerp(A, ease((turned - 0.4) / 0.2))
+	end
 	return left, right, tip, slope
 end
 
@@ -250,6 +280,7 @@ function Doodler.start(kit, who)
 		st.parts[name] = model:FindFirstChild(name)
 		if not st.parts[name] then return st end -- an odd body: it only sits
 	end
+	st.feet = { LeftFoot = model:FindFirstChild("LeftFoot"), RightFoot = model:FindFirstChild("RightFoot") } -- (a body may have none)
 	local kid = st.kid
 	local function part(name, size, color)
 		local made = kit.paper(who.cast, color)
