@@ -7,7 +7,7 @@ A runner-up emote (2nd and 3rd). Made by the [emote pipeline](../emote-pipeline.
 misses ... it just like goes off to the side behind them").
 
 ## Where it stands
-**Ready to record** (2026-11-24): steps 3 to 5 done; the two body clips (drafts `SneakyTossLeftClip` and `SneakyTossRightClip` in the open place's `Assets`), the ball and the module, checked by numbers in Edit (below). No sound (Alan picked none). Next: the primary session's recording (step 6), with `DevRunnerUp` = "SneakyToss".
+**Approved by Alan in his own Play** (2026-11-24; his words under "Alan in Play" below): waiting for the upload of its two clips, the primary session's on his go. No sound. In Studio it plays from the drafts `SneakyTossLeftClip` and `SneakyTossRightClip` in the open place's `Assets` (`DevRunnerUp` = "SneakyToss").
 
 ## Shot card
 **Alan's OK (2026-11-24):** "Sneaky Toss looks good", with one change: **no whistling**, neither the sound nor the look ("doing a whistling sound's going to be difficult. We also can't make them look like they're whistling ... do it more visually with their body language to make them look like they're trying to pretend to be innocent. Like maybe they're kind of being shifty, looking back and forth ... hands behind their back, like rocking back and forth, looking away from first place, kind of like tilting their head back and forth"). The card below has it. One throw (my default).
@@ -111,9 +111,9 @@ The prompt: `.planning/emotes/sneaky-toss-prompt-1.txt` (untracked); the moves i
   number is in its comments): Left throws towards the kid's own left (1st on the picture's right) with the left hand,
   Right the mirror. 12 s, played once, held on the last pose. In the video's seconds: clip second 1 is 1st's light.
   Baked into the open place's `Assets` as `SneakyTossLeftClip` and `SneakyTossRightClip` (unsaved drafts: what `ourClip`
-  plays in Studio); copies in `.planning/emotes/sneaky-toss-left.rbxm` and `-right.rbxm` (untracked). To bake again
+  plays in Studio); saved as `assets/animations/emotes/sneaky-toss-left.rbxm` and `-right.rbxm`. To bake again
   after a close without a save: a copy of `tools/emote_clips.lua` with `_G.EMOTE_CLIPS = { "cut:SneakyTossLeft" }` as its
-  first line, then `python tools/emote_preview.py STUDIO_ID x --lua=THAT_COPY "--bake=SneakyTossLeft:SneakyTossLeftClip:.planning/emotes/sneaky-toss-left.rbxm"` (and Right).
+  first line, then `python tools/emote_preview.py STUDIO_ID x --lua=THAT_COPY "--bake=SneakyTossLeft:SneakyTossLeftClip:assets/animations/emotes/sneaky-toss-left.rbxm"` (and Right).
 - **The marks** (clip seconds; 1st's light is 1.0; for 3rd add 0.6): Look 1.0 (the sly look starts), Out 2.0 (the hand
   comes out with the ball), Toss 2.62 and Catch 2.9 (the one bounce), Cock 3.32 (hand up by the head, elbow high),
   **Release 3.44 (the throw)**, Away 3.85 (face up and away), Back 4.05 (hand behind the back again), **Glance 7.1 (the
@@ -182,8 +182,16 @@ The prompt: `.planning/emotes/sneaky-toss-prompt-1.txt` (untracked); the moves i
 ## Sound (step 5)
 None: Alan picked no rustle after hearing the videos, and the card has no other sound. Nothing for `runnerSound`.
 
+## Alan in Play (2026-11-24)
+In his own Play, after the primary session's recording ([playtest note](../../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md)):
+"Sneaky toss isn't bad. It's very close. It's very close. The only thing I'll say is the way that they're throwing
+it. That's more or less the problem. Actually, no. Honestly, I think sneaky toss is good. No, sneaky toss is good."
+**Approved as it plays, the throw included** (he named it, then took it back): nothing changes. Next: the upload of
+the two clips (step 6, the primary session's, on his go).
+
 ## Files
 | File | What |
 |---|---|
 | `src/client/emotes/SneakyToss.luau` | The emote's module: picks the clip, times it to 1st's light, the ball and its flight |
 | `tools/emote_cuts/sneaky-toss.lua` | The body cut: `CUTS.SneakyTossLeft`, `CUTS.SneakyTossRight` |
+| `assets/animations/emotes/sneaky-toss-left.rbxm`, `sneaky-toss-right.rbxm` | The two baked clips |
