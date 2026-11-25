@@ -1662,6 +1662,19 @@ return JSONTypes.map({
                 }),
             }),
         }),
+        ["town_routes"] = JSONTypes.map({
+            ["floor_studs"] = 45,
+            ["half_size"] = JSONTypes.array({
+                [1] = 1014,
+                [2] = 714,
+            }),
+            ["spacing"] = 70,
+            ["y_positions"] = JSONTypes.array({
+                [1] = 60,
+                [2] = 95,
+            }),
+        }),
+        ["town_routes_comment"] = "Bots in the town (Alan 2026-11-25, docs/plan/BOTS-IN-TOWN-PLAN.md step 1): extra route points over the town mat (half size in x, z), one layer per height, `spacing` apart, only where a plane fits, plus points before, inside and after every hole a plane fits through. Street lamps top out at 37.5 studs and trees at 42 inside the town, so the low layers sit at 60 and 95 and a bot over the town is pushed up only under `floor_studs` (75 elsewhere).",
         ["width_studs"] = 2800,
     }),
 })

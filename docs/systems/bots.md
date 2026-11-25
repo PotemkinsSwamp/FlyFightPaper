@@ -102,7 +102,8 @@ invulnerable debug bots or target-board practice.
 | File | What it does |
 |---|---|
 | `src/server/BotService.luau` | Bot brain: vision, targets, states, zone play |
-| `src/shared/AirRoutes.luau` | Flight routes through the room and pathfinding (also the tutorial guide line) |
+| `src/shared/AirRoutes.luau` | Flight routes through the room and pathfinding (also the tutorial guide line); on the server also the town map (`buildTown`: low points over the town and points at every hole, built after start, a few ms a frame) |
+| `src/shared/AirMapRules.luau` | Pure route logic: the fastest route over the points (A* with a heap) and holes in a building from a grid of ray hits. Test: `tests/unit/AirMapRules.spec.luau` |
 | `src/shared/BotBuilds.luau` | Bot planes per skill tier |
 | `src/shared/BotTactics.luau` | Each build's trick, where a bot brakes or holds off, when it steals a damaged plane |
 | `src/shared/BotRosterRules.luau` | How many bots, which skill, and which cast name each takes |
@@ -111,7 +112,7 @@ invulnerable debug bots or target-board practice.
 | `src/server/Matchmaking.luau, src/server/MatchmakingAdapter.luau` | Rookie or regular servers, transfers |
 
 ## Tuning numbers
-`config/gameplay.json` `bots` (mixes, personalities, quirks, eraser skill, objective share; tricks: `tricks_comment`); `config/server.json` `routing`.
+`config/gameplay.json` `world.town_routes` (the town map's heights, spacing and floor push) and `bots` (mixes, personalities, quirks, eraser skill, objective share; tricks: `tricks_comment`); `config/server.json` `routing`.
 
 ## Related
 - [Bots use the town](../decisions/2026-11-25-bots-use-the-town.md) and its [plan](../plan/BOTS-IN-TOWN-PLAN.md) (2026-11-25, being built)

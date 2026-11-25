@@ -118,6 +118,19 @@
       310,
       495
     ],
+    "town_routes_comment": "Bots in the town (Alan 2026-11-25, docs/plan/BOTS-IN-TOWN-PLAN.md step 1): extra route points over the town mat (half size in x, z), one layer per height, `spacing` apart, only where a plane fits, plus points before, inside and after every hole a plane fits through. Street lamps top out at 37.5 studs and trees at 42 inside the town, so the low layers sit at 60 and 95 and a bot over the town is pushed up only under `floor_studs` (75 elsewhere).",
+    "town_routes": {
+      "half_size": [
+        1014,
+        714
+      ],
+      "y_positions": [
+        60,
+        95
+      ],
+      "spacing": 70,
+      "floor_studs": 45
+    },
     "paper_targets_comment": "Hidden kid-drawn paper targets (Alan 2026-10-13): rooftop points found in Studio (flat roofs 90-350 up, open sky above; re-placed 2026-10-16 for the new town), front faces the city middle. Each pilot has a private set per round; 2 points each = the prop cap.",
     "paper_targets": [
       {"design": "broccoli", "at": [602, 330.6, -190], "yaw": 108},

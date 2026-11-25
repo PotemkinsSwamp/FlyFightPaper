@@ -195,6 +195,7 @@ function Service:weaponFor(p)
 end
 function Service.new(flight,combat)
  local self=setmetatable({flight=flight,combat=combat,routes=Routes.new(flight),brains={},serial=0,mixed={}},Service)
+ task.spawn(function() self.routes:buildTown() end) -- the town's low ways and holes, a few ms a frame
  Players.PlayerAdded:Connect(function() self:fill() end);Players.PlayerRemoving:Connect(function() task.defer(function() self:fill() end) end)
  self:fill()
  Run.PreSimulation:Connect(function(dt)local start=os.clock();self:step(dt);self.lastWorkMs=(os.clock()-start)*1000 end)
@@ -604,7 +605,10 @@ function Service:steer(p,b,dt,now)
   local inside=Vector3.new(-localPos.X,0,-localPos.Z)
   if inside.Magnitude>.1 then direction=(direction+inside.Unit*2).Unit end
  end
- if position.Y<75 then direction=(direction+Vector3.yAxis*1.8).Unit end
+ -- Pushed up near the floor: over the town only just above its lamps and trees, so bots can fly down its streets.
+ local town=Config.world.town_routes
+ local floor=math.abs(position.X)<town.half_size[1] and math.abs(position.Z)<town.half_size[2] and town.floor_studs or 75
+ if position.Y<floor then direction=(direction+Vector3.yAxis*1.8).Unit end
  if position.Y>half.Y*2-80 and not duct then direction=(direction-Vector3.yAxis*1.8).Unit end
  -- Planes are hard to see coming head-on at 200+ studs/s closing, so look 1.5 s ahead: if another plane's
  -- closest approach would touch, swerve away from that point now, harder the sooner it comes.
