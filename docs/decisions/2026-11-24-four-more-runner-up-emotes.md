@@ -1,7 +1,7 @@
 # Four more runner-up emotes, to match the eight for 1st place
 
 **Decided:** 2026-11-24 (Alan, after looking at what exists)
-**Status:** Decided, and the four shot cards have his OK (2026-11-24). Nothing is made yet.
+**Status:** Built, approved by Alan in his own Play and uploaded, all four, the same day (2026-11-24; [his three looks](../playtests/2026-11-24-the-four-new-runner-up-emotes-first-look.md)). Eight runner-up emotes for eight 1st-place ones.
 
 ## Decision
 - **As many runner-up emotes as 1st-place ones** ("We need to make equal amounts of runner-ups ... we need 8 runner-up emotes as well"). Eight exist for 1st (Toy Pilot, Camera Flick, Book Kicker, Bubblegum, Magician, A+, Skeet Shoot, Fold It Up); four for the runner-ups (Good Game, Nap, Next One, So Close).

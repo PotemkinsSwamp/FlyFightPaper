@@ -1,0 +1,24 @@
+{
+  "path": "operations/3f645b61-b2b3-4e03-8856-d218b0eff6d0",
+  "operationId": "3f645b61-b2b3-4e03-8856-d218b0eff6d0",
+  "done": true,
+  "response": {
+    "path": "assets/135416115654567",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-25T03:24:33.061Z",
+    "assetId": "135416115654567",
+    "displayName": "FFP emote Doodler",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}

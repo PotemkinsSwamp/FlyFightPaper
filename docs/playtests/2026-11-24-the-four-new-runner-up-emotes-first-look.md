@@ -17,5 +17,8 @@
 | Test Flight | "Test Flight is good." | Nothing | **Approved in his Play** (the whoosh not heard yet: silent until its upload). Next: two clips and the whoosh uploaded, on his go |
 | Doodler | "A little off ... for some models, because of the way they're holding it, the way they flip it around and hold it, because they're sitting crisscross, the drawing when they turn it around is in their legs, so they need to slightly pick it up and pull it forward so that it's not clipping inside of their legs ... It kind of ruins the whole point ... it's because they put it on the ground to then flip it and show you, when they could be lifting it up and showing you." | The kid lifts the notebook off the lap and brings it forward before turning it, so the whole page is clear of the crossed legs on every body | Passed to its session |
 
+## His third look (the same day, after Doodler's legs fix)
+"Okay all 4 are good make sure they are uploaded." Doodler is approved with the notebook lifted clear of the legs (it covers the lower face on most bodies; he was told before he looked). The uploads were done on this go: five clips and Test Flight's whoosh, all free ([the table](../workshop/emote-pipeline.md)). All eight runner-up emotes now exist, as many as for 1st place.
+
 ## Claude's mistake this round
 Sore Loser was reported ready with no Dev button: the button and the clips were held back to go in with a recording of all four. Alan went looking for it ("you were supposed to build the dev button"). From then on each emote's button went in the moment its session reported ready.

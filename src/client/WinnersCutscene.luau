@@ -649,7 +649,7 @@ end
 -- name them for everyone instead: DevFirstEmote for 1st; DevRunnerUp, one name for both or "A,B", 2nd's and 3rd's
 -- (the "end: real" button clears both).
 Cutscene.FIRSTS = { "ToyPilot", "CameraFlick", "BookKicker", "Bubblegum", "Magician", "APlus", "SkeetShoot", "FoldItUp" }
-Cutscene.RUNNER_UPS = { "GoodGame", "Nap", "NextOne", "SoClose", "SneakyToss" }
+Cutscene.RUNNER_UPS = { "GoodGame", "Nap", "NextOne", "SoClose", "SneakyToss", "SoreLoser", "TestFlight", "Doodler" }
 Cutscene.FREE = { "ToyPilot", "GoodGame", "GoodGame" } -- by place
 Cutscene.chosen = {}
 -- `human(actorId)`: whether that winner is a person (a test passes its own).

@@ -72,6 +72,10 @@ local definitions={
  -- So Close (src/client/emotes/SoClose.luau): the runner-up kid's sigh, cut from a Gemini video's sound and uploaded
  -- 2026-11-22 (assets/audio/emotes). Volume 1: the file itself is quiet (Alan on the recording: "its good").
  soCloseSigh={77036908941159,1,1,.86},
+ -- Test Flight (src/client/emotes/TestFlight.luau): the little plane's whoosh at each of its three throws, cut from
+ -- its Gemini video (Alan: "you can use the little whooshing sound of the plane") and uploaded 2026-11-24. Volume 1:
+ -- the file itself is as quiet as the sigh above. Not yet heard by him in the game.
+ testFlightWhoosh={96265768354635,1,1,1.8},
  -- A+ and Skeet Shoot (src/client/emotes): our own sounds, cut from Gemini videos' sound and uploaded 2026-11-24
  -- (assets/audio/emotes; Alan on the recordings: "its good upload it"). aPlusFlap: the card snapped up overhead.
  -- aPlusSlap: the card flat on the lens, the loudest (as loud as Book Kicker's thud). skeetShot: the straw's puff

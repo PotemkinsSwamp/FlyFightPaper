@@ -301,7 +301,7 @@ function HUD.start(getPlane, action)
 	-- does both. DevRunnerUp "A,B" is 2nd's and 3rd's (WinnersCutscene).
 	local winnersDev={studio=game:GetService("RunService"):IsStudio(),turn=0,
 		firsts={"ToyPilot","CameraFlick","BookKicker","Bubblegum","Magician","APlus","SkeetShoot","FoldItUp"},
-		ups={"GoodGame","Nap","NextOne","SoClose","SneakyToss"}}
+		ups={"GoodGame","Nap","NextOne","SoClose","SneakyToss","SoreLoser","TestFlight","Doodler"}}
 	function winnersDev.finish(first,up)
 		if winnersDev.studio then
 			winnersDev.turn+=1

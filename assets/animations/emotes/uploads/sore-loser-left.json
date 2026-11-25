@@ -1,0 +1,24 @@
+{
+  "path": "operations/748f57e2-92ae-48a6-a845-269488a92ccb",
+  "operationId": "748f57e2-92ae-48a6-a845-269488a92ccb",
+  "done": true,
+  "response": {
+    "path": "assets/131626858206835",
+    "revisionId": "1",
+    "revisionCreateTime": "2026-11-25T03:24:19.847Z",
+    "assetId": "131626858206835",
+    "displayName": "FFP emote Sore Loser left",
+    "description": "Retained FlyFightPaper classroom art, resized to a shared 1024-pixel atlas.",
+    "assetType": "Animation",
+    "creationContext": {
+      "creator": {
+        "userId": "52064999"
+      }
+    },
+    "moderationResult": {
+      "moderationState": "Approved"
+    },
+    "state": "Active",
+    "isPublished": true
+  }
+}
