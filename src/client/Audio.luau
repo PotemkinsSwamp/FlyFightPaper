@@ -86,6 +86,13 @@ local definitions={
  -- yet heard in the game (the toss's file is the loudest).
  foldPeel={89389178316383,1,1,1.26},foldFlap={120117285560264,1,1,.23},foldScrunch={77731942021002,1,1,1.17},
  foldToss={96887272012291,1,1,.24},foldDust={89242235637504,1,1,.23},
+ -- The Emotes page's TV switching on and off (Alan 2026-11-25: "the sound of a TV turning on, turning off, the
+ -- click"): three candidates for his pick by ear, all Pro Sound Effects, "Television FX". 1: "Television Button 5"
+ -- (a TV's power button, on and off). 2: "Television Button 2" (the same, another take). 3: "Television Switch 11" (a
+ -- channel knob's click) and, on switching on, a short soft burst of "Television Static On Change Stations Constant 1".
+ -- The two not picked go once he picks. Loudness is Claude's number, not yet heard.
+ tvOn1={9119969984,1,.6,1},tvOff1={9119969984,1,.6,1},tvOn2={9119969690,1,.6,1.1},tvOff2={9119969690,1,.6,1.1},
+ tvOn3={9119973132,1,.6,.6,after={"tvStatic",.05}},tvOff3={9119973132,1,.6,.6},tvStatic={9126097386,1,.2,.45},
  ggClap={9114772106,1,1.6,.9},napPop={9113263758,1.8,1.5,.3},napSnore={9113861981,1,1.4,2.2},fold={9125724963,1.4,1.4,.5},
 }
 -- Sounds with a position are heard from that spot in the room (3D: louder and on that side when it's near you);

@@ -21,6 +21,7 @@ local PaperUI = require(script.Parent.PaperUI)
 local PlaneLooks = require(script.Parent.PlaneLooks)
 local Customize = require(script.Parent.HangarCustomize) -- (the skin you wear)
 local Cutscene = require(script.Parent.WinnersCutscene)
+local Audio = require(script.Parent.Audio)
 local EmoteShop = {}
 
 local W, H = PaperUI.W, PaperUI.H
@@ -111,7 +112,7 @@ function EmoteShop.new(playerGui, api)
 	if safe then safe:GetPropertyChangedSignal("AbsoluteSize"):Connect(fit) end
 	fit()
 
-	local state = { pick = nil, owned = {}, worn = {}, profile = nil, playing = false, shown = false, token = 0 }
+	local state = { pick = nil, owned = {}, worn = {}, profile = nil, playing = false, shown = false, token = 0, tvSound = 1 }
 
 	-- The TV's power light: painted lit; this covers it while the TV is off.
 	local lamp = round(frame(sheet, "Lamp", LAMP_OFF, 1259, 787, 14, 14), 7)
@@ -150,6 +151,15 @@ function EmoteShop.new(playerGui, api)
 	PaperUI.loud(centred(PaperUI.words(using, "Label", "Using", 60, 0, 240, BUTTON_H, 40)))
 	for _, piece in { buyPaper, use, using } do piece.Visible = false end
 	usingCheck.ZIndex = 2
+	-- ponytail: Studio only, until Alan picks the TV's sound by ear (Audio: tvOn1..3); then this button goes.
+	if RunService:IsStudio() then
+		local dev
+		dev = PaperUI.button(sheet, "DevTvSound", strip.blue, "TV sound 1", 60, by, 300, BUTTON_H, 0, function()
+			state.tvSound = state.tvSound % 3 + 1
+			dev.Label.Text = "TV sound " .. state.tvSound
+			Audio.play("tvOn" .. state.tvSound)
+		end, 34)
+	end
 
 	-- ===== The two boards and their cards =====
 	local cards = {} -- id -> { button, price, view, emote }
@@ -252,7 +262,8 @@ function EmoteShop.new(playerGui, api)
 		return t
 	end
 	local function switchOff(token)
-		-- the picture folds to a bright line, the line to a dot, the dot goes out
+		-- the click, then the picture folds to a bright line, the line to a dot, the dot goes out
+		Audio.play("tvOff" .. state.tvSound)
 		glow.Size, glow.BackgroundTransparency, glow.Visible = UDim2.fromOffset(GLASS_W, GLASS_H), 1, true
 		tween(glow, 0.08, { BackgroundTransparency = 0 })
 		task.wait(0.08)
@@ -291,6 +302,7 @@ function EmoteShop.new(playerGui, api)
 		end
 		state.playing = true
 		lamp.BackgroundTransparency = 1
+		Audio.play("tvOn" .. state.tvSound)
 		-- the tube warms up: a bright line across the middle opens into a white picture, which clears to the kid
 		task.spawn(function()
 			glow.Size, glow.BackgroundTransparency, glow.Visible = UDim2.fromOffset(0, 6), 0, true
