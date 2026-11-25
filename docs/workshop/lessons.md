@@ -1156,3 +1156,23 @@ Back to [HOME](../HOME.md)
   differed on equal points. One order (the server's) and everything else keeps it.
 - **A clip's hands land somewhere else on every body**: any pose where the hands must be at a place (together, on a
   prop, at the chest) is finished in the game with `bendArm` from the body's own chest, not in the clip.
+
+## Runner-up emotes built four at once (2026-11-24)
+- **The Dev button and the clips go in the moment a side session says "ready".** Holding them back for one recording
+  of all four made Alan look for a button that was not there. His own Play is the first look; a recording only if he
+  asks.
+- **A held-still pose reads as no feeling.** Sore Loser's card said "almost nothing moves"; in Play he saw a statue.
+  A sulk is acted out: the turn away and the arm cross happen on screen, a stamp, a huff, the look back with the
+  whole upper body. The reference video already showed it; the build had lost it.
+- **A prop is the size the same prop has in the other emotes.** Test Flight's plane was a tenth of the kid's height
+  (the card's own number); `holdPlane`'s default is about three times that. Measure the existing one first.
+- **A flying prop's roll never comes from the path's bend** (it jumps at every path point: thousands of degrees a
+  second, read as flapping wings). Carry the top along with the nose.
+- **Anything shown on a seated kid is measured against that body's own legs, on every cast body.** Doodler's page
+  sat 0.13 to 0.21 of the height inside the crossed legs on all twelve; the plain test kid had hidden it.
+- **Put a runner-up's key moment in the first 3 s after 1st's light**, or shorten by `kit.seenFor()`: the runner-ups
+  are seen 10.4 s at most and 3.05 s under Fold It Up.
+- **One Studio, one `_G.EMOTE`.** Two sessions running `tools/emote_preview.py` at once wipe each other's test kids
+  and clip lists: set `_G.EMOTE_CLIPS` right before the run and expect a rerun.
+- **A Play copy of a clip serialises 15 bytes longer than Edit's.** Compare an upload with what Alan saw by keys,
+  poses and pose sum (`KeyframeSequenceProvider:GetKeyframeSequenceAsync` works on Play's server), not by bytes.
