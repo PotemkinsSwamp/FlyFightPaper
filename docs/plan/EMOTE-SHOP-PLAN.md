@@ -54,6 +54,28 @@ straight Robux buy is a little cheaper than buying the Paper for it. **The numbe
 All 14: 53,200 Paper, about 81 matches. Each Robux price is at or just under what its Paper costs in the biggest
 pack (18.75 Paper a Robux). Free: Toy Pilot, Good Game.
 
+### What other games charge for an emote (looked up 2026-11-25; Alan: "the prices seem low")
+Fan wikis and guide sites, mixed dates, none official; nothing here is measured in our game.
+
+| Game | Emote prices | In Robux |
+|---|---|---|
+| Roblox's own catalog emotes (worn in every game) | 55 to 110 R$ (Godlike 80) | 55-110 |
+| The Strongest Battlegrounds | ordinary 25 R$ or 100 kills; limited-time ones 300 to 799 R$ | 25; 300-799 |
+| Rivals | 50 / 75 / 100 Keys by rarity; a Key is about 5 R$ (10 for 49, 40 for 199) | about 245 / 370 / 490 |
+| Rivals skins, for scale | 299 / 449 / 599 R$ by rarity | 299-599 |
+| Fortnite (not Roblox) | 200 / 500 / 800 V-Bucks, about $1.80 / $4.50 / $7.20 | (about 150 / 360 / 580 at 400 R$ = $4.99) |
+
+Ours at 89 to 399 R$ sit at the low end: the cheap ones at catalog-emote prices, the best under Rivals' best and
+far under a limited one elsewhere. **Offered to him, not in the config:** Paper = Robux x 20 (a little dearer than
+the biggest pack's 18.75, so the Robux button is the slightly better deal): Leader 599 / 449 / 299 R$ = 12,000 /
+9,000 / 6,000 Paper; Runner-up 249 / 149 R$ = 5,000 / 3,000 Paper. All 14: 96,000 Paper, about 145 matches.
+Sources: [Rivals emotes](https://bloxodes.com/wiki/rivals/emotes), [Rivals shop](https://www.u7buy.com/blog/rivals-shop-guide-2/),
+[TSB emotes](https://www.gamezebo.com/walkthroughs/how-to-get-emotes-in-the-strongest-battlegrounds/),
+[TSB limited emotes](https://roonby.com/2026/07/04/all-limited-time-emotes-in-the-strongest-battlegrounds-2026-and-what-they-do/),
+[catalog emotes](https://bloxodes.com/catalog/roblox-items-and-bundles/roblox-emotes),
+[Fortnite 200](https://www.sportskeeda.com/fortnite/top-5-fortnite-emotes-cost-200-vbucks); Rivals skins and Robux
+per dollar from [pricing research](../research/PRICING-RESEARCH-2026-10-18.md).
+
 ## Claude's calls, his to reverse
 - The TV is off when the menu opens and switches off after each emote (no frozen last pose).
 - The black school TV of his photos 1, 2 and 4, not the wood one.
