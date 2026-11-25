@@ -96,7 +96,9 @@ local function id(definition)
  return type(definition[1])=="number" and "rbxassetid://"..definition[1] or "rbxasset://sounds/"..definition[1]
 end
 function Audio.seconds(name) local definition=definitions[name];return definition and (definition[4] or .22) or 0 end -- how long `name` plays
-function Audio.play(name,position,reach)
+-- `group` (any table, optional): Audio.hush(group) stops its sounds early (the emote shop's TV, switched to another emote).
+function Audio.hush(group) for sound,token in busy do if token.group==group then sound:Stop() end end end
+function Audio.play(name,position,reach,group)
  local definition=definitions[name];if not definition then return end
  if definition.after then task.delay(definition.after[2],Audio.play,definition.after[1],position,reach) end
  local sound=table.remove(available)
@@ -109,7 +111,7 @@ function Audio.play(name,position,reach)
  local spot=spots[sound]
  if position then spot.WorldPosition=position;spot.Parent=workspace.Terrain;sound.Parent=spot else sound.Parent=Sounds end
  sound.SoundId=id(definition);sound.PlaybackSpeed=definition[2];sound.Volume=definition[3]*(Root:GetAttribute("SoundVolume") or 1)
- local token={};busy[sound]=token;sound:Play()
+ local token={group=group};busy[sound]=token;sound:Play()
  task.delay(definition[4] or .22,function()if busy[sound]==token then sound:Stop();busy[sound]=nil;table.insert(available,sound) end end)
  return sound -- (to fade it early; it goes back in the pool by itself)
 end

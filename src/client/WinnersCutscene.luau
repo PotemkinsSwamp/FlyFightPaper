@@ -94,6 +94,10 @@ local CONE_WIDE, CONE_TALL, CONE_LAYERS, CONE_CLEAR, CONE_BIG = 1.52, 8, 24, 0.9
 local POOL_CLEAR, LIGHT_BACK = 0.8, 1.8
 local Cutscene = {}
 Cutscene.tv = {} -- the emote shop's TV: one winner alone, seen through a hole in the menu (at the end of this file)
+do -- every sound played while the TV is on belongs to that showing, so TV.stop can cut it off (Audio.hush; Alan 2026-11-25)
+	local all = Audio
+	Audio = setmetatable({ play = function(name, position, reach) return all.play(name, position, reach, Cutscene.tv.state) end }, { __index = all })
+end
 local active
 
 -- The cone's shape is Roblox's own classic cone (asset 1033714: 2 wide, 0.75 tall, tip up; measured 2026-11-20),
@@ -2327,7 +2331,9 @@ function TV.frame()
 	camera.CFrame, camera.FieldOfView = shot, math.deg(2 * math.atan(math.tan(math.rad(fov / 2)) / share))
 	local soft = s.kickAt and kickSoft(t - s.kickAt) or 0
 	s.smear.Size, s.smear.Enabled = KICK_BLUR * camera.ViewportSize.Y * share * soft, soft > 0
-	if t >= leaveAt(s) then
+	-- The winners' moment runs an emote GLIDE seconds past `leaveAt`, while its camera glides home: the same here, or
+	-- what ends on the lens is cut short (Alan 2026-11-25: Bubblegum's gum was never scraped off the glass).
+	if t >= leaveAt(s) + GLIDE then
 		local done = s.done
 		TV.stop()
 		if done then done() end
@@ -2343,6 +2349,7 @@ function TV.stop()
 	end
 	TV.state = nil
 	firstSoundAt = nil
+	Audio.hush(s) -- its sounds stop with it (Alan 2026-11-25: Magician's played on under the next emote)
 	s.set:Destroy()
 	s.smear:Destroy()
 	local camera = workspace.CurrentCamera
