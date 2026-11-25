@@ -1176,3 +1176,19 @@ Back to [HOME](../HOME.md)
   and clip lists: set `_G.EMOTE_CLIPS` right before the run and expect a rerun.
 - **A Play copy of a clip serialises 15 bytes longer than Edit's.** Compare an upload with what Alan saw by keys,
   poses and pose sum (`KeyframeSequenceProvider:GetKeyframeSequenceAsync` works on Play's server), not by bytes.
+
+## A 3D picture inside a menu (the emote shop's TV, 2026-11-24)
+- **A menu's own 3D window (a ViewportFrame) draws no paper made in code and no blur.** Tested in Edit with three
+  parts side by side: the one with a SurfaceGui came out blank, the Decal and the see-through part drew. A+'s card,
+  Doodler's drawing, Fold It Up's picture and Book Kicker's pages are SurfaceGuis. Check what an effect is made of
+  (`grep SurfaceGui`, `BlurEffect`, lights) before promising it in such a window.
+- **The way round it: a hole in the menu and the real picture behind it.** The hole has to sit in the middle of the
+  screen, because the game's picture cannot be shifted sideways; the real camera's lens is widened so the hole shows
+  the lens angle the scene was tuned for. That fixed the page's layout (the TV in the middle), so find it out before
+  agreeing a layout with Alan: his note had the TV on the right.
+- **Roblox files hair and shoes as "layered clothing" too.** `HumanoidDescription:GetAccessories(false)` returned
+  Alan's jacket, both shoes and his hair; clearing the list took his hair off. Filter by `AccessoryType` and read a
+  real avatar's list first (`Players:GetHumanoidDescriptionFromUserIdAsync`, also from the Server side of a running
+  Play).
+- **A flat-colour page reads as unfinished to Alan even as a first build** ("You kind of just did it in like SVG").
+  Line up the pictures before the first look of a new page, or tell him before he opens it that it is shapes only.
