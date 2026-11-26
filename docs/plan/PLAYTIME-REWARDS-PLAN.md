@@ -23,6 +23,26 @@ chest**. When the chart is full: "Come back tomorrow for a new chart."
 - In a match: a small paper note when a sticker is earned ("Sticker earned! Take it from the menu."). The prize is taken
   from the menu, also the in-match menu.
 
+## The look (Alan 2026-11-25; concept pictures in `.planning/playtime/`)
+- **A treasure map** in place of the sticker chart ("I kind of like the idea of the treasure map"): a path from Start to an
+  X with the chest, 16 stops, the three half-hour stops drawn as landmarks, a paper plane where you are. On **light blue
+  craft paper** with cut-paper pieces (his pick of three papers: "it should be on the blue craft paper"), with the
+  notebook-hole edge and tape of the Missions sheet.
+- From the picture review, for the build: a stop you can open bounces and says "Open!"; stops not reached are dimmed; a
+  big stop's time sits on its own flag; the chest's X is not red (the close button is); labels get bigger paper.
+- **The wheel shows chances by slice size, with no percentages written on it** (Alan: "the spots need to just indicate
+  the percentage like all other spin wheels do"): 3,000 Paper 108 degrees, the boost pair 97, Sticker chest 90, 5,000
+  Paper 36, Blue Ribbon chest 22, Golden Star chest 7. Proposed: a small "?" opens the list of exact chances, as our
+  chests' prize lists do.
+- **The treasure chest opens with the same animation as every other chest** (Alan: "the treasure chest is an animation
+  like all the other chests"; `ChestOpening.luau`: the screen dims, the chest rises, rattles, the lid pops with sparkles).
+  Proposed steps from map to prize (waiting on Alan's OK): tap the bouncing chest on the X; the map dims and the chest
+  plays that opening; three things rise out and settle in a row above it (3,000 Paper, the wheel in the middle and
+  biggest, the boost pair), each with its button (Take, Spin!, Take); a taken prize shows on the chests' prize note with
+  Done; Spin! drops the side prizes back in, the wheel grows, spins about 4 seconds with the pencil ticking and stops,
+  then the same prize note (a won chest: "Open now" plays that chest's opening, or "Later"); closing before choosing
+  shuts the chest and it waits on the map until the day ends.
+
 ## Rules
 - **What counts:** all time in the game: matches, the menus, building planes, training (Alan 2026-11-25: "if you are in
   the menu building planes or doing other stuff that play time should count"; first set to match time only). Time away
