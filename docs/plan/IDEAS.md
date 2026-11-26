@@ -23,6 +23,9 @@ and a stage.
   Once skins exist, the shop's Today's parts row can rotate skins for players who own every part (Alan 2026-11-12).
 - **Plane emotes: tricks in flight** (Alan 2026-11-19: "we need those as well"): a barrel roll, loop or wing wiggle
   on a key while flying, sold and earned like the other emotes. After the winners' circle redo and the kid emotes.
+- **Ranks instead of levels** (Alan 2026-11-25): "we're a little too far off the money as far as being a dogfight game";
+  arcade dogfight games usually have ranks, so the level system becomes ranks with our own theme. It should help the
+  later prestige system. Backlog only.
 - **Look back** (Alan 2026-11-25): a key that turns the view backwards for a moment, to see whether someone is
   chasing you and to time a dodge.
 - **Redo the part models, boosters first** (Alan 2026-11-12): the booster models don't read as what they do, and
