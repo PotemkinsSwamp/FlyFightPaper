@@ -68,6 +68,7 @@ function Spec.run()
    hangar={doubleMatch=function(_,buyer,match)assert(buyer==player);offered=match end}},Runtime)
   function runtime:tutorialRoom()return false end
   function runtime:earnings()end
+  function runtime:countPlaytime()end
   local Root=game.ReplicatedStorage.FlyFightPaper;local previous=Root:GetAttribute("TutorialRoom")
   runtime:step(require(Root.Generated.Server).round.step_seconds)
   Root:SetAttribute("TutorialRoom",previous)

@@ -305,7 +305,8 @@ function Spec.run()
    assert(f.profile.Data.boosts.paperSeconds==900)
   end
  end)
- test("daily timed gifts extend the shared clock and permanent coverage gives 250 earned Paper instead",function()
+ test("daily timed gifts extend the shared clock and permanent coverage gives earned Paper instead",function()
+  local worth=EconomyConfig.daily_gift.boost_covered_paper
   for _,resource in ipairs({"xp","paper"}) do
    for _,permanent in ipairs({false,true}) do
     local field=resource=="xp" and "xpSeconds" or "paperSeconds"
@@ -313,8 +314,8 @@ function Spec.run()
     local f=fixture({setup=function(p)p.dailyGift.next=resource=="xp" and 3 or 6;p.boosts[field]=25;p.boosts[flag]=permanent end})
     local claimed=f:claim();assert(claimed.status=="ok",claimed.code)
     if permanent then
-     assert(claimed.value.paper==250 and claimed.value.seconds==nil)
-     assert(f.profile.Data.paperMilli==250000 and f.profile.Data.earnedPaperMilli==250000 and f.profile.Data.boosts[field]==25)
+     assert(claimed.value.paper==worth and claimed.value.seconds==nil)
+     assert(f.profile.Data.paperMilli==worth*1000 and f.profile.Data.earnedPaperMilli==worth*1000 and f.profile.Data.boosts[field]==25)
     else
      assert(claimed.value.resource==resource and claimed.value.seconds==900 and f.profile.Data.boosts[field]==925)
      assert(f.service:liveBoostView("user").value.boosts[field]==925)

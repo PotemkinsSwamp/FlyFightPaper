@@ -10,7 +10,7 @@ return JSONTypes.map({
     ["control_personal_points_max_per_match"] = 1920,
     ["currency_rounding"] = "sum exact internal milli-units, floor credited integer, retain residual",
     ["daily_gift"] = JSONTypes.map({
-        ["boost_covered_paper"] = 250,
+        ["boost_covered_paper"] = 500,
         ["chests"] = JSONTypes.array({
             [1] = "paper",
             [2] = "sticker",
@@ -55,7 +55,7 @@ return JSONTypes.map({
     }),
     ["paper_per_point"] = 0.363,
     ["playtime"] = JSONTypes.map({
-        ["boost_covered_paper_per_hour"] = 1000,
+        ["boost_covered_paper_per_hour"] = 2000,
         ["box_seconds"] = 450,
         ["boxes"] = JSONTypes.array({
             [1] = JSONTypes.map({

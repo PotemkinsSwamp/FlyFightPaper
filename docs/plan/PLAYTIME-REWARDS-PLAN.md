@@ -32,11 +32,11 @@ chest**. When the chart is full: "Come back tomorrow for a new chart."
   big stop's time sits on its own flag; the chest's X is not red (the close button is); labels get bigger paper.
 - **The wheel shows chances by slice size, with no percentages written on it** (Alan: "the spots need to just indicate
   the percentage like all other spin wheels do"): 3,000 Paper 108 degrees, the boost pair 97, Sticker chest 90, 5,000
-  Paper 36, Blue Ribbon chest 22, Golden Star chest 7. Proposed: a small "?" opens the list of exact chances, as our
-  chests' prize lists do.
+  Paper 36, Blue Ribbon chest 22, Golden Star chest 7. A small "?" opens the list of exact chances, as our chests' prize
+  lists do (Alan: yes).
 - **The treasure chest opens with the same animation as every other chest** (Alan: "the treasure chest is an animation
   like all the other chests"; `ChestOpening.luau`: the screen dims, the chest rises, rattles, the lid pops with sparkles).
-  Proposed steps from map to prize (waiting on Alan's OK): tap the bouncing chest on the X; the map dims and the chest
+  Steps from map to prize (Alan: yes, 2026-11-25): tap the bouncing chest on the X; the map dims and the chest
   plays that opening; three things rise out and settle in a row above it (3,000 Paper, the wheel in the middle and
   biggest, the boost pair), each with its button (Take, Spin!, Take); a taken prize shows on the chests' prize note with
   Done; Spin! drops the side prizes back in, the wheel grows, spins about 4 seconds with the pencil ticking and stops,
@@ -50,6 +50,9 @@ chest**. When the chart is full: "Come back tomorrow for a new chart."
   next touch, so nobody can leave the game running, or rejoin and leave it again, for a chest.
 - **Today's chart:** time adds up over the day, so leaving and coming back keeps your stars. A new chart starts the
   first time you join on a new day (UTC, like the daily gift); it never resets while you are playing.
+- A boost prize that a "2x forever" pass already covers pays Paper instead: 2,000 Paper for each hour of boost (166 for
+  5 minutes, 500 for 15, 1,000 for 30; the chest's boost pair pays 4,000 with both passes;
+  [decision](../decisions/2026-11-25-pass-owners-get-paper-for-boost-prizes.md)).
 - Each box can be taken once a day; a box not taken by the day's end is lost (the chart page says so).
 - The server counts and saves the time; the game on your screen only shows it.
 

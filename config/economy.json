@@ -63,13 +63,13 @@
       {"chest": true}
     ],
     "chests": ["paper", "sticker", "blue_ribbon", "golden_star"],
-    "boost_covered_paper": 250
+    "boost_covered_paper": 500
   },
   "playtime": {
     "box_seconds": 450,
     "idle_seconds": 120,
     "max_add_seconds": 600,
-    "boost_covered_paper_per_hour": 1000,
+    "boost_covered_paper_per_hour": 2000,
     "boxes": [
       {"paper": 100}, {"xp_seconds": 300}, {"paper": 100}, {"paper_seconds": 900},
       {"paper": 150}, {"xp_seconds": 300}, {"paper": 150}, {"paper": 400},
