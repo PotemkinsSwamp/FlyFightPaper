@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-25: [The playtime chart takes 2 hours, not 4](2026-11-25-playtime-chart-two-hours.md)
 - 2026-11-25: [The playtime chart's treasure chest: two sure prizes and a spin wheel](2026-11-25-playtime-chest.md)
 - 2026-11-25: [Long play earns it, impatient players can pay; crossed-out prices are always real](2026-11-25-real-prices-only.md)
 - 2026-11-25: [Bots use the town and feel smarter](2026-11-25-bots-use-the-town.md)

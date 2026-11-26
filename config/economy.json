@@ -66,7 +66,7 @@
     "boost_covered_paper": 250
   },
   "playtime": {
-    "box_seconds": 900,
+    "box_seconds": 450,
     "idle_seconds": 120,
     "max_add_seconds": 600,
     "boost_covered_paper_per_hour": 1000,

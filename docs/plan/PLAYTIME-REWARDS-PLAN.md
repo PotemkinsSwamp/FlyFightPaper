@@ -11,7 +11,7 @@ what we give away because we also want people to pay with robux, but also we nee
 is worth and what it pays us in the long game. after that we can consider whats in the chest." (The first draft had five
 boxes from 5 minutes to a chest at 2 hours.)
 
-**Settled (Alan 2026-11-25):** "chest at 4 hours"; prices shown are always real ([decision](../decisions/2026-11-25-real-prices-only.md)).
+**Settled (Alan 2026-11-25):** "chest at 4 hours", then the same day "4 hours is a bit excessive ... we drop it down to 2. We just fit everything back into 2 hours": the same 16 boxes, one every 7½ minutes ([decision](../decisions/2026-11-25-playtime-chart-two-hours.md)); prices shown are always real ([decision](../decisions/2026-11-25-real-prices-only.md)). The look: he likes the treasure map idea (concept pictures in progress).
 
 ## What the player sees
 A **sticker chart** for today, like the ones on a classroom wall: a row of boxes for each hour, each box with its time
@@ -67,17 +67,17 @@ chest**. When the chart is full: "Come back tomorrow for a new chart."
    for little Robux value. The free chest shows off the chest collection the same way.
 3. The first box matters most: it's the one most players ever reach (15 minutes is about the median player's whole day).
 4. A 4-hour chest gets almost all of a 5-hour one's benefit: very few kids play either, Roblox no longer pays for long
-   sittings, and 5 hours is a very long day for a kid. Recommended: **4 hours**.
+   sittings, and 5 hours is a very long day for a kid. Recommended: **4 hours** (Alan later chose 2).
 
 ## What the chart gives away (approved 2026-11-25: "Bigger", the small boxes' Paper doubled)
-Sixteen boxes over 4 hours: three small ones every 15 minutes, a big one at each hour (★). The prizes grow through the day.
+Sixteen boxes over 2 hours: one every 7½ minutes (about one a match), a big one every half hour (★). The prizes grow through the day.
 
-| Hour | :15 | :30 | :45 | ★ the hour |
+| Half hour | 7½ min | 15 min | 22½ min | ★ the half hour |
 |---|---|---|---|---|
-| 1 | 100 Paper | 5 min 2x XP | 100 Paper | **15 min 2x Paper** |
-| 2 | 150 Paper | 5 min 2x XP | 150 Paper | **400 Paper** |
-| 3 | 200 Paper | 5 min 2x XP | 200 Paper | **30 min 2x XP** |
-| 4 | 250 Paper | 5 min 2x XP | 250 Paper | **Treasure chest** (see below) |
+| 0:00-0:30 | 100 Paper | 5 min 2x XP | 100 Paper | **15 min 2x Paper** |
+| 0:30-1:00 | 150 Paper | 5 min 2x XP | 150 Paper | **400 Paper** |
+| 1:00-1:30 | 200 Paper | 5 min 2x XP | 200 Paper | **30 min 2x XP** |
+| 1:30-2:00 | 250 Paper | 5 min 2x XP | 250 Paper | **Treasure chest** (see below) |
 
 How much that is, next to what playing earns (about 550 Paper an 8.5-minute match, **about 4,000 Paper an hour**;
 [pacing](../systems/economy-and-shop.md)) and to the shop (Paper packs give 15-20 Paper a Robux; 2x boosts 10 Robux for 15
@@ -85,9 +85,9 @@ minutes, 15 for 30; the cheapest chest 45 Robux):
 
 | A player who plays today | Gets from the chart | About | Worth in the shop |
 |---|---|---|---|
-| 15 minutes (the median player) | 100 Paper | 10% on top of their Paper | 6 Robux |
-| 1 hour | 200 Paper, 5 min 2x XP, 15 min 2x Paper | 1,200 Paper (+30%) if they keep playing | 25 Robux |
-| 4 hours, the whole chart | 1,800 Paper, 20 min 2x XP, 15 min 2x Paper, 30 min 2x XP, the chest | 2,800 Paper (+18%) plus the chest | about 145 Robux plus the chest (about $1.80 a player pays; about 55 cents to us) |
+| 15 minutes (the median player) | 100 Paper, 5 min 2x XP | 10% on top of their Paper | about 9 Robux |
+| 1 hour | 900 Paper, 10 min 2x XP, 15 min 2x Paper | 1,900 Paper (+48%) if they keep playing | about 70 Robux |
+| 2 hours, the whole chart | 1,800 Paper, 20 min 2x XP, 15 min 2x Paper, 30 min 2x XP, the chest | 2,800 Paper (+35%) plus the chest (about 3,900 more on average: +80% in all) | about 145 Robux plus the chest (about 150), about $3.70 a player pays; about $1.10 to us |
 
 The daily gift (100-300 Paper a day, a chest every 7th day in a row) stays as it is; the two add up. (Proposed first
 with half the small boxes' Paper, 1,100 for the day; Alan chose "Bigger".)
@@ -145,7 +145,7 @@ session"), brings its own plain screen and does nothing about idle players
 the saving, the UTC day and the chest and boost prizes; the chart uses those.
 
 ## Questions for Alan
-1. ~~The chest at 4 hours or 5~~: 4 hours. 2. ~~The prizes~~: bigger (the table above). 3. ~~What counts~~: match time
+1. ~~The chest at 4 hours or 5~~: 4 hours, then 2. 2. ~~The prizes~~: bigger (the table above). 3. ~~What counts~~: match time
 only (all Alan, 2026-11-25).
 4. ~~The treasure chest~~: sure prizes either side of a spin wheel (above).
 

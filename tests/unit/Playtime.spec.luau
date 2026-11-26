@@ -6,27 +6,28 @@ local Spec = {}
 
 function Spec.run()
 	local result, test = Suite.new()
-	test("a box is earned every 900 seconds up to four hours", function()
-		assert(Playtime.BOX_COUNT == 16 and Playtime.CAP == 14400)
-		for seconds, boxes in pairs({[0] = 0, [899] = 0, [900] = 1, [14400] = 16, [99999] = 16}) do
+	local B, CAP = Config.box_seconds, Playtime.CAP
+	test("a box is earned every box_seconds up to the cap", function()
+		assert(Playtime.BOX_COUNT == 16 and CAP == 16 * B)
+		for seconds, boxes in pairs({[0] = 0, [B - 1] = 0, [B] = 1, [CAP] = 16, [CAP * 10] = 16}) do
 			assert(Playtime.earned(seconds) == boxes)
 		end
 	end)
 	test("adding time preserves claimed boxes, reports new boxes and caps the total", function()
-		local state = table.freeze({day = 12, seconds = 14350, taken = 1})
-		local added, earned = Playtime.add(state, 600)
-		assert(added.day == 12 and added.seconds == 14400 and added.taken == 1)
-		assert(#earned == 1 and earned[1] == 16 and state.seconds == 14350)
+		local state = table.freeze({day = 12, seconds = CAP - 50, taken = 1})
+		local added, earned = Playtime.add(state, 100)
+		assert(added.day == 12 and added.seconds == CAP and added.taken == 1)
+		assert(#earned == 1 and earned[1] == 16 and state.seconds == CAP - 50)
 		local capped, noBoxes = Playtime.add(added, 1)
-		assert(capped ~= added and capped.seconds == 14400 and #noBoxes == 0)
+		assert(capped ~= added and capped.seconds == CAP and #noBoxes == 0)
 	end)
 	test("one update reports every crossed box threshold in order", function()
-		-- The usual limit is shorter than a box. Raise it only for this case.
+		-- Raise the usual limit only for this case, so one add crosses three boxes.
 		local limit = Config.max_add_seconds
-		Config.max_add_seconds = 2700
+		Config.max_add_seconds = 3 * B
 		local ok, err = pcall(function()
-			local added, earned = Playtime.add({day = 12, seconds = 899, taken = 0}, 2700)
-			assert(added.seconds == 3599 and #earned == 3)
+			local added, earned = Playtime.add({day = 12, seconds = B - 1, taken = 0}, 3 * B)
+			assert(added.seconds == 4 * B - 1 and #earned == 3)
 			assert(earned[1] == 1 and earned[2] == 2 and earned[3] == 3)
 		end)
 		Config.max_add_seconds = limit
@@ -34,7 +35,7 @@ function Spec.run()
 	end)
 	test("only bounded whole seconds can be added", function()
 		local state = Playtime.fresh(12)
-		for _, seconds in ipairs({0, -1, 601, 1.5, "10", false, 0/0, math.huge}) do
+		for _, seconds in ipairs({0, -1, Config.max_add_seconds + 1, 1.5, "10", false, 0/0, math.huge}) do
 			local added, why = Playtime.add(state, seconds)
 			assert(added == nil and why == "invalid_seconds")
 		end
@@ -42,7 +43,7 @@ function Spec.run()
 		assert(added == nil and why == "invalid_seconds" and state.seconds == 0)
 	end)
 	test("the same day keeps its chart, a newer day starts fresh, and an older day is stale", function()
-		local state = table.freeze({day = 12, seconds = 900, taken = 1})
+		local state = table.freeze({day = 12, seconds = B, taken = 1})
 		assert(Playtime.forDay(state, 12) == state)
 		local nextDay = Playtime.forDay(state, 13)
 		assert(nextDay.day == 13 and nextDay.seconds == 0 and nextDay.taken == 0)
@@ -50,10 +51,10 @@ function Spec.run()
 		assert(older == nil and why == "stale_day")
 	end)
 	test("only earned, valid boxes can be taken and each box has its own bit", function()
-		local state = table.freeze({day = 12, seconds = 1800, taken = 0})
+		local state = table.freeze({day = 12, seconds = 2 * B, taken = 0})
 		assert(Playtime.canTake(state, 2) and not Playtime.isTaken(state, 2))
 		local taken = assert(Playtime.take(state, 2))
-		assert(taken.taken == 2 and taken.day == 12 and taken.seconds == 1800 and state.taken == 0)
+		assert(taken.taken == 2 and taken.day == 12 and taken.seconds == 2 * B and state.taken == 0)
 		assert(Playtime.isTaken(taken, 2) and not Playtime.isTaken(taken, 1))
 		for box, expected in pairs({[2] = "taken", [3] = "not_earned", [0] = "invalid_box", [17] = "invalid_box", [1.5] = "invalid_box"}) do
 			local canTake, why = Playtime.canTake(taken, box)
@@ -61,17 +62,17 @@ function Spec.run()
 			local claimed, takeError = Playtime.take(taken, box)
 			assert(claimed == nil and takeError == expected)
 		end
-		local full = assert(Playtime.take({day = 12, seconds = 14400, taken = 0}, 16))
+		local full = assert(Playtime.take({day = 12, seconds = CAP, taken = 0}, 16))
 		assert(full.taken == 32768 and Playtime.isTaken(full, 16))
 	end)
 	test("ready counts unclaimed boxes and nextBox points to the next threshold", function()
 		local fresh = Playtime.fresh(12)
 		local box, seconds = Playtime.nextBox(fresh)
-		assert(Playtime.ready(fresh) == 0 and box == 1 and seconds == 900)
-		local state = {day = 12, seconds = 1801, taken = 2}
+		assert(Playtime.ready(fresh) == 0 and box == 1 and seconds == B)
+		local state = {day = 12, seconds = 2 * B + 1, taken = 2}
 		box, seconds = Playtime.nextBox(state)
-		assert(Playtime.ready(state) == 1 and box == 3 and seconds == 899)
-		local full = {day = 12, seconds = 14400, taken = 65534}
+		assert(Playtime.ready(state) == 1 and box == 3 and seconds == B - 1)
+		local full = {day = 12, seconds = CAP, taken = 65534}
 		assert(Playtime.ready(full) == 1 and Playtime.nextBox(full) == nil)
 	end)
 	test("the chart uses the configured prizes and counts only active match time", function()

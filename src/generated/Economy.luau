@@ -56,7 +56,7 @@ return JSONTypes.map({
     ["paper_per_point"] = 0.363,
     ["playtime"] = JSONTypes.map({
         ["boost_covered_paper_per_hour"] = 1000,
-        ["box_seconds"] = 900,
+        ["box_seconds"] = 450,
         ["boxes"] = JSONTypes.array({
             [1] = JSONTypes.map({
                 ["paper"] = 100,

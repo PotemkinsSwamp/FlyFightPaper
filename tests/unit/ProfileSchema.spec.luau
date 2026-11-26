@@ -3,6 +3,7 @@ local Schema=require(Root.Shared.ProfileSchema)
 local Missions=require(Root.Shared.Missions)
 local Economy=require(Root.Shared.EconomyRules)
 local EconomyConfig=require(Root.Generated.Economy)
+local Playtime=require(Root.Shared.PlaytimeRules)
 local Catalog=require(Root.Shared.Catalog)
 local Suite=require(script.Parent.Parent.fixtures.Suite)
 local Spec={}
@@ -73,7 +74,7 @@ function Spec.run()
 			function(p) p.playtime.day=1.5 end,
 			function(p) p.playtime.seconds=nil end,
 			function(p) p.playtime.seconds=-1 end,
-			function(p) p.playtime.seconds=14401 end,
+			function(p) p.playtime.seconds=Playtime.CAP+1 end,
 			function(p) p.playtime.seconds=1.5 end,
 			function(p) p.playtime.taken=nil end,
 			function(p) p.playtime.taken=-1 end,
@@ -83,7 +84,7 @@ function Spec.run()
 		}) do
 			local p=fresh();change(p);assert(not Schema.validate(p,catalog))
 		end
-		local p=fresh();p.playtime={day=0,seconds=14400,taken=65535}
+		local p=fresh();p.playtime={day=0,seconds=Playtime.CAP,taken=65535}
 		assert(Schema.validate(p,catalog))
 	end)
 	test("emote saves require a paid ownership set and valid picks for both slots",function()

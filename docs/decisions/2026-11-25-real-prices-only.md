@@ -22,7 +22,7 @@ use the real prices, chest at 4 hours"**.
   prices; only in Studio practice mode).
 - Impatient players get honest shortcuts: unlock a part now for Robux or play N more matches, boosts that get a goal
   N matches sooner, Double this match, a chest now instead of at the end of the playtime chart.
-- The playtime chart's treasure chest comes at 4 hours of play in a day ([playtime rewards plan](../plan/PLAYTIME-REWARDS-PLAN.md)).
+- The playtime chart's treasure chest comes at 4 hours of play in a day ([playtime rewards plan](../plan/PLAYTIME-REWARDS-PLAN.md)); replaced the same day by 2 hours ([decision](2026-11-25-playtime-chart-two-hours.md)).
 
 ## Why
 Players who play a lot should be able to earn everything without paying; players who want it sooner pay to skip the

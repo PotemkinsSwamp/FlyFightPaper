@@ -4,7 +4,7 @@
 **Status:** in force, not built
 
 ## Decision
-The 4-hour box of the [playtime chart](../plan/PLAYTIME-REWARDS-PLAN.md) is a treasure chest that opens into a choice:
+The last box (2 hours, [decision](2026-11-25-playtime-chart-two-hours.md)) of the [playtime chart](../plan/PLAYTIME-REWARDS-PLAN.md) is a treasure chest that opens into a choice:
 3,000 Paper on the left, a spin wheel in the middle, 1 hour of 2x Paper and 1 hour of 2x XP (one prize) on the right.
 The wheel: 3,000 Paper 30%, the boost pair 27%, a Sticker chest 25%, 5,000 Paper 10%, a Blue Ribbon chest 6%, a
 Golden Star chest 2%. Odds are printed on the wheel.
