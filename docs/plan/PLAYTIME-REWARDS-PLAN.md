@@ -1,6 +1,6 @@
 # Playtime rewards plan
 
-**Status:** how it works, waiting on Alan (2026-11-25). His words: "lets tackle playtime rewards and we will bundle it
+**Status:** how it works and the chart's prizes approved (2026-11-25); the treasure chest's design open. His words: "lets tackle playtime rewards and we will bundle it
 with the treasure chest because at the end of the playtime rewards you could get a treasure chest". The idea and his
 first numbers: [ideas](IDEAS.md) (playtime rewards, treasure chest for buyers).
 
@@ -69,15 +69,15 @@ chest**. When the chart is full: "Come back tomorrow for a new chart."
 4. A 4-hour chest gets almost all of a 5-hour one's benefit: very few kids play either, Roblox no longer pays for long
    sittings, and 5 hours is a very long day for a kid. Recommended: **4 hours**.
 
-## What the chart gives away (proposal)
+## What the chart gives away (approved 2026-11-25: "Bigger", the small boxes' Paper doubled)
 Sixteen boxes over 4 hours: three small ones every 15 minutes, a big one at each hour (★). The prizes grow through the day.
 
 | Hour | :15 | :30 | :45 | ★ the hour |
 |---|---|---|---|---|
-| 1 | 50 Paper | 5 min 2x XP | 50 Paper | **15 min 2x Paper** |
-| 2 | 75 Paper | 5 min 2x XP | 75 Paper | **400 Paper** |
-| 3 | 100 Paper | 5 min 2x XP | 100 Paper | **30 min 2x XP** |
-| 4 | 125 Paper | 5 min 2x XP | 125 Paper | **Treasure chest** (what's in it: next, after this is agreed) |
+| 1 | 100 Paper | 5 min 2x XP | 100 Paper | **15 min 2x Paper** |
+| 2 | 150 Paper | 5 min 2x XP | 150 Paper | **400 Paper** |
+| 3 | 200 Paper | 5 min 2x XP | 200 Paper | **30 min 2x XP** |
+| 4 | 250 Paper | 5 min 2x XP | 250 Paper | **Treasure chest** (see below) |
 
 How much that is, next to what playing earns (about 550 Paper an 8.5-minute match, **about 4,000 Paper an hour**;
 [pacing](../systems/economy-and-shop.md)) and to the shop (Paper packs give 15-20 Paper a Robux; 2x boosts 10 Robux for 15
@@ -85,13 +85,18 @@ minutes, 15 for 30; the cheapest chest 45 Robux):
 
 | A player who plays today | Gets from the chart | About | Worth in the shop |
 |---|---|---|---|
-| 15 minutes (the median player) | 50 Paper | 5% on top of their Paper | 3 Robux |
-| 1 hour | 100 Paper, 5 min 2x XP, 15 min 2x Paper | 1,100 Paper (+25%) if they keep playing | 19 Robux |
-| 4 hours, the whole chart | 1,100 Paper, 20 min 2x XP, 15 min 2x Paper, 30 min 2x XP, the chest | 3,100 Paper with the chest (+20%) | about 150 Robux (about $1.85 a player pays; about 57 cents to us) |
+| 15 minutes (the median player) | 100 Paper | 10% on top of their Paper | 6 Robux |
+| 1 hour | 200 Paper, 5 min 2x XP, 15 min 2x Paper | 1,200 Paper (+30%) if they keep playing | 25 Robux |
+| 4 hours, the whole chart | 1,800 Paper, 20 min 2x XP, 15 min 2x Paper, 30 min 2x XP, the chest | 2,800 Paper (+18%) plus the chest | about 145 Robux plus the chest (about $1.80 a player pays; about 55 cents to us) |
 
-The daily gift (100-300 Paper a day, a chest every 7th day in a row) stays as it is; the two add up. Smaller or bigger:
-halve or double the Paper in the small boxes (the chart's whole-day Paper goes from 1,100 to 750 or 1,800); the
-boosts and the chest stay.
+The daily gift (100-300 Paper a day, a chest every 7th day in a row) stays as it is; the two add up. (Proposed first
+with half the small boxes' Paper, 1,100 for the day; Alan chose "Bigger".)
+
+**The treasure chest (open):** Alan 2026-11-25: "its a treasure chest, we could either do a few equal options or a spin
+wheel roll for good prizes and a small chance at a Great prize". Next: draft both (a pick-one of a few equal prizes; a
+wheel of good prizes with a small chance of a great one), each with real prizes and their worth, for his pick. Earned
+without Robux, so Roblox needs no odds shown, but the wheel shows its odds like our chests do; if a wheel spin is ever
+sold for Robux, every prize and its exact odds must be shown first.
 
 Other games: Tower Defense Simulator gives playtime rewards at 5, 15, 30, 60, 90 and 120 minutes; Toilet Tower Defense
 gives nine crates over up to 6 hours in one sitting ([TDS wiki](https://tds.fandom.com/wiki/Playtime_Rewards),
@@ -107,10 +112,9 @@ session"), brings its own plain screen and does nothing about idle players
 the saving, the UTC day and the chest and boost prizes; the chart uses those.
 
 ## Questions for Alan
-1. ~~The chest at 4 hours or 5~~: 4 hours (Alan).
-2. The prizes above: boosts for the big hour boxes, Paper and short XP boosts between. As they are, smaller or bigger?
-3. Only time in matches counts (menus don't). OK?
-4. Then: what's in the chest.
+1. ~~The chest at 4 hours or 5~~: 4 hours. 2. ~~The prizes~~: bigger (the table above). 3. ~~What counts~~: match time
+only (all Alan, 2026-11-25).
+4. The treasure chest: a few equal prizes to pick from, or a spin wheel (drafts of both to come).
 
 ## Build order (after his OK)
 1. The rules (which boxes a number of seconds earns, the new day, one take per box) with unit tests: a Codex job (on
