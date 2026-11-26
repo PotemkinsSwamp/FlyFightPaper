@@ -13,6 +13,7 @@ local Looks=require(Root.Shared.LooksRules)
 local Emotes=require(Root.Shared.EmoteRules)
 local Economy=require(Root.Shared.EconomyRules)
 local Commerce=require(Root.Shared.CommerceRules)
+local Playtime=require(Root.Shared.PlaytimeRules)
 local Gameplay=require(Root.Generated.Gameplay)
 local Config=require(Root.Generated.Server).profiles
 local Runtime={};Runtime.__index=Runtime
@@ -126,6 +127,8 @@ function Runtime:load(player)
    self:devAccount(e,not (typeof(player)=="Instance" and workspace:GetAttribute("DevAccountLevel")))
    attached=self.service:view(e.account)
   end
+  -- The playtime chart's day is the day this session started: it never resets mid-session.
+  e.playtimeDay=math.floor(self.service.unix()/86400)
   e.loaded=true;e.snapshot=attached.value;e.lastSavedVersion=profile.LastSavedData and profile.LastSavedData.version or -1
   if self.cosmeticOwners then self.cosmeticOwners:observe(e,attached.value) end
   profile.OnSave:Connect(function()
@@ -316,6 +319,10 @@ function Runtime:update(e)
  e.player:SetAttribute("DailyGiftReady",ready)
  e.player:SetAttribute("DailyGiftSecondsLeft",ready and 0 or 86400-now%86400)
  e.player:SetAttribute("StarterPackEnds",Commerce.starterPackEnds(e.snapshot,now))
+ local chart=Playtime.forDay(e.snapshot.playtime,e.playtimeDay or day) or Playtime.fresh(day)
+ e.player:SetAttribute("PlaytimeSeconds",chart.seconds)
+ e.player:SetAttribute("PlaytimeTaken",chart.taken)
+ e.player:SetAttribute("PlaytimeReady",Playtime.ready(chart))
  e.player:SetAttribute("PaperJar",math.floor(e.snapshot.paperJarMilli/Economy.MILLI))
  local used={};for key in pairs(e.snapshot.firstBuys) do table.insert(used,key) end;table.sort(used)
  e.player:SetAttribute("FirstBuysUsed",table.concat(used,","))
@@ -327,6 +334,9 @@ function Runtime:view(player,refreshMissions)
  local e=self.entries[player];if not e or not e.loaded or e.leaving or e.closing then return nil end
  local current=self.service:view(e.account,refreshMissions)
  return current.status=="ok" and current.value or nil
+end
+function Runtime:playtimeDay(player)
+ local e=self.entries[player];return e and e.loaded and e.playtimeDay or nil
 end
 function Runtime:playerForUserId(id)
  for player,e in pairs(self.entries) do if player.UserId==id and e.loaded and not e.closing then return player end end

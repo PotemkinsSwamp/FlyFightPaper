@@ -18,10 +18,11 @@ local LoadLog=require(script.Parent.LoadLog)
 local Loadouts=require(Root.Shared.WeaponLoadouts)
 local Schema=require(Root.Shared.ProfileSchema)
 local Missions=require(Root.Shared.Missions)
+local Playtime=require(Root.Shared.PlaytimeRules)
 local WALL_GRACE_SECONDS=2 -- ponytail: a fixed grace; move to config/gameplay.json if it needs tuning
 local Runtime={};Runtime.__index=Runtime
 function Runtime.new(flight,combat,bots,profiles,commerce)
- local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false},Runtime)
+ local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false,playtimePending={}},Runtime)
  self.matchmaking=require(script.Parent.Matchmaking).new(profiles)
  self.engine=Match.new({clock={now=os.clock},config=Config,economy=Economy,sessionId=Http:GenerateGUID(false):gsub("%-",""):sub(1,12),seed=ServerConfig.round.seed,
   allowStudioTestUsers=Run:IsStudio(),combatDrainState=function() return {through=os.clock(),blocked=false} end})
@@ -210,6 +211,7 @@ function Runtime:bind(p)
   p.team=facts.teamId
  end
  p.identity={actorId=p.id,lifeId=tostring(p.life),participationId=p.id,matchId=self.engine.round.id,teamId=p.team}
+ p.playtimeActiveAt=os.clock() -- a new life is a touch: the playtime chart counts from here
  assert(self.engine:lifeStarted(p.identity))
  p.model:SetAttribute("Team",p.team or "")
  local text=p.body.PilotName:FindFirstChildOfClass("TextLabel")
@@ -546,6 +548,7 @@ function Runtime:join(player)
  end
 end
 function Runtime:withdraw(player)
+ self:flushPlaytime(player)
  local p=self.flight.pilots[player]
  if p then self.flight:remove(p,"withdrawal") end
  self.joined[player]=nil;player:SetAttribute("InMatch",false)
@@ -588,9 +591,38 @@ end
 -- What happens as the round break moves on: the vote lap frees the planes and puts up the rings; the countdown
 -- takes them down again.
 function Runtime:phaseChanged(phase)
+ if phase~="ACTIVE" then for player in pairs(self.playtimePending) do self:flushPlaytime(player) end end
  if phase=="VOTE" then
   self.flight:hold(false);self.bots.enabled=true;self.rings:show()
  elseif phase=="COUNTDOWN" then self.rings:hide() end
+end
+-- Playtime chart (docs/plan/PLAYTIME-REWARDS-PLAN.md): match seconds count while the player has steered in the
+-- last 2 minutes (flying or at the desk between lives). Saved every 30 s, at a box's time and when the match ends.
+-- ponytail: up to 30 s of counted time is lost if a player quits the game mid-match.
+function Runtime:countPlaytime(p,dt)
+ local player=p.player
+ if not Playtime.counts(true,os.clock()-(p.playtimeActiveAt or os.clock())) then return end
+ local _,toGo=Playtime.nextBox({seconds=player:GetAttribute("PlaytimeSeconds") or Playtime.CAP})
+ if not toGo then return end -- the chart is full (or the profile isn't loaded yet)
+ local pending=(self.playtimePending[player] or 0)+dt
+ self.playtimePending[player]=pending
+ local whole=math.floor(pending)
+ if whole~=player:GetAttribute("PlaytimePending") then player:SetAttribute("PlaytimePending",whole) end
+ if whole>=30 or whole>=toGo then self:flushPlaytime(player) end
+end
+function Runtime:flushPlaytime(player)
+ local pending=self.playtimePending[player];if not pending then return end
+ local whole=math.min(math.floor(pending),Economy.playtime.max_add_seconds)
+ local day=self.profiles:playtimeDay(player)
+ if not player.Parent or not day then self.playtimePending[player]=nil;return end
+ if whole<1 then return end
+ self.playtimePending[player]=pending-whole
+ player:SetAttribute("PlaytimePending",math.floor(pending-whole))
+ self.profiles:enqueue(player,{kind="playtimeAdd",day=day,seconds=whole},nil,function(ok,result)
+  if ok and type(result)=="table" and #result.earned>0 then
+   player:SetAttribute("PlaytimeStickers",(player:GetAttribute("PlaytimeStickers") or 0)+#result.earned)
+  end
+ end)
 end
 function Runtime:queueSettlement()
  local r=self.engine.round
@@ -668,8 +700,9 @@ function Runtime:step(dt)
      if p.player and p.model:GetAttribute("State")=="FLYING" then
       self:gearCount(p,nil,"seconds",ServerConfig.round.step_seconds)
       local direction=p.body.CFrame.LookVector
-      if not p.activityDirection or direction:Dot(p.activityDirection)<.995 then self.engine:controlActivity(p.id);p.activityDirection=direction end
+      if not p.activityDirection or direction:Dot(p.activityDirection)<.995 then self.engine:controlActivity(p.id);p.activityDirection=direction;p.playtimeActiveAt=os.clock() end
      end
+     if p.player then self:countPlaytime(p,ServerConfig.round.step_seconds) end
     end
    end
   end

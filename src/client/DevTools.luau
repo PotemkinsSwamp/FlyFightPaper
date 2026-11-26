@@ -194,6 +194,11 @@ function DevTools.start(menu)
 	nextText()
 	player:GetAttributeChangedSignal("DevMissionNextMatch"):Connect(nextText)
 	nextButton.Activated:Connect(function() Root:WaitForChild("RoundAction"):FireServer("devMissionNextMatch") end)
+	-- One treasure map stop's worth of match time per press (the map is 2 hours long).
+	local playtimeButton = switch:Clone()
+	playtimeButton.Name, playtimeButton.Position, playtimeButton.Text, playtimeButton.Parent =
+		"Playtime", UDim2.new(1, -10, 1, -298), "Dev: +7.5 min playtime", switchGui
+	playtimeButton.Activated:Connect(function() Root:WaitForChild("RoundAction"):FireServer("devPlaytime") end)
 	-- DevScreen "screen" or "screen:page" (e.g. "hangar:customize" opens the binder).
 	player:GetAttributeChangedSignal("DevScreen"):Connect(function()
 		local screen, page = string.match(player:GetAttribute("DevScreen") or "", "^([^:]+):?(.*)$")

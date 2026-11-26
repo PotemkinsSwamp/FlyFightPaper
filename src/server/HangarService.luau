@@ -9,6 +9,7 @@ local Emotes=require(Root.Shared.EmoteRules)
 local Commerce=require(Root.Generated.Commerce)
 local EconomyConfig=require(Root.Generated.Economy)
 local CommerceRules=require(Root.Shared.CommerceRules)
+local Playtime=require(Root.Shared.PlaytimeRules)
 local PresetCount=require(Root.Generated.Gameplay).menus.saved_loadouts
 local Service={};Service.__index=Service
 function Service.new(flight,profiles,commerce,deps)
@@ -328,6 +329,13 @@ function Service:handle(player,action,value)
   -- RoundRuntime reads and clears this at the player's next match end: that match finishes one daily mission.
   player:SetAttribute("DevMissionNextMatch",true)
   self:message(player,"Your next match will finish a mission.")
+ elseif action=="devPlaytime" and value==nil and Run:IsStudio() and self.profiles.mock==true and player:GetAttribute("Dev")==true then
+  -- Studio only: one box's worth of playtime, so the treasure map can be tried without playing for it.
+  local day=self.profiles:playtimeDay(player);if not day then return end
+  self:enqueue(player,{kind="playtimeAdd",day=day,seconds=EconomyConfig.playtime.box_seconds},function(ok,result)
+   if ok and #result.earned>0 then player:SetAttribute("PlaytimeStickers",(player:GetAttribute("PlaytimeStickers") or 0)+#result.earned) end
+   self:message(player,ok and "Playtime added." or "Playtime could not be added.")
+  end)
  elseif action=="claimDailyGift" then
   -- The client supplies no date or reward. Queued claims re-check the saved day.
   self:enqueue(player,{kind="dailyGift",day=math.floor(self.unix()/86400)},function(ok,result)
@@ -336,6 +344,26 @@ function Service:handle(player,action,value)
    elseif result.chest then self:message(player,Looks.chest(result.chest).name.." earned! Open it under Chests.")
    elseif result.paper then self:message(player,"Gift claimed: +"..result.paper.." Paper.")
    else self:message(player,"Gift claimed: "..string.format("%d",result.seconds/60).." minutes of 2x "..(result.resource=="xp" and "XP" or "Paper")..".") end
+  end)
+ elseif action=="takePlaytime" then
+  -- A box number 1-15, or the chest's choice. The server supplies the chart's day and the wheel's roll.
+  local box,choice=value,nil
+  if value=="paper" or value=="boosts" or value=="spin" then box,choice=Playtime.BOX_COUNT,value end
+  local day=self.profiles:playtimeDay(player)
+  if not Schema.integer(box) or not day then return end
+  self:enqueue(player,{kind="playtimeBox",day=day,box=box,choice=choice},function(ok,result)
+   if not ok then
+    self:message(player,result=="taken" and "Already taken." or result=="not_earned" and "Keep playing to reach this one."
+     or result=="stale_day" and "A new map is ready. Rejoin to start it." or "That prize could not be taken. Try again shortly.")
+    return
+   end
+   player:SetAttribute("PlaytimePrize",Http:JSONEncode(result)) -- the map and the wheel show what was won
+   local parts={}
+   if result.paper then table.insert(parts,"+"..result.paper.." Paper") end
+   if result.paperSeconds then table.insert(parts,string.format("%d",result.paperSeconds/60).." min 2x Paper") end
+   if result.xpSeconds then table.insert(parts,string.format("%d",result.xpSeconds/60).." min 2x XP") end
+   if result.chest then table.insert(parts,Looks.chest(result.chest).name.."! Open it under Chests") end
+   self:message(player,table.concat(parts," + ").."!")
   end)
  elseif action=="buyProduct" and type(value)=="string" then
   if CommerceRules.giftBase(value) then self:message(player,"That can't be gifted.");return end
