@@ -146,8 +146,8 @@ session"), brings its own plain screen and does nothing about idle players
 the saving, the UTC day and the chest and boost prizes; the chart uses those.
 
 ## Questions for Alan
-1. ~~The chest at 4 hours or 5~~: 4 hours, then 2. 2. ~~The prizes~~: bigger (the table above). 3. ~~What counts~~: match time
-only (all Alan, 2026-11-25).
+1. ~~The chest at 4 hours or 5~~: 4 hours, then 2. 2. ~~The prizes~~: bigger (the table above). 3. ~~What counts~~: all time in
+the game except time away from the keyboard (all Alan, 2026-11-25).
 4. ~~The treasure chest~~: sure prizes either side of a spin wheel (above).
 
 ## Build order (after his OK)
