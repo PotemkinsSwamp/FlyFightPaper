@@ -187,21 +187,44 @@ function Routes:escape(from,forward)
 	for k=1,math.min(#scored,REACH_CHECKS) do if self:clear(from,scored[k][1],18) then return {scored[k][1]} end end
 	return {}
 end
--- Somewhere low in the town that `threat` can't see, 150-450 studs from `from` and not behind it (a bot diving into
--- the town to shake off its attacker, plan step 3); among the REACH_CHECKS nearest. Nil before the town map is built.
-function Routes:hideSpot(from,forward,threat)
+-- The next leg of a street run (plan step 5): a low town point 150-450 studs from `from`, not behind it, that takes the
+-- bot furthest from `threat`; the first of the REACH_CHECKS furthest that `threat` can't see, else the furthest. Nil
+-- before the town map is built or when no low point leads away.
+function Routes:runSpot(from,forward,threat)
 	local spots={}
+	local start=(threat-from).Magnitude
 	for i=(self.coarse or #self.nodes)+1,#self.nodes do
 		local p=self.nodes[i]
 		local delta=p-from;local d=delta.Magnitude
-		if p.Y<100 and d>150 and d<450 and forward:Dot(delta.Unit)>-.2 then table.insert(spots,{p,d}) end
+		local gain=(p-threat).Magnitude-start
+		if p.Y<100 and d>150 and d<450 and gain>60 and forward:Dot(delta.Unit)>-.2 then table.insert(spots,{p,gain}) end
 	end
-	table.sort(spots,function(a,b) return a[2]<b[2] end)
+	table.sort(spots,function(a,b) return a[2]>b[2] end)
 	for k=1,math.min(#spots,REACH_CHECKS) do
 		local p=spots[k][1]
 		if workspace:Raycast(threat,p-threat,self.flight.cast) then return p end
 	end
+	return spots[1] and spots[1][1]
+end
+-- A hole whose way in is 40-`reach` studs ahead (within about 50 degrees of the nose) and runs the way the bot is going:
+-- {in, middle, out}, ordered from the bot's side.
+function Routes:holeAhead(from,forward,reach)
+	for _,hole in ipairs(self.holes or {}) do
+		local near=(hole[1]-from).Magnitude<(hole[3]-from).Magnitude
+		local entry,exit=near and hole[1] or hole[3],near and hole[3] or hole[1]
+		local delta=entry-from;local d=delta.Magnitude
+		if d>40 and d<reach and forward:Dot(delta.Unit)>.65 and forward:Dot((exit-entry).Unit)>.3 then return {entry,hole[2],exit} end
+	end
 	return nil
+end
+-- A random low town point within `radius` of `at` (a bot searching where it lost a low target, plan step 6).
+function Routes:pickNear(random,at,radius)
+	local near={}
+	for i=(self.coarse or #self.nodes)+1,#self.nodes do
+		local p=self.nodes[i]
+		if p.Y<100 and (p-at).Magnitude<radius then table.insert(near,p) end
+	end
+	return #near>0 and near[random:NextInteger(1,#near)] or nil
 end
 -- The hole ({before, inside, after}) whose middle is within `radius` of `position`.
 function Routes:holeAt(position,radius)

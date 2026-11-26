@@ -421,24 +421,25 @@ function Service:decide(p,b,now)
   b.nextEvade=b.evadeUntil+b.profile.evade_cooldown_seconds*b.style.evade_cooldown_factor
  end
  local shotAt=math.max(p.lastHitAt or 0,p.shotAtAt or 0)
+ if b.run and now>=b.run.untilAt then b.run=nil end
  if now>=(b.nextEvade or 0) and shotAt>(b.lastEvadedHit or 0) then
   b.lastEvadedHit=shotAt
-  -- Inside the ducts it never dodges.
-  if not b.duct then
+  -- Inside the ducts and on a street run it never dodges (a dodge among the buildings is a crash).
+  if not b.duct and not b.run then
    -- Good pilots turn into the attacker (the shots show where from), forcing an overshoot; rookies pick at random.
    local attacker=(p.shotAtAt or 0)>(p.lastHitAt or 0) and p.shotAtBy or p.lastHitBy
    local side=b.random:NextNumber()<.5 and -1 or 1
    if attacker and attacker.body and b.random:NextNumber()<b.profile.read_attacker then
     side=forward:Cross(Vector3.yAxis):Dot(attacker.body.Position-position)>=0 and 1 or -1
    end
-   -- Diving into the town (plan step 3): once per attacker (again after 20 s), town_dive_chance to fly somewhere low
-   -- among the buildings where the attacker can't see it, instead of a dodge.
+   -- A street run (plan step 5, Alan 2026-11-25): once per attacker (again after 20 s), town_dive_chance to drop to the
+   -- low routes and run away from it for 10-15 s, through a hole if one comes up ahead, instead of a dodge.
    local spot
    if attacker and attacker.body and not (b.diveRoll and b.diveRoll.by==attacker and now-b.diveRoll.at<20) then
     b.diveRoll={by=attacker,at=now}
-    if b.random:NextNumber()<b.profile.town_dive_chance then spot=self.routes:hideSpot(position,forward,attacker.body.Position) end
+    if b.random:NextNumber()<b.profile.town_dive_chance then spot=self.routes:runSpot(position,forward,attacker.body.Position) end
    end
-   if spot then b.hide={spot=spot,untilAt=now+8};b.evadeUntil=now
+   if spot then b.run={spot=spot,by=attacker,threat=attacker.body.Position,untilAt=now+b.random:NextNumber(10,15)};b.evadeUntil=now
    else b.evadeUntil=self:startMove(b,now,"evade",{self:pickMove(b,b.profile.evade_moves,position)},side) end
    -- The rest starts once the move is flown, so long moves don't chain into one endless dodge.
    b.nextEvade=b.evadeUntil+b.profile.evade_cooldown_seconds*b.style.evade_cooldown_factor
@@ -478,8 +479,20 @@ function Service:decide(p,b,now)
   local ring=Landing.approach(p.home,Config.service);local rel=ring:PointToObjectSpace(position)
   local lined=rel.Z< -80 and math.abs(rel.X)<30 and math.abs(rel.Y)<40
   b.mode="repair";b.goal=lined and (ring*CFrame.new(0,-5,60)).Position or (ring*CFrame.new(0,10,-260)).Position;b.target=nil
- elseif b.hide and now<b.hide.untilAt and (position-b.hide.spot).Magnitude>100 then
-  b.mode="hide";b.target=nil;b.goal=b.hide.spot
+ elseif b.run and now<b.run.untilAt then
+  -- On a street run: low point after low point away from the attacker (where it is now, if it can tell), through the
+  -- first hole that comes up ahead (one a run), then back to the fight when the time is up.
+  local run=b.run
+  if run.by.body and run.by.model:GetAttribute("State")=="FLYING" then run.threat=run.by.body.Position end
+  local hole=not run.holed and self.routes:holeAhead(position,forward,400)
+  if hole and self.routes:clear(position,hole[1],18) then
+   run.holed,run.spot=true,nil
+   b.duct={points=hole,i=1,untilAt=now+8,hole=true};b.mode="hole";b.target=nil;b.goal=hole[1];b.move=nil
+  else
+   if not run.spot or (position-run.spot).Magnitude<100 then run.spot=self.routes:runSpot(position,forward,run.threat) end
+   if not run.spot then b.run=nil end
+   b.mode="run";b.target=nil;b.goal=run.spot or position+forward*200
+  end
  elseif b.evadeUntil and now<b.evadeUntil then
   b.mode="evade";b.goal=position+forward*200
  elseif b.celebrateUntil and now<b.celebrateUntil then
@@ -555,11 +568,16 @@ function Service:decide(p,b,now)
    b.goal=Vector3.new(c[1]+math.cos(now*.2+b.seed)*r,y,c[3]+math.sin(now*.2+b.seed)*r)
   else
    b.target=nil;b.mode="patrol"
-   if not b.patrol or (position-b.patrol).Magnitude<90 then
+   -- Lost a target low among the buildings (plan step 6): search at that height, at a low point near where it was last
+   -- seen (once per loss).
+   local lostLow=b.lastKnown and b.lastKnown.Y<100 and now-(b.lastSeen or 0)<12 and b.lostFor~=b.lastSeen
+   if not b.patrol or (position-b.patrol).Magnitude<90 or lostLow then
     -- Sometimes circle for a look around before heading to the next spot.
-    if b.patrol and b.random:NextNumber()<.35 then self:startMove(b,now,"patrol",{"orbit"},b.random:NextNumber()<.5 and -1 or 1) end
-    -- Low over the town or up high, by the bot's liking (plan step 4).
-    b.patrol=self.routes:pick(b.random,b.random:NextNumber()<.5+b.lowBias)
+    if b.patrol and not lostLow and b.random:NextNumber()<.35 then self:startMove(b,now,"patrol",{"orbit"},b.random:NextNumber()<.5 and -1 or 1) end
+    if lostLow then b.lostFor=b.lastSeen end
+    -- Low over the town patrol_low_chance of the time, a little more or less by the bot's liking (plan steps 4 and 6).
+    b.patrol=lostLow and self.routes:pickNear(b.random,b.lastKnown,350)
+     or self.routes:pick(b.random,b.random:NextNumber()<Config.bots.patrol_low_chance+b.lowBias*.5)
    end
    b.goal=b.patrol
    -- Studio eraser practice: the hunter always knows where you are.
@@ -582,7 +600,7 @@ function Service:decide(p,b,now)
   local scraped=deflect>(b.deflectSeen or 0)+.6
   if scraped then b.deflectSeen=deflect end
   -- (Circling within 150 studs of the goal is arriving, not stuck.)
-  if b.mode~="unstuck" and (scraped or now-b.progress.at>2 and away>150 and (b.mode=="patrol" or b.mode=="search" or b.mode=="fan" or b.mode=="hide")) then
+  if b.mode~="unstuck" and (scraped or now-b.progress.at>2 and away>150 and (b.mode=="patrol" or b.mode=="search" or b.mode=="fan" or b.mode=="run")) then
    b.recoverUntil=now+1.5;b.recoverGoal=Vector3.new(position.X,math.min(position.Y+160,self.flight.boundsSize.Y-90),position.Z)+forward*60
    b.mode="unstuck";b.goal=b.recoverGoal;b.progress=nil;b.routeAt=-math.huge
   end
@@ -857,7 +875,7 @@ function Service:step(dt)
    end
   elseif state=="FLYING" then
    -- Through the takeoff ring: start flying from wherever the scripted takeoff left the plane.
-   if b.mode=="launch" then b.heading=p.body.CFrame.LookVector;b.bank=0;b.route={};b.routeAt=-math.huge;b.avoid=nil;b.target=nil;b.duct=nil;b.mode="patrol";b.nextDecision=0 end
+   if b.mode=="launch" then b.heading=p.body.CFrame.LookVector;b.bank=0;b.route={};b.routeAt=-math.huge;b.avoid=nil;b.target=nil;b.duct=nil;b.run=nil;b.mode="patrol";b.nextDecision=0 end
    if now>=b.nextDecision then b.nextDecision=now+b.reaction;self:decide(p,b,now) end
    self:steer(p,b,dt,now)
   end
