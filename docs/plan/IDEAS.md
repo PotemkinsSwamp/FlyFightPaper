@@ -14,7 +14,8 @@ and a stage.
   all-time stats, on its own screen; not for the end of a round ([report card plan](REPORT-CARD-PLAN.md)).
 - **Playtime rewards for retention** (Alan 2026-11-12): little rewards for staying and playing, on a growing scale
   (5 minutes, 10, 30, an hour, 2 hours...), shown as a little calendar you fill in. What fills them is open: it waits
-  on cosmetics, and small rewards could lead up to them.
+  on cosmetics, and small rewards could lead up to them. Picked 2026-11-25, with the treasure chest as the last prize:
+  [playtime rewards plan](PLAYTIME-REWARDS-PLAN.md).
 - **Cosmetics: skins, trails, emotes** (Alan 2026-11-12: "we have to start looking at" them and the other small
   buys): what to sell and how players earn some of them, maybe a whole system for getting them. Needed before the
   playtime rewards can be filled. Research: [cosmetics research](../research/COSMETICS-RESEARCH-2026-11-12.md).
@@ -37,6 +38,7 @@ and a stage.
   after a number of purchases you get to pick something from a chest (e.g. 10,000 Paper), the prizes growing the more
   you've bought, a goal players can see. Not a punch card and never framed as "good" for spending. Check first that
   it's fair to kids and allowed on Roblox (the player picks, so it's not random).
+  Bundled 2026-11-25 into the [playtime rewards plan](PLAYTIME-REWARDS-PLAN.md): the chest ends the playtime chart.
 
 ## Later scope (from the vision)
 The [vision](../vision/VISION.md) lists what waits until after the first release: cosmetics, more maps, full touch

@@ -32,6 +32,7 @@ otherwise.
 - [Winners' circle and emotes plan](plan/WINNERS-CIRCLE-PLAN.md): the round-end scene redo and the emotes to sell by place (talking it through)
 - [Emote shop plan](plan/EMOTE-SHOP-PLAN.md): buy and equip the emotes in one menu, your character on a box TV (how it works approved 2026-11-24; prices open)
 - [Bots in the town plan](plan/BOTS-IN-TOWN-PLAN.md): bots fly through the streets and holes, follow and hide, and stop crashing (approved 2026-11-25)
+- [Playtime rewards plan](plan/PLAYTIME-REWARDS-PLAN.md): a daily sticker chart for time played, a treasure chest at 2 hours (how it works, waiting on Alan)
 - [Report card plan](plan/REPORT-CARD-PLAN.md): the round's results on a school report card (built 2026-11-11)
 - [Gift a friend plan](plan/GIFT-PLAN.md): buy a Paper pack or boost for a Roblox friend (approved 2026-11-13, being built)
 - [Shop prices plan](plan/SHOP-PRICES-PLAN.md): Paper packs and Robux part prices after the price rise (approved 2026-11-11)
