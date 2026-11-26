@@ -54,6 +54,110 @@ return JSONTypes.map({
         ["share"] = 0.25,
     }),
     ["paper_per_point"] = 0.363,
+    ["playtime"] = JSONTypes.map({
+        ["boost_covered_paper_per_hour"] = 1000,
+        ["box_seconds"] = 900,
+        ["boxes"] = JSONTypes.array({
+            [1] = JSONTypes.map({
+                ["paper"] = 100,
+            }),
+            [2] = JSONTypes.map({
+                ["xp_seconds"] = 300,
+            }),
+            [3] = JSONTypes.map({
+                ["paper"] = 100,
+            }),
+            [4] = JSONTypes.map({
+                ["paper_seconds"] = 900,
+            }),
+            [5] = JSONTypes.map({
+                ["paper"] = 150,
+            }),
+            [6] = JSONTypes.map({
+                ["xp_seconds"] = 300,
+            }),
+            [7] = JSONTypes.map({
+                ["paper"] = 150,
+            }),
+            [8] = JSONTypes.map({
+                ["paper"] = 400,
+            }),
+            [9] = JSONTypes.map({
+                ["paper"] = 200,
+            }),
+            [10] = JSONTypes.map({
+                ["xp_seconds"] = 300,
+            }),
+            [11] = JSONTypes.map({
+                ["paper"] = 200,
+            }),
+            [12] = JSONTypes.map({
+                ["xp_seconds"] = 1800,
+            }),
+            [13] = JSONTypes.map({
+                ["paper"] = 250,
+            }),
+            [14] = JSONTypes.map({
+                ["xp_seconds"] = 300,
+            }),
+            [15] = JSONTypes.map({
+                ["paper"] = 250,
+            }),
+            [16] = JSONTypes.map({
+                ["chest"] = true,
+            }),
+        }),
+        ["chest"] = JSONTypes.map({
+            ["boosts"] = JSONTypes.map({
+                ["paper_seconds"] = 3600,
+                ["xp_seconds"] = 3600,
+            }),
+            ["paper"] = JSONTypes.map({
+                ["paper"] = 3000,
+            }),
+            ["wheel"] = JSONTypes.array({
+                [1] = JSONTypes.map({
+                    ["prize"] = JSONTypes.map({
+                        ["paper"] = 3000,
+                    }),
+                    ["weight"] = 30,
+                }),
+                [2] = JSONTypes.map({
+                    ["prize"] = JSONTypes.map({
+                        ["paper_seconds"] = 3600,
+                        ["xp_seconds"] = 3600,
+                    }),
+                    ["weight"] = 27,
+                }),
+                [3] = JSONTypes.map({
+                    ["prize"] = JSONTypes.map({
+                        ["chest"] = "sticker",
+                    }),
+                    ["weight"] = 25,
+                }),
+                [4] = JSONTypes.map({
+                    ["prize"] = JSONTypes.map({
+                        ["paper"] = 5000,
+                    }),
+                    ["weight"] = 10,
+                }),
+                [5] = JSONTypes.map({
+                    ["prize"] = JSONTypes.map({
+                        ["chest"] = "blue_ribbon",
+                    }),
+                    ["weight"] = 6,
+                }),
+                [6] = JSONTypes.map({
+                    ["prize"] = JSONTypes.map({
+                        ["chest"] = "golden_star",
+                    }),
+                    ["weight"] = 2,
+                }),
+            }),
+        }),
+        ["idle_seconds"] = 120,
+        ["max_add_seconds"] = 600,
+    }),
     ["podium_paper_by_place"] = JSONTypes.array({
         [1] = 30,
         [2] = 20,

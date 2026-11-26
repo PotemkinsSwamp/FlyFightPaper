@@ -350,6 +350,7 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 |---|---|
 | `src/shared/EconomyRules.luau` | Points to Paper and XP, bonuses, levels, purchases |
 | `src/shared/CommerceRules.luau` | Shop products and 2x passes |
+| `src/shared/PlaytimeRules.luau` | Daily playtime boxes, claim rules and treasure chest prizes |
 | `src/shared/Missions.luau` | Generates daily and weekly missions and handles progress, claims, swaps and rollover. Tests are in `tests/unit/Missions.spec.luau`. |
 | `src/shared/LooksRules.luau` | Skin and Trail chest pools, duplicate values, wearing and bot cosmetics ([skins plan](../plan/SKINS-PLAN.md)) |
 | `src/client/EmoteShop.luau` | The Emotes page: the box TV your character plays an emote on, the Leader and Runner-up cards, Paper and Robux buttons, Use ([plan and what is built](../plan/EMOTE-SHOP-PLAN.md)) |
@@ -363,6 +364,8 @@ and applicable permissions are verified. Mock UI is unambiguously development-on
 | `tests/unit/CommerceService.spec.luau` | Receipts paid once, saved before granted; passes; prompts; late starter bundles |
 | `tests/unit/Emotes.spec.luau` | Emote IDs, kinds, tier prices, defaults and pure rules |
 | `tests/unit/ShopSave.spec.luau` | Gift rows, starter timing and bundles, first-buy doubles, buy counts, emote purchases, schema migration and Player attributes |
+| `tests/unit/Playtime.spec.luau` | Box timing, claims, wheel odds and boost rewards |
+| `tests/unit/PlaytimeSave.spec.luau` | Saving counted time and claims, paying prizes and migrating old profiles |
 | `tests/unit/MockShop.spec.luau` | Practice-only guards, typed grants including emotes, and refusal of individual part products |
 | `tests/unit/GiftSave.spec.luau` | Gift catalog, sender receipts, receiver grants, duplicates and schema migration |
 | `tests/unit/GiftCheck.spec.luau` | Friend checks, waiting count, check lifetime, gift refusals and Studio practice sends |

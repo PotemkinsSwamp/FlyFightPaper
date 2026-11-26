@@ -21,6 +21,7 @@ function Spec.run()
 		assert(p.unlocksSeen==Economy.levelForXP(p.xpMilli))
 		assert(p.schemaVersion==Schema.VERSION and p.prestige==0 and next(p.lessons)==nil)
 		assert(type(p.doubleLocks)=="table" and next(p.doubleLocks)==nil)
+		assert(Schema.canonical(p.playtime)==Schema.canonical({day=-1,seconds=0,taken=0}))
 	end)
 	test("schema 14 keeps earned chests and the current daily gift through later migrations",function()
 		local old=Schema.defaults(catalog)
@@ -51,16 +52,39 @@ function Spec.run()
 		assert(not Schema.validate(migrated,catalog) and fresh().missions.dailySwaps==0)
 	end)
 	test("schema 16 adds two free emote picks and preserves every old field",function()
-		local old=fresh();old.schemaVersion=16;old.emotes=nil
+		local old=fresh();old.schemaVersion=16;old.emotes=nil;old.playtime=nil
 		old.paperMilli=123456;old.looks.owned.confetti=true;old.looks.trail="confetti"
 		old.dailyGift={next=6,lastDay=20700};old.receiptIds.earlier=true
 		local before=Schema.canonical(old)
-		local expected=assert(Schema.copy(old));expected.schemaVersion=17
+		local expected=assert(Schema.copy(old));expected.schemaVersion=Schema.VERSION
 		expected.emotes={owned={},leader="ToyPilot",runnerUp="GoodGame"}
+		expected.playtime={day=-1,seconds=0,taken=0}
 		local migrated=assert(Schema.migrate(Schema.freeze(old),catalog))
 		assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
 		migrated.emotes.owned.Nap=true
 		assert(next(fresh().emotes.owned)==nil)
+	end)
+	test("playtime saves require an exact chart with a valid day, whole seconds and a 16-bit mask",function()
+		for _,change in ipairs({
+			function(p) p.playtime=nil end,
+			function(p) p.playtime.extra=true end,
+			function(p) p.playtime.day=nil end,
+			function(p) p.playtime.day=-2 end,
+			function(p) p.playtime.day=1.5 end,
+			function(p) p.playtime.seconds=nil end,
+			function(p) p.playtime.seconds=-1 end,
+			function(p) p.playtime.seconds=14401 end,
+			function(p) p.playtime.seconds=1.5 end,
+			function(p) p.playtime.taken=nil end,
+			function(p) p.playtime.taken=-1 end,
+			function(p) p.playtime.taken=65536 end,
+			function(p) p.playtime.taken=1.5 end,
+			function(p) p.playtime.taken="1" end,
+		}) do
+			local p=fresh();change(p);assert(not Schema.validate(p,catalog))
+		end
+		local p=fresh();p.playtime={day=0,seconds=14400,taken=65535}
+		assert(Schema.validate(p,catalog))
 	end)
 	test("emote saves require a paid ownership set and valid picks for both slots",function()
 		for _,change in ipairs({

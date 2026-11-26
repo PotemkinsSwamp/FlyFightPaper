@@ -90,12 +90,13 @@ function Spec.run()
  end)
  test("schema 8 migration adds shop defaults and preserves the entire old save without mutating it",function()
   local f=fixture();local old=assert(Schema.copy(f.profile.Data))
-  old.schemaVersion=8;old.dailyGift=nil;old.starterPack=nil;old.firstBuys=nil;old.buysToday=nil;old.paperJarMilli=nil
+  old.schemaVersion=8;old.dailyGift=nil;old.starterPack=nil;old.firstBuys=nil;old.buysToday=nil;old.paperJarMilli=nil;old.playtime=nil
   old.paperMilli=123456;old.receiptIds.old_receipt=true;old.extensions={keep="old data"}
   local before=Schema.canonical(old);local migrated=assert(Schema.migrate(old,f.catalog))
   local expected=assert(Schema.copy(old));expected.schemaVersion=Schema.VERSION
   expected.dailyGift={next=1,lastDay=-1};expected.starterPack={offeredAt=0,bought=false}
   expected.firstBuys={};expected.buysToday={day=-1,count=0};expected.paperJarMilli=0
+  expected.playtime={day=-1,seconds=0,taken=0}
   assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
   assert(not Schema.validate(old,f.catalog),"validation must not silently migrate")
  end)
@@ -121,10 +122,11 @@ function Spec.run()
  end)
  test("schema 9 migration adds an empty jar and preserves the old save without mutating it",function()
   local f=fixture();assert(f.profile.Data.paperJarMilli==0 and f.player.attributes.PaperJar==0)
-  local old=assert(Schema.copy(f.profile.Data));old.schemaVersion=9;old.paperJarMilli=nil
+  local old=assert(Schema.copy(f.profile.Data));old.schemaVersion=9;old.paperJarMilli=nil;old.playtime=nil
   old.paperMilli=123456;old.firstBuys.paper_pack_1500=true;old.extensions={keep="old data"}
   local before=Schema.canonical(old);local expected=assert(Schema.copy(old))
   expected.schemaVersion=Schema.VERSION;expected.paperJarMilli=0
+  expected.playtime={day=-1,seconds=0,taken=0}
   local migrated=assert(Schema.migrate(Schema.freeze(old),f.catalog))
   assert(Schema.canonical(migrated)==Schema.canonical(expected) and Schema.canonical(old)==before)
   assert(Schema.canonical(assert(Schema.migrate(migrated,f.catalog)))==Schema.canonical(migrated))

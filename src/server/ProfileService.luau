@@ -9,6 +9,7 @@ local Emotes=require(Root.Shared.EmoteRules)
 local Missions=require(Root.Shared.Missions)
 local MissionConfig=require(Root.Generated.Missions)
 local Commerce=require(Root.Shared.CommerceRules)
+local Playtime=require(Root.Shared.PlaytimeRules)
 local EconomyConfig=require(Root.Generated.Economy)
 local BoostClock=require(Root.Shared.BoostClock)
 local Gameplay=require(Root.Generated.Gameplay)
@@ -197,6 +198,30 @@ local function giftReward(p,day)
  end
  return reward
 end
+local function playtimeReward(p,op,roll)
+ local reward,wheelIndex
+ if op.box==Playtime.BOX_COUNT then
+  reward,wheelIndex=Playtime.chestPrize(op.choice,roll)
+  if not reward then return nil,wheelIndex end
+ else
+  if op.choice~=nil then return nil,"invalid_choice" end
+  reward=Playtime.prize(op.box)
+ end
+ return Playtime.covered(reward,p.boosts.permanentPaper,p.boosts.permanentXP),wheelIndex
+end
+local function payGiftReward(p,v,reward,operationID)
+ if reward.paper then
+  local paid,rejected=Economy.applyFinalBonuses(v,{finalPaper=reward.paper,finalXP=0},{paper=1,xp=1},operationID)
+  if not paid then return nil,rejected.code end
+  Schema.mergeEconomic(p,paid.profile)
+ end
+ if reward.chest then
+  local total=safeAdd(p.chests.stock[reward.chest],1)
+  if not total then return nil,"overflow" end
+  p.chests.stock[reward.chest]=total
+ end
+ return true
+end
 function Service:_recordBuy(p)
  local now=self.unix();if not Schema.integer(now) then return nil,"invalid_time" end
  local day=math.floor(now/86400)
@@ -318,7 +343,7 @@ function Service:_matchMissions(p,op,seed)
  return valid,finished
 end
 
-function Service:_effect(p,op,boostState,seed)
+function Service:_effect(p,op,boostState,seed,playtimeClaim)
 	if op.kind=="receipt" then
 		local key=Service.receiptKey(op.receiptId)
 		if p.receiptIds[key]==true then return {type="ReceiptAlreadyGranted"} end
@@ -439,20 +464,23 @@ function Service:_effect(p,op,boostState,seed)
 		result={type="MatchDoubled",paper=paper,xp=amountXP,matchId=lock and lock.matchId or nil}
 	elseif op.kind=="dailyGift" then
 		local reward,why=giftReward(p,op.day);if not reward then return nil,why end
-		if reward.paper then
-			local paid,rejected=Economy.applyFinalBonuses(v,{finalPaper=reward.paper,finalXP=0},{paper=1,xp=1},op.id)
-			if not paid then return nil,rejected.code end
-			Schema.mergeEconomic(p,paid.profile)
-		end
-		if reward.chest then
-			local total=safeAdd(p.chests.stock[reward.chest],1)
-			if not total then return nil,"overflow" end
-			p.chests.stock[reward.chest]=total
-		end
+		local paid,err=payGiftReward(p,v,reward,op.id);if not paid then return nil,err end
 		p.dailyGift.next=Commerce.dailyGiftDay(p.dailyGift,op.day)%28+1
 		p.dailyGift.lastDay=op.day
 		result={type="DailyGiftClaimed",chest=reward.chest,paper=reward.paper,seconds=reward.xp_seconds or reward.paper_seconds,
 			resource=reward.xp_seconds and "xp" or reward.paper_seconds and "paper" or nil}
+	elseif op.kind=="playtimeAdd" then
+		local state,why=Playtime.forDay(p.playtime,op.day);if not state then return nil,why end
+		local added,earned=Playtime.add(state,op.seconds);if not added then return nil,earned end
+		p.playtime=added
+		result={type="PlaytimeAdded",seconds=added.seconds,earned=earned}
+	elseif op.kind=="playtimeBox" then
+		local reward,wheelIndex=playtimeReward(p,op,playtimeClaim.roll);if not reward then return nil,wheelIndex end
+		local paid,err=payGiftReward(p,v,reward,op.id);if not paid then return nil,err end
+		local taken,why=Playtime.take(playtimeClaim.state,op.box);if not taken then return nil,why end
+		p.playtime=taken
+		result={type="PlaytimeBoxTaken",box=op.box,choice=op.choice,wheelIndex=wheelIndex,
+			paper=reward.paper,paperSeconds=reward.paper_seconds,xpSeconds=reward.xp_seconds,chest=reward.chest}
 	elseif op.kind=="paidChest" then
 		local chest=Looks.chest(op.chest)
 		if not chest then return nil,"unknown_chest" end
@@ -570,7 +598,7 @@ function Service:_effect(p,op,boostState,seed)
 	if not result then return nil,"unsupported_operation" end
 	return assert(Schema.copy(result))
 end
-local allowed={paidChest=true,receipt=true,giftReceived=true,passGrant=true,dailyGift=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
+local allowed={paidChest=true,receipt=true,giftReceived=true,passGrant=true,dailyGift=true,playtimeAdd=true,playtimeBox=true,starterPack=true,paperJar=true,doubleLock=true,matchDouble=true,contribution=true,finalBonus=true,equipmentPurchase=true,prestige=true,preset=true,rangePreset=true,rangeSlot=true,settings=true,lessonDone=true,unlocksSeen=true,
  qualification=true,purchasedPaper=true,boostIntent=true,statistics=true,missionClaim=true,missionSwap=true,devFinishMissions=true,refoldIntent=true,lookPurchase=true,lookWear=true,openChest=true,
  emotePurchase=true,emoteWear=true,emoteUnlock=true,
  refoldDeliver=true,refoldCancel=true,refoldRetire=true,refoldRefund=true,refoldApplied=true}
@@ -628,6 +656,11 @@ function Service:apply(account,input)
   if op.resource~="xp" and op.resource~="paper" then return outcome("error","invalid_resource") end
   if s.profile.Data.boosts[op.resource=="xp" and "permanentXP" or "permanentPaper"] then intent=nil
   else intent={kind="boostIntent",resource=op.resource,action="permanent"} end
+ elseif op.kind=="playtimeAdd" or op.kind=="playtimeBox" then
+  local fields=if op.kind=="playtimeAdd" then {kind=true,id=true,day=true,seconds=true}
+   else {kind=true,id=true,day=true,box=true,choice=true}
+  for field in pairs(op) do if not fields[field] then return outcome("error","invalid_operation") end end
+  if not Schema.integer(op.day) then return outcome("error","invalid_playtime_day") end
  elseif op.kind=="openChest" then
   if type(op.chest)~="string" or not Schema.integer(op.opened) or (op.source~="earned" and op.source~="paper" and op.source~="paidStock") then return outcome("error","invalid_operation") end
   for key in pairs(op) do if key~="kind" and key~="id" and key~="opened" and key~="chest" and key~="source" then return outcome("error","invalid_operation") end end
@@ -655,26 +688,47 @@ function Service:apply(account,input)
  local advanced,why=self:_advance(s);if not advanced then return outcome("retry",why) end
  -- Composite rewards use the same clock preview as a paid timed boost. Nothing is
  -- installed until the entire profile (including money, ownership and IDs) validates.
+ local timedReward,playtimeClaim
  if intent and intent.kind=="dailyGift" then
   local reward,err=giftReward(s.profile.Data,op.day);if not reward then return outcome("error",err) end
-  intent=reward.xp_seconds and {kind="boostIntent",resource="xp",action="duration",seconds=reward.xp_seconds}
-   or reward.paper_seconds and {kind="boostIntent",resource="paper",action="duration",seconds=reward.paper_seconds} or nil
+  timedReward=reward
+ elseif op.kind=="playtimeBox" then
+  local p=s.profile.Data
+  local state,err=Playtime.forDay(p.playtime,op.day);if not state then return outcome("error",err) end
+  local canTake,refused=Playtime.canTake(state,op.box);if not canTake then return outcome("error",refused) end
+  -- Use one server roll for both the clock preview and the saved payout.
+  local roll=if op.box==Playtime.BOX_COUNT and op.choice=="spin" then self.random() else nil
+  local reward,rejected=playtimeReward(p,op,roll);if not reward then return outcome("error",rejected) end
+  timedReward=reward
+  playtimeClaim={state=state,roll=roll}
  elseif intent and intent.kind=="starterPack" then
   intent={kind="boostIntent",resource="xp",action="duration",seconds=EconomyConfig.starter_pack.xp_seconds}
  end
  local clock=s.clock
- if intent and intent.kind=="boostIntent" then
+ local timedBoost=timedReward and (timedReward.paper_seconds or timedReward.xp_seconds)
+ if timedBoost or (intent and intent.kind=="boostIntent") then
   clock=BoostClock.new(s.clock:snapshot(),s.clock.now,s.clock.eligible,{historyLimit=Config.boost_history_limit})
   clock.startedAt=s.clock.startedAt;clock.watermark=s.clock.watermark;clock.revision=s.clock.revision
   clock.intervals=assert(Schema.copy(s.clock.intervals));clock.changes=assert(Schema.copy(s.clock.changes))
-  local ok,err
-  if intent.action=="duration" then ok,err=clock:grantVerifiedTemporary(intent.resource,intent.seconds,self.mono())
-  elseif intent.action=="permanent" then ok,err=clock:grantVerifiedPermanent(intent.resource,self.mono()) end
-  if not ok then return outcome("error",err or "invalid_boost_intent") end
+  if timedBoost then
+   local now=self.mono()
+   for _,resource in ipairs({"paper","xp"}) do
+    local seconds=timedReward[resource.."_seconds"]
+    if seconds then
+     local ok,err=clock:grantVerifiedTemporary(resource,seconds,now)
+     if not ok then return outcome("error",err) end
+    end
+   end
+  else
+   local ok,err
+   if intent.action=="duration" then ok,err=clock:grantVerifiedTemporary(intent.resource,intent.seconds,self.mono())
+   elseif intent.action=="permanent" then ok,err=clock:grantVerifiedPermanent(intent.resource,self.mono()) end
+   if not ok then return outcome("error",err or "invalid_boost_intent") end
+  end
  end
  local data=assert(Schema.copy(s.profile.Data));data.lease={nonce=s.token,generation=data.generation,expires=0}
  local seed=tonumber(account) or 0
- local result,err,details=self:_effect(data,op,clock:snapshot(),seed)
+ local result,err,details=self:_effect(data,op,clock:snapshot(),seed,playtimeClaim)
  if not result then return outcome("error",err,details) end
  if mockBuy or (op.kind=="receipt" and result.type~="ReceiptAlreadyGranted") then
   local recorded,code=self:_recordBuy(data);if not recorded then return outcome("error",code) end

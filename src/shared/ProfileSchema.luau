@@ -1,6 +1,7 @@
 -- Bounded JSON persistence contract. No load failure is interpreted as a new account.
 local Economy = require(script.Parent.EconomyRules)
 local Commerce = require(script.Parent.CommerceRules)
+local Playtime = require(script.Parent.PlaytimeRules)
 local Missions = require(script.Parent.Missions)
 local Looks = require(script.Parent.LooksRules)
 local Emotes = require(script.Parent.EmoteRules)
@@ -9,7 +10,7 @@ local Config = require(script.Parent.Parent.Generated.Server)
 local Gameplay = require(script.Parent.Parent.Generated.Gameplay)
 local TouchLayout = require(script.Parent.TouchLayout)
 local KeyBinds = require(script.Parent.KeyBinds)
-local Schema = { VERSION = 17, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
+local Schema = { VERSION = 18, MAX_BYTES = Config.schema.max_bytes, MAX_ENTRIES = Config.schema.max_entries,
 	MAX_DEPTH = Config.schema.max_depth, MAX_OPERATION_ID = Config.schema.max_id_bytes }
 local function integer(n) return type(n) == "number" and n == n and n >= 0 and n <= Economy.MAX_SAFE_INTEGER and n % 1 == 0 end
 Schema.integer = integer
@@ -130,7 +131,7 @@ function Schema.defaults(catalog)
 		looks = { owned = {}, skin = "", trail = "" }, emotes = emptyEmotes(), chests = emptyChests(), missions = Missions.defaults(),
 		presets = {}, rangePresets = {}, rangeSlot = 1, settings = { music = 1, sound = 1, sensitivity = 1, reducedShake = false, quality = "High", crosshairColor = "blue", crosshairSize = "Medium", matchTips = true, autoFire = true, speedMatch = true },
 		qualification = { count = 0, history = {} }, boosts = { paperSeconds = 0, xpSeconds = 0, permanentPaper = false, permanentXP = false },
-		dailyGift = { next = 1, lastDay = -1 }, starterPack = { offeredAt = 0, bought = false }, firstBuys = {}, buysToday = { day = -1, count = 0 }, doubleLocks = {},
+		dailyGift = { next = 1, lastDay = -1 }, playtime = Playtime.fresh(-1), starterPack = { offeredAt = 0, bought = false }, firstBuys = {}, buysToday = { day = -1, count = 0 }, doubleLocks = {},
 		statistics = { matches = 0, wins = 0, eliminations = 0, deaths = 0 }, operationIds = {}, operationSessions = {}, receiptIds = {}, giftIds = {}, lessons = {} }
 	for i = 1, Gameplay.menus.saved_loadouts do
 		p.presets[i] = { name = "Loadout " .. i, loadout = catalog:starterLoadout() }
@@ -142,7 +143,7 @@ function Schema.validate(record, catalog)
 	local p, err = Schema.copy(record); if not p then return nil, err end
 	local ok, message = pcall(function()
 		exact(p, { schemaVersion=1, version=1, generation=1, lease=0, paperMilli=1, earnedPaperMilli=1, purchasedPaperMilli=1, paperJarMilli=1,
-			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, looks=1, emotes=1, chests=1, missions=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, dailyGift=1, starterPack=1, firstBuys=1, buysToday=1, doubleLocks=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, giftIds=1, lessons=1, extensions=0, refolds=0 })
+			xpMilli=1, prestige=1, unlocksSeen=1, ownership=1, looks=1, emotes=1, chests=1, missions=1, presets=1, rangePresets=1, rangeSlot=1, settings=1, qualification=1, boosts=1, dailyGift=1, playtime=1, starterPack=1, firstBuys=1, buysToday=1, doubleLocks=1, statistics=1, operationIds=1, operationSessions=1, receiptIds=1, giftIds=1, lessons=1, extensions=0, refolds=0 })
 		assert(p.schemaVersion == Schema.VERSION, "unsupported_schema")
 		assert(integer(p.version) and integer(p.generation), "invalid_version")
 		assert(integer(p.prestige) and p.prestige<=EconomyConfig.prestige_max, "invalid_prestige")
@@ -204,6 +205,10 @@ function Schema.validate(record, catalog)
 		exact(p.dailyGift, {next=1,lastDay=1})
 		assert(integer(p.dailyGift.next) and p.dailyGift.next>=1 and p.dailyGift.next<=28, "invalid_daily_gift_next")
 		assert(p.dailyGift.lastDay==-1 or integer(p.dailyGift.lastDay), "invalid_daily_gift_day")
+		exact(p.playtime, {day=1,seconds=1,taken=1})
+		assert(p.playtime.day==-1 or integer(p.playtime.day), "invalid_playtime_day")
+		assert(integer(p.playtime.seconds) and p.playtime.seconds<=Playtime.CAP, "invalid_playtime_seconds")
+		assert(integer(p.playtime.taken) and p.playtime.taken<=bit32.lshift(1,Playtime.BOX_COUNT)-1, "invalid_playtime_taken")
 		exact(p.starterPack, {offeredAt=1,bought=1})
 		assert(integer(p.starterPack.offeredAt) and type(p.starterPack.bought)=="boolean", "invalid_starter_pack")
 		assert(type(p.firstBuys)=="table", "missing_first_buys")
@@ -331,6 +336,10 @@ function Schema.migrate(record, catalog)
 	if p.schemaVersion==16 then
 		p.emotes=emptyEmotes()
 		p.schemaVersion=17
+	end
+	if p.schemaVersion==17 then
+		p.playtime=Playtime.fresh(-1)
+		p.schemaVersion=18
 	end
 	if p.schemaVersion==Schema.VERSION and type(p.emotes)=="table" then
 		p.emotes.leader=Emotes.worn(p.emotes,"leader")
