@@ -1,7 +1,7 @@
 # Bots use the town and feel smarter
 
 **Decided:** 2026-11-25 (Alan)  
-**Status:** in force; being built ([plan](../plan/BOTS-IN-TOWN-PLAN.md))
+**Status:** in force; built 2026-11-25 ([plan](../plan/BOTS-IN-TOWN-PLAN.md))
 
 ## Decision
 Alan: "lets get the bots to be able to move through buildings and be smarter when it comes to that". Asked which of

@@ -5,10 +5,13 @@ Computer pilots fill empty seats so a match always has up to 12 planes. They fly
 
 ## Where it stands (2026-11-08)
 **In the town (2026-11-25, [plan, steps and numbers](../plan/BOTS-IN-TOWN-PLAN.md)):** bots fly routes low over the
-town (60 and 95 studs) and through 20 holes the server finds at start; shot at, a bot may dive somewhere low its
-attacker can't see, and it may follow its target through a hole, both by skill (`hole_follow_chance`,
-`town_dive_chance`); a scrape or getting nowhere for 2 s climbs it to open air to plan again; each bot has its own
-route habits. Alan's first look: "didn't notice much of change"; street runs and lower fights with his new skill numbers are approved, not built ([plan](../plan/BOTS-IN-TOWN-PLAN.md) steps 5-6). Most bot-match "crashes" are rams (rammer quirk); real town crashes about 1.3 a match. Dev panel **ace bots**: every bot a veteran or an ace (Studio).
+town (60 and 95 studs) and through 20 holes the server finds at start; shot at, a bot may make a 10-15 s **street run**
+low and away from its attacker, through a low hole ahead (`town_dive_chance`, 80/70/50/30%), and it may follow its
+target through a hole (`hole_follow_chance`, 90/70/45/20%); cruising picks low points 70% of the time
+(`patrol_low_chance`) and a bot that loses a low target searches low; a scrape or getting nowhere for 2 s climbs it to
+open air to plan again; each bot has its own route habits. Bots are low over the town about a quarter of the time; real
+town crashes about 1.3 a match (most bot-match "crashes" are rams, the rammer quirk). Alan approved it from a
+before/after video (2026-11-25). Dev panel **ace bots**: every bot a veteran or an ace (Studio).
 Bots fly at their plane's full top speed, like a player ([decision](../decisions/2026-11-07-bots-fly-full-speed.md)); skill
 changes how hard they turn and pitch (`turn_factor`) and how they brake.
 **Planes** ([decision](../decisions/2026-11-08-unlock-ladder-and-bot-builds.md)): rookies fly the level-1 presets (Fighter,
@@ -117,7 +120,7 @@ invulnerable debug bots or target-board practice.
 | `src/server/Matchmaking.luau, src/server/MatchmakingAdapter.luau` | Rookie or regular servers, transfers |
 
 ## Tuning numbers
-`config/gameplay.json` `world.town_routes` (the town map's heights, spacing and floor push) and `bots` (mixes, personalities, quirks, eraser skill, objective share; tricks: `tricks_comment`); `config/server.json` `routing`.
+`config/gameplay.json` `world.town_routes` (the town map's heights, spacing and floor push) and `bots` (mixes, personalities, quirks, eraser skill, objective share; the town: `town_comment`; tricks: `tricks_comment`); `config/server.json` `routing`.
 
 ## Related
 - [Bots use the town](../decisions/2026-11-25-bots-use-the-town.md) and its [plan](../plan/BOTS-IN-TOWN-PLAN.md) (2026-11-25, being built)

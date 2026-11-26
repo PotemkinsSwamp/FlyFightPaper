@@ -4,6 +4,13 @@
 with the treasure chest because at the end of the playtime rewards you could get a treasure chest". The idea and his
 first numbers: [ideas](IDEAS.md) (playtime rewards, treasure chest for buyers).
 
+**Alan's changes to the first draft (2026-11-25):** the chest comes much later, "probably like 4-5 hours of total
+playtime for the day"; "large rewards at every hour mark and then small rewards between", three between every hour mark.
+Before the prizes are set: "we really have to consider how much we give away and whats worth the player retention vs
+what we give away because we also want people to pay with robux, but also we need to look at how much player retention
+is worth and what it pays us in the long game. after that we can consider whats in the chest." The box table below is
+the first draft, replaced once that is weighed.
+
 ## What the player sees
 A **sticker chart** for today, like the ones on a classroom wall: five boxes in a row, each with its time and its prize.
 Playing fills the chart; when a box's time is reached it gets a gold star sticker and a "!" shows on its menu strip. Tap

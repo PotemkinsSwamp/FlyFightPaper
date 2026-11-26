@@ -3,6 +3,7 @@
 One note per time Alan played the game, newest first: what he said, and what changed because of it. Alan's word is
 final on these.
 
+- [2026-11-25 Bots in the town, before/after video: "looks good", no Play look needed](2026-11-25-bots-in-the-town-video.md)
 - [2026-11-25 Bots in the town, first look: "didn't notice much of change"; a look-back for the backlog](2026-11-25-bots-in-the-town-first-look.md)
 - [2026-11-25 Nap sits (worse first: fixed), every sitting emote checked, emotes closed for now, Airspace zones reach the floor ("ok its good now"), bots in the town approved](2026-11-25-nap-sits-and-zones-reach-the-floor.md)
 - [2026-11-25 The Emotes page with its painting: the picture "looks great"; order the cards by price; the TV needs its sounds; emotes cut off early; the last emote's sound keeps playing; his kid floats over the books; Sneaky Toss's ball hangs in the air; Test Flight's plane flies backwards; the TV's own picture must look as good](2026-11-25-emotes-page-with-its-painting.md)

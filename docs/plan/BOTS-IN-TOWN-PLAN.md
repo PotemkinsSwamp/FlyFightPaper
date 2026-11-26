@@ -1,8 +1,9 @@
 # Bots in the town plan
 
-**Status:** approved by Alan 2026-11-25 ("go on both": the plan and the skill numbers, plus his go for bot matches
+**Status:** built and approved (2026-11-25; steps 5-6 from a video, [playtest](../playtests/2026-11-25-bots-in-the-town-video.md)).
+Plan approved by Alan 2026-11-25 ("go on both": the plan and the skill numbers, plus his go for bot matches
 and Claude's own Play runs for this work). What he asked for and the numbers:
-[decision](../decisions/2026-11-25-bots-use-the-town.md). Nothing built yet; the "before" matches are below.
+[decision](../decisions/2026-11-25-bots-use-the-town.md). The "before" matches and each step's numbers are below.
 
 ## Steps
 1. **A map of the town's open air and faster route finding.** Today's routes (`src/shared/AirRoutes.luau`) are a
@@ -128,11 +129,33 @@ follow who gets rammed, not who hits walls. Real crashes into the town: about 1.
 the thin monorail pillars and beam; rookies only hit the town (worse pilots by design). The "before" 2.3 a match mixed
 rams and walls and cannot be split now.
 
+## After steps 5 and 6 (2026-11-25)
+Step 5: a bot shot at rolls `town_dive_chance` (80/70/50/30%) once per attacker for a **street run**: 10-15 s from low
+point to low point (150-450 studs on, not behind it, the furthest from the attacker's position now, out of its sight
+when one is), through the first low hole that comes up ahead (one a run), with no dodges on the way; a run ends early
+only when no low point leads further away (the town's corners). Step 6: cruising picks a low point
+`bots.patrol_low_chance` (70%) of the time, moved by up to 17 points by the bot's habit; a bot that lost its target
+below 100 studs cruises next to a low point within 350 studs of where it last saw it. `hole_follow_chance`
+90/70/45/20%. Three matches (aces and veterans):
+
+| Match | Bot deaths | Crashes | Into the town (not rams) | Low | Mid | High | botMs each second |
+|---|---|---|---|---|---|---|---|
+| 1 | 92 | 6 | 1 (porthole book tower) | 23% | 51% | 24% | 0.61 avg, 4 peak |
+| 2 | 83 | 8 | 2 (a hole's floor, a monorail pylon) | 22% | 49% | 27% | 0.63 avg, 9 peak |
+| 3 | 83 | 1 | 1 (a monorail pylon) | 27% | 51% | 21% | 0.61 avg, 7 peak |
+
+Low 24% on average (8-11% after step 4; the goal was about 25-30%); town crashes 1.3 a match (goal: no worse than 1.5);
+server time the same. Bots spent about 20% of their time on street runs and 12% in holes; deaths fell about 10-20% (fights
+last longer). Regulars, one match: 1 town crash (a ceiling ring), 21% low. Rookies, one match: 1 (a ceiling ring), 15%.
+
+Found while filming: a run took any hole ahead, and one climbed to a ceiling ring 400 studs up and was shot down. Runs
+now take only holes under 200 studs and not above the bot (`7bc56d306`). The re-measure after that fix was stopped
+before its first match ended; not re-run. The before/after video was recorded with the fix.
+
 ## Where it stands
-Steps 1-4 built and measured; crashes into the town about 1.3 a match (rams are by design). Dev panel **ace bots** makes
-every bot a veteran or an ace. Alan's first look: "didn't notice much of change" (low only 8-11% of the time; dives fly
-out of the chaser's sight; hole follows are rare; his Play may have had rookies and regulars). Steps 5 and 6 approved
-with new numbers; not built. Next: build steps 5 and 6, measure, then his look with a before/after video. Later, if he
-wants: the monorail pillars (the most hit part of the town).
+**Done** (2026-11-25): steps 1-6 built and measured; Alan watched the before/after video, "alright looks good", and
+didn't need a Play look ([playtest](../playtests/2026-11-25-bots-in-the-town-video.md)). Dev panel **ace bots** makes
+every bot a veteran or an ace. Open: the re-measure after the low-hole fix; later, if he wants, the monorail pylons (the
+most hit part of the town).
 
 Back to [HOME](../HOME.md)
