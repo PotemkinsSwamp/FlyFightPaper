@@ -58,7 +58,7 @@ local function still(parent, item, x, y, w, h, pose, fill)
 	return view
 end
 -- The starter pack preview (example contents, Alan's OK pending: docs/decisions/2026-11-11-shop-direction.md).
-local STARTER = { price = 99, worth = 227, seconds = (2 * 24 + 14) * 3600 + 5 * 60,
+local STARTER = { price = 99, seconds = (2 * 24 + 14) * 3600 + 5 * 60,
 	items = { { part = "wings_1", kind = "wings" }, { icon = "iconStack", label = "1,500 Paper" }, { icon = "iconClockStar", label = "1 hour\n2x XP" }, { chest = "paper", label = "Paper Skin\nChest" } } } -- Alan 2026-11-12: 2x XP, not 2x Paper
 
 local commas = PaperUI.commas
@@ -621,7 +621,10 @@ function ShopScreen.new(playerGui, api)
 		end
 		move(fit(pic(card, "Sparkle", Art.sparkle, 860, 30, 925, 85, 12)), "twinkle", 0)
 		move(fit(pic(card, "Sparkle2", Art.sparkle, 1185, 100, 1215, 130, -10)), "twinkle", 1.7)
-		local worth = say(card, "Worth", tostring(STARTER.worth + Looks.chest("paper").robux), 985, 115, 1130, 170, 50)
+		-- The crossed-out price is only ever the real one (Alan 2026-11-25, docs/decisions/2026-11-25-real-prices-only.md):
+		-- what the pack's pieces cost bought one by one at today's prices (wings, 1,500 Paper, 1 hour 2x XP, Paper chest).
+		local real = Customize.unlockRobux(Catalog:get("wings_1").paper_price) + PRICE.paper_pack_1500 + PRICE.xp_boost_60m + Looks.chest("paper").robux
+		local worth = say(card, "Worth", tostring(real), 985, 115, 1130, 170, 50)
 		local cross = Instance.new("Frame")
 		cross.Name, cross.BackgroundColor3, cross.BorderSizePixel, cross.AnchorPoint = "Cross", Color3.fromRGB(220, 30, 30), 0, Vector2.new(0.5, 0.5)
 		cross.Position, cross.Size, cross.Rotation, cross.Parent = UDim2.fromScale(0.5, 0.55), UDim2.new(0.75, 0, 0, 6 * K), -6, worth

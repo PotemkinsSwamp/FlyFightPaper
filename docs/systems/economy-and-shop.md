@@ -195,7 +195,8 @@ decides and records its first buy together with the purchased Paper. Receipt rep
 bonus does not apply to the starter bundle, daily gifts or other purchased Paper.
 
 The starter bundle gives Swept Wings (`wings_1`), 1,500 purchased Paper, 3,600 seconds of 2x XP and a Paper Skin chest together in one
-save operation. Owning the wings already is fine. An in-flight receipt after a permanent XP upgrade adds dormant
+save operation. Its card shows the real total crossed out (218 R$: 49 + 99 + 25 + 45, added up from the live prices;
+[real prices only](../decisions/2026-11-25-real-prices-only.md)). Owning the wings already is fine. An in-flight receipt after a permanent XP upgrade adds dormant
 XP time, just like a paid timed boost. The offer starts on the first server load that sees no saved start time and
 lasts 259,200 real seconds, including time away. It never restarts. It is offered only before any purchase, with
 no receipt history or permanent pass, and only once. An expired or previously used offer cannot open checkout;

@@ -11,6 +11,8 @@ what we give away because we also want people to pay with robux, but also we nee
 is worth and what it pays us in the long game. after that we can consider whats in the chest." (The first draft had five
 boxes from 5 minutes to a chest at 2 hours.)
 
+**Settled (Alan 2026-11-25):** "chest at 4 hours"; prices shown are always real ([decision](../decisions/2026-11-25-real-prices-only.md)).
+
 ## What the player sees
 A **sticker chart** for today, like the ones on a classroom wall: a row of boxes for each hour, each box with its time
 and its prize. Playing fills the chart; when a box's time is reached it gets a gold star sticker and a "!" shows on its
@@ -105,7 +107,7 @@ session"), brings its own plain screen and does nothing about idle players
 the saving, the UTC day and the chest and boost prizes; the chart uses those.
 
 ## Questions for Alan
-1. The chest at **4 hours** (or 5)?
+1. ~~The chest at 4 hours or 5~~: 4 hours (Alan).
 2. The prizes above: boosts for the big hour boxes, Paper and short XP boosts between. As they are, smaller or bigger?
 3. Only time in matches counts (menus don't). OK?
 4. Then: what's in the chest.
