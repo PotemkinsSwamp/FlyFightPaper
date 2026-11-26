@@ -1052,6 +1052,9 @@ Back to [HOME](../HOME.md)
   and Eevee's "Shadow buffer full" lines are harmless: send the output to a log and read only the last lines.
 
 ## Scripted Play tests (2026-11-16, the skins and trails check)
+- **A bot match's "crashes" include rams** (2026-11-25): every collision death counts, and the rammer quirk flies into
+  hurt planes on purpose. Read the CRASHES line (each crash says RAM or the part hit, with the bot's skill, style and
+  plane) before blaming the town: of 27 crashes in five matches, 20 were rams.
 - **Change the bot match tool's Luau, then prove it with a one-minute match first** (2026-11-25): a real line break
   slipped into a Luau string in `tools/run_bot_matches.py` (a `\\n` written through a Python script) and three
   matches, 25 minutes, came back with no report. `python tools/run_bot_matches.py 1 60` shows the report in 2 minutes.
