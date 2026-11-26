@@ -101,8 +101,30 @@ studs), and the stuck rule fired on bots circling near their goal (633 s "unstuc
 town. Fixed with step 4: the lower a bot, the shallower its dive (straight down 200 studs over the floor, about 12
 degrees at it); circling within 150 studs of the goal is not stuck; a hide spot counts as reached within 100 studs.
 
+## After step 4 and what the crashes are (2026-11-25)
+Step 4: each bot adds its own fixed 0-30% cost to each route leg and likes low ways or high ones by up to 35%, and
+cruises low or high by that liking. Three matches: crashes 5, 5, 7; low 8%, 11%, 9%; botMs 0.56-0.65 avg, peaks 4-6 ms.
+
+"Crashes" in these tables are every collision death, and **rams count** (a plane flown into another; the weaker one
+dies). From 2026-11-25 the match tool tells them apart (a crash with no wall touch in the last 2.5 s is a ram) and
+names each crashing bot's skill, style and plane. Five diagnostic matches (Alan asked whether skill, personality or
+habits cause them):
+
+| Bots | Crashes | Rams | Into the town |
+|---|---|---|---|
+| Aces and veterans, 3 matches | 19 | 15 | 4: monorail beam, monorail pillar twice, gateway towers |
+| Regulars, 1 match | 6 | 5 | 1: book-stack lookout |
+| Rookies, 1 match | 2 | 0 | 2: a ceiling ring, a monorail pillar |
+
+Rams are the rammer quirk at work (it flies into a weaker plane on purpose); the rammed are mostly hurt bots flying to
+repair or to a fan. Plane and personality differences in crash counts (Cardboard Tank and objective bots highest)
+follow who gets rammed, not who hits walls. Real crashes into the town: about 1.3 a match for aces and veterans, mostly
+the thin monorail pillars and beam; rookies only hit the town (worse pilots by design). The "before" 2.3 a match mixed
+rams and walls and cannot be split now.
+
 ## Where it stands
-Steps 1-4 built (step 4: each bot adds its own fixed 0-30% cost to each route leg and likes low ways or high ones by
-up to 35%, and cruises low or high by that liking). Step 4's matches running. Next: Alan's look in Play.
+Steps 1-4 built and measured; crashes into the town about 1.3 a match (rams are by design). Dev panel **ace bots** makes
+every bot a veteran or an ace for Alan's look. Next: Alan's look in Play; then, if he wants, the monorail pillars (the
+most hit part).
 
 Back to [HOME](../HOME.md)
