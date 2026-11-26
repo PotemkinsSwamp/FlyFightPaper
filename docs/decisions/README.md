@@ -6,6 +6,7 @@ affects. If a decision is reversed, add a new note and mark the old one "Replace
 Claude's own smaller calls waiting for Alan's review live in [STATE](../../state/STATE.md) under
 "Decisions to review". Back to [HOME](../HOME.md).
 
+- 2026-11-25: [From an approved concept picture to a screen: break it into 2D pieces, assemble in Studio](2026-11-25-concept-to-screen.md)
 - 2026-11-25: [A boost prize a "2x forever" pass covers pays 2,000 Paper an hour instead](2026-11-25-pass-owners-get-paper-for-boost-prizes.md)
 - 2026-11-25: [The playtime chart takes 2 hours, not 4](2026-11-25-playtime-chart-two-hours.md)
 - 2026-11-25: [The playtime chart's treasure chest: two sure prizes and a spin wheel](2026-11-25-playtime-chest.md)

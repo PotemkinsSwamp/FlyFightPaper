@@ -31,10 +31,12 @@ chest**. When the chart is full: "Come back tomorrow for a new chart."
 - **Built to look exactly like the concept pictures** (Alan 2026-11-25, on a first assembly made from the game's
   loaded art with the path turned round, mint circles, time flags, "Open!" bursts and greyed stops: "that looks a lot
   different from the concept images so no to that, make it look exactly like the concept image or dont do it at all").
-  So the screen is the concept picture itself: Codex splits `map-c.png` and `chest-open.png` into layers
-  (`assets/ui/playtime/concept/`): the same picture with the moving parts removed, and the moving parts (star, tick,
-  plane, wheel pieces, chest poses) as cut-outs. The prize words are part of the picture: changing a prize in
-  `config/economy.json` means a new picture. No change to the approved look without asking him first.
+  The way to do it ([decision](../decisions/2026-11-25-concept-to-screen.md)): break `map-c.png` and `chest-open.png`
+  into 2D pieces; use art the game already has only where nobody would notice the difference; make every other piece
+  from the concept as drawn; put them together in Studio at the concept's positions and compare with the concept.
+  Codex's cut-outs are in `assets/ui/playtime/concept/` (its two whole-picture layers there are position guides only,
+  not screen art); the first set in `assets/ui/playtime/raw/` was a restyle and is not the look. No change to the
+  approved look without asking him first.
 - **The wheel shows chances by slice size, with no percentages written on it** (Alan: "the spots need to just indicate
   the percentage like all other spin wheels do"): 3,000 Paper 108 degrees, the boost pair 97, Sticker chest 90, 5,000
   Paper 36, Blue Ribbon chest 22, Golden Star chest 7. A small "?" opens the list of exact chances, as our chests' prize
