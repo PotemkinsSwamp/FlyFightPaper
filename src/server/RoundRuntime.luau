@@ -22,7 +22,7 @@ local Playtime=require(Root.Shared.PlaytimeRules)
 local WALL_GRACE_SECONDS=2 -- ponytail: a fixed grace; move to config/gameplay.json if it needs tuning
 local Runtime={};Runtime.__index=Runtime
 function Runtime.new(flight,combat,bots,profiles,commerce)
- local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false,playtimePending={}},Runtime)
+ local self=setmetatable({flight=flight,combat=combat,bots=bots,profiles=profiles,joined={},sequence=0,earningCursor=0,clock=0,finished=false,playtimePending=setmetatable({},{__mode="k"}),playtimeTouch=setmetatable({},{__mode="k"})},Runtime)
  self.matchmaking=require(script.Parent.Matchmaking).new(profiles)
  self.engine=Match.new({clock={now=os.clock},config=Config,economy=Economy,sessionId=Http:GenerateGUID(false):gsub("%-",""):sub(1,12),seed=ServerConfig.round.seed,
   allowStudioTestUsers=Run:IsStudio(),combatDrainState=function() return {through=os.clock(),blocked=false} end})
@@ -49,6 +49,7 @@ function Runtime.new(flight,combat,bots,profiles,commerce)
   if type(action)~="string" then return end
   if action=="sendTown" then self.flight:sendTown(player);return end
   if action=="loadTimes" then LoadLog.save(player,value);return end
+  if action=="here" then self.playtimeTouch[player]=os.clock();return end -- the player pressed, moved or tapped something
   if action=="mapReady" then
    if player:GetAttribute("ClassroomLoaded") then return end
    player:SetAttribute("ClassroomLoaded",true)
@@ -211,7 +212,6 @@ function Runtime:bind(p)
   p.team=facts.teamId
  end
  p.identity={actorId=p.id,lifeId=tostring(p.life),participationId=p.id,matchId=self.engine.round.id,teamId=p.team}
- p.playtimeActiveAt=os.clock() -- a new life is a touch: the playtime chart counts from here
  assert(self.engine:lifeStarted(p.identity))
  p.model:SetAttribute("Team",p.team or "")
  local text=p.body.PilotName:FindFirstChildOfClass("TextLabel")
@@ -548,7 +548,6 @@ function Runtime:join(player)
  end
 end
 function Runtime:withdraw(player)
- self:flushPlaytime(player)
  local p=self.flight.pilots[player]
  if p then self.flight:remove(p,"withdrawal") end
  self.joined[player]=nil;player:SetAttribute("InMatch",false)
@@ -591,17 +590,18 @@ end
 -- What happens as the round break moves on: the vote lap frees the planes and puts up the rings; the countdown
 -- takes them down again.
 function Runtime:phaseChanged(phase)
- if phase~="ACTIVE" then for player in pairs(self.playtimePending) do self:flushPlaytime(player) end end
  if phase=="VOTE" then
   self.flight:hold(false);self.bots.enabled=true;self.rings:show()
  elseif phase=="COUNTDOWN" then self.rings:hide() end
 end
--- Playtime chart (docs/plan/PLAYTIME-REWARDS-PLAN.md): match seconds count while the player has steered in the
--- last 2 minutes (flying or at the desk between lives). Saved every 30 s, at a box's time and when the match ends.
--- ponytail: up to 30 s of counted time is lost if a player quits the game mid-match.
-function Runtime:countPlaytime(p,dt)
- local player=p.player
- if not Playtime.counts(true,os.clock()-(p.playtimeActiveAt or os.clock())) then return end
+-- Playtime chart (docs/plan/PLAYTIME-REWARDS-PLAN.md): every second in the game counts (menus, building, matches)
+-- while the player has pressed, moved or tapped something in the last 2 minutes (the client's "here" note, sent at
+-- most every 20 s). Saved every 30 s and at a box's time.
+-- ponytail: up to 30 s of counted time is lost when a player quits; an auto-clicker passes as a player (as in any
+-- Roblox game; Roblox itself kicks after 20 idle minutes).
+function Runtime:countPlaytime(player,dt)
+ local touched=self.playtimeTouch[player]
+ if not touched or not Playtime.counts(true,os.clock()-touched) then return end
  local _,toGo=Playtime.nextBox({seconds=player:GetAttribute("PlaytimeSeconds") or Playtime.CAP})
  if not toGo then return end -- the chart is full (or the profile isn't loaded yet)
  local pending=(self.playtimePending[player] or 0)+dt
@@ -686,6 +686,7 @@ end
 function Runtime:step(dt)
  self.clock+=dt;if self.clock<ServerConfig.round.step_seconds then return end;self.clock%=ServerConfig.round.step_seconds
  Root:SetAttribute("TutorialRoom",self:tutorialRoom())
+ for _,player in ipairs(Players:GetPlayers()) do self:countPlaytime(player,ServerConfig.round.step_seconds) end
  -- The tutorial room has no match: the round engine waits (Studio's stand-in room resumes its paused match after).
  for _,p in pairs(self.flight.pilots) do if p.pin and p.player and p.model:GetAttribute("State")=="FLYING" then self:rangeTargets(p.player,p) end end
  if self.flight.tutorialRoom then return end
@@ -700,9 +701,8 @@ function Runtime:step(dt)
      if p.player and p.model:GetAttribute("State")=="FLYING" then
       self:gearCount(p,nil,"seconds",ServerConfig.round.step_seconds)
       local direction=p.body.CFrame.LookVector
-      if not p.activityDirection or direction:Dot(p.activityDirection)<.995 then self.engine:controlActivity(p.id);p.activityDirection=direction;p.playtimeActiveAt=os.clock() end
+      if not p.activityDirection or direction:Dot(p.activityDirection)<.995 then self.engine:controlActivity(p.id);p.activityDirection=direction end
      end
-     if p.player then self:countPlaytime(p,ServerConfig.round.step_seconds) end
     end
    end
   end

@@ -69,6 +69,18 @@ require(script.Parent.Audio).start(function()return plane end)
 require(script.Parent.Tutorial).start(function()return plane end)
 require(script.Parent.MatchTips).start(function()return plane end)
 require(script.Parent.DevTools).start(Menu)
+-- Playtime chart: tell the server the player is here (any key, click, mouse move or touch), at most every 20 s.
+-- With no note for 2 minutes the server stops counting playtime (docs/plan/PLAYTIME-REWARDS-PLAN.md).
+do
+	local Input=game:GetService("UserInputService")
+	local sent=-math.huge
+	local function here()
+		local now=os.clock()
+		if now-sent>=20 then sent=now;Root.RoundAction:FireServer("here") end
+	end
+	Input.InputBegan:Connect(here)
+	Input.InputChanged:Connect(here)
+end
 Root.RoundAction:FireServer("mapReady")
 Loading.ready()
 for _,connection in ipairs(loadingEvents) do connection:Disconnect() end

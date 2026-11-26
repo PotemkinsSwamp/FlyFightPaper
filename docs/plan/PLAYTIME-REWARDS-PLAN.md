@@ -24,9 +24,10 @@ chest**. When the chart is full: "Come back tomorrow for a new chart."
   from the menu, also the in-match menu.
 
 ## Rules
-- **What counts:** minutes in a match (flying, or at your desk between lives). Menus don't count, and nor does a
-  player who has touched nothing for 2 minutes (counting starts again at the next touch). That stops kids leaving the
-  game running in a menu for a chest.
+- **What counts:** all time in the game: matches, the menus, building planes, training (Alan 2026-11-25: "if you are in
+  the menu building planes or doing other stuff that play time should count"; first set to match time only). Time away
+  from the keyboard does not: a player who has pressed, moved or tapped nothing for 2 minutes stops counting until the
+  next touch, so nobody can leave the game running, or rejoin and leave it again, for a chest.
 - **Today's chart:** time adds up over the day, so leaving and coming back keeps your stars. A new chart starts the
   first time you join on a new day (UTC, like the daily gift); it never resets while you are playing.
 - Each box can be taken once a day; a box not taken by the day's end is lost (the chart page says so).
@@ -152,7 +153,7 @@ only (all Alan, 2026-11-25).
 ## Build order (after his OK)
 1. The rules (which boxes a number of seconds earns, the new day, one take per box) with unit tests: a Codex job (on
    Alan's ChatGPT plan; no other cost).
-2. The server: count match seconds (pausing for idle players), save with the profile, take a box, give the prize through
+2. The server: count seconds in the game (pausing for idle players), save with the profile, take a box, give the prize through
    the daily gift's code.
 3. The chart's look: two or three options built from our loaded art, put together in the scene, for Alan to pick
    before anything new is uploaded.
