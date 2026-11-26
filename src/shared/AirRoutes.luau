@@ -206,14 +206,15 @@ function Routes:runSpot(from,forward,threat)
 	end
 	return spots[1] and spots[1][1]
 end
--- A hole whose way in is 40-`reach` studs ahead (within about 50 degrees of the nose) and runs the way the bot is going:
--- {in, middle, out}, ordered from the bot's side.
+-- A low hole (under 200 studs and not above the bot: a street run never climbs for one, like the ceiling rings) whose way
+-- in is 40-`reach` studs ahead (within about 50 degrees of the nose) and runs the way the bot is going: {in, middle, out},
+-- ordered from the bot's side.
 function Routes:holeAhead(from,forward,reach)
 	for _,hole in ipairs(self.holes or {}) do
 		local near=(hole[1]-from).Magnitude<(hole[3]-from).Magnitude
 		local entry,exit=near and hole[1] or hole[3],near and hole[3] or hole[1]
 		local delta=entry-from;local d=delta.Magnitude
-		if d>40 and d<reach and forward:Dot(delta.Unit)>.65 and forward:Dot((exit-entry).Unit)>.3 then return {entry,hole[2],exit} end
+		if hole[2].Y<200 and hole[2].Y<from.Y+30 and d>40 and d<reach and forward:Dot(delta.Unit)>.65 and forward:Dot((exit-entry).Unit)>.3 then return {entry,hole[2],exit} end
 	end
 	return nil
 end
