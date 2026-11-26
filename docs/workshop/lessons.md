@@ -1055,6 +1055,9 @@ Back to [HOME](../HOME.md)
 - **A bot match's "crashes" include rams** (2026-11-25): every collision death counts, and the rammer quirk flies into
   hurt planes on purpose. Read the CRASHES line (each crash says RAM or the part hit, with the bot's skill, style and
   plane) before blaming the town: of 27 crashes in five matches, 20 were rams.
+- **Watch one bot on camera before trusting a bot change's numbers** (2026-11-25): three matches looked fine (12% of the time in holes), but the first filmed street run climbed 400 studs to a ceiling ring and was shot down. `tools/follow_bot.luau` films the next bot that starts a mode.
+- **How long a bot mode lasts can't be read from `BotIntent` samples alone** (2026-11-25): a street run paused by `unstuck`, `hole` or `fan` and then resumed shows up as a new, short run. Log why a mode ends with a temporary Studio-only attribute instead, and pick films by a fresh start (from chase, patrol or evade).
+- **`git checkout -- <file>` can fail with "unable to unlink" on a file Rojo is serving** (Windows, 2026-11-25); write it in place with `git show HEAD:<file> > <file>`.
 - **Change the bot match tool's Luau, then prove it with a one-minute match first** (2026-11-25): a real line break
   slipped into a Luau string in `tools/run_bot_matches.py` (a `\\n` written through a Python script) and three
   matches, 25 minutes, came back with no report. `python tools/run_bot_matches.py 1 60` shows the report in 2 minutes.
