@@ -21,6 +21,12 @@ and Claude's own Play runs for this work). What he asked for and the numbers:
    through, otherwise goes round or over. Airspace bots spread through the zone's whole height.
 4. **Varied ways.** Each bot adds its own small random cost to route legs (fixed per bot), some prefer low ways,
    some high, so they do not all follow one path.
+5. **Street runs** (Alan 2026-11-25 evening, [decision](../decisions/2026-11-25-bots-use-the-town.md)): the dive becomes
+   a 10-15 s run along the low routes away from the attacker, through a hole within about 400 studs ahead, then back
+   up. New chances: street run 80/70/50/30%, follow through a hole 90/70/45/20% (Ace/Veteran/Regular/Rookie).
+6. **Fights low more often:** cruising picks low points 70% of the time (habit moves it a little); a bot that loses a
+   target low searches at its height. Done when low is about 25-30%, town crashes (rams not counted) no worse than
+   about 1.5 a match, the same server time; then Alan's look with a before/after video.
 
 Pure logic (the point map's search, hole finding from ray results) goes to Codex with unit tests; the Roblox side,
 the behaviour and the checks are Claude's.
@@ -124,7 +130,9 @@ rams and walls and cannot be split now.
 
 ## Where it stands
 Steps 1-4 built and measured; crashes into the town about 1.3 a match (rams are by design). Dev panel **ace bots** makes
-every bot a veteran or an ace for Alan's look. Next: Alan's look in Play; then, if he wants, the monorail pillars (the
-most hit part).
+every bot a veteran or an ace. Alan's first look: "didn't notice much of change" (low only 8-11% of the time; dives fly
+out of the chaser's sight; hole follows are rare; his Play may have had rookies and regulars). Steps 5 and 6 approved
+with new numbers; not built. Next: build steps 5 and 6, measure, then his look with a before/after video. Later, if he
+wants: the monorail pillars (the most hit part of the town).
 
 Back to [HOME](../HOME.md)

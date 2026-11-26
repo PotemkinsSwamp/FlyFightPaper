@@ -22,6 +22,22 @@ Skill decides how smart (his OK on these numbers):
 | Follows you through a hole | 90% | 60% | 25% | never (goes around) |
 | Dives into the town when chased | most times | often | sometimes | never (climbs away) |
 
+**Changed the same evening** (after his first look, "i didnt notice mush of change"; [playtest](../playtests/2026-11-25-bots-in-the-town-first-look.md)):
+"lets do A and B and allow lower skill bots to use the town more often", then "yes those numbers are good":
+- **A. Street runs:** a bot shot at that rolls its dive drops to the low routes and heads away from its attacker for
+  10-15 seconds, through a hole when one is within about 400 studs ahead, then climbs back and fights again.
+- **B. Fights low more often:** cruising bots pick low points 70% of the time (each bot's habit moves it a little); a
+  bot that loses you low keeps searching at your height.
+- New skill numbers (replace the table above):
+
+| | Ace | Veteran | Regular | Rookie |
+|---|---|---|---|---|
+| Street run when shot at | 80% | 70% | 50% | 30% |
+| Follows you through a hole | 90% | 70% | 45% | 20% |
+
+Done when bots-only matches show bots low about 25-30% of the time, crashes into the town no worse than about 1.5 a
+match (rams not counted), the same server time; then his look with a short before/after video.
+
 ## Why
 Bots only flew over the town (their routes' lowest layer was 145 studs up and they were pushed up under 75 studs),
 never through it, so they read as dumb next to a player who hides and chases between buildings. Rookies stay easy
