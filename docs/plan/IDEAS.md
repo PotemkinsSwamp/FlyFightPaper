@@ -22,6 +22,8 @@ and a stage.
   Once skins exist, the shop's Today's parts row can rotate skins for players who own every part (Alan 2026-11-12).
 - **Plane emotes: tricks in flight** (Alan 2026-11-19: "we need those as well"): a barrel roll, loop or wing wiggle
   on a key while flying, sold and earned like the other emotes. After the winners' circle redo and the kid emotes.
+- **Look back** (Alan 2026-11-25): a key that turns the view backwards for a moment, to see whether someone is
+  chasing you and to time a dodge.
 - **Redo the part models, boosters first** (Alan 2026-11-12): the booster models don't read as what they do, and
   every part should look more appealing. Revisit all part models later.
 - **Bots that use the town** (Alan 2026-11-12): bots never fly through the tubes, rings and holes, never go for
