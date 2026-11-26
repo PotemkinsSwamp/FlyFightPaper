@@ -93,10 +93,47 @@ The daily gift (100-300 Paper a day, a chest every 7th day in a row) stays as it
 with half the small boxes' Paper, 1,100 for the day; Alan chose "Bigger".)
 
 **The treasure chest (open):** Alan 2026-11-25: "its a treasure chest, we could either do a few equal options or a spin
-wheel roll for good prizes and a small chance at a Great prize". Next: draft both (a pick-one of a few equal prizes; a
-wheel of good prizes with a small chance of a great one), each with real prizes and their worth, for his pick. Earned
-without Robux, so Roblox needs no odds shown, but the wheel shows its odds like our chests do; if a wheel spin is ever
-sold for Robux, every prize and its exact odds must be shown first.
+wheel roll for good prizes and a small chance at a Great prize". Both drafted below (2026-11-26) for his pick. Worth is
+what the prize costs in our shop today (Paper price, Robux price, and dollars at 400 R$ = $4.99). Earned without Robux,
+so Roblox needs no odds shown, but the wheel shows its odds like our chests do; if a wheel spin is ever sold for Robux,
+every prize and its exact odds must be shown first.
+
+*Draft A, pick one of three.* The chest opens and three prizes rise out; tap one. The same three every day.
+
+| Prize | Paper price | Robux price | Dollars |
+|---|---|---|---|
+| A Sticker chest (skins or trails, chosen when opened) | 3,000 | 135 | $1.68 |
+| 3,000 Paper | 3,000 | no 3,000 pack; 150-198 in packs | $1.87-2.47 |
+| 1 hour 2x Paper + 1 hour 2x XP | about 4,000 extra Paper over that hour of play | 50 (25 + 25) | $0.62 |
+
+Equal in Paper, the money a kid sees. Longer boosts were left out on purpose: 3 hours of 2x Paper every day would be a
+near-free copy of the 999 R$ "2x Paper forever" pass for exactly the players most likely to buy it.
+
+*Draft B, the spin wheel.* The chest opens into a paper wheel; spin it once. Odds printed on the wheel.
+
+| Prize | Chance | Playing 4 h every day, about | Paper price | Robux price | Dollars |
+|---|---|---|---|---|---|
+| 1,500 Paper | 30% | 2 days in 7 | 1,500 | 99 (the 1,500 pack) | $1.24 |
+| 1 hour 2x Paper + 1 hour 2x XP | 25% | 1 day in 4 | about 4,000 when played | 50 | $0.62 |
+| A Sticker chest | 20% | once in 5 days | 3,000 | 135 | $1.68 |
+| 5,000 Paper | 15% | once a week | 5,000 | 299 (the 5,000 pack) | $3.73 |
+| A Blue Ribbon chest | 8% | once in 12 days | 6,500 | 295 | $3.68 |
+| **Great:** a Legendary skin you don't have (all five owned: a Golden Star chest) | 2% | once in 7 weeks | 30,000 | 599 | $7.47 |
+
+Average worth of a spin: about 150 R$, the same as Draft A's chest or Paper. The great prize is 2% rather than the 0.1% other
+wheels use, because ours turns once a day at most, not every 20 minutes: at 0.1% nobody would ever see it.
+
+*What other games do* (fan wikis and guides, unofficial): Bubble Gum Simulator Infinity's wheel gives a free spin every
+20 minutes and sells more (19 R$ a spin): coins 45%, more coins 20%, potions and keys 14% and 10%, a mystery box 3%,
+5 spins 2.9%, a rare pet 0.1% ([Roonby](https://roonby.com/2025/04/15/wheel-spin-guide-bubble-gum-simulator-infinite-rewards-location-and-how-it-works/),
+[Ginx](https://www.ginx.tv/en/bgsi-wheel-spin-rewards-ticket-price)). Durian Garden: one free spin a day, its most
+common prize about 31%, a jackpot 0.1% ([game.guide](https://www.game.guide/durian-garden/rewards)). Tower Defense
+Simulator's playtime chests (5 to 120 minutes) hold rare towers at about 1%; Toilet Tower Defense's last crates, after
+up to 6 hours, can hold units found nowhere else (links above). None found uses a pick-one.
+
+*Selling it later:* the decision promises impatient players "a chest now instead of at the end of the chart". Selling
+Draft A's chest is a plain purchase. Selling Draft B's spin is a paid random item: odds shown before buying and Roblox's
+eligibility check, which our chests already do.
 
 Other games: Tower Defense Simulator gives playtime rewards at 5, 15, 30, 60, 90 and 120 minutes; Toilet Tower Defense
 gives nine crates over up to 6 hours in one sitting ([TDS wiki](https://tds.fandom.com/wiki/Playtime_Rewards),
@@ -114,7 +151,7 @@ the saving, the UTC day and the chest and boost prizes; the chart uses those.
 ## Questions for Alan
 1. ~~The chest at 4 hours or 5~~: 4 hours. 2. ~~The prizes~~: bigger (the table above). 3. ~~What counts~~: match time
 only (all Alan, 2026-11-25).
-4. The treasure chest: a few equal prizes to pick from, or a spin wheel (drafts of both to come).
+4. The treasure chest: Draft A (pick one of three) or Draft B (the spin wheel), above.
 
 ## Build order (after his OK)
 1. The rules (which boxes a number of seconds earns, the new day, one take per box) with unit tests: a Codex job (on
